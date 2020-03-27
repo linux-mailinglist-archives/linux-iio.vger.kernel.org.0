@@ -2,199 +2,318 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B321952DD
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 09:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A62681952F0
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 09:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbgC0IbL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 04:31:11 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:35985 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726427AbgC0IbL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 04:31:11 -0400
-Received: by mail-wr1-f66.google.com with SMTP id 31so10347297wrs.3
-        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 01:31:09 -0700 (PDT)
+        id S1726169AbgC0Ice (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 04:32:34 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:45791 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgC0Ice (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 04:32:34 -0400
+Received: by mail-wr1-f68.google.com with SMTP id t7so10289324wrw.12;
+        Fri, 27 Mar 2020 01:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=7qMxcUuECzy6UW7EY22DAqOxFR3J+yYatNeUV89Utj0=;
-        b=Re9nh7mY7E2XnsoW7UqnE/ZbPpu/RAKnPlkcHVa+kmfTNDW7Q8B+tS5p7UHi+5cQzr
-         BoVPWRVPSDacWjh56gaT78/RFhIEV+yvCIrnphWAOihwXMbTJ3wEJabJ9p/kvd359VZW
-         DHiulHb5HIhXw2KzkMMZ/m6cgb0duHKD+TrVUQa4iTBBFWqefNuYnKCdHNTIOS8awbKW
-         ElPVI6HDUuw7o2+SI6O/SoB/QrV4uSimO/Lht54lGbHc5r0Jr0thhgokUFlgR3yS/VBV
-         LJQVP8XMaQrc+enAiFb6qurB13hn5fbTUYDDiEfWMdTFHH579thoAdWbrBFW7mHhF5DR
-         nkaw==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=20+rjJHkP5zjHWEqe7dgbhTZkAm7I7OD3XXtBy0eyQE=;
+        b=UYJUPUYqgsrfEyceVAKLFPAiyxCLAVHMMp+Mjg5e3aum4pFFKzoDTAC60Il6ycwyd5
+         qAc3KQA0xxYqFqN5TslW7epKsguOJnJ93xT8LYYHLkdxuXVMiTOBnXXzoSIp8n8y1/IR
+         QYFyloAHPo6HMw7yDwh+C7p2O37ZxAo6WjZV0rH6XagF824vIm0snNJLOohbEPtHIb/j
+         aM9/98XEOrXD2kkC6EXvFeXvfc+jxH817jmxMD9bU3E/FMcthdhvnzuE2MIGExa4ih7F
+         M2UpMVjRCR7523rvIOkd7K5QO2nts3JSXmJm9/5/zRxqhmGSXTEZPrIegkRtlpQEA6+z
+         SrCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=7qMxcUuECzy6UW7EY22DAqOxFR3J+yYatNeUV89Utj0=;
-        b=nFaoDLE7rJD/P8QBQg1+SmlSEpP7XRh5qRSTHUrG/EDtjIUj9kb/4XVVJMUDqwDjEn
-         6gephF9kcoIARsFkLc4lnv4/ohCkyd0+Yox5s1yTGEaftnpLf2rfDmn3yAsvtaiIq/Ke
-         cVaOEUYZA8iPFKguf7IdgnCX6YFCh+W+jhYzTLdWqg8JaMhtZ9STEcG1rZ8vJUvWkiYn
-         PiHR7iK7ATiw0SNjS/SxoE1Biu80S0F5MAoxDNVyFuXkC76p3AN50fjxOXDwLjVV1rtG
-         Mz+s38xuWxX+gTLIRt2dJoweChooQ7D6nZk/PZvm8QQsZvWeDM6EFze0wDFEJX74Ij/O
-         yL9g==
-X-Gm-Message-State: ANhLgQ1Hv0MGNM6gwalC49eBCOw76lRyNsXYRwtvDtEoMn9sNc0ZU5nX
-        mAxuVzZZMpYBN4bCQ7wZHLw3Ow==
-X-Google-Smtp-Source: ADFU+vsnkuuXK5PCN3CGLGb7k6BWdwMd/4riN9BWBlsjaqEq6fO9cPeQcvyc9vM82ENDj4wZ1oJO+A==
-X-Received: by 2002:a5d:5141:: with SMTP id u1mr12997224wrt.146.1585297868413;
-        Fri, 27 Mar 2020 01:31:08 -0700 (PDT)
-Received: from dell ([95.149.164.95])
-        by smtp.gmail.com with ESMTPSA id q3sm7373231wru.87.2020.03.27.01.31.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 01:31:07 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 08:31:57 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guillaume La Roque <glaroque@baylibre.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Zhang Rui <rui.zhang@intel.com>,
-        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties:
- false'
-Message-ID: <20200327083157.GI603801@dell>
-References: <20200325220542.19189-1-robh@kernel.org>
- <20200325220542.19189-5-robh@kernel.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=20+rjJHkP5zjHWEqe7dgbhTZkAm7I7OD3XXtBy0eyQE=;
+        b=IBbmqzaeMlYyiEI6bLY9vggsIPSeXfo2cP1MSRQZx0DZqN7SyRlOF38fbDfpPrKru/
+         LUVUkd8HYcn6OCxvdi6V0iZnaKuvmq6K+mXJ6aqp/4cSB3VFKmDCAFHAmEN0R1Dejn9s
+         hN1lXJdlR/dGvj4OWuoPBel+ePqaHhDoozNWhERBxw5vA1pzri9ziIEtUq7urFBa3G+o
+         pQDe9kONmxHkQxaXCBSRdZZrIai8OHML5775AD3hT9Fw5+y5x0KIqujKLM07T3cNirM0
+         nZS3NWBiGOtYFtuN8u1h2Dr2xXgOpiugK096RVwUnEnuTf37QZtuhwWyfIGjCcTRVJK4
+         Hk8g==
+X-Gm-Message-State: ANhLgQ0VrGmpnEM4NXGdbHB45ahRy76Ih4jGMWA3rk1AqObIiMHXVxys
+        Iv/+lCW+68+zoWrevYCNOfkgV+bg
+X-Google-Smtp-Source: ADFU+vvSUA0fk8D8cSwfi5ZPgVWYwVYPYFXKvKLL8ZiroYVWsolSYZHcy0wqmtOA0ENjkgQkyIXyjQ==
+X-Received: by 2002:adf:f88b:: with SMTP id u11mr2746580wrp.84.1585297951285;
+        Fri, 27 Mar 2020 01:32:31 -0700 (PDT)
+Received: from [192.168.0.104] (p5B3F6E13.dip0.t-ipconnect.de. [91.63.110.19])
+        by smtp.gmail.com with ESMTPSA id g2sm7634023wrs.42.2020.03.27.01.32.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Mar 2020 01:32:30 -0700 (PDT)
+Subject: Re: [PATCH v4 2/5] mfd: mp2629: Add support for mps battery charger
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20200322224626.13160-1-sravanhome@gmail.com>
+ <20200322224626.13160-3-sravanhome@gmail.com> <20200327075541.GF603801@dell>
+From:   saravanan sekar <sravanhome@gmail.com>
+Message-ID: <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com>
+Date:   Fri, 27 Mar 2020 09:32:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200325220542.19189-5-robh@kernel.org>
+In-Reply-To: <20200327075541.GF603801@dell>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 Mar 2020, Rob Herring wrote:
+Hi Lee,
 
-> Setting 'additionalProperties: false' is frequently omitted, but is
-> important in order to check that there aren't extra undocumented
-> properties in a binding.
-> 
-> Ideally, we'd just add this automatically and make this the default, but
-> there's some cases where it doesn't work. For example, if a common
-> schema is referenced, then properties in the common schema aren't part
-> of what's considered for 'additionalProperties'. Also, sometimes there
-> are bus specific properties such as 'spi-max-frequency' that go into
-> bus child nodes, but aren't defined in the child node's schema.
-> 
-> So let's stick with the json-schema defined default and add
-> 'additionalProperties: false' where needed. This will be a continual
-> review comment and game of wack-a-mole.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../devicetree/bindings/arm/altera/socfpga-clk-manager.yaml    | 2 ++
->  .../bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml       | 2 ++
->  Documentation/devicetree/bindings/arm/msm/qcom,llcc.yaml       | 2 ++
->  Documentation/devicetree/bindings/arm/renesas,prr.yaml         | 2 ++
->  .../devicetree/bindings/arm/samsung/exynos-chipid.yaml         | 2 ++
->  Documentation/devicetree/bindings/arm/samsung/pmu.yaml         | 2 ++
->  .../bindings/arm/samsung/samsung-secure-firmware.yaml          | 2 ++
->  .../devicetree/bindings/arm/stm32/st,stm32-syscon.yaml         | 2 ++
->  Documentation/devicetree/bindings/clock/fsl,plldig.yaml        | 2 ++
->  Documentation/devicetree/bindings/clock/imx8mn-clock.yaml      | 2 ++
->  Documentation/devicetree/bindings/clock/imx8mp-clock.yaml      | 2 ++
->  Documentation/devicetree/bindings/clock/milbeaut-clock.yaml    | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-apq8064.yaml  | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-ipq8074.yaml  | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-msm8996.yaml  | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-msm8998.yaml  | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-qcs404.yaml   | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-sc7180.yaml   | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc-sm8150.yaml   | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,gcc.yaml          | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,mmcc.yaml         | 2 ++
->  .../devicetree/bindings/clock/qcom,msm8998-gpucc.yaml          | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml       | 2 ++
->  .../devicetree/bindings/clock/qcom,sc7180-dispcc.yaml          | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,sc7180-gpucc.yaml | 2 ++
->  .../devicetree/bindings/clock/qcom,sc7180-videocc.yaml         | 2 ++
->  .../devicetree/bindings/clock/qcom,sdm845-dispcc.yaml          | 2 ++
->  Documentation/devicetree/bindings/clock/qcom,sdm845-gpucc.yaml | 2 ++
->  .../devicetree/bindings/clock/qcom,sdm845-videocc.yaml         | 2 ++
->  .../devicetree/bindings/display/amlogic,meson-vpu.yaml         | 2 ++
->  .../devicetree/bindings/dma/sifive,fu540-c000-pdma.yaml        | 2 ++
->  Documentation/devicetree/bindings/dsp/fsl,dsp.yaml             | 2 ++
->  Documentation/devicetree/bindings/eeprom/at24.yaml             | 2 ++
->  .../firmware/intel,ixp4xx-network-processing-engine.yaml       | 3 +++
->  .../devicetree/bindings/gpio/brcm,xgs-iproc-gpio.yaml          | 2 ++
->  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
->  Documentation/devicetree/bindings/gpio/xylon,logicvc-gpio.yaml | 2 ++
->  Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml    | 2 ++
->  Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml    | 2 ++
->  Documentation/devicetree/bindings/gpu/arm,mali-utgard.yaml     | 2 ++
->  Documentation/devicetree/bindings/gpu/samsung-rotator.yaml     | 2 ++
->  Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml       | 2 ++
->  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml       | 2 ++
->  Documentation/devicetree/bindings/hwmon/pmbus/ti,ucd90320.yaml | 2 ++
->  Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml         | 2 ++
->  Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml  | 2 ++
->  Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml      | 2 ++
->  Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml      | 2 ++
->  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 2 ++
->  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml         | 2 ++
->  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml        | 2 ++
->  .../devicetree/bindings/iio/chemical/plantower,pms7003.yaml    | 2 ++
->  .../devicetree/bindings/iio/chemical/sensirion,sps30.yaml      | 2 ++
->  Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml    | 2 ++
->  Documentation/devicetree/bindings/iio/light/adux1020.yaml      | 2 ++
->  Documentation/devicetree/bindings/iio/light/bh1750.yaml        | 2 ++
->  Documentation/devicetree/bindings/iio/light/isl29018.yaml      | 2 ++
->  Documentation/devicetree/bindings/iio/light/noa1305.yaml       | 2 ++
->  Documentation/devicetree/bindings/iio/light/stk33xx.yaml       | 2 ++
->  Documentation/devicetree/bindings/iio/light/tsl2583.yaml       | 2 ++
->  Documentation/devicetree/bindings/iio/light/tsl2772.yaml       | 2 ++
->  Documentation/devicetree/bindings/iio/light/veml6030.yaml      | 2 ++
->  .../devicetree/bindings/iio/pressure/asc,dlhl60d.yaml          | 2 ++
->  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml     | 2 ++
->  .../devicetree/bindings/iio/proximity/devantech-srf04.yaml     | 2 ++
->  .../devicetree/bindings/iio/proximity/parallax-ping.yaml       | 2 ++
->  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml       | 2 ++
->  Documentation/devicetree/bindings/input/gpio-vibrator.yaml     | 2 ++
->  Documentation/devicetree/bindings/input/max77650-onkey.yaml    | 3 +++
->  .../bindings/interrupt-controller/intel,ixp4xx-interrupt.yaml  | 2 ++
->  Documentation/devicetree/bindings/iommu/samsung,sysmmu.yaml    | 2 ++
->  Documentation/devicetree/bindings/leds/leds-max77650.yaml      | 3 +++
->  Documentation/devicetree/bindings/leds/rohm,bd71828-leds.yaml  | 3 +++
->  .../devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml    | 2 ++
->  Documentation/devicetree/bindings/media/amlogic,gx-vdec.yaml   | 2 ++
->  .../devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml     | 2 ++
->  Documentation/devicetree/bindings/media/renesas,ceu.yaml       | 2 ++
+On 27/03/20 8:55 am, Lee Jones wrote:
+> On Sun, 22 Mar 2020, Saravanan Sekar wrote:
+>
+>> mp2629 is a highly-integrated switching-mode battery charge management
+>> device for single-cell Li-ion or Li-polymer battery.
+>>
+>> Add MFD core enables chip access for ADC driver for battery readings,
+>> and a power supply battery-charger driver
+>>
+>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+>> ---
+>>   drivers/mfd/Kconfig        |   9 +++
+>>   drivers/mfd/Makefile       |   2 +
+>>   drivers/mfd/mp2629.c       | 116 +++++++++++++++++++++++++++++++++++++
+>>   include/linux/mfd/mp2629.h |  22 +++++++
+>>   4 files changed, 149 insertions(+)
+>>   create mode 100644 drivers/mfd/mp2629.c
+>>   create mode 100644 include/linux/mfd/mp2629.h
+>>
+>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+>> index 3c547ed575e6..6614e5cff881 100644
+>> --- a/drivers/mfd/Kconfig
+>> +++ b/drivers/mfd/Kconfig
+>> @@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
+>>   	help
+>>   	  Select this if your MC13xxx is connected via an I2C bus.
+>>   
+>> +config MFD_MP2629
+>> +	bool "Monolithic power system MP2629 ADC and Battery charger"
+>> +	depends on I2C
+>> +	select REGMAP_I2C
+>> +	help
+>> +	  Select this option to enable support for monolithic power system
+>> +	  battery charger. This provides ADC, thermal, battery charger power
+>> +	  management functions on the systems.
+>> +
+>>   config MFD_MXS_LRADC
+>>   	tristate "Freescale i.MX23/i.MX28 LRADC"
+>>   	depends on ARCH_MXS || COMPILE_TEST
+>> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+>> index f935d10cbf0f..d6c210f96d02 100644
+>> --- a/drivers/mfd/Makefile
+>> +++ b/drivers/mfd/Makefile
+>> @@ -170,6 +170,8 @@ obj-$(CONFIG_MFD_MAX8925)	+= max8925.o
+>>   obj-$(CONFIG_MFD_MAX8997)	+= max8997.o max8997-irq.o
+>>   obj-$(CONFIG_MFD_MAX8998)	+= max8998.o max8998-irq.o
+>>   
+>> +obj-$(CONFIG_MFD_MP2629)	+= mp2629.o
+>> +
+>>   pcf50633-objs			:= pcf50633-core.o pcf50633-irq.o
+>>   obj-$(CONFIG_MFD_PCF50633)	+= pcf50633.o
+>>   obj-$(CONFIG_PCF50633_ADC)	+= pcf50633-adc.o
+>> diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
+>> new file mode 100644
+>> index 000000000000..41a4082387ce
+>> --- /dev/null
+>> +++ b/drivers/mfd/mp2629.c
+>> @@ -0,0 +1,116 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * MP2629 MFD Driver for ADC and battery charger
+> s/MFD Driver/parent driver/
+>
+>> + * Copyright 2020 Monolithic Power Systems, Inc
+>> + *
+>> + * Author: Saravanan Sekar <sravanhome@gmail.com>
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/module.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/i2c.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/irq.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/mfd/core.h>
+>> +#include <linux/mfd/mp2629.h>
+> Alphabetical please.
+>
+>> +enum {
+>> +	MP2629_MFD_ADC,
+>> +	MP2629_MFD_CHARGER,
+>> +	MP2629_MFD_MAX
+>> +};
+>> +
+>> +static struct resource mp2629_irq_rsrc[] = {
+>> +	{
+>> +		.flags = IORESOURCE_IRQ,
+>> +	},
+>> +};
+>> +
+>> +static struct mfd_cell mp2629mfd[] = {
+>> +	[MP2629_MFD_ADC] = {
+>> +		.name = "mp2629_adc",
+>> +		.of_compatible = "mps,mp2629_adc",
+>> +	},
+>> +	[MP2629_MFD_CHARGER] = {
+>> +		.name = "mp2629_charger",
+>> +		.of_compatible = "mps,mp2629_charger",
+>> +		.resources = mp2629_irq_rsrc,
+>> +		.num_resources = ARRAY_SIZE(mp2629_irq_rsrc),
+>> +	}
+>> +};
+>> +
+>> +static const struct regmap_config mp2629_regmap_config = {
+>> +	.reg_bits = 8,
+>> +	.val_bits = 8,
+>> +	.max_register = 0x17,
+>> +};
+>> +
+>> +static int mp2629_probe(struct i2c_client *client)
+>> +{
+>> +	struct mp2629_info *info;
+> All this ddata instead of info.
+Not sure the reason, I will do.
+>
+>> +	struct resource	*resources;
+>> +	int ret;
+>> +	int i;
+>> +
+>> +	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
+>> +	if (!info)
+>> +		return -ENOMEM;
+>> +
+>> +	info->dev = &client->dev;
+>> +	i2c_set_clientdata(client, info);
+>> +
+>> +	info->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
+>> +	if (IS_ERR(info->regmap)) {
+>> +		dev_err(info->dev, "Failed to allocate regmap!\n");
+>> +		return PTR_ERR(info->regmap);
+>> +	}
+>> +
+>> +	for (i = 0; i < MP2629_MFD_MAX; i++) {
+>> +		mp2629mfd[i].platform_data = &info->regmap;
+>> +		mp2629mfd[i].pdata_size = sizeof(info->regmap);
+> You don't need to store this in platform data as well.
+>
+> You already have it in device data (ddata [currently 'info']).
 
->  Documentation/devicetree/bindings/mfd/max77650.yaml            | 2 ++
->  Documentation/devicetree/bindings/mfd/rohm,bd71828-pmic.yaml   | 2 ++
+"The IIO parts seems fine (minor comments inline) but I'm not keep on
+directly accessing the internals of the mfd device info structure.
+To my mind that should be opaque to the child drivers so as to provide
+clear structure to any such accesses.
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+This mess in layering with the children directly using the parents
+regmap is a little concerning. It means that the 3 drivers
+really aren't very well separated and can't really be reviewed
+independently (not a good thing)."
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+This is the review comments form Jonathan on V2, not to access parent 
+data structure directly.
+Am I misunderstood his review comments? please suggest the better option 
+to follow as like in V2
+or V2 + some improvements or V4 + improvements?
+
+>> +		resources = (struct resource *)mp2629mfd[i].resources;
+>> +		if (resources) {
+>> +			resources[0].start = client->irq;
+>> +			resources[0].end = client->irq;
+>> +		}
+> You don't need to store this separately either.
+>
+> Just fetch it from the parent in the child device driver.
+>
+> It will look something like (untested, off the top of my head):
+>
+>    platform_get_irq(to_platform_device(pdev->dev.parent), 0);
+I have tested child got irq number correctly. Ok I will change it
+>
+>> +	}
+>> +
+>> +	ret = devm_mfd_add_devices(info->dev, PLATFORM_DEVID_NONE, mp2629mfd,
+>> +				ARRAY_SIZE(mp2629mfd), NULL,
+>> +				0, NULL);
+>> +	if (ret)
+>> +		dev_err(info->dev, "Failed to add mfd %d\n", ret);
+> "Failed to register sub-devices"
+>
+>> +	return ret;
+>> +}
+>> +
+>> +static const struct of_device_id mp2629_of_match[] = {
+>> +	{ .compatible = "mps,mp2629"},
+>> +	{ }
+>> +};
+>> +MODULE_DEVICE_TABLE(of, mp2629_of_match);
+>> +
+>> +static const struct i2c_device_id mp2629_id[] = {
+>> +	{ "mp2629", },
+>> +	{ }
+>> +};
+>> +MODULE_DEVICE_TABLE(i2c, mp2629_id);
+> You're already using .probe_new - this can be removed.
+>
+>> +static struct i2c_driver mp2629_driver = {
+>> +	.driver = {
+>> +		.name = "mp2629",
+>> +		.of_match_table = mp2629_of_match,
+>> +	},
+>> +	.probe_new	= mp2629_probe,
+>> +	.id_table	= mp2629_id,
+>> +};
+>> +module_i2c_driver(mp2629_driver);
+>> +
+>> +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
+>> +MODULE_DESCRIPTION("MP2629 Battery charger mfd driver");
+> "parent driver"
+>
+>> +MODULE_LICENSE("GPL");
+>> diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
+>> new file mode 100644
+>> index 000000000000..371e44330ba8
+>> --- /dev/null
+>> +++ b/include/linux/mfd/mp2629.h
+>> @@ -0,0 +1,22 @@
+>> +/* SPDX-License-Identifier: GPL-2.0+ */
+>> +/*
+>> + * mp2629.h  - register definitions for mp2629 charger
+> Remove the filename.
+>
+> s/mp2629/MP2629/
+>
+>> + * Copyright 2020 Monolithic Power Systems, Inc
+>> + *
+> Superfluous '\n'.
+>
+>> + */
+>> +
+>> +#ifndef __MP2629_H__
+>> +#define __MP2629_H__
+>> +
+>> +#include <linux/types.h>
+>> +
+>> +struct device;
+>> +struct regmap;
+> Why not just add the includes?
+Some more shared enum added in ADC driver
+>> +struct mp2629_info {
+>> +	struct device *dev;
+>> +	struct regmap *regmap;
+>> +};
+>> +
+>> +#endif
+Thanks,
+Saravanan

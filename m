@@ -2,176 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE3F19550C
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 11:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2689A195571
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 11:40:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727287AbgC0KVe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 06:21:34 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:52972 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726379AbgC0KVe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 06:21:34 -0400
-Received: by mail-wm1-f66.google.com with SMTP id z18so10845312wmk.2
-        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 03:21:31 -0700 (PDT)
+        id S1726758AbgC0KkC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 06:40:02 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:35193 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726333AbgC0KkC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 06:40:02 -0400
+Received: by mail-wr1-f68.google.com with SMTP id d5so10843279wrn.2
+        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 03:39:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=mxz8+ilE2NjB6kYVNyYap8z20EWNc89Zq7z80dHig9g=;
-        b=lwFfgP7q0u5LzYu5IHEQz+moTPm67eiVbNP8jvxisTOsI5Ma9EXK0h13/GmZJTgMnl
-         +Onr6bFvSPfXY+9YSNs3mbaMYQKyYOx/Nun1R1AIDyUetdtqqChqnXG7/1EIZeZJwG+h
-         AoYjZMrLCixc4B2+nEQHEZhYmkVUgGuEFxsGPd1u8CQiLy2L6AQ8e4C5sS5mdW24AHni
-         L423xnfJL3YVYLmXGSdDIk0Rk/t8gmiLBSeHvfIrZebXL+l1ni5cFPFsMcSjyofPyV6m
-         rZrGDRGPqN0mT60S1tgbFGUZi4IjDSYnD6UJGS6q6bGnrTlVviriUNh9zl3/vfCBifys
-         8g/g==
+        bh=hUy8CSxiwxtlSvFdhJfOQOxn+8kEeA3/QOE0g86x3DY=;
+        b=LMxxjnWHsVPWoK+YealyJ9Y8VXYAU9t0UsEYeUXuUR6Kew3uePNv32seA9fjNqon+b
+         uKpgsUP3PLmbQwwhR2nGysLvWXcqVaYGhAvXiI15N8rxlWciMQWG/KcpXGRlWQpXvMbD
+         RVtEo241nEUUlqhor80ruIxUeVG3aaorxDTsvOsB9vIFYbqkiJl1Pqqd+D0Yy7eMMI9N
+         Qg3fNLmNm7A/O55vwlpdITkGRbG7ojljbzonQ4My13PQK/K3+3D+YmKSL0S4/AbMzliq
+         qioniwV77ZESN3EwdzImhbFexw5sbgGBNGrFPYs18SKLkJTQpHsVMFSvYh0qVZmZxkT5
+         CIIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=mxz8+ilE2NjB6kYVNyYap8z20EWNc89Zq7z80dHig9g=;
-        b=hkVI9OIOsAwWnVop7Im8+5/NZ4AWGwMh0RAd/kmV+OAx8yS658BfvrvmPu0UKa2Jft
-         H2ty7xf3HUzu5WQrqQgrfhRZGy1uLpyXn16bwlttRHR3OF1ATFyLtd8+oeqn3nSKrlZ6
-         ZrIuFaan67WXVBPUsC7m88Ih4BCe/3KFKEu7PzDl1Dhh3yotiK0LYvmjGz5d1t7wYzOJ
-         YV6pigdJTNZc/i8L2HzlVCDhFPkJ0tny21/NUTzPAt1H6d1tTisKAOcqHeJTPUnM0bwW
-         dtz5EWP+K2OfrR2oivTDJuQa9xcyQgaL9gPpEVKs/nKsWL12yzZpKsgbQjtXsuadVGql
-         GztQ==
-X-Gm-Message-State: ANhLgQ0Cf3Q5BMClkiJJxqbZNT4b9+Q+K4YyPpBylgyWFG8HflagIKtE
-        AKDxSa9A4xJmznipEn3164T5eg==
-X-Google-Smtp-Source: ADFU+vv/J6W+8sMVirHWEM1E3vhMlYyC18B4Hdl1cCEW5yYGJgHZTGUu0teFlFTlPWijkILtA2tP2g==
-X-Received: by 2002:a1c:b4c6:: with SMTP id d189mr4433247wmf.132.1585304491231;
-        Fri, 27 Mar 2020 03:21:31 -0700 (PDT)
+        bh=hUy8CSxiwxtlSvFdhJfOQOxn+8kEeA3/QOE0g86x3DY=;
+        b=cf8jsUMZgUN2vzz9Zvu0bmhKuOW2JjNYGrI/DC1KuOD5LG+ULGf3TpZXxhNQwoaSgU
+         jQWm6UtEh8OQHoHnJE1FKIdN5Mw8poCyrtdBA6q4QpOfy+03Yfuj/oGTyI7SsxdJRQmf
+         JMilBIMqN3zfJfMCajRRR+8MmYxGTn0MNvMduDUMIBSMZbL1WrgToBVhA6+qZNWwz2iM
+         dNcCfxxSOTQEYfcMSeYYhV2zdQINcoma9Ev3UD+IfXaMnfpqp8WTCfVXTRQcvhwQl4RK
+         OQ3atmlXeGU6/wfr9WnMlaaec8FaUK09VRDc6oj7VC7ghNegvMJ3Dnp1ce7t7bPBjmDw
+         pCmQ==
+X-Gm-Message-State: ANhLgQ3Q3PsC3QsTPrxX7jzHhKGQ1jrNYDmGd6AtY8msx+RRk/gkYvxD
+        OA82DGRhTZPxgB+F9iJXLinYAQ==
+X-Google-Smtp-Source: ADFU+vu2K+4IxFs7+VvXvZAHHpSGTr0Ruak97rimwwt4gOR55rJ8O0ACPtX5CuXxCIq/LRKi6XwULw==
+X-Received: by 2002:adf:f0c5:: with SMTP id x5mr14511489wro.415.1585305598986;
+        Fri, 27 Mar 2020 03:39:58 -0700 (PDT)
 Received: from dell ([95.149.164.95])
-        by smtp.gmail.com with ESMTPSA id n9sm7646671wru.50.2020.03.27.03.21.30
+        by smtp.gmail.com with ESMTPSA id x206sm7522623wmg.17.2020.03.27.03.39.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 03:21:30 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 10:22:21 +0000
+        Fri, 27 Mar 2020 03:39:58 -0700 (PDT)
+Date:   Fri, 27 Mar 2020 10:40:49 +0000
 From:   Lee Jones <lee.jones@linaro.org>
-To:     saravanan sekar <sravanhome@gmail.com>
-Cc:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] mfd: mp2629: Add support for mps battery charger
-Message-ID: <20200327102221.GA3383@dell>
-References: <20200322224626.13160-1-sravanhome@gmail.com>
- <20200322224626.13160-3-sravanhome@gmail.com>
- <20200327075541.GF603801@dell>
- <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com, a.zummo@towertech.it,
+        alexandre.belloni@bootlin.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        stefan@agner.ch, b.galvani@gmail.com, phh@phh.me,
+        letux-kernel@openphoenux.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, jic23@kernel.org
+Subject: [GIT PULL] Immutable branch between MFD, IIO and RTC due for the
+ v5.7 merge window
+Message-ID: <20200327104049.GB3383@dell>
+References: <20200320081105.12026-1-andreas@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com>
+In-Reply-To: <20200320081105.12026-1-andreas@kemnade.info>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Saravanan, Jonathan,
+Enjoy!
 
-On Fri, 27 Mar 2020, saravanan sekar wrote:
-> On 27/03/20 8:55 am, Lee Jones wrote:
-> > On Sun, 22 Mar 2020, Saravanan Sekar wrote:
-> > 
-> > > mp2629 is a highly-integrated switching-mode battery charge management
-> > > device for single-cell Li-ion or Li-polymer battery.
-> > > 
-> > > Add MFD core enables chip access for ADC driver for battery readings,
-> > > and a power supply battery-charger driver
-> > > 
-> > > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> > > ---
-> > >   drivers/mfd/Kconfig        |   9 +++
-> > >   drivers/mfd/Makefile       |   2 +
-> > >   drivers/mfd/mp2629.c       | 116 +++++++++++++++++++++++++++++++++++++
-> > >   include/linux/mfd/mp2629.h |  22 +++++++
-> > >   4 files changed, 149 insertions(+)
-> > >   create mode 100644 drivers/mfd/mp2629.c
-> > >   create mode 100644 include/linux/mfd/mp2629.h
+The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
 
-[...]
+  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
 
-> > > +static int mp2629_probe(struct i2c_client *client)
-> > > +{
-> > > +	struct mp2629_info *info;
-> > Call this ddata instead of info.
-> Not sure the reason, I will do.
+are available in the Git repository at:
 
-Because this is device data.  Info is too loose of a definition.
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-iio-rtc-5.7
 
-> > > +	struct resource	*resources;
-> > > +	int ret;
-> > > +	int i;
-> > > +
-> > > +	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
-> > > +	if (!info)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	info->dev = &client->dev;
-> > > +	i2c_set_clientdata(client, info);
-> > > +
-> > > +	info->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
-> > > +	if (IS_ERR(info->regmap)) {
-> > > +		dev_err(info->dev, "Failed to allocate regmap!\n");
-> > > +		return PTR_ERR(info->regmap);
-> > > +	}
-> > > +
-> > > +	for (i = 0; i < MP2629_MFD_MAX; i++) {
-> > > +		mp2629mfd[i].platform_data = &info->regmap;
-> > > +		mp2629mfd[i].pdata_size = sizeof(info->regmap);
-> > You don't need to store this in platform data as well.
-> > 
-> > You already have it in device data (ddata [currently 'info']).
-> 
-> "The IIO parts seems fine (minor comments inline) but I'm not keep on
-> directly accessing the internals of the mfd device info structure.
-> To my mind that should be opaque to the child drivers so as to provide
-> clear structure to any such accesses.
-> 
-> This mess in layering with the children directly using the parents
-> regmap is a little concerning. It means that the 3 drivers
-> really aren't very well separated and can't really be reviewed
-> independently (not a good thing)."
-> 
-> This is the review comments form Jonathan on V2, not to access parent data
-> structure directly.
-> Am I misunderstood his review comments? please suggest the better option to
-> follow as like in V2
-> or V2 + some improvements or V4 + improvements?
+for you to fetch changes up to 7858658cdcab7ca8057444b1d24c6a28ddaa8589:
 
-I will take this up with Jonathan separately if necessary.
+  mfd: rn5t618: Cleanup i2c_device_id (2020-03-27 09:42:44 +0000)
 
-For your FYI (and Jonathan if he's Cc'ed), it's very common for a
-child of an MFD to acquire resources from their parent.  That is the
-point of a lot of MFDs, to obtain and register shared resources and
-pass them onto their offspring.  There are 10's of examples of this.
+----------------------------------------------------------------
+Andreas Kemnade (7):
+      dt-bindings: mfd: rn5t618: Document optional property interrupts
+      mfd: rn5t618: Add IRQ support
+      mfd: rn5t618: Add RTC related registers
+      mfd: rn5t618: Add more subdevices
+      rtc: rc5t619: Add Ricoh RC5T619 RTC driver
+      iio: adc: rn5t618: Add ADC driver for RN5T618/RC5T619
+      mfd: rn5t618: Cleanup i2c_device_id
 
-Things like Regmaps aren't platform data, they are device/driver data,
-which is usually passed though platform_set_drvdata().
-
-[...]
-
-> > > + */
-> > > +
-> > > +#ifndef __MP2629_H__
-> > > +#define __MP2629_H__
-> > > +
-> > > +#include <linux/types.h>
-> > > +
-> > > +struct device;
-> > > +struct regmap;
-> > Why not just add the includes?
-> Some more shared enum added in ADC driver
-
-Sorry?
-
-> > > +struct mp2629_info {
-> > > +	struct device *dev;
-> > > +	struct regmap *regmap;
-> > > +};
-> > > +
-> > > +#endif
+ Documentation/devicetree/bindings/mfd/rn5t618.txt |   4 +
+ drivers/iio/adc/Kconfig                           |  10 +
+ drivers/iio/adc/Makefile                          |   1 +
+ drivers/iio/adc/rn5t618-adc.c                     | 256 +++++++++++++
+ drivers/mfd/Kconfig                               |   1 +
+ drivers/mfd/rn5t618.c                             | 109 +++++-
+ drivers/rtc/Kconfig                               |  10 +
+ drivers/rtc/Makefile                              |   1 +
+ drivers/rtc/rtc-rc5t619.c                         | 444 ++++++++++++++++++++++
+ include/linux/mfd/rn5t618.h                       |  26 ++
+ 10 files changed, 851 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/iio/adc/rn5t618-adc.c
+ create mode 100644 drivers/rtc/rtc-rc5t619.c
 
 -- 
 Lee Jones [李琼斯]

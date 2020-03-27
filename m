@@ -2,131 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1971952C9
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 09:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B321952DD
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 09:31:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbgC0I1w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 04:27:52 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37910 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726115AbgC0I1v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 04:27:51 -0400
-Received: by mail-wr1-f65.google.com with SMTP id s1so10330415wrv.5
-        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 01:27:50 -0700 (PDT)
+        id S1726937AbgC0IbL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 04:31:11 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:35985 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbgC0IbL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 04:31:11 -0400
+Received: by mail-wr1-f66.google.com with SMTP id 31so10347297wrs.3
+        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 01:31:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=CkVRhFLjR5BXVsdWkkY22kPoQIG0Zdn2VQ6NVgBKV48=;
-        b=cuGfgicMqDk4qiU3ysMlg91HLCLPOZbXo7igRicRO6QTzqKuyqlrU0cCPo+ied8CsK
-         jx6W2/vtAg0MPFaSohSUfQSDAzmxlQbsdkmGCODjzJYjHyJmJk/Ju0PybMfzHT70P9qJ
-         avqzT8aW3bvc16hZcGU595c4zsD62d4T1I+BuSEeXzcuYBUbqnK480CnSxWw57BRaYN/
-         WiZiY67zl2oxF+5G/zgqk78pl2rKxqJDTb+XcNBG1dzIFwDpgpNunnyNaDG1P5atDXf8
-         /LOYjlkda4K3R9f/VS5TB9Up2Wdq+WxQUbCPLRxwQNXv4yzmOO5OGZ+u4XmiJ7mHLHYm
-         B4OQ==
+        bh=7qMxcUuECzy6UW7EY22DAqOxFR3J+yYatNeUV89Utj0=;
+        b=Re9nh7mY7E2XnsoW7UqnE/ZbPpu/RAKnPlkcHVa+kmfTNDW7Q8B+tS5p7UHi+5cQzr
+         BoVPWRVPSDacWjh56gaT78/RFhIEV+yvCIrnphWAOihwXMbTJ3wEJabJ9p/kvd359VZW
+         DHiulHb5HIhXw2KzkMMZ/m6cgb0duHKD+TrVUQa4iTBBFWqefNuYnKCdHNTIOS8awbKW
+         ElPVI6HDUuw7o2+SI6O/SoB/QrV4uSimO/Lht54lGbHc5r0Jr0thhgokUFlgR3yS/VBV
+         LJQVP8XMaQrc+enAiFb6qurB13hn5fbTUYDDiEfWMdTFHH579thoAdWbrBFW7mHhF5DR
+         nkaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=CkVRhFLjR5BXVsdWkkY22kPoQIG0Zdn2VQ6NVgBKV48=;
-        b=ffhhvl5hTS1ackBa27EMlIFU9DFcidJ7qUQ0kHaI6LptnJSZv/hxJ1xvAvlb0MmgMF
-         wKhE4lt1t/tmE0+6R9nEaccJtlOYMQBTlRHueVVjSgbK9iDcZA0di+rvWrCSAzpjj0HU
-         rGQu0FG1kchIT++PoHCAQbb92J+ZK/zOOkY5cK4WkLsWTwIPcXQHWs0Y1JJMiu5oG6t4
-         s7IKcQwD80km9AjyyDc+xS5owN55exxyiPmC0j6snEhbS8bTMHhAj/Yggg+QcFHTAmfR
-         Y9ZFnwRHcly5WW94YpzsLuR63xdbdlEj1Y51yBFhPjubtcaAiRqn/lEraWo7CHfzCuQq
-         5k7Q==
-X-Gm-Message-State: ANhLgQ24KA7dC5Cx/csp/TCa4eIhX9rCnASHDwGej9O39tshkDRgAV2L
-        uxdPzdB/xLUJTLy+v+yxVHvzlQ==
-X-Google-Smtp-Source: ADFU+vtCW1W+yt8zBsprd4LHiYYpC1yHMIMxUiv60XGYvGRFRU9BWgLV8s918txIquxn9g/Qf+pVdA==
-X-Received: by 2002:adf:bc04:: with SMTP id s4mr13567000wrg.244.1585297670103;
-        Fri, 27 Mar 2020 01:27:50 -0700 (PDT)
+        bh=7qMxcUuECzy6UW7EY22DAqOxFR3J+yYatNeUV89Utj0=;
+        b=nFaoDLE7rJD/P8QBQg1+SmlSEpP7XRh5qRSTHUrG/EDtjIUj9kb/4XVVJMUDqwDjEn
+         6gephF9kcoIARsFkLc4lnv4/ohCkyd0+Yox5s1yTGEaftnpLf2rfDmn3yAsvtaiIq/Ke
+         cVaOEUYZA8iPFKguf7IdgnCX6YFCh+W+jhYzTLdWqg8JaMhtZ9STEcG1rZ8vJUvWkiYn
+         PiHR7iK7ATiw0SNjS/SxoE1Biu80S0F5MAoxDNVyFuXkC76p3AN50fjxOXDwLjVV1rtG
+         Mz+s38xuWxX+gTLIRt2dJoweChooQ7D6nZk/PZvm8QQsZvWeDM6EFze0wDFEJX74Ij/O
+         yL9g==
+X-Gm-Message-State: ANhLgQ1Hv0MGNM6gwalC49eBCOw76lRyNsXYRwtvDtEoMn9sNc0ZU5nX
+        mAxuVzZZMpYBN4bCQ7wZHLw3Ow==
+X-Google-Smtp-Source: ADFU+vsnkuuXK5PCN3CGLGb7k6BWdwMd/4riN9BWBlsjaqEq6fO9cPeQcvyc9vM82ENDj4wZ1oJO+A==
+X-Received: by 2002:a5d:5141:: with SMTP id u1mr12997224wrt.146.1585297868413;
+        Fri, 27 Mar 2020 01:31:08 -0700 (PDT)
 Received: from dell ([95.149.164.95])
-        by smtp.gmail.com with ESMTPSA id 127sm7479123wmd.38.2020.03.27.01.27.48
+        by smtp.gmail.com with ESMTPSA id q3sm7373231wru.87.2020.03.27.01.31.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 01:27:49 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 08:28:40 +0000
+        Fri, 27 Mar 2020 01:31:07 -0700 (PDT)
+Date:   Fri, 27 Mar 2020 08:31:57 +0000
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     dmitry.torokhov@gmail.com, thierry.reding@gmail.com,
-        jic23@kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, u.kleine-koenig@pengutronix.de,
-        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Subject: [GIT PULL] Immutable branch between MFD, IIO and Input due for the
- v5.7 merge window
-Message-ID: <20200327082840.GH603801@dell>
-References: <1581895931-6056-1-git-send-email-jeff@labundy.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Brian Masney <masneyb@onstation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guillaume La Roque <glaroque@baylibre.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties:
+ false'
+Message-ID: <20200327083157.GI603801@dell>
+References: <20200325220542.19189-1-robh@kernel.org>
+ <20200325220542.19189-5-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1581895931-6056-1-git-send-email-jeff@labundy.com>
+In-Reply-To: <20200325220542.19189-5-robh@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Enjoy!
+On Wed, 25 Mar 2020, Rob Herring wrote:
 
-The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
+> Setting 'additionalProperties: false' is frequently omitted, but is
+> important in order to check that there aren't extra undocumented
+> properties in a binding.
+> 
+> Ideally, we'd just add this automatically and make this the default, but
+> there's some cases where it doesn't work. For example, if a common
+> schema is referenced, then properties in the common schema aren't part
+> of what's considered for 'additionalProperties'. Also, sometimes there
+> are bus specific properties such as 'spi-max-frequency' that go into
+> bus child nodes, but aren't defined in the child node's schema.
+> 
+> So let's stick with the json-schema defined default and add
+> 'additionalProperties: false' where needed. This will be a continual
+> review comment and game of wack-a-mole.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/arm/altera/socfpga-clk-manager.yaml    | 2 ++
+>  .../bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml       | 2 ++
+>  Documentation/devicetree/bindings/arm/msm/qcom,llcc.yaml       | 2 ++
+>  Documentation/devicetree/bindings/arm/renesas,prr.yaml         | 2 ++
+>  .../devicetree/bindings/arm/samsung/exynos-chipid.yaml         | 2 ++
+>  Documentation/devicetree/bindings/arm/samsung/pmu.yaml         | 2 ++
+>  .../bindings/arm/samsung/samsung-secure-firmware.yaml          | 2 ++
+>  .../devicetree/bindings/arm/stm32/st,stm32-syscon.yaml         | 2 ++
+>  Documentation/devicetree/bindings/clock/fsl,plldig.yaml        | 2 ++
+>  Documentation/devicetree/bindings/clock/imx8mn-clock.yaml      | 2 ++
+>  Documentation/devicetree/bindings/clock/imx8mp-clock.yaml      | 2 ++
+>  Documentation/devicetree/bindings/clock/milbeaut-clock.yaml    | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-apq8064.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-ipq8074.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-msm8996.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-msm8998.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-qcs404.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-sc7180.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-sm8150.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,mmcc.yaml         | 2 ++
+>  .../devicetree/bindings/clock/qcom,msm8998-gpucc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml       | 2 ++
+>  .../devicetree/bindings/clock/qcom,sc7180-dispcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,sc7180-gpucc.yaml | 2 ++
+>  .../devicetree/bindings/clock/qcom,sc7180-videocc.yaml         | 2 ++
+>  .../devicetree/bindings/clock/qcom,sdm845-dispcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,sdm845-gpucc.yaml | 2 ++
+>  .../devicetree/bindings/clock/qcom,sdm845-videocc.yaml         | 2 ++
+>  .../devicetree/bindings/display/amlogic,meson-vpu.yaml         | 2 ++
+>  .../devicetree/bindings/dma/sifive,fu540-c000-pdma.yaml        | 2 ++
+>  Documentation/devicetree/bindings/dsp/fsl,dsp.yaml             | 2 ++
+>  Documentation/devicetree/bindings/eeprom/at24.yaml             | 2 ++
+>  .../firmware/intel,ixp4xx-network-processing-engine.yaml       | 3 +++
+>  .../devicetree/bindings/gpio/brcm,xgs-iproc-gpio.yaml          | 2 ++
+>  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
+>  Documentation/devicetree/bindings/gpio/xylon,logicvc-gpio.yaml | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml    | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml    | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-utgard.yaml     | 2 ++
+>  Documentation/devicetree/bindings/gpu/samsung-rotator.yaml     | 2 ++
+>  Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml       | 2 ++
+>  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml       | 2 ++
+>  Documentation/devicetree/bindings/hwmon/pmbus/ti,ucd90320.yaml | 2 ++
+>  Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml         | 2 ++
+>  Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml  | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 2 ++
+>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml         | 2 ++
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml        | 2 ++
+>  .../devicetree/bindings/iio/chemical/plantower,pms7003.yaml    | 2 ++
+>  .../devicetree/bindings/iio/chemical/sensirion,sps30.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml    | 2 ++
+>  Documentation/devicetree/bindings/iio/light/adux1020.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/light/bh1750.yaml        | 2 ++
+>  Documentation/devicetree/bindings/iio/light/isl29018.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/light/noa1305.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/tsl2583.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/tsl2772.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/veml6030.yaml      | 2 ++
+>  .../devicetree/bindings/iio/pressure/asc,dlhl60d.yaml          | 2 ++
+>  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml     | 2 ++
+>  .../devicetree/bindings/iio/proximity/devantech-srf04.yaml     | 2 ++
+>  .../devicetree/bindings/iio/proximity/parallax-ping.yaml       | 2 ++
+>  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml       | 2 ++
+>  Documentation/devicetree/bindings/input/gpio-vibrator.yaml     | 2 ++
+>  Documentation/devicetree/bindings/input/max77650-onkey.yaml    | 3 +++
+>  .../bindings/interrupt-controller/intel,ixp4xx-interrupt.yaml  | 2 ++
+>  Documentation/devicetree/bindings/iommu/samsung,sysmmu.yaml    | 2 ++
+>  Documentation/devicetree/bindings/leds/leds-max77650.yaml      | 3 +++
+>  Documentation/devicetree/bindings/leds/rohm,bd71828-leds.yaml  | 3 +++
+>  .../devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml    | 2 ++
+>  Documentation/devicetree/bindings/media/amlogic,gx-vdec.yaml   | 2 ++
+>  .../devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml     | 2 ++
+>  Documentation/devicetree/bindings/media/renesas,ceu.yaml       | 2 ++
 
-  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
+>  Documentation/devicetree/bindings/mfd/max77650.yaml            | 2 ++
+>  Documentation/devicetree/bindings/mfd/rohm,bd71828-pmic.yaml   | 2 ++
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-iio-input-v5.7
-
-for you to fetch changes up to 189c3c495ad7382099a641664171d8b047d9e9b5:
-
-  iio: position: Add support for Azoteq IQS624/625 angle sensors (2020-03-27 08:25:59 +0000)
-
-----------------------------------------------------------------
-Immutable branch between MFD, IIO and Input due for the v5.7 merge window
-
-----------------------------------------------------------------
-Jeff LaBundy (6):
-      dt-bindings: Add bindings for Azoteq IQS620A/621/622/624/625
-      mfd: Add support for Azoteq IQS620A/621/622/624/625
-      input: keyboard: Add support for Azoteq IQS620A/621/622/624/625
-      iio: temperature: Add support for Azoteq IQS620AT temperature sensor
-      iio: light: Add support for Azoteq IQS621/622 ambient light sensors
-      iio: position: Add support for Azoteq IQS624/625 angle sensors
-
- .../devicetree/bindings/input/iqs62x-keys.yaml     |  132 +++
- Documentation/devicetree/bindings/mfd/iqs62x.yaml  |  179 ++++
- .../devicetree/bindings/pwm/iqs620a-pwm.yaml       |   32 +
- drivers/iio/Kconfig                                |    1 +
- drivers/iio/Makefile                               |    1 +
- drivers/iio/light/Kconfig                          |   10 +
- drivers/iio/light/Makefile                         |    1 +
- drivers/iio/light/iqs621-als.c                     |  617 ++++++++++++
- drivers/iio/position/Kconfig                       |   19 +
- drivers/iio/position/Makefile                      |    7 +
- drivers/iio/position/iqs624-pos.c                  |  284 ++++++
- drivers/iio/temperature/Kconfig                    |   10 +
- drivers/iio/temperature/Makefile                   |    1 +
- drivers/iio/temperature/iqs620at-temp.c            |   97 ++
- drivers/input/keyboard/Kconfig                     |   10 +
- drivers/input/keyboard/Makefile                    |    1 +
- drivers/input/keyboard/iqs62x-keys.c               |  335 ++++++
- drivers/mfd/Kconfig                                |   13 +
- drivers/mfd/Makefile                               |    1 +
- drivers/mfd/iqs62x.c                               | 1063 ++++++++++++++++++++
- include/linux/mfd/iqs62x.h                         |  139 +++
- 21 files changed, 2953 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/iqs62x-keys.yaml
- create mode 100644 Documentation/devicetree/bindings/mfd/iqs62x.yaml
- create mode 100644 Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml
- create mode 100644 drivers/iio/light/iqs621-als.c
- create mode 100644 drivers/iio/position/Kconfig
- create mode 100644 drivers/iio/position/Makefile
- create mode 100644 drivers/iio/position/iqs624-pos.c
- create mode 100644 drivers/iio/temperature/iqs620at-temp.c
- create mode 100644 drivers/input/keyboard/iqs62x-keys.c
- create mode 100644 drivers/mfd/iqs62x.c
- create mode 100644 include/linux/mfd/iqs62x.h
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
 -- 
 Lee Jones [李琼斯]

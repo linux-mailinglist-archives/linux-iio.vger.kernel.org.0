@@ -2,158 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B7A195279
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 08:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1971952C9
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 09:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbgC0H71 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 03:59:27 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36812 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbgC0H70 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 03:59:26 -0400
-Received: by mail-wm1-f67.google.com with SMTP id g62so11305027wme.1
-        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 00:59:24 -0700 (PDT)
+        id S1726427AbgC0I1w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 04:27:52 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:37910 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726115AbgC0I1v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 04:27:51 -0400
+Received: by mail-wr1-f65.google.com with SMTP id s1so10330415wrv.5
+        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 01:27:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=A3SXt9hKtlX1+t84Pw/hXlXdpS45L5XvfwgDMGD8Nko=;
-        b=PH8Cpe40EpSF7HB9AKeXxzJ1+XtwHVysz14bHbN16e+oAMowvX590ARQroH633UNUx
-         f+rXTFoH9FEkJAs7AxlbINo7Io1KUh/QFsEU8hRJ9UckHHvOyK7uT0gnRWIn3lTqIZY4
-         VszUzEF1c3iVwZtq8xr/Rt/1h927SDlUfEc3OYlTsKwkk+jjDeGWQGxXLmy6eLqf4h36
-         lsPty8cviKyEar+HtlgyOxKTG96MgoiP5Z5fmuckNar2L1b07WKA6JgNmp3TVlz0JHUy
-         MrUeIChjLJzTnqWcwr7loYjzbUPin3CRt93ie1JeIhqrWzu9HH6lGKmZfzWobXn9Sobi
-         rl0w==
+        bh=CkVRhFLjR5BXVsdWkkY22kPoQIG0Zdn2VQ6NVgBKV48=;
+        b=cuGfgicMqDk4qiU3ysMlg91HLCLPOZbXo7igRicRO6QTzqKuyqlrU0cCPo+ied8CsK
+         jx6W2/vtAg0MPFaSohSUfQSDAzmxlQbsdkmGCODjzJYjHyJmJk/Ju0PybMfzHT70P9qJ
+         avqzT8aW3bvc16hZcGU595c4zsD62d4T1I+BuSEeXzcuYBUbqnK480CnSxWw57BRaYN/
+         WiZiY67zl2oxF+5G/zgqk78pl2rKxqJDTb+XcNBG1dzIFwDpgpNunnyNaDG1P5atDXf8
+         /LOYjlkda4K3R9f/VS5TB9Up2Wdq+WxQUbCPLRxwQNXv4yzmOO5OGZ+u4XmiJ7mHLHYm
+         B4OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=A3SXt9hKtlX1+t84Pw/hXlXdpS45L5XvfwgDMGD8Nko=;
-        b=EFv7iuN3HhVkJZhwg86J9dBvcuynBJBNsTggqq7/HIHJFtBkhNGeL/igj9lpf0Tel4
-         nkHdDZf0F8PXvBRnwnXaQbmyzwri+meq75DLl3cD8k2SVbB1fAqi5Or1B1DL2Pj774ju
-         8mEJJer5X+NTFZt9Nt+jqxIpsE6qc8KuGGQHW5z/pGO/bENox7pJVq2OT9QXYhMHMWK3
-         +rA9VOHqgsDkmxx8F6lugTY4b3CnvYx6rcIx8cCmMmL8iW90VHEcKBZhxz4Q+g2wDTvT
-         PXxSYo1J8z0gAcyqVLh7jCoU3JGd1+xPQtdpcSmpj9R7su2KasK8P2JYCGJEDqeJsXol
-         jfBw==
-X-Gm-Message-State: ANhLgQ359ZtSmJ9B3Sup2w2T/UwObEErWIzUESKMpzH5jet69oJW8/VQ
-        xiOSHZN/Ok0NvNbn/YNWH67P7SUZSR8=
-X-Google-Smtp-Source: ADFU+vtuAAzt17YyAL9hR5KUBg7fm4k5jzYFnkXge0vitnHvBL5WZM5ArdCdYWMQtFG71oW2werRfw==
-X-Received: by 2002:a7b:ca52:: with SMTP id m18mr3951832wml.156.1585295963787;
-        Fri, 27 Mar 2020 00:59:23 -0700 (PDT)
+        bh=CkVRhFLjR5BXVsdWkkY22kPoQIG0Zdn2VQ6NVgBKV48=;
+        b=ffhhvl5hTS1ackBa27EMlIFU9DFcidJ7qUQ0kHaI6LptnJSZv/hxJ1xvAvlb0MmgMF
+         wKhE4lt1t/tmE0+6R9nEaccJtlOYMQBTlRHueVVjSgbK9iDcZA0di+rvWrCSAzpjj0HU
+         rGQu0FG1kchIT++PoHCAQbb92J+ZK/zOOkY5cK4WkLsWTwIPcXQHWs0Y1JJMiu5oG6t4
+         s7IKcQwD80km9AjyyDc+xS5owN55exxyiPmC0j6snEhbS8bTMHhAj/Yggg+QcFHTAmfR
+         Y9ZFnwRHcly5WW94YpzsLuR63xdbdlEj1Y51yBFhPjubtcaAiRqn/lEraWo7CHfzCuQq
+         5k7Q==
+X-Gm-Message-State: ANhLgQ24KA7dC5Cx/csp/TCa4eIhX9rCnASHDwGej9O39tshkDRgAV2L
+        uxdPzdB/xLUJTLy+v+yxVHvzlQ==
+X-Google-Smtp-Source: ADFU+vtCW1W+yt8zBsprd4LHiYYpC1yHMIMxUiv60XGYvGRFRU9BWgLV8s918txIquxn9g/Qf+pVdA==
+X-Received: by 2002:adf:bc04:: with SMTP id s4mr13567000wrg.244.1585297670103;
+        Fri, 27 Mar 2020 01:27:50 -0700 (PDT)
 Received: from dell ([95.149.164.95])
-        by smtp.gmail.com with ESMTPSA id o9sm7378769wrx.48.2020.03.27.00.59.22
+        by smtp.gmail.com with ESMTPSA id 127sm7479123wmd.38.2020.03.27.01.27.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 00:59:22 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 08:00:13 +0000
+        Fri, 27 Mar 2020 01:27:49 -0700 (PDT)
+Date:   Fri, 27 Mar 2020 08:28:40 +0000
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] dt-bindings: mfd: add document bindings for mp2629
-Message-ID: <20200327080013.GG603801@dell>
-References: <20200322224626.13160-1-sravanhome@gmail.com>
- <20200322224626.13160-2-sravanhome@gmail.com>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     dmitry.torokhov@gmail.com, thierry.reding@gmail.com,
+        jic23@kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com
+Subject: [GIT PULL] Immutable branch between MFD, IIO and Input due for the
+ v5.7 merge window
+Message-ID: <20200327082840.GH603801@dell>
+References: <1581895931-6056-1-git-send-email-jeff@labundy.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200322224626.13160-2-sravanhome@gmail.com>
+In-Reply-To: <1581895931-6056-1-git-send-email-jeff@labundy.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020, Saravanan Sekar wrote:
+Enjoy!
 
-> Add device tree binding information for mp2629 mfd driver.
-> 
-> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> ---
->  .../devicetree/bindings/mfd/mps,mp2629.yaml   | 60 +++++++++++++++++++
->  1 file changed, 60 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> new file mode 100644
-> index 000000000000..314309ea91ac
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> @@ -0,0 +1,60 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/mps,mp2629.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
 
-Are these links supposed to work?
+  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
 
-> +title: MP2629 Battery Charger PMIC from Monolithic Power System.
-> +
-> +maintainers:
-> +  - Saravanan Sekar <sravanhome@gmail.com>
-> +
-> +description: |
-> +  MP2629 is an PMIC providing battery charging and power supply for smartphones,
+are available in the Git repository at:
 
-s/an/a/
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-iio-input-v5.7
 
-> +  wireless camera and portable devices. Chip is contrlled over I2C.
+for you to fetch changes up to 189c3c495ad7382099a641664171d8b047d9e9b5:
 
-Spell check!
+  iio: position: Add support for Azoteq IQS624/625 angle sensors (2020-03-27 08:25:59 +0000)
 
-> +  The MFD device handles battery charger controller and ADC IIO device for
-> +  battery, system voltage
+----------------------------------------------------------------
+Immutable branch between MFD, IIO and Input due for the v5.7 merge window
 
-MFD isn't a thing.  We made it up.  Please describe it as it is in the datasheet.
+----------------------------------------------------------------
+Jeff LaBundy (6):
+      dt-bindings: Add bindings for Azoteq IQS620A/621/622/624/625
+      mfd: Add support for Azoteq IQS620A/621/622/624/625
+      input: keyboard: Add support for Azoteq IQS620A/621/622/624/625
+      iio: temperature: Add support for Azoteq IQS620AT temperature sensor
+      iio: light: Add support for Azoteq IQS621/622 ambient light sensors
+      iio: position: Add support for Azoteq IQS624/625 angle sensors
 
-> +properties:
-> +  compatible:
-> +    const: mps,mp2629
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +    description:
-> +      The first cell is the IRQ number, the second cell is the trigger type.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - interrupt-controller
-> +  - "#interrupt-cells"
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/input/linux-event-codes.h>
-> +    i2c {
-
-i2c@0x????????
-
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        pmic@4b {
-> +            compatible = "mps,mp2629";
-> +            reg = <0x4b>;
-> +
-> +            interrupt-controller;
-> +            interrupt-parent = <&gpio2>;
-> +            #interrupt-cells = <2>;
-> +            interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
-> +        };
-> +    };
+ .../devicetree/bindings/input/iqs62x-keys.yaml     |  132 +++
+ Documentation/devicetree/bindings/mfd/iqs62x.yaml  |  179 ++++
+ .../devicetree/bindings/pwm/iqs620a-pwm.yaml       |   32 +
+ drivers/iio/Kconfig                                |    1 +
+ drivers/iio/Makefile                               |    1 +
+ drivers/iio/light/Kconfig                          |   10 +
+ drivers/iio/light/Makefile                         |    1 +
+ drivers/iio/light/iqs621-als.c                     |  617 ++++++++++++
+ drivers/iio/position/Kconfig                       |   19 +
+ drivers/iio/position/Makefile                      |    7 +
+ drivers/iio/position/iqs624-pos.c                  |  284 ++++++
+ drivers/iio/temperature/Kconfig                    |   10 +
+ drivers/iio/temperature/Makefile                   |    1 +
+ drivers/iio/temperature/iqs620at-temp.c            |   97 ++
+ drivers/input/keyboard/Kconfig                     |   10 +
+ drivers/input/keyboard/Makefile                    |    1 +
+ drivers/input/keyboard/iqs62x-keys.c               |  335 ++++++
+ drivers/mfd/Kconfig                                |   13 +
+ drivers/mfd/Makefile                               |    1 +
+ drivers/mfd/iqs62x.c                               | 1063 ++++++++++++++++++++
+ include/linux/mfd/iqs62x.h                         |  139 +++
+ 21 files changed, 2953 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/iqs62x-keys.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/iqs62x.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml
+ create mode 100644 drivers/iio/light/iqs621-als.c
+ create mode 100644 drivers/iio/position/Kconfig
+ create mode 100644 drivers/iio/position/Makefile
+ create mode 100644 drivers/iio/position/iqs624-pos.c
+ create mode 100644 drivers/iio/temperature/iqs620at-temp.c
+ create mode 100644 drivers/input/keyboard/iqs62x-keys.c
+ create mode 100644 drivers/mfd/iqs62x.c
+ create mode 100644 include/linux/mfd/iqs62x.h
 
 -- 
 Lee Jones [李琼斯]

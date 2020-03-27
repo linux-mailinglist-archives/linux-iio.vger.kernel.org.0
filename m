@@ -2,237 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C53F41955B9
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 11:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E62351955C7
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 11:56:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726439AbgC0Kw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 06:52:28 -0400
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:24418 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726284AbgC0Kw2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 06:52:28 -0400
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02RApnf1020688;
-        Fri, 27 Mar 2020 03:52:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=YAdAil2EByAmnOnKo3Bheq01DoRT7Usv7JJwfCNN66Q=;
- b=R2jt3VIjc8bH7YH/I7bE28NCwniG1ZvecyvtaCfrcdtE4bdCPoqWUitDVPvdhRJpAu6b
- jOv8hnjBFiGOG523zbbbNYgEGA6taNC07ERZTmDQW88Y1hn6vG1qmSHPBoFEsnxnNKMF
- 6U0ODyQeaTXm2x+OO/UBEj4araS+AXSOyckF1/mYUxXI6qTTw61jvwzamEfTsCsfxRaT
- rPRAq7glN+8n3yjijfEusHQMeAmjEixEN7sb3Gt/HgU2U6LZptGaNrRVcz/6MoX0BsJl
- /WAXEBrAweezkcsy6egHU7VPkTRi9h0IDwda1+On0X1zA+Vk/ght2KLEaJVNTjwBoZ3A /A== 
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2049.outbound.protection.outlook.com [104.47.66.49])
-        by mx0b-00328301.pphosted.com with ESMTP id 300bux0v9r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Mar 2020 03:52:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FtPSfOOv08u3GX2JLcznwDVBH8oY+8D9hV2+Lp/lQbMGibnNGy/KzcLUxUxF0o73ASdS4F9sugQOBNq4blpmYDafcdACWXAZLCHA1XJaezyE8JQc+Wf0rKzadsB5eNDfHfNf6NDKnQExP9BRe6X5AKDJkAh2lbWwzX76ED6bZ6gi1lO27WZ/0rpj5CVEIJKjEvWGwMHybuJVQLFSd4Q6Sg8waiPgkDz7Vi3Hj+78oLWSUeCcAQJb5PXIeRPxblT5KZfjut1TgbvBDBE2hmx2j3yaojca+E62fXxs/+pNqHuNB2JP7zeJPMU8m83DAB2qmgtMsTzl+F13xt41Boa55w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YAdAil2EByAmnOnKo3Bheq01DoRT7Usv7JJwfCNN66Q=;
- b=ku8kaMTNcCdp1pd+3xO18fQdMMEY8BKa0s8o1KB6gjVMq0Wd+9NwOIDJS6wZH0rI9cYxaYnkApN+QpftyABRp8AkxlVCPdNodGEWTJSEryDDCatIfnupiHvypRlxkUK+kepgxtYSAlWY/4PlTSM5Ru8oWss8dnzp/S6cobik0NplPciJyU3ILHn+/DYIHWJEE+ETXM/BPRq/M13sX1gUEUKF+Ar/Em/yFubKbvvOW1f66RpW1685fOFdgWRPo2g34GOaLX9L7k+MpIO+qzT2CY/x47P1ASvZE+9hGyX1Pvf8MIy3O1J8ZmfnSb0XRQANBc1qqHmPBGq55ktETah7Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
+        id S1726804AbgC0K4R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 06:56:17 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:34683 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726217AbgC0K4R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 06:56:17 -0400
+Received: by mail-wm1-f67.google.com with SMTP id 26so9840860wmk.1;
+        Fri, 27 Mar 2020 03:56:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YAdAil2EByAmnOnKo3Bheq01DoRT7Usv7JJwfCNN66Q=;
- b=LOoMeksZwkHyZei5QQNQSDBEEbgohMZtb7VicxVmEFWCq/MwDDRs/bcdR7iL5mTNe1d2EpCPvUHWP7KwsvICBP3F4H5Rw2Vr+nG64hGx0UVVU4xpJFDD1ENqxk0gRvm+3muFQMuvxKXjQ8GQIhCJAaMljEbc05PtAUtbhGbRx0A=
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
- by MN2PR12MB4533.namprd12.prod.outlook.com (2603:10b6:208:266::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.20; Fri, 27 Mar
- 2020 10:52:02 +0000
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0]) by MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0%4]) with mapi id 15.20.2835.021; Fri, 27 Mar 2020
- 10:52:02 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] iio: imu: inv_mpu6050: convert to use
- i2c_new_client_device()
-Thread-Topic: [PATCH 1/1] iio: imu: inv_mpu6050: convert to use
- i2c_new_client_device()
-Thread-Index: AQHWA7NBLBGRcKbNIkm533g4m2Qp66hcQ5oV
-Date:   Fri, 27 Mar 2020 10:52:02 +0000
-Message-ID: <MN2PR12MB44228DEA7CE19B853292FE38C4CC0@MN2PR12MB4422.namprd12.prod.outlook.com>
-References: <20200326210955.12991-1-wsa+renesas@sang-engineering.com>,<20200326210955.12991-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20200326210955.12991-2-wsa+renesas@sang-engineering.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [91.174.78.156]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a7e5910a-5431-457d-08d0-08d7d23ce1c1
-x-ms-traffictypediagnostic: MN2PR12MB4533:
-x-microsoft-antispam-prvs: <MN2PR12MB4533140DC097390C0293D0FCC4CC0@MN2PR12MB4533.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-forefront-prvs: 0355F3A3AE
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(366004)(376002)(136003)(396003)(39850400004)(64756008)(66556008)(91956017)(33656002)(76116006)(86362001)(66446008)(2906002)(26005)(66946007)(71200400001)(478600001)(4326008)(110136005)(81166006)(8676002)(8936002)(9686003)(66476007)(52536014)(53546011)(54906003)(7696005)(5660300002)(55016002)(186003)(316002)(81156014)(6506007);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB4533;H:MN2PR12MB4422.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: j5KOn+qrCIQC0ienDwVdbbTKCPSRP2guh6ENbg9hBXCf4pFuRdn6la8Sm7cML7eJhGX1tI5lnAyIHXWNt2Opaq9x9bbywH2BSWkSYjScdol652gi3VyB6DXob1XPum89ev9paZpR0Z4SsBqDfSC9OVhLF/sb04K8j9fy6BftqAW+HNajKI8y+xj3wVQySB/6/MBsuNAdveU66UcJPvMFJgO3k7kCqCLAw0AK6togcKcseUOsjnQAKy1W0BHLw0v6bKSfSu27TeYuGkv0+sXDTdDhBz46NhuCTZjrpP/HJKpzPnw2Bkgr24VMPo5LMr3W99jO/eQxw0Unca4IhGhEAFNM6u7BTXfSbXMWP9UwcodfgfCfFNnUXciq3W+h3O30S2ZnWtrJfcYLK0pRBYDFHFM0bisj8nBBqDat5NVKChObNKr0SwThsgzFUCPIhwWm
-x-ms-exchange-antispam-messagedata: lF1se7bi4A1TGdwOhxL5smVAtsiy5dKb/vpLM2bVbttzezxtGxfovZun3QbR0vxGZn91FBXNEP+o6ShE9GICyyXG00WRIpWxu7DQjUXF5GZIWX4gwLJB6PG6rGDK5KG2BI4Hs2kFtI2A0Z0JFwx4gQ==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=dL7gv6sWkyNmltNkwBKTpfHTf5artkuk2jHExaT5rwo=;
+        b=Ze8UpfUOyNHJABjYlb+idMeSG10f0yfqmZUnvbVOEj3iDSKX7gfB2FevnOMYvfNV3C
+         ZZXd2rRAVBtQwWnftG5y18IwPNORXt3sjFNPKZ7EvPgFPL5q9ba2ZetUQUEX6KXOpsoe
+         neTuZVAUj150z1mZZ07MayLtYg0R/UYdYF7DThmpt3QpObFENcU2NjZspBDtmHp5jBLG
+         GLiUuWTYKv6SrUF5Hu4AcDUw/grtzmCCO+6IG8vs5qjy6sNE3g+17S20cFG4gi4CvBri
+         VJjV+HAr845oJiKBLhoZSAvo3A5QaLRM3upfdKFZ2W0UeLZ269wC2ok5Npfaa2WfdKqR
+         eP0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=dL7gv6sWkyNmltNkwBKTpfHTf5artkuk2jHExaT5rwo=;
+        b=dGnr6ID4sirKML1LdzaOE7F62/xBD6wlJspId0XVt68lwX01yVUyxR+33BtZMP7vba
+         bOKCB3ApC//8m0ZHBgr1tyd5tzZgUGFSsxVAtXBfWnSGk4EG6W291vAgKKJO7mtxsbAm
+         rx/KG8oulT6x4CeccVPGc7TTUI5fbBafJms618KO6xnf9/+iWpu1K+cw3/9a5M8SKGAL
+         TWw2HaIxInJ/Wu7juee9Ng/rv81rkuUVHMqoAiUUIwl8T4bvT1p8FvycINXwnaQpYcyo
+         CwW/58fqH85VRuEHv0KWzB1KMuFaiB4OYXT+dk0IGon+zu1+kpgLalRmv0ueUvZTNjvf
+         dlYA==
+X-Gm-Message-State: ANhLgQ2Ni8kxMxHPaSUZrHXoK9NL1y+BpWvAd77+gXD5GjyO/6Y+HNhP
+        TRbyppBfYobT6Aalp/FHPhH4bJ+B
+X-Google-Smtp-Source: ADFU+vtvhuSZJjurIGRCsgdKkflRiS/mvFRDEymYBxWuLgfQjZc0ZtIPYOpBb4EhyF82lAEDddKD0g==
+X-Received: by 2002:a1c:a9d5:: with SMTP id s204mr4864337wme.172.1585306573821;
+        Fri, 27 Mar 2020 03:56:13 -0700 (PDT)
+Received: from [192.168.0.104] (p5B3F6E13.dip0.t-ipconnect.de. [91.63.110.19])
+        by smtp.gmail.com with ESMTPSA id f9sm8456599wrs.36.2020.03.27.03.56.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Mar 2020 03:56:13 -0700 (PDT)
+Subject: Re: [PATCH v4 2/5] mfd: mp2629: Add support for mps battery charger
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20200322224626.13160-1-sravanhome@gmail.com>
+ <20200322224626.13160-3-sravanhome@gmail.com> <20200327075541.GF603801@dell>
+ <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com> <20200327102221.GA3383@dell>
+From:   saravanan sekar <sravanhome@gmail.com>
+Message-ID: <a679aba5-4cfb-1b6c-8cb0-dab3a644f3e7@gmail.com>
+Date:   Fri, 27 Mar 2020 11:56:12 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7e5910a-5431-457d-08d0-08d7d23ce1c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2020 10:52:02.2992
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uMEsU8IilfofHRFRtgZR46Ph5WeRfuUvI+juthJlXrYTPMbtZ1WU6ZKS3o6CSlb678xet03INLkMKfPgYtYmKXNbWYGW/HgSbqU7xchZ4NY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4533
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-27_03:2020-03-27,2020-03-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 clxscore=1011 mlxlogscore=978 bulkscore=0 adultscore=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270100
+In-Reply-To: <20200327102221.GA3383@dell>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,=0A=
-=0A=
-thanks for the patch.=0A=
-Looks good for me.=0A=
-=0A=
-Acked-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-Best regards,=0A=
-JB=0A=
-=0A=
-=0A=
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on =
-behalf of Wolfram Sang <wsa+renesas@sang-engineering.com>=0A=
-=0A=
-Sent: Thursday, March 26, 2020 22:09=0A=
-=0A=
-To: linux-i2c@vger.kernel.org <linux-i2c@vger.kernel.org>=0A=
-=0A=
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>; Jonathan Cameron <jic2=
-3@kernel.org>; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@m=
-etafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; linux-iio@vger.kern=
-el.org <linux-iio@vger.kernel.org>;=0A=
- linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>=0A=
-=0A=
-Subject: [PATCH 1/1] iio: imu: inv_mpu6050: convert to use i2c_new_client_d=
-evice()=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-Move away from the deprecated API and return the shiny new ERRPTR where=0A=
-=0A=
-useful.=0A=
-=0A=
-=0A=
-=0A=
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>=0A=
-=0A=
----=0A=
-=0A=
-=A0drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c | 8 +++++---=0A=
-=0A=
-=A01 file changed, 5 insertions(+), 3 deletions(-)=0A=
-=0A=
-=0A=
-=0A=
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c b/drivers/iio/imu/i=
-nv_mpu6050/inv_mpu_acpi.c=0A=
-=0A=
-index 2f8560ba4572..c27d06035c8b 100644=0A=
-=0A=
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c=0A=
-=0A=
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c=0A=
-=0A=
-@@ -135,6 +135,7 @@ int inv_mpu_acpi_create_mux_client(struct i2c_client *c=
-lient)=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 st->mux_client =3D NULL;=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 if (ACPI_HANDLE(&client->dev)) {=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct i2c_board_info info=
-;=0A=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct i2c_client *mux_client;=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct acpi_device *adev;=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int ret =3D -1;=0A=
-=0A=
-=A0=0A=
-=0A=
-@@ -172,9 +173,10 @@ int inv_mpu_acpi_create_mux_client(struct i2c_client *=
-client)=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 } =
-else=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0 return 0; /* no secondary addr, which is OK */=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->mux_client =3D i2c_new_devi=
-ce(st->muxc->adapter[0], &info);=0A=
-=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->mux_client)=0A=
-=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return =
--ENODEV;=0A=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 mux_client =3D i2c_new_client_d=
-evice(st->muxc->adapter[0], &info);=0A=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (IS_ERR(mux_client))=0A=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return =
-PTR_ERR(mux_client);=0A=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->mux_client =3D mux_client;=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-=A0=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 return 0;=0A=
-=0A=
--- =0A=
-=0A=
-2.20.1=0A=
-=0A=
-=0A=
-=0A=
+Hi Lee,
+
+
+On 27/03/20 11:22 am, Lee Jones wrote:
+> Saravanan, Jonathan,
+>
+> On Fri, 27 Mar 2020, saravanan sekar wrote:
+>> On 27/03/20 8:55 am, Lee Jones wrote:
+>>> On Sun, 22 Mar 2020, Saravanan Sekar wrote:
+>>>
+>>>> mp2629 is a highly-integrated switching-mode battery charge management
+>>>> device for single-cell Li-ion or Li-polymer battery.
+>>>>
+>>>> Add MFD core enables chip access for ADC driver for battery readings,
+>>>> and a power supply battery-charger driver
+>>>>
+>>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+>>>> ---
+>>>>    drivers/mfd/Kconfig        |   9 +++
+>>>>    drivers/mfd/Makefile       |   2 +
+>>>>    drivers/mfd/mp2629.c       | 116 +++++++++++++++++++++++++++++++++++++
+>>>>    include/linux/mfd/mp2629.h |  22 +++++++
+>>>>    4 files changed, 149 insertions(+)
+>>>>    create mode 100644 drivers/mfd/mp2629.c
+>>>>    create mode 100644 include/linux/mfd/mp2629.h
+> [...]
+>
+>>>> +static int mp2629_probe(struct i2c_client *client)
+>>>> +{
+>>>> +	struct mp2629_info *info;
+>>> Call this ddata instead of info.
+>> Not sure the reason, I will do.
+> Because this is device data.  Info is too loose of a definition.
+
+
+Ok, noted
+
+>>>> +	struct resource	*resources;
+>>>> +	int ret;
+>>>> +	int i;
+>>>> +
+>>>> +	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
+>>>> +	if (!info)
+>>>> +		return -ENOMEM;
+>>>> +
+>>>> +	info->dev = &client->dev;
+>>>> +	i2c_set_clientdata(client, info);
+>>>> +
+>>>> +	info->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
+>>>> +	if (IS_ERR(info->regmap)) {
+>>>> +		dev_err(info->dev, "Failed to allocate regmap!\n");
+>>>> +		return PTR_ERR(info->regmap);
+>>>> +	}
+>>>> +
+>>>> +	for (i = 0; i < MP2629_MFD_MAX; i++) {
+>>>> +		mp2629mfd[i].platform_data = &info->regmap;
+>>>> +		mp2629mfd[i].pdata_size = sizeof(info->regmap);
+>>> You don't need to store this in platform data as well.
+>>>
+>>> You already have it in device data (ddata [currently 'info']).
+>> "The IIO parts seems fine (minor comments inline) but I'm not keep on
+>> directly accessing the internals of the mfd device info structure.
+>> To my mind that should be opaque to the child drivers so as to provide
+>> clear structure to any such accesses.
+>>
+>> This mess in layering with the children directly using the parents
+>> regmap is a little concerning. It means that the 3 drivers
+>> really aren't very well separated and can't really be reviewed
+>> independently (not a good thing)."
+>>
+>> This is the review comments form Jonathan on V2, not to access parent data
+>> structure directly.
+>> Am I misunderstood his review comments? please suggest the better option to
+>> follow as like in V2
+>> or V2 + some improvements or V4 + improvements?
+> I will take this up with Jonathan separately if necessary.
+>
+> For your FYI (and Jonathan if he's Cc'ed), it's very common for a
+> child of an MFD to acquire resources from their parent.  That is the
+> point of a lot of MFDs, to obtain and register shared resources and
+> pass them onto their offspring.  There are 10's of examples of this.
+>
+> Things like Regmaps aren't platform data, they are device/driver data,
+> which is usually passed though platform_set_drvdata().
+
+Thanks for clarification, I will go as like in V2 sharing mfd struct to 
+the childs.
+
+
+> [...]
+>
+>>>> + */
+>>>> +
+>>>> +#ifndef __MP2629_H__
+>>>> +#define __MP2629_H__
+>>>> +
+>>>> +#include <linux/types.h>
+>>>> +
+>>>> +struct device;
+>>>> +struct regmap;
+>>> Why not just add the includes?
+>> Some more shared enum added in ADC driver
+> Sorry?
+
+I misunderstood your previous question that you are asking to remove 
+this mp2629.h file
+
+"No user here. (Hint: Use forward declaration of struct device instead)" 
+- review comments on V1 from Andy Shevchenko.
+So remove the includes
+
+
+>>>> +struct mp2629_info {
+>>>> +	struct device *dev;
+>>>> +	struct regmap *regmap;
+>>>> +};
+>>>> +
+>>>> +#endif
+
+
+Thanks,
+
+Saravanan
+

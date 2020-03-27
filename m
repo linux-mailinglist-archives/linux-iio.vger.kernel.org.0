@@ -2,136 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4BA19573C
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 13:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B45E719574A
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 13:42:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbgC0MkL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 08:40:11 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:40293 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726540AbgC0MkK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 08:40:10 -0400
-Received: by mail-wr1-f66.google.com with SMTP id u10so11220071wro.7;
-        Fri, 27 Mar 2020 05:40:09 -0700 (PDT)
+        id S1727444AbgC0MmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 08:42:25 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:33009 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727125AbgC0MmZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 08:42:25 -0400
+Received: by mail-pg1-f194.google.com with SMTP id d17so4534819pgo.0
+        for <linux-iio@vger.kernel.org>; Fri, 27 Mar 2020 05:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=jZHFiWax8vCvFZJl+Fo54qpkUa4Crpp6F75KMLPAOl8=;
-        b=gSh1gE1Yz3lU4ivwfNB+k/+ydo1wN4UNR3yIdL5Ae311j2ZRONhSmKEL4Ky00zVO6B
-         p0vDv3LMBMBcX+xF5JsE9FFLEdyuayAuxuq0YpBOgAmb3raaqn7Z8whvwmG9vrtg69Sw
-         JVrflaT1O86knx4zu6XIU0Eejx4mYm0i972UKLIL5VLuZXn8iDwOYswPEm8ujRc18Gem
-         xh/lXLvIGELQEAt8HWpSbDCq3Hg0FdLZTIL8+ioEaz1HZFt2on+nOGfEP9waji/lI16u
-         4MrrS89SWr5I8WQSRdQhEJlofDB46HDpTZksPP+H3HyWxr39RjXJM+14IMsqgzjwNtsl
-         wbqw==
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=6/5YCNjZbhs7fDAqKSxswEEQ3GsJtkzaU0ERi/T9jdI=;
+        b=pDJP439AKcqJEmIiiQaq6fA0FRPNI2TGoJyKDH2QWJoa10+GA1NXAGjCnejn0D8NKh
+         E/2YJr5BO60dyTwRyIbQTraOWM/wHXcJQhfixsk8JHm0KHcWzWiL/+UxySN4AzlXhUyW
+         5zyn2PgxvZV7jIH6E1I/tKWG45EvUpSg1LTh4KsH1/rt+A1L6Q9065rSnNeB2kcgyRi6
+         /DuP99iQwPGPQi9Ne7v2Rt0ElZv6VHuD8LVRdEEOAqJZcf7cNFkYzPvIbBQFJGWflEIH
+         3F8b103aJzx5Av32T33KBPtkGJSKySEJXNbx7BGsjoA0/VlCXshGENDUwJ7NdvGLnUB4
+         ON0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=jZHFiWax8vCvFZJl+Fo54qpkUa4Crpp6F75KMLPAOl8=;
-        b=hL/ey5hkDXc9vilE5RKInTrY1OmAai/Dvpyt7deZpbb7UIZpvSzWk0k3pPQIja3qZq
-         xJcVLCXd87sMXmkYHgKlOdPRdUlv8r30+nQ4q08vY8DfBjblR72i6A7JZOOGWnKaD2P2
-         I40TVky28tfoL++YazOXfhDuYOqTcunWr8qXzk8ojV9fKfy5lrhWX0IZnhM0dzbIgT32
-         tu9G3Mha8he8sgVc4qqTt6X/xcNc3g+b2OMedx1A+XuUH97dvivD3FQOVMNWWTtfoBZj
-         EYE1/NJZjF6b7chGPXCMulk/96R8R20/OXhun8genCNX/FbLZ1YEjV1skISDoQiU0V6X
-         gPnA==
-X-Gm-Message-State: ANhLgQ1gExEibaFXYCZB1xTCkg9p5N+CVZ5EvqA3b4DCuu8nKAomUwTU
-        liguFai9tfkTeDA/7jJkHIQ=
-X-Google-Smtp-Source: ADFU+vvKWziGHlMdvcuetUGwCoGi7eYH0NZ0+lmcZX0O4k6SAr9Vh6MW+2Mw+lx2eY1oQlgBl03rlQ==
-X-Received: by 2002:adf:ab12:: with SMTP id q18mr15276713wrc.148.1585312808970;
-        Fri, 27 Mar 2020 05:40:08 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F6E13.dip0.t-ipconnect.de. [91.63.110.19])
-        by smtp.gmail.com with ESMTPSA id u131sm8292883wmg.41.2020.03.27.05.40.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2020 05:40:08 -0700 (PDT)
-Subject: Re: [PATCH v4 2/5] mfd: mp2629: Add support for mps battery charger
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com
-References: <20200322224626.13160-1-sravanhome@gmail.com>
- <20200322224626.13160-3-sravanhome@gmail.com> <20200327075541.GF603801@dell>
- <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com> <20200327102221.GA3383@dell>
- <a679aba5-4cfb-1b6c-8cb0-dab3a644f3e7@gmail.com> <20200327112523.GC3383@dell>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <45f68c40-8e50-e0a2-a89a-b5a164d6b75c@gmail.com>
-Date:   Fri, 27 Mar 2020 13:40:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=6/5YCNjZbhs7fDAqKSxswEEQ3GsJtkzaU0ERi/T9jdI=;
+        b=TU1G+vM1QrYvIqET3d4OBCPUJaXrgGBqj9elVt569twtu5JApOIwfx2t7vDsTN0Yn2
+         XIrPWu1ypClBbXsmwEdtH1dx3LiamQpyfW+fJH/gz0fDk+D8+MeYpbbGFt4TZ/kWjTov
+         +nBLwnzBP8ABcVWYteWPFa0yvpbpfIlSdu9ZznoSlgULkU4F9BGjQtSpW0tlxI8aCS4Z
+         x+QlnNjtLFRiAd58Kzqe4diDGqHlvmKxUqHpg/A9gdgCVB5/L6V91S7PsoTkh5YvJ/15
+         DasfB97solDw04v8oH9LI1HLbGWvsNVCvXcCFWDXFRtOaOOoO1peP6BzxzfGzazdrYKr
+         EbuQ==
+X-Gm-Message-State: ANhLgQ39DqhiLyWZ+ZeRgOOgjSxB9PLw6XSCtdDtcGlU+sQcZAeT/Fx3
+        4M5T8yRg+m3tL1mprswJK96OpgkGO50=
+X-Google-Smtp-Source: ADFU+vsV/F21FOaRvO15PNaCzRYH1GWTS74YJq40ErXbKs5RHRa3UictBwXBL6FXeFNsxEgqLuK1ZA==
+X-Received: by 2002:a65:6910:: with SMTP id s16mr14604573pgq.426.1585312941765;
+        Fri, 27 Mar 2020 05:42:21 -0700 (PDT)
+Received: from SARKAR ([106.51.108.92])
+        by smtp.gmail.com with ESMTPSA id e14sm4025423pfn.196.2020.03.27.05.42.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2020 05:42:21 -0700 (PDT)
+Message-ID: <5e7df4ad.1c69fb81.25b38.eec8@mx.google.com>
+X-Google-Original-Message-ID: <20200327124217.GA13042@rohitsarkar5398@gmail.com>
+Date:   Fri, 27 Mar 2020 18:12:17 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: add debugfs register r/w interface
+References: <5e730c2f.1c69fb81.9eda3.5c70@mx.google.com>
+ <CAHp75Vf+SA7ptRQRxvMtVfN0MzQeQ_AgzAP7fc3eaT5nmsxo_g@mail.gmail.com>
+ <MN2PR12MB4422876C03060876ACBB4414C4F40@MN2PR12MB4422.namprd12.prod.outlook.com>
+ <20200321183154.128d8920@archlinux>
+ <CAHp75VcUtMZDMqizhW=oayvbGcMTZ9M0s=7L0TngkdXz=M49uQ@mail.gmail.com>
+ <MN2PR12MB4422EA3CFA8DCFC397502B02C4CC0@MN2PR12MB4422.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <20200327112523.GC3383@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+In-Reply-To: <MN2PR12MB4422EA3CFA8DCFC397502B02C4CC0@MN2PR12MB4422.namprd12.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee, Andy
-
-On 27/03/20 12:25 pm, Lee Jones wrote:
-> On Fri, 27 Mar 2020, saravanan sekar wrote:
->> On 27/03/20 11:22 am, Lee Jones wrote:
->>> Saravanan, Jonathan,
->>>
->>> On Fri, 27 Mar 2020, saravanan sekar wrote:
->>>> On 27/03/20 8:55 am, Lee Jones wrote:
->>>>> On Sun, 22 Mar 2020, Saravanan Sekar wrote:
->>>>>
->>>>>> mp2629 is a highly-integrated switching-mode battery charge management
->>>>>> device for single-cell Li-ion or Li-polymer battery.
->>>>>>
->>>>>> Add MFD core enables chip access for ADC driver for battery readings,
->>>>>> and a power supply battery-charger driver
->>>>>>
->>>>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->>>>>> ---
->>>>>>     drivers/mfd/Kconfig        |   9 +++
->>>>>>     drivers/mfd/Makefile       |   2 +
->>>>>>     drivers/mfd/mp2629.c       | 116 +++++++++++++++++++++++++++++++++++++
->>>>>>     include/linux/mfd/mp2629.h |  22 +++++++
->>>>>>     4 files changed, 149 insertions(+)
->>>>>>     create mode 100644 drivers/mfd/mp2629.c
->>>>>>     create mode 100644 include/linux/mfd/mp2629.h
-> [...]
->
->>>>>> +#ifndef __MP2629_H__
->>>>>> +#define __MP2629_H__
->>>>>> +
->>>>>> +#include <linux/types.h>
->>>>>> +
->>>>>> +struct device;
->>>>>> +struct regmap;
->>>>> Why not just add the includes?
->>>> Some more shared enum added in ADC driver
->>> Sorry?
->> I misunderstood your previous question that you are asking to remove this
->> mp2629.h file
->>
->> "No user here. (Hint: Use forward declaration of struct device instead)" -
->> review comments on V1 from Andy Shevchenko.
->> So remove the includes
-> So Andy has reviewed, but you still don't have him on Cc?
-Sorry one of his hint made me removed him in CC unknowingly.
-
-"For the future, hint:
- Â Â Â Â Â Â Â  scripts/get_maintainer.pl --git --git-min-percent=67 ..."
-
-My fault, added him in CC
-
-> How are we meant to continue the discussion?
->
-> As a general rule I'm not a fan of forward declarations.
->
-> I think they should be avoided if at all possible.
-Ok will add includes
->>>>>> +struct mp2629_info {
->>>>>> +	struct device *dev;
->>>>>> +	struct regmap *regmap;
->>>>>> +};
->>>>>> +
->>>>>> +#endif
+On Fri, Mar 27, 2020 at 10:56:33AM +0000, Jean-Baptiste Maneyrol wrote:
+> Hello,
+> 
+> this is quite useful for me for debugging and testing. So I am in favor.
+> 
+> Just one comment, I think it is safer here to lock the mutex to ensure this doesn't happen in the middle of an interrupt or anything else.
+Sure
+> I am waiting for V2.
+Will send it asap, was waiting for your ack.
+> Thanks for the patch,
+> JB
+> 
+> 
+> 
+> From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+> Sent: Saturday, March 21, 2020 20:53
+> 
+> To: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+> 
+> Cc: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>; Rohit Sarkar <rohitsarkar5398@gmail.com>; linux-iio <linux-iio@vger.kernel.org>
+> 
+> Subject: Re: [PATCH] iio: imu: inv_mpu6050: add debugfs register r/w interface
+> 
+>  
+> 
+> 
+>  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
+> 
+> 
+> 
+> On Sat, Mar 21, 2020 at 8:31 PM Jonathan Cameron
+> 
+> <jic23@jic23.retrosnub.co.uk> wrote:
+> 
+> > On Thu, 19 Mar 2020 11:08:44 +0000
+> 
+> > Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+> 
+> 
+> 
+> > > iio debugfs register interface is quite handy because we can read a single register and write a value.
+> 
+> > >
+> 
+> > > regmap debugfs is only a dump of all registers, as far as I know (may have missed something).
+> 
+> >
+> 
+> > So this is something Mark has discussed before around regmap
+> 
+> > and more generally IIRC.  The issue is that a write
+> 
+> > interface does make it somewhat easy to do really nasty things
+> 
+> > in some drivers that use regmap (to the extent of setting boards
+> 
+> > on fire etc).  For IIO we are much safer - the worst you can do
+> 
+> > is break the IIO driver.
+> 
+> 
+> 
+> Sometimes IIO driver provides a sensor data about platform facilities,
+> 
+> such as temperature of the die / chip or battery voltage threshold.
+> 
+> 
+> 
+> > I've never been that fussed myself about the debugfs interfaces
+> 
+> > as it's easy to hack them in when needed for actual debugging, but
+> 
+> > have taken the view that if someone has enough of a usecase to
+> 
+> > want to add them to a particular driver, then it's up to them.
+> 
+> 
+> 
+> Good to know your p.o.v.!
+> 
+> 
+> 
+> -- 
+> 
+> With Best Regards,
+> 
+> Andy Shevchenko
+> 

@@ -2,114 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DADBF196843
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74CB91968A7
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 19:44:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726369AbgC1Ry1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 13:54:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52822 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726265AbgC1Ry0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 13:54:26 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1DDCE20714;
-        Sat, 28 Mar 2020 17:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585418066;
-        bh=MEfK/Wd6je8M1cHxqH0HG5AU8WTrpsQp30mt+xBLJCc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IlsMp9NNHsDb+NZj7iT15hk97roZTcS2isuGdoh64AOrdGScrsa326RlRqdJw6ddV
-         S6e2OyQ7IBbsy44BQcxGPSyLZ7uhd3rjZPmM1e2jrRanqi7hbaHh/12E0GuHFcPjHu
-         SJhgHqiMcwfsZhDqykwDO/1ypuJ71x66vVhKbs2A=
-Date:   Sat, 28 Mar 2020 17:54:21 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        id S1726937AbgC1So2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 14:44:28 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:40248 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgC1So2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 14:44:28 -0400
+Received: by mail-pg1-f195.google.com with SMTP id t24so6431050pgj.7;
+        Sat, 28 Mar 2020 11:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AEgBW9QQu99a2sai4d1Uz2IOeiRHB8mBntj4/oX3if8=;
+        b=ouDCjhKFXNz0qHg97LSTL9LtxoMEHHt5XmMHY0O3JWTXTX6KVUoBbbKGEaRoe4suqH
+         Bgodh/bhOWuh+Uw5ZYeUQDC/rlML9443WQkuM+KCmxxhjELg+7MhD0Lq4BubKI4pnMJo
+         ZfzaEEDCyNKntZ4F6dUb4Vs7Vd7wELm98oGUZpswTvhm/Q/HA/SIavwXKsKEUe8xWMC5
+         veV78phgOYhrh7JtLFf0oynNemIhylY0qL9bQa33NeSOWpUu5C2XlY98iV+luNSHwaoY
+         omgLIxik4AauciZPkWxYN3o5K2+dsH2puaV0rjGc9TgHCkoqYwbi0M9EoN+qXpWdHwjE
+         0FQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AEgBW9QQu99a2sai4d1Uz2IOeiRHB8mBntj4/oX3if8=;
+        b=dlULcW7kqArkv4j7DbmJHfUyFt4GbrAIHzZoQXfR5O0KPH5B5AnwTAcncNaFqFEVpX
+         E06XRhfASd74n30kpgSPaPpHVmBaBLt+px8+yi8pR7hgadhBmUQCTHhKh1tNu1WMoqhI
+         lDCteVz/OpqrfBGWA/RbIUR3ff2nD+Sx9UV0M/JPG8cQhJ+SRpI1r4rrer1+FSjPyjmt
+         VeEqSsRWljlBN2KVDVSN3aycD6igJwP4ma3Mvrl0g2YhdQdJPnONRNf7PjBI/HyGtcMX
+         EQD63CYD89GYsxCokQz3zNESrVGi8rfUyaKRbrjrep+wPSwdFUH98NHgOSjYWMJnmHSV
+         MNAw==
+X-Gm-Message-State: ANhLgQ0zqf6VJTpoj7dsR+EApo/YZ7PAutSsnW6U+DNXAiGhilaWc+z2
+        uSUMvyc/sLqWtu8CQdiYr6SPqoo11DKGOgLdJ4w=
+X-Google-Smtp-Source: ADFU+vuLh8bWhofnY0uetIzib0+lVHRoBH+mcX9y4a5vGukmUlw/9WY99xY/uiIsg6cXSU/IMm9zO7gbPWfER27vvoc=
+X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr5459087pfs.36.1585421066788;
+ Sat, 28 Mar 2020 11:44:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200328001154.17313-1-sravanhome@gmail.com> <20200328001154.17313-5-sravanhome@gmail.com>
+ <CAHp75VefP3oPyRJ=Z9Y5Wv3rSc-nJdKFLJ60YLdUbP5dFikS+w@mail.gmail.com> <36892440-99b2-10e8-1d7c-dd8c97e03a39@gmail.com>
+In-Reply-To: <36892440-99b2-10e8-1d7c-dd8c97e03a39@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 28 Mar 2020 20:44:14 +0200
+Message-ID: <CAHp75VdAfiSjkHhTnghZ__WAJCJTGSWBprJBPNmpkxZTjZuVgQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/5] power: supply: Add support for mps mp2629 battery charger
+To:     saravanan sekar <sravanhome@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
-Subject: Re: [PATCH] iio: temperature: ltc2983: remove redundant comparison
- to bool
-Message-ID: <20200328175421.605c7eae@archlinux>
-In-Reply-To: <BN6PR03MB3347A202426BE1F409B3A68599CD0@BN6PR03MB3347.namprd03.prod.outlook.com>
-References: <5e7ef454.1c69fb81.56770.82c7@mx.google.com>
-        <BN6PR03MB3347A202426BE1F409B3A68599CD0@BN6PR03MB3347.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 28 Mar 2020 09:43:58 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Sat, Mar 28, 2020 at 1:29 PM saravanan sekar <sravanhome@gmail.com> wrote:
+> On 28/03/20 12:02 pm, Andy Shevchenko wrote:
+> > On Sat, Mar 28, 2020 at 2:12 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
 
-> > -----Original Message-----
-> > From: Rohit Sarkar <rohitsarkar5398@gmail.com>
-> > Sent: Samstag, 28. M=C3=A4rz 2020 07:53
-> > To: linux-iio@vger.kernel.org
-> > Cc: Sa, Nuno <Nuno.Sa@analog.com>; rohitsarkar5398@gmail.com;
-> > jic23@kernel.org; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen
-> > <lars@metafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; linux-
-> > iio@vger.kernel.org; linux-kernel@vger.kernel.org; Bogdan, Dragos
-> > <Dragos.Bogdan@analog.com>
-> > Subject: [PATCH] iio: temperature: ltc2983: remove redundant comparison=
- to
-> > bool
-> >=20
-> >=20
-> > Remove redundant comparison to a boolean variable.
-> >=20
-> > Fixes coccinelle warning:
-> > drivers/iio/temperature//ltc2983.c:393:20-32: WARNING: Comparison to
-> > bool
-> > drivers/iio/temperature//ltc2983.c:394:20-32: WARNING: Comparison to
-> > bool
-> >=20
-> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
-> > ---
-> >  drivers/iio/temperature/ltc2983.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/temperature/ltc2983.c
-> > b/drivers/iio/temperature/ltc2983.c
-> > index d39c0d6b77f1..8976e8d59826 100644
-> > --- a/drivers/iio/temperature/ltc2983.c
-> > +++ b/drivers/iio/temperature/ltc2983.c
-> > @@ -390,8 +390,8 @@ static struct ltc2983_custom_sensor
-> > *__ltc2983_custom_sensor_new(
-> >  	 * For custom steinhart, the full u32 is taken. For all the others
-> >  	 * the MSB is discarded.
-> >  	 */
-> > -	const u8 n_size =3D (is_steinhart =3D=3D true) ? 4 : 3;
-> > -	const u8 e_size =3D (is_steinhart =3D=3D true) ? sizeof(u32) : sizeof=
-(u64);
-> > +	const u8 n_size =3D is_steinhart ? 4 : 3;
-> > +	const u8 e_size =3D is_steinhart ? sizeof(u32) : sizeof(u64);
-> >=20
-> >  	n_entries =3D of_property_count_elems_of_size(np, propname, e_size);
-> >  	/* n_entries must be an even number */
-> > -- =20
->=20
-> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
+...
 
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to play with it.
+> >> +       val->intval = (rval * props[fld].step) + props[fld].min;
+> > Too many parentheses.
+> >
+> > ...
+> >
+> >> +       return ((psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
+> >> +               (psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
+> >> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
+> >> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE));
+> > Ditto.
+> I think I misunderstood you previous review comment "Redundant
+> parentheses", no sure what is the expectation
 
-Thanks,
+(At least) surrounding pair is not needed, return (a == b) || (c == d);
 
-Jonathan
+> > ...
+> >
+> >> +       return ((psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
+> >> +               (psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT));
+> > Ditto.
 
+...
 
-> Thanks,
-> Nuno S=C3=A1
->=20
+> >> +       struct power_supply_config psy_cfg = {NULL};
+> > { 0 }
+> >
+> NULL to make compiler happy.
 
+Hmm... Can you share warning / error compiler issued in 0 case?
+
+-- 
+With Best Regards,
+Andy Shevchenko

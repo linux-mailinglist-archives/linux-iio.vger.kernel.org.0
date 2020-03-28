@@ -2,150 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2ED7196171
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 23:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48CED196257
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 01:12:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727738AbgC0WpE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 18:45:04 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:45434 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727620AbgC0WpE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 18:45:04 -0400
-Received: by mail-io1-f67.google.com with SMTP id a24so10928117iol.12;
-        Fri, 27 Mar 2020 15:45:03 -0700 (PDT)
+        id S1726384AbgC1AMG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 20:12:06 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:45431 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726134AbgC1AMF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 20:12:05 -0400
+Received: by mail-wr1-f65.google.com with SMTP id t7so13812882wrw.12;
+        Fri, 27 Mar 2020 17:12:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=ETNuk5HoFRvajcPB5SGInXBPTRaocJmabwQ1Y7pZBVg=;
+        b=szKTbn7Jiys934mZuxreqLLDFQrlEVHV/AofHqRdBXdaHFq6+Pua50d4ivqc9PL5qg
+         zZ+YfUqR/nYf3ck6yyOt1vOjn6w1UdkKL2+UgdJk8totMH2ndHqWQqZAR2CTBr+jIetc
+         4GLiuTqXtcX1xgMUyEEUxmfWk/EK7SRca4o6l8wrIaaYvrbmczx0mJUBqeH85RDzwcaB
+         nlR9RdemOAKNJObKVj7xNvbsDOUtZwNR+aAIouAQWrCjgO3tbzdb2nfb10VH7MXQr+i7
+         NSKQwq1Jo6gST/SBpnTP4OE2EDg4Y+XLLM7u66a3QGtyc+OGNMIt7QhVt0RtYGC4PiwU
+         7k+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=u4k13uf5713DqF6VnWYY7OaKrDxuIhG+KLjykTCZmLE=;
-        b=Gv/I3R7+nOm+zatwFGKaLrr2HO4RHpM6Wiywg6KtnKTZacBCH/iLnHXPrVtmtU7U5R
-         fRMHJNwxU/jxQEYWXRPYwDdfk4SmpRIY4RrNXxfIxEv59Y/sAGxWJg5OGo3vl5gX722n
-         R6cKMvdscNifJPGOiQgDSfKP8U7oX6QB8PdhQeU/Fn80Pzcp2GAjphFe+aAjnnLsDss2
-         NYxpyvMbfS9mBpU3R1WEjTB07ymrXS+dfVUAq2x1W5cHXUfypR34+iORfI2A5XsfJEib
-         5Y1bNS9hclBlv/aSkn6OXx65/TU1lD0QaO5zPmUSpQqNiA9j9Ck3d1s6jvST9Tk1Fb8T
-         ePjQ==
-X-Gm-Message-State: ANhLgQ0NxNnuVl10UUWDG/OARaPvajEC8t/cZx1nbKfHmV7Dy5sCBO07
-        bDnIU5eTGVq5cgF1ygBwKmyLhpc=
-X-Google-Smtp-Source: ADFU+vsAE04nea1pFbNgX10KkqsBq3CtTvHBC//maalfcP/HRR+gaN6juo2FWt0zeUBHYvmVpvNbkQ==
-X-Received: by 2002:a6b:ed17:: with SMTP id n23mr871676iog.165.1585349103124;
-        Fri, 27 Mar 2020 15:45:03 -0700 (PDT)
-Received: from xps15.herring.priv ([64.188.179.250])
-        by smtp.googlemail.com with ESMTPSA id u125sm1838651ioe.24.2020.03.27.15.45.01
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ETNuk5HoFRvajcPB5SGInXBPTRaocJmabwQ1Y7pZBVg=;
+        b=kZFTonwd8zOhLEs9bEjyv54o74S0U9DrVp+2baSrvHmNBH6Bw42y4oUFFZ+gIpyAz0
+         HprWTlYwm9HA/vQSoprv7wXVxqsSAfhIORD3oR9/+Ec5vi1mF5UJ9NpL++gGW9eDgA66
+         dxFHlFKnGiEILEYl6XIr6zQ5AA2P70kU9dFXvDxk0rx+nUu92l3UNUmBbydXtkz5X6kY
+         /SSwMk7mxrEaVvZorS4yEUjervD7spr076OW1yXC6K7ZvwWq10L3/Pbu9SFvQNCOyFFC
+         xWd41XKKJ6ZdP9S8TYJU+Z/yklK6EZ/uidD0dX5LF5y/B6fo92DwoegBQgKO5J3Om5pR
+         PQ2w==
+X-Gm-Message-State: ANhLgQ0KED/oyICmHeneUYxfEUdFf2TVpGdyFsWlWkYLzsBNkPGMZh2q
+        I1Su8z97wjnOzGmehP6YtGqvcBXsZpc=
+X-Google-Smtp-Source: ADFU+vvGP/WBIzxxjjBTJSg0UHtTPuXBpCde+gIzwWpVYnjVPJ1UEIOppTESL3dr3zDiVzMU6zZgtg==
+X-Received: by 2002:adf:a387:: with SMTP id l7mr2086993wrb.250.1585354323958;
+        Fri, 27 Mar 2020 17:12:03 -0700 (PDT)
+Received: from localhost.localdomain (p5B3F7536.dip0.t-ipconnect.de. [91.63.117.54])
+        by smtp.gmail.com with ESMTPSA id 61sm11237956wrn.82.2020.03.27.17.12.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 15:45:02 -0700 (PDT)
-From:   Rob Herring <robh@kernel.org>
-To:     devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: Fix adi,ltc2983 uint64-matrix schema constraints
-Date:   Fri, 27 Mar 2020 16:45:01 -0600
-Message-Id: <20200327224501.18590-1-robh@kernel.org>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Fri, 27 Mar 2020 17:12:03 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
+        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v5 0/5] Add battery charger driver support for MP2629
+Date:   Sat, 28 Mar 2020 01:11:49 +0100
+Message-Id: <20200328001154.17313-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-'minItems' and 'maxItems' apply at the same level as 'items' schemas as
-the keywords apply to arrays. What's currently defined is a 3
-dimensional matrix with the outer size being undefined. To fix this,
-minItems/maxItems needs to be moved up a level.
+changes in v5:
+ - removed platfrom data stored in mfd and directly accessed mfd struct in child
+ - fixed spell check and capitalization in mfd and documentation
 
-With this fixed, the example fails validation. For matrix types, the dts
-syntax must use brackets (<>) matching the schema definition. In this
-case, the inner array size is 2 elements, so let's add the correct
-bracketing.
+changes in v4:
+ - fixed capitalization in mfg Kconfig and documentation
 
-Fixes: 3986a14870cb ("dt-bindings: iio: Add ltc2983 documentation")
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc: linux-iio@vger.kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-I'll take this via the DT tree as I have another change this will 
-conflict.
+changes in v3:
+ - regmap for children passed using platform data and remove mfd driver info
+   access directly from children
 
-Rob
+changes in v2:
+ - removed EXPORT_SYMBOL of register set/get helper
+ - regmap bit filed used, fixed other review comments
 
- .../bindings/iio/temperature/adi,ltc2983.yaml | 38 +++++++++----------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+This patch series add support for Battery charger control driver for Monolithic
+Power System's MP2629 chipset, includes MFD driver for ADC battery & input
+power supply measurement and battery charger control driver.
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-index acc030c1b20e..8fb46de6641d 100644
---- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-@@ -123,12 +123,11 @@ patternProperties:
-           sign.
-         allOf:
-           - $ref: /schemas/types.yaml#/definitions/uint64-matrix
-+        minItems: 3
-+        maxItems: 64
-         items:
--          minItems: 3
--          maxItems: 64
--          items:
--            minItems: 2
--            maxItems: 2
-+          minItems: 2
-+          maxItems: 2
- 
-   "^diode@":
-     type: object
-@@ -328,12 +327,11 @@ patternProperties:
-           78 and 79.
-         allOf:
-           - $ref: /schemas/types.yaml#/definitions/uint64-matrix
-+        minItems: 3
-+        maxItems: 64
-         items:
--          minItems: 3
--          maxItems: 64
--          items:
--            minItems: 2
--            maxItems: 2
-+          minItems: 2
-+          maxItems: 2
- 
-       adi,custom-steinhart:
-         description:
-@@ -465,16 +463,16 @@ examples:
-                         adi,sensor-type = <9>; //custom thermocouple
-                         adi,single-ended;
-                         adi,custom-thermocouple = /bits/ 64
--                                 <(-50220000) 0
--                                  (-30200000) 99100000
--                                  (-5300000) 135400000
--                                  0 273150000
--                                  40200000 361200000
--                                  55300000 522100000
--                                  88300000 720300000
--                                  132200000 811200000
--                                  188700000 922500000
--                                  460400000 1000000000>; //10 pairs
-+                                 <(-50220000) 0>,
-+                                 <(-30200000) 99100000>,
-+                                 <(-5300000) 135400000>,
-+                                 <0 273150000>,
-+                                 <40200000 361200000>,
-+                                 <55300000 522100000>,
-+                                 <88300000 720300000>,
-+                                 <132200000 811200000>,
-+                                 <188700000 922500000>,
-+                                 <460400000 1000000000>; //10 pairs
-                };
- 
-         };
+Thanks,
+Saravanan
+
+Saravanan Sekar (5):
+  dt-bindings: mfd: add document bindings for mp2629
+  mfd: mp2629: Add support for mps battery charger
+  iio: adc: mp2629: Add support for mp2629 ADC driver
+  power: supply: Add support for mps mp2629 battery charger
+  MAINTAINERS: Add entry for mp2629 Battery Charger driver
+
+ .../devicetree/bindings/mfd/mps,mp2629.yaml   |  60 ++
+ MAINTAINERS                                   |   5 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/mp2629_adc.c                  | 209 ++++++
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   2 +
+ drivers/mfd/mp2629.c                          |  86 +++
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/mp2629_charger.c         | 686 ++++++++++++++++++
+ include/linux/mfd/mp2629.h                    |  29 +
+ 12 files changed, 1108 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+ create mode 100644 drivers/iio/adc/mp2629_adc.c
+ create mode 100644 drivers/mfd/mp2629.c
+ create mode 100644 drivers/power/supply/mp2629_charger.c
+ create mode 100644 include/linux/mfd/mp2629.h
+
 -- 
-2.20.1
+2.17.1
 

@@ -2,156 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 098D31968A9
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 19:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCA31968B0
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 19:50:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgC1Spy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 14:45:54 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:39096 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgC1Spy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 14:45:54 -0400
-Received: by mail-lj1-f194.google.com with SMTP id i20so13632271ljn.6
-        for <linux-iio@vger.kernel.org>; Sat, 28 Mar 2020 11:45:50 -0700 (PDT)
+        id S1727137AbgC1Sui (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 14:50:38 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43346 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726389AbgC1Sui (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 14:50:38 -0400
+Received: by mail-pf1-f194.google.com with SMTP id f206so6312746pfa.10;
+        Sat, 28 Mar 2020 11:50:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pUsdNFpgnIaNR6yOO+Kv3b62V0TWAJjUUURX0oRUKHY=;
-        b=Y44lZCNMqnjVhA+gybvKMybKldYWKWAdNjzeEIuv05ZmYKeFNEM57EBq0jrlkvRMXb
-         7NEoLcyu+DUigFCy1i/Cdcvx16te+saWXEzZlZPF11XpAIAPro7wyMMSngLbSaKTQvvX
-         sPArdq+2p2AkCZoghsBXcpT9xczigy9dQQ//Jxqi5khublfSA4GeBshGyF4Y8ic0fcwv
-         2bzSUvCyHLJQ8nJwvf2BbBKEqFDYqCE7zDjC38RpW7KHzuJIczlppmV9I/1gZCXOP0JI
-         x4vEsgxUDpokbI2dD43i6yvxVzchRQoCAWudTzupNW/uvquLRWprIUdX9tUlHLqkeCNA
-         vuqg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lJztbg3kquFXjjuv4enGOn4xogqAqaadH1DhetiB26k=;
+        b=GrZPc3M+d/HKKXspmK1fowRDcNl5MdRG2JpyOfUUrBlLbSmWUtRH7oneRISr5HwQfz
+         kpcdlMdHL6H6WlnPABvm/1eACsodKwSTKjgyVCjNrsIBiQOt4ClpvEIzRbbjBh4lDMF+
+         53MSE6kzSA54B/NWJ3tZYF/aGI44Ii7hqXOK0sYsp9hC03hfQhgLgMYB3bfszT0gdGez
+         DBdD85JJ5sRyLkYzr4ZpzndawidofqaPj9/5zW3ARPGM5CSi2W7rrqEK1+jYEADfEe1O
+         1IEwVWOU+EBzJv0zpoS9pLeq7h+y1CGT3Kbd04oetZygKrxm7TZ64dKxw650Fwh15ckj
+         RoNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pUsdNFpgnIaNR6yOO+Kv3b62V0TWAJjUUURX0oRUKHY=;
-        b=cYL8PsCNSqysnBQnSfOYjKfDZYwMOTpkEFmrlb5M9+Ku7rqoGJncyCi81XlIvN1I4h
-         RNXahPimK6/tlsC4ewhgEoLSVq/Wn0d8ds6ZDLd1fifxR2TWFu1/7iD77ELvmb5kSCbt
-         f0gp3/YVvJN0zdzIks0ieustrBPOMPgLoq1EaWGDD15XRVvwOF0kv3ReQyM06YaUKUY2
-         gJt8/eSjoE4ZaGECuwsLGZ0cz+3ybS1lpK5dUzT0DBu7dHl3xXRqlz/nNNdYdpv/RGeZ
-         ChMjUN8AtrL1bLi+71KSJ+60B2Jz23W6+ZrlGBC7XmQhr2CkBEce2YGk+Dvohg523cR7
-         SRqg==
-X-Gm-Message-State: AGi0PubZwsXDCuAk7aSufSxSSwfk0eYrJM12JmVzONonCL7PeXOkfIIS
-        67u4H4b1G6uT5dkZtX71DeLEwU2q
-X-Google-Smtp-Source: APiQypKcGaSXR7Rdd5T+h+vr7rq7erdsSD4yg7pqk52YV0kXymli9+US+2MHlQY3lERhZY2H4mkSkA==
-X-Received: by 2002:a05:651c:404:: with SMTP id 4mr2852431lja.281.1585421149608;
-        Sat, 28 Mar 2020 11:45:49 -0700 (PDT)
-Received: from samarch.kvaser.se (h-4-68-234.A785.priv.bahnhof.se. [155.4.68.234])
-        by smtp.gmail.com with ESMTPSA id l20sm3472145lji.74.2020.03.28.11.45.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2020 11:45:48 -0700 (PDT)
-From:   Jimmy Assarsson <jimmyassarsson@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2 2/2] iio: imu: st_lsm6dsx: Add sensor hub device LIS3MDL
-Date:   Sat, 28 Mar 2020 19:45:19 +0100
-Message-Id: <20200328184519.2302703-1-jimmyassarsson@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lJztbg3kquFXjjuv4enGOn4xogqAqaadH1DhetiB26k=;
+        b=XgS2/9GEpVLoH/Ql8bSMJf6kD2hUYt/bHCphIMv4O2U7JSB8DXEvAGSBQ60K0+Fvtr
+         dtpg5ZzMzfhie3M87S/iDWeVOBMsV+5l3xqyvLREtQfYdmvWItmteHrAJ1NBAsj/tC9g
+         r5K6cW4R9E6cQ6rDqpoxNpjpvXKe367eNs8KW2z5LoB/JNaViLYwZpWx5ATf8hG0V3i1
+         Gh7DHNI1PsyKfugXlmu9hrIM0lpZStmidr/T8eNIb3aOUcufpgeWiAyc/0ayvhxVIYtg
+         6TjOUn40+hiB72iq+/YGMn8w5lRPoS3CEnRFQLBDdPjwAbRF/nDwVfRxzpN+lZG2quSE
+         wUtg==
+X-Gm-Message-State: ANhLgQ2jEdK5ajTCwEfsc+UznE4rRCVcy76jV1Ym46DS5+OSnlZKjnOi
+        gWrU3S9fXtbzV79oORoX7540YKbor5mTxiZ9qXw=
+X-Google-Smtp-Source: ADFU+vvB3hIe4HEhNOKz/p6x69voaqbgpdkUnlsdlWWjaLUCVYBnfIv/CtD7hZr9iBy+SSZdivtXaesNKI8B2LqdmEs=
+X-Received: by 2002:a63:798a:: with SMTP id u132mr5651237pgc.203.1585421436474;
+ Sat, 28 Mar 2020 11:50:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200322224626.13160-1-sravanhome@gmail.com> <20200322224626.13160-4-sravanhome@gmail.com>
+ <CAHp75VfauHuAv1Wr=7ga=G+6JOYXuop_oyXiwmQgKeB2e_z=tQ@mail.gmail.com> <20200328144234.081b964f@archlinux>
+In-Reply-To: <20200328144234.081b964f@archlinux>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 28 Mar 2020 20:50:24 +0200
+Message-ID: <CAHp75VdTN3W3gsRRgvbKgduzcWFwVsm_K=dahAhE0ymWKBt-BA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] iio: adc: mp2629: Add support for mp2629 ADC driver
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Saravanan Sekar <sravanhome@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add LIS3MDL register map to sensor hub device table.
-Tested with LSM6DSM.
+On Sat, Mar 28, 2020 at 4:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Mon, 23 Mar 2020 01:32:34 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Mon, Mar 23, 2020 at 12:47 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
 
-Signed-off-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
----
-Changes in v2:
-  - Use ST_SENSORS_DEFAULT_WAI_ADDRESS
+...
 
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 64 ++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+> > > +       indio_dev->dev.of_node = pdev->dev.of_node;
+> >
+> > Jonathan, doesn't IIO core do this for all?
+> >
+>
+> Nope.  I'm not totally sure it's always safe to do so
+> as we have some weird parent structures in some cases.
+> A quick grep suggests that we may be fine though, or
+> alternatively be able to get away with a set it if not
+> already set approach.
+>
+> I'll take a look when I get some time. It would be nice
+> to clean this up.
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index 95ddd19d1aa7..3b983e0cc5ce 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -28,6 +28,7 @@
- #include <linux/iio/sysfs.h>
- #include <linux/bitfield.h>
- 
-+#include <linux/iio/common/st_sensors.h>
- #include "st_lsm6dsx.h"
- 
- #define ST_LSM6DSX_SLV_ADDR(n, base)		((base) + (n) * 3)
-@@ -88,6 +89,69 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
- 			.len = 6,
- 		},
- 	},
-+	/* LIS3MDL */
-+	{
-+		.i2c_addr = { 0x1e },
-+		.wai = {
-+			.addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-+			.val = 0x3d,
-+		},
-+		.id = ST_LSM6DSX_ID_MAGN,
-+		.odr_table = {
-+			.reg = {
-+				.addr = 0x20,
-+				.mask = GENMASK(4, 2),
-+			},
-+			.odr_avl[0] = {  1000, 0x0 },
-+			.odr_avl[1] = {  2000, 0x1 },
-+			.odr_avl[2] = {  3000, 0x2 },
-+			.odr_avl[3] = {  5000, 0x3 },
-+			.odr_avl[4] = { 10000, 0x4 },
-+			.odr_avl[5] = { 20000, 0x5 },
-+			.odr_avl[6] = { 40000, 0x6 },
-+			.odr_avl[7] = { 80000, 0x7 },
-+			.odr_len = 8,
-+		},
-+		.fs_table = {
-+			.reg = {
-+				.addr = 0x21,
-+				.mask = GENMASK(6, 5),
-+			},
-+			.fs_avl[0] = {
-+				.gain = 146,
-+				.val = 0x00,
-+			}, /* 4000 uG/LSB */
-+			.fs_avl[1] = {
-+				.gain = 292,
-+				.val = 0x01,
-+			}, /* 8000 uG/LSB */
-+			.fs_avl[2] = {
-+				.gain = 438,
-+				.val = 0x02,
-+			}, /* 12000 uG/LSB */
-+			.fs_avl[3] = {
-+				.gain = 584,
-+				.val = 0x03,
-+			}, /* 16000 uG/LSB */
-+			.fs_len = 4,
-+		},
-+		.pwr_table = {
-+			.reg = {
-+				.addr = 0x22,
-+				.mask = GENMASK(1, 0),
-+			},
-+			.off_val = 0x2,
-+			.on_val = 0x0,
-+		},
-+		.bdu = {
-+			.addr = 0x24,
-+			.mask = BIT(6),
-+		},
-+		.out = {
-+			.addr = 0x28,
-+			.len = 6,
-+		},
-+	},
- };
- 
- static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
+We may follow the GPIO subsystem's approach, i.e. if there is no node
+provided take the one from the supplied  struct device.
+But it may have side effects. So, it's completely up to you.
+
 -- 
-2.26.0
-
+With Best Regards,
+Andy Shevchenko

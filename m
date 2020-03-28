@@ -2,39 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D24196820
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 732A2196826
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:31:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725882AbgC1RYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 13:24:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44328 "EHLO mail.kernel.org"
+        id S1726265AbgC1Rbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 13:31:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45512 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725807AbgC1RYz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 13:24:55 -0400
+        id S1725807AbgC1Rbh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Mar 2020 13:31:37 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E28FB206F6;
-        Sat, 28 Mar 2020 17:24:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82208206DB;
+        Sat, 28 Mar 2020 17:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585416293;
-        bh=cfzFYS/oG1CrThIAkWAcRMT2ZQr5LIDVXad2fZshHtU=;
+        s=default; t=1585416696;
+        bh=vG64A0FZ/wyL1OcvxNk+CZBzjwTgOgIwdp7k4GCvs6A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0/Q8eIelCZltuUoVh78VwZKzuHiGLaN31hDNO4IlSEUzHTkIQOlODwGInWw3v9f01
-         w4sLdEtl1J9nomFV/j5hkc+nqUQlFIQ/unQerzO9zkEqaG2CyDIQH/kXFGKc/A3GI8
-         8DY3ppYYV5jVN6N83mJHxvnJlD4lLiMlKkFLVEAE=
-Date:   Sat, 28 Mar 2020 17:24:49 +0000
+        b=UsHokRD9QbPm4IQfC3LcYutgvPiC6kVQHgDpmVxCG3k+v7UDLNfBrmh7WDZjNP5uB
+         FsDLp6LSaDTeH+/uInypdmApoB+gI4QXJ6EsYlclo2IL49L0H59lP9FICBmjLxIjrE
+         o44LAH91Jlux5JXzv1nji/Ej/PxzZ+xtxxkS8QSI=
+Date:   Sat, 28 Mar 2020 17:31:32 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>, bleung@chromium.org,
-        Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 12/12] iio: cros_ec: flush as hwfifo attribute
-Message-ID: <20200328172449.530b1fd8@archlinux>
-In-Reply-To: <c3609af9-42a7-8d59-f0a4-9da3badc3668@collabora.com>
-References: <20200327223443.6006-1-gwendal@chromium.org>
-        <20200327223443.6006-13-gwendal@chromium.org>
-        <c3609af9-42a7-8d59-f0a4-9da3badc3668@collabora.com>
+To:     <Eugen.Hristev@microchip.com>
+Cc:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <Ludovic.Desroches@microchip.com>,
+        <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH v3 1/3] iio: adc: at91-sama5d2_adc: fix differential
+ channels in triggered mode
+Message-ID: <20200328173132.25f7e1d8@archlinux>
+In-Reply-To: <5c0829d6-3b8d-0efc-0ffc-042727cb9115@microchip.com>
+References: <1580216189-27418-1-git-send-email-eugen.hristev@microchip.com>
+        <1580216189-27418-2-git-send-email-eugen.hristev@microchip.com>
+        <20200202110206.7326ce4d@archlinux>
+        <5c0829d6-3b8d-0efc-0ffc-042727cb9115@microchip.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,87 +47,90 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 28 Mar 2020 10:14:23 +0100
-Enric Balletbo i Serra <enric.balletbo@collabora.com> wrote:
+On Mon, 23 Mar 2020 10:42:19 +0000
+<Eugen.Hristev@microchip.com> wrote:
 
-> Hi Jonathan and Gwendal,
-> 
-> On 27/3/20 23:34, Gwendal Grignou wrote:
-> > Add buffer/hwfifo_flush. It is not part of the ABI, but it follows ST
-> > and HID lead: Tells the sensor hub to send to the host all pending
-> > sensor events.
+> On 02.02.2020 13:02, Jonathan Cameron wrote:
+> > On Tue, 28 Jan 2020 12:57:39 +0000
+> > <Eugen.Hristev@microchip.com> wrote:
+> >   
+> >> From: Eugen Hristev <eugen.hristev@microchip.com>
+> >>
+> >> The differential channels require writing the channel offset register (COR).
+> >> Otherwise they do not work in differential mode.
+> >> The configuration of COR is missing in triggered mode.
+> >>
+> >> Fixes: 5e1a1da0f8c9 ("iio: adc: at91-sama5d2_adc: add hw trigger and buffer support")
+> >> Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>  
+> > Applied to the fixes-togreg branch of iio.git.  Normally I avoid rebasing that
+> > branch but I may do so this time given it's currently mid merge window.
 > > 
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
+> > The other two patches will have to wait for this one to get upstream of
+> > my togreg branch which will take a few weeks.
+> > 
+> > Please give me a poke if I seem to have forgotten about them!
+> >   
 > 
-> I need an Ack from Jonathan to pick this.
-> 
-> Jonathan, once you are fine with it, do you mind if I take the full series
-> through the platform chrome tree?
+> Poke !
+Timings have gone badly this cycle I'm afraid, so whilst it's made it
+into staging/staging-next, I'm not going to be rebasing togreg
+until after a pull request to Greg KH.  The timing issue was
+I didn't get one out before staging most likely closed (one week
+ahead of the window opening which it will probably do tomorrow).
 
-Once 12 is sorted (or if you want to take up to 11 thats fine) then
-sure happy for you to take them.
+So this will have to wait at least a few weeks more.
 
-Thanks,
+Sorry for the delay.
 
 Jonathan
 
 > 
-> Thanks,
->  Enric
+> Eugen
 > 
-> 
-> > ---
-> > No changes in v7.
-> > New in v6.
+> > Thanks,
 > > 
-> >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 28 +++++++++++++++++++
-> >  1 file changed, 28 insertions(+)
-> > 
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index c831915ca7e56..aaf124a82e0e4 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -113,6 +113,33 @@ static int cros_ec_sensor_set_ec_rate(struct cros_ec_sensors_core_state *st,
-> >  	return ret;
-> >  }
-> >  
-> > +static ssize_t cros_ec_sensors_flush(struct device *dev,
-> > +				     struct device_attribute *attr,
-> > +				     const char *buf, size_t len)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-> > +	int ret = 0;
-> > +	bool flush;
-> > +
-> > +	ret = strtobool(buf, &flush);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	if (!flush)
-> > +		return -EINVAL;
-> > +
-> > +	mutex_lock(&st->cmd_lock);
-> > +	st->param.cmd = MOTIONSENSE_CMD_FIFO_FLUSH;
-> > +	ret = cros_ec_motion_send_host_cmd(st, 0);
-> > +	if (ret != 0)
-> > +		dev_warn(&indio_dev->dev, "Unable to flush sensor\n");
-> > +	mutex_unlock(&st->cmd_lock);
-> > +	return ret ? ret : len;
-> > +}
-> > +
-> > +static IIO_DEVICE_ATTR(hwfifo_flush, 0644, NULL,
-> > +		       cros_ec_sensors_flush, 0);
-> > +
-> >  static ssize_t cros_ec_sensor_set_report_latency(struct device *dev,
-> >  						 struct device_attribute *attr,
-> >  						 const char *buf, size_t len)
-> > @@ -175,6 +202,7 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
-> >  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
-> >  
-> >  const struct attribute *cros_ec_sensor_fifo_attributes[] = {
-> > +	&iio_dev_attr_hwfifo_flush.dev_attr.attr,
-> >  	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
-> >  	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-> >  	NULL,
+> > Jonathan
 > >   
+> >> ---
+> >> Changes in v2:
+> >> - moved to the start of the list
+> >>
+> >>   drivers/iio/adc/at91-sama5d2_adc.c | 15 +++++++++++++++
+> >>   1 file changed, 15 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> >> index e1850f3..2a6950a 100644
+> >> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> >> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> >> @@ -723,6 +723,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
+> >>
+> >>        for_each_set_bit(bit, indio->active_scan_mask, indio->num_channels) {
+> >>                struct iio_chan_spec const *chan = at91_adc_chan_get(indio, bit);
+> >> +             u32 cor;
+> >>
+> >>                if (!chan)
+> >>                        continue;
+> >> @@ -732,6 +733,20 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
+> >>                        continue;
+> >>
+> >>                if (state) {
+> >> +                     cor = at91_adc_readl(st, AT91_SAMA5D2_COR);
+> >> +
+> >> +                     if (chan->differential)
+> >> +                             cor |= (BIT(chan->channel) |
+> >> +                                     BIT(chan->channel2)) <<
+> >> +                                     AT91_SAMA5D2_COR_DIFF_OFFSET;
+> >> +                     else
+> >> +                             cor &= ~(BIT(chan->channel) <<
+> >> +                                    AT91_SAMA5D2_COR_DIFF_OFFSET);
+> >> +
+> >> +                     at91_adc_writel(st, AT91_SAMA5D2_COR, cor);
+> >> +             }
+> >> +
+> >> +             if (state) {
+> >>                        at91_adc_writel(st, AT91_SAMA5D2_CHER,
+> >>                                        BIT(chan->channel));
+> >>                        /* enable irq only if not using DMA */  
+> >   
+> 
 

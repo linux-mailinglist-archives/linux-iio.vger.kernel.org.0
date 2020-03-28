@@ -2,41 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE83E196735
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 17:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4BE196739
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 17:04:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726981AbgC1QCJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 12:02:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45076 "EHLO mail.kernel.org"
+        id S1726899AbgC1QEh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 12:04:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45278 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726518AbgC1QCJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 12:02:09 -0400
+        id S1726518AbgC1QEh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Mar 2020 12:04:37 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E155F206DB;
-        Sat, 28 Mar 2020 16:02:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A153E206DB;
+        Sat, 28 Mar 2020 16:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585411329;
-        bh=HLNJr3866dNd7FwWdbTyEMZnyPy8zYW7bYSYw7WT+G0=;
+        s=default; t=1585411476;
+        bh=AKUkbkRfY/IcOObociTk2nIYvu/Ff33DG1VMwOD9g5A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hla6fEDqO2HtBLLgCY1XpDgENq2ZwmkzD3AHlGJv9E57Lvqa/byXuMV1RJw1BEU3B
-         6xtV8zy6hXZCiCwShBnJta1Itdh8PR8a5OuOYDehynNfy+zTECsrNlJzTQnROsYExC
-         7Q0MgtTWNSprmlCEKTwflmKullvIhcaDO5Y6mRQg=
-Date:   Sat, 28 Mar 2020 16:02:03 +0000
+        b=S4ncorX9/KaT0XSmf6TJ8KnvM08wuIwzilUC8FVfJJ2oJbGXjjkuBubGh4zJFvRwd
+         UWWmvXQp9lq6Tr3cuMeiq/aCTngvnUTlurTregvu9p0ZMnH08AIdsAhequE7DHt/hV
+         3fQ/tMDTlWuYJVJAFbZIa/kEDYVA1dkPFKuSRO4A=
+Date:   Sat, 28 Mar 2020 16:04:31 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v2 1/5] iio: pressure: bmp280: Tolerate IRQ before
- registering
-Message-ID: <20200328160203.1d0e378b@archlinux>
-In-Reply-To: <CACRpkdagNP6cY353oi0vCAihqvd2ZOHJ8Os7j-cq4EVBCC4+Ug@mail.gmail.com>
-References: <20200323104129.60466-1-andriy.shevchenko@linux.intel.com>
-        <CACRpkdagNP6cY353oi0vCAihqvd2ZOHJ8Os7j-cq4EVBCC4+Ug@mail.gmail.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, robh+dt@kernel.org, mark.rutland@arm.com
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: accel: Add bmi088
+ accelerometer bindings
+Message-ID: <20200328160431.365ee392@archlinux>
+In-Reply-To: <20200324080309.12171-1-mike.looijmans@topic.nl>
+References: <20200324080309.12171-1-mike.looijmans@topic.nl>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,41 +43,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Mar 2020 11:50:25 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, 24 Mar 2020 09:03:07 +0100
+Mike Looijmans <mike.looijmans@topic.nl> wrote:
 
-> On Mon, Mar 23, 2020 at 11:41 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
+> the accelerometer part.
 > 
-> > With DEBUG_SHIRQ enabled we have a kernel crash
-> >
-> > [  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >
-> > ...
-> >
-> > [  116.606571] Call Trace:
-> > [  116.609023]  <IRQ>
-> > [  116.611047]  complete+0x34/0x50
-> > [  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
-> >
-> > because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
-> > ought to be able to handle an interrupt happening before request_irq() returns.
-> >
-> > Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
-> > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> > v2: put conditional logic back when re-initializing completion (Jonathan)  
-> 
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at them.
-
-Thanks,
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Ah. For some reason I missed there was a v5. Comments on the v4 binding.
 
 Jonathan
 
+> ---
+> v2: convert to yaml format
+> v3..v4: -
+> v5: submit together with driver code as patch series
+>  .../bindings/iio/accel/bosch,bmi088.yaml      | 38 +++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
 > 
-> Yours,
-> Linus Walleij
+> diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> new file mode 100644
+> index 000000000000..715f79c3b2a9
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> @@ -0,0 +1,38 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/bosch,bma400.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bosch BMI088 IMU accelerometer part
+> +
+> +maintainers:
+> +  - Mike Looijmans <mike.looijmans@topic.nl>
+> +
+> +description: |
+> +  Acceleration part of the IMU sensor with an SPI interface
+> +
+> +  Specifications about the sensor can be found at:
+> +    https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - bosch,bmi088_accel
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +  spi {
+> +    bmi088_accel@1 {
+> +      compatible = "bosch,bmi088_accel";
+> +      reg = <1>;
+> +      spi-max-frequency = <10000000>;
+> +    };
+> +  };
 

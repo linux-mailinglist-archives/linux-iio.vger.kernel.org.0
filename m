@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3441D1963F8
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 07:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 400581963FA
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 07:35:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725919AbgC1GfR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 02:35:17 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:38134 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725800AbgC1GfR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 02:35:17 -0400
-Received: by mail-pf1-f193.google.com with SMTP id c21so5030597pfo.5;
-        Fri, 27 Mar 2020 23:35:16 -0700 (PDT)
+        id S1725845AbgC1Gff (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 02:35:35 -0400
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:52739 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725800AbgC1Gff (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 02:35:35 -0400
+Received: by mail-pj1-f68.google.com with SMTP id ng8so4866104pjb.2;
+        Fri, 27 Mar 2020 23:35:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=etzlIQkap/HQGAt9AHwYnTRq8Pfsx8vvSgBOokn+rgg=;
-        b=J/yaeS0Pl+8/sgomNJI/sCIe90HEWufMMdxyzcc61YUrYv7zt1ARMGDrTB2RQzrPQd
-         okVWh0FYOSQvEoZM3Uw8KRrQ27ys40sEAu0fpjtXHPimt3AsfUNUigFdeQuanEjJGuZ7
-         E+qzu6BPLh6p1/6SNI9jw12m81c6CArf5Th8BvyB9bTyqfIeZvIlvXwmbNcS3jbWRNTl
-         QN6q69DMXrDyJEO/SdMGS2NPm4qCbVGZMdKRGJFC4WY/B8UL4JEVV+nGfRqn40vG1fPa
-         h+rLKeyWxC/ZDhs1oa7x83vdZB8wGu8UGT3GaCjyLPooY8ntYuYTGQWNW6SLifrgxdSS
-         oh8A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=y5jRiliTP1odCqMCzp/TxFT4UkMSNXFuQPuyIcWrqbQ=;
+        b=pJJ34XBLUMRlelBTpFs5uzHyTLfRbPZ1roamcPfvs9Q79ItrkB5tzhTTzQsapvPvu4
+         eitHRogB/SfPP1UQdZspe3ZoKQGeofEo0uUVcao/Taqh8O0W7QIwGCk2SEBomgRW4sw1
+         bdrj9pfcLelC92VCRnGtWA5QeR4r467VjV67LpKqiB+fa0MJ4p2APmM5CwKslmFPGkPQ
+         /WM3Pmy8bTANhtHBDDwEg0j+2eccK95cRqmuht/c9u7Rr26c1KLeHUb8QxlsxTrJtYda
+         eZ0bPgFYXfN/YWPl7qvWB6rtEKrN+3phqIZn+ROu1oUpwi8gckBMjdbiquNIInatOxrA
+         zehQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=etzlIQkap/HQGAt9AHwYnTRq8Pfsx8vvSgBOokn+rgg=;
-        b=BSI4Vid7ohrqR+5+hUL0E9kik4hSaNgt4xsR2/Dvj1BAGyaY5TfwKk8grv1OUxiFKr
-         JXQ4kvjqPDQsuO3v8lD9b97sF5jw8QHyR6N8Vs9SzU4l2bDWL+hvB7mxXe0eHl/PTSxK
-         MHqYRfL0s8WnbfGi/8WNlF5BZdIleG+X8BE5HtS17S75nlP+GsxurewRNh44hJHm9MaO
-         h2esVDwlZquEl8mxZuBkck3+0bgFJwdCnOpm4a99SbwG1/izs4S0OaG80+zU72u4ywyp
-         Jh+PTqiXmsQaIaPv5ZqDNUBMgjJe1TqW4jezA756knHrEUAPEe8nWhlz8t/sFh5EErEi
-         RplQ==
-X-Gm-Message-State: ANhLgQ3lOxYPAXtLK/KnUKjikLflldYmzKtvy1Tr+/Cda31mBvf8s3Xa
-        zoIKqid5Jr0I1tTVd9qUc4pNQCj9zPM=
-X-Google-Smtp-Source: ADFU+vsOAJPjdB9JlcfHibQkVn0JMjnqDb7yFnZs7ngsQpCeSboPRcw06uKUaAVsCsm34dCsFFornQ==
-X-Received: by 2002:a63:5716:: with SMTP id l22mr3071643pgb.164.1585377315987;
-        Fri, 27 Mar 2020 23:35:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=y5jRiliTP1odCqMCzp/TxFT4UkMSNXFuQPuyIcWrqbQ=;
+        b=CzVhxn8NhvK00SULKGJz5WuXMOjhztzYqHU7YaYRfrSEgDVbMovBxyum2EO1iS1+jj
+         9Cax6bR65iVkrEVXl2VpmtQPV1/1H75ZfEyllNwqrFHS5WHPVoP4N3QOF+SE40FaI3KA
+         eTx21/EORSs1ltD3CiwH69AWKroEN7q7ZGzKn6rJ7XVVCroWsfjravGRwNzdMrGYdKZE
+         2+wRO3KMjEXCtdiYOcdam9RV5CDnUJO8rUCKGKzIZjCeWL5eiJiaTIptAmSI9yl8CZci
+         8UZsCZRjgr9Wp1+7F3LcLZ87RQ3SWuZj9kvJ3JZSBVafIhQtDx91nx88x5EbL9qdS2xe
+         kLEw==
+X-Gm-Message-State: ANhLgQ2pXKIciZnGh5E6NPQYcgAZ2L9Ep1SHFW9Ajh8wgJMLn/3xljro
+        4B3p+ZKUN5U383DMhhpHQV5+98ilGuo=
+X-Google-Smtp-Source: ADFU+vtCckRcXihAbhwWPbL08Pub0omo2SoFC4vIMhHB3gP9bFWcdZD3FPEWV0nvvvBCk1ilfPqzOg==
+X-Received: by 2002:a17:90a:3606:: with SMTP id s6mr3447319pjb.195.1585377333561;
+        Fri, 27 Mar 2020 23:35:33 -0700 (PDT)
 Received: from localhost.localdomain ([106.51.108.92])
-        by smtp.gmail.com with ESMTPSA id l13sm4989976pjq.42.2020.03.27.23.35.12
+        by smtp.gmail.com with ESMTPSA id l13sm4989976pjq.42.2020.03.27.23.35.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 23:35:15 -0700 (PDT)
+        Fri, 27 Mar 2020 23:35:33 -0700 (PDT)
 From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
 To:     linux-iio@vger.kernel.org
 Cc:     dragos.bogdan@analog.com, Rohit Sarkar <rohitsarkar5398@gmail.com>,
@@ -54,10 +54,12 @@ Cc:     dragos.bogdan@analog.com, Rohit Sarkar <rohitsarkar5398@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] use DEFINE_DEBUGFS_ATTRIBUTE instead of DEFINE_SIMPLE_ATTRIBUTE
-Date:   Sat, 28 Mar 2020 12:04:53 +0530
-Message-Id: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
+Subject: [PATCH 1/2] iio: imu: adis16400: use DEFINE_DEBUGFS_ATTRIBUTE instead of DEFINE_SIMPLE_ATTRIBUTE
+Date:   Sat, 28 Mar 2020 12:04:54 +0530
+Message-Id: <20200328063456.24012-2-rohitsarkar5398@gmail.com>
 X-Mailer: git-send-email 2.23.0.385.gbc12974a89
+In-Reply-To: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
+References: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -65,34 +67,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The debugfs_create_file_unsafe method does not protect the fops given to
-it from file removal. It must be used with DEFINE_DEBUGFS_ATTRIBUTE
-which makes the fops aware of the file lifetime.
+debugfs_create_file_unsafe does not protect the fops handed to it
+against file removal. DEFINE_DEBUGFS_ATTRIBUTE makes the fops aware of
+the file lifetime and thus protects it against removal.
 
-Further using DEFINE_DEBUGFS_ATTRIBUTE along with
-debugfs_create_file_unsafe significantly reduces the overhead introduced by
-debugfs_create_file which creates a lifetime managing proxy around each
-fops handed in. Refer [1] for more on this.
-
-Fixes the following warnings reported by coccinelle:
-drivers/iio/imu//adis16460.c:126:0-23: WARNING: adis16460_flash_count_fops should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-drivers/iio/imu//adis16460.c:108:0-23: WARNING: adis16460_product_id_fops should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-drivers/iio/imu//adis16460.c:90:0-23: WARNING: adis16460_serial_number_fops should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-drivers/iio/imu//adis16400.c:278:0-23: WARNING: adis16400_flash_count_fops should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-drivers/iio/imu//adis16400.c:261:0-23: WARNING: adis16400_product_id_fops should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-
-[1]: https://lists.gt.net/linux/kernel/2369498
-
-Rohit Sarkar (2):
-  iio: imu: adis16400: use DEFINE_DEBUGFS_ATTRIBUTE instead of
-    DEFINE_SIMPLE_ATTRIBUTE
-  iio: imu: adis16460: use DEFINE_DEBUGFS_ATTRIBUTE instead of
-    DEFINE_SIMPLE_ATTRIBUTE
-
+Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+---
  drivers/iio/imu/adis16400.c | 4 ++--
- drivers/iio/imu/adis16460.c | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+index cfb1c19eb930..19a35967f385 100644
+--- a/drivers/iio/imu/adis16400.c
++++ b/drivers/iio/imu/adis16400.c
+@@ -258,7 +258,7 @@ static int adis16400_show_product_id(void *arg, u64 *val)
+ 
+ 	return 0;
+ }
+-DEFINE_SIMPLE_ATTRIBUTE(adis16400_product_id_fops,
++DEFINE_DEBUGFS_ATTRIBUTE(adis16400_product_id_fops,
+ 	adis16400_show_product_id, NULL, "%lld\n");
+ 
+ static int adis16400_show_flash_count(void *arg, u64 *val)
+@@ -275,7 +275,7 @@ static int adis16400_show_flash_count(void *arg, u64 *val)
+ 
+ 	return 0;
+ }
+-DEFINE_SIMPLE_ATTRIBUTE(adis16400_flash_count_fops,
++DEFINE_DEBUGFS_ATTRIBUTE(adis16400_flash_count_fops,
+ 	adis16400_show_flash_count, NULL, "%lld\n");
+ 
+ static int adis16400_debugfs_init(struct iio_dev *indio_dev)
 -- 
 2.23.0.385.gbc12974a89
 

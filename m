@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D39EA19665A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 14:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5589419665D
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 14:39:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726258AbgC1Nek (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 09:34:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41208 "EHLO mail.kernel.org"
+        id S1726290AbgC1NjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 09:39:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41424 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726045AbgC1Nek (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 09:34:40 -0400
+        id S1726045AbgC1NjB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Mar 2020 09:39:01 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F251D20723;
-        Sat, 28 Mar 2020 13:34:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5457B20723;
+        Sat, 28 Mar 2020 13:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585402479;
-        bh=D51Ze+TeBkb8ZH++L4VvpMQ2EANDDwOH2Tg7FGmEGbg=;
+        s=default; t=1585402740;
+        bh=xAFlyQu5GQ2i/oCi/YFOh4Dk91mW4Z9zh6ovMDcaCfI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xKEURjXW6yyMB1JXSkKikDEFarVMO+surQLh7VK1AFmx7xtWkZ5c4nWQKJsE+7eWw
-         atqw8AmtVuCKB//F8YAC0fzEYbrglMfatCH3FEopt+K/jmvOaCoBNgPEPYxLNih3lG
-         W6iyC4hZqZUUG0oJ3jETI1zXQVl/BUcwkKk/DDSM=
-Date:   Sat, 28 Mar 2020 13:34:34 +0000
+        b=NfA0Hv8t2jiov9tiUJgfQT4fgrO2qf8bB7sWT5y1ZXypRPCQner1voOHCB+lctxzV
+         yDPaPB54hD8xMvGe04cB5DLjU00vESplU2UZr3XsyqdGpVGJlpC8h6rQvZblDGOYGc
+         n0pQR1pxM8mIZKrfKKq//PIn5ZitzJwLWlYu965g=
+Date:   Sat, 28 Mar 2020 13:38:56 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Lazar <alazar@startmail.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v5 2/2] iio: adc: Add MAX1241 driver
-Message-ID: <20200328133434.0f99dc93@archlinux>
-In-Reply-To: <20200322140237.211347-3-alazar@startmail.com>
-References: <20200322140237.211347-1-alazar@startmail.com>
-        <20200322140237.211347-3-alazar@startmail.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>
+Subject: Re: [PATCH v3] iio: adc: ad7793: use read_avail iio hook for scale
+ available
+Message-ID: <20200328133856.7fdf34e3@archlinux>
+In-Reply-To: <20200322152656.41669-1-alexandru.ardelean@analog.com>
+References: <20200322152656.41669-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,289 +42,158 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020 16:02:37 +0200
-Alexandru Lazar <alazar@startmail.com> wrote:
+On Sun, 22 Mar 2020 17:26:56 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Add driver for the Maxim MAX1241 12-bit, single-channel ADC.
+> This change uses the read_avail and '.info_mask_shared_by_type_available'
+> modifier to set the available scale.
+> Essentially, nothing changes to the driver's ABI.
 > 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Signed-off-by: Alexandru Lazar <alazar@startmail.com>
+> The main idea for this patch is to remove the AD7793 driver from
+> checkpatch's radar. There have been about ~3 attempts to fix/break the
+> 'in_voltage-voltage_scale_available' attribute, because checkpatch assumed
+> it to be an arithmetic operation and people were trying to change that.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Minor issue inline.  I can fix that up when applying.
-However, I'd like to give more time for Rob to take a look at the
-dt binding.  I've made too many mistakes on those recently :(
-
-Reality is we've missed the coming merge window with this anyway
-so we have plenty of time.
-
-Thanks,
+Applied thanks.  It almost seems a shame to remove the 'educational'
+potential of this one but I suppose we should be 'nice' :)
 
 Jonathan
 
 > ---
->  drivers/iio/adc/Kconfig   |  10 ++
->  drivers/iio/adc/Makefile  |   1 +
->  drivers/iio/adc/max1241.c | 213 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 224 insertions(+)
->  create mode 100644 drivers/iio/adc/max1241.c
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 5d8540b7b427..55f6462cd93f 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -566,6 +566,16 @@ config MAX1118
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called max1118.
+> Changelog v2 -> v3:
+> * split from series https://patchwork.kernel.org/project/linux-iio/list/?series=259659
+> * moved -EINVAL return to default case
+> 
+>  drivers/iio/adc/ad7793.c | 55 +++++++++++++++++++++++++++-------------
+>  1 file changed, 37 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
+> index 5592ae573e6b..7005bde50a76 100644
+> --- a/drivers/iio/adc/ad7793.c
+> +++ b/drivers/iio/adc/ad7793.c
+> @@ -354,29 +354,28 @@ static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
+>  static IIO_CONST_ATTR_NAMED(sampling_frequency_available_ad7797,
+>  	sampling_frequency_available, "123 62 50 33 17 16 12 10 8 6 4");
 >  
-> +config MAX1241
-> +	tristate "Maxim max1241 ADC driver"
-> +	depends on SPI_MASTER
-> +	help
-> +	  Say yes here to build support for Maxim max1241 12-bit, single-channel
-> +	  ADC.
-> +
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called max1241.
-> +
->  config MAX1363
->  	tristate "Maxim max1363 ADC driver"
->  	depends on I2C
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index a1f1fbec0f87..37d6f17559dc 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -54,6 +54,7 @@ obj-$(CONFIG_LTC2497) += ltc2497.o
->  obj-$(CONFIG_MAX1027) += max1027.o
->  obj-$(CONFIG_MAX11100) += max11100.o
->  obj-$(CONFIG_MAX1118) += max1118.o
-> +obj-$(CONFIG_MAX1241) += max1241.o
->  obj-$(CONFIG_MAX1363) += max1363.o
->  obj-$(CONFIG_MAX9611) += max9611.o
->  obj-$(CONFIG_MCP320X) += mcp320x.o
-> diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
-> new file mode 100644
-> index 000000000000..33ea61305f27
-> --- /dev/null
-> +++ b/drivers/iio/adc/max1241.c
-> @@ -0,0 +1,213 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * MAX1241 low-power, 12-bit serial ADC
-> + *
-> + * Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX1240-MAX1241.pdf
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#define MAX1241_VAL_MASK GENMASK(11, 0)
-> +#define MAX1241_SHDN_DELAY_USEC 4
-> +
-> +enum max1241_id {
-> +	max1241,
-> +};
-> +
-> +struct max1241 {
-> +	struct spi_device *spi;
-> +	struct mutex lock;
-> +	struct regulator *vdd;
-> +	struct regulator *vref;
-> +	struct gpio_desc *shdn;
-> +
-> +	__be16 data ____cacheline_aligned;
-> +};
-> +
-> +static const struct iio_chan_spec max1241_channels[] = {
-> +	{
-> +		.type = IIO_VOLTAGE,
-> +		.indexed = 1,
-> +		.channel = 0,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				BIT(IIO_CHAN_INFO_SCALE),
-> +	},
-> +};
-> +
-> +static int max1241_read(struct max1241 *adc)
-> +{
-> +	struct spi_transfer xfers[] = {
-> +		/*
-> +		 * Begin conversion by bringing /CS low for at least
-> +		 * tconv us.
-> +		 */
-> +		{
-> +			.len = 0,
-> +			.delay.value = 8,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
-> +		},
-> +		/*
-> +		 * Then read two bytes of data in our RX buffer.
-> +		 */
-> +		{
-> +			.rx_buf = &adc->data,
-> +			.len = 2,
-> +		},
-> +	};
-> +
-> +	return spi_sync_transfer(adc->spi, xfers, ARRAY_SIZE(xfers));
-> +}
-> +
-> +static int max1241_read_raw(struct iio_dev *indio_dev,
-> +			struct iio_chan_spec const *chan,
-> +			int *val, int *val2, long mask)
-> +{
-> +	int ret, vref_uV;
-> +	struct max1241 *adc = iio_priv(indio_dev);
-> +
+> -static ssize_t ad7793_show_scale_available(struct device *dev,
+> -			struct device_attribute *attr, char *buf)
+> +static int ad7793_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     const int **vals, int *type, int *length,
+> +			     long mask)
+>  {
+> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct ad7793_state *st = iio_priv(indio_dev);
+> -	int i, len = 0;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++)
+> -		len += sprintf(buf + len, "%d.%09u ", st->scale_avail[i][0],
+> -			       st->scale_avail[i][1]);
+> -
+> -	len += sprintf(buf + len, "\n");
 > +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		mutex_lock(&adc->lock);
-> +
-> +		if (adc->shdn) {
-> +			gpiod_set_value(adc->shdn, 0);
-> +			udelay(MAX1241_SHDN_DELAY_USEC);
-> +			ret = max1241_read(adc);
-> +			gpiod_set_value(adc->shdn, 1);
-> +		} else
-> +			ret = max1241_read(adc);
-> +
-> +		if (ret) {
-> +			mutex_unlock(&adc->lock);
-> +			return ret;
-> +		}
-> +
-> +		*val = (be16_to_cpu(adc->data) >> 3) & MAX1241_VAL_MASK;
-> +
-> +		mutex_unlock(&adc->lock);
-> +		return IIO_VAL_INT;
 > +	case IIO_CHAN_INFO_SCALE:
-> +		vref_uV = regulator_get_voltage(adc->vref);
-> +
-> +		if (vref_uV < 0)
-> +			return vref_uV;
-> +
-> +		*val = vref_uV / 1000;
-> +		*val2 = 12;
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +		*vals = (int *)st->scale_avail;
+> +		*type = IIO_VAL_INT_PLUS_NANO;
+> +		/* Values are stored in a 2D matrix  */
+> +		*length = ARRAY_SIZE(st->scale_avail) * 2;
+>  
+> -	return len;
+> +		return IIO_AVAIL_LIST;
 > +	default:
 > +		return -EINVAL;
 > +	}
-> +}
+>  }
+>  
+> -static IIO_DEVICE_ATTR_NAMED(in_m_in_scale_available,
+> -		in_voltage-voltage_scale_available, S_IRUGO,
+> -		ad7793_show_scale_available, NULL, 0);
+> -
+>  static struct attribute *ad7793_attributes[] = {
+>  	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+> -	&iio_dev_attr_in_m_in_scale_available.dev_attr.attr,
+>  	NULL
+>  };
+>  
+> @@ -534,6 +533,7 @@ static const struct iio_info ad7793_info = {
+>  	.read_raw = &ad7793_read_raw,
+>  	.write_raw = &ad7793_write_raw,
+>  	.write_raw_get_fmt = &ad7793_write_raw_get_fmt,
+> +	.read_avail = ad7793_read_avail,
+>  	.attrs = &ad7793_attribute_group,
+>  	.validate_trigger = ad_sd_validate_trigger,
+>  };
+> @@ -547,7 +547,7 @@ static const struct iio_info ad7797_info = {
+>  };
+>  
+>  #define __AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
+> -	_storagebits, _shift, _extend_name, _type, _mask_all) \
+> +	_storagebits, _shift, _extend_name, _type, _mask_type_av, _mask_all) \
+>  	{ \
+>  		.type = (_type), \
+>  		.differential = (_channel2 == -1 ? 0 : 1), \
+> @@ -559,6 +559,7 @@ static const struct iio_info ad7797_info = {
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+>  			BIT(IIO_CHAN_INFO_OFFSET), \
+>  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+> +		.info_mask_shared_by_type_available = (_mask_type_av), \
+>  		.info_mask_shared_by_all = _mask_all, \
+>  		.scan_index = (_si), \
+>  		.scan_type = { \
+> @@ -574,23 +575,41 @@ static const struct iio_info ad7797_info = {
+>  	_storagebits, _shift) \
+>  	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
+>  		_storagebits, _shift, NULL, IIO_VOLTAGE, \
+> +		BIT(IIO_CHAN_INFO_SCALE), \
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+>  
+>  #define AD7793_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
+>  	_storagebits, _shift) \
+>  	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
+>  		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
+> +		BIT(IIO_CHAN_INFO_SCALE), \
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+>  
+>  #define AD7793_TEMP_CHANNEL(_si, _address, _bits, _storagebits, _shift) \
+>  	__AD7793_CHANNEL(_si, 0, -1, _address, _bits, \
+>  		_storagebits, _shift, NULL, IIO_TEMP, \
+> +		0, \
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+>  
+>  #define AD7793_SUPPLY_CHANNEL(_si, _channel, _address, _bits, _storagebits, \
+>  	_shift) \
+>  	__AD7793_CHANNEL(_si, _channel, -1, _address, _bits, \
+>  		_storagebits, _shift, "supply", IIO_VOLTAGE, \
+> +		0, \
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ))
 > +
-> +static const struct iio_info max1241_info = {
-> +	.read_raw = max1241_read_raw,
-> +};
+> +#define AD7797_DIFF_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
+> +	_storagebits, _shift) \
+> +	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
+> +		_storagebits, _shift, NULL, IIO_VOLTAGE, \
+> +		0, \
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ))
 > +
-> +static void max1241_disable_reg_action(void *data)
-> +{
-> +	struct max1241 *adc = data;
-> +	struct device *dev = &adc->spi->dev;
-> +	int err;
-> +
-> +	err = regulator_disable(adc->vref);
-> +	if (err)
-> +		dev_err(dev, "could not disable vref regulator.\n");
-> +
-> +	err = regulator_disable(adc->vdd);
-> +	if (err)
-> +		dev_err(dev, "could not disable vdd regulator.\n");
-> +}
-> +
-> +static int max1241_probe(struct spi_device *spi)
-> +{
-> +	struct device *dev = &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct max1241 *adc;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	adc = iio_priv(indio_dev);
-> +	adc->spi = spi;
-> +	mutex_init(&adc->lock);
-> +
-> +	spi_set_drvdata(spi, indio_dev);
-> +
-> +	adc->vdd = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(adc->vdd)) {
-> +		dev_err(dev, "failed to get vdd regulator\n");
-> +		return PTR_ERR(adc->vdd);
-> +	}
-> +
-> +	ret = regulator_enable(adc->vdd);
-> +	if (ret)
-> +		return ret;
-> +
-> +	adc->vref = devm_regulator_get(dev, "vref");
-> +	if (IS_ERR(adc->vref)) {
-
-If this returns an error you have left the vref regulator on.
-
-Unfortunately to keep things simple you'll need to have two
-separate callbacks for devm_add_action_or_reset, one for each
-of the regulators.
-
-> +		dev_err(dev, "failed to get vref regulator\n");
-> +		return PTR_ERR(adc->vref);
-> +	}
-> +
-> +	ret = regulator_enable(adc->vref);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(dev, max1241_disable_reg_action, adc);
-> +	if (ret) {
-> +		dev_err(dev, "could not set up regulator cleanup action!\n");
-> +		return ret;
-> +	}
-> +
-> +	adc->shdn = devm_gpiod_get_optional(dev, "shdn", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(adc->shdn))
-> +		return PTR_ERR(adc->shdn);
-> +
-> +	if (adc->shdn)
-> +		dev_dbg(dev, "shdn pin passed, low-power mode enabled");
-> +	else
-> +		dev_dbg(dev, "no shdn pin passed, low-power mode disabled");
-> +
-> +	indio_dev->name = spi_get_device_id(spi)->name;
-> +	indio_dev->dev.parent = dev;
-> +	indio_dev->info = &max1241_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = max1241_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(max1241_channels);
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static const struct spi_device_id max1241_id[] = {
-> +	{ "max1241", max1241 },
-> +	{}
-> +};
-> +
-> +static const struct of_device_id max1241_dt_ids[] = {
-> +	{ .compatible = "maxim,max1241" },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, max1241_dt_ids);
-> +
-> +static struct spi_driver max1241_spi_driver = {
-> +	.driver = {
-> +		.name = "max1241",
-> +		.of_match_table = max1241_dt_ids,
-> +	},
-> +	.probe = max1241_probe,
-> +	.id_table = max1241_id,
-> +};
-> +module_spi_driver(max1241_spi_driver);
-> +
-> +MODULE_AUTHOR("Alexandru Lazar <alazar@startmail.com>");
-> +MODULE_DESCRIPTION("MAX1241 ADC driver");
-> +MODULE_LICENSE("GPL v2");
+> +#define AD7797_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
+> +	_storagebits, _shift) \
+> +	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
+> +		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
+> +		0, \
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+>  
+>  #define DECLARE_AD7793_CHANNELS(_name, _b, _sb, _s) \
+> @@ -620,8 +639,8 @@ const struct iio_chan_spec _name##_channels[] = { \
+>  
+>  #define DECLARE_AD7797_CHANNELS(_name, _b, _sb) \
+>  const struct iio_chan_spec _name##_channels[] = { \
+> -	AD7793_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
+> -	AD7793_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
+> +	AD7797_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
+> +	AD7797_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
+>  	AD7793_TEMP_CHANNEL(2, AD7793_CH_TEMP, (_b), (_sb), 0), \
+>  	AD7793_SUPPLY_CHANNEL(3, 3, AD7793_CH_AVDD_MONITOR, (_b), (_sb), 0), \
+>  	IIO_CHAN_SOFT_TIMESTAMP(4), \
 

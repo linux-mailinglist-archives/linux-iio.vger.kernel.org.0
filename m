@@ -2,47 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 848B01967CD
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF2B819681E
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:23:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbgC1REP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 13:04:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725807AbgC1REP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 13:04:15 -0400
+        id S1726315AbgC1RXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 13:23:00 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:45522 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725807AbgC1RXA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 13:23:00 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F16E20714;
-        Sat, 28 Mar 2020 17:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585415054;
-        bh=re7p6j0PGrxKSZZ6Le17eLNOy+JoAmbengRYQrLBe3E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K3ktQwAG5vot+NVGaYyusk7AKtEnQPr029KatKl6b1HNTIflnBg5WVmhft5+k9vdQ
-         TsPGI+yB1TU6Mk7YqxTHOXXpIG1XFqmZq+TJQwtyvWYIjH5tTUN+GLeQ7lO8BAm9k1
-         sGbi7J1KvatH9dr1cljVM7zM03Xg/IRc9zjkJ3qc=
-Date:   Sat, 28 Mar 2020 17:04:07 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mka@chromium.org, linus.walleij@linaro.org, sboyd@codeaurora.org,
-        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
-        kgunda@codeaurora.org, aghayal@codeaurora.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-msm-owner@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: adc: Add support for PMIC7 ADC
-Message-ID: <20200328170407.41d8ed68@archlinux>
-In-Reply-To: <1585064650-16235-4-git-send-email-jprakash@codeaurora.org>
-References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org>
-        <1585064650-16235-4-git-send-email-jprakash@codeaurora.org>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 6C0E09E7A1D;
+        Sat, 28 Mar 2020 17:22:58 +0000 (GMT)
+Date:   Sat, 28 Mar 2020 17:22:56 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     bleung@chromium.org, enric.balletbo@collabora.com,
+        Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 12/12] iio: cros_ec: flush as hwfifo attribute
+Message-ID: <20200328172256.583b483e@archlinux>
+In-Reply-To: <20200327223443.6006-13-gwendal@chromium.org>
+References: <20200327223443.6006-1-gwendal@chromium.org>
+        <20200327223443.6006-13-gwendal@chromium.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,95 +34,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Mar 2020 21:14:10 +0530
-Jishnu Prakash <jprakash@codeaurora.org> wrote:
+On Fri, 27 Mar 2020 15:34:43 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> The ADC architecture on PMIC7 is changed as compared to PMIC5. The
-> major change from PMIC5 is that all SW communication to ADC goes through
-> PMK8350, which communicates with other PMICs through PBS when the ADC
-> on PMK8350 works in master mode. The SID register is used to identify the
-> PMICs with which the PBS needs to communicate. Add support for the same.
+> Add buffer/hwfifo_flush. It is not part of the ABI, but it follows ST
+> and HID lead: Tells the sensor hub to send to the host all pending
+> sensor events.
 > 
-> In addition, add definitions for ADC channels and virtual channel
-> definitions per PMIC, to be used by ADC clients for PMIC7.
-> 
-> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
-A few additions from me.
+Unless I'm missing something there aren't any other drivers providing
+an explicit flush attribute. The nearest equivalent is the flush
+callback which reads out stuff that is in a fifo to be read, but which
+hasn't yet reached a watermark to trigger normal readback.
+
+Can we do something similar here?
+
+If not this needs ABI documentation in Documentation/ABI/testing/...
+I'm not keen on it in becoming general ABI unless I'm missing a
+strong argument in favour of it.
+
+Jonathan
+
 
 > ---
-
-...
-
+> No changes in v7.
+> New in v6.
+> 
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index c831915ca7e56..aaf124a82e0e4 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -113,6 +113,33 @@ static int cros_ec_sensor_set_ec_rate(struct cros_ec_sensors_core_state *st,
+>  	return ret;
+>  }
 >  
-> +static int adc5_exit(struct platform_device *pdev)
+> +static ssize_t cros_ec_sensors_flush(struct device *dev,
+> +				     struct device_attribute *attr,
+> +				     const char *buf, size_t len)
 > +{
-> +	struct adc5_chip *adc = platform_get_drvdata(pdev);
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+> +	int ret = 0;
+> +	bool flush;
 > +
-> +	mutex_destroy(&adc->lock);
-
-Andy raised potential races.  You definitely have some as this
-will destroy the mutex before you've removed the userspace interfaces.
-
-> +	return 0;
+> +	ret = strtobool(buf, &flush);
+> +	if (ret < 0)
+> +		return ret;
+> +	if (!flush)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&st->cmd_lock);
+> +	st->param.cmd = MOTIONSENSE_CMD_FIFO_FLUSH;
+> +	ret = cros_ec_motion_send_host_cmd(st, 0);
+> +	if (ret != 0)
+> +		dev_warn(&indio_dev->dev, "Unable to flush sensor\n");
+> +	mutex_unlock(&st->cmd_lock);
+> +	return ret ? ret : len;
 > +}
 > +
->  static struct platform_driver adc5_driver = {
->  	.driver = {
->  		.name = "qcom-spmi-adc5.c",
->  		.of_match_table = adc5_match_table,
->  	},
->  	.probe = adc5_probe,
-> +	.remove = adc5_exit,
->  };
->  module_platform_driver(adc5_driver);
+> +static IIO_DEVICE_ATTR(hwfifo_flush, 0644, NULL,
+> +		       cros_ec_sensors_flush, 0);
+> +
+>  static ssize_t cros_ec_sensor_set_report_latency(struct device *dev,
+>  						 struct device_attribute *attr,
+>  						 const char *buf, size_t len)
+> @@ -175,6 +202,7 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
+>  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
 >  
-
-...
-
->  
-> +static int qcom_vadc7_scale_hw_calib_die_temp(
-> +				const struct vadc_prescale_ratio *prescale,
-> +				const struct adc5_data *data,
-> +				u16 adc_code, int *result_mdec)
-> +{
-> +
-> +	int voltage, vtemp0, temp, i = 0;
-> +
-> +	voltage = qcom_vadc_scale_code_voltage_factor(adc_code,
-> +				prescale, data, 1);
-> +
-> +	while (i < ARRAY_SIZE(adcmap7_die_temp)) {
-> +		if (adcmap7_die_temp[i].x > voltage)
-> +			break;
-> +		i++;
-> +	}
-
-For loop (I think Andy also raised this one).
-
-> +
-> +	if (i == 0) {
-> +		*result_mdec = DIE_TEMP_ADC7_SCALE_1;
-> +	} else if (i == ARRAY_SIZE(adcmap7_die_temp)) {
-> +		*result_mdec = DIE_TEMP_ADC7_MAX;
-> +	} else {
-> +		vtemp0 = adcmap7_die_temp[i-1].x;
-
-Spaces around the - 
-Same elsewhere.
-
-> +		voltage = voltage - vtemp0;
-> +		temp = div64_s64(voltage * DIE_TEMP_ADC7_SCALE_FACTOR,
-> +			adcmap7_die_temp[i-1].y);
-> +		temp += DIE_TEMP_ADC7_SCALE_1 + (DIE_TEMP_ADC7_SCALE_2 * (i-1));
-> +		*result_mdec = temp;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int qcom_vadc_scale_hw_smb_temp(
->  				const struct vadc_prescale_ratio *prescale,
->  				const struct adc5_data *data,
-...
+>  const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+> +	&iio_dev_attr_hwfifo_flush.dev_attr.attr,
+>  	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
+>  	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
+>  	NULL,
 

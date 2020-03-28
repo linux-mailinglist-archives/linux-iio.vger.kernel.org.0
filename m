@@ -2,116 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6DF196831
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1459A196839
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 18:47:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726265AbgC1Rpj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 13:45:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49200 "EHLO mail.kernel.org"
+        id S1725882AbgC1Rrj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 13:47:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50136 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725807AbgC1Rpj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Mar 2020 13:45:39 -0400
+        id S1725807AbgC1Rri (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Mar 2020 13:47:38 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EEBF920714;
-        Sat, 28 Mar 2020 17:45:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 83C5520714;
+        Sat, 28 Mar 2020 17:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585417538;
-        bh=4/8LQolKu8so+6XDSEG5uJlSl9nM13HcF/vq2+oIHWk=;
+        s=default; t=1585417658;
+        bh=mNYkWFhLfxL58A8os+PE0jgGSO/lmQHN1YOVq75Jifk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2bjGQxo9mlXE9D3DGo4/rulDrFofQ+KoAww6tvgNtpbtLnNBifhG07biYFLrWZu+G
-         ABxZOtNXNxI5R77jk3VF1t3m7QPqE9Wa1rI5PBYKvjFEvDyibxRaXi+6Ng2HAvSazR
-         X9sioDYR52VC9XCWbpa8hwqaheYFYW53Xx1e1WmU=
-Date:   Sat, 28 Mar 2020 17:45:34 +0000
+        b=EBpnVjhWymVWQhNVUW8HujxVUfDxIEn2uFzraKV2IFJSWUFdNK8z36/J/Pg0D8nzA
+         40zH7J2f0c95huDR1gfJGCCoEklvN8Xjs2Zir4j+KoLuPIVHjWodgT13pLXm8hGmpe
+         bbsrsZ0U43nN9vaywXS9GwvgEut6/0EgPlZa1evw=
+Date:   Sat, 28 Mar 2020 17:47:33 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     Rob Herring <robh@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: add debugfs register r/w
- interface
-Message-ID: <20200328174534.6851a9c0@archlinux>
-In-Reply-To: <20200327131901.GW1922688@smile.fi.intel.com>
-References: <5e7dfb41.1c69fb81.cc4bb.042f@mx.google.com>
-        <20200327131901.GW1922688@smile.fi.intel.com>
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: iio: Fix adi,ltc2983 uint64-matrix schema
+ constraints
+Message-ID: <20200328174733.0485a340@archlinux>
+In-Reply-To: <BN6PR03MB3347F56F6C3396083F16113199CD0@BN6PR03MB3347.namprd03.prod.outlook.com>
+References: <20200327224501.18590-1-robh@kernel.org>
+        <BN6PR03MB3347F56F6C3396083F16113199CD0@BN6PR03MB3347.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Mar 2020 15:19:01 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-> On Fri, Mar 27, 2020 at 06:40:23PM +0530, Rohit Sarkar wrote:
-> > The debugfs interface provides direct access to read and write device
-> > registers if debugfs is enabled.
-> > 
-> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> >
+> >=20
+> > 'minItems' and 'maxItems' apply at the same level as 'items' schemas as
+> > the keywords apply to arrays. What's currently defined is a 3
+> > dimensional matrix with the outer size being undefined. To fix this,
+> > minItems/maxItems needs to be moved up a level.
+> >=20
+> > With this fixed, the example fails validation. For matrix types, the dts
+> > syntax must use brackets (<>) matching the schema definition. In this
+> > case, the inner array size is 2 elements, so let's add the correct
+> > bracketing.
+> >=20
+> > Fixes: 3986a14870cb ("dt-bindings: iio: Add ltc2983 documentation")
+> > Cc: "Nuno S=C3=A1" <nuno.sa@analog.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>
+> > Cc: Hartmut Knaack <knaack.h@gmx.de>
+> > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> > Cc: linux-iio@vger.kernel.org
+> > Signed-off-by: Rob Herring <robh@kernel.org>
 > > ---
-> > Changelog v1->v2
-> > * grab a lock to protect driver state
-> > * add a comma at the end of structure member initialisation
-> > 
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 19 +++++++++++++++++++
-> >  1 file changed, 19 insertions(+)
-> > 
-> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> > index 7cb9ff3d3e94..381a3fb09858 100644
-> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> > @@ -1248,12 +1248,31 @@ static const struct attribute_group inv_attribute_group = {
-> >  	.attrs = inv_attributes
-> >  };
-> >  
-> > +static int inv_mpu6050_reg_access(struct iio_dev *indio_dev,
-> > +				  unsigned int reg,
-> > +				  unsigned int writeval,
-> > +				  unsigned int *readval)
-> > +{
-> > +	struct inv_mpu6050_state *st = iio_priv(indio_dev);  
-> 
-> > +	int ret = 0;  
-> 
-> Assignment is redundant, but I think maintainers may update this when applying.
+> > I'll take this via the DT tree as I have another change this will
+> > conflict.
+> >=20
+> > Rob
+=20
+> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Fixed up and applied to the togreg branch of iio.git and pushed
-out as testing for the autobuilders to play with it.
+thanks,
 
 Jonathan
-
-> 
-> > +
-> > +	mutex_lock(&st->lock);
-> > +	if (readval)
-> > +		ret = regmap_read(st->map, reg, readval);
-> > +	else
-> > +		ret = regmap_write(st->map, reg, writeval);
-> > +	mutex_unlock(&st->lock);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> >  static const struct iio_info mpu_info = {
-> >  	.read_raw = &inv_mpu6050_read_raw,
-> >  	.write_raw = &inv_mpu6050_write_raw,
-> >  	.write_raw_get_fmt = &inv_write_raw_get_fmt,
-> >  	.attrs = &inv_attribute_group,
-> >  	.validate_trigger = inv_mpu6050_validate_trigger,
-> > +	.debugfs_reg_access = &inv_mpu6050_reg_access,
-> >  };
-> >  
-> >  /**
-> > -- 
-> > 2.23.0.385.gbc12974a89
-> >   
-> 
+>=20
+> Thanks,
+> - Nuno S=C3=A1
+>=20
 

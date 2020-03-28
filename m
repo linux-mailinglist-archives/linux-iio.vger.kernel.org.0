@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59766196531
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 11:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D981C196571
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Mar 2020 12:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726283AbgC1KwY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Mar 2020 06:52:24 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:41513 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726156AbgC1KwY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 06:52:24 -0400
-Received: by mail-pl1-f195.google.com with SMTP id d24so678489pll.8;
-        Sat, 28 Mar 2020 03:52:23 -0700 (PDT)
+        id S1726258AbgC1LC3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Mar 2020 07:02:29 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:42327 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725973AbgC1LC3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Mar 2020 07:02:29 -0400
+Received: by mail-pl1-f196.google.com with SMTP id e1so4512746plt.9;
+        Sat, 28 Mar 2020 04:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YcKn/H8EDvahzikQuDQ0C/2jv4PkNkkgCQKKj34zNzU=;
-        b=Aq4+5gmji624zQXh/p3KCAR+m5x43hob634OL/vHwySR8euy8H9Z1vnBgp970IK8eD
-         x24zEis9Y7h6I10OLNJ1oLzuoWRlnMBrL59ojvdpXzWNVKnpAfjCE/quPUckA0C84GB6
-         ojq87jZ+RoyuIgX3Ch2qpzoMhIFzyqBzoT0/xAxdTnbi6uRbG8HtDmi46tAMTSdtL/NB
-         yUpvK1ndDbPWHjwv5heS52sIEDeI0RsheV2+o2WWh8GzMwD35mlSn3qnsbpVBnUb0/NK
-         OhiPGGPWMGjxHfLiw6D7fqYAZ+E/MZC0FemWrtD2K+5H4+jrFAqdWjApUEyvROiaysas
-         hNAA==
+        bh=ybzEvvM/Y1fK+T4WB91lb7mb7tennh3w1iclknsvBKc=;
+        b=gjcm36dXWUs94y8B/p36oRvfBldTX64A6N06TUsXWS0b6nFqH9rrxoCyNRHHeaiVvv
+         2LEb+zr4cpeSH3c8zLRfFw7jgECmRWw4mCs/f3/u2Ww6lmBoefnBs/fIN8A3GcNwNmVK
+         Gicsud5Vj0H+I01Pg+ccfKrB1dPmMbHfo1vaCaGqSPFv7xrTY5WUlOXlUYi74oWp2hiF
+         z5LLYLMYKpyFvO3E4jC5wkTmryGlRW/yfOWK22PC1u+XAiXNEzFJ45Tz92vRfXqUUlc1
+         dN8XRULR6WSGhd1zWwvsa8Yy3X25R3H3u2heWimkaCV/Sz8qgKBtT6k0nXrMQ0JfeK5b
+         2yBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YcKn/H8EDvahzikQuDQ0C/2jv4PkNkkgCQKKj34zNzU=;
-        b=OaGzN7ONZYLBdjZtGmpZaKhSP0+wC5Rqzao6bPf5jK0gs2zGqvJBq+gX7hMolUaBWS
-         LRZu4OFJtGDs3TEA2/H4iYdtv4Py1pLn/d9kyytLrFaQnWaoFE4MGqIqKN8fYiOUnhPO
-         y5hjjsMg9Q9h2lZINaxn3mMFmnk9j+FHR2MnBthULMnkIm6iu4piLXPjZWUgjdF/z3cB
-         8ARFh/5u+xWjbqEg1vNJYLqLm7wTEBEqu1c+H9Ui5vGH/cUtuHW9DD9OzVX0E4C/Afpk
-         qZKuXDC4eRD99dIidWrBZIGAqgWfWruOXwHCgnO6UNMlUwfOXCgkxKu53kJ9yPKH2K0o
-         ZKaw==
-X-Gm-Message-State: ANhLgQ2+Gkiz3BjWhYWrspC54XMPW2jt2YAqnRQ9i3X6VdkbokzJAuZg
-        JYUT8tlcQ8qPVm4GpmWmBJ3EZp/bdG0P9OFBEIA=
-X-Google-Smtp-Source: ADFU+vtWEO67dR4rn0uYyS0uWFD2xD8gBrqyU1X3pu1a9Fb0fdsPskth2ohRugs+hg9Jmm/g4k5LlQR5WBgqNXRyHj0=
-X-Received: by 2002:a17:90a:8403:: with SMTP id j3mr4422773pjn.8.1585392742658;
- Sat, 28 Mar 2020 03:52:22 -0700 (PDT)
+        bh=ybzEvvM/Y1fK+T4WB91lb7mb7tennh3w1iclknsvBKc=;
+        b=Mq90f3Nhi73MFpYncHkTweX/jPhRB1Nu8S1AEaweCkrCt3gDehgZKMM4EYbCm+nqxS
+         gFWq0gT7AZThy70TERzTyvPaF+YZfjWooc2QKlL72C56y5g3ssHt0oYCZGUzhZ8EWjEP
+         YHE96N1W3X7pDsy8emZJ1nwPkre4D93C86Zvho88HSv3NjQrMj7MT+Ev9x8xoaoGmGjX
+         BIDOVcTxPAfF98iI4bShycZIsPinJX3WPG3xcu0NDukBI6L/BU55VFDdzrvLIsQuq5u9
+         GZnO2sDEfTLS7ihC2uOwyKwksO+VNg/7UcF8rnXdxMIrm8MGnAXYTbVPopNE8YVyth8V
+         V6tA==
+X-Gm-Message-State: ANhLgQ24Kxf25wpCOcwQ2CCrFkSdc7wYOUiEG3M0wKpelBVwt5Y5mCsY
+        9Ha5dmzr/MudgEZcLpDpt3hmaAD4bhYIZWiZT3Q=
+X-Google-Smtp-Source: ADFU+vuCr9+XdOtdmikLkVMOj3ejA58Zcuyfi6kogZWnczcwpxiLFPcnu2MTG/IsoHJiICAMnk8f3uvOS5NSWlNwi7k=
+X-Received: by 2002:a17:90a:9408:: with SMTP id r8mr4479521pjo.1.1585393348229;
+ Sat, 28 Mar 2020 04:02:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200328001154.17313-1-sravanhome@gmail.com> <20200328001154.17313-4-sravanhome@gmail.com>
-In-Reply-To: <20200328001154.17313-4-sravanhome@gmail.com>
+References: <20200328001154.17313-1-sravanhome@gmail.com> <20200328001154.17313-5-sravanhome@gmail.com>
+In-Reply-To: <20200328001154.17313-5-sravanhome@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 28 Mar 2020 12:52:11 +0200
-Message-ID: <CAHp75Vd+m=1eaDY1JLvtNKbBPXsaTFmpewG=Vn+v-=+GMBCs2w@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] iio: adc: mp2629: Add support for mp2629 ADC driver
+Date:   Sat, 28 Mar 2020 13:02:17 +0200
+Message-ID: <CAHp75VefP3oPyRJ=Z9Y5Wv3rSc-nJdKFLJ60YLdUbP5dFikS+w@mail.gmail.com>
+Subject: Re: [PATCH v5 4/5] power: supply: Add support for mps mp2629 battery charger
 To:     Saravanan Sekar <sravanhome@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -66,44 +66,77 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Sat, Mar 28, 2020 at 2:12 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
 >
-> Add support for 8-bit resolution ADC readings for input power
-> supply and battery charging measurement. Provides voltage, current
-> readings to mp2629 power supply driver.
+> The mp2629 provides switching-mode battery charge management for
+> single-cell Li-ion or Li-polymer battery. Driver supports the
+> access/control input source and battery charging parameters.
 
 ...
 
-> +               ret = regmap_read(info->regmap, chan->address, &rval);
-> +               if (ret < 0)
+> +#include <linux/module.h>
+> +#include <linux/of_device.h>
 
-' < 0' is not needed for regmap call.
-
-..
-
-> +               case MP2629_INPUT_CURRENT:
-> +                       *val = 133;
-> +                       *val2 = 10;
-> +                       return IIO_VAL_FRACTIONAL;
-> +
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +
-> +       default:
-> +               return -EINVAL;
-> +       }
-
-> +
-> +       return 0;
-
-Do you really need this? Looks to me as dead code.
+Missed header bits.h.
 
 ...
 
-> +       indio_dev->name = dev_name(dev);
+> +       ret = iio_read_channel_processed(charger->iiochan[ch], &chval);
 
-Shouldn't be this a part number?
-I heard something, so, I might be mistaken, but I hope maintainers
-will help here.
+> +       if (ret < 0)
+
+Is it possible to get positive returned value?
+
+> +               return ret;
+
+...
+
+> +       val->intval = (rval * props[fld].step) + props[fld].min;
+
+Too many parentheses.
+
+...
+
+> +       return ((psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
+> +               (psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
+> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
+> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE));
+
+Ditto.
+
+...
+
+> +       return ((psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
+> +               (psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT));
+
+Ditto.
+
+...
+
+> +       return sprintf(buf, "%d mohm\n", rval);
+
+Hmm... For units we usually have separate node, but it is up to
+maintainer, I dunno what the common practice is there.
+
+...
+
+> +       int val;
+> +       int ret;
+> +
+> +       ret = kstrtoint(buf, 10, &val);
+> +       if (ret)
+> +               return ret;
+> +
+
+> +       if (val < 0 && val > 140)
+
+What the point to convert negative values in the first place? kstrtouint()
+
+> +               return -ERANGE;
+
+...
+
+> +       struct power_supply_config psy_cfg = {NULL};
+
+{ 0 }
 
 -- 
 With Best Regards,

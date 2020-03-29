@@ -2,95 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CB7D196C14
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 11:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD3F196C1C
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 11:31:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727878AbgC2J1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Mar 2020 05:27:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45934 "EHLO mail.kernel.org"
+        id S1727503AbgC2JbU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Mar 2020 05:31:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47450 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727286AbgC2J1L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Mar 2020 05:27:11 -0400
+        id S1727286AbgC2JbT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Mar 2020 05:31:19 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9C767206CC;
-        Sun, 29 Mar 2020 09:27:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E19320659;
+        Sun, 29 Mar 2020 09:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585474030;
-        bh=p1dnSJJEqRK9BrL5kAdwlm93iK6znjQUpSF3jkakrNA=;
+        s=default; t=1585474278;
+        bh=PxW4hn4Ld7OjwTv2MWhlfHSeyOHCmw/7zhVE/vC1wYc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IKp5bJEaibdjMIMmaU7HweCZT4awde5YYEeZfcDEWgoRWPWEi+uxmUWb+M+RI6Mhh
-         MOcZofql85HkHAfbArZsph+COwCIU6qr6j3Mk0KYsv41gQFcqQ5gOPkmnPN4jOKcw/
-         PVEIIyPgIkNgKH0BbSAMlBu1NNRmubVfPF7tobuA=
-Date:   Sun, 29 Mar 2020 10:27:05 +0100
+        b=ppBMJhkcGaStdWIAsfapUWCjX0L4DYzpSy1mvN+bNqHHGP2XRTfr9V1kMaxy7O5/1
+         L+VsXkpwKOd1nChxY3ToNtLGrq5TQp18eNHTgetn0e2iWrjcj8LyGIgkaVFg1irFnR
+         yyXBGkdkfLmGcGdcc8loA10AhAODEpMxXtxD6OmY=
+Date:   Sun, 29 Mar 2020 10:31:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
-Cc:     Tomas Novotny <tomas@novotny.cz>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>
-Subject: Re: [PATCH v3 4/4] Documentation: ABI: document IIO
- in_proximity_near_level file
-Message-ID: <20200329102705.0a69000c@archlinux>
-In-Reply-To: <bffa50e16f64df2a97913d9a9e87481c6e7e4852.1585134362.git.agx@sigxcpu.org>
-References: <cover.1585134362.git.agx@sigxcpu.org>
-        <bffa50e16f64df2a97913d9a9e87481c6e7e4852.1585134362.git.agx@sigxcpu.org>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 12/12] iio: cros_ec: flush as hwfifo attribute
+Message-ID: <20200329103114.22ece15d@archlinux>
+In-Reply-To: <CAPUE2usGMaqieLW+L_Axou1GoVVOEnWDd6huAsqY21iKnMDPzQ@mail.gmail.com>
+References: <20200327223443.6006-1-gwendal@chromium.org>
+        <20200327223443.6006-13-gwendal@chromium.org>
+        <20200328172256.583b483e@archlinux>
+        <CAPUE2usGMaqieLW+L_Axou1GoVVOEnWDd6huAsqY21iKnMDPzQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 Mar 2020 12:09:08 +0100
-Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
+On Sat, 28 Mar 2020 17:33:48 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> The vcnl4000 IIO driver introduced a new attribute
-> "in_proximity_near_level".  This adds it to the list of documented ABI
-> for sysfs-bus-iio.
+> On Sat, Mar 28, 2020 at 10:22 AM Jonathan Cameron
+> <jic23@jic23.retrosnub.co.uk> wrote:
+> >
+> > On Fri, 27 Mar 2020 15:34:43 -0700
+> > Gwendal Grignou <gwendal@chromium.org> wrote:
+> >  
+> > > Add buffer/hwfifo_flush. It is not part of the ABI, but it follows ST
+> > > and HID lead: Tells the sensor hub to send to the host all pending
+> > > sensor events.
+> > >
+> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
+> >
+> > Unless I'm missing something there aren't any other drivers providing
+> > an explicit flush attribute.  
+> The flush attribute comes from a  requirement from Android to ask the
+> sensorhub to flush the samples still in its FIFO queue. (see
+> https://source.android.com/devices/sensors/hal-interface#flush_sensor)
+> It has been implemented in the ST Android HAL, which expects a
+> hw_fifo_flush attribute.:
+> https://github.com/STMicroelectronics/STMems_Android_Sensor_HAL_IIO/blob/STMems_Android_Sensor_HAL_IIO/src/utils.cpp#L31
+> 
+> But I misread kernel ST code; as you said, the request to flush
+> appends only when the buffer is enabled/disabled or the sensor
+> suspended, it is not exposed to user space.
+> 
+> For Bosh sensor : there is a patch that was proposed a while back:
+> "http://lkml.iu.edu/hypermail/linux/kernel/1504.3/03270.html", but it
+> never reached mainline.
+> 
+> For HID, the attribute is defined in the HID specification (31C) :
+> https://www.usb.org/sites/default/files/hutrr59_-_usages_for_wearables_0.pdf
+> but I could not find a publicly available proposed change request that uses it.
+> 
+> Anyhow, it was a mistake to put this patch in the current patch set. I
+> need it on chromebook for supporting Android, but it should be
+> discussed more widely to have it part of the ABI, or define a better
+> solution.
+> 
+> > The nearest equivalent is the flush
+> > callback which reads out stuff that is in a fifo to be read, but which
+> > hasn't yet reached a watermark to trigger normal readback.
+> >
+> > Can we do something similar here?
+> >
+> > If not this needs ABI documentation in Documentation/ABI/testing/...
+> > I'm not keen on it in becoming general ABI unless I'm missing a
+> > strong argument in favour of it.
+> >
+> > Jonathan  
+> Thank you for your support,
+> Gwendal.
 
-Description and patch title are now wrong due to dropping the _
+Agreed, lets separate this one out for now.
 
-I can fix that up whilst applying if nothing else comes up.
+So Enric, please pick up patches 1-11 and we can revisit this one
+as a separate series.
 
-The rest of the series looks good to me, just giving time
-for others to comment before taking this.
-
-Thanks,
+Thanks!
 
 Jonathan
 
->=20
-> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio-proximity | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-proximity
->=20
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-proximity b/Document=
-ation/ABI/testing/sysfs-bus-iio-proximity
-> new file mode 100644
-> index 000000000000..2172f3bb9c64
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-proximity
-> @@ -0,0 +1,10 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_nearlevel
-> +Date:		March 2020
-> +KernelVersion:	5.7
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Near level for proximity sensors. This is a single integer
-> +		value that tells user space when an object should be
-> +		considered close to the device. If the value read from the
-> +		sensor is above or equal to the value in this file an object
-> +		should typically be considered near.
+> >
+> >  
+> > > ---
+> > > No changes in v7.
+> > > New in v6.
+> > >
+> > >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 28 +++++++++++++++++++
+> > >  1 file changed, 28 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > index c831915ca7e56..aaf124a82e0e4 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > @@ -113,6 +113,33 @@ static int cros_ec_sensor_set_ec_rate(struct cros_ec_sensors_core_state *st,
+> > >       return ret;
+> > >  }
+> > >
+> > > +static ssize_t cros_ec_sensors_flush(struct device *dev,
+> > > +                                  struct device_attribute *attr,
+> > > +                                  const char *buf, size_t len)
+> > > +{
+> > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > +     struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+> > > +     int ret = 0;
+> > > +     bool flush;
+> > > +
+> > > +     ret = strtobool(buf, &flush);
+> > > +     if (ret < 0)
+> > > +             return ret;
+> > > +     if (!flush)
+> > > +             return -EINVAL;
+> > > +
+> > > +     mutex_lock(&st->cmd_lock);
+> > > +     st->param.cmd = MOTIONSENSE_CMD_FIFO_FLUSH;
+> > > +     ret = cros_ec_motion_send_host_cmd(st, 0);
+> > > +     if (ret != 0)
+> > > +             dev_warn(&indio_dev->dev, "Unable to flush sensor\n");
+> > > +     mutex_unlock(&st->cmd_lock);
+> > > +     return ret ? ret : len;
+> > > +}
+> > > +
+> > > +static IIO_DEVICE_ATTR(hwfifo_flush, 0644, NULL,
+> > > +                    cros_ec_sensors_flush, 0);
+> > > +
+> > >  static ssize_t cros_ec_sensor_set_report_latency(struct device *dev,
+> > >                                                struct device_attribute *attr,
+> > >                                                const char *buf, size_t len)
+> > > @@ -175,6 +202,7 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
+> > >  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
+> > >
+> > >  const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+> > > +     &iio_dev_attr_hwfifo_flush.dev_attr.attr,
+> > >       &iio_dev_attr_hwfifo_timeout.dev_attr.attr,
+> > >       &iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
+> > >       NULL,  
+> >  
 

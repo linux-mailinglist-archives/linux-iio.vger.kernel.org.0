@@ -2,94 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E333E196C61
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 12:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19FFA196C75
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 12:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727875AbgC2KTV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Mar 2020 06:19:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56446 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727639AbgC2KTV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Mar 2020 06:19:21 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 92D0D20732;
-        Sun, 29 Mar 2020 10:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585477160;
-        bh=zucRSTGGzuFkVabCQezWqRiMwAZFZTLz64620KT1MlI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ht87FUpI68j2yRsicb5MfQNxxsKNdJueCA2Kr8EY9Gnu9vDvz/SI2nKl9yYqhb23t
-         PECULlATF27BhYfK/jq22ikq8j0PkTp0/4u4EgJCxW6TU82prPIpldpekC2LpkY07r
-         NaWwz/H/iSJFmPBTYSNtFMzH0g0yjYkze3E3Lqe0=
-Date:   Sun, 29 Mar 2020 11:19:15 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "robh@kernel.org" <robh@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
-        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "Costina, Adrian" <Adrian.Costina@analog.com>
-Subject: Re: [PATCH v13 8/8] dt-bindings: iio: adc: add bindings doc for
- AD9467 ADC
-Message-ID: <20200329111915.0a3211bb@archlinux>
-In-Reply-To: <17a99874285734496a97d271dda7368b40e88255.camel@analog.com>
-References: <20200324134636.64643-1-alexandru.ardelean@analog.com>
-        <20200324134636.64643-9-alexandru.ardelean@analog.com>
-        <20200326185616.GA2673@bogus>
-        <17a99874285734496a97d271dda7368b40e88255.camel@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727959AbgC2KeJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Mar 2020 06:34:09 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:37348 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727869AbgC2KeI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 06:34:08 -0400
+Received: by mail-wm1-f68.google.com with SMTP id d1so17849441wmb.2;
+        Sun, 29 Mar 2020 03:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=FlZLcBO7OYWRZLM3fnAWMQqlsSHKvKFSKGsey7ScD04=;
+        b=cw+9tTm5CubLPa3eNghOc8/tTgz+aoRUpcGucXULJ+ldNN6QMblIQREQsUok7XYMIk
+         ha8w9p/gRDaqa39YyCeDLhRrDkt+4q+bHhHtN1N5r/GB16h5vWpaDBRYq4cWDVmCYbtI
+         LhoMLLqgM8i5JmFitQATyqoECAHnFf8DB64QFr5DeCzSyG+T485qKEWYkcGar4TPwGiY
+         D+wex9yiUq1JIyfCngOdQ58Es1pLoMF8r5KRRprvGxH8cYXUJVe2Erpsw/XHx+u9FUF8
+         Jwc3wa+e+SyDOdX3wuMhA3LWBEcccWUM7IcZdEcO1cggFTiCyd66cxF+BcCFlodaCNzn
+         aB8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=FlZLcBO7OYWRZLM3fnAWMQqlsSHKvKFSKGsey7ScD04=;
+        b=ujmJuJs5r470oALl5YZ+q1uC6o3mEjbeVopOl/2G/c7wY0z7Ia7nek6b/EIyzD8DwH
+         c8kkE33pZJG9VFN3sgw+5VNEy2OmYhlpOznz6A/5amavW+xWbIMzjQC4dxV2PQpf8fyp
+         IzPed1VJJPRWlOXXYikEGIypMkc0TxOcbiqZfV2TG2/MzJQluzwbF1BZw+iig76qxbcy
+         53QeGxLovPExByoBeYsPRPVMMUD3f0aDcAQ62/J+dtIjiDpDvVO+94eHcEc9Upz8P7un
+         ByajeBbwDMYEl9dQlU3w0zKXhO6PfswHUZXknB6VsixQ32QSmNq3M6MsyMNlETIY2foj
+         TPyw==
+X-Gm-Message-State: ANhLgQ0Ks7qGMJ/n3cVEm+zZRyrAwvAQT9Mnad1gAh/1vhI11UuA8bUW
+        so1SdlhnDNJ1KtdNk65Oz/gQuRR3
+X-Google-Smtp-Source: ADFU+vsgvkJcM76vOwqLH3zSNrn5alEJfrSXUpOh5ObS7Qs3iQPqty7+fqs4pAtBixLWjHiL2dqujw==
+X-Received: by 2002:a7b:c0d1:: with SMTP id s17mr7685443wmh.58.1585478046213;
+        Sun, 29 Mar 2020 03:34:06 -0700 (PDT)
+Received: from [192.168.0.104] (p5B3F6BD9.dip0.t-ipconnect.de. [91.63.107.217])
+        by smtp.gmail.com with ESMTPSA id m19sm16289545wml.48.2020.03.29.03.34.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Mar 2020 03:34:05 -0700 (PDT)
+Subject: Re: [PATCH v5 4/5] power: supply: Add support for mps mp2629 battery
+ charger
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+References: <20200328001154.17313-1-sravanhome@gmail.com>
+ <20200328001154.17313-5-sravanhome@gmail.com>
+ <CAHp75VefP3oPyRJ=Z9Y5Wv3rSc-nJdKFLJ60YLdUbP5dFikS+w@mail.gmail.com>
+ <36892440-99b2-10e8-1d7c-dd8c97e03a39@gmail.com>
+ <CAHp75VdAfiSjkHhTnghZ__WAJCJTGSWBprJBPNmpkxZTjZuVgQ@mail.gmail.com>
+From:   saravanan sekar <sravanhome@gmail.com>
+Message-ID: <3d811222-68fa-0992-eeeb-97d1c6d09608@gmail.com>
+Date:   Sun, 29 Mar 2020 12:34:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <CAHp75VdAfiSjkHhTnghZ__WAJCJTGSWBprJBPNmpkxZTjZuVgQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 26 Mar 2020 19:45:39 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+Hi Andy,
 
-> On Thu, 2020-03-26 at 12:56 -0600, Rob Herring wrote:
-> > On Tue, 24 Mar 2020 15:46:36 +0200, Alexandru Ardelean wrote:  
-> > > This change adds the binding doc for the AD9467 ADC.
-> > > 
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > ---
-> > >  .../bindings/iio/adc/adi,ad9467.yaml          | 65 +++++++++++++++++++
-> > >  1 file changed, 65 insertions(+)
-> > >  create mode 100644
-> > > Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-> > >   
-> > 
-> > Please add Acked-by/Reviewed-by tags when posting new versions. However,
-> > there's no need to repost patches *only* to add the tags. The upstream
-> > maintainer will do that for acks received on the version they apply.
-> > 
-> > If a tag was not added on purpose, please state why and what changed.  
-> 
-> My bad. Apologies for that.
-> No idea how I missed adding this. Especially since I already know that I should
-> add it.
-> 
-> I guess I got mixed up with too many branches and not paying attention.
-Fixed the missing tag from Rob and whole series applied to the togreg branch of
-iio.git.  Pushed out as testing for the autobuilders to poke at it.
+On 28/03/20 7:44 pm, Andy Shevchenko wrote:
+> On Sat, Mar 28, 2020 at 1:29 PM saravanan sekar <sravanhome@gmail.com> wrote:
+>> On 28/03/20 12:02 pm, Andy Shevchenko wrote:
+>>> On Sat, Mar 28, 2020 at 2:12 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
+> ...
+>
+>>>> +       val->intval = (rval * props[fld].step) + props[fld].min;
+>>> Too many parentheses.
+>>>
+>>> ...
+>>>
+>>>> +       return ((psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
+>>>> +               (psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
+>>>> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
+>>>> +               (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE));
+>>> Ditto.
+>> I think I misunderstood you previous review comment "Redundant
+>> parentheses", no sure what is the expectation
+> (At least) surrounding pair is not needed, return (a == b) || (c == d);
+ok, I will remove outer ().
+>>> ...
+>>>
+>>>> +       return ((psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
+>>>> +               (psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT));
+>>> Ditto.
+> ...
+>
+>>>> +       struct power_supply_config psy_cfg = {NULL};
+>>> { 0 }
+>>>
+>> NULL to make compiler happy.
+> Hmm... Can you share warning / error compiler issued in 0 case?
+>
+Please see the 0-day warning.
 
-Exposing the dma buffer stuff to the autobuilders is great. So far the only
-issue was that patch I took yesterday where we need to rethink things.
-However, that's just my sanity check local build so I'm sure we broke
-some obscure architecture :)
-
-Thanks,
-
-Jonathan
-
+"Reported-by: kbuild test robot <lkp@intel.com>
+sparse warnings: (new ones prefixed by >>)
+ >> drivers/power/supply/mp2629_charger.c:584:47: sparse: sparse: Using 
+plain integer as NULL pointer"
 

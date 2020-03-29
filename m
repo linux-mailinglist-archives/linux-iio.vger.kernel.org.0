@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBCE196D5B
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 14:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D15196D60
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 14:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728225AbgC2MbZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Mar 2020 08:31:25 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:39061 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727901AbgC2MbY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 08:31:24 -0400
-Received: by mail-wm1-f68.google.com with SMTP id e9so6107573wme.4;
-        Sun, 29 Mar 2020 05:31:22 -0700 (PDT)
+        id S1727903AbgC2Mbe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Mar 2020 08:31:34 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:56184 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728205AbgC2Mb1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 08:31:27 -0400
+Received: by mail-wm1-f67.google.com with SMTP id z5so16672198wml.5;
+        Sun, 29 Mar 2020 05:31:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pURdKGkUjGAlB+GMPVdoxwxa2IDpxHy72t8d0MTCWSk=;
-        b=WaTowRK9jbAfsQPNW3C5FSswCeI2BOJPhpeAiuASQjnr5ZSjnJB6Lajd3mxw4bPmaY
-         NQWUW3Ek4MvvHiSKW/CxMV0rYOW8hcJW60s42y7WcKNH846KBFYiLZY1i2d5lQYgbQa2
-         kXiuQcinxiCC7xO9RKxkbTmPQYq/dhSmF6rIsZu//4xZhcQpD/wi45dCxbMVOSgKj4+Q
-         qdtycuCyyL0QLJ45p0u5Fr0YYpGnTS+IO3VWGuQtWHtQAnfu+SNASaR3OQ65LLDvn/zl
-         ymSHVqNFTVDYeqEdhcaEWylsg7nmEVf/50ccUPcZa+qcdENfJ2JoGZwU/9F3oCCegCV2
-         50Mg==
+        bh=XqcgzYs41Pt6ZEtI+pxqWzuWv5T+y9a7P5MK34lJ43g=;
+        b=adgYN11pOko6yiXu1J8ftaFJ2t8B8+kDfl+qdebPdhiO6aOJvqFovOLsb/hCIEdxF7
+         2S0I1HD8f97ozs96RKWmZ+DMfS1jEq+ZxzyL4pXhLEDxFJokitPAtsHGnSGZZbzli/N3
+         NLurxHbfhteIwh5yPyKzaIK8Ebrh0FzNEXal3VWYJ0m5MtP1Nuhx7azue0NtZaRMWsun
+         lbYscs61r/AZCqRIoLPtDj4DSNSFGBIA+AkokKKxC9Y4LVi7HHBtpl+OiWM/60MfMPdr
+         nt+124PjXlwaE+f2ZNi3/4gE/HPkrmCRHJyL68sSvTzZM7Za78HJPyz9vRdVWskJCU8C
+         o9QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=pURdKGkUjGAlB+GMPVdoxwxa2IDpxHy72t8d0MTCWSk=;
-        b=Zd8SIWY69dgk3ku0WpMmBlcCMZMzYnnegV0fNA+OGfvCuEuSwzMCT6Q8VY7Sdx82MW
-         u3asATPKTp+9wNuexYg8oV9mL705d5+Fej+byIoF2A4esfo/f+xw9FmFqyS+Qmqf5woc
-         pT2ZH+OsaCl/ZPru/t5kG+XqbpFbIzHrbKqqg7DwUCr5SoNqtoowtFlNSjzkgnlXZm87
-         WuvLU1IfaF8u0G0P5k/pACEKSMS6JoGiR+02FM66pSXPCnBJ9ghBg40OHA2S/sqRz9jO
-         PlTWz5jKkHZCLOhRUKTFBXUzlEIjZjQ1Aon0mvKMq34QrJgUbldNWJRdzGndLE3VIxYB
-         7y3g==
-X-Gm-Message-State: ANhLgQ2E/snNrZ/uiwS03IteKdXO79+1XA89MoJB+J2miIjuRm1gbtih
-        r+7EQtBXWJbRXwAIRhgwYdk=
-X-Google-Smtp-Source: ADFU+vvV8Wjdd61CcrWnprRybEwqky5CPLOL9g5ZaGBx6Z2L7vO/jMZLjmAMMFLJNBYSSX+SLinFMg==
-X-Received: by 2002:a1c:770a:: with SMTP id t10mr8502476wmi.150.1585485081549;
-        Sun, 29 Mar 2020 05:31:21 -0700 (PDT)
+        bh=XqcgzYs41Pt6ZEtI+pxqWzuWv5T+y9a7P5MK34lJ43g=;
+        b=EEiM1ar2e1+Sa6D4xlTOX7vxdWlHpaLyHoCh/GMKwVnQK/dAxdghEaYsUQwoFkZTgr
+         DlaD0NGgv83k5EN+rQLn6at2wqmUTgfzyqgrciKTfIOF/BWRmLD4K3v2t1d5MIJGGojT
+         /KC5lKN8NaMKwJ2yEaegPq9QKIO1f8sxu3A+cdvcIbTsajMKTuA48oT++Tyq0+bN66xI
+         1FKDu1I+GMMTvahnzCbTpE3uGXfHrYVgIrATj28XS5h9uUMzJX22IOxA/Q1sasJLUoXS
+         7tN5ckXw09GGL0EN4qJh/y39tuakQxqaMVYsQ7RxapXM1nVrpazA3/XXn4dkM87K9pEf
+         wFlw==
+X-Gm-Message-State: ANhLgQ2LtGug5J3KOI7cygDIB111M1jGvsYPLvi3izeLOa0OI58Fz/eg
+        Dhn0OTSr9FpbwGB1pA6ol2A=
+X-Google-Smtp-Source: ADFU+vsJFdZyHxe1Nv2ylaFCOg9q8vSLFzetVtDmwMXomlHQtDqsNE9OPIb42RHhFRyUsomIOI5lPQ==
+X-Received: by 2002:a7b:c7c7:: with SMTP id z7mr1665580wmk.142.1585485082804;
+        Sun, 29 Mar 2020 05:31:22 -0700 (PDT)
 Received: from localhost.localdomain (p5B3F6BD9.dip0.t-ipconnect.de. [91.63.107.217])
-        by smtp.gmail.com with ESMTPSA id f9sm17259108wrc.71.2020.03.29.05.31.20
+        by smtp.gmail.com with ESMTPSA id f9sm17259108wrc.71.2020.03.29.05.31.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2020 05:31:20 -0700 (PDT)
+        Sun, 29 Mar 2020 05:31:21 -0700 (PDT)
 From:   Saravanan Sekar <sravanhome@gmail.com>
 To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
         robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
@@ -50,9 +50,9 @@ To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
         Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v6 3/5] iio: adc: mp2629: Add support for mp2629 ADC driver
-Date:   Sun, 29 Mar 2020 14:31:08 +0200
-Message-Id: <20200329123110.26482-4-sravanhome@gmail.com>
+Subject: [PATCH v6 4/5] power: supply: Add support for mps mp2629 battery charger
+Date:   Sun, 29 Mar 2020 14:31:09 +0200
+Message-Id: <20200329123110.26482-5-sravanhome@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200329123110.26482-1-sravanhome@gmail.com>
 References: <20200329123110.26482-1-sravanhome@gmail.com>
@@ -61,283 +61,744 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for 8-bit resolution ADC readings for input power
-supply and battery charging measurement. Provides voltage, current
-readings to mp2629 power supply driver.
+The mp2629 provides switching-mode battery charge management for
+single-cell Li-ion or Li-polymer battery. Driver supports the
+access/control input source and battery charging parameters.
 
 Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
 ---
- drivers/iio/adc/Kconfig      |  10 ++
- drivers/iio/adc/Makefile     |   1 +
- drivers/iio/adc/mp2629_adc.c | 207 +++++++++++++++++++++++++++++++++++
- include/linux/mfd/mp2629.h   |   9 ++
- 4 files changed, 227 insertions(+)
- create mode 100644 drivers/iio/adc/mp2629_adc.c
+ drivers/power/supply/Kconfig          |  10 +
+ drivers/power/supply/Makefile         |   1 +
+ drivers/power/supply/mp2629_charger.c | 687 ++++++++++++++++++++++++++
+ 3 files changed, 698 insertions(+)
+ create mode 100644 drivers/power/supply/mp2629_charger.c
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 82e33082958c..ef0c0cd31855 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -680,6 +680,16 @@ config MESON_SARADC
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called meson_saradc.
+diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
+index f3424fdce341..05b3f66946ad 100644
+--- a/drivers/power/supply/Kconfig
++++ b/drivers/power/supply/Kconfig
+@@ -541,6 +541,16 @@ config CHARGER_MAX8998
+ 	  Say Y to enable support for the battery charger control sysfs and
+ 	  platform data of MAX8998/LP3974 PMICs.
  
-+config MP2629_ADC
-+	tristate "Monolithic MP2629 ADC driver"
++config CHARGER_MP2629
++	tristate "Monolithic power system MP2629 Battery charger"
 +	depends on MFD_MP2629
++	depends on MP2629_ADC
++	depends on IIO
 +	help
-+	  Say yes to have support for battery charger IC MP2629 ADC device
-+	  accessed over I2C.
++	  Select this option to enable support for Monolithic power system
++	  Battery charger. This driver provies Battery charger power management
++	  functions on the systems.
 +
-+	  This driver provides ADC conversion of system, input power supply
-+	  and battery voltage & current information.
-+
- config NAU7802
- 	tristate "Nuvoton NAU7802 ADC driver"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 919228900df9..f14416c245a6 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -64,6 +64,7 @@ obj-$(CONFIG_MCP3911) += mcp3911.o
- obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
- obj-$(CONFIG_MEN_Z188_ADC) += men_z188_adc.o
- obj-$(CONFIG_MESON_SARADC) += meson_saradc.o
-+obj-$(CONFIG_MP2629_ADC) += mp2629_adc.o
- obj-$(CONFIG_MXS_LRADC_ADC) += mxs-lradc-adc.o
- obj-$(CONFIG_NAU7802) += nau7802.o
- obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
-diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+ config CHARGER_QCOM_SMBB
+ 	tristate "Qualcomm Switch-Mode Battery Charger and Boost"
+ 	depends on MFD_SPMI_PMIC || COMPILE_TEST
+diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
+index 6c7da920ea83..41cb64f09e49 100644
+--- a/drivers/power/supply/Makefile
++++ b/drivers/power/supply/Makefile
+@@ -75,6 +75,7 @@ obj-$(CONFIG_CHARGER_MAX77650)	+= max77650-charger.o
+ obj-$(CONFIG_CHARGER_MAX77693)	+= max77693_charger.o
+ obj-$(CONFIG_CHARGER_MAX8997)	+= max8997_charger.o
+ obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
++obj-$(CONFIG_CHARGER_MP2629)	+= mp2629_charger.o
+ obj-$(CONFIG_CHARGER_QCOM_SMBB)	+= qcom_smbb.o
+ obj-$(CONFIG_CHARGER_BQ2415X)	+= bq2415x_charger.o
+ obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
+diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply/mp2629_charger.c
 new file mode 100644
-index 000000000000..2e5518168d3e
+index 000000000000..279edfe383ee
 --- /dev/null
-+++ b/drivers/iio/adc/mp2629_adc.c
-@@ -0,0 +1,207 @@
++++ b/drivers/power/supply/mp2629_charger.c
+@@ -0,0 +1,687 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * MP2629 Driver for ADC
++ * MP2629 battery charger driver
 + *
 + * Copyright 2020 Monolithic Power Systems, Inc
 + *
 + * Author: Saravanan Sekar <sravanhome@gmail.com>
 + */
 +
-+#include <linux/iio/driver.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/machine.h>
++#include <linux/bits.h>
++#include <linux/iio/consumer.h>
++#include <linux/iio/types.h>
++#include <linux/interrupt.h>
 +#include <linux/mfd/mp2629.h>
 +#include <linux/module.h>
-+#include <linux/mutex.h>
++#include <linux/mod_devicetable.h>
 +#include <linux/platform_device.h>
++#include <linux/power_supply.h>
 +#include <linux/regmap.h>
++#include <linux/workqueue.h>
 +
-+#define	MP2629_REG_ADC_CTRL		0x03
-+#define	MP2629_REG_BATT_VOLT		0x0e
-+#define	MP2629_REG_SYSTEM_VOLT		0x0f
-+#define	MP2629_REG_INPUT_VOLT		0x11
-+#define	MP2629_REG_BATT_CURRENT		0x12
-+#define	MP2629_REG_INPUT_CURRENT	0x13
++#define MP2629_REG_INPUT_ILIM		0x00
++#define MP2629_REG_INPUT_VLIM		0x01
++#define MP2629_REG_CHARGE_CTRL		0x04
++#define MP2629_REG_CHARGE_ILIM		0x05
++#define MP2629_REG_PRECHARGE		0x06
++#define MP2629_REG_TERM_CURRENT		0x06
++#define MP2629_REG_CHARGE_VLIM		0x07
++#define MP2629_REG_TIMER_CTRL		0x08
++#define MP2629_REG_IMPEDANCE_COMP	0x09
++#define MP2629_REG_INTERRUPT		0x0b
++#define MP2629_REG_STATUS		0x0c
++#define MP2629_REG_FAULT		0x0d
 +
-+#define	MP2629_ADC_START		BIT(7)
-+#define	MP2629_ADC_CONTINUOUS		BIT(6)
++#define MP2629_MASK_INPUT_TYPE		GENMASK(7, 5)
++#define MP2629_MASK_CHARGE_TYPE		GENMASK(4, 3)
++#define MP2629_MASK_CHARGE_CTRL		GENMASK(5, 4)
++#define MP2629_MASK_WDOG_CTRL		GENMASK(5, 4)
++#define MP2629_MASK_IMPEDANCE		GENMASK(7, 4)
 +
-+#define MP2629_MAP(_mp, _mpc) IIO_MAP(#_mp, "mp2629_charger", "mp2629-"_mpc)
++#define MP2629_INPUTSOURCE_CHANGE	GENMASK(7, 5)
++#define MP2629_CHARGING_CHANGE		GENMASK(4, 3)
++#define MP2629_FAULT_BATTERY		BIT(3)
++#define MP2629_FAULT_THERMAL		BIT(4)
++#define MP2629_FAULT_INPUT		BIT(5)
++#define MP2629_FAULT_OTG		BIT(6)
 +
-+#define MP2629_ADC_CHAN(_ch, _type) {				\
-+	.type = _type,						\
-+	.indexed = 1,						\
-+	.datasheet_name = #_ch,					\
-+	.channel = MP2629_ ## _ch,				\
-+	.address = MP2629_REG_ ## _ch,				\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
++#define MP2629_MAX_BATT_CAPACITY	100
++
++#define MP2629_PROPS(_idx, _min, _max, _step)		\
++	[_idx] = {					\
++		.min	= _min,				\
++		.max	= _max,				\
++		.step	= _step,			\
 +}
 +
-+struct mp2629_adc {
-+	struct regmap *regmap;
++enum mp2629_source_type {
++	MP2629_SOURCE_TYPE_NO_INPUT,
++	MP2629_SOURCE_TYPE_NON_STD,
++	MP2629_SOURCE_TYPE_SDP,
++	MP2629_SOURCE_TYPE_CDP,
++	MP2629_SOURCE_TYPE_DCP,
++	MP2629_SOURCE_TYPE_OTG = 7,
++};
++
++enum mp2629_field {
++	INPUT_ILIM,
++	INPUT_VLIM,
++	CHARGE_ILIM,
++	CHARGE_VLIM,
++	PRECHARGE,
++	TERM_CURRENT,
++	MP2629_MAX_FIELD
++};
++
++struct mp2629_charger {
 +	struct device *dev;
++	struct work_struct charger_work;
++	int status;
++	int fault;
++
++	struct regmap *regmap;
++	struct regmap_field *regmap_fields[MP2629_MAX_FIELD];
++	struct mutex lock;
++	struct power_supply *usb;
++	struct power_supply *battery;
++	struct iio_channel *iiochan[MP2629_ADC_CHAN_END];
 +};
 +
-+static struct iio_chan_spec mp2629_channels[] = {
-+	MP2629_ADC_CHAN(BATT_VOLT, IIO_VOLTAGE),
-+	MP2629_ADC_CHAN(SYSTEM_VOLT, IIO_VOLTAGE),
-+	MP2629_ADC_CHAN(INPUT_VOLT, IIO_VOLTAGE),
-+	MP2629_ADC_CHAN(BATT_CURRENT, IIO_CURRENT),
-+	MP2629_ADC_CHAN(INPUT_CURRENT, IIO_CURRENT)
++struct mp2629_prop {
++	int reg;
++	int mask;
++	int min;
++	int max;
++	int step;
++	int shift;
 +};
 +
-+static struct iio_map mp2629_adc_maps[] = {
-+	MP2629_MAP(BATT_VOLT, "batt-volt"),
-+	MP2629_MAP(SYSTEM_VOLT, "system-volt"),
-+	MP2629_MAP(INPUT_VOLT, "input-volt"),
-+	MP2629_MAP(BATT_CURRENT, "batt-current"),
-+	MP2629_MAP(INPUT_CURRENT, "input-current")
++static enum power_supply_usb_type mp2629_usb_types[] = {
++	POWER_SUPPLY_USB_TYPE_SDP,
++	POWER_SUPPLY_USB_TYPE_DCP,
++	POWER_SUPPLY_USB_TYPE_CDP,
++	POWER_SUPPLY_USB_TYPE_PD_DRP,
++	POWER_SUPPLY_USB_TYPE_UNKNOWN
 +};
 +
-+static int mp2629_read_raw(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan,
-+			int *val, int *val2, long mask)
++static enum power_supply_property mp2629_charger_usb_props[] = {
++	POWER_SUPPLY_PROP_ONLINE,
++	POWER_SUPPLY_PROP_USB_TYPE,
++	POWER_SUPPLY_PROP_VOLTAGE_NOW,
++	POWER_SUPPLY_PROP_CURRENT_NOW,
++	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
++	POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT,
++};
++
++static enum power_supply_property mp2629_charger_bat_props[] = {
++	POWER_SUPPLY_PROP_STATUS,
++	POWER_SUPPLY_PROP_HEALTH,
++	POWER_SUPPLY_PROP_CHARGE_TYPE,
++	POWER_SUPPLY_PROP_VOLTAGE_NOW,
++	POWER_SUPPLY_PROP_CURRENT_NOW,
++	POWER_SUPPLY_PROP_CAPACITY,
++	POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
++	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
++};
++
++static struct mp2629_prop props[] = {
++	MP2629_PROPS(INPUT_ILIM, 100000, 3250000, 50000),
++	MP2629_PROPS(INPUT_VLIM, 3800000, 5300000, 100000),
++	MP2629_PROPS(CHARGE_ILIM, 320000, 4520000, 40000),
++	MP2629_PROPS(CHARGE_VLIM, 3400000, 4670000, 10000),
++	MP2629_PROPS(PRECHARGE, 120000, 720000, 40000),
++	MP2629_PROPS(TERM_CURRENT, 80000, 680000, 40000),
++};
++
++static const struct reg_field mp2629_reg_fields[] = {
++	[INPUT_ILIM]	= REG_FIELD(MP2629_REG_INPUT_ILIM, 0, 5),
++	[INPUT_VLIM]	= REG_FIELD(MP2629_REG_INPUT_VLIM, 0, 3),
++	[CHARGE_ILIM]	= REG_FIELD(MP2629_REG_CHARGE_ILIM, 0, 6),
++	[CHARGE_VLIM]	= REG_FIELD(MP2629_REG_CHARGE_VLIM, 1, 7),
++	[PRECHARGE]	= REG_FIELD(MP2629_REG_PRECHARGE, 4, 7),
++	[TERM_CURRENT]	= REG_FIELD(MP2629_REG_TERM_CURRENT, 0, 3),
++};
++
++static char *adc_chan_name[] = {
++	"mp2629-batt-volt",
++	"mp2629-system-volt",
++	"mp2629-input-volt",
++	"mp2629-batt-current",
++	"mp2629-input-current",
++};
++
++static int mp2629_read_adc(struct mp2629_charger *charger,
++			   enum mp2629_adc_chan ch,
++			   union power_supply_propval *val)
 +{
-+	struct mp2629_adc *info = iio_priv(indio_dev);
++	int ret;
++	int chval;
++
++	ret = iio_read_channel_processed(charger->iiochan[ch], &chval);
++	if (ret)
++		return ret;
++
++	val->intval = chval * 1000;
++
++	return 0;
++}
++
++static int mp2629_get_prop(struct mp2629_charger *charger,
++			   enum mp2629_field fld,
++			   union power_supply_propval *val)
++{
++	int ret;
 +	unsigned int rval;
++
++	ret = regmap_field_read(charger->regmap_fields[fld], &rval);
++	if (ret)
++		return ret;
++
++	val->intval = rval * props[fld].step + props[fld].min;
++
++	return 0;
++}
++
++static int mp2629_set_prop(struct mp2629_charger *charger,
++			   enum mp2629_field fld,
++			   const union power_supply_propval *val)
++{
++	unsigned int rval;
++
++	if (val->intval < props[fld].min || val->intval > props[fld].max)
++		return -EINVAL;
++
++	rval = (val->intval - props[fld].min) / props[fld].step;
++	return regmap_field_write(charger->regmap_fields[fld], rval);
++}
++
++static int mp2629_get_battery_capacity(struct mp2629_charger *charger,
++				       union power_supply_propval *val)
++{
++	union power_supply_propval vnow, vlim;
 +	int ret;
 +
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = regmap_read(info->regmap, chan->address, &rval);
++	ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, &vnow);
++	if (ret)
++		return ret;
++
++	ret = mp2629_get_prop(charger, CHARGE_VLIM, &vlim);
++	if (ret)
++		return ret;
++
++	val->intval = (vnow.intval * 100) / vlim.intval;
++	val->intval = min(val->intval, MP2629_MAX_BATT_CAPACITY);
++
++	return 0;
++}
++
++static int mp2629_charger_battery_get_prop(struct power_supply *psy,
++					enum power_supply_property psp,
++					union power_supply_propval *val)
++{
++	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
++	unsigned int rval;
++	int ret = 0;
++
++	switch (psp) {
++	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
++		ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CURRENT_NOW:
++		ret = mp2629_read_adc(charger, MP2629_BATT_CURRENT, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
++		val->intval = 4520000;
++		break;
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
++		val->intval = 4670000;
++		break;
++
++	case POWER_SUPPLY_PROP_CAPACITY:
++		ret = mp2629_get_battery_capacity(charger, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
++		ret = mp2629_get_prop(charger, TERM_CURRENT, val);
++		break;
++
++	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
++		ret = mp2629_get_prop(charger, PRECHARGE, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
++		ret = mp2629_get_prop(charger, CHARGE_VLIM, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
++		ret = mp2629_get_prop(charger, CHARGE_ILIM, val);
++		break;
++
++	case POWER_SUPPLY_PROP_HEALTH:
++		if (!charger->fault)
++			val->intval = POWER_SUPPLY_HEALTH_GOOD;
++		if (MP2629_FAULT_BATTERY & charger->fault)
++			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
++		else if (MP2629_FAULT_THERMAL & charger->fault)
++			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
++		else if (MP2629_FAULT_INPUT & charger->fault)
++			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
++		break;
++
++	case POWER_SUPPLY_PROP_STATUS:
++		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
 +		if (ret)
-+			return ret;
++			break;
 +
-+		if (chan->address == MP2629_INPUT_VOLT)
-+			rval &= GENMASK(6, 0);
-+		*val = rval;
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->channel) {
-+		case MP2629_BATT_VOLT:
-+		case MP2629_SYSTEM_VOLT:
-+			*val = 20;
-+			return IIO_VAL_INT;
-+
-+		case MP2629_INPUT_VOLT:
-+			*val = 60;
-+			return IIO_VAL_INT;
-+
-+		case MP2629_BATT_CURRENT:
-+			*val = 175;
-+			*val2 = 10;
-+			return IIO_VAL_FRACTIONAL;
-+
-+		case MP2629_INPUT_CURRENT:
-+			*val = 133;
-+			*val2 = 10;
-+			return IIO_VAL_FRACTIONAL;
-+
-+		default:
-+			return -EINVAL;
++		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
++		switch (rval) {
++		case 0x00:
++			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
++			break;
++		case 0x01:
++		case 0x10:
++			val->intval = POWER_SUPPLY_STATUS_CHARGING;
++			break;
++		case 0x11:
++			val->intval = POWER_SUPPLY_STATUS_FULL;
 +		}
++		break;
++
++	case POWER_SUPPLY_PROP_CHARGE_TYPE:
++		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
++		if (ret)
++			break;
++
++		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
++		switch (rval) {
++		case 0x00:
++			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
++			break;
++		case 0x01:
++			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
++			break;
++		case 0x10:
++			val->intval = POWER_SUPPLY_CHARGE_TYPE_STANDARD;
++			break;
++		default:
++			val->intval = POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
++		}
++		break;
++
++	default:
++		return -EINVAL;
++	}
++
++	return ret;
++}
++
++static int mp2629_charger_battery_set_prop(struct power_supply *psy,
++					enum power_supply_property psp,
++					const union power_supply_propval *val)
++{
++	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
++
++	switch (psp) {
++	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
++		return mp2629_set_prop(charger, TERM_CURRENT, val);
++
++	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
++		return mp2629_set_prop(charger, PRECHARGE, val);
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
++		return mp2629_set_prop(charger, CHARGE_VLIM, val);
++
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
++		return mp2629_set_prop(charger, CHARGE_ILIM, val);
 +
 +	default:
 +		return -EINVAL;
 +	}
 +}
 +
-+static const struct iio_info mp2629_adc_info = {
-+	.read_raw = &mp2629_read_raw,
-+};
-+
-+static int mp2629_adc_probe(struct platform_device *pdev)
++static int mp2629_charger_usb_get_prop(struct power_supply *psy,
++				enum power_supply_property psp,
++				union power_supply_propval *val)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct mp2629_info *ddata = dev_get_drvdata(dev->parent);
-+	struct mp2629_adc *info;
-+	struct iio_dev *indio_dev;
++	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
++	unsigned int rval;
 +	int ret;
 +
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
-+	if (!indio_dev)
-+		return -ENOMEM;
++	switch (psp) {
++	case POWER_SUPPLY_PROP_ONLINE:
++		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
++		if (ret)
++			break;
 +
-+	info = iio_priv(indio_dev);
-+	info->regmap = ddata->regmap;
-+	info->dev = dev;
-+	platform_set_drvdata(pdev, indio_dev);
++		val->intval = !!(rval & MP2629_MASK_INPUT_TYPE);
++		break;
 +
-+	ret = iio_map_array_register(indio_dev, mp2629_adc_maps);
-+	if (ret) {
-+		dev_err(dev, "IIO maps register fail: %d\n", ret);
-+		return ret;
++	case POWER_SUPPLY_PROP_USB_TYPE:
++		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
++		if (ret)
++			break;
++
++		rval = (rval & MP2629_MASK_INPUT_TYPE) >> 5;
++		switch (rval) {
++		case MP2629_SOURCE_TYPE_SDP:
++			val->intval = POWER_SUPPLY_USB_TYPE_SDP;
++			break;
++		case MP2629_SOURCE_TYPE_CDP:
++			val->intval = POWER_SUPPLY_USB_TYPE_CDP;
++			break;
++		case MP2629_SOURCE_TYPE_DCP:
++			val->intval = POWER_SUPPLY_USB_TYPE_DCP;
++			break;
++		case MP2629_SOURCE_TYPE_OTG:
++			val->intval = POWER_SUPPLY_USB_TYPE_PD_DRP;
++			break;
++		default:
++			val->intval = POWER_SUPPLY_USB_TYPE_UNKNOWN;
++			break;
++		}
++		break;
++
++	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
++		ret = mp2629_read_adc(charger, MP2629_INPUT_VOLT, val);
++		break;
++
++	case POWER_SUPPLY_PROP_CURRENT_NOW:
++		ret = mp2629_read_adc(charger, MP2629_INPUT_CURRENT, val);
++		break;
++
++	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
++		ret = mp2629_get_prop(charger, INPUT_VLIM, val);
++		break;
++
++	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
++		ret = mp2629_get_prop(charger, INPUT_ILIM, val);
++		break;
++
++	default:
++		return -EINVAL;
 +	}
-+
-+	indio_dev->name = "mp2629-adc";
-+	indio_dev->dev.parent = dev;
-+	indio_dev->channels = mp2629_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(mp2629_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &mp2629_adc_info;
-+
-+	ret = regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
-+				MP2629_ADC_START | MP2629_ADC_CONTINUOUS,
-+				MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
-+	if (ret) {
-+		dev_err(dev, "adc enable fail: %d\n", ret);
-+		goto fail_unmap;
-+	}
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret) {
-+		dev_err(dev, "IIO device register fail: %d\n", ret);
-+		goto fail_disable;
-+	}
-+
-+	return 0;
-+
-+fail_disable:
-+	regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
-+					 MP2629_ADC_CONTINUOUS, 0);
-+	regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
-+					 MP2629_ADC_START, 0);
-+
-+fail_unmap:
-+	iio_map_array_unregister(indio_dev);
 +
 +	return ret;
 +}
 +
-+static int mp2629_adc_remove(struct platform_device *pdev)
++static int mp2629_charger_usb_set_prop(struct power_supply *psy,
++				enum power_supply_property psp,
++				const union power_supply_propval *val)
 +{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct mp2629_adc *info = iio_priv(indio_dev);
++	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
 +
-+	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
-+					 MP2629_ADC_CONTINUOUS, 0);
-+	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
-+					 MP2629_ADC_START, 0);
++	switch (psp) {
++	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
++		return mp2629_set_prop(charger, INPUT_VLIM, val);
 +
-+	iio_map_array_unregister(indio_dev);
-+	iio_device_unregister(indio_dev);
++	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
++		return mp2629_set_prop(charger, INPUT_ILIM, val);
 +
++	default:
++		return -EINVAL;
++	}
++}
++
++static int mp2629_charger_battery_prop_writeable(struct power_supply *psy,
++				     enum power_supply_property psp)
++{
++	return (psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
++	       (psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
++	       (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
++	       (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE);
++}
++
++static int mp2629_charger_usb_prop_writeable(struct power_supply *psy,
++				     enum power_supply_property psp)
++{
++	return (psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
++	       (psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT);
++}
++
++static void mp2629_charger_work(struct work_struct *work)
++{
++	struct mp2629_charger *charger;
++	unsigned int rval;
++	int ret;
++
++	charger = container_of(work, struct mp2629_charger, charger_work);
++
++	mutex_lock(&charger->lock);
++
++	ret = regmap_read(charger->regmap, MP2629_REG_FAULT, &rval);
++	if (ret)
++		goto unlock;
++
++	if (rval) {
++		charger->fault = rval;
++		if (MP2629_FAULT_BATTERY & rval)
++			dev_err(charger->dev, "Battery fault OVP");
++		else if (MP2629_FAULT_THERMAL & rval)
++			dev_err(charger->dev, "Thermal shutdown fault");
++		else if (MP2629_FAULT_INPUT & rval)
++			dev_err(charger->dev, "no input or input OVP");
++		else if (MP2629_FAULT_OTG & rval)
++			dev_err(charger->dev, "VIN overloaded");
++
++		goto unlock;
++	}
++
++	ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
++	if (ret)
++		goto unlock;
++
++	if (rval & MP2629_INPUTSOURCE_CHANGE)
++		power_supply_changed(charger->usb);
++	else if (rval & MP2629_CHARGING_CHANGE)
++		power_supply_changed(charger->battery);
++
++unlock:
++	mutex_unlock(&charger->lock);
++}
++
++static irqreturn_t mp2629_irq_handler(int irq, void *dev_id)
++{
++	struct mp2629_charger *charger = dev_id;
++
++	schedule_work(&charger->charger_work);
++	return IRQ_HANDLED;
++}
++
++static const struct power_supply_desc mp2629_usb_desc = {
++	.name		= "mp2629_usb",
++	.type		= POWER_SUPPLY_TYPE_USB,
++	.usb_types      = mp2629_usb_types,
++	.num_usb_types  = ARRAY_SIZE(mp2629_usb_types),
++	.properties	= mp2629_charger_usb_props,
++	.num_properties	= ARRAY_SIZE(mp2629_charger_usb_props),
++	.get_property	= mp2629_charger_usb_get_prop,
++	.set_property	= mp2629_charger_usb_set_prop,
++	.property_is_writeable = mp2629_charger_usb_prop_writeable,
++};
++
++static const struct power_supply_desc mp2629_battery_desc = {
++	.name		= "mp2629_battery",
++	.type		= POWER_SUPPLY_TYPE_BATTERY,
++	.properties	= mp2629_charger_bat_props,
++	.num_properties	= ARRAY_SIZE(mp2629_charger_bat_props),
++	.get_property	= mp2629_charger_battery_get_prop,
++	.set_property	= mp2629_charger_battery_set_prop,
++	.property_is_writeable = mp2629_charger_battery_prop_writeable,
++};
++
++static ssize_t batt_impedance_compensation_show(struct device *dev,
++					   struct device_attribute *attr,
++					   char *buf)
++{
++	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
++	unsigned int rval;
++	int ret;
++
++	ret = regmap_read(charger->regmap, MP2629_REG_IMPEDANCE_COMP, &rval);
++	if (ret)
++		return ret;
++
++	rval = (rval >> 4) * 10;
++	return sprintf(buf, "%d mohm\n", rval);
++}
++
++static ssize_t batt_impedance_compensation_store(struct device *dev,
++					    struct device_attribute *attr,
++					    const char *buf,
++					    size_t count)
++{
++	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
++	unsigned int val;
++	int ret;
++
++	ret = kstrtouint(buf, 10, &val);
++	if (ret)
++		return ret;
++
++	if (val > 140)
++		return -ERANGE;
++
++	/* multiples of 10 mohm so round off */
++	val = val / 10;
++	ret = regmap_update_bits(charger->regmap, MP2629_REG_IMPEDANCE_COMP,
++					MP2629_MASK_IMPEDANCE, val << 4);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++static DEVICE_ATTR_RW(batt_impedance_compensation);
++
++static struct attribute *mp2629_charger_sysfs_attrs[] = {
++	&dev_attr_batt_impedance_compensation.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(mp2629_charger_sysfs);
++
++static int mp2629_charger_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct mp2629_info *ddata = dev_get_drvdata(dev->parent);
++	struct mp2629_charger *charger;
++	struct power_supply_config psy_cfg = {};
++	int ret, i, irq;
++
++	charger = devm_kzalloc(dev, sizeof(*charger), GFP_KERNEL);
++	if (!charger)
++		return -ENOMEM;
++
++	charger->regmap = ddata->regmap;
++	charger->dev = dev;
++	platform_set_drvdata(pdev, charger);
++
++	for (i = 0; i < MP2629_MAX_FIELD; i++) {
++		charger->regmap_fields[i] = devm_regmap_field_alloc(dev,
++					charger->regmap, mp2629_reg_fields[i]);
++		if (IS_ERR(charger->regmap_fields[i])) {
++			dev_err(dev, "regmap field alloc fail %d\n", i);
++			return PTR_ERR(charger->regmap_fields[i]);
++		}
++	}
++
++	for (i = 0; i < MP2629_ADC_CHAN_END; i++) {
++		charger->iiochan[i] = iio_channel_get(dev, adc_chan_name[i]);
++		if (IS_ERR(charger->iiochan[i])) {
++			ret = PTR_ERR(charger->iiochan[i]);
++			goto iio_fail;
++		}
++	}
++
++	charger->usb = devm_power_supply_register(dev, &mp2629_usb_desc, NULL);
++	if (IS_ERR(charger->usb)) {
++		ret = PTR_ERR(charger->usb);
++		goto iio_fail;
++	}
++
++	psy_cfg.drv_data = charger;
++	psy_cfg.attr_grp = mp2629_charger_sysfs_groups;
++	charger->battery = devm_power_supply_register(dev,
++					 &mp2629_battery_desc, &psy_cfg);
++	if (IS_ERR(charger->battery)) {
++		ret = PTR_ERR(charger->battery);
++		goto iio_fail;
++	}
++
++	ret = regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
++					MP2629_MASK_CHARGE_CTRL, BIT(4));
++	if (ret) {
++		dev_err(dev, "enable charge fail: %d\n", ret);
++		goto iio_fail;
++	}
++
++	regmap_update_bits(charger->regmap, MP2629_REG_TIMER_CTRL,
++					MP2629_MASK_WDOG_CTRL, 0);
++
++	INIT_WORK(&charger->charger_work, mp2629_charger_work);
++	mutex_init(&charger->lock);
++
++	irq = platform_get_irq(to_platform_device(pdev->dev.parent), 0);
++	if (irq) {
++		ret = devm_request_irq(dev, irq, mp2629_irq_handler,
++				 IRQF_TRIGGER_RISING, "mp2629-charger",
++				 charger);
++		if (ret) {
++			dev_err(dev, "failed to request gpio IRQ\n");
++			goto iio_fail;
++		}
++	}
++
++	regmap_update_bits(charger->regmap, MP2629_REG_INTERRUPT,
++				GENMASK(6, 5), BIT(6) | BIT(5));
++
++	return 0;
++
++iio_fail:
++	while (i--)
++		iio_channel_release(charger->iiochan[i]);
++
++	dev_err(dev, "driver register fail: %d\n", ret);
++	return ret;
++}
++
++static int mp2629_charger_remove(struct platform_device *pdev)
++{
++	struct mp2629_charger *charger = platform_get_drvdata(pdev);
++	int i;
++
++	cancel_work_sync(&charger->charger_work);
++
++	for (i = 0; i < MP2629_ADC_CHAN_END; i++)
++		iio_channel_release(charger->iiochan[i]);
++
++	regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
++					MP2629_MASK_CHARGE_CTRL, 0);
 +	return 0;
 +}
 +
-+static const struct of_device_id mp2629_adc_of_match[] = {
-+	{ .compatible = "mps,mp2629_adc"},
++static const struct of_device_id mp2629_charger_of_match[] = {
++	{ .compatible = "mps,mp2629_charger"},
 +	{}
 +};
-+MODULE_DEVICE_TABLE(of, mp2629_adc_of_match);
++MODULE_DEVICE_TABLE(of, mp2629_charger_of_match);
 +
-+static struct platform_driver mp2629_adc_driver = {
++static struct platform_driver mp2629_charger_driver = {
 +	.driver = {
-+		.name = "mp2629_adc",
-+		.of_match_table = mp2629_adc_of_match,
++		.name = "mp2629_charger",
++		.of_match_table = mp2629_charger_of_match,
 +	},
-+	.probe		= mp2629_adc_probe,
-+	.remove		= mp2629_adc_remove,
++	.probe		= mp2629_charger_probe,
++	.remove		= mp2629_charger_remove,
 +};
-+module_platform_driver(mp2629_adc_driver);
++module_platform_driver(mp2629_charger_driver);
 +
 +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
-+MODULE_DESCRIPTION("MP2629 ADC driver");
++MODULE_DESCRIPTION("MP2629 Charger driver");
 +MODULE_LICENSE("GPL");
-diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
-index 06985e41fc6f..83ebfab41691 100644
---- a/include/linux/mfd/mp2629.h
-+++ b/include/linux/mfd/mp2629.h
-@@ -16,4 +16,13 @@ struct mp2629_info {
- 	struct regmap *regmap;
- };
- 
-+enum mp2629_adc_chan {
-+	MP2629_BATT_VOLT,
-+	MP2629_SYSTEM_VOLT,
-+	MP2629_INPUT_VOLT,
-+	MP2629_BATT_CURRENT,
-+	MP2629_INPUT_CURRENT,
-+	MP2629_ADC_CHAN_END
-+};
-+
- #endif
 -- 
 2.17.1
 

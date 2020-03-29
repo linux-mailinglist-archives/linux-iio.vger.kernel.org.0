@@ -2,94 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A804196CE8
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 13:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C51A5196CEB
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 13:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728018AbgC2LRV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Mar 2020 07:17:21 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:42588 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbgC2LRV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 07:17:21 -0400
-Received: by mail-pl1-f193.google.com with SMTP id e1so5510417plt.9;
-        Sun, 29 Mar 2020 04:17:20 -0700 (PDT)
+        id S1728083AbgC2LW0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Mar 2020 07:22:26 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:46314 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728070AbgC2LW0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 07:22:26 -0400
+Received: by mail-pg1-f193.google.com with SMTP id k191so7217702pgc.13;
+        Sun, 29 Mar 2020 04:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=uKtR+5w7WQys8ZLticdbGtlBPUvMy1PtG4ZxAo5yrO8=;
-        b=J323auRWlF9o7SQj0lMxjvfYi4xcJSj9vs7cZj0Y+aBaps3F3n3P6WGEV1AJrZNfna
-         YRbaHlXQ720eOA9HVcX6lzpObjt3MSbCIwCdzDcaUxTTa6bI0s8SgCtQNHev93p52s4H
-         nzufCQOFgMC5EzfpG4j2HXAnXzy+VgJsh9gNcUxKtk/vvYeWb73k4xhLVFSV7bsy6iy2
-         Htznd+1/zmoLQ2MENk2mXE9VzqwMY6p2R3tWeIUnnTfs6qfhPAK33jMGj+Akc/QRISPW
-         bonKvyKYGN6p8IkaXgL9phmZxBvry+urn++5xZ+y6L6BdC720mv818dx1ox/HV+k5eHM
-         zT2w==
+        bh=GMN72kZ+dQBIE9BK5gK8is5DfX56QN4AerLjDwscHk0=;
+        b=q/OHEu1huh69xufvD4/e6DgSXihaH27aM7Fi7rji/CBHrZB5nhe28g7vKTQSJ6Tuuq
+         eNrTJSmg0Zttdzil6nDKEenb7+1r+HwkuSbmzytcybRkQsiFOxcS8FTS1EzZoss7YSw4
+         9n6dLN7TMT2czm097pK6hQ0kJtyYc4LfYCPvbWGWg708YeBfg1Oq3T9rB1HjsODJzseb
+         H1syhjFExGnlXsOyWBGBhZLjAL3DdUKTu3rUoeap1tJ5zkU9hUzbbwIM7+2NLhCXMvxr
+         zUwMw1sqX3TGaUMO+YtQ41EOT/s4q3B6HUfcIsDJpgeSg93l3HtSxvxDxG7+WwajBc1j
+         WCTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uKtR+5w7WQys8ZLticdbGtlBPUvMy1PtG4ZxAo5yrO8=;
-        b=aRxQkyBmZWcbCksS5c/INZmLXq9+QYL9NfRdZcvQTiRjfXdRui/CRf+UA3/H2wiTV1
-         9Cs2AQQFKdgUrdr2nnDNLYzZW6xUli2SjO1h3G6NGd+dRHVKkmnxuKWTzMmFz+Kqh6oi
-         lEhiC7G+658CJ0VZmk7ft+JLi5TJSAMftG/AUldxAO7hRhAlU/0ga/vUsUz80mspkzLq
-         FZBUqJCJunrf6pNEbhAY6cRV0aEWWB5LwxvivUu+4PRYDbE/Lx8sS27wUjRF4lu9y39E
-         iUcDwy/hjDn42UTkeU1dnNF6vYTVQ1aq2hGcVekvuNZI4TvKXHueTr9KA6HlLh0Wtguo
-         Btdw==
-X-Gm-Message-State: ANhLgQ3B8NNjUTbaqYI9QVu9u7CvHFc4gdLKtj4AR+DF8NxyE7YYej7p
-        S+QUsNqSi6X0hLlGk8SjyHv2IORB8uy0nc7YMyQ=
-X-Google-Smtp-Source: ADFU+vvQE6KqrhJdYUsrklNm0AJtJVflTVU+/YJx9BrHWpwMyDeakevgTa1EnSsrYSC3YCH5EEn8L3lKoRvUSaolbs4=
-X-Received: by 2002:a17:902:5acb:: with SMTP id g11mr8051127plm.18.1585480639948;
- Sun, 29 Mar 2020 04:17:19 -0700 (PDT)
+        bh=GMN72kZ+dQBIE9BK5gK8is5DfX56QN4AerLjDwscHk0=;
+        b=aa7wPYsbCqJO8nHorslY6epClbb6wtM+h+zi+txTG2KNT+Q+s32HTGmhb3TEPdtGY0
+         7KnIRaWt0gp0OuK2TXfEwW//GUdI0x9Tv8ieC05pUWLVYtmeIwzEcvrdcbjdt7KuCraI
+         fIZjr8fMU24WPKc/IfjO+/vKEs88GtVQ3yYP3OKlL1qNeiRyV3LKWZIwj+d/FpcSnxBO
+         tUgjMMrnP0Kfn+YjzuabY76Na4LmSus3JZ75FD8APVKAIPnQ/liyEgepffg3rqnQLUBL
+         QEpunYAUhCJzf+6FLlQTc9vkSKdE+6P3buz5p6kks9MISJNNydmX3QedgopL8udMuFyA
+         Q0Hg==
+X-Gm-Message-State: ANhLgQ3/CUjQ99Qj/hE/G0B3B9gLLGFRaaJe/MxHPQo3eIMMXfdJfuR/
+        KN9LSdu1ivbtXbUAy1H5sBjz9cMRZpGTSsy+QYc=
+X-Google-Smtp-Source: ADFU+vvo6yPjelxmVNaAJIY9eDDVqjrsR5UqyUcKJbl7RJRaA4yprdi6TnUllj58+cV++aYcvwMR9aAi4ZXZr2F1cP0=
+X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr8360593pfs.36.1585480943579;
+ Sun, 29 Mar 2020 04:22:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200328001154.17313-1-sravanhome@gmail.com> <20200328001154.17313-5-sravanhome@gmail.com>
- <CAHp75VefP3oPyRJ=Z9Y5Wv3rSc-nJdKFLJ60YLdUbP5dFikS+w@mail.gmail.com>
- <36892440-99b2-10e8-1d7c-dd8c97e03a39@gmail.com> <CAHp75VdAfiSjkHhTnghZ__WAJCJTGSWBprJBPNmpkxZTjZuVgQ@mail.gmail.com>
- <3d811222-68fa-0992-eeeb-97d1c6d09608@gmail.com>
-In-Reply-To: <3d811222-68fa-0992-eeeb-97d1c6d09608@gmail.com>
+References: <20200327223443.6006-1-gwendal@chromium.org> <20200327223443.6006-13-gwendal@chromium.org>
+In-Reply-To: <20200327223443.6006-13-gwendal@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 29 Mar 2020 14:17:08 +0300
-Message-ID: <CAHp75VdbRB109uZZ7HHNzgx68RtRsi64Re554bLtNiytRV3GGw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/5] power: supply: Add support for mps mp2629 battery charger
-To:     saravanan sekar <sravanhome@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Sun, 29 Mar 2020 14:22:11 +0300
+Message-ID: <CAHp75VeRZO9DnTRZWavfp2FPjg_kqmpNr0VZnXv1U3G4Pr0iFQ@mail.gmail.com>
+Subject: Re: [PATCH v7 12/12] iio: cros_ec: flush as hwfifo attribute
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 29, 2020 at 1:34 PM saravanan sekar <sravanhome@gmail.com> wrote:
-> On 28/03/20 7:44 pm, Andy Shevchenko wrote:
-> > On Sat, Mar 28, 2020 at 1:29 PM saravanan sekar <sravanhome@gmail.com> wrote:
-> >> On 28/03/20 12:02 pm, Andy Shevchenko wrote:
-> >>> On Sat, Mar 28, 2020 at 2:12 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
+On Sat, Mar 28, 2020 at 12:37 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> Add buffer/hwfifo_flush. It is not part of the ABI, but it follows ST
+> and HID lead: Tells the sensor hub to send to the host all pending
+> sensor events.
+
+I see where discussion is going, but nevertheless some comments below
+that you will not make same mistakes in the future.
 
 ...
 
-> >>>> +       struct power_supply_config psy_cfg = {NULL};
-> >>> { 0 }
-> >>>
-> >> NULL to make compiler happy.
-> > Hmm... Can you share warning / error compiler issued in 0 case?
-> >
-> Please see the 0-day warning.
->
-> "Reported-by: kbuild test robot <lkp@intel.com>
-> sparse warnings: (new ones prefixed by >>)
->  >> drivers/power/supply/mp2629_charger.c:584:47: sparse: sparse: Using
-> plain integer as NULL pointer"
+> +       int ret = 0;
 
-I see. Grepping the code shows that for this certain structure other
-drivers are using simple '{}'. Can you align with them?
+Useless assignment.
+
+> +       bool flush;
+> +
+
+> +       ret = strtobool(buf, &flush);
+
+kstrtobool()
+
+> +       if (ret < 0)
+
+Positive error codes? I'm not sure it returns a such. So ' < 0' part
+is redundant.
+
+> +               return ret;
+
+> +       if (!flush)
+> +               return -EINVAL;
+
+This I didn't get, you have accept only true as input? It's really strange.
+
+> +       ret = cros_ec_motion_send_host_cmd(st, 0);
+
+> +       if (ret != 0)
+
+Similar to above ' != 0' part is redundant.
+
+> +               dev_warn(&indio_dev->dev, "Unable to flush sensor\n");
+
+...
+
+> +static IIO_DEVICE_ATTR(hwfifo_flush, 0644, NULL,
+> +                      cros_ec_sensors_flush, 0);
+
+IIO_DEVICE_ATTR_RW() ?
 
 -- 
 With Best Regards,

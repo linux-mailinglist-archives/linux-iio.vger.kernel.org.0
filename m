@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D9B196D58
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 14:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FBCE196D5B
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Mar 2020 14:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728216AbgC2MbY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Mar 2020 08:31:24 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:45042 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728190AbgC2MbX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 08:31:23 -0400
-Received: by mail-wr1-f65.google.com with SMTP id m17so17519023wrw.11;
-        Sun, 29 Mar 2020 05:31:20 -0700 (PDT)
+        id S1728225AbgC2MbZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Mar 2020 08:31:25 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:39061 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727901AbgC2MbY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Mar 2020 08:31:24 -0400
+Received: by mail-wm1-f68.google.com with SMTP id e9so6107573wme.4;
+        Sun, 29 Mar 2020 05:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6JHVvWyjCIClbMe3qA+hwkoKr1pqM/u0MjtagCuJzWg=;
-        b=GS2coSV0Ia+k6CEHUACGbbzNV1WJJflWMxQTfHSjwgORxyoNy0KYjKAxsEcecnO4uI
-         7nGhTjjZDUro1ijSYdY3+qhko/j0DCjHoS3DoJjTn6BRENXbCqyOJYNLkASahpP44D/c
-         zEA+9TsbS+X6Txay9o78DmlSSJQv0hcRIGFJkg2WQQozBJURZm/qUBRuNXEFREUtaVYb
-         F6qr3sSgJmDieoxEcc8yy7bA0n4QYhQYAefeCTu+FopQNylgu3BoRUpF/kjRJvV82W3X
-         p3oqKxxurPLnTe8OPTJEzUoFdn3gDE+q4UliIGfhJ4DyagDY9S5wN9OeIvTOzZUoJVpd
-         eaWg==
+        bh=pURdKGkUjGAlB+GMPVdoxwxa2IDpxHy72t8d0MTCWSk=;
+        b=WaTowRK9jbAfsQPNW3C5FSswCeI2BOJPhpeAiuASQjnr5ZSjnJB6Lajd3mxw4bPmaY
+         NQWUW3Ek4MvvHiSKW/CxMV0rYOW8hcJW60s42y7WcKNH846KBFYiLZY1i2d5lQYgbQa2
+         kXiuQcinxiCC7xO9RKxkbTmPQYq/dhSmF6rIsZu//4xZhcQpD/wi45dCxbMVOSgKj4+Q
+         qdtycuCyyL0QLJ45p0u5Fr0YYpGnTS+IO3VWGuQtWHtQAnfu+SNASaR3OQ65LLDvn/zl
+         ymSHVqNFTVDYeqEdhcaEWylsg7nmEVf/50ccUPcZa+qcdENfJ2JoGZwU/9F3oCCegCV2
+         50Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=6JHVvWyjCIClbMe3qA+hwkoKr1pqM/u0MjtagCuJzWg=;
-        b=D6mWLxTV7badflBfq6o4rCFfFJeDQRoOwjYYeUU4ViRVdQgNbozNCd0ON6i1bbm6yM
-         AWsX/z4iIZaNf81bzngewyKJn76xJvRgF6TeE51o2sPKLwYnMGKwLAIrHgO+9ryIW4Ps
-         fJO0y4HIfY7wVOdEWupt90qvAf4lz3oyKcm4rpmlXrFVm4IQM58KWAjX2jKsdfGp2vB7
-         DfwVLx0cDmPGwjUeUqXOmyD72FmlVjcrv20VcyyT2C6cH45UZDrChohleZbA8wfb7IAR
-         9yva0Fm28j303WhyoWnaEsw3ch2pivpNWme19Wg1oTRpFxeOV2Q0pDcvLCmjq/rT0dC2
-         1K1w==
-X-Gm-Message-State: ANhLgQ2bzkmtNvvC9CXr69qpPVxdXvn8L/wioXn/4RsSK8rddku1zDS5
-        ozNc6P9BnIeiQb0G9gc1ZTQ=
-X-Google-Smtp-Source: ADFU+vtASPaBoA0ZlG0D4yOABB50aEuSguJWuKm66wTqqbZky5lB2QXy+ktUPr/nbOzDaTyeB0lbrw==
-X-Received: by 2002:a05:6000:1090:: with SMTP id y16mr9124165wrw.281.1585485080148;
-        Sun, 29 Mar 2020 05:31:20 -0700 (PDT)
+        bh=pURdKGkUjGAlB+GMPVdoxwxa2IDpxHy72t8d0MTCWSk=;
+        b=Zd8SIWY69dgk3ku0WpMmBlcCMZMzYnnegV0fNA+OGfvCuEuSwzMCT6Q8VY7Sdx82MW
+         u3asATPKTp+9wNuexYg8oV9mL705d5+Fej+byIoF2A4esfo/f+xw9FmFqyS+Qmqf5woc
+         pT2ZH+OsaCl/ZPru/t5kG+XqbpFbIzHrbKqqg7DwUCr5SoNqtoowtFlNSjzkgnlXZm87
+         WuvLU1IfaF8u0G0P5k/pACEKSMS6JoGiR+02FM66pSXPCnBJ9ghBg40OHA2S/sqRz9jO
+         PlTWz5jKkHZCLOhRUKTFBXUzlEIjZjQ1Aon0mvKMq34QrJgUbldNWJRdzGndLE3VIxYB
+         7y3g==
+X-Gm-Message-State: ANhLgQ2E/snNrZ/uiwS03IteKdXO79+1XA89MoJB+J2miIjuRm1gbtih
+        r+7EQtBXWJbRXwAIRhgwYdk=
+X-Google-Smtp-Source: ADFU+vvV8Wjdd61CcrWnprRybEwqky5CPLOL9g5ZaGBx6Z2L7vO/jMZLjmAMMFLJNBYSSX+SLinFMg==
+X-Received: by 2002:a1c:770a:: with SMTP id t10mr8502476wmi.150.1585485081549;
+        Sun, 29 Mar 2020 05:31:21 -0700 (PDT)
 Received: from localhost.localdomain (p5B3F6BD9.dip0.t-ipconnect.de. [91.63.107.217])
-        by smtp.gmail.com with ESMTPSA id f9sm17259108wrc.71.2020.03.29.05.31.18
+        by smtp.gmail.com with ESMTPSA id f9sm17259108wrc.71.2020.03.29.05.31.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2020 05:31:19 -0700 (PDT)
+        Sun, 29 Mar 2020 05:31:20 -0700 (PDT)
 From:   Saravanan Sekar <sravanhome@gmail.com>
 To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
         robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
@@ -50,9 +50,9 @@ To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
         Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v6 2/5] mfd: mp2629: Add support for mps battery charger
-Date:   Sun, 29 Mar 2020 14:31:07 +0200
-Message-Id: <20200329123110.26482-3-sravanhome@gmail.com>
+Subject: [PATCH v6 3/5] iio: adc: mp2629: Add support for mp2629 ADC driver
+Date:   Sun, 29 Mar 2020 14:31:08 +0200
+Message-Id: <20200329123110.26482-4-sravanhome@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200329123110.26482-1-sravanhome@gmail.com>
 References: <20200329123110.26482-1-sravanhome@gmail.com>
@@ -61,172 +61,283 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-mp2629 is a highly-integrated switching-mode battery charge management
-device for single-cell Li-ion or Li-polymer battery.
-
-Add MFD core enables chip access for ADC driver for battery readings,
-and a power supply battery-charger driver
+Add support for 8-bit resolution ADC readings for input power
+supply and battery charging measurement. Provides voltage, current
+readings to mp2629 power supply driver.
 
 Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
 ---
- drivers/mfd/Kconfig        |  9 ++++
- drivers/mfd/Makefile       |  2 +
- drivers/mfd/mp2629.c       | 86 ++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/mp2629.h | 19 +++++++++
- 4 files changed, 116 insertions(+)
- create mode 100644 drivers/mfd/mp2629.c
- create mode 100644 include/linux/mfd/mp2629.h
+ drivers/iio/adc/Kconfig      |  10 ++
+ drivers/iio/adc/Makefile     |   1 +
+ drivers/iio/adc/mp2629_adc.c | 207 +++++++++++++++++++++++++++++++++++
+ include/linux/mfd/mp2629.h   |   9 ++
+ 4 files changed, 227 insertions(+)
+ create mode 100644 drivers/iio/adc/mp2629_adc.c
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 3c547ed575e6..85be799795aa 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
- 	help
- 	  Select this if your MC13xxx is connected via an I2C bus.
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 82e33082958c..ef0c0cd31855 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -680,6 +680,16 @@ config MESON_SARADC
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called meson_saradc.
  
-+config MFD_MP2629
-+	tristate "Monolithic power system MP2629 ADC and Battery charger"
-+	depends on I2C
-+	select REGMAP_I2C
++config MP2629_ADC
++	tristate "Monolithic MP2629 ADC driver"
++	depends on MFD_MP2629
 +	help
-+	  Select this option to enable support for monolithic power system
-+	  battery charger. This provides ADC, thermal, battery charger power
-+	  management functions on the systems.
++	  Say yes to have support for battery charger IC MP2629 ADC device
++	  accessed over I2C.
 +
- config MFD_MXS_LRADC
- 	tristate "Freescale i.MX23/i.MX28 LRADC"
- 	depends on ARCH_MXS || COMPILE_TEST
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index f935d10cbf0f..d6c210f96d02 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -170,6 +170,8 @@ obj-$(CONFIG_MFD_MAX8925)	+= max8925.o
- obj-$(CONFIG_MFD_MAX8997)	+= max8997.o max8997-irq.o
- obj-$(CONFIG_MFD_MAX8998)	+= max8998.o max8998-irq.o
- 
-+obj-$(CONFIG_MFD_MP2629)	+= mp2629.o
++	  This driver provides ADC conversion of system, input power supply
++	  and battery voltage & current information.
 +
- pcf50633-objs			:= pcf50633-core.o pcf50633-irq.o
- obj-$(CONFIG_MFD_PCF50633)	+= pcf50633.o
- obj-$(CONFIG_PCF50633_ADC)	+= pcf50633-adc.o
-diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
+ config NAU7802
+ 	tristate "Nuvoton NAU7802 ADC driver"
+ 	depends on I2C
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 919228900df9..f14416c245a6 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -64,6 +64,7 @@ obj-$(CONFIG_MCP3911) += mcp3911.o
+ obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
+ obj-$(CONFIG_MEN_Z188_ADC) += men_z188_adc.o
+ obj-$(CONFIG_MESON_SARADC) += meson_saradc.o
++obj-$(CONFIG_MP2629_ADC) += mp2629_adc.o
+ obj-$(CONFIG_MXS_LRADC_ADC) += mxs-lradc-adc.o
+ obj-$(CONFIG_NAU7802) += nau7802.o
+ obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
+diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
 new file mode 100644
-index 000000000000..46242b1cdf24
+index 000000000000..2e5518168d3e
 --- /dev/null
-+++ b/drivers/mfd/mp2629.c
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/iio/adc/mp2629_adc.c
+@@ -0,0 +1,207 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * MP2629 parent driver for ADC and battery charger
++ * MP2629 Driver for ADC
 + *
 + * Copyright 2020 Monolithic Power Systems, Inc
 + *
 + * Author: Saravanan Sekar <sravanhome@gmail.com>
 + */
 +
-+#include <linux/i2c.h>
-+#include <linux/kernel.h>
-+#include <linux/mfd/core.h>
++#include <linux/iio/driver.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/machine.h>
 +#include <linux/mfd/mp2629.h>
 +#include <linux/module.h>
++#include <linux/mutex.h>
 +#include <linux/platform_device.h>
 +#include <linux/regmap.h>
-+#include <linux/slab.h>
 +
-+enum {
-+	MP2629_MFD_ADC,
-+	MP2629_MFD_CHARGER,
-+	MP2629_MFD_MAX
++#define	MP2629_REG_ADC_CTRL		0x03
++#define	MP2629_REG_BATT_VOLT		0x0e
++#define	MP2629_REG_SYSTEM_VOLT		0x0f
++#define	MP2629_REG_INPUT_VOLT		0x11
++#define	MP2629_REG_BATT_CURRENT		0x12
++#define	MP2629_REG_INPUT_CURRENT	0x13
++
++#define	MP2629_ADC_START		BIT(7)
++#define	MP2629_ADC_CONTINUOUS		BIT(6)
++
++#define MP2629_MAP(_mp, _mpc) IIO_MAP(#_mp, "mp2629_charger", "mp2629-"_mpc)
++
++#define MP2629_ADC_CHAN(_ch, _type) {				\
++	.type = _type,						\
++	.indexed = 1,						\
++	.datasheet_name = #_ch,					\
++	.channel = MP2629_ ## _ch,				\
++	.address = MP2629_REG_ ## _ch,				\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
++}
++
++struct mp2629_adc {
++	struct regmap *regmap;
++	struct device *dev;
 +};
 +
-+static const struct mfd_cell mp2629mfd[] = {
-+	[MP2629_MFD_ADC] = {
-+		.name = "mp2629_adc",
-+		.of_compatible = "mps,mp2629_adc",
-+	},
-+	[MP2629_MFD_CHARGER] = {
-+		.name = "mp2629_charger",
-+		.of_compatible = "mps,mp2629_charger",
-+	}
++static struct iio_chan_spec mp2629_channels[] = {
++	MP2629_ADC_CHAN(BATT_VOLT, IIO_VOLTAGE),
++	MP2629_ADC_CHAN(SYSTEM_VOLT, IIO_VOLTAGE),
++	MP2629_ADC_CHAN(INPUT_VOLT, IIO_VOLTAGE),
++	MP2629_ADC_CHAN(BATT_CURRENT, IIO_CURRENT),
++	MP2629_ADC_CHAN(INPUT_CURRENT, IIO_CURRENT)
 +};
 +
-+static const struct regmap_config mp2629_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x17,
++static struct iio_map mp2629_adc_maps[] = {
++	MP2629_MAP(BATT_VOLT, "batt-volt"),
++	MP2629_MAP(SYSTEM_VOLT, "system-volt"),
++	MP2629_MAP(INPUT_VOLT, "input-volt"),
++	MP2629_MAP(BATT_CURRENT, "batt-current"),
++	MP2629_MAP(INPUT_CURRENT, "input-current")
 +};
 +
-+static int mp2629_probe(struct i2c_client *client)
++static int mp2629_read_raw(struct iio_dev *indio_dev,
++			struct iio_chan_spec const *chan,
++			int *val, int *val2, long mask)
 +{
-+	struct mp2629_info *ddata;
++	struct mp2629_adc *info = iio_priv(indio_dev);
++	unsigned int rval;
 +	int ret;
 +
-+	ddata = devm_kzalloc(&client->dev, sizeof(*ddata), GFP_KERNEL);
-+	if (!ddata)
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = regmap_read(info->regmap, chan->address, &rval);
++		if (ret)
++			return ret;
++
++		if (chan->address == MP2629_INPUT_VOLT)
++			rval &= GENMASK(6, 0);
++		*val = rval;
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->channel) {
++		case MP2629_BATT_VOLT:
++		case MP2629_SYSTEM_VOLT:
++			*val = 20;
++			return IIO_VAL_INT;
++
++		case MP2629_INPUT_VOLT:
++			*val = 60;
++			return IIO_VAL_INT;
++
++		case MP2629_BATT_CURRENT:
++			*val = 175;
++			*val2 = 10;
++			return IIO_VAL_FRACTIONAL;
++
++		case MP2629_INPUT_CURRENT:
++			*val = 133;
++			*val2 = 10;
++			return IIO_VAL_FRACTIONAL;
++
++		default:
++			return -EINVAL;
++		}
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info mp2629_adc_info = {
++	.read_raw = &mp2629_read_raw,
++};
++
++static int mp2629_adc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct mp2629_info *ddata = dev_get_drvdata(dev->parent);
++	struct mp2629_adc *info;
++	struct iio_dev *indio_dev;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
++	if (!indio_dev)
 +		return -ENOMEM;
 +
-+	ddata->dev = &client->dev;
-+	i2c_set_clientdata(client, ddata);
++	info = iio_priv(indio_dev);
++	info->regmap = ddata->regmap;
++	info->dev = dev;
++	platform_set_drvdata(pdev, indio_dev);
 +
-+	ddata->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
-+	if (IS_ERR(ddata->regmap)) {
-+		dev_err(ddata->dev, "Failed to allocate regmap!\n");
-+		return PTR_ERR(ddata->regmap);
++	ret = iio_map_array_register(indio_dev, mp2629_adc_maps);
++	if (ret) {
++		dev_err(dev, "IIO maps register fail: %d\n", ret);
++		return ret;
 +	}
 +
-+	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_NONE, mp2629mfd,
-+				ARRAY_SIZE(mp2629mfd), NULL,
-+				0, NULL);
-+	if (ret)
-+		dev_err(ddata->dev, "Failed to register sub-devices %d\n", ret);
++	indio_dev->name = "mp2629-adc";
++	indio_dev->dev.parent = dev;
++	indio_dev->channels = mp2629_channels;
++	indio_dev->num_channels = ARRAY_SIZE(mp2629_channels);
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->info = &mp2629_adc_info;
++
++	ret = regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
++				MP2629_ADC_START | MP2629_ADC_CONTINUOUS,
++				MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
++	if (ret) {
++		dev_err(dev, "adc enable fail: %d\n", ret);
++		goto fail_unmap;
++	}
++
++	ret = devm_iio_device_register(dev, indio_dev);
++	if (ret) {
++		dev_err(dev, "IIO device register fail: %d\n", ret);
++		goto fail_disable;
++	}
++
++	return 0;
++
++fail_disable:
++	regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
++					 MP2629_ADC_CONTINUOUS, 0);
++	regmap_update_bits(ddata->regmap, MP2629_REG_ADC_CTRL,
++					 MP2629_ADC_START, 0);
++
++fail_unmap:
++	iio_map_array_unregister(indio_dev);
 +
 +	return ret;
 +}
 +
-+static const struct of_device_id mp2629_of_match[] = {
-+	{ .compatible = "mps,mp2629"},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, mp2629_of_match);
++static int mp2629_adc_remove(struct platform_device *pdev)
++{
++	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
++	struct mp2629_adc *info = iio_priv(indio_dev);
 +
-+static struct i2c_driver mp2629_driver = {
-+	.driver = {
-+		.name = "mp2629",
-+		.of_match_table = mp2629_of_match,
-+	},
-+	.probe_new	= mp2629_probe,
++	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
++					 MP2629_ADC_CONTINUOUS, 0);
++	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
++					 MP2629_ADC_START, 0);
++
++	iio_map_array_unregister(indio_dev);
++	iio_device_unregister(indio_dev);
++
++	return 0;
++}
++
++static const struct of_device_id mp2629_adc_of_match[] = {
++	{ .compatible = "mps,mp2629_adc"},
++	{}
 +};
-+module_i2c_driver(mp2629_driver);
++MODULE_DEVICE_TABLE(of, mp2629_adc_of_match);
++
++static struct platform_driver mp2629_adc_driver = {
++	.driver = {
++		.name = "mp2629_adc",
++		.of_match_table = mp2629_adc_of_match,
++	},
++	.probe		= mp2629_adc_probe,
++	.remove		= mp2629_adc_remove,
++};
++module_platform_driver(mp2629_adc_driver);
 +
 +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
-+MODULE_DESCRIPTION("MP2629 Battery charger parent driver");
++MODULE_DESCRIPTION("MP2629 ADC driver");
 +MODULE_LICENSE("GPL");
 diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
-new file mode 100644
-index 000000000000..06985e41fc6f
---- /dev/null
+index 06985e41fc6f..83ebfab41691 100644
+--- a/include/linux/mfd/mp2629.h
 +++ b/include/linux/mfd/mp2629.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * register definitions for MP2629 charger
-+ *
-+ * Copyright 2020 Monolithic Power Systems, Inc
-+ */
-+
-+#ifndef __MP2629_H__
-+#define __MP2629_H__
-+
-+#include <linux/device.h>
-+#include <linux/regmap.h>
-+
-+struct mp2629_info {
-+	struct device *dev;
-+	struct regmap *regmap;
+@@ -16,4 +16,13 @@ struct mp2629_info {
+ 	struct regmap *regmap;
+ };
+ 
++enum mp2629_adc_chan {
++	MP2629_BATT_VOLT,
++	MP2629_SYSTEM_VOLT,
++	MP2629_INPUT_VOLT,
++	MP2629_BATT_CURRENT,
++	MP2629_INPUT_CURRENT,
++	MP2629_ADC_CHAN_END
 +};
 +
-+#endif
+ #endif
 -- 
 2.17.1
 

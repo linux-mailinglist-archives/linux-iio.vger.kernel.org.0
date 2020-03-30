@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 312661975AB
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 09:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CA5197556
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 09:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729413AbgC3HaB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 03:30:01 -0400
-Received: from condef-02.nifty.com ([202.248.20.67]:41104 "EHLO
-        condef-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729197AbgC3HaA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 03:30:00 -0400
-X-Greylist: delayed 833 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Mar 2020 03:29:58 EDT
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-02.nifty.com with ESMTP id 02U7AC7C000608;
-        Mon, 30 Mar 2020 16:10:12 +0900
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45]) (authenticated)
-        by conssluserg-01.nifty.com with ESMTP id 02U79xvR024938;
-        Mon, 30 Mar 2020 16:10:00 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 02U79xvR024938
+        id S1729426AbgC3HOs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 03:14:48 -0400
+Received: from condef-07.nifty.com ([202.248.20.72]:31630 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729367AbgC3HOs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 03:14:48 -0400
+Received: from conssluserg-06.nifty.com ([10.126.8.85])by condef-07.nifty.com with ESMTP id 02U7B7jg022348;
+        Mon, 30 Mar 2020 16:11:07 +0900
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 02U7Av80019091;
+        Mon, 30 Mar 2020 16:10:58 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 02U7Av80019091
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1585552200;
-        bh=ln1CQt+YaUVnJf/8SbMK3iPTVvG1KE5EE/FUul8MWQc=;
+        s=dec2015msa; t=1585552259;
+        bh=hkMe26g7xlvZHHpLSXHK4NtsfOWPZ3tdB27BX4Gdox4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=1sthGaoHw8qoSp3F/D3eH8NqZjk++zLNoSrFExAge5M5k4o6izC7znUZmDsjrR95d
-         3LRi45OyZDxUKTfu4A/3P4aV5+yY39DtCxwP5T2nox/GAPp7PJ3ZaF7u226D4E6kMs
-         pxp3tchjSZY1dsGYXfpp7Fyf63ssOrWN+V8tr3iI8kkkZhdSc6hQrcCJehpowCH1tV
-         t5Ybjs0wWAwMh0SzhZruoB9o66WBYJD1t+qP7ZqRNrr7efxFSXjCoLMubpsREjCj3w
-         uh2OG10xugvGzdVuKY1o+FeM5bjbz3bVeCv27FcaCEJ6WsaSLhERu5H58t5BiMZ2Xi
-         G3vbpTZyiHDew==
-X-Nifty-SrcIP: [209.85.217.45]
-Received: by mail-vs1-f45.google.com with SMTP id z125so10303326vsb.13;
-        Mon, 30 Mar 2020 00:09:59 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaxIQ01k2OIzzRmX0pmP4+GKnL2dKkEkaAhViRjVhNEthRWBKXc
-        iLGdsfopkiPxzS20T9vORC2VKBgWqZ276l6JheA=
-X-Google-Smtp-Source: APiQypLmGnB9GmkGFIr7L8MQtdRTKDMNPR3ere0jKX6O5/r2adqpWFQ5TPcwWpLgYxRGXDf4dZ6YCv27RE8dCFz54+s=
-X-Received: by 2002:a67:2d55:: with SMTP id t82mr7452280vst.215.1585552198446;
- Mon, 30 Mar 2020 00:09:58 -0700 (PDT)
+        b=KcBjhsrL3dR1mZBfET/9TKUG3Daz3RdGt09Vw88Y0YifetOYyh51xxQuPG+592DtH
+         pFD/CO1Uz9mbzrlhLsGxyA9LIeKZxQV5JWMNTr3zAUPp/UNFC9xsfpSFLKmSnqpbVi
+         KvGBO/fpymKKpXGF51W9+pp48ZX3tcSz8n+L0IMq+80fOal/Z3reDXdedCEK2jpq9t
+         ZaAnXDROMrj+BP2GRX1zhtxD+Xkh94NmVI1aUp5NoYk9oPnwKjnxG8FwLUREXbNfCc
+         6kGzkoTJ/wqDKmu97f3h+oWVDyt0bnUTb6G3aaLggK3fY//mDPC7DDsHNA2itSmKHS
+         IRfBEQUPNsiGg==
+X-Nifty-SrcIP: [209.85.221.173]
+Received: by mail-vk1-f173.google.com with SMTP id n128so4386036vke.5;
+        Mon, 30 Mar 2020 00:10:58 -0700 (PDT)
+X-Gm-Message-State: AGi0PuYyqi+Jqqf0vNqIG0UHCnkTbAhwoH+gdkE6en4feAPwTOi1AeBg
+        6SNSy4sbA3RjhYi0kM4uSRxQdCChezoSNPT7Oc4=
+X-Google-Smtp-Source: APiQypLNZL0F1SjmrpxCYWMM92Tc2B289mmJ4nqnInP/lERMnXKF0z9Hs/o7lbsUDIM38rMhrwxOtOM94wAMTS6itNI=
+X-Received: by 2002:a1f:3649:: with SMTP id d70mr6296693vka.12.1585552257254;
+ Mon, 30 Mar 2020 00:10:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200325220542.19189-1-robh@kernel.org> <20200325220542.19189-5-robh@kernel.org>
-In-Reply-To: <20200325220542.19189-5-robh@kernel.org>
+References: <20200325220542.19189-1-robh@kernel.org> <20200325220542.19189-4-robh@kernel.org>
+In-Reply-To: <20200325220542.19189-4-robh@kernel.org>
 From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 30 Mar 2020 16:09:22 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARJn4uugHxcjK+WOWBs0gPVZQsCu4y6M8hkNK1U5FehRA@mail.gmail.com>
-Message-ID: <CAK7LNARJn4uugHxcjK+WOWBs0gPVZQsCu4y6M8hkNK1U5FehRA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties: false'
+Date:   Mon, 30 Mar 2020 16:10:21 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASHkBoOP_uGXLuO-UT1JL-rN3od_L+F4cB0SRPCzQCyKA@mail.gmail.com>
+Message-ID: <CAK7LNASHkBoOP_uGXLuO-UT1JL-rN3od_L+F4cB0SRPCzQCyKA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] dt-bindings: Clean-up schema errors due to missing
+ 'addtionalProperties: false'
 To:     Rob Herring <robh@kernel.org>
 Cc:     DTML <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -86,31 +86,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Mar 26, 2020 at 7:06 AM Rob Herring <robh@kernel.org> wrote:
 >
-> Setting 'additionalProperties: false' is frequently omitted, but is
-> important in order to check that there aren't extra undocumented
-> properties in a binding.
+> Numerous schemas are missing 'additionalProperties: false' statements which
+> ensures a binding doesn't have any extra undocumented properties or child
+> nodes. Fixing this reveals various missing properties, so let's fix all
+> those occurrences.
 >
-> Ideally, we'd just add this automatically and make this the default, but
-> there's some cases where it doesn't work. For example, if a common
-> schema is referenced, then properties in the common schema aren't part
-> of what's considered for 'additionalProperties'. Also, sometimes there
-> are bus specific properties such as 'spi-max-frequency' that go into
-> bus child nodes, but aren't defined in the child node's schema.
->
-> So let's stick with the json-schema defined default and add
-> 'additionalProperties: false' where needed. This will be a continual
-> review comment and game of wack-a-mole.
->
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Neil Armstrong <narmstrong@baylibre.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Guillaume La Roque <glaroque@baylibre.com>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-gpio@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-amlogic@lists.infradead.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
 
 
->  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
+
+>  .../gpio/socionext,uniphier-gpio.yaml         |  2 ++
 
 
 You may have already queue this up, but just in case.
 
 Acked-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+
 
 -- 
 Best Regards

@@ -2,73 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7F1198635
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 23:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0478A1987A8
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 00:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728393AbgC3VQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 17:16:39 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44363 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728376AbgC3VQi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 17:16:38 -0400
-Received: by mail-io1-f68.google.com with SMTP id r25so7605596ioc.11;
-        Mon, 30 Mar 2020 14:16:38 -0700 (PDT)
+        id S1728880AbgC3W7h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 18:59:37 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:43837 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728876AbgC3W7h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 18:59:37 -0400
+Received: by mail-il1-f194.google.com with SMTP id g15so17580536ilj.10;
+        Mon, 30 Mar 2020 15:59:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tkKJxOuJOygZAD90Xqr7W823Gleu+iZSPyiLdvcI/vY=;
-        b=ZnMxueZrPM6UgZpBoYdasOyXr97MzBdDi/MIJEP6p0KzwF9LJGpL3m0Zt0zS7roOH6
-         luJi49dBsYp2Qn6NfRZ3QtdbZ3XxabuPiWUcTJ2KkgRdOhUEsliTvOu2b3Lf8zoM9pRZ
-         Nru8oPl2nI8wF7z8BAQKr3KwU/d20mG/m6d7W0hBi9C+k8GPg5ar3Pg//brrdUq+1gLF
-         U52mH7wmVRomLojHB6+mdbuIfM/vHee7JWVlm2n0ExmQBXho0sAIgKpXK5TRQPokXcC3
-         Ex+iCayaJmm1QyuFx0me5hbw1QWTqVXkPkJi390X4V3OUe5u4/mZvZfTNiudD88uwMD2
-         3frA==
-X-Gm-Message-State: ANhLgQ2gUFTTlUoWFwcXplS2SC+xydXb1dpa1ZN/pfB+dAnWjNPZquJM
-        fE0Smzxt3or3n4blZt4KGw==
-X-Google-Smtp-Source: ADFU+vt8NcKzJ1ZQ+zYRamd2iQqQrwipjvEDCqGiJNp01E3XeT/iw5c9GD4EIlYsyre+AvLvjpMojQ==
-X-Received: by 2002:a05:6602:2406:: with SMTP id s6mr12557183ioa.76.1585602997824;
-        Mon, 30 Mar 2020 14:16:37 -0700 (PDT)
+        bh=kaww/X906RvhEBeXpHvQ7H0BgU+ZNwj0MfgsRF9EmPo=;
+        b=aphs+ArrWHW4zJbhnSXSazwL6dS5FZ3ssBhqJSB1LwH+guwse+z+jkPX2h5E4ixLkf
+         nkY8ZvTvZeO9655qTtUE9Kf+7vs0KjkbGxVcwZ8y5xCGADPMPaspqbfhln7xaarZeYJx
+         tROdErPVaX2EYhNIAf71der9v5YWCjzzMXTFw1m+z7ss03cGq53mx0XPS4RqNFkk/jHD
+         OzCNsjD8ewKXFy+8VgBsIFiQnpq5YScWi1gIJ0GRstYEDTi3r/kC2nBUjwJf+bD8W9tW
+         lLYoN9E2OTLJflWVJiQnIcm1a8cv/IONo2CxTH0vGp6h2ZbQhMYatZqRbfJ4wMtCbE7L
+         Wliw==
+X-Gm-Message-State: ANhLgQ3l6x4w8C31REgRupW7K8VdiOnbuFhEboDY6ZSAPp3ECvQma+J5
+        LXj8gnpQ2ZxqoQ5lyvIO9g==
+X-Google-Smtp-Source: ADFU+vu/V8SE4+GhvyNKh8/DXvbO0KPS1E8HxLuvvNK9BpS6lC2+zQOjy4fxqTBKuoq0LwxVH3IPEw==
+X-Received: by 2002:a92:dcc8:: with SMTP id b8mr13269509ilr.244.1585609176223;
+        Mon, 30 Mar 2020 15:59:36 -0700 (PDT)
 Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id c28sm5270849ilf.26.2020.03.30.14.16.36
+        by smtp.gmail.com with ESMTPSA id r29sm5358442ilk.76.2020.03.30.15.59.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 14:16:36 -0700 (PDT)
-Received: (nullmailer pid 3903 invoked by uid 1000);
-        Mon, 30 Mar 2020 21:16:35 -0000
-Date:   Mon, 30 Mar 2020 15:16:35 -0600
+        Mon, 30 Mar 2020 15:59:35 -0700 (PDT)
+Received: (nullmailer pid 19335 invoked by uid 1000);
+        Mon, 30 Mar 2020 22:59:34 -0000
+Date:   Mon, 30 Mar 2020 16:59:34 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Michael Auchter <michael.auchter@ni.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Michael Auchter <michael.auchter@ni.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: ad7291: add binding
-Message-ID: <20200330211635.GA3708@bogus>
-References: <20200317135649.8876-1-michael.auchter@ni.com>
- <20200317145113.12413-1-michael.auchter@ni.com>
- <20200317145113.12413-2-michael.auchter@ni.com>
+To:     Nishant Malpani <nish.malpani25@gmail.com>
+Cc:     jic23@kernel.org, robh+dt@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, mark.rutland@arm.com,
+        nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] dt-bindings: iio: tsl2563: convert bindings to YAML
+Message-ID: <20200330225934.GA19255@bogus>
+References: <20200318071940.12220-1-nish.malpani25@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200317145113.12413-2-michael.auchter@ni.com>
+In-Reply-To: <20200318071940.12220-1-nish.malpani25@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 17 Mar 2020 09:51:13 -0500, Michael Auchter wrote:
-> Add device-tree binding for ADI AD7291 ADC.
+On Wed, 18 Mar 2020 12:49:40 +0530, Nishant Malpani wrote:
+> Convert the TSL2563 device tree bindings to the new YAML format.
 > 
-> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
+> Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
 > ---
->  .../bindings/iio/adc/adi,ad7291.yaml          | 50 +++++++++++++++++++
->  1 file changed, 50 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7291.yaml
+> 
+> Changes in v4:
+>   - Change $id property to reflect corrected relative path.
+> 
+> Changes in v3:
+>   - Include the complete diff (changes from v1).
+> 
+> Changes in v2:
+>   - Rename the dt-bindings to include manufacturer's name.
+>   - Synchronize the bindings with the driver.
+> ---
+>  .../bindings/iio/light/amstaos,tsl2563.yaml   | 49 +++++++++++++++++++
+>  .../devicetree/bindings/iio/light/tsl2563.txt | 19 -------
+>  2 files changed, 49 insertions(+), 19 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/amstaos,tsl2563.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.txt
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>

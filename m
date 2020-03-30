@@ -2,89 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6DD8197FC6
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 17:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC390197FCD
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 17:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728091AbgC3Phr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 11:37:47 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:36455 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729059AbgC3Phr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 11:37:47 -0400
-Received: by mail-il1-f193.google.com with SMTP id p13so16193635ilp.3;
-        Mon, 30 Mar 2020 08:37:46 -0700 (PDT)
+        id S1729054AbgC3PiW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 11:38:22 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:40338 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725978AbgC3PiW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 11:38:22 -0400
+Received: by mail-il1-f196.google.com with SMTP id j9so16256371ilr.7;
+        Mon, 30 Mar 2020 08:38:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mkwxb5JvjMmyFZrDRCuhIwp5i7N+YTkvrCmiuVH1Fic=;
-        b=OG44WY7K6YPCEe3T/IcnhkGV25/psznkLeiKaEidX5Vovu22Y5cvf6RNM1IM9SsVZM
-         fSgmTfopqJqo6D/TGgfo2PbH5nwaZxiTMuuQdr6lF/JS9ODtCXJv/42wQmJKpZxVKrJh
-         pSxORQixh60vYEoqhc0Fie6m9ab2ItL5B5+UD+5XgNMlOyGSeuXxoOO3xRsiGYRqa8L/
-         EVcJS44pv+D5zPpn+MiHVU9pakXqMSRgDmgaaRhnuMoU3dajc9/wxR5h6J53+TX82a85
-         tZHJIzxROvWvjOkxheUkcr7yZDXFXEu0bD0Ul/qATaywHxdFOHNvzjVgmce+SlQrpZIm
-         SdOQ==
-X-Gm-Message-State: ANhLgQ1j96ZMrGxxdfJtlMmK7RZdJuU5hGF4hfh2Hrbujab6bnkt9oEU
-        oOzgknQErPnzcD9NGHOKsA==
-X-Google-Smtp-Source: ADFU+vt21JoipmYTiUdTolbv6zjigW1PlZnXRMPY/IpL+qcHi+xo9piY1XQqocbQl+43wrwQMa/9Ow==
-X-Received: by 2002:a92:8953:: with SMTP id n80mr11430471ild.5.1585582666374;
-        Mon, 30 Mar 2020 08:37:46 -0700 (PDT)
+        bh=EXjMGOdpbJrvmMf7CXHzMRGgy3e0VQX/+0etqeIYW0I=;
+        b=NPbkt9poFni0A6IYIINdF5/iAZ0ePAUo+11fz2WBbxooSVuKgd3HM1X5L0vrPTuasE
+         ftt/LIYPPZCy3XXeO/VlXQUVj3NHDEr1POGtCP8Ll75UM3s7uUtMecdU02Myjr2A24RJ
+         0Ytp/GAx2JCXAB/JHPgvB1BxOTcYkZnQCZHclnyz6ukR8fgeOXmjpaYKIhVzl4vVZGw9
+         QNQ+eI0PP+W441mkg/42F/zm2h+HzLjRGtyPU42hC3bGe716NnLobyghGaxeHEke2yrT
+         m+RoZFWzkBClvyRjbzAOF+zKyV7buIkSxkGp/wbca7B5THdcSjq/bG4Mxnpw3e6rJAWf
+         YDhQ==
+X-Gm-Message-State: ANhLgQ32zwh3qeRCyUumfYqJzS1j6TPJ/vRuaRaRl7B5laEIoq9OU38j
+        ePZOTRoSjyG/72Uh9+t7DeeNr/k=
+X-Google-Smtp-Source: ADFU+vs3+gql6fDj89qq2KjSl6YPLLP7Rggs4xlleR1CpIoDOZyi6hisfvhiRdP4SAUnEH4MpKBuLg==
+X-Received: by 2002:a92:cb49:: with SMTP id f9mr11644813ilq.193.1585582700524;
+        Mon, 30 Mar 2020 08:38:20 -0700 (PDT)
 Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id l17sm5041250ilf.28.2020.03.30.08.37.43
+        by smtp.gmail.com with ESMTPSA id h29sm4969835ili.19.2020.03.30.08.38.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 08:37:45 -0700 (PDT)
-Received: (nullmailer pid 18293 invoked by uid 1000);
-        Mon, 30 Mar 2020 15:37:43 -0000
-Date:   Mon, 30 Mar 2020 09:37:43 -0600
+        Mon, 30 Mar 2020 08:38:19 -0700 (PDT)
+Received: (nullmailer pid 19151 invoked by uid 1000);
+        Mon, 30 Mar 2020 15:38:18 -0000
+Date:   Mon, 30 Mar 2020 09:38:18 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        jic23@kernel.org, linux-kernel@vger.kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
-        mark.rutland@arm.com, Mike Looijmans <mike.looijmans@topic.nl>
-Subject: Re: [PATCH v5 1/2] dt-bindings: iio: accel: Add bmi088 accelerometer
- bindings
-Message-ID: <20200330153743.GA17787@bogus>
-References: <20200324080309.12171-1-mike.looijmans@topic.nl>
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mka@chromium.org, linus.walleij@linaro.org, sboyd@codeaurora.org,
+        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
+        kgunda@codeaurora.org, aghayal@codeaurora.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jishnu Prakash <jprakash@codeaurora.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Andy Gross <andy.gross@linaro.org>, linux-iio@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: adc: Convert the QCOM SPMI ADC bindings to
+ .yaml format
+Message-ID: <20200330153818.GA18495@bogus>
+References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org>
+ <1585064650-16235-2-git-send-email-jprakash@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200324080309.12171-1-mike.looijmans@topic.nl>
+In-Reply-To: <1585064650-16235-2-git-send-email-jprakash@codeaurora.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Mar 2020 09:03:07 +0100, Mike Looijmans wrote:
-> This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
-> the accelerometer part.
+On Tue, 24 Mar 2020 21:14:08 +0530, Jishnu Prakash wrote:
+> Convert the adc bindings from .txt to .yaml format.
 > 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
 > ---
-> v2: convert to yaml format
-> v3..v4: -
-> v5: submit together with driver code as patch series
->  .../bindings/iio/accel/bosch,bmi088.yaml      | 38 +++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+>  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.txt | 173 --------------------
+>  .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 178 +++++++++++++++++++++
+>  2 files changed, 178 insertions(+), 173 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
 > 
 
 My bot found errors running 'make dt_binding_check' on your patch:
 
-Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml:  while scanning a simple key
-  in "<unicode string>", line 32, column 3
-could not find expected ':'
-  in "<unicode string>", line 38, column 3
-Documentation/devicetree/bindings/Makefile:12: recipe for target 'Documentation/devicetree/bindings/iio/accel/bosch,bmi088.example.dts' failed
-make[1]: *** [Documentation/devicetree/bindings/iio/accel/bosch,bmi088.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-warning: no schema found in file: Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml: ignoring, error parsing file
-Makefile:1262: recipe for target 'dt_binding_check' failed
-make: *** [dt_binding_check] Error 2
+Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:20.11-26: Warning (reg_format): /example-0/vadc@3100:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
+Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dt.yaml: vadc@3100: 'adc-chan@0x39' does not match any of the regexes: '.*-names$', '.*-supply$', '^#.*-cells$', '^#[a-zA-Z0-9,+\\-._]{0,63}$', '^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}$', '^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}@[0-9a-fA-F]+(,[0-9a-fA-F]+)*$', '^__.*__$', 'pinctrl-[0-9]+'
 
-See https://patchwork.ozlabs.org/patch/1260498
+See https://patchwork.ozlabs.org/patch/1260800
 
 If you already ran 'make dt_binding_check' and didn't see the above
 error(s), then make sure dt-schema is up to date:

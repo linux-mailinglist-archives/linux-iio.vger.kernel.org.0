@@ -2,95 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E92F6197689
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 10:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B89197698
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 10:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729657AbgC3Idy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 04:33:54 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:53923 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729661AbgC3Idx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 04:33:53 -0400
-Received: from envy ([87.123.107.212]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MHoAg-1jXf2D0Va2-00ErkA; Mon, 30
- Mar 2020 10:33:39 +0200
-Message-ID: <048ceb3ded2c8a4b7063b6ac1ad1605f569e9057.camel@richard-neumann.de>
-Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
- fusion Hub using HID framework
-From:   Richard Neumann <mail@richard-neumann.de>
-To:     Sandeep Singh <Sandeep.Singh@amd.com>
-Cc:     Shyam-sundar.S-k@amd.com, jikos@kernel.org,
-        benjamin.tissoires@redhat.com, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, srinivas.pandruvada@linux.intel.com,
-        jic23@kernel.org, linux-iio@vger.kernel.org, hdegoede@redhat.com,
-        Nehal-bakulchandra.Shah@amd.com
-Date:   Mon, 30 Mar 2020 10:33:36 +0200
-In-Reply-To: <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
-References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
-         <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-xu5K+B2HpkD7ANo/1hwE"
-User-Agent: Evolution 3.36.1 
+        id S1729653AbgC3IiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 04:38:12 -0400
+Received: from conssluserg-01.nifty.com ([210.131.2.80]:56073 "EHLO
+        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgC3IiM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 04:38:12 -0400
+X-Greylist: delayed 5280 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Mar 2020 04:38:09 EDT
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id 02U8bmN8026273;
+        Mon, 30 Mar 2020 17:37:49 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 02U8bmN8026273
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1585557470;
+        bh=PxRmu3HuDIYTqEJxiJ5PqE2LXmQuo3D9zlavzY5jVI4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=brVEPKJScKZunXMPy14SQD8gmdtXfD/Z7CL8ZRWvjqvg8UYOEXDjY45m6LQp+Upry
+         SgIqRIt+Vbfvxsnbg1Sa4ESbah6Ht4e+ygLsb2zMtFxzxi6m+CL+3akLM9W4IRUtrC
+         8IrkWOugyFCF6k+q9DWaJ/RylMYkLVAXmcO1Y053y79in1DJ1SYDKl6QryZcJvymZW
+         zhUI92s1QDExgPzlgqMqS+2VzRW+Hf/0CueUJkv89pUXdRGkEy/yT1U57PQSLpZHL5
+         dpuemg5XzFyFNtnhwxT9TEaThfuk/wESfJfRmQy4YDPJPK/eWz1pRIvn+23Xa8wREx
+         iiOBT5PkS+9Hg==
+X-Nifty-SrcIP: [209.85.222.47]
+Received: by mail-ua1-f47.google.com with SMTP id r47so5951861uad.11;
+        Mon, 30 Mar 2020 01:37:49 -0700 (PDT)
+X-Gm-Message-State: AGi0PuYfI1t4jOABvMJbBeheO5K31RVjKrp+v3PMdlyhGrfyx/pJ5lj8
+        56rX/6bnMc6mi60tJtnMdm1005lbsmAaPgRPoO8=
+X-Google-Smtp-Source: APiQypJeTOypTow5s/orWLiqA+luxDBNhpwR1xE86uZ7tA8NnJnWdBsJgIswlbl89EaZoapGrF/J2WDHqcRU1fH6V1M=
+X-Received: by 2002:a9f:28c5:: with SMTP id d63mr6911883uad.25.1585557468135;
+ Mon, 30 Mar 2020 01:37:48 -0700 (PDT)
 MIME-Version: 1.0
-X-Provags-ID: V03:K1:52KXuA9Wvi9SCX4EGMAd8VUk0U6to71d4Rv1xC3zOrH/eUBgM6d
- rubt419lNrvV64sQ8ADhqX8lLgUhLG5+reVBNdwqpXoiBmBhJy+VLlLzI3s7SA00A7a1G4g
- XRJP00bc1JFP1IzLvr9j2/AIaeRhJyAtx1QbPfbVDWKpg6iRSHOe2zhEl4LsiQo9pVKP3WJ
- Jl0E86KjVkfWtdgR08Rnw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UdRSUDvqg+E=:a4udqGZ7gYdKz1amxMLmrI
- In8dWEa5RVpMKM0Xqd/5SQqLUKZBVKjc4A5Zl9JxCUd26s0OMG65qUBhvKqjnB8ka8B9clKEt
- yJO/+RKkKEZL5emq2Qxu0XWJQIsXjrr6FM010e2nj/1oqi6HQgkD7EvywBecUf4h9oY6Pj1BG
- 34QNdbNTS263V220Lc/zBEKPw/Q3USrOSxyW335ONgID61xIc/W0GNHcHkwarpqzIpWH3F+jW
- dTSFBHYwu/w2eT3XzgcCUvm9D0Sp6c14h3N/BM9aP0BLSuATKMRSeRh6A9VUBlVto3uTtfEa2
- 8ITsLLSomYNO5z1vMYNf+16Ehg2U6K29cF3yXKIRbY0FqDMnIMt+fpIoG89sOHW5YCvSvjFvd
- yXInm4/6Xh49j6GmiKnLJXpKl1OcpmzK+JsSBFGhm1cAzocnVpSW8mTQihi04fZ5YNa8JM2tm
- GHRm93DwSQ5HQjS+Gb6j783luRs7oUbDEk1jrz8CP/hM/Zo+heNfb3kDAsHjrPV/8p/Pdu1nO
- cKXxT69KKhfnuxEcBhNcg8w3OjToHaJdFv5OWsjNUSv4/rgpQSMCtN4lR8Fjq3/IhACpb5kUU
- cyCQL2cJPjgqRZ7AKLupFy8whojN0dmq3hLigS6IuDJOQyc5csd8pw3z+ITAYO8Ras9kEdWKa
- TWhG33aue4juxx2HrjQ9bUX2gLMpbhyl1/Rp+KK9wQUikySwI6ICh84p8ll/dxoZYyyedg5wW
- THO29loPZZga3fm0/i8W2bwy5oCT193lvXX2hcnLyj5QFAJb55Y2i8rvIjGHbeiRi5Ft1nnVz
- o3EcBcjmnTjIt+A+uEhCn6nAmvV4rbpL4JIF04U4lE0cztzpltiCyrEx31MW0vsWRRw8Mds
+References: <20200325220542.19189-1-robh@kernel.org> <20200325220542.19189-5-robh@kernel.org>
+ <CAK7LNARJn4uugHxcjK+WOWBs0gPVZQsCu4y6M8hkNK1U5FehRA@mail.gmail.com>
+In-Reply-To: <CAK7LNARJn4uugHxcjK+WOWBs0gPVZQsCu4y6M8hkNK1U5FehRA@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 30 Mar 2020 17:37:11 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARXj3=1VPWL4kFmGkZuvV=yKb7gVaX2nbeiO54f-zWeHQ@mail.gmail.com>
+Message-ID: <CAK7LNARXj3=1VPWL4kFmGkZuvV=yKb7gVaX2nbeiO54f-zWeHQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties: false'
+To:     Rob Herring <robh@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Brian Masney <masneyb@onstation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guillaume La Roque <glaroque@baylibre.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux PM mailing list <linux-pm@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Rob,
 
---=-xu5K+B2HpkD7ANo/1hwE
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 30, 2020 at 4:09 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> On Thu, Mar 26, 2020 at 7:06 AM Rob Herring <robh@kernel.org> wrote:
+> >
+> > Setting 'additionalProperties: false' is frequently omitted, but is
+> > important in order to check that there aren't extra undocumented
+> > properties in a binding.
+> >
+> > Ideally, we'd just add this automatically and make this the default, but
+> > there's some cases where it doesn't work. For example, if a common
+> > schema is referenced, then properties in the common schema aren't part
+> > of what's considered for 'additionalProperties'. Also, sometimes there
+> > are bus specific properties such as 'spi-max-frequency' that go into
+> > bus child nodes, but aren't defined in the child node's schema.
+> >
+> > So let's stick with the json-schema defined default and add
+> > 'additionalProperties: false' where needed. This will be a continual
+> > review comment and game of wack-a-mole.
+> >
+> > Signed-off-by: Rob Herring <robh@kernel.org>
+> > ---
+>
+>
+> >  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
+>
+>
+> You may have already queue this up, but just in case.
+>
+> Acked-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-I took some time testing the patch series on my HP ENVY x360 13-
-ag0005ng with a Ryzen 5 2500U.
-On my machine the readout of register AMD_P2C_MSG3 (0x1068C) always
-comes back as zero (0x0) and thusly activestatus will be zero as well.
-Consequently the bistmask (0x0) will not match any sensor types.
-I came up with a patch [1] on top of this patch series to add module
-parameters to be able to statically enable the different sensors.
-If I load the module with "force_accel=3D1" I get a working accelerometer
-HID device and working screen rotation through iio-sensor-proxy. This
-only works so far, if I boot the kernel with "amd_iommu=3Doff", which
-seems to be a general issue with this driver [2],[3].
 
-[1] https://gist.githubusercontent.com/conqp/e8a0793406fbe7c9714f01f3078ea3=
-3a/raw/ac2de743e68d1dd90430e57cb28df8c1dc5d1098/amd-sfh.patch
-[2] https://bbs.archlinux.org/viewtopic.php?id=3D253058
-[3] https://bbs.archlinux.org/viewtopic.php?id=3D252815
+
+I take back Ack for socionext,uniphier-gpio.yaml
 
 
 
---=-xu5K+B2HpkD7ANo/1hwE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+Now "make dt_binding_check" produces a new warning.
 
------BEGIN PGP SIGNATURE-----
+gpio@55000000: 'interrupt-parent' does not match any of the regexes:
+'pinctrl-[0-9]+'
 
-iHUEABYIAB0WIQT62wKwhMqSt8WaustMqNUjvThq9wUCXoGu4AAKCRBMqNUjvThq
-90CcAP42tzB5p8epHWyLk2ibq8kfLGKbQECKP4upjJ7Y0q0llAEAvBpxLho8wZLp
-c57ghnyWscdAxbchldW7RQ4GVjX+DAs=
-=l8Eg
------END PGP SIGNATURE-----
 
---=-xu5K+B2HpkD7ANo/1hwE--
+This binding uses 'interrupt-parent'
+without 'interrupts'.
 
+Instead, the mapping of the interrupt numbers
+is specified by the vendor-specific property
+socionext,interrupt-ranges
+
+
+
+I cannot add   "interrupt-parent: true" because
+dt-schema/meta-schemas/interrupts.yaml
+has "interrupt-parent: false".
+
+
+Is there any solution?
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

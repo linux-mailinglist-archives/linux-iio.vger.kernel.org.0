@@ -2,127 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EE0197C4E
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 14:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A8CF197D07
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 15:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729985AbgC3M47 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 08:56:59 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:59876 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729862AbgC3M47 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 08:56:59 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 368072981B1
-Subject: Re: [PATCH v7 00/12] Cros EC sensor hub FIFO support
-To:     Gwendal Grignou <gwendal@chromium.org>, bleung@chromium.org,
-        Jonathan.Cameron@huawei.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200327223443.6006-1-gwendal@chromium.org>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <bd18a910-4f1b-661a-53a7-c69e7f3e9222@collabora.com>
-Date:   Mon, 30 Mar 2020 14:56:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1727955AbgC3Nfs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 09:35:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34398 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727612AbgC3Nfs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Mar 2020 09:35:48 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 63EDC20757;
+        Mon, 30 Mar 2020 13:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585575347;
+        bh=mpEf7NQVYYvCdUG6heXAB6Ng6mW+GJ24w6fwdkL20GU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=bjjMLzKCuXkABe8htMvwdDaKYBYq/YwHYEzf81lxMyl1OwfoszaeMmodLD7w925HE
+         LPiu/Kfu+/BCT1sT2VCsk+l5DgeVzGNhcrqfqSnS65K4j4/JBrm7h0XAkgZ2HX/3Nx
+         kPPAss31wk+vBgTwCAS5Ev+PmnkPJt7JVMkuTwxA=
+Date:   Mon, 30 Mar 2020 14:35:41 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "robh@kernel.org" <robh@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
+        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "Costina, Adrian" <Adrian.Costina@analog.com>
+Subject: Re: [PATCH v13 8/8] dt-bindings: iio: adc: add bindings doc for
+ AD9467 ADC
+Message-ID: <20200330143541.189ba0ad@archlinux>
+In-Reply-To: <20200329111915.0a3211bb@archlinux>
+References: <20200324134636.64643-1-alexandru.ardelean@analog.com>
+        <20200324134636.64643-9-alexandru.ardelean@analog.com>
+        <20200326185616.GA2673@bogus>
+        <17a99874285734496a97d271dda7368b40e88255.camel@analog.com>
+        <20200329111915.0a3211bb@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200327223443.6006-1-gwendal@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Gwendal,
+On Sun, 29 Mar 2020 11:19:15 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-On 27/3/20 23:34, Gwendal Grignou wrote:
-> This patchset adds a sensorhub driver for spreading sensor
-> events coming from the Embedded controller sensor FIFO:
+> On Thu, 26 Mar 2020 19:45:39 +0000
+> "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 > 
->        +---------------+ +--------------+ +----
->        | cros_ec_accel | | cros_ec_gyro | | ...
->        +---------------+ +--------------+ +----
->            id:0       \        id:1 |       / id:..
->                  +------------------------------+
->                  |       cros-ec-sensorhub      |
->                  +------------------------------+
->                  |           cros_ec_dev        |
->                  +------------------------------+
->                  | cros_ec_i2c, cros_ec_lpc, .. |
->                  +------------------------------+
->                                  |
->                                  EC
+> > On Thu, 2020-03-26 at 12:56 -0600, Rob Herring wrote:  
+> > > On Tue, 24 Mar 2020 15:46:36 +0200, Alexandru Ardelean wrote:    
+> > > > This change adds the binding doc for the AD9467 ADC.
+> > > > 
+> > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > > ---
+> > > >  .../bindings/iio/adc/adi,ad9467.yaml          | 65 +++++++++++++++++++
+> > > >  1 file changed, 65 insertions(+)
+> > > >  create mode 100644
+> > > > Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > > >     
+> > > 
+> > > Please add Acked-by/Reviewed-by tags when posting new versions. However,
+> > > there's no need to repost patches *only* to add the tags. The upstream
+> > > maintainer will do that for acks received on the version they apply.
+> > > 
+> > > If a tag was not added on purpose, please state why and what changed.    
+> > 
+> > My bad. Apologies for that.
+> > No idea how I missed adding this. Especially since I already know that I should
+> > add it.
+> > 
+> > I guess I got mixed up with too many branches and not paying attention.  
+> Fixed the missing tag from Rob and whole series applied to the togreg branch of
+> iio.git.  Pushed out as testing for the autobuilders to poke at it.
 > 
-> When new sensors events are present, the EC raises and interrupt,
-> sensorhub reads the FIFO and uses the 'id' field to spread the event to
-> the proper IIO sensors. This stack is similar to the HID sensor input
-> stack.
-> 
-> The patch set allows the host to receive MEMS sensor sample
-> asynchronously from ChromeOS Emebedded Controller (EC).
-> 
-> Given the EC and the host are not synchronized, the timestamp generated
-> by the EC drifts and the AP interrupt latency adds variable delay.
-> 
-> When events arrive, the driver stores the time of the interrupt and use
-> that information to convert the timestamp from the EC time domain to the
-> AP time domain. To prevent the errors from the interrupt time variation,
-> a median filter smooth the timestamp generation and prevents timestamps
-> to go in the past.
-> 
-> When a batch of sensor events arrives, the sensor hub ring code spreads
-> the timestamps.
-> 
-> The buffer interaface is presentid through the IIO ABI.
-> And extra parameter - flush - (presents on HID and ST sensor hub implementation)
-> force the EC to send accumulated events in its queue, without waiting
-> for buffer hwfifo_timeout to expire.
-> 
-> To access sensor data, we can use iio_readdev like:
->  iio_readdev -T 10000 -s 4 -b 2 iio:device4
-> 
-> When FIFO is not supported by the EC, a trigger is present in the
-> directory. After registering a trigger, setting sampling_frequency,
-> the latest data collected by the sensor will be retrieved by the host
-> when the trigger expires.
-> 
-> When cros_ec_accel_legacy driver is used, no FIFO is supported and the
-> sampling frequency for the accelerometers is hard coded at 10Hz.
-> 
-> Gwendal Grignou (12):
->   platform: chrome: sensorhub: Add the number of sensors in sensorhub
->   platform: chrome: sensorhub: Add FIFO support
->   platform: chrome: sensorhub: Add code to spread timestmap
->   platform: chrome: sensorhub: Add median filter
->   iio: cros_ec: Move function description to .c file
->   iio: expose iio_device_set_clock
->   iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO
->   iio: cros_ec: Remove pm function
->   iio: cros_ec: Expose hwfifo_timeout
->   iio: cros_ec: Report hwfifo_watermark_max
->   iio: cros_ec: Use Hertz as unit for sampling frequency
->   iio: cros_ec: flush as hwfifo attribute
-> 
->  drivers/iio/accel/cros_ec_accel_legacy.c      |    8 +-
->  .../cros_ec_sensors/cros_ec_lid_angle.c       |    3 +-
->  .../common/cros_ec_sensors/cros_ec_sensors.c  |   13 +-
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |  403 +++++--
->  drivers/iio/industrialio-core.c               |    8 +-
->  drivers/iio/light/cros_ec_light_prox.c        |   15 +-
->  drivers/iio/pressure/cros_ec_baro.c           |   14 +-
->  drivers/platform/chrome/Makefile              |    4 +-
->  drivers/platform/chrome/cros_ec_sensorhub.c   |  111 +-
->  .../platform/chrome/cros_ec_sensorhub_ring.c  | 1046 +++++++++++++++++
->  .../linux/iio/common/cros_ec_sensors_core.h   |  104 +-
->  include/linux/iio/iio.h                       |    2 +
->  .../linux/platform_data/cros_ec_sensorhub.h   |  163 +++
->  13 files changed, 1655 insertions(+), 239 deletions(-)
->  create mode 100644 drivers/platform/chrome/cros_ec_sensorhub_ring.c
-> 
+> Exposing the dma buffer stuff to the autobuilders is great. So far the only
+> issue was that patch I took yesterday where we need to rethink things.
+> However, that's just my sanity check local build so I'm sure we broke
+> some obscure architecture :)
 
-Queued patches from 0 to 11 to for-next. Patch 12 needs some rework.
+0-day found some issues in the series..  Note I think this is the list that
+hasn't been human sanity checked yet so can be 'interesting'.
+
+drivers/iio/adc/ad9467.c:288:13: warning: Checking if unsigned expression 'r_clk' is less than zero. [unsignedLessThanZero]
+r_clk = clock_round_rate that can indeed return a negative (long)
+I've dropped the unsigned given we check for negative so this should be safe.
+
+drivers/iio/adc/ad9467.c:381:7: warning: Variable 'ret' is assigned a value that is never used. [unreadVariable]
+Missing error check. I've added it. Please sanity check in the testing branch.
+
+
+drivers/iio/adc/adi-axi-adc.c:158:18: warning: The scope of the variable 'ctrl' can be reduced. [variableScope]
+This one is silly.  Sure you could reduce the scope, but there is little risk in not doing so given all the
+function contains is one loop.
+
+drivers/iio/adc/adi-axi-adc.c:354:32: warning: Redundant assignment of 'conv' to itself. [selfAssignment]
+This one is real. Fixed up. conv = conv = st->...
+
+drivers/iio/adc/adi-axi-adc.c:355:9: warning: The scope of the variable 'ret' can be reduced. [variableScope]
+Again, somewhat silly. 
+
+So I've ignored 2 of them.  We 'could' fix these but until I get the feeling
+the kernel coding style has actually changed to specify this rather than it
+being a matter of taste I'm not particularly inclined to do so.
 
 Thanks,
-Enric
+
+Jonathan
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
 

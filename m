@@ -2,72 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC8E119830F
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 20:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E496198351
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Mar 2020 20:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727849AbgC3SLK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Mar 2020 14:11:10 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:45717 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726567AbgC3SLJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 14:11:09 -0400
-Received: by mail-il1-f194.google.com with SMTP id x16so16774750ilp.12;
-        Mon, 30 Mar 2020 11:11:09 -0700 (PDT)
+        id S1726385AbgC3SYp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Mar 2020 14:24:45 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:41093 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgC3SYp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Mar 2020 14:24:45 -0400
+Received: by mail-il1-f195.google.com with SMTP id t6so13219411ilj.8;
+        Mon, 30 Mar 2020 11:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vb60ZKVrPR+7lUjzvQVj0TYyeHury9tAevngqdCfDhE=;
+        b=POVqLOteVZRnU2iuw+JQb1UYnasknNqPZdpCx0FB+6K7FuuJ7m5m6mEKHWE6TlcOos
+         0Diox5mBgrAeBfDmeO5m4DiTGXi1FDMNV3Z0OLRNmxGve8hr7x8jLcBFmsFrXM2ND3cY
+         81jZKk+7I1OS/UgVpP2dufwbvSo0kz+ADW5wjNM7eD/YDzBwEGLWzJqGj9PfSzU3/Qzg
+         mtCG42OIsqJV5cASCjob/eBtdjPyTjImV+1mlpchK3eS4WUucgCiSD8GABAmHQwdxn91
+         sXDjzzULkHHd/SrQ26sbko/mreOZGab7H0CdnqoaHL3MWC/P7q+o3JQH6Svad/2MvIUo
+         xPSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=s037sC2z9ESNjlnmzZ5RPd9h1faVevqStuCn9N98VOk=;
-        b=hHSA4bdSUWu80EWc74x1j7IzJ/nIBJP7ZLwcbJ1G4kpzD6ONfztSUep6CsNXY85KIV
-         GBV5vLkWwGeA7VGxORE634PvP644lrRQsQiOen+V4ZRXOCGChhJMGbr04OKMm8VfJiNE
-         PY7hjRGg/A0EapvbDftOabiC0X1qKDtSccJweiPy2e6hqWLDJgrHdssALcEZivWUDKm/
-         85h56Ict75N5wAXDMA+ZV6GynxvqHtpQMr4MHT52defgKGhkZSw6iVDruJ8+qvG0058A
-         O3dugWu2McDD5n0HZ6CmrJqX0SE/+jspr74ojfA9jPKzAMB9lYTR4RH4XI/UcuvIWlFs
-         z+iw==
-X-Gm-Message-State: ANhLgQ16+I5XQqXEXVg/wLm1mo9z0NB/z9Gwyjt+3ZEZpZ5+b6cFCI5T
-        87xPoTj4DXSv9tn4KW3eqw==
-X-Google-Smtp-Source: ADFU+vvnW1E4loPKsXsXHGuRBP7ua4bfNufn3sVJlvuMFqQEmjNGX7i3bU6vAWNXSWc11oAu5L3yCA==
-X-Received: by 2002:a92:88d0:: with SMTP id m77mr11696908ilh.282.1585591868568;
-        Mon, 30 Mar 2020 11:11:08 -0700 (PDT)
-Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id l70sm5158843ili.81.2020.03.30.11.11.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 11:11:07 -0700 (PDT)
-Received: (nullmailer pid 8155 invoked by uid 1000);
-        Mon, 30 Mar 2020 18:11:06 -0000
-Date:   Mon, 30 Mar 2020 12:11:06 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Johan Jonker <jbx6244@gmail.com>
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, heiko@sntech.de, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/3] dt-bindings: iio: adc: rockchip-saradc: add
- description for px30
-Message-ID: <20200330181106.GA8102@bogus>
-References: <20200313132926.10543-1-jbx6244@gmail.com>
- <20200313132926.10543-3-jbx6244@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vb60ZKVrPR+7lUjzvQVj0TYyeHury9tAevngqdCfDhE=;
+        b=KesPkTbZL14bJXOM1KhlPOhUEvQ6kY8SeaOEdlR0ZCW35kZkoSqwqOK1OKpqrr+xPG
+         uq+afEVeIjUGrv8zrDdQyuE6qkCrkBZ85XAqT9gXkkdwkDc2tV4fV/W5qYgs5uuByJj2
+         fhA+x6701WQ7UMEBelorlyfAn1rLqAgkeIwFHuocNKtmAR3oiqp4VtTn64PpyWqsX9Yn
+         7tAbY2U6HH9TtAjhHnOSd3uq/XM7QDClcZfN+bF5L2g5tWCVVxrMsGVNvUJrdnbfOGff
+         Ya4ZMbtXPThTWx1K2zx8NeVh8e8fPKsyykTVm3rKwXX98gYdIwkKvq2lWlkB6O3YPmUq
+         og4w==
+X-Gm-Message-State: ANhLgQ2B+LVVTlOkiaISWZxZg/Rr6mWAaNEC1LQ3Y6+YcUtVN9ZKBNkH
+        s2N9BWbZzgAV517uwJq3MqV6dO6+I5o/2y9LRSI=
+X-Google-Smtp-Source: ADFU+vtXo3ZRGtwaLol7PUjCnQ1OWidrDqgi2IjetQ1Esv1g1R4SmO/FqtyW5pSo2N6rqRZ/Y/EdLAp7hIhCLrxvFKY=
+X-Received: by 2002:a92:9edc:: with SMTP id s89mr13038549ilk.229.1585592683695;
+ Mon, 30 Mar 2020 11:24:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200313132926.10543-3-jbx6244@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200316124929.GA389@syed.domain.name> <20200318020506.GA45571@icarus>
+ <20200322175831.74e10aa7@archlinux>
+In-Reply-To: <20200322175831.74e10aa7@archlinux>
+From:   Syed Nayyar Waris <syednwaris@gmail.com>
+Date:   Mon, 30 Mar 2020 23:54:32 +0530
+Message-ID: <CACG_h5qctM0S2buQHHNnJ_qVY6YY2wYruj9aTKH9RiJ=9_LfoQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] counter: 104-quad-8: Add lock guards - generic interface
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 Mar 2020 14:29:26 +0100, Johan Jonker wrote:
-> The description below is already in use for px30.dtsi,
-> but was somehow never added to a document, so add
-> "rockchip,px30-saradc", "rockchip,rk3399-saradc"
-> for saradc nodes on a px30 platform to rockchip-saradc.yaml.
-> 
-> Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+Hi Jonathan
 
-Acked-by: Rob Herring <robh@kernel.org>
+>Looks good.  I'm not sure right now which tree I'll take this through
+>(depends on whether it looks like we'll get an rc8 and hence I can sneak
+>it in for the coming merge window or not).
+>
+>So poke me if I seem to have forgotten to apply this in a week or so.
+
+Gentle Reminder.
+Thanks !
+Syed Nayyar Waris

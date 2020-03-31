@@ -2,245 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E1E1995C0
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 13:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D851995C2
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 13:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730755AbgCaLs4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Mar 2020 07:48:56 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:62774 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730334AbgCaLsz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 07:48:55 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02VBdxBF005080;
-        Tue, 31 Mar 2020 07:48:37 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3020e6hfpa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 31 Mar 2020 07:48:36 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 02VBmZbp027952
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 31 Mar 2020 07:48:35 -0400
-Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 31 Mar 2020 04:48:34 -0700
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 31 Mar 2020 04:48:23 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 31 Mar 2020 04:48:32 -0700
-Received: from NSA-L01.ad.analog.com (nsa-l01.ad.analog.com [10.32.224.203])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 02VBmGgE024975;
-        Tue, 31 Mar 2020 07:48:29 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH v3 6/6] dt-bindings: iio: Add adis16475 documentation
-Date:   Tue, 31 Mar 2020 13:48:11 +0200
-Message-ID: <20200331114811.7978-7-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200331114811.7978-1-nuno.sa@analog.com>
-References: <20200331114811.7978-1-nuno.sa@analog.com>
+        id S1730424AbgCaLt5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Mar 2020 07:49:57 -0400
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:53820 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730334AbgCaLt4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 07:49:56 -0400
+Received: by mail-pj1-f66.google.com with SMTP id l36so966247pjb.3;
+        Tue, 31 Mar 2020 04:49:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/wPvbpIMhd7MnskghgUO5jeF7ND/28Jj4zI+1cNb8CE=;
+        b=cp7OQ06NQE0XtQPzutp24bGeZ2NvsNJQmmnWK3ccLOyanaxOxMc2oNRWBldBtsxLpA
+         tXMZ6HXF1y9xmtg1pg8roQxQiI8fzmTobx0P/zZsZwhkq6f8NsJy2NHoPVbdlkfhH3+a
+         lo8D5gucRqYfdEIqnZ4q+mCmFh3ego3D9ggr8FaK4RK+G52/NKzopGrBxquCHQFJPqKT
+         p4HTq6r7yOqZlVLcnL5D/C3wiQfv6eTWeAHUEcK4F3S4DCG0pYAkqmlcHnTyBHd6n20N
+         d2Dm4YyON6KekpYxDWcILIKq/wl0pzLcU861XGp0vJyJNU64KwMeK0hdPRtRZJaj/VEj
+         XFpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/wPvbpIMhd7MnskghgUO5jeF7ND/28Jj4zI+1cNb8CE=;
+        b=SdYTTPYwrPUPtXkcZesCQCLtWH7IULY79Jk2nT6ngY7hswjGWv4EAe71t1n1aIQBR+
+         la+Fs3qYOa1xfMsWJtwP3mMxXdR/GwJlRLINH0oHhpKGqtKB3gM7qqd95G49x6zNk6jS
+         M0gTi/Bshz8jB9jJkpq8Y+L0c0iJemN/QohfIr22fcpGKtHV+WcMRdHdJZJZt3g2PjXN
+         qyPMIFR0qHhOZ5kEP/rUl+hwZy8NfPt1Ntguyee5mPnt7MCYmeIL9UL9C6EFtxMtLvPb
+         eETNxKYDKzDMjskvPIo/JIQk3ROmwOf4BPdvxlTAYqUfiaWMnTjmlokQrqw8LmdIxUZP
+         LSHw==
+X-Gm-Message-State: AGi0PuZr6soBG7pO0mz02I7twm6c7RX+rwtxvetQK0uL34xwdoLVtZqN
+        XhL6TCoq+ZGtKUmV7j6y7b54eiBPfRhPfg==
+X-Google-Smtp-Source: APiQypIBjqOl1pWqZwL+WPV3jBmwrFFA8SIvj0PVeEIp3RjvywwUIvLZPi9mZYlsFCTo4/JTUnnYwA==
+X-Received: by 2002:a17:90b:4d04:: with SMTP id mw4mr3524626pjb.180.1585655395317;
+        Tue, 31 Mar 2020 04:49:55 -0700 (PDT)
+Received: from SARKAR ([122.178.242.244])
+        by smtp.gmail.com with ESMTPSA id z66sm2843635pfz.30.2020.03.31.04.49.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2020 04:49:54 -0700 (PDT)
+Message-ID: <5e832e62.1c69fb81.2a0e9.b85d@mx.google.com>
+X-Google-Original-Message-ID: <20200331114951.GB7750@rohitsarkar5398@gmail.com>
+Date:   Tue, 31 Mar 2020 17:19:51 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "stefan.popa@analog.com" <stefan.popa@analog.com>,
+        "zhongjiang@huawei.com" <zhongjiang@huawei.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/2] use DEFINE_DEBUGFS_ATTRIBUTE instead of
+ DEFINE_SIMPLE_ATTRIBUTE
+References: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
+ <20200329103818.2fce9529@archlinux>
+ <aee10d6bfc5f2fef85d90245304f3e0f368f94ec.camel@analog.com>
+ <BN6PR03MB33472A88BA78392686737F9099C80@BN6PR03MB3347.namprd03.prod.outlook.com>
+ <74033597-c348-03df-d52f-748bf52c1a12@metafoo.de>
+ <5e832756.1c69fb81.19c58.78e8@mx.google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-03-31_04:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
- clxscore=1015 phishscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310107
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5e832756.1c69fb81.19c58.78e8@mx.google.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the ADIS16475 device devicetree bindings.
-
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
-Changes in v2:
- * Remove burst32 property;
- * Rename clk-mode to adi,sync-mode;
- * Remove clock-names;
- * Add conditionals to state that clocks is only needed depending on adi,sync-mode property.
-
-Changes in v3:
- * Make use of 'allOf' in conditionals.
-
- .../bindings/iio/imu/adi,adis16475.yaml       | 137 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 138 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-new file mode 100644
-index 000000000000..98baecb4b98a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-@@ -0,0 +1,137 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/imu/adi,adis16475.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADIS16475 and similar IMUs
-+
-+maintainers:
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+description: |
-+  Analog Devices ADIS16475 and similar IMUs
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16475.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adis16475-1
-+      - adi,adis16475-2
-+      - adi,adis16475-3
-+      - adi,adis16477-1
-+      - adi,adis16477-2
-+      - adi,adis16477-3
-+      - adi,adis16470
-+      - adi,adis16465-1
-+      - adi,adis16465-2
-+      - adi,adis16465-3
-+      - adi,adis16467-1
-+      - adi,adis16467-2
-+      - adi,adis16467-3
-+      - adi,adis16500
-+      - adi,adis16505-1
-+      - adi,adis16505-2
-+      - adi,adis16505-3
-+      - adi,adis16507-1
-+      - adi,adis16507-2
-+      - adi,adis16507-3
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpha: true
-+
-+  spi-cpol: true
-+
-+  spi-max-frequency:
-+    maximum: 2000000
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description:
-+      Must be the device tree identifier of the RESET pin. If specified,
-+      it will be asserted during driver probe. As the line is active low,
-+      it should be marked GPIO_ACTIVE_LOW.
-+    maxItems: 1
-+
-+  adi,sync-mode:
-+    description:
-+      Configures the device SYNC pin. The following modes are supported
-+      0 - output_sync
-+      1 - direct_sync
-+      2 - scaled_sync
-+      3 - pulse_sync
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 3
-+
-+  adi,scaled-output-hz:
-+    description:
-+      This property must be present if the clock mode is scaled-sync through
-+      clock-names property. In this mode, the input clock can have a range
-+      of 1Hz to 128HZ which must be scaled to originate an allowable sample
-+      rate. This property specifies that rate.
-+    minimum: 1900
-+    maximum: 2100
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - spi-cpha
-+  - spi-cpol
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,adis16500
-+              - adi,adis16505-1
-+              - adi,adis16505-2
-+              - adi,adis16505-3
-+              - adi,adis16507-1
-+              - adi,adis16507-2
-+              - adi,adis16507-3
-+
-+    then:
-+      properties:
-+        adi,sync-mode:
-+          minimum: 0
-+          maximum: 2
-+
-+  - if:
-+      properties:
-+        adi,sync-mode:
-+          enum: [1, 2, 3]
-+
-+    then:
-+      dependencies:
-+        adi,sync-mode: [ clocks ]
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            adis16475: adis16475-3@0 {
-+                    compatible = "adi,adis16475-3";
-+                    reg = <0>;
-+                    spi-cpha;
-+                    spi-cpol;
-+                    spi-max-frequency = <2000000>;
-+                    interrupts = <4 IRQ_TYPE_EDGE_RISING>;
-+                    interrupt-parent = <&gpio>;
-+            };
-+    };
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ae9cce22fa40..0fd9dbf2f793 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1016,6 +1016,7 @@ W:	http://ez.analog.com/community/linux-device-drivers
- S:	Supported
- F:	drivers/iio/imu/adis16475.c
- F:	Documentation/ABI/testing/sysfs-bus-iio-imu-adis16475
-+F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
- 
- ANALOG DEVICES INC ADM1177 DRIVER
- M:	Beniamin Bia <beniamin.bia@analog.com>
--- 
-2.17.1
-
+Hey Nuno,
+> > > > 
+> > > I don't have the exact parts that this patch is touching but I have other parts where this patch
+> > > applies and should be same. So, the idea to test this is to read the files in debugfs? Maybe also
+> > > some unbind + binding?
+> > > 
+> > > I will try to test this still today...
+> > 
+> > The stress test is to open the debugfs file, then unbind the device and then
+> > read from the still open debugfs file.
+> Yes, also just to be sure, we need to test DEFINE_DEBUGFS_ATTRIBUTE
+> along with debugfs_create_file_unsafe. I will send out another patch
+> that changes debugfs_create_file to debugfs_create_file_unsafe and then
+> that can be tested.
+Have sent out a v2 that is ready to be tested
+> > - Lars
+> 
+> Thanks,
+> Rohit
+Thanks,
+Rohit

@@ -2,80 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C39F1999A2
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 17:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD961999B2
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 17:31:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730528AbgCaP2o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Mar 2020 11:28:44 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:4694 "EHLO
+        id S1730521AbgCaPbH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Mar 2020 11:31:07 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5462 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727703AbgCaP2o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 11:28:44 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02VFQuk3013027;
-        Tue, 31 Mar 2020 11:28:25 -0400
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2108.outbound.protection.outlook.com [104.47.55.108])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3023g59ddd-1
+        by vger.kernel.org with ESMTP id S1730391AbgCaPbG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 11:31:06 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02VFTqdL006351;
+        Tue, 31 Mar 2020 11:30:48 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3020e6j2t5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 31 Mar 2020 11:28:25 -0400
+        Tue, 31 Mar 2020 11:30:48 -0400
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02VFUmH7007511;
+        Tue, 31 Mar 2020 11:30:48 -0400
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2103.outbound.protection.outlook.com [104.47.55.103])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3020e6j2t3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 31 Mar 2020 11:30:48 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PGXxa8/oRzmKag/NTX3r8BT7khkxY9QBtzNRnpHYdn/McM3lJde5WoFo+438YWDPsiK7GfmNtCcrFE1GhsXtd6HQlMavABfvKg+kc4bt0LuSkoMMIN8o6vSs+HgHQ9FpWD/d+4lniGYBXAOhQ4yWkifbZvwG1AoMqtADxDkSK50ihNcm3vnCkKpa9lob6xohhrLBGkDWaCfF/03yHunGfYK1XRB5Ya+sPSlviB4F5jpkT+ISUP1LRmKjYDx8ProEpw6OaGrAJ6H50kyh30su21zsM2Vq5l1Lkk2+aDruDfeTqrNb01Y3esPsBO4n3Zx+KRTJ4WsZPQRVw2OsCkBK5Q==
+ b=PKFq9EJ0okVQwXuCuO61+k75XplUd0OLsxlgvQvpJINdqgF7GQd5xz+V/DfXK5Mrmkbv/uDXeo6vzehMzHAakqHeNC5Ap2c7ZeWR702mak4vpayEzn6hHCq2SRQBQ4P+v3zGu3wB4GUm/Kh9dFgLt5Qu3jphMBk3nIWORnSj+XPmS3BA1XlessutNqBH8oM+she+qD8T/5rGI4IQ1+WZrYyc+2Dp4/yl0RK6+ru/Q6nM45aUb/eRFHrj6mbxX7Zr8xabFkFlGEfuqribiyLlX+99tAPoH8qZlZMmlQmI7EXm/SrOiJFfx6PD4Bb1SdhJryM48mlxuVwXuKnq2lXwCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dmlqA6xbNMd/GO8Jo4fA1ZFBRm6FQtN1dLObOYPZXNE=;
- b=QBxdV4ZwCMH5ematNCfJ0AF6F0odHZ3qGUkFbrbj0B9+zF80DKeeGFj9ijXjH10CFlqKzOFN1imcLt0ADYbzqWpWEf+uhKu7y0fxk50XdLr8QXCPCuIpIXpzYLDQA00WrxGCLjrHpNHqQ11INXmEka/Z0JefYjVrb2jE3tRNHOkz09auLIz5Hxg2M+2SgQFfkInPkJ3DdDO0WZcgZkjHj9gP0Ec9orzcXK6LS+u+F8JzhIGgZXS3TLgefsKUM4BcxzD1RX3kwuUmDxlqOVDIW+KSc2+Wfn+GpLTJN8+10j4GtsRzo2BSTO7tvLyDkm6zVGqgfUaw15C3DTO1/WGaEg==
+ bh=Xin5BUtgFHdwhbaYR8h3fNf0HAWCEq0jm93YOdanraU=;
+ b=YGKz3qkUlShskkleckloF3GpJ98mhLc/Q+WGAffTLKPXQblcUPVy/Ng7Vu7N1rybDFlnNmcZcVEDXhYZ9VaTeC3yhgmgfohULZZri81c3d6NqqdAzVMNdVCey+rTqz56XNzrOPaQpNy2R0j48pkVoeP2RWJ0/YjWpzoA0UAkykPdNf2kHfk+C9PJCFF1kart2Gme4q35wI9q4UTEwED1KAXWePJbD/r+PW/aQGQ/RK+2qRYHuPe7/jwOcHcnI/jO47Wjjw6VpGIcHy3os/bjB0ayID2TXcdT5eQm4jdwMw57M/quhUNLpEvnWHde72eNXBt3LMMuVGlpT4WlqLlVVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dmlqA6xbNMd/GO8Jo4fA1ZFBRm6FQtN1dLObOYPZXNE=;
- b=jxaqwfx9YC2GpPzdRGxLUyrTifYiAekIYtb3QjdwCtlWhiH/vDhJ5rcYl9UoIv7IjTPLzDEJvc1scMGjKJvraNEptSY+jtePS7Eb5XNKpsLXQj0V4Xbh3rbiAiiV9fye23UBFUpHQbSUzHTeGMaMfIHBbMYp/WRBp9g0CES2ZXU=
+ bh=Xin5BUtgFHdwhbaYR8h3fNf0HAWCEq0jm93YOdanraU=;
+ b=z8AYt/mDY96mDdmORmQ4hIcNL4cQ1rTbbgbBfKdDTNkUcImGVJdbZIjE+OPlM6Yk6tw2oENrWOBtN49E9r4B7/UIubazUX4RhDrFpeUsUKhEpsKgN1kRVUZFV0aTFwObqtTKvLVYFdv4wsDLjHCPeRDJjuCBPwhUf0XQilx2yco=
 Received: from BN6PR03MB3347.namprd03.prod.outlook.com (2603:10b6:405:3d::35)
- by BN6PR03MB3044.namprd03.prod.outlook.com (2603:10b6:404:10e::17) with
+ by BN6PR03MB2788.namprd03.prod.outlook.com (2603:10b6:404:5a::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.19; Tue, 31 Mar
- 2020 15:28:22 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Tue, 31 Mar
+ 2020 15:30:46 +0000
 Received: from BN6PR03MB3347.namprd03.prod.outlook.com
  ([fe80::4097:be14:fb64:1979]) by BN6PR03MB3347.namprd03.prod.outlook.com
  ([fe80::4097:be14:fb64:1979%7]) with mapi id 15.20.2856.019; Tue, 31 Mar 2020
- 15:28:22 +0000
+ 15:30:46 +0000
 From:   "Sa, Nuno" <Nuno.Sa@analog.com>
 To:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "zhongjiang@huawei.com" <zhongjiang@huawei.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 2/2] iio: imu: adis16460: use DEFINE_DEBUGFS_ATTRIBUTE
- instead of DEFINE_SIMPLE_ATTRIBUTE
-Thread-Topic: [PATCH v2 2/2] iio: imu: adis16460: use DEFINE_DEBUGFS_ATTRIBUTE
- instead of DEFINE_SIMPLE_ATTRIBUTE
-Thread-Index: AQHWB1JK8SqV+m9ll0iy5w3+icdDlKhi01KA
-Date:   Tue, 31 Mar 2020 15:28:22 +0000
-Message-ID: <BN6PR03MB33478A31AA2CF52CF3A81AB999C80@BN6PR03MB3347.namprd03.prod.outlook.com>
+Subject: RE: [PATCH 0/2] use DEFINE_DEBUGFS_ATTRIBUTE instead of
+ DEFINE_SIMPLE_ATTRIBUTE
+Thread-Topic: [PATCH 0/2] use DEFINE_DEBUGFS_ATTRIBUTE instead of
+ DEFINE_SIMPLE_ATTRIBUTE
+Thread-Index: AQHWBMsVVhk01u9Q+ku9e2lfo1M2mqhfUfcAgAGNSICAAa0UAIAAA14AgAADS4CAAAhmgIAAPSFQ
+Date:   Tue, 31 Mar 2020 15:30:46 +0000
+Message-ID: <BN6PR03MB334776C7AD6C7C2B2F4A55A399C80@BN6PR03MB3347.namprd03.prod.outlook.com>
 References: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
- <20200331114732.14739-1-rohitsarkar5398@gmail.com>
- <20200331114732.14739-3-rohitsarkar5398@gmail.com>
-In-Reply-To: <20200331114732.14739-3-rohitsarkar5398@gmail.com>
+ <20200329103818.2fce9529@archlinux>
+ <aee10d6bfc5f2fef85d90245304f3e0f368f94ec.camel@analog.com>
+ <BN6PR03MB33472A88BA78392686737F9099C80@BN6PR03MB3347.namprd03.prod.outlook.com>
+ <74033597-c348-03df-d52f-748bf52c1a12@metafoo.de>
+ <5e832756.1c69fb81.19c58.78e8@mx.google.com>
+ <5e832e62.1c69fb81.2a0e9.b85d@mx.google.com>
+In-Reply-To: <5e832e62.1c69fb81.2a0e9.b85d@mx.google.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
  =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctM2ZkYjU2MDAtNzM2NC0xMWVhLThhMzAtZmM3Nz?=
- =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDNmZGI1NjAyLTczNjQtMTFlYS04YTMwLWZj?=
- =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMzUzMyIgdD0iMTMyMzAxNDIxMD?=
- =?iso-8859-1?Q?AzNzE3NjQyIiBoPSI0eVhnSHRzQXorTmNWdzNGNDhSelhWa0g3eEU9IiBp?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctOTVlZmFiZDEtNzM2NC0xMWVhLThhMzAtZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDk1ZWZhYmQzLTczNjQtMTFlYS04YTMwLWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMTczOSIgdD0iMTMyMzAxNDIyND?=
+ =?iso-8859-1?Q?Q3Nzk3MjgyIiBoPSJpWU15dG9GbFMxMy9yd29vNitYRGJ4VkVYVTA9IiBp?=
  =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQUFLdkRRQ2NRZldBWWhNSUN1VHRHb1ZpRXdnSzVPMGFoVURBQUFB?=
+ =?iso-8859-1?Q?FFb0NBQUFpcEVkWWNRZldBV3dVSXA2bzVuWXBiQlFpbnFqbWRpa0RBQUFB?=
  =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
  =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQTV1R0RXQUFBQUFBQUFBQUFBQUFBQUo0?=
  =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
@@ -97,130 +109,85 @@ x-dg-rorf: true
 x-originating-ip: [2001:a61:25e8:5601:8594:23ee:fc00:bd03]
 x-ms-publictraffictype: Email
 x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 419f1fa2-64e7-42cf-f48d-08d7d58825bd
-x-ms-traffictypediagnostic: BN6PR03MB3044:
+x-ms-office365-filtering-correlation-id: 38aa1ad9-c38d-4820-1189-08d7d5887bf5
+x-ms-traffictypediagnostic: BN6PR03MB2788:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR03MB304422E61362F0267DEE8CD599C80@BN6PR03MB3044.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1443;
+x-microsoft-antispam-prvs: <BN6PR03MB27880BC7DC143CB7B520EBC599C80@BN6PR03MB2788.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
 x-forefront-prvs: 0359162B6D
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR03MB3347.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(376002)(346002)(39860400002)(396003)(366004)(136003)(86362001)(8676002)(76116006)(81166006)(66476007)(54906003)(64756008)(110136005)(66446008)(8936002)(66556008)(4326008)(7696005)(66946007)(316002)(52536014)(81156014)(478600001)(5660300002)(55016002)(53546011)(6506007)(33656002)(71200400001)(186003)(9686003)(2906002);DIR:OUT;SFP:1101;
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR03MB3347.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(396003)(39860400002)(376002)(346002)(136003)(366004)(53546011)(8936002)(86362001)(33656002)(6506007)(7696005)(66574012)(2906002)(478600001)(5660300002)(8676002)(81166006)(81156014)(66446008)(66946007)(76116006)(52536014)(66556008)(54906003)(9686003)(55016002)(186003)(316002)(4326008)(71200400001)(110136005)(64756008)(66476007);DIR:OUT;SFP:1101;
 received-spf: None (protection.outlook.com: analog.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: yJ7z9AvL0AnwejElDkOc1PwXEkxfEQi4v7wimPbd25ti+w9VXrI2oyKwz3jhO5MgCezWEXnEO48gqC8vpXfwJ3z9Svlj/xVrBKaOmt+BgbH0qdyYQUsZ/Ug2LafC0IxiFnorbzvUnvu8SuRTGcNJYHYACBRqPBV3B4w9eJLQM+Ts4s3kpzI/4BL3vxGFc6fvb5aXZwh4zEeecnbLb95q3+PnHqZG+s8S0Ra+TDxvhLuBnBD4ZnAJmVYfCjQl7TYgBxUxrmAOvD7M9UqbCgldacc8sKF+IpIA+gZtWIuNb+FpfWKjy5PKRmw3ouV11bFYSU6NdUzd742ep8ZfahI5ateTRVQUIU1rqS91VnQ9yL9+SmafMmBc0oOdbeyUK9Fd7Gf9jQ9bH0p9RqVP11InOtO+nUG9RM40NIPhQXssfVh/rn4JCXtPztPa+NI2tmDi
-x-ms-exchange-antispam-messagedata: zP5Up7BS2E/5Iwu7wWYYMwbK9iNtPxQoi3a5iN+p5WGY2VpJLqQjo5KwZcq8isGrT2gAKf2rHmOuM2uU78QqFwu8l5vOI3y0WfYKRMEz1aClKc3XXsWdchrKWQeUjOfQybeyPy3dHTQqfCWNqWb/pXQXmMTt8D0WQTGvX9OnUrmBL7dyWFHHPriKj1bDTVCQRgzBaP2Otx1i2+CFeTwjFg==
+x-microsoft-antispam-message-info: hVBlaKT+PA6O6uMsVHbGQw2QaijkI/oTx+FCa2E6UjeKs6m5jTjJd1viYskC6vyRgVaYfhCZrxkcrMHgc4Wb2QydhezHtwkPIrgqy9QmRSUP+W75T38WesWZUJD4SRBTN8rXHYewq7T4J57+xF/SC2StqUkac/zn79mhhF1XNzlq41B73gklo6Gnta+No25fCVjNR42SYaBDZ7RNxLjpnNxICPT3SEB11QgTImQwTOqo2BSRsiduPqIzjBynUu8DiG3Eiwsj54pV8nM0c+EMxIh+piF3XLJARvPuteHzQt7L/sZt88qykosUH9NgyJ1k5vs1tcwcsQeRQXZM2HzjB3gu/dStphzc6VAnF2iytqF4Ivdr8YbTgSRurxIciDDJNOygkd6SUhtbeIhQmLtaiKRpXTwmw44Au3etlsPPGzHFBbuQfjMvwQ6EtaJI1tAs
+x-ms-exchange-antispam-messagedata: ajbTwcEKvgXqu++yuYUlni7EKGtl2367qXueBBGCGqOxO6GrbP33RHIIyjYVv8J3dZ9C9FcBNg83S1n4/dhH/aF2+awSNSvUIZGbqb0WYgSm5ZdHdJAvnzMPHoxdZN732PijMm/uqaryfmnW5a2rAbFQiGvKB3DTIMDfjWrAqXNmjU77hm0Obz2mzjO+pTkGRj7sRAedbmv+oyBjv3SN7g==
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 419f1fa2-64e7-42cf-f48d-08d7d58825bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2020 15:28:22.0719
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38aa1ad9-c38d-4820-1189-08d7d5887bf5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2020 15:30:46.6272
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3kIb64xvnWg/DbeJmc2VqxyQjjfiTDFep1NF51GcXtBl/MfAxNA/Lz0A/dSISkjHLSNfPky3H1YhpNMNDGUPXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB3044
+X-MS-Exchange-CrossTenant-userprincipalname: Bc6T27/Jf9rMFr0iIJzedEJUg0WNh0rwQ2x2IHQ1yfDy9Fj7ktwSyxIxzNta1XH8700c8aNgEscKQuJswTlouQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB2788
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
  definitions=2020-03-31_05:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003310140
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ spamscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
+ clxscore=1015 phishscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003310140
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> O=
-n
-> Behalf Of Rohit Sarkar
-> Sent: Dienstag, 31. M=E4rz 2020 13:48
-> To: linux-iio@vger.kernel.org
-> Cc: Bogdan, Dragos <Dragos.Bogdan@analog.com>; Rohit Sarkar
-> <rohitsarkar5398@gmail.com>; Lars-Peter Clausen <lars@metafoo.de>;
-> Hennerich, Michael <Michael.Hennerich@analog.com>; Stefan Popa
-> <stefan.popa@analog.com>; Jonathan Cameron <jic23@kernel.org>; Hartmut
-> Knaack <knaack.h@gmx.de>; Peter Meerwald-Stadler
-> <pmeerw@pmeerw.net>; linux-kernel@vger.kernel.org
-> Subject: [PATCH v2 2/2] iio: imu: adis16460: use
-> DEFINE_DEBUGFS_ATTRIBUTE instead of DEFINE_SIMPLE_ATTRIBUTE
+> From: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> Sent: Dienstag, 31. M=E4rz 2020 13:50
+> To: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Sa, Nuno <Nuno.Sa@analog.com>; Ardelean, Alexandru
+> <alexandru.Ardelean@analog.com>; jic23@kernel.org;
+> stefan.popa@analog.com; zhongjiang@huawei.com; linux-
+> iio@vger.kernel.org; Bogdan, Dragos <Dragos.Bogdan@analog.com>;
+> pmeerw@pmeerw.net; knaack.h@gmx.de; Hennerich, Michael
+> <Michael.Hennerich@analog.com>; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH 0/2] use DEFINE_DEBUGFS_ATTRIBUTE instead of
+> DEFINE_SIMPLE_ATTRIBUTE
 >=20
-> debugfs_create_file_unsafe does not protect the fops handed to it
-> against file removal. DEFINE_DEBUGFS_ATTRIBUTE makes the fops aware of
-> the file lifetime and thus protects it against removal.
->=20
-> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
-> ---
->  drivers/iio/imu/adis16460.c | 27 +++++++++++++++------------
->  1 file changed, 15 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
-> index 9539cfe4a259..f96cfd007957 100644
-> --- a/drivers/iio/imu/adis16460.c
-> +++ b/drivers/iio/imu/adis16460.c
-> @@ -87,8 +87,8 @@ static int adis16460_show_serial_number(void *arg,
-> u64 *val)
->=20
->  	return 0;
->  }
-> -DEFINE_SIMPLE_ATTRIBUTE(adis16460_serial_number_fops,
-> -	adis16460_show_serial_number, NULL, "0x%.4llx\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(adis16460_serial_number_fops,
-> +		adis16460_show_serial_number, NULL, "0x%.4llx\n");
->=20
->  static int adis16460_show_product_id(void *arg, u64 *val)
->  {
-> @@ -105,8 +105,8 @@ static int adis16460_show_product_id(void *arg, u64
-> *val)
->=20
->  	return 0;
->  }
-> -DEFINE_SIMPLE_ATTRIBUTE(adis16460_product_id_fops,
-> -	adis16460_show_product_id, NULL, "%llu\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(adis16460_product_id_fops,
-> +		adis16460_show_product_id, NULL, "%llu\n");
->=20
->  static int adis16460_show_flash_count(void *arg, u64 *val)
->  {
-> @@ -123,19 +123,22 @@ static int adis16460_show_flash_count(void *arg,
-> u64 *val)
->=20
->  	return 0;
->  }
-> -DEFINE_SIMPLE_ATTRIBUTE(adis16460_flash_count_fops,
-> -	adis16460_show_flash_count, NULL, "%lld\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(adis16460_flash_count_fops,
-> +		adis16460_show_flash_count, NULL, "%lld\n");
->=20
->  static int adis16460_debugfs_init(struct iio_dev *indio_dev)
->  {
->  	struct adis16460 *adis16460 =3D iio_priv(indio_dev);
->=20
-> -	debugfs_create_file("serial_number", 0400, indio_dev-
-> >debugfs_dentry,
-> -		adis16460, &adis16460_serial_number_fops);
-> -	debugfs_create_file("product_id", 0400, indio_dev->debugfs_dentry,
-> -		adis16460, &adis16460_product_id_fops);
-> -	debugfs_create_file("flash_count", 0400, indio_dev->debugfs_dentry,
-> -		adis16460, &adis16460_flash_count_fops);
-> +	debugfs_create_file_unsafe("serial_number", 0400,
-> +			indio_dev->debugfs_dentry, adis16460,
-> +			&adis16460_serial_number_fops);
-> +	debugfs_create_file_unsafe("product_id", 0400,
-> +			indio_dev->debugfs_dentry, adis16460,
-> +			&adis16460_product_id_fops);
-> +	debugfs_create_file_unsafe("flash_count", 0400,
-> +			indio_dev->debugfs_dentry, adis16460,
-> +			&adis16460_flash_count_fops);
->=20
->  	return 0;
->  }
+> Hey Nuno,
+> > > > >
+> > > > I don't have the exact parts that this patch is touching but I have=
+ other
+> parts where this patch
+> > > > applies and should be same. So, the idea to test this is to read th=
+e files in
+> debugfs? Maybe also
+> > > > some unbind + binding?
+> > > >
+> > > > I will try to test this still today...
+> > >
+> > > The stress test is to open the debugfs file, then unbind the device a=
+nd then
+> > > read from the still open debugfs file.
+> > Yes, also just to be sure, we need to test DEFINE_DEBUGFS_ATTRIBUTE
+> > along with debugfs_create_file_unsafe. I will send out another patch
+> > that changes debugfs_create_file to debugfs_create_file_unsafe and then
+> > that can be tested.
+> Have sent out a v2 that is ready to be tested
 
-Tested-by Nuno S=E1 <nuno.sa@analog.com>
+So I tested your changes in a different HW but the principle is the same.
+It worked as expected. Unbinding the device and doing a read on an opened f=
+ile
+descriptor afterwards returns error...
 
-> --
-> 2.23.0.385.gbc12974a89
-
+- Nuno S=E1
+> > > - Lars
+> >
+> > Thanks,
+> > Rohit
+> Thanks,
+> Rohit

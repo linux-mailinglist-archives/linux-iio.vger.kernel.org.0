@@ -2,150 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D44C71997AC
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 15:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381011998BB
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 16:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730876AbgCaNjU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Mar 2020 09:39:20 -0400
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:11306 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730786AbgCaNjU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 09:39:20 -0400
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02VDXsN0027748;
-        Tue, 31 Mar 2020 06:39:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : content-type : mime-version; s=pfpt1;
- bh=Ndo+3OLN4htnVFVbwWSyNOqv9HsYOke8yNNcwbjoThE=;
- b=ZX5GQvk2azCvfoWofbmJl+BCX2FFwcbnYI3N5XaGW2i9WgL2I2FA2Lk4nzu0kJkPOir6
- w0HlA+tQ07S0l9kWtTUxMDZnB5KacwwNN5sgm8zkR/zLT3p2BXXiRRvIotCuH937kk64
- +RY01B6b5quh0RF2YFhmLYfDCDa5O/CuW/8R0SbyKMHYnNpleQD5MmQldY9aWeWG/jnM
- VewHXToTyqYuIWDg0GkVYRT+6+hgBArzDZHkCmIdN22T96kOWsB/CB2Bow2yDdoolVQ+
- tP6SPB2waKJEFH0pHIDIVev/lKsCQ2Q6XPtLflCxaArKpdZjRzCeuvNonjkKOLJGCktj wA== 
-Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2051.outbound.protection.outlook.com [104.47.44.51])
-        by mx0b-00328301.pphosted.com with ESMTP id 303rc20aea-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 31 Mar 2020 06:39:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AKEQiFVO5kfv2U7GKOFzK8T1iHdpH4+TliJRXrW073k6WOS1FRIKhvNLDXGTdeFWHMsJPKThnA+E9aEsaUO6QV88AHtVp2sBXdeAky7kP5VkPpe72+LzgmI0oh8pK22Amffh6q3+Wjyv1z9F7jH6SLgloxpQK20/gVQiQ8FdfK7bdfA8L9HQM4SUoQ9GfnHHGpPrcpRhxXBd/DX9hgZD6Cqu7DWFlAom1yWCimTtTS1VNk137U+7q1SowxTaMCqWR2r3CK+IRzKCaDW0w7eIU8JBfgtz1Rpa2IKMtzymOe8B5hGEoisUNftoTi5W3sZvFkwkVpYlbzvkYC1mtGDYfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ndo+3OLN4htnVFVbwWSyNOqv9HsYOke8yNNcwbjoThE=;
- b=n6b646pwuWQ/12ZFW/qOUKdAhi0p67ecdfEDZd2vDuNP7SEvrAQQsN4pvzZavHe4V/U5IQdlsEjZMHL9UD83wOzW5v7U6M4P7Et//TxbPp9nE/O2Drdkp7HcU+b7lgBVmXURSUqxaix8TOQZBnzUZVRVLw0FL550bZEFjp/DxlC6HOgMrBVD5oj3FdZ9FlATNAb3De5ual4LjZLwcMUBVGXZgsTw5Jj4d0GK4Yiv/bIgQ9kjLuScgyaZ1483fYEtFscas6AePQfO9qXvbQY+w/yv/V9oMBLdZFjBEVtROAPLxK/9KjieJms3y4AlC2Amn706FlEMFX7ZVMHbWny4+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ndo+3OLN4htnVFVbwWSyNOqv9HsYOke8yNNcwbjoThE=;
- b=V2jFTG48KESpyWSoYQQlWjBZzsSZEOEYqlI+zm56SxQeMaFl2lEt2L4qLnZEg5zFbcIfTz8Ee0O6UwuBlu/fb52BrMqrUBDv95gPONyqX8f4qrxWJzy2Igg1i+pRjJhfJbIvDfSNdhMnnEFsiy0sAWc56WnEZDCNEO0qI7G/Juo=
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
- by MN2PR12MB3568.namprd12.prod.outlook.com (2603:10b6:208:c3::33) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.19; Tue, 31 Mar
- 2020 13:39:14 +0000
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0]) by MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0%4]) with mapi id 15.20.2856.019; Tue, 31 Mar 2020
- 13:39:14 +0000
-From:   Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-To:     linux-iio@vger.kernel.org, jic23@kernel.org
-Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runtime power
-Date:   Tue, 31 Mar 2020 15:38:50 +0200
-Message-Id: <20200331133850.23757-1-jmaneyrol@invensense.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P265CA0294.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a5::18) To MN2PR12MB4422.namprd12.prod.outlook.com
- (2603:10b6:208:265::9)
+        id S1731081AbgCaOjO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Mar 2020 10:39:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52704 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726194AbgCaOjN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 31 Mar 2020 10:39:13 -0400
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4A0F214D8;
+        Tue, 31 Mar 2020 14:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585665552;
+        bh=VQTYjDLJpBPL64v+KHcwfSavLEUmQ5VPbYuKeDQvfh4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=w9kKXD8z4sqI86PU33XbHmfq5R7o1rl1Yc6oUOAz42cwHppv6UAYyiBVNzHr/8rGq
+         fiuijzJ4syHgX49+YFivKcsWhdJV6fv/bOG69I3vdo0Lq1npTDVuNQt+ItarZp4b9G
+         a/bP28cpaoxY9yg7N1tSpyTZfOjD00o0nNDF4FO0=
+Received: by mail-qk1-f175.google.com with SMTP id l25so23220051qki.7;
+        Tue, 31 Mar 2020 07:39:12 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ1Yn4A9Q6+UE+Fanv4lnS9wOsS2mOqlYHd34dkABj36/5Rng+QK
+        5l9WpzStfcaqEjMA1sRPag/9oA3L9MsbAp5F3A==
+X-Google-Smtp-Source: ADFU+vs96kIPVk/bUhQUvXuwHTzxBhEjf4smiGd+iZOn7jyc5rfIytLi140jinW+le6E+iSeEnGKe3qbfJEIB3it89g=
+X-Received: by 2002:a37:aa92:: with SMTP id t140mr4802134qke.119.1585665551704;
+ Tue, 31 Mar 2020 07:39:11 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from frgnb-buildozer.invcorp.invensense.com (77.157.193.39) by LO2P265CA0294.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:a5::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20 via Frontend Transport; Tue, 31 Mar 2020 13:39:12 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [77.157.193.39]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b6a73c99-cd30-40cd-e01e-08d7d578e697
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3568:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR12MB356871BC0996D08C53C92E9EC4C80@MN2PR12MB3568.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
-X-Forefront-PRVS: 0359162B6D
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4422.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(39850400004)(366004)(376002)(346002)(396003)(136003)(66476007)(66556008)(1076003)(6486002)(8936002)(7696005)(186003)(8676002)(16526019)(36756003)(6666004)(52116002)(107886003)(15650500001)(956004)(316002)(26005)(81156014)(5660300002)(86362001)(66946007)(4326008)(81166006)(2906002)(2616005)(478600001);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QU1/ig95D21AM3E693T3r2iYqNglq1ihxz/mmVpJO5OuibRcSS+7FS7pltFFq2SsFZrZ3thMTUjgJ5e/5d+FHeyBMg9Svx96pm+BPMheXKc13puC6KWwVpQhfvAkhZiXwAAE5GAHIc3GJ4hZZUPPfPITLFsIIAx09osAPADzKhBa5IRa4vxn6LvUzydfEt2enRT6eo9rCyY3+wVaxYNCnKtu4ZVrTLd/8+DBq5zXgZnnhDLPy9RlQoezzQ3ao7AdSu1ATd9V+VRslFoWJQ2ND4zXB85bd88zSM6Cz/y/PCbjXgboEhsU0qPgiY/stGoHQSfZpie8f0lao7Op82gKPjmoz/5wRy8rT/u29IVaKYSrfdd5gO7zcnvOJEyNAjfF2dHdAL9kGcd7g3qelyGxi3TJ46dRIFCLcdwdVZE/km/163AjRkScjJE7mjpHE0UQ
-X-MS-Exchange-AntiSpam-MessageData: eorTIEGZqpikXP0v7io2P49T6IikYir55D4M88HJ7t6KJxboSeGRIFcUJBSvdegkmHfPVYknWm1kncNSlEzFDrLVqcJAdJhzcKahp0sWxFuiyHJa3UIwH8rbFDtdq+IUn7t/MUFjQoTOsXt4nT3P4A==
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6a73c99-cd30-40cd-e01e-08d7d578e697
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2020 13:39:14.0387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +m2wfUsl8LiAhSnLBZKOQQjbDk8NL98KqoPaZINZenh51t8wI2E26Vo9hvVuXtOBESH5W3s/F5hSQHqeMElZ6WN7DLT8FomBHjh9QqjKltM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3568
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-03-31_04:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 impostorscore=0 clxscore=1015 mlxscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 mlxlogscore=826
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310124
+References: <20200325220542.19189-1-robh@kernel.org> <20200325220542.19189-5-robh@kernel.org>
+ <CAK7LNARJn4uugHxcjK+WOWBs0gPVZQsCu4y6M8hkNK1U5FehRA@mail.gmail.com> <CAK7LNARXj3=1VPWL4kFmGkZuvV=yKb7gVaX2nbeiO54f-zWeHQ@mail.gmail.com>
+In-Reply-To: <CAK7LNARXj3=1VPWL4kFmGkZuvV=yKb7gVaX2nbeiO54f-zWeHQ@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 31 Mar 2020 08:39:00 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLDL6mVZ3Bb3f6eObF9SNwy6WK_srX5=m=NCN8Jq+-R+g@mail.gmail.com>
+Message-ID: <CAL_JsqLDL6mVZ3Bb3f6eObF9SNwy6WK_srX5=m=NCN8Jq+-R+g@mail.gmail.com>
+Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties: false'
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Brian Masney <masneyb@onstation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guillaume La Roque <glaroque@baylibre.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux PM mailing list <linux-pm@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Suspend/resume were not working correctly with pm runtime.
-Now suspend check if the chip is already suspended, and
-resume put runtime pm in the correct state.
+On Mon, Mar 30, 2020 at 2:38 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Hi Rob,
+>
+> On Mon, Mar 30, 2020 at 4:09 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > On Thu, Mar 26, 2020 at 7:06 AM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > Setting 'additionalProperties: false' is frequently omitted, but is
+> > > important in order to check that there aren't extra undocumented
+> > > properties in a binding.
+> > >
+> > > Ideally, we'd just add this automatically and make this the default, but
+> > > there's some cases where it doesn't work. For example, if a common
+> > > schema is referenced, then properties in the common schema aren't part
+> > > of what's considered for 'additionalProperties'. Also, sometimes there
+> > > are bus specific properties such as 'spi-max-frequency' that go into
+> > > bus child nodes, but aren't defined in the child node's schema.
+> > >
+> > > So let's stick with the json-schema defined default and add
+> > > 'additionalProperties: false' where needed. This will be a continual
+> > > review comment and game of wack-a-mole.
+> > >
+> > > Signed-off-by: Rob Herring <robh@kernel.org>
+> > > ---
+> >
+> >
+> > >  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
+> >
+> >
+> > You may have already queue this up, but just in case.
+> >
+> > Acked-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+>
+>
+>
+> I take back Ack for socionext,uniphier-gpio.yaml
+>
+>
+>
+> Now "make dt_binding_check" produces a new warning.
+>
+> gpio@55000000: 'interrupt-parent' does not match any of the regexes:
+> 'pinctrl-[0-9]+'
+>
+>
+> This binding uses 'interrupt-parent'
+> without 'interrupts'.
+>
+> Instead, the mapping of the interrupt numbers
+> is specified by the vendor-specific property
+> socionext,interrupt-ranges
+>
+>
+>
+> I cannot add   "interrupt-parent: true" because
+> dt-schema/meta-schemas/interrupts.yaml
+> has "interrupt-parent: false".
+>
+>
+> Is there any solution?
 
-Fixes: 4599cac84614 ("iio: imu: inv_mpu6050: use runtime pm with autosuspend")
-Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+I'd meant to just drop socionext,uniphier-gpio.yaml.
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index e4b0d368c2f9..a58bab03f0b0 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1636,6 +1636,10 @@ static int __maybe_unused inv_mpu_resume(struct device *dev)
- 	if (result)
- 		goto out_unlock;
- 
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_active(dev);
-+	pm_runtime_enable(dev);
-+
- 	result = inv_mpu6050_switch_engine(st, true, st->suspended_sensors);
- 	if (result)
- 		goto out_unlock;
-@@ -1657,13 +1661,18 @@ static int __maybe_unused inv_mpu_suspend(struct device *dev)
- 
- 	mutex_lock(&st->lock);
- 
-+	st->suspended_sensors = 0;
-+	if (pm_runtime_suspended(dev)) {
-+		result = 0;
-+		goto out_unlock;
-+	}
-+
- 	if (iio_buffer_enabled(indio_dev)) {
- 		result = inv_mpu6050_prepare_fifo(st, false);
- 		if (result)
- 			goto out_unlock;
- 	}
- 
--	st->suspended_sensors = 0;
- 	if (st->chip_config.accl_en)
- 		st->suspended_sensors |= INV_MPU6050_SENSOR_ACCL;
- 	if (st->chip_config.gyro_en)
--- 
-2.17.1
-
+Rob

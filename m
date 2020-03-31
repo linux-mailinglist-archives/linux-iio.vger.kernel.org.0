@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BE4199D10
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 19:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38497199D1C
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 19:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgCaRkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Mar 2020 13:40:12 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:39365 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgCaRkM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 13:40:12 -0400
-Received: by mail-pj1-f67.google.com with SMTP id z3so1367593pjr.4;
-        Tue, 31 Mar 2020 10:40:10 -0700 (PDT)
+        id S1726194AbgCaRlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Mar 2020 13:41:50 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:37881 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726000AbgCaRlu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 13:41:50 -0400
+Received: by mail-pg1-f195.google.com with SMTP id i34so531697pgl.4;
+        Tue, 31 Mar 2020 10:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=ZGgZ/DpbtjfvIoAyjH9WXHlU0MAC6qI9epf9j+QkcKY=;
-        b=th3yCmPTqqQGqzzkW/l97xkY9n6LcLBq0Q6woMFWev7XAzbKr1HS2mb/U3X3zpSIaE
-         8g/PuCmSRKZkX4IdCvjw4Qk5syo6pKaBl3MRW9P9PzQ+PAa2YjXdZo467gT2hsO3aUWQ
-         32/Ckxav4t5mEnYp0n50dSc3PisBJgeKXj+sW8pKeWDD1tgJP+5LpCcSwWrHr72DgeL1
-         DkiKreZel2jBtxw1QLa1V3zDzsNNCSnDl8oPz6xEK/wUTA3Z+ljIy4tL3shrMmpofR32
-         MG8tq1tapDMLsjir8Xemx9ANVGR3+xxCu+VEKofLlZoOnpqOUwiog3uGqHdrSAiBAux9
-         YtIQ==
+        bh=0WK1L776nmYgsU46xCXGDCiU0P0Wvlg3rNsyJsRlP98=;
+        b=oXlHk8rqDvug0MKUD6I63bxufCaRC8Qv5IN1o81KbvCaUN2Ayl1AQb1oVDmmIKiCaU
+         y+FKmCdXIQ/hd5W2+PQOjt9zCudi7Wlyqq4B+7n3d7Y2E+FpGVAkzNEdjUWWBQEPYDyb
+         rJ8Rsli2qX1/AuOPa0sURyKOgzjlDPFGDr2Mdj0nwI3hImibl+jNacA7PWw0odV7rDji
+         ZRWD7fxp+IyMvDagjNeJeUCELKz1eV2HlCBA3TSriuHmLMUzz0sqBTOPjHnFAAyOM0zl
+         aRFQ6IVIdzbSGwLEo0wEG0fGtF4zI+9IVqhPSRqXUMn8zqe1fdQ0v5rpxqvCvmtrKfYt
+         zgAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZGgZ/DpbtjfvIoAyjH9WXHlU0MAC6qI9epf9j+QkcKY=;
-        b=TT1ggirRF8qwYI94fBHx6Yf6KkAPZ4XSzbztF3YSbUWVz5sBmq6QoLL1ij3YOOkXlp
-         OGZKqLrfa5RwGYz7vtszMijdy927+5YiudVFOGlPitRh9TLyS/XnmGq3sUDufL5fOCy9
-         8R9E6gVmfV73esg/9xirBwRmta0CDzfrTOj5UgnKr6r9q8dmVgCg99QUw80RK8/Ac60z
-         TceOr23UqRvaGJuJ7EkFC+z6WMfSaEemXDJ7CmSrLADD7Q4DJp661wJ+awyZABAfLV8B
-         +XdUR3L7xpYrk9ct33mck2iB5AH2lq5G+Cr49YLUz680Y64BOQO4U8MFWZJ0y55xgWt7
-         Of0g==
-X-Gm-Message-State: AGi0PuZ6cmlxpfA8RTAgXFnHKlLWKnqEGQdwUrxrwWcOvVUoQfTc11dQ
-        ikckPp8TouHhqkJUpAvAg5Itf1MJm2yDV1bWhDQ=
-X-Google-Smtp-Source: APiQypIQuOZDYcgwqK9kKPwJGPfZOl5Efak8sh+J533FlKJ/LbInbJDvdydB3qMebrD1YhQoYcmStt+VziIDAqwgmpA=
-X-Received: by 2002:a17:90a:3602:: with SMTP id s2mr5288873pjb.143.1585676409848;
- Tue, 31 Mar 2020 10:40:09 -0700 (PDT)
+        bh=0WK1L776nmYgsU46xCXGDCiU0P0Wvlg3rNsyJsRlP98=;
+        b=sEWnnFvL4WYaphVc/5jGdb4Ua6JhiUfeDMfh1qE+UUfG6ZdH/YOpnYJ7T1jwltHKel
+         zGlPZzCvriJuIiLmrEcdxGRkCTgWvoTqINo/C8WM2vSpcAzhu8OJEavzX+CUQQVQPp+S
+         bf55RIJtWph+00Wn+iRoDOj2RWhlqj4CdEqmqrNGIRBHHvA2arL6xEgaIQHbX+9UebNr
+         oSyp8ekPxc/bTANN5PS2Wwc54RwnW7cNrGrJgIn72SsemCXqrDOadT0So331n6N9Lktv
+         KeavOw93COVAlOFRp6cunHuFj2YnOYLSFlmupL3BF5JCopsKCJmlL+ly9R+3O/xHAeuB
+         s1UA==
+X-Gm-Message-State: AGi0PuZSgWKGo3ueAMJQbgr7dLb+AO3MCKn1AosRyzAz8rgyS5WEdgFk
+        CyKxmzH6aG82Viz3gGiSuirjkYdTMIcSdT9gAiY=
+X-Google-Smtp-Source: APiQypLQFtXGfHUfvQUXhzwkFBcnNbPE4ORbACPZdwZJmr1jkPWgd79RsT3GiwhfIVOyeVAXF4niiNd0dLyr4hHQD/4=
+X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr5918902pfs.36.1585676508695;
+ Tue, 31 Mar 2020 10:41:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-3-nuno.sa@analog.com>
-In-Reply-To: <20200331114811.7978-3-nuno.sa@analog.com>
+References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-4-nuno.sa@analog.com>
+In-Reply-To: <20200331114811.7978-4-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 31 Mar 2020 20:40:02 +0300
-Message-ID: <CAHp75VfXS1P-EJaKERojK=-3erYi5MxyDMjfrELyY2X3PZEN1A@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] iio: imu: adis: Add irq mask variable
+Date:   Tue, 31 Mar 2020 20:41:41 +0300
+Message-ID: <CAHp75VdWa_-x4n+FwuZZ6a9pw19bejOGtx_VwWhvNAuSTYfgdw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/6] iio: adis: Add adis_update_bits() APIs
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
@@ -67,37 +67,15 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
-> There are some ADIS devices that can configure the data ready pin
-> polarity. Hence, we cannot hardcode our IRQ mask as IRQF_TRIGGER_RISING
-> since we might want to have it as IRQF_TRIGGER_FALLING.
+> This patch adds a `regmap_update_bits()` like API to the ADIS library.
+> It provides locked and unlocked variant.
 
-...
+> +       __val &=3D ~mask;
+> +       __val |=3D val & mask;
 
-> +static int adis_validate_irq_mask(struct adis *adis)
-> +{
-> +       if (!adis->irq_mask) {
-> +               adis->irq_mask =3D IRQF_TRIGGER_RISING;
-> +               return 0;
+You can use standard one liner, i.e.
 
-> +       } else if (adis->irq_mask !=3D IRQF_TRIGGER_RISING &&
-
-'else' is redundant.
-
-> +                  adis->irq_mask !=3D IRQF_TRIGGER_FALLING) {
-
-But this condition rises questions. Why i can't configure both?
-Why I can't configure other flags there?
-
-> +               dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
-> +                       adis->irq_mask);
-> +               return -EINVAL;
-> +       }
-
-> +       return 0;
-> +}
-
-And actually name of the function is not exactly what it does. It
-validates *or* initializes.
+       __val =3D (__val & ~mask) | (val & mask);
 
 --=20
 With Best Regards,

@@ -2,81 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38497199D1C
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 19:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7722199D55
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Mar 2020 19:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726194AbgCaRlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Mar 2020 13:41:50 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:37881 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726000AbgCaRlu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 13:41:50 -0400
-Received: by mail-pg1-f195.google.com with SMTP id i34so531697pgl.4;
-        Tue, 31 Mar 2020 10:41:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=0WK1L776nmYgsU46xCXGDCiU0P0Wvlg3rNsyJsRlP98=;
-        b=oXlHk8rqDvug0MKUD6I63bxufCaRC8Qv5IN1o81KbvCaUN2Ayl1AQb1oVDmmIKiCaU
-         y+FKmCdXIQ/hd5W2+PQOjt9zCudi7Wlyqq4B+7n3d7Y2E+FpGVAkzNEdjUWWBQEPYDyb
-         rJ8Rsli2qX1/AuOPa0sURyKOgzjlDPFGDr2Mdj0nwI3hImibl+jNacA7PWw0odV7rDji
-         ZRWD7fxp+IyMvDagjNeJeUCELKz1eV2HlCBA3TSriuHmLMUzz0sqBTOPjHnFAAyOM0zl
-         aRFQ6IVIdzbSGwLEo0wEG0fGtF4zI+9IVqhPSRqXUMn8zqe1fdQ0v5rpxqvCvmtrKfYt
-         zgAg==
+        id S1726268AbgCaR66 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Mar 2020 13:58:58 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:44006 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbgCaR66 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Mar 2020 13:58:58 -0400
+Received: by mail-io1-f67.google.com with SMTP id x9so16241652iom.10;
+        Tue, 31 Mar 2020 10:58:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=0WK1L776nmYgsU46xCXGDCiU0P0Wvlg3rNsyJsRlP98=;
-        b=sEWnnFvL4WYaphVc/5jGdb4Ua6JhiUfeDMfh1qE+UUfG6ZdH/YOpnYJ7T1jwltHKel
-         zGlPZzCvriJuIiLmrEcdxGRkCTgWvoTqINo/C8WM2vSpcAzhu8OJEavzX+CUQQVQPp+S
-         bf55RIJtWph+00Wn+iRoDOj2RWhlqj4CdEqmqrNGIRBHHvA2arL6xEgaIQHbX+9UebNr
-         oSyp8ekPxc/bTANN5PS2Wwc54RwnW7cNrGrJgIn72SsemCXqrDOadT0So331n6N9Lktv
-         KeavOw93COVAlOFRp6cunHuFj2YnOYLSFlmupL3BF5JCopsKCJmlL+ly9R+3O/xHAeuB
-         s1UA==
-X-Gm-Message-State: AGi0PuZSgWKGo3ueAMJQbgr7dLb+AO3MCKn1AosRyzAz8rgyS5WEdgFk
-        CyKxmzH6aG82Viz3gGiSuirjkYdTMIcSdT9gAiY=
-X-Google-Smtp-Source: APiQypLQFtXGfHUfvQUXhzwkFBcnNbPE4ORbACPZdwZJmr1jkPWgd79RsT3GiwhfIVOyeVAXF4niiNd0dLyr4hHQD/4=
-X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr5918902pfs.36.1585676508695;
- Tue, 31 Mar 2020 10:41:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-4-nuno.sa@analog.com>
-In-Reply-To: <20200331114811.7978-4-nuno.sa@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 31 Mar 2020 20:41:41 +0300
-Message-ID: <CAHp75VdWa_-x4n+FwuZZ6a9pw19bejOGtx_VwWhvNAuSTYfgdw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] iio: adis: Add adis_update_bits() APIs
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=td5o5/tiHIRBYofYMDETAP0Ltd0LRLXxBohco08C/no=;
+        b=WhQ5BXIoFNInaHzPI7eu0BM1DVTn2dclDosGzbeE5vR+Hpjzjw8uudivAYkAJi6oT8
+         o3PjdHm9DKPtVrV99xPNZ7h7pWz0TuaXOSYxlrqP2EL6C88ELRoAZ5wTWG+TQczWSRjA
+         34524e58llqubX888TK0Rh1HfkPZntJe1vBkP5bh9HvQRrzDAaZv9itHl2nfb4YUhLBe
+         qdt89Xe4smqHeFkl36YVanxA/mC/PjCqXr2UMmBuAssZYwtSuE3zNoRwTBKYe7hntR+p
+         ArWIfWYyqJgohf0u6L0Ca2gBimDmbK33jZsvOsUFOLHrV8DGmYcZ9KUEURVVxGl/7K0g
+         v2dw==
+X-Gm-Message-State: ANhLgQ3Wl16e4VW6iTq3ycVh2PwDuslBnr1Py//5M8vLZWmUto6zKOT3
+        VSuR/B/Ka2o0f3YnPRC6enLxzj4=
+X-Google-Smtp-Source: ADFU+vusw14RdmuJ7zrBadBBFp8IzG2PeGojTVZrZsBXAA0o/Wml8YZzKjsZTDX9R92K6374xp15Yw==
+X-Received: by 2002:a02:9988:: with SMTP id a8mr16525847jal.3.1585677537116;
+        Tue, 31 Mar 2020 10:58:57 -0700 (PDT)
+Received: from rob-hp-laptop ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id b4sm6160512ilg.58.2020.03.31.10.58.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2020 10:58:56 -0700 (PDT)
+Received: (nullmailer pid 31762 invoked by uid 1000);
+        Tue, 31 Mar 2020 17:58:55 -0000
+Date:   Tue, 31 Mar 2020 11:58:55 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Daniel Campello <campello@chromium.org>
+Cc:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: Add bindings for sx9310 sensor
+Message-ID: <20200331175855.GA30009@bogus>
+References: <20200323124310.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200323124310.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> This patch adds a `regmap_update_bits()` like API to the ADIS library.
-> It provides locked and unlocked variant.
+On Mon, Mar 23, 2020 at 12:45:14PM -0600, Daniel Campello wrote:
+> Adds device tree bandings for sx9310 sensor.
+> 
+> Signed-off-by: Daniel Campello <campello@chromium.org>
+> ---
+> 
+>  .../iio/proximity/semtech,sx9310.yaml         | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> new file mode 100644
+> index 00000000000000..da3424abe37e9d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> @@ -0,0 +1,52 @@
+> +# SPDX-License-Identifier: GPL-2.0
 
-> +       __val &=3D ~mask;
-> +       __val |=3D val & mask;
+Dual license new bindings:
 
-You can use standard one liner, i.e.
+(GPL-2.0-only OR BSD-2-Clause)
 
-       __val =3D (__val & ~mask) | (val & mask);
+With that,
 
---=20
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Rob Herring <robh@kernel.org>

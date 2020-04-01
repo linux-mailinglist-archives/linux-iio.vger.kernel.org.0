@@ -2,128 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDFB819A98C
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 12:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E449819AAB6
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 13:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732179AbgDAK1e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 06:27:34 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:43140 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728087AbgDAK1d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 06:27:33 -0400
-Received: by mail-pf1-f195.google.com with SMTP id f206so11885232pfa.10;
-        Wed, 01 Apr 2020 03:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=RNJMZCJvB40U9Qk+mZw8kiFZdWTeiO8956JY+Lpa3zY=;
-        b=kd+qALydDbsk5PDv3CmNVU876gc2XF9ln0DDeqKl2KQAmmQURexYe6cGFN/wz629v6
-         brJSdD5GuUwI/AD89NLIcxbm0THCRCkr925la6QHbV2IVAmQfOujYs/65sZkqcODp2C6
-         1xrJxGxtDNRfAJXPR9QA9Va36wxptxLSMw0XRUUf0j7j74OTEbGxffE+2ewDh0/XbV7g
-         g5Yxa8OsfcZCO602gcz22X4qYB1CPG5pwO0HaueaHsaZgQwi1sP+F7V59FMoThwgZT+Y
-         klbhMvCKOBbJsfyRFpugp1KQZ8TwFG89UzgrRtBFJEuj7gLSxNypQkoRvKX1O87zL6LB
-         66RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=RNJMZCJvB40U9Qk+mZw8kiFZdWTeiO8956JY+Lpa3zY=;
-        b=GfgQaF8Q4/c1mmVPuazlO4iavY866iuU7o03ucpory8CM9CUnr7oB+Xb0PyDB0FchU
-         uK07oITEPbkncPAX94bx1CAdKMtVC//zz6nj05icUi65RTvNJrkoFvnB5cLqC58TLRFm
-         adgXx2YOXeyRlIu/cvIOSyd8uZq2VeCPaJSqpwsGE0cuaBk9Suoja+RlLw6ywOyPeah0
-         NbR/oVHnf6RXoVDDKWX8L3IavvhcvlfsG/3KRg82j6vmF/dYPfPJgD45lbb3y+iB3qkm
-         UfGAtu7959CpVOdFLjebk7f/zvV6tti3BfFJbq+Td1a9IHIId/5Gl92KycSpXuqDLJQo
-         zQGw==
-X-Gm-Message-State: ANhLgQ3dOscSuQju4rQneqlFm7Odio7zjTaISfA4Bt2shq5vSgYvBoKp
-        6BzhyP2fr4AABkFRrytTCZL5y5RaC/uwDthA739vGIsTN5Y=
-X-Google-Smtp-Source: ADFU+vt4HEC1R5DFw7uZpOKFKf66YONDP4gkCpjtAsq+aOrsNGlomYjFsswtwGKtUniltF+o2+/dDvfW30Ht+CAEtdg=
-X-Received: by 2002:aa7:9097:: with SMTP id i23mr22128994pfa.170.1585736851029;
- Wed, 01 Apr 2020 03:27:31 -0700 (PDT)
+        id S1732205AbgDALXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 07:23:31 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:19414 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732121AbgDALXa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 07:23:30 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 031BMeUh010124;
+        Wed, 1 Apr 2020 07:23:16 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3023g5c3vb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Apr 2020 07:23:16 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 031BNEGq043710
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 1 Apr 2020 07:23:15 -0400
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 1 Apr 2020 04:23:13 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 1 Apr 2020 04:23:13 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 031BNAvr024109;
+        Wed, 1 Apr 2020 07:23:10 -0400
+From:   Mircea Caprioru <mircea.caprioru@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: [PATCH] iio: core: Fix handling of 'dB'
+Date:   Wed, 1 Apr 2020 14:22:30 +0300
+Message-ID: <20200401112230.4708-1-mircea.caprioru@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-3-nuno.sa@analog.com>
- <CAHp75VfXS1P-EJaKERojK=-3erYi5MxyDMjfrELyY2X3PZEN1A@mail.gmail.com> <BN6PR03MB3347F9B31FE4E82904ED3E8C99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-In-Reply-To: <BN6PR03MB3347F9B31FE4E82904ED3E8C99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Apr 2020 13:27:23 +0300
-Message-ID: <CAHp75VfowVagnG0U8N4SM5Y2ZRoRTFFtJtZgkV+XWGznhrkogg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] iio: imu: adis: Add irq mask variable
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-01_01:2020-03-31,2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1011 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 suspectscore=1 mlxlogscore=977 spamscore=0
+ lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2004010102
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 1, 2020 at 10:22 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
-> > From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org>=
- On
-> > Behalf Of Andy Shevchenko
-> > Sent: Dienstag, 31. M=C3=A4rz 2020 19:40
-> > On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote=
-:
-> > >
-> > > There are some ADIS devices that can configure the data ready pin
-> > > polarity. Hence, we cannot hardcode our IRQ mask as
-> > IRQF_TRIGGER_RISING
-> > > since we might want to have it as IRQF_TRIGGER_FALLING.
+This patch fixes the call to iio_str_to_fixpoint when using 'dB' sufix.
+Before this the scale_db was not used when parsing the string written to
+the attribute and it failed with invalid value.
 
-...
+Fixes: b8528224741b ("iio: core: Handle 'dB' suffix in core")
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+---
+ drivers/iio/industrialio-core.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-> > > +static int adis_validate_irq_mask(struct adis *adis)
-> > > +{
-> > > +       if (!adis->irq_mask) {
-> > > +               adis->irq_mask =3D IRQF_TRIGGER_RISING;
-> > > +               return 0;
-> >
-> > > +       } else if (adis->irq_mask !=3D IRQF_TRIGGER_RISING &&
-> >
-> > 'else' is redundant.
-> >
-> > > +                  adis->irq_mask !=3D IRQF_TRIGGER_FALLING) {
-> >
-> > But this condition rises questions. Why i can't configure both?
-> > Why I can't configure other flags there?
->
-> Both you can't because it is just how these type of devices work. Data is=
- ready either
-> on the rising edge or on the falling edge (if supported by the device)...
-> I agree this could check if only one of the flags are set instead of dire=
-ctly comparing the
-> values (invalidating other flags) but I would prefer to keep this simple =
-for now...
->
-> >
-> > > +               dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
-> > > +                       adis->irq_mask);
-> > > +               return -EINVAL;
-> > > +       }
-> >
-> > > +       return 0;
-> > > +}
-> >
-> > And actually name of the function is not exactly what it does. It
-> > validates *or* initializes.
->
-> Well, yes. It just sets the mask to the default value to keep backward co=
-mpatibility
-> with all the other devices that don't support/use this variable...
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 157d95a24faa..7da9cd2a2b58 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -909,14 +909,11 @@ static ssize_t iio_write_channel_info(struct device *dev,
+ 			return -EINVAL;
+ 		integer = ch;
+ 	} else {
+-		ret = iio_str_to_fixpoint(buf, fract_mult, &integer, &fract);
++		ret = __iio_str_to_fixpoint(buf, fract_mult, &integer, &fract,
++					    scale_db);
+ 		if (ret)
+ 			return ret;
+ 	}
+-	ret = __iio_str_to_fixpoint(buf, fract_mult, &integer, &fract,
+-				    scale_db);
+-	if (ret)
+-		return ret;
+ 
+ 	ret = indio_dev->info->write_raw(indio_dev, this_attr->c,
+ 					 integer, fract, this_attr->address);
+-- 
+2.17.1
 
-Perhaps documentation in a comment form should be added.
-Moreover, I realized that you added to variable and function mask
-suffix while it's actually flag.
-
---=20
-With Best Regards,
-Andy Shevchenko

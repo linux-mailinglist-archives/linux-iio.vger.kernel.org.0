@@ -2,119 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0CFD19B0C1
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 18:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4528A19B17F
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 18:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388153AbgDAQ3O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 12:29:14 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:58319 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388148AbgDAQ3L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 12:29:11 -0400
-Received: from envy ([82.207.223.251]) by mrelayeu.kundenserver.de (mreue106
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1N5W0q-1jHt2y0YtW-016w4x; Wed, 01
- Apr 2020 18:28:54 +0200
-Message-ID: <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
-Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
- fusion Hub using HID framework
-From:   Richard Neumann <mail@richard-neumann.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
-Cc:     Sandeep Singh <Sandeep.Singh@amd.com>, Shyam-sundar.S-k@amd.com,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Date:   Wed, 01 Apr 2020 18:28:51 +0200
-In-Reply-To: <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
-References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
-         <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
-         <4fe47b0323c1d65d429ee89b000e8bfcd984495f.camel@richard-neumann.de>
-         <896f84bc-f0d6-59a5-c894-809695aa348f@amd.com>
-         <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-JMpIYctbEoNFnW+rx2oI"
-User-Agent: Evolution 3.36.1 
+        id S2388643AbgDAQf2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 12:35:28 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:36007 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388749AbgDAQf1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 12:35:27 -0400
+Received: by mail-pf1-f193.google.com with SMTP id n10so198199pff.3;
+        Wed, 01 Apr 2020 09:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Nv0PB7OQMBhmTUY0yfkOYmQ8lz6lTwWj9RPSvbAhmZg=;
+        b=lneG3+bylYOe+VWYyx4URUoJhBOrtwSx6J84qh6JImO1KXK/y81BfpHS4Nk6jmrx6f
+         FwQKNwiRF3ngj47XOZFQOlKHuobZfGkexsOKYMu7HCsMKMxgSTAtSQaoEAm4Gh9YxNEX
+         GLYGo2iIEac6fJtC9JZJmUUYPwPBoI6ATPHgnT4YGLXqWydHtqaVR879GefrAbQ919Yc
+         3FQgClxUMNncLsRQfiyCg5EyGg+5Npvbi7xzcXRdQ7tRjKxdTHLmsCn/1lIn44HWaUlF
+         dNOgBL/Hg5vUKGc/7Ve/y8ao6GKTalXDk5WU2q6bJPMQ9PoC/wqQqj0wzfGWB8IujmLm
+         +dXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Nv0PB7OQMBhmTUY0yfkOYmQ8lz6lTwWj9RPSvbAhmZg=;
+        b=Wc/Y7/PMd/bq/1DMeR7iS81uSq+B38hPcLIV0Ne9V6fNhVfn0XMlHFroP1aWVrGRLC
+         /fPF+za3A1LadFrKbBLRKsoI4gcwlgkqRda7BMeot/fs0DeYKUS+HDiwg77Ln5kHWksj
+         r6eRY9Afdx+vCtyq+E/0DyyjX3SHKS5LkOYh0k8VIdIZL7njwO3yHPN/GehN9lGSU8rY
+         XxWesk4uJqMsj1inApwrJQ2IUtAN2kh+5oKdNReHaf/EIpB11wdBpi44xhLz9/OFgBly
+         yeth6APBaXONaotyhDF8KbeIp5z7KJ1LRuj038TmIpXqYmStoqaRbsp/ouzu6nieFttf
+         /JcQ==
+X-Gm-Message-State: AGi0PuZHvsVup4LfqluyGZHeia6uu28491FAQQ5puog08m88VNCtm2ig
+        DmoZYKD57DaaMJWaNDluQKg/btUFmrNN+KtxPrE=
+X-Google-Smtp-Source: APiQypIYInYnpmxVEVR4+As3ewJkYDPICTo9pnPQ8lnEBYfZhcIldzFXAraLEALorMmUdTYnZ6YizL46WjW0pqghLyM=
+X-Received: by 2002:a63:5859:: with SMTP id i25mr9501810pgm.74.1585758926434;
+ Wed, 01 Apr 2020 09:35:26 -0700 (PDT)
 MIME-Version: 1.0
-X-Provags-ID: V03:K1:/Iuh6Wc2OWUWANhg+i5sa8DX8+N5Q471sfzV1dJZGtvhNgn30bW
- WFNUEw83jU+/rRD8GACG8t2TGf2kw4Z5QQLxVaB3MvjdmW+0A8XTSl1hI2iTfdflWXmcfYH
- 1IwhXyqvBX/2rCAP5zojzlREeoMLx4pLRZg6+TbOXwHSofssNiK+0ubQ27EHfVP+wpjgfDE
- 9haVSMVl1addbBrysAL7w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BEgHpqVQWuA=:eab8Bjm6U04XClhfM96ei2
- 6eVrEtmoO/i+1Z0ybln3l54Ic5d8P0vyqSGtUqDdZB+rHtFjXTtH07Hz5ZKah2Up5iX5Lo9zx
- dWBBBxAq3tM2LhPhpwLvl25KM/fiw79mo64WUjY4SLGdy+D2FX7b5mTtRPuBCY+u06nIbBtkd
- ZdUuVhPde03VpLsKqprLsyBP96JXvcWslukQVjTzJP9/AIaw6Mqqm5rZa/YSxck8aAYoqh5PG
- 4f+cMMdZU89i2DRM3SAKN5MwZw2WPrRXBKHgiAZByC5834bmS2/WwbmaNjnAUKmfBvYW4VTn8
- FixF/Of2X2CK3RXKiOx/SitiO5F76BadLahtiLOR7bM++gUyHdkbsm7sKqS2DFh4fUSdBQMNd
- mZLHzHT9hdqNhIp224x/VeQzByHZwaPegkzUv7xWeU2QNIFAscRqcV1AooEKAAHTEBcBOyNay
- OniuUrU51qLrVzVRZif/oO4dBoYVaHezOcZo6j8boCuTeCrpoRxqkM01iSNREWvyAc5mX06Sl
- /kfXvsksupRk669Q08Oi/lMJwXgNaFFWryEs2nNtE/X2/FKmoPXaWhNHy8JGbntNkRovKqt6h
- kb1ccpgMV5Il06Drok+Vcz0rNjsEMvzl6zMF+8QymF30Voc1Fo1JM7CYP4tPykr5JFhRv4Kr8
- k9jTU2x8QxkEGuvAs+uSHJeH/Sc4d8uoLnrVw6ZKwzCMZ1qk4tK60ly4fkYe58OLQdBQvO3LX
- eJyBw2xDeHlfCsiD1ZFPe+SSXskptFLDQ0lgJbwoE52Xkmy+ntyZWo39lQnBJlPLrPqzARLd2
- sMeTVIZRzPwwOnT4o4/r/iRAAGDDqLL5Tw5Ts01zYC7APWmfooBVR0QejZXowu75yG0HU/d
+References: <20200401162416.24474-1-i.mikhaylov@yadro.com> <20200401162416.24474-3-i.mikhaylov@yadro.com>
+In-Reply-To: <20200401162416.24474-3-i.mikhaylov@yadro.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 1 Apr 2020 19:35:19 +0300
+Message-ID: <CAHp75VcdDR-owtFuFMqNLFh_-L902fXODG14_6Dh416tTwjidA@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: proximity: Add driver support for vcnl3020
+ proximity sensor
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Apr 1, 2020 at 7:24 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
+>
+> Proximity sensor driver based on light/vcnl4000.c code.
+> For now supports only the single on-demand measurement.
+>
+> The VCNL3020 is a fully integrated proximity sensor. Fully
+> integrated means that the infrared emitter is included in the
+> package. It has 16-bit resolution. It includes a signal
+> processing IC and features standard I2C communication
+> interface. It features an interrupt function.
 
---=-JMpIYctbEoNFnW+rx2oI
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for an update, my comments below.
 
-Am Dienstag, den 31.03.2020, 20:24 +0300 schrieb Andy Shevchenko:
-> On Tue, Mar 31, 2020 at 4:26 PM Shah, Nehal-bakulchandra
-> <nehal-bakulchandra.shah@amd.com> wrote:
-> > On 3/31/2020 6:01 PM, Richard Neumann wrote:
-> > > Not a real review, but your patch series seems to be repeating a
-> > > lot
-> > > from drivers/i2c/busses/i2c-amd-mp2*.
-> > > Is there any chance we could re-use the code?
-> > > E.g. the AMD_C2P_* definitions from drivers/i2c/busses/i2c-amd-
-> > > mp2.h?
-> >=20
-> > Thanks for the mail. Yes there are some common structures, however
-> > as of now we have kept separately considering both
-> >=20
-> > are part of different sub systems. But may be will consider this
-> > input for future enhancement.
->=20
-> It can be done in a form of shared definitions at least in
-> include/linux/platform_data/x86/amd-mp2.h or alike ...
->=20
+...
 
-I managed to add support for the AMD SFH PCI device to i2c-amd-mp2* and
-outsourced the headers to include/linux/i2c-amd-mp2.h. [1]
-I also refactored the patch series (excluded the documentation) [2] to
-use the PCI device now provided by i2c_amd_mp2_pci and removed some
-duplicate and unncessary code.
-The driver now consist of just one module (amd_sfhtp_hid).
-Unfortunately I was not able to solve the problem, that I get AMD-Vi
-IO_PAGE_FAULT errors when not booted with amd_iommu=3Doff.
+> +static int get_and_apply_property(struct vcnl3020_data *data, const char *prop,
+> +                                 u32 reg)
+> +{
+> +       int rc;
+> +       u32 val;
+> +
+> +       rc = device_property_read_u32(data->dev, prop, &val);
+> +       if (rc)
+> +               return 0;
+> +
+> +       rc = regmap_write(data->regmap, reg, val);
+> +       if (rc)
 
-[1] https://gist.githubusercontent.com/conqp/4d726f86da8a8397d6e70091a124de=
-67/raw/f97e88a0b44d98bfa1258cb73c8afe4dce7afa87/i2c-amd-mp2.patch
-[2] https://gist.githubusercontent.com/conqp/67036e690aca89d08b958971edac28=
-3d/raw/2a1ef122f9c8c8e07164b6d597962ce7bbad6d45/amd-sfhtp.patch
+> +               dev_err(data->dev, "Error (%d) setting property (%s)",
+> +                       rc, prop);
 
---=-JMpIYctbEoNFnW+rx2oI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+This requires {} according to the coding style.
 
------BEGIN PGP SIGNATURE-----
+> +       return rc;
+> +}
 
-iHUEABYIAB0WIQT62wKwhMqSt8WaustMqNUjvThq9wUCXoTBQwAKCRBMqNUjvThq
-95P6AQD2f9/1gcoiIcDpJ/lT+fG8FH3cCnQqUJ7jGkVhNmZuiQD/aPm0aB1ZPd0L
-NzfP2Euf/mdDdd0WMbbsFkX4VhKSxw8=
-=0blY
------END PGP SIGNATURE-----
+...
 
---=-JMpIYctbEoNFnW+rx2oI--
+> +static int vcnl3020_probe(struct i2c_client *client)
+> +{
 
+> +       indio_dev->name = VCNL_DRV_NAME;
+
+It's definitely not a driver name. You have to put part number here.
+
+> +}
+
+...
+
+> +static struct i2c_driver vcnl3020_driver = {
+> +       .driver = {
+
+> +               .name   = VCNL_DRV_NAME,
+
+Better to spell it explicitly.
+
+> +               .of_match_table = vcnl3020_of_match,
+> +       },
+> +       .probe_new  = vcnl3020_probe,
+> +};
+
+-- 
+With Best Regards,
+Andy Shevchenko

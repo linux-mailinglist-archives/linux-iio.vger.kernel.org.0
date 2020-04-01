@@ -2,92 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E449819AAB6
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 13:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED2919AABA
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 13:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732205AbgDALXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 07:23:31 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:19414 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732121AbgDALXa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 07:23:30 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 031BMeUh010124;
-        Wed, 1 Apr 2020 07:23:16 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3023g5c3vb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 01 Apr 2020 07:23:16 -0400
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 031BNEGq043710
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 1 Apr 2020 07:23:15 -0400
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 1 Apr 2020 04:23:13 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 1 Apr 2020 04:23:13 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 031BNAvr024109;
-        Wed, 1 Apr 2020 07:23:10 -0400
-From:   Mircea Caprioru <mircea.caprioru@analog.com>
-To:     <jic23@kernel.org>
-CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Mircea Caprioru <mircea.caprioru@analog.com>
-Subject: [PATCH] iio: core: Fix handling of 'dB'
-Date:   Wed, 1 Apr 2020 14:22:30 +0300
-Message-ID: <20200401112230.4708-1-mircea.caprioru@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1732146AbgDALZ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 07:25:29 -0400
+Received: from sonic316-13.consmr.mail.bf2.yahoo.com ([74.6.130.123]:40361
+        "EHLO sonic316-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732121AbgDALZ3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 07:25:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1585740328; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=BO6XtL1VJ9VB09afy5FWPkAB3X1cQVJzOfDPSc9We29ak7l31/tdXfi3CZ0ECy7+ojGBV/KqyZs1MLaIs7DFBcdxZKzeiBtexlu1KpmSwOrSFW/hzJpdMsFgD/CNrKXSrMiX46GtzBD3R9SrQh3UrSAXoSaVCW4LF5aA14C9/5uK/wSzpa2/3ZFtU9tA+CnKDGJ2G25nmUoV56yE0IfZYSkO/SjAmS2GCuVzA1TKH0isQL3qZnPjvzfS4rsNQ1BSV37/2xJz/4rGnJkBhuhvXToSrfPf5GTx/KHmWNMrsslVZGvWi909X0bK4RKPMFoAZOPKC3oKPk4NNESjbtSkmg==
+X-YMail-OSG: wwGB57wVM1nWRK8gFYKCST.A81orHkdXWeVsqTlC06Lrv1tWd4fKqJuIOA6jIhP
+ tnSG6t9qcXfbN7aTexNIXJ2vaqGJ_tTAPVyeVVlXPE0WIXLyZSXBh4gAWGp0GvuhpsgeGposPyA_
+ MIBXEg2ONEt2hCJIiTVwys486r2bjCzWIoXc.OfhuOgU7e4smznfeBwdw5r3HnpwUH9qPLJUbil5
+ ckba5aANyQCRhB3WOyoREoFrMbt8SCwffh9bckuekY_ViixmtDGYfX.ToGQenY8DeOfF0us8G37J
+ SL6GPfS6nwXXP9YqhsrS_fR5Gw4R0449hMMyWIrPq0qkK_UERX4gWPSkdsde_sCDRDqdxHSdyuZx
+ EwyxoHo79Zj4c91fkCpQt3dHZly7.EXa0gxAVzlYfL6SDq96Ct.Qdy8tb9hdkRErFy0.V4rGzDsi
+ eXll5w8SSx0Awrm1EPYR61_Fo7buPmlrq2x10HX8XsSGHX.eiLmgjN7_1l2wBN7hIvX7xUpzdLBi
+ Xj9h7XfxWxdNn3Rj6rRhvm9Pfy5Dz0WcOoUlNKolJ6dmvg4ScdhyptmleioQVl.bEg.U5LCcONKz
+ pegc3eE4KXv_kCDa7wcNPArw3AQS4mMQWx32kcgaGwojG0ZCNwwZr0IHWPBliCLn.W__3FNLJQTB
+ K4jQrC4X_D6jY4RJBPE7W2wEsYFum5Of70jkIIf7cytW6kQw2iluOwp2RcLXJSJJmHPtIXX.NDjx
+ 4X2I0P3_h4xubJDpuIONiju9q6KEhOVCv6guIP0V.eeENpgl54QABdUjeERPGptP_D4bjHxMcnCz
+ q_7Va0lBAL14UW92sSAZVQ3vIdzW.a1w6g_paYbZPeBBznFdQhgpRPE_6nY.6y092CX4ny5k5yni
+ xF6TGfONUqqJAKF_XaYJ6LYv0SFYhDOglSlbvb_ePnFHKwB2NbpePpgBq3AYzKMmow2CEdJ.mWuK
+ rNKkyDVCy3ZS.ukrjvhbpmtn.5SNP2F.TZ1Wrw3YTjUO8TXysnxHqJwvo4P.uH7pVOGuDa3xhqSm
+ ubmAspvZkbXC51J1dFBQs9MeS1HCUI62AXuU4QvMyO0gSg7.P.QITBxm6eiwXLG1bnQGYAOpKS31
+ iKage9munt174WHRMA_L_KCCFKcAhni95UkD1otYcKRmrRHYSbNadK9YcgW525tPX8OPmJ.ZQMpF
+ x7nddWtoCHEPnB2pWC2Cf_K_G5CHo9rX..PvhNIUVl2Y7BZMPgCo2pDC5sQly3d1o6lpmQZkxe.a
+ 4CnNSvu8fnPrJhokQw5S3rfs6gcy_wxnOrwKdl3RjDLUjjW6_d5gA_ww_GlVCOw6i1pU6G7av2rY
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Wed, 1 Apr 2020 11:25:28 +0000
+Date:   Wed, 1 Apr 2020 11:25:22 +0000 (UTC)
+From:   Ms lisa Hugh <lisahugh531@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <499881988.130253.1585740322781@mail.yahoo.com>
+Subject: BUSINESS TRANSFER FROM MS LISA HUGH
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-01_01:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
- impostorscore=0 suspectscore=1 mlxlogscore=977 spamscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2004010102
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <499881988.130253.1585740322781.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15585 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch fixes the call to iio_str_to_fixpoint when using 'dB' sufix.
-Before this the scale_db was not used when parsing the string written to
-the attribute and it failed with invalid value.
 
-Fixes: b8528224741b ("iio: core: Handle 'dB' suffix in core")
-Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
----
- drivers/iio/industrialio-core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 157d95a24faa..7da9cd2a2b58 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -909,14 +909,11 @@ static ssize_t iio_write_channel_info(struct device *dev,
- 			return -EINVAL;
- 		integer = ch;
- 	} else {
--		ret = iio_str_to_fixpoint(buf, fract_mult, &integer, &fract);
-+		ret = __iio_str_to_fixpoint(buf, fract_mult, &integer, &fract,
-+					    scale_db);
- 		if (ret)
- 			return ret;
- 	}
--	ret = __iio_str_to_fixpoint(buf, fract_mult, &integer, &fract,
--				    scale_db);
--	if (ret)
--		return ret;
- 
- 	ret = indio_dev->info->write_raw(indio_dev, this_attr->c,
- 					 integer, fract, this_attr->address);
--- 
-2.17.1
+Dear Friend,
 
+I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
+
+Note/ 50% for you why 50% for me after success of the transfer to your bank account.
+
+Below information is what i need from you so will can be reaching each other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa hugh.

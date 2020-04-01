@@ -2,135 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2E219B037
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 18:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CFD19B0C1
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 18:29:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387787AbgDAQZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 12:25:09 -0400
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:55970 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387764AbgDAQZI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 12:25:08 -0400
-Received: by mail-pj1-f66.google.com with SMTP id fh8so185014pjb.5;
-        Wed, 01 Apr 2020 09:25:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=gHFLCKlpXIGAn0egtGMAf9G1WrufJhSv91wXY+Y8f8Q=;
-        b=tWM2eX3i801PMq7UXOjk5Rdt+AbUlekjbWhkNHZLubyt7URQ62HbIkd62klBeCS1Ob
-         0bechhHZmZz0bUIAD2eQQxzk7/i4Yv9pCZIvNZGUVu4t1x2A56iCLukQ9gDV2p4kjldH
-         O+p9CbN7FF+/m3GsmzqB1T20aftGn5qll1X6AbDYLdYTNEx2+uD8m7/IH6REWVJdcSls
-         u+VoyYhb3lqNUPLDRXuzTWV9bi4xGRzl/zNJcjAUBV3yELDna/l33VoFKYgPwItULo1J
-         KCkG/7DXUDDKN6h9hN4+VI6xFJvMeqVVkfPoYus+LOy9GbUVaxZ5a2b9GSomfQ8MENUs
-         q7xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=gHFLCKlpXIGAn0egtGMAf9G1WrufJhSv91wXY+Y8f8Q=;
-        b=mS4XvEIO21jAYcoutoxdpqF4kjXNvK0nxVNQbKjM3MaIRPVnnxZyuhJWXCPU5z/eBD
-         1HG8C3SWLOmLjRUa92qSmtaMZkqJL1tbHh4AeMjBi/D6VfT9ipK/G/1UUoiZOKHzUe9u
-         d4ebKmeTO8ZP7IGeNcmDf6bekVu2QdUuX4UO+dLOR5g+rKAf29GCF5HFbhbnfABbxYvQ
-         X7mjozt1V6UAp8SKZrHlHsSpHJbDzloWdstwqwDy8+QqnPhwixpoG8b18gOrp+NtrxF2
-         ue1UZ+eLNucx4ZeVvPpIcuMiILcLS1Y3UTFzs8u5/SH+Zj09lcF5SKQVN+b7zZPjC5TL
-         m/Eg==
-X-Gm-Message-State: AGi0PuZzbQ/Qr5fvm5aSxtocHuNmErHmMwvyOkZRtOuA8X69LFuSRtRM
-        /MaQQQukgB9f1P5ki7lm2i5kMITSPMQuL0+nPik=
-X-Google-Smtp-Source: APiQypJFkKtX6ZC6hJ0SDdwypkf/KeP+1RyrvwFBHvlwbJQHvhQXt7QZJ/RME6jjIkwyNRSQ2VZlIfHmuUBQY2B1cL8=
-X-Received: by 2002:a17:90a:8403:: with SMTP id j3mr5878941pjn.8.1585758307412;
- Wed, 01 Apr 2020 09:25:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-6-nuno.sa@analog.com>
- <CAHp75Vdxtn1gXi=xCJfGOkBYiWB2qsYQLTJyaEGiiFqHvELaHQ@mail.gmail.com>
- <BN6PR03MB3347862A4C434CCA8C1B1E2599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
- <CAHp75VfuWMDR4dUmjsYgeMgNMcVDZKdKVCsZ5p6g0m3TLHi5UA@mail.gmail.com>
- <BN6PR03MB3347E5ECF100EAD1453B577D99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
- <CAHp75Vcp5Rs53i_74MvbudcRrDYCD=Agfjh2cO_GNc7TXaS73g@mail.gmail.com> <BN6PR03MB33475E91FA8665937E8F3AE599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-In-Reply-To: <BN6PR03MB33475E91FA8665937E8F3AE599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Apr 2020 19:24:59 +0300
-Message-ID: <CAHp75VddBgGtBf=3yNs331EU6HQgL-Aq7tmf+dG3Z9W-d0hdNQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
+        id S2388153AbgDAQ3O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 12:29:14 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:58319 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388148AbgDAQ3L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 12:29:11 -0400
+Received: from envy ([82.207.223.251]) by mrelayeu.kundenserver.de (mreue106
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1N5W0q-1jHt2y0YtW-016w4x; Wed, 01
+ Apr 2020 18:28:54 +0200
+Message-ID: <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
+Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
+ fusion Hub using HID framework
+From:   Richard Neumann <mail@richard-neumann.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
+Cc:     Sandeep Singh <Sandeep.Singh@amd.com>, Shyam-sundar.S-k@amd.com,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Date:   Wed, 01 Apr 2020 18:28:51 +0200
+In-Reply-To: <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
+References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
+         <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
+         <4fe47b0323c1d65d429ee89b000e8bfcd984495f.camel@richard-neumann.de>
+         <896f84bc-f0d6-59a5-c894-809695aa348f@amd.com>
+         <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-JMpIYctbEoNFnW+rx2oI"
+User-Agent: Evolution 3.36.1 
+MIME-Version: 1.0
+X-Provags-ID: V03:K1:/Iuh6Wc2OWUWANhg+i5sa8DX8+N5Q471sfzV1dJZGtvhNgn30bW
+ WFNUEw83jU+/rRD8GACG8t2TGf2kw4Z5QQLxVaB3MvjdmW+0A8XTSl1hI2iTfdflWXmcfYH
+ 1IwhXyqvBX/2rCAP5zojzlREeoMLx4pLRZg6+TbOXwHSofssNiK+0ubQ27EHfVP+wpjgfDE
+ 9haVSMVl1addbBrysAL7w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BEgHpqVQWuA=:eab8Bjm6U04XClhfM96ei2
+ 6eVrEtmoO/i+1Z0ybln3l54Ic5d8P0vyqSGtUqDdZB+rHtFjXTtH07Hz5ZKah2Up5iX5Lo9zx
+ dWBBBxAq3tM2LhPhpwLvl25KM/fiw79mo64WUjY4SLGdy+D2FX7b5mTtRPuBCY+u06nIbBtkd
+ ZdUuVhPde03VpLsKqprLsyBP96JXvcWslukQVjTzJP9/AIaw6Mqqm5rZa/YSxck8aAYoqh5PG
+ 4f+cMMdZU89i2DRM3SAKN5MwZw2WPrRXBKHgiAZByC5834bmS2/WwbmaNjnAUKmfBvYW4VTn8
+ FixF/Of2X2CK3RXKiOx/SitiO5F76BadLahtiLOR7bM++gUyHdkbsm7sKqS2DFh4fUSdBQMNd
+ mZLHzHT9hdqNhIp224x/VeQzByHZwaPegkzUv7xWeU2QNIFAscRqcV1AooEKAAHTEBcBOyNay
+ OniuUrU51qLrVzVRZif/oO4dBoYVaHezOcZo6j8boCuTeCrpoRxqkM01iSNREWvyAc5mX06Sl
+ /kfXvsksupRk669Q08Oi/lMJwXgNaFFWryEs2nNtE/X2/FKmoPXaWhNHy8JGbntNkRovKqt6h
+ kb1ccpgMV5Il06Drok+Vcz0rNjsEMvzl6zMF+8QymF30Voc1Fo1JM7CYP4tPykr5JFhRv4Kr8
+ k9jTU2x8QxkEGuvAs+uSHJeH/Sc4d8uoLnrVw6ZKwzCMZ1qk4tK60ly4fkYe58OLQdBQvO3LX
+ eJyBw2xDeHlfCsiD1ZFPe+SSXskptFLDQ0lgJbwoE52Xkmy+ntyZWo39lQnBJlPLrPqzARLd2
+ sMeTVIZRzPwwOnT4o4/r/iRAAGDDqLL5Tw5Ts01zYC7APWmfooBVR0QejZXowu75yG0HU/d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 1, 2020 at 5:18 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
->
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Sent: Mittwoch, 1. April 2020 16:06
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>; devicetree
-> > <devicetree@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>;
-> > Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>;
-> > Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Rob Herring
-> > <robh+dt@kernel.org>; Mark Rutland <mark.rutland@arm.com>; Ardelean,
-> > Alexandru <alexandru.Ardelean@analog.com>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>
-> > Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
-> >
-> > On Wed, Apr 1, 2020 at 4:27 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
-> > > > On Wed, Apr 1, 2020 at 10:13 AM Sa, Nuno <Nuno.Sa@analog.com>
-> > wrote:
-> > > > > > On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.co=
-m>
-> > wrote:
 
-...
+--=-JMpIYctbEoNFnW+rx2oI
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > > Well, I can remove the 7. I honestly took it from another driver and =
-I guess
-> > the idea
-> > > is to make explicit that 7 is not supported. Since this is a 3 bit fi=
-eld and the
-> > datasheet
-> > > does not state this directly.
-> > >
-> > > As for the >=3D0, I prefer to have either as is or >0 since we don't =
-really need to
-> > check the
-> > > index 0. If 1 fails, then we will use 0 either way...
-> >
-> > It makes sense to check to get better optimization (and increased reada=
-bility).
-> > Look for this
-> >
-> > i =3D ARRAY_SIZE(...);
-> >
-> > while (i--) {
-> >  ...
-> > }
-> >
-> > It's much better to read and understand.
->
-> Well, about the readability it's a bit subjective . It depends who is
-> reading the code. Just curious, how would you get better optimization
-> by doing >=3D0 instead of > 0?
+Am Dienstag, den 31.03.2020, 20:24 +0300 schrieb Andy Shevchenko:
+> On Tue, Mar 31, 2020 at 4:26 PM Shah, Nehal-bakulchandra
+> <nehal-bakulchandra.shah@amd.com> wrote:
+> > On 3/31/2020 6:01 PM, Richard Neumann wrote:
+> > > Not a real review, but your patch series seems to be repeating a
+> > > lot
+> > > from drivers/i2c/busses/i2c-amd-mp2*.
+> > > Is there any chance we could re-use the code?
+> > > E.g. the AMD_C2P_* definitions from drivers/i2c/busses/i2c-amd-
+> > > mp2.h?
+> >=20
+> > Thanks for the mail. Yes there are some common structures, however
+> > as of now we have kept separately considering both
+> >=20
+> > are part of different sub systems. But may be will consider this
+> > input for future enhancement.
+>=20
+> It can be done in a form of shared definitions at least in
+> include/linux/platform_data/x86/amd-mp2.h or alike ...
+>=20
 
-Feel the difference while (i--) vs. while (--i > 0).
-The latter one is a bit unusual.
+I managed to add support for the AMD SFH PCI device to i2c-amd-mp2* and
+outsourced the headers to include/linux/i2c-amd-mp2.h. [1]
+I also refactored the patch series (excluded the documentation) [2] to
+use the PCI device now provided by i2c_amd_mp2_pci and removed some
+duplicate and unncessary code.
+The driver now consist of just one module (amd_sfhtp_hid).
+Unfortunately I was not able to solve the problem, that I get AMD-Vi
+IO_PAGE_FAULT errors when not booted with amd_iommu=3Doff.
 
-> Either way, I don=E2=80=99t have any strong feeling about this so I can d=
-o as
-> you suggest.
+[1] https://gist.githubusercontent.com/conqp/4d726f86da8a8397d6e70091a124de=
+67/raw/f97e88a0b44d98bfa1258cb73c8afe4dce7afa87/i2c-amd-mp2.patch
+[2] https://gist.githubusercontent.com/conqp/67036e690aca89d08b958971edac28=
+3d/raw/2a1ef122f9c8c8e07164b6d597962ce7bbad6d45/amd-sfhtp.patch
 
+--=-JMpIYctbEoNFnW+rx2oI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
+-----BEGIN PGP SIGNATURE-----
 
---=20
-With Best Regards,
-Andy Shevchenko
+iHUEABYIAB0WIQT62wKwhMqSt8WaustMqNUjvThq9wUCXoTBQwAKCRBMqNUjvThq
+95P6AQD2f9/1gcoiIcDpJ/lT+fG8FH3cCnQqUJ7jGkVhNmZuiQD/aPm0aB1ZPd0L
+NzfP2Euf/mdDdd0WMbbsFkX4VhKSxw8=
+=0blY
+-----END PGP SIGNATURE-----
+
+--=-JMpIYctbEoNFnW+rx2oI--
+

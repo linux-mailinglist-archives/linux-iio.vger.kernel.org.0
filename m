@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EC6E19A974
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 12:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFB819A98C
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 12:27:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730574AbgDAKXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 06:23:00 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:36712 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726115AbgDAKXA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 06:23:00 -0400
-Received: by mail-pl1-f193.google.com with SMTP id g2so9447027plo.3;
-        Wed, 01 Apr 2020 03:22:59 -0700 (PDT)
+        id S1732179AbgDAK1e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 06:27:34 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:43140 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728087AbgDAK1d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 06:27:33 -0400
+Received: by mail-pf1-f195.google.com with SMTP id f206so11885232pfa.10;
+        Wed, 01 Apr 2020 03:27:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=sJXYD/KrXkJjDAueyAH7HsEdzJYm9FD8Z2MtDlOCrrk=;
-        b=UtEUt4mbMenaSDfZ+i3oxoB6VUwNtDy/5KRhj8thR4LPppi7VQh6sM8j1nP6wjhGE9
-         2kH1BD0+xnEKaD42Ohd9A4Dmzi2OW7DT8Vk/ApqUG9v4QKYrt7AZ9W1jzrwp3I8PAOWO
-         SGFvKChvZw/1NxSlE3/Qu8AY0smSXBjKMK5Jhy2uPKS3DT5hx60H8uQE4Vgz+1BZprZ1
-         O33Mxelnw9iGXfRITH03Z4QePDAi65XyGeK7bYI2FywCfCJ3CU2yJSDGeJ4DaDwAQCzl
-         8jOdKGkX40x2V4XmYWAgW/llpHjTAhGd0hzf6w05o9mN2RuULaD8rpkqbIzZIicROrFB
-         rkOw==
+        bh=RNJMZCJvB40U9Qk+mZw8kiFZdWTeiO8956JY+Lpa3zY=;
+        b=kd+qALydDbsk5PDv3CmNVU876gc2XF9ln0DDeqKl2KQAmmQURexYe6cGFN/wz629v6
+         brJSdD5GuUwI/AD89NLIcxbm0THCRCkr925la6QHbV2IVAmQfOujYs/65sZkqcODp2C6
+         1xrJxGxtDNRfAJXPR9QA9Va36wxptxLSMw0XRUUf0j7j74OTEbGxffE+2ewDh0/XbV7g
+         g5Yxa8OsfcZCO602gcz22X4qYB1CPG5pwO0HaueaHsaZgQwi1sP+F7V59FMoThwgZT+Y
+         klbhMvCKOBbJsfyRFpugp1KQZ8TwFG89UzgrRtBFJEuj7gLSxNypQkoRvKX1O87zL6LB
+         66RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=sJXYD/KrXkJjDAueyAH7HsEdzJYm9FD8Z2MtDlOCrrk=;
-        b=Xvs4eUM7+q6oyC0riAwwCz2acsQKwzgROdeM2zgqfPQqXhXiCD7rwaRFb7jyaLB5N8
-         NX9BOfAlv4KY071cEmyFfJnGV6SKiEaNnFFa6OKsWNL8F6Qxy5UTpDh76fWfdMNT/V3U
-         yES6OKAjMTR0rPt7zmJ2E8KPRlJEpBKZKXiaBYTaK2Qq3IM2cGKKv4/AkvxSAOn356ow
-         vhJx08MYu4/QrmnkatNODEhTVlZE78D/Sz4902KuL1XNjOn0ayHxBTPnlfBxerquWkWc
-         K40tqzAJW9ZkikVmOVOvdZzROLR5SDy57NSxqIHNj6P4OqkwkhwuDXTwol+Exax3bCLd
-         kU1Q==
-X-Gm-Message-State: AGi0PuYhfklbofwyFss2igT6TdhTUmPvCynCC8X/LV8mDR21dPuaThP3
-        Ncl5diZ37bFrA0J8Oh3j7/VJnS0dcEi3Wjt8ZDk=
-X-Google-Smtp-Source: APiQypJhwdk0KJ+Lsizg8n6B6HQOSOOZMnjnlz8bonWMFGqFcS2kC5KJTEBx4N3caI1tfhW8Q1NYHmWq55WINwHyYSk=
-X-Received: by 2002:a17:90a:3602:: with SMTP id s2mr3889830pjb.143.1585736578573;
- Wed, 01 Apr 2020 03:22:58 -0700 (PDT)
+        bh=RNJMZCJvB40U9Qk+mZw8kiFZdWTeiO8956JY+Lpa3zY=;
+        b=GfgQaF8Q4/c1mmVPuazlO4iavY866iuU7o03ucpory8CM9CUnr7oB+Xb0PyDB0FchU
+         uK07oITEPbkncPAX94bx1CAdKMtVC//zz6nj05icUi65RTvNJrkoFvnB5cLqC58TLRFm
+         adgXx2YOXeyRlIu/cvIOSyd8uZq2VeCPaJSqpwsGE0cuaBk9Suoja+RlLw6ywOyPeah0
+         NbR/oVHnf6RXoVDDKWX8L3IavvhcvlfsG/3KRg82j6vmF/dYPfPJgD45lbb3y+iB3qkm
+         UfGAtu7959CpVOdFLjebk7f/zvV6tti3BfFJbq+Td1a9IHIId/5Gl92KycSpXuqDLJQo
+         zQGw==
+X-Gm-Message-State: ANhLgQ3dOscSuQju4rQneqlFm7Odio7zjTaISfA4Bt2shq5vSgYvBoKp
+        6BzhyP2fr4AABkFRrytTCZL5y5RaC/uwDthA739vGIsTN5Y=
+X-Google-Smtp-Source: ADFU+vt4HEC1R5DFw7uZpOKFKf66YONDP4gkCpjtAsq+aOrsNGlomYjFsswtwGKtUniltF+o2+/dDvfW30Ht+CAEtdg=
+X-Received: by 2002:aa7:9097:: with SMTP id i23mr22128994pfa.170.1585736851029;
+ Wed, 01 Apr 2020 03:27:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-6-nuno.sa@analog.com>
- <CAHp75Vdxtn1gXi=xCJfGOkBYiWB2qsYQLTJyaEGiiFqHvELaHQ@mail.gmail.com> <BN6PR03MB3347862A4C434CCA8C1B1E2599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-In-Reply-To: <BN6PR03MB3347862A4C434CCA8C1B1E2599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
+References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-3-nuno.sa@analog.com>
+ <CAHp75VfXS1P-EJaKERojK=-3erYi5MxyDMjfrELyY2X3PZEN1A@mail.gmail.com> <BN6PR03MB3347F9B31FE4E82904ED3E8C99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
+In-Reply-To: <BN6PR03MB3347F9B31FE4E82904ED3E8C99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Apr 2020 13:22:51 +0300
-Message-ID: <CAHp75VfuWMDR4dUmjsYgeMgNMcVDZKdKVCsZ5p6g0m3TLHi5UA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
+Date:   Wed, 1 Apr 2020 13:27:23 +0300
+Message-ID: <CAHp75VfowVagnG0U8N4SM5Y2ZRoRTFFtJtZgkV+XWGznhrkogg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/6] iio: imu: adis: Add irq mask variable
 To:     "Sa, Nuno" <Nuno.Sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
@@ -66,159 +66,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 1, 2020 at 10:13 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
->
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Sent: Dienstag, 31. M=C3=A4rz 2020 20:16
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>; devicetree
-> > <devicetree@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>;
-> > Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>;
-> > Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Rob Herring
-> > <robh+dt@kernel.org>; Mark Rutland <mark.rutland@arm.com>; Ardelean,
-> > Alexandru <alexandru.Ardelean@analog.com>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>
-> > Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
+On Wed, Apr 1, 2020 at 10:22 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+> > From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org>=
+ On
+> > Behalf Of Andy Shevchenko
+> > Sent: Dienstag, 31. M=C3=A4rz 2020 19:40
 > > On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote=
 :
+> > >
+> > > There are some ADIS devices that can configure the data ready pin
+> > > polarity. Hence, we cannot hardcode our IRQ mask as
+> > IRQF_TRIGGER_RISING
+> > > since we might want to have it as IRQF_TRIGGER_FALLING.
 
 ...
 
-> > > +#include <asm/unaligned.h>
-
-> I thought we wanted alphabetic order...
-
-Yes, but from more generic header groups to less generic. Inside each
-group is alphabetical.
-asm/ is less generic than linux/.
-
-> > Usually it goes after linux/*
-
-> > > +#include <linux/bitfield.h>
-> > > +#include <linux/bitops.h>
-> > > +#include <linux/clk.h>
-> > > +#include <linux/debugfs.h>
-> > > +#include <linux/delay.h>
-> > > +#include <linux/device.h>
+> > > +static int adis_validate_irq_mask(struct adis *adis)
+> > > +{
+> > > +       if (!adis->irq_mask) {
+> > > +               adis->irq_mask =3D IRQF_TRIGGER_RISING;
+> > > +               return 0;
 > >
-> > > +#include <linux/kernel.h>
+> > > +       } else if (adis->irq_mask !=3D IRQF_TRIGGER_RISING &&
 > >
-> > What this is for?
+> > 'else' is redundant.
 > >
-> Yeps. Not really needed...
-
-I think you needed it for DIV_ROUND_UP or alike macros. It also has
-container_of...
-
-> > > +#include <linux/iio/buffer.h>
-> > > +#include <linux/iio/iio.h>
-> > > +#include <linux/iio/imu/adis.h>
-> > > +#include <linux/iio/sysfs.h>
-> > > +#include <linux/iio/trigger_consumer.h>
-> > > +#include <linux/irq.h>
-> > > +#include <linux/module.h>
+> > > +                  adis->irq_mask !=3D IRQF_TRIGGER_FALLING) {
 > >
-> > > +#include <linux/of_device.h>
-> >
-> > Do you really need this? Perhaps mod_devicetable.h is what you are look=
-ing
-> > for.
-> >
+> > But this condition rises questions. Why i can't configure both?
+> > Why I can't configure other flags there?
 >
-> Yes. For ` of_device_get_match_data ``. If changed by `device_get_match_d=
-ata`, then I guess
-> I can drop it..
-
-Probably change to mod_devicetable.h with property.h.
-
-> > > +#include <linux/spi/spi.h>
-
-...
-
-> > > +       for (i =3D ARRAY_SIZE(adis16475_3db_freqs) - 2; i >=3D 1; i--=
-) {
-> >
-> > Why those margins? size-2 and 1 ?
-> >
+> Both you can't because it is just how these type of devices work. Data is=
+ ready either
+> on the rising edge or on the falling edge (if supported by the device)...
+> I agree this could check if only one of the flags are set instead of dire=
+ctly comparing the
+> values (invalidating other flags) but I would prefer to keep this simple =
+for now...
 >
-> The -2 is needed since index 7 is not valid. The 1 I honestly don't remem=
-ber why I did it
-> like this. Using > 0 is the same and more "common"...
-
-More common is >=3D 0. That's my question basically.
-And if 7 is not valid why to keep it in the array at all?
-
-> > > +               if (adis16475_3db_freqs[i] >=3D filter)
-> > > +                       break;
-> > > +       }
-
-...
-
-> > > +#define ADIS16475_GYRO_CHANNEL(_mod) \
-> > > +       ADIS16475_MOD_CHAN(IIO_ANGL_VEL, IIO_MOD_ ## _mod, \
-> > > +       ADIS16475_REG_ ## _mod ## _GYRO_L, ADIS16475_SCAN_GYRO_ ##
-> > _mod, 32, \
-> > > +       32)
 > >
-> > It's not obvious that this is macro inside macro. Can you indent better=
-?
-> > Ditto for the rest similar ones.
-> >
->
-> Honestly here I don't see any problems with indentation and it goes in co=
-nformity with
-> other IMU drivers already in tree. So here, as long as anyone else has a =
-problem with this, I prefer
-> to keep it this way...
-
-I'm not a maintainer, not my call :-)
-
-...
-
-> > > +       buffer =3D (u16 *)adis->buffer;
-> >
-> > Why the casting is needed?
-> >
-> > > +       crc =3D get_unaligned_be16(&buffer[offset + 2]);
-> >
-> > If your buffer is aligned in the structure, you may simple use be16_to_=
-cpu().
-> > Same for the rest of get_unaligned*() calls.
-> > Or do you have unaligned data there?
->
-> This is a nice point. So, honestly I made it like this to keep conformity=
- with other drivers we have
-> in our internal tree (in queue for upstream) and I also wondered about th=
-is. The only justification I can
-> find to use unligned calls is to keep this independent from the ADIS lib =
-(not sure if it makes sense) since
-> we get the pointer from the library (allocated there).
->
-> Now, if Im not missing nothing obvious we can access the buffer normally =
-since it's being allocated
-> with kmalloc which means we have  ARCH_KMALLOC_MINALIGN (which is at leas=
-t 8 if Im not mistaken).
-> On top of this, the device sends the data as n 16 bits segments. So in th=
-eory, I guess we can ditch the
-> overhead of the *unaligned calls if any objections?
-
-No objections from my side at least.
-
-...
-
-> > > +       desc =3D irq_get_irq_data(spi->irq);
-> >
-> > > +       if (!desc) {
-> > > +               dev_err(&spi->dev, "Could not find IRQ %d\n", spi->ir=
-q);
+> > > +               dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
+> > > +                       adis->irq_mask);
 > > > +               return -EINVAL;
 > > > +       }
 > >
-> > Is this even possible?
+> > > +       return 0;
+> > > +}
+> >
+> > And actually name of the function is not exactly what it does. It
+> > validates *or* initializes.
+>
+> Well, yes. It just sets the mask to the default value to keep backward co=
+mpatibility
+> with all the other devices that don't support/use this variable...
 
-> I guess. If someone does not include it in device tree...
-
-Hmm... and this function will be called anyway?
+Perhaps documentation in a comment form should be added.
+Moreover, I realized that you added to variable and function mask
+suffix while it's actually flag.
 
 --=20
 With Best Regards,

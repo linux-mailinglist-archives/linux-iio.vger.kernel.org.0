@@ -2,49 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8324619A62E
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 09:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC6E19A974
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Apr 2020 12:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731861AbgDAHWd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Apr 2020 03:22:33 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:32042 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731818AbgDAHWd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 03:22:33 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0317GaJt019217;
-        Wed, 1 Apr 2020 03:22:11 -0400
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2173.outbound.protection.outlook.com [104.47.56.173])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3023g5bgc7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 01 Apr 2020 03:22:10 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SgCFumkWTQemiK77QlV6EAJjeeMEr8YdDkYxJD3dLrbxpD5QmqWr86h4b0049Efuq/5P5msOa3BL85cYqOum0975AEXmNcVFvcwXen09zMsyjgBCGHz5kj9zA35k7qghWvp7JJFEi3Dxx2RR00QI4I+2J8NYz6j69aIRxlCmjJ9K9Pe2gP8jEH4wTVNDGcltVRQmKOsPCOQ5uKizwKzrt7FSjyzmJ1vb8d3KPvEO2VIaNJq/CauqnvVY6THAbOPYc/JZocrGSKNE29X2UzoOQt8COY/uTv77HEmBWkdetjDhyDLkJQWZI5WTV2BXgMURPH55iRw2pdR5Q5+Lb160Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=McVCNtb1ktXuB+K/2g/MdJQokSWscfo6FS9y1JgMI8c=;
- b=GNXTy0wr1Wakjf5FnEXR+6n4FOBXAGkVSbaxQSvfy3eKnJxhLnmgJ8epzpRUW0ha46B8JjcxZoVarSRGAOga1s8BlrmHCMYEWiZPZmHyHXroKx97dDXAxJBFF8oHbPOw8v+/6CXIP5FkiXLW7eHPjnc4T1Dq2AiH+L/Cew9gBvG8kTa8VDoQiH6ONhA0VmxW355KK7Yv0vfDgFrTQ+VXndV+qlCoovAueA62a1rtjZXmy0fAZGhTY5h6V0/6deEzuk2PCpgfigoMEzIGvQjl0/RuqpK3tHdN02FvVmfTAvKKlyXSNHMuqD+gU9W2PNaO3HbI3vyf+UNNiGJqH1PKHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S1730574AbgDAKXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Apr 2020 06:23:00 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:36712 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726115AbgDAKXA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Apr 2020 06:23:00 -0400
+Received: by mail-pl1-f193.google.com with SMTP id g2so9447027plo.3;
+        Wed, 01 Apr 2020 03:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=McVCNtb1ktXuB+K/2g/MdJQokSWscfo6FS9y1JgMI8c=;
- b=pvcxg5g54EM+eRG863Oicy1FaGbnmrsFSH9YtsvO0oHFjl7heX6pcI8cW4yWJggDBzjnqCxFr2jfm3p8CmAcS3OMPGCN27kZ+ohaNptqjSpdKuFtFgXMAPiajRDvctozU97tzQlLwTLx6JhYUnZt6p1j/OLGf8mtVCCJdSmGO7o=
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com (2603:10b6:405:3d::35)
- by BN6PR03MB2996.namprd03.prod.outlook.com (2603:10b6:404:10e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Wed, 1 Apr
- 2020 07:22:09 +0000
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::4097:be14:fb64:1979]) by BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::4097:be14:fb64:1979%7]) with mapi id 15.20.2856.019; Wed, 1 Apr 2020
- 07:22:09 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     linux-iio <linux-iio@vger.kernel.org>,
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=sJXYD/KrXkJjDAueyAH7HsEdzJYm9FD8Z2MtDlOCrrk=;
+        b=UtEUt4mbMenaSDfZ+i3oxoB6VUwNtDy/5KRhj8thR4LPppi7VQh6sM8j1nP6wjhGE9
+         2kH1BD0+xnEKaD42Ohd9A4Dmzi2OW7DT8Vk/ApqUG9v4QKYrt7AZ9W1jzrwp3I8PAOWO
+         SGFvKChvZw/1NxSlE3/Qu8AY0smSXBjKMK5Jhy2uPKS3DT5hx60H8uQE4Vgz+1BZprZ1
+         O33Mxelnw9iGXfRITH03Z4QePDAi65XyGeK7bYI2FywCfCJ3CU2yJSDGeJ4DaDwAQCzl
+         8jOdKGkX40x2V4XmYWAgW/llpHjTAhGd0hzf6w05o9mN2RuULaD8rpkqbIzZIicROrFB
+         rkOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=sJXYD/KrXkJjDAueyAH7HsEdzJYm9FD8Z2MtDlOCrrk=;
+        b=Xvs4eUM7+q6oyC0riAwwCz2acsQKwzgROdeM2zgqfPQqXhXiCD7rwaRFb7jyaLB5N8
+         NX9BOfAlv4KY071cEmyFfJnGV6SKiEaNnFFa6OKsWNL8F6Qxy5UTpDh76fWfdMNT/V3U
+         yES6OKAjMTR0rPt7zmJ2E8KPRlJEpBKZKXiaBYTaK2Qq3IM2cGKKv4/AkvxSAOn356ow
+         vhJx08MYu4/QrmnkatNODEhTVlZE78D/Sz4902KuL1XNjOn0ayHxBTPnlfBxerquWkWc
+         K40tqzAJW9ZkikVmOVOvdZzROLR5SDy57NSxqIHNj6P4OqkwkhwuDXTwol+Exax3bCLd
+         kU1Q==
+X-Gm-Message-State: AGi0PuYhfklbofwyFss2igT6TdhTUmPvCynCC8X/LV8mDR21dPuaThP3
+        Ncl5diZ37bFrA0J8Oh3j7/VJnS0dcEi3Wjt8ZDk=
+X-Google-Smtp-Source: APiQypJhwdk0KJ+Lsizg8n6B6HQOSOOZMnjnlz8bonWMFGqFcS2kC5KJTEBx4N3caI1tfhW8Q1NYHmWq55WINwHyYSk=
+X-Received: by 2002:a17:90a:3602:: with SMTP id s2mr3889830pjb.143.1585736578573;
+ Wed, 01 Apr 2020 03:22:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200331114811.7978-1-nuno.sa@analog.com> <20200331114811.7978-6-nuno.sa@analog.com>
+ <CAHp75Vdxtn1gXi=xCJfGOkBYiWB2qsYQLTJyaEGiiFqHvELaHQ@mail.gmail.com> <BN6PR03MB3347862A4C434CCA8C1B1E2599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
+In-Reply-To: <BN6PR03MB3347862A4C434CCA8C1B1E2599C90@BN6PR03MB3347.namprd03.prod.outlook.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 1 Apr 2020 13:22:51 +0300
+Message-ID: <CAHp75VfuWMDR4dUmjsYgeMgNMcVDZKdKVCsZ5p6g0m3TLHi5UA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -54,131 +59,167 @@ CC:     linux-iio <linux-iio@vger.kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>
-Subject: RE: [PATCH v3 2/6] iio: imu: adis: Add irq mask variable
-Thread-Topic: [PATCH v3 2/6] iio: imu: adis: Add irq mask variable
-Thread-Index: AQHWB1JXGSpmkJ3opUGHDYpi/3D/j6hi+CsAgADjkaA=
-Date:   Wed, 1 Apr 2020 07:22:09 +0000
-Message-ID: <BN6PR03MB3347F9B31FE4E82904ED3E8C99C90@BN6PR03MB3347.namprd03.prod.outlook.com>
-References: <20200331114811.7978-1-nuno.sa@analog.com>
- <20200331114811.7978-3-nuno.sa@analog.com>
- <CAHp75VfXS1P-EJaKERojK=-3erYi5MxyDMjfrELyY2X3PZEN1A@mail.gmail.com>
-In-Reply-To: <CAHp75VfXS1P-EJaKERojK=-3erYi5MxyDMjfrELyY2X3PZEN1A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dE4yUTBOREl4TVdZdE56TmxPUzB4TVdWaExUaGhNekV0Wm1NM056YzBNakZt?=
- =?utf-8?B?WTJGbFhHRnRaUzEwWlhOMFhEZGtORFF5TVRJd0xUY3paVGt0TVRGbFlTMDRZ?=
- =?utf-8?B?VE14TFdaak56YzNOREl4Wm1OaFpXSnZaSGt1ZEhoMElpQnplajBpTWpRMU1T?=
- =?utf-8?B?SWdkRDBpTVRNeU16QXhPVGt6TWpZMk56YzJNamN4SWlCb1BTSkZPR3hwWjBo?=
- =?utf-8?B?blRFeG5halZ0ZWxaS1NFb3JhRUZNTlhGUWVqZzlJaUJwWkQwaUlpQmliRDBp?=
- =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
- =?utf-8?B?VUZGYjBOQlFVUlFRMHcwTHpsblpsZEJVVEZFZFVKS1JXZzROMlpFVlU4MFJX?=
- =?utf-8?B?dFRTSHAwT0VSQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
- =?utf-8?B?QlFVRkVZVUZSUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
- =?utf-8?B?VVVGQ1FVRkJRVFYxUjBSWFFVRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
- =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
- =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
- =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
- =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
- =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
- =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
- =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
- =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlFUMDlJaTgrUEM5dFpYUmhQZz09?=
-x-dg-rorf: true
-x-originating-ip: [2001:a61:2422:3901:c912:5684:2cfe:d6d1]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: fa713ba2-0505-492c-837c-08d7d60d63cd
-x-ms-traffictypediagnostic: BN6PR03MB2996:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR03MB2996850BA94DE847AB2582B999C90@BN6PR03MB2996.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 03607C04F0
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR03MB3347.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(136003)(39860400002)(376002)(346002)(366004)(396003)(2906002)(316002)(86362001)(66574012)(4326008)(107886003)(186003)(6916009)(8676002)(52536014)(478600001)(81156014)(64756008)(8936002)(81166006)(9686003)(76116006)(53546011)(6506007)(54906003)(33656002)(7696005)(66946007)(71200400001)(66446008)(5660300002)(55016002)(66476007)(66556008);DIR:OUT;SFP:1101;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: iYRdA+OnRPrtOrz6A+qfnW3z9AIIwaPE7fr5+CqyfiZYNSh2R3ZWYBa0gqDf/uKU8NhsGTzcO7OvEZPdMRYUBILH4qIAvF4xoY3MbmvozRkxGDPjVA387E/Ska423l5oBV5a/2zwZc6suo+9JiP+VyXkCKIleExbJ7m5CQXgZfA4f9+zHIsgwHBofR1JqqpAPQ+SR+AI8TCaVcg91J4eqmPDEmYriXI3fug5ci0ux8TtoZHlUdtsdooE6lroo/I7rZlf5uMMze7FYySLSdDSt3tP3P4wTdbL+CQb/PAeILAzOBRzstP1tWoRQaLP/SS5X++EldMi6DOtAUSWd0gyibSknd7wrNajeL7XyfOkLUhPigdE+oflppi8+BbuF1BVa8RQ084jPD/AykkuvCBSIgRvc/iyMhPtv1ddgAqBY2bbT9Lk0FJaB/clGAZKd6Qg
-x-ms-exchange-antispam-messagedata: LSXUZTNf9nCVIefCxbs5cETExLLJtXnKw8lEN5ghbPCUr5BYz21UnS1Gc7BCDaF6Dqfi1PrMX3gWApZZWp2OGsUp5EJUtAq8dinQ71IlV84Bd8nosoUjrhWazTYzqUzHyQBgRH/uYb1hXWh34IQZHUh5D7ID0Wxf+l1E9wpLkJyhkDauur8hGrpyobYFlidktCKymRi8Mkfdc8wiWfE2Pg==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa713ba2-0505-492c-837c-08d7d60d63cd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2020 07:22:09.2007
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EdGYDdk4Fk8f0RGrC4qHX2daE+FbTIi/khqlAfocSWMoMezG4w8xkKAQJrCnR02au9Rw1RVL3BKpZ9JsYPD5FA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB2996
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-03-31_07:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2004010066
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiBGcm9tOiBsaW51eC1paW8tb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1paW8tb3duZXJA
-dmdlci5rZXJuZWwub3JnPiBPbg0KPiBCZWhhbGYgT2YgQW5keSBTaGV2Y2hlbmtvDQo+IFNlbnQ6
-IERpZW5zdGFnLCAzMS4gTcOkcnogMjAyMCAxOTo0MA0KPiBUbzogU2EsIE51bm8gPE51bm8uU2FA
-YW5hbG9nLmNvbT4NCj4gQ2M6IGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9yZz47
-IGRldmljZXRyZWUNCj4gPGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnPjsgSm9uYXRoYW4gQ2Ft
-ZXJvbiA8amljMjNAa2VybmVsLm9yZz47DQo+IEhhcnRtdXQgS25hYWNrIDxrbmFhY2suaEBnbXgu
-ZGU+OyBMYXJzLVBldGVyIENsYXVzZW4gPGxhcnNAbWV0YWZvby5kZT47DQo+IFBldGVyIE1lZXJ3
-YWxkLVN0YWRsZXIgPHBtZWVyd0BwbWVlcncubmV0PjsgUm9iIEhlcnJpbmcNCj4gPHJvYmgrZHRA
-a2VybmVsLm9yZz47IE1hcmsgUnV0bGFuZCA8bWFyay5ydXRsYW5kQGFybS5jb20+OyBBcmRlbGVh
-biwNCj4gQWxleGFuZHJ1IDxhbGV4YW5kcnUuQXJkZWxlYW5AYW5hbG9nLmNvbT47IEhlbm5lcmlj
-aCwgTWljaGFlbA0KPiA8TWljaGFlbC5IZW5uZXJpY2hAYW5hbG9nLmNvbT4NCj4gU3ViamVjdDog
-UmU6IFtQQVRDSCB2MyAyLzZdIGlpbzogaW11OiBhZGlzOiBBZGQgaXJxIG1hc2sgdmFyaWFibGUN
-Cj4gDQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIFR1ZSwgTWFyIDMxLCAyMDIwIGF0IDI6NDkgUE0g
-TnVubyBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBUaGVyZSBhcmUg
-c29tZSBBRElTIGRldmljZXMgdGhhdCBjYW4gY29uZmlndXJlIHRoZSBkYXRhIHJlYWR5IHBpbg0K
-PiA+IHBvbGFyaXR5LiBIZW5jZSwgd2UgY2Fubm90IGhhcmRjb2RlIG91ciBJUlEgbWFzayBhcw0K
-PiBJUlFGX1RSSUdHRVJfUklTSU5HDQo+ID4gc2luY2Ugd2UgbWlnaHQgd2FudCB0byBoYXZlIGl0
-IGFzIElSUUZfVFJJR0dFUl9GQUxMSU5HLg0KPiANCj4gLi4uDQo+IA0KPiA+ICtzdGF0aWMgaW50
-IGFkaXNfdmFsaWRhdGVfaXJxX21hc2soc3RydWN0IGFkaXMgKmFkaXMpDQo+ID4gK3sNCj4gPiAr
-ICAgICAgIGlmICghYWRpcy0+aXJxX21hc2spIHsNCj4gPiArICAgICAgICAgICAgICAgYWRpcy0+
-aXJxX21hc2sgPSBJUlFGX1RSSUdHRVJfUklTSU5HOw0KPiA+ICsgICAgICAgICAgICAgICByZXR1
-cm4gMDsNCj4gDQo+ID4gKyAgICAgICB9IGVsc2UgaWYgKGFkaXMtPmlycV9tYXNrICE9IElSUUZf
-VFJJR0dFUl9SSVNJTkcgJiYNCj4gDQo+ICdlbHNlJyBpcyByZWR1bmRhbnQuDQo+IA0KPiA+ICsg
-ICAgICAgICAgICAgICAgICBhZGlzLT5pcnFfbWFzayAhPSBJUlFGX1RSSUdHRVJfRkFMTElORykg
-ew0KPiANCj4gQnV0IHRoaXMgY29uZGl0aW9uIHJpc2VzIHF1ZXN0aW9ucy4gV2h5IGkgY2FuJ3Qg
-Y29uZmlndXJlIGJvdGg/DQo+IFdoeSBJIGNhbid0IGNvbmZpZ3VyZSBvdGhlciBmbGFncyB0aGVy
-ZT8NCg0KQm90aCB5b3UgY2FuJ3QgYmVjYXVzZSBpdCBpcyBqdXN0IGhvdyB0aGVzZSB0eXBlIG9m
-IGRldmljZXMgd29yay4gRGF0YSBpcyByZWFkeSBlaXRoZXINCm9uIHRoZSByaXNpbmcgZWRnZSBv
-ciBvbiB0aGUgZmFsbGluZyBlZGdlIChpZiBzdXBwb3J0ZWQgYnkgdGhlIGRldmljZSkuLi4NCkkg
-YWdyZWUgdGhpcyBjb3VsZCBjaGVjayBpZiBvbmx5IG9uZSBvZiB0aGUgZmxhZ3MgYXJlIHNldCBp
-bnN0ZWFkIG9mIGRpcmVjdGx5IGNvbXBhcmluZyB0aGUNCnZhbHVlcyAoaW52YWxpZGF0aW5nIG90
-aGVyIGZsYWdzKSBidXQgSSB3b3VsZCBwcmVmZXIgdG8ga2VlcCB0aGlzIHNpbXBsZSBmb3Igbm93
-Li4uDQoNCj4gDQo+ID4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJmFkaXMtPnNwaS0+ZGV2LCAi
-SW52YWxpZCBJUlEgbWFzazogJTA4bHhcbiIsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
-YWRpcy0+aXJxX21hc2spOw0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gLUVJTlZBTDsNCj4g
-PiArICAgICAgIH0NCj4gDQo+ID4gKyAgICAgICByZXR1cm4gMDsNCj4gPiArfQ0KPiANCj4gQW5k
-IGFjdHVhbGx5IG5hbWUgb2YgdGhlIGZ1bmN0aW9uIGlzIG5vdCBleGFjdGx5IHdoYXQgaXQgZG9l
-cy4gSXQNCj4gdmFsaWRhdGVzICpvciogaW5pdGlhbGl6ZXMuDQoNCldlbGwsIHllcy4gSXQganVz
-dCBzZXRzIHRoZSBtYXNrIHRvIHRoZSBkZWZhdWx0IHZhbHVlIHRvIGtlZXAgYmFja3dhcmQgY29t
-cGF0aWJpbGl0eQ0Kd2l0aCBhbGwgdGhlIG90aGVyIGRldmljZXMgdGhhdCBkb24ndCBzdXBwb3J0
-L3VzZSB0aGlzIHZhcmlhYmxlLi4uDQoNCi0gTnVubyBTw6ENCj4gDQo+IC0tDQo+IFdpdGggQmVz
-dCBSZWdhcmRzLA0KPiBBbmR5IFNoZXZjaGVua28NCg==
+On Wed, Apr 1, 2020 at 10:13 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+>
+> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Sent: Dienstag, 31. M=C3=A4rz 2020 20:16
+> > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > Cc: linux-iio <linux-iio@vger.kernel.org>; devicetree
+> > <devicetree@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>;
+> > Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Rob Herring
+> > <robh+dt@kernel.org>; Mark Rutland <mark.rutland@arm.com>; Ardelean,
+> > Alexandru <alexandru.Ardelean@analog.com>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>
+> > Subject: Re: [PATCH v3 5/6] iio: imu: Add support for adis16475
+> > On Tue, Mar 31, 2020 at 2:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote=
+:
+
+...
+
+> > > +#include <asm/unaligned.h>
+
+> I thought we wanted alphabetic order...
+
+Yes, but from more generic header groups to less generic. Inside each
+group is alphabetical.
+asm/ is less generic than linux/.
+
+> > Usually it goes after linux/*
+
+> > > +#include <linux/bitfield.h>
+> > > +#include <linux/bitops.h>
+> > > +#include <linux/clk.h>
+> > > +#include <linux/debugfs.h>
+> > > +#include <linux/delay.h>
+> > > +#include <linux/device.h>
+> >
+> > > +#include <linux/kernel.h>
+> >
+> > What this is for?
+> >
+> Yeps. Not really needed...
+
+I think you needed it for DIV_ROUND_UP or alike macros. It also has
+container_of...
+
+> > > +#include <linux/iio/buffer.h>
+> > > +#include <linux/iio/iio.h>
+> > > +#include <linux/iio/imu/adis.h>
+> > > +#include <linux/iio/sysfs.h>
+> > > +#include <linux/iio/trigger_consumer.h>
+> > > +#include <linux/irq.h>
+> > > +#include <linux/module.h>
+> >
+> > > +#include <linux/of_device.h>
+> >
+> > Do you really need this? Perhaps mod_devicetable.h is what you are look=
+ing
+> > for.
+> >
+>
+> Yes. For ` of_device_get_match_data ``. If changed by `device_get_match_d=
+ata`, then I guess
+> I can drop it..
+
+Probably change to mod_devicetable.h with property.h.
+
+> > > +#include <linux/spi/spi.h>
+
+...
+
+> > > +       for (i =3D ARRAY_SIZE(adis16475_3db_freqs) - 2; i >=3D 1; i--=
+) {
+> >
+> > Why those margins? size-2 and 1 ?
+> >
+>
+> The -2 is needed since index 7 is not valid. The 1 I honestly don't remem=
+ber why I did it
+> like this. Using > 0 is the same and more "common"...
+
+More common is >=3D 0. That's my question basically.
+And if 7 is not valid why to keep it in the array at all?
+
+> > > +               if (adis16475_3db_freqs[i] >=3D filter)
+> > > +                       break;
+> > > +       }
+
+...
+
+> > > +#define ADIS16475_GYRO_CHANNEL(_mod) \
+> > > +       ADIS16475_MOD_CHAN(IIO_ANGL_VEL, IIO_MOD_ ## _mod, \
+> > > +       ADIS16475_REG_ ## _mod ## _GYRO_L, ADIS16475_SCAN_GYRO_ ##
+> > _mod, 32, \
+> > > +       32)
+> >
+> > It's not obvious that this is macro inside macro. Can you indent better=
+?
+> > Ditto for the rest similar ones.
+> >
+>
+> Honestly here I don't see any problems with indentation and it goes in co=
+nformity with
+> other IMU drivers already in tree. So here, as long as anyone else has a =
+problem with this, I prefer
+> to keep it this way...
+
+I'm not a maintainer, not my call :-)
+
+...
+
+> > > +       buffer =3D (u16 *)adis->buffer;
+> >
+> > Why the casting is needed?
+> >
+> > > +       crc =3D get_unaligned_be16(&buffer[offset + 2]);
+> >
+> > If your buffer is aligned in the structure, you may simple use be16_to_=
+cpu().
+> > Same for the rest of get_unaligned*() calls.
+> > Or do you have unaligned data there?
+>
+> This is a nice point. So, honestly I made it like this to keep conformity=
+ with other drivers we have
+> in our internal tree (in queue for upstream) and I also wondered about th=
+is. The only justification I can
+> find to use unligned calls is to keep this independent from the ADIS lib =
+(not sure if it makes sense) since
+> we get the pointer from the library (allocated there).
+>
+> Now, if Im not missing nothing obvious we can access the buffer normally =
+since it's being allocated
+> with kmalloc which means we have  ARCH_KMALLOC_MINALIGN (which is at leas=
+t 8 if Im not mistaken).
+> On top of this, the device sends the data as n 16 bits segments. So in th=
+eory, I guess we can ditch the
+> overhead of the *unaligned calls if any objections?
+
+No objections from my side at least.
+
+...
+
+> > > +       desc =3D irq_get_irq_data(spi->irq);
+> >
+> > > +       if (!desc) {
+> > > +               dev_err(&spi->dev, "Could not find IRQ %d\n", spi->ir=
+q);
+> > > +               return -EINVAL;
+> > > +       }
+> >
+> > Is this even possible?
+
+> I guess. If someone does not include it in device tree...
+
+Hmm... and this function will be called anyway?
+
+--=20
+With Best Regards,
+Andy Shevchenko

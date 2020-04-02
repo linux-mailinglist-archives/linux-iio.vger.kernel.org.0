@@ -2,93 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 130A219C953
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Apr 2020 21:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EE6819CD3D
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Apr 2020 01:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389297AbgDBTCS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Apr 2020 15:02:18 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:41167 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388843AbgDBTCR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Apr 2020 15:02:17 -0400
-Received: by mail-pl1-f194.google.com with SMTP id d24so1686506pll.8;
-        Thu, 02 Apr 2020 12:02:17 -0700 (PDT)
+        id S2389613AbgDBXCG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Apr 2020 19:02:06 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:34330 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387919AbgDBXCG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Apr 2020 19:02:06 -0400
+Received: by mail-il1-f196.google.com with SMTP id t11so5427634ils.1
+        for <linux-iio@vger.kernel.org>; Thu, 02 Apr 2020 16:02:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6yHfKlaCzswQfxovPpLdXkshSIOZGxKsbwiyjHduQhQ=;
-        b=FMjyYjFS9dJWJ6Kufsp8wFXo4bon8NQ/xj3XlxYm3k9C/CCHoNQw5slUw277HlDJ0+
-         XY5OoqwS2GIbSMm9eI6Cc992ICMNYsZ06POmIZPstcIioFVOz69byrDtsNNXZzT8lFS3
-         KdmK1u4KiK5kkFbXreYuMAzH9RebBBPNi8lmWyyzwNYM6x5ewD5mzbJz5Gkrpz1P8zqT
-         lTkYn5LypHhZzOBFSEFirni+nY2Am5iSaa4Us78yjlyNie2RJqOmyWU4FsWeea+GgfSR
-         WVBZ8iOrlEU0MTi+I0jpNOw5Dk8lXXwaDz6e3pu5QYnK3A+chHn7leasiVTniupAi/ko
-         Urdw==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8h9TNvv6CZ2PKXPL953qS4ZWG+3/jrimtqMPT6Mv1pU=;
+        b=QomA5NjtFvJQErByC8wHcdpBoa4FleTSJNfY747f268VshMlihtHC6OviHbjhlZBM6
+         yc3Nxmlb3GRhGQ5nmF22Xfy46volL/Us88RKVifpWoYcayJ1q5Hd4XZyOeh8E8knn4u9
+         g2KKzgTI5UZAYJxVUTae7wN3FCUs8sT3zy3k8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6yHfKlaCzswQfxovPpLdXkshSIOZGxKsbwiyjHduQhQ=;
-        b=FAZNx9KOZ6NN/oz7HYn1xmOKHe8sT3Wmi34wAdxAdwGWif1OxWvKNOkEc+sESO9/iz
-         JbPyb0cxkxTRz0na0EJGhIMt7yfCcYh5DUxu+bHHwmv6kvxS3K9GwEgjdcp86AlhCh/g
-         T6XIGL98izeYgS3f3qeElOM/SdAJDdqKTwX8asQOsy9KUNt+FV3OosgtY+0vziCRHPRe
-         x6Z1QsubI3NqjekomPSHbVSaCc/RUwyIxmMxtTm3DizDn1SN86HvhY+Ds1rMawHRtJ5f
-         LM/cXh/QbF3I8UMqsvgeNAbbS7DnFfGCzDM+mUCU/rMQZ76I9AWpsgNP/KjY2SPXvOd7
-         wwPQ==
-X-Gm-Message-State: AGi0PuYwCMMW1YcWul4yD9r22Or4hp7dH79GyYZJZqrSsT8gQzC1lWj4
-        kQX4fy+wnHO9ZXNbG1aR9hVYqLAebjgXT8oC64Q=
-X-Google-Smtp-Source: APiQypLiABGWEuSpBPsVE+16FnXvEv+J3IeXgmeAKbsxy7kWLepFn3RNroasquV/ua9mGroakBr424wUXGYvlrNYSgE=
-X-Received: by 2002:a17:902:8215:: with SMTP id x21mr4212381pln.255.1585854136837;
- Thu, 02 Apr 2020 12:02:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200401185138.10673-1-alazar@startmail.com> <20200401185138.10673-3-alazar@startmail.com>
- <CAHp75VffpBYh+5xrWeeJJH8gRmJqT9ya5eQFedWi190_=p8HKQ@mail.gmail.com> <4431cacc-4af6-a497-5850-20dfceb588c1@metafoo.de>
-In-Reply-To: <4431cacc-4af6-a497-5850-20dfceb588c1@metafoo.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 2 Apr 2020 22:02:05 +0300
-Message-ID: <CAHp75VdeME1Bck2nFSW4r5PUA2mJDewEJZYZXhVhP-L-A-Nhig@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: adc: Add MAX1241 driver
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Alexandru Lazar <alazar@startmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8h9TNvv6CZ2PKXPL953qS4ZWG+3/jrimtqMPT6Mv1pU=;
+        b=m8YcaAW/EZq/CLf76jXcXqwC9xPqFyVD4vaXN9tSN/RPFWa3F5XSeka+H5zt/A4WD6
+         Hsy5YukDosLelhkP+vzeqZUQ0TNji2TqLMtbyUi74tXJOj7jVy4LEuFfdFlhRVAhwTba
+         kEiNic2gjtNAgHJcCiiAl/p5d7q6I7MGdZckoYl0V4PBR6AEg4YRhFf0WgC77R/mFlWf
+         wcsl0drf/wKqni/GgaJ5754UoGBuLeyj4qa9B8YzrcAntOuEn527pD1sAlolVtPu0fDf
+         8YmpRFt2uOObD1KS0Ly1gnnZSzewjbU/5YUftlTStoSMs4vYovQ1Rvd8iIqWCK+nVcQH
+         8zNg==
+X-Gm-Message-State: AGi0PubbRAOWOveFhAyt9rI8H/PF5wRD3Kw14xoAt5BdWZK2NSHzGJbe
+        bVJpB/yRUwOA1TFsCVFt0ao6FQ==
+X-Google-Smtp-Source: APiQypJfC8VUbwJAGR7sUSeGGe0EC41G2TO8QzvnR3qOZDxuY//+mCVxGZ3gqZhd37cWATOWh6pVDA==
+X-Received: by 2002:a92:d490:: with SMTP id p16mr5940369ilg.300.1585868525477;
+        Thu, 02 Apr 2020 16:02:05 -0700 (PDT)
+Received: from derch.Home (75-166-136-192.hlrn.qwest.net. [75.166.136.192])
+        by smtp.gmail.com with ESMTPSA id v24sm1808461iob.0.2020.04.02.16.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2020 16:02:04 -0700 (PDT)
+From:   Daniel Campello <campello@chromium.org>
+To:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Rob Herring <robh@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: [PATCH 1/2 v2] dt-bindings: iio: Add bindings for sx9310 sensor
+Date:   Thu,  2 Apr 2020 17:01:29 -0600
+Message-Id: <20200402165720.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
+X-Mailer: git-send-email 2.26.0.292.g33ef6b2f38-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 2, 2020 at 9:55 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
-> On 4/2/20 8:45 PM, Andy Shevchenko wrote:
-> > On Wed, Apr 1, 2020 at 9:47 PM Alexandru Lazar <alazar@startmail.com> wrote:
-> >> Add driver for the Maxim MAX1241 12-bit, single-channel ADC.
-> >>
-> > Perhaps put data sheet link as Datasheet: tag here?
-> >
-> >> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> >> Signed-off-by: Alexandru Lazar <alazar@startmail.com>
-> > ...
-> >
-> >> +       indio_dev->name = spi_get_device_id(spi)->name;
-> > Shouldn't be rather part number?
-> > Jonathan?
->
-> This is the part number as defined in the spi_device id table :)
+Adds device tree bandings for sx9310 sensor.
 
-Okay!
+Signed-off-by: Daniel Campello <campello@chromium.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+v2 changes:
+ - Added power-supply
+ - Changed to dual license
 
-> +static const struct spi_device_id max1241_id[] = {
-> +       { "max1241", max1241 },
-> +       {}
-> +};
+ .../iio/proximity/semtech,sx9310.yaml         | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
 
+diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+new file mode 100644
+index 00000000000000..b52ffdac678b54
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+@@ -0,0 +1,56 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Semtech's SX9310 capacitive proximity sensor
++
++maintainers:
++  - Daniel Campello <campello@chromium.org>
++
++description: |
++  Semtech's SX9310/SX9311 capacitive proximity/button solution.
++
++  Specifications about the devices can be found at:
++  https://www.semtech.com/products/smart-sensing/sar-sensors/sx9310
++
++properties:
++  compatible:
++    enum:
++      - semtech,sx9310
++      - semtech,sx9311
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    description:
++      The sole interrupt generated by the device used to announce the
++      preceding reading request has finished and that data is
++      available or that a close/far proximity event has happened.
++    maxItems: 1
++
++  power-supply: true
++
++required:
++  - compatible
++  - reg
++  - power-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      proximity@28 {
++        compatible = "semtech,sx9310";
++        reg = <0x28>;
++        interrupt-parent = <&pio>;
++        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
++        power-supply = <...>;
++      };
++    };
+--
+2.26.0.292.g33ef6b2f38-goog
 
--- 
-With Best Regards,
-Andy Shevchenko

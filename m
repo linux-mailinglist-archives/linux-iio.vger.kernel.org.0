@@ -2,84 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C595B19C8FF
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Apr 2020 20:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC4A19C93C
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Apr 2020 20:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389563AbgDBSpp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Apr 2020 14:45:45 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:42790 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389488AbgDBSpp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Apr 2020 14:45:45 -0400
-Received: by mail-pf1-f196.google.com with SMTP id 22so2161962pfa.9;
-        Thu, 02 Apr 2020 11:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wWr69Y/Pu+l3rKDfB+kaa0Y/R2YkkQ/XWcl9cAQ2XGE=;
-        b=gJTpKAdkvdg6y/jhsrxUL+gJw2S/100D0rlWTfzoycDhCIJPeLFjN2QfhfnliVgt3T
-         q+u6LtlWB1S9CkhU7CebkOMVhvNdWUhveRE+Fwf47aBxyXOWzHwAJyy3l8KeVqu0/oDX
-         ArqyLnxpz8OFhfVK/NnYu6J2YXzabkRsNS7NHDaC4+k7dddSrBGPn6UUhipUJrkUbTWO
-         RWBhtdXZvZrPySnysWSrbymBiuBsJ/N0AybDt5koPczRxjQMP6ZnDGRBB7rupK036Irl
-         xHeL6xDIKRKGD4BavjBTSbW7LR674w3hAR3GRSKUUEfBW/CAxVx0aS8/rANOPLwbkTS1
-         4JXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wWr69Y/Pu+l3rKDfB+kaa0Y/R2YkkQ/XWcl9cAQ2XGE=;
-        b=Mg2GrnOQ1x0CnJmxpKqYyMhdMGTk1idNpaBx4oLU4nI27CX1e4XGDB0qsNsiRi5EMw
-         NKkTvgpAgSJbVipq72tHUl5mbv4X5yhGS1pBpNYHDPOwzbvuPW6CAqCNUs/56I28u2+h
-         7GPnHhI9+xCjf+6NXsTRyZkWNKwbBpSLEofc2ZVw+53sUIX11CsS35+xvE+zZCxjfCmH
-         TwWgOKgaHbZ2c9fz4xhMsQkOcwUe62+GNhXwOhvqnXlmSBtB6tdEnUvSeQsSTzclPX4A
-         iMH4H/48/MM97elJT19BNcVce7UO/rB9ncbu6cIpIWd0mNoQ4u9hE2AMeiFbSZblXu+R
-         0qyg==
-X-Gm-Message-State: AGi0PuYPzXkGwQtN4/9XWAfzORLXVWBmBFaDC5laR0ehG7k/0XWx+9io
-        85rLHAZnZpTxCSLGQnVZZ0E7uP0/LU1RHPvCEU0=
-X-Google-Smtp-Source: APiQypI5LwmZIG1K/ektUM79THvuM7P1xsTKZ/wmHbYlvtEyby8PesDjPi9wJgJrB46N+1tEX9yeNKQuphv+vMynlxA=
-X-Received: by 2002:aa7:958f:: with SMTP id z15mr4374221pfj.130.1585853144097;
- Thu, 02 Apr 2020 11:45:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200401185138.10673-1-alazar@startmail.com> <20200401185138.10673-3-alazar@startmail.com>
-In-Reply-To: <20200401185138.10673-3-alazar@startmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 2 Apr 2020 21:45:32 +0300
-Message-ID: <CAHp75VffpBYh+5xrWeeJJH8gRmJqT9ya5eQFedWi190_=p8HKQ@mail.gmail.com>
+        id S2387726AbgDBSz6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Apr 2020 14:55:58 -0400
+Received: from www381.your-server.de ([78.46.137.84]:55958 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732214AbgDBSz6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Apr 2020 14:55:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=fKsOtiZ5cqqJb+vxcZ4y9u2bLpGbyUzcShKf+FTpLFQ=; b=lmGm1muQUlissLhe/K17gQWPTp
+        RRJEoMqSTHvQO+1d5U+NT5rYynkJy6mOs5lPZ3qEAiEm6/g67nqRzk3RGduBE4LX0xn0Isv0lHswd
+        O9X2eld1rxRDLYl3xeTFtOYgggdt228fegTgjPxP/k7lbqufyEBFuWEvAo9LIfS9ijqEw+eYJlCyf
+        laOkJkebnhyAuLL/pmQ0Ve7OinsRvrLzkjxE1nzA+E3m1V5qlM7n60RJ0HG79KuFzDKXAETqx9EFp
+        0XelgymVUzqpsr1PsGrbo55o0ueE21JfOkYM5RYsoGx9NrcD+e6Nzj/pvDq9BuYWFiiIVONhDQN6U
+        3svwTmDg==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1jK50K-0001o5-Q4; Thu, 02 Apr 2020 20:55:52 +0200
+Received: from [82.135.64.109] (helo=[192.168.178.20])
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1jK50K-000Td1-Fa; Thu, 02 Apr 2020 20:55:52 +0200
 Subject: Re: [PATCH v6 2/2] iio: adc: Add MAX1241 driver
-To:     Alexandru Lazar <alazar@startmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200401185138.10673-1-alazar@startmail.com>
+ <20200401185138.10673-3-alazar@startmail.com>
+ <CAHp75VffpBYh+5xrWeeJJH8gRmJqT9ya5eQFedWi190_=p8HKQ@mail.gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <4431cacc-4af6-a497-5850-20dfceb588c1@metafoo.de>
+Date:   Thu, 2 Apr 2020 20:55:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <CAHp75VffpBYh+5xrWeeJJH8gRmJqT9ya5eQFedWi190_=p8HKQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25770/Thu Apr  2 14:58:54 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 1, 2020 at 9:47 PM Alexandru Lazar <alazar@startmail.com> wrote:
+On 4/2/20 8:45 PM, Andy Shevchenko wrote:
+> On Wed, Apr 1, 2020 at 9:47 PM Alexandru Lazar <alazar@startmail.com> wrote:
+>> Add driver for the Maxim MAX1241 12-bit, single-channel ADC.
+>>
+> Perhaps put data sheet link as Datasheet: tag here?
 >
-> Add driver for the Maxim MAX1241 12-bit, single-channel ADC.
+>> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>> Signed-off-by: Alexandru Lazar <alazar@startmail.com>
+> ...
 >
+>> +       indio_dev->name = spi_get_device_id(spi)->name;
+> Shouldn't be rather part number?
+> Jonathan?
 
-Perhaps put data sheet link as Datasheet: tag here?
+This is the part number as defined in the spi_device id table :)
 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Signed-off-by: Alexandru Lazar <alazar@startmail.com>
++static const struct spi_device_id max1241_id[] = {
++	{ "max1241", max1241 },
++	{}
++};
 
-...
+- Lars
 
-> +       indio_dev->name = spi_get_device_id(spi)->name;
-
-Shouldn't be rather part number?
-Jonathan?
-
--- 
-With Best Regards,
-Andy Shevchenko

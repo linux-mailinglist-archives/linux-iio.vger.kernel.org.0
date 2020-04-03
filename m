@@ -2,1227 +2,485 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 770DF19CD45
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Apr 2020 01:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658BA19D648
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Apr 2020 14:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388951AbgDBXCj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Apr 2020 19:02:39 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:36810 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389944AbgDBXCh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Apr 2020 19:02:37 -0400
-Received: by mail-io1-f68.google.com with SMTP id n10so5550081iom.3
-        for <linux-iio@vger.kernel.org>; Thu, 02 Apr 2020 16:02:36 -0700 (PDT)
+        id S2390904AbgDCMEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Apr 2020 08:04:34 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:33144 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390889AbgDCMEd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Apr 2020 08:04:33 -0400
+Received: by mail-ua1-f68.google.com with SMTP id v24so2625992uak.0
+        for <linux-iio@vger.kernel.org>; Fri, 03 Apr 2020 05:04:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7ODUCGZbL3DOrOF1+u/gar2j5y5Q66jpdToEWzruGis=;
-        b=iG0asSvON/KWqJTVhrKKZ2fEQw3Qisayiby2bYfSu+xzJwtREj4PJ702SBE7lcQlHx
-         Y+GpXAkRkf738geZm9dLkpoUf777uALqdHcSMDMMNZ81sNRIScLrsKgKSjM59mDdQc8s
-         pE/s/WQ2Zr2TJOXQLNwxyfp+VLNZC3o0NsDT4=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IPONUMAB3D1DcNuQiQuiJ7+MvoNVdJvTPSkPLFYEYyI=;
+        b=dcAsgmgLnaT06rcCKLTQ+N64JvwGYd1MEFPK78+55FNy6HhKcliPzu9c82AQkDhR3l
+         JdhVvy8htX3/mxrXN7rEMcHBlGYHOWqBx019FwsZ6SsWXaE4pJD//XnS8N3HXYZiqwrD
+         0JATaud8lfXdiKecwdM28keRd6PhrpTPdUf9Pqo5MJMWtnotUfz0AFhpENN7zscXTDhI
+         HQwHMlp65BlDoxAZm1/o3YsXzLM4hnYlJp+RVdsrVQIOubgdL8XnAA/vvYanFxdK/G+H
+         2ToAeucF3y3u+s/4M7w9YRAzzyXyqNzPflRDnpJ3KK67WjLRhqmWGJjbgx+H3tSFFhp6
+         iJsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7ODUCGZbL3DOrOF1+u/gar2j5y5Q66jpdToEWzruGis=;
-        b=L8A7KnY3BSjHsa6IQzoMdxJI1iiYA08BlEiXV1rDrWmxwVPIar95e208bGoM7xf/uX
-         5lji5EgxDPfwOOo1DWBXVk9TwfTBFmiAeE0LF/Kp2LucOg8qHtq9dJyaaRf86dhzfbzk
-         Oam2egdG2lKGNsTVveOlMdaLGo1/TscnEYcF8/mxQL8J/DNk5JpR+c6RJ4vYj+1UQS/3
-         mkAfArkNP9YBy07kLS1ynJ9Fm5dus/car+7Hk30I1q5E3SDvYmJzbAjrtkyykGsSB6wm
-         nCnVBJKeQb+iums79oo4EgBjsaUNgsMckXr7/+qL6Ax4WY3G9P14Y02Dkt9NCOXbUUjl
-         zs9g==
-X-Gm-Message-State: AGi0PuaPvdH8m1/RiJyded5+YF2Wb/jQArqSmyxeB9p3cMmjG3r4ri9n
-        yUqjhYla15fTcgtq5Hp/aj/LrQ==
-X-Google-Smtp-Source: APiQypI56AUebMzQp1HYqBL5Xib1E2NhUFVdFnFbo1rm022bnWC4TZnQc6pGNC4qZL7DQXL1gQ/+Aw==
-X-Received: by 2002:a02:8798:: with SMTP id t24mr5432713jai.119.1585868555052;
-        Thu, 02 Apr 2020 16:02:35 -0700 (PDT)
-Received: from derch.Home (75-166-136-192.hlrn.qwest.net. [75.166.136.192])
-        by smtp.gmail.com with ESMTPSA id v24sm1808461iob.0.2020.04.02.16.02.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2020 16:02:34 -0700 (PDT)
-From:   Daniel Campello <campello@chromium.org>
-To:     LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Daniel Campello <campello@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IPONUMAB3D1DcNuQiQuiJ7+MvoNVdJvTPSkPLFYEYyI=;
+        b=h7OAYBX1j+uCj7W15Bhfr9BeihMRF5O9wJ5jIH2IauiAfyQpBqa/QZw4hAoYhYtOGi
+         Y4kNzsOrg5geqD61RGwHnMVR5f+K5g0dolWhTFfymknmX1gP4Z0WaufafdPdt9GQrwHM
+         7ODPHVcHVZZ4Fn27QpqOnevH9TlhgqBZeuEYxKQMmSG0Z2Rz/BVlyPpeZUH/F7NWKi6Y
+         67cBJbKTFAwVp7Jd2DFJwVkKtsevlzqB9k8pgRHY1WqCinTlZvqbIWR6sfVwgMt5l1Gg
+         OHjYsN4CrFlWaXELx8yCnecCp4fTP/g/kn3INLuWzZmrmRxTqGIZkQj2iqJjjHeuqYv6
+         eSRA==
+X-Gm-Message-State: AGi0PuaSc/PRnZAQwEVlRKFASZAcLqa30T5LT++ZAHIDSekQtoJetthd
+        zdWOwLa3hd9zV9iRX4V00buuAez6rKBo69g/dCuXvA==
+X-Google-Smtp-Source: APiQypJ0KFGIJF3JXXLv2U11ia7m3kVrZVSFtNJmbP2K1O3ev5uSt6YVI01oMi/Xus+TLFLi5vMWzBabCX0h876VVhE=
+X-Received: by 2002:ab0:6185:: with SMTP id h5mr6526647uan.23.1585915471249;
+ Fri, 03 Apr 2020 05:04:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org> <1585064650-16235-2-git-send-email-jprakash@codeaurora.org>
+In-Reply-To: <1585064650-16235-2-git-send-email-jprakash@codeaurora.org>
+From:   Amit Kucheria <amit.kucheria@linaro.org>
+Date:   Fri, 3 Apr 2020 17:34:19 +0530
+Message-ID: <CAHLCerML7vR9X_YxAg=S71n2NiY88toZyGDhxZaUZAvnNX2P+g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: adc: Convert the QCOM SPMI ADC bindings to .yaml format
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
+        kgunda@codeaurora.org, aghayal@codeaurora.org,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-iio@vger.kernel.org
-Subject: [PATCH 2/2 v6] iio: Add SEMTECH SX9310/9311 sensor driver
-Date:   Thu,  2 Apr 2020 17:01:30 -0600
-Message-Id: <20200402165720.2.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
-X-Mailer: git-send-email 2.26.0.292.g33ef6b2f38-goog
-In-Reply-To: <20200402165720.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
-References: <20200402165720.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andy Gross <andy.gross@linaro.org>, linux-iio@vger.kernel.org,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-arm-msm-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add SEMTECH SX9310/9311 driver.
+On Tue, Mar 24, 2020 at 9:15 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+>
+> Convert the adc bindings from .txt to .yaml format.
+>
+> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+> ---
+>  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.txt | 173 --------------------
+>  .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 178 +++++++++++++++++++++
+>  2 files changed, 178 insertions(+), 173 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+> deleted file mode 100644
+> index c878768..0000000
+> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+> +++ /dev/null
+> @@ -1,173 +0,0 @@
+> -Qualcomm's SPMI PMIC ADC
+> -
+> -- SPMI PMIC voltage ADC (VADC) provides interface to clients to read
+> -  voltage. The VADC is a 15-bit sigma-delta ADC.
+> -- SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
+> -  voltage. The VADC is a 16-bit sigma-delta ADC.
+> -
+> -VADC node:
+> -
+> -- compatible:
+> -    Usage: required
+> -    Value type: <string>
+> -    Definition: Should contain "qcom,spmi-vadc".
+> -                Should contain "qcom,spmi-adc5" for PMIC5 ADC driver.
+> -                Should contain "qcom,spmi-adc-rev2" for PMIC rev2 ADC driver.
+> -                Should contain "qcom,pms405-adc" for PMS405 PMIC
+> -
+> -- reg:
+> -    Usage: required
+> -    Value type: <prop-encoded-array>
+> -    Definition: VADC base address in the SPMI PMIC register map.
+> -
+> -- #address-cells:
+> -    Usage: required
+> -    Value type: <u32>
+> -    Definition: Must be one. Child node 'reg' property should define ADC
+> -            channel number.
+> -
+> -- #size-cells:
+> -    Usage: required
+> -    Value type: <u32>
+> -    Definition: Must be zero.
+> -
+> -- #io-channel-cells:
+> -    Usage: required
+> -    Value type: <u32>
+> -    Definition: Must be one. For details about IIO bindings see:
+> -            Documentation/devicetree/bindings/iio/iio-bindings.txt
+> -
+> -- interrupts:
+> -    Usage: optional
+> -    Value type: <prop-encoded-array>
+> -    Definition: End of conversion interrupt.
+> -
+> -Channel node properties:
+> -
+> -- reg:
+> -    Usage: required
+> -    Value type: <u32>
+> -    Definition: ADC channel number.
+> -            See include/dt-bindings/iio/qcom,spmi-vadc.h
+> -
+> -- label:
+> -    Usage: required for "qcom,spmi-adc5" and "qcom,spmi-adc-rev2"
+> -    Value type: <empty>
+> -    Definition: ADC input of the platform as seen in the schematics.
+> -            For thermistor inputs connected to generic AMUX or GPIO inputs
+> -            these can vary across platform for the same pins. Hence select
+> -            the platform schematics name for this channel.
+> -
+> -- qcom,decimation:
+> -    Usage: optional
+> -    Value type: <u32>
+> -    Definition: This parameter is used to decrease ADC sampling rate.
+> -            Quicker measurements can be made by reducing decimation ratio.
+> -            - For compatible property "qcom,spmi-vadc", valid values are
+> -              512, 1024, 2048, 4096. If property is not found, default value
+> -              of 512 will be used.
+> -            - For compatible property "qcom,spmi-adc5", valid values are 250, 420
+> -              and 840. If property is not found, default value of 840 is used.
+> -            - For compatible property "qcom,spmi-adc-rev2", valid values are 256,
+> -              512 and 1024. If property is not present, default value is 1024.
+> -
+> -- qcom,pre-scaling:
+> -    Usage: optional
+> -    Value type: <u32 array>
+> -    Definition: Used for scaling the channel input signal before the signal is
+> -            fed to VADC. The configuration for this node is to know the
+> -            pre-determined ratio and use it for post scaling. Select one from
+> -            the following options.
+> -            <1 1>, <1 3>, <1 4>, <1 6>, <1 20>, <1 8>, <10 81>, <1 10>
+> -            If property is not found default value depending on chip will be used.
+> -
+> -- qcom,ratiometric:
+> -    Usage: optional
+> -    Value type: <empty>
+> -    Definition: Channel calibration type.
+> -            - For compatible property "qcom,spmi-vadc", if this property is
+> -              specified VADC will use the VDD reference (1.8V) and GND for
+> -              channel calibration. If property is not found, channel will be
+> -              calibrated with 0.625V and 1.25V reference channels, also
+> -              known as absolute calibration.
+> -            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+> -              if this property is specified VADC will use the VDD reference
+> -              (1.875V) and GND for channel calibration. If property is not found,
+> -              channel will be calibrated with 0V and 1.25V reference channels,
+> -              also known as absolute calibration.
+> -
+> -- qcom,hw-settle-time:
+> -    Usage: optional
+> -    Value type: <u32>
+> -    Definition: Time between AMUX getting configured and the ADC starting
+> -            conversion. The 'hw_settle_time' is an index used from valid values
+> -            and programmed in hardware to achieve the hardware settling delay.
+> -            - For compatible property "qcom,spmi-vadc" and "qcom,spmi-adc-rev2",
+> -              Delay = 100us * (hw_settle_time) for hw_settle_time < 11,
+> -              and 2ms * (hw_settle_time - 10) otherwise.
+> -              Valid values are: 0, 100, 200, 300, 400, 500, 600, 700, 800,
+> -              900 us and 1, 2, 4, 6, 8, 10 ms.
+> -              If property is not found, channel will use 0us.
+> -            - For compatible property "qcom,spmi-adc5", delay = 15us for
+> -              value 0, 100us * (value) for values < 11,
+> -              and 2ms * (value - 10) otherwise.
+> -              Valid values are: 15, 100, 200, 300, 400, 500, 600, 700, 800,
+> -              900 us and 1, 2, 4, 6, 8, 10 ms
+> -              Certain controller digital versions have valid values of
+> -              15, 100, 200, 300, 400, 500, 600, 700, 1, 2, 4, 8, 16, 32, 64, 128 ms
+> -              If property is not found, channel will use 15us.
+> -
+> -- qcom,avg-samples:
+> -    Usage: optional
+> -    Value type: <u32>
+> -    Definition: Number of samples to be used for measurement.
+> -            Averaging provides the option to obtain a single measurement
+> -            from the ADC that is an average of multiple samples. The value
+> -            selected is 2^(value).
+> -            - For compatible property "qcom,spmi-vadc", valid values
+> -              are: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+> -              If property is not found, 1 sample will be used.
+> -            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+> -              valid values are: 1, 2, 4, 8, 16
+> -              If property is not found, 1 sample will be used.
+> -
+> -NOTE:
+> -
+> -For compatible property "qcom,spmi-vadc" following channels, also known as
+> -reference point channels, are used for result calibration and their channel
+> -configuration nodes should be defined:
+> -VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
+> -VADC_GND_REF and VADC_VDD_VADC.
+> -
+> -Example:
+> -
+> -#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> -#include <linux/irq.h>
+> -/* ... */
+> -
+> -       /* VADC node */
+> -       pmic_vadc: vadc@3100 {
+> -               compatible = "qcom,spmi-vadc";
+> -               reg = <0x3100>;
+> -               interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+> -               #address-cells = <1>;
+> -               #size-cells = <0>;
+> -               #io-channel-cells = <1>;
+> -               io-channel-ranges;
+> -
+> -               /* Channel node */
+> -               adc-chan@VADC_LR_MUX10_USB_ID {
+> -                       reg = <VADC_LR_MUX10_USB_ID>;
+> -                       qcom,decimation = <512>;
+> -                       qcom,ratiometric;
+> -                       qcom,hw-settle-time = <200>;
+> -                       qcom,avg-samples = <1>;
+> -                       qcom,pre-scaling = <1 3>;
+> -               };
+> -       };
+> -
+> -       /* IIO client node */
+> -       usb {
+> -               io-channels = <&pmic_vadc VADC_LR_MUX10_USB_ID>;
+> -               io-channel-names = "vadc";
+> -       };
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> new file mode 100644
+> index 0000000..72db14c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> @@ -0,0 +1,178 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/qcom,spmi-vadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm's SPMI PMIC ADC
+> +
+> +maintainers:
+> +  - Andy Gross <agross@kernel.org>
+> +  - Bjorn Andersson <bjorn.andersson@linaro.org>
+> +
+> +description: |
+> +  SPMI PMIC voltage ADC (VADC) provides interface to clients to read
+> +  voltage. The VADC is a 15-bit sigma-delta ADC.
+> +  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
+> +  voltage. The VADC is a 16-bit sigma-delta ADC.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,spmi-vadc
+> +      - qcom,spmi-adc5
+> +      - qcom,spmi-adc-rev2
+> +      - qcom,pms405-adc
+> +
+> +  reg:
+> +    description: VADC base address in the SPMI PMIC register map
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  '#io-channel-cells':
+> +    const: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description:
+> +      End of conversion interrupt.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +  - '#io-channel-cells'
+> +
+> +patternProperties:
+> +  "^[a-z0-9-_@]$":
+> +    type: object
+> +    description: |
+> +      Represents the external channels which are connected to the ADC.
+> +      For compatible property "qcom,spmi-vadc" following channels, also known as
+> +      reference point channels, are used for result calibration and their channel
+> +      configuration nodes should be defined:
+> +      VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
+> +      VADC_GND_REF and VADC_VDD_VADC.
 
-The device has the following entry points:
+Instead of this note for "qcom,spmi-vadc", you can enforce this
+through checks in YAML grammar.
 
-Usual frequency:
-- sampling_frequency
-- sampling_frequency_available
+A simple example can be found in
+Documentation/devicetree/bindings/thermal/qcom-tsens.yaml. Look for
+the if, then, else clause which determines how many interrupts need to
+be defined.
 
-Instant reading of current values for different sensors:
-- in_proximity0_raw
-- in_proximity1_raw
-- in_proximity2_raw
-- in_proximity3_comb_raw
-and associated events in events/
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          ADC channel number.
+> +          See include/dt-bindings/iio/qcom,spmi-vadc.h
+> +
+> +      label:
+> +        description: |
+> +            ADC input of the platform as seen in the schematics.
+> +            For thermistor inputs connected to generic AMUX or GPIO inputs
+> +            these can vary across platform for the same pins. Hence select
+> +            the platform schematics name for this channel. It is required
+> +            for "qcom,spmi-adc5" and "qcom,spmi-adc-rev2".
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/string
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Signed-off-by: Enrico Granata <egranata@chromium.org>
-Signed-off-by: Daniel Campello <campello@chromium.org>
----
-v6 changes:
-  - Fixed formatting
-  - Changed to make use of device_get_match_data()
-  - Switched to ->probe_new()
-v5 changes:
-  - Fixed size of allocated buffer to include timestamp
-  - Changed string comparison to whoami comparison when probing and
-    assigning device name
-v4 changes:
-  - Renamed in_proximity3_COMB_raw to in_proximity3_comb_raw and added
-    documentation for it
-  - Minor clean ups
-v3 changes:
-  - Fixed "Using plain integer as NULL pointer"
-v2 changes:
-  - Removed differential channels
-  - Raw channels expose data from SX9310_REG_DIFF_MSB registers
-  - 4th channel uses extend_name = COMB
-  - Allocated data->buffer statically
-  - Check whoami value against i2c / acpi device id
-  - General clean up
+You shouldn't need allOf here.
 
- .../ABI/testing/sysfs-bus-iio-sx9310          |   10 +
- drivers/iio/proximity/Kconfig                 |   13 +
- drivers/iio/proximity/Makefile                |    1 +
- drivers/iio/proximity/sx9310.c                | 1049 +++++++++++++++++
- 4 files changed, 1073 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9310
- create mode 100644 drivers/iio/proximity/sx9310.c
+Just a "$ref: /schemas/types.yaml#/definitions/string" should be fine.
+And move it above the description.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-sx9310 b/Documentation/ABI/testing/sysfs-bus-iio-sx9310
-new file mode 100644
-index 00000000000000..3ac7759013e5c4
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-sx9310
-@@ -0,0 +1,10 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/in_proximity3_comb_raw
-+Date:		February 2019
-+KernelVersion:	5.6
-+Contact:	Daniel Campello <campello@chromium.org>
-+Description:
-+		Proximity measurement indicating that some object is
-+		near the combined sensor. The combined sensor presents
-+		proximity measurements constructed by hardware by
-+		combining measurements taken from a given set of
-+		physical sensors.
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index 37606d400805a9..d57e8cc17e42d6 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -101,6 +101,19 @@ config SRF04
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called srf04.
+Same for all the uses of allOf below.
 
-+config SX9310
-+	tristate "SX9310/SX9311 Semtech proximity sensor"
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	select REGMAP_I2C
-+	depends on I2C
-+	help
-+	  Say Y here to build a driver for Semtech's SX9310/SX9311 capacitive
-+	  proximity/button sensor.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called sx9310.
-+
- config SX9500
- 	tristate "SX9500 Semtech proximity sensor"
- 	select IIO_BUFFER
-diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-index c591b019304e7f..25e5a04da101c5 100644
---- a/drivers/iio/proximity/Makefile
-+++ b/drivers/iio/proximity/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_PING)		+= ping.o
- obj-$(CONFIG_RFD77402)		+= rfd77402.o
- obj-$(CONFIG_SRF04)		+= srf04.o
- obj-$(CONFIG_SRF08)		+= srf08.o
-+obj-$(CONFIG_SX9310)		+= sx9310.o
- obj-$(CONFIG_SX9500)		+= sx9500.o
- obj-$(CONFIG_VL53L0X_I2C)	+= vl53l0x-i2c.o
 
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-new file mode 100644
-index 00000000000000..7d31901e45df4a
---- /dev/null
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -0,0 +1,1049 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2018 Google LLC.
-+ *
-+ * Driver for Semtech's SX9310/SX9311 capacitive proximity/button solution.
-+ * Based on SX9500 driver and Semtech driver using the input framework
-+ * <https://my.syncplicity.com/share/teouwsim8niiaud/
-+ *          linux-driver-SX9310_NoSmartHSensing>.
-+ * Reworked April 2019 by Evan Green <evgreen@chromium.org>
-+ * and January 2020 by Daniel Campello <campello@chromium.org>
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/irq.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
-+
-+/* Register definitions. */
-+#define SX9310_REG_IRQ_SRC				0x00
-+#define SX9310_REG_STAT0				0x01
-+#define SX9310_REG_STAT1				0x02
-+#define SX9310_REG_IRQ_MSK				0x03
-+#define   SX9310_CONVDONE_IRQ				BIT(3)
-+#define   SX9310_FAR_IRQ				BIT(5)
-+#define   SX9310_CLOSE_IRQ				BIT(6)
-+#define   SX9310_EVENT_IRQ		(SX9310_FAR_IRQ | SX9310_CLOSE_IRQ)
-+#define SX9310_REG_IRQ_FUNC				0x04
-+
-+#define SX9310_REG_PROX_CTRL0				0x10
-+#define   SX9310_REG_PROX_CTRL0_PROXSTAT2		0x10
-+#define   SX9310_REG_PROX_CTRL0_EN_MASK			0x0F
-+#define SX9310_REG_PROX_CTRL1				0x11
-+#define SX9310_REG_PROX_CTRL2				0x12
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_ALL		0x80
-+#define   SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC	0x04
-+#define SX9310_REG_PROX_CTRL3				0x13
-+#define   SX9310_REG_PROX_CTRL3_GAIN0_X8		0x0c
-+#define   SX9310_REG_PROX_CTRL3_GAIN12_X4		0x02
-+#define SX9310_REG_PROX_CTRL4				0x14
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST	0x07
-+#define SX9310_REG_PROX_CTRL5				0x15
-+#define   SX9310_REG_PROX_CTRL5_RANGE_SMALL		0xc0
-+#define   SX9310_REG_PROX_CTRL5_STARTUPSENS_CS1		0x04
-+#define   SX9310_REG_PROX_CTRL5_RAWFILT_1P25		0x02
-+#define SX9310_REG_PROX_CTRL6				0x16
-+#define   SX9310_REG_PROX_CTRL6_COMP_COMMON		0x20
-+#define SX9310_REG_PROX_CTRL7				0x17
-+#define   SX9310_REG_PROX_CTRL7_AVGNEGFILT_2		0x08
-+#define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_512		0x05
-+#define SX9310_REG_PROX_CTRL8				0x18
-+#define SX9310_REG_PROX_CTRL9				0x19
-+#define   SX9310_REG_PROX_CTRL8_9_PTHRESH12_28		0x40
-+#define   SX9310_REG_PROX_CTRL8_9_PTHRESH_96		0x88
-+#define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_900	0x03
-+#define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_1500	0x05
-+#define SX9310_REG_PROX_CTRL10				0x1a
-+#define   SX9310_REG_PROX_CTRL10_HYST_6PCT		0x10
-+#define   SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_8	0x12
-+#define   SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_8		0x03
-+#define SX9310_REG_PROX_CTRL11				0x1b
-+#define SX9310_REG_PROX_CTRL12				0x1c
-+#define SX9310_REG_PROX_CTRL13				0x1d
-+#define SX9310_REG_PROX_CTRL14				0x1e
-+#define SX9310_REG_PROX_CTRL15				0x1f
-+#define SX9310_REG_PROX_CTRL16				0x20
-+#define SX9310_REG_PROX_CTRL17				0x21
-+#define SX9310_REG_PROX_CTRL18				0x22
-+#define SX9310_REG_PROX_CTRL19				0x23
-+#define SX9310_REG_SAR_CTRL0				0x2a
-+#define   SX9310_REG_SAR_CTRL0_SARDEB_4_SAMPLES		0x40
-+#define   SX9310_REG_SAR_CTRL0_SARHYST_8		0x10
-+#define SX9310_REG_SAR_CTRL1				0x2b
-+/* Each increment of the slope register is 0.0078125. */
-+#define   SX9310_REG_SAR_CTRL1_SLOPE(_hnslope)		(_hnslope / 78125)
-+#define SX9310_REG_SAR_CTRL2				0x2c
-+#define   SX9310_REG_SAR_CTRL2_SAROFFSET_DEFAULT	0x3c
-+
-+#define SX9310_REG_SENSOR_SEL				0x30
-+
-+#define SX9310_REG_USE_MSB				0x31
-+#define SX9310_REG_USE_LSB				0x32
-+
-+#define SX9310_REG_AVG_MSB				0x33
-+#define SX9310_REG_AVG_LSB				0x34
-+
-+#define SX9310_REG_DIFF_MSB				0x35
-+#define SX9310_REG_DIFF_LSB				0x36
-+
-+#define SX9310_REG_OFFSET_MSB				0x37
-+#define SX9310_REG_OFFSET_LSB				0x38
-+
-+#define SX9310_REG_SAR_MSB				0x39
-+#define SX9310_REG_SAR_LSB				0x3a
-+
-+#define SX9310_REG_I2CADDR				0x40
-+#define SX9310_REG_PAUSE				0x41
-+#define SX9310_REG_WHOAMI				0x42
-+#define   SX9310_WHOAMI_VALUE				0x01
-+#define   SX9311_WHOAMI_VALUE				0x02
-+
-+#define SX9310_REG_RESET				0x7f
-+#define   SX9310_SOFT_RESET				0xde
-+
-+#define SX9310_SCAN_PERIOD_MASK				GENMASK(7, 4)
-+#define SX9310_SCAN_PERIOD_SHIFT			4
-+
-+#define SX9310_COMPSTAT_MASK				GENMASK(3, 0)
-+
-+/* 4 hardware channels, as defined in STAT0: COMB, CS2, CS1 and CS0. */
-+#define SX9310_NUM_CHANNELS				4
-+#define SX9310_CHAN_ENABLED_MASK			GENMASK(3, 0)
-+
-+struct sx9310_data {
-+	/* Serialize access to registers and channel configuration */
-+	struct mutex mutex;
-+	struct i2c_client *client;
-+	struct iio_trigger *trig;
-+	struct regmap *regmap;
-+	/*
-+	 * Last reading of the proximity status for each channel.
-+	 * We only send an event to user space when this changes.
-+	 */
-+	bool prox_stat[SX9310_NUM_CHANNELS];
-+	bool trigger_enabled;
-+	/* 64-bit data + 64-bit timestamp buffer */
-+	__be16 buffer[SX9310_NUM_CHANNELS + 4];
-+	/* Remember enabled channels and sample rate during suspend. */
-+	unsigned int suspend_ctrl0;
-+	struct completion completion;
-+	unsigned long chan_read, chan_event;
-+	int channel_users[SX9310_NUM_CHANNELS];
-+	int whoami;
-+};
-+
-+static const struct iio_event_spec sx9310_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+#define SX9310_NAMED_CHANNEL(idx, name)					 \
-+	{								 \
-+		.type = IIO_PROXIMITY,					 \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		 \
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+		.indexed = 1,						 \
-+		.channel = idx,						 \
-+		.extend_name = name,					 \
-+		.address = SX9310_REG_DIFF_MSB,				 \
-+		.event_spec = sx9310_events,				 \
-+		.num_event_specs = ARRAY_SIZE(sx9310_events),		 \
-+		.scan_index = idx,					 \
-+		.scan_type = {						 \
-+			.sign = 's',					 \
-+			.realbits = 12,					 \
-+			.storagebits = 16,				 \
-+			.endianness = IIO_BE,				 \
-+		},							 \
-+	}
-+#define SX9310_CHANNEL(idx) SX9310_NAMED_CHANNEL(idx, NULL)
-+
-+static const struct iio_chan_spec sx9310_channels[] = {
-+	SX9310_CHANNEL(0),			/* CS0 */
-+	SX9310_CHANNEL(1),			/* CS1 */
-+	SX9310_CHANNEL(2),			/* CS2 */
-+	SX9310_NAMED_CHANNEL(3, "comb"),	/* COMB */
-+
-+	IIO_CHAN_SOFT_TIMESTAMP(4),
-+};
-+
-+/*
-+ * Each entry contains the integer part (val) and the fractional part, in micro
-+ * seconds. It conforms to the IIO output IIO_VAL_INT_PLUS_MICRO.
-+ */
-+static const struct {
-+	int val;
-+	int val2;
-+} sx9310_samp_freq_table[] = {
-+	{ 500, 0 }, /* 0000: Min (no idle time) */
-+	{ 66, 666666 }, /* 0001: 15 ms */
-+	{ 33, 333333 }, /* 0010: 30 ms (Typ.) */
-+	{ 22, 222222 }, /* 0011: 45 ms */
-+	{ 16, 666666 }, /* 0100: 60 ms */
-+	{ 11, 111111 }, /* 0101: 90 ms */
-+	{ 8, 333333 }, /* 0110: 120 ms */
-+	{ 5, 0 }, /* 0111: 200 ms */
-+	{ 2, 500000 }, /* 1000: 400 ms */
-+	{ 1, 666666 }, /* 1001: 600 ms */
-+	{ 1, 250000 }, /* 1010: 800 ms */
-+	{ 1, 0 }, /* 1011: 1 s */
-+	{ 0, 500000 }, /* 1100: 2 s */
-+	{ 0, 333333 }, /* 1101: 3 s */
-+	{ 0, 250000 }, /* 1110: 4 s */
-+	{ 0, 200000 }, /* 1111: 5 s */
-+};
-+static const unsigned int sx9310_scan_period_table[] = {
-+	2,   15,  30,  45,   60,   90,	 120,  200,
-+	400, 600, 800, 1000, 2000, 3000, 4000, 5000,
-+};
-+
-+static ssize_t sx9310_show_samp_freq_avail(struct device *dev,
-+					   struct device_attribute *attr,
-+					   char *buf)
-+{
-+	size_t len = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
-+				 sx9310_samp_freq_table[i].val,
-+				 sx9310_samp_freq_table[i].val2);
-+	buf[len - 1] = '\n';
-+	return len;
-+}
-+static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(sx9310_show_samp_freq_avail);
-+
-+static const struct regmap_range sx9310_writable_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_MSK, SX9310_REG_IRQ_FUNC),
-+	regmap_reg_range(SX9310_REG_PROX_CTRL0, SX9310_REG_PROX_CTRL19),
-+	regmap_reg_range(SX9310_REG_SAR_CTRL0, SX9310_REG_SAR_CTRL2),
-+	regmap_reg_range(SX9310_REG_SENSOR_SEL, SX9310_REG_SENSOR_SEL),
-+	regmap_reg_range(SX9310_REG_OFFSET_MSB, SX9310_REG_OFFSET_LSB),
-+	regmap_reg_range(SX9310_REG_PAUSE, SX9310_REG_PAUSE),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_writeable_regs = {
-+	.yes_ranges = sx9310_writable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_writable_reg_ranges),
-+};
-+
-+static const struct regmap_range sx9310_readable_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_SRC, SX9310_REG_IRQ_FUNC),
-+	regmap_reg_range(SX9310_REG_PROX_CTRL0, SX9310_REG_PROX_CTRL19),
-+	regmap_reg_range(SX9310_REG_SAR_CTRL0, SX9310_REG_SAR_CTRL2),
-+	regmap_reg_range(SX9310_REG_SENSOR_SEL, SX9310_REG_SAR_LSB),
-+	regmap_reg_range(SX9310_REG_I2CADDR, SX9310_REG_WHOAMI),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_readable_regs = {
-+	.yes_ranges = sx9310_readable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_readable_reg_ranges),
-+};
-+
-+static const struct regmap_range sx9310_volatile_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_SRC, SX9310_REG_STAT1),
-+	regmap_reg_range(SX9310_REG_USE_MSB, SX9310_REG_DIFF_LSB),
-+	regmap_reg_range(SX9310_REG_SAR_MSB, SX9310_REG_SAR_LSB),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_volatile_regs = {
-+	.yes_ranges = sx9310_volatile_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_volatile_reg_ranges),
-+};
-+
-+static const struct regmap_config sx9310_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+
-+	.max_register = SX9310_REG_RESET,
-+	.cache_type = REGCACHE_RBTREE,
-+
-+	.wr_table = &sx9310_writeable_regs,
-+	.rd_table = &sx9310_readable_regs,
-+	.volatile_table = &sx9310_volatile_regs,
-+};
-+
-+static int sx9310_update_chan_en(struct sx9310_data *data,
-+				 unsigned long chan_read,
-+				 unsigned long chan_event)
-+{
-+	int ret;
-+	unsigned long channels = chan_read | chan_event;
-+
-+	if ((data->chan_read | data->chan_event) != channels) {
-+		ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-+					 SX9310_CHAN_ENABLED_MASK, channels);
-+		if (ret)
-+			return ret;
-+	}
-+	data->chan_read = chan_read;
-+	data->chan_event = chan_event;
-+	return 0;
-+}
-+
-+static int sx9310_get_read_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read | BIT(channel),
-+				     data->chan_event);
-+}
-+
-+static int sx9310_put_read_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read & ~BIT(channel),
-+				     data->chan_event);
-+}
-+
-+static int sx9310_get_event_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read,
-+				     data->chan_event | BIT(channel));
-+}
-+
-+static int sx9310_put_event_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read,
-+				     data->chan_event & ~BIT(channel));
-+}
-+
-+static int sx9310_enable_irq(struct sx9310_data *data, unsigned int irq)
-+{
-+	return regmap_update_bits(data->regmap, SX9310_REG_IRQ_MSK, irq, irq);
-+}
-+
-+static int sx9310_disable_irq(struct sx9310_data *data, unsigned int irq)
-+{
-+	return regmap_update_bits(data->regmap, SX9310_REG_IRQ_MSK, irq, 0);
-+}
-+
-+static int sx9310_read_prox_data(struct sx9310_data *data,
-+				 const struct iio_chan_spec *chan, __be16 *val)
-+{
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_SENSOR_SEL, chan->channel);
-+	if (ret < 0)
-+		return ret;
-+
-+	return regmap_bulk_read(data->regmap, chan->address, val,
-+				sizeof(__be16));
-+}
-+
-+/*
-+ * If we have no interrupt support, we have to wait for a scan period
-+ * after enabling a channel to get a result.
-+ */
-+static int sx9310_wait_for_sample(struct sx9310_data *data)
-+{
-+	int ret;
-+	unsigned int val;
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = (val & SX9310_SCAN_PERIOD_MASK) >> SX9310_SCAN_PERIOD_SHIFT;
-+
-+	msleep(sx9310_scan_period_table[val]);
-+
-+	return 0;
-+}
-+
-+static int sx9310_read_proximity(struct sx9310_data *data,
-+				 const struct iio_chan_spec *chan, int *val)
-+{
-+	int ret = 0;
-+	__be16 rawval;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = sx9310_get_read_channel(data, chan->channel);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = sx9310_enable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out_put_channel;
-+
-+	mutex_unlock(&data->mutex);
-+
-+	if (data->client->irq > 0) {
-+		ret = wait_for_completion_interruptible(&data->completion);
-+		reinit_completion(&data->completion);
-+	} else {
-+		ret = sx9310_wait_for_sample(data);
-+	}
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (ret < 0)
-+		goto out_disable_irq;
-+
-+	ret = sx9310_read_prox_data(data, chan, &rawval);
-+	if (ret < 0)
-+		goto out_disable_irq;
-+
-+	*val = sign_extend32(be16_to_cpu(rawval),
-+			     chan->address == SX9310_REG_DIFF_MSB ? 11 : 15);
-+
-+	ret = sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out_put_channel;
-+
-+	ret = sx9310_put_read_channel(data, chan->channel);
-+	if (ret < 0)
-+		goto out;
-+
-+	mutex_unlock(&data->mutex);
-+
-+	return IIO_VAL_INT;
-+
-+out_disable_irq:
-+	sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+out_put_channel:
-+	sx9310_put_read_channel(data, chan->channel);
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static int sx9310_read_samp_freq(struct sx9310_data *data, int *val, int *val2)
-+{
-+	unsigned int regval;
-+	int ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &regval);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	regval = (regval & SX9310_SCAN_PERIOD_MASK) >> SX9310_SCAN_PERIOD_SHIFT;
-+	*val = sx9310_samp_freq_table[regval].val;
-+	*val2 = sx9310_samp_freq_table[regval].val2;
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int sx9310_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan, int *val,
-+			   int *val2, long mask)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		ret = sx9310_read_proximity(data, chan, val);
-+		iio_device_release_direct_mode(indio_dev);
-+		return ret;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return sx9310_read_samp_freq(data, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int sx9310_set_samp_freq(struct sx9310_data *data, int val, int val2)
-+{
-+	int i, ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
-+		if (val == sx9310_samp_freq_table[i].val &&
-+		    val2 == sx9310_samp_freq_table[i].val2)
-+			break;
-+
-+	if (i == ARRAY_SIZE(sx9310_samp_freq_table))
-+		return -EINVAL;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-+				 SX9310_SCAN_PERIOD_MASK,
-+				 i << SX9310_SCAN_PERIOD_SHIFT);
-+
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static int sx9310_write_raw(struct iio_dev *indio_dev,
-+			    const struct iio_chan_spec *chan, int val, int val2,
-+			    long mask)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-+		return -EINVAL;
-+
-+	return sx9310_set_samp_freq(data, val, val2);
-+}
-+
-+static irqreturn_t sx9310_irq_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	if (data->trigger_enabled)
-+		iio_trigger_poll(data->trig);
-+
-+	/*
-+	 * Even if no event is enabled, we need to wake the thread to clear the
-+	 * interrupt state by reading SX9310_REG_IRQ_SRC.
-+	 * It is not possible to do that here because regmap_read takes a mutex.
-+	 */
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static void sx9310_push_events(struct iio_dev *indio_dev)
-+{
-+	int ret;
-+	unsigned int val, chan;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	s64 timestamp = iio_get_time_ns(indio_dev);
-+
-+	/* Read proximity state on all channels */
-+	ret = regmap_read(data->regmap, SX9310_REG_STAT0, &val);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "i2c transfer error in irq\n");
-+		return;
-+	}
-+
-+	for_each_set_bit(chan, &data->chan_event, SX9310_NUM_CHANNELS) {
-+		int dir;
-+		u64 ev;
-+		bool new_prox = val & BIT(chan);
-+
-+		if (new_prox == data->prox_stat[chan])
-+			/* No change on this channel. */
-+			continue;
-+
-+		dir = new_prox ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+		ev = IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan,
-+					  IIO_EV_TYPE_THRESH, dir);
-+
-+		iio_push_event(indio_dev, ev, timestamp);
-+		data->prox_stat[chan] = new_prox;
-+	}
-+}
-+
-+static irqreturn_t sx9310_irq_thread_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+	unsigned int val;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_IRQ_SRC, &val);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "i2c transfer error in irq\n");
-+		goto out;
-+	}
-+
-+	if (val & SX9310_EVENT_IRQ)
-+		sx9310_push_events(indio_dev);
-+
-+	if (val & SX9310_CONVDONE_IRQ)
-+		complete(&data->completion);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int sx9310_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	return !!(data->chan_event & BIT(chan->channel));
-+}
-+
-+static int sx9310_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir, int state)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	/* If the state hasn't changed, there's nothing to do. */
-+	if (!!(data->chan_event & BIT(chan->channel)) == state)
-+		return 0;
-+
-+	mutex_lock(&data->mutex);
-+	if (state) {
-+		ret = sx9310_get_event_channel(data, chan->channel);
-+		if (ret < 0)
-+			goto out_unlock;
-+		if (!(data->chan_event & ~BIT(chan->channel))) {
-+			ret = sx9310_enable_irq(data, SX9310_EVENT_IRQ);
-+			if (ret < 0)
-+				sx9310_put_event_channel(data, chan->channel);
-+		}
-+	} else {
-+		ret = sx9310_put_event_channel(data, chan->channel);
-+		if (ret < 0)
-+			goto out_unlock;
-+		if (!data->chan_event) {
-+			ret = sx9310_disable_irq(data, SX9310_EVENT_IRQ);
-+			if (ret < 0)
-+				sx9310_get_event_channel(data, chan->channel);
-+		}
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static struct attribute *sx9310_attributes[] = {
-+	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group sx9310_attribute_group = {
-+	.attrs = sx9310_attributes,
-+};
-+
-+static const struct iio_info sx9310_info = {
-+	.attrs = &sx9310_attribute_group,
-+	.read_raw = sx9310_read_raw,
-+	.write_raw = sx9310_write_raw,
-+	.read_event_config = sx9310_read_event_config,
-+	.write_event_config = sx9310_write_event_config,
-+};
-+
-+static int sx9310_set_trigger_state(struct iio_trigger *trig, bool state)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (state)
-+		ret = sx9310_enable_irq(data, SX9310_CONVDONE_IRQ);
-+	else if (!data->chan_read)
-+		ret = sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out;
-+
-+	data->trigger_enabled = state;
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static const struct iio_trigger_ops sx9310_trigger_ops = {
-+	.set_trigger_state = sx9310_set_trigger_state,
-+};
-+
-+static irqreturn_t sx9310_trigger_handler(int irq, void *private)
-+{
-+	struct iio_poll_func *pf = private;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	__be16 val;
-+	int bit, ret, i = 0;
-+
-+	mutex_lock(&data->mutex);
-+
-+	for_each_set_bit(bit, indio_dev->active_scan_mask,
-+			 indio_dev->masklength) {
-+		ret = sx9310_read_prox_data(data, &indio_dev->channels[bit],
-+					    &val);
-+		if (ret < 0)
-+			goto out;
-+
-+		data->buffer[i++] = val;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
-+					   pf->timestamp);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int sx9310_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	unsigned long channels = 0;
-+	int bit, ret;
-+
-+	mutex_lock(&data->mutex);
-+	for_each_set_bit(bit, indio_dev->active_scan_mask,
-+			 indio_dev->masklength)
-+		__set_bit(indio_dev->channels[bit].channel, &channels);
-+
-+	ret = sx9310_update_chan_en(data, channels, data->chan_event);
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static int sx9310_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->mutex);
-+	ret = sx9310_update_chan_en(data, 0, data->chan_event);
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static const struct iio_buffer_setup_ops sx9310_buffer_setup_ops = {
-+	.preenable = sx9310_buffer_preenable,
-+	.postenable = iio_triggered_buffer_postenable,
-+	.predisable = iio_triggered_buffer_predisable,
-+	.postdisable = sx9310_buffer_postdisable,
-+};
-+
-+struct sx9310_reg_default {
-+	u8 reg;
-+	u8 def;
-+};
-+
-+#define SX_INIT(_reg, _def)			\
-+	{					\
-+		.reg = SX9310_REG_##_reg,	\
-+		.def = _def,			\
-+	}
-+
-+static const struct sx9310_reg_default sx9310_default_regs[] = {
-+	SX_INIT(IRQ_MSK, 0x00),
-+	SX_INIT(IRQ_FUNC, 0x00),
-+	/*
-+	 * The lower 4 bits should not be set as it enable sensors measurements.
-+	 * Turning the detection on before the configuration values are set to
-+	 * good values can cause the device to return erroneous readings.
-+	 */
-+	SX_INIT(PROX_CTRL0, SX9310_REG_PROX_CTRL0_PROXSTAT2),
-+	SX_INIT(PROX_CTRL1, 0x00),
-+	SX_INIT(PROX_CTRL2, SX9310_REG_PROX_CTRL2_COMBMODE_ALL |
-+			    SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC),
-+	SX_INIT(PROX_CTRL3, SX9310_REG_PROX_CTRL3_GAIN0_X8 |
-+			    SX9310_REG_PROX_CTRL3_GAIN12_X4),
-+	SX_INIT(PROX_CTRL4, SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST),
-+	SX_INIT(PROX_CTRL5, SX9310_REG_PROX_CTRL5_RANGE_SMALL |
-+			    SX9310_REG_PROX_CTRL5_STARTUPSENS_CS1 |
-+			    SX9310_REG_PROX_CTRL5_RAWFILT_1P25),
-+	SX_INIT(PROX_CTRL6, SX9310_REG_PROX_CTRL6_COMP_COMMON),
-+	SX_INIT(PROX_CTRL7, SX9310_REG_PROX_CTRL7_AVGNEGFILT_2 |
-+			    SX9310_REG_PROX_CTRL7_AVGPOSFILT_512),
-+	SX_INIT(PROX_CTRL8, SX9310_REG_PROX_CTRL8_9_PTHRESH_96 |
-+			    SX9310_REG_PROX_CTRL8_9_BODYTHRESH_1500),
-+	SX_INIT(PROX_CTRL9, SX9310_REG_PROX_CTRL8_9_PTHRESH12_28 |
-+			    SX9310_REG_PROX_CTRL8_9_BODYTHRESH_900),
-+	SX_INIT(PROX_CTRL10, SX9310_REG_PROX_CTRL10_HYST_6PCT |
-+			     SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_8 |
-+			     SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_8),
-+	SX_INIT(PROX_CTRL11, 0x00),
-+	SX_INIT(PROX_CTRL12, 0x00),
-+	SX_INIT(PROX_CTRL13, 0x00),
-+	SX_INIT(PROX_CTRL14, 0x00),
-+	SX_INIT(PROX_CTRL15, 0x00),
-+	SX_INIT(PROX_CTRL16, 0x00),
-+	SX_INIT(PROX_CTRL17, 0x00),
-+	SX_INIT(PROX_CTRL18, 0x00),
-+	SX_INIT(PROX_CTRL19, 0x00),
-+	SX_INIT(SAR_CTRL0, SX9310_REG_SAR_CTRL0_SARDEB_4_SAMPLES |
-+			   SX9310_REG_SAR_CTRL0_SARHYST_8),
-+	SX_INIT(SAR_CTRL1, SX9310_REG_SAR_CTRL1_SLOPE(10781250)),
-+	SX_INIT(SAR_CTRL2, SX9310_REG_SAR_CTRL2_SAROFFSET_DEFAULT),
-+};
-+
-+#undef SX_INIT
-+
-+/* Activate all channels and perform an initial compensation. */
-+static int sx9310_init_compensation(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int i, ret;
-+	unsigned int val;
-+	unsigned int ctrl0;
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &ctrl0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* run the compensation phase on all channels */
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+			   ctrl0 | SX9310_REG_PROX_CTRL0_EN_MASK);
-+	if (ret < 0)
-+		return ret;
-+
-+	for (i = 100; i >= 0; i--) {
-+		msleep(20);
-+		ret = regmap_read(data->regmap, SX9310_REG_STAT1, &val);
-+		if (ret < 0)
-+			goto out;
-+		if (!(val & SX9310_COMPSTAT_MASK))
-+			break;
-+	}
-+
-+	if (i < 0) {
-+		dev_err(&data->client->dev,
-+			"initial compensation timed out: 0x%02x", val);
-+		ret = -ETIMEDOUT;
-+	}
-+
-+out:
-+	regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
-+	return ret;
-+}
-+
-+static int sx9310_init_device(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	const struct sx9310_reg_default *initval;
-+	int ret;
-+	unsigned int i, val;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_RESET, SX9310_SOFT_RESET);
-+	if (ret < 0)
-+		return ret;
-+
-+	usleep_range(1000, 2000); /* power-up time is ~1ms. */
-+
-+	/* Clear reset interrupt state by reading SX9310_REG_IRQ_SRC. */
-+	ret = regmap_read(data->regmap, SX9310_REG_IRQ_SRC, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Program some sane defaults. */
-+	for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
-+		initval = &sx9310_default_regs[i];
-+		ret = regmap_write(data->regmap, initval->reg, initval->def);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return sx9310_init_compensation(indio_dev);
-+}
-+
-+static int sx9310_set_indio_dev_name(struct device *dev,
-+				     struct iio_dev *indio_dev, int whoami)
-+{
-+	if ((int)device_get_match_data(dev) != whoami)
-+		dev_err(dev, "WHOAMI does not match device data: %s", whoami);
-+
-+	switch (whoami) {
-+	case SX9310_WHOAMI_VALUE:
-+		indio_dev->name = "sx9310";
-+		break;
-+	case SX9311_WHOAMI_VALUE:
-+		indio_dev->name = "sx9311";
-+		break;
-+	default:
-+		dev_err(dev, "unexpected WHOAMI response: %u", whoami);
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sx9310_probe(struct i2c_client *client)
-+{
-+	int ret;
-+	struct device *dev = &client->dev;
-+	struct iio_dev *indio_dev;
-+	struct sx9310_data *data;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->client = client;
-+	mutex_init(&data->mutex);
-+	init_completion(&data->completion);
-+
-+	data->regmap = devm_regmap_init_i2c(client, &sx9310_regmap_config);
-+	if (IS_ERR(data->regmap))
-+		return PTR_ERR(data->regmap);
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_WHOAMI, &data->whoami);
-+	if (ret < 0) {
-+		dev_err(dev, "error in reading WHOAMI register: %d", ret);
-+		return ret;
-+	}
-+
-+	ret = sx9310_set_indio_dev_name(dev, indio_dev, data->whoami);
-+	if (ret < 0)
-+		return ret;
-+
-+	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(dev));
-+	indio_dev->dev.parent = dev;
-+	indio_dev->channels = sx9310_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(sx9310_channels);
-+	indio_dev->info = &sx9310_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	i2c_set_clientdata(client, indio_dev);
-+
-+	ret = sx9310_init_device(indio_dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (client->irq) {
-+		ret = devm_request_threaded_irq(dev, client->irq,
-+						sx9310_irq_handler,
-+						sx9310_irq_thread_handler,
-+						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-+						"sx9310_event", indio_dev);
-+		if (ret < 0)
-+			return ret;
-+
-+		data->trig = devm_iio_trigger_alloc(
-+			dev, "%s-dev%d", indio_dev->name, indio_dev->id);
-+		if (!data->trig)
-+			return -ENOMEM;
-+
-+		data->trig->dev.parent = dev;
-+		data->trig->ops = &sx9310_trigger_ops;
-+		iio_trigger_set_drvdata(data->trig, indio_dev);
-+
-+		ret = devm_iio_trigger_register(dev, data->trig);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      sx9310_trigger_handler,
-+					      &sx9310_buffer_setup_ops);
-+	if (ret < 0)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static int __maybe_unused sx9310_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	u8 ctrl0;
-+	int ret;
-+
-+	disable_irq_nosync(data->client->irq);
-+
-+	mutex_lock(&data->mutex);
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
-+			  &data->suspend_ctrl0);
-+
-+	if (ret)
-+		goto out;
-+
-+	ctrl0 = data->suspend_ctrl0 & ~SX9310_REG_PROX_CTRL0_EN_MASK;
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static int __maybe_unused sx9310_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->mutex);
-+	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+			   data->suspend_ctrl0);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	enable_irq(data->client->irq);
-+
-+	return ret;
-+}
-+
-+static const struct dev_pm_ops sx9310_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(sx9310_suspend, sx9310_resume)
-+};
-+
-+static const struct acpi_device_id sx9310_acpi_match[] = {
-+	{ "STH9310", SX9310_WHOAMI_VALUE },
-+	{ "STH9311", SX9311_WHOAMI_VALUE },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, sx9310_acpi_match);
-+
-+static const struct of_device_id sx9310_of_match[] = {
-+	{ .compatible = "semtech,sx9310" },
-+	{ .compatible = "semtech,sx9311" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, sx9310_of_match);
-+
-+static const struct i2c_device_id sx9310_id[] = {
-+	{ "sx9310", SX9310_WHOAMI_VALUE },
-+	{ "sx9311", SX9311_WHOAMI_VALUE },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, sx9310_id);
-+
-+static struct i2c_driver sx9310_driver = {
-+	.driver = {
-+		.name	= "sx9310",
-+		.acpi_match_table = ACPI_PTR(sx9310_acpi_match),
-+		.of_match_table = of_match_ptr(sx9310_of_match),
-+		.pm = &sx9310_pm_ops,
-+	},
-+	.probe_new	= sx9310_probe,
-+	.id_table	= sx9310_id,
-+};
-+module_i2c_driver(sx9310_driver);
-+
-+MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
-+MODULE_AUTHOR("Daniel Campello <campello@chromium.org>");
-+MODULE_DESCRIPTION("Driver for Semtech SX9310/SX9311 proximity sensor");
-+MODULE_LICENSE("GPL v2");
---
-2.26.0.292.g33ef6b2f38-goog
+> +      qcom,decimation:
+> +        description: |
+> +            This parameter is used to decrease ADC sampling rate.
+> +            Quicker measurements can be made by reducing decimation ratio.
+> +            - For compatible property "qcom,spmi-vadc", valid values are
+> +              512, 1024, 2048, 4096. If property is not found, default value
+> +              of 512 will be used.
+> +            - For compatible property "qcom,spmi-adc5", valid values are 250, 420
+> +              and 840. If property is not found, default value of 840 is used.
+> +            - For compatible property "qcom,spmi-adc-rev2", valid values are 256,
+> +              512 and 1024. If property is not present, default value is 1024.
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/uint32
+> +
 
+As pointed out by Jonathon, please enforce these by keying off the
+compatible property.
+
+> +      qcom,pre-scaling:
+> +        description: |
+> +            Used for scaling the channel input signal before the signal is
+> +            fed to VADC. The configuration for this node is to know the
+> +            pre-determined ratio and use it for post scaling. Select one from
+> +            the following options.
+
+Please improve this description from the old binding. Does <1 3> mean
+the signal is scaled 3x or 1/3x?
+
+> +            <1 1>, <1 3>, <1 4>, <1 6>, <1 20>, <1 8>, <10 81>, <1 10>
+> +            If property is not found default value depending on chip will be used.
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +      qcom,ratiometric:
+> +        description: |
+> +            Channel calibration type.
+> +            - For compatible property "qcom,spmi-vadc", if this property is
+> +              specified VADC will use the VDD reference (1.8V) and GND for
+> +              channel calibration. If property is not found, channel will be
+> +              calibrated with 0.625V and 1.25V reference channels, also
+> +              known as absolute calibration.
+> +            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+> +              if this property is specified VADC will use the VDD reference (1.875V)
+> +              and GND for channel calibration. If property is not found, channel
+> +              will be calibrated with 0V and 1.25V reference channels, also known
+> +              as absolute calibration.
+> +        type: boolean
+> +
+
+please enforce these by keying off the compatible property.
+
+> +      qcom,hw-settle-time:
+> +        description: |
+> +            Time between AMUX getting configured and the ADC starting
+> +            conversion. The 'hw_settle_time' is an index used from valid values
+> +            and programmed in hardware to achieve the hardware settling delay.
+> +            - For compatible property "qcom,spmi-vadc" and "qcom,spmi-adc-rev2",
+> +              Delay = 100us * (hw_settle_time) for hw_settle_time < 11,
+> +              and 2ms * (hw_settle_time - 10) otherwise.
+> +              Valid values are: 0, 100, 200, 300, 400, 500, 600, 700, 800,
+> +              900 us and 1, 2, 4, 6, 8, 10 ms.
+> +              If property is not found, channel will use 0us.
+> +            - For compatible property "qcom,spmi-adc5", delay = 15us for
+> +              value 0, 100us * (value) for values < 11,
+> +              and 2ms * (value - 10) otherwise.
+> +              Valid values are: 15, 100, 200, 300, 400, 500, 600, 700, 800,
+> +              900 us and 1, 2, 4, 6, 8, 10 ms
+> +              Certain controller digital versions have valid values of
+> +              15, 100, 200, 300, 400, 500, 600, 700, 1, 2, 4, 8, 16, 32, 64, 128 ms
+> +              If property is not found, channel will use 15us.
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/uint32
+> +
+
+please enforce these by keying off the compatible property.
+
+> +      qcom,avg-samples:
+> +        description: |
+> +            Number of samples to be used for measurement.
+> +            Averaging provides the option to obtain a single measurement
+> +            from the ADC that is an average of multiple samples. The value
+> +            selected is 2^(value).
+> +            - For compatible property "qcom,spmi-vadc", valid values
+> +              are: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+> +              If property is not found, 1 sample will be used.
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/uint32
+> +
+
+please enforce these by keying off the compatible property.
+
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+> +examples:
+> +  - |
+> +      /* VADC node */
+> +      pmic_vadc: vadc@3100 {
+> +        compatible = "qcom,spmi-vadc";
+> +        reg = <0x3100>;
+> +        interrupts = <0x0 0x31 0x0 0x1>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        #io-channel-cells = <1>;
+> +        io-channel-ranges;
+> +
+> +        /* Channel node */
+> +        adc-chan@0x39 {
+> +          reg = <0x39>;
+> +          qcom,decimation = <512>;
+> +          qcom,ratiometric;
+> +          qcom,hw-settle-time = <200>;
+> +          qcom,avg-samples = <1>;
+> +          qcom,pre-scaling = <1 3>;
+> +        };
+> +      };
+> --
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project

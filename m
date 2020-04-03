@@ -2,322 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EEE19D65F
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Apr 2020 14:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C4619D704
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Apr 2020 14:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390923AbgDCMIg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Apr 2020 08:08:36 -0400
-Received: from mx-out2.startmail.com ([145.131.90.155]:56436 "EHLO
-        mx-out2.startmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390880AbgDCMIg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Apr 2020 08:08:36 -0400
-From:   Alexandru Lazar <alazar@startmail.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=startmail.com;
-        s=2017-11; t=1585915713;
-        bh=VAThOJYw62Ktrta9iKVxQZ9KyozWyw05s29h4xdI1qY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MjiKjNlvBM1URpaAs4s1YFDUUgwx/+PWHltHoxL37GlcBs1uqmizncJrJS9BVkVr7
-         yrHRwM49g5vgf8DxgnPq2e1E2O++E6hm+bf8tRaoh46tLGBDJxHem4/SLKQvtVjG7a
-         izkxiBSGoz9P56+NboOpv/pA4YpQ6fzZ07C45oRXYNy7vC8n3OKLnqPHLQXOMNpt41
-         I8VsHFyiojGCGuQmWr8QFHvIkRaCM9fiz4PvhflbZVHMqnG3kfrmrqgOCdUefPmfyJ
-         fdJYGrF0Sh5K/ih+XTpWHJv3rhQXyHdIwUCC4GeNR1ji2mWwZAVhnqKC5nMdzzUQkY
-         XM9+oUGJ9CraA==
-To:     linux-iio@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
-        mark.rutland@arm.com, Alexandru Lazar <alazar@startmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v7 2/2] iio: adc: Add MAX1241 driver
-Date:   Fri,  3 Apr 2020 15:13:23 +0300
-Message-Id: <20200403121323.1742-3-alazar@startmail.com>
-In-Reply-To: <20200403121323.1742-1-alazar@startmail.com>
-References: <20200403121323.1742-1-alazar@startmail.com>
+        id S2390715AbgDCM6r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Apr 2020 08:58:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53307 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728001AbgDCM6q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Apr 2020 08:58:46 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jKLuA-00045U-PA; Fri, 03 Apr 2020 12:58:38 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mircea Caprioru <mircea.caprioru@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: dac: ad5770r: fix off-by-one check on maximum number of channels
+Date:   Fri,  3 Apr 2020 13:58:38 +0100
+Message-Id: <20200403125838.71271-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add driver for the Maxim MAX1241 12-bit, single-channel ADC.
+From: Colin Ian King <colin.king@canonical.com>
 
-Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX1240-MAX1241.pdf
+Currently there is an off-by-one check on the number of channels that
+will cause an arry overrun in array st->output_mode when calling the
+function d5770r_store_output_range. Fix this by using >= rather than >
+to check for maximum number of channels.
 
-Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Signed-off-by: Alexandru Lazar <alazar@startmail.com>
+Addresses-Coverity: ("Out-of-bounds access")
+Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/iio/adc/Kconfig   |  10 ++
- drivers/iio/adc/Makefile  |   1 +
- drivers/iio/adc/max1241.c | 227 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 238 insertions(+)
- create mode 100644 drivers/iio/adc/max1241.c
+ drivers/iio/dac/ad5770r.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 5d8540b7b427..55f6462cd93f 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -566,6 +566,16 @@ config MAX1118
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called max1118.
+diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
+index a98ea76732e7..2d7623b9b2c0 100644
+--- a/drivers/iio/dac/ad5770r.c
++++ b/drivers/iio/dac/ad5770r.c
+@@ -525,7 +525,7 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
+ 		ret = fwnode_property_read_u32(child, "num", &num);
+ 		if (ret)
+ 			return ret;
+-		if (num > AD5770R_MAX_CHANNELS)
++		if (num >= AD5770R_MAX_CHANNELS)
+ 			return -EINVAL;
  
-+config MAX1241
-+	tristate "Maxim max1241 ADC driver"
-+	depends on SPI_MASTER
-+	help
-+	  Say yes here to build support for Maxim max1241 12-bit, single-channel
-+	  ADC.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called max1241.
-+
- config MAX1363
- 	tristate "Maxim max1363 ADC driver"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index a1f1fbec0f87..37d6f17559dc 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -54,6 +54,7 @@ obj-$(CONFIG_LTC2497) += ltc2497.o
- obj-$(CONFIG_MAX1027) += max1027.o
- obj-$(CONFIG_MAX11100) += max11100.o
- obj-$(CONFIG_MAX1118) += max1118.o
-+obj-$(CONFIG_MAX1241) += max1241.o
- obj-$(CONFIG_MAX1363) += max1363.o
- obj-$(CONFIG_MAX9611) += max9611.o
- obj-$(CONFIG_MCP320X) += mcp320x.o
-diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
-new file mode 100644
-index 000000000000..541939c7abca
---- /dev/null
-+++ b/drivers/iio/adc/max1241.c
-@@ -0,0 +1,227 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * MAX1241 low-power, 12-bit serial ADC
-+ *
-+ * Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX1240-MAX1241.pdf
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+
-+#define MAX1241_VAL_MASK GENMASK(11, 0)
-+#define MAX1241_SHUTDOWN_DELAY_USEC 4
-+
-+enum max1241_id {
-+	max1241,
-+};
-+
-+struct max1241 {
-+	struct spi_device *spi;
-+	struct mutex lock;
-+	struct regulator *vdd;
-+	struct regulator *vref;
-+	struct gpio_desc *shutdown;
-+
-+	__be16 data ____cacheline_aligned;
-+};
-+
-+static const struct iio_chan_spec max1241_channels[] = {
-+	{
-+		.type = IIO_VOLTAGE,
-+		.indexed = 1,
-+		.channel = 0,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+};
-+
-+static int max1241_read(struct max1241 *adc)
-+{
-+	struct spi_transfer xfers[] = {
-+		/*
-+		 * Begin conversion by bringing /CS low for at least
-+		 * tconv us.
-+		 */
-+		{
-+			.len = 0,
-+			.delay.value = 8,
-+			.delay.unit = SPI_DELAY_UNIT_USECS,
-+		},
-+		/*
-+		 * Then read two bytes of data in our RX buffer.
-+		 */
-+		{
-+			.rx_buf = &adc->data,
-+			.len = 2,
-+		},
-+	};
-+
-+	return spi_sync_transfer(adc->spi, xfers, ARRAY_SIZE(xfers));
-+}
-+
-+static int max1241_read_raw(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan,
-+			int *val, int *val2, long mask)
-+{
-+	int ret, vref_uV;
-+	struct max1241 *adc = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&adc->lock);
-+
-+		if (adc->shutdown) {
-+			gpiod_set_value(adc->shutdown, 0);
-+			udelay(MAX1241_SHUTDOWN_DELAY_USEC);
-+			ret = max1241_read(adc);
-+			gpiod_set_value(adc->shutdown, 1);
-+		} else
-+			ret = max1241_read(adc);
-+
-+		if (ret) {
-+			mutex_unlock(&adc->lock);
-+			return ret;
-+		}
-+
-+		*val = (be16_to_cpu(adc->data) >> 3) & MAX1241_VAL_MASK;
-+
-+		mutex_unlock(&adc->lock);
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		vref_uV = regulator_get_voltage(adc->vref);
-+
-+		if (vref_uV < 0)
-+			return vref_uV;
-+
-+		*val = vref_uV / 1000;
-+		*val2 = 12;
-+
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info max1241_info = {
-+	.read_raw = max1241_read_raw,
-+};
-+
-+static void max1241_disable_vdd_action(void *data)
-+{
-+	struct max1241 *adc = data;
-+	struct device *dev = &adc->spi->dev;
-+	int err;
-+
-+	err = regulator_disable(adc->vdd);
-+	if (err)
-+		dev_err(dev, "could not disable vdd regulator.\n");
-+}
-+
-+static void max1241_disable_vref_action(void *data)
-+{
-+	struct max1241 *adc = data;
-+	struct device *dev = &adc->spi->dev;
-+	int err;
-+
-+	err = regulator_disable(adc->vref);
-+	if (err)
-+		dev_err(dev, "could not disable vref regulator.\n");
-+}
-+
-+static int max1241_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct iio_dev *indio_dev;
-+	struct max1241 *adc;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	adc = iio_priv(indio_dev);
-+	adc->spi = spi;
-+	mutex_init(&adc->lock);
-+
-+	spi_set_drvdata(spi, indio_dev);
-+
-+	adc->vdd = devm_regulator_get(dev, "vdd");
-+	if (IS_ERR(adc->vdd)) {
-+		dev_err(dev, "failed to get vdd regulator\n");
-+		return PTR_ERR(adc->vdd);
-+	}
-+
-+	ret = regulator_enable(adc->vdd);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, max1241_disable_vdd_action, adc);
-+	if (ret) {
-+		dev_err(dev, "could not set up vdd regulator cleanup action\n");
-+		return ret;
-+	}
-+
-+	adc->vref = devm_regulator_get(dev, "vref");
-+	if (IS_ERR(adc->vref)) {
-+		dev_err(dev, "failed to get vref regulator\n");
-+		return PTR_ERR(adc->vref);
-+	}
-+
-+	ret = regulator_enable(adc->vref);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, max1241_disable_vref_action, adc);
-+	if (ret) {
-+		dev_err(dev, "could not set up vref regulator cleanup action\n");
-+		return ret;
-+	}
-+
-+	adc->shutdown = devm_gpiod_get_optional(dev, "shutdown",
-+						GPIOD_OUT_HIGH);
-+	if (IS_ERR(adc->shutdown))
-+		return PTR_ERR(adc->shutdown);
-+
-+	if (adc->shutdown)
-+		dev_dbg(dev, "shutdown pin passed, low-power mode enabled");
-+	else
-+		dev_dbg(dev, "no shutdown pin passed, low-power mode disabled");
-+
-+	indio_dev->name = spi_get_device_id(spi)->name;
-+	indio_dev->dev.parent = dev;
-+	indio_dev->info = &max1241_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = max1241_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(max1241_channels);
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct spi_device_id max1241_id[] = {
-+	{ "max1241", max1241 },
-+	{}
-+};
-+
-+static const struct of_device_id max1241_dt_ids[] = {
-+	{ .compatible = "maxim,max1241" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, max1241_dt_ids);
-+
-+static struct spi_driver max1241_spi_driver = {
-+	.driver = {
-+		.name = "max1241",
-+		.of_match_table = max1241_dt_ids,
-+	},
-+	.probe = max1241_probe,
-+	.id_table = max1241_id,
-+};
-+module_spi_driver(max1241_spi_driver);
-+
-+MODULE_AUTHOR("Alexandru Lazar <alazar@startmail.com>");
-+MODULE_DESCRIPTION("MAX1241 ADC driver");
-+MODULE_LICENSE("GPL v2");
+ 		ret = fwnode_property_read_u32_array(child,
 -- 
-2.20.1
+2.25.1
 

@@ -2,40 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A0119E554
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 16:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E78F19E566
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 16:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbgDDOGi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Apr 2020 10:06:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47994 "EHLO mail.kernel.org"
+        id S1726339AbgDDONs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Apr 2020 10:13:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49526 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726016AbgDDOGi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Apr 2020 10:06:38 -0400
+        id S1726327AbgDDONs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Apr 2020 10:13:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BAD93206D4;
-        Sat,  4 Apr 2020 14:06:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B64A206D4;
+        Sat,  4 Apr 2020 14:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586009197;
-        bh=wjN6og/BdgQiXgjgfs18wtB2fwB8t82/B8/axoPpm0o=;
+        s=default; t=1586009628;
+        bh=ZvuleyhiKzg2qJsFUH+wTl9rb8FF4uXXYTWgnvLY7H8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ktl7UJTQFM1lv/2svEtlYwjB5jadi3E+SxqcjnIoT+DrdEOdxruQp33fAud7E9wGU
-         Lmm3JfFFvxTJcvzh9nQC+3rEzUKC7nx+CL8nrFDXlw95rkO3EejbNiA9H1/Myhz6gJ
-         w1tqJQFiljIxUtprhkZM92e8O2FDhXs/gmxT95d0=
-Date:   Sat, 4 Apr 2020 15:06:33 +0100
+        b=BUJXJ67HM8feh6Ehp8/PVEKDVNXonHBGWgL+5sdET+uAfflyQJuoOahXckHB8wRtu
+         ydGRnNQl7EV0JLnWFeVSUY6SVQbW4CLjnejlZjN0s2wIxcxh5I4U3jZ24BPtcq4fl1
+         Hc4xAN/itxl5jYnBZUtamOgM4fjgiPQMawaj7NDk=
+Date:   Sat, 4 Apr 2020 15:13:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Syed Nayyar Waris <syednwaris@gmail.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] counter: 104-quad-8: Add lock guards - generic
- interface
-Message-ID: <20200404150633.2421decd@archlinux>
-In-Reply-To: <CACG_h5qctM0S2buQHHNnJ_qVY6YY2wYruj9aTKH9RiJ=9_LfoQ@mail.gmail.com>
-References: <20200316124929.GA389@syed.domain.name>
-        <20200318020506.GA45571@icarus>
-        <20200322175831.74e10aa7@archlinux>
-        <CACG_h5qctM0S2buQHHNnJ_qVY6YY2wYruj9aTKH9RiJ=9_LfoQ@mail.gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Nishant Malpani <nish.malpani25@gmail.com>, robh+dt@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        mark.rutland@arm.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] dt-bindings: iio: tsl2563: convert bindings to YAML
+Message-ID: <20200404151341.19388a2e@archlinux>
+In-Reply-To: <20200330225934.GA19255@bogus>
+References: <20200318071940.12220-1-nish.malpani25@gmail.com>
+        <20200330225934.GA19255@bogus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,26 +44,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Mar 2020 23:54:32 +0530
-Syed Nayyar Waris <syednwaris@gmail.com> wrote:
+On Mon, 30 Mar 2020 16:59:34 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> Hi Jonathan
+> On Wed, 18 Mar 2020 12:49:40 +0530, Nishant Malpani wrote:
+> > Convert the TSL2563 device tree bindings to the new YAML format.
+> > 
+> > Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
+> > ---
+> > 
+> > Changes in v4:
+> >   - Change $id property to reflect corrected relative path.
+> > 
+> > Changes in v3:
+> >   - Include the complete diff (changes from v1).
+> > 
+> > Changes in v2:
+> >   - Rename the dt-bindings to include manufacturer's name.
+> >   - Synchronize the bindings with the driver.
+> > ---
+> >  .../bindings/iio/light/amstaos,tsl2563.yaml   | 49 +++++++++++++++++++
+> >  .../devicetree/bindings/iio/light/tsl2563.txt | 19 -------
+> >  2 files changed, 49 insertions(+), 19 deletions(-)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/light/amstaos,tsl2563.yaml
+> >  delete mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.txt
+> >   
 > 
-> >Looks good.  I'm not sure right now which tree I'll take this through
-> >(depends on whether it looks like we'll get an rc8 and hence I can sneak
-> >it in for the coming merge window or not).
-> >
-> >So poke me if I seem to have forgotten to apply this in a week or so.  
-> 
-> Gentle Reminder.
-> Thanks !
-> Syed Nayyar Waris
-
-Thanks.  I've applied it to the fixes-togreg branch of iio.git which will go
-upstream after the merge window closes.
+> Reviewed-by: Rob Herring <robh@kernel.org>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
-
 

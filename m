@@ -2,279 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDFF19E66F
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 18:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9237C19E674
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 18:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbgDDQYR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Apr 2020 12:24:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbgDDQYR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Apr 2020 12:24:17 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85E04206F8;
-        Sat,  4 Apr 2020 16:24:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586017456;
-        bh=zLzyO0vkAY8hFwapbYXloOrTstp1BoEEZ4oGP7XxZ+Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=v9RfM2tWuoCf6nDxriN7YBQW3h1hUdPWLHIWF5ub2d4DOWPnef1LUZw7mHyjSKDi7
-         DH4hP0FaLJmn40fmR4NE8CBO89LYyJqCTY/i6nHa0dtMEi9kRvjEcc69ax3fYu8KGf
-         F83euvRAi9Kgb1CNvC2AqSQtAKeC/RVEbGbXEvXI=
-Date:   Sat, 4 Apr 2020 17:24:11 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v3 1/6] iio: imu: adis: Add Managed device functions
-Message-ID: <20200404172411.07defbab@archlinux>
-In-Reply-To: <20200331114811.7978-2-nuno.sa@analog.com>
-References: <20200331114811.7978-1-nuno.sa@analog.com>
-        <20200331114811.7978-2-nuno.sa@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726248AbgDDQ3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Apr 2020 12:29:42 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:30232 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726207AbgDDQ3m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Apr 2020 12:29:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586017780;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yqtc2iXO4XwLwAH+Ev8DqQ8ksFmMxHRs6wL0orvLPSg=;
+        b=J4AygyVdRfSYIYJgW7ho7kx8lkzX7IE/hv7U/Dl45q4Oe/i8b8oKMw1AY/wD61055stRGY
+        Rs4psPmTCizHEnBQF0yu6zfwE3GJapAkQ6DMJTwT4dD6qFGI7ytDHZ3LkN0I3d5i8QMK6q
+        evfrbIj5G6w4bZ2lgq1vmx4rvBc4duo=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-417-1t0BvXZUPsS4z7quBWV9lw-1; Sat, 04 Apr 2020 12:29:38 -0400
+X-MC-Unique: 1t0BvXZUPsS4z7quBWV9lw-1
+Received: by mail-vk1-f199.google.com with SMTP id q65so4137540vka.3
+        for <linux-iio@vger.kernel.org>; Sat, 04 Apr 2020 09:29:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=yqtc2iXO4XwLwAH+Ev8DqQ8ksFmMxHRs6wL0orvLPSg=;
+        b=ozorGiijcKLYGSNmGBzjcqKF9WvZv9W8cKimw5e8BE1l4wc0ZsBbSgz3rTWXZnuHZ3
+         bhVlKTIC95RnkUqk8+Nol2FPPjnJA2o9k+OS88EyBEXIslUopx9pJ+2KAJaAADoIEA0i
+         qkmPkxHAT+e7LaEV46Gu3quC5xI4AwYssjTbDkK83tgi7wicysdB7sFqGtcUpTMiC/yR
+         yNBFenEjBFoFOvRggbmMWksQXoR4mxItMgu2mDXN6KqInf/XtuA5LxSd57wsLdvugwen
+         oCvLRR5M9lNERr04XX62cEHAWyLhuF59To4S9nFKYFFOfBZx8yLYt3+r8D4vKneEUUcF
+         yjPg==
+X-Gm-Message-State: AGi0PuYi9AGXLG3ohXjCh1QBJswg9nSdwzbRpMphT2aC6S6cYwOsz0ib
+        Pc3q6H2oT83kgK5+Lrb7isaXLOlt/ZJFon7qfYzXMq3wn0Q8OvmaRfo8b1XWaqAbXu92SfKDv1o
+        kY9wvvD1DTm2WSh66QWYiAfOK8RyPhEsWOkSm
+X-Received: by 2002:a1f:9a08:: with SMTP id c8mr10057468vke.20.1586017777230;
+        Sat, 04 Apr 2020 09:29:37 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKoI0DjM1bLM7YQjRkXsPf1BtEehW2nEGTwpMBUJPs2atS8XBHFRXloGct4Zt1D7St7MDkGihjE36P9u8Bz3SY=
+X-Received: by 2002:a1f:9a08:: with SMTP id c8mr10057460vke.20.1586017776948;
+ Sat, 04 Apr 2020 09:29:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <e9beff6b3a32ddf0de20821e50cf3ed562e36b48.1584122527.git.lorenzo@kernel.org>
+ <CH2PR12MB4216CB1A1882DBE10CAAC967AEF60@CH2PR12MB4216.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB4216CB1A1882DBE10CAAC967AEF60@CH2PR12MB4216.namprd12.prod.outlook.com>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sat, 4 Apr 2020 18:29:25 +0200
+Message-ID: <CAJ0CqmVmMe-YN-gYeS54cc_So1u-ARSQQkB_a+w6N2AZSeCGXg@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: flush hw FIFO before resetting the device
+To:     "jic23@kernel.org" <jic23@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "mario.tesi@st.com" <mario.tesi@st.com>,
+        Vitor Soares <Vitor.Soares@synopsys.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 31 Mar 2020 13:48:06 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>
+> Hi Lorenzo,
+>
+> From: Lorenzo Bianconi <lorenzo@kernel.org>
+> Date: Fri, Mar 13, 2020 at 18:06:00
+>
+> > flush hw FIFO before device reset in order to avoid possible races
+> > on interrupt line 1. If the first interrupt line is asserted during
+> > hw reset the device will work in I3C-only mode (if it is supported)
+> >
 
-> This patch adds support for a managed device version of
-> adis_setup_buffer_and_trigger. It works exactly as the original
-> one but it calls all the devm_iio_* functions to setup an iio
-> buffer and trigger. Hence we do not need to care about cleaning those
-> and we do not need to support a remove() callback for every driver using
-> the adis library.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Hi Jonathan,
 
-Random thought inline.  Something we could use more in IIO :)
+any news about this patch? Maybe I am wrong but I am not able to find
+it in your tree.
+Thanks in advance.
 
-> ---
-> Changes in v2:
->  * Added blank lines for readability.
->=20
-> Changes in V3:
->  * Removed unnecessary inline;
->  * Free buffer resources.
->=20
->  drivers/iio/imu/adis_buffer.c  | 45 ++++++++++++++++++++++++++++++++++
->  drivers/iio/imu/adis_trigger.c | 41 ++++++++++++++++++++++++++++---
->  include/linux/iio/imu/adis.h   | 17 +++++++++++++
->  3 files changed, 100 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
-> index 04e5e2a0fd6b..c2211ab80d8c 100644
-> --- a/drivers/iio/imu/adis_buffer.c
-> +++ b/drivers/iio/imu/adis_buffer.c
-> @@ -156,6 +156,14 @@ static irqreturn_t adis_trigger_handler(int irq, voi=
-d *p)
->  	return IRQ_HANDLED;
->  }
-> =20
-> +static void adis_buffer_cleanup(void *arg)
-> +{
-> +	struct adis *adis =3D arg;
-> +
-> +	kfree(adis->buffer);
-> +	kfree(adis->xfer);
-> +}
-> +
->  /**
->   * adis_setup_buffer_and_trigger() - Sets up buffer and trigger for the =
-adis device
->   * @adis: The adis device.
-> @@ -198,6 +206,43 @@ int adis_setup_buffer_and_trigger(struct adis *adis,=
- struct iio_dev *indio_dev,
->  }
->  EXPORT_SYMBOL_GPL(adis_setup_buffer_and_trigger);
-> =20
-> +/**
-> + * devm_adis_setup_buffer_and_trigger() - Sets up buffer and trigger for
-> + *					  the managed adis device
-> + * @adis: The adis device
-> + * @indio_dev: The IIO device
-> + * @trigger_handler: Optional trigger handler, may be NULL.
-> + *
-> + * Returns 0 on success, a negative error code otherwise.
-> + *
-> + * This function perfoms exactly the same as adis_setup_buffer_and_trigg=
-er()
-> + */
-> +int
-> +devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *in=
-dio_dev,
-> +				   irqreturn_t (*trigger_handler)(int, void *))
-
-It occurred to me that there must be a lot of irq handling function pointers
-in the kernel and it would be odd if there wasn't a type for this...
-
-There is :) irq_handler_t=20
-
-https://elixir.bootlin.com/linux/latest/source/include/linux/interrupt.h#L92
-
-Not sure why I never noticed that before.  Hohum.
-
-Jonathan
+Regards,
+Lorenzo
 
 
-> +{
-> +	int ret;
-> +
-> +	if (!trigger_handler)
-> +		trigger_handler =3D adis_trigger_handler;
-> +
-> +	ret =3D devm_iio_triggered_buffer_setup(&adis->spi->dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      trigger_handler, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (adis->spi->irq) {
-> +		ret =3D devm_adis_probe_trigger(adis, indio_dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return devm_add_action_or_reset(&adis->spi->dev, adis_buffer_cleanup,
-> +					adis);
-> +}
-> +EXPORT_SYMBOL_GPL(devm_adis_setup_buffer_and_trigger);
-> +
->  /**
->   * adis_cleanup_buffer_and_trigger() - Free buffer and trigger resources
->   * @adis: The adis device.
-> diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigge=
-r.c
-> index 8b9cd02c0f9f..a36810e0b1ab 100644
-> --- a/drivers/iio/imu/adis_trigger.c
-> +++ b/drivers/iio/imu/adis_trigger.c
-> @@ -27,6 +27,13 @@ static const struct iio_trigger_ops adis_trigger_ops =
-=3D {
->  	.set_trigger_state =3D &adis_data_rdy_trigger_set_state,
->  };
-> =20
-> +static void adis_trigger_setup(struct adis *adis)
-> +{
-> +	adis->trig->dev.parent =3D &adis->spi->dev;
-> +	adis->trig->ops =3D &adis_trigger_ops;
-> +	iio_trigger_set_drvdata(adis->trig, adis);
-> +}
-> +
->  /**
->   * adis_probe_trigger() - Sets up trigger for a adis device
->   * @adis: The adis device
-> @@ -45,9 +52,7 @@ int adis_probe_trigger(struct adis *adis, struct iio_de=
-v *indio_dev)
->  	if (adis->trig =3D=3D NULL)
->  		return -ENOMEM;
-> =20
-> -	adis->trig->dev.parent =3D &adis->spi->dev;
-> -	adis->trig->ops =3D &adis_trigger_ops;
-> -	iio_trigger_set_drvdata(adis->trig, adis);
-> +	adis_trigger_setup(adis);
-> =20
->  	ret =3D request_irq(adis->spi->irq,
->  			  &iio_trigger_generic_data_rdy_poll,
-> @@ -73,6 +78,36 @@ int adis_probe_trigger(struct adis *adis, struct iio_d=
-ev *indio_dev)
->  }
->  EXPORT_SYMBOL_GPL(adis_probe_trigger);
-> =20
-> +/**
-> + * devm_adis_probe_trigger() - Sets up trigger for a managed adis device
-> + * @adis: The adis device
-> + * @indio_dev: The IIO device
-> + *
-> + * Returns 0 on success or a negative error code
-> + */
-> +int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
-> +{
-> +	int ret;
-> +
-> +	adis->trig =3D devm_iio_trigger_alloc(&adis->spi->dev, "%s-dev%d",
-> +					    indio_dev->name, indio_dev->id);
-> +	if (!adis->trig)
-> +		return -ENOMEM;
-> +
-> +	adis_trigger_setup(adis);
-> +
-> +	ret =3D devm_request_irq(&adis->spi->dev, adis->spi->irq,
-> +			       &iio_trigger_generic_data_rdy_poll,
-> +			       IRQF_TRIGGER_RISING,
-> +			       indio_dev->name,
-> +			       adis->trig);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_trigger_register(&adis->spi->dev, adis->trig);
-> +}
-> +EXPORT_SYMBOL_GPL(devm_adis_probe_trigger);
-> +
->  /**
->   * adis_remove_trigger() - Remove trigger for a adis devices
->   * @adis: The adis device
-> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-> index dd8219138c2e..ac94c483bf2b 100644
-> --- a/include/linux/iio/imu/adis.h
-> +++ b/include/linux/iio/imu/adis.h
-> @@ -448,11 +448,15 @@ struct adis_burst {
->  	unsigned int	extra_len;
->  };
-> =20
-> +int
-> +devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *in=
-dio_dev,
-> +				   irqreturn_t (*trigger_handler)(int, void *));
->  int adis_setup_buffer_and_trigger(struct adis *adis,
->  	struct iio_dev *indio_dev, irqreturn_t (*trigger_handler)(int, void *));
->  void adis_cleanup_buffer_and_trigger(struct adis *adis,
->  	struct iio_dev *indio_dev);
-> =20
-> +int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev=
-);
->  int adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev);
->  void adis_remove_trigger(struct adis *adis);
-> =20
-> @@ -461,6 +465,13 @@ int adis_update_scan_mode(struct iio_dev *indio_dev,
-> =20
->  #else /* CONFIG_IIO_BUFFER */
-> =20
-> +static inline int
-> +devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *in=
-dio_dev,
-> +				   irqreturn_t (*trigger_handler)(int, void *))
-> +{
-> +	return 0;
-> +}
-> +
->  static inline int adis_setup_buffer_and_trigger(struct adis *adis,
->  	struct iio_dev *indio_dev, irqreturn_t (*trigger_handler)(int, void *))
->  {
-> @@ -472,6 +483,12 @@ static inline void adis_cleanup_buffer_and_trigger(s=
-truct adis *adis,
->  {
->  }
-> =20
-> +static inline int devm_adis_probe_trigger(struct adis *adis,
-> +					  struct iio_dev *indio_dev)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline int adis_probe_trigger(struct adis *adis,
->  	struct iio_dev *indio_dev)
->  {
+> > Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
+> > Fixes: 43901008fde0 ("iio: imu: st_lsm6dsx: add support to LSM6DSR")
+> > Reported-by: Mario Tesi <mario.tesi@st.com>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> > This is a new version of: "iio: imu: st_lsm6dsx: disable I3C support du=
+ring
+> > device reset"
+> > https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__patchwork.kernel=
+.org_patch_11425389_&d=3DDwIDAg&c=3DDPL6_X_6JkXFx7AXWqB0tg&r=3DqVuU64u9x77Y=
+0Kd0PhDK_lpxFgg6PK9PateHwjb_DY0&m=3Dd7oUzE4fWeY3JqYqqd-uW_v1SJkij_sOpXRvpm3=
+-Thg&s=3DBEgROrIZoG9oGrwQEENFz0DP88VioXUhpeZP2Y168XI&e=3D
+> > ---
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 24 +++++++++++++++++++-
+> >  1 file changed, 23 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > index 84d219ae6aee..4426524b59f2 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > @@ -2036,11 +2036,21 @@ static int st_lsm6dsx_init_hw_timer(struct st_l=
+sm6dsx_hw *hw)
+> >       return 0;
+> >  }
+> >
+> > -static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> > +static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
+> >  {
+> >       const struct st_lsm6dsx_reg *reg;
+> >       int err;
+> >
+> > +     /*
+> > +      * flush hw FIFO before device reset in order to avoid
+> > +      * possible races on interrupt line 1. If the first interrupt
+> > +      * line is asserted during hw reset the device will work in
+> > +      * I3C-only mode (if it is supported)
+> > +      */
+> > +     err =3D st_lsm6dsx_flush_fifo(hw);
+> > +     if (err < 0 && err !=3D -ENOTSUPP)
+> > +             return err;
+> > +
+> >       /* device sw reset */
+> >       reg =3D &hw->settings->reset;
+> >       err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > @@ -2059,6 +2069,18 @@ static int st_lsm6dsx_init_device(struct st_lsm6=
+dsx_hw *hw)
+> >
+> >       msleep(50);
+> >
+> > +     return 0;
+> > +}
+> > +
+> > +static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> > +{
+> > +     const struct st_lsm6dsx_reg *reg;
+> > +     int err;
+> > +
+> > +     err =3D st_lsm6dsx_reset_device(hw);
+> > +     if (err < 0)
+> > +             return err;
+> > +
+> >       /* enable Block Data Update */
+> >       reg =3D &hw->settings->bdu;
+> >       err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > --
+> > 2.24.1
+>
+> I tested the patch and the I3C interface is working fine in this version.
+>
+> Reviewed-by: Vitor Soares <vitor.soares@synopsys.com>
+> Tested-by: Vitor Soares <vitor.soares@synopsys.com>
+>
+> Best regards,
+> Vitor
+> Soares
+>
+>
 

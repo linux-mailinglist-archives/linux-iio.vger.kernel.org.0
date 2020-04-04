@@ -2,50 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0BB19E5FC
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 17:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F29919E612
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 17:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbgDDPBe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Apr 2020 11:01:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59560 "EHLO mail.kernel.org"
+        id S1726132AbgDDPdE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Apr 2020 11:33:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37492 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726370AbgDDPBe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Apr 2020 11:01:34 -0400
+        id S1726130AbgDDPdE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Apr 2020 11:33:04 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32F8A206C3;
-        Sat,  4 Apr 2020 15:01:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9335220644;
+        Sat,  4 Apr 2020 15:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586012493;
-        bh=2+OkZnOX6aKz/aqxQT7vTReb2mbwYBZHxLGB897/sIY=;
+        s=default; t=1586014383;
+        bh=gBwjA/Xgt68E/PkOd2G7ivoVbgTFZ/UXr4oapzOjJwY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sJ+gJGt7bKVvIMypf8n4UtxCGgpbiXT7Ut1AB6LiYBb9zVfRVGTahre/AzeO3ks2E
-         V8SETT36BCtDVnC7OT1j3hhu6R4JiBDCYGaKEythyi3C3kL4iZYiNBErxFOag65hEH
-         IwaFu6+FUy0msTf7kjbF7eRJktYMB9Fco+E25O0g=
-Date:   Sat, 4 Apr 2020 16:01:27 +0100
+        b=kBpsjukKzQd14ZTCHV0h8muN0nlO7rraeccKlKIgOH4OSvZMYqNHl2Wjz1lC59+i9
+         mH3+iH5yTMrDWwSz17x0GcNhN3ZNOqPyV5ntcKUoWM34kJohMjIvXT8BjwIMZxcrws
+         lTC0Q06jdKQQ8YAlQ+lxt7hQKe/ydD2PkpwuhDlM=
+Date:   Sat, 4 Apr 2020 16:32:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>,
-        Tomas Novotny <tomas@novotny.cz>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>
-Subject: Re: [PATCH v3 2/4] dt-bindings: iio: light: vcnl4000: Add
- near-level
-Message-ID: <20200404160127.1ef9d1ac@archlinux>
-In-Reply-To: <20200331214517.GA24128@bogus>
-References: <cover.1585134362.git.agx@sigxcpu.org>
-        <f0ad40351d7ab12f79d2c29f738443514ae0fb76.1585134362.git.agx@sigxcpu.org>
-        <20200329102526.1ee85e96@archlinux>
-        <20200331214517.GA24128@bogus>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] iio: imu: adis16400: use
+ DEFINE_DEBUGFS_ATTRIBUTE instead of DEFINE_SIMPLE_ATTRIBUTE
+Message-ID: <20200404163258.3daba6e6@archlinux>
+In-Reply-To: <BN6PR03MB3347F052B16EDFB9BED9029D99C80@BN6PR03MB3347.namprd03.prod.outlook.com>
+References: <20200328063456.24012-1-rohitsarkar5398@gmail.com>
+        <20200331114732.14739-1-rohitsarkar5398@gmail.com>
+        <20200331114732.14739-2-rohitsarkar5398@gmail.com>
+        <BN6PR03MB3347F052B16EDFB9BED9029D99C80@BN6PR03MB3347.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,87 +52,92 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 31 Mar 2020 15:45:17 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Tue, 31 Mar 2020 15:28:03 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> On Sun, Mar 29, 2020 at 10:25:26AM +0100, Jonathan Cameron wrote:
-> > On Wed, 25 Mar 2020 12:09:06 +0100
-> > Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
-> >  =20
-> > > This value indicates when userspace should consider an object
-> > > near to the sensor/device.
-> > >=20
-> > > Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org> =20
+> > From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org>=
+ On
+> > Behalf Of Rohit Sarkar
+> > Sent: Dienstag, 31. M=C3=A4rz 2020 13:48
+> > To: linux-iio@vger.kernel.org
+> > Cc: Bogdan, Dragos <Dragos.Bogdan@analog.com>; Rohit Sarkar
+> > <rohitsarkar5398@gmail.com>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>; Stefan Popa
+> > <stefan.popa@analog.com>; Jonathan Cameron <jic23@kernel.org>; Hartmut
+> > Knaack <knaack.h@gmx.de>; Peter Meerwald-Stadler
+> > <pmeerw@pmeerw.net>; linux-kernel@vger.kernel.org
+> > Subject: [PATCH v2 1/2] iio: imu: adis16400: use
+> > DEFINE_DEBUGFS_ATTRIBUTE instead of DEFINE_SIMPLE_ATTRIBUTE
 > >=20
-> > I'm fine with this.  Note for Rob or other DT people.
+> > debugfs_create_file_unsafe does not protect the fops handed to it
+> > against file removal. DEFINE_DEBUGFS_ATTRIBUTE makes the fops aware of
+> > the file lifetime and thus protects it against removal.
 > >=20
-> > This is a new generic binding hence no vendor prefix. =20
+> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> > ---
+> >  drivers/iio/imu/adis16400.c | 19 ++++++++++---------
+> >  1 file changed, 10 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+> > index cfb1c19eb930..c8fcd40f58c0 100644
+> > --- a/drivers/iio/imu/adis16400.c
+> > +++ b/drivers/iio/imu/adis16400.c
+> > @@ -258,7 +258,7 @@ static int adis16400_show_product_id(void *arg, u64
+> > *val)
+> >=20
+> >  	return 0;
+> >  }
+> > -DEFINE_SIMPLE_ATTRIBUTE(adis16400_product_id_fops,
+> > +DEFINE_DEBUGFS_ATTRIBUTE(adis16400_product_id_fops,
+> >  	adis16400_show_product_id, NULL, "%lld\n");
+> >=20
+> >  static int adis16400_show_flash_count(void *arg, u64 *val)
+> > @@ -275,7 +275,7 @@ static int adis16400_show_flash_count(void *arg, u64
+> > *val)
+> >=20
+> >  	return 0;
+> >  }
+> > -DEFINE_SIMPLE_ATTRIBUTE(adis16400_flash_count_fops,
+> > +DEFINE_DEBUGFS_ATTRIBUTE(adis16400_flash_count_fops,
+> >  	adis16400_show_flash_count, NULL, "%lld\n");
+> >=20
+> >  static int adis16400_debugfs_init(struct iio_dev *indio_dev)
+> > @@ -283,15 +283,16 @@ static int adis16400_debugfs_init(struct iio_dev
+> > *indio_dev)
+> >  	struct adis16400_state *st =3D iio_priv(indio_dev);
+> >=20
+> >  	if (st->variant->flags & ADIS16400_HAS_SERIAL_NUMBER)
+> > -		debugfs_create_file("serial_number", 0400,
+> > -			indio_dev->debugfs_dentry, st,
+> > -			&adis16400_serial_number_fops);
+> > +		debugfs_create_file_unsafe("serial_number", 0400,
+> > +				indio_dev->debugfs_dentry, st,
+> > +				&adis16400_serial_number_fops);
+> >  	if (st->variant->flags & ADIS16400_HAS_PROD_ID)
+> > -		debugfs_create_file("product_id", 0400,
+> > +		debugfs_create_file_unsafe("product_id", 0400,
+> > +				indio_dev->debugfs_dentry, st,
+> > +				&adis16400_product_id_fops);
+> > +	debugfs_create_file_unsafe("flash_count", 0400,
+> >  			indio_dev->debugfs_dentry, st,
+> > -			&adis16400_product_id_fops);
+> > -	debugfs_create_file("flash_count", 0400, indio_dev->debugfs_dentry,
+> > -		st, &adis16400_flash_count_fops);
+> > +			&adis16400_flash_count_fops);
+> >=20
+> >  	return 0;
+> >  } =20
 >=20
-> Then document in a common place.
-
-Ok.=20
-
-I guess we need to create a proximity specific binding file.
-
-Documentation/devicetree/bindings/iio/proximity.yaml
-
-Guido, could you do a v4 adding such a file.  For now I think
-this is pretty much all that is proximity specific.
-
-At somepoint we should convert the subsystem wide iio-bindings.txt
-but not today!
+> Tested-by Nuno S=C3=A1 <nuno.sa@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to try it out.
 
 Thanks,
 
 Jonathan
 
 >=20
-> >=20
-> > I will ideally want review of both the dt patches though
-> > before applying.  As we've missed the merge window anyway
-> > there is no particular rush.
-> >=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >  =20
-> > > ---
-> > >  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml    | 8 ++++++=
-++
-> > >  1 file changed, 8 insertions(+)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4=
-000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> > > index 21ef2eb7a205..ac9e3bb6a505 100644
-> > > --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> > > @@ -25,6 +25,13 @@ properties:
-> > >    reg:
-> > >      maxItems: 1
-> > > =20
-> > > +  near-level: =20
+> > --
+> > 2.23.0.385.gbc12974a89 =20
 >=20
-> Perhaps proximity-near-level instead.
-
-Makes sense.
-
->=20
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Raw proximity values equal or above this level should be
-> > > +      considered 'near' to the device (an object is near to the
-> > > +      sensor).
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > @@ -40,6 +47,7 @@ examples:
-> > >        light-sensor@51 {
-> > >                compatible =3D "vishay,vcnl4200";
-> > >                reg =3D <0x51>;
-> > > +              near-level =3D <220>;
-> > >        };
-> > >    };
-> > >  ... =20
-> >  =20
 

@@ -2,159 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE8119E622
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 17:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76AC319E627
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Apr 2020 17:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbgDDPiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Apr 2020 11:38:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38666 "EHLO mail.kernel.org"
+        id S1726248AbgDDPlU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Apr 2020 11:41:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38930 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbgDDPiG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Apr 2020 11:38:06 -0400
+        id S1726197AbgDDPlU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Apr 2020 11:41:20 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C70F920644;
-        Sat,  4 Apr 2020 15:38:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03E3F20644;
+        Sat,  4 Apr 2020 15:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586014685;
-        bh=016bPs53uTJoZ4UjX+VEtpi7tnVVWRCyC75+6CHq38w=;
+        s=default; t=1586014879;
+        bh=xQ97FhWym7EDNwNowNrGj3fKZzyx50jj+V4vKnarv9o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZWeaYyIdTDQa8MkeF9462u1JpofbFOAicflu7vgoIS9fohUlXtcSFSSPHXLmm1cIP
-         +ue7vUWjxi9UfYxgxVireP7uMbnD4Ik1/hWXXy5eMi6beEF6WR4WQXPzQjzvXoUCHF
-         lv3FHgse9jQ5xGQmaT4katvuOPSyuT2I5/6Blna4=
-Date:   Sat, 4 Apr 2020 16:38:01 +0100
+        b=t5KLwjXlUYVkIFFs3LRMPj/M0Pweqqab4YgvYaqx1Hesrl9qpJwX5rMjwpI1SAXV7
+         fE8g9epwbbZlDeLiCRrPxC/kYbVUh3sFcFCa/ouZ6ksL5rFjpczVsCaPLaBVab2GjX
+         u+ohfrTOGqIxboJkuTI+Wf4mt1vHVh7mTQp2j+Fc=
+Date:   Sat, 4 Apr 2020 16:41:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jimmy Assarsson <jimmyassarsson@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: imu: st_lsm6dsx: Add sensor hub device
- LIS3MDL
-Message-ID: <20200404163801.43e3b094@archlinux>
-In-Reply-To: <20200329104240.230b05a9@archlinux>
-References: <20200328184519.2302703-1-jimmyassarsson@gmail.com>
-        <20200329104240.230b05a9@archlinux>
+To:     =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>
+Subject: Re: [PATCH 1/2] dt-bindings: st_sensors: add st,lis2hh12 compatible
+ entry
+Message-ID: <20200404164115.7644bd28@archlinux>
+In-Reply-To: <20200330141923.280226-1-rvlander@gaetanandre.eu>
+References: <20200330141923.280226-1-rvlander@gaetanandre.eu>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 29 Mar 2020 10:42:40 +0100
-Jonathan Cameron <jic23@jic23.retrosnub.co.uk> wrote:
+On Mon, 30 Mar 2020 16:19:22 +0200
+Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu> wrote:
 
-> On Sat, 28 Mar 2020 19:45:19 +0100
-> Jimmy Assarsson <jimmyassarsson@gmail.com> wrote:
-> 
-> > Add LIS3MDL register map to sensor hub device table.
-> > Tested with LSM6DSM.
-> > 
-> > Signed-off-by: Jimmy Assarsson <jimmyassarsson@gmail.com>  
-> 
-> Please always repost the entire series.  On this occasion I can find
-> patch 1 but sometimes it's not so easy :)
-> 
-> Looks fine to me, but lets' leave it on list for a while longer to
-> see if others wish to comment.
-> 
+> Add LIS2HH12 compatible entry.
+>=20
+> Signed-off-by: Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu>
 Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+the autobuilders to ignore this patch (and build the next one!)
+
+At somepoint we should look to convert this binding over to yaml.
 
 Thanks,
 
 Jonathan
 
-> > ---
-> > Changes in v2:
-> >   - Use ST_SENSORS_DEFAULT_WAI_ADDRESS
-> > 
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 64 ++++++++++++++++++++
-> >  1 file changed, 64 insertions(+)
-> > 
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > index 95ddd19d1aa7..3b983e0cc5ce 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > @@ -28,6 +28,7 @@
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/bitfield.h>
-> >  
-> > +#include <linux/iio/common/st_sensors.h>
-> >  #include "st_lsm6dsx.h"
-> >  
-> >  #define ST_LSM6DSX_SLV_ADDR(n, base)		((base) + (n) * 3)
-> > @@ -88,6 +89,69 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
-> >  			.len = 6,
-> >  		},
-> >  	},
-> > +	/* LIS3MDL */
-> > +	{
-> > +		.i2c_addr = { 0x1e },
-> > +		.wai = {
-> > +			.addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-> > +			.val = 0x3d,
-> > +		},
-> > +		.id = ST_LSM6DSX_ID_MAGN,
-> > +		.odr_table = {
-> > +			.reg = {
-> > +				.addr = 0x20,
-> > +				.mask = GENMASK(4, 2),
-> > +			},
-> > +			.odr_avl[0] = {  1000, 0x0 },
-> > +			.odr_avl[1] = {  2000, 0x1 },
-> > +			.odr_avl[2] = {  3000, 0x2 },
-> > +			.odr_avl[3] = {  5000, 0x3 },
-> > +			.odr_avl[4] = { 10000, 0x4 },
-> > +			.odr_avl[5] = { 20000, 0x5 },
-> > +			.odr_avl[6] = { 40000, 0x6 },
-> > +			.odr_avl[7] = { 80000, 0x7 },
-> > +			.odr_len = 8,
-> > +		},
-> > +		.fs_table = {
-> > +			.reg = {
-> > +				.addr = 0x21,
-> > +				.mask = GENMASK(6, 5),
-> > +			},
-> > +			.fs_avl[0] = {
-> > +				.gain = 146,
-> > +				.val = 0x00,
-> > +			}, /* 4000 uG/LSB */
-> > +			.fs_avl[1] = {
-> > +				.gain = 292,
-> > +				.val = 0x01,
-> > +			}, /* 8000 uG/LSB */
-> > +			.fs_avl[2] = {
-> > +				.gain = 438,
-> > +				.val = 0x02,
-> > +			}, /* 12000 uG/LSB */
-> > +			.fs_avl[3] = {
-> > +				.gain = 584,
-> > +				.val = 0x03,
-> > +			}, /* 16000 uG/LSB */
-> > +			.fs_len = 4,
-> > +		},
-> > +		.pwr_table = {
-> > +			.reg = {
-> > +				.addr = 0x22,
-> > +				.mask = GENMASK(1, 0),
-> > +			},
-> > +			.off_val = 0x2,
-> > +			.on_val = 0x0,
-> > +		},
-> > +		.bdu = {
-> > +			.addr = 0x24,
-> > +			.mask = BIT(6),
-> > +		},
-> > +		.out = {
-> > +			.addr = 0x28,
-> > +			.len = 6,
-> > +		},
-> > +	},
-> >  };
-> >  
-> >  static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)  
-> 
+> ---
+>  Documentation/devicetree/bindings/iio/st-sensors.txt | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/st-sensors.txt b/Docum=
+entation/devicetree/bindings/iio/st-sensors.txt
+> index 0ef64a444479..3213599c5071 100644
+> --- a/Documentation/devicetree/bindings/iio/st-sensors.txt
+> +++ b/Documentation/devicetree/bindings/iio/st-sensors.txt
+> @@ -50,6 +50,7 @@ Accelerometers:
+>  - st,lis3dhh
+>  - st,lis3de
+>  - st,lis2de12
+> +- st,lis2hh12
+> =20
+>  Gyroscopes:
+>  - st,l3g4200d-gyro
+>=20
+> base-commit: b723e9431b77976b83efb90178dfcada3405321c
 

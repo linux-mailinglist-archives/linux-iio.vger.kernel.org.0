@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C015219EBAC
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 15:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D584319EBA8
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 15:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726609AbgDENun (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 09:50:43 -0400
-Received: from honk.sigxcpu.org ([24.134.29.49]:44838 "EHLO honk.sigxcpu.org"
+        id S1727191AbgDENul (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 09:50:41 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:44798 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727199AbgDENun (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 09:50:43 -0400
+        id S1726609AbgDENul (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 09:50:41 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 7CA19FB04;
-        Sun,  5 Apr 2020 15:50:39 +0200 (CEST)
+        by honk.sigxcpu.org (Postfix) with ESMTP id 7A411FB02;
+        Sun,  5 Apr 2020 15:50:37 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Sg_tHY6aIAbQ; Sun,  5 Apr 2020 15:50:37 +0200 (CEST)
+        with ESMTP id j5w2Lyh6w43K; Sun,  5 Apr 2020 15:50:34 +0200 (CEST)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id EF26C414C6; Sun,  5 Apr 2020 15:50:32 +0200 (CEST)
+        id 01863414D8; Sun,  5 Apr 2020 15:50:32 +0200 (CEST)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Tomas Novotny <tomas@novotny.cz>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -34,9 +34,9 @@ To:     Tomas Novotny <tomas@novotny.cz>,
         devicetree@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Nishant Malpani <nish.malpani25@gmail.com>
-Subject: [PATCH v4 1/5] dt-bindings: iio: vcnl4000: convert bindings to YAML format
-Date:   Sun,  5 Apr 2020 15:50:28 +0200
-Message-Id: <fa148ef5a3e27f7acc0a675217524453ca010575.1586094535.git.agx@sigxcpu.org>
+Subject: [PATCH v4 2/5] dt-bindings: iio: Introduce common properties for iio sensors
+Date:   Sun,  5 Apr 2020 15:50:29 +0200
+Message-Id: <8b91f0b7fa76ca4b2f3cdc251411829f71f8d810.1586094535.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1586094535.git.agx@sigxcpu.org>
 References: <cover.1586094535.git.agx@sigxcpu.org>
@@ -48,97 +48,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the vcnl4000 device tree bindings to the new YAML format.
+Introduce a file for common properties of iio sensors. So far this
+contains the new proximity-near-level property for proximity sensors
+that indicates when an object should be considered near.
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../bindings/iio/light/vcnl4000.txt           | 24 ----------
- .../bindings/iio/light/vishay,vcnl4000.yaml   | 45 +++++++++++++++++++
- 2 files changed, 45 insertions(+), 24 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4000.txt
- create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+ .../devicetree/bindings/iio/common.yaml       | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/common.yaml
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt b/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-deleted file mode 100644
-index 955af4555c90..000000000000
---- a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-+++ /dev/null
-@@ -1,24 +0,0 @@
--VISHAY VCNL4000 -  Ambient Light and proximity sensor
--
--This driver supports the VCNL4000/10/20/40 and VCNL4200 chips
--
--Required properties:
--
--	-compatible: must be one of :
--        vishay,vcnl4000
--        vishay,vcnl4010
--        vishay,vcnl4020
--        vishay,vcnl4040
--        vishay,vcnl4200
--
--	-reg: I2C address of the sensor, should be one from below based on the model:
--        0x13
--        0x51
--        0x60
--
--Example:
--
--light-sensor@51 {
--	compatible = "vishay,vcnl4200";
--	reg = <0x51>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+diff --git a/Documentation/devicetree/bindings/iio/common.yaml b/Documentation/devicetree/bindings/iio/common.yaml
 new file mode 100644
-index 000000000000..21ef2eb7a205
+index 000000000000..97ffcb77043d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-@@ -0,0 +1,45 @@
++++ b/Documentation/devicetree/bindings/iio/common.yaml
+@@ -0,0 +1,35 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/light/vishay,vcnl4000.yaml#
++$id: http://devicetree.org/schemas/iio/common.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: VISHAY VCNL4000 ambient light and proximity sensor
++title: Common properties for iio sensors
 +
 +maintainers:
-+  - Peter Meerwald <pmeerw@pmeerw.net>
++  - Jonathan Cameron <jic23@kernel.org>
++  - Guido Günther <agx@sigxcpu.org>
 +
 +description: |
-+  Ambient light sensing with proximity detection over an i2c
-+  interface.
++  This document defines device tree properties common to several iio
++  sensors. It doesn't constitue a device tree binding specification by itself but
++  is meant to be referenced by device tree bindings.
++
++  When referenced from sensor tree bindings the properties defined in this
++  document are defined as follows. The sensor tree bindings are responsible for
++  defining whether each property is required or optional.
 +
 +properties:
-+  compatible:
-+    enum:
-+      - vishay,vcnl4000
-+      - vishay,vcnl4010
-+      - vishay,vcnl4020
-+      - vishay,vcnl4040
-+      - vishay,vcnl4200
++  proximity-near-level:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      For proximity sensors whether an object can be considered near to the
++      device depends on parameters like sensor position, covering glass and
++      aperture. This value gives an indication to userspace for which
++      sensor readings this is the case.
 +
-+  reg:
-+    maxItems: 1
++      Raw proximity values equal or above this level should be
++      considered 'near' to the device (an object is near to the
++      sensor).
 +
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+- |
-+  i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      light-sensor@51 {
-+              compatible = "vishay,vcnl4200";
-+              reg = <0x51>;
-+      };
-+  };
 +...
 -- 
 2.23.0

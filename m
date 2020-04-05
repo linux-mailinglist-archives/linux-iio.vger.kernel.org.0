@@ -2,161 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A34D19EB32
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E302719EB34
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbgDEMYa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 08:24:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56638 "EHLO mail.kernel.org"
+        id S1726716AbgDEM0H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 08:26:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59574 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726574AbgDEMYa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 08:24:30 -0400
+        id S1726388AbgDEM0G (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 08:26:06 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF03820672;
-        Sun,  5 Apr 2020 12:24:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 353AB20672;
+        Sun,  5 Apr 2020 12:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586089469;
-        bh=WeElrOdEljZlX3sc42YJnl4iy1cnJgpEOkV3Pg6ad8I=;
+        s=default; t=1586089566;
+        bh=w9QUzAecpFqcM0HgC1NsocyonUjRV40NnLOep//tZG0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p9o1P2WohfFELD2MsyPm1YT8iR7RGlnkxdleWPfVoDcG9WnHjcRw7pG/FEpQ7AT8c
-         /b8kqVTl2gGpFHEWW4xBpYaLGMCO015242O8AzOblEwJk4HUQxMfqXSFQIrwSzJ2mM
-         xihFj11qC4nilsuPeNNmCIzaqmcb0M7Z2XMlbMBw=
-Date:   Sun, 5 Apr 2020 13:24:25 +0100
+        b=pWp4ILFe5FLeyttD8+gfqR5qG/J4T/cjQibOq08fu3kL3mRUq8h6URVOVDVO+Z/dv
+         XP+bxSFN01mztftc2+j/Zk4MNQZSunkQQUe50VSyF6807y4yaUaVAXFEsCyHfT8Ne0
+         IjET8af7kEYvJpGSbYxFpBKwzDsjyRfekkHLXVQ0=
+Date:   Sun, 5 Apr 2020 13:26:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>
-Cc:     <linux-iio@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        Bastien Nocera <hadess@hadess.net>
-Subject: Re: [PATCH] iio: st_sensors: make scale channels also shared by
- type
-Message-ID: <20200405132425.2432bca9@archlinux>
-In-Reply-To: <20200405115139.GA189531@ADVI0116>
-References: <20200330145920.441528-1-rvlander@gaetanandre.eu>
-        <20200405110217.0f6a38d0@archlinux>
-        <20200405115139.GA189531@ADVI0116>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: xilinx-xadc: Fix ADC-B powerdown
+Message-ID: <20200405132602.65a7a480@archlinux>
+In-Reply-To: <55c93588-2242-2ccb-2d8e-50cc66de28f5@metafoo.de>
+References: <20200403132717.24682-1-lars@metafoo.de>
+        <20200405131039.37ae5165@archlinux>
+        <55c93588-2242-2ccb-2d8e-50cc66de28f5@metafoo.de>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 5 Apr 2020 13:51:39 +0200
-Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu> wrote:
+On Sun, 5 Apr 2020 14:13:32 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> On Sun, Apr 05, 2020 at 11:02:17AM +0100, Jonathan Cameron wrote:
-> > On Mon, 30 Mar 2020 16:59:20 +0200
-> > Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu> wrote:
-> >  =20
-> > > Scale channels are available by axis. For example for accelerometers,
-> > > in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are available.
-> > >=20
-> > > However, they should be shared by type as documented in
-> > > Documentation/ABI/testing/sysfs-bus-iio.
-> > >=20
-> > > For each sensor (acceleros, gyros and magnetos) only one value is spe=
-cified
-> > > for all the axes.
-> > >=20
-> > > Existing, by axis, entries are preserved in order to to leave the old=
- ABI
-> > > untouched. =20
-> > Hi Ga=C3=ABtan,
-> >=20
-> > Thanks for this.  Whilst I agree the ideal ABI would be to have just the
-> > shared version userspace should cope with the current version anyway as
-> > it would be the right option if for example the scale of x and y are co=
-ntrolled
-> > by one register field and z by another (this used to be common for acce=
-lerometers)
-> >=20
-> > Any userspace software using this will have to assign a precedence to t=
-he
-> > two files that result and the most likely option is more specific first=
- meaning
-> > the shared version is unused.
-> >=20
-> > Hence I'd argue we aren't broke (just non ideal) and adding the additio=
-nal
-> > interface just confuses matters.  Hence I would rather leave things how=
- they
-> > currently are.  Do we have some userspace that is broken by this being =
-less
-> > than ideal?
-> >  =20
-> Hi Jonathan,
->=20
-> Thanks for taking time to answer.
->=20
-> I don't have any point of view regarding what is better.
->=20
-> What I know is that iio-sensor-proxy [1] only looks for a common scale.
-> Hence, it won't work with ST sensors as is.
-
-Ah.  Cc'd Bastien for that.
-
->=20
-> I could either do this patch or patch iio-sensor-proxy. What decided me
-> is that all ST sensors, if I am correct, use only one scale value for all=
- axis.
->=20
-> If things are to be kept as is, then iio-sensor-proxy should be patched.
-Hmm. Even if we patched iio-sensor-proxy (and we probably should to support
-devices that actually have different scales), we'd still have the normal
-problem of people not upgrading their stacks terribly often.
-
-Lets see what Bastien says, but (with the addition of a comment to say why
-we are doing both in the code) I'm fine taking this patch given we have
-known userspace issue without it.
-
->=20
-> Also, note that currently in_acceleration_scale_{x, y, z} don't seem to
-> be documented.
-
-Good spot.  We should tidy that up.  Seems in_magn_x_scale is there, but
-not the in_accel_x_scale etc.  Likely some of the others are missing as well
-but we never noticed.
-
-Thanks
+> On 4/5/20 2:10 PM, Jonathan Cameron wrote:
+> > On Fri,  3 Apr 2020 15:27:13 +0200
+> > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> >  
+> >> The check for shutting down the second ADC is inverted. This causes it to
+> >> be powered down when it should be enabled. As a result channels that are
+> >> supposed to be handled by the second ADC return invalid conversion results.
+> >>
+> >> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
+> > Fixes tag?  Definitely sounds like something we should be backporting!  
+> 
+> Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
+For all of them? (just checking)
 
 Jonathan
 
->=20
-> Thanks,
->=20
-> Ga=C3=ABtan
->=20
-> [1] iio-sensor-proxy: https://gitlab.freedesktop.org/hadess/iio-sensor-pr=
-oxy/
->=20
-> > Thanks
-> >=20
+> 
+> >
 > > Jonathan
-> >  =20
-> > >=20
-> > > Signed-off-by: Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu>
-> > > ---
-> > >  include/linux/iio/common/st_sensors.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >=20
-> > > diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/ii=
-o/common/st_sensors.h
-> > > index 33e939977444..f31e309f0fd1 100644
-> > > --- a/include/linux/iio/common/st_sensors.h
-> > > +++ b/include/linux/iio/common/st_sensors.h
-> > > @@ -52,6 +52,7 @@
-> > >  	.type =3D device_type, \
-> > >  	.modified =3D mod, \
-> > >  	.info_mask_separate =3D mask, \
-> > > +	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE), \
-> > >  	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> > >  	.scan_index =3D index, \
-> > >  	.channel2 =3D ch2, \
-> > >=20
-> > > base-commit: b723e9431b77976b83efb90178dfcada3405321c =20
-> >  =20
+> >  
+> >> ---
+> >>   drivers/iio/adc/xilinx-xadc-core.c | 5 +++--
+> >>   1 file changed, 3 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+> >> index 2d6505a66511..4fcf1729341f 100644
+> >> --- a/drivers/iio/adc/xilinx-xadc-core.c
+> >> +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> >> @@ -722,13 +722,14 @@ static int xadc_power_adc_b(struct xadc *xadc, unsigned int seq_mode)
+> >>   {
+> >>   	uint16_t val;
+> >>   
+> >> +	/* Powerdown the ADC-B when it is not needed. */
+> >>   	switch (seq_mode) {
+> >>   	case XADC_CONF1_SEQ_SIMULTANEOUS:
+> >>   	case XADC_CONF1_SEQ_INDEPENDENT:
+> >> -		val = XADC_CONF2_PD_ADC_B;
+> >> +		val = 0;
+> >>   		break;
+> >>   	default:
+> >> -		val = 0;
+> >> +		val = XADC_CONF2_PD_ADC_B;
+> >>   		break;
+> >>   	}
+> >>     
+> 
+> 
 

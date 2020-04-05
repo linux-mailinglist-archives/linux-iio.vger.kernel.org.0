@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF98A19EBAE
+	by mail.lfdr.de (Postfix) with ESMTP id 40E3B19EBAD
 	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 15:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbgDENuo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 09:50:44 -0400
-Received: from honk.sigxcpu.org ([24.134.29.49]:44858 "EHLO honk.sigxcpu.org"
+        id S1727329AbgDENun (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 09:50:43 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:44876 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727242AbgDENum (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 09:50:42 -0400
+        id S1727307AbgDENun (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 09:50:43 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 433A9FB05;
-        Sun,  5 Apr 2020 15:50:40 +0200 (CEST)
+        by honk.sigxcpu.org (Postfix) with ESMTP id 3503EFB06;
+        Sun,  5 Apr 2020 15:50:41 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yj7JZvhU6cgW; Sun,  5 Apr 2020 15:50:38 +0200 (CEST)
+        with ESMTP id CZAg9vPJ8Wck; Sun,  5 Apr 2020 15:50:39 +0200 (CEST)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 13127414DB; Sun,  5 Apr 2020 15:50:33 +0200 (CEST)
+        id 1D09A414DC; Sun,  5 Apr 2020 15:50:33 +0200 (CEST)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Tomas Novotny <tomas@novotny.cz>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -34,9 +34,9 @@ To:     Tomas Novotny <tomas@novotny.cz>,
         devicetree@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Nishant Malpani <nish.malpani25@gmail.com>
-Subject: [PATCH v4 4/5] iio: vcnl4000: Export near level property for proximity sensor
-Date:   Sun,  5 Apr 2020 15:50:31 +0200
-Message-Id: <cfd5373665c4d314764c4dbe20b55de14fb6ba34.1586094535.git.agx@sigxcpu.org>
+Subject: [PATCH v4 5/5] Documentation: ABI: document IIO in_proximity_nearlevel file
+Date:   Sun,  5 Apr 2020 15:50:32 +0200
+Message-Id: <4d3d41e42721128916640d097cc4dbf7b19fb525.1586094535.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1586094535.git.agx@sigxcpu.org>
 References: <cover.1586094535.git.agx@sigxcpu.org>
@@ -48,75 +48,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When an object can be considered close to the sensor is hardware
-dependent. Allowing to configure the property via device tree
-allows to configure this device specific value.
-
-This is useful for e.g. iio-sensor-proxy to indicate to userspace
-if an object is close to the sensor.
+The vcnl4000 IIO driver introduced a new attribute
+"in_proximity_nearlevel".  This adds it to the list of documented ABI
+for sysfs-bus-iio.
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- drivers/iio/light/vcnl4000.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio-proximity | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-proximity
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index ec803c1e81df..985cc39ede8e 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -83,6 +83,7 @@ struct vcnl4000_data {
- 	struct mutex vcnl4000_lock;
- 	struct vcnl4200_channel vcnl4200_al;
- 	struct vcnl4200_channel vcnl4200_ps;
-+	uint32_t near_level;
- };
- 
- struct vcnl4000_chip_spec {
-@@ -343,6 +344,25 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
- 	},
- };
- 
-+static ssize_t vcnl4000_read_near_level(struct iio_dev *indio_dev,
-+					uintptr_t priv,
-+					const struct iio_chan_spec *chan,
-+					char *buf)
-+{
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+
-+	return sprintf(buf, "%u\n", data->near_level);
-+}
-+
-+static const struct iio_chan_spec_ext_info vcnl4000_ext_info[] = {
-+	{
-+		.name = "nearlevel",
-+		.shared = IIO_SEPARATE,
-+		.read = vcnl4000_read_near_level,
-+	},
-+	{ /* sentinel */ }
-+};
-+
- static const struct iio_chan_spec vcnl4000_channels[] = {
- 	{
- 		.type = IIO_LIGHT,
-@@ -351,6 +371,7 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
- 	}, {
- 		.type = IIO_PROXIMITY,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.ext_info = vcnl4000_ext_info,
- 	}
- };
- 
-@@ -440,6 +461,10 @@ static int vcnl4000_probe(struct i2c_client *client,
- 	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
- 		data->chip_spec->prod, data->rev);
- 
-+	if (device_property_read_u32(&client->dev, "proximity-near-level",
-+				     &data->near_level))
-+		data->near_level = 0;
-+
- 	indio_dev->dev.parent = &client->dev;
- 	indio_dev->info = &vcnl4000_info;
- 	indio_dev->channels = vcnl4000_channels;
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-proximity b/Documentation/ABI/testing/sysfs-bus-iio-proximity
+new file mode 100644
+index 000000000000..2172f3bb9c64
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-bus-iio-proximity
+@@ -0,0 +1,10 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_nearlevel
++Date:		March 2020
++KernelVersion:	5.7
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Near level for proximity sensors. This is a single integer
++		value that tells user space when an object should be
++		considered close to the device. If the value read from the
++		sensor is above or equal to the value in this file an object
++		should typically be considered near.
 -- 
 2.23.0
 

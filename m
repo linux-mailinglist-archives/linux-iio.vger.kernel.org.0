@@ -2,125 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7596D19EB03
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 13:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B75E19EB05
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 13:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726579AbgDELvp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 07:51:45 -0400
-Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2]:43033 "EHLO
-        smtpout1.mo529.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726641AbgDELvo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Apr 2020 07:51:44 -0400
-Received: from DAG2EX1.mxp2.local (unknown [10.108.20.177])
-        by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 650082D5D796;
-        Sun,  5 Apr 2020 13:51:41 +0200 (CEST)
-Received: from gaetanandre.eu (37.59.142.106) by DAG2EX1.mxp2.local
- (172.16.2.3) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Sun, 5 Apr 2020
- 13:51:40 +0200
-Date:   Sun, 5 Apr 2020 13:51:39 +0200
-From:   =?iso-8859-1?Q?Ga=EBtan_Andr=E9?= <rvlander@gaetanandre.eu>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH] iio: st_sensors: make scale channels also shared by type
-Message-ID: <20200405115139.GA189531@ADVI0116>
-References: <20200330145920.441528-1-rvlander@gaetanandre.eu>
- <20200405110217.0f6a38d0@archlinux>
+        id S1726554AbgDELwY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 07:52:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60566 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726541AbgDELwY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 07:52:24 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CEBBE206C3;
+        Sun,  5 Apr 2020 11:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586087543;
+        bh=Ow1tfwRfxDT3c5hBboE3+C49CQ0nIRzVWNb00H3h5S4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=H4c6RH6VBFGTY8tfJXGV3v2pS34vR7m6reKOcfGDfNW3EeLrWzsGiGckJGkmWZc4j
+         Sn/jnnuWfvUTw2l/hZ2iNMhGkq2a/z1HGiErWBWcu8yhOWJ0rr/ZZvO+BM+d21tmgp
+         VNklo8jiD/ftshIKya7xsP8GmkHR+cdyn0XbOyEY=
+Date:   Sun, 5 Apr 2020 12:52:19 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: dma-buffer: Cleanup buffer.h/buffer_impl.h
+ includes
+Message-ID: <20200405125219.5cbe63c8@archlinux>
+In-Reply-To: <490a1fe0296f3ea92c0419c2887cb02b615af572.camel@analog.com>
+References: <20200401165706.30416-1-lars@metafoo.de>
+        <490a1fe0296f3ea92c0419c2887cb02b615af572.camel@analog.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200405110217.0f6a38d0@archlinux>
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG8EX1.mxp2.local (172.16.2.15) To DAG2EX1.mxp2.local
- (172.16.2.3)
-X-Ovh-Tracer-GUID: d4338d2e-e90b-4e15-ac67-f41ba5ea7f75
-X-Ovh-Tracer-Id: 14289077196965495005
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedruddugdeghecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfhfgggtugfgjghisehtkeertddttddunecuhfhrohhmpefirgotthgrnhgptehnughrrocuoehrvhhlrghnuggvrhesghgrvghtrghnrghnughrvgdrvghuqeenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopefftefivdfgigdurdhmgihpvddrlhhotggrlhdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprhhvlhgrnhguvghrsehgrggvthgrnhgrnhgurhgvrdgvuhdprhgtphhtthhopeimphhoshhtmhgrrhhkvghtohhssdhuphhsthhrvggrmhhinhhgsehlihhsthhsrdhsrhdrhhht
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 05, 2020 at 11:02:17AM +0100, Jonathan Cameron wrote:
-> On Mon, 30 Mar 2020 16:59:20 +0200
-> Gaëtan André <rvlander@gaetanandre.eu> wrote:
-> 
-> > Scale channels are available by axis. For example for accelerometers,
-> > in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are available.
+On Thu, 2 Apr 2020 15:13:12 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+
+> On Wed, 2020-04-01 at 18:57 +0200, Lars-Peter Clausen wrote:
+> > [External]
 > > 
-> > However, they should be shared by type as documented in
-> > Documentation/ABI/testing/sysfs-bus-iio.
+> > The IIO DMA buffer is a DMA buffer implementation. As such it should
+> > include buffer_impl.h rather than buffer.h.
 > > 
-> > For each sensor (acceleros, gyros and magnetos) only one value is specified
-> > for all the axes.
+> > The include to buffer.h in buffer-dma.h should be buffer_impl.h so it has
+> > access to the struct iio_buffer definition. The code currently only works
+> > because all places that use buffer-dma.h include buffer_impl.h before it.
 > > 
-> > Existing, by axis, entries are preserved in order to to leave the old ABI
-> > untouched.
-> Hi Gaëtan,
+> > The include to buffer.h in industrialio-buffer-dma.c  can be removed since
+> > those file does not reference any of buffer consumer functions.
+> >   
 > 
-> Thanks for this.  Whilst I agree the ideal ABI would be to have just the
-> shared version userspace should cope with the current version anyway as
-> it would be the right option if for example the scale of x and y are controlled
-> by one register field and z by another (this used to be common for accelerometers)
-> 
-> Any userspace software using this will have to assign a precedence to the
-> two files that result and the most likely option is more specific first meaning
-> the shared version is unused.
-> 
-> Hence I'd argue we aren't broke (just non ideal) and adding the additional
-> interface just confuses matters.  Hence I would rather leave things how they
-> currently are.  Do we have some userspace that is broken by this being less
-> than ideal?
-> 
-Hi Jonathan,
-
-Thanks for taking time to answer.
-
-I don't have any point of view regarding what is better.
-
-What I know is that iio-sensor-proxy [1] only looks for a common scale.
-Hence, it won't work with ST sensors as is.
-
-I could either do this patch or patch iio-sensor-proxy. What decided me
-is that all ST sensors, if I am correct, use only one scale value for all axis.
-
-If things are to be kept as is, then iio-sensor-proxy should be patched.
-
-Also, note that currently in_acceleration_scale_{x, y, z} don't seem to
-be documented.
+> Tested-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to play with it.
 
 Thanks,
 
-Gaëtan
+Jonathan
 
-[1] iio-sensor-proxy: https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
-
-> Thanks
 > 
-> Jonathan
-> 
-> > 
-> > Signed-off-by: Gaëtan André <rvlander@gaetanandre.eu>
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 > > ---
-> >  include/linux/iio/common/st_sensors.h | 1 +
-> >  1 file changed, 1 insertion(+)
+> > Changes since v1:
+> > 	* Don't remove buffer.h include in buffer-dma.h since it is needed
+> > 	  after all.
+> > ---
+> >  drivers/iio/buffer/industrialio-buffer-dma.c | 1 -
+> >  include/linux/iio/buffer-dma.h               | 2 +-
+> >  2 files changed, 1 insertion(+), 2 deletions(-)
 > > 
-> > diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
-> > index 33e939977444..f31e309f0fd1 100644
-> > --- a/include/linux/iio/common/st_sensors.h
-> > +++ b/include/linux/iio/common/st_sensors.h
-> > @@ -52,6 +52,7 @@
-> >  	.type = device_type, \
-> >  	.modified = mod, \
-> >  	.info_mask_separate = mask, \
-> > +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-> >  	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> >  	.scan_index = index, \
-> >  	.channel2 = ch2, \
-> > 
-> > base-commit: b723e9431b77976b83efb90178dfcada3405321c
-> 
+> > diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c
+> > b/drivers/iio/buffer/industrialio-buffer-dma.c
+> > index a74bd9c0587c..d348af8b9705 100644
+> > --- a/drivers/iio/buffer/industrialio-buffer-dma.c
+> > +++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+> > @@ -12,7 +12,6 @@
+> >  #include <linux/mutex.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/poll.h>
+> > -#include <linux/iio/buffer.h>
+> >  #include <linux/iio/buffer_impl.h>
+> >  #include <linux/iio/buffer-dma.h>
+> >  #include <linux/dma-mapping.h>
+> > diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
+> > index 016d8a068353..ff15c61bf319 100644
+> > --- a/include/linux/iio/buffer-dma.h
+> > +++ b/include/linux/iio/buffer-dma.h
+> > @@ -11,7 +11,7 @@
+> >  #include <linux/kref.h>
+> >  #include <linux/spinlock.h>
+> >  #include <linux/mutex.h>
+> > -#include <linux/iio/buffer.h>
+> > +#include <linux/iio/buffer_impl.h>
+> >  
+> >  struct iio_dma_buffer_queue;
+> >  struct iio_dma_buffer_ops;  
+

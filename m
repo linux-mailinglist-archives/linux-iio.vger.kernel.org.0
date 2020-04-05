@@ -2,101 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D655219EB21
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E3019EB24
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726587AbgDEMNg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 08:13:36 -0400
-Received: from www381.your-server.de ([78.46.137.84]:48156 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726541AbgDEMNf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Apr 2020 08:13:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=682+EXlTpEEqAjYTEZEEx959VaPq1DnUP0GqLBEVGTY=; b=kRvWuVnmCzTtd1S5nVevss0OFy
-        J1885eAMoIBgvwFBluFE2R5Mjs4o844FbYg/BIDApR5gCTSQIR+VQQ59iWGPklMAQOXTQuNcNhLNr
-        hbXgUaQMV0szIsbIcVOEek4k28cxW7Pl8CrURSv0ynxXJKtFXkgAeB+p1YhKBTejoYVJ8zt/Jq/6S
-        SO3Jq7WY5ZZKyp4ZeJoCf/unjnnQXeek/PKR7ZvKRlZl3fCSDF/BqjOEfXXjzDPXuoQlfXGAlD9ye
-        aiutL6lgkE8X26P626n2oZfnmhNI34VA3kNNOEizaDznF2Z6e+GFtBL65S5I0Rh5+znlz+Esg0kGJ
-        H5fGtvTQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jL49d-0004HW-Qn; Sun, 05 Apr 2020 14:13:33 +0200
-Received: from [82.135.79.250] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jL49d-000GgM-HD; Sun, 05 Apr 2020 14:13:33 +0200
-Subject: Re: [PATCH 1/5] iio: xilinx-xadc: Fix ADC-B powerdown
-To:     Jonathan Cameron <jic23@kernel.org>
+        id S1726669AbgDEMNx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 08:13:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42928 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726541AbgDEMNw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 08:13:52 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B7511206B8;
+        Sun,  5 Apr 2020 12:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586088832;
+        bh=hqxypv1/soNwaZHOaGwg17k+2Dmj89e4t/m2X6dJ+Ao=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dfzbippEDy7Y+TEloAoQrly5ARmQ3D3WompcfDU9hKiQo2fSaigZUIuTIYkDEM6IH
+         Iz571enQ2Mzf93OTX+JPncuKEheeK/l1iU9K4khJaIbIc7lPz/UModDQVLNxJKZQhg
+         XczUqRLoI1kOvc8Qwo14foqqaZ8sef+LZhFD8FTs=
+Date:   Sun, 5 Apr 2020 13:13:48 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
+Subject: Re: [PATCH 3/5] iio: xilinx-xadc: Fix sequencer configuration for
+ aux channels in simultaneous mode
+Message-ID: <20200405131348.6eb332af@archlinux>
+In-Reply-To: <20200403132717.24682-3-lars@metafoo.de>
 References: <20200403132717.24682-1-lars@metafoo.de>
- <20200405131039.37ae5165@archlinux>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <55c93588-2242-2ccb-2d8e-50cc66de28f5@metafoo.de>
-Date:   Sun, 5 Apr 2020 14:13:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        <20200403132717.24682-3-lars@metafoo.de>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200405131039.37ae5165@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25772/Sat Apr  4 14:56:57 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/5/20 2:10 PM, Jonathan Cameron wrote:
-> On Fri,  3 Apr 2020 15:27:13 +0200
-> Lars-Peter Clausen <lars@metafoo.de> wrote:
->
->> The check for shutting down the second ADC is inverted. This causes it to
->> be powered down when it should be enabled. As a result channels that are
->> supposed to be handled by the second ADC return invalid conversion results.
->>
->> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Fixes tag?  Definitely sounds like something we should be backporting!
+On Fri,  3 Apr 2020 15:27:15 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
+> The XADC has two internal ADCs. Depending on the mode it is operating in
+> either one or both of them are used. The device manual calls this
+> continuous (one ADC) and simultaneous (both ADCs) mode.
+> 
+> The meaning of the sequencing register for the aux channels changes
+> depending on the mode.
+> 
+> In continuous mode each bit corresponds to one of the 16 aux channels. And
+> the single ADC will convert them one by one in order.
+> 
+> In simultaneous mode the aux channels are split into two groups the first 8
+> channels are assigned to the first ADC and the other 8 channels to the
+> second ADC. The upper 8 bits of the sequencing register are unused and the
+> lower 8 bits control both ADCs. This means a bit needs to be set if either
+> the corresponding channel from the first group or the second group (or
+> both) are set.
+> 
+> Currently the driver does not have the special handling required for
+> simultaneous mode. Add it.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 
->
-> Jonathan
->
->> ---
->>   drivers/iio/adc/xilinx-xadc-core.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
->> index 2d6505a66511..4fcf1729341f 100644
->> --- a/drivers/iio/adc/xilinx-xadc-core.c
->> +++ b/drivers/iio/adc/xilinx-xadc-core.c
->> @@ -722,13 +722,14 @@ static int xadc_power_adc_b(struct xadc *xadc, unsigned int seq_mode)
->>   {
->>   	uint16_t val;
->>   
->> +	/* Powerdown the ADC-B when it is not needed. */
->>   	switch (seq_mode) {
->>   	case XADC_CONF1_SEQ_SIMULTANEOUS:
->>   	case XADC_CONF1_SEQ_INDEPENDENT:
->> -		val = XADC_CONF2_PD_ADC_B;
->> +		val = 0;
->>   		break;
->>   	default:
->> -		val = 0;
->> +		val = XADC_CONF2_PD_ADC_B;
->>   		break;
->>   	}
->>   
+Looks fine, but sounds like a fix, so when was the problem introduced?
 
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/xilinx-xadc-core.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+> index 04a2a609ced4..4acababda4d5 100644
+> --- a/drivers/iio/adc/xilinx-xadc-core.c
+> +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> @@ -798,6 +798,16 @@ static int xadc_preenable(struct iio_dev *indio_dev)
+>  	if (ret)
+>  		goto err;
+>  
+> +	/*
+> +	 * In simultaneous mode the upper and lower aux channels are samples at
+> +	 * the same time. In this mode the upper 8 bits in the sequencer
+> +	 * register are don't care and the lower 8 bits control two channels
+> +	 * each. As such we must set the bit if either the channel in the lower
+> +	 * group or the upper group is enabled.
+> +	 */
+> +	if (seq_mode == XADC_CONF1_SEQ_SIMULTANEOUS)
+> +		scan_mask = ((scan_mask >> 8) | scan_mask) & 0xff0000;
+> +
+>  	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(1), scan_mask >> 16);
+>  	if (ret)
+>  		goto err;
 

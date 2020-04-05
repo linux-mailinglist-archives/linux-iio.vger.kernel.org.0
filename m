@@ -2,135 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ACCC19EA90
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 12:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA89B19EA9A
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 12:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgDEKtu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 06:49:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53606 "EHLO mail.kernel.org"
+        id S1726410AbgDEKxq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 06:53:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54538 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726388AbgDEKtu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 06:49:50 -0400
+        id S1726388AbgDEKxq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 06:53:46 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 206C3206F7;
-        Sun,  5 Apr 2020 10:49:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B55A4206B8;
+        Sun,  5 Apr 2020 10:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586083789;
-        bh=/VZ3KmIgEC6efHdxH1vT5MP77jl2r8v/FZq5ipfD3Uw=;
+        s=default; t=1586084025;
+        bh=6Y5VeSBeh8aYiph9RvH1WUYUtJk/6KelitXaK2jowkI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xSpnB6eSk090CkMIWAIBx7/xjvdbPpTkK9Cjnm7WMk6qXPTSUVh8kvQMg0Fv+wcyk
-         4Etba6lm8LU2yp4zvFvErrkg1Jxf5f1eGYF9zpVa04smyfdqjPRxr+Y5DkKArV4Wym
-         qtOFLwvv/C+XmQWrx4mpEf/dDk4l2wAJZSlStC7s=
-Date:   Sun, 5 Apr 2020 11:49:45 +0100
+        b=a/4+IyfDnVg1ElUWBcpnB9e9AYKxd7ZxmyoxW4JMKYEOvlV1Nti+pnZLRA+MZHOd0
+         snhkIQndOaPUnw+CMkgPDEKKZdlKUiygt+EGbPPQR+uFzVklC1IhXjyci4rOLCU/pQ
+         50dvllCqst7Lm2uXOZWi8TMnvUYW4zx82ZrAr3lY=
+Date:   Sun, 5 Apr 2020 11:53:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <lorenzo.bianconi83@gmail.com>
-Subject: Re: [PATCH 3/3] staging: iio: ad5933: use
- iio_device_attach_kfifo_buffer() helper
-Message-ID: <20200405114945.67110eb2@archlinux>
-In-Reply-To: <20200401125936.6398-3-alexandru.ardelean@analog.com>
-References: <20200401125936.6398-1-alexandru.ardelean@analog.com>
-        <20200401125936.6398-3-alexandru.ardelean@analog.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        linux-iio@vger.kernel.org, michael.hennerich@analog.com,
+        nuno.sa@analog.com, dragos.bogdan@analog.com,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: [RFC PATCH 3/3] iio: buffer: add output buffer support for
+ chrdev
+Message-ID: <20200405115341.631b8769@archlinux>
+In-Reply-To: <db6bdd2b-cb9b-442f-46b9-557e1f31f431@metafoo.de>
+References: <20200330145705.29447-1-alexandru.ardelean@analog.com>
+        <20200330145705.29447-4-alexandru.ardelean@analog.com>
+        <53b06603-67f5-fd54-54e6-551ecc789fbc@metafoo.de>
+        <20200405104939.0e220daa@archlinux>
+        <bcdeeb9e-b225-6f6a-65f4-49023ebba169@metafoo.de>
+        <db6bdd2b-cb9b-442f-46b9-557e1f31f431@metafoo.de>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 1 Apr 2020 15:59:36 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Sun, 5 Apr 2020 11:58:38 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> This driver calls iio_kfifo_allocate() vs devm_iio_kfifo_allocate(). But
-> the conversion is still simpler here, and cleans-up/reduces some error
-> paths.
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> On 4/5/20 11:57 AM, Lars-Peter Clausen wrote:
+> > On 4/5/20 11:49 AM, Jonathan Cameron wrote: =20
+> >>>> 3. A side question is about the 'iio_buffer -> pollq' field. I was
+> >>>> wondering if it would make sense to move that on to 'iio_dev=C2=A0=20
+> >>>> pollq' if
+> >>>> adding multiple buffers are added per-device. It almost makes sense =
+to
+> >>>> unify the 'pollq' on indio_dev.
+> >>>> But, it looks a bit difficult, and would require some more change=20
+> >>>> [which is
+> >>>> doable] if it makes sense for whatever reason.
+> >>>> The only reason to do it, is because the iio_buffer_fileops has a=20
+> >>>> .poll =3D
+> >>>> iio_buffer_poll() function attached to it. Adding multiple buffers=20
+> >>>> for an
+> >>>> IIO device may require some consideration on the iio_buffer_poll()=20
+> >>>> function
+> >>>> as well. =20
+> >>> I think we need one chardev per buffer. Conceptually that is the right
+> >>> approach in my option since the two buffers are independent streams.=
+=20
+> >>> But
+> >>> also from a practical point of view we want to have the ability to ha=
+ve
+> >>> the buffers opened by different applications. E.g. iio_readdev on the
+> >>> input buffer and iio_writedev on the output buffer. And there might be
+> >>> some other operations that wont multiplex as nicely as read/write. The
+> >>> high speed interface for example would not work as it is right now.
+> >>> =20
+> >> Yup. Separate chardev is pretty much the only option given the poll=20
+> >> infrastructure.
+> >> In theory could do the anon file trick again but I'm not sure it's=20
+> >> worth it
+> >> - the vast majority of drivers are still going to be single buffer (I=
+=20
+> >> think!) =20
+> > The main problem I see with the anon file trick is that we use the=20
+> > open file also as mutual exclusion so only one application can access=20
+> > a buffer at a time. This means if one application has the main chardev=
+=20
+> > open no other application will be able to access the buffers (or events=
+). =20
+>=20
+> And of course also that you can use `cat`, `echo`, `dd` and so on.
 
-This mixes devm managed stuff an unmanaged.  Hence it fails the 'obviously correct'
-test.  If you wanted to do this you'd first need to sort out the unmanaged
-bits to be automatically unwound (regulators and clocks). Or potentially reorder
-the driver so those happen after this allocation is done.
+True on both counts. For events I'm don't think this restriction really mat=
+ters
+because they are normally fairly tightly coupled to the data stream coming =
+in
+etc (though we should do an in kernel consumer at somepoint).  I did have a=
+ plan
+a long time ago to allow additional kfifos to be attached as consumer devic=
+es
+to allow more complex multi user cases if needed but never implemented it.
 
-Thanks,
+Lets not go down the anon route for input vs output buffers as seems entire=
+ly
+reasonable that they might be used by separate programs.
 
 Jonathan
 
-> ---
->  .../staging/iio/impedance-analyzer/ad5933.c   | 28 ++++---------------
->  1 file changed, 5 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index af0bcf95ee8a..7bde93c6dd74 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -602,22 +602,6 @@ static const struct iio_buffer_setup_ops ad5933_ring_setup_ops = {
->  	.postdisable = ad5933_ring_postdisable,
->  };
->  
-> -static int ad5933_register_ring_funcs_and_init(struct iio_dev *indio_dev)
-> -{
-> -	struct iio_buffer *buffer;
-> -
-> -	buffer = iio_kfifo_allocate();
-> -	if (!buffer)
-> -		return -ENOMEM;
-> -
-> -	iio_device_attach_buffer(indio_dev, buffer);
-> -
-> -	/* Ring buffer functions - here trigger setup related */
-> -	indio_dev->setup_ops = &ad5933_ring_setup_ops;
-> -
-> -	return 0;
-> -}
-> -
->  static void ad5933_work(struct work_struct *work)
->  {
->  	struct ad5933_state *st = container_of(work,
-> @@ -738,26 +722,25 @@ static int ad5933_probe(struct i2c_client *client,
->  	indio_dev->dev.parent = &client->dev;
->  	indio_dev->info = &ad5933_info;
->  	indio_dev->name = id->name;
-> -	indio_dev->modes = (INDIO_BUFFER_SOFTWARE | INDIO_DIRECT_MODE);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = ad5933_channels;
->  	indio_dev->num_channels = ARRAY_SIZE(ad5933_channels);
->  
-> -	ret = ad5933_register_ring_funcs_and_init(indio_dev);
-> +	ret = iio_device_attach_kfifo_buffer(indio_dev, INDIO_BUFFER_SOFTWARE,
-> +					     &ad5933_ring_setup_ops);
->  	if (ret)
->  		goto error_disable_mclk;
->  
->  	ret = ad5933_setup(st);
->  	if (ret)
-> -		goto error_unreg_ring;
-> +		goto error_disable_mclk;
->  
->  	ret = iio_device_register(indio_dev);
->  	if (ret)
-> -		goto error_unreg_ring;
-> +		goto error_disable_mclk;
->  
->  	return 0;
->  
-> -error_unreg_ring:
-> -	iio_kfifo_free(indio_dev->buffer);
->  error_disable_mclk:
->  	clk_disable_unprepare(st->mclk);
->  error_disable_reg:
-> @@ -772,7 +755,6 @@ static int ad5933_remove(struct i2c_client *client)
->  	struct ad5933_state *st = iio_priv(indio_dev);
->  
->  	iio_device_unregister(indio_dev);
-> -	iio_kfifo_free(indio_dev->buffer);
->  	regulator_disable(st->reg);
->  	clk_disable_unprepare(st->mclk);
->  
+>=20
 

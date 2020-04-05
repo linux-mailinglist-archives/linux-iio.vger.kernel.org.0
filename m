@@ -2,39 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D964B19EB16
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F024A19EB1B
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 14:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726620AbgDEMG1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 08:06:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37336 "EHLO mail.kernel.org"
+        id S1726473AbgDEMH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 08:07:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38286 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726410AbgDEMG1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 08:06:27 -0400
+        id S1726410AbgDEMH2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 08:07:28 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 262AF206B8;
-        Sun,  5 Apr 2020 12:06:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6C09206B8;
+        Sun,  5 Apr 2020 12:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586088385;
-        bh=BLqF5UpN5dBt1mmE30uQkggfsm1D8TJgVlYEiQgXgYk=;
+        s=default; t=1586088447;
+        bh=T90kb5QCR3lbEvT1+2G8wiSq5fIrxkeysERrnmdSwa8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=S931edFR5bYWYsUzDFrRmmKYtkoHOFI3AJt6sVnvIiyw4cYRGu55YnaArKu8yVj88
-         7yd7ut5dYgfXPNSTLBGj1k34U+OKSsSZyd/i/OfT6zaHioRT7CC0Yhxp7/3TPQk45A
-         ZKQspLZvbz+Zu1yRO5r8Vip3uYlKSaDVA2uQlGXc=
-Date:   Sun, 5 Apr 2020 13:06:21 +0100
+        b=jC8e+12Ct+kMAYnabXNxLuWHd+pbjeGpKDQc7jHXiJA1WtgJj1iQq8DWvIfjQOPyd
+         d8PG4gTsncF1uSoZiwujHuzW5DOpntNjIWuFhY3Ss3N1D7bbcO5xTBF787/1vyzl5h
+         jsr0fXqbJMu9xzR8+BvWeDI4ZTxPh6B7xIPgfucU=
+Date:   Sun, 5 Apr 2020 13:07:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Johan Jonker <jbx6244@gmail.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        heiko@sntech.de, robh+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: adc: convert rockchip saradc
- bindings to yaml
-Message-ID: <20200405130621.252578e8@archlinux>
-In-Reply-To: <20200404102730.3295-1-jbx6244@gmail.com>
-References: <20200404102730.3295-1-jbx6244@gmail.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: remove duplicated macro
+Message-ID: <20200405130724.70094f1c@archlinux>
+In-Reply-To: <f7c16e9f25debe726645f25df6c9c18aa44f0a1f.1586082819.git.lorenzo@kernel.org>
+References: <f7c16e9f25debe726645f25df6c9c18aa44f0a1f.1586082819.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,165 +40,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  4 Apr 2020 12:27:28 +0200
-Johan Jonker <jbx6244@gmail.com> wrote:
+On Sun,  5 Apr 2020 12:36:26 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Current dts files with 'saradc' nodes are manually verified.
-> In order to automate this process rockchip-saradc.txt
-> has to be converted to yaml.
+> Remove ST_LSM6DSX_REG_WHOAMI_ADDR duplicated macro and rely on ST sensor
+> common definitions
 > 
-> Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-Hi Johan
-
-As I'd already applied these I'd have preferred a fix patch and I'm not actually
-sure it's really worth making the change.  I don't think we have any rules
-about minimal includes or anything in DT bindings.  Was there an error or
-warning as a result of this?
-
-Still as I hadn't pushed out as non rebasing yet I've picked this version up
-and dropped the previous.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Applied.
 
 Thanks,
 
 Jonathan
 
 > ---
-> Changes v2:
->   Add reviewed by
->   Fix irq.h already included in arm-gic.h
-> ---
->  .../bindings/iio/adc/rockchip-saradc.txt           | 37 ----------
->  .../bindings/iio/adc/rockchip-saradc.yaml          | 78 ++++++++++++++++++++++
->  2 files changed, 78 insertions(+), 37 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/rockchip-saradc.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.txt b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.txt
-> deleted file mode 100644
-> index c2c50b598..000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.txt
-> +++ /dev/null
-> @@ -1,37 +0,0 @@
-> -Rockchip Successive Approximation Register (SAR) A/D Converter bindings
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 84d219ae6aee..f3cf13b29d18 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -58,12 +58,11 @@
+>  #include <linux/regmap.h>
+>  #include <linux/bitfield.h>
+>  
+> +#include <linux/iio/common/st_sensors.h>
+>  #include <linux/platform_data/st_sensors_pdata.h>
+>  
+>  #include "st_lsm6dsx.h"
+>  
+> -#define ST_LSM6DSX_REG_WHOAMI_ADDR		0x0f
 > -
-> -Required properties:
-> -- compatible: should be "rockchip,<name>-saradc" or "rockchip,rk3066-tsadc"
-> -   - "rockchip,saradc": for rk3188, rk3288
-> -   - "rockchip,rk3066-tsadc": for rk3036
-> -   - "rockchip,rk3328-saradc", "rockchip,rk3399-saradc": for rk3328
-> -   - "rockchip,rk3399-saradc": for rk3399
-> -   - "rockchip,rv1108-saradc", "rockchip,rk3399-saradc": for rv1108
-> -
-> -- reg: physical base address of the controller and length of memory mapped
-> -       region.
-> -- interrupts: The interrupt number to the cpu. The interrupt specifier format
-> -              depends on the interrupt controller.
-> -- clocks: Must contain an entry for each entry in clock-names.
-> -- clock-names: Shall be "saradc" for the converter-clock, and "apb_pclk" for
-> -               the peripheral clock.
-> -- vref-supply: The regulator supply ADC reference voltage.
-> -- #io-channel-cells: Should be 1, see ../iio-bindings.txt
-> -
-> -Optional properties:
-> -- resets: Must contain an entry for each entry in reset-names if need support
-> -	  this option. See ../reset/reset.txt for details.
-> -- reset-names: Must include the name "saradc-apb".
-> -
-> -Example:
-> -	saradc: saradc@2006c000 {
-> -		compatible = "rockchip,saradc";
-> -		reg = <0x2006c000 0x100>;
-> -		interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
-> -		clocks = <&cru SCLK_SARADC>, <&cru PCLK_SARADC>;
-> -		clock-names = "saradc", "apb_pclk";
-> -		resets = <&cru SRST_SARADC>;
-> -		reset-names = "saradc-apb";
-> -		#io-channel-cells = <1>;
-> -		vref-supply = <&vcc18>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
-> new file mode 100644
-> index 000000000..9b9882323
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
-> @@ -0,0 +1,78 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/rockchip-saradc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Rockchip Successive Approximation Register (SAR) A/D Converter
-> +
-> +maintainers:
-> +  - Heiko Stuebner <heiko@sntech.de>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: rockchip,saradc
-> +      - const: rockchip,rk3066-tsadc
-> +      - const: rockchip,rk3399-saradc
-> +      - items:
-> +          - enum:
-> +            - rockchip,rk3328-saradc
-> +            - rockchip,rv1108-saradc
-> +          - const: rockchip,rk3399-saradc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: converter clock
-> +      - description: peripheral clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: saradc
-> +      - const: apb_pclk
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  reset-names:
-> +    const: saradc-apb
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator supply for the ADC reference voltage.
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - vref-supply
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/rk3288-cru.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    saradc: saradc@2006c000 {
-> +      compatible = "rockchip,saradc";
-> +      reg = <0x2006c000 0x100>;
-> +      interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
-> +      clocks = <&cru SCLK_SARADC>, <&cru PCLK_SARADC>;
-> +      clock-names = "saradc", "apb_pclk";
-> +      resets = <&cru SRST_SARADC>;
-> +      reset-names = "saradc-apb";
-> +      vref-supply = <&vcc18>;
-> +      #io-channel-cells = <1>;
-> +    };
+>  #define ST_LSM6DSX_TS_SENSITIVITY		25000UL /* 25us */
+>  
+>  static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+> @@ -1364,7 +1363,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
+>  		return -ENODEV;
+>  	}
+>  
+> -	err = regmap_read(hw->regmap, ST_LSM6DSX_REG_WHOAMI_ADDR, &data);
+> +	err = regmap_read(hw->regmap, ST_SENSORS_DEFAULT_WAI_ADDRESS, &data);
+>  	if (err < 0) {
+>  		dev_err(hw->dev, "failed to read whoami register\n");
+>  		return err;
 

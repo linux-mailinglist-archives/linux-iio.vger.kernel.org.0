@@ -2,170 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E2D19EA2C
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 11:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A3B19EA32
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Apr 2020 11:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbgDEJ02 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Apr 2020 05:26:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34980 "EHLO mail.kernel.org"
+        id S1726494AbgDEJ3u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Apr 2020 05:29:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35594 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbgDEJ02 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Apr 2020 05:26:28 -0400
+        id S1726399AbgDEJ3u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Apr 2020 05:29:50 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DA1EC20678;
-        Sun,  5 Apr 2020 09:26:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4740B20672;
+        Sun,  5 Apr 2020 09:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586078787;
-        bh=XrVuvReqCn7qRHsh+DwZX7M+CiBM1sQe2eII1bqWaHs=;
+        s=default; t=1586078989;
+        bh=MjC92rt0E5l5W5t5bknkFQpDqRFmsGXr/XiP7FEyRnw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nvE1wq9fIX48SjSa/e6YPrOhaPnSxiSRHOUxfDPNNKuedK35cxsjuSHtsg+VqVrQ+
-         VCl6xsqU29r12ESCh/vWxJf3eeUTI+EWTpAPYeTEJEEja97OvRrO3fnU/3v20TCxjh
-         4NheFU4gMFmvh53wYih9MU2sRRCN/HgWIo+PetY4=
-Date:   Sun, 5 Apr 2020 10:26:23 +0100
+        b=ANdgQ1IlKPeaeP/UytsafnLFyaKFe4sOwigg/u5QrYmJJa+OIda9LoCwhMDL14Nxv
+         BZBVt6Nr44kJtnK53DkJ0pjs7O/MKIJaKILuKldI5RPiWyja6nOh1hSYrVygl2T0TK
+         sTWsyONTO4eGptXCELaIsRF835tYvTjTYsc/BXvA=
+Date:   Sun, 5 Apr 2020 10:29:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mario.tesi@st.com" <mario.tesi@st.com>,
-        Vitor Soares <Vitor.Soares@synopsys.com>
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: flush hw FIFO before resetting
- the device
-Message-ID: <20200405102623.4a850ca7@archlinux>
-In-Reply-To: <CAJ0CqmWaUp+H9GiEedjZ+Wc+=Bj=Adv60LeKqPrCmH2vD4sM9w@mail.gmail.com>
-References: <e9beff6b3a32ddf0de20821e50cf3ed562e36b48.1584122527.git.lorenzo@kernel.org>
-        <CH2PR12MB4216CB1A1882DBE10CAAC967AEF60@CH2PR12MB4216.namprd12.prod.outlook.com>
-        <CAJ0CqmVmMe-YN-gYeS54cc_So1u-ARSQQkB_a+w6N2AZSeCGXg@mail.gmail.com>
-        <20200404180642.6e2014c6@archlinux>
-        <CAJ0CqmWaUp+H9GiEedjZ+Wc+=Bj=Adv60LeKqPrCmH2vD4sM9w@mail.gmail.com>
+To:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
+Cc:     Rob Herring <robh@kernel.org>, Tomas Novotny <tomas@novotny.cz>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nishant Malpani <nish.malpani25@gmail.com>
+Subject: Re: [PATCH v3 2/4] dt-bindings: iio: light: vcnl4000: Add
+ near-level
+Message-ID: <20200405102944.41589d98@archlinux>
+In-Reply-To: <20200404174521.GA24709@bogon.m.sigxcpu.org>
+References: <cover.1585134362.git.agx@sigxcpu.org>
+        <f0ad40351d7ab12f79d2c29f738443514ae0fb76.1585134362.git.agx@sigxcpu.org>
+        <20200329102526.1ee85e96@archlinux>
+        <20200331214517.GA24128@bogus>
+        <20200404160127.1ef9d1ac@archlinux>
+        <20200404174521.GA24709@bogon.m.sigxcpu.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 4 Apr 2020 19:09:18 +0200
-Lorenzo Bianconi <lorenzo.bianconi@redhat.com> wrote:
+On Sat, 4 Apr 2020 19:45:21 +0200
+Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
 
-> >
-> > On Sat, 4 Apr 2020 18:29:25 +0200
-> > Lorenzo Bianconi <lorenzo.bianconi@redhat.com> wrote:
-> >  
-> > > >
-> > > > Hi Lorenzo,
-> > > >
-> > > > From: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > Date: Fri, Mar 13, 2020 at 18:06:00
-> > > >  
-> > > > > flush hw FIFO before device reset in order to avoid possible races
-> > > > > on interrupt line 1. If the first interrupt line is asserted during
-> > > > > hw reset the device will work in I3C-only mode (if it is supported)
-> > > > >  
-> > >
-> > > Hi Jonathan,
-> > >
-> > > any news about this patch? Maybe I am wrong but I am not able to find
-> > > it in your tree.
-> > > Thanks in advance.  
-> >
-> > I'm running a bit behind on catching up with fixes after it became obvious
-> > they wouldn't make the merge window.
-> >
-> > Applied to the fixes-togreg branch of iio.git and marked for stable.
-> >  
-> 
-> ack, thx...sorry for all the noise around it.
+> Hi,
+> On Sat, Apr 04, 2020 at 04:01:27PM +0100, Jonathan Cameron wrote:
+> > On Tue, 31 Mar 2020 15:45:17 -0600
+> > Rob Herring <robh@kernel.org> wrote:
+> >  =20
+> > > On Sun, Mar 29, 2020 at 10:25:26AM +0100, Jonathan Cameron wrote: =20
+> > > > On Wed, 25 Mar 2020 12:09:06 +0100
+> > > > Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
+> > > >    =20
+> > > > > This value indicates when userspace should consider an object
+> > > > > near to the sensor/device.
+> > > > >=20
+> > > > > Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>   =20
+> > > >=20
+> > > > I'm fine with this.  Note for Rob or other DT people.
+> > > >=20
+> > > > This is a new generic binding hence no vendor prefix.   =20
+> > >=20
+> > > Then document in a common place. =20
+> >=20
+> > Ok.=20
+> >=20
+> > I guess we need to create a proximity specific binding file.
+> >=20
+> > Documentation/devicetree/bindings/iio/proximity.yaml
+> >=20
+> > Guido, could you do a v4 adding such a file.  For now I think
+> > this is pretty much all that is proximity specific. =20
+>=20
+> I did a Documentation/devicetree/bindings/iio/common.yaml:
+>=20
+> https://source.puri.sm/guido.gunther/linux-imx8/commit/8b91f0b7fa76ca4b2f=
+3cdc251411829f71f8d810
+>=20
+> so we can add new properties there and move iio-bindings.txt over.
+>=20
+> Does that work as well? If so I'll send out a v4.
 
-No problem - it reminded me to actually do something about this and other
-patches in the same position ;)
+I can't find any real precedence for naming of such files.
+So I guess this is still evolving. Send it out and we'll see what Rob think=
+s.
 
 Jonathan
-> 
-> Regards,
-> Lorenzo
-> 
-> > >
-> > > Regards,
-> > > Lorenzo
-> > >
-> > >  
-> > > > > Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-> > > > > Fixes: 43901008fde0 ("iio: imu: st_lsm6dsx: add support to LSM6DSR")
-> > > > > Reported-by: Mario Tesi <mario.tesi@st.com>
-> > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+
+> Cheers,
+>  -- Guido
+>=20
+>=20
+> >=20
+> > At somepoint we should convert the subsystem wide iio-bindings.txt
+> > but not today!
+> >=20
+> > Thanks,
+> >=20
+> > Jonathan
+> >  =20
+> > >  =20
+> > > >=20
+> > > > I will ideally want review of both the dt patches though
+> > > > before applying.  As we've missed the merge window anyway
+> > > > there is no particular rush.
+> > > >=20
+> > > > Thanks,
+> > > >=20
+> > > > Jonathan
+> > > >    =20
 > > > > > ---
-> > > > > This is a new version of: "iio: imu: st_lsm6dsx: disable I3C support during
-> > > > > device reset"
-> > > > > https://urldefense.proofpoint.com/v2/url?u=https-3A__patchwork.kernel.org_patch_11425389_&d=DwIDAg&c=DPL6_X_6JkXFx7AXWqB0tg&r=qVuU64u9x77Y0Kd0PhDK_lpxFgg6PK9PateHwjb_DY0&m=d7oUzE4fWeY3JqYqqd-uW_v1SJkij_sOpXRvpm3-Thg&s=BEgROrIZoG9oGrwQEENFz0DP88VioXUhpeZP2Y168XI&e=
-> > > > > ---
-> > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 24 +++++++++++++++++++-
-> > > > >  1 file changed, 23 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > index 84d219ae6aee..4426524b59f2 100644
-> > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > @@ -2036,11 +2036,21 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
-> > > > >       return 0;
-> > > > >  }
-> > > > >
-> > > > > -static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
-> > > > > +static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
-> > > > >  {
-> > > > >       const struct st_lsm6dsx_reg *reg;
-> > > > >       int err;
-> > > > >
-> > > > > +     /*
-> > > > > +      * flush hw FIFO before device reset in order to avoid
-> > > > > +      * possible races on interrupt line 1. If the first interrupt
-> > > > > +      * line is asserted during hw reset the device will work in
-> > > > > +      * I3C-only mode (if it is supported)
-> > > > > +      */
-> > > > > +     err = st_lsm6dsx_flush_fifo(hw);
-> > > > > +     if (err < 0 && err != -ENOTSUPP)
-> > > > > +             return err;
+> > > > >  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml    | 8 ++=
+++++++
+> > > > >  1 file changed, 8 insertions(+)
+> > > > >=20
+> > > > > diff --git a/Documentation/devicetree/bindings/iio/light/vishay,v=
+cnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.=
+yaml
+> > > > > index 21ef2eb7a205..ac9e3bb6a505 100644
+> > > > > --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000=
+.yaml
+> > > > > +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000=
+.yaml
+> > > > > @@ -25,6 +25,13 @@ properties:
+> > > > >    reg:
+> > > > >      maxItems: 1
+> > > > > =20
+> > > > > +  near-level:   =20
+> > >=20
+> > > Perhaps proximity-near-level instead. =20
+> >=20
+> > Makes sense.
+> >  =20
+> > >  =20
+> > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > +    description:
+> > > > > +      Raw proximity values equal or above this level should be
+> > > > > +      considered 'near' to the device (an object is near to the
+> > > > > +      sensor).
 > > > > > +
-> > > > >       /* device sw reset */
-> > > > >       reg = &hw->settings->reset;
-> > > > >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> > > > > @@ -2059,6 +2069,18 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
-> > > > >
-> > > > >       msleep(50);
-> > > > >
-> > > > > +     return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
-> > > > > +{
-> > > > > +     const struct st_lsm6dsx_reg *reg;
-> > > > > +     int err;
-> > > > > +
-> > > > > +     err = st_lsm6dsx_reset_device(hw);
-> > > > > +     if (err < 0)
-> > > > > +             return err;
-> > > > > +
-> > > > >       /* enable Block Data Update */
-> > > > >       reg = &hw->settings->bdu;
-> > > > >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> > > > > --
-> > > > > 2.24.1  
-> > > >
-> > > > I tested the patch and the I3C interface is working fine in this version.
-> > > >
-> > > > Reviewed-by: Vitor Soares <vitor.soares@synopsys.com>
-> > > > Tested-by: Vitor Soares <vitor.soares@synopsys.com>
-> > > >  
-> >  
-> > > > Best regards,
-> > > > Vitor
-> > > > Soares
-> > > >
-> > > >  
-> > >  
-> >  
-> 
+> > > > >  required:
+> > > > >    - compatible
+> > > > >    - reg
+> > > > > @@ -40,6 +47,7 @@ examples:
+> > > > >        light-sensor@51 {
+> > > > >                compatible =3D "vishay,vcnl4200";
+> > > > >                reg =3D <0x51>;
+> > > > > +              near-level =3D <220>;
+> > > > >        };
+> > > > >    };
+> > > > >  ...   =20
+> > > >    =20
+> >  =20
 

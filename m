@@ -2,125 +2,269 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4289B19F9AA
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 18:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A24B119FA00
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 18:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729058AbgDFQGJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 12:06:09 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2634 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728878AbgDFQGJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 Apr 2020 12:06:09 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 9AEACEE0DA8BD16DC166;
-        Mon,  6 Apr 2020 17:06:06 +0100 (IST)
-Received: from localhost (10.47.92.64) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Mon, 6 Apr 2020
- 17:06:05 +0100
-Date:   Mon, 6 Apr 2020 17:05:54 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <agross@kernel.org>,
-        <bjorn.andersson@linaro.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <mka@chromium.org>,
-        <linus.walleij@linaro.org>, <sboyd@codeaurora.org>,
-        <smohanad@codeaurora.org>, <kgunda@codeaurora.org>,
-        <aghayal@codeaurora.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
+        id S1728879AbgDFQTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 12:19:42 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:46932 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728802AbgDFQTm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 12:19:42 -0400
+Received: by mail-pg1-f195.google.com with SMTP id k191so138748pgc.13;
+        Mon, 06 Apr 2020 09:19:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=oa630XzomU4aKMww5XPentv1Soe/ZbLABSO++PNFqs0=;
+        b=aqKQfC2j1EtWORNiX4VgxmMztGjb35unU4GdvAMFBwhin7sem4OKIy3z49zGwXOVfS
+         VpF6XarXErLaQsxPJ2rqcvnQZKNA14z1/xM3a4J/+Z/tOldiJBMpsLRExlldLq0mhzyy
+         IUkWeK+rSRD5JwJoEfMyz3nIHV5M8tl4y2j1yKrJ3f7c1NnyFnGGWi+OxUqJ2QlzY5VV
+         pEe/guSd252MxJRhFTEJocKAEPNjVk7n8RNPP3hEIogaeocCUyZs64H3uKOHBmBk0naT
+         D2gwTJDo8tX8XF9ep2t38ZjR5lHKuaYpA00JHRJKpzKbOwjAOIDSYcMZwZauhEaDJ/JW
+         +Yjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=oa630XzomU4aKMww5XPentv1Soe/ZbLABSO++PNFqs0=;
+        b=j9jmTcT0ouwhNsle1lDecYIoVvaUrDk1IuD/f000pXXKFTmJQ40fdVto3mT/FnDEjo
+         32t/WxMS/IlRB86cbEWDBLO38or6Svf1Zjejm07r87VLZowFTfRyq/YCUum7exrpfwUq
+         f/wh8mLR+7HnUBUf36KHFY6wsxbRI27MM2Phsk6+g8dWJyk82VovPFOlAN1o8NqLrC/8
+         ipMrmeP333Sbn+J5C4Giq+oYtFbLl37K466N5msGe6SzLcbPvO2V8CY/OMmC39A1GCbm
+         oPQXD1xA9LSBypPkZ1CVoQM5XAY9oirqL+gQrX562qVsPLYwkh3WnXqoY0M/mBjQ51n+
+         onPQ==
+X-Gm-Message-State: AGi0PuYOsrD1djWqoyp7K001ay329Omp4IdXCDHZTBtN7p6h7s23VO4Z
+        1oKld4M8gvdFNU2w3mI+f+61H386F3MWlmhp5RE=
+X-Google-Smtp-Source: APiQypJU+5ObmGWWzP72qOYvrzN6MOlLYHJRMcoUevfMEqea7emG1qqaRhegC8m0z8uNHfnVVLeFLZhlLL3aAyMhlIg=
+X-Received: by 2002:a63:1d4:: with SMTP id 203mr9970690pgb.74.1586189978891;
+ Mon, 06 Apr 2020 09:19:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200406150846.878-1-nuno.sa@analog.com> <20200406150846.878-6-nuno.sa@analog.com>
+In-Reply-To: <20200406150846.878-6-nuno.sa@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 6 Apr 2020 19:19:31 +0300
+Message-ID: <CAHp75VeK8K0WHK3gDwyT3ZAaMaVdfZ5xVG94JY4O8fd2U0HEHg@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] iio: imu: Add support for adis16475
+To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        <linux-iio@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-msm-owner@vger.kernel.org>
-Subject: Re: [PATCH 2/3] iio: adc: Add PMIC7 ADC bindings
-Message-ID: <20200406170554.00003887@Huawei.com>
-In-Reply-To: <fe8056c5-9480-a9a3-9626-5ebab8031b08@codeaurora.org>
-References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org>
-        <1585064650-16235-3-git-send-email-jprakash@codeaurora.org>
-        <20200328165410.7db48818@archlinux>
-        <fe8056c5-9480-a9a3-9626-5ebab8031b08@codeaurora.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.92.64]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Apr 2020 17:15:21 +0530
-Jishnu Prakash <jprakash@codeaurora.org> wrote:
+On Mon, Apr 6, 2020 at 6:10 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>
+> Support ADIS16475 and similar IMU devices. These devices are
+> a precision, miniature MEMS inertial measurement unit (IMU) that
+> includes a triaxial gyroscope and a triaxial accelerometer. Each
+> inertial sensor combines with signal conditioning that optimizes
+> dynamic performance.
+>
+> The driver adds support for the following devices:
+>  * adis16470, adis16475, adis16477, adis16465, adis16467, adis16500,
+>    adis16505, adis16507.
 
-> Hi Jonathan,
-> 
-> On 3/28/2020 10:24 PM, Jonathan Cameron wrote:
-> > On Tue, 24 Mar 2020 21:14:09 +0530
-> > Jishnu Prakash <jprakash@codeaurora.org> wrote:
-> >  
-> >> Add documentation for PMIC7 ADC peripheral. For PMIC7 ADC, all SW
-> >> communication to ADC goes through PMK8350, which communicates with
-> >> other PMICs through PBS.
-> >>
-> >> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
-> >> ---
-> >>   .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 28 ++++++++++++++++------
-> >>   1 file changed, 21 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> >> index 72db14c..20f010c 100644
-> >> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> >> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> >> @@ -13,7 +13,7 @@ maintainers:
-> >>   description: |
-> >>     SPMI PMIC voltage ADC (VADC) provides interface to clients to read
-> >>     voltage. The VADC is a 15-bit sigma-delta ADC.
-> >> -  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
-> >> +  SPMI PMIC5/PMIC7 voltage ADC (ADC) provides interface to clients to read
-> >>     voltage. The VADC is a 16-bit sigma-delta ADC.
-> >>   
-> >>   properties:
-> >> @@ -23,6 +23,7 @@ properties:
-> >>         - qcom,spmi-adc5
-> >>         - qcom,spmi-adc-rev2
-> >>         - qcom,pms405-adc
-> >> +      - qcom,spmi-adc7
-> >>   
-> >>     reg:
-> >>       description: VADC base address in the SPMI PMIC register map
-> >> @@ -65,6 +66,8 @@ patternProperties:
-> >>           description: |
-> >>             ADC channel number.
-> >>             See include/dt-bindings/iio/qcom,spmi-vadc.h
-> >> +          For PMIC7 ADC, the channel numbers are specified separately per PMIC
-> >> +          in the PMIC-specific files in include/dt-bindings/iio/.  
-> > That makes me thing we really should have separate compatibles.  The
-> > parts clearly have differences, even if we haven't needed to use them
-> > explicitly as yet.  
-> I'm not sure what you mean by this. We have added a new compatible 
-> property "qcom,spmi-adc7" for PMIC7 ADC.
+...
 
-I've no idea what I meant either :)
+> +       int i =3D ARRAY_SIZE(adis16475_3db_freqs);
+> +       int ret;
 
-Jonathan
-> >  
-> >>   
-> >>         label:
-> >>           description: |
-> >> @@ -72,7 +75,7 @@ patternProperties:
-> >>               For thermistor inputs connected to generic AMUX or GPIO inputs
-> >>               these can vary across platform for the same pins. Hence select
-> >>               the platform schematics name for this channel. It is required
-> >> -            for "qcom,spmi-adc5" and "qcom,spmi-adc-rev2".
-> >> +            for "qcom,spmi-adc5", "qcom,spmi-adc7" and "qcom,spmi-adc-rev2".
-> >>           allOf:
-> >>             - $ref: /schemas/types.yaml#/definitions/string
-> >>   
-> >>  
+> +       while (--i)
+> +               if (adis16475_3db_freqs[i] >=3D filter)
+> +                       break;
 
+Nit: perhaps {} to add.
 
+...
+
+> +enum adis16475_variant {
+> +       ADIS16470,
+> +       ADIS16475_1,
+> +       ADIS16475_2,
+> +       ADIS16475_3,
+> +       ADIS16477_1,
+> +       ADIS16477_2,
+> +       ADIS16477_3,
+> +       ADIS16465_1,
+> +       ADIS16465_2,
+> +       ADIS16465_3,
+> +       ADIS16467_1,
+> +       ADIS16467_2,
+> +       ADIS16467_3,
+> +       ADIS16500,
+> +       ADIS16505_1,
+> +       ADIS16505_2,
+> +       ADIS16505_3,
+> +       ADIS16507_1,
+> +       ADIS16507_2,
+> +       ADIS16507_3,
+
+> +
+
+Extra blank line.
+
+> +};
+
+...
+
+> +static void adis16475_burst32_check(struct adis16475 *st)
+> +{
+> +       int ret;
+> +       struct adis *adis =3D &st->adis;
+> +
+> +       if (!st->info->has_burst32)
+> +               return;
+> +
+> +       if (st->lsb_flag && !st->burst32) {
+> +               const u16 en =3D ADIS16500_BURST32(1);
+> +
+> +               ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_C=
+TRL,
+> +                                        ADIS16500_BURST32_MASK, en);
+> +               if (ret)
+> +                       return;
+> +
+> +               st->burst32 =3D true;
+
++ Blank line.
+
+> +               /*
+> +                * In 32bit mode we need extra 2 bytes for all gyro
+
+32-bit
+
+> +                * and accel channels.
+> +                */
+> +               adis->burst_extra_len =3D 6 * sizeof(u16);
+> +               adis->xfer[1].len +=3D 6 * sizeof(u16);
+> +               dev_dbg(&adis->spi->dev, "Enable burst32 mode, xfer:%d",
+> +                       adis->xfer[1].len);
+> +
+> +       } else if (!st->lsb_flag && st->burst32) {
+> +               const u16 en =3D ADIS16500_BURST32(0);
+> +
+> +               ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_C=
+TRL,
+> +                                        ADIS16500_BURST32_MASK, en);
+> +               if (ret)
+> +                       return;
+> +
+> +               st->burst32 =3D false;
+
++ Blank line
+
+> +               /* Remove the extra bits */
+> +               adis->burst_extra_len =3D 0;
+> +               adis->xfer[1].len -=3D 6 * sizeof(u16);
+> +               dev_dbg(&adis->spi->dev, "Disable burst32 mode, xfer:%d\n=
+",
+> +                       adis->xfer[1].len);
+> +       }
+> +}
+
+...
+
+> +       for_each_set_bit(bit, indio_dev->active_scan_mask,
+> +                        indio_dev->masklength) {
+
+One line?
+
+> +                               if (st->lsb_flag && !st->info->has_burst3=
+2) {
+> +                                       u16 val =3D 0;
+
+> +                                       const u32 reg =3D ADIS16475_REG_X=
+_GYRO_L +
+> +                                               (bit * 4);
+
+Redundant parentheses.
+
+> +                                       adis_read_reg_16(adis, reg, &val)=
+;
+> +                                       data[i++] =3D cpu_to_be16(val);
+> +                               } else {
+> +                                       /* lower not used */
+> +                                       data[i++] =3D 0;
+> +                               }
+> +                       }
+> +                       break;
+> +               }
+> +       }
+
+...
+
+> +               if (sync->sync_mode =3D=3D ADIS16475_SYNC_SCALED) {
+> +                       u16 up_scale;
+> +                       u32 scaled_out_freq =3D 0;
+> +                       /*
+> +                        * If we are in scaled mode, we must have an up_s=
+cale.
+> +                        * In scaled mode the allowable input clock range=
+ is
+> +                        * 1 Hz to 128 Hz, and the allowable output range=
+ is
+> +                        * 1900 to 2100 Hz. Hence, a scale must be given =
+to
+> +                        * get the allowable output.
+> +                        */
+> +                       device_property_read_u32(dev, "adi,scaled-output-=
+hz",
+> +                                                &scaled_out_freq);
+> +
+> +                       if (scaled_out_freq < 1900 || scaled_out_freq > 2=
+100) {
+> +                               dev_err(dev,
+> +                                       "Invalid value:%u for adi,scaled-=
+output-hz",
+> +                                       scaled_out_freq);
+
+When there is no property or property has a value 0 this message can't
+tell the difference.
+Perhaps you have to check return code from device_property_read_u32() call.
+
+> +                               return -EINVAL;
+> +                       }
+
+> +               }
+
+...
+
+> +       /*
+> +        * It is possible to configure the data ready polarity. Furthermo=
+re, we
+> +        * need to update the adis struct if we want data ready as active=
+ low.
+> +        */
+> +       irq_type =3D irqd_get_trigger_type(desc);
+> +       if (irq_type =3D=3D IRQF_TRIGGER_RISING) {
+> +               polarity =3D 1;
+> +       } else if (irq_type =3D=3D IRQF_TRIGGER_FALLING) {
+> +               polarity =3D 0;
+> +               st->adis.irq_flag =3D IRQF_TRIGGER_FALLING;
+> +       } else {
+> +               dev_err(&spi->dev, "Invalid interrupt type 0x%x specified=
+\n",
+> +                       irq_type);
+> +               return -EINVAL;
+> +       }
+
+Here is the problem. You got type, but you compare it to flags. It's
+not correct.
+Although values are the same, the meaning is different.
+
+--
+With Best Regards,
+Andy Shevchenko

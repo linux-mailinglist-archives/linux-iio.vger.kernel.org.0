@@ -2,269 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A24B119FA00
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 18:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DFA19FA28
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 18:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728879AbgDFQTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 12:19:42 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:46932 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728802AbgDFQTm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 12:19:42 -0400
-Received: by mail-pg1-f195.google.com with SMTP id k191so138748pgc.13;
-        Mon, 06 Apr 2020 09:19:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=oa630XzomU4aKMww5XPentv1Soe/ZbLABSO++PNFqs0=;
-        b=aqKQfC2j1EtWORNiX4VgxmMztGjb35unU4GdvAMFBwhin7sem4OKIy3z49zGwXOVfS
-         VpF6XarXErLaQsxPJ2rqcvnQZKNA14z1/xM3a4J/+Z/tOldiJBMpsLRExlldLq0mhzyy
-         IUkWeK+rSRD5JwJoEfMyz3nIHV5M8tl4y2j1yKrJ3f7c1NnyFnGGWi+OxUqJ2QlzY5VV
-         pEe/guSd252MxJRhFTEJocKAEPNjVk7n8RNPP3hEIogaeocCUyZs64H3uKOHBmBk0naT
-         D2gwTJDo8tX8XF9ep2t38ZjR5lHKuaYpA00JHRJKpzKbOwjAOIDSYcMZwZauhEaDJ/JW
-         +Yjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=oa630XzomU4aKMww5XPentv1Soe/ZbLABSO++PNFqs0=;
-        b=j9jmTcT0ouwhNsle1lDecYIoVvaUrDk1IuD/f000pXXKFTmJQ40fdVto3mT/FnDEjo
-         32t/WxMS/IlRB86cbEWDBLO38or6Svf1Zjejm07r87VLZowFTfRyq/YCUum7exrpfwUq
-         f/wh8mLR+7HnUBUf36KHFY6wsxbRI27MM2Phsk6+g8dWJyk82VovPFOlAN1o8NqLrC/8
-         ipMrmeP333Sbn+J5C4Giq+oYtFbLl37K466N5msGe6SzLcbPvO2V8CY/OMmC39A1GCbm
-         oPQXD1xA9LSBypPkZ1CVoQM5XAY9oirqL+gQrX562qVsPLYwkh3WnXqoY0M/mBjQ51n+
-         onPQ==
-X-Gm-Message-State: AGi0PuYOsrD1djWqoyp7K001ay329Omp4IdXCDHZTBtN7p6h7s23VO4Z
-        1oKld4M8gvdFNU2w3mI+f+61H386F3MWlmhp5RE=
-X-Google-Smtp-Source: APiQypJU+5ObmGWWzP72qOYvrzN6MOlLYHJRMcoUevfMEqea7emG1qqaRhegC8m0z8uNHfnVVLeFLZhlLL3aAyMhlIg=
-X-Received: by 2002:a63:1d4:: with SMTP id 203mr9970690pgb.74.1586189978891;
- Mon, 06 Apr 2020 09:19:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200406150846.878-1-nuno.sa@analog.com> <20200406150846.878-6-nuno.sa@analog.com>
-In-Reply-To: <20200406150846.878-6-nuno.sa@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 6 Apr 2020 19:19:31 +0300
-Message-ID: <CAHp75VeK8K0WHK3gDwyT3ZAaMaVdfZ5xVG94JY4O8fd2U0HEHg@mail.gmail.com>
-Subject: Re: [PATCH v4 5/6] iio: imu: Add support for adis16475
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1729048AbgDFQdQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 12:33:16 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:48262 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728789AbgDFQdQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 6 Apr 2020 12:33:16 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 9704B41259;
+        Mon,  6 Apr 2020 16:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-transfer-encoding:mime-version:user-agent:content-type
+        :content-type:organization:references:in-reply-to:date:date:from
+        :from:subject:subject:message-id:received:received:received; s=
+        mta-01; t=1586190792; x=1588005193; bh=5jzTCimFf/ZN+kP2sD+q9bPMb
+        I+Q4K3DWZbRHFkwR74=; b=DGLBL0YqcGOeu952klY/cvzNCyealrFkuiwZbyjdc
+        7z9P+5KzECC3m8eMMBVGj7O2zvtVW9Dp2pT0qtRvL3R1wc2zw+DLVSEJ98NQBwJS
+        yG4k9OEWHeICT9dwej1SvhFN1rxtcacC7BYuKWum+PW2vgQpcFjyXsuT1zy4YRGb
+        s0=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CN7tA-FteRvA; Mon,  6 Apr 2020 19:33:12 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 53EAB412E2;
+        Mon,  6 Apr 2020 19:32:38 +0300 (MSK)
+Received: from localhost.localdomain (10.199.2.226) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Mon, 6 Apr 2020 19:32:38 +0300
+Message-ID: <b02f5e2fc09b30c36b0d9e8984c18eb21cba7b73.camel@yadro.com>
+Subject: Re: [PATCH v7 2/2] iio: proximity: Add driver support for vcnl3020
+ proximity sensor
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
+        Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 6 Apr 2020 19:32:56 +0300
+In-Reply-To: <CAHp75Vdg7bhB69uQSZt2LK3JXJ-my-+-Mg-0F6ij9HcFdQ=LTg@mail.gmail.com>
+References: <20200406151839.13572-1-i.mikhaylov@yadro.com>
+         <20200406151839.13572-3-i.mikhaylov@yadro.com>
+         <CAHp75Vdg7bhB69uQSZt2LK3JXJ-my-+-Mg-0F6ij9HcFdQ=LTg@mail.gmail.com>
+Organization: YADRO
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.199.2.226]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 6:10 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> Support ADIS16475 and similar IMU devices. These devices are
-> a precision, miniature MEMS inertial measurement unit (IMU) that
-> includes a triaxial gyroscope and a triaxial accelerometer. Each
-> inertial sensor combines with signal conditioning that optimizes
-> dynamic performance.
->
-> The driver adds support for the following devices:
->  * adis16470, adis16475, adis16477, adis16465, adis16467, adis16500,
->    adis16505, adis16507.
+On Mon, 2020-04-06 at 18:43 +0300, Andy Shevchenko wrote:
+> On Mon, Apr 6, 2020 at 6:18 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
+> > Proximity sensor driver based on light/vcnl4000.c code.
+> > For now supports only the single on-demand measurement.
+> > 
+> > The VCNL3020 is a fully integrated proximity sensor. Fully
+> > integrated means that the infrared emitter is included in the
+> > package. It has 16-bit resolution. It includes a signal
+> > processing IC and features standard I2C communication
+> > interface. It features an interrupt function.
+> > 
+> 
+> I don't know how to explain to you that if anybody gives the tag, you
+> need to add it to your commit message.
+> Why are you ignoring this?
+> 
 
-...
+Sorry for that, I'll add it.
 
-> +       int i =3D ARRAY_SIZE(adis16475_3db_freqs);
-> +       int ret;
+> Jonathan, my tag still applies here, but I'm so confused with the above.
 
-> +       while (--i)
-> +               if (adis16475_3db_freqs[i] >=3D filter)
-> +                       break;
-
-Nit: perhaps {} to add.
-
-...
-
-> +enum adis16475_variant {
-> +       ADIS16470,
-> +       ADIS16475_1,
-> +       ADIS16475_2,
-> +       ADIS16475_3,
-> +       ADIS16477_1,
-> +       ADIS16477_2,
-> +       ADIS16477_3,
-> +       ADIS16465_1,
-> +       ADIS16465_2,
-> +       ADIS16465_3,
-> +       ADIS16467_1,
-> +       ADIS16467_2,
-> +       ADIS16467_3,
-> +       ADIS16500,
-> +       ADIS16505_1,
-> +       ADIS16505_2,
-> +       ADIS16505_3,
-> +       ADIS16507_1,
-> +       ADIS16507_2,
-> +       ADIS16507_3,
-
-> +
-
-Extra blank line.
-
-> +};
-
-...
-
-> +static void adis16475_burst32_check(struct adis16475 *st)
-> +{
-> +       int ret;
-> +       struct adis *adis =3D &st->adis;
-> +
-> +       if (!st->info->has_burst32)
-> +               return;
-> +
-> +       if (st->lsb_flag && !st->burst32) {
-> +               const u16 en =3D ADIS16500_BURST32(1);
-> +
-> +               ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_C=
-TRL,
-> +                                        ADIS16500_BURST32_MASK, en);
-> +               if (ret)
-> +                       return;
-> +
-> +               st->burst32 =3D true;
-
-+ Blank line.
-
-> +               /*
-> +                * In 32bit mode we need extra 2 bytes for all gyro
-
-32-bit
-
-> +                * and accel channels.
-> +                */
-> +               adis->burst_extra_len =3D 6 * sizeof(u16);
-> +               adis->xfer[1].len +=3D 6 * sizeof(u16);
-> +               dev_dbg(&adis->spi->dev, "Enable burst32 mode, xfer:%d",
-> +                       adis->xfer[1].len);
-> +
-> +       } else if (!st->lsb_flag && st->burst32) {
-> +               const u16 en =3D ADIS16500_BURST32(0);
-> +
-> +               ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_C=
-TRL,
-> +                                        ADIS16500_BURST32_MASK, en);
-> +               if (ret)
-> +                       return;
-> +
-> +               st->burst32 =3D false;
-
-+ Blank line
-
-> +               /* Remove the extra bits */
-> +               adis->burst_extra_len =3D 0;
-> +               adis->xfer[1].len -=3D 6 * sizeof(u16);
-> +               dev_dbg(&adis->spi->dev, "Disable burst32 mode, xfer:%d\n=
-",
-> +                       adis->xfer[1].len);
-> +       }
-> +}
-
-...
-
-> +       for_each_set_bit(bit, indio_dev->active_scan_mask,
-> +                        indio_dev->masklength) {
-
-One line?
-
-> +                               if (st->lsb_flag && !st->info->has_burst3=
-2) {
-> +                                       u16 val =3D 0;
-
-> +                                       const u32 reg =3D ADIS16475_REG_X=
-_GYRO_L +
-> +                                               (bit * 4);
-
-Redundant parentheses.
-
-> +                                       adis_read_reg_16(adis, reg, &val)=
-;
-> +                                       data[i++] =3D cpu_to_be16(val);
-> +                               } else {
-> +                                       /* lower not used */
-> +                                       data[i++] =3D 0;
-> +                               }
-> +                       }
-> +                       break;
-> +               }
-> +       }
-
-...
-
-> +               if (sync->sync_mode =3D=3D ADIS16475_SYNC_SCALED) {
-> +                       u16 up_scale;
-> +                       u32 scaled_out_freq =3D 0;
-> +                       /*
-> +                        * If we are in scaled mode, we must have an up_s=
-cale.
-> +                        * In scaled mode the allowable input clock range=
- is
-> +                        * 1 Hz to 128 Hz, and the allowable output range=
- is
-> +                        * 1900 to 2100 Hz. Hence, a scale must be given =
-to
-> +                        * get the allowable output.
-> +                        */
-> +                       device_property_read_u32(dev, "adi,scaled-output-=
-hz",
-> +                                                &scaled_out_freq);
-> +
-> +                       if (scaled_out_freq < 1900 || scaled_out_freq > 2=
-100) {
-> +                               dev_err(dev,
-> +                                       "Invalid value:%u for adi,scaled-=
-output-hz",
-> +                                       scaled_out_freq);
-
-When there is no property or property has a value 0 this message can't
-tell the difference.
-Perhaps you have to check return code from device_property_read_u32() call.
-
-> +                               return -EINVAL;
-> +                       }
-
-> +               }
-
-...
-
-> +       /*
-> +        * It is possible to configure the data ready polarity. Furthermo=
-re, we
-> +        * need to update the adis struct if we want data ready as active=
- low.
-> +        */
-> +       irq_type =3D irqd_get_trigger_type(desc);
-> +       if (irq_type =3D=3D IRQF_TRIGGER_RISING) {
-> +               polarity =3D 1;
-> +       } else if (irq_type =3D=3D IRQF_TRIGGER_FALLING) {
-> +               polarity =3D 0;
-> +               st->adis.irq_flag =3D IRQF_TRIGGER_FALLING;
-> +       } else {
-> +               dev_err(&spi->dev, "Invalid interrupt type 0x%x specified=
-\n",
-> +                       irq_type);
-> +               return -EINVAL;
-> +       }
-
-Here is the problem. You got type, but you compare it to flags. It's
-not correct.
-Although values are the same, the meaning is different.
-
---
-With Best Regards,
-Andy Shevchenko

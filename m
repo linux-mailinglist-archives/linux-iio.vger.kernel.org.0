@@ -2,30 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E26119FE08
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 21:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9817F19FE5C
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 21:47:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725933AbgDFTZK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 15:25:10 -0400
-Received: from mout.web.de ([217.72.192.78]:58259 "EHLO mout.web.de"
+        id S1726230AbgDFTrI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 15:47:08 -0400
+Received: from mout.web.de ([212.227.17.12]:55577 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725895AbgDFTZJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 Apr 2020 15:25:09 -0400
+        id S1725895AbgDFTrI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 6 Apr 2020 15:47:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1586201103;
-        bh=W3M56n2XTRnNj5AzukLHHxbKaj35SVC5/ktzs7G1j/Y=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=jcR1w43MNcmpD8++TS1ntlOW2I9IHCi0QEkZMBIQxgka7i9wlmz7ZTHJeL3sYmDtZ
-         OPlgksX1BBjHxd0hmtqymdLryjcZabjW4aXi43XCAMDfkmVFdgev0zl205u6UCjO7w
-         j65KTUZO1odRMjoeMBrnPfZk4BRl4Y04Ql1yIA5Y=
+        s=dbaedf251592; t=1586202421;
+        bh=bJ6wweKpkHlByA6Q6e8+/NUkCdi0x/x3PugEKawABUM=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=Xc0rOf/Yil9FKybcL/IBsC84ah9yskuJLyxnzOQkKeIiwZ1+BTk2G6vF24xvzZwMC
+         HSYbUDPaVjGbPM7nqr/xeLyv0jImwaR7k9k+jwoNG3spZhWhJKwrLwjFCU/7zNu4fC
+         0wMMAXWwpzC9vQZIYu0UYCOS9XSySNh5TvKu2RXg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([2.243.176.200]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LpO93-1irRwh3gjV-00fAjY; Mon, 06
- Apr 2020 21:25:02 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LylnX-1jHOTr3m9X-0169ZZ; Mon, 06
+ Apr 2020 21:47:01 +0200
+Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: fix null de-ref crash during probe
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: core: move 'indio_dev->info' null check first
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -70,49 +72,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <50f3bbed-c46c-b28d-cf7d-101582df1c53@web.de>
-Date:   Mon, 6 Apr 2020 21:25:01 +0200
+Message-ID: <4ff0776f-b5de-536a-ccf9-7516f1a65d87@web.de>
+Date:   Mon, 6 Apr 2020 21:46:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:748UCxK+Cus5Jli/LgvN0EoVmqE8d5tD66YvuMfLGH9qQZ4AxQ7
- qBvXZUIfWB0ynHiN/6cWkWwWgFlt3IUuM0+ATwBlF2p7IcMrATOxYUJfNu8lkt9Docmyaf0
- qH/AW0vfUzWugOAcuu2GD6199op/+794EsFQ8EX0b/GDxD9+bFMJoT76MYn2An7uo4nD4Nk
- sXsLKa5zzY+I8XLukAtog==
+X-Provags-ID: V03:K1:nTkTxTA1SZNVGPWwxO9KOH6GehbIAhymhujo1VqWuIDAZu/B7nk
+ MCk7vNIcjXdXG8m99Hf9+4rT8A2L1EIEgweTFPC/fvj3RZxkuvEN07wlV47ftwn4xOJLImZ
+ bWF5ScRJc9+cKsTcXRENIhb0P/1IUoc+5eSKMXytIG83sfMQbd5FacDhU8qQGJDekFwlsx2
+ 2KGnEOgc1rc2MWYVhVYag==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IuD9KdJqZHw=:6X5syDb5rh1YnLayrCTx7R
- IaEi229Ot4Ysivrym/kNQpQeBI9wbqBt4nkq5oAz0olF0n9xB0vTuzO63/XMkLUl9vYO6Km+Y
- d7amGd7ln5yp5RxDUUOIU5KPK17atnptB68oFHUiJeqyW3/IAsTtmk9TvWyZWAXwiNnNPHRT+
- 4nNyD+cqb33+9G7c7LKfJ/ZNJqvI6/5NQl7BkaXfSpmaR+3dVIqJhE/SgBDoMlTohi+nFy0Rd
- IY61KVZQoDb/bnUxquw2sL9e0L0jLEfum8pCAmAlo8IJ7goWxSGbMABRGMr10Z3qDmVWE7xsJ
- 7Hch4fkYW6E1sHcigfHWzxIxSA1BgxIuiY5p/NeUTPTOS5y3x/sz3d55snyZQqrl+tefEyBv3
- DAAWFRtzGiJCbSq5QWCyauqptZ7lC1B67vxVkaynM4MgsT3P70eUejM75ErmPZKLIxdxZBtHB
- 3fE2CeHEmd9g9wuOwMM1b3LFU2EkPpOXTBk/cnq9xTLRXx/Xew71ItdXANRuggfNav0QxBasE
- cogBOpw/SN/yPZW2rUB0D1aF7NZeXoOy9NIIbZEff3tK76ayyjGe7oO0CA4xTbe6HgakEZj1m
- QZmR4fIqQSIzRiM23VpAxxuL8LUdH7LKS3aWlCi9L6AwQd/ynsTeY49zCW+LosqZf1wy/qmIU
- 1710zOVhMuoiSA/UXwJKrWxeemBAiZM6u+4F9Y/haNkEX7IsAhNTEAWS2InUpVO3wm01Sdt5G
- GiUVTDMFqAmAgrbSDfHR6Tc0yBXabBFHRydCUmtGwze5ZgN4/2BlYOh34zyhNS4Zw2vGp/89n
- NkETKbyEfascVhSXIwFdzV0ZnUcGpDO6Iq6MIFXwn/SUGJtx5HEsS0yR/k4ktAr9ojQF0MmGP
- GcNkIDXPMqhf2oGUyFOE7R3+aVOutUTd0FDb912jixa/we4H5GD3axl3dP/eP9bSeMFHQLn7C
- plc8dHTa6K0Mdus2Osk2bF0KHRHEWrUcaQpxf5FJRkMl9wCSrYv8K4spwwwXRGAU5bcnzCDVt
- kysuXSAPtYURUGm1Jt4M0YPYlKiApzj3Wc6i+4OcSpAEZrNMueYAbcQX2nMXhufBmMGQTEutU
- 1dbaNTkGZkGf9Mc9On6qfxjMMzvMvtT8DQMfZOGathXV4bSNYXKiWZ0dk+ki9PUKbUKyni8LW
- JlsQ+o5xNQ0KdhnvAiB48m7t8LEIY+Wom9LAuVuZZGIt0f5nK9aF/dZ4x1DksOAZRJWdvv9vr
- GyaxyVf8r/g25Xrba
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QVlMxmMQ314=:T53pCEETDaqWsriQ+Vhxn0
+ e6PTAp4Iqn7Qz+DDFavIHC3Jd2gjP9BBAeTvWu8o0OpqtlFYZXFDmnZaLEl2LtDn/fZbs7ux6
+ YNBX1Qpo5tnPsMZCVKsBgJJtB+iv/muKrsTa3QgFQOr9vzfgZd44bDT/3lbeVXpWdZjYcAdRh
+ 74AP+xVM+oATPH+WlLDRJhnADqdjjAJsAAQz55x25/8WAMQWAaZDbf8DcOcc+gV2sAjbKEYmq
+ fz+OGlfm5Kn0NIP1R9qWbOmsx727OO2TZacmRBJO4k6Jr8bKe86kmOZI2DnVYCUNr8OI/ctHe
+ Zx+4bgi1Pmz6BBdPnRhO046Y8cVUaLTmPPT0xpJoJiAIC0Gqvo7SsJgnmhbiWZC6oxvulGcWr
+ JQtT3adGy05tiSEfSFNokO/H58sypdrndbqKJg6upblYyYc2nnUWKEaS/ChFyLgjlOx1PsBe0
+ d2rL149mh3U/eQHnlYNCjSipi9ci0wwv+8YHPq0X3i5nbsjJzm7/89Ds/shFKnEcoQNKEJYkJ
+ +wqjaIjF9PiDfcuAsy0DDwVnRkqdo2OT7vdOH66BW7ncL6s6ksUA6NUOMQG8aD8oTAUthS204
+ lTFtF5+fe2xlyEQzTCFSCOEWnahxZUVhNZTxiusDHb7AQYfhUmVKmVxC9jtmEyTp+e0VC0y5r
+ Y6it3dHl5BXA/Kiwb4P1AsFCoSC0Gdp+UAN5eALfOaJvsVKHhTyghep92xL3PHhhJdj0b55/g
+ EI3v2zSUyMQbrGUWLdfSKgKrYsYqm+vy0o5WYm4IPQSik1xoGBK0xNVAv0PshLXUiwDQjTwjy
+ t+miPb/MJo2/x5QfSXVS8YTzImCmGFHfVW0EuQ0iRVJDiSxHMF7sKVaoI5Q67EZkLrGFKoZ8a
+ GcgjyBkipctXisvvpK9fpQ9xLf9x5aUIdZwrgYAvK2WOEhrxSL0oX7l89svCduuDARgzmzqV7
+ 3Z6n1J0KRriP7kf/dc2CqFIzhVazAY7mmQWzl1Smeik6kMG5Qo6G03kxDY707kmK1UVVlq/Lm
+ 1ZuYUEMJtOBHQkSfo1T17HbtewV+Tg3saW3oyQYWjGAon0mdN06qexYPtIcS0uUx5KaK5EWiK
+ 4b1kyjmCdEobfG1nNfwD+M2tu8Vblj2tE51oGiWEa8QzYZM92/97QERGkRf2SjsXqIIWEhTJu
+ fSkWy9+LhLdUm/BU1hLvN+QeGhXapRDGeJvWpq0VCh6f6L9MkkkSnnAWeEShJaeKJga0sR35O
+ m8N5eKNhlv/YITcLu
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> Doesn't fix anything. Just moves this to be the first check, as it's ver=
-y
-> simple and fails the regitration earlier, =E2=80=A6
+> After that patch 'spi_get_device_id(spi)' returns NULL, so this crashes
+> during probe with null de-ref.
 
-How do you think about to use the word =E2=80=9Cregistration=E2=80=9D in t=
-he change description?
+How do you think about to use the term =E2=80=9Cnull pointer dereference=
+=E2=80=9D
+in the commit message?
+
+
+> Fixes 66614ab2be38: ("staging: iio: adc: ad7192: removed spi_device_id")
+
+Please correct this tag.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D7e63420847ae5f1036e4f7c42f=
+0b3282e73efbc2#n183
+
+Why was a colon misplaced here?
 
 Regards,
 Markus

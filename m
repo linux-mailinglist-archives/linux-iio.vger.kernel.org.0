@@ -2,89 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 214CC19F639
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 14:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC77F19F670
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 15:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728120AbgDFM6a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 08:58:30 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:52164 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728077AbgDFM6a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 08:58:30 -0400
-Received: by mail-pj1-f67.google.com with SMTP id fr8so1302564pjb.1
-        for <linux-iio@vger.kernel.org>; Mon, 06 Apr 2020 05:58:29 -0700 (PDT)
+        id S1728274AbgDFNIU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 09:08:20 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:41852 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728154AbgDFNIU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 09:08:20 -0400
+Received: by mail-pl1-f196.google.com with SMTP id d24so5883268pll.8
+        for <linux-iio@vger.kernel.org>; Mon, 06 Apr 2020 06:08:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uKXJdflQY9JNUXXfN4nUV8l17pl4e2lUC4+pC0EJojw=;
-        b=RdQ3MqSxxe0Jk2+fEjSe5w5OkXvT273878MLixZJdq9VeSJNpLbafhrOMR24QzQhGE
-         LrC+XrnLoKxmWhTOHVb2sbJfTy+Evcpca2UrMZo2U2Z2oRuVU0APNbz0zsxacWkXXQKb
-         7U211v9QF1dIaAeWqoCK0RXZnZD4QfErhtIOsw7RhCvlYBkFhcwdHRTQUBFFFLoTXshn
-         k/e5AkLPqiezfrPefsYzOFzg+VgtgI2tSTVdOO1MZEj3WDikouf6dBV03Sr3MssWr6et
-         51ho65eaiTfI7wm+ocps8cbtYRgZzlbgYU3dLmDsB0e7m+GTVF1bFzNP1RlTOX9RJiKx
-         QiLA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1o4gaBgpPeWl/lKYWr3kiJTV7bXRiAZ0S2t8VEJHdw4=;
+        b=li5xCr1k3GEGhtxErghBoY23iQHYazmG5QOBN8owoRPV4WClcBUcUin3hIP6Lc1Ofd
+         pcUAVHHLfX2rlA8FPtpB1ECMTPlc1Q8D4emjujTNUuamGP99/zEfIXo5clGzS4UnJIld
+         7Mav/0t98lzHK7STzimY9FHRiVr9/uxBn3tqwTlsHFNyb7IFFoF+uFi5bUTpGLbIg7EU
+         03BTQMi834udph9wB+XJ+HW44y6QEqmny4cv5DZ0qgfIraI48191NkD6miLlKyUK3fFi
+         exhz3EI53Z1tel15GLJPz9cNaFzZsKjUufO2FgdUFSRi3stETc7SnvfXPV+cb1Sm+Z8R
+         XXcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uKXJdflQY9JNUXXfN4nUV8l17pl4e2lUC4+pC0EJojw=;
-        b=m6iRu7mF+nSNAH6O0ln4jQjp8NbCKHbY58zWmINiIPnwtRww8v0EpBwYQYKL9c6Yit
-         E6Nh0Lzd1i/EfKuUz21aQc0KjakL6VzmoaHDQ75C4ShfVYzzlAdpqqabUYMM+SYTxI07
-         JnKvz1LdesByguFZ0BAodo9VecONVUuzvoSkbvqM87pbZ/79k23ffzTCJN5g10HuTbwO
-         EVgs47DGlWokMi+HKlTPUaaH74eQ5lY8fbG/Uza7VnRNL4Mbcnq3prnkrK6M9ZmjMQCs
-         3/aERcReTP94LJNm1ouMutv4XTRkaCqyz2R5cFRelhVgb6U0A6xg5ezjhs2W7FX05awP
-         gwPw==
-X-Gm-Message-State: AGi0PuavZQHNcA7S+u3yr+SUb4LP0NUSnGiseXgZRh2N6Uqe8bVWUD7i
-        huXJkOs5fRF81CVRTji/lNHgPoqjss87InNkwaA=
-X-Google-Smtp-Source: APiQypJeByCQgdf9R5/wMD+nqcsNXz+JCuoArFbFLfIeHEnnqw318jeAaB+MCCRChdUaAVdeltxMjfKDJJnzkqZgSA0=
-X-Received: by 2002:a17:90a:8546:: with SMTP id a6mr4404219pjw.8.1586177908717;
- Mon, 06 Apr 2020 05:58:28 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1o4gaBgpPeWl/lKYWr3kiJTV7bXRiAZ0S2t8VEJHdw4=;
+        b=bjAcycCDMc04xbTjdx8iyB6+W41jaGRM1Ghq7NBnjrNO+3WRU1LVPXM14lrYQ36d/K
+         r+CvgLNaEsEOZZxlWetvbG1OQrvLNRWE0WO3csgfKXRhnGKMJTI+Py9WXbmjmda+TN/6
+         L/7i7Im0Glmy77TTmOl9PeaFUuWKIPE1DqWJp83vWmXp0WHF+GXmzPIe1DRuZTgWFpEt
+         h0XNEEMx5GOBeZnvT+99f+ugBL5F01diYc5DN0bpVe7h8UeNWfKhBXr8Tz4zcUdADAK5
+         sr8eQoK1yc/6agU3alvP2OTo+1fNaKpdR6usqkvaT1eFO3EcLWvcGvGLWkOx/9RJYyiv
+         VD5Q==
+X-Gm-Message-State: AGi0PuaH/LgIxt/iRKAria3Gd88UWph3jV2Err8VUcDtuMg9zV8ZZSFQ
+        bAYFUB/wuyUMRtolCGEkvZA=
+X-Google-Smtp-Source: APiQypLd+6McGAgvmYACrWhpOdS2g9zwXctbQrHGEoRrc4DI3u95Q6lV30XAsF4LAdabHHnhuOg48A==
+X-Received: by 2002:a17:90a:30cf:: with SMTP id h73mr27513694pjb.189.1586178497370;
+        Mon, 06 Apr 2020 06:08:17 -0700 (PDT)
+Received: from himanshu-Vostro-3559 ([103.83.145.32])
+        by smtp.gmail.com with ESMTPSA id v25sm11036294pgl.55.2020.04.06.06.08.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 06 Apr 2020 06:08:15 -0700 (PDT)
+Date:   Mon, 6 Apr 2020 18:38:09 +0530
+From:   Himanshu Jha <himanshujha199640@gmail.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 3/6] iio:chemical:bme680: Tidy up parameters to
+ regmap_bulk_read
+Message-ID: <20200406130809.GA21539@himanshu-Vostro-3559>
+References: <20200405180321.1737310-1-jic23@kernel.org>
+ <20200405180321.1737310-4-jic23@kernel.org>
 MIME-Version: 1.0
-References: <8593125b207045797adb9406aa2d3d2f43c30153.1586170271.git.lorenzo@kernel.org>
- <CAHp75VcqZ_VDD69wToo6LQqsawkEA_oPFQanSoFOT1gSgOrXZQ@mail.gmail.com> <20200406112006.GA5890@lore-desk-wlan>
-In-Reply-To: <20200406112006.GA5890@lore-desk-wlan>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 6 Apr 2020 15:58:21 +0300
-Message-ID: <CAHp75VeCfhNC4ky2UjAyyGcqMq2GF_crHUavVCrRbos-74_Pew@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: drop huge include in sensor-hub driver
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lorenzo.bianconi@redhat.com,
-        Jimmy Assarsson <jimmyassarsson@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200405180321.1737310-4-jic23@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 2:20 PM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > On Mon, Apr 6, 2020 at 1:52 PM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > >
-> > > st_sensors.h contains common stm sensor definitions but in
-> >
-> > > st_lsm6dsx_shub driver it is used just to introduce the default
-> >
-> > Still doesn't fully clear why only this part of the st_lsm6dsx is not
-> > okay with the header.
-> > You need to explain that common/st_sensors is for separate ST sensor
-> > drivers, while LSM6DSx is a driver for certain IMU which *does not*
-> > use ST common infrastructure.
->
-> I guess it is pretty simple and evident: we did not use it at all before
-> the LISM3DL commit and at moment we need it just for ST_SENSORS_DEFAULT_WAI_ADDRESS
-> definition. It is better to hard code the value directly.
+On Sun, Apr 05, 2020 at 07:03:18PM +0100, jic23@kernel.org wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> A mixture of:
+> * Unnecessary casts of val parameter to u8 * which makes little sense as
+>   the function take a void *.
+> * Explicit sizes where we can use the destination type to define that.
+>   Note that's not true in all cases as we do read 3 bytes into 4 byte
+>   destinations.
+> 
+> Note that noting was broken here, I'm just trying to ensure this doesn't
+> get cut and paste into more drivers so cleaning these out subsystem wide.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> CC: Himanshu Jha <himanshujha199640@gmail.com>
 
-Yes, my point is that for a reader (*) of this commit message is not
-fully clear why on a sudden we did that.
+Acked-by: Himanshu Jha <himanshujha199640@gmail.com>
 
-(*) the reader may not know full history.
+> ---
+>  drivers/iio/chemical/bme680_core.c | 36 ++++++++++++++++++------------
+>  1 file changed, 22 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> index ccde4c65ff93..13773e01699b 100644
+> --- a/drivers/iio/chemical/bme680_core.c
+> +++ b/drivers/iio/chemical/bme680_core.c
+> @@ -114,14 +114,16 @@ static int bme680_read_calib(struct bme680_data *data,
+>  	__le16 buf;
+>  
+>  	/* Temperature related coefficients */
+> -	ret = regmap_bulk_read(data->regmap, BME680_T1_LSB_REG, (u8 *) &buf, 2);
 
-> > > wai address for LIS3MDL sensor.
-> > > Drop this largely unconnected include and introduce the default wai
-> > > address in st_lsm6dsx_ext_dev_settings register map
+This was exactly 80 chars ;-)
 
+> +	ret = regmap_bulk_read(data->regmap, BME680_T1_LSB_REG,
+> +			       &buf, sizeof(buf));
+
+
+FYI all complex maths + calib reg addr is now available
+in the latest datasheet.
+
+
+
+Thank You!
 -- 
-With Best Regards,
-Andy Shevchenko
+Himanshu Jha

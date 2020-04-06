@@ -2,146 +2,287 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B3819F01B
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 07:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CDD19F0D2
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 09:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726492AbgDFF06 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 01:26:58 -0400
-Received: from mail-bn8nam11on2049.outbound.protection.outlook.com ([40.107.236.49]:64139
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726474AbgDFF06 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 Apr 2020 01:26:58 -0400
+        id S1726509AbgDFHdv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 03:33:51 -0400
+Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:53008 "EHLO
+        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726491AbgDFHdv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 03:33:51 -0400
+Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
+        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0367ScAL002564;
+        Mon, 6 Apr 2020 00:33:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt1;
+ bh=4n3qPraFfCDpMJrmkBdBXQrOFLGiQ1Xm5RD5s5j0vBg=;
+ b=W4RtP9kKcOh7I2UWuNnn3W7shpvqlDgoMpcADjSigmJniY0GgMS0Arq1ks13zTOVcdNP
+ JHVucUtAbqfB4Oxyqja0B2laGxbHuW1ziAlXvDt/4IAOmTa5ywTScfJ8h1lIpOwvZ1md
+ nG8OIpnJC18Gj83Y/voGsOIxyxcZEZbE4SlRLaFRX4Lwn17yGledM6QGSxhIXyoPBjLR
+ 1wAyF9b4LFax1lpz/E2GjHai+xqdbt8UHDpe+tYeWc8JUjgRt09aV3rrEIZwlvxBYyAq
+ tX6mSc5JH68bsSvkIrl3JssSYLnVSPrzvq7Ecu/S9CxyWY0MkAFbo1n1wG0eP2VpjBuM Ww== 
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
+        by mx0b-00328301.pphosted.com with ESMTP id 306xk1gecc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Apr 2020 00:33:47 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k4B78RZ12bvnw/3/mYks+xUnXWEiNGzscewwS0PIjq15c1fLU/1rh+bLYAs7/00c1p+AuKWYsZWm60J3OlbWwgkMN0CUVzs32kDPVj3TqwdhbYgiBtWblMkHkyZb4gDQTQfxuJYKW23Y8cB3v80ECqO9KUTpC5tJ3U6XbW3Phyao4MfqkulRyNmvgJU6CcDIOzl8rtC0etWROn6cUuFwnNHsPvNCbSe4JhFuGv4Tg9s947lDVMQugw+jMatKC0ys29P4YMooRDbx+9xy4P595+nXcm7Y5lcO41Jwd+gD36+9GehuRmyber+nqe5PCVz7ghlWMPBZbBq+8+GT3pKjpg==
+ b=Sfd+jZz68LncmQA6B1fRkEjNI8zDpzg0VtyuCwlIGXbvK2mCMY6VMXnFKxP/T3zVG6BopXKG0UziNrL/gWsVk4RKHSudMkaRRDtOD/XqNc9tGoIHnH3pWf7/zNGbZGhyhTQuAu8GZR1YBf1DykfBRzeCQR5ffw83NdhHFdjWFZlm7cxi9k+F/UC12J8dopgWjsyHmT7GR7afQ6xnS+VGYKEEvDdw99rPZBbFmw0PmdOZjsiIIEpt0KpDKUcLHjTGOs3x5ivhoSgp/Njx2hrxty/1cuHfkMqqZw+y0b4klb+ICLB/j3PH2DNRZBjRiVlMV4nAil9HMVxiUl2rVXhUlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ht2vboZnZiRfauaKcfMGnX06q5cpJsmvHlK6kllRLIQ=;
- b=ddCwIp3UxHc3wZRF+2y8dqlv5gdjXqpkEYBepsV/oVUog9Lr3woZwWtBxz7z4LCe9EIfxPcw0ZcglKUOMxb9lla0c8F2LRcF96QGZPAhBYPeMMGa7RBhR0T+V2GWcSO9SxtFObEvIanLmcsVBI8YnRRMPevuHRAWDN4xkjqy7aWN5Umwz4FqFX95wkqfLUCQZQjC6mMUUt50tD3G2yBiDBuKn9uhJz7nENmQkJug9ND9vfNQ2m1cb+uhKE0/HKDW1EU0MQidlQMWLWlEYN5OzHdkYyMpPGKQRWl1iH6YMNnQcTKotEIo8OoVJxlSI1MsAeQs6cn90dM58pz+G4CVLQ==
+ bh=4n3qPraFfCDpMJrmkBdBXQrOFLGiQ1Xm5RD5s5j0vBg=;
+ b=Ph79f1AwvtboBJMCXx3iSp1vbgxpDz8dnmE/U0CUD0dqFUsLAugTOVCK8nis9dInADXunFaeHadORQwFWbHPPSV/gJQC7DYiS6E+UuN/0PrkwW64/6OA/eyHAfZzvdn1fuXljdUEAcDv+2gkUZs69pco1sQ6SeMGAIv/BJo0bW69IlGzhSqGbswkUDLhRjgS0qLIOvldCrPDNkCLDoHvJCSnO8fXGzWoLMnvoO0NohZJXkOVG+J6Bu4a6bSwVTBusChiXtoSgMPM/J0Vubf9pmjMgMlhIa+ZIato7DvMyC9zECIo1le2MLg5xa2dX/lsT5prmZej09fCy1y9T7NUeA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ smtp.mailfrom=invensense.com; dmarc=pass action=none
+ header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ht2vboZnZiRfauaKcfMGnX06q5cpJsmvHlK6kllRLIQ=;
- b=I2aMpEf4GaWKdchwjTuzOj1I+9rRMNp324QCMopafU0ubBWzF/F9k6nDuyC1l+LCL41KJGltx0RDdYkcIp9fYguzmcCcZ8NJa1bWDS7RW3TGllffrvVNSdLLZWyDixS/Pj+eEiLcQj9dIRPUv3jfwV1/kB7YxIVaNLFXZhY8cEg=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Nehal-bakulchandra.Shah@amd.com; 
-Received: from BN6PR1201MB2467.namprd12.prod.outlook.com (2603:10b6:404:a7::8)
- by BN6PR1201MB0018.namprd12.prod.outlook.com (2603:10b6:405:54::8) with
+ bh=4n3qPraFfCDpMJrmkBdBXQrOFLGiQ1Xm5RD5s5j0vBg=;
+ b=jDVdovtpL69Ki/VZp84pmeTn4kmsp0mLnalPw7dbDMFzly8vjushQkija+pMg3rK5sL/rLrsWu919J/sCPMoeoq8YK5skeWjk0meVe9XcWQVBa7HKAIvW01BzwpM6klXtdgQ3j2etKZauQtyjaSij/7+1Uillw4dD5OoRgwmHj4=
+Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
+ by MN2PR12MB3311.namprd12.prod.outlook.com (2603:10b6:208:100::32) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.19; Mon, 6 Apr
- 2020 05:26:52 +0000
-Received: from BN6PR1201MB2467.namprd12.prod.outlook.com
- ([fe80::8daf:74d4:cbe4:759]) by BN6PR1201MB2467.namprd12.prod.outlook.com
- ([fe80::8daf:74d4:cbe4:759%12]) with mapi id 15.20.2878.016; Mon, 6 Apr 2020
- 05:26:52 +0000
-Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
- fusion Hub using HID framework
-To:     Richard Neumann <mail@richard-neumann.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Sandeep Singh <Sandeep.Singh@amd.com>, Shyam-sundar.S-k@amd.com,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
- <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
- <4fe47b0323c1d65d429ee89b000e8bfcd984495f.camel@richard-neumann.de>
- <896f84bc-f0d6-59a5-c894-809695aa348f@amd.com>
- <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
- <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
-From:   "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
-Message-ID: <3ffc343e-c44b-1b4e-993e-179a13dc928c@amd.com>
-Date:   Mon, 6 Apr 2020 10:56:33 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-In-Reply-To: <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.20; Mon, 6 Apr
+ 2020 07:33:44 +0000
+Received: from MN2PR12MB4422.namprd12.prod.outlook.com
+ ([fe80::7471:da8b:8ca1:6af0]) by MN2PR12MB4422.namprd12.prod.outlook.com
+ ([fe80::7471:da8b:8ca1:6af0%4]) with mapi id 15.20.2878.017; Mon, 6 Apr 2020
+ 07:33:44 +0000
+From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runtime
+ power
+Thread-Topic: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runtime
+ power
+Thread-Index: AQHWB2HEfG9pP8WIw0etsswWO1hkTqhqieKAgAEx0HQ=
+Date:   Mon, 6 Apr 2020 07:33:44 +0000
+Message-ID: <MN2PR12MB44224D20FCD73D198639A5DAC4C20@MN2PR12MB4422.namprd12.prod.outlook.com>
+References: <20200331133850.23757-1-jmaneyrol@invensense.com>,<20200405141549.0f773f5f@archlinux>
+In-Reply-To: <20200405141549.0f773f5f@archlinux>
+Accept-Language: en-US
 Content-Language: en-US
-X-ClientProxiedBy: BM1PR01CA0082.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:1::22) To BN6PR1201MB2467.namprd12.prod.outlook.com
- (2603:10b6:404:a7::8)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [172.31.38.85] (165.204.159.242) by BM1PR01CA0082.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:1::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.16 via Frontend Transport; Mon, 6 Apr 2020 05:26:47 +0000
-X-Originating-IP: [165.204.159.242]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 196808c4-3724-4781-7310-08d7d9eb1cfe
-X-MS-TrafficTypeDiagnostic: BN6PR1201MB0018:|BN6PR1201MB0018:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN6PR1201MB00185D46B46A54119CE11346A0C20@BN6PR1201MB0018.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-Forefront-PRVS: 0365C0E14B
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR1201MB2467.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(366004)(346002)(136003)(376002)(39860400002)(396003)(6486002)(5660300002)(966005)(4326008)(16526019)(26005)(81156014)(956004)(2616005)(6666004)(8936002)(36756003)(186003)(8676002)(81166006)(52116002)(16576012)(7416002)(31686004)(110136005)(66946007)(478600001)(66476007)(31696002)(66556008)(54906003)(86362001)(53546011)(2906002)(316002);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [91.174.78.156]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8a7856b1-c7cf-406f-6dd4-08d7d9fcd615
+x-ms-traffictypediagnostic: MN2PR12MB3311:
+x-microsoft-antispam-prvs: <MN2PR12MB3311A2FC754BF4E2E7E8C6C6C4C20@MN2PR12MB3311.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0365C0E14B
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4422.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(396003)(376002)(346002)(366004)(136003)(39850400004)(71200400001)(5660300002)(9686003)(55016002)(86362001)(81166006)(15650500001)(52536014)(76116006)(81156014)(478600001)(91956017)(316002)(66446008)(64756008)(66556008)(66476007)(66946007)(8676002)(8936002)(26005)(53546011)(7696005)(2906002)(186003)(33656002)(6506007)(6916009)(4326008);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: invensense.com does not designate
  permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8LofnWlv0Of9XvnyvvaNd1LoKUfDu6g3LIglJKaEsKVJsVOP5S5moulG8TyIohgdrWi6W3ONiYVFEGPfo7BB67rcXbQvXIK8GseQQ1797dYixXwRCoBvipaOyv4R3RtLPruDkd6ySqSNWUgqJeXSgZivdrdOabRMJq3sjmhQGDcD6Fiw/oDeMmr08Tnyw0Kb0ZyNNFaY3rBVBZkNka8tEuF09wlFP+9J66TIBty969iM8zKESw/+BrV2TC5UdZgpw7LIhrKYF2Ud1aAx9r69CdiozsxPQUBlAyKG9RWq5UL+NBdnirrAmDnZ9zGfdOcAqGlBu0+MORfrghviEePezq31WquPRICic2WvdjM2eXRs0+lPwtXb6CVBiXIPplXcL+Tb5COlZ9qcGvc/Vg6xi+YQC51Ximl7KOwg3lLO6cY/FMsykhVwb1j0XiQ1RZgLmW+UcRlVYZZsVBkjA4hZfDSqNus/eMHGjpuWOQSFDO8oyw3ZZ6akeIPsKw5s7qvbs3IKsYIh8UpLHGV4ANbfEg==
-X-MS-Exchange-AntiSpam-MessageData: Q7qTfmeCDSSiyS8uh6cST9+4iqBQnlWWBMyWGGn4z9rbmXlPO49guPvhCrRwyxPZ+x1lpEabxtp56TaQiRDJumLlrQTadKURMNk1BlL1pNeD8Y5Nlzi7LEZwyF0djRIT+cArcYMbk3XUbIAwBkpjlw==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 196808c4-3724-4781-7310-08d7d9eb1cfe
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2020 05:26:52.6832
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: JsN9vMmNQFRz7JlXV/gxYTo3KS6yFq6hHTjQ7m6zjk52BVxaf+Ui5gXsKUJ4mODnHx79nHH0xS/MIp4rET3YL23YcNeTCmOYEtlrQ8AMfEP7SKkGcjT2OenTon5KSVAfFsVTf034ivHGM4Eee4MJKxN4zly32izyLvC8EhWYvHJBu/3HkTmOqQfqzoV7KylOcpeAyoDDul7xL++9oMoP7IWoCMydgEhUBhBZbOHr18NcFBZBk0sKnyAEvs3Y+lyAEE6l0ZN3fF8ixYKrmv4WH0kiXY4vp56qPwg5VUkJD+PpBwo3+c9HhSdA7ymM3O+fC5h5yoWePK2evEG3fmGSiOsZbS4l6iU+xjYR9Tl2EWW5gSgtZ8EnA9KkJMYU5UnspByRdN3oo0bVjJizIFKbbtNHhTSx+YWiMHTxleAYhvCissjiQnKaF5k3F62UFeSc
+x-ms-exchange-antispam-messagedata: 2lR6vKqXXZrKSXXpGsp5x0vZXBPv4tjKIZ5DK6PV8qLLuV+y4IuWDvO8qffu72kZTbAfdXFTeHchd9AduvQXgRLQlfyyE0lBpAlpFcsZ9VJUtPmj2MgRwKJ/icuo6ENQby/E8tHNqldS2Sozpc4bRA==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: invensense.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a7856b1-c7cf-406f-6dd4-08d7d9fcd615
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Apr 2020 07:33:44.0529
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LuTMvzWAM66uXzsA7QncnUWROhLzkdI9C3MV52Jjdg0p4PuzgNshm/zZl9sLfvAo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1201MB0018
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: z1xPCAv+jmh9XaWWJOfAhe4A2SDPKYHDjEIQXwuIdxh9IOJ2PbzVnKf2uqlARR1U5/T7HYehRbbgvQCazn07Pb02J0M8mUE3cY0dp8w1riU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3311
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-06_03:2020-04-03,2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 clxscore=1015 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004060063
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-HI
-
-On 4/1/2020 9:58 PM, Richard Neumann wrote:
-> Am Dienstag, den 31.03.2020, 20:24 +0300 schrieb Andy Shevchenko:
->> On Tue, Mar 31, 2020 at 4:26 PM Shah, Nehal-bakulchandra
->> <nehal-bakulchandra.shah@amd.com> wrote:
->>> On 3/31/2020 6:01 PM, Richard Neumann wrote:
->>>> Not a real review, but your patch series seems to be repeating a
->>>> lot
->>>> from drivers/i2c/busses/i2c-amd-mp2*.
->>>> Is there any chance we could re-use the code?
->>>> E.g. the AMD_C2P_* definitions from drivers/i2c/busses/i2c-amd-
->>>> mp2.h?
->>> Thanks for the mail. Yes there are some common structures, however
->>> as of now we have kept separately considering both
->>>
->>> are part of different sub systems. But may be will consider this
->>> input for future enhancement.
->> It can be done in a form of shared definitions at least in
->> include/linux/platform_data/x86/amd-mp2.h or alike ...
->>
-> I managed to add support for the AMD SFH PCI device to i2c-amd-mp2* and
-> outsourced the headers to include/linux/i2c-amd-mp2.h. [1]
-> I also refactored the patch series (excluded the documentation) [2] to
-> use the PCI device now provided by i2c_amd_mp2_pci and removed some
-> duplicate and unncessary code.
-> The driver now consist of just one module (amd_sfhtp_hid).
-> Unfortunately I was not able to solve the problem, that I get AMD-Vi
-> IO_PAGE_FAULT errors when not booted with amd_iommu=off.
->
-> [1] https://gist.githubusercontent.com/conqp/4d726f86da8a8397d6e70091a124de67/raw/f97e88a0b44d98bfa1258cb73c8afe4dce7afa87/i2c-amd-mp2.patch
-> [2] https://gist.githubusercontent.com/conqp/67036e690aca89d08b958971edac283d/raw/2a1ef122f9c8c8e07164b6d597962ce7bbad6d45/amd-sfhtp.patch
-
-Thanks for the patch and appreciate your efforts. At this point of time, we would like to have our first patch for SFH to be upstreamed and dont want to complicate the
-
-with two sub systems and maintainers. Surely will consider this input for future enhancement. Thanks for your understanding.
-
-Thanks
-
-
-Nehal
-
-
+Hello Jonathan,=0A=
+=0A=
+there were 2 issues with suspend/resume when the device was already suspend=
+ed by runtime pm.=0A=
+=0A=
+When entering suspend, there was an error in logs because we were disabling=
+ vddio regulator although it was already disabled.=0A=
+And when resuming, the chip was pull back to full power but the pm_runtime =
+state was not updated. So it was believing it was still suspended.=0A=
+=0A=
+Do you need a new patch with full description?=0A=
+=0A=
+Thanks,=0A=
+JB=0A=
+=0A=
+=0A=
+From: Jonathan Cameron <jic23@kernel.org>=0A=
+=0A=
+Sent: Sunday, April 5, 2020 15:15=0A=
+=0A=
+To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>=0A=
+=0A=
+Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>=0A=
+=0A=
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runtime=
+ power=0A=
+=0A=
+=A0=0A=
+=0A=
+=0A=
+=A0CAUTION: This email originated from outside of the organization. Please =
+make sure the sender is who they say they are and do not click links or ope=
+n attachments unless you recognize the sender and know the content is safe.=
+=0A=
+=0A=
+=0A=
+=0A=
+On Tue, 31 Mar 2020 15:38:50 +0200=0A=
+=0A=
+Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:=0A=
+=0A=
+=0A=
+=0A=
+> Suspend/resume were not working correctly with pm runtime.=0A=
+=0A=
+=0A=
+=0A=
+Need more info than that!=0A=
+=0A=
+Anyhow, when you say "not working correctly" what is happening that=0A=
+=0A=
+is wrong?=0A=
+=0A=
+=0A=
+=0A=
+Jonathan=0A=
+=0A=
+=0A=
+=0A=
+=0A=
+=0A=
+> Now suspend check if the chip is already suspended, and=0A=
+=0A=
+> resume put runtime pm in the correct state.=0A=
+=0A=
+> =0A=
+=0A=
+> Fixes: 4599cac84614 ("iio: imu: inv_mpu6050: use runtime pm with autosusp=
+end")=0A=
+=0A=
+> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
+=0A=
+> ---=0A=
+=0A=
+>=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 11 ++++++++++-=0A=
+=0A=
+>=A0 1 file changed, 10 insertions(+), 1 deletion(-)=0A=
+=0A=
+> =0A=
+=0A=
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu=
+/inv_mpu6050/inv_mpu_core.c=0A=
+=0A=
+> index e4b0d368c2f9..a58bab03f0b0 100644=0A=
+=0A=
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
+=0A=
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
+=0A=
+> @@ -1636,6 +1636,10 @@ static int __maybe_unused inv_mpu_resume(struct de=
+vice *dev)=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
+=0A=
+>=A0 =0A=
+=0A=
+> +=A0=A0=A0=A0 pm_runtime_disable(dev);=0A=
+=0A=
+> +=A0=A0=A0=A0 pm_runtime_set_active(dev);=0A=
+=0A=
+> +=A0=A0=A0=A0 pm_runtime_enable(dev);=0A=
+=0A=
+> +=0A=
+=0A=
+=0A=
+=0A=
+Looking at the docs, we should do this if we were previously suspended and =
+no longer=0A=
+=0A=
+are.=A0 Not sure we should do it we weren't previously in runtime suspend?=
+=0A=
+=0A=
+=0A=
+=0A=
+I guess it is idempotent anyway so if we were previously enabled we just se=
+t it again.=0A=
+=0A=
+So probably fine.=0A=
+=0A=
+=0A=
+=0A=
+Jonathan=0A=
+=0A=
+=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engine(st, true, st->s=
+uspended_sensors);=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
+=0A=
+> @@ -1657,13 +1661,18 @@ static int __maybe_unused inv_mpu_suspend(struct =
+device *dev)=0A=
+=0A=
+>=A0 =0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 mutex_lock(&st->lock);=0A=
+=0A=
+>=A0 =0A=
+=0A=
+> +=A0=A0=A0=A0 st->suspended_sensors =3D 0;=0A=
+=0A=
+> +=A0=A0=A0=A0 if (pm_runtime_suspended(dev)) {=0A=
+=0A=
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D 0;=0A=
+=0A=
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
+=0A=
+> +=A0=A0=A0=A0 }=0A=
+=0A=
+> +=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 if (iio_buffer_enabled(indio_dev)) {=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_prepa=
+re_fifo(st, false);=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto=
+ out_unlock;=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 }=0A=
+=0A=
+>=A0 =0A=
+=0A=
+> -=A0=A0=A0=A0 st->suspended_sensors =3D 0;=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 if (st->chip_config.accl_en)=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->suspended_sensors |=3D I=
+NV_MPU6050_SENSOR_ACCL;=0A=
+=0A=
+>=A0=A0=A0=A0=A0=A0=A0 if (st->chip_config.gyro_en)=0A=
+=0A=
+=0A=
+=0A=

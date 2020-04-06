@@ -2,128 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C626C19F475
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 13:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8276819F4E8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 13:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726873AbgDFLUO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 07:20:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51716 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726858AbgDFLUN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 Apr 2020 07:20:13 -0400
-Received: from lore-desk-wlan (unknown [151.48.151.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727447AbgDFLm2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 07:42:28 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:48203 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727441AbgDFLm1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 07:42:27 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586173347; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=uLA+aP168I0ocVcL3/x2EZUaB7OeJIyHoWNUAc8lggA=; b=nQh+pg6BFscBUiK9sp+IS4Bc5xADYGr26Tv/ZAxoggFdo6YXQr5xmOnLVIClpf+gun+L0NbP
+ leBiDB9YOTC4DoNSKAKHa1xqqfflCXdr+GfrGbpGSr+gXmRcUWtZzHVjPH1fnzloU3CtjCFe
+ 6PbUiCZCINQYmmPBZxx0iP+Rts0=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e8b15a2.7f40aa4c8260-smtp-out-n04;
+ Mon, 06 Apr 2020 11:42:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2728CC4478F; Mon,  6 Apr 2020 11:42:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from [192.168.1.100] (unknown [157.44.182.98])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C070206F5;
-        Mon,  6 Apr 2020 11:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586172013;
-        bh=fGQhadMhJmDGDppfU2HYv0Smkyp/qbALVqGc9UmyZ/0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jyewfDpXxas+6yH4QfyQ2ilkzTp2SLQ96NhSk6tY2ETE/2klp5/oBU9If+TIcEeap
-         /dkHBh9s/sbLVIirBkUA2wL0MBL890l2L6Bvy+QQ97UgzZerON1/3H5XpxOdlR5nCr
-         2d3senMW6xuSv/Ppe0UQO0/EA6LpKf3sm41PfTF4=
-Date:   Mon, 6 Apr 2020 13:20:06 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lorenzo.bianconi@redhat.com,
-        Jimmy Assarsson <jimmyassarsson@gmail.com>
-Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: drop huge include in sensor-hub
- driver
-Message-ID: <20200406112006.GA5890@lore-desk-wlan>
-References: <8593125b207045797adb9406aa2d3d2f43c30153.1586170271.git.lorenzo@kernel.org>
- <CAHp75VcqZ_VDD69wToo6LQqsawkEA_oPFQanSoFOT1gSgOrXZQ@mail.gmail.com>
+        (Authenticated sender: jprakash)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01F4BC433D2;
+        Mon,  6 Apr 2020 11:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01F4BC433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
+Subject: Re: [PATCH 1/3] iio: adc: Convert the QCOM SPMI ADC bindings to .yaml
+ format
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mka@chromium.org, linus.walleij@linaro.org, sboyd@codeaurora.org,
+        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
+        kgunda@codeaurora.org, aghayal@codeaurora.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Andy Gross <andy.gross@linaro.org>, linux-iio@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
+References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org>
+ <1585064650-16235-2-git-send-email-jprakash@codeaurora.org>
+ <20200328165113.6fdeedd3@archlinux>
+From:   Jishnu Prakash <jprakash@codeaurora.org>
+Message-ID: <f53cd9f7-333d-9bc7-b545-236e0b9efcac@codeaurora.org>
+Date:   Mon, 6 Apr 2020 17:11:56 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
-Content-Disposition: inline
-In-Reply-To: <CAHp75VcqZ_VDD69wToo6LQqsawkEA_oPFQanSoFOT1gSgOrXZQ@mail.gmail.com>
+In-Reply-To: <20200328165113.6fdeedd3@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Jonathan,
 
---+QahgC5+KEYLbs62
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 3/28/2020 10:21 PM, Jonathan Cameron wrote:
+> On Tue, 24 Mar 2020 21:14:08 +0530
+> Jishnu Prakash <jprakash@codeaurora.org> wrote:
+>
+>> Convert the adc bindings from .txt to .yaml format.
+>>
+>> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+> Hi Jishnu,
+>
+> Looks to me like we can tighten the checks a fair bit in here rather
+> than just using uint32s
+>
+> Now, my yaml isn't great so I won't try to say how, but there are plenty
+> of examples in tree.
+>
+> Thanks,
+>
+> Jonathan
+>
+> +
+> +      qcom,decimation:
+> +        description: |
+> +            This parameter is used to decrease ADC sampling rate.
+> +            Quicker measurements can be made by reducing decimation ratio.
+> +            - For compatible property "qcom,spmi-vadc", valid values are
+> +              512, 1024, 2048, 4096. If property is not found, default value
+> +              of 512 will be used.
+> +            - For compatible property "qcom,spmi-adc5", valid values are 250, 420
+> +              and 840. If property is not found, default value of 840 is used.
+> +            - For compatible property "qcom,spmi-adc-rev2", valid values are 256,
+> +              512 and 1024. If property is not present, default value is 1024.
+> +        allOf:
+> +          - $ref: /schemas/types.yaml#/definitions/uint32
+> Should ideally verify all the values against models etc rather than a uint32 binding.
+I'll add constraints for all properties for which it's applicable in the 
+next post.
+>
+>> +
+>> +      qcom,pre-scaling:
+>> +        description: |
+>> +            Used for scaling the channel input signal before the signal is
+>> +            fed to VADC. The configuration for this node is to know the
+>> +            pre-determined ratio and use it for post scaling. Select one from
+>> +            the following options.
+>> +            <1 1>, <1 3>, <1 4>, <1 6>, <1 20>, <1 8>, <10 81>, <1 10>
+>
 
-> On Mon, Apr 6, 2020 at 1:52 PM Lorenzo Bianconi <lorenzo@kernel.org> wrot=
-e:
-> >
-> > st_sensors.h contains common stm sensor definitions but in
->=20
-> > st_lsm6dsx_shub driver it is used just to introduce the default
->=20
-> Still doesn't fully clear why only this part of the st_lsm6dsx is not
-> okay with the header.
-> You need to explain that common/st_sensors is for separate ST sensor
-> drivers, while LSM6DSx is a driver for certain IMU which *does not*
-> use ST common infrastructure.
-
-I guess it is pretty simple and evident: we did not use it at all before
-the LISM3DL commit and at moment we need it just for ST_SENSORS_DEFAULT_WAI=
-_ADDRESS
-definition. It is better to hard code the value directly.
-
->=20
-> > wai address for LIS3MDL sensor.
-> > Drop this largely unconnected include and introduce the default wai
-> > address in st_lsm6dsx_ext_dev_settings register map
-> >
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> > Changes since v1:
-> > - improve commit message
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > index 280925dd8edb..947ca3a7dcaf 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > @@ -28,7 +28,6 @@
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/bitfield.h>
-> >
-> > -#include <linux/iio/common/st_sensors.h>
-> >  #include "st_lsm6dsx.h"
-> >
-> >  #define ST_LSM6DSX_SLV_ADDR(n, base)           ((base) + (n) * 3)
-> > @@ -93,7 +92,7 @@ static const struct st_lsm6dsx_ext_dev_settings st_ls=
-m6dsx_ext_dev_table[] =3D {
-> >         {
-> >                 .i2c_addr =3D { 0x1e },
-> >                 .wai =3D {
-> > -                       .addr =3D ST_SENSORS_DEFAULT_WAI_ADDRESS,
-> > +                       .addr =3D 0x0f,
-> >                         .val =3D 0x3d,
-> >                 },
-> >                 .id =3D ST_LSM6DSX_ID_MAGN,
-> > --
-> > 2.25.1
-> >
->=20
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
-
---+QahgC5+KEYLbs62
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXosQZAAKCRA6cBh0uS2t
-rPMpAQDwpRrjJv0tPuO/gkm5Y2jDJFFL/pQzaBeTerEAJ/VwBQEAzkpRWi5jUuTH
-JgImPowL/5WQ5Vh9PTDzzFXr1RP4sAs=
-=SoO5
------END PGP SIGNATURE-----
-
---+QahgC5+KEYLbs62--
+>> +
+>> +examples:
+>> +  - |
+>> +      /* VADC node */
+>> +      pmic_vadc: vadc@3100 {
+> Should really be using generic names, so adc@3100 preferred.
+I'll change it in the next post.

@@ -2,112 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC77F19F670
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 15:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1680119F7DD
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Apr 2020 16:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728274AbgDFNIU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Apr 2020 09:08:20 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:41852 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728154AbgDFNIU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Apr 2020 09:08:20 -0400
-Received: by mail-pl1-f196.google.com with SMTP id d24so5883268pll.8
-        for <linux-iio@vger.kernel.org>; Mon, 06 Apr 2020 06:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1o4gaBgpPeWl/lKYWr3kiJTV7bXRiAZ0S2t8VEJHdw4=;
-        b=li5xCr1k3GEGhtxErghBoY23iQHYazmG5QOBN8owoRPV4WClcBUcUin3hIP6Lc1Ofd
-         pcUAVHHLfX2rlA8FPtpB1ECMTPlc1Q8D4emjujTNUuamGP99/zEfIXo5clGzS4UnJIld
-         7Mav/0t98lzHK7STzimY9FHRiVr9/uxBn3tqwTlsHFNyb7IFFoF+uFi5bUTpGLbIg7EU
-         03BTQMi834udph9wB+XJ+HW44y6QEqmny4cv5DZ0qgfIraI48191NkD6miLlKyUK3fFi
-         exhz3EI53Z1tel15GLJPz9cNaFzZsKjUufO2FgdUFSRi3stETc7SnvfXPV+cb1Sm+Z8R
-         XXcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1o4gaBgpPeWl/lKYWr3kiJTV7bXRiAZ0S2t8VEJHdw4=;
-        b=bjAcycCDMc04xbTjdx8iyB6+W41jaGRM1Ghq7NBnjrNO+3WRU1LVPXM14lrYQ36d/K
-         r+CvgLNaEsEOZZxlWetvbG1OQrvLNRWE0WO3csgfKXRhnGKMJTI+Py9WXbmjmda+TN/6
-         L/7i7Im0Glmy77TTmOl9PeaFUuWKIPE1DqWJp83vWmXp0WHF+GXmzPIe1DRuZTgWFpEt
-         h0XNEEMx5GOBeZnvT+99f+ugBL5F01diYc5DN0bpVe7h8UeNWfKhBXr8Tz4zcUdADAK5
-         sr8eQoK1yc/6agU3alvP2OTo+1fNaKpdR6usqkvaT1eFO3EcLWvcGvGLWkOx/9RJYyiv
-         VD5Q==
-X-Gm-Message-State: AGi0PuaH/LgIxt/iRKAria3Gd88UWph3jV2Err8VUcDtuMg9zV8ZZSFQ
-        bAYFUB/wuyUMRtolCGEkvZA=
-X-Google-Smtp-Source: APiQypLd+6McGAgvmYACrWhpOdS2g9zwXctbQrHGEoRrc4DI3u95Q6lV30XAsF4LAdabHHnhuOg48A==
-X-Received: by 2002:a17:90a:30cf:: with SMTP id h73mr27513694pjb.189.1586178497370;
-        Mon, 06 Apr 2020 06:08:17 -0700 (PDT)
-Received: from himanshu-Vostro-3559 ([103.83.145.32])
-        by smtp.gmail.com with ESMTPSA id v25sm11036294pgl.55.2020.04.06.06.08.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 06 Apr 2020 06:08:15 -0700 (PDT)
-Date:   Mon, 6 Apr 2020 18:38:09 +0530
-From:   Himanshu Jha <himanshujha199640@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 3/6] iio:chemical:bme680: Tidy up parameters to
- regmap_bulk_read
-Message-ID: <20200406130809.GA21539@himanshu-Vostro-3559>
-References: <20200405180321.1737310-1-jic23@kernel.org>
- <20200405180321.1737310-4-jic23@kernel.org>
+        id S1728705AbgDFOYB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Apr 2020 10:24:01 -0400
+Received: from mout.web.de ([212.227.17.11]:42217 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728539AbgDFOYB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 6 Apr 2020 10:24:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1586183024;
+        bh=A+/Z9pl5jZknTW9T6YxUFwyyDAtN1Pty0w3A9DheCFU=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=bvmoW3pzV4GL4GJXBrO+K9SZFcvTtJI5E1fvVM2oRHGrtQdj9aUXRoqEwStnjTu9J
+         AAwMywau4e9CGnJoQJacn1VwBo4vZ/Ktg59YzJ8muhIy1kaAOVZ0PM+8IvK3X4Z4AM
+         hAB5N5V9a0LXzBbbs+tRh4zRPblvHiCf2MvsscwQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from LaptopNick.fritz.box ([79.214.93.1]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M9GJ0-1jSZOo0NzC-00CeLw; Mon, 06
+ Apr 2020 16:23:44 +0200
+From:   Nick Reitemeyer <nick.reitemeyer@web.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Nick Reitemeyer <nick.reitemeyer@web.de>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 1/3] dt-bindings: vendor-prefixes: Add Alps
+Date:   Mon,  6 Apr 2020 16:13:49 +0200
+Message-Id: <20200406141350.162036-1-nick.reitemeyer@web.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200405180321.1737310-4-jic23@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1XAnolYbOqSRtvq/4irl/ieQvfSn3WE/AUbMOgIL3Ax8Px9V92I
+ xsM1KwcVgwd/KP24usPWuS4OKYyMSRyYYcI7F7KmzQR8dFQDPjyY6O9jc5mZQXC1T5HkaBT
+ 4kwVnKlAol3vS78Xs7beVbcoLHC9sODBS3vnNtScUY8l95LhrktUed3WrFYbT5ekm2c/8/G
+ GQhAoqp2TJu2cyGQPUWwg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qt91JurmaBg=:uL6cRiHJ7WjioDChJHgbme
+ Ghg7z+2syURCIRtp6wa5WnneBLVYzP8uVlYcF5xso51ojPT/Dr1MT/Ij8Eh6bCT9t+UIA8qGe
+ HmL3XO2HvBuTLlV8Cn4NhhL4S3RHB6gASezkqVreOrOzaiI5vD+WWw8uduQfsRwiStPIL0ww7
+ V3JAWhKDWCTxv1ERS95hCb2AvvdEFYYvkPDEpH/PmNWAe8N3OyCtHAZtAdJEmkvlaKjNd00pz
+ O03XpTb/tT68aK4pbglIzzb0GEm2/6JqzVbLpZyGeufXP0o1F6volTYnt8GNVM0Jk2aYakVxA
+ +EfOgM6ODHCnGAUtWKIJa0t3EJj0RTWH/Qd9H+2OMHbfmgHQbAZbOWAMFU7JRnUuQGZ2FW09e
+ Ms7QzZ5BH/kh7OsVSlM+JxRXBrYmkA9EDBIPI4BlSsRbHeaLDztP8OdXcWl5Bx5a+KEJcG8cp
+ NrASn0i06YkWgPbItlW/3ABnpLYdhhdB/W/yev1SxkOaUZYYnvvmAzC9+hnQLwxt7d4I8fSfw
+ 9u1NTOQA1ihrGMV37qV8xsFz8iYBUuaCQDEr/UXfgbGn+QYHgq6I/N4jb3d/Q7otzAj1UYYCn
+ 1RKYStUrxSCNN6AhOXTgPdmqyn4qqwWknZ2NbVPSqjMZv8YUwsVpXUuwU+Kfz71meo/nLfTxC
+ ohItkQFGl30gXwcgMR/ex1SLBwdD4eH2iG2XEzWST1tAViyF6f/o0g36JTJEHqFIh8jdwrOBX
+ d4sULoe+t3rG2/1VNIzXqVV/B2wsPYBopbKFllpUaKlGj26xI4umzDMEYfETsuBWfhMR1MELT
+ qJgkgq6pzCXhzMjANd1beSo6din9CVyromqVg5PGp2aiVA8wKXjoT02p7Odb7ymz/AxZ8x73g
+ NfpdcbDIz1x6al0dHoPsNs9bjVj66GARrkdDgAAZzOoWUTerDFsu8HQahHEMnDZrj6xxc/L3m
+ 7/k4/YE8Gps/U/agbGWyUgclfrzfZqp5XYCQt2N2ZySo4fdxu6+YF/1cgCAFAFu17AWyLaDni
+ Opq/A8muGxIx1xL5dV+MfMqzzlaCl6W3WLH5uo5YSCKtAbC4PfN+qRrM/XWGmmEfjSj2BSaKx
+ xf3toT1ofvgSTNvTJwfSe+VuNgO0M3s8Jj9V3mRzD4dKD8G+vfUK6bvdwZYtBfCyNFF03cIbI
+ cVQa6W2w0d3Glh7mm13gOx4Xwwuo3LMnmJsLRyV80oFQPy2NLj5hrwdDvQuqPFO2zJpY57o9X
+ H/AM5dxlDVF6lGDfN
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 05, 2020 at 07:03:18PM +0100, jic23@kernel.org wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> A mixture of:
-> * Unnecessary casts of val parameter to u8 * which makes little sense as
->   the function take a void *.
-> * Explicit sizes where we can use the destination type to define that.
->   Note that's not true in all cases as we do read 3 bytes into 4 byte
->   destinations.
-> 
-> Note that noting was broken here, I'm just trying to ensure this doesn't
-> get cut and paste into more drivers so cleaning these out subsystem wide.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> CC: Himanshu Jha <himanshujha199640@gmail.com>
+Alps Electric Co., Ltd. is a japanese electronics company:
+https://www.alps.com/
 
-Acked-by: Himanshu Jha <himanshujha199640@gmail.com>
+Signed-off-by: Nick Reitemeyer <nick.reitemeyer@web.de>
+=2D--
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> ---
->  drivers/iio/chemical/bme680_core.c | 36 ++++++++++++++++++------------
->  1 file changed, 22 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> index ccde4c65ff93..13773e01699b 100644
-> --- a/drivers/iio/chemical/bme680_core.c
-> +++ b/drivers/iio/chemical/bme680_core.c
-> @@ -114,14 +114,16 @@ static int bme680_read_calib(struct bme680_data *data,
->  	__le16 buf;
->  
->  	/* Temperature related coefficients */
-> -	ret = regmap_bulk_read(data->regmap, BME680_T1_LSB_REG, (u8 *) &buf, 2);
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Docu=
+mentation/devicetree/bindings/vendor-prefixes.yaml
+index 77fb3c453014..bbccd6cbbe73 100644
+=2D-- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -59,6 +59,8 @@ patternProperties:
+     description: Allwinner Technology Co., Ltd.
+   "^alphascale,.*":
+     description: AlphaScale Integrated Circuits Systems, Inc.
++  "^alps,.*":
++    description: Alps Electric Co., Ltd.
+   "^altr,.*":
+     description: Altera Corp.
+   "^amarula,.*":
+=2D-
+2.26.0
 
-This was exactly 80 chars ;-)
-
-> +	ret = regmap_bulk_read(data->regmap, BME680_T1_LSB_REG,
-> +			       &buf, sizeof(buf));
-
-
-FYI all complex maths + calib reg addr is now available
-in the latest datasheet.
-
-
-
-Thank You!
--- 
-Himanshu Jha

@@ -2,124 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AC8A1A0CD9
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 13:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591711A0D55
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 14:13:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726562AbgDGLaA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Apr 2020 07:30:00 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:19208 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726399AbgDGLaA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 07:30:00 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 037BPcDm003031;
-        Tue, 7 Apr 2020 07:29:57 -0400
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
-        by mx0b-00128a01.pphosted.com with ESMTP id 3079ubexph-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 07 Apr 2020 07:29:57 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MsdebdqEg9+m0KST8LW/sToPc+TKqyitrbj7PSeb5uH0tazAf3AZm3eXF8PxAggwRU6djZQWpbbKsh6JKYAWisTCs4PlfoGxhyGgjmDtk7eHp0xsK3oEX1Y0kqTirftDR7Im2nhCN8L+xD3kPFxP8+No4UnNYMIabjRG9T8LkL7AEFOl1iQRnMEe0w6OzlGunMT6BN5keS8NWqyv4z/L+mIckpEkc0yO5rF/DRro/+7MqlUYW/8dvxEipkwBaNcVDxVmb6MqFpS1Mm6qCjTwWxYlg9yZliPQENVyBi//BF886/lQr50lyFQFCS5shNdk3qKjIuCGOXT7jBKYwtAvAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WPjoUDEg/2RqPqTzJP5N6B2k7r1XU4jOi/tNrE86Gnw=;
- b=eHaab2pj8zIHBwybV1iKwXWSZJnzTLyw9W5INIqGnT/H5eOMlFkF9o8fMWMLDA7yFR8ytlcFoxM/hki+XlIaybQl5fZenBy7wwOusaw8EUHWD2Juy6+5MEW9qeEdOJQfU+SW/RYQK2OXqZkDkK2MgC0II/Qa19yQ1FA8NBTwd9b/uSFfrI8zwniMRl/Q4dNMguMqIk/D2IV4qBVLEQnCrTbgxlWoqdFESV0rccOJ+XQ3nsNWqKnpuAQovCChYDoMEdHEhrQn0TSqcKmIXL/beDtiEiqpWF0R4U0+9X4vuWuoALVicAHJ5vvGujG4lgSDeUXwLecstKYRobMh69hGVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WPjoUDEg/2RqPqTzJP5N6B2k7r1XU4jOi/tNrE86Gnw=;
- b=nDiZWLEQ10lwYed25oTK0n0hDishzJkiq3XIHl6EEmEwjx9W7aSTObaSNCFTj5qIlzccuufvMFwaZtV57XtXTUvwYnCpFNN9wNbE1WKc+0SM+lg0oB4IKflGFRDxinzqqSjX8l3yiNH69DB5C+TxUqKO8gdbSovTugQVEvbhJNY=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (20.178.27.206) by
- DM6PR03MB4380.namprd03.prod.outlook.com (20.178.27.17) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2878.19; Tue, 7 Apr 2020 11:29:55 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2878.018; Tue, 7 Apr 2020
- 11:29:55 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "Markus.Elfring@web.de" <Markus.Elfring@web.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        id S1726591AbgDGMNA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Apr 2020 08:13:00 -0400
+Received: from mout.web.de ([217.72.192.78]:42511 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726562AbgDGMNA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 7 Apr 2020 08:13:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1586261572;
+        bh=8iZCvK4TfzgSSgAd8zxODHBnbqjB750pxDrttHZ7JU4=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=LLSDomx/1pYRA+CpGpFWZJDWMbNodJHF0FOOtdQ731K8g68jmFbgJOmZst3jAjzpw
+         lwxoCUFLcJhHDKKtT6Dc2l4DWyHLUhVXYQmZTi2diYH6rC9cgD7CtYiXkEGhgQ8m7l
+         q1YcTNEJYJ9gE/438rlhlkPAlEaUvWfq/nt0fWyw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([78.49.5.104]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LoYjO-1ipUI22pn0-00gaVH; Tue, 07
+ Apr 2020 14:12:52 +0200
 Subject: Re: [v2] iio: core: move 'indio_dev->info' null check first
-Thread-Topic: [v2] iio: core: move 'indio_dev->info' null check first
-Thread-Index: AQHWDMlSZrUp5iveZ0qk1mOyXvaT86htfiwAgAAH+QA=
-Date:   Tue, 7 Apr 2020 11:29:54 +0000
-Message-ID: <2db41c0869d24d18b70f9ff5d4311fb86187c3e6.camel@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org
 References: <cb300eeb-6045-bd91-3e0e-902dd3b5d5d8@web.de>
-         <3725f882accda683815f04c0eff0bb36c285fe62.camel@analog.com>
-         <39d24c67-e83a-e414-e27e-041c7d5cea1a@web.de>
-         <d25190f18a171d82f3300f00b00f50f62f636d28.camel@analog.com>
-In-Reply-To: <d25190f18a171d82f3300f00b00f50f62f636d28.camel@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [188.27.135.58]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 1130a8c7-b3e9-4e2c-c050-08d7dae6fef6
-x-ms-traffictypediagnostic: DM6PR03MB4380:
-x-microsoft-antispam-prvs: <DM6PR03MB438010786F0A7A09AEC97D77F9C30@DM6PR03MB4380.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 036614DD9C
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(396003)(366004)(346002)(39860400002)(136003)(376002)(54906003)(66476007)(86362001)(5660300002)(76116006)(8676002)(66556008)(66946007)(91956017)(66446008)(64756008)(478600001)(81166006)(81156014)(71200400001)(6512007)(110136005)(26005)(316002)(8936002)(2906002)(4326008)(2616005)(36756003)(6506007)(186003)(6486002);DIR:OUT;SFP:1101;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: +NC/u/v+Ioaq8xf2UhGSoMoAEkWzs8uJcz/w5MJFh2eCc1N283MFvvxkG3FgxtduKQ662c6v+j1K1lf4jzQguR/MtT9sgP+2WnIbkMZG1a4an0E6MmO2A7HMxaNSlrcpx6SF0ZXBRe8xYMmf3IrCK1r1wO7vBtjbzuv/sgXIlqo8Yw6YgdV3fm9xEyAXAmdhSDkQy/CpdVJLATJj5yyRtqjivAKR2QirZ/5FR47FT/WXQid/VmRmQR0CGkGjWcNvKQtxtpGQH75fnzxiwCEKFcZ1W/xeQuKf9Dbc9jzEf7PWyiT6OimJKuzTuG4TGL+wFh+AHaHHE1zuZLPm0wcTrhG4zb2OQc/7CQaALsBIF+wPgKDiKEsfVipCLzMTMp+PVy9/+Zwnp16WDJrl9BIwhsYkbDVye78ukf19iQ8Dxfql6/seSjXbeHl8sT41d8Im
-x-ms-exchange-antispam-messagedata: 8CH2TgwSFcH1u/vQq9EPYXyXRiQQB0d9qEoqYoaCe9xAWVOPR0QsatsKn9ImdIxIFzL9d8MAxY6CroLB3Z5hHhkMclrPHgLRVR3E7yRIfzVb5Vanea8RbTs+NDHtkY0axN+h8HFU3HWfAx/KZNyxiQ==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0EFC8928B641E94B8550C7EA1ED42654@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <3725f882accda683815f04c0eff0bb36c285fe62.camel@analog.com>
+ <39d24c67-e83a-e414-e27e-041c7d5cea1a@web.de>
+ <d25190f18a171d82f3300f00b00f50f62f636d28.camel@analog.com>
+ <2db41c0869d24d18b70f9ff5d4311fb86187c3e6.camel@analog.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <a1ae5805-6576-82cf-33c0-6fc4fd3512d8@web.de>
+Date:   Tue, 7 Apr 2020 14:12:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1130a8c7-b3e9-4e2c-c050-08d7dae6fef6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2020 11:29:55.0032
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ExNjDTkW3ke7XylCF+3FlQODg+PQaeURbOSuzull1C5lUM7LknTWYC8zrnUmFDQuhPBxKML/SCYboi5o2ZaJ6RYo7SzFEJENH78U9OJKi8I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4380
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-07_03:2020-04-07,2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004070099
+In-Reply-To: <2db41c0869d24d18b70f9ff5d4311fb86187c3e6.camel@analog.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KtraC8ozH8jWcveqLZFaBGc8ur5lNLpYT2M6AeGtkczQuAu7TUp
+ WgM4gdygWm+QjSeFR7nP20QmJKNcl7G+0RHhzd/3BgohGiWl5JCsXYEy48Aa9GqyksemKYV
+ jksRgpgMCb89tpRzP3rkYwNMWT8BRcCXkCIsWsh56/R9OpWbTbD34ktNF3bbP0Mduhgi2tV
+ RmG6vUt5FTRe2876Ss3Hg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VucKd0+vBr4=:qbB8Tppw3hFHRY4C7UaxX9
+ dF5zzXq2Ao0ZtUXb0cl/oqPTc00Q3+VR4V2AX9EdRvDYJ4Ez0IRy3HCJ1Eo2rDfqEJeaWE+P/
+ oq5WVJdiOGTW4PgnBOPbtXb/IHR+ywsuwkbyEptSVvOz/qUy++W63KLPtPT3TexUCoBlq67QP
+ 7mQC4FZZ0UNktQnx0axEqvQA8QCXA8VU48Ashjts8tWbQ9/xZlskfDQFxWPyjYQ3rt+MmYFDO
+ 9rwWJm2S98APeQBgx2ytzYf282O2tX0OrTuTz80qFwizq4w6FzInyaU7o4arbEuU/fko+qT6c
+ oTcP2hBr8+hJItJeZUoCPxUMDSld3gkkXW7tplsaeSMcuCkuOySfogZhzbLjsdmb3Ak0IdPVs
+ /CkdwfPdGl9cwEdzy6EoXD/OF+30jil8TzbdglWVY/tBvHqJxGcd/qEpCftR/kgCXSLKL5bIY
+ 7b2HqnTnEv06KGMy3+OcqJNtMl0jo/W4WpNHB/Iwd5dm16bbr8XMWwhtvLUp5Zp4/+DiaeCKX
+ 46XtL9hjxtroCeLzYtG6R4Ul4qHMLCAil5clfrIm+V6XRMtInp6Pbx/k7vKjbqi8s9sh3Et8G
+ jvZcL95jlr33MFeNN99EaFobX/TO4jkbFjbPZZqgYA4G46Evqgjc8fGCYEdgUxKy5/PfFCgmi
+ UYMwzYNVJO7ao5KQllwSB6iAn36y0p8FlurLPc/YtvwZFaI8eBbvEXC7EEBI5iHQCUwN7qWE4
+ 9K/lfTcZ/DjsttSikymi3sO+aZaOt964Mv1t0AZVSRBlDwFwGRvHiWZKpe9uCXx/Ib2yHEKRD
+ cRSvbLfPFMSFsLycgCJk/8CBRWsjNIG4dHjNwCXj0tp+qJLFeDjFCdMATk4gVu3EwRmntRprT
+ JKo/oy8wBQ9/YDoT9LUcAF279x4ujZzvcPsFLYwLkkNXFKt5oXaPyW/0WxVRtd8O5sBK8TzLo
+ +WzHPRi7xJpgarpb3sAnN4rJ4WKENxmGV1cqOhrTgWcQhacCS5LzDyvdXHr2PxomhnE6wBW8e
+ ZzTAtfSOzUCGEizF9JLFxGSYGDXuZ/SouJHFIXQlKXl8ygFVyGX4nZ6EIsvEKfDCLAymA3ZLh
+ EmAXtSiffqo6ycS/8j09HebZEOIw12WCTye/2p0u6cB4/ODct+w4B7pWDKNBdxqDlVzzz9GCX
+ xZwaY8OWXVt5m59eHEMmkrKCRDEci4oJYtP0V7DH6UIe21iZkNUrbiroRPRjSrS2wJxYUhS7X
+ Bcn3yRWxT5NQmKpzi
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTA0LTA3IGF0IDExOjAxICswMDAwLCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdy
-b3RlOg0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBUdWUsIDIwMjAtMDQtMDcgYXQgMTI6NDIgKzAy
-MDAsIE1hcmt1cyBFbGZyaW5nIHdyb3RlOg0KPiA+IFtFeHRlcm5hbF0NCj4gPiANCj4gPiA+IFNv
-LCBvdmVyIHRpbWUgSSBnb3QgdGhlIGhhYml0IG9mIG1lbnRpb25pbmcgJ0RvZXNuJ3QgZml4IGFu
-eXRoaW5nLicNCj4gPiANCj4gPiBJIHN1Z2dlc3QgdG8gcmVjb25zaWRlciBzdWNoIGluZm9ybWF0
-aW9uIG9uY2UgbW9yZS4NCj4gPiBXZSBjb21lIGFsb25nIGRpZmZlcmVudCBpbnRlcnByZXRhdGlv
-bnMgZm9yIHJlbWFya2FibGUgc29mdHdhcmUgYWRqdXN0bWVudHMuDQo+ID4gDQo+ID4gDQo+ID4g
-PiBpZiB0aGUgcGF0Y2ggZG9lc24ndCBmaXggYW55dGhpbmcuDQo+ID4gDQo+ID4gRG8geW91IGlt
-cHJvdmUgdGhlIGlucHV0IHBhcmFtZXRlciB2YWxpZGF0aW9uIGEgYml0IGluIHByaW5jaXBsZSBo
-ZXJlPw0KPiANCj4gSSB0aG91Z2h0IHRoYXQgd2FzIG9idmlvdXMgZnJvbSB0aGUgcmVzdCBvZiB0
-aGUgZGVzY3JpcHRpb24gKyBwYXRjaC4NCj4gSSBndWVzcyBpdCBpc24ndC4NCj4gDQo+IEknbGwg
-c2VlLg0KDQpTbywgaG93IGFib3V0IHRoaXM6DQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0NCiAgICBEb2Vzbid0IGZpeCBhbnl0aGluZy4gSnVzdCBtb3ZlcyB0
-aGlzIHRvIGJlIHRoZSBmaXJzdCBjaGVjaywgYXMgaXQncyB2ZXJ5DQogICAgc2ltcGxlIGFuZCBm
-YWlscyB0aGUgcmVnaXN0cmF0aW9uIGVhcmxpZXIsIGluc3RlYWQgb2YgcG90ZW50aWFsbHkNCiAg
-ICBpbml0aWFsaXppbmcgdGhlICdpbmRpb19kZXYtPmxhYmVsJyBhbmQgY2hlY2tpbmcgZm9yIGR1
-cGxpY2F0ZSBpbmRleGVzLCBhbmQNCiAgICB0aGVuIGZhaWxpbmcgd2l0aCB0aGlzIHNpbXBsZS1j
-aGVjay4NCiAgICANCiAgICBUaGlzIGlzIGEgbWlub3Igb3B0aW1pemF0aW9uLCBzaW5jZSAnX19p
-aW9fZGV2aWNlX3JlZ2lzdGVyKCknIHdpbGwgd2FzdGUNCiAgICBmZXdlciB2YWxpZGF0aW9uIGN5
-Y2xlcyBpbiBjYXNlICdpbmRpb19kZXYtPmluZm8nIGlzIE5VTEwuDQotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj8gICAgDQoNCg0KPiANCj4gPiBSZWdhcmRz
-LA0KPiA+IE1hcmt1cw0K
+>     Doesn't fix anything.
+
+You would like to change something for a specific reason.
+Thus please omit this sentence.
+
+
+>     Just moves this to be the first check, as it's very =E2=80=A6
+
+Wording alternative:
+Move a null pointer check to the beginning of this function implementation=
+.
+
+
+>     This is a minor optimization, since '__iio_device_register()' will w=
+aste
+>     fewer validation cycles in case 'indio_dev->info' is NULL.
+
+How do you think about to use the text =E2=80=9Ciio: core: Improve input p=
+arameter validation
+in __iio_device_register()=E2=80=9D as a commit subject?
+
+Regards,
+Markus

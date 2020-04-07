@@ -2,354 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD9F1A0E31
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 15:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FCCB1A0F0F
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 16:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728829AbgDGNOa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 7 Apr 2020 09:14:30 -0400
-Received: from relay-1.mailobj.net ([213.182.54.6]:34895 "EHLO
-        relay-1.mailobj.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728663AbgDGNOa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 09:14:30 -0400
-Received: from www-1.localdomain (www-1.in.mailobj.net [192.168.90.193])
-        by relay-1.mailobj.net (Postfix) with SMTP id C6DFD137F;
-        Tue,  7 Apr 2020 15:14:27 +0200 (CEST)
-Received: by www-1.mailo.com with http webmail; Tue,  7 Apr 2020
-  15:14:27 +0200 (CEST)
-X-EA-Auth: zYVuCnZvEGCssHz7guNbyIwWkt7kNNPdGMyWBEEwix2TCf/Td2n0ioQ2DY+PZjJN8+/3wCZHWYG39dKR6oVLGFxqK+ZrzPAo
-From:   yarl-baudig@mailoo.org
-To:     "Jonathan Cameron" <jic23@kernel.org>
-Cc:     denis.ciocca@st.com, linux-iio@vger.kernel.org
-Date:   Tue,  7 Apr 2020 15:14:27 +0200 (CEST)
-Subject: Re: lsm303dlhc magnetometer: please help
-X-Priority: 3
+        id S1728885AbgDGOWq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Apr 2020 10:22:46 -0400
+Received: from new2-smtp.messagingengine.com ([66.111.4.224]:57187 "EHLO
+        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728776AbgDGOWq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 10:22:46 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id E14165800FB;
+        Tue,  7 Apr 2020 10:22:44 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 07 Apr 2020 10:22:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=WZZOGhHApCSV1L4UtRpjl8cMVms
+        LTISqTdlhGk83/tE=; b=wdop+RypTY1L95rFhllqkRhtWYgEAFYClfhAPgL7V8o
+        qMlLR5SE6GWLIa1ZSoQ79+Z0W44kt9OiHmZ3CvUvzPb9jnW8UTnki0vTUO07qO/M
+        IH6Du1/ArFs7vqpgdxcGBcasaf/y7tUY/Qy7R0LaqaiV+vdq3gWWG69cu1/Db2d2
+        tSYjGHL62GfQ854q3eGFOokJ2aVePEbHQyaKzerNy29ZfdIMewn63SjOEecLL7SC
+        keWTudwlRGyEJlyAtfcF1aiupSS+Bt6ZxO/lAXvD3cJrOSGcwc7fHwYCw97oo/XP
+        B09l3Pen7zFk/wx6bMLUR9LR0LM1186/fRdBfVdHAjg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=WZZOGh
+        HApCSV1L4UtRpjl8cMVmsLTISqTdlhGk83/tE=; b=u7Ar+N/LF2C6DeXvp3SLmb
+        v1Aty03403E8GzS/l7ZKt6hE1iFd1OjUSMadk8vZhO0FHQa5CTGzPnz2qMBxScGh
+        VM3E1KLQdyBaBxleBRWqGLabrDiHLEfgPjVNddjZEVwztIaWE4P5pY5cKXNJff1G
+        m4v7B7IbDgM7MLt99bro9rRdWjB2MqQrm0rgPulYrJ6qwW00bE6wZ8PNYhUPXcpA
+        NpZlR0RsXbdqFhNsP68Mf/Bl8eF9YLBED3W7NW8d0Dgna7s6UMubPnxtj7zz17PK
+        db20zhWWFiQbOMl2mISNojJH+Obdtsrx2/DuH48sMTHeAJRm9Yrwpn1QMT9SoKvA
+        ==
+X-ME-Sender: <xms:sIyMXlTiXSiRI3WvCdI1mm-Jzir6hQXM5vePtj5cXsapk4tU1rNmag>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudehgdejgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
+    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucffohhmrghinh
+    epuggvvhhitggvthhrvggvrdhorhhgnecukfhppeeltddrkeelrdeikedrjeeinecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvse
+    gtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:sIyMXgXSx8_2lL0owyyT9Y357BIRf8xmDBvgz7I_14l90OfeLLKC5w>
+    <xmx:sIyMXhLRLGm4H2wIpXCkhFto8ChkzLs0j1QJICpClPHUiGd0LFxaYA>
+    <xmx:sIyMXo1pKdgnUJ6tomalMQBcN1-ucn-9h8KxFx-8TrBFAflFemlHRg>
+    <xmx:tIyMXlK4-tLy7Ok2qgPryQ3kFTA8t51d5wIiKn3KRdcyZJ25Z25gwQ>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 0064F3280066;
+        Tue,  7 Apr 2020 10:22:39 -0400 (EDT)
+Date:   Tue, 7 Apr 2020 16:22:38 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/3] Input: rotary-encoder-counter: add DT bindings
+Message-ID: <20200407142238.ik67isetbggn2rh3@gilmour.lan>
+References: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
+ <20200406155806.1295169-3-kamel.bouhara@bootlin.com>
+ <20200407094159.xtbhtsxorvs2g22c@gilmour.lan>
+ <20200407110339.GA1489441@kb-xps>
 MIME-Version: 1.0
-X-Mailer: COMS/EA19.11/r20200317
-Message-ID: <ea-mime-5e8c7cb3-95a-5209a24d@www-1.mailo.com>
-In-Reply-To: <20200405140356.15700701@archlinux>
-Content-Type: text/plain;
- charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cmea35pc2hxci5l3"
+Content-Disposition: inline
+In-Reply-To: <20200407110339.GA1489441@kb-xps>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
----- Message d'origine ----
-> De : Jonathan Cameron <jic23@kernel.org>
-> À : yarl-baudig@mailoo.org
-> Sujet : Re: lsm303dlhc magnetometer: please help
-> Date : 05/04/2020 15:03:56 Europe/Paris
-> Copie à : denis.ciocca@st.com;
->       linux-iio@vger.kernel.org
-> 
-> On Sat,  4 Apr 2020 14:43:04 +0200 (CEST)
-> yarl-baudig@mailoo.org wrote:
-> 
-> > Good afternoun,
-> > 
-> > I have an lsm303dlhc that I'm trying to get to work with a triggered 
-> buffer, the magnetometer part of it.
-> > The problem with this sensor is that the dataready signal has, I think, a 
-> different
-> > meaning than the one expected by the ST sensor driver set.
-> > On this sensor the signal is always high except when the sensor is writing 
-> new values to its data
-> > registers. The problem with the driver is that it expects the sensor to 
-> have a register
-> > to check if new data is available:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/drivers/
-> iio/common/st_sensors/st_sensors_trigger.c?h=testing#n36
-> > the lsm303dlhc magnetometer is not configured with such a register:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/drivers/
-> iio/magnetometer/st_magn_core.c?h=testing#n183
-> > There is one in the sensor but the dataready bit is just the value of the 
-> signal, so
-> > even if I added the address and mask for this information, the meaning 
-> would be
-> > wrong from the point of view of  function and the while loop would run 
-> endlessly:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/drivers/
-> iio/common/st_sensors/st_sensors_trigger.c?h=testing#n113
-> > 
-> Looking at the datasheet, it is a rather dumb device isn't it and the 
-> datasheet
-> doesn't supply anywhere near enough info..  It says it's a system in 
-> package
-> so in theory we could find out what the sensor actually is and that might
-> have a better datasheet.
-> 
-> Then we have the data ready bit as you say and a lock bit that fires when 
-> we
-> successfully start reading (ensuring we get a full set from the same 
-> 'scan')
-> The dataready bit description says:
-> "Data-ready bit. This bit is when a new set of measurements is available."
-> I admit I'm reading between the lines, but that sounds like it will clear 
-> when
-> the data has been read.  If it clears on it's own then there isn't much
-> we can do reliably.
-> 
-> We could just treat the irq as a iio-trigger-interrupt trigger as long as we 
-> definitely don't
-> need to do anything to clear it.  That will not hit any of the paths you 
-> are
-> looking at as will directly call st_sensors_trigger_handler.
-> 
-> Unfortunately that doesn't seem to have a device tree binding yet 
-> (obviously
-> not much used except on very old platforms). I don't have a handy platform 
-> to
-> test it on at the moment unfortunately but should just be a case of adding
-> a device tree id table to the driver.  Then the dt entry will simply 
-> contain
-> the interrupt line.
-> 
-> Denis, any more info on this part and whether the using a dumb interrupt 
-> trigger
-> is the way to go or if we can do anything more clever?
-> 
-> It may be a case where the best bet is to ignore that line and use a high
-> resolution time trigger running at half the raw sampling frequency of the 
-> device
-> (to avoid repeated values)
-> 
-> Thanks,
-> 
-> Jonathan
-> 
+--cmea35pc2hxci5l3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you for answering. I will probably try as you say, use an hrtimer.
+On Tue, Apr 07, 2020 at 01:03:39PM +0200, Kamel Bouhara wrote:
+> > On Mon, Apr 06, 2020 at 05:58:05PM +0200, Kamel Bouhara wrote:
+> > > Add dt binding for the counter variant of the rotary encoder driver.
+> > >
+> > > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > > ---
+> > >  .../input/rotary-encoder-counter.yaml         | 67 +++++++++++++++++++
+> > >  1 file changed, 67 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > > new file mode 100644
+> > > index 000000000000..a59f7c1faf0c
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > > @@ -0,0 +1,67 @@
+> > > +# SPDX-License-Identifier: GPL-2.0
+> >
+> > Bindings are usually used by other OS's, so you should consider
+> > putting it under a more permissive license, usually that would be GPL2
+> > and the BSD-2-Clause
+>
+> Well to be honest I just looked into an existing binding and I guess
+> the wrong one :).
 
-Anyway I want to precise one thing I just saw using the patch I showed you.
-The lsm303dlhc contains an accelerometer and a magnetometer.
-When the buffer for the accelerometer is disabled, the magnetometer "works"
-the way I described in my last mail: one out of two times.
-When the buffer for the accelerometer is enabled: the magnetometer works,
-every time...
-> 
-> > I then modified a bit, patch below.
-> > 
-> > Let me first tell you that it work one out of two time:
-> > I boot, load this device-tree:
-> > ---
-> > /dts-v1/;
-> > /plugin/;
-> > 
-> > / {
-> >   compatible = "brcm,bcm2708";
-> > 
-> >   fragment@0 {
-> >     target = <&gpio>;
-> >     __overlay__ {
-> >       magn_pins: nine_dof_pins {
-> >         brcm,pins = <27>;
-> >         brcm,function = <0>;
-> >         brcm,pull = <1>;
-> >         status = "okay";
-> >       };
-> >     };
-> >   };
-> > 
-> >   fragment@1 {
-> >     target = <&i2c_arm>;
-> >     __overlay__ {
-> >       status = "okay";
-> >       #address-cells = <1>;
-> >       #size-cells = <0>;
-> >       magn@1e {
-> >         compatible = "st,lsm303dlhc-magn";
-> >         reg = <0x1e>;
-> >         status = "okay";
-> >         interrupt-parent = <&gpio>;
-> >         interrupts = <27 1>;
-> >       };
-> >     };
-> >   };
-> > };
-> > ---
-> > I then enable scan_elements, enable buffer (echo 1 > buffer/enable)
-> > interrupts are coming regularly at sampling_frequency. It works fine.
-> > If I now disable the buffer then re-enable it, one and only interrupt,
-> > doesn't work fine..
-> > re-disable, re-re-enable: works fine!
-> > and it seem to be always that, it works modulo 2.
-> > 
-> > On my first try I didn't change st_magn_buffer_preenable and 
-> st_magn_buffer_postenable
-> > But I thought that maybe, the problem was some sort of bad writting, 
-> reading timing
-> > because 
-> > (1) request_threaded_irq is called for a rising signal while it is already 
-> high.
-> > 
-> > I make a break here and ask you a question:
-> > As you read, I am a kernel newbie: is doing (1) bad?
-> Interesting question.  There is so little info in the datasheet that it is 
-> hard
-> to tell. It might be a level_high interrupt.
-> 
-> > end of break.
-> > 
-> > So I added st_magn_buffer_preenable and modified st_magn_buffer_postenable 
-> to
-> > try to mask the irq during the arppropriate interval.
-> > 
-> > No visible change.
-> > I never almost never wrote kernel code before.
-> > I tried to get closer to what was happening using gdb/kgdb, first time I 
-> used this.
-> > I am now pretty discouraged and any suggestions are welcome.
-> > 
-> > Thank you.
-> > 
-> > ---
-> >  drivers/iio/common/st_sensors/st_sensors_core.c | 11 +++++++++++
-> >  .../iio/common/st_sensors/st_sensors_trigger.c  |  9 +++++++++
-> >  drivers/iio/magnetometer/st_magn_buffer.c       | 17 ++++++++++++++++-
-> >  drivers/iio/magnetometer/st_magn_core.c         |  3 +++
-> >  include/linux/iio/common/st_sensors.h           |  2 ++
-> >  5 files changed, 41 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c 
-> b/drivers/iio/common/st_sensors/st_sensors_core.c
-> > index 09279e40c55c..fef6b70976b4 100644
-> > --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> > +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> > @@ -480,6 +480,17 @@ int st_sensors_set_dataready_irq(struct iio_dev 
-> *indio_dev, bool enable)
-> >  	u8 drdy_addr, drdy_mask;
-> >  	struct st_sensor_data *sdata = iio_priv(indio_dev);
-> >  
-> > +	if (sdata->sensor_settings->drdy_irq.simple) {
-> > +		/*
-> > +		 * some devices very simple. No register to enable, disable
-> > +		 * or configure the signal. Actually, when it is low it means that
-> > +		 * sensor is writing data to its register, when it is high it
-> > +		 * means that data can be read. i.e when rising new data is available.
-> > +		 */
-> > +		sdata->hw_irq_trigger = enable;
-> > +		return 0;
-> > +	}
-> > +
-> >  	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
-> >  	    !sdata->sensor_settings->drdy_irq.int2.addr) {
-> >  		/*
-> > diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c 
-> b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > index fdcc5a891958..146aaae0a85c 100644
-> > --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > @@ -30,6 +30,13 @@ static int st_sensors_new_samples_available(struct 
-> iio_dev *indio_dev,
-> >  	u8 status;
-> >  	int ret;
-> >  
-> > +	/* We simply trust the signal */
-> > +	if (sdata->sensor_settings->drdy_irq.simple) {
-> > +		if (indio_dev->active_scan_mask)
-> > +			return 1;
-> > +		return 0;
-> > +	}
-> > +
-> >  	/* How would I know if I can't check it? */
-> >  	if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
-> >  		return -EINVAL;
-> > @@ -90,6 +97,8 @@ static irqreturn_t st_sensors_irq_thread(int irq, void 
-> *p)
-> >  	if (sdata->hw_irq_trigger &&
-> >  	    st_sensors_new_samples_available(indio_dev, sdata)) {
-> >  		iio_trigger_poll_chained(p);
-> > +		if (sdata->sensor_settings->drdy_irq.simple)
-> > +			return IRQ_HANDLED;
-> >  	} else {
-> >  		dev_dbg(sdata->dev, "spurious IRQ\n");
-> >  		return IRQ_NONE;
-> > diff --git a/drivers/iio/magnetometer/st_magn_buffer.c 
-> b/drivers/iio/magnetometer/st_magn_buffer.c
-> > index 37ab30566464..ae13e4339127 100644
-> > --- a/drivers/iio/magnetometer/st_magn_buffer.c
-> > +++ b/drivers/iio/magnetometer/st_magn_buffer.c
-> > @@ -30,6 +30,16 @@ int st_magn_trig_set_state(struct iio_trigger *trig, 
-> bool state)
-> >  	return st_sensors_set_dataready_irq(indio_dev, state);
-> >  }
-> >  
-> > +static int st_magn_buffer_preenable(struct iio_dev *indio_dev)
-> > +{
-> > +	struct st_sensor_data *mdata = iio_priv(indio_dev);
-> > +
-> > +	if (mdata->sensor_settings->drdy_irq.simple) {
-> > +		disable_irq(mdata->get_irq_data_ready(indio_dev));
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> >  static int st_magn_buffer_postenable(struct iio_dev *indio_dev)
-> >  {
-> >  	int err;
-> > @@ -45,7 +55,11 @@ static int st_magn_buffer_postenable(struct iio_dev 
-> *indio_dev)
-> >  	if (err < 0)
-> >  		goto st_magn_buffer_postenable_error;
-> >  
-> > -	return st_sensors_set_enable(indio_dev, true);
-> > +	err = st_sensors_set_enable(indio_dev, true);
-> > +
-> > +	enable_irq(mdata->get_irq_data_ready(indio_dev));
-> > +
-> > +	return err;
-> >  
-> >  st_magn_buffer_postenable_error:
-> >  	kfree(mdata->buffer_data);
-> > @@ -70,6 +84,7 @@ static int st_magn_buffer_predisable(struct iio_dev 
-> *indio_dev)
-> >  }
-> >  
-> >  static const struct iio_buffer_setup_ops st_magn_buffer_setup_ops = {
-> > +	.preenable = &st_magn_buffer_preenable,
-> >  	.postenable = &st_magn_buffer_postenable,
-> >  	.predisable = &st_magn_buffer_predisable,
-> >  };
-> > diff --git a/drivers/iio/magnetometer/st_magn_core.c 
-> b/drivers/iio/magnetometer/st_magn_core.c
-> > index 72f6d1335a04..0fb0915529e9 100644
-> > --- a/drivers/iio/magnetometer/st_magn_core.c
-> > +++ b/drivers/iio/magnetometer/st_magn_core.c
-> > @@ -259,6 +259,9 @@ static const struct st_sensor_settings 
-> st_magn_sensors_settings[] = {
-> >  				},
-> >  			},
-> >  		},
-> > +    .drdy_irq = {
-> > +      .simple = true,
-> > +    },
-> >  		.multi_read_bit = false,
-> >  		.bootime = 2,
-> >  	},
-> > diff --git a/include/linux/iio/common/st_sensors.h 
-> b/include/linux/iio/common/st_sensors.h
-> > index f9bd6e8ab138..e25b5f033557 100644
-> > --- a/include/linux/iio/common/st_sensors.h
-> > +++ b/include/linux/iio/common/st_sensors.h
-> > @@ -154,6 +154,7 @@ struct st_sensor_int_drdy {
-> >   * struct ig1 - represents the Interrupt Generator 1 of sensors.
-> >   * @en_addr: address of the enable ig1 register.
-> >   * @en_mask: mask to write the on/off value for enable.
-> > + * @simple: the data-ready is a "very simple implementation".
-> >   */
-> >  struct st_sensor_data_ready_irq {
-> >  	struct st_sensor_int_drdy int1;
-> > @@ -168,6 +169,7 @@ struct st_sensor_data_ready_irq {
-> >  		u8 en_addr;
-> >  		u8 en_mask;
-> >  	} ig1;
-> > +	bool simple;
-> >  };
-> > 
-> > 
-> 
-> 
+Not the wrong ones, but the old ones :)
 
+It's painful to change a license on existing files, whereas it's
+pretty easy to mention it during review.
 
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/input/rotary-encoder-counter.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Rotary Encoder Counter
+> > > +
+> > > +maintainers:
+> > > +  - Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > > +
+> > > +description:
+> > > +  Registers a Rotary encoder connected through a counter device.
+> >
+> > You shouldn't really describe the action here, but more what the
+> > binding is about. The registration will not depend on the presence of
+> > the node following that binding, but rather on whether or not the OS
+> > that uses it has support for it.
+> >
+>
+> Then shall it be better with just :
+> "A rotary encoder device using a generic counter interface." ?
+
+The generic counter interface is a Linux-only stuff though, some other
+OS might want to implement something else. Something like "based on a
+counter"?
+
+Maxime
+
+--cmea35pc2hxci5l3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXoyMrgAKCRDj7w1vZxhR
+xaGoAP0Rk4zze3+M3tv+xBVv0PmMPLNoqDCmIQF259PcWDF2FQEAovMUQKsz/fRB
+40V3ClfoNka1Z3kbhlkiwiHDy75R/Q0=
+=HdTF
+-----END PGP SIGNATURE-----
+
+--cmea35pc2hxci5l3--

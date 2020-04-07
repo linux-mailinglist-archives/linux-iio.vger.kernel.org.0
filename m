@@ -2,80 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A29FF1A0637
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 07:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9F41A0726
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 08:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbgDGFMp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Apr 2020 01:12:45 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33298 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726909AbgDGFMn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 01:12:43 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 22so1881640otf.0
-        for <linux-iio@vger.kernel.org>; Mon, 06 Apr 2020 22:12:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
-         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
-         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
-         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
-         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
-         DmdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=dgrGzC77gEvxvcJnv7/lLNvlAQJPmIfbvgv6AjTX1LF4lMwyke3tkmaHn+tHCs2y/v
-         /cy4wmLvAppA3UNwNgBbJJaofp4TC0KR8UwHSl5Yrfs4wMsb1mQFhyyq+joJkNSVZtwA
-         QAYMxPKgJKJm45994gai7z5XjMkJbG6EFvLxL8iRdjBSDt6fKOhHZPtYxcc973+omrbn
-         LkLzIWOsYmL8u9DsiWaomipGEXg6IOc+2eXR2pTR6kkB52aPO74Kp8lArVCphkFeDbkA
-         kkimz9vZjUruhn6Jw9tR9/dqnohPtOdcKMZx4AFTMu3V9BiQYY7N/9XyHKTAKzvp7jfc
-         +1OQ==
-X-Gm-Message-State: AGi0PuZlMN/7I/XS9HxBFstr+MajGQXnWn5yvnuy6jTbq9Mxk1NK/YYG
-        l5olf4WCf2U0/Qkg9idQBg8QBRjJLTbJx/Hi27SrhMYqFro=
-X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
-X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
- 06 Apr 2020 22:12:41 -0700 (PDT)
+        id S1726448AbgDGGWf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Apr 2020 02:22:35 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:23902 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726232AbgDGGWf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 02:22:35 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0376KR4R027263;
+        Tue, 7 Apr 2020 02:22:33 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 306m369p72-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 07 Apr 2020 02:22:33 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0376MVCd059802
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 7 Apr 2020 02:22:32 -0400
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 6 Apr 2020 23:22:30 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 6 Apr 2020 23:22:30 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0376MSiP024336;
+        Tue, 7 Apr 2020 02:22:28 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2] iio: core: move 'indio_dev->info' null check first
+Date:   Tue, 7 Apr 2020 09:21:15 +0300
+Message-ID: <20200407062115.84346-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200406123246.57684-1-alexandru.ardelean@analog.com>
+References: <20200406123246.57684-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
-From:   SANDRA DEWI <dewisandra154@gmail.com>
-Date:   Tue, 7 Apr 2020 05:12:40 +0000
-Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
-Subject: whether this is your correct email address or not
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-07_01:2020-04-07,2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070053
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear ,Pastor
+Doesn't fix anything. Just moves this to be the first check, as it's very
+simple and fails the registration earlier, instead of potentially
+initializing the 'indio_dev->label' and checking for duplicate indexes, and
+then failing with this simple-check.
 
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+Changelog v1 -> v2:
+* fix typo 'regitration' 'registration'
 
+ drivers/iio/industrialio-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I have a client who is an oil business man and he made a fixed deposit
-of $26 million USD in my bank, where I am the director of the branch,
-My client died with his entire family in Jordanian
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 157d95a24faa..56ff24d7a174 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1711,6 +1711,9 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+ {
+ 	int ret;
+ 
++	if (!indio_dev->info)
++		return -EINVAL;
++
+ 	indio_dev->driver_module = this_mod;
+ 	/* If the calling driver did not initialize of_node, do it here */
+ 	if (!indio_dev->dev.of_node && indio_dev->dev.parent)
+@@ -1723,9 +1726,6 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (!indio_dev->info)
+-		return -EINVAL;
+-
+ 	/* configure elements for the chrdev */
+ 	indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
+ 
+-- 
+2.17.1
 
-50% of the fund will be for the church  for the work of God,the
-balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
-50% for me
-
-intervention in the Syrian Civil War 2014 leaving behind no next of
-kin. I Propose to present you as next of kin to claim the funds, if
-interested reply me for full details and how we are to
-
-
-
-proceed to close this deal.
-
-
-
-
-Mrs. Sandra Dewi
-
-
-
-Email  mrsdewi@gmx.com

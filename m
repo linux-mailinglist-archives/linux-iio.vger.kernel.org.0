@@ -2,118 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 580AA1A0A13
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 11:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6640E1A0A51
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Apr 2020 11:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726562AbgDGJ3L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Apr 2020 05:29:11 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:32218 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726353AbgDGJ3L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 05:29:11 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0379RIce016784;
-        Tue, 7 Apr 2020 05:28:53 -0400
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-        by mx0a-00128a01.pphosted.com with ESMTP id 306q55hw36-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 07 Apr 2020 05:28:53 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jFQVyWWujxfhqLFGZ68pwxnjiESBagheuIUajMS9LwSZCENFqYW8A0n7silU4UDvgDcMTMlLXLwRw//cI9TyYdpjc41KHeiDBFbH35NrX0wmgMtYXEdqZLZIwpLoY4e2+Hdg9VuiBc5MRWCl+hmjvbWWAts7CgUMH9tN8fVkbyeqvAcxXZ5Oyi1y5DbAMBC/HSzYBxEjEAhRrVBfSeR9au6O69w5xcrz1S0j5rnIloD6eEiGwIF5g6KDSOMMrCWEK5rAkNnnak88zkMyPrGI7MRW9yNqHkhL3Rs0yC1/xI7CeQWflzXtkt39wHYQkWR7MIlin+sKkZSanQWpwdC0xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1b0QhILor/VvDbCtMKGapbCbmZO3e6cMtm61odFRNsQ=;
- b=kOQfxvi3IosX6KTKG8XK0KSsUDv4lRoypwqgzTsse69q8MfUKgH4a3lYiXodIDdD+cxbbtv7O050vLvkxrC3yAYX8uihRQt1Mu+kV0PrcPHLt3fwFwTm0VYHIICWnoDQbsLYAKkB+Bu5AiR3vUVBUTYtPVwxSoSUxCsIAvqIuiQWg2qHSiGSu0NkY/6elXj4mDUF0lUCQZ3mPILqWjp2AxltJRyLS/wgdESJJAy5BIqMs8z1ctActJB16KzGXQ4+XOldPqMSsdoT7amcXVeIxSlLamY6VefPKTDPCWjYEL8uHXUbuEm0sBIJUusK4mJ+UhqujLw4uiUHF97xz/iY0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1b0QhILor/VvDbCtMKGapbCbmZO3e6cMtm61odFRNsQ=;
- b=yxRn/DMyqz9zCVGNTTyTLVkWuGACz1srTZxa2OBGGkfgM/KaUNYPYMVCjw6X7ZXqTBx9a2CpcBJDBTuZHVt1hYD1Ld9qqg61ao6fBPTCV8yeQYAOKh9C2OoRLwZXtGQIDil6a5Z/QJ38i9/LwvbJ6lIHccofuMY+3jscoVpSyzA=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB5051.namprd03.prod.outlook.com (2603:10b6:5:1ea::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.15; Tue, 7 Apr
- 2020 09:28:50 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2878.018; Tue, 7 Apr 2020
- 09:28:50 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "Markus.Elfring@web.de" <Markus.Elfring@web.de>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [PATCH 2/3] iio: make use of iio_device_attach_kfifo_buffer()
- where straightforward
-Thread-Topic: [PATCH 2/3] iio: make use of iio_device_attach_kfifo_buffer()
- where straightforward
-Thread-Index: AQHWDL6X7y9OF2Hsf0WKb3NS9qDxRqhtZGcA
-Date:   Tue, 7 Apr 2020 09:28:50 +0000
-Message-ID: <a8fd15498fc71fb1d6a02e463aeaade44574c06a.camel@analog.com>
-References: <36669e0f-c41c-5cc8-7218-be5cad5cf8a5@web.de>
-In-Reply-To: <36669e0f-c41c-5cc8-7218-be5cad5cf8a5@web.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [188.27.135.58]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 30e329ea-06fa-4130-8814-08d7dad61535
-x-ms-traffictypediagnostic: DM6PR03MB5051:
-x-microsoft-antispam-prvs: <DM6PR03MB5051FAF4175AF4F8D051C36CF9C30@DM6PR03MB5051.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:466;
-x-forefront-prvs: 036614DD9C
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(39860400002)(376002)(136003)(396003)(346002)(366004)(478600001)(36756003)(110136005)(4326008)(86362001)(71200400001)(5660300002)(54906003)(2906002)(316002)(6512007)(186003)(26005)(8676002)(81156014)(66556008)(4744005)(66476007)(66946007)(6506007)(91956017)(6486002)(8936002)(81166006)(66446008)(64756008)(2616005)(76116006);DIR:OUT;SFP:1101;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ZL/EaOI2Ef6D3oMF3xcK97eWH9uoP/PvZ+tJLx4eg0yJIHuj1mJEtR3bruUNfCjxlh9zN4zzp8n51sEYP3LfahxXtqbuK2nYFTDDQjNsZUTfTbUj6/JxahOb30m0JRdDrNAfwlDrHHN4uILoW2OSMGnogZ/raZrpOsH8rIywaku+NuhAhMm41gulb9RdhadyX3hVjyQdAZT/AOyCg6W9tQGzseBySFJf3xn4TRxOwEs5ncmZGePTxZ5B26wMDJsPfYhbUanB+0/KVD0JFdEhx5lxxBK5cf972ZXEwzBgYcA9uGFdcgdk6SJ2r0Zg5rilANZdcMjfUGXbD1T3IBhaM5MJPrr0MZ9M8kHERFZjAfiTaZCg4HP8hOzcOAqxS9lpjtgBY6JOxQk4qMS20J6cSjkCAxIriuZ9cJuzvCpzmoctNfKRgb3Tq5CyXftiMa+H
-x-ms-exchange-antispam-messagedata: Cohff/hpX2iCD+9aRgq+3XHCn4E8DK+vbyJ4+SV11ANfDcr/TItKtwHVf920YxroY+itOS+/cUHtvw8giFepm9rvDYzR+/4kSGEFtULr6/+Xdc+riUmCeuErIfYA50LDavbFfrop+7zUuJrHlA02Fg==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <666B5620265F2C43AB29A5B29BE79C67@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1728023AbgDGJmE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Apr 2020 05:42:04 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:42003 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725883AbgDGJmE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Apr 2020 05:42:04 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 8F18B580432;
+        Tue,  7 Apr 2020 05:42:02 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 07 Apr 2020 05:42:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=CCbcFFDvgPRSxCF+8kZaaLO/1MA
+        76diBRU97kO0B2Q8=; b=T5/TfczrwzeOgw6HFlUxIdyoSA/V0HhD7PYXgy/9TQ4
+        ikbfway1Ve6eAIDB1YpuKG8qj8p0bt3ImtiS5pVw3wXumJRHeiWAuFM+0UCB+KNf
+        jNkB4xLghBQLbrYfXDxqscKi7+Zd5C0e8otfoRQsR9J83FuaTZ51porehp1vuEIx
+        27FTOX4iAFXHwRRQKZFXxlJhg/FVD0RcXh9vmzfub5Yc/D2TLRdWM92xAgXJWFre
+        g5AooSA85ZbUkd3R0yR/wB16lhCJCscJRIUxoos4gqOUk7PFRjpf7A0VAr3/6Jij
+        Vo/9sYx3ICBSkKgA4qG+jSXhS/rz7mt4yoyei538yIg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=CCbcFF
+        DvgPRSxCF+8kZaaLO/1MA76diBRU97kO0B2Q8=; b=D8wY+GD4/i+PHJodUNJO57
+        8imtIXeZcubk9ZyX7MWTkFSIlwKtdy9pezqcnMwb9f+Q/UWIgV8aqvjJ+kkzEv7V
+        /dvqFuDOa3o5Gd1IoLrBvFUBc87+XSIyZAvpthaTuigqpH/wjPLycMqzY1/PmmPZ
+        mnFMDp4yUSc8Ork+6KdpZr8Cj0kOc+b61fFDKWEbAjltSwPU9J4kder4tAu5bO7Q
+        kuIXCEu23UEVOftL2fYnnHEvuPwT2z33SUQuJEjfJ3oZrfGQ6zJpnjUAwNJXDp4o
+        AjKMMZjRqmnZ9oskDmQlGTyg5fRmjTa9AIqswuJJ4rQ6pPofwl+X4EQqzAeeZOoQ
+        ==
+X-ME-Sender: <xms:6UqMXrEESRaMA6LPL3tIrAKxumyafD9oInxTfyn0UYeMhbuq_F3qpg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudehgddulecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
+    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucffohhmrghinh
+    epuggvvhhitggvthhrvggvrdhorhhgnecukfhppeeltddrkeelrdeikedrjeeinecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvse
+    gtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:6UqMXjxTEDcTx1vL3tqsGbobBFxRNsbgWN30Nr0OrYnkWl2y1Vrdww>
+    <xmx:6UqMXgps9meExFNY9FK8qVIHjUIRuKsKRFhApBpQRbNRfR8LRDGObA>
+    <xmx:6UqMXtjiYQnYDtdnDJwlxdZOiIOoWsN6Bt76h6ENnjnYbJhLZR--ug>
+    <xmx:6kqMXmjh6iiSCY83qIMll5ueTt-0nO1qmd6Z7Q-wNzHVP6hBGf0vIg>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 19790328005A;
+        Tue,  7 Apr 2020 05:42:01 -0400 (EDT)
+Date:   Tue, 7 Apr 2020 11:41:59 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/3] Input: rotary-encoder-counter: add DT bindings
+Message-ID: <20200407094159.xtbhtsxorvs2g22c@gilmour.lan>
+References: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
+ <20200406155806.1295169-3-kamel.bouhara@bootlin.com>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30e329ea-06fa-4130-8814-08d7dad61535
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2020 09:28:50.8431
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s8SR21q65W9lrBAhNGfKlhlDXQTyqrhk8kaqtxiAx+bE6krtdtL2cshz/OOh6Ed0TNkEwvgM76O80BA5bJcCE3NyuLeYrIRFr7nndqCYTpo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5051
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-07_01:2020-04-07,2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- phishscore=0 mlxscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- mlxlogscore=589 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004070080
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="japkdjzpcbcq3brx"
+Content-Disposition: inline
+In-Reply-To: <20200406155806.1295169-3-kamel.bouhara@bootlin.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTA0LTA3IGF0IDExOjI2ICswMjAwLCBNYXJrdXMgRWxmcmluZyB3cm90ZToN
-Cj4gW0V4dGVybmFsXQ0KPiANCj4gSG93IGRvIHlvdSB0aGluayBhYm91dCBhIHBhdGNoIHN1Ympl
-Y3QgbGlrZSDigJxpaW86IEluY3JlYXNlIHVzZSBvZg0KPiBpaW9fZGV2aWNlX2F0dGFjaF9rZmlm
-b19idWZmZXIoKeKAnT8NCj4gDQo+IA0KPiA+IFRoaXMgY2hhbmdlIGRvZXMgdGhhdC4NCj4gDQo+
-IEkgc3VnZ2VzdCB0byBpbXByb3ZlIGFsc28gdGhpcyBjb21taXQgbWVzc2FnZS4NCj4gDQo+ICog
-V291bGQgeW91IGxpa2UgdG8gY29uc2lkZXIgYSB3b3JkaW5nIGxpa2Ug4oCcQ29udmVydCBhIHNw
-ZWNpZmljIGZ1bmN0aW9uIGNhbGwNCj4gICBjb21iaW5hdGlvbiB0byBhIGJldHRlciBwcm9ncmFt
-bWluZyBpbnRlcmZhY2Uu4oCdPw0KPiANCj4gKiBEbyB5b3UgaW1hZ2luZSBhbnkgbW9yZSBzb2Z0
-d2FyZSBmaW5lLXR1bmluZyBiZWNhdXNlIG9mIHJlbGF0ZWQNCj4gICBjb2xsYXRlcmFsIGV2b2x1
-dGlvbj8NCj4gDQoNCkknbGwgc2VlLg0KVGhpcyBwYXRjaHNldCBpcyBraW5kIG9mIHN0b3BwZWQu
-DQpXaWxsIG5lZWQgYSByZXdvcmsgZm9yIGl0Lg0KDQo+IFJlZ2FyZHMsDQo+IE1hcmt1cw0K
+
+--japkdjzpcbcq3brx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Hi Kamel,
+
+The prefix for device tree bindings is usually dt-bindings:
+$framework: $title
+
+So a title like "dt-bindings: input: Add a counter-based rotary
+encoder binding" would be better.
+
+On Mon, Apr 06, 2020 at 05:58:05PM +0200, Kamel Bouhara wrote:
+> Add dt binding for the counter variant of the rotary encoder driver.
+>
+> Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> ---
+>  .../input/rotary-encoder-counter.yaml         | 67 +++++++++++++++++++
+>  1 file changed, 67 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> new file mode 100644
+> index 000000000000..a59f7c1faf0c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> @@ -0,0 +1,67 @@
+> +# SPDX-License-Identifier: GPL-2.0
+
+Bindings are usually used by other OS's, so you should consider
+putting it under a more permissive license, usually that would be GPL2
+and the BSD-2-Clause
+
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/rotary-encoder-counter.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Rotary Encoder Counter
+> +
+> +maintainers:
+> +  - Kamel Bouhara <kamel.bouhara@bootlin.com>
+> +
+> +description:
+> +  Registers a Rotary encoder connected through a counter device.
+
+You shouldn't really describe the action here, but more what the
+binding is about. The registration will not depend on the presence of
+the node following that binding, but rather on whether or not the OS
+that uses it has support for it.
+
+> +properties:
+> +  compatible:
+> +    const: rotary-encoder-counter
+> +
+> +  counter:
+> +    description: Phandle for the counter device providing rotary position.
+
+This should have a type
+
+> +  linux-axis:
+> +    description: The input subsystem axis to map to this rotary encoder.
+> +    type: boolean
+> +
+> +  qdec-mode:
+> +    description: |
+> +      Quadrature decoder function to set in the counter device.
+> +      3: x1-PHA
+> +      4: x1-PHB
+> +      5: x2-PHA
+> +      6: x2-PHB
+> +      7: x4-PHA and PHB
+
+That range (even though it's a bit odd) should be expressed through an
+enum so that you can check that the values are actually within that
+range.
+
+> +  steps:
+> +    description: Number of steps in a full turnaround of the encoder.
+
+Muli-line strings should have either quotes around them, or a | or >
+like you did for the description. | will keep the \n, > will make that
+a single string.
+
+This should also have a type
+
+> +      Only relevant for absolute axis.
+
+This should be expressed through a if / then clause, or a dependencies one
+
+>                                         Defaults to 24 which is a typical
+> +      value for such devices.
+
+This should be expressed through a default property.
+
+> +  relative-axis:
+> +    description: Register a relative axis rather than an absolute one.
+> +    type: boolean
+> +
+> +  rollover:
+> +    description: Automatic rollover when the rotary value becomes greater
+> +      than the specified steps or smaller than 0. For absolute axis only.
+> +    type: boolean
+
+Same story than steps for the dependency. Also, what is is the
+behaviour when this property isn't set?
+
+> +  poll-interval:
+> +    description: Poll interval at which the position is read from the counter
+> +      device (default 500ms).
+
+It should have a type too, and a default property
+
+> +
+> +required:
+> +  - compatible
+> +  - counter
+> +  - qdec-mode
+> +
+> +examples:
+> +  - |
+> +    rotary@0 {
+> +        compatible = "rotary-encoder-counter";
+
+A unit-address (the part after @) only makes sense for a node if
+there's a matching reg property in the node. This will trigger a DTC
+warning, so you should remove the @0
+
+Maxime
+
+--japkdjzpcbcq3brx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXoxK5wAKCRDj7w1vZxhR
+xV5PAP9oleLNJ1AEhCCnvJCT4zm5frzWFncYL0ZW4bzrBCNAgQD/VfmXTyrdhPL8
+UoL54zIDj9ggENLCwxMqk6jdw/++/wM=
+=QF+N
+-----END PGP SIGNATURE-----
+
+--japkdjzpcbcq3brx--

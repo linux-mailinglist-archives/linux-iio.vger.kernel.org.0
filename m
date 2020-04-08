@@ -2,467 +2,595 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C90A91A2AF2
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Apr 2020 23:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E806C1A2B22
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Apr 2020 23:31:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728221AbgDHVUI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Apr 2020 17:20:08 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:34191 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729540AbgDHVUI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Apr 2020 17:20:08 -0400
-Received: by mail-wm1-f66.google.com with SMTP id c195so1020318wme.1
-        for <linux-iio@vger.kernel.org>; Wed, 08 Apr 2020 14:20:04 -0700 (PDT)
+        id S1730567AbgDHVbX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Apr 2020 17:31:23 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:35367 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729613AbgDHVbX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Apr 2020 17:31:23 -0400
+Received: by mail-qk1-f196.google.com with SMTP id c63so1948977qke.2;
+        Wed, 08 Apr 2020 14:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mlooLY7Sz99r4w5SxW3vhlXWplWMMsvRGvuuen3K1G4=;
-        b=dN4B/PDUnB4ESD02bEyepRx8xOEgSxpQkBnOn1PcFRiLJHlhzDqu+5FzsTHHtqwmyu
-         p0t1WW1FOGeUBGOvvWYNRZOM7PPegLuwU3C02BYEmf39qCifISHTYbOE//7hXGTkvULF
-         69CBbB0SZnHe15+XLIEJwmIbv7QeXPZ+VIhdQ9yYEoUNLe/scixvX+TEHrnNVitj3oD2
-         aPU2mOKUTycAypK/EIINnP3sRPGb5j67LPA3abnn6YqD3bZT1fEtoMpur7YkoaBr8ucR
-         ZsgSHpx+NkPj+kkMao8gKvAfQNiTq6eGyaarUtfHNr85qgPoOUmiDq/KTtEugZoamFbW
-         dFOA==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3GdzMyIS6o4XfcCDmmix8QiGCsWxtWhkq+gSFrv4xx0=;
+        b=JzJ300seGItAe4s4hYjoDFezs3QASPmmf5xei5ZlTmxLpGsIQAK00BuCgHFvJoxGVo
+         N+BRcE69RQVLKh8lFXnVaVXQlCGn9x7khIxcoKPntA8mTADLX864yeGMrTHxR3I0ZxZR
+         Z2VL5089MVOu6cE+58t+XTY68NHtxSPqXlYekdbu6Y9P9JWR6GsIvccUqUyI4Lepwt7O
+         M2QNNW+5kcJndJh2JqVQdWMQ8WPDMXp3wnagXg3ykudRjAQofCbrWIXNfsnJskZJKTH9
+         ht2IOtFbV/DFkSGkyP9VoljNRJZXJuSW0uXNoraoMpFLRRfz9e2uBkwF8elAdEQhMhkZ
+         jAdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mlooLY7Sz99r4w5SxW3vhlXWplWMMsvRGvuuen3K1G4=;
-        b=DHvgwVfEatfJBcGc9YhZLNKn181C3skl/QUY3m6etxQjgIG4mskGJ/R0Mf0db0sT60
-         jku/KBEfYqjERO72uP6Et6YVZOyZMkLGC6MM9dqFLy52RifEPuhImkR+jiuPSORAYArC
-         hIjdqa968/RFjuvEw2zkBIGdt7veuGHYgbXsGJhK1JLvpxRi6cR7DuGnGG+2Gf46uWfG
-         1kqMlkvN8Gr8iQ/tgdXI46LBtg9WMxJPpVmoVg9Wi5JnX+MKu5bmcFprz43KCSyHb8bJ
-         vfEMjH+Bt/RqKzJnBO4PubvMPHB5exwcbm4+sHsG9/u7dKXv3qJoK8KeVKS6+XDQmTKE
-         34lQ==
-X-Gm-Message-State: AGi0PubmagzabtvX8cOIxHhrfypw7m57gxlYBsr1E/vS3Zm4ulVHyur3
-        z0YSbhVfXiQ+/YhIyABhUdbzGJddAVlkZyGdmzJPCw==
-X-Google-Smtp-Source: APiQypKhHUwAsJjYzyYB5VHXHzMmc8iH+YM/uo2cJCDxrNfExZKJ40xBSX/01K7muRDVNEhwkWslWZLPCv77qbEK1j4=
-X-Received: by 2002:adf:e282:: with SMTP id v2mr10444096wri.329.1586380803307;
- Wed, 08 Apr 2020 14:20:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3GdzMyIS6o4XfcCDmmix8QiGCsWxtWhkq+gSFrv4xx0=;
+        b=gThZ+WjO0OMC+wyPf2O3GoQPJ/fkWTkiFUUMJYNTy/ohXL8vuhVFzVv4PAM4Hl+/2v
+         EV9CJi9yksPUNJ/QDFDbL4A6pelTc22eWYz4M1KGD5NK8xdOMNnePJTlfiwdJMHZypBh
+         APHRjHSsRiAbQjP7QhXmFjnonfLUNEIz+RRZpjIF6yAIj/Za8EdLNfz2tXtjmu9gLkWB
+         cWISXzeGO6sHe0oNhH6w9GD/dj0luOHoIBTinQfkpYCwM5qgYwoxKSr4huE1pquyYtXn
+         kHIG/QimOcoErD9Pb78FHYLGCJD29xlSug0q0X0nUN428aVEVGTo/jSbF/0nv/TyzmQ9
+         0U2Q==
+X-Gm-Message-State: AGi0PubXuBwIQHzRkr18988dffgWCVgOFHElfYLkU+HXBZfkcMNMpOKi
+        zH4RrYURf5s9UyuzVYzN6/w=
+X-Google-Smtp-Source: APiQypLJhVu6+a6yzc2PfuBawKGhlYDBnRoGqlYZgoeoWun0d7hyqhPeyqsJm4dasFSWvKST17vmkQ==
+X-Received: by 2002:ae9:f44a:: with SMTP id z10mr9768938qkl.353.1586381480363;
+        Wed, 08 Apr 2020 14:31:20 -0700 (PDT)
+Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id g14sm2773863qtb.24.2020.04.08.14.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2020 14:31:19 -0700 (PDT)
+Date:   Wed, 8 Apr 2020 17:31:03 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 3/3] counter: Add atmel TCB capture counter
+Message-ID: <20200408213013.GA30867@icarus>
+References: <20200406155320.1291701-1-kamel.bouhara@bootlin.com>
+ <20200406155320.1291701-4-kamel.bouhara@bootlin.com>
 MIME-Version: 1.0
-References: <20200323124310.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
- <20200323124310.2.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid> <CAHp75VfHiKqjaEKPGa=ymmsu44AMB5FCNKFEKhDeazW5vWZkBg@mail.gmail.com>
-In-Reply-To: <CAHp75VfHiKqjaEKPGa=ymmsu44AMB5FCNKFEKhDeazW5vWZkBg@mail.gmail.com>
-From:   Daniel Campello <campello@google.com>
-Date:   Wed, 8 Apr 2020 15:19:26 -0600
-Message-ID: <CAHcu+VZW_giesTmJRoy35b7-6V04BW8Npgz+GAN6NSYH81ZYZQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2 v5] iio: Add SEMTECH SX9310/9311 sensor driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kfjH4zxOES6UT95V"
+Content-Disposition: inline
+In-Reply-To: <20200406155320.1291701-4-kamel.bouhara@bootlin.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 10:18 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Mar 23, 2020 at 8:46 PM Daniel Campello <campello@chromium.org> wrote:
-> >
-> > Add SEMTECH SX9310/9311 driver.
-> >
-> > The device has the following entry points:
-> >
-> > Usual frequency:
-> > - sampling_frequency
-> > - sampling_frequency_available
-> >
-> > Instant reading of current values for different sensors:
-> > - in_proximity0_raw
-> > - in_proximity1_raw
-> > - in_proximity2_raw
-> > - in_proximity3_comb_raw
-> > and associated events in events/
->
-> ...
->
-> > +#include <linux/acpi.h>
->
-> > +#include <linux/of.h>
->
-> No users for these (see ID table handling below), but property.h would
-> be needed.
->
->
 
-I removed of.h but kept acpi.h in v6 since it was needed for other
-ACPI macros on the probe function
->
-> ...
->
-> > +#define   SX9310_EVENT_IRQ                             (SX9310_FAR_IRQ | \
-> > +                                                        SX9310_CLOSE_IRQ)
->
-> Better formatting is
-> #define FOO \
->   (BAR | ZOO)
->
-> ...
->
-> > +struct sx9310_data {
->
-> > +       struct i2c_client *client;
->
-> Do you really need client? Perhaps struct device will be enough?
+--kfjH4zxOES6UT95V
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Apr 06, 2020 at 05:53:20PM +0200, Kamel Bouhara wrote:
+> This drivers allows to use the capture mode of the Timer Counter Block
+> hardware block available in Atmel SoCs through the counter subsystem.
+>=20
+> Two functions of the counter are supported for the moment: period
+> capture and quadrature decoder. The latter is only supported by the
+> SAMA5 series of SoCs.
+>=20
+> For the period capture mode a basic setup has been chosen that will
+> reset the counter each time the period is actually reached. Of course
+> the device offers much more possibilities.
+>=20
+> For quadrature mode, both channel 0 and 1 must be configured even if we
+> only capture the position (no revolution/rotation).
+>=20
+> Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
 
-There are references to client->irq in some places
+Hi Kamel,
 
->
->
-> > +       struct iio_trigger *trig;
-> > +       struct regmap *regmap;
-> > +       /*
-> > +        * Last reading of the proximity status for each channel.
-> > +        * We only send an event to user space when this changes.
-> > +        */
-> > +       bool prox_stat[SX9310_NUM_CHANNELS];
-> > +       bool trigger_enabled;
->
-> > +       __be16 buffer[SX9310_NUM_CHANNELS +
-> > +                     4]; /* 64-bit data + 64-bit timestamp */
->
-> Please, fix formatting.
->
-> > +};
->
-> ...
->
-> > +static int sx9310_update_chan_en(struct sx9310_data *data,
-> > +                                unsigned int chan_read,
-> > +                                unsigned int chan_event)
-> > +{
-> > +       int ret;
-> > +
->
-> > +       if ((data->chan_read | data->chan_event) != (chan_read | chan_event)) {
-> > +               ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-> > +                                        SX9310_CHAN_ENABLED_MASK,
-> > +                                        chan_read | chan_event);
->
-> unsigned int readevent = chan_read | chan_event;
-> ...
-> if (... != readevent) {
->   ..., readevent);
-> }
->
-> > +               if (ret)
-> > +                       return ret;
-> > +       }
-> > +       data->chan_read = chan_read;
-> > +       data->chan_event = chan_event;
-> > +       return 0;
-> > +}
->
-> ...
->
-> > +static int sx9310_read_prox_data(struct sx9310_data *data,
-> > +                                const struct iio_chan_spec *chan, __be16 *val)
-> > +{
-> > +       int ret;
-> > +
-> > +       ret = regmap_write(data->regmap, SX9310_REG_SENSOR_SEL, chan->channel);
-> > +       if (ret < 0)
-> > +               return ret;
-> > +
->
-> > +       return regmap_bulk_read(data->regmap, chan->address, val, 2);
->
-> sizeof()?
->
-> > +}
->
-> ...
->
-> > +       if (data->client->irq > 0) {
-> > +               ret = wait_for_completion_interruptible(&data->completion);
-> > +               reinit_completion(&data->completion);
->
-> Logically reinit better to be called before you start measurement.
->
-I think this is effectively before measurement, minus error/locking handling.
+Thank you for submitting support for this driver. Since this is a new
+counter driver, make sure to create an entry for it in the top-level
+MAINTAINERS file so users know who to contact to report bugs and other
+issues.
 
-> > +       } else {
-> > +               ret = sx9310_wait_for_sample(data);
-> > +       }
->
-> ...
->
-> > +       *val = sign_extend32(be16_to_cpu(rawval),
-> > +                            (chan->address == SX9310_REG_DIFF_MSB ? 11 : 15));
->
-> Too many parentheses.
->
-> ...
->
-> > +       mutex_lock(&data->mutex);
-> > +
-> > +       ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-> > +                                SX9310_SCAN_PERIOD_MASK,
-> > +                                i << SX9310_SCAN_PERIOD_SHIFT);
-> > +
-> > +       mutex_unlock(&data->mutex);
->
-> Btw, can you use locking provided by regmap?
+I've written some more comments inline below.
 
+> ---
+>  drivers/counter/Kconfig             |  11 +
+>  drivers/counter/Makefile            |   1 +
+>  drivers/counter/atmel-tcb-capture.c | 388 ++++++++++++++++++++++++++++
+>  3 files changed, 400 insertions(+)
+>  create mode 100644 drivers/counter/atmel-tcb-capture.c
+>=20
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index c80fa76bb531..c50d7453ec33 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -70,4 +70,15 @@ config FTM_QUADDEC
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ftm-quaddec.
+> =20
+> +config ATMEL_TCB_CAPTURE
+> +	tristate "Atmel Timer Counter Capture driver"
+> +	depends on HAS_IOMEM && OF
+> +	select REGMAP_MMIO
+> +	help
+> +	  Select this option to enable the Atmel Timer Counter Block
+> +	  capture driver.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called atmel-tcb-capture.
+> +
+>  endif # COUNTER
+> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
+> index 55142d1f4c43..70c5b8924588 100644
+> --- a/drivers/counter/Makefile
+> +++ b/drivers/counter/Makefile
+> @@ -10,3 +10,4 @@ obj-$(CONFIG_STM32_TIMER_CNT)	+=3D stm32-timer-cnt.o
+>  obj-$(CONFIG_STM32_LPTIMER_CNT)	+=3D stm32-lptimer-cnt.o
+>  obj-$(CONFIG_TI_EQEP)		+=3D ti-eqep.o
+>  obj-$(CONFIG_FTM_QUADDEC)	+=3D ftm-quaddec.o
+> +obj-$(CONFIG_ATMEL_TCB_CAPTURE)	+=3D atmel-tcb-capture.o
+> diff --git a/drivers/counter/atmel-tcb-capture.c b/drivers/counter/atmel-=
+tcb-capture.c
+> new file mode 100644
+> index 000000000000..6ac809503f90
+> --- /dev/null
+> +++ b/drivers/counter/atmel-tcb-capture.c
+> @@ -0,0 +1,388 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/**
+> + * Copyright (C) 2020 Atmel
+> + *
+> + * Author: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> + *
+> + */
+> +#include <linux/clk.h>
+> +#include <linux/counter.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <soc/at91/atmel_tcb.h>
+> +
+> +#define ATMEL_TC_CMR_MASK	(ATMEL_TC_LDRA_RISING | ATMEL_TC_LDRB_FALLING =
+| \
+> +				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
+> +				 ATMEL_TC_LDBSTOP)
+> +
+> +#define ATMEL_TC_QDEN			BIT(8)
+> +#define ATMEL_TC_POSEN			BIT(9)
+> +
+> +struct atmel_tc_data {
+> +	const struct atmel_tcb_config *tc_cfg;
+> +	struct counter_device counter;
+> +	struct regmap *regmap;
+> +	int qdec_mode;
+> +	int num_channels;
+> +	int channel[2];
+> +	bool trig_inverted;
+> +};
+> +
+> +enum atmel_tc_count_function {
+> +	ATMEL_TC_FUNCTION_INCREASE,
+> +	ATMEL_TC_FUNCTION_QUADRATURE,
+> +};
+> +
+> +static enum counter_count_function atmel_tc_count_functions[] =3D {
+> +	[ATMEL_TC_FUNCTION_INCREASE] =3D COUNTER_COUNT_FUNCTION_INCREASE,
+> +	[ATMEL_TC_FUNCTION_QUADRATURE] =3D COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+> +};
+> +
+> +enum atmel_tc_synapse_action {
+> +	ATMEL_TC_SYNAPSE_ACTION_NONE =3D 0,
+> +	ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE,
+> +	ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE,
+> +	ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE
+> +};
+> +
+> +static enum counter_synapse_action atmel_tc_synapse_actions[] =3D {
+> +	[ATMEL_TC_SYNAPSE_ACTION_NONE] =3D COUNTER_SYNAPSE_ACTION_NONE,
+> +	[ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE] =3D COUNTER_SYNAPSE_ACTION_RISING=
+_EDGE,
+> +	[ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE] =3D COUNTER_SYNAPSE_ACTION_FALLI=
+NG_EDGE,
+> +	[ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE] =3D COUNTER_SYNAPSE_ACTION_BOTH_EDG=
+ES,
+> +};
+> +
+> +static struct counter_signal atmel_tc_count_signals[] =3D {
+> +	{
+> +		.id =3D 0,
+> +		.name =3D "Channel A",
+> +	},
+> +	{
+> +		.id =3D 1,
+> +		.name =3D "Channel B",
+> +	}
+> +};
+> +
+> +static struct counter_synapse atmel_tc_count_synapses[] =3D {
+> +	{
+> +		.actions_list =3D atmel_tc_synapse_actions,
+> +		.num_actions =3D ARRAY_SIZE(atmel_tc_synapse_actions),
+> +		.signal =3D &atmel_tc_count_signals[0]
+> +	},
+> +	{
+> +		.actions_list =3D atmel_tc_synapse_actions,
+> +		.num_actions =3D ARRAY_SIZE(atmel_tc_synapse_actions),
+> +		.signal =3D &atmel_tc_count_signals[1]
+> +	}
+> +};
+> +
+> +static int atmel_tc_count_function_get(struct counter_device *counter,
+> +				       struct counter_count *count,
+> +				       size_t *function)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +
+> +	if (priv->qdec_mode)
+> +		*function =3D ATMEL_TC_FUNCTION_QUADRATURE;
+> +	else
+> +		*function =3D ATMEL_TC_FUNCTION_INCREASE;
+> +
+> +	return 0;
+> +}
+> +
+> +static int atmel_tc_count_function_set(struct counter_device *counter,
+> +				       struct counter_count *count,
+> +				       size_t function)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +	u32 bmr, cmr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_BMR, &bmr);
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
+> +
+> +	/* Set capture mode */
+> +	cmr &=3D ~ATMEL_TC_WAVE;
+> +
+> +	switch (function) {
+> +	case ATMEL_TC_FUNCTION_INCREASE:
+> +		priv->qdec_mode =3D 0;
+> +		/* Set highest rate based on whether soc has gclk or not */
+> +		bmr &=3D ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
+> +		if (priv->tc_cfg->has_gclk)
+> +			cmr |=3D ATMEL_TC_TIMER_CLOCK2;
+> +		else
+> +			cmr |=3D ATMEL_TC_TIMER_CLOCK1;
+> +		/* Setup the period capture mode */
+> +		cmr |=3D  ATMEL_TC_CMR_MASK;
+> +		cmr &=3D ~(ATMEL_TC_ABETRG | ATMEL_TC_XC0);
+> +		break;
+> +	case ATMEL_TC_FUNCTION_QUADRATURE:
+> +		if (!priv->tc_cfg->has_qdec)
+> +			return -ENODEV;
 
-The lock is protecting critical sections that include multiple regmap
-and other operations together in other parts of the code.
->
->
-> ...
->
-> > +       /*
-> > +        * Even if no event is enabled, we need to wake the thread to
->
-> > +        * clear the interrupt state by reading SX9310_REG_IRQ_SRC.  It
->
-> Move it to the next line.
->
-> > +        * is not possible to do that here because regmap_read takes a
-> > +        * mutex.
-> > +        */
->
-> ...
->
-> > +       for (chan = 0; chan < SX9310_NUM_CHANNELS; chan++) {
-> > +               int dir;
-> > +               u64 ev;
-> > +               bool new_prox = val & BIT(chan);
-> > +
->
-> > +               if (!(data->chan_event & BIT(chan)))
-> > +                       continue;
->
-> for_each_set_bit()
+I think returning an -EINVAL here might be better. I can understand that
+the system does not have a quadrature encoder device in this case, but
+=66rom the user perspective they are requesting to set the function for
+the existing counter device. Therefore, if the existing counter device
+does not support the requested function, it makes sense to report the
+issue as simply an invalid argument (return -EINVAL) for this particular
+device.
 
+> +		/* In QDEC mode settings both channels 0 and 1 are required */
+> +		if (priv->num_channels < 2 || priv->channel[0] !=3D 0 ||
+> +		    priv->channel[1] !=3D 1) {
+> +			pr_err("Invalid channels number or id for quadrature mode\n");
+> +			return -EINVAL;
+> +		}
+> +		priv->qdec_mode =3D 1;
+> +		bmr |=3D ATMEL_TC_QDEN | ATMEL_TC_POSEN;
+> +		cmr |=3D ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_ABETRG | ATMEL_TC_XC0;
+> +		break;
+> +	}
+> +
+> +	regmap_write(priv->regmap, ATMEL_TC_BMR, bmr);
+> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), cmr);
+> +
+> +	/* Enable clock and trigger counter */
+> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CCR),
+> +		     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
+> +
+> +	if (priv->qdec_mode) {
+> +		regmap_write(priv->regmap,
+> +			     ATMEL_TC_REG(priv->channel[1], CMR), cmr);
+> +		regmap_write(priv->regmap,
+> +			     ATMEL_TC_REG(priv->channel[1], CCR),
+> +			     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int atmel_tc_count_signal_read(struct counter_device *counter,
+> +				      struct counter_signal *signal,
+> +				      enum counter_signal_value *val)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +	bool sigstatus;
+> +	u32 sr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
+> +
+> +	if (priv->trig_inverted)
+> +		sigstatus =3D (sr & ATMEL_TC_MTIOB);
+> +	else
+> +		sigstatus =3D (sr & ATMEL_TC_MTIOA);
+> +
+> +	*val =3D sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
+> +
+> +	return 0;
+> +}
+> +
+> +static int atmel_tc_count_action_get(struct counter_device *counter,
+> +				     struct counter_count *count,
+> +				     struct counter_synapse *synapse,
+> +				     size_t *action)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +	u32 cmr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
+> +
+> +	*action =3D ATMEL_TC_SYNAPSE_ACTION_NONE;
+> +
+> +	if (cmr & ATMEL_TC_ETRGEDG_NONE)
+> +		*action =3D ATMEL_TC_SYNAPSE_ACTION_NONE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
+> +		*action =3D ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
+> +		*action =3D ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
+> +		*action =3D ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE;
+> +
+> +	return 0;
+> +}
+> +
+> +static int atmel_tc_count_action_set(struct counter_device *counter,
+> +				     struct counter_count *count,
+> +				     struct counter_synapse *synapse,
+> +				     size_t action)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +	u32 edge =3D ATMEL_TC_ETRGEDG_NONE;
+> +
+> +	switch (action) {
+> +	case ATMEL_TC_SYNAPSE_ACTION_NONE:
+> +		edge =3D ATMEL_TC_ETRGEDG_NONE;
+> +		break;
+> +	case ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE:
+> +		edge =3D ATMEL_TC_ETRGEDG_RISING;
+> +		break;
+> +	case ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE:
+> +		edge =3D ATMEL_TC_ETRGEDG_FALLING;
+> +		break;
+> +	case ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE:
+> +		edge =3D ATMEL_TC_ETRGEDG_BOTH;
+> +		break;
+> +	}
+> +
+> +	return regmap_write_bits(priv->regmap,
+> +				ATMEL_TC_REG(priv->channel[0], CMR),
+> +				ATMEL_TC_ETRGEDG, edge);
 
-Thanks, more clear now!
->
->
-> > +               if (new_prox == data->prox_stat[chan])
-> > +                       /* No change on this channel. */
-> > +                       continue;
->
-> > +       }
->
-> ...
->
-> > +static struct attribute *sx9310_attributes[] = {
-> > +       &iio_dev_attr_sampling_frequency_available.dev_attr.attr,
->
-> > +       NULL,
->
-> Comma is not needed for terminator.
->
-> > +};
->
-> ...
->
-> > +static int sx9310_buffer_preenable(struct iio_dev *indio_dev)
-> > +{
-> > +       struct sx9310_data *data = iio_priv(indio_dev);
-> > +       unsigned int channels = 0;
-> > +       int bit, ret;
-> > +
-> > +       mutex_lock(&data->mutex);
-> > +       for_each_set_bit(bit, indio_dev->active_scan_mask,
-> > +                        indio_dev->masklength)
->
-> > +               channels |= BIT(indio_dev->channels[bit].channel);
->
-> unsigned long channels;
-> ...
-> __set_bit(...);
->
-> > +       ret = sx9310_update_chan_en(data, channels, data->chan_event);
-> > +       mutex_unlock(&data->mutex);
-> > +       return ret;
-> > +}
->
-> ...
->
-> > +#define SX_INIT(_reg, _def)                    \
-> > +       {                                       \
-> > +               .reg = SX9310_REG_##_reg,       \
-> > +               .def = _def,                    \
-> > +       }
->
-> Usually it's a good tone to #undef custom macro when they are not
-> needed anymore.
->
-> ...
->
-> > +       for (i = 100; i >= 0; i--) {
-> > +               msleep(20);
-> > +               ret = regmap_read(data->regmap, SX9310_REG_STAT1, &val);
-> > +               if (ret < 0)
-> > +                       goto out;
-> > +               if (!(val & SX9310_COMPSTAT_MASK))
-> > +                       break;
-> > +       }
->
-> NIH of regmap_real_poll_timeout();
+Are users able to adjust the edges like this even if the device is
+configured for QDEC mode? If not, you should return -EINVAL if the
+device is in QDEC mode.
 
+> +}
+> +
+> +static int atmel_tc_count_read(struct counter_device *counter,
+> +			       struct counter_count *count,
+> +			       unsigned long *val)
+> +{
+> +	struct atmel_tc_data *const priv =3D counter->priv;
+> +	u32 cnt;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CV), &cnt);
+> +	*val =3D cnt;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct counter_count atmel_tc_count =3D {
+> +	.id =3D 0,
+> +	.name =3D "Timer Counter",
+> +	.functions_list =3D atmel_tc_count_functions,
+> +	.num_functions =3D ARRAY_SIZE(atmel_tc_count_functions),
+> +	.synapses =3D atmel_tc_count_synapses,
+> +	.num_synapses =3D ARRAY_SIZE(atmel_tc_count_synapses),
+> +};
+> +
+> +static struct counter_ops atmel_tc_ops =3D {
+> +	.signal_read  =3D atmel_tc_count_signal_read,
+> +	.count_read   =3D atmel_tc_count_read,
+> +	.count_write  =3D NULL,
 
-Sorry, somehow I overlooked this on v6, I'll send v7 with it
+No need to explicitly set count_write to NULL since it will be NULL by
+default in this static structure.
 
->
->
-> > +
-> > +       if (i < 0) {
-> > +               dev_err(&data->client->dev,
-> > +                       "initial compensation timed out: 0x%02x", val);
-> > +               ret = -ETIMEDOUT;
-> > +       }
->
-> ...
->
-> > +               ret = regmap_write(data->regmap, initval->reg, initval->def);
-> > +               if (ret < 0)
->
-> Do you need all these ' < 0'?
+> +	.function_get =3D atmel_tc_count_function_get,
+> +	.function_set =3D atmel_tc_count_function_set,
+> +	.action_get   =3D atmel_tc_count_action_get,
+> +	.action_set   =3D atmel_tc_count_action_set
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_rm9200_config =3D {
+> +		.counter_width =3D 16,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sam9x5_config =3D {
+> +		.counter_width =3D 32,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sama5d2_config =3D {
+> +		.counter_width =3D 32,
+> +		.has_gclk =3D true,
+> +		.has_qdec =3D true,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sama5d3_config =3D {
+> +		.counter_width =3D 32,
+> +		.has_qdec =3D true,
+> +};
+> +
+> +static const struct of_device_id atmel_tc_of_match[] =3D {
+> +	{ .compatible =3D "atmel,at91rm9200-tcb", .data =3D &tcb_rm9200_config,=
+ },
+> +	{ .compatible =3D "atmel,at91sam9x5-tcb", .data =3D &tcb_sam9x5_config,=
+ },
+> +	{ .compatible =3D "atmel,sama5d2-tcb", .data =3D &tcb_sama5d2_config, },
+> +	{ .compatible =3D "atmel,sama5d3-tcb", .data =3D &tcb_sama5d3_config, },
+> +	{ /* sentinel */ }
+> +};
+> +
+> +static int atmel_tc_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *np =3D pdev->dev.of_node;
+> +	const struct atmel_tcb_config *tcb_config;
+> +	const struct of_device_id *match;
+> +	struct atmel_tc_data *priv;
+> +	char clk_name[] =3D "t0_clk";
+> +	struct regmap *regmap;
+> +	struct clk *clk[3];
+> +	int channel;
+> +	int ret, i;
+> +
+> +	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, priv);
+> +
+> +	match =3D of_match_node(atmel_tc_of_match, np->parent);
+> +	tcb_config =3D match->data;
+> +	if (!tcb_config) {
+> +		dev_err(&pdev->dev, "No matching parent node found\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	regmap =3D syscon_node_to_regmap(np->parent);
+> +	if (IS_ERR(priv->regmap))
+> +		return PTR_ERR(priv->regmap);
+> +
+> +	/* max. channels number is 2 when in QDEC mode */
+> +	priv->num_channels =3D of_property_count_u32_elems(np, "reg");
+> +	if (priv->num_channels < 0) {
+> +		dev_err(&pdev->dev, "Invalid or missing channel\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Register channels and initialize clocks */
+> +	for (i =3D 0; i < priv->num_channels; i++) {
+> +		ret =3D of_property_read_u32_index(np, "reg", i, &channel);
+> +		if (ret < 0 || channel > 2)
+> +			return -ENODEV;
+> +
+> +		priv->channel[i] =3D channel;
+> +
+> +		clk_name[1] +=3D channel;
 
+You're being clever here (not a bad thing) but this looks too easy to
+get wrong and confused. I'd much rather see a snprintf here for clarity
+and know that nothing funny is going to happen.
 
-Not sure what do you mean? This one in particular is trying to fail
-fast the probe
->
->
-> > +                       return ret;
->
-> ...
->
-> > +       const struct acpi_device_id *acpi_id;
->
-> > +       /* id will be NULL when enumerated via ACPI */
-> > +       if (id) {
-> > +               if (id->driver_data != whoami)
-> > +                       dev_err(dev, "WHOAMI does not match i2c_device_id: %s",
-> > +                               id->name);
-> > +       } else if (ACPI_HANDLE(dev)) {
-> > +               acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
-> > +               if (!acpi_id)
-> > +                       return -ENODEV;
-> > +               if (acpi_id->driver_data != whoami)
-> > +                       dev_err(dev, "WHOAMI does not match acpi_device_id: %s",
-> > +                               acpi_id->id);
-> > +       } else
-> > +               return -ENODEV;
->
-> device_get_match_data().
->
-THANKS! I was happy to learn about this after you pointed it out!
->
-> ...
->
-> > +static int sx9310_probe(struct i2c_client *client,
-> > +                       const struct i2c_device_id *id)
->
-> Can you switch to ->probe_new()?
->
-> ...
->
-> > +       indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->
-> > +       if (indio_dev == NULL)
->
-> if (!indio_dev)
->
-> > +               return -ENOMEM;
->
-> ...
->
-> > +               dev_err(&client->dev, "error in reading WHOAMI register: %d",
-> > +                       ret);
->
-> If you introduce temporary variable the code will be better to read
->
->   struct device *dev = &client->dev;
->
-> > +       ret = sx9310_set_indio_dev_name(&client->dev, indio_dev, id,
-> > +                                       data->whoami);
-> > +       if (ret < 0)
-> > +               return ret;
->
-> ...
->
-> > +static const struct acpi_device_id sx9310_acpi_match[] = {
-> > +       { "STH9310", SX9310_WHOAMI_VALUE },
-> > +       { "STH9311", SX9311_WHOAMI_VALUE },
->
-> Hmm... May I ask some official proof that these IDs are real and
-> issued by vendor?
+> +		clk[i] =3D of_clk_get_by_name(np->parent, clk_name);
+> +		if (IS_ERR(clk[i])) {
+> +			/* Fallback to t0_clk */
+> +			clk[i] =3D of_clk_get_by_name(np->parent, "t0_clk");
+> +			if (IS_ERR(clk[i]))
+> +				return PTR_ERR(clk[i]);
+> +		}
+> +
+> +		ret =3D clk_prepare_enable(clk[i]);
+> +		if (ret)
+> +			return ret;
+> +
+> +		dev_info(&pdev->dev,
+> +			 "Initialized capture mode on channel %d\n",
+> +			 channel);
+> +	}
+> +
+> +	priv->tc_cfg =3D tcb_config;
+> +	priv->regmap =3D regmap;
+> +	priv->counter.name =3D dev_name(&pdev->dev);
+> +	priv->counter.parent =3D &pdev->dev;
+> +	priv->counter.ops =3D &atmel_tc_ops;
+> +	priv->counter.num_counts =3D 1;
 
+Use ARRAY_SIZE here so that future reviewers will know that num_counts
+matches what's in the atmel_tc_count array without having to check so
+themselves.
 
-Not sure how to prove this but they are live in device firmware right
-now. One example:
-https://chromium.googlesource.com/chromiumos/third_party/coreboot/+/b905beb46935c114ebc416583bb2e5407183af35/src/mainboard/google/zoombini/variants/meowth/devicetree.cb
->
->
-> > +       {},
->
-> No comma.
->
-> > +};
-> > +MODULE_DEVICE_TABLE(acpi, sx9310_acpi_match);
->
-> > +static const struct of_device_id sx9310_of_match[] = {
-> > +       { .compatible = "semtech,sx9310" },
-> > +       { .compatible = "semtech,sx9311" },
->
-> > +       {},
->
-> No comma.
->
-> > +};
-> > +MODULE_DEVICE_TABLE(of, sx9310_of_match);
-> > +
-> > +static const struct i2c_device_id sx9310_id[] = {
-> > +       { "sx9310", SX9310_WHOAMI_VALUE },
-> > +       { "sx9311", SX9311_WHOAMI_VALUE },
->
-> > +       {},
->
-> No comma.
->
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, sx9310_id);
->
-> ...
->
-> > +               .acpi_match_table = ACPI_PTR(sx9310_acpi_match),
-> > +               .of_match_table = of_match_ptr(sx9310_of_match),
->
-> Drop these macros. You probably didn't test with !ACPI and/or !OF --
-> should be compiler warning.
+William Breathitt Gray
 
+> +	priv->counter.counts =3D &atmel_tc_count;
+> +	priv->counter.num_signals =3D ARRAY_SIZE(atmel_tc_count_signals);
+> +	priv->counter.signals =3D atmel_tc_count_signals;
+> +	priv->counter.priv =3D priv;
+> +
+> +	ret =3D devm_counter_register(&pdev->dev, &priv->counter);
+> +	if (ret < 0) {
+> +		for (i =3D 0; i < priv->num_channels; i++)
+> +			clk_disable_unprepare(clk[i]);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id atmel_tc_dt_ids[] =3D {
+> +	{ .compatible =3D "atmel,tcb-capture", },
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, atmel_tc_dt_ids);
+> +
+> +static struct platform_driver atmel_tc_driver =3D {
+> +	.probe =3D atmel_tc_probe,
+> +	.driver =3D {
+> +		.name =3D "atmel-tcb-capture",
+> +		.of_match_table =3D atmel_tc_dt_ids,
+> +	},
+> +};
+> +module_platform_driver(atmel_tc_driver);
+> +
+> +MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
+> +MODULE_DESCRIPTION("Atmel TCB Capture driver");
+> +MODULE_LICENSE("GPL v2");
+> --=20
+> 2.25.0
+>=20
 
-Why do we want to drop these? I tried compiling with either and both
-disabled and did not see a warning on my system.
->
->
-> > +               .pm = &sx9310_pm_ops,
-> > +       },
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+--kfjH4zxOES6UT95V
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks for the review. Sorry for the delay on this email after sending v6.
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Daniel
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl6OQpcACgkQhvpINdm7
+VJKzkxAA4oyTS1HWLdtrt93Ob0L8o+GxCg4KuvOHneTy0bYwFMJDTZud2/NJYSc+
+llrmcb8Xdka5Kgwse5Pnt0nS58o8jSfuiam13YfdWtwVeB/a1XhOMx52gdpwzHb/
+D8fWlGJUFp1Ww3NOtHUMg0pOKhpFJVC6i2Wa4SRQMfsRADqvtn6J3mLWELFfFpM3
+bIfNyKpr0Fc1ves7afgFWFFinQna8ncGjbKg3mAQbcmZnLy5n+HFG1VfFPvG/VEX
+PSwoUH1tacJDbs9Bb0O/M8tD9Ze3IYbmbDYT35gj1hrgF9gCWjhfPKwBCPimDUpX
+bmuaeHySlWubcIYd9jPLQH91cRSLyQYT14oM05wL5BOGgJwsvISI92UxvhSKwuFQ
+P2KJi3JftsvhDsRFCBqxD8jpKkiF5OjmOEZaY3CBgnU5fOGN9AGJMR4pNxTpF+Up
+dJdTccgE7mHn/oNDAuLmRFXVMByUKbhTYhdNnq8fPSzd2rHzz1ba+VLTR8Kivrr2
+VuksUS6TXVJOxYu6wwVOM9FftTGQehDDYuPxuL9qJjJZsiKxbNN4YmBdRyn/NBmB
+ISPx274bpYpbMoPb0diDs1KZt10BsDnsK8jkDlreIPv0DCxkzUxRSZ71sXDF+/wy
+lDyk+0yzHj/8TSPV71A0iJegA3GRYqjL8KmGLmqKqeiJJmmQxMk=
+=7F1P
+-----END PGP SIGNATURE-----
+
+--kfjH4zxOES6UT95V--

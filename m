@@ -2,90 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 512BA1A32E9
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Apr 2020 13:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6124E1A3321
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Apr 2020 13:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbgDILFF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Apr 2020 07:05:05 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.25]:15215 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbgDILFF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Apr 2020 07:05:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586430304;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=JZtWUKSt/SSRJuXHNVjkglmAeQX7E7zzV3vHhB09VW0=;
-        b=chGUEpHntb16dm8h1gVnLKFvqbWHU1w6NsIZQvqomGz+eEWj5sSIK7419u/YIBWK4S
-        XB3J7D7+7MF5t99y/HWIotDV6h+3eaB++D7EmxJFI/hG8MtsCKqvEjo1OOmVhXXOkaf3
-        vj1F54wqnEGUWpRF8j5qA3EwSJiGUC3xOW6UT/Mu8JxoSqj9CyhOskyIxToADEWWB6jR
-        UTj4ZlxxEzB/IzaM0dGdo1KJcBZ9gVGjk3Cz+yVLbzM2KsEx1GUHQOqu2shhi/swJ/Du
-        c0Als63JPcHr0bJVoFfxLG0KiM7j2DbrvBrLUN3aD1+hd/mhK2fBk1OK1w6vGBPmRyuJ
-        QRIQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j7Ic/HYoo="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 46.2.1 DYNA|AUTH)
-        with ESMTPSA id u043b8w39B1uLf8
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Thu, 9 Apr 2020 13:01:56 +0200 (CEST)
-Date:   Thu, 9 Apr 2020 13:01:52 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Alexandre Bard <alexandre.bard@netmodule.com>
-Cc:     lorenzo.bianconi83@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix reading array out of bounds
-Message-ID: <20200409110128.GA53758@gerhold.net>
-References: <20200409085818.9533-1-alexandre.bard@netmodule.com>
+        id S1726082AbgDILYS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 9 Apr 2020 07:24:18 -0400
+Received: from relay-1.mailobj.net ([213.182.54.6]:39790 "EHLO
+        relay-1.mailobj.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725987AbgDILYR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Apr 2020 07:24:17 -0400
+Received: from www-1.localdomain (www-1.in.mailobj.net [192.168.90.193])
+        by relay-1.mailobj.net (Postfix) with SMTP id B18B31398;
+        Thu,  9 Apr 2020 13:24:15 +0200 (CEST)
+Received: by www-1.mailo.com with http webmail; Thu,  9 Apr 2020
+  13:24:15 +0200 (CEST)
+X-EA-Auth: 51f63A1iQWxjqfuqS0pH2z02upEdsLkubR47eUqcAZ3JuimLp08tE51jLpcDOMo5bgMTgGNe1IbrPKj8VHF0LURKFEuFHCOD
+From:   yarl-baudig@mailoo.org
+To:     "Jonathan Cameron" <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, "Hartmut Knaack" <knaack.h@gmx.de>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        "Denis Ciocca" <denis.ciocca@st.com>
+Date:   Thu,  9 Apr 2020 13:24:15 +0200 (CEST)
+Subject: Re: [PATCH] iio: st_sensors: rely on odr mask to know if odr can
+ be set
+X-Priority: 3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200409085818.9533-1-alexandre.bard@netmodule.com>
+X-Mailer: COMS/EA19.11/r20200317
+Message-ID: <ea-mime-5e8f05df-2178-2373fc98@www-1.mailo.com>
+In-Reply-To: <20200405125702.2e72981c@archlinux>
+Content-Type: text/plain;
+ charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 09, 2020 at 10:58:18AM +0200, Alexandre Bard wrote:
-> Former code was iterating through all possible IDs whereas only a few
-> per settings array are really available. Leading to several out of
-> bounds readings.
+Oh, sorry, just saw your answer. Ok I can list such sensors.
+Please tell me what I should do about Fixes tag. That's the first time I send a patch I'm not sure What I should put in it.
+Is it :
+Fixes: 4358be137952 (MAINTAINERS: Add Syed Nayyar Waris to ACCES 104-QUAD-8 driver)
+? Thank you.
+---- Message d'origine ----
+> De : Jonathan Cameron <jic23@kernel.org>
+> À : yarl-baudig@mailoo.org
+> Sujet : Re: [PATCH] iio: st_sensors: rely on odr mask to know if odr can be set
+> Date : 05/04/2020 13:57:02 Europe/Paris
+> Copie à : linux-iio@vger.kernel.org;
+>       Hartmut Knaack <knaack.h@gmx.de>;
+>       Lars-Peter Clausen <lars@metafoo.de>;
+>       Peter Meerwald-Stadler <pmeerw@pmeerw.net>;
+>       Denis Ciocca <denis.ciocca@st.com>
 > 
-> Line is now longer than 80 characters. But since it is a classic for
-> loop I think it is better to keep it like this than splitting it.
+> On Thu,  2 Apr 2020 15:40:59 +0200 (CEST)
+> yarl-baudig@mailoo.org wrote:
 > 
-> Signed-off-by: Alexandre Bard <alexandre.bard@netmodule.com>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> > Indeed, relying on addr being not 0 cannot work because some device have
+> > their register to set odr at address 0. As a matter of fact, if the odr
+> > can be set, then there is a mask.
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 84d219ae6aee..be8882ff30eb 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1350,7 +1350,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
->  	int err, i, j, data;
->  
->  	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
-> -		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
-> +		for (j = 0; j < ARRAY_SIZE(st_lsm6dsx_sensor_settings[i].id); j++) {
-
-id in st_lsm6dsx_settings is declared as:
-
-	struct {
-		enum st_lsm6dsx_hw_id hw_id;
-		const char *name;
-	} id[ST_LSM6DSX_MAX_ID];
-
-so it's always ST_LSM6DSX_MAX_ID long
-(additional entries are just zero-initialized).
-
-Isn't ARRAY_SIZE(st_lsm6dsx_sensor_settings[i].id) == ST_LSM6DSX_MAX_ID
-in this case?
-
->  			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
->  			    id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
->  				break;
-> -- 
-> 2.20.1
+> Hi Lary,
 > 
+> Which sensor has ODR in the register at address 0?
+> 
+> I see it's a few of the magnetometers from a quick grep, but please state
+> it in the cover letter.  Also please add a suitable Fixes tag
+> as we will want this backported if appropriate.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> > Signed-off-by: Lary Gibaud <yarl-baudig@mailoo.org>
+> > ---
+> >  drivers/iio/common/st_sensors/st_sensors_core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c 
+> b/drivers/iio/common/st_sensors/st_sensors_core.c
+> > index a0c2cbd60c6f..cccd4c26dfa4 100644
+> > --- a/drivers/iio/common/st_sensors/st_sensors_core.c
+> > +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+> > @@ -79,7 +79,7 @@ int st_sensors_set_odr(struct iio_dev *indio_dev, 
+> unsigned int odr)
+> >  	struct st_sensor_odr_avl odr_out = {0, 0};
+> >  	struct st_sensor_data *sdata = iio_priv(indio_dev);
+> >  
+> > -	if (!sdata->sensor_settings->odr.addr)
+> > +	if (!sdata->sensor_settings->odr.mask)
+> >  		return 0;
+> >  
+> >  	err = st_sensors_match_odr(sdata->sensor_settings, odr, &odr_out);
+> 
+> 
+
+

@@ -2,52 +2,22 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A55E1A4569
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Apr 2020 12:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4F91A4593
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Apr 2020 13:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725975AbgDJKzi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Apr 2020 06:55:38 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:33568 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725924AbgDJKzi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Apr 2020 06:55:38 -0400
-Received: by mail-pg1-f195.google.com with SMTP id d17so864839pgo.0;
-        Fri, 10 Apr 2020 03:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aIcnFNlKwbhEUKuern25WOvqQEVVsTXqGIr0A8WwShs=;
-        b=OHsTaGa0WQ0YKhuVGOQ6pPcIKYKJQmtrS2+T8Szuyi16vomvG6C+YQ0O3IlqEnYEuY
-         vu9zRhcCwSVWKFUOlCa+2e9JI8Q6x940HHClWPfwkcZnMF5hnXZKbD0oS6/aaG+TnVYc
-         pRBFg5mAzqvql2AcdtPhjL9lMpMJ9J2zqmyzybRd0MWTbak6q6rP9UheTARiDh2qHMmB
-         OQLbxh7glsMqwXOzDPqJ8GoCU7fjGbJFO+iSiVuKbM6+M63B4ffbioe7km4BzU/PYU9j
-         hGP5CFwcd6r6oL55/u1/wjFFN6GAWEnYsAY8JBGSBgVtGEPYEMk727gMMDVvVW+2vJC+
-         YoRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aIcnFNlKwbhEUKuern25WOvqQEVVsTXqGIr0A8WwShs=;
-        b=FQGoLlD1OjYCfqSugyQ6xskZ0/oMm0SQifUxR0KCy9nLSx5UnR59xAtP8+DArMKqxS
-         Vo1UMwWuFZVW3nwZrfu3CB9oFdhEaNzyxGD5jUS9XZjScMpU7e+gmE97IhHQLN8QPXOs
-         Eh9vkMsE/v1IcasF+GGfWlFLg6dWXlMOhKraT12WzO1rmwZQI9FNgeTaj8N1+VxZ0pbW
-         R5AYpZLftXljP/nscrZYDrvWhGQmjsTFiiZ6IeXtCti94Sr3Cen9K30px+tpeHXlIGr2
-         bATAOfUW5L0BdSEEpWwfaxGlUmIaR2+wPPOmYZdPg446IYwtEY6yjrBjFwurfg5LgAOH
-         k1vw==
-X-Gm-Message-State: AGi0Puak9eMKhODsor6zaLp9Wbw8eZ50XdlnsM4RcQurMJv+idfhK/1w
-        BtrC+Ip0DepZegzPSFm1mIs4o5TmVFfqFRKG0dU=
-X-Google-Smtp-Source: APiQypJjTjt8JGmxlFWTs2L3oU8ewPIPy4jYOmNiUW8hyrSurIcnqOta9nx1FhHqib1d/JIBljwPbBXFfHF5+tGhjZg=
-X-Received: by 2002:aa7:958f:: with SMTP id z15mr4357812pfj.130.1586516137980;
- Fri, 10 Apr 2020 03:55:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200409151125.32677-1-aishwaryarj100@gmail.com> <20200409155936.GV3628@piout.net>
-In-Reply-To: <20200409155936.GV3628@piout.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Apr 2020 13:55:26 +0300
-Message-ID: <CAHp75VcLLjjc5T+Qq8du4QgnQ-rtzFLh=5Jt-DPjigb+QUWOSg@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: at91-adc: Use devm_platform_ioremap_resource
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+        id S1725990AbgDJLWj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Apr 2020 07:22:39 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:38793 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbgDJLWj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Apr 2020 07:22:39 -0400
+Received: from localhost (lfbn-lyo-1-9-35.w86-202.abo.wanadoo.fr [86.202.105.35])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 5B594240010;
+        Fri, 10 Apr 2020 11:22:36 +0000 (UTC)
+Date:   Fri, 10 Apr 2020 13:22:36 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Aishwarya R <aishwaryarj100@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -62,29 +32,55 @@ Cc:     Aishwarya R <aishwaryarj100@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] iio: adc: at91-adc: Use devm_platform_ioremap_resource
+Message-ID: <20200410112236.GX3628@piout.net>
+References: <20200409151125.32677-1-aishwaryarj100@gmail.com>
+ <20200409155936.GV3628@piout.net>
+ <CAHp75VcLLjjc5T+Qq8du4QgnQ-rtzFLh=5Jt-DPjigb+QUWOSg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcLLjjc5T+Qq8du4QgnQ-rtzFLh=5Jt-DPjigb+QUWOSg@mail.gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 9, 2020 at 7:00 PM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
-> On 09/04/2020 20:41:23+0530, Aishwarya R wrote:
-> > Use the helper function that wraps the calls to
-> > platform_get_resource() and devm_ioremap_resource()
-> > together.
+On 10/04/2020 13:55:26+0300, Andy Shevchenko wrote:
+> On Thu, Apr 9, 2020 at 7:00 PM Alexandre Belloni
+> <alexandre.belloni@bootlin.com> wrote:
+> > On 09/04/2020 20:41:23+0530, Aishwarya R wrote:
+> > > Use the helper function that wraps the calls to
+> > > platform_get_resource() and devm_ioremap_resource()
+> > > together.
+> 
+> > Please elaborate the actual value of doing that.
+> 
+> Please, elaborate actual value of not doing that.
+> 
+> Yes, I know that you are p* off of these changes, but why you not
+> going further and forbid all clean ups we are doing in the code?
+> 
+> To the point. Above change is reducing code base and showing the new
+> comers modern APIs to use.
+> 
 
-> Please elaborate the actual value of doing that.
+The value of doing it is to reduce the code size by 16 bytes. The same
+people doing that will actively ruin that by adding error string for
+error that will never ever happen.
 
-Please, elaborate actual value of not doing that.
+Also, the commit message is definitively lacking. A good commit message
+would say that the patch has been generated using coccinelle, that no
+testing has been done and that no thought has been given.
 
-Yes, I know that you are p* off of these changes, but why you not
-going further and forbid all clean ups we are doing in the code?
+It would definitively make sense to send one patch per subsystem instead
+of having 475 different patches each changing only one location.
 
-To the point. Above change is reducing code base and showing the new
-comers modern APIs to use.
+The whole "let's let newcomers fix trivial bugs" thing is definitively
+not working and it is not leading to an increase of the number of useful
+reviewers and contributors
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

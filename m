@@ -2,84 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D84001A3EFB
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Apr 2020 05:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338111A447D
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Apr 2020 11:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726890AbgDJDqz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Apr 2020 23:46:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57104 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726882AbgDJDqy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 9 Apr 2020 23:46:54 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4382A21473;
-        Fri, 10 Apr 2020 03:46:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586490414;
-        bh=qnKjeRFljIsmqkFccDcOzXGYVkd2gtcV3xBaAQ+3WqM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzJWqgz59/0IzM6zAaL8Zy82k2FSOyprfxfZqocnjLyMh3Bd2pMUhHFtWRxpUZjak
-         vdvS46IdEi45OuGvZPZ8UutL1YPjEV/RK8dNjPJo0VFYbJsFmS3FiG0PzS5SAgtKWV
-         E2Kv3tmpZvuhavfzJ53bTtuFl6iSPgFtb6MvtB5M=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 16/68] iio: imu: st_lsm6dsx: check return value from st_lsm6dsx_sensor_set_enable
-Date:   Thu,  9 Apr 2020 23:45:41 -0400
-Message-Id: <20200410034634.7731-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200410034634.7731-1-sashal@kernel.org>
-References: <20200410034634.7731-1-sashal@kernel.org>
+        id S1725897AbgDJJfj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Apr 2020 05:35:39 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54948 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725861AbgDJJfj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Apr 2020 05:35:39 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03A9Yncg031470;
+        Fri, 10 Apr 2020 05:35:26 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3091nb0pu5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 10 Apr 2020 05:35:26 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 03A9ZPGV027798
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 10 Apr 2020 05:35:25 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 10 Apr
+ 2020 05:35:24 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 10 Apr 2020 05:35:23 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03A9ZK1G018489;
+        Fri, 10 Apr 2020 05:35:21 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH][RFC] iio: buffer: remove 'scan_el_attrs' attribute group from buffer struct
+Date:   Fri, 10 Apr 2020 12:36:07 +0300
+Message-ID: <20200410093607.74516-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-10_03:2020-04-07,2020-04-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 suspectscore=2
+ mlxscore=0 phishscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004100079
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+This field doesn't seem used. It seems that only 'buffer->attrs' was ever
+used to extend sysfs attributes for an IIO buffer.
 
-[ Upstream commit f20dbe11e2e904547597ae7371c1f635e3be9cad ]
+Moving forward, it may not make sense to keep it. This patch removes the
+field and it's initialization code.
 
-Add missing return value check in st_lsm6dsx_shub_read_oneshot disabling
-the slave device connected to the st_lsm6dsx i2c controller.
-The issue is reported by coverity with the following error:
+Since we want to rework IIO buffer, to be able to add more buffers per IIO
+device, we will merge [somehow] the 'buffer' & 'scan_elements' groups, and
+we will continue to add the attributes to the 'buffer' group.
 
-Unchecked return value:
-If the function returns an error value, the error value may be mistaken
-for a normal value.
+Removing it here, will also make the rework here a bit smaller, since
+this code will not be present.
 
-Addresses-Coverity-ID: 1456767 ("Unchecked return value")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index eea555617d4aa..95ddd19d1aa7c 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -464,9 +464,10 @@ st_lsm6dsx_shub_read_oneshot(struct st_lsm6dsx_sensor *sensor,
+I have no idea whether removing this is acceptable or not.
+If it is acceptable, then this can be applied.
+I am a bit vague on how this was ever used, of if it was ever used, but
+it looks like dead code.
+
+
+ drivers/iio/industrialio-buffer.c | 8 --------
+ include/linux/iio/buffer_impl.h   | 6 ------
+ 2 files changed, 14 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index e6fa1a4e135d..221157136af6 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1283,11 +1283,6 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
  
- 	len = min_t(int, sizeof(data), ch->scan_type.realbits >> 3);
- 	err = st_lsm6dsx_shub_read(sensor, ch->address, data, len);
-+	if (err < 0)
-+		return err;
+ 	indio_dev->groups[indio_dev->groupcounter++] = &buffer->buffer_group;
  
--	st_lsm6dsx_shub_set_enable(sensor, false);
+-	if (buffer->scan_el_attrs != NULL) {
+-		attr = buffer->scan_el_attrs->attrs;
+-		while (*attr++ != NULL)
+-			attrcount_orig++;
+-	}
+ 	attrcount = attrcount_orig;
+ 	INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
+ 	channels = indio_dev->channels;
+@@ -1325,9 +1320,6 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 		ret = -ENOMEM;
+ 		goto error_free_scan_mask;
+ 	}
+-	if (buffer->scan_el_attrs)
+-		memcpy(buffer->scan_el_group.attrs, buffer->scan_el_attrs,
+-		       sizeof(buffer->scan_el_group.attrs[0])*attrcount_orig);
+ 	attrn = attrcount_orig;
+ 
+ 	list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
+diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
+index 1e7edf6bed96..a63dc07b7350 100644
+--- a/include/linux/iio/buffer_impl.h
++++ b/include/linux/iio/buffer_impl.h
+@@ -94,12 +94,6 @@ struct iio_buffer {
+ 	unsigned int watermark;
+ 
+ 	/* private: */
+-	/*
+-	 * @scan_el_attrs: Control of scan elements if that scan mode
+-	 * control method is used.
+-	 */
+-	struct attribute_group *scan_el_attrs;
 -
-+	err = st_lsm6dsx_shub_set_enable(sensor, false);
- 	if (err < 0)
- 		return err;
+ 	/* @scan_timestamp: Does the scan mode include a timestamp. */
+ 	bool scan_timestamp;
  
 -- 
-2.20.1
+2.17.1
 

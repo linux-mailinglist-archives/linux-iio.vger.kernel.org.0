@@ -2,254 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3080A1A4F3D
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 11:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7851A4F47
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 12:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbgDKJ6x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Apr 2020 05:58:53 -0400
-Received: from relay12.mail.gandi.net ([217.70.178.232]:47283 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbgDKJ6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 05:58:52 -0400
-Received: from kb-xps (unknown [78.193.40.249])
-        (Authenticated sender: kamel.bouhara@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id F0911200007;
-        Sat, 11 Apr 2020 09:58:48 +0000 (UTC)
-Date:   Sat, 11 Apr 2020 11:58:47 +0200
-From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/3] counter: add an inkernel API
-Message-ID: <20200411095847.GA161090@kb-xps>
-References: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
- <20200406155806.1295169-2-kamel.bouhara@bootlin.com>
- <7651ea0d-91c2-49db-9af7-b01a78868d7e@infradead.org>
+        id S1726166AbgDKKQA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Apr 2020 06:16:00 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:44782 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726129AbgDKKQA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 06:16:00 -0400
+Received: by mail-pg1-f194.google.com with SMTP id n13so2062911pgp.11;
+        Sat, 11 Apr 2020 03:16:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=scubK+r04ANvJ29JphyW/4RuEQax/zyXuzaYQPzCFCM=;
+        b=GNaRhQ9nYhkAq0UI9ryUmQD01lO3Pku9cYd7QbjSFYzwMvPG1d+YJDoqUKlnvk7IzZ
+         x9bZUR+RrVUlKk8vCjUP04j5VRT0hMHfzIC6ON9X/AIlPiaDIVEfqZ5Qq3w0gEPSf/Rg
+         ozUvI420hMOdneTBRCsQTvemtvPrxsVUAs3L4rQ0IIuZUQuOGoSoEVL7Me24EuCtlT3Z
+         IeVOO36F2l/VTog/B0fNq7Qekt1MczQ5iuivaNqH0H4r1kJ8YKBXAJbFXL2HL25V8f/z
+         R3EdXokEF+FbRyfJV91LEuhtmU3XyM6Eu4qpfbdb52sKQX6l7YfsyAWsIR5N3CR5vm6p
+         gQXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=scubK+r04ANvJ29JphyW/4RuEQax/zyXuzaYQPzCFCM=;
+        b=RaOd+JlvVina3JNEgoB4cSkoG4oXNIzRdNKmvXJJu8wXkmWViIPclijBhyQKtkbmEZ
+         AEBPa7NWo3LB+85iyF0DQyHJu2PBkUPwOPd3lRnR0iMhz+jZd8tw2pMws38ls+PIG1uL
+         Q3umwHpScao4flAJGKHzQbvWmiloBXvgjiLyOn6byfFdEr9XJvz2WnAKnyYZotAvG/qe
+         CW+Yx1E2U+IUE3ovwBJjzeTxGD/Cs6yj/4GfH2pUGRx17mAxCS1pIYEASasJg30PUe95
+         B0vd+XCrlB234J0ptgOyKdsTgnVEtBblzGsDy1vKf9QTiBVxMBmISZVspt1/cmiIvKFd
+         UvUQ==
+X-Gm-Message-State: AGi0PuZ+RiGKYAaltPmg96AFjfPiSckPxDadIesxzB8Aj07n76N1zR8x
+        SSJaqG+Bztjyxua9cFhD1c4pAslkKK6JgSZ/t20=
+X-Google-Smtp-Source: APiQypLM96wHbtB2AIkNdcMbN+kWGkC6xP7eQasEi3VO1Wybh6tYHb/ULm6Eu2U8rQX6Ofw0T/+J4sqqH+vz/vQFac8=
+X-Received: by 2002:aa7:9097:: with SMTP id i23mr9016213pfa.170.1586600159486;
+ Sat, 11 Apr 2020 03:15:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7651ea0d-91c2-49db-9af7-b01a78868d7e@infradead.org>
+References: <20200410201948.1293-1-sravanhome@gmail.com> <20200410201948.1293-5-sravanhome@gmail.com>
+In-Reply-To: <20200410201948.1293-5-sravanhome@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 11 Apr 2020 13:15:47 +0300
+Message-ID: <CAHp75Vc2Gf_=wWKdH2rgEhGTb0HmZkbVeUYx2hpdKE0P6Ru7FA@mail.gmail.com>
+Subject: Re: [PATCH v7 4/5] power: supply: Add support for mps mp2629 battery charger
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 10:34:34AM -0700, Randy Dunlap wrote:
-> Hi--
+On Fri, Apr 10, 2020 at 11:20 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
 >
+> The mp2629 provides switching-mode battery charge management for
+> single-cell Li-ion or Li-polymer battery. Driver supports the
+> access/control input source and battery charging parameters.
 
-Hello,
+...
 
-> On 4/6/20 8:58 AM, Kamel Bouhara wrote:
-> > ---
-> >  drivers/counter/counter.c | 213 ++++++++++++++++++++++++++++++++++++++
-> >  include/linux/counter.h   |  27 +++++
-> >  2 files changed, 240 insertions(+)
-> >
-> > diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
-> > index 6a683d086008..f81d2d1dbca7 100644
-> > --- a/drivers/counter/counter.c
-> > +++ b/drivers/counter/counter.c
->
-> [snip]
->
-> Please use
-> /**
-> on these functions so that kernel-doc will process them.
->
+> +static DEVICE_ATTR_RW(batt_impedance_compensation);
+> +
+> +static struct attribute *mp2629_charger_sysfs_attrs[] = {
+> +       &dev_attr_batt_impedance_compensation.attr,
+> +       NULL
+> +};
+> +ATTRIBUTE_GROUPS(mp2629_charger_sysfs);
 
-OK, fixed.
+Did I miss ABI documentation?
 
-Thanks.
 
-> > +
-> > +/*
-> > + * devm_counter_get - Obtain an exclusive access to a counter.
-> > + * @dev: device for counter "consumer"
-> > + *
-> > + * Returns a struct counter_device matching the counter producer, or
-> > + * IS_ERR() condition containing errno.
-> > + *
-> > + */
-> > +struct counter_device *devm_counter_get(struct device *dev)
-> > +{
-> > +	struct counter_device **ptr, *counter;
-> > +
-> > +	ptr = devres_alloc(devm_counter_release, sizeof(*ptr), GFP_KERNEL);
-> > +	if (!ptr)
-> > +		return ERR_PTR(-ENOMEM);
-> > +
-> > +	counter = counter_get(dev);
-> > +	if (IS_ERR(counter)) {
-> > +		devres_free(ptr);
-> > +		return counter;
-> > +	}
-> > +
-> > +	*ptr = counter;
-> > +	devres_add(dev, ptr);
-> > +
-> > +	return counter;
-> > +}
-> > +EXPORT_SYMBOL_GPL(devm_counter_get);
-> > +
-> > +/*
-> > + * counter_action_get - get counter synapse mode
-> > + * @counter: counter device to operate with
-> > + * @action: pointer to store the current counter synapse mode
->
-> should be @mode: ^^^^^
->
-
-Fixed.
-
-Thanks.
-
-Kamel
-
-> > + * returns:
-> > + *	0 on success, error code on failure.
-> > + */
-> > +int counter_action_get(struct counter_device *counter, int *mode)
-> > +{
-> > +	struct counter_synapse *synapse = counter->counts->synapses;
-> > +	size_t action_index;
-> > +	int err;
-> > +
-> > +	err = counter->ops->action_get(counter, counter->counts, synapse,
-> > +				       &action_index);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	*mode = synapse->actions_list[action_index];
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_action_get);
-> > +
-> > +/*
-> > + * counter_action_set - set counter device synapse
-> > + * @counter: counter device to operate with
-> > + * @action: enum of the synapse mode
-> > + * returns:
-> > + *	0 on success, error code on failure.
-> > + */
-> > +int counter_action_set(struct counter_device *counter,
-> > +		       enum counter_synapse_action action)
-> > +{
-> > +	struct counter_synapse *synapse = counter->counts->synapses;
-> > +	const size_t num_actions = synapse->num_actions;
-> > +	size_t action_index;
-> > +
-> > +	/* Find requested action mode */
-> > +	for (action_index = 0; action_index < num_actions; action_index++) {
-> > +		if (action == synapse->actions_list[action_index])
-> > +			break;
-> > +	}
-> > +
-> > +	if (action_index >= num_actions)
-> > +		return -EINVAL;
-> > +
-> > +	return counter->ops->action_set(counter, counter->counts, synapse,
-> > +					action_index);
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_action_set);
-> > +
-> > +/*
-> > + * counter_function_get - get the count function
-> > + * @counter: pointer to counter device to operate with
-> > + * @mode: pointer to store the current counter function mode
-> > + * returns:
-> > + *	0 on success, error code on failure.
-> > + */
-> > +int counter_function_get(struct counter_device *counter, int *mode)
-> > +{
-> > +	size_t func_index;
-> > +	int err;
-> > +
-> > +	err = counter->ops->function_get(counter, counter->counts,
-> > +					 &func_index);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	*mode = counter->counts->functions_list[func_index];
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_function_get);
-> > +
-> > +/*
-> > + * counter_function_set - set a count function
-> > + * @counter: pointer to a counter device to operate with
-> > + * @function: enum of the function mode
-> > + * returns:
-> > + *	0 on success, error code on failure.
-> > + */
-> > +int counter_function_set(struct counter_device *counter,
-> > +			  enum counter_count_function function)
-> > +{
-> > +	const size_t num_functions = counter->counts->num_functions;
-> > +	size_t func_index;
-> > +
-> > +	for (func_index = 0; func_index < num_functions; func_index++) {
-> > +		if (function == counter->counts->functions_list[func_index])
-> > +			break;
-> > +	}
-> > +
-> > +	if (func_index >= num_functions)
-> > +		return -EINVAL;
-> > +
-> > +	return counter->ops->function_set(counter, counter->counts, func_index);
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_function_set);
-> > +
-> > +/*
-> > + * counter_count_set - set a count value
-> > + * @counter: pointer to the counter device to operate with
-> > + * @val: count value to write into the counter
-> > + * @len: length of the value written to the counter
-> > + * returns:
-> > + *	bytes length of the value on success, error code on failure.
-> > + */
-> > +size_t counter_count_set(struct counter_device *counter,
-> > +			 unsigned long val, size_t len)
-> > +{
-> > +	return counter->ops->count_write(counter, counter->counts, val);
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_count_set);
-> > +
-> > +/*
-> > + * counter_count_get - read the count value
-> > + * @counter: pointer to the counter device to operate with
-> > + * @val: pointer to store the count value
-> > + * returns:
-> > + *  0 on success, error code on failure.
-> > + */
-> > +int counter_count_get(struct counter_device *counter, unsigned long *val)
-> > +{
-> > +	return counter->ops->count_read(counter, counter->counts, val);
-> > +}
-> > +EXPORT_SYMBOL_GPL(counter_count_get);
-> > +
-> >  /**
-> >   * devm_counter_unregister - Resource-managed counter_unregister
-> >   * @dev:	device this counter_device belongs to
->
->
-> thanks.
-> --
-> ~Randy
->
-
---
-Kamel Bouhara, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+-- 
+With Best Regards,
+Andy Shevchenko

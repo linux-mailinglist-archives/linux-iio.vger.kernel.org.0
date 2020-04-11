@@ -2,136 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBCD1A4F50
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 12:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 984B11A4F6B
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 12:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726029AbgDKKRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Apr 2020 06:17:07 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:36454 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725951AbgDKKRH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 06:17:07 -0400
-Received: by mail-pl1-f194.google.com with SMTP id g2so1514734plo.3;
-        Sat, 11 Apr 2020 03:17:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+KhT4Lw+E5hrVuuvNZOtXCA2e1KBZDLsYmSlwMgDSyg=;
-        b=TWEUX3Fl2swRdWz1CPY9/HNUxPMMtmhelCLQ8zPb4wYHGuGI9SpL/HzaYcX16EELqZ
-         BXN0p1OBYoA6HjRK8EbmVcQ1UZ7YnhYSjkdTzBSnSG88f+VjOjHU/r5cB1ZBQA12+vNO
-         UFD4IP8e817V2PQN5efSqYJ6nKR1zEZ7tPW8Zl9koZbPe/2xF89FZYc1/zxm5baDE8kR
-         UsJnvbCyQgDwxGBDIGIj4TCs2IFCUvTzlj4n0H24f4cGsOkd1BVmmc0PR51dMFRuEdEd
-         p1ZbT0tzx+EcKlQWZslSb8Th5r5btoHG5z/Fg7+HD0Ab/ITdri8x2ja6kfGVPsgndwIi
-         JFIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+KhT4Lw+E5hrVuuvNZOtXCA2e1KBZDLsYmSlwMgDSyg=;
-        b=bwzUHxvckPq+1Ghycx8SnGAooZAWyPvAV8wdncb0QdnHacnHqvKZGZ05AkAfvTt3UX
-         SKoJaiKusU+0KIeixKZDJQseg+hfoKO+v/imkAA1YascDDfKs4O4ySifOJR0aBptziYU
-         lFFeF3LN1VMSe6yG20VRn9JZ6AnpdyRsVFPPa2GbhgLNc7M2iiCD4lxRgliefbKOSSCW
-         mYAAdnrmL0JuU3I2mnlmeVG/1QDeI/vP0k8BUnttuVVePunqKYikZtGLH2goYe/cTUcv
-         KKB3ai1FwkNPO3/++GvMieB3+kBBu6Znx3nkQW3vjgD8YhHGtdJdP9cN1XpxOIXyg6b9
-         jrJw==
-X-Gm-Message-State: AGi0PubRyEezX6gwpzvoyfXf17u0UFOl8x98LnFalGOcjCiW1Cyesvya
-        S5rNZLhn7ngCLjMznFQ/zpqM7wWGd/lHSVLofAg=
-X-Google-Smtp-Source: APiQypKBxqyP2VTpmEejb05I4p492JmmrAy8Kn3YOkmqKWJ44ajFN7cG6Yd4Z7a8ByaUsXFQr/6Fx/zuKiqXXAhbmLo=
-X-Received: by 2002:a17:902:5985:: with SMTP id p5mr4048369pli.262.1586600225472;
- Sat, 11 Apr 2020 03:17:05 -0700 (PDT)
+        id S1726025AbgDKKn6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Apr 2020 06:43:58 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:40009 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725951AbgDKKn5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 06:43:57 -0400
+Received: from kb-xps (unknown [78.193.40.249])
+        (Authenticated sender: kamel.bouhara@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id AD555200008;
+        Sat, 11 Apr 2020 10:43:54 +0000 (UTC)
+Date:   Sat, 11 Apr 2020 12:43:53 +0200
+From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/3] Input: rotary-encoder-counter: add DT bindings
+Message-ID: <20200411104353.GB161090@kb-xps>
+References: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
+ <20200406155806.1295169-3-kamel.bouhara@bootlin.com>
+ <20200409222115.GT75430@dtor-ws>
+ <20200409223907.GW3628@piout.net>
+ <20200409234623.GU75430@dtor-ws>
 MIME-Version: 1.0
-References: <20200410201948.1293-1-sravanhome@gmail.com>
-In-Reply-To: <20200410201948.1293-1-sravanhome@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 11 Apr 2020 13:16:53 +0300
-Message-ID: <CAHp75Vem_Uifke36hZrWJutddJbar1t2CK7qrydg91=Fdu_GzQ@mail.gmail.com>
-Subject: Re: [PATCH v7 0/5] Add battery charger driver support for MP2629
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200409234623.GU75430@dtor-ws>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 11:19 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
+On Thu, Apr 09, 2020 at 04:46:23PM -0700, Dmitry Torokhov wrote:
+> On Fri, Apr 10, 2020 at 12:39:07AM +0200, Alexandre Belloni wrote:
+> > Hi Dmitry,
+> >
+> > On 09/04/2020 15:21:15-0700, Dmitry Torokhov wrote:
+> > > On Mon, Apr 06, 2020 at 05:58:05PM +0200, Kamel Bouhara wrote:
+> > > > Add dt binding for the counter variant of the rotary encoder driver.
+> > > >
+> > > > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > > > ---
+> > > >  .../input/rotary-encoder-counter.yaml         | 67 +++++++++++++++++++
+> > > >  1 file changed, 67 insertions(+)
+> > > >  create mode 100644 Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..a59f7c1faf0c
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/input/rotary-encoder-counter.yaml
+> > > > @@ -0,0 +1,67 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/input/rotary-encoder-counter.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Rotary Encoder Counter
+> > > > +
+> > > > +maintainers:
+> > > > +  - Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > > > +
+> > > > +description:
+> > > > +  Registers a Rotary encoder connected through a counter device.
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    const: rotary-encoder-counter
+> > >
+> > > I wonder if a separate driver is really needed. The original driver be
+> > > taught to use counter device when available?
+> > >
+> >
+> > By the original driver, do you mean drivers/input/misc/rotary_encoder.c
+> > that is using gpios ?
 >
-> changes in v7:
->  - fixed probe/remove order, managed and unmanaged call mix use in adc.
->  - Documentation dual license, i2c node with controller address
+> Yes.
+>
 
-Overall looks good to me, FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Well, it could be the case if the counter device could provide such a
+way to signal interrupts.
 
-One question though in reply to patch 4.
+> >
+> > > > +
+> > > > +  counter:
+> > > > +    description: Phandle for the counter device providing rotary position.
+> > > > +
+> > > > +  linux-axis:
+> > > > +    description: The input subsystem axis to map to this rotary encoder.
+> > > > +    type: boolean
+> > > > +
+> > > > +  qdec-mode:
+> > > > +    description: |
+> > > > +      Quadrature decoder function to set in the counter device.
+> > > > +      3: x1-PHA
+> > > > +      4: x1-PHB
+> > > > +      5: x2-PHA
+> > > > +      6: x2-PHB
+> > > > +      7: x4-PHA and PHB
+> > >
+> > > Is it really property of the rotary encoder itself or property of the
+> > > counter device?
+> > >
+> >
+> > The mode the quadrature decoder has to be put in depends on both the
+> > rotary encoder and the qdec.
+>
+> OK.
+>
+> >
+> > > > +
+> > > > +  steps:
+> > > > +    description: Number of steps in a full turnaround of the encoder.
+> > > > +      Only relevant for absolute axis. Defaults to 24 which is a typical
+> > > > +      value for such devices.
+> > > > +
+> > > > +  relative-axis:
+> > > > +    description: Register a relative axis rather than an absolute one.
+> > > > +    type: boolean
+> > > > +
+> > > > +  rollover:
+> > > > +    description: Automatic rollover when the rotary value becomes greater
+> > > > +      than the specified steps or smaller than 0. For absolute axis only.
+> > > > +    type: boolean
+> > > > +
+> > > > +  poll-interval:
+> > > > +    description: Poll interval at which the position is read from the counter
+> > > > +      device (default 500ms).
+> > >
+> > > Is there a way found counters to signal an interrupt?
+> > >
+> >
+> > For some counters, there are interrupts available, this is not trivial
+> > with the counter that is the target of this work but this is on the TODO
+> > list. Of course, this will also require adding a bit more to the
+> > in-kernel counter API to allow registering a callback that would be
+> > called when an interrupt happens.
+>
+> Should it be a callback, or can counter create an irqchip so that users
+> do not need to know how exactly it is wired up?
+>
 
-> changes in v6:
->  - removed includes types.h in mfd, of_device.h in adc.
->  - fixed review comments parentheses, err check, kstrtouint
->
-> changes in v5:
->  - removed platfrom data stored in mfd and directly accessed mfd struct in child
->  - fixed spell check and capitalization in mfd and documentation
->
-> changes in v4:
->  - fixed capitalization in mfg Kconfig and documentation
->
-> changes in v3:
->  - regmap for children passed using platform data and remove mfd driver info
->    access directly from children
->
-> changes in v2:
->  - removed EXPORT_SYMBOL of register set/get helper
->  - regmap bit filed used, fixed other review comments
->
-> This patch series add support for Battery charger control driver for Monolithic
-> Power System's MP2629 chipset, includes MFD driver for ADC battery & input
-> power supply measurement and battery charger control driver.
->
-> Thanks,
-> Saravanan
->
-> Saravanan Sekar (5):
->   dt-bindings: mfd: add document bindings for mp2629
->   mfd: mp2629: Add support for mps battery charger
->   iio: adc: mp2629: Add support for mp2629 ADC driver
->   power: supply: Add support for mps mp2629 battery charger
->   MAINTAINERS: Add entry for mp2629 Battery Charger driver
->
->  .../devicetree/bindings/mfd/mps,mp2629.yaml   |  60 ++
->  MAINTAINERS                                   |   5 +
->  drivers/iio/adc/Kconfig                       |  10 +
->  drivers/iio/adc/Makefile                      |   1 +
->  drivers/iio/adc/mp2629_adc.c                  | 208 ++++++
->  drivers/mfd/Kconfig                           |   9 +
->  drivers/mfd/Makefile                          |   2 +
->  drivers/mfd/mp2629.c                          |  86 +++
->  drivers/power/supply/Kconfig                  |  10 +
->  drivers/power/supply/Makefile                 |   1 +
->  drivers/power/supply/mp2629_charger.c         | 687 ++++++++++++++++++
->  include/linux/mfd/mp2629.h                    |  28 +
->  12 files changed, 1107 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
->  create mode 100644 drivers/iio/adc/mp2629_adc.c
->  create mode 100644 drivers/mfd/mp2629.c
->  create mode 100644 drivers/power/supply/mp2629_charger.c
->  create mode 100644 include/linux/mfd/mp2629.h
+Maybe for some of them yes but for others the polling is still required.
+
+> Thanks.
 >
 > --
-> 2.17.1
->
+> Dmitry
 
-
--- 
-With Best Regards,
-Andy Shevchenko
+--
+Kamel Bouhara, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com

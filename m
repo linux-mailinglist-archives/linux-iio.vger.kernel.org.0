@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7081A52B2
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 18:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED7681A5318
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Apr 2020 19:23:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbgDKQBf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Apr 2020 12:01:35 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:39710 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726155AbgDKQBe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 12:01:34 -0400
-Received: by mail-qt1-f195.google.com with SMTP id o10so3796043qtr.6;
-        Sat, 11 Apr 2020 09:01:34 -0700 (PDT)
+        id S1726129AbgDKRXE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Apr 2020 13:23:04 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:45135 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726069AbgDKRXE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Apr 2020 13:23:04 -0400
+Received: by mail-qk1-f193.google.com with SMTP id m67so5313674qke.12;
+        Sat, 11 Apr 2020 10:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=zhRskEKtP61k0yqbLaLsqJL1DLZl52yNBvZ6bXRfLCM=;
-        b=fNxHgv832WDYysIX0jD9QPCDscvmTf43PY81UgQokDRgCjw1x1ogToIhqT4QwC1E/D
-         jQV+i9/yOZevJrfP6URcG91dfGR9MznldAw4c9lwIRLy4K+ZkuSns4XOT1z3VBwCqQmU
-         XzTzVOGpvddRB382w7EZKk580NNwa5C89GZQQwQRRhXGgvtshGQX/A6MFnVfeYIDEOkX
-         dynKyb2bw0spA8bBE2buTF1e2TQArisyj26LhuTWPO95DRiiSIuwlSkiheCCjTpnk4Pp
-         lfMpv2u4xMOoIH+aZxcBEnjjJB/c0PWEva93mmt67JDYMVjP1vdZqgNOTnWVAdisd9Bd
-         qadA==
+        bh=+Ayr3d044SiKn+0TAPDMyKPpqh+ya5/Ml+HLoEx/aHI=;
+        b=SF2b+rsNf7n3Y7ncNeM6Z+GZ8p5q0su6HbWASI6ylQzlFJ16Fw0DWrYblTsVxm0Ovw
+         4SbeqaYcxqh7f8UzLa4TmKrwDDS4qzOZhvn66II0fnz+wi8Z7RLi0O1qg6I4bd0YIVi2
+         Wy3FCamlP2ed+At7XvF9OusgQ9/LOqS4OTuOq2Vy8bdHl4c8mCO261jfGSecr6BMcwwt
+         jPg9TxjK4qdrVRIAgMY2ZPxQ+2HvXQbWdPHA1EWEm2/rQO/dhJUckXma+EsT4HEdmgLR
+         ljFwBeSp55zmBQPAfdjy60D4/ZU6nyWHqKyzpxOGDHr/r2fhrVeqdC4j9WkOABG/uc5c
+         6LWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=zhRskEKtP61k0yqbLaLsqJL1DLZl52yNBvZ6bXRfLCM=;
-        b=H2JIFgbt1KbidWeWTLWFrC6FXgPAVzIQx/Lns/9wZUzDiYPEwmYbO7EC3Gyy8uFzGS
-         uETzeEX0YJMtyhCD+VpkwXv0R0BdESaNpCEOof1BIiCogrVVbXTW6Dop7SdbeqosFXwt
-         aWhdBU8ndi690Gq4jmd/3sqNcGWqS2injdZtcURJpvL2MKxgZvtYQXdY/JmPKWrpSC67
-         /RnVxFU8eEcHsj4CIOuTO7Utn3DiHYm5eIb2NMd4x/LGZiVk0aqtfpRaeskCIXxdwAUh
-         i/ffZXzI0+g12WWVaLYnbmc/emCaoQTMuBgZ8I40QnBOYM22amSG1cWERMufhw2CW3eo
-         Dc1g==
-X-Gm-Message-State: AGi0PuZR4EeFl9NBI8T+9MlQ9ZIUuco9AOfKWfelW34n3Hjkf18FfQNO
-        9SpHuIxiW9OP1xb84ObI+3s=
-X-Google-Smtp-Source: APiQypLVRG/zAWgaDeXS+aPd3v3rXiHthdj4V64zP9c4KydlcwVH+GkllKXLr6/Q5Q4sF7pMJNhTqA==
-X-Received: by 2002:aed:3b75:: with SMTP id q50mr4232741qte.23.1586620893939;
-        Sat, 11 Apr 2020 09:01:33 -0700 (PDT)
+        bh=+Ayr3d044SiKn+0TAPDMyKPpqh+ya5/Ml+HLoEx/aHI=;
+        b=bATjYKSOL9rnNa/OK3F1fQYmfdeY9ljMBiZGM9Ejd3Vhthnq2l5uiiYeT4V2BkZlO6
+         doDdi0pquJWjReUwvd3iKnaCLQJxGnHBzCuofoB70bxWug2FsCec86KrsnWuVsjhTsUe
+         gugt9GjCKQzbWi01P08RHVuGKMrOhBDyleMAvCgJLHSV1LdscTXqUIXD/Zz6QGjJJwas
+         QhxaIxygER14ujdIKrlC55zSKJDsW4LuKESu6zq8t3B+9gBTfg6n4bTaK4gEw4hNVbkn
+         LenVE87r7PU0SIgCqnJ+ItqwmT0N0F4M0TStiDsQY+RkmfWK481w1whG7bv2U07P1Ca+
+         0lCw==
+X-Gm-Message-State: AGi0PuZphHwS7GB3RaFl5Ydax/79tY2xpsLXLUR5euur4wLC1OspSV97
+        6s+3pIhpTE5bf/zRuID/KFE=
+X-Google-Smtp-Source: APiQypLRbj9x/M6LU2b+6Naa9xWB3R34biG+yS19O+uI116m27K8PWcX4EoCx+U0X25dFZgIABeD6g==
+X-Received: by 2002:a37:9b4a:: with SMTP id d71mr9111643qke.382.1586625783226;
+        Sat, 11 Apr 2020 10:23:03 -0700 (PDT)
 Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id o13sm3853059qkg.111.2020.04.11.09.01.32
+        by smtp.gmail.com with ESMTPSA id u27sm4152409qtc.73.2020.04.11.10.23.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2020 09:01:32 -0700 (PDT)
-Date:   Sat, 11 Apr 2020 12:01:16 -0400
+        Sat, 11 Apr 2020 10:23:02 -0700 (PDT)
+Date:   Sat, 11 Apr 2020 13:22:59 -0400
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -55,98 +56,99 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] Atmel TCB capture driver
-Message-ID: <20200411160116.GA95806@icarus>
-References: <20200409141401.321222-1-kamel.bouhara@bootlin.com>
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 0/3] Introduce a counter inkernel API
+Message-ID: <20200411172259.GB95806@icarus>
+References: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="J/dobhs11T7y2rNN"
+        protocol="application/pgp-signature"; boundary="eAbsdosE1cNLO4uF"
 Content-Disposition: inline
-In-Reply-To: <20200409141401.321222-1-kamel.bouhara@bootlin.com>
+In-Reply-To: <20200406155806.1295169-1-kamel.bouhara@bootlin.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---J/dobhs11T7y2rNN
+--eAbsdosE1cNLO4uF
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 09, 2020 at 04:13:58PM +0200, Kamel Bouhara wrote:
-> Hello,
+On Mon, Apr 06, 2020 at 05:58:03PM +0200, Kamel Bouhara wrote:
+> Hello everyone,
 >=20
-> Here is a new counter driver to support Atmel TCB capture devices.
+> This series introduce a basic inkernel API for the counter subsystem and
+> add a new rotary encoder driver that use a counter interface instead of
+> the GPIO existing one.
 >=20
-> Each SoC has two TCB blocks, each one including three independent
-> channels.The following series adds support for two counter modes:
-> increase and quadrature decoder.
->=20
-> As for the atmel clocksource and pwm, the counter driver needs to fill
-> some tcb capabilities in order to operate with the right configuration.
-> This is achieved in first patch of this series.
->=20
-> Please feel free to comment.
->=20
-> Cheers,
->=20
-> Changes from v2:
->  - Fixed first patch not applying on mainline
->  - Updated return code to -EINVAL when user is requesting qdec mode on
->    a counter device not supporting it.
->  - Added an error case returning -EINVAL when action edge is performed in
->    qdec mode.
->  - Removed no need to explicity setting ops to NULL from static struct as
->    it is the default value.
->  - Changed confusing code by using snprintf for the sake of clarity.
->  - Changed code to use ARRAY_SIZE so that future reviewers will know
->    that num_counts matches what's in the atmel_tc_count array without
->    having to check so themselves.
+> See commit log in 0001-counter-add-an-inkernel-API.patch for further
+> details.
 >=20
 > Kamel Bouhara (3):
->   ARM: at91: add atmel tcb capabilities
->   dt-bindings: counter: atmel-tcb-capture counter
->   counter: Add atmel TCB capture counter
+>   counter: add an inkernel API
+>   Input: rotary-encoder-counter: add DT bindings
+>   Input: add a rotary encoders based on counter devices
 >=20
->  .../bindings/counter/atmel-tcb-capture.yaml   |  35 ++
->  drivers/counter/Kconfig                       |  11 +
->  drivers/counter/Makefile                      |   1 +
->  drivers/counter/atmel-tcb-capture.c           | 394 ++++++++++++++++++
->  include/soc/at91/atmel_tcb.h                  |   2 +
->  5 files changed, 443 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/counter/atmel-tcb-c=
-apture.yaml
->  create mode 100644 drivers/counter/atmel-tcb-capture.c
+>  .../input/rotary-encoder-counter.yaml         |  67 ++++++
+>  drivers/counter/counter.c                     | 213 ++++++++++++++++++
+>  drivers/input/misc/Kconfig                    |   9 +
+>  drivers/input/misc/Makefile                   |   1 +
+>  drivers/input/misc/rotary_encoder_counter.c   | 152 +++++++++++++
+>  include/linux/counter.h                       |  27 +++
+>  6 files changed, 469 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/rotary-encode=
+r-counter.yaml
+>  create mode 100644 drivers/input/misc/rotary_encoder_counter.c
 >=20
 > --
 > 2.25.0
 
-Thanks Kamel, this version applies nicely now. Fix the error messages
-Rob Herring pointed out in the dt-bindings patch and I should be able to
-sign off on these.
+Hello Kamel,
+
+I'm not inherently opposed to adding an in-kernel API for the Counter
+subsystem, but I'm not sure yet if it's necessary for this particular
+situation.
+
+Is the purpose of this driver to allow users to poll on the rotary
+encoder position value? If so, perhaps instead of an in-kernel API, the
+polling functionality should be added as part of the Counter subsystem;
+I can see this being a useful feature for many counter devices, and
+it'll keep the code contained to a single subsystem.
+
+By the way, I'm going to be submitting a major update to the Counter
+subsystem code in the next couple weeks that isolates the sysfs code
+=66rom the rest of the subsystem -- it'll likely affect the interface and
+code here -- so I'll probably wait to decide for certain until that
+patch lands; I anticipate it making things easier for you here after
+it's merged.
+
+For now, I want to get a better high-level understanding about how users
+would interact with this driver to use the device (input_setup_polling
+is a new call for me). That should help me understand whether an
+in-kernel API is the best choice here.
 
 William Breathitt Gray
 
---J/dobhs11T7y2rNN
+--eAbsdosE1cNLO4uF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl6R6b8ACgkQhvpINdm7
-VJJT3hAAtJGYMWuStziOpn3oiehL6iBN7av6JLXQ1xaNk4DP0R6MyU0qGUQJCH27
-Cbckx4xNpwUmPK+7tV1NISlzXjBj9hEt3cRoPjf3Sd6Gw2x/F4GDSzbbcPot9KOD
-jqQL6HqJ/n9YPv/UYr5NtJ5Joh312TCf0mPdJ//GXWRCG7AzHa6b5CrBfz6bWb4x
-ylK0myhYbPEs5ViHlWSC69TUs+rrRqRgmIyJSBuaSukB0JYXFsj7BOMmgV7ymr9t
-91Qvf43jmzsXy0F4/lpp5u5d0DliHPhMk7J9LTILIECs7AvOxKB3D0mJSEoq++ws
-hugZXe1vbo39+gzf7QD1hEkVHOTwnWSG5wXUXxmjDpPqt7Ic9h1fu+mP3Nd8OLFx
-PmCeKyqBgkdQxUAb75Y+YObrgTDnBiWtnn391K0kpwy22aPQ10RzZYSCHY8pBvrB
-rkYsQs+KzHgH+/YtGkkohmPAialRUXEdMaGfIC/ZAggQdExxhdgtIEO49gV/yDL/
-+Cp4MDfoBlomK4oLX3m1sagP9/Fzh+6yREa2EBajPMn9ZQ692Sy4hQCXfE1pFCs6
-1IXRuFXRZFETnyvT+SWcDxbizKYCVm7yCrA0M55tczJvoaDQOC93/i4hNf2aVMaT
-glv8dfI+2oNtO+AUclf7F1EX3izFvCqvUD89nuxhKZxfHbKkmJA=
-=rbCt
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl6R/OYACgkQhvpINdm7
+VJJULA//cJf3iV5J+NsneoTVZ26SG+cQdVz4UFAUmrQ7lKokM+KB49/vO6JjzUXa
+kXebfHwgqvjcnCwiyEmHqvkVR5QDH1Qo9uryOrBzY2Uz/HGmUI7DB8OZXTa0J6Vf
+Udy0T/jiwC7iTy2IGKt0svVAauesGdFA052BHCt+1fbarvKjr+ZBwDLQjPEy7rOU
+NYcpVoOH4bPtQbgvDLGp01dmw1nvzSmjxrCHF0ARy8funxA7Bng69jQcGWiaWRjm
+PAyqb8CBIfQ4clIrEwGh5Hhj/oYUFMIf8pB0fFM5mZ39ISqwKF9nedQZ6hYmvgXH
+xNRDOWP63UksmBVXp1vtZjiHUdrH07sF+cRRgrwQkn3bkJfR8sQAA2oRDCBieMA3
+hRBWjmw31IGzmI0HtzYjsFLvFUuK1Yoe7F+EGdvdrVmRQmtom3pzZ8AcDdpB6h8R
+Hr/v9jKXPc54UKOe66rKhMe7aTx4H/7nG3kxnZSzNKWFhwV+dCjy8D1X9HxEKoZp
+WRAfsClBsNGzJBqVSO3ryFrIzRuJuYLtGNbKhBbTJvc0nRpJAuJbSnw0ZRf9kGZg
+KJ0nNPdweo26YbxYkT2hyNJantJCYc9GmyLy+FubdgF3skX47nnIusRtpoBYe/hd
+AZ/ERtySq9+Tv+dQzk8xrWxAYGdoIVCdub93jaSnWAYoyKZJs7g=
+=Rx8J
 -----END PGP SIGNATURE-----
 
---J/dobhs11T7y2rNN--
+--eAbsdosE1cNLO4uF--

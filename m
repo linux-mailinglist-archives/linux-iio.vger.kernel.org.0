@@ -2,44 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C4B1A5EC7
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79671A5ECD
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbgDLNfa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 09:35:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60762 "EHLO mail.kernel.org"
+        id S1726689AbgDLNqH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 09:46:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33198 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726102AbgDLNfa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Apr 2020 09:35:30 -0400
+        id S1726139AbgDLNqH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 09:46:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE474206B8;
-        Sun, 12 Apr 2020 13:35:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7E077206E5;
+        Sun, 12 Apr 2020 13:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586698529;
-        bh=4p2YNKktYSmPfCxQd6u0rZRlru4MeJGH9CUkvjHp2F8=;
+        s=default; t=1586699166;
+        bh=7AopOZwIzZa2CQ4mMAWvMFT+u7XNL1Oh9NPETruA0rQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0FjNXapwCDGHnq+f69m8HBequQ+UJXpCjwTc11vGlCGMX6HMgVkyih0kkn+Jsw0Oz
-         xV54Ye6xMGXMms5QlCf0qST1irCAb3+kCct8Mhl2OEnBmfP0/RXN48fGepZpdoC7/X
-         yh/1EYXGjfG8+z5E8j1CnyULF5jnC1PPyth8pobI=
-Date:   Sun, 12 Apr 2020 14:35:24 +0100
+        b=zWqfI2wyEVPNwN1iog3lmDMe/qwVbR1+0nUp8YrxIsgZN3h89aK07XSCiYEGIKl/5
+         Rh+xjI5826qrWFOgo1HH/4/XwgBB5PM/5m35c9jn50vGZcN0vryQ4tapRh1CV0j9bS
+         wap4jMVRhfYKbiJhfS8C7uZL9+p/hmM0SINE5p9w=
+Date:   Sun, 12 Apr 2020 14:46:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Nick Reitemeyer <nick.reitemeyer@web.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 3/3] iio: magnetometer: ak8974: add Alps hscdtd008a
-Message-ID: <20200412143524.377d2c16@archlinux>
-In-Reply-To: <20200406143113.GA126707@gerhold.net>
-References: <20200406141350.162036-1-nick.reitemeyer@web.de>
-        <20200406141350.162036-3-nick.reitemeyer@web.de>
-        <20200406143113.GA126707@gerhold.net>
+To:     Mathieu Othacehe <m.othacehe@gmail.com>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
+Subject: Re: [PATCH v2 4/4] iio: vcnl4000: Add buffer support for
+ VCNL4010/20.
+Message-ID: <20200412144602.25e2b810@archlinux>
+In-Reply-To: <20200406145356.25883-5-m.othacehe@gmail.com>
+References: <20200406145356.25883-1-m.othacehe@gmail.com>
+        <20200406145356.25883-5-m.othacehe@gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,149 +44,305 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Apr 2020 16:31:13 +0200
-Stephan Gerhold <stephan@gerhold.net> wrote:
+On Mon,  6 Apr 2020 16:53:56 +0200
+Mathieu Othacehe <m.othacehe@gmail.com> wrote:
 
-> On Mon, Apr 06, 2020 at 04:13:53PM +0200, Nick Reitemeyer wrote:
-> > The hscdtd008a is similar to the AK8974:
-> > Only the whoami value and some registers are different.
-> > 
-> > Signed-off-by: Nick Reitemeyer <nick.reitemeyer@web.de>  
+> The VCNL4010 and VCNL4020 chips are able to raise interrupts on data ready.
+> Use it to provide triggered buffer support for proximity data.
 > 
-> Thanks a lot for sending this patch upstream!
+> Those two chips also provide ambient light data. However, they are sampled
+> at different rate than proximity data. As this is not handled by the IIO
+> framework for now, and the sample frequencies of ambient light data are
+> very low, do add buffer support for them.
 > 
-> I checked this with the datasheet available here:
-> https://tech.alpsalpine.com/prod/c/pdf/sensor/geomagnetic/hscd/hscdtd008a_data.pdf
-> 
-> Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
-> 
-> ... and it seems to produce reasonable values on samsung-golden:
-> 
-> Tested-by: Stephan Gerhold <stephan@gerhold.net>
-> 
-> Linus Walleij might want to test this on his samsung-skomer :)
+> Signed-off-by: Mathieu Othacehe <m.othacehe@gmail.com>
 
-Looks good to me, but I'll need a review on the binding (particularly
-the vendor prefix as it's in a generic file). 
+Hi Mathieu,
+
+One nitpick in here which I can fix whilst applying. The series as
+a whole looks good to me.
+
+On a more general note we probably have a merge conflict between this
+series and Guido's one adding the near level property to the driver.
+
+Based on a bit of arbitrary timing I'd like to apply Guido's first
+then try and take yours on top.  If there are any problems I'll
+probably ask you to do the rebase at that point.
+
+Guido's series is waiting for some other reviews to come in so
+it may be a week or so.
 
 Thanks,
 
 Jonathan
 
+
+> ---
+>  drivers/iio/light/Kconfig    |   2 +
+>  drivers/iio/light/vcnl4000.c | 178 ++++++++++++++++++++++++++++++++++-
+>  2 files changed, 178 insertions(+), 2 deletions(-)
 > 
-> Thanks,
-> Stephan
-> 
-> > ---
-> >  drivers/iio/magnetometer/ak8974.c | 38 ++++++++++++++++++++++++-------
-> >  1 file changed, 30 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-> > index d32996702110..ade4ed8f67d2 100644
-> > --- a/drivers/iio/magnetometer/ak8974.c
-> > +++ b/drivers/iio/magnetometer/ak8974.c
-> > @@ -49,6 +49,7 @@
-> >  #define AK8974_WHOAMI_VALUE_AMI306 0x46
-> >  #define AK8974_WHOAMI_VALUE_AMI305 0x47
-> >  #define AK8974_WHOAMI_VALUE_AK8974 0x48
-> > +#define AK8974_WHOAMI_VALUE_HSCDTD008A 0x49
-> > 
-> >  #define AK8974_DATA_X		0x10
-> >  #define AK8974_DATA_Y		0x12
-> > @@ -140,6 +141,12 @@
-> >  #define AK8974_INT_CTRL_PULSE	BIT(1) /* 0 = latched; 1 = pulse (50 usec) */
-> >  #define AK8974_INT_CTRL_RESDEF	(AK8974_INT_CTRL_XYZEN | AK8974_INT_CTRL_POL)
-> > 
-> > +/* HSCDTD008A-specific control register */
-> > +#define HSCDTD008A_CTRL4	0x1E
-> > +#define HSCDTD008A_CTRL4_MMD	BIT(7)	/* must be set to 1 */
-> > +#define HSCDTD008A_CTRL4_RANGE	BIT(4)	/* 0 = 14-bit output; 1 = 15-bit output */
-> > +#define HSCDTD008A_CTRL4_RESDEF	(HSCDTD008A_CTRL4_MMD | HSCDTD008A_CTRL4_RANGE)
-> > +
-> >  /* The AMI305 has elaborate FW version and serial number registers */
-> >  #define AMI305_VER		0xE8
-> >  #define AMI305_SN		0xEA
-> > @@ -241,10 +248,17 @@ static int ak8974_reset(struct ak8974 *ak8974)
-> >  	ret = regmap_write(ak8974->map, AK8974_CTRL3, AK8974_CTRL3_RESDEF);
-> >  	if (ret)
-> >  		return ret;
-> > -	ret = regmap_write(ak8974->map, AK8974_INT_CTRL,
-> > -			   AK8974_INT_CTRL_RESDEF);
-> > -	if (ret)
-> > -		return ret;
-> > +	if (ak8974->variant != AK8974_WHOAMI_VALUE_HSCDTD008A) {
-> > +		ret = regmap_write(ak8974->map, AK8974_INT_CTRL,
-> > +				   AK8974_INT_CTRL_RESDEF);
-> > +		if (ret)
-> > +			return ret;
-> > +	} else {
-> > +		ret = regmap_write(ak8974->map, HSCDTD008A_CTRL4,
-> > +				   HSCDTD008A_CTRL4_RESDEF);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > 
-> >  	/* After reset, power off is default state */
-> >  	return ak8974_set_power(ak8974, AK8974_PWR_OFF);
-> > @@ -267,6 +281,8 @@ static int ak8974_configure(struct ak8974 *ak8974)
-> >  		if (ret)
-> >  			return ret;
-> >  	}
-> > +	if (ak8974->variant == AK8974_WHOAMI_VALUE_HSCDTD008A)
-> > +		return 0;
-> >  	ret = regmap_write(ak8974->map, AK8974_INT_CTRL, AK8974_INT_CTRL_POL);
-> >  	if (ret)
-> >  		return ret;
-> > @@ -495,6 +511,10 @@ static int ak8974_detect(struct ak8974 *ak8974)
-> >  		name = "ak8974";
-> >  		dev_info(&ak8974->i2c->dev, "detected AK8974\n");
-> >  		break;
-> > +	case AK8974_WHOAMI_VALUE_HSCDTD008A:
-> > +		name = "hscdtd008a";
-> > +		dev_info(&ak8974->i2c->dev, "detected hscdtd008a\n");
-> > +		break;
-> >  	default:
-> >  		dev_err(&ak8974->i2c->dev, "unsupported device (%02x) ",
-> >  			whoami);
-> > @@ -674,18 +694,18 @@ static bool ak8974_writeable_reg(struct device *dev, unsigned int reg)
-> >  	case AK8974_INT_CTRL:
-> >  	case AK8974_INT_THRES:
-> >  	case AK8974_INT_THRES + 1:
-> > +		return true;
-> >  	case AK8974_PRESET:
-> >  	case AK8974_PRESET + 1:
-> > -		return true;
-> > +		return ak8974->variant != AK8974_WHOAMI_VALUE_HSCDTD008A;
-> >  	case AK8974_OFFSET_X:
-> >  	case AK8974_OFFSET_X + 1:
-> >  	case AK8974_OFFSET_Y:
-> >  	case AK8974_OFFSET_Y + 1:
-> >  	case AK8974_OFFSET_Z:
-> >  	case AK8974_OFFSET_Z + 1:
-> > -		if (ak8974->variant == AK8974_WHOAMI_VALUE_AK8974)
-> > -			return true;
-> > -		return false;
-> > +		return ak8974->variant == AK8974_WHOAMI_VALUE_AK8974 ||
-> > +		       ak8974->variant == AK8974_WHOAMI_VALUE_HSCDTD008A;
-> >  	case AMI305_OFFSET_X:
-> >  	case AMI305_OFFSET_X + 1:
-> >  	case AMI305_OFFSET_Y:
-> > @@ -926,12 +946,14 @@ static const struct i2c_device_id ak8974_id[] = {
-> >  	{"ami305", 0 },
-> >  	{"ami306", 0 },
-> >  	{"ak8974", 0 },
-> > +	{"hscdtd008a", 0 },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, ak8974_id);
-> > 
-> >  static const struct of_device_id ak8974_of_match[] = {
-> >  	{ .compatible = "asahi-kasei,ak8974", },
-> > +	{ .compatible = "alps,hscdtd008a", },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(of, ak8974_of_match);
-> > --
-> > 2.26.0
-> >   
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 9968f982fbc7..0c066b800743 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -485,6 +485,8 @@ config US5182D
+>  
+>  config VCNL4000
+>  	tristate "VCNL4000/4010/4020/4200 combined ALS and proximity sensor"
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	depends on I2C
+>  	help
+>  	  Say Y here if you want to build a driver for the Vishay VCNL4000,
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index 899abef137a2..625d1a8114e5 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -5,6 +5,7 @@
+>   *
+>   * Copyright 2012 Peter Meerwald <pmeerw@pmeerw.net>
+>   * Copyright 2019 Pursim SPC
+> + * Copyright 2020 Mathieu Othacehe <m.othacehe@gmail.com>
+>   *
+>   * IIO driver for:
+>   *   VCNL4000/10/20 (7-bit I2C slave address 0x13)
+> @@ -14,8 +15,7 @@
+>   * TODO:
+>   *   allow to adjust IR current
+>   *   proximity threshold and event handling
+> - *   periodic ALS/proximity measurement (VCNL4010/20)
+> - *   interrupts (VCNL4010/20/40, VCNL4200)
+> + *   interrupts (VCNL4040, VCNL4200)
+>   */
+>  
+>  #include <linux/module.h>
+> @@ -24,9 +24,13 @@
+>  #include <linux/delay.h>
+>  #include <linux/interrupt.h>
+>  
+> +#include <linux/iio/buffer.h>
+>  #include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+>  
+>  #define VCNL4000_DRV_NAME "vcnl4000"
+>  #define VCNL4000_PROD_ID	0x01
+> @@ -820,7 +824,14 @@ static const struct iio_chan_spec vcnl4010_channels[] = {
+>  			BIT(IIO_CHAN_INFO_SAMP_FREQ),
+>  		.event_spec = vcnl4000_event_spec,
+>  		.num_event_specs = ARRAY_SIZE(vcnl4000_event_spec),
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.storagebits = 16,
+> +			.endianness = IIO_CPU,
+> +		},
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(1),
+>  };
+>  
+>  static IIO_CONST_ATTR(in_illuminance_sampling_frequency_available,
+> @@ -938,10 +949,158 @@ static irqreturn_t vcnl4010_irq_thread(int irq, void *p)
+>  		mutex_unlock(&data->vcnl4000_lock);
+>  	}
+>  
+> +	if (isr & VCNL4010_INT_DRDY && iio_buffer_enabled(indio_dev))
+> +		iio_trigger_poll_chained(indio_dev->trig);
+> +
+> +end:
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t vcnl4010_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> +	const unsigned long *active_scan_mask = indio_dev->active_scan_mask;
+> +	u16 buffer[8] = {0}; /* 1x16-bit + ts */
+> +	bool data_read = false;
+> +	unsigned long isr;
+> +	int val = 0;
+> +	int ret;
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +	ret = i2c_smbus_read_byte_data(data->client, VCNL4010_ISR);
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +
+> +	if (ret < 0)
+> +		goto end;
+> +
+> +	isr = ret;
+> +
+> +	if (test_bit(0, active_scan_mask)) {
+> +		if (test_bit(VCNL4010_INT_PROXIMITY, &isr)) {
+> +			ret = vcnl4000_read_data(data,
+> +						 VCNL4000_PS_RESULT_HI,
+> +						 &val);
+> +			if (ret < 0)
+> +				goto end;
+> +
+> +			buffer[0] = val;
+> +			data_read = true;
+> +		}
+> +	}
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_ISR,
+> +					isr & VCNL4010_INT_DRDY);
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +
+> +	if (ret < 0 || !data_read)
+> +		goto end;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+> +					   iio_get_time_ns(indio_dev));
+> +
+>  end:
+> +	iio_trigger_notify_done(indio_dev->trig);
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev)
+> +{
+> +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +	int cmd;
+> +
+> +	ret = iio_triggered_buffer_postenable(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +
+> +	ret = i2c_smbus_read_byte_data(data->client, VCNL4000_COMMAND);
+> +	if (ret < 0)
+> +		goto end;
+> +
+> +	/* Do not enable the buffer if we are already capturing events. */
+> +	if ((ret & VCNL4000_SELF_TIMED_EN) > 0) {
+> +		ret = -EBUSY;
+> +		goto end;
+> +	}
+> +
+> +	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL,
+> +					VCNL4010_INT_PROX_EN);
+> +	if (ret < 0)
+> +		goto end;
+> +
+> +	cmd = VCNL4000_SELF_TIMED_EN | VCNL4000_PROX_EN;
+> +	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, cmd);
+> +	if (ret < 0)
+> +		goto end;
+> +
+> +end:
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +	if (ret < 0)
+> +		iio_triggered_buffer_predisable(indio_dev);
+> +
+> +	return ret;
+> +}
+> +
+> +static int vcnl4010_buffer_predisable(struct iio_dev *indio_dev)
+> +{
+> +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> +	int ret, ret_disable;
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +
+> +	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL, 0);
+> +	if (ret < 0)
+> +		goto end;
+> +
+> +	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
+> +
+> +end:
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +
+> +	ret_disable = iio_triggered_buffer_predisable(indio_dev);
+> +	if (ret == 0)
+> +		ret = ret_disable;
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct iio_buffer_setup_ops vcnl4010_buffer_ops = {
+> +	.postenable = &vcnl4010_buffer_postenable,
+> +	.predisable = &vcnl4010_buffer_predisable,
+> +};
+> +
+> +static const struct iio_trigger_ops vcnl4010_trigger_ops = {
+> +	.validate_device = iio_trigger_validate_own_device,
+> +};
+> +
+> +static int vcnl4010_probe_trigger(struct iio_dev *indio_dev)
+> +{
+> +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> +	struct i2c_client *client = data->client;
+> +	struct iio_trigger *trigger;
+> +	int ret;
+> +
+> +	trigger = devm_iio_trigger_alloc(&client->dev, "%s-dev%d",
+> +					 indio_dev->name, indio_dev->id);
+> +	if (!trigger)
+> +		return -ENOMEM;
+> +
+> +	trigger->dev.parent = &client->dev;
+> +	trigger->ops = &vcnl4010_trigger_ops;
+> +	iio_trigger_set_drvdata(trigger, indio_dev);
+> +
+> +	ret = devm_iio_trigger_register(&client->dev, trigger);
+> +	if (ret)
+> +		return ret;
+
+nitpick: 
+return devm_iio_trigger_register
+does the same thing.
+
+> +
+> +	return 0;
+> +}
+> +
+>  static int vcnl4000_probe(struct i2c_client *client,
+>  			  const struct i2c_device_id *id)
+>  {
+> @@ -974,6 +1133,16 @@ static int vcnl4000_probe(struct i2c_client *client,
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	if (client->irq && data->chip_spec->irq_support) {
+> +		ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
+> +						      NULL,
+> +						      vcnl4010_trigger_handler,
+> +						      &vcnl4010_buffer_ops);
+> +		if (ret < 0) {
+> +			dev_err(&client->dev,
+> +				"unable to setup iio triggered buffer\n");
+> +			return ret;
+> +		}
+> +
+>  		ret = devm_request_threaded_irq(&client->dev, client->irq,
+>  						NULL, vcnl4010_irq_thread,
+>  						IRQF_TRIGGER_FALLING |
+> @@ -984,6 +1153,10 @@ static int vcnl4000_probe(struct i2c_client *client,
+>  			dev_err(&client->dev, "irq request failed\n");
+>  			return ret;
+>  		}
+> +
+> +		ret = vcnl4010_probe_trigger(indio_dev);
+> +		if (ret < 0)
+> +			return ret;
+>  	}
+>  
+>  	return devm_iio_device_register(&client->dev, indio_dev);
+> @@ -1026,5 +1199,6 @@ static struct i2c_driver vcnl4000_driver = {
+>  module_i2c_driver(vcnl4000_driver);
+>  
+>  MODULE_AUTHOR("Peter Meerwald <pmeerw@pmeerw.net>");
+> +MODULE_AUTHOR("Mathieu Othacehe <m.othacehe@gmail.com>");
+>  MODULE_DESCRIPTION("Vishay VCNL4000 proximity/ambient light sensor driver");
+>  MODULE_LICENSE("GPL");
 

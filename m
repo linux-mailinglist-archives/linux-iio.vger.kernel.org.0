@@ -2,36 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C766A1A5EA4
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71751A5EAF
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726992AbgDLNBI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 09:01:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51242 "EHLO mail.kernel.org"
+        id S1726689AbgDLNFo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 09:05:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgDLNBI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Apr 2020 09:01:08 -0400
+        id S1726043AbgDLNFo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 09:05:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5453720705;
-        Sun, 12 Apr 2020 13:01:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9F86820705;
+        Sun, 12 Apr 2020 13:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586696468;
-        bh=8lEq43mVTnv5gBR+gJ9XIkZyLjfNuczQB0NMtpyiYzU=;
+        s=default; t=1586696744;
+        bh=vQ2ijPfgHyfD5uLqbnIBZ1qOAfAzreu0lThBZ/PCPUI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PIFecLOE1/LxlhXqEyUFzFnhvvfXRFvaZBQpiBVglpiMTOMkNxRdBEPFE7jdvFWs4
-         y7+D2WifRzQ7Zqul459pYRMorMEMOpO+QHAA1yLMYsg4vm+ToYubtF9erA0lUOKkTr
-         YsuTItGPaF0+y7mgTKJ4CsS52GCYUGunTU43togI=
-Date:   Sun, 12 Apr 2020 14:01:04 +0100
+        b=A1sBPEX9yB5LNire+7Z43N3bLt7iLiCE0PVaiuwtl4intBYM+MgQ27zEyK687+m1v
+         i5I2yClxSsnUPnOQezTT/1dJfbrYbw8WSLxY9mrk+7QTpLRXyUatQczYoc7m2pPfcu
+         EEwm+MTaptw8JjWRHdiDjq2+jzC1Zy5Bfk1pUtnI=
+Date:   Sun, 12 Apr 2020 14:05:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 8/8] iio: buffer: drop devm_iio_kfifo_free() API call
-Message-ID: <20200412140104.0f30a475@archlinux>
-In-Reply-To: <20200227135227.12433-8-alexandru.ardelean@analog.com>
-References: <20200227135227.12433-1-alexandru.ardelean@analog.com>
-        <20200227135227.12433-8-alexandru.ardelean@analog.com>
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v8 1/2] iio: proximity: provide device tree binding
+ document
+Message-ID: <20200412140539.4b4ddff1@archlinux>
+In-Reply-To: <20200406172002.18028-2-i.mikhaylov@yadro.com>
+References: <20200406172002.18028-1-i.mikhaylov@yadro.com>
+        <20200406172002.18028-2-i.mikhaylov@yadro.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,84 +48,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Feb 2020 15:52:27 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Mon, 6 Apr 2020 20:20:01 +0300
+Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
 
-> It's unused so far, so it can't be removed. Also makes sense to remove it
-> to discourage weird uses of this call during review.
+> Mostly standard i2c driver with some additional led-current option
+> for vcnl3020.
 > 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Applied with the can't -> can above fixed up.
+> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+One comment inline preempting likely review from Rob.  I'd also like
+there to be plenty of time for Rob and others to take a look before I
+apply this.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../driver-api/driver-model/devres.rst        |  1 -
->  drivers/iio/buffer/kfifo_buf.c                | 22 -------------------
->  include/linux/iio/kfifo_buf.h                 |  1 -
->  3 files changed, 24 deletions(-)
+>  .../bindings/iio/proximity/vcnl3020.yaml      | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
 > 
-> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-> index 10ccebe9f7c1..91b0b8e5556c 100644
-> --- a/Documentation/driver-api/driver-model/devres.rst
-> +++ b/Documentation/driver-api/driver-model/devres.rst
-> @@ -286,7 +286,6 @@ IIO
->    devm_iio_device_alloc()
->    devm_iio_device_register()
->    devm_iio_kfifo_allocate()
-> -  devm_iio_kfifo_free()
->    devm_iio_triggered_buffer_setup()
->    devm_iio_trigger_alloc()
->    devm_iio_trigger_register()
-> diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
-> index 3150f8ab984b..1359abed3b31 100644
-> --- a/drivers/iio/buffer/kfifo_buf.c
-> +++ b/drivers/iio/buffer/kfifo_buf.c
-> @@ -179,16 +179,6 @@ static void devm_iio_kfifo_release(struct device *dev, void *res)
->  	iio_kfifo_free(*(struct iio_buffer **)res);
->  }
->  
-> -static int devm_iio_kfifo_match(struct device *dev, void *res, void *data)
-> -{
-> -	struct iio_buffer **r = res;
-> -
-> -	if (WARN_ON(!r || !*r))
-> -		return 0;
-> -
-> -	return *r == data;
-> -}
-> -
->  /**
->   * devm_iio_fifo_allocate - Resource-managed iio_kfifo_allocate()
->   * @dev:		Device to allocate kfifo buffer for
-> @@ -216,16 +206,4 @@ struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev)
->  }
->  EXPORT_SYMBOL(devm_iio_kfifo_allocate);
->  
-> -/**
-> - * devm_iio_fifo_free - Resource-managed iio_kfifo_free()
-> - * @dev:		Device the buffer belongs to
-> - * @r:			The buffer associated with the device
-> - */
-> -void devm_iio_kfifo_free(struct device *dev, struct iio_buffer *r)
-> -{
-> -	WARN_ON(devres_release(dev, devm_iio_kfifo_release,
-> -			       devm_iio_kfifo_match, r));
-> -}
-> -EXPORT_SYMBOL(devm_iio_kfifo_free);
-> -
->  MODULE_LICENSE("GPL");
-> diff --git a/include/linux/iio/kfifo_buf.h b/include/linux/iio/kfifo_buf.h
-> index 764659e01b68..1fc1efa7799d 100644
-> --- a/include/linux/iio/kfifo_buf.h
-> +++ b/include/linux/iio/kfifo_buf.h
-> @@ -9,6 +9,5 @@ struct iio_buffer *iio_kfifo_allocate(void);
->  void iio_kfifo_free(struct iio_buffer *r);
->  
->  struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev);
-> -void devm_iio_kfifo_free(struct device *dev, struct iio_buffer *r);
->  
->  #endif
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml b/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
+> new file mode 100644
+> index 000000000000..29ab2dee1694
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: GPL-2.0
+
+Very much preferred for new bindings to have a dual license including
+BSD to allow there use outside of the Linux kernel.
+
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/vcnl3020.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Integrated Proximity Sensor With Infrared Emitter
+> +
+> +maintainers:
+> +  - Ivan Mikhaylov <i.mikhaylov@yadro.com>
+> +
+> +description: |
+> +  The VCNL3020 is a fully integrated proximity sensor. Fully integrated means
+> +  that the infrared emitter is included in the package. It has 16-bit
+> +  resolution. It includes a signal processing IC and features standard I2C
+> +  communication interface. It features an interrupt function.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://www.vishay.com/docs/84150/vcnl3020.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - vishay,vcnl3020
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description: IRQ line for the proximity sensor
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor
+> +
+> +  vddio-supply:
+> +    description: Regulator that provides power to the bus
+> +
+> +  vishay,led-current-milliamp:
+> +    description:
+> +        IR LED current value with valid Range = 0 to 20d. e.g. 0 = 0 mA,
+> +        1 = 10 mA, 20 = 200 mA (2 = 20 mA = DEFAULT). LED Current is
+> +        limited to 200 mA for values higher than decimal 20.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+> +              18, 19, 20]
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        proximity@13 {
+> +              compatible = "vishay,vcnl3020";
+> +              reg = <0x13>;
+> +              vishay,led-current-milliamp = <0x14>;
+> +        };
+> +    };
 

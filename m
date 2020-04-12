@@ -2,36 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93E901A5E17
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 12:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965C91A5E1F
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 12:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725909AbgDLKol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 06:44:41 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:47798 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725903AbgDLKok (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Apr 2020 06:44:40 -0400
+        id S1726805AbgDLK45 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 06:56:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51116 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726043AbgDLK44 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 06:56:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 1E7E99E7632;
-        Sun, 12 Apr 2020 11:44:36 +0100 (BST)
-Date:   Sun, 12 Apr 2020 11:44:33 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] counter: Add atmel TCB capture counter
-Message-ID: <20200412114433.03e1f163@archlinux>
-In-Reply-To: <20200409141401.321222-4-kamel.bouhara@bootlin.com>
-References: <20200409141401.321222-1-kamel.bouhara@bootlin.com>
-        <20200409141401.321222-4-kamel.bouhara@bootlin.com>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9FD41206DA;
+        Sun, 12 Apr 2020 10:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586689015;
+        bh=X3fEng+5biN0i5V0U5O+A5zlawcrsCFcufGJy9DUGmU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=YMjHcv14QqrIEqk/Zr0tZsBfoApNMYDONx1fBb+edqxGs1cn+vmL1hi5/DY39m2gX
+         qUSD7Xp6fnsZnBmMM5QtNZ7Vpg9Q1A7vQ7HDWH+6lCHOmIIK4e+liq4kvdrZE974OW
+         j91MrbloJW3JSGAYsxd1o8AWZl457+lg2ZCxV+hg=
+Date:   Sun, 12 Apr 2020 11:56:50 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Daniel Campello <campello@chromium.org>,
+        LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 2/2 v8] iio: Add SEMTECH SX9310/9311 sensor driver
+Message-ID: <20200412115650.5312f05e@archlinux>
+In-Reply-To: <CAHp75VcuPoVK_+KV+88Di1dUFZ9S8-1nNqo2s8a_n3vgSMoecg@mail.gmail.com>
+References: <20200408175058.2.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
+        <CAHp75VcuPoVK_+KV+88Di1dUFZ9S8-1nNqo2s8a_n3vgSMoecg@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,503 +52,395 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  9 Apr 2020 16:14:01 +0200
-Kamel Bouhara <kamel.bouhara@bootlin.com> wrote:
+On Fri, 10 Apr 2020 13:52:16 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> This drivers allows to use the capture mode of the Timer Counter Block
-> hardware block available in Atmel SoCs through the counter subsystem.
-> 
-> Two functions of the counter are supported for the moment: period
-> capture and quadrature decoder. The latter is only supported by the
-> SAMA5 series of SoCs.
-> 
-> For the period capture mode a basic setup has been chosen that will
-> reset the counter each time the period is actually reached. Of course
-> the device offers much more possibilities.
-> 
-> For quadrature mode, both channel 0 and 1 must be configured even if we
-> only capture the position (no revolution/rotation).
-> 
-> Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
-Hi Kamel,
+> One side note. Whenever you prepare patches do the following:
+> - use -v<n> to git-format-patch to versioning it by using standard
+> template (<n> is a version number)
+> - use --thread to make messages in one bunch
+> - resend entire series
+> - do not send patches more often than once per 24 hours
 
-An issue around cleanup inline + a few nitpicks.
-
-Otherwise looks good to me.
+If no one replied to earlier thread and you are fixing up something
+you noticed yourself, please also reply to that thread so that
+no one accidentally reviews it when catching up on emails!
 
 Jonathan
 
-> ---
-> Changes from v2:
->  - Updated return code to -EINVAL when user is requesting qdec mode on
->    a counter device not supporting it.
->  - Added an error case returning -EINVAL when action edge is performed in
->    qdec mode.
->  - Removed no need to explicity setting ops to NULL from static struct as
->    it is the default value.
->  - Changed confusing code by using snprintf for the sake of clarity.
->  - Changed code to use ARRAY_SIZE so that future reviewers will know
->    that num_counts matches what's in the atmel_tc_count array without
->    having to check so themselves.
 > 
->  drivers/counter/Kconfig             |  11 +
->  drivers/counter/Makefile            |   1 +
->  drivers/counter/atmel-tcb-capture.c | 394 ++++++++++++++++++++++++++++
->  3 files changed, 406 insertions(+)
->  create mode 100644 drivers/counter/atmel-tcb-capture.c
+> On Thu, Apr 9, 2020 at 2:54 AM Daniel Campello <campello@chromium.org> wrote:
+> >
+> > Add SEMTECH SX9310/9311 driver.
+> >
+> > The device has the following entry points:
+> >
+> > Usual frequency:
+> > - sampling_frequency
+> > - sampling_frequency_available
+> >
+> > Instant reading of current values for different sensors:
+> > - in_proximity0_raw
+> > - in_proximity1_raw
+> > - in_proximity2_raw
+> > - in_proximity3_comb_raw
+> > and associated events in events/
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > Signed-off-by: Enrico Granata <egranata@chromium.org>  
 > 
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index c80fa76bb531..c50d7453ec33 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -70,4 +70,15 @@ config FTM_QUADDEC
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called ftm-quaddec.
+> This is not understandable. Are they who helped you develop the code
+> (we have a special tag, i.e. Co-developed-by in addition to SoB), or
+> just people in the middle? Then the question is, how come author is
+> you and not Gwendal?
 > 
-> +config ATMEL_TCB_CAPTURE
-> +	tristate "Atmel Timer Counter Capture driver"
-> +	depends on HAS_IOMEM && OF
-> +	select REGMAP_MMIO
-> +	help
-> +	  Select this option to enable the Atmel Timer Counter Block
-> +	  capture driver.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called atmel-tcb-capture.
-> +
->  endif # COUNTER
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 55142d1f4c43..70c5b8924588 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -10,3 +10,4 @@ obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
->  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
->  obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
->  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-> +obj-$(CONFIG_ATMEL_TCB_CAPTURE)	+= atmel-tcb-capture.o
-> diff --git a/drivers/counter/atmel-tcb-capture.c b/drivers/counter/atmel-tcb-capture.c
-> new file mode 100644
-> index 000000000000..4f2b3d60584f
-> --- /dev/null
-> +++ b/drivers/counter/atmel-tcb-capture.c
-> @@ -0,0 +1,394 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/**
-> + * Copyright (C) 2020 Atmel
-> + *
-> + * Author: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> + *
+> ...
+> 
+> > +What:          /sys/bus/iio/devices/iio:deviceX/in_proximity3_comb_raw  
+> 
+> > +Description:
+> > +               Proximity measurement indicating that some object is
+> > +               near the combined sensor. The combined sensor presents
+> > +               proximity measurements constructed by hardware by
+> > +               combining measurements taken from a given set of
+> > +               physical sensors.  
+> 
+> I'm wondering if we rather have some standard tag across sensors for
+> combined values.
+> It's particular to proximity sensors only? Would it stay like this
+> forever? Won't we come to the very heavy and noisy ABI if more sensors
+> are gaining something like this?
 
-Nitpick. Blank line doesn't add anything :)
+It's the first instance I've ever seen of this particular oddity.
+We have combined magic for cases like accelerometers where there is
+maths involved (x^2 + y^2 + z^2) but this is a bit 'special'.
+To be honest, I'm not sure what the point in actually doing it in a
+design is.
 
-> + */
-> +#include <linux/clk.h>
-> +#include <linux/counter.h>
-> +#include <linux/mfd/syscon.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <soc/at91/atmel_tcb.h>
-> +
-> +#define ATMEL_TC_CMR_MASK	(ATMEL_TC_LDRA_RISING | ATMEL_TC_LDRB_FALLING | \
-> +				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
-> +				 ATMEL_TC_LDBSTOP)
-> +
-> +#define ATMEL_TC_QDEN			BIT(8)
-> +#define ATMEL_TC_POSEN			BIT(9)
-> +
-> +struct atmel_tc_data {
-> +	const struct atmel_tcb_config *tc_cfg;
-> +	struct counter_device counter;
-> +	struct regmap *regmap;
-> +	int qdec_mode;
-> +	int num_channels;
-> +	int channel[2];
-> +	bool trig_inverted;
-> +};
-> +
-> +enum atmel_tc_count_function {
-> +	ATMEL_TC_FUNCTION_INCREASE,
-> +	ATMEL_TC_FUNCTION_QUADRATURE,
-> +};
-> +
-> +static enum counter_count_function atmel_tc_count_functions[] = {
-> +	[ATMEL_TC_FUNCTION_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
-> +	[ATMEL_TC_FUNCTION_QUADRATURE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-> +};
-> +
-> +enum atmel_tc_synapse_action {
-> +	ATMEL_TC_SYNAPSE_ACTION_NONE = 0,
-> +	ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE,
-> +	ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE,
-> +	ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE
-> +};
-> +
-> +static enum counter_synapse_action atmel_tc_synapse_actions[] = {
-> +	[ATMEL_TC_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
-> +	[ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-> +	[ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-> +	[ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE] = COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
-> +};
-> +
-> +static struct counter_signal atmel_tc_count_signals[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Channel A",
-> +	},
-> +	{
-> +		.id = 1,
-> +		.name = "Channel B",
-> +	}
-> +};
-> +
-> +static struct counter_synapse atmel_tc_count_synapses[] = {
-> +	{
-> +		.actions_list = atmel_tc_synapse_actions,
-> +		.num_actions = ARRAY_SIZE(atmel_tc_synapse_actions),
-> +		.signal = &atmel_tc_count_signals[0]
-> +	},
-> +	{
-> +		.actions_list = atmel_tc_synapse_actions,
-> +		.num_actions = ARRAY_SIZE(atmel_tc_synapse_actions),
-> +		.signal = &atmel_tc_count_signals[1]
-> +	}
-> +};
-> +
-> +static int atmel_tc_count_function_get(struct counter_device *counter,
-> +				       struct counter_count *count,
-> +				       size_t *function)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +
-> +	if (priv->qdec_mode)
-> +		*function = ATMEL_TC_FUNCTION_QUADRATURE;
-> +	else
-> +		*function = ATMEL_TC_FUNCTION_INCREASE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_tc_count_function_set(struct counter_device *counter,
-> +				       struct counter_count *count,
-> +				       size_t function)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +	u32 bmr, cmr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_BMR, &bmr);
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-> +
-> +	/* Set capture mode */
-> +	cmr &= ~ATMEL_TC_WAVE;
-> +
-> +	switch (function) {
-> +	case ATMEL_TC_FUNCTION_INCREASE:
-> +		priv->qdec_mode = 0;
-> +		/* Set highest rate based on whether soc has gclk or not */
-> +		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
-> +		if (priv->tc_cfg->has_gclk)
-> +			cmr |= ATMEL_TC_TIMER_CLOCK2;
-> +		else
-> +			cmr |= ATMEL_TC_TIMER_CLOCK1;
-> +		/* Setup the period capture mode */
-> +		cmr |=  ATMEL_TC_CMR_MASK;
-> +		cmr &= ~(ATMEL_TC_ABETRG | ATMEL_TC_XC0);
-> +		break;
-> +	case ATMEL_TC_FUNCTION_QUADRATURE:
-> +		if (!priv->tc_cfg->has_qdec)
-> +			return -EINVAL;
-> +		/* In QDEC mode settings both channels 0 and 1 are required */
-> +		if (priv->num_channels < 2 || priv->channel[0] != 0 ||
-> +		    priv->channel[1] != 1) {
-> +			pr_err("Invalid channels number or id for quadrature mode\n");
-> +			return -EINVAL;
-> +		}
-> +		priv->qdec_mode = 1;
-> +		bmr |= ATMEL_TC_QDEN | ATMEL_TC_POSEN;
-> +		cmr |= ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_ABETRG | ATMEL_TC_XC0;
-> +		break;
-> +	}
-> +
-> +	regmap_write(priv->regmap, ATMEL_TC_BMR, bmr);
-> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), cmr);
-> +
-> +	/* Enable clock and trigger counter */
-> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-> +		     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-> +
-> +	if (priv->qdec_mode) {
-> +		regmap_write(priv->regmap,
-> +			     ATMEL_TC_REG(priv->channel[1], CMR), cmr);
-> +		regmap_write(priv->regmap,
-> +			     ATMEL_TC_REG(priv->channel[1], CCR),
-> +			     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_tc_count_signal_read(struct counter_device *counter,
-> +				      struct counter_signal *signal,
-> +				      enum counter_signal_value *val)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +	bool sigstatus;
-> +	u32 sr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
-> +
-> +	if (priv->trig_inverted)
-> +		sigstatus = (sr & ATMEL_TC_MTIOB);
-> +	else
-> +		sigstatus = (sr & ATMEL_TC_MTIOA);
-> +
-> +	*val = sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_tc_count_action_get(struct counter_device *counter,
-> +				     struct counter_count *count,
-> +				     struct counter_synapse *synapse,
-> +				     size_t *action)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +	u32 cmr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-> +
-> +	*action = ATMEL_TC_SYNAPSE_ACTION_NONE;
-> +
-> +	if (cmr & ATMEL_TC_ETRGEDG_NONE)
-> +		*action = ATMEL_TC_SYNAPSE_ACTION_NONE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-> +		*action = ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
-> +		*action = ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
-> +		*action = ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_tc_count_action_set(struct counter_device *counter,
-> +				     struct counter_count *count,
-> +				     struct counter_synapse *synapse,
-> +				     size_t action)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +	u32 edge = ATMEL_TC_ETRGEDG_NONE;
-> +
-> +	/* QDEC mode is rising edge only */
-> +	if (priv->qdec_mode)
-> +		return -EINVAL;
-> +
-> +	switch (action) {
-> +	case ATMEL_TC_SYNAPSE_ACTION_NONE:
-> +		edge = ATMEL_TC_ETRGEDG_NONE;
-> +		break;
-> +	case ATMEL_TC_SYNAPSE_ACTION_RISING_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_RISING;
-> +		break;
-> +	case ATMEL_TC_SYNAPSE_ACTION_FALLING_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_FALLING;
-> +		break;
-> +	case ATMEL_TC_SYNAPSE_ACTION_BOTH_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_BOTH;
-> +		break;
-> +	}
-> +
-> +	return regmap_write_bits(priv->regmap,
-> +				ATMEL_TC_REG(priv->channel[0], CMR),
-> +				ATMEL_TC_ETRGEDG, edge);
-> +}
-> +
-> +static int atmel_tc_count_read(struct counter_device *counter,
-> +			       struct counter_count *count,
-> +			       unsigned long *val)
-> +{
-> +	struct atmel_tc_data *const priv = counter->priv;
-> +	u32 cnt;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CV), &cnt);
-> +	*val = cnt;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct counter_count atmel_tc_counts[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Timer Counter",
-> +		.functions_list = atmel_tc_count_functions,
-> +		.num_functions = ARRAY_SIZE(atmel_tc_count_functions),
-> +		.synapses = atmel_tc_count_synapses,
-> +		.num_synapses = ARRAY_SIZE(atmel_tc_count_synapses),
-> +	},
-> +};
-> +
-> +static struct counter_ops atmel_tc_ops = {
-> +	.signal_read  = atmel_tc_count_signal_read,
-> +	.count_read   = atmel_tc_count_read,
-> +	.function_get = atmel_tc_count_function_get,
-> +	.function_set = atmel_tc_count_function_set,
-> +	.action_get   = atmel_tc_count_action_get,
-> +	.action_set   = atmel_tc_count_action_set
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_rm9200_config = {
-> +		.counter_width = 16,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sam9x5_config = {
-> +		.counter_width = 32,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sama5d2_config = {
-> +		.counter_width = 32,
-> +		.has_gclk = true,
-> +		.has_qdec = true,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sama5d3_config = {
-> +		.counter_width = 32,
-> +		.has_qdec = true,
-> +};
-> +
-> +static const struct of_device_id atmel_tc_of_match[] = {
-> +	{ .compatible = "atmel,at91rm9200-tcb", .data = &tcb_rm9200_config, },
-> +	{ .compatible = "atmel,at91sam9x5-tcb", .data = &tcb_sam9x5_config, },
-> +	{ .compatible = "atmel,sama5d2-tcb", .data = &tcb_sama5d2_config, },
-> +	{ .compatible = "atmel,sama5d3-tcb", .data = &tcb_sama5d3_config, },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static int atmel_tc_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	const struct atmel_tcb_config *tcb_config;
-> +	const struct of_device_id *match;
-> +	struct atmel_tc_data *priv;
-> +	char clk_name[7];
-> +	struct regmap *regmap;
-> +	struct clk *clk[3];
-> +	int channel;
-> +	int ret, i;
-> +
-> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +
-> +	match = of_match_node(atmel_tc_of_match, np->parent);
-> +	tcb_config = match->data;
-> +	if (!tcb_config) {
-> +		dev_err(&pdev->dev, "No matching parent node found\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	regmap = syscon_node_to_regmap(np->parent);
-> +	if (IS_ERR(priv->regmap))
-> +		return PTR_ERR(priv->regmap);
-> +
-> +	/* max. channels number is 2 when in QDEC mode */
-> +	priv->num_channels = of_property_count_u32_elems(np, "reg");
-> +	if (priv->num_channels < 0) {
-> +		dev_err(&pdev->dev, "Invalid or missing channel\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Register channels and initialize clocks */
-> +	for (i = 0; i < priv->num_channels; i++) {
-> +		ret = of_property_read_u32_index(np, "reg", i, &channel);
-> +		if (ret < 0 || channel > 2)
-> +			return -ENODEV;
-> +
-> +		priv->channel[i] = channel;
-> +
-> +		snprintf(clk_name, sizeof(clk_name), "t%d_clk", channel);
-> +
-> +		clk[i] = of_clk_get_by_name(np->parent, clk_name);
-> +		if (IS_ERR(clk[i])) {
-> +			/* Fallback to t0_clk */
-> +			clk[i] = of_clk_get_by_name(np->parent, "t0_clk");
-> +			if (IS_ERR(clk[i]))
-> +				return PTR_ERR(clk[i]);
-> +		}
-> +
-> +		ret = clk_prepare_enable(clk[i]);
-> +		if (ret)
-> +			return ret;
-If you see the below, you'll note I mention this not being cleaned up on
-remove. 
+So yes we are paying a price in ABI by doing this but until we have some
+visibility of more sensors doing it, I'm not sure we can come up with a
+general solution.
 
-I would suggest using devm_add_action_or_reset to automate the cleanup
-(and let you get rid of the error path below).
+> 
+> ...
+> 
+> > + * Copyright 2018 Google LLC.  
+> 
+> I remember you did changes in this year...
+> Is your changes copyrighted by G company?
+> 
+> > + * Reworked April 2019 by Evan Green <evgreen@chromium.org>  
+> 
+> in April
+> 
+> > + * and January 2020 by Daniel Campello <campello@chromium.org>  
+> 
+> in January
+> 
+> And since it looks like a sentence, put period at the end of it.
+> 
+> ...
+> 
+> > +#include <linux/acpi.h>
+> > +#include <linux/delay.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/irq.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/module.h>
+> > +#include <linux/pm.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/slab.h>  
+> 
+> ...
+> 
+> > +#define SX9310_REG_IRQ_MSK                             0x03  
+> 
+> Is MSK abbreviation in datasheet? Please spell it how it's in datasheet.
+> 
+> > +#define   SX9310_CONVDONE_IRQ                          BIT(3)
+> > +#define   SX9310_FAR_IRQ                               BIT(5)
+> > +#define   SX9310_CLOSE_IRQ                             BIT(6)  
+> 
+> > +#define   SX9310_EVENT_IRQ             (SX9310_FAR_IRQ | SX9310_CLOSE_IRQ)  
+> 
+> Is it listed in hardware, or simple an addition to have it easier to
+> handle in the code?
+> 
+> ...
+> 
+> > +#define   SX9310_REG_PROX_CTRL0_EN_MASK                        0x0F  
+> 
+> GENMASK()
+> 
+> ...
+> 
+> > +#define   SX9310_REG_PROX_CTRL2_COMBMODE_ALL           0x80  
+> 
+> BIT() ?
+> 
+> > +#define   SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC       0x04  
+> 
+> BIT() ?
+> 
+> If it is not a one bit value, better to use (value << shift) and
+> perhaps mention other possibilities.
+> But for current case looks like anyway BIT() macro can be suitable.
+> 
+> You can revisit all the rest definitions, but it's up to you, just try
+> to be close to the datasheet.
+> 
+> ...
+> 
+> > +struct sx9310_data {  
+> 
+> > +       struct i2c_client *client;  
+> 
+> > +};  
+> 
+> ...
+> 
+> > +static ssize_t sx9310_show_samp_freq_avail(struct device *dev,
+> > +                                          struct device_attribute *attr,
+> > +                                          char *buf)
+> > +{
+> > +       size_t len = 0;
+> > +       int i;
+> > +
+> > +       for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
+> > +               len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
+> > +                                sx9310_samp_freq_table[i].val,
+> > +                                sx9310_samp_freq_table[i].val2);
+> > +       buf[len - 1] = '\n';
+> > +       return len;
+> > +}
+> > +static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(sx9310_show_samp_freq_avail);  
+> 
+> Jonathan, what is the best practice now with this kind of output? I
+> think that IIO core provides a unified format to out this.
 
-> +
-> +		dev_info(&pdev->dev,
-> +			 "Initialized capture mode on channel %d\n",
-> +			 channel);
+Yeah.  I've been a bit lazy on pushing the read_avail callback other than
+in cases where we need to provide in kernel access.  However, in this
+particular case the code is replicating what the core does so would be
+nice to switch to the avail callbacks if possible.
 
-Isn't this apparent from the resulting counter being created?  I'd argue
-that it is therefore noise in the kernel log and demote it to dev_dbg
+At somepoint I'll actually add good documentation on how to use those
+then start being a lot fussier about moving over to them for new
+code.  To do that I'd also want to convert a few drivers to give more
+examples of the various options.  It's been on the todo list for a while
+(that list is far too long!)
 
-> +	}
-> +
-> +	priv->tc_cfg = tcb_config;
-> +	priv->regmap = regmap;
-> +	priv->counter.name = dev_name(&pdev->dev);
-> +	priv->counter.parent = &pdev->dev;
-> +	priv->counter.ops = &atmel_tc_ops;
-> +	priv->counter.num_counts = ARRAY_SIZE(atmel_tc_counts);
-> +	priv->counter.counts = atmel_tc_counts;
-> +	priv->counter.num_signals = ARRAY_SIZE(atmel_tc_count_signals);
-> +	priv->counter.signals = atmel_tc_count_signals;
-> +	priv->counter.priv = priv;
-> +
-> +	ret = devm_counter_register(&pdev->dev, &priv->counter);
+If anyone wants to take this task on they would be most welcome - however
+this probably isn't one for a beginner!
 
-> +	if (ret < 0) {
-> +		for (i = 0; i < priv->num_channels; i++)
-> +			clk_disable_unprepare(clk[i]);
+Jonathan
 
-What does this in the remove path?
-
-I initially thought you'll have a race here because of mixing managed
-and unmanaged cleanup (which will be an issue if you do add this to remove
-path) but then noticed there was no remove.
-
-
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id atmel_tc_dt_ids[] = {
-> +	{ .compatible = "atmel,tcb-capture", },
-> +	{ /* sentinel */ },
-> +};
-> +MODULE_DEVICE_TABLE(of, atmel_tc_dt_ids);
-> +
-> +static struct platform_driver atmel_tc_driver = {
-> +	.probe = atmel_tc_probe,
-> +	.driver = {
-> +		.name = "atmel-tcb-capture",
-> +		.of_match_table = atmel_tc_dt_ids,
-> +	},
-> +};
-> +module_platform_driver(atmel_tc_driver);
-> +
-> +MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
-> +MODULE_DESCRIPTION("Atmel TCB Capture driver");
-> +MODULE_LICENSE("GPL v2");
+> 
+> ...
+> 
+> > +static int sx9310_read_prox_data(struct sx9310_data *data,
+> > +                                const struct iio_chan_spec *chan, __be16 *val)
+> > +{
+> > +       int ret;
+> > +
+> > +       ret = regmap_write(data->regmap, SX9310_REG_SENSOR_SEL, chan->channel);  
+> 
+> > +       if (ret < 0)  
+> 
+> Do you need all these ' < 0' checks? Revisit code and drop where it's
+> not needed, like here.
+> 
+> > +               return ret;
+> > +
+> > +       return regmap_bulk_read(data->regmap, chan->address, val,  
+> 
+> > +                               sizeof(__be16));  
+> 
+> sizeof(*val)
+> 
+> > +}  
+> 
+> ...
+> 
+> > +static int sx9310_read_proximity(struct sx9310_data *data,
+> > +                                const struct iio_chan_spec *chan, int *val)
+> > +{  
+> 
+> > +       int ret = 0;  
+> 
+> Unneede assignment.
+> 
+> > +       if (ret < 0)
+> > +               goto out_disable_irq;  
+> 
+> And if the path was non-IRQ one do we need to call ..._disable_irq()?
+> 
+> > +       if (ret < 0)
+> > +               goto out_disable_irq;  
+> 
+> Ditto.
+> 
+> > +       ret = sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
+> > +       if (ret < 0)
+> > +               goto out_put_channel;  
+> 
+> Ditto.
+> 
+> > +       return IIO_VAL_INT;
+> > +
+> > +out_disable_irq:
+> > +       sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
+> > +out_put_channel:
+> > +       sx9310_put_read_channel(data, chan->channel);
+> > +out:
+> > +       mutex_unlock(&data->mutex);
+> > +
+> > +       return ret;
+> > +}  
+> 
+> ...
+> 
+> > +static int sx9310_read_samp_freq(struct sx9310_data *data, int *val, int *val2)
+> > +{
+> > +       unsigned int regval;  
+> 
+> > +       int ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &regval);  
+> 
+> Slightly better to assign exactly before use, i.e. below before if (ret).
+> For now it's okay, but rationale is that if you need to inject some
+> code in between in the future, this will become an additional burden.
+> 
+> > +       if (ret < 0)
+> > +               return ret;  
+> 
+> > +}  
+> 
+> ...
+> 
+> > +       for_each_set_bit(chan, &data->chan_event, SX9310_NUM_CHANNELS) {
+> > +               int dir;
+> > +               u64 ev;  
+> 
+> > +               bool new_prox = val & BIT(chan);  
+> 
+> Similar: slightly better to assign before use.
+> 
+> > +
+> > +               if (new_prox == data->prox_stat[chan])
+> > +                       /* No change on this channel. */
+> > +                       continue;  
+> 
+> > +       }  
+> 
+> ...
+> 
+> > +#define SX_INIT(_reg, _def)                    \
+> > +       {                                       \
+> > +               .reg = SX9310_REG_##_reg,       \
+> > +               .def = _def,                    \
+> > +       }  
+> 
+> I think this macro makes it harder to read, and better simple to put
+> these initializers directly into below structure, but it's up to you.
+> 
+> ...
+> 
+> > +       ret = regmap_read_poll_timeout(data->regmap, SX9310_REG_STAT1, val,
+> > +                                      !(val & SX9310_COMPSTAT_MASK), 20000,
+> > +                                      2000000);
+> > +       if (ret == -ETIMEDOUT)
+> > +               dev_err(&data->client->dev,
+> > +                       "initial compensation timed out: 0x%02x", val);
+> > +  
+> 
+> > +       regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);  
+> 
+> Even in timeout case?
+> 
+> > +       return ret;  
+> 
+> ...
+> 
+> > +       if ((long)device_get_match_data(dev) != whoami)  
+> 
+>   unsigned int long ddata;
+> 
+>   ddata = (uintptr_t)device_get_match_data(dev);
+>   if (ddata != whoami)
+>   ...
+> 
+> > +               dev_err(dev, "WHOAMI does not match device data: %d", whoami);  
+> 
+> If it's error, why not bail out here?
+> Or i.o.w. what is the usefulness of the driver data?
+> 
+> > +       switch (whoami) {
+> > +       case SX9310_WHOAMI_VALUE:
+> > +               indio_dev->name = "sx9310";
+> > +               break;
+> > +       case SX9311_WHOAMI_VALUE:
+> > +               indio_dev->name = "sx9311";
+> > +               break;
+> > +       default:
+> > +               dev_err(dev, "unexpected WHOAMI response: %u", whoami);
+> > +               return -ENODEV;
+> > +       }  
+> 
+> ...
+> 
+> > +               data->trig = devm_iio_trigger_alloc(
+> > +                       dev, "%s-dev%d", indio_dev->name, indio_dev->id);  
+> 
+> Indentation issues.
+> 
+> ...
+> 
+> > +       mutex_lock(&data->mutex);
+> > +       ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
+> > +                         &data->suspend_ctrl0);  
+> 
+> > +  
+> 
+> Blank line in a wrong position?
+> 
+> > +       if (ret)
+> > +               goto out;
+> > +  
+> 
+> ...
+> 
+> > +       mutex_lock(&data->mutex);
+> > +       ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
+> > +       if (ret)
+> > +               goto out;
+> > +
+> > +       ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
+> > +                          data->suspend_ctrl0);
+> > +
+> > +out:
+> > +       mutex_unlock(&data->mutex);
+> > +  
+> 
+> > +       enable_irq(data->client->irq);  
+> 
+> So, you enable IRQ despite the error. Why?
+> 
+> ...
+> 
+> > +static const struct dev_pm_ops sx9310_pm_ops = {
+> > +       SET_SYSTEM_SLEEP_PM_OPS(sx9310_suspend, sx9310_resume)
+> > +};  
+> 
+> ...
+> 
+> > +               .acpi_match_table = ACPI_PTR(sx9310_acpi_match),
+> > +               .of_match_table = of_match_ptr(sx9310_of_match),  
+> 
+> Drop these macros. They more harmful than useful, i.e. you will get
+> compiler warning.
+> If you would like to use them, you have to guard ID tables with ugly ifdeffery.
+> 
+> 
 > --
-> 2.25.0
-> 
+> With Best Regards,
+> Andy Shevchenko
 

@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E201A5EA2
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C766A1A5EA4
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbgDLNAY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 09:00:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47700 "EHLO mail.kernel.org"
+        id S1726992AbgDLNBI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 09:01:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51242 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgDLNAY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Apr 2020 09:00:24 -0400
+        id S1726043AbgDLNBI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 09:01:08 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A53520705;
-        Sun, 12 Apr 2020 13:00:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5453720705;
+        Sun, 12 Apr 2020 13:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586696423;
-        bh=ollfsvnlFYeQf0DEcXjahLhgJYIHtleZy323hYBFpuo=;
+        s=default; t=1586696468;
+        bh=8lEq43mVTnv5gBR+gJ9XIkZyLjfNuczQB0NMtpyiYzU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uL/UVklTDbnRDgX6k2lJHXRaJA3CyPHYas7hM7Rl9cxHI7Y7qi3MbyUJFRPHHwrt5
-         85YGtVXFDt/sdVzzD2CzkQPpusUVKJAZ8LfSMJDgcVrZ2D2XObk/wKk5tPmexjDFj2
-         KdrJmVB/oOxygy2NB9+hwTBzuM9cg1XV9RZhx49c=
-Date:   Sun, 12 Apr 2020 14:00:20 +0100
+        b=PIFecLOE1/LxlhXqEyUFzFnhvvfXRFvaZBQpiBVglpiMTOMkNxRdBEPFE7jdvFWs4
+         y7+D2WifRzQ7Zqul459pYRMorMEMOpO+QHAA1yLMYsg4vm+ToYubtF9erA0lUOKkTr
+         YsuTItGPaF0+y7mgTKJ4CsS52GCYUGunTU43togI=
+Date:   Sun, 12 Apr 2020 14:01:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 7/8] iio: buffer: drop devm_iio_hw_consumer_free() API
- call
-Message-ID: <20200412140020.4e726f4f@archlinux>
-In-Reply-To: <20200227135227.12433-7-alexandru.ardelean@analog.com>
+Subject: Re: [PATCH 8/8] iio: buffer: drop devm_iio_kfifo_free() API call
+Message-ID: <20200412140104.0f30a475@archlinux>
+In-Reply-To: <20200227135227.12433-8-alexandru.ardelean@analog.com>
 References: <20200227135227.12433-1-alexandru.ardelean@analog.com>
-        <20200227135227.12433-7-alexandru.ardelean@analog.com>
+        <20200227135227.12433-8-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,93 +41,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Feb 2020 15:52:26 +0200
+On Thu, 27 Feb 2020 15:52:27 +0200
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
 > It's unused so far, so it can't be removed. Also makes sense to remove it
 > to discourage weird uses of this call during review.
 > 
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Applied thanks.
-
-Though just notice you have a can't where it should be can in the patch
-description.   Will fix that up.
+Applied with the can't -> can above fixed up.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/buffer/industrialio-hw-consumer.c | 31 -------------------
->  include/linux/iio/hw-consumer.h               |  1 -
->  2 files changed, 32 deletions(-)
+>  .../driver-api/driver-model/devres.rst        |  1 -
+>  drivers/iio/buffer/kfifo_buf.c                | 22 -------------------
+>  include/linux/iio/kfifo_buf.h                 |  1 -
+>  3 files changed, 24 deletions(-)
 > 
-> diff --git a/drivers/iio/buffer/industrialio-hw-consumer.c b/drivers/iio/buffer/industrialio-hw-consumer.c
-> index 95165697d8ae..f2d27788f666 100644
-> --- a/drivers/iio/buffer/industrialio-hw-consumer.c
-> +++ b/drivers/iio/buffer/industrialio-hw-consumer.c
-> @@ -142,17 +142,6 @@ static void devm_iio_hw_consumer_release(struct device *dev, void *res)
->  	iio_hw_consumer_free(*(struct iio_hw_consumer **)res);
+> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+> index 10ccebe9f7c1..91b0b8e5556c 100644
+> --- a/Documentation/driver-api/driver-model/devres.rst
+> +++ b/Documentation/driver-api/driver-model/devres.rst
+> @@ -286,7 +286,6 @@ IIO
+>    devm_iio_device_alloc()
+>    devm_iio_device_register()
+>    devm_iio_kfifo_allocate()
+> -  devm_iio_kfifo_free()
+>    devm_iio_triggered_buffer_setup()
+>    devm_iio_trigger_alloc()
+>    devm_iio_trigger_register()
+> diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
+> index 3150f8ab984b..1359abed3b31 100644
+> --- a/drivers/iio/buffer/kfifo_buf.c
+> +++ b/drivers/iio/buffer/kfifo_buf.c
+> @@ -179,16 +179,6 @@ static void devm_iio_kfifo_release(struct device *dev, void *res)
+>  	iio_kfifo_free(*(struct iio_buffer **)res);
 >  }
 >  
-> -static int devm_iio_hw_consumer_match(struct device *dev, void *res, void *data)
+> -static int devm_iio_kfifo_match(struct device *dev, void *res, void *data)
 > -{
-> -	struct iio_hw_consumer **r = res;
+> -	struct iio_buffer **r = res;
 > -
-> -	if (!r || !*r) {
-> -		WARN_ON(!r || !*r);
+> -	if (WARN_ON(!r || !*r))
 > -		return 0;
-> -	}
+> -
 > -	return *r == data;
 > -}
 > -
 >  /**
->   * devm_iio_hw_consumer_alloc - Resource-managed iio_hw_consumer_alloc()
->   * @dev: Pointer to consumer device.
-> @@ -160,9 +149,6 @@ static int devm_iio_hw_consumer_match(struct device *dev, void *res, void *data)
->   * Managed iio_hw_consumer_alloc. iio_hw_consumer allocated with this function
->   * is automatically freed on driver detach.
->   *
-> - * If an iio_hw_consumer allocated with this function needs to be freed
-> - * separately, devm_iio_hw_consumer_free() must be used.
-> - *
->   * returns pointer to allocated iio_hw_consumer on success, NULL on failure.
->   */
->  struct iio_hw_consumer *devm_iio_hw_consumer_alloc(struct device *dev)
-> @@ -186,23 +172,6 @@ struct iio_hw_consumer *devm_iio_hw_consumer_alloc(struct device *dev)
+>   * devm_iio_fifo_allocate - Resource-managed iio_kfifo_allocate()
+>   * @dev:		Device to allocate kfifo buffer for
+> @@ -216,16 +206,4 @@ struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev)
 >  }
->  EXPORT_SYMBOL_GPL(devm_iio_hw_consumer_alloc);
+>  EXPORT_SYMBOL(devm_iio_kfifo_allocate);
 >  
 > -/**
-> - * devm_iio_hw_consumer_free - Resource-managed iio_hw_consumer_free()
-> - * @dev: Pointer to consumer device.
-> - * @hwc: iio_hw_consumer to free.
-> - *
-> - * Free iio_hw_consumer allocated with devm_iio_hw_consumer_alloc().
+> - * devm_iio_fifo_free - Resource-managed iio_kfifo_free()
+> - * @dev:		Device the buffer belongs to
+> - * @r:			The buffer associated with the device
 > - */
-> -void devm_iio_hw_consumer_free(struct device *dev, struct iio_hw_consumer *hwc)
+> -void devm_iio_kfifo_free(struct device *dev, struct iio_buffer *r)
 > -{
-> -	int rc;
-> -
-> -	rc = devres_release(dev, devm_iio_hw_consumer_release,
-> -			    devm_iio_hw_consumer_match, hwc);
-> -	WARN_ON(rc);
+> -	WARN_ON(devres_release(dev, devm_iio_kfifo_release,
+> -			       devm_iio_kfifo_match, r));
 > -}
-> -EXPORT_SYMBOL_GPL(devm_iio_hw_consumer_free);
+> -EXPORT_SYMBOL(devm_iio_kfifo_free);
 > -
->  /**
->   * iio_hw_consumer_enable() - Enable IIO hardware consumer
->   * @hwc: iio_hw_consumer to enable.
-> diff --git a/include/linux/iio/hw-consumer.h b/include/linux/iio/hw-consumer.h
-> index 44d48bb1d39f..e8255c2e33bc 100644
-> --- a/include/linux/iio/hw-consumer.h
-> +++ b/include/linux/iio/hw-consumer.h
-> @@ -14,7 +14,6 @@ struct iio_hw_consumer;
->  struct iio_hw_consumer *iio_hw_consumer_alloc(struct device *dev);
->  void iio_hw_consumer_free(struct iio_hw_consumer *hwc);
->  struct iio_hw_consumer *devm_iio_hw_consumer_alloc(struct device *dev);
-> -void devm_iio_hw_consumer_free(struct device *dev, struct iio_hw_consumer *hwc);
->  int iio_hw_consumer_enable(struct iio_hw_consumer *hwc);
->  void iio_hw_consumer_disable(struct iio_hw_consumer *hwc);
+>  MODULE_LICENSE("GPL");
+> diff --git a/include/linux/iio/kfifo_buf.h b/include/linux/iio/kfifo_buf.h
+> index 764659e01b68..1fc1efa7799d 100644
+> --- a/include/linux/iio/kfifo_buf.h
+> +++ b/include/linux/iio/kfifo_buf.h
+> @@ -9,6 +9,5 @@ struct iio_buffer *iio_kfifo_allocate(void);
+>  void iio_kfifo_free(struct iio_buffer *r);
 >  
+>  struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev);
+> -void devm_iio_kfifo_free(struct device *dev, struct iio_buffer *r);
+>  
+>  #endif
 

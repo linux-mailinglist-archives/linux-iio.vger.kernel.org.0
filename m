@@ -2,36 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0AE81A5EC2
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C4B1A5EC7
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 15:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726943AbgDLNaM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 09:30:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60368 "EHLO mail.kernel.org"
+        id S1726139AbgDLNfa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 09:35:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60762 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726102AbgDLNaM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Apr 2020 09:30:12 -0400
+        id S1726102AbgDLNfa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 09:35:30 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C5ED20673;
-        Sun, 12 Apr 2020 13:30:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CE474206B8;
+        Sun, 12 Apr 2020 13:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586698211;
-        bh=JCenLFN5beHsJI7hfY8pGkBETX594Vt2msukbcaD+m8=;
+        s=default; t=1586698529;
+        bh=4p2YNKktYSmPfCxQd6u0rZRlru4MeJGH9CUkvjHp2F8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AY42TAcq1YeUTaD/Tc+pfhNsfyzWdgz83t/0oQkAdF8RKbbNVLSOzLiNh1jlZxRo9
-         XxtGcDe+D/vFVIyRzxmQj1+O2JzU1U01PeNXabOyUGQ6qz+1AuXf31xm31z6BctIhx
-         Up2YaDlx8cmVWnjrBUcE4AGDZUIauyxNIm6qw61U=
-Date:   Sun, 12 Apr 2020 14:30:08 +0100
+        b=0FjNXapwCDGHnq+f69m8HBequQ+UJXpCjwTc11vGlCGMX6HMgVkyih0kkn+Jsw0Oz
+         xV54Ye6xMGXMms5QlCf0qST1irCAb3+kCct8Mhl2OEnBmfP0/RXN48fGepZpdoC7/X
+         yh/1EYXGjfG8+z5E8j1CnyULF5jnC1PPyth8pobI=
+Date:   Sun, 12 Apr 2020 14:35:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] iio: buffer: remove null-checks for 'indio_dev->info'
-Message-ID: <20200412143008.3fa722a9@archlinux>
-In-Reply-To: <20200407145918.6833-1-alexandru.ardelean@analog.com>
-References: <20200407145918.6833-1-alexandru.ardelean@analog.com>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Nick Reitemeyer <nick.reitemeyer@web.de>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 3/3] iio: magnetometer: ak8974: add Alps hscdtd008a
+Message-ID: <20200412143524.377d2c16@archlinux>
+In-Reply-To: <20200406143113.GA126707@gerhold.net>
+References: <20200406141350.162036-1-nick.reitemeyer@web.de>
+        <20200406141350.162036-3-nick.reitemeyer@web.de>
+        <20200406143113.GA126707@gerhold.net>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,100 +49,149 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 7 Apr 2020 17:59:18 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Mon, 6 Apr 2020 16:31:13 +0200
+Stephan Gerhold <stephan@gerhold.net> wrote:
 
-> Checking for 'indio_dev->info' is an impossible condition, since an IIO
-> device should NOT be able to register without that information.
-> The iio_device_register() function won't allow an IIO device to register if
-> 'indio_dev->info' is NULL.
+> On Mon, Apr 06, 2020 at 04:13:53PM +0200, Nick Reitemeyer wrote:
+> > The hscdtd008a is similar to the AK8974:
+> > Only the whoami value and some registers are different.
+> > 
+> > Signed-off-by: Nick Reitemeyer <nick.reitemeyer@web.de>  
 > 
-> If that information somehow becomes NULL, then we're likely busted anyway
-> and we should crash the system, if we haven't already.
+> Thanks a lot for sending this patch upstream!
 > 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-I'm glad there was a comment in there to remind me of what was going on here.
+> I checked this with the datasheet available here:
+> https://tech.alpsalpine.com/prod/c/pdf/sensor/geomagnetic/hscd/hscdtd008a_data.pdf
+> 
+> Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+> 
+> ... and it seems to produce reasonable values on samsung-golden:
+> 
+> Tested-by: Stephan Gerhold <stephan@gerhold.net>
+> 
+> Linus Walleij might want to test this on his samsung-skomer :)
 
-This is the result of an ancient set from (I think) Lars hardening IIO
-against forced removal.
-
-The indio_dev->info == NULL is deliberately set to true by the IIO core
-during device remove in order to deal with any inflight data.
-
-Reference counting should ensure the device doesn't go away but we need
-to avoid actually doing anything if this occurs.  That pointer was a
-convenient option to avoid having to add an explicit flag or 'going away'.
-
-Now, it's possible we don't need this any more due to other changes but
-I certainly don't want to remove it without that being very thoroughly
-verified!
+Looks good to me, but I'll need a review on the binding (particularly
+the vendor prefix as it's in a generic file). 
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/industrialio-buffer.c | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index e6fa1a4e135d..c96071bfada8 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -54,10 +54,6 @@ static bool iio_buffer_ready(struct iio_dev *indio_dev, struct iio_buffer *buf,
->  	size_t avail;
->  	int flushed = 0;
->  
-> -	/* wakeup if the device was unregistered */
-This comment makes it clear this isn't as 'obvious' as it might at first seem ;)
-
-> -	if (!indio_dev->info)
-> -		return true;
-> -
->  	/* drain the buffer if it was disabled */
->  	if (!iio_buffer_is_active(buf)) {
->  		to_wait = min_t(size_t, to_wait, 1);
-> @@ -109,9 +105,6 @@ ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
->  	size_t to_wait;
->  	int ret = 0;
->  
-> -	if (!indio_dev->info)
-> -		return -ENODEV;
-> -
->  	if (!rb || !rb->access->read)
->  		return -EINVAL;
->  
-> @@ -131,11 +124,6 @@ ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
->  
->  	add_wait_queue(&rb->pollq, &wait);
->  	do {
-> -		if (!indio_dev->info) {
-> -			ret = -ENODEV;
-> -			break;
-> -		}
-> -
->  		if (!iio_buffer_ready(indio_dev, rb, to_wait, n / datum_size)) {
->  			if (signal_pending(current)) {
->  				ret = -ERESTARTSYS;
-> @@ -171,7 +159,7 @@ __poll_t iio_buffer_poll(struct file *filp,
->  	struct iio_dev *indio_dev = filp->private_data;
->  	struct iio_buffer *rb = indio_dev->buffer;
->  
-> -	if (!indio_dev->info || rb == NULL)
-> +	if (rb == NULL)
->  		return 0;
->  
->  	poll_wait(filp, &rb->pollq, wait);
-> @@ -1100,11 +1088,6 @@ int iio_update_buffers(struct iio_dev *indio_dev,
->  		goto out_unlock;
->  	}
->  
-> -	if (indio_dev->info == NULL) {
-> -		ret = -ENODEV;
-> -		goto out_unlock;
-> -	}
-> -
->  	ret = __iio_update_buffers(indio_dev, insert_buffer, remove_buffer);
->  
->  out_unlock:
+> Thanks,
+> Stephan
+> 
+> > ---
+> >  drivers/iio/magnetometer/ak8974.c | 38 ++++++++++++++++++++++++-------
+> >  1 file changed, 30 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+> > index d32996702110..ade4ed8f67d2 100644
+> > --- a/drivers/iio/magnetometer/ak8974.c
+> > +++ b/drivers/iio/magnetometer/ak8974.c
+> > @@ -49,6 +49,7 @@
+> >  #define AK8974_WHOAMI_VALUE_AMI306 0x46
+> >  #define AK8974_WHOAMI_VALUE_AMI305 0x47
+> >  #define AK8974_WHOAMI_VALUE_AK8974 0x48
+> > +#define AK8974_WHOAMI_VALUE_HSCDTD008A 0x49
+> > 
+> >  #define AK8974_DATA_X		0x10
+> >  #define AK8974_DATA_Y		0x12
+> > @@ -140,6 +141,12 @@
+> >  #define AK8974_INT_CTRL_PULSE	BIT(1) /* 0 = latched; 1 = pulse (50 usec) */
+> >  #define AK8974_INT_CTRL_RESDEF	(AK8974_INT_CTRL_XYZEN | AK8974_INT_CTRL_POL)
+> > 
+> > +/* HSCDTD008A-specific control register */
+> > +#define HSCDTD008A_CTRL4	0x1E
+> > +#define HSCDTD008A_CTRL4_MMD	BIT(7)	/* must be set to 1 */
+> > +#define HSCDTD008A_CTRL4_RANGE	BIT(4)	/* 0 = 14-bit output; 1 = 15-bit output */
+> > +#define HSCDTD008A_CTRL4_RESDEF	(HSCDTD008A_CTRL4_MMD | HSCDTD008A_CTRL4_RANGE)
+> > +
+> >  /* The AMI305 has elaborate FW version and serial number registers */
+> >  #define AMI305_VER		0xE8
+> >  #define AMI305_SN		0xEA
+> > @@ -241,10 +248,17 @@ static int ak8974_reset(struct ak8974 *ak8974)
+> >  	ret = regmap_write(ak8974->map, AK8974_CTRL3, AK8974_CTRL3_RESDEF);
+> >  	if (ret)
+> >  		return ret;
+> > -	ret = regmap_write(ak8974->map, AK8974_INT_CTRL,
+> > -			   AK8974_INT_CTRL_RESDEF);
+> > -	if (ret)
+> > -		return ret;
+> > +	if (ak8974->variant != AK8974_WHOAMI_VALUE_HSCDTD008A) {
+> > +		ret = regmap_write(ak8974->map, AK8974_INT_CTRL,
+> > +				   AK8974_INT_CTRL_RESDEF);
+> > +		if (ret)
+> > +			return ret;
+> > +	} else {
+> > +		ret = regmap_write(ak8974->map, HSCDTD008A_CTRL4,
+> > +				   HSCDTD008A_CTRL4_RESDEF);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > 
+> >  	/* After reset, power off is default state */
+> >  	return ak8974_set_power(ak8974, AK8974_PWR_OFF);
+> > @@ -267,6 +281,8 @@ static int ak8974_configure(struct ak8974 *ak8974)
+> >  		if (ret)
+> >  			return ret;
+> >  	}
+> > +	if (ak8974->variant == AK8974_WHOAMI_VALUE_HSCDTD008A)
+> > +		return 0;
+> >  	ret = regmap_write(ak8974->map, AK8974_INT_CTRL, AK8974_INT_CTRL_POL);
+> >  	if (ret)
+> >  		return ret;
+> > @@ -495,6 +511,10 @@ static int ak8974_detect(struct ak8974 *ak8974)
+> >  		name = "ak8974";
+> >  		dev_info(&ak8974->i2c->dev, "detected AK8974\n");
+> >  		break;
+> > +	case AK8974_WHOAMI_VALUE_HSCDTD008A:
+> > +		name = "hscdtd008a";
+> > +		dev_info(&ak8974->i2c->dev, "detected hscdtd008a\n");
+> > +		break;
+> >  	default:
+> >  		dev_err(&ak8974->i2c->dev, "unsupported device (%02x) ",
+> >  			whoami);
+> > @@ -674,18 +694,18 @@ static bool ak8974_writeable_reg(struct device *dev, unsigned int reg)
+> >  	case AK8974_INT_CTRL:
+> >  	case AK8974_INT_THRES:
+> >  	case AK8974_INT_THRES + 1:
+> > +		return true;
+> >  	case AK8974_PRESET:
+> >  	case AK8974_PRESET + 1:
+> > -		return true;
+> > +		return ak8974->variant != AK8974_WHOAMI_VALUE_HSCDTD008A;
+> >  	case AK8974_OFFSET_X:
+> >  	case AK8974_OFFSET_X + 1:
+> >  	case AK8974_OFFSET_Y:
+> >  	case AK8974_OFFSET_Y + 1:
+> >  	case AK8974_OFFSET_Z:
+> >  	case AK8974_OFFSET_Z + 1:
+> > -		if (ak8974->variant == AK8974_WHOAMI_VALUE_AK8974)
+> > -			return true;
+> > -		return false;
+> > +		return ak8974->variant == AK8974_WHOAMI_VALUE_AK8974 ||
+> > +		       ak8974->variant == AK8974_WHOAMI_VALUE_HSCDTD008A;
+> >  	case AMI305_OFFSET_X:
+> >  	case AMI305_OFFSET_X + 1:
+> >  	case AMI305_OFFSET_Y:
+> > @@ -926,12 +946,14 @@ static const struct i2c_device_id ak8974_id[] = {
+> >  	{"ami305", 0 },
+> >  	{"ami306", 0 },
+> >  	{"ak8974", 0 },
+> > +	{"hscdtd008a", 0 },
+> >  	{}
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, ak8974_id);
+> > 
+> >  static const struct of_device_id ak8974_of_match[] = {
+> >  	{ .compatible = "asahi-kasei,ak8974", },
+> > +	{ .compatible = "alps,hscdtd008a", },
+> >  	{}
+> >  };
+> >  MODULE_DEVICE_TABLE(of, ak8974_of_match);
+> > --
+> > 2.26.0
+> >   
 

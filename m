@@ -2,246 +2,227 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D210F1A5E32
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 13:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E7731A5E34
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Apr 2020 13:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726102AbgDLLNO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 07:13:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55210 "EHLO mail.kernel.org"
+        id S1725909AbgDLLS3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Apr 2020 07:18:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57256 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725909AbgDLLNO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Apr 2020 07:13:14 -0400
+        id S1725903AbgDLLS3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 12 Apr 2020 07:18:29 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 311ED2072D;
-        Sun, 12 Apr 2020 11:13:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1555C206E9;
+        Sun, 12 Apr 2020 11:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586689993;
-        bh=FceBHPgTNrFsYCCRJs015ni9bMzW0ZZrrVsZE0Rm9WU=;
+        s=default; t=1586690309;
+        bh=KVxlN5pn9biEvZszl+Y+7ZXezrAEjJJg578pji2Cn5A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JsufFmEYaPNzsvzbzd0UZxQUmbRmEIvvfzqmlBgVC0dcGB+yYSpo0dirw8IrMccF8
-         0RPWvLMTkg3jl9UKqdINrTf22/meqEPTbk7tvT6j0RqlX/Jixvy24JDm3+vHuEyo1Z
-         4BLXpZNc0Hc4xrpJBmFBD/E6k4Gotidrnkp8CvuU=
-Date:   Sun, 12 Apr 2020 12:13:10 +0100
+        b=AELM0sLAn6vjIN6P4iu0wZmzKagd5DqiyEGAjE0ScHaCoZwabaIsabcfwpw4APzVL
+         XyRtESekXsjNZeKly+q9PJZ7qN1pAeEryAR5klskxUwDL5Td6SrLz16TQZioDOKbbk
+         DcEKF6AgVS+bylCoQ3fQCGFrJgFDILOXCZRuh9zU=
+Date:   Sun, 12 Apr 2020 12:18:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runtime
- power
-Message-ID: <20200412121310.7eac7f6a@archlinux>
-In-Reply-To: <MN2PR12MB44224D20FCD73D198639A5DAC4C20@MN2PR12MB4422.namprd12.prod.outlook.com>
-References: <20200331133850.23757-1-jmaneyrol@invensense.com>
-        <20200405141549.0f773f5f@archlinux>
-        <MN2PR12MB44224D20FCD73D198639A5DAC4C20@MN2PR12MB4422.namprd12.prod.outlook.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH 1/3] iio: kfifo: add iio_device_attach_kfifo_buffer()
+ helper
+Message-ID: <20200412121824.2319c12d@archlinux>
+In-Reply-To: <48e7f8d5f090971e0c48c0134ebb2dca86a0f144.camel@analog.com>
+References: <20200401125936.6398-1-alexandru.ardelean@analog.com>
+        <20200405114602.160c690b@archlinux>
+        <48e7f8d5f090971e0c48c0134ebb2dca86a0f144.camel@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Apr 2020 07:33:44 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On Mon, 6 Apr 2020 08:12:42 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> Hello Jonathan,
->=20
-> there were 2 issues with suspend/resume when the device was already suspe=
-nded by runtime pm.
->=20
-> When entering suspend, there was an error in logs because we were disabli=
-ng vddio regulator although it was already disabled.
-> And when resuming, the chip was pull back to full power but the pm_runtim=
-e state was not updated. So it was believing it was still suspended.
->=20
-> Do you need a new patch with full description?
->=20
-I edited to the description to add this info.
+> On Sun, 2020-04-05 at 11:46 +0100, Jonathan Cameron wrote:
+> > [External]
+> > 
+> > On Wed, 1 Apr 2020 15:59:34 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> >   
+> > > This change adds the iio_device_attach_kfifo_buffer() helper/short-hand,
+> > > which groups the simple routine of allocating a kfifo buffers via
+> > > devm_iio_kfifo_allocate() and calling iio_device_attach_buffer().
+> > > 
+> > > The mode_flags parameter is required. The setup_ops parameter is optional.
+> > > 
+> > > This function will be a bit more useful when needing to define multiple
+> > > buffers per IIO device.
+> > > 
+> > > One requirement [that is more a recommendation] for this helper, is to call
+> > > it after 'indio_dev' has been populated.
+> > > 
+> > > Also, one consequence related to using this helper is that the resource
+> > > management of the buffer will be tied to 'indio_dev->dev'. Previously it
+> > > was open-coded, and each driver does it slightly differently. Most of them
+> > > tied it to the parent device, some of them to 'indio_dev->dev'.
+> > > This shouldn't be a problem, and may be a good idea when adding more
+> > > buffers per-device.  
+> > 
+> > I'm glad you highlighted this subtlety.  I'm not sure it's safe in all cases
+> > because the result is that the managed cleanup for this will occur once we
+> > get to the cleanup for devm_iio_device_alloc and we release the indio_dev->dev
+> > 
+> > That would put it 'after' any other devm calls that are still hung off the
+> > parent
+> > device.
+> > 
+> > Now the question is whether that ever causes us problems... See next patch.
+> > It potentially does.  I think we need to provide the dev separately even
+> > if it feels a bit silly to do so.  Scope management is complex so I don't
+> > really want to force people to mix and match between different devices
+> > and so get it wrong by accident.
+> > 
+> > The other issue is that it's not readily apparent from the naming that
+> > this function is registering stuff that is cleaned up automatically or
+> > that it even allocates anything that might need that..
+> > 
+> > devm_iio_device_attach_new_kfifo_buffer maybe?
+> > 
+> > I'm sort of wondering if we should do what dma did and have
+> > 
+> > iiom_device_attach_new_kfifo_buffer to indicate it's managed in the
+> > scope of the iio device?
+> > 
+> > What do people think?
+> > 
+> > However, see patch 2 before commenting.  Reality is I'm not sure forcing
+> > managed calls to hang off iio_dev->dev is a good idea (at this stage given
+> > where we are).  
+> 
+> What I am really after with this patch is to hide away these:
+>      iio_kfifo_free(indio_dev->buffer);
+>      iio_buffer_set_attrs(indio_dev->buffer, xxxx_fifo_attributes); 
+> i.e. not have 'indio_dev->buffer' open-coded in drivers, and hide it in IIO core
+> somewhere.
+> Some ideas can go in parallel [like this one] to add support for multiple
+> buffers.
+> 
+> So, I will think of a better [less sloppy] V2 for this.
+> 
+> One intermediate alternative is to do 'iio_device_kfifo_free(indio_dev)', but
+> I'll still try to think of a better devm_ approach.
+> devm_iio_device_attach_new_kfifo_buffer() sounds a bit long but may work.
+> iiom_device_attach_new_kfifo_buffer() can also work.
+> 
+> What if we just default attaching to the parent device?
 
-Applied to the fixes-togreg branch of iio.git
+That would work and be consistent with the vast majority of current cases.
 
-Thanks
+> 
+> Would it work to also attach the parent device in devm_iio_device_alloc() by
+> default?
 
-Jonathan
+That would need a thorough audit to check nothing crazy is done by
+a driver with an odd structure.  Such a driver would (I think) be
+buggy though as the child lifetime should be dependent on the parent
+and not some other device.
 
+> Or change 'iio_device_alloc()' to take a parent device as argument?
 
-> Thanks,
-> JB
->=20
->=20
-> From: Jonathan Cameron <jic23@kernel.org>
->=20
-> Sent: Sunday, April 5, 2020 15:15
->=20
-> To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
->=20
-> Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
->=20
-> Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix suspend/resume with runti=
-me power
->=20
-> =C2=A0
->=20
->=20
-> =C2=A0CAUTION: This email originated from outside of the organization. Pl=
-ease make sure the sender is who they say they are and do not click links o=
-r open attachments unless you recognize the sender and know the content is =
-safe.
->=20
->=20
->=20
-> On Tue, 31 Mar 2020 15:38:50 +0200
->=20
-> Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
->=20
->=20
->=20
-> > Suspend/resume were not working correctly with pm runtime. =20
->=20
->=20
->=20
-> Need more info than that!
->=20
-> Anyhow, when you say "not working correctly" what is happening that
->=20
-> is wrong?
->=20
->=20
->=20
-> Jonathan
->=20
->=20
->=20
->=20
->=20
-> > Now suspend check if the chip is already suspended, and =20
->=20
-> > resume put runtime pm in the correct state. =20
->=20
-> >  =20
->=20
-> > Fixes: 4599cac84614 ("iio: imu: inv_mpu6050: use runtime pm with autosu=
-spend") =20
->=20
-> > Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> =20
->=20
-> > --- =20
->=20
-> >=C2=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 11 ++++++++++- =20
->=20
-> >=C2=A0 1 file changed, 10 insertions(+), 1 deletion(-) =20
->=20
-> >  =20
->=20
-> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/i=
-mu/inv_mpu6050/inv_mpu_core.c =20
->=20
-> > index e4b0d368c2f9..a58bab03f0b0 100644 =20
->=20
-> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c =20
->=20
-> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c =20
->=20
-> > @@ -1636,6 +1636,10 @@ static int __maybe_unused inv_mpu_resume(struct =
-device *dev) =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (result) =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 goto out_unlock; =20
->=20
-> >=C2=A0  =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 pm_runtime_disable(dev); =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 pm_runtime_set_active(dev); =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 pm_runtime_enable(dev); =20
->=20
-> > + =20
->=20
->=20
->=20
-> Looking at the docs, we should do this if we were previously suspended an=
-d no longer
->=20
-> are.=C2=A0 Not sure we should do it we weren't previously in runtime susp=
-end?
->=20
->=20
->=20
-> I guess it is idempotent anyway so if we were previously enabled we just =
-set it again.
->=20
-> So probably fine.
->=20
->=20
->=20
-> Jonathan
->=20
->=20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 result =3D inv_mpu6050_switch=
-_engine(st, true, st->suspended_sensors); =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (result) =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 goto out_unlock; =20
->=20
-> > @@ -1657,13 +1661,18 @@ static int __maybe_unused inv_mpu_suspend(struc=
-t device *dev) =20
->=20
-> >=C2=A0  =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_lock(&st->lock); =20
->=20
-> >=C2=A0  =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 st->suspended_sensors =3D 0; =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 if (pm_runtime_suspended(dev)) { =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 result =3D 0; =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 goto out_unlock; =20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 } =20
->=20
-> > + =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (iio_buffer_enabled(indio_=
-dev)) { =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 result =3D inv_mpu6050_prepare_fifo(st, false); =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 if (result) =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out=
-_unlock; =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } =20
->=20
-> >=C2=A0  =20
->=20
-> > -=C2=A0=C2=A0=C2=A0=C2=A0 st->suspended_sensors =3D 0; =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (st->chip_config.accl_en) =
-=20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 st->suspended_sensors |=3D INV_MPU6050_SENSOR_ACCL; =20
->=20
-> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (st->chip_config.gyro_en) =
-=20
->=20
->=20
->=20
+I think there are only a couple of users, so that would work.
+
+> Which for devm_iio_device_alloc(dev,...) would implicitly mean that 'dev' is
+> 'parent'?
+
+I think that's a fair assumption (though needs a sanity check)
+
+> 
+> These are just some thoughts.
+> 
+> 
+> > 
+> > Thanks
+> > 
+> > Jonathan
+> > 
+> >   
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > ---
+> > >  drivers/iio/buffer/kfifo_buf.c | 37 ++++++++++++++++++++++++++++++++++
+> > >  include/linux/iio/kfifo_buf.h  |  4 ++++
+> > >  2 files changed, 41 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
+> > > index 3150f8ab984b..05b7c5fc6f1d 100644
+> > > --- a/drivers/iio/buffer/kfifo_buf.c
+> > > +++ b/drivers/iio/buffer/kfifo_buf.c
+> > > @@ -228,4 +228,41 @@ void devm_iio_kfifo_free(struct device *dev, struct
+> > > iio_buffer *r)
+> > >  }
+> > >  EXPORT_SYMBOL(devm_iio_kfifo_free);
+> > >  
+> > > +/**
+> > > + * iio_device_attach_kfifo_buffer - Allocate a kfifo buffer & attach it to
+> > > an IIO device
+> > > + * @indio_dev: The device the buffer should be attached to
+> > > + * @mode_flags: The mode flags for this buffer (INDIO_BUFFER_SOFTWARE
+> > > and/or
+> > > + *		INDIO_BUFFER_TRIGGERED).
+> > > + * @setup_ops: The setup_ops required to configure the HW part of the
+> > > buffer (optional)
+> > > + *
+> > > + * This function allocates a kfifo buffer via devm_iio_kfifo_allocate() and
+> > > + * attaches it to the IIO device via iio_device_attach_buffer().
+> > > + * This is meant to be a bit of a short-hand/helper function as many driver
+> > > + * seem to do this.
+> > > + */
+> > > +int iio_device_attach_kfifo_buffer(struct iio_dev *indio_dev,
+> > > +				   int mode_flags,
+> > > +				   const struct iio_buffer_setup_ops *setup_ops)
+> > > +{
+> > > +	struct iio_buffer *buffer;
+> > > +
+> > > +	if (mode_flags)
+> > > +		mode_flags &= kfifo_access_funcs.modes;
+> > > +
+> > > +	if (!mode_flags)
+> > > +		return -EINVAL;
+> > > +
+> > > +	buffer = devm_iio_kfifo_allocate(&indio_dev->dev);
+> > > +	if (!buffer)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	iio_device_attach_buffer(indio_dev, buffer);
+> > > +
+> > > +	indio_dev->modes |= mode_flags;
+> > > +	indio_dev->setup_ops = setup_ops;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(iio_device_attach_kfifo_buffer);
+> > > +
+> > >  MODULE_LICENSE("GPL");
+> > > diff --git a/include/linux/iio/kfifo_buf.h b/include/linux/iio/kfifo_buf.h
+> > > index 764659e01b68..2363a931be14 100644
+> > > --- a/include/linux/iio/kfifo_buf.h
+> > > +++ b/include/linux/iio/kfifo_buf.h
+> > > @@ -11,4 +11,8 @@ void iio_kfifo_free(struct iio_buffer *r);
+> > >  struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev);
+> > >  void devm_iio_kfifo_free(struct device *dev, struct iio_buffer *r);
+> > >  
+> > > +int iio_device_attach_kfifo_buffer(struct iio_dev *indio_dev,
+> > > +				   int mode_flags,
+> > > +				   const struct iio_buffer_setup_ops
+> > > *setup_ops);
+> > > +
+> > >  #endif  
 

@@ -1,176 +1,336 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A6A1A60D2
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 00:13:00 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id E5F4E1A6545
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 12:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728401AbgDLWMi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Apr 2020 18:12:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:55162 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727388AbgDLWMi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Apr 2020 18:12:38 -0400
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87969C0A88B5
-        for <linux-iio@vger.kernel.org>; Sun, 12 Apr 2020 15:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586729557;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cGjiTEH9gWCWuYOZfVsqMBDJb/PeBA4Q6mzgJop06QU=;
-        b=C7EkkxojxFiuyk2sc46ADPQ9fhqJIer7H7GGQoTYnt9pu2G9T/qBWF+w9SfdxT9BIzOc+V
-        ah5QkeXJHO9d7FM9md0AHd/bAqkyZWPzYeVinJ1oMAqeHGRNXf0/tXMqnareurMS/o7PHD
-        PVZbZjjzWrThBOzt1/FSmSYnq2S3MBs=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-256-pIgBW5ADNMCwFLLpk6nl9w-1; Sun, 12 Apr 2020 18:12:35 -0400
-X-MC-Unique: pIgBW5ADNMCwFLLpk6nl9w-1
-Received: by mail-vk1-f200.google.com with SMTP id x132so3556838vke.17
-        for <linux-iio@vger.kernel.org>; Sun, 12 Apr 2020 15:12:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cGjiTEH9gWCWuYOZfVsqMBDJb/PeBA4Q6mzgJop06QU=;
-        b=YXHPvXuefkzOlWmSUX93Q1QFs6NliPwN0kOrl3A5uA3Rgswd+vaY6cS4HZzK+CDIpy
-         TKSbQ062fTCkgJaObpFuCnu0owr8lgFg/0GUL7KjSl0f848JYcfHGqgmnuV1/cpL2vES
-         WwzlLyCPZERXW4c5C0luY6WPJ12jKVcEpgmv0nT40Hu3DwBIzx7qlo12bom5F7x93kwD
-         OcFR0rIETgfQL8dxAtA3HJq4LibOwm+uFaNMlE9EMFypIw2R5KIvcANVE8JRH7bDkj6M
-         QhFkXyTQvJ820xOxbPJGwDGpiE79JuO+4yVDjOrTv3KgZD8+jOG4PHzQJP/wqZG6VPuu
-         4ifw==
-X-Gm-Message-State: AGi0Puaqb+/IaZckt5JElPcJx4iwoaUlciCXQ2pmcW4Ex2I/s0J28Lpz
-        I6TLSl7Urh3OM8xq342wvezEgxP1flHMi+KlVPb0czoTOE9Qig7RIKfNJJNPgGSCgudoxSEd6Xj
-        /2aKNrLjp2N7y3gr63a57AhTFM7Miy7l67eIz
-X-Received: by 2002:ab0:4505:: with SMTP id r5mr9462302uar.64.1586729554799;
-        Sun, 12 Apr 2020 15:12:34 -0700 (PDT)
-X-Google-Smtp-Source: APiQypLjTXIYkki/rWp91Qqizb80avO8beO2xI1BdDZTL2YTtVdPztrNPrKaVl8vvIGeyM1p416zRfnPTUlAaZO+6T4=
-X-Received: by 2002:ab0:4505:: with SMTP id r5mr9462291uar.64.1586729554390;
- Sun, 12 Apr 2020 15:12:34 -0700 (PDT)
+        id S1727952AbgDMKiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 06:38:03 -0400
+Received: from gloria.sntech.de ([185.11.138.130]:57546 "EHLO gloria.sntech.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727776AbgDMKiC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Apr 2020 06:38:02 -0400
+Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=phil.lan)
+        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <heiko@sntech.de>)
+        id 1jNlJh-0006wK-EU; Mon, 13 Apr 2020 00:43:05 +0200
+From:   Heiko Stuebner <heiko@sntech.de>
+To:     jic23@kernel.org
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        heiko@sntech.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        xxm@rock-chips.com, kever.yang@rock-chips.com,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+Subject: [PATCH v3] iio: adc: rockchip_saradc: Add support iio buffers
+Date:   Mon, 13 Apr 2020 00:42:51 +0200
+Message-Id: <20200412224251.2919182-1-heiko@sntech.de>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-References: <d7464094f82945ae7978a18e0117570b2c71c963.1586247885.git.lorenzo@kernel.org>
- <20200412142515.0b30b2b5@archlinux>
-In-Reply-To: <20200412142515.0b30b2b5@archlinux>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Mon, 13 Apr 2020 00:12:23 +0200
-Message-ID: <CAJ0CqmXuwE56eyi7p5-LydcAAnst4UjWgJnmPDTGZ__U8SSyjg@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: limit variales scope reading hw FIFO
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
->
-> On Tue,  7 Apr 2020 10:26:44 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->
-> > Fix following cppcheck warnings reported by kbuild test robot
-> >
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:313:15:
-> > warning: The scope of the variable 'word_len' can be reduced. [variableScope]
-> >                  ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:314:6:
-> > warning: The scope of the variable 'err' can be reduced. [variableScope]
-> >         ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:11:
-> > warning: The scope of the variable 'sip' can be reduced. [variableScope]
-> >              ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:16:
-> > warning: The scope of the variable 'acc_sip' can be reduced. [variableScope]
-> >                   ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:25:
-> > warning: The scope of the variable 'gyro_sip' can be reduced. [variableScope]
-> >                            ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:35:
-> > warning: The scope of the variable 'ts_sip' can be reduced. [variableScope]
-> >                                      ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:43:
-> > warning: The scope of the variable 'ext_sip' can be reduced. [variableScope]
-> >                                              ^
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:341:62:
-> > warning: The scope of the variable 'offset' can be reduced. [variableScope]
-> >
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> I find it hard to care about these to be honest.  I got the original report
-> at chose not to fix them :)  Anyhow, if you want to tidy them up that's fine
-> of course.
->
-> More interestingly this doesn't actually apply any more due to your sensor
-> hub patches.  If you want to respin on top of the testing branch of iio.git
-> then feel free.
->
+From: Simon Xue <xxm@rock-chips.com>
 
-I agree with you, there are probably other 'errors' like that one so I
-guess we can just drop it.
+Add the ability to also support access via (triggered) buffers
+next to the existing direct mode.
 
-Regards,
-Lorenzo
+Device in question is the Odroid Go Advance that connects a joystick
+to two of the saradc channels for X and Y axis and the new (and still
+pending) adc joystick driver of course wants to use triggered buffers
+from the iio subsystem.
 
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > index afd00daeefb2..849f01fbe76c 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > @@ -310,10 +310,12 @@ static inline int st_lsm6dsx_read_block(struct st_lsm6dsx_hw *hw, u8 addr,
-> >                                       u8 *data, unsigned int data_len,
-> >                                       unsigned int max_word_len)
-> >  {
-> > -     unsigned int word_len, read_len = 0;
-> > -     int err;
-> > +     unsigned int read_len = 0;
-> >
-> >       while (read_len < data_len) {
-> > +             unsigned int word_len;
-> > +             int err;
-> > +
-> >               word_len = min_t(unsigned int, data_len - read_len,
-> >                                max_word_len);
-> >               err = st_lsm6dsx_read_locked(hw, addr, data + read_len,
-> > @@ -338,7 +340,6 @@ static inline int st_lsm6dsx_read_block(struct st_lsm6dsx_hw *hw, u8 addr,
-> >  int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >  {
-> >       struct st_lsm6dsx_sensor *acc_sensor, *gyro_sensor, *ext_sensor = NULL;
-> > -     int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
-> >       u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
-> >       u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
-> >       u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> > @@ -346,6 +347,7 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >       u8 ext_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> >       bool reset_ts = false;
-> >       __le16 fifo_status;
-> > +     int err, read_len;
-> >       s64 ts = 0;
-> >
-> >       err = st_lsm6dsx_read_locked(hw,
-> > @@ -370,6 +372,8 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >               ext_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_EXT0]);
-> >
-> >       for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
-> > +             int acc_sip, gyro_sip, ts_sip, ext_sip, offset = 0, sip = 0;
-> > +
-> >               err = st_lsm6dsx_read_block(hw, ST_LSM6DSX_REG_FIFO_OUTL_ADDR,
-> >                                           hw->buff, pattern_len,
-> >                                           ST_LSM6DSX_MAX_WORD_LEN);
-> > @@ -399,8 +403,6 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >               gyro_sip = gyro_sensor->sip;
-> >               acc_sip = acc_sensor->sip;
-> >               ts_sip = hw->ts_sip;
-> > -             offset = 0;
-> > -             sip = 0;
-> >
-> >               while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
-> >                       if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
->
+Signed-off-by: Simon Xue <xxm@rock-chips.com>
+[some simplifications and added commit description]
+Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+---
+changes in v3:
+- split buffer struct into values and timestamp area similar to dln2-adc
+  and make sure timestamp gets 8-byte aligned - ALIGN uses 4 as it aligns
+  u16 elements not bytes - hopefully I got it right this time ;-)
+changes in v2:
+- use devm_iio_triggered_buffer_setup
+- calculate data array size from channel number (curtesy of at91-sama5d2_adc)
+
+ drivers/iio/adc/Kconfig           |   2 +
+ drivers/iio/adc/rockchip_saradc.c | 146 ++++++++++++++++++++++--------
+ 2 files changed, 112 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 12bb8b7ca1ff..8d2dd60614c6 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -809,6 +809,8 @@ config ROCKCHIP_SARADC
+ 	tristate "Rockchip SARADC driver"
+ 	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+ 	depends on RESET_CONTROLLER
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say yes here to build support for the SARADC found in SoCs from
+ 	  Rockchip.
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index 582ba047c4a6..0713363a4b43 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -15,7 +15,11 @@
+ #include <linux/delay.h>
+ #include <linux/reset.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
++#include <linux/iio/trigger.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
+ 
+ #define SARADC_DATA			0x00
+ 
+@@ -32,9 +36,12 @@
+ #define SARADC_DLY_PU_SOC_MASK		0x3f
+ 
+ #define SARADC_TIMEOUT			msecs_to_jiffies(100)
++#define SARADC_MAX_CHANNELS		6
++
++/* buffer elements are u16, timestamp needs to be 8-byte aligned */
++#define SARADC_BUFFER_NUM_U16	ALIGN(SARADC_MAX_CHANNELS, 4)
+ 
+ struct rockchip_saradc_data {
+-	int				num_bits;
+ 	const struct iio_chan_spec	*channels;
+ 	int				num_channels;
+ 	unsigned long			clk_rate;
+@@ -49,8 +56,37 @@ struct rockchip_saradc {
+ 	struct reset_control	*reset;
+ 	const struct rockchip_saradc_data *data;
+ 	u16			last_val;
++	const struct iio_chan_spec *last_chan;
+ };
+ 
++static void rockchip_saradc_power_down(struct rockchip_saradc *info)
++{
++	/* Clear irq & power down adc */
++	writel_relaxed(0, info->regs + SARADC_CTRL);
++}
++
++static int rockchip_saradc_conversion(struct rockchip_saradc *info,
++				   struct iio_chan_spec const *chan)
++{
++	reinit_completion(&info->completion);
++
++	/* 8 clock periods as delay between power up and start cmd */
++	writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
++
++	info->last_chan = chan;
++
++	/* Select the channel to be used and trigger conversion */
++	writel(SARADC_CTRL_POWER_CTRL
++			| (chan->channel & SARADC_CTRL_CHN_MASK)
++			| SARADC_CTRL_IRQ_ENABLE,
++		   info->regs + SARADC_CTRL);
++
++	if (!wait_for_completion_timeout(&info->completion, SARADC_TIMEOUT))
++		return -ETIMEDOUT;
++
++	return 0;
++}
++
+ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+ 				    struct iio_chan_spec const *chan,
+ 				    int *val, int *val2, long mask)
+@@ -62,24 +98,12 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&indio_dev->mlock);
+ 
+-		reinit_completion(&info->completion);
+-
+-		/* 8 clock periods as delay between power up and start cmd */
+-		writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
+-
+-		/* Select the channel to be used and trigger conversion */
+-		writel(SARADC_CTRL_POWER_CTRL
+-				| (chan->channel & SARADC_CTRL_CHN_MASK)
+-				| SARADC_CTRL_IRQ_ENABLE,
+-		       info->regs + SARADC_CTRL);
+-
+-		if (!wait_for_completion_timeout(&info->completion,
+-						 SARADC_TIMEOUT)) {
+-			writel_relaxed(0, info->regs + SARADC_CTRL);
++		ret = rockchip_saradc_conversion(info, chan);
++		if (ret) {
++			rockchip_saradc_power_down(info);
+ 			mutex_unlock(&indio_dev->mlock);
+-			return -ETIMEDOUT;
++			return ret;
+ 		}
+-
+ 		*val = info->last_val;
+ 		mutex_unlock(&indio_dev->mlock);
+ 		return IIO_VAL_INT;
+@@ -91,7 +115,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 
+ 		*val = ret / 1000;
+-		*val2 = info->data->num_bits;
++		*val2 = chan->scan_type.realbits;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
+ 	default:
+ 		return -EINVAL;
+@@ -104,10 +128,9 @@ static irqreturn_t rockchip_saradc_isr(int irq, void *dev_id)
+ 
+ 	/* Read value */
+ 	info->last_val = readl_relaxed(info->regs + SARADC_DATA);
+-	info->last_val &= GENMASK(info->data->num_bits - 1, 0);
++	info->last_val &= GENMASK(info->last_chan->scan_type.realbits - 1, 0);
+ 
+-	/* Clear irq & power down adc */
+-	writel_relaxed(0, info->regs + SARADC_CTRL);
++	rockchip_saradc_power_down(info);
+ 
+ 	complete(&info->completion);
+ 
+@@ -118,51 +141,55 @@ static const struct iio_info rockchip_saradc_iio_info = {
+ 	.read_raw = rockchip_saradc_read_raw,
+ };
+ 
+-#define ADC_CHANNEL(_index, _id) {				\
++#define ADC_CHANNEL(_index, _id, _res) {			\
+ 	.type = IIO_VOLTAGE,					\
+ 	.indexed = 1,						\
+ 	.channel = _index,					\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+ 	.datasheet_name = _id,					\
++	.scan_index = _index,					\
++	.scan_type = {						\
++		.sign = 'u',					\
++		.realbits = _res,				\
++		.storagebits = 16,				\
++		.endianness = IIO_LE,				\
++	},							\
+ }
+ 
+ static const struct iio_chan_spec rockchip_saradc_iio_channels[] = {
+-	ADC_CHANNEL(0, "adc0"),
+-	ADC_CHANNEL(1, "adc1"),
+-	ADC_CHANNEL(2, "adc2"),
++	ADC_CHANNEL(0, "adc0", 10),
++	ADC_CHANNEL(1, "adc1", 10),
++	ADC_CHANNEL(2, "adc2", 10),
+ };
+ 
+ static const struct rockchip_saradc_data saradc_data = {
+-	.num_bits = 10,
+ 	.channels = rockchip_saradc_iio_channels,
+ 	.num_channels = ARRAY_SIZE(rockchip_saradc_iio_channels),
+ 	.clk_rate = 1000000,
+ };
+ 
+ static const struct iio_chan_spec rockchip_rk3066_tsadc_iio_channels[] = {
+-	ADC_CHANNEL(0, "adc0"),
+-	ADC_CHANNEL(1, "adc1"),
++	ADC_CHANNEL(0, "adc0", 12),
++	ADC_CHANNEL(1, "adc1", 12),
+ };
+ 
+ static const struct rockchip_saradc_data rk3066_tsadc_data = {
+-	.num_bits = 12,
+ 	.channels = rockchip_rk3066_tsadc_iio_channels,
+ 	.num_channels = ARRAY_SIZE(rockchip_rk3066_tsadc_iio_channels),
+ 	.clk_rate = 50000,
+ };
+ 
+ static const struct iio_chan_spec rockchip_rk3399_saradc_iio_channels[] = {
+-	ADC_CHANNEL(0, "adc0"),
+-	ADC_CHANNEL(1, "adc1"),
+-	ADC_CHANNEL(2, "adc2"),
+-	ADC_CHANNEL(3, "adc3"),
+-	ADC_CHANNEL(4, "adc4"),
+-	ADC_CHANNEL(5, "adc5"),
++	ADC_CHANNEL(0, "adc0", 10),
++	ADC_CHANNEL(1, "adc1", 10),
++	ADC_CHANNEL(2, "adc2", 10),
++	ADC_CHANNEL(3, "adc3", 10),
++	ADC_CHANNEL(4, "adc4", 10),
++	ADC_CHANNEL(5, "adc5", 10),
+ };
+ 
+ static const struct rockchip_saradc_data rk3399_saradc_data = {
+-	.num_bits = 10,
+ 	.channels = rockchip_rk3399_saradc_iio_channels,
+ 	.num_channels = ARRAY_SIZE(rockchip_rk3399_saradc_iio_channels),
+ 	.clk_rate = 1000000,
+@@ -193,6 +220,42 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
+ 	reset_control_deassert(reset);
+ }
+ 
++static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *i_dev = pf->indio_dev;
++	struct rockchip_saradc *info = iio_priv(i_dev);
++	struct {
++		u16 values[SARADC_BUFFER_NUM_U16];
++		int64_t timestamp;
++	} data;
++	int ret;
++	int i, j = 0;
++
++	mutex_lock(&i_dev->mlock);
++
++	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
++		const struct iio_chan_spec *chan = &i_dev->channels[i];
++
++		ret = rockchip_saradc_conversion(info, chan);
++		if (ret) {
++			rockchip_saradc_power_down(info);
++			goto out;
++		}
++
++		data.values[j] = info->last_val;
++		j++;
++	}
++
++	iio_push_to_buffers_with_timestamp(i_dev, &data, iio_get_time_ns(i_dev));
++out:
++	mutex_unlock(&i_dev->mlock);
++
++	iio_trigger_notify_done(i_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
+ static int rockchip_saradc_probe(struct platform_device *pdev)
+ {
+ 	struct rockchip_saradc *info = NULL;
+@@ -221,6 +284,11 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 
+ 	info->data = match->data;
+ 
++	if (info->data->num_channels > SARADC_MAX_CHANNELS) {
++		dev_err(&pdev->dev, "max channels exceeded");
++		return -EINVAL;
++	}
++
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	info->regs = devm_ioremap_resource(&pdev->dev, mem);
+ 	if (IS_ERR(info->regs))
+@@ -315,6 +383,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 	indio_dev->channels = info->data->channels;
+ 	indio_dev->num_channels = info->data->num_channels;
+ 
++	ret = devm_iio_triggered_buffer_setup(&indio_dev->dev, indio_dev, NULL,
++					      rockchip_saradc_trigger_handler,
++					      NULL);
++	if (ret)
++		goto err_clk;
++
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret)
+ 		goto err_clk;
+-- 
+2.24.1
 

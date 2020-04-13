@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 330751A6AD8
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 19:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3F81A6AF4
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 19:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732348AbgDMREp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 13:04:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54036 "EHLO mail.kernel.org"
+        id S1732352AbgDMRGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 13:06:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732349AbgDMREo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Apr 2020 13:04:44 -0400
+        id S1732482AbgDMRGB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Apr 2020 13:06:01 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F8C02063A;
-        Mon, 13 Apr 2020 17:04:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 70AAE2063A;
+        Mon, 13 Apr 2020 17:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586797483;
-        bh=ISb9wr/yPKrfewUQACkHyT9WS5iqliM2PiGjRAwlLmE=;
+        s=default; t=1586797560;
+        bh=XSzvWwboQfJbnb90gbiOgWC167qu2vdKrgA+BfEfCpo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qaOBvA8AKlyeNCbkd4Zs0mpBeGdTHZabxXBQs1uXf5W57T4mBhXl81I56EcXMKufU
-         RMDpB+1ENeCyLMExQMPcol4CbLOh4UreDPiRFxNw3dE+MpLumWWbj8UmEymGp9rC+P
-         ec/gCH95x5UgjGxHzr9Xgm7Z1j4RfIH4vYXP8jBk=
-Date:   Mon, 13 Apr 2020 18:04:39 +0100
+        b=QqrGYb7IDH34G4ZR7RSg/V2SkPEJ2ZZyh7mDf3OYFbo7lQBigcWIvnrAz39PgzOhx
+         R6REQgOrgZLbNoHYrvUalvOTXj1LGyMghKalIM0d0RW0nAKgvikPXLU5aUah08TFbq
+         ANf+eAJWPV1B01x/z2JUsZ+QqISS9nhxYb0gtyRk=
+Date:   Mon, 13 Apr 2020 18:05:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: light: isl29125: fix
- iio_triggered_buffer_{predisable,postenable} positions
-Message-ID: <20200413180439.61cbf7b6@archlinux>
-In-Reply-To: <5ced40e32260e5e99ca37dcf8ecdc77b25eb5153.camel@analog.com>
-References: <20200304082425.18600-1-alexandru.ardelean@analog.com>
-        <5ced40e32260e5e99ca37dcf8ecdc77b25eb5153.camel@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <eugen.hristev@microchip.com>, <ludovic.desroches@microchip.com>
+Subject: Re: [PATCH v2 1/2] iio: at91-sama5d2_adc: split
+ at91_adc_current_chan_is_touch() helper
+Message-ID: <20200413180556.20638f3b@archlinux>
+In-Reply-To: <20200304084219.20810-1-alexandru.ardelean@analog.com>
+References: <20200304084219.20810-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,95 +42,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 Mar 2020 11:42:31 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Wed, 4 Mar 2020 10:42:18 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> On Wed, 2020-03-04 at 10:24 +0200, Alexandru Ardelean wrote:
-> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-> > the poll functions.
-> > 
-> > For the predisable hook, the disable code should occur before detaching
-> > the poll func, and for the postenable hook, the poll func should be
-> > attached before the enable code.
-> > 
-> > This change reworks the predisable/postenable hooks so that the pollfunc is
-> > attached/detached in the correct position.
-> > It also balances the calls a bit, by grouping the preenable and the
-> > iio_triggered_buffer_postenable() into a single
-> > isl29125_buffer_postenable() function.  
+> This change moves the logic to check if the current channel is the
+> touchscreen channel to a separate helper.
+> This reduces some code duplication, but the main intent is to re-use this
+> in the next patches.
 > 
-> ping on this patch
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Eugen / Ludovic,
 
-Long enough.  Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.
+Have you had a chance to look at this series? 
 
 Thanks,
 
 Jonathan
 
+> ---
 > 
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  drivers/iio/light/isl29125.c | 28 +++++++++++++++++++---------
-> >  1 file changed, 19 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
-> > index e37894f0ae0b..95611f5eff01 100644
-> > --- a/drivers/iio/light/isl29125.c
-> > +++ b/drivers/iio/light/isl29125.c
-> > @@ -213,13 +213,24 @@ static const struct iio_info isl29125_info = {
-> >  	.attrs = &isl29125_attribute_group,
-> >  };
-> >  
-> > -static int isl29125_buffer_preenable(struct iio_dev *indio_dev)
-> > +static int isl29125_buffer_postenable(struct iio_dev *indio_dev)
-> >  {
-> >  	struct isl29125_data *data = iio_priv(indio_dev);
-> > +	int err;
-> > +
-> > +	err = iio_triggered_buffer_postenable(indio_dev);
-> > +	if (err)
-> > +		return err;
-> >  
-> >  	data->conf1 |= ISL29125_MODE_RGB;
-> > -	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> > +	err = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> >  		data->conf1);
-> > +	if (err) {
-> > +		iio_triggered_buffer_predisable(indio_dev);
-> > +		return err;
-> > +	}
-> > +
-> > +	return 0;
-> >  }
-> >  
-> >  static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
-> > @@ -227,19 +238,18 @@ static int isl29125_buffer_predisable(struct iio_dev
-> > *indio_dev)
-> >  	struct isl29125_data *data = iio_priv(indio_dev);
-> >  	int ret;
-> >  
-> > -	ret = iio_triggered_buffer_predisable(indio_dev);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -
-> >  	data->conf1 &= ~ISL29125_MODE_MASK;
-> >  	data->conf1 |= ISL29125_MODE_PD;
-> > -	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> > +	ret = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> >  		data->conf1);
-> > +
-> > +	iio_triggered_buffer_predisable(indio_dev);
-> > +
-> > +	return ret;
-> >  }
-> >  
-> >  static const struct iio_buffer_setup_ops isl29125_buffer_setup_ops = {
-> > -	.preenable = isl29125_buffer_preenable,
-> > -	.postenable = &iio_triggered_buffer_postenable,
-> > +	.postenable = isl29125_buffer_postenable,
-> >  	.predisable = isl29125_buffer_predisable,
-> >  };
-> >    
+> This patchset continues discussion:
+>    https://lore.kernel.org/linux-iio/20191023082508.17583-1-alexandru.ardelean@analog.com/
+> Apologies for the delay.
+> 
+> Changelog v1 -> v2:
+> * added patch 'iio: at91-sama5d2_adc: split at91_adc_current_chan_is_touch()
+>   helper'
+> * renamed at91_adc_buffer_postenable() -> at91_adc_buffer_preenable()
+>   - at91_adc_buffer_postenable() - now just calls
+>     iio_triggered_buffer_postenable() if the channel isn't the touchscreen
+>     channel
+> * renamed at91_adc_buffer_predisable() -> at91_adc_buffer_postdisable()
+>   - at91_adc_buffer_predisable() - now just calls
+>     iio_triggered_buffer_predisable() if the channel isn't the touchscreen
+>     channel
+> 
+>  drivers/iio/adc/at91-sama5d2_adc.c | 31 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index a5c7771227d5..f2a74c47c768 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -873,18 +873,24 @@ static int at91_adc_dma_start(struct iio_dev *indio_dev)
+>  	return 0;
+>  }
+>  
+> +static bool at91_adc_current_chan_is_touch(struct iio_dev *indio_dev)
+> +{
+> +	struct at91_adc_state *st = iio_priv(indio_dev);
+> +
+> +	return !!bitmap_subset(indio_dev->active_scan_mask,
+> +			       &st->touch_st.channels_bitmask,
+> +			       AT91_SAMA5D2_MAX_CHAN_IDX + 1);
+> +}
+> +
+>  static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
+>  {
+>  	int ret;
+>  	struct at91_adc_state *st = iio_priv(indio_dev);
+>  
+>  	/* check if we are enabling triggered buffer or the touchscreen */
+> -	if (bitmap_subset(indio_dev->active_scan_mask,
+> -			  &st->touch_st.channels_bitmask,
+> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> -		/* touchscreen enabling */
+> +	if (at91_adc_current_chan_is_touch(indio_dev))
+>  		return at91_adc_configure_touch(st, true);
+> -	}
+> +
+>  	/* if we are not in triggered mode, we cannot enable the buffer. */
+>  	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
+>  		return -EINVAL;
+> @@ -906,12 +912,9 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
+>  	u8 bit;
+>  
+>  	/* check if we are disabling triggered buffer or the touchscreen */
+> -	if (bitmap_subset(indio_dev->active_scan_mask,
+> -			  &st->touch_st.channels_bitmask,
+> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> -		/* touchscreen disable */
+> +	if (at91_adc_current_chan_is_touch(indio_dev))
+>  		return at91_adc_configure_touch(st, false);
+> -	}
+> +
+>  	/* if we are not in triggered mode, nothing to do here */
+>  	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
+>  		return -EINVAL;
+> @@ -1886,14 +1889,10 @@ static __maybe_unused int at91_adc_resume(struct device *dev)
+>  		return 0;
+>  
+>  	/* check if we are enabling triggered buffer or the touchscreen */
+> -	if (bitmap_subset(indio_dev->active_scan_mask,
+> -			  &st->touch_st.channels_bitmask,
+> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> -		/* touchscreen enabling */
+> +	if (at91_adc_current_chan_is_touch(indio_dev))
+>  		return at91_adc_configure_touch(st, true);
+> -	} else {
+> +	else
+>  		return at91_adc_configure_trigger(st->trig, true);
+> -	}
+>  
+>  	/* not needed but more explicit */
+>  	return 0;
 

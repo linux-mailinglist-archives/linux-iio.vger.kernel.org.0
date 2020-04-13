@@ -2,418 +2,241 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB251A6AA0
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 18:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 756D61A6AB4
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 18:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732187AbgDMQzX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 12:55:23 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:59634 "EHLO gloria.sntech.de"
+        id S1732239AbgDMQ6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 12:58:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732186AbgDMQzW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Apr 2020 12:55:22 -0400
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <heiko@sntech.de>)
-        id 1jO2Mb-0002yy-E2; Mon, 13 Apr 2020 18:55:13 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, xxm@rock-chips.com,
-        kever.yang@rock-chips.com
-Subject: Re: [PATCH v3] iio: adc: rockchip_saradc: Add support iio buffers
-Date:   Mon, 13 Apr 2020 18:55:12 +0200
-Message-ID: <4304017.Osc3njyXrW@diego>
-In-Reply-To: <20200413174434.55b2941a@archlinux>
-References: <20200412224251.2919182-1-heiko@sntech.de> <20200413174434.55b2941a@archlinux>
+        id S1732238AbgDMQ6R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Apr 2020 12:58:17 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 47D8820739;
+        Mon, 13 Apr 2020 16:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586797096;
+        bh=YqZ5wVla+WWpQKBP5kfizBtWI8bMEeFycRYBZ3wpUAQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=taVVjTIo9Hfx/n2w7Tsv5p5Zex3H/KQ+VzQtd1OqD3P1znUncwu8OgPmgAhtKrwoh
+         E5rGC2VMeVNpJWiYD09KCyqJnVwnaZvMrv5Ro5fXUt0KZpqZHB+1pMLFBmdYswKT+Q
+         U2QRY6uCWo5b9lRbM0mIQ9ciBYXJ4hGATNnhUqi0=
+Date:   Mon, 13 Apr 2020 17:58:12 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     mani@kernel.org
+Cc:     robh+dt@kernel.org, narcisaanamaria12@gmail.com, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: chemical: Add support for external Reset and
+ Wakeup in CCS811
+Message-ID: <20200413175812.6392c887@archlinux>
+In-Reply-To: <20200412183658.6755-3-mani@kernel.org>
+References: <20200412183658.6755-1-mani@kernel.org>
+        <20200412183658.6755-3-mani@kernel.org>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Mon, 13 Apr 2020 00:06:57 +0530
+mani@kernel.org wrote:
 
-Am Montag, 13. April 2020, 18:44:34 CEST schrieb Jonathan Cameron:
-> On Mon, 13 Apr 2020 00:42:51 +0200
-> Heiko Stuebner <heiko@sntech.de> wrote:
+> From: Manivannan Sadhasivam <mani@kernel.org>
 > 
-> > From: Simon Xue <xxm@rock-chips.com>
-> > 
-> > Add the ability to also support access via (triggered) buffers
-> > next to the existing direct mode.
-> > 
-> > Device in question is the Odroid Go Advance that connects a joystick
-> > to two of the saradc channels for X and Y axis and the new (and still
-> > pending) adc joystick driver of course wants to use triggered buffers
-> > from the iio subsystem.
-> > 
-> > Signed-off-by: Simon Xue <xxm@rock-chips.com>
-> > [some simplifications and added commit description]
-> > Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+> CCS811 VOC sensor exposes nRESET and nWAKE pins which can be connected
+> to GPIO pins of the host controller. These pins can be used to externally
+> release the device from reset and also to wake it up before any I2C
+> transaction. The initial driver support assumed that the nRESET pin is not
+> connected and the nWAKE pin is tied to ground.
 > 
-> Comments inline.
+> This commit improves it by adding support for controlling those two pins
+> externally using a host controller. For the case of reset, if the hardware
+> reset is not available, the mechanism to do software reset is also added.
 > 
-> The issue with mixing managed and unmanaged allocations needs tidying up.
-> Sorry if I missed that one before; I probably didn't open up the current
-> driver to sanity check it :(
+> As a side effect of doing this, the IIO device allocation needs to be
+> slightly moved to top of probe to make use of priv data early.
 > 
-> Jonathan
+> Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+
+One trivial thing inline to allow things to work if we have deferred probing
+and the gpio provider isn't ready yet.  Currently you eat the error code
+rather than passing it on.
+
+Otherwise looks good to me.
+
+Thanks,
+
+Jonathan
+> ---
+>  drivers/iio/chemical/ccs811.c | 88 +++++++++++++++++++++++++++++++----
+>  1 file changed, 80 insertions(+), 8 deletions(-)
 > 
-> > ---
-> > changes in v3:
-> > - split buffer struct into values and timestamp area similar to dln2-adc
-> >   and make sure timestamp gets 8-byte aligned - ALIGN uses 4 as it aligns
-> >   u16 elements not bytes - hopefully I got it right this time ;-)
-> > changes in v2:
-> > - use devm_iio_triggered_buffer_setup
-> > - calculate data array size from channel number (curtesy of at91-sama5d2_adc)
-> > 
-> >  drivers/iio/adc/Kconfig           |   2 +
-> >  drivers/iio/adc/rockchip_saradc.c | 146 ++++++++++++++++++++++--------
-> >  2 files changed, 112 insertions(+), 36 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index 12bb8b7ca1ff..8d2dd60614c6 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -809,6 +809,8 @@ config ROCKCHIP_SARADC
-> >  	tristate "Rockchip SARADC driver"
-> >  	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
-> >  	depends on RESET_CONTROLLER
-> > +	select IIO_BUFFER
-> > +	select IIO_TRIGGERED_BUFFER
-> >  	help
-> >  	  Say yes here to build support for the SARADC found in SoCs from
-> >  	  Rockchip.
-> > diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> > index 582ba047c4a6..0713363a4b43 100644
-> > --- a/drivers/iio/adc/rockchip_saradc.c
-> > +++ b/drivers/iio/adc/rockchip_saradc.c
-> > @@ -15,7 +15,11 @@
-> >  #include <linux/delay.h>
-> >  #include <linux/reset.h>
-> >  #include <linux/regulator/consumer.h>
-> > +#include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> > +#include <linux/iio/trigger.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> >  
-> >  #define SARADC_DATA			0x00
-> >  
-> > @@ -32,9 +36,12 @@
-> >  #define SARADC_DLY_PU_SOC_MASK		0x3f
-> >  
-> >  #define SARADC_TIMEOUT			msecs_to_jiffies(100)
-> > +#define SARADC_MAX_CHANNELS		6
-> > +
-> > +/* buffer elements are u16, timestamp needs to be 8-byte aligned */
-> > +#define SARADC_BUFFER_NUM_U16	ALIGN(SARADC_MAX_CHANNELS, 4)
-> I may be going crazy but I think that will get you the 'start' of the
-> timestamp, not the length including it.
-> 
-> We should be seeing 24 bytes here = 12 u16s.  Sanity check the value.
-> 
-> Running through the stack of defines.
-> #define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
-> #define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-> #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
-> 
-> ALIGN(6, 4) == __ALIGN_KERNEL(6, 4)
->             == __ALIGN_KERNEL_MASK(6, 3)
->             == (((6 + 3) & ~3) 
-> which is 9 with the bottom two bits masked or b1001 & b1100 = 8 not 12
-> 
-> So I think you are looking for
-> ALIGN(SARADC_MAX_CHANNELS + sizeof(u64) / sizeof(u16), 4)
-> which will be ((10 + 3) & ~3) b1101 & b1100 = 12
+> diff --git a/drivers/iio/chemical/ccs811.c b/drivers/iio/chemical/ccs811.c
+> index 2ebdfc35bcda..6cd92c49c348 100644
+> --- a/drivers/iio/chemical/ccs811.c
+> +++ b/drivers/iio/chemical/ccs811.c
+> @@ -16,6 +16,7 @@
+>   */
+>  
+>  #include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/i2c.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -36,6 +37,7 @@
+>  #define CCS811_ERR		0xE0
+>  /* Used to transition from boot to application mode */
+>  #define CCS811_APP_START	0xF4
+> +#define CCS811_SW_RESET		0xFF
+>  
+>  /* Status register flags */
+>  #define CCS811_STATUS_ERROR		BIT(0)
+> @@ -74,6 +76,7 @@ struct ccs811_data {
+>  	struct mutex lock; /* Protect readings */
+>  	struct ccs811_reading buffer;
+>  	struct iio_trigger *drdy_trig;
+> +	struct gpio_desc *wakeup_gpio;
+>  	bool drdy_trig_on;
+>  };
+>  
+> @@ -166,10 +169,25 @@ static int ccs811_setup(struct i2c_client *client)
+>  					 CCS811_MODE_IAQ_1SEC);
+>  }
+>  
+> +static void ccs811_set_wakeup(struct ccs811_data *data, bool enable)
+> +{
+> +	if (!data->wakeup_gpio)
+> +		return;
+> +
+> +	gpiod_set_value(data->wakeup_gpio, enable);
+> +
+> +	if (enable)
+> +		usleep_range(50, 60);
+> +	else
+> +		usleep_range(20, 30);
+> +}
+> +
+>  static int ccs811_get_measurement(struct ccs811_data *data)
+>  {
+>  	int ret, tries = 11;
+>  
+> +	ccs811_set_wakeup(data, true);
+> +
+>  	/* Maximum waiting time: 1s, as measurements are made every second */
+>  	while (tries-- > 0) {
+>  		ret = i2c_smbus_read_byte_data(data->client, CCS811_STATUS);
+> @@ -183,9 +201,12 @@ static int ccs811_get_measurement(struct ccs811_data *data)
+>  	if (!(ret & CCS811_STATUS_DATA_READY))
+>  		return -EIO;
+>  
+> -	return i2c_smbus_read_i2c_block_data(data->client,
+> +	ret = i2c_smbus_read_i2c_block_data(data->client,
+>  					    CCS811_ALG_RESULT_DATA, 8,
+>  					    (char *)&data->buffer);
+> +	ccs811_set_wakeup(data, false);
+> +
+> +	return ret;
+>  }
+>  
+>  static int ccs811_read_raw(struct iio_dev *indio_dev,
+> @@ -336,6 +357,42 @@ static irqreturn_t ccs811_data_rdy_trigger_poll(int irq, void *private)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int ccs811_reset(struct i2c_client *client)
+> +{
+> +	struct gpio_desc *reset_gpio;
+> +	int ret;
+> +
+> +	reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
+> +					     GPIOD_OUT_LOW);
+> +	if (IS_ERR(reset_gpio)) {
+> +		dev_err(&client->dev, "Failed to acquire reset gpio\n");
+> +		return -EINVAL;
 
-hmm, getting the start of the timestamp was actually what I intended ;-)
-The dln2-adc driver did that fancy struct definition for its data. which
-I stole, see the part from blow:
+return PTR_ERR as it may well be a deferred signal to say try again later
+after the gpio provide device has been initialized.
 
-> > +	struct {
-> > +		u16 values[SARADC_BUFFER_NUM_U16];
-> > +		int64_t timestamp;
-> > +	} data;
-
-So SARADC_BUFFER_NUM really is meant to only contain the
-number of actual buffer data - I guess I should explain that out better
-in the comment. Because defining this separate makes this so much
-more readable when we're not trying to implicitly add the timestamp
-space.
-
-And a size_of(data) for that struct then returned nicely these 24 bytes
-in my tests.
-
-
-> >  
-> >  struct rockchip_saradc_data {
-> > -	int				num_bits;
-> >  	const struct iio_chan_spec	*channels;
-> >  	int				num_channels;
-> >  	unsigned long			clk_rate;
-> > @@ -49,8 +56,37 @@ struct rockchip_saradc {
-> >  	struct reset_control	*reset;
-> >  	const struct rockchip_saradc_data *data;
-> >  	u16			last_val;
-> > +	const struct iio_chan_spec *last_chan;
-> >  };
-> >  
-> > +static void rockchip_saradc_power_down(struct rockchip_saradc *info)
-> > +{
-> > +	/* Clear irq & power down adc */
-> > +	writel_relaxed(0, info->regs + SARADC_CTRL);
-> > +}
-> > +
-> > +static int rockchip_saradc_conversion(struct rockchip_saradc *info,
-> > +				   struct iio_chan_spec const *chan)
-> > +{
-> > +	reinit_completion(&info->completion);
-> > +
-> > +	/* 8 clock periods as delay between power up and start cmd */
-> > +	writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
-> > +
-> > +	info->last_chan = chan;
-> > +
-> > +	/* Select the channel to be used and trigger conversion */
-> > +	writel(SARADC_CTRL_POWER_CTRL
-> > +			| (chan->channel & SARADC_CTRL_CHN_MASK)
-> > +			| SARADC_CTRL_IRQ_ENABLE,
-> > +		   info->regs + SARADC_CTRL);
-> > +
-> > +	if (!wait_for_completion_timeout(&info->completion, SARADC_TIMEOUT))
-> > +		return -ETIMEDOUT;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
-> >  				    struct iio_chan_spec const *chan,
-> >  				    int *val, int *val2, long mask)
-> > @@ -62,24 +98,12 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
-> >  	case IIO_CHAN_INFO_RAW:
-> >  		mutex_lock(&indio_dev->mlock);
-> >  
-> > -		reinit_completion(&info->completion);
-> > -
-> > -		/* 8 clock periods as delay between power up and start cmd */
-> > -		writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
-> > -
-> > -		/* Select the channel to be used and trigger conversion */
-> > -		writel(SARADC_CTRL_POWER_CTRL
-> > -				| (chan->channel & SARADC_CTRL_CHN_MASK)
-> > -				| SARADC_CTRL_IRQ_ENABLE,
-> > -		       info->regs + SARADC_CTRL);
-> > -
-> > -		if (!wait_for_completion_timeout(&info->completion,
-> > -						 SARADC_TIMEOUT)) {
-> > -			writel_relaxed(0, info->regs + SARADC_CTRL);
-> > +		ret = rockchip_saradc_conversion(info, chan);
-> > +		if (ret) {
-> > +			rockchip_saradc_power_down(info);
-> >  			mutex_unlock(&indio_dev->mlock);
-> > -			return -ETIMEDOUT;
-> > +			return ret;
-> >  		}
-> > -
-> >  		*val = info->last_val;
-> >  		mutex_unlock(&indio_dev->mlock);
-> >  		return IIO_VAL_INT;
-> > @@ -91,7 +115,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
-> >  		}
-> >  
-> >  		*val = ret / 1000;
-> > -		*val2 = info->data->num_bits;
-> > +		*val2 = chan->scan_type.realbits;
-> >  		return IIO_VAL_FRACTIONAL_LOG2;
-> >  	default:
-> >  		return -EINVAL;
-> > @@ -104,10 +128,9 @@ static irqreturn_t rockchip_saradc_isr(int irq, void *dev_id)
-> >  
-> >  	/* Read value */
-> >  	info->last_val = readl_relaxed(info->regs + SARADC_DATA);
-> > -	info->last_val &= GENMASK(info->data->num_bits - 1, 0);
-> > +	info->last_val &= GENMASK(info->last_chan->scan_type.realbits - 1, 0);
-> >  
-> > -	/* Clear irq & power down adc */
-> > -	writel_relaxed(0, info->regs + SARADC_CTRL);
-> > +	rockchip_saradc_power_down(info);
-> >  
-> >  	complete(&info->completion);
-> >  
-> > @@ -118,51 +141,55 @@ static const struct iio_info rockchip_saradc_iio_info = {
-> >  	.read_raw = rockchip_saradc_read_raw,
-> >  };
-> >  
-> > -#define ADC_CHANNEL(_index, _id) {				\
-> > +#define ADC_CHANNEL(_index, _id, _res) {			\
-> >  	.type = IIO_VOLTAGE,					\
-> >  	.indexed = 1,						\
-> >  	.channel = _index,					\
-> >  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> >  	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> >  	.datasheet_name = _id,					\
-> > +	.scan_index = _index,					\
-> > +	.scan_type = {						\
-> > +		.sign = 'u',					\
-> > +		.realbits = _res,				\
-> > +		.storagebits = 16,				\
-> > +		.endianness = IIO_LE,				\
-> > +	},							\
-> >  }
-> >  
-> >  static const struct iio_chan_spec rockchip_saradc_iio_channels[] = {
-> > -	ADC_CHANNEL(0, "adc0"),
-> > -	ADC_CHANNEL(1, "adc1"),
-> > -	ADC_CHANNEL(2, "adc2"),
-> > +	ADC_CHANNEL(0, "adc0", 10),
-> > +	ADC_CHANNEL(1, "adc1", 10),
-> > +	ADC_CHANNEL(2, "adc2", 10),
-> >  };
-> >  
-> >  static const struct rockchip_saradc_data saradc_data = {
-> > -	.num_bits = 10,
-> >  	.channels = rockchip_saradc_iio_channels,
-> >  	.num_channels = ARRAY_SIZE(rockchip_saradc_iio_channels),
-> >  	.clk_rate = 1000000,
-> >  };
-> >  
-> >  static const struct iio_chan_spec rockchip_rk3066_tsadc_iio_channels[] = {
-> > -	ADC_CHANNEL(0, "adc0"),
-> > -	ADC_CHANNEL(1, "adc1"),
-> > +	ADC_CHANNEL(0, "adc0", 12),
-> > +	ADC_CHANNEL(1, "adc1", 12),
-> >  };
-> >  
-> >  static const struct rockchip_saradc_data rk3066_tsadc_data = {
-> > -	.num_bits = 12,
-> >  	.channels = rockchip_rk3066_tsadc_iio_channels,
-> >  	.num_channels = ARRAY_SIZE(rockchip_rk3066_tsadc_iio_channels),
-> >  	.clk_rate = 50000,
-> >  };
-> >  
-> >  static const struct iio_chan_spec rockchip_rk3399_saradc_iio_channels[] = {
-> > -	ADC_CHANNEL(0, "adc0"),
-> > -	ADC_CHANNEL(1, "adc1"),
-> > -	ADC_CHANNEL(2, "adc2"),
-> > -	ADC_CHANNEL(3, "adc3"),
-> > -	ADC_CHANNEL(4, "adc4"),
-> > -	ADC_CHANNEL(5, "adc5"),
-> > +	ADC_CHANNEL(0, "adc0", 10),
-> > +	ADC_CHANNEL(1, "adc1", 10),
-> > +	ADC_CHANNEL(2, "adc2", 10),
-> > +	ADC_CHANNEL(3, "adc3", 10),
-> > +	ADC_CHANNEL(4, "adc4", 10),
-> > +	ADC_CHANNEL(5, "adc5", 10),
-> >  };
-> >  
-> >  static const struct rockchip_saradc_data rk3399_saradc_data = {
-> > -	.num_bits = 10,
-> >  	.channels = rockchip_rk3399_saradc_iio_channels,
-> >  	.num_channels = ARRAY_SIZE(rockchip_rk3399_saradc_iio_channels),
-> >  	.clk_rate = 1000000,
-> > @@ -193,6 +220,42 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
-> >  	reset_control_deassert(reset);
-> >  }
-> >  
-> > +static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf = p;
-> > +	struct iio_dev *i_dev = pf->indio_dev;
-> > +	struct rockchip_saradc *info = iio_priv(i_dev);
-> > +	struct {
-> > +		u16 values[SARADC_BUFFER_NUM_U16];
-> > +		int64_t timestamp;
-> > +	} data;
-> > +	int ret;
-> > +	int i, j = 0;
-> > +
-> > +	mutex_lock(&i_dev->mlock);
-> > +
-> > +	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
-> > +		const struct iio_chan_spec *chan = &i_dev->channels[i];
-> > +
-> > +		ret = rockchip_saradc_conversion(info, chan);
-> > +		if (ret) {
-> > +			rockchip_saradc_power_down(info);
-> > +			goto out;
-> > +		}
-> > +
-> > +		data.values[j] = info->last_val;
-> > +		j++;
-> > +	}
-> > +
-> > +	iio_push_to_buffers_with_timestamp(i_dev, &data, iio_get_time_ns(i_dev));
-> > +out:
-> > +	mutex_unlock(&i_dev->mlock);
-> > +
-> > +	iio_trigger_notify_done(i_dev->trig);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> >  static int rockchip_saradc_probe(struct platform_device *pdev)
-> >  {
-> >  	struct rockchip_saradc *info = NULL;
-> > @@ -221,6 +284,11 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
-> >  
-> >  	info->data = match->data;
-> >  
-> > +	if (info->data->num_channels > SARADC_MAX_CHANNELS) {
-> > +		dev_err(&pdev->dev, "max channels exceeded");
-> > +		return -EINVAL;
-> 
-> How can that happen?  Bug in the addition of a new device type?
-> If it's just paranoia against future code, perhaps add a comment to
-> say that.
-
-yep that is "paranoia" for the case someone adds a fancy new 20 channel
-saradc variant and forgets to adapt the constant.
-
-I'll add a comment.
-
-> 
-> > +	}
-> > +
-> >  	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> >  	info->regs = devm_ioremap_resource(&pdev->dev, mem);
-> >  	if (IS_ERR(info->regs))
-> > @@ -315,6 +383,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
-> >  	indio_dev->channels = info->data->channels;
-> >  	indio_dev->num_channels = info->data->num_channels;
-> >  
-> > +	ret = devm_iio_triggered_buffer_setup(&indio_dev->dev, indio_dev, NULL,
-> > +					      rockchip_saradc_trigger_handler,
-> > +					      NULL);
-> > +	if (ret)
-> > +		goto err_clk;
-> > +
-> 
-> Please avoid mixing an matching between device managed an unmanaged interfaces.
-> It means the driver is not 'obviously correct' and hence harder to review.
-> 
-> Two choices here.  Either use devm_add_action_or_reset to automatically
-> disable each clock + regulator in the managed release path, drop all the error
-> handling and remove (note this should be a precursor patch), or use
-> iio_triggered_buffer_setup and manually call iio_triggered_buffer_cleanup
-> in the right place in the remove function.
-
-I'll go with the devm_* approach, less complexity is better than adding more ;-)
-
-
-Heiko
-
-> >  	ret = iio_device_register(indio_dev);
-> >  	if (ret)
-> >  		goto err_clk;
-> 
-> 
-
-
-
+> +	}
+> +
+> +	/* Try to reset using nRESET pin if available else do SW reset */
+> +	if (reset_gpio) {
+> +		gpiod_set_value(reset_gpio, 1);
+> +		usleep_range(20, 30);
+> +		gpiod_set_value(reset_gpio, 0);
+> +	} else {
+> +		static const u8 reset_seq[] = {
+> +			0xFF, 0x11, 0xE5, 0x72, 0x8A,
+> +		};
+> +
+> +		ret = i2c_smbus_write_i2c_block_data(client, CCS811_SW_RESET,
+> +					     sizeof(reset_seq), reset_seq);
+> +		if (ret < 0) {
+> +			dev_err(&client->dev, "Failed to reset sensor\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	/* tSTART delay required after reset */
+> +	usleep_range(1000, 2000);
+> +
+> +	return 0;
+> +}
+> +
+>  static int ccs811_probe(struct i2c_client *client,
+>  			const struct i2c_device_id *id)
+>  {
+> @@ -348,6 +405,27 @@ static int ccs811_probe(struct i2c_client *client,
+>  				     | I2C_FUNC_SMBUS_READ_I2C_BLOCK))
+>  		return -EOPNOTSUPP;
+>  
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data = iio_priv(indio_dev);
+> +	i2c_set_clientdata(client, indio_dev);
+> +	data->client = client;
+> +
+> +	data->wakeup_gpio = devm_gpiod_get_optional(&client->dev, "wakeup",
+> +						    GPIOD_OUT_HIGH);
+> +	if (IS_ERR(data->wakeup_gpio)) {
+> +		dev_err(&client->dev, "Failed to acquire wakeup gpio\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ccs811_set_wakeup(data, true);
+> +
+> +	ret = ccs811_reset(client);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/* Check hardware id (should be 0x81 for this family of devices) */
+>  	ret = i2c_smbus_read_byte_data(client, CCS811_HW_ID);
+>  	if (ret < 0)
+> @@ -367,17 +445,11 @@ static int ccs811_probe(struct i2c_client *client,
+>  		return -ENODEV;
+>  	}
+>  
+> -	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> -	if (!indio_dev)
+> -		return -ENOMEM;
+> -
+>  	ret = ccs811_setup(client);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	data = iio_priv(indio_dev);
+> -	i2c_set_clientdata(client, indio_dev);
+> -	data->client = client;
+> +	ccs811_set_wakeup(data, false);
+>  
+>  	mutex_init(&data->lock);
+>  
 

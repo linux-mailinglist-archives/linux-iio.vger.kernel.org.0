@@ -2,99 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE391A6CFC
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 22:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 693BE1A6D20
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 22:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727955AbgDMULI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 16:11:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
+        id S2388275AbgDMUU5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 16:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727816AbgDMULH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Apr 2020 16:11:07 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F309C0A3BDC;
-        Mon, 13 Apr 2020 13:11:06 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id e16so4015309pjp.1;
-        Mon, 13 Apr 2020 13:11:06 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2388255AbgDMUU4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Apr 2020 16:20:56 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD79C0A3BDC;
+        Mon, 13 Apr 2020 13:20:54 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id m16so3811313pls.4;
+        Mon, 13 Apr 2020 13:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LZqafRmRyQFCaiVXl6/7KpQLXAfpOOpFwxoy3qp4Wzo=;
-        b=hBeooTLLnG54arHcFVqwFhOl1MSgWJ4FhzUtM+sQZPihXrROPFPV2lnHuZ0pGySA8I
-         urXtzC0sB4meF1fs4fMKK2pL+/Bqf3dBmA3dg4mNrDYsFuPmn4VUQ8xhL9mb2mooWd4E
-         x2nPBzbFJKztHKSEoIDE4hTSoVaVcln1WbG7g3g5Jwc66+4Jt1G1I/+Rh0Mo6RPwBxSC
-         kc3b39fvUkquG01Z2KtnpGCg2Pa6XqFKkwE2AadgpddodUClLJQNCFPNNh8QwfvAyv6r
-         CDgiw3nvaivXxy7nKQ/1qJGfY5SJP30o7EFRClHKr2zXs3SjXOR7QjuJVDXijsQu4hxU
-         aF6w==
+        bh=rhP8togHEFOdKrEhVMamW4MRO722aEfkopEuZNN/wOI=;
+        b=muwUYuehGhzwsgmvrzKmt4pgdN4QkY+03DonmZB9ONRyVR3wLUNGv4QmN/mlS95AEP
+         QAKBUY6ZVRYMN3mCDf9Px0fpWYYsN1ivAllgSX9ZhTZs48PYiSoWvq7Mr+hroAmUXZRK
+         jdZXh8S9NsD5Vplx6KHkljE4S/P7mXMfpMo2RPcoI0e6B8wc9jH2YsllR1gE3YagnZAn
+         RDeCSxaduKyp8Lhog0moA43DdJxf7LZCA2Z4qpOX3AE1M0b8vm0x8GfnTVKXocWyZaZo
+         GMSy45tMweLjHjzteh/dZH+XEqx9wNuF9/i7SvczCMvF6nLN4AVzxvb3tcQKoDsAMlKR
+         fP+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LZqafRmRyQFCaiVXl6/7KpQLXAfpOOpFwxoy3qp4Wzo=;
-        b=AKUCPALX2z2FUaVmlJK2cLbZubN8Vb6bkyr2vf+rdLlCRkQgeiGV4t1iO/GaU+wAnY
-         4H1RpW07rLZK1KpV1tbp7zMFCG3LhebJW/FkUkC+PE2BVp3yHPtIpiSu0qqxk2G3BcSe
-         +MNtEukJRtj63gX4NxaflMrPYBqfWhnUHXBd/qhBRFH9HeG8Rpa2a8GUxFCIrynpWP6c
-         kvBdL/aP/NX7QBWgaheBfj7UUl62PLztNyKc0SYo+OCkG2ZO+TRofOlcAobgwgFljjXN
-         BP/aB3oIRIahFltyrK/aLbg2Z0jBFlMxD9rZZG9VQFdFoWitXt9RzaPJMyx2q9m6KfBk
-         mThA==
-X-Gm-Message-State: AGi0PuYdnFBSW90QHFegWBUlO/KKFHPX34lKFl+2N7/1+4bYTG/dItRJ
-        YkRxxRPqLdWqHA4WwN8vS3BkDERSmTsgxKcXypI=
-X-Google-Smtp-Source: APiQypINs7COjR3S1/ugzSWIcMYXhZLkL2dyDG4xs6MC97WDLSg7ekcSNiRGo6qgUndOlT4SrKpI4lG4HPbClh15hPA=
-X-Received: by 2002:a17:90a:ff06:: with SMTP id ce6mr457333pjb.1.1586808665986;
- Mon, 13 Apr 2020 13:11:05 -0700 (PDT)
+        bh=rhP8togHEFOdKrEhVMamW4MRO722aEfkopEuZNN/wOI=;
+        b=Ou8RE0ix9xzA3+FZwBx8+gA78GwO9Oo8P//hCVAr1p85EUuJxC6NiQVf96p4n5zwpi
+         J/3gLw272faInCAeabAT1dAvqOZSS1zNUOo2YihFpBrjnVUqpvcm8VMCHBZiwXaQQGW4
+         C12q6zZOmuHhVjsHhtjSYDbqsnbWxPr5vBPrkh5vVccjIGR5YhYsps5/q7vIVtty7Xq/
+         nvHvssfCcoeSYjrHD+BGf71LI2XsM8KsKbPFXzWBdH+uonShRblY+ID4QmjUt6HwB8Vq
+         vB7jbJGl5VhWps7RFnR0Com7mhM8P47TjYTtg8Qz9t5LMR6fotBcw+hw/p5SyuGjVfNg
+         VrUw==
+X-Gm-Message-State: AGi0PuYVmreznnVuPyEq9VrevwpB8Fm7bUoj4glZgoFNWGYioefPnVUY
+        CPNr16t+mEcos6ZKtkPmYF6jKNTwNUc05PL1tBE=
+X-Google-Smtp-Source: APiQypIgRVIiNAo/CmIcX7f33PN0CQ9kB3cxHtZlVhBp3gUUznxaxkngllL8DZt3NoX6LOk97BucPhJbTgIWavQIXAM=
+X-Received: by 2002:a17:902:5985:: with SMTP id p5mr14336982pli.262.1586809254098;
+ Mon, 13 Apr 2020 13:20:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200413173656.28522-1-sravanhome@gmail.com> <20200413173656.28522-5-sravanhome@gmail.com>
-In-Reply-To: <20200413173656.28522-5-sravanhome@gmail.com>
+References: <20200412183658.6755-1-mani@kernel.org> <20200412183658.6755-3-mani@kernel.org>
+In-Reply-To: <20200412183658.6755-3-mani@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 13 Apr 2020 23:10:54 +0300
-Message-ID: <CAHp75VeYFY1CW4AH+D4HAgzppMZ5J8dL8kKPYmcwsXNVGNSYjQ@mail.gmail.com>
-Subject: Re: [PATCH v8 4/6] power: supply: Add support for mps mp2629 battery charger
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+Date:   Mon, 13 Apr 2020 23:20:42 +0300
+Message-ID: <CAHp75VdCK26wXiw0c=1fc0vKsea4w=tthCBrroLOqqaDbwuMVQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] iio: chemical: Add support for external Reset and
+ Wakeup in CCS811
+To:     mani@kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, narcisaanamaria12@gmail.com,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 13, 2020 at 8:37 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
+On Mon, Apr 13, 2020 at 8:34 AM <mani@kernel.org> wrote:
 >
-> The mp2629 provides switching-mode battery charge management for
-> single-cell Li-ion or Li-polymer battery. Driver supports the
-> access/control input source and battery charging parameters.
+> From: Manivannan Sadhasivam <mani@kernel.org>
+>
+> CCS811 VOC sensor exposes nRESET and nWAKE pins which can be connected
+> to GPIO pins of the host controller. These pins can be used to externally
+> release the device from reset and also to wake it up before any I2C
+> transaction. The initial driver support assumed that the nRESET pin is not
+> connected and the nWAKE pin is tied to ground.
+>
+> This commit improves it by adding support for controlling those two pins
+> externally using a host controller. For the case of reset, if the hardware
+> reset is not available, the mechanism to do software reset is also added.
+>
+> As a side effect of doing this, the IIO device allocation needs to be
+> slightly moved to top of probe to make use of priv data early.
 
 ...
 
-> +static int mp2629_charger_probe(struct platform_device *pdev)
-> +{
+> +#define CCS811_SW_RESET                0xFF
 
-> +       irq = platform_get_irq(to_platform_device(pdev->dev.parent), 0);
 
-Why not to use temporary variable dev?
+> +       reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
+> +                                            GPIOD_OUT_LOW);
+> +       if (IS_ERR(reset_gpio)) {
+> +               dev_err(&client->dev, "Failed to acquire reset gpio\n");
 
-This should be platform_get_irq_optional().
+> +               return -EINVAL;
 
-> +       if (irq) {
-> +               ret = devm_request_irq(dev, irq, mp2629_irq_handler,
-> +                                IRQF_TRIGGER_RISING, "mp2629-charger",
-> +                                charger);
-> +               if (ret) {
-> +                       dev_err(dev, "failed to request gpio IRQ\n");
-> +                       goto iio_fail;
+Do not shadow actual error code.
+
+> +       }
+> +
+> +       /* Try to reset using nRESET pin if available else do SW reset */
+> +       if (reset_gpio) {
+> +               gpiod_set_value(reset_gpio, 1);
+> +               usleep_range(20, 30);
+> +               gpiod_set_value(reset_gpio, 0);
+> +       } else {
+
+> +               static const u8 reset_seq[] = {
+> +                       0xFF, 0x11, 0xE5, 0x72, 0x8A,
+> +               };
+
+Is 0xFF here is CCS811_SW_RESET? If so, can you put it explicitly?
+
+> +               ret = i2c_smbus_write_i2c_block_data(client, CCS811_SW_RESET,
+> +                                            sizeof(reset_seq), reset_seq);
+> +               if (ret < 0) {
+> +                       dev_err(&client->dev, "Failed to reset sensor\n");
+> +                       return ret;
 > +               }
 > +       }
 
-> +}
+...
+
+> +       data->wakeup_gpio = devm_gpiod_get_optional(&client->dev, "wakeup",
+> +                                                   GPIOD_OUT_HIGH);
+> +       if (IS_ERR(data->wakeup_gpio)) {
+> +               dev_err(&client->dev, "Failed to acquire wakeup gpio\n");
+
+> +               return -EINVAL;
+
+Ditto.
+
+> +       }
 
 -- 
 With Best Regards,

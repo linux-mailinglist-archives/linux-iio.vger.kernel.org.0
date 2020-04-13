@@ -2,148 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3F81A6AF4
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 19:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4671F1A6AFF
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 19:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732352AbgDMRGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 13:06:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56672 "EHLO mail.kernel.org"
+        id S1732517AbgDMRHg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 13:07:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57328 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732482AbgDMRGB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Apr 2020 13:06:01 -0400
+        id S1732482AbgDMRHf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Apr 2020 13:07:35 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70AAE2063A;
-        Mon, 13 Apr 2020 17:05:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D6382063A;
+        Mon, 13 Apr 2020 17:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586797560;
-        bh=XSzvWwboQfJbnb90gbiOgWC167qu2vdKrgA+BfEfCpo=;
+        s=default; t=1586797654;
+        bh=aZjUtUk9QZwo2K36lV5HFVf06Y2lBOpMb8+khBRP8JY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QqrGYb7IDH34G4ZR7RSg/V2SkPEJ2ZZyh7mDf3OYFbo7lQBigcWIvnrAz39PgzOhx
-         R6REQgOrgZLbNoHYrvUalvOTXj1LGyMghKalIM0d0RW0nAKgvikPXLU5aUah08TFbq
-         ANf+eAJWPV1B01x/z2JUsZ+QqISS9nhxYb0gtyRk=
-Date:   Mon, 13 Apr 2020 18:05:56 +0100
+        b=DujfD7l5PVD2eexgA0mb8vvI4TrQRk6HOy7OoMqiCxHZp6P47b2VEv6KjP6M0dE2x
+         Jly+puteAITXPxDql3q+W9tnHcxkKtxGlr5P6PfAS2MP0Khr1xrhsi2y+fsioFk7cE
+         vlWp+5+biQe8//+QZGYtfiUAJ9qlbotuBZlD24dQ=
+Date:   Mon, 13 Apr 2020 18:07:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <eugen.hristev@microchip.com>, <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH v2 1/2] iio: at91-sama5d2_adc: split
- at91_adc_current_chan_is_touch() helper
-Message-ID: <20200413180556.20638f3b@archlinux>
-In-Reply-To: <20200304084219.20810-1-alexandru.ardelean@analog.com>
-References: <20200304084219.20810-1-alexandru.ardelean@analog.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v2 0/6] irq/irq_sim: try to improve the API
+Message-ID: <20200413180728.0714da3d@archlinux>
+In-Reply-To: <CAMRc=Mc=gTrpQsMdOTBJaYT6JLg=o17Mm78ijAGUJYE2pXcCQQ@mail.gmail.com>
+References: <20200211131240.15853-1-brgl@bgdev.pl>
+        <CAMRc=Mc=gTrpQsMdOTBJaYT6JLg=o17Mm78ijAGUJYE2pXcCQQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 4 Mar 2020 10:42:18 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Tue, 3 Mar 2020 08:57:43 +0100
+Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> This change moves the logic to check if the current channel is the
-> touchscreen channel to a separate helper.
-> This reduces some code duplication, but the main intent is to re-use this
-> in the next patches.
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Eugen / Ludovic,
+> wt., 11 lut 2020 o 14:12 Bartosz Golaszewski <brgl@bgdev.pl> napisa=C5=82=
+(a):
+> >
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > This is my second take at improving the interrupt simulator interface.
+> > I marked it as v2 but it actually takes a completely different approach.
+> >
+> > The interrupt simulator API exposes a lot of custom data structures and
+> > functions and doesn't reuse the interfaces already exposed by the irq
+> > subsystem. This series tries to address it.
+> >
+> > First, we make irq_domain_reset_irq_data() available to non-V2 domain A=
+PI
+> > users - that'll be used in the subsequent patch. Next we overhaul the
+> > public interfaces - we hide all specific data structures and instead
+> > rely on the irq_domain struct and virtual interrupt numberspace.
+> >
+> > Next four patches simplify the interface even more, but since the change
+> > may be a bit more controversial due to modification of the irq_domain
+> > I decided to split them out of the second patch.
+> >
+> > In patch 3/6 we're adding a new callback to irq_domain_ops that is call=
+ed
+> > right before all the other code in irq_domain_remove(). Next we use it =
+to
+> > remove the simulator-specific cleanup function from irq_sim.h - users n=
+ow
+> > can simply use the regular irq_domain_remove().
+> >
+> > Last two patches show that the new callback isn't limited to the interr=
+upt
+> > simulator and can be used to shrink code in real driver too. We introdu=
+ce
+> > a new helper for a common use case of disposing of all mappings before
+> > removing the irq_domain and use it in the keystone irqchip driver.
+> >
+> > The end effect is that we limit the interrupt simulator API to two
+> > functions (plus one device managed variant) and zero new structures.
+> >
+> > v1: https://lkml.org/lkml/2019/8/12/558
+> >
+> > v1 -> v2:
+> > - instead of just making the new data structures opaque for users, remo=
+ve
+> >   them entirely in favor of irq_domain
+> > - call irq_set_handler() & irq_domain_reset_irq_data() when unmapping
+> >   the simulated interrupt
+> > - fix a memory leak in error path
+> > - make it possible to use irq_find_matching_fwnode() with the simulator
+> >   domain
+> > - correctly use irq_create_mapping() and irq_find_mapping(): only use t=
+he
+> >   former at init-time and the latter at interrupt-time
+> > =20
+>=20
+> Hi,
+>=20
+> it's been three weeks, so gentle ping on that.
+>=20
+> Or should I resend the entire series with a more elaborate commit
+> message for patch 1/6?
 
-Have you had a chance to look at this series? 
+I'd resend it now if nothing has happened that I missed.  Merge window
+having just closed, it's the perfect time for a rebase on rc1.
 
-Thanks,
+thanks,
 
 Jonathan
 
-> ---
-> 
-> This patchset continues discussion:
->    https://lore.kernel.org/linux-iio/20191023082508.17583-1-alexandru.ardelean@analog.com/
-> Apologies for the delay.
-> 
-> Changelog v1 -> v2:
-> * added patch 'iio: at91-sama5d2_adc: split at91_adc_current_chan_is_touch()
->   helper'
-> * renamed at91_adc_buffer_postenable() -> at91_adc_buffer_preenable()
->   - at91_adc_buffer_postenable() - now just calls
->     iio_triggered_buffer_postenable() if the channel isn't the touchscreen
->     channel
-> * renamed at91_adc_buffer_predisable() -> at91_adc_buffer_postdisable()
->   - at91_adc_buffer_predisable() - now just calls
->     iio_triggered_buffer_predisable() if the channel isn't the touchscreen
->     channel
-> 
->  drivers/iio/adc/at91-sama5d2_adc.c | 31 +++++++++++++++---------------
->  1 file changed, 15 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index a5c7771227d5..f2a74c47c768 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -873,18 +873,24 @@ static int at91_adc_dma_start(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> +static bool at91_adc_current_chan_is_touch(struct iio_dev *indio_dev)
-> +{
-> +	struct at91_adc_state *st = iio_priv(indio_dev);
-> +
-> +	return !!bitmap_subset(indio_dev->active_scan_mask,
-> +			       &st->touch_st.channels_bitmask,
-> +			       AT91_SAMA5D2_MAX_CHAN_IDX + 1);
-> +}
-> +
->  static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
->  {
->  	int ret;
->  	struct at91_adc_state *st = iio_priv(indio_dev);
->  
->  	/* check if we are enabling triggered buffer or the touchscreen */
-> -	if (bitmap_subset(indio_dev->active_scan_mask,
-> -			  &st->touch_st.channels_bitmask,
-> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
-> -		/* touchscreen enabling */
-> +	if (at91_adc_current_chan_is_touch(indio_dev))
->  		return at91_adc_configure_touch(st, true);
-> -	}
-> +
->  	/* if we are not in triggered mode, we cannot enable the buffer. */
->  	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
->  		return -EINVAL;
-> @@ -906,12 +912,9 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
->  	u8 bit;
->  
->  	/* check if we are disabling triggered buffer or the touchscreen */
-> -	if (bitmap_subset(indio_dev->active_scan_mask,
-> -			  &st->touch_st.channels_bitmask,
-> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
-> -		/* touchscreen disable */
-> +	if (at91_adc_current_chan_is_touch(indio_dev))
->  		return at91_adc_configure_touch(st, false);
-> -	}
-> +
->  	/* if we are not in triggered mode, nothing to do here */
->  	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
->  		return -EINVAL;
-> @@ -1886,14 +1889,10 @@ static __maybe_unused int at91_adc_resume(struct device *dev)
->  		return 0;
->  
->  	/* check if we are enabling triggered buffer or the touchscreen */
-> -	if (bitmap_subset(indio_dev->active_scan_mask,
-> -			  &st->touch_st.channels_bitmask,
-> -			  AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
-> -		/* touchscreen enabling */
-> +	if (at91_adc_current_chan_is_touch(indio_dev))
->  		return at91_adc_configure_touch(st, true);
-> -	} else {
-> +	else
->  		return at91_adc_configure_trigger(st->trig, true);
-> -	}
->  
->  	/* not needed but more explicit */
->  	return 0;
+>=20
+> Bartosz
 

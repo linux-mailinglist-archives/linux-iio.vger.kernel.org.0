@@ -2,38 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3B591A6953
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 18:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACC71A6982
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 18:12:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731191AbgDMQA3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 12:00:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59582 "EHLO mail.kernel.org"
+        id S1731326AbgDMQM5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 12:12:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731188AbgDMQA3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Apr 2020 12:00:29 -0400
+        id S1731261AbgDMQM4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Apr 2020 12:12:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85EFF2072D;
-        Mon, 13 Apr 2020 16:00:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C22EA2063A;
+        Mon, 13 Apr 2020 16:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586793628;
-        bh=K2yI55ob0TD8VrNui5vXyRDN6synzQ1NUa4PR66fgc8=;
+        s=default; t=1586794375;
+        bh=PiJCskkBH4HQmJKrq6l2BUxAKLvdz6RRfLLB9w3jJOM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=zHSBv4r2yNPFdPsDbw/q2nAEicKCRczR4HLX6dgnt6CCX0T2s/QtdS/uOPK5dWdSo
-         It9Rs9kLDtDj6Gh5islr8zD/SjQ9UT6z0X5k+rZ3paNspPwEkupt8eH7NqDdfiGS4I
-         KZ/r8JuEyfoGkc1qM2rohgRlxxSXGfywQ/5hKYNI=
-Date:   Mon, 13 Apr 2020 17:00:24 +0100
+        b=R0+4nAcRn19VFnyDoemwSPHdWrk2+ibRP2cCMe54Ax+eEkaLOH/HHthNQdQxqFWlI
+         BAb45HSy3I0sObAAk4VaxQVGh4R1oi7KiL93fGwWboPEoSi0u5TbGzhxRpLn+1hqCF
+         nvGmpWTb4eC43ldhTNkcfJIGviC5qh1UWrHtbkeo=
+Date:   Mon, 13 Apr 2020 17:12:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH v3 4/5] iio: buffer: move sysfs alloc/free in
- industrialio-buffer.c
-Message-ID: <20200413170024.56ca6ca2@archlinux>
-In-Reply-To: <20200410141729.82834-5-alexandru.ardelean@analog.com>
-References: <20200410141729.82834-1-alexandru.ardelean@analog.com>
-        <20200410141729.82834-5-alexandru.ardelean@analog.com>
+        <alexandru.tachici@analog.com>
+Subject: Re: [PATCH v3 1/2] iio: adc: ad7192: fix null pointer de-reference
+ crash during probe
+Message-ID: <20200413171251.5407db5b@archlinux>
+In-Reply-To: <20200413082044.81101-1-alexandru.ardelean@analog.com>
+References: <20200413082044.81101-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,176 +42,181 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Apr 2020 17:17:28 +0300
+On Mon, 13 Apr 2020 11:20:43 +0300
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Since we now have the 'iio_device_buffers_{un}init()' entry-points into the
-> industrialio-buffer.c we can now move the sysfs alloc & free in there as
-> part of that init/uninit.
+> When the 'spi_device_id' table was removed, it omitted to cleanup/fix the
+> assignment:
+>    'indio_dev->name = spi_get_device_id(spi)->name;'
 > 
-> This changes the order of iio_device_register()/iio_device_unregister() a
-> bit, but overall this shouldn't matter.
+> After that patch 'spi_get_device_id(spi)' returns NULL, so this crashes
+> during probe with null de-ref.
 > 
+> This change fixes this by introducing an ad7192_chip_info struct, and
+> defines all part-names [that should be assigned to indio_dev->name] in a
+> 'ad7192_chip_info_tbl' table.
+> 
+> With this change, the old 'st->devid' is also moved to be a
+> 'chip_info->chip_id'. And the old 'ID_AD719X' macros have been renamed to
+> 'CHIPID_AD719X'. Tld identifiers have been re-purposed to be enum/index
+> values in the new 'ad7192_chip_info_tbl'.
+> 
+> This should fix the bug, and maintain the ABI for the 'indio_dev->name'
+> field.
+> 
+> Fixes: 66614ab2be38 ("staging: iio: adc: ad7192: removed spi_device_id")
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Seems fine at first glance.
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/iio_core.h            | 10 ----------
->  drivers/iio/industrialio-buffer.c | 29 +++++++++++++++--------------
->  drivers/iio/industrialio-core.c   | 14 +-------------
->  3 files changed, 16 insertions(+), 37 deletions(-)
 > 
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index 4bdadeac2710..1d69071e1426 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -48,9 +48,6 @@ void iio_device_buffers_uninit(struct iio_dev *indio_dev);
+> Changelog v2 -> v3:
+> * reworked patch to introduce a chip_info struct for the part-name
+> * added 2nd patch to move of-table closer to the end of the file; this
+>   patch is more cosmetic; has no fixes tag, but is on top of the previous
+> 
+> Changelog v1 -> v2:
+> * fix colon for Fixes tag
+> * updated commit title a bit; to make it longer
+> 
+>  drivers/iio/adc/ad7192.c | 61 ++++++++++++++++++++++++++++++----------
+>  1 file changed, 46 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 8ec28aa8fa8a..7e8662c5cb0e 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -125,10 +125,10 @@
+>  #define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
 >  
->  void iio_device_buffers_put(struct iio_dev *indio_dev);
+>  /* ID Register Bit Designations (AD7192_REG_ID) */
+> -#define ID_AD7190		0x4
+> -#define ID_AD7192		0x0
+> -#define ID_AD7193		0x2
+> -#define ID_AD7195		0x6
+> +#define CHIPID_AD7190		0x4
+> +#define CHIPID_AD7192		0x0
+> +#define CHIPID_AD7193		0x2
+> +#define CHIPID_AD7195		0x6
+>  #define AD7192_ID_MASK		0x0F
 >  
-> -int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev);
-> -void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev);
-> -
->  void iio_disable_all_buffers(struct iio_dev *indio_dev);
->  void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
->  
-> @@ -66,13 +63,6 @@ static inline void iio_device_buffers_uninit(struct iio_dev *indio_dev) {}
->  
->  static inline void iio_device_buffers_put(struct iio_dev *indio_dev) {}
->  
-> -static inline int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev) {}
-> -
->  static inline void iio_disable_all_buffers(struct iio_dev *indio_dev) {}
->  static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
->  
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 4b5c3baadaab..8ab089a9c3bc 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1284,11 +1284,11 @@ static struct attribute *iio_buffer_attrs[] = {
->  	&dev_attr_data_available.attr,
+>  /* GPOCON Register Bit Designations (AD7192_REG_GPOCON) */
+> @@ -161,7 +161,20 @@ enum {
+>     AD7192_SYSCALIB_FULL_SCALE,
 >  };
 >  
-> -int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> +static int iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer)
->  {
-> +	struct iio_dev *indio_dev = buffer->indio_dev;
->  	struct iio_dev_attr *p;
->  	struct attribute **attr;
-> -	struct iio_buffer *buffer = indio_dev->buffer;
->  	int ret, i, attrn, attrcount, attrcount_orig = 0;
->  	const struct iio_chan_spec *channels;
->  
-> @@ -1301,9 +1301,6 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  		indio_dev->masklength = ml;
->  	}
->  
-> -	if (!buffer)
-> -		return 0;
-> -
->  	attrcount = 0;
->  	if (buffer->attrs) {
->  		while (buffer->attrs[attrcount] != NULL)
-> @@ -1395,15 +1392,12 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  	return ret;
->  }
->  
-> -void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> +static void iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
->  {
-> -	if (!indio_dev->buffer)
-> -		return;
-> -
-> -	bitmap_free(indio_dev->buffer->scan_mask);
-> -	kfree(indio_dev->buffer->buffer_group.attrs);
-> -	kfree(indio_dev->buffer->scan_el_group.attrs);
-> -	iio_free_chan_devattr_list(&indio_dev->buffer->scan_el_dev_attr_list);
-> +	bitmap_free(buffer->scan_mask);
-> +	kfree(buffer->buffer_group.attrs);
-> +	kfree(buffer->scan_el_group.attrs);
-> +	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
->  }
->  
->  static const struct file_operations iio_buffer_fileops = {
-> @@ -1425,13 +1419,19 @@ int iio_device_buffers_init(struct iio_dev *indio_dev, struct module *this_mod)
->  	if (!buffer)
->  		return -ENOTSUPP;
->  
-> +	ret = iio_buffer_alloc_sysfs_and_mask(buffer);
-> +	if (ret)
-> +		return ret;
+> +enum {
+> +	ID_AD7190,
+> +	ID_AD7192,
+> +	ID_AD7193,
+> +	ID_AD7195,
+> +};
 > +
->  	cdev_init(&buffer->chrdev, &iio_buffer_fileops);
+> +struct ad7192_chip_info {
+> +	unsigned int			chip_id;
+> +	const char			*name;
+> +};
+> +
+>  struct ad7192_state {
+> +	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+>  	struct regulator		*dvdd;
+>  	struct clk			*mclk;
+> @@ -172,7 +185,6 @@ struct ad7192_state {
+>  	u32				conf;
+>  	u32				scale_avail[8][2];
+>  	u8				gpocon;
+> -	u8				devid;
+>  	u8				clock_sel;
+>  	struct mutex			lock;	/* protect sensor state */
+>  	u8				syscalib_mode[8];
+> @@ -348,7 +360,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
 >  
->  	buffer->chrdev.owner = this_mod;
+>  	id &= AD7192_ID_MASK;
 >  
->  	ret = cdev_device_add(&buffer->chrdev, &indio_dev->dev);
-> -	if (ret)
-> +	if (ret) {
-> +		iio_buffer_free_sysfs_and_mask(buffer);
->  		return ret;
-> +	}
+> -	if (id != st->devid)
+> +	if (id != st->chip_info->chip_id)
+>  		dev_warn(&st->sd.spi->dev, "device ID query failed (0x%X)\n",
+>  			 id);
 >  
->  	iio_device_get(indio_dev);
->  	iio_buffer_get(buffer);
-> @@ -1457,6 +1457,7 @@ void iio_device_buffers_uninit(struct iio_dev *indio_dev)
->  		return;
+> @@ -363,7 +375,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+>  		st->mode |= AD7192_MODE_REJ60;
 >  
->  	cdev_device_del(&buffer->chrdev, &indio_dev->dev);
-> +	iio_buffer_free_sysfs_and_mask(buffer);
->  	iio_buffer_put(buffer);
->  	iio_device_put(indio_dev);
+>  	refin2_en = of_property_read_bool(np, "adi,refin2-pins-enable");
+> -	if (refin2_en && st->devid != ID_AD7195)
+> +	if (refin2_en && st->chip_info->chip_id != CHIPID_AD7195)
+>  		st->conf |= AD7192_CONF_REFSEL;
+>  
+>  	st->conf &= ~AD7192_CONF_CHOP;
+> @@ -859,11 +871,30 @@ static const struct iio_chan_spec ad7193_channels[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(14),
+>  };
+>  
+> +static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
+> +	[ID_AD7190] = {
+> +		.chip_id = CHIPID_AD7190,
+> +		.name = "ad7190",
+> +	},
+> +	[ID_AD7192] = {
+> +		.chip_id = CHIPID_AD7192,
+> +		.name = "ad7192",
+> +	},
+> +	[ID_AD7193] = {
+> +		.chip_id = CHIPID_AD7193,
+> +		.name = "ad7193",
+> +	},
+> +	[ID_AD7195] = {
+> +		.chip_id = CHIPID_AD7195,
+> +		.name = "ad7195",
+> +	},
+> +};
+> +
+>  static int ad7192_channels_config(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7192_state *st = iio_priv(indio_dev);
+>  
+> -	switch (st->devid) {
+> +	switch (st->chip_info->chip_id) {
+>  	case ID_AD7193:
+>  		indio_dev->channels = ad7193_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(ad7193_channels);
+> @@ -878,10 +909,10 @@ static int ad7192_channels_config(struct iio_dev *indio_dev)
 >  }
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 2158aeab0bd2..794aaa4be832 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1737,18 +1737,11 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
 >  
->  	iio_device_register_debugfs(indio_dev);
->  
-> -	ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
-> -	if (ret) {
-> -		dev_err(indio_dev->dev.parent,
-> -			"Failed to create buffer sysfs interfaces\n");
-> -		goto error_unreg_debugfs;
-> -	}
-> -
->  	ret = iio_device_register_sysfs(indio_dev);
->  	if (ret) {
->  		dev_err(indio_dev->dev.parent,
->  			"Failed to register sysfs interfaces\n");
-> -		goto error_buffer_free_sysfs;
-> +		goto error_free_sysfs;
+>  static const struct of_device_id ad7192_of_match[] = {
+> -	{ .compatible = "adi,ad7190", .data = (void *)ID_AD7190 },
+> -	{ .compatible = "adi,ad7192", .data = (void *)ID_AD7192 },
+> -	{ .compatible = "adi,ad7193", .data = (void *)ID_AD7193 },
+> -	{ .compatible = "adi,ad7195", .data = (void *)ID_AD7195 },
+> +	{ .compatible = "adi,ad7190", .data = &ad7192_chip_info_tbl[ID_AD7190] },
+> +	{ .compatible = "adi,ad7192", .data = &ad7192_chip_info_tbl[ID_AD7192] },
+> +	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
+> +	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, ad7192_of_match);
+> @@ -938,16 +969,16 @@ static int ad7192_probe(struct spi_device *spi)
 >  	}
->  	ret = iio_device_register_eventset(indio_dev);
->  	if (ret) {
-> @@ -1785,9 +1778,6 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->  	iio_device_unregister_eventset(indio_dev);
->  error_free_sysfs:
->  	iio_device_unregister_sysfs(indio_dev);
-> -error_buffer_free_sysfs:
-> -	iio_buffer_free_sysfs_and_mask(indio_dev);
-> -error_unreg_debugfs:
->  	iio_device_unregister_debugfs(indio_dev);
->  	return ret;
->  }
-> @@ -1818,8 +1808,6 @@ void iio_device_unregister(struct iio_dev *indio_dev)
->  	iio_buffer_wakeup_poll(indio_dev);
 >  
->  	mutex_unlock(&indio_dev->info_exist_lock);
-> -
-> -	iio_buffer_free_sysfs_and_mask(indio_dev);
->  }
->  EXPORT_SYMBOL(iio_device_unregister);
+>  	spi_set_drvdata(spi, indio_dev);
+> -	st->devid = (unsigned long)of_device_get_match_data(&spi->dev);
+> +	st->chip_info = of_device_get_match_data(&spi->dev);
+>  	indio_dev->dev.parent = &spi->dev;
+> -	indio_dev->name = spi_get_device_id(spi)->name;
+> +	indio_dev->name = st->chip_info->name;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
 >  
+>  	ret = ad7192_channels_config(indio_dev);
+>  	if (ret < 0)
+>  		goto error_disable_dvdd;
+>  
+> -	if (st->devid == ID_AD7195)
+> +	if (st->chip_info->chip_id == CHIPID_AD7195)
+>  		indio_dev->info = &ad7195_info;
+>  	else
+>  		indio_dev->info = &ad7192_info;
 

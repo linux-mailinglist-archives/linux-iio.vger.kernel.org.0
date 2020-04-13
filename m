@@ -1,336 +1,140 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F4E1A6545
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 12:38:03 +0200 (CEST)
+Received: from vger.kernel.org (unknown [209.132.180.67])
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1661A622A
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Apr 2020 06:31:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgDMKiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Apr 2020 06:38:03 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:57546 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727776AbgDMKiC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Apr 2020 06:38:02 -0400
-Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74] helo=phil.lan)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <heiko@sntech.de>)
-        id 1jNlJh-0006wK-EU; Mon, 13 Apr 2020 00:43:05 +0200
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        heiko@sntech.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        xxm@rock-chips.com, kever.yang@rock-chips.com,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
-Subject: [PATCH v3] iio: adc: rockchip_saradc: Add support iio buffers
-Date:   Mon, 13 Apr 2020 00:42:51 +0200
-Message-Id: <20200412224251.2919182-1-heiko@sntech.de>
-X-Mailer: git-send-email 2.24.1
+        id S1728698AbgDMEbe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Apr 2020 00:31:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:60482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbgDMEbd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Apr 2020 00:31:33 -0400
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7841C0A3BE0
+        for <linux-iio@vger.kernel.org>; Sun, 12 Apr 2020 21:31:33 -0700 (PDT)
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03D4TxJD018435;
+        Mon, 13 Apr 2020 00:31:31 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-00128a01.pphosted.com with ESMTP id 30b7namy4r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Apr 2020 00:31:31 -0400
+Received: from m0167091.ppops.net (m0167091.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03D4VVPW020322;
+        Mon, 13 Apr 2020 00:31:31 -0400
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2103.outbound.protection.outlook.com [104.47.55.103])
+        by mx0b-00128a01.pphosted.com with ESMTP id 30b7namy4p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Apr 2020 00:31:31 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TAqhjsBFXh8TYJtEIw+MDV3vdOeNgOAhKgfRUGnrJ9URMssTPyK4MlOU5Zn0SQFopFSCblg6Ty7xNRdBAwoFWSzbhYil3ATIaSqTRz1/WJl3k2W8qqd9DUhDQX2DjsRJU5w1RVx31jz9hkDsoGTlaa3eFr70lqI8FAHWFdnsMDyiuxSskDVnABKQS1i2D41Z4KiWrvtB/tOhq4YfIcuc6staE5mCdWThkethgDgi9n3RtkHZBYYtZwKDStwSfPXSDQGvsIAiT+m7LOt178JUdvDMDHKgCdjVdYQRLHsa9TsODsVu8I/0K1F/78rFIFhHu6tVCAkov8BqBIzVdjozng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aa4C5tCupXqq3zrA+yolso65TahkTenWC6e/euv7Ndc=;
+ b=RYTFgYHFAK9kGpwOxIlgp5A6sYtHYyIVKLx7O+NmJXQTaZtCy/5/NAd2IS8YeIFepxlv+8xeU9NslThl8VQhQSq07+RL7aUSnpqyKAEGdiKgGa54rQPSThPDnFnLua/XPOh+/HPA3zL8cZqKbHhQDI13ev8Q2UekqmoBq7/8nHAzaFymrIIMpsKkrLJRsy9cRrUkUFRe4vMWaHCl7eYSVrL4pW+Eh01yGV/EODwlGsdVRfYjfbS26l/zf+r/sgj97+HIF/sRhHVK0T1s6Zci7Jof7KldgXSq67ppPje7FWjTLTwRnrTc/IhIPlagmqdrvTLNakBgbTce46Qv0WnSdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aa4C5tCupXqq3zrA+yolso65TahkTenWC6e/euv7Ndc=;
+ b=zyswlUB0/iigQTfUQJRSJbt82+7PipR1OOOP+b9+9HkRXyd2MQgYbAVRkZhGX5P++dE2ZIs7IQkXU1wFybtkJuivvOFMASFTLPGkQRmxPdV+v6gPSeJigfWpRfQOBGFpEhEO51bYJWC9DYqSIWnlDURtA0eNDNGJO6yffKdS3sE=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB3787.namprd03.prod.outlook.com (2603:10b6:5:44::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.17; Mon, 13 Apr
+ 2020 04:31:29 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2900.026; Mon, 13 Apr 2020
+ 04:31:29 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 1/6] iio:accel:mxc4005: Drop unnecessary explicit casts in
+ regmap_bulk_read calls
+Thread-Topic: [PATCH 1/6] iio:accel:mxc4005: Drop unnecessary explicit casts
+ in regmap_bulk_read calls
+Thread-Index: AQHWC3TZRHKV9xGe106JQLG1in8ocqh2gvYA
+Date:   Mon, 13 Apr 2020 04:31:29 +0000
+Message-ID: <6372edb1b9f88fdae77ad46d0b26388a99ba9c43.camel@analog.com>
+References: <20200405180321.1737310-1-jic23@kernel.org>
+         <20200405180321.1737310-2-jic23@kernel.org>
+In-Reply-To: <20200405180321.1737310-2-jic23@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [188.27.135.58]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 2f6cf437-4940-4016-6341-08d7df638948
+x-ms-traffictypediagnostic: DM6PR03MB3787:
+x-microsoft-antispam-prvs: <DM6PR03MB37874344D6B85ED3DBECA850F9DD0@DM6PR03MB3787.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3631;
+x-forefront-prvs: 037291602B
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(366004)(136003)(376002)(396003)(346002)(39850400004)(478600001)(110136005)(5660300002)(6512007)(36756003)(54906003)(2906002)(186003)(76116006)(26005)(316002)(91956017)(66946007)(66476007)(64756008)(66556008)(66446008)(4326008)(81156014)(2616005)(86362001)(8936002)(6486002)(71200400001)(6506007)(8676002);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: kyEQZhBy7XpCL0OeHpV4lvFojWDNkwr+jgha0K6X7EiFQThcYod9zyFTutEE5soejprWgKRY31nyCVurADZhMdvA8NZj+krV9yK9DsGJYcRr84R3/WJaDtVVQc95L325NjFoM3+uuhnZIrgShufBrS7s3eeZBnr6tc19OTjnNwOZZPfwmcShmGnmLVmE7YeSwDVaDeGK65V0bOp05ymypFchCiK4LJ4riyJGnYT4D0sJVaHBWAicfNzAFQWwlKmUX6zcLsUAe9STRuoFanq2yGNGGVElul1NdEajjW/M2s8rCmxEgkhIfs9uwWXfBsAbYMCBVmYpTE5tIEaIqpAYgpvWDswL9IGsonWnOfYRoazOP/H6SLOkDYTI4IwOBuK/5u6yvnEGwTj0dmWd2YJHPRpa69Hh9dcSJxexbUc64a4p3EGEvsdZMPND/x6gtJGF
+x-ms-exchange-antispam-messagedata: ZDxG0K5wSBraPkl2Fst5yMB38uPJtfMQHGCVeqgY+EKnTcyIgREtu+9XoiA8h8XlSK+vA1L4IH+ze/R27dEaVjIJy9j/Foil51Wph3xnpLp98rSFXaXDycMJD++CZQYP6Oa3nQItQdLTI6d9/kD7Nw==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EC23D731EB0FDF4C8AA5218C107B4DFE@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f6cf437-4940-4016-6341-08d7df638948
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2020 04:31:29.2524
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OHK7fOcGWTN3yg2yIknATspuqoSmc/ipquPxaM8O3o9qd0yyQKfnrEtxGcnU+QIeAAIGJDubSZ4lIAUmdb8dBuv+OKZV9udwyW6LbIHMuCk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3787
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-13_01:2020-04-12,2020-04-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
+ clxscore=1015 impostorscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004130040
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Simon Xue <xxm@rock-chips.com>
-
-Add the ability to also support access via (triggered) buffers
-next to the existing direct mode.
-
-Device in question is the Odroid Go Advance that connects a joystick
-to two of the saradc channels for X and Y axis and the new (and still
-pending) adc joystick driver of course wants to use triggered buffers
-from the iio subsystem.
-
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
-[some simplifications and added commit description]
-Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
----
-changes in v3:
-- split buffer struct into values and timestamp area similar to dln2-adc
-  and make sure timestamp gets 8-byte aligned - ALIGN uses 4 as it aligns
-  u16 elements not bytes - hopefully I got it right this time ;-)
-changes in v2:
-- use devm_iio_triggered_buffer_setup
-- calculate data array size from channel number (curtesy of at91-sama5d2_adc)
-
- drivers/iio/adc/Kconfig           |   2 +
- drivers/iio/adc/rockchip_saradc.c | 146 ++++++++++++++++++++++--------
- 2 files changed, 112 insertions(+), 36 deletions(-)
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 12bb8b7ca1ff..8d2dd60614c6 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -809,6 +809,8 @@ config ROCKCHIP_SARADC
- 	tristate "Rockchip SARADC driver"
- 	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
- 	depends on RESET_CONTROLLER
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for the SARADC found in SoCs from
- 	  Rockchip.
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 582ba047c4a6..0713363a4b43 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -15,7 +15,11 @@
- #include <linux/delay.h>
- #include <linux/reset.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #define SARADC_DATA			0x00
- 
-@@ -32,9 +36,12 @@
- #define SARADC_DLY_PU_SOC_MASK		0x3f
- 
- #define SARADC_TIMEOUT			msecs_to_jiffies(100)
-+#define SARADC_MAX_CHANNELS		6
-+
-+/* buffer elements are u16, timestamp needs to be 8-byte aligned */
-+#define SARADC_BUFFER_NUM_U16	ALIGN(SARADC_MAX_CHANNELS, 4)
- 
- struct rockchip_saradc_data {
--	int				num_bits;
- 	const struct iio_chan_spec	*channels;
- 	int				num_channels;
- 	unsigned long			clk_rate;
-@@ -49,8 +56,37 @@ struct rockchip_saradc {
- 	struct reset_control	*reset;
- 	const struct rockchip_saradc_data *data;
- 	u16			last_val;
-+	const struct iio_chan_spec *last_chan;
- };
- 
-+static void rockchip_saradc_power_down(struct rockchip_saradc *info)
-+{
-+	/* Clear irq & power down adc */
-+	writel_relaxed(0, info->regs + SARADC_CTRL);
-+}
-+
-+static int rockchip_saradc_conversion(struct rockchip_saradc *info,
-+				   struct iio_chan_spec const *chan)
-+{
-+	reinit_completion(&info->completion);
-+
-+	/* 8 clock periods as delay between power up and start cmd */
-+	writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
-+
-+	info->last_chan = chan;
-+
-+	/* Select the channel to be used and trigger conversion */
-+	writel(SARADC_CTRL_POWER_CTRL
-+			| (chan->channel & SARADC_CTRL_CHN_MASK)
-+			| SARADC_CTRL_IRQ_ENABLE,
-+		   info->regs + SARADC_CTRL);
-+
-+	if (!wait_for_completion_timeout(&info->completion, SARADC_TIMEOUT))
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
- static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
- 				    struct iio_chan_spec const *chan,
- 				    int *val, int *val2, long mask)
-@@ -62,24 +98,12 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		mutex_lock(&indio_dev->mlock);
- 
--		reinit_completion(&info->completion);
--
--		/* 8 clock periods as delay between power up and start cmd */
--		writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
--
--		/* Select the channel to be used and trigger conversion */
--		writel(SARADC_CTRL_POWER_CTRL
--				| (chan->channel & SARADC_CTRL_CHN_MASK)
--				| SARADC_CTRL_IRQ_ENABLE,
--		       info->regs + SARADC_CTRL);
--
--		if (!wait_for_completion_timeout(&info->completion,
--						 SARADC_TIMEOUT)) {
--			writel_relaxed(0, info->regs + SARADC_CTRL);
-+		ret = rockchip_saradc_conversion(info, chan);
-+		if (ret) {
-+			rockchip_saradc_power_down(info);
- 			mutex_unlock(&indio_dev->mlock);
--			return -ETIMEDOUT;
-+			return ret;
- 		}
--
- 		*val = info->last_val;
- 		mutex_unlock(&indio_dev->mlock);
- 		return IIO_VAL_INT;
-@@ -91,7 +115,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
- 		}
- 
- 		*val = ret / 1000;
--		*val2 = info->data->num_bits;
-+		*val2 = chan->scan_type.realbits;
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 	default:
- 		return -EINVAL;
-@@ -104,10 +128,9 @@ static irqreturn_t rockchip_saradc_isr(int irq, void *dev_id)
- 
- 	/* Read value */
- 	info->last_val = readl_relaxed(info->regs + SARADC_DATA);
--	info->last_val &= GENMASK(info->data->num_bits - 1, 0);
-+	info->last_val &= GENMASK(info->last_chan->scan_type.realbits - 1, 0);
- 
--	/* Clear irq & power down adc */
--	writel_relaxed(0, info->regs + SARADC_CTRL);
-+	rockchip_saradc_power_down(info);
- 
- 	complete(&info->completion);
- 
-@@ -118,51 +141,55 @@ static const struct iio_info rockchip_saradc_iio_info = {
- 	.read_raw = rockchip_saradc_read_raw,
- };
- 
--#define ADC_CHANNEL(_index, _id) {				\
-+#define ADC_CHANNEL(_index, _id, _res) {			\
- 	.type = IIO_VOLTAGE,					\
- 	.indexed = 1,						\
- 	.channel = _index,					\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
- 	.datasheet_name = _id,					\
-+	.scan_index = _index,					\
-+	.scan_type = {						\
-+		.sign = 'u',					\
-+		.realbits = _res,				\
-+		.storagebits = 16,				\
-+		.endianness = IIO_LE,				\
-+	},							\
- }
- 
- static const struct iio_chan_spec rockchip_saradc_iio_channels[] = {
--	ADC_CHANNEL(0, "adc0"),
--	ADC_CHANNEL(1, "adc1"),
--	ADC_CHANNEL(2, "adc2"),
-+	ADC_CHANNEL(0, "adc0", 10),
-+	ADC_CHANNEL(1, "adc1", 10),
-+	ADC_CHANNEL(2, "adc2", 10),
- };
- 
- static const struct rockchip_saradc_data saradc_data = {
--	.num_bits = 10,
- 	.channels = rockchip_saradc_iio_channels,
- 	.num_channels = ARRAY_SIZE(rockchip_saradc_iio_channels),
- 	.clk_rate = 1000000,
- };
- 
- static const struct iio_chan_spec rockchip_rk3066_tsadc_iio_channels[] = {
--	ADC_CHANNEL(0, "adc0"),
--	ADC_CHANNEL(1, "adc1"),
-+	ADC_CHANNEL(0, "adc0", 12),
-+	ADC_CHANNEL(1, "adc1", 12),
- };
- 
- static const struct rockchip_saradc_data rk3066_tsadc_data = {
--	.num_bits = 12,
- 	.channels = rockchip_rk3066_tsadc_iio_channels,
- 	.num_channels = ARRAY_SIZE(rockchip_rk3066_tsadc_iio_channels),
- 	.clk_rate = 50000,
- };
- 
- static const struct iio_chan_spec rockchip_rk3399_saradc_iio_channels[] = {
--	ADC_CHANNEL(0, "adc0"),
--	ADC_CHANNEL(1, "adc1"),
--	ADC_CHANNEL(2, "adc2"),
--	ADC_CHANNEL(3, "adc3"),
--	ADC_CHANNEL(4, "adc4"),
--	ADC_CHANNEL(5, "adc5"),
-+	ADC_CHANNEL(0, "adc0", 10),
-+	ADC_CHANNEL(1, "adc1", 10),
-+	ADC_CHANNEL(2, "adc2", 10),
-+	ADC_CHANNEL(3, "adc3", 10),
-+	ADC_CHANNEL(4, "adc4", 10),
-+	ADC_CHANNEL(5, "adc5", 10),
- };
- 
- static const struct rockchip_saradc_data rk3399_saradc_data = {
--	.num_bits = 10,
- 	.channels = rockchip_rk3399_saradc_iio_channels,
- 	.num_channels = ARRAY_SIZE(rockchip_rk3399_saradc_iio_channels),
- 	.clk_rate = 1000000,
-@@ -193,6 +220,42 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
- 	reset_control_deassert(reset);
- }
- 
-+static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *i_dev = pf->indio_dev;
-+	struct rockchip_saradc *info = iio_priv(i_dev);
-+	struct {
-+		u16 values[SARADC_BUFFER_NUM_U16];
-+		int64_t timestamp;
-+	} data;
-+	int ret;
-+	int i, j = 0;
-+
-+	mutex_lock(&i_dev->mlock);
-+
-+	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
-+		const struct iio_chan_spec *chan = &i_dev->channels[i];
-+
-+		ret = rockchip_saradc_conversion(info, chan);
-+		if (ret) {
-+			rockchip_saradc_power_down(info);
-+			goto out;
-+		}
-+
-+		data.values[j] = info->last_val;
-+		j++;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(i_dev, &data, iio_get_time_ns(i_dev));
-+out:
-+	mutex_unlock(&i_dev->mlock);
-+
-+	iio_trigger_notify_done(i_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int rockchip_saradc_probe(struct platform_device *pdev)
- {
- 	struct rockchip_saradc *info = NULL;
-@@ -221,6 +284,11 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 
- 	info->data = match->data;
- 
-+	if (info->data->num_channels > SARADC_MAX_CHANNELS) {
-+		dev_err(&pdev->dev, "max channels exceeded");
-+		return -EINVAL;
-+	}
-+
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	info->regs = devm_ioremap_resource(&pdev->dev, mem);
- 	if (IS_ERR(info->regs))
-@@ -315,6 +383,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	indio_dev->channels = info->data->channels;
- 	indio_dev->num_channels = info->data->num_channels;
- 
-+	ret = devm_iio_triggered_buffer_setup(&indio_dev->dev, indio_dev, NULL,
-+					      rockchip_saradc_trigger_handler,
-+					      NULL);
-+	if (ret)
-+		goto err_clk;
-+
- 	ret = iio_device_register(indio_dev);
- 	if (ret)
- 		goto err_clk;
--- 
-2.24.1
-
+T24gU3VuLCAyMDIwLTA0LTA1IGF0IDE5OjAzICswMTAwLCBqaWMyM0BrZXJuZWwub3JnIHdyb3Rl
+Og0KPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxKb25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+
+DQo+IA0KPiByZWdtYXBfYnVsa19yZWFkIHRha2VzIGEgdm9pZCAqIGZvciBpdHMgdmFsIHBhcmFt
+ZXRlci4gSXQgY2VydGFpbmx5DQo+IG1ha2VzIG5vIHNlbnNlIHRvIGNhc3QgdG8gYSAodTggKikg
+KyBubyBuZWVkIHRvIGV4cGxpY2l0bHkgY2FzdA0KPiBhdCBhbGwgd2hlbiBjb252ZXJ0aW5nIGFu
+b3RoZXIgcG9pbnRlciB0eXBlIHRvIHZvaWQgKi4NCj4gDQoNClJldmlld2VkLWJ5OiBBbGV4YW5k
+cnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0KDQo+IFNpZ25lZC1v
+ZmYtYnk6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4g
+LS0tDQo+ICBkcml2ZXJzL2lpby9hY2NlbC9teGM0MDA1LmMgfCA0ICsrLS0NCj4gIDEgZmlsZSBj
+aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9paW8vYWNjZWwvbXhjNDAwNS5jIGIvZHJpdmVycy9paW8vYWNjZWwvbXhjNDAw
+NS5jDQo+IGluZGV4IDNkNWJlYTY1MTkyMy4uOWQwNzY0MmMwZGUxIDEwMDY0NA0KPiAtLS0gYS9k
+cml2ZXJzL2lpby9hY2NlbC9teGM0MDA1LmMNCj4gKysrIGIvZHJpdmVycy9paW8vYWNjZWwvbXhj
+NDAwNS5jDQo+IEBAIC0xMzUsNyArMTM1LDcgQEAgc3RhdGljIGludCBteGM0MDA1X3JlYWRfeHl6
+KHN0cnVjdCBteGM0MDA1X2RhdGEgKmRhdGEpDQo+ICAJaW50IHJldDsNCj4gIA0KPiAgCXJldCA9
+IHJlZ21hcF9idWxrX3JlYWQoZGF0YS0+cmVnbWFwLCBNWEM0MDA1X1JFR19YT1VUX1VQUEVSLA0K
+PiAtCQkJICAgICAgICh1OCAqKSBkYXRhLT5idWZmZXIsIHNpemVvZihkYXRhLT5idWZmZXIpKTsN
+Cj4gKwkJCSAgICAgICBkYXRhLT5idWZmZXIsIHNpemVvZihkYXRhLT5idWZmZXIpKTsNCj4gIAlp
+ZiAocmV0IDwgMCkgew0KPiAgCQlkZXZfZXJyKGRhdGEtPmRldiwgImZhaWxlZCB0byByZWFkIGF4
+ZXNcbiIpOw0KPiAgCQlyZXR1cm4gcmV0Ow0KPiBAQCAtMTUwLDcgKzE1MCw3IEBAIHN0YXRpYyBp
+bnQgbXhjNDAwNV9yZWFkX2F4aXMoc3RydWN0IG14YzQwMDVfZGF0YSAqZGF0YSwNCj4gIAlfX2Jl
+MTYgcmVnOw0KPiAgCWludCByZXQ7DQo+ICANCj4gLQlyZXQgPSByZWdtYXBfYnVsa19yZWFkKGRh
+dGEtPnJlZ21hcCwgYWRkciwgKHU4ICopICZyZWcsIHNpemVvZihyZWcpKTsNCj4gKwlyZXQgPSBy
+ZWdtYXBfYnVsa19yZWFkKGRhdGEtPnJlZ21hcCwgYWRkciwgJnJlZywgc2l6ZW9mKHJlZykpOw0K
+PiAgCWlmIChyZXQgPCAwKSB7DQo+ICAJCWRldl9lcnIoZGF0YS0+ZGV2LCAiZmFpbGVkIHRvIHJl
+YWQgcmVnICUwMnhcbiIsIGFkZHIpOw0KPiAgCQlyZXR1cm4gcmV0Ow0K

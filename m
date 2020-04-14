@@ -2,208 +2,538 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A561A7A9B
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 14:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2171A7D3A
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 15:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440035AbgDNMWt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 08:22:49 -0400
-Received: from esa6.microchip.iphmx.com ([216.71.154.253]:40185 "EHLO
-        esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2440031AbgDNMWs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 08:22:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1586866967; x=1618402967;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=yZhZu3Yw8d2fTjKDYWHyka/eeaxi09dz7wD87IiRzqs=;
-  b=QYBxqwdKaHrV9Yod/B11rb8tU5PMCk3NUCAR11tNEKpDQwP6B+rg4djx
-   2En4bqjorhfWw3UXnHFVh2RITXuIPnj/7qvcF8/8AaNeuPWqob3HqkEhQ
-   5vv0yPd9PuqQG3YbrED8oM5hEbvP45QTy3sHufTmvqX3jUU+FTXyw6Oms
-   1ydaEZWaP24tpkCMn+NHqFq0lP1w3dp4Q7XQt83QunSebtD6aU3LmT9fv
-   /bp6X7FBYButDZwC/1A4H4xLl1hjq6yHsE0Rbd3WwtOeyF2as11ztXWpb
-   aWbjNAhuAqIJQVf/MIyjCjpf5AK/LjAhU4at/UNAScPDc9IjYT3psSZk6
-   Q==;
-IronPort-SDR: zZ1MmLsD2jAugCsCPhMwbhPwEzbCdBftSOb5cnzVDb1C6Wsqi4dLxNiTIJxDppITUCw3bEMgep
- v+Vj0jBZqG4qvrtpECZGG9adtVgvrf//Bh8LFlBoAvRuW8fKY3/6KUlcCXusFwlS68UGFZYvPX
- i58T3QXGDx+RCJ0u54JL40yAFt1PqcuDrh+V5/pt833+HTq6ZVXDBBIaiINLioveJ/khvI7hRQ
- gK1OJFpfkL6DmTrbl+9IF4HsjgFmXd1lGrpAHdLPKW4cgds70WhxW4dYl3dNyvF2aXJU2DnuJs
- 9PY=
-X-IronPort-AV: E=Sophos;i="5.72,382,1580799600"; 
-   d="scan'208";a="9073660"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Apr 2020 05:22:47 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 14 Apr 2020 05:22:46 -0700
-Received: from NAM04-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5 via Frontend
- Transport; Tue, 14 Apr 2020 05:22:57 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lXhqA30l2pUB9D/r67s+kMi6rghRZcx7+UgKwl3paRK5AUykOnyHMFL0kRHa6a3BU0pa3P1AJog9taYTv1Gb8I1FUF1wrGGKpV0pvMg093Jm4hF+NknFaFbkn/6T33oWAWVLPU5jN19girXjYAhk/G5DAcMbSelQTqJHoeDSIdUaG6QS9qYaehGmA197I1FcZH9WvmytAucj05D3LgUhzjGEAwMJ5PLZ6MKE8mL698TreEKEwuWIOPBPuriMfXT9395knSA9LkrZ301Jin5vJdQTJfhuBIk3TkvoPqSjyMQZ8QCDdB2Wr++VYTFzw8/5eT1wMTHBtvOwiJL8tTF+gA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yZhZu3Yw8d2fTjKDYWHyka/eeaxi09dz7wD87IiRzqs=;
- b=cttHSGxhovUsTyGmRVgnf6ijpkKymolN1pn+fy+xB9kdkJwlRskZjA+XTQVzo96kSvDjVo63XZlVPr6mAfuft0YJBVclZ1rC4Ztb5QJp1hNCNshwqDEaYCUlOdNw5VxNSTpuTc8Fx/blXnmgb7+6wcY3C7V3/tZfkr/gSgsX0xsmTzuaZOO1R2KbBd1oNEX9MlhR/5DEk3U5Fl9lmTCCzvcPmDbYvdPcNzMf6PtCWVrernrqutQZmPjuQDK5h620z6DdzbAxPtUJBapRwecBzE8ZXpof2pGyZiI2NLq7GjrAsl5IhJpt26KdQmH+GqenSNFUKWHgyuQNUfVk3xgk6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yZhZu3Yw8d2fTjKDYWHyka/eeaxi09dz7wD87IiRzqs=;
- b=gOlCKiWI+tzckmYXy/b70tERYkK0qsWnjb47zCuv0hFFDHAUxMjELZ1UIoiqqtXgeGAP3lg2MMACmjJ+wSUQt8UDaNRTQwDH4K1dUsOYLmgvNaD83sLEE/jhOb9cJ1P4Wdi3/xQWohFEJmyDMKx3VThDJw9BxUpwVAQ4MwsQsHs=
-Received: from CY4PR11MB1605.namprd11.prod.outlook.com (2603:10b6:910:10::22)
- by CY4PR11MB1575.namprd11.prod.outlook.com (2603:10b6:910:10::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.26; Tue, 14 Apr
- 2020 12:22:45 +0000
-Received: from CY4PR11MB1605.namprd11.prod.outlook.com
- ([fe80::7c42:c3d3:aaa:88b]) by CY4PR11MB1605.namprd11.prod.outlook.com
- ([fe80::7c42:c3d3:aaa:88b%12]) with mapi id 15.20.2900.028; Tue, 14 Apr 2020
- 12:22:45 +0000
-From:   <Eugen.Hristev@microchip.com>
-To:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <Ludovic.Desroches@microchip.com>
-Subject: Re: [PATCH v2 1/2] iio: at91-sama5d2_adc: split
- at91_adc_current_chan_is_touch() helper
-Thread-Topic: [PATCH v2 1/2] iio: at91-sama5d2_adc: split
- at91_adc_current_chan_is_touch() helper
-Thread-Index: AQHV8gB3ISKFiu2vJ0SQVLw/xGJ2m6h3h5YAgAFDNIA=
-Date:   Tue, 14 Apr 2020 12:22:45 +0000
-Message-ID: <9315e9a7-0703-b119-ca32-69f0c2fcc7de@microchip.com>
-References: <20200304084219.20810-1-alexandru.ardelean@analog.com>
- <20200413180556.20638f3b@archlinux>
-In-Reply-To: <20200413180556.20638f3b@archlinux>
-Accept-Language: en-US, ro-RO
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Eugen.Hristev@microchip.com; 
-x-originating-ip: [86.120.188.33]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0194f1e4-1195-41b8-f4ff-08d7e06e8972
-x-ms-traffictypediagnostic: CY4PR11MB1575:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR11MB15757365386572A4350CDDA6E8DA0@CY4PR11MB1575.namprd11.prod.outlook.com>
-x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0373D94D15
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR11MB1605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(136003)(396003)(376002)(366004)(39840400004)(346002)(81156014)(8936002)(2906002)(966005)(54906003)(6512007)(4326008)(53546011)(8676002)(71200400001)(107886003)(316002)(6486002)(6506007)(478600001)(110136005)(76116006)(91956017)(5660300002)(186003)(86362001)(66476007)(26005)(36756003)(2616005)(66556008)(64756008)(66946007)(66446008)(31696002)(31686004)(309714004);DIR:OUT;SFP:1101;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ARp8NWJuj1RGanL8KQ9k8uVlujH/dBVTFlzlX86lq3qcf0ZUjWwlEbYxkt5Zg6x4zwJX0KAr4OHkZkr9CdRcobwaJLj1gq8G4QwizWbdo3UgMJCxbdMQZmV5nHxTQPOTtNtBKHFI2SRYmkh67EP/CSsG0E4FjbRQnwOKyqm9Yh5ZCxaEZBWxvl5avEZU8E28jZnCYaym0TSxUrOJ7yDq5fbfYkc3ZkDUpPYte7Ru2K9kADqTK/VDMP/vHfefNejInbyLHgaV0gVfI1yeZkKBl82IGmofm2QcePTyqgmKKVsnkBMhLEMH919xFPsjO7Nq8CHZxdPMMh9RonyboteHbODcNzvuWZ0dinR8AEk7y1cgvIW1lc4GJnl1cgZFyISHOU87jntF3UsMPkoC4LL2e2fG3NM8fpXMGQ5mZVKX06RNq8MoS4z28wk9W2VycpoT3n8FNMRDdZc6885fZcfmQlNKpUV+/V95yWdoc2ZfISzo6StJpsvekefdLsIADQaEzVXjsaXqH122LrOUDWNMJEF0akxdmaDcNahFz2htOMmVP4jR0yXtsvvMIOfNj16h
-x-ms-exchange-antispam-messagedata: MIKmMms/WE7LAtOrjt4D2+7DThAFbCukdS2qMOAMFT88t+x4Iw2PKEnoGGZJRsXXIifz71EK2tjB7m95ukTRyCUkEKkDQ78UP5n6V+Djv3nlazFRToTf8L1H4qo6ir1Hfa4ABQHvmLtI/NVIzy4QfA==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8492A23634214E40AEFB16EE553D7CE2@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1731233AbgDNNVX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 09:21:23 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:43570 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729104AbgDNNVK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 09:21:10 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id D5C782A18BD
+Subject: Re: [PATCH v2] drivers: counter: Add Cros EC Sync counter
+To:     Gwendal Grignou <gwendal@chromium.org>, vilhelm.gray@gmail.com,
+        jic23@kernel.org
+Cc:     bleung@chromium.org, groeck@chromium.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20200413195514.192868-1-gwendal@chromium.org>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <0500fa26-16df-858e-dce6-db53e3852b48@collabora.com>
+Date:   Tue, 14 Apr 2020 15:21:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0194f1e4-1195-41b8-f4ff-08d7e06e8972
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2020 12:22:45.0972
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Xu8ynMoLaBizO9jx/VB5jAWiyz4y1y+SWDwBLTv0eLIei/wxWpXrHftcktkizD7zXRMVa8OchIGxXbXn0iijnpMK01UmMDgHFufIeqj4bAo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR11MB1575
+In-Reply-To: <20200413195514.192868-1-gwendal@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gMTMuMDQuMjAyMCAyMDowNSwgSm9uYXRoYW4gQ2FtZXJvbiB3cm90ZToNCj4gT24gV2VkLCA0
-IE1hciAyMDIwIDEwOjQyOjE4ICswMjAwDQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1
-LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdyb3RlOg0KPiANCj4+IFRoaXMgY2hhbmdlIG1vdmVzIHRo
-ZSBsb2dpYyB0byBjaGVjayBpZiB0aGUgY3VycmVudCBjaGFubmVsIGlzIHRoZQ0KPj4gdG91Y2hz
-Y3JlZW4gY2hhbm5lbCB0byBhIHNlcGFyYXRlIGhlbHBlci4NCj4+IFRoaXMgcmVkdWNlcyBzb21l
-IGNvZGUgZHVwbGljYXRpb24sIGJ1dCB0aGUgbWFpbiBpbnRlbnQgaXMgdG8gcmUtdXNlIHRoaXMN
-Cj4+IGluIHRoZSBuZXh0IHBhdGNoZXMuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZHJ1
-IEFyZGVsZWFuIDxhbGV4YW5kcnUuYXJkZWxlYW5AYW5hbG9nLmNvbT4NCj4gRXVnZW4gLyBMdWRv
-dmljLA0KPiANCj4gSGF2ZSB5b3UgaGFkIGEgY2hhbmNlIHRvIGxvb2sgYXQgdGhpcyBzZXJpZXM/
-DQoNCkhpIEpvbmF0aGFuLA0KDQpEb2VzIHRoZSBwYXRjaCBhcHBseSBjb3JyZWN0bHkgZm9yIHlv
-dSA/DQpJIHdpbGwgdHJ5IHRvIHRlc3QgaXQgLCBpZiBJIG1hbmFnZSB0byBhcHBseSBpdC4NCkkg
-Y2FuIG9ubHkgdGVzdCB0aGUgQURDIHRob3VnaCBiZWNhdXNlIGF0IHRoaXMgbW9tZW50IEkgZG8g
-bm90IGhhdmUgYSANCnRvdWNoc2NyZWVuIGF0IGRpc3Bvc2FsLg0KDQpNZWFud2hpbGUsIHRoZSBj
-b2RlIGxvb2tzIGdvb2QgZm9yIG1lLA0KDQpSZXZpZXdlZC1ieTogRXVnZW4gSHJpc3RldiA8ZXVn
-ZW4uaHJpc3RldkBtaWNyb2NoaXAuY29tPg0KDQpCeSB0aGUgd2F5LCBJIGRvIG5vdCBrbm93IGlm
-IG15IHR3byBwZW5kaW5nIHBhdGNoZXMgb24gdGhpcyBkcml2ZXIgd2lsbCANCmNvbmZsaWN0IG9y
-IG5vdC4NCg0KRXVnZW4NCg0KPiANCj4gVGhhbmtzLA0KPiANCj4gSm9uYXRoYW4NCj4gDQo+PiAt
-LS0NCj4+DQo+PiBUaGlzIHBhdGNoc2V0IGNvbnRpbnVlcyBkaXNjdXNzaW9uOg0KPj4gICAgIGh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWlpby8yMDE5MTAyMzA4MjUwOC4xNzU4My0xLWFs
-ZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tLw0KPj4gQXBvbG9naWVzIGZvciB0aGUgZGVsYXku
-DQo+Pg0KPj4gQ2hhbmdlbG9nIHYxIC0+IHYyOg0KPj4gKiBhZGRlZCBwYXRjaCAnaWlvOiBhdDkx
-LXNhbWE1ZDJfYWRjOiBzcGxpdCBhdDkxX2FkY19jdXJyZW50X2NoYW5faXNfdG91Y2goKQ0KPj4g
-ICAgaGVscGVyJw0KPj4gKiByZW5hbWVkIGF0OTFfYWRjX2J1ZmZlcl9wb3N0ZW5hYmxlKCkgLT4g
-YXQ5MV9hZGNfYnVmZmVyX3ByZWVuYWJsZSgpDQo+PiAgICAtIGF0OTFfYWRjX2J1ZmZlcl9wb3N0
-ZW5hYmxlKCkgLSBub3cganVzdCBjYWxscw0KPj4gICAgICBpaW9fdHJpZ2dlcmVkX2J1ZmZlcl9w
-b3N0ZW5hYmxlKCkgaWYgdGhlIGNoYW5uZWwgaXNuJ3QgdGhlIHRvdWNoc2NyZWVuDQo+PiAgICAg
-IGNoYW5uZWwNCj4+ICogcmVuYW1lZCBhdDkxX2FkY19idWZmZXJfcHJlZGlzYWJsZSgpIC0+IGF0
-OTFfYWRjX2J1ZmZlcl9wb3N0ZGlzYWJsZSgpDQo+PiAgICAtIGF0OTFfYWRjX2J1ZmZlcl9wcmVk
-aXNhYmxlKCkgLSBub3cganVzdCBjYWxscw0KPj4gICAgICBpaW9fdHJpZ2dlcmVkX2J1ZmZlcl9w
-cmVkaXNhYmxlKCkgaWYgdGhlIGNoYW5uZWwgaXNuJ3QgdGhlIHRvdWNoc2NyZWVuDQo+PiAgICAg
-IGNoYW5uZWwNCj4+DQo+PiAgIGRyaXZlcnMvaWlvL2FkYy9hdDkxLXNhbWE1ZDJfYWRjLmMgfCAz
-MSArKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDE1
-IGluc2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2
-ZXJzL2lpby9hZGMvYXQ5MS1zYW1hNWQyX2FkYy5jIGIvZHJpdmVycy9paW8vYWRjL2F0OTEtc2Ft
-YTVkMl9hZGMuYw0KPj4gaW5kZXggYTVjNzc3MTIyN2Q1Li5mMmE3NGM0N2M3NjggMTAwNjQ0DQo+
-PiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvYXQ5MS1zYW1hNWQyX2FkYy5jDQo+PiArKysgYi9kcml2
-ZXJzL2lpby9hZGMvYXQ5MS1zYW1hNWQyX2FkYy5jDQo+PiBAQCAtODczLDE4ICs4NzMsMjQgQEAg
-c3RhdGljIGludCBhdDkxX2FkY19kbWFfc3RhcnQoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikN
-Cj4+ICAgICAgICByZXR1cm4gMDsNCj4+ICAgfQ0KPj4NCj4+ICtzdGF0aWMgYm9vbCBhdDkxX2Fk
-Y19jdXJyZW50X2NoYW5faXNfdG91Y2goc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikNCj4+ICt7
-DQo+PiArICAgICBzdHJ1Y3QgYXQ5MV9hZGNfc3RhdGUgKnN0ID0gaWlvX3ByaXYoaW5kaW9fZGV2
-KTsNCj4+ICsNCj4+ICsgICAgIHJldHVybiAhIWJpdG1hcF9zdWJzZXQoaW5kaW9fZGV2LT5hY3Rp
-dmVfc2Nhbl9tYXNrLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAmc3QtPnRvdWNo
-X3N0LmNoYW5uZWxzX2JpdG1hc2ssDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFU
-OTFfU0FNQTVEMl9NQVhfQ0hBTl9JRFggKyAxKTsNCj4+ICt9DQo+PiArDQo+PiAgIHN0YXRpYyBp
-bnQgYXQ5MV9hZGNfYnVmZmVyX3Bvc3RlbmFibGUoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikN
-Cj4+ICAgew0KPj4gICAgICAgIGludCByZXQ7DQo+PiAgICAgICAgc3RydWN0IGF0OTFfYWRjX3N0
-YXRlICpzdCA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+Pg0KPj4gICAgICAgIC8qIGNoZWNrIGlm
-IHdlIGFyZSBlbmFibGluZyB0cmlnZ2VyZWQgYnVmZmVyIG9yIHRoZSB0b3VjaHNjcmVlbiAqLw0K
-Pj4gLSAgICAgaWYgKGJpdG1hcF9zdWJzZXQoaW5kaW9fZGV2LT5hY3RpdmVfc2Nhbl9tYXNrLA0K
-Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgJnN0LT50b3VjaF9zdC5jaGFubmVsc19iaXRtYXNr
-LA0KPj4gLSAgICAgICAgICAgICAgICAgICAgICAgQVQ5MV9TQU1BNUQyX01BWF9DSEFOX0lEWCAr
-IDEpKSB7DQo+PiAtICAgICAgICAgICAgIC8qIHRvdWNoc2NyZWVuIGVuYWJsaW5nICovDQo+PiAr
-ICAgICBpZiAoYXQ5MV9hZGNfY3VycmVudF9jaGFuX2lzX3RvdWNoKGluZGlvX2RldikpDQo+PiAg
-ICAgICAgICAgICAgICByZXR1cm4gYXQ5MV9hZGNfY29uZmlndXJlX3RvdWNoKHN0LCB0cnVlKTsN
-Cj4+IC0gICAgIH0NCj4+ICsNCj4+ICAgICAgICAvKiBpZiB3ZSBhcmUgbm90IGluIHRyaWdnZXJl
-ZCBtb2RlLCB3ZSBjYW5ub3QgZW5hYmxlIHRoZSBidWZmZXIuICovDQo+PiAgICAgICAgaWYgKCEo
-aW5kaW9fZGV2LT5jdXJyZW50bW9kZSAmIElORElPX0FMTF9UUklHR0VSRURfTU9ERVMpKQ0KPj4g
-ICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7DQo+PiBAQCAtOTA2LDEyICs5MTIsOSBAQCBz
-dGF0aWMgaW50IGF0OTFfYWRjX2J1ZmZlcl9wcmVkaXNhYmxlKHN0cnVjdCBpaW9fZGV2ICppbmRp
-b19kZXYpDQo+PiAgICAgICAgdTggYml0Ow0KPj4NCj4+ICAgICAgICAvKiBjaGVjayBpZiB3ZSBh
-cmUgZGlzYWJsaW5nIHRyaWdnZXJlZCBidWZmZXIgb3IgdGhlIHRvdWNoc2NyZWVuICovDQo+PiAt
-ICAgICBpZiAoYml0bWFwX3N1YnNldChpbmRpb19kZXYtPmFjdGl2ZV9zY2FuX21hc2ssDQo+PiAt
-ICAgICAgICAgICAgICAgICAgICAgICAmc3QtPnRvdWNoX3N0LmNoYW5uZWxzX2JpdG1hc2ssDQo+
-PiAtICAgICAgICAgICAgICAgICAgICAgICBBVDkxX1NBTUE1RDJfTUFYX0NIQU5fSURYICsgMSkp
-IHsNCj4+IC0gICAgICAgICAgICAgLyogdG91Y2hzY3JlZW4gZGlzYWJsZSAqLw0KPj4gKyAgICAg
-aWYgKGF0OTFfYWRjX2N1cnJlbnRfY2hhbl9pc190b3VjaChpbmRpb19kZXYpKQ0KPj4gICAgICAg
-ICAgICAgICAgcmV0dXJuIGF0OTFfYWRjX2NvbmZpZ3VyZV90b3VjaChzdCwgZmFsc2UpOw0KPj4g
-LSAgICAgfQ0KPj4gKw0KPj4gICAgICAgIC8qIGlmIHdlIGFyZSBub3QgaW4gdHJpZ2dlcmVkIG1v
-ZGUsIG5vdGhpbmcgdG8gZG8gaGVyZSAqLw0KPj4gICAgICAgIGlmICghKGluZGlvX2Rldi0+Y3Vy
-cmVudG1vZGUgJiBJTkRJT19BTExfVFJJR0dFUkVEX01PREVTKSkNCj4+ICAgICAgICAgICAgICAg
-IHJldHVybiAtRUlOVkFMOw0KPj4gQEAgLTE4ODYsMTQgKzE4ODksMTAgQEAgc3RhdGljIF9fbWF5
-YmVfdW51c2VkIGludCBhdDkxX2FkY19yZXN1bWUoc3RydWN0IGRldmljZSAqZGV2KQ0KPj4gICAg
-ICAgICAgICAgICAgcmV0dXJuIDA7DQo+Pg0KPj4gICAgICAgIC8qIGNoZWNrIGlmIHdlIGFyZSBl
-bmFibGluZyB0cmlnZ2VyZWQgYnVmZmVyIG9yIHRoZSB0b3VjaHNjcmVlbiAqLw0KPj4gLSAgICAg
-aWYgKGJpdG1hcF9zdWJzZXQoaW5kaW9fZGV2LT5hY3RpdmVfc2Nhbl9tYXNrLA0KPj4gLSAgICAg
-ICAgICAgICAgICAgICAgICAgJnN0LT50b3VjaF9zdC5jaGFubmVsc19iaXRtYXNrLA0KPj4gLSAg
-ICAgICAgICAgICAgICAgICAgICAgQVQ5MV9TQU1BNUQyX01BWF9DSEFOX0lEWCArIDEpKSB7DQo+
-PiAtICAgICAgICAgICAgIC8qIHRvdWNoc2NyZWVuIGVuYWJsaW5nICovDQo+PiArICAgICBpZiAo
-YXQ5MV9hZGNfY3VycmVudF9jaGFuX2lzX3RvdWNoKGluZGlvX2RldikpDQo+PiAgICAgICAgICAg
-ICAgICByZXR1cm4gYXQ5MV9hZGNfY29uZmlndXJlX3RvdWNoKHN0LCB0cnVlKTsNCj4+IC0gICAg
-IH0gZWxzZSB7DQo+PiArICAgICBlbHNlDQo+PiAgICAgICAgICAgICAgICByZXR1cm4gYXQ5MV9h
-ZGNfY29uZmlndXJlX3RyaWdnZXIoc3QtPnRyaWcsIHRydWUpOw0KPj4gLSAgICAgfQ0KPj4NCj4+
-ICAgICAgICAvKiBub3QgbmVlZGVkIGJ1dCBtb3JlIGV4cGxpY2l0ICovDQo+PiAgICAgICAgcmV0
-dXJuIDA7DQo+IA0KDQo=
+Hi Gwendal,
+
+Thank you for your patch.
+
+On 13/4/20 21:55, Gwendal Grignou wrote:
+> When the camera vsync pin is connected to the embedded controller (EC) of
+> a chromebook, the EC reports a sensor with a counter that increases
+> at each GPIO rising edge.
+> 
+> The sensor is presented using the counter subsystem.
+> In addition, it is also presented via the IIO subsystem with a timestamp,
+> allowing synchronisation with sensors connected to the same EC, for
+> image stabilisation or augmented reality applications.
+> 
+> To enable the counter:
+> via counter ABI:
+> echo "rising edge" > counterX/count0/signal_action
+> via iio ABI
+> echo 1 > iio:deviceY/en
+> 
+> To disable the counter:
+> via counter ABI:
+> echo "none" > counterX/count0/signal_action
+> via iio ABI
+> echo 0 > iio:deviceY/en
+> 
+> To read the current counter value:
+> via counter ABI:
+> cat counterX/count0/count
+> via iio ABI
+> cat iio:deviceY/in_count_raw
+> We can also read the value through the IIO buffer:
+> echo 1 > iio:deviceY/scan_elements/in_timestamp_en
+> echo 1 > iio:deviceY/scan_elements/in_count_en
+> echo 1 > iio:deviceY/buffer/enable
+> 
+> and each time to counter increase, the following binary blob
+> will be appended to dev/iio:deviceY:
+> 000f 0000 0000 0000 dc66 816c 0071 0000
+>  \   <-- padding -> <-- timestamp ---->
+>   count
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+> Changes in v2:
+> - fix license.
+> - remove extra unlock.
+> 
+>  drivers/counter/Kconfig                       |  11 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/cros_ec_sync.c                | 332 ++++++++++++++++++
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    |  15 +
+>  drivers/platform/chrome/cros_ec_sensorhub.c   |   3 +
+
+From the chrome-platform side:
+
+Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+
+Hopefully the IIO and counter maintainers can give you more specific feedback.
+
+Thanks,
+ Enric
+
+>  .../linux/iio/common/cros_ec_sensors_core.h   |   4 +-
+>  6 files changed, 365 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/counter/cros_ec_sync.c
+> 
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index c80fa76bb5311..18fde918ff40b 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -29,6 +29,17 @@ config 104_QUAD_8
+>  	  The base port addresses for the devices may be configured via the base
+>  	  array module parameter.
+>  
+> +config CROS_EC_SYNC
+> +	tristate "ChromeOS EC Counter driver"
+> +	depends on IIO_CROS_EC_SENSORS_CORE
+> +	help
+> +	  Module to handle synchronisation sensor presented by the ChromeOS EC
+> +	  Sensor hub.
+> +	  Synchronisation sensor sends event to the host when the camera
+> +	  take a picture. It allows synchronisation with other MEMS sensor,
+> +	  like gyroscope for image statbilization or augmented reality
+> +	  application (AR).
+> +
+>  config STM32_TIMER_CNT
+>  	tristate "STM32 Timer encoder counter driver"
+>  	depends on MFD_STM32_TIMERS || COMPILE_TEST
+> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
+> index 55142d1f4c436..98378fca50ad6 100644
+> --- a/drivers/counter/Makefile
+> +++ b/drivers/counter/Makefile
+> @@ -6,6 +6,7 @@
+>  obj-$(CONFIG_COUNTER) += counter.o
+>  
+>  obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
+> +obj-$(CONFIG_CROS_EC_SYNC)	+= cros_ec_sync.o
+>  obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
+>  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
+>  obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
+> diff --git a/drivers/counter/cros_ec_sync.c b/drivers/counter/cros_ec_sync.c
+> new file mode 100644
+> index 0000000000000..4e644d651fde6
+> --- /dev/null
+> +++ b/drivers/counter/cros_ec_sync.c
+> @@ -0,0 +1,332 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Driver for synchronisation sensor behind CrOS EC.
+> + *
+> + * Copyright 2020 Google LLC.
+> + *
+> + * This driver uses the cros-ec interface to communicate with the Chrome OS
+> + * EC about counter sensors. Counters are presented through
+> + * iio sysfs.
+> + */
+> +
+> +#include <linux/counter.h>
+> +#include <linux/device.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/common/cros_ec_sensors_core.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_data/cros_ec_commands.h>
+> +#include <linux/platform_data/cros_ec_proto.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +
+> +/*
+> + * One channel for counter, the other for timestamp.
+> + */
+> +#define MAX_CHANNELS (1 + 1)
+> +
+> +/**
+> + * struct cros_ec_sync_state - device structure
+> + *
+> + * @core: common structure for all cros_ec sensor.
+> + *        Must be at the beggining.
+> + * @channels: presented iio channels(2).
+> + * @counter: counter data structure.
+> + */
+> +struct cros_ec_sync_state {
+> +	struct cros_ec_sensors_core_state core;
+> +	struct iio_chan_spec channels[MAX_CHANNELS];
+> +	struct counter_device counter;
+> +};
+> +
+> +/**
+> + * cros_ec_sync_get_enable() - Check if the counter is enabled.
+> + *
+> + * @st:     core cros_ec sensor
+> + * @val:    status: 0: disabled, 1 enabled.
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +static int cros_ec_sync_get_enable(struct cros_ec_sensors_core_state *st,
+> +				   int *val)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->cmd_lock);
+> +	st->param.cmd = MOTIONSENSE_CMD_SENSOR_ODR;
+> +	st->param.sensor_odr.data = EC_MOTION_SENSE_NO_VALUE;
+> +
+> +	ret = cros_ec_motion_send_host_cmd(st, 0);
+> +	mutex_unlock(&st->cmd_lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = !!st->resp->sensor_odr.ret;
+> +	return 0;
+> +}
+> +
+> +/**
+> + * cros_ec_sync_set_enable() - Allow the counter to count.
+> + *
+> + * When enable, the counter will increase for each VSYNC rising edge
+> + * and will produce an event in the iio buffer, if enabled.
+> + *
+> + * @st:     core cros_ec sensor
+> + * @val:    0: disable, 1 enable.
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +static int cros_ec_sync_set_enable(struct cros_ec_sensors_core_state *st,
+> +				   int val)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->cmd_lock);
+> +	st->param.cmd = MOTIONSENSE_CMD_SENSOR_ODR;
+> +	st->param.sensor_odr.data = val;
+> +	st->param.sensor_odr.roundup = 1;
+> +
+> +	ret = cros_ec_motion_send_host_cmd(st, 0);
+> +	mutex_unlock(&st->cmd_lock);
+> +	return ret;
+> +}
+> +
+> +static int cros_ec_sync_iio_read(struct iio_dev *indio_dev,
+> +				 struct iio_chan_spec const *chan,
+> +				 int *val, int *val2, long mask)
+> +{
+> +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+> +	u16 data;
+> +	int ret;
+> +	int idx = chan->scan_index;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		mutex_lock(&st->cmd_lock);
+> +		ret = cros_ec_sensors_read_cmd(indio_dev, 1 << idx, &data);
+> +		mutex_unlock(&st->cmd_lock);
+> +		if (ret < 0)
+> +			break;
+> +		ret = IIO_VAL_INT;
+> +		*val = data;
+> +		break;
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		ret = cros_ec_sync_get_enable(st, val);
+> +		if (ret < 0)
+> +			break;
+> +		ret = IIO_VAL_INT;
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +		break;
+> +	}
+> +	return ret;
+> +}
+> +
+> +static int cros_ec_sync_iio_write(struct iio_dev *indio_dev,
+> +				  struct iio_chan_spec const *chan,
+> +				  int val, int val2, long mask)
+> +{
+> +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		if (val < 0 || val > 1)
+> +			return -EINVAL;
+> +
+> +		return cros_ec_sync_set_enable(st, val);
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info cros_ec_sync_info = {
+> +	.read_raw = &cros_ec_sync_iio_read,
+> +	.write_raw = &cros_ec_sync_iio_write,
+> +};
+> +
+> +/* The counter can only increase, so only one function present. */
+> +static enum counter_count_function cros_ec_sync_functions[] = {
+> +	COUNTER_COUNT_FUNCTION_INCREASE,
+> +};
+> +
+> +/* 2 synapse actions allowed: count for each rising edge, or not. */
+> +static enum counter_synapse_action cros_ec_sync_synapse_actions[] = {
+> +	COUNTER_SYNAPSE_ACTION_NONE,
+> +	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+> +};
+> +
+> +static int cros_ec_sync_read_count(struct counter_device *counter,
+> +				   struct counter_count *count,
+> +				   unsigned long *val)
+> +{
+> +	struct cros_ec_sensors_core_state *st = counter->priv;
+> +	u16 raw;
+> +	int ret;
+> +
+> +	mutex_lock(&st->cmd_lock);
+> +	ret = cros_ec_sensors_read_cmd(iio_priv_to_dev(st), 1, &raw);
+> +	mutex_unlock(&st->cmd_lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = raw;
+> +	return 0;
+> +}
+> +
+> +static int cros_ec_sync_function_get(struct counter_device *counter,
+> +				     struct counter_count *count,
+> +				     size_t *function)
+> +{
+> +	*function = 0;
+> +	return 0;
+> +}
+> +
+> +static int cros_ec_sync_action_get(struct counter_device *counter,
+> +				   struct counter_count *count,
+> +				   struct counter_synapse *synapse,
+> +				   size_t *action)
+> +{
+> +	struct cros_ec_sensors_core_state *st = counter->priv;
+> +	int ret;
+> +	int raw;
+> +
+> +	ret = cros_ec_sync_get_enable(st, &raw);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*action = !!raw;
+> +	return 0;
+> +}
+> +
+> +static int cros_ec_sync_action_set(struct counter_device *counter,
+> +				   struct counter_count *count,
+> +				   struct counter_synapse *synapse,
+> +				   size_t action)
+> +{
+> +	struct cros_ec_sensors_core_state *st = counter->priv;
+> +
+> +	return cros_ec_sync_set_enable(st, action);
+> +}
+> +
+> +static const struct counter_ops cros_ec_sync_ops = {
+> +	.count_read = cros_ec_sync_read_count,
+> +	.function_get = cros_ec_sync_function_get,
+> +	.action_get = cros_ec_sync_action_get,
+> +	.action_set = cros_ec_sync_action_set,
+> +};
+> +
+> +static struct counter_signal cros_ec_sync_signals[] = {
+> +	{
+> +		.id = 0,
+> +		.name = "vsync"
+> +	}
+> +};
+> +
+> +static struct counter_synapse cros_ec_sync_synapses[] = {
+> +	{
+> +		.actions_list = cros_ec_sync_synapse_actions,
+> +		.num_actions = ARRAY_SIZE(cros_ec_sync_synapse_actions),
+> +		.signal = cros_ec_sync_signals
+> +	}
+> +};
+> +
+> +static struct counter_count cros_ec_sync_counts[] = {
+> +	{
+> +		.id = 0,
+> +		.name = "vsync",
+> +		.functions_list = cros_ec_sync_functions,
+> +		.num_functions = ARRAY_SIZE(cros_ec_sync_functions),
+> +		.synapses = cros_ec_sync_synapses,
+> +		.num_synapses = ARRAY_SIZE(cros_ec_sync_synapses),
+> +	}
+> +};
+> +
+> +static int cros_ec_sync_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct cros_ec_sync_state *state;
+> +	struct iio_chan_spec *channel;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> +					cros_ec_sensors_capture,
+> +					cros_ec_sensors_push_data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->info = &cros_ec_sync_info;
+> +	state = iio_priv(indio_dev);
+> +
+> +	/* Initialize IIO device */
+> +	channel = state->channels;
+> +
+> +	/* Counter channel */
+> +	channel->type = IIO_COUNT;
+> +	channel->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+> +	channel->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_ENABLE);
+> +	channel->scan_type.realbits = CROS_EC_SENSOR_BITS;
+> +	channel->scan_type.storagebits = CROS_EC_SENSOR_BITS;
+> +	channel->scan_type.shift = 0;
+> +	channel->scan_index = 0;
+> +	channel->ext_info = cros_ec_sensors_limited_info;
+> +	channel->scan_type.sign = 'u';
+> +
+> +	/* Timestamp channel */
+> +	channel++;
+> +	channel->type = IIO_TIMESTAMP;
+> +	channel->channel = -1;
+> +	channel->scan_index = 1;
+> +	channel->scan_type.sign = 's';
+> +	channel->scan_type.realbits = 64;
+> +	channel->scan_type.storagebits = 64;
+> +
+> +	indio_dev->channels = state->channels;
+> +	indio_dev->num_channels = MAX_CHANNELS;
+> +
+> +	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+> +
+> +	/* Initialize Counter device */
+> +	state->counter.name = dev_name(&pdev->dev);
+> +	state->counter.parent = &pdev->dev;
+> +	state->counter.ops = &cros_ec_sync_ops;
+> +	state->counter.counts = cros_ec_sync_counts;
+> +	state->counter.num_counts = ARRAY_SIZE(cros_ec_sync_counts);
+> +	state->counter.signals = cros_ec_sync_signals;
+> +	state->counter.num_signals = ARRAY_SIZE(cros_ec_sync_signals);
+> +	state->counter.priv = state;
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_counter_register(dev, &state->counter);
+> +}
+> +
+> +static const struct platform_device_id cros_ec_sync_ids[] = {
+> +	{
+> +		.name = "cros-ec-sync",
+> +	},
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(platform, cros_ec_sync_ids);
+> +
+> +static struct platform_driver cros_ec_sync_platform_driver = {
+> +	.driver = {
+> +		.name	= "cros-ec-sync",
+> +	},
+> +	.probe		= cros_ec_sync_probe,
+> +	.id_table	= cros_ec_sync_ids,
+> +};
+> +module_platform_driver(cros_ec_sync_platform_driver);
+> +
+> +MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
+> +MODULE_DESCRIPTION("ChromeOS EC synchronisation sensor driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index c831915ca7e56..3a15094616710 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -31,6 +31,7 @@
+>  static char *cros_ec_loc[] = {
+>  	[MOTIONSENSE_LOC_BASE] = "base",
+>  	[MOTIONSENSE_LOC_LID] = "lid",
+> +	[MOTIONSENSE_LOC_CAMERA] = "camera",
+>  	[MOTIONSENSE_LOC_MAX] = "unknown",
+>  };
+>  
+> @@ -467,6 +468,20 @@ const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[] = {
+>  };
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_ext_info);
+>  
+> +const struct iio_chan_spec_ext_info cros_ec_sensors_limited_info[] = {
+> +	{
+> +		.name = "id",
+> +		.shared = IIO_SHARED_BY_ALL,
+> +		.read = cros_ec_sensors_id
+> +	},
+> +	{
+> +		.name = "location",
+> +		.shared = IIO_SHARED_BY_ALL,
+> +		.read = cros_ec_sensors_loc
+> +	},
+> +	{ },
+> +};
+> +EXPORT_SYMBOL_GPL(cros_ec_sensors_limited_info);
+>  /**
+>   * cros_ec_sensors_idx_to_reg - convert index into offset in shared memory
+>   * @st:		pointer to state information for device
+> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
+> index b7f2c00db5e1e..e4ae0868d1e06 100644
+> --- a/drivers/platform/chrome/cros_ec_sensorhub.c
+> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
+> @@ -106,6 +106,9 @@ static int cros_ec_sensorhub_register(struct device *dev,
+>  		case MOTIONSENSE_TYPE_ACTIVITY:
+>  			name = "cros-ec-activity";
+>  			break;
+> +		case MOTIONSENSE_TYPE_SYNC:
+> +			name = "cros-ec-sync";
+> +			break;
+>  		default:
+>  			dev_warn(dev, "unknown type %d\n",
+>  				 sensorhub->resp->info.type);
+> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> index 7bc961defa87e..e416b28cf24c7 100644
+> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> @@ -114,7 +114,9 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+>  			       struct iio_chan_spec const *chan,
+>  			       int val, int val2, long mask);
+>  
+> -/* List of extended channel specification for all sensors */
+> +/* List of extended channel specification for all sensors. */
+> +extern const struct iio_chan_spec_ext_info cros_ec_sensors_limited_info[];
+> +/* Add calibration to set above. */
+>  extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
+>  extern const struct attribute *cros_ec_sensor_fifo_attributes[];
+>  
+> 

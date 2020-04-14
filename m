@@ -2,76 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D79D51A89D9
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C581A89DF
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504146AbgDNSlg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 14:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49788 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2504143AbgDNSlf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 14:41:35 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72F4C061A0E
-        for <linux-iio@vger.kernel.org>; Tue, 14 Apr 2020 11:41:32 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id o81so8656449wmo.2
-        for <linux-iio@vger.kernel.org>; Tue, 14 Apr 2020 11:41:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=engebretsen.ch; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=T5w85/Anw13tnbFJIsbgQbaUb8qEVJINnyZH/cS+SFA=;
-        b=jsnljtSlvswR2ovcKd+fXLvdcJQndwCSqeK0GipEcGER4ywfKTkpnJNqj4mcZqIpMR
-         2o5ibNYzD0C7iHDKnfXG7hhjArAkjF6s+im2cJuvtdrA3h+9ZlzV5cM/lJo33et812yJ
-         IUESe4hIAw6xyL0FSzSgPhcYz4Zi9Gjv4z8Ew=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=T5w85/Anw13tnbFJIsbgQbaUb8qEVJINnyZH/cS+SFA=;
-        b=JSIY2mwSrgAr9aCsFX1T6grXKMS9cprHVXWxnZHU2m4Z5uH6VeSiqT4MIHrOPNAjCE
-         IfOUG7gGtZuhP72h31rvKbwQuLXl9Sy+6zsx1Nzsx8Dw+5QZmRlZdBM0ZISLmLOOLXYd
-         Q/vQDMedhalweLa+4QDuU4L4WhPkDKJLlYOdiMomX2yfXK9/GoEL/WBFe5zDXUvS9nYS
-         MILaplC9cMMf2vdikgZkCtkIFVhYNFaxQMMUcWAARtDoGIBY2p/DKz0BhojXxd70hNuq
-         IXTM2Ic+O9/efunAqauW8aDLdBctmUFDfYC+62rkRf6Pv8tNfWEwwRXE3pFby6Xpg6ux
-         JSlQ==
-X-Gm-Message-State: AGi0PuZTdxWOKwza1BDHV6Aj2DZpCSZ6UdC8puo41hFOyMv4JF/PrfYy
-        7jXl0pjaZQvwtZ0J01T6OUdx/+NvnJKIsw==
-X-Google-Smtp-Source: APiQypL+0lwar/HungBo6Fq2I5YAeBElDe10v88NDnRwHd8hW/C6LhUu7ylWSAU9d6M5gPmbyZufuQ==
-X-Received: by 2002:a7b:cb86:: with SMTP id m6mr1108996wmi.64.1586889691181;
-        Tue, 14 Apr 2020 11:41:31 -0700 (PDT)
-Received: from server.home ([2a02:120b:2c74:f040:98c9:7cd5:92ab:c7f4])
-        by smtp.gmail.com with ESMTPSA id d7sm20095555wrr.77.2020.04.14.11.41.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2020 11:41:30 -0700 (PDT)
-From:   Lars Engebretsen <lars@engebretsen.ch>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic@kernel.org, Lars Engebretsen <lars@engebretsen.ch>
-Subject: [PATCH] iio: core: remove extra semi-colon from devm_iio_device_register() macro
-Date:   Tue, 14 Apr 2020 20:41:28 +0200
-Message-Id: <20200414184128.22957-1-lars@engebretsen.ch>
+        id S2504167AbgDNSmE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 14:42:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38536 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504161AbgDNSmA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:42:00 -0400
+Received: from localhost.localdomain (unknown [157.50.36.11])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 61E0920575;
+        Tue, 14 Apr 2020 18:41:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586889720;
+        bh=EhY9S7dYktQbTuIZZ+wU/JMgDZdSEmh036QER0H/G2M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U4ZF0K8SxXm5K4rBnwdSwk7lQv4BmApw+SQ1/NgzveVvzzZEZ00gZRpc6nY1IoG2l
+         XCgHn+7N1x8iFSxpTXMaH6ZvERfoJo+wPSPt5lkc6sIdQrwytgD882sSKCA/RvByvU
+         Da0zFbYLM+0tDK91cfVRWz6rjnkks2qjvxzdgagU=
+From:   mani@kernel.org
+To:     jic23@kernel.org, robh+dt@kernel.org, narcisaanamaria12@gmail.com
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, andy.shevchenko@gmail.com,
+        Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH v3 0/3] Add Reset and Wakeup support for CCS811
+Date:   Wed, 15 Apr 2020 00:11:44 +0530
+Message-Id: <20200414184147.4857-1-mani@kernel.org>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Signed-off-by: Lars Engebretsen <lars@engebretsen.ch>
----
- include/linux/iio/iio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+From: Manivannan Sadhasivam <mani@kernel.org>
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index d63884a54939..76ba7c9fd3e0 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -597,7 +597,7 @@ void iio_device_unregister(struct iio_dev *indio_dev);
-  * 0 on success, negative error number on failure.
-  */
- #define devm_iio_device_register(dev, indio_dev) \
--	__devm_iio_device_register((dev), (indio_dev), THIS_MODULE);
-+	__devm_iio_device_register((dev), (indio_dev), THIS_MODULE)
- int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
- 			       struct module *this_mod);
- int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+Hello,
+
+This patchset adds external reset and wakeup support for CCS811 VOC
+gas sensor. The nRESET and nWAKE pins available on the device are
+utilised to provide these functionalities.
+
+The patchset has been validated using CCS811 connected to STM32MP1 based
+board over I2C.
+
+While at it, the devicetree yaml binding and OF match table for this sensor
+are also added.
+
+Thanks,
+Mani
+
+Changes in v3:
+
+* Added ccs811_set_wake(false) to all error paths before calling it actually
+* Added Andy's reviewed-by tag
+* Added comment for reset procedure and dropped error print for gpio request
+
+Changes in v2:
+
+* Fixed DT binding schema and switched to dual license (GPL/BSD)
+* Returned actual error code from devm_gpiod_get_optional()
+* Dropped of.h include and of_match_ptr()
+
+Manivannan Sadhasivam (3):
+  iio: chemical: Add support for external Reset and Wakeup in CCS811
+  iio: chemical: Add OF match table for CCS811 VOC sensor
+  dt-bindings: serial: Add binding for software flow control in STM32
+    UART
+
+ .../bindings/serial/st,stm32-uart.yaml        |  15 ++-
+ drivers/iio/chemical/ccs811.c                 | 112 ++++++++++++++++--
+ 2 files changed, 115 insertions(+), 12 deletions(-)
+
 -- 
 2.17.1
 

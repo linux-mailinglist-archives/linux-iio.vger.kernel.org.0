@@ -2,118 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD491A8805
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 19:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC94F1A8852
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503085AbgDNRzA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 13:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729303AbgDNRy5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 13:54:57 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA93C061A0C;
-        Tue, 14 Apr 2020 10:54:57 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id y12so231917pll.2;
-        Tue, 14 Apr 2020 10:54:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rnzfUDYxEvrxL/hRN3b8DZ36m1G+UapytgfgeqmXarc=;
-        b=swBZHQ+jeuu12Wr0DzOy4+d7GhoNyfBfqvvcT6dufJgPIVxKZLFx6afFv3bN+nYF1u
-         cW8OwvCjLY8uzqBvvxfU7UwQIxZktJnZ6k4SjTe/YR02adq03/7nTLm9qYizxFtTT5Vn
-         BFqdyN4/o2+d5f/rdKzmku3S+qRp1+oCN+nwc1xttnYlqJBGYMwD7f5I7QIMKp2k42qa
-         N1rLFy76U84nz1m9K3oPvpg3vWYK3Lus7H9iqk+7LYFIZHshp5+7SeNcQ96fTIYPVUhI
-         2/NRjlxvwGxGhRnTvQF/41ItaC89soYy5Vbvi4XF1l+k3b3CtnemHemG958vucbjsu7y
-         S8Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rnzfUDYxEvrxL/hRN3b8DZ36m1G+UapytgfgeqmXarc=;
-        b=a7BcWTXfO1FPEKpv/4gEJUJIwaqC4AGYimfzLwnUlvdO/hcSzVvopXB7cpe7SUtK5H
-         VpMQlK2jIlOiKHzWJid0/laeBR2J1eEb6OUoWYlBdkw65uzNqWC4TMXFETOpAtDaqU15
-         wqHHXeliaNjRztEouXpsCYZ+T9Zd/Gu6I87f/MrGV7mhXBk7/WD3LHPZtNof1wYDyeYp
-         Z5TKqB/SjVdSzUft/F/98XX+v8csKj5mG2RcIwzRi0niS+ZL0DsBLucZkWasScPzHaUj
-         2eQGamBzbFw6waRRlldj9tiY8vM/DTXvkyrsBQdsC2EZFSLRhZsURlIOR3GrUXHsDiU3
-         SmcQ==
-X-Gm-Message-State: AGi0PuZfU59qudvJXJYSqviQHSE08mB1kVEP/ySQIdOHX8NGcgVzHvp2
-        X4AXFy0K78FqXYmDLwqLvSoUyDGwM4JpyMtrQd8=
-X-Google-Smtp-Source: APiQypLhumr4MJTllRY/t3SmDpj5VuGCv8QLFhjePjpnX+8t78azioJLwE+BGzZDSVtfTJLeDKmwIpL7GsgVCgMz/FY=
-X-Received: by 2002:a17:902:5985:: with SMTP id p5mr1063294pli.262.1586886896754;
- Tue, 14 Apr 2020 10:54:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200414153415.957-1-mani@kernel.org> <20200414153415.957-3-mani@kernel.org>
- <CAHp75Vf1wzBD+r5L7XFPW=ydxFLBfBNr6Jc4b6sMWR4Rci-Acw@mail.gmail.com> <20200414170547.GB3334@Mani-XPS-13-9360>
-In-Reply-To: <20200414170547.GB3334@Mani-XPS-13-9360>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 14 Apr 2020 20:54:49 +0300
-Message-ID: <CAHp75Vfk3aw30j8U+BJiobU6s2KsOis_VyUv4+6csbYLFnV9eg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: chemical: Add support for external Reset and
- Wakeup in CCS811
-To:     Manivannan Sadhasivam <mani@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, narcisaanamaria12@gmail.com,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S2503283AbgDNSCq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 14:02:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58798 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2503187AbgDNSB1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:01:27 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3922A20767;
+        Tue, 14 Apr 2020 18:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586887287;
+        bh=PtAFfHJJmm+j+Kb6LPSRoxHltnduIZpLutVkxDiIp6M=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=PNGC55v0Lk+cz0A6FXEaVrU1+fhb/3ILrbT3nI3yKEMti6V/jdpmJEqkcIzPAVtUW
+         pm/J+Q3/0/XbKwkpE9qJ1O0MrF/cz56h3K53dF2MyIKuWxOxyUCAwXHqHcvviyZkzq
+         3Xpro0hMvZ+5shzFBI0w52SsOG8ok9SJpGIQZQeE=
+Date:   Tue, 14 Apr 2020 19:01:22 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Steve Winslow <swinslow@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: patch set ltc2632
+Message-ID: <20200414190122.6881a478@archlinux>
+In-Reply-To: <20200414062648.19013-1-chris.ruehl@gtsys.com.hk>
+References: <20200414062648.19013-1-chris.ruehl@gtsys.com.hk>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 8:06 PM Manivannan Sadhasivam <mani@kernel.org> wrote:
-> On Tue, Apr 14, 2020 at 07:42:24PM +0300, Andy Shevchenko wrote:
-> > On Tue, Apr 14, 2020 at 6:34 PM <mani@kernel.org> wrote:
+On Tue, 14 Apr 2020 14:26:43 +0800
+Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
 
-...
+> Patchset to extend ltc2632 spi driver to support the similar chip set
+> ltc2634.
+> * Patch v2 1/3 update documentation struct ltc2632_chip_info
+> * Patch v2 2/3 patch ltc2632.c,Kconfig,ltc2632.txt(devtree)
+> * Patch v2 3/3 convert ltc2632.txt to yaml format named lltc,ltc2632.yaml
+Hi Chris,
 
-> > > +       reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-> > > +                                            GPIOD_OUT_LOW);
-> > > +       if (IS_ERR(reset_gpio)) {
-> >
-> > > +               dev_err(&client->dev, "Failed to acquire reset gpio\n");
-> >
-> > If it's a deferred probe, it would spam the log.
-> >
->
-> Hmm. But error is an error isn't it? Would you recommend doing a debug print
-> or completely removing the logging?
+Still something going on with your git send-email.  Are you sending these one
+by one perhaps?  Or maybe have something odd in your .git/config?
 
-I would remove completely, but better to wait for Jonathan to comment.
-Maybe he prefers something like
-  if (err != EPROBE_DEFER)
-    dev_err()
+These have turned up as a series of independent messages as the in-reply-to
+field isn't set in the patches (which should point to this one).
+git-send-email will do that automatically by default if pointed at all the
+files in one go.
 
-> > > +               return PTR_ERR(reset_gpio);
-> > > +       }
-> >
-> > ...
-> >
-> > > +               static const u8 reset_seq[] = {
-> > > +                       0xFF, 0x11, 0xE5, 0x72, 0x8A,
-> > > +               };
-> >
-> > I would suggest to comment above from where you got this and the
-> > meaning of the numbers.
-> >
->
-> The datasheet doesn't specify the meaning of these values. But will add a
-> comment.
+Thanks,
 
-Thanks!
+Jonathan
+> 
+> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+> ---
+> 
 
-> Btw, just noticed that 0xFF is not needed and only 4 values are
-> sufficient for SW reset.
-
-Better to do exactly what datasheet suggests (in case it's not clear
-or deductible what is going on).
-
--- 
-With Best Regards,
-Andy Shevchenko

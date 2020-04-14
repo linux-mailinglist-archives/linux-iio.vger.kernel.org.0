@@ -2,248 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0EB81A8869
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D94F51A8897
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407747AbgDNSDo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 14:03:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60308 "EHLO mail.kernel.org"
+        id S2503395AbgDNSGg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 14:06:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33862 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407740AbgDNSDk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 14 Apr 2020 14:03:40 -0400
+        id S2503394AbgDNSGd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:06:33 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF7DA20767;
-        Tue, 14 Apr 2020 18:03:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E524420767;
+        Tue, 14 Apr 2020 18:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586887419;
-        bh=s0vw9/h6V53cDi9aP+QP3fsdH0r5SY++04AJLWiVtjI=;
+        s=default; t=1586887592;
+        bh=Q3OyjLxd6V7sXDninaj5vQ+tDQMP5JCucrq9XJnj4jg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VpUZpDw3U5FG2CIbGLaRE29UUI822ujJhQpeRf1mwwk7xJRFmYKARyrKntORlrPGN
-         kmnFTwirXz0bzQs4UppgmQWR7XuuhRDp9QN6JrCB5yiOCVOuhUgqg7bvnGfDTJ8Q4p
-         Xi6BBXOdO0SZtm2JfeGqVPg7BeuaaVtX+mzMnmCE=
-Date:   Tue, 14 Apr 2020 19:03:36 +0100
+        b=qJfNNloyUkTzPZ08qkeZmoG7gff5nYyrP/RIHx7/sptpDcvD9nTRsZ4oEVeVnu8YB
+         MMNtNNnKdzCIOmnFtia5gA+Qi3QnXnuLPbUYsMvLEqQST6UjoNJSaHD6HxEfPNaebP
+         klNdk8pAn2fzqFWUmYySCKFo7m3qozbVVS6aNjf8=
+Date:   Tue, 14 Apr 2020 19:06:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: DAC extension for ltc2634-12/10/8
-Message-ID: <20200414190336.388df40d@archlinux>
-In-Reply-To: <872ae273-48f5-a576-656b-5e011b7beee6@gtsys.com.hk>
-References: <20200414062717.19124-1-chris.ruehl@gtsys.com.hk>
-        <alpine.DEB.2.21.2004140920210.21841@vps.pmeerw.net>
-        <872ae273-48f5-a576-656b-5e011b7beee6@gtsys.com.hk>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: core: register chardev only if needed
+Message-ID: <20200414190629.2d85759e@archlinux>
+In-Reply-To: <20200414083656.7696-1-alexandru.ardelean@analog.com>
+References: <20200414083656.7696-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Apr 2020 17:49:50 +0800
-Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
+On Tue, 14 Apr 2020 11:36:56 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Hi Peter,
->=20
-> good eyes!
->=20
-> On 14/4/2020 3:29 pm, Peter Meerwald-Stadler wrote:
-> >> This patch add support for Analog Devices (Linear Technology)
-> >> LTC2634 Quad 12-/10-/8-Bit Rail-to-Rail DAC.
-> >> The SPI functionality based on them from LTC2632 therefor
-> >> add the definitions only and update the Kconfig. =20
-> > comments below
-> >    =20
-> >> V2:
-> >> Send the documentation fix in a extra patch
-> >> Kconfig simplify the driver description, details to the help text
-> >> ltc2632.txt add to this patch-set (prepare to convert to yaml)
-> >>
-> >> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-> >> ---
-> >>   .../devicetree/bindings/iio/dac/ltc2632.txt   |  8 ++-
-> >>   drivers/iio/dac/Kconfig                       |  6 +-
-> >>   drivers/iio/dac/ltc2632.c                     | 60 +++++++++++++++++=
-++
-> >>   3 files changed, 70 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/D=
-ocumentation/devicetree/bindings/iio/dac/ltc2632.txt
-> >> index 338c3220f01a..1ab9570cf219 100644
-> >> --- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> >> +++ b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> >> @@ -1,4 +1,4 @@
-> >> -Linear Technology LTC2632/2636 DAC
-> >> +Linear Technology LTC2632/2634/2636 DAC
-> >>  =20
-> >>   Required properties:
-> >>    - compatible: Has to contain one of the following:
-> >> @@ -8,6 +8,12 @@ Required properties:
-> >>   	lltc,ltc2632-h12
-> >>   	lltc,ltc2632-h10
-> >>   	lltc,ltc2632-h8
-> >> +	lltc,ltc2634-l12
-> >> +	lltc,ltc2634-l10
-> >> +	lltc,ltc2634-l8
-> >> +	lltc,ltc2634-h12
-> >> +	lltc,ltc2634-h10
-> >> +	lltc,ltc2634-h8
-> >>   	lltc,ltc2636-l12
-> >>   	lltc,ltc2636-l10
-> >>   	lltc,ltc2636-l8
-> >> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> >> index 93744011b63f..aee13ced6ddf 100644
-> >> --- a/drivers/iio/dac/Kconfig
-> >> +++ b/drivers/iio/dac/Kconfig
-> >> @@ -279,12 +279,12 @@ config LTC1660
-> >>   	  module will be called ltc1660.
-> >>  =20
-> >>   config LTC2632
-> >> -	tristate "Linear Technology LTC2632-12/10/8 and LTC2636-12/10/8 DAC =
-spi driver"
-> >> +	tristate "Linear Technology LTC2632-12/10/8 and similar DAC spi driv=
-er"
-> >>   	depends on SPI
-> >>   	help
-> >>   	  Say yes here to build support for Linear Technology
-> >> -	  LTC2632-12, LTC2632-10, LTC2632-8, LTC2636-12, LTC2636-10 and
-> >> -	  LTC2636-8 converters (DAC).
-> >> +	  LTC2632, LTC2634 and LTC2636 DAC resolution 12/10/8 bit
-> >> +	  low 0-2.5V and high 0-4,096V range converters. =20
-> > this should be 0-4.096V?
-> > use consistent decimal separator =20
-> that call to reformat the patch indeed.
->=20
-> > =20
-> >>  =20
-> >>   	  To compile this driver as a module, choose M here: the
-> >>   	  module will be called ltc2632.
-> >> diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
-> >> index 2a84ea654645..e939d7f81014 100644
-> >> --- a/drivers/iio/dac/ltc2632.c
-> >> +++ b/drivers/iio/dac/ltc2632.c
-> >> @@ -54,6 +54,12 @@ enum ltc2632_supported_device_ids {
-> >>   	ID_LTC2632H12,
-> >>   	ID_LTC2632H10,
-> >>   	ID_LTC2632H8,
-> >> +	ID_LTC2634L12,
-> >> +	ID_LTC2634L10,
-> >> +	ID_LTC2634L8,
-> >> +	ID_LTC2634H12,
-> >> +	ID_LTC2634H10,
-> >> +	ID_LTC2634H8,
-> >>   	ID_LTC2636L12,
-> >>   	ID_LTC2636L10,
-> >>   	ID_LTC2636L8,
-> >> @@ -236,6 +242,36 @@ static const struct ltc2632_chip_info ltc2632_chi=
-p_info_tbl[] =3D {
-> >>   		.num_channels	=3D 2,
-> >>   		.vref_mv	=3D 4096,
-> >>   	},
-> >> +	[ID_LTC2634L12] =3D {
-> >> +		.channels	=3D ltc2632x12_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 2500,
-> >> +	},
-> >> +	[ID_LTC2634L10] =3D {
-> >> +		.channels	=3D ltc2632x10_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 2500,
-> >> +	},
-> >> +	[ID_LTC2634L8] =3D  {
-> >> +		.channels	=3D ltc2632x8_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 2500,
-> >> +	},
-> >> +	[ID_LTC2634H12] =3D {
-> >> +		.channels	=3D ltc2632x12_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 4096,
-> >> +	},
-> >> +	[ID_LTC2634H10] =3D {
-> >> +		.channels	=3D ltc2632x10_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 4096,
-> >> +	},
-> >> +	[ID_LTC2634H8] =3D  {
-> >> +		.channels	=3D ltc2632x8_channels,
-> >> +		.num_channels	=3D 4,
-> >> +		.vref_mv	=3D 4096,
-> >> +	},
-> >>   	[ID_LTC2636L12] =3D {
-> >>   		.channels	=3D ltc2632x12_channels,
-> >>   		.num_channels	=3D 8,
-> >> @@ -357,6 +393,12 @@ static const struct spi_device_id ltc2632_id[] =
-=3D {
-> >>   	{ "ltc2632-h12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H=
-12] },
-> >>   	{ "ltc2632-h10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H=
-10] },
-> >>   	{ "ltc2632-h8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H8=
-] },
-> >> +	{ "ltc2634-l12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L1=
-2] }, =20
-> > is kernel_ulong_t the correct type here?
-> >
-> > i.e. guaranteed to hold a pointer value, such as uintptr_t in C?
-> > it seems so, but why not use uintptr_t? =20
-> I tried not to change a running system, only 'extend' the functionality o=
-f the
-> driver.=C2=A0 I leave this to Jonathan, to decide if we touch that cast o=
-r not.
-For avoidance of doubt:
-1) Like Andy said
-2) Any change would need to be a separate patch from this one anyway.
+> The final intent is to localize all buffer ops into the
+> industrialio-buffer.c file, to be able to add support for multiple buffers
+> per IIO device.
+> 
+> We only need a chardev if we need to support buffers and/or events.
+> 
+> With this change, a chardev will be created:
+> 1. if there is an IIO buffer attached OR
+> 2. if there is an event_interface configured
+> 
+> Otherwise, no chardev will be created.
+> Quite a lot of IIO devices don't really need a chardev, so this is a minor
+> improvement to the IIO core, as the IIO device will take up fewer
+> resources.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+> 
+> Changelog v1 -> v2:
+> * split away from series 'iio: core,buffer: re-organize chardev creation';
+>   i'm getting the feeling that this has some value on it's own;
+>   no idea if it needs 'Fixes' tag; it is a bit fuzzy to point to a patch
+>   which this would be fixed by this; i'm guessing it would be fine
+>   without one
+
+I'd argue it's an 'optimization' rather than a fix :)
+
+Still looks good to me but I'd like it to sit for a little while to
+see if anyone points out something we are both missing!
+
+Thanks for tidying this up.
 
 Jonathan
 
->=20
->=20
-> >> +	{ "ltc2634-l10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L1=
-0] },
-> >> +	{ "ltc2634-l8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L8]=
- },
-> >> +	{ "ltc2634-h12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H1=
-2] },
-> >> +	{ "ltc2634-h10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H1=
-0] },
-> >> +	{ "ltc2634-h8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H8]=
- },
-> >>   	{ "ltc2636-l12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L=
-12] },
-> >>   	{ "ltc2636-l10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L=
-10] },
-> >>   	{ "ltc2636-l8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L8=
-] },
-> >> @@ -386,6 +428,24 @@ static const struct of_device_id ltc2632_of_match=
-[] =3D {
-> >>   	}, {
-> >>   		.compatible =3D "lltc,ltc2632-h8",
-> >>   		.data =3D &ltc2632_chip_info_tbl[ID_LTC2632H8]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-l12",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634L12]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-l10",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634L10]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-l8",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634L8]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-h12",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634H12]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-h10",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634H10]
-> >> +	}, {
-> >> +		.compatible =3D "lltc,ltc2634-h8",
-> >> +		.data =3D &ltc2632_chip_info_tbl[ID_LTC2634H8]
-> >>   	}, {
-> >>   		.compatible =3D "lltc,ltc2636-l12",
-> >>   		.data =3D &ltc2632_chip_info_tbl[ID_LTC2636L12]
-> >> =20
->=20
+> 
+>  drivers/iio/industrialio-core.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index f4daf19f2a3b..32e72d9fd1e9 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1676,6 +1676,15 @@ static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
+>  
+>  static const struct iio_buffer_setup_ops noop_ring_setup_ops;
+>  
+> +static const struct file_operations iio_event_fileops = {
+> +	.release = iio_chrdev_release,
+> +	.open = iio_chrdev_open,
+> +	.owner = THIS_MODULE,
+> +	.llseek = noop_llseek,
+> +	.unlocked_ioctl = iio_ioctl,
+> +	.compat_ioctl = compat_ptr_ioctl,
+> +};
+> +
+>  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  {
+>  	int ret;
+> @@ -1726,7 +1735,10 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  		indio_dev->setup_ops == NULL)
+>  		indio_dev->setup_ops = &noop_ring_setup_ops;
+>  
+> -	cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> +	if (indio_dev->buffer)
+> +		cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> +	else if (indio_dev->event_interface)
+> +		cdev_init(&indio_dev->chrdev, &iio_event_fileops);
+>  
+>  	indio_dev->chrdev.owner = this_mod;
+>  
+> @@ -1754,7 +1766,8 @@ EXPORT_SYMBOL(__iio_device_register);
+>   **/
+>  void iio_device_unregister(struct iio_dev *indio_dev)
+>  {
+> -	cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+> +	if (indio_dev->buffer || indio_dev->event_interface)
+> +		cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+>  
+>  	mutex_lock(&indio_dev->info_exist_lock);
+>  
 

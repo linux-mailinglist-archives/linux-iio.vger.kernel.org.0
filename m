@@ -2,95 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E92851A76A2
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 10:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4135B1A76EC
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 11:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437205AbgDNIwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 04:52:34 -0400
-Received: from relay6-d.mail.gandi.net ([217.70.183.198]:60025 "EHLO
-        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437158AbgDNIv6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 04:51:58 -0400
-X-Originating-IP: 78.193.40.249
-Received: from kb-xps (unknown [78.193.40.249])
-        (Authenticated sender: kamel.bouhara@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 07CFBC0013;
-        Tue, 14 Apr 2020 08:51:54 +0000 (UTC)
-Date:   Tue, 14 Apr 2020 10:51:53 +0200
-From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] ARM: at91: add atmel tcb capabilities
-Message-ID: <20200414085153.GC161090@kb-xps>
-References: <20200409141401.321222-1-kamel.bouhara@bootlin.com>
- <20200409141401.321222-2-kamel.bouhara@bootlin.com>
- <20200412113137.1763f084@archlinux>
+        id S2437361AbgDNJFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 05:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44550 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437356AbgDNJFW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 05:05:22 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7049CC0A3BD0;
+        Tue, 14 Apr 2020 02:05:22 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id np9so5006901pjb.4;
+        Tue, 14 Apr 2020 02:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F107NiRVAgQ23qg6alA+b2hmVPaDBWwXKGbC/6Kd1Ds=;
+        b=iPkJTp44SIdd8vyikAwhCDs+sHWOHLZ78+E8SBIxuZq285eqxNF9d2SS2o8+mIJG9+
+         bj+Ono74KZ67j91z2wgqvEPw6rRN8yvfKpvOHFvP1j1Fa4X93fCqFI+4g8q5k3BUnr76
+         Xh2PlVy406/b6FfP+bM49JHBBUPVp+sSQ4AGj25e2KaTwAjbrYWigzPSCYuN904rzINZ
+         b5ON0ysRUVmysJ5LoohGlP/9/kOs7Pjep80Uqc0M1wHHLZFIAXl7ZgTTFYDcQGs0gRhk
+         +oncynKLpp+dW+7w349p+icF5PZGiOOc2ZSEOzhES4+/RifvTaFOFW9nehAiNcgLNLIq
+         yMQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F107NiRVAgQ23qg6alA+b2hmVPaDBWwXKGbC/6Kd1Ds=;
+        b=mGpSDd/8n3MHJh596hxfgIXMSb8xEwoKYGIU5/j0l3bHqmSQD+ykxbQR2PfJVUzRqL
+         4XrqLpg3Nrokacp9ngGw6JXuXtHvZHZB1HWPeBR+DzloFLXGm2b3zERSMRP05aM5FSf9
+         Bj8fgZzbMNtO1Zk2UzqpzMH7RykD4Mv/wfIEjf90WqXGa241BqxvxsuY7iTkhUBD9FlL
+         Hl2FBmEbp2Z1ySdf2+PT0QDSijoYZ3f34zBsov7XZZTUKjtlsoZbW5YhukGXbrvz2O/6
+         lM4oRfIUCjHMJyaoOtqnCljvPaF2LTLNqHBxa8hxYgtc0JeOCQ1UtVzEq5LBVdZpyp97
+         x55w==
+X-Gm-Message-State: AGi0PubwUnWVtyHt+bS/fCk7kZypufxhAD+TYzpem6vKAnszQD0U1eIm
+        m0gY+5q3Kg9n++6cOhicspBsBlNk7vcaQBB0miI=
+X-Google-Smtp-Source: APiQypItJnd7xLSTDEuRf+mho4kdhPUComrhtelzkg62uCTrDAdfkoWo8cE1BKvSyx/C/m0v8G/RQo6NBn3pXMMcGmc=
+X-Received: by 2002:a17:902:aa09:: with SMTP id be9mr14890031plb.18.1586855121908;
+ Tue, 14 Apr 2020 02:05:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200412113137.1763f084@archlinux>
+References: <20200413173656.28522-1-sravanhome@gmail.com> <20200413173656.28522-5-sravanhome@gmail.com>
+ <CAHp75VeYFY1CW4AH+D4HAgzppMZ5J8dL8kKPYmcwsXNVGNSYjQ@mail.gmail.com>
+ <6cfab0a6-c3eb-bd9b-6572-b49e3205524f@gmail.com> <20200413204847.ni7dsrn5tslrorqn@earth.universe>
+In-Reply-To: <20200413204847.ni7dsrn5tslrorqn@earth.universe>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 14 Apr 2020 12:05:15 +0300
+Message-ID: <CAHp75VdRXWVtveRnvR-k8wqH5R_P7owfQvFf7YT3qM_oVEY3vg@mail.gmail.com>
+Subject: Re: [PATCH v8 4/6] power: supply: Add support for mps mp2629 battery charger
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     saravanan sekar <sravanhome@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 12, 2020 at 11:31:37AM +0100, Jonathan Cameron wrote:
-> On Thu,  9 Apr 2020 16:13:59 +0200
-> Kamel Bouhara <kamel.bouhara@bootlin.com> wrote:
->
-> > Some atmel socs have extra tcb capabilities that allow using a generic
-> > clock source or enabling a quadrature decoder.
-> >
-> > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > ---
-> > Changes from v2:
-> >  - Fixed first patch not applying on mainline
-> >
-> >  include/soc/at91/atmel_tcb.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/include/soc/at91/atmel_tcb.h b/include/soc/at91/atmel_tcb.h
-> > index c3c7200ce151..7e47ace9255c 100644
-> > --- a/include/soc/at91/atmel_tcb.h
-> > +++ b/include/soc/at91/atmel_tcb.h
-> > @@ -39,6 +39,8 @@ struct clk;
-> >   */
-> >  struct atmel_tcb_config {
-> >  	size_t	counter_width;
->
-Hi,
+On Mon, Apr 13, 2020 at 11:48 PM Sebastian Reichel
+<sebastian.reichel@collabora.com> wrote:
+> On Mon, Apr 13, 2020 at 10:28:19PM +0200, saravanan sekar wrote:
+> > On 13/04/20 10:10 pm, Andy Shevchenko wrote:
+> > > On Mon, Apr 13, 2020 at 8:37 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
 
-> This structure has existing kernel doc. Please add these new
-> elements and run ./scripts/kernel-doc over it check for any issues.
->
+...
 
-Its fixed, thanks.
-
-Kamel
-
-> > +	bool    has_gclk;
-> > +	bool    has_qdec;
-> >  };
+> > > > +       irq = platform_get_irq(to_platform_device(pdev->dev.parent), 0);
+> > > Why not to use temporary variable dev?
+> > >
+> > > This should be platform_get_irq_optional().
 > >
-> >  /**
-> > --
-> > 2.25.0
-> >
+> > Platform_get_irq in turn calls platform_get_irq_optional. It was suggested
+> > by Lee and is it mandatory to change it?
 >
-> Thanks,
->
-> Jonathan
+> platform_get_irq is fine.
 
---
-Kamel Bouhara, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+I don't think so. It will spill an error in case there is no IRQ or
+error happened.
+
+So, either is should be _optional, or below conditional simply wrong, should be
+  if (irq < 0)
+    return irq;
+
+> > > > +       if (irq) {
+>
+> But this must be
+>
+> if (irq > 0)
+>
+> or you will also try to continue with error codes.
+>
+> > > > +               ret = devm_request_irq(dev, irq, mp2629_irq_handler,
+> > > > +                                IRQF_TRIGGER_RISING, "mp2629-charger",
+> > > > +                                charger);
+> > > > +               if (ret) {
+> > > > +                       dev_err(dev, "failed to request gpio IRQ\n");
+> > > > +                       goto iio_fail;
+> > > > +               }
+> > > > +       }
+> > > > +}
+
+-- 
+With Best Regards,
+Andy Shevchenko

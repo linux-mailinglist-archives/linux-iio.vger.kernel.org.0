@@ -2,138 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49DDA1A89FC
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C111A8A00
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Apr 2020 20:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504251AbgDNSn7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 14:43:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50142 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730222AbgDNSnz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 14:43:55 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A60C061A0C
-        for <linux-iio@vger.kernel.org>; Tue, 14 Apr 2020 11:43:49 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id k21so738905otl.5
-        for <linux-iio@vger.kernel.org>; Tue, 14 Apr 2020 11:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=engebretsen.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=I+hAlgTR2YEuEasOcuEwhqs57QQeHXfYQ3rgmaEJ3/A=;
-        b=YkvaGV3/zX8twiwwxX80m20zglEvh4BB9vxIlM3cb5IxMaJ8iFlZKMiXo9XhR+v1pt
-         GSNbJwc7ZDAv1T3/azo7hSx9f9livxuY4tNPa5S0g/LrAX/jHD17IU5YBT4gpgyqT3Zj
-         MXZrlT3v6joSx1T+5NUuHvPhbEa8QYPWLQLVI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=I+hAlgTR2YEuEasOcuEwhqs57QQeHXfYQ3rgmaEJ3/A=;
-        b=MNIRy0AKuym4It/pZZNx+opUUr7qFlbtHua6J+Nd6TI/vJMXNT1CHITm/3odW1I/yg
-         N0OKfUrTV0QAXgRNNswv06KUReeUlfGi8yPzTF2ji6BKjCjfKFzt0bxQDcE21kLqOEb0
-         V6uJbsdvVQm0t/jm/hN+YbxXoktL/O2oANHBe+9cfJD3JrT5txSvX5ghyAqizNmO4BX/
-         3UTZ97xSLUV3+xbp2RYXG/12tnxbMUE7iqnD/1UqeyUxLIrXqNNcT0Cm1phJV4orp2Xw
-         2Jxv29fKPsvb8bncLdPsYlvStEbpO1xd0kOslPq5512v51QmdnD0V5kNItrWGR32rpmn
-         t3hw==
-X-Gm-Message-State: AGi0PuZ5JAWiK8ijd41qMa1WbC4yfclQoM/gOT2vJ3R5HnS/TKEG5Kiy
-        WqOlOsSkKkPeZJrQj9BBTDW3WhjkT1lygP6CH6m9Gw==
-X-Google-Smtp-Source: APiQypJzk2/mOjgpezw5X6Z56heQTR1kDjxxReCnKT5erKGVfXruFF680EWRItJ3VGnfYO4jvO8WnLRL0KusdyidAS4=
-X-Received: by 2002:a05:6830:18e:: with SMTP id q14mr9504903ota.136.1586889828619;
- Tue, 14 Apr 2020 11:43:48 -0700 (PDT)
+        id S2504269AbgDNSo5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 14:44:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42806 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504270AbgDNSo4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 14 Apr 2020 14:44:56 -0400
+Received: from Mani-XPS-13-9360 (unknown [157.50.36.11])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EA4B52074D;
+        Tue, 14 Apr 2020 18:44:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586889895;
+        bh=oMbI+vt8Em625llNVbyJzSoSXiN6bAXE8KfBVvF18nI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ol3Q/qI4y0XWlUteUtqOpWGcqR7/YGWZ9ZfgbJoqSr4yrE8Bygoxmnn1A3P7sDEHR
+         TXLTgGKZ61VF+LiQ9V7ZN+38mnWW6nqYQ95r4CtJOaDOFRVSJXZ0uGGcJA0LWVS14Z
+         cER7Yp7IfUb5Zn6hPYI91xCbt15M6MHy3ShTW2h8=
+Date:   Wed, 15 Apr 2020 00:14:44 +0530
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     jic23@kernel.org, robh+dt@kernel.org, narcisaanamaria12@gmail.com
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, andy.shevchenko@gmail.com
+Subject: Re: [PATCH v3 0/3] Add Reset and Wakeup support for CCS811
+Message-ID: <20200414184444.GA5041@Mani-XPS-13-9360>
+References: <20200414184147.4857-1-mani@kernel.org>
 MIME-Version: 1.0
-References: <CA+XPV5MX1aH3yMcRmukmOU4cPFL34dFfPoznwxGT6cTeqYSTvg@mail.gmail.com>
- <02c6aff918a4cda27f2f16d852a9e52a81fbce5d.camel@analog.com>
-In-Reply-To: <02c6aff918a4cda27f2f16d852a9e52a81fbce5d.camel@analog.com>
-From:   Lars Engebretsen <lars@engebretsen.ch>
-Date:   Tue, 14 Apr 2020 20:43:37 +0200
-Message-ID: <CA+XPV5OCMccsZe0iiQsXc-5N2qBmgpjsuTHvDT4yrJhSfXXF3A@mail.gmail.com>
-Subject: Re: Small error in iio/iio.h
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414184147.4857-1-mani@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Den m=C3=A5n 13 apr. 2020 kl 11:04 skrev Ardelean, Alexandru
-<alexandru.Ardelean@analog.com>:
->
-> On Mon, 2020-04-13 at 10:38 +0200, Lars Engebretsen wrote:
-> > Hi all,
-> >
-> > I just came across a small thing: I think that there is an erroneous
-> > semicolon at the end of line 603 in include/linux/iio/iio.h
->
-> yep;
-> good find :)
->
-> >
-> > https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel=
-/git/torvalds/linux.git/tree/include/linux/iio/iio.h?h=3Dv5.7-rc1*n602__;Iw=
-!!A3Ni8CS0y2Y!rXR19w3XDkuxpdAY4teDN4bSsfqvea7Sz5ZW26L2TCEeYhwf1mgTjt63tIp3X=
-ld9oFWgcg$
-> >
-> > I'm completely new to kernel development, so I don't know the process f=
-or
-> > submitting patches. Moreover, the macro seems to be gone in git://
-> > git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git so maybe the issu=
-e
-> > has been fixed already? In any case, I'd be happy to submit a patch if =
-that
-> > is the right thing to do. But then I'd need a bit of help to get starte=
-d.
-> >
->
-> You're probably looking at the wrong branch.
-> It's a good idea to look at the ones that have been updated more recently=
-.
-> It's still there.
->
-> Check 'togreg' or 'testing'.
->
-> I suggest editing those.
-> Look for patterns in the commit title & descriptions, don't forget to add=
- your
-> Signed-off-by tag with  'git commit -s'
-> If you want, an idea for a commit title would be:
-> 'iio: core: remove extra semi-colon from devm_iio_device_register() macro=
-'
->
-> Add a comment describing the change.
->
-> Generate the patch with:
-> git format-patch HEAD~1..
->
-> then run ./scripts/get_maintainers.pl <patch-file>
->
-> The output suggests which lists to target.
-> What I do, is put lists with --to=3D<list>, maintainers [other people] wi=
-th --
-> cc=3D<maintainer> --cc=3D<driver-author> --cc=3D<other-potentially-intere=
-sted-people>
->
-> You first need to configure git-email to send emails; there should be som=
-e docs
-> on the web about that.
->
-> Lastly:
-> git send-email --to=3Dlinux-iio@vger.kernel.org --to=3Dlinux-kernel@vger.=
-kernel.org
-> --cc=3Djic@kernel.org <patch-file>
->
->
-> That's roughly it.
->
-> We should see your patch on the list.
-> https://lore.kernel.org/linux-iio/
-> &
-> https://patchwork.kernel.org/project/linux-iio/list/
+On Wed, Apr 15, 2020 at 12:11:44AM +0530, mani@kernel.org wrote:
+> From: Manivannan Sadhasivam <mani@kernel.org>
+> 
+> Hello,
+> 
+> This patchset adds external reset and wakeup support for CCS811 VOC
+> gas sensor. The nRESET and nWAKE pins available on the device are
+> utilised to provide these functionalities.
+> 
+> The patchset has been validated using CCS811 connected to STM32MP1 based
+> board over I2C.
+> 
+> While at it, the devicetree yaml binding and OF match table for this sensor
+> are also added.
+> 
+> Thanks,
+> Mani
+> 
+> Changes in v3:
+> 
+> * Added ccs811_set_wake(false) to all error paths before calling it actually
+> * Added Andy's reviewed-by tag
+> * Added comment for reset procedure and dropped error print for gpio request
+> 
+> Changes in v2:
+> 
+> * Fixed DT binding schema and switched to dual license (GPL/BSD)
+> * Returned actual error code from devm_gpiod_get_optional()
+> * Dropped of.h include and of_match_ptr()
+> 
+> Manivannan Sadhasivam (3):
+>   iio: chemical: Add support for external Reset and Wakeup in CCS811
+>   iio: chemical: Add OF match table for CCS811 VOC sensor
+>   dt-bindings: serial: Add binding for software flow control in STM32
 
-Thanks!
+Err... please ignore this series. I'll resend it.
 
-I've sent the e-mail now. Got one address wrong the first time, so
-please disregard the first e-mail. :-)
+Thanks,
+Mani
 
-    /Lars
+>     UART
+> 
+>  .../bindings/serial/st,stm32-uart.yaml        |  15 ++-
+>  drivers/iio/chemical/ccs811.c                 | 112 ++++++++++++++++--
+>  2 files changed, 115 insertions(+), 12 deletions(-)
+> 
+> -- 
+> 2.17.1
+> 

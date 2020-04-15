@@ -2,285 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E54F1A9E88
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 13:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 075E81AA32A
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 15:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2897940AbgDOL5E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 07:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2409393AbgDOLrs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 07:47:48 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD99C061A0C;
-        Wed, 15 Apr 2020 04:47:47 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id i3so1379726pgk.1;
-        Wed, 15 Apr 2020 04:47:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GdlccVqvEfoDxvHoO56bT+qL7Fs8cbKZNv7I5qYxJpo=;
-        b=Zjri4U5bbnxcnCr9oo3j6Ct5z65XWfJc7E7Uuny4h9zIU3R6EO8QrHVUVP34ufXxge
-         fyCZ6jWtxHvL02WKA8exXr72Po2MxJf8OO3DZZSeRq4M7SmzjwRN7zuXJa/jN18kcCtJ
-         1B76ukYKpPj52LRP8wXL3GTBSyFU0SSwczl/MNxWCpC4G2FFHMpUoLAaTlsMsHGpCbNO
-         bGxwbMedW3nn21tO2G2eEu2ukP/ja+N4CEjF71cwbMtMw+XhCrnm2EnijQeUZIAjhJsj
-         eb60vIKZPD1fgcAX8UkKbxbu+Zdg8t+6YecK+oAjls3cOe0bBOVrEHfmi0dAhHKxJLT5
-         HfMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GdlccVqvEfoDxvHoO56bT+qL7Fs8cbKZNv7I5qYxJpo=;
-        b=pZiUyVSVCXnYOcnYNNtqlq4KcKWOtJgkAyE1E2wBzCyVr0HXb+TLpQUSPk/9Q39/OV
-         1sq7V7O7ZAvBB3sHQQLFfxZPgagskn02vJayft7qVfJmpHYkPZuOK9DJBc/iDS1U+NGi
-         FkNL8u90SZWurzYUpoKp3q2xNEM+SaTzcSO369uqZG3HWyF7+ywYZC1hGBVi86SuqjMD
-         4TuCEQkAI5qSKx4rlXTgTwri3fOYGlJ3wT4rAFcySi1QTRuJYd+O6KPCPG/KyL9K6y5O
-         APn61Xqq8DkXgb06lJAloqDiZZauDcxDvW1frRrrCmG8yjK2b085bn6VH2tQ4MRG9b1j
-         l8TQ==
-X-Gm-Message-State: AGi0Pub8aY5jiZYp7XeWlojc2TG/Ft0EZr24wqI4Ox1tz96cbReavSJc
-        j/SfPU5vh/bN5AJMp12KeKHJg9zLphrjgIBM2H8=
-X-Google-Smtp-Source: APiQypJDGbJc1gp4F746Bb3HTqtzQemI8dHZMHU/r0nsd//x3v3uGSUQtVoVXvLwQIZYjFUa1tLyRPTumSJ9YrrUNrg=
-X-Received: by 2002:aa7:8192:: with SMTP id g18mr27092058pfi.36.1586951267273;
- Wed, 15 Apr 2020 04:47:47 -0700 (PDT)
+        id S2505904AbgDONFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 09:05:07 -0400
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:46327 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2505896AbgDONFC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 09:05:02 -0400
+X-Originating-IP: 78.193.40.249
+Received: from localhost (unknown [78.193.40.249])
+        (Authenticated sender: kamel.bouhara@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id C089DFF80D;
+        Wed, 15 Apr 2020 13:04:58 +0000 (UTC)
+From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: [PATCH v3 0/3] Microchip TCB Capture driver
+Date:   Wed, 15 Apr 2020 15:04:52 +0200
+Message-Id: <20200415130455.2222019-1-kamel.bouhara@bootlin.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-References: <20200414184930.5576-1-mani@kernel.org> <20200414184930.5576-3-mani@kernel.org>
-In-Reply-To: <20200414184930.5576-3-mani@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Apr 2020 14:47:40 +0300
-Message-ID: <CAHp75Vd6Fd89_WgXN+hFrF5effQ88GX0j5PeFOr9RU0LdxYNfw@mail.gmail.com>
-Subject: Re: [RESEND PATCH v3 2/3] iio: chemical: Add support for external
- Reset and Wakeup in CCS811
-To:     mani@kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, narcisaanamaria12@gmail.com,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 9:49 PM <mani@kernel.org> wrote:
->
-> From: Manivannan Sadhasivam <mani@kernel.org>
->
-> CCS811 VOC sensor exposes nRESET and nWAKE pins which can be connected
-> to GPIO pins of the host controller. These pins can be used to externally
-> release the device from reset and also to wake it up before any I2C
-> transaction. The initial driver support assumed that the nRESET pin is not
-> connected and the nWAKE pin is tied to ground.
->
-> This commit improves it by adding support for controlling those two pins
-> externally using a host controller. For the case of reset, if the hardware
-> reset is not available, the mechanism to do software reset is also added.
->
-> As a side effect of doing this, the IIO device allocation needs to be
-> slightly moved to top of probe to make use of priv data early.
->
+Hello,
 
-LGTM,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Here is a new counter driver to support Microchip TCB capture devices.
 
-> Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-> ---
->  drivers/iio/chemical/ccs811.c | 105 ++++++++++++++++++++++++++++++----
->  1 file changed, 94 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/iio/chemical/ccs811.c b/drivers/iio/chemical/ccs811.c
-> index 2ebdfc35bcda..1500e4b0dfbd 100644
-> --- a/drivers/iio/chemical/ccs811.c
-> +++ b/drivers/iio/chemical/ccs811.c
-> @@ -16,6 +16,7 @@
->   */
->
->  #include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/i2c.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/buffer.h>
-> @@ -36,6 +37,7 @@
->  #define CCS811_ERR             0xE0
->  /* Used to transition from boot to application mode */
->  #define CCS811_APP_START       0xF4
-> +#define CCS811_SW_RESET                0xFF
->
->  /* Status register flags */
->  #define CCS811_STATUS_ERROR            BIT(0)
-> @@ -74,6 +76,7 @@ struct ccs811_data {
->         struct mutex lock; /* Protect readings */
->         struct ccs811_reading buffer;
->         struct iio_trigger *drdy_trig;
-> +       struct gpio_desc *wakeup_gpio;
->         bool drdy_trig_on;
->  };
->
-> @@ -166,10 +169,25 @@ static int ccs811_setup(struct i2c_client *client)
->                                          CCS811_MODE_IAQ_1SEC);
->  }
->
-> +static void ccs811_set_wakeup(struct ccs811_data *data, bool enable)
-> +{
-> +       if (!data->wakeup_gpio)
-> +               return;
-> +
-> +       gpiod_set_value(data->wakeup_gpio, enable);
-> +
-> +       if (enable)
-> +               usleep_range(50, 60);
-> +       else
-> +               usleep_range(20, 30);
-> +}
-> +
->  static int ccs811_get_measurement(struct ccs811_data *data)
->  {
->         int ret, tries = 11;
->
-> +       ccs811_set_wakeup(data, true);
-> +
->         /* Maximum waiting time: 1s, as measurements are made every second */
->         while (tries-- > 0) {
->                 ret = i2c_smbus_read_byte_data(data->client, CCS811_STATUS);
-> @@ -183,9 +201,12 @@ static int ccs811_get_measurement(struct ccs811_data *data)
->         if (!(ret & CCS811_STATUS_DATA_READY))
->                 return -EIO;
->
-> -       return i2c_smbus_read_i2c_block_data(data->client,
-> +       ret = i2c_smbus_read_i2c_block_data(data->client,
->                                             CCS811_ALG_RESULT_DATA, 8,
->                                             (char *)&data->buffer);
-> +       ccs811_set_wakeup(data, false);
-> +
-> +       return ret;
->  }
->
->  static int ccs811_read_raw(struct iio_dev *indio_dev,
-> @@ -336,6 +357,45 @@ static irqreturn_t ccs811_data_rdy_trigger_poll(int irq, void *private)
->         return IRQ_HANDLED;
->  }
->
-> +static int ccs811_reset(struct i2c_client *client)
-> +{
-> +       struct gpio_desc *reset_gpio;
-> +       int ret;
-> +
-> +       reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-> +                                            GPIOD_OUT_LOW);
-> +       if (IS_ERR(reset_gpio))
-> +               return PTR_ERR(reset_gpio);
-> +
-> +       /* Try to reset using nRESET pin if available else do SW reset */
-> +       if (reset_gpio) {
-> +               gpiod_set_value(reset_gpio, 1);
-> +               usleep_range(20, 30);
-> +               gpiod_set_value(reset_gpio, 0);
-> +       } else {
-> +               /*
-> +                * As per the datasheet, this sequence of values needs to be
-> +                * written to the SW_RESET register for triggering the soft
-> +                * reset in the device and placing it in boot mode.
-> +                */
-> +               static const u8 reset_seq[] = {
-> +                       0x11, 0xE5, 0x72, 0x8A,
-> +               };
-> +
-> +               ret = i2c_smbus_write_i2c_block_data(client, CCS811_SW_RESET,
-> +                                            sizeof(reset_seq), reset_seq);
-> +               if (ret < 0) {
-> +                       dev_err(&client->dev, "Failed to reset sensor\n");
-> +                       return ret;
-> +               }
-> +       }
-> +
-> +       /* tSTART delay required after reset */
-> +       usleep_range(1000, 2000);
-> +
-> +       return 0;
-> +}
-> +
->  static int ccs811_probe(struct i2c_client *client,
->                         const struct i2c_device_id *id)
->  {
-> @@ -348,36 +408,59 @@ static int ccs811_probe(struct i2c_client *client,
->                                      | I2C_FUNC_SMBUS_READ_I2C_BLOCK))
->                 return -EOPNOTSUPP;
->
-> +       indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +       if (!indio_dev)
-> +               return -ENOMEM;
-> +
-> +       data = iio_priv(indio_dev);
-> +       i2c_set_clientdata(client, indio_dev);
-> +       data->client = client;
-> +
-> +       data->wakeup_gpio = devm_gpiod_get_optional(&client->dev, "wakeup",
-> +                                                   GPIOD_OUT_HIGH);
-> +       if (IS_ERR(data->wakeup_gpio))
-> +               return PTR_ERR(data->wakeup_gpio);
-> +
-> +       ccs811_set_wakeup(data, true);
-> +
-> +       ret = ccs811_reset(client);
-> +       if (ret) {
-> +               ccs811_set_wakeup(data, false);
-> +               return ret;
-> +       }
-> +
->         /* Check hardware id (should be 0x81 for this family of devices) */
->         ret = i2c_smbus_read_byte_data(client, CCS811_HW_ID);
-> -       if (ret < 0)
-> +       if (ret < 0) {
-> +               ccs811_set_wakeup(data, false);
->                 return ret;
-> +       }
->
->         if (ret != CCS811_HW_ID_VALUE) {
->                 dev_err(&client->dev, "hardware id doesn't match CCS81x\n");
-> +               ccs811_set_wakeup(data, false);
->                 return -ENODEV;
->         }
->
->         ret = i2c_smbus_read_byte_data(client, CCS811_HW_VERSION);
-> -       if (ret < 0)
-> +       if (ret < 0) {
-> +               ccs811_set_wakeup(data, false);
->                 return ret;
-> +       }
->
->         if ((ret & CCS811_HW_VERSION_MASK) != CCS811_HW_VERSION_VALUE) {
->                 dev_err(&client->dev, "no CCS811 sensor\n");
-> +               ccs811_set_wakeup(data, false);
->                 return -ENODEV;
->         }
->
-> -       indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> -       if (!indio_dev)
-> -               return -ENOMEM;
-> -
->         ret = ccs811_setup(client);
-> -       if (ret < 0)
-> +       if (ret < 0) {
-> +               ccs811_set_wakeup(data, false);
->                 return ret;
-> +       }
->
-> -       data = iio_priv(indio_dev);
-> -       i2c_set_clientdata(client, indio_dev);
-> -       data->client = client;
-> +       ccs811_set_wakeup(data, false);
->
->         mutex_init(&data->lock);
->
-> --
-> 2.17.1
->
+Each SoC has two TCB blocks, each one including three independent
+channels.The following series adds support for two counter modes:
+increase and quadrature decoder.
 
+As for the atmel clocksource and pwm, the counter driver needs to fill
+some tcb capabilities in order to operate with the right configuration.
+This is achieved in first patch of this series.
+
+Please feel free to comment.
+
+Cheers,
+
+Changes from v3:
+ - Updated the brand name: s/atmel/microchip/.
+ - Added missing kernel doc for new elements introduced in structure
+   atmel_tcb_config.
+ - Removed useless blank line
+ - Added an explicit clock removing path using devm_add_action_or_reset
+
+Changes from v2:
+ - Fixed first patch not applying on mainline
+ - Updated return code to -EINVAL when user is requesting qdec mode on
+   a counter device not supporting it.
+ - Added an error case returning -EINVAL when action edge is performed in
+   qdec mode.
+ - Removed no need to explicity setting ops to NULL from static struct as
+   it is the default value.
+ - Changed confusing code by using snprintf for the sake of clarity.
+ - Changed code to use ARRAY_SIZE so that future reviewers will know
+   that num_counts matches what's in the atmel_tc_count array without
+   having to check so themselves.
+ - Fixed errors reported by dt_binding_check
+
+
+Kamel Bouhara (3):
+  ARM: at91: add atmel tcb capabilities
+  dt-bindings: counter: microchip-tcb-capture counter
+  counter: Add microchip TCB capture counter
+
+ .../counter/microchip-tcb-capture.yaml        |  33 ++
+ drivers/counter/Kconfig                       |  11 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/microchip-tcb-capture.c       | 397 ++++++++++++++++++
+ include/soc/at91/atmel_tcb.h                  |   5 +
+ 5 files changed, 447 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml
+ create mode 100644 drivers/counter/microchip-tcb-capture.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.0
+

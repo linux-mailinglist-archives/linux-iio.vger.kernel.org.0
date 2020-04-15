@@ -2,138 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B37FB1AAC75
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 17:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1591AADC1
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 18:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410032AbgDOP61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 11:58:27 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:50851 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2410018AbgDOP6Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 15 Apr 2020 11:58:25 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 492Rpj3tkWzCQ;
-        Wed, 15 Apr 2020 17:58:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1586966302; bh=sPTpapXfr78FujPIIuXzxYq0FrcfINA6LgQokS6Lg8A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=J5wcI7lCacgb85p4hxcKJf/Mb+FF/PRT6WeLeMcvDjLsjxB2nxIazKXeq0QmMH4Q+
-         tnqz4yVXdbc2SkjLA2y3ySkERydmBxPFu6M8JuAlFszNX3kjEb48eR5Kkje2q/b3wf
-         qHbOp0c74ffAYldJNNNxolqBREx9Bru7Kv+o2AIjGJpqy7J2x5GtrqaM/zmdL5M2X5
-         8W0UvekbJTdbFj7Dkt51EPlI+2ZezPLjFD/cIMssQkFbIhGd6L0jRL17sZRriPNPY6
-         8HsmRI+oQQiZS0BZOLF5VATAYrRUtMfHaKeN+7wDxYO/5FD+G6MziPQjW16EaOjiJF
-         1wNEXsmNVnF0g==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Wed, 15 Apr 2020 17:58:17 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-input@vger.kernel.org,
-        Nick Reitemeyer <nick.reitemeyer@web.de>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: Re: [PATCH] iio: magnetometer: ak8974: Provide scaling
-Message-ID: <20200415155817.GA19897@qmqm.qmqm.pl>
-References: <20200414211717.11472-1-linus.walleij@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200414211717.11472-1-linus.walleij@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1415570AbgDOQUq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 12:20:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1415560AbgDOQUl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 12:20:41 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F252AC061A0E;
+        Wed, 15 Apr 2020 09:20:39 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id i10so542570wrv.10;
+        Wed, 15 Apr 2020 09:20:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=mFzMem1epN+M9aq3TwIVVdu8mwf/kZGYgwT4xmROzGI=;
+        b=L6vFOOxQYGv3gVjLWmsSwz9qxv06UmjfrEaTzVDG/QtcvFvljG1hlaV0NOprSrkceN
+         +/UDBYbyX8+yLbIU1EYL+gFMPoThtATdcpoJfTe+08LbF4lfxjpP/J6sAlZsRlrFNN1p
+         yXypPj5e18EvDe5+Yy7s7U1Pr1aWKkW2KOv9yACaCMaFGR7t8GgF2sf7VJMNh3ukSfDE
+         J0ujg6gpRRWO6qNpDX+RyiET3UewqM0FqeWM2s2mZcDAVS4HNqvkrWrcZN2XObzoObXY
+         iTzA/8L0lTcSt/qO2MsXO8BmnWCFX0zRPZfgY8+Lwb8iG+JIRdFPUWmCLQhWNaYSlAoP
+         qlWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=mFzMem1epN+M9aq3TwIVVdu8mwf/kZGYgwT4xmROzGI=;
+        b=MeyIpbO4XlfCIDjOVC/VqaSrVjVgSQzWVhqvR+tP1UuX/1m6yHu1hJxrmhj2Lwox5p
+         l3YCDQKfkDnpTG0BQpNBJNSCztkdT9hNwmP7dvuTP0DifkSK/eMVktVbYTUbIwymhU3j
+         JySSMngYPaMGiXPUhhYMLzeDam7QRIedYlDDwzmktLgl5PZ4+0QTE/D0uCDZFCNi9lbz
+         Kl9OseUxoGN+MoTx8SILlynm1qgqRbl5CCavP3NMSQSUBfzWmwQSIEZOqUMqIPzS6kW5
+         qFGk60nFCow1iJ7zTmTiCWLOtAmX9FnUm01ubZiW2a0UIiAowrom0HH+bz7DDUZh2gXj
+         tsSw==
+X-Gm-Message-State: AGi0Pub6NONL0ejLAr8tKJJfo1TxtBmlYQF5xbSDA278Gyd5KDHBIQqT
+        bxS50TjKafAdr/laqvJwntY=
+X-Google-Smtp-Source: APiQypLXoZAJ9FM2wqyI/7jypcQdh3roJTEErg8J2yFpaAcz7RGu8uVTgySZYcTcQGmhJ+JypGUewQ==
+X-Received: by 2002:adf:df82:: with SMTP id z2mr21121457wrl.58.1586967638621;
+        Wed, 15 Apr 2020 09:20:38 -0700 (PDT)
+Received: from localhost.localdomain (p5B3F6CCC.dip0.t-ipconnect.de. [91.63.108.204])
+        by smtp.gmail.com with ESMTPSA id 17sm102526wmo.2.2020.04.15.09.20.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2020 09:20:37 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
+        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v9 0/6] Add battery charger driver support for MP2629
+Date:   Wed, 15 Apr 2020 18:20:24 +0200
+Message-Id: <20200415162030.16414-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 11:17:17PM +0200, Linus Walleij wrote:
-> The manual for the HSCDTD008A gives us a scaling for the
-> three axis as +/- 2.4mT per axis.
-> 
-> When I implement this the biggest axis indicates 0.59 Gauss
-> which is a reasonable measurement for the earths magnetic
-> which is in the range of 0.25 to 0.65 Gauss on the surface
-> according to Wikipedia.
-> 
-> Since the raw read function is now also used for scaling
-> we need to break out a function that takes the locks and
-> runtime PM so we don't get too hairy goto:s.
-> 
-> Cc: Nick Reitemeyer <nick.reitemeyer@web.de>
-> Cc: Stephan Gerhold <stephan@gerhold.net>
-> Cc: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> This patch is based on top of Nick's patches for the
-> HSCDTD008A support.
-> ---
->  drivers/iio/magnetometer/ak8974.c | 66 +++++++++++++++++++++----------
->  1 file changed, 45 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-> index ade4ed8f67d2..effcdd93e650 100644
-> --- a/drivers/iio/magnetometer/ak8974.c
-> +++ b/drivers/iio/magnetometer/ak8974.c
-> @@ -554,46 +554,69 @@ static int ak8974_detect(struct ak8974 *ak8974)
->  	return 0;
->  }
->  
-> +static int ak8974_measure(struct ak8974 *ak8974, unsigned long address, s16 *val)
-> +{
-> +	__le16 hw_values[3];
-> +	int ret;
-> +
-> +	pm_runtime_get_sync(&ak8974->i2c->dev);
-> +	mutex_lock(&ak8974->lock);
-> +
-> +	ret = ak8974_trigmeas(ak8974);
-> +	if (ret)
-> +		goto out_unlock;
-> +	ret = ak8974_getresult(ak8974, hw_values);
-> +	if (ret)
-> +		goto out_unlock;
-> +	*val = (s16)le16_to_cpu(hw_values[address]);
+changes in v9:
+ - fixed review comments in mp2629 power supply such as resource based
+   iio channel, replace workqueue by threaded irq, irq get with "_optional"
 
-You could pass a pointer to int, and avoid later copy in
-ak8974_read_raw().
+changes in v8:
+ - fixed order of call in probe/remove in iio adc
+ - add ABI documentation for mp2629 power supply
 
-> +out_unlock:
-> +	mutex_unlock(&ak8974->lock);
-> +	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
-> +	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
-> +
-> +	return ret;
-> +}
-> +
->  static int ak8974_read_raw(struct iio_dev *indio_dev,
->  			   struct iio_chan_spec const *chan,
->  			   int *val, int *val2,
->  			   long mask)
->  {
->  	struct ak8974 *ak8974 = iio_priv(indio_dev);
-> -	__le16 hw_values[3];
->  	int ret = -EINVAL;
-> -
-> -	pm_runtime_get_sync(&ak8974->i2c->dev);
-> -	mutex_lock(&ak8974->lock);
-> +	s16 outval;
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
->  		if (chan->address > 2) {
->  			dev_err(&ak8974->i2c->dev, "faulty channel address\n");
->  			ret = -EIO;
-> -			goto out_unlock;
-> +			goto out_err_read;
-[...]
-This can be just return -EIO since you've pushed the locks into separate
-function.
+changes in v7:
+ - fixed probe/remove order, managed and unmanaged call mix use in adc.
+ - Documentation dual license, i2c node with controller address
 
-Can you split the patch into one extracting the code for
-ak8974_measure() and second for adding the scale?
+Overall looks good to me, FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Best Regards,
-Micha³ Miros³aw
+One question though in reply to patch 4.
+
+changes in v6:
+ - removed includes types.h in mfd, of_device.h in adc.
+ - fixed review comments parentheses, err check, kstrtouint
+
+changes in v5:
+ - removed platfrom data stored in mfd and directly accessed mfd struct in child
+ - fixed spell check and capitalization in mfd and documentation
+
+changes in v4:
+ - fixed capitalization in mfg Kconfig and documentation
+
+changes in v3:
+ - regmap for children passed using platform data and remove mfd driver info
+   access directly from children
+
+changes in v2:
+ - removed EXPORT_SYMBOL of register set/get helper
+ - regmap bit filed used, fixed other review comments
+
+This patch series add support for Battery charger control driver for Monolithic
+Power System's MP2629 chipset, includes MFD driver for ADC battery & input
+power supply measurement and battery charger control driver.
+
+Thanks,
+Saravanan
+
+Saravanan Sekar (6):
+  dt-bindings: mfd: add document bindings for mp2629
+  mfd: mp2629: Add support for mps battery charger
+  iio: adc: mp2629: Add support for mp2629 ADC driver
+  power: supply: Add support for mps mp2629 battery charger
+  power: supply: mp2629: Add impedance compenstation config
+  MAINTAINERS: Add entry for mp2629 Battery Charger driver
+
+ .../ABI/testing/sysfs-class-power-mp2629      |   8 +
+ .../devicetree/bindings/mfd/mps,mp2629.yaml   |  60 ++
+ MAINTAINERS                                   |   5 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/mp2629_adc.c                  | 208 ++++++
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   2 +
+ drivers/mfd/mp2629.c                          |  86 +++
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/mp2629_charger.c         | 667 ++++++++++++++++++
+ include/linux/mfd/mp2629.h                    |  28 +
+ 13 files changed, 1095 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-power-mp2629
+ create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+ create mode 100644 drivers/iio/adc/mp2629_adc.c
+ create mode 100644 drivers/mfd/mp2629.c
+ create mode 100644 drivers/power/supply/mp2629_charger.c
+ create mode 100644 include/linux/mfd/mp2629.h
+
+-- 
+2.17.1
+

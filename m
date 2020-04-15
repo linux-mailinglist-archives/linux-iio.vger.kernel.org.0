@@ -2,162 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B21E1AAAD8
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 16:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F041AAB10
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 17:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392440AbgDOOuZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 10:50:25 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:34088 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392458AbgDOOuX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 10:50:23 -0400
-Received: by mail-ot1-f66.google.com with SMTP id m2so172244otr.1;
-        Wed, 15 Apr 2020 07:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BCfQgZxvV4MoTZSYDxb0wNI9nAJHYoGxVLajTWTSLyY=;
-        b=hl+ewQckLqhwBCz+umnf/61TE4+tdl5IzY2XZbw0EKxdGLwHUVFJOBYMVQfIODeIxD
-         4rBgTjpluem8ZTvlobWiU7/tjMo/wrNrUgQT4HRhjP8+ZuiafSZXQ6bXVVALFBJ08uTx
-         Cl41/icceRtRyCUs33OVukVWoEk4aeLKS+44cIX+kMOwXTYn3FmUS6+m/9gURX9Mh1ce
-         A4pw0AWDUv90Jh9dVNdUcxkT7qQ6yhtVOuRVpK756V/y7GMOetdutSCZoKbDs0DOkpar
-         JZ5GEHeo82l/kNxsZYZHFncxDM4Scw+4n3jv7QEl6842FsLG4Di7Cp8xHJre6FTJQw67
-         p7MQ==
-X-Gm-Message-State: AGi0Pub7TBeFQcPCtQtK9a4wS2sMitDVb+O1vFQ4n35WeeJ+lVYetG5T
-        +R37nbvtbglmNDlyC0y2Rg==
-X-Google-Smtp-Source: APiQypKcpijmKSyWUjzt28VMefad1XpVXfp9yRjVfdZ1IEIYQs06OXNoEWQPyd3SSWHWptV5JNctTA==
-X-Received: by 2002:a05:6830:1606:: with SMTP id g6mr24123812otr.315.1586962222629;
-        Wed, 15 Apr 2020 07:50:22 -0700 (PDT)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id a19sm4454831otp.25.2020.04.15.07.50.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 07:50:21 -0700 (PDT)
-Received: (nullmailer pid 25733 invoked by uid 1000);
-        Wed, 15 Apr 2020 14:50:21 -0000
-Date:   Wed, 15 Apr 2020 09:50:21 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v8 1/2] iio: proximity: provide device tree binding
- document
-Message-ID: <20200415145021.GA16420@bogus>
-References: <20200406172002.18028-1-i.mikhaylov@yadro.com>
- <20200406172002.18028-2-i.mikhaylov@yadro.com>
+        id S371127AbgDOO4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 10:56:08 -0400
+Received: from www381.your-server.de ([78.46.137.84]:59296 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S371077AbgDOOzr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 10:55:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Yz0l86f24qxXld0PMX62MsPf2RZVXxmRh2DJRXJDM6E=; b=fxFdIKdgV28mihHYh8iY9qHHG2
+        p54PwuQp+gih3nPpoRxr5D//jlBEmngtnQJj/2SvNCVpd7I3OmXHIMZNfWkeZmmFHGHwCDQq5mkuw
+        Wm8+PoTmMu1WMkyOdBxoCI4qo3FrWmW2qVmIYE8T9LVwub/ssQ8pz96/QKy8E4AND0+NAPkRWl3U6
+        23jzKJvPzNTcm/D/Atj4jmFVqIgtAncuiW9Q5iv05Ml+n3v5SGKAUGyIjF/jkS7+nf+JO7V3Kg4HB
+        Yqt85o/bL4rXYo1jwPDmDiIzTHQlQI63zlTsGmJZrz5GHFTYlAXcbPvPNMfZca5i+veWtOQqHNFdt
+        6tLOxO9g==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1jOjS1-00066E-8u; Wed, 15 Apr 2020 16:55:41 +0200
+Received: from [82.135.68.81] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1jOjS1-000GwS-1r; Wed, 15 Apr 2020 16:55:41 +0200
+Subject: Re: [PATCH v2] iio: core: register chardev only if needed
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <20200414083656.7696-1-alexandru.ardelean@analog.com>
+ <20200414190629.2d85759e@archlinux>
+ <761fb0aef92e5e026df78b6679329dbbb55b6226.camel@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <5d3d6bad-934d-41c5-d167-dd69734e8015@metafoo.de>
+Date:   Wed, 15 Apr 2020 16:55:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200406172002.18028-2-i.mikhaylov@yadro.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <761fb0aef92e5e026df78b6679329dbbb55b6226.camel@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25783/Wed Apr 15 14:03:13 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 06, 2020 at 08:20:01PM +0300, Ivan Mikhaylov wrote:
-> Mostly standard i2c driver with some additional led-current option
-> for vcnl3020.
-> 
-> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
-> ---
->  .../bindings/iio/proximity/vcnl3020.yaml      | 65 +++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml b/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
-> new file mode 100644
-> index 000000000000..29ab2dee1694
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
-> @@ -0,0 +1,65 @@
-> +# SPDX-License-Identifier: GPL-2.0
+On 4/15/20 3:56 PM, Ardelean, Alexandru wrote:
+> On Tue, 2020-04-14 at 19:06 +0100, Jonathan Cameron wrote:
+>> [External]
+>>
+>> On Tue, 14 Apr 2020 11:36:56 +0300
+>> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+>>
+>>> The final intent is to localize all buffer ops into the
+>>> industrialio-buffer.c file, to be able to add support for multiple buffers
+>>> per IIO device.
+>>>
+>>> We only need a chardev if we need to support buffers and/or events.
+>>>
+>>> With this change, a chardev will be created:
+>>> 1. if there is an IIO buffer attached OR
+>>> 2. if there is an event_interface configured
+>>>
+>>> Otherwise, no chardev will be created.
+>>> Quite a lot of IIO devices don't really need a chardev, so this is a minor
+>>> improvement to the IIO core, as the IIO device will take up fewer
+>>> resources.
+>>>
+>>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>>> ---
+>>>
+>>> Changelog v1 -> v2:
+>>> * split away from series 'iio: core,buffer: re-organize chardev creation';
+>>>    i'm getting the feeling that this has some value on it's own;
+>>>    no idea if it needs 'Fixes' tag; it is a bit fuzzy to point to a patch
+>>>    which this would be fixed by this; i'm guessing it would be fine
+>>>    without one
+>> I'd argue it's an 'optimization' rather than a fix :)
+>>
+>> Still looks good to me but I'd like it to sit for a little while to
+>> see if anyone points out something we are both missing!
+>>
+> This is not good.
+> It seems that I did not properly test all cases.
+> I had to break a device to not have an event_interface to notice that the sysfs
+> doesn't get instantiated either because device_add is missing.
+>
+> Will do another try.
 
-Dual license as Jonathan said.
+I think you also have to make the `indio_dev->dev.devt = ...` 
+conditional. Or conditionally use device_add() instead of device_add_cdev().
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/vcnl3020.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Integrated Proximity Sensor With Infrared Emitter
-> +
-> +maintainers:
-> +  - Ivan Mikhaylov <i.mikhaylov@yadro.com>
-> +
-> +description: |
-> +  The VCNL3020 is a fully integrated proximity sensor. Fully integrated means
-> +  that the infrared emitter is included in the package. It has 16-bit
-> +  resolution. It includes a signal processing IC and features standard I2C
-> +  communication interface. It features an interrupt function.
-> +
-> +  Specifications about the devices can be found at:
-> +  https://www.vishay.com/docs/84150/vcnl3020.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - vishay,vcnl3020
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description: IRQ line for the proximity sensor
+If you go for the former you need to call cdev_device_del() 
+unconditionally, for the latter call device_del() or cdev_device_del() 
+depending on whether the cdev was registered.
 
-Can drop this.
+- Lars
 
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Regulator that provides power to the sensor
-> +
-> +  vddio-supply:
-> +    description: Regulator that provides power to the bus
-> +
-> +  vishay,led-current-milliamp:
-> +    description:
-> +        IR LED current value with valid Range = 0 to 20d. e.g. 0 = 0 mA,
 
-Should be indented 2 fewer spaces.
-
-> +        1 = 10 mA, 20 = 200 mA (2 = 20 mA = DEFAULT). LED Current is
-> +        limited to 200 mA for values higher than decimal 20.
-
-Use the 'default' property to define the default.
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-
-Can drop this as standard units have a type already. However, the 
-standard unit is '-microamp', so use that. Also, looks like this is 
-in units of register values, not milliamps. Use microamps (e.g. 200000).
-
-> +      - enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-> +              18, 19, 20]
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        proximity@13 {
-> +              compatible = "vishay,vcnl3020";
-> +              reg = <0x13>;
-> +              vishay,led-current-milliamp = <0x14>;
-> +        };
-> +    };
-> -- 
-> 2.21.1
-> 

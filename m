@@ -2,112 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F041AAB10
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 17:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37FB1AAC75
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 17:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S371127AbgDOO4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 10:56:08 -0400
-Received: from www381.your-server.de ([78.46.137.84]:59296 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S371077AbgDOOzr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 10:55:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Yz0l86f24qxXld0PMX62MsPf2RZVXxmRh2DJRXJDM6E=; b=fxFdIKdgV28mihHYh8iY9qHHG2
-        p54PwuQp+gih3nPpoRxr5D//jlBEmngtnQJj/2SvNCVpd7I3OmXHIMZNfWkeZmmFHGHwCDQq5mkuw
-        Wm8+PoTmMu1WMkyOdBxoCI4qo3FrWmW2qVmIYE8T9LVwub/ssQ8pz96/QKy8E4AND0+NAPkRWl3U6
-        23jzKJvPzNTcm/D/Atj4jmFVqIgtAncuiW9Q5iv05Ml+n3v5SGKAUGyIjF/jkS7+nf+JO7V3Kg4HB
-        Yqt85o/bL4rXYo1jwPDmDiIzTHQlQI63zlTsGmJZrz5GHFTYlAXcbPvPNMfZca5i+veWtOQqHNFdt
-        6tLOxO9g==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jOjS1-00066E-8u; Wed, 15 Apr 2020 16:55:41 +0200
-Received: from [82.135.68.81] (helo=[192.168.178.20])
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jOjS1-000GwS-1r; Wed, 15 Apr 2020 16:55:41 +0200
-Subject: Re: [PATCH v2] iio: core: register chardev only if needed
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <20200414083656.7696-1-alexandru.ardelean@analog.com>
- <20200414190629.2d85759e@archlinux>
- <761fb0aef92e5e026df78b6679329dbbb55b6226.camel@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <5d3d6bad-934d-41c5-d167-dd69734e8015@metafoo.de>
-Date:   Wed, 15 Apr 2020 16:55:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S2410032AbgDOP61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 11:58:27 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:50851 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2410018AbgDOP6Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 15 Apr 2020 11:58:25 -0400
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 492Rpj3tkWzCQ;
+        Wed, 15 Apr 2020 17:58:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1586966302; bh=sPTpapXfr78FujPIIuXzxYq0FrcfINA6LgQokS6Lg8A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J5wcI7lCacgb85p4hxcKJf/Mb+FF/PRT6WeLeMcvDjLsjxB2nxIazKXeq0QmMH4Q+
+         tnqz4yVXdbc2SkjLA2y3ySkERydmBxPFu6M8JuAlFszNX3kjEb48eR5Kkje2q/b3wf
+         qHbOp0c74ffAYldJNNNxolqBREx9Bru7Kv+o2AIjGJpqy7J2x5GtrqaM/zmdL5M2X5
+         8W0UvekbJTdbFj7Dkt51EPlI+2ZezPLjFD/cIMssQkFbIhGd6L0jRL17sZRriPNPY6
+         8HsmRI+oQQiZS0BZOLF5VATAYrRUtMfHaKeN+7wDxYO/5FD+G6MziPQjW16EaOjiJF
+         1wNEXsmNVnF0g==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.102.2 at mail
+Date:   Wed, 15 Apr 2020 17:58:17 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-input@vger.kernel.org,
+        Nick Reitemeyer <nick.reitemeyer@web.de>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: Re: [PATCH] iio: magnetometer: ak8974: Provide scaling
+Message-ID: <20200415155817.GA19897@qmqm.qmqm.pl>
+References: <20200414211717.11472-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <761fb0aef92e5e026df78b6679329dbbb55b6226.camel@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25783/Wed Apr 15 14:03:13 2020)
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200414211717.11472-1-linus.walleij@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/15/20 3:56 PM, Ardelean, Alexandru wrote:
-> On Tue, 2020-04-14 at 19:06 +0100, Jonathan Cameron wrote:
->> [External]
->>
->> On Tue, 14 Apr 2020 11:36:56 +0300
->> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->>
->>> The final intent is to localize all buffer ops into the
->>> industrialio-buffer.c file, to be able to add support for multiple buffers
->>> per IIO device.
->>>
->>> We only need a chardev if we need to support buffers and/or events.
->>>
->>> With this change, a chardev will be created:
->>> 1. if there is an IIO buffer attached OR
->>> 2. if there is an event_interface configured
->>>
->>> Otherwise, no chardev will be created.
->>> Quite a lot of IIO devices don't really need a chardev, so this is a minor
->>> improvement to the IIO core, as the IIO device will take up fewer
->>> resources.
->>>
->>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
->>> ---
->>>
->>> Changelog v1 -> v2:
->>> * split away from series 'iio: core,buffer: re-organize chardev creation';
->>>    i'm getting the feeling that this has some value on it's own;
->>>    no idea if it needs 'Fixes' tag; it is a bit fuzzy to point to a patch
->>>    which this would be fixed by this; i'm guessing it would be fine
->>>    without one
->> I'd argue it's an 'optimization' rather than a fix :)
->>
->> Still looks good to me but I'd like it to sit for a little while to
->> see if anyone points out something we are both missing!
->>
-> This is not good.
-> It seems that I did not properly test all cases.
-> I had to break a device to not have an event_interface to notice that the sysfs
-> doesn't get instantiated either because device_add is missing.
->
-> Will do another try.
+On Tue, Apr 14, 2020 at 11:17:17PM +0200, Linus Walleij wrote:
+> The manual for the HSCDTD008A gives us a scaling for the
+> three axis as +/- 2.4mT per axis.
+> 
+> When I implement this the biggest axis indicates 0.59 Gauss
+> which is a reasonable measurement for the earths magnetic
+> which is in the range of 0.25 to 0.65 Gauss on the surface
+> according to Wikipedia.
+> 
+> Since the raw read function is now also used for scaling
+> we need to break out a function that takes the locks and
+> runtime PM so we don't get too hairy goto:s.
+> 
+> Cc: Nick Reitemeyer <nick.reitemeyer@web.de>
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Cc: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> This patch is based on top of Nick's patches for the
+> HSCDTD008A support.
+> ---
+>  drivers/iio/magnetometer/ak8974.c | 66 +++++++++++++++++++++----------
+>  1 file changed, 45 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+> index ade4ed8f67d2..effcdd93e650 100644
+> --- a/drivers/iio/magnetometer/ak8974.c
+> +++ b/drivers/iio/magnetometer/ak8974.c
+> @@ -554,46 +554,69 @@ static int ak8974_detect(struct ak8974 *ak8974)
+>  	return 0;
+>  }
+>  
+> +static int ak8974_measure(struct ak8974 *ak8974, unsigned long address, s16 *val)
+> +{
+> +	__le16 hw_values[3];
+> +	int ret;
+> +
+> +	pm_runtime_get_sync(&ak8974->i2c->dev);
+> +	mutex_lock(&ak8974->lock);
+> +
+> +	ret = ak8974_trigmeas(ak8974);
+> +	if (ret)
+> +		goto out_unlock;
+> +	ret = ak8974_getresult(ak8974, hw_values);
+> +	if (ret)
+> +		goto out_unlock;
+> +	*val = (s16)le16_to_cpu(hw_values[address]);
 
-I think you also have to make the `indio_dev->dev.devt = ...` 
-conditional. Or conditionally use device_add() instead of device_add_cdev().
+You could pass a pointer to int, and avoid later copy in
+ak8974_read_raw().
 
-If you go for the former you need to call cdev_device_del() 
-unconditionally, for the latter call device_del() or cdev_device_del() 
-depending on whether the cdev was registered.
+> +out_unlock:
+> +	mutex_unlock(&ak8974->lock);
+> +	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
+> +	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
+> +
+> +	return ret;
+> +}
+> +
+>  static int ak8974_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+>  			   int *val, int *val2,
+>  			   long mask)
+>  {
+>  	struct ak8974 *ak8974 = iio_priv(indio_dev);
+> -	__le16 hw_values[3];
+>  	int ret = -EINVAL;
+> -
+> -	pm_runtime_get_sync(&ak8974->i2c->dev);
+> -	mutex_lock(&ak8974->lock);
+> +	s16 outval;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+>  		if (chan->address > 2) {
+>  			dev_err(&ak8974->i2c->dev, "faulty channel address\n");
+>  			ret = -EIO;
+> -			goto out_unlock;
+> +			goto out_err_read;
+[...]
+This can be just return -EIO since you've pushed the locks into separate
+function.
 
-- Lars
+Can you split the patch into one extracting the code for
+ak8974_measure() and second for adding the scale?
 
-
+Best Regards,
+Micha³ Miros³aw

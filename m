@@ -2,104 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3956B1A9422
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 09:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD6C1A93C4
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 09:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2635112AbgDOHVF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 03:21:05 -0400
-Received: from gproxy7-pub.mail.unifiedlayer.com ([70.40.196.235]:45998 "EHLO
-        gproxy7-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2635111AbgDOHVE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 03:21:04 -0400
-Received: from cmgw10.unifiedlayer.com (unknown [10.9.0.10])
-        by gproxy7.mail.unifiedlayer.com (Postfix) with ESMTP id D60A02160CD
-        for <linux-iio@vger.kernel.org>; Wed, 15 Apr 2020 00:56:27 -0600 (MDT)
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-        by cmsmtp with ESMTP
-        id ObyDjdXrHxgMWObyFjNfXv; Wed, 15 Apr 2020 00:56:27 -0600
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.3 cv=Pc3ReBpd c=1 sm=1 tr=0
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=LfuyaZh/8e9VOkaVZk0aRw==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19
- a=cl8xLZFz6L8A:10:nop_rcvd_month_year
- a=oz0wMknONp8A:10:endurance_base64_authed_username_1 a=vU9dKmh3AAAA:8
- a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=Y28-TRqkxeyTFcY-HFsA:9
- a=rsP06fVo5MYu2ilr0aT5:22 a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-        ; s=default; h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=RHHw8W6Lmjf4Hc7SmIWpD/+CyVsKAyN8CN+edQFhdwA=; b=SNPy7jw2H46nN3+WcPpKV6lbht
-        hqufwm30P1ikISQQa/VdMdqQpfUnIHCgRLlcRIVVC3G2VvojJnt8Fn9CldjrJjRaU2okWzuxE16yX
-        /NRZNkZ28IEF1OTc4y/MqTirGspYrFO/HgepgK04LngbIVPzMXOcsIG8YHiCvJvBIVMvJ3hx56tkl
-        luYRe/lmuUMvomvVKgCMXTbelX0whAP0Ash4gBMUnAZ/unge196Ydl28L5rX9NAo9XsrxHrUlcuH5
-        UTWBY2VWBGk7rluA86cCxown+g0mivYVKgTzu7vl/6FHaO3w1r/YAk8gngRa2a8t+LoPx/rnYbuOP
-        EHtoBcZg==;
-Received: from p5b3f6ccc.dip0.t-ipconnect.de ([91.63.108.204]:49262 helo=localhost.localdomain)
-        by md-in-79.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        id S2404014AbgDOHAt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 03:00:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404012AbgDOHAr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 03:00:47 -0400
+X-Greylist: delayed 435 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Apr 2020 00:00:47 PDT
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66EE4C061A0E
+        for <linux-iio@vger.kernel.org>; Wed, 15 Apr 2020 00:00:47 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <saravanan@linumiz.com>)
-        id 1jObyC-0000eI-4P; Wed, 15 Apr 2020 06:56:24 +0000
-From:   Saravanan Sekar <saravanan@linumiz.com>
-To:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, broonie@kernel.org,
-        lgirdwood@gmail.com, saravanan@linumiz.com
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH 4/4] MAINTAINERS: Add entry for wsen-itds accelerometer sensor
-Date:   Wed, 15 Apr 2020 08:55:35 +0200
-Message-Id: <20200415065535.7753-5-saravanan@linumiz.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200415065535.7753-1-saravanan@linumiz.com>
-References: <20200415065535.7753-1-saravanan@linumiz.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 91.63.108.204
-X-Source-L: No
-X-Exim-ID: 1jObyC-0000eI-4P
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: p5b3f6ccc.dip0.t-ipconnect.de (localhost.localdomain) [91.63.108.204]:49262
-X-Source-Auth: saravanan@linumiz.com
-X-Email-Count: 41
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jOc27-0006DZ-RA; Wed, 15 Apr 2020 09:00:27 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jOc25-0007Ko-JT; Wed, 15 Apr 2020 09:00:25 +0200
+Date:   Wed, 15 Apr 2020 09:00:25 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Allison Randal <allison@lohutok.net>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: DAC extension for ltc2634-12/10/8
+Message-ID: <20200415070025.6isvybjzpfhh3ts3@pengutronix.de>
+References: <20200414235609.20125-1-chris.ruehl@gtsys.com.hk>
+ <20200414235609.20125-3-chris.ruehl@gtsys.com.hk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200414235609.20125-3-chris.ruehl@gtsys.com.hk>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add MAINTAINERS entry for wsen-itds accelerometer sensor driver.
+On Wed, Apr 15, 2020 at 07:56:03AM +0800, Chris Ruehl wrote:
+> This patch add support for Analog Devices (Linear Technology)
+> LTC2634 Quad 12-/10-/8-Bit Rail-to-Rail DAC.
+> The SPI functionality based on them from LTC2632 therefor
+> add the definitions only and update the Kconfig.
+> 
+> V2:
+> Send the documentation fix in a extra patch
+> Kconfig simplify the driver description, details to the help text
+> ltc2632.txt add to this patch-set (prepare to convert to yaml)
+> 
+> V3:
+> Consistens decimal separator in help text
 
-Signed-off-by: Saravanan Sekar <saravanan@linumiz.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+The description about how the patch evolves usually goes below the ---
+and S-o-b area. This way it doesn't make it into the commit history.
+> 
+> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+> ---
+>  .../devicetree/bindings/iio/dac/ltc2632.txt   |  8 ++-
+>  drivers/iio/dac/Kconfig                       |  6 +-
+>  drivers/iio/dac/ltc2632.c                     | 60 +++++++++++++++++++
+>  3 files changed, 70 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
+> index 338c3220f01a..1ab9570cf219 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
+> +++ b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
+> @@ -1,4 +1,4 @@
+> -Linear Technology LTC2632/2636 DAC
+> +Linear Technology LTC2632/2634/2636 DAC
+>  
+>  Required properties:
+>   - compatible: Has to contain one of the following:
+> @@ -8,6 +8,12 @@ Required properties:
+>  	lltc,ltc2632-h12
+>  	lltc,ltc2632-h10
+>  	lltc,ltc2632-h8
+> +	lltc,ltc2634-l12
+> +	lltc,ltc2634-l10
+> +	lltc,ltc2634-l8
+> +	lltc,ltc2634-h12
+> +	lltc,ltc2634-h10
+> +	lltc,ltc2634-h8
+>  	lltc,ltc2636-l12
+>  	lltc,ltc2636-l10
+>  	lltc,ltc2636-l8
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 93744011b63f..aee13ced6ddf 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -279,12 +279,12 @@ config LTC1660
+>  	  module will be called ltc1660.
+>  
+>  config LTC2632
+> -	tristate "Linear Technology LTC2632-12/10/8 and LTC2636-12/10/8 DAC spi driver"
+> +	tristate "Linear Technology LTC2632-12/10/8 and similar DAC spi driver"
+>  	depends on SPI
+>  	help
+>  	  Say yes here to build support for Linear Technology
+> -	  LTC2632-12, LTC2632-10, LTC2632-8, LTC2636-12, LTC2636-10 and
+> -	  LTC2636-8 converters (DAC).
+> +	  LTC2632, LTC2634 and LTC2636 DAC resolution 12/10/8 bit
+> +	  low 0-2.5V and high 0-4.096V range converters.
+>  
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 32a95d162f06..0cb5dcb4d787 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18167,6 +18167,12 @@ F:	drivers/watchdog/
- F:	include/linux/watchdog.h
- F:	include/uapi/linux/watchdog.h
- 
-+WSEN-ITDS THREE-AXIS DIGITAL ACCELEROMETER DRIVER
-+M:	Saravanan Sekar <saravanan@linumiz.com>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/accel/we,wsen-itds.yaml
-+F:	drivers/iio/accel/wsen-itds.c
-+
- WHISKEYCOVE PMIC GPIO DRIVER
- M:	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
- L:	linux-gpio@vger.kernel.org
+The naming pattern seems to be:
+
+	LTC263ab-cc
+
+with:
+
+	a = 2 -> 2 channels
+	a = 4 -> 4 channels
+	a = 6 -> 8 channels
+
+	b = L -> Vref = 2.5V
+	b = H -> Vref = 4.096V
+
+	cc = 8 -> 8 bit precision
+	cc = 10 -> 10 bit precision
+	cc = 12 -> 12 bit precision
+
+Would it make sense to document this somewhere?
+
+But as this is (somewhat) orthogonal to this patch:
+
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+
+Best regards
+Uwe
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

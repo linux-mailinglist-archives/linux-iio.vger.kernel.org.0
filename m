@@ -2,853 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C66B1AA8EE
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 15:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B7601AA934
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 15:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2636178AbgDONob (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 09:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2633518AbgDONo3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 09:44:29 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78DFFC061A0C;
-        Wed, 15 Apr 2020 06:44:28 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id a25so19240395wrd.0;
-        Wed, 15 Apr 2020 06:44:28 -0700 (PDT)
+        id S2633760AbgDON4y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 09:56:54 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:59102 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2636336AbgDON4V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 09:56:21 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03FDt8JB008766;
+        Wed, 15 Apr 2020 09:56:16 -0400
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30dn7ujb1u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Apr 2020 09:56:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HJRaloBJSa4qzQCtuDo8ua9ULdv69XxOVdu0SgX/AjIqUnToGU7VNwDtq9UOcppZ5U13lhNEyEDrbG+1F6o2DuYdOmQeOz1/jtV9gp5mh27BtcxIk++XUEOH3OJZ3uFpyOOeLsp6UuHnXLaJ0mDZuBNl8Ip0uJE5QiuW0RBMUuS5z4IGSVfre7DUXxaX/lZniE+H5nA1nsI72kcaY1D8e7YKHK1YnkXChcSNb5jHKqmIs2JoMRwu67UfVrBCu8iVZPe3RaNhBBBovwQD3+N6A6/OSAxbhwNCk1dE+Jn7gqJ6HHRqOuJOjRf2p5RU0oy7PqXxBLcHGw/ReTh1Glpo6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A2ES/F+k3ogINEdBqcpQyJCZwnZwQBxvmD4fbprsgtg=;
+ b=oDyvd1Xwmz516KgyfWsuBD0Zjd/PvlnIUZA8RAo3jN51qVdQt4hyXw0sSDFSqWPaEVJwj9AlZOh98FYEJPzcAHyscFJIcBKUezexHOn0A5szb5L7tD4yO6yhIPFbv6v1+Ir1SW4A8NlDQw8SbE+e3aCgn6XPVLGb7Kgrm9eOcwwC0kpIqQy3YzhAGvVM0eFni6X+T3/buM45sMytuOPmzqkn2tXz0V0qd3TH2WwAnLQpAOlUWt7SoA1URhLQbFpOzwjmf2ShR96uiGp2flDi2Rp4qGvl2/DyMxVpEXkA5IT408p2io/slu2OGoy/kuEempFvHaeY4xAxdzaFKG/DSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=3yIPseqiqJQFHTh2KZqAmVltCbI9IrwXrTtfHY7WlAM=;
-        b=F913JGvEK5ATRb6YMPOiN1E/BhbTDLEzvPw7o+FilH3i0XnFkafQ8O9yH+0WIP7zcb
-         LZ3gWkzK8DcuDFX8ldcL3g/tLeEZNMp66o/69ZJjpA2NCOgwS+ceAIjIPp7h83ry8tjG
-         jIZsMENQk87sOdPYiSF933LGJ1syl49VtTPTQBVeNsxr/Ecn8+ReHDLySJODgdXYglfe
-         8lUzuDlR259P1cyD8zEkIQy5aiMxOLeS6+34PeapwRvxFeEUFx6enFQLxSYVhZAdVJK2
-         pAX5mPur1phKPxmKdQf+7RQPvt7ryZjkz6OSD/1K7y27arligt3nmMzJGvDt9/p3uKPd
-         5kvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=3yIPseqiqJQFHTh2KZqAmVltCbI9IrwXrTtfHY7WlAM=;
-        b=UA8BSYYfOR0C9k+HbDxhlWaPzoLvtKBxkJ1aFq5N8Vfsx/13Sn59ksn79leEGxW2M2
-         Mr5DhlnzeRKJX3pVNvjn7DAfps2z1AbK7A0qeLOX7mPy8dh3N3HZtiwVpj2ihq5TthTU
-         JZiXUnijr5tGuB+OdDkpa01pqYoCbSTngBSCA/E3OWAnDv/d3ak4ebNfcuIh0rc2WruA
-         QC54F+A5p3PNFDcagAozqRxHdLl/Rfwl4xvMTE7Yz0zBym2jNj8CbHDG/yHrybxTHhl1
-         5s7ou48G24nf+SJUM6EJSeZPhSJrcapKny3F6n1aOLOU+ZUp4ZZdEfThQ4MrhvZe6psI
-         CW+A==
-X-Gm-Message-State: AGi0Pub64SmUcdXohdEmFTTwnThsy9I50EdLj0ZfI84xKL4IHMi3KdTu
-        +yAcUbQIrZ1bNF9H6sYYH1L9m9//
-X-Google-Smtp-Source: APiQypL91QArMxRhfHPYYt0vOY3gHKbfZHSTh4+OoYn5I02hzMOfFeYxa/BGnsUiZNEoT913TQ731w==
-X-Received: by 2002:adf:e282:: with SMTP id v2mr29076837wri.329.1586958265543;
-        Wed, 15 Apr 2020 06:44:25 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F6CCC.dip0.t-ipconnect.de. [91.63.108.204])
-        by smtp.gmail.com with ESMTPSA id a24sm3595575wmb.24.2020.04.15.06.44.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2020 06:44:24 -0700 (PDT)
-Subject: Re: [PATCH v7 4/5] power: supply: Add support for mps mp2629 battery
- charger
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
-        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20200410201948.1293-1-sravanhome@gmail.com>
- <20200410201948.1293-5-sravanhome@gmail.com>
- <20200413204054.ezgtahixclkog2wi@earth.universe>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <34d42f11-92a3-1170-2229-64a06e1c7ce3@gmail.com>
-Date:   Wed, 15 Apr 2020 15:44:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200413204054.ezgtahixclkog2wi@earth.universe>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A2ES/F+k3ogINEdBqcpQyJCZwnZwQBxvmD4fbprsgtg=;
+ b=iwBLR+nlAhQklXCz2FXp3bFJPL4xB3nEkpaL/oV0m/Y5AfQ6hwffcEkeFSg02MVAFwi0ZdeB1vefL48CcUfvYUSkRZr8JvPgORRxDd/9udN0u0efy0L9+OoF1eZrcA568j9c2pdvd+f5Ld25B28K7sEsxLFW6PeWK+JFK7OdR8c=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB5242.namprd03.prod.outlook.com (2603:10b6:5:22a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.17; Wed, 15 Apr
+ 2020 13:56:14 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2921.024; Wed, 15 Apr 2020
+ 13:56:13 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: core: register chardev only if needed
+Thread-Topic: [PATCH v2] iio: core: register chardev only if needed
+Thread-Index: AQHWEjfBZCWPnaEudUWFdTBfvszEb6h46meAgAFMZwA=
+Date:   Wed, 15 Apr 2020 13:56:13 +0000
+Message-ID: <761fb0aef92e5e026df78b6679329dbbb55b6226.camel@analog.com>
+References: <20200414083656.7696-1-alexandru.ardelean@analog.com>
+         <20200414190629.2d85759e@archlinux>
+In-Reply-To: <20200414190629.2d85759e@archlinux>
+Accept-Language: en-US
 Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [188.27.135.58]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d74c1d19-f07e-4a3f-b23b-08d7e144c2da
+x-ms-traffictypediagnostic: DM6PR03MB5242:
+x-microsoft-antispam-prvs: <DM6PR03MB5242D7D105A43930745F02C5F9DB0@DM6PR03MB5242.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0374433C81
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(136003)(396003)(39860400002)(346002)(376002)(366004)(54906003)(36756003)(71200400001)(8936002)(478600001)(5660300002)(6916009)(2616005)(81156014)(8676002)(6512007)(4326008)(2906002)(76116006)(91956017)(64756008)(316002)(66946007)(86362001)(26005)(66476007)(6506007)(186003)(66556008)(6486002)(66446008);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: H8j1XLwAAYgSGecOO85TxPOR5IVDAjGfhJJMX6ACTC+1C8m3LU6SUj4Mst+dfGGns/hwwzKkSB4VrFHNqjlO9fVMcbzs/GyW8gLuYm3bArRMmxTjyoe22wziRGMji2ZOK3DrcZfIz/S37Xf/z4SzRnf0uLV/2fTu66ly5Ht13T+NyqWdxs16/3Ld4ITOVnCY1/sll/gUwJsF25h2gHBp8csXWe6V0CJBNjFV3Qshms8stwmzF4mn64Jr3gdl7dJGy5t9dpYXRW3q1wmk+wHlvSVnCEEpzrECrm32C5NWAsGiC+w7oyozRjS8I2Nymxas583uGYlXjPxGnwruZrwGfjoyZ32ZW4Lj7b0BegEzSBafCSRrMWDqXvzjOpThEBlKkdggch6vL5FeXIPQZvNV2ObVrcRmybzdNnwRtGPjvEfdhv3bW12CR52BBZqjO/Qk
+x-ms-exchange-antispam-messagedata: 70lZvN2Ou8sJDBtqpyL8DnkgSLlZzwcVKVvMuNjvkc9WwWL2nBPLlCkgLrso0UxnnexqfQ8tZgyjlvHoAkP5gogl/7P2VHaX6wyAwvyBcsk/8ESDjraQRErgQQDa/yl6Uq5i+uKkrRg14nlfqcByJw==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F0B8D427DD035449B8FD8574FA9B93A9@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d74c1d19-f07e-4a3f-b23b-08d7e144c2da
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2020 13:56:13.5374
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gOasM/MIRA7i6XO8f7YicseF6dO85DJl5s79Ds/aOKFgKGvjHHDdq666bevU1cDbpfC+tiRpaqVGMFhi1c192NH0M4tCveirN5bR8/GeLTk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5242
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-15_04:2020-04-14,2020-04-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 clxscore=1015
+ phishscore=0 impostorscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004150102
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Sebastian,
-
-On 13/04/20 10:40 pm, Sebastian Reichel wrote:
-> Hi,
->
-> On Fri, Apr 10, 2020 at 10:19:47PM +0200, Saravanan Sekar wrote:
->> The mp2629 provides switching-mode battery charge management for
->> single-cell Li-ion or Li-polymer battery. Driver supports the
->> access/control input source and battery charging parameters.
->>
->> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->> ---
-> Generally looks good, but I do have some comments.
->
->>   drivers/power/supply/Kconfig          |  10 +
->>   drivers/power/supply/Makefile         |   1 +
->>   drivers/power/supply/mp2629_charger.c | 687 ++++++++++++++++++++++++++
->>   3 files changed, 698 insertions(+)
->>   create mode 100644 drivers/power/supply/mp2629_charger.c
->>
->> diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
->> index f3424fdce341..05b3f66946ad 100644
->> --- a/drivers/power/supply/Kconfig
->> +++ b/drivers/power/supply/Kconfig
->> @@ -541,6 +541,16 @@ config CHARGER_MAX8998
->>   	  Say Y to enable support for the battery charger control sysfs and
->>   	  platform data of MAX8998/LP3974 PMICs.
->>   
->> +config CHARGER_MP2629
->> +	tristate "Monolithic power system MP2629 Battery charger"
->> +	depends on MFD_MP2629
->> +	depends on MP2629_ADC
->> +	depends on IIO
->> +	help
->> +	  Select this option to enable support for Monolithic power system
->> +	  Battery charger. This driver provies Battery charger power management
->> +	  functions on the systems.
->> +
->>   config CHARGER_QCOM_SMBB
->>   	tristate "Qualcomm Switch-Mode Battery Charger and Boost"
->>   	depends on MFD_SPMI_PMIC || COMPILE_TEST
->> diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
->> index 6c7da920ea83..41cb64f09e49 100644
->> --- a/drivers/power/supply/Makefile
->> +++ b/drivers/power/supply/Makefile
->> @@ -75,6 +75,7 @@ obj-$(CONFIG_CHARGER_MAX77650)	+= max77650-charger.o
->>   obj-$(CONFIG_CHARGER_MAX77693)	+= max77693_charger.o
->>   obj-$(CONFIG_CHARGER_MAX8997)	+= max8997_charger.o
->>   obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
->> +obj-$(CONFIG_CHARGER_MP2629)	+= mp2629_charger.o
->>   obj-$(CONFIG_CHARGER_QCOM_SMBB)	+= qcom_smbb.o
->>   obj-$(CONFIG_CHARGER_BQ2415X)	+= bq2415x_charger.o
->>   obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
->> diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply/mp2629_charger.c
->> new file mode 100644
->> index 000000000000..279edfe383ee
->> --- /dev/null
->> +++ b/drivers/power/supply/mp2629_charger.c
->> @@ -0,0 +1,687 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * MP2629 battery charger driver
->> + *
->> + * Copyright 2020 Monolithic Power Systems, Inc
->> + *
->> + * Author: Saravanan Sekar <sravanhome@gmail.com>
->> + */
->> +
->> +#include <linux/bits.h>
->> +#include <linux/iio/consumer.h>
->> +#include <linux/iio/types.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/mfd/mp2629.h>
->> +#include <linux/module.h>
->> +#include <linux/mod_devicetable.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/power_supply.h>
->> +#include <linux/regmap.h>
->> +#include <linux/workqueue.h>
->> +
->> +#define MP2629_REG_INPUT_ILIM		0x00
->> +#define MP2629_REG_INPUT_VLIM		0x01
->> +#define MP2629_REG_CHARGE_CTRL		0x04
->> +#define MP2629_REG_CHARGE_ILIM		0x05
->> +#define MP2629_REG_PRECHARGE		0x06
->> +#define MP2629_REG_TERM_CURRENT		0x06
->> +#define MP2629_REG_CHARGE_VLIM		0x07
->> +#define MP2629_REG_TIMER_CTRL		0x08
->> +#define MP2629_REG_IMPEDANCE_COMP	0x09
->> +#define MP2629_REG_INTERRUPT		0x0b
->> +#define MP2629_REG_STATUS		0x0c
->> +#define MP2629_REG_FAULT		0x0d
->> +
->> +#define MP2629_MASK_INPUT_TYPE		GENMASK(7, 5)
->> +#define MP2629_MASK_CHARGE_TYPE		GENMASK(4, 3)
->> +#define MP2629_MASK_CHARGE_CTRL		GENMASK(5, 4)
->> +#define MP2629_MASK_WDOG_CTRL		GENMASK(5, 4)
->> +#define MP2629_MASK_IMPEDANCE		GENMASK(7, 4)
->> +
->> +#define MP2629_INPUTSOURCE_CHANGE	GENMASK(7, 5)
->> +#define MP2629_CHARGING_CHANGE		GENMASK(4, 3)
->> +#define MP2629_FAULT_BATTERY		BIT(3)
->> +#define MP2629_FAULT_THERMAL		BIT(4)
->> +#define MP2629_FAULT_INPUT		BIT(5)
->> +#define MP2629_FAULT_OTG		BIT(6)
->> +
->> +#define MP2629_MAX_BATT_CAPACITY	100
->> +
->> +#define MP2629_PROPS(_idx, _min, _max, _step)		\
->> +	[_idx] = {					\
->> +		.min	= _min,				\
->> +		.max	= _max,				\
->> +		.step	= _step,			\
->> +}
->> +
->> +enum mp2629_source_type {
->> +	MP2629_SOURCE_TYPE_NO_INPUT,
->> +	MP2629_SOURCE_TYPE_NON_STD,
->> +	MP2629_SOURCE_TYPE_SDP,
->> +	MP2629_SOURCE_TYPE_CDP,
->> +	MP2629_SOURCE_TYPE_DCP,
->> +	MP2629_SOURCE_TYPE_OTG = 7,
->> +};
->> +
->> +enum mp2629_field {
->> +	INPUT_ILIM,
->> +	INPUT_VLIM,
->> +	CHARGE_ILIM,
->> +	CHARGE_VLIM,
->> +	PRECHARGE,
->> +	TERM_CURRENT,
->> +	MP2629_MAX_FIELD
->> +};
->> +
->> +struct mp2629_charger {
->> +	struct device *dev;
->> +	struct work_struct charger_work;
->> +	int status;
->> +	int fault;
->> +
->> +	struct regmap *regmap;
->> +	struct regmap_field *regmap_fields[MP2629_MAX_FIELD];
->> +	struct mutex lock;
->> +	struct power_supply *usb;
->> +	struct power_supply *battery;
->> +	struct iio_channel *iiochan[MP2629_ADC_CHAN_END];
->> +};
->> +
->> +struct mp2629_prop {
->> +	int reg;
->> +	int mask;
->> +	int min;
->> +	int max;
->> +	int step;
->> +	int shift;
->> +};
->> +
->> +static enum power_supply_usb_type mp2629_usb_types[] = {
->> +	POWER_SUPPLY_USB_TYPE_SDP,
->> +	POWER_SUPPLY_USB_TYPE_DCP,
->> +	POWER_SUPPLY_USB_TYPE_CDP,
->> +	POWER_SUPPLY_USB_TYPE_PD_DRP,
->> +	POWER_SUPPLY_USB_TYPE_UNKNOWN
->> +};
->> +
->> +static enum power_supply_property mp2629_charger_usb_props[] = {
->> +	POWER_SUPPLY_PROP_ONLINE,
->> +	POWER_SUPPLY_PROP_USB_TYPE,
->> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
->> +	POWER_SUPPLY_PROP_CURRENT_NOW,
->> +	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
->> +	POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT,
->> +};
->> +
->> +static enum power_supply_property mp2629_charger_bat_props[] = {
->> +	POWER_SUPPLY_PROP_STATUS,
->> +	POWER_SUPPLY_PROP_HEALTH,
->> +	POWER_SUPPLY_PROP_CHARGE_TYPE,
->> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
->> +	POWER_SUPPLY_PROP_CURRENT_NOW,
->> +	POWER_SUPPLY_PROP_CAPACITY,
->> +	POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
->> +	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
->> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
->> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
->> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
->> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
->> +};
->> +
->> +static struct mp2629_prop props[] = {
->> +	MP2629_PROPS(INPUT_ILIM, 100000, 3250000, 50000),
->> +	MP2629_PROPS(INPUT_VLIM, 3800000, 5300000, 100000),
->> +	MP2629_PROPS(CHARGE_ILIM, 320000, 4520000, 40000),
->> +	MP2629_PROPS(CHARGE_VLIM, 3400000, 4670000, 10000),
->> +	MP2629_PROPS(PRECHARGE, 120000, 720000, 40000),
->> +	MP2629_PROPS(TERM_CURRENT, 80000, 680000, 40000),
->> +};
->> +
->> +static const struct reg_field mp2629_reg_fields[] = {
->> +	[INPUT_ILIM]	= REG_FIELD(MP2629_REG_INPUT_ILIM, 0, 5),
->> +	[INPUT_VLIM]	= REG_FIELD(MP2629_REG_INPUT_VLIM, 0, 3),
->> +	[CHARGE_ILIM]	= REG_FIELD(MP2629_REG_CHARGE_ILIM, 0, 6),
->> +	[CHARGE_VLIM]	= REG_FIELD(MP2629_REG_CHARGE_VLIM, 1, 7),
->> +	[PRECHARGE]	= REG_FIELD(MP2629_REG_PRECHARGE, 4, 7),
->> +	[TERM_CURRENT]	= REG_FIELD(MP2629_REG_TERM_CURRENT, 0, 3),
->> +};
->> +
->> +static char *adc_chan_name[] = {
->> +	"mp2629-batt-volt",
->> +	"mp2629-system-volt",
->> +	"mp2629-input-volt",
->> +	"mp2629-batt-current",
->> +	"mp2629-input-current",
->> +};
->> +
->> +static int mp2629_read_adc(struct mp2629_charger *charger,
->> +			   enum mp2629_adc_chan ch,
->> +			   union power_supply_propval *val)
->> +{
->> +	int ret;
->> +	int chval;
->> +
->> +	ret = iio_read_channel_processed(charger->iiochan[ch], &chval);
->> +	if (ret)
->> +		return ret;
->> +
->> +	val->intval = chval * 1000;
->> +
->> +	return 0;
->> +}
->> +
->> +static int mp2629_get_prop(struct mp2629_charger *charger,
->> +			   enum mp2629_field fld,
->> +			   union power_supply_propval *val)
->> +{
->> +	int ret;
->> +	unsigned int rval;
->> +
->> +	ret = regmap_field_read(charger->regmap_fields[fld], &rval);
->> +	if (ret)
->> +		return ret;
->> +
->> +	val->intval = rval * props[fld].step + props[fld].min;
->> +
->> +	return 0;
->> +}
->> +
->> +static int mp2629_set_prop(struct mp2629_charger *charger,
->> +			   enum mp2629_field fld,
->> +			   const union power_supply_propval *val)
->> +{
->> +	unsigned int rval;
->> +
->> +	if (val->intval < props[fld].min || val->intval > props[fld].max)
->> +		return -EINVAL;
->> +
->> +	rval = (val->intval - props[fld].min) / props[fld].step;
->> +	return regmap_field_write(charger->regmap_fields[fld], rval);
->> +}
->> +
->> +static int mp2629_get_battery_capacity(struct mp2629_charger *charger,
->> +				       union power_supply_propval *val)
->> +{
->> +	union power_supply_propval vnow, vlim;
->> +	int ret;
->> +
->> +	ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, &vnow);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = mp2629_get_prop(charger, CHARGE_VLIM, &vlim);
->> +	if (ret)
->> +		return ret;
->> +
->> +	val->intval = (vnow.intval * 100) / vlim.intval;
->> +	val->intval = min(val->intval, MP2629_MAX_BATT_CAPACITY);
->> +
->> +	return 0;
->> +}
-> This looks like a very rough estimate. Voltage does not drop
-> linearly for Li-Ion batteries. Is there a good reason for exposing
-> this and not letting userspace taking care of this estimation?
-
-Initially it was not clear for me from the datasheet, then checked with 
-chip vendor to arrive above
-and reference graph share with me, the Vbatt was not linear during charging.
-
-
->> +static int mp2629_charger_battery_get_prop(struct power_supply *psy,
->> +					enum power_supply_property psp,
->> +					union power_supply_propval *val)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
->> +	unsigned int rval;
->> +	int ret = 0;
->> +
->> +	switch (psp) {
->> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
->> +		ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
->> +		ret = mp2629_read_adc(charger, MP2629_BATT_CURRENT, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
->> +		val->intval = 4520000;
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
->> +		val->intval = 4670000;
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CAPACITY:
->> +		ret = mp2629_get_battery_capacity(charger, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
->> +		ret = mp2629_get_prop(charger, TERM_CURRENT, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
->> +		ret = mp2629_get_prop(charger, PRECHARGE, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
->> +		ret = mp2629_get_prop(charger, CHARGE_VLIM, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
->> +		ret = mp2629_get_prop(charger, CHARGE_ILIM, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_HEALTH:
->> +		if (!charger->fault)
->> +			val->intval = POWER_SUPPLY_HEALTH_GOOD;
->> +		if (MP2629_FAULT_BATTERY & charger->fault)
->> +			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
->> +		else if (MP2629_FAULT_THERMAL & charger->fault)
->> +			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
->> +		else if (MP2629_FAULT_INPUT & charger->fault)
->> +			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_STATUS:
->> +		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
->> +		if (ret)
->> +			break;
->> +
->> +		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
->> +		switch (rval) {
->> +		case 0x00:
->> +			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
->> +			break;
-> This should probably set POWER_SUPPLY_STATUS_DISCHARGING vs
-> POWER_SUPPLY_STATUS_NOT_CHARGING based on the battery current.
-> NOT_CHARGING means, that the battery is idle.
->
-ok will change to DISCHARGING
->> +		case 0x01:
->> +		case 0x10:
->> +			val->intval = POWER_SUPPLY_STATUS_CHARGING;
->> +			break;
->> +		case 0x11:
->> +			val->intval = POWER_SUPPLY_STATUS_FULL;
->> +		}
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CHARGE_TYPE:
->> +		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
->> +		if (ret)
->> +			break;
->> +
->> +		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
->> +		switch (rval) {
->> +		case 0x00:
->> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
->> +			break;
->> +		case 0x01:
->> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
->> +			break;
->> +		case 0x10:
->> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_STANDARD;
->> +			break;
->> +		default:
->> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
->> +		}
->> +		break;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->> +	return ret;
->> +}
->> +
->> +static int mp2629_charger_battery_set_prop(struct power_supply *psy,
->> +					enum power_supply_property psp,
->> +					const union power_supply_propval *val)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
->> +
->> +	switch (psp) {
->> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
->> +		return mp2629_set_prop(charger, TERM_CURRENT, val);
->> +
->> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
->> +		return mp2629_set_prop(charger, PRECHARGE, val);
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
->> +		return mp2629_set_prop(charger, CHARGE_VLIM, val);
->> +
->> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
->> +		return mp2629_set_prop(charger, CHARGE_ILIM, val);
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
->> +
->> +static int mp2629_charger_usb_get_prop(struct power_supply *psy,
->> +				enum power_supply_property psp,
->> +				union power_supply_propval *val)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
->> +	unsigned int rval;
->> +	int ret;
->> +
->> +	switch (psp) {
->> +	case POWER_SUPPLY_PROP_ONLINE:
->> +		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
->> +		if (ret)
->> +			break;
->> +
->> +		val->intval = !!(rval & MP2629_MASK_INPUT_TYPE);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_USB_TYPE:
->> +		ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
->> +		if (ret)
->> +			break;
->> +
->> +		rval = (rval & MP2629_MASK_INPUT_TYPE) >> 5;
->> +		switch (rval) {
->> +		case MP2629_SOURCE_TYPE_SDP:
->> +			val->intval = POWER_SUPPLY_USB_TYPE_SDP;
->> +			break;
->> +		case MP2629_SOURCE_TYPE_CDP:
->> +			val->intval = POWER_SUPPLY_USB_TYPE_CDP;
->> +			break;
->> +		case MP2629_SOURCE_TYPE_DCP:
->> +			val->intval = POWER_SUPPLY_USB_TYPE_DCP;
->> +			break;
->> +		case MP2629_SOURCE_TYPE_OTG:
->> +			val->intval = POWER_SUPPLY_USB_TYPE_PD_DRP;
->> +			break;
->> +		default:
->> +			val->intval = POWER_SUPPLY_USB_TYPE_UNKNOWN;
->> +			break;
->> +		}
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
->> +		ret = mp2629_read_adc(charger, MP2629_INPUT_VOLT, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
->> +		ret = mp2629_read_adc(charger, MP2629_INPUT_CURRENT, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
->> +		ret = mp2629_get_prop(charger, INPUT_VLIM, val);
->> +		break;
->> +
->> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
->> +		ret = mp2629_get_prop(charger, INPUT_ILIM, val);
->> +		break;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->> +	return ret;
->> +}
->> +
->> +static int mp2629_charger_usb_set_prop(struct power_supply *psy,
->> +				enum power_supply_property psp,
->> +				const union power_supply_propval *val)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
->> +
->> +	switch (psp) {
->> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
->> +		return mp2629_set_prop(charger, INPUT_VLIM, val);
->> +
->> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
->> +		return mp2629_set_prop(charger, INPUT_ILIM, val);
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
->> +
->> +static int mp2629_charger_battery_prop_writeable(struct power_supply *psy,
->> +				     enum power_supply_property psp)
->> +{
->> +	return (psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
->> +	       (psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
->> +	       (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
->> +	       (psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE);
->> +}
->> +
->> +static int mp2629_charger_usb_prop_writeable(struct power_supply *psy,
->> +				     enum power_supply_property psp)
->> +{
->> +	return (psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
->> +	       (psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT);
->> +}
->> +
->> +static void mp2629_charger_work(struct work_struct *work)
->> +{
->> +	struct mp2629_charger *charger;
->> +	unsigned int rval;
->> +	int ret;
->> +
->> +	charger = container_of(work, struct mp2629_charger, charger_work);
->> +
->> +	mutex_lock(&charger->lock);
->> +
->> +	ret = regmap_read(charger->regmap, MP2629_REG_FAULT, &rval);
->> +	if (ret)
->> +		goto unlock;
->> +
->> +	if (rval) {
->> +		charger->fault = rval;
->> +		if (MP2629_FAULT_BATTERY & rval)
->> +			dev_err(charger->dev, "Battery fault OVP");
->> +		else if (MP2629_FAULT_THERMAL & rval)
->> +			dev_err(charger->dev, "Thermal shutdown fault");
->> +		else if (MP2629_FAULT_INPUT & rval)
->> +			dev_err(charger->dev, "no input or input OVP");
->> +		else if (MP2629_FAULT_OTG & rval)
->> +			dev_err(charger->dev, "VIN overloaded");
->> +
->> +		goto unlock;
->> +	}
->> +
->> +	ret = regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
->> +	if (ret)
->> +		goto unlock;
->> +
->> +	if (rval & MP2629_INPUTSOURCE_CHANGE)
->> +		power_supply_changed(charger->usb);
->> +	else if (rval & MP2629_CHARGING_CHANGE)
->> +		power_supply_changed(charger->battery);
->> +
->> +unlock:
->> +	mutex_unlock(&charger->lock);
->> +}
->> +
->> +static irqreturn_t mp2629_irq_handler(int irq, void *dev_id)
->> +{
->> +	struct mp2629_charger *charger = dev_id;
->> +
->> +	schedule_work(&charger->charger_work);
->> +	return IRQ_HANDLED;
->> +}
-> The worker is only called here, so it is an open coded
-> request_threaded_irq() without IRQF_ONESHOT. Please use
-> the standard request_threaded_irq() and remove the worker.
->
-> It simplifies the code and removes a race condition during
-> driver removal: If any interrupt arrives between canceling
-> the charger work and disabling the IRQ the driver might execute
-> the worker with free'd resources.
-ok
->> +static const struct power_supply_desc mp2629_usb_desc = {
->> +	.name		= "mp2629_usb",
->> +	.type		= POWER_SUPPLY_TYPE_USB,
->> +	.usb_types      = mp2629_usb_types,
->> +	.num_usb_types  = ARRAY_SIZE(mp2629_usb_types),
->> +	.properties	= mp2629_charger_usb_props,
->> +	.num_properties	= ARRAY_SIZE(mp2629_charger_usb_props),
->> +	.get_property	= mp2629_charger_usb_get_prop,
->> +	.set_property	= mp2629_charger_usb_set_prop,
->> +	.property_is_writeable = mp2629_charger_usb_prop_writeable,
->> +};
->> +
->> +static const struct power_supply_desc mp2629_battery_desc = {
->> +	.name		= "mp2629_battery",
->> +	.type		= POWER_SUPPLY_TYPE_BATTERY,
->> +	.properties	= mp2629_charger_bat_props,
->> +	.num_properties	= ARRAY_SIZE(mp2629_charger_bat_props),
->> +	.get_property	= mp2629_charger_battery_get_prop,
->> +	.set_property	= mp2629_charger_battery_set_prop,
->> +	.property_is_writeable = mp2629_charger_battery_prop_writeable,
->> +};
->> +
->> +static ssize_t batt_impedance_compensation_show(struct device *dev,
->> +					   struct device_attribute *attr,
->> +					   char *buf)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
->> +	unsigned int rval;
->> +	int ret;
->> +
->> +	ret = regmap_read(charger->regmap, MP2629_REG_IMPEDANCE_COMP, &rval);
->> +	if (ret)
->> +		return ret;
->> +
->> +	rval = (rval >> 4) * 10;
->> +	return sprintf(buf, "%d mohm\n", rval);
->> +}
->> +
->> +static ssize_t batt_impedance_compensation_store(struct device *dev,
->> +					    struct device_attribute *attr,
->> +					    const char *buf,
->> +					    size_t count)
->> +{
->> +	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
->> +	unsigned int val;
->> +	int ret;
->> +
->> +	ret = kstrtouint(buf, 10, &val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	if (val > 140)
->> +		return -ERANGE;
->> +
->> +	/* multiples of 10 mohm so round off */
->> +	val = val / 10;
->> +	ret = regmap_update_bits(charger->regmap, MP2629_REG_IMPEDANCE_COMP,
->> +					MP2629_MASK_IMPEDANCE, val << 4);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return count;
->> +}
->> +
->> +static DEVICE_ATTR_RW(batt_impedance_compensation);
-> Needs to be documented in device specific properties:
->
-> Documentation/ABI/testing/sysfs-class-power
-Covered as part of v8
->> +static struct attribute *mp2629_charger_sysfs_attrs[] = {
->> +	&dev_attr_batt_impedance_compensation.attr,
->> +	NULL
->> +};
->> +ATTRIBUTE_GROUPS(mp2629_charger_sysfs);
->> +
->> +static int mp2629_charger_probe(struct platform_device *pdev)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	struct mp2629_info *ddata = dev_get_drvdata(dev->parent);
->> +	struct mp2629_charger *charger;
->> +	struct power_supply_config psy_cfg = {};
->> +	int ret, i, irq;
->> +
->> +	charger = devm_kzalloc(dev, sizeof(*charger), GFP_KERNEL);
->> +	if (!charger)
->> +		return -ENOMEM;
->> +
->> +	charger->regmap = ddata->regmap;
->> +	charger->dev = dev;
->> +	platform_set_drvdata(pdev, charger);
->> +
->> +	for (i = 0; i < MP2629_MAX_FIELD; i++) {
->> +		charger->regmap_fields[i] = devm_regmap_field_alloc(dev,
->> +					charger->regmap, mp2629_reg_fields[i]);
->> +		if (IS_ERR(charger->regmap_fields[i])) {
->> +			dev_err(dev, "regmap field alloc fail %d\n", i);
->> +			return PTR_ERR(charger->regmap_fields[i]);
->> +		}
->> +	}
->> +
->> +	for (i = 0; i < MP2629_ADC_CHAN_END; i++) {
->> +		charger->iiochan[i] = iio_channel_get(dev, adc_chan_name[i]);
-> Why not devm_iio_channel_get() for further simplifying the code?
->
->> +		if (IS_ERR(charger->iiochan[i])) {
->> +			ret = PTR_ERR(charger->iiochan[i]);
->> +			goto iio_fail;
->> +		}
->> +	}
->> +
->> +	charger->usb = devm_power_supply_register(dev, &mp2629_usb_desc, NULL);
->> +	if (IS_ERR(charger->usb)) {
->> +		ret = PTR_ERR(charger->usb);
->> +		goto iio_fail;
->> +	}
-> devm_ based resource allocation should not follow non-devm
-> allocation without a very good reason. Usually we release resources
-> in reverse allocation order, like unrolling a stack. Having a
-> non-devm requested resource request before a devm resource request
-> breaks this pattern.
-ok will change to resource based
->> +	psy_cfg.drv_data = charger;
->> +	psy_cfg.attr_grp = mp2629_charger_sysfs_groups;
->> +	charger->battery = devm_power_supply_register(dev,
->> +					 &mp2629_battery_desc, &psy_cfg);
->> +	if (IS_ERR(charger->battery)) {
->> +		ret = PTR_ERR(charger->battery);
->> +		goto iio_fail;
->> +	}
->> +
->> +	ret = regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
->> +					MP2629_MASK_CHARGE_CTRL, BIT(4));
->> +	if (ret) {
->> +		dev_err(dev, "enable charge fail: %d\n", ret);
->> +		goto iio_fail;
->> +	}
->> +
->> +	regmap_update_bits(charger->regmap, MP2629_REG_TIMER_CTRL,
->> +					MP2629_MASK_WDOG_CTRL, 0);
->> +
->> +	INIT_WORK(&charger->charger_work, mp2629_charger_work);
->> +	mutex_init(&charger->lock);
->> +
->> +	irq = platform_get_irq(to_platform_device(pdev->dev.parent), 0);
->> +	if (irq) {
->> +		ret = devm_request_irq(dev, irq, mp2629_irq_handler,
->> +				 IRQF_TRIGGER_RISING, "mp2629-charger",
->> +				 charger);
->> +		if (ret) {
->> +			dev_err(dev, "failed to request gpio IRQ\n");
->> +			goto iio_fail;
->> +		}
->> +	}
->> +
->> +	regmap_update_bits(charger->regmap, MP2629_REG_INTERRUPT,
->> +				GENMASK(6, 5), BIT(6) | BIT(5));
->> +
->> +	return 0;
->> +
->> +iio_fail:
->> +	while (i--)
->> +		iio_channel_release(charger->iiochan[i]);
->> +
->> +	dev_err(dev, "driver register fail: %d\n", ret);
->> +	return ret;
->> +}
->> +
->> +static int mp2629_charger_remove(struct platform_device *pdev)
->> +{
->> +	struct mp2629_charger *charger = platform_get_drvdata(pdev);
->> +	int i;
->> +
->> +	cancel_work_sync(&charger->charger_work);
->> +
->> +	for (i = 0; i < MP2629_ADC_CHAN_END; i++)
->> +		iio_channel_release(charger->iiochan[i]);
->> +
->> +	regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
->> +					MP2629_MASK_CHARGE_CTRL, 0);
->> +	return 0;
->> +}
->> +
->> +static const struct of_device_id mp2629_charger_of_match[] = {
->> +	{ .compatible = "mps,mp2629_charger"},
->> +	{}
->> +};
->> +MODULE_DEVICE_TABLE(of, mp2629_charger_of_match);
->> +
->> +static struct platform_driver mp2629_charger_driver = {
->> +	.driver = {
->> +		.name = "mp2629_charger",
->> +		.of_match_table = mp2629_charger_of_match,
->> +	},
->> +	.probe		= mp2629_charger_probe,
->> +	.remove		= mp2629_charger_remove,
->> +};
->> +module_platform_driver(mp2629_charger_driver);
->> +
->> +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
->> +MODULE_DESCRIPTION("MP2629 Charger driver");
->> +MODULE_LICENSE("GPL");
-> -- Sebastian
+T24gVHVlLCAyMDIwLTA0LTE0IGF0IDE5OjA2ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBUdWUsIDE0IEFwciAyMDIwIDExOjM2OjU2ICswMzAw
+DQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdy
+b3RlOg0KPiANCj4gPiBUaGUgZmluYWwgaW50ZW50IGlzIHRvIGxvY2FsaXplIGFsbCBidWZmZXIg
+b3BzIGludG8gdGhlDQo+ID4gaW5kdXN0cmlhbGlvLWJ1ZmZlci5jIGZpbGUsIHRvIGJlIGFibGUg
+dG8gYWRkIHN1cHBvcnQgZm9yIG11bHRpcGxlIGJ1ZmZlcnMNCj4gPiBwZXIgSUlPIGRldmljZS4N
+Cj4gPiANCj4gPiBXZSBvbmx5IG5lZWQgYSBjaGFyZGV2IGlmIHdlIG5lZWQgdG8gc3VwcG9ydCBi
+dWZmZXJzIGFuZC9vciBldmVudHMuDQo+ID4gDQo+ID4gV2l0aCB0aGlzIGNoYW5nZSwgYSBjaGFy
+ZGV2IHdpbGwgYmUgY3JlYXRlZDoNCj4gPiAxLiBpZiB0aGVyZSBpcyBhbiBJSU8gYnVmZmVyIGF0
+dGFjaGVkIE9SDQo+ID4gMi4gaWYgdGhlcmUgaXMgYW4gZXZlbnRfaW50ZXJmYWNlIGNvbmZpZ3Vy
+ZWQNCj4gPiANCj4gPiBPdGhlcndpc2UsIG5vIGNoYXJkZXYgd2lsbCBiZSBjcmVhdGVkLg0KPiA+
+IFF1aXRlIGEgbG90IG9mIElJTyBkZXZpY2VzIGRvbid0IHJlYWxseSBuZWVkIGEgY2hhcmRldiwg
+c28gdGhpcyBpcyBhIG1pbm9yDQo+ID4gaW1wcm92ZW1lbnQgdG8gdGhlIElJTyBjb3JlLCBhcyB0
+aGUgSUlPIGRldmljZSB3aWxsIHRha2UgdXAgZmV3ZXINCj4gPiByZXNvdXJjZXMuDQo+ID4gDQo+
+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZHJ1IEFyZGVsZWFuIDxhbGV4YW5kcnUuYXJkZWxlYW5A
+YW5hbG9nLmNvbT4NCj4gPiAtLS0NCj4gPiANCj4gPiBDaGFuZ2Vsb2cgdjEgLT4gdjI6DQo+ID4g
+KiBzcGxpdCBhd2F5IGZyb20gc2VyaWVzICdpaW86IGNvcmUsYnVmZmVyOiByZS1vcmdhbml6ZSBj
+aGFyZGV2IGNyZWF0aW9uJzsNCj4gPiAgIGknbSBnZXR0aW5nIHRoZSBmZWVsaW5nIHRoYXQgdGhp
+cyBoYXMgc29tZSB2YWx1ZSBvbiBpdCdzIG93bjsNCj4gPiAgIG5vIGlkZWEgaWYgaXQgbmVlZHMg
+J0ZpeGVzJyB0YWc7IGl0IGlzIGEgYml0IGZ1enp5IHRvIHBvaW50IHRvIGEgcGF0Y2gNCj4gPiAg
+IHdoaWNoIHRoaXMgd291bGQgYmUgZml4ZWQgYnkgdGhpczsgaSdtIGd1ZXNzaW5nIGl0IHdvdWxk
+IGJlIGZpbmUNCj4gPiAgIHdpdGhvdXQgb25lDQo+IA0KPiBJJ2QgYXJndWUgaXQncyBhbiAnb3B0
+aW1pemF0aW9uJyByYXRoZXIgdGhhbiBhIGZpeCA6KQ0KPiANCj4gU3RpbGwgbG9va3MgZ29vZCB0
+byBtZSBidXQgSSdkIGxpa2UgaXQgdG8gc2l0IGZvciBhIGxpdHRsZSB3aGlsZSB0bw0KPiBzZWUg
+aWYgYW55b25lIHBvaW50cyBvdXQgc29tZXRoaW5nIHdlIGFyZSBib3RoIG1pc3NpbmchDQo+IA0K
+DQpUaGlzIGlzIG5vdCBnb29kLg0KSXQgc2VlbXMgdGhhdCBJIGRpZCBub3QgcHJvcGVybHkgdGVz
+dCBhbGwgY2FzZXMuDQpJIGhhZCB0byBicmVhayBhIGRldmljZSB0byBub3QgaGF2ZSBhbiBldmVu
+dF9pbnRlcmZhY2UgdG8gbm90aWNlIHRoYXQgdGhlIHN5c2ZzDQpkb2Vzbid0IGdldCBpbnN0YW50
+aWF0ZWQgZWl0aGVyIGJlY2F1c2UgZGV2aWNlX2FkZCBpcyBtaXNzaW5nLg0KDQpXaWxsIGRvIGFu
+b3RoZXIgdHJ5Lg0KDQoNCj4gVGhhbmtzIGZvciB0aWR5aW5nIHRoaXMgdXAuDQo+IA0KPiBKb25h
+dGhhbg0KPiANCj4gPiAgZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWNvcmUuYyB8IDE3ICsrKysr
+KysrKysrKysrKy0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspLCAyIGRl
+bGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9pbmR1c3RyaWFs
+aW8tY29yZS5jIGIvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLQ0KPiA+IGNvcmUuYw0KPiA+IGlu
+ZGV4IGY0ZGFmMTlmMmEzYi4uMzJlNzJkOWZkMWU5IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMv
+aWlvL2luZHVzdHJpYWxpby1jb3JlLmMNCj4gPiArKysgYi9kcml2ZXJzL2lpby9pbmR1c3RyaWFs
+aW8tY29yZS5jDQo+ID4gQEAgLTE2NzYsNiArMTY3NiwxNSBAQCBzdGF0aWMgaW50IGlpb19jaGVj
+a191bmlxdWVfc2Nhbl9pbmRleChzdHJ1Y3QgaWlvX2Rldg0KPiA+ICppbmRpb19kZXYpDQo+ID4g
+IA0KPiA+ICBzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19idWZmZXJfc2V0dXBfb3BzIG5vb3Bfcmlu
+Z19zZXR1cF9vcHM7DQo+ID4gIA0KPiA+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGZpbGVfb3BlcmF0
+aW9ucyBpaW9fZXZlbnRfZmlsZW9wcyA9IHsNCj4gPiArCS5yZWxlYXNlID0gaWlvX2NocmRldl9y
+ZWxlYXNlLA0KPiA+ICsJLm9wZW4gPSBpaW9fY2hyZGV2X29wZW4sDQo+ID4gKwkub3duZXIgPSBU
+SElTX01PRFVMRSwNCj4gPiArCS5sbHNlZWsgPSBub29wX2xsc2VlaywNCj4gPiArCS51bmxvY2tl
+ZF9pb2N0bCA9IGlpb19pb2N0bCwNCj4gPiArCS5jb21wYXRfaW9jdGwgPSBjb21wYXRfcHRyX2lv
+Y3RsLA0KPiA+ICt9Ow0KPiA+ICsNCj4gPiAgaW50IF9faWlvX2RldmljZV9yZWdpc3RlcihzdHJ1
+Y3QgaWlvX2RldiAqaW5kaW9fZGV2LCBzdHJ1Y3QgbW9kdWxlDQo+ID4gKnRoaXNfbW9kKQ0KPiA+
+ICB7DQo+ID4gIAlpbnQgcmV0Ow0KPiA+IEBAIC0xNzI2LDcgKzE3MzUsMTAgQEAgaW50IF9faWlv
+X2RldmljZV9yZWdpc3RlcihzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LA0KPiA+IHN0cnVjdCBt
+b2R1bGUgKnRoaXNfbW9kKQ0KPiA+ICAJCWluZGlvX2Rldi0+c2V0dXBfb3BzID09IE5VTEwpDQo+
+ID4gIAkJaW5kaW9fZGV2LT5zZXR1cF9vcHMgPSAmbm9vcF9yaW5nX3NldHVwX29wczsNCj4gPiAg
+DQo+ID4gLQljZGV2X2luaXQoJmluZGlvX2Rldi0+Y2hyZGV2LCAmaWlvX2J1ZmZlcl9maWxlb3Bz
+KTsNCj4gPiArCWlmIChpbmRpb19kZXYtPmJ1ZmZlcikNCj4gPiArCQljZGV2X2luaXQoJmluZGlv
+X2Rldi0+Y2hyZGV2LCAmaWlvX2J1ZmZlcl9maWxlb3BzKTsNCj4gPiArCWVsc2UgaWYgKGluZGlv
+X2Rldi0+ZXZlbnRfaW50ZXJmYWNlKQ0KPiA+ICsJCWNkZXZfaW5pdCgmaW5kaW9fZGV2LT5jaHJk
+ZXYsICZpaW9fZXZlbnRfZmlsZW9wcyk7DQo+ID4gIA0KPiA+ICAJaW5kaW9fZGV2LT5jaHJkZXYu
+b3duZXIgPSB0aGlzX21vZDsNCj4gPiAgDQo+ID4gQEAgLTE3NTQsNyArMTc2Niw4IEBAIEVYUE9S
+VF9TWU1CT0woX19paW9fZGV2aWNlX3JlZ2lzdGVyKTsNCj4gPiAgICoqLw0KPiA+ICB2b2lkIGlp
+b19kZXZpY2VfdW5yZWdpc3RlcihzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2KQ0KPiA+ICB7DQo+
+ID4gLQljZGV2X2RldmljZV9kZWwoJmluZGlvX2Rldi0+Y2hyZGV2LCAmaW5kaW9fZGV2LT5kZXYp
+Ow0KPiA+ICsJaWYgKGluZGlvX2Rldi0+YnVmZmVyIHx8IGluZGlvX2Rldi0+ZXZlbnRfaW50ZXJm
+YWNlKQ0KPiA+ICsJCWNkZXZfZGV2aWNlX2RlbCgmaW5kaW9fZGV2LT5jaHJkZXYsICZpbmRpb19k
+ZXYtPmRldik7DQo+ID4gIA0KPiA+ICAJbXV0ZXhfbG9jaygmaW5kaW9fZGV2LT5pbmZvX2V4aXN0
+X2xvY2spOw0KPiA+ICANCg==

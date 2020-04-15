@@ -2,219 +2,239 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A801A92A7
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 07:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E1D1A92C1
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 07:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393444AbgDOFrW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Apr 2020 01:47:22 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:32338 "EHLO
+        id S2389663AbgDOF5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Apr 2020 01:57:31 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:51904 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2393419AbgDOFrT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 01:47:19 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03F5j7aB001179;
-        Wed, 15 Apr 2020 01:47:16 -0400
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2176.outbound.protection.outlook.com [104.47.55.176])
-        by mx0a-00128a01.pphosted.com with ESMTP id 30dn7uh11n-1
+        by vger.kernel.org with ESMTP id S2389655AbgDOF5a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Apr 2020 01:57:30 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03F5qEfB010280;
+        Wed, 15 Apr 2020 01:57:29 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30dn9a91jf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Apr 2020 01:47:16 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FuzL6dlMOq2DoiPNbnnAH5Koxi/nU8/ps82RHnI7wE8NAO82Wi3ErF9SsNQBOhDHL9kRxFz9A4TnDebT4Ecw+LL2UYmypwwGADx1gRfYRRluWdZN2CfXiJh8PkOQrmYSJpC7rGDejFRpUBdjMuq3OGrr5e4FHrNLo3mtQNcgXkcxhmNb1sIUT+9ecH0DdJG6naMLqRam5kpMXARbDND5MN/yJoDOx8ccwxsOa9TYwGJ8A+91NvGNrJ0ZBBTPFZWmasN4eb7oJMjQdAQVSoahRgn0SKk9GUnkbD1aS8QmZ5kNDvwJ4F3PPDGqu2FC/GHjmLjWG8vp/BSVNSUm52MIlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S4ij0ax6vbddE8+jh7kk4mdfeOt0Xht8z7pR0/BFLio=;
- b=NLwp5ZJ6m2HOFIiYM2NKKw6ayE1aV+uLKdFtRAmhahHbb0UiTVHd2OE+ZvoULZZomu5OSFL+jLM1TKoyRpunnLch/nqx/nhvVhC2D94Bx22T9O/K7fhT4j/0nUgmoJVl2EL0XJJpRxMBwY6VfCpb5e05hLRjmCm9NefzYVZj0gKjCiRB3BU0gcdkMGn3YGQNNvzcEHSDKPwgAHOdd6F3teVyHdABjn1qY4V2S/KQRJF4v0eYc57pXWP41pfvnqEVvNReQ7mc89vTswJB0fOtl873+mGhH9dfsq8Fc6j0AILvuuiGNZXFmu1osVjDiBs50K2gO3FMoCOsAOub4UA/iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S4ij0ax6vbddE8+jh7kk4mdfeOt0Xht8z7pR0/BFLio=;
- b=BQr6qS1VmgEyHnaZX+RFiyP9lusOIrataJDiTc7RI3Eei0O+A0nr8Ya/V8LzQo4ZKx53K3YQ1MnEzeABf4R7t6ow8Ig6M8gOXGX37abgrfgJDGHKpMOVK8r/BFY/SHVNUY3AJxAsSDu0qiHGh29nfhoWchxxcNxyoRizgl8TxJU=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB4412.namprd03.prod.outlook.com (2603:10b6:5:107::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.28; Wed, 15 Apr
- 2020 05:47:14 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2921.024; Wed, 15 Apr 2020
- 05:47:14 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "jeremyfertic@gmail.com" <jeremyfertic@gmail.com>
-CC:     "Tachici, Alexandru" <Alexandru.Tachici@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] iio: adc: ad7192: fix null pointer de-reference
- crash during probe
-Thread-Topic: [PATCH v3 1/2] iio: adc: ad7192: fix null pointer de-reference
- crash during probe
-Thread-Index: AQHWEWxdRyazMz4LQE6U/VDj6V8oHKh3nLqAgAIUJQA=
-Date:   Wed, 15 Apr 2020 05:47:14 +0000
-Message-ID: <e1a8ff6ee52e8c8d0c5b0704d7b6b26088d0925a.camel@analog.com>
-References: <20200413082044.81101-1-alexandru.ardelean@analog.com>
-         <20200413220631.GA4884@r2700x.localdomain>
-In-Reply-To: <20200413220631.GA4884@r2700x.localdomain>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [188.27.135.58]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: df818634-d943-4a45-f911-08d7e100731c
-x-ms-traffictypediagnostic: DM6PR03MB4412:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR03MB4412CF18EE1B40C6DF3D8134F9DB0@DM6PR03MB4412.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2089;
-x-forefront-prvs: 0374433C81
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(396003)(346002)(39860400002)(376002)(366004)(136003)(26005)(4326008)(6486002)(8936002)(86362001)(2616005)(5660300002)(316002)(2906002)(36756003)(186003)(6512007)(66476007)(8676002)(91956017)(81156014)(6506007)(54906003)(6916009)(66556008)(71200400001)(478600001)(66446008)(66946007)(76116006)(64756008);DIR:OUT;SFP:1101;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: bVoIrwslwo8THPD1CaN8F/AVNeSvOmJkqc075enIDKDo1N6wfHKcoJaglkfamMAgyirlopwnF6Sq+E6TSXt8kmMmaMjRPm4cKjaHEQtdnr2YoTHGheUsOdWR4dDQ4YBBgnAsD0PRlC2Ee8uzdqS+DkY9EUBPoEagw2OGj8/tKDMwHYXpAQ+Beq/Y+9KDE1nmmZEwvk31roRDFN8Bsh+JibQCORqkWyRseJ7c0UXmLn0m3U95Uz2U2WcFL3rsejzHWhUvdo5kjlHACUC8EuI9UFwrHnLsFBvG5MMLQi5mC6dzSVh+2UbLWO6WDLIstzeVhTjRwG5WYqBI2qDUUUaZvJl57j57B35KMcMElT6PiLuzQIDCVtQyl9KZ3Zl6/tUs85X0o5+uaS/oYGLi2yiNRLNEGtq38K+v4Q5PskTr8v+9rllNXhwNf7EsY4qDTfnk
-x-ms-exchange-antispam-messagedata: nIncsnDE5Hp8DQPnhnv/SodPD6stIrAEu14V+UarN92BU1GAXyPtjIQnpbQu2IGVmJvDfTexH54Vjg8jX6VTK3V2suMErOIq5QzbTh69Yt60YVl1A6BA8/Gr2uwxhhB3olFTgLAlFIbo9CJi+tXgjQ==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4637A7607709D94CB807592B8D955FDB@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Wed, 15 Apr 2020 01:57:29 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 03F5vROb063672
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 15 Apr 2020 01:57:28 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 14 Apr 2020 22:57:26 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 14 Apr 2020 22:57:26 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 14 Apr 2020 22:57:26 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03F5vNqc029221;
+        Wed, 15 Apr 2020 01:57:24 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <alexandru.tachici@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v4 1/2] iio: adc: ad7192: fix null pointer de-reference crash during probe
+Date:   Wed, 15 Apr 2020 08:58:03 +0300
+Message-ID: <20200415055804.17971-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df818634-d943-4a45-f911-08d7e100731c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2020 05:47:14.1643
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JPrGmczFJVlAOsngRcjZ27J6k3AxdfMEW4ZSIqHiGhNr5Q9Q7YZsiWKmwzBBszGZlsLNsOi1evWEqQ8tc8+hn4XSpqZy++85dHP1kKyEJNE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4412
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
  definitions=2020-04-15_01:2020-04-14,2020-04-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 clxscore=1011
- phishscore=0 impostorscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004150043
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
+ mlxscore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004150044
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTA0LTEzIGF0IDE2OjA2IC0wNjAwLCBKZXJlbXkgRmVydGljIHdyb3RlOg0K
-PiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIEFwciAxMywgMjAyMCBhdCAxMToyMDo0M0FNICsw
-MzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3JvdGU6DQo+ID4gV2hlbiB0aGUgJ3NwaV9kZXZpY2Vf
-aWQnIHRhYmxlIHdhcyByZW1vdmVkLCBpdCBvbWl0dGVkIHRvIGNsZWFudXAvZml4IHRoZQ0KPiA+
-IGFzc2lnbm1lbnQ6DQo+ID4gICAgJ2luZGlvX2Rldi0+bmFtZSA9IHNwaV9nZXRfZGV2aWNlX2lk
-KHNwaSktPm5hbWU7Jw0KPiA+IA0KPiA+IEFmdGVyIHRoYXQgcGF0Y2ggJ3NwaV9nZXRfZGV2aWNl
-X2lkKHNwaSknIHJldHVybnMgTlVMTCwgc28gdGhpcyBjcmFzaGVzDQo+ID4gZHVyaW5nIHByb2Jl
-IHdpdGggbnVsbCBkZS1yZWYuDQo+ID4gDQo+ID4gVGhpcyBjaGFuZ2UgZml4ZXMgdGhpcyBieSBp
-bnRyb2R1Y2luZyBhbiBhZDcxOTJfY2hpcF9pbmZvIHN0cnVjdCwgYW5kDQo+ID4gZGVmaW5lcyBh
-bGwgcGFydC1uYW1lcyBbdGhhdCBzaG91bGQgYmUgYXNzaWduZWQgdG8gaW5kaW9fZGV2LT5uYW1l
-XSBpbiBhDQo+ID4gJ2FkNzE5Ml9jaGlwX2luZm9fdGJsJyB0YWJsZS4NCj4gPiANCj4gPiBXaXRo
-IHRoaXMgY2hhbmdlLCB0aGUgb2xkICdzdC0+ZGV2aWQnIGlzIGFsc28gbW92ZWQgdG8gYmUgYQ0K
-PiA+ICdjaGlwX2luZm8tPmNoaXBfaWQnLiBBbmQgdGhlIG9sZCAnSURfQUQ3MTlYJyBtYWNyb3Mg
-aGF2ZSBiZWVuIHJlbmFtZWQgdG8NCj4gPiAnQ0hJUElEX0FENzE5WCcuIFRsZCBpZGVudGlmaWVy
-cyBoYXZlIGJlZW4gcmUtcHVycG9zZWQgdG8gYmUgZW51bS9pbmRleA0KPiA+IHZhbHVlcyBpbiB0
-aGUgbmV3ICdhZDcxOTJfY2hpcF9pbmZvX3RibCcuDQo+ID4gDQo+ID4gVGhpcyBzaG91bGQgZml4
-IHRoZSBidWcsIGFuZCBtYWludGFpbiB0aGUgQUJJIGZvciB0aGUgJ2luZGlvX2Rldi0+bmFtZScN
-Cj4gPiBmaWVsZC4NCj4gPiANCj4gPiBGaXhlczogNjY2MTRhYjJiZTM4ICgic3RhZ2luZzogaWlv
-OiBhZGM6IGFkNzE5MjogcmVtb3ZlZCBzcGlfZGV2aWNlX2lkIikNCj4gPiBTaWduZWQtb2ZmLWJ5
-OiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0KPiA+
-IC0tLQ0KPiA+IA0KPiA+IENoYW5nZWxvZyB2MiAtPiB2MzoNCj4gPiAqIHJld29ya2VkIHBhdGNo
-IHRvIGludHJvZHVjZSBhIGNoaXBfaW5mbyBzdHJ1Y3QgZm9yIHRoZSBwYXJ0LW5hbWUNCj4gPiAq
-IGFkZGVkIDJuZCBwYXRjaCB0byBtb3ZlIG9mLXRhYmxlIGNsb3NlciB0byB0aGUgZW5kIG9mIHRo
-ZSBmaWxlOyB0aGlzDQo+ID4gICBwYXRjaCBpcyBtb3JlIGNvc21ldGljOyBoYXMgbm8gZml4ZXMg
-dGFnLCBidXQgaXMgb24gdG9wIG9mIHRoZSBwcmV2aW91cw0KPiA+IA0KPiA+IENoYW5nZWxvZyB2
-MSAtPiB2MjoNCj4gPiAqIGZpeCBjb2xvbiBmb3IgRml4ZXMgdGFnDQo+ID4gKiB1cGRhdGVkIGNv
-bW1pdCB0aXRsZSBhIGJpdDsgdG8gbWFrZSBpdCBsb25nZXINCj4gPiANCj4gPiAgZHJpdmVycy9p
-aW8vYWRjL2FkNzE5Mi5jIHwgNjEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-LS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgMTUgZGVsZXRpb25z
-KC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyBiL2Ry
-aXZlcnMvaWlvL2FkYy9hZDcxOTIuYw0KPiA+IGluZGV4IDhlYzI4YWE4ZmE4YS4uN2U4NjYyYzVj
-YjBlIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYw0KPiA+ICsrKyBi
-L2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYw0KPiA+IEBAIC0xMjUsMTAgKzEyNSwxMCBAQA0KPiA+
-ICAjZGVmaW5lIEFENzE5M19DSF9BSU5DT00JMHg2MDAgLyogQUlOQ09NIC0gQUlOQ09NICovDQo+
-ID4gIA0KPiA+ICAvKiBJRCBSZWdpc3RlciBCaXQgRGVzaWduYXRpb25zIChBRDcxOTJfUkVHX0lE
-KSAqLw0KPiA+IC0jZGVmaW5lIElEX0FENzE5MAkJMHg0DQo+ID4gLSNkZWZpbmUgSURfQUQ3MTky
-CQkweDANCj4gPiAtI2RlZmluZSBJRF9BRDcxOTMJCTB4Mg0KPiA+IC0jZGVmaW5lIElEX0FENzE5
-NQkJMHg2DQo+ID4gKyNkZWZpbmUgQ0hJUElEX0FENzE5MAkJMHg0DQo+ID4gKyNkZWZpbmUgQ0hJ
-UElEX0FENzE5MgkJMHgwDQo+ID4gKyNkZWZpbmUgQ0hJUElEX0FENzE5MwkJMHgyDQo+ID4gKyNk
-ZWZpbmUgQ0hJUElEX0FENzE5NQkJMHg2DQo+ID4gICNkZWZpbmUgQUQ3MTkyX0lEX01BU0sJCTB4
-MEYNCj4gPiAgDQo+ID4gIC8qIEdQT0NPTiBSZWdpc3RlciBCaXQgRGVzaWduYXRpb25zIChBRDcx
-OTJfUkVHX0dQT0NPTikgKi8NCj4gPiBAQCAtMTYxLDcgKzE2MSwyMCBAQCBlbnVtIHsNCj4gPiAg
-ICAgQUQ3MTkyX1NZU0NBTElCX0ZVTExfU0NBTEUsDQo+ID4gIH07DQo+ID4gIA0KPiA+ICtlbnVt
-IHsNCj4gPiArCUlEX0FENzE5MCwNCj4gPiArCUlEX0FENzE5MiwNCj4gPiArCUlEX0FENzE5MywN
-Cj4gPiArCUlEX0FENzE5NSwNCj4gPiArfTsNCj4gPiArDQo+ID4gK3N0cnVjdCBhZDcxOTJfY2hp
-cF9pbmZvIHsNCj4gPiArCXVuc2lnbmVkIGludAkJCWNoaXBfaWQ7DQo+ID4gKwljb25zdCBjaGFy
-CQkJKm5hbWU7DQo+ID4gK307DQo+ID4gKw0KPiA+ICBzdHJ1Y3QgYWQ3MTkyX3N0YXRlIHsNCj4g
-PiArCWNvbnN0IHN0cnVjdCBhZDcxOTJfY2hpcF9pbmZvCSpjaGlwX2luZm87DQo+ID4gIAlzdHJ1
-Y3QgcmVndWxhdG9yCQkqYXZkZDsNCj4gPiAgCXN0cnVjdCByZWd1bGF0b3IJCSpkdmRkOw0KPiA+
-ICAJc3RydWN0IGNsawkJCSptY2xrOw0KPiA+IEBAIC0xNzIsNyArMTg1LDYgQEAgc3RydWN0IGFk
-NzE5Ml9zdGF0ZSB7DQo+ID4gIAl1MzIJCQkJY29uZjsNCj4gPiAgCXUzMgkJCQlzY2FsZV9hdmFp
-bFs4XVsyXTsNCj4gPiAgCXU4CQkJCWdwb2NvbjsNCj4gPiAtCXU4CQkJCWRldmlkOw0KPiA+ICAJ
-dTgJCQkJY2xvY2tfc2VsOw0KPiA+ICAJc3RydWN0IG11dGV4CQkJbG9jazsJLyogcHJvdGVjdCBz
-ZW5zb3Igc3RhdGUgKi8NCj4gPiAgCXU4CQkJCXN5c2NhbGliX21vZGVbOF07DQo+ID4gQEAgLTM0
-OCw3ICszNjAsNyBAQCBzdGF0aWMgaW50IGFkNzE5Ml9zZXR1cChzdHJ1Y3QgYWQ3MTkyX3N0YXRl
-ICpzdCwgc3RydWN0DQo+ID4gZGV2aWNlX25vZGUgKm5wKQ0KPiA+ICANCj4gPiAgCWlkICY9IEFE
-NzE5Ml9JRF9NQVNLOw0KPiA+ICANCj4gPiAtCWlmIChpZCAhPSBzdC0+ZGV2aWQpDQo+ID4gKwlp
-ZiAoaWQgIT0gc3QtPmNoaXBfaW5mby0+Y2hpcF9pZCkNCj4gPiAgCQlkZXZfd2Fybigmc3QtPnNk
-LnNwaS0+ZGV2LCAiZGV2aWNlIElEIHF1ZXJ5IGZhaWxlZCAoMHglWClcbiIsDQo+ID4gIAkJCSBp
-ZCk7DQo+ID4gIA0KPiA+IEBAIC0zNjMsNyArMzc1LDcgQEAgc3RhdGljIGludCBhZDcxOTJfc2V0
-dXAoc3RydWN0IGFkNzE5Ml9zdGF0ZSAqc3QsIHN0cnVjdA0KPiA+IGRldmljZV9ub2RlICpucCkN
-Cj4gPiAgCQlzdC0+bW9kZSB8PSBBRDcxOTJfTU9ERV9SRUo2MDsNCj4gPiAgDQo+ID4gIAlyZWZp
-bjJfZW4gPSBvZl9wcm9wZXJ0eV9yZWFkX2Jvb2wobnAsICJhZGkscmVmaW4yLXBpbnMtZW5hYmxl
-Iik7DQo+ID4gLQlpZiAocmVmaW4yX2VuICYmIHN0LT5kZXZpZCAhPSBJRF9BRDcxOTUpDQo+ID4g
-KwlpZiAocmVmaW4yX2VuICYmIHN0LT5jaGlwX2luZm8tPmNoaXBfaWQgIT0gQ0hJUElEX0FENzE5
-NSkNCj4gPiAgCQlzdC0+Y29uZiB8PSBBRDcxOTJfQ09ORl9SRUZTRUw7DQo+ID4gIA0KPiA+ICAJ
-c3QtPmNvbmYgJj0gfkFENzE5Ml9DT05GX0NIT1A7DQo+ID4gQEAgLTg1OSwxMSArODcxLDMwIEBA
-IHN0YXRpYyBjb25zdCBzdHJ1Y3QgaWlvX2NoYW5fc3BlYyBhZDcxOTNfY2hhbm5lbHNbXSA9DQo+
-ID4gew0KPiA+ICAJSUlPX0NIQU5fU09GVF9USU1FU1RBTVAoMTQpLA0KPiA+ICB9Ow0KPiA+ICAN
-Cj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBhZDcxOTJfY2hpcF9pbmZvIGFkNzE5Ml9jaGlwX2lu
-Zm9fdGJsW10gPSB7DQo+ID4gKwlbSURfQUQ3MTkwXSA9IHsNCj4gPiArCQkuY2hpcF9pZCA9IENI
-SVBJRF9BRDcxOTAsDQo+ID4gKwkJLm5hbWUgPSAiYWQ3MTkwIiwNCj4gPiArCX0sDQo+ID4gKwlb
-SURfQUQ3MTkyXSA9IHsNCj4gPiArCQkuY2hpcF9pZCA9IENISVBJRF9BRDcxOTIsDQo+ID4gKwkJ
-Lm5hbWUgPSAiYWQ3MTkyIiwNCj4gPiArCX0sDQo+ID4gKwlbSURfQUQ3MTkzXSA9IHsNCj4gPiAr
-CQkuY2hpcF9pZCA9IENISVBJRF9BRDcxOTMsDQo+ID4gKwkJLm5hbWUgPSAiYWQ3MTkzIiwNCj4g
-PiArCX0sDQo+ID4gKwlbSURfQUQ3MTk1XSA9IHsNCj4gPiArCQkuY2hpcF9pZCA9IENISVBJRF9B
-RDcxOTUsDQo+ID4gKwkJLm5hbWUgPSAiYWQ3MTk1IiwNCj4gPiArCX0sDQo+ID4gK307DQo+ID4g
-Kw0KPiA+ICBzdGF0aWMgaW50IGFkNzE5Ml9jaGFubmVsc19jb25maWcoc3RydWN0IGlpb19kZXYg
-KmluZGlvX2RldikNCj4gPiAgew0KPiA+ICAJc3RydWN0IGFkNzE5Ml9zdGF0ZSAqc3QgPSBpaW9f
-cHJpdihpbmRpb19kZXYpOw0KPiA+ICANCj4gPiAtCXN3aXRjaCAoc3QtPmRldmlkKSB7DQo+ID4g
-Kwlzd2l0Y2ggKHN0LT5jaGlwX2luZm8tPmNoaXBfaWQpIHsNCj4gPiAgCWNhc2UgSURfQUQ3MTkz
-Og0KPiANCj4gV291bGQgaXQgYmUgYmV0dGVyIHRvIGNoYW5nZSB0aGlzIHRvIENISVBJRF9BRDcx
-OTM/IEl0IGxvb2tzIGxpa2UgaXQgd29ya3MNCj4gdGhlIHdheSB5b3UgaGF2ZSBpdCwgYnV0IG9u
-bHkgYnkgY29pbmNpZGVuY2Ugc2luY2UgaXQgaGFwcGVucyB0byBiZSB0cnVlDQo+IHRoYXQgSURf
-QUQ3MTkzID09IENISVBJRF9BRDcxOTMuDQoNClRoYW5rcyBmb3IgY2F0Y2hpbmcgdGhpcy4NCkkn
-bGwgZml4IHVwIGluIGEgVjMuDQoNCg0KPiANCj4gSmVyZW15DQo+IA0KPiA+ICAJCWluZGlvX2Rl
-di0+Y2hhbm5lbHMgPSBhZDcxOTNfY2hhbm5lbHM7DQo+ID4gIAkJaW5kaW9fZGV2LT5udW1fY2hh
-bm5lbHMgPSBBUlJBWV9TSVpFKGFkNzE5M19jaGFubmVscyk7DQo+ID4gQEAgLTg3OCwxMCArOTA5
-LDEwIEBAIHN0YXRpYyBpbnQgYWQ3MTkyX2NoYW5uZWxzX2NvbmZpZyhzdHJ1Y3QgaWlvX2Rldg0K
-PiA+ICppbmRpb19kZXYpDQo+ID4gIH0NCj4gPiAgDQo+ID4gIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-b2ZfZGV2aWNlX2lkIGFkNzE5Ml9vZl9tYXRjaFtdID0gew0KPiA+IC0JeyAuY29tcGF0aWJsZSA9
-ICJhZGksYWQ3MTkwIiwgLmRhdGEgPSAodm9pZCAqKUlEX0FENzE5MCB9LA0KPiA+IC0JeyAuY29t
-cGF0aWJsZSA9ICJhZGksYWQ3MTkyIiwgLmRhdGEgPSAodm9pZCAqKUlEX0FENzE5MiB9LA0KPiA+
-IC0JeyAuY29tcGF0aWJsZSA9ICJhZGksYWQ3MTkzIiwgLmRhdGEgPSAodm9pZCAqKUlEX0FENzE5
-MyB9LA0KPiA+IC0JeyAuY29tcGF0aWJsZSA9ICJhZGksYWQ3MTk1IiwgLmRhdGEgPSAodm9pZCAq
-KUlEX0FENzE5NSB9LA0KPiA+ICsJeyAuY29tcGF0aWJsZSA9ICJhZGksYWQ3MTkwIiwgLmRhdGEg
-PSAmYWQ3MTkyX2NoaXBfaW5mb190YmxbSURfQUQ3MTkwXQ0KPiA+IH0sDQo+ID4gKwl7IC5jb21w
-YXRpYmxlID0gImFkaSxhZDcxOTIiLCAuZGF0YSA9ICZhZDcxOTJfY2hpcF9pbmZvX3RibFtJRF9B
-RDcxOTJdDQo+ID4gfSwNCj4gPiArCXsgLmNvbXBhdGlibGUgPSAiYWRpLGFkNzE5MyIsIC5kYXRh
-ID0gJmFkNzE5Ml9jaGlwX2luZm9fdGJsW0lEX0FENzE5M10NCj4gPiB9LA0KPiA+ICsJeyAuY29t
-cGF0aWJsZSA9ICJhZGksYWQ3MTk1IiwgLmRhdGEgPSAmYWQ3MTkyX2NoaXBfaW5mb190YmxbSURf
-QUQ3MTk1XQ0KPiA+IH0sDQo+ID4gIAl7fQ0KPiA+ICB9Ow0KPiA+ICBNT0RVTEVfREVWSUNFX1RB
-QkxFKG9mLCBhZDcxOTJfb2ZfbWF0Y2gpOw0KPiA+IEBAIC05MzgsMTYgKzk2OSwxNiBAQCBzdGF0
-aWMgaW50IGFkNzE5Ml9wcm9iZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQ0KPiA+ICAJfQ0KPiA+
-ICANCj4gPiAgCXNwaV9zZXRfZHJ2ZGF0YShzcGksIGluZGlvX2Rldik7DQo+ID4gLQlzdC0+ZGV2
-aWQgPSAodW5zaWduZWQgbG9uZylvZl9kZXZpY2VfZ2V0X21hdGNoX2RhdGEoJnNwaS0+ZGV2KTsN
-Cj4gPiArCXN0LT5jaGlwX2luZm8gPSBvZl9kZXZpY2VfZ2V0X21hdGNoX2RhdGEoJnNwaS0+ZGV2
-KTsNCj4gPiAgCWluZGlvX2Rldi0+ZGV2LnBhcmVudCA9ICZzcGktPmRldjsNCj4gPiAtCWluZGlv
-X2Rldi0+bmFtZSA9IHNwaV9nZXRfZGV2aWNlX2lkKHNwaSktPm5hbWU7DQo+ID4gKwlpbmRpb19k
-ZXYtPm5hbWUgPSBzdC0+Y2hpcF9pbmZvLT5uYW1lOw0KPiA+ICAJaW5kaW9fZGV2LT5tb2RlcyA9
-IElORElPX0RJUkVDVF9NT0RFOw0KPiA+ICANCj4gPiAgCXJldCA9IGFkNzE5Ml9jaGFubmVsc19j
-b25maWcoaW5kaW9fZGV2KTsNCj4gPiAgCWlmIChyZXQgPCAwKQ0KPiA+ICAJCWdvdG8gZXJyb3Jf
-ZGlzYWJsZV9kdmRkOw0KPiA+ICANCj4gPiAtCWlmIChzdC0+ZGV2aWQgPT0gSURfQUQ3MTk1KQ0K
-PiA+ICsJaWYgKHN0LT5jaGlwX2luZm8tPmNoaXBfaWQgPT0gQ0hJUElEX0FENzE5NSkNCj4gPiAg
-CQlpbmRpb19kZXYtPmluZm8gPSAmYWQ3MTk1X2luZm87DQo+ID4gIAllbHNlDQo+ID4gIAkJaW5k
-aW9fZGV2LT5pbmZvID0gJmFkNzE5Ml9pbmZvOw0KPiA+IC0tIA0KPiA+IDIuMTcuMQ0KPiA+IA0K
+When the 'spi_device_id' table was removed, it omitted to cleanup/fix the
+assignment:
+   'indio_dev->name = spi_get_device_id(spi)->name;'
+
+After that patch 'spi_get_device_id(spi)' returns NULL, so this crashes
+during probe with null de-ref.
+
+This change fixes this by introducing an ad7192_chip_info struct, and
+defines all part-names [that should be assigned to indio_dev->name] in a
+'ad7192_chip_info_tbl' table.
+
+With this change, the old 'st->devid' is also moved to be a
+'chip_info->chip_id'. And the old 'ID_AD719X' macros have been renamed to
+'CHIPID_AD719X'. Tld identifiers have been re-purposed to be enum/index
+values in the new 'ad7192_chip_info_tbl'.
+
+This should fix the bug, and maintain the ABI for the 'indio_dev->name'
+field.
+
+Fixes: 66614ab2be38 ("staging: iio: adc: ad7192: removed spi_device_id")
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+
+Changelog v3 -> v4:
+ * renamed ID_AD7193 -> CHIPIP_AD7193 in ad7192_channels_config();
+   noticed by Jeremy Fertic <jeremyfertic@gmail.com>
+ * did another sweep of the ID_AD719X -> CHIPID_AD719X rename to make
+   sure nothing else slipped
+
+Changelog v2 -> v3:
+ * reworked patch to introduce a chip_info struct for the part-name
+ * added 2nd patch to move of-table closer to the end of the file; this
+   patch is more cosmetic; has no fixes tag, but is on top of the previous
+ 
+Changelog v1 -> v2:
+ * fix colon for Fixes tag
+ * updated commit title a bit; to make it longer
+
+ drivers/iio/adc/ad7192.c | 63 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 8ec28aa8fa8a..1431f555daa6 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -125,10 +125,10 @@
+ #define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
+ 
+ /* ID Register Bit Designations (AD7192_REG_ID) */
+-#define ID_AD7190		0x4
+-#define ID_AD7192		0x0
+-#define ID_AD7193		0x2
+-#define ID_AD7195		0x6
++#define CHIPID_AD7190		0x4
++#define CHIPID_AD7192		0x0
++#define CHIPID_AD7193		0x2
++#define CHIPID_AD7195		0x6
+ #define AD7192_ID_MASK		0x0F
+ 
+ /* GPOCON Register Bit Designations (AD7192_REG_GPOCON) */
+@@ -161,7 +161,20 @@ enum {
+    AD7192_SYSCALIB_FULL_SCALE,
+ };
+ 
++enum {
++	ID_AD7190,
++	ID_AD7192,
++	ID_AD7193,
++	ID_AD7195,
++};
++
++struct ad7192_chip_info {
++	unsigned int			chip_id;
++	const char			*name;
++};
++
+ struct ad7192_state {
++	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
+ 	struct regulator		*dvdd;
+ 	struct clk			*mclk;
+@@ -172,7 +185,6 @@ struct ad7192_state {
+ 	u32				conf;
+ 	u32				scale_avail[8][2];
+ 	u8				gpocon;
+-	u8				devid;
+ 	u8				clock_sel;
+ 	struct mutex			lock;	/* protect sensor state */
+ 	u8				syscalib_mode[8];
+@@ -348,7 +360,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+ 
+ 	id &= AD7192_ID_MASK;
+ 
+-	if (id != st->devid)
++	if (id != st->chip_info->chip_id)
+ 		dev_warn(&st->sd.spi->dev, "device ID query failed (0x%X)\n",
+ 			 id);
+ 
+@@ -363,7 +375,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+ 		st->mode |= AD7192_MODE_REJ60;
+ 
+ 	refin2_en = of_property_read_bool(np, "adi,refin2-pins-enable");
+-	if (refin2_en && st->devid != ID_AD7195)
++	if (refin2_en && st->chip_info->chip_id != CHIPID_AD7195)
+ 		st->conf |= AD7192_CONF_REFSEL;
+ 
+ 	st->conf &= ~AD7192_CONF_CHOP;
+@@ -859,12 +871,31 @@ static const struct iio_chan_spec ad7193_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(14),
+ };
+ 
++static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
++	[ID_AD7190] = {
++		.chip_id = CHIPID_AD7190,
++		.name = "ad7190",
++	},
++	[ID_AD7192] = {
++		.chip_id = CHIPID_AD7192,
++		.name = "ad7192",
++	},
++	[ID_AD7193] = {
++		.chip_id = CHIPID_AD7193,
++		.name = "ad7193",
++	},
++	[ID_AD7195] = {
++		.chip_id = CHIPID_AD7195,
++		.name = "ad7195",
++	},
++};
++
+ static int ad7192_channels_config(struct iio_dev *indio_dev)
+ {
+ 	struct ad7192_state *st = iio_priv(indio_dev);
+ 
+-	switch (st->devid) {
+-	case ID_AD7193:
++	switch (st->chip_info->chip_id) {
++	case CHIPID_AD7193:
+ 		indio_dev->channels = ad7193_channels;
+ 		indio_dev->num_channels = ARRAY_SIZE(ad7193_channels);
+ 		break;
+@@ -878,10 +909,10 @@ static int ad7192_channels_config(struct iio_dev *indio_dev)
+ }
+ 
+ static const struct of_device_id ad7192_of_match[] = {
+-	{ .compatible = "adi,ad7190", .data = (void *)ID_AD7190 },
+-	{ .compatible = "adi,ad7192", .data = (void *)ID_AD7192 },
+-	{ .compatible = "adi,ad7193", .data = (void *)ID_AD7193 },
+-	{ .compatible = "adi,ad7195", .data = (void *)ID_AD7195 },
++	{ .compatible = "adi,ad7190", .data = &ad7192_chip_info_tbl[ID_AD7190] },
++	{ .compatible = "adi,ad7192", .data = &ad7192_chip_info_tbl[ID_AD7192] },
++	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
++	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ad7192_of_match);
+@@ -938,16 +969,16 @@ static int ad7192_probe(struct spi_device *spi)
+ 	}
+ 
+ 	spi_set_drvdata(spi, indio_dev);
+-	st->devid = (unsigned long)of_device_get_match_data(&spi->dev);
++	st->chip_info = of_device_get_match_data(&spi->dev);
+ 	indio_dev->dev.parent = &spi->dev;
+-	indio_dev->name = spi_get_device_id(spi)->name;
++	indio_dev->name = st->chip_info->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+ 	ret = ad7192_channels_config(indio_dev);
+ 	if (ret < 0)
+ 		goto error_disable_dvdd;
+ 
+-	if (st->devid == ID_AD7195)
++	if (st->chip_info->chip_id == CHIPID_AD7195)
+ 		indio_dev->info = &ad7195_info;
+ 	else
+ 		indio_dev->info = &ad7192_info;
+-- 
+2.17.1
+

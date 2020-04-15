@@ -2,205 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 329861A8F65
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 02:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3381A8F8B
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Apr 2020 02:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2634501AbgDNX5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Apr 2020 19:57:03 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:51180 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1732541AbgDNX5C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 19:57:02 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id A5A8F20156CF;
-        Wed, 15 Apr 2020 07:56:58 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rITjnQJBjKIy; Wed, 15 Apr 2020 07:56:58 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 8AB8F2001496;
-        Wed, 15 Apr 2020 07:56:58 +0800 (HKT)
-Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
-        by s01.gtsys.com.hk (Postfix) with ESMTP id 879A2C019EC;
-        Wed, 15 Apr 2020 07:56:58 +0800 (HKT)
-Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
-        id 81CC9201602; Wed, 15 Apr 2020 07:56:58 +0800 (HKT)
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-To:     chris.ruehl@gtsys.com.hk
-Cc:     devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        id S2392273AbgDOAJj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Apr 2020 20:09:39 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:37593 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732131AbgDOAJg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Apr 2020 20:09:36 -0400
+Received: by mail-oi1-f195.google.com with SMTP id r25so2212881oij.4;
+        Tue, 14 Apr 2020 17:09:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CiDDE0DyhBloF7hIDJ2bI5/ecfmmCHzUlHKjb1D+bpM=;
+        b=OWuCPgl6fSRAE5kvjfEnaP8iGQRNqkjzhHL5tAiA34MGc6gnu5X3VFagVL7qt/qKyf
+         M2ycrhyPrp2KBgvbKO5ouXivqXnc09BliquDwbIUoZSX4ojVxCMTKQ1xyOFZr+n7F9su
+         5F/gYR2+X9Lij7lmipwXEx3aIr2jdxXCqmnrmiK0ys+z1dyC1sH2SYTI+Vb33qnsa4AF
+         Lb0AOCqJpWq+yumg9hi7mFT1X1NhYS8mNOBTIvQaQvCRZccOKsregaWJUaJRgAmfY4zj
+         5YVlDfEfMCU3hsfltRuYga7VaGLvVWSBPco+P0KIKhZJiXsCU8kbTVWt/4LfC6VTlPH0
+         if1w==
+X-Gm-Message-State: AGi0PuZXk0wa5Mu704m1qZsfpAIxz1yZcndj87Z4yTF/Vjg1N5lNk3pU
+        Dj4ats2c4cBElDEvb898pA==
+X-Google-Smtp-Source: APiQypIqWFfEFpmn7X8Ecvx8nJkbWUS/T7ILIV+dk2IFwpicn/g+8xtoLV7zzaOU8QZjqTq3TY386w==
+X-Received: by 2002:aca:c311:: with SMTP id t17mr16585790oif.169.1586909375378;
+        Tue, 14 Apr 2020 17:09:35 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 186sm6360665ooi.30.2020.04.14.17.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2020 17:09:34 -0700 (PDT)
+Received: (nullmailer pid 23835 invoked by uid 1000);
+        Wed, 15 Apr 2020 00:09:33 -0000
+Date:   Tue, 14 Apr 2020 19:09:33 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Nick Reitemeyer <nick.reitemeyer@web.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Steve Winslow <swinslow@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] iio/dac: convert ltc2632.txt to lltc,ltc2632.yaml
-Date:   Wed, 15 Apr 2020 07:56:04 +0800
-Message-Id: <20200414235609.20125-4-chris.ruehl@gtsys.com.hk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200414235609.20125-1-chris.ruehl@gtsys.com.hk>
-References: <20200414235609.20125-1-chris.ruehl@gtsys.com.hk>
+        linux-iio@vger.kernel.org,
+        Nick Reitemeyer <nick.reitemeyer@web.de>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: Add Alps
+Message-ID: <20200415000933.GA23792@bogus>
+References: <20200406141350.162036-1-nick.reitemeyer@web.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200406141350.162036-1-nick.reitemeyer@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Conversion of the ltc2632 to yaml format and name the file 'lltc,ltc2632.yaml'.
+On Mon,  6 Apr 2020 16:13:49 +0200, Nick Reitemeyer wrote:
+> 
+> Alps Electric Co., Ltd. is a japanese electronics company:
+> https://www.alps.com/
+> 
+> Signed-off-by: Nick Reitemeyer <nick.reitemeyer@web.de>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
----
- .../bindings/iio/dac/lltc,ltc2632.yaml        | 78 +++++++++++++++++++
- .../devicetree/bindings/iio/dac/ltc2632.txt   | 49 ------------
- 2 files changed, 78 insertions(+), 49 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/dac/ltc2632.txt
+Applied, thanks.
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-new file mode 100644
-index 000000000000..314bf700d934
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-@@ -0,0 +1,78 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+# Copyright 2020 Christopher Ruehl <chris.ruehl@gtsys.com.hk>
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description: |
-+  Bindings for the Linear Technology LTC2632/2634/2636 DAC
-+  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC263[246].pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - lltc,ltc2632-l12
-+      - lltc,ltc2632-l10
-+      - lltc,ltc2632-l8
-+      - lltc,ltc2632-h12
-+      - lltc,ltc2632-h10
-+      - lltc,ltc2632-h8
-+      - lltc,ltc2634-l12
-+      - lltc,ltc2634-l10
-+      - lltc,ltc2634-l8
-+      - lltc,ltc2634-h12
-+      - lltc,ltc2634-h10
-+      - lltc,ltc2634-h8
-+      - lltc,ltc2636-l12
-+      - lltc,ltc2636-l10
-+      - lltc,ltc2636-l8
-+      - lltc,ltc2636-h12
-+      - lltc,ltc2636-h10
-+      - lltc,ltc2636-h8
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 2000000
-+
-+  vref-supply:
-+    description:
-+	  Phandle to the external reference voltage supply. This should
-+      only be set if there is an external reference voltage connected to the VREF
-+      pin. If the property is not set the internal reference is used.
-+
-+required:
-+  - compatible
-+  - reg
-+  - vref-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    vref: regulator-vref {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vref-ltc2632";
-+        regulator-min-microvolt = <1250000>;
-+        regulator-max-microvolt = <1250000>;
-+        regulator-always-on;
-+    };
-+
-+    spi_master {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      dac: ltc2632@0 {
-+        compatible = "lltc,ltc2632";
-+        reg = <0>;    /* CS0 */
-+        spi-max-frequency = <1000000>;
-+        vref-supply = <&vref>;
-+      };
-+    };
-diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-deleted file mode 100644
-index 1ab9570cf219..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-+++ /dev/null
-@@ -1,49 +0,0 @@
--Linear Technology LTC2632/2634/2636 DAC
--
--Required properties:
-- - compatible: Has to contain one of the following:
--	lltc,ltc2632-l12
--	lltc,ltc2632-l10
--	lltc,ltc2632-l8
--	lltc,ltc2632-h12
--	lltc,ltc2632-h10
--	lltc,ltc2632-h8
--	lltc,ltc2634-l12
--	lltc,ltc2634-l10
--	lltc,ltc2634-l8
--	lltc,ltc2634-h12
--	lltc,ltc2634-h10
--	lltc,ltc2634-h8
--	lltc,ltc2636-l12
--	lltc,ltc2636-l10
--	lltc,ltc2636-l8
--	lltc,ltc2636-h12
--	lltc,ltc2636-h10
--	lltc,ltc2636-h8
--
--Property rules described in Documentation/devicetree/bindings/spi/spi-bus.txt
--apply. In particular, "reg" and "spi-max-frequency" properties must be given.
--
--Optional properties:
--	- vref-supply: Phandle to the external reference voltage supply. This should
--	  only be set if there is an external reference voltage connected to the VREF
--	  pin. If the property is not set the internal reference is used.
--
--Example:
--
--	vref: regulator-vref {
--		compatible = "regulator-fixed";
--		regulator-name = "vref-ltc2632";
--		regulator-min-microvolt = <1250000>;
--		regulator-max-microvolt = <1250000>;
--		regulator-always-on;
--	};
--
--	spi_master {
--		dac: ltc2632@0 {
--			compatible = "lltc,ltc2632-l12";
--			reg = <0>; /* CS0 */
--			spi-max-frequency = <1000000>;
--			vref-supply = <&vref>; /* optional */
--		};
--	};
--- 
-2.20.1
-
+Rob

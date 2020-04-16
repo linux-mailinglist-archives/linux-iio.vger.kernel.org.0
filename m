@@ -2,72 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77ADC1AD05A
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 21:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492C71AD060
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 21:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729934AbgDPTbD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 15:31:03 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:46070 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728664AbgDPTbD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 15:31:03 -0400
-Received: by mail-oi1-f194.google.com with SMTP id k133so16854837oih.12;
-        Thu, 16 Apr 2020 12:31:02 -0700 (PDT)
+        id S1731077AbgDPTcG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 15:32:06 -0400
+Received: from mail-yw1-f66.google.com ([209.85.161.66]:33367 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728664AbgDPTcF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 15:32:05 -0400
+Received: by mail-oo1-f66.google.com with SMTP id b17so906700ooa.0;
+        Thu, 16 Apr 2020 12:32:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=83Bpp8uoGsIBtYSm1pLHa49KTy+QHzu3gut9+0c+dz8=;
-        b=TopJOVYfofkMbZWEQnGp6CQHzeW/Qkr2SU3dbBo5plbcWF9kGONV71XePyOyc8j04n
-         4WQANmiwCFQN+qFeaUn0GMtU+F8mgGVD16zNdaS6FQfuY+OhdnjdnvQQQ9jLXo6/7tJh
-         zLAdREQ9RGhGx3LljD/1G6zVGdeR+E9Dkg6TN/K1SG2RZDcuB5UExfqSUCYQXEzD1tME
-         M4qhdlCRN86uXWo79h/3UqwygB1qHCQqn22VExgF4bNv42/lxDqfPqEP/2OIv6Jo6hwX
-         JGEDBZuQ4bLSWmp+SX/o1wVmOOans4HTjxj5dsicl/O8KObepvlj6wo+qgx6SR01ZDF5
-         phew==
-X-Gm-Message-State: AGi0PubgDC5/SyIMJIBRD9zNa0LuS6vGNFj0zmLkbK3oJ2FPqiasA+/z
-        HMvC0jtutea40czw6qv6qZ1DRbU=
-X-Google-Smtp-Source: APiQypKtFNn7klGmlxS7O33zd15hLes5Ce7gwnHv476q+1Q8X3OSIexFGD7vX+EbNCMQi+0zLh3qvw==
-X-Received: by 2002:aca:d705:: with SMTP id o5mr4155329oig.67.1587065461930;
-        Thu, 16 Apr 2020 12:31:01 -0700 (PDT)
+        bh=G2KfsHLol0MxR420xNgeMgYQ50fxqR1O3iC2ZHpUZCI=;
+        b=XlQRNX46xNOgIpzbJem5CSH6woGZBYzcSHE3vXyRWHNgBa07OZbPNzgCxWPBz+9pme
+         S5iefyIjt4j8OupGfhtqKOYcbz8/SETcwtiVMVW5cKJgZPjUQAmmGODnSEDt2kNyICmw
+         52PkbeGTqkHHi2UcMSnocjifLHPn/mpTb6VVXOW6xYn1R/UjhNBLn6FL+X2+gsitqM3x
+         KbtQJoJ84oCbA+N2VLolAprct3zK2Mv6t7nkkaEfefDz8Ul/ZLAwFIje0SbUhMpughkV
+         gXs0iyGCWki9m5KAVjOm6mNCe9/rA8JJCyr/lzIlFS4HXEKV8jV9lyUo/dBO++pcD9Dn
+         dPDQ==
+X-Gm-Message-State: AGi0PubK8GJPLiF2UAr5TGLFtY0Kr8Rzh8S4nLjnAXH21hA+Z5UC2OBa
+        dZzyyawkgIUeZe/YRXBgMp4MHmw=
+X-Google-Smtp-Source: APiQypIkMfpzlk1lmK+EBTOhD1SsnV9Gj8mGtLRMMEgrPlQkC3YqpIsnDV4DJjgAdynWvj140tiheA==
+X-Received: by 2002:a4a:95ee:: with SMTP id p43mr27323868ooi.24.1587065523461;
+        Thu, 16 Apr 2020 12:32:03 -0700 (PDT)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id r205sm7324602oih.47.2020.04.16.12.31.00
+        by smtp.gmail.com with ESMTPSA id t10sm1236678oou.38.2020.04.16.12.32.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 12:31:01 -0700 (PDT)
-Received: (nullmailer pid 19733 invoked by uid 1000);
-        Thu, 16 Apr 2020 19:31:00 -0000
-Date:   Thu, 16 Apr 2020 14:31:00 -0500
+        Thu, 16 Apr 2020 12:32:02 -0700 (PDT)
+Received: (nullmailer pid 21598 invoked by uid 1000);
+        Thu, 16 Apr 2020 19:32:01 -0000
+Date:   Thu, 16 Apr 2020 14:32:01 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH trivial 1/6] dt-bindings: Fix misspellings of "Analog
- Devices"
-Message-ID: <20200416193100.GA19671@bogus>
-References: <20200416103058.15269-1-geert+renesas@glider.be>
- <20200416103058.15269-2-geert+renesas@glider.be>
+To:     alexandru.tachici@analog.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, jic23@kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: dac: AD5570R fix bindings errors
+Message-ID: <20200416193201.GA21490@bogus>
+References: <20200416115848.56156-1-alexandru.tachici@analog.com>
+ <20200416115848.56156-3-alexandru.tachici@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200416103058.15269-2-geert+renesas@glider.be>
+In-Reply-To: <20200416115848.56156-3-alexandru.tachici@analog.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 12:30:53 +0200, Geert Uytterhoeven wrote:
-> According to https://www.analog.com/, the company name is spelled
-> "Analog Devices".
+On Thu, 16 Apr 2020 14:58:48 +0300, <alexandru.tachici@analog.com> wrote:
+> From: Alexandru Tachici <alexandru.tachici@analog.com>
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Replaced num property with reg property, fixed errors
+> reported by dt-binding-check.
+> 
+> Fixes: ea52c21268e6 ("iio: dac: ad5770r: Add AD5770R support")
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
 > ---
->  .../devicetree/bindings/display/bridge/adi,adv7123.txt        | 4 ++--
->  .../devicetree/bindings/display/bridge/adi,adv7511.txt        | 4 ++--
->  Documentation/devicetree/bindings/dma/adi,axi-dmac.txt        | 2 +-
->  Documentation/devicetree/bindings/iio/dac/ad5755.txt          | 2 +-
->  4 files changed, 6 insertions(+), 6 deletions(-)
+>  .../bindings/iio/dac/adi,ad5770r.yaml         | 82 +++++++++----------
+>  1 file changed, 39 insertions(+), 43 deletions(-)
 > 
 
 Applied, thanks.

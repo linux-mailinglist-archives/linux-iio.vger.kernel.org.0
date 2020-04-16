@@ -2,109 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02FF61ABC77
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 11:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7661ABFFA
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 13:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441124AbgDPIaX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 04:30:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38708 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439552AbgDPILF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 16 Apr 2020 04:11:05 -0400
-Received: from localhost (unknown [223.235.195.235])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D38A206B9;
-        Thu, 16 Apr 2020 08:07:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587024458;
-        bh=+AtB2qrsVxt1QWCAagtuBV0iMzA+FqM4hoS9ArXVBXI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2SDVAHMhpWjl2KgmMtDeMa4mCSN5E7syFhtD6nl+7e+uOtdm92iHSJh7of/HWeSKy
-         HDPx9eDy3/ziMPBERearhYxolH1rzEwouN2J1vLT/RYfJAdCvbbfyQVciDd7LjXhj3
-         Rm7XEVuyXLSwCmFC9enIFNjzAhrkqZPWIGTVc9wk=
-Date:   Thu, 16 Apr 2020 13:37:34 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        id S2506573AbgDPLpG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 07:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2505189AbgDPKgN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 06:36:13 -0400
+X-Greylist: delayed 301 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Apr 2020 03:36:13 PDT
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEECC061A10
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 03:36:13 -0700 (PDT)
+Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:fd83:81bb:c1d7:433d])
+        by xavier.telenet-ops.be with bizsmtp
+        id TNWz2200i4dKHqf01NWzxE; Thu, 16 Apr 2020 12:31:11 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jP1nP-0001cj-Ll; Thu, 16 Apr 2020 12:30:59 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jP1nP-0003z7-JX; Thu, 16 Apr 2020 12:30:59 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Fabio Estevam <festevam@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: Remove cases of 'allOf' containing a
- '$ref'
-Message-ID: <20200416080734.GJ72691@vkoul-mobl>
-References: <20200416005549.9683-1-robh@kernel.org>
- <20200416005549.9683-2-robh@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200416005549.9683-2-robh@kernel.org>
+        Jiri Kosina <trivial@kernel.org>
+Cc:     devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH trivial 0/6] Fix misspellings of "Analog Devices"
+Date:   Thu, 16 Apr 2020 12:30:52 +0200
+Message-Id: <20200416103058.15269-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15-04-20, 19:55, Rob Herring wrote:
-> json-schema versions draft7 and earlier have a weird behavior in that
-> any keywords combined with a '$ref' are ignored (silently). The correct
-> form was to put a '$ref' under an 'allOf'. This behavior is now changed
-> in the 2019-09 json-schema spec and '$ref' can be mixed with other
-> keywords. The json-schema library doesn't yet support this, but the
-> tooling now does a fixup for this and either way works.
-> 
-> This has been a constant source of review comments, so let's change this
-> treewide so everyone copies the simpler syntax.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../devicetree/bindings/arm/cpus.yaml         |  81 +++---
->  .../devicetree/bindings/arm/l2c2x0.yaml       |  87 +++---
->  .../devicetree/bindings/arm/psci.yaml         |  15 +-
->  .../bindings/arm/samsung/exynos-chipid.yaml   |   5 +-
->  .../bus/allwinner,sun50i-a64-de2.yaml         |   5 +-
->  .../bindings/clock/fixed-factor-clock.yaml    |   5 +-
->  .../bindings/connector/usb-connector.yaml     |  28 +-
->  .../bindings/crypto/st,stm32-hash.yaml        |   9 +-
->  .../allwinner,sun4i-a10-display-engine.yaml   |   7 +-
->  .../display/allwinner,sun4i-a10-tcon.yaml     |   5 +-
->  .../bindings/display/panel/panel-common.yaml  |   5 +-
->  .../devicetree/bindings/dma/dma-common.yaml   |   3 +-
->  .../devicetree/bindings/dma/ti/k3-udma.yaml   |  18 +-
+	Hi all,
 
-Acked-By: Vinod Koul <vkoul@kernel.org>
+In several files the company also known as ADI is spelled as "Analog
+Device".  However, according to https://www.analog.com/, the company
+name is spelled "Analog Devices".
+
+Hence this patch series, one per subsystem, fixes these misspellings.
+
+Thanks for your comments!
+
+Geert Uytterhoeven (6):
+  dt-bindings: Fix misspellings of "Analog Devices"
+  dma: Fix misspelling of "Analog Devices"
+  drm: Fix misspellings of "Analog Devices"
+  iio: Fix misspellings of "Analog Devices"
+  ALSA: Fix misspellings of "Analog Devices"
+  ASoC: Fix misspellings of "Analog Devices"
+
+ .../devicetree/bindings/display/bridge/adi,adv7123.txt        | 4 ++--
+ .../devicetree/bindings/display/bridge/adi,adv7511.txt        | 4 ++--
+ Documentation/devicetree/bindings/dma/adi,axi-dmac.txt        | 2 +-
+ Documentation/devicetree/bindings/iio/dac/ad5755.txt          | 2 +-
+ drivers/dma/Kconfig                                           | 2 +-
+ drivers/gpu/drm/bridge/adv7511/Kconfig                        | 2 +-
+ drivers/gpu/drm/drm_fb_cma_helper.c                           | 2 +-
+ drivers/gpu/drm/tegra/fb.c                                    | 2 +-
+ drivers/iio/adc/ad7791.c                                      | 2 +-
+ drivers/iio/trigger/iio-trig-hrtimer.c                        | 2 +-
+ drivers/staging/iio/Documentation/overview.txt                | 2 +-
+ sound/isa/ad1816a/ad1816a.c                                   | 2 +-
+ sound/pci/ac97/ac97_patch.c                                   | 2 +-
+ sound/pci/hda/Kconfig                                         | 4 ++--
+ sound/soc/codecs/ad1980.c                                     | 2 +-
+ sound/soc/codecs/ad73311.c                                    | 2 +-
+ sound/soc/codecs/wm8782.c                                     | 2 +-
+ 17 files changed, 20 insertions(+), 20 deletions(-)
 
 -- 
-~Vinod
+2.17.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -2,127 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C601ACE0D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 18:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAAE51ACE8A
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 19:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729256AbgDPQwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 12:52:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59454 "EHLO
+        id S1729065AbgDPRT7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 13:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729241AbgDPQwJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 12:52:09 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44F3C061A0C
-        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 09:52:07 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id w145so6124839lff.3
-        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 09:52:07 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1728494AbgDPRT5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 13:19:57 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1ACEC061A0C
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 10:19:56 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id e25so2182031ljg.5
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 10:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=APUlN2SyohYE3TMZoo4vmSwQg+0t4tO+0TGNZ3bBlE0=;
-        b=n1UvzusNO2Rcn2bDf0NRYBXquabq4c/tHd3wR8FlPjMf0sYf/Qq0kmozER1LNg0R1J
-         qrsGcfC4HLWAVrxFA+PBk66Ge+L56/er9nJL9uxxBNTwdShYjTuS9kopK7Ej6czuRz7O
-         vWEfA9c3VNBqRmtI9NWJfhU8+dsHt09PrNhw9MlDRCTQ8BBFLtD4kD4kpY6XPRJQVsgd
-         lAf6UOorr4V5diQfeUJmCR01jHL6PtuMOwQrnI5MW4/hB5d86hnQ0PkIgf0Vt7/VL3c1
-         iq/QlChEsUzsEa7sRzyNZgXSIC2xjHWNU9QZ2IoDrxOM16mQPTm84LEa2uk8Y53g2RLf
-         nQUg==
+         :cc;
+        bh=Xmgjy0ty5RO8ShykGtS92qM5szeKa7pfy8ZG6OZmBfs=;
+        b=mtYFXncU6tDw39rbFA2+QWLItOxC4YgplWiP4MiUaJ6xzioFinv8X6aFBtXS19dxBB
+         66OT9EQgpX7njBmYv3h9kc6vi/lxjg/ElUgQXDgpohHEetZ55AI1S8Fy/Tg2ultOayWp
+         oURHqvXe/xrBSTZUqTcdB1Wh0jKoqKbtUYTiKY0cFE+WvW6z3LDM7ve+Ed1NyDkn7Y0M
+         NYVbpSk2j09PA8stn2qURCsUI8KhXza6zl0hCS1cTBuOMHAeS1xK67jFORs9AC5kiGAp
+         5gaDgiLifDkdg6PQiShAp4TFRNKf7XI+c8K203/VSrHvuDJGniOU4rWudi+k2vs0UtrO
+         5O6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=APUlN2SyohYE3TMZoo4vmSwQg+0t4tO+0TGNZ3bBlE0=;
-        b=l0jzkugFK3nNY1bF/qn5RCnobcv9uKIn9cJDvcvyBgxyZlFd2rWMamnesuecU8fE70
-         J3hRkwzZqOh3JP4ePXpjYgCLDYk8NlNHcOnb/UGd4SbGJn1A+NkDTKxnNmhI7PCQ2Yi9
-         I/eAkIrMWNr1Ns6nvnLVYwDXqCgEkGd0JxPAqBRUAXfijOnxkD3WEuSrrJEVWfyqB2RU
-         7Fo07QtxD0hpC7l4GNKyNHIopSf39W7DFa9LJVHPsb5GOfzOphqguf3jPhyFIhT+gCCf
-         qMlJqas4o3zaJIXkrNcIJGsG3LL0QZCfsnM7sbZ9RURDGYCUe8Y90Qhkd6dLG1HgNLN+
-         Dg+w==
-X-Gm-Message-State: AGi0PuZ5SKZGZXRn7FIc5WjbU/TrBE9ls4xD9YEYV/3aDsO8txdz5h4k
-        hkBlxjMXcnP2xt47Vk3VSdWTXfq1OV72iOiJYdgCVg==
-X-Google-Smtp-Source: APiQypLLy9khTrsHaSVXFll+8db9vcB9f6SRRtyCIku9mKZWZQNfAcSuyjm4xnTMgyMpunFu6XVe6Gs58zevIW3oU1g=
-X-Received: by 2002:a05:6512:685:: with SMTP id t5mr6408558lfe.47.1587055926080;
- Thu, 16 Apr 2020 09:52:06 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=Xmgjy0ty5RO8ShykGtS92qM5szeKa7pfy8ZG6OZmBfs=;
+        b=KrDDzlqWn5gBs0DfuEN6HJppe7bgMj3CYuSnReCoiw2T8z5v3VXC7YCakqnI01zhVy
+         2M/5spnSNZSdZZTcXmG1FE1sQojnnbfErsVo8Nez9iSBOjn0W+5BZEjL5o7iHbT161e2
+         6BhhJnd4nS0NCvO5SS0n6xshJATz3cNAXZ6GsGaaPIY1xPPksn0aulIkYCKNwipaMqbp
+         /Mgb537d691FFvH9oNGM4LIPgaSPchUIMuAQwvQIgywAUt+J5esxDRL7cMhU/vYlc9uf
+         b1xk2oBggg6KPT+5z6T7z6+/VP6ccoSqeJuTQ1f6YHVAHYtS3Ji+3g3qRA/g4UiE68OP
+         bPGg==
+X-Gm-Message-State: AGi0PuaXMu9TOTIb+Jyw551RY1f4Dp+ijLApBYlq50LJDiD2FLD814NQ
+        eY95rdHcwY6a3jV/yJHfkEtgCSHruZh7M5j3se5Dcw==
+X-Google-Smtp-Source: APiQypLozgZJM/HTHaYnPJVi/Mw+Ley5k/K1BjqUZ9QmAHQmtUBpjJ5zYF6rkNgMW++kGOXpJaSG6QFhkR2UMRZ9ShA=
+X-Received: by 2002:a2e:8805:: with SMTP id x5mr3594739ljh.223.1587057595108;
+ Thu, 16 Apr 2020 10:19:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200414222713.32660-1-digetx@gmail.com> <CACRpkdY_J8e127etFFYkoxLDDkc334Xgg8ZbapdU36oGsaZ08g@mail.gmail.com>
- <e08c487c-5c2a-3172-7c9c-0e7d2cd51769@gmail.com>
-In-Reply-To: <e08c487c-5c2a-3172-7c9c-0e7d2cd51769@gmail.com>
+References: <20200416140917.8087-1-linus.walleij@linaro.org>
+ <20200416140917.8087-2-linus.walleij@linaro.org> <20200416153200.GA897@gerhold.net>
+In-Reply-To: <20200416153200.GA897@gerhold.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 16 Apr 2020 18:51:54 +0200
-Message-ID: <CACRpkdbMF4=-g2ic_SKgOkd6kfgKJqZ2UxCRaoXJjq0EiEn+pw@mail.gmail.com>
-Subject: Re: [PATCH v1] iio: magnetometer: ak8974: Silence deferred-probe error
-To:     Dmitry Osipenko <digetx@gmail.com>
+Date:   Thu, 16 Apr 2020 19:19:43 +0200
+Message-ID: <CACRpkdY9-QPAVT=WgbsWWzLeB5k-7JWB_YnppqeZ_OHr5kssNw@mail.gmail.com>
+Subject: Re: [PATCH 2/2 v2] iio: magnetometer: ak8974: Provide scaling
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>
+        Linux Input <linux-input@vger.kernel.org>,
+        Nick Reitemeyer <nick.reitemeyer@web.de>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 4:45 PM Dmitry Osipenko <digetx@gmail.com> wrote:
-> 16.04.2020 14:33, Linus Walleij =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+On Thu, Apr 16, 2020 at 5:32 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+> On Thu, Apr 16, 2020 at 04:09:17PM +0200, Linus Walleij wrote:
 
-> > This misses some important aspects of dev_dbg(), notably this:
-> >
-> > #if defined(CONFIG_DYNAMIC_DEBUG)
-> > #define dev_dbg(dev, fmt, ...)                                         =
- \
-> >         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
-> > #elif defined(DEBUG)
-> > #define dev_dbg(dev, fmt, ...)                                         =
- \
-> >         dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
-> > #else
-> > #define dev_dbg(dev, fmt, ...)                                         =
- \
-> > ({                                                                     =
- \
-> >         if (0)                                                         =
- \
-> >                 dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__=
-); \
-> > })
-> > #endif
-> >
-> > If DEBUG is not defined the entire dev_dbg() message is enclodes in if =
-(0)
-> > and compiled out of the kernel, saving space. The above does not
-> > fulfil that.
+> > The manual for the HSCDTD008A gives us a scaling for the
+> > three axis as +/- 2.4mT per axis.
 >
-> Hello Linus,
+> I wonder if we can really assume that this applies to
+> the other models (e.g. AK8974) as well?
+
+Patches are for testing :D
+
+I have a Ux500 reference board with the AK8974 vanilla
+variant mounted so I will check with that one.
+
+> > +     case IIO_CHAN_INFO_SCALE:
+> > +             /*
+> > +              * The datasheet for HSCDTF008A, page 3 specifies the
+> > +              * range of the sensor as +/- 2.4 mT per axis, which corresponds
+> > +              * to +/- 2400 uT = +/- 24 Gauss. So 0x7fff is 24 Gauss and
+> > +              * 0xffff is -24 Gauss. To account for the one missing value if
+> > +              * we multiply by 1/S16_MAX, instead multiply with 2/U16_MAX.
+> > +              */
 >
-> After some recent discussions in regards to the EPROBE_DEFER handling,
-> Thierry Reding suggested the form which is used in my patch and we
-> started to use it recently in the Tegra DRM driver [1]. The reason is
-> that we don't want to miss any deferred-probe messages under any
-> circumstances, for example like in a case of a disabled DYNAMIC_DEBUG.
+> I just want to note that (according to the datasheet), HSCDTD008A
+> produces either 14-bit or 15-bit measurements (depending on
+> the HSCDTD008A_CTRL4_RANGE bit that we set by default).
 
-I have a hard time to accept this reasoning.
+Argh OK I will fix this. I try to get an AMI datasheet as well.
 
-Who doesn't feel that way about their subsystem? If you don't want
-to miss the message under any circumstances then use dev_info().
-Don't override the default behaviour of dev_dbg().
+> I think this isn't exposed correctly in the AK8974_AXIS_CHANNEL() macro
+> (realbits is 16 instead of 15), so this might need special casing for
+> hscdt008a?
 
-> The debug messages are usually disabled in a release-build and when not
-> a very experienced person hands you KMSG for diagnosing a problem, the
-> KMSG is pretty much useless if error is hidden silently.
+Yes definately. It's a bug. I'll make a separate patch for this.
 
-So use dev_info().
+> The reason I mention this is because I think it would also affect the
+> scaling that you implement here. With 15-bit output it produces values
+> from +16383 (0x3fff) (= 2.4 mT?) to -16384 (0xc000) (= -2.4 mT?).
+>
+> So it would never reach the 0x7fff and 0xffff you mention
+> in your comment.
 
-> By moving the message to a debug level, we reduce the noise in the KMSG
-> because usually people look for a bold-red error messages. Secondly, we
-> don't introduce an additional overhead to the kernel size since the same
-> text is reused for all error conditions.
-
-dev_info() is not supposed to be an error message, it is supposed to
-be information, so use that.
+You're right. What I need to do is put the HSCDTD008A and
+AK8974 side by side and compare.
 
 Yours,
 Linus Walleij

@@ -2,242 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DCAF1AB974
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 09:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C8E91AB9A8
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 09:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437186AbgDPHO2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 03:14:28 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:47794 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S2437959AbgDPHOZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 03:14:25 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 9C978200E7EC;
-        Thu, 16 Apr 2020 15:14:14 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cUck7dk6dGh3; Thu, 16 Apr 2020 15:14:14 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 6FDE7200E7CA;
-        Thu, 16 Apr 2020 15:14:14 +0800 (HKT)
-Received: from [10.128.2.32] (unknown [124.217.188.146])
-        by s01.gtsys.com.hk (Postfix) with ESMTPSA id 39206C019EC;
-        Thu, 16 Apr 2020 15:14:13 +0800 (HKT)
-Subject: Re: [PATCH v4 2/3] iio: DAC extension for ltc2634-12/10/8
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S2439099AbgDPHTk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 03:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2439116AbgDPHT1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 03:19:27 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3ACC02C444
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 00:19:20 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id t14so3498325wrw.12
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 00:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=3AEaWn5XeJ7hcX74F4NzwZbogUqZr77xLF5d73BlBfw=;
+        b=x+7x1SRD1y/LTZJxHdO7NBoPBhyXEErUVgwIai9Txb2aqME7MbBYVN8PkA7MmFMlG/
+         +PTNeDQuJeOieuyql513BpDrE+TR0fX/mGtYOkCA4N6z7VRTvWgnydlKHHjdN1pHbDi6
+         FcrLT7q9Xm6W6XF2DKy+sVxRvrx2e8zXuCLbQfQ8d2nPd/iJ34SsziQVe8hgIZhAVDz1
+         X39oeCEgZoTyWJybNtbP4u4Ik4a22WiM6sS1Gf+7ektT/jxfmy4EaiaU+raISKCA976c
+         DL5uziLMISTg53DG/aGMYXA9DS9lwHatzi8LUvPjSHKrnZk+uf82Nr0GKjoaC8YAX62l
+         Ovyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=3AEaWn5XeJ7hcX74F4NzwZbogUqZr77xLF5d73BlBfw=;
+        b=fewcdGscn8Ct0qisL7lsHZpCHqDsmToiwr+TunfCNmtk1DNwHiaB9/937kgua7G14N
+         LafAHP+wMlHkCVrBzPqo1eF70jOVlVN0/5UgH+h0s0R5DA6rw5oIHPFJBqXJBQlyjKLn
+         ShrqF67lJzUfLYM4RI0WvRtKpbW+YhoZ9wicF9f3emdEZI7Bp6Ojt2YqZb8P7GicuanP
+         QSiPblKHkP3VeGM0AZiC2jwPBQNfWblJAHSZs9gW/4Dv3bKX7ihu5nDArudmtRLAg6IY
+         hYySpKqdwde7pGRC4E9L/W0tP7bikl1+1TNpe39gkv1phUwCsD/pA/dxJOhauYnvYcgz
+         TXiA==
+X-Gm-Message-State: AGi0Pub8d68URZN8QWYUQJW/en1tX+CqU+aZ+wHXOmwojN7uKnoWTFdT
+        Mm6Yf29b2qsYrxB9tkpAkfNhkQ==
+X-Google-Smtp-Source: APiQypLCNVZBL4RMlNf7UZFX5oU2xDT6SF7MjxuD7BsWZie9pUbnFA9tcL+f+7W6lePE+UdiJ1fBjg==
+X-Received: by 2002:adf:e4cc:: with SMTP id v12mr8967305wrm.106.1587021558557;
+        Thu, 16 Apr 2020 00:19:18 -0700 (PDT)
+Received: from dell ([95.149.164.124])
+        by smtp.gmail.com with ESMTPSA id p16sm19943946wro.21.2020.04.16.00.19.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2020 00:19:17 -0700 (PDT)
+Date:   Thu, 16 Apr 2020 08:20:18 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>, Vinod Koul <vkoul@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Steve Winslow <swinslow@gmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200416012016.21422-1-chris.ruehl@gtsys.com.hk>
- <20200416012016.21422-3-chris.ruehl@gtsys.com.hk>
- <20200416065655.cxy67hlj267dpjrw@pengutronix.de>
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Message-ID: <e4a6af21-a8ec-e9b5-2c5e-1e109888f0c7@gtsys.com.hk>
-Date:   Thu, 16 Apr 2020 15:14:10 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: Clean-up schema indentation formatting
+Message-ID: <20200416072018.GS2167633@dell>
+References: <20200416005549.9683-1-robh@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200416065655.cxy67hlj267dpjrw@pengutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200416005549.9683-1-robh@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Wed, 15 Apr 2020, Rob Herring wrote:
 
-On 16/4/2020 2:56 pm, Uwe Kleine-König wrote:
-> Hello,
+> Fix various inconsistencies in schema indentation. Most of these are
+> list indentation which should be 2 spaces more than the start of the
+> enclosing keyword. This doesn't matter functionally, but affects running
+> scripts which do transforms on the schema files.
 > 
-> dropped stefan.popa@analog.com from recipents as the address bounces for
-> me.
-the maintainer script added this email automatically , I will remove it
-in the future mails.
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/arm/altera.yaml       |  6 +-
+>  .../amlogic/amlogic,meson-gx-ao-secure.yaml   |  2 +-
+>  .../devicetree/bindings/arm/bitmain.yaml      |  2 +-
+>  .../devicetree/bindings/arm/nxp/lpc32xx.yaml  |  9 ++-
+>  .../bindings/arm/socionext/uniphier.yaml      | 26 ++++----
+>  .../bindings/arm/stm32/st,mlahb.yaml          |  2 +-
+>  .../bindings/arm/stm32/st,stm32-syscon.yaml   |  6 +-
+>  .../bindings/ata/faraday,ftide010.yaml        |  4 +-
+>  .../bindings/bus/allwinner,sun8i-a23-rsb.yaml |  4 +-
+>  .../clock/allwinner,sun4i-a10-gates-clk.yaml  |  8 +--
+>  .../devicetree/bindings/clock/fsl,plldig.yaml | 17 +++--
+>  .../devicetree/bindings/clock/qcom,mmcc.yaml  | 16 ++---
+>  .../bindings/connector/usb-connector.yaml     |  6 +-
+>  .../crypto/allwinner,sun4i-a10-crypto.yaml    | 14 ++--
+>  .../bindings/crypto/allwinner,sun8i-ce.yaml   | 16 ++---
+>  .../bindings/crypto/amlogic,gxl-crypto.yaml   |  2 +-
+>  .../display/allwinner,sun4i-a10-hdmi.yaml     | 40 ++++++------
+>  .../display/allwinner,sun4i-a10-tcon.yaml     | 58 ++++++++---------
+>  .../display/allwinner,sun6i-a31-mipi-dsi.yaml | 28 ++++----
+>  .../display/allwinner,sun8i-a83t-dw-hdmi.yaml | 10 +--
+>  .../bindings/display/bridge/lvds-codec.yaml   | 18 +++---
+>  .../display/panel/sony,acx424akp.yaml         |  2 +-
+>  .../display/panel/xinpeng,xpp055c272.yaml     |  4 +-
+>  .../bindings/display/renesas,cmm.yaml         | 16 ++---
+>  .../devicetree/bindings/dma/ti/k3-udma.yaml   |  8 +--
+>  .../bindings/gpio/brcm,xgs-iproc-gpio.yaml    |  2 +-
+>  .../bindings/gpu/arm,mali-midgard.yaml        | 18 +++---
+>  .../devicetree/bindings/gpu/vivante,gc.yaml   |  2 +-
+>  .../devicetree/bindings/i2c/i2c-rk3x.yaml     | 10 +--
+>  .../bindings/iio/adc/adi,ad7124.yaml          |  4 +-
+>  .../bindings/iio/adc/lltc,ltc2496.yaml        |  6 +-
+>  .../input/allwinner,sun4i-a10-lradc-keys.yaml |  4 +-
+>  .../bindings/input/touchscreen/goodix.yaml    |  2 +-
+>  .../bindings/interconnect/qcom,msm8916.yaml   |  4 +-
+>  .../bindings/interconnect/qcom,msm8974.yaml   |  4 +-
+>  .../bindings/interconnect/qcom,qcs404.yaml    |  4 +-
+>  .../allwinner,sun7i-a20-sc-nmi.yaml           | 12 ++--
+>  .../intel,ixp4xx-interrupt.yaml               |  8 +--
+>  .../interrupt-controller/st,stm32-exti.yaml   | 12 ++--
+>  .../bindings/iommu/samsung,sysmmu.yaml        | 10 +--
+>  .../bindings/mailbox/st,stm32-ipcc.yaml       |  2 +-
+>  .../media/allwinner,sun4i-a10-csi.yaml        | 28 ++++----
+>  .../bindings/media/amlogic,gx-vdec.yaml       | 14 ++--
+>  .../bindings/media/renesas,ceu.yaml           | 28 ++++----
+>  .../bindings/media/renesas,vin.yaml           |  8 +--
+>  .../devicetree/bindings/media/ti,vpe.yaml     |  2 +-
+>  .../memory-controllers/fsl/imx8m-ddrc.yaml    |  6 +-
 
-Thanks.
+>  .../bindings/mfd/st,stm32-lptimer.yaml        |  4 +-
+>  .../bindings/mfd/st,stm32-timers.yaml         |  4 +-
+>  .../devicetree/bindings/mfd/syscon.yaml       | 12 ++--
 
-> 
-> On Thu, Apr 16, 2020 at 09:20:10AM +0800, Chris Ruehl wrote:
->> This patch add support for Analog Devices (Linear Technology)
->> LTC2634 Quad 12-/10-/8-Bit Rail-to-Rail DAC.
->> The SPI functionality based on them from LTC2632 therefor
->> add the definitions only and update the Kconfig.
->>
->> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
->> ---
->> v4:
->> -hide version from commit text
->> v3:
->> -Consistens decimal separator in help text
->> v2:
->> -Send the documentation fix in a extra patch
->> -Kconfig simplify the driver description, details to the help text
->> -ltc2632.txt add to this patch-set (prepare to convert to yaml)
->>
->>   .../devicetree/bindings/iio/dac/ltc2632.txt   |  8 ++-
->>   drivers/iio/dac/Kconfig                       |  6 +-
->>   drivers/iio/dac/ltc2632.c                     | 60 +++++++++++++++++++
->>   3 files changed, 70 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
->> index 338c3220f01a..1ab9570cf219 100644
->> --- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
->> +++ b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
->> @@ -1,4 +1,4 @@
->> -Linear Technology LTC2632/2636 DAC
->> +Linear Technology LTC2632/2634/2636 DAC
->>   
->>   Required properties:
->>    - compatible: Has to contain one of the following:
->> @@ -8,6 +8,12 @@ Required properties:
->>   	lltc,ltc2632-h12
->>   	lltc,ltc2632-h10
->>   	lltc,ltc2632-h8
->> +	lltc,ltc2634-l12
->> +	lltc,ltc2634-l10
->> +	lltc,ltc2634-l8
->> +	lltc,ltc2634-h12
->> +	lltc,ltc2634-h10
->> +	lltc,ltc2634-h8
->>   	lltc,ltc2636-l12
->>   	lltc,ltc2636-l10
->>   	lltc,ltc2636-l8
->> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
->> index 93744011b63f..aee13ced6ddf 100644
->> --- a/drivers/iio/dac/Kconfig
->> +++ b/drivers/iio/dac/Kconfig
->> @@ -279,12 +279,12 @@ config LTC1660
->>   	  module will be called ltc1660.
->>   
->>   config LTC2632
->> -	tristate "Linear Technology LTC2632-12/10/8 and LTC2636-12/10/8 DAC spi driver"
->> +	tristate "Linear Technology LTC2632-12/10/8 and similar DAC spi driver"
->>   	depends on SPI
->>   	help
->>   	  Say yes here to build support for Linear Technology
->> -	  LTC2632-12, LTC2632-10, LTC2632-8, LTC2636-12, LTC2636-10 and
->> -	  LTC2636-8 converters (DAC).
->> +	  LTC2632, LTC2634 and LTC2636 DAC resolution 12/10/8 bit
->> +	  low 0-2.5V and high 0-4.096V range converters.
->>   
->>   	  To compile this driver as a module, choose M here: the
->>   	  module will be called ltc2632.
->> diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
->> index 2a84ea654645..e939d7f81014 100644
->> --- a/drivers/iio/dac/ltc2632.c
->> +++ b/drivers/iio/dac/ltc2632.c
->> @@ -54,6 +54,12 @@ enum ltc2632_supported_device_ids {
->>   	ID_LTC2632H12,
->>   	ID_LTC2632H10,
->>   	ID_LTC2632H8,
->> +	ID_LTC2634L12,
->> +	ID_LTC2634L10,
->> +	ID_LTC2634L8,
->> +	ID_LTC2634H12,
->> +	ID_LTC2634H10,
->> +	ID_LTC2634H8,
->>   	ID_LTC2636L12,
->>   	ID_LTC2636L10,
->>   	ID_LTC2636L8,
->> @@ -236,6 +242,36 @@ static const struct ltc2632_chip_info ltc2632_chip_info_tbl[] = {
->>   		.num_channels	= 2,
->>   		.vref_mv	= 4096,
->>   	},
->> +	[ID_LTC2634L12] = {
->> +		.channels	= ltc2632x12_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 2500,
->> +	},
->> +	[ID_LTC2634L10] = {
->> +		.channels	= ltc2632x10_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 2500,
->> +	},
->> +	[ID_LTC2634L8] =  {
->> +		.channels	= ltc2632x8_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 2500,
->> +	},
->> +	[ID_LTC2634H12] = {
->> +		.channels	= ltc2632x12_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 4096,
->> +	},
->> +	[ID_LTC2634H10] = {
->> +		.channels	= ltc2632x10_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 4096,
->> +	},
->> +	[ID_LTC2634H8] =  {
->> +		.channels	= ltc2632x8_channels,
->> +		.num_channels	= 4,
->> +		.vref_mv	= 4096,
->> +	},
->>   	[ID_LTC2636L12] = {
->>   		.channels	= ltc2632x12_channels,
->>   		.num_channels	= 8,
->> @@ -357,6 +393,12 @@ static const struct spi_device_id ltc2632_id[] = {
->>   	{ "ltc2632-h12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H12] },
->>   	{ "ltc2632-h10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H10] },
->>   	{ "ltc2632-h8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2632H8] },
->> +	{ "ltc2634-l12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L12] },
->> +	{ "ltc2634-l10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L10] },
->> +	{ "ltc2634-l8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634L8] },
->> +	{ "ltc2634-h12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H12] },
->> +	{ "ltc2634-h10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H10] },
->> +	{ "ltc2634-h8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2634H8] },
->>   	{ "ltc2636-l12", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L12] },
->>   	{ "ltc2636-l10", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L10] },
->>   	{ "ltc2636-l8", (kernel_ulong_t)&ltc2632_chip_info_tbl[ID_LTC2636L8] },
->> @@ -386,6 +428,24 @@ static const struct of_device_id ltc2632_of_match[] = {
->>   	}, {
->>   		.compatible = "lltc,ltc2632-h8",
->>   		.data = &ltc2632_chip_info_tbl[ID_LTC2632H8]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-l12",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634L12]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-l10",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634L10]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-l8",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634L8]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-h12",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634H12]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-h10",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634H10]
->> +	}, {
->> +		.compatible = "lltc,ltc2634-h8",
->> +		.data = &ltc2632_chip_info_tbl[ID_LTC2634H8]
->>   	}, {
->>   		.compatible = "lltc,ltc2636-l12",
->>   		.data = &ltc2632_chip_info_tbl[ID_LTC2636L12]
-> 
-> Looks good to me:
-> 
-> Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> 
-> Thanks
-> Uwe
-> 
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
+>  .../devicetree/bindings/mmc/cdns,sdhci.yaml   |  2 +-
+>  .../bindings/mmc/rockchip-dw-mshc.yaml        | 16 ++---
+>  .../bindings/mmc/socionext,uniphier-sd.yaml   | 14 ++--
+>  .../devicetree/bindings/mtd/denali,nand.yaml  |  4 +-
+>  .../net/allwinner,sun8i-a83t-emac.yaml        |  4 +-
+>  .../bindings/net/can/bosch,m_can.yaml         | 52 +++++++--------
+>  .../bindings/net/renesas,ether.yaml           |  4 +-
+>  .../bindings/net/ti,cpsw-switch.yaml          | 12 ++--
+>  .../bindings/net/ti,davinci-mdio.yaml         | 27 ++++----
+>  .../bindings/phy/intel,lgm-emmc-phy.yaml      |  2 +-
+>  .../devicetree/bindings/pwm/pwm-samsung.yaml  | 16 ++---
+>  .../bindings/remoteproc/st,stm32-rproc.yaml   |  2 +-
+>  .../reset/brcm,bcm7216-pcie-sata-rescal.yaml  |  4 +-
+>  .../devicetree/bindings/rtc/st,stm32-rtc.yaml | 38 +++++------
+>  .../bindings/serial/amlogic,meson-uart.yaml   | 16 ++---
+>  .../devicetree/bindings/serial/rs485.yaml     | 17 ++---
+>  .../bindings/soc/amlogic/amlogic,canvas.yaml  | 10 +--
+>  .../bindings/sound/renesas,fsi.yaml           | 16 ++---
+>  .../bindings/spi/qcom,spi-qcom-qspi.yaml      | 10 +--
+>  .../devicetree/bindings/spi/renesas,hspi.yaml |  4 +-
+>  .../devicetree/bindings/spi/spi-pl022.yaml    |  2 +-
+>  .../bindings/spi/st,stm32-qspi.yaml           |  4 +-
+>  .../allwinner,sun4i-a10-system-control.yaml   | 64 +++++++++----------
+>  .../bindings/thermal/amlogic,thermal.yaml     | 10 +--
+>  .../bindings/timer/arm,arch_timer.yaml        |  4 +-
+>  .../bindings/timer/arm,arch_timer_mmio.yaml   |  4 +-
+>  .../devicetree/bindings/usb/dwc2.yaml         |  8 +--
+>  77 files changed, 450 insertions(+), 450 deletions(-)
 
 -- 
-GTSYS Limited RFID Technology
-9/F, Unit E, R07, Kwai Shing Industrial Building Phase 2,
-42-46 Tai Lin Pai Road, Kwai Chung, N.T., Hong Kong
-Tel (852) 9079 9521
-
-Disclaimer: https://www.gtsys.com.hk/email/classified.html
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

@@ -2,161 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0B11AC1B5
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 14:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001571AC50A
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 16:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2636113AbgDPMoW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 08:44:22 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:33886 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2636077AbgDPMoR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 08:44:17 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 924AA80487;
-        Thu, 16 Apr 2020 14:44:00 +0200 (CEST)
-Date:   Thu, 16 Apr 2020 14:43:59 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        id S1729329AbgDPOKU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 10:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33846 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2393116AbgDPOJV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 10:09:21 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6191EC061A0C
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 07:09:21 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id v9so7910962ljk.12
+        for <linux-iio@vger.kernel.org>; Thu, 16 Apr 2020 07:09:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EcwerKQQEP8j7nclGhrMgaoQqJ2z0i0teVUv4cSWNXE=;
+        b=GN52HuCOuJ1SswJKMaB3uMoT9Eb7waHxo5fPIzcXanb+uCFUuFV9TkhM4PjXVBZGM4
+         X9GP/WnyyF12vzcnEFCYv7gJiciOItxiplPtQ813fPjhHClqYVqTvgWqTEjiVLTU1bms
+         Og8XEEhsp2X6ua24ARy8T8XZfkqUsljn7IRGAqPB2qSXuTLw19sluh/ley6xJnCCtHMa
+         5n+QFWr4zT6kwQ63EfIZqBR2gzX30JHDRng2AYTzLQ4DWUxX1hK3yE+MV4XlG4P+ZGIY
+         Etp9hrQ43oR1+uOnq0nhUh/Sh5WqYlC1+h1IeKX4VIbxG9eqaoREpo81upE/SDpDDH+l
+         DiRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EcwerKQQEP8j7nclGhrMgaoQqJ2z0i0teVUv4cSWNXE=;
+        b=GIx1pwBGJoE5eWU45/KUGAFNS/r9fFfCnDzu5722rZQW0ePUdUDutBuVFAhnWdA2FK
+         pL6iidkjkTyVRWtLkHd6YBgf05S1wbzxpQQybZ/H6jRAuH1xQgGPVgfq8fJvnREPIExK
+         C5TV22xsNjy0vr8Z8LJsFl5l+WJCvEA9TLpN0otvCsRxPpeq71gAmkVFgh5cpJoGV8zw
+         GASjSt21pW+ukiqchdSmOb3hy/yjIHC3tnaXNogC4Olw8Ehzxr5zELuV+DRNj2p/ZiU4
+         xZUmQ/WGgLgdiEzCB9tME4ze3SKknlwn3uF9kl5fpTuE26et7y3uG0xMC/Vt3oCsRDcl
+         b5Rw==
+X-Gm-Message-State: AGi0PubO9xrcJUhoHQk4dRdEp0jAxWl0iQhdRAxoIEFoba7v2SVjBSPf
+        zWOkBAozOwqWuZvvshpS/TcdCA==
+X-Google-Smtp-Source: APiQypJcSV0LCNGO0pS1gyWwCMCoYh6wY2j+JWPGs+yObCYqdjzVp901POV40kM+hMkZGLw4VxCyCQ==
+X-Received: by 2002:a05:651c:39b:: with SMTP id e27mr6962616ljp.45.1587046159829;
+        Thu, 16 Apr 2020 07:09:19 -0700 (PDT)
+Received: from localhost.bredbandsbolaget (c-f3d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.243])
+        by smtp.gmail.com with ESMTPSA id v12sm9744045ljd.85.2020.04.16.07.09.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2020 07:09:19 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-input@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: Clean-up schema indentation formatting
-Message-ID: <20200416124359.GB5785@ravnborg.org>
-References: <20200416005549.9683-1-robh@kernel.org>
+        Nick Reitemeyer <nick.reitemeyer@web.de>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH 1/2 v2] iio: magnetometer: ak8974: Break out measurement
+Date:   Thu, 16 Apr 2020 16:09:16 +0200
+Message-Id: <20200416140917.8087-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200416005549.9683-1-robh@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10
-        a=xJWM5Xtqm7-vkBAKM1YA:9 a=bxeknKLoBf6BnO7k:21 a=StjP_oZuoJ7ca4eH:21
-        a=CjuIK1q_8ugA:10
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob.
+This breaks out the measurement code to its own function
+so we can handle this without swirling it up with the
+bis switch() statement inside ak8974_read_raw().
 
-On Wed, Apr 15, 2020 at 07:55:48PM -0500, Rob Herring wrote:
-> Fix various inconsistencies in schema indentation. Most of these are
-> list indentation which should be 2 spaces more than the start of the
-> enclosing keyword. This doesn't matter functionally, but affects running
-> scripts which do transforms on the schema files.
+Use an intermediary s16* variable since we read s16 but
+the external API required an int* so this way we get
+explicit casting.
 
-Are there any plans to improve the tooling so we get warnigns for this?
-Otherwise I am afraid we will see a lot of patches that gets this wrong.
+Cc: Nick Reitemeyer <nick.reitemeyer@web.de>
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v1->v2:
+- Break out as a separate patch.
+---
+ drivers/iio/magnetometer/ak8974.c | 51 +++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 20 deletions(-)
 
-As a follow-up patch it would be good if example-schema.yaml
-could gain some comments about the correct indentions.
+diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+index ade4ed8f67d2..5361647b9054 100644
+--- a/drivers/iio/magnetometer/ak8974.c
++++ b/drivers/iio/magnetometer/ak8974.c
+@@ -554,46 +554,57 @@ static int ak8974_detect(struct ak8974 *ak8974)
+ 	return 0;
+ }
+ 
++static int ak8974_measure(struct ak8974 *ak8974, unsigned long address, s16 *val)
++{
++	__le16 hw_values[3];
++	int ret;
++
++	pm_runtime_get_sync(&ak8974->i2c->dev);
++	mutex_lock(&ak8974->lock);
++
++	ret = ak8974_trigmeas(ak8974);
++	if (ret)
++		goto out_unlock;
++	ret = ak8974_getresult(ak8974, hw_values);
++	if (ret)
++		goto out_unlock;
++	*val = (s16)le16_to_cpu(hw_values[address]);
++out_unlock:
++	mutex_unlock(&ak8974->lock);
++	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
++	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
++
++	return ret;
++}
++
+ static int ak8974_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val, int *val2,
+ 			   long mask)
+ {
+ 	struct ak8974 *ak8974 = iio_priv(indio_dev);
+-	__le16 hw_values[3];
+ 	int ret = -EINVAL;
+-
+-	pm_runtime_get_sync(&ak8974->i2c->dev);
+-	mutex_lock(&ak8974->lock);
++	s16 outval;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		if (chan->address > 2) {
+ 			dev_err(&ak8974->i2c->dev, "faulty channel address\n");
+ 			ret = -EIO;
+-			goto out_unlock;
++			goto out_err_read;
+ 		}
+-		ret = ak8974_trigmeas(ak8974);
+-		if (ret)
+-			goto out_unlock;
+-		ret = ak8974_getresult(ak8974, hw_values);
+-		if (ret)
+-			goto out_unlock;
+-
+ 		/*
+ 		 * We read all axes and discard all but one, for optimized
+ 		 * reading, use the triggered buffer.
+ 		 */
+-		*val = (s16)le16_to_cpu(hw_values[chan->address]);
+-
++		ret = ak8974_measure(ak8974, chan->address, &outval);
++		if (ret)
++			goto out_err_read;
++		*val = outval;
+ 		ret = IIO_VAL_INT;
++		break;
+ 	}
+-
+- out_unlock:
+-	mutex_unlock(&ak8974->lock);
+-	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
+-	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
+-
++out_err_read:
+ 	return ret;
+ }
+ 
+-- 
+2.21.1
 
-Some comments in the following.
-
-> diff --git a/Documentation/devicetree/bindings/arm/altera.yaml b/Documentation/devicetree/bindings/arm/altera.yaml
-> index 49e0362ddc11..b388c5aa7984 100644
-> --- a/Documentation/devicetree/bindings/arm/altera.yaml
-> +++ b/Documentation/devicetree/bindings/arm/altera.yaml
-> @@ -13,8 +13,8 @@ properties:
->    compatible:
->      items:
->        - enum:
-> -        - altr,socfpga-cyclone5
-> -        - altr,socfpga-arria5
-> -        - altr,socfpga-arria10
-> +          - altr,socfpga-cyclone5
-> +          - altr,socfpga-arria5
-> +          - altr,socfpga-arria10
->        - const: altr,socfpga
-
-So here "- enum" do not need the extra indent.
-Is it because this is not a list?
-
->  ...
-> diff --git a/Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml b/Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
-> index 66213bd95e6e..6cc74523ebfd 100644
-> --- a/Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
-> +++ b/Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
-> @@ -25,7 +25,7 @@ select:
-> 
->  properties:
->    compatible:
-> -   items:
-> +    items:
->        - const: amlogic,meson-gx-ao-secure
->        - const: syscon
-
-This is something I had expected the tooling to notice.
-I had expected the two "- const" to be indented with 4 spaces, not two.
-So there is something I do not understand.
-
-
-> diff --git a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> index 07f39d3eee7e..f7f024910e71 100644
-> --- a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> +++ b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> @@ -17,9 +17,8 @@ properties:
->            - nxp,lpc3230
->            - nxp,lpc3240
->        - items:
-> -        - enum:
-> -            - ea,ea3250
-> -            - phytec,phy3250
-> -        - const: nxp,lpc3250
-> -
-> +          - enum:
-> +              - ea,ea3250
-> +              - phytec,phy3250
-> +          - const: nxp,lpc3250
->  ...
-
-And here "- enum" receive extra indent.
-
-I trust you know what you are doing - but I do not get it.
-
-Some pointers or examples for the correct indention would be great.
-I cannot review this patch as long as I do not know the rules.
-
-My request to update example-schema.yaml was one way to teach me.
-(Some people will say that is difficult/impossible to teach me,
-but thats another story:-) ).
-
-	Sam

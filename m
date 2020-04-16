@@ -2,46 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F23F81AC07D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 13:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F06B61AC14B
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 14:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2634617AbgDPL6V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 07:58:21 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:58726 "EHLO
+        id S2635650AbgDPMdB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 08:33:01 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:44444 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2634579AbgDPL6J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 07:58:09 -0400
+        by vger.kernel.org with ESMTP id S2635625AbgDPMc4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 08:32:56 -0400
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03GBqVpT019700;
-        Thu, 16 Apr 2020 07:58:09 -0400
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03GCIhFB001327;
+        Thu, 16 Apr 2020 08:32:54 -0400
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 30dn9adgm8-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 30dn9adkdp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Apr 2020 07:58:08 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 03GBw7aZ016574
+        Thu, 16 Apr 2020 08:32:54 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 03GCWqfi024890
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 16 Apr 2020 07:58:07 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 16 Apr
- 2020 07:58:06 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 16 Apr 2020 07:58:06 -0400
+        Thu, 16 Apr 2020 08:32:53 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 16 Apr 2020 05:32:51 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 16 Apr 2020 05:32:44 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 16 Apr 2020 05:32:50 -0700
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03GBw2DY013213;
-        Thu, 16 Apr 2020 07:58:05 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <jic23@kernel.org>, <robh+dt@kernel.org>
-Subject: [PATCH v2 2/2] dt-bindings: iio: dac: AD5570R fix bindings errors
-Date:   Thu, 16 Apr 2020 14:58:48 +0300
-Message-ID: <20200416115848.56156-3-alexandru.tachici@analog.com>
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03GCWnWI007655;
+        Thu, 16 Apr 2020 08:32:49 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: core: fail early in iio_device_alloc() if we can't get a device id
+Date:   Thu, 16 Apr 2020 15:33:31 +0300
+Message-ID: <20200416123331.68790-1-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200416115848.56156-1-alexandru.tachici@analog.com>
-References: <20200416115848.56156-1-alexandru.tachici@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRoutedOnPrem: True
@@ -51,193 +53,66 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamsco
  impostorscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
  mlxscore=0 priorityscore=1501 suspectscore=0 adultscore=0
  lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004160084
+ engine=8.12.0-2003020000 definitions=main-2004160088
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+This change moves the 'ida_simple_get()' call to be the first one in
+iio_device_alloc(). It cleans up the error path a bit as we don't need to
+call any kfree(dev) anymore. We allocate an IIO device only if we have
+managed to obtain a device ID.
 
-Replaced num property with reg property, fixed errors
-reported by dt-binding-check.
-
-Fixes: ea52c21268e6 ("iio: dac: ad5770r: Add AD5770R support")
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- .../bindings/iio/dac/adi,ad5770r.yaml         | 82 +++++++++----------
- 1 file changed, 39 insertions(+), 43 deletions(-)
+ drivers/iio/industrialio-core.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-index d9c25cf4b92f..87e9b2802013 100644
---- a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-@@ -2,7 +2,7 @@
- # Copyright 2020 Analog Devices Inc.
- %YAML 1.2
- ---
--$id: http://devicetree.org/schemas/bindings/iio/dac/adi,ad5770r.yaml#
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5770r.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index f4daf19f2a3b..7c1d8a3ab2f3 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1494,6 +1494,14 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ {
+ 	struct iio_dev *dev;
+ 	size_t alloc_size;
++	int id;
++
++	id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
++	if (id < 0) {
++		/* cannot use a dev_err as the name isn't available */
++		pr_err("failed to get device id\n");
++		return NULL;
++	}
  
- title: Analog Devices AD5770R DAC device driver
-@@ -49,83 +49,77 @@ properties:
-       asserted during driver probe.
-     maxItems: 1
+ 	alloc_size = sizeof(struct iio_dev);
+ 	if (sizeof_priv) {
+@@ -1506,6 +1514,8 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 	dev = kzalloc(alloc_size, GFP_KERNEL);
  
--  channel0:
-+  channel@0:
-     description: Represents an external channel which are
-       connected to the DAC. Channel 0 can act both as a current
-       source and sink.
-     type: object
+ 	if (dev) {
++		dev->id = id;
++		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+ 		dev->dev.groups = dev->groups;
+ 		dev->dev.type = &iio_device_type;
+ 		dev->dev.bus = &iio_bus_type;
+@@ -1514,15 +1524,6 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 		mutex_init(&dev->mlock);
+ 		mutex_init(&dev->info_exist_lock);
+ 		INIT_LIST_HEAD(&dev->channel_attr_list);
+-
+-		dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
+-		if (dev->id < 0) {
+-			/* cannot use a dev_err as the name isn't available */
+-			pr_err("failed to get device id\n");
+-			kfree(dev);
+-			return NULL;
+-		}
+-		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+ 		INIT_LIST_HEAD(&dev->buffer_list);
+ 	}
  
-     properties:
--      num:
-+      reg:
-         description: This represents the channel number.
--        items:
--          const: 0
-+        const: 0
- 
-       adi,range-microamp:
-           description: Output range of the channel.
-           oneOf:
--            - $ref: /schemas/types.yaml#/definitions/int32-array
-             - items:
--                - enum: [0 300000]
--                - enum: [-60000 0]
--                - enum: [-60000 300000]
-+                - const: 0
-+                - const: 300000
-+            - items:
-+                - const: -60000
-+                - const: 0
-+            - items:
-+                - const: -60000
-+                - const: 300000
- 
--  channel1:
-+  channel@1:
-     description: Represents an external channel which are
-       connected to the DAC.
-     type: object
- 
-     properties:
--      num:
-+      reg:
-         description: This represents the channel number.
--        items:
--          const: 1
-+        const: 1
- 
-       adi,range-microamp:
-           description: Output range of the channel.
--          oneOf:
--            - $ref: /schemas/types.yaml#/definitions/uint32-array
--            - items:
--                - enum: [0 140000]
--                - enum: [0 250000]
-+          items:
-+            - const: 0
-+            - enum: [ 140000, 250000 ]
- 
--  channel2:
-+  channel@2:
-     description: Represents an external channel which are
-       connected to the DAC.
-     type: object
- 
-     properties:
--      num:
-+      reg:
-         description: This represents the channel number.
--        items:
--          const: 2
-+        const: 2
- 
-       adi,range-microamp:
-           description: Output range of the channel.
--          oneOf:
--            - $ref: /schemas/types.yaml#/definitions/uint32-array
--            - items:
--                - enum: [0 140000]
--                - enum: [0 250000]
-+          items:
-+            - const: 0
-+            - enum: [ 55000, 150000 ]
- 
- patternProperties:
-   "^channel@([3-5])$":
-     type: object
-     description: Represents the external channels which are connected to the DAC.
-     properties:
--      num:
-+      reg:
-         description: This represents the channel number.
--        items:
--          minimum: 3
--          maximum: 5
-+        minimum: 3
-+        maximum: 5
- 
-       adi,range-microamp:
-           description: Output range of the channel.
--          oneOf:
--            - $ref: /schemas/types.yaml#/definitions/uint32-array
--            - items:
--                - enum: [0 45000]
--                - enum: [0 100000]
-+          items:
-+            - const: 0
-+            - enum: [ 45000, 100000 ]
- 
- required:
- - reg
-@@ -150,34 +144,36 @@ examples:
-                         vref-supply = <&vref>;
-                         adi,external-resistor;
-                         reset-gpios = <&gpio 22 0>;
-+                        #address-cells = <1>;
-+                        #size-cells = <0>;
- 
-                         channel@0 {
--                                num = <0>;
--                                adi,range-microamp = <(-60000) 300000>;
-+                                reg = <0>;
-+                                adi,range-microamp = <0 300000>;
-                         };
- 
-                         channel@1 {
--                                num = <1>;
-+                                reg = <1>;
-                                 adi,range-microamp = <0 140000>;
-                         };
- 
-                         channel@2 {
--                                num = <2>;
-+                                reg = <2>;
-                                 adi,range-microamp = <0 55000>;
-                         };
- 
-                         channel@3 {
--                                num = <3>;
-+                                reg = <3>;
-                                 adi,range-microamp = <0 45000>;
-                         };
- 
-                         channel@4 {
--                                num = <4>;
-+                                reg = <4>;
-                                 adi,range-microamp = <0 45000>;
-                         };
- 
-                         channel@5 {
--                                num = <5>;
-+                                reg = <5>;
-                                 adi,range-microamp = <0 45000>;
-                         };
-                 };
 -- 
-2.20.1
+2.17.1
 

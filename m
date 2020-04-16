@@ -2,71 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 492C71AD060
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 21:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58CA61AD15D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Apr 2020 22:43:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731077AbgDPTcG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Apr 2020 15:32:06 -0400
-Received: from mail-yw1-f66.google.com ([209.85.161.66]:33367 "EHLO
-        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728664AbgDPTcF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 15:32:05 -0400
-Received: by mail-oo1-f66.google.com with SMTP id b17so906700ooa.0;
-        Thu, 16 Apr 2020 12:32:03 -0700 (PDT)
+        id S1727806AbgDPUmo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Apr 2020 16:42:44 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:41516 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727798AbgDPUmo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Apr 2020 16:42:44 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c3so155207otp.8;
+        Thu, 16 Apr 2020 13:42:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=G2KfsHLol0MxR420xNgeMgYQ50fxqR1O3iC2ZHpUZCI=;
-        b=XlQRNX46xNOgIpzbJem5CSH6woGZBYzcSHE3vXyRWHNgBa07OZbPNzgCxWPBz+9pme
-         S5iefyIjt4j8OupGfhtqKOYcbz8/SETcwtiVMVW5cKJgZPjUQAmmGODnSEDt2kNyICmw
-         52PkbeGTqkHHi2UcMSnocjifLHPn/mpTb6VVXOW6xYn1R/UjhNBLn6FL+X2+gsitqM3x
-         KbtQJoJ84oCbA+N2VLolAprct3zK2Mv6t7nkkaEfefDz8Ul/ZLAwFIje0SbUhMpughkV
-         gXs0iyGCWki9m5KAVjOm6mNCe9/rA8JJCyr/lzIlFS4HXEKV8jV9lyUo/dBO++pcD9Dn
-         dPDQ==
-X-Gm-Message-State: AGi0PubK8GJPLiF2UAr5TGLFtY0Kr8Rzh8S4nLjnAXH21hA+Z5UC2OBa
-        dZzyyawkgIUeZe/YRXBgMp4MHmw=
-X-Google-Smtp-Source: APiQypIkMfpzlk1lmK+EBTOhD1SsnV9Gj8mGtLRMMEgrPlQkC3YqpIsnDV4DJjgAdynWvj140tiheA==
-X-Received: by 2002:a4a:95ee:: with SMTP id p43mr27323868ooi.24.1587065523461;
-        Thu, 16 Apr 2020 12:32:03 -0700 (PDT)
+        bh=jZ0RlsGr2+5/XacCO4EL2cmFSLDykRvrVImbCZUcZLg=;
+        b=DvAOXBQonaCJPEGwmplK2XFnZME3s8BkyLLNEDBkWC1BZhAS7XFunAZxwBXS3hhPt/
+         OS+pMokkLMirRFe2ohlfmBnnlzPPHCyTK1BKXBWZSC6t+PFEsQGKeVNSOlGKoXMXcFyV
+         X4XFLPndA4s88qq7vPHxljsLi+eKlpvckfE7Yf1SNN8LyLlpTDf7AabClIDmIAfivqMv
+         URFEmY6O+zcygEO3frWCubRCJ8M6qIB5EahaX7FH/IASMvwi7g8lj57dINFVKsE6CVYC
+         loP/cl/k7fLGUxqcdPEWFMHpKQviANNTG+WpPJ3E+yl6rsT6Dtl7c/aKnzNSwpE/llBM
+         jRoA==
+X-Gm-Message-State: AGi0PuavByK+0JR1Z6cqxl0QoOz0QPGsr7CgIX4BVPuBsVBBiJxiC1I0
+        k8l5EPW2bU4T/n4OQqKz6A==
+X-Google-Smtp-Source: APiQypJo+wfUfZ+Jua5JzMhkPsJfsCwdLjpvmnCen6w86M/uhXfd6Uaka/f2N84W9kSeMbR05r4Myg==
+X-Received: by 2002:a05:6830:15a:: with SMTP id j26mr28677476otp.248.1587069762956;
+        Thu, 16 Apr 2020 13:42:42 -0700 (PDT)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id t10sm1236678oou.38.2020.04.16.12.32.02
+        by smtp.gmail.com with ESMTPSA id s25sm2712659ooh.22.2020.04.16.13.42.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 12:32:02 -0700 (PDT)
-Received: (nullmailer pid 21598 invoked by uid 1000);
-        Thu, 16 Apr 2020 19:32:01 -0000
-Date:   Thu, 16 Apr 2020 14:32:01 -0500
+        Thu, 16 Apr 2020 13:42:42 -0700 (PDT)
+Received: (nullmailer pid 14696 invoked by uid 1000);
+        Thu, 16 Apr 2020 20:42:41 -0000
+Date:   Thu, 16 Apr 2020 15:42:41 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     alexandru.tachici@analog.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, jic23@kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: dac: AD5570R fix bindings errors
-Message-ID: <20200416193201.GA21490@bogus>
-References: <20200416115848.56156-1-alexandru.tachici@analog.com>
- <20200416115848.56156-3-alexandru.tachici@analog.com>
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mka@chromium.org, linus.walleij@linaro.org,
+        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
+        kgunda@codeaurora.org, aghayal@codeaurora.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jishnu Prakash <jprakash@codeaurora.org>,
+        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-msm-owner@vger.kernel.org
+Subject: Re: [PATCH V2 1/3] iio: adc: Convert the QCOM SPMI ADC bindings to
+ .yaml format
+Message-ID: <20200416204241.GA14143@bogus>
+References: <1586942266-21480-1-git-send-email-jprakash@codeaurora.org>
+ <1586942266-21480-2-git-send-email-jprakash@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200416115848.56156-3-alexandru.tachici@analog.com>
+In-Reply-To: <1586942266-21480-2-git-send-email-jprakash@codeaurora.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 14:58:48 +0300, <alexandru.tachici@analog.com> wrote:
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Wed, 15 Apr 2020 14:47:44 +0530, Jishnu Prakash wrote:
+> Convert the adc bindings from .txt to .yaml format.
 > 
-> Replaced num property with reg property, fixed errors
-> reported by dt-binding-check.
-> 
-> Fixes: ea52c21268e6 ("iio: dac: ad5770r: Add AD5770R support")
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
 > ---
->  .../bindings/iio/dac/adi,ad5770r.yaml         | 82 +++++++++----------
->  1 file changed, 39 insertions(+), 43 deletions(-)
+>  .../devicetree/bindings/iio/adc/qcom,spmi-vadc.txt | 173 -------------
+>  .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 288 +++++++++++++++++++++
+>  2 files changed, 288 insertions(+), 173 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
 > 
 
-Applied, thanks.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Rob
+Documentation/devicetree/bindings/display/simple-framebuffer.example.dts:21.16-37.11: Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dt.yaml: adc@3100: 'adc-chan@0x39', 'adc-chan@0x9', 'adc-chan@0xa', 'adc-chan@0xe', 'adc-chan@0xf' do not match any of the regexes: '.*-names$', '.*-supply$', '^#.*-cells$', '^#[a-zA-Z0-9,+\\-._]{0,63}$', '^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}$', '^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}@[0-9a-fA-F]+(,[0-9a-fA-F]+)*$', '^__.*__$', 'pinctrl-[0-9]+'
+
+See https://patchwork.ozlabs.org/patch/1271025
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.

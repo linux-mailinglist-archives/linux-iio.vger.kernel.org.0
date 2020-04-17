@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5213E1ADED1
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 15:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 926021ADEE1
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 15:59:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730714AbgDQN5G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 09:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58404 "EHLO
+        id S1730769AbgDQN6Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 09:58:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730691AbgDQN5G (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 09:57:06 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E91C061A0C;
-        Fri, 17 Apr 2020 06:57:05 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id bu9so872040qvb.13;
-        Fri, 17 Apr 2020 06:57:05 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1730563AbgDQN6Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 09:58:24 -0400
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B887C061A0C;
+        Fri, 17 Apr 2020 06:58:24 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id v7so2463663qkc.0;
+        Fri, 17 Apr 2020 06:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=oqcTP4i+a7YGi21w2c2gncPHzEaLd+RyksgvDG1LlGQ=;
-        b=nkL7/2UwuToC9Qt2i6kcBIZYANeglyiEJgWOvtfpq4CAtzTk8zAzGzjSbhyG5yIke6
-         KxE5LoodWN5XEKHKMjhMDp86xkGpMNypr4Bzx3u2ATA4iJ7Jb8YJldfTGpt9Y+Ci07Bo
-         M4SlUWnmNlNBz/3Nk5rRLPh3a3tskzCNw9gefdLV32J4FVJed4gkMGBhfLouR+KAcqwv
-         Hjz77TBwDuzNqzR8TRVMb2zH9Gjj8p0o7KhDbdXJvo0wkW/jnEfv7yRyCFsxNmiTMv8P
-         kpX1+99eQeajo6XQsWCYZPqVXdsDpBF2GssNE1UxgK11+hpfsijVHnij9ARtEpzjQDr4
-         rrTw==
+        bh=r8S2kr+1qqUEZmx89jm+Cng1XtsvEmNd5bR0TB0uIJE=;
+        b=iotocs2RNeI49d3mnbUlyAa5zwoDWCGA0757Yxah/0qc/j0AXXBLIPdxm09p9H3Ir/
+         ptEt4ci5MW89V7TZlQs31KRvTGMk8ozPnpLACN8LIOOr/WKfYDTBrX1F83DukeJXi9xS
+         6ttqPRpMBj1/RlCpXob8wDDKXyBK+3cIPxDok6r8TrctMVcEQVXnSCpmXegLDLwsetmh
+         5chGVw6tndImMDtEC4XJhTDad+TBkL4bq7fFdL6rHr/LVgscNOV9lGHEx9j+cWZ3tDyp
+         0DVE2cbOpa4b1IpjbWK4vjYT6BqkdS0Nz9jr56kzWrokadZjKXEOw3+it++I1LGTXkzH
+         eGVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=oqcTP4i+a7YGi21w2c2gncPHzEaLd+RyksgvDG1LlGQ=;
-        b=TdAccyl4dLAO6kbap9CmJfbk/+/DTywY3GSDVo2ZNaqYqaNpKz+ARbIauKLsQgQsEI
-         v4uNLMuMJ1BR4ZIfdIv0oBJ6WNOk6dxbPHPy2gA+JdB4w8cqlAF8fQZWJjq9iNSkJiZP
-         GIJAqJD44XWnifKTVcvC6dWv4HTO3rSA+8vtkuske4AoeezupilJq2vL1Cnlmn3TJV0M
-         CgjaOpDKX5pRJB2ROHHVTvw7XeikqGSD1NTa7L0GSMUwE/C/fPjYQZzbH8zE4bL7diAc
-         dU84BOSI+lbmTwXSk5ovkkL1hyY3JSduAzn+cDjCz2ZVCVINJE2QOfFPYAdQOkujqLac
-         8mzg==
-X-Gm-Message-State: AGi0PuZasHFS4rj3xA50dgpcegxYazs4qZ5Rg8f4zbMsmojbFIgm+bvy
-        jU0448gMO5i+SdrqZRz8CXU=
-X-Google-Smtp-Source: APiQypJ8JrKJ3vHc/mky7+x34T8yXzxIAA4sFNSJhjCHLPgr3v5dwnzrf21iZm9GgH2AV8+9/WiOoQ==
-X-Received: by 2002:ad4:4744:: with SMTP id c4mr2857740qvx.203.1587131825006;
-        Fri, 17 Apr 2020 06:57:05 -0700 (PDT)
+        bh=r8S2kr+1qqUEZmx89jm+Cng1XtsvEmNd5bR0TB0uIJE=;
+        b=kUAug7oTP+pzvuV4S2ABQiJ5Y+QR/DLBAmet0nXDNct1nugGXH395W0bvHhWbqJlUO
+         NSW6YyUK6YVhXPkpRe5TQpAvXe/7J0oCX57idAguqAiLuaX4pc63YjyVvNv/4bNQmtab
+         a1pnFqRHoV0piabNbGOaVcVxR2nhoqisCtWUi5bpn/LPCp6+gMaNZ5ZG+wmoYaRKX/xv
+         NM6LcYbhefmN7yNbvU1lNUQui7MwIHUtbABuXniY/eIv/qi10gA3BXeQHgu7VvG/4f6e
+         D05c9fk7z9aFgbtWgai3MH1W9KRCZCmCxAWz71RGGbyVZoZjP1g4ak5X22PpMXdsJEwv
+         kz5g==
+X-Gm-Message-State: AGi0PuZn6xnOIKGK1gFyrc2R7x0khVMHRDcrCFw/AiMNJuK4lIf0Ay0Y
+        qg/A5SP+66dtvQ2T2/u97F4=
+X-Google-Smtp-Source: APiQypLycIbxKLBQBj/VxBvwEctnJBVu08QReewXgY6W5HGc4qa7J3lYp+camisa7kG+4/t0wN902Q==
+X-Received: by 2002:a37:63d1:: with SMTP id x200mr3442405qkb.144.1587131903728;
+        Fri, 17 Apr 2020 06:58:23 -0700 (PDT)
 Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id s18sm6143621qkg.53.2020.04.17.06.57.02
+        by smtp.gmail.com with ESMTPSA id y6sm8991279qky.133.2020.04.17.06.58.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2020 06:57:03 -0700 (PDT)
-Date:   Fri, 17 Apr 2020 09:56:35 -0400
+        Fri, 17 Apr 2020 06:58:22 -0700 (PDT)
+Date:   Fri, 17 Apr 2020 09:58:20 -0400
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Kamel Bouhara <kamel.bouhara@bootlin.com>, jic23@kernel.org
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -59,29 +59,34 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] ARM: at91: add atmel tcb capabilities
-Message-ID: <20200417135635.GA94725@icarus>
+Subject: Re: [PATCH v3 2/3] dt-bindings: counter: microchip-tcb-capture
+ counter
+Message-ID: <20200417135820.GB94725@icarus>
 References: <20200415130455.2222019-1-kamel.bouhara@bootlin.com>
- <20200415130455.2222019-2-kamel.bouhara@bootlin.com>
+ <20200415130455.2222019-3-kamel.bouhara@bootlin.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Q68bSM7Ycu6FN28Q"
+        protocol="application/pgp-signature"; boundary="l76fUT7nc3MelDdI"
 Content-Disposition: inline
-In-Reply-To: <20200415130455.2222019-2-kamel.bouhara@bootlin.com>
+In-Reply-To: <20200415130455.2222019-3-kamel.bouhara@bootlin.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---Q68bSM7Ycu6FN28Q
+--l76fUT7nc3MelDdI
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 15, 2020 at 03:04:53PM +0200, Kamel Bouhara wrote:
-> Some atmel socs have extra tcb capabilities that allow using a generic
-> clock source or enabling a quadrature decoder.
+On Wed, Apr 15, 2020 at 03:04:54PM +0200, Kamel Bouhara wrote:
+> Describe the devicetree binding for the Microchip TCB module.
+> Each counter blocks exposes three independent counters.
+>=20
+> However, when configured in quadrature decoder, both channel <0> and <1>
+> are required for speed/position and rotation capture (yet only the
+> position is captured).
 >=20
 > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
 
@@ -89,56 +94,79 @@ Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
 > ---
 > Changes from v3:
->  - Added missing kernel doc for new elements introduced in structure
->    atmel_tcb_config.
+>  - Updated the brand name: s/atmel/microchip/.
 >=20
 > Changes from v2:
->  - Fixed first patch not applying on mainline
+>  - Fixed errors reported by dt_binding_check
 >=20
->  include/soc/at91/atmel_tcb.h | 5 +++++
->  1 file changed, 5 insertions(+)
+>  .../counter/microchip-tcb-capture.yaml        | 33 +++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/microchip-t=
+cb-capture.yaml
 >=20
-> diff --git a/include/soc/at91/atmel_tcb.h b/include/soc/at91/atmel_tcb.h
-> index c3c7200ce151..1d7071dc0bca 100644
-> --- a/include/soc/at91/atmel_tcb.h
-> +++ b/include/soc/at91/atmel_tcb.h
-> @@ -36,9 +36,14 @@ struct clk;
->  /**
->   * struct atmel_tcb_config - SoC data for a Timer/Counter Block
->   * @counter_width: size in bits of a timer counter register
-> + * @has_gclk: boolean indicating if a timer counter has a generic clock
-> + * @has_qdec: boolean indicating if a timer counter has a quadrature
-> + * decoder.
->   */
->  struct atmel_tcb_config {
->  	size_t	counter_width;
-> +	bool    has_gclk;
-> +	bool    has_qdec;
->  };
-> =20
->  /**
+> diff --git a/Documentation/devicetree/bindings/counter/microchip-tcb-capt=
+ure.yaml b/Documentation/devicetree/bindings/counter/microchip-tcb-capture.=
+yaml
+> new file mode 100644
+> index 000000000000..183e9ee4c049
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml
+> @@ -0,0 +1,33 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/counter/microchip-tcb-capture.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip TCB Counter
+> +
+> +maintainers:
+> +  - Kamel Bouhara <kamel.bouhara@bootlin.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: "microchip,tcb-capture"
+> +
+> +  reg:
+> +    description: TCB capture channel to register as counter device.
+> +      Each channel is independent therefore only one channel is
+> +      registered by default execpt for the QDEC mode where both TCB0's
+> +      channels <0> and  <1> are required.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    tcb0: timer@f800c000 {
+> +        compatible =3D "microchip,tcb-capture";
+> +        reg =3D <0>, <1>;
+> +    };
 > --=20
 > 2.25.0
 >=20
 
---Q68bSM7Ycu6FN28Q
+--l76fUT7nc3MelDdI
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl6ZtX0ACgkQhvpINdm7
-VJJsmg//ZzvO1iZZuwiC/V4qTReyr1hNkDABRiGVHOtaLLWCoDyPqxgZ+03mUfjz
-nOHOaS4wHv52thU/N9zcgqT9gLTpStioyU7TTVdQONnINc1N9ObHfwX3+OYbtsAF
-8ebes1Drz/cx13tJo/UR8IkyExUn9x18447s1cfUrzYVfTYLZUrbD6IweqL0NKgd
-vNpOFWF0hNPy65DKp7qtmbURpAJjUOCTXPjJQcGdwcBtkYIDyFDcc1vO4f5QrM3d
-uk7OWGdaLgyqp0rUkvXEWZT11CRP4OvuK0BLYrNgucE1hkU5vtzcA8pa1JJlCBer
-fkbrLDUvazavSf1buTJZoxZbAfRtmTnBS1U5np/THmggu3kbNl0LDrSYcrjFJEr5
-JmT5GCKyZy3C8vLHBKPOMkQ6MnQXRtpB+NtNCne4/6SFJRBC0LC73cwma04/hSm0
-DTrxc+nVoDfrxXQEvlQ+neAoADJJx4gGh0BLdj09dO8jJHV9g2tm9/NUDur0U9wm
-aJRxAB8WrXHup1lVaXC1pqd5sLNoeChLjL5SKOjUPqEnxfXlbZnFVSlhDo63aziN
-YyJFpOxEh99s0HxfMMlibjGbUV1tL76Cb+wNAO1+DbjCgtFqbEzIwpKnriMEdy6q
-E9bnkPrkRz/OexR1od28QEROZo5Uvl9PuhMyPcL8k83RzMW5/2Y=
-=G8zt
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl6ZtfwACgkQhvpINdm7
+VJJyFg//WHsXZYH0on+vZZkrMR5ZzW8MOCpE+wrxZiS8hKDnCyQZV6iLxv9ySQi/
+BmWiyF2rMpE7Jt35ALYT82NwfljVPD4JCrqUjESxREF5N6TxtsaHyjjyo9elPG6x
+2vG0aUHWSZecCgt/IhALWE7i3A39oADcsIKf4DDrM/Sg1syaOYmds8F3YtR8uygl
+x+2YZISXhYreGwfipfs3qp2LtbgvXahytEZE01EQAmpZOptcZS3pRL2Ke/zYQmbr
+/yMKknNB82sDFGFty1A28zZ9guz767p+7cilZwTqkWxBOHR40G6ieIQ2wHYYktm6
+yc4AL1/nfdRpXBIlPL2FcxyftrdnV+DG6hyXm58o56JFoESPI3gMoOwEqFFYhNn8
+W1hszb+C6N9pKszPABb9K1eLHwQQfj4sbi+DdeH4mME/ItpIKeF/hJ/K/62yvGyu
+XSg9utS00CYB2YKB832S5v8/wanuO69g+8kMes25QBeiUiIXd/ne2UUsHx64akkc
+Gx3lWSKJmNPNDJuciTCW+r7ax3wLjn9nQjZV887GK6oNiuo4qbrrU1p+71OMBnHc
+N7ezTozJG8dWWoN2DDPU6D2rw4mcFxmls24ryA8OVv0Nrvvg9R/5wh8Hg1BXN7VU
+6E4lGrFc40Q//KgHIsnc0BO6I4eaq/JIEDA73cqLBe7kXxiUDfc=
+=yr/6
 -----END PGP SIGNATURE-----
 
---Q68bSM7Ycu6FN28Q--
+--l76fUT7nc3MelDdI--

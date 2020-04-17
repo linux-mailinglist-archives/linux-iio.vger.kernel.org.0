@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5242D1ADC56
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 13:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11251ADC59
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 13:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730451AbgDQLkj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 07:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
+        id S1730453AbgDQLkl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 07:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730450AbgDQLki (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 07:40:38 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E590C061A0F
-        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 04:40:38 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id u15so1704240ljd.3
-        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 04:40:37 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1730452AbgDQLkk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 07:40:40 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C232C061A0C
+        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 04:40:40 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id u15so1704337ljd.3
+        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 04:40:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=4UUxeiU31CzkmS+D9kh8cZkO8ytha7iuen+sgkO4OnY=;
-        b=lNuayNOQkdyF/kCTgE2m+wG3o6YYQ8w38+844DdyNJcsqAr1JH8gru1wBf1yIgGOQR
-         EpbEgcE0N7p03hrsKgRj/nIr1ZPjXbtzAD626zPr+oSSs47P/RrrJInNZQ4GZkqwKq/u
-         AsKqZsCELGh4e5jkxy3QA98UffOiD8DaWjjMh0aKpwKpywSa5BAHzDSOMYjKe4O6VynY
-         rC2OvwEGQa5huLEoufGGU44UbQnq6fQ5ZfMmiu3GkBscWjtU+oECGBuWZWrogpD8B3an
-         qhGYoNoa8OE2KWBxZawfd0QX0q9APvs/MUSh9IN1v4qMOd/DX+U6JDR3+Yc54EDxJb2n
-         0+cQ==
+        bh=qhmDZCtu+Fm5vZMBowuSgHazmx5rDHZk1tmwfRDitKM=;
+        b=RZZaRpi8gWQG1wgvVw1SjeDt3fBJO6IUbms7KYFA8QlZ+s13bCT4KAmqdwUPZ8lHbi
+         Z01grjlVT7k1mQ9HEPW0ku2V5alXNwL+tDnSAGW59v0Tdq/nx/5Po8aBXKkUU8c/rkNB
+         5Snc4xw+oca1QtdnO82t5oHFoRJggPJssl7le2A1J31e4Yo8BhuoRMIa1BMeBGSSEM71
+         oM/WzyREzsyjY/94NwA/c/bGcdFjUxmlmymo4+9qPTTsHqoqqYpDpAyhFGzZTQ16iVlw
+         6c5IeXyme4+HP0B1wSN5iPMD9vK9Nc+hOQEiRVOPiJbGzC1nX0FDxKpR0OeVH1Oic9Pc
+         3ygA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=4UUxeiU31CzkmS+D9kh8cZkO8ytha7iuen+sgkO4OnY=;
-        b=X2lo+vQKYC9PiOpdj8STWulZrymwikQqBNW4FH51l72CAvcB3kCqyaSN4a+qXg5W1N
-         8Z8e0RPLGSon/jq9iAHcgrzc1GQKdrmTJC0mrkYC8MbNQ/1l1DV/OSPEdFB9Mrw0Iqg6
-         Qkf+NgWOMyvAl4j9WZS3WT6sgKsx1Wnd68NEqHOG+WGQhawANPl7+xoGieVEbSJjnfOj
-         fEg8OlS+ezeDjTitXtdMMJ9cgnOtTW2pdoq66+Vm5LMQwrwQAwZst9QHOqZ0vr9MSWhO
-         8gIcCg5IAHiKV0i/+z9notQaMUzVypuhvKFQsfdXTxIsGpe4mQS0M8PudSVOkokv6NMk
-         eayA==
-X-Gm-Message-State: AGi0PuZQ/7N/j3hvFW6HkGVuNJjqI1wVmR2WnsuO4APNFN/xLmkoNgzk
-        m9c37PB/vxq0xmlTiBGMXdG+pg==
-X-Google-Smtp-Source: APiQypIYIKjq+pDIm0Sirg3ppl9xyUeRT7jEFhK9hvdu8eD+MQ1/PK+QKeCnrKcTI00+zIH3+TdcKQ==
-X-Received: by 2002:a2e:3c08:: with SMTP id j8mr1900415lja.243.1587123636541;
-        Fri, 17 Apr 2020 04:40:36 -0700 (PDT)
+        bh=qhmDZCtu+Fm5vZMBowuSgHazmx5rDHZk1tmwfRDitKM=;
+        b=WfoKog5gMgoNTL0030Ea4q8rSaCj+KHQ5TVmhyG3kNGSjIrnse+mrhQR14D9qbZa/y
+         Eh6Ni+yoqNcbaW1eoZ+5l/9g85hTqcJW22UdtlKFlKiaedw0+u+CgjbCXpcD/dU9NNGS
+         uKxasBj7QLSTBVFPcnFpCOTlDIUNCHeIBHg0X03dcbr/SKAMEVeN+1RBlQt+ibXubra5
+         1VFRdoy1caj6eiCqAlqyxGK3UMl6mbsnWVnrR9/buOLjgImnoE0CaIh0QIsxezH8Dvzt
+         xMyZc8j2Z4erbkE9yEMXOjTN+5cmAI8hjf4VIuYh7dyUHqjnkJ13Z62ZZAOTy5Kf41ka
+         fBuw==
+X-Gm-Message-State: AGi0PuYEHLkIqEPxXM9K+XYHLPeTKPrYOlVxZsaqWbV+APNmTqWJbX1v
+        rNLO716Qa8file20B+uBW86xmQ==
+X-Google-Smtp-Source: APiQypJTFnI7d2Jl1UvXuhJNx+Zk9Xzq51U1c3/EqRmHjG0E42ZwxGFDGbja412Z8LwUAU4UPGhYpQ==
+X-Received: by 2002:a05:651c:1209:: with SMTP id i9mr1720176lja.250.1587123638595;
+        Fri, 17 Apr 2020 04:40:38 -0700 (PDT)
 Received: from localhost.bredbandsbolaget (c-f3d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.243])
-        by smtp.gmail.com with ESMTPSA id 78sm16256618ljf.76.2020.04.17.04.40.35
+        by smtp.gmail.com with ESMTPSA id 78sm16256618ljf.76.2020.04.17.04.40.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2020 04:40:35 -0700 (PDT)
+        Fri, 17 Apr 2020 04:40:38 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
@@ -57,9 +57,9 @@ Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Nick Reitemeyer <nick.reitemeyer@web.de>,
         Stephan Gerhold <stephan@gerhold.net>,
         =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH 2/3 v3] iio: magnetometer: ak8974: Break out measurement
-Date:   Fri, 17 Apr 2020 13:40:19 +0200
-Message-Id: <20200417114020.31291-2-linus.walleij@linaro.org>
+Subject: [PATCH 3/3 v3] iio: magnetometer: ak8974: Provide scaling
+Date:   Fri, 17 Apr 2020 13:40:20 +0200
+Message-Id: <20200417114020.31291-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200417114020.31291-1-linus.walleij@linaro.org>
 References: <20200417114020.31291-1-linus.walleij@linaro.org>
@@ -71,14 +71,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This breaks out the measurement code to its own function
-so we can handle this without swirling it up with the
-big switch() statement inside ak8974_read_raw().
+The manual for the HSCDTD008A gives us a scaling for the
+three axis as +/- 2.4mT (24 Gauss) per axis.
 
-Keep a local s16 helper variable for the signed value
-coming out of the measurement before assigning it to the
-integer *val. The local variable makes the code easier
-to read and the compiler will optimize it if possible.
+The manual for the AMI305 and AMI306 gives us a scaling
+for the three axis as +/- 12 Gauss per axis.
+
+Tests with the HSCDTD008A sensor, cat the raw values:
+$ cat in_magn_*_raw
+raw
+45
+189
+-19
+
+The scaling factor in in_magn_*_scale is 0.001464843,
+which gives:
+0.065 Gauss
+0.277 Gauss
+-0.027 Gauss
+
+The earths magnetic field is in the range of 0.25 to 0.65
+Gauss on the surface according to Wikipedia, so these
+seem like reasonable values.
+
+Again we are guessing that the AK8974 has a 12 bit ADC,
+based on the similarity with AMI305 and AMI306.
 
 Cc: Nick Reitemeyer <nick.reitemeyer@web.de>
 Cc: Stephan Gerhold <stephan@gerhold.net>
@@ -86,114 +103,79 @@ Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v2->v3:
-- Return directly from the raw read function, we
-  need no goto:s as we got rid of the lock.
-- Change the measurement function to return an int *
-  after measurement and just pass *val
-  to the function saving a local variable.
-- Insert a comment explaining the explicit cast to
-  (s16).
-- Rename function as ak8974_measure_channel() so the
-  name states exactly what is going on.
-- Break out as a separate patch.
+- Scale the 2.4mT/24Gauss to 15 bits for the HSCDTD008A.
+- Scale the 12 Gauss to 12 bits for the AMI305/AMI306
+- Use 12 bits for the other variants.
+- Return directly in the raw read function.
+ChangeLog v1->v2:
+- Split out the measurement refactoring.
 ---
- drivers/iio/magnetometer/ak8974.c | 68 +++++++++++++++++++------------
- 1 file changed, 42 insertions(+), 26 deletions(-)
+ drivers/iio/magnetometer/ak8974.c | 45 ++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index f22b40ef5661..b8dbea119a67 100644
+index b8dbea119a67..f8410ac34316 100644
 --- a/drivers/iio/magnetometer/ak8974.c
 +++ b/drivers/iio/magnetometer/ak8974.c
-@@ -554,47 +554,63 @@ static int ak8974_detect(struct ak8974 *ak8974)
- 	return 0;
- }
- 
-+static int ak8974_measure_channel(struct ak8974 *ak8974, unsigned long address,
-+				  int *val)
-+{
-+	__le16 hw_values[3];
-+	int ret;
-+	s16 outval;
-+
-+	pm_runtime_get_sync(&ak8974->i2c->dev);
-+	mutex_lock(&ak8974->lock);
-+
-+	/*
-+	 * We read all axes and discard all but one, for optimized
-+	 * reading, use the triggered buffer.
-+	 */
-+	ret = ak8974_trigmeas(ak8974);
-+	if (ret)
-+		goto out_unlock;
-+	ret = ak8974_getresult(ak8974, hw_values);
-+	if (ret)
-+		goto out_unlock;
-+	/*
-+	 * This explicit cast to (s16) is necessary as the measurement
-+	 * is done in 2's complement with positive and negative values.
-+	 * The follwing assignment to *val will then convert the signed
-+	 * s16 value to a signed int value.
-+	 */
-+	outval = (s16)le16_to_cpu(hw_values[address]);
-+	*val = outval;
-+out_unlock:
-+	mutex_unlock(&ak8974->lock);
-+	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
-+	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
-+
-+	return ret;
-+}
-+
- static int ak8974_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2,
- 			   long mask)
- {
- 	struct ak8974 *ak8974 = iio_priv(indio_dev);
--	__le16 hw_values[3];
--	int ret = -EINVAL;
--
--	pm_runtime_get_sync(&ak8974->i2c->dev);
--	mutex_lock(&ak8974->lock);
-+	int ret;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		if (chan->address > 2) {
- 			dev_err(&ak8974->i2c->dev, "faulty channel address\n");
--			ret = -EIO;
--			goto out_unlock;
-+			return -EIO;
- 		}
--		ret = ak8974_trigmeas(ak8974);
-+		ret = ak8974_measure_channel(ak8974, chan->address, val);
+@@ -608,6 +608,48 @@ static int ak8974_read_raw(struct iio_dev *indio_dev,
  		if (ret)
--			goto out_unlock;
--		ret = ak8974_getresult(ak8974, hw_values);
--		if (ret)
--			goto out_unlock;
--
--		/*
--		 * We read all axes and discard all but one, for optimized
--		 * reading, use the triggered buffer.
--		 */
--		*val = (s16)le16_to_cpu(hw_values[chan->address]);
--
--		ret = IIO_VAL_INT;
-+			return ret;
-+		return IIO_VAL_INT;
+ 			return ret;
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		switch (ak8974->variant) {
++		case AK8974_WHOAMI_VALUE_AMI306:
++		case AK8974_WHOAMI_VALUE_AMI305:
++			/*
++			 * The datasheet for AMI305 and AMI306, page 6
++			 * specifies the range of the sensor to be
++			 * +/- 12 Gauss.
++			 */
++			*val = 12 * 2;
++			/*
++			 * 12 bits are used
++			 * [ -2048 .. 2047 ] (manual page 20)
++			 * [ 0xf800 .. 0x07ff ]
++			 */
++			*val2 = 4096;
++			return IIO_VAL_FRACTIONAL;
++		case AK8974_WHOAMI_VALUE_HSCDTD008A:
++			/*
++			 * The datasheet for HSCDTF008A, page 3 specifies the
++			 * range of the sensor as +/- 2.4 mT per axis, which
++			 * corresponds to +/- 2400 uT = +/- 24 Gauss.
++			 */
++			*val = 24 * 2;
++			/*
++			 * 15 bits are used (set up in CTRL4)
++			 * [ -16384 .. 16383 ] (manual page 24)
++			 * [ 0xc000 .. 0x3fff ]
++			 */
++			*val2 = 32768;
++			return IIO_VAL_FRACTIONAL;
++		default:
++			/* GUESSING +/- 12 Gauss */
++			*val = 12 * 2;
++			/* GUESSING 12 bits ADC */
++			*val2 = 4096;
++			return IIO_VAL_FRACTIONAL;
++		}
++		break;
++	default:
++		/* Unknown request */
++		break;
  	}
  
-- out_unlock:
--	mutex_unlock(&ak8974->lock);
--	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
--	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
--
--	return ret;
-+	return -EINVAL;
- }
- 
- static void ak8974_fill_buffer(struct iio_dev *indio_dev)
+ 	return -EINVAL;
+@@ -672,7 +714,8 @@ static const struct iio_chan_spec_ext_info ak8974_ext_info[] = {
+ 		.type = IIO_MAGN,					\
+ 		.modified = 1,						\
+ 		.channel2 = IIO_MOD_##axis,				\
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
++			BIT(IIO_CHAN_INFO_SCALE),			\
+ 		.ext_info = ak8974_ext_info,				\
+ 		.address = index,					\
+ 		.scan_index = index,					\
 -- 
 2.21.1
 

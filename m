@@ -2,103 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 706191AE22A
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 18:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F240D1AE4A1
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 20:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726089AbgDQQXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 12:23:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbgDQQXA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 12:23:00 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A730CC061A0C;
-        Fri, 17 Apr 2020 09:22:59 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id v9so2610826ljk.12;
-        Fri, 17 Apr 2020 09:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=dSPf0aY0yppzj5gx9Joi4SbBbhqOVEPDH+QYs8U5ZbU=;
-        b=i5SP6oSPqjEcxQYe1/OaztHbbHTIepY9zMXcv4d7taT/zo/sqdmsBo+MvHpjVBt0Oc
-         A5kGipir+gRukYvCtpevQ9WWiWU5GkLHzpusNp7939Hv66RJx2V4mY73wztJjFDN22q3
-         zhYtfmQ1TOK5Fh+36EXqc9snT1JQgi4D0T3YRJt/gMEaDBpWXsuZ4JIGV7rPCmwhNuz+
-         2rjTKPJ7QtdygFcgpv452IjOkL2u7bdAjsmHmz09HDdBYjMFSEjFzhYFwXBkzNv+qcTn
-         WCyvdXyMTyHcmoLXDfHkCT8Fjhh92MX1ygD+FhBWQ58db0SDio85I2C4SIcxBds21/L/
-         wz3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=dSPf0aY0yppzj5gx9Joi4SbBbhqOVEPDH+QYs8U5ZbU=;
-        b=k7f2AayuBvDGP1Uv6V5opUXBxWmJ8hghlFrqnwZhY/6MM7QTzQwjBbLL+56aEk7rzK
-         rcfILwteSi35px6iG3+6aCQqruoSgWuBI6Atf3Avm5ef8M7+VSehINbv6W6JhyGxWKOW
-         HTbF47F+OxPJaPFTJlid1t0i7jejKQnQePi0G/JFF6KqEdCxDS1zTOfPlW/AiPYrORNC
-         ecM6QLDIMCQkTRw56oCxVb5o6MF6Y3AHhyGFhWcW2joM8o3Efeg11IE+IxcN458UrAFo
-         guqEtGowfn7nrsehEtTAo5JOAiiUA4ouV7HkLrvxCuK4D2Wvk/Jy53mIT81wkff8tzjq
-         8/uA==
-X-Gm-Message-State: AGi0Pubzc6kFv4npJJC1jpZrAdCTvmw5JUZ1gy4ou7j/kMttg9XSaubh
-        KByQnHmSFJfLBLl+wFEWw0I=
-X-Google-Smtp-Source: APiQypLSV/rMKlJbQzBn1kDvs9KkGdPzIR+jUYKlZffArq5ulwJYH/zFg1jj3ihpOGnmYYGqAW4WlA==
-X-Received: by 2002:a2e:968d:: with SMTP id q13mr2708587lji.62.1587140578175;
-        Fri, 17 Apr 2020 09:22:58 -0700 (PDT)
-Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.gmail.com with ESMTPSA id q6sm18014950lfp.28.2020.04.17.09.22.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2020 09:22:57 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
+        id S1730362AbgDQSUe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 14:20:34 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:39762 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730048AbgDQSUe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 17 Apr 2020 14:20:34 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 42E5E458F6;
+        Fri, 17 Apr 2020 18:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1587147629; x=
+        1588962030; bh=pPvsmUg7KGXtK8pyuzHNcDxGo9Ah6UhyKmouSR92JY8=; b=j
+        l0qKrOklCAPTQi6HVvzXiVoi5qwoa2WeIussc8l3RrIviOa77T/5rWThLpLwvYbH
+        0rcW67gXD0GbdZLTrg7Kh72jaJTnDBwv1V0kB6iFSgUoid3icd8oNQBbF2wjQNF5
+        EC2Sjx2ckcl7UylogQRzek8SkVgymUlIJA27cbQRvg=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id uTf5CM3YFVfO; Fri, 17 Apr 2020 21:20:29 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id C5BA4458F3;
+        Fri, 17 Apr 2020 21:20:28 +0300 (MSK)
+Received: from localhost.dev.yadro.com (10.199.3.202) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Fri, 17 Apr 2020 21:20:27 +0300
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: magnetometer: ak8974: Silence deferred-probe error
-Date:   Fri, 17 Apr 2020 19:22:04 +0300
-Message-Id: <20200417162204.14463-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.26.0
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v9 0/2] iio: proximity: driver for vcnl3020
+Date:   Fri, 17 Apr 2020 21:20:51 +0300
+Message-ID: <20200417182053.22213-1-i.mikhaylov@yadro.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.3.202]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It's not uncommon that voltage regulator becomes available later during
-kernel's boot process. This patch adds info message about unavailable
-regulators in a case of the deferred-probe error and also amends the
-error message with a error code.
+Add proximity sensor driver for Vishay vcnl3020. Only on-demand
+measurement is supported for now.
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
+Changes from v8:
+   1. add vcnl3020 prefix into get_and_apply_property function.
+   2. add bsd license into yaml.
+   3. vishay,led-current-milliamp -> vishay,led-current-microamp.
+   4. add default value into vishay,led-current-microamp and change
+      register values into microamps.
 
-Changelog:
+Changes from v7:
+   1. forgot to add Reviewed-by tag.
 
-v2: - Replaced dev_printk() with dev_info() for the deferred-probe error,
-      as was requested by Linus Walleij in a review comment to v1.
+Changes from v6:
+   1. minor changes
+     1.1 remove VCNL_DRV_NAME
+     1.2 add braces in get_and_apply_property
 
- drivers/iio/magnetometer/ak8974.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Changes from v5:
+   1. add get_and_apply_property function for optional parameters.
+   2. minor changes.
 
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index d32996702110..ae1dc478fc02 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -746,7 +746,12 @@ static int ak8974_probe(struct i2c_client *i2c,
- 				      ARRAY_SIZE(ak8974->regs),
- 				      ak8974->regs);
- 	if (ret < 0) {
--		dev_err(&i2c->dev, "cannot get regulators\n");
-+		if (ret == -EPROBE_DEFER)
-+			dev_info(&i2c->dev,
-+				 "regulators unavailable, deferring probe\n");
-+		else
-+			dev_err(&i2c->dev, "cannot get regulators: %d\n", ret);
-+
- 		return ret;
- 	}
- 
+Changes from v4:
+   1. add vdd-supply,vddio-supply,interrupts properties into yaml.
+   2. led-current -> vishay,led-current-milliamp in yaml.
+   3. add possible values enum list.
+   4. add bulk_read for result hi/lo registers.
+   5. add description of vcnl3020_data structure.
+   6. vcnl3020 id table is removed.
+   7. make "vishay,led-current-milliamp" optional in yaml and code.
+
+Changes from v3:
+   1. minor changes.
+   2. add i2c block to fix dts section in yaml.
+
+Changes from v2:
+   1. using regmap_read_poll_timeout instead of do-while in measurement
+      function.
+   2. change struct i2client* in vcnl3020_data to struct dev*
+   3. enable REGMAP_I2C in Kconfig
+
+Changes from v1:
+   1. using regmap interface instead of i2c_smbus_* calls.
+   2. switch from probe to probe_new.
+   3. s32/int32_t -> int
+
+Ivan Mikhaylov (2):
+  iio: proximity: provide device tree binding document
+  iio: proximity: Add driver support for vcnl3020 proximity sensor
+
+ .../bindings/iio/proximity/vcnl3020.yaml      |  64 +++++
+ drivers/iio/proximity/Kconfig                 |  11 +
+ drivers/iio/proximity/Makefile                |   1 +
+ drivers/iio/proximity/vcnl3020.c              | 235 ++++++++++++++++++
+ 4 files changed, 311 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
+ create mode 100644 drivers/iio/proximity/vcnl3020.c
+
 -- 
-2.26.0
+2.21.1
 

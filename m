@@ -2,348 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62ECF1AE6B6
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 22:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2111AE6F6
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 22:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731056AbgDQUUh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 16:20:37 -0400
-Received: from relay2-d.mail.gandi.net ([217.70.183.194]:61565 "EHLO
-        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731027AbgDQUUg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 16:20:36 -0400
-X-Originating-IP: 195.189.32.242
-Received: from pc.localdomain (unknown [195.189.32.242])
-        (Authenticated sender: contact@artur-rojek.eu)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 4020840007;
-        Fri, 17 Apr 2020 20:20:31 +0000 (UTC)
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     Heiko Stuebner <heiko@sntech.de>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Artur Rojek <contact@artur-rojek.eu>
-Subject: [RESEND PATCH v5 5/5] input: joystick: Add ADC attached joystick driver.
-Date:   Fri, 17 Apr 2020 22:28:59 +0200
-Message-Id: <20200417202859.35427-5-contact@artur-rojek.eu>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200417202859.35427-1-contact@artur-rojek.eu>
-References: <20200417202859.35427-1-contact@artur-rojek.eu>
+        id S1725932AbgDQUtk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 16:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725915AbgDQUtj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 16:49:39 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F59C061A0C;
+        Fri, 17 Apr 2020 13:49:39 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id 19so3809641ioz.10;
+        Fri, 17 Apr 2020 13:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=s/5KJFmOpE2KLSUP8j+/RNY6rBwg32SJvyDFTbrFnjg=;
+        b=k9j5U2CsXAvOhbXu8Yd2siYsccDOfo6sQLomLD9IyoyxiUXGyIwiGBx7caaD33JcgF
+         e3XxHOdN8Urqhrk76QoWVjO5ZG+0Cr88Fk51Js+q0redYD6n4yKFrmQEpwETPKq7qNLO
+         b/9K8asMT6etv3Mca/n9DaOiSFjgrLrOPTeDoB/zQwcTS6SRH4Phz3qEXX0GNpteME59
+         +ygAMAJ0xBW/DZ4u3shERp+COeLcwlBy7wFuOiVO/nBIIQpbT2S5Ps4DdgviazYrc+A5
+         eD12T9Q/UUKPaphc8D++g/GmHMWPqKY/JTSLXqmkq7QDquCKpsGhb3uSYpqAF9GykUZt
+         Z1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=s/5KJFmOpE2KLSUP8j+/RNY6rBwg32SJvyDFTbrFnjg=;
+        b=mewKUdx1SH2t/0Qw7E618GzBZ6psRT5+LaPDfrCyKz0fpTzlAy4vtE7k2kgi1zu0lX
+         UhC3g1hSLNySng+HUMzy0PdGG1juWHpDAY4GoQnVdhgYf5+8r+UZlmtIpVLRYVZs4/BG
+         P4tKyEBF6skye/0qbO/mSuwFqFZYMRnFMEf2/Dk9NQWqDOk0FZd7LRFy1tRfZABiu4zN
+         JpwGZpPEQGjmd6Yblkzh3/VsouAwUChQA9SuUZhFq8Dt4uGw75Fdk/mr0065CmHpvnZ+
+         uEzME84xzsKSxP1i5ifYmI825w5HybIRsHYKm4teRT09fbj2BKKBULmBx3z8PjUc28v9
+         Xy4Q==
+X-Gm-Message-State: AGi0PuYDAS0KlNlRKKzgOrJZSvQ6CpmXJEKE+cQ352lxOnD2nfpXNZQ/
+        tltzLnC8hIC5J4U3I0yT+Q9cV5wWHtV6LjQUviA=
+X-Google-Smtp-Source: APiQypKEdV/Gubhy4Ciu633itt2gmWEr8YJyaidff96eETyTanDKpubhbd2NYFPX5WrIfg9zL8wI/TjlMrBtvO0NmWI=
+X-Received: by 2002:a6b:f60f:: with SMTP id n15mr5069585ioh.22.1587156578608;
+ Fri, 17 Apr 2020 13:49:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200417162204.14463-1-digetx@gmail.com>
+In-Reply-To: <20200417162204.14463-1-digetx@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 17 Apr 2020 23:49:26 +0300
+Message-ID: <CAHp75VdAn3QYY3gejnsdKuSyaLme1tiksSnoeg9rtzcJNG6S0w@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: magnetometer: ak8974: Silence deferred-probe error
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a driver for joystick devices connected to ADC controllers
-supporting the Industrial I/O subsystem.
+On Fri, Apr 17, 2020 at 7:24 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> It's not uncommon that voltage regulator becomes available later during
+> kernel's boot process. This patch adds info message about unavailable
+> regulators in a case of the deferred-probe error and also amends the
+> error message with a error code.
 
-Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-Tested-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
 
- v2: - sanity check supported channel format on probe,
-     - rename adc_joystick_disable to a more sensible adc_joystick_cleanup, 
-     - enforce correct axis order by checking the `reg` property of
-       child nodes
+> +               if (ret == -EPROBE_DEFER)
 
- v3-v5: no change
+> +                       dev_info(&i2c->dev,
+> +                                "regulators unavailable, deferring probe\n");
 
- drivers/input/joystick/Kconfig        |  10 ++
- drivers/input/joystick/Makefile       |   1 +
- drivers/input/joystick/adc-joystick.c | 245 ++++++++++++++++++++++++++
- 3 files changed, 256 insertions(+)
- create mode 100644 drivers/input/joystick/adc-joystick.c
+I dunno why you think it is worth to spam log with this?
+This message will be printed as many times as driver got deferred
+probe cycle (maybe dozens in worst case).
 
-diff --git a/drivers/input/joystick/Kconfig b/drivers/input/joystick/Kconfig
-index 940b744639c7..efbc20ec5099 100644
---- a/drivers/input/joystick/Kconfig
-+++ b/drivers/input/joystick/Kconfig
-@@ -42,6 +42,16 @@ config JOYSTICK_A3D
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called a3d.
- 
-+config JOYSTICK_ADC
-+	tristate "Simple joystick connected over ADC"
-+	depends on IIO
-+	select IIO_BUFFER_CB
-+	help
-+	  Say Y here if you have a simple joystick connected over ADC.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called adc-joystick.
-+
- config JOYSTICK_ADI
- 	tristate "Logitech ADI digital joysticks and gamepads"
- 	select GAMEPORT
-diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
-index 8656023f6ef5..58232b3057d3 100644
---- a/drivers/input/joystick/Makefile
-+++ b/drivers/input/joystick/Makefile
-@@ -6,6 +6,7 @@
- # Each configuration option enables a list of files.
- 
- obj-$(CONFIG_JOYSTICK_A3D)		+= a3d.o
-+obj-$(CONFIG_JOYSTICK_ADC)		+= adc-joystick.o
- obj-$(CONFIG_JOYSTICK_ADI)		+= adi.o
- obj-$(CONFIG_JOYSTICK_AMIGA)		+= amijoy.o
- obj-$(CONFIG_JOYSTICK_AS5011)		+= as5011.o
-diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
-new file mode 100644
-index 000000000000..9cb9896da26e
---- /dev/null
-+++ b/drivers/input/joystick/adc-joystick.c
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Input driver for joysticks connected over ADC.
-+ * Copyright (c) 2019-2020 Artur Rojek <contact@artur-rojek.eu>
-+ */
-+#include <linux/ctype.h>
-+#include <linux/input.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+
-+struct adc_joystick_axis {
-+	u32 code;
-+	s32 range[2];
-+	s32 fuzz;
-+	s32 flat;
-+};
-+
-+struct adc_joystick {
-+	struct input_dev *input;
-+	struct iio_cb_buffer *buffer;
-+	struct adc_joystick_axis *axes;
-+	struct iio_channel *chans;
-+	int num_chans;
-+};
-+
-+static int adc_joystick_handle(const void *data, void *private)
-+{
-+	struct adc_joystick *joy = private;
-+	enum iio_endian endianness;
-+	int bytes, msb, val, i;
-+	bool sign;
-+
-+	bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
-+
-+	for (i = 0; i < joy->num_chans; ++i) {
-+		endianness = joy->chans[i].channel->scan_type.endianness;
-+		msb = joy->chans[i].channel->scan_type.realbits - 1;
-+		sign = (tolower(joy->chans[i].channel->scan_type.sign) == 's');
-+
-+		switch (bytes) {
-+		case 1:
-+			val = ((const u8 *)data)[i];
-+			break;
-+		case 2:
-+			val = ((const u16 *)data)[i];
-+			if (endianness == IIO_BE)
-+				val = be16_to_cpu(val);
-+			else if (endianness == IIO_LE)
-+				val = le16_to_cpu(val);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		val >>= joy->chans[i].channel->scan_type.shift;
-+		if (sign)
-+			val = sign_extend32(val, msb);
-+		else
-+			val &= GENMASK(msb, 0);
-+		input_report_abs(joy->input, joy->axes[i].code, val);
-+	}
-+
-+	input_sync(joy->input);
-+
-+	return 0;
-+}
-+
-+static int adc_joystick_open(struct input_dev *dev)
-+{
-+	struct adc_joystick *joy = input_get_drvdata(dev);
-+	int ret;
-+
-+	ret = iio_channel_start_all_cb(joy->buffer);
-+	if (ret)
-+		dev_err(dev->dev.parent, "Unable to start callback buffer");
-+
-+	return ret;
-+}
-+
-+static void adc_joystick_close(struct input_dev *dev)
-+{
-+	struct adc_joystick *joy = input_get_drvdata(dev);
-+
-+	iio_channel_stop_all_cb(joy->buffer);
-+}
-+
-+static void adc_joystick_cleanup(void *data)
-+{
-+	iio_channel_release_all_cb(data);
-+}
-+
-+static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
-+{
-+	struct adc_joystick_axis *axes;
-+	struct fwnode_handle *child;
-+	int num_axes, ret, i;
-+
-+	num_axes = device_get_child_node_count(dev);
-+	if (!num_axes) {
-+		dev_err(dev, "Unable to find child nodes");
-+		return -EINVAL;
-+	}
-+
-+	if (num_axes != joy->num_chans) {
-+		dev_err(dev, "Got %d child nodes for %d channels",
-+			num_axes, joy->num_chans);
-+		return -EINVAL;
-+	}
-+
-+	axes = devm_kmalloc_array(dev, num_axes, sizeof(*axes), GFP_KERNEL);
-+	if (!axes)
-+		return -ENOMEM;
-+
-+	device_for_each_child_node(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &i);
-+		if (ret || i >= num_axes) {
-+			dev_err(dev, "reg invalid or missing");
-+			goto err;
-+		}
-+
-+		if (fwnode_property_read_u32(child, "linux,code",
-+					     &axes[i].code)) {
-+			dev_err(dev, "linux,code invalid or missing");
-+			goto err;
-+		}
-+
-+		if (fwnode_property_read_u32_array(child, "abs-range",
-+						   axes[i].range, 2)) {
-+			dev_err(dev, "abs-range invalid or missing");
-+			goto err;
-+		}
-+
-+		fwnode_property_read_u32(child, "abs-fuzz",
-+					 &axes[i].fuzz);
-+		fwnode_property_read_u32(child, "abs-flat",
-+					 &axes[i].flat);
-+
-+		input_set_abs_params(joy->input, axes[i].code,
-+				     axes[i].range[0], axes[i].range[1],
-+				     axes[i].fuzz,
-+				     axes[i].flat);
-+		input_set_capability(joy->input, EV_ABS, axes[i].code);
-+	}
-+
-+	joy->axes = axes;
-+
-+	return 0;
-+
-+err:
-+	fwnode_handle_put(child);
-+	return -EINVAL;
-+}
-+
-+static int adc_joystick_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct adc_joystick *joy;
-+	struct input_dev *input;
-+	int bits, ret, i;
-+
-+	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
-+	if (!joy)
-+		return -ENOMEM;
-+
-+	joy->chans = devm_iio_channel_get_all(dev);
-+	if (IS_ERR(joy->chans)) {
-+		ret = PTR_ERR(joy->chans);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "Unable to get IIO channels");
-+		return ret;
-+	}
-+
-+	/* Count how many channels we got. NULL terminated. */
-+	while (joy->chans[joy->num_chans].indio_dev)
-+		joy->num_chans++;
-+
-+	bits = joy->chans[0].channel->scan_type.storagebits;
-+	if (!bits || (bits >> 3) > 2) {
-+		dev_err(dev, "Unsupported channel storage size");
-+		return -EINVAL;
-+	}
-+	for (i = 1; i < joy->num_chans; ++i)
-+		if (joy->chans[i].channel->scan_type.storagebits != bits) {
-+			dev_err(dev, "Channels must have equal storage size");
-+			return -EINVAL;
-+		}
-+
-+	input = devm_input_allocate_device(dev);
-+	if (!input) {
-+		dev_err(dev, "Unable to allocate input device");
-+		return -ENOMEM;
-+	}
-+
-+	joy->input = input;
-+	input->name = pdev->name;
-+	input->id.bustype = BUS_HOST;
-+	input->open = adc_joystick_open;
-+	input->close = adc_joystick_close;
-+
-+	ret = adc_joystick_set_axes(dev, joy);
-+	if (ret)
-+		return ret;
-+
-+	input_set_drvdata(input, joy);
-+	ret = input_register_device(input);
-+	if (ret) {
-+		dev_err(dev, "Unable to register input device: %d", ret);
-+		return ret;
-+	}
-+
-+	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
-+	if (IS_ERR(joy->buffer)) {
-+		dev_err(dev, "Unable to allocate callback buffer");
-+		return PTR_ERR(joy->buffer);
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
-+	if (ret)
-+		dev_err(dev, "Unable to add action");
-+
-+	return ret;
-+}
-+
-+static const struct of_device_id adc_joystick_of_match[] = {
-+	{ .compatible = "adc-joystick", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adc_joystick_of_match);
-+
-+static struct platform_driver adc_joystick_driver = {
-+	.driver = {
-+		.name = "adc-joystick",
-+		.of_match_table = of_match_ptr(adc_joystick_of_match),
-+	},
-+	.probe = adc_joystick_probe,
-+};
-+module_platform_driver(adc_joystick_driver);
-+
-+MODULE_DESCRIPTION("Input driver for joysticks connected over ADC");
-+MODULE_AUTHOR("Artur Rojek <contact@artur-rojek.eu>");
-+MODULE_LICENSE("GPL");
+> +               else
+> +                       dev_err(&i2c->dev, "cannot get regulators: %d\n", ret);
+> +
+>                 return ret;
+>         }
+>
+> --
+> 2.26.0
+>
+
+
 -- 
-2.26.1
-
+With Best Regards,
+Andy Shevchenko

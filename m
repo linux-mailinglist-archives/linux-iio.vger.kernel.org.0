@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 223EC1AE7CF
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 23:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673031AE7CA
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 23:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728290AbgDQVuh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 17:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
+        id S1728389AbgDQVuS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 17:50:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728202AbgDQVuh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 17:50:37 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26505C061A0C;
-        Fri, 17 Apr 2020 14:50:37 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id z6so1428044plk.10;
-        Fri, 17 Apr 2020 14:50:37 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1728202AbgDQVuR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 17:50:17 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9B8C061A0C;
+        Fri, 17 Apr 2020 14:50:17 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id f19so4013087iog.5;
+        Fri, 17 Apr 2020 14:50:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
@@ -32,17 +32,17 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
         bh=Yyfon3UjJVDXM3n7BEphB31enIUKUa7u+sxxgo0yrmI=;
-        b=pwTNs4qDe8WibAPeb6HbRk1vu+p3Xqj5bLrNXE/mfMk3ABc9+MynAoc2tD0JwBYkrg
-         evv1/gQV5i4jflhZwseyKWpr8nT6Pk8qmZJJt6c3B03YdhGPk83CWzRVkQVatqAtII0s
-         Fc8VKaHpVXNF+1zJeu8QztLhzDPSr3YGHHfuq2vmzSJlvOd1kUxbfFupkYIhOqvd+Pcd
-         /yfrPE8BgceRh7J9zlD0vy98KdzridwTxFDeY8RIaB4Bc6+TMnvk9TJnbEQQrr3NCatg
-         ZwIAw9QsidSR4gp91ElVqPPabnrysMD0ssApMzw7thVz9/w6i9v5+EDwq7V0dvTekLWJ
-         cMng==
-X-Gm-Message-State: AGi0PubNt6ViZI8ro2ZB9jn2ZsjJIxbUly4EF/mohhih/2POjLumrZj2
-        1/X5W7WJ52Dmir1qmP4HSzqenZ9puCkwH3ae2dU=
-X-Google-Smtp-Source: APiQypJkWQMGu9vzO25yxEIMTiFKD/QbefkVkLHcC5m213DXMOEFIc8Qj7+9MmcLHIdm1bGzG+j8Q0PI84zMeHEHUDA=
-X-Received: by 2002:a17:902:854a:: with SMTP id d10mr5458422plo.262.1587160236702;
- Fri, 17 Apr 2020 14:50:36 -0700 (PDT)
+        b=d0Da6GbANZIMM7wP/HU1vBlBphZyiuXjFYrFvVz1sZamxThlDXdOraqVwQnk9kfCCQ
+         XAAgXeaQQQOtflSzp5wYFHQWGM2A6J70uZopC3kTlpowYB/JcOVdzSvHqYFrqJcZtVmW
+         J1axha5/00pjUlWoTVAVclAS5cqmoqfhc0+bADR+Vvv8rjesoH52BR2G2ni9oOQt0doO
+         0OyCTk/TiWXYNb6GmG+qjhre8pG7RjuYfr6F+/jzisrAFvvuafND5Q31FWi1fpCwrHSx
+         6bW8bWlw3vGXT4bVAT7l7Vf9pF8jgCva6PAw5jatVzI0k5YntQAZYClKNFw5Kx+9ACuE
+         jNFQ==
+X-Gm-Message-State: AGi0PuafXloEeBD4YiOl41WcXst6+3QCZA80f9CNVzM8l7I0thou+i9N
+        9LPR7Q9hbQyDQPnxy9PZLJPKLOGAgmjtDlxgFFI=
+X-Google-Smtp-Source: APiQypLUrYGdfMIZGVFHbJuFwPr6yCRSi6YyHuDuqpJxPmyo6Dj9Pth5VceoheilyTTmiFdw0iypN0Chjm3Lit4vw8U=
+X-Received: by 2002:a02:9642:: with SMTP id c60mr5301945jai.87.1587160216862;
+ Fri, 17 Apr 2020 14:50:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200417202859.35427-1-contact@artur-rojek.eu>
  <20200417202859.35427-5-contact@artur-rojek.eu> <CAHp75VfRbnnuUhfyXpu+5dp4TutHSrHus=sX_vG_5F0dX4k0fQ@mail.gmail.com>

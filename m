@@ -2,92 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7E21ADB0C
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 12:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D591ADB5F
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 12:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729174AbgDQK1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 06:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54202 "EHLO
+        id S1729277AbgDQKoq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 06:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728893AbgDQK1w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 06:27:52 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F525C061A0F;
-        Fri, 17 Apr 2020 03:27:52 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id np9so914294pjb.4;
-        Fri, 17 Apr 2020 03:27:52 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1729143AbgDQKoq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 06:44:46 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D431BC061A0C;
+        Fri, 17 Apr 2020 03:44:45 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id k18so834146pll.6;
+        Fri, 17 Apr 2020 03:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=/sWUOMORUKum104p8fgduP75zm2yCeLIzJBIrqZB+Ps=;
-        b=KahVJP5ItSiIPFpot2mBBqQ9e76gqyDsccm5Ukxw//dMpOmX5viM8xZUjKXz/6lfi9
-         5Hvc7ldn+DOuaclp1L7zs7rnA4NM3ZI8bq7Ichtjfe5UDxStI3clkhfX3ca4jD/nUOmL
-         1TLjQOGtEd7MWJXjXSwUX+H4YoDGcoTobjSLqQUtXrkuCLK/sIyppBH6GF27qyKvxCK+
-         gO+vhwHWBV+pe1zqObTSMAjc684ujLkFfjX7nhG3Ehc+OeVEzKLfZauZEnviGakP/kQy
-         EhOX94KWOGczkebdlYbEJgAVo+9U6bwRZvJ1QjdBxzFfIWbamMAOUVW3teppP/S1aOh1
-         HfWw==
+         :cc;
+        bh=d42f2h9ctMaCehQT0Tc2kOQMVp8paPlwrO5LTLzjmso=;
+        b=SVQ6DyRAWbehkdkiK/O0D40lSjnmEUva1SldvnuirK5asqzHVVStpftfknnhtopkoQ
+         JVR2ivIHCCcQPvzp/kbNI8Qi0j8gHg3Nsuwy2PK5ly3vp1XDM5Rrrp/rOo3RflYu9RJu
+         97UxjpxFCjRZSNgSUdy6OohTWetibZciF6Nx+Rnwswl5UumoY31//R/Nwk+OMdp4yf6w
+         5jnTxqBxXjkS7dsjSHxZq7uyM78L28GF0J8zkbcWPKF/x9dqvbWBWLLW4yCdg58+CsJ6
+         v6FVAj7gpnVWaNxy5G5uKYj+bESZXF8cQaQp+Ps4WM7+bszcJlzjJuE9IBVEHrhPLqU2
+         G07g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=/sWUOMORUKum104p8fgduP75zm2yCeLIzJBIrqZB+Ps=;
-        b=K4to3HOWczvt9WFBg5+5hC7oGSOLSqQfbmqUJNkT2/zQ9ZCTvgIp9nKAd7D0Y9lSjt
-         5wdlUpehC1LzRZm8Zt7j3sRxQorrlXJ1/s1RLpUpid5sBEojw5MZPtQDTyaWyoTeECUE
-         dwtRXHo2STYzvmcpJ1FoPv3U3eLGjjmQ2ce5jhFPdVgP8FgRjCm8bAYZopJJn2Fm4UJS
-         wp+5kNympvbm0gjFg2vsljDgJEmhHDRym3gANbeICymFByKCfF/4k6vmQuG3dN9uPsIf
-         5NFDLd3bKd7DHc6ncOzck6XRpuVmCpAA1puTS2YfhsrfKPprfQorXDIgXFYFTclTgSPs
-         wYsA==
-X-Gm-Message-State: AGi0PuaPpDT2efc5mAeL0Np6XBjveCyBL/IC41H6MHWADzrQIWnuQwsj
-        znS30jmCr6j+bYiVx47ogA/vAFlOb7sxf+9HXAwFhzkWcNlIwA==
-X-Google-Smtp-Source: APiQypJJLjV2o0/L1MJrfkO016rcaDEjMxTgdiZvyKNt5MBCK0q9Wsq4v0LzlfRjwCzi73fcGjHqkEZULNtssGBUydY=
-X-Received: by 2002:a17:902:aa09:: with SMTP id be9mr2880287plb.18.1587119271627;
- Fri, 17 Apr 2020 03:27:51 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=d42f2h9ctMaCehQT0Tc2kOQMVp8paPlwrO5LTLzjmso=;
+        b=hGyuVPS5YLYPzG74GsGpGcPDueT/53U3UgT65EFpxOBRuCvTqiHSOlO6Wh/uWbqZJa
+         NZQ+hJxXV/doD1NKcL5zR4yVQWU8ZLof8znup7H3prv+jN/nHbgrvFF9i5EYa9x9B+yS
+         Fe1DYZQMd+1y/HiUbz4OyIGmcUFcyNhtF9ulbLlI6gMaHMl/2dMqQNPRjF3nIRowfKm1
+         l6VG3UEKYZNtSS/iNeV6h469UM2DX2S7ZSB6lo4jM4jJjx3qh+qnYfYsNY2ZPj32ERuY
+         SDoK1IOEy5HPW5uT1rrDWCBQufmllRhnZlZKMcYX0JV497ySvwKiJ1A6Z1VAx1DXJmfk
+         5rsA==
+X-Gm-Message-State: AGi0PuahxmIOVX5MTq7ruAlt3a1Nv6mzr/qCKP+pn2MHol+vC7zZBiuN
+        srd+/vMU9QEKnHZAL12MfWSgaifcTHIK5Gm/ZhQ=
+X-Google-Smtp-Source: APiQypJjy/nqbVYfePMYGlGonxzGHni7ixbPvw6nM8NVNtQvWlT+TZXaBKPQHXx4t6E3c5CrBIMxJnkLntjvHE9hVcc=
+X-Received: by 2002:a17:90a:364c:: with SMTP id s70mr3570968pjb.143.1587120285359;
+ Fri, 17 Apr 2020 03:44:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200416012016.21422-1-chris.ruehl@gtsys.com.hk>
- <20200416012016.21422-3-chris.ruehl@gtsys.com.hk> <20200416065655.cxy67hlj267dpjrw@pengutronix.de>
- <e4a6af21-a8ec-e9b5-2c5e-1e109888f0c7@gtsys.com.hk>
-In-Reply-To: <e4a6af21-a8ec-e9b5-2c5e-1e109888f0c7@gtsys.com.hk>
+References: <20200416205428.437503-1-alexandre.belloni@bootlin.com> <20200416205428.437503-2-alexandre.belloni@bootlin.com>
+In-Reply-To: <20200416205428.437503-2-alexandre.belloni@bootlin.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 17 Apr 2020 13:27:40 +0300
-Message-ID: <CAHp75VfN4Fj0J4n2xKmK8fDKACT0epo_xXQnMzKDW-Y1XH46Pw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] iio: DAC extension for ltc2634-12/10/8
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        devicetree <devicetree@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+Date:   Fri, 17 Apr 2020 13:44:33 +0300
+Message-ID: <CAHp75Vddt-UKkP+b8W2CDYjt5kzggwQ+gTjrieigeYhM=e4Tig@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: adc: ti-ads8344: properly byte swap value
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Steve Winslow <swinslow@gmail.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 10:15 AM Chris Ruehl <chris.ruehl@gtsys.com.hk> wro=
-te:
-> On 16/4/2020 2:56 pm, Uwe Kleine-K=C3=B6nig wrote:
-> > dropped stefan.popa@analog.com from recipents as the address bounces fo=
-r
-> > me.
-> the maintainer script added this email automatically , I will remove it
-> in the future mails.
+On Thu, Apr 16, 2020 at 11:55 PM Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+>
+> The first received byte is the MSB, followed by the LSB so the value needs
+> to be byte swapped.
+>
+> Also, the ADC actually has a delay of one clock on the SPI bus. Read three
+> bytes to get the last bit.
+>
 
-Somebody from Analog Devs should sent a patch as an urgent fix.
-I also suffered from very same bounces.
+Can you show example of what is read and what is expected to be a correct value?
+Because it seems I have been reported with similar issue on other TI
+ADC chip [1]. Perhaps we have to fix all of them?
+
+[1]: https://github.com/edison-fw/meta-intel-edison/issues/108
+
+> Fixes: 8dd2d7c0fed7 ("iio: adc: Add driver for the TI ADS8344 A/DC chips")
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  drivers/iio/adc/ti-ads8344.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
+> index 9a460807d46d..abe4b56c847c 100644
+> --- a/drivers/iio/adc/ti-ads8344.c
+> +++ b/drivers/iio/adc/ti-ads8344.c
+> @@ -29,7 +29,7 @@ struct ads8344 {
+>         struct mutex lock;
+>
+>         u8 tx_buf ____cacheline_aligned;
+> -       u16 rx_buf;
+> +       u8 rx_buf[3];
+>  };
+>
+>  #define ADS8344_VOLTAGE_CHANNEL(chan, si)                              \
+> @@ -89,11 +89,11 @@ static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
+>
+>         udelay(9);
+>
+> -       ret = spi_read(spi, &adc->rx_buf, 2);
+> +       ret = spi_read(spi, adc->rx_buf, sizeof(adc->rx_buf));
+>         if (ret)
+>                 return ret;
+>
+> -       return adc->rx_buf;
+> +       return adc->rx_buf[0] << 9 | adc->rx_buf[1] << 1 | adc->rx_buf[2] >> 7;
+>  }
+>
+>  static int ads8344_read_raw(struct iio_dev *iio,
+> --
+> 2.25.2
+>
 
 
---=20
+-- 
 With Best Regards,
 Andy Shevchenko

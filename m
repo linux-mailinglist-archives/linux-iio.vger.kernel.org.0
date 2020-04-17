@@ -2,118 +2,266 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23DBA1ADA2F
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 11:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7338E1ADAE6
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 12:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730396AbgDQJjE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 05:39:04 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34602 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730324AbgDQJjE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 17 Apr 2020 05:39:04 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 4FB76B02B;
-        Fri, 17 Apr 2020 09:39:00 +0000 (UTC)
-Date:   Fri, 17 Apr 2020 11:39:00 +0200
-Message-ID: <s5hd086bgej.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1729118AbgDQKWB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 06:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729065AbgDQKWA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 06:22:00 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4ADC061A0C;
+        Fri, 17 Apr 2020 03:22:00 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id n24so800838plp.13;
+        Fri, 17 Apr 2020 03:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=v9o7ZoIgzXJqKYoLABOnJkIlZshn18vcvbRXK1Q6RLo=;
+        b=JL072y7f6N9gKxWfexCxBPb+cAOHoBIFmRoncRhfQWGflGo8u+SrlKcD/00whMNBK3
+         HRRXDTBWkggY00aIrwHlrDUg4tak69rOsN/DtV3BskRH8nsNrmfs6pw5zywnVVstozuN
+         7cMs8DzRIFSgD8ECi4Z6zVLcPxTpVBipu/xIxz/XARsbK7oIQgP/2jd4t/wBTOC0NXhI
+         BHIkceqMH6YQOkNN7aPttyieDX/Tt3hE8tF5kurxIfnNQFy9lYWKPEDI3eMMG/4BtyY6
+         By/PqToU4yHid/bsBWz4hxdayFKg9ZYe0bicI2PzwoJInJcUohxa7i67eX4FRzJr1XTd
+         m0gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=v9o7ZoIgzXJqKYoLABOnJkIlZshn18vcvbRXK1Q6RLo=;
+        b=f7ZvSffOI7l6oyco0w0R2IlQDu6ea93wN3MldsBdcIFgS3U6BryJRQj8kgCngnpEsj
+         hAMnmwq9ylvOwAeN1Dvg/REYQeenPuqG0vCcdjoD/KWynEH+nPa20RPYfrz3tCfLLqw4
+         XaXNopZr33schCUCCppH2E9Bq1QJ7TxODJWgOeIUleoHfRTelaclLwWV8JJmlenZXOTe
+         feRN5+gVXB3l2V0PCWmzSrXamlfnzZ7cl9aBdPqiv10bJnjFJej1SNelB4hTrsqCfxEc
+         vZdAZ+wie87euGPyxCb/zbBvPHDamt+GW+2dlQ/wrrhqUjvRqpei3s7naR3hM+7kQBmo
+         g9UQ==
+X-Gm-Message-State: AGi0PuaXM6otvMOkrvyXvORoSs2tlsbwGEfgNOo6xfB7W3N8yKU3oSiV
+        sWzwmuaxIBCNRoOm9OYhrsaa8Qsq2lcL2/qUVIo=
+X-Google-Smtp-Source: APiQypIEGsAfRI8/UwJHsSIucgqgff/1ssU16K4g8ZZGqIBHsDCN0aHDCIFkpKuw3+ht8/snHWbikJvaNPY6iTORyQk=
+X-Received: by 2002:a17:90a:364c:: with SMTP id s70mr3464434pjb.143.1587118919577;
+ Fri, 17 Apr 2020 03:21:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <1586942266-21480-1-git-send-email-jprakash@codeaurora.org> <1586942266-21480-4-git-send-email-jprakash@codeaurora.org>
+In-Reply-To: <1586942266-21480-4-git-send-email-jprakash@codeaurora.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 17 Apr 2020 13:21:47 +0300
+Message-ID: <CAHp75VegoXJmi1rDg_-ePKqoo69Jdt7NBchCTE=bPAdJqrgYQQ@mail.gmail.com>
+Subject: Re: [PATCH V2 3/3] iio: adc: Add support for PMIC7 ADC
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        smohanad@codeaurora.org, kgunda@codeaurora.org,
+        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jiri Kosina <trivial@kernel.org>, <devicetree@vger.kernel.org>,
-        <dmaengine@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH trivial 5/6] ALSA: Fix misspellings of "Analog Devices"
-In-Reply-To: <20200416103058.15269-6-geert+renesas@glider.be>
-References: <20200416103058.15269-1-geert+renesas@glider.be>
-        <20200416103058.15269-6-geert+renesas@glider.be>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
- FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
- (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
-Content-Type: text/plain; charset=US-ASCII
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-arm-msm@vger.kernel.org,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm-msm-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 12:30:57 +0200,
-Geert Uytterhoeven wrote:
-> 
-> According to https://www.analog.com/, the company name is spelled
-> "Analog Devices".
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+On Thu, Apr 16, 2020 at 1:48 AM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+>
+> The ADC architecture on PMIC7 is changed as compared to PMIC5. The
+> major change from PMIC5 is that all SW communication to ADC goes through
+> PMK8350, which communicates with other PMICs through PBS when the ADC
+> on PMK8350 works in master mode. The SID register is used to identify the
+> PMICs with which the PBS needs to communicate. Add support for the same.
 
-Applied this patch to sound git tree for-next branch.
+Please, split pr_*() -> dev_*() to separate patch. Also think about
+other logical pieces you may split out.
 
+...
 
-thanks,
+> +static const struct adc5_data adc7_data_pmic;
 
-Takashi
+Global variable? Hmm...
 
+...
 
-> ---
->  sound/isa/ad1816a/ad1816a.c | 2 +-
->  sound/pci/ac97/ac97_patch.c | 2 +-
->  sound/pci/hda/Kconfig       | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/sound/isa/ad1816a/ad1816a.c b/sound/isa/ad1816a/ad1816a.c
-> index ce4c8ba2fa9873e7..ca18fe3ff8a59a9f 100644
-> --- a/sound/isa/ad1816a/ad1816a.c
-> +++ b/sound/isa/ad1816a/ad1816a.c
-> @@ -54,7 +54,7 @@ MODULE_PARM_DESC(clockfreq, "Clock frequency for ad1816a driver (default = 0).")
->  static const struct pnp_card_device_id snd_ad1816a_pnpids[] = {
->  	/* Analog Devices AD1815 */
->  	{ .id = "ADS7150", .devs = { { .id = "ADS7150" }, { .id = "ADS7151" } } },
-> -	/* Analog Device AD1816? */
-> +	/* Analog Devices AD1816? */
->  	{ .id = "ADS7180", .devs = { { .id = "ADS7180" }, { .id = "ADS7181" } } },
->  	/* Analog Devices AD1816A - added by Kenneth Platz <kxp@atl.hp.com> */
->  	{ .id = "ADS7181", .devs = { { .id = "ADS7180" }, { .id = "ADS7181" } } },
-> diff --git a/sound/pci/ac97/ac97_patch.c b/sound/pci/ac97/ac97_patch.c
-> index ebf926728c5f84af..45ef0f52ec55b803 100644
-> --- a/sound/pci/ac97/ac97_patch.c
-> +++ b/sound/pci/ac97/ac97_patch.c
-> @@ -1356,7 +1356,7 @@ static int patch_cx20551(struct snd_ac97 *ac97)
->  }
->  
->  /*
-> - * Analog Device AD18xx, AD19xx codecs
-> + * Analog Devices AD18xx, AD19xx codecs
->   */
->  #ifdef CONFIG_PM
->  static void ad18xx_resume(struct snd_ac97 *ac97)
-> diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
-> index e1d3082a4fe93153..7ba542e45a3d7f88 100644
-> --- a/sound/pci/hda/Kconfig
-> +++ b/sound/pci/hda/Kconfig
-> @@ -99,10 +99,10 @@ comment "Set to Y if you want auto-loading the codec driver"
->  	depends on SND_HDA=y && SND_HDA_CODEC_REALTEK=m
->  
->  config SND_HDA_CODEC_ANALOG
-> -	tristate "Build Analog Device HD-audio codec support"
-> +	tristate "Build Analog Devices HD-audio codec support"
->  	select SND_HDA_GENERIC
->  	help
-> -	  Say Y or M here to include Analog Device HD-audio codec support in
-> +	  Say Y or M here to include Analog Devices HD-audio codec support in
->  	  snd-hda-intel driver, such as AD1986A.
->  
->  comment "Set to Y if you want auto-loading the codec driver"
-> -- 
-> 2.17.1
-> 
+> +       int ret;
+> +       u8 conv_req = 0, buf[4];
+> +
+> +       ret = adc5_masked_write(adc, ADC_APP_SID, ADC_APP_SID_MASK, prop->sid);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
+
+> +       if (ret < 0)
+
+Does  > 0 have a meaning?
+
+> +               return ret;
+> +
+> +       /* Digital param selection */
+> +       adc5_update_dig_param(adc, prop, &buf[0]);
+> +
+> +       /* Update fast average sample value */
+
+> +       buf[1] &= 0xff & ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
+
+What the point of 0xff & part?
+
+> +       buf[1] |= prop->avg_samples;
+> +
+> +       /* Select ADC channel */
+> +       buf[2] = prop->channel;
+> +
+> +       /* Select HW settle delay for channel */
+> +       buf[3] &= 0xff & ~ADC5_USR_HW_SETTLE_DELAY_MASK;
+
+Ditto.
+
+> +       buf[3] |= prop->hw_settle_time;
+
+...
+
+> +static int adc7_do_conversion(struct adc5_chip *adc,
+> +                       struct adc5_channel_prop *prop,
+> +                       struct iio_chan_spec const *chan,
+> +                       u16 *data_volt, u16 *data_cur)
+> +{
+> +       int ret;
+
+> +       u8 status = 0;
+
+Redundant assignment.
+
+> +       mutex_lock(&adc->lock);
+> +
+> +       ret = adc7_configure(adc, prop);
+> +       if (ret) {
+> +               dev_err(adc->dev, "ADC configure failed with %d\n", ret);
+> +               goto unlock;
+> +       }
+> +
+> +       /* No support for polling mode at present*/
+
+Missed space
+
+> +       wait_for_completion_timeout(&adc->complete, ADC7_CONV_TIMEOUT);
+> +
+> +       ret = adc5_read(adc, ADC5_USR_STATUS1, &status, 1);
+
+> +       if (ret < 0)
+
+Remove all ' < 0' where it is not needed.
+
+> +               goto unlock;
+> +
+> +       if (status & ADC5_USR_STATUS1_CONV_FAULT) {
+> +               dev_err(adc->dev, "Unexpected conversion fault\n");
+> +               ret = -EIO;
+> +               goto unlock;
+> +       }
+> +
+> +       ret = adc5_read_voltage_data(adc, data_volt);
+> +
+> +unlock:
+> +       mutex_unlock(&adc->lock);
+
+...
+
+> +       for (i = 0; i < adc->nchannels; i++) {
+
+> +               v_channel = (adc->chan_props[i].sid << ADC_CHANNEL_OFFSET |
+> +                       adc->chan_props[i].channel);
+
+Too many parentheses or they are in a wrong position. I don't remember
+operator precedence by heart.
+
+> +               if (v_channel == iiospec->args[0])
+> +                       return i;
+> +       }
+
+...
+
+> +       /*
+> +        * Value read from "reg" is virtual channel number
+> +        * virtual channel number = (sid << 8 | channel number).
+
+Too many parentheses. And perhaps formulas better to have on a separate line.
+
+> +        */
+
+...
+
+> +static const struct vadc_map_pt adcmap7_100k[] = {
+> +       { 4250657, -40960 },
+> +       { 3962085, -39936 },
+
+> +       { 419448, -3072 },
+> +       { 396851, -2048 },
+> +       { 375597, -1024 },
+> +       { 355598, 0 },
+> +       { 336775, 1024 },
+> +       { 319052, 2048 },
+> +       { 302359, 3072 },
+
+> +       { 2560, 128000 },
+> +       { 2489, 129024 },
+> +       { 2420, 130048 }
+> +};
+
+I'm wondering why you have second column here? Can't you derive it
+from index? Seems to me pretty easy calculus.
+
+...
+
+> +       int ret, result = 0;
+
+Redundant assignment.
+
+> +       if (adc_code >= RATIO_MAX_ADC7)
+> +               return -EINVAL;
+> +
+> +       /* (ADC code * R_PULLUP (100Kohm)) / (full_scale_code - ADC code)*/
+> +       resistance *= R_PU_100K;
+> +       resistance = div64_s64(resistance, RATIO_MAX_ADC7 - adc_code);
+> +
+> +       ret = qcom_vadc_map_voltage_temp(adcmap7_100k,
+> +                                ARRAY_SIZE(adcmap7_100k),
+> +                                resistance, &result);
+> +       if (ret)
+> +               return ret;
+> +
+> +       *result_mdec = result;
+
+...
+
+> +       for (i = 0; i < ARRAY_SIZE(adcmap7_die_temp); i++)
+> +               if (adcmap7_die_temp[i].x > voltage)
+> +                       break;
+> +
+
+> +       if (i == 0) {
+> +               *result_mdec = DIE_TEMP_ADC7_SCALE_1;
+> +       } else if (i == ARRAY_SIZE(adcmap7_die_temp)) {
+> +               *result_mdec = DIE_TEMP_ADC7_MAX;
+
+I think you can done these checks before loop, and return immediately.
+
+> +       } else {
+> +               vtemp0 = adcmap7_die_temp[i - 1].x;
+> +               voltage = voltage - vtemp0;
+> +               temp = div64_s64(voltage * DIE_TEMP_ADC7_SCALE_FACTOR,
+> +                       adcmap7_die_temp[i - 1].y);
+> +               temp += DIE_TEMP_ADC7_SCALE_1 + (DIE_TEMP_ADC7_SCALE_2 * (i - 1));
+> +               *result_mdec = temp;
+> +       }
+
+-- 
+With Best Regards,
+Andy Shevchenko

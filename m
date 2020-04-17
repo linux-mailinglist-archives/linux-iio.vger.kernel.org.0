@@ -2,97 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0316A1AE0D3
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 17:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 706191AE22A
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 18:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728810AbgDQPOv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 11:14:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42338 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728272AbgDQPOu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 11:14:50 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E655FC061A0C;
-        Fri, 17 Apr 2020 08:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=YfcdpQWtKsaw+yPCSMjyubrORmj0oCIV+0oQZL7RWS0=; b=XASgXQK5pLpEHZkviFU71mEj+0
-        yWwsFWDyefLn55gU9UbpLBPsyW8Ga+ODuvzm67RJRnuJeBJWZ6BOJG+XY28jwGaWYaSSRdysqksNm
-        CQisXfnjZsko3uHUDiHf89Cq6+IFII07ctHPYxMGo6/g/4wsHNmPnqMAj0idTtunEMmeUegwel1pf
-        NWZ66er5+AXg1u1yPuWfuTW28JZUAthvPg31VhS95B4j/szxhSNeEn914yeLudR3FISpqCOvWPXfo
-        aB/D7f6MQv2ooen6IA56FniP1G0WLD2NAKAI91alpDt6PK7IbxQ3bllskHnmtpPiz1hcLxBSvot1h
-        IylDvzeQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jPShe-0006IA-Mv; Fri, 17 Apr 2020 15:14:50 +0000
-Subject: Re: [PATCH v10 3/6] iio: adc: mp2629: Add support for mp2629 ADC
- driver
-To:     saravanan sekar <sravanhome@gmail.com>, lee.jones@linaro.org,
-        andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20200417085003.6124-1-sravanhome@gmail.com>
- <20200417085003.6124-4-sravanhome@gmail.com>
- <a8da9a3d-93a5-b926-b8c0-84138b59ad4f@infradead.org>
- <2b4c7de2-aa85-65aa-be5e-3daed689c44d@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <f1e85fcd-e5e5-798c-6093-a195c5cbc08a@infradead.org>
-Date:   Fri, 17 Apr 2020 08:14:49 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726089AbgDQQXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 12:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726083AbgDQQXA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 12:23:00 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A730CC061A0C;
+        Fri, 17 Apr 2020 09:22:59 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id v9so2610826ljk.12;
+        Fri, 17 Apr 2020 09:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dSPf0aY0yppzj5gx9Joi4SbBbhqOVEPDH+QYs8U5ZbU=;
+        b=i5SP6oSPqjEcxQYe1/OaztHbbHTIepY9zMXcv4d7taT/zo/sqdmsBo+MvHpjVBt0Oc
+         A5kGipir+gRukYvCtpevQ9WWiWU5GkLHzpusNp7939Hv66RJx2V4mY73wztJjFDN22q3
+         zhYtfmQ1TOK5Fh+36EXqc9snT1JQgi4D0T3YRJt/gMEaDBpWXsuZ4JIGV7rPCmwhNuz+
+         2rjTKPJ7QtdygFcgpv452IjOkL2u7bdAjsmHmz09HDdBYjMFSEjFzhYFwXBkzNv+qcTn
+         WCyvdXyMTyHcmoLXDfHkCT8Fjhh92MX1ygD+FhBWQ58db0SDio85I2C4SIcxBds21/L/
+         wz3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dSPf0aY0yppzj5gx9Joi4SbBbhqOVEPDH+QYs8U5ZbU=;
+        b=k7f2AayuBvDGP1Uv6V5opUXBxWmJ8hghlFrqnwZhY/6MM7QTzQwjBbLL+56aEk7rzK
+         rcfILwteSi35px6iG3+6aCQqruoSgWuBI6Atf3Avm5ef8M7+VSehINbv6W6JhyGxWKOW
+         HTbF47F+OxPJaPFTJlid1t0i7jejKQnQePi0G/JFF6KqEdCxDS1zTOfPlW/AiPYrORNC
+         ecM6QLDIMCQkTRw56oCxVb5o6MF6Y3AHhyGFhWcW2joM8o3Efeg11IE+IxcN458UrAFo
+         guqEtGowfn7nrsehEtTAo5JOAiiUA4ouV7HkLrvxCuK4D2Wvk/Jy53mIT81wkff8tzjq
+         8/uA==
+X-Gm-Message-State: AGi0Pubzc6kFv4npJJC1jpZrAdCTvmw5JUZ1gy4ou7j/kMttg9XSaubh
+        KByQnHmSFJfLBLl+wFEWw0I=
+X-Google-Smtp-Source: APiQypLSV/rMKlJbQzBn1kDvs9KkGdPzIR+jUYKlZffArq5ulwJYH/zFg1jj3ihpOGnmYYGqAW4WlA==
+X-Received: by 2002:a2e:968d:: with SMTP id q13mr2708587lji.62.1587140578175;
+        Fri, 17 Apr 2020 09:22:58 -0700 (PDT)
+Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
+        by smtp.gmail.com with ESMTPSA id q6sm18014950lfp.28.2020.04.17.09.22.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2020 09:22:57 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: magnetometer: ak8974: Silence deferred-probe error
+Date:   Fri, 17 Apr 2020 19:22:04 +0300
+Message-Id: <20200417162204.14463-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-In-Reply-To: <2b4c7de2-aa85-65aa-be5e-3daed689c44d@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/17/20 7:51 AM, saravanan sekar wrote:
-> Hi Randy,
-> 
-> On 17/04/20 4:35 pm, Randy Dunlap wrote:
->> Hi--
->>
->> On 4/17/20 1:50 AM, Saravanan Sekar wrote:
->>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->>> index 82e33082958c..ef0c0cd31855 100644
->>> --- a/drivers/iio/adc/Kconfig
->>> +++ b/drivers/iio/adc/Kconfig
->>> @@ -680,6 +680,16 @@ config MESON_SARADC
->>>         To compile this driver as a module, choose M here: the
->>>         module will be called meson_saradc.
->>>   +config MP2629_ADC
->>> +    tristate "Monolithic MP2629 ADC driver"
->>> +    depends on MFD_MP2629
->>     depends on I2C
->> ?
-> 
-> Made "depends on I2C" in MFD_MP2629, hope not needed becomes redundant here
-> 
-> Thanks,
-> Saravanan
+It's not uncommon that voltage regulator becomes available later during
+kernel's boot process. This patch adds info message about unavailable
+regulators in a case of the deferred-probe error and also amends the
+error message with a error code.
 
-I see. Thanks for explaining.
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
 
->>> +    help
->>> +      Say yes to have support for battery charger IC MP2629 ADC device
->>> +      accessed over I2C.
->>> +
->>> +      This driver provides ADC conversion of system, input power supply
->>> +      and battery voltage & current information.
->>> +
->>>   config NAU7802
->>>       tristate "Nuvoton NAU7802 ADC driver"
->>>       depends on I2C
->> thanks.
+Changelog:
 
+v2: - Replaced dev_printk() with dev_info() for the deferred-probe error,
+      as was requested by Linus Walleij in a review comment to v1.
 
+ drivers/iio/magnetometer/ak8974.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+index d32996702110..ae1dc478fc02 100644
+--- a/drivers/iio/magnetometer/ak8974.c
++++ b/drivers/iio/magnetometer/ak8974.c
+@@ -746,7 +746,12 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 				      ARRAY_SIZE(ak8974->regs),
+ 				      ak8974->regs);
+ 	if (ret < 0) {
+-		dev_err(&i2c->dev, "cannot get regulators\n");
++		if (ret == -EPROBE_DEFER)
++			dev_info(&i2c->dev,
++				 "regulators unavailable, deferring probe\n");
++		else
++			dev_err(&i2c->dev, "cannot get regulators: %d\n", ret);
++
+ 		return ret;
+ 	}
+ 
 -- 
-~Randy
+2.26.0
 

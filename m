@@ -2,110 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F181AE033
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 16:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B335E1AE060
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Apr 2020 17:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728258AbgDQOv4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Apr 2020 10:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38772 "EHLO
+        id S1728514AbgDQPCa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Apr 2020 11:02:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727850AbgDQOv4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 10:51:56 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C204EC061A0C;
-        Fri, 17 Apr 2020 07:51:55 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id v8so5123620wma.0;
-        Fri, 17 Apr 2020 07:51:55 -0700 (PDT)
+        with ESMTP id S1728287AbgDQPCa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Apr 2020 11:02:30 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C72F4C061A0C
+        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 08:02:28 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id f13so3371260wrm.13
+        for <linux-iio@vger.kernel.org>; Fri, 17 Apr 2020 08:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=YW/m6LvUDm14fECG63jq0+bjFbSb+5TTFXaHDDYWM/I=;
-        b=oO/L3FvsHa0vf+P7DWAUzHQ73QNVuxOPnvkTd4rT9phupOkapPvk070rBoZgW+xy0D
-         bBraLamFCmnbcrAlrsiYyoRk5rmJWIOv+h2e2oMorq7g6AIw0S54ZrFGYkzkW/8ysGCR
-         467XRqy/nIN30SDMW5CFaebYQ3CZW3aFWT4U3yXgvtvF9ZAiMHwDHSfBNAKbHdwPfqKn
-         mYQxjNxlIlIg8bZGI9+qDFgv4TImLGRZ01pkiG82Jzd6zxQwXlAiiGvMNmmoyHe1kIQx
-         yY7bBcV1S6viIAdabkna4ltna5nQvqL/lIm9z6oh4V9h4TR1oxJV2GRNcwIWeT1yYWXo
-         Jl8A==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MZOx11K7BVkb9vfDngpczKG72DuQTl/mUltDtknINYM=;
+        b=Co8VCB7jRRt1O8+H04fdcxwEtJQvvJ85wW4SvxgTv/mHipUFj+ltqVgCL7M0LxDbBm
+         Pb7tEFjXMUdCDK1W7VoRTpT556UNIZvUATsFGTDHXX4ngalCQfdP4rjg3fEM8Y0uLOUu
+         QsIi+ueZ6e8w8tapH3hrUwyBDQ4rCmAD5wsU8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=YW/m6LvUDm14fECG63jq0+bjFbSb+5TTFXaHDDYWM/I=;
-        b=U6zANE1LVAItm4jndZPzbd9JlqfTiPmzJCDS2jNNjfRtEfe3EoSgUz5EFYtIoYRy7m
-         PPJMPjxvBZdVg2TEbkZdQgM9/phVbZG+OL7N7nAQhFfkaAUIVBr4eA/u9gLAMugQSdMw
-         jIxgOL+MRyH6XsmeT9h7OCEjb2NRP57PA9TSvWY79JezZY9qBbyMgtzrV4MpcAVC8HIE
-         RwO0DQqLbd51dEvrB/I0+r1eOUmUjUbSzVETvJ/a+a1pzsDLkSlGwqKDBC4++lmplzpb
-         hjP0kOaO9bZqzPN4Dua7E7AK0IlJNWJmNd3u3RkES2pyhrmxW3+A/hdr8RgrnirYhrcY
-         nEHQ==
-X-Gm-Message-State: AGi0PuYXEIk1XCNSwvqenP9yOPrCTItRb9TYpX3y+M9iSyDRnjqOVuMk
-        kfQQIlCCZ4gGZy9kcAYPzxoJ8yhx
-X-Google-Smtp-Source: APiQypKAbsG2v1WQaLKRNFkDILulw/SdGDc5V6hyWNsZ+JF7kgVocqLc55OPtZ0/P5FUUcIX5qPzzg==
-X-Received: by 2002:a7b:cb59:: with SMTP id v25mr3769643wmj.139.1587135114085;
-        Fri, 17 Apr 2020 07:51:54 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F7443.dip0.t-ipconnect.de. [91.63.116.67])
-        by smtp.gmail.com with ESMTPSA id i25sm8298407wml.43.2020.04.17.07.51.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Apr 2020 07:51:53 -0700 (PDT)
-Subject: Re: [PATCH v10 3/6] iio: adc: mp2629: Add support for mp2629 ADC
- driver
-To:     Randy Dunlap <rdunlap@infradead.org>, lee.jones@linaro.org,
-        andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20200417085003.6124-1-sravanhome@gmail.com>
- <20200417085003.6124-4-sravanhome@gmail.com>
- <a8da9a3d-93a5-b926-b8c0-84138b59ad4f@infradead.org>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <2b4c7de2-aa85-65aa-be5e-3daed689c44d@gmail.com>
-Date:   Fri, 17 Apr 2020 16:51:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=MZOx11K7BVkb9vfDngpczKG72DuQTl/mUltDtknINYM=;
+        b=bknCH87ClwZFMo1JgzSuA2HRyVA8tS95OO6sZc9oYr1NT6fZLZC3hFipLB8z2KNRUR
+         PXJO+yvxjxuQOG3JK92koYJQhY7jn6t0nrfBG3cGPeTWR4HhB0EQwl5TIMxw9HaMZdrB
+         cBQsIqmpsA7UjqxO+7Oo2GHonmOeSHeM55W3P7HMkq3qM/EI9FGmArXXFjjVkYtPhPTy
+         G6NjwL0ooKlV1PopOatzl/Gq4Q18/LV/P07IlXHFag8Vb3IBJu7TtJGwKnjXUjQMdbcB
+         UkYUXYoQlGqc1W9aKGppuEjz87iH8vOtrqwONIeDEsjm5LVmxIpRnk0V2/kpXbRJhqXi
+         mhGg==
+X-Gm-Message-State: AGi0PubGoWPpcet/7rG28paf1Ej8jfKwZIZOIZQ0nwfLCIRBE4HLqWYR
+        k50oaTyRReHWvNviVvs9s8+OmQ==
+X-Google-Smtp-Source: APiQypJc7M6g4SJSxadMb830ZLUuNjVyEPZxJsFHSeWGeY7zkoZSsxwQWcW79Vv6OwRGwssTlFoC0w==
+X-Received: by 2002:a5d:438c:: with SMTP id i12mr4404415wrq.14.1587135747372;
+        Fri, 17 Apr 2020 08:02:27 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id e5sm33270104wru.92.2020.04.17.08.02.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2020 08:02:26 -0700 (PDT)
+Date:   Fri, 17 Apr 2020 17:02:24 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jiri Kosina <trivial@kernel.org>, devicetree@vger.kernel.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH trivial 3/6] drm: Fix misspellings of "Analog Devices"
+Message-ID: <20200417150224.GO3456981@phenom.ffwll.local>
+Mail-Followup-To: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Jiri Kosina <trivial@kernel.org>,
+        devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+References: <20200416103058.15269-1-geert+renesas@glider.be>
+ <20200416103058.15269-4-geert+renesas@glider.be>
 MIME-Version: 1.0
-In-Reply-To: <a8da9a3d-93a5-b926-b8c0-84138b59ad4f@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200416103058.15269-4-geert+renesas@glider.be>
+X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Randy,
+On Thu, Apr 16, 2020 at 12:30:55PM +0200, Geert Uytterhoeven wrote:
+> According to https://www.analog.com/, the company name is spelled
+> "Analog Devices".
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-On 17/04/20 4:35 pm, Randy Dunlap wrote:
-> Hi--
->
-> On 4/17/20 1:50 AM, Saravanan Sekar wrote:
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 82e33082958c..ef0c0cd31855 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -680,6 +680,16 @@ config MESON_SARADC
->>   	  To compile this driver as a module, choose M here: the
->>   	  module will be called meson_saradc.
->>   
->> +config MP2629_ADC
->> +	tristate "Monolithic MP2629 ADC driver"
->> +	depends on MFD_MP2629
-> 	depends on I2C
-> ?
+Queued for 5.8 in drm-misc-next, thanks for your patch.
+-Daniel
 
-Made "depends on I2C" in MFD_MP2629, hope not needed becomes redundant here
+> ---
+>  drivers/gpu/drm/bridge/adv7511/Kconfig | 2 +-
+>  drivers/gpu/drm/drm_fb_cma_helper.c    | 2 +-
+>  drivers/gpu/drm/tegra/fb.c             | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/adv7511/Kconfig b/drivers/gpu/drm/bridge/adv7511/Kconfig
+> index 47d4eb9e845d085c..f46a5e26b5dd6406 100644
+> --- a/drivers/gpu/drm/bridge/adv7511/Kconfig
+> +++ b/drivers/gpu/drm/bridge/adv7511/Kconfig
+> @@ -6,7 +6,7 @@ config DRM_I2C_ADV7511
+>  	select REGMAP_I2C
+>  	select DRM_MIPI_DSI
+>  	help
+> -	  Support for the Analog Device ADV7511(W)/13/33/35 HDMI encoders.
+> +	  Support for the Analog Devices ADV7511(W)/13/33/35 HDMI encoders.
+>  
+>  config DRM_I2C_ADV7511_AUDIO
+>  	bool "ADV7511 HDMI Audio driver"
+> diff --git a/drivers/gpu/drm/drm_fb_cma_helper.c b/drivers/gpu/drm/drm_fb_cma_helper.c
+> index 9801c0333eca29e9..cb2349ad338d953b 100644
+> --- a/drivers/gpu/drm/drm_fb_cma_helper.c
+> +++ b/drivers/gpu/drm/drm_fb_cma_helper.c
+> @@ -2,7 +2,7 @@
+>  /*
+>   * drm kms/fb cma (contiguous memory allocator) helper functions
+>   *
+> - * Copyright (C) 2012 Analog Device Inc.
+> + * Copyright (C) 2012 Analog Devices Inc.
+>   *   Author: Lars-Peter Clausen <lars@metafoo.de>
+>   *
+>   * Based on udl_fbdev.c
+> diff --git a/drivers/gpu/drm/tegra/fb.c b/drivers/gpu/drm/tegra/fb.c
+> index b8a328f538626e7a..2b0666ac681b8721 100644
+> --- a/drivers/gpu/drm/tegra/fb.c
+> +++ b/drivers/gpu/drm/tegra/fb.c
+> @@ -4,7 +4,7 @@
+>   * Copyright (C) 2012 NVIDIA CORPORATION.  All rights reserved.
+>   *
+>   * Based on the KMS/FB CMA helpers
+> - *   Copyright (C) 2012 Analog Device Inc.
+> + *   Copyright (C) 2012 Analog Devices Inc.
+>   */
+>  
+>  #include <linux/console.h>
+> -- 
+> 2.17.1
+> 
 
-Thanks,
-Saravanan
-
->> +	help
->> +	  Say yes to have support for battery charger IC MP2629 ADC device
->> +	  accessed over I2C.
->> +
->> +	  This driver provides ADC conversion of system, input power supply
->> +	  and battery voltage & current information.
->> +
->>   config NAU7802
->>   	tristate "Nuvoton NAU7802 ADC driver"
->>   	depends on I2C
-> thanks.
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

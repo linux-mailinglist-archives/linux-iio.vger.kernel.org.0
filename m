@@ -2,40 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D810D1AF17B
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E831AF183
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbgDRPN0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 11:13:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43934 "EHLO mail.kernel.org"
+        id S1726083AbgDRPRR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 11:17:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgDRPN0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 11:13:26 -0400
+        id S1725903AbgDRPRR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 11:17:17 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D95C12076A;
-        Sat, 18 Apr 2020 15:13:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 489D22072B;
+        Sat, 18 Apr 2020 15:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587222806;
-        bh=KqCHTGwt1fa8Is/VnfHILiRPxUCKBCE00PJ3kjgWfxo=;
+        s=default; t=1587223036;
+        bh=qugxNfPkvqYi5+IUgteDQlgxWnSNpZvobR+yGLVDicc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ImQbeWIiNMFkrxK1BHv32y8eAViALymou+rPJ3kCDM0yLC0GgbMmxy4uJT6Q0PFHw
-         RqA1jsnDU4xUn+O5udmI+Q/+LeB7YjA/Y5cFi5kuZPksYqMlIe35vvbZLySrDPlBpE
-         EYYQSqHXinXD2lun8YC24sZnrBnMkSoofJPf9tcc=
-Date:   Sat, 18 Apr 2020 16:13:22 +0100
+        b=BkhkS6zEdLKRGqWQpRLzde6OxUxvIwlsvwGWQPRdCua2pBb8tHU3aRvh2C5SCmGxF
+         hJJb3A/+a666MlSl69WLezjGQ6lb9GPV3C8sSkDhE+D/DkCU8wBeqbBydQz5q1+cfp
+         Px4H65dHyixYKeb6TjYi7fnmo/ai+VhYvqh6vU6A=
+Date:   Sat, 18 Apr 2020 16:17:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads8344: optimize consumption
-Message-ID: <20200418161322.71b2b353@archlinux>
-In-Reply-To: <20200416205428.437503-3-alexandre.belloni@bootlin.com>
-References: <20200416205428.437503-1-alexandre.belloni@bootlin.com>
-        <20200416205428.437503-3-alexandre.belloni@bootlin.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jiri Kosina <trivial@kernel.org>, devicetree@vger.kernel.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH trivial 4/6] iio: Fix misspellings of "Analog Devices"
+Message-ID: <20200418161710.55ccf37c@archlinux>
+In-Reply-To: <20200416103058.15269-5-geert+renesas@glider.be>
+References: <20200416103058.15269-1-geert+renesas@glider.be>
+        <20200416103058.15269-5-geert+renesas@glider.be>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,67 +55,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 22:54:28 +0200
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+On Thu, 16 Apr 2020 12:30:56 +0200
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-> Set the clock mode only once, at probe time and then keep the ADC powered
-> down between conversions.
+> According to https://www.analog.com/, the company name is spelled
+> "Analog Devices".
 > 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Looks fine to me. I'd like to be lazy and not take this until the fix is
-in my upstream (even though I suspect the merge would be fine).
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Give me a poke if I seem to have forgotten this after that is true!
+Applied to the togreg branch of iio.git and pushed out as testing as there
+are other things in that tree that need a build test.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ti-ads8344.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/ad7791.c                       | 2 +-
+>  drivers/iio/trigger/iio-trig-hrtimer.c         | 2 +-
+>  drivers/staging/iio/Documentation/overview.txt | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
-> index abe4b56c847c..40e7a9eee189 100644
-> --- a/drivers/iio/adc/ti-ads8344.c
-> +++ b/drivers/iio/adc/ti-ads8344.c
-> @@ -72,7 +72,7 @@ static const struct iio_chan_spec ads8344_channels[] = {
->  };
+> diff --git a/drivers/iio/adc/ad7791.c b/drivers/iio/adc/ad7791.c
+> index abb2393926317087..70bfc41052db2740 100644
+> --- a/drivers/iio/adc/ad7791.c
+> +++ b/drivers/iio/adc/ad7791.c
+> @@ -444,5 +444,5 @@ static struct spi_driver ad7791_driver = {
+>  module_spi_driver(ad7791_driver);
 >  
->  static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
-> -				  bool differential)
-> +				  bool differential, u8 clock)
->  {
->  	struct spi_device *spi = adc->spi;
->  	int ret;
-> @@ -81,7 +81,7 @@ static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
->  	if (!differential)
->  		adc->tx_buf |= ADS8344_SINGLE_END;
->  	adc->tx_buf |= ADS8344_CHANNEL(channel);
-> -	adc->tx_buf |= ADS8344_CLOCK_INTERNAL;
-> +	adc->tx_buf |= clock;
+>  MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
+> -MODULE_DESCRIPTION("Analog Device AD7787/AD7788/AD7789/AD7790/AD7791 ADC driver");
+> +MODULE_DESCRIPTION("Analog Devices AD7787/AD7788/AD7789/AD7790/AD7791 ADC driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
+> index a5e670726717f0d8..f59bf8d585866ea2 100644
+> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
+> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
+> @@ -4,7 +4,7 @@
+>   *
+>   * Copyright (C) Intuitive Aerial AB
+>   * Written by Marten Svanfeldt, marten@intuitiveaerial.com
+> - * Copyright (C) 2012, Analog Device Inc.
+> + * Copyright (C) 2012, Analog Devices Inc.
+>   *	Author: Lars-Peter Clausen <lars@metafoo.de>
+>   * Copyright (C) 2015, Intel Corporation
+>   */
+> diff --git a/drivers/staging/iio/Documentation/overview.txt b/drivers/staging/iio/Documentation/overview.txt
+> index 43f92b06bc3e5574..ebdc64f451d7c798 100644
+> --- a/drivers/staging/iio/Documentation/overview.txt
+> +++ b/drivers/staging/iio/Documentation/overview.txt
+> @@ -34,7 +34,7 @@ turned on or off (if possible) via sysfs interfaces.
+>  fifo / ring buffers on the sensor chip.  These greatly reduce the load
+>  on the host CPU by buffering relatively large numbers of data samples
+>  based on an internal sampling clock. Examples include VTI SCA3000
+> -series and Analog Device ADXL345 accelerometers.  Each buffer supports
+> +series and Analog Devices ADXL345 accelerometers.  Each buffer supports
+>  polling to establish when data is available.
 >  
->  	ret = spi_write(spi, &adc->tx_buf, 1);
->  	if (ret)
-> @@ -106,7 +106,7 @@ static int ads8344_read_raw(struct iio_dev *iio,
->  	case IIO_CHAN_INFO_RAW:
->  		mutex_lock(&adc->lock);
->  		*value = ads8344_adc_conversion(adc, channel->scan_index,
-> -						channel->differential);
-> +						channel->differential, 0);
->  		mutex_unlock(&adc->lock);
->  		if (*value < 0)
->  			return *value;
-> @@ -161,6 +161,11 @@ static int ads8344_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> +	/* Do a dummy read and set external clock mode */
-> +	ret = ads8344_adc_conversion(adc, 0, 0, ADS8344_CLOCK_INTERNAL);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	spi_set_drvdata(spi, indio_dev);
->  
->  	ret = iio_device_register(indio_dev);
+>  * Trigger and software buffer support. In many data analysis
 

@@ -2,37 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A06DF1AF1A5
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B6C1AF1C3
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbgDRPai (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 11:30:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56656 "EHLO mail.kernel.org"
+        id S1725887AbgDRPqL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 11:46:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725879AbgDRPai (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 11:30:38 -0400
+        id S1725879AbgDRPqL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 11:46:11 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CA696206D6;
-        Sat, 18 Apr 2020 15:30:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F0569214AF;
+        Sat, 18 Apr 2020 15:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587223837;
-        bh=Ji+/ngu49EDoosMhuiqpUh49xYTr4T3ZLflDlqaizbM=;
+        s=default; t=1587224770;
+        bh=gAUQLU0v6aIaqVNJTJyUkmBKiT7bjoHQztA86lZZWUw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZaI0nmrghirZ6FTduutJsss6K/MJO8aYdEMAW7OSKFjpLp9Cmzbbh+R3gJ7qrdoaB
-         ltPK2LvdCrdhLXT4eAHv9D+bclpATI0CzFW6PoRAnBQkzgkqAVKr8NaLnUHgJ/QhTu
-         mZ6rJM1hCTUnPiDZbYBpRIQH/9A1OsCGFXXhH9Gw=
-Date:   Sat, 18 Apr 2020 16:30:33 +0100
+        b=icNAzWYO9Tb9HX63e1cMv730uULPHXtmDTpWrg7Xq+GVvDnTrnFV2mxwUllJeY8rn
+         Mb7cOjY5/B13H3mLoVcbxMWLw7WYp0dQJUxbqogSFbWFRbQMJL6WCXz5+69OtZqHVL
+         0KnGWdkIsElRZ2ju1aPpnRpqvH0a63bTOSG2krsg=
+Date:   Sat, 18 Apr 2020 16:46:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <alexandru.tachici@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/2] iio: dac: ad5770r: read channel nr from reg
-Message-ID: <20200418163033.21696ea0@archlinux>
-In-Reply-To: <20200416115848.56156-2-alexandru.tachici@analog.com>
-References: <20200416115848.56156-1-alexandru.tachici@analog.com>
-        <20200416115848.56156-2-alexandru.tachici@analog.com>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Steve Winslow <swinslow@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] iio: documentation ltc2632_chip_info add
+ num_channels
+Message-ID: <20200418164606.42ad772f@archlinux>
+In-Reply-To: <20200416012016.21422-2-chris.ruehl@gtsys.com.hk>
+References: <20200416012016.21422-1-chris.ruehl@gtsys.com.hk>
+        <20200416012016.21422-2-chris.ruehl@gtsys.com.hk>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,42 +50,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 14:58:47 +0300
-<alexandru.tachici@analog.com> wrote:
+On Thu, 16 Apr 2020 09:20:09 +0800
+Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
 
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
+> The documentation for ltc_2632_chip_info missed the desciption for the
+> num_channels. This trivial patch adds it.
 > 
-> Read channel number from the reg property of each child
-> node.
-> 
-> Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
-This one is awkwardly timed - I'll be doing a fixes pull request shortly
-then advance my fixes branch to include the patch this fixes.
+> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
 
-Please poke me if I look like I've forgotten it!
-Now we are out of sync with the bindings but as long as we get the fix
-in before the release that shouldn't really matter to anyone.
+Please make sure to pick up tags from earlier versions.  Uwe
+gave one to v3 + added a fixes tag to make it explicit which
+commit introduced the field but didn't document it.
 
-Thanks,
+I'm in two minds on whether to leave that in the commit when I
+take it as the AI bot may well pick the patch up and backport
+it which seems a bit pointless if harmless!
 
-Jonathan
+Still if you respin please add it and I can make up my mind then.
+In meantime the series needs DT review.
 
 > ---
->  drivers/iio/dac/ad5770r.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v4:
+> Fix commit text.
 > 
-> diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-> index a98ea76732e7..6302f11551d4 100644
-> --- a/drivers/iio/dac/ad5770r.c
-> +++ b/drivers/iio/dac/ad5770r.c
-> @@ -522,7 +522,7 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
->  		return -EINVAL;
->  
->  	device_for_each_child_node(&st->spi->dev, child) {
-> -		ret = fwnode_property_read_u32(child, "num", &num);
-> +		ret = fwnode_property_read_u32(child, "reg", &num);
->  		if (ret)
->  			return ret;
->  		if (num > AD5770R_MAX_CHANNELS)
+>  drivers/iio/dac/ltc2632.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
+> index 7adc91056aa1..2a84ea654645 100644
+> --- a/drivers/iio/dac/ltc2632.c
+> +++ b/drivers/iio/dac/ltc2632.c
+> @@ -24,6 +24,7 @@
+>  /**
+>   * struct ltc2632_chip_info - chip specific information
+>   * @channels:		channel spec for the DAC
+> + * @num_channels:	DAC channel count of the chip
+>   * @vref_mv:		internal reference voltage
+>   */
+>  struct ltc2632_chip_info {
 

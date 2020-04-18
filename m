@@ -2,50 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37E831AF183
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2068F1AF191
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726083AbgDRPRR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 11:17:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48892 "EHLO mail.kernel.org"
+        id S1726121AbgDRP0B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 11:26:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54176 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgDRPRR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 11:17:17 -0400
+        id S1725903AbgDRP0A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 11:26:00 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 489D22072B;
-        Sat, 18 Apr 2020 15:17:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BFE7F20732;
+        Sat, 18 Apr 2020 15:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587223036;
-        bh=qugxNfPkvqYi5+IUgteDQlgxWnSNpZvobR+yGLVDicc=;
+        s=default; t=1587223560;
+        bh=Bsx+dDMGy1HPzN7fo/yLW6PVUv+11YvSb7UygiTobq0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BkhkS6zEdLKRGqWQpRLzde6OxUxvIwlsvwGWQPRdCua2pBb8tHU3aRvh2C5SCmGxF
-         hJJb3A/+a666MlSl69WLezjGQ6lb9GPV3C8sSkDhE+D/DkCU8wBeqbBydQz5q1+cfp
-         Px4H65dHyixYKeb6TjYi7fnmo/ai+VhYvqh6vU6A=
-Date:   Sat, 18 Apr 2020 16:17:10 +0100
+        b=myrou/+i7qw+laAzGraeX6Aio+kmcBH2Gm0ZG6iYIrAKBi+ClWzbVqn+JF7N7WaRg
+         CC0huTRN8WNE/ooMvO11mgk7bU5VhApaY1pGN8LuqrgVBr6JwGAvkZBps/FIEgeLQR
+         vcv4385XinA/UHHw12Zw3hx5hX54I4lXAqUkxQG8=
+Date:   Sat, 18 Apr 2020 16:25:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jiri Kosina <trivial@kernel.org>, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH trivial 4/6] iio: Fix misspellings of "Analog Devices"
-Message-ID: <20200418161710.55ccf37c@archlinux>
-In-Reply-To: <20200416103058.15269-5-geert+renesas@glider.be>
-References: <20200416103058.15269-1-geert+renesas@glider.be>
-        <20200416103058.15269-5-geert+renesas@glider.be>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: core: fail early in iio_device_alloc() if we can't
+ get a device id
+Message-ID: <20200418162555.4b6f4b8d@archlinux>
+In-Reply-To: <20200416123331.68790-1-alexandru.ardelean@analog.com>
+References: <20200416123331.68790-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,62 +41,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 12:30:56 +0200
-Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+On Thu, 16 Apr 2020 15:33:31 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> According to https://www.analog.com/, the company name is spelled
-> "Analog Devices".
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> This change moves the 'ida_simple_get()' call to be the first one in
+> iio_device_alloc(). It cleans up the error path a bit as we don't need to
+> call any kfree(dev) anymore. We allocate an IIO device only if we have
+> managed to obtain a device ID.
 
-Applied to the togreg branch of iio.git and pushed out as testing as there
-are other things in that tree that need a build test.
-
-Thanks,
+We just threw away an ID if the kzalloc then fails (or am I missing something?)
+With that fixed I can't see this as being much of an improvement.
+Either way one allocation needs to be tidied up.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ad7791.c                       | 2 +-
->  drivers/iio/trigger/iio-trig-hrtimer.c         | 2 +-
->  drivers/staging/iio/Documentation/overview.txt | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ad7791.c b/drivers/iio/adc/ad7791.c
-> index abb2393926317087..70bfc41052db2740 100644
-> --- a/drivers/iio/adc/ad7791.c
-> +++ b/drivers/iio/adc/ad7791.c
-> @@ -444,5 +444,5 @@ static struct spi_driver ad7791_driver = {
->  module_spi_driver(ad7791_driver);
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  drivers/iio/industrialio-core.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index f4daf19f2a3b..7c1d8a3ab2f3 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1494,6 +1494,14 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+>  {
+>  	struct iio_dev *dev;
+>  	size_t alloc_size;
+> +	int id;
+> +
+> +	id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
+> +	if (id < 0) {
+> +		/* cannot use a dev_err as the name isn't available */
+> +		pr_err("failed to get device id\n");
+> +		return NULL;
+> +	}
 >  
->  MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
-> -MODULE_DESCRIPTION("Analog Device AD7787/AD7788/AD7789/AD7790/AD7791 ADC driver");
-> +MODULE_DESCRIPTION("Analog Devices AD7787/AD7788/AD7789/AD7790/AD7791 ADC driver");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
-> index a5e670726717f0d8..f59bf8d585866ea2 100644
-> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
-> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
-> @@ -4,7 +4,7 @@
->   *
->   * Copyright (C) Intuitive Aerial AB
->   * Written by Marten Svanfeldt, marten@intuitiveaerial.com
-> - * Copyright (C) 2012, Analog Device Inc.
-> + * Copyright (C) 2012, Analog Devices Inc.
->   *	Author: Lars-Peter Clausen <lars@metafoo.de>
->   * Copyright (C) 2015, Intel Corporation
->   */
-> diff --git a/drivers/staging/iio/Documentation/overview.txt b/drivers/staging/iio/Documentation/overview.txt
-> index 43f92b06bc3e5574..ebdc64f451d7c798 100644
-> --- a/drivers/staging/iio/Documentation/overview.txt
-> +++ b/drivers/staging/iio/Documentation/overview.txt
-> @@ -34,7 +34,7 @@ turned on or off (if possible) via sysfs interfaces.
->  fifo / ring buffers on the sensor chip.  These greatly reduce the load
->  on the host CPU by buffering relatively large numbers of data samples
->  based on an internal sampling clock. Examples include VTI SCA3000
-> -series and Analog Device ADXL345 accelerometers.  Each buffer supports
-> +series and Analog Devices ADXL345 accelerometers.  Each buffer supports
->  polling to establish when data is available.
+>  	alloc_size = sizeof(struct iio_dev);
+>  	if (sizeof_priv) {
+> @@ -1506,6 +1514,8 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+>  	dev = kzalloc(alloc_size, GFP_KERNEL);
 >  
->  * Trigger and software buffer support. In many data analysis
+>  	if (dev) {
+> +		dev->id = id;
+> +		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+>  		dev->dev.groups = dev->groups;
+>  		dev->dev.type = &iio_device_type;
+>  		dev->dev.bus = &iio_bus_type;
+> @@ -1514,15 +1524,6 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+>  		mutex_init(&dev->mlock);
+>  		mutex_init(&dev->info_exist_lock);
+>  		INIT_LIST_HEAD(&dev->channel_attr_list);
+> -
+> -		dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
+> -		if (dev->id < 0) {
+> -			/* cannot use a dev_err as the name isn't available */
+> -			pr_err("failed to get device id\n");
+> -			kfree(dev);
+> -			return NULL;
+> -		}
+> -		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+>  		INIT_LIST_HEAD(&dev->buffer_list);
+>  	}
+>  
 

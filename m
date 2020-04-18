@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C42C1AF172
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D810D1AF17B
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 17:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgDRPGN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 11:06:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41642 "EHLO mail.kernel.org"
+        id S1725939AbgDRPN0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 11:13:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgDRPGN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 11:06:13 -0400
+        id S1725903AbgDRPN0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 11:13:26 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2AA42076A;
-        Sat, 18 Apr 2020 15:06:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D95C12076A;
+        Sat, 18 Apr 2020 15:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587222373;
-        bh=WSSh4VYHIuXqS25vztwkH7Z0icJIFqorESdXxBszA/Y=;
+        s=default; t=1587222806;
+        bh=KqCHTGwt1fa8Is/VnfHILiRPxUCKBCE00PJ3kjgWfxo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mfvJmDye3Fg0GYmcb8DGBu8CgrjFGuIGzOVuiVZIbjxX04w1Yry3WSUHv8/wHMg4o
-         NdeWO5t7yRzeg3BBuOXJsc2BQfebtaDlxk4KTaIk3PGC7929vRXCtDm5UYSKXjvzMg
-         bBTQVMVF6JB9EIEXzIXBp2Bs8dlhmReFMfEzhYsM=
-Date:   Sat, 18 Apr 2020 16:06:08 +0100
+        b=ImQbeWIiNMFkrxK1BHv32y8eAViALymou+rPJ3kCDM0yLC0GgbMmxy4uJT6Q0PFHw
+         RqA1jsnDU4xUn+O5udmI+Q/+LeB7YjA/Y5cFi5kuZPksYqMlIe35vvbZLySrDPlBpE
+         EYYQSqHXinXD2lun8YC24sZnrBnMkSoofJPf9tcc=
+Date:   Sat, 18 Apr 2020 16:13:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
@@ -31,11 +31,11 @@ Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Gregory CLEMENT <gregory.clement@bootlin.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: adc: ti-ads8344: properly byte swap value
-Message-ID: <20200418160608.55046663@archlinux>
-In-Reply-To: <20200416205428.437503-2-alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads8344: optimize consumption
+Message-ID: <20200418161322.71b2b353@archlinux>
+In-Reply-To: <20200416205428.437503-3-alexandre.belloni@bootlin.com>
 References: <20200416205428.437503-1-alexandre.belloni@bootlin.com>
-        <20200416205428.437503-2-alexandre.belloni@bootlin.com>
+        <20200416205428.437503-3-alexandre.belloni@bootlin.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,58 +45,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Apr 2020 22:54:27 +0200
+On Thu, 16 Apr 2020 22:54:28 +0200
 Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
 
-> The first received byte is the MSB, followed by the LSB so the value needs
-> to be byte swapped.
+> Set the clock mode only once, at probe time and then keep the ADC powered
+> down between conversions.
 > 
-> Also, the ADC actually has a delay of one clock on the SPI bus. Read three
-> bytes to get the last bit.
-> 
-> Fixes: 8dd2d7c0fed7 ("iio: adc: Add driver for the TI ADS8344 A/DC chips")
 > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Looks fine to me. I'd like to be lazy and not take this until the fix is
+in my upstream (even though I suspect the merge would be fine).
 
-Applied to the fixes-togreg branch of iio.git.  Marked for stable.
-
-Random aside that I'll probably forget to clean up.
-
-Driver includes iio/buffer.h and doesn't use it...
+Give me a poke if I seem to have forgotten this after that is true!
 
 Thanks,
 
 Jonathan
 
-
 > ---
->  drivers/iio/adc/ti-ads8344.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/ti-ads8344.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
-> index 9a460807d46d..abe4b56c847c 100644
+> index abe4b56c847c..40e7a9eee189 100644
 > --- a/drivers/iio/adc/ti-ads8344.c
 > +++ b/drivers/iio/adc/ti-ads8344.c
-> @@ -29,7 +29,7 @@ struct ads8344 {
->  	struct mutex lock;
->  
->  	u8 tx_buf ____cacheline_aligned;
-> -	u16 rx_buf;
-> +	u8 rx_buf[3];
+> @@ -72,7 +72,7 @@ static const struct iio_chan_spec ads8344_channels[] = {
 >  };
 >  
->  #define ADS8344_VOLTAGE_CHANNEL(chan, si)				\
-> @@ -89,11 +89,11 @@ static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
+>  static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
+> -				  bool differential)
+> +				  bool differential, u8 clock)
+>  {
+>  	struct spi_device *spi = adc->spi;
+>  	int ret;
+> @@ -81,7 +81,7 @@ static int ads8344_adc_conversion(struct ads8344 *adc, int channel,
+>  	if (!differential)
+>  		adc->tx_buf |= ADS8344_SINGLE_END;
+>  	adc->tx_buf |= ADS8344_CHANNEL(channel);
+> -	adc->tx_buf |= ADS8344_CLOCK_INTERNAL;
+> +	adc->tx_buf |= clock;
 >  
->  	udelay(9);
->  
-> -	ret = spi_read(spi, &adc->rx_buf, 2);
-> +	ret = spi_read(spi, adc->rx_buf, sizeof(adc->rx_buf));
+>  	ret = spi_write(spi, &adc->tx_buf, 1);
+>  	if (ret)
+> @@ -106,7 +106,7 @@ static int ads8344_read_raw(struct iio_dev *iio,
+>  	case IIO_CHAN_INFO_RAW:
+>  		mutex_lock(&adc->lock);
+>  		*value = ads8344_adc_conversion(adc, channel->scan_index,
+> -						channel->differential);
+> +						channel->differential, 0);
+>  		mutex_unlock(&adc->lock);
+>  		if (*value < 0)
+>  			return *value;
+> @@ -161,6 +161,11 @@ static int ads8344_probe(struct spi_device *spi)
 >  	if (ret)
 >  		return ret;
 >  
-> -	return adc->rx_buf;
-> +	return adc->rx_buf[0] << 9 | adc->rx_buf[1] << 1 | adc->rx_buf[2] >> 7;
->  }
+> +	/* Do a dummy read and set external clock mode */
+> +	ret = ads8344_adc_conversion(adc, 0, 0, ADS8344_CLOCK_INTERNAL);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	spi_set_drvdata(spi, indio_dev);
 >  
->  static int ads8344_read_raw(struct iio_dev *iio,
+>  	ret = iio_device_register(indio_dev);
 

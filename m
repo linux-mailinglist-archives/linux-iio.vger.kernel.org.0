@@ -2,47 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6EA61AF32C
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A91B71AF330
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726086AbgDRSYt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 14:24:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50250 "EHLO mail.kernel.org"
+        id S1726086AbgDRSbz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 14:31:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51816 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725824AbgDRSYt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 14:24:49 -0400
+        id S1725824AbgDRSbz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 14:31:55 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD51221BE5;
-        Sat, 18 Apr 2020 18:24:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A28FF221E9;
+        Sat, 18 Apr 2020 18:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587234288;
-        bh=Eiw2FcEguTRJkOBXYe2RiFR5T2mMDxr5J0RGwGhG6fc=;
+        s=default; t=1587234714;
+        bh=IEWcrH/CIzYGczVXCaYhLD77YsuTXvp2rvlPfx0hHCQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oIG38DGXDITaJxY5mhXfozPYjDp5qVgzxBz2FaEUDhDUIDtJ8/LXkYtm0DCH2A5hi
-         oAqP0Lp7VtDQ92aeu9gmRxu7OyTQ6xhEWpeP1bBkthsCRnau6P7qayITlHJtAYNSF4
-         IVvwF00aGUuThd3pXs7B1gION9uSlHW8WhJ9oBAk=
-Date:   Sat, 18 Apr 2020 19:24:43 +0100
+        b=AzxnKtxft+ArNCKn5B8pgjU8OFiW/E6u0AEJYN3Hy4+cID6yqdOlfT7Y5+6yro+bs
+         XTZIndqZwZoPiPrUnqLJZKi9tMq5pojagkK3tRNDvdKxqzuI32a60UgC/Id8AfZZ4h
+         nsOmu+xRmh2ufE5vV1/bkV9/+lCPNKAi8X7cYWXg=
+Date:   Sat, 18 Apr 2020 19:31:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: counter: microchip-tcb-capture
- counter
-Message-ID: <20200418192443.47322236@archlinux>
-In-Reply-To: <20200417135820.GB94725@icarus>
-References: <20200415130455.2222019-1-kamel.bouhara@bootlin.com>
-        <20200415130455.2222019-3-kamel.bouhara@bootlin.com>
-        <20200417135820.GB94725@icarus>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <alexandru.tachici@analog.com>
+Subject: Re: [PATCH v4 1/2] iio: adc: ad7192: fix null pointer de-reference
+ crash during probe
+Message-ID: <20200418193150.05dc83bb@archlinux>
+In-Reply-To: <20200415055804.17971-1-alexandru.ardelean@analog.com>
+References: <20200415055804.17971-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,79 +42,190 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Apr 2020 09:58:20 -0400
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+On Wed, 15 Apr 2020 08:58:03 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> On Wed, Apr 15, 2020 at 03:04:54PM +0200, Kamel Bouhara wrote:
-> > Describe the devicetree binding for the Microchip TCB module.
-> > Each counter blocks exposes three independent counters.
-> > 
-> > However, when configured in quadrature decoder, both channel <0> and <1>
-> > are required for speed/position and rotation capture (yet only the
-> > position is captured).
-> > 
-> > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>  
+> When the 'spi_device_id' table was removed, it omitted to cleanup/fix the
+> assignment:
+>    'indio_dev->name = spi_get_device_id(spi)->name;'
 > 
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-Will let this sit a bit longer to let the DT maintainers have an opportunity
-to take a look.
+> After that patch 'spi_get_device_id(spi)' returns NULL, so this crashes
+> during probe with null de-ref.
+> 
+> This change fixes this by introducing an ad7192_chip_info struct, and
+> defines all part-names [that should be assigned to indio_dev->name] in a
+> 'ad7192_chip_info_tbl' table.
+> 
+> With this change, the old 'st->devid' is also moved to be a
+> 'chip_info->chip_id'. And the old 'ID_AD719X' macros have been renamed to
+> 'CHIPID_AD719X'. Tld identifiers have been re-purposed to be enum/index
+> values in the new 'ad7192_chip_info_tbl'.
+> 
+> This should fix the bug, and maintain the ABI for the 'indio_dev->name'
+> field.
+> 
+> Fixes: 66614ab2be38 ("staging: iio: adc: ad7192: removed spi_device_id")
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Thanks,
+Applied to the fixes-togreg branch of iio.git.
+
+thanks,
 
 Jonathan
 
+> ---
 > 
-> > ---
-> > Changes from v3:
-> >  - Updated the brand name: s/atmel/microchip/.
-> > 
-> > Changes from v2:
-> >  - Fixed errors reported by dt_binding_check
-> > 
-> >  .../counter/microchip-tcb-capture.yaml        | 33 +++++++++++++++++++
-> >  1 file changed, 33 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml b/Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml
-> > new file mode 100644
-> > index 000000000000..183e9ee4c049
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/counter/microchip-tcb-capture.yaml
-> > @@ -0,0 +1,33 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/counter/microchip-tcb-capture.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Microchip TCB Counter
-> > +
-> > +maintainers:
-> > +  - Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: "microchip,tcb-capture"
-> > +
-> > +  reg:
-> > +    description: TCB capture channel to register as counter device.
-> > +      Each channel is independent therefore only one channel is
-> > +      registered by default execpt for the QDEC mode where both TCB0's
-> > +      channels <0> and  <1> are required.
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    tcb0: timer@f800c000 {
-> > +        compatible = "microchip,tcb-capture";
-> > +        reg = <0>, <1>;
-> > +    };
-> > -- 
-> > 2.25.0
-> >   
+> Changelog v3 -> v4:
+>  * renamed ID_AD7193 -> CHIPIP_AD7193 in ad7192_channels_config();
+>    noticed by Jeremy Fertic <jeremyfertic@gmail.com>
+>  * did another sweep of the ID_AD719X -> CHIPID_AD719X rename to make
+>    sure nothing else slipped
+> 
+> Changelog v2 -> v3:
+>  * reworked patch to introduce a chip_info struct for the part-name
+>  * added 2nd patch to move of-table closer to the end of the file; this
+>    patch is more cosmetic; has no fixes tag, but is on top of the previous
+>  
+> Changelog v1 -> v2:
+>  * fix colon for Fixes tag
+>  * updated commit title a bit; to make it longer
+> 
+>  drivers/iio/adc/ad7192.c | 63 ++++++++++++++++++++++++++++++----------
+>  1 file changed, 47 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 8ec28aa8fa8a..1431f555daa6 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -125,10 +125,10 @@
+>  #define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
+>  
+>  /* ID Register Bit Designations (AD7192_REG_ID) */
+> -#define ID_AD7190		0x4
+> -#define ID_AD7192		0x0
+> -#define ID_AD7193		0x2
+> -#define ID_AD7195		0x6
+> +#define CHIPID_AD7190		0x4
+> +#define CHIPID_AD7192		0x0
+> +#define CHIPID_AD7193		0x2
+> +#define CHIPID_AD7195		0x6
+>  #define AD7192_ID_MASK		0x0F
+>  
+>  /* GPOCON Register Bit Designations (AD7192_REG_GPOCON) */
+> @@ -161,7 +161,20 @@ enum {
+>     AD7192_SYSCALIB_FULL_SCALE,
+>  };
+>  
+> +enum {
+> +	ID_AD7190,
+> +	ID_AD7192,
+> +	ID_AD7193,
+> +	ID_AD7195,
+> +};
+> +
+> +struct ad7192_chip_info {
+> +	unsigned int			chip_id;
+> +	const char			*name;
+> +};
+> +
+>  struct ad7192_state {
+> +	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+>  	struct regulator		*dvdd;
+>  	struct clk			*mclk;
+> @@ -172,7 +185,6 @@ struct ad7192_state {
+>  	u32				conf;
+>  	u32				scale_avail[8][2];
+>  	u8				gpocon;
+> -	u8				devid;
+>  	u8				clock_sel;
+>  	struct mutex			lock;	/* protect sensor state */
+>  	u8				syscalib_mode[8];
+> @@ -348,7 +360,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+>  
+>  	id &= AD7192_ID_MASK;
+>  
+> -	if (id != st->devid)
+> +	if (id != st->chip_info->chip_id)
+>  		dev_warn(&st->sd.spi->dev, "device ID query failed (0x%X)\n",
+>  			 id);
+>  
+> @@ -363,7 +375,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+>  		st->mode |= AD7192_MODE_REJ60;
+>  
+>  	refin2_en = of_property_read_bool(np, "adi,refin2-pins-enable");
+> -	if (refin2_en && st->devid != ID_AD7195)
+> +	if (refin2_en && st->chip_info->chip_id != CHIPID_AD7195)
+>  		st->conf |= AD7192_CONF_REFSEL;
+>  
+>  	st->conf &= ~AD7192_CONF_CHOP;
+> @@ -859,12 +871,31 @@ static const struct iio_chan_spec ad7193_channels[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(14),
+>  };
+>  
+> +static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
+> +	[ID_AD7190] = {
+> +		.chip_id = CHIPID_AD7190,
+> +		.name = "ad7190",
+> +	},
+> +	[ID_AD7192] = {
+> +		.chip_id = CHIPID_AD7192,
+> +		.name = "ad7192",
+> +	},
+> +	[ID_AD7193] = {
+> +		.chip_id = CHIPID_AD7193,
+> +		.name = "ad7193",
+> +	},
+> +	[ID_AD7195] = {
+> +		.chip_id = CHIPID_AD7195,
+> +		.name = "ad7195",
+> +	},
+> +};
+> +
+>  static int ad7192_channels_config(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7192_state *st = iio_priv(indio_dev);
+>  
+> -	switch (st->devid) {
+> -	case ID_AD7193:
+> +	switch (st->chip_info->chip_id) {
+> +	case CHIPID_AD7193:
+>  		indio_dev->channels = ad7193_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(ad7193_channels);
+>  		break;
+> @@ -878,10 +909,10 @@ static int ad7192_channels_config(struct iio_dev *indio_dev)
+>  }
+>  
+>  static const struct of_device_id ad7192_of_match[] = {
+> -	{ .compatible = "adi,ad7190", .data = (void *)ID_AD7190 },
+> -	{ .compatible = "adi,ad7192", .data = (void *)ID_AD7192 },
+> -	{ .compatible = "adi,ad7193", .data = (void *)ID_AD7193 },
+> -	{ .compatible = "adi,ad7195", .data = (void *)ID_AD7195 },
+> +	{ .compatible = "adi,ad7190", .data = &ad7192_chip_info_tbl[ID_AD7190] },
+> +	{ .compatible = "adi,ad7192", .data = &ad7192_chip_info_tbl[ID_AD7192] },
+> +	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
+> +	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, ad7192_of_match);
+> @@ -938,16 +969,16 @@ static int ad7192_probe(struct spi_device *spi)
+>  	}
+>  
+>  	spi_set_drvdata(spi, indio_dev);
+> -	st->devid = (unsigned long)of_device_get_match_data(&spi->dev);
+> +	st->chip_info = of_device_get_match_data(&spi->dev);
+>  	indio_dev->dev.parent = &spi->dev;
+> -	indio_dev->name = spi_get_device_id(spi)->name;
+> +	indio_dev->name = st->chip_info->name;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	ret = ad7192_channels_config(indio_dev);
+>  	if (ret < 0)
+>  		goto error_disable_dvdd;
+>  
+> -	if (st->devid == ID_AD7195)
+> +	if (st->chip_info->chip_id == CHIPID_AD7195)
+>  		indio_dev->info = &ad7195_info;
+>  	else
+>  		indio_dev->info = &ad7192_info;
 

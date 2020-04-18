@@ -2,94 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 538F21AF3CE
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCE731AF3FE
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:58:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728044AbgDRSxK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 14:53:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59990 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725824AbgDRSxJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 14:53:09 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3E66C21D93;
-        Sat, 18 Apr 2020 18:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587235989;
-        bh=6Z96Ro4J8eng7mjTKTrohKq7lCiEJvmaqF+1CM5f0AQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cKnWoTG0IkKW0ofQ9Nq4hVMgRQX9VSEZ+LazEa+NX1mTkCXFSVX+PKs/cSyVlm5lP
-         QqHc6kNEfW88oWdk97kszhhlMc/IpVEOFZfzNpdLm8+aluT1MPewHxWF1rbBTY8TfM
-         0xhGYP24Nf1NRiE6ndWi85k0dltXMsJDLyuSceBY=
-Date:   Sat, 18 Apr 2020 19:53:03 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     mani@kernel.org
-Cc:     robh+dt@kernel.org, narcisaanamaria12@gmail.com, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [RESEND PATCH v3 0/3] Add Reset and Wakeup support for CCS811
-Message-ID: <20200418195303.5ddf7939@archlinux>
-In-Reply-To: <20200414184930.5576-1-mani@kernel.org>
-References: <20200414184930.5576-1-mani@kernel.org>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727784AbgDRS6h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 14:58:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726086AbgDRS6h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Apr 2020 14:58:37 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8CA3C061A0C;
+        Sat, 18 Apr 2020 11:58:35 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id z26so5535929ljz.11;
+        Sat, 18 Apr 2020 11:58:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Dj6gxh78iTr/nqo+x5cdc1Pc/5Q+3/7zF1q1lmk/SYA=;
+        b=eHE56v2FPZyj2jphYl8E5RUXUJLL0WrGR/hZhiXOIKhKo4jp/HZAPu6q0iVpGwSU+H
+         cYbwCbiOx13wXtq867i4fCiLZfbfdlqTzCQCdKzcYyeJiUWNztZHDE+ZIDbcGCceGs9t
+         2kwwvLdFn7Hezol1gB/XucCgYk2sgjh80/8Z4NKbBGeX11ys5lxPr07yLHNt5pU0N6Qo
+         tukMhTvY0yv2iXKPmuCW+IHk0uihJVXylhFieyVNielcggh/M7HYQJN4vLfF06Tttvp7
+         p/BD+sljquTqef/mERfsEbpiSUYDlnRj4sZspaMK0MJtNZTjhgEQ1Bz10g7Etpg3Yz6g
+         1JFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Dj6gxh78iTr/nqo+x5cdc1Pc/5Q+3/7zF1q1lmk/SYA=;
+        b=jKOda6nZHddaKt3DPR2Q1qbMWIpJwbixISsRyjH/ly1Vs1QLgVl61BtLttMrUT1FOt
+         xrrle8C07bpE+JPLvBm8wvjuKfP+N8MtMC5FfQ8JZF9gON4EeiM4JFY/FZBhgwIQm6PM
+         EWwq4+nu4vcr0XuV9EusxEcVremSnWtzPD6G4NGt5s7FGutJOoZYll2yaMp/Nab6GDi2
+         4hjiQDkna/d7jeGFv/IdhKzWQnk1VQ3V8rmDVNWhUlgqQgz/R6rOyo0hWtGWEzLTHl+i
+         1mPuPfnz6Fx/fO+MDV+rwOJdNaXjbfGfDrYu7slAsBr9/taBfHXdZNfs6UUmCwMVRLOU
+         sr/Q==
+X-Gm-Message-State: AGi0PuYOGmCBYvxyfKs/Ek2Ybxo/PJCMqpaBJ262NKfThOz2ZjgDfK83
+        CmVVXb/7l35/o2SDpcnLU6QMeVcr
+X-Google-Smtp-Source: APiQypKJ5eOYQAgEg46LJSr0ViweR75vxySLSUaWfBVZQugcY5w2kqBMQA6ltWrtGVxfxti9xurM6g==
+X-Received: by 2002:a2e:8954:: with SMTP id b20mr5173635ljk.176.1587236314241;
+        Sat, 18 Apr 2020 11:58:34 -0700 (PDT)
+Received: from [192.168.2.145] (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
+        by smtp.googlemail.com with ESMTPSA id l7sm22390675lfg.79.2020.04.18.11.58.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Apr 2020 11:58:33 -0700 (PDT)
+Subject: Re: [PATCH v3] iio: magnetometer: ak8974: Silence deferred-probe
+ error
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200418171244.2320-1-digetx@gmail.com>
+ <20200418192145.57fa291b@archlinux>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <92c2e6d7-8085-b448-f789-9ceecb6a4f74@gmail.com>
+Date:   Sat, 18 Apr 2020 21:58:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200418192145.57fa291b@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Apr 2020 00:19:27 +0530
-mani@kernel.org wrote:
+18.04.2020 21:21, Jonathan Cameron пишет:
+> On Sat, 18 Apr 2020 20:12:44 +0300
+> Dmitry Osipenko <digetx@gmail.com> wrote:
+> 
+>> It's not uncommon that voltage regulator becomes available later during
+>> kernel's boot process. This patch adds info message about unavailable
+>> regulators in a case of the deferred-probe error and also amends the
+>> error message with a error code.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing for the
+> autobuilders to play with it.
 
-> From: Manivannan Sadhasivam <mani@kernel.org>
-> 
-> Hello,
-> 
-> This patchset adds external reset and wakeup support for CCS811 VOC
-> gas sensor. The nRESET and nWAKE pins available on the device are
-> utilised to provide these functionalities.
-> 
-> The patchset has been validated using CCS811 connected to STM32MP1 based
-> board over I2C.
-> 
-> While at it, the devicetree yaml binding and OF match table for this sensor
-> are also added.
-> 
-Looks good to me. I'd just like to give it a bit longer to allow dt
-maintainers to take a look if they wish.
-
-Thanks,
-
-Jonathan
-
-> Thanks,
-> Mani
-> 
-> Changes in v3:
-> 
-> * Added ccs811_set_wake(false) to all error paths before calling it actually
-> * Added Andy's reviewed-by tag
-> * Added comment for reset procedure and dropped error print for gpio request
-> 
-> Changes in v2:
-> 
-> * Fixed DT binding schema and switched to dual license (GPL/BSD)
-> * Returned actual error code from devm_gpiod_get_optional()
-> * Dropped of.h include and of_match_ptr()
-> 
-> Manivannan Sadhasivam (3):
->   dt-bindings: iio: chemical: Add binding for CCS811 VOC sensor
->   iio: chemical: Add support for external Reset and Wakeup in CCS811
->   iio: chemical: Add OF match table for CCS811 VOC sensor
-> 
->  .../bindings/iio/chemical/ams,ccs811.yaml     |  51 ++++++++
->  drivers/iio/chemical/ccs811.c                 | 112 ++++++++++++++++--
->  2 files changed, 152 insertions(+), 11 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/ams,ccs811.yaml
-> 
-
+Awesome, thank you :)

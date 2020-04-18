@@ -2,41 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F6C1AF324
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9C01AF327
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Apr 2020 20:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726036AbgDRSVv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Apr 2020 14:21:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49414 "EHLO mail.kernel.org"
+        id S1726307AbgDRSXd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Apr 2020 14:23:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49722 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725824AbgDRSVu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Apr 2020 14:21:50 -0400
+        id S1725824AbgDRSXd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Apr 2020 14:23:33 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D100321BE5;
-        Sat, 18 Apr 2020 18:21:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BBE5B21BE5;
+        Sat, 18 Apr 2020 18:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587234110;
-        bh=VVZpAOqgMwZPlB6GdhKOTgDQezmxNUaobjVLTtPV/9s=;
+        s=default; t=1587234212;
+        bh=D0YLD1CWlKpcWEMow+Kk2q0B0UJPZE3Wdv2YBGnWJic=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CiwglmY46HLtjnEfCn2Y5qBtEkiczixa5AdXyKrkqBqb5l3jfoNw+N2ErSS6AhW+f
-         CmiTXiYQNQusddMoWwVN+o/gK4uS8SnJ2Mrc8UcaWEXQq1Z/lBNDN0GAs6nXupgNM7
-         RKgV2dgpSFAp5DjgFnxgEsG5O1zw9n3Xa/9w8pEg=
-Date:   Sat, 18 Apr 2020 19:21:45 +0100
+        b=TM/WaVc93+TEUGTvUQx0MkFqN55VwlhtsfB622iwbLuaBBILnE8kj6UFczbdPbjJF
+         O4Nvkaq252hnpXVhWbA5IhWr3I2jb/+gdTq/JKgt+9ZjLMQopRkh/LFVUKT57sxySM
+         /kULNFwY5oaCSk/HSbTpWuca+8F1rkhnHrnpeKxY=
+Date:   Sat, 18 Apr 2020 19:23:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: magnetometer: ak8974: Silence deferred-probe
- error
-Message-ID: <20200418192145.57fa291b@archlinux>
-In-Reply-To: <20200418171244.2320-1-digetx@gmail.com>
-References: <20200418171244.2320-1-digetx@gmail.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] ARM: at91: add atmel tcb capabilities
+Message-ID: <20200418192327.151e3155@archlinux>
+In-Reply-To: <20200417135635.GA94725@icarus>
+References: <20200415130455.2222019-1-kamel.bouhara@bootlin.com>
+        <20200415130455.2222019-2-kamel.bouhara@bootlin.com>
+        <20200417135635.GA94725@icarus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,51 +51,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Apr 2020 20:12:44 +0300
-Dmitry Osipenko <digetx@gmail.com> wrote:
+On Fri, 17 Apr 2020 09:56:35 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> It's not uncommon that voltage regulator becomes available later during
-> kernel's boot process. This patch adds info message about unavailable
-> regulators in a case of the deferred-probe error and also amends the
-> error message with a error code.
+> On Wed, Apr 15, 2020 at 03:04:53PM +0200, Kamel Bouhara wrote:
+> > Some atmel socs have extra tcb capabilities that allow using a generic
+> > clock source or enabling a quadrature decoder.
+> > 
+> > Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>  
 > 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to play with it.
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> 
+I'll need an appropriate ack from at91 maintainers for this bit
 
 Thanks,
 
 Jonathan
 
-> ---
-> 
-> Changelog:
-> 
-> v3: - Replaced dev_info() with dev_dbg().
-> 
-> v2: - Replaced dev_printk() with dev_info() for the deferred-probe error,
->       as was requested by Linus Walleij in a review comment to v1.
-> 
->  drivers/iio/magnetometer/ak8974.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-> index d32996702110..372c80c25dd4 100644
-> --- a/drivers/iio/magnetometer/ak8974.c
-> +++ b/drivers/iio/magnetometer/ak8974.c
-> @@ -746,7 +746,12 @@ static int ak8974_probe(struct i2c_client *i2c,
->  				      ARRAY_SIZE(ak8974->regs),
->  				      ak8974->regs);
->  	if (ret < 0) {
-> -		dev_err(&i2c->dev, "cannot get regulators\n");
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&i2c->dev, "cannot get regulators: %d\n", ret);
-> +		else
-> +			dev_dbg(&i2c->dev,
-> +				"regulators unavailable, deferring probe\n");
-> +
->  		return ret;
->  	}
->  
+> > ---
+> > Changes from v3:
+> >  - Added missing kernel doc for new elements introduced in structure
+> >    atmel_tcb_config.
+> > 
+> > Changes from v2:
+> >  - Fixed first patch not applying on mainline
+> > 
+> >  include/soc/at91/atmel_tcb.h | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/include/soc/at91/atmel_tcb.h b/include/soc/at91/atmel_tcb.h
+> > index c3c7200ce151..1d7071dc0bca 100644
+> > --- a/include/soc/at91/atmel_tcb.h
+> > +++ b/include/soc/at91/atmel_tcb.h
+> > @@ -36,9 +36,14 @@ struct clk;
+> >  /**
+> >   * struct atmel_tcb_config - SoC data for a Timer/Counter Block
+> >   * @counter_width: size in bits of a timer counter register
+> > + * @has_gclk: boolean indicating if a timer counter has a generic clock
+> > + * @has_qdec: boolean indicating if a timer counter has a quadrature
+> > + * decoder.
+> >   */
+> >  struct atmel_tcb_config {
+> >  	size_t	counter_width;
+> > +	bool    has_gclk;
+> > +	bool    has_qdec;
+> >  };
+> >  
+> >  /**
+> > -- 
+> > 2.25.0
+> >   
 

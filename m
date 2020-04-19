@@ -2,106 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A87BF1AFBAB
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Apr 2020 17:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3881AFCA6
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Apr 2020 19:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725793AbgDSPPq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Apr 2020 11:15:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32806 "EHLO mail.kernel.org"
+        id S1725970AbgDSRWB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Apr 2020 13:22:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51238 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726099AbgDSPPq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 Apr 2020 11:15:46 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725932AbgDSRWB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 Apr 2020 13:22:01 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 54607214D8;
-        Sun, 19 Apr 2020 15:15:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 79A062051A;
+        Sun, 19 Apr 2020 17:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587309346;
-        bh=cQ9U94UnrbUT8HgyDQm3AZwdy/gyoQAPtkqTjvyUzsk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GjqvAql2t+nh9DMbZlCojUZKnSlyzm7yP1PBSOyjb5sNtWoOdvyU9xRs8SLbLGpiW
-         Lhuqi7vfgX900NS8O6Kl1KCMl+UvZJruLqM7x/bC85lUjKlc3M8/8ewVJfdunI/eok
-         IWECPTDzIpIK0Sy0y6gLkvRkLQp+xtE/lmqe+QbY=
-From:   jic23@kernel.org
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: Use an early return in iio_device_alloc to simplify code.
-Date:   Sun, 19 Apr 2020 16:13:37 +0100
-Message-Id: <20200419151337.43293-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.26.1
+        s=default; t=1587316920;
+        bh=VkftWsjoLA+KscNaIO4tcQT4ywPJpLBB1uF0sfXa3gc=;
+        h=Date:From:To:Subject:From;
+        b=bL/66IoSMQaV+2+s348ADRB6/T7aLS1nbzGcRRf0dRppcnBH5XRanAOTJxdmLM6v1
+         nMS2uKXQAL7lWYz7WbOjCxfJmmOO7f5CPZ6VelhpSSYzeLfUmnB9Sbgaj+pgCy1FTh
+         x1cDRC5GtTFFtVpznje8zT+GjJUzjbNDLgyoz0ag=
+Date:   Sun, 19 Apr 2020 18:21:57 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] First set of IIO fixes for 5.7
+Message-ID: <20200419182157.5ba79356@archlinux>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The following changes since commit e681bb287f40e7a9dbcb04cef80fd87a2511ab86:
 
-Noticed whilst reviewing Alexandru's patch to the same function.
-If we simply flip the logic and return NULL immediately after memory
-allocation failure we reduce the indent of the following block and
-end up with more 'idiomatic' kernel code.
+  staging: vt6656: Use DIV_ROUND_UP macro instead of specific code (2020-03-27 10:05:52 +0100)
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/industrialio-core.c | 38 ++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+are available in the Git repository at:
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f4daf19f2a3b..96f6dacb206d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1504,27 +1504,27 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
- 	alloc_size += IIO_ALIGN - 1;
- 
- 	dev = kzalloc(alloc_size, GFP_KERNEL);
-+	if (!dev)
-+		return NULL;
- 
--	if (dev) {
--		dev->dev.groups = dev->groups;
--		dev->dev.type = &iio_device_type;
--		dev->dev.bus = &iio_bus_type;
--		device_initialize(&dev->dev);
--		dev_set_drvdata(&dev->dev, (void *)dev);
--		mutex_init(&dev->mlock);
--		mutex_init(&dev->info_exist_lock);
--		INIT_LIST_HEAD(&dev->channel_attr_list);
--
--		dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
--		if (dev->id < 0) {
--			/* cannot use a dev_err as the name isn't available */
--			pr_err("failed to get device id\n");
--			kfree(dev);
--			return NULL;
--		}
--		dev_set_name(&dev->dev, "iio:device%d", dev->id);
--		INIT_LIST_HEAD(&dev->buffer_list);
-+	dev->dev.groups = dev->groups;
-+	dev->dev.type = &iio_device_type;
-+	dev->dev.bus = &iio_bus_type;
-+	device_initialize(&dev->dev);
-+	dev_set_drvdata(&dev->dev, (void *)dev);
-+	mutex_init(&dev->mlock);
-+	mutex_init(&dev->info_exist_lock);
-+	INIT_LIST_HEAD(&dev->channel_attr_list);
-+
-+	dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
-+	if (dev->id < 0) {
-+		/* cannot use a dev_err as the name isn't available */
-+		pr_err("failed to get device id\n");
-+		kfree(dev);
-+		return NULL;
- 	}
-+	dev_set_name(&dev->dev, "iio:device%d", dev->id);
-+	INIT_LIST_HEAD(&dev->buffer_list);
- 
- 	return dev;
- }
--- 
-2.26.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.7a
 
+for you to fetch changes up to 0f0459b8103835f75464db530a397da4d418b516:
+
+  MAINTAINERS: remove Stefan Popa's email (2020-04-19 17:50:03 +0100)
+
+----------------------------------------------------------------
+First set of IIO fixes for the 5.7 cycle.
+
+Includes one MAINTAINERS update to avoid people getting a lot of bounce
+messages and complaining about it.
+
+* MAINTAINERS
+  - Drop Stefan Popa's Analog Devices email address in favour of
+    Michael Hennerich.
+* core
+  - Fix handling of dB sysfs inputs.
+  - Drop a stray semi colon in macro definition.
+* ad5770r
+  - Fix an off by one in chec on maximum number of channels.
+* ad7192
+  - Fix a null pointer de-reference due to the name previously being
+    retrieved from the spi_get_device_id call which no longer works as
+    the relevant table was removed.
+* ad7797
+  - Use correct attribute group.
+* counter/104-quad-8
+  - Add locks to prevent some race conditions.
+* inv-mpu6050
+  - Fix issues around suspend / resume clashing with runtime PM.
+* stm32-adc
+  - Fix sleep in invalid context
+  - Fix id relative path error in device tree binding doc.
+* st_lsm6dsx
+  - Fix a read alignment issue on an untagged FIFO.
+  - Handle odr for slave to properly compute the FIFO data layout / pattern.
+  - Flush the HW FIFO before resettting the device to avoid a race on
+    interrupt line 1.
+* st_sensors
+  - Rely on ODR mask not ODR address to identify if the ODR can be set.
+    Some devices have an ODR address of 0.
+* ti-ads8344
+  - Byte ordering was wrong - fix it.
+* xilinx-xadc
+  - Fix inverted logic in powering down the second ADC.
+  - Fix clearing interrupt when enabling the trigger.
+  - Fix configuration of sequencer when in simultaneous sampling mode.
+  - Limit initial sampling rate as done for runtime configured ones.
+
+----------------------------------------------------------------
+Alexandre Belloni (1):
+      iio: adc: ti-ads8344: properly byte swap value
+
+Alexandru Ardelean (2):
+      iio: adc: ad7192: fix null pointer de-reference crash during probe
+      MAINTAINERS: remove Stefan Popa's email
+
+Colin Ian King (1):
+      iio: dac: ad5770r: fix off-by-one check on maximum number of channels
+
+Fabrice Gasnier (1):
+      dt-bindings: iio: adc: stm32-adc: fix id relative path
+
+Jean-Baptiste Maneyrol (1):
+      iio: imu: inv_mpu6050: fix suspend/resume with runtime power
+
+Lars Engebretsen (1):
+      iio: core: remove extra semi-colon from devm_iio_device_register() macro
+
+Lars-Peter Clausen (4):
+      iio: xilinx-xadc: Fix ADC-B powerdown
+      iio: xilinx-xadc: Fix clearing interrupt when enabling trigger
+      iio: xilinx-xadc: Fix sequencer configuration for aux channels in simultaneous mode
+      iio: xilinx-xadc: Make sure not exceed maximum samplerate
+
+Lary Gibaud (1):
+      iio: st_sensors: rely on odr mask to know if odr can be set
+
+Lorenzo Bianconi (3):
+      iio: imu: st_lsm6dsx: fix read misalignment on untagged FIFO
+      iio: imu: st_lsm6dsx: specify slave odr in slv_odr
+      iio: imu: st_lsm6dsx: flush hw FIFO before resetting the device
+
+Mircea Caprioru (1):
+      iio: core: Fix handling of 'dB'
+
+Olivier Moysan (1):
+      iio: adc: stm32-adc: fix sleep in atomic context
+
+Syed Nayyar Waris (1):
+      counter: 104-quad-8: Add lock guards - generic interface
+
+YueHaibing (1):
+      iio:ad7797: Use correct attribute_group
+
+ .../devicetree/bindings/iio/adc/st,stm32-adc.yaml  |   2 +-
+ MAINTAINERS                                        |  15 +-
+ drivers/counter/104-quad-8.c                       | 194 +++++++++++++++++----
+ drivers/iio/adc/ad7192.c                           |  63 +++++--
+ drivers/iio/adc/ad7793.c                           |   2 +-
+ drivers/iio/adc/stm32-adc.c                        |  31 +++-
+ drivers/iio/adc/ti-ads8344.c                       |   6 +-
+ drivers/iio/adc/xilinx-xadc-core.c                 |  95 +++++++---
+ drivers/iio/common/st_sensors/st_sensors_core.c    |   2 +-
+ drivers/iio/dac/ad5770r.c                          |   2 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         |  11 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |   3 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |  23 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       |  24 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c       |  29 ++-
+ drivers/iio/industrialio-core.c                    |   7 +-
+ include/linux/iio/iio.h                            |   2 +-
+ 17 files changed, 400 insertions(+), 111 deletions(-)

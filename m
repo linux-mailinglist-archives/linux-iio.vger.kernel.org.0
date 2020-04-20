@@ -2,55 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC681AFEE2
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Apr 2020 01:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558EE1B00B3
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Apr 2020 06:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgDSX2z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Apr 2020 19:28:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725834AbgDSX2z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Apr 2020 19:28:55 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3BB6C061A0C
-        for <linux-iio@vger.kernel.org>; Sun, 19 Apr 2020 16:28:53 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id w145so6390877lff.3
-        for <linux-iio@vger.kernel.org>; Sun, 19 Apr 2020 16:28:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b4+vr8+9TgBkYPVM2P+sDjYNtgtH50PQzg4RN2xn9fY=;
-        b=Nxl86tTYqy/RCOitgqJlqTMN4ItVBBZKF2dlgLBbxxFIEOCvaK//khDrAivjwR4u2n
-         0pUa6VWc0V+w+dbu3ZAq0IDZ0hzOHSmI+iz914UVeeoloRpbSazlgqYWS3akVcIXHzYm
-         yAtik9EGJ6z/NyHDsc/4Iu8cIn8lex4wJSbGs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b4+vr8+9TgBkYPVM2P+sDjYNtgtH50PQzg4RN2xn9fY=;
-        b=D6ih2+1MNc93pVDEQ7JHXtHl3ymGhDgMTnlk64fOkFuNIP0aXtLwGPQlMOojvFH6dy
-         B7mnJ9wTOT45d6uKCWESX26yhm1F+6txmw9ygaUxD0Koa2KJEiJSQqATAqAjPWTAXiDo
-         zBPHkt5Q4KGl5HWTFeAC86IWBMlibpwJF4X6PaWFW4KCMUqlzyEzb9Mvrbxs2JuB+Kmw
-         9lqpPqo9+EHgXrWfPiqSG0lxhu6mgEVfiGA135JtPtlsGcwrHs7T7WjXe11zz7H7tb/S
-         XDMd21kd527L2CXbXG6zDJkwAxMeE0erE/PdjgvZ8PHUlR8u4g8RHPyoDEvloEtGIlcg
-         +SQQ==
-X-Gm-Message-State: AGi0PuZJvqG7jfxJr5UjF74XjJBisp1VLLB3vM4IoNldz13K32H/jP+k
-        l8qp53402CkCSMrmJIQZ+cjZ9hltdmn2Ig==
-X-Google-Smtp-Source: APiQypI5mUJ7Pejtqm0qGk3jim0u75MSuEm5ayuNbyjUlL9SBUlvAgfEf2EsQWOK5n05lN0KL/yKxA==
-X-Received: by 2002:a05:6512:695:: with SMTP id t21mr8724049lfe.158.1587338932115;
-        Sun, 19 Apr 2020 16:28:52 -0700 (PDT)
-Received: from taos.konsulko.bg (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id s7sm7376147ljm.58.2020.04.19.16.28.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2020 16:28:51 -0700 (PDT)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH] iio: chemical: atlas-sensor: correct DO-SM channels
-Date:   Mon, 20 Apr 2020 02:28:47 +0300
-Message-Id: <20200419232847.32206-1-matt.ranostay@konsulko.com>
+        id S1726020AbgDTE0v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Apr 2020 00:26:51 -0400
+Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:54980 "EHLO
+        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1725710AbgDTE0v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 00:26:51 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 92BAE2007EB3;
+        Mon, 20 Apr 2020 12:26:45 +0800 (HKT)
+X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
+Received: from mail.gtsys.com.hk ([127.0.0.1])
+        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id yN9VBUDXXj0o; Mon, 20 Apr 2020 12:26:45 +0800 (HKT)
+Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 6C05D20038D0;
+        Mon, 20 Apr 2020 12:26:45 +0800 (HKT)
+Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
+        by s01.gtsys.com.hk (Postfix) with ESMTP id 59F26C01F9E;
+        Mon, 20 Apr 2020 12:26:45 +0800 (HKT)
+Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
+        id 2DC87201602; Mon, 20 Apr 2020 12:26:45 +0800 (HKT)
+From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     devicetree@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Richard Fontana <rfontana@redhat.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5] iio: patch set ltc2632
+Date:   Mon, 20 Apr 2020 12:26:05 +0800
+Message-Id: <20200420042612.27752-1-chris.ruehl@gtsys.com.hk>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,40 +51,20 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-IIO_CONCENTRATION channel for the DO-SM shouldn't be indexed as
-there isn't more than one, and also ATLAS_CONCENTRATION_CHANNEL
-macro scan_index define steps on the IIO_TIMESTAMP channel.
+Patchset to extend ltc2632 spi driver to support the similar chip set
+ltc2634.
+* Patch v2 1/3 update documentation struct ltc2632_chip_info
+* Patch v2 2/3 patch ltc2632.c,Kconfig,ltc2632.txt(devtree)
+* Patch v2 3/3 convert ltc2632.txt to yaml format named lltc,ltc2632.yaml
 
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+* Patch v3 2/3 : correct help text
+
+* Patch v4 1/3 : correct spelling in commit
+           */3  hide change history below --- 
+
+* Patch v5 : 1/3,2/3 add Accept-by and fixed tag,
+             3/3   maintainer & correct required seciton
+
+Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
 ---
- drivers/iio/chemical/atlas-sensor.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index 82d470561ad3..7b199ce16ecf 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -194,7 +194,19 @@ static const struct iio_chan_spec atlas_orp_channels[] = {
- };
- 
- static const struct iio_chan_spec atlas_do_channels[] = {
--	ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_DO_DATA),
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.address = ATLAS_REG_DO_DATA,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_BE,
-+		},
-+	},
- 	IIO_CHAN_SOFT_TIMESTAMP(1),
- 	{
- 		.type = IIO_TEMP,
--- 
-2.20.1
 

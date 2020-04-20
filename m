@@ -2,174 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F781B02BD
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Apr 2020 09:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 596C61B04A7
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Apr 2020 10:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726055AbgDTHTO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Apr 2020 03:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726020AbgDTHTO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 03:19:14 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E43C061A41
-        for <linux-iio@vger.kernel.org>; Mon, 20 Apr 2020 00:19:13 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id v8so10033916wma.0
-        for <linux-iio@vger.kernel.org>; Mon, 20 Apr 2020 00:19:13 -0700 (PDT)
+        id S1726006AbgDTInF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Apr 2020 04:43:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725773AbgDTInF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 04:43:05 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA967C061A0C;
+        Mon, 20 Apr 2020 01:43:04 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id k13so9836614wrw.7;
+        Mon, 20 Apr 2020 01:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=+a5D/Go3l6kNSMlbJDlUz7E/smrjsN8BEZkxCZCPYyw=;
-        b=j2WkOi/BwuKO0264ycM/t1QGPReas21DiXLzX+1O2wHO69r4NkdP/a+D9TWB7XTU/S
-         h7Ht8uQGNR5z3nBRGDVpcE9JyM6yAL2hh47Xme4rAAuZJ1X4AMknYJNzvgemYgKTK/SQ
-         HDfySjW67EuCUellMv/FB8SxZrNhWqkFZIDlMwsbnN3H45p7+d/xDI22zqaS4wtdS1fH
-         cJsfpC6DEGo8I4nydqC6GKJyR/bzH3JoygU3N2GBwQU4VJetVikJaRlp2+lxOtNZTzw8
-         8oYM7q0Wttet5w6aDSEO8FcsPFM/A6FTcQjynbFfD31acw8WbBgOCR4yGGLiNjo56rbR
-         PCcQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FvWDhWISpGn4NECKTMbbAGhGOgcSHURkbEnrDvJMLos=;
+        b=avlZ9T8hhK+4D60c+QbITmY+PpA+oISCvv+x0+zVw0TZI2T9hRy3ezvi4EQWm5p9Yr
+         ulRTiSrqUSlB7Vh6Wzy1treFQdHNls8hEfF2gpLAS6+MkeT5iHJbFEgZ+c2W6kbY/Wnu
+         WgUFyYxWE7FHP635rcDZz02rSAdVkVLQTowgA1lra7/FwFiiGQNeNEa4rpXBJNPvlXVw
+         HUco5qQzwtWYSnBmTok31veJLWFwg1J44hBagJfK4YhoQ5mbwFyMjHsu3ru2qzpyQHZW
+         nYX2KuaZ3IHhR6qdv1GbYN73u4YUmpER8TRMhosoHsfyhmHd4zUIWOv418XrN+jExe6E
+         ksWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=+a5D/Go3l6kNSMlbJDlUz7E/smrjsN8BEZkxCZCPYyw=;
-        b=DB4bdPCFQPZJAOWa528EwDRmXp44+H1H/5VSjfBoBCAbm4vVUfqU2KZG6i+n5Ervwk
-         RDyROxNPGVhwbhiHzIcCZNAo2d2Dbnd5DeaWU0xsa+BzMGUGANIcC+v97gHeL8FFEcg5
-         mU9wp3uvGd2Zbln8cPlupjTgKCEDsmDnih6IIHILVGjiR8mtLjt6HznGKMwXJP/1EEL6
-         w0JilIO4uI95AiX/qpSW0ixmAjcdlpOJeVDZk4vjlF1Jh3NggQbu5hOk8suxA4KxFCq4
-         XrZFAabPKbgNANwam3mIuUkMo76wRInQjoUpNNsmREYNmXwF3OZbFNBFiezG9CTxonWl
-         IxDw==
-X-Gm-Message-State: AGi0PuYPgcC1FRsKFXe0UAj3W/VMkkARKLCVtFwgrupORhPvHpWJbqi2
-        lw9cA8UviIDW/oZm/ZcFnyrugw==
-X-Google-Smtp-Source: APiQypLv4LVvAOzvDjOb58HRVezAofHOjRpLzd4Mor7CopqOj5iXyJlmolJo63jJoVcdcrCO+1fbkQ==
-X-Received: by 2002:a1c:4d07:: with SMTP id o7mr17368816wmh.59.1587367152449;
-        Mon, 20 Apr 2020 00:19:12 -0700 (PDT)
-Received: from dell ([95.149.164.107])
-        by smtp.gmail.com with ESMTPSA id k133sm196661wma.0.2020.04.20.00.19.11
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FvWDhWISpGn4NECKTMbbAGhGOgcSHURkbEnrDvJMLos=;
+        b=tGwb/sX/bUmNLxH4OfTzZcYxYmgd1wq5YUfIYTpfQQpj81BDxwK6GOeU4rt37DgEzV
+         VevGZcNhtHS5Pb3zZZV1amAeG+dFVp6sXMTHY3fZVva7OMV2li6pLveGb5fJq5TiUNFt
+         CgBRifVyFb+bI0VVudVtdsRvv9K6b0umvu/GeK1r7rcO/CEpGdTyDgl1tEhqbWpys+Go
+         01asEaE8zQRMSKNs23Mf01ZcLvFB5I9cEZ3WAj6EJe4ug+xtddvivcLeYvLobdC3FXsT
+         D8QusCkaNZChUr2tS+alSTnw7ZzNL09lqQgzKTeQDqmyDOtKj3dYhqTT92c+z9gxLPol
+         5YCw==
+X-Gm-Message-State: AGi0PuYrBOxCuGCLYKvrOSXFmZ1rpAqdcssWPAy6VQov0d7PBSA16Bvg
+        2S3D2gEb3OXv5uuWFbEG19k=
+X-Google-Smtp-Source: APiQypK5lrfo31xY8UUezFr4HAJ7K5iYcV+IgTMTdqw5RpA5VCYN8IlN/pUiRQPYMnHeei40rYxRqQ==
+X-Received: by 2002:a5d:6688:: with SMTP id l8mr18750767wru.179.1587372183564;
+        Mon, 20 Apr 2020 01:43:03 -0700 (PDT)
+Received: from meru.fronius.com ([2a01:cb18:832e:5f00:c546:5ea:178b:4074])
+        by smtp.gmail.com with ESMTPSA id g74sm403183wme.44.2020.04.20.01.43.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2020 00:19:11 -0700 (PDT)
-Date:   Mon, 20 Apr 2020 08:19:10 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     saravanan sekar <sravanhome@gmail.com>, andy.shevchenko@gmail.com,
-        robh+dt@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v10 1/6] dt-bindings: mfd: add document bindings for
- mp2629
-Message-ID: <20200420071910.GH3737@dell>
-References: <20200417085003.6124-1-sravanhome@gmail.com>
- <20200417085003.6124-2-sravanhome@gmail.com>
- <20200418155308.681df38f@archlinux>
- <50ffb42e-4080-415e-dd3d-e38f7b0a6071@gmail.com>
- <20200418170619.155222fa@archlinux>
+        Mon, 20 Apr 2020 01:43:02 -0700 (PDT)
+From:   Mathieu Othacehe <m.othacehe@gmail.com>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH v3 0/4] iio: vcnl: Add interrupts support for VCNL4010/20.
+Date:   Mon, 20 Apr 2020 10:42:06 +0200
+Message-Id: <20200420084210.14245-1-m.othacehe@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200418170619.155222fa@archlinux>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Apr 2020, Jonathan Cameron wrote:
+Hello,
 
-> On Sat, 18 Apr 2020 17:01:17 +0200
-> saravanan sekar <sravanhome@gmail.com> wrote:
-> 
-> > Hi Jonathan,
-> > 
-> > On 18/04/20 4:53 pm, Jonathan Cameron wrote:
-> > > On Fri, 17 Apr 2020 10:49:58 +0200
-> > > Saravanan Sekar <sravanhome@gmail.com> wrote:
-> > >  
-> > >> Add device tree binding information for mp2629 mfd driver.
-> > >>
-> > >> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> > >> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > >> ---
-> > >>   .../devicetree/bindings/mfd/mps,mp2629.yaml   | 61 +++++++++++++++++++
-> > >>   1 file changed, 61 insertions(+)
-> > >>   create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> > >>
-> > >> diff --git a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> > >> new file mode 100644
-> > >> index 000000000000..b25b29259d67
-> > >> --- /dev/null
-> > >> +++ b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> > >> @@ -0,0 +1,61 @@
-> > >> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > >> +%YAML 1.2
-> > >> +---
-> > >> +$id: http://devicetree.org/schemas/mfd/mps,mp2629.yaml#
-> > >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > >> +
-> > >> +title: MP2629 Battery Charger PMIC from Monolithic Power System.
-> > >> +
-> > >> +maintainers:
-> > >> +  - Saravanan Sekar <sravanhome@gmail.com>
-> > >> +
-> > >> +description: |
-> > >> +  MP2629 is a PMIC providing battery charging and power supply for smartphones,
-> > >> +  wireless camera and portable devices. Chip is controlled over I2C.
-> > >> +
-> > >> +  The battery charge management device handles battery charger controller and
-> > >> +  ADC IIO device for battery, system voltage
-> > >> +
-> > >> +properties:
-> > >> +  compatible:
-> > >> +    const: mps,mp2629
-> > >> +
-> > >> +  reg:
-> > >> +    maxItems: 1
-> > >> +
-> > >> +  interrupts:
-> > >> +    maxItems: 1
-> > >> +
-> > >> +  interrupt-controller: true
-> > >> +
-> > >> +  "#interrupt-cells":
-> > >> +    const: 2
-> > >> +    description:
-> > >> +      The first cell is the IRQ number, the second cell is the trigger type.
-> > >> +
-> > >> +required:
-> > >> +  - compatible
-> > >> +  - reg
-> > >> +  - interrupts
-> > >> +  - interrupt-controller
-> > >> +  - "#interrupt-cells"
-> > >> +
-> > >> +examples:
-> > >> +  - |
-> > >> +    #include <dt-bindings/interrupt-controller/irq.h>
-> > >> +    #include <dt-bindings/input/linux-event-codes.h>
-> > >> +    i2c@7e205000 {  
-> > > I thought the general trend for i2c devices was to leave the i2c
-> > > part 'vague'.
-> > >
-> > >      i2c {
-> > >            #address-cells = <1>;
-> > >            #size-cells = <0>;
-> > >           
-> > >            pmic@4b.. etc  
-> > I agree with you and initial patch was as like above, but Lee was 
-> > somehow unhappy and not satisfied with
-> > 
-> > my explanations. Please find more info on v4.
-> 
-> Ah. Curious.  Oh well - over to Rob for a definitive answer!
+Here's a v3 that is rebased on top of recent additions to the vcnl4000 driver.
 
-I haven't seen this spoken about before.  The comments were based
-solely on my own views of, the example should provide a solid, valid,
-potentially working block for people to use as a reference.
+Thanks,
 
-Would an I2C node missing an address be a valid DTS/DTSI entry?
+Mathieu
+
+Changes from v2:
+* Rebase on iio testing branch.
+* Remove useless test in vcnl4010_probe_trigger.
+
+Changes from v1:
+* Split into four different patches.
+* Use iio_device_claim_direct_mode to protect
+raw access from buffer capture.
+* Requesting a sampling frequency above the limit is no longer possible.
+* Inline read_isr and write_isr functions.
+* Remove IIO_LIGHT data from buffer capture.
+* Make sure postenable and predisable functions respect the common form.
+* Do not set the trigger by default.
+* Remove the devm_iio_triggered_buffer_setup top half.
+
+Mathieu Othacehe (4):
+  iio: vcnl4000: Factorize data reading and writing.
+  iio: vcnl4000: Add event support for VCNL4010/20.
+  iio: vcnl4000: Add sampling frequency support for VCNL4010/20.
+  iio: vcnl4000: Add buffer support for VCNL4010/20.
+
+ drivers/iio/light/Kconfig    |   2 +
+ drivers/iio/light/vcnl4000.c | 890 ++++++++++++++++++++++++++++++++---
+ 2 files changed, 828 insertions(+), 64 deletions(-)
 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.26.0
+

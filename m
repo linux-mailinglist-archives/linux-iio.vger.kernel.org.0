@@ -2,74 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 292191B2026
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 09:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396B51B2039
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 09:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726388AbgDUHn5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Apr 2020 03:43:57 -0400
-Received: from mga02.intel.com ([134.134.136.20]:44548 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725992AbgDUHn5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 21 Apr 2020 03:43:57 -0400
-IronPort-SDR: GvcYGzyDAQG9eFibqszA4LNcJKaxpKNHu5+7M5rJad9LUV9JUV4yaUKn/q8KW4h0c9IxrPNUBL
- paze5cB9MrYA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2020 00:43:56 -0700
-IronPort-SDR: AU4U89muze9SpjkdQQxFBWt4xPs98GKFbShrX7yEZnQAOwxeuz7y3EVjYsSURbo7SZv/OqWBTB
- KEH4JFx7uZ3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,409,1580803200"; 
-   d="scan'208";a="365267838"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 21 Apr 2020 00:43:53 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 21 Apr 2020 10:43:53 +0300
-Date:   Tue, 21 Apr 2020 10:43:53 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>, linux-usb@vger.kernel.org
-Subject: Re: ucsi and DRD controller interaction
-Message-ID: <20200421074353.GE3768833@kuha.fi.intel.com>
-References: <26823688-3b9c-5869-bcb6-4d6e5dcd77bc@amd.com>
+        id S1726106AbgDUHrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Apr 2020 03:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726052AbgDUHrT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 03:47:19 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FA4C061A41
+        for <linux-iio@vger.kernel.org>; Tue, 21 Apr 2020 00:47:19 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id p10so4480875ioh.7
+        for <linux-iio@vger.kernel.org>; Tue, 21 Apr 2020 00:47:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=OeY1D5X0JTe+X4nNccsTmfIHAJbVoZEYQTxgNeqW028=;
+        b=NCdIJS3I3tyMbQF5olMC+eUV6oQEQKyGdY9AXUQLfpzFEDXi6k5GMbZK/iNrkE/LFj
+         MHjHx8MCqFEjTe3OpSCjvgjswdR/xfdxAqaaktflmnX6Q3uE5egmYuO+Pe4lXlkWCjFw
+         sthcMkuVk0Fb7zK9/r6LjPM8k98RNebHHT69pVnq6068yJgGfd3wmKbHpEuGQzpMDH+L
+         N6Q5w96ta8azjJdeXVIYLRGqS2Q+QZVinSjajx/yZMgrmUhg+kRF0JTSF7QXI2BcwAI/
+         kRQ+vo5H1vhvrUu/wAXPwh/JBDtfAftYF3eLMdM/E4hPhZ89+WEy1cekgin+66XU6Kw+
+         puTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OeY1D5X0JTe+X4nNccsTmfIHAJbVoZEYQTxgNeqW028=;
+        b=SMbG9/+ZGGCPiMqjOjzox154whgwvVhYEqLabnIj9HsL/YnLk/DVZsE+WNpVIYR4KK
+         xd69McoTUm2XO8HuajgXd2GOBQA9Pt/7x2IKsLIpH0TR6O/gl7unpeU4ZK39vI28gYqh
+         HWcQAiZEKDtGqfc1u8OZ+VdvQAtRmKRe3lGAMlcvn2zynjVAMBnkraIsetPmfQ0lxa5G
+         zM5yXuFt57DyREqPlG0UkKomEkxFSgbVm4S8XG7J/iTvBnBOsnICFFsETrTYErCZ5kGs
+         rSJNOoVhwPLqAx+f3U7pNo+MvJsWWzM1lxVfjSBZmubZ5Bo618j9Otyfje/rXUTcxWni
+         sz1g==
+X-Gm-Message-State: AGi0PuaXp39zHl3Y/P+0A6rs/Rk+XJabmvlew1Ne/yJwv5043CSnuMGU
+        7/mQXz5Rxn9qi4JNFQKhyQtK7y6YvbE6IxW+dFS/fg==
+X-Google-Smtp-Source: APiQypK8Fgiv9fuxZ96YyuvwHZijN8BQ7LGwA3Vk2+rHhZNpoJL5ML+jbbE9xAFzb+UsDPsxi8UytpkHJxDB0QJRJng=
+X-Received: by 2002:a05:6602:199:: with SMTP id m25mr19489799ioo.13.1587455238413;
+ Tue, 21 Apr 2020 00:47:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <26823688-3b9c-5869-bcb6-4d6e5dcd77bc@amd.com>
+References: <20200417080549.23751-1-brgl@bgdev.pl> <20200417080549.23751-2-brgl@bgdev.pl>
+ <CAHp75Vf_kBfb_oLB2Dp48iYiDgs2k_RgzpudTvQMoxNYGMz3TA@mail.gmail.com>
+In-Reply-To: <CAHp75Vf_kBfb_oLB2Dp48iYiDgs2k_RgzpudTvQMoxNYGMz3TA@mail.gmail.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 21 Apr 2020 09:47:07 +0200
+Message-ID: <CAMRc=MdopCtsB23bk058iHd2LGqecqot1nAsi5S8x72U4wiGCg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] irq: make irq_domain_reset_irq_data() available
+ even for non-V2 users
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Adding linux-usb mailing list.
+pt., 17 kwi 2020 o 12:50 Andy Shevchenko <andy.shevchenko@gmail.com> napisa=
+=C5=82(a):
+>
+> On Fri, Apr 17, 2020 at 11:13 AM Bartosz Golaszewski <brgl@bgdev.pl> wrot=
+e:
+> >
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > irq_domain_reset_irq_data() doesn't modify the parent data, so it can b=
+e
+> > made available even if irq domain hierarchy is not being built. We'll
+> > subsequently use it in irq_sim code.
+>
+>
+> > @@ -475,7 +476,6 @@ extern int __irq_domain_alloc_irqs(struct irq_domai=
+n *domain, int irq_base,
+> >  extern void irq_domain_free_irqs(unsigned int virq, unsigned int nr_ir=
+qs);
+> >  extern int irq_domain_activate_irq(struct irq_data *irq_data, bool ear=
+ly);
+> >  extern void irq_domain_deactivate_irq(struct irq_data *irq_data);
+> > -
+> >  static inline int irq_domain_alloc_irqs(struct irq_domain *domain,
+> >                         unsigned int nr_irqs, int node, void *arg)
+> >  {
+>
+> Seems extra hunk slipped to the patch.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
-On Mon, Apr 20, 2020 at 07:09:17PM +0530, Shah, Nehal-bakulchandra wrote:
-> Hi Heikki ,
-> 
-> I need some pointer from you, so in a system where I have UCSI driver for DRD
-> Controller, then how call stack will be?
-> 
-> I am unable to comprehend the flow from UCSI infrastructure to DRD controller
-> code base.
+Indeed, I'll wait for more reviews though before resending.
 
-Do you need to tell the negotiated data role to your USB controller
-driver from the UCSI driver? For that we would need to know which USB
-controller, or more precisely, which USB port is connected to the
-USB Type-C connector in question.
-
-That would require ACPI tables to be able to describe the connection
-between the USB Type-C connector and the USB port (and the connection
-between DisplayPort and the USB Type-C connector etc.). Unfortunately
-there is currently no documented way of doing that, however, there is
-a proposal for a document the defines how the USB Type-C connectors
-should be described in ACPI in general. The proposal does consider
-this problem as well. For this the solution is to use _DSD device
-properties "usb2-port" and "usb3-port" that have references to the
-correct USB port nodes as values.
-
-Which USB controller are you using btw?
-
-thanks,
-
--- 
-heikki
+Bart

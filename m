@@ -2,108 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 396B51B2039
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 09:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747D01B2073
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 09:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726106AbgDUHrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Apr 2020 03:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
+        id S1728248AbgDUHzl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Apr 2020 03:55:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726052AbgDUHrT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 03:47:19 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FA4C061A41
-        for <linux-iio@vger.kernel.org>; Tue, 21 Apr 2020 00:47:19 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id p10so4480875ioh.7
-        for <linux-iio@vger.kernel.org>; Tue, 21 Apr 2020 00:47:19 -0700 (PDT)
+        with ESMTP id S1725992AbgDUHzl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 03:55:41 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B684CC061A0F;
+        Tue, 21 Apr 2020 00:55:40 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id z6so2536910wml.2;
+        Tue, 21 Apr 2020 00:55:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=OeY1D5X0JTe+X4nNccsTmfIHAJbVoZEYQTxgNeqW028=;
-        b=NCdIJS3I3tyMbQF5olMC+eUV6oQEQKyGdY9AXUQLfpzFEDXi6k5GMbZK/iNrkE/LFj
-         MHjHx8MCqFEjTe3OpSCjvgjswdR/xfdxAqaaktflmnX6Q3uE5egmYuO+Pe4lXlkWCjFw
-         sthcMkuVk0Fb7zK9/r6LjPM8k98RNebHHT69pVnq6068yJgGfd3wmKbHpEuGQzpMDH+L
-         N6Q5w96ta8azjJdeXVIYLRGqS2Q+QZVinSjajx/yZMgrmUhg+kRF0JTSF7QXI2BcwAI/
-         kRQ+vo5H1vhvrUu/wAXPwh/JBDtfAftYF3eLMdM/E4hPhZ89+WEy1cekgin+66XU6Kw+
-         puTg==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9KHZNctYOhjFckhn2qMQlu+HnNBvg93+938BxzB/qXk=;
+        b=rD4G4DY+VhyR8RlILQ8P5h6uIb96WX59w47l9toPCaaDFia2jKbT3IMMXkZ5wtDxu6
+         +r06QIqmZoIh16Fki/4nI2NPrAED8m74o0mUxULApjNPMKeaUeJwLnnYkfgAqaAMzUEQ
+         BCxTPPmB/XPJXC3yLP/xfzhgXdonVOpJp74S+c4K/NYCE02sYCis2zR8EVcKVHRR0yWM
+         iHwgSM/3NrWal8kWuypWMosb4PVO+NfGHoRMUa736Ix8JNeKpogoRKrVczmFcPKMgNso
+         XgepSBebYVt8BZdTbOVU236FAEuzYz5+vAQLRERHiKdC7iOyam5pbY1Be088DUL/swmF
+         uxGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=OeY1D5X0JTe+X4nNccsTmfIHAJbVoZEYQTxgNeqW028=;
-        b=SMbG9/+ZGGCPiMqjOjzox154whgwvVhYEqLabnIj9HsL/YnLk/DVZsE+WNpVIYR4KK
-         xd69McoTUm2XO8HuajgXd2GOBQA9Pt/7x2IKsLIpH0TR6O/gl7unpeU4ZK39vI28gYqh
-         HWcQAiZEKDtGqfc1u8OZ+VdvQAtRmKRe3lGAMlcvn2zynjVAMBnkraIsetPmfQ0lxa5G
-         zM5yXuFt57DyREqPlG0UkKomEkxFSgbVm4S8XG7J/iTvBnBOsnICFFsETrTYErCZ5kGs
-         rSJNOoVhwPLqAx+f3U7pNo+MvJsWWzM1lxVfjSBZmubZ5Bo618j9Otyfje/rXUTcxWni
-         sz1g==
-X-Gm-Message-State: AGi0PuaXp39zHl3Y/P+0A6rs/Rk+XJabmvlew1Ne/yJwv5043CSnuMGU
-        7/mQXz5Rxn9qi4JNFQKhyQtK7y6YvbE6IxW+dFS/fg==
-X-Google-Smtp-Source: APiQypK8Fgiv9fuxZ96YyuvwHZijN8BQ7LGwA3Vk2+rHhZNpoJL5ML+jbbE9xAFzb+UsDPsxi8UytpkHJxDB0QJRJng=
-X-Received: by 2002:a05:6602:199:: with SMTP id m25mr19489799ioo.13.1587455238413;
- Tue, 21 Apr 2020 00:47:18 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9KHZNctYOhjFckhn2qMQlu+HnNBvg93+938BxzB/qXk=;
+        b=Wj2i3jyXrVEvaCVU/HAIOsXlUoUrx8hlSgRHYS4qONboV8m6+JT7dRNRvvVViXxy4f
+         HTqqomidJKshqIfjiyEcF6399/f35cgFDpB/J6U6/MLoGI1AehnXibjPRgwxmT8xj+2U
+         meJLvnvGYPEzPhasnp6dCuen2WtDSQ8JN1dCYX7GYYQz6MMamL3Fs4XHEII7wOJqxfVK
+         ohq35H1ZbLIwC7uzqsLQQk6iH4SQOSTrwKouzc4PTo6LbrTPmEsnVeKeFCQeP4NkPRuK
+         Lh7zoRDZGEuj4Fso9OdTNgI0+D9wlKv9VuWdpZHSgW42l83ERi3UaaHjo7Jq/hixKHFO
+         OvqA==
+X-Gm-Message-State: AGi0PuaKolV0+X7o3JlRacjADKDimu1f8N2hZH2bEwPkAi69/JprOGmB
+        Ea6OdBGomJohkgwNunSweJw=
+X-Google-Smtp-Source: APiQypL62K50g4PegXCteX7g4tERnjiyhSM92fWXcY/FKxxnndsAHDVief66jJxPR/WOaiYRCzqxNw==
+X-Received: by 2002:a7b:c74d:: with SMTP id w13mr3410328wmk.36.1587455739444;
+        Tue, 21 Apr 2020 00:55:39 -0700 (PDT)
+Received: from meru.fronius.com ([2a01:cb18:832e:5f00:f9a2:4:b043:a3fb])
+        by smtp.gmail.com with ESMTPSA id c190sm2514510wme.10.2020.04.21.00.55.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2020 00:55:38 -0700 (PDT)
+From:   Mathieu Othacehe <m.othacehe@gmail.com>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH v4 0/4] iio: vcnl: Add interrupts support for VCNL4010/20.
+Date:   Tue, 21 Apr 2020 09:55:28 +0200
+Message-Id: <20200421075532.19192-1-m.othacehe@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-References: <20200417080549.23751-1-brgl@bgdev.pl> <20200417080549.23751-2-brgl@bgdev.pl>
- <CAHp75Vf_kBfb_oLB2Dp48iYiDgs2k_RgzpudTvQMoxNYGMz3TA@mail.gmail.com>
-In-Reply-To: <CAHp75Vf_kBfb_oLB2Dp48iYiDgs2k_RgzpudTvQMoxNYGMz3TA@mail.gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 21 Apr 2020 09:47:07 +0200
-Message-ID: <CAMRc=MdopCtsB23bk058iHd2LGqecqot1nAsi5S8x72U4wiGCg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] irq: make irq_domain_reset_irq_data() available
- even for non-V2 users
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-pt., 17 kwi 2020 o 12:50 Andy Shevchenko <andy.shevchenko@gmail.com> napisa=
-=C5=82(a):
->
-> On Fri, Apr 17, 2020 at 11:13 AM Bartosz Golaszewski <brgl@bgdev.pl> wrot=
-e:
-> >
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > irq_domain_reset_irq_data() doesn't modify the parent data, so it can b=
-e
-> > made available even if irq domain hierarchy is not being built. We'll
-> > subsequently use it in irq_sim code.
->
->
-> > @@ -475,7 +476,6 @@ extern int __irq_domain_alloc_irqs(struct irq_domai=
-n *domain, int irq_base,
-> >  extern void irq_domain_free_irqs(unsigned int virq, unsigned int nr_ir=
-qs);
-> >  extern int irq_domain_activate_irq(struct irq_data *irq_data, bool ear=
-ly);
-> >  extern void irq_domain_deactivate_irq(struct irq_data *irq_data);
-> > -
-> >  static inline int irq_domain_alloc_irqs(struct irq_domain *domain,
-> >                         unsigned int nr_irqs, int node, void *arg)
-> >  {
->
-> Seems extra hunk slipped to the patch.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Hello,
 
-Indeed, I'll wait for more reviews though before resending.
+Here's a v4 addressing Peter and Andy remarks. The most important change is
+the removal of most mutex uses, as i2c accesses are already protected
+by the i2c framework.
 
-Bart
+Thanks,
+
+Mathieu
+
+Changes from v3:
+* Use i2c_smbus_read_byte_data and i2c_smbus_write_word_data
+for read and write functions.
+* Rename vcnl4010_prox_threshold to vcnl4010_config_threshold.
+* Do not lock i2c accesses as they are already protected.
+* Fix a typo in irq name.
+* Do not provide ALS sampling frequency operation, as ALS data
+are not buffered anymore.
+* Return bool in vcnl4010_in_periodic_mode and vcnl4010_thr_enabled
+functions.
+
+Changes from v2:
+* Rebase on iio testing branch.
+* Remove useless test in vcnl4010_probe_trigger.
+
+Changes from v1:
+* Split into four different patches.
+* Use iio_device_claim_direct_mode to protect
+raw access from buffer capture.
+* Requesting a sampling frequency above the limit is no longer possible.
+* Inline read_isr and write_isr functions.
+* Remove IIO_LIGHT data from buffer capture.
+* Make sure postenable and predisable functions respect the common form.
+* Do not set the trigger by default.
+* Remove the devm_iio_triggered_buffer_setup top half.
+
+Mathieu Othacehe (4):
+  iio: vcnl4000: Factorize data reading and writing.
+  iio: vcnl4000: Add event support for VCNL4010/20.
+  iio: vcnl4000: Add sampling frequency support for VCNL4010/20.
+  iio: vcnl4000: Add buffer support for VCNL4010/20.
+
+ drivers/iio/light/Kconfig    |   2 +
+ drivers/iio/light/vcnl4000.c | 747 +++++++++++++++++++++++++++++++----
+ 2 files changed, 683 insertions(+), 66 deletions(-)
+
+-- 
+2.26.0
+

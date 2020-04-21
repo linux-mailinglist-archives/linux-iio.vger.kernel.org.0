@@ -2,138 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFB21B3118
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 22:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395601B31C7
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 23:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726055AbgDUUXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Apr 2020 16:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726050AbgDUUXX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 16:23:23 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270C8C0610D5;
-        Tue, 21 Apr 2020 13:23:23 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id ay1so5696691plb.0;
-        Tue, 21 Apr 2020 13:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zl40T50FPbwBzCKH7/OEcPTWE7rgN74/mA60zW5oOTo=;
-        b=kSVKMtXhsAi8UcAwt4iulSL7+eVDGadF0SrWh1wVO8+gwbi2E3F2/Bu88eqAMDqnNC
-         aZ2mjX0aG8et1NQWeo8ZoqL86PFMAa9v96WA6g5JD4PlRfZEH0jzquzVm9R6IChZKIhb
-         zcY8v9xaimsRqlZD3L00+wNkc2bvpGkgsA4MSxRZvyOGgRs3kAMODPQAfqLSRs2OSJqh
-         BcNdlAijqbWjZzMYeVHCEUzCC2faFEgiPzbSIl3mFI1991GqAT/ycuXtVyi9GAtgp9qw
-         WIkb7B71vc+P6LPbsdJKzeE5C7bacRjKervPeUmo9fHz2TSRbjWv9YZNWlE9xPV6oFpe
-         Di8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zl40T50FPbwBzCKH7/OEcPTWE7rgN74/mA60zW5oOTo=;
-        b=cY3t05GscfJbY08quxK/bL2BiGnsftewrmnK/Lae9xALiiRyVjJs1K2CKzWwos2xn6
-         aPG8LjjNDXYVv0iPQtT4LxpdznRsQkLhuOYY1JphRpgOwlQxGfF4LnZEQj493Dlgrj28
-         /sVxaUeirFOyclbBtKY0eB5sqB9FsLddaCqgvuDTpB59gJH0RsRTt8jGxElhpT7q0788
-         50N7f5qi1iWI9VPkf4dwkOtN+4dbCxIqFX4JBnCphi61INVCNtMgLXYQG7rClmQaDxu6
-         5ft0hbUhlmxKLnrpcHHg/3DdLSzR6ezJu7+FfRom9jKiWcAJNjYcCAdZ0d4ofAMK362v
-         5gGQ==
-X-Gm-Message-State: AGi0PuYAmniL6kAlbKMg2Ss23scbj7nUB+U6ANCEG0B0151mdKuBWirn
-        RVzluqD3kGDPS1wi4G40NSuV5rRb7oM/ijejd4o=
-X-Google-Smtp-Source: APiQypLAu9QTbWNgbPerC9FiXf54TGJy1cCm8ZU48UUMzfczq3a63vgoRJ4CWI4WeYnDtbGa2fmkEOryIT/jGVwyPhs=
-X-Received: by 2002:a17:90a:2401:: with SMTP id h1mr7862503pje.1.1587500602433;
- Tue, 21 Apr 2020 13:23:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200421194005.6295-1-i.mikhaylov@yadro.com> <20200421194005.6295-3-i.mikhaylov@yadro.com>
-In-Reply-To: <20200421194005.6295-3-i.mikhaylov@yadro.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 21 Apr 2020 23:23:11 +0300
-Message-ID: <CAHp75VdZ=jmQFt68+iniDbhGY9Q-ueT6QzrL82mLmsoGwftxFg@mail.gmail.com>
-Subject: Re: [PATCH v10 2/2] iio: proximity: Add driver support for vcnl3020
- proximity sensor
-To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        id S1726106AbgDUVSp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Apr 2020 17:18:45 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:39369 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725987AbgDUVSo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 17:18:44 -0400
+Received: from envy ([82.207.214.61]) by mrelayeu.kundenserver.de (mreue009
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1M6URd-1jK9bH0505-006sqo; Tue, 21
+ Apr 2020 23:18:26 +0200
+Message-ID: <c6831429000eeb2132c68c44d4d171063fa53d56.camel@richard-neumann.de>
+Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
+ fusion Hub using HID framework
+From:   Richard Neumann <mail@richard-neumann.de>
+To:     "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Sandeep Singh <Sandeep.Singh@amd.com>, Shyam-sundar.S-k@amd.com,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-input <linux-input@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+Date:   Tue, 21 Apr 2020 23:18:23 +0200
+In-Reply-To: <f4c08c96-bbaf-c42e-0dff-a02c5bbed6ed@amd.com>
+References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
+         <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
+         <4fe47b0323c1d65d429ee89b000e8bfcd984495f.camel@richard-neumann.de>
+         <896f84bc-f0d6-59a5-c894-809695aa348f@amd.com>
+         <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
+         <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
+         <3ffc343e-c44b-1b4e-993e-179a13dc928c@amd.com>
+         <7683f875aa617b3003a1949131ce79bd0e3c4dcb.camel@richard-neumann.de>
+         <f4c08c96-bbaf-c42e-0dff-a02c5bbed6ed@amd.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-qKskeWVPLD7TB1ApjQF3"
+User-Agent: Evolution 3.36.1 
+MIME-Version: 1.0
+X-Provags-ID: V03:K1:MEfE3I7hfcltTmoofx/Sk9X2L2Rsx4r1czXM8UQR5m3eXhcdtJE
+ FQkLSJzTHehzjsLHwTtXts+T32txJuXhpMmGcp0oAB7D8zzCU6w6KE7VITqvy5uAyJ7RBcF
+ I8CD8DrmJyQxU7zfTRQN2keVwtG1uOY9Y3PrHliveZ8yiexHNvHlHXlu5BlLkSU9M8FWiPb
+ rp9aQukTYY3Sxz7blJ6VQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bEb9qy7t5V8=:jZa391THHBj2FnwxkZJpt+
+ Eh1rWsIsrjBlp2K2RnVU5PTyB8xaeW+MpbrFYwNHgm29ZutExAj3pitOspN6x3RxVsCKZo2ZJ
+ rCN5vqLxcc2OAseuJ85d2Lj/rQH58p8PDVLYQxvsaH5mN4ROaiU+EZg7YZhI3K7vF/sUIqZ4W
+ by++CIl7RS1/ITPPKeIm+GmNGgX1rsJ2OyOTbqBV1Dmu5xTevR9bc/j15dcTLXswsTXz8iHVI
+ HvIg3onfmHPhdkmRe9JV+WC2nn+2ISattINvuL2AjG0QW/GOQr/zbw+hDGsFN/jutydY3EE81
+ hF69M9POZYy1AkWWJ35ueM9CsIO2jM+JPR8b27ASPBxzFnTJo0J+MfyZ1OceUVURGgYN6St32
+ kA25ELwczRU/Ty9B/9oeMzi9xyrwF65Rrwdh9y2fmzY9Dx1pQMrXN7Pv47P0kGBbjPo3CH7Er
+ W5HfQHTOhIp/uf1DsQsvYkl5D6ZgGtVftrBYJTRCqU9RhsQKx9aUO0uznQ0D9Sb3NZ+q8sOTZ
+ Vy5d2OXVh+FcCOL+EcOT7r2pARBQpA2lFkoxctSAvblFTsO3gW3ex45xRavmmYJt7wS2ypnd4
+ XcNRJjUyYCB3Gepo9aXLDd7SeegARWKnrAt7lYKyKUHHLpp+COfwmP22fmQDVxIbg+/j1T1hU
+ H9gi4MUtYL3mcbbQh6Md0idKc3gGnS1VLfUf6XBQU9YFuL8GtnIw33zJV1uTNajk5IEnLcaY3
+ pZApomV6EPkXbrn58xhqilJAonmuHkYTEZCSruPL6tsIkSzLnp0wrDBYqhcGRy/9/wpT561BL
+ KgvIxpOXCnQrBnqI6M9AMEiQIh46wqU15sbIC2aVb2gAj/EplZ1CBwsKZYCOFaBeP3khXqB
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 21, 2020 at 10:39 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
->
-> Proximity sensor driver based on light/vcnl4000.c code.
-> For now supports only the single on-demand measurement.
->
-> The VCNL3020 is a fully integrated proximity sensor. Fully
-> integrated means that the infrared emitter is included in the
-> package. It has 16-bit resolution. It includes a signal
-> processing IC and features standard I2C communication
-> interface. It features an interrupt function.
 
-...
+--=-qKskeWVPLD7TB1ApjQF3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +static int vcnl3020_get_and_apply_property(struct vcnl3020_data *data,
-> +                                          const char *prop, u32 reg)
-> +{
-> +       int rc;
-> +       u32 val;
-> +
-> +       rc = device_property_read_u32(data->dev, prop, &val);
-> +       if (rc)
-> +               return 0;
-> +
+Am Mittwoch, den 22.04.2020, 00:01 +0530 schrieb Shah, Nehal-
+bakulchandra:
+> Hi Richard,
+>=20
+> Thanks for the refactoring  the patch. The .raw_request in
+> hid_ll_driver is not correct, the output of sensor is not raw but it
+> is processed one,
+>=20
+> so better to move it to .request function. Regarding your question
+> for sensor position well it comes from firmware. So i am not sure
+> about the firmware
+>=20
+> for sensor , what you have.Also, regarding the IOMMU, we figured out
+> the issue, earlier patch series has bug that during DMA allocation
+> pdev was passed
+>=20
+> from platform driver context, where in for IOMMU needs context PCI
+> pdev. So that is taken care in your refactored patch hence issue is
+> disappeared.
+>=20
+>=20
+> Now regarding the patch (with your changes) i need to validate at our
+> side. Due to lockdown i dont have access to the system, so may be we
+> can wait on that.
+>=20
+>=20
+> Thanks
+>=20
+> Nehal Shah
 
-> +       /* An example of conversion from uA to reg val:
-> +        * 200000 uA == 200 mA == 20
-> +        */
-> +       if (!strcmp(prop, "vishay,led-current-microamp"))
-> +               val /= 10000;
+Hi Nehal
 
-I probably missed the point why this function is needed at all, since
-we always call only for a single property.
+and thank you for the feedback.
 
-On top of that, why do we have this nasty strcmp()? Can't we simple do
-something like
+Regarding the raw_request / request, I think the "raw" here is meant to
+indicate, that the implementation is expected to write "raw bytes" [1]
+into a buffer rather than handling a "struct hid_report", which is
+exactly what the get_feature_report() and get_input_report() from the
+original patch seem to be intended to do.
+However it should be easy to migrate this to ".report", since it'd
+probably look a lot like __hid_request() [2], which is currently doing
+the magic automatically for me.
+Furthermore a ll_driver needs a raw_request implementation anyways as
+it's being tested for in hid_add_device() [3].
 
-static int vcnl3020_get_and_apply_property(struct vcnl3020_data *data,
-const char *prop, u32 reg, u32 div)
-{
-...
-  val /= div;
-...
-}
+Regarding the validation on your side: Of course! I do in no way want
+to undermine your work on this in any way. I'm just offering what I've
+learned so far and what is working for me. If you find parts of it
+worth taking into a refactored version for upstream, awesome. If you
+don't agree with other parts, that's fine, too. I'm quite new to this
+and eager to learn. Also I am in no rush. Good things take time.
 
-static int vcnl3020_get_and_apply_led_current_property(struct
-vcnl3020_data *data)
-{
-  /*
-   * An example of conversion from uA to reg val:
-   * 200000 uA == 200 mA == 20
-   */
-// Note by the way comments style
-  return vcnl3020_get_and_apply_property(data, "vishay,led-current-microamp",
-                                              VCNL_LED_CURRENT, 10000);
-}
+In case you're missing my patch on gist.github.com, I decided to
+further develop the driver in a forked linux source tree [4].
 
-?
+It's on the branch amd-sfh. You can just diff to the master branch to
+get the entire patch. The changed files are still under
+drivers/hid/amd-sfh-hid and Documentation/hid respectively.
 
-> +       rc = regmap_write(data->regmap, reg, val);
-> +       if (rc) {
-> +               dev_err(data->dev, "Error (%d) setting property (%s)\n",
-> +                       rc, prop);
-> +       }
-> +
-> +       return rc;
-> +}
+You'll find that in the meantime I did some more work / learning and
+implemented some rudimentary IRQ handling.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Kind regards,
+
+Richard
+
+[1] https://elixir.bootlin.com/linux/latest/source/include/linux/hid.h#L107=
+0
+[2] https://elixir.bootlin.com/linux/latest/source/drivers/hid/hid-core.c#L=
+1688
+[3] https://elixir.bootlin.com/linux/latest/source/drivers/hid/hid-core.c#L=
+2386
+[3] https://github.com/conqp/linux/tree/amd-sfh
+
+--=-qKskeWVPLD7TB1ApjQF3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQT62wKwhMqSt8WaustMqNUjvThq9wUCXp9jHwAKCRBMqNUjvThq
+99I7AP9vmpENS45P92BDw1vV5wR4JcPiqpoc3lYzTupHbHyjXQD+OcnvH+UeIapi
+7dK8yJqSiySCtpBMjt5Nh43DbwBAegs=
+=CNx3
+-----END PGP SIGNATURE-----
+
+--=-qKskeWVPLD7TB1ApjQF3--
+

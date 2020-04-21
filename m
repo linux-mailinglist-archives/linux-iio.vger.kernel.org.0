@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E36BE1B1AC3
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC8FC1B1AC5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726659AbgDUAbm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Apr 2020 20:31:42 -0400
-Received: from mga17.intel.com ([192.55.52.151]:43075 "EHLO mga17.intel.com"
+        id S1726709AbgDUAbn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Apr 2020 20:31:43 -0400
+Received: from mga07.intel.com ([134.134.136.100]:58406 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726709AbgDUAbl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Apr 2020 20:31:41 -0400
-IronPort-SDR: xy+b+FcIGusK1VJRxyBUF6ew8aTC+qAmrODbaR5HQ6w4UVLFofEDne7GQtjwBG8j80gsSiiiJW
- 5AcWbo4PvGGw==
+        id S1726611AbgDUAbm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 20 Apr 2020 20:31:42 -0400
+IronPort-SDR: uAJTQRTeDeaBTNa21S3CiELzbwg8iX2ZGBBHgxX0f+2uCfqKRRPChYrhvVH1b7rq3x9mqheFSR
+ ISBpwakLZFaQ==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2020 17:31:41 -0700
-IronPort-SDR: Y0Sac913DexQRxUYT+71bofMzSOE2YoK9DIpm8h9NC8HCyP/SkZvWL5g1bAppyKmkq0FNdoz+k
- YeIOKjyfDXNg==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2020 17:31:41 -0700
+IronPort-SDR: 61i1H+BB99Ipc6Q5tjkfUjpPhlbU19LZCORx6vN38UV8Ttvf/PnloqvIX7xXidD5jc5S906Jaz
+ Qj4n353Uvnog==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,408,1580803200"; 
-   d="scan'208";a="244002919"
+   d="scan'208";a="291433482"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 20 Apr 2020 17:31:39 -0700
+  by orsmga008.jf.intel.com with ESMTP; 20 Apr 2020 17:31:39 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E1BC25F5; Tue, 21 Apr 2020 03:31:36 +0300 (EEST)
+        id EB48E70F; Tue, 21 Apr 2020 03:31:36 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 12/16] iio: pressure: hp206c: Use get_unaligned_be24()
-Date:   Tue, 21 Apr 2020 03:31:31 +0300
-Message-Id: <20200421003135.23060-12-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 13/16] iio: pressure: ms5611: Use get_unaligned_be24()
+Date:   Tue, 21 Apr 2020 03:31:32 +0300
+Message-Id: <20200421003135.23060-13-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
 References: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
@@ -48,29 +48,36 @@ This makes the driver code slightly easier to read.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/pressure/hp206c.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/pressure/ms5611_i2c.c | 2 +-
+ drivers/iio/pressure/ms5611_spi.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/pressure/hp206c.c b/drivers/iio/pressure/hp206c.c
-index 3ac3632e7242..d746882eccc8 100644
---- a/drivers/iio/pressure/hp206c.c
-+++ b/drivers/iio/pressure/hp206c.c
-@@ -93,12 +93,12 @@ static int hp206c_read_20bit(struct i2c_client *client, u8 cmd)
- 	int ret;
- 	u8 values[3];
- 
--	ret = i2c_smbus_read_i2c_block_data(client, cmd, 3, values);
-+	ret = i2c_smbus_read_i2c_block_data(client, cmd, sizeof(values), values);
+diff --git a/drivers/iio/pressure/ms5611_i2c.c b/drivers/iio/pressure/ms5611_i2c.c
+index 8089c59adce5..ced83162ae94 100644
+--- a/drivers/iio/pressure/ms5611_i2c.c
++++ b/drivers/iio/pressure/ms5611_i2c.c
+@@ -50,7 +50,7 @@ static int ms5611_i2c_read_adc(struct ms5611_state *st, s32 *val)
  	if (ret < 0)
  		return ret;
--	if (ret != 3)
-+	if (ret != sizeof(values))
- 		return -EIO;
--	return ((values[0] & 0xF) << 16) | (values[1] << 8) | (values[2]);
-+	return get_unaligned_be24(&values[0]) & GENMASK(19, 0);
- }
  
- /* Spin for max 160ms until DEV_RDY is 1, or return error. */
+-	*val = (buf[0] << 16) | (buf[1] << 8) | buf[2];
++	*val = get_unaligned_be24(&buf[0]);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/iio/pressure/ms5611_spi.c b/drivers/iio/pressure/ms5611_spi.c
+index b463eaa799ab..517295616869 100644
+--- a/drivers/iio/pressure/ms5611_spi.c
++++ b/drivers/iio/pressure/ms5611_spi.c
+@@ -45,7 +45,7 @@ static int ms5611_spi_read_adc(struct device *dev, s32 *val)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	*val = (buf[0] << 16) | (buf[1] << 8) | buf[2];
++	*val = get_unaligned_be24(&buf[0]);
+ 
+ 	return 0;
+ }
 -- 
 2.26.1
 

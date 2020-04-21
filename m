@@ -2,121 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A596F1B25D5
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 14:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BD821B25E2
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 14:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728519AbgDUMWT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Apr 2020 08:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726018AbgDUMWS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 08:22:18 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D96E0C061A10;
-        Tue, 21 Apr 2020 05:22:18 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id f8so5193398plt.2;
-        Tue, 21 Apr 2020 05:22:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8sHt8rACV0yZYLyEpCbUse20aIl7fEUIoxUsoOswD+k=;
-        b=ndBQEhgYJd0zICtRgs6Yy/gHJhOtx99YjM4TK0LBPLlYCsmWLAJwk8TcSSr6FtNZPg
-         TiHeBhW9XaMym13AhQnMws+4s/5/TDA72yp8R9ebMQmdeQggvpkaEw3mh8kb72ZX1YOO
-         d+/koVewepSFYmOG2Q+EhNG+MQfa8zgcdLvxLU3HoDcFfSl1A46l4rdqsQrcQuKtpQ1X
-         SNkNePwjuRPsjnMEc8Aqw8VVHPPhb5O31X0igg5S6RoUTt76owjtGITaAMMTimiTAr9l
-         LLBHnHN53qJhgduZlWCbpYfcei3wNocFxmH6Sg6IoKV52uiJJzJfIUT3Zo/6IGK/g5Ye
-         6XBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8sHt8rACV0yZYLyEpCbUse20aIl7fEUIoxUsoOswD+k=;
-        b=eLV6Yi6XAaqmVno1mVmg+uZgjMAhQceb8UVvFh+sL4jkLE0jP64qTLK2zvQV6XTbMI
-         8WF0AK6gMlk0vMoX8yLzIB9esLOi27+aqrulpm7lRyR48xnLu41l2EXH77e86CPl7/zy
-         OpHQpeSnccCzqUHkdMd1a7MZwmxiGY+XEaaz2OCDFckQec8X4hd62bouN1PEw8GX7dks
-         nZZLF7PIolmf8IhauDFoT/fwMTiGvQ4nxTqBlxqh6vT8M4Q+MKM/pYoB714JTWilmozI
-         w4IZQPkSnUcWKUwpilLLKEjxKJNzjWjYxL9DcxMoBBEfosNzS/L80mzZ881rKcwF5+Y+
-         x3mA==
-X-Gm-Message-State: AGi0Puack588qPRxo0WO+zSz7VMXNlL2SYhORvajNCQmn8B/pXXFPp6y
-        98yqWy8yiZAJiOBsV6ARJBa1XuT158hf9CAYrZCT5tiyusbPtQ==
-X-Google-Smtp-Source: APiQypIGo8RVZmRCk9H0kZdzTUbSuVm0vb+/PSzTStmjUoOedvrRMvK+PmcyG4kLaA5OhYCmnzkot1teedX4nROIuUI=
-X-Received: by 2002:a17:90a:364c:: with SMTP id s70mr5171704pjb.143.1587471738292;
- Tue, 21 Apr 2020 05:22:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200421075532.19192-1-m.othacehe@gmail.com> <20200421075532.19192-4-m.othacehe@gmail.com>
-In-Reply-To: <20200421075532.19192-4-m.othacehe@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 21 Apr 2020 15:22:11 +0300
-Message-ID: <CAHp75VcJ300S8r_f2cueYzB0OaLBJK9oJySgz5Jekb7dGFWnCw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] iio: vcnl4000: Add sampling frequency support for VCNL4010/20.
-To:     Mathieu Othacehe <m.othacehe@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1728519AbgDUMY3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 21 Apr 2020 08:24:29 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:34915 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728391AbgDUMY1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 08:24:27 -0400
+Received: from localhost (lfbn-lyo-1-9-35.w86-202.abo.wanadoo.fr [86.202.105.35])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id EFAE120000A;
+        Tue, 21 Apr 2020 12:24:24 +0000 (UTC)
+Date:   Tue, 21 Apr 2020 14:24:24 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     "Xia, Hui" <hui.xia@intel.com>
+Cc:     "Li, Philip" <philip.li@intel.com>, lkp <lkp@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] iio: adc: ti-ads8344: properly byte swap value
+Message-ID: <20200421122424.GK7326@piout.net>
+References: <20200415212257.161238-2-alexandre.belloni@bootlin.com>
+ <202004161449.NY5hL54S%lkp@intel.com>
+ <20200416205023.GA437042@piout.net>
+ <20200419024948.GK21730@intel.com>
+ <2A5F4C9150EECB4DAA6291810D6D61B9745DE89F@shsmsx102.ccr.corp.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <2A5F4C9150EECB4DAA6291810D6D61B9745DE89F@shsmsx102.ccr.corp.intel.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 21, 2020 at 10:56 AM Mathieu Othacehe <m.othacehe@gmail.com> wrote:
->
-> Add sampling frequency support for proximity data on VCNL4010 and VCNL4020
-> chips.
+Hi,
 
-Couple of nitpicks below.
+On 21/04/2020 07:25:01+0000, Xia, Hui wrote:
+> >-----Original Message-----
+> >From: Li, Philip <philip.li@intel.com>
+> >Sent: 2020年4月19日 10:50
+> >To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> >Cc: lkp <lkp@intel.com>; Jonathan Cameron <jic23@kernel.org>; kbuild-
+> >all@lists.01.org; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen
+> ><lars@metafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Gregory
+> >CLEMENT <gregory.clement@bootlin.com>; linux-iio@vger.kernel.org; linux-
+> >kernel@vger.kernel.org
+> >Subject: Re: [PATCH 1/3] iio: adc: ti-ads8344: properly byte swap value
+> >
+> >On Thu, Apr 16, 2020 at 10:50:23PM +0200, Alexandre Belloni wrote:
+> >> Hi,
+> >>
+> >> On 16/04/2020 14:22:03+0800, kbuild test robot wrote:
+> >> > Hi Alexandre,
+> >> >
+> >> > I love your patch! Yet something to improve:
+> >> >
+> >> > [auto build test ERROR on iio/togreg] [also build test ERROR on
+> >> > v5.7-rc1 next-20200415] [if your patch is applied to the wrong git
+> >> > tree, please drop us a note to help improve the system. BTW, we also
+> >> > suggest to use '--base' option to specify the base tree in git
+> >> > format-patch, please see https://stackoverflow.com/a/37406982]
+> >> >
+> >> > url:    https://github.com/0day-ci/linux/commits/Alexandre-Belloni/iio-adc-ti-
+> >ads8344-improve-the-driver/20200416-073357
+> >> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> >> > config: c6x-allyesconfig (attached as .config)
+> >> > compiler: c6x-elf-gcc (GCC) 9.3.0
+> >> > reproduce:
+> >> >         wget https://raw.githubusercontent.com/intel/lkp-
+> >tests/master/sbin/make.cross -O ~/bin/make.cross
+> >> >         chmod +x ~/bin/make.cross
+> >> >         # save the attached .config to linux build tree
+> >> >         COMPILER_INSTALL_PATH=$HOME/0day GCC_VERSION=9.3.0
+> >> > make.cross ARCH=c6x
+> >> >
+> >>
+> >> I spent some time to reproduce and this is actually not that trivial
+> >> because your toolchains are linked with libisl22 and most
+> >> distributions still ship an older version. Maybe you can do something about that?
+> >Thanks for the feedback, we will resolve this to use old version in earliest time.
+> The cross toolchains has been updated to link with libisl19 the stable version. Please remove the old toolchain and make.cross again.
+> Feel free to let us know if still have problem. Thanks.
+> 
 
-...
-
-> +static const int vcnl4010_prox_sampling_frequency[][2] = {
-> +       {1, 950000},
-> +       {3, 906250},
-> +       {7, 812500},
-> +       {16, 625000},
-> +       {31, 250000},
-> +       {62, 500000},
-> +       {125, 0},
-
-> +       {250, 0}
-
-Leave comma here, potentially helpful if it will be extended.
-
-> +};
-
-...
-
-> +static int vcnl4010_write_proxy_samp_freq(struct vcnl4000_data *data, int val,
-> +                                         int val2)
-> +{
-> +       int i;
-> +       const int len = ARRAY_SIZE(vcnl4010_prox_sampling_frequency);
-> +
-> +       for (i = 0; i < len; i++) {
-> +               if (val <= vcnl4010_prox_sampling_frequency[i][0])
-> +                       break;
-> +       }
-> +
-> +       if (i == len)
-> +               return -EINVAL;
-
-I would refactor this
-
-  unsigned int i = ARRAY_SIZE(vcnl4010_prox_sampling_frequency);
-
-  do {
-    if (val > vcnl4010_prox_sampling_frequency[i][0])
-      break;
-  } while (--i);
-
-You won't need to go full array to return error in this case.
-
-> +       return i2c_smbus_write_byte_data(data->client, VCNL4010_PROX_RATE, i);
-> +}
+Thank you, this works properly on more machines now.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

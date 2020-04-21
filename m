@@ -2,97 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6B21B1ACF
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DCD1B1AD3
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726262AbgDUAhQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Apr 2020 20:37:16 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:49594 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726161AbgDUAhQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 20:37:16 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 32ABE200D9F0;
-        Tue, 21 Apr 2020 08:37:14 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RSnMUGsga8nL; Tue, 21 Apr 2020 08:37:14 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 11E8520038D0;
-        Tue, 21 Apr 2020 08:37:14 +0800 (HKT)
-Received: from [10.128.2.32] (unknown [124.217.189.45])
-        by s01.gtsys.com.hk (Postfix) with ESMTPSA id D489DC01A1D;
-        Tue, 21 Apr 2020 08:37:13 +0800 (HKT)
-Subject: Re: inquiry: where to place iio/ bandpass filter driver
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org
-References: <55472b69-c587-ca04-d3b9-c8615e6a652d@gtsys.com.hk>
- <20200417102350.00003a28@Huawei.com>
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Message-ID: <a67b5e24-94df-cc84-73ae-004c0a27a26a@gtsys.com.hk>
-Date:   Tue, 21 Apr 2020 08:37:13 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726208AbgDUAl1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Apr 2020 20:41:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726017AbgDUAl1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 20:41:27 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 936CEC061A0E;
+        Mon, 20 Apr 2020 17:41:25 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id i3so13196786ioo.13;
+        Mon, 20 Apr 2020 17:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lp6vpDhEt9eyN5A2LThz9ErewFsCdZY3Mzy1abOFyOM=;
+        b=cT7c7uhdV9eMRxr29pkmMWATsUGGzY28V+ctNsd8r9ksSQR7IlXpNqh8+eAys81DEa
+         i5N7sgF8ngepHsdKae2d8nzgXXhe7BIxm40fdeirDFhOVl/uGkQj7zrRNpARTn/x45XA
+         y+9LMQmh0ucSPSBYlcxnPTM7j5JX5Ia3gB5a5q/6FSbEfnquNfm5LX0icdBT0t5z0nGE
+         UGflhB48sCNGUQ/pxxe99MfgE3JNcBI7MaNoqeuTKb5I1xpPnwwThfmKzc9z+qPzz0yi
+         aeW8KEFZfQddcWic1B7MevZmfAGJBnwOkSFmqWckb+1AToDJTuDYUA+5F2k15uM1I2cK
+         nVqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lp6vpDhEt9eyN5A2LThz9ErewFsCdZY3Mzy1abOFyOM=;
+        b=JNsptscSyGJ6JTxbVSZFuZcubxoAT4QIPLeeoIQkHvx4nII7TcA85Kc8MjOrtQ6F79
+         iSR2TCCe/9CHP/pr5NBAYnIVjBA6i6ayj/nIXh08Uz8yqAMNJNOjzT3LR9QWf20iC8aM
+         9gWlaINu9thOYCqyYYFe22Fk3NsxuqnFC3CUr3XOO1OX6HAxlqbVZgvmBLBY/W8536yt
+         T9g8hTTtloRE7B/gsdnHPHFZdPaF6ARfBjsM93wRglaE1UzG2kRnC0MWAOZtg2qbJOG0
+         2jDoxhhpKurxOp2KFkYkfRDZgG/lWycgMWM6RONjuFS5VLbd2h6e13aGHjr1ra29sZ2B
+         ALYA==
+X-Gm-Message-State: AGi0PuZ1PTr+lbBj6SzAZzSKM5Os2auf7+igGi9l7GVBqnq1NoBH4mjs
+        gv91D19yDs8/X+29RKYtHWwxs9qr9vPPPM5Axos=
+X-Google-Smtp-Source: APiQypJa/8ktzh53XgWTNmgtLunc8o0bFjpB0e5CpZ50MeLAPsEXoJIMQxsKtx587H9bDXQxhKTI93+8YR1RVJHY904=
+X-Received: by 2002:a6b:580e:: with SMTP id m14mr18198504iob.190.1587429684748;
+ Mon, 20 Apr 2020 17:41:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200417102350.00003a28@Huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20200420084210.14245-1-m.othacehe@gmail.com> <20200420084210.14245-3-m.othacehe@gmail.com>
+In-Reply-To: <20200420084210.14245-3-m.othacehe@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 21 Apr 2020 03:41:12 +0300
+Message-ID: <CAHp75VektPSwxu3bShk9yQhbNGmYDa2j1Vbapdkrn3rBiaZ0WQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] iio: vcnl4000: Add event support for VCNL4010/20.
+To:     Mathieu Othacehe <m.othacehe@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan,
-
-On 17/4/2020 5:23 pm, Jonathan Cameron wrote:
-> On Thu, 16 Apr 2020 11:48:31 +0800
-> Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
+On Mon, Apr 20, 2020 at 11:43 AM Mathieu Othacehe <m.othacehe@gmail.com> wrote:
 >
->> Hi,
->>
->> I'm working on implementation for ltc6602 dual match bandpass filter spi
->> driver.
->> The driver tree has a iio/frequency which has PLLs at time beeing and
->> I wondering to drop my driver there or have a new directory
->> freqfilter or bpf ?
->>
->> This isn't urgent, but would be nice to know.
->>
-> Perhaps iio/afe?  It's a type of analog front end (or might be used as such).
-> Is the intent to wrap these up as a consumer of an ADC?  So they ultimately provide
-> a unified device presentation to userspace of the ADC + filters. Or are
-> we looking at simply controlling a filter which doesn't connect to an ADC or DAC
-> visible to us?
->
-> I'm not against a new directory for filters though.  Don't be specific on the
-> type unless we need to be :)
->
-> Jonathan
-I place the driver into afe, makes totally sense to me, but have to create a 
-directory
-linux/iio/afe which is not existing while I write this.
+> The VCNL4010 and VCNL4020 chips are able to raise interrupts on proximity
+> threshold events. Add support for threshold rising and falling events for
+> those two chips.
 
-will be then:
-drivers/iio/afe/ltc6602.c
-include/linux/iio/afe/ltc6602.h
-add entry to drivers/iio/afe/Kconfig + Makefile.
+...
 
-If i have the driver ready and checked I send my patches
+> +       ret = (ret & VCNL4000_SELF_TIMED_EN) > 0;
 
-Cheers
-Chris
+This can be done outside of lock.
+And here is type violation. Use bool for the function.
 
->> Regards
->> Chris
->
+> +end:
+> +       mutex_unlock(&data->vcnl4000_lock);
+> +
+> +       return ret;
+> +}
+
+...
+
+> +       ret = (ret & VCNL4010_INT_THR_EN) > 0;
+> +
+> +end:
+> +       mutex_unlock(&data->vcnl4000_lock);
+> +
+> +       return ret;
+> +}
+
+Ditto.
 
 -- 
-GTSYS Limited RFID Technology
-9/F, Unit E, R07, Kwai Shing Industrial Building Phase 2,
-42-46 Tai Lin Pai Road, Kwai Chung, N.T., Hong Kong
-Tel (852) 9079 9521
-
-Disclaimer: https://www.gtsys.com.hk/email/classified.html
-
+With Best Regards,
+Andy Shevchenko

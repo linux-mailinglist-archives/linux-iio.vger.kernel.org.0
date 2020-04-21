@@ -2,82 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 576391B1AC8
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BFE1B1ACD
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 02:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbgDUAbo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Apr 2020 20:31:44 -0400
-Received: from mga04.intel.com ([192.55.52.120]:20093 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbgDUAbn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Apr 2020 20:31:43 -0400
-IronPort-SDR: nVD3TA90F3be5FCUqcSBWEu3xgPSvq0aEGaQLxL6VJ+iWEDIoRILkLJsufAicDXM8y+QHLgKN5
- xGpOXJ6TfCxg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2020 17:31:42 -0700
-IronPort-SDR: IwmJ/v6ATFdORK3NQ+Bs2Wl+ntg8k5kXOeXmpMZFACWJ9t95s/1IHZewauu+/2bKm+GNfMoXCY
- HVPFomfUpOpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,408,1580803200"; 
-   d="scan'208";a="255113840"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 20 Apr 2020 17:31:41 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 0B60B881; Tue, 21 Apr 2020 03:31:37 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH v1 16/16] iio: st_sensors: Use get_unaligned_be24() and sign_extend32()
-Date:   Tue, 21 Apr 2020 03:31:35 +0300
-Message-Id: <20200421003135.23060-16-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
-References: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
+        id S1726121AbgDUAg2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Apr 2020 20:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726055AbgDUAg2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Apr 2020 20:36:28 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3569FC061A0E;
+        Mon, 20 Apr 2020 17:36:28 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id j7so2369903pgj.13;
+        Mon, 20 Apr 2020 17:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Jr4pepYiKfm1uIftVMCmPnL3b+xwADu0/lF4/xhGC1o=;
+        b=Asw3NHTwrFrFd3xXUg6KCD3TCt1TknJTW3dnS5o7UGUGYRYsg+W9p/OX+kseROXyQs
+         0XeEq89TRm4RPktbiQ8ThmTJIgb2TXEy8RU/TZBYbcJz90pxadmUOPnnnqDxQvGz9kGm
+         CdvMnrPvsAbejuIiMuwu4wvYHXP66Bcr8vId9dSGaLyx/kMdbE84jiIAyrXYviiJQKYs
+         TtSX82jHkGeJMvjjZYfkk7icp1B/2fJ8mAPU81vdHIjVTlZVbZ3hyUc/EDDcUz1zbz9n
+         vNSe5D1WNaR/ZmTIEnuW4YCPVwLKcvPQ6oi5ahXZhuCaKTuQygg1A2fAuPbMde2o0h3M
+         0vxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Jr4pepYiKfm1uIftVMCmPnL3b+xwADu0/lF4/xhGC1o=;
+        b=R48UwQBM9NWxi5NgNLBv985Tdt9gy/kJt6aDCF1czsBHh7qtT3OrTMXrEOOSu1yMwJ
+         wkmVUfz8bwSaWS6TnDBtO3elGsHMte3Ik1HEuHBV0ktkOWVqliinohLVZrujjXK6olg+
+         OCBRGtSakOWl7bl2QZRR761wreE4XR4Qg9MDfJdZ6CY9KEnDG0y+FyOTyfM+hBi72LIi
+         GSbXRFsetJ2TKfzHgUFWCqFZvpKiz9jk56GnXUdiWzt4RMlzQb9UxwvR/kIBX7LdMRs5
+         C+yDF6W8URYRslDGLOS0pWCFf+kourRp8qggkOjTcjzsTEbC7PsNJCV80eGTpOopXU9p
+         KMrg==
+X-Gm-Message-State: AGi0PuailcX1bDaDk3Gmxp6SCM/f7Z7/74KCkqruexef8bJHkud2I6Qd
+        6pBcrPGOuiSGU/WWlAcquZ9yd8JbYRGRhsYt6cOix4vBBr4=
+X-Google-Smtp-Source: APiQypKT5yvxJB+RFskDNTzXkKxM55ZO5RUfYBByOEqqpOcm36wrNLManMQ9TB+l+iztYURHb9Z5VokY+8ZFHID76EI=
+X-Received: by 2002:a63:1c1:: with SMTP id 184mr19974359pgb.203.1587429387467;
+ Mon, 20 Apr 2020 17:36:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200420084210.14245-1-m.othacehe@gmail.com> <20200420084210.14245-2-m.othacehe@gmail.com>
+In-Reply-To: <20200420084210.14245-2-m.othacehe@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 21 Apr 2020 03:36:15 +0300
+Message-ID: <CAHp75Vd+Ri1qKUkDjOV9R4=AW-++7wp4VPfnTqKEHxR7RWzX0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] iio: vcnl4000: Factorize data reading and writing.
+To:     Mathieu Othacehe <m.othacehe@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use these functions instead of open-coding them.
+On Mon, Apr 20, 2020 at 11:43 AM Mathieu Othacehe <m.othacehe@gmail.com> wrote:
+>
+> Factorize data reading in vcnl4000_measure into a vcnl4000_read_block_data
+> function. Use it to provide a vcnl4000_read_data function that is able to
+> read sensor data under lock. Also add a vcnl4000_write_data function.
 
-Cc: Denis Ciocca <denis.ciocca@st.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/common/st_sensors/st_sensors_core.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+...
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index 0e35ff06f9af..bfc39ef64718 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -20,11 +20,6 @@
- 
- #include "st_sensors_core.h"
- 
--static inline u32 st_sensors_get_unaligned_le24(const u8 *p)
--{
--	return (s32)((p[0] | p[1] << 8 | p[2] << 16) << 8) >> 8;
--}
--
- int st_sensors_write_data_with_mask(struct iio_dev *indio_dev,
- 				    u8 reg_addr, u8 mask, u8 data)
- {
-@@ -545,7 +540,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
- 	else if (byte_for_channel == 2)
- 		*data = (s16)get_unaligned_le16(outdata);
- 	else if (byte_for_channel == 3)
--		*data = (s32)st_sensors_get_unaligned_le24(outdata);
-+		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
- 
- st_sensors_free_memory:
- 	kfree(outdata);
+> +       __be16 buf;
+> +       int ret;
+> +
+> +       ret = i2c_smbus_read_i2c_block_data(data->client,
+
+> +               data_reg, sizeof(buf), (u8 *) &buf);
+
+Why do you need casting?
+
+> +       if (ret < 0)
+> +               goto end;
+
 -- 
-2.26.1
-
+With Best Regards,
+Andy Shevchenko

@@ -2,162 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 395601B31C7
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Apr 2020 23:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 186561B398D
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Apr 2020 10:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726106AbgDUVSp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Apr 2020 17:18:45 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:39369 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725987AbgDUVSo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Apr 2020 17:18:44 -0400
-Received: from envy ([82.207.214.61]) by mrelayeu.kundenserver.de (mreue009
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1M6URd-1jK9bH0505-006sqo; Tue, 21
- Apr 2020 23:18:26 +0200
-Message-ID: <c6831429000eeb2132c68c44d4d171063fa53d56.camel@richard-neumann.de>
-Subject: Re: [PATCH v4 2/4] SFH: PCI driver to add support of AMD sensor
- fusion Hub using HID framework
-From:   Richard Neumann <mail@richard-neumann.de>
-To:     "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Sandeep Singh <Sandeep.Singh@amd.com>, Shyam-sundar.S-k@amd.com,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1725811AbgDVICR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Apr 2020 04:02:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725810AbgDVICQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Apr 2020 04:02:16 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41202C03C1A6;
+        Wed, 22 Apr 2020 01:02:16 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id t63so1175044wmt.3;
+        Wed, 22 Apr 2020 01:02:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:references:date:in-reply-to:message-id
+         :user-agent:mime-version;
+        bh=276h72KTtylrnULr9OGp8Ofnvi/+2QUze7tpHtVgUYc=;
+        b=NRyeQPoUxhqd6VJaDmPOxUvzPKFp5UVW+KAXnh0USrkJDLUSI5z0xUCrR19/VNs66q
+         ha/QKAWGlTTRrOikeQBb5UwzTTqvcURrzdkEL3jciUpeEATZ2jTPA7CfZWoC5U7GENiL
+         3aCRzlXmFoVsfv7DSo9chTp1x/C7HK6V/z17Uek3vbB2/cTvDVcFo2OU2LKh2SQ2TSiO
+         KEkSIYTUyW14UckA1ONlpt+rUTExOjiKyHi5oEw0lTeyAzRsSUb2Qf5FXilEGAQmeyLu
+         /nZk/zSsPg+20W+WseUIl8zuUTfjwsbitxeBmd3V23Ih67ThPj486UKKKeiOpvDOENRg
+         a9wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version;
+        bh=276h72KTtylrnULr9OGp8Ofnvi/+2QUze7tpHtVgUYc=;
+        b=pugg+379XImwfirT65jYpM07X3uDgEFV9qTr5oDdMHLCFi7g88nUXhwVH7TgDWHbtN
+         kO/Zu6qFEVvFxpTXOz5EZowmqAKVnk7j6F16n/T0iRWUm4eG6ugm9XwEOmhriJtsnHak
+         cRHhC/DHD6G/qsORebhz7gqBEUWlSV94sNvxfsDWtUWUes7h/pti2H9sWRkAl+XRXp60
+         rYbmDcG8U2lxk1NyL/Ks8cO70f2BcyWtgY4Kz1hbB6NRZ2WvUsJbiMzGmWGCu7pTXxa/
+         kErsIGgSRbODZ0S/ZuHq2JXqLilvBb4ssPKLOcf5LRQdousqm+nqmgjCqTJXnvJBnyTM
+         eG4g==
+X-Gm-Message-State: AGi0PuaBXtFG0Me6Es5pEeoF3onpA0Cns8zfU4OiTzs8fcBCb6lz6Wbp
+        Gt1WcBCSPsJ8IREx6V6eQ0NR5dhu+fM=
+X-Google-Smtp-Source: APiQypLUIvMLQElpQ0YeDX4LXgi+d6EVLy+A09/FAG1IA0q7WkePThaGskKab/Prr5WYqQs9OXVMnA==
+X-Received: by 2002:a1c:e903:: with SMTP id q3mr8830283wmc.76.1587542534579;
+        Wed, 22 Apr 2020 01:02:14 -0700 (PDT)
+Received: from meru ([2a01:cb18:832e:5f00:1d35:d245:4470:8434])
+        by smtp.gmail.com with ESMTPSA id t16sm8175157wrb.8.2020.04.22.01.02.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2020 01:02:13 -0700 (PDT)
+From:   Mathieu Othacehe <m.othacehe@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Date:   Tue, 21 Apr 2020 23:18:23 +0200
-In-Reply-To: <f4c08c96-bbaf-c42e-0dff-a02c5bbed6ed@amd.com>
-References: <1582779537-25662-1-git-send-email-Sandeep.Singh@amd.com>
-         <1582779537-25662-3-git-send-email-Sandeep.Singh@amd.com>
-         <4fe47b0323c1d65d429ee89b000e8bfcd984495f.camel@richard-neumann.de>
-         <896f84bc-f0d6-59a5-c894-809695aa348f@amd.com>
-         <CAHp75Vfr6q_H6z6tRFfaKedF7oR7nhmZvRWL4mxx3W7uypUFvA@mail.gmail.com>
-         <9aea760f9abdd2f90f36642af77de7bfae719485.camel@richard-neumann.de>
-         <3ffc343e-c44b-1b4e-993e-179a13dc928c@amd.com>
-         <7683f875aa617b3003a1949131ce79bd0e3c4dcb.camel@richard-neumann.de>
-         <f4c08c96-bbaf-c42e-0dff-a02c5bbed6ed@amd.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-qKskeWVPLD7TB1ApjQF3"
-User-Agent: Evolution 3.36.1 
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/4] iio: vcnl4000: Add event support for VCNL4010/20.
+References: <20200421075532.19192-1-m.othacehe@gmail.com>
+        <20200421075532.19192-3-m.othacehe@gmail.com>
+        <CAHp75Veqp=tb0Z9h2cey5DE_KpNBp3Jdmh2gLzSoo-N5CsGpvw@mail.gmail.com>
+Date:   Wed, 22 Apr 2020 10:02:11 +0200
+In-Reply-To: <CAHp75Veqp=tb0Z9h2cey5DE_KpNBp3Jdmh2gLzSoo-N5CsGpvw@mail.gmail.com>
+        (Andy Shevchenko's message of "Tue, 21 Apr 2020 14:24:30 +0300")
+Message-ID: <87y2qoosn0.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-X-Provags-ID: V03:K1:MEfE3I7hfcltTmoofx/Sk9X2L2Rsx4r1czXM8UQR5m3eXhcdtJE
- FQkLSJzTHehzjsLHwTtXts+T32txJuXhpMmGcp0oAB7D8zzCU6w6KE7VITqvy5uAyJ7RBcF
- I8CD8DrmJyQxU7zfTRQN2keVwtG1uOY9Y3PrHliveZ8yiexHNvHlHXlu5BlLkSU9M8FWiPb
- rp9aQukTYY3Sxz7blJ6VQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:bEb9qy7t5V8=:jZa391THHBj2FnwxkZJpt+
- Eh1rWsIsrjBlp2K2RnVU5PTyB8xaeW+MpbrFYwNHgm29ZutExAj3pitOspN6x3RxVsCKZo2ZJ
- rCN5vqLxcc2OAseuJ85d2Lj/rQH58p8PDVLYQxvsaH5mN4ROaiU+EZg7YZhI3K7vF/sUIqZ4W
- by++CIl7RS1/ITPPKeIm+GmNGgX1rsJ2OyOTbqBV1Dmu5xTevR9bc/j15dcTLXswsTXz8iHVI
- HvIg3onfmHPhdkmRe9JV+WC2nn+2ISattINvuL2AjG0QW/GOQr/zbw+hDGsFN/jutydY3EE81
- hF69M9POZYy1AkWWJ35ueM9CsIO2jM+JPR8b27ASPBxzFnTJo0J+MfyZ1OceUVURGgYN6St32
- kA25ELwczRU/Ty9B/9oeMzi9xyrwF65Rrwdh9y2fmzY9Dx1pQMrXN7Pv47P0kGBbjPo3CH7Er
- W5HfQHTOhIp/uf1DsQsvYkl5D6ZgGtVftrBYJTRCqU9RhsQKx9aUO0uznQ0D9Sb3NZ+q8sOTZ
- Vy5d2OXVh+FcCOL+EcOT7r2pARBQpA2lFkoxctSAvblFTsO3gW3ex45xRavmmYJt7wS2ypnd4
- XcNRJjUyYCB3Gepo9aXLDd7SeegARWKnrAt7lYKyKUHHLpp+COfwmP22fmQDVxIbg+/j1T1hU
- H9gi4MUtYL3mcbbQh6Md0idKc3gGnS1VLfUf6XBQU9YFuL8GtnIw33zJV1uTNajk5IEnLcaY3
- pZApomV6EPkXbrn58xhqilJAonmuHkYTEZCSruPL6tsIkSzLnp0wrDBYqhcGRy/9/wpT561BL
- KgvIxpOXCnQrBnqI6M9AMEiQIh46wqU15sbIC2aVb2gAj/EplZ1CBwsKZYCOFaBeP3khXqB
+Content-Type: text/plain
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---=-qKskeWVPLD7TB1ApjQF3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hello Andy,
 
-Am Mittwoch, den 22.04.2020, 00:01 +0530 schrieb Shah, Nehal-
-bakulchandra:
-> Hi Richard,
->=20
-> Thanks for the refactoring  the patch. The .raw_request in
-> hid_ll_driver is not correct, the output of sensor is not raw but it
-> is processed one,
->=20
-> so better to move it to .request function. Regarding your question
-> for sensor position well it comes from firmware. So i am not sure
-> about the firmware
->=20
-> for sensor , what you have.Also, regarding the IOMMU, we figured out
-> the issue, earlier patch series has bug that during DMA allocation
-> pdev was passed
->=20
-> from platform driver context, where in for IOMMU needs context PCI
-> pdev. So that is taken care in your refactored patch hence issue is
-> disappeared.
->=20
->=20
-> Now regarding the patch (with your changes) i need to validate at our
-> side. Due to lockdown i dont have access to the system, so may be we
-> can wait on that.
->=20
->=20
-> Thanks
->=20
-> Nehal Shah
+>> +               ret = devm_request_threaded_irq(&client->dev, client->irq,
+>> +                                               NULL, vcnl4010_irq_thread,
+>> +                                               IRQF_TRIGGER_FALLING |
+>
+>> +                                               IRQF_ONESHOT,
+>
+> Isn't it by default when threaded IRQ is asked with NULL for hw handler?
 
-Hi Nehal
+No, and it fails with this error message if IRQF_ONESHOT is not set:
 
-and thank you for the feedback.
+pr_err("Threaded irq requested with handler=NULL and !ONESHOT for %s (irq %d)\n",
 
-Regarding the raw_request / request, I think the "raw" here is meant to
-indicate, that the implementation is expected to write "raw bytes" [1]
-into a buffer rather than handling a "struct hid_report", which is
-exactly what the get_feature_report() and get_input_report() from the
-original patch seem to be intended to do.
-However it should be easy to migrate this to ".report", since it'd
-probably look a lot like __hid_request() [2], which is currently doing
-the magic automatically for me.
-Furthermore a ll_driver needs a raw_request implementation anyways as
-it's being tested for in hid_add_device() [3].
+Thanks,
 
-Regarding the validation on your side: Of course! I do in no way want
-to undermine your work on this in any way. I'm just offering what I've
-learned so far and what is working for me. If you find parts of it
-worth taking into a refactored version for upstream, awesome. If you
-don't agree with other parts, that's fine, too. I'm quite new to this
-and eager to learn. Also I am in no rush. Good things take time.
-
-In case you're missing my patch on gist.github.com, I decided to
-further develop the driver in a forked linux source tree [4].
-
-It's on the branch amd-sfh. You can just diff to the master branch to
-get the entire patch. The changed files are still under
-drivers/hid/amd-sfh-hid and Documentation/hid respectively.
-
-You'll find that in the meantime I did some more work / learning and
-implemented some rudimentary IRQ handling.
-
-Kind regards,
-
-Richard
-
-[1] https://elixir.bootlin.com/linux/latest/source/include/linux/hid.h#L107=
-0
-[2] https://elixir.bootlin.com/linux/latest/source/drivers/hid/hid-core.c#L=
-1688
-[3] https://elixir.bootlin.com/linux/latest/source/drivers/hid/hid-core.c#L=
-2386
-[3] https://github.com/conqp/linux/tree/amd-sfh
-
---=-qKskeWVPLD7TB1ApjQF3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQT62wKwhMqSt8WaustMqNUjvThq9wUCXp9jHwAKCRBMqNUjvThq
-99I7AP9vmpENS45P92BDw1vV5wR4JcPiqpoc3lYzTupHbHyjXQD+OcnvH+UeIapi
-7dK8yJqSiySCtpBMjt5Nh43DbwBAegs=
-=CNx3
------END PGP SIGNATURE-----
-
---=-qKskeWVPLD7TB1ApjQF3--
-
+Mathieu

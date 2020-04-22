@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5241B4712
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Apr 2020 16:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFFC21B4723
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Apr 2020 16:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727774AbgDVOUG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Apr 2020 10:20:06 -0400
-Received: from smtpout1.mo528.mail-out.ovh.net ([46.105.34.251]:57629 "EHLO
-        smtpout1.mo528.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726643AbgDVOUF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Apr 2020 10:20:05 -0400
-Received: from pro2.mail.ovh.net (unknown [10.109.156.173])
-        by mo528.mail-out.ovh.net (Postfix) with ESMTPS id 4A8E05A6DE6D;
+        id S1727888AbgDVOWO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Apr 2020 10:22:14 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:38519 "EHLO
+        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726419AbgDVOWN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Apr 2020 10:22:13 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.146.85])
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id D40504F477F1;
         Wed, 22 Apr 2020 16:13:07 +0200 (CEST)
 Received: from arch.lan (89.70.31.203) by DAG2EX1.emp2.local (172.16.2.11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Wed, 22 Apr
- 2020 16:13:06 +0200
+ 2020 16:13:07 +0200
 From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
 To:     <linux-iio@vger.kernel.org>
 CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh+dt@kernel.org>, <jic23@kernel.org>,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH 3/6] iio: chemical: scd30: add serial interface driver
-Date:   Wed, 22 Apr 2020 16:11:32 +0200
-Message-ID: <20200422141135.86419-4-tomasz.duszynski@octakon.com>
+Subject: [PATCH 4/6] Documentation: ABI: testing: scd30: document iio attributes
+Date:   Wed, 22 Apr 2020 16:11:33 +0200
+Message-ID: <20200422141135.86419-5-tomasz.duszynski@octakon.com>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
 References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
@@ -35,327 +35,126 @@ Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [89.70.31.203]
 X-ClientProxiedBy: DAG3EX2.emp2.local (172.16.2.22) To DAG2EX1.emp2.local
  (172.16.2.11)
-X-Ovh-Tracer-Id: 5833005946154015767
+X-Ovh-Tracer-Id: 5833005944528591895
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrgeejgdeikecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffojghfggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecukfhppedtrddtrddtrddtpdekledrjedtrdefuddrvddtfeenucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrgh
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrgeejgdeikecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffojghfggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecukfhppedtrddtrddtrddtpdekledrjedtrdefuddrvddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrgh
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add serial interface driver for the SCD30 sensor.
+Add documentation for sensor specific iio attributes.
 
 Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
- drivers/iio/chemical/Kconfig        |  11 ++
- drivers/iio/chemical/Makefile       |   1 +
- drivers/iio/chemical/scd30_serial.c | 262 ++++++++++++++++++++++++++++
- 3 files changed, 274 insertions(+)
- create mode 100644 drivers/iio/chemical/scd30_serial.c
+ Documentation/ABI/testing/sysfs-bus-iio-scd30 | 97 +++++++++++++++++++
+ 1 file changed, 97 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
 
-diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index 0c99f37b6bb0..1b7a58d320e7 100644
---- a/drivers/iio/chemical/Kconfig
-+++ b/drivers/iio/chemical/Kconfig
-@@ -96,6 +96,17 @@ config SCD30_I2C
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called scd30_i2c.
- 
-+config SCD30_SERIAL
-+	tristate "SCD30 carbon dioxide sensor serial driver"
-+	depends on SCD30_CORE && SERIAL_DEV_BUS
-+	select CRC16
-+	help
-+	  Say Y here to build support for the Sensirion SCD30 serial interface
-+	  driver.
-+
-+	  To compile this driver as a module, choose M here: the module will
-+	  be called scd30_serial.
-+
- config SENSIRION_SGP30
- 	tristate "Sensirion SGPxx gas sensors"
- 	depends on I2C
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index f60c8ef358c3..1fac1b14f825 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
- obj-$(CONFIG_PMS7003) += pms7003.o
- obj-$(CONFIG_SCD30_CORE) += scd30_core.o
- obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
-+obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
- obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
- obj-$(CONFIG_SPS30) += sps30.o
- obj-$(CONFIG_VZ89X)		+= vz89x.o
-diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
 new file mode 100644
-index 000000000000..93b98d5f2cc4
+index 000000000000..0431a718447d
 --- /dev/null
-+++ b/drivers/iio/chemical/scd30_serial.c
-@@ -0,0 +1,262 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Sensirion SCD30 carbon dioxide sensor serial driver
-+ *
-+ * Copyright (c) Tomasz Duszynski <tomasz.duszynski@octakon.com>
-+ */
-+#include <asm/unaligned.h>
-+#include <linux/crc16.h>
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/iio/iio.h>
-+#include <linux/jiffies.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/of_irq.h>
-+#include <linux/serdev.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
++++ b/Documentation/ABI/testing/sysfs-bus-iio-scd30
+@@ -0,0 +1,97 @@
++What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Given that sensor's CO2 measurement chamber has fixed volume
++		pressure changes will affect concentration readings. Writing
++		current ambient pressure here will allow senor to make necessary
++		adjustments. Upon reading previously set value is returned.
++		Units are millibars.
 +
-+#include "scd30.h"
++What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp_available
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		The range of available values in millibars represented as the
++		minimum value, the step and the maximum value, all enclosed in
++		square brackets.
 +
-+#define SCD30_SERDEV_ADDR 0x61
-+#define SCD30_SERDEV_WRITE 0x06
-+#define SCD30_SERDEV_READ 0x03
-+#define SCD30_SERDEV_MAX_BUF_SIZE 17
-+#define SCD30_SERDEV_RX_HEADER_SIZE 3
-+#define SCD30_SERDEV_CRC_SIZE 2
-+#define SCD30_SERDEV_TIMEOUT msecs_to_jiffies(500)
++What:		/sys/bus/iio/devices/iio:deviceX/meas_interval
++Date:		January 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Amount of time between subsequent measurements. Writing this
++		attribute will change measurement interval. Upon reading
++		current measurement interval is returned. Units are seconds.
 +
-+struct scd30_serdev_priv {
-+	struct completion meas_ready;
-+	char *buf;
-+	int num_expected;
-+	int num;
-+};
++What:		/sys/bus/iio/devices/iio:deviceX/meas_interval_available
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		The range of available values in seconds represented as the
++		minimum value, the step and the maximum value, all enclosed in
++		square brackets.
 +
-+static u16 scd30_serdev_cmd_lookup_tbl[] = {
-+	[CMD_START_MEAS] = 0x0036,
-+	[CMD_STOP_MEAS] = 0x0037,
-+	[CMD_MEAS_INTERVAL] = 0x0025,
-+	[CMD_MEAS_READY] = 0x0027,
-+	[CMD_READ_MEAS] = 0x0028,
-+	[CMD_ASC] = 0x003a,
-+	[CMD_FRC] = 0x0039,
-+	[CMD_TEMP_OFFSET] = 0x003b,
-+	[CMD_FW_VERSION] = 0x0020,
-+	[CMD_RESET] = 0x0034,
-+};
++What:		/sys/bus/iio/devices/iio:deviceX/asc
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Writing 1 or 0 to this attribute will respectively activate or
++		deactivate automatic self calibration procedure. Upon reading 1
++		is returned if asc is ongoing, 0 otherwise.
 +
-+static u16 scd30_serdev_calc_crc(const char *buf, int size)
-+{
-+	return crc16(0xffff, buf, size);
-+}
++What:		/sys/bus/iio/devices/iio:deviceX/frc
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Forced recalibration is used to compensate for sensor drifts
++		when a reference value of CO2 concentration in close proximity
++		to the sensor is available. Writing attribute will set frc
++		value. Upon reading current frc is returned. Units are
++		millibars.
 +
-+static int scd30_serdev_xfer(struct scd30_state *state, char *txbuf, int txsize,
-+			     char *rxbuf, int rxsize)
-+{
-+	struct serdev_device *serdev = to_serdev_device(state->dev);
-+	struct scd30_serdev_priv *priv = state->priv;
-+	int ret;
++What:		/sys/bus/iio/devices/iio:deviceX/frc_available
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		The range of available values in millibars represented as the
++		minimum value, the step and the maximum value, all enclosed in
++		square brackets.
 +
-+	priv->buf = rxbuf;
-+	priv->num_expected = rxsize;
-+	priv->num = 0;
++What:		/sys/bus/iio/devices/iio:deviceX/temp_offset
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Sensor readings may be affected by ambient temperature.
++		Writing temperature offset will compensate for unwanted changes.
++		Note that written offset gets multiplied by a factor of 100
++		by a sensor internally.
 +
-+	ret = serdev_device_write(serdev, txbuf, txsize, SCD30_SERDEV_TIMEOUT);
-+	if (ret < txsize)
-+		return ret < 0 ? ret : -EIO;
++		For example, writing 10 here will correspond to 0.1 degree
++		Celsius.
 +
-+	ret = wait_for_completion_interruptible_timeout(&priv->meas_ready,
-+							SCD30_SERDEV_TIMEOUT);
-+	if (ret > 0)
-+		ret = 0;
-+	else if (!ret)
-+		ret = -ETIMEDOUT;
++What:		/sys/bus/iio/devices/iio:deviceX/temp_offset_available
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		The range of available values in degrees Celsius represented as
++		the minimum value, the step and the maximum value, all enclosed
++		in square brackets.
 +
-+	return ret;
-+}
-+
-+static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd,
-+				u16 arg, char *rsp, int size)
-+{
-+	/*
-+	 * Communication over serial line is based on modbus protocol (or rather
-+	 * its variation called modbus over serial to be precise). Upon
-+	 * receiving a request device should reply with response.
-+	 *
-+	 * Frame below represents a request message. Each field takes
-+	 * exactly one byte.
-+	 *
-+	 * +------+------+-----+-----+-------+-------+-----+-----+
-+	 * | dev  | op   | reg | reg | byte1 | byte0 | crc | crc |
-+	 * | addr | code | msb | lsb |       |       | lsb | msb |
-+	 * +------+------+-----+-----+-------+-------+-----+-----+
-+	 *
-+	 * The message device replies with depends on the 'op code' field from
-+	 * the request. In case it was set to SCD30_SERDEV_WRITE sensor should
-+	 * reply with unchanged request. Otherwise 'op code' was set to
-+	 * SCD30_SERDEV_READ and response looks like the one below. As with
-+	 * request, each field takes one byte.
-+	 *
-+	 * +------+------+--------+-------+-----+-------+-----+-----+
-+	 * | dev  | op   | num of | byte0 | ... | byteN | crc | crc |
-+	 * | addr | code | bytes  |       |     |       | lsb | msb |
-+	 * +------+------+--------+-------+-----+-------+-----+-----+
-+	 */
-+	char rxbuf[SCD30_SERDEV_MAX_BUF_SIZE];
-+	char txbuf[SCD30_SERDEV_MAX_BUF_SIZE] = { SCD30_SERDEV_ADDR };
-+	int ret, rxsize, txsize = 2;
-+	u16 crc;
-+
-+	put_unaligned_be16(scd30_serdev_cmd_lookup_tbl[cmd], txbuf + txsize);
-+	txsize += 2;
-+
-+	if (rsp) {
-+		txbuf[1] = SCD30_SERDEV_READ;
-+		if (cmd == CMD_READ_MEAS)
-+			/* number of u16 words to read */
-+			put_unaligned_be16(size / 2, txbuf + txsize);
-+		else
-+			put_unaligned_be16(0x0001, txbuf + txsize);
-+		txsize += 2;
-+		crc = scd30_serdev_calc_crc(txbuf, txsize);
-+		put_unaligned_le16(crc, txbuf + txsize);
-+		txsize += 2;
-+		rxsize = SCD30_SERDEV_RX_HEADER_SIZE + size +
-+			 SCD30_SERDEV_CRC_SIZE;
-+	} else {
-+		if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
-+			arg = 0x0001;
-+
-+		txbuf[1] = SCD30_SERDEV_WRITE;
-+		put_unaligned_be16(arg, txbuf + txsize);
-+		txsize += 2;
-+		crc = scd30_serdev_calc_crc(txbuf, txsize);
-+		put_unaligned_le16(crc, txbuf + txsize);
-+		txsize += 2;
-+		rxsize = txsize;
-+	}
-+
-+	ret = scd30_serdev_xfer(state, txbuf, txsize, rxbuf, rxsize);
-+	if (ret)
-+		return ret;
-+
-+	switch (txbuf[1]) {
-+	case SCD30_SERDEV_WRITE:
-+		if (memcmp(txbuf, txbuf, txsize)) {
-+			dev_err(state->dev, "wrong message received\n");
-+			return -EIO;
-+		}
-+		break;
-+	case SCD30_SERDEV_READ:
-+		if (rxbuf[2] != (rxsize -
-+				 SCD30_SERDEV_RX_HEADER_SIZE -
-+				 SCD30_SERDEV_CRC_SIZE)) {
-+			dev_err(state->dev,
-+				"received data size does not match header\n");
-+			return -EIO;
-+		}
-+
-+		rxsize -= SCD30_SERDEV_CRC_SIZE;
-+		crc = get_unaligned_le16(rxbuf + rxsize);
-+		if (crc != scd30_serdev_calc_crc(rxbuf, rxsize)) {
-+			dev_err(state->dev, "data integrity check failed\n");
-+			return -EIO;
-+		}
-+
-+		rxsize -= SCD30_SERDEV_RX_HEADER_SIZE;
-+		memcpy(rsp, rxbuf + SCD30_SERDEV_RX_HEADER_SIZE, rxsize);
-+		break;
-+	default:
-+		dev_err(state->dev, "received unknown op code\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int scd30_serdev_receive_buf(struct serdev_device *serdev,
-+				    const unsigned char *buf, size_t size)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	struct scd30_serdev_priv *priv = state->priv;
-+	int num;
-+
-+	/* just in case sensor puts some unexpected bytes on the bus */
-+	if (!priv->buf)
-+		return 0;
-+
-+	if (priv->num + size >= priv->num_expected)
-+		num = priv->num_expected - priv->num;
-+	else
-+		num = size;
-+
-+	memcpy(priv->buf + priv->num, buf, num);
-+	priv->num += num;
-+
-+	if (priv->num == priv->num_expected) {
-+		priv->buf = NULL;
-+		complete(&priv->meas_ready);
-+	}
-+
-+	return num;
-+}
-+
-+static const struct serdev_device_ops scd30_serdev_ops = {
-+	.receive_buf = scd30_serdev_receive_buf,
-+	.write_wakeup = serdev_device_write_wakeup,
-+};
-+
-+static int scd30_serdev_probe(struct serdev_device *serdev)
-+{
-+	struct device *dev = &serdev->dev;
-+	struct scd30_serdev_priv *priv;
-+	int irq, ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	init_completion(&priv->meas_ready);
-+	serdev_device_set_client_ops(serdev, &scd30_serdev_ops);
-+
-+	ret = devm_serdev_device_open(dev, serdev);
-+	if (ret)
-+		return ret;
-+
-+	serdev_device_set_baudrate(serdev, 19200);
-+	serdev_device_set_flow_control(serdev, false);
-+
-+	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-+	if (ret)
-+		return ret;
-+
-+	irq = of_irq_get(dev->of_node, 0);
-+	if (irq <= 0)
-+		irq = 0;
-+
-+	return scd30_probe(dev, irq, KBUILD_MODNAME, priv,
-+			   scd30_serdev_command);
-+}
-+
-+static const struct of_device_id scd30_serdev_of_match[] = {
-+	{ .compatible = "sensirion,scd30" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, scd30_serdev_of_match);
-+
-+static struct serdev_device_driver scd30_serdev_driver = {
-+	.driver = {
-+		.name = KBUILD_MODNAME,
-+		.of_match_table = scd30_serdev_of_match,
-+		.pm = &scd30_pm_ops,
-+	},
-+	.probe = scd30_serdev_probe,
-+};
-+module_serdev_device_driver(scd30_serdev_driver);
-+
-+MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-+MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor serial driver");
-+MODULE_LICENSE("GPL v2");
++What:		/sys/bus/iio/devices/iio:deviceX/reset
++Date:		April 2020
++KernelVersion:	5.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Software reset mechanism forces sensor into the same state
++		as after powering up without the need for removing power supply.
++		Writing any value will reset sensor.
 -- 
 2.26.1
 

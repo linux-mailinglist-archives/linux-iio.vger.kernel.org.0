@@ -2,174 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C664F1B45D9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Apr 2020 15:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88281B45E2
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Apr 2020 15:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726384AbgDVNHb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Apr 2020 09:07:31 -0400
-Received: from mail-dm6nam11on2047.outbound.protection.outlook.com ([40.107.223.47]:10878
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725810AbgDVNHb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 22 Apr 2020 09:07:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Lp4yhMwB3cJsyShvMYamQMP/znropGJXeOGTCAS+PwYRzetbl0oOiIZLNF3K7B40lLRDZXG8LJEiXt3EL5sNpmKKaod/YGk8EdRXnK5y05COz/w0PRts1Mf0ZLpw8sSS9z4RwtsXNp7rvNeVQn0rvG5aba640o6u3ovhGkmG4gjMNarScpKfiQZPu+EbUZdZstTjTAm23KHeUsoVS/ogMl5Sc8QerVulGnMQCaS7YZJiJ49h/SOJbSDdhOq9NEWAskDiAgSMVU1kXU2aM8/W3cTnyahL0QtNI2Mmf59ObrsVH1fDliVh8F6PcdqOhP1/gfGvbqaCG7rhF55Xg3LEHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W4bpvdz5V9jtSjE+DbqHfp8lsqJtMkdFMRvo1cEzeWo=;
- b=KHkTr/L9lcjQbHqC0lw8t/laY6/YdBJHwEq2ilb2r7HetWfaWb1ysgPkB2ywH2nQ9x4WeeI7JeL7OI6QdiSCx2uz8madHvHxJeK4sicyAkijI8VKp+huXGzmLQ3yTlxrfj1eYX2Bar5M2xPQP4usbw7Nd46LUhhdmt0J5aVdHe4++Tkih+MOt1ZnrNoLfNBq8Fgn3iErYzp+b9JWwgpLebtG5mMMEatYFCj2mMfYyzQ1nYCGtdBDCkbQAP/95F9Hv2d+lxWQNgooU06X+0LVMG33bM70b9HqJygmmwA8/TfjwCfN6PLOsFyJv2QJvUo18bdOyr0/lNfWygAvOIfovA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+        id S1726116AbgDVNJI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Apr 2020 09:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725810AbgDVNJH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Apr 2020 09:09:07 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83374C03C1A9;
+        Wed, 22 Apr 2020 06:09:07 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id v4so4915108wme.1;
+        Wed, 22 Apr 2020 06:09:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W4bpvdz5V9jtSjE+DbqHfp8lsqJtMkdFMRvo1cEzeWo=;
- b=RN9dfSp9qDONy7eFbCwjBd5VeibXaAUI/t24scWUDDkEXMxoXFSZFHzbncByOmgu+vrRfZeoUTqQ4/ET5+qgox3Z6HwzJaI1dmySHAwwMuHshqThMPh/jiKs3VOqFn7CTGYyON1DhbUWAAxXsE0ie9TNa2IxTY1QI0Clh0GapSQ=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Nehal-bakulchandra.Shah@amd.com; 
-Received: from BN6PR1201MB2467.namprd12.prod.outlook.com (2603:10b6:404:a7::8)
- by BN6PR1201MB2465.namprd12.prod.outlook.com (2603:10b6:404:a6::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.29; Wed, 22 Apr
- 2020 13:07:23 +0000
-Received: from BN6PR1201MB2467.namprd12.prod.outlook.com
- ([fe80::8daf:74d4:cbe4:759]) by BN6PR1201MB2467.namprd12.prod.outlook.com
- ([fe80::8daf:74d4:cbe4:759%12]) with mapi id 15.20.2921.030; Wed, 22 Apr 2020
- 13:07:23 +0000
-Subject: Re: ucsi and DRD controller interaction
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>, linux-usb@vger.kernel.org,
-        Jagadish.Hadimani@amd.com
-References: <26823688-3b9c-5869-bcb6-4d6e5dcd77bc@amd.com>
- <20200421074353.GE3768833@kuha.fi.intel.com>
- <1d4fd9f3-8ea6-c054-0ba4-d50d78226fae@amd.com>
- <20200422110056.GB618654@kuha.fi.intel.com>
-From:   "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
-Message-ID: <841d88c6-e08b-72d3-6884-0aa51805e3be@amd.com>
-Date:   Wed, 22 Apr 2020 18:37:10 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-In-Reply-To: <20200422110056.GB618654@kuha.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-ClientProxiedBy: BMXPR01CA0025.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:c::11) To BN6PR1201MB2467.namprd12.prod.outlook.com
- (2603:10b6:404:a7::8)
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RKZeIF5oa3PJGYfL412u0zBLwHBoYTt9cbGj5XIHl7w=;
+        b=NZ8PkCeHEJb93tczaENRAIVlVsv5YvvQfIvNgzZqUu90AJ2bRIxEhOHszY209N/LLN
+         uFndkxXGY1EJGgQlzVnWX+F6wk8mfNgrdTtMmC6SJ+9hV/6wIntc7oU4j7ku1ASfNjGT
+         AkiyNOQO2FD7kfl8UmcKrH0Qkfo3SooN5iYYvkGUn5MWryhIxaYYTmQ/+uVByK5+5Lan
+         pcKv3RjWbLoplpSPoK0MI7f4LXUuqqMhmz3CgIWyv/iM42JqvG0/daXbMxt5mHkVlbce
+         D60rNLSNGzc4YX5P896pH05DNWDOFxOLZs8DfEa7Rfjszbb9arilSw4GmHpVK9FO1tr5
+         LUnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RKZeIF5oa3PJGYfL412u0zBLwHBoYTt9cbGj5XIHl7w=;
+        b=oTDNaJsLO/bkIvR/wt5z0P0Hc1MxT7/IKf9RK1EO19Fxz9VZ4ln2rAojlMysYhDkCu
+         MXDffzpxMAmp4gSV3ZQmpGMPEergB2Rk0QbOLOkH8Qhoe+2Ck+x/AgoE8MiN/NIDpM40
+         t+yXSkBCjoZfDWgWgLlTzGTFLVMBgcacSkBPdnaYzan1+yxr4LN7EhdI1spNSqNvA0jU
+         khYfkcfh5OpzNpqVt+PXp31HkRQYIKeVfZYF8whCVUw1kjwD+5aZM3V7rsc3r2oToUKI
+         FHxAQrs4FwbOjyfFf7w6/BaFVR+Fzzx3NWGBSjTxAaqk5H6ZvJBE9InK2D4vNEJqVXoD
+         UsQQ==
+X-Gm-Message-State: AGi0PubiDOpP1bEUj23FQhS/sYBNMxktFWipPQ3361jtC/5yBnaa1Pkk
+        o/kXFtjFC4kfpzbRlpa34QQ=
+X-Google-Smtp-Source: APiQypKLVEuv665pnccyANSRDruxEFNubppeFp7M7T06aH564HbzZu1v5VJUk8fs3z4dS4rSuo7spw==
+X-Received: by 2002:a05:600c:2218:: with SMTP id z24mr10372240wml.82.1587560946273;
+        Wed, 22 Apr 2020 06:09:06 -0700 (PDT)
+Received: from meru.fronius.com ([2a01:cb18:832e:5f00:8872:7e71:5cf6:8a5b])
+        by smtp.gmail.com with ESMTPSA id o3sm2064820wru.68.2020.04.22.06.09.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2020 06:09:05 -0700 (PDT)
+From:   Mathieu Othacehe <m.othacehe@gmail.com>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH v5 0/4] iio: vcnl: Add interrupts support for VCNL4010/20.
+Date:   Wed, 22 Apr 2020 15:08:52 +0200
+Message-Id: <20200422130856.1722-1-m.othacehe@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.0.104] (202.62.82.154) by BMXPR01CA0025.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:c::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.26 via Frontend Transport; Wed, 22 Apr 2020 13:07:21 +0000
-X-Originating-IP: [202.62.82.154]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: bf7776aa-52e5-46f9-af18-08d7e6be18db
-X-MS-TrafficTypeDiagnostic: BN6PR1201MB2465:|BN6PR1201MB2465:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN6PR1201MB2465268669F094ECB3E7907EA0D20@BN6PR1201MB2465.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-Forefront-PRVS: 03818C953D
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR1201MB2467.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(396003)(39860400002)(366004)(136003)(376002)(346002)(81156014)(186003)(8676002)(16526019)(31696002)(86362001)(956004)(2616005)(31686004)(6916009)(2906002)(36756003)(5660300002)(8936002)(4326008)(66946007)(6486002)(6666004)(55236004)(478600001)(66556008)(66476007)(16576012)(52116002)(316002)(966005)(26005)(53546011);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jGEqioMuQTcBcREoZ1OCjzVzEbRFsUcPc2jLHyYcu4YLz/gYUKeTC+f8jptjZ3KNikLgG6py22YzLaDqAIrNcVB0uJePkt6R9RIH2AGiTdcintKUwlMvyPSPcalUbbqXp+uZhJLLvXEB9yVPvYBGhVLg34hZeJpcwmNQHikE7drJER4QiEhg+PJq143yQwpk/qDs7VdH8naXBbUhwZ4ydoNWwBZIkIaxWmw01iAuXqpCF2h28EyP4VWahQH4it8m6R3XtKnKgSUUlrwOfrOsrl4BcOSnGwhhJu6Tq3Iz9PgjpHBWvsFcbe3jqX+WnqbB7jTykg2G9GPWPTSLZHpNKgO9blIM6RUQZECZfK+KMFFk7u8zPVChbF4UOqmo+6h1bcy9xOJ/Bg2pjs+wbGCNAZJPOI/g9L4kzYmyxwFXvHNLe1TjmMheazRlQeU2NdvaL7V8/xsFtfkmzyxXvmP1l9BoworufwOdLjkRoxZ1ZnMbjkveNZlDj6llXievl8GV4scVnkUjvXVifi4WVlySJA==
-X-MS-Exchange-AntiSpam-MessageData: nJb7hG83JcqxCD3yEr8MP3u+r72H5q/AcQA7R8zfIeEYwlaxm0hnaL84BSd8YqlDQMlx9ULA/AKVjAbfbWae6i1gAZmDbJd+O+OHtxvTuE6MCZonkIlnnxahTbZCCIYUWnaEb5CLkurbdfsAkZu5rA==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf7776aa-52e5-46f9-af18-08d7e6be18db
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2020 13:07:23.4248
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8cmVAvhwwhNE1FRa7FO2XTym+Sy/8/7hoPj50WtS91f6y7rwRpmbyKT4TV1/emec
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1201MB2465
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi
+Hello,
 
-On 4/22/2020 4:30 PM, Heikki Krogerus wrote:
-> On Tue, Apr 21, 2020 at 07:23:30PM +0530, Shah, Nehal-bakulchandra wrote:
->> Hi
->>
->> On 4/21/2020 1:13 PM, Heikki Krogerus wrote:
->>> Adding linux-usb mailing list.
->>>
->>> On Mon, Apr 20, 2020 at 07:09:17PM +0530, Shah, Nehal-bakulchandra wrote:
->>>> Hi Heikki ,
->>>>
->>>> I need some pointer from you, so in a system where I have UCSI driver for DRD
->>>> Controller, then how call stack will be?
->>>>
->>>> I am unable to comprehend the flow from UCSI infrastructure to DRD controller
->>>> code base.
->>> Do you need to tell the negotiated data role to your USB controller
->>> driver from the UCSI driver? For that we would need to know which USB
->>> controller, or more precisely, which USB port is connected to the
->>> USB Type-C connector in question.
->>>
->>> That would require ACPI tables to be able to describe the connection
->>> between the USB Type-C connector and the USB port (and the connection
->>> between DisplayPort and the USB Type-C connector etc.). Unfortunately
->>> there is currently no documented way of doing that, however, there is
->>> a proposal for a document the defines how the USB Type-C connectors
->>> should be described in ACPI in general. The proposal does consider
->>> this problem as well. For this the solution is to use _DSD device
->>> properties "usb2-port" and "usb3-port" that have references to the
->>> correct USB port nodes as values.
->>>
->>> Which USB controller are you using btw?
->>>
->>> thanks,
->> Thanks for the mail.
->>
->> Here is the configuration
->>
->> 1. DRD Controller (DWC3 controller)
->>
->> 2. TI PD Controller
->>
->> 3. TI PD Controller and Host has I2C as transport layer. So ACPI mechanism wont work here.
->>
->>
->> Hence i was wondering, is there any way from UCSI Driver we inform to DWC3 driver stack about Role change. I can understand one point that,
->>
->> DWC3 controller can work without UCSI Implementation i.e Only PD firmware. But i want to understand  if there is a role change, PD interrupt will be generated
->>
->> and UCSI Driver will come to know about this role change. But from this onwards , i am  unable to comprehend how it can be propagated upto DWC3 stack.
-> If the Type-C drivers need to tell DWC3 driver the data role (USB
-> role) the connector is operating in, then you use the USB Role Switch
-> Class for that (drivers/usb/role/). The USB Type-C driver (so ucsi.c
-> or tps6598x.c in this case) that knows the USB role tells it to the
-> USB role class by calling usb_role_switch_set_role().
->
-> The USB role switch class then takes care of forwarding the
-> information to the actual switch, which is DWC3 in this case. The DWC3
-> driver already registers the USB role switch for you
-> (drivers/usb/dwc3/drd.c), but the UCSI driver, and also tps6598x.c,
-> does not use the USB role switch API yet. There has never been need
-> for that before this.
->
-> Adding USB role switch handling to the UCSI and tps6598x drivers can
-> easily be fixed, but it's still not enough. You still need to describe
-> the connection between the USB PD controller and DWC3 somewhere.
->
-> thanks,
+Here's a v5 taking Andy remarks into account.
 
-appreciate your input.  So if understand correctly, something like below  patch has to be done
+Thanks,
 
-http://lkml.iu.edu/hypermail/linux/kernel/2003.1/04687.html
+Mathieu
 
-So this patch is still under review? right, and this will take for "Registering a role switch in the DRD code". So then from ucsi.c we need to
+Changes from v4:
+* Rename vcnl4010_in_periodic_mode into vcnl4010_is_in_periodic_mode
+and vcnl4010_thr_enabled into vcnl4010_is_thr_enabled.
+Also fix bitmask checking in those functions.
+* Refactor vcnl4010_write_proxy_samp_freq to loop in the
+other direction.
 
-call the role class. Also, the above patch is based on device tree binding (i.e for arm platform)but in my case i have x86 so do i have to expose this via ACPI?
+Changes from v3:
+* Use i2c_smbus_read_byte_data and i2c_smbus_write_word_data
+for read and write functions.
+* Rename vcnl4010_prox_threshold to vcnl4010_config_threshold.
+* Do not lock i2c accesses as they are already protected.
+* Fix a typo in irq name.
+* Do not provide ALS sampling frequency operation, as ALS data
+are not buffered anymore.
+* Return bool in vcnl4010_in_periodic_mode and vcnl4010_thr_enabled
+functions.
 
-Regards
+Changes from v2:
+* Rebase on iio testing branch.
+* Remove useless test in vcnl4010_probe_trigger.
 
-Nehal Shah
+Changes from v1:
+* Split into four different patches.
+* Use iio_device_claim_direct_mode to protect
+raw access from buffer capture.
+* Requesting a sampling frequency above the limit is no longer possible.
+* Inline read_isr and write_isr functions.
+* Remove IIO_LIGHT data from buffer capture.
+* Make sure postenable and predisable functions respect the common form.
+* Do not set the trigger by default.
+* Remove the devm_iio_triggered_buffer_setup top half.
+
+Mathieu Othacehe (4):
+  iio: vcnl4000: Factorize data reading and writing.
+  iio: vcnl4000: Add event support for VCNL4010/20.
+  iio: vcnl4000: Add sampling frequency support for VCNL4010/20.
+  iio: vcnl4000: Add buffer support for VCNL4010/20.
+
+ drivers/iio/light/Kconfig    |   2 +
+ drivers/iio/light/vcnl4000.c | 750 ++++++++++++++++++++++++++++++++---
+ 2 files changed, 686 insertions(+), 66 deletions(-)
+
+-- 
+2.26.0
 

@@ -2,115 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D49D1B5336
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Apr 2020 05:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24D9C1B53D5
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Apr 2020 06:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbgDWDn2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Apr 2020 23:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726002AbgDWDn1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Apr 2020 23:43:27 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58890C03C1AA
-        for <linux-iio@vger.kernel.org>; Wed, 22 Apr 2020 20:43:27 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id p10so4888796ioh.7
-        for <linux-iio@vger.kernel.org>; Wed, 22 Apr 2020 20:43:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FVtIjnpSf5LbpdK1udZaGf8l6jxgW8vEApCuaJr7DLA=;
-        b=RB5Mu5CGL8wOd/nwjvsvrx4OJUpV0ViQYOOz/JyrWwKukpAv7HP418yqQ15tTSlyfH
-         M7JH37dal0UVxRtepLDldHoaCwltw81Kv/Vaa+5lMqKQhfOr+U+Oe665YhX3rnUSr1dn
-         kP9UkiJoDXBwzVPz24hM22HOEzD6e+q2rooEg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FVtIjnpSf5LbpdK1udZaGf8l6jxgW8vEApCuaJr7DLA=;
-        b=DJDrSYo4Ax1oMuDpZnx9i+/dP0JUARs0689EanuDzccbYjBHRVK1INWodORQfTTyb7
-         eqymkJNqgwPVMITbGcuJoCorMzhy2EmJiq5+tHnyfns22uuur3l3ShpAIVTqVQpMzm5g
-         oZXbfC2tOJOuTDc+x4F3a2Ik2HgI7wqAQHfBggT4SXfOXaD0V9BkfCM2qErNogSIDiBB
-         kPuD7rfP1Sy44oB4OaVIZpLCuNC5RmU8Y/bzPnQjHM7HebpFXK+abO7fqpTMRIkB9vB0
-         nGkiq12088YF42A9doHeJ5W2L4wZFN50Fxy+DVUHRjyOcBqjOmScSFZkIl+yotvsgeHx
-         8lEQ==
-X-Gm-Message-State: AGi0PubgemSSmdXbOo6b0So7HxPT6Qiz2Kak+GEmPBvglTHvr2ifMKQu
-        CHmlUSp93nQY8E+3+FoGKmD8v0s8ASN4PTSV+JcV5eZu4SwSm/6p
-X-Google-Smtp-Source: APiQypJ0DTeUzRERj3zfr6NoWysEzVAvR+zpq57mc+hAFunyn+olEAvyD8cSwXkdZXfznGIoL8JHmoXGDLLYAE7sb20=
-X-Received: by 2002:a6b:3e0a:: with SMTP id l10mr1866090ioa.112.1587613406759;
- Wed, 22 Apr 2020 20:43:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200419232847.32206-1-matt.ranostay@konsulko.com>
- <20200422182742.00004e9b@huawei.com> <CAJCx=gmHeyAsjf8ZkWpSE9=uDHtX7=5jES9sx0=P3kZh=TDHng@mail.gmail.com>
-In-Reply-To: <CAJCx=gmHeyAsjf8ZkWpSE9=uDHtX7=5jES9sx0=P3kZh=TDHng@mail.gmail.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Wed, 22 Apr 2020 20:43:15 -0700
-Message-ID: <CAJCx=gnjj6pp9=aEKohdmxrsm+aRgSO9wus3p8oLd01JQGoOUw@mail.gmail.com>
-Subject: Re: [PATCH] iio: chemical: atlas-sensor: correct DO-SM channels
+        id S1725961AbgDWEwn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Apr 2020 00:52:43 -0400
+Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:38474 "EHLO
+        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1725867AbgDWEwn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Apr 2020 00:52:43 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 0AA90200987E;
+        Thu, 23 Apr 2020 12:52:41 +0800 (HKT)
+X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
+Received: from mail.gtsys.com.hk ([127.0.0.1])
+        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id VZx7VtcbFw3r; Thu, 23 Apr 2020 12:52:40 +0800 (HKT)
+Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id DC490200986C;
+        Thu, 23 Apr 2020 12:52:40 +0800 (HKT)
+Received: from [10.128.2.32] (unknown [124.217.189.45])
+        by s01.gtsys.com.hk (Postfix) with ESMTPSA id 8F604C01A1D;
+        Thu, 23 Apr 2020 12:52:40 +0800 (HKT)
+Subject: Re: inquiry: where to place iio/ bandpass filter driver
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-iio@vger.kernel.org
+References: <55472b69-c587-ca04-d3b9-c8615e6a652d@gtsys.com.hk>
+ <20200417102350.00003a28@Huawei.com>
+ <a67b5e24-94df-cc84-73ae-004c0a27a26a@gtsys.com.hk>
+ <20200422182540.0000410f@huawei.com>
+From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Message-ID: <0af907a2-c85e-ab40-2fed-ba391fad0fed@gtsys.com.hk>
+Date:   Thu, 23 Apr 2020 12:52:30 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200422182540.0000410f@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 22, 2020 at 8:42 PM Matt Ranostay
-<matt.ranostay@konsulko.com> wrote:
->
-> On Wed, Apr 22, 2020 at 10:27 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Mon, 20 Apr 2020 02:28:47 +0300
-> > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-> >
-> > > IIO_CONCENTRATION channel for the DO-SM shouldn't be indexed as
-> > > there isn't more than one, and also ATLAS_CONCENTRATION_CHANNEL
-> > > macro scan_index define steps on the IIO_TIMESTAMP channel.
-> > >
->
-> Fixes: 1a881ed8a43b  (iio: chemical: atlas-sensor: add RTD-SM module support)
+Hi,
 
-Oops wrong change for Fixes tag. Sorry about that..
+On 23/4/2020 1:25 am, Jonathan Cameron wrote:
+> On Tue, 21 Apr 2020 08:37:13 +0800
+> Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
+>
+>> Jonathan,
+>>
+>> On 17/4/2020 5:23 pm, Jonathan Cameron wrote:
+>>> On Thu, 16 Apr 2020 11:48:31 +0800
+>>> Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
+>>>   
+>>>> Hi,
+>>>>
+>>>> I'm working on implementation for ltc6602 dual match bandpass
+>>>> filter spi driver.
+>>>> The driver tree has a iio/frequency which has PLLs at time beeing
+>>>> and I wondering to drop my driver there or have a new directory
+>>>> freqfilter or bpf ?
+>>>>
+>>>> This isn't urgent, but would be nice to know.
+>>>>   
+>>> Perhaps iio/afe?  It's a type of analog front end (or might be used
+>>> as such). Is the intent to wrap these up as a consumer of an ADC?
+>>> So they ultimately provide a unified device presentation to
+>>> userspace of the ADC + filters. Or are we looking at simply
+>>> controlling a filter which doesn't connect to an ADC or DAC visible
+>>> to us?
+>>>
+>>> I'm not against a new directory for filters though.  Don't be
+>>> specific on the type unless we need to be :)
+>>>
+>>> Jonathan
+>> I place the driver into afe, makes totally sense to me, but have to
+>> create a directory
+>> linux/iio/afe which is not existing while I write this.
+> curious.  It was introduced in 4.18.
+>
+> What tree are you working on top of?
+linux-next , tag 20200408, 20200420
 
-Fixes: a751b8e48018 (iio: chemical: atlas-sensor: add DO-SM module support)
+the include/linux/iio/afe not here.
+
 
 >
-> > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> >
-> > Fixes tag?
-> >
-> > J
-> > > ---
-> > >  drivers/iio/chemical/atlas-sensor.c | 14 +++++++++++++-
-> > >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/iio/chemical/atlas-sensor.c
-> > > b/drivers/iio/chemical/atlas-sensor.c index
-> > > 82d470561ad3..7b199ce16ecf 100644 ---
-> > > a/drivers/iio/chemical/atlas-sensor.c +++
-> > > b/drivers/iio/chemical/atlas-sensor.c @@ -194,7 +194,19 @@ static
-> > > const struct iio_chan_spec atlas_orp_channels[] = { };
-> > >
-> > >  static const struct iio_chan_spec atlas_do_channels[] = {
-> > > -     ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_DO_DATA),
-> > > +     {
-> > > +             .type = IIO_CONCENTRATION,
-> > > +             .address = ATLAS_REG_DO_DATA,
-> > > +             .info_mask_separate =
-> > > +                     BIT(IIO_CHAN_INFO_RAW) |
-> > > BIT(IIO_CHAN_INFO_SCALE),
-> > > +             .scan_index = 0,
-> > > +             .scan_type = {
-> > > +                     .sign = 'u',
-> > > +                     .realbits = 32,
-> > > +                     .storagebits = 32,
-> > > +                     .endianness = IIO_BE,
-> > > +             },
-> > > +     },
-> > >       IIO_CHAN_SOFT_TIMESTAMP(1),
-> > >       {
-> > >               .type = IIO_TEMP,
-> >
+>> will be then:
+>> drivers/iio/afe/ltc6602.c
+>> include/linux/iio/afe/ltc6602.h
+> possibly on the header, but most IIO drivers don't have their own
+> header. For kernel code it is preferred to put as much as possible
+> directly in the c file.  The exceptions are drivers needing multiple
+> files or where the header is used in conjunction with a DT binding.
+>
+>> add entry to drivers/iio/afe/Kconfig + Makefile.
+>>
+>> If i have the driver ready and checked I send my patches
+> Great.
+>
+> Jonathan
+>> Cheers
+>> Chris
+>>
+>>>> Regards
+>>>> Chris
+>>>   
+
+-- 
+GTSYS Limited RFID Technology
+9/F, Unit E, R07, Kwai Shing Industrial Building Phase 2,
+42-46 Tai Lin Pai Road, Kwai Chung, N.T., Hong Kong
+Tel (852) 9079 9521
+
+Disclaimer: https://www.gtsys.com.hk/email/classified.html
+

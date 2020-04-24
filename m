@@ -2,48 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADDA21B6CD6
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3271B6CD5
 	for <lists+linux-iio@lfdr.de>; Fri, 24 Apr 2020 06:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726126AbgDXE4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1725919AbgDXE4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Fri, 24 Apr 2020 00:56:40 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:38280 "EHLO
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:38278 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725852AbgDXE4k (ORCPT
+        by vger.kernel.org with ESMTP id S1725823AbgDXE4k (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Apr 2020 00:56:40 -0400
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03O4rGIZ028901;
-        Fri, 24 Apr 2020 00:56:22 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 30fxf6csfp-1
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03O4qul1024418;
+        Fri, 24 Apr 2020 00:56:24 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30fxf6csfu-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 24 Apr 2020 00:56:22 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 03O4uLEU016508
+        Fri, 24 Apr 2020 00:56:24 -0400
+Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03O4tF9c030227;
+        Fri, 24 Apr 2020 00:56:24 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30fxf6csfq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 24 Apr 2020 00:56:24 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 03O4uNfR047659
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 24 Apr 2020 00:56:21 -0400
+        Fri, 24 Apr 2020 00:56:23 -0400
 Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 24 Apr 2020 00:56:20 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ 15.1.1779.2; Fri, 24 Apr 2020 00:56:22 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
  ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 24 Apr 2020 00:56:20 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 24 Apr 2020 00:56:20 -0400
+ 15.1.1779.2; Fri, 24 Apr 2020 00:56:21 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 24 Apr 2020 00:56:21 -0400
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03O4uGpj017534;
-        Fri, 24 Apr 2020 00:56:17 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03O4uGpk017534;
+        Fri, 24 Apr 2020 00:56:18 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <lars@metafoo.de>, <jic23@kernel.org>, <pmeerw@pmeerw.net>,
-        "Alexandru Ardelean" <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 0/7] iio: core,buffer: re-organize chardev creation
-Date:   Fri, 24 Apr 2020 07:56:35 +0300
-Message-ID: <20200424045642.4903-1-alexandru.ardelean@analog.com>
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v4 1/7] iio: Use an early return in iio_device_alloc to simplify code.
+Date:   Fri, 24 Apr 2020 07:56:36 +0300
+Message-ID: <20200424045642.4903-2-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200424045642.4903-1-alexandru.ardelean@analog.com>
+References: <20200424045642.4903-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRoutedOnPrem: True
@@ -51,7 +61,7 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
  definitions=2020-04-24_01:2020-04-23,2020-04-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
  priorityscore=1501 spamscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
- suspectscore=2 bulkscore=0 impostorscore=0 mlxlogscore=939 phishscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2004240035
 Sender: linux-iio-owner@vger.kernel.org
@@ -59,68 +69,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The main intent is to be able to add more chardevs per IIO device, one
-for each buffer. To get there, some rework is needed.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Since v3, some changes have been done. See changelog
+Noticed whilst reviewing Alexandru's patch to the same function.
+If we simply flip the logic and return NULL immediately after memory
+allocation failure we reduce the indent of the following block and
+end up with more 'idiomatic' kernel code.
 
-Changelog v3 -> v4:
-- added patch [1] 'iio: Use an early return in iio_device_alloc to simplify code.'
-  it's main purpose is so that this patch applies:
-     [2]'iio: core: add simple centralized mechanism for ioctl() handlers'
-  depending on the final version of patch [1], patch [2] needs some
-  minor fixup
-- added patch 'iio: core,buffer: wrap iio_buffer_put() call into iio_buffers_put()'
-- patch 'iio: core: register buffer fileops only if buffer present'
-  is now: 'iio: core: register chardev only if needed'
-- dropped 'iio: buffer: move sysfs alloc/free in industrialio-buffer.c'
-  it's likely we won't be doing this patch anymore
-- patches:
-    'iio: buffer: move iio buffer chrdev in industrialio-buffer.c'
-    'iio: event: move event-only chardev in industrialio-event.c'
-  have been merged into 'iio: buffer,event: duplicate chardev creation for buffers & events'
-  since now, the logic is a bit different, and 'indio_dev->chrdev' is
-  now a reference to either the buffer's chrdev & or the events-only
-  chrdev
-- added simple mechanism to register ioctl() handlers for IIO device
-  which is currently used only by events mechanism
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/industrialio-core.c | 46 ++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-Changelog v2 -> v3:
-* removed double init in
-  'iio: event: move event-only chardev in industrialio-event.c'
-
-Changelog v1 -> v2:
-* re-reviewed some exit-paths and cleanup some potential leaks on those
-  exit paths:
-  - for 'iio: buffer: move iio buffer chrdev in industrialio-buffer.c'
-    add iio_device_buffers_put() helper and calling iio_buffers_uninit()
-    on device un-regsiter
-  - for 'move sysfs alloc/free in industrialio-buffer.c'
-    call 'iio_buffer_free_sysfs_and_mask()' on exit path if
-    cdev_device_add() fails
-  - for 'move event-only chardev in industrialio-event.c'
-    check if event_interface is NULL in
-    iio_device_unregister_event_chrdev()
-
-Alexandru Ardelean (6):
-  iio: buffer: add back-ref from iio_buffer to iio_dev
-  iio: core,buffer: wrap iio_buffer_put() call into iio_buffers_put()
-  iio: core: register chardev only if needed
-  iio: buffer,event: duplicate chardev creation for buffers & events
-  iio: core: add simple centralized mechanism for ioctl() handlers
-  iio: core: use new common ioctl() mechanism
-
-Jonathan Cameron (1):
-  iio: Use an early return in iio_device_alloc to simplify code.
-
- drivers/iio/iio_core.h            |  29 ++++--
- drivers/iio/industrialio-buffer.c | 102 ++++++++++++++++++--
- drivers/iio/industrialio-core.c   | 151 ++++++++++++------------------
- drivers/iio/industrialio-event.c  | 100 +++++++++++++++++++-
- include/linux/iio/buffer_impl.h   |  10 ++
- include/linux/iio/iio.h           |   8 +-
- 6 files changed, 290 insertions(+), 110 deletions(-)
-
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index f4daf19f2a3b..3c97090c2ab9 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1492,7 +1492,7 @@ struct device_type iio_device_type = {
+  **/
+ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ {
+-	struct iio_dev *dev;
++	struct iio_dev *indio_dev;
+ 	size_t alloc_size;
+ 
+ 	alloc_size = sizeof(struct iio_dev);
+@@ -1503,30 +1503,30 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 	/* ensure 32-byte alignment of whole construct ? */
+ 	alloc_size += IIO_ALIGN - 1;
+ 
+-	dev = kzalloc(alloc_size, GFP_KERNEL);
+-
+-	if (dev) {
+-		dev->dev.groups = dev->groups;
+-		dev->dev.type = &iio_device_type;
+-		dev->dev.bus = &iio_bus_type;
+-		device_initialize(&dev->dev);
+-		dev_set_drvdata(&dev->dev, (void *)dev);
+-		mutex_init(&dev->mlock);
+-		mutex_init(&dev->info_exist_lock);
+-		INIT_LIST_HEAD(&dev->channel_attr_list);
+-
+-		dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
+-		if (dev->id < 0) {
+-			/* cannot use a dev_err as the name isn't available */
+-			pr_err("failed to get device id\n");
+-			kfree(dev);
+-			return NULL;
+-		}
+-		dev_set_name(&dev->dev, "iio:device%d", dev->id);
+-		INIT_LIST_HEAD(&dev->buffer_list);
++	indio_dev = kzalloc(alloc_size, GFP_KERNEL);
++	if (!indio_dev)
++		return NULL;
++
++	indio_dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
++	if (indio_dev->id < 0) {
++		/* cannot use a dev_err as the name isn't available */
++		pr_err("failed to get device id\n");
++		kfree(indio_dev);
++		return NULL;
+ 	}
+ 
+-	return dev;
++	dev_set_name(&indio_dev->dev, "iio:device%d", indio_dev->id);
++	indio_dev->dev.groups = indio_dev->groups;
++	indio_dev->dev.type = &iio_device_type;
++	indio_dev->dev.bus = &iio_bus_type;
++	device_initialize(&indio_dev->dev);
++	dev_set_drvdata(&indio_dev->dev, (void *)indio_dev);
++	mutex_init(&indio_dev->mlock);
++	mutex_init(&indio_dev->info_exist_lock);
++	INIT_LIST_HEAD(&indio_dev->channel_attr_list);
++	INIT_LIST_HEAD(&indio_dev->buffer_list);
++
++	return indio_dev;
+ }
+ EXPORT_SYMBOL(iio_device_alloc);
+ 
 -- 
 2.17.1
 

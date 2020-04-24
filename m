@@ -2,124 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D21B1B71E1
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Apr 2020 12:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA251B7252
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Apr 2020 12:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726699AbgDXKYE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Apr 2020 06:24:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726289AbgDXKYE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Apr 2020 06:24:04 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF76CC09B045;
-        Fri, 24 Apr 2020 03:24:03 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id k13so10127538wrw.7;
-        Fri, 24 Apr 2020 03:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=bQcbk8WYbUCXM8knUlOISeoGEbWqFrfG0URxAnWtDsk=;
-        b=XoXClpEkuyudeUYr11NBZJIDel5oAqmbmXwO22lDlR4ljNBMJ5bf9ZtmMOwat81W9+
-         qzhm9UCn6F6ZwHy0BQ8lHBEnc6kj+oB/7FhZ4aiP34YtfOSbVdtuDyCDh4D7zY1iAyln
-         kz2EGoWsZbwP37W0p4DlM6rTX3VJYhXHkCZM+IVOWEyTPpvkasxNol4hMfVEJDg6IwhM
-         bmUzcbcLw5RAw/sFUHmGx+iHKB8CB4sx+88YCo5Ao6dglq9FCF4wxEf7GnV+DFS0Lrkr
-         o4Ik6kbrxsTNAhHZlGi8Z/aZ3ocUvVGDy85E3U2ClyfDoNEg+ausvZWWsabhbL4g078s
-         OE2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=bQcbk8WYbUCXM8knUlOISeoGEbWqFrfG0URxAnWtDsk=;
-        b=GKOUhvBz+Vk+dyfhYANn8C7SIyOHaRkzHx2xVzNWGa33VPDz1hAaTz7TlWcrSX09qB
-         TcB56vw9TsB59o1521Oz1ZoiMIUIeS8uMNfpaF4VcSz1oN4DXEC9LrtefBZCW5VGO3Uo
-         bMepzHzQ3e4wvZEuHqI7Bc/zkRoagUCaog/HG/UsKX9YxL0Z5OWlW0IQKLk+Ui/PU8g8
-         1lR2FhrxmSpu5++9VU1vwdzE27FolPd6rO5wwZVktO1cSZYDW84D16DE0G970D1opgSr
-         X9fMOww+xVG/K8lNdnO1tlsn+wm6JL36C/AZKXyid5fP6bVWIcuJfJm7F7jFn18ECfjD
-         G/hQ==
-X-Gm-Message-State: AGi0PuaoJ/EK2QVh5UkjNiCzIZCrjX9DfhDhQIB12j2KMazoYmMqlmxV
-        LbSQDNUchI5pcZXo0+cVxVXwQCbR
-X-Google-Smtp-Source: APiQypJF/eHZfdI5emJWdfXC7ZAywuX3+XbLBgAOS+KEOq0ctGTCHfHIFlT+Ij8KwsgHO9EDrEcDHw==
-X-Received: by 2002:adf:cd04:: with SMTP id w4mr10785370wrm.357.1587723842138;
-        Fri, 24 Apr 2020 03:24:02 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F694A.dip0.t-ipconnect.de. [91.63.105.74])
-        by smtp.gmail.com with ESMTPSA id s30sm7473775wrb.67.2020.04.24.03.24.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2020 03:24:00 -0700 (PDT)
-Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20200415162030.16414-1-sravanhome@gmail.com>
- <20200415162030.16414-3-sravanhome@gmail.com> <20200424071822.GM3612@dell>
- <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com> <20200424093720.GA3542@dell>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com>
-Date:   Fri, 24 Apr 2020 12:23:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726988AbgDXKov (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Apr 2020 06:44:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49846 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726582AbgDXKov (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 24 Apr 2020 06:44:51 -0400
+Received: from localhost.localdomain.com (unknown [151.66.196.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 644442064A;
+        Fri, 24 Apr 2020 10:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587725091;
+        bh=+R2L3PyZ1c0qeAYGVTviJHhvMvp7aZu4jg8HcUQIxik=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lDieJtnK5sBnVROL94l8iqTlC+HhjrGh1FfdrK9ySG0khZRg8nwQxhGPBLQ4WUpAN
+         +0lmWm1C81+cAQU7tH7Fmu5lVkWVdVX+035VY12OqLpejuZhcrJhqWlJQR3lbyzePk
+         bwkt9A3dopwYfdHEJ9dt92OqiM03u3FxgDEtDFxA=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: enable 833Hz sample frequency for tagged sensors
+Date:   Fri, 24 Apr 2020 12:44:38 +0200
+Message-Id: <81e5660e7b7755346efefdd90f721a4b0cd63726.1587724988.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.3
 MIME-Version: 1.0
-In-Reply-To: <20200424093720.GA3542@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+Enable 833Hz ODR for sensors that supports tagged hw FIFO:
+- LSM6DSO/LSM6DSOX
+- LSM6DSR/LSM6DSRX
+- ASM330LHH
 
-On 24/04/20 11:37 am, Lee Jones wrote:
-> On Fri, 24 Apr 2020, saravanan sekar wrote:
->
->> Hi Lee,
->>
->> On 24/04/20 9:18 am, Lee Jones wrote:
->>> On Wed, 15 Apr 2020, Saravanan Sekar wrote:
->>>
->>>> mp2629 is a highly-integrated switching-mode battery charge management
->>>> device for single-cell Li-ion or Li-polymer battery.
->>>>
->>>> Add MFD core enables chip access for ADC driver for battery readings,
->>>> and a power supply battery-charger driver
->>>>
->>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->>>> ---
->>>>    drivers/mfd/Kconfig        |  9 ++++
->>>>    drivers/mfd/Makefile       |  2 +
->>>>    drivers/mfd/mp2629.c       | 86 ++++++++++++++++++++++++++++++++++++++
->>>>    include/linux/mfd/mp2629.h | 19 +++++++++
->>>>    4 files changed, 116 insertions(+)
->>>>    create mode 100644 drivers/mfd/mp2629.c
->>>>    create mode 100644 include/linux/mfd/mp2629.h
->>> How is this driver registered?
->>>
->>> Looks like it has device tree support.  Is there another way?
->> Yes, only using device tree
-> Then how about using 'simple-mfd' and 'syscon'?
->
-> Then you can omit this driver completely.
-The exception is to support for non device tree platform as well, but I 
-have tested only for ARM device tree platform.
->
->>>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
->>>> index 3c547ed575e6..85be799795aa 100644
->>>> --- a/drivers/mfd/Kconfig
->>>> +++ b/drivers/mfd/Kconfig
->>>> @@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
->>>>    	help
->>>>    	  Select this if your MC13xxx is connected via an I2C bus.
->>>> +config MFD_MP2629
->>>> +	tristate "Monolithic power system MP2629 ADC and Battery charger"
->>>> +	depends on I2C
->>>> +	select REGMAP_I2C
->>>> +	help
->>>> +	  Select this option to enable support for monolithic power system
->>>> +	  battery charger. This provides ADC, thermal, battery charger power
->>>> +	  management functions on the systems.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 21 +++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 84d219ae6aee..e6339bbb4469 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -27,7 +27,8 @@
+  *   - FIFO size: 4KB
+  *
+  * - LSM6DSO/LSM6DSOX/ASM330LHH/LSM6DSR/ISM330DHCX:
+- *   - Accelerometer/Gyroscope supported ODR [Hz]: 13, 26, 52, 104, 208, 416
++ *   - Accelerometer/Gyroscope supported ODR [Hz]: 13, 26, 52, 104, 208, 416,
++ *     833
+  *   - Accelerometer supported full-scale [g]: +-2/+-4/+-8/+-16
+  *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/+-2000
+  *   - FIFO size: 3KB
+@@ -791,7 +792,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -804,7 +806,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -994,7 +997,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -1007,7 +1011,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -1171,7 +1176,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -1184,7 +1190,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104000, 0x04 },
+ 				.odr_avl[4] = { 208000, 0x05 },
+ 				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_len = 6,
++				.odr_avl[6] = { 833000, 0x07 },
++				.odr_len = 7,
+ 			},
+ 		},
+ 		.fs_table = {
+-- 
+2.25.3
+

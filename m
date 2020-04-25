@@ -2,40 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 022A51B8829
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 596351B8832
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgDYRel (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 13:34:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60536 "EHLO mail.kernel.org"
+        id S1726337AbgDYRie (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 13:38:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33702 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbgDYRek (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 13:34:40 -0400
+        id S1726145AbgDYRie (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 13:38:34 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1020420704;
-        Sat, 25 Apr 2020 17:34:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F150720728;
+        Sat, 25 Apr 2020 17:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587836080;
-        bh=n/c6G2+pz7iSd0hluR8q+ZQxALEQt3pvWT6Lzkx/HZc=;
+        s=default; t=1587836313;
+        bh=wozh6fPngOaid+sufoR11TXXvYo49Yoy0laoXfwu+iQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gEtD0dS9tKbwL2+xWiTPKjw+xgmDKDM4DOGN0YzGiRk0f18odhsap1Yp/PCpxhnXQ
-         OZT7+4DrLUU580m3qoY7erW6HOoIDdqZR3pCmEQZQ9/5eSvZugzKB7AZdT4t9YoAyS
-         4Fu/iATZWKpP4ho4YJ3Za3Pp1qQX1EMZ4IYRNBUQ=
-Date:   Sat, 25 Apr 2020 18:34:36 +0100
+        b=neCfOoexTTvUUd7UtEOWURtYSzqhPRSlizBUrvV8193NP6RAufCPLsTg0eb+eVIaG
+         cDtm/r8Vvlrf3uRFl9v+Omq4L9WOsC0rlNhZzJeewZ3h5A6atOC/ydCCZj0Cx2R8r0
+         3aOmZspA+Y0/QNSx/2iOSTnvTap1J5pkIzPCFKRg=
+Date:   Sat, 25 Apr 2020 18:38:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+To:     Rob Herring <robh@kernel.org>
+Cc:     Nick Reitemeyer <nick.reitemeyer@web.de>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: unlock on error in
- st_lsm6dsx_shub_write_raw()
-Message-ID: <20200425183436.2d22db77@archlinux>
-In-Reply-To: <20200422093811.GA196034@mwanda>
-References: <20200422093811.GA196034@mwanda>
+        linux-iio@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 2/3] dt-bindings: magnetometer: ak8974: Add Alps
+ hscdtd008a
+Message-ID: <20200425183829.4646e503@archlinux>
+In-Reply-To: <20200415000945.GA24169@bogus>
+References: <20200406141350.162036-1-nick.reitemeyer@web.de>
+        <20200406141350.162036-2-nick.reitemeyer@web.de>
+        <20200415000945.GA24169@bogus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,49 +49,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Apr 2020 12:38:11 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Tue, 14 Apr 2020 19:09:45 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-> We need to release a lock if st_lsm6dsx_check_odr() fails, we can't
-> return directly.
+> On Mon,  6 Apr 2020 16:13:51 +0200, Nick Reitemeyer wrote:
+> > 
+> > Add binding documentation for the Alps HSCDTD008A, which is similar
+> > to the ak8974.
+> > 
+> > Signed-off-by: Nick Reitemeyer <nick.reitemeyer@web.de>
+> > ---
+> >  Documentation/devicetree/bindings/iio/magnetometer/ak8974.txt | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >   
 > 
-> Fixes: 76551a3c3df1 ("iio: imu: st_lsm6dsx: specify slave odr in slv_odr")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Good find.
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Applied to the fixes-togreg branch of iio.git.
+Applied to the togreg branch of iio.git.
 
-Thanks,
+thanks,
 
 Jonathan
-
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> index 64ef07a30726..1cf98195f84d 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> @@ -544,8 +544,10 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
->  
->  			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
->  			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
-> -			if (odr < 0)
-> -				return odr;
-> +			if (odr < 0) {
-> +				err = odr;
-> +				goto release;
-> +			}
->  
->  			sensor->ext_info.slv_odr = val;
->  			sensor->odr = odr;
-> @@ -557,6 +559,7 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
->  		break;
->  	}
->  
-> +release:
->  	iio_device_release_direct_mode(iio_dev);
->  
->  	return err;
-

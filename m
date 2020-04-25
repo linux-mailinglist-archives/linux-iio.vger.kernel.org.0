@@ -2,42 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 579D71B8809
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C46051B880C
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726228AbgDYRK6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 13:10:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44936 "EHLO mail.kernel.org"
+        id S1726146AbgDYROD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 13:14:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46502 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726192AbgDYRK6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 13:10:58 -0400
+        id S1726145AbgDYROD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 13:14:03 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 44098206B6;
-        Sat, 25 Apr 2020 17:10:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E10CF206B6;
+        Sat, 25 Apr 2020 17:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587834658;
-        bh=9JLPrvwtf1kR1XWHBlo5cHjeAQpwvGV5tSTP/VROjBw=;
+        s=default; t=1587834842;
+        bh=hOtsB+DN6WGIPXY5sIR15wmPMKfko2/6MGBgyUS7KM4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=c+5nHlWN09zsQoQrU7U4zQaBKY44wiT3NKX9U9V8hidHXxvLJilr6BbWYqiZlzmHA
-         sg0rgZ7GkamplUTWe26nR+NwNc8K6SKJ8z5yxbDlZfHkZnWkfE/rPphKgMTtenO4FC
-         VmAfFdtUOGCU83p4F9vY07/ipVGV96nmBuhiKZIk=
-Date:   Sat, 25 Apr 2020 18:10:52 +0100
+        b=rn8kxlY8kJUz4OnwkuUsfposkIuHK56jjs66W37MoPhH7Cr7H3RoZ3H2gNFUjcsgO
+         aS0rNcK5O4NlQpUhb4P8v/+RbE/PhwzicETKG35n2GJAUHfDGp5IEXjbI4k1l8nJNJ
+         WEW5jGoHE0Q0xx+LpDDlSQfj9rP3s8wfC7/tWyfc=
+Date:   Sat, 25 Apr 2020 18:13:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: iio: adi,ltc2983: Add missing quotes on
- dependencies
-Message-ID: <20200425181052.1588a862@archlinux>
-In-Reply-To: <CY4PR03MB33502FFA293BB3F068A488B299D00@CY4PR03MB3350.namprd03.prod.outlook.com>
-References: <20200423150523.23984-1-robh@kernel.org>
-        <CY4PR03MB33502FFA293BB3F068A488B299D00@CY4PR03MB3350.namprd03.prod.outlook.com>
+To:     =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>
+Cc:     <linux-iio@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Bastien Nocera <hadess@hadess.net>
+Subject: Re: [PATCH v2] iio: st_sensors: make scale channels also shared by
+ type
+Message-ID: <20200425181359.1e30e315@archlinux>
+In-Reply-To: <20200423121714.607262-1-rvlander@gaetanandre.eu>
+References: <20200423121714.607262-1-rvlander@gaetanandre.eu>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -47,73 +43,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Apr 2020 07:26:46 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Thu, 23 Apr 2020 14:17:15 +0200
+Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu> wrote:
 
-> > From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org>
-> > On Behalf Of Rob Herring
-> > Sent: Donnerstag, 23. April 2020 17:05
-> > To: devicetree@vger.kernel.org
-> > Cc: Sa, Nuno <Nuno.Sa@analog.com>; Jonathan Cameron
-> > <jic23@kernel.org>; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter
-> > Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
-> > <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org
-> > Subject: [PATCH] dt-bindings: iio: adi,ltc2983: Add missing quotes on
-> > dependencies
-> >=20
-> > With the bracketed list form, any strings with commas have to be quoted
-> > or they are separated.
-> >=20
-> > Fixes: 3986a14870cb ("dt-bindings: iio: Add ltc2983 documentation")
-> > Cc: "Nuno S=C3=A1" <nuno.sa@analog.com>
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > Cc: Hartmut Knaack <knaack.h@gmx.de>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> > Cc: linux-iio@vger.kernel.org
-> > Signed-off-by: Rob Herring <robh@kernel.org>
-> > --- =20
+> Scale channels are available by axis. For example for accelerometers,
+> in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are available.
 >=20
-> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> However, they should be shared by type as documented in
+> Documentation/ABI/testing/sysfs-bus-iio.
 >=20
+> For each sensor (acceleros, gyros and magnetos) only one value is specifi=
+ed
+> for all the axes.
+>=20
+> Existing, by axis, entries are preserved in order to to leave the old ABI
+> untouched.
+As I mentioned in v1, there isn't a strict ABI rule that says that we must
+do the shared form
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Rob, Do you want to pick this one up via your tree?
++CC'd Bastien for comment on what userspace is assuming and whether we shou=
+ld
+push this back to stable or not.
 
 Thanks,
 
 Jonathan
 
-> >  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml      | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git
-> > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> > index 8fb46de6641d..04da5c48a5e9 100644
-> > --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> > +++
-> > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> > @@ -260,7 +260,7 @@ patternProperties:
-> >        - adi,rsense-handle
-> >=20
-> >      dependencies:
-> > -      adi,current-rotate: [ adi,rsense-share ]
-> > +      adi,current-rotate: [ "adi,rsense-share" ]
-> >=20
-> >    "^thermistor@":
-> >      type: object
-> > @@ -349,7 +349,7 @@ patternProperties:
-> >        - adi,rsense-handle
-> >=20
-> >      dependencies:
-> > -      adi,current-rotate: [ adi,rsense-share ]
-> > +      adi,current-rotate: [ "adi,rsense-share" ]
-> >=20
-> >    "^adc@":
-> >      type: object
-> > --
-> > 2.20.1 =20
 >=20
+> Signed-off-by: Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu>
+> ---
+> v1->v2: add comment explaining why we are doing both.
+>=20
+>  include/linux/iio/common/st_sensors.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/co=
+mmon/st_sensors.h
+> index 33e939977444..42663fbab085 100644
+> --- a/include/linux/iio/common/st_sensors.h
+> +++ b/include/linux/iio/common/st_sensors.h
+> @@ -46,12 +46,19 @@
+>  #define ST_SENSORS_MAX_NAME			17
+>  #define ST_SENSORS_MAX_4WAI			8
+> =20
+> +/*
+> + * Scale channels are configured both by type and by axis.
+> + * - By axis to keep the previous ABI and flexibility.
+> + * - By type because it is how some userland
+> + * applications are expecting them (ex: iio-sensor-proxy).
+> + */
+>  #define ST_SENSORS_LSM_CHANNELS(device_type, mask, index, mod, \
+>  					ch2, s, endian, rbits, sbits, addr) \
+>  { \
+>  	.type =3D device_type, \
+>  	.modified =3D mod, \
+>  	.info_mask_separate =3D mask, \
+> +	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE), \
+>  	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+>  	.scan_index =3D index, \
+>  	.channel2 =3D ch2, \
+>=20
+> base-commit: 2de8c02349f02d014e51b43f306d28fc7a23ea6e
 

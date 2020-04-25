@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D1A1B88DF
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 21:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 233AB1B88E9
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 21:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgDYTXq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 15:23:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35588 "EHLO mail.kernel.org"
+        id S1726259AbgDYT2s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 15:28:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726304AbgDYTXq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 15:23:46 -0400
+        id S1726216AbgDYT2r (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 15:28:47 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7C36C20714;
-        Sat, 25 Apr 2020 19:23:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7E8FC20714;
+        Sat, 25 Apr 2020 19:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587842625;
-        bh=7xT0CJYyctX/za7aIrPT0FcmDTrVX7/KZzusycnTbGw=;
+        s=default; t=1587842927;
+        bh=uqZb4Ri4kMh3j89fFdv3gFVALSHGMTlVnWc6qy4vE2Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HlFvJ60PnH+YbWSiAq1+P2/m+MDmT6K00GWCV+Tybx27lZ+AmLnOGjBguupwtuZGA
-         LwhXG/kM9+lK9PqhusGz3PXPLKBbCJ/TdADnsMbeyeNxVso1eRebrPJ3GtKEhmTzph
-         phMiQdBDzDbrA2j/h9gdDZXLV6/s+ybloqg2Q6o0=
-Date:   Sat, 25 Apr 2020 20:23:41 +0100
+        b=qtctqnX4EHzmCto6jcsMonOxY4SxrquUKXdxJmFtOtGUL5vzo1Y76wHQyRNfObhi8
+         npvSjdjNG8wjbnvLRJ3rUmcCvkQLaCNY967BvYHKmiKFvYYO4bbx7imX+xdJu2IVcu
+         UCOgM3x9eZpNeWBGWgOkXQ4fK7hEKGeg7mjRgqGc=
+Date:   Sat, 25 Apr 2020 20:28:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH 5/6] dt-bindings: iio: scd30: add device binding file
-Message-ID: <20200425202341.53e614d8@archlinux>
-In-Reply-To: <20200422141135.86419-6-tomasz.duszynski@octakon.com>
-References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
-        <20200422141135.86419-6-tomasz.duszynski@octakon.com>
+To:     Heiko Stuebner <heiko@sntech.de>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, xxm@rock-chips.com,
+        kever.yang@rock-chips.com,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+Subject: Re: [PATCH v5 1/3] iio: adc: rockchip_saradc: move all of probe to
+ devm-functions
+Message-ID: <20200425202842.41a2c7e2@archlinux>
+In-Reply-To: <20200419100207.58108-1-heiko@sntech.de>
+References: <20200419100207.58108-1-heiko@sntech.de>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,103 +45,125 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Apr 2020 16:11:34 +0200
-Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+On Sun, 19 Apr 2020 12:02:05 +0200
+Heiko Stuebner <heiko@sntech.de> wrote:
 
-> Add SCD30 sensor binding file.
+> From: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
 > 
-> Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> Parts of the saradc probe rely on devm functions and later parts do not.
+> This makes it more difficult to for example enable triggers via their
+> devm-functions and would need more undo-work in remove.
+> 
+> So to make life easier for the driver, move the rest of probe calls
+> also to their devm-equivalents.
+> 
+> This includes moving the clk- and regulator-disabling to a devm_action
+> so that they gets disabled both during remove and in the error case
+> in probe, after the action is registered.
+> 
+> Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
 > ---
->  .../iio/chemical/sensirion,scd30.yaml         | 71 +++++++++++++++++++
->  1 file changed, 71 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+> changes in v5:
+> - none
+> changes in v4:
+> - new patch as suggested by Jonathan
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
-> new file mode 100644
-> index 000000000000..b092b2530c76
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
-> @@ -0,0 +1,71 @@
-> +# SPDX-License-Identifier: GPL-2.0
+>  drivers/iio/adc/rockchip_saradc.c | 37 ++++++++++++++++---------------
+>  1 file changed, 19 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+> index 582ba047c4a6..270eb7e83823 100644
+> --- a/drivers/iio/adc/rockchip_saradc.c
+> +++ b/drivers/iio/adc/rockchip_saradc.c
+> @@ -193,6 +193,15 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
+>  	reset_control_deassert(reset);
+>  }
+>  
+> +static void rockchip_saradc_disable(void *data)
+> +{
+> +	struct rockchip_saradc *info = data;
+> +
+> +	clk_disable_unprepare(info->clk);
+> +	clk_disable_unprepare(info->pclk);
+> +	regulator_disable(info->vref);
 
-Dual license preferred with BSD for bindings.
+You should do these independently.  If you use
+a separate devm_add_action_or_reset you can drop the error handling
+in probe because that will all be cleaned up automatically as well.
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/chemical/sensirion,scd30.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Sensirion SCD30 carbon dioxide sensor
-> +
-> +maintainers:
-> +  - Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> +
-> +description: |
-> +  Air quality sensor capable of measuring co2 concentration, temperature
-> +  and relative humidity.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - sensirion,scd30
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  sensirion,sel-gpios:
-> +    description: GPIO connected to the SEL line
-> +    maxItems: 1
-> +
-> +  sensirion,pwm-gpios:
-> +    description: GPIO connected to the PWM line
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - vdd-supply
+Right now you have a nasty hybrid of managed and unmanaged needing
+manual cleanup in some paths.
 
-Only enable it I think in the driver.  Should be fine with a stub regulator
-as provided if we don't specify one in the dt binding because it's not
-controllable and we are lazy.
+It will take a few more lines of code, but it will be a lot easier
+to review / maintain.
 
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    # include <dt-bindings/gpio/gpio.h>
-> +    # include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      scd30@61 {
-> +        compatible = "sensirion,scd30";
-> +        reg = <0x61>;
-> +        vdd-supply = <&vdd>;
-> +        interrupt-parrent = <&gpio0>;
-> +        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> +      };
-> +    };
-> +  - |
-> +    # include <dt-bindings/gpio/gpio.h>
+Jonathan
 
-Why gpio?
 
-> +    # include <dt-bindings/interrupt-controller/irq.h>
-> +    serial {
-> +      scd30 {
-> +        compatible = "sensirion,scd30";
-> +        vdd-supply = <&vdd>;
-> +        interrupt-parrent = <&gpio0>;
-> +        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> +      };
-> +    };
+> +}
 > +
-> +...
+>  static int rockchip_saradc_probe(struct platform_device *pdev)
+>  {
+>  	struct rockchip_saradc *info = NULL;
+> @@ -304,6 +313,14 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+>  		goto err_pclk;
+>  	}
+>  
+> +	ret = devm_add_action_or_reset(&pdev->dev,
+> +				       rockchip_saradc_disable, info);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "failed to register devm action, %d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+>  	platform_set_drvdata(pdev, indio_dev);
+>  
+>  	indio_dev->name = dev_name(&pdev->dev);
+> @@ -315,14 +332,12 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+>  	indio_dev->channels = info->data->channels;
+>  	indio_dev->num_channels = info->data->num_channels;
+>  
+> -	ret = iio_device_register(indio_dev);
+> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+>  	if (ret)
+> -		goto err_clk;
+> +		return ret;
+>  
+>  	return 0;
+>  
+> -err_clk:
+> -	clk_disable_unprepare(info->clk);
+>  err_pclk:
+>  	clk_disable_unprepare(info->pclk);
+
+>  err_reg_voltage:
+> @@ -330,19 +345,6 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+>  	return ret;
+>  }
+>  
+> -static int rockchip_saradc_remove(struct platform_device *pdev)
+> -{
+> -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> -	struct rockchip_saradc *info = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	clk_disable_unprepare(info->clk);
+> -	clk_disable_unprepare(info->pclk);
+> -	regulator_disable(info->vref);
+> -
+> -	return 0;
+> -}
+> -
+>  #ifdef CONFIG_PM_SLEEP
+>  static int rockchip_saradc_suspend(struct device *dev)
+>  {
+> @@ -383,7 +385,6 @@ static SIMPLE_DEV_PM_OPS(rockchip_saradc_pm_ops,
+>  
+>  static struct platform_driver rockchip_saradc_driver = {
+>  	.probe		= rockchip_saradc_probe,
+> -	.remove		= rockchip_saradc_remove,
+>  	.driver		= {
+>  		.name	= "rockchip-saradc",
+>  		.of_match_table = rockchip_saradc_match,
 

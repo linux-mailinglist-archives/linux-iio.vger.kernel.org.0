@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC811B87CC
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 18:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E5E91B87D0
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 18:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726144AbgDYQxt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 12:53:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37818 "EHLO mail.kernel.org"
+        id S1726224AbgDYQzG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 12:55:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726076AbgDYQxt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 12:53:49 -0400
+        id S1726152AbgDYQzE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 12:55:04 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17DD0206D4;
-        Sat, 25 Apr 2020 16:53:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91CCB206D4;
+        Sat, 25 Apr 2020 16:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587833629;
-        bh=UV9KYwwqh7/w5fmi/n97rx6YOlO1XQqVDCam0wu/dX4=;
+        s=default; t=1587833704;
+        bh=JjChTrtA0oJ6ePhjEidISsO81puxuHkvJCnWPoasV2c=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=M+PGtVFazBmir9rJ4CevPckMHC4dVLggDQHscSXgT8EkiVyb/9pqlPjmGoiD4YkID
-         d1UH9SxJvyMSqzg4YtrIqwVmuAVCW1eZnL2p0sXTXHbP6ErTulSsoqt1npBnSEt5J1
-         wOjPWZAI5mgXNFUaqyF3ZAhT185KvMK64UUhxDe4=
-Date:   Sat, 25 Apr 2020 17:53:45 +0100
+        b=HbrDkR+BPdXmHiPtxrnTJ4qX3w2V5OSeBsbMwy3n39kNV+jOJVi1Sgjird+eIr3Wp
+         lK8Gv114NK7/2Q+aIb7AJZ+G5krVjYafBOFyStPRttxL+MQxXYGmHz//wegZPOeA16
+         q3kpgwzafpCtbpQHxwbBe2kD8InE+RjafBGoIWlg=
+Date:   Sat, 25 Apr 2020 17:54:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Denis Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH v1 16/16] iio: st_sensors: Use get_unaligned_be24() and
- sign_extend32()
-Message-ID: <20200425175345.693b2f36@archlinux>
-In-Reply-To: <20200421003135.23060-16-andriy.shevchenko@linux.intel.com>
-References: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
-        <20200421003135.23060-16-andriy.shevchenko@linux.intel.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        stefan.popa@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad5593r: Fix a typo in MODULE_DESCRIPTION
+Message-ID: <20200425175458.4ba655e0@archlinux>
+In-Reply-To: <20200425065653.31203-1-christophe.jaillet@wanadoo.fr>
+References: <20200425065653.31203-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,45 +43,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 21 Apr 2020 03:31:35 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sat, 25 Apr 2020 08:56:53 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> Use these functions instead of open-coding them.
+> This module is related to AD5593R, not AD5592R.
 > 
-> Cc: Denis Ciocca <denis.ciocca@st.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-This one already has the header, so applied to the togreg branch of iio.git
-and pushed out as testing with no changes :)
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied.
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/common/st_sensors/st_sensors_core.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+>  drivers/iio/dac/ad5593r.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-> index 0e35ff06f9af..bfc39ef64718 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> @@ -20,11 +20,6 @@
+> diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
+> index 44ea3b8117d0..1fbe9c019c7f 100644
+> --- a/drivers/iio/dac/ad5593r.c
+> +++ b/drivers/iio/dac/ad5593r.c
+> @@ -134,5 +134,5 @@ static struct i2c_driver ad5593r_driver = {
+>  module_i2c_driver(ad5593r_driver);
 >  
->  #include "st_sensors_core.h"
->  
-> -static inline u32 st_sensors_get_unaligned_le24(const u8 *p)
-> -{
-> -	return (s32)((p[0] | p[1] << 8 | p[2] << 16) << 8) >> 8;
-> -}
-> -
->  int st_sensors_write_data_with_mask(struct iio_dev *indio_dev,
->  				    u8 reg_addr, u8 mask, u8 data)
->  {
-> @@ -545,7 +540,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
->  	else if (byte_for_channel == 2)
->  		*data = (s16)get_unaligned_le16(outdata);
->  	else if (byte_for_channel == 3)
-> -		*data = (s32)st_sensors_get_unaligned_le24(outdata);
-> +		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
->  
->  st_sensors_free_memory:
->  	kfree(outdata);
+>  MODULE_AUTHOR("Paul Cercueil <paul.cercueil@analog.com>");
+> -MODULE_DESCRIPTION("Analog Devices AD5592R multi-channel converters");
+> +MODULE_DESCRIPTION("Analog Devices AD5593R multi-channel converters");
+>  MODULE_LICENSE("GPL v2");
 

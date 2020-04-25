@@ -2,93 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA711B87E9
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B83DF1B87F4
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 19:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726343AbgDYRCu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 13:02:50 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:56982 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726177AbgDYRCu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Apr 2020 13:02:50 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 142339E762F;
-        Sat, 25 Apr 2020 18:02:44 +0100 (BST)
-Date:   Sat, 25 Apr 2020 18:02:43 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] iio: adc: ad7476: remove redundant null check on
- an array
-Message-ID: <20200425180243.18ff7f13@archlinux>
-In-Reply-To: <20200425180110.3ffa5696@archlinux>
-References: <20200424130419.22940-1-colin.king@canonical.com>
-        <f2c6d3f3f8f884e87f1c9895fe99b77e8f4c1e3e.camel@analog.com>
-        <20200425180110.3ffa5696@archlinux>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726152AbgDYREW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 13:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726146AbgDYREW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Apr 2020 13:04:22 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3498BC09B04D
+        for <linux-iio@vger.kernel.org>; Sat, 25 Apr 2020 10:04:22 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id t40so5224927pjb.3
+        for <linux-iio@vger.kernel.org>; Sat, 25 Apr 2020 10:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dNflyFnV/TC3B3/b75yNBanubXUp9ZouaK20FVEG1Bk=;
+        b=lbuxksf03IPd8AtfZ7bBEGvc5bjewR7ftzAQGvcv8UXcDWbKcyndCXdrixpsQCDkLO
+         hVYXYFPeSpE6nMFIYutHvQcC2PToBxDz4wGV20gc4l7biE+G4T/gAMcRBlfN6mTFfN59
+         T1gs1YPNw9BN2fW1DAfp6H4ViSbuSuaFs2KFq/ZKo5bvinfPnqHcBVLTmlflm8g2b8oQ
+         v8PGjvgf4qrmJEgK6ZCG8T7UaSOLYtZkGhqVaX2WdelKm1/H1gtTKivI3qUy3A1K1dyJ
+         jZ2FADq2ezJqoNFALZxcl1ctZkrjoeRX7kbQy+03aNt9opHsY0jzuWWJ+jO4rjFQ4w7k
+         RjGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dNflyFnV/TC3B3/b75yNBanubXUp9ZouaK20FVEG1Bk=;
+        b=IKck4Qe0AJh7A+D7vA6R0FxY0bdFP7nO5h4+PnmIQ9eLCval2KBmJUxnGkow4wUiYv
+         CNCszBEiGaQPTqjSU4utpllgeP0PgvkjYEks8UD/gMZQC1sPI+rgTe9kIe0OUR03zevh
+         VBe40/L78FuUAyXAVcJgpV/0COjN/VaXO1PSe+T1f7AVjqGJS7f61Lp/SnknGSaexN7S
+         gVfTdXHNGqGBgf9VUUSvTr9awBmTF+GHHHS6FoXL8YJdP0qBUvC7rGZCzd6z1rKix1dM
+         bqCnt92PygwbBLwTd5z2J6VkYobx8z70SnpdJL1xpocn9iANAWVTaYw6jN2CujixoTiF
+         NFng==
+X-Gm-Message-State: AGi0Pua3Qm/WiTOnyUqWNaNfn1Ovh/slNiQF9c+Fbz3of0/2XPqBEx2c
+        T/UjMA02eSZedvNL47AIpeUBY0icogyZVtLRArfXctu30YA=
+X-Google-Smtp-Source: APiQypI6VzfYYmOhXo15GAy3OloBHN08BsDD3qCIJLDFDTN57Zue908ZombZIqfgNKQN+hkzTcnrZdayYq7Fcw/Pzsc=
+X-Received: by 2002:a17:902:aa09:: with SMTP id be9mr15484542plb.18.1587834261791;
+ Sat, 25 Apr 2020 10:04:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
+ <20200421003135.23060-16-andriy.shevchenko@linux.intel.com> <20200425175345.693b2f36@archlinux>
+In-Reply-To: <20200425175345.693b2f36@archlinux>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 25 Apr 2020 20:04:09 +0300
+Message-ID: <CAHp75VchNqVs34g8ox8qkN-dBj9qK8Z1x-zRCuACWundZq2oKA@mail.gmail.com>
+Subject: Re: [PATCH v1 16/16] iio: st_sensors: Use get_unaligned_be24() and sign_extend32()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Denis Ciocca <denis.ciocca@st.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 25 Apr 2020 18:01:10 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Apr 25, 2020 at 7:54 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Tue, 21 Apr 2020 03:31:35 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>
+> > Use these functions instead of open-coding them.
+> >
+> > Cc: Denis Ciocca <denis.ciocca@st.com>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> This one already has the header, so applied to the togreg branch of iio.git
+> and pushed out as testing with no changes :)
 
-> On Fri, 24 Apr 2020 15:01:26 +0000
-> "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
-> 
-> > On Fri, 2020-04-24 at 14:04 +0100, Colin King wrote:  
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > > 
-> > > The null check on st->chip_info->convst_channel is redundant because
-> > > convst_channel is a 2 element array of struct iio_chan_spec objects
-> > > and this can never be null. Fix this by removing the null check.
-> > >     
-> > 
-> > Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> Applied to the togreg branch of iio.git and pushed out as testing.
-> I didn't take this as a fix as it's not doing any harm in the meantime
-> whilst this patch goes the slow route.
-Just noticed this is in next only currently!  Hence can definitely
-got he slow route as doesn't apply to mainline :)
+Thanks, I'm sorry I didn't compile all of them and by some reason
+thought they all have it already.
+Strange we didn't get kbuild bot complains...
 
-Jonathan
-
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> >   
-> > > Addresses-Coverity: ("Array compared against 0")
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > > ---
-> > >  drivers/iio/adc/ad7476.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> > > index e9984a38fc4c..4e816d714ad2 100644
-> > > --- a/drivers/iio/adc/ad7476.c
-> > > +++ b/drivers/iio/adc/ad7476.c
-> > > @@ -309,7 +309,7 @@ static int ad7476_probe(struct spi_device *spi)
-> > >  	indio_dev->num_channels = 2;
-> > >  	indio_dev->info = &ad7476_info;
-> > >  
-> > > -	if (st->convst_gpio && st->chip_info->convst_channel)
-> > > +	if (st->convst_gpio)
-> > >  		indio_dev->channels = st->chip_info->convst_channel;
-> > >  	/* Setup default message */
-> > >      
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko

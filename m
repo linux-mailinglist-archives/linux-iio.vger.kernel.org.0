@@ -2,38 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C750B1B877B
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 17:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45FB1B877D
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 17:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbgDYPrS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 11:47:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54464 "EHLO mail.kernel.org"
+        id S1726102AbgDYPw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 11:52:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56040 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726102AbgDYPrS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 11:47:18 -0400
+        id S1726076AbgDYPw2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 11:52:28 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7676520644;
-        Sat, 25 Apr 2020 15:47:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3416520748;
+        Sat, 25 Apr 2020 15:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587829637;
-        bh=lSIPFWfPmqrhfz/68+uAdMRkD49fvIiQl3etQyD/o1o=;
+        s=default; t=1587829947;
+        bh=sSzcBJpJQDV6XFyy+Mxe6whwFoOrRKDwYzXXoWKA+Eg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=R9ZMQIWM2tvaGemmGWuzpvN1P3ZFzb8N4elLt+TJTMm7lXjo8xrYI0iaK5YhCkBEi
-         BeioUomMnLg8CvK0xfzbwLMEu5+ma92R0ANiIO5xrHesAKjiDl/VDLcH2Pm9SAlbB3
-         0aJ+K/Gb8umD9lbJAomdMpS3BfGQCm1mj3cu4UEY=
-Date:   Sat, 25 Apr 2020 16:47:13 +0100
+        b=Jd99gAHJsOwVZSzFyax2jkh18W+fjYSLNqtyhqF2PT7QyXptbdMHX6llBbNoltt+P
+         zZ7osfqjIMzLYdErQie9d8YJoB/g7j1ykdNjFo5uuI+85ZI2uVKn4vNmWIRh2sZEzX
+         NdCwAs/BcJQozbd4UlHatGkMwKxhVhhIwSp6gyzw=
+Date:   Sat, 25 Apr 2020 16:52:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: Use an early return in iio_device_alloc to
- simplify code.
-Message-ID: <20200425164713.201c89cc@archlinux>
-In-Reply-To: <0aac8f5bd4836b8ac0013bf19b2d8a0f9a8b5c47.camel@analog.com>
-References: <20200419151337.43293-1-jic23@kernel.org>
-        <0aac8f5bd4836b8ac0013bf19b2d8a0f9a8b5c47.camel@analog.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Mathieu Othacehe <m.othacehe@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 3/4] iio: vcnl4000: Add sampling frequency support
+ for VCNL4010/20.
+Message-ID: <20200425165223.0fc0e930@archlinux>
+In-Reply-To: <CAHp75VcJ300S8r_f2cueYzB0OaLBJK9oJySgz5Jekb7dGFWnCw@mail.gmail.com>
+References: <20200421075532.19192-1-m.othacehe@gmail.com>
+        <20200421075532.19192-4-m.othacehe@gmail.com>
+        <CAHp75VcJ300S8r_f2cueYzB0OaLBJK9oJySgz5Jekb7dGFWnCw@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,118 +48,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Apr 2020 06:17:32 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Tue, 21 Apr 2020 15:22:11 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Sun, 2020-04-19 at 16:13 +0100, jic23@kernel.org wrote:
-> > [External]
-> > 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Noticed whilst reviewing Alexandru's patch to the same function.
-> > If we simply flip the logic and return NULL immediately after memory
-> > allocation failure we reduce the indent of the following block and
-> > end up with more 'idiomatic' kernel code.
-> >   
+> On Tue, Apr 21, 2020 at 10:56 AM Mathieu Othacehe <m.othacehe@gmail.com> wrote:
+> >
+> > Add sampling frequency support for proximity data on VCNL4010 and VCNL4020
+> > chips.  
 > 
-> I also was tempted to do it, but was tempted [a bit more] by the initial change
-> that I goofed.
+> Couple of nitpicks below.
 > 
-> A few thoughts on this [can be ignored].
-> But, since doing this change, should 'dev' be renamed to 'indio_dev'?
-> It shouldn't be a lot more code than the current change [I hope].
-> When looking through IIO core, I got a minor/slight confusion on this alloc code
-> about the name 'dev' [which is of type 'struct iio_dev' vs 'struct device', as
-> is more customary].
+> ...
 > 
-> If 'dev' was chosen to fit within any 80 col-width limit, that limit should be
-> less likely to hit now.
+> > +static const int vcnl4010_prox_sampling_frequency[][2] = {
+> > +       {1, 950000},
+> > +       {3, 906250},
+> > +       {7, 812500},
+> > +       {16, 625000},
+> > +       {31, 250000},
+> > +       {62, 500000},
+> > +       {125, 0},  
+> 
+> > +       {250, 0}  
+> 
+> Leave comma here, potentially helpful if it will be extended.
 
-A different type of cleanup, so I think worth a separate patch
-(even though it's messing with the same block of code.)
+Hi Andy,
 
-Got to keep to the rules I pester everyone else into following :)
+Doesn't particularly matter either way, but given this is a list of the values
+supported by the device, very unlikely it will be extended.
 
-So I'll apply this as is and might get the dev->indio_dev one out
-after I've caught up with rest of email queue. 
-
-Thanks,
+Games like trying to share the first part of a longer array between
+multiple device types might occur, but those are usually really ugly.
 
 Jonathan
 
 > 
-> 1 more inline.
+> > +};  
 > 
-> Well, even with/without these changes.
+> ...
 > 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  drivers/iio/industrialio-core.c | 38 ++++++++++++++++-----------------
-> >  1 file changed, 19 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index f4daf19f2a3b..96f6dacb206d 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1504,27 +1504,27 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
-> >  	alloc_size += IIO_ALIGN - 1;
-> >  
-> >  	dev = kzalloc(alloc_size, GFP_KERNEL);
-> > +	if (!dev)
-> > +		return NULL;
-> >  
-> > -	if (dev) {
-> > -		dev->dev.groups = dev->groups;
-> > -		dev->dev.type = &iio_device_type;
-> > -		dev->dev.bus = &iio_bus_type;
-> > -		device_initialize(&dev->dev);
-> > -		dev_set_drvdata(&dev->dev, (void *)dev);
-> > -		mutex_init(&dev->mlock);
-> > -		mutex_init(&dev->info_exist_lock);
-> > -		INIT_LIST_HEAD(&dev->channel_attr_list);
-> > -
-> > -		dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
-> > -		if (dev->id < 0) {
-> > -			/* cannot use a dev_err as the name isn't available */
-> > -			pr_err("failed to get device id\n");
-> > -			kfree(dev);
-> > -			return NULL;
-> > -		}
-> > -		dev_set_name(&dev->dev, "iio:device%d", dev->id);
-> > -		INIT_LIST_HEAD(&dev->buffer_list);
-> > +	dev->dev.groups = dev->groups;
-> > +	dev->dev.type = &iio_device_type;
-> > +	dev->dev.bus = &iio_bus_type;
-> > +	device_initialize(&dev->dev);
-> > +	dev_set_drvdata(&dev->dev, (void *)dev);
-> > +	mutex_init(&dev->mlock);
-> > +	mutex_init(&dev->info_exist_lock);
-> > +	INIT_LIST_HEAD(&dev->channel_attr_list);
+> > +static int vcnl4010_write_proxy_samp_freq(struct vcnl4000_data *data, int val,
+> > +                                         int val2)
+> > +{
+> > +       int i;
+> > +       const int len = ARRAY_SIZE(vcnl4010_prox_sampling_frequency);
 > > +
-> > +	dev->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
-> > +	if (dev->id < 0) {
-> > +		/* cannot use a dev_err as the name isn't available */
-> > +		pr_err("failed to get device id\n");
-> > +		kfree(dev);
-> > +		return NULL;  
+> > +       for (i = 0; i < len; i++) {
+> > +               if (val <= vcnl4010_prox_sampling_frequency[i][0])
+> > +                       break;
+> > +       }
+> > +
+> > +       if (i == len)
+> > +               return -EINVAL;  
 > 
-> would it be too much for this patch to move this right after the kzalloc()?
-> no strong opinion from my side to do it or not;
-> but it does save some init cycles, and compresses this init block a bit;
-
-It doesn't really save any cycles because the chance of failure of ID allocation
-is negligible...  Now I'd agree with you if writing from scratch, but as a
-tidy up patch, it's good to keep things really simple.
-
-
+> I would refactor this
 > 
-> >  	}
-> > +	dev_set_name(&dev->dev, "iio:device%d", dev->id);
-> > +	INIT_LIST_HEAD(&dev->buffer_list);
-> >  
-> >  	return dev;
-> >  }  
+>   unsigned int i = ARRAY_SIZE(vcnl4010_prox_sampling_frequency);
+> 
+>   do {
+>     if (val > vcnl4010_prox_sampling_frequency[i][0])
+>       break;
+>   } while (--i);
+> 
+> You won't need to go full array to return error in this case.
+> 
+> > +       return i2c_smbus_write_byte_data(data->client, VCNL4010_PROX_RATE, i);
+> > +}  
+> 
 

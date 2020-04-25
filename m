@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146AC1B87C3
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 18:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37EE11B87C5
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 18:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726185AbgDYQss (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 12:48:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35988 "EHLO mail.kernel.org"
+        id S1726151AbgDYQuK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 12:50:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36598 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726148AbgDYQsr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 12:48:47 -0400
+        id S1726148AbgDYQuK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 12:50:10 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7864D206B9;
-        Sat, 25 Apr 2020 16:48:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46A1D20714;
+        Sat, 25 Apr 2020 16:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587833327;
-        bh=tzCr+jaVMbJVOsWnde9XRc+ThyBXl/43wzxL1g/6FUw=;
+        s=default; t=1587833410;
+        bh=ddMxxmplEYvOrsmlNc7BIWl6PERpaiqw7X0QTIAoAKo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Rerwil9d7r/ThdeWTlQfNmxH7wZuE8e3g35kefLFVhU5qLSxSaxIjjb2cW7B4pAq2
-         4xuABzy1oSLCwVWCncKRzdiQIVjeW86meItgMP/qrR3ufMWaFsZgw/DV4E10WIsaOV
-         6liccr+61yTaNNbWnj7ImerI4gaTJFKM5xf9ib+M=
-Date:   Sat, 25 Apr 2020 17:48:43 +0100
+        b=S4kqytA4gEg293ysVtwtQ4hbCzyOIjEzpWmWeRtIs8JqhgyicQd/UWfwXrG4hPx/b
+         zTaJRirnyLyju5NsWO0uKA8zNKfsesMA4nlnje+8Wlk66M1wRjMQH4unkJxhsjkSmU
+         1ppwcK66AQHGbrZi4WqWXyHalb/uJWVkhMId4eYU=
+Date:   Sat, 25 Apr 2020 17:50:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomasz Duszynski <tduszyns@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1 13/16] iio: pressure: ms5611: Use
- get_unaligned_be24()
-Message-ID: <20200425174843.352a5853@archlinux>
-In-Reply-To: <20200421083645.GA23009@arch>
+Subject: Re: [PATCH v1 14/16] iio: pressure: zpa2326: Use
+ get_unaligned_le24()
+Message-ID: <20200425175006.3a244a3b@archlinux>
+In-Reply-To: <20200421003135.23060-14-andriy.shevchenko@linux.intel.com>
 References: <20200421003135.23060-1-andriy.shevchenko@linux.intel.com>
-        <20200421003135.23060-13-andriy.shevchenko@linux.intel.com>
-        <20200421083645.GA23009@arch>
+        <20200421003135.23060-14-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,55 +43,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 21 Apr 2020 10:36:45 +0200
-Tomasz Duszynski <tduszyns@gmail.com> wrote:
+On Tue, 21 Apr 2020 03:31:33 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Tue, Apr 21, 2020 at 03:31:32AM +0300, Andy Shevchenko wrote:
-> > This makes the driver code slightly easier to read.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >  drivers/iio/pressure/ms5611_i2c.c | 2 +-
-> >  drivers/iio/pressure/ms5611_spi.c | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/pressure/ms5611_i2c.c b/drivers/iio/pressure/ms5611_i2c.c
-> > index 8089c59adce5..ced83162ae94 100644
-> > --- a/drivers/iio/pressure/ms5611_i2c.c
-> > +++ b/drivers/iio/pressure/ms5611_i2c.c
-> > @@ -50,7 +50,7 @@ static int ms5611_i2c_read_adc(struct ms5611_state *st, s32 *val)
-> >  	if (ret < 0)
-> >  		return ret;
-> >
-> > -	*val = (buf[0] << 16) | (buf[1] << 8) | buf[2];
-> > +	*val = get_unaligned_be24(&buf[0]);
-> >
-> >  	return 0;
-> >  }
-> > diff --git a/drivers/iio/pressure/ms5611_spi.c b/drivers/iio/pressure/ms5611_spi.c
-> > index b463eaa799ab..517295616869 100644
-> > --- a/drivers/iio/pressure/ms5611_spi.c
-> > +++ b/drivers/iio/pressure/ms5611_spi.c
-> > @@ -45,7 +45,7 @@ static int ms5611_spi_read_adc(struct device *dev, s32 *val)
-> >  	if (ret < 0)
-> >  		return ret;
-> >
-> > -	*val = (buf[0] << 16) | (buf[1] << 8) | buf[2];
-> > +	*val = get_unaligned_be24(&buf[0]);
-> >
-> >  	return 0;
-> >  }  
+> This makes the driver code slightly easier to read.
 > 
-> Looks good.
-> Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
-Added missing asm/unaligned.h includes and applied.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Include added and applied.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/pressure/zpa2326.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 > 
-> > --
-> > 2.26.1
-> >  
+> diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+> index 99dfe33ee402..c2ad106e3d5b 100644
+> --- a/drivers/iio/pressure/zpa2326.c
+> +++ b/drivers/iio/pressure/zpa2326.c
+> @@ -1005,22 +1005,20 @@ static int zpa2326_fetch_raw_sample(const struct iio_dev *indio_dev,
+>  	struct regmap *regs = ((struct zpa2326_private *)
+>  			       iio_priv(indio_dev))->regmap;
+>  	int            err;
+> +	u8             v[3];
+>  
+>  	switch (type) {
+>  	case IIO_PRESSURE:
+>  		zpa2326_dbg(indio_dev, "fetching raw pressure sample");
+>  
+> -		err = regmap_bulk_read(regs, ZPA2326_PRESS_OUT_XL_REG, value,
+> -				       3);
+> +		err = regmap_bulk_read(regs, ZPA2326_PRESS_OUT_XL_REG, v, sizeof(v));
+>  		if (err) {
+>  			zpa2326_warn(indio_dev, "failed to fetch pressure (%d)",
+>  				     err);
+>  			return err;
+>  		}
+>  
+> -		/* Pressure is a 24 bits wide little-endian unsigned int. */
+> -		*value = (((u8 *)value)[2] << 16) | (((u8 *)value)[1] << 8) |
+> -			 ((u8 *)value)[0];
+> +		*value = get_unaligned_le24(&v[0]);
+>  
+>  		return IIO_VAL_INT;
+>  
 

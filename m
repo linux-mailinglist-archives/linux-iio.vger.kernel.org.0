@@ -2,161 +2,237 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622C21B842F
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 09:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5C81B8646
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 13:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgDYHZd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 03:25:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60032 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726097AbgDYHZb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Apr 2020 03:25:31 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8E3C09B049
-        for <linux-iio@vger.kernel.org>; Sat, 25 Apr 2020 00:25:31 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id u15so12306733ljd.3
-        for <linux-iio@vger.kernel.org>; Sat, 25 Apr 2020 00:25:31 -0700 (PDT)
+        id S1726121AbgDYLns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 07:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43512 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726061AbgDYLns (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Apr 2020 07:43:48 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04857C09B04B;
+        Sat, 25 Apr 2020 04:43:48 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id o15so5976240pgi.1;
+        Sat, 25 Apr 2020 04:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1EvqB1CyHlv41G1Xc32epcgBQIAEREmOXv1dtCCZIzY=;
-        b=MbEqDD2MXlMSFYXNIwZH7Ky633kVkBVAvp5LE9qaLa5bGENAz6VlL+mkPHOCop9omX
-         g4z7+3CSNFZwdu+ExbPBl2zuldhcQnRSx+4dudGkd6WU31cR27+LOKO+I4dHBN5tnBK9
-         ghiEDwWMK/cDWSCihtNjSM40/+puyVkohSd44=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=D+fcBxNw/nwKWvas8bdh9z7lSOeFbVCVoSvS/R8YOZ4=;
+        b=FBGpWRshuMLAD0L8sCwi1qBFiM3qU3inaSks+NHjc7EiO83P6aGntSbE2m7YDKbG5A
+         mryVIOJddS5k0MIvthi5ILVpua11o+xn4uZLMq8u/ZsXyoJdqK7bAoMKNIIY1NIhwtjc
+         1z/odHsWWdDINScg3E4/CyJ/AeQD6xWnmEf1GbZDkkZgfQIOZUjuhtp5RAZt9wmJHGWA
+         +eAC9LSaIca26xLroqp+HQms8+mbdhBXjranbaNt38IMGkBTgiAUHmMXaawGs+el9fC8
+         KdkTEEUa7+dBq/A+o0nAoHaZqtVIK2LyuytNm7vxyBqOcHRxETVHUaZu1USwsNuT/sx/
+         DBiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1EvqB1CyHlv41G1Xc32epcgBQIAEREmOXv1dtCCZIzY=;
-        b=aDaYZyyvBq+1cPVW2+TIOdGQ6sUny6yBt4jmLCk5wlL91/DRHSn2yY30Z8f5ZiBvSe
-         Yvb3tvNtoT/bc3oOJyovFr5Osc3G3COuuKU3+9k04pe3HZ1spU5GX+n52YiRtzq96oc1
-         NSx58VezGYqnn0wngUvIPBqmJoSJO34T3S/h1vcUoT+aNXNFzKwOElUi+DNnJFXbvlZY
-         B/pT4MGDmPzCLnZnTSJ6k0hAlDXERIACkR3Pg4VLL8sMbol3TIT9cgWV57JPvkC1nk3U
-         +8LUcZA2UmXeEMGjEzLITs9A38+gSHWDl1PHFS/KMEQIcjC0HH9GzfnKGloJFQ2Qyqqq
-         4f1A==
-X-Gm-Message-State: AGi0PuZ0ZY/fObYyp1UmTBkHxnysjqNaSRgBL3g2/gmXsGWV48zh1EMO
-        CT/nR4wJgeDH0y8mAhG6fCEneg==
-X-Google-Smtp-Source: APiQypJqltiC1BLuN9sgPzPZTC+nUdbh8+HdlwGBhcPMj7tLBzortGzCwIcm8BWq6nBSAk2pXxcSsA==
-X-Received: by 2002:a2e:140e:: with SMTP id u14mr8005197ljd.252.1587799529925;
-        Sat, 25 Apr 2020 00:25:29 -0700 (PDT)
-Received: from taos.konsulko.bg (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id t8sm6382662lfe.31.2020.04.25.00.25.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2020 00:25:29 -0700 (PDT)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH v3 2/2] iio: chemical: atlas-sensor: add RTD-SM module support
-Date:   Sat, 25 Apr 2020 10:25:20 +0300
-Message-Id: <20200425072520.27776-3-matt.ranostay@konsulko.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200425072520.27776-1-matt.ranostay@konsulko.com>
-References: <20200425072520.27776-1-matt.ranostay@konsulko.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=D+fcBxNw/nwKWvas8bdh9z7lSOeFbVCVoSvS/R8YOZ4=;
+        b=Xt5ya8mSHJ4Jmt4u4UFcova67qDqusn2rIoEEKin7zOIPxtXP0eouMsyjFWwVzAx9d
+         Smv+kxOHcn7WqWpHq3i01mGkCyAZfE1w7Fbj2Bp6I1kqkc6j/O2TwwW8Y85RpeQ3QNzT
+         xdl+K8WBDiwklYrgwFWWA7WKtyoyJ54vdbhUZdzxNn3aDJSSHpFJkhTEbPKHUYanBrd2
+         wCQi7kLP3iCHej3nbR9wdYuCYU2eyzvRmPDPQ/HgxUZrkldXBnrhB0/wNJ0BiapcpaCD
+         LZzeE50Jqpeld3NhCfOTzDfVWyISIMm8Ybe+cCOQ5Yq0saxJ4LLrqcals5vTbPrDTB6e
+         yvwg==
+X-Gm-Message-State: AGi0PuZDP9MGLJM4YRE7tM6utd5mhyqVNXwxq4+WMqidJzYmTrI9N9d3
+        GPxvkwYICAvdZJcJgB9HYfK+pt7eeumWC8ezObdB8syNrJQ=
+X-Google-Smtp-Source: APiQypLNRmDFDdkqQqFUJOEj14NHuHK26wddSprK6QKYDfBaSBDQ4d1J6m87q/0nL6ioabJ60J0w18/POeBEdQJoJGI=
+X-Received: by 2002:a62:5ec7:: with SMTP id s190mr14036650pfb.130.1587815027309;
+ Sat, 25 Apr 2020 04:43:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
+ <20200422141135.86419-2-tomasz.duszynski@octakon.com> <CAHp75VcbaGYj76qkDJnTnuG5SM215qVmFo7FLR6YzHA37PgF_g@mail.gmail.com>
+ <20200424190413.GA2731@arch>
+In-Reply-To: <20200424190413.GA2731@arch>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 25 Apr 2020 14:43:35 +0300
+Message-ID: <CAHp75Vdajf7Ci3ytxP7Qs9=fFaxvVBQoL5uh+HUDwxHS5r9MUg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] iio: chemical: scd30: add core driver
+To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Atlas Scientific RTD-SM OEM sensor reads temperaturee using
-resistance temperature detector technology.
+On Fri, Apr 24, 2020 at 10:05 PM Tomasz Duszynski
+<tomasz.duszynski@octakon.com> wrote:
+> On Wed, Apr 22, 2020 at 10:49:44PM +0300, Andy Shevchenko wrote:
+> > On Wed, Apr 22, 2020 at 5:22 PM Tomasz Duszynski
+> > <tomasz.duszynski@octakon.com> wrote:
 
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
----
- drivers/iio/chemical/atlas-sensor.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+...
 
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index 82d470561ad3..4688cbe83d86 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -53,6 +53,8 @@
- #define ATLAS_REG_DO_CALIB_STATUS_PRESSURE	BIT(0)
- #define ATLAS_REG_DO_CALIB_STATUS_DO		BIT(1)
- 
-+#define ATLAS_REG_RTD_DATA		0x0e
-+
- #define ATLAS_REG_PH_TEMP_DATA		0x0e
- #define ATLAS_REG_PH_DATA		0x16
- 
-@@ -72,12 +74,14 @@
- #define ATLAS_EC_INT_TIME_IN_MS		650
- #define ATLAS_ORP_INT_TIME_IN_MS	450
- #define ATLAS_DO_INT_TIME_IN_MS		450
-+#define ATLAS_RTD_INT_TIME_IN_MS	450
- 
- enum {
- 	ATLAS_PH_SM,
- 	ATLAS_EC_SM,
- 	ATLAS_ORP_SM,
- 	ATLAS_DO_SM,
-+	ATLAS_RTD_SM,
- };
- 
- struct atlas_data {
-@@ -206,6 +210,22 @@ static const struct iio_chan_spec atlas_do_channels[] = {
- 	},
- };
- 
-+static const struct iio_chan_spec atlas_rtd_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.address = ATLAS_REG_RTD_DATA,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_BE,
-+		},
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(1),
-+};
-+
- static int atlas_check_ph_calibration(struct atlas_data *data)
- {
- 	struct device *dev = &data->client->dev;
-@@ -350,6 +370,12 @@ static struct atlas_device atlas_devices[] = {
- 				.calibration = &atlas_check_do_calibration,
- 				.delay = ATLAS_DO_INT_TIME_IN_MS,
- 	},
-+	[ATLAS_RTD_SM] = {
-+				.channels = atlas_rtd_channels,
-+				.num_channels = 2,
-+				.data_reg = ATLAS_REG_RTD_DATA,
-+				.delay = ATLAS_RTD_INT_TIME_IN_MS,
-+	},
- };
- 
- static int atlas_set_powermode(struct atlas_data *data, int on)
-@@ -478,6 +504,7 @@ static int atlas_read_raw(struct iio_dev *indio_dev,
- 	struct atlas_data *data = iio_priv(indio_dev);
- 
- 	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
- 	case IIO_CHAN_INFO_RAW: {
- 		int ret;
- 		__be32 reg;
-@@ -566,6 +593,7 @@ static const struct i2c_device_id atlas_id[] = {
- 	{ "atlas-ec-sm", ATLAS_EC_SM},
- 	{ "atlas-orp-sm", ATLAS_ORP_SM},
- 	{ "atlas-do-sm", ATLAS_DO_SM},
-+	{ "atlas-rtd-sm", ATLAS_RTD_SM},
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, atlas_id);
-@@ -575,6 +603,7 @@ static const struct of_device_id atlas_dt_ids[] = {
- 	{ .compatible = "atlas,ec-sm", .data = (void *)ATLAS_EC_SM, },
- 	{ .compatible = "atlas,orp-sm", .data = (void *)ATLAS_ORP_SM, },
- 	{ .compatible = "atlas,do-sm", .data = (void *)ATLAS_DO_SM, },
-+	{ .compatible = "atlas,rtd-sm", .data = (void *)ATLAS_RTD_SM, },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, atlas_dt_ids);
+> > > Add Sensirion SCD30 carbon dioxide core driver.
+> >
+> > And DocLink tar of Datasheet: with a link?
+>
+> I never do this. These files change their location way too often to be
+> worthwhile putting here. Nobody has that much time to fallow all this
+> and keep respective files up to date.
+>
+> But that doesn't mean I can't drop a link here.
+> https://developer.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/9.5_CO2/Sensirion_CO2_Sensors_SCD30_Interface_Description.pdf
+
+Yes, just make it a tag
+
+DocLink: ....
+
+...
+
+> > > +int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+> > > +               int (*command)(struct scd30_state *state, enum scd30_cmd cmd,
+> > > +                              u16 arg, char *rsp, int size));
+> >
+> > My gosh.
+> > Please, supply proper structure member in priv or alike.
+>
+> Not sure it's worth the fuss. Wrapping all into structure means either
+> copying respective members or more dereferences later on.
+
+At least you may introduce a typedef, because above really hurts my eyes.
+
+...
+
+> > > +enum {
+> > > +       CONC,
+> > > +       TEMP,
+> > > +       HR,
+> > > +};
+> >
+> > Way too generic names for anonymous enum.
+>
+> I'd argue that they are pretty well understood abbreviations in iio generally
+> and here specifically. But adding some prefix won't harm.
+
+Yes, prefix is what I was talking about.
+
+...
+
+> > > +static int scd30_wait_meas_poll(struct scd30_state *state)
+> > > +{
+> > > +       int tries = 5;
+> > > +
+> > > +       while (tries--) {
+> > > +               int ret;
+> > > +               u16 val;
+> > > +
+> > > +               ret = scd30_command(state, CMD_MEAS_READY, 0, (char *)&val,
+> > > +                                   sizeof(val));
+> > > +               if (ret)
+> > > +                       return -EIO;
+> > > +
+> > > +               /* new measurement available */
+> > > +               if (val)
+> > > +                       break;
+> > > +
+> > > +               msleep_interruptible(state->meas_interval * 250);
+> > > +       }
+> > > +
+> > > +       if (tries == -1)
+> > > +               return -ETIMEDOUT;
+> >
+> > unsigned int tries = ...;
+> >
+> > do {
+> >  ...
+> > } while (--tries);
+> > if (!tries)
+> >   return ...;
+> >
+> > looks better and I guess less code in asm.
+> >
+>
+> You mean that one extra branch in case of while?
+
+There are few things:
+a) do {} while notation immediately tells that at least one cycle of
+body will be done (unconditionally);
+b) it makes a loop variable unsigned and no need to check for specific
+negative numbers;
+c) it quite likely will generate slightly better assembly code.
+
+>  But it comes to code
+> itself it looks more compact. And I am okay with that.
+>
+> > > +       return 0;
+> > > +}
+
+...
+
+> > > +       if (kstrtou16(buf, 0, &val))
+> > > +               return -EINVAL;
+> >
+> > Shadowed error code. Don't do like this.
+>
+> Integer parsing either returns EINVAL or ERANGE. Passing the latter to
+> the user is not worth the trouble, especially because majority of writable attrs
+> have a fellow _available attr.
+
+It's simple a bad coding practice. Please, change.
+
+> > > +       if (kstrtou16(buf, 0, &val))
+> > > +               return -EINVAL;
+> >
+> > Ditto.
+> >
+> > > +       if (kstrtou16(buf, 0, &val))
+> > > +               return -EINVAL;
+> >
+> > Ditto.
+
+...
+
+> > > +       if (kstrtou16(buf, 0, &val))
+> > > +               return -EINVAL;
+> >
+> > No shadowed error code, please. Check entire code.
+
+Same here.
+
+...
+
+> > > +static IIO_DEVICE_ATTR_RW(pressure_comp, 0);
+> > > +static IIO_DEVICE_ATTR_RO(pressure_comp_available, 0);
+> > > +static IIO_DEVICE_ATTR_RW(meas_interval, 0);
+> > > +static IIO_DEVICE_ATTR_RO(meas_interval_available, 0);
+> > > +static IIO_DEVICE_ATTR_RW(asc, 0);
+> > > +static IIO_DEVICE_ATTR_RW(frc, 0);
+> > > +static IIO_DEVICE_ATTR_RO(frc_available, 0);
+> > > +static IIO_DEVICE_ATTR_RW(temp_offset, 0);
+> > > +static IIO_CONST_ATTR(temp_offset_available, "[0 1 65535]");
+> > > +static IIO_DEVICE_ATTR_WO(reset, 0);
+> >
+> > Do you need all of them? Doesn't  IIO core provides a tons of helpers for these?
+> > Btw, where is ABI documentation? It's a show stopper.
+>
+> They are sensor specific and none falls into a category of iio generic
+> attrs. Maybe, except the measurement interval which could be represented as
+> a SAMP_FREQ.
+
+IIO ABI becomes already a big pile of nodes and I hope we will become
+stricter about adding new ones.
+
+> But given that measurement interval spans from 2s to 1800s
+> it becomes a little bit awkward to have it in Hz.
+
+> As for ABI that's in
+> a separate patch.
+
+It's not good from bisectability point of view. If by some reason this
+patch or documentation patch gets reverted, the other one will be
+dangling.
+Please, unify them.
+
 -- 
-2.20.1
-
+With Best Regards,
+Andy Shevchenko

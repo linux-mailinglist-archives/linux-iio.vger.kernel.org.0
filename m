@@ -2,107 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 498FA1B874C
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 17:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E231B8756
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Apr 2020 17:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726113AbgDYPS0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Apr 2020 11:18:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55444 "EHLO mail.kernel.org"
+        id S1726131AbgDYPVH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Apr 2020 11:21:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58060 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726062AbgDYPSZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 25 Apr 2020 11:18:25 -0400
+        id S1726116AbgDYPVG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 25 Apr 2020 11:21:06 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C27D2071C;
-        Sat, 25 Apr 2020 15:18:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E65EF2071C;
+        Sat, 25 Apr 2020 15:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587827905;
-        bh=rOkvclJzaXVnBhcnnHYunJz4EyHyd4zB1pXX/giEa6I=;
+        s=default; t=1587828066;
+        bh=XT458vq0XN1WLWI28Diyiv9sG8dG5RTg3qgKZyWEnqI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cOzRyirjqSHYhZL4KaXK2Ni+S/Tf7cb0hpFj5a/Q0zprMwWbjCUJHRvfdsbHEY1xX
-         C09jLCwyxZfnGiLMNqLKEHI6QPMkHVbqHl+sBy5hANYsPOeFK43cmJPV7c6bde5snk
-         ITvzVw2fyT9ume4EoCBwzkkbwP0X3JrVpQgERDQI=
-Date:   Sat, 25 Apr 2020 16:18:21 +0100
+        b=w2Z9xofFm6mP3p6Bw0TBrKkoMEtxca6iBgpF3jQXay+xV8dAyXts2Urhhmz/slMR/
+         yMGhTyTJGLtDP5GC+hnN5LdkDx7oSonXPhx3zysAkHfEE6q98yHgwinUTuNJ1RiWsv
+         cHFgEeh4gup0YcLboBlXX0hcg+YkFEx9Vg8SXxuU=
+Date:   Sat, 25 Apr 2020 16:21:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v5 0/6] Support ADIS16475 and similar IMUs
-Message-ID: <20200425161821.1975fe3e@archlinux>
-In-Reply-To: <20200413172722.1cb5f55e@archlinux>
-References: <20200413082445.17324-1-nuno.sa@analog.com>
-        <20200413172722.1cb5f55e@archlinux>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] drivers: counter: Add Cros EC Sync counter
+Message-ID: <20200425162101.21f7960e@archlinux>
+In-Reply-To: <20200420190810.GA16124@icarus>
+References: <20200413195514.192868-1-gwendal@chromium.org>
+        <20200414204814.GH7347@icarus>
+        <CAPUE2utas86PQdQem7bPsNL+xnHreepG8wbvbt2Vk5rtjoyn-A@mail.gmail.com>
+        <20200420190810.GA16124@icarus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Apr 2020 17:27:22 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 20 Apr 2020 15:08:10 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> On Mon, 13 Apr 2020 10:24:39 +0200
-> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->=20
-> > This series adds support for the adis16475 and similar IMUs. This driver
-> > will be the first user of some changes on the adis library. Hence, the
-> > first three patches are related to the library:
-> >  * Add anaged device functions for registering triggers with the librar=
-y;
-> >  * Updates the way `irq_mask` is passed to `request_irq()`;
-> >  * It adds an update_bits() like API.
-> >=20
-> > A new patch was introduced (iio: adis: Add burst_max_len variable) in
-> > order to make burst32 configuration at runtime. =20
->=20
-> Series looks good to me, but I'd like to allow a bit of time for DT
-> review + anyone else who wants to take another look.
+> On Mon, Apr 20, 2020 at 11:54:16AM -0700, Gwendal Grignou wrote:
+> > On Tue, Apr 14, 2020 at 1:48 PM William Breathitt Gray
+> > <vilhelm.gray@gmail.com> wrote:  
+> > >
+> > > On Mon, Apr 13, 2020 at 12:55:14PM -0700, Gwendal Grignou wrote:  
+> > > > When the camera vsync pin is connected to the embedded controller (EC) of
+> > > > a chromebook, the EC reports a sensor with a counter that increases
+> > > > at each GPIO rising edge.
+> > > >
+> > > > The sensor is presented using the counter subsystem.
+> > > > In addition, it is also presented via the IIO subsystem with a timestamp,
+> > > > allowing synchronisation with sensors connected to the same EC, for
+> > > > image stabilisation or augmented reality applications.  
+> > >
+> > > Hi Gwendal,
+> > >
+> > > Sorry for the delay. I have some changes requested below.
+> > >  
+> > > > To enable the counter:
+> > > > via counter ABI:
+> > > > echo "rising edge" > counterX/count0/signal_action
+> > > > via iio ABI
+> > > > echo 1 > iio:deviceY/en
+> > > >
+> > > > To disable the counter:
+> > > > via counter ABI:
+> > > > echo "none" > counterX/count0/signal_action
+> > > > via iio ABI
+> > > > echo 0 > iio:deviceY/en  
+> > >
+> > > Although in theory a user could manually disable the actions for a
+> > > Signal, this is a very roundabout way of actually disabling the Count.
+> > > It's better to expose an "enable" attribute to allow the users to
+> > > perform this functionality; for example:
+> > >
+> > > echo 0 > counterX/count0/enable
+> > > echo 1 > counterX/count0/enable
+> > >  
+> > > >
+> > > > To read the current counter value:
+> > > > via counter ABI:
+> > > > cat counterX/count0/count
+> > > > via iio ABI
+> > > > cat iio:deviceY/in_count_raw  
+> > >
+> > > I know we discussed this in the last review but it's still the same as
+> > > before: IIO_COUNT interface is deprecated so new drivers won't be
+> > > allowed to use it. You'll have to remove the IIO_COUNT code in this
+> > > driver and replace it with Counter subsystem equivalents.  
+> > I understand the need of a clean separation between counter and IIO subsystems.
+> > I will wait for counter to offer a way to gather timestamp'ed counts.
+> > Do you have a plan/proposed ABI you can share?
+> > 
+> > Thanks,
+> > 
+> > Gwendal.  
+> 
+> Hi Gwendal,
+> 
+> I'm working on a reimplementation of the internals of the Counter
+> subsystem: https://gitlab.com/vilhelmgray/iio/-/tree/counter_chardev
+> 
+> I'm hoping to submit it to the mailing list later this week if I don't
+> hit any delays; it'll include support as well for a character device
+> interface for userspace application.
+> 
+> Once those changes are merged into IIO, I'll submit a patch to add
+> timestamp support -- hopefully within a week or two after. Right now I
+> haven't yet chosen any specific format for timestamps, but I will likely
+> match the format IIO subsystem currently has for its timestamp support
+> so that migration is easier for these drivers.
+> 
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
-
-Thanks,
+Don't copy our crazy clock choosing stuff. That's legacy rubbish for
+compatibility with a silly choice I made a long time ago.  Pick
+a sensible clock type and stick to it.
 
 Jonathan
 
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> >=20
-> > Nuno S=C3=A1 (6):
-> >   iio: imu: adis: Add Managed device functions
-> >   iio: imu: adis: Add irq mask variable
-> >   iio: adis: Add adis_update_bits() APIs
-> >   iio: adis: Support different burst sizes
-> >   iio: imu: Add support for adis16475
-> >   dt-bindings: iio: Add adis16475 documentation
-> >=20
-> >  .../bindings/iio/imu/adi,adis16475.yaml       |  137 ++
-> >  MAINTAINERS                                   |    8 +
-> >  drivers/iio/imu/Kconfig                       |   13 +
-> >  drivers/iio/imu/Makefile                      |    1 +
-> >  drivers/iio/imu/adis.c                        |   25 +
-> >  drivers/iio/imu/adis16400.c                   |    2 +-
-> >  drivers/iio/imu/adis16475.c                   | 1336 +++++++++++++++++
-> >  drivers/iio/imu/adis_buffer.c                 |   58 +-
-> >  drivers/iio/imu/adis_trigger.c                |   72 +-
-> >  include/linux/iio/imu/adis.h                  |   87 +-
-> >  10 files changed, 1728 insertions(+), 11 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis1=
-6475.yaml
-> >  create mode 100644 drivers/iio/imu/adis16475.c
-> >  =20
->=20
+> William Breathitt Gray
 

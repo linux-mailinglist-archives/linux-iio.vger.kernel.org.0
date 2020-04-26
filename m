@@ -2,822 +2,487 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A716E1B93D3
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Apr 2020 22:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D10A1B946B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 00:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726176AbgDZUC6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Apr 2020 16:02:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726171AbgDZUC6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Apr 2020 16:02:58 -0400
-Received: from earth.universe (dyndsl-095-033-155-130.ewe-ip-backbone.de [95.33.155.130])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED2CA2070A;
-        Sun, 26 Apr 2020 20:02:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587931376;
-        bh=cCVvLRQ5oT7+sF5Puc8Z3HxZPrxIQylcPDCOsmCKjLg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vqMoiMa7YfriYRQU0ZRes8KnYoCQnRBCgejVmn+ua3Tb2LlkAKQgN6vFPvMsGfxm7
-         smr0vIIQYnNVOx/JRMAvK31hMZcMP41YH3xV9zNg1E62NE4vAGI54S98g9oje/6XSJ
-         STLT7c09mPEXWJv2yQh6f9sn6H/M84gJhPPbpEE0=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 37B423C08C6; Sun, 26 Apr 2020 22:02:54 +0200 (CEST)
-Date:   Sun, 26 Apr 2020 22:02:54 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
-        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v10 4/6] power: supply: Add support for mps mp2629
- battery charger
-Message-ID: <20200426200254.ew75ppg6ljcq2lzf@earth.universe>
-References: <20200417085003.6124-1-sravanhome@gmail.com>
- <20200417085003.6124-5-sravanhome@gmail.com>
+        id S1726188AbgDZWTB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Apr 2020 18:19:01 -0400
+Received: from mail-am6eur05on2109.outbound.protection.outlook.com ([40.107.22.109]:54987
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725999AbgDZWTA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Apr 2020 18:19:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CrFOw4ThaVeOL57BYm/ShAc4y0UabWQC2WLQlCRBrXxDi3CwQMfEOkbWSSCL/SMHpaeeGkqYwhuNmQ8sAzhox17S7eNhFCl6HIrXX0WTMvLl49TTp4goSs7MMF8fK0Q6dkhg1zBsnDegZMxwfU3mQZ/8LWGT2cVqWNVxLPsoa4f1yJonIHH+8k0k9qVvE2vvpn+QTXokl0TpKici7ydMDmuxeZSH8hBKMUve5nmZsxfz5+UGRqlAYWHFGPKZh/tRHUQvvr+wYROSquw5GVjAcnChzX8M0WjpRZlNZYXf6VwypMeotffvOXvqvYHSRXZGddGi0IRQQgqMPpUVlnRDZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m8ViyFFmCDRHd1BiXDoH8Gw6oX+30aRnsMZ7exH0Hd0=;
+ b=LGD3uB21tZUq1T2qFugew9/8GSisEimXyFKurjKDVCRDnDzIatfk40H9/+ixpAteJCv6zOmjodvStcfbyO86a0GSOzRZa5dRNO3xDJvamdsp9jwlSdNMbJz+RGuuvhJcLDNq4pu6JdgJhznJ8rUy4XOyV0qP8it8r+FgjI15Wx2Wjv8NTnLUmjwLqYeqKq2aABJ9/pSw8bWIoCXTsM54vlZCRo/Hlk2Wh1ojre1hDtISXfzsXd0o/9K0dutq+VJ1CeAMpqy2czfY3BPoTtmpTTPPGnl7JN+oIZQGtrHWc3SxcugROtXxS0KhgYWklRUGVUkFm35+4Q0yH1D/TZxO2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=norphonic.com; dmarc=pass action=none
+ header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m8ViyFFmCDRHd1BiXDoH8Gw6oX+30aRnsMZ7exH0Hd0=;
+ b=HEYonRAFquF4Rk973UhwK91aUkz24P/eLRT6h/+O/n5IttEE5y/IzxPUp3OCdEge1Wqcnbe9qehn+IjdYsapArNaOkG6cV4mUcEFqz5SlgLbWgXjkuUrKK8k7pOV/up3q86MTD2jMHfBP1BMyi1Wd8EsB3EUO1M2c9uImYZIWco=
+Received: from AM6PR06MB5430.eurprd06.prod.outlook.com (2603:10a6:20b:86::11)
+ by AM6PR06MB6200.eurprd06.prod.outlook.com (2603:10a6:20b:f5::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13; Sun, 26 Apr
+ 2020 22:18:54 +0000
+Received: from AM6PR06MB5430.eurprd06.prod.outlook.com
+ ([fe80::9814:8ea:8170:5678]) by AM6PR06MB5430.eurprd06.prod.outlook.com
+ ([fe80::9814:8ea:8170:5678%5]) with mapi id 15.20.2937.023; Sun, 26 Apr 2020
+ 22:18:54 +0000
+From:   Eugene Zalkonnikov <ez@norphonic.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "development@norphonic.com" <development@norphonic.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: [PATCH v7 1/2] Driver for TI HDC20x0 humidity and temperature sensors
+Thread-Topic: [PATCH v7 1/2] Driver for TI HDC20x0 humidity and temperature
+ sensors
+Thread-Index: AQHWHBirVMY9gQ8rT0e72WF+BkqeBQ==
+Date:   Sun, 26 Apr 2020 22:18:54 +0000
+Message-ID: <E372084A-C6C5-4261-90C5-B810ADAFDD73@norphonic.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ez@norphonic.com; 
+x-originating-ip: [88.88.123.37]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 69268f3e-a4d7-4758-5155-08d7ea2fce5c
+x-ms-traffictypediagnostic: AM6PR06MB6200:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM6PR06MB62009E44AC1BB20D5E51C100CAAE0@AM6PR06MB6200.eurprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 03853D523D
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB5430.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(396003)(39830400003)(376002)(136003)(346002)(8676002)(71200400001)(81156014)(8936002)(26005)(6512007)(4326008)(30864003)(33656002)(2616005)(36756003)(91956017)(76116006)(2906002)(6486002)(66946007)(508600001)(6916009)(86362001)(66446008)(316002)(6506007)(966005)(66556008)(54906003)(5660300002)(186003)(66476007)(64756008);DIR:OUT;SFP:1102;
+received-spf: None (protection.outlook.com: norphonic.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: TGk09q0BHLHdW/palWS4TFRf9AxKotQ75XZ4hCZTw1C8vw0bU/8rrjHXFe7/Xzt6pRYqAFhGFGo+S1Wj4EBI2T0d4wOIxoTPFbSbC2KtoN+VyxT1JOjWevGWKqvvvVNwee2pxwrw2zjiMXausSxNzLrH9mSadT0+6fevbH++hUYCCoHwNG2FDJoLucjtS0MACNxKetGghOoGAOSyNWyRlVeOiSBv1sAKYzSN15CAgV882/B0Et1lZgQ2HPC4iHAW8dFOcG992hVgJmZ5f8lFUwgmn4ceNj3gP9oGl3uQ3a/FLIeDMfNUuOMM7Jx2Ev6JrI1Omg+j+1i6YA0if46R/PRPFmmxgfc885RJGRJOOo4KWPFDbFpb1Bg3kHMlcgRhQifkXSsrkau/UW7sWrzqpXPAmJ0+FdBoTGlNUX2MEeTAd9fhUMNG47sPk2GxSOKwcgNfjt3rrNlv7DeEmB6wZIp3y5oqnATx0jEi75qqtmJNktEFoI+y5yLlyXqAuWcUTsJd9NfZ+nVfROILGw2Prg==
+x-ms-exchange-antispam-messagedata: Q2+dhsjcoXO/mgdO9DeUC0MsKTnmh87qecOeGsyXt8e1529d//JcLQ/+lVK3QU6Gl+Ly7GtUo793YwMBzK9Cn3PsoLo6WFiamOA3Fx2zgurdDnAXNKdA9AeZme9iEXFF4NGxkSPqbFydbmM0AMGguehZdvbmuLeByDzu8T8XVAXsJkCTi6n7su+aqzhRLvBr9yvuf9mlJmL0shqIAH5Tk/FB6i3BPqUG1qTgFuI3JeClffXpcaW5IvTw79fNxg/srsB+4rvHoLEabPStKhV7LPdWP/SfX//a7o5fBmGS8Eyece6/IbUfxtsVHjjPKtKR0GTB8CRL+7x1Et5WbU2guSgpGf48GOOpGG0tE5vtd9X17iW0MSkneA43ITG7s7750cGqzSRssmpSGyx9uqOtNk7sigvVaWaHALnHRN6vvl5Y3SSa2uF6CLuyHEZc8gBl083sFNjk+G+n5WayDiFYtbm23DzF34f6pYFWlsnK3/dA5VGw0CjGnRZjLAEesAUBgL/6GLXj9a+pw+PBdtALnFxFR0M2dbasfKVyDDH9ly6wqZH//qZYKthDEFe8sKHqEfbx5XZTH+jDPge1OfYQSVLy9i+J0vmolTUFp07CeL79d4SDANJJ7oZiM0RfeKp8Icu1K0t7wg3hbFHxWK0QCG3YsMrYOH5xhl5CoWy61KGdoBeM9xrHJTUlL/XGW5H1ztFbBvfoqDYRDgheRgImfCwoRmHyghUy4iAj9j5fVcglDNVvyS+S9wv2OyCD0aDemM/dztCpUk4GygbimcZDrruDm1mBX38X+3VqlA+YIAM=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6DF2BF8D01594F48A6793C0B43148563@eurprd06.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vfgjxyl5talfeqsh"
-Content-Disposition: inline
-In-Reply-To: <20200417085003.6124-5-sravanhome@gmail.com>
+X-OriginatorOrg: norphonic.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69268f3e-a4d7-4758-5155-08d7ea2fce5c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Apr 2020 22:18:54.1214
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UjcTCvx2d3ek1eNNbSAwMctNSvV6Zm/d65NaJK473ejiRSnmBk5QRvBWv6z7ZThZJir8jtlesS0HhIawQvZekQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB6200
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+HDC2010/2080 driver and sysfs documentation for its heater element.
 
---vfgjxyl5talfeqsh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
 
-Hi,
+diff -uprN -X linux-5.3.8/Documentation/dontdiff linux-5.3.8/Documentation/=
+ABI/testing/sysfs-bus-iio-humidity-hdc2010 linux-5.3.8_hdc2010/Documentatio=
+n/ABI/testing/sysfs-bus-iio-humidity-hdc2010
+--- linux-5.3.8/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010	19=
+70-01-01 01:00:00.000000000 +0100
++++ linux-5.3.8_hdc2010/Documentation/ABI/testing/sysfs-bus-iio-humidity-hd=
+c2010	2019-12-02 11:09:25.803326999 +0100
+@@ -0,0 +1,9 @@
++What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw
++What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available
++KernelVersion:	5.3.8
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Controls the heater device within the humidity sensor to get
++		rid of excess condensation.
++
++		Valid control values are 0 =3D OFF, and 1 =3D ON.
+diff -uprN -X linux-5.3.8/Documentation/dontdiff linux-5.3.8/drivers/iio/hu=
+midity/hdc2010.c linux-5.3.8_hdc2010/drivers/iio/humidity/hdc2010.c
+--- linux-5.3.8/drivers/iio/humidity/hdc2010.c	1970-01-01 01:00:00.00000000=
+0 +0100
++++ linux-5.3.8_hdc2010/drivers/iio/humidity/hdc2010.c	2020-04-24 18:04:48.=
+699251583 +0200
+@@ -0,0 +1,333 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * hdc2010.c - Support for the TI HDC2010 and HDC2080
++ * temperature + relative humidity sensors
++ *
++ * Copyright (C) 2020 Norphonic AS
++ * Author: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
++ *
++ * Datasheets:
++ * http://www.ti.com/product/HDC2010/datasheet
++ * http://www.ti.com/product/HDC2080/datasheet
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/i2c.h>
++
++#include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
++
++#define HDC2010_REG_TEMP_LOW			0x00
++#define HDC2010_REG_TEMP_HIGH			0x01
++#define HDC2010_REG_HUMIDITY_LOW		0x02
++#define HDC2010_REG_HUMIDITY_HIGH		0x03
++#define HDC2010_REG_INTERRUPT_DRDY		0x04
++#define HDC2010_REG_TEMP_MAX			0x05
++#define HDC2010_REG_HUMIDITY_MAX		0x06
++#define HDC2010_REG_INTERRUPT_EN		0x07
++#define HDC2010_REG_TEMP_OFFSET_ADJ		0x08
++#define HDC2010_REG_HUMIDITY_OFFSET_ADJ		0x09
++#define HDC2010_REG_TEMP_THR_L			0x0a
++#define HDC2010_REG_TEMP_THR_H			0x0b
++#define HDC2010_REG_RH_THR_L			0x0c
++#define HDC2010_REG_RH_THR_H			0x0d
++#define HDC2010_REG_RESET_DRDY_INT_CONF		0x0e
++#define HDC2010_REG_MEASUREMENT_CONF		0x0f
++
++#define HDC2010_MEAS_CONF			GENMASK(2, 1)
++#define HDC2010_MEAS_TRIG			BIT(0)
++#define HDC2010_HEATER_EN			BIT(3)
++#define HDC2010_AMM				GENMASK(6, 4)
++
++struct hdc2010_data {
++	struct i2c_client *client;
++	struct mutex lock;
++	u8 measurement_config;
++	u8 interrupt_config;
++	u8 drdy_config;
++};
++
++enum hdc2010_addr_groups {
++	HDC2010_GROUP_TEMP =3D 0,
++	HDC2010_GROUP_HUMIDITY
++};
++
++struct hdc2010_reg_record {
++	unsigned long primary;
++	unsigned long peak;
++};
++
++static const struct hdc2010_reg_record hdc2010_reg_translation[] =3D {
++	[HDC2010_GROUP_TEMP] =3D {
++		.primary =3D HDC2010_REG_TEMP_LOW,
++		.peak =3D HDC2010_REG_TEMP_MAX,
++	},
++	[HDC2010_GROUP_HUMIDITY] =3D {
++		.primary =3D HDC2010_REG_HUMIDITY_LOW,
++		.peak =3D HDC2010_REG_HUMIDITY_MAX,
++	},
++};
++
++static IIO_CONST_ATTR(out_current_heater_raw_available,
++		"0 1");
++
++static struct attribute *hdc2010_attributes[] =3D {
++	&iio_const_attr_out_current_heater_raw_available.dev_attr.attr,
++	NULL
++};
++
++static const struct attribute_group hdc2010_attribute_group =3D {
++	.attrs =3D hdc2010_attributes,
++};
++
++static const struct iio_chan_spec hdc2010_channels[] =3D {
++	{
++		.type =3D IIO_TEMP,
++		.address =3D HDC2010_GROUP_TEMP,
++		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
++			BIT(IIO_CHAN_INFO_PEAK) |
++			BIT(IIO_CHAN_INFO_OFFSET) |
++			BIT(IIO_CHAN_INFO_SCALE),
++	},
++	{
++		.type =3D IIO_HUMIDITYRELATIVE,
++		.address =3D HDC2010_GROUP_HUMIDITY,
++		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
++			BIT(IIO_CHAN_INFO_PEAK) |
++			BIT(IIO_CHAN_INFO_SCALE),
++	},
++	{
++		.type =3D IIO_CURRENT,
++		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
++		.extend_name =3D "heater",
++		.output =3D 1,
++	},
++};
++
++static int hdc2010_update_drdy_config(struct hdc2010_data *data,
++					     char mask, char val)
++{
++	char tmp =3D (~mask & data->drdy_config) | val;
++	int ret;
++
++	ret =3D i2c_smbus_write_byte_data(data->client,
++					HDC2010_REG_RESET_DRDY_INT_CONF, tmp);
++	if (!ret)
++		data->drdy_config =3D tmp;
++
++	return ret;
++}
++
++static int hdc2010_get_prim_measurement_word(struct hdc2010_data *data,
++					     struct iio_chan_spec const *chan)
++{
++	struct i2c_client *client =3D data->client;
++	s32 ret;
++
++	ret =3D i2c_smbus_read_word_data(client,
++			hdc2010_reg_translation[chan->address].primary);
++
++	if (ret < 0)
++		dev_err(&client->dev, "Could not read sensor data\n");
++
++	return ret;
++}
++
++static int hdc2010_get_peak_measurement_byte(struct hdc2010_data *data,
++					     struct iio_chan_spec const *chan)
++{
++	struct i2c_client *client =3D data->client;
++	s32 ret;
++
++	ret =3D i2c_smbus_read_byte_data(client,
++			hdc2010_reg_translation[chan->address].peak);
++
++	if (ret < 0)
++		dev_err(&client->dev, "Could not read sensor data\n");
++
++	return ret;
++}
++
++static int hdc2010_get_heater_status(struct hdc2010_data *data)
++{
++	return !!(data->drdy_config & HDC2010_HEATER_EN);
++}
++
++static int hdc2010_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int *val,
++			    int *val2, long mask)
++{
++	struct hdc2010_data *data =3D iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW: {
++		int ret;
++
++		if (chan->type =3D=3D IIO_CURRENT) {
++			*val =3D hdc2010_get_heater_status(data);
++			return IIO_VAL_INT;
++		}
++		ret =3D iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++		mutex_lock(&data->lock);
++		ret =3D hdc2010_get_prim_measurement_word(data, chan);
++		mutex_unlock(&data->lock);
++		iio_device_release_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
++		*val =3D ret;
++		return IIO_VAL_INT;
++	}
++	case IIO_CHAN_INFO_PEAK: {
++		int ret;
++
++		ret =3D iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++		mutex_lock(&data->lock);
++		ret =3D hdc2010_get_peak_measurement_byte(data, chan);
++		mutex_unlock(&data->lock);
++		iio_device_release_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
++		/* Scaling up the value so we can use same offset as RAW */
++		*val =3D ret * 256;
++		return IIO_VAL_INT;
++	}
++	case IIO_CHAN_INFO_SCALE:
++		*val2 =3D 65536;
++		if (chan->type =3D=3D IIO_TEMP)
++			*val =3D 165000;
++		else
++			*val =3D 100000;
++		return IIO_VAL_FRACTIONAL;
++	case IIO_CHAN_INFO_OFFSET:
++		*val =3D -15887;
++		*val2 =3D 515151;
++		return IIO_VAL_INT_PLUS_MICRO;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int hdc2010_write_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int val, int val2, long mask)
++{
++	struct hdc2010_data *data =3D iio_priv(indio_dev);
++	int new, ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		if (chan->type !=3D IIO_CURRENT || val2 !=3D 0)
++			return -EINVAL;
++
++		switch (val) {
++		case 1:
++			new =3D HDC2010_HEATER_EN;
++			break;
++		case 0:
++			new =3D 0;
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		mutex_lock(&data->lock);
++		ret =3D hdc2010_update_drdy_config(data, HDC2010_HEATER_EN, new);
++		mutex_unlock(&data->lock);
++		return ret;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info hdc2010_info =3D {
++	.read_raw =3D hdc2010_read_raw,
++	.write_raw =3D hdc2010_write_raw,
++	.attrs =3D &hdc2010_attribute_group,
++};
++
++static int hdc2010_probe(struct i2c_client *client,
++			 const struct i2c_device_id *id)
++{
++	struct iio_dev *indio_dev;
++	struct hdc2010_data *data;
++	u8 tmp;
++	int ret;
++
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA |
++				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
++		return -EOPNOTSUPP;
++
++	indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*data));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	data =3D iio_priv(indio_dev);
++	i2c_set_clientdata(client, indio_dev);
++	data->client =3D client;
++	mutex_init(&data->lock);
++
++	indio_dev->dev.parent =3D &client->dev;
++	/*
++	 * As DEVICE ID register does not differentiate between
++	 * HDC2010 and HDC2080, we have the name hardcoded
++	 */
++	indio_dev->name =3D "hdc2010";
++	indio_dev->modes =3D INDIO_DIRECT_MODE;
++	indio_dev->info =3D &hdc2010_info;
++
++	indio_dev->channels =3D hdc2010_channels;
++	indio_dev->num_channels =3D ARRAY_SIZE(hdc2010_channels);
++
++	/* Enable Automatic Measurement Mode at 5Hz */
++	ret =3D hdc2010_update_drdy_config(data, HDC2010_AMM, HDC2010_AMM);
++	if (ret)
++		return ret;
++
++	/*
++	 * We enable both temp and humidity measurement.
++	 * However the measurement won't start even in AMM until triggered.
++	 */
++	tmp =3D (u8)(data->measurement_config & ~HDC2010_MEAS_CONF) |
++		HDC2010_MEAS_TRIG;
++
++	ret =3D i2c_smbus_write_byte_data(client,
++					HDC2010_REG_MEASUREMENT_CONF, tmp);
++	if (ret)
++		return ret;
++	data->measurement_config =3D tmp;
++
++	return devm_iio_device_register(&client->dev, indio_dev);
++}
++
++static const struct i2c_device_id hdc2010_id[] =3D {
++	{ "hdc2010" },
++	{ "hdc2080" },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, hdc2010_id);
++
++static const struct of_device_id hdc2010_dt_ids[] =3D {
++	{ .compatible =3D "ti,hdc2010" },
++	{ .compatible =3D "ti,hdc2080" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, hdc2010_dt_ids);
++
++static struct i2c_driver hdc2010_driver =3D {
++	.driver =3D {
++		.name	=3D "hdc2010",
++		.of_match_table =3D hdc2010_dt_ids,
++	},
++	.probe =3D hdc2010_probe,
++	.id_table =3D hdc2010_id,
++};
++module_i2c_driver(hdc2010_driver);
++
++MODULE_AUTHOR("Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>");
++MODULE_DESCRIPTION("TI HDC2010 humidity and temperature sensor driver");
++MODULE_LICENSE("GPL");
+diff -uprN -X linux-5.3.8/Documentation/dontdiff linux-5.3.8/drivers/iio/hu=
+midity/Kconfig linux-5.3.8_hdc2010/drivers/iio/humidity/Kconfig
+--- linux-5.3.8/drivers/iio/humidity/Kconfig	2019-10-29 09:22:48.000000000 =
++0100
++++ linux-5.3.8_hdc2010/drivers/iio/humidity/Kconfig	2019-11-28 14:31:27.79=
+4242693 +0100
+@@ -38,6 +38,16 @@ config HDC100X
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called hdc100x.
+=20
++config HDC2010
++	tristate "TI HDC2010 relative humidity and temperature sensor"
++	depends on I2C
++	help
++	  Say yes here to build support for the Texas Instruments
++	  HDC2010 and HDC2080 relative humidity and temperature sensors.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called hdc2010.
++
+ config HID_SENSOR_HUMIDITY
+ 	tristate "HID Environmental humidity sensor"
+ 	depends on HID_SENSOR_HUB
+diff -uprN -X linux-5.3.8/Documentation/dontdiff linux-5.3.8/drivers/iio/hu=
+midity/Makefile linux-5.3.8_hdc2010/drivers/iio/humidity/Makefile
+--- linux-5.3.8/drivers/iio/humidity/Makefile	2019-10-29 09:22:48.000000000=
+ +0100
++++ linux-5.3.8_hdc2010/drivers/iio/humidity/Makefile	2019-11-28 14:30:40.6=
+09892061 +0100
+@@ -6,6 +6,7 @@
+ obj-$(CONFIG_AM2315) +=3D am2315.o
+ obj-$(CONFIG_DHT11) +=3D dht11.o
+ obj-$(CONFIG_HDC100X) +=3D hdc100x.o
++obj-$(CONFIG_HDC2010) +=3D hdc2010.o
+ obj-$(CONFIG_HID_SENSOR_HUMIDITY) +=3D hid-sensor-humidity.o
+=20
+ hts221-y :=3D hts221_core.o \
 
-On Fri, Apr 17, 2020 at 10:50:01AM +0200, Saravanan Sekar wrote:
-> The mp2629 provides switching-mode battery charge management for
-> single-cell Li-ion or Li-polymer battery. Driver supports the
-> access/control input source and battery charging parameters.
->=20
-> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
-
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-
-With one improvement suggestion.
-
--- Sebastian
-
->  drivers/power/supply/Kconfig          |  10 +
->  drivers/power/supply/Makefile         |   1 +
->  drivers/power/supply/mp2629_charger.c | 667 ++++++++++++++++++++++++++
->  3 files changed, 678 insertions(+)
->  create mode 100644 drivers/power/supply/mp2629_charger.c
->=20
-> diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
-> index f3424fdce341..a46643f5e2fb 100644
-> --- a/drivers/power/supply/Kconfig
-> +++ b/drivers/power/supply/Kconfig
-> @@ -541,6 +541,16 @@ config CHARGER_MAX8998
->  	  Say Y to enable support for the battery charger control sysfs and
->  	  platform data of MAX8998/LP3974 PMICs.
-> =20
-> +config CHARGER_MP2629
-> +	tristate "Monolithic power system MP2629 Battery charger"
-> +	depends on MFD_MP2629
-> +	depends on MP2629_ADC
-> +	depends on IIO
-> +	help
-> +	  Select this option to enable support for Monolithic power system
-> +	  Battery charger. This driver provides Battery charger power management
-> +	  functions on the systems.
-> +
->  config CHARGER_QCOM_SMBB
->  	tristate "Qualcomm Switch-Mode Battery Charger and Boost"
->  	depends on MFD_SPMI_PMIC || COMPILE_TEST
-> diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
-> index 6c7da920ea83..41cb64f09e49 100644
-> --- a/drivers/power/supply/Makefile
-> +++ b/drivers/power/supply/Makefile
-> @@ -75,6 +75,7 @@ obj-$(CONFIG_CHARGER_MAX77650)	+=3D max77650-charger.o
->  obj-$(CONFIG_CHARGER_MAX77693)	+=3D max77693_charger.o
->  obj-$(CONFIG_CHARGER_MAX8997)	+=3D max8997_charger.o
->  obj-$(CONFIG_CHARGER_MAX8998)	+=3D max8998_charger.o
-> +obj-$(CONFIG_CHARGER_MP2629)	+=3D mp2629_charger.o
->  obj-$(CONFIG_CHARGER_QCOM_SMBB)	+=3D qcom_smbb.o
->  obj-$(CONFIG_CHARGER_BQ2415X)	+=3D bq2415x_charger.o
->  obj-$(CONFIG_CHARGER_BQ24190)	+=3D bq24190_charger.o
-> diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply=
-/mp2629_charger.c
-> new file mode 100644
-> index 000000000000..1c45fc162f74
-> --- /dev/null
-> +++ b/drivers/power/supply/mp2629_charger.c
-> @@ -0,0 +1,667 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * MP2629 battery charger driver
-> + *
-> + * Copyright 2020 Monolithic Power Systems, Inc
-> + *
-> + * Author: Saravanan Sekar <sravanhome@gmail.com>
-> + */
-> +
-> +#include <linux/bits.h>
-> +#include <linux/iio/consumer.h>
-> +#include <linux/iio/types.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/mfd/mp2629.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/power_supply.h>
-> +#include <linux/regmap.h>
-> +
-> +#define MP2629_REG_INPUT_ILIM		0x00
-> +#define MP2629_REG_INPUT_VLIM		0x01
-> +#define MP2629_REG_CHARGE_CTRL		0x04
-> +#define MP2629_REG_CHARGE_ILIM		0x05
-> +#define MP2629_REG_PRECHARGE		0x06
-> +#define MP2629_REG_TERM_CURRENT		0x06
-> +#define MP2629_REG_CHARGE_VLIM		0x07
-> +#define MP2629_REG_TIMER_CTRL		0x08
-> +#define MP2629_REG_IMPEDANCE_COMP	0x09
-> +#define MP2629_REG_INTERRUPT		0x0b
-> +#define MP2629_REG_STATUS		0x0c
-> +#define MP2629_REG_FAULT		0x0d
-> +
-> +#define MP2629_MASK_INPUT_TYPE		GENMASK(7, 5)
-> +#define MP2629_MASK_CHARGE_TYPE		GENMASK(4, 3)
-> +#define MP2629_MASK_CHARGE_CTRL		GENMASK(5, 4)
-> +#define MP2629_MASK_WDOG_CTRL		GENMASK(5, 4)
-> +#define MP2629_MASK_IMPEDANCE		GENMASK(7, 4)
-> +
-> +#define MP2629_INPUTSOURCE_CHANGE	GENMASK(7, 5)
-> +#define MP2629_CHARGING_CHANGE		GENMASK(4, 3)
-> +#define MP2629_FAULT_BATTERY		BIT(3)
-> +#define MP2629_FAULT_THERMAL		BIT(4)
-> +#define MP2629_FAULT_INPUT		BIT(5)
-> +#define MP2629_FAULT_OTG		BIT(6)
-> +
-> +#define MP2629_MAX_BATT_CAPACITY	100
-> +
-> +#define MP2629_PROPS(_idx, _min, _max, _step)		\
-> +	[_idx] =3D {					\
-> +		.min	=3D _min,				\
-> +		.max	=3D _max,				\
-> +		.step	=3D _step,			\
-> +}
-> +
-> +enum mp2629_source_type {
-> +	MP2629_SOURCE_TYPE_NO_INPUT,
-> +	MP2629_SOURCE_TYPE_NON_STD,
-> +	MP2629_SOURCE_TYPE_SDP,
-> +	MP2629_SOURCE_TYPE_CDP,
-> +	MP2629_SOURCE_TYPE_DCP,
-> +	MP2629_SOURCE_TYPE_OTG =3D 7,
-> +};
-> +
-> +enum mp2629_field {
-> +	INPUT_ILIM,
-> +	INPUT_VLIM,
-> +	CHARGE_ILIM,
-> +	CHARGE_VLIM,
-> +	PRECHARGE,
-> +	TERM_CURRENT,
-> +	MP2629_MAX_FIELD
-> +};
-> +
-> +struct mp2629_charger {
-> +	struct device *dev;
-> +	int status;
-> +	int fault;
-> +
-> +	struct regmap *regmap;
-> +	struct regmap_field *regmap_fields[MP2629_MAX_FIELD];
-> +	struct mutex lock;
-> +	struct power_supply *usb;
-> +	struct power_supply *battery;
-> +	struct iio_channel *iiochan[MP2629_ADC_CHAN_END];
-> +};
-> +
-> +struct mp2629_prop {
-> +	int reg;
-> +	int mask;
-> +	int min;
-> +	int max;
-> +	int step;
-> +	int shift;
-> +};
-> +
-> +static enum power_supply_usb_type mp2629_usb_types[] =3D {
-> +	POWER_SUPPLY_USB_TYPE_SDP,
-> +	POWER_SUPPLY_USB_TYPE_DCP,
-> +	POWER_SUPPLY_USB_TYPE_CDP,
-> +	POWER_SUPPLY_USB_TYPE_PD_DRP,
-> +	POWER_SUPPLY_USB_TYPE_UNKNOWN
-> +};
-> +
-> +static enum power_supply_property mp2629_charger_usb_props[] =3D {
-> +	POWER_SUPPLY_PROP_ONLINE,
-> +	POWER_SUPPLY_PROP_USB_TYPE,
-> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-> +	POWER_SUPPLY_PROP_CURRENT_NOW,
-> +	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-> +	POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT,
-> +};
-> +
-> +static enum power_supply_property mp2629_charger_bat_props[] =3D {
-> +	POWER_SUPPLY_PROP_STATUS,
-> +	POWER_SUPPLY_PROP_HEALTH,
-> +	POWER_SUPPLY_PROP_CHARGE_TYPE,
-> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-> +	POWER_SUPPLY_PROP_CURRENT_NOW,
-> +	POWER_SUPPLY_PROP_CAPACITY,
-> +	POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
-> +	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
-> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-> +};
-> +
-> +static struct mp2629_prop props[] =3D {
-> +	MP2629_PROPS(INPUT_ILIM, 100000, 3250000, 50000),
-> +	MP2629_PROPS(INPUT_VLIM, 3800000, 5300000, 100000),
-> +	MP2629_PROPS(CHARGE_ILIM, 320000, 4520000, 40000),
-> +	MP2629_PROPS(CHARGE_VLIM, 3400000, 4670000, 10000),
-> +	MP2629_PROPS(PRECHARGE, 120000, 720000, 40000),
-> +	MP2629_PROPS(TERM_CURRENT, 80000, 680000, 40000),
-> +};
-> +
-> +static const struct reg_field mp2629_reg_fields[] =3D {
-> +	[INPUT_ILIM]	=3D REG_FIELD(MP2629_REG_INPUT_ILIM, 0, 5),
-> +	[INPUT_VLIM]	=3D REG_FIELD(MP2629_REG_INPUT_VLIM, 0, 3),
-> +	[CHARGE_ILIM]	=3D REG_FIELD(MP2629_REG_CHARGE_ILIM, 0, 6),
-> +	[CHARGE_VLIM]	=3D REG_FIELD(MP2629_REG_CHARGE_VLIM, 1, 7),
-> +	[PRECHARGE]	=3D REG_FIELD(MP2629_REG_PRECHARGE, 4, 7),
-> +	[TERM_CURRENT]	=3D REG_FIELD(MP2629_REG_TERM_CURRENT, 0, 3),
-> +};
-> +
-> +static char *adc_chan_name[] =3D {
-> +	"mp2629-batt-volt",
-> +	"mp2629-system-volt",
-> +	"mp2629-input-volt",
-> +	"mp2629-batt-current",
-> +	"mp2629-input-current",
-> +};
-> +
-> +static int mp2629_read_adc(struct mp2629_charger *charger,
-> +			   enum mp2629_adc_chan ch,
-> +			   union power_supply_propval *val)
-> +{
-> +	int ret;
-> +	int chval;
-> +
-> +	ret =3D iio_read_channel_processed(charger->iiochan[ch], &chval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	val->intval =3D chval * 1000;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mp2629_get_prop(struct mp2629_charger *charger,
-> +			   enum mp2629_field fld,
-> +			   union power_supply_propval *val)
-> +{
-> +	int ret;
-> +	unsigned int rval;
-> +
-> +	ret =3D regmap_field_read(charger->regmap_fields[fld], &rval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	val->intval =3D rval * props[fld].step + props[fld].min;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mp2629_set_prop(struct mp2629_charger *charger,
-> +			   enum mp2629_field fld,
-> +			   const union power_supply_propval *val)
-> +{
-> +	unsigned int rval;
-> +
-> +	if (val->intval < props[fld].min || val->intval > props[fld].max)
-> +		return -EINVAL;
-> +
-> +	rval =3D (val->intval - props[fld].min) / props[fld].step;
-> +	return regmap_field_write(charger->regmap_fields[fld], rval);
-> +}
-> +
-> +static int mp2629_get_battery_capacity(struct mp2629_charger *charger,
-> +				       union power_supply_propval *val)
-> +{
-> +	union power_supply_propval vnow, vlim;
-> +	int ret;
-> +
-> +	ret =3D mp2629_read_adc(charger, MP2629_BATT_VOLT, &vnow);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D mp2629_get_prop(charger, CHARGE_VLIM, &vlim);
-> +	if (ret)
-> +		return ret;
-> +
-> +	val->intval =3D (vnow.intval * 100) / vlim.intval;
-> +	val->intval =3D min(val->intval, MP2629_MAX_BATT_CAPACITY);
-> +
-> +	return 0;
-> +}
-> +
-> +static int mp2629_charger_battery_get_prop(struct power_supply *psy,
-> +					enum power_supply_property psp,
-> +					union power_supply_propval *val)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(psy->dev.parent);
-> +	unsigned int rval;
-> +	int ret =3D 0;
-> +
-> +	switch (psp) {
-> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-> +		ret =3D mp2629_read_adc(charger, MP2629_BATT_VOLT, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
-> +		ret =3D mp2629_read_adc(charger, MP2629_BATT_CURRENT, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
-> +		val->intval =3D 4520000;
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
-> +		val->intval =3D 4670000;
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CAPACITY:
-> +		ret =3D mp2629_get_battery_capacity(charger, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
-> +		ret =3D mp2629_get_prop(charger, TERM_CURRENT, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
-> +		ret =3D mp2629_get_prop(charger, PRECHARGE, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-> +		ret =3D mp2629_get_prop(charger, CHARGE_VLIM, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-> +		ret =3D mp2629_get_prop(charger, CHARGE_ILIM, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_HEALTH:
-> +		if (!charger->fault)
-> +			val->intval =3D POWER_SUPPLY_HEALTH_GOOD;
-> +		if (MP2629_FAULT_BATTERY & charger->fault)
-> +			val->intval =3D POWER_SUPPLY_HEALTH_OVERVOLTAGE;
-> +		else if (MP2629_FAULT_THERMAL & charger->fault)
-> +			val->intval =3D POWER_SUPPLY_HEALTH_OVERHEAT;
-> +		else if (MP2629_FAULT_INPUT & charger->fault)
-> +			val->intval =3D POWER_SUPPLY_HEALTH_OVERVOLTAGE;
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_STATUS:
-> +		ret =3D regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
-> +		if (ret)
-> +			break;
-> +
-> +		rval =3D (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
-> +		switch (rval) {
-> +		case 0x00:
-> +			val->intval =3D POWER_SUPPLY_STATUS_DISCHARGING;
-> +			break;
-> +		case 0x01:
-> +		case 0x10:
-> +			val->intval =3D POWER_SUPPLY_STATUS_CHARGING;
-> +			break;
-> +		case 0x11:
-> +			val->intval =3D POWER_SUPPLY_STATUS_FULL;
-> +		}
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CHARGE_TYPE:
-> +		ret =3D regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
-> +		if (ret)
-> +			break;
-> +
-> +		rval =3D (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
-> +		switch (rval) {
-> +		case 0x00:
-> +			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_NONE;
-> +			break;
-> +		case 0x01:
-> +			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
-> +			break;
-> +		case 0x10:
-> +			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_STANDARD;
-> +			break;
-> +		default:
-> +			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
-> +		}
-> +		break;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int mp2629_charger_battery_set_prop(struct power_supply *psy,
-> +					enum power_supply_property psp,
-> +					const union power_supply_propval *val)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(psy->dev.parent);
-> +
-> +	switch (psp) {
-> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
-> +		return mp2629_set_prop(charger, TERM_CURRENT, val);
-> +
-> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
-> +		return mp2629_set_prop(charger, PRECHARGE, val);
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-> +		return mp2629_set_prop(charger, CHARGE_VLIM, val);
-> +
-> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-> +		return mp2629_set_prop(charger, CHARGE_ILIM, val);
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int mp2629_charger_usb_get_prop(struct power_supply *psy,
-> +				enum power_supply_property psp,
-> +				union power_supply_propval *val)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(psy->dev.parent);
-> +	unsigned int rval;
-> +	int ret;
-> +
-> +	switch (psp) {
-> +	case POWER_SUPPLY_PROP_ONLINE:
-> +		ret =3D regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
-> +		if (ret)
-> +			break;
-> +
-> +		val->intval =3D !!(rval & MP2629_MASK_INPUT_TYPE);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_USB_TYPE:
-> +		ret =3D regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
-> +		if (ret)
-> +			break;
-> +
-> +		rval =3D (rval & MP2629_MASK_INPUT_TYPE) >> 5;
-> +		switch (rval) {
-> +		case MP2629_SOURCE_TYPE_SDP:
-> +			val->intval =3D POWER_SUPPLY_USB_TYPE_SDP;
-> +			break;
-> +		case MP2629_SOURCE_TYPE_CDP:
-> +			val->intval =3D POWER_SUPPLY_USB_TYPE_CDP;
-> +			break;
-> +		case MP2629_SOURCE_TYPE_DCP:
-> +			val->intval =3D POWER_SUPPLY_USB_TYPE_DCP;
-> +			break;
-> +		case MP2629_SOURCE_TYPE_OTG:
-> +			val->intval =3D POWER_SUPPLY_USB_TYPE_PD_DRP;
-> +			break;
-> +		default:
-> +			val->intval =3D POWER_SUPPLY_USB_TYPE_UNKNOWN;
-> +			break;
-> +		}
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-> +		ret =3D mp2629_read_adc(charger, MP2629_INPUT_VOLT, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
-> +		ret =3D mp2629_read_adc(charger, MP2629_INPUT_CURRENT, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
-> +		ret =3D mp2629_get_prop(charger, INPUT_VLIM, val);
-> +		break;
-> +
-> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
-> +		ret =3D mp2629_get_prop(charger, INPUT_ILIM, val);
-> +		break;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int mp2629_charger_usb_set_prop(struct power_supply *psy,
-> +				enum power_supply_property psp,
-> +				const union power_supply_propval *val)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(psy->dev.parent);
-> +
-> +	switch (psp) {
-> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
-> +		return mp2629_set_prop(charger, INPUT_VLIM, val);
-> +
-> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
-> +		return mp2629_set_prop(charger, INPUT_ILIM, val);
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int mp2629_charger_battery_prop_writeable(struct power_supply *ps=
-y,
-> +				     enum power_supply_property psp)
-> +{
-> +	return (psp =3D=3D POWER_SUPPLY_PROP_PRECHARGE_CURRENT) ||
-> +	       (psp =3D=3D POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT) ||
-> +	       (psp =3D=3D POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT) ||
-> +	       (psp =3D=3D POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE);
-> +}
-> +
-> +static int mp2629_charger_usb_prop_writeable(struct power_supply *psy,
-> +				     enum power_supply_property psp)
-> +{
-> +	return (psp =3D=3D POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT) ||
-> +	       (psp =3D=3D POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT);
-> +}
-> +
-> +static irqreturn_t mp2629_irq_handler(int irq, void *dev_id)
-> +{
-> +	struct mp2629_charger *charger =3D dev_id;
-> +	unsigned int rval;
-> +	int ret;
-> +
-> +	mutex_lock(&charger->lock);
-> +
-> +	ret =3D regmap_read(charger->regmap, MP2629_REG_FAULT, &rval);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	if (rval) {
-> +		charger->fault =3D rval;
-> +		if (MP2629_FAULT_BATTERY & rval)
-> +			dev_err(charger->dev, "Battery fault OVP\n");
-> +		else if (MP2629_FAULT_THERMAL & rval)
-> +			dev_err(charger->dev, "Thermal shutdown fault\n");
-> +		else if (MP2629_FAULT_INPUT & rval)
-> +			dev_err(charger->dev, "no input or input OVP\n");
-> +		else if (MP2629_FAULT_OTG & rval)
-> +			dev_err(charger->dev, "VIN overloaded\n");
-> +
-> +		goto unlock;
-> +	}
-> +
-> +	ret =3D regmap_read(charger->regmap, MP2629_REG_STATUS, &rval);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	if (rval & MP2629_INPUTSOURCE_CHANGE)
-> +		power_supply_changed(charger->usb);
-> +	else if (rval & MP2629_CHARGING_CHANGE)
-> +		power_supply_changed(charger->battery);
-> +
-> +unlock:
-> +	mutex_unlock(&charger->lock);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static const struct power_supply_desc mp2629_usb_desc =3D {
-> +	.name		=3D "mp2629_usb",
-> +	.type		=3D POWER_SUPPLY_TYPE_USB,
-> +	.usb_types      =3D mp2629_usb_types,
-> +	.num_usb_types  =3D ARRAY_SIZE(mp2629_usb_types),
-> +	.properties	=3D mp2629_charger_usb_props,
-> +	.num_properties	=3D ARRAY_SIZE(mp2629_charger_usb_props),
-> +	.get_property	=3D mp2629_charger_usb_get_prop,
-> +	.set_property	=3D mp2629_charger_usb_set_prop,
-> +	.property_is_writeable =3D mp2629_charger_usb_prop_writeable,
-> +};
-> +
-> +static const struct power_supply_desc mp2629_battery_desc =3D {
-> +	.name		=3D "mp2629_battery",
-> +	.type		=3D POWER_SUPPLY_TYPE_BATTERY,
-> +	.properties	=3D mp2629_charger_bat_props,
-> +	.num_properties	=3D ARRAY_SIZE(mp2629_charger_bat_props),
-> +	.get_property	=3D mp2629_charger_battery_get_prop,
-> +	.set_property	=3D mp2629_charger_battery_set_prop,
-> +	.property_is_writeable =3D mp2629_charger_battery_prop_writeable,
-> +};
-> +
-> +static ssize_t batt_impedance_compensation_show(struct device *dev,
-> +					   struct device_attribute *attr,
-> +					   char *buf)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(dev->parent);
-> +	unsigned int rval;
-> +	int ret;
-> +
-> +	ret =3D regmap_read(charger->regmap, MP2629_REG_IMPEDANCE_COMP, &rval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	rval =3D (rval >> 4) * 10;
-> +	return sprintf(buf, "%d mohm\n", rval);
-> +}
-> +
-> +static ssize_t batt_impedance_compensation_store(struct device *dev,
-> +					    struct device_attribute *attr,
-> +					    const char *buf,
-> +					    size_t count)
-> +{
-> +	struct mp2629_charger *charger =3D dev_get_drvdata(dev->parent);
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret =3D kstrtouint(buf, 10, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (val > 140)
-> +		return -ERANGE;
-> +
-> +	/* multiples of 10 mohm so round off */
-> +	val =3D val / 10;
-> +	ret =3D regmap_update_bits(charger->regmap, MP2629_REG_IMPEDANCE_COMP,
-> +					MP2629_MASK_IMPEDANCE, val << 4);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +static DEVICE_ATTR_RW(batt_impedance_compensation);
-> +
-> +static struct attribute *mp2629_charger_sysfs_attrs[] =3D {
-> +	&dev_attr_batt_impedance_compensation.attr,
-> +	NULL
-> +};
-> +ATTRIBUTE_GROUPS(mp2629_charger_sysfs);
-> +
-> +static int mp2629_charger_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct mp2629_info *ddata =3D dev_get_drvdata(dev->parent);
-> +	struct mp2629_charger *charger;
-> +	struct power_supply_config psy_cfg =3D {};
-> +	int ret, i, irq;
-> +
-> +	charger =3D devm_kzalloc(dev, sizeof(*charger), GFP_KERNEL);
-> +	if (!charger)
-> +		return -ENOMEM;
-> +
-> +	charger->regmap =3D ddata->regmap;
-> +	charger->dev =3D dev;
-> +	platform_set_drvdata(pdev, charger);
-> +
-> +	irq =3D platform_get_irq_optional(to_platform_device(dev->parent), 0);
-> +	if (irq < 0) {
-> +		dev_err(dev, "get irq fail: %d\n", irq);
-> +		return irq;
-> +	}
-> +
-> +	for (i =3D 0; i < MP2629_MAX_FIELD; i++) {
-> +		charger->regmap_fields[i] =3D devm_regmap_field_alloc(dev,
-> +					charger->regmap, mp2629_reg_fields[i]);
-> +		if (IS_ERR(charger->regmap_fields[i])) {
-> +			dev_err(dev, "regmap field alloc fail %d\n", i);
-> +			return PTR_ERR(charger->regmap_fields[i]);
-> +		}
-> +	}
-> +
-> +	for (i =3D 0; i < MP2629_ADC_CHAN_END; i++) {
-> +		charger->iiochan[i] =3D devm_iio_channel_get(dev,
-> +							adc_chan_name[i]);
-> +		if (IS_ERR(charger->iiochan[i])) {
-> +			dev_err(dev, "iio chan get %s err\n", adc_chan_name[i]);
-> +			return PTR_ERR(charger->iiochan[i]);
-> +		}
-> +	}
-> +
-> +	charger->usb =3D devm_power_supply_register(dev, &mp2629_usb_desc, NULL=
-);
-> +	if (IS_ERR(charger->usb)) {
-> +		dev_err(dev, "power supply register usb failed\n");
-> +		return PTR_ERR(charger->usb);
-> +	}
-> +
-> +	psy_cfg.drv_data =3D charger;
-> +	psy_cfg.attr_grp =3D mp2629_charger_sysfs_groups;
-> +	charger->battery =3D devm_power_supply_register(dev,
-> +					 &mp2629_battery_desc, &psy_cfg);
-> +	if (IS_ERR(charger->battery)) {
-> +		dev_err(dev, "power supply register battery failed\n");
-> +		return PTR_ERR(charger->battery);
-> +	}
-> +
-> +	ret =3D regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
-> +					MP2629_MASK_CHARGE_CTRL, BIT(4));
-> +	if (ret) {
-> +		dev_err(dev, "enable charge fail: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	regmap_update_bits(charger->regmap, MP2629_REG_TIMER_CTRL,
-> +					MP2629_MASK_WDOG_CTRL, 0);
-> +
-> +	mutex_init(&charger->lock);
-> +
-> +	ret =3D devm_request_threaded_irq(dev, irq, NULL,	mp2629_irq_handler,
-> +					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
-> +					"mp2629-charger", charger);
-> +	if (ret) {
-> +		dev_err(dev, "failed to request gpio IRQ\n");
-> +		return ret;
-> +	}
-> +
-> +	regmap_update_bits(charger->regmap, MP2629_REG_INTERRUPT,
-> +				GENMASK(6, 5), BIT(6) | BIT(5));
-> +
-> +	return 0;
-> +}
-> +
-> +static int mp2629_charger_remove(struct platform_device *pdev)
-> +{
-> +	struct mp2629_charger *charger =3D platform_get_drvdata(pdev);
-> +
-> +	regmap_update_bits(charger->regmap, MP2629_REG_CHARGE_CTRL,
-> +					MP2629_MASK_CHARGE_CTRL, 0);
-> +	return 0;
-> +}
-
-It would be cleaner to register charger disabling via devm_add_action_or_re=
-set()
-before the call to devm_power_supply_register(), so that it is disabled aft=
-er
-power-supply device has been removed and not before. As a nice side-effect =
-the
-mp2629_charger_remove() is no longer needed at all afterwards.
-
--- Sebastian
-
-> +static const struct of_device_id mp2629_charger_of_match[] =3D {
-> +	{ .compatible =3D "mps,mp2629_charger"},
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, mp2629_charger_of_match);
-> +
-> +static struct platform_driver mp2629_charger_driver =3D {
-> +	.driver =3D {
-> +		.name =3D "mp2629_charger",
-> +		.of_match_table =3D mp2629_charger_of_match,
-> +	},
-> +	.probe		=3D mp2629_charger_probe,
-> +	.remove		=3D mp2629_charger_remove,
-> +};
-> +module_platform_driver(mp2629_charger_driver);
-> +
-> +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
-> +MODULE_DESCRIPTION("MP2629 Charger driver");
-> +MODULE_LICENSE("GPL");
-> --=20
-> 2.17.1
->=20
-
---vfgjxyl5talfeqsh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl6l6OUACgkQ2O7X88g7
-+ppEhw//QTM7ggJCHJMWTI6QH/a+lUi/p7N7Rj5Tb/I9yxBQBQg0REf3vAGX4Z7Z
-i5FOCiTooZqSu0ewMhQXszT5kuGzFurwaDpe/YqmQteeJlF4HIhmwqdZFl/6WTeB
-qyOO7wWTYLRsl2faLCV3HjjO8CAJyqdQI8fpE8Y8I1raZ++MtXzIq75tOKarTvaR
-jiReWwUh5ctFSga1aWIM0sQ0jZ+eWglelUpRzrDK6PNUSdvx3HlCVchBweZsIjT3
-b6nsDcepsbYEbQOEwkvSfzUFNmcRCtNMpTyL40VbNs9ybfSdrWRojMzxVUPlbWmP
-5J2JJGpJ0wHu39+0pBJ13xbsl8TQueeuaCnHF+eQ2h3ZtHGl/aMksf4lgZq32L6d
-fYBefIcAEyclGn8YwucKOb5Eo0dJD9NojF1zpPqONBN1xQfIweCtLEZy0it+Tp3H
-5Iou5IwH76dUWCzRssbCvwf5FtPSLcQZz4tSft0ZwRF3Z/8/f0+QA8RlScMTGPB+
-GpOBTjVibR+MiPnM1SzpZaIAAu5tgp9+F95no2Sh0lltpOlGHPbAD8oGl1zoHfpx
-dlXq1TolZ0Mfq9RdDXx395Siw7aij1aXJlLMjPfhI4AlKQSnk5c00/ChwqZqyhiE
-Wmad05qjufmhr1SGd2G/KsuXjYaDr4sjlmFYgSsbn5DXsAZh8vw=
-=W/nv
------END PGP SIGNATURE-----
-
---vfgjxyl5talfeqsh--

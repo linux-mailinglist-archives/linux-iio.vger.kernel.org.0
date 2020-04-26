@@ -2,260 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 585131B8E90
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Apr 2020 11:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF97C1B8E98
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Apr 2020 11:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726121AbgDZJpn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Apr 2020 05:45:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34258 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726116AbgDZJpn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Apr 2020 05:45:43 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD3632070A;
-        Sun, 26 Apr 2020 09:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587894342;
-        bh=r4PBBrVo9jj3+oNkApElEHPg2MtshUZdeGZ50RpOxKY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WAZ0f5alsx89nmgSXL7nn7Nf35XVDHGnMZpS8erg54YVMviws8dhAaW0KiyoWRkk2
-         +wev8YDX4f0EpeCc69XKHNSOovfIMlCCAGcAnp1bHQtczGWVgm0YoXB6hvmF9asFeA
-         RY94OJTJhdmKLRJmSFZG8aTvEgZ2k23yVXyAKOqM=
-Date:   Sun, 26 Apr 2020 10:45:38 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [RFC PATCH 1/4] iio: Move scan mask management to the core
-Message-ID: <20200426104538.657a2d9a@archlinux>
-In-Reply-To: <20200424051818.6408-2-alexandru.ardelean@analog.com>
-References: <20200424051818.6408-1-alexandru.ardelean@analog.com>
-        <20200424051818.6408-2-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726116AbgDZJ4n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Apr 2020 05:56:43 -0400
+Received: from mail.pmenos.com.br ([200.253.192.8]:57991 "EHLO pmenos.com.br"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726112AbgDZJ4m (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Apr 2020 05:56:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=paguemenos.com.br; s=2bee2d6d-b5f1-4300-9a0d-fc2994317afd;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Message-ID:Reply-To:From:Date; bh=6tcWEWbVcCy5FFC0IZJg6Jt3M82xHq9IdoZZTB+YcLo=;
+        b=kc7ryJdZxs/JOSNUwLbkS0Ves26MKBx8G7O8OSZwzbNNwoWtG5i0Gkvr9I57iL+DTtbN4LRQTYLNyZgu6pbNV/SalK12FX59jp4vmqXa19iRmLAnlV9jpHfPRYCD67j+8npdfgwzwa4cwEYcDKuqEgTbLiVHbkNJQnk7mjmDkAMP8pyLsnBw6DaMxg/XleACZEYx9Qk03d8cTAgKvz80rmd2YkNnNZTTnk98SBMtD2gkI6sC59XjQnyIDAHC6ftsMz3kg23oSNY5Z/lgilQUm7o6j9OWKH2R/JG8V+PQdv7PStNHZchFAe2VtwB1m0OFHowrND38Bo2CLbeY8Bb0rQ==;
+Received:  from [172.24.0.4] (helo=mail.pmenos.com.br)
+         by pmenos.com.br stage1 with esmtps 
+        (Exim MailCleaner) 
+        id 1jSdzd-0000Oa-Fx  
+        from <analuciaoliveira@pmenos.com.br>; Sun, 26 Apr 2020 06:54:33 -0300
+Received: from mail.pmenos.com.br (localhost [127.0.0.1])
+        by mail.pmenos.com.br (Postfix) with ESMTPS id A7F79343661;
+        Sun, 26 Apr 2020 06:54:28 -0300 (-03)
+Received: from mail.pmenos.com.br (localhost [127.0.0.1])
+        by mail.pmenos.com.br (Postfix) with ESMTPS id 797F4343361;
+        Sun, 26 Apr 2020 06:54:28 -0300 (-03)
+Received: from mail.pmenos.com.br (localhost [127.0.0.1])
+        by mail.pmenos.com.br (Postfix) with ESMTP id 1A573342FF9;
+        Sun, 26 Apr 2020 06:54:28 -0300 (-03)
+Date:   Sun, 26 Apr 2020 06:54:28 -0300 (BRT)
+From:   Barbara D Wilkins <analuciaoliveira@pmenos.com.br>
+Reply-To: "mrsbarbarawilkinsfunds.usa@gmail.com" 
+          <mrsbarbarawilkinsfunds.usa@gmail.com>
+Message-ID: <1437941471.5681747.1587894868088.JavaMail.zimbra@pmenos.com.br>
+Subject: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [172.24.0.4]
+X-Mailer: Zimbra 8.6.0_GA_1194 (zclient/8.6.0_GA_1194)
+Thread-Topic: 
+Thread-Index: J2IRNYeXEP89XNFo3itdIMUnQ22RkA==
+X-MailCleaner-RDNS: invalid reverse DNS for 172.24.0.4
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Apr 2020 08:18:15 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+Hallo,
 
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> 
-> Let the core handle the buffer scan mask management including allocation
-> and channel selection. Having this handled in a central place rather than
-> open-coding it all over the place will make it easier to change the
-> implementation.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+          Wir sind eine christliche Organisation, die gegr=C3=BCndet wurde,=
+ um Menschen zu helfen, die Hilfe ben=C3=B6tigen, beispielsweise finanziell=
+e Hilfe. Wenn Sie also finanzielle Schwierigkeiten haben oder sich in einem=
+ finanziellen Chaos befinden und Geld ben=C3=B6tigen, um Ihr eigenes Untern=
+ehmen zu gr=C3=BCnden, oder wenn Sie einen Kredit ben=C3=B6tigen Begleichen=
+ Sie Ihre Schulden oder zahlen Sie Ihre Rechnungen ab, gr=C3=BCnden Sie ein=
+ gutes Gesch=C3=A4ft oder es f=C3=A4llt Ihnen schwer, einen Kapitalkredit v=
+on lokalen Banken zu erhalten. Kontaktieren Sie uns noch heute per E-Mail: =
+mrsbarbarawilkinsfunds.usa@gmail.com f=C3=BCr die Bibel sagt "" Luke 11: 10=
+ Jeder, der fragt, erh=C3=A4lt; wer sucht, findet; und f=C3=BCr den, der kl=
+opft, wird die T=C3=BCr ge=C3=B6ffnet ". Lassen Sie sich diese Gelegenheit =
+nicht entgehen, denn Jesus ist gestern, heute und f=C3=BCr immer derselbe. =
+Bitte, diese sind f=C3=BCr ernsthafte und gottesf=C3=BCrchtige Menschen.
 
-Hi Alex,
+Dein Name:
+Darlehensbetrag:
+Leihdauer:
+G=C3=BCltige Handynummer:
 
-For some reason I only have patch 1 of this series of 4.
+Vielen Dank f=C3=BCr Ihr Verst=C3=A4ndnis f=C3=BCr Ihren Kontakt, w=C3=A4hr=
+end wir warten: mrsbarbarawilkinsfunds.usa@gmail.com
 
-This one looks reasonable to me as abstracts away how it is implemented
-which is good. A few comments and a question inline.
-
-Jonathan
-
-
-> ---
->  drivers/iio/buffer/industrialio-buffer-cb.c | 17 ++++------
->  drivers/iio/industrialio-buffer.c           | 36 +++++++++++++++------
->  drivers/iio/inkern.c                        | 15 +++++++++
->  include/linux/iio/consumer.h                | 10 ++++++
->  4 files changed, 58 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/iio/buffer/industrialio-buffer-cb.c b/drivers/iio/buffer/industrialio-buffer-cb.c
-> index 47c96f7f4976..b50f1f48cac6 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-cb.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-cb.c
-> @@ -33,8 +33,7 @@ static int iio_buffer_cb_store_to(struct iio_buffer *buffer, const void *data)
->  static void iio_buffer_cb_release(struct iio_buffer *buffer)
->  {
->  	struct iio_cb_buffer *cb_buff = buffer_to_cb_buffer(buffer);
-> -
-> -	bitmap_free(cb_buff->buffer.scan_mask);
-> +	iio_buffer_free_scanmask(buffer);
->  	kfree(cb_buff);
->  }
->  
-> @@ -72,27 +71,25 @@ struct iio_cb_buffer *iio_channel_get_all_cb(struct device *dev,
->  	}
->  
->  	cb_buff->indio_dev = cb_buff->channels[0].indio_dev;
-> -	cb_buff->buffer.scan_mask = bitmap_zalloc(cb_buff->indio_dev->masklength,
-> -						  GFP_KERNEL);
-> -	if (cb_buff->buffer.scan_mask == NULL) {
-> -		ret = -ENOMEM;
-> +
-> +	ret = iio_buffer_alloc_scanmask(&cb_buff->buffer, cb_buff->indio_dev);
-> +	if (ret)
->  		goto error_release_channels;
-> -	}
-> +
->  	chan = &cb_buff->channels[0];
->  	while (chan->indio_dev) {
->  		if (chan->indio_dev != cb_buff->indio_dev) {
->  			ret = -EINVAL;
->  			goto error_free_scan_mask;
->  		}
-> -		set_bit(chan->channel->scan_index,
-> -			cb_buff->buffer.scan_mask);
-> +		iio_buffer_channel_enable(&cb_buff->buffer, chan);
->  		chan++;
->  	}
->  
->  	return cb_buff;
->  
->  error_free_scan_mask:
-> -	bitmap_free(cb_buff->buffer.scan_mask);
-> +	iio_buffer_free_scanmask(&cb_buff->buffer);
->  error_release_channels:
->  	iio_channel_release_all(cb_buff->channels);
->  error_free_cb_buff:
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 221157136af6..c06691281287 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -206,6 +206,26 @@ void iio_buffer_init(struct iio_buffer *buffer)
->  }
->  EXPORT_SYMBOL(iio_buffer_init);
->  
-> +int iio_buffer_alloc_scanmask(struct iio_buffer *buffer,
-> +			      struct iio_dev *indio_dev)
-I'm not sure passing the indio_dev in here makes sense as it
-obscures that all we are getting from it is the masklength.
-May be better to pass that explicitly.
-
-> +{
-> +	if (!indio_dev->masklength)
-> +		return 0;
-
-This is a bit of an oddity of the old code.  Any idea why we
-allow things to continue with a masklength of 0?  Seems to me
-that it is thoroughly broken if that occurs!
-
-> +
-> +	buffer->scan_mask = bitmap_zalloc(indio_dev->masklength, GFP_KERNEL);
-> +	if (buffer->scan_mask == NULL)
-> +		return -ENOMEM;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(iio_buffer_alloc_scanmask);
-> +
-> +void iio_buffer_free_scanmask(struct iio_buffer *buffer)
-> +{
-> +	bitmap_free(buffer->scan_mask);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_buffer_free_scanmask);
-> +
->  /**
->   * iio_buffer_set_attrs - Set buffer specific attributes
->   * @buffer: The buffer for which we are setting attributes
-> @@ -1301,14 +1321,10 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  				indio_dev->scan_index_timestamp =
->  					channels[i].scan_index;
->  		}
-> -		if (indio_dev->masklength && buffer->scan_mask == NULL) {
-> -			buffer->scan_mask = bitmap_zalloc(indio_dev->masklength,
-> -							  GFP_KERNEL);
-> -			if (buffer->scan_mask == NULL) {
-> -				ret = -ENOMEM;
-> -				goto error_cleanup_dynamic;
-> -			}
-> -		}
-> +
-> +		ret = iio_buffer_alloc_scanmask(buffer, indio_dev);
-> +		if (ret)
-> +			goto error_cleanup_dynamic;
->  	}
->  
->  	buffer->scan_el_group.name = iio_scan_elements_group_name;
-> @@ -1329,7 +1345,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
->  	return 0;
->  
->  error_free_scan_mask:
-> -	bitmap_free(buffer->scan_mask);
-> +	iio_buffer_free_scanmask(buffer);
->  error_cleanup_dynamic:
->  	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
->  	kfree(indio_dev->buffer->buffer_group.attrs);
-> @@ -1342,7 +1358,7 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
->  	if (!indio_dev->buffer)
->  		return;
->  
-> -	bitmap_free(indio_dev->buffer->scan_mask);
-> +	iio_buffer_free_scanmask(indio_dev->buffer);
->  	kfree(indio_dev->buffer->buffer_group.attrs);
->  	kfree(indio_dev->buffer->scan_el_group.attrs);
->  	iio_free_chan_devattr_list(&indio_dev->buffer->scan_el_dev_attr_list);
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index ede99e0d5371..f35cb9985edc 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -11,6 +11,7 @@
->  
->  #include <linux/iio/iio.h>
->  #include "iio_core.h"
-> +#include <linux/iio/buffer_impl.h>
->  #include <linux/iio/machine.h>
->  #include <linux/iio/driver.h>
->  #include <linux/iio/consumer.h>
-> @@ -857,6 +858,20 @@ int iio_write_channel_raw(struct iio_channel *chan, int val)
->  }
->  EXPORT_SYMBOL_GPL(iio_write_channel_raw);
->  
-> +void iio_buffer_channel_enable(struct iio_buffer *buffer,
-> +			       const struct iio_channel *chan)
-> +{
-> +	set_bit(chan->channel->scan_index, buffer->scan_mask);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_buffer_channel_enable);
-> +
-> +void iio_buffer_channel_disable(struct iio_buffer *buffer,
-> +				const struct iio_channel *chan)
-> +{
-> +	clear_bit(chan->channel->scan_index, buffer->scan_mask);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_buffer_channel_disable);
-> +
->  unsigned int iio_get_channel_ext_info_count(struct iio_channel *chan)
->  {
->  	const struct iio_chan_spec_ext_info *ext_info;
-> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-> index c4118dcb8e05..dbc87c26250a 100644
-> --- a/include/linux/iio/consumer.h
-> +++ b/include/linux/iio/consumer.h
-> @@ -12,6 +12,7 @@
->  
->  struct iio_dev;
->  struct iio_chan_spec;
-> +struct iio_buffer;
->  struct device;
->  
->  /**
-> @@ -342,6 +343,15 @@ int iio_read_channel_scale(struct iio_channel *chan, int *val,
->  int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
->  	int *processed, unsigned int scale);
->  
-> +void iio_buffer_channel_enable(struct iio_buffer *buffer,
-> +			       const struct iio_channel *chan);
-> +void iio_buffer_channel_disable(struct iio_buffer *buffer,
-> +				const struct iio_channel *chan);
-> +
-> +int iio_buffer_alloc_scanmask(struct iio_buffer *buffer,
-> +			      struct iio_dev *indio_dev);
-> +void iio_buffer_free_scanmask(struct iio_buffer *buffer);
-> +
->  /**
->   * iio_get_channel_ext_info_count() - get number of ext_info attributes
->   *				      connected to the channel.
-
+Gr=C3=BC=C3=9Fe
+Verwaltung

@@ -2,141 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 508D51B9921
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 09:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223E11B9ACC
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 10:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726693AbgD0H54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 03:57:56 -0400
-Received: from mail-eopbgr20113.outbound.protection.outlook.com ([40.107.2.113]:55430
-        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725785AbgD0H5z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Apr 2020 03:57:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aVSRxrHCiQeEcjznMhZu+SPAdJTlCqWVUAPupTVGln1r8JDjZXXssr+ZSHa4zZ/WqreLmHrtSEGM5NqbYGTn8qZBOY7bFn/1hnJm7PaPbvalV4v5T/CrRBqdn9JRTYUxlAhntE4qmSW/xr0vMHJmRiKa5D8Sow+ZJ92u3jbEmd6Hlpzz6EnR+t0mt+/Y/INs6sl2i6bP/Lk5Bt4ckx26SR8mBGYVJR0usUh/jSWcRz7hgyGh5CIg7E6IyRykN3QBsABIdxOEnfIX7GAsPngh0/sETLcpghR91aI1qMTRK6bZe+BwrEIFOXcYdgsMU2+iDrSYRg0J+tNdamML1dvJlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QYS5WhcG1LJpzVDbgPPqMEwqKcVKqz79FBXpD5ntIFY=;
- b=OkdpsiOVc0aNUVyKrA9LPZUZQUlDFfJh9A3Ug1P7Mi9CD5TgRwQdTOYzoyWWdWgVA00h2PkHSd+RB6b5/Nj2/UEHdS+89PHqZyjKX226u1I/t0iBgY8HN7jz+JeXmeTPiAkDCuwiovqFEgSLBchEgaawxYfvljgf2VzWa+f+Yw8bGP093E7GWlfHzQ7oiX+Kj4FanuHkVcBmc8aOyX7mv8v4TXWHpEY846g+0IT97wcS4uzlaQnogS7Y9Ssr6re0KNTiYFckdsuZYySFQAa+ntTfHkh6bgRRNaRCrBFko/A+5EVsLc+3HuYo6zGiO18ZlKJiyDo2+eLGyWB+vwFrLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
+        id S1726693AbgD0Ivy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 04:51:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726003AbgD0Ivy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 04:51:54 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F229C061A0F
+        for <linux-iio@vger.kernel.org>; Mon, 27 Apr 2020 01:51:53 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id j1so19545443wrt.1
+        for <linux-iio@vger.kernel.org>; Mon, 27 Apr 2020 01:51:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QYS5WhcG1LJpzVDbgPPqMEwqKcVKqz79FBXpD5ntIFY=;
- b=oViM41xWtinyaoddRDM98wqnYj/0c3Mch7EdJSm3zTBTmyJPCjlsSDNvPpU6SmmPuzdQGzSq/oWM3gbcrcGYmP1mgNWnNdN0pFwYVC83WkKJfhRmrj7m19BAfBOGfYgQVPZKuFY6yoP/SXgLL38YfYchAN5z+Fz37SzTXP+HWPw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=ez@norphonic.com; 
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com (2603:10a6:20b:86::11)
- by AM6PR06MB5224.eurprd06.prod.outlook.com (2603:10a6:20b:82::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Mon, 27 Apr
- 2020 07:57:51 +0000
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::9814:8ea:8170:5678]) by AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::9814:8ea:8170:5678%5]) with mapi id 15.20.2937.023; Mon, 27 Apr 2020
- 07:57:51 +0000
-Subject: Re: [PATCH v7 1/2] Driver for TI HDC20x0 humidity and temperature
- sensors
-To:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Eugene Zalkonnikov <ez@norphonic.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "development@norphonic.com" <development@norphonic.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <E372084A-C6C5-4261-90C5-B810ADAFDD73@norphonic.com>
- <alpine.DEB.2.21.2004270024590.16743@vps.pmeerw.net>
-From:   Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
-Message-ID: <7482ee6f-eedb-8482-d30e-7fa8e9b0fd47@norphonic.com>
-Date:   Mon, 27 Apr 2020 09:57:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-In-Reply-To: <alpine.DEB.2.21.2004270024590.16743@vps.pmeerw.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-ClientProxiedBy: OL1P279CA0051.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:e10:14::20) To AM6PR06MB5430.eurprd06.prod.outlook.com
- (2603:10a6:20b:86::11)
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=YPX4x0jDIEDTz7nvc7sn5bHK6BG3ihIkRvdS/BPSLzE=;
+        b=kWzVEYgY/9/widQPXrFcowP4ZjgLQHkdS9enzKduSjdkfx0EjP8bo0XL/1eJr3WKSX
+         JaXngTlXbRhWYn2hX9lTbL3BYOqB19rkhQThOErWAmIF/qonKh6RswR09vTh231Wumen
+         kkhqjmo/YdeXh0zkjImVDbUiZWOQt5OyFIRoy4ZvEENcfdPREtsZ5U6G1/quPfUCxTIt
+         5WXJoK36jKqIJyTxsTPlB5EpFR3KR7+KpsTR2iyPEYyeeX6eEN0rh8FYAJP1NsCNeGda
+         ozRxEpQyGjVLx9eZmfL6/SZ/2VZ5D0pd0rGMWpG6pqLBK3piKAxPdyCLrOe8OBJMZ1fF
+         OK0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=YPX4x0jDIEDTz7nvc7sn5bHK6BG3ihIkRvdS/BPSLzE=;
+        b=hiD0LRy10O/EteUgnDhqVJnS8PW7+NTsa8RIv+yGDDLZveBSMYZgeIBIXghW1j7+ia
+         NXOQPuj+VwJni7il0kO8yt/jxZuOqVxGnlmb4HSXTWVIR5C15YHQW2TOtw7QTOO33YOa
+         pUgh4HQhY595S23+CY4GnouFqxjI+AGVtF8R1VAimsK12ey7vBCDloW4Ist7o/mD59Cq
+         mCa++XconO1ba6tY31Q3d9iyVKq1MfStRZlR3KVP2MUYncnsOFOO3Y124sehjWwDC0BA
+         q+afGAVgaeprLDEVl2Up2Yg74ZNSO9nzfspCgTXa5eh9QQDHvDNqZskiKFCIdJseMHv6
+         03hw==
+X-Gm-Message-State: AGi0PubIBD9DERVPJpioE1SayhakXf7ls3aiVHqW38CWONGp2CXd1nWC
+        B/5pdOEs6jceYMSrFteSoAGxs9F3lCE=
+X-Google-Smtp-Source: APiQypLxApUbpg3TJ0ILuchowzV4ZZ5EBCvXW4eaI3vv4CK0MLDKEWjIbJVseNky+c8kdrfJlPFTuQ==
+X-Received: by 2002:adf:dd8a:: with SMTP id x10mr26630284wrl.308.1587977511933;
+        Mon, 27 Apr 2020 01:51:51 -0700 (PDT)
+Received: from dell ([2.31.163.63])
+        by smtp.gmail.com with ESMTPSA id x18sm14507505wmi.29.2020.04.27.01.51.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2020 01:51:51 -0700 (PDT)
+Date:   Mon, 27 Apr 2020 09:51:49 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     saravanan sekar <sravanhome@gmail.com>
+Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        sre@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
+Message-ID: <20200427085149.GF3559@dell>
+References: <20200415162030.16414-1-sravanhome@gmail.com>
+ <20200415162030.16414-3-sravanhome@gmail.com>
+ <20200424071822.GM3612@dell>
+ <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com>
+ <20200424093720.GA3542@dell>
+ <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com>
+ <20200424105319.GD8414@dell>
+ <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.0.1.54] (62.97.226.122) by OL1P279CA0051.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:14::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Mon, 27 Apr 2020 07:57:50 +0000
-X-Originating-IP: [62.97.226.122]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5790da8a-f554-4be6-7eea-08d7ea80aee9
-X-MS-TrafficTypeDiagnostic: AM6PR06MB5224:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM6PR06MB52243FF3287D98610516AEC2CAAF0@AM6PR06MB5224.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-Forefront-PRVS: 0386B406AA
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB5430.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(136003)(396003)(366004)(39830400003)(346002)(4326008)(66946007)(81156014)(53546011)(508600001)(66556008)(2906002)(31686004)(186003)(2616005)(16526019)(956004)(5660300002)(44832011)(6636002)(26005)(54906003)(36756003)(31696002)(8936002)(8676002)(110136005)(16576012)(66476007)(316002)(6486002)(52116002);DIR:OUT;SFP:1102;
-Received-SPF: None (protection.outlook.com: norphonic.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: q+XFoqP3LXzewqx4+Kt5pbBvwJLekAd29ICvjP5yfFll+Hr0PwXhIIS205uqmqX3uhc1jaWyneuHIUAheTi0hngyALMvjF1Ysp5QHeMXLgdbEgkIO1N3OWmB8+VF17+hVTO9KJC3PKTX1v1EdHB/KQ5PH2PSe9fRLlhB6uSCJZzWzL7t9p+j700Di4JTc2uq4ZdKZ7eHJwYqIg4Gv685BSjsONHLZ+kTEGbVu3N/xUCX/aUaI7rjn0Z26BDEl30cXxmfVcOQqIB+T/6ZITVPsTN8FoiAa1EnXuu9E+YcuNZCnQHVn7RQt0gbm0p1O/cTTQ4MP7ZrEOQSApxHRb2T6gnEerm5lIHM8Doy5A9ChbStExzGgwl8/ul4uMgWXeo9JvCSXZ5GaYTKTIXw6OV7QN0NiIhctFeNLJrE2biw3CDNFSfuY9yIRWRqWPe4rq9o
-X-MS-Exchange-AntiSpam-MessageData: yLMsPodrtFkSHD1J6/w9gam/wEF80D1XMsb0JT+WVzwQBWxhWX6I07CBYRtyxhtGWtgIrmUwUxs77J1eCaczOTIsUY2vhl42xD789hASvmKhDCNm+a0F78hMUB4sy54R+K7h6GmsEMh9PYp4u4uPxpeLLacsbLhXZvp7cf9r/W/AHxZSbjImzFXTdFkNf56VI8zm1/Uh8iN8Bu/i8qBIT2OlrsQd/qC062uafXB1kZ/9PhQvedfeFhULjIB2SCvKd2cunElSuGLVliUN1SA8tH0x6aWOUp8Et6HcxQrMEp97eHc12Z9u6QvukRvRaeW1+D6NCjf00qMzhZM81EJMFDbEby/hcM+0LICCFLRSLuADnN/7Flg+OBslq8GKBK7UpbUBcFO0SkiBw14xC9OR+4Ot2dpSv7xrmIDq8tJDzjyzwLdEEwZoq5/PbKO3OIZAmZrYmQtVOWVnEIMRdeyWiiGGWEjzGlVy/KeChWMuVWXoMriDXLmHB13D7SxEEt43usEJFdAszGMo3uMBEE05/k4UX5cY0VVVsQtzknOJqsAS8BUg782PXUXIq6Q+pe8/28BcLsd08wwyJclmz8ajbeSkATE8C20dIXPwmMRJU/nfcB7HBP4ZcY95F9j+ygPhdTiB+oXlP/RYsPsZajdRx17QMJWqeCOwEkYDt8Gp0ZJcpZCmsyvEPwd12iJriAysWNf3Mho/Na6is3ug2+UkCfEtcUxxQ1a+B6qa3dbBXnq1kFkT3BP9M3z+fzHAhriPptBYWZuCIwAair1LgbIEf4oXXy8Scil0jDNvyUgN500=
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5790da8a-f554-4be6-7eea-08d7ea80aee9
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2020 07:57:50.9774
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FCU5DlzogAzagiafcq9Lket07xgoyTmaq/h2OdD4o6JdxZ79e/5+zIYtciTvPPqlGRlJHVSBRzMpA5VnSZj+ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB5224
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Peter,
+On Fri, 24 Apr 2020, saravanan sekar wrote:
 
+> 
+> On 24/04/20 12:53 pm, Lee Jones wrote:
+> > On Fri, 24 Apr 2020, saravanan sekar wrote:
+> > 
+> > > Hi Lee,
+> > > 
+> > > On 24/04/20 11:37 am, Lee Jones wrote:
+> > > > On Fri, 24 Apr 2020, saravanan sekar wrote:
+> > > > 
+> > > > > Hi Lee,
+> > > > > 
+> > > > > On 24/04/20 9:18 am, Lee Jones wrote:
+> > > > > > On Wed, 15 Apr 2020, Saravanan Sekar wrote:
+> > > > > > 
+> > > > > > > mp2629 is a highly-integrated switching-mode battery charge management
+> > > > > > > device for single-cell Li-ion or Li-polymer battery.
+> > > > > > > 
+> > > > > > > Add MFD core enables chip access for ADC driver for battery readings,
+> > > > > > > and a power supply battery-charger driver
+> > > > > > > 
+> > > > > > > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> > > > > > > ---
+> > > > > > >     drivers/mfd/Kconfig        |  9 ++++
+> > > > > > >     drivers/mfd/Makefile       |  2 +
+> > > > > > >     drivers/mfd/mp2629.c       | 86 ++++++++++++++++++++++++++++++++++++++
+> > > > > > >     include/linux/mfd/mp2629.h | 19 +++++++++
+> > > > > > >     4 files changed, 116 insertions(+)
+> > > > > > >     create mode 100644 drivers/mfd/mp2629.c
+> > > > > > >     create mode 100644 include/linux/mfd/mp2629.h
+> > > > > > How is this driver registered?
+> > > > > > 
+> > > > > > Looks like it has device tree support.  Is there another way?
+> > > > > Yes, only using device tree
+> > > > Then how about using 'simple-mfd' and 'syscon'?
+> > > > 
+> > > > Then you can omit this driver completely.
+> > > The exception is to support for non device tree platform as well, but I have
+> > > tested only for ARM device tree platform.
+> > Is that a reality though?
+> > 
+> > How else do you see this realistically being registered?
+> > 
+> I understand that acpi related device table are not covered here, well I
+> don't have to platform to test so.
+> If you ask me to cover acpi related table, I can do but hard to test.
 
-On 27.04.2020 00:35, Peter Meerwald-Stadler wrote:
->> +{
->> +	struct i2c_client *client = data->client;
->> +	s32 ret;
->> +
->> +	ret = i2c_smbus_read_byte_data(client,
->> +			hdc2010_reg_translation[chan->address].peak);
->> +
->> +	if (ret < 0)
->> +		dev_err(&client->dev, "Could not read sensor data\n");
->> +
->> +	return ret;
->> +}
->> +
->> +static int hdc2010_get_heater_status(struct hdc2010_data *data)
-> return value should be bool?
+I don't know of any reasons why syscon can't be used by ACPI.
 
-No idea. It is an int in hdc100x hdc heater sysfs and I try to stick to existing practices.
+Please try to solve this issue using 'simple-mfd' and 'syscon'.
 
-Should those be bools?
+> > > > > > > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> > > > > > > index 3c547ed575e6..85be799795aa 100644
+> > > > > > > --- a/drivers/mfd/Kconfig
+> > > > > > > +++ b/drivers/mfd/Kconfig
+> > > > > > > @@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
+> > > > > > >     	help
+> > > > > > >     	  Select this if your MC13xxx is connected via an I2C bus.
+> > > > > > > +config MFD_MP2629
+> > > > > > > +	tristate "Monolithic power system MP2629 ADC and Battery charger"
+> > > > > > > +	depends on I2C
+> > > > > > > +	select REGMAP_I2C
+> > > > > > > +	help
+> > > > > > > +	  Select this option to enable support for monolithic power system
+> > > > > > > +	  battery charger. This provides ADC, thermal, battery charger power
+> > > > > > > +	  management functions on the systems.
 
->
->> +	case IIO_CHAN_INFO_PEAK: {
->> +		int ret;
->> +
->> +		ret = iio_device_claim_direct_mode(indio_dev);
->> +		if (ret)
->> +			return ret;
->> +		mutex_lock(&data->lock);
->> +		ret = hdc2010_get_peak_measurement_byte(data, chan);
->> +		mutex_unlock(&data->lock);
->> +		iio_device_release_direct_mode(indio_dev);
->> +		if (ret < 0)
->> +			return ret;
->> +		/* Scaling up the value so we can use same offset as RAW */
->> +		*val = ret * 256;
-> I'd rather have different _SCALEs for peak and raw
-
-They are made shared per Jonathan's suggestion early on, as the offsets for the channels don't match.
-
-
-Regards,
-
-�� Eugene.
-
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

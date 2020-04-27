@@ -2,308 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5821BA03A
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 11:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F15EE1BA07C
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 11:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbgD0Jor (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 05:44:47 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2104 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726349AbgD0Jor (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Apr 2020 05:44:47 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 1C9DCBF8E98470DDCA16;
-        Mon, 27 Apr 2020 10:44:45 +0100 (IST)
-Received: from localhost (10.47.88.126) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 27 Apr
- 2020 10:44:44 +0100
-Date:   Mon, 27 Apr 2020 10:44:26 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH 4/6] Documentation: ABI: testing: scd30: document iio
- attributes
-Message-ID: <20200427104426.000010bf@Huawei.com>
-In-Reply-To: <20200426111104.GB3282@arch>
-References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
-        <20200422141135.86419-5-tomasz.duszynski@octakon.com>
-        <alpine.DEB.2.21.2004221818490.26800@vps.pmeerw.net>
-        <20200423155317.GB43448@arch>
-        <20200425202057.5c8ad612@archlinux>
-        <20200426111104.GB3282@arch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726504AbgD0J4K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 05:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726485AbgD0J4J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 05:56:09 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDA0C0610D5;
+        Mon, 27 Apr 2020 02:56:09 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id k1so19811088wrx.4;
+        Mon, 27 Apr 2020 02:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=78897x0Vz8sDaO0Q94P5Aox7/J6SvRZJYjM13t5atvo=;
+        b=ZBJEozcW/B2nYEACBeplmtwaIDIjaVdUY70J9ZI7j/o1CBLXPtBtJIoz+awkf9qODn
+         zBv6asu3LiVNZK4UIlmfMZiIB4138sSbdwG5ypIE/ZSFrL2LJI/xpAGSIWvMUPxEJdEM
+         sNaI2BuGaV7iA+uhM39NpSoMCkQrCoalhRvK+Um+QkduSk2q2DHrFFStVcJIGvbT3ziV
+         iNQlc8SveNODARzF4OkbESPiwyVmm3JMmaQqPhYOxcWwHPk25a/nR+Ctb1euCtmLrMDR
+         r09avxYMNNfD1ueBP/OAsltcvhWXVPfniPMs5rAqU9xQ48GtbHOjwmVdhhvD+QOUs2LA
+         /hNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=78897x0Vz8sDaO0Q94P5Aox7/J6SvRZJYjM13t5atvo=;
+        b=ABhtZ8drq28wkhynT6CdDWvZ55yohFSaDL2n3MXpO4HJT3d1ckHy3qLfCE77sHm7jm
+         u/TGOJafzAhsmXnytKn0qVhvLVrlb5g2bpehFnKZ2GvqDWmibbYBrQoehGuHc06Ft6VD
+         lhRSJQeTEN+U5Lh4gZGcvAsVjlhaxFneS+wENT7qU4ayIi9kpbxpAXvJ9JScBIYGRV/D
+         2cZKDpW4Y2ADXDDG2qxMFIkqOBuz65qs7krTDaudvi2h1Hjgu26uBqmwVcnGRaY5/e/y
+         FwKiGi4PvNz4ugJN7cjlDLW+k1Vbej0O6qY/X090EXvDuwle5+GHv0sRVrZt4tPtHe1H
+         fquA==
+X-Gm-Message-State: AGi0PubzNNnJiw8/vPsmj5ri7MZbLpjwq1SSoKIfFiXwmKfaXuI626jC
+        Eg+dvm1poWE71LA/yVK9wDXcnsOnEfc=
+X-Google-Smtp-Source: APiQypJmw3gP87szqL6WiP/AjYwYBCy8JLyODqr5Z1MD9+Zw88TK6ydHTdSBMjBSRsK/z2NcabCqRQ==
+X-Received: by 2002:a5d:6b85:: with SMTP id n5mr26846006wrx.370.1587981367870;
+        Mon, 27 Apr 2020 02:56:07 -0700 (PDT)
+Received: from meru.fronius.com ([2a01:cb18:832e:5f00:7069:9b5d:ebe2:85b8])
+        by smtp.gmail.com with ESMTPSA id y10sm14487606wma.5.2020.04.27.02.56.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2020 02:56:07 -0700 (PDT)
+From:   Mathieu Othacehe <m.othacehe@gmail.com>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: [PATCH v6 0/5] iio: vcnl: Add interrupts support for VCNL4010/20.
+Date:   Mon, 27 Apr 2020 11:55:54 +0200
+Message-Id: <20200427095559.16131-1-m.othacehe@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.88.126]
-X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Tomasz,
+Hello,
 
-Replies inline.
+Here's a v6 taking Jonathan remarks into account. A new patch is added to fix
+i2c measure reads. The driver also uses read_avail callback for sampling
+frequency.
 
-On Sun, 26 Apr 2020 13:11:04 +0200
-Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+Thanks,
 
-> On Sat, Apr 25, 2020 at 08:20:57PM +0100, Jonathan Cameron wrote:
-> > On Thu, 23 Apr 2020 17:53:17 +0200
-> > Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
-> >  
-> > > On Wed, Apr 22, 2020 at 06:40:17PM +0200, Peter Meerwald-Stadler wrote:  
-> > > > On Wed, 22 Apr 2020, Tomasz Duszynski wrote:
-> > > >  
-> > > > > Add documentation for sensor specific iio attributes.  
-> > > >
-> > > > minor comments below  
-> > >
-> > > Thanks.
-> > >  
-> > > >  
-> > > > > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> > > > > ---
-> > > > >  Documentation/ABI/testing/sysfs-bus-iio-scd30 | 97 +++++++++++++++++++
-> > > > >  1 file changed, 97 insertions(+)
-> > > > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
-> > > > >
-> > > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-> > > > > new file mode 100644
-> > > > > index 000000000000..0431a718447d
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-> > > > > @@ -0,0 +1,97 @@
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Given that sensor's CO2 measurement chamber has fixed volume
-> > > > > +		pressure changes will affect concentration readings. Writing
-> > > > > +		current ambient pressure here will allow senor to make necessary  
-> > > >
-> > > > sensor
-> > > >  
-> > >
-> > > Okay.
-> > >  
-> > > > > +		adjustments. Upon reading previously set value is returned.
-> > > > > +		Units are millibars.  
-> > > >
-> > > > unit for pressure in IIO is kilopascal (e.g.
-> > > > /sys/bus/iio/devices/iio:deviceX/in_pressure_raw)
-> > > >  
-> > >
-> > > My thinking here was that since these are sensor specific attributes
-> > > they don't need to stick to iio conventions and millibars were somewhat
-> > > more natural to use. But I guess that's just matter of habit.  
-> >
-> > You absolutely have to stick to standard units.  Userspace programs
-> > aren't going to come read your docs...
-> >
-> > For other sensors that take a calibration value like this we've reported
-> > them via an output channel.  For example the atlas-ph sensor has
-> > an 'output temp' channel used for this purpose.
-> >  
-> 
-> Fair enough.
-> 
-> > It's not ideal or totally intuitive but it does let us avoid expanding
-> > the overall ABI.  The argument was something along the lines of
-> > 1) Imagine your sensor could control the pressure in the measurement space...
-> > 2) An output channel would provide the value to set it to.
-> > 3) Now instead we provide a means of saying 'what it is'
-> > 4) End result is we write a value and the pressure in the chamber is
-> >    that value :)
-> >
-> > As I said not ideal but the best we can do without having to define a lot
-> > of ABI just to deal with compensation factors.
-> >
-> > This is a rare case where I would document the 'standard' ABI in here
-> > to make the point that it is actually providing an estimate of the pressure
-> > not controlling it...
-> >  
-> > >
-> > > So generally I am okay with reworking all attrs to accept values in iio
-> > > preferred units.
-> > >  
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp_available
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		The range of available values in millibars represented as the
-> > > > > +		minimum value, the step and the maximum value, all enclosed in
-> > > > > +		square brackets.
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/meas_interval
-> > > > > +Date:		January 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Amount of time between subsequent measurements. Writing this
-> > > > > +		attribute will change measurement interval. Upon reading
-> > > > > +		current measurement interval is returned. Units are seconds.  
-> >
-> > Use the existing ABI sampling frequency which is sort of the inverse of this.
-> >  
-> 
-> Was thinking about it but long periods in Hz simply don't look appealing :).
-> 
-> No other strong opinions so I'll rework that.
+Mathieu
 
-Agreed it can look a bit odd, but we don't want to have multiple controls for the
-same thing so we are stuck with it.
+Changed from v5:
+* Fix i2c measure reads that are broken on the current driver for be16
+platforms.
+* Use read_avail callback for sampling frequency.
+* Move scan_index setting to the correct patch.
 
-> 
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/meas_interval_available
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		The range of available values in seconds represented as the
-> > > > > +		minimum value, the step and the maximum value, all enclosed in
-> > > > > +		square brackets.
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/asc  
-> > Spends some characters to easy of understanding ;)
-> >
-> > auto_calib_proc_enable maybe?  Or can we get away with the 'somewhat standard
-> > calibration (it's used in at least one other driver IIRC)
-> >  
-> 
-> Just self_calibration would do?
+Changes from v4:
+* Rename vcnl4010_in_periodic_mode into vcnl4010_is_in_periodic_mode
+and vcnl4010_thr_enabled into vcnl4010_is_thr_enabled.
+Also fix bitmask checking in those functions.
+* Refactor vcnl4010_write_proxy_samp_freq to loop in the
+other direction.
 
-I'll think a bit more on this one but probably fine.
+Changes from v3:
+* Use i2c_smbus_read_byte_data and i2c_smbus_write_word_data
+for read and write functions.
+* Rename vcnl4010_prox_threshold to vcnl4010_config_threshold.
+* Do not lock i2c accesses as they are already protected.
+* Fix a typo in irq name.
+* Do not provide ALS sampling frequency operation, as ALS data
+are not buffered anymore.
+* Return bool in vcnl4010_in_periodic_mode and vcnl4010_thr_enabled
+functions.
 
-> 
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Writing 1 or 0 to this attribute will respectively activate or
-> > > > > +		deactivate automatic self calibration procedure. Upon reading 1  
-> > > >
-> > > > deactivate automatic self calibration (asc) procedure
-> > > >  
-> > >
-> > > That shouldn't be too difficult to realize what asc actually stands for after
-> > > reading this short description.
-> > >  
-> > > > > +		is returned if asc is ongoing, 0 otherwise.
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/frc
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Forced recalibration is used to compensate for sensor drifts
-> > > > > +		when a reference value of CO2 concentration in close proximity
-> > > > > +		to the sensor is available. Writing attribute will set frc
-> > > > > +		value. Upon reading current frc is returned. Units are
-> > > > > +		millibars.  
-> >
-> > Could we implement this by just writing to the main channel value?
-> > Bit of a clunky ABI but sort of logically fits in my head given we are basically
-> > forcing the value we read to be this one?
-> >  
-> 
-> So the similar to the pressure compensation. Okay.
-> 
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/frc_available
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		The range of available values in millibars represented as the
-> > > > > +		minimum value, the step and the maximum value, all enclosed in
-> > > > > +		square brackets.
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/temp_offset
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Sensor readings may be affected by ambient temperature.
-> > > > > +		Writing temperature offset will compensate for unwanted changes.
-> > > > > +		Note that written offset gets multiplied by a factor of 100
-> > > > > +		by a sensor internally.
-> > > > > +
-> > > > > +		For example, writing 10 here will correspond to 0.1 degree
-> > > > > +		Celsius.  
-> >
-> > This sounds like a calibbias to me which is standard ABI.
-> >  
-> 
-> Right, that could work.
-> 
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/temp_offset_available
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		The range of available values in degrees Celsius represented as
-> > > > > +		the minimum value, the step and the maximum value, all enclosed
-> > > > > +		in square brackets.  
-> >
-> > Wrong units for temperature (which is an odd one as we
-> > lifted them from hwmon before learning the error of our ways and starting to use
-> > SI units as the base).
-> >  
-> 
-> Does calibbias have _available counterpart?
+Changes from v2:
+* Rebase on iio testing branch.
+* Remove useless test in vcnl4010_probe_trigger.
 
-It might not be documented yet (as not sure it's been used) but any attribute has
-an available counterpart.  That's effectively standard ABI.
+Changes from v1:
+* Split into four different patches.
+* Use iio_device_claim_direct_mode to protect
+raw access from buffer capture.
+* Requesting a sampling frequency above the limit is no longer possible.
+* Inline read_isr and write_isr functions.
+* Remove IIO_LIGHT data from buffer capture.
+* Make sure postenable and predisable functions respect the common form.
+* Do not set the trigger by default.
+* Remove the devm_iio_triggered_buffer_setup top half.
 
-> 
-> >  
-> > > > > +
-> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/reset
-> > > > > +Date:		April 2020
-> > > > > +KernelVersion:	5.8
-> > > > > +Contact:	linux-iio@vger.kernel.org
-> > > > > +Description:
-> > > > > +		Software reset mechanism forces sensor into the same state
-> > > > > +		as after powering up without the need for removing power supply.
-> > > > > +		Writing any value will reset sensor.  
-> >
-> > Not seeing an argument here for why you might want to do that other than on
-> > power up or module probe to get the driver into a known state.
-> > So currently it's a no to this one - just don't expose it to userspace.
-> >  
-> 
-> If one writes some odd configuration (though allowed) into sensor, for example
-> out of sheer curiosity and then writes the sane values back sensor needs some
-> time to recover (i.e start reporting valid measurements again).
-> 
-> So rationale here was that after reset sensor recovers immediately. I'd
-> say that reset is sometimes useful. Perhaps that could be exported by
-> means of iio debug api?
+Mathieu Othacehe (5):
+  iio: vcnl4000: Fix i2c swapped word reading.
+  iio: vcnl4000: Factorize data reading and writing.
+  iio: vcnl4000: Add event support for VCNL4010/20.
+  iio: vcnl4000: Add sampling frequency support for VCNL4010/20.
+  iio: vcnl4000: Add buffer support for VCNL4010/20.
 
-Debugfs would be fine
+ drivers/iio/light/Kconfig    |   2 +
+ drivers/iio/light/vcnl4000.c | 753 ++++++++++++++++++++++++++++++++---
+ 2 files changed, 689 insertions(+), 66 deletions(-)
 
-> 
-> >  
-> > > > >  
-> > > >
-> > > > --
-> > > >
-> > > > Peter Meerwald-Stadler
-> > > > Mobile: +43 664 24 44 418  
-> >  
-
+-- 
+2.26.0
 

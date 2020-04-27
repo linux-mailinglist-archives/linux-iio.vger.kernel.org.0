@@ -2,86 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1817C1BA946
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 17:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1941BAC02
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 20:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728514AbgD0PvJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 11:51:09 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44009 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728491AbgD0PvI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 11:51:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588002667;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=O0EVbd8yvTnodt/PwOFNSr4NOJBYWtmio5+4hHlbVdA=;
-        b=MbSuDOcZjHsiLgGzFWjiHQzuMnH1n4njgSiooB0wV/YDqhB9+Z1BzIS3mh1u748gOSIbvx
-        IwO54eMrEaNvLgJwpjrWUK8IY7IFry188xZY7Ec0anWqtVcmgzrH/KusCx+UAhNIEV1MQz
-        9EPE0Ij0YLhN6lpaXb10rYb2cFVPcdY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-309-nI1rz6WXPVO-hYMpnkVNJQ-1; Mon, 27 Apr 2020 11:51:03 -0400
-X-MC-Unique: nI1rz6WXPVO-hYMpnkVNJQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B660B835B40;
-        Mon, 27 Apr 2020 15:51:01 +0000 (UTC)
-Received: from x1.localdomain.com (ovpn-114-38.ams2.redhat.com [10.36.114.38])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 316A96063C;
-        Mon, 27 Apr 2020 15:50:59 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1726228AbgD0SGN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 14:06:13 -0400
+Received: from www381.your-server.de ([78.46.137.84]:33998 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725980AbgD0SGN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 14:06:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=b+JkcQ4uyv5WctR1jDZH5MFIn8xMbKa3wCFiPqWOx6Y=; b=fMFxopEd4lVmijPFIrjnk93xxo
+        35K+FqlokGWoWUAETAR0CM/dhdYpar4fZxtX2UYSjxvqCEIMAUDhZm2MqAMwI7sh5/kEE1snJI+Cn
+        uNM2qVeY3aEsKKmQb1jiSSV//Lrzl9dOgFzrJso1n+MnDEwwDel3j7TMk9xxNjHebIYNvpe61yfYJ
+        CcFSh4a+sYae2CQ7LyEOkpxwZu4NnYs8sWB7hWg6+N1j8jhC9zf9HurGq8s3AAzRzxP/5YCIdOh4H
+        V+nM943j77Tj0x5iiTmVhNBQu+cO6KX0KunNS3DLvC4gNmnCVfNqXklj7ahCMk7D8LWEvEWRtdwcQ
+        uTOk8QHg==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1jT88v-0005c5-LE; Mon, 27 Apr 2020 20:06:09 +0200
+Received: from [82.135.70.60] (helo=[192.168.178.20])
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1jT88v-000Ulx-9v; Mon, 27 Apr 2020 20:06:09 +0200
+Subject: Re: [PATCH v5 5/6] iio: imu: Add support for adis16475
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2 8/8] iio: light: cm32181: Fix integartion time typo
-Date:   Mon, 27 Apr 2020 17:50:37 +0200
-Message-Id: <20200427155037.218390-8-hdegoede@redhat.com>
-In-Reply-To: <20200427155037.218390-1-hdegoede@redhat.com>
-References: <20200427155037.218390-1-hdegoede@redhat.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+References: <20200413082445.17324-1-nuno.sa@analog.com>
+ <20200413082445.17324-6-nuno.sa@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <2418ed60-8407-0c99-bf5d-1afc3964de2b@metafoo.de>
+Date:   Mon, 27 Apr 2020 20:06:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200413082445.17324-6-nuno.sa@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25795/Mon Apr 27 14:00:10 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix integartion time typo and while at it improve the comment with
-the typo a bit in general.
+On 4/13/20 10:24 AM, Nuno Sá wrote:
+> [...]
+> +static irqreturn_t adis16475_trigger_handler(int irq, void *p)
+> +{
+> [...]
+> +	__be16 data[ADIS16475_MAX_SCAN_DATA], *buffer;
+> [...]
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, data, pf->timestamp);
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/iio/light/cm32181.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If the timestamp is enabled the IIO core might insert padding between 
+the data channels and the timestamp. If that happens this will disclose 
+kernel stack memory to userspace.
 
-diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-index 04ba636415c9..95c57b0cb230 100644
---- a/drivers/iio/light/cm32181.c
-+++ b/drivers/iio/light/cm32181.c
-@@ -236,7 +236,7 @@ static int cm32181_reg_init(struct cm32181_chip *cm32=
-181)
-  *  @cm32181:	pointer of struct cm32181
-  *  @val2:	pointer of int to load the als_it value.
-  *
-- *  Report the current integartion time by millisecond.
-+ *  Report the current integration time in milliseconds.
-  *
-  *  Return: IIO_VAL_INT_PLUS_MICRO for success, otherwise -EINVAL.
-  */
---=20
-2.26.0
+This needs either a memset(data, 0x00, sizeof(data)) or maybe put data 
+into the state struct and kzalloc it.
+
+- Lars
 

@@ -2,192 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D6B1BA4A6
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 15:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DBB1BA4AE
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 15:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727957AbgD0NZl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 09:25:41 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:32153 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727941AbgD0NZk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 09:25:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587993939; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=e3+w8s/l3hu/ku2ane6vYbSjhaYCXdUv6vEK5wlQJqk=; b=nJdfKUHaAwGl7pVSSF5xawoN4Hh61EY1l/Xv3NFeAWMHz4ppBgPf2e0F9BM6pwaIKRgp2xrF
- zE8NjphqFk006DAskAXsEVzh13cv3sSmZkqxwg9L6BvER0uUowdjjki+oiFk9pzvAuNfxMGD
- xQZoBXrYy42O9Gre3ys8ogyv4MA=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea6dd4d.7fb2f0d6e298-smtp-out-n04;
- Mon, 27 Apr 2020 13:25:33 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2D608C58A03; Mon, 27 Apr 2020 13:25:33 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from jprakash-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jprakash)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08999C44798;
-        Mon, 27 Apr 2020 13:25:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 08999C44798
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
-From:   Jishnu Prakash <jprakash@codeaurora.org>
-To:     agross@kernel.org, bjorn.andersson@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mka@chromium.org, linus.walleij@linaro.org,
-        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
-        kgunda@codeaurora.org, aghayal@codeaurora.org,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1726786AbgD0N2W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 09:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52814 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726769AbgD0N2U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 09:28:20 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CEDC0610D5;
+        Mon, 27 Apr 2020 06:28:20 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id e6so7437764pjt.4;
+        Mon, 27 Apr 2020 06:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GHn5LhhRmzy3sndf78S27qfruwCqi4o/1SdzUaUG+CY=;
+        b=P/eSHGWJI1R3+uwssq2jpcVpDs0STyTfYIjS/6fMuUcoKIU0mq5NqPzlrT8vwwPNAW
+         uWttoIiLsdjqqVFUgcTi1GYSStxqdgmYStqY38agWPApHa+cK/4u2CfH0yRl5SFqVKAv
+         Lr1F/A+HFTmbHrP9nKai236DFWbk6CzIXm1hXRwW7lDktn98mx6HZrofcjh1rRx6lsJT
+         5QegEpUU99h1j5Krd1SLd4YTii50H5tDTxxsdTW5OcElutDBV78VY0szJ6Ogjodm/e59
+         5IkNZ0WklVmQIYsgXD2jWRDMIdKvEsuK5EAhTmM8MChcBuQ0SzdZHqGBhH++PbTkQ3VE
+         jtaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GHn5LhhRmzy3sndf78S27qfruwCqi4o/1SdzUaUG+CY=;
+        b=aeK8Uyr/6fN8u276LP1T5Tu4GaSG9EQTALOBVALSRKahmR60h+1hNTZA7F+P0IgFyb
+         pemHGld97av8l/DmPcblVX/HCJadbfkk/Nbd40K4aJWoDNuCtfpQCXQAohz4EHq8vrip
+         hNkQC7h3wmCPd8/bbZfa2XUVUO6H+KpjsEgK0XE99/y62/Fr3k0KQLZKKLZGRw9gD5wo
+         hj+DK23z7ATcXmNFUWZ072uwmyW8StWMxMn8zgvSaHOdG0+X8W7/4Bh7hXZeFJtzu6Og
+         e8Q9LTD09DqhsV6HkVb/NrcNiz0G6VRCd9dfkgo79+mAeKnrKZD5aSTMKz8HiQ8hj2v4
+         EZ0g==
+X-Gm-Message-State: AGi0PuZsafI9WR+z9hj4BzqbM8g3TidQJ2iQ3W5bfT4ME6S2GQ1ca63V
+        95+xfBnCn9ZHHSurY0gMcfCQUMm5a+CY/AMpGts=
+X-Google-Smtp-Source: APiQypLM5+dnAYGRYo/miUr0skkS1pXmKokJxMTF2OxcJbjIgqi5/Xf//ExfkwcwyxPjQWzVN+J/SlG8Ed/n4uKxqo8=
+X-Received: by 2002:a17:90a:364c:: with SMTP id s70mr23246347pjb.143.1587994099840;
+ Mon, 27 Apr 2020 06:28:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <1586942266-21480-1-git-send-email-jprakash@codeaurora.org>
+ <1586942266-21480-4-git-send-email-jprakash@codeaurora.org>
+ <CAHp75VegoXJmi1rDg_-ePKqoo69Jdt7NBchCTE=bPAdJqrgYQQ@mail.gmail.com> <68d9c770-b190-dd13-0869-fdae9fb1f16f@codeaurora.org>
+In-Reply-To: <68d9c770-b190-dd13-0869-fdae9fb1f16f@codeaurora.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 27 Apr 2020 16:28:13 +0300
+Message-ID: <CAHp75Vdu4HvaTg5ij=DFhwn=y_JCb9ae9L5-iV72Zk-k9CBHuw@mail.gmail.com>
+Subject: Re: [PATCH V2 3/3] iio: adc: Add support for PMIC7 ADC
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        smohanad@codeaurora.org, kgunda@codeaurora.org,
+        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     linux-arm-msm-owner@vger.kernel.org,
-        Jishnu Prakash <jprakash@codeaurora.org>
-Subject: [PATCH V3 4/4] iio: adc: Update error checks and debug prints
-Date:   Mon, 27 Apr 2020 18:54:05 +0530
-Message-Id: <1587993846-30773-5-git-send-email-jprakash@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1587993846-30773-1-git-send-email-jprakash@codeaurora.org>
-References: <1587993846-30773-1-git-send-email-jprakash@codeaurora.org>
+        linux-arm-msm@vger.kernel.org,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm-msm-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Change pr_err/pr_debug statements to dev_err/dev_dbg for
-increased clarity. Also clean up some return value checks.
+On Mon, Apr 27, 2020 at 3:56 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+> On 4/17/2020 3:51 PM, Andy Shevchenko wrote:
+> On Thu, Apr 16, 2020 at 1:48 AM Jishnu Prakash <jprakash@codeaurora.org> wrote:
 
-Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
----
- drivers/iio/adc/qcom-spmi-adc5.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+Stop using HTML. It breaks badly the reply and discussion.
 
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index a66eeb7..7e951a0 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -249,11 +249,11 @@ static int adc5_read_voltage_data(struct adc5_chip *adc, u16 *data)
- 	*data = (rslt_msb << 8) | rslt_lsb;
- 
- 	if (*data == ADC5_USR_DATA_CHECK) {
--		pr_err("Invalid data:0x%x\n", *data);
-+		dev_err(adc->dev, "Invalid data:0x%x\n", *data);
- 		return -EINVAL;
- 	}
- 
--	pr_debug("voltage raw code:0x%x\n", *data);
-+	dev_dbg(adc->dev, "voltage raw code:0x%x\n", *data);
- 
- 	return 0;
- }
-@@ -304,7 +304,7 @@ static int adc5_configure(struct adc5_chip *adc,
- 
- 	/* Read registers 0x42 through 0x46 */
- 	ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
--	if (ret < 0)
-+	if (ret)
- 		return ret;
- 
- 	/* Digital param selection */
-@@ -344,7 +344,7 @@ static int adc7_configure(struct adc5_chip *adc,
- 		return ret;
- 
- 	ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
--	if (ret < 0)
-+	if (ret)
- 		return ret;
- 
- 	/* Digital param selection */
-@@ -385,24 +385,24 @@ static int adc5_do_conversion(struct adc5_chip *adc,
- 
- 	ret = adc5_configure(adc, prop);
- 	if (ret) {
--		pr_err("ADC configure failed with %d\n", ret);
-+		dev_err(adc->dev, "ADC configure failed with %d\n", ret);
- 		goto unlock;
- 	}
- 
- 	if (adc->poll_eoc) {
- 		ret = adc5_poll_wait_eoc(adc);
- 		if (ret < 0) {
--			pr_err("EOC bit not set\n");
-+			dev_err(adc->dev, "EOC bit not set\n");
- 			goto unlock;
- 		}
- 	} else {
- 		ret = wait_for_completion_timeout(&adc->complete,
- 							ADC5_CONV_TIMEOUT);
- 		if (!ret) {
--			pr_debug("Did not get completion timeout.\n");
-+			dev_dbg(adc->dev, "Did not get completion timeout.\n");
- 			ret = adc5_poll_wait_eoc(adc);
- 			if (ret < 0) {
--				pr_err("EOC bit not set\n");
-+				dev_err(adc->dev, "EOC bit not set\n");
- 				goto unlock;
- 			}
- 		}
-@@ -435,7 +435,7 @@ static int adc7_do_conversion(struct adc5_chip *adc,
- 	wait_for_completion_timeout(&adc->complete, ADC7_CONV_TIMEOUT);
- 
- 	ret = adc5_read(adc, ADC5_USR_STATUS1, &status, 1);
--	if (ret < 0)
-+	if (ret)
- 		goto unlock;
- 
- 	if (status & ADC5_USR_STATUS1_CONV_FAULT) {
-@@ -481,8 +481,8 @@ static int adc7_of_xlate(struct iio_dev *indio_dev,
- 	int i, v_channel;
- 
- 	for (i = 0; i < adc->nchannels; i++) {
--		v_channel = (adc->chan_props[i].sid << ADC_CHANNEL_OFFSET |
--			adc->chan_props[i].channel);
-+		v_channel = (adc->chan_props[i].sid << ADC_CHANNEL_OFFSET) |
-+			adc->chan_props[i].channel;
- 		if (v_channel == iiospec->args[0])
- 			return i;
- 	}
-@@ -728,7 +728,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
- 	channel_name = of_get_property(node,
- 				"label", NULL) ? : node->name;
- 	if (!channel_name) {
--		pr_err("Invalid channel name\n");
-+		dev_err(dev, "Invalid channel name\n");
- 		return -EINVAL;
- 	}
- 	prop->datasheet_name = channel_name;
-@@ -766,12 +766,12 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
- 
- 		ret = adc5_read(adc, ADC5_USR_REVISION1, dig_version,
- 							sizeof(dig_version));
--		if (ret < 0) {
-+		if (ret) {
- 			dev_err(dev, "Invalid dig version read %d\n", ret);
- 			return ret;
- 		}
- 
--		pr_debug("dig_ver:minor:%d, major:%d\n", dig_version[0],
-+		dev_dbg(dev, "dig_ver:minor:%d, major:%d\n", dig_version[0],
- 						dig_version[1]);
- 		/* Digital controller >= 5.3 have hw_settle_2 option */
- 		if ((dig_version[0] >= ADC5_HW_SETTLE_DIFF_MINOR &&
-@@ -975,7 +975,7 @@ static int adc5_probe(struct platform_device *pdev)
- 
- 	ret = adc5_get_dt_data(adc, node);
- 	if (ret) {
--		pr_err("adc get dt data failed\n");
-+		dev_err(dev, "adc get dt data failed\n");
- 		return ret;
- 	}
- 
+...
+
+> +static const struct adc5_data adc7_data_pmic;
+>
+> Global variable? Hmm...
+>
+> adc7_data_pmic is referenced twice before its actual definition (which was added along with corresponding adc5_data struct for PMIC5 ADC), so I have given the initial declaration here.
+
+Maybe you can realize how to avoid global variable at all?
+
+...
+
+> +       buf[1] &= 0xff & ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
+>
+> What the point of 0xff & part?
+>
+> This was something you suggested in my first post:
+>
+> > +       buf[1] &= (u8) ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
+>
+> Use '0xFF ^ _MASK' instead of casting.
+>
+> ...
+>
+> > +       buf[3] &= (u8) ~ADC5_USR_HW_SETTLE_DELAY_MASK;
+>
+> Ditto.
+>
+> I think "0xff &" works as intended here in place of casting to (u8)...
+
+Does it work without casting? (Note, I suggested slightly different expression)
+I.o.w. what the problem casting solves?
+
+> +       buf[1] |= prop->avg_samples;
+> +
+> +       /* Select ADC channel */
+> +       buf[2] = prop->channel;
+> +
+> +       /* Select HW settle delay for channel */
+> +       buf[3] &= 0xff & ~ADC5_USR_HW_SETTLE_DELAY_MASK;
+>
+> Ditto.
+>
+> +       buf[3] |= prop->hw_settle_time;
+
+
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+With Best Regards,
+Andy Shevchenko

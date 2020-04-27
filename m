@@ -2,129 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DBB1BA4AE
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 15:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B04E61BA59B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 16:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbgD0N2W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 09:28:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726769AbgD0N2U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 09:28:20 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CEDC0610D5;
-        Mon, 27 Apr 2020 06:28:20 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id e6so7437764pjt.4;
-        Mon, 27 Apr 2020 06:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GHn5LhhRmzy3sndf78S27qfruwCqi4o/1SdzUaUG+CY=;
-        b=P/eSHGWJI1R3+uwssq2jpcVpDs0STyTfYIjS/6fMuUcoKIU0mq5NqPzlrT8vwwPNAW
-         uWttoIiLsdjqqVFUgcTi1GYSStxqdgmYStqY38agWPApHa+cK/4u2CfH0yRl5SFqVKAv
-         Lr1F/A+HFTmbHrP9nKai236DFWbk6CzIXm1hXRwW7lDktn98mx6HZrofcjh1rRx6lsJT
-         5QegEpUU99h1j5Krd1SLd4YTii50H5tDTxxsdTW5OcElutDBV78VY0szJ6Ogjodm/e59
-         5IkNZ0WklVmQIYsgXD2jWRDMIdKvEsuK5EAhTmM8MChcBuQ0SzdZHqGBhH++PbTkQ3VE
-         jtaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GHn5LhhRmzy3sndf78S27qfruwCqi4o/1SdzUaUG+CY=;
-        b=aeK8Uyr/6fN8u276LP1T5Tu4GaSG9EQTALOBVALSRKahmR60h+1hNTZA7F+P0IgFyb
-         pemHGld97av8l/DmPcblVX/HCJadbfkk/Nbd40K4aJWoDNuCtfpQCXQAohz4EHq8vrip
-         hNkQC7h3wmCPd8/bbZfa2XUVUO6H+KpjsEgK0XE99/y62/Fr3k0KQLZKKLZGRw9gD5wo
-         hj+DK23z7ATcXmNFUWZ072uwmyW8StWMxMn8zgvSaHOdG0+X8W7/4Bh7hXZeFJtzu6Og
-         e8Q9LTD09DqhsV6HkVb/NrcNiz0G6VRCd9dfkgo79+mAeKnrKZD5aSTMKz8HiQ8hj2v4
-         EZ0g==
-X-Gm-Message-State: AGi0PuZsafI9WR+z9hj4BzqbM8g3TidQJ2iQ3W5bfT4ME6S2GQ1ca63V
-        95+xfBnCn9ZHHSurY0gMcfCQUMm5a+CY/AMpGts=
-X-Google-Smtp-Source: APiQypLM5+dnAYGRYo/miUr0skkS1pXmKokJxMTF2OxcJbjIgqi5/Xf//ExfkwcwyxPjQWzVN+J/SlG8Ed/n4uKxqo8=
-X-Received: by 2002:a17:90a:364c:: with SMTP id s70mr23246347pjb.143.1587994099840;
- Mon, 27 Apr 2020 06:28:19 -0700 (PDT)
+        id S1727010AbgD0OA7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 10:00:59 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:37709 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727824AbgD0OAw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 10:00:52 -0400
+Received: from localhost ([109.41.194.26]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1N6sON-1j7g1g0Aed-018Lsx; Mon, 27 Apr 2020 16:00:23 +0200
+Date:   Mon, 27 Apr 2020 16:00:19 +0200
+From:   Andreas Klinger <ak@it-klinger.de>
+To:     jic23@kernel.org
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        bgolaszewski@baylibre.com, linus.walleij@linaro.org,
+        tglx@linutronix.de, allison@lohutok.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: bmp280: fix compensation of humidity
+Message-ID: <20200427140017.GA25402@arbad>
 MIME-Version: 1.0
-References: <1586942266-21480-1-git-send-email-jprakash@codeaurora.org>
- <1586942266-21480-4-git-send-email-jprakash@codeaurora.org>
- <CAHp75VegoXJmi1rDg_-ePKqoo69Jdt7NBchCTE=bPAdJqrgYQQ@mail.gmail.com> <68d9c770-b190-dd13-0869-fdae9fb1f16f@codeaurora.org>
-In-Reply-To: <68d9c770-b190-dd13-0869-fdae9fb1f16f@codeaurora.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 27 Apr 2020 16:28:13 +0300
-Message-ID: <CAHp75Vdu4HvaTg5ij=DFhwn=y_JCb9ae9L5-iV72Zk-k9CBHuw@mail.gmail.com>
-Subject: Re: [PATCH V2 3/3] iio: adc: Add support for PMIC7 ADC
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        smohanad@codeaurora.org, kgunda@codeaurora.org,
-        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Provags-ID: V03:K1:tcKH7nPEyKfMcDD2F9kaxMB5SlaQQyO81sdZWyfprhBwlc8BRZ5
+ CKn9SjH/HoNL2EiXPUG0olFXqFqTpIwnBQHI/cXeAGrTHFuSowrGcAatD7uiz1p9jVVuCQV
+ BztvGLp6CEf5KXe6caXnuertc2S4mNiY8Rri/OhNLfzVIUrPpfEqX5AysUIfY8k3sSYe3AY
+ k75pwe3lujqHkt3NSdGhg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MhHVfASsqnE=:oA/7DL60ewl/0B+eL9FqNa
+ 21qi8f6W/DmlH1ebuMABZsQtGM/+PCyRbJO4VT8boGgPrAiOm7tigdBJLxBxyqcagNA/ocHdz
+ HuE1aDm7gsaIC6HaBlY+jYtkxdLpf7kFU6x4S2MKK14IiKEbNMbvIv3W2Z1aa6w+/BJhiSibC
+ AB5PGrlwHehYSCXjV40QtRo6QF/4iaLBWhauCqmkZ2/fLp2IccWNmA/nc3Bld0GGL+pRcS6dn
+ bh+1FRo1ejHhpu7Z6GnMJGTIfaXIKPziL4Ih2gcaVswzbeBdhx0BBGFSGNJxgGD9+prZ4w8h7
+ w1q4otzUD3kFi+DCwo+hxUd5RWLoWWqRFE42KS99yVHIcmemq1Rlvj00t0hCgRjMYQTmfFudL
+ TDb7S2lhJSa3alkf7T6v4sH85E3K6g2AaoScS4rb4kxxHrv0QC76LM0V1XBg/9devS5kA1/8K
+ /8fpjOe6ucadozFs4D1Rb7KUjh7+1UX6HbuKyPp9x2oxcb2Tm+Ut1Rin49Xoz4SwfgtXmw/s9
+ vHvhvHO4pu5oLgupYXCvvC0+R+/HMONg+Jl35NUP/JZ0p9Fdy+0ABkUT9HuJtE51fzTj9dgc3
+ HHR5QBAFRt1mqLCNbMpnGvupvCctccZZj/Fe23FcE0kyiUDVW1lrP0CJTIuCUnS3H55NB+crK
+ SGUAc/T7B0+WAvqY8+TYXbzLoCwtDmaZTAGIN56huUkiPinndGdaQ+lhyAyym+VufAZujszyS
+ X5GBAchc+kWxtaU32KQCszQ+QoBGS58LE1xlf6cVMSdZWIf4/8hdJSbPcVpHqGPeD88euZHwk
+ hsgpcBnRKgH2aPcLcU/Vb1yC2YEm+rOaBZkoMvVc6u89yzMbhY/ZbgpyhA6J2U87LY3dKHx
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 27, 2020 at 3:56 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
-> On 4/17/2020 3:51 PM, Andy Shevchenko wrote:
-> On Thu, Apr 16, 2020 at 1:48 AM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+Output of humidity compensation is limited to the range between 0 and 100
+percent. Add this to the compensation formula as described in the datasheet
+chapter 4.2.3.
 
-Stop using HTML. It breaks badly the reply and discussion.
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+---
+ drivers/iio/pressure/bmp280-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-...
-
-> +static const struct adc5_data adc7_data_pmic;
->
-> Global variable? Hmm...
->
-> adc7_data_pmic is referenced twice before its actual definition (which was added along with corresponding adc5_data struct for PMIC5 ADC), so I have given the initial declaration here.
-
-Maybe you can realize how to avoid global variable at all?
-
-...
-
-> +       buf[1] &= 0xff & ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
->
-> What the point of 0xff & part?
->
-> This was something you suggested in my first post:
->
-> > +       buf[1] &= (u8) ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
->
-> Use '0xFF ^ _MASK' instead of casting.
->
-> ...
->
-> > +       buf[3] &= (u8) ~ADC5_USR_HW_SETTLE_DELAY_MASK;
->
-> Ditto.
->
-> I think "0xff &" works as intended here in place of casting to (u8)...
-
-Does it work without casting? (Note, I suggested slightly different expression)
-I.o.w. what the problem casting solves?
-
-> +       buf[1] |= prop->avg_samples;
-> +
-> +       /* Select ADC channel */
-> +       buf[2] = prop->channel;
-> +
-> +       /* Select HW settle delay for channel */
-> +       buf[3] &= 0xff & ~ADC5_USR_HW_SETTLE_DELAY_MASK;
->
-> Ditto.
->
-> +       buf[3] |= prop->hw_settle_time;
-
-
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 29c209cc1108..ac9ef1b63b07 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -271,6 +271,9 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
+ 		+ (s32)2097152) * calib->H2 + 8192) >> 14);
+ 	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)calib->H1) >> 4;
+ 
++	var = var < 0 ? 0 : var;
++	var = var > 419430400 ? 419430400 : var;
++
+ 	return var >> 12;
+ };
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.20.1

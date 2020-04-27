@@ -2,43 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE88D1BA448
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 15:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7201BA449
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 15:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbgD0NLK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 09:11:10 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5350 "EHLO
+        id S1727892AbgD0NLL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 09:11:11 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:7142 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727869AbgD0NLK (ORCPT
+        by vger.kernel.org with ESMTP id S1727881AbgD0NLK (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 09:11:10 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03RCvD5l022378;
-        Mon, 27 Apr 2020 09:10:55 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 30mj457vkp-1
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03RCsxp8016897;
+        Mon, 27 Apr 2020 09:10:56 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30mn4j7e5e-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 27 Apr 2020 09:10:54 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 03RDArO7007194
+        Mon, 27 Apr 2020 09:10:56 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 03RDAqC1010873
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 27 Apr 2020 09:10:53 -0400
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+        Mon, 27 Apr 2020 09:10:55 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 27 Apr 2020 06:10:51 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 27 Apr 2020 06:10:51 -0700
+ 15.1.1779.2; Mon, 27 Apr 2020 06:10:52 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 27 Apr 2020 06:10:41 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 27 Apr 2020 06:10:52 -0700
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03RDAfUU011495;
-        Mon, 27 Apr 2020 09:10:48 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03RDAfUV011495;
+        Mon, 27 Apr 2020 09:10:50 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <lars@metafoo.de>, <jic23@kernel.org>, <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v6 4/6] iio: buffer,event: duplicate chardev creation for buffers & events
-Date:   Mon, 27 Apr 2020 16:10:58 +0300
-Message-ID: <20200427131100.50845-5-alexandru.ardelean@analog.com>
+        "Alexandru Ardelean" <alexandru.ardelean@analog.com>
+Subject: [PATCH v6 5/6] iio: core: add simple centralized mechanism for ioctl() handlers
+Date:   Mon, 27 Apr 2020 16:10:59 +0300
+Message-ID: <20200427131100.50845-6-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200427131100.50845-1-alexandru.ardelean@analog.com>
 References: <20200427131100.50845-1-alexandru.ardelean@analog.com>
@@ -47,551 +51,166 @@ Content-Type: text/plain
 X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
  definitions=2020-04-27_09:2020-04-24,2020-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- suspectscore=2 malwarescore=0 spamscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004270114
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2004270114
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch moves the chardev creation into industrialio-buffer.c &
-industrialio-event.c. The move has to be in a single step (which makes the
-patch a bit big), in order to pass the reference of the chardev to
-'indio_dev->chrdev'.
+The aim of this is to reduce the organization violation of ioctl() calls in
+IIO core. Currently, since the chardev is split across files, event ioctl()
+calls need to be called in buffer ioctl() calls.
 
-For structure purposes, industrialio-core.c should be the place where
-cdev_device_add()/device_add() gets called, and the deletion function as
-well.
+The 'industrialio-core.c' file will provide a 'iio_device_ioctl()' which
+will iterate over a list of ioctls registered with the IIO device. These
+can be event ioctl() or buffer ioctl() calls, or something else.
+This is needed, since there is currently one chardev per IIO device and
+that is used for both event handling and reading from the buffer.
 
-What happens after this patch is:
-- 'indio_dev->chrdev' is converted to a pointer
-- if there is an IIO buffer, iio_device_buffer_attach_chrdev() will attach
-  it's chardev to 'indio_chrdev'
-- if it doesn't, the event interface will attach a reference to it's
-  chardev (if it is instantiated) via iio_device_event_attach_chrdev()
+Each ioctl() will have to return a IIO_IOCTL_UNHANDLED code (which is
+positive 1), if the ioctl() did not handle the call in any. This eliminates
+any potential ambiguities; if we were to have used error codes it would
+have been uncertain whether they were actual errors, or whether
+the registered ioctl() doesn't service the command.
 
-That way, the control of the 'legacy' chardev is still visible in
-'industrialio-core.c'. So, each logic file (for buffers & events) shouldn't
-hide things too much away from the core file.
+If any ioctl() returns 0, it was considered that it was serviced
+successfully and the loop will exit.
+
+One assumption for all registered ioctl() handlers is that they are
+statically allocated, so the iio_device_unregister() which just remove all
+of them from the device's ioctl() handler list.
+
+Also, something that is a bit hard to do [at this point] and may not be
+worth the effort of doing, is to check whether registered ioctl()
+calls/commands overlap. This should be unlikely to happen, and should get
+caught at review time. Though, new ioctl() calls would likely not be added
+too often.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/iio_core.h            |  16 ++---
- drivers/iio/industrialio-buffer.c |  90 ++++++++++++++++++++++++--
- drivers/iio/industrialio-core.c   | 103 ++++--------------------------
- drivers/iio/industrialio-event.c  | 103 +++++++++++++++++++++++++++++-
- include/linux/iio/buffer_impl.h   |   7 ++
- include/linux/iio/iio.h           |   6 +-
- 6 files changed, 211 insertions(+), 114 deletions(-)
+ drivers/iio/iio_core.h          | 14 +++++++++++++
+ drivers/iio/industrialio-core.c | 37 +++++++++++++++++++++++++++++++++
+ include/linux/iio/iio.h         |  2 ++
+ 3 files changed, 53 insertions(+)
 
 diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-index 39ec0344fb68..a527a66be9e5 100644
+index a527a66be9e5..34c3e19229d8 100644
 --- a/drivers/iio/iio_core.h
 +++ b/drivers/iio/iio_core.h
-@@ -40,17 +40,14 @@ ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
- #ifdef CONFIG_IIO_BUFFER
- struct poll_table_struct;
+@@ -17,6 +17,20 @@ struct iio_dev;
  
--__poll_t iio_buffer_poll(struct file *filp,
--			     struct poll_table_struct *wait);
--ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
--			      size_t n, loff_t *f_ps);
-+long iio_device_event_ioctl(struct iio_dev *indio_dev, struct file *filp,
-+			    unsigned int cmd, unsigned long arg);
-+
-+void iio_device_buffer_attach_chrdev(struct iio_dev *indio_dev);
+ extern struct device_type iio_device_type;
  
- int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev);
- void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev);
- 
--#define iio_buffer_poll_addr (&iio_buffer_poll)
--#define iio_buffer_read_outer_addr (&iio_buffer_read_outer)
--
- void iio_device_buffers_put(struct iio_dev *indio_dev);
- 
- void iio_disable_all_buffers(struct iio_dev *indio_dev);
-@@ -58,8 +55,7 @@ void iio_buffer_wakeup_poll(struct iio_dev *indio_dev);
- 
- #else
- 
--#define iio_buffer_poll_addr NULL
--#define iio_buffer_read_outer_addr NULL
-+static inline void iio_device_buffer_attach_chrdev(struct iio_dev *indio_dev) {}
- 
- static inline int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
- {
-@@ -77,8 +73,8 @@ static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
- 
- int iio_device_register_eventset(struct iio_dev *indio_dev);
- void iio_device_unregister_eventset(struct iio_dev *indio_dev);
-+void iio_device_event_attach_chrdev(struct iio_dev *indio_dev);
- void iio_device_wakeup_eventset(struct iio_dev *indio_dev);
--int iio_event_getfd(struct iio_dev *indio_dev);
- 
- struct iio_event_interface;
- bool iio_event_enabled(const struct iio_event_interface *ev_int);
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index a66d3fbc2905..0689c100b041 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -99,11 +99,11 @@ static bool iio_buffer_ready(struct iio_dev *indio_dev, struct iio_buffer *buf,
-  * Return: negative values corresponding to error codes or ret != 0
-  *	   for ending the reading activity
-  **/
--ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
--			      size_t n, loff_t *f_ps)
-+static ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
-+				     size_t n, loff_t *f_ps)
- {
--	struct iio_dev *indio_dev = filp->private_data;
--	struct iio_buffer *rb = indio_dev->buffer;
-+	struct iio_buffer *rb = filp->private_data;
-+	struct iio_dev *indio_dev = rb->indio_dev;
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
- 	size_t datum_size;
- 	size_t to_wait;
-@@ -165,11 +165,11 @@ ssize_t iio_buffer_read_outer(struct file *filp, char __user *buf,
-  * Return: (EPOLLIN | EPOLLRDNORM) if data is available for reading
-  *	   or 0 for other cases
-  */
--__poll_t iio_buffer_poll(struct file *filp,
-+static __poll_t iio_buffer_poll(struct file *filp,
- 			     struct poll_table_struct *wait)
- {
--	struct iio_dev *indio_dev = filp->private_data;
--	struct iio_buffer *rb = indio_dev->buffer;
-+	struct iio_buffer *rb = filp->private_data;
-+	struct iio_dev *indio_dev = rb->indio_dev;
- 
- 	if (!indio_dev->info || rb == NULL)
- 		return 0;
-@@ -180,6 +180,48 @@ __poll_t iio_buffer_poll(struct file *filp,
- 	return 0;
- }
- 
-+/**
-+ * iio_buffer_chrdev_open() - chrdev file open for buffer access
-+ * @inode:	Inode structure for identifying the device in the file system
-+ * @filp:	File structure for iio device used to keep and later access
-+ *		private data
-+ *
-+ * Return: 0 on success or -EBUSY if the device is already opened
-+ */
-+static int iio_buffer_chrdev_open(struct inode *inode, struct file *filp)
-+{
-+	struct iio_buffer *buffer = container_of(inode->i_cdev,
-+						 struct iio_buffer, chrdev);
-+
-+	if (test_and_set_bit(IIO_BUSY_BIT_POS, &buffer->file_ops_flags))
-+		return -EBUSY;
-+
-+	iio_buffer_get(buffer);
-+
-+	filp->private_data = buffer;
-+
-+	return 0;
-+}
-+
-+/**
-+ * iio_buffer_chrdev_release() - chrdev file close for buffer access
-+ * @inode:	Inode structure pointer for the char device
-+ * @filp:	File structure pointer for the char device
-+ *
-+ * Return: 0 for successful release
-+ */
-+static int iio_buffer_chrdev_release(struct inode *inode, struct file *filp)
-+{
-+	struct iio_buffer *buffer = container_of(inode->i_cdev,
-+						 struct iio_buffer, chrdev);
-+
-+	clear_bit(IIO_BUSY_BIT_POS, &buffer->file_ops_flags);
-+
-+	iio_buffer_put(buffer);
-+
-+	return 0;
-+}
-+
- /**
-  * iio_buffer_wakeup_poll - Wakes up the buffer waitqueue
-  * @indio_dev: The IIO device
-@@ -1129,6 +1171,17 @@ void iio_disable_all_buffers(struct iio_dev *indio_dev)
- 	iio_buffer_deactivate_all(indio_dev);
- }
- 
-+static long iio_buffer_ioctl(struct file *filep, unsigned int cmd,
-+			     unsigned long arg)
-+{
-+	struct iio_buffer *buffer = filep->private_data;
-+
-+	if (!buffer || !buffer->access)
-+		return -ENODEV;
-+
-+	return iio_device_event_ioctl(buffer->indio_dev, filep, cmd, arg);
-+}
-+
- static ssize_t iio_buffer_store_enable(struct device *dev,
- 				       struct device_attribute *attr,
- 				       const char *buf,
-@@ -1355,6 +1408,29 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
- 	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
- }
- 
-+static const struct file_operations iio_buffer_fileops = {
-+	.owner = THIS_MODULE,
-+	.llseek = noop_llseek,
-+	.read = iio_buffer_read_outer,
-+	.poll = iio_buffer_poll,
-+	.unlocked_ioctl = iio_buffer_ioctl,
-+	.compat_ioctl = compat_ptr_ioctl,
-+	.open = iio_buffer_chrdev_open,
-+	.release = iio_buffer_chrdev_release,
++#define IIO_IOCTL_UNHANDLED	1
++struct iio_ioctl_handler {
++	struct list_head entry;
++	long (*ioctl)(struct iio_dev *indio_dev, struct file *filp,
++		      unsigned int cmd, unsigned long arg);
 +};
 +
-+void iio_device_buffer_attach_chrdev(struct iio_dev *indio_dev)
-+{
-+	struct iio_buffer *buffer = indio_dev->buffer;
++long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
++		      unsigned int cmd, unsigned long arg);
 +
-+	if (!buffer)
-+		return;
++void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
++				       struct iio_ioctl_handler *h);
++void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
 +
-+	cdev_init(&buffer->chrdev, &iio_buffer_fileops);
-+
-+	indio_dev->chrdev = &buffer->chrdev;
-+}
-+
- void iio_device_buffers_put(struct iio_dev *indio_dev)
- {
- 	struct iio_buffer *buffer = indio_dev->buffer;
+ int __iio_add_chan_devattr(const char *postfix,
+ 			   struct iio_chan_spec const *chan,
+ 			   ssize_t (*func)(struct device *dev,
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 51e279c60793..e9c37bcd733d 100644
+index e9c37bcd733d..94e7f9541e81 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -1584,79 +1584,6 @@ struct iio_dev *devm_iio_device_alloc(struct device *dev, int sizeof_priv)
+@@ -1531,6 +1531,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 	}
+ 	dev_set_name(&dev->dev, "iio:device%d", dev->id);
+ 	INIT_LIST_HEAD(&dev->buffer_list);
++	INIT_LIST_HEAD(&dev->ioctl_handlers);
+ 
+ 	return dev;
+ }
+@@ -1584,6 +1585,37 @@ struct iio_dev *devm_iio_device_alloc(struct device *dev, int sizeof_priv)
  }
  EXPORT_SYMBOL_GPL(devm_iio_device_alloc);
  
--/**
-- * iio_chrdev_open() - chrdev file open for buffer access and ioctls
-- * @inode:	Inode structure for identifying the device in the file system
-- * @filp:	File structure for iio device used to keep and later access
-- *		private data
-- *
-- * Return: 0 on success or -EBUSY if the device is already opened
-- **/
--static int iio_chrdev_open(struct inode *inode, struct file *filp)
--{
--	struct iio_dev *indio_dev = container_of(inode->i_cdev,
--						struct iio_dev, chrdev);
--
--	if (test_and_set_bit(IIO_BUSY_BIT_POS, &indio_dev->flags))
--		return -EBUSY;
--
--	iio_device_get(indio_dev);
--
--	filp->private_data = indio_dev;
--
--	return 0;
--}
--
--/**
-- * iio_chrdev_release() - chrdev file close buffer access and ioctls
-- * @inode:	Inode structure pointer for the char device
-- * @filp:	File structure pointer for the char device
-- *
-- * Return: 0 for successful release
-- */
--static int iio_chrdev_release(struct inode *inode, struct file *filp)
--{
--	struct iio_dev *indio_dev = container_of(inode->i_cdev,
--						struct iio_dev, chrdev);
--	clear_bit(IIO_BUSY_BIT_POS, &indio_dev->flags);
--	iio_device_put(indio_dev);
--
--	return 0;
--}
--
--/* Somewhat of a cross file organization violation - ioctls here are actually
-- * event related */
--static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
--{
--	struct iio_dev *indio_dev = filp->private_data;
--	int __user *ip = (int __user *)arg;
--	int fd;
--
--	if (!indio_dev->info)
--		return -ENODEV;
--
--	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
--		fd = iio_event_getfd(indio_dev);
--		if (fd < 0)
--			return fd;
--		if (copy_to_user(ip, &fd, sizeof(fd)))
--			return -EFAULT;
--		return 0;
--	}
--	return -EINVAL;
--}
--
--static const struct file_operations iio_buffer_fileops = {
--	.read = iio_buffer_read_outer_addr,
--	.release = iio_chrdev_release,
--	.open = iio_chrdev_open,
--	.poll = iio_buffer_poll_addr,
--	.owner = THIS_MODULE,
--	.llseek = noop_llseek,
--	.unlocked_ioctl = iio_ioctl,
--	.compat_ioctl = compat_ptr_ioctl,
--};
--
++void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
++				       struct iio_ioctl_handler *h)
++{
++	/* this assumes that all ioctl() handlers are statically allocated */
++	list_add_tail(&h->entry, &indio_dev->ioctl_handlers);
++}
++
++long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
++		      unsigned int cmd, unsigned long arg)
++{
++	struct iio_ioctl_handler *h;
++	int ret = -ENODEV;
++
++	mutex_lock(&indio_dev->info_exist_lock);
++
++	if (!indio_dev->info)
++		goto out_unlock;
++
++	ret = -EINVAL;
++	list_for_each_entry(h, &indio_dev->ioctl_handlers, entry) {
++		ret = h->ioctl(indio_dev, filp, cmd, arg);
++		if (ret != IIO_IOCTL_UNHANDLED)
++			break;
++	}
++
++out_unlock:
++	mutex_unlock(&indio_dev->info_exist_lock);
++
++	return ret;
++}
++
  static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
  {
  	int i, j;
-@@ -1682,15 +1609,6 @@ static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
- 
- static const struct iio_buffer_setup_ops noop_ring_setup_ops;
- 
--static const struct file_operations iio_event_fileops = {
--	.owner = THIS_MODULE,
--	.llseek = noop_llseek,
--	.unlocked_ioctl = iio_event_ioctl_wrapper,
--	.compat_ioctl = compat_ptr_ioctl,
--	.open = iio_chrdev_open,
--	.release = iio_chrdev_release,
--};
--
- int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
- {
- 	int ret;
-@@ -1741,16 +1659,17 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
- 		indio_dev->setup_ops == NULL)
- 		indio_dev->setup_ops = &noop_ring_setup_ops;
- 
--	if (indio_dev->buffer)
--		cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
--	else if (indio_dev->event_interface)
--		cdev_init(&indio_dev->chrdev, &iio_event_fileops);
-+	iio_device_buffer_attach_chrdev(indio_dev);
- 
--	indio_dev->chrdev.owner = this_mod;
-+	/* no chrdev attached from buffer, we go with event-only chrdev */
-+	if (!indio_dev->chrdev)
-+		iio_device_event_attach_chrdev(indio_dev);
- 
--	if (indio_dev->buffer || indio_dev->event_interface)
--		ret = cdev_device_add(&indio_dev->chrdev, &indio_dev->dev);
--	else
-+	if (indio_dev->chrdev) {
-+		indio_dev->chrdev->owner = this_mod;
-+
-+		ret = cdev_device_add(indio_dev->chrdev, &indio_dev->dev);
-+	} else
- 		ret = device_add(&indio_dev->dev);
- 
- 	if (ret < 0)
-@@ -1776,8 +1695,8 @@ EXPORT_SYMBOL(__iio_device_register);
+@@ -1695,6 +1727,8 @@ EXPORT_SYMBOL(__iio_device_register);
   **/
  void iio_device_unregister(struct iio_dev *indio_dev)
  {
--	if (indio_dev->buffer || indio_dev->event_interface)
--		cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
-+	if (indio_dev->chrdev)
-+		cdev_device_del(indio_dev->chrdev, &indio_dev->dev);
++	struct iio_ioctl_handler *h, *t;
++
+ 	if (indio_dev->chrdev)
+ 		cdev_device_del(indio_dev->chrdev, &indio_dev->dev);
  	else
- 		device_del(&indio_dev->dev);
+@@ -1706,6 +1740,9 @@ void iio_device_unregister(struct iio_dev *indio_dev)
  
-diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index 5b17c92d3b50..d532a689c2eb 100644
---- a/drivers/iio/industrialio-event.c
-+++ b/drivers/iio/industrialio-event.c
-@@ -30,6 +30,8 @@
-  * @flags:		file operations related flags including busy flag.
-  * @group:		event interface sysfs attribute group
-  * @read_lock:		lock to protect kfifo read operations
-+ * @chrdev:		associated chardev for this event
-+ * @indio_dev:		IIO device to which this event interface belongs to
-  */
- struct iio_event_interface {
- 	wait_queue_head_t	wait;
-@@ -39,6 +41,9 @@ struct iio_event_interface {
- 	unsigned long		flags;
- 	struct attribute_group	group;
- 	struct mutex		read_lock;
-+
-+	struct cdev		chrdev;
-+	struct iio_dev		*indio_dev;
- };
+ 	iio_disable_all_buffers(indio_dev);
  
- bool iio_event_enabled(const struct iio_event_interface *ev_int)
-@@ -182,7 +187,7 @@ static const struct file_operations iio_event_chrdev_fileops = {
- 	.llseek = noop_llseek,
- };
++	list_for_each_entry_safe(h, t, &indio_dev->ioctl_handlers, entry)
++		list_del(&h->entry);
++
+ 	indio_dev->info = NULL;
  
--int iio_event_getfd(struct iio_dev *indio_dev)
-+static int iio_event_getfd(struct iio_dev *indio_dev)
- {
- 	struct iio_event_interface *ev_int = indio_dev->event_interface;
- 	int fd;
-@@ -215,6 +220,102 @@ int iio_event_getfd(struct iio_dev *indio_dev)
- 	return fd;
- }
- 
-+/**
-+ * iio_chrdev_open() - chrdev file open for event ioctls
-+ * @inode:	Inode structure for identifying the device in the file system
-+ * @filp:	File structure for iio device used to keep and later access
-+ *		private data
-+ *
-+ * Return: 0 on success or -EBUSY if the device is already opened
-+ */
-+static int iio_chrdev_open(struct inode *inode, struct file *filp)
-+{
-+	struct iio_event_interface *ev =
-+		container_of(inode->i_cdev, struct iio_event_interface, chrdev);
-+
-+	if (test_and_set_bit(IIO_BUSY_BIT_POS, &ev->flags))
-+		return -EBUSY;
-+
-+	iio_device_get(ev->indio_dev);
-+
-+	filp->private_data = ev;
-+
-+	return 0;
-+}
-+
-+/**
-+ * iio_chrdev_release() - chrdev file close for event ioctls
-+ * @inode:	Inode structure pointer for the char device
-+ * @filp:	File structure pointer for the char device
-+ *
-+ * Return: 0 for successful release
-+ */
-+static int iio_chrdev_release(struct inode *inode, struct file *filp)
-+{
-+	struct iio_event_interface *ev =
-+		container_of(inode->i_cdev, struct iio_event_interface, chrdev);
-+
-+	clear_bit(IIO_BUSY_BIT_POS, &ev->flags);
-+	iio_device_put(ev->indio_dev);
-+
-+	return 0;
-+}
-+
-+long iio_device_event_ioctl(struct iio_dev *indio_dev, struct file *filp,
-+			    unsigned int cmd, unsigned long arg)
-+{
-+	int __user *ip = (int __user *)arg;
-+	int fd;
-+
-+	/**
-+	 * The NULL check here is required to prevent crashing when a device
-+	 * is being removed while userspace would still have open file handles
-+	 * to try to access this device.
-+	 */
-+	if (!indio_dev->info)
-+		return -ENODEV;
-+
-+	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
-+		fd = iio_event_getfd(indio_dev);
-+		if (fd < 0)
-+			return fd;
-+		if (copy_to_user(ip, &fd, sizeof(fd)))
-+			return -EFAULT;
-+		return 0;
-+	}
-+	return -EINVAL;
-+}
-+
-+static long iio_event_ioctl_wrapper(struct file *filp, unsigned int cmd,
-+				    unsigned long arg)
-+{
-+	struct iio_event_interface *ev = filp->private_data;
-+
-+	return iio_device_event_ioctl(ev->indio_dev, filp, cmd, arg);
-+}
-+
-+static const struct file_operations iio_event_fileops = {
-+	.owner = THIS_MODULE,
-+	.llseek = noop_llseek,
-+	.unlocked_ioctl = iio_event_ioctl_wrapper,
-+	.compat_ioctl = compat_ptr_ioctl,
-+	.open = iio_chrdev_open,
-+	.release = iio_chrdev_release,
-+};
-+
-+void iio_device_event_attach_chrdev(struct iio_dev *indio_dev)
-+{
-+	struct iio_event_interface *ev = indio_dev->event_interface;
-+
-+	if (!ev)
-+		return;
-+
-+	cdev_init(&ev->chrdev, &iio_event_fileops);
-+
-+	ev->indio_dev = indio_dev;
-+	indio_dev->chrdev = &ev->chrdev;
-+}
-+
- static const char * const iio_ev_type_text[] = {
- 	[IIO_EV_TYPE_THRESH] = "thresh",
- 	[IIO_EV_TYPE_MAG] = "mag",
-diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-index 67d73d465e02..46fc977deae3 100644
---- a/include/linux/iio/buffer_impl.h
-+++ b/include/linux/iio/buffer_impl.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef _IIO_BUFFER_GENERIC_IMPL_H_
- #define _IIO_BUFFER_GENERIC_IMPL_H_
-+#include <linux/cdev.h>
- #include <linux/sysfs.h>
- #include <linux/kref.h>
- 
-@@ -72,6 +73,12 @@ struct iio_buffer {
- 	/** @indio_dev: IIO device to which this buffer belongs to. */
- 	struct iio_dev *indio_dev;
- 
-+	/** @chrdev: associated character device. */
-+	struct cdev chrdev;
-+
-+	/** @file_ops_flags: file ops related flags including busy flag. */
-+	unsigned long file_ops_flags;
-+
- 	/** @length: Number of datums in buffer. */
- 	unsigned int length;
- 
+ 	iio_device_wakeup_eventset(indio_dev);
 diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 5f9f439a4f01..52992be44e9e 100644
+index 52992be44e9e..b6ca8d85629e 100644
 --- a/include/linux/iio/iio.h
 +++ b/include/linux/iio/iio.h
-@@ -516,10 +516,9 @@ struct iio_buffer_setup_ops {
-  * @info_exist_lock:	[INTERN] lock to prevent use during removal
-  * @setup_ops:		[DRIVER] callbacks to call before and after buffer
-  *			enable/disable
-- * @chrdev:		[INTERN] associated character device
-+ * @chrdev:		[INTERN] reference to associated character device
-  * @groups:		[INTERN] attribute groups
-  * @groupcounter:	[INTERN] index of next attribute group
-- * @flags:		[INTERN] file ops related flags including busy flag.
-  * @debugfs_dentry:	[INTERN] device specific debugfs dentry.
-  * @cached_reg_addr:	[INTERN] cached register address for debugfs reads.
-  */
-@@ -559,12 +558,11 @@ struct iio_dev {
- 	clockid_t			clock_id;
- 	struct mutex			info_exist_lock;
- 	const struct iio_buffer_setup_ops	*setup_ops;
--	struct cdev			chrdev;
-+	struct cdev			*chrdev;
- #define IIO_MAX_GROUPS 6
- 	const struct attribute_group	*groups[IIO_MAX_GROUPS + 1];
- 	int				groupcounter;
+@@ -488,6 +488,7 @@ struct iio_buffer_setup_ops {
+  * @currentmode:	[DRIVER] current operating mode
+  * @dev:		[DRIVER] device structure, should be assigned a parent
+  *			and owner
++ * @ioctl_handlers:	[INTERN] list of registered ioctl handlers
+  * @event_interface:	[INTERN] event chrdevs associated with interrupt lines
+  * @buffer:		[DRIVER] any buffer present
+  * @buffer_list:	[INTERN] list of all buffers currently attached
+@@ -529,6 +530,7 @@ struct iio_dev {
+ 	int				modes;
+ 	int				currentmode;
+ 	struct device			dev;
++	struct list_head		ioctl_handlers;
  
--	unsigned long			flags;
- #if defined(CONFIG_DEBUG_FS)
- 	struct dentry			*debugfs_dentry;
- 	unsigned			cached_reg_addr;
+ 	struct iio_event_interface	*event_interface;
+ 
 -- 
 2.17.1
 

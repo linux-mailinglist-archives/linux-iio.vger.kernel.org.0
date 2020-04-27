@@ -2,150 +2,308 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B911B9FEA
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 11:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5821BA03A
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Apr 2020 11:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726700AbgD0Jat (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Apr 2020 05:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726855AbgD0Jas (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Apr 2020 05:30:48 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A848DC0610D5;
-        Mon, 27 Apr 2020 02:30:47 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id x18so19659521wrq.2;
-        Mon, 27 Apr 2020 02:30:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=gGhrm05lBeDufcAvIkVNnCglslvfHPRc0gSDutuQja0=;
-        b=GeeRUujz4O7iJXAC8HLyUVXX+fqUvCukRLH6iXhKfJ4GPhfu9aBtAYH1uRlM07CaFI
-         K2z2zCmurdZT4Gt0kBRIqSg9dbINfKY4mXnmRSLLSqpF19GWbjtXXqtCtuWOSrhlbscD
-         3LFxjeVRZ6z8x1AcL8UIiEeKy6BKD2S9olqstUN7pJN0BKSozWQO+eiD+lmoM4g/NUPb
-         qRK7HeqGazO3IkwbCPa975iDleur20Sti0/48AFit1sDMD3trUZ3ht21mRGBiV8TXQv+
-         ruo4tqJCKC2nrM+eAkXosU5a1RzbK4Clc3jVOdCEm6NdcGts8EJM/G2hUmmmK9BlvvMN
-         pDoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=gGhrm05lBeDufcAvIkVNnCglslvfHPRc0gSDutuQja0=;
-        b=VmLF7qORXYhnFrHIx2ijtL5ehw2XvbgG8eyG+B10HWttsDkvHfR5bIoFh+WN6SzeCS
-         Pr//raT6VOpq0GErxiHLx1MJQzBULteb3+zjhN0s+Fs8NhqGy4mcJ/owO7YCKxBZgSE4
-         h/9XqUL+AcBFCkhdB10p3O984Gipd/VCGjzrODrgMnx2F586WHqgk6W3D8r4cvjy5Q6d
-         va0/dGatjBLn5uRTHqpoiHqo4TUmPadiYDuD9hDGSJr3fv6MCSFYpRJXOHOe3HdsCP9o
-         2cM8mxp22bsVKzNqrP+mUrLIgAlGeyKC6SFl5PyXjJubYYxzD56Z4zp6jnIWAe5rM+Xi
-         YrIw==
-X-Gm-Message-State: AGi0Puag6X0sLyZWhK218dr/5X4NaUrQRZMRg8glAKj9wIyfXPAbiU0U
-        DrKhALpOdlTAa/Qij3TfiEZ3qn7+
-X-Google-Smtp-Source: APiQypJo+llHo9YUkCbnIuHUB0aRrp3ZNC/vsVhKFFyb2jPux13yVg6PBP+g/CAWQ7gKyt42+xooXA==
-X-Received: by 2002:a5d:4292:: with SMTP id k18mr25168842wrq.137.1587979845950;
-        Mon, 27 Apr 2020 02:30:45 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F6E10.dip0.t-ipconnect.de. [91.63.110.16])
-        by smtp.gmail.com with ESMTPSA id h16sm22954922wrw.36.2020.04.27.02.30.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2020 02:30:44 -0700 (PDT)
-Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20200415162030.16414-1-sravanhome@gmail.com>
- <20200415162030.16414-3-sravanhome@gmail.com> <20200424071822.GM3612@dell>
- <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com> <20200424093720.GA3542@dell>
- <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com> <20200424105319.GD8414@dell>
- <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com> <20200427085149.GF3559@dell>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com>
-Date:   Mon, 27 Apr 2020 11:30:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726434AbgD0Jor (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Apr 2020 05:44:47 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2104 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726349AbgD0Jor (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Apr 2020 05:44:47 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 1C9DCBF8E98470DDCA16;
+        Mon, 27 Apr 2020 10:44:45 +0100 (IST)
+Received: from localhost (10.47.88.126) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 27 Apr
+ 2020 10:44:44 +0100
+Date:   Mon, 27 Apr 2020 10:44:26 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH 4/6] Documentation: ABI: testing: scd30: document iio
+ attributes
+Message-ID: <20200427104426.000010bf@Huawei.com>
+In-Reply-To: <20200426111104.GB3282@arch>
+References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
+        <20200422141135.86419-5-tomasz.duszynski@octakon.com>
+        <alpine.DEB.2.21.2004221818490.26800@vps.pmeerw.net>
+        <20200423155317.GB43448@arch>
+        <20200425202057.5c8ad612@archlinux>
+        <20200426111104.GB3282@arch>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <20200427085149.GF3559@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Originating-IP: [10.47.88.126]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+Hi Tomasz,
 
-On 27/04/20 10:51 am, Lee Jones wrote:
-> On Fri, 24 Apr 2020, saravanan sekar wrote:
->
->> On 24/04/20 12:53 pm, Lee Jones wrote:
->>> On Fri, 24 Apr 2020, saravanan sekar wrote:
->>>
->>>> Hi Lee,
->>>>
->>>> On 24/04/20 11:37 am, Lee Jones wrote:
->>>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
->>>>>
->>>>>> Hi Lee,
->>>>>>
->>>>>> On 24/04/20 9:18 am, Lee Jones wrote:
->>>>>>> On Wed, 15 Apr 2020, Saravanan Sekar wrote:
->>>>>>>
->>>>>>>> mp2629 is a highly-integrated switching-mode battery charge management
->>>>>>>> device for single-cell Li-ion or Li-polymer battery.
->>>>>>>>
->>>>>>>> Add MFD core enables chip access for ADC driver for battery readings,
->>>>>>>> and a power supply battery-charger driver
->>>>>>>>
->>>>>>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->>>>>>>> ---
->>>>>>>>      drivers/mfd/Kconfig        |  9 ++++
->>>>>>>>      drivers/mfd/Makefile       |  2 +
->>>>>>>>      drivers/mfd/mp2629.c       | 86 ++++++++++++++++++++++++++++++++++++++
->>>>>>>>      include/linux/mfd/mp2629.h | 19 +++++++++
->>>>>>>>      4 files changed, 116 insertions(+)
->>>>>>>>      create mode 100644 drivers/mfd/mp2629.c
->>>>>>>>      create mode 100644 include/linux/mfd/mp2629.h
->>>>>>> How is this driver registered?
->>>>>>>
->>>>>>> Looks like it has device tree support.  Is there another way?
->>>>>> Yes, only using device tree
->>>>> Then how about using 'simple-mfd' and 'syscon'?
->>>>>
->>>>> Then you can omit this driver completely.
->>>> The exception is to support for non device tree platform as well, but I have
->>>> tested only for ARM device tree platform.
->>> Is that a reality though?
->>>
->>> How else do you see this realistically being registered?
->>>
->> I understand that acpi related device table are not covered here, well I
->> don't have to platform to test so.
->> If you ask me to cover acpi related table, I can do but hard to test.
-> I don't know of any reasons why syscon can't be used by ACPI.
->
-> Please try to solve this issue using 'simple-mfd' and 'syscon'.
-Well the simple-mfd and syscon topic recommended by you when Device tree 
-alone is used.
-I wounder still I receive review/improvements comments for this mfd 
-patch and also another
-to omit this driver using simple-mfd (rework the series).
-Confused, not sure which is valid and will be accepted at the end.
->
->>>>>>>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
->>>>>>>> index 3c547ed575e6..85be799795aa 100644
->>>>>>>> --- a/drivers/mfd/Kconfig
->>>>>>>> +++ b/drivers/mfd/Kconfig
->>>>>>>> @@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
->>>>>>>>      	help
->>>>>>>>      	  Select this if your MC13xxx is connected via an I2C bus.
->>>>>>>> +config MFD_MP2629
->>>>>>>> +	tristate "Monolithic power system MP2629 ADC and Battery charger"
->>>>>>>> +	depends on I2C
->>>>>>>> +	select REGMAP_I2C
->>>>>>>> +	help
->>>>>>>> +	  Select this option to enable support for monolithic power system
->>>>>>>> +	  battery charger. This provides ADC, thermal, battery charger power
->>>>>>>> +	  management functions on the systems.
+Replies inline.
+
+On Sun, 26 Apr 2020 13:11:04 +0200
+Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+
+> On Sat, Apr 25, 2020 at 08:20:57PM +0100, Jonathan Cameron wrote:
+> > On Thu, 23 Apr 2020 17:53:17 +0200
+> > Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+> >  
+> > > On Wed, Apr 22, 2020 at 06:40:17PM +0200, Peter Meerwald-Stadler wrote:  
+> > > > On Wed, 22 Apr 2020, Tomasz Duszynski wrote:
+> > > >  
+> > > > > Add documentation for sensor specific iio attributes.  
+> > > >
+> > > > minor comments below  
+> > >
+> > > Thanks.
+> > >  
+> > > >  
+> > > > > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > > > > ---
+> > > > >  Documentation/ABI/testing/sysfs-bus-iio-scd30 | 97 +++++++++++++++++++
+> > > > >  1 file changed, 97 insertions(+)
+> > > > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+> > > > >
+> > > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
+> > > > > new file mode 100644
+> > > > > index 000000000000..0431a718447d
+> > > > > --- /dev/null
+> > > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-scd30
+> > > > > @@ -0,0 +1,97 @@
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Given that sensor's CO2 measurement chamber has fixed volume
+> > > > > +		pressure changes will affect concentration readings. Writing
+> > > > > +		current ambient pressure here will allow senor to make necessary  
+> > > >
+> > > > sensor
+> > > >  
+> > >
+> > > Okay.
+> > >  
+> > > > > +		adjustments. Upon reading previously set value is returned.
+> > > > > +		Units are millibars.  
+> > > >
+> > > > unit for pressure in IIO is kilopascal (e.g.
+> > > > /sys/bus/iio/devices/iio:deviceX/in_pressure_raw)
+> > > >  
+> > >
+> > > My thinking here was that since these are sensor specific attributes
+> > > they don't need to stick to iio conventions and millibars were somewhat
+> > > more natural to use. But I guess that's just matter of habit.  
+> >
+> > You absolutely have to stick to standard units.  Userspace programs
+> > aren't going to come read your docs...
+> >
+> > For other sensors that take a calibration value like this we've reported
+> > them via an output channel.  For example the atlas-ph sensor has
+> > an 'output temp' channel used for this purpose.
+> >  
+> 
+> Fair enough.
+> 
+> > It's not ideal or totally intuitive but it does let us avoid expanding
+> > the overall ABI.  The argument was something along the lines of
+> > 1) Imagine your sensor could control the pressure in the measurement space...
+> > 2) An output channel would provide the value to set it to.
+> > 3) Now instead we provide a means of saying 'what it is'
+> > 4) End result is we write a value and the pressure in the chamber is
+> >    that value :)
+> >
+> > As I said not ideal but the best we can do without having to define a lot
+> > of ABI just to deal with compensation factors.
+> >
+> > This is a rare case where I would document the 'standard' ABI in here
+> > to make the point that it is actually providing an estimate of the pressure
+> > not controlling it...
+> >  
+> > >
+> > > So generally I am okay with reworking all attrs to accept values in iio
+> > > preferred units.
+> > >  
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/pressure_comp_available
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		The range of available values in millibars represented as the
+> > > > > +		minimum value, the step and the maximum value, all enclosed in
+> > > > > +		square brackets.
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/meas_interval
+> > > > > +Date:		January 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Amount of time between subsequent measurements. Writing this
+> > > > > +		attribute will change measurement interval. Upon reading
+> > > > > +		current measurement interval is returned. Units are seconds.  
+> >
+> > Use the existing ABI sampling frequency which is sort of the inverse of this.
+> >  
+> 
+> Was thinking about it but long periods in Hz simply don't look appealing :).
+> 
+> No other strong opinions so I'll rework that.
+
+Agreed it can look a bit odd, but we don't want to have multiple controls for the
+same thing so we are stuck with it.
+
+> 
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/meas_interval_available
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		The range of available values in seconds represented as the
+> > > > > +		minimum value, the step and the maximum value, all enclosed in
+> > > > > +		square brackets.
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/asc  
+> > Spends some characters to easy of understanding ;)
+> >
+> > auto_calib_proc_enable maybe?  Or can we get away with the 'somewhat standard
+> > calibration (it's used in at least one other driver IIRC)
+> >  
+> 
+> Just self_calibration would do?
+
+I'll think a bit more on this one but probably fine.
+
+> 
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Writing 1 or 0 to this attribute will respectively activate or
+> > > > > +		deactivate automatic self calibration procedure. Upon reading 1  
+> > > >
+> > > > deactivate automatic self calibration (asc) procedure
+> > > >  
+> > >
+> > > That shouldn't be too difficult to realize what asc actually stands for after
+> > > reading this short description.
+> > >  
+> > > > > +		is returned if asc is ongoing, 0 otherwise.
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/frc
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Forced recalibration is used to compensate for sensor drifts
+> > > > > +		when a reference value of CO2 concentration in close proximity
+> > > > > +		to the sensor is available. Writing attribute will set frc
+> > > > > +		value. Upon reading current frc is returned. Units are
+> > > > > +		millibars.  
+> >
+> > Could we implement this by just writing to the main channel value?
+> > Bit of a clunky ABI but sort of logically fits in my head given we are basically
+> > forcing the value we read to be this one?
+> >  
+> 
+> So the similar to the pressure compensation. Okay.
+> 
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/frc_available
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		The range of available values in millibars represented as the
+> > > > > +		minimum value, the step and the maximum value, all enclosed in
+> > > > > +		square brackets.
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/temp_offset
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Sensor readings may be affected by ambient temperature.
+> > > > > +		Writing temperature offset will compensate for unwanted changes.
+> > > > > +		Note that written offset gets multiplied by a factor of 100
+> > > > > +		by a sensor internally.
+> > > > > +
+> > > > > +		For example, writing 10 here will correspond to 0.1 degree
+> > > > > +		Celsius.  
+> >
+> > This sounds like a calibbias to me which is standard ABI.
+> >  
+> 
+> Right, that could work.
+> 
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/temp_offset_available
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		The range of available values in degrees Celsius represented as
+> > > > > +		the minimum value, the step and the maximum value, all enclosed
+> > > > > +		in square brackets.  
+> >
+> > Wrong units for temperature (which is an odd one as we
+> > lifted them from hwmon before learning the error of our ways and starting to use
+> > SI units as the base).
+> >  
+> 
+> Does calibbias have _available counterpart?
+
+It might not be documented yet (as not sure it's been used) but any attribute has
+an available counterpart.  That's effectively standard ABI.
+
+> 
+> >  
+> > > > > +
+> > > > > +What:		/sys/bus/iio/devices/iio:deviceX/reset
+> > > > > +Date:		April 2020
+> > > > > +KernelVersion:	5.8
+> > > > > +Contact:	linux-iio@vger.kernel.org
+> > > > > +Description:
+> > > > > +		Software reset mechanism forces sensor into the same state
+> > > > > +		as after powering up without the need for removing power supply.
+> > > > > +		Writing any value will reset sensor.  
+> >
+> > Not seeing an argument here for why you might want to do that other than on
+> > power up or module probe to get the driver into a known state.
+> > So currently it's a no to this one - just don't expose it to userspace.
+> >  
+> 
+> If one writes some odd configuration (though allowed) into sensor, for example
+> out of sheer curiosity and then writes the sane values back sensor needs some
+> time to recover (i.e start reporting valid measurements again).
+> 
+> So rationale here was that after reset sensor recovers immediately. I'd
+> say that reset is sometimes useful. Perhaps that could be exported by
+> means of iio debug api?
+
+Debugfs would be fine
+
+> 
+> >  
+> > > > >  
+> > > >
+> > > > --
+> > > >
+> > > > Peter Meerwald-Stadler
+> > > > Mobile: +43 664 24 44 418  
+> >  
+
+

@@ -2,99 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A42481BC0B1
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 16:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D03E1BC6A4
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 19:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728113AbgD1OIY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Apr 2020 10:08:24 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:47039 "EHLO
-        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727807AbgD1OIY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Apr 2020 10:08:24 -0400
-Received: from pro2.mail.ovh.net (unknown [10.108.4.3])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 24867500160D;
-        Tue, 28 Apr 2020 16:08:22 +0200 (CEST)
-Received: from localhost (89.70.31.203) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Tue, 28 Apr
- 2020 16:08:21 +0200
-Date:   Tue, 28 Apr 2020 16:06:53 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1728361AbgD1R3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Apr 2020 13:29:34 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:35527 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728462AbgD1R3d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Apr 2020 13:29:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588094972;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Ua1iWH5acCeIcm+qZwgP19KY7BJbDjRWNsiRUuQwRiU=;
+        b=Q5W8ZbSuah3EttIefzVmn4k6fyOJe17HUb5dL+PmwqKjnC3fygH8psky9RwLA/CC8Wwaaw
+        QGuZfal9wInMVf4iaSCrKU3CE/UeDDirlqmL09DjuaubnEcMKJtzgGK/wtr5bQHwuCq7Ts
+        V+07SVEb3X8JbZX8tR1m4qNYoa35qNA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-444-mKmWBTEaMoW-QRUatY1bxQ-1; Tue, 28 Apr 2020 13:29:31 -0400
+X-MC-Unique: mKmWBTEaMoW-QRUatY1bxQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C9B0C8BF366;
+        Tue, 28 Apr 2020 17:29:28 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-114-62.ams2.redhat.com [10.36.114.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 742F05C1D4;
+        Tue, 28 Apr 2020 17:29:25 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
         Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 1/6] iio: chemical: scd30: add core driver
-Message-ID: <20200428140653.GA10280@arch>
-References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
- <20200422141135.86419-2-tomasz.duszynski@octakon.com>
- <CAHp75VcbaGYj76qkDJnTnuG5SM215qVmFo7FLR6YzHA37PgF_g@mail.gmail.com>
- <20200424190413.GA2731@arch>
- <CAHp75Vdajf7Ci3ytxP7Qs9=fFaxvVBQoL5uh+HUDwxHS5r9MUg@mail.gmail.com>
- <20200425184130.GA37271@arch>
- <CAHp75Vez8wSaYHbXmvfXUS5N+vScQqHGg055DNKrEnCunP7awA@mail.gmail.com>
- <20200428075606.GB6908@arch>
- <CAHp75VdKqVvJg7T=42w1SzKSDbfWjYKMomgQBshiMAW=_e0y_w@mail.gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v3 01/11] iio: light: cm32181: Switch to new style i2c-driver probe function
+Date:   Tue, 28 Apr 2020 19:29:13 +0200
+Message-Id: <20200428172923.567806-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdKqVvJg7T=42w1SzKSDbfWjYKMomgQBshiMAW=_e0y_w@mail.gmail.com>
-X-Originating-IP: [89.70.31.203]
-X-ClientProxiedBy: DAG1EX1.emp2.local (172.16.2.1) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 4095460913286765727
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedriedugdejvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecukfhppedtrddtrddtrddtpdekledrjedtrdefuddrvddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrgh
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 01:16:47PM +0300, Andy Shevchenko wrote:
-> On Tue, Apr 28, 2020 at 10:57 AM Tomasz Duszynski
-> <tomasz.duszynski@octakon.com> wrote:
-> >
-> > On Sat, Apr 25, 2020 at 09:52:25PM +0300, Andy Shevchenko wrote:
-> > > On Sat, Apr 25, 2020 at 9:42 PM Tomasz Duszynski
-> > > <tomasz.duszynski@octakon.com> wrote:
-> > > > On Sat, Apr 25, 2020 at 02:43:35PM +0300, Andy Shevchenko wrote:
-> > > > > On Fri, Apr 24, 2020 at 10:05 PM Tomasz Duszynski
-> > > > > <tomasz.duszynski@octakon.com> wrote:
-> > > > > > On Wed, Apr 22, 2020 at 10:49:44PM +0300, Andy Shevchenko wrote:
-> > > > > > > On Wed, Apr 22, 2020 at 5:22 PM Tomasz Duszynski
-> > > > > > > <tomasz.duszynski@octakon.com> wrote:
-> > >
-> > > ...
-> > >
-> > > > > > As for ABI that's in
-> > > > > > a separate patch.
-> > > > >
-> > > > > It's not good from bisectability point of view. If by some reason this
-> > > > > patch or documentation patch gets reverted, the other one will be
-> > > > > dangling.
-> > > > > Please, unify them.
-> > > > >
-> > > >
-> > > > Huh? Reverting core and leaving leftovers would be wrong and pointless.
-> > >
-> > > Exactly my point why it should be one patch. To secure impossibility
-> > > to do pointless reverts.
-> > >
-> >
-> > But the same applies to other driver parts like i2c or serial
-> > interfaces. I don't buy it.
->
-> They won't compile without core driver, right? Absence of the
-> documentation OTOH doesn't prevent build.
->
+Switch to the new style i2c-driver probe_new probe function and drop the
+unnecessary i2c_device_id table (we do not have any old style board files
+using this).
 
-Fair enough.
+This is a preparation patch for adding ACPI binding support.
 
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v3:
+- This is a new patch in v3 of this patch-set
+---
+ drivers/iio/light/cm32181.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+index 5f4fb5674fa0..cc57190a24cb 100644
+--- a/drivers/iio/light/cm32181.c
++++ b/drivers/iio/light/cm32181.c
+@@ -294,8 +294,7 @@ static const struct iio_info cm32181_info =3D {
+ 	.attrs			=3D &cm32181_attribute_group,
+ };
+=20
+-static int cm32181_probe(struct i2c_client *client,
+-			const struct i2c_device_id *id)
++static int cm32181_probe(struct i2c_client *client)
+ {
+ 	struct cm32181_chip *cm32181;
+ 	struct iio_dev *indio_dev;
+@@ -316,7 +315,7 @@ static int cm32181_probe(struct i2c_client *client,
+ 	indio_dev->channels =3D cm32181_channels;
+ 	indio_dev->num_channels =3D ARRAY_SIZE(cm32181_channels);
+ 	indio_dev->info =3D &cm32181_info;
+-	indio_dev->name =3D id->name;
++	indio_dev->name =3D dev_name(&client->dev);
+ 	indio_dev->modes =3D INDIO_DIRECT_MODE;
+=20
+ 	ret =3D cm32181_reg_init(cm32181);
+@@ -338,13 +337,6 @@ static int cm32181_probe(struct i2c_client *client,
+ 	return 0;
+ }
+=20
+-static const struct i2c_device_id cm32181_id[] =3D {
+-	{ "cm32181", 0 },
+-	{ }
+-};
+-
+-MODULE_DEVICE_TABLE(i2c, cm32181_id);
+-
+ static const struct of_device_id cm32181_of_match[] =3D {
+ 	{ .compatible =3D "capella,cm32181" },
+ 	{ }
+@@ -356,8 +348,7 @@ static struct i2c_driver cm32181_driver =3D {
+ 		.name	=3D "cm32181",
+ 		.of_match_table =3D of_match_ptr(cm32181_of_match),
+ 	},
+-	.id_table       =3D cm32181_id,
+-	.probe		=3D cm32181_probe,
++	.probe_new	=3D cm32181_probe,
+ };
+=20
+ module_i2c_driver(cm32181_driver);
+--=20
+2.26.0
+

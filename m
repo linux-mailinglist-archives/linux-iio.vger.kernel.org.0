@@ -2,185 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08B691BBC18
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 13:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 020211BBC69
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 13:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbgD1LOW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Apr 2020 07:14:22 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:17486 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726762AbgD1LOV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Apr 2020 07:14:21 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03SBBMGJ020165;
-        Tue, 28 Apr 2020 07:14:18 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 30mj45baah-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Apr 2020 07:14:18 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 03SBEHDx017060
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 28 Apr 2020 07:14:17 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 28 Apr
- 2020 07:14:16 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 28 Apr 2020 07:14:16 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03SBEAgv032471;
-        Tue, 28 Apr 2020 07:14:14 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <rachna@ti.com>, <mugunthanvnm@ti.com>,
-        <vigneshr@ti.com>, <afd@ti.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 3/3] iio: adc: ti_am335x_adc: convert rest of probe to devm_ functions
-Date:   Tue, 28 Apr 2020 14:14:30 +0300
-Message-ID: <20200428111430.71723-3-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200428111430.71723-1-alexandru.ardelean@analog.com>
-References: <20200428111430.71723-1-alexandru.ardelean@analog.com>
+        id S1726519AbgD1Lah (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Apr 2020 07:30:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40382 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726419AbgD1Lag (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 28 Apr 2020 07:30:36 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 99138206A1;
+        Tue, 28 Apr 2020 11:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588073436;
+        bh=bmn/QeL07kN6ZF+drWtdbMskzMxoYTgWWIqxwCRdXf4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QXN7mTggzYM5iyN9EKtU2t26wDOabguc6BJyfL9I9ZktUFES2RtQ9TuYb3oSdKyGJ
+         h9SKy7kOhvpYLmygqhauu4Ndgh/XXWktuuTitkA5oIm7y+SidIvmVZ/jNqIM4m5+sV
+         /8R2NSjfbzEFBH4knAeFN8+52tqfm+s60t0W5LpM=
+Date:   Tue, 28 Apr 2020 12:30:33 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Leslie =?utf-8?B?SHNpYSjlpI/pgqbpgLJfUGVnYXRyb24p?= 
+        <Leslie_Hsia@pegatroncorp.com>
+Cc:     "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hermes =?utf-8?B?SHNpZWgo6Kyd5pe75YqtX1BlZ2F0cm9uKQ==?= 
+        <Hermes_Hsieh@pegatroncorp.com>,
+        "jesse.sung@canonical.com" <jesse.sung@canonical.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Subject: Re: [PATCH] subsystem: Amplifier driver for TAS5805M,Texas
+ instruments
+Message-ID: <20200428113033.GE5677@sirena.org.uk>
+References: <754706C925201D4896E92CCAD6B38E4401F0F733E3@PTW-EX-37.PEGA.CORP.PEGATRON>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-28_07:2020-04-28,2020-04-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- suspectscore=2 malwarescore=0 spamscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280091
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bi5JUZtvcfApsciF"
+Content-Disposition: inline
+In-Reply-To: <754706C925201D4896E92CCAD6B38E4401F0F733E3@PTW-EX-37.PEGA.CORP.PEGATRON>
+X-Cookie: Eschew obfuscation.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change converts the rest of the probe to use devm_ functions.
-Consequently this allows us to remove the remove hook.
 
-It tries to preserve the initial order or probe & remove.
-The devm_add_action() call hooks the cleanup routine (what's needed still
-for the remove part).
-If that doesn't work the DMA channel is cleaned up manually inside the
-probe hook. This done (like this) because the remove hook has a peculiar
-cleanup that tries to restore a step-mask, and that only seems to happen on
-the remove hook, and not in any probe error-cleanup paths.
+--bi5JUZtvcfApsciF
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/adc/ti_am335x_adc.c | 63 +++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+On Tue, Apr 28, 2020 at 10:43:18AM +0000, Leslie Hsia(=E5=A4=8F=E9=82=A6=E9=
+=80=B2_Pegatron) wrote:
+>   *   Author: Leslie Hsia
+>   *   Amplifier driver for TAS5805M, initial the amplifier and set the so=
+und parameter.
+>   *   Signed-off-by: Leslie Hsia <Leslie_Hsia@pegatroncorp.com<mailto:Les=
+lie_Hsia@pegatroncorp.com>>
 
-diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index 03b2ab649cc3..9fac83e036c1 100644
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -562,6 +562,18 @@ static int tiadc_request_dma(struct platform_device *pdev,
- 	return -ENOMEM;
- }
- 
-+static void tiadc_cleanup_dma(struct tiadc_device *adc_dev)
-+{
-+	struct tiadc_dma *dma = &adc_dev->dma;
-+
-+	if (!dma->chan)
-+		return;
-+
-+	dma_free_coherent(dma->chan->device->dev, DMA_BUFFER_SIZE,
-+			  dma->buf, dma->addr);
-+	dma_release_channel(dma->chan);
-+}
-+
- static int tiadc_parse_dt(struct platform_device *pdev,
- 			  struct tiadc_device *adc_dev)
- {
-@@ -593,6 +605,17 @@ static int tiadc_parse_dt(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static void tiadc_cleanup(void *data)
-+{
-+	struct tiadc_device *adc_dev = data;
-+	u32 step_en;
-+
-+	tiadc_cleanup_dma(adc_dev);
-+
-+	step_en = get_adc_step_mask(adc_dev);
-+	am335x_tsc_se_clr(adc_dev->mfd_tscadc, step_en);
-+}
-+
- static int tiadc_probe(struct platform_device *pdev)
- {
- 	struct iio_dev		*indio_dev;
-@@ -635,48 +658,27 @@ static int tiadc_probe(struct platform_device *pdev)
- 		IRQF_SHARED,
- 		&tiadc_buffer_setup_ops);
- 
-+	err = devm_iio_device_register(&pdev->dev, indio_dev);
- 	if (err)
--		goto err_free_channels;
--
--	err = iio_device_register(indio_dev);
--	if (err)
--		goto err_buffer_unregister;
-+		return err;
- 
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	err = tiadc_request_dma(pdev, adc_dev);
- 	if (err && err == -EPROBE_DEFER)
--		goto err_dma;
-+		return err;
-+
-+	err = devm_add_action(&pdev->dev, tiadc_cleanup, adc_dev);
-+	if (err)
-+		goto err_free_dma;
- 
- 	return 0;
- 
--err_dma:
--	iio_device_unregister(indio_dev);
--err_buffer_unregister:
--err_free_channels:
-+err_free_dma:
-+	tiadc_cleanup_dma(adc_dev);
- 	return err;
- }
- 
--static int tiadc_remove(struct platform_device *pdev)
--{
--	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
--	struct tiadc_device *adc_dev = iio_priv(indio_dev);
--	struct tiadc_dma *dma = &adc_dev->dma;
--	u32 step_en;
--
--	if (dma->chan) {
--		dma_free_coherent(dma->chan->device->dev, DMA_BUFFER_SIZE,
--				  dma->buf, dma->addr);
--		dma_release_channel(dma->chan);
--	}
--	iio_device_unregister(indio_dev);
--
--	step_en = get_adc_step_mask(adc_dev);
--	am335x_tsc_se_clr(adc_dev->mfd_tscadc, step_en);
--
--	return 0;
--}
--
- static int __maybe_unused tiadc_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-@@ -723,7 +725,6 @@ static struct platform_driver tiadc_driver = {
- 		.of_match_table = ti_adc_dt_ids,
- 	},
- 	.probe	= tiadc_probe,
--	.remove	= tiadc_remove,
- };
- module_platform_driver(tiadc_driver);
- 
--- 
-2.17.1
+Please follow the patch submission process that is described in
+Documentation/process/submitting-patches.rst in the kernel source.  Take
+a look at other submissions on the list and follow a similar process.
+There also appear to be both IIO and ASoC drivers in there which is at
+best a bit weird.
 
+Having done a quick scan through your code it doesn't actually seem to
+integrate with the subsystem at all (there's no
+snd_soc_register_codec())=20
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--bi5JUZtvcfApsciF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6oE9gACgkQJNaLcl1U
+h9CBNwf9GnZKlT7pJP/Ffhe6NYK62tVJxbnR+kIljUUaRAdSQyXtO0R54DP6U890
+CZoGgcrPIG+TYwY+mFJ29DaTKGVWGlkoXsEQi4kECGmKLKTH3lfY698eXGqJM4WZ
+TplTUGDbl1n08WOpqdLeX1XdEXM+LHqBAAG7KmNgk/MYFFnVN0QMADONgtAW/6SW
+vfyMttbzzRAOYGZ5wUsnL6+O1qShCElLKOzhcIj+3XDD+rt+iejwrq0hd1CUndWY
+Zd7ENnySP+KAtk4pYfr0UbjNzdSbKDnQgLEiRFNoCHizBF/+28O0PslkVKSgAjpQ
+2TGhh2N0R+7r03DW5Kpuj7U6xxPZvQ==
+=n/8D
+-----END PGP SIGNATURE-----
+
+--bi5JUZtvcfApsciF--

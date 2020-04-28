@@ -2,107 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1068A1BBAFA
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 12:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C64A31BBB4B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Apr 2020 12:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbgD1KQ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Apr 2020 06:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726932AbgD1KQ7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Apr 2020 06:16:59 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0958C03C1A9;
-        Tue, 28 Apr 2020 03:16:58 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id s18so7425190pgl.12;
-        Tue, 28 Apr 2020 03:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PMjnBAmGgu6XoLQhl6ptyrFCAoyMr8FVl1mKQC6PPaE=;
-        b=RncoTczbOdcqMr1ZHkJfFjjB0TySFxQ4a/8qT19W8hFxRJqFCwcm9AzyxUbwKDoXT7
-         xYWMguhbPD77QZQ312Y126fgdFaMoOQEYDBcdZPBuzN1mwNHgSWij6w5ig1H8QZKiqKu
-         EzQVPOJn2px/+ozTqudMXpPUnJeZQDVPcSdDOsP1KclaC5P7lKI2/HgeiF5zkm/ibKl6
-         DpilYpsf4DH9GgRl7Boq1vyTOz/EAgrOXhsGHXy1ztGWKjfggVEHNTipZuoE2xwESXjq
-         1706dZ9KMUtqdzKy0UnnO3IGZtmrYRigiXwqV8HNsO0XLnB89VoN1X3TrJqhS+Zy+PYj
-         dL5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PMjnBAmGgu6XoLQhl6ptyrFCAoyMr8FVl1mKQC6PPaE=;
-        b=e0qFp2/aT3QfnGBJPjYr3KdPjkc5yNXCvX4naCiJVBSL0xfn9UfI2GvT9SQPEqZKHL
-         a4rqvaWgMAkxDTw1kYOmuIKqUxBf4JAyR9TFdwQbwd+NHq6oCvW9lazFugCJ1SYodlqX
-         7tx4Ax4KKBZytbzxKjuGyrMyzRqpG/yacV2v6lTmAl0OBbhLw1qc7RJo5yiwSJ3PMMBL
-         I/oqDw5aprHZzrwBU9stAT85peUcw1qxjHjlS7rR5Fj61Bq8cwwne4Kyqgp5RKzJf7W7
-         MoJq65qleP/q8bho0YHl7KDYqLk5sm5mlQW5n2gCcLgKqKgTI5mBrlW/o7PNKOCv31Dj
-         buYQ==
-X-Gm-Message-State: AGi0PuYsZfCh8CRGIGLU5FH6H60tgba+6kpE34vxpAN0MyT7LS9B0TU/
-        88HEepFzlzR4ZR2iJTiXZlN5+HoL4ySSBU80aBs=
-X-Google-Smtp-Source: APiQypLjwqT3Evw7cs2eSptlYQM/hGNM8/iUGajRjMjhIp6HGHqaheczoeJmTSjtV9L+Y2DRDj5i3DuQvRUZCDBD4wU=
-X-Received: by 2002:a62:f908:: with SMTP id o8mr28487450pfh.170.1588069018490;
- Tue, 28 Apr 2020 03:16:58 -0700 (PDT)
+        id S1726364AbgD1KeL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Apr 2020 06:34:11 -0400
+Received: from ms10.pegatroncorp.com ([192.72.126.90]:60666 "EHLO
+        ms9.pegatroncorp.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726276AbgD1KeL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Apr 2020 06:34:11 -0400
+X-Greylist: delayed 618 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Apr 2020 06:34:10 EDT
+Received: from pps.filterd (ptwppsf03.pega.corp.pegatron [127.0.0.1])
+        by ptwppsf03.pega.corp.pegatron (8.16.0.21/8.16.0.21) with SMTP id 03SATbeo024161;
+        Tue, 28 Apr 2020 18:33:28 +0800
+Received: from ptw-ex-cashub15.pega.corp.pegatron ([172.18.6.20])
+        by ptwppsf03.pega.corp.pegatron with ESMTP id 30nvwmnqyk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Tue, 28 Apr 2020 18:33:28 +0800
+Received: from PTW-EX-37.PEGA.CORP.PEGATRON ([fe80::5466:11cb:50e:8c0e]) by
+ PTW-EX-CASHUB15.PEGA.CORP.PEGATRON ([::1]) with mapi id 14.03.0279.002; Tue,
+ 28 Apr 2020 18:33:28 +0800
+From:   =?utf-8?B?TGVzbGllIEhzaWEo5aSP6YKm6YCyX1BlZ2F0cm9uKQ==?= 
+        <Leslie_Hsia@pegatroncorp.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        =?utf-8?B?SGVybWVzIEhzaWVoKOisneaXu+WKrV9QZWdhdHJvbik=?= 
+        <Hermes_Hsieh@pegatroncorp.com>,
+        "jesse.sung@canonical.com" <jesse.sung@canonical.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Subject: =?utf-8?B?5Zue5pS2OiBbUEFUQ0hdIHN1YnN5c3RlbTogQW1wbGlmaWVyIGRyaXZlciBm?=
+ =?utf-8?Q?or_TAS5805M,Texas_instruments?=
+Thread-Topic: [PATCH] subsystem: Amplifier driver for TAS5805M,Texas
+ instruments
+Thread-Index: AdYdSHQUPiejJoGiQP+tgEu7AqbpKA==
+X-CallingTelephoneNumber: IPM.Note
+X-VoiceMessageDuration: 17
+X-FaxNumberOfPages: 0
+Date:   Tue, 28 Apr 2020 10:33:27 +0000
+Message-ID: <754706C925201D4896E92CCAD6B38E4401F0F733C0@PTW-EX-37.PEGA.CORP.PEGATRON>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.192.178.208]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
- <20200422141135.86419-2-tomasz.duszynski@octakon.com> <CAHp75VcbaGYj76qkDJnTnuG5SM215qVmFo7FLR6YzHA37PgF_g@mail.gmail.com>
- <20200424190413.GA2731@arch> <CAHp75Vdajf7Ci3ytxP7Qs9=fFaxvVBQoL5uh+HUDwxHS5r9MUg@mail.gmail.com>
- <20200425184130.GA37271@arch> <CAHp75Vez8wSaYHbXmvfXUS5N+vScQqHGg055DNKrEnCunP7awA@mail.gmail.com>
- <20200428075606.GB6908@arch>
-In-Reply-To: <20200428075606.GB6908@arch>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 28 Apr 2020 13:16:47 +0300
-Message-ID: <CAHp75VdKqVvJg7T=42w1SzKSDbfWjYKMomgQBshiMAW=_e0y_w@mail.gmail.com>
-Subject: Re: [PATCH 1/6] iio: chemical: scd30: add core driver
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 10:57 AM Tomasz Duszynski
-<tomasz.duszynski@octakon.com> wrote:
->
-> On Sat, Apr 25, 2020 at 09:52:25PM +0300, Andy Shevchenko wrote:
-> > On Sat, Apr 25, 2020 at 9:42 PM Tomasz Duszynski
-> > <tomasz.duszynski@octakon.com> wrote:
-> > > On Sat, Apr 25, 2020 at 02:43:35PM +0300, Andy Shevchenko wrote:
-> > > > On Fri, Apr 24, 2020 at 10:05 PM Tomasz Duszynski
-> > > > <tomasz.duszynski@octakon.com> wrote:
-> > > > > On Wed, Apr 22, 2020 at 10:49:44PM +0300, Andy Shevchenko wrote:
-> > > > > > On Wed, Apr 22, 2020 at 5:22 PM Tomasz Duszynski
-> > > > > > <tomasz.duszynski@octakon.com> wrote:
-> >
-> > ...
-> >
-> > > > > As for ABI that's in
-> > > > > a separate patch.
-> > > >
-> > > > It's not good from bisectability point of view. If by some reason this
-> > > > patch or documentation patch gets reverted, the other one will be
-> > > > dangling.
-> > > > Please, unify them.
-> > > >
-> > >
-> > > Huh? Reverting core and leaving leftovers would be wrong and pointless.
-> >
-> > Exactly my point why it should be one patch. To secure impossibility
-> > to do pointless reverts.
-> >
->
-> But the same applies to other driver parts like i2c or serial
-> interfaces. I don't buy it.
-
-They won't compile without core driver, right? Absence of the
-documentation OTOH doesn't prevent build.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+TGVzbGllIEhzaWEo5aSP6YKm6YCyX1BlZ2F0cm9uKSDluIzmnJvlm57mlLbpgJnlsIHpg7Xku7Yg
+W1tQQVRDSF0gc3Vic3lzdGVtOiBBbXBsaWZpZXIgZHJpdmVyIGZvciBUQVM1ODA1TSxUZXhhcyBp
+bnN0cnVtZW50c13jgIINCg0KDQpUaGlzIGUtbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnQgbWF5IGNv
+bnRhaW4gaW5mb3JtYXRpb24gdGhhdCBpcyBjb25maWRlbnRpYWwgb3IgcHJpdmlsZWdlZCwgYW5k
+IGFyZSBzb2xlbHkgZm9yIHRoZSB1c2Ugb2YgdGhlIGluZGl2aWR1YWwgdG8gd2hvbSB0aGlzIGUt
+bWFpbCBpcyBhZGRyZXNzZWQuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQg
+b3IgaGF2ZSByZWNlaXZlZCBpdCBhY2NpZGVudGFsbHksIHBsZWFzZSBpbW1lZGlhdGVseSBub3Rp
+ZnkgdGhlIHNlbmRlciBieSByZXBseSBlLW1haWwgYW5kIGRlc3Ryb3kgYWxsIGNvcGllcyBvZiB0
+aGlzIGVtYWlsIGFuZCBpdHMgYXR0YWNobWVudC4gUGxlYXNlIGJlIGFkdmlzZWQgdGhhdCBhbnkg
+dW5hdXRob3JpemVkIHVzZSwgZGlzY2xvc3VyZSwgZGlzdHJpYnV0aW9uIG9yIGNvcHlpbmcgb2Yg
+dGhpcyBlbWFpbCBvciBpdHMgYXR0YWNobWVudCBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLg0KDQrm
+nKzpm7vlrZDpg7Xku7blj4rlhbbpmYTku7blj6/og73lkKvmnInmqZ/lr4bmiJbkvp3ms5Xlj5fn
+ibnmrornrqHliLbkuYvos4foqIrvvIzlg4XkvpvmnKzpm7vlrZDpg7Xku7bkuYvlj5fmlofogIXk
+vb/nlKjjgILlj7Dnq6/lpoLpnZ7mnKzpm7vlrZDpg7Xku7bkuYvlj5fmlofogIXmiJboqqTmlLbm
+nKzpm7vlrZDpg7Xku7bvvIzoq4vnq4vljbPlm57opobpg7Xku7bpgJrnn6Xlr4Tku7bkurrvvIzk
+uKbpirfmr4DmnKzpm7vlrZDpg7Xku7bkuYvmiYDmnInopIfmnKzlj4rpmYTku7bjgILku7vkvZXm
+nKrntpPmjojmrIrogIzkvb/nlKjjgIHmj63pnLLjgIHmlaPkvYjmiJbopIfoo73mnKzpm7vlrZDp
+g7Xku7bmiJblhbbpmYTku7bkuYvooYzngrrvvIznmoblmrTmoLznpoHmraIg44CCDQoNCg==

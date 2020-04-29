@@ -2,126 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2DA1BDC24
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 14:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B4B1BDC87
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 14:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726524AbgD2M3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Apr 2020 08:29:34 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:44456 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726628AbgD2M3d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Apr 2020 08:29:33 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03TCKSXu013757;
-        Wed, 29 Apr 2020 14:29:19 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=pilen/wBsf89ww4XsI4xQOKQHe32n2wJXShWQN4oLKE=;
- b=WnWAfPgmeQ7nJDF2iWXoMR9oJVZgj47kEM4eiIQcQslEaOD+GbrYcpv11ao0MWwU+XLD
- gc2H0Sy4phLMYv+H+DnLSMkSIkrfWRGois7LIbg9ftaYnLoJiJGErDajYcuzRQCnrxjw
- MexvDyXYlqDdxopUy5+Z5POZ9lf8EER+SU8S857DXxpmLgp5dFb+jhQ1ktC0q4Vv/UAR
- sZk3Gmhf5NOj3EVOcg79ukAMn0o9sCih+T/v6ziyu00y6dz/Iv3WUi+FdHaoKpABWFkJ
- /JZodHtiskTXJwwyJPBUILd4LasgLOdyBkwp8kdmbKs66qSB8Wu5hWemUlgIQGmp1GDS xw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 30n4j62ffu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 29 Apr 2020 14:29:19 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AF06E100045;
-        Wed, 29 Apr 2020 14:29:18 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9D20021BAA0;
-        Wed, 29 Apr 2020 14:29:18 +0200 (CEST)
-Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 29 Apr 2020 14:29:17
- +0200
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <rjw@rjwysocki.net>, <ulf.hansson@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <benjamin.gaignard@st.com>, <alexandre.torgue@st.com>,
-        <fabrice.gasnier@st.com>, <olivier.moysan@st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2] iio: adc: stm32-adc: fix runtime autosuspend delay when slow polling
-Date:   Wed, 29 Apr 2020 14:29:08 +0200
-Message-ID: <1588163348-31640-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726516AbgD2MnZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Apr 2020 08:43:25 -0400
+Received: from mga03.intel.com ([134.134.136.65]:38722 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726426AbgD2MnY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Apr 2020 08:43:24 -0400
+IronPort-SDR: 0lCQU0q54Ng7WLZ4/rMfSd6eQklG4lmgLBjhhDtDZs0ppuItNEvV2JyBrmK+W/u4qKznYIpB4g
+ d/G2+a3PI61A==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2020 05:43:24 -0700
+IronPort-SDR: uPleOOqDLzBNwLmku8SxH9uVCRLrF2XEg4o0f9aRuNoA0t2wIjCW7zIDeklGfp7P1gvt36YMLR
+ rcB1mnE5C6fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,332,1583222400"; 
+   d="scan'208";a="367794354"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 29 Apr 2020 05:43:21 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 29 Apr 2020 15:43:21 +0300
+Date:   Wed, 29 Apr 2020 15:43:21 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>, linux-usb@vger.kernel.org,
+        Jagadish.Hadimani@amd.com
+Subject: Re: ucsi and DRD controller interaction
+Message-ID: <20200429124321.GC2738754@kuha.fi.intel.com>
+References: <26823688-3b9c-5869-bcb6-4d6e5dcd77bc@amd.com>
+ <20200421074353.GE3768833@kuha.fi.intel.com>
+ <1d4fd9f3-8ea6-c054-0ba4-d50d78226fae@amd.com>
+ <20200422110056.GB618654@kuha.fi.intel.com>
+ <841d88c6-e08b-72d3-6884-0aa51805e3be@amd.com>
+ <20200422142808.GE618654@kuha.fi.intel.com>
+ <e85cefec-2731-65e8-f0f5-8cdc5d9e3773@amd.com>
+ <20200427120032.GA2351955@kuha.fi.intel.com>
+ <b139b18c-0452-d717-856e-14b9dd03910a@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG7NODE3.st.com (10.75.127.21) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-29_05:2020-04-29,2020-04-29 signatures=0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b139b18c-0452-d717-856e-14b9dd03910a@amd.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When the ADC is runtime suspended and starting a conversion, the stm32-adc
-driver calls pm_runtime_get_sync() that gets cascaded to the parent
-(e.g. runtime resume of stm32-adc-core driver). This also kicks the
-autosuspend delay (e.g. 2s) of the parent.
-Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
-capture) won't kick the autosuspend delay for the parent (stm32-adc-core
-driver) as already active.
+On Mon, Apr 27, 2020 at 07:45:07PM +0530, Shah, Nehal-bakulchandra wrote:
+> Hi Heikki,
+> 
+> On 4/27/2020 5:30 PM, Heikki Krogerus wrote:
+> > On Wed, Apr 22, 2020 at 08:23:54PM +0530, Shah, Nehal-bakulchandra wrote:
+> >>> Can you still influence what goes to your ACPI tables, or are we
+> >>> talking about products that are already on the market?
+> >> Yes still it is in development phase so i can work out with BIOS team for the same. When you say description of connection ,something like this should be part of _DSD method right? (i.e from below dts
+> >> to _DSD of ACPI)
+> >>
+> >>  usb_con: connector {
+> >> compatible = "usb-c-connector";
+> >>  label = "USB-C";
+> >>  data-role = "dual";
+> >>  power-role = "dual";
+> >>  try-power-role = "sink";
+> >>  source-pdos = <PDO_FIXED(5000, 500, PDO_FIXED_USB_COMM)>;
+> >>  sink-pdos = <PDO_FIXED(5000, 500, PDO_FIXED_USB_COMM)
+> >>  PDO_VAR(5000, 5000, 1000)>;
+> >>  op-sink-microwatt = <10000000>;
+> >>  };
+> > Here's how the ASL for the _DSD should look like. I don't know how
+> > are all these components placed on your platform, so I'm just assuming
+> > that your I2C host is under PCI0, as well as your DWC3 controller.
+> > It's just an example, but hopefully you get the point from it:
+> >
+> > /*
+> >  * I2C1 is the I2C host, and PDC1 is the USB PD Controller (I2C slave device).
+> >  */
+> > Scope (\_SB.PCI0.I2C1.PDC1)
+> > {
+> >         /* Each connector should have its own ACPI device entry (node). */
+> >         Device (CON0)
+> >         {
+> >                 Name (_ADR, 0)
+> >
+> >                 Name (_DSD, Package () {
+> >                     ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> >                     Package() {
+> >                         Package () {"usb-role-switch", \_SB.PCI0.DWC3},
+> >                     }
+> >                 })
+> >         }
+> > }
+> >
+> > So that property "usb-role-switch" has reference to the DWC3 node as
+> > its value. That's what we are after here. If you have that property,
+> > the subsystem will find the USB controller for you.
+> >
+> > If you need for example the properties for the roles, then the _DSD
+> > would look like this:
+> >
+> > Name (_DSD, Package () {
+> >     ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> >     Package() {
+> >         Package () {"usb-role-switch", \_SB.PCI0.DWC3},
+> >         Package () {"power-role", "dual"},
+> >         Package () {"data-role", "dual"},
+> >     }
+> > })
+> >
+> > and so on...
+> >
+> >
+> > Thanks,
+> 
+> Thanks for the details so this will enable the role switch  for drd controller. Now for UCSI driver to call the role make functions it needs the reference of the same switch reference,
+> 
+> so for that do i have to use device_get_named_child_node(dev,"CON0"), in UCSI Driver?
 
-Currently, this makes the stm32-adc-core driver go in suspend state
-every 2s when doing slow polling. As an example, doing a capture, e.g.
-cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
-isn't refreshed. Once it expires, the parent immediately falls into
-runtime suspended state, in between two captures, as soon as the child
-driver falls into runtime suspend state:
-- e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
-  autosuspend delay of the child.
-- stm32-adc-core switches off regulators, clocks and so on.
-- They get switched on back again 100ms later in this example (at 2.2s).
+No. If you use the ucsi driver, and if your connector child nodes are
+in correct order, then ucsi_find_fwnode() takes care of assigning the
+node for you.
 
-So, use runtime_idle() callback in stm32-adc-core driver to call
-pm_runtime_mark_last_busy() for the parent driver (stm32-adc-core),
-to avoid this.
+But you do need to use the USB role class API to get a handle to the
+switch (dwc3) in the typec driver.
 
-Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
+UCSI is really meant to be a status interface. The specification
+states that the USB Type-C connectors should function autonomously
+without any OS involvement. So by relying on the driver to configure
+the muxes, you are actually corrupting that part of the specification.
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
-Changes in v2:
-- Use runtime_idle callback in stm32-adc-core driver, instead of refreshing
-  last_busy from the child (for the parent) at many place. Initial patch v1
-  looked like "somewhat adhoc solution" as commented by Jonathan.
----
- drivers/iio/adc/stm32-adc-core.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+I would still strongly recommend that you use TI's own host interface.
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 2df88d2..ebe5dbc 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -803,6 +803,13 @@ static int stm32_adc_core_runtime_resume(struct device *dev)
- {
- 	return stm32_adc_core_hw_start(dev);
- }
-+
-+static int stm32_adc_core_runtime_idle(struct device *dev)
-+{
-+	pm_runtime_mark_last_busy(dev);
-+
-+	return 0;
-+}
- #endif
- 
- static const struct dev_pm_ops stm32_adc_core_pm_ops = {
-@@ -810,7 +817,7 @@ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
- 				pm_runtime_force_resume)
- 	SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
- 			   stm32_adc_core_runtime_resume,
--			   NULL)
-+			   stm32_adc_core_runtime_idle)
- };
- 
- static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
+
+Cheers,
+
 -- 
-2.7.4
-
+heikki

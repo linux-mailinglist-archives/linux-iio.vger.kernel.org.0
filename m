@@ -2,81 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 202641BDD03
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 15:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D65E91BDF02
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 15:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbgD2NDT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Apr 2020 09:03:19 -0400
-Received: from mga09.intel.com ([134.134.136.24]:25882 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726516AbgD2NDT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 Apr 2020 09:03:19 -0400
-IronPort-SDR: sDOLxxoUz4dUWSf+D5DHDEYsBvPqMOAv0sYyLX/hSyKdw+IPBB3DkHeKmZFFvxBlGw9p9rEs+S
- 73GRNy8OjMTw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2020 06:03:18 -0700
-IronPort-SDR: jd8PV5TJXkyfqaoGQy6o+rgxDdDEOwr2l1Lfs7V6gdeAhmGEl3n3infeGaxG+a/J13Q+VGuLOp
- 6fR16xyrt0AA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,332,1583222400"; 
-   d="scan'208";a="367798156"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 29 Apr 2020 06:03:15 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 29 Apr 2020 16:03:15 +0300
-Date:   Wed, 29 Apr 2020 16:03:15 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Shah, Nehal-bakulchandra" <nehal-bakulchandra.shah@amd.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>, linux-usb@vger.kernel.org,
-        Jagadish.Hadimani@amd.com
-Subject: Re: ucsi and DRD controller interaction
-Message-ID: <20200429130315.GD2738754@kuha.fi.intel.com>
-References: <26823688-3b9c-5869-bcb6-4d6e5dcd77bc@amd.com>
- <20200421074353.GE3768833@kuha.fi.intel.com>
- <1d4fd9f3-8ea6-c054-0ba4-d50d78226fae@amd.com>
- <20200422110056.GB618654@kuha.fi.intel.com>
- <841d88c6-e08b-72d3-6884-0aa51805e3be@amd.com>
- <20200422142808.GE618654@kuha.fi.intel.com>
- <e85cefec-2731-65e8-f0f5-8cdc5d9e3773@amd.com>
- <20200427120032.GA2351955@kuha.fi.intel.com>
- <b139b18c-0452-d717-856e-14b9dd03910a@amd.com>
- <20200429124321.GC2738754@kuha.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200429124321.GC2738754@kuha.fi.intel.com>
+        id S1727921AbgD2NkK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Apr 2020 09:40:10 -0400
+Received: from gproxy10-pub.mail.unifiedlayer.com ([69.89.20.226]:57073 "EHLO
+        gproxy10-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728472AbgD2NkK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Apr 2020 09:40:10 -0400
+Received: from cmgw15.unifiedlayer.com (unknown [10.9.0.15])
+        by gproxy10.mail.unifiedlayer.com (Postfix) with ESMTP id 29334140B2F
+        for <linux-iio@vger.kernel.org>; Wed, 29 Apr 2020 07:40:08 -0600 (MDT)
+Received: from md-in-79.webhostbox.net ([43.225.55.182])
+        by cmsmtp with ESMTP
+        id TmwXjOPnqrO3uTmwZj4Vk4; Wed, 29 Apr 2020 07:40:08 -0600
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.3 cv=dbOuI0fe c=1 sm=1 tr=0
+ a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=LfuyaZh/8e9VOkaVZk0aRw==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=cl8xLZFz6L8A:10:nop_rcvd_month_year
+ a=oz0wMknONp8A:10:endurance_base64_authed_username_1 a=iGRvdBzYb-_JTU_o6kgA:9
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
+        ; s=default; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=nWppLDkAaEMdPFqbD1TQDJt+62vsBP06spj0SrS+K2g=; b=P6eC2jtWIjtpYm7+yPVRA0Pse9
+        SlwjZFlIVvyEE3x/yPClPcvwqChNQcXosW0rXw168oVD0GifTT3EpXsreN2Tg+yyrL1ls1wVm428T
+        PH3dnG9kTZbP15wg8dXpimdzQZoKATYXVi30K/Oy2KFxoayKF4mZsbj3OECceLFIloUQWOj+nxwoq
+        Frkh4b00BnzQ8Lmu5Zrr/dtVDwqKu3Fk3Kx8lbc6zCEKDJmZ3glwFdwDTjbQRoZCYHo5neXkNvgEU
+        89e6aiod1tpzZjQ3/EDVUzOHLC3Z3jlTtabjMgct7idr4FUtWxZeC8qARR5WMVGf4EKpkr9Y5AUI4
+        7dXoSp4A==;
+Received: from p5b3f6bb1.dip0.t-ipconnect.de ([91.63.107.177]:33262 helo=localhost.localdomain)
+        by md-in-79.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <saravanan@linumiz.com>)
+        id 1jTmwW-0009y4-0w; Wed, 29 Apr 2020 13:40:04 +0000
+From:   Saravanan Sekar <saravanan@linumiz.com>
+To:     robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, broonie@kernel.org,
+        lgirdwood@gmail.com, saravanan@linumiz.com
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/4] Add driver for wsen-itds accelerometer sensor
+Date:   Wed, 29 Apr 2020 15:39:39 +0200
+Message-Id: <20200429133943.18298-1-saravanan@linumiz.com>
+X-Mailer: git-send-email 2.17.1
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - linumiz.com
+X-BWhitelist: no
+X-Source-IP: 91.63.107.177
+X-Source-L: No
+X-Exim-ID: 1jTmwW-0009y4-0w
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: p5b3f6bb1.dip0.t-ipconnect.de (localhost.localdomain) [91.63.107.177]:33262
+X-Source-Auth: saravanan@linumiz.com
+X-Email-Count: 2
+X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
+X-Local-Domain: yes
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi again,
+changes in v2:
+ - added ABI document
+ - fixed review comments in v1
+ - removed vendor entry changes (merged in v1)
 
-> > Thanks for the details so this will enable the role switch  for drd controller. Now for UCSI driver to call the role make functions it needs the reference of the same switch reference,
-> > 
-> > so for that do i have to use device_get_named_child_node(dev,"CON0"), in UCSI Driver?
-> 
-> No. If you use the ucsi driver, and if your connector child nodes are
-> in correct order, then ucsi_find_fwnode() takes care of assigning the
-> node for you.
-> 
-> But you do need to use the USB role class API to get a handle to the
-> switch (dwc3) in the typec driver.
-> 
-> UCSI is really meant to be a status interface. The specification
-> states that the USB Type-C connectors should function autonomously
-> without any OS involvement. So by relying on the driver to configure
-> the muxes, you are actually corrupting that part of the specification.
+The patch series add support for wurth elektronic wsen-itds 3-axis
+accelerometer. Driver supports the acceleration, temperature data reading and
+supports configuring of output data rate, operating mode and scale.
 
-I had to recheck that. I seem to be wrong about this. It does not
-clearly state that the ports need to function autonomously. Also, in
-this case the USB role switch isn't a mux.
+Thanks,
+Saravanan
 
-Sorry about that.
+Saravanan Sekar (4):
+  dt-bindings: iio: add document bindings for wsen-itds accel sensor
+  iio: accel: Add driver for wsen-itds accelerometer sensor
+  iio: accel: wsen-itds accel documentation
+  MAINTAINERS: Add entry for wsen-itds accelerometer sensor
 
-> I would still strongly recommend that you use TI's own host interface.
+ .../ABI/testing/sysfs-bus-iio-wsen-itds       |  23 +
+ .../bindings/iio/accel/we,wsen-itds.yaml      |  55 +
+ MAINTAINERS                                   |   7 +
+ drivers/iio/accel/Kconfig                     |  14 +
+ drivers/iio/accel/Makefile                    |   1 +
+ drivers/iio/accel/wsen-itds.c                 | 947 ++++++++++++++++++
+ 6 files changed, 1047 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-wsen-itds
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/we,wsen-itds.yaml
+ create mode 100644 drivers/iio/accel/wsen-itds.c
 
 -- 
-heikki
+2.17.1
+

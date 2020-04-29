@@ -2,94 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F4A1BE918
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 22:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70FC1BEA1C
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Apr 2020 23:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727078AbgD2UuB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Apr 2020 16:50:01 -0400
-Received: from vern.gendns.com ([98.142.107.122]:59342 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726511AbgD2UuB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 Apr 2020 16:50:01 -0400
-X-Greylist: delayed 1724 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Apr 2020 16:50:00 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Y8MYBDFCYPC4U8pxIx3v4pRrJy5sBdcHs+qbfFFaKhU=; b=HTOA934A6qy/XJhCXv7JieZkm9
-        VDL/VwsXQXfZKMgebwhoX79DwCe1dEyeNLemwXBIk8tM5mFwdDDYFvPECAQCzz75BADr6511h+kZm
-        b8xC6rq+M3ApF0SyHRlkvEHJekU7J0f4DZ8eUQvE4QuZoVDF0ga3EBnACXPC9HY9MiFJVOENmdDtj
-        V6tmcJNN1od8LGMdW7BZHbnD6DX6UdWZuMsTjoiZDME+RGH4YX2Cz59VwIWX2x2edHepq3assRPm5
-        7v+9TI4QaC6GTRJwyxxr7pBa0wkQ6YQmJFqwDC/WN7rMHSh9ev0BsCPqOzmnf/buNsVuHQbXNNHod
-        d6QWNSXQ==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:40316 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1jTtCd-0005BN-Mc; Wed, 29 Apr 2020 16:21:07 -0400
-Subject: Re: [PATCH 0/4] Introduce the Counter character device interface
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, felipe.balbi@linux.intel.com,
-        fabien.lahoudere@collabora.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-References: <cover.1588176662.git.vilhelm.gray@gmail.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <a6402ade-648d-6e49-85cd-a7fd7f58fd1d@lechnology.com>
-Date:   Wed, 29 Apr 2020 15:21:05 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726921AbgD2Vm7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Apr 2020 17:42:59 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:42421 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726511AbgD2Vm6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Apr 2020 17:42:58 -0400
+Received: by mail-oi1-f193.google.com with SMTP id i13so3256801oie.9;
+        Wed, 29 Apr 2020 14:42:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ZN/QRY3OxMls9AHONLpA7W00pKe4yt6lczGLbOe3TCs=;
+        b=OHP5FA4ujpCRCDbhz0uB+PWV436h924hAc+l/c/RFiPSSn/cjAzioveog6bgAmdLLx
+         IHDLNRAnUbrNC2i7cs4nQbvbK+7sOsfgbPxeCoijUtqNo92Xed8yVNl1DDQ+3wsoLo54
+         02HzvovPYfSvExkoAvSG/MaroUr7mlckLDtoSNqR/HtLWXIJXY87jEyuRbnFYHnNHLmm
+         YGCpmrT4XR4fAGASTXUN3MSDOjpB+l2geNfAvRsAYQgjg9psAxdFFj1H2KYq6Vfi6c1Z
+         FUzB6QGx1ckBJ8Tm1LPftWcHQpctpLbzspqrhODLr3K58ckttT1PnYTwAT93eFV6jc1f
+         f6Aw==
+X-Gm-Message-State: AGi0Pub/C7SwQXyyCQUL1OL5l0T+izsX5gjIezwa6PJR+0luz6A9J2Wo
+        jafNZ3UwMywJRdzXZnzSqg==
+X-Google-Smtp-Source: APiQypKCxdqv61B1T1NpBM6xwpLAjHJI0zpy60RiRUAzF2x8pqxnzmCc+fmPja7HqOoybilLjjX3bQ==
+X-Received: by 2002:aca:4c13:: with SMTP id z19mr258695oia.79.1588196576073;
+        Wed, 29 Apr 2020 14:42:56 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id j42sm766426ooi.5.2020.04.29.14.42.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2020 14:42:55 -0700 (PDT)
+Received: (nullmailer pid 17398 invoked by uid 1000);
+        Wed, 29 Apr 2020 21:42:54 -0000
+Date:   Wed, 29 Apr 2020 16:42:54 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        saravanan sekar <sravanhome@gmail.com>,
+        andy.shevchenko@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, sre@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v10 1/6] dt-bindings: mfd: add document bindings for
+ mp2629
+Message-ID: <20200429214254.GA9175@bogus>
+References: <20200417085003.6124-1-sravanhome@gmail.com>
+ <20200417085003.6124-2-sravanhome@gmail.com>
+ <20200418155308.681df38f@archlinux>
+ <50ffb42e-4080-415e-dd3d-e38f7b0a6071@gmail.com>
+ <20200418170619.155222fa@archlinux>
+ <20200420071910.GH3737@dell>
 MIME-Version: 1.0
-In-Reply-To: <cover.1588176662.git.vilhelm.gray@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200420071910.GH3737@dell>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/29/20 1:11 PM, William Breathitt Gray wrote:
-> Over the past couple years we have noticed some shortcomings with the
-> Counter sysfs interface. Although useful in the majority of situations,
-> there are certain use-cases where interacting through sysfs attributes
-> can become cumbersome and inefficient. A desire to support more advanced
-> functionality such as timestamps, multi-axis positioning tables, and
-> other such latency-sensitive applications, has motivated a reevaluation
-> of the Counter subsystem. I believe a character device interface will be
-> helpful for this more niche area of counter device use.
-
-Nice to see some progress being made. :-)
-
+On Mon, Apr 20, 2020 at 08:19:10AM +0100, Lee Jones wrote:
+> On Sat, 18 Apr 2020, Jonathan Cameron wrote:
 > 
-> Interaction with Counter character devices occurs via ioctl commands.
-> This allows userspace applications to access and set counter data using
-> native C datatypes rather than working through string translations.
+> > On Sat, 18 Apr 2020 17:01:17 +0200
+> > saravanan sekar <sravanhome@gmail.com> wrote:
+> > 
+> > > Hi Jonathan,
+> > > 
+> > > On 18/04/20 4:53 pm, Jonathan Cameron wrote:
+> > > > On Fri, 17 Apr 2020 10:49:58 +0200
+> > > > Saravanan Sekar <sravanhome@gmail.com> wrote:
+> > > >  
+> > > >> Add device tree binding information for mp2629 mfd driver.
+> > > >>
+> > > >> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> > > >> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > >> ---
+> > > >>   .../devicetree/bindings/mfd/mps,mp2629.yaml   | 61 +++++++++++++++++++
+> > > >>   1 file changed, 61 insertions(+)
+> > > >>   create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+> > > >>
+> > > >> diff --git a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+> > > >> new file mode 100644
+> > > >> index 000000000000..b25b29259d67
+> > > >> --- /dev/null
+> > > >> +++ b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+> > > >> @@ -0,0 +1,61 @@
+> > > >> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > > >> +%YAML 1.2
+> > > >> +---
+> > > >> +$id: http://devicetree.org/schemas/mfd/mps,mp2629.yaml#
+> > > >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > >> +
+> > > >> +title: MP2629 Battery Charger PMIC from Monolithic Power System.
+> > > >> +
+> > > >> +maintainers:
+> > > >> +  - Saravanan Sekar <sravanhome@gmail.com>
+> > > >> +
+> > > >> +description: |
+> > > >> +  MP2629 is a PMIC providing battery charging and power supply for smartphones,
+> > > >> +  wireless camera and portable devices. Chip is controlled over I2C.
+> > > >> +
+> > > >> +  The battery charge management device handles battery charger controller and
+> > > >> +  ADC IIO device for battery, system voltage
+> > > >> +
+> > > >> +properties:
+> > > >> +  compatible:
+> > > >> +    const: mps,mp2629
+> > > >> +
+> > > >> +  reg:
+> > > >> +    maxItems: 1
+> > > >> +
+> > > >> +  interrupts:
+> > > >> +    maxItems: 1
+> > > >> +
+> > > >> +  interrupt-controller: true
+> > > >> +
+> > > >> +  "#interrupt-cells":
+> > > >> +    const: 2
+> > > >> +    description:
+> > > >> +      The first cell is the IRQ number, the second cell is the trigger type.
+> > > >> +
+> > > >> +required:
+> > > >> +  - compatible
+> > > >> +  - reg
+> > > >> +  - interrupts
+> > > >> +  - interrupt-controller
+> > > >> +  - "#interrupt-cells"
+> > > >> +
+> > > >> +examples:
+> > > >> +  - |
+> > > >> +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > >> +    #include <dt-bindings/input/linux-event-codes.h>
+> > > >> +    i2c@7e205000 {  
+> > > > I thought the general trend for i2c devices was to leave the i2c
+> > > > part 'vague'.
+> > > >
+> > > >      i2c {
+> > > >            #address-cells = <1>;
+> > > >            #size-cells = <0>;
+> > > >           
+> > > >            pmic@4b.. etc  
+> > > I agree with you and initial patch was as like above, but Lee was 
+> > > somehow unhappy and not satisfied with
 
-For most aspects of the counter subsystem, this is not an issue since
-configuring a counter is not a time-sensitive operation. Instead of
-ioctls, I was expecting to just be able to read the character device
-and receive counter events or poll to wait for events similar to how
-the input subsystem works or how buffers work in the iio subsystem.
+Jonathan is correct.
 
-I'm afraid I don't really see much use in having ioctls that do
-exactly what sysfs already does. And my intuition tells me that the
-extra work needed to maintain it will probably cost more than any
-benefit gained. (Maybe other have a different experience that leads
-to a different conclusion?)
+> > > 
+> > > my explanations. Please find more info on v4.
+> > 
+> > Ah. Curious.  Oh well - over to Rob for a definitive answer!
+> 
+> I haven't seen this spoken about before.  The comments were based
+> solely on my own views of, the example should provide a solid, valid,
+> potentially working block for people to use as a reference.
+
+I agree that the part matching this schema should be. The rest is just 
+boilerplate.
+
+> Would an I2C node missing an address be a valid DTS/DTSI entry?
+
+i2c-gpio?
+
+Rob
+
+
+

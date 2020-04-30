@@ -2,163 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 868911BF429
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 11:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CAC1BF5B4
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 12:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgD3J3M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Apr 2020 05:29:12 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:19722 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726404AbgD3J3J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 05:29:09 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03U9SODP004608;
-        Thu, 30 Apr 2020 11:28:58 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=tPSl8U7fRW8ZKuW1r9MplGDa5LvBZylklxKzBDbnnZI=;
- b=PBGPAlJta4nLIzyCT6BSNzBErO+ArOOi+wPL3Ei1rlsPclCHqYG180cka8x6p7QiYh8c
- iHFcvpFK1Ev+IVC81sayWNFYFFGFyNv9onXYEdTPOWcvTpkxZ7qF86tK3BVB0Mrim1MR
- Ih0MVTpUQs7AwGf+Sma4VqpDYHztD+9fP8Zg96t47VB3skHJkszfh5yzw2yfyhr5/s0z
- zmcnHCfmMcO6f1tbR8Bw24Pz3xXekdG1Ebz35LO76fOQYQSP/HNShAw14ZyE3Nc31bm5
- pAPuIrZ4DV6GcKiA+T5GjxQlLAuZ6JQhQPPpPo9SzHx1PZlBNpinSyfbPvsu6/W2XZJ1 Zw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 30n4j67guw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 30 Apr 2020 11:28:58 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 56F9D10002A;
-        Thu, 30 Apr 2020 11:28:58 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 45E0D2ABF9D;
-        Thu, 30 Apr 2020 11:28:58 +0200 (CEST)
-Received: from localhost (10.75.127.45) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 30 Apr 2020 11:28:57
- +0200
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH] iio: adc: stm32-dfsdm: fix device used to request dma
-Date:   Thu, 30 Apr 2020 11:28:46 +0200
-Message-ID: <1588238926-23964-2-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1588238926-23964-1-git-send-email-fabrice.gasnier@st.com>
-References: <1588238926-23964-1-git-send-email-fabrice.gasnier@st.com>
+        id S1726520AbgD3Kjy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Apr 2020 06:39:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726413AbgD3Kjy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 06:39:54 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E294C035494;
+        Thu, 30 Apr 2020 03:39:54 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id d15so6276229wrx.3;
+        Thu, 30 Apr 2020 03:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=m+chlPrQMdP5dXdx8tvxwWBw9YtWA0u5+Y75TJ+sgjc=;
+        b=DEO30DXRjI9qe7OqYYAiRNHtlG5zLfzm7Y1JyOvMdwEQzGht2paggKoPuCmJjyKgJV
+         e+jPeRtbuZrY/XJfqb9y+2zpvX9TmgLrUuES2zrcM4I8i7MAPEtf+W/l4cs8VE4xhA9o
+         QlpROHnGv2QimMSkqYpQdOoJUl8qzE8DTcMydvi0QGn9GTU4p6rIjohZirkl9uQ+3whf
+         r1xn3SAf6NqdhKQdX2a3ZdlpxhTtWwG3N2wbSA6ZykbizdiWlYOlSOKmt7c32HNYnytZ
+         SFxWzd3ZKVr4fvn9obczDkGcSHmAikNFlhbsbHdfpfjzdj6CquRr6cXfoBOQvfmQYoS6
+         AAdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=m+chlPrQMdP5dXdx8tvxwWBw9YtWA0u5+Y75TJ+sgjc=;
+        b=eXuZv8jOUnzaS4iVY+mkezcmXLVvSHjbbmJpsS4rWsaBDGK+fCDcHjK2XnNzh5Eq6d
+         LeVMdZJsX/yja9fu6jBrpCtJYoSO4gBxIWkFltwl+N/YhPTbn16A/IbfyyyIcHhKr59Y
+         2fuOaKOsPyHaWZOsbfs/HA9rwBFyj5a/xokwkIBqcy5lI+Za++UZL2t2bt3ETrzozEQg
+         LZH8ThvxTfIbuXbLMRsCMm37MwNT9p0cEYbNPbdLddL9cfp0+T3j90iv7ZJpTstXOoHk
+         1Bg+TDwuCsiaEzXPAIurePiyj9J4MVLc0UiPVq7v6eFnWFIs+NUHWKWzk7hnOG/2dygs
+         ZCGQ==
+X-Gm-Message-State: AGi0PuYcEdXz5G/KqX9IWgrvb7wjPhaOhWqh3ZxpxuMEQ0qBc+I7TVHF
+        YBpmg59EEhZFpq/DzILiRGJE9tZ8
+X-Google-Smtp-Source: APiQypLiSTqx0KQcnVM1ygQKcXZCjKbEZfa1vp0p40OC82kF6U5oyh0OQ+sb7bPOvGgT+TOg2khd1g==
+X-Received: by 2002:a05:6000:1287:: with SMTP id f7mr3253924wrx.345.1588243192502;
+        Thu, 30 Apr 2020 03:39:52 -0700 (PDT)
+Received: from [192.168.0.104] (p5B3F6E9D.dip0.t-ipconnect.de. [91.63.110.157])
+        by smtp.gmail.com with ESMTPSA id c20sm12353770wmd.36.2020.04.30.03.39.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2020 03:39:50 -0700 (PDT)
+Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
+From:   saravanan sekar <sravanhome@gmail.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        sre@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+References: <20200415162030.16414-1-sravanhome@gmail.com>
+ <20200415162030.16414-3-sravanhome@gmail.com> <20200424071822.GM3612@dell>
+ <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com> <20200424093720.GA3542@dell>
+ <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com> <20200424105319.GD8414@dell>
+ <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com> <20200427085149.GF3559@dell>
+ <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com>
+Message-ID: <4585179d-826b-6240-38a2-18fe757bc810@gmail.com>
+Date:   Thu, 30 Apr 2020 12:39:49 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG7NODE1.st.com (10.75.127.19) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-30_05:2020-04-30,2020-04-30 signatures=0
+In-Reply-To: <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DMA channel request should use device struct from platform device struct.
-Currently it's using iio device struct. But at this stage when probing,
-device struct isn't yet registered (e.g. device_register is done in
-iio_device_register). Since commit 71723a96b8b1 ("dmaengine: Create
-symlinks between DMA channels and slaves"), a warning message is printed
-as the links in sysfs can't be created, due to device isn't yet registered:
-- Cannot create DMA slave symlink
-- Cannot create DMA dma:rx symlink
+Hi Lee,
 
-Fix this by using device struct from platform device to request dma chan.
+On 27/04/20 11:30 am, saravanan sekar wrote:
+> Hi Lee,
+>
+> On 27/04/20 10:51 am, Lee Jones wrote:
+>> On Fri, 24 Apr 2020, saravanan sekar wrote:
+>>
+>>> On 24/04/20 12:53 pm, Lee Jones wrote:
+>>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
+>>>>
+>>>>> Hi Lee,
+>>>>>
+>>>>> On 24/04/20 11:37 am, Lee Jones wrote:
+>>>>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
+>>>>>>
+>>>>>>> Hi Lee,
+>>>>>>>
+>>>>>>> On 24/04/20 9:18 am, Lee Jones wrote:
+>>>>>>>> On Wed, 15 Apr 2020, Saravanan Sekar wrote:
+>>>>>>>>
+>>>>>>>>> mp2629 is a highly-integrated switching-mode battery charge 
+>>>>>>>>> management
+>>>>>>>>> device for single-cell Li-ion or Li-polymer battery.
+>>>>>>>>>
+>>>>>>>>> Add MFD core enables chip access for ADC driver for battery 
+>>>>>>>>> readings,
+>>>>>>>>> and a power supply battery-charger driver
+>>>>>>>>>
+>>>>>>>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+>>>>>>>>> ---
+>>>>>>>>>      drivers/mfd/Kconfig        |  9 ++++
+>>>>>>>>>      drivers/mfd/Makefile       |  2 +
+>>>>>>>>>      drivers/mfd/mp2629.c       | 86 
+>>>>>>>>> ++++++++++++++++++++++++++++++++++++++
+>>>>>>>>>      include/linux/mfd/mp2629.h | 19 +++++++++
+>>>>>>>>>      4 files changed, 116 insertions(+)
+>>>>>>>>>      create mode 100644 drivers/mfd/mp2629.c
+>>>>>>>>>      create mode 100644 include/linux/mfd/mp2629.h
+>>>>>>>> How is this driver registered?
+>>>>>>>>
+>>>>>>>> Looks like it has device tree support.  Is there another way?
+>>>>>>> Yes, only using device tree
+>>>>>> Then how about using 'simple-mfd' and 'syscon'?
+>>>>>>
+>>>>>> Then you can omit this driver completely.
+>>>>> The exception is to support for non device tree platform as well, 
+>>>>> but I have
+>>>>> tested only for ARM device tree platform.
+>>>> Is that a reality though?
+>>>>
+>>>> How else do you see this realistically being registered?
+>>>>
+>>> I understand that acpi related device table are not covered here, 
+>>> well I
+>>> don't have to platform to test so.
+>>> If you ask me to cover acpi related table, I can do but hard to test.
+>> I don't know of any reasons why syscon can't be used by ACPI.
+>>
+>> Please try to solve this issue using 'simple-mfd' and 'syscon'.
+> Well the simple-mfd and syscon topic recommended by you when Device 
+> tree alone is used.
+> I wounder still I receive review/improvements comments for this mfd 
+> patch and also another
+> to omit this driver using simple-mfd (rework the series).
+> Confused, not sure which is valid and will be accepted at the end.
 
-Fixes: eca949800d2d ("IIO: ADC: add stm32 DFSDM support for PDM microphone")
+I had look into syscon, as far my understanding syscon is supported only 
+for memory mapped IO. MP2629
+device is over I2C bus, could you share your thought about syscon for 
+this device?
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
- drivers/iio/adc/stm32-dfsdm-adc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+Thanks,
+Saravanan
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index 76a60d9..506bf51 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -62,7 +62,7 @@ enum sd_converter_type {
- 
- struct stm32_dfsdm_dev_data {
- 	int type;
--	int (*init)(struct iio_dev *indio_dev);
-+	int (*init)(struct device *dev, struct iio_dev *indio_dev);
- 	unsigned int num_channels;
- 	const struct regmap_config *regmap_cfg;
- };
-@@ -1365,11 +1365,12 @@ static void stm32_dfsdm_dma_release(struct iio_dev *indio_dev)
- 	}
- }
- 
--static int stm32_dfsdm_dma_request(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_dma_request(struct device *dev,
-+				   struct iio_dev *indio_dev)
- {
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
- 
--	adc->dma_chan = dma_request_chan(&indio_dev->dev, "rx");
-+	adc->dma_chan = dma_request_chan(dev, "rx");
- 	if (IS_ERR(adc->dma_chan)) {
- 		int ret = PTR_ERR(adc->dma_chan);
- 
-@@ -1425,7 +1426,7 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
- 					  &adc->dfsdm->ch_list[ch->channel]);
- }
- 
--static int stm32_dfsdm_audio_init(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-@@ -1452,10 +1453,10 @@ static int stm32_dfsdm_audio_init(struct iio_dev *indio_dev)
- 	indio_dev->num_channels = 1;
- 	indio_dev->channels = ch;
- 
--	return stm32_dfsdm_dma_request(indio_dev);
-+	return stm32_dfsdm_dma_request(dev, indio_dev);
- }
- 
--static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-@@ -1499,17 +1500,17 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
- 	init_completion(&adc->completion);
- 
- 	/* Optionally request DMA */
--	ret = stm32_dfsdm_dma_request(indio_dev);
-+	ret = stm32_dfsdm_dma_request(dev, indio_dev);
- 	if (ret) {
- 		if (ret != -ENODEV) {
- 			if (ret != -EPROBE_DEFER)
--				dev_err(&indio_dev->dev,
-+				dev_err(dev,
- 					"DMA channel request failed with %d\n",
- 					ret);
- 			return ret;
- 		}
- 
--		dev_dbg(&indio_dev->dev, "No DMA support\n");
-+		dev_dbg(dev, "No DMA support\n");
- 		return 0;
- 	}
- 
-@@ -1622,7 +1623,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
- 		adc->dfsdm->fl_list[adc->fl_id].sync_mode = val;
- 
- 	adc->dev_data = dev_data;
--	ret = dev_data->init(iio);
-+	ret = dev_data->init(dev, iio);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.7.4
 

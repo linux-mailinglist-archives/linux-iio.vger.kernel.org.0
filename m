@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2206A1BFC1A
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 16:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 713791BFA80
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 15:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729084AbgD3ODn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Apr 2020 10:03:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35252 "EHLO mail.kernel.org"
+        id S1728885AbgD3NyF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Apr 2020 09:54:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728515AbgD3Nx2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 30 Apr 2020 09:53:28 -0400
+        id S1728881AbgD3NyE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 30 Apr 2020 09:54:04 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F3A42208DB;
-        Thu, 30 Apr 2020 13:53:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3AB582063A;
+        Thu, 30 Apr 2020 13:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588254807;
-        bh=LnRKxRdBBHi+iOcOHrjj/xv8agSdNOIgGHqJnMpCSqM=;
+        s=default; t=1588254844;
+        bh=2q6xYtEnk5Q9fAbhYOot0AOAKQNt/B7JU4vxKPWHFG0=;
         h=From:To:Cc:Subject:Date:From;
-        b=cqpsjiMlWPxWEwf81cteVVsuSaxLtq4nI79KZK4C7Ql2rohivZaahUXrARoRDWMmW
-         VMsYItGqS7kP7PY3orWNq8dygfvTUfO/weWboFu/wlVUF9W1x8JWD1Z0Usbrb5oFXW
-         shXaSZSKyJ7kXme7ERJLzwKY2wdAaxGyqQc40k3w=
+        b=el+UKp8X4Hs8p+up8LaYpNIcWkgJ3xnqAeAnrt4cNxr+csL97WCdhop9mIXgENQQ1
+         J31zQlTRoLm76jFT9slCfmvVb84aRXd8LuCeKMuELWiYwZ7Z6KKflfEAp3hY2t1VSa
+         iaKvgFGFr3kuMdk0rHXQOWQXo+t3rsNW6Fa6FOgs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     YueHaibing <yuehaibing@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 01/30] iio:ad7797: Use correct attribute_group
-Date:   Thu, 30 Apr 2020 09:52:56 -0400
-Message-Id: <20200430135325.20762-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 01/27] iio:ad7797: Use correct attribute_group
+Date:   Thu, 30 Apr 2020 09:53:36 -0400
+Message-Id: <20200430135402.20994-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
@@ -62,18 +62,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-index d4bbe5b533189..23a6e7baa396b 100644
+index 07246a6037e31..f64781d03d5d3 100644
 --- a/drivers/iio/adc/ad7793.c
 +++ b/drivers/iio/adc/ad7793.c
-@@ -542,7 +542,7 @@ static const struct iio_info ad7797_info = {
+@@ -543,7 +543,7 @@ static const struct iio_info ad7797_info = {
  	.read_raw = &ad7793_read_raw,
  	.write_raw = &ad7793_write_raw,
  	.write_raw_get_fmt = &ad7793_write_raw_get_fmt,
 -	.attrs = &ad7793_attribute_group,
 +	.attrs = &ad7797_attribute_group,
  	.validate_trigger = ad_sd_validate_trigger,
+ 	.driver_module = THIS_MODULE,
  };
- 
 -- 
 2.20.1
 

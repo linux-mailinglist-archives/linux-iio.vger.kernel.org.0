@@ -2,153 +2,219 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8CAC1BF5B4
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 12:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D251BF612
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 13:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbgD3Kjy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Apr 2020 06:39:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53050 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726413AbgD3Kjy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 06:39:54 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E294C035494;
-        Thu, 30 Apr 2020 03:39:54 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id d15so6276229wrx.3;
-        Thu, 30 Apr 2020 03:39:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=m+chlPrQMdP5dXdx8tvxwWBw9YtWA0u5+Y75TJ+sgjc=;
-        b=DEO30DXRjI9qe7OqYYAiRNHtlG5zLfzm7Y1JyOvMdwEQzGht2paggKoPuCmJjyKgJV
-         e+jPeRtbuZrY/XJfqb9y+2zpvX9TmgLrUuES2zrcM4I8i7MAPEtf+W/l4cs8VE4xhA9o
-         QlpROHnGv2QimMSkqYpQdOoJUl8qzE8DTcMydvi0QGn9GTU4p6rIjohZirkl9uQ+3whf
-         r1xn3SAf6NqdhKQdX2a3ZdlpxhTtWwG3N2wbSA6ZykbizdiWlYOlSOKmt7c32HNYnytZ
-         SFxWzd3ZKVr4fvn9obczDkGcSHmAikNFlhbsbHdfpfjzdj6CquRr6cXfoBOQvfmQYoS6
-         AAdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=m+chlPrQMdP5dXdx8tvxwWBw9YtWA0u5+Y75TJ+sgjc=;
-        b=eXuZv8jOUnzaS4iVY+mkezcmXLVvSHjbbmJpsS4rWsaBDGK+fCDcHjK2XnNzh5Eq6d
-         LeVMdZJsX/yja9fu6jBrpCtJYoSO4gBxIWkFltwl+N/YhPTbn16A/IbfyyyIcHhKr59Y
-         2fuOaKOsPyHaWZOsbfs/HA9rwBFyj5a/xokwkIBqcy5lI+Za++UZL2t2bt3ETrzozEQg
-         LZH8ThvxTfIbuXbLMRsCMm37MwNT9p0cEYbNPbdLddL9cfp0+T3j90iv7ZJpTstXOoHk
-         1Bg+TDwuCsiaEzXPAIurePiyj9J4MVLc0UiPVq7v6eFnWFIs+NUHWKWzk7hnOG/2dygs
-         ZCGQ==
-X-Gm-Message-State: AGi0PuYcEdXz5G/KqX9IWgrvb7wjPhaOhWqh3ZxpxuMEQ0qBc+I7TVHF
-        YBpmg59EEhZFpq/DzILiRGJE9tZ8
-X-Google-Smtp-Source: APiQypLiSTqx0KQcnVM1ygQKcXZCjKbEZfa1vp0p40OC82kF6U5oyh0OQ+sb7bPOvGgT+TOg2khd1g==
-X-Received: by 2002:a05:6000:1287:: with SMTP id f7mr3253924wrx.345.1588243192502;
-        Thu, 30 Apr 2020 03:39:52 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F6E9D.dip0.t-ipconnect.de. [91.63.110.157])
-        by smtp.gmail.com with ESMTPSA id c20sm12353770wmd.36.2020.04.30.03.39.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2020 03:39:50 -0700 (PDT)
-Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
-From:   saravanan sekar <sravanhome@gmail.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20200415162030.16414-1-sravanhome@gmail.com>
- <20200415162030.16414-3-sravanhome@gmail.com> <20200424071822.GM3612@dell>
- <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com> <20200424093720.GA3542@dell>
- <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com> <20200424105319.GD8414@dell>
- <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com> <20200427085149.GF3559@dell>
- <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com>
-Message-ID: <4585179d-826b-6240-38a2-18fe757bc810@gmail.com>
-Date:   Thu, 30 Apr 2020 12:39:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726745AbgD3LEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Apr 2020 07:04:15 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40828 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726309AbgD3LEP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 07:04:15 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03UAnWFL032315;
+        Thu, 30 Apr 2020 07:04:13 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30pes2gqmt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 Apr 2020 07:04:13 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 03UB4BWL003415
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 30 Apr 2020 07:04:12 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 30 Apr 2020 04:04:10 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 30 Apr 2020 04:04:10 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 30 Apr 2020 04:04:10 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 03UB46tw008447;
+        Thu, 30 Apr 2020 07:04:07 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <dragos.bogdan@analog.com>, <nuno.sa@analog.com>,
+        <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: imu: adis16xxx: use helper to access iio core debugfs dir
+Date:   Thu, 30 Apr 2020 14:04:22 +0300
+Message-ID: <20200430110422.7472-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-30_07:2020-04-30,2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004300090
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+The IIO core provides a iio_get_debugfs_dentry() helper.
+It seems that the ADIS IMU drivers access that field directly.
 
-On 27/04/20 11:30 am, saravanan sekar wrote:
-> Hi Lee,
->
-> On 27/04/20 10:51 am, Lee Jones wrote:
->> On Fri, 24 Apr 2020, saravanan sekar wrote:
->>
->>> On 24/04/20 12:53 pm, Lee Jones wrote:
->>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
->>>>
->>>>> Hi Lee,
->>>>>
->>>>> On 24/04/20 11:37 am, Lee Jones wrote:
->>>>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
->>>>>>
->>>>>>> Hi Lee,
->>>>>>>
->>>>>>> On 24/04/20 9:18 am, Lee Jones wrote:
->>>>>>>> On Wed, 15 Apr 2020, Saravanan Sekar wrote:
->>>>>>>>
->>>>>>>>> mp2629 is a highly-integrated switching-mode battery charge 
->>>>>>>>> management
->>>>>>>>> device for single-cell Li-ion or Li-polymer battery.
->>>>>>>>>
->>>>>>>>> Add MFD core enables chip access for ADC driver for battery 
->>>>>>>>> readings,
->>>>>>>>> and a power supply battery-charger driver
->>>>>>>>>
->>>>>>>>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->>>>>>>>> ---
->>>>>>>>>      drivers/mfd/Kconfig        |  9 ++++
->>>>>>>>>      drivers/mfd/Makefile       |  2 +
->>>>>>>>>      drivers/mfd/mp2629.c       | 86 
->>>>>>>>> ++++++++++++++++++++++++++++++++++++++
->>>>>>>>>      include/linux/mfd/mp2629.h | 19 +++++++++
->>>>>>>>>      4 files changed, 116 insertions(+)
->>>>>>>>>      create mode 100644 drivers/mfd/mp2629.c
->>>>>>>>>      create mode 100644 include/linux/mfd/mp2629.h
->>>>>>>> How is this driver registered?
->>>>>>>>
->>>>>>>> Looks like it has device tree support.  Is there another way?
->>>>>>> Yes, only using device tree
->>>>>> Then how about using 'simple-mfd' and 'syscon'?
->>>>>>
->>>>>> Then you can omit this driver completely.
->>>>> The exception is to support for non device tree platform as well, 
->>>>> but I have
->>>>> tested only for ARM device tree platform.
->>>> Is that a reality though?
->>>>
->>>> How else do you see this realistically being registered?
->>>>
->>> I understand that acpi related device table are not covered here, 
->>> well I
->>> don't have to platform to test so.
->>> If you ask me to cover acpi related table, I can do but hard to test.
->> I don't know of any reasons why syscon can't be used by ACPI.
->>
->> Please try to solve this issue using 'simple-mfd' and 'syscon'.
-> Well the simple-mfd and syscon topic recommended by you when Device 
-> tree alone is used.
-> I wounder still I receive review/improvements comments for this mfd 
-> patch and also another
-> to omit this driver using simple-mfd (rework the series).
-> Confused, not sure which is valid and will be accepted at the end.
+This change converts them to use iio_get_debugfs_dentry() instead.
 
-I had look into syscon, as far my understanding syscon is supported only 
-for memory mapped IO. MP2629
-device is over I2C bus, could you share your thought about syscon for 
-this device?
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/gyro/adis16136.c | 10 ++++------
+ drivers/iio/imu/adis16400.c  | 10 ++++------
+ drivers/iio/imu/adis16460.c  | 10 ++++------
+ drivers/iio/imu/adis16475.c  | 15 ++++++---------
+ drivers/iio/imu/adis16480.c  | 16 ++++++----------
+ 5 files changed, 24 insertions(+), 37 deletions(-)
 
-Thanks,
-Saravanan
-
+diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
+index a4c967a5fc5c..afdc57af475d 100644
+--- a/drivers/iio/gyro/adis16136.c
++++ b/drivers/iio/gyro/adis16136.c
+@@ -148,16 +148,14 @@ DEFINE_DEBUGFS_ATTRIBUTE(adis16136_flash_count_fops,
+ static int adis16136_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16136 *adis16136 = iio_priv(indio_dev);
++	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
+ 
+ 	debugfs_create_file_unsafe("serial_number", 0400,
+-		indio_dev->debugfs_dentry, adis16136,
+-		&adis16136_serial_fops);
++		d, adis16136, &adis16136_serial_fops);
+ 	debugfs_create_file_unsafe("product_id", 0400,
+-		indio_dev->debugfs_dentry,
+-		adis16136, &adis16136_product_id_fops);
++		d, adis16136, &adis16136_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+-		indio_dev->debugfs_dentry,
+-		adis16136, &adis16136_flash_count_fops);
++		d, adis16136, &adis16136_flash_count_fops);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+index 439feb755d82..229f2ff98469 100644
+--- a/drivers/iio/imu/adis16400.c
++++ b/drivers/iio/imu/adis16400.c
+@@ -281,18 +281,16 @@ DEFINE_DEBUGFS_ATTRIBUTE(adis16400_flash_count_fops,
+ static int adis16400_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16400_state *st = iio_priv(indio_dev);
++	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
+ 
+ 	if (st->variant->flags & ADIS16400_HAS_SERIAL_NUMBER)
+ 		debugfs_create_file_unsafe("serial_number", 0400,
+-				indio_dev->debugfs_dentry, st,
+-				&adis16400_serial_number_fops);
++				d, st, &adis16400_serial_number_fops);
+ 	if (st->variant->flags & ADIS16400_HAS_PROD_ID)
+ 		debugfs_create_file_unsafe("product_id", 0400,
+-				indio_dev->debugfs_dentry, st,
+-				&adis16400_product_id_fops);
++				d, st, &adis16400_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+-			indio_dev->debugfs_dentry, st,
+-			&adis16400_flash_count_fops);
++			d, st, &adis16400_flash_count_fops);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
+index 0957f5cfe9c0..ad20c488a3ba 100644
+--- a/drivers/iio/imu/adis16460.c
++++ b/drivers/iio/imu/adis16460.c
+@@ -129,16 +129,14 @@ DEFINE_DEBUGFS_ATTRIBUTE(adis16460_flash_count_fops,
+ static int adis16460_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16460 *adis16460 = iio_priv(indio_dev);
++	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
+ 
+ 	debugfs_create_file_unsafe("serial_number", 0400,
+-			indio_dev->debugfs_dentry, adis16460,
+-			&adis16460_serial_number_fops);
++			d, adis16460, &adis16460_serial_number_fops);
+ 	debugfs_create_file_unsafe("product_id", 0400,
+-			indio_dev->debugfs_dentry, adis16460,
+-			&adis16460_product_id_fops);
++			d, adis16460, &adis16460_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+-			indio_dev->debugfs_dentry, adis16460,
+-			&adis16460_flash_count_fops);
++			d, adis16460, &adis16460_flash_count_fops);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+index e2bd4214eaeb..4fac24227fae 100644
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -228,20 +228,17 @@ DEFINE_DEBUGFS_ATTRIBUTE(adis16475_flash_count_fops,
+ static void adis16475_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16475 *st = iio_priv(indio_dev);
++	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
+ 
+ 	debugfs_create_file_unsafe("serial_number", 0400,
+-				   indio_dev->debugfs_dentry, st,
+-				   &adis16475_serial_number_fops);
++				   d, st, &adis16475_serial_number_fops);
+ 	debugfs_create_file_unsafe("product_id", 0400,
+-				   indio_dev->debugfs_dentry, st,
+-				   &adis16475_product_id_fops);
++				   d, st, &adis16475_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+-				   indio_dev->debugfs_dentry, st,
+-				   &adis16475_flash_count_fops);
++				   d, st, &adis16475_flash_count_fops);
+ 	debugfs_create_file("firmware_revision", 0400,
+-			    indio_dev->debugfs_dentry, st,
+-			    &adis16475_firmware_revision_fops);
+-	debugfs_create_file("firmware_date", 0400, indio_dev->debugfs_dentry,
++			    d, st, &adis16475_firmware_revision_fops);
++	debugfs_create_file("firmware_date", 0400, d,
+ 			    st, &adis16475_firmware_date_fops);
+ }
+ #else
+diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+index cfae0e4476e7..6a471eee110e 100644
+--- a/drivers/iio/imu/adis16480.c
++++ b/drivers/iio/imu/adis16480.c
+@@ -284,22 +284,18 @@ DEFINE_DEBUGFS_ATTRIBUTE(adis16480_flash_count_fops,
+ static int adis16480_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16480 *adis16480 = iio_priv(indio_dev);
++	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
+ 
+ 	debugfs_create_file_unsafe("firmware_revision", 0400,
+-		indio_dev->debugfs_dentry, adis16480,
+-		&adis16480_firmware_revision_fops);
++		d, adis16480, &adis16480_firmware_revision_fops);
+ 	debugfs_create_file_unsafe("firmware_date", 0400,
+-		indio_dev->debugfs_dentry, adis16480,
+-		&adis16480_firmware_date_fops);
++		d, adis16480, &adis16480_firmware_date_fops);
+ 	debugfs_create_file_unsafe("serial_number", 0400,
+-		indio_dev->debugfs_dentry, adis16480,
+-		&adis16480_serial_number_fops);
++		d, adis16480, &adis16480_serial_number_fops);
+ 	debugfs_create_file_unsafe("product_id", 0400,
+-		indio_dev->debugfs_dentry, adis16480,
+-		&adis16480_product_id_fops);
++		d, adis16480, &adis16480_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+-		indio_dev->debugfs_dentry, adis16480,
+-		&adis16480_flash_count_fops);
++		d, adis16480, &adis16480_flash_count_fops);
+ 
+ 	return 0;
+ }
+-- 
+2.17.1
 

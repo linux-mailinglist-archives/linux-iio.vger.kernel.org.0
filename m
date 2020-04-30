@@ -2,234 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15CB81C0009
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 17:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97D6F1C00F8
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 17:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726398AbgD3PYS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Apr 2020 11:24:18 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33199 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726344AbgD3PYR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 11:24:17 -0400
-Received: by mail-ot1-f66.google.com with SMTP id j26so5234128ots.0;
-        Thu, 30 Apr 2020 08:24:16 -0700 (PDT)
+        id S1726900AbgD3P6V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Apr 2020 11:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726420AbgD3P6V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 11:58:21 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B4AFC035494;
+        Thu, 30 Apr 2020 08:58:19 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id x4so2466740wmj.1;
+        Thu, 30 Apr 2020 08:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=OPbeDM2cJ5aY40/5CUX4MHQFjKQOx8SNoJZ2e5+rWE4=;
+        b=P5yrqIGJN0HwsHhkR4vMRNhcfK9xpijRREv97x1ZAk/hVSZeoUnHqMcaPk5Mpg7k60
+         Arw2ul2YgP0P2EZqMvuMAbiWI4riPNjH5n9HqegzKqlKAK6egB88JO1LnICEhqkdhOHx
+         C7qgl/AUVidKSO2dQ231ogIMRjnM9+QEzY3U7uGMNfCF/xniyj6Ch1SjEjHbg/CLis4C
+         rbT6z5X4mWtbbSlXWzWJSUswcazMECs6EEYudahmjYbkWXf5bMYiMPOHGYmc1Sq2MDb+
+         wvNS6jzQK79PzCqvtSnyUapdCU6CUrJqSHgPZXXrZ5o3zHIwduJqjizPf7j/Ht0mL0To
+         cF6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=u4g24e3GzwdiYIpTDMkHlnY+SwtLlwI/g7Kc4NqV3FM=;
-        b=TdHtPfPiDpFSjQ7rAknghIRiOPwnYwMDbSJxTqoatwenKBTZehrcoYJLi7fEMPKydJ
-         74h3rE+EVVIcCXwhYVtxJ/nGMlBSHbziBG1pVbzsLv+hZM7dGVN24mdDhA3IOdB06p8x
-         Th27exzb+fTIiwdNyavEMWXwY/WcOyydF1ovQuzmJ2i/L1U4kgXOpx9Qu4uhle8TCNW5
-         yXBPvXGzuBsJ4PmYIwPBYgIuMdcNMNwTKU+93CyfrR3DXmZjD9a+cHj57xACQ0zzda7j
-         mRy9nCbTCujJPOi6PnIbtQpPqi6Z9cEf/6Bjz+VonPHDu+5XTMGbcWHa+2QBMB7Lb06p
-         bnGg==
-X-Gm-Message-State: AGi0PuY4CVKlXrc2vz1e5myFhhRTlpesK3PzbvSVD1NW7saCwbf3WKvg
-        vpoKWIOJGN2IgIY6Zr0nGw==
-X-Google-Smtp-Source: APiQypIEEBcRD0MSn0hGLzIxLkXC5lYI2OeNfPr7SM8+BRERqIlo3llUkEhqFKBx/zMNHevWxNEssQ==
-X-Received: by 2002:a9d:7b55:: with SMTP id f21mr2114497oto.31.1588260256120;
-        Thu, 30 Apr 2020 08:24:16 -0700 (PDT)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id t20sm49738ott.51.2020.04.30.08.24.14
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=OPbeDM2cJ5aY40/5CUX4MHQFjKQOx8SNoJZ2e5+rWE4=;
+        b=hZzLksOz3yS8KUChr++PjlgJhSs2uhosgMVu11DOxEPNVtNOU0hOaAU86h7kvBDj6r
+         hWFwrnmly1l6oCBDfDIRjBjoqWMfL50HIuqfbUBEz3Tc6feqv3nfHU2azTP+XP5iZceW
+         UAY05zRH4HJvWA9Ib3TA03pW+3O+xivQHbXAapt6qofAQJs7XX15Qm/RO5QdHRzFyJrw
+         ojdk5LZjbya/TDVzz8/0bTY4OhqhK7kubdeTvA/4mJe3ZNRi/CQOxqsNEWPREXf/b2rR
+         nvS6LOPPU4CmmIJDb957PyKymGHXLbsstweegzfxnU+etIr+IPfAVNrWxwEPIZAkD1J2
+         0vbw==
+X-Gm-Message-State: AGi0PuaXcQsWQU86MnhIuFDKratux3gMZ03HlJuJLd1zkl7ZfFegtwGB
+        ZeFUx60a3f1kpyvNqVhiYVo=
+X-Google-Smtp-Source: APiQypJGM/yC0m96AySjSxYslDHri5PZMrYCb0FFv3elkENgHkRGkZiiD/fFkakWizNlPa+BFZW0Yw==
+X-Received: by 2002:a7b:c4c9:: with SMTP id g9mr3674853wmk.171.1588262298154;
+        Thu, 30 Apr 2020 08:58:18 -0700 (PDT)
+Received: from localhost.localdomain (p5B3F6E9D.dip0.t-ipconnect.de. [91.63.110.157])
+        by smtp.gmail.com with ESMTPSA id w8sm265410wrs.25.2020.04.30.08.58.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2020 08:24:15 -0700 (PDT)
-Received: (nullmailer pid 30190 invoked by uid 1000);
-        Thu, 30 Apr 2020 15:24:14 -0000
-Date:   Thu, 30 Apr 2020 10:24:14 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     devicetree@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Steve Winslow <swinslow@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] iio/dac: convert ltc2632.txt to lltc,ltc2632.yaml
-Message-ID: <20200430152414.GA19887@bogus>
-References: <20200420042612.27752-1-chris.ruehl@gtsys.com.hk>
- <20200420042612.27752-4-chris.ruehl@gtsys.com.hk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200420042612.27752-4-chris.ruehl@gtsys.com.hk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Thu, 30 Apr 2020 08:58:17 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
+        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v11 0/6]  Add battery charger driver support for MP2629
+Date:   Thu, 30 Apr 2020 17:58:04 +0200
+Message-Id: <20200430155810.21383-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 20, 2020 at 12:26:08PM +0800, Chris Ruehl wrote:
-> Conversion of the ltc2632 to yaml format and name the file 'lltc,ltc2632.yaml'.
-> 
-> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-> ---
-> v5:
-> correct require section
-> set maintainer of analog.com
-> v4..v2: no change
-> 
->  .../bindings/iio/dac/lltc,ltc2632.yaml        | 76 +++++++++++++++++++
->  .../devicetree/bindings/iio/dac/ltc2632.txt   | 49 ------------
->  2 files changed, 76 insertions(+), 49 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
->  delete mode 100644 Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-> new file mode 100644
-> index 000000000000..b0043144fbc4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-> @@ -0,0 +1,76 @@
-> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
-> +
-> +maintainers:
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  Bindings for the Linear Technology LTC2632/2634/2636 DAC
-> +  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC263[246].pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - lltc,ltc2632-l12
-> +      - lltc,ltc2632-l10
-> +      - lltc,ltc2632-l8
-> +      - lltc,ltc2632-h12
-> +      - lltc,ltc2632-h10
-> +      - lltc,ltc2632-h8
-> +      - lltc,ltc2634-l12
-> +      - lltc,ltc2634-l10
-> +      - lltc,ltc2634-l8
-> +      - lltc,ltc2634-h12
-> +      - lltc,ltc2634-h10
-> +      - lltc,ltc2634-h8
-> +      - lltc,ltc2636-l12
-> +      - lltc,ltc2636-l10
-> +      - lltc,ltc2636-l8
-> +      - lltc,ltc2636-h12
-> +      - lltc,ltc2636-h10
-> +      - lltc,ltc2636-h8
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
-> +  vref-supply:
-> +    description:
-> +	  Phandle to the external reference voltage supply. This should
+changes in v11:
+ - module_remove part replaced by devm_add_action_or_reset in charger patch
+ - minor review comments solved in mfd and adc patch
 
-There's a tab here which the yaml parser isn't going to like. Not sure 
-why my checker didn't run on this, but make sure 'make dt_binding_check' 
-passes.
+changes in v10:
+ - fixed typo, \n in dev_err
+ - dt bindings Warning (unit_address_vs_reg) reported by bot
 
-> +      only be set if there is an external reference voltage connected to the VREF
-> +      pin. If the property is not set the internal reference is used.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    vref: regulator-vref {
-> +        compatible = "regulator-fixed";
-> +        regulator-name = "vref-ltc2632";
-> +        regulator-min-microvolt = <1250000>;
-> +        regulator-max-microvolt = <1250000>;
-> +        regulator-always-on;
-> +    };
-> +
-> +    spi_master {
+changes in v9:
+ - fixed review comments in mp2629 power supply such as resource based
+   iio channel, replace workqueue by threaded irq, irq get with "_optional"
 
-spi {
+changes in v8:
+ - fixed order of call in probe/remove in iio adc
+ - add ABI documentation for mp2629 power supply
 
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      dac: ltc2632@0 {
+changes in v7:
+ - fixed probe/remove order, managed and unmanaged call mix use in adc.
+ - Documentation dual license, i2c node with controller address
 
-dac@0
+Overall looks good to me, FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-And drop the unused label.
+One question though in reply to patch 4.
 
-> +        compatible = "lltc,ltc2632";
-> +        reg = <0>;    /* CS0 */
-> +        spi-max-frequency = <1000000>;
-> +        vref-supply = <&vref>;
-> +      };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> deleted file mode 100644
-> index 1ab9570cf219..000000000000
-> --- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> +++ /dev/null
-> @@ -1,49 +0,0 @@
-> -Linear Technology LTC2632/2634/2636 DAC
-> -
-> -Required properties:
-> - - compatible: Has to contain one of the following:
-> -	lltc,ltc2632-l12
-> -	lltc,ltc2632-l10
-> -	lltc,ltc2632-l8
-> -	lltc,ltc2632-h12
-> -	lltc,ltc2632-h10
-> -	lltc,ltc2632-h8
-> -	lltc,ltc2634-l12
-> -	lltc,ltc2634-l10
-> -	lltc,ltc2634-l8
-> -	lltc,ltc2634-h12
-> -	lltc,ltc2634-h10
-> -	lltc,ltc2634-h8
-> -	lltc,ltc2636-l12
-> -	lltc,ltc2636-l10
-> -	lltc,ltc2636-l8
-> -	lltc,ltc2636-h12
-> -	lltc,ltc2636-h10
-> -	lltc,ltc2636-h8
-> -
-> -Property rules described in Documentation/devicetree/bindings/spi/spi-bus.txt
-> -apply. In particular, "reg" and "spi-max-frequency" properties must be given.
-> -
-> -Optional properties:
-> -	- vref-supply: Phandle to the external reference voltage supply. This should
-> -	  only be set if there is an external reference voltage connected to the VREF
-> -	  pin. If the property is not set the internal reference is used.
-> -
-> -Example:
-> -
-> -	vref: regulator-vref {
-> -		compatible = "regulator-fixed";
-> -		regulator-name = "vref-ltc2632";
-> -		regulator-min-microvolt = <1250000>;
-> -		regulator-max-microvolt = <1250000>;
-> -		regulator-always-on;
-> -	};
-> -
-> -	spi_master {
-> -		dac: ltc2632@0 {
-> -			compatible = "lltc,ltc2632-l12";
-> -			reg = <0>; /* CS0 */
-> -			spi-max-frequency = <1000000>;
-> -			vref-supply = <&vref>; /* optional */
-> -		};
-> -	};
-> -- 
-> 2.20.1
-> 
+changes in v6:
+ - removed includes types.h in mfd, of_device.h in adc.
+ - fixed review comments parentheses, err check, kstrtouint
+
+changes in v5:
+ - removed platfrom data stored in mfd and directly accessed mfd struct in child
+ - fixed spell check and capitalization in mfd and documentation
+
+changes in v4:
+ - fixed capitalization in mfg Kconfig and documentation
+
+changes in v3:
+ - regmap for children passed using platform data and remove mfd driver info
+   access directly from children
+
+changes in v2:
+ - removed EXPORT_SYMBOL of register set/get helper
+ - regmap bit filed used, fixed other review comments
+
+This patch series add support for Battery charger control driver for Monolithic
+Power System's MP2629 chipset, includes MFD driver for ADC battery & input
+power supply measurement and battery charger control driver.
+
+Thanks,
+Saravanan
+
+Saravanan Sekar (6):
+  dt-bindings: mfd: add document bindings for mp2629
+  mfd: mp2629: Add support for mps battery charger
+  iio: adc: mp2629: Add support for mp2629 ADC driver
+  power: supply: Add support for mps mp2629 battery charger
+  power: supply: mp2629: Add impedance compensation config
+  MAINTAINERS: Add entry for mp2629 Battery Charger driver
+
+ .../ABI/testing/sysfs-class-power-mp2629      |   8 +
+ .../devicetree/bindings/mfd/mps,mp2629.yaml   |  62 ++
+ MAINTAINERS                                   |   5 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/mp2629_adc.c                  | 208 ++++++
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   2 +
+ drivers/mfd/mp2629.c                          |  79 +++
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/mp2629_charger.c         | 669 ++++++++++++++++++
+ include/linux/mfd/mp2629.h                    |  26 +
+ 13 files changed, 1090 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-power-mp2629
+ create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+ create mode 100644 drivers/iio/adc/mp2629_adc.c
+ create mode 100644 drivers/mfd/mp2629.c
+ create mode 100644 drivers/power/supply/mp2629_charger.c
+ create mode 100644 include/linux/mfd/mp2629.h
+
+-- 
+2.17.1
+

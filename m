@@ -2,119 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03C4E1BF61D
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 13:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EE841BF72A
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Apr 2020 13:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726413AbgD3LIL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Apr 2020 07:08:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725280AbgD3LIL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 07:08:11 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30DE4C035494;
-        Thu, 30 Apr 2020 04:08:11 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id w65so2704728pfc.12;
-        Thu, 30 Apr 2020 04:08:11 -0700 (PDT)
+        id S1726127AbgD3LxM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Apr 2020 07:53:12 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:55782 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726053AbgD3LxM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Apr 2020 07:53:12 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03UBq6Oo014322;
+        Thu, 30 Apr 2020 07:53:10 -0400
+Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2058.outbound.protection.outlook.com [104.47.37.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30mj45kceh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 Apr 2020 07:53:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NndaVZl3X7JSks7/d0VbNAZslQ8v3lJ2PvOtJc+n6uLsY7jMB7NDyAc6x3ZusVGsNMQZLVY82AGoDOIuBWB0nGn4XY+WCg2oHsnLL+dkrbn816SBBU1c2aDp4c0RxmYCn00AmTkIAN7fToX8LyWf/HbV1NQPUmoezSW37XLjAM7+gd1AwIkM9vIS1vK5qDnAOxyTRSsGOXIhW2Fa+N7k8bkJEFJUMhDroM9qmEvpfn06LiEQJ69qYs36BThM7M9UeIKSSfmtiJ9BK07ZM821J5xNnSjrkEeCPrGzCs/7pPpITC8zQsx89u53dPXCYqUkUr3Klq6iEapFarQpFptaLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6T5bMBHe0hS7QKSl/fN6yd/jt9WnqMmaK1Edj8VVc48=;
+ b=LS2VfGRm2SBRYZjSNfgXBUFKQNhKVtqDnNP3U4m6p0wRVmX98b1hLgYMF8Jn2+T/tkXWb4l9qfgHcO+NwzdlwlYCQRny71dcmIxlGtnNbGJrFsOLBOoYravVpTTP8eDFEwR6uh+FHw7ISqNKAXLL2j4JaLBVFRKSlnnwPj/5cYlqCni9FHcG2aB4XQJsqZXN7PzIiwUcSkoBlymsNa/wIFiFASAWiVHjOSUbKXMebuWhfhAtwtIKCVuRkfnSFbQgha0THp1AUJYydoyFDBLYMPclPB0TVCI8P8U54jWZIZNus8yDkgm942C12yfjB9NXrqOgqqbWoroNZAnCy2QHgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3YzQNid97kqBggOZQ18C1LhT5mfiq53k4mzAIfsUnLE=;
-        b=Jh9fqjv2seVUJxCv/tidEAfVPLwykN/tjVlbnkkjoSUllix6GJx0sA1bkBpuDMvlg8
-         Q26m7CUN6bKkMgtjL86m1BCF8Gd8EvabNZKCXtk77FTpf/A0sJDw9TKOoYhv7HrHcdJ2
-         pG4VMzVF899pxXlvXpLkrpZ0IJmjVU7flM6DhEdsEqcahH3ACQD09mK+PVh3Vva4jHFy
-         vzZ/1NlcqM9bMNbr78wcol1D//PW0CV16tqheLsPDJR2f57Ab+trEX4DN2eJi9RugWY8
-         +7VKtJ+PRVH4wewh/r0X4LgLhMNkxE52CpT0xWSVGt5pSb+QFFkj46k6hYQPtXwxU8hX
-         GG/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3YzQNid97kqBggOZQ18C1LhT5mfiq53k4mzAIfsUnLE=;
-        b=ObrWDDR+WW4xbw2vSbnPzz55ywjXzzWZtBjRSk1y3F8BcOjK49wllnay9jPjvztKKG
-         wO2mviefs3xTwCK8T6xzSu/Z/Gq08LM6e+Mfn1wcI5gWe5g+GEYNMATC7OyCEQ9YCPOF
-         hK9JqRv/l0WQmrm7VTGsE12PREVsd5FN3ybbgUPHt1QXxp2kACSVADsXv18TjKLSUflN
-         B97qHz9J5ZflIY06XiSDhn3KP1x3Z4IVOJOWi8Vd6yt2PQGGyPaps0crA2vU31Jn5G9m
-         t0fJBYoi2P/mtx+mc6t6LQu1UiZ407Ijg6ynsUhNy3oQ4QWIxDpgk/f7jzQUKGtG4UIE
-         Inig==
-X-Gm-Message-State: AGi0PuYqgxFE4b5m2/fkwfzJ5fHKDwLSnCCFZeAgtBjM3SFFoO6vgN+3
-        VkxepNmlECoAqYtd+03Sa8GwCSNS34k/cuDQShPlZCgW
-X-Google-Smtp-Source: APiQypKoZgytgfpRIRcYTrUfB53T910MQX77K+M78+bkpG732U7uQjhCU+J1dF6vFKP8u87Fp6FhwxUKKz1hRMXWsJw=
-X-Received: by 2002:aa7:8f26:: with SMTP id y6mr3119423pfr.36.1588244890479;
- Thu, 30 Apr 2020 04:08:10 -0700 (PDT)
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6T5bMBHe0hS7QKSl/fN6yd/jt9WnqMmaK1Edj8VVc48=;
+ b=mJ0aSnDBAyd6AeFaoUzERsyur6RUmC9G3voIXmQYO+mepoDkZRgLoAUhK7SPhzt1NkEDXh0J8S+7kQatqqkrQQhMho0c9PuGDmM9AblRVRqi7qlq71AWqU6oeX49l8SU+RN0kmjxtywTTElUSn9ZVjK3m9M6YE7dncWBGZqhVp8=
+Received: from BN6PR03MB3347.namprd03.prod.outlook.com (2603:10b6:405:3d::35)
+ by BN6PR03MB3202.namprd03.prod.outlook.com (2603:10b6:405:42::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Thu, 30 Apr
+ 2020 11:53:08 +0000
+Received: from BN6PR03MB3347.namprd03.prod.outlook.com
+ ([fe80::21b1:c085:e156:cfe7]) by BN6PR03MB3347.namprd03.prod.outlook.com
+ ([fe80::21b1:c085:e156:cfe7%4]) with mapi id 15.20.2958.020; Thu, 30 Apr 2020
+ 11:53:08 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Subject: RE: [PATCH] iio: imu: adis16xxx: use helper to access iio core
+ debugfs dir
+Thread-Topic: [PATCH] iio: imu: adis16xxx: use helper to access iio core
+ debugfs dir
+Thread-Index: AQHWHt8WygP08mSDgE+lJ8nVfIqj1qiRjaSQ
+Date:   Thu, 30 Apr 2020 11:53:08 +0000
+Message-ID: <BN6PR03MB3347761C636F1406DCA6F23199AA0@BN6PR03MB3347.namprd03.prod.outlook.com>
+References: <20200430110422.7472-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20200430110422.7472-1-alexandru.ardelean@analog.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctMjgzOTEzOTMtOGFkOS0xMWVhLThhNTYtZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDI4MzkxMzk1LThhZDktMTFlYS04YTU2LWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMTE1MiIgdD0iMTMyMzI3MjExOD?=
+ =?iso-8859-1?Q?g1NzgxMDExIiBoPSJFRVRWQnd1VmZzWUh4cDZPZHdMbWhpeXhicmM9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FFb0NBQUFUNEpIcTVSN1dBWGplK21JdkYyNXdlTjc2WWk4WGJuQURBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQTV1R0RXQUFBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-rorf: true
+authentication-results: analog.com; dkim=none (message not signed)
+ header.d=none;analog.com; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [2001:a61:25e3:eb01:8485:f8a6:dea4:3871]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d39af665-023f-48f0-b752-08d7ecfd0cee
+x-ms-traffictypediagnostic: BN6PR03MB3202:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BN6PR03MB3202AB65E9679895809F95A299AA0@BN6PR03MB3202.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1107;
+x-forefront-prvs: 0389EDA07F
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR03MB3347.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(39860400002)(136003)(396003)(366004)(346002)(8676002)(6506007)(4326008)(71200400001)(478600001)(53546011)(5660300002)(9686003)(110136005)(316002)(54906003)(55016002)(33656002)(8936002)(2906002)(66476007)(66556008)(66446008)(64756008)(7696005)(4744005)(52536014)(66946007)(186003)(76116006)(107886003)(86362001);DIR:OUT;SFP:1101;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wQz2sFehwQn5iXS8lSCEiTPmST6lTX913/m6RI2k7ukVeEadYZi8myU/W73Ok238Qy5538Qgptv18LuM6fGGwzmIMc4z/BdUVzXINefQzfXVF0uA7fbj6zJni1XAyuy52jredaSyFVzlI+Wlz5Y/9urVsYwJY+VUXWVSc2C163Sy6zgrBbUlUKfiKHnzY1WbS0zru6AieDwi/llsTx1V7UeboCDC1vTbc/aS4/wfo5i5OGLVpv8MV1hFDQLScnl5JZpvNJnwD8GaYGoIf5bG9aGIkUgdL9n7Ui8OMQMeDuks/DXOXP2fvw/nmlRpM3PurEpZgGlCfYjRQmogRdLPC5GiRAumYjbS3kouHeYr1djWncmzf5XaIkdGs3IaplYkKIL/CeFFVXvw27E2ECZ8tj3JT7k0O+tEKN5KAgVCyANv+UCeaEiTCK7jkTFaaija
+x-ms-exchange-antispam-messagedata: a+1DOGWn+P5ahR1oLG8bOxIA0FEHLs7AuknnDkrMKCEx9de81MUMMpDhlixFWy/nEs5gwzKwqNHiErHLnZGRALFnVXn/VxE+EOcI61oyblHx6a66whByyvt2sHvw8LmnxZLZpyWbbvDz92lJsggc4JUIAnMoJ/YfAgARK4rYwA0XVODFCPd6W5TrrG/3X0/9nDqE60EpkA66kuCcjvvvXWiFwBgV+fQbTzB9e4fIHnbisq7QAmidG3YIAV4Yrl8f4XMI/xr00tiNZS3g7PWLOADVkc4fk3vUGNc5BjyAzGmGR30vXA/mLielS2ouPS8Bf+y1LC9ISM/m4tIL0S+2Uhk/Gnygzfsaw5MDWF8PC71lnYoDi7l4pGfYw5Bh7zhd8BQwQ6UR5bxSAqrLskgaUhag3fp1NFUoSCmR+x7dbFiqDi8o9xTQqlUuQcHKm5vZyt5zgKpklNrxbN03Rt0bmSG9jeFrzmXG5yDtaKPOgG7e7NKpYNbQXI2GBy5zcGIrhjIo++zjqJSGxuocahsl5BbPstEAFlAqMUsVJrAnebdyzLscczbpZNbKQvH7krX15WwUREEi2jJV2iUVPiKqnJoT0d2yN9YhSJp+/ihLHiiF+REHyTL2QXxwoEZEetLzNJhfFXBB159MQHDQ/AcGQt6+AdPb3XfYycscRjJxUfJaB5gaJ6NU0/jnKCsSU1VnlHHHx9IyyM+3Ws8/AXhe/5stUGFufAuuJ5R27hE7g8LpF/4J5r4oO+eoBwSlx0D/BTv+F8FqQGeVDrnZ8iQ829Nd40Wd4BrTQUptBHKOEvyFXleBkHkJc3744/2BhXsUkff/mSD5PDkxpATgnuk7QxHoD7MIgoxR1FNqxqaodXA=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20200415162030.16414-1-sravanhome@gmail.com> <20200415162030.16414-3-sravanhome@gmail.com>
- <20200424071822.GM3612@dell> <8ff17d07-8030-fcfe-8d8a-3011e4077778@gmail.com>
- <20200424093720.GA3542@dell> <864eb6ad-a605-c0a0-c3e7-23c0c70f5ede@gmail.com>
- <20200424105319.GD8414@dell> <c62cd5f2-6d82-0a2a-5ee5-a3e99e188a05@gmail.com>
- <20200427085149.GF3559@dell> <6063ad6e-444c-b905-b858-d8f94d700748@gmail.com> <4585179d-826b-6240-38a2-18fe757bc810@gmail.com>
-In-Reply-To: <4585179d-826b-6240-38a2-18fe757bc810@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 30 Apr 2020 14:07:59 +0300
-Message-ID: <CAHp75Vf_PUQdcOVdao0KUjiLapicMOFHK6f5+gf-bi-k6hVgkA@mail.gmail.com>
-Subject: Re: [PATCH v9 2/6] mfd: mp2629: Add support for mps battery charger
-To:     saravanan sekar <sravanhome@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d39af665-023f-48f0-b752-08d7ecfd0cee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2020 11:53:08.2957
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1UjL8jLYfSvM1+PcVdLwjwQ6ZXm0BFzZb637QdGwWXfxWb4L6SzhX+eAYeOFl3fgP37tOa7+U8tW9uEYxIWmGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB3202
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-30_07:2020-04-30,2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=951 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004300099
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 30, 2020 at 1:39 PM saravanan sekar <sravanhome@gmail.com> wrote:
-> On 27/04/20 11:30 am, saravanan sekar wrote:
-> > On 27/04/20 10:51 am, Lee Jones wrote:
-> >> On Fri, 24 Apr 2020, saravanan sekar wrote:
-> >>> On 24/04/20 12:53 pm, Lee Jones wrote:
-> >>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
-> >>>>> On 24/04/20 11:37 am, Lee Jones wrote:
-> >>>>>> On Fri, 24 Apr 2020, saravanan sekar wrote:
 
-...
+> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Sent: Donnerstag, 30. April 2020 13:04
+> To: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org
+> Cc: Bogdan, Dragos <Dragos.Bogdan@analog.com>; Sa, Nuno
+> <Nuno.Sa@analog.com>; jic23@kernel.org; Ardelean, Alexandru
+> <alexandru.Ardelean@analog.com>
+> Subject: [PATCH] iio: imu: adis16xxx: use helper to access iio core debug=
+fs dir
+>=20
+> The IIO core provides a iio_get_debugfs_dentry() helper.
+> It seems that the ADIS IMU drivers access that field directly.
+>=20
+> This change converts them to use iio_get_debugfs_dentry() instead.
+>=20
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  drivers/iio/gyro/adis16136.c | 10 ++++------
+>  drivers/iio/imu/adis16400.c  | 10 ++++------
+>  drivers/iio/imu/adis16460.c  | 10 ++++------
+>  drivers/iio/imu/adis16475.c  | 15 ++++++---------
+>  drivers/iio/imu/adis16480.c  | 16 ++++++----------
+>  5 files changed, 24 insertions(+), 37 deletions(-)
+>=20
 
-> >>>>>> Then how about using 'simple-mfd' and 'syscon'?
-> >>>>>>
-> >>>>>> Then you can omit this driver completely.
-> >>>>> The exception is to support for non device tree platform as well,
-> >>>>> but I have
-> >>>>> tested only for ARM device tree platform.
-> >>>> Is that a reality though?
-> >>>>
-> >>>> How else do you see this realistically being registered?
-> >>>>
-> >>> I understand that acpi related device table are not covered here,
-> >>> well I
-> >>> don't have to platform to test so.
-> >>> If you ask me to cover acpi related table, I can do but hard to test.
-> >> I don't know of any reasons why syscon can't be used by ACPI.
-> >>
-> >> Please try to solve this issue using 'simple-mfd' and 'syscon'.
-> > Well the simple-mfd and syscon topic recommended by you when Device
-> > tree alone is used.
-> > I wounder still I receive review/improvements comments for this mfd
-> > patch and also another
-> > to omit this driver using simple-mfd (rework the series).
-> > Confused, not sure which is valid and will be accepted at the end.
->
-> I had look into syscon, as far my understanding syscon is supported only
-> for memory mapped IO. MP2629
-> device is over I2C bus, could you share your thought about syscon for
-> this device?
-
-My understanding too, but I didn't dug into it.
-Something like general regmap support is missing (or I am missing the
-way how to pass it to syscon).
-
--- 
-With Best Regards,
-Andy Shevchenko
+Acked-by: Nuno S=E1 <nuno.sa@analog.com>

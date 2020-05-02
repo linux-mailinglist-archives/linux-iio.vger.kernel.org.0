@@ -2,113 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFDC1C2785
-	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 20:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D931C278A
+	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 20:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728160AbgEBSVc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 May 2020 14:21:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52476 "EHLO mail.kernel.org"
+        id S1728399AbgEBSZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 May 2020 14:25:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53840 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725963AbgEBSVb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 May 2020 14:21:31 -0400
+        id S1728263AbgEBSZq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 May 2020 14:25:46 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D090206F0;
-        Sat,  2 May 2020 18:21:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EB6062072E;
+        Sat,  2 May 2020 18:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588443691;
-        bh=DPc9Re7qa8CBzUBp9XwR6ALtym5ZC8rwfj/DMwRnlbQ=;
+        s=default; t=1588443945;
+        bh=4xtD+5d23b9hmfE6WuotCTglkcLgeOgR/W0bd3CpJsg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uC5yN99jManhws+iD6txsIbLRmkVjGreNgP+s4rVkXN6on8WoAvEyEthgvV8SL0pr
-         akVAqiTV86f+EvdX9AZ0zFAupzyw8M6ZHF2F33ZAIbEcxRQZCcHHK2vXiBiRSnzbzX
-         aWOYKELmtg3bO41/h3tjbr6eDwviIsz8f0e5vuOk=
-Date:   Sat, 2 May 2020 19:21:27 +0100
+        b=xtlIwTwcSxZ2EgS7xSg/Q5PPVOXa9WxzHRrJwuPRpIfkJs7YUzjJtwZQX8klHXHJM
+         gCLcRV375bZ2X2VespTPsTsuup4GNMXlu3nYH4i/fSxCpBNEVaorB6v9hGbC0T/9wT
+         Yl/vVSXZGFuzWRbGUdZXkbp8xYasq2bZuGZeC1LQ=
+Date:   Sat, 2 May 2020 19:25:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Eugene Zalkonnikov <ez@norphonic.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "development@norphonic.com" <development@norphonic.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v7 1/2] Driver for TI HDC20x0 humidity and temperature
- sensors
-Message-ID: <20200502192127.25c77aa5@archlinux>
-In-Reply-To: <7482ee6f-eedb-8482-d30e-7fa8e9b0fd47@norphonic.com>
-References: <E372084A-C6C5-4261-90C5-B810ADAFDD73@norphonic.com>
-        <alpine.DEB.2.21.2004270024590.16743@vps.pmeerw.net>
-        <7482ee6f-eedb-8482-d30e-7fa8e9b0fd47@norphonic.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] staging: iio: ad5933: rework probe to use devm_
+ function variants
+Message-ID: <20200502192542.63cc25a2@archlinux>
+In-Reply-To: <20200428093128.60747-1-alexandru.ardelean@analog.com>
+References: <20200428093128.60747-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Apr 2020 09:57:49 +0200
-Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com> wrote:
+On Tue, 28 Apr 2020 12:31:28 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Hi Peter,
->=20
->=20
-> On 27.04.2020 00:35, Peter Meerwald-Stadler wrote:
-> >> +{
-> >> +	struct i2c_client *client =3D data->client;
-> >> +	s32 ret;
-> >> +
-> >> +	ret =3D i2c_smbus_read_byte_data(client,
-> >> +			hdc2010_reg_translation[chan->address].peak);
-> >> +
-> >> +	if (ret < 0)
-> >> +		dev_err(&client->dev, "Could not read sensor data\n");
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +static int hdc2010_get_heater_status(struct hdc2010_data *data) =20
-> > return value should be bool? =20
->=20
-> No idea. It is an int in hdc100x hdc heater sysfs and I try to stick to e=
-xisting practices.
->=20
-> Should those be bools?
+> This change cleans up the driver's probe function to use only devm_
+> function variants. This also gets rid of the remove function and moves the
+> clock & regulator de-initializations to the 'ad5933_cleanup()' callback.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Locally it would make sense, but then we write them into an int where
-they are used, so little point. Probably best to leave them as they are.
-
->=20
-> > =20
-> >> +	case IIO_CHAN_INFO_PEAK: {
-> >> +		int ret;
-> >> +
-> >> +		ret =3D iio_device_claim_direct_mode(indio_dev);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +		mutex_lock(&data->lock);
-> >> +		ret =3D hdc2010_get_peak_measurement_byte(data, chan);
-> >> +		mutex_unlock(&data->lock);
-> >> +		iio_device_release_direct_mode(indio_dev);
-> >> +		if (ret < 0)
-> >> +			return ret;
-> >> +		/* Scaling up the value so we can use same offset as RAW */
-> >> +		*val =3D ret * 256; =20
-> > I'd rather have different _SCALEs for peak and raw =20
->=20
-> They are made shared per Jonathan's suggestion early on, as the offsets f=
-or the channels don't match.
-
-Yup. There is no standard ABI to deal with different scales for peak and
-raw and I wasn't keen that we introduce it for this relatively rare
-corner case.
+Basic rule of thumb. Whatever you register with devm_add_action_or_reset
+should only cleanup one one thing done in the probe path.
+There is almost always a race if you do more than one bit of cleanup
+per such callback + it's harder to review as it fails the 'obviously correct
+test'.
 
 Jonathan
 
->=20
->=20
-> Regards,
->=20
-> =C2=A0=C2=A0 Eugene.
->=20
+> ---
+>  .../staging/iio/impedance-analyzer/ad5933.c   | 59 ++++++++-----------
+>  1 file changed, 23 insertions(+), 36 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> index af0bcf95ee8a..06a6dcd7883b 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -602,11 +602,12 @@ static const struct iio_buffer_setup_ops ad5933_ring_setup_ops = {
+>  	.postdisable = ad5933_ring_postdisable,
+>  };
+>  
+> -static int ad5933_register_ring_funcs_and_init(struct iio_dev *indio_dev)
+> +static int ad5933_register_ring_funcs_and_init(struct device *dev,
+> +					       struct iio_dev *indio_dev)
+>  {
+>  	struct iio_buffer *buffer;
+>  
+> -	buffer = iio_kfifo_allocate();
+> +	buffer = devm_iio_kfifo_allocate(dev);
+>  	if (!buffer)
+>  		return -ENOMEM;
+>  
+> @@ -676,6 +677,14 @@ static void ad5933_work(struct work_struct *work)
+>  	}
+>  }
+>  
+> +static void ad5933_cleanup(void *data)
+> +{
+> +	struct ad5933_state *st = data;
+> +
+> +	clk_disable_unprepare(st->mclk);
+> +	regulator_disable(st->reg);
+
+Please do two separate callbacks so that these can be handled
+in the correct places.  I.e. you do something then immediately
+register the handler to undo it.
+
+Currently you can end up disabling a clock you haven't enabled
+(which I am fairly sure will give you an error message).
+
+> +}
+> +
+>  static int ad5933_probe(struct i2c_client *client,
+>  			const struct i2c_device_id *id)
+>  {
+> @@ -703,23 +712,28 @@ static int ad5933_probe(struct i2c_client *client,
+>  		dev_err(&client->dev, "Failed to enable specified VDD supply\n");
+>  		return ret;
+>  	}
+> +
+> +	ret = devm_add_action_or_reset(&client->dev, ad5933_cleanup, st);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret = regulator_get_voltage(st->reg);
+>  
+>  	if (ret < 0)
+> -		goto error_disable_reg;
+> +		return ret;
+>  
+>  	st->vref_mv = ret / 1000;
+>  
+>  	st->mclk = devm_clk_get(&client->dev, "mclk");
+>  	if (IS_ERR(st->mclk) && PTR_ERR(st->mclk) != -ENOENT) {
+>  		ret = PTR_ERR(st->mclk);
+> -		goto error_disable_reg;
+> +		return ret;
+>  	}
+>  
+>  	if (!IS_ERR(st->mclk)) {
+>  		ret = clk_prepare_enable(st->mclk);
+>  		if (ret < 0)
+> -			goto error_disable_reg;
+> +			return ret;
+>  		ext_clk_hz = clk_get_rate(st->mclk);
+>  	}
+>  
+> @@ -742,41 +756,15 @@ static int ad5933_probe(struct i2c_client *client,
+>  	indio_dev->channels = ad5933_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(ad5933_channels);
+>  
+> -	ret = ad5933_register_ring_funcs_and_init(indio_dev);
+> +	ret = ad5933_register_ring_funcs_and_init(&client->dev, indio_dev);
+>  	if (ret)
+> -		goto error_disable_mclk;
+> +		return ret;
+>  
+>  	ret = ad5933_setup(st);
+>  	if (ret)
+> -		goto error_unreg_ring;
+> -
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret)
+> -		goto error_unreg_ring;
+> -
+> -	return 0;
+> -
+> -error_unreg_ring:
+> -	iio_kfifo_free(indio_dev->buffer);
+> -error_disable_mclk:
+> -	clk_disable_unprepare(st->mclk);
+> -error_disable_reg:
+> -	regulator_disable(st->reg);
+> -
+> -	return ret;
+> -}
+> -
+> -static int ad5933_remove(struct i2c_client *client)
+> -{
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -	struct ad5933_state *st = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	iio_kfifo_free(indio_dev->buffer);
+> -	regulator_disable(st->reg);
+> -	clk_disable_unprepare(st->mclk);
+> +		return ret;
+>  
+> -	return 0;
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+>  }
+>  
+>  static const struct i2c_device_id ad5933_id[] = {
+> @@ -801,7 +789,6 @@ static struct i2c_driver ad5933_driver = {
+>  		.of_match_table = ad5933_of_match,
+>  	},
+>  	.probe = ad5933_probe,
+> -	.remove = ad5933_remove,
+>  	.id_table = ad5933_id,
+>  };
+>  module_i2c_driver(ad5933_driver);
 

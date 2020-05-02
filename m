@@ -2,91 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 768861C2760
-	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 20:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D503A1C2777
+	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 20:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728044AbgEBSBp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 May 2020 14:01:45 -0400
-Received: from www381.your-server.de ([78.46.137.84]:52370 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727988AbgEBSBp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 May 2020 14:01:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=8I+Hn7E68vFWn4rc9egcH+6P7fyOrFPXVwlizaUW9w0=; b=HxSLmT8E53oyA/H3tqK3kSB8KR
-        6R3pw0nrMUvR9bXNoNEpxjlNP9zZ6EZmqY8v0xgjG1gSBbDln4Vq03i8x+lh+22Ju8PwyzbBzRVbM
-        6odq4EHPDmJ6IeCat0aycYmgX3uMNLvCYEopG6RMDxbFtABs70gRZmdkRHUKkyS5O+z+jT+uVTaMm
-        d+Cssg/S4mmtV88XnddYz2bOuvRHSq1wzZQmJCVZTlGeggq5wZlAI9qkpSWqiGj1tDd4D/7hpD0K1
-        8cWaxLZrVltoTRxJLZJb0hdqnYDr650cubsFstNNmt/4M+VhDYunnPkXVGN6CF+Q35xZ29gdqj6W0
-        9nakBupA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jUwSJ-0007OK-W0; Sat, 02 May 2020 20:01:40 +0200
-Received: from [82.135.65.122] (helo=[192.168.178.20])
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jUwSJ-000Wod-MA; Sat, 02 May 2020 20:01:39 +0200
-Subject: Re: [PATCH v5 5/6] iio: imu: Add support for adis16475
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-References: <20200413082445.17324-1-nuno.sa@analog.com>
- <20200413082445.17324-6-nuno.sa@analog.com>
- <2418ed60-8407-0c99-bf5d-1afc3964de2b@metafoo.de>
- <20200502184010.134eb8b5@archlinux>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <67202bd8-e0a5-be53-13c6-e01a25e2a85b@metafoo.de>
-Date:   Sat, 2 May 2020 20:01:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728044AbgEBSHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 May 2020 14:07:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49808 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727997AbgEBSHz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 May 2020 14:07:55 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4AB4D206CD;
+        Sat,  2 May 2020 18:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588442875;
+        bh=LFBiura8oNYbLlkJUPEOFowICXKprYZOh30K36bcOSU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=fBo/wCDucspKSG2NxBCAnBdG3xho3Ao662M4INjZkm1tkEoFQu/6nvX9i8GtrerWc
+         SozKVmeOzXdzi8MOvQeW/iG9CWDdIg6FTKrFHSDIafGlLJtd79WJMEr/1lJm8Scl0g
+         G/+EAs4HPZLOGRDBTMqK6Xsf3qEFQ1wVYx6j3vrc=
+Date:   Sat, 2 May 2020 19:07:51 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     =?UTF-8?B?R2HDq3RhbiBBbmRyw6k=?= <rvlander@gaetanandre.eu>,
+        linux-iio@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Denis Ciocca <denis.ciocca@st.com>
+Subject: Re: [PATCH v2] iio: st_sensors: make scale channels also shared by
+ type
+Message-ID: <20200502190751.53123be3@archlinux>
+In-Reply-To: <faf0bf3315c93fddee4f4cdb890bc5e80701c8fd.camel@hadess.net>
+References: <20200423121714.607262-1-rvlander@gaetanandre.eu>
+        <20200425181359.1e30e315@archlinux>
+        <faf0bf3315c93fddee4f4cdb890bc5e80701c8fd.camel@hadess.net>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200502184010.134eb8b5@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25800/Sat May  2 14:08:18 2020)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/2/20 7:40 PM, Jonathan Cameron wrote:
-> On Mon, 27 Apr 2020 20:06:07 +0200
-> Lars-Peter Clausen <lars@metafoo.de> wrote:
->
->> On 4/13/20 10:24 AM, Nuno Sá wrote:
->>> [...]
->>> +static irqreturn_t adis16475_trigger_handler(int irq, void *p)
->>> +{
->>> [...]
->>> +	__be16 data[ADIS16475_MAX_SCAN_DATA], *buffer;
->>> [...]
->>> +
->>> +	iio_push_to_buffers_with_timestamp(indio_dev, data, pf->timestamp);
->> If the timestamp is enabled the IIO core might insert padding between
->> the data channels and the timestamp. If that happens this will disclose
->> kernel stack memory to userspace.
->>
->> This needs either a memset(data, 0x00, sizeof(data)) or maybe put data
->> into the state struct and kzalloc it.
-> Good spot. Could simply do __be16 data[ADI..] = {0}; rather than explicit
-> memset, but some form of zeroization is needed.
->
-> I've fixed up the applied patch with the above approach.
-There is actually another issue. The stack data is not necessarily 
-aligned to 64 bit, which causes issues if we try to put the 64-bit 
-timestamp in it. I think data should really be in the state struct.
+On Sun, 26 Apr 2020 13:19:09 +0200
+Bastien Nocera <hadess@hadess.net> wrote:
+
+> On Sat, 2020-04-25 at 18:13 +0100, Jonathan Cameron wrote:
+> > On Thu, 23 Apr 2020 14:17:15 +0200
+> > Ga=C3=ABtan Andr=C3=A9 <rvlander@gaetanandre.eu> wrote:
+> >  =20
+> > > Scale channels are available by axis. For example for
+> > > accelerometers,
+> > > in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are
+> > > available.
+> > >=20
+> > > However, they should be shared by type as documented in
+> > > Documentation/ABI/testing/sysfs-bus-iio.
+> > >=20
+> > > For each sensor (acceleros, gyros and magnetos) only one value is
+> > > specified
+> > > for all the axes.
+> > >=20
+> > > Existing, by axis, entries are preserved in order to to leave the
+> > > old ABI
+> > > untouched. =20
+> > As I mentioned in v1, there isn't a strict ABI rule that says that we
+> > must
+> > do the shared form
+> >=20
+> > +CC'd Bastien for comment on what userspace is assuming and whether
+> > we should
+> > push this back to stable or not. =20
+>=20
+> I have no idea what the effects of this would be on the ABI, and how
+> this would impact iio-sensor-proxy.
+
+There goes me being lazy ;)
+
+>=20
+> Code is here though, so it might be best to test it:
+> https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/tree/master/src
+>=20
+> And we accept merge requests :)
+
+Only looks at scale and in_accel_scale
+
+Easy enough to fix...
+
+Note that for some older accelerometers it has to do per channel scales btw.
+It used to be hard to have the same range out of the plane of the silicon
+than within it, so was common to have sensors with different ranges and hen=
+ce
+scales in z direction from x and y.
+
+I'll apply the kernel patch but good to fix up iio-sensor-proxy as well.
+
+I would ideally like Denis to give this a quick sanity check though as I'd
+like to give it a stable tag and don't want any unexpected breakage.
+
+Thanks,
+
+Jonathan
+
+>=20
+

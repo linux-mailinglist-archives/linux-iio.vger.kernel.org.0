@@ -2,38 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE011C2708
-	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 18:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EBDE1C2716
+	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 18:55:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbgEBQkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 May 2020 12:40:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56818 "EHLO mail.kernel.org"
+        id S1728327AbgEBQzn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 May 2020 12:55:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59692 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728234AbgEBQkP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 May 2020 12:40:15 -0400
+        id S1728312AbgEBQzn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 May 2020 12:55:43 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 968C121775;
-        Sat,  2 May 2020 16:40:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A8C26206B8;
+        Sat,  2 May 2020 16:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588437614;
-        bh=NZiy5yWwTP4PvDJcOhunj9pXgTY/ZgIiiyHGdYNxJ3s=;
+        s=default; t=1588438542;
+        bh=EN0jC8jtMpvS3MIG3TGZ6/L5gRNmXrVn1U3RMM0Hd6o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=zgzBZVwvFyOLkPI3yUE7x/uWWduOci6J2NXkQKgW393A9yZJuohpwLakSusQkzfKA
-         02Skw30x+NO2rQagAbs7I0+vcx38Pck2Y18M62N3Oy3f6wBLubiUWKi2gBTD49iWZ4
-         brlfACXaGQ7bObLL2JGeUjBsgXbWCaQpdUx1QqnQ=
-Date:   Sat, 2 May 2020 17:40:10 +0100
+        b=K219v3P1Or+rBvMErrWH54Sa9dn/94QgsBGtbnvOq/l6WQL6DSKVVVPH4UYy5+Nfh
+         oUK/mAgInHqqjSZ8LQWpRCt121xKo+Ab+/Rgxgri5xr8mT2uMH4pCl3wP6cS6kFbht
+         6z95s2UWcvSXBSY/KTkyFYClUSNHbg43q60dddFs=
+Date:   Sat, 2 May 2020 17:55:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: ltr501: Constify structs
-Message-ID: <20200502174010.77c89dd2@archlinux>
-In-Reply-To: <20200502095237.71429-1-rikard.falkeborn@gmail.com>
-References: <20200502095237.71429-1-rikard.falkeborn@gmail.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        david@lechnology.com, felipe.balbi@linux.intel.com,
+        fabien.lahoudere@collabora.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 0/4] Introduce the Counter character device interface
+Message-ID: <20200502175536.1e9ac944@archlinux>
+In-Reply-To: <20200501154519.GA4581@icarus>
+References: <cover.1588176662.git.vilhelm.gray@gmail.com>
+        <20200430201345.GX51277@piout.net>
+        <20200501154519.GA4581@icarus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,200 +51,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  2 May 2020 11:52:37 +0200
-Rikard Falkeborn <rikard.falkeborn@gmail.com> wrote:
+On Fri, 1 May 2020 11:46:10 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> Constify some data structs that are never changed. In order to do so,
-> also update a couple of functions that now need to accept pointers to
-> const struct instead of struct. While at it, update a few more functions
-> to accept pointers to const struct instead of pointers.
+> On Thu, Apr 30, 2020 at 10:13:45PM +0200, Alexandre Belloni wrote:
+> > Hi,
+> > 
+> > On 29/04/2020 14:11:34-0400, William Breathitt Gray wrote:  
+> > > Over the past couple years we have noticed some shortcomings with the
+> > > Counter sysfs interface. Although useful in the majority of situations,
+> > > there are certain use-cases where interacting through sysfs attributes
+> > > can become cumbersome and inefficient. A desire to support more advanced
+> > > functionality such as timestamps, multi-axis positioning tables, and
+> > > other such latency-sensitive applications, has motivated a reevaluation
+> > > of the Counter subsystem. I believe a character device interface will be
+> > > helpful for this more niche area of counter device use.
+> > > 
+> > > To quell any concerns from the offset: this patchset makes no changes to
+> > > the existing Counter sysfs userspace interface -- existing userspace
+> > > applications will continue to work with no modifications necessary. I
+> > > request that driver maintainers please test their applications to verify
+> > > that this is true, and report any discrepancies if they arise.
+> > >   
+> > 
+> > On that topic, I'm wondering why the counter subsystem uses /sys/bus
+> > instead of /sys/class that would be more natural for a class of devices.
+> > I can't see how counters would be considered busses. I think you should
+> > consider moving it over to /sys/class (even if deprecating
+> > /sys/bus/counter will be long).  
 > 
-> This allows the compiler to put more data in the code segment instead of
-> the data segment, as seen by the output of the file command:
+> At the time I wasn't quite familiar with sysfs development so I was
+> following the iio sysfs code rather closely. However, I see now that
+> you're probably right: this isn't really a bus but rather a collection
+> of various types of counters -- i.e. a class of devices.
 > 
-> Before:
->    text    data     bss     dec     hex filename
->   27080    8144     192   35416    8a58 drivers/iio/light/ltr501.o
+> Perhaps I should migrate this then to /sys/class/counter. Of course, the
+> /sys/bus/counter location will have to remain for compatibility with
+> existing applications, but I think a simple symlink to the new
+> /sys/class/counter location should suffice for that.
 > 
-> After:
->    text    data     bss     dec     hex filename
->   27688    7536     192   35416    8a58 drivers/iio/light/ltr501.o
-> Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+> If anyone sees an issue with this give me a heads up.
+To just address this point as I've not read the rest of the thread yet...
 
-Looks sensible to me.  Will leave it a few days to get Peter time to
-sanity check if he wants to.
+I would resist moving it.  This one is an old argument. 
 
-Thanks,
+Some info in https://lwn.net/Articles/645810/
+As that puts it a "bus" is better known as a "subsystem".
 
-Jonathan
+When we originally considered class vs bus for IIO, the view expressed
+at the times was that the whole separation of the two didn't mean anything
+and for non trivial cases bus was always preferred.  It's nothing to do
+with with whether the thing is a bus or not.  Now I suppose it's possible
+opinion has moved on this topic...    However, I'd say there
+is really 0 advantage in moving an existing subsystem even if opinion
+has changed.
 
-> ---
->  drivers/iio/light/ltr501.c | 39 +++++++++++++++++++-------------------
->  1 file changed, 20 insertions(+), 19 deletions(-)
++CC Greg in case he wants to add anything.
+
 > 
-> diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-> index 0626927251bb..5a3fcb127cd2 100644
-> --- a/drivers/iio/light/ltr501.c
-> +++ b/drivers/iio/light/ltr501.c
-> @@ -101,12 +101,12 @@ struct ltr501_gain {
->  	int uscale;
->  };
->  
-> -static struct ltr501_gain ltr501_als_gain_tbl[] = {
-> +static const struct ltr501_gain ltr501_als_gain_tbl[] = {
->  	{1, 0},
->  	{0, 5000},
->  };
->  
-> -static struct ltr501_gain ltr559_als_gain_tbl[] = {
-> +static const struct ltr501_gain ltr559_als_gain_tbl[] = {
->  	{1, 0},
->  	{0, 500000},
->  	{0, 250000},
-> @@ -117,14 +117,14 @@ static struct ltr501_gain ltr559_als_gain_tbl[] = {
->  	{0, 10000},
->  };
->  
-> -static struct ltr501_gain ltr501_ps_gain_tbl[] = {
-> +static const struct ltr501_gain ltr501_ps_gain_tbl[] = {
->  	{1, 0},
->  	{0, 250000},
->  	{0, 125000},
->  	{0, 62500},
->  };
->  
-> -static struct ltr501_gain ltr559_ps_gain_tbl[] = {
-> +static const struct ltr501_gain ltr559_ps_gain_tbl[] = {
->  	{0, 62500}, /* x16 gain */
->  	{0, 31250}, /* x32 gain */
->  	{0, 15625}, /* bits X1 are for x64 gain */
-> @@ -133,9 +133,9 @@ static struct ltr501_gain ltr559_ps_gain_tbl[] = {
->  
->  struct ltr501_chip_info {
->  	u8 partid;
-> -	struct ltr501_gain *als_gain;
-> +	const struct ltr501_gain *als_gain;
->  	int als_gain_tbl_size;
-> -	struct ltr501_gain *ps_gain;
-> +	const struct ltr501_gain *ps_gain;
->  	int ps_gain_tbl_size;
->  	u8 als_mode_active;
->  	u8 als_gain_mask;
-> @@ -192,7 +192,7 @@ static int ltr501_match_samp_freq(const struct ltr501_samp_table *tab,
->  	return -EINVAL;
->  }
->  
-> -static int ltr501_als_read_samp_freq(struct ltr501_data *data,
-> +static int ltr501_als_read_samp_freq(const struct ltr501_data *data,
->  				     int *val, int *val2)
->  {
->  	int ret, i;
-> @@ -210,7 +210,7 @@ static int ltr501_als_read_samp_freq(struct ltr501_data *data,
->  	return IIO_VAL_INT_PLUS_MICRO;
->  }
->  
-> -static int ltr501_ps_read_samp_freq(struct ltr501_data *data,
-> +static int ltr501_ps_read_samp_freq(const struct ltr501_data *data,
->  				    int *val, int *val2)
->  {
->  	int ret, i;
-> @@ -266,7 +266,7 @@ static int ltr501_ps_write_samp_freq(struct ltr501_data *data,
->  	return ret;
->  }
->  
-> -static int ltr501_als_read_samp_period(struct ltr501_data *data, int *val)
-> +static int ltr501_als_read_samp_period(const struct ltr501_data *data, int *val)
->  {
->  	int ret, i;
->  
-> @@ -282,7 +282,7 @@ static int ltr501_als_read_samp_period(struct ltr501_data *data, int *val)
->  	return IIO_VAL_INT;
->  }
->  
-> -static int ltr501_ps_read_samp_period(struct ltr501_data *data, int *val)
-> +static int ltr501_ps_read_samp_period(const struct ltr501_data *data, int *val)
->  {
->  	int ret, i;
->  
-> @@ -321,7 +321,7 @@ static unsigned long ltr501_calculate_lux(u16 vis_data, u16 ir_data)
->  	return lux / 1000;
->  }
->  
-> -static int ltr501_drdy(struct ltr501_data *data, u8 drdy_mask)
-> +static int ltr501_drdy(const struct ltr501_data *data, u8 drdy_mask)
->  {
->  	int tries = 100;
->  	int ret, status;
-> @@ -373,7 +373,8 @@ static int ltr501_set_it_time(struct ltr501_data *data, int it)
->  }
->  
->  /* read int time in micro seconds */
-> -static int ltr501_read_it_time(struct ltr501_data *data, int *val, int *val2)
-> +static int ltr501_read_it_time(const struct ltr501_data *data,
-> +			       int *val, int *val2)
->  {
->  	int ret, index;
->  
-> @@ -391,7 +392,7 @@ static int ltr501_read_it_time(struct ltr501_data *data, int *val, int *val2)
->  	return IIO_VAL_INT_PLUS_MICRO;
->  }
->  
-> -static int ltr501_read_als(struct ltr501_data *data, __le16 buf[2])
-> +static int ltr501_read_als(const struct ltr501_data *data, __le16 buf[2])
->  {
->  	int ret;
->  
-> @@ -403,7 +404,7 @@ static int ltr501_read_als(struct ltr501_data *data, __le16 buf[2])
->  				buf, 2 * sizeof(__le16));
->  }
->  
-> -static int ltr501_read_ps(struct ltr501_data *data)
-> +static int ltr501_read_ps(const struct ltr501_data *data)
->  {
->  	int ret, status;
->  
-> @@ -419,7 +420,7 @@ static int ltr501_read_ps(struct ltr501_data *data)
->  	return status;
->  }
->  
-> -static int ltr501_read_intr_prst(struct ltr501_data *data,
-> +static int ltr501_read_intr_prst(const struct ltr501_data *data,
->  				 enum iio_chan_type type,
->  				 int *val2)
->  {
-> @@ -716,7 +717,7 @@ static int ltr501_read_raw(struct iio_dev *indio_dev,
->  	return -EINVAL;
->  }
->  
-> -static int ltr501_get_gain_index(struct ltr501_gain *gain, int size,
-> +static int ltr501_get_gain_index(const struct ltr501_gain *gain, int size,
->  				 int val, int val2)
->  {
->  	int i;
-> @@ -848,14 +849,14 @@ static int ltr501_write_raw(struct iio_dev *indio_dev,
->  	return ret;
->  }
->  
-> -static int ltr501_read_thresh(struct iio_dev *indio_dev,
-> +static int ltr501_read_thresh(const struct iio_dev *indio_dev,
->  			      const struct iio_chan_spec *chan,
->  			      enum iio_event_type type,
->  			      enum iio_event_direction dir,
->  			      enum iio_event_info info,
->  			      int *val, int *val2)
->  {
-> -	struct ltr501_data *data = iio_priv(indio_dev);
-> +	const struct ltr501_data *data = iio_priv(indio_dev);
->  	int ret, thresh_data;
->  
->  	switch (chan->type) {
-> @@ -1359,7 +1360,7 @@ static bool ltr501_is_volatile_reg(struct device *dev, unsigned int reg)
->  	}
->  }
->  
-> -static struct regmap_config ltr501_regmap_config = {
-> +static const struct regmap_config ltr501_regmap_config = {
->  	.name =  LTR501_REGMAP_NAME,
->  	.reg_bits = 8,
->  	.val_bits = 8,
+> > > Interaction with Counter character devices occurs via ioctl commands.
+> > > This allows userspace applications to access and set counter data using
+> > > native C datatypes rather than working through string translations.
+> > >   
+> > 
+> > I agree with David that you should consider using read to retrieve the
+> > counter data as this will simplify interrupt handling/polling and
+> > blocking/non-blocking reads can be used by an application. ABI wise,
+> > this can also be a good move as you could always consider having an
+> > ioctl requesting a specific format when reading the device so you are
+> > not stuck with the initial format you are going to choose.  
+> 
+> My hesitation to implement support for read/write calls is due to a
+> concern that we will end up with various incompatible formats between
+> counter drivers (thus requiring users to have intimate knowledge of the
+> drivers and therefore defeating the purpose of a subsystem). However, if
+> we can standardize on a format that is flexible enough to work for all
+> counter drivers, then read/write calls should not be a problem.
+> 
+> I think a general format could be possible. For example, the counter
+> character device can return a standard header data at the start which
+> provides general information about the counter device: number of
+> counters, number or signals, number of extensions, etc. From this
+> information, offsets can be computed (or perhaps provided by the device)
+> to where the binary data for the count, extension, etc., can be read or
+> written. Interrupts can then be handled as blocking reads, as could
+> other types of events we implement.
+> 
+> Would something like this work well?
+> 
+> William Breathitt Gray
+> 
+> > > 2. Should device driver callbacks return int or long? I sometimes see
+> > >    error values returned as long (e.g. PTR_ERR(), the file_operations
+> > >    structure's ioctl callbacks, etc.); when is it necessary to return
+> > >    long as opposed to int?
+> > >   
+> > 
+> > You should use a long if you ever have to return a point as it is
+> > guaranteed to have the correct size. Else, just stick to an int if you
+> > are not going to overflow it.
+> >   
+> > > 3. I only implemented the unlocked_ioctl callback. Should I implement a
+> > >    compat_ioctl callback as well?
+> > >   
+> > 
+> > The compat_ioctl is to handle 32bit userspace running on a 64bit kernel.
+> > If your structures have the same size in both cases, then you don't have
+> > to implement compat_ioctl.
+> > 
+> > Have a look at Documentation/driver-api/ioctl.rst
+> > 
+> > 
+> > -- 
+> > Alexandre Belloni, Bootlin
+> > Embedded Linux and Kernel engineering
+> > https://bootlin.com  
 

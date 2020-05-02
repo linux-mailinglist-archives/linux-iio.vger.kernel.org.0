@@ -2,39 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 909F11C2706
-	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 18:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAE011C2708
+	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 18:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbgEBQhq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 May 2020 12:37:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56588 "EHLO mail.kernel.org"
+        id S1728312AbgEBQkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 May 2020 12:40:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56818 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728362AbgEBQho (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 May 2020 12:37:44 -0400
+        id S1728234AbgEBQkP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 May 2020 12:40:15 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 788B621775;
-        Sat,  2 May 2020 16:37:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 968C121775;
+        Sat,  2 May 2020 16:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588437463;
-        bh=mp5eWd3dyWdSRPKPSqE5UHQ/nRbmvCuR2K27RMW+TEc=;
+        s=default; t=1588437614;
+        bh=NZiy5yWwTP4PvDJcOhunj9pXgTY/ZgIiiyHGdYNxJ3s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wFlzp2KYHyJ0SreeC5LPUYMuCiUW6igSwpQvJwLoY37XaNuVW8UoWPdU2chdNDnqc
-         pKGiZhsxfYz180T3HzX0mhyIbgRMXbwOQsL0ts5NFkVysBjGu+JudjRJaST4XQwPr+
-         YPvACyT2FvNRq7Pgx5n8Qhy6nRnybwcVxG8/nK90=
-Date:   Sat, 2 May 2020 17:37:38 +0100
+        b=zgzBZVwvFyOLkPI3yUE7x/uWWduOci6J2NXkQKgW393A9yZJuohpwLakSusQkzfKA
+         02Skw30x+NO2rQagAbs7I0+vcx38Pck2Y18M62N3Oy3f6wBLubiUWKi2gBTD49iWZ4
+         brlfACXaGQ7bObLL2JGeUjBsgXbWCaQpdUx1QqnQ=
+Date:   Sat, 2 May 2020 17:40:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/6] iio: chemical: scd30: add core driver
-Message-ID: <20200502173738.66dbc888@archlinux>
-In-Reply-To: <20200428075101.GA6908@arch>
-References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
-        <20200422141135.86419-2-tomasz.duszynski@octakon.com>
-        <20200425195534.2ac91fe6@archlinux>
-        <20200428075101.GA6908@arch>
+To:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: ltr501: Constify structs
+Message-ID: <20200502174010.77c89dd2@archlinux>
+In-Reply-To: <20200502095237.71429-1-rikard.falkeborn@gmail.com>
+References: <20200502095237.71429-1-rikard.falkeborn@gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,232 +43,200 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Apr 2020 09:51:01 +0200
-Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+On Sat,  2 May 2020 11:52:37 +0200
+Rikard Falkeborn <rikard.falkeborn@gmail.com> wrote:
 
-> On Sat, Apr 25, 2020 at 07:55:34PM +0100, Jonathan Cameron wrote:
-> > On Wed, 22 Apr 2020 16:11:30 +0200
-> > Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
-> >  
-> > > Add Sensirion SCD30 carbon dioxide core driver.
-> > >
-> > > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>  
-> > Hi Tomasz
-> >
-> > As you've probably guessed the big questions are around the custom ABI.
-> >
-> > Few other things inline.
-> >
-> > Jonathan
-> >  
-...
+> Constify some data structs that are never changed. In order to do so,
+> also update a couple of functions that now need to accept pointers to
+> const struct instead of struct. While at it, update a few more functions
+> to accept pointers to const struct instead of pointers.
+> 
+> This allows the compiler to put more data in the code segment instead of
+> the data segment, as seen by the output of the file command:
+> 
+> Before:
+>    text    data     bss     dec     hex filename
+>   27080    8144     192   35416    8a58 drivers/iio/light/ltr501.o
+> 
+> After:
+>    text    data     bss     dec     hex filename
+>   27688    7536     192   35416    8a58 drivers/iio/light/ltr501.o
+> Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
 
-> > > +static int scd30_read_meas(struct scd30_state *state)
-> > > +{
-> > > +	int i, ret;
-> > > +
-> > > +	ret = scd30_command(state, CMD_READ_MEAS, 0, (char *)state->meas,
-> > > +			    sizeof(state->meas));
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
-> > > +		state->meas[i] = scd30_float_to_fp(state->meas[i]);  
-> >
-> > We have previously discussed proving direct floating point channel types
-> > for the rare devices that actually provide floating point data in
-> > a standard format.
-> >
-> > I'm happy to revisit that if you would like to.
-> >  
-> 
-> Thanks for reminding me :).
-> 
-> In that case I admit that some float helper in iio would be a good thing to
-> have. Especially that there will be at least 2 sensors using it.
-> 
-> I'd work on that after this driver makes it into the tree.
-> 
-> How does it sound?
+Looks sensible to me.  Will leave it a few days to get Peter time to
+sanity check if he wants to.
 
-The problem is that, if we do it in that order we have ABI for this
-device that we should really maintain.  We can probably get away
-with changing it on the basis the channel type is self describing anyway
-but it's not ideal.  
+Thanks,
 
-So probably fine but not best practice...
+Jonathan
 
+> ---
+>  drivers/iio/light/ltr501.c | 39 +++++++++++++++++++-------------------
+>  1 file changed, 20 insertions(+), 19 deletions(-)
 > 
-> > > +
-> > > +	/*
-> > > +	 * Accuracy within calibrated operating range is
-> > > +	 * +-(30ppm + 3% measurement) so fractional part does
-> > > +	 * not add real value. Moreover, ppm is an integer.
-> > > +	 */
-> > > +	state->meas[CONC] /= 100;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int scd30_wait_meas_irq(struct scd30_state *state)
-> > > +{
-> > > +	int ret, timeout = msecs_to_jiffies(state->meas_interval * 1250);
-> > > +
-> > > +	reinit_completion(&state->meas_ready);
-> > > +	enable_irq(state->irq);  
-> >
-> > So this is just 'grab the next one'?
-> >  
-> 
-> Yes, grab the fresh one. Moreover enabling interrupts only when necessary can
-> limit pointless buss traffic. Reason being irq is acknowledged by reading data
-> from sensor.
-> 
+> diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+> index 0626927251bb..5a3fcb127cd2 100644
+> --- a/drivers/iio/light/ltr501.c
+> +++ b/drivers/iio/light/ltr501.c
+> @@ -101,12 +101,12 @@ struct ltr501_gain {
+>  	int uscale;
+>  };
+>  
+> -static struct ltr501_gain ltr501_als_gain_tbl[] = {
+> +static const struct ltr501_gain ltr501_als_gain_tbl[] = {
+>  	{1, 0},
+>  	{0, 5000},
+>  };
+>  
+> -static struct ltr501_gain ltr559_als_gain_tbl[] = {
+> +static const struct ltr501_gain ltr559_als_gain_tbl[] = {
+>  	{1, 0},
+>  	{0, 500000},
+>  	{0, 250000},
+> @@ -117,14 +117,14 @@ static struct ltr501_gain ltr559_als_gain_tbl[] = {
+>  	{0, 10000},
+>  };
+>  
+> -static struct ltr501_gain ltr501_ps_gain_tbl[] = {
+> +static const struct ltr501_gain ltr501_ps_gain_tbl[] = {
+>  	{1, 0},
+>  	{0, 250000},
+>  	{0, 125000},
+>  	{0, 62500},
+>  };
+>  
+> -static struct ltr501_gain ltr559_ps_gain_tbl[] = {
+> +static const struct ltr501_gain ltr559_ps_gain_tbl[] = {
+>  	{0, 62500}, /* x16 gain */
+>  	{0, 31250}, /* x32 gain */
+>  	{0, 15625}, /* bits X1 are for x64 gain */
+> @@ -133,9 +133,9 @@ static struct ltr501_gain ltr559_ps_gain_tbl[] = {
+>  
+>  struct ltr501_chip_info {
+>  	u8 partid;
+> -	struct ltr501_gain *als_gain;
+> +	const struct ltr501_gain *als_gain;
+>  	int als_gain_tbl_size;
+> -	struct ltr501_gain *ps_gain;
+> +	const struct ltr501_gain *ps_gain;
+>  	int ps_gain_tbl_size;
+>  	u8 als_mode_active;
+>  	u8 als_gain_mask;
+> @@ -192,7 +192,7 @@ static int ltr501_match_samp_freq(const struct ltr501_samp_table *tab,
+>  	return -EINVAL;
+>  }
+>  
+> -static int ltr501_als_read_samp_freq(struct ltr501_data *data,
+> +static int ltr501_als_read_samp_freq(const struct ltr501_data *data,
+>  				     int *val, int *val2)
+>  {
+>  	int ret, i;
+> @@ -210,7 +210,7 @@ static int ltr501_als_read_samp_freq(struct ltr501_data *data,
+>  	return IIO_VAL_INT_PLUS_MICRO;
+>  }
+>  
+> -static int ltr501_ps_read_samp_freq(struct ltr501_data *data,
+> +static int ltr501_ps_read_samp_freq(const struct ltr501_data *data,
+>  				    int *val, int *val2)
+>  {
+>  	int ret, i;
+> @@ -266,7 +266,7 @@ static int ltr501_ps_write_samp_freq(struct ltr501_data *data,
+>  	return ret;
+>  }
+>  
+> -static int ltr501_als_read_samp_period(struct ltr501_data *data, int *val)
+> +static int ltr501_als_read_samp_period(const struct ltr501_data *data, int *val)
+>  {
+>  	int ret, i;
+>  
+> @@ -282,7 +282,7 @@ static int ltr501_als_read_samp_period(struct ltr501_data *data, int *val)
+>  	return IIO_VAL_INT;
+>  }
+>  
+> -static int ltr501_ps_read_samp_period(struct ltr501_data *data, int *val)
+> +static int ltr501_ps_read_samp_period(const struct ltr501_data *data, int *val)
+>  {
+>  	int ret, i;
+>  
+> @@ -321,7 +321,7 @@ static unsigned long ltr501_calculate_lux(u16 vis_data, u16 ir_data)
+>  	return lux / 1000;
+>  }
+>  
+> -static int ltr501_drdy(struct ltr501_data *data, u8 drdy_mask)
+> +static int ltr501_drdy(const struct ltr501_data *data, u8 drdy_mask)
+>  {
+>  	int tries = 100;
+>  	int ret, status;
+> @@ -373,7 +373,8 @@ static int ltr501_set_it_time(struct ltr501_data *data, int it)
+>  }
+>  
+>  /* read int time in micro seconds */
+> -static int ltr501_read_it_time(struct ltr501_data *data, int *val, int *val2)
+> +static int ltr501_read_it_time(const struct ltr501_data *data,
+> +			       int *val, int *val2)
+>  {
+>  	int ret, index;
+>  
+> @@ -391,7 +392,7 @@ static int ltr501_read_it_time(struct ltr501_data *data, int *val, int *val2)
+>  	return IIO_VAL_INT_PLUS_MICRO;
+>  }
+>  
+> -static int ltr501_read_als(struct ltr501_data *data, __le16 buf[2])
+> +static int ltr501_read_als(const struct ltr501_data *data, __le16 buf[2])
+>  {
+>  	int ret;
+>  
+> @@ -403,7 +404,7 @@ static int ltr501_read_als(struct ltr501_data *data, __le16 buf[2])
+>  				buf, 2 * sizeof(__le16));
+>  }
+>  
+> -static int ltr501_read_ps(struct ltr501_data *data)
+> +static int ltr501_read_ps(const struct ltr501_data *data)
+>  {
+>  	int ret, status;
+>  
+> @@ -419,7 +420,7 @@ static int ltr501_read_ps(struct ltr501_data *data)
+>  	return status;
+>  }
+>  
+> -static int ltr501_read_intr_prst(struct ltr501_data *data,
+> +static int ltr501_read_intr_prst(const struct ltr501_data *data,
+>  				 enum iio_chan_type type,
+>  				 int *val2)
+>  {
+> @@ -716,7 +717,7 @@ static int ltr501_read_raw(struct iio_dev *indio_dev,
+>  	return -EINVAL;
+>  }
+>  
+> -static int ltr501_get_gain_index(struct ltr501_gain *gain, int size,
+> +static int ltr501_get_gain_index(const struct ltr501_gain *gain, int size,
+>  				 int val, int val2)
+>  {
+>  	int i;
+> @@ -848,14 +849,14 @@ static int ltr501_write_raw(struct iio_dev *indio_dev,
+>  	return ret;
+>  }
+>  
+> -static int ltr501_read_thresh(struct iio_dev *indio_dev,
+> +static int ltr501_read_thresh(const struct iio_dev *indio_dev,
+>  			      const struct iio_chan_spec *chan,
+>  			      enum iio_event_type type,
+>  			      enum iio_event_direction dir,
+>  			      enum iio_event_info info,
+>  			      int *val, int *val2)
+>  {
+> -	struct ltr501_data *data = iio_priv(indio_dev);
+> +	const struct ltr501_data *data = iio_priv(indio_dev);
+>  	int ret, thresh_data;
+>  
+>  	switch (chan->type) {
+> @@ -1359,7 +1360,7 @@ static bool ltr501_is_volatile_reg(struct device *dev, unsigned int reg)
+>  	}
+>  }
+>  
+> -static struct regmap_config ltr501_regmap_config = {
+> +static const struct regmap_config ltr501_regmap_config = {
+>  	.name =  LTR501_REGMAP_NAME,
+>  	.reg_bits = 8,
+>  	.val_bits = 8,
 
-As mentioned below, it seems to me that we should really be starting this
-device only when we want a reading.  Hence any interrupt (subject to possible
-races) should be valid.  Hence we would not be enabling and disabling the
-interrupt controller mask on this line.
-
-
-> > > +static int scd30_setup_trigger(struct iio_dev *indio_dev)
-> > > +{
-> > > +	struct scd30_state *state = iio_priv(indio_dev);
-> > > +	struct device *dev = indio_dev->dev.parent;
-> > > +	struct iio_trigger *trig;
-> > > +	int ret;
-> > > +
-> > > +	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-> > > +				      indio_dev->id);
-> > > +	if (!trig) {
-> > > +		dev_err(dev, "failed to allocate trigger\n");
-> > > +		return -ENOMEM;
-> > > +	}
-> > > +
-> > > +	trig->dev.parent = dev;
-> > > +	trig->ops = &scd30_trigger_ops;
-> > > +	iio_trigger_set_drvdata(trig, indio_dev);
-> > > +
-> > > +	ret = devm_iio_trigger_register(dev, trig);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	indio_dev->trig = iio_trigger_get(trig);
-> > > +
-> > > +	ret = devm_request_threaded_irq(dev, state->irq, scd30_irq_handler,
-> > > +					scd30_irq_thread_handler,
-> > > +					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-> > > +					indio_dev->name, indio_dev);
-> > > +	if (ret)
-> > > +		dev_err(dev, "failed to request irq\n");  
-> >
-> > I'm guessing this is a device without any means to disable the interrupt
-> > being generated?  In which case are you safe against a race before you
-> > disable here?
-> >  
-> 
-> IRQs can be actually disabled by telling device to stop taking measurements.
-> There is dedicated command for that. If irq fires off before being disabled
-> nothing bad should happen as everything necessary is in place already.
-
-Hmm. I wonder if we'd be better off starting it on demand - or only when running
-with it as a data ready trigger. That would make the the polled read a case
-of starting the sampling for one sample rather than just 'picking' one from
-the stream of actual samples.
-
-> 
-> Another thing is that without disabling interrupt here we would get warning
-> about unbalanced irq whilst enabling trigger.
-> 
-> > > +
-> > > +	disable_irq(state->irq);
-> > > +
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
-> > > +		int (*command)(struct scd30_state *state, enum scd30_cmd cmd,
-> > > +			       u16 arg, char *rsp, int size))
-> > > +{
-> > > +	static const unsigned long scd30_scan_masks[] = { 0x07, 0x00 };
-> > > +	struct scd30_state *state;
-> > > +	struct iio_dev *indio_dev;
-> > > +	int ret;
-> > > +	u16 val;
-> > > +
-> > > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
-> > > +	if (!indio_dev)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	dev_set_drvdata(dev, indio_dev);
-> > > +
-> > > +	state = iio_priv(indio_dev);
-> > > +	state->dev = dev;
-> > > +	state->priv = priv;
-> > > +	state->irq = irq;
-> > > +	state->pressure_comp = SCD30_PRESSURE_COMP_DEFAULT;
-> > > +	state->meas_interval = SCD30_MEAS_INTERVAL_DEFAULT;
-> > > +	state->command = command;
-> > > +	mutex_init(&state->lock);
-> > > +	init_completion(&state->meas_ready);
-> > > +
-> > > +	indio_dev->dev.parent = dev;
-> > > +	indio_dev->info = &scd30_info;
-> > > +	indio_dev->name = name;
-> > > +	indio_dev->channels = scd30_channels;
-> > > +	indio_dev->num_channels = ARRAY_SIZE(scd30_channels);
-> > > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > > +	indio_dev->available_scan_masks = scd30_scan_masks;
-> > > +
-> > > +	state->vdd = devm_regulator_get(dev, "vdd");
-> > > +	if (IS_ERR(state->vdd)) {  
-> >
-> > This is very noisy if we have deferred probing going on.
-> > Either explicitly check for that case or just don't bother
-> > with an error message in this path.
-> >  
-> 
-> Okay.
-> 
-> > > +		dev_err(dev, "failed to get vdd regulator\n");
-> > > +		return PTR_ERR(state->vdd);
-> > > +	}
-> > > +
-> > > +	ret = regulator_enable(state->vdd);
-> > > +	if (ret) {
-> > > +		dev_err(dev, "failed to enable vdd regulator\n");
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	ret = devm_add_action_or_reset(dev, scd30_exit, state);
-> > > +	if (ret)  
-> >
-> > This should match exactly against the item above it. Whilst stop
-> > measurement may be safe from here on, it is not easy to review
-> > unless we can clearly see where the equivalent start is.
-> >  
-> 
-> Well, naming might be confusing. The thing is that sensor after being
-> powered up reverts itself to the much the same state it left.
-> 
-> If we have real regulator then scd30_exit would disable regulator and
-> that's it. But, in case of a dummy one and sensor starting in
-> continuous mode we waste power for no real reason (for example 19mA
-> at 0.5Hz).
-> 
-> So it's explanation for doing 2 things inside early on but not excuse
-> for unintuitive naming.
-
-I'd rather see two devm_add_action_or_reset calls one handling the regulator
-and one handling the register write.  Then it will be clear what each
-one is doing and that there are no possible races.  Basically it lets
-a reviewer not bother thinking which is always good :)
-
-> 
-> > > +		return ret;
-> > > +
-> > > +	ret = scd30_reset(state);
-> > > +	if (ret) {
-> > > +		dev_err(dev, "failed to reset device: %d\n", ret);
-> > > +		return ret;
-> > > +	}

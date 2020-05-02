@@ -2,346 +2,374 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF7F1C2738
-	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 19:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0BE1C2742
+	for <lists+linux-iio@lfdr.de>; Sat,  2 May 2020 19:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728395AbgEBRTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 May 2020 13:19:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36440 "EHLO mail.kernel.org"
+        id S1728363AbgEBRbH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 May 2020 13:31:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37524 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728382AbgEBRTe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 May 2020 13:19:34 -0400
+        id S1726400AbgEBRbH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 May 2020 13:31:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 398E92071E;
-        Sat,  2 May 2020 17:19:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 44DF6206B8;
+        Sat,  2 May 2020 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588439973;
-        bh=qosBcG3BRg4WRxkSTjRhEFcy1o28piu0+aIZLMBwg/0=;
+        s=default; t=1588440666;
+        bh=Un4jyA+lzOxIUevxBXaZkTNsi2B49jZeVzIglPjaOWg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WFeLEfrIu1BOu9rxlTSz8x8yKaEICaF9pUs7xIBpFgky6g6ztUgpbdBKzrk+C/8rE
-         5UaarWvuDfuPDBHQt37zboOHhC63W5slvStO4RXHReCVYPl0vxVs9HWd3X1XgmItnK
-         vCUTxA6knkqYDoC93+067CrcWoOPVVVseyqVWMU0=
-Date:   Sat, 2 May 2020 18:19:29 +0100
+        b=F5bje+/Vvao4S/KkOUBoaHA9PzSDhufrYZ7x2m4yEy2BP7QDg51ETS7WZOi4EBD0E
+         FDEgm6tS/FJ3Lkm9zqxNeOTjCMhm3Pkhjm2P7MM9Hs/PvvKoJHxerNc05et3yFunJd
+         gdTBAOpufbtC1k6JS6tr1sFQmVzevaS6xB7dSSps=
+Date:   Sat, 2 May 2020 18:31:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Eugen.Hristev@microchip.com" <Eugen.Hristev@microchip.com>,
+        "Ludovic.Desroches@microchip.com" <Ludovic.Desroches@microchip.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [RFC PATCH 4/4] iio: Track enabled channels on a per channel
- basis
-Message-ID: <20200502181929.2409dcde@archlinux>
-In-Reply-To: <CY4PR03MB3350C865423E5FF97834BD3F99AF0@CY4PR03MB3350.namprd03.prod.outlook.com>
-References: <20200424051818.6408-1-alexandru.ardelean@analog.com>
-        <20200424051818.6408-5-alexandru.ardelean@analog.com>
-        <CY4PR03MB33506FD8C2BF3921FE9BA2DD99D00@CY4PR03MB3350.namprd03.prod.outlook.com>
-        <20200426115031.2eb0bb3c@archlinux>
-        <CY4PR03MB3350C865423E5FF97834BD3F99AF0@CY4PR03MB3350.namprd03.prod.outlook.com>
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] iio: at91-sama5d2_adc: split
+ at91_adc_current_chan_is_touch() helper
+Message-ID: <20200502183102.4e916203@archlinux>
+In-Reply-To: <b9ab676489de3575984dac5610fcf05fd8742a38.camel@analog.com>
+References: <20200304084219.20810-1-alexandru.ardelean@analog.com>
+        <20200413180556.20638f3b@archlinux>
+        <9315e9a7-0703-b119-ca32-69f0c2fcc7de@microchip.com>
+        <20200414184505.0cd39249@archlinux>
+        <f13b4286c5f133e7461d59965d7f84af059c8e89.camel@analog.com>
+        <208699ad-1302-aac1-c2e7-4f469e39a7eb@microchip.com>
+        <b50961e86a536223be7e3df0f276e572a435f644.camel@analog.com>
+        <be31bfcde7dc35b07855302d5cbf6db42bc7f634.camel@analog.com>
+        <b9ab676489de3575984dac5610fcf05fd8742a38.camel@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Apr 2020 12:09:18 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Thu, 30 Apr 2020 08:10:29 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> > From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org>
-> > On Behalf Of Jonathan Cameron
-> > Sent: Sonntag, 26. April 2020 12:51
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: Ardelean, Alexandru <alexandru.Ardelean@analog.com>; linux-
-> > iio@vger.kernel.org; linux-kernel@vger.kernel.org; lars@metafoo.de
-> > Subject: Re: [RFC PATCH 4/4] iio: Track enabled channels on a per chann=
-el
-> > basis
-> >=20
-> > On Fri, 24 Apr 2020 07:51:05 +0000
-> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> >  =20
-> > > > From: linux-iio-owner@vger.kernel.org <linux-iio- =20
-> > owner@vger.kernel.org> =20
-> > > > On Behalf Of Alexandru Ardelean
-> > > > Sent: Freitag, 24. April 2020 07:18
-> > > > To: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > > > Cc: jic23@kernel.org; lars@metafoo.de; Ardelean, Alexandru
-> > > > <alexandru.Ardelean@analog.com>
-> > > > Subject: [RFC PATCH 4/4] iio: Track enabled channels on a per chann=
-el =20
-> > basis =20
-> > > >
-> > > > From: Lars-Peter Clausen <lars@metafoo.de>
-> > > >
-> > > > Now that we support multiple channels with the same scan index we c=
-an =20
-> > no =20
-> > > > longer use the scan mask to track which channels have been enabled.
-> > > > Otherwise it is not possible to enable channels with the same scan =
-index
-> > > > independently.
-> > > >
-> > > > Introduce a new channel mask which is used instead of the scan mask=
- to
-> > > > track which channels are enabled. Whenever the channel mask is =20
-> > changed a =20
-> > > > new scan mask is computed based on it.
-> > > >
-> > > > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > > ---
-> > > >  drivers/iio/industrialio-buffer.c | 62 +++++++++++++++++++++------=
-----
-> > > >  drivers/iio/inkern.c              | 19 +++++++++-
-> > > >  include/linux/iio/buffer_impl.h   |  3 ++
-> > > >  include/linux/iio/consumer.h      |  2 +
-> > > >  4 files changed, 64 insertions(+), 22 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/indust=
-rialio- =20
-> > buffer.c =20
-> > > > index c06691281287..1821a3e32fb3 100644
-> > > > --- a/drivers/iio/industrialio-buffer.c
-> > > > +++ b/drivers/iio/industrialio-buffer.c
-> > > > @@ -216,12 +216,20 @@ int iio_buffer_alloc_scanmask(struct iio_buff=
-er
-> > > > *buffer,
-> > > >  	if (buffer->scan_mask =3D=3D NULL)
-> > > >  		return -ENOMEM;
-> > > >
-> > > > +	buffer->channel_mask =3D bitmap_zalloc(indio_dev->num_channels,
-> > > > +					     GFP_KERNEL);
-> > > > +	if (buffer->channel_mask =3D=3D NULL) {
-> > > > +		bitmap_free(buffer->scan_mask);
-> > > > +		return -ENOMEM;
-> > > > +	}
-> > > > +
-> > > >  	return 0;
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(iio_buffer_alloc_scanmask);
-> > > >
-> > > >  void iio_buffer_free_scanmask(struct iio_buffer *buffer)
-> > > >  {
-> > > > +	bitmap_free(buffer->channel_mask);
-> > > >  	bitmap_free(buffer->scan_mask);
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(iio_buffer_free_scanmask);
-> > > > @@ -285,7 +293,7 @@ static ssize_t iio_scan_el_show(struct device =
-=20
-> > *dev, =20
-> > > >
-> > > >  	/* Ensure ret is 0 or 1. */
-> > > >  	ret =3D !!test_bit(to_iio_dev_attr(attr)->address,
-> > > > -		       indio_dev->buffer->scan_mask);
-> > > > +		       indio_dev->buffer->channel_mask);
-> > > >
-> > > >  	return sprintf(buf, "%d\n", ret);
-> > > >  }
-> > > > @@ -330,11 +338,12 @@ static bool iio_validate_scan_mask(struct =20
-> > iio_dev =20
-> > > > *indio_dev,
-> > > >   * buffers might request, hence this code only verifies that the
-> > > >   * individual buffers request is plausible.
-> > > >   */
-> > > > -static int iio_scan_mask_set(struct iio_dev *indio_dev,
-> > > > -		      struct iio_buffer *buffer, int bit)
-> > > > +static int iio_channel_mask_set(struct iio_dev *indio_dev,
-> > > > +				struct iio_buffer *buffer, int bit)
-> > > >  {
-> > > >  	const unsigned long *mask;
-> > > >  	unsigned long *trialmask;
-> > > > +	unsigned int ch;
-> > > >
-> > > >  	trialmask =3D bitmap_zalloc(indio_dev->masklength, GFP_KERNEL);
-> > > >  	if (trialmask =3D=3D NULL)
-> > > > @@ -343,8 +352,11 @@ static int iio_scan_mask_set(struct iio_dev
-> > > > *indio_dev,
-> > > >  		WARN(1, "Trying to set scanmask prior to registering
-> > > > buffer\n");
-> > > >  		goto err_invalid_mask;
-> > > >  	}
-> > > > -	bitmap_copy(trialmask, buffer->scan_mask, indio_dev- =20
-> > > > >masklength); =20
-> > > > -	set_bit(bit, trialmask);
-> > > > +
-> > > > +	set_bit(bit, buffer->channel_mask);
-> > > > +
-> > > > +	for_each_set_bit(ch, buffer->channel_mask, indio_dev- =20
-> > > > >num_channels) =20
-> > > > +		set_bit(indio_dev->channels[ch].scan_index, trialmask); =20
-> > >
-> > > So, here if the channels all have the same scan_index, we will end up=
- with a =20
-> > scan_mask which is =20
-> > > different that channel_mask, right? I saw that in our internal driver=
-'s we =20
-> > then just access the =20
-> > > channel_mask field directly to know what pieces/channels do we need t=
-o =20
-> > enable prior to =20
-> > > buffering, which implies including buffer_impl.h. =20
-> > Given that we handle the demux only at the level of scan elements that
-> > won't work in general
-> > (even if it wasn't a horrible layering issue). =20
->=20
-> Yes, and the driver just adds 16 channels and points all of them to scan_=
-index 0. It then
-> sets real_bits and the shift so that userspace can get the right channel =
-bit. So, in the end
-> we have just one buffer/scan element with 16bits. My problem here is more=
- architectural...
-> We should not directly include "buffer_impl.h" in drivers...
->=20
-> > >
-> > > So, for me it would make sense to compute scan_mask so that it will b=
-e the =20
-> > same as channel_mask =20
-> > > (hmm but that would be a problem when computing the buffer size...) a=
-nd =20
-> > drivers can correctly use =20
-> > > ` validate_scan_mask ()` cb. Alternatively, we need to expose =20
-> > channel_mask either on a new cb or =20
-> > > change the ` validate_scan_mask ()` footprint. =20
-> >=20
-> > Excellent points. We need to address support for:
-> >=20
-> > 1) available_scan_mask - if we have complicated rules on mixtures of
-> > channels inside
-> >    a given buffer element. =20
->=20
-> Maybe one solution to expose channel mask is to check if channel_mask !=
-=3D scan_mask
-> before calling the ` validate_scan_mask()`. If it is, we pass channel_mas=
-k to the callback.
-> Driver's should then know what to do with it...
+> On Thu, 2020-04-30 at 07:30 +0000, Ardelean, Alexandru wrote:
+> > On Mon, 2020-04-27 at 13:00 +0000, Ardelean, Alexandru wrote:  
+> > > [External]
+> > > 
+> > > On Mon, 2020-04-27 at 12:20 +0000, Eugen.Hristev@microchip.com wrote:  
+> > > > [External]
+> > > > 
+> > > > On 15.04.2020 09:33, Ardelean, Alexandru wrote:
+> > > >   
+> > > > > On Tue, 2020-04-14 at 18:45 +0100, Jonathan Cameron wrote:  
+> > > > > > On Tue, 14 Apr 2020 12:22:45 +0000
+> > > > > > <Eugen.Hristev@microchip.com> wrote:
+> > > > > >   
+> > > > > > > On 13.04.2020 20:05, Jonathan Cameron wrote:  
+> > > > > > > > On Wed, 4 Mar 2020 10:42:18 +0200
+> > > > > > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> > > > > > > >   
+> > > > > > > > > This change moves the logic to check if the current channel is
+> > > > > > > > > the
+> > > > > > > > > touchscreen channel to a separate helper.
+> > > > > > > > > This reduces some code duplication, but the main intent is to
+> > > > > > > > > re-
+> > > > > > > > > use
+> > > > > > > > > this
+> > > > > > > > > in the next patches.
+> > > > > > > > > 
+> > > > > > > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com  
+> > > > > > > > > >  
+> > > > > > > > Eugen / Ludovic,
+> > > > > > > > 
+> > > > > > > > Have you had a chance to look at this series?  
+> > > > > > > 
+> > > > > > > Hi Jonathan,
+> > > > > > > 
+> > > > > > > Does the patch apply correctly for you ?  
+> > > > > > 
+> > > > > > I haven't tried yet :)
+> > > > > >   
+> > > > > 
+> > > > > I've rebased this patchset on top of current iio/testing and it still
+> > > > > applies.
+> > > > >   
+> > > > 
+> > > > Hi Alex,
+> > > > 
+> > > > I tried this patch on top of my tree (however I am testing with an older 
+> > > > kernel 5.4) , and I have issues starting the buffer after you moved my 
+> > > > code to the preenable callback.
+> > > > 
+> > > > Namely, on the line:
+> > > > 
+> > > > if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
+> > > >                 return -EINVAL;  
+> > 
+> > In the meantime I found this patch:
+> > https://urldefense.com/v3/__https://lore.kernel.org/linux-iio/1431525891-19285-5-git-send-email-lars@metafoo.de/__;!!A3Ni8CS0y2Y!ocQuNvFF_8rd-cCvMNXU0cTk9mLezpCPyzelQyhbxMGdKgFo0_JTgTD1q1VU-kj10aqxxA$ 
+> > 
+> > from about ~5 years ago;
 
-That's liable to be flakey as there is no requirement for the scan_mask to
-be ordered or indeed not have holes.
+Yup.  That started the transition to claim_direct_mode to avoid the locking
+issues.   There are probably a few drivers that never got there but 
+in theory moving the setting of this parameter earlier should now
+be fine as the original race condition is closed (subject to a few
+drivers that still have that race condition)
 
->=20
-> > 2) channel enabling though I'm sort of inclined to say that if you are =
-using this
-> > approach
-> >    you only get information on channels that make up a scan mask elemen=
-t.
-> > Tough luck you
-> >    may end up enabling more than you'd like. =20
->=20
-> Not sure if I'm fully understanding this point. I believe with this appro=
-ach channel
-> enablement works as before since the core is kind of mapping channel_mask=
- to
-> scan_mask. So if we have 16 channels using only 1 scan_element we can sti=
-ll
-> enable/disable all 16 channels.
 
-Its more subtle than that.  Because of the mux, a number of different chann=
-els can
-be enabled by different consumers, but all that is exposed to the driver is
-the resulting fused scan_mask across all consumers.  It has no idea what ch=
-annels
-have been enabled if they lie within a scan_mask element.
+> > 
+> > if this patch is a valid proposal, it could fix this case as well;
+> > well, it might break others, so applying it [now] would need some general
+> > review
+> > of all pre/post enable/disable hooks
+> >   
+> 
+> So, apologies if this will start to seem like spamming.
+> I decided to do a bit of shell magic for this:
+> 
+> get_files() {
+> git grep -w iio_buffer_setup_ops  | grep drivers | cut -d: -f1 | sort | uniq
+> }
+> 
+> for file in $(get_files) ; do
+>     if grep -q currentmode $file ; then
+>         echo $file
+>     fi
+> done
+> 
+> It finds 4 drivers.
+> Though, `get_files()` will return 56 files.
+> 
+> drivers/iio/accel/bmc150-accel-core.c
+> drivers/iio/adc/at91-sama5d2_adc.c
+> drivers/iio/adc/stm32-dfsdm-adc.c
+> drivers/iio/magnetometer/rm3100-core.c
+> 
+> The rm3100 driver doesn't do any checks in the setup_ops for 'currentmode' as
+> far as I could see.
+> 
+> So, Lars' patch could work nicely to fix this current case and not break others.
+> 
+> Semantically though, it would sound nicer to have a 'nextmode' parameter
+> somewhere; maybe on the setup_ops(indio_dev, nextmode)?
+> Though, only those 3 drivers would really ever use it; so doing it like that
+> sounds like overkill.
+> 
+> So, we're left with Lars' patch or we could add an 'indio_dev->nextmode' field,
+> that may be used in just these 3 drivers [which again: sounds overkill at this
+> point in time].
+> 
+> Alternatively, this 'indio_dev->currentmode' could be removed from all these 3
+> drivers somehow. But that needs testing and a thorough understanding of all 3
+> drivers and what they're doing, to do properly.
+> 
+> @Jonathan: what do you think?
 
-Hence, whilst there can be individual channel enable and disable attributes
-they driver only seems enable and disable of scan mask elements. That means
-it needs to turn on ALL of the channels within one scan mask element.
-To do anything more complex requires us to carry all the following to the d=
-emux
-calculator
+I think we are 'now' fine to apply what Lars originally suggested to solve
+this issue.  There are still some difference between pre and post functions
+but for many usecases they no longer matter (if curious just look at what
+remains being called between them).
 
-1) scan_mask
-2) channel_mask
-3) mapping from channel mask to scan mask
-
-It could be done, but it's potentially nasty.  Even then we don't want to
-get into breaking out particular elements within a scan mask element so we'd
-end up providing all enabled channels (within each scan mask element)
-to the all consumers who are after any of them.
-
-We'd also have to expose the fused channel mask as well as scan mask
-to the driver which is not exactly elegant.
-
-That's why I'd suggest initial work uses scan mask as the fundamental
-unit of enable / disable, not the channel mask.
-
-Nothing stops then improving that later to deal with the channel mask
-fusion needed to work out the enables, but it's not something I'd do
-for step 1.
-
->=20
-> In the end, if we have a traditional driver with one channel per scan_ind=
-ex, channel_mask
-> should be equal to scan_mask. As we start to have more than one channel p=
-ointing to the
-> same scan_index, these masks will be different.
->=20
-> > It might be possible to make switch to using a channel mask but given t=
-he
-> > channel index is
-> > implicit that is going to be at least a little bit nasty.
-> >=20
-> > How much does it hurt to not have the ability to separately control cha=
-nnels
-> > within
-> > a given buffer element?   Userspace can enable / disable them but reali=
-ty is
-> > you'll =20
->=20
-> As long as we are "ok" with the extra amount of allocated memory, I think=
- it would work.
-> Though drivers will have to replicate the same data trough all the enable=
-d scan elements...
-
-Hmm. I think we are talking about different things.  Let me give an example.
-
-8 channels in scan mask element 0 size 8 bits, 8 channels in scan mask elem=
-ent 1
-
-Enable a channel in scan mask element 0 on consumer 0, and a
-different one on consumer 1.  If they were in different scan mask elements
-we'd deliver the first element only to consumer 0 and the second element
-only to consumer 1 (that's what the demux does for us)
-
-Here, in what I would suggest for the initial implementation, channel mask
-is not exposed at all to buffer setup op (update_scan_mask) - so we
-don't know which channels in that scan mask element are needed.
-Only answer, turn all 8 on.
-
-In this case we would deliver one 8 bit buffer element to each of the consu=
-mers
-but it would include the values for all 8 channels (but none from the 8 cha=
-nnels
-in our second scan mask element).
-
-This keeps the channel mask logic (for now) separate from the demux
-and the buffered capture setup logic, but at the cost of sampling channels
-no one cares about.  Note we often do that anyway as a lot of hardware does
-not have per channel enables, or is more efficient if we grab all the chann=
-els
-in a single transaction.
-
-Jonathan
-
->=20
-> - Nuno S=C3=A1
->=20
-> > get data for all the channels in a buffer element if any of them are en=
-abled.
-> >=20
-> > Given the demux will copy the whole element anyway (don't want to waste
-> > time doing
-> > masking inside an element), userspace might get these extra channels
-> > anyway if another
-> > consumer has enabled them.
-> >=20
-> > Jonathan
-> >=20
-> >  =20
-> > >
-> > > - Nuno S=C3=A1 =20
->=20
+> 
+> In any case, pending a reply, I'll send Lars' patch.
+> Even if we come to a different conclusion we have something to start with.
+> But, if the conclusion is that Lars' patch is a good solution now, it can be
+> applied.
+> 
+> 
+> > > Apologies for the breakage.
+> > > 
+> > > For the touch-part I don't see that code being executed.
+> > > 
+> > > But a question is: does the driver need to check for the currentmode?
+> > > Or is that something that the IIO core should do?
+> > >   
+> > > > And with this , the preenable fails on my side, because the current mode 
+> > > > is not yet switched to triggered.
+> > > > 
+> > > > I do remember adding this line with a specific reason. It may be related 
+> > > > to touchscreen operations, but I have to retest the touch with and 
+> > > > without this line and your patch.
+> > > > 
+> > > > Meanwhile, maybe you have any suggestions on how to fix the buffer ?   
+> > > 
+> > > Well, there was the question of whether iio_triggered_buffer_postenable()
+> > > [to
+> > > attach the pollfunc] makes sense to be called first/last in the old
+> > > at91_adc_buffer_postenable(), and the answer was 'last'; so then one
+> > > solution
+> > > was to move things to preenable().
+> > > 
+> > > Going back to the old patch isn't ideal, as the idea was to make the
+> > > position
+> > > of
+> > > iio_triggered_buffer_postenable() consistent across all drivers, so that it
+> > > can
+> > > be removed [and moved to the IIO core].
+> > > 
+> > > But if we need revert the patch, then I guess it's fine.
+> > > The only solution I see right now [for going forward], is to remove that
+> > > check
+> > > for 'currrentmode'
+> > >   
+> > > > This check here makes any sense to you ?  
+> > > 
+> > > I think Jonathan may have to add some input here, but I think that in this
+> > > current situation, checking 'currentmode' looks like is re-validating how
+> > > the
+> > > device was configured via the IIO framework.
+> > > I am not sure if it's needed or not.
+> > >   
+> > > > Thanks,
+> > > > Eugen
+> > > >   
+> > > > > > > I will try to test it , if I manage to apply it.
+> > > > > > > I can only test the ADC though because at this moment I do not have
+> > > > > > > a
+> > > > > > > touchscreen at disposal.
+> > > > > > > 
+> > > > > > > Meanwhile, the code looks good for me,
+> > > > > > > 
+> > > > > > > Reviewed-by: Eugen Hristev <eugen.hristev@microchip.com>
+> > > > > > > 
+> > > > > > > By the way, I do not know if my two pending patches on this driver
+> > > > > > > will
+> > > > > > > conflict or not.  
+> > > > > > 
+> > > > > > As this is a long term rework patch at heart, there isn't any
+> > > > > > particular
+> > > > > > rush as long as we don't loose it forever!
+> > > > > > 
+> > > > > > Thanks,
+> > > > > > 
+> > > > > > Jonathan
+> > > > > >   
+> > > > > > > Eugen
+> > > > > > >   
+> > > > > > > > Thanks,
+> > > > > > > > 
+> > > > > > > > Jonathan
+> > > > > > > >   
+> > > > > > > > > ---
+> > > > > > > > > 
+> > > > > > > > > This patchset continues discussion:
+> > > > > > > > > 
+> > > > > > > > > https://urldefense.com/v3/__https://lore.kernel.org/linux-iio/20191023082508.17583-1-alexandru.ardelean@analog.com/__;!!A3Ni8CS0y2Y!ql1bYiNMPFlz1twnCCAQpiEBvpzxR_VHAPL712rWFfwy2TSKjZ2UhGBoV7-29Syny6z0yg$
+> > > > > > > > > 
+> > > > > > > > > Apologies for the delay.
+> > > > > > > > > 
+> > > > > > > > > Changelog v1 -> v2:
+> > > > > > > > > * added patch 'iio: at91-sama5d2_adc: split
+> > > > > > > > > at91_adc_current_chan_is_touch()
+> > > > > > > > >     helper'
+> > > > > > > > > * renamed at91_adc_buffer_postenable() ->
+> > > > > > > > > at91_adc_buffer_preenable()
+> > > > > > > > >     - at91_adc_buffer_postenable() - now just calls
+> > > > > > > > >       iio_triggered_buffer_postenable() if the channel isn't the
+> > > > > > > > > touchscreen
+> > > > > > > > >       channel
+> > > > > > > > > * renamed at91_adc_buffer_predisable() ->
+> > > > > > > > > at91_adc_buffer_postdisable()
+> > > > > > > > >     - at91_adc_buffer_predisable() - now just calls
+> > > > > > > > >       iio_triggered_buffer_predisable() if the channel isn't the
+> > > > > > > > > touchscreen
+> > > > > > > > >       channel
+> > > > > > > > > 
+> > > > > > > > >    drivers/iio/adc/at91-sama5d2_adc.c | 31 +++++++++++++++----
+> > > > > > > > > ----
+> > > > > > > > > -------
+> > > > > > > > >    1 file changed, 15 insertions(+), 16 deletions(-)
+> > > > > > > > > 
+> > > > > > > > > diff --git a/drivers/iio/adc/at91-sama5d2_adc.c
+> > > > > > > > > b/drivers/iio/adc/at91-
+> > > > > > > > > sama5d2_adc.c
+> > > > > > > > > index a5c7771227d5..f2a74c47c768 100644
+> > > > > > > > > --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> > > > > > > > > +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> > > > > > > > > @@ -873,18 +873,24 @@ static int at91_adc_dma_start(struct
+> > > > > > > > > iio_dev
+> > > > > > > > > *indio_dev)
+> > > > > > > > >         return 0;
+> > > > > > > > >    }
+> > > > > > > > > 
+> > > > > > > > > +static bool at91_adc_current_chan_is_touch(struct iio_dev
+> > > > > > > > > *indio_dev)
+> > > > > > > > > +{
+> > > > > > > > > +     struct at91_adc_state *st = iio_priv(indio_dev);
+> > > > > > > > > +
+> > > > > > > > > +     return !!bitmap_subset(indio_dev->active_scan_mask,
+> > > > > > > > > +                            &st->touch_st.channels_bitmask,
+> > > > > > > > > +                            AT91_SAMA5D2_MAX_CHAN_IDX + 1);
+> > > > > > > > > +}
+> > > > > > > > > +
+> > > > > > > > >    static int at91_adc_buffer_postenable(struct iio_dev
+> > > > > > > > > *indio_dev)
+> > > > > > > > >    {
+> > > > > > > > >         int ret;
+> > > > > > > > >         struct at91_adc_state *st = iio_priv(indio_dev);
+> > > > > > > > > 
+> > > > > > > > >         /* check if we are enabling triggered buffer or the
+> > > > > > > > > touchscreen
+> > > > > > > > > */
+> > > > > > > > > -     if (bitmap_subset(indio_dev->active_scan_mask,
+> > > > > > > > > -                       &st->touch_st.channels_bitmask,
+> > > > > > > > > -                       AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> > > > > > > > > -             /* touchscreen enabling */
+> > > > > > > > > +     if (at91_adc_current_chan_is_touch(indio_dev))
+> > > > > > > > >                 return at91_adc_configure_touch(st, true);
+> > > > > > > > > -     }
+> > > > > > > > > +
+> > > > > > > > >         /* if we are not in triggered mode, we cannot enable the
+> > > > > > > > > buffer.
+> > > > > > > > > */
+> > > > > > > > >         if (!(indio_dev->currentmode &
+> > > > > > > > > INDIO_ALL_TRIGGERED_MODES))
+> > > > > > > > >                 return -EINVAL;
+> > > > > > > > > @@ -906,12 +912,9 @@ static int
+> > > > > > > > > at91_adc_buffer_predisable(struct
+> > > > > > > > > iio_dev *indio_dev)
+> > > > > > > > >         u8 bit;
+> > > > > > > > > 
+> > > > > > > > >         /* check if we are disabling triggered buffer or the
+> > > > > > > > > touchscreen
+> > > > > > > > > */
+> > > > > > > > > -     if (bitmap_subset(indio_dev->active_scan_mask,
+> > > > > > > > > -                       &st->touch_st.channels_bitmask,
+> > > > > > > > > -                       AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> > > > > > > > > -             /* touchscreen disable */
+> > > > > > > > > +     if (at91_adc_current_chan_is_touch(indio_dev))
+> > > > > > > > >                 return at91_adc_configure_touch(st, false);
+> > > > > > > > > -     }
+> > > > > > > > > +
+> > > > > > > > >         /* if we are not in triggered mode, nothing to do here
+> > > > > > > > > */
+> > > > > > > > >         if (!(indio_dev->currentmode &
+> > > > > > > > > INDIO_ALL_TRIGGERED_MODES))
+> > > > > > > > >                 return -EINVAL;
+> > > > > > > > > @@ -1886,14 +1889,10 @@ static __maybe_unused int
+> > > > > > > > > at91_adc_resume(struct
+> > > > > > > > > device *dev)
+> > > > > > > > >                 return 0;
+> > > > > > > > > 
+> > > > > > > > >         /* check if we are enabling triggered buffer or the
+> > > > > > > > > touchscreen
+> > > > > > > > > */
+> > > > > > > > > -     if (bitmap_subset(indio_dev->active_scan_mask,
+> > > > > > > > > -                       &st->touch_st.channels_bitmask,
+> > > > > > > > > -                       AT91_SAMA5D2_MAX_CHAN_IDX + 1)) {
+> > > > > > > > > -             /* touchscreen enabling */
+> > > > > > > > > +     if (at91_adc_current_chan_is_touch(indio_dev))
+> > > > > > > > >                 return at91_adc_configure_touch(st, true);
+> > > > > > > > > -     } else {
+> > > > > > > > > +     else
+> > > > > > > > >                 return at91_adc_configure_trigger(st->trig,
+> > > > > > > > > true);
+> > > > > > > > > -     }
+> > > > > > > > > 
+> > > > > > > > >         /* not needed but more explicit */
+> > > > > > > > >         return 0;  
 

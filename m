@@ -2,155 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A0C1C2DAA
-	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 17:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADA881C2DEA
+	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 18:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728725AbgECPvL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 May 2020 11:51:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728207AbgECPvL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 May 2020 11:51:11 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 584EF206EB;
-        Sun,  3 May 2020 15:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588521070;
-        bh=MoYkt8nJNSYHxeNV4ctvv8LFowIxDvxKKgf3MIzhfcA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hiDzOyLI23KoKwV6kZszpJJDvJURTVrqGvMNbf4WeHS9st6i18dVI0EmLTcd7qFMN
-         lrSXhUvBnf1DfoNUqWa9SubjBBBoc0eHDY0Sg6eJnfL76eudfLBhuwfBi6Wa+fh/FI
-         1aMoaOElwL6H9giB6XBPqUh9U6Cluvorc7Dp9QJU=
-Date:   Sun, 3 May 2020 16:51:05 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v6 0/6] iio: core,buffer: re-organize chardev creation
-Message-ID: <20200503165105.74047af8@archlinux>
-In-Reply-To: <20200427131100.50845-1-alexandru.ardelean@analog.com>
-References: <20200427131100.50845-1-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728665AbgECQZd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 May 2020 12:25:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728002AbgECQZd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 12:25:33 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF13C061A0E;
+        Sun,  3 May 2020 09:25:32 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id z1so4346920pfn.3;
+        Sun, 03 May 2020 09:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
+        b=uHgi4jckBb1RaPiRnyys/tkc39VdwZl7c3o+IQlNjugZL8FZYQn75n77dVAU+bCjLs
+         9eq7vhb99S00JA58zhzo13ohJMlwEbJdqDhuTNmc5DU689eE2JcVK+RF0JiWICCLhu0A
+         GBe6DRYG28uXIsb1t/ZrAvcbvJl3sIECsWP8CQl+yhrMfPsWqemHwMPB5zCnyQ0nwK/C
+         WCifDlVGNcjT5mugw7i1kzvwXWF7hVJt5rkIiplYpFSCYtMKxC+qxXUUgbioH3kuJz7D
+         M6yqH+t3dFiLUWQjFrbF/2/464jS+nZBjqD+pa0QWNy2bomD6btiMSyLt0X6kuEkYcrV
+         Sx+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
+        b=Zxqoe0thq5IvgKsDln3YVt1hmDG+YmqsiMUgKXQy5dW89gn9VjT5Q3wZPInZw44oRC
+         Sy7onZBaSXu0FF1F1HKtUoT3ygOuRuUS99vxEl6eiIAQbUk2CLst0rPgd2JhMQA2lRyV
+         Ry9W472ySzCqqThCcgbDa/uncVSpLNJC7XgjnMOlDYA7v3chRByZWQh+5jelSAbqqQMT
+         E4PqTpaXsQcyrOW+Id9nQFUnSljPEswPC13SRfqWTN3yfE6++U/YcPilCJYD5gZdqR7a
+         2vWjtBYsUC+CDQu44KDn/d3/2S0qg2lfRpAGY2yYSoTP5/U77q2XYvG/SdE+YYSFdb+v
+         DOYA==
+X-Gm-Message-State: AGi0PuYDHjnM98xf4V8rrBJ1FJ6nCh3EzHf3OIxb4T2bpvf3fi/go+Ln
+        Mn+pglBtX/yoJRNfqE0kCvTb5bpg4Pj+DSYo+3I=
+X-Google-Smtp-Source: APiQypIdkxCKDQcOl5esMtYineYHmnfKgOTXof+YtrxX0N/0Q0zcOtHVkEZH2obVS8ilArA2woICWcXUSh4qFjhVf9I=
+X-Received: by 2002:a63:1c1:: with SMTP id 184mr13829522pgb.203.1588523132175;
+ Sun, 03 May 2020 09:25:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200428172923.567806-1-hdegoede@redhat.com> <20200428172923.567806-10-hdegoede@redhat.com>
+ <20200503122237.4af34181@archlinux>
+In-Reply-To: <20200503122237.4af34181@archlinux>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 3 May 2020 19:25:20 +0300
+Message-ID: <CAHp75Vdt+shL3yXHfct17DUHdRBBrCzC4vBjQL8YHbimFefV7A@mail.gmail.com>
+Subject: Re: [PATCH v3 10/11] iio: light: cm32181: Add support for parsing
+ CPM0 and CPM1 ACPI tables
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Apr 2020 16:10:54 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Sun, May 3, 2020 at 2:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Tue, 28 Apr 2020 19:29:22 +0200
+> Hans de Goede <hdegoede@redhat.com> wrote:
 
-> The main intent is to be able to add more chardevs per IIO device, one
-> for each buffer. To get there, some rework is needed.
-> This tries to re-organize the init of the chardev.
+...
 
-Hmm. I'd like this set to sit and ideally gather a few acks before
-I move ahead with it.
+> > This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
+> > Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
+>
+> I assume it's far too much to hope this CPM0 / CPM1 stuff is actually defined
+> in a spec anywhere?
+>
+> There are standard way of adding vendor specific data blobs to ACPI and this
+> isn't one of them (unless I'm missing something).  People need to beat
+> up vendors earlier about this stuff.
+>
+> Grumble over...
+>
+> Code looks fine to me, but I'd like an ACPI review ideally.
 
-The protections against problems around remove have always been
-somewhat fiddly and I suspect don't cover everything.
+ACPI didn't cover embedded world and has the following issues
+a) where it should be strict (like how many I2CSerialBus() resources
+can be given and for what type of devices, etc), it doesn't
+b) they need to provides better validation tools, but they didn't
+c) it's still windows oriented :-(
 
-I'm fairly sure taking the exist lock is 'sufficient' but I'm not
-actually sure it's necessary.   We only otherwise take it for
-place where the inkern interface is in use so we can race
-against removal of a provider driver.
+Above is custom extension on how to add device properties (and note,
+we have now _DSD() and still we have some M$ way of thinking how to
+use them).
 
-We don't have such heavy weight protections in the buffer code
-and I'll be honest I can't remember why. Original patch mentions
-that it was about avoiding taking additional new references to the
-struct iio_dev.  We aren't doing that as such here so perhaps
-we don't need to take the lock..
+Since the above approach is in the wild, I'm afraid we have not many
+possibilities here (each of them with own problems):
+1/ shout at vendors to use ACPI properly and simple don't by broken
+hardware (rather firmware)
+2/ try to support custom changes (may lead to several approaches for
+the same thing)
+3/ create a lot of board files (something in between 1/ and 2/)
 
-Lars, I suspect you may have been involved in that stuff originally
-so I'd appreciate you taking a quick look at this if you have
-time!
+As a result:
+1/ is obviously a best one, but I think it's an utopia.
+2/ in practice we don't have many deviations (luckily OEMs are quite
+lazy to modify reference BIOSes and often reuse existing approaches)
+3/ may not work, because on cheap laptops the means of distinguishing
+them (like DMI strings) may also been broken.
 
-Thanks,
-
-Jonathan
-
-> 
->  
-> Changelog v5 -> v6:
-> - patch 'iio: core: register chardev only if needed'
->   - sort file_operations fields for iio_event_fileops
-> - patch 'iio: buffer,event: duplicate chardev creation for buffers & events'
->   - fixed-up '**/' -> '*/' for 2 block comments
->   - sorted file_operations for iio_buffer_fileops, after move
->   - removed 'indio_dev->chrdev = NULL' on IIO device unregister
->   - added comment about 'indio_dev->info' NULL check in
->     iio_device_event_ioctl()
-> - patch 'iio: core: add simple centralized mechanism for ioctl() handlers'
->   - re-using lock 'indio_dev->info_exist_lock' for new ioctl register
->     mechanism in iio_device_ioctl()
->   - simplified exit condition from the loop; only need to check
->     `ret != IIO_IOCTL_UNHANDLED` to continue looping;
->     everything else is just return/break
-> - patch 'iio: core: use new common ioctl() mechanism'
->   - the comment for 'indio_dev->info' NULL check is being moved here to
->     highlight why the null-check is being removed; or where it's being
->     moved
-> 
-> Changelog v4 -> v5:
-> - dropped patch 'iio: Use an early return in iio_device_alloc to simplify code.'
->   is applied upstream
-> 
-> Changelog v3 -> v4:
-> - added patch [1] 'iio: Use an early return in iio_device_alloc to simplify code.'
->   it's main purpose is so that this patch applies:
->      [2]'iio: core: add simple centralized mechanism for ioctl() handlers'
->   depending on the final version of patch [1], patch [2] needs some
->   minor fixup
-> - added patch 'iio: core,buffer: wrap iio_buffer_put() call into iio_buffers_put()'
-> - patch 'iio: core: register buffer fileops only if buffer present'
->   is now: 'iio: core: register chardev only if needed'
-> - dropped 'iio: buffer: move sysfs alloc/free in industrialio-buffer.c'
->   it's likely we won't be doing this patch anymore
-> - patches:
->     'iio: buffer: move iio buffer chrdev in industrialio-buffer.c'
->     'iio: event: move event-only chardev in industrialio-event.c'
->   have been merged into 'iio: buffer,event: duplicate chardev creation for buffers & events'
->   since now, the logic is a bit different, and 'indio_dev->chrdev' is
->   now a reference to either the buffer's chrdev & or the events-only
->   chrdev
-> - added simple mechanism to register ioctl() handlers for IIO device
->   which is currently used only by events mechanism
-> 
-> Changelog v2 -> v3:
-> * removed double init in
->   'iio: event: move event-only chardev in industrialio-event.c'
-> 
-> Changelog v1 -> v2:
-> * re-reviewed some exit-paths and cleanup some potential leaks on those
->   exit paths:
->   - for 'iio: buffer: move iio buffer chrdev in industrialio-buffer.c'
->     add iio_device_buffers_put() helper and calling iio_buffers_uninit()
->     on device un-regsiter
->   - for 'move sysfs alloc/free in industrialio-buffer.c'
->     call 'iio_buffer_free_sysfs_and_mask()' on exit path if
->     cdev_device_add() fails
->   - for 'move event-only chardev in industrialio-event.c'
->     check if event_interface is NULL in
->     iio_device_unregister_event_chrdev()
-> 
-> Alexandru Ardelean (6):
->   iio: buffer: add back-ref from iio_buffer to iio_dev
->   iio: core,buffer: wrap iio_buffer_put() call into iio_buffers_put()
->   iio: core: register chardev only if needed
->   iio: buffer,event: duplicate chardev creation for buffers & events
->   iio: core: add simple centralized mechanism for ioctl() handlers
->   iio: core: use new common ioctl() mechanism
-> 
->  drivers/iio/iio_core.h            |  29 +++++---
->  drivers/iio/industrialio-buffer.c | 102 ++++++++++++++++++++++++--
->  drivers/iio/industrialio-core.c   | 116 +++++++++++++-----------------
->  drivers/iio/industrialio-event.c  | 100 +++++++++++++++++++++++++-
->  include/linux/iio/buffer_impl.h   |  10 +++
->  include/linux/iio/iio.h           |   8 +--
->  6 files changed, 276 insertions(+), 89 deletions(-)
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko

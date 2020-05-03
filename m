@@ -2,120 +2,199 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADA881C2DEA
-	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 18:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9BE91C2E25
+	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 19:06:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728665AbgECQZd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 May 2020 12:25:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44838 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728002AbgECQZd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 12:25:33 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF13C061A0E;
-        Sun,  3 May 2020 09:25:32 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id z1so4346920pfn.3;
-        Sun, 03 May 2020 09:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
-        b=uHgi4jckBb1RaPiRnyys/tkc39VdwZl7c3o+IQlNjugZL8FZYQn75n77dVAU+bCjLs
-         9eq7vhb99S00JA58zhzo13ohJMlwEbJdqDhuTNmc5DU689eE2JcVK+RF0JiWICCLhu0A
-         GBe6DRYG28uXIsb1t/ZrAvcbvJl3sIECsWP8CQl+yhrMfPsWqemHwMPB5zCnyQ0nwK/C
-         WCifDlVGNcjT5mugw7i1kzvwXWF7hVJt5rkIiplYpFSCYtMKxC+qxXUUgbioH3kuJz7D
-         M6yqH+t3dFiLUWQjFrbF/2/464jS+nZBjqD+pa0QWNy2bomD6btiMSyLt0X6kuEkYcrV
-         Sx+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=N3PY0NJ7YL1BNARD0oetT7jynu4pCokp1u8ZAvx5dx4=;
-        b=Zxqoe0thq5IvgKsDln3YVt1hmDG+YmqsiMUgKXQy5dW89gn9VjT5Q3wZPInZw44oRC
-         Sy7onZBaSXu0FF1F1HKtUoT3ygOuRuUS99vxEl6eiIAQbUk2CLst0rPgd2JhMQA2lRyV
-         Ry9W472ySzCqqThCcgbDa/uncVSpLNJC7XgjnMOlDYA7v3chRByZWQh+5jelSAbqqQMT
-         E4PqTpaXsQcyrOW+Id9nQFUnSljPEswPC13SRfqWTN3yfE6++U/YcPilCJYD5gZdqR7a
-         2vWjtBYsUC+CDQu44KDn/d3/2S0qg2lfRpAGY2yYSoTP5/U77q2XYvG/SdE+YYSFdb+v
-         DOYA==
-X-Gm-Message-State: AGi0PuYDHjnM98xf4V8rrBJ1FJ6nCh3EzHf3OIxb4T2bpvf3fi/go+Ln
-        Mn+pglBtX/yoJRNfqE0kCvTb5bpg4Pj+DSYo+3I=
-X-Google-Smtp-Source: APiQypIdkxCKDQcOl5esMtYineYHmnfKgOTXof+YtrxX0N/0Q0zcOtHVkEZH2obVS8ilArA2woICWcXUSh4qFjhVf9I=
-X-Received: by 2002:a63:1c1:: with SMTP id 184mr13829522pgb.203.1588523132175;
- Sun, 03 May 2020 09:25:32 -0700 (PDT)
+        id S1728830AbgECRFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 May 2020 13:05:50 -0400
+Received: from relay2-d.mail.gandi.net ([217.70.183.194]:58493 "EHLO
+        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728753AbgECRFu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 13:05:50 -0400
+X-Originating-IP: 195.189.32.242
+Received: from pc.localdomain (unknown [195.189.32.242])
+        (Authenticated sender: contact@artur-rojek.eu)
+        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 9FC9640007;
+        Sun,  3 May 2020 17:05:44 +0000 (UTC)
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Heiko Stuebner <heiko@sntech.de>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Artur Rojek <contact@artur-rojek.eu>
+Subject: [PATCH v6 1/7] dt-bindings: iio/adc: Convert ingenic-adc docs to YAML.
+Date:   Sun,  3 May 2020 19:14:45 +0200
+Message-Id: <20200503171451.44034-1-contact@artur-rojek.eu>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200428172923.567806-1-hdegoede@redhat.com> <20200428172923.567806-10-hdegoede@redhat.com>
- <20200503122237.4af34181@archlinux>
-In-Reply-To: <20200503122237.4af34181@archlinux>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 3 May 2020 19:25:20 +0300
-Message-ID: <CAHp75Vdt+shL3yXHfct17DUHdRBBrCzC4vBjQL8YHbimFefV7A@mail.gmail.com>
-Subject: Re: [PATCH v3 10/11] iio: light: cm32181: Add support for parsing
- CPM0 and CPM1 ACPI tables
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 3, 2020 at 2:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Tue, 28 Apr 2020 19:29:22 +0200
-> Hans de Goede <hdegoede@redhat.com> wrote:
+Convert the textual documentation of Device Tree bindings for the
+Ingenic JZ47xx SoCs ADC controller to YAML.
 
-...
+The `interrupts` property is now explicitly listed and marked as
+required. While missing from the previous textual documentation, this
+property has been used with all the boards which probe this driver.
 
-> > This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
-> > Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
->
-> I assume it's far too much to hope this CPM0 / CPM1 stuff is actually defined
-> in a spec anywhere?
->
-> There are standard way of adding vendor specific data blobs to ACPI and this
-> isn't one of them (unless I'm missing something).  People need to beat
-> up vendors earlier about this stuff.
->
-> Grumble over...
->
-> Code looks fine to me, but I'd like an ACPI review ideally.
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+Tested-by: Paul Cercueil <paul@crapouillou.net>
+---
 
-ACPI didn't cover embedded world and has the following issues
-a) where it should be strict (like how many I2CSerialBus() resources
-can be given and for what type of devices, etc), it doesn't
-b) they need to provides better validation tools, but they didn't
-c) it's still windows oriented :-(
+Changes:
 
-Above is custom extension on how to add device properties (and note,
-we have now _DSD() and still we have some M$ way of thinking how to
-use them).
+v6: new patch
 
-Since the above approach is in the wild, I'm afraid we have not many
-possibilities here (each of them with own problems):
-1/ shout at vendors to use ACPI properly and simple don't by broken
-hardware (rather firmware)
-2/ try to support custom changes (may lead to several approaches for
-the same thing)
-3/ create a lot of board files (something in between 1/ and 2/)
+ .../bindings/iio/adc/ingenic,adc.txt          | 49 ------------
+ .../bindings/iio/adc/ingenic,adc.yaml         | 74 +++++++++++++++++++
+ 2 files changed, 74 insertions(+), 49 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
 
-As a result:
-1/ is obviously a best one, but I think it's an utopia.
-2/ in practice we don't have many deviations (luckily OEMs are quite
-lazy to modify reference BIOSes and often reuse existing approaches)
-3/ may not work, because on cheap laptops the means of distinguishing
-them (like DMI strings) may also been broken.
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
+deleted file mode 100644
+index cd9048cf9dcf..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
++++ /dev/null
+@@ -1,49 +0,0 @@
+-* Ingenic JZ47xx ADC controller IIO bindings
+-
+-Required properties:
+-
+-- compatible: Should be one of:
+-  * ingenic,jz4725b-adc
+-  * ingenic,jz4740-adc
+-  * ingenic,jz4770-adc
+-- reg: ADC controller registers location and length.
+-- clocks: phandle to the SoC's ADC clock.
+-- clock-names: Must be set to "adc".
+-- #io-channel-cells: Must be set to <1> to indicate channels are selected
+-  by index.
+-
+-ADC clients must use the format described in iio-bindings.txt, giving
+-a phandle and IIO specifier pair ("io-channels") to the ADC controller.
+-
+-Example:
+-
+-#include <dt-bindings/iio/adc/ingenic,adc.h>
+-
+-adc: adc@10070000 {
+-	compatible = "ingenic,jz4740-adc";
+-	#io-channel-cells = <1>;
+-
+-	reg = <0x10070000 0x30>;
+-
+-	clocks = <&cgu JZ4740_CLK_ADC>;
+-	clock-names = "adc";
+-
+-	interrupt-parent = <&intc>;
+-	interrupts = <18>;
+-};
+-
+-adc-keys {
+-	...
+-	compatible = "adc-keys";
+-	io-channels = <&adc INGENIC_ADC_AUX>;
+-	io-channel-names = "buttons";
+-	...
+-};
+-
+-battery {
+-	...
+-	compatible = "ingenic,jz4740-battery";
+-	io-channels = <&adc INGENIC_ADC_BATTERY>;
+-	io-channel-names = "battery";
+-	...
+-};
+diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+new file mode 100644
+index 000000000000..e9c46fff840a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+@@ -0,0 +1,74 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2019-2020 Artur Rojek
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Ingenic JZ47xx ADC controller IIO bindings
++
++maintainers:
++  - Artur Rojek <contact@artur-rojek.eu>
++
++description: >
++  Industrial I/O subsystem bindings for ADC controller found in
++  Ingenic JZ47xx SoCs.
++
++  ADC clients must use the format described in iio-bindings.txt, giving
++  a phandle and IIO specifier pair ("io-channels") to the ADC controller.
++
++properties:
++  compatible:
++    enum:
++      - ingenic,jz4725b-adc
++      - ingenic,jz4740-adc
++      - ingenic,jz4770-adc
++
++  '#io-channel-cells':
++    const: 1
++    description:
++      Must be set to <1> to indicate channels are selected by index.
++
++  reg:
++    items:
++      - description: ADC controller registers location and length.
++
++  clocks:
++    items:
++      - description: phandle to the SoC's ADC clock.
++
++  clock-names:
++    items:
++      - const: adc
++
++  interrupts:
++    items:
++      - description: IRQ line for the ADC.
++
++required:
++  - compatible
++  - '#io-channel-cells'
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/jz4740-cgu.h>
++    #include <dt-bindings/iio/adc/ingenic,adc.h>
++
++    adc@10070000 {
++            compatible = "ingenic,jz4740-adc";
++            #io-channel-cells = <1>;
++
++            reg = <0x10070000 0x30>;
++
++            clocks = <&cgu JZ4740_CLK_ADC>;
++            clock-names = "adc";
++
++            interrupt-parent = <&intc>;
++            interrupts = <18>;
++    };
 -- 
-With Best Regards,
-Andy Shevchenko
+2.26.2
+

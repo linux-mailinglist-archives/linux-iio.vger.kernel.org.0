@@ -2,102 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 629201C2CFF
-	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 16:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC4DD1C2D1F
+	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 16:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728604AbgECOVQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 3 May 2020 10:21:16 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:49341 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728277AbgECOVQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 10:21:16 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-195-H0ScGf_APEKaLWptspzlKw-1; Sun, 03 May 2020 15:21:12 +0100
-X-MC-Unique: H0ScGf_APEKaLWptspzlKw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Sun, 3 May 2020 15:21:11 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Sun, 3 May 2020 15:21:11 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Jonathan Cameron' <jic23@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-CC:     "kamel.bouhara@bootlin.com" <kamel.bouhara@bootlin.com>,
-        "gwendal@chromium.org" <gwendal@chromium.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "david@lechnology.com" <david@lechnology.com>,
-        "felipe.balbi@linux.intel.com" <felipe.balbi@linux.intel.com>,
-        "fabien.lahoudere@collabora.com" <fabien.lahoudere@collabora.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "syednwaris@gmail.com" <syednwaris@gmail.com>,
-        "patrick.havelange@essensium.com" <patrick.havelange@essensium.com>,
-        "fabrice.gasnier@st.com" <fabrice.gasnier@st.com>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        "alexandre.torgue@st.com" <alexandre.torgue@st.com>
-Subject: RE: [PATCH 0/4] Introduce the Counter character device interface
-Thread-Topic: [PATCH 0/4] Introduce the Counter character device interface
-Thread-Index: AQHWIVUDUyU0PU/R2k6dJAMe78u4OaiWaHyQ
-Date:   Sun, 3 May 2020 14:21:11 +0000
-Message-ID: <b2d51e3f9dfb4dd78156b2e945607e8d@AcuMS.aculab.com>
+        id S1728685AbgECOwv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 May 2020 10:52:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41774 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728002AbgECOwv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 May 2020 10:52:51 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 918FD206F0;
+        Sun,  3 May 2020 14:52:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588517571;
+        bh=xXDUieDuCzRqcEpqQa4OH8QkYBoUMGQ7uE6Ln2swCE8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BwzIx5JNlgm+xPpdHNmK6Ug/5+tkTXai709h5BlOsaYVzJ70JQUz02hooslHlBOpm
+         cvowAwVs5jIu5veh1ttXQnvWEGfN4Feo4hghFrLb49giSYHDa16woOeomwk/qq32g5
+         L/RSkXW+YBlKnRkpnbcJgJIo7mU7ZHX4hiwzt2Zo=
+Date:   Sun, 3 May 2020 15:52:45 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     David Lechner <david@lechnology.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, felipe.balbi@linux.intel.com,
+        fabien.lahoudere@collabora.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+Subject: Re: [PATCH 0/4] Introduce the Counter character device interface
+Message-ID: <20200503155245.08916211@archlinux>
+In-Reply-To: <a6402ade-648d-6e49-85cd-a7fd7f58fd1d@lechnology.com>
 References: <cover.1588176662.git.vilhelm.gray@gmail.com>
- <20200503151314.2ac1fc2e@archlinux>
-In-Reply-To: <20200503151314.2ac1fc2e@archlinux>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        <a6402ade-648d-6e49-85cd-a7fd7f58fd1d@lechnology.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron
-> Sent: 03 May 2020 15:13
-...
-> > The following are some questions I have about this patchset:
-> >
-> > 1. Should enums be used to represent standard counter component states
-> >    (e.g. COUNTER_SIGNAL_LOW), or would these be better defined as int?
-> >
-> >    These standard counter component states are defined in the
-> >    counter-types.h file and serve as constants used by counter device
-> >    drivers and Counter subsystem components in order to ensure a
-> >    consistent interface.
-> >
-> >    My concern is whether enum constants will cause problems when passed
-> >    to userspace via the Counter character device ioctl calls. Along the
-> >    same lines is whether the C bool datatype is safe to pass as well,
-> >    given that it is a more modern C datatype.
+On Wed, 29 Apr 2020 15:21:05 -0500
+David Lechner <david@lechnology.com> wrote:
+
+> On 4/29/20 1:11 PM, William Breathitt Gray wrote:
+> > Over the past couple years we have noticed some shortcomings with the
+> > Counter sysfs interface. Although useful in the majority of situations,
+> > there are certain use-cases where interacting through sysfs attributes
+> > can become cumbersome and inefficient. A desire to support more advanced
+> > functionality such as timestamps, multi-axis positioning tables, and
+> > other such latency-sensitive applications, has motivated a reevaluation
+> > of the Counter subsystem. I believe a character device interface will be
+> > helpful for this more niche area of counter device use.  
 > 
-> For enums, I'd pass them as integers.
+> Nice to see some progress being made. :-)
 > 
-> Bool is probably fine either way.
+> > 
+> > Interaction with Counter character devices occurs via ioctl commands.
+> > This allows userspace applications to access and set counter data using
+> > native C datatypes rather than working through string translations.  
+> 
+> For most aspects of the counter subsystem, this is not an issue since
+> configuring a counter is not a time-sensitive operation. Instead of
+> ioctls, I was expecting to just be able to read the character device
+> and receive counter events or poll to wait for events similar to how
+> the input subsystem works or how buffers work in the iio subsystem.
+> 
+> I'm afraid I don't really see much use in having ioctls that do
+> exactly what sysfs already does. And my intuition tells me that the
+> extra work needed to maintain it will probably cost more than any
+> benefit gained. (Maybe other have a different experience that leads
+> to a different conclusion?)
 
-Always use fixed size types in any API structures.
-Ensure that fields are always on their natural boundaries.
+I agree with David here.  The ioctls are currently doing what could have
+been done nicely with a userspace library.  Moving away from the string
+based internal interface is a good move to my mind, because it ensures
+consistency in they sysfs interface and provides for in kernel users
+when they make sense.  The step of then using that to simplify providing
+an IOCTL interface to do the same things doesn't seem particularly useful.
+So what do we gain?
 
-So no enums and no bools.
-It may even be worth using uint64_t for any userspace pointers.
-
-At some point you'll live to regret anything else.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+Jonathan

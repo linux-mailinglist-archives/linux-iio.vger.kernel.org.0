@@ -2,210 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 193011C2B66
-	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 12:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B02661C2B7F
+	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 12:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728018AbgECKiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 May 2020 06:38:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45440 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727916AbgECKiM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 May 2020 06:38:12 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1975A20757;
-        Sun,  3 May 2020 10:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588502291;
-        bh=eMxME0+Eg46hELjOnYbsaxHgLKs+NXA38J0XX9hpq/o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=i4DKc0Hbip0XlgKqqKBe+kxGCpPuDxjngVTgqteHl5EN74mqSO98s6HvSu9y0vmWi
-         BWttfHLlyJT/6+CqQXAbZcAHbKLf+OJkhxMoAKtMSw+/Yl3xkIofRGAX7+shmQX3KR
-         qQmtHEaFCjagRLd6E6ftePGT5ZLfWF1zjQ56A0P8=
-Date:   Sun, 3 May 2020 11:38:07 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rachna@ti.com>, <mugunthanvnm@ti.com>, <vigneshr@ti.com>,
-        <afd@ti.com>
-Subject: Re: [PATCH 3/3] iio: adc: ti_am335x_adc: convert rest of probe to
- devm_ functions
-Message-ID: <20200503113807.07c5237e@archlinux>
-In-Reply-To: <20200428111430.71723-3-alexandru.ardelean@analog.com>
-References: <20200428111430.71723-1-alexandru.ardelean@analog.com>
-        <20200428111430.71723-3-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728207AbgECKz3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 May 2020 06:55:29 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:36653 "EHLO
+        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728205AbgECKz2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 06:55:28 -0400
+Received: from pro2.mail.ovh.net (unknown [10.108.16.246])
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 9EDD45092F0B;
+        Sun,  3 May 2020 12:55:24 +0200 (CEST)
+Received: from localhost (89.70.31.203) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 3 May 2020
+ 12:55:24 +0200
+Date:   Sun, 3 May 2020 12:53:51 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH 1/6] iio: chemical: scd30: add core driver
+Message-ID: <20200503105351.GA2712@arch>
+References: <20200422141135.86419-1-tomasz.duszynski@octakon.com>
+ <20200422141135.86419-2-tomasz.duszynski@octakon.com>
+ <20200425195534.2ac91fe6@archlinux>
+ <20200428075101.GA6908@arch>
+ <20200502173738.66dbc888@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20200502173738.66dbc888@archlinux>
+X-Originating-IP: [89.70.31.203]
+X-ClientProxiedBy: DAG2EX2.emp2.local (172.16.2.12) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 11753269131200519250
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrjedvgdefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfhfgggtuggjihesthdtredttddtjeenucfhrhhomhepvfhomhgrshiiucffuhhsiiihnhhskhhiuceothhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtheevtefhffduteejfedtkeeuheejgeejvdetfffgveekffefgeffueeghefgjeenucfkpheptddrtddrtddrtddpkeelrdejtddrfedurddvtdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheprhhosghhodgutheskhgvrhhnvghlrdhorhhg
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Apr 2020 14:14:30 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Sat, May 02, 2020 at 05:37:38PM +0100, Jonathan Cameron wrote:
+> On Tue, 28 Apr 2020 09:51:01 +0200
+> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+>
+> > On Sat, Apr 25, 2020 at 07:55:34PM +0100, Jonathan Cameron wrote:
+> > > On Wed, 22 Apr 2020 16:11:30 +0200
+> > > Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+> > >
+> > > > Add Sensirion SCD30 carbon dioxide core driver.
+> > > >
+> > > > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > > Hi Tomasz
+> > >
+> > > As you've probably guessed the big questions are around the custom ABI.
+> > >
+> > > Few other things inline.
+> > >
+> > > Jonathan
+> > >
+> ...
+>
+> > > > +static int scd30_read_meas(struct scd30_state *state)
+> > > > +{
+> > > > +	int i, ret;
+> > > > +
+> > > > +	ret = scd30_command(state, CMD_READ_MEAS, 0, (char *)state->meas,
+> > > > +			    sizeof(state->meas));
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
+> > > > +		state->meas[i] = scd30_float_to_fp(state->meas[i]);
+> > >
+> > > We have previously discussed proving direct floating point channel types
+> > > for the rare devices that actually provide floating point data in
+> > > a standard format.
+> > >
+> > > I'm happy to revisit that if you would like to.
+> > >
+> >
+> > Thanks for reminding me :).
+> >
+> > In that case I admit that some float helper in iio would be a good thing to
+> > have. Especially that there will be at least 2 sensors using it.
+> >
+> > I'd work on that after this driver makes it into the tree.
+> >
+> > How does it sound?
+>
+> The problem is that, if we do it in that order we have ABI for this
+> device that we should really maintain.  We can probably get away
+> with changing it on the basis the channel type is self describing anyway
+> but it's not ideal.
+>
+> So probably fine but not best practice...
+>
 
-> This change converts the rest of the probe to use devm_ functions.
-> Consequently this allows us to remove the remove hook.
->=20
-> It tries to preserve the initial order or probe & remove.
-> The devm_add_action() call hooks the cleanup routine (what's needed still
-> for the remove part).
-> If that doesn't work the DMA channel is cleaned up manually inside the
-> probe hook. This done (like this) because the remove hook has a peculiar
-> cleanup that tries to restore a step-mask, and that only seems to happen =
-on
-> the remove hook, and not in any probe error-cleanup paths.
->=20
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+While I generally agree I can also easily imagine inclusion delay caused
+by that change. I need to give some more though to this.
 
-First two patches are fine, but this last one is (as you've noted) more
-complex.  I'd like to cleanup the complexity rather than papering over
-it.
+> >
+> > > > +
+> > > > +	/*
+> > > > +	 * Accuracy within calibrated operating range is
+> > > > +	 * +-(30ppm + 3% measurement) so fractional part does
+> > > > +	 * not add real value. Moreover, ppm is an integer.
+> > > > +	 */
+> > > > +	state->meas[CONC] /= 100;
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static int scd30_wait_meas_irq(struct scd30_state *state)
+> > > > +{
+> > > > +	int ret, timeout = msecs_to_jiffies(state->meas_interval * 1250);
+> > > > +
+> > > > +	reinit_completion(&state->meas_ready);
+> > > > +	enable_irq(state->irq);
+> > >
+> > > So this is just 'grab the next one'?
+> > >
+> >
+> > Yes, grab the fresh one. Moreover enabling interrupts only when necessary can
+> > limit pointless buss traffic. Reason being irq is acknowledged by reading data
+> > from sensor.
+> >
+>
+> As mentioned below, it seems to me that we should really be starting this
+> device only when we want a reading.  Hence any interrupt (subject to possible
+> races) should be valid.  Hence we would not be enabling and disabling the
+> interrupt controller mask on this line.
+>
 
-So the real question is why we need to restore the step-mask on exit, but
-not in other paths in the code.
+While it's okay for triggered mode that isn't so ideal for polled mode
+because of extra time needed by sensor to actually spin up.
 
-=46rom what I recall (and it's been quite a lot of years) the step mask
-is controlling the 'scan' so that we capture the set of enabled channels
-and no others (there is a mux that is being controlled).
+You start measuring and expect new data to arrive within 2 seconds
+(given 0.5Hz sampling frequency is set) but they can actually show
+up within 8 secs. Not very reliable so to say.
 
-The current optimization is to not bother resetting that to empty when
-we read individual channels, or come out of buffered mode because we
-will set it anyway when moving to some new mode.
+Thus I think sticking to continuous sampling is preferred here.
 
-What I can't understand is why we need to set it in the exit path?
-This is a complex corner given the involvement of the touchscreen
-driver and mfd.  My first inclination is we may be better off leaving
-it alone unless we have a test setup to make sure we fully understand
-what is going on.
+>
+> > > > +static int scd30_setup_trigger(struct iio_dev *indio_dev)
+> > > > +{
+> > > > +	struct scd30_state *state = iio_priv(indio_dev);
+> > > > +	struct device *dev = indio_dev->dev.parent;
+> > > > +	struct iio_trigger *trig;
+> > > > +	int ret;
+> > > > +
+> > > > +	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
+> > > > +				      indio_dev->id);
+> > > > +	if (!trig) {
+> > > > +		dev_err(dev, "failed to allocate trigger\n");
+> > > > +		return -ENOMEM;
+> > > > +	}
+> > > > +
+> > > > +	trig->dev.parent = dev;
+> > > > +	trig->ops = &scd30_trigger_ops;
+> > > > +	iio_trigger_set_drvdata(trig, indio_dev);
+> > > > +
+> > > > +	ret = devm_iio_trigger_register(dev, trig);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	indio_dev->trig = iio_trigger_get(trig);
+> > > > +
+> > > > +	ret = devm_request_threaded_irq(dev, state->irq, scd30_irq_handler,
+> > > > +					scd30_irq_thread_handler,
+> > > > +					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+> > > > +					indio_dev->name, indio_dev);
+> > > > +	if (ret)
+> > > > +		dev_err(dev, "failed to request irq\n");
+> > >
+> > > I'm guessing this is a device without any means to disable the interrupt
+> > > being generated?  In which case are you safe against a race before you
+> > > disable here?
+> > >
+> >
+> > IRQs can be actually disabled by telling device to stop taking measurements.
+> > There is dedicated command for that. If irq fires off before being disabled
+> > nothing bad should happen as everything necessary is in place already.
+>
+> Hmm. I wonder if we'd be better off starting it on demand - or only when running
+> with it as a data ready trigger. That would make the the polled read a case
+> of starting the sampling for one sample rather than just 'picking' one from
+> the stream of actual samples.
+>
+> >
+> > Another thing is that without disabling interrupt here we would get warning
+> > about unbalanced irq whilst enabling trigger.
+> >
+> > > > +
+> > > > +	disable_irq(state->irq);
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > > > +
+> > > > +int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+> > > > +		int (*command)(struct scd30_state *state, enum scd30_cmd cmd,
+> > > > +			       u16 arg, char *rsp, int size))
+> > > > +{
+> > > > +	static const unsigned long scd30_scan_masks[] = { 0x07, 0x00 };
+> > > > +	struct scd30_state *state;
+> > > > +	struct iio_dev *indio_dev;
+> > > > +	int ret;
+> > > > +	u16 val;
+> > > > +
+> > > > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
+> > > > +	if (!indio_dev)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	dev_set_drvdata(dev, indio_dev);
+> > > > +
+> > > > +	state = iio_priv(indio_dev);
+> > > > +	state->dev = dev;
+> > > > +	state->priv = priv;
+> > > > +	state->irq = irq;
+> > > > +	state->pressure_comp = SCD30_PRESSURE_COMP_DEFAULT;
+> > > > +	state->meas_interval = SCD30_MEAS_INTERVAL_DEFAULT;
+> > > > +	state->command = command;
+> > > > +	mutex_init(&state->lock);
+> > > > +	init_completion(&state->meas_ready);
+> > > > +
+> > > > +	indio_dev->dev.parent = dev;
+> > > > +	indio_dev->info = &scd30_info;
+> > > > +	indio_dev->name = name;
+> > > > +	indio_dev->channels = scd30_channels;
+> > > > +	indio_dev->num_channels = ARRAY_SIZE(scd30_channels);
+> > > > +	indio_dev->modes = INDIO_DIRECT_MODE;
+> > > > +	indio_dev->available_scan_masks = scd30_scan_masks;
+> > > > +
+> > > > +	state->vdd = devm_regulator_get(dev, "vdd");
+> > > > +	if (IS_ERR(state->vdd)) {
+> > >
+> > > This is very noisy if we have deferred probing going on.
+> > > Either explicitly check for that case or just don't bother
+> > > with an error message in this path.
+> > >
+> >
+> > Okay.
+> >
+> > > > +		dev_err(dev, "failed to get vdd regulator\n");
+> > > > +		return PTR_ERR(state->vdd);
+> > > > +	}
+> > > > +
+> > > > +	ret = regulator_enable(state->vdd);
+> > > > +	if (ret) {
+> > > > +		dev_err(dev, "failed to enable vdd regulator\n");
+> > > > +		return ret;
+> > > > +	}
+> > > > +
+> > > > +	ret = devm_add_action_or_reset(dev, scd30_exit, state);
+> > > > +	if (ret)
+> > >
+> > > This should match exactly against the item above it. Whilst stop
+> > > measurement may be safe from here on, it is not easy to review
+> > > unless we can clearly see where the equivalent start is.
+> > >
+> >
+> > Well, naming might be confusing. The thing is that sensor after being
+> > powered up reverts itself to the much the same state it left.
+> >
+> > If we have real regulator then scd30_exit would disable regulator and
+> > that's it. But, in case of a dummy one and sensor starting in
+> > continuous mode we waste power for no real reason (for example 19mA
+> > at 0.5Hz).
+> >
+> > So it's explanation for doing 2 things inside early on but not excuse
+> > for unintuitive naming.
+>
+> I'd rather see two devm_add_action_or_reset calls one handling the regulator
+> and one handling the register write.  Then it will be clear what each
+> one is doing and that there are no possible races.  Basically it lets
+> a reviewer not bother thinking which is always good :)
+>
 
-Given your stated reason for tidying this up was to deal with the
-buffer stuff and this has no impact on that, I'll take patches 1 and 2 for
-now and leave this one out.
+Fair enough.
 
-However, I'd like to leave more time for comments on those two as well
-(though they seem 'obviously' correct to me).
-
-Thanks,
-
-Jonathan
-
-
-> ---
->  drivers/iio/adc/ti_am335x_adc.c | 63 +++++++++++++++++----------------
->  1 file changed, 32 insertions(+), 31 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_=
-adc.c
-> index 03b2ab649cc3..9fac83e036c1 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -562,6 +562,18 @@ static int tiadc_request_dma(struct platform_device =
-*pdev,
->  	return -ENOMEM;
->  }
-> =20
-> +static void tiadc_cleanup_dma(struct tiadc_device *adc_dev)
-> +{
-> +	struct tiadc_dma *dma =3D &adc_dev->dma;
-> +
-> +	if (!dma->chan)
-> +		return;
-> +
-> +	dma_free_coherent(dma->chan->device->dev, DMA_BUFFER_SIZE,
-> +			  dma->buf, dma->addr);
-> +	dma_release_channel(dma->chan);
-> +}
-> +
->  static int tiadc_parse_dt(struct platform_device *pdev,
->  			  struct tiadc_device *adc_dev)
->  {
-> @@ -593,6 +605,17 @@ static int tiadc_parse_dt(struct platform_device *pd=
-ev,
->  	return 0;
->  }
-> =20
-> +static void tiadc_cleanup(void *data)
-> +{
-> +	struct tiadc_device *adc_dev =3D data;
-> +	u32 step_en;
-> +
-> +	tiadc_cleanup_dma(adc_dev);
-> +
-> +	step_en =3D get_adc_step_mask(adc_dev);
-> +	am335x_tsc_se_clr(adc_dev->mfd_tscadc, step_en);
-> +}
-> +
->  static int tiadc_probe(struct platform_device *pdev)
->  {
->  	struct iio_dev		*indio_dev;
-> @@ -635,48 +658,27 @@ static int tiadc_probe(struct platform_device *pdev)
->  		IRQF_SHARED,
->  		&tiadc_buffer_setup_ops);
-> =20
-> +	err =3D devm_iio_device_register(&pdev->dev, indio_dev);
->  	if (err)
-> -		goto err_free_channels;
-> -
-> -	err =3D iio_device_register(indio_dev);
-> -	if (err)
-> -		goto err_buffer_unregister;
-> +		return err;
-> =20
->  	platform_set_drvdata(pdev, indio_dev);
-> =20
->  	err =3D tiadc_request_dma(pdev, adc_dev);
->  	if (err && err =3D=3D -EPROBE_DEFER)
-> -		goto err_dma;
-> +		return err;
-> +
-> +	err =3D devm_add_action(&pdev->dev, tiadc_cleanup, adc_dev);
-> +	if (err)
-> +		goto err_free_dma;
-> =20
->  	return 0;
-> =20
-> -err_dma:
-> -	iio_device_unregister(indio_dev);
-> -err_buffer_unregister:
-> -err_free_channels:
-> +err_free_dma:
-> +	tiadc_cleanup_dma(adc_dev);
->  	return err;
->  }
-> =20
-> -static int tiadc_remove(struct platform_device *pdev)
-> -{
-> -	struct iio_dev *indio_dev =3D platform_get_drvdata(pdev);
-> -	struct tiadc_device *adc_dev =3D iio_priv(indio_dev);
-> -	struct tiadc_dma *dma =3D &adc_dev->dma;
-> -	u32 step_en;
-> -
-> -	if (dma->chan) {
-> -		dma_free_coherent(dma->chan->device->dev, DMA_BUFFER_SIZE,
-> -				  dma->buf, dma->addr);
-> -		dma_release_channel(dma->chan);
-> -	}
-> -	iio_device_unregister(indio_dev);
-> -
-> -	step_en =3D get_adc_step_mask(adc_dev);
-> -	am335x_tsc_se_clr(adc_dev->mfd_tscadc, step_en);
-> -
-> -	return 0;
-> -}
-> -
->  static int __maybe_unused tiadc_suspend(struct device *dev)
->  {
->  	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> @@ -723,7 +725,6 @@ static struct platform_driver tiadc_driver =3D {
->  		.of_match_table =3D ti_adc_dt_ids,
->  	},
->  	.probe	=3D tiadc_probe,
-> -	.remove	=3D tiadc_remove,
->  };
->  module_platform_driver(tiadc_driver);
-> =20
-
+> >
+> > > > +		return ret;
+> > > > +
+> > > > +	ret = scd30_reset(state);
+> > > > +	if (ret) {
+> > > > +		dev_err(dev, "failed to reset device: %d\n", ret);
+> > > > +		return ret;
+> > > > +	}

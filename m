@@ -2,99 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2F51C2E72
-	for <lists+linux-iio@lfdr.de>; Sun,  3 May 2020 20:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC3EE1C304A
+	for <lists+linux-iio@lfdr.de>; Mon,  4 May 2020 01:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728847AbgECSB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 May 2020 14:01:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59690 "EHLO
+        id S1726404AbgECXvB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 May 2020 19:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728831AbgECSB7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 14:01:59 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D7FC061A0E
-        for <linux-iio@vger.kernel.org>; Sun,  3 May 2020 11:01:59 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id g13so18162404wrb.8
-        for <linux-iio@vger.kernel.org>; Sun, 03 May 2020 11:01:59 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726181AbgECXvB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 May 2020 19:51:01 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C353C061A0E
+        for <linux-iio@vger.kernel.org>; Sun,  3 May 2020 16:50:59 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id j8so6296333iog.13
+        for <linux-iio@vger.kernel.org>; Sun, 03 May 2020 16:50:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=yq7OS+fmfIyIhWEO7cmy1+d/sKzgA7OIv80VKiprsGU=;
-        b=c3Pe3aLDA3oibPPkjCJHgFVSz0/E/wG26P/eS9dKfIgrwrsIl2u6BE6RFlnzcy3u6o
-         ur2OxEHk5JFVBNd/Ny3BEpU1S56GquUCCkjNy4bZ9wMfNpnC8wV/Jvjos5DAhSyX9+Hh
-         JAQurqaddckij3cXGn1oAN4RQzy0/A4WwKqTNY8Gm9xVFUhlbDViz53doc77JkL0b/lG
-         oxufpfQt4Y1b9hmyagkHJT443IVeQi0Rvadvt95mAF5p6jjy1oz+Yz+sg2NQfc2KxQ7C
-         YDiFD6J5PORafyiVHdUyuXO7lUAYjJLhQ/1JjyMkM8BGc+RMEAJsGfqPWIk/8urPkGo+
-         BCtA==
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a6K4s6GpNB5HBwiMfi4MD8Tdj3oyJBPurGCn0q+DybI=;
+        b=AP7P/gLNl7s6FU6937O2v2//Zu8BE9+T3BfqOAeZTFSvhYah8FGZ9raDAjpCaHvMoq
+         3olR4RjA88Pal8DWMPFMj+v7OCnmidKpql4Ok6PCqF0datYAVYoR0LdcEZ13qBgDeP2Y
+         TChdiBfCjtO396n/Sc0IHWIy5F7lNq60Yd76M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=yq7OS+fmfIyIhWEO7cmy1+d/sKzgA7OIv80VKiprsGU=;
-        b=JIYsM6Fax3qpN1vOb5z4HiR0qw4aC5EWU9G+q6VJa3bpgTese1j2eIba4Gp1wUUZyM
-         Ms2iR6GkuBa3uVmXlE9IIVJgCrO1pbEUfebkabho+fr+JT7bdeBQTLsh7vjx3xI4lVYB
-         apn0HZdxmjGF0te5k5mkeD08aFTKhn2JAriQeAbdgsu5ldo0A1zYjZn2uZZAoBNtWy5c
-         DuuIrNeQwcREEcWNWxnftoEZPjSm20rK29sXICzxux9ZkyF8cAIOqo1ZtHlOy6pOdFue
-         GSevb2ZcOCFnVizC1t6Ckc3BAJoCSPHWRnV9q3YlrmKWYKbVp0GZPdHJfTaO1EjkMfkF
-         6cPA==
-X-Gm-Message-State: AGi0PuZGiu6bLSpM5yx89Q97pXXSKe9GHKQLm3Nt5GCFOx8vUPnpXmrk
-        jKN55TFajzl5IJXbMNTanr0=
-X-Google-Smtp-Source: APiQypK6tSggXJpyaCBFPCVLp5Bx+htGp9ybX1ugmpzzg5xLMr5zNWm/OE34B2Zk2yiNYmyPAYNCPg==
-X-Received: by 2002:adf:ec09:: with SMTP id x9mr14852637wrn.364.1588528917797;
-        Sun, 03 May 2020 11:01:57 -0700 (PDT)
-Received: from nunojsa-N551JK.fritz.box ([2001:a61:2488:b501:889a:1d04:1d51:f2d0])
-        by smtp.googlemail.com with ESMTPSA id e11sm14786447wrn.87.2020.05.03.11.01.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2020 11:01:57 -0700 (PDT)
-Message-ID: <8069360d699a6699eb7768a07681c78e4b94b250.camel@gmail.com>
-Subject: Re: [PATCH] iio: accel: kxsd9: Fix alignment of local buffer.
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     jic23@kernel.org, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Sun, 03 May 2020 20:01:56 +0200
-In-Reply-To: <20200503172235.207632-1-jic23@kernel.org>
-References: <20200503172235.207632-1-jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.1-2 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a6K4s6GpNB5HBwiMfi4MD8Tdj3oyJBPurGCn0q+DybI=;
+        b=EhNS4bxHaBfu0KIXkwFeg+96y2AR25x0SkgKG/S026UtfIbLPuI79n89RRtsXMw4xY
+         GWVrwH/tqnFxfNjLHbtak3TUOewSS8zvdPKDJY/mnQn+t6gSCWiJLeW8SnZHjAfY/WZ9
+         Z2OSX5x+mUuyDXTvbfxsiKEIOMIy3Jv/ZOdHtAvNAKA2Pu9WtStEpyfFNTDx91AJVvV5
+         ylnEblZpM9JkcAdsPGjtPlykJtQ476IVY3uWudKGKVTdeuYSLTDU1UHhZOLyoLO9GWu6
+         jz6LPPVsGeWGU5lkEGE2M3I/MRgJLxCeNsdyhzfiknBOQiKjCaRHYpDkVL2mWcT5dwFS
+         u6gw==
+X-Gm-Message-State: AGi0PuYRNYeWRyRxFe0lbpuDsj6hSPGYrj9dvmtq+AfzBKljq/e0QpOJ
+        LdV4NjrNgFXliaykBdzyJ4lbltzBzEigIz66+jzeefmKsSY=
+X-Google-Smtp-Source: APiQypI9JqcvVJafNkVWdgtKg+pQYWh025Ke6piHU+rR338Runm94c9ZO3aAX/022kHKJbS5r9B83gl00zcppy3IGWY=
+X-Received: by 2002:a5d:8715:: with SMTP id u21mr8047424iom.46.1588549858737;
+ Sun, 03 May 2020 16:50:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200210001058.7515-1-matt.ranostay@konsulko.com>
+ <20200413181031.68e101da@archlinux> <CAJCx=gnEySbyLQA9u=nVJ3-Wk+++Ch6L9C-bYP_EFSz-7TKkhg@mail.gmail.com>
+ <20200502172336.1456e167@archlinux>
+In-Reply-To: <20200502172336.1456e167@archlinux>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sun, 3 May 2020 16:50:47 -0700
+Message-ID: <CAJCx=gmSkVhDQY15Hg=5oJZHu1NY9vuTbQP9h4LF4KSZ6-DpdQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/3] iio: chemical: atlas-sensor: add DO support
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2020-05-03 at 18:22 +0100, jic23@kernel.org wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> iio_push_to_buffers_with_timestamp assumes 8 byte alignment which
-> is not guaranteed by an array of 8 __be16.
-> 
-> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/accel/kxsd9.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
-> index 0b876b2dc5bd..4c42d1200914 100644
-> --- a/drivers/iio/accel/kxsd9.c
-> +++ b/drivers/iio/accel/kxsd9.c
-> @@ -209,14 +209,16 @@ static irqreturn_t kxsd9_trigger_handler(int
-> irq, void *p)
->  	const struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct kxsd9_state *st = iio_priv(indio_dev);
-> +	struct {
-> +		__be16 chan[4];
-> +		u64 ts;
-> +	} hw_values;
+On Sat, May 2, 2020 at 9:23 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Mon, 27 Apr 2020 21:30:30 -0700
+> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+>
+> > On Mon, Apr 13, 2020 at 10:10 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > >
+> > >
+> > > Hi Matt,
+> > >
+> > > Found this still in my queue and to be honest I'm lost and
+> > > can't easily figure out what the status is (I'm too lazy to
+> > > read all the past threads).
+> > >
+> > > So what do you think the status of this patch set is?
+> >
+> > The code is merged but just noticed the documentation patch somehow got dropped.
+> Ah oops. I picked up v7 but missed dropping v6 from my queue.
+>
+> For docs, it seems to be there..?
 
-A nitpick from my side. Maybe a comment woudn't be that noisy. It might
-be not that obvious for some people why this construct is needed and it
-might prevent new driver's from doing the same mistake.
+Ah yes it is.. forgot I put it part of "dt-bindings: iio: chemical:
+consolidate atlas-sensor docs"
 
-- Nuno Sá
+Thanks,
 
+Matt
 
+>
+> J
+> >
+> > Thanks,
+> >
+> > Matt
+> >
+> > >
+> > > Thanks,
+> > >
+> > > Jonathan
+> > >
+> > > On Sun,  9 Feb 2020 16:10:55 -0800
+> > > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> > >
+> > > > Changes from v1:
+> > > > * combined dt binding docs
+> > > > * added making interrupt line is optional patchset
+> > > > * broke out dt changes from DO-SM module patchset
+> > > >
+> > > > Changes from v2:
+> > > > * switch docs to YAML format
+> > > >
+> > > > Changes from v3:
+> > > > * fix up issues reported with dt-schema
+> > > >
+> > > > Changes from v4:
+> > > > * fix logic issue in optional interrupt patchset
+> > > >
+> > > > Changes from v5:
+> > > > * Update license on yaml conversion to GPLv2.0+ and BSD clause
+> > > >
+> > > > Matt Ranostay (3):
+> > > >   iio: chemical: atlas-sensor: allow probe without interrupt line
+> > > >   iio: chemical: atlas-sensor: add DO-SM module support
+> > > >   dt-bindings: iio: chemical: consolidate atlas-sensor docs
+> > > >
+> > > >  .../bindings/iio/chemical/atlas,ec-sm.txt     | 21 -----
+> > > >  .../bindings/iio/chemical/atlas,orp-sm.txt    | 21 -----
+> > > >  .../bindings/iio/chemical/atlas,ph-sm.txt     | 21 -----
+> > > >  .../bindings/iio/chemical/atlas,sensor.yaml   | 53 +++++++++++
+> > > >  drivers/iio/chemical/atlas-sensor.c           | 91 +++++++++++++++----
+> > > >  5 files changed, 125 insertions(+), 82 deletions(-)
+> > > >  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
+> > > >  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
+> > > >  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
+> > > >  create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
+> > > >
+> > >
+>

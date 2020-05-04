@@ -2,311 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C246A1C35FA
-	for <lists+linux-iio@lfdr.de>; Mon,  4 May 2020 11:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3000A1C3600
+	for <lists+linux-iio@lfdr.de>; Mon,  4 May 2020 11:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728338AbgEDJp2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 May 2020 05:45:28 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2153 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726625AbgEDJp2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 4 May 2020 05:45:28 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id F344D28FFBBEBC844D6A;
-        Mon,  4 May 2020 10:45:26 +0100 (IST)
-Received: from localhost (10.47.88.153) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 4 May 2020
- 10:45:26 +0100
-Date:   Mon, 4 May 2020 10:45:07 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [PATCH v2 1/2] iio: Move scan mask management to the core
-Message-ID: <20200504104507.00002e5c@Huawei.com>
-In-Reply-To: <5c66a2ac28fd0b0a603393579164b59450f41329.camel@analog.com>
-References: <20200429151740.85917-1-alexandru.ardelean@analog.com>
-        <20200503135117.4cddccfa@archlinux>
-        <5c66a2ac28fd0b0a603393579164b59450f41329.camel@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1728401AbgEDJqh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 May 2020 05:46:37 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:54651 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728360AbgEDJqh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 May 2020 05:46:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588585595;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=scFFt0BtLPxeOsN+SbAlNTW9udoDL7YI1oVFgdqCTZQ=;
+        b=EsvJjMWca1dEh8G6lVVg4F1NQB5TuoyL2r/vJ6SS7br/+CZFaN/gf5gFjUA/KpQto4NDeh
+        iWb4MHIeofMjewavizBE1kBEoPEIeFP+nrTNxfWcA2L9Lbv920eOqKb3Op6WLeiypTRiaZ
+        IkFi3SzfjbLDbthzVz2TdJ4zapUcxy4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-59-RIhSgbQJPEueZalICcztrQ-1; Mon, 04 May 2020 05:46:33 -0400
+X-MC-Unique: RIhSgbQJPEueZalICcztrQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 71so3213196wmb.8
+        for <linux-iio@vger.kernel.org>; Mon, 04 May 2020 02:46:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=scFFt0BtLPxeOsN+SbAlNTW9udoDL7YI1oVFgdqCTZQ=;
+        b=pWHIzgvHH1KfY1lNCDMrU+fhw46jpG4Jdxb6o9Wyt9MJGLI3mc495BCQSP+MonNezL
+         2azlPwaQaLXuVNI5ZRVQKs4YZVVhD8ktECy+VDwenmt8DVWPr7JuGpLWLg+2CEdMxTpc
+         lizS2YJGEf1aKk/geCbiEt7PV5IyjCadTw7u4rW+kakQToSXQUklmmhlLTLj49aE38nw
+         6/DW8h/HamfSlrZjD11mGZ5+L2zOJ2h9nM/yn28esmnf0V2whdiDug012R5TEjxCo733
+         E7wgDyNjcUC0/eVlmSrvGb2IgOymPCsCfeZDl2icfy9heEX79t36rby2swdIFEMJk6ww
+         c9Nw==
+X-Gm-Message-State: AGi0Pualy0KWVUa1gijOSPtHa4uCNCf9Sv59sjEPYwRZK9dpo5V6LlvO
+        0J79sS82/kH/Z7VKM+FUBiJmKRBvibrsKr+vV9wjXfU3DQZoDKuvUCX7rgeJxKp7dmUQMFRHFkv
+        59PPO3xr8kaat3rmvKjaR
+X-Received: by 2002:a5d:4e0a:: with SMTP id p10mr10850207wrt.215.1588585592348;
+        Mon, 04 May 2020 02:46:32 -0700 (PDT)
+X-Google-Smtp-Source: APiQypL0l4tMFMDt9Hx6InMV/UDMk+rNzIMkzBVD6Xl95GsMPzXuuyBsYRdcehNHJEPa9EQux5wbsg==
+X-Received: by 2002:a5d:4e0a:: with SMTP id p10mr10850189wrt.215.1588585592165;
+        Mon, 04 May 2020 02:46:32 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id z18sm17330878wrw.41.2020.05.04.02.46.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2020 02:46:31 -0700 (PDT)
+Subject: Re: [PATCH v3 01/11] iio: light: cm32181: Switch to new style
+ i2c-driver probe function
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+References: <20200428172923.567806-1-hdegoede@redhat.com>
+ <20200503115456.11a16411@archlinux>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <4f6df1df-8c82-c14f-8862-c020d67d3df3@redhat.com>
+Date:   Mon, 4 May 2020 11:46:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <20200503115456.11a16411@archlinux>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.88.153]
-X-ClientProxiedBy: lhreml739-chm.china.huawei.com (10.201.108.189) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 4 May 2020 06:45:27 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+Hi,
 
-> On Sun, 2020-05-03 at 13:51 +0100, Jonathan Cameron wrote:
-> > On Wed, 29 Apr 2020 18:17:39 +0300
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >   
-> > > From: Lars-Peter Clausen <lars@metafoo.de>
-> > > 
-> > > Let the core handle the buffer scan mask management including allocation
-> > > and channel selection. Having this handled in a central place rather than
-> > > open-coding it all over the place will make it easier to change the
-> > > implementation (if needed).
-> > > At the very least, this change abstracts scan-mask management away from
-> > > buffer implementations.
-> > > 
-> > > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> > 
-> > I'm not 100% happy with including the buffer_impl.h header in the inkern
-> > code, but I can't see a simple way around it.  
+On 5/3/20 12:54 PM, Jonathan Cameron wrote:
+> On Tue, 28 Apr 2020 19:29:13 +0200
+> Hans de Goede <hdegoede@redhat.com> wrote:
 > 
-> I actually also tried to not do it [I suspect Lars may have tried as well].
-> But you end up either having to expose 'struct iio_channel' outside of
-> 'inkern.c' or having to include 'iio/consumer.h' in industrialio-buffer.c
+>> Switch to the new style i2c-driver probe_new probe function and drop the
+>> unnecessary i2c_device_id table (we do not have any old style board files
+>> using this).
+>>
+>> This is a preparation patch for adding ACPI binding support.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>> Changes in v3:
+>> - This is a new patch in v3 of this patch-set
+>> ---
+>>   drivers/iio/light/cm32181.c | 15 +++------------
+>>   1 file changed, 3 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+>> index 5f4fb5674fa0..cc57190a24cb 100644
+>> --- a/drivers/iio/light/cm32181.c
+>> +++ b/drivers/iio/light/cm32181.c
+>> @@ -294,8 +294,7 @@ static const struct iio_info cm32181_info = {
+>>   	.attrs			= &cm32181_attribute_group,
+>>   };
+>>   
+>> -static int cm32181_probe(struct i2c_client *client,
+>> -			const struct i2c_device_id *id)
+>> +static int cm32181_probe(struct i2c_client *client)
+>>   {
+>>   	struct cm32181_chip *cm32181;
+>>   	struct iio_dev *indio_dev;
+>> @@ -316,7 +315,7 @@ static int cm32181_probe(struct i2c_client *client,
+>>   	indio_dev->channels = cm32181_channels;
+>>   	indio_dev->num_channels = ARRAY_SIZE(cm32181_channels);
+>>   	indio_dev->info = &cm32181_info;
+>> -	indio_dev->name = id->name;
+>> +	indio_dev->name = dev_name(&client->dev);
 > 
-> Since there will be a V3, I will probably try to look again at a potential
-> different solution. Maybe there is a better solution I haven't considered.
+> ABI breakage.  The name needs to be unaffected by this patch and I'm
+> fairly sure it just gained the vendor prefix.
 > 
-> > 
-> > However, there are some missing statics in here and I'm feeling lazy
-> > so not going to fix them up for you.
-> >   
-> 
-> No problem from my side.
-> I'll fix them up.
-> I prefer it when people don't cleanup after me. Makes me feel less guilty.
-> Though I will admit, it's a double-edged feeling: I am greatful when someone
-> cleans up after me, but I also feel slightly guilty [about it].
-> 
+> So to drop that table, you need to provide the 'clean' part number
+> somewhere else.  Seeing as driver currently only supports one number,
+> you could just provide it directly here. However, as you are
+> going to add support for another part number later, you'll need
+> to do something more clever when you introduce that.
 
-*laughs*.  It's a trade off for the patch applier between
+Ok, I will fix this for the next version.
 
-1) Making people feel guilty so they are more careful in future.
-2) Effort to actually make trivial fixes.
-3) Having to get their brain back in gear when they get around to looking
-   at the next version.
+> I'll make this suggestion in that patch, but I think you should add
+> a chip_info structure for each of the supported chips rather than using
+> a switch to put a number of different elements in place.  The name
+> would then go in there.
 
-Mostly 3 wins out though I like to go with 1 every now and then when
-I'm feeling grump.  Warning for all, lock down makes me grumpy so
-you may all suffer the effects :)
+Ok, I will add a chip_info structure for the next version (version 4).
 
-J
+Regards,
 
-> 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> > > ---
-> > > 
-> > > Changelog v1 -> v2:
-> > > - split away from initial series; the `buffer->channel_mask` attribute
-> > >   requires a bit more dicussion; or may even be dropped; just these 2
-> > >   patches helps with diff-ing 2 trees, as applying patches between my
-> > >   work tree & IIO has fewer conflicts
-> > > - return -EINVAL if masklength is 0 in iio_buffer_alloc_scanmask()
-> > > - convert 2nd parameter to `unsigned int masklength` in
-> > >   iio_buffer_alloc_scanmask()
-> > > 
-> > >  drivers/iio/buffer/industrialio-buffer-cb.c | 17 +++++-----
-> > >  drivers/iio/industrialio-buffer.c           | 36 +++++++++++++++------
-> > >  drivers/iio/inkern.c                        | 15 +++++++++
-> > >  include/linux/iio/consumer.h                | 10 ++++++
-> > >  4 files changed, 59 insertions(+), 19 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/buffer/industrialio-buffer-cb.c
-> > > b/drivers/iio/buffer/industrialio-buffer-cb.c
-> > > index 47c96f7f4976..dc5bb2ab533a 100644
-> > > --- a/drivers/iio/buffer/industrialio-buffer-cb.c
-> > > +++ b/drivers/iio/buffer/industrialio-buffer-cb.c
-> > > @@ -34,7 +34,7 @@ static void iio_buffer_cb_release(struct iio_buffer
-> > > *buffer)
-> > >  {
-> > >  	struct iio_cb_buffer *cb_buff = buffer_to_cb_buffer(buffer);
-> > >  
-> > > -	bitmap_free(cb_buff->buffer.scan_mask);
-> > > +	iio_buffer_free_scanmask(&cb_buff->buffer);
-> > >  	kfree(cb_buff);
-> > >  }
-> > >  
-> > > @@ -72,27 +72,26 @@ struct iio_cb_buffer *iio_channel_get_all_cb(struct
-> > > device *dev,
-> > >  	}
-> > >  
-> > >  	cb_buff->indio_dev = cb_buff->channels[0].indio_dev;
-> > > -	cb_buff->buffer.scan_mask = bitmap_zalloc(cb_buff->indio_dev-  
-> > > >masklength,  
-> > > -						  GFP_KERNEL);
-> > > -	if (cb_buff->buffer.scan_mask == NULL) {
-> > > -		ret = -ENOMEM;
-> > > +
-> > > +	ret = iio_buffer_alloc_scanmask(&cb_buff->buffer,
-> > > +					cb_buff->indio_dev->masklength);
-> > > +	if (ret)
-> > >  		goto error_release_channels;
-> > > -	}
-> > > +
-> > >  	chan = &cb_buff->channels[0];
-> > >  	while (chan->indio_dev) {
-> > >  		if (chan->indio_dev != cb_buff->indio_dev) {
-> > >  			ret = -EINVAL;
-> > >  			goto error_free_scan_mask;
-> > >  		}
-> > > -		set_bit(chan->channel->scan_index,
-> > > -			cb_buff->buffer.scan_mask);
-> > > +		iio_buffer_channel_enable(&cb_buff->buffer, chan);
-> > >  		chan++;
-> > >  	}
-> > >  
-> > >  	return cb_buff;
-> > >  
-> > >  error_free_scan_mask:
-> > > -	bitmap_free(cb_buff->buffer.scan_mask);
-> > > +	iio_buffer_free_scanmask(&cb_buff->buffer);
-> > >  error_release_channels:
-> > >  	iio_channel_release_all(cb_buff->channels);
-> > >  error_free_cb_buff:
-> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-
-> > > buffer.c
-> > > index eae39eaf49af..c6b63f4474ff 100644
-> > > --- a/drivers/iio/industrialio-buffer.c
-> > > +++ b/drivers/iio/industrialio-buffer.c
-> > > @@ -208,6 +208,26 @@ void iio_buffer_init(struct iio_buffer *buffer)
-> > >  }
-> > >  EXPORT_SYMBOL(iio_buffer_init);
-> > >  
-> > > +int iio_buffer_alloc_scanmask(struct iio_buffer *buffer,
-> > > +			      unsigned int masklength)
-> > > +{
-> > > +	if (!masklength)
-> > > +		return -EINVAL;
-> > > +
-> > > +	buffer->scan_mask = bitmap_zalloc(masklength, GFP_KERNEL);
-> > > +	if (buffer->scan_mask == NULL)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(iio_buffer_alloc_scanmask);
-> > > +
-> > > +void iio_buffer_free_scanmask(struct iio_buffer *buffer)
-> > > +{
-> > > +	bitmap_free(buffer->scan_mask);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(iio_buffer_free_scanmask);
-> > > +
-> > >  /**
-> > >   * iio_buffer_set_attrs - Set buffer specific attributes
-> > >   * @buffer: The buffer for which we are setting attributes
-> > > @@ -1306,14 +1326,10 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev
-> > > *indio_dev)
-> > >  				indio_dev->scan_index_timestamp =
-> > >  					channels[i].scan_index;
-> > >  		}
-> > > -		if (indio_dev->masklength && buffer->scan_mask == NULL) {
-> > > -			buffer->scan_mask = bitmap_zalloc(indio_dev->masklength,
-> > > -							  GFP_KERNEL);
-> > > -			if (buffer->scan_mask == NULL) {
-> > > -				ret = -ENOMEM;
-> > > -				goto error_cleanup_dynamic;
-> > > -			}
-> > > -		}
-> > > +
-> > > +		ret = iio_buffer_alloc_scanmask(buffer, indio_dev->masklength);
-> > > +		if (ret)
-> > > +			goto error_cleanup_dynamic;
-> > >  	}
-> > >  
-> > >  	buffer->scan_el_group.name = iio_scan_elements_group_name;
-> > > @@ -1334,7 +1350,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev
-> > > *indio_dev)
-> > >  	return 0;
-> > >  
-> > >  error_free_scan_mask:
-> > > -	bitmap_free(buffer->scan_mask);
-> > > +	iio_buffer_free_scanmask(buffer);
-> > >  error_cleanup_dynamic:
-> > >  	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > >  	kfree(buffer->buffer_group.attrs);
-> > > @@ -1349,7 +1365,7 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev
-> > > *indio_dev)
-> > >  	if (!buffer)
-> > >  		return;
-> > >  
-> > > -	bitmap_free(buffer->scan_mask);
-> > > +	iio_buffer_free_scanmask(buffer);
-> > >  	kfree(buffer->buffer_group.attrs);
-> > >  	kfree(buffer->scan_el_group.attrs);
-> > >  	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > > index ede99e0d5371..f35cb9985edc 100644
-> > > --- a/drivers/iio/inkern.c
-> > > +++ b/drivers/iio/inkern.c
-> > > @@ -11,6 +11,7 @@
-> > >  
-> > >  #include <linux/iio/iio.h>
-> > >  #include "iio_core.h"
-> > > +#include <linux/iio/buffer_impl.h>
-> > >  #include <linux/iio/machine.h>
-> > >  #include <linux/iio/driver.h>
-> > >  #include <linux/iio/consumer.h>
-> > > @@ -857,6 +858,20 @@ int iio_write_channel_raw(struct iio_channel *chan, int
-> > > val)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(iio_write_channel_raw);
-> > >  
-> > > +void iio_buffer_channel_enable(struct iio_buffer *buffer,
-> > > +			       const struct iio_channel *chan)
-> > > +{
-> > > +	set_bit(chan->channel->scan_index, buffer->scan_mask);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(iio_buffer_channel_enable);
-> > > +
-> > > +void iio_buffer_channel_disable(struct iio_buffer *buffer,
-> > > +				const struct iio_channel *chan)
-> > > +{
-> > > +	clear_bit(chan->channel->scan_index, buffer->scan_mask);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(iio_buffer_channel_disable);
-> > > +
-> > >  unsigned int iio_get_channel_ext_info_count(struct iio_channel *chan)
-> > >  {
-> > >  	const struct iio_chan_spec_ext_info *ext_info;
-> > > diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-> > > index c4118dcb8e05..9fcd320c2fb4 100644
-> > > --- a/include/linux/iio/consumer.h
-> > > +++ b/include/linux/iio/consumer.h
-> > > @@ -12,6 +12,7 @@
-> > >  
-> > >  struct iio_dev;
-> > >  struct iio_chan_spec;
-> > > +struct iio_buffer;
-> > >  struct device;
-> > >  
-> > >  /**
-> > > @@ -342,6 +343,15 @@ int iio_read_channel_scale(struct iio_channel *chan,
-> > > int *val,
-> > >  int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
-> > >  	int *processed, unsigned int scale);
-> > >  
-> > > +void iio_buffer_channel_enable(struct iio_buffer *buffer,
-> > > +			       const struct iio_channel *chan);
-> > > +void iio_buffer_channel_disable(struct iio_buffer *buffer,
-> > > +				const struct iio_channel *chan);
-> > > +
-> > > +int iio_buffer_alloc_scanmask(struct iio_buffer *buffer,
-> > > +			      unsigned int masklength);
-> > > +void iio_buffer_free_scanmask(struct iio_buffer *buffer);
-> > > +
-> > >  /**
-> > >   * iio_get_channel_ext_info_count() - get number of ext_info attributes
-> > >   *				      connected to the channel.  
-
+Hans
 

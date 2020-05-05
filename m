@@ -2,569 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16EB31C5282
-	for <lists+linux-iio@lfdr.de>; Tue,  5 May 2020 12:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A761C52FF
+	for <lists+linux-iio@lfdr.de>; Tue,  5 May 2020 12:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728601AbgEEKEp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 May 2020 06:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728712AbgEEKEo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 May 2020 06:04:44 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C34C0610D5
-        for <linux-iio@vger.kernel.org>; Tue,  5 May 2020 03:04:44 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id z16so198861uae.11
-        for <linux-iio@vger.kernel.org>; Tue, 05 May 2020 03:04:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=verdurent-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2V9ffIH/XNFkkuiYyYUCpuPj7J9y3Q1pVCLVZiE4wHg=;
-        b=nH9GUjgvoW7d8C4FxYPU9AcYjLjPjNe7tUQ4u09kZpNW35OUfDRoKXRBhq52aqmSN9
-         2E6StMqkCPPf7qbKtbOlzR51y9DWqq3LoT542gehj1V0oag4GQ+IL4aP170QSKo47Kcu
-         hkUYxUDRIHgxEeKT9OyxIGFLMWlisqN8CQCjzfCVwEQIRg8g/VGYhL1trk38jtamjzl+
-         4NKrX9JacjMwLgzi0ehxsKvyYx0meLCGLIJcQxw8qqy9jfeDdI57d/en9WvAumxUD70K
-         jVhN30XJTK3mQExgTa4NzByWSWhTqnO8Xksuuy0tjENnKoF0gVzTRQ22EX6KXMbjtKO3
-         jxgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2V9ffIH/XNFkkuiYyYUCpuPj7J9y3Q1pVCLVZiE4wHg=;
-        b=hL9voN4OwZ/7woDKtrmg7MdknFvnrbatTBAg6mcTDYoJ7oJpPCTcMBCqK+8A7m8x/Q
-         i+7pVuEfz1+WlGtMH/HROVP0yOjCzifnnsf6ZfRL23uH25OWBni5xKCXcjRCKKGze+et
-         SKrpXLzgsNJ/b0CdMT3SKM7sjekqdgV+9H8+7URkAxBUWNFsCsRbRhz7AAGb2j9goE3v
-         fSBAspTVyguuZjQ1aKZoR8EElY/jXyMQ9WA9tyUCynmAKCDttvEOKDwChJhOekbF0vsY
-         rHk8eVJO2w79QEa0YoZBVQNRRA0GesP4zQMXMZsZSDUgv/jys2eLqR8sTLshYlaxB7uU
-         UuNQ==
-X-Gm-Message-State: AGi0PuamoVb7SiTjcJB6uX3FhHYL9OCq/dpzDq5zyUyo9Qg9R5QahN/K
-        Cm2brEGF7ByKZT9YndW+pnPOwWKuWVap4u+SvcDqTg==
-X-Google-Smtp-Source: APiQypLa5ArJQKNreRWaPJZ2nMisZ2qNBtSNE99z4eFITg/6l+sMWPnycjf8Zwo1wijc7rFQrLLDfHU3kQYPg50IDTs=
-X-Received: by 2002:ab0:117:: with SMTP id 23mr1672992uak.67.1588673083011;
- Tue, 05 May 2020 03:04:43 -0700 (PDT)
+        id S1728430AbgEEKUb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 May 2020 06:20:31 -0400
+Received: from ms10.pegatroncorp.com ([192.72.126.90]:35902 "EHLO
+        ms9.pegatroncorp.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727931AbgEEKU3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 May 2020 06:20:29 -0400
+Received: from pps.filterd (ptwppsf03.pega.corp.pegatron [127.0.0.1])
+        by ptwppsf03.pega.corp.pegatron (8.16.0.21/8.16.0.21) with SMTP id 045AEaX5054169;
+        Tue, 5 May 2020 18:19:45 +0800
+Received: from ptw-ex-hub04.pega.corp.pegatron ([172.18.6.20])
+        by ptwppsf03.pega.corp.pegatron with ESMTP id 30u601r340-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 05 May 2020 18:19:45 +0800
+Received: from PTW-EX-38.PEGA.CORP.PEGATRON ([fe80::c52b:4934:6819:9fa]) by
+ PTW-EX-HUB04.PEGA.CORP.PEGATRON ([fe80::61de:87d8:fb23:fac6%24]) with mapi id
+ 14.03.0279.002; Tue, 5 May 2020 18:19:44 +0800
+From:   =?utf-8?B?TGVzbGllIEhzaWEo5aSP6YKm6YCyX1BlZ2F0cm9uKQ==?= 
+        <Leslie_Hsia@pegatroncorp.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        =?utf-8?B?SGVybWVzIEhzaWVoKOisneaXu+WKrV9QZWdhdHJvbik=?= 
+        <Hermes_Hsieh@pegatroncorp.com>,
+        "jesse.sung@canonical.com" <jesse.sung@canonical.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Subject: =?utf-8?B?5Zue5pS2OiBbUEFUQ0hdIEFTb0M6IHRhczU4MDVtOiBBZGQgVEFTNTgwNU0g?=
+ =?utf-8?Q?amplifier_driver?=
+Thread-Topic: [PATCH] ASoC: tas5805m: Add TAS5805M amplifier driver
+Thread-Index: AdYixrIckbOYnHz4QaWHIGzMQcHrxg==
+X-CallingTelephoneNumber: IPM.Note
+X-VoiceMessageDuration: 1
+X-FaxNumberOfPages: 0
+Date:   Tue, 5 May 2020 10:19:44 +0000
+Message-ID: <754706C925201D4896E92CCAD6B38E4401F0F7B8F2@PTW-EX-38.PEGA.CORP.PEGATRON>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.192.178.208]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <1587993846-30773-1-git-send-email-jprakash@codeaurora.org> <1587993846-30773-3-git-send-email-jprakash@codeaurora.org>
-In-Reply-To: <1587993846-30773-3-git-send-email-jprakash@codeaurora.org>
-From:   Amit Kucheria <amit.kucheria@verdurent.com>
-Date:   Tue, 5 May 2020 15:34:11 +0530
-Message-ID: <CAHLCerO0v22-kFRwJk9PAAVu=2zDGhOHHPD3SXK-ojnY9CnZ1w@mail.gmail.com>
-Subject: Re: [PATCH V3 2/4] iio: adc: Add PMIC7 ADC bindings
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan.Cameron@huawei.com, smohanad@codeaurora.org,
-        kgunda@codeaurora.org, aghayal@codeaurora.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 27, 2020 at 6:55 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
->
-> Add documentation for PMIC7 ADC peripheral.
-> For the PMIC7-type PMICs, ADC peripheral is present in HW for the
-> following PMICs: PMK8350, PM8350, PM8350b, PMR735a and PMR735b.
-> Of these, only the ADC peripheral on PMK8350 is exposed directly to SW.
-> If SW needs to communicate with ADCs on other PMICs, it specifies the
-> PMIC to PMK8350 through the newly added SID register and communication
-> between PMK8350 ADC and other PMIC ADCs is carried out through
-> PBS(Programmable Boot Sequence) at the firmware level.
->
-> In addition, add definitions for ADC channels and virtual channel
-> definitions (combination of ADC channel number and PMIC SID number)
-> per PMIC, to be used by ADC clients for PMIC7.
->
-> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
-
-Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
-
-
-> ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 38 ++++++++--
->  include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h    | 67 ++++++++++++++++
->  include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h   | 88 ++++++++++++++++++++++
->  include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h   | 46 +++++++++++
->  include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h   | 28 +++++++
->  include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h   | 28 +++++++
->  include/dt-bindings/iio/qcom,spmi-vadc.h           | 78 ++++++++++++++++++-
->  7 files changed, 366 insertions(+), 7 deletions(-)
->  create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
->  create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
->  create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
->  create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
->  create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> index de8d243..e6263b6 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> @@ -13,7 +13,7 @@ maintainers:
->  description: |
->    SPMI PMIC voltage ADC (VADC) provides interface to clients to read
->    voltage. The VADC is a 15-bit sigma-delta ADC.
-> -  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
-> +  SPMI PMIC5/PMIC7 voltage ADC (ADC) provides interface to clients to read
->    voltage. The VADC is a 16-bit sigma-delta ADC.
->
->  properties:
-> @@ -28,6 +28,7 @@ properties:
->            - qcom,spmi-vadc
->            - qcom,spmi-adc5
->            - qcom,spmi-adc-rev2
-> +          - qcom,spmi-adc7
->
->    reg:
->      description: VADC base address in the SPMI PMIC register map
-> @@ -70,6 +71,8 @@ patternProperties:
->          description: |
->            ADC channel number.
->            See include/dt-bindings/iio/qcom,spmi-vadc.h
-> +          For PMIC7 ADC, the channel numbers are specified separately per PMIC
-> +          in the PMIC-specific files in include/dt-bindings/iio/.
->
->        label:
->          $ref: /schemas/types.yaml#/definitions/string
-> @@ -113,11 +116,11 @@ patternProperties:
->                channel calibration. If property is not found, channel will be
->                calibrated with 0.625V and 1.25V reference channels, also
->                known as absolute calibration.
-> -            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
-> -              if this property is specified VADC will use the VDD reference (1.875V)
-> -              and GND for channel calibration. If property is not found, channel
-> -              will be calibrated with 0V and 1.25V reference channels, also known
-> -              as absolute calibration.
-> +            - For compatible property "qcom,spmi-adc5", "qcom,spmi-adc7" and
-> +              "qcom,spmi-adc-rev2", if this property is specified VADC will use
-> +              the VDD reference (1.875V) and GND for channel calibration. If
-> +              property is not found, channel will be calibrated with 0V and 1.25V
-> +              reference channels, also known as absolute calibration.
->          type: boolean
->
->        qcom,hw-settle-time:
-> @@ -208,6 +211,29 @@ allOf:
->                enum: [ 1, 2, 4, 8, 16 ]
->                default: 1
->
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: qcom,spmi-adc7
-> +
-> +    then:
-> +      patternProperties:
-> +        "^.*@[0-9a-f]+$":
-> +          properties:
-> +            qcom,decimation:
-> +              enum: [ 85, 340, 1360 ]
-> +              default: 1360
-> +
-> +            qcom,hw-settle-time:
-> +              enum: [ 15, 100, 200, 300, 400, 500, 600, 700, 1000, 2000, 4000,
-> +                      8000, 16000, 32000, 64000, 128000 ]
-> +              default: 15
-> +
-> +            qcom,avg-samples:
-> +              enum: [ 1, 2, 4, 8, 16 ]
-> +              default: 1
-> +
->  examples:
->    - |
->      spmi_bus {
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
-> new file mode 100644
-> index 0000000..9426f27
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
-> @@ -0,0 +1,67 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020, The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H
-> +
-> +#ifndef PM8350_SID
-> +#define PM8350_SID                                     1
-> +#endif
-> +
-> +/* ADC channels for PM8350_ADC for PMIC7 */
-> +#define PM8350_ADC7_REF_GND                    (PM8350_SID << 8 | 0x0)
-> +#define PM8350_ADC7_1P25VREF                   (PM8350_SID << 8 | 0x01)
-> +#define PM8350_ADC7_VREF_VADC                  (PM8350_SID << 8 | 0x02)
-> +#define PM8350_ADC7_DIE_TEMP                   (PM8350_SID << 8 | 0x03)
-> +
-> +#define PM8350_ADC7_AMUX_THM1                  (PM8350_SID << 8 | 0x04)
-> +#define PM8350_ADC7_AMUX_THM2                  (PM8350_SID << 8 | 0x05)
-> +#define PM8350_ADC7_AMUX_THM3                  (PM8350_SID << 8 | 0x06)
-> +#define PM8350_ADC7_AMUX_THM4                  (PM8350_SID << 8 | 0x07)
-> +#define PM8350_ADC7_AMUX_THM5                  (PM8350_SID << 8 | 0x08)
-> +#define PM8350_ADC7_GPIO1                      (PM8350_SID << 8 | 0x0a)
-> +#define PM8350_ADC7_GPIO2                      (PM8350_SID << 8 | 0x0b)
-> +#define PM8350_ADC7_GPIO3                      (PM8350_SID << 8 | 0x0c)
-> +#define PM8350_ADC7_GPIO4                      (PM8350_SID << 8 | 0x0d)
-> +
-> +/* 30k pull-up1 */
-> +#define PM8350_ADC7_AMUX_THM1_30K_PU           (PM8350_SID << 8 | 0x24)
-> +#define PM8350_ADC7_AMUX_THM2_30K_PU           (PM8350_SID << 8 | 0x25)
-> +#define PM8350_ADC7_AMUX_THM3_30K_PU           (PM8350_SID << 8 | 0x26)
-> +#define PM8350_ADC7_AMUX_THM4_30K_PU           (PM8350_SID << 8 | 0x27)
-> +#define PM8350_ADC7_AMUX_THM5_30K_PU           (PM8350_SID << 8 | 0x28)
-> +#define PM8350_ADC7_GPIO1_30K_PU               (PM8350_SID << 8 | 0x2a)
-> +#define PM8350_ADC7_GPIO2_30K_PU               (PM8350_SID << 8 | 0x2b)
-> +#define PM8350_ADC7_GPIO3_30K_PU               (PM8350_SID << 8 | 0x2c)
-> +#define PM8350_ADC7_GPIO4_30K_PU               (PM8350_SID << 8 | 0x2d)
-> +
-> +/* 100k pull-up2 */
-> +#define PM8350_ADC7_AMUX_THM1_100K_PU          (PM8350_SID << 8 | 0x44)
-> +#define PM8350_ADC7_AMUX_THM2_100K_PU          (PM8350_SID << 8 | 0x45)
-> +#define PM8350_ADC7_AMUX_THM3_100K_PU          (PM8350_SID << 8 | 0x46)
-> +#define PM8350_ADC7_AMUX_THM4_100K_PU          (PM8350_SID << 8 | 0x47)
-> +#define PM8350_ADC7_AMUX_THM5_100K_PU          (PM8350_SID << 8 | 0x48)
-> +#define PM8350_ADC7_GPIO1_100K_PU              (PM8350_SID << 8 | 0x4a)
-> +#define PM8350_ADC7_GPIO2_100K_PU              (PM8350_SID << 8 | 0x4b)
-> +#define PM8350_ADC7_GPIO3_100K_PU              (PM8350_SID << 8 | 0x4c)
-> +#define PM8350_ADC7_GPIO4_100K_PU              (PM8350_SID << 8 | 0x4d)
-> +
-> +/* 400k pull-up3 */
-> +#define PM8350_ADC7_AMUX_THM1_400K_PU          (PM8350_SID << 8 | 0x64)
-> +#define PM8350_ADC7_AMUX_THM2_400K_PU          (PM8350_SID << 8 | 0x65)
-> +#define PM8350_ADC7_AMUX_THM3_400K_PU          (PM8350_SID << 8 | 0x66)
-> +#define PM8350_ADC7_AMUX_THM4_400K_PU          (PM8350_SID << 8 | 0x67)
-> +#define PM8350_ADC7_AMUX_THM5_400K_PU          (PM8350_SID << 8 | 0x68)
-> +#define PM8350_ADC7_GPIO1_400K_PU              (PM8350_SID << 8 | 0x6a)
-> +#define PM8350_ADC7_GPIO2_400K_PU              (PM8350_SID << 8 | 0x6b)
-> +#define PM8350_ADC7_GPIO3_400K_PU              (PM8350_SID << 8 | 0x6c)
-> +#define PM8350_ADC7_GPIO4_400K_PU              (PM8350_SID << 8 | 0x6d)
-> +
-> +/* 1/3 Divider */
-> +#define PM8350_ADC7_GPIO4_DIV3                 (PM8350_SID << 8 | 0x8d)
-> +
-> +#define PM8350_ADC7_VPH_PWR                    (PM8350_SID << 8 | 0x8e)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H */
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
-> new file mode 100644
-> index 0000000..dc2497c
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
-> @@ -0,0 +1,88 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H
-> +
-> +#ifndef PM8350B_SID
-> +#define PM8350B_SID                                    3
-> +#endif
-> +
-> +/* ADC channels for PM8350B_ADC for PMIC7 */
-> +#define PM8350B_ADC7_REF_GND                   (PM8350B_SID << 8 | 0x0)
-> +#define PM8350B_ADC7_1P25VREF                  (PM8350B_SID << 8 | 0x01)
-> +#define PM8350B_ADC7_VREF_VADC                 (PM8350B_SID << 8 | 0x02)
-> +#define PM8350B_ADC7_DIE_TEMP                  (PM8350B_SID << 8 | 0x03)
-> +
-> +#define PM8350B_ADC7_AMUX_THM1                 (PM8350B_SID << 8 | 0x04)
-> +#define PM8350B_ADC7_AMUX_THM2                 (PM8350B_SID << 8 | 0x05)
-> +#define PM8350B_ADC7_AMUX_THM3                 (PM8350B_SID << 8 | 0x06)
-> +#define PM8350B_ADC7_AMUX_THM4                 (PM8350B_SID << 8 | 0x07)
-> +#define PM8350B_ADC7_AMUX_THM5                 (PM8350B_SID << 8 | 0x08)
-> +#define PM8350B_ADC7_AMUX_THM6                 (PM8350B_SID << 8 | 0x09)
-> +#define PM8350B_ADC7_GPIO1                     (PM8350B_SID << 8 | 0x0a)
-> +#define PM8350B_ADC7_GPIO2                     (PM8350B_SID << 8 | 0x0b)
-> +#define PM8350B_ADC7_GPIO3                     (PM8350B_SID << 8 | 0x0c)
-> +#define PM8350B_ADC7_GPIO4                     (PM8350B_SID << 8 | 0x0d)
-> +
-> +#define PM8350B_ADC7_CHG_TEMP                  (PM8350B_SID << 8 | 0x10)
-> +#define PM8350B_ADC7_USB_IN_V_16               (PM8350B_SID << 8 | 0x11)
-> +#define PM8350B_ADC7_VDC_16                    (PM8350B_SID << 8 | 0x12)
-> +#define PM8350B_ADC7_CC1_ID                    (PM8350B_SID << 8 | 0x13)
-> +#define PM8350B_ADC7_VREF_BAT_THERM            (PM8350B_SID << 8 | 0x15)
-> +#define PM8350B_ADC7_IIN_FB                    (PM8350B_SID << 8 | 0x17)
-> +
-> +/* 30k pull-up1 */
-> +#define PM8350B_ADC7_AMUX_THM1_30K_PU          (PM8350B_SID << 8 | 0x24)
-> +#define PM8350B_ADC7_AMUX_THM2_30K_PU          (PM8350B_SID << 8 | 0x25)
-> +#define PM8350B_ADC7_AMUX_THM3_30K_PU          (PM8350B_SID << 8 | 0x26)
-> +#define PM8350B_ADC7_AMUX_THM4_30K_PU          (PM8350B_SID << 8 | 0x27)
-> +#define PM8350B_ADC7_AMUX_THM5_30K_PU          (PM8350B_SID << 8 | 0x28)
-> +#define PM8350B_ADC7_AMUX_THM6_30K_PU          (PM8350B_SID << 8 | 0x29)
-> +#define PM8350B_ADC7_GPIO1_30K_PU              (PM8350B_SID << 8 | 0x2a)
-> +#define PM8350B_ADC7_GPIO2_30K_PU              (PM8350B_SID << 8 | 0x2b)
-> +#define PM8350B_ADC7_GPIO3_30K_PU              (PM8350B_SID << 8 | 0x2c)
-> +#define PM8350B_ADC7_GPIO4_30K_PU              (PM8350B_SID << 8 | 0x2d)
-> +#define PM8350B_ADC7_CC1_ID_30K_PU             (PM8350B_SID << 8 | 0x33)
-> +
-> +/* 100k pull-up2 */
-> +#define PM8350B_ADC7_AMUX_THM1_100K_PU         (PM8350B_SID << 8 | 0x44)
-> +#define PM8350B_ADC7_AMUX_THM2_100K_PU         (PM8350B_SID << 8 | 0x45)
-> +#define PM8350B_ADC7_AMUX_THM3_100K_PU         (PM8350B_SID << 8 | 0x46)
-> +#define PM8350B_ADC7_AMUX_THM4_100K_PU         (PM8350B_SID << 8 | 0x47)
-> +#define PM8350B_ADC7_AMUX_THM5_100K_PU         (PM8350B_SID << 8 | 0x48)
-> +#define PM8350B_ADC7_AMUX_THM6_100K_PU         (PM8350B_SID << 8 | 0x49)
-> +#define PM8350B_ADC7_GPIO1_100K_PU             (PM8350B_SID << 8 | 0x4a)
-> +#define PM8350B_ADC7_GPIO2_100K_PU             (PM8350B_SID << 8 | 0x4b)
-> +#define PM8350B_ADC7_GPIO3_100K_PU             (PM8350B_SID << 8 | 0x4c)
-> +#define PM8350B_ADC7_GPIO4_100K_PU             (PM8350B_SID << 8 | 0x4d)
-> +#define PM8350B_ADC7_CC1_ID_100K_PU            (PM8350B_SID << 8 | 0x53)
-> +
-> +/* 400k pull-up3 */
-> +#define PM8350B_ADC7_AMUX_THM1_400K_PU         (PM8350B_SID << 8 | 0x64)
-> +#define PM8350B_ADC7_AMUX_THM2_400K_PU         (PM8350B_SID << 8 | 0x65)
-> +#define PM8350B_ADC7_AMUX_THM3_400K_PU         (PM8350B_SID << 8 | 0x66)
-> +#define PM8350B_ADC7_AMUX_THM4_400K_PU         (PM8350B_SID << 8 | 0x67)
-> +#define PM8350B_ADC7_AMUX_THM5_400K_PU         (PM8350B_SID << 8 | 0x68)
-> +#define PM8350B_ADC7_AMUX_THM6_400K_PU         (PM8350B_SID << 8 | 0x69)
-> +#define PM8350B_ADC7_GPIO1_400K_PU             (PM8350B_SID << 8 | 0x6a)
-> +#define PM8350B_ADC7_GPIO2_400K_PU             (PM8350B_SID << 8 | 0x6b)
-> +#define PM8350B_ADC7_GPIO3_400K_PU             (PM8350B_SID << 8 | 0x6c)
-> +#define PM8350B_ADC7_GPIO4_400K_PU             (PM8350B_SID << 8 | 0x6d)
-> +#define PM8350B_ADC7_CC1_ID_400K_PU            (PM8350B_SID << 8 | 0x73)
-> +
-> +/* 1/3 Divider */
-> +#define PM8350B_ADC7_GPIO1_DIV3                        (PM8350B_SID << 8 | 0x8a)
-> +#define PM8350B_ADC7_GPIO2_DIV3                        (PM8350B_SID << 8 | 0x8b)
-> +#define PM8350B_ADC7_GPIO3_DIV3                        (PM8350B_SID << 8 | 0x8c)
-> +#define PM8350B_ADC7_GPIO4_DIV3                        (PM8350B_SID << 8 | 0x8d)
-> +
-> +#define PM8350B_ADC7_VPH_PWR                   (PM8350B_SID << 8 | 0x8e)
-> +#define PM8350B_ADC7_VBAT_SNS                  (PM8350B_SID << 8 | 0x8f)
-> +
-> +#define PM8350B_ADC7_SBUx                      (PM8350B_SID << 8 | 0x94)
-> +#define PM8350B_ADC7_VBAT_2S_MID               (PM8350B_SID << 8 | 0x96)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H */
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
-> new file mode 100644
-> index 0000000..6c29687
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
-> @@ -0,0 +1,46 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
-> +
-> +#ifndef PMK8350_SID
-> +#define PMK8350_SID                                    0
-> +#endif
-> +
-> +/* ADC channels for PMK8350_ADC for PMIC7 */
-> +#define PMK8350_ADC7_REF_GND                   (PMK8350_SID << 8 | 0x0)
-> +#define PMK8350_ADC7_1P25VREF                  (PMK8350_SID << 8 | 0x01)
-> +#define PMK8350_ADC7_VREF_VADC                 (PMK8350_SID << 8 | 0x02)
-> +#define PMK8350_ADC7_DIE_TEMP                  (PMK8350_SID << 8 | 0x03)
-> +
-> +#define PMK8350_ADC7_AMUX_THM1                 (PMK8350_SID << 8 | 0x04)
-> +#define PMK8350_ADC7_AMUX_THM2                 (PMK8350_SID << 8 | 0x05)
-> +#define PMK8350_ADC7_AMUX_THM3                 (PMK8350_SID << 8 | 0x06)
-> +#define PMK8350_ADC7_AMUX_THM4                 (PMK8350_SID << 8 | 0x07)
-> +#define PMK8350_ADC7_AMUX_THM5                 (PMK8350_SID << 8 | 0x08)
-> +
-> +/* 30k pull-up1 */
-> +#define PMK8350_ADC7_AMUX_THM1_30K_PU          (PMK8350_SID << 8 | 0x24)
-> +#define PMK8350_ADC7_AMUX_THM2_30K_PU          (PMK8350_SID << 8 | 0x25)
-> +#define PMK8350_ADC7_AMUX_THM3_30K_PU          (PMK8350_SID << 8 | 0x26)
-> +#define PMK8350_ADC7_AMUX_THM4_30K_PU          (PMK8350_SID << 8 | 0x27)
-> +#define PMK8350_ADC7_AMUX_THM5_30K_PU          (PMK8350_SID << 8 | 0x28)
-> +
-> +/* 100k pull-up2 */
-> +#define PMK8350_ADC7_AMUX_THM1_100K_PU         (PMK8350_SID << 8 | 0x44)
-> +#define PMK8350_ADC7_AMUX_THM2_100K_PU         (PMK8350_SID << 8 | 0x45)
-> +#define PMK8350_ADC7_AMUX_THM3_100K_PU         (PMK8350_SID << 8 | 0x46)
-> +#define PMK8350_ADC7_AMUX_THM4_100K_PU         (PMK8350_SID << 8 | 0x47)
-> +#define PMK8350_ADC7_AMUX_THM5_100K_PU         (PMK8350_SID << 8 | 0x48)
-> +
-> +/* 400k pull-up3 */
-> +#define PMK8350_ADC7_AMUX_THM1_400K_PU         (PMK8350_SID << 8 | 0x64)
-> +#define PMK8350_ADC7_AMUX_THM2_400K_PU         (PMK8350_SID << 8 | 0x65)
-> +#define PMK8350_ADC7_AMUX_THM3_400K_PU         (PMK8350_SID << 8 | 0x66)
-> +#define PMK8350_ADC7_AMUX_THM4_400K_PU         (PMK8350_SID << 8 | 0x67)
-> +#define PMK8350_ADC7_AMUX_THM5_400K_PU         (PMK8350_SID << 8 | 0x68)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H */
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
-> new file mode 100644
-> index 0000000..d6df1b1
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
-> @@ -0,0 +1,28 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H
-> +
-> +#ifndef PMR735A_SID
-> +#define PMR735A_SID                                    4
-> +#endif
-> +
-> +/* ADC channels for PMR735A_ADC for PMIC7 */
-> +#define PMR735A_ADC7_REF_GND                   (PMR735A_SID << 8 | 0x0)
-> +#define PMR735A_ADC7_1P25VREF                  (PMR735A_SID << 8 | 0x01)
-> +#define PMR735A_ADC7_VREF_VADC                 (PMR735A_SID << 8 | 0x02)
-> +#define PMR735A_ADC7_DIE_TEMP                  (PMR735A_SID << 8 | 0x03)
-> +
-> +#define PMR735A_ADC7_GPIO1                     (PMR735A_SID << 8 | 0x0a)
-> +#define PMR735A_ADC7_GPIO2                     (PMR735A_SID << 8 | 0x0b)
-> +#define PMR735A_ADC7_GPIO3                     (PMR735A_SID << 8 | 0x0c)
-> +
-> +/* 100k pull-up2 */
-> +#define PMR735A_ADC7_GPIO1_100K_PU             (PMR735A_SID << 8 | 0x4a)
-> +#define PMR735A_ADC7_GPIO2_100K_PU             (PMR735A_SID << 8 | 0x4b)
-> +#define PMR735A_ADC7_GPIO3_100K_PU             (PMR735A_SID << 8 | 0x4c)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H */
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
-> new file mode 100644
-> index 0000000..8da0e7d
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
-> @@ -0,0 +1,28 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H
-> +
-> +#ifndef PMR735B_SID
-> +#define PMR735B_SID                                    5
-> +#endif
-> +
-> +/* ADC channels for PMR735B_ADC for PMIC7 */
-> +#define PMR735B_ADC7_REF_GND                   (PMR735B_SID << 8 | 0x0)
-> +#define PMR735B_ADC7_1P25VREF                  (PMR735B_SID << 8 | 0x01)
-> +#define PMR735B_ADC7_VREF_VADC                 (PMR735B_SID << 8 | 0x02)
-> +#define PMR735B_ADC7_DIE_TEMP                  (PMR735B_SID << 8 | 0x03)
-> +
-> +#define PMR735B_ADC7_GPIO1                     (PMR735B_SID << 8 | 0x0a)
-> +#define PMR735B_ADC7_GPIO2                     (PMR735B_SID << 8 | 0x0b)
-> +#define PMR735B_ADC7_GPIO3                     (PMR735B_SID << 8 | 0x0c)
-> +
-> +/* 100k pull-up2 */
-> +#define PMR735B_ADC7_GPIO1_100K_PU             (PMR735B_SID << 8 | 0x4a)
-> +#define PMR735B_ADC7_GPIO2_100K_PU             (PMR735B_SID << 8 | 0x4b)
-> +#define PMR735B_ADC7_GPIO3_100K_PU             (PMR735B_SID << 8 | 0x4c)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H */
-> diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> index 61d556d..08adfe2 100644
-> --- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-> +++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> @@ -1,6 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
-> - * Copyright (c) 2012-2014,2018 The Linux Foundation. All rights reserved.
-> + * Copyright (c) 2012-2014,2018,2020 The Linux Foundation. All rights reserved.
->   */
->
->  #ifndef _DT_BINDINGS_QCOM_SPMI_VADC_H
-> @@ -221,4 +221,80 @@
->
->  #define ADC5_MAX_CHANNEL                       0xc0
->
-> +/* ADC channels for ADC for PMIC7 */
-> +
-> +#define ADC7_REF_GND                           0x00
-> +#define ADC7_1P25VREF                          0x01
-> +#define ADC7_VREF_VADC                         0x02
-> +#define ADC7_DIE_TEMP                          0x03
-> +
-> +#define ADC7_AMUX_THM1                         0x04
-> +#define ADC7_AMUX_THM2                         0x05
-> +#define ADC7_AMUX_THM3                         0x06
-> +#define ADC7_AMUX_THM4                         0x07
-> +#define ADC7_AMUX_THM5                         0x08
-> +#define ADC7_AMUX_THM6                         0x09
-> +#define ADC7_GPIO1                             0x0a
-> +#define ADC7_GPIO2                             0x0b
-> +#define ADC7_GPIO3                             0x0c
-> +#define ADC7_GPIO4                             0x0d
-> +
-> +#define ADC7_CHG_TEMP                          0x10
-> +#define ADC7_USB_IN_V_16                       0x11
-> +#define ADC7_VDC_16                            0x12
-> +#define ADC7_CC1_ID                            0x13
-> +#define ADC7_VREF_BAT_THERM                    0x15
-> +#define ADC7_IIN_FB                            0x17
-> +
-> +/* 30k pull-up1 */
-> +#define ADC7_AMUX_THM1_30K_PU                  0x24
-> +#define ADC7_AMUX_THM2_30K_PU                  0x25
-> +#define ADC7_AMUX_THM3_30K_PU                  0x26
-> +#define ADC7_AMUX_THM4_30K_PU                  0x27
-> +#define ADC7_AMUX_THM5_30K_PU                  0x28
-> +#define ADC7_AMUX_THM6_30K_PU                  0x29
-> +#define ADC7_GPIO1_30K_PU                      0x2a
-> +#define ADC7_GPIO2_30K_PU                      0x2b
-> +#define ADC7_GPIO3_30K_PU                      0x2c
-> +#define ADC7_GPIO4_30K_PU                      0x2d
-> +#define ADC7_CC1_ID_30K_PU                     0x33
-> +
-> +/* 100k pull-up2 */
-> +#define ADC7_AMUX_THM1_100K_PU                 0x44
-> +#define ADC7_AMUX_THM2_100K_PU                 0x45
-> +#define ADC7_AMUX_THM3_100K_PU                 0x46
-> +#define ADC7_AMUX_THM4_100K_PU                 0x47
-> +#define ADC7_AMUX_THM5_100K_PU                 0x48
-> +#define ADC7_AMUX_THM6_100K_PU                 0x49
-> +#define ADC7_GPIO1_100K_PU                     0x4a
-> +#define ADC7_GPIO2_100K_PU                     0x4b
-> +#define ADC7_GPIO3_100K_PU                     0x4c
-> +#define ADC7_GPIO4_100K_PU                     0x4d
-> +#define ADC7_CC1_ID_100K_PU                    0x53
-> +
-> +/* 400k pull-up3 */
-> +#define ADC7_AMUX_THM1_400K_PU                 0x64
-> +#define ADC7_AMUX_THM2_400K_PU                 0x65
-> +#define ADC7_AMUX_THM3_400K_PU                 0x66
-> +#define ADC7_AMUX_THM4_400K_PU                 0x67
-> +#define ADC7_AMUX_THM5_400K_PU                 0x68
-> +#define ADC7_AMUX_THM6_400K_PU                 0x69
-> +#define ADC7_GPIO1_400K_PU                     0x6a
-> +#define ADC7_GPIO2_400K_PU                     0x6b
-> +#define ADC7_GPIO3_400K_PU                     0x6c
-> +#define ADC7_GPIO4_400K_PU                     0x6d
-> +#define ADC7_CC1_ID_400K_PU                    0x73
-> +
-> +/* 1/3 Divider */
-> +#define ADC7_GPIO1_DIV3                                0x8a
-> +#define ADC7_GPIO2_DIV3                                0x8b
-> +#define ADC7_GPIO3_DIV3                                0x8c
-> +#define ADC7_GPIO4_DIV3                                0x8d
-> +
-> +#define ADC7_VPH_PWR                           0x8e
-> +#define ADC7_VBAT_SNS                          0x8f
-> +
-> +#define ADC7_SBUx                              0x94
-> +#define ADC7_VBAT_2S_MID                       0x96
-> +
->  #endif /* _DT_BINDINGS_QCOM_SPMI_VADC_H */
-> --
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
+TGVzbGllIEhzaWEo5aSP6YKm6YCyX1BlZ2F0cm9uKSDluIzmnJvlm57mlLbpgJnlsIHpg7Xku7Yg
+W1tQQVRDSF0gQVNvQzogdGFzNTgwNW06IEFkZCBUQVM1ODA1TSBhbXBsaWZpZXIgZHJpdmVyXeOA
+gg0KDQoNClRoaXMgZS1tYWlsIGFuZCBpdHMgYXR0YWNobWVudCBtYXkgY29udGFpbiBpbmZvcm1h
+dGlvbiB0aGF0IGlzIGNvbmZpZGVudGlhbCBvciBwcml2aWxlZ2VkLCBhbmQgYXJlIHNvbGVseSBm
+b3IgdGhlIHVzZSBvZiB0aGUgaW5kaXZpZHVhbCB0byB3aG9tIHRoaXMgZS1tYWlsIGlzIGFkZHJl
+c3NlZC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCBvciBoYXZlIHJlY2Vp
+dmVkIGl0IGFjY2lkZW50YWxseSwgcGxlYXNlIGltbWVkaWF0ZWx5IG5vdGlmeSB0aGUgc2VuZGVy
+IGJ5IHJlcGx5IGUtbWFpbCBhbmQgZGVzdHJveSBhbGwgY29waWVzIG9mIHRoaXMgZW1haWwgYW5k
+IGl0cyBhdHRhY2htZW50LiBQbGVhc2UgYmUgYWR2aXNlZCB0aGF0IGFueSB1bmF1dGhvcml6ZWQg
+dXNlLCBkaXNjbG9zdXJlLCBkaXN0cmlidXRpb24gb3IgY29weWluZyBvZiB0aGlzIGVtYWlsIG9y
+IGl0cyBhdHRhY2htZW50IGlzIHN0cmljdGx5IHByb2hpYml0ZWQuDQoNCuacrOmbu+WtkOmDteS7
+tuWPiuWFtumZhOS7tuWPr+iDveWQq+acieapn+WvhuaIluS+neazleWPl+eJueauiueuoeWItuS5
+i+izh+ioiu+8jOWDheS+m+acrOmbu+WtkOmDteS7tuS5i+WPl+aWh+iAheS9v+eUqOOAguWPsOer
+r+WmgumdnuacrOmbu+WtkOmDteS7tuS5i+WPl+aWh+iAheaIluiqpOaUtuacrOmbu+WtkOmDteS7
+tu+8jOiri+eri+WNs+WbnuimhumDteS7tumAmuefpeWvhOS7tuS6uu+8jOS4pumKt+avgOacrOmb
+u+WtkOmDteS7tuS5i+aJgOacieikh+acrOWPiumZhOS7tuOAguS7u+S9leacque2k+aOiOasiuiA
+jOS9v+eUqOOAgeaPremcsuOAgeaVo+S9iOaIluikh+ijveacrOmbu+WtkOmDteS7tuaIluWFtumZ
+hOS7tuS5i+ihjOeCuu+8jOeahuWatOagvOemgeatoiDjgIINCg0K

@@ -2,98 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8143F1C44E8
-	for <lists+linux-iio@lfdr.de>; Mon,  4 May 2020 20:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C04B01C4CF3
+	for <lists+linux-iio@lfdr.de>; Tue,  5 May 2020 06:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730738AbgEDSLI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 May 2020 14:11:08 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:44035 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732265AbgEDSLH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 May 2020 14:11:07 -0400
-Received: from localhost ([109.41.193.12]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1M58SY-1jWm0f3tDQ-0016Pm; Mon, 04 May 2020 20:10:38 +0200
-Date:   Mon, 4 May 2020 20:10:34 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        bgolaszewski@baylibre.com, linus.walleij@linaro.org,
-        tglx@linutronix.de, allison@lohutok.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3] iio: bmp280: fix compensation of humidity
-Message-ID: <20200504181033.GA15745@arbad>
+        id S1726638AbgEEEFk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 May 2020 00:05:40 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:35732 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725272AbgEEEFk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 May 2020 00:05:40 -0400
+Received: by mail-oi1-f196.google.com with SMTP id o7so878066oif.2;
+        Mon, 04 May 2020 21:05:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=NxcXGsja0RqwbNvyBbTQG5dqInSaMyIr4W7PW6vbWV0=;
+        b=jXUnYvJQVStbcYVTkL/Jw2kaOFvCP7u+v3ywFtgA8TQGU3zsFXnaEw2OAbednQaVqX
+         PH9ZnqDZZA+/CyUVFDHQfpV9ZPRmci8Wq5EVmx0y0cccFOGVW5sCHG5+owNcMlXCs4Kr
+         1eS7IHfc92GWspuXCycdZkAflpRkiLstgPukUmTAcn7xZgQnfzT8KAyUYo2X1TbeIwPa
+         GlTZQRLzB5JjK7XBlMxWiU5Pg9ap9mGtFvubgXxF6iyY43mmd0fxtEoJknmzdHTE3QSl
+         n0/02lyeig+VmBhaJD5wtTZ+bZRAQjefDFjMiidM9dYZEfiPS+FNFBTqOqXN0WwlBVjg
+         1oPA==
+X-Gm-Message-State: AGi0PuaJomyo3ngPktiGF7onaBkbeHlJxK90lLJ0hq5ORsQ9CYCdSSno
+        brt0bjq5kkD6NT2lO9YvfQ==
+X-Google-Smtp-Source: APiQypIm6bJ2GYcUWnDrZJSKFY2MMrVaOZ5DgIjiUPpdrF0QvVmDwHdw5rjjHX4mQ/dYp0iumLOLcQ==
+X-Received: by 2002:aca:d441:: with SMTP id l62mr1244483oig.9.1588651539145;
+        Mon, 04 May 2020 21:05:39 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 61sm329855otp.13.2020.05.04.21.05.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2020 21:05:38 -0700 (PDT)
+Received: (nullmailer pid 31439 invoked by uid 1000);
+        Tue, 05 May 2020 04:05:37 -0000
+Date:   Mon, 4 May 2020 23:05:37 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Artur Rojek <contact@artur-rojek.eu>
+Subject: Re: [PATCH v6 6/7] dt-bindings: input: Add docs for ADC driven
+ joystick.
+Message-ID: <20200505040537.GA30791@bogus>
+References: <20200503171451.44034-1-contact@artur-rojek.eu>
+ <20200503171451.44034-6-contact@artur-rojek.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20200503171451.44034-6-contact@artur-rojek.eu>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Provags-ID: V03:K1:ocgTseaez8bdvV9u0+jmemzP2DfkQbD7gDGFoeFvrUSUgmWG2lK
- NDSVIRPPSrIMxBnpSWtJM8aYNFU5deDn9LaChONPne5226HYUGUW/wBhWBcvjvcH3hrwJM4
- byjq9YPVokkwr3qdK6wVvYmjbPxFLzqkAFb2DmAgHagi0pBcfXlkw+FH3c7Xmfiqwx3VMqY
- 0zN7rp+/vM3yRtC2FsMiw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lf9AWC4ovJ4=:mJnYAnWFsnpuNXC45ASvp/
- qHip1buxF0G2h4HS4JfGBUweYpiZNe8jidwQdTzAWFjLiMyEGBm3sb85PfrxTS3EG6sTNhSGi
- OYj7PPSl+wkzYUjUlKCNaQC37flFsYDO4hWR5e4hcTK/f9GAurjCqf2cWsyVabUuEyQrD7iSu
- Gi7+hHkbiJvHFZt/qGIqASEPrdMyA8mHeRMhyA4LwNNe/yNn8tBez/xjxiB1ouK8qM4zUURP0
- kAnmzqdDGIhGp1cc4pBcGpTweZ+EAtrPoUdBHKMHmh9MUGsIpLA/lw+3VYCH0N35KLTXeVaYt
- 5ozXkao/PfDRz4zEpMjojmV9k7osfLLUzboF50WqwrxfJJa03R63AwPIbB1fIDrU3HUP8/2l6
- 17FTxkz1oicJdVi7GmyGM4K36jQrxyAb+HtLMgwr8KELpbkVGIi7j73s7NfrmDu16rPmoyuYt
- EVRapTTULUDPV/1v/JpMQxOJ22aKkD1y6/E96OpD00UM2/UkGIioLa6z3sOluTM8KSDB1iOSO
- c+bX1lTOs2F9TUZmgOnWmSVSk07QG5c4GgBNih/wVFt7iQkdGMPRWLIYuxHYa2zsfCo6A+yT/
- XXptZRxZIAqV/Z4wTItCdn9RidsnlctQHwUg6pxy7Gznp4y1O9DQsFqkx4uuoioJE+KI2FNOc
- GFOOiRNeAyuFzc9t0Qrl7qNd5zFgUikGiJMkrUb02iGNLOjGCjgmqXlAcniyO5E4MwHvT+2d8
- B6Yz+vI4OobdHkwzFLOlweXKIgFM64CdeCPoegqJ0v5XhVd+WKhojm3ZHbEZxWMLdEAcgyMdw
- Hn7Q3zTDqNBtW0E0/hkEZQ/J06fGl64rVNtMTxrnnJBpRtWCR3uuf/VWZgMTzQ9UNP2fzyB
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Limit the output of humidity compensation to the range between 0 and 100
-percent.
+On Sun,  3 May 2020 19:14:50 +0200, Artur Rojek wrote:
+> Add documentation for the adc-joystick driver, used to provide support
+> for joysticks connected over ADC.
+> 
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+> 
+>  Changes:
+> 
+>  v2: - Add `reg` property to axis subnode in order to enumerate the axes,
+>      - rename `linux,abs-code` property to `linux,code`,
+>      - drop `linux,` prefix from the remaining properties of axis subnode
+> 
+>  v3: no change
+> 
+>  v4: - remove "bindings" from the unique identifier string,
+>      - replace `|` with `>` for all description properties,
+>      - specify the number of items for `io-channels`,
+>      - correct the regex pattern of `axis` property,
+>      - specify the value range of `reg` property for each axis,
+>      - put `abs-range` properties under `allOf` 
+> 
+>  v5: add `a-f` to the regex pattern of `axis` property
+> 
+>  v6: no change
+> 
+>  .../bindings/input/adc-joystick.yaml          | 121 ++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/adc-joystick.yaml
+> 
 
-Depending on the calibration parameters of the individual sensor it
-happens, that a humidity above 100 percent or below 0 percent is
-calculated, which don't make sense in terms of relative humidity.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Add a clamp to the compensation formula as described in the datasheet of
-the sensor in chapter 4.2.3.
+Error: Documentation/devicetree/bindings/input/adc-joystick.example.dts:24.31-32 syntax error
+FATAL ERROR: Unable to parse input tree
+scripts/Makefile.lib:312: recipe for target 'Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml' failed
+make[1]: *** [Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+Makefile:1300: recipe for target 'dt_binding_check' failed
+make: *** [dt_binding_check] Error 2
 
-Although this clamp is documented, it was never in the driver of the
-kernel.
+See https://patchwork.ozlabs.org/patch/1282045
 
-It depends on the circumstances (calibration parameters, temperature,
-humidity) if one can see a value above 100 percent without the clamp.
-The writer of this patch was working with this type of sensor without
-noting this error. So it seems to be a rare event when this bug occures.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
 
-Change to v2:
-Thanks to the review of Jonathan a more descriptive commit message is
-added.
-
-Change to v1:
-Thanks to Tomasz for suggesting the easier to use function clamp_val()
-which is now used.
-
- drivers/iio/pressure/bmp280-core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 29c209cc1108..297ee2205bf6 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -271,6 +271,8 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
- 		+ (s32)2097152) * calib->H2 + 8192) >> 14);
- 	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)calib->H1) >> 4;
- 
-+	var = clamp_val(var, 0, 419430400);
-+
- 	return var >> 12;
- };
- 
--- 
-2.20.1
+Please check and re-submit.

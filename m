@@ -2,232 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6911C60C6
-	for <lists+linux-iio@lfdr.de>; Tue,  5 May 2020 21:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E187E1C6556
+	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 03:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728642AbgEETHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 May 2020 15:07:55 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:43729 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727857AbgEETHz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 May 2020 15:07:55 -0400
-Received: by mail-ot1-f66.google.com with SMTP id g14so2619590otg.10;
-        Tue, 05 May 2020 12:07:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=yRzXKHUNDJ+mtxR4YILju7sSskHiz9OTnTLXZbQ3p2Y=;
-        b=hIvg7SPDZem/i5nuv/x0WIHo3fP8UXKpoIxYdnDvlKZqdJFoCALTaVUOkXgNVFBqFa
-         MVmbgeAecx9cWY3LFz9TW44i9g8n0DnazcP1MeDyyHVUt7OR0R0Ys/7nxpgONNIzGTDO
-         9Smp5KK3fMUs6nmZIEmKIB3+F3WNbgzT+ZItryeunhuj6byIVBqErLA8y8nsLssxYxNN
-         3as4AFTSUPMVD9rW/wJiAH+/34SbIzjCdm3MOngQR8HoHTvrlyV+BpUF68YshYYgAaDF
-         KbZrkDmNvIshCsOhyF9gyvjQObU6l7SiOWVgXS4HbGOV6qlLo2y6Ga9kNtKjUW0od+zw
-         ltug==
-X-Gm-Message-State: AGi0PuYNHe4lL4/ufB+J9t/Vz2A9iWmQ2X2JaOMlrdULIHHUBkwzcNgF
-        rhq9/RrwOt26X6Nkprw6yQ==
-X-Google-Smtp-Source: APiQypK2eZKZF5A9T34e/f8dTGyfZ0o4fZJqUzZkYfTgjBhAmNs3W9y7CwGgIbJcYFLhw+3Fn9UvsA==
-X-Received: by 2002:a9d:4716:: with SMTP id a22mr3514646otf.46.1588705674224;
-        Tue, 05 May 2020 12:07:54 -0700 (PDT)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id z10sm464168oon.5.2020.05.05.12.07.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 12:07:53 -0700 (PDT)
-Received: (nullmailer pid 19674 invoked by uid 1000);
-        Tue, 05 May 2020 19:07:52 -0000
-Date:   Tue, 5 May 2020 14:07:52 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
+        id S1728875AbgEFBHW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 May 2020 21:07:22 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:53790 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728609AbgEFBHV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 5 May 2020 21:07:21 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id C322D4C83F;
+        Wed,  6 May 2020 01:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1588727237; x=
+        1590541638; bh=7zdTSg/YpORI67pNtF1hXovvQa2Yrhy7TR7Vr3f2tMo=; b=N
+        57NqQ5fjDkvU5M9t/H3CNmXKZatmtXRI1Vg5TYJKdP/yi2y0WATIvf5+DLeBOogj
+        8FEduFzA7dnzohZtJKK0Q/3e5ieBGBoaiA4djhv6Wo5vwXy+YarXTf7NKDdSS/Zq
+        p7+fF+3Di6EagBId4uZIeuV0O1jJpEAmv+7GcrQ0VY=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id a_XwDhOFpGWD; Wed,  6 May 2020 04:07:17 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 2498F427B1;
+        Wed,  6 May 2020 04:07:17 +0300 (MSK)
+Received: from localhost.dev.yadro.com (10.199.2.222) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Wed, 6 May 2020 04:07:18 +0300
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/7] dt-bindings: iio/adc: Convert ingenic-adc docs to
- YAML.
-Message-ID: <20200505190752.GA16143@bogus>
-References: <20200503171451.44034-1-contact@artur-rojek.eu>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v12 0/2] iio: proximity: driver for vcnl3020
+Date:   Wed, 6 May 2020 04:08:07 +0300
+Message-ID: <20200506010809.6348-1-i.mikhaylov@yadro.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200503171451.44034-1-contact@artur-rojek.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.2.222]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 03, 2020 at 07:14:45PM +0200, Artur Rojek wrote:
-> Convert the textual documentation of Device Tree bindings for the
-> Ingenic JZ47xx SoCs ADC controller to YAML.
-> 
-> The `interrupts` property is now explicitly listed and marked as
-> required. While missing from the previous textual documentation, this
-> property has been used with all the boards which probe this driver.
-> 
-> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-> Tested-by: Paul Cercueil <paul@crapouillou.net>
-> ---
-> 
-> Changes:
-> 
-> v6: new patch
-> 
->  .../bindings/iio/adc/ingenic,adc.txt          | 49 ------------
->  .../bindings/iio/adc/ingenic,adc.yaml         | 74 +++++++++++++++++++
->  2 files changed, 74 insertions(+), 49 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
-> deleted file mode 100644
-> index cd9048cf9dcf..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
-> +++ /dev/null
-> @@ -1,49 +0,0 @@
-> -* Ingenic JZ47xx ADC controller IIO bindings
-> -
-> -Required properties:
-> -
-> -- compatible: Should be one of:
-> -  * ingenic,jz4725b-adc
-> -  * ingenic,jz4740-adc
-> -  * ingenic,jz4770-adc
-> -- reg: ADC controller registers location and length.
-> -- clocks: phandle to the SoC's ADC clock.
-> -- clock-names: Must be set to "adc".
-> -- #io-channel-cells: Must be set to <1> to indicate channels are selected
-> -  by index.
-> -
-> -ADC clients must use the format described in iio-bindings.txt, giving
-> -a phandle and IIO specifier pair ("io-channels") to the ADC controller.
-> -
-> -Example:
-> -
-> -#include <dt-bindings/iio/adc/ingenic,adc.h>
-> -
-> -adc: adc@10070000 {
-> -	compatible = "ingenic,jz4740-adc";
-> -	#io-channel-cells = <1>;
-> -
-> -	reg = <0x10070000 0x30>;
-> -
-> -	clocks = <&cgu JZ4740_CLK_ADC>;
-> -	clock-names = "adc";
-> -
-> -	interrupt-parent = <&intc>;
-> -	interrupts = <18>;
-> -};
-> -
-> -adc-keys {
-> -	...
-> -	compatible = "adc-keys";
-> -	io-channels = <&adc INGENIC_ADC_AUX>;
-> -	io-channel-names = "buttons";
-> -	...
-> -};
-> -
-> -battery {
-> -	...
-> -	compatible = "ingenic,jz4740-battery";
-> -	io-channels = <&adc INGENIC_ADC_BATTERY>;
-> -	io-channel-names = "battery";
-> -	...
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-> new file mode 100644
-> index 000000000000..e9c46fff840a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-> @@ -0,0 +1,74 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2019-2020 Artur Rojek
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Ingenic JZ47xx ADC controller IIO bindings
-> +
-> +maintainers:
-> +  - Artur Rojek <contact@artur-rojek.eu>
-> +
-> +description: >
-> +  Industrial I/O subsystem bindings for ADC controller found in
-> +  Ingenic JZ47xx SoCs.
-> +
-> +  ADC clients must use the format described in iio-bindings.txt, giving
-> +  a phandle and IIO specifier pair ("io-channels") to the ADC controller.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ingenic,jz4725b-adc
-> +      - ingenic,jz4740-adc
-> +      - ingenic,jz4770-adc
-> +
-> +  '#io-channel-cells':
-> +    const: 1
-> +    description:
-> +      Must be set to <1> to indicate channels are selected by index.
-> +
-> +  reg:
-> +    items:
-> +      - description: ADC controller registers location and length.
+Add proximity sensor driver for Vishay vcnl3020. Only on-demand
+measurement is supported for now.
 
-That's all 'reg' properties. Just 'maxItems: 1' is good for single 
-entry.
+Changes from v11:
+   1. minor changes to yaml.
 
-> +
-> +  clocks:
-> +    items:
-> +      - description: phandle to the SoC's ADC clock.
+Changes from v10:
+   1. add vcnl3020_property struct for optional properties.
 
-Same here.
+Changes from v9:
+   1. minor changes.
+   2. pass microamps from dts, not register value.
 
-> +
-> +  clock-names:
-> +    items:
-> +      - const: adc
-> +
-> +  interrupts:
-> +    items:
-> +      - description: IRQ line for the ADC.
+Changes from v8:
+   1. add vcnl3020 prefix into get_and_apply_property function.
+   2. add bsd license into yaml.
+   3. vishay,led-current-milliamp -> vishay,led-current-microamp.
+   4. add default value into vishay,led-current-microamp and change
+      register values into microamps.
 
-And here.
+Changes from v7:
+   1. forgot to add Reviewed-by tag.
 
-> +
-> +required:
-> +  - compatible
-> +  - '#io-channel-cells'
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/jz4740-cgu.h>
-> +    #include <dt-bindings/iio/adc/ingenic,adc.h>
-> +
-> +    adc@10070000 {
-> +            compatible = "ingenic,jz4740-adc";
-> +            #io-channel-cells = <1>;
-> +
-> +            reg = <0x10070000 0x30>;
-> +
-> +            clocks = <&cgu JZ4740_CLK_ADC>;
-> +            clock-names = "adc";
-> +
-> +            interrupt-parent = <&intc>;
-> +            interrupts = <18>;
-> +    };
-> -- 
-> 2.26.2
-> 
+Changes from v6:
+   1. minor changes
+     1.1 remove VCNL_DRV_NAME
+     1.2 add braces in get_and_apply_property
+
+Changes from v5:
+   1. add get_and_apply_property function for optional parameters.
+   2. minor changes.
+
+Changes from v4:
+   1. add vdd-supply,vddio-supply,interrupts properties into yaml.
+   2. led-current -> vishay,led-current-milliamp in yaml.
+   3. add possible values enum list.
+   4. add bulk_read for result hi/lo registers.
+   5. add description of vcnl3020_data structure.
+   6. vcnl3020 id table is removed.
+   7. make "vishay,led-current-milliamp" optional in yaml and code.
+
+Changes from v3:
+   1. minor changes.
+   2. add i2c block to fix dts section in yaml.
+
+Changes from v2:
+   1. using regmap_read_poll_timeout instead of do-while in measurement
+      function.
+   2. change struct i2client* in vcnl3020_data to struct dev*
+   3. enable REGMAP_I2C in Kconfig
+
+Changes from v1:
+   1. using regmap interface instead of i2c_smbus_* calls.
+   2. switch from probe to probe_new.
+   3. s32/int32_t -> int
+
+Ivan Mikhaylov (2):
+  dt-bindings: proximity: provide vcnl3020 device tree binding document
+  iio: proximity: Add driver support for vcnl3020 proximity sensor
+
+ .../iio/proximity/vishay,vcnl3020.yaml        |  65 +++++
+ drivers/iio/proximity/Kconfig                 |  11 +
+ drivers/iio/proximity/Makefile                |   1 +
+ drivers/iio/proximity/vcnl3020.c              | 258 ++++++++++++++++++
+ 4 files changed, 335 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
+ create mode 100644 drivers/iio/proximity/vcnl3020.c
+
+-- 
+2.21.1
+

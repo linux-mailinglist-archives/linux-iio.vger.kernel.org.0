@@ -2,112 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9A541C6E8F
-	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 12:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E201C7070
+	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 14:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728948AbgEFKi3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 May 2020 06:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
+        id S1728093AbgEFMiA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 May 2020 08:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728338AbgEFKi3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 06:38:29 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABEDC061A0F;
-        Wed,  6 May 2020 03:38:29 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id a5so671626pjh.2;
-        Wed, 06 May 2020 03:38:29 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1727067AbgEFMh7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 08:37:59 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60207C061A10
+        for <linux-iio@vger.kernel.org>; Wed,  6 May 2020 05:37:59 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id x73so1204722lfa.2
+        for <linux-iio@vger.kernel.org>; Wed, 06 May 2020 05:37:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
-        b=cfeMbzjjr2O4Cw1uSwSiiOnq7ozVGG9+v0gmcQMqOdBGNT94BtXZeH1Vk0DpoIaAJ9
-         Tllhu5B8YINCJR6KvA87+KtaEftkw2Hj+qPDr0N7dih/CK0166AMBKfxUJ4JgOG6ujKR
-         UEo4flpajmZABW4JGOjPD+mqNoenPHGzcRKoatZBzZGBOBu/8CwjQ77cHoCmPm24tM+L
-         bEH5L7IHljTsB1bC1Qvv28aFGS8RKx3ewTBxyUR0G3Tbkwno4CbtDs9mLomGZBD1q1IT
-         ZnN2XJBvG4uHXGM9774PbHY4gDBTF/0YqeoUIHoWtgZ1eO2ZBwdwW9WxmINyrR2JJYzH
-         gyxQ==
+        bh=5vIN5MKPLeNGbWiYHgtJvnfkqaDr6sG1XDxpbHqc8lM=;
+        b=kaEO8qV6PIFjtYwjIDIahnc/RQhVLTmcERmgJGOXglVl98mzoWY2lV+n22uUQ3sTU9
+         oCcsrORlY/Y6EPw6AOdxdX5hS9ObK6ICW5Zc2X4VzbEsQvt+d3sAd06d4Xt9vP8o7oEg
+         if+HkIsWMBp4gg383s9tXCLbndzR5RzR9/v/XEau0KqBATsQeodpC6OyXd2Fy7ZXdai/
+         nY7FWkCB9mFTaKZX4MnTXzjyO++yl6X/9Rf4f69mnXz+wf1X5QyL27JvrRjNYJ5ZZVc3
+         JOS/p3dYNhGBT6XWiogysHwo3eovKnA1xBe9i2RMBn6oMTaCUS3UByCH4WZIkA3jIhyt
+         8fPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1OkzDtpIyQuO7IKIy35A+BZWVbOn5RiVMSLQdPPTaSc=;
-        b=Cfpm4/LIeZHSRcHNGdZ6TvXilXqVB5SKFaa0AspgOWUDGLcmZiXkur/MseMIp3J75s
-         gTCeaJ2JPx67Ypxi2XHA59izeUb9tdEGTijrk+ROSSkWP0VAGhH+l1foRtImfBoJN1vb
-         424qPC2GCWadmV5A67U/1hoNLe5hrY5WVvN0AoMACR//mTL6qydxuL+bcBs4xEz5gi+O
-         VXg3ge9LdXUmohmV5WjbWV6pP3JPzJpcuil26ApiUBu7C9dOgZATobGPpX0hYLAVpiWT
-         bzJkABogg9MbisI6HoaRLd/Fa9gEImIkBk68/Q63gunZDlNZRH0elp3EE0gT2vUCCxhc
-         7Tgw==
-X-Gm-Message-State: AGi0PuZ9zdJ2xSydLBizZqYhg2mWmL2GPtn9BOIjzCQH/+uVPgWXxRDu
-        AQVkKEs5854WBXDS8glvaGcDAGiIQsm57g/WPWJxnK7opSE=
-X-Google-Smtp-Source: APiQypIQSsE756MmU5Ui9qd6Ru5n1fOj18yZcTKTZaLH1fRbMTqqyO0CS+qusaR0TW0AGLITbhdOtcSi1Yf7K190AJA=
-X-Received: by 2002:a17:902:6901:: with SMTP id j1mr7086450plk.255.1588761508837;
- Wed, 06 May 2020 03:38:28 -0700 (PDT)
+        bh=5vIN5MKPLeNGbWiYHgtJvnfkqaDr6sG1XDxpbHqc8lM=;
+        b=hSsN5Pe62QBitlt+ljpbq8DbF7f0V9UiY2EBwegO3smouo1u6GjF+PCwcSJhd3OjO6
+         /Sz++A1PBBlMOHQObAKyt8hZ9Cdcidb76rW28LOByo4jwEiuDj0GF1pa6qC6vGqVK5kT
+         R3Kwwcxt0O65VxiYpPbF3h+lxTWD+JQasj5X/+wKSrKFBhVEIkw2921I6wm+silsvYcV
+         vtY8v2OdL9nL5QRhrnyfZUsK9QG9HNnjCKX3+IKFQp4hEdO2QzaLY7j6pSFRSLlfNQBc
+         omrG7anCPrsMc/5UDJkXjkXC4QMRYxyiZN0gJ33kqQXmDu06sRFrTz5keREJ9QOZkp0R
+         9n6g==
+X-Gm-Message-State: AGi0PuYcqofdPvwaRBSL1vBQ/fETxaAhSLbEJkRjDCwmfihJAsaBHR5R
+        VCO0Q8o11CfIHB5wtB4xi0GGvwBYnwrhc7rfsA6Tsg==
+X-Google-Smtp-Source: APiQypIscBufxrzX8o55c1IMYLoTuOUYZIw8WZNx/RqZ9X8rS3BVqal75ivPG1WUGd3PnEmeKRrga5Mx5j8aXZYQyZ4=
+X-Received: by 2002:ac2:414c:: with SMTP id c12mr4967725lfi.47.1588768677564;
+ Wed, 06 May 2020 05:37:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 6 May 2020 13:38:22 +0300
-Message-ID: <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+References: <20200503172206.13782-1-xc-racer2@live.ca> <BN6PR04MB0660ABCDFF774833264D39A6A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+In-Reply-To: <BN6PR04MB0660ABCDFF774833264D39A6A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 6 May 2020 14:37:45 +0200
+Message-ID: <CACRpkdanfaPRwm6vCGTDStxvZj38k8OTL5BviTmyTJcx0KtARQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] iio: accel: bma180: Prepare for different reset values
+To:     Jonathan Bakker <xc-racer2@live.ca>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Input <linux-input@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
-> call.
-> Remove it.
->
-> While at it add a missing \n at the end of the message.
->
+On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
 
-It should have Fixes tag because it is a quite an issue (get_device()
-breaks reference counting with all problems we may expect).
-
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is purely speculative.
-> I've looked a bit arround and see no point for this get_device() but other
-> eyes are welcomed :)
-> ---
->  drivers/iio/accel/sca3000.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Some variants of the bma180 (eg bma023) have different reset
+> values.  In preparation for adding support for them, factor
+> out the reset value into the chip specific data.
 >
-> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> index 66d768d971e1..6e429072e44a 100644
-> --- a/drivers/iio/accel/sca3000.c
-> +++ b/drivers/iio/accel/sca3000.c
-> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
->         st->tx[0] = SCA3000_READ_REG(reg_address_high);
->         ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
->         if (ret) {
-> -               dev_err(get_device(&st->us->dev), "problem reading register");
-> +               dev_err(&st->us->dev, "problem reading register\n");
->                 return ret;
->         }
->
-> --
-> 2.25.1
->
+> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
 
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Yours,
+Linus Walleij

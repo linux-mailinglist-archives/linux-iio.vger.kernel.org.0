@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8184E1C70CB
-	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 14:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C80A1C70CF
+	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 14:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728547AbgEFMtu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 May 2020 08:49:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34430 "EHLO
+        id S1728180AbgEFMvS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 May 2020 08:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728081AbgEFMtu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 08:49:50 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39ACC061A10
-        for <linux-iio@vger.kernel.org>; Wed,  6 May 2020 05:49:49 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id j3so2190338ljg.8
-        for <linux-iio@vger.kernel.org>; Wed, 06 May 2020 05:49:49 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1728131AbgEFMvS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 08:51:18 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F72C061A10
+        for <linux-iio@vger.kernel.org>; Wed,  6 May 2020 05:51:17 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id a21so2176033ljj.11
+        for <linux-iio@vger.kernel.org>; Wed, 06 May 2020 05:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vGrAL221U5LNFhyomdWD44/6fcd1PnVHrarNM3q/rB4=;
-        b=HKgt/yucHxP3oL+g7rj+nOg7Qg8kMDg6w4PXkk9Qk5J32RYqKhXSzTfL2UusXRkZ9r
-         O2StDPBYRDXKb+J1PtGUc24f0sARXZnS89BtEMms1cXY+5flaKRfapQ9K7V3s03lll89
-         codd1AN2XQZhUsdeXdFmiRNpoBYDAUcyiS0479s0pfBTTnLJwWpyBLJj5SZ+mIJ9zFCj
-         PEtcVypA6N3FwlvTcob+epUPeNM+uiS+Cnl3BN1CpVJGlbKygZgVmT8OMBCL1Aos2QIv
-         4/mPn1QV6hB/SLg2g4Q0UmozH8hGwGVOYINA418+STfObX11M7ZQPiR/e0tttmUtjlBR
-         ddxA==
+        bh=COqQCzJ4auJxawCeL75BevJEbAnSN1myQOD2Q4QlS6o=;
+        b=aUP/Sxk2re3PRk+ECqewTQ+F6wOEpuHPLfG7pOjR67sNQWZCZXm7Pfzn/ZAYrBQSbY
+         HVhJOF8T1bwfgCt/z4GB6Ow72DCwp+iAHjSoprUUYF5vtKSY8Cy5Xl4kJdlz2Hn/zH5o
+         4C3uG3jkQiChJm4nW6t0LQ5NEH4t3yE246s/ohqdudan45YcDTTSmK71uwDs+nHhvsvW
+         Y5igS6gapbGHcIHtefdk9vrArC3GRfr+RqBbTaLOzZxsy1IWVjbepibeT/Lb4UK0thrP
+         y5pz35U+/XWr9Bm+eiGtlMLF/XRlRGyQ/eEX64km/9WDAVpPOMdw+gSlGnegG2NrgeXY
+         E2WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vGrAL221U5LNFhyomdWD44/6fcd1PnVHrarNM3q/rB4=;
-        b=QZ3B34nDfK4eC58317hlOunKk2xCJ+uDbMRDt8lad4fqokTLPa5ie0xYfBNL6SY8/y
-         HeoFK2BdVAbu+cjd49034fsdI3fn8xKpFN3FOvDFMuYGEvm6SFMGPFchRFu9B3LPHaqK
-         E+fp3W1TwayTwuYdd/aFvxiiHRTR5ch5wh39fchU8W/6EBIxsHp8XtTRYpYVliCRHPwO
-         wagrvCsdBDngSOrmAKNaTLgj4TQrUMKoKhIOKBCnS4Ewswhp1z7i64yTAj5TipLosUJb
-         rZJeseksRZJFqsX6htfp59PClbwwPq1vE/ReLmim/v2nABzjxWiRo4kwvFDkx+kgNOOR
-         NC2A==
-X-Gm-Message-State: AGi0PuZCTJmFDAkUaaXCJVEV8Li19dJEgBmXpj8ydkgxjw4xDCPeVHeU
-        PRwVSouI9rsjh9nanb2DKYPeeuRZflJ9bgOeBuspvA==
-X-Google-Smtp-Source: APiQypKsFo3w+1HtO8wBxx6yf4L26hGpogFQ0SkxurfXqdzs9iDJ62nzs6zcG/VDKtCJyrzv6laayACPUSjDv3/Lfjo=
-X-Received: by 2002:a2e:8087:: with SMTP id i7mr4455713ljg.99.1588769387748;
- Wed, 06 May 2020 05:49:47 -0700 (PDT)
+        bh=COqQCzJ4auJxawCeL75BevJEbAnSN1myQOD2Q4QlS6o=;
+        b=hMpMrTiH7HWRyfTc3g3dzBQJR5UMsY9hWRq1Ve0syHRegM3mNI5Lp2ARapRoBTKp1v
+         zXWfHrO+NJvNZvRwBBT+zePJ0R1Y247xXOwUBNwfVGcAvPy6WLAZVGCLjgAmZepSQT93
+         8KDok8SF9zSO1xo11+QB6xBUHSRVt9VtKsPZugsDyFsCiQYXPIOQ8UWjTrlAvagp90pT
+         Di5v0OE/6yhAXNvuN3b0XNeRBHskZb/WphPeweCz/Td5RqiF41AEwddqsGm6C6nFyOwp
+         eBhELGykzqC8TnalHYeOsfrelRf2GGAQidbh2afmxrrwBeQCibXEBttRtAFYTavm9xjY
+         P2RQ==
+X-Gm-Message-State: AGi0Pub5hwxQ7JWSHnRJKIbme+V4J+TiZ7ZbUKkYlLz75XnWhtfdso0S
+        eZuaq/ZQvaDEv9bHkgVCiY2OAq1UAMPBDD8YEOxSGA==
+X-Google-Smtp-Source: APiQypImbwPouCSTKAxAbrKj370TdmOTHAg/3XPenrNSIG2xSYlnZPNpgYrCuSMEoTyq02M+FrCmk94OR5vDtNs6eq8=
+X-Received: by 2002:a2e:81d5:: with SMTP id s21mr4764927ljg.258.1588769476101;
+ Wed, 06 May 2020 05:51:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200503172206.13782-1-xc-racer2@live.ca> <BN6PR04MB06609033B2E0AB157A228989A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
-In-Reply-To: <BN6PR04MB06609033B2E0AB157A228989A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+References: <20200503172206.13782-1-xc-racer2@live.ca> <BN6PR04MB0660C583D9538853C8296398A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+In-Reply-To: <BN6PR04MB0660C583D9538853C8296398A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 6 May 2020 14:49:36 +0200
-Message-ID: <CACRpkdY7aSe-MWdWvL-2NC0RKohpgibnod9dnNiS_Wr9eHL-_Q@mail.gmail.com>
-Subject: Re: [PATCH 4/5] dt-bindings: iio: accel: Add required regulators to bma180
+Date:   Wed, 6 May 2020 14:51:04 +0200
+Message-ID: <CACRpkdasEU0ao0OZBoeQ9x5Efe8tFwtpkLMOU_=Xn639anJxbA@mail.gmail.com>
+Subject: Re: [PATCH 5/5] iio: accel: bma180: Add support for bma023
 To:     Jonathan Bakker <xc-racer2@live.ca>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -73,12 +73,17 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
 
-> The bma180 and related chips should have two registers attached to
-> them.  The IIO driver currently uses them, document them here as
-> well.
+> The bma023 chip is similar enough to the bma180 and bma25x that the
+> same driver can support all of them.  The biggest differences are
+> the lack of a temperature channel and no low power but still working
+> mode.
+>
+> The bma150 is a close relative of the bma023, but it does have a
+> temperature channel so support is not added for it.
 >
 > Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
 
+Looks good to me!
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,

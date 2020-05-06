@@ -2,111 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1F2A1C77EA
-	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 19:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6813C1C7A0D
+	for <lists+linux-iio@lfdr.de>; Wed,  6 May 2020 21:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728728AbgEFRbo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 May 2020 13:31:44 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:30972 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728704AbgEFRbo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 13:31:44 -0400
-Received: from [192.168.1.41] ([92.148.185.155])
-        by mwinf5d27 with ME
-        id bVXe2200R3MbWjg03VXfnK; Wed, 06 May 2020 19:31:41 +0200
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 06 May 2020 19:31:41 +0200
-X-ME-IP: 92.148.185.155
-Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1728543AbgEFTQb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 May 2020 15:16:31 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:45792 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728410AbgEFTQa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 May 2020 15:16:30 -0400
+Received: by mail-ot1-f67.google.com with SMTP id e20so2296647otk.12;
+        Wed, 06 May 2020 12:16:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RffY1VKIuHSTUWSQQaHo7x6JeP+WjY39egkTgOhujrc=;
+        b=c5UykAeQ1gYmZRITApNL+xBRUvKZG4l3oi1dw6GzoUZU1SC8p1CO+ToFirjqueEEU5
+         2IUKRUIp4+bZjenTvuWAxrqPtb+MhqlgKMNw8HLLfxuGuj+OTyrngX8DAZLLQ4ilTUNL
+         wyCpV83+qY0UOf3QrDEDPSlnlFxNfbmvycwTbw1nXH4GX7EmTtBue+LFFzxhiHwnJWII
+         9t1UysyHx5WRdR0YeXiXyKSpwO+Txd79E9xz9R7WtRuB6QwLjQmvaJC8Ww5PBihkMeDV
+         BzIrvEa7nHbsAZ5bY5iPD4SUph0bzyK9A1ZhGL88rAbt8Zaj+X5IVz3LMnTAxYXOTGR5
+         4GSw==
+X-Gm-Message-State: AGi0PubO8RHjiDSXrnK3HyNtsnI0IG3MdOkB8gaXGrKtdeHrDEVT+RP0
+        LYmx3YyeHQWlFf7XHHfBrA==
+X-Google-Smtp-Source: APiQypKX7Yv5OxxTXIw4EebyAUNARWZ7M2l2W40uhAxBhtZnJdkyt9oNdwaILP/riNyqVgTQ5qC/Hg==
+X-Received: by 2002:a9d:68d8:: with SMTP id i24mr7690098oto.371.1588792589363;
+        Wed, 06 May 2020 12:16:29 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id f14sm726909otl.62.2020.05.06.12.16.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 12:16:28 -0700 (PDT)
+Received: (nullmailer pid 21925 invoked by uid 1000);
+        Wed, 06 May 2020 19:16:27 -0000
+Date:   Wed, 6 May 2020 14:16:27 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
- <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <0a8cd600-2b21-2076-1355-8c97d7ceb709@wanadoo.fr>
-Date:   Wed, 6 May 2020 19:31:38 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v12 1/2] dt-bindings: proximity: provide vcnl3020 device
+ tree binding document
+Message-ID: <20200506191542.GA20381@bogus>
+References: <20200506010809.6348-1-i.mikhaylov@yadro.com>
+ <20200506010809.6348-2-i.mikhaylov@yadro.com>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506010809.6348-2-i.mikhaylov@yadro.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 6 May 2020 04:08:08 +0300, Ivan Mikhaylov wrote:
+> Mostly standard i2c driver with some additional led-current option
+> for vcnl3020.
+> 
+> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+> ---
+>  .../iio/proximity/vishay,vcnl3020.yaml        | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
+> 
 
-Le 06/05/2020 à 12:38, Andy Shevchenko a écrit :
-> On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
-> <christophe.jaillet@wanadoo.fr> wrote:
->> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
->> call.
->> Remove it.
->>
->> While at it add a missing \n at the end of the message.
->>
-> It should have Fixes tag because it is a quite an issue (get_device()
-> breaks reference counting with all problems we may expect).
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Agreed and I usually do, but here, I've lost track when this driver has 
-gone out of staging.
+Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/iio/proximity/vishay,vcnl3020.yaml#
 
-Based on:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/iio/accel/sca3000.c
-The issue was already there on 2016/10/23, but when I try to go one step 
-further:
+See https://patchwork.ozlabs.org/patch/1284005
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/staging/iio/accel/sca3000.c?id=2ccf61442ff142d2dde7c47471c2798a4d78b0ad
-^^^^         ^^^^^^^
-works but if I try to see the log for that:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/staging/iio/accel/sca3000.c
-^^^         ^^^^^^^
-is empty.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
 
-Most of the time, when I do it like that it works just fine, but not on 
-this file.
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
 
-Any other way to navigate in history of moved file would be appreciated.
-
-CJ
-
->
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->> This patch is purely speculative.
->> I've looked a bit arround and see no point for this get_device() but other
->> eyes are welcomed :)
->> ---
->>   drivers/iio/accel/sca3000.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
->> index 66d768d971e1..6e429072e44a 100644
->> --- a/drivers/iio/accel/sca3000.c
->> +++ b/drivers/iio/accel/sca3000.c
->> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
->>          st->tx[0] = SCA3000_READ_REG(reg_address_high);
->>          ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
->>          if (ret) {
->> -               dev_err(get_device(&st->us->dev), "problem reading register");
->> +               dev_err(&st->us->dev, "problem reading register\n");
->>                  return ret;
->>          }
->>
->> --
->> 2.25.1
->>
->
+Please check and re-submit.

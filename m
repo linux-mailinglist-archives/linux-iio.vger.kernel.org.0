@@ -2,125 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BDAE1C80D0
-	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 06:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DB8E1C8617
+	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 11:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725845AbgEGEXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 May 2020 00:23:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725802AbgEGEXW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 May 2020 00:23:22 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DD6C061A0F;
-        Wed,  6 May 2020 21:23:22 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id u10so1545950pls.8;
-        Wed, 06 May 2020 21:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=6G+6eM+WUd8jnoXez9hLJ5VPYRmDs4q7SM6DwmQSnA4=;
-        b=L9JVeMJqgEQBzurgIqXdi3L9TtEo0pjexujwUfiAFa1SI6mhcCSpGS/l35i+s6+o74
-         2fQykf8CgPob+2Ha8noFcvBGOyYTRa3SxkLPC3tuqNh9nNQTk8tvBGykuRKpvRqNjbbQ
-         AbBEfqHEbCSbpKO0KTyk/2E5t907BFOMx+a8Te+gtqMD99dg6iNafZoyoBAON3J2meKl
-         gPi2rZYIhTuEnzLjXH8yDRsKMv4h/PsufacBHXtr7D3ivThthxaRlG+IfI3VB/sfmOBj
-         2Cmbm8iellbywzHSGnlmK+T+7VmCaPAljBChuo6geyQjReshvrIKCjuEGsv4hU0tu1p+
-         oWyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6G+6eM+WUd8jnoXez9hLJ5VPYRmDs4q7SM6DwmQSnA4=;
-        b=NcKUH67/gfZZnhAsYHyvTEqJq9rLwVuC5XzFhFkodeIDm8fSTjY93Pzl3Xn+qxljq2
-         NB8QwG7GuoLzXeQoEVTxLeHLOPs0X/95N/RxOyfTVINfqRYEnmkmNFIBVASMSxvB+Fel
-         kzutREfIaE1qii43ImLV3UViMQMdh8AUQX7EwLeYOgeQtdxdY5Jik89yoZ016uhIsDJR
-         CExVs8TadJYqpePEi3JK4xV087GyKQMgpReoMKjL+knYwENxw3CoxS+HM179woaNI21U
-         aShmsgEhfhRgyVl1IQz3gCRzlGOsJl3hOkVk2qwQ1bm6a+0VJN6EiJ3Oq1+354BNfYeb
-         kbag==
-X-Gm-Message-State: AGi0PuadYi09YDNuedcTz4eRndwV2L+PW332nTyNRg1NzW06eQM3mB1T
-        Z+2fhu6g0Bxc+ky1z9frI+s=
-X-Google-Smtp-Source: APiQypKfVQJJDaMh/+EdjgY2icxQ8eu1eW9hG6nbY1dwgWodpmUB8r4EHl2DChcWe82TXYKcYbfrUw==
-X-Received: by 2002:a17:90a:32ea:: with SMTP id l97mr13148734pjb.50.1588825401246;
-        Wed, 06 May 2020 21:23:21 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
-        by smtp.gmail.com with ESMTPSA id x7sm3461022pfj.122.2020.05.06.21.23.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2020 21:23:20 -0700 (PDT)
-Date:   Wed, 6 May 2020 21:23:18 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Jonathan Bakker <xc-racer2@live.ca>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Input <linux-input@vger.kernel.org>
-Subject: Re: [PATCH 2/5] input: misc: bma150: Conditionally disable bma023
- support
-Message-ID: <20200507042318.GD89269@dtor-ws>
-References: <20200503172206.13782-1-xc-racer2@live.ca>
- <BN6PR04MB0660B420EFA83668BBF4F315A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
- <CACRpkdb3kG=7SQg8RGh1F=8=_mivV6p_zxpodFT=M-f3PmiyYQ@mail.gmail.com>
- <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
+        id S1726408AbgEGJuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 May 2020 05:50:32 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56386 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725848AbgEGJuc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 May 2020 05:50:32 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0479lopB102709;
+        Thu, 7 May 2020 09:50:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=EQ+E4Tct/z2vRcGjh+IR0QddtdU4Z7ldQ+DofhTaTAw=;
+ b=Mhj9CrcqOv6UuKjlHgoBbwP15fBZkiNeYaougogHveoMNXebz7skaUerzSs61yeYFP47
+ XAL+uT1PTZ05VXmETAn3E2QCfQUv/pbydEa9Wy2eUPzBvYYvDN5C/52VlFmAQGW2OHSM
+ VPgz2y5ueIRGpmG+/1JA0utkQfxJgcIrLMVNELQV1G8HPDLnsGoO8aAHRznLMdmEXXfJ
+ aD4yZVlDTvODjOS3RSy8jYdl3iOe0DwQdCvyZjikhQfoYksx2mw8F13wPn5T68K0G5eb
+ KgxRU02g0jhQZ1JLVA45SN778/oWJTo4ZHB+LweKB6k44EvisQTG4GnO/5n6/W1QuPra ug== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 30s09rf6xh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 07 May 2020 09:50:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0479grmg092934;
+        Thu, 7 May 2020 09:50:26 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 30sjdxp4ww-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 07 May 2020 09:50:26 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0479oO5X022913;
+        Thu, 7 May 2020 09:50:25 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 07 May 2020 02:50:24 -0700
+Date:   Thu, 7 May 2020 12:50:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: ad5933: rework probe to use devm_ function
+ variants
+Message-ID: <20200507095016.GC9365@kadam>
+References: <20200428093128.60747-1-alexandru.ardelean@analog.com>
+ <20200502192542.63cc25a2@archlinux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
+In-Reply-To: <20200502192542.63cc25a2@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9613 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005070079
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9613 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005070079
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 06, 2020 at 08:46:12PM -0700, Jonathan Bakker wrote:
-> Hi Linus,
+On Sat, May 02, 2020 at 07:25:42PM +0100, Jonathan Cameron wrote:
+> On Tue, 28 Apr 2020 12:31:28 +0300
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> > +static void ad5933_cleanup(void *data)
+> > +{
+> > +	struct ad5933_state *st = data;
+> > +
+> > +	clk_disable_unprepare(st->mclk);
+> > +	regulator_disable(st->reg);
 > 
-> On 2020-05-06 5:46 a.m., Linus Walleij wrote:
-> > On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
-> > 
-> >> The bma180 IIO driver has been extended for support for bma023.
-> >> However, this could cause conflicts with this driver.  Since some
-> >> setups may depend upon the evdev setup, disable support in this
-> >> driver for the bma023 only when the IIO driver is being built.
-> >>
-> >> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
-> > 
-> > I would just fix this with KConfig instead, like add mutually
-> > exclusive depends on these two drivers.
-> > 
-> > Set this input driver as:
-> > depends on BMA180=n
-> > 
-> > And the IIO driver as:
-> > depends on INPUT_BMA150=n
-> > 
-> > It's a rough measure but this input driver should anyway
-> > go away.
-
-Isn't the driver handle more than bma023? I see bma150 and smb380 ID's.
-If we go Kconfig route we will be disabling it for them as well when IIO
-driver is enabled.
-
-> > 
+> Please do two separate callbacks so that these can be handled
+> in the correct places.  I.e. you do something then immediately
+> register the handler to undo it.
 > 
-> Ok, sounds good to me.  If I include a patch removing the input
-> driver, can I just drop this patch entirely?
+> Currently you can end up disabling a clock you haven't enabled
+> (which I am fairly sure will give you an error message).
 
-> 
-> The only in-tree user of the input driver (based on i2c ids) is Intel
-> Mid.  Not sure what the kernel policy on dropping drivers is.
+Yeah.  It does.
 
-Do we still support this platform? I'd start there.
+It feels like we should just make a devm_ version of regulator_enable().
+Or potentially this is more complicated than it seems, but in that case
+probably adding devm_add_action_or_reset() is more complicated than it
+seems as well.
 
-Thanks.
-
--- 
-Dmitry
+regards,
+dan carpenter

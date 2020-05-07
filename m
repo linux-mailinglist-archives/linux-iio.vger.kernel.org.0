@@ -2,45 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA801C80A8
-	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 05:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BDAE1C80D0
+	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 06:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726074AbgEGDtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 May 2020 23:49:23 -0400
-Received: from mail-co1nam11olkn2042.outbound.protection.outlook.com ([40.92.18.42]:60609
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725809AbgEGDtX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 6 May 2020 23:49:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YMSaXUqIB4D8s/6a3KdOakYsLpOxLzmh8pcLLdH8+RKW4jE0GVQTTCdNor/J6RLvrADJlMPB5Oicts+Y1r1MnTNYXDimYdNElXizv7NBbKi1JQtm8Cct+FEJLzXtPvcatqkQDN5pL005EMNCA6/wTmo31usXwiZKnRXX5P4vqVYqkE+i7WC85eltGDnZkwEIMa03CfJ7UT8ZJbmuh97KMKsTWGSjkm3+WEBV4yRTdGOGdwDiqVR6I8TcYTSkba3mCBVDTAqXK0cFWUuVX+5yHJDRL5R9NRkKWk0FJptEapv5h9QNUcwJs5VWsUj1Dpt7zho2E6Khda1gsjyATiV5sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n7WS0ep6Pof67yFRn3nDZEba4oGZkhMCcHX7e4vT7vE=;
- b=A4RCxDHP2vdqAQwTaV2UAmCW/RHDNTTFcrNcZYB49QG/BCDLHcw+TdsR/zxCTO4ZxKGb0waAnKTEPLedPHDXvd1r1p4ssbUtjIU152gf2JuW8HhAQFaSgfz3ZTh8Gwn6GjeeQ5yYKdZhYQzOC2LfFS6FzBjDA37UeE9+k/3TR9SZXJ1CoifGT6JNP/+vaMt7RQyCbhvKAe3ezdPYCJgQ7FFVIhUgt5u41LGbtuk7epkl4BODZjzaEMUJ4/aa2UFEDn7kTqpkZa9uzZAJBcZWEDIla+FiChnyIzZEk2ok+m16eqf6Sa1ChOHCRtvfUCyF8wYphM9Qk1upqdJ3CMgvcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=live.ca; dmarc=pass action=none header.from=live.ca; dkim=pass
- header.d=live.ca; arc=none
-Received: from DM6NAM11FT046.eop-nam11.prod.protection.outlook.com
- (2a01:111:e400:fc4d::52) by
- DM6NAM11HT211.eop-nam11.prod.protection.outlook.com (2a01:111:e400:fc4d::260)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.27; Thu, 7 May
- 2020 03:49:21 +0000
-Received: from BN6PR04MB0660.namprd04.prod.outlook.com
- (2a01:111:e400:fc4d::50) by DM6NAM11FT046.mail.protection.outlook.com
- (2a01:111:e400:fc4d::121) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.27 via Frontend
- Transport; Thu, 7 May 2020 03:49:21 +0000
-X-IncomingTopHeaderMarker: OriginalChecksum:D62C5FD99AA6B2C7BB5B5814B373DA82F85035C1579510770DE4DCDFC959F25C;UpperCasedChecksum:E72F6D97373CD4F15348698307B3CF6FE7D5D32898808A3C7BC0E0F56EC93F3D;SizeAsReceived:9609;Count:50
-Received: from BN6PR04MB0660.namprd04.prod.outlook.com
- ([fe80::ad10:4127:4bc8:76fc]) by BN6PR04MB0660.namprd04.prod.outlook.com
- ([fe80::ad10:4127:4bc8:76fc%6]) with mapi id 15.20.2979.028; Thu, 7 May 2020
- 03:49:21 +0000
-Subject: Re: [PATCH 0/5] iio: accel: Add bma023 support to bma180
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1725845AbgEGEXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 May 2020 00:23:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725802AbgEGEXW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 May 2020 00:23:22 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DD6C061A0F;
+        Wed,  6 May 2020 21:23:22 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id u10so1545950pls.8;
+        Wed, 06 May 2020 21:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=6G+6eM+WUd8jnoXez9hLJ5VPYRmDs4q7SM6DwmQSnA4=;
+        b=L9JVeMJqgEQBzurgIqXdi3L9TtEo0pjexujwUfiAFa1SI6mhcCSpGS/l35i+s6+o74
+         2fQykf8CgPob+2Ha8noFcvBGOyYTRa3SxkLPC3tuqNh9nNQTk8tvBGykuRKpvRqNjbbQ
+         AbBEfqHEbCSbpKO0KTyk/2E5t907BFOMx+a8Te+gtqMD99dg6iNafZoyoBAON3J2meKl
+         gPi2rZYIhTuEnzLjXH8yDRsKMv4h/PsufacBHXtr7D3ivThthxaRlG+IfI3VB/sfmOBj
+         2Cmbm8iellbywzHSGnlmK+T+7VmCaPAljBChuo6geyQjReshvrIKCjuEGsv4hU0tu1p+
+         oWyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6G+6eM+WUd8jnoXez9hLJ5VPYRmDs4q7SM6DwmQSnA4=;
+        b=NcKUH67/gfZZnhAsYHyvTEqJq9rLwVuC5XzFhFkodeIDm8fSTjY93Pzl3Xn+qxljq2
+         NB8QwG7GuoLzXeQoEVTxLeHLOPs0X/95N/RxOyfTVINfqRYEnmkmNFIBVASMSxvB+Fel
+         kzutREfIaE1qii43ImLV3UViMQMdh8AUQX7EwLeYOgeQtdxdY5Jik89yoZ016uhIsDJR
+         CExVs8TadJYqpePEi3JK4xV087GyKQMgpReoMKjL+knYwENxw3CoxS+HM179woaNI21U
+         aShmsgEhfhRgyVl1IQz3gCRzlGOsJl3hOkVk2qwQ1bm6a+0VJN6EiJ3Oq1+354BNfYeb
+         kbag==
+X-Gm-Message-State: AGi0PuadYi09YDNuedcTz4eRndwV2L+PW332nTyNRg1NzW06eQM3mB1T
+        Z+2fhu6g0Bxc+ky1z9frI+s=
+X-Google-Smtp-Source: APiQypKfVQJJDaMh/+EdjgY2icxQ8eu1eW9hG6nbY1dwgWodpmUB8r4EHl2DChcWe82TXYKcYbfrUw==
+X-Received: by 2002:a17:90a:32ea:: with SMTP id l97mr13148734pjb.50.1588825401246;
+        Wed, 06 May 2020 21:23:21 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id x7sm3461022pfj.122.2020.05.06.21.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 21:23:20 -0700 (PDT)
+Date:   Wed, 6 May 2020 21:23:18 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Jonathan Bakker <xc-racer2@live.ca>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
@@ -49,89 +60,67 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Kate Stewart <kstewart@linuxfoundation.org>,
         Greg KH <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Linux Input <linux-input@vger.kernel.org>
-References: <BN6PR04MB0660046ABD79433EA94A85A9A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
- <CACRpkdbb89q2FRJZ1=2QoQs8JFYcwWpNZwJUbnjsVvZYEE-LKw@mail.gmail.com>
-From:   Jonathan Bakker <xc-racer2@live.ca>
-Message-ID: <BN6PR04MB0660BD7ABF64EC0C19A65A03A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
-Date:   Wed, 6 May 2020 20:49:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-In-Reply-To: <CACRpkdbb89q2FRJZ1=2QoQs8JFYcwWpNZwJUbnjsVvZYEE-LKw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MWHPR13CA0014.namprd13.prod.outlook.com
- (2603:10b6:300:16::24) To BN6PR04MB0660.namprd04.prod.outlook.com
- (2603:10b6:404:d9::21)
-X-Microsoft-Original-Message-ID: <1bb115be-fb1a-2024-d42f-4886f4cf207d@live.ca>
+Subject: Re: [PATCH 2/5] input: misc: bma150: Conditionally disable bma023
+ support
+Message-ID: <20200507042318.GD89269@dtor-ws>
+References: <20200503172206.13782-1-xc-racer2@live.ca>
+ <BN6PR04MB0660B420EFA83668BBF4F315A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+ <CACRpkdb3kG=7SQg8RGh1F=8=_mivV6p_zxpodFT=M-f3PmiyYQ@mail.gmail.com>
+ <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by MWHPR13CA0014.namprd13.prod.outlook.com (2603:10b6:300:16::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.11 via Frontend Transport; Thu, 7 May 2020 03:49:19 +0000
-X-Microsoft-Original-Message-ID: <1bb115be-fb1a-2024-d42f-4886f4cf207d@live.ca>
-X-TMN:  [guzGGOMzR893nySBwTW0D24rgCeYJMv37PiOHM3O8jvitFAJljdWPSVHhpCYxaG9]
-X-MS-PublicTrafficType: Email
-X-IncomingHeaderCount: 50
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-Correlation-Id: 76cc8ac4-9800-48a5-0dfe-08d7f239a006
-X-MS-TrafficTypeDiagnostic: DM6NAM11HT211:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: H0SlhJ89kHbXu+2bL3mhpeRiKukjGmTJntsSk8GLGk32f7onWt3yOjIv5YWSIf0SGgmPP7NesMkPg2i2eQCJYRYuYlNeqCcymhiEwbxFJIlYGYUS/yk081BNEoA+PxF40SFSPysnz7dl+gSzIrMTQNBc10GRN8rhmzOULe/BEWOHxp3SSJz5WXTLmJO4K1t+FB3jS1j6E5D77A8yfnbWWg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:0;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR04MB0660.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:;DIR:OUT;SFP:1901;
-X-MS-Exchange-AntiSpam-MessageData: KdSp707CMaCaKb/T+6/RBiFX+R6hGsSF48youbVNqH7rSIqb2emCzhDCE4m40CgAf+OQPBGyLDzOdobsj6Oju4U91aTREh2mQDClzRjHVIOPlgi4Ii3ppEen+QJlDNGsplangyM7FUejLM8VdBH5DeAYJ7gBX4rGNna3yRL2LyEQ50tu5mTGd91ZcEOl5h1wLDrq2LBMsUo/1hKLzdahKA==
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76cc8ac4-9800-48a5-0dfe-08d7f239a006
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2020 03:49:21.1701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6NAM11HT211
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Linus,
+On Wed, May 06, 2020 at 08:46:12PM -0700, Jonathan Bakker wrote:
+> Hi Linus,
+> 
+> On 2020-05-06 5:46 a.m., Linus Walleij wrote:
+> > On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
+> > 
+> >> The bma180 IIO driver has been extended for support for bma023.
+> >> However, this could cause conflicts with this driver.  Since some
+> >> setups may depend upon the evdev setup, disable support in this
+> >> driver for the bma023 only when the IIO driver is being built.
+> >>
+> >> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+> > 
+> > I would just fix this with KConfig instead, like add mutually
+> > exclusive depends on these two drivers.
+> > 
+> > Set this input driver as:
+> > depends on BMA180=n
+> > 
+> > And the IIO driver as:
+> > depends on INPUT_BMA150=n
+> > 
+> > It's a rough measure but this input driver should anyway
+> > go away.
 
-On 2020-05-06 5:47 a.m., Linus Walleij wrote:
-> On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
-> 
->> This patchset adds support for the bma023 three axis accelerometer
->> to the bma180 IIO driver.  The bma023 is found on several ~2010
->> phones, including the first-gen Galaxy S series.
->>
->> The bma023 differs from later chips (bma180, bma25x) in that it
->> has no low power but still working mode and no temperature
->> channel.
->>
->> The bma023 is already supported by a misc input driver (bma150), so
->> when both are enabled, the iio driver is preferred.  The bma150
->> is very similar to the bma023, but has a temperature channel.
->> Support for the bma150 is not added in this patchset.
-> 
-> I'd say, if it's not too much trouble please also patch in
-> support for BMA150 and SMB380 to the IIO driver so
-> we can delete this old Input driver, we have done this
-> before and thes "input drivers" are just causing headaches
-> and wasting time for the Input maintainer.
-> 
+Isn't the driver handle more than bma023? I see bma150 and smb380 ID's.
+If we go Kconfig route we will be disabling it for them as well when IIO
+driver is enabled.
 
-Looking at the bma150, it looks the same.  The temperature is implemented
-slightly differently than on the bma180+ (unsigned vs signed) but should
-be quite easy to add.  I'll add a new patch for it in v2.
-
-> It can be in a separate patch set from this one if you
-> don't want to get stuck on this.
+> > 
 > 
-> Yours,
-> Linus Walleij
-> 
+> Ok, sounds good to me.  If I include a patch removing the input
+> driver, can I just drop this patch entirely?
 
-Thanks,
-Jonathan
+> 
+> The only in-tree user of the input driver (based on i2c ids) is Intel
+> Mid.  Not sure what the kernel policy on dropping drivers is.
+
+Do we still support this platform? I'd start there.
+
+Thanks.
+
+-- 
+Dmitry

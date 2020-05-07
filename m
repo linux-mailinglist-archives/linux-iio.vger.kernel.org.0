@@ -2,99 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB8E1C8617
-	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 11:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0CDB1C8C18
+	for <lists+linux-iio@lfdr.de>; Thu,  7 May 2020 15:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726408AbgEGJuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 May 2020 05:50:32 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:56386 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbgEGJuc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 May 2020 05:50:32 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0479lopB102709;
-        Thu, 7 May 2020 09:50:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=EQ+E4Tct/z2vRcGjh+IR0QddtdU4Z7ldQ+DofhTaTAw=;
- b=Mhj9CrcqOv6UuKjlHgoBbwP15fBZkiNeYaougogHveoMNXebz7skaUerzSs61yeYFP47
- XAL+uT1PTZ05VXmETAn3E2QCfQUv/pbydEa9Wy2eUPzBvYYvDN5C/52VlFmAQGW2OHSM
- VPgz2y5ueIRGpmG+/1JA0utkQfxJgcIrLMVNELQV1G8HPDLnsGoO8aAHRznLMdmEXXfJ
- aD4yZVlDTvODjOS3RSy8jYdl3iOe0DwQdCvyZjikhQfoYksx2mw8F13wPn5T68K0G5eb
- KgxRU02g0jhQZ1JLVA45SN778/oWJTo4ZHB+LweKB6k44EvisQTG4GnO/5n6/W1QuPra ug== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 30s09rf6xh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 07 May 2020 09:50:27 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0479grmg092934;
-        Thu, 7 May 2020 09:50:26 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 30sjdxp4ww-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 07 May 2020 09:50:26 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0479oO5X022913;
-        Thu, 7 May 2020 09:50:25 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 07 May 2020 02:50:24 -0700
-Date:   Thu, 7 May 2020 12:50:16 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: ad5933: rework probe to use devm_ function
- variants
-Message-ID: <20200507095016.GC9365@kadam>
-References: <20200428093128.60747-1-alexandru.ardelean@analog.com>
- <20200502192542.63cc25a2@archlinux>
+        id S1726538AbgEGNZQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 May 2020 09:25:16 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:53614 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726761AbgEGNZO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 7 May 2020 09:25:14 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 5E2C24C842;
+        Thu,  7 May 2020 13:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1588857907; x=
+        1590672308; bh=9C9PVAvhrkZd1qlXzdIJDP96sBVG2rbEzvt7nhtTCXs=; b=U
+        vC3XuDb7OxyKSjsLeyhfxwEGJxWupbBVAgi4YQD/EkKXwgOzL9rFIZx+L1SmnoOE
+        0+GWtZIWdjubBxwyK8bc1AH11U2dZ9cx+iTuetIPrKUOdkv7Z48BrMh43zPoTBoa
+        Wsg0ZV7jgZmsKpCXGKmjri2Q0V61MtPBWXWPe+wdfw=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id dK40BI2aw03v; Thu,  7 May 2020 16:25:07 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 6BB79404CF;
+        Thu,  7 May 2020 16:25:06 +0300 (MSK)
+Received: from localhost.dev.yadro.com (10.199.0.174) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Thu, 7 May 2020 16:25:07 +0300
+From:   Ivan Mikhaylov <i.mikhaylov@yadro.com>
+CC:     Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v13 0/2] iio: proximity: driver for vcnl3020
+Date:   Thu, 7 May 2020 16:25:58 +0300
+Message-ID: <20200507132600.8801-1-i.mikhaylov@yadro.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200502192542.63cc25a2@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9613 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- bulkscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005070079
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9613 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011 suspectscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=999 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005070079
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.0.174]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 02, 2020 at 07:25:42PM +0100, Jonathan Cameron wrote:
-> On Tue, 28 Apr 2020 12:31:28 +0300
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > +static void ad5933_cleanup(void *data)
-> > +{
-> > +	struct ad5933_state *st = data;
-> > +
-> > +	clk_disable_unprepare(st->mclk);
-> > +	regulator_disable(st->reg);
-> 
-> Please do two separate callbacks so that these can be handled
-> in the correct places.  I.e. you do something then immediately
-> register the handler to undo it.
-> 
-> Currently you can end up disabling a clock you haven't enabled
-> (which I am fairly sure will give you an error message).
+Add proximity sensor driver for Vishay vcnl3020. Only on-demand
+measurement is supported for now.
 
-Yeah.  It does.
+Changes from v12:
+   1. forgot to change path inside yaml.
 
-It feels like we should just make a devm_ version of regulator_enable().
-Or potentially this is more complicated than it seems, but in that case
-probably adding devm_add_action_or_reset() is more complicated than it
-seems as well.
+Changes from v11:
+   1. minor changes to yaml.
 
-regards,
-dan carpenter
+Changes from v10:
+   1. add vcnl3020_property struct for optional properties.
+
+Changes from v9:
+   1. minor changes.
+   2. pass microamps from dts, not register value.
+
+Changes from v8:
+   1. add vcnl3020 prefix into get_and_apply_property function.
+   2. add bsd license into yaml.
+   3. vishay,led-current-milliamp -> vishay,led-current-microamp.
+   4. add default value into vishay,led-current-microamp and change
+      register values into microamps.
+
+Changes from v7:
+   1. forgot to add Reviewed-by tag.
+
+Changes from v6:
+   1. minor changes
+     1.1 remove VCNL_DRV_NAME
+     1.2 add braces in get_and_apply_property
+
+Changes from v5:
+   1. add get_and_apply_property function for optional parameters.
+   2. minor changes.
+
+Changes from v4:
+   1. add vdd-supply,vddio-supply,interrupts properties into yaml.
+   2. led-current -> vishay,led-current-milliamp in yaml.
+   3. add possible values enum list.
+   4. add bulk_read for result hi/lo registers.
+   5. add description of vcnl3020_data structure.
+   6. vcnl3020 id table is removed.
+   7. make "vishay,led-current-milliamp" optional in yaml and code.
+
+Changes from v3:
+   1. minor changes.
+   2. add i2c block to fix dts section in yaml.
+
+Changes from v2:
+   1. using regmap_read_poll_timeout instead of do-while in measurement
+      function.
+   2. change struct i2client* in vcnl3020_data to struct dev*
+   3. enable REGMAP_I2C in Kconfig
+
+Changes from v1:
+   1. using regmap interface instead of i2c_smbus_* calls.
+   2. switch from probe to probe_new.
+   3. s32/int32_t -> int
+
+Ivan Mikhaylov (2):
+  dt-bindings: proximity: provide vcnl3020 device tree binding document
+  iio: proximity: Add driver support for vcnl3020 proximity sensor
+
+ .../iio/proximity/vishay,vcnl3020.yaml        |  65 +++++
+ drivers/iio/proximity/Kconfig                 |  11 +
+ drivers/iio/proximity/Makefile                |   1 +
+ drivers/iio/proximity/vcnl3020.c              | 258 ++++++++++++++++++
+ 4 files changed, 335 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
+ create mode 100644 drivers/iio/proximity/vcnl3020.c
+
+-- 
+2.21.1
+

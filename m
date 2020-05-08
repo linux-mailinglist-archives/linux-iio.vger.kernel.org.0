@@ -2,242 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBE7C1CB3CD
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 17:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5DD1CB428
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 17:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbgEHPoy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 11:44:54 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2181 "EHLO huawei.com"
+        id S1726922AbgEHP5S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 May 2020 11:57:18 -0400
+Received: from mail-mw2nam12olkn2100.outbound.protection.outlook.com ([40.92.23.100]:14144
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727051AbgEHPoy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 11:44:54 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 80F5A89D46A181AD5269;
-        Fri,  8 May 2020 16:44:53 +0100 (IST)
-Received: from localhost (10.47.95.97) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 8 May 2020
- 16:44:53 +0100
-Date:   Fri, 8 May 2020 16:44:30 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jic23@kernel.org>
-Subject: Re: [PATCH 1/3] iio: core: wrap IIO device into a iio_dev_priv
- object
-Message-ID: <20200508164430.00001741@Huawei.com>
-In-Reply-To: <20200508164015.0000223f@Huawei.com>
-References: <20200508141306.17222-1-alexandru.ardelean@analog.com>
-        <20200508164015.0000223f@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+        id S1726906AbgEHP5S (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 May 2020 11:57:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ABjZsuFe8tH4uNPR8DT8VJUs0KuZ+5ADzfhMpYQSKtE2kVXNRHZaG77rQoBXrU8i0o6gFRxHbsU1rgJfaGyBsART8gs2gKBVyPymPGhXwpALUUCQ6Q8UuQ82SGlkhL7fODEw2yUnKkoVDP3/hQ90nq/BotJgNl8HinMeIZjzf1kQIFqpaue7F2gk6mbR9d+4ZGho8sw6Jg6tP3yJ6tijG64dnMmqYlD07DG/cojxFhLD35IQ9goiFkbXczrfp6wQj4ShP8XRH6lhXckAsD3N420PEY+5jaT3gk+RaY7NrKq9UUaxKQz5CzzK9GO7KdMK6IqqgwIRSUjQZi4ouUTNyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BeKlBqQWWhuEKLQhogpt1dyvYTfzHMWHB9BpEl3j4pE=;
+ b=PERJ6PpqzxZK2VWrl+F6vMXjhFoYm7KUKY4mY5QYoEJcbLjl7+N9zNQniHYsTK7IiSNMUhmWGVd4oDy2+09NYlVKF97Wf9rhFqP+LDYkO02PrNu4UJolSUvei9H2vK5wL5yc7PObUN9LIhiE4pgyGNjl72fqNBA6mdOjBicMNvFi5W443ngD1/WVb48w2QtaNnoDMpSw/xRWFSumpgvdgMmhcrF09ioj19PDWmm6YqR8STTbg+BeMHJNb0Go2+Fcvfn+anXrU1yeNwyvTMZtXAkmVqlUIkhR26h9Ne6f8NYqWCqQWJekwKUM3GS3xmheEae5HOzSKuRm/XnxzDKNgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=live.ca; dmarc=pass action=none header.from=live.ca; dkim=pass
+ header.d=live.ca; arc=none
+Received: from DM6NAM12FT065.eop-nam12.prod.protection.outlook.com
+ (2a01:111:e400:fc64::45) by
+ DM6NAM12HT127.eop-nam12.prod.protection.outlook.com (2a01:111:e400:fc64::176)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.23; Fri, 8 May
+ 2020 15:57:16 +0000
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ (2a01:111:e400:fc64::44) by DM6NAM12FT065.mail.protection.outlook.com
+ (2a01:111:e400:fc64::353) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.11 via Frontend
+ Transport; Fri, 8 May 2020 15:57:16 +0000
+X-IncomingTopHeaderMarker: OriginalChecksum:78E43D6A9D98FE9E7CCBBBB3B16732A3E27544B045E316179504C987EE2CC482;UpperCasedChecksum:33A39E8DE68E2010E1E96726F552B797A379D07E0B003CE7830963932578F91D;SizeAsReceived:9764;Count:50
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::ad10:4127:4bc8:76fc]) by BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::ad10:4127:4bc8:76fc%6]) with mapi id 15.20.2979.033; Fri, 8 May 2020
+ 15:57:16 +0000
+Subject: Re: [PATCH 2/5] input: misc: bma150: Conditionally disable bma023
+ support
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Input <linux-input@vger.kernel.org>
+References: <20200503172206.13782-1-xc-racer2@live.ca>
+ <BN6PR04MB0660B420EFA83668BBF4F315A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
+ <CACRpkdb3kG=7SQg8RGh1F=8=_mivV6p_zxpodFT=M-f3PmiyYQ@mail.gmail.com>
+ <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
+ <20200507042318.GD89269@dtor-ws>
+From:   Jonathan Bakker <xc-racer2@live.ca>
+Message-ID: <BN6PR04MB0660FB7E230C514608743560A3A20@BN6PR04MB0660.namprd04.prod.outlook.com>
+Date:   Fri, 8 May 2020 08:57:12 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+In-Reply-To: <20200507042318.GD89269@dtor-ws>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.95.97]
-X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-ClientProxiedBy: MWHPR1601CA0010.namprd16.prod.outlook.com
+ (2603:10b6:300:da::20) To BN6PR04MB0660.namprd04.prod.outlook.com
+ (2603:10b6:404:d9::21)
+X-Microsoft-Original-Message-ID: <8890a897-f37f-94e4-3c86-7ac3af161039@live.ca>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by MWHPR1601CA0010.namprd16.prod.outlook.com (2603:10b6:300:da::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.26 via Frontend Transport; Fri, 8 May 2020 15:57:14 +0000
+X-Microsoft-Original-Message-ID: <8890a897-f37f-94e4-3c86-7ac3af161039@live.ca>
+X-TMN:  [jZKOyh5g2L8FHAKCl3uYgqzCglv0FRISfN8J2oonFrDVhbXqkxZsCjtCyv6Vm5wD]
+X-MS-PublicTrafficType: Email
+X-IncomingHeaderCount: 50
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-Correlation-Id: 7cfdc31f-10e3-4f9d-3d13-08d7f3687aae
+X-MS-TrafficTypeDiagnostic: DM6NAM12HT127:
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: htorRvgHnRoRsTB2mvzy+0T6NwgyowB0IlP/RXWyUFwjVKTupQ6z3eAK5rttWszH9wK1fb4B4zHrvthBxJscxgDvtz/ExtCqg7TPKE14wgFOzlZGjkZvX6cqs6sPS246xolKW0cG+/mnx4m7pECGCDF3JqXhZCMS1fZIE04d3yLqhSh4gLYAJ7tGXGT2Y/MsoJsWEMOBB9Gcr06EWwRw0A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:0;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR04MB0660.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:;DIR:OUT;SFP:1901;
+X-MS-Exchange-AntiSpam-MessageData: WgKBQ01znWlkv2Ml36Cv6x9bVuOapHzdQC46sqluek2Rrxfdb9yvsv5uFc2uMEvV1kJkTa1U4jb6iikokrO9jfWLP0MRuINGWkkSpsta+e5lT7nfVkSd0njR6T3XlHl5zyCPvQpyz422VgPSvBY4pUNZ6ZNunjryzNtcOSv/Ipw1Dm8G0r+0LMZHEpAXscS7bvKmhXGCTMHu/CxV1eh0fA==
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cfdc31f-10e3-4f9d-3d13-08d7f3687aae
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2020 15:57:16.2049
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6NAM12HT127
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 8 May 2020 16:40:15 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+H Dmitry,
 
-> On Fri, 8 May 2020 17:13:04 +0300
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On 2020-05-06 9:23 p.m., Dmitry Torokhov wrote:
+> On Wed, May 06, 2020 at 08:46:12PM -0700, Jonathan Bakker wrote:
+>> Hi Linus,
+>>
+>> On 2020-05-06 5:46 a.m., Linus Walleij wrote:
+>>> On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
+>>>
+>>>> The bma180 IIO driver has been extended for support for bma023.
+>>>> However, this could cause conflicts with this driver.  Since some
+>>>> setups may depend upon the evdev setup, disable support in this
+>>>> driver for the bma023 only when the IIO driver is being built.
+>>>>
+>>>> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+>>>
+>>> I would just fix this with KConfig instead, like add mutually
+>>> exclusive depends on these two drivers.
+>>>
+>>> Set this input driver as:
+>>> depends on BMA180=n
+>>>
+>>> And the IIO driver as:
+>>> depends on INPUT_BMA150=n
+>>>
+>>> It's a rough measure but this input driver should anyway
+>>> go away.
 > 
-> > There are plenty of bad designs we want to discourage or not have to review
-> > manually usually about accessing private (marked as [INTERN]) fields of
-> > 'struct iio_dev'.  
-> 
-> This has been on the todo list for many years so great you are having a go.
->  
-> > 
-> > This is difficult, as a lot of users copy drivers, and not always the best
-> > examples.
-> > 
-> > A better idea is to hide those fields into the framework.
-> > For 'struct iio_dev' this is a 'struct iio_dev_priv' which wraps a public
-> > 'struct iio_dev' object.
-> > 
-> > In the next patches, some fields will be moved to this new struct, each
-> > with it's own rework.
-> > 
-> > This rework will not be complete[-able] for a while, as many fields need
-> > some drivers to be reworked in order to finalize them
-> > (e.g. 'indio_dev->mlock').
-> > 
-> > But some fields can already be moved, and in time, all of them may get
-> > there (in the 'struct iio_dev_priv' object).
-> > 
-> > We also need to hide the implementations for 'iio_priv()' &
-> > 'iio_priv_to_dev()', as the pointer arithmetic will not match once things
-> > are moved.  
-> 
-> This last bit has the disadvantage of potentially putting a function
-> call in some fast paths where there wasn't one before.
-> 
-> We may not need to 'forcefully' hide the internal parts.  May be
-> enough to just make their use really obvious.  If you have to cast
-> to an iio_dev_priv then you are doing something very wrong.
-
-Note, definitely keep the to_* macro only in the private core header.
-
-> The old stick __ in front of it may make that even more obvious.
-> 
-> Naming is a bit confusing though.  iio_dev_priv sounds like private
-> to the device... iio_dev_opaque maybe?
-> 
-> 
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> > 
-> > Just as a note here, I've been running this patchset without a problem
-> > for 2 weeks now in a work branch.
-> > But it's only been a setup, so no idea if some other thing may cause
-> > bigger issues.
-> > 
-> > This small patchset is meant to kickstart this, for GSoC people or for
-> > people wanting to start contributing to IIO.
-> > 
-> >  drivers/iio/iio_core.h          | 11 +++++++++++
-> >  drivers/iio/industrialio-core.c | 32 +++++++++++++++++++++++++++-----
-> >  include/linux/iio/iio.h         | 12 ++----------
-> >  3 files changed, 40 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> > index fd9a5f1d5e51..84f3b4590c05 100644
-> > --- a/drivers/iio/iio_core.h
-> > +++ b/drivers/iio/iio_core.h
-> > @@ -17,6 +17,17 @@ struct iio_dev;
-> >  
-> >  extern struct device_type iio_device_type;
-> >  
-> > +/**
-> > + * struct iio_dev_priv - industrial I/O device private information
-> > + * @indio_dev:			public IIO device object
-> > + */
-> > +struct iio_dev_priv {
-> > +	struct iio_dev			indio_dev;
-> > +};
-> > +
-> > +#define to_iio_dev_priv(indio_dev)	\
-> > +	container_of(indio_dev, struct iio_dev_priv, indio_dev)
-> > +
-> >  int __iio_add_chan_devattr(const char *postfix,
-> >  			   struct iio_chan_spec const *chan,
-> >  			   ssize_t (*func)(struct device *dev,
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 462d3e810013..f0888dd84d3d 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -164,6 +164,23 @@ static const char * const iio_chan_info_postfix[] = {
-> >  	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
-> >  };
-> >  
-> > +
-> > +void *iio_priv(const struct iio_dev *indio_dev)
-> > +{
-> > +	struct iio_dev_priv *iio_dev_priv = to_iio_dev_priv(indio_dev);
-> > +	return (char *)iio_dev_priv + ALIGN(sizeof(struct iio_dev_priv), IIO_ALIGN);
-> > +}
-> > +EXPORT_SYMBOL_GPL(iio_priv);
-> > +
-> > +struct iio_dev *iio_priv_to_dev(void *priv)
-> > +{
-> > +	struct iio_dev_priv *iio_dev_priv =
-> > +		(struct iio_dev_priv *)((char *)priv -
-> > +				  ALIGN(sizeof(struct iio_dev_priv), IIO_ALIGN));
-> > +	return &iio_dev_priv->indio_dev;
-> > +}
-> > +EXPORT_SYMBOL_GPL(iio_priv_to_dev);
-> > +
-> >  /**
-> >   * iio_find_channel_from_si() - get channel from its scan index
-> >   * @indio_dev:		device
-> > @@ -1476,6 +1493,8 @@ static void iio_device_unregister_sysfs(struct iio_dev *indio_dev)
-> >  static void iio_dev_release(struct device *device)
-> >  {
-> >  	struct iio_dev *indio_dev = dev_to_iio_dev(device);
-> > +	struct iio_dev_priv *iio_dev_priv = to_iio_dev_priv(indio_dev);
-> > +
-> >  	if (indio_dev->modes & INDIO_ALL_TRIGGERED_MODES)
-> >  		iio_device_unregister_trigger_consumer(indio_dev);
-> >  	iio_device_unregister_eventset(indio_dev);
-> > @@ -1484,7 +1503,7 @@ static void iio_dev_release(struct device *device)
-> >  	iio_buffer_put(indio_dev->buffer);
-> >  
-> >  	ida_simple_remove(&iio_ida, indio_dev->id);
-> > -	kfree(indio_dev);
-> > +	kfree(iio_dev_priv);
-> >  }
-> >  
-> >  struct device_type iio_device_type = {
-> > @@ -1498,10 +1517,11 @@ struct device_type iio_device_type = {
-> >   **/
-> >  struct iio_dev *iio_device_alloc(int sizeof_priv)
-> >  {
-> > +	struct iio_dev_priv *iio_dev_priv;
-> >  	struct iio_dev *dev;
-> >  	size_t alloc_size;
-> >  
-> > -	alloc_size = sizeof(struct iio_dev);
-> > +	alloc_size = sizeof(struct iio_dev_priv);
-> >  	if (sizeof_priv) {
-> >  		alloc_size = ALIGN(alloc_size, IIO_ALIGN);
-> >  		alloc_size += sizeof_priv;
-> > @@ -1509,10 +1529,12 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
-> >  	/* ensure 32-byte alignment of whole construct ? */
-> >  	alloc_size += IIO_ALIGN - 1;
-> >  
-> > -	dev = kzalloc(alloc_size, GFP_KERNEL);
-> > -	if (!dev)
-> > +	iio_dev_priv = kzalloc(alloc_size, GFP_KERNEL);
-> > +	if (!iio_dev_priv)
-> >  		return NULL;
-> >  
-> > +	dev = &iio_dev_priv->indio_dev;
-> > +
-> >  	dev->dev.groups = dev->groups;
-> >  	dev->dev.type = &iio_device_type;
-> >  	dev->dev.bus = &iio_bus_type;
-> > @@ -1526,7 +1548,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
-> >  	if (dev->id < 0) {
-> >  		/* cannot use a dev_err as the name isn't available */
-> >  		pr_err("failed to get device id\n");
-> > -		kfree(dev);
-> > +		kfree(iio_dev_priv);
-> >  		return NULL;
-> >  	}
-> >  	dev_set_name(&dev->dev, "iio:device%d", dev->id);
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index 5f9f439a4f01..38c4ea505394 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -678,16 +678,8 @@ static inline void *iio_device_get_drvdata(struct iio_dev *indio_dev)
-> >  #define IIO_ALIGN L1_CACHE_BYTES
-> >  struct iio_dev *iio_device_alloc(int sizeof_priv);
-> >  
-> > -static inline void *iio_priv(const struct iio_dev *indio_dev)
-> > -{
-> > -	return (char *)indio_dev + ALIGN(sizeof(struct iio_dev), IIO_ALIGN);
-> > -}
-> > -
-> > -static inline struct iio_dev *iio_priv_to_dev(void *priv)
-> > -{
-> > -	return (struct iio_dev *)((char *)priv -
-> > -				  ALIGN(sizeof(struct iio_dev), IIO_ALIGN));
-> > -}
-> > +void *iio_priv(const struct iio_dev *indio_dev);
-> > +struct iio_dev *iio_priv_to_dev(void *priv);
-> >  
-> >  void iio_device_free(struct iio_dev *indio_dev);
-> >  struct iio_dev *devm_iio_device_alloc(struct device *dev, int sizeof_priv);  
-> 
+> Isn't the driver handle more than bma023? I see bma150 and smb380 ID's.
+> If we go Kconfig route we will be disabling it for them as well when IIO
+> driver is enabled.
 > 
 
+Yes, that's correct.
 
+>>>
+>>
+>> Ok, sounds good to me.  If I include a patch removing the input
+>> driver, can I just drop this patch entirely?
+> 
+>>
+>> The only in-tree user of the input driver (based on i2c ids) is Intel
+>> Mid.  Not sure what the kernel policy on dropping drivers is.
+> 
+> Do we still support this platform? I'd start there.
+
+It looks to me like the preferred method would be to also add IIO support for
+smb380/bma150, add the exclusive Kconfig entries, and leave the input
+driver in place.  Does this work for everyone?
+
+> 
+> Thanks.
+> 
+
+Thanks,
+Jonathan

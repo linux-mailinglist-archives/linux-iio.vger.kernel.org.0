@@ -2,96 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BECD1CACF6
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 14:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE831CAD82
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 15:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730152AbgEHM5w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 08:57:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41380 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730040AbgEHM5t (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 08:57:49 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 040F42054F;
-        Fri,  8 May 2020 12:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588942669;
-        bh=48NqrDGnrzppujpNDFRQjW7iHDemvgNPr206uvHmtdQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lSYuM++ubZ3ockKq+n3h6a2DVmUvWRNVWl0SoP8sbObUsreMUAATV9FMCSRJDyv9c
-         OjR/Kp0y75wcpwGzOwboHeAnxoeANCLQuWXR/uMt3uTSdvbo0RSDjh/Ry9fRtdH95N
-         5zEm6vufOL9EPVf0rZdO+nr2INz3Wmi1JYdrDoLo=
-Date:   Fri, 8 May 2020 13:57:46 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        id S1728324AbgEHNCt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 8 May 2020 09:02:49 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2168 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728171AbgEHNCq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 May 2020 09:02:46 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 543BE160904952BFEA35;
+        Fri,  8 May 2020 14:02:44 +0100 (IST)
+Received: from localhost (10.47.95.97) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 8 May 2020
+ 14:02:43 +0100
+Date:   Fri, 8 May 2020 14:02:21 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: ad5933: rework probe to use devm_ function
- variants
-Message-ID: <20200508125746.GH4820@sirena.org.uk>
-References: <20200428093128.60747-1-alexandru.ardelean@analog.com>
- <20200502192542.63cc25a2@archlinux>
- <20200507095016.GC9365@kadam>
- <20200508134307.0000233a@Huawei.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] iio: sca3000: Remove an erroneous 'get_device()'
+Message-ID: <20200508140221.0000018d@Huawei.com>
+In-Reply-To: <0a8cd600-2b21-2076-1355-8c97d7ceb709@wanadoo.fr>
+References: <20200506035206.192173-1-christophe.jaillet@wanadoo.fr>
+        <CAHp75Vdi+ZYpQPHgoREQ6LTaUHTPmNkR7ULZaVNTJr7Bvh-q9Q@mail.gmail.com>
+        <0a8cd600-2b21-2076-1355-8c97d7ceb709@wanadoo.fr>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SUk9VBj82R8Xhb8H"
-Content-Disposition: inline
-In-Reply-To: <20200508134307.0000233a@Huawei.com>
-X-Cookie: Give him an evasive answer.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.95.97]
+X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 6 May 2020 19:31:38 +0200
+Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
---SUk9VBj82R8Xhb8H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Le 06/05/2020 à 12:38, Andy Shevchenko a écrit :
+> > On Wed, May 6, 2020 at 6:55 AM Christophe JAILLET
+> > <christophe.jaillet@wanadoo.fr> wrote:  
+> >> This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
+> >> call.
+> >> Remove it.
+> >>
+> >> While at it add a missing \n at the end of the message.
+> >>  
+> > It should have Fixes tag because it is a quite an issue (get_device()
+> > breaks reference counting with all problems we may expect).  
+> 
+> Agreed and I usually do, but here, I've lost track when this driver has 
+> gone out of staging.
+> 
+> Based on:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/iio/accel/sca3000.c
+> The issue was already there on 2016/10/23, but when I try to go one step 
+> further:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/staging/iio/accel/sca3000.c?id=2ccf61442ff142d2dde7c47471c2798a4d78b0ad
+> ^^^^         ^^^^^^^
+> works but if I try to see the log for that:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/staging/iio/accel/sca3000.c
+> ^^^         ^^^^^^^
+> is empty.
+> 
+> Most of the time, when I do it like that it works just fine, but not on 
+> this file.
 
-On Fri, May 08, 2020 at 01:43:07PM +0100, Jonathan Cameron wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Oddity of the web interface. Edit the url to get a log form a commit
 
-> > It feels like we should just make a devm_ version of regulator_enable().
-> > Or potentially this is more complicated than it seems, but in that case
-> > probably adding devm_add_action_or_reset() is more complicated than it
-> > seems as well.
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/staging/iio/accel/sca3000.c?id=2ccf61442ff142d2dde7c47471c2798a4d78b0ad
+                                                                    ^^^
+Then for more fun you have to deal with another rename
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/staging/iio/accel/?id=ced5c03d360aeebaac6faa7dd8d6d0a77733ab16
 
-> It has been a while since that was last proposed.   At the time the
-> counter argument was that you should almost always be doing some form
-> of PM and hence the regulator shouldn't have the same lifetime as the
-> driver.   Reality is that a lot of simple drivers either don't do
-> PM or have elected to not turn the regulator off so as to retain state
-> etc.
+Next bit of log...
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/staging/iio/accel/sca3000_ring.c?id=ced5c03d360aeebaac6faa7dd8d6d0a77733ab16 
 
-Same issue as before - I fear it's far too error prone in conjunction
-with runtime PM, and if the driver really is just doing an enable and
-disable at probe and remove then that seems fairly trivial anyway.  I
-am constantly finding abuses of things like regulator_get_optional()
-(which we do actually need) in drivers and it's not like I can review
-all the users, I don't have much confidence in this stuff especially
-when practically speaking few regulators ever change state at runtime so
-issues don't manifest so often.
+It goes all the way..
 
---SUk9VBj82R8Xhb8H
-Content-Type: application/pgp-signature; name="signature.asc"
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/staging/iio/accel/sca3000_core.c?id=574fb258d63658e4564c32c1940068a3bad666a0
 
------BEGIN PGP SIGNATURE-----
+Fixes: 574fb258d636 ("Staging: IIO: VTI sca3000 series accelerometer driver (spi)")
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl61V0oACgkQJNaLcl1U
-h9C8yAf+PavksgqAsWThGDHNhdDBAGYyMuu+VSKMkNo1+NN5f/Pso4SPcBnIVTuo
-Me4WbVrl2pnpJ6KPtKyAzfg/AqKVX15JpL3rhHikzjN+7HSV5sslQVNkdl4UuGB4
-edt3kNZyDsfLLBhhs3FF9gW9TgeZsMPN5f0mJZrMGF6cTvgM5c1k1JxWBXKDRGZw
-pDYq3nCPDt2yELv7N2jvV14CgitA/fgpxKQ7D4ejbzR7XBryPrCV29LCjKNfBAHS
-y8N0uQYduMFAJ9/TKJm8NgYQsiEW6iRbxXBoBOTT4hsEaroUnBqHTTOR/PyGt3zO
-rRTPM1hsbuFXjh9PajDXpUgLlSAv7w==
-=mxsy
------END PGP SIGNATURE-----
+Which was in the initial IIO patch set nearly 11 years ago in the merge window for 2.6.32.
 
---SUk9VBj82R8Xhb8H--
+What can I say - I was young and just as capable of writing dumb bugs as I am today :)
+
+I'll get this queued up when I'm on the right computer...
+
+Thanks,
+
+Jonathan
+
+
+> 
+> Any other way to navigate in history of moved file would be appreciated.
+> 
+> CJ
+> 
+> >  
+> >> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> >> ---
+> >> This patch is purely speculative.
+> >> I've looked a bit arround and see no point for this get_device() but other
+> >> eyes are welcomed :)
+> >> ---
+> >>   drivers/iio/accel/sca3000.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+> >> index 66d768d971e1..6e429072e44a 100644
+> >> --- a/drivers/iio/accel/sca3000.c
+> >> +++ b/drivers/iio/accel/sca3000.c
+> >> @@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
+> >>          st->tx[0] = SCA3000_READ_REG(reg_address_high);
+> >>          ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
+> >>          if (ret) {
+> >> -               dev_err(get_device(&st->us->dev), "problem reading register");
+> >> +               dev_err(&st->us->dev, "problem reading register\n");
+> >>                  return ret;
+> >>          }
+> >>
+> >> --
+> >> 2.25.1
+> >>  
+> >  
+
+

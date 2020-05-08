@@ -2,694 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B3961CB13D
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 16:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C87BC1CB17C
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 16:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbgEHOB3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 10:01:29 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2171 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726767AbgEHOB3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 10:01:29 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 48E5839EDB81459772AE;
-        Fri,  8 May 2020 15:01:27 +0100 (IST)
-Received: from localhost (10.47.95.97) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 8 May 2020
- 15:01:26 +0100
-Date:   Fri, 8 May 2020 15:01:04 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-CC:     <jic23@kernel.org>, <robh+dt@kernel.org>, <robh@kernel.org>,
-        <mchehab+huawei@kernel.org>, <davem@davemloft.net>,
-        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 04/12] iio: imu: inv_icm42600: add gyroscope IIO device
-Message-ID: <20200508150104.000010c2@Huawei.com>
-In-Reply-To: <20200507144222.20989-5-jmaneyrol@invensense.com>
-References: <20200507144222.20989-1-jmaneyrol@invensense.com>
-        <20200507144222.20989-5-jmaneyrol@invensense.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726767AbgEHONL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 May 2020 10:13:11 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:23038 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726904AbgEHONL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 May 2020 10:13:11 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 048E52xY006944;
+        Fri, 8 May 2020 10:13:09 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30vtef2mad-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 08 May 2020 10:13:09 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 048ED8Ad046078
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 8 May 2020 10:13:08 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 8 May 2020 10:13:07 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 8 May 2020 10:13:07 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 8 May 2020 10:13:07 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 048ED5JY031800;
+        Fri, 8 May 2020 10:13:05 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3] iio: core: wrap IIO device into a iio_dev_priv object
+Date:   Fri, 8 May 2020 17:13:04 +0300
+Message-ID: <20200508141306.17222-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.95.97]
-X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-08_13:2020-05-08,2020-05-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 suspectscore=2
+ clxscore=1015 phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2005080126
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 7 May 2020 16:42:14 +0200
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
+There are plenty of bad designs we want to discourage or not have to review
+manually usually about accessing private (marked as [INTERN]) fields of
+'struct iio_dev'.
 
-> Add IIO device for gyroscope sensor with data polling interface.
-> Attributes: raw, scale, sampling_frequency, calibbias.
-> 
-> Gyroscope in low noise mode.
-> 
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Few trivial things and questions inline.
+This is difficult, as a lot of users copy drivers, and not always the best
+examples.
 
-J
+A better idea is to hide those fields into the framework.
+For 'struct iio_dev' this is a 'struct iio_dev_priv' which wraps a public
+'struct iio_dev' object.
 
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h   |   4 +
->  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |   5 +
->  .../iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 549 ++++++++++++++++++
->  3 files changed, 558 insertions(+)
->  create mode 100644 drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> index 8da4c8249aed..ca41a9d6404a 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -120,6 +120,7 @@ struct inv_icm42600_suspended {
->   *  @orientation:	sensor chip orientation relative to main hardware.
->   *  @conf:		chip sensors configurations.
->   *  @suspended:		suspended sensors configuration.
-> + *  @indio_gyro:	gyroscope IIO device.
->   */
->  struct inv_icm42600_state {
->  	struct mutex lock;
-> @@ -131,6 +132,7 @@ struct inv_icm42600_state {
->  	struct iio_mount_matrix orientation;
->  	struct inv_icm42600_conf conf;
->  	struct inv_icm42600_suspended suspended;
-> +	struct iio_dev *indio_gyro;
->  };
->  
->  /* Virtual register addresses: @bank on MSB (4 upper bits), @address on LSB */
-> @@ -369,4 +371,6 @@ int inv_icm42600_debugfs_reg(struct iio_dev *indio_dev, unsigned int reg,
->  int inv_icm42600_core_probe(struct regmap *regmap, int chip,
->  			    inv_icm42600_bus_setup bus_setup);
->  
-> +int inv_icm42600_gyro_init(struct inv_icm42600_state *st);
-> +
->  #endif
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> index 35bdf4f9d31e..151257652ce6 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> @@ -503,6 +503,11 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip,
->  	if (ret)
->  		return ret;
->  
-> +	/* create and init gyroscope iio device */
+In the next patches, some fields will be moved to this new struct, each
+with it's own rework.
 
-'Kind' of obvious from function name?   Maybe drop the comment?
+This rework will not be complete[-able] for a while, as many fields need
+some drivers to be reworked in order to finalize them
+(e.g. 'indio_dev->mlock').
 
-> +	ret = inv_icm42600_gyro_init(st);
-> +	if (ret)
-> +		return ret;
-> +
->  	/* setup runtime power management */
->  	ret = pm_runtime_set_active(dev);
->  	if (ret)
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> new file mode 100644
-> index 000000000000..74aa2b5fa611
-> --- /dev/null
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> @@ -0,0 +1,549 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2020 Invensense, Inc.
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/mutex.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +#include <linux/delay.h>
-> +#include <linux/iio/iio.h>
-> +
-> +#include "inv_icm42600.h"
-> +
-> +#define INV_ICM42600_GYRO_CHAN(_modifier, _index, _ext_info)		\
-> +	{								\
-> +		.type = IIO_ANGL_VEL,					\
-> +		.modified = 1,						\
-> +		.channel2 = _modifier,					\
-> +		.info_mask_separate =					\
-> +			BIT(IIO_CHAN_INFO_RAW) |			\
-> +			BIT(IIO_CHAN_INFO_CALIBBIAS),			\
-> +		.info_mask_shared_by_type =				\
-> +			BIT(IIO_CHAN_INFO_SCALE),			\
-> +		.info_mask_shared_by_type_available =			\
-> +			BIT(IIO_CHAN_INFO_SCALE),			\
-> +		.info_mask_shared_by_all =				\
-> +			BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-> +		.info_mask_shared_by_all_available =			\
-> +			BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-> +		.scan_index = _index,					\
-> +		.scan_type = {						\
-> +			.sign = 's',					\
-> +			.realbits = 16,					\
-> +			.storagebits = 16,				\
-> +			.shift = 0,					\
+But some fields can already be moved, and in time, all of them may get
+there (in the 'struct iio_dev_priv' object).
 
-Shift has the 'obviously' default of 0, so normally we don't bother explicitly
-setting it to 0 like this.
+We also need to hide the implementations for 'iio_priv()' &
+'iio_priv_to_dev()', as the pointer arithmetic will not match once things
+are moved.
 
-> +			.endianness = IIO_BE,				\
-> +		},							\
-> +		.ext_info = _ext_info,					\
-> +	}
-> +
-> +enum inv_icm42600_gyro_scan {
-> +	INV_ICM42600_GYRO_SCAN_X,
-> +	INV_ICM42600_GYRO_SCAN_Y,
-> +	INV_ICM42600_GYRO_SCAN_Z,
-> +};
-> +
-> +static const struct iio_chan_spec_ext_info inv_icm42600_gyro_ext_infos[] = {
-> +	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, inv_icm42600_get_mount_matrix),
-> +	{},
-> +};
-> +
-> +static const struct iio_chan_spec inv_icm42600_gyro_channels[] = {
-> +	INV_ICM42600_GYRO_CHAN(IIO_MOD_X, INV_ICM42600_GYRO_SCAN_X,
-> +			       inv_icm42600_gyro_ext_infos),
-> +	INV_ICM42600_GYRO_CHAN(IIO_MOD_Y, INV_ICM42600_GYRO_SCAN_Y,
-> +			       inv_icm42600_gyro_ext_infos),
-> +	INV_ICM42600_GYRO_CHAN(IIO_MOD_Z, INV_ICM42600_GYRO_SCAN_Z,
-> +			       inv_icm42600_gyro_ext_infos),
-> +};
-> +
-> +static int inv_icm42600_gyro_read_sensor(struct inv_icm42600_state *st,
-> +					 struct iio_chan_spec const *chan,
-> +					 int16_t *val)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-> +	unsigned int reg;
-> +	__be16 data;
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		reg = INV_ICM42600_REG_GYRO_DATA_X;
-> +		break;
-> +	case IIO_MOD_Y:
-> +		reg = INV_ICM42600_REG_GYRO_DATA_Y;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		reg = INV_ICM42600_REG_GYRO_DATA_Z;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	pm_runtime_get_sync(dev);
-> +	mutex_lock(&st->lock);
-> +
-> +	/* enable gyro sensor */
-> +	conf.mode = INV_ICM42600_SENSOR_MODE_LOW_NOISE;
-> +	ret = inv_icm42600_set_gyro_conf(st, &conf, NULL);
-> +	if (ret)
-> +		goto exit;
-> +
-> +	/* read gyro register data */
-> +	ret = regmap_bulk_read(st->map, reg, &data, sizeof(data));
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
 
-IIRC bulk reads need to be to dma safe buffers.  So typically on the stack and
-in appropriately aligned location in any containing structure.
+Just as a note here, I've been running this patchset without a problem
+for 2 weeks now in a work branch.
+But it's only been a setup, so no idea if some other thing may cause
+bigger issues.
 
-> +	if (ret)
-> +		goto exit;
-> +
-> +	*val = (int16_t)be16_to_cpu(data);
-> +	if (*val == INV_ICM42600_DATA_INVALID)
-> +		ret = -EINVAL;
-> +exit:
-> +	mutex_unlock(&st->lock);
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +	return ret;
-> +}
-> +
-> +/* IIO format int + nano */
-> +static const int inv_icm42600_gyro_scale[] = {
-> +	/* +/- 2000dps => 0.001065264 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_2000DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_2000DPS + 1] = 1065264,
-> +	/* +/- 1000dps => 0.000532632 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_1000DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_1000DPS + 1] = 532632,
-> +	/* +/- 500dps => 0.000266316 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_500DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_500DPS + 1] = 266316,
-> +	/* +/- 250dps => 0.000133158 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_250DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_250DPS + 1] = 133158,
-> +	/* +/- 125dps => 0.000066579 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_125DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_125DPS + 1] = 66579,
-> +	/* +/- 62.5dps => 0.000033290 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_62_5DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_62_5DPS + 1] = 33290,
-> +	/* +/- 31.25dps => 0.000016645 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_31_25DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_31_25DPS + 1] = 16645,
-> +	/* +/- 15.625dps => 0.000008322 rad/s */
-> +	[2 * INV_ICM42600_GYRO_FS_15_625DPS] = 0,
-> +	[2 * INV_ICM42600_GYRO_FS_15_625DPS + 1] = 8322,
-> +};
-> +
-> +static int inv_icm42600_gyro_read_scale(struct inv_icm42600_state *st,
-> +					int *val, int *val2)
-> +{
-> +	unsigned int idx;
-> +
-> +	mutex_lock(&st->lock);
-> +	idx = st->conf.gyro.fs;
+This small patchset is meant to kickstart this, for GSoC people or for
+people wanting to start contributing to IIO.
 
-Seems like we shouldn't need the lock to retrieve a single value.
-Is there some odd intermediate state somewhere I'm missing?
+ drivers/iio/iio_core.h          | 11 +++++++++++
+ drivers/iio/industrialio-core.c | 32 +++++++++++++++++++++++++++-----
+ include/linux/iio/iio.h         | 12 ++----------
+ 3 files changed, 40 insertions(+), 15 deletions(-)
 
-> +	mutex_unlock(&st->lock);
-> +
-> +	*val = inv_icm42600_gyro_scale[2 * idx];
-> +	*val2 = inv_icm42600_gyro_scale[2 * idx + 1];
-> +	return IIO_VAL_INT_PLUS_NANO;
-> +}
-> +
-> +static int inv_icm42600_gyro_write_scale(struct inv_icm42600_state *st,
-> +					 int val, int val2)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	unsigned int idx;
-> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-> +	int ret;
-> +
-> +	for (idx = 0; idx < ARRAY_SIZE(inv_icm42600_gyro_scale); idx += 2) {
-> +		if (val == inv_icm42600_gyro_scale[idx] &&
-> +				val2 == inv_icm42600_gyro_scale[idx + 1])
-
-Alignment of code seems odd.
-
-> +			break;
-> +	}
-> +	if (idx >= ARRAY_SIZE(inv_icm42600_gyro_scale))
-> +		return -EINVAL;
-> +
-> +	/* update gyro fs */
-> +	pm_runtime_get_sync(dev);
-> +
-> +	mutex_lock(&st->lock);
-> +	conf.fs = idx / 2;
-> +	ret = inv_icm42600_set_gyro_conf(st, &conf, NULL);
-> +	mutex_unlock(&st->lock);
-> +
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +/* IIO format int + micro */
-> +static const int inv_icm42600_gyro_odr[] = {
-> +	/* 12.5Hz */
-> +	12, 500000,
-> +	/* 25Hz */
-> +	25, 0,
-> +	/* 50Hz */
-> +	50, 0,
-> +	/* 100Hz */
-> +	100, 0,
-> +	/* 200Hz */
-> +	200, 0,
-> +	/* 1kHz */
-> +	1000, 0,
-> +	/* 2kHz */
-> +	2000, 0,
-> +	/* 4kHz */
-> +	4000, 0,
-> +};
-> +
-> +static const int inv_icm42600_gyro_odr_conv[] = {
-> +	INV_ICM42600_ODR_12_5HZ,
-> +	INV_ICM42600_ODR_25HZ,
-> +	INV_ICM42600_ODR_50HZ,
-> +	INV_ICM42600_ODR_100HZ,
-> +	INV_ICM42600_ODR_200HZ,
-> +	INV_ICM42600_ODR_1KHZ_LN,
-> +	INV_ICM42600_ODR_2KHZ_LN,
-> +	INV_ICM42600_ODR_4KHZ_LN,
-> +};
-> +
-> +static int inv_icm42600_gyro_read_odr(struct inv_icm42600_state *st,
-> +				      int *val, int *val2)
-> +{
-> +	unsigned int odr;
-> +	unsigned int i;
-> +
-> +	mutex_lock(&st->lock);
-> +	odr = st->conf.gyro.odr;
-> +	mutex_unlock(&st->lock);
-> +
-> +	for (i = 0; i < ARRAY_SIZE(inv_icm42600_gyro_odr_conv); ++i) {
-> +		if (inv_icm42600_gyro_odr_conv[i] == odr)
-> +			break;
-> +	}
-> +	if (i >= ARRAY_SIZE(inv_icm42600_gyro_odr_conv))
-> +		return -EINVAL;
-> +
-> +	*val = inv_icm42600_gyro_odr[2 * i];
-> +	*val2 = inv_icm42600_gyro_odr[2 * i + 1];
-> +
-> +	return IIO_VAL_INT_PLUS_MICRO;
-> +}
-> +
-> +static int inv_icm42600_gyro_write_odr(struct inv_icm42600_state *st,
-> +				       int val, int val2)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	unsigned int idx;
-> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-> +	int ret;
-> +
-> +	for (idx = 0; idx < ARRAY_SIZE(inv_icm42600_gyro_odr); idx += 2) {
-> +		if (val == inv_icm42600_gyro_odr[idx] &&
-> +				val2 == inv_icm42600_gyro_odr[idx + 1])
-> +			break;
-> +	}
-> +	if (idx >= ARRAY_SIZE(inv_icm42600_gyro_odr))
-> +		return -EINVAL;
-> +
-> +	/* update gyro odr */
-> +	pm_runtime_get_sync(dev);
-> +
-> +	mutex_lock(&st->lock);
-> +	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
-> +	ret = inv_icm42600_set_gyro_conf(st, &conf, NULL);
-> +	mutex_unlock(&st->lock);
-> +
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int inv_icm42600_gyro_read_offset(struct inv_icm42600_state *st,
-> +					 struct iio_chan_spec const *chan,
-> +					 int16_t *val)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	unsigned int reg;
-> +	uint8_t data[2];
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		reg = INV_ICM42600_REG_OFFSET_USER0;
-> +		break;
-> +	case IIO_MOD_Y:
-> +		reg = INV_ICM42600_REG_OFFSET_USER1;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		reg = INV_ICM42600_REG_OFFSET_USER3;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	pm_runtime_get_sync(dev);
-> +
-> +	/* read gyro offset data */
-> +	mutex_lock(&st->lock);
-> +	ret = regmap_bulk_read(st->map, reg, &data, sizeof(data));
-> +	mutex_unlock(&st->lock);
-> +	if (ret)
-> +		goto exit;
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		*val = (int16_t)(((data[1] & 0x0F) << 8) | data[0]);
-
-This doesn't look right for negative values.  You would be better
-off with a sign extend of the 12 bit value.
-
-> +		break;
-> +	case IIO_MOD_Y:
-> +		*val = (int16_t)(((data[0] & 0xF0) << 4) | data[1]);
-> +		break;
-> +	case IIO_MOD_Z:
-> +		*val = (int16_t)(((data[1] & 0x0F) << 8) | data[0]);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +
-> +exit:
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +	return ret;
-> +}
-> +
-> +static int inv_icm42600_gyro_write_offset(struct inv_icm42600_state *st,
-> +					  struct iio_chan_spec const *chan,
-> +					  int val)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	unsigned int reg, regval;
-> +	uint8_t data[2];
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		reg = INV_ICM42600_REG_OFFSET_USER0;
-> +		break;
-> +	case IIO_MOD_Y:
-> +		reg = INV_ICM42600_REG_OFFSET_USER1;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		reg = INV_ICM42600_REG_OFFSET_USER3;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* value is limited to 12 bits signed */
-> +	if (val < -2048 || val > 2047)
-> +		return -EINVAL;
-
-Perhaps worth an available callback to give the range?
-
-> +
-> +	pm_runtime_get_sync(dev);
-> +	mutex_lock(&st->lock);
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		/* OFFSET_USER1 register is shared */
-> +		ret = regmap_read(st->map, INV_ICM42600_REG_OFFSET_USER1,
-> +				  &regval);
-> +		if (ret)
-> +			goto out_unlock;
-> +		data[0] = val & 0xFF;
-> +		data[1] = (regval & 0xF0) | ((val & 0xF00) >> 8);
-> +		break;
-> +	case IIO_MOD_Y:
-> +		/* OFFSET_USER1 register is shared */
-> +		ret = regmap_read(st->map, INV_ICM42600_REG_OFFSET_USER1,
-> +				  &regval);
-> +		if (ret)
-> +			goto out_unlock;
-> +		data[0] = ((val & 0xF00) >> 4) | (regval & 0x0F);
-> +		data[1] = val & 0xFF;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		/* OFFSET_USER4 register is shared */
-> +		ret = regmap_read(st->map, INV_ICM42600_REG_OFFSET_USER4,
-> +				  &regval);
-> +		if (ret)
-> +			goto out_unlock;
-> +		data[0] = val & 0xFF;
-> +		data[1] = (regval & 0xF0) | ((val & 0xF00) >> 8);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
-> +	ret = regmap_bulk_write(st->map, reg, data, sizeof(data));
-> +
-> +out_unlock:
-> +	mutex_unlock(&st->lock);
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +	return ret;
-> +}
-> +
-> +static int inv_icm42600_gyro_read_raw(struct iio_dev *indio_dev,
-> +				      struct iio_chan_spec const *chan,
-> +				      int *val, int *val2, long mask)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	int16_t data;
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +		ret = inv_icm42600_gyro_read_sensor(st, chan, &data);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +		*val = data;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return inv_icm42600_gyro_read_scale(st, val, val2);
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return inv_icm42600_gyro_read_odr(st, val, val2);
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-
-I'm curious.  Why can't we read back a calibration offset whilst doing
-buffered capture?
-
-> +		ret = inv_icm42600_gyro_read_offset(st, chan, &data);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +		*val = data;
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int inv_icm42600_gyro_read_avail(struct iio_dev *indio_dev,
-> +					struct iio_chan_spec const *chan,
-> +					const int **vals,
-> +					int *type, int *length, long mask)
-> +{
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*vals = inv_icm42600_gyro_scale;
-> +		*type = IIO_VAL_INT_PLUS_NANO;
-> +		*length = ARRAY_SIZE(inv_icm42600_gyro_scale);
-> +		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*vals = inv_icm42600_gyro_odr;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		*length = ARRAY_SIZE(inv_icm42600_gyro_odr);
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int inv_icm42600_gyro_write_raw(struct iio_dev *indio_dev,
-> +				       struct iio_chan_spec const *chan,
-> +				       int val, int val2, long mask)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +		ret = inv_icm42600_gyro_write_scale(st, val, val2);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		return ret;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return inv_icm42600_gyro_write_odr(st, val, val2);
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +		ret = inv_icm42600_gyro_write_offset(st, chan, val);
-> +		iio_device_release_direct_mode(indio_dev);
-> +		return ret;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int inv_icm42600_gyro_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +					       struct iio_chan_spec const *chan,
-> +					       long mask)
-> +{
-> +	if (chan->type != IIO_ANGL_VEL)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info inv_icm42600_gyro_info = {
-> +	.read_raw = inv_icm42600_gyro_read_raw,
-> +	.read_avail = inv_icm42600_gyro_read_avail,
-> +	.write_raw = inv_icm42600_gyro_write_raw,
-> +	.write_raw_get_fmt = inv_icm42600_gyro_write_raw_get_fmt,
-> +	.debugfs_reg_access = inv_icm42600_debugfs_reg,
-> +};
-> +
-> +int inv_icm42600_gyro_init(struct inv_icm42600_state *st)
-> +{
-> +	struct device *dev = regmap_get_device(st->map);
-> +	const char *name;
-> +	struct iio_dev *indio_dev;
-> +
-> +	name = devm_kasprintf(dev, GFP_KERNEL, "%s-gyro", st->name);
-> +	if (!name)
-> +		return -ENOMEM;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, 0);
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	iio_device_set_drvdata(indio_dev, st);
-> +	indio_dev->dev.parent = dev;
-> +	indio_dev->name = name;
-> +	indio_dev->info = &inv_icm42600_gyro_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = inv_icm42600_gyro_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(inv_icm42600_gyro_channels);
-> +
-> +	st->indio_gyro = indio_dev;
-> +	return devm_iio_device_register(dev, st->indio_gyro);
-> +}
-
+diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+index fd9a5f1d5e51..84f3b4590c05 100644
+--- a/drivers/iio/iio_core.h
++++ b/drivers/iio/iio_core.h
+@@ -17,6 +17,17 @@ struct iio_dev;
+ 
+ extern struct device_type iio_device_type;
+ 
++/**
++ * struct iio_dev_priv - industrial I/O device private information
++ * @indio_dev:			public IIO device object
++ */
++struct iio_dev_priv {
++	struct iio_dev			indio_dev;
++};
++
++#define to_iio_dev_priv(indio_dev)	\
++	container_of(indio_dev, struct iio_dev_priv, indio_dev)
++
+ int __iio_add_chan_devattr(const char *postfix,
+ 			   struct iio_chan_spec const *chan,
+ 			   ssize_t (*func)(struct device *dev,
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 462d3e810013..f0888dd84d3d 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -164,6 +164,23 @@ static const char * const iio_chan_info_postfix[] = {
+ 	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
+ };
+ 
++
++void *iio_priv(const struct iio_dev *indio_dev)
++{
++	struct iio_dev_priv *iio_dev_priv = to_iio_dev_priv(indio_dev);
++	return (char *)iio_dev_priv + ALIGN(sizeof(struct iio_dev_priv), IIO_ALIGN);
++}
++EXPORT_SYMBOL_GPL(iio_priv);
++
++struct iio_dev *iio_priv_to_dev(void *priv)
++{
++	struct iio_dev_priv *iio_dev_priv =
++		(struct iio_dev_priv *)((char *)priv -
++				  ALIGN(sizeof(struct iio_dev_priv), IIO_ALIGN));
++	return &iio_dev_priv->indio_dev;
++}
++EXPORT_SYMBOL_GPL(iio_priv_to_dev);
++
+ /**
+  * iio_find_channel_from_si() - get channel from its scan index
+  * @indio_dev:		device
+@@ -1476,6 +1493,8 @@ static void iio_device_unregister_sysfs(struct iio_dev *indio_dev)
+ static void iio_dev_release(struct device *device)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(device);
++	struct iio_dev_priv *iio_dev_priv = to_iio_dev_priv(indio_dev);
++
+ 	if (indio_dev->modes & INDIO_ALL_TRIGGERED_MODES)
+ 		iio_device_unregister_trigger_consumer(indio_dev);
+ 	iio_device_unregister_eventset(indio_dev);
+@@ -1484,7 +1503,7 @@ static void iio_dev_release(struct device *device)
+ 	iio_buffer_put(indio_dev->buffer);
+ 
+ 	ida_simple_remove(&iio_ida, indio_dev->id);
+-	kfree(indio_dev);
++	kfree(iio_dev_priv);
+ }
+ 
+ struct device_type iio_device_type = {
+@@ -1498,10 +1517,11 @@ struct device_type iio_device_type = {
+  **/
+ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ {
++	struct iio_dev_priv *iio_dev_priv;
+ 	struct iio_dev *dev;
+ 	size_t alloc_size;
+ 
+-	alloc_size = sizeof(struct iio_dev);
++	alloc_size = sizeof(struct iio_dev_priv);
+ 	if (sizeof_priv) {
+ 		alloc_size = ALIGN(alloc_size, IIO_ALIGN);
+ 		alloc_size += sizeof_priv;
+@@ -1509,10 +1529,12 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 	/* ensure 32-byte alignment of whole construct ? */
+ 	alloc_size += IIO_ALIGN - 1;
+ 
+-	dev = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!dev)
++	iio_dev_priv = kzalloc(alloc_size, GFP_KERNEL);
++	if (!iio_dev_priv)
+ 		return NULL;
+ 
++	dev = &iio_dev_priv->indio_dev;
++
+ 	dev->dev.groups = dev->groups;
+ 	dev->dev.type = &iio_device_type;
+ 	dev->dev.bus = &iio_bus_type;
+@@ -1526,7 +1548,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
+ 	if (dev->id < 0) {
+ 		/* cannot use a dev_err as the name isn't available */
+ 		pr_err("failed to get device id\n");
+-		kfree(dev);
++		kfree(iio_dev_priv);
+ 		return NULL;
+ 	}
+ 	dev_set_name(&dev->dev, "iio:device%d", dev->id);
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 5f9f439a4f01..38c4ea505394 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -678,16 +678,8 @@ static inline void *iio_device_get_drvdata(struct iio_dev *indio_dev)
+ #define IIO_ALIGN L1_CACHE_BYTES
+ struct iio_dev *iio_device_alloc(int sizeof_priv);
+ 
+-static inline void *iio_priv(const struct iio_dev *indio_dev)
+-{
+-	return (char *)indio_dev + ALIGN(sizeof(struct iio_dev), IIO_ALIGN);
+-}
+-
+-static inline struct iio_dev *iio_priv_to_dev(void *priv)
+-{
+-	return (struct iio_dev *)((char *)priv -
+-				  ALIGN(sizeof(struct iio_dev), IIO_ALIGN));
+-}
++void *iio_priv(const struct iio_dev *indio_dev);
++struct iio_dev *iio_priv_to_dev(void *priv);
+ 
+ void iio_device_free(struct iio_dev *indio_dev);
+ struct iio_dev *devm_iio_device_alloc(struct device *dev, int sizeof_priv);
+-- 
+2.17.1
 

@@ -2,106 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E66421CABE4
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 14:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BECD1CACF6
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 14:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729617AbgEHMsB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 08:48:01 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2167 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729607AbgEHMr6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 08:47:58 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 708D1EDF60E665A57672;
-        Fri,  8 May 2020 13:47:56 +0100 (IST)
-Received: from localhost (10.47.95.97) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 8 May 2020
- 13:47:55 +0100
-Date:   Fri, 8 May 2020 13:47:33 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jonathan Bakker <xc-racer2@live.ca>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
+        id S1730152AbgEHM5w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 May 2020 08:57:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41380 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730040AbgEHM5t (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 May 2020 08:57:49 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 040F42054F;
+        Fri,  8 May 2020 12:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588942669;
+        bh=48NqrDGnrzppujpNDFRQjW7iHDemvgNPr206uvHmtdQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lSYuM++ubZ3ockKq+n3h6a2DVmUvWRNVWl0SoP8sbObUsreMUAATV9FMCSRJDyv9c
+         OjR/Kp0y75wcpwGzOwboHeAnxoeANCLQuWXR/uMt3uTSdvbo0RSDjh/Ry9fRtdH95N
+         5zEm6vufOL9EPVf0rZdO+nr2INz3Wmi1JYdrDoLo=
+Date:   Fri, 8 May 2020 13:57:46 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Input <linux-input@vger.kernel.org>
-Subject: Re: [PATCH 0/5] iio: accel: Add bma023 support to bma180
-Message-ID: <20200508134733.0000233a@Huawei.com>
-In-Reply-To: <BN6PR04MB0660BD7ABF64EC0C19A65A03A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
-References: <BN6PR04MB0660046ABD79433EA94A85A9A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
-        <CACRpkdbb89q2FRJZ1=2QoQs8JFYcwWpNZwJUbnjsVvZYEE-LKw@mail.gmail.com>
-        <BN6PR04MB0660BD7ABF64EC0C19A65A03A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: ad5933: rework probe to use devm_ function
+ variants
+Message-ID: <20200508125746.GH4820@sirena.org.uk>
+References: <20200428093128.60747-1-alexandru.ardelean@analog.com>
+ <20200502192542.63cc25a2@archlinux>
+ <20200507095016.GC9365@kadam>
+ <20200508134307.0000233a@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.95.97]
-X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SUk9VBj82R8Xhb8H"
+Content-Disposition: inline
+In-Reply-To: <20200508134307.0000233a@Huawei.com>
+X-Cookie: Give him an evasive answer.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 6 May 2020 20:49:17 -0700
-Jonathan Bakker <xc-racer2@live.ca> wrote:
 
-> Hi Linus,
-> 
-> On 2020-05-06 5:47 a.m., Linus Walleij wrote:
-> > On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
-> >   
-> >> This patchset adds support for the bma023 three axis accelerometer
-> >> to the bma180 IIO driver.  The bma023 is found on several ~2010
-> >> phones, including the first-gen Galaxy S series.
-> >>
-> >> The bma023 differs from later chips (bma180, bma25x) in that it
-> >> has no low power but still working mode and no temperature
-> >> channel.
-> >>
-> >> The bma023 is already supported by a misc input driver (bma150), so
-> >> when both are enabled, the iio driver is preferred.  The bma150
-> >> is very similar to the bma023, but has a temperature channel.
-> >> Support for the bma150 is not added in this patchset.  
-> > 
-> > I'd say, if it's not too much trouble please also patch in
-> > support for BMA150 and SMB380 to the IIO driver so
-> > we can delete this old Input driver, we have done this
-> > before and thes "input drivers" are just causing headaches
-> > and wasting time for the Input maintainer.
-> >   
-> 
-> Looking at the bma150, it looks the same.  The temperature is implemented
-> slightly differently than on the bma180+ (unsigned vs signed) but should
-> be quite easy to add.  I'll add a new patch for it in v2.
+--SUk9VBj82R8Xhb8H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Great.  Series looks fine to me as well, so should be fine to apply v2.
-(subject to Dmitry Ack).
+On Fri, May 08, 2020 at 01:43:07PM +0100, Jonathan Cameron wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Jonathan
+> > It feels like we should just make a devm_ version of regulator_enable().
+> > Or potentially this is more complicated than it seems, but in that case
+> > probably adding devm_add_action_or_reset() is more complicated than it
+> > seems as well.
 
-> 
-> > It can be in a separate patch set from this one if you
-> > don't want to get stuck on this.
-> > 
-> > Yours,
-> > Linus Walleij
-> >   
-> 
-> Thanks,
-> Jonathan
+> It has been a while since that was last proposed.   At the time the
+> counter argument was that you should almost always be doing some form
+> of PM and hence the regulator shouldn't have the same lifetime as the
+> driver.   Reality is that a lot of simple drivers either don't do
+> PM or have elected to not turn the regulator off so as to retain state
+> etc.
 
+Same issue as before - I fear it's far too error prone in conjunction
+with runtime PM, and if the driver really is just doing an enable and
+disable at probe and remove then that seems fairly trivial anyway.  I
+am constantly finding abuses of things like regulator_get_optional()
+(which we do actually need) in drivers and it's not like I can review
+all the users, I don't have much confidence in this stuff especially
+when practically speaking few regulators ever change state at runtime so
+issues don't manifest so often.
 
+--SUk9VBj82R8Xhb8H
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl61V0oACgkQJNaLcl1U
+h9C8yAf+PavksgqAsWThGDHNhdDBAGYyMuu+VSKMkNo1+NN5f/Pso4SPcBnIVTuo
+Me4WbVrl2pnpJ6KPtKyAzfg/AqKVX15JpL3rhHikzjN+7HSV5sslQVNkdl4UuGB4
+edt3kNZyDsfLLBhhs3FF9gW9TgeZsMPN5f0mJZrMGF6cTvgM5c1k1JxWBXKDRGZw
+pDYq3nCPDt2yELv7N2jvV14CgitA/fgpxKQ7D4ejbzR7XBryPrCV29LCjKNfBAHS
+y8N0uQYduMFAJ9/TKJm8NgYQsiEW6iRbxXBoBOTT4hsEaroUnBqHTTOR/PyGt3zO
+rRTPM1hsbuFXjh9PajDXpUgLlSAv7w==
+=mxsy
+-----END PGP SIGNATURE-----
+
+--SUk9VBj82R8Xhb8H--

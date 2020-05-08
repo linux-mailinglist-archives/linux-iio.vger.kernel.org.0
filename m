@@ -2,39 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DD71CB24C
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 16:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BDB1CB258
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 16:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728000AbgEHOva (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 10:51:30 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2175 "EHLO huawei.com"
+        id S1726767AbgEHO4i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 May 2020 10:56:38 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2176 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726751AbgEHOva (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 10:51:30 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id ED18474328E5A4274316;
-        Fri,  8 May 2020 15:51:28 +0100 (IST)
+        id S1726690AbgEHO4i (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 May 2020 10:56:38 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 5C856535883A350AC80C;
+        Fri,  8 May 2020 15:56:36 +0100 (IST)
 Received: from localhost (10.47.95.97) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 8 May 2020
- 15:51:28 +0100
-Date:   Fri, 8 May 2020 15:51:06 +0100
+ 15:56:35 +0100
+Date:   Fri, 8 May 2020 15:56:13 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v13 1/2] dt-bindings: proximity: provide vcnl3020 device
- tree binding document
-Message-ID: <20200508155050.0000008e@Huawei.com>
-In-Reply-To: <20200507132600.8801-2-i.mikhaylov@yadro.com>
-References: <20200507132600.8801-1-i.mikhaylov@yadro.com>
-        <20200507132600.8801-2-i.mikhaylov@yadro.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+CC:     <enric.balletbo@collabora.com>, <jic23@kernel.org>,
+        <bleung@chromium.org>, <groeck@chromium.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 0/3] iio: cros_ec: Add support for RGB light sensor
+Message-ID: <20200508155613.00005c95@Huawei.com>
+In-Reply-To: <20200506230324.139241-1-gwendal@chromium.org>
+References: <20200506230324.139241-1-gwendal@chromium.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -49,96 +42,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 7 May 2020 16:25:59 +0300
-Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
+On Wed, 6 May 2020 16:03:21 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Mostly standard i2c driver with some additional led-current option
-> for vcnl3020.
+> Add support for color light sensor presented by the Chromebook Embedded
+> Controller (EC).
+> Instead of just presenting lux measurement (clear channel), a color light
+> sensor is able to report color temperature measurement.
 > 
-> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
-> ---
->  .../iio/proximity/vishay,vcnl3020.yaml        | 65 +++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
+> The EC, using factory settings, can transform the raw measurement into
+> the CIE 1931 XYZ color space (XYZ) and take adavantage of color sensor
+> autocalibration to provide the most accurate measurements.
+
+v3 of series with v2 patches?
+
+Also my earlier comment about colour channels cannot be illuminance
+still stands. It is a term that "only" applies to light measurements with
+a particular frequency / sensitivity curve.
+
+The colour channels should all be in_intensity_xxx_raw.
+
+If you want to do the computation in driver to derive the illuminance
+that would be great, otherwise we shouldn't have any illuminance channels.
+
+Jonathan
+
+
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml b/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
-> new file mode 100644
-> index 000000000000..408dee17cdf5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/vishay,vcnl3020.yaml
-> @@ -0,0 +1,65 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/vishay,vcnl3020.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Integrated Proximity Sensor With Infrared Emitter
-> +
-> +maintainers:
-> +  - Ivan Mikhaylov <i.mikhaylov@yadro.com>
-> +
-> +description: |
-> +  The VCNL3020 is a fully integrated proximity sensor. Fully integrated means
-> +  that the infrared emitter is included in the package. It has 16-bit
-> +  resolution. It includes a signal processing IC and features standard I2C
-> +  communication interface. It features an interrupt function.
-> +
-> +  Specifications about the devices can be found at:
-> +  https://www.vishay.com/docs/84150/vcnl3020.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - vishay,vcnl3020
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Regulator that provides power to the sensor
-> +
-> +  vddio-supply:
-> +    description: Regulator that provides power to the bus
-> +
-> +  vishay,led-current-microamp:
-> +    description:
-> +      IR LED current value with valid Range = 0 to 20d. e.g. 0 = 0 mA,
-> +      1 = 10 mA, 20 = 200 mA. LED Current is limited to 200 mA for values
-> +      higher than decimal 20. The drive current for the LED used in proximity
-> +      sensing.
-
-This text is really confusing. Just let the enum speak for itself and leave text as
-something short like
-
-"The driver current for the LED used in proximity sensing. "
-
-Units and values are clear already.
-
-> +    enum: [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000,
-> +          100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
-> +          180000, 190000, 200000]
-> +    default: 20000
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        proximity@13 {
-> +              compatible = "vishay,vcnl3020";
-> +              reg = <0x13>;
-> +              vishay,led-current-microamp = <200000>;
-> +        };
-> +    };
+> Gwendal Grignou (3):
+>   iio: Add in_illumincance vectors in different color spaces
+>   iio: cros_ec: Allow enabling/disabling calibration mode
+>   iio: cros_ec_light: Add support for RGB sensor
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio       |  27 +
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    |   3 +-
+>  drivers/iio/light/cros_ec_light_prox.c        | 469 +++++++++++++++---
+>  drivers/platform/chrome/cros_ec_sensorhub.c   |   3 +
+>  .../linux/iio/common/cros_ec_sensors_core.h   |   1 -
+>  .../linux/platform_data/cros_ec_commands.h    |  14 +-
+>  6 files changed, 441 insertions(+), 76 deletions(-)
+> 
 
 

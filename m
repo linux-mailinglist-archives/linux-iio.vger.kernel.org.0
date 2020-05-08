@@ -2,158 +2,386 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF5DD1CB428
-	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 17:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FBDC1CB653
+	for <lists+linux-iio@lfdr.de>; Fri,  8 May 2020 19:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbgEHP5S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 May 2020 11:57:18 -0400
-Received: from mail-mw2nam12olkn2100.outbound.protection.outlook.com ([40.92.23.100]:14144
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726906AbgEHP5S (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 May 2020 11:57:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ABjZsuFe8tH4uNPR8DT8VJUs0KuZ+5ADzfhMpYQSKtE2kVXNRHZaG77rQoBXrU8i0o6gFRxHbsU1rgJfaGyBsART8gs2gKBVyPymPGhXwpALUUCQ6Q8UuQ82SGlkhL7fODEw2yUnKkoVDP3/hQ90nq/BotJgNl8HinMeIZjzf1kQIFqpaue7F2gk6mbR9d+4ZGho8sw6Jg6tP3yJ6tijG64dnMmqYlD07DG/cojxFhLD35IQ9goiFkbXczrfp6wQj4ShP8XRH6lhXckAsD3N420PEY+5jaT3gk+RaY7NrKq9UUaxKQz5CzzK9GO7KdMK6IqqgwIRSUjQZi4ouUTNyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BeKlBqQWWhuEKLQhogpt1dyvYTfzHMWHB9BpEl3j4pE=;
- b=PERJ6PpqzxZK2VWrl+F6vMXjhFoYm7KUKY4mY5QYoEJcbLjl7+N9zNQniHYsTK7IiSNMUhmWGVd4oDy2+09NYlVKF97Wf9rhFqP+LDYkO02PrNu4UJolSUvei9H2vK5wL5yc7PObUN9LIhiE4pgyGNjl72fqNBA6mdOjBicMNvFi5W443ngD1/WVb48w2QtaNnoDMpSw/xRWFSumpgvdgMmhcrF09ioj19PDWmm6YqR8STTbg+BeMHJNb0Go2+Fcvfn+anXrU1yeNwyvTMZtXAkmVqlUIkhR26h9Ne6f8NYqWCqQWJekwKUM3GS3xmheEae5HOzSKuRm/XnxzDKNgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=live.ca; dmarc=pass action=none header.from=live.ca; dkim=pass
- header.d=live.ca; arc=none
-Received: from DM6NAM12FT065.eop-nam12.prod.protection.outlook.com
- (2a01:111:e400:fc64::45) by
- DM6NAM12HT127.eop-nam12.prod.protection.outlook.com (2a01:111:e400:fc64::176)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.23; Fri, 8 May
- 2020 15:57:16 +0000
-Received: from BN6PR04MB0660.namprd04.prod.outlook.com
- (2a01:111:e400:fc64::44) by DM6NAM12FT065.mail.protection.outlook.com
- (2a01:111:e400:fc64::353) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.11 via Frontend
- Transport; Fri, 8 May 2020 15:57:16 +0000
-X-IncomingTopHeaderMarker: OriginalChecksum:78E43D6A9D98FE9E7CCBBBB3B16732A3E27544B045E316179504C987EE2CC482;UpperCasedChecksum:33A39E8DE68E2010E1E96726F552B797A379D07E0B003CE7830963932578F91D;SizeAsReceived:9764;Count:50
-Received: from BN6PR04MB0660.namprd04.prod.outlook.com
- ([fe80::ad10:4127:4bc8:76fc]) by BN6PR04MB0660.namprd04.prod.outlook.com
- ([fe80::ad10:4127:4bc8:76fc%6]) with mapi id 15.20.2979.033; Fri, 8 May 2020
- 15:57:16 +0000
-Subject: Re: [PATCH 2/5] input: misc: bma150: Conditionally disable bma023
- support
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Input <linux-input@vger.kernel.org>
-References: <20200503172206.13782-1-xc-racer2@live.ca>
- <BN6PR04MB0660B420EFA83668BBF4F315A3A90@BN6PR04MB0660.namprd04.prod.outlook.com>
- <CACRpkdb3kG=7SQg8RGh1F=8=_mivV6p_zxpodFT=M-f3PmiyYQ@mail.gmail.com>
- <BN6PR04MB0660BA0E181869F866594E98A3A50@BN6PR04MB0660.namprd04.prod.outlook.com>
- <20200507042318.GD89269@dtor-ws>
-From:   Jonathan Bakker <xc-racer2@live.ca>
-Message-ID: <BN6PR04MB0660FB7E230C514608743560A3A20@BN6PR04MB0660.namprd04.prod.outlook.com>
-Date:   Fri, 8 May 2020 08:57:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-In-Reply-To: <20200507042318.GD89269@dtor-ws>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MWHPR1601CA0010.namprd16.prod.outlook.com
- (2603:10b6:300:da::20) To BN6PR04MB0660.namprd04.prod.outlook.com
- (2603:10b6:404:d9::21)
-X-Microsoft-Original-Message-ID: <8890a897-f37f-94e4-3c86-7ac3af161039@live.ca>
+        id S1726746AbgEHRtx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 May 2020 13:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726636AbgEHRtx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 May 2020 13:49:53 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65617C061A0C
+        for <linux-iio@vger.kernel.org>; Fri,  8 May 2020 10:49:53 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id j8so2600442iog.13
+        for <linux-iio@vger.kernel.org>; Fri, 08 May 2020 10:49:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1EYGmrzG573Ks0XAeSIkFEqkQ+RNtw9hiWTAhmMb9Ag=;
+        b=ASB/blVX23kzoR3xP448s6soeGLu/4yrdWKtyFNl2LtMVmoqQ2rX4wLtVJKWILMpUF
+         l4lkB/XZtkLVc9HYDnMkoQxcq6qAq73adPkBFwhImsIfkPtDnDL+J/kKJdeeRid1Jmli
+         chi8lRmAWfCcrAoPTusraIUUpZ4ExeOuz+RuA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1EYGmrzG573Ks0XAeSIkFEqkQ+RNtw9hiWTAhmMb9Ag=;
+        b=hYgEpOKexSL4bBD57yHonYR6fRuXMKL22ewhpdxTfP8Ux2E/fFgIfJirxDJ9bDGxyS
+         3hWyzW9j7BOggKMRBB/gx+FjF9QyXrs6qJJzquC+HBGGHeaXvFXC8XLxLJpypaIBGZHi
+         cG5I1EQERejfTXdBIKIbuxc9Fl0U8TvnRy8YqO4Sv+fqK9VPTqFKuNGjDo4V40sBagzm
+         beOwVOmt1JP3qlxP9BQxeUkmPLKmGHjLe7C+x8amTv0MRa8vficFK2lFRsopaw88f3Xs
+         IpyosAWDCfCZr+ku0Z1kE9A8pzghKUXi89mnHjiqk6TjfckJdQN+Hh5KuCNAj76yjPaG
+         Syxg==
+X-Gm-Message-State: AGi0PuZOIeuFpMjvC3v25+TnIBFXLfBEwsLOA8I4Nh9YcSIRiOWBpjZY
+        3qq4KMUxygFVQSWeo4nV61wbPNSmONnB33BvMzI97QRX
+X-Google-Smtp-Source: APiQypKNoAxD2vmLQtxap/6FWmdS94ZgfBEd9db1TcYmrM8u+vJnRw/Oc1Q96hVASuYegyKNp2wqFvs4VVOpreM1Yu4=
+X-Received: by 2002:a5d:8a10:: with SMTP id w16mr2715452iod.95.1588960192483;
+ Fri, 08 May 2020 10:49:52 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by MWHPR1601CA0010.namprd16.prod.outlook.com (2603:10b6:300:da::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.26 via Frontend Transport; Fri, 8 May 2020 15:57:14 +0000
-X-Microsoft-Original-Message-ID: <8890a897-f37f-94e4-3c86-7ac3af161039@live.ca>
-X-TMN:  [jZKOyh5g2L8FHAKCl3uYgqzCglv0FRISfN8J2oonFrDVhbXqkxZsCjtCyv6Vm5wD]
-X-MS-PublicTrafficType: Email
-X-IncomingHeaderCount: 50
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-Correlation-Id: 7cfdc31f-10e3-4f9d-3d13-08d7f3687aae
-X-MS-TrafficTypeDiagnostic: DM6NAM12HT127:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: htorRvgHnRoRsTB2mvzy+0T6NwgyowB0IlP/RXWyUFwjVKTupQ6z3eAK5rttWszH9wK1fb4B4zHrvthBxJscxgDvtz/ExtCqg7TPKE14wgFOzlZGjkZvX6cqs6sPS246xolKW0cG+/mnx4m7pECGCDF3JqXhZCMS1fZIE04d3yLqhSh4gLYAJ7tGXGT2Y/MsoJsWEMOBB9Gcr06EWwRw0A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:0;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR04MB0660.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:;DIR:OUT;SFP:1901;
-X-MS-Exchange-AntiSpam-MessageData: WgKBQ01znWlkv2Ml36Cv6x9bVuOapHzdQC46sqluek2Rrxfdb9yvsv5uFc2uMEvV1kJkTa1U4jb6iikokrO9jfWLP0MRuINGWkkSpsta+e5lT7nfVkSd0njR6T3XlHl5zyCPvQpyz422VgPSvBY4pUNZ6ZNunjryzNtcOSv/Ipw1Dm8G0r+0LMZHEpAXscS7bvKmhXGCTMHu/CxV1eh0fA==
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7cfdc31f-10e3-4f9d-3d13-08d7f3687aae
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2020 15:57:16.2049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6NAM12HT127
+References: <20200428054107.16061-1-matt.ranostay@konsulko.com>
+ <20200428054107.16061-3-matt.ranostay@konsulko.com> <20200503111726.3bb111c3@archlinux>
+ <CAJCx=gk373nJo=+4BVNk6+1G32SPOBgwAx0wYRMFPLkp2yQi3g@mail.gmail.com> <20200508133851.000044fa@Huawei.com>
+In-Reply-To: <20200508133851.000044fa@Huawei.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Fri, 8 May 2020 10:49:41 -0700
+Message-ID: <CAJCx=gnbt+L=qF8CwkgSCHhcCvZaSdzPFekckd9FN6nUJGFURw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: chemical: add atlas-ezo-sensor initial support
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-H Dmitry,
+On Fri, May 8, 2020 at 5:39 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Tue, 5 May 2020 21:22:00 -0700
+> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+>
+> > On Sun, May 3, 2020 at 3:17 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > On Tue, 28 Apr 2020 08:41:07 +0300
+> > > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> > >
+> > > > Add driver for Atlas EZO line of sensors with initial support for
+> > > > CO2 the sensor. This is effectively ASCII strings proxied over I2C
+> > > > due to these series of sensors being by default UART.
+> > > >
+> > > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > >
+> > > A few things inline - including a dive into a bit of the i2c subsystem
+> > > that's been there for a few years, but never used ;)
+> > >
+> > > Jonathan
+> > >
+> > > > ---
+> > > >  drivers/iio/chemical/Kconfig            |  11 ++
+> > > >  drivers/iio/chemical/Makefile           |   1 +
+> > > >  drivers/iio/chemical/atlas-ezo-sensor.c | 173 ++++++++++++++++++++++++
+> > > >  3 files changed, 185 insertions(+)
+> > > >  create mode 100644 drivers/iio/chemical/atlas-ezo-sensor.c
+> > > >
+> > > > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> > > > index a7e65a59bf42..7f21afd73b1c 100644
+> > > > --- a/drivers/iio/chemical/Kconfig
+> > > > +++ b/drivers/iio/chemical/Kconfig
+> > > > @@ -22,6 +22,17 @@ config ATLAS_PH_SENSOR
+> > > >         To compile this driver as module, choose M here: the
+> > > >         module will be called atlas-ph-sensor.
+> > > >
+> > > > +config ATLAS_EZO_SENSOR
+> > > > +     tristate "Atlas Scientific EZO sensors"
+> > > > +     depends on I2C
+> > > > +     help
+> > > > +       Say Y here to build I2C interface support for the following
+> > > > +       Atlas Scientific EZO sensors
+> > > > +         * CO2 EZO Sensor
+> > > > +
+> > > > +       To compile this driver as module, choose M here: the
+> > > > +       module will be called atlas-ezo-sensor.
+> > > > +
+> > > >  config BME680
+> > > >       tristate "Bosch Sensortec BME680 sensor driver"
+> > > >       depends on (I2C || SPI)
+> > > > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> > > > index 33d3a595dda9..aba4167db745 100644
+> > > > --- a/drivers/iio/chemical/Makefile
+> > > > +++ b/drivers/iio/chemical/Makefile
+> > > > @@ -5,6 +5,7 @@
+> > > >
+> > > >  # When adding new entries keep the list in alphabetical order
+> > > >  obj-$(CONFIG_ATLAS_PH_SENSOR)        += atlas-sensor.o
+> > > > +obj-$(CONFIG_ATLAS_EZO_SENSOR)       += atlas-ezo-sensor.o
+> > > >  obj-$(CONFIG_BME680) += bme680_core.o
+> > > >  obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
+> > > >  obj-$(CONFIG_BME680_SPI) += bme680_spi.o
+> > > > diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
+> > > > new file mode 100644
+> > > > index 000000000000..1f972f525a46
+> > > > --- /dev/null
+> > > > +++ b/drivers/iio/chemical/atlas-ezo-sensor.c
+> > > > @@ -0,0 +1,173 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0+
+> > > > +/*
+> > > > + * atlas-ezo-sensor.c - Support for Atlas Scientific EZO sensors
+> > > > + *
+> > > > + * Copyright (C) 2020 Konsulko Group
+> > > > + * Author: Matt Ranostay <matt.ranostay@konsulko.com>
+> > > > + */
+> > > > +
+> > > > +#include <linux/module.h>
+> > > > +#include <linux/init.h>
+> > > > +#include <linux/delay.h>
+> > > > +#include <linux/mutex.h>
+> > > > +#include <linux/err.h>
+> > > > +#include <linux/i2c.h>
+> > > > +#include <linux/of_device.h>
+> > > > +#include <linux/iio/iio.h>
+> > > > +
+> > > > +#define ATLAS_EZO_DRV_NAME           "atlas-ezo-sensor"
+> > > > +#define ATLAS_CO2_INT_TIME_IN_MS     950
+> > > > +
+> > > > +enum {
+> > > > +     ATLAS_CO2_EZO,
+> > > > +};
+> > > > +
+> > > > +struct atlas_ezo_device {
+> > > > +     const struct iio_chan_spec *channels;
+> > > > +     int num_channels;
+> > > > +     int delay;
+> > > > +};
+> > > > +
+> > > > +struct atlas_ezo_data {
+> > > > +     struct i2c_client *client;
+> > > > +     struct atlas_ezo_device *chip;
+> > >
+> > > const?  Seems like it's always a pointer to a constant structure.
+> > >
+> > > > +     struct mutex lock;
+> > >
+> > > Locks should 'always' have a comment to say what their scope is.
+> > > Even when it appears obvious ;)
+> > >
+> > > > +     u8 buffer[8];
+> > > > +};
+> > > > +
+> > > > +static const struct iio_chan_spec atlas_co2_ezo_channels[] = {
+> > > > +     {
+> > > > +             .type = IIO_CONCENTRATION,
+> > > > +             .modified = 1,
+> > > > +             .channel2 = IIO_MOD_CO2,
+> > > > +             .info_mask_separate =
+> > > > +                     BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> > > > +             .scan_index = 0,
+> > > > +             .scan_type = {
+> > > > +                     .sign = 'u',
+> > > > +                     .realbits = 32,
+> > > > +                     .storagebits = 32,
+> > > > +                     .endianness = IIO_CPU,
+> > > > +             },
+> > > > +     },
+> > > > +};
+> > > > +
+> > > > +static struct atlas_ezo_device atlas_ezo_devices[] = {
+> > >
+> > > const?
+> > >
+> > > > +     [ATLAS_CO2_EZO] = {
+> > > > +             .channels = atlas_co2_ezo_channels,
+> > > > +             .num_channels = 1,
+> > > > +             .delay = ATLAS_CO2_INT_TIME_IN_MS,
+> > > > +     },
+> > > > +};
+> > > > +
+> > > > +static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
+> > > > +                       struct iio_chan_spec const *chan,
+> > > > +                       int *val, int *val2, long mask)
+> > > > +{
+> > > > +     struct atlas_ezo_data *data = iio_priv(indio_dev);
+> > > > +     struct i2c_client *client = data->client;
+> > > > +     int ret = 0;
+> > > > +
+> > > > +     if (chan->type != IIO_CONCENTRATION)
+> > > > +             return -EINVAL;
+> > > > +
+> > > > +     switch (mask) {
+> > > > +     case IIO_CHAN_INFO_RAW: {
+> > > > +             int tmp;
+> > > > +
+> > > > +             mutex_lock(&data->lock);
+> > > > +
+> > > > +             tmp = i2c_smbus_write_byte(client, 'R');
+> > > > +
+> > > > +             if (tmp < 0) {
+> > > > +                     mutex_unlock(&data->lock);
+> > > > +                     return tmp;
+> > > > +             }
+> > > > +
+> > > > +             msleep(data->chip->delay);
+> > > > +
+> > > > +             tmp = i2c_master_recv(client, data->buffer, sizeof(data->buffer));
+> > > > +
+> > > > +             // Confirm response code is 1 for success
+> > >
+> > > Comment syntax /* */
+> > >
+> > > > +             if (tmp < 0 || data->buffer[0] != 1) {
+> > > > +                     mutex_unlock(&data->lock);
+> > > > +                     return -EBUSY;
+> > > > +             }
+> > > > +
+> > > > +             ret = kstrtol(data->buffer + 1, 10, (long *) val);
+> > >
+> > > Use a local variable rather than casting like that which could in theory
+> > > be unsafe.
+> > >
+> > > > +
+> > > > +             mutex_unlock(&data->lock);
+> > > > +
+> > > > +             return ret ? ret : IIO_VAL_INT;
+> > > > +     }
+> > > > +     case IIO_CHAN_INFO_SCALE:
+> > > > +             *val = 1;
+> > > > +             *val2 = 10000; /* 0.0001 */
+> > > > +             return IIO_VAL_FRACTIONAL;
+> > >
+> > > Could use VAL_INT_PLUS_MICRO to reduce the maths needed for
+> > > a constant case like we have here where that representation
+> > > is just as easy to read as this one.
+> > >
+> > > > +     }
+> > > > +
+> > >
+> > > Can only get here in invalid path. So return -EINVAL and don't
+> > > initialize ret above.
+> > >
+> > > > +     return ret;
+> > > > +}
+> > > > +
+> > > > +static const struct iio_info atlas_info = {
+> > > > +     .read_raw = atlas_ezo_read_raw,
+> > > > +};
+> > > > +
+> > > > +static const struct i2c_device_id atlas_ezo_id[] = {
+> > > > +     { "atlas-co2-ezo", ATLAS_CO2_EZO },
+> > > > +     {}
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(i2c, atlas_ezo_id);
+> > > > +
+> > > > +static const struct of_device_id atlas_ezo_dt_ids[] = {
+> > > > +     { .compatible = "atlas,co2-ezo", .data = (void *)ATLAS_CO2_EZO, },
+> > > > +     {}
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(of, atlas_ezo_dt_ids);
+> > > > +
+> > > > +static int atlas_ezo_probe(struct i2c_client *client,
+> > > > +                    const struct i2c_device_id *id)
+> > > > +{
+> > > > +     struct atlas_ezo_data *data;
+> > > > +     struct atlas_ezo_device *chip;
+> > > > +     const struct of_device_id *of_id;
+> > > > +     struct iio_dev *indio_dev;
+> > > > +
+> > > > +     indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> > > > +     if (!indio_dev)
+> > > > +             return -ENOMEM;
+> > > > +
+> > > > +     of_id = of_match_device(atlas_dt_ids, &client->dev);
+> > > > +     if (!of_id)
+> > > > +             chip = &atlas_ezo_devices[id->driver_data];
+> > >
+> > > Given we are supposed to be transitioning away (slowly) from
+> > > probe to probe_new, we shouldn't really be using id to do anything
+> > > in here (directly anyway)
+> > >
+> > > Looking at i2c_of_match_device, there is some magic to match
+> > > if we have initialized through the sysfs interface, so use that
+> > > instead.
+> > >
+> > > https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-of.c#L224
+> > >
+> > > I 'think' that takes care of the case where we haven't instantiated
+> > > via device tree.
+> > >
+> > > Interestingly it's a very little used function. But, the original discussion
+> > > included a patch doing pretty much what I'm suggesting here:
+> > >
+> > > https://lore.kernel.org/patchwork/patch/728984/
+> >
+> > Looks good but what about ACPI systems like x86? Which now my UP^2 is
+> > my main development system now.
+>
+> I'm not sure what you mean?  ACPI based probing doesn't use the old
+> I2C ID table anyway.
+>
+> So three ways to work with them:
+>
+> 1) the sysfs interface as above.
+> 2) actual ACPI IDs and bindings but those need specific support in
+>    the driver.
+> 3) PRP0001 ID and the magic device tree bindings.  You would need
+>    to use the generic firmware calls, but you aren't currently doing
+>    that.. It will be an issue for the above function but seems like
+>    it would make sense to have a similar wrapper with the string based
+>    fallback for that as well.
+>
+> So how are you instantiating this on your ACPI based board?
 
-On 2020-05-06 9:23 p.m., Dmitry Torokhov wrote:
-> On Wed, May 06, 2020 at 08:46:12PM -0700, Jonathan Bakker wrote:
->> Hi Linus,
->>
->> On 2020-05-06 5:46 a.m., Linus Walleij wrote:
->>> On Sun, May 3, 2020 at 7:22 PM Jonathan Bakker <xc-racer2@live.ca> wrote:
->>>
->>>> The bma180 IIO driver has been extended for support for bma023.
->>>> However, this could cause conflicts with this driver.  Since some
->>>> setups may depend upon the evdev setup, disable support in this
->>>> driver for the bma023 only when the IIO driver is being built.
->>>>
->>>> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
->>>
->>> I would just fix this with KConfig instead, like add mutually
->>> exclusive depends on these two drivers.
->>>
->>> Set this input driver as:
->>> depends on BMA180=n
->>>
->>> And the IIO driver as:
->>> depends on INPUT_BMA150=n
->>>
->>> It's a rough measure but this input driver should anyway
->>> go away.
-> 
-> Isn't the driver handle more than bma023? I see bma150 and smb380 ID's.
-> If we go Kconfig route we will be disabling it for them as well when IIO
-> driver is enabled.
-> 
+Manually using the new_device entry in /sys/bus/i2c/*
 
-Yes, that's correct.
-
->>>
->>
->> Ok, sounds good to me.  If I include a patch removing the input
->> driver, can I just drop this patch entirely?
-> 
->>
->> The only in-tree user of the input driver (based on i2c ids) is Intel
->> Mid.  Not sure what the kernel policy on dropping drivers is.
-> 
-> Do we still support this platform? I'd start there.
-
-It looks to me like the preferred method would be to also add IIO support for
-smb380/bma150, add the exclusive Kconfig entries, and leave the input
-driver in place.  Does this work for everyone?
-
-> 
-> Thanks.
-> 
+# echo "atlas-co2-ezo 0x69" > new_device
 
 Thanks,
-Jonathan
+
+Matt
+
+>
+> Jonathan
+>
+> >
+> > Thanks,
+> >
+> > Matt
+> >
+> > >
+> > >
+> > > > +     else
+> > > > +             chip = &atlas_ezo_devices[(unsigned long)of_id->data];
+> > > > +
+> > > > +     indio_dev->info = &atlas_info;
+> > > > +     indio_dev->name = ATLAS_EZO_DRV_NAME;
+> > > > +     indio_dev->channels = chip->channels;
+> > > > +     indio_dev->num_channels = chip->num_channels;
+> > > > +     indio_dev->modes = INDIO_DIRECT_MODE;
+> > > > +     indio_dev->dev.parent = &client->dev;
+> > > > +
+> > > > +     data = iio_priv(indio_dev);
+> > > > +     data->client = client;
+> > > > +     data->chip = chip;
+> > > > +     mutex_init(&data->lock);
+> > > > +
+> > > > +     return devm_iio_device_register(&client->dev, indio_dev);
+> > > > +};
+> > > > +
+> > > > +static struct i2c_driver atlas_ezo_driver = {
+> > > > +     .driver = {
+> > > > +             .name   = ATLAS_EZO_DRV_NAME,
+> > > > +             .of_match_table = atlas_ezo_dt_ids,
+> > > > +     },
+> > > > +     .probe          = atlas_ezo_probe,
+> > > > +     .id_table       = atlas_ezo_id,
+> > > > +};
+> > > > +module_i2c_driver(atlas_ezo_driver);
+> > > > +
+> > > > +MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
+> > > > +MODULE_DESCRIPTION("Atlas Scientific EZO sensors");
+> > > > +MODULE_LICENSE("GPL");
+> > >
+>
+>

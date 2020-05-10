@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 396F91CC97C
-	for <lists+linux-iio@lfdr.de>; Sun, 10 May 2020 10:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39CF21CC9A3
+	for <lists+linux-iio@lfdr.de>; Sun, 10 May 2020 11:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728660AbgEJIhC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 May 2020 04:37:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43134 "EHLO mail.kernel.org"
+        id S1728743AbgEJJAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 May 2020 05:00:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726630AbgEJIhC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 10 May 2020 04:37:02 -0400
+        id S1727834AbgEJJAf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 10 May 2020 05:00:35 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6AF120820;
-        Sun, 10 May 2020 08:36:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 851B3208DB;
+        Sun, 10 May 2020 09:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589099819;
-        bh=PVoIOP+3iZEBk9LHvUjV0+vhWP+mGDlJmJ99VSuYamA=;
+        s=default; t=1589101234;
+        bh=lpOoz2jVNrycW8K/fqSbUuMO26AJnlyeDRTjhR4j5fY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JejB5R3qm4Ec5Lg0Nf5SOyPPlxjTpsAYjxkCZ0JNeNdpAfVc/xGno9zzj/JnsbXCg
-         fVS6WI/AIz+MgtJ+BJFMXMBcuir96eL9hLQn+vzqkkAL82sAOohtO4knu7TndR/EZW
-         ItbeGDoKYKIv2NMwpDzGeUq7fxpKba9y4w2iD9Sw=
-Date:   Sun, 10 May 2020 09:36:55 +0100
+        b=QRsx6FgYYv+HRe8aWEKoju4R5XFPgj7rF39T2KKEtXSY8YQdBeg5KTu5j7FVVkP23
+         YbKIuUTycOrt9an44Ko8NFbiVHxM6MhRGiCy38JGoA/i5rPbUw3Yaol5koQdpzf1q5
+         b66g/O0KZdeVMeuz9qx32STx+beFyUKBzARbzYpY=
+Date:   Sun, 10 May 2020 10:00:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: hid-sensors: move triggered buffer setup into
- hid_sensor_setup_trigger
-Message-ID: <20200510093655.4b94836c@archlinux>
-In-Reply-To: <e29261c645c1f0d30bda74033bece7b50645fe60.camel@linux.intel.com>
-References: <20200424043418.3579-1-alexandru.ardelean@analog.com>
-        <e29261c645c1f0d30bda74033bece7b50645fe60.camel@linux.intel.com>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio: chemical: add atlas-ezo-sensor initial support
+Message-ID: <20200510100030.7c1617d3@archlinux>
+In-Reply-To: <CAJCx=gnbt+L=qF8CwkgSCHhcCvZaSdzPFekckd9FN6nUJGFURw@mail.gmail.com>
+References: <20200428054107.16061-1-matt.ranostay@konsulko.com>
+        <20200428054107.16061-3-matt.ranostay@konsulko.com>
+        <20200503111726.3bb111c3@archlinux>
+        <CAJCx=gk373nJo=+4BVNk6+1G32SPOBgwAx0wYRMFPLkp2yQi3g@mail.gmail.com>
+        <20200508133851.000044fa@Huawei.com>
+        <CAJCx=gnbt+L=qF8CwkgSCHhcCvZaSdzPFekckd9FN6nUJGFURw@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,777 +46,361 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 09 May 2020 03:49:31 -0700
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+On Fri, 8 May 2020 10:49:41 -0700
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-> On Fri, 2020-04-24 at 07:34 +0300, Alexandru Ardelean wrote:
-> > The main intent here is to get rid of the iio_buffer_set_attrs()
-> > helper, or
-> > at least rework it's usage a bit.
-> > The problem with that helper is that it needs a pointer to the
-> > buffer,
-> > which makes supporting multiple buffers per IIO device a bit more
-> > cumbersome.
-> > 
-> > The hid_sensor_setup_trigger() is pretty much used in the same way:
-> > - iio_triggered_buffer_setup() gets called before
-> > - then hid_sensor_setup_trigger() and hid_sensor_setup_batch_mode()
-> > gets
-> >   called which may attach some fifo attributes
-> > 
-> > This change merges the 2 together under the
-> > hid_sensor_setup_trigger()
-> > function. Only the &iio_pollfunc_store_time is passed to all devices,
-> > so
-> > it's not even required to pass it explicitly outside of the common
-> > hid_sensor_setup_trigger() function.
-> > 
-> > Moving the devm_iio_triggered_buffer_setup/cleanup() calls into the
-> > common
-> > place code can help the rework of the buffer code, since it is in one
-> > place.
-> > 
-> > One detail of the change is that there are 2 drivers that use
-> > devm_iio_triggered_buffer_setup(). That function gets implicitly
-> > replaced with iio_triggered_buffer_setup()/cleanup(), but since all
-> > drivers
-> > call both hid_sensor_setup_trigger9) & hid_sensor_remove_trigger()
-> > trigger,
-> > the iio_triggered_buffer_cleanup() piggy backs on the
-> > hid_sensor_remove_trigger() call, which should cover the cleanup.
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> On Fri, May 8, 2020 at 5:39 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Tue, 5 May 2020 21:22:00 -0700
+> > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> >  
+> > > On Sun, May 3, 2020 at 3:17 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > >
+> > > > On Tue, 28 Apr 2020 08:41:07 +0300
+> > > > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> > > >  
+> > > > > Add driver for Atlas EZO line of sensors with initial support for
+> > > > > CO2 the sensor. This is effectively ASCII strings proxied over I2C
+> > > > > due to these series of sensors being by default UART.
+> > > > >
+> > > > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>  
+> > > >
+> > > > A few things inline - including a dive into a bit of the i2c subsystem
+> > > > that's been there for a few years, but never used ;)
+> > > >
+> > > > Jonathan
+> > > >  
+> > > > > ---
+> > > > >  drivers/iio/chemical/Kconfig            |  11 ++
+> > > > >  drivers/iio/chemical/Makefile           |   1 +
+> > > > >  drivers/iio/chemical/atlas-ezo-sensor.c | 173 ++++++++++++++++++++++++
+> > > > >  3 files changed, 185 insertions(+)
+> > > > >  create mode 100644 drivers/iio/chemical/atlas-ezo-sensor.c
+> > > > >
+> > > > > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> > > > > index a7e65a59bf42..7f21afd73b1c 100644
+> > > > > --- a/drivers/iio/chemical/Kconfig
+> > > > > +++ b/drivers/iio/chemical/Kconfig
+> > > > > @@ -22,6 +22,17 @@ config ATLAS_PH_SENSOR
+> > > > >         To compile this driver as module, choose M here: the
+> > > > >         module will be called atlas-ph-sensor.
+> > > > >
+> > > > > +config ATLAS_EZO_SENSOR
+> > > > > +     tristate "Atlas Scientific EZO sensors"
+> > > > > +     depends on I2C
+> > > > > +     help
+> > > > > +       Say Y here to build I2C interface support for the following
+> > > > > +       Atlas Scientific EZO sensors
+> > > > > +         * CO2 EZO Sensor
+> > > > > +
+> > > > > +       To compile this driver as module, choose M here: the
+> > > > > +       module will be called atlas-ezo-sensor.
+> > > > > +
+> > > > >  config BME680
+> > > > >       tristate "Bosch Sensortec BME680 sensor driver"
+> > > > >       depends on (I2C || SPI)
+> > > > > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> > > > > index 33d3a595dda9..aba4167db745 100644
+> > > > > --- a/drivers/iio/chemical/Makefile
+> > > > > +++ b/drivers/iio/chemical/Makefile
+> > > > > @@ -5,6 +5,7 @@
+> > > > >
+> > > > >  # When adding new entries keep the list in alphabetical order
+> > > > >  obj-$(CONFIG_ATLAS_PH_SENSOR)        += atlas-sensor.o
+> > > > > +obj-$(CONFIG_ATLAS_EZO_SENSOR)       += atlas-ezo-sensor.o
+> > > > >  obj-$(CONFIG_BME680) += bme680_core.o
+> > > > >  obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
+> > > > >  obj-$(CONFIG_BME680_SPI) += bme680_spi.o
+> > > > > diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..1f972f525a46
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/iio/chemical/atlas-ezo-sensor.c
+> > > > > @@ -0,0 +1,173 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0+
+> > > > > +/*
+> > > > > + * atlas-ezo-sensor.c - Support for Atlas Scientific EZO sensors
+> > > > > + *
+> > > > > + * Copyright (C) 2020 Konsulko Group
+> > > > > + * Author: Matt Ranostay <matt.ranostay@konsulko.com>
+> > > > > + */
+> > > > > +
+> > > > > +#include <linux/module.h>
+> > > > > +#include <linux/init.h>
+> > > > > +#include <linux/delay.h>
+> > > > > +#include <linux/mutex.h>
+> > > > > +#include <linux/err.h>
+> > > > > +#include <linux/i2c.h>
+> > > > > +#include <linux/of_device.h>
+> > > > > +#include <linux/iio/iio.h>
+> > > > > +
+> > > > > +#define ATLAS_EZO_DRV_NAME           "atlas-ezo-sensor"
+> > > > > +#define ATLAS_CO2_INT_TIME_IN_MS     950
+> > > > > +
+> > > > > +enum {
+> > > > > +     ATLAS_CO2_EZO,
+> > > > > +};
+> > > > > +
+> > > > > +struct atlas_ezo_device {
+> > > > > +     const struct iio_chan_spec *channels;
+> > > > > +     int num_channels;
+> > > > > +     int delay;
+> > > > > +};
+> > > > > +
+> > > > > +struct atlas_ezo_data {
+> > > > > +     struct i2c_client *client;
+> > > > > +     struct atlas_ezo_device *chip;  
+> > > >
+> > > > const?  Seems like it's always a pointer to a constant structure.
+> > > >  
+> > > > > +     struct mutex lock;  
+> > > >
+> > > > Locks should 'always' have a comment to say what their scope is.
+> > > > Even when it appears obvious ;)
+> > > >  
+> > > > > +     u8 buffer[8];
+> > > > > +};
+> > > > > +
+> > > > > +static const struct iio_chan_spec atlas_co2_ezo_channels[] = {
+> > > > > +     {
+> > > > > +             .type = IIO_CONCENTRATION,
+> > > > > +             .modified = 1,
+> > > > > +             .channel2 = IIO_MOD_CO2,
+> > > > > +             .info_mask_separate =
+> > > > > +                     BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> > > > > +             .scan_index = 0,
+> > > > > +             .scan_type = {
+> > > > > +                     .sign = 'u',
+> > > > > +                     .realbits = 32,
+> > > > > +                     .storagebits = 32,
+> > > > > +                     .endianness = IIO_CPU,
+> > > > > +             },
+> > > > > +     },
+> > > > > +};
+> > > > > +
+> > > > > +static struct atlas_ezo_device atlas_ezo_devices[] = {  
+> > > >
+> > > > const?
+> > > >  
+> > > > > +     [ATLAS_CO2_EZO] = {
+> > > > > +             .channels = atlas_co2_ezo_channels,
+> > > > > +             .num_channels = 1,
+> > > > > +             .delay = ATLAS_CO2_INT_TIME_IN_MS,
+> > > > > +     },
+> > > > > +};
+> > > > > +
+> > > > > +static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
+> > > > > +                       struct iio_chan_spec const *chan,
+> > > > > +                       int *val, int *val2, long mask)
+> > > > > +{
+> > > > > +     struct atlas_ezo_data *data = iio_priv(indio_dev);
+> > > > > +     struct i2c_client *client = data->client;
+> > > > > +     int ret = 0;
+> > > > > +
+> > > > > +     if (chan->type != IIO_CONCENTRATION)
+> > > > > +             return -EINVAL;
+> > > > > +
+> > > > > +     switch (mask) {
+> > > > > +     case IIO_CHAN_INFO_RAW: {
+> > > > > +             int tmp;
+> > > > > +
+> > > > > +             mutex_lock(&data->lock);
+> > > > > +
+> > > > > +             tmp = i2c_smbus_write_byte(client, 'R');
+> > > > > +
+> > > > > +             if (tmp < 0) {
+> > > > > +                     mutex_unlock(&data->lock);
+> > > > > +                     return tmp;
+> > > > > +             }
+> > > > > +
+> > > > > +             msleep(data->chip->delay);
+> > > > > +
+> > > > > +             tmp = i2c_master_recv(client, data->buffer, sizeof(data->buffer));
+> > > > > +
+> > > > > +             // Confirm response code is 1 for success  
+> > > >
+> > > > Comment syntax /* */
+> > > >  
+> > > > > +             if (tmp < 0 || data->buffer[0] != 1) {
+> > > > > +                     mutex_unlock(&data->lock);
+> > > > > +                     return -EBUSY;
+> > > > > +             }
+> > > > > +
+> > > > > +             ret = kstrtol(data->buffer + 1, 10, (long *) val);  
+> > > >
+> > > > Use a local variable rather than casting like that which could in theory
+> > > > be unsafe.
+> > > >  
+> > > > > +
+> > > > > +             mutex_unlock(&data->lock);
+> > > > > +
+> > > > > +             return ret ? ret : IIO_VAL_INT;
+> > > > > +     }
+> > > > > +     case IIO_CHAN_INFO_SCALE:
+> > > > > +             *val = 1;
+> > > > > +             *val2 = 10000; /* 0.0001 */
+> > > > > +             return IIO_VAL_FRACTIONAL;  
+> > > >
+> > > > Could use VAL_INT_PLUS_MICRO to reduce the maths needed for
+> > > > a constant case like we have here where that representation
+> > > > is just as easy to read as this one.
+> > > >  
+> > > > > +     }
+> > > > > +  
+> > > >
+> > > > Can only get here in invalid path. So return -EINVAL and don't
+> > > > initialize ret above.
+> > > >  
+> > > > > +     return ret;
+> > > > > +}
+> > > > > +
+> > > > > +static const struct iio_info atlas_info = {
+> > > > > +     .read_raw = atlas_ezo_read_raw,
+> > > > > +};
+> > > > > +
+> > > > > +static const struct i2c_device_id atlas_ezo_id[] = {
+> > > > > +     { "atlas-co2-ezo", ATLAS_CO2_EZO },
+> > > > > +     {}
+> > > > > +};
+> > > > > +MODULE_DEVICE_TABLE(i2c, atlas_ezo_id);
+> > > > > +
+> > > > > +static const struct of_device_id atlas_ezo_dt_ids[] = {
+> > > > > +     { .compatible = "atlas,co2-ezo", .data = (void *)ATLAS_CO2_EZO, },
+> > > > > +     {}
+> > > > > +};
+> > > > > +MODULE_DEVICE_TABLE(of, atlas_ezo_dt_ids);
+> > > > > +
+> > > > > +static int atlas_ezo_probe(struct i2c_client *client,
+> > > > > +                    const struct i2c_device_id *id)
+> > > > > +{
+> > > > > +     struct atlas_ezo_data *data;
+> > > > > +     struct atlas_ezo_device *chip;
+> > > > > +     const struct of_device_id *of_id;
+> > > > > +     struct iio_dev *indio_dev;
+> > > > > +
+> > > > > +     indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> > > > > +     if (!indio_dev)
+> > > > > +             return -ENOMEM;
+> > > > > +
+> > > > > +     of_id = of_match_device(atlas_dt_ids, &client->dev);
+> > > > > +     if (!of_id)
+> > > > > +             chip = &atlas_ezo_devices[id->driver_data];  
+> > > >
+> > > > Given we are supposed to be transitioning away (slowly) from
+> > > > probe to probe_new, we shouldn't really be using id to do anything
+> > > > in here (directly anyway)
+> > > >
+> > > > Looking at i2c_of_match_device, there is some magic to match
+> > > > if we have initialized through the sysfs interface, so use that
+> > > > instead.
+> > > >
+> > > > https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-of.c#L224
+> > > >
+> > > > I 'think' that takes care of the case where we haven't instantiated
+> > > > via device tree.
+> > > >
+> > > > Interestingly it's a very little used function. But, the original discussion
+> > > > included a patch doing pretty much what I'm suggesting here:
+> > > >
+> > > > https://lore.kernel.org/patchwork/patch/728984/  
+> > >
+> > > Looks good but what about ACPI systems like x86? Which now my UP^2 is
+> > > my main development system now.  
+> >
+> > I'm not sure what you mean?  ACPI based probing doesn't use the old
+> > I2C ID table anyway.
+> >
+> > So three ways to work with them:
+> >
+> > 1) the sysfs interface as above.
+> > 2) actual ACPI IDs and bindings but those need specific support in
+> >    the driver.
+> > 3) PRP0001 ID and the magic device tree bindings.  You would need
+> >    to use the generic firmware calls, but you aren't currently doing
+> >    that.. It will be an issue for the above function but seems like
+> >    it would make sense to have a similar wrapper with the string based
+> >    fallback for that as well.
+> >
+> > So how are you instantiating this on your ACPI based board?  
+> 
+> Manually using the new_device entry in /sys/bus/i2c/*
+> 
+> # echo "atlas-co2-ezo 0x69" > new_device
 
-Applied.  Thanks,
+That should be fine without the separate old style table.
+new_device_store
+https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L1026
+
+calls
+i2c_new_client_device
+https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L732
+
+which calls device_register
+
+That will result in device_add -> ... via  a long chain... -> __device_attach_driver
+-> drv->bus->match which for the i2c subsystem is:
+i2c_device_match
+
+which will call i2c_of_match_device if there is an of_match_table
+(before it tries the old style table)
+
+That function is the one which will happily match the name without the vendor id.
+
+Thus you should still be able to use that method without needing to register
+the old style table.
+
+At least that's how I believe it is suppose to work.  Maybe I'm missing something!
 
 Jonathan
 
 > 
-> > ---
-> >  drivers/iio/accel/hid-sensor-accel-3d.c        | 18 ++++----------
-> > ----
-> >  .../common/hid-sensors/hid-sensor-trigger.c    | 18 +++++++++++++++-
-> > --
-> >  .../common/hid-sensors/hid-sensor-trigger.h    |  3 ++-
-> >  drivers/iio/gyro/hid-sensor-gyro-3d.c          | 18 ++++----------
-> > ----
-> >  drivers/iio/humidity/hid-sensor-humidity.c     | 12 +++---------
-> >  drivers/iio/light/hid-sensor-als.c             | 18 ++++----------
-> > ----
-> >  drivers/iio/light/hid-sensor-prox.c            | 18 ++++----------
-> > ----
-> >  drivers/iio/magnetometer/hid-sensor-magn-3d.c  | 18 ++++----------
-> > ----
-> >  drivers/iio/orientation/hid-sensor-incl-3d.c   | 18 ++++----------
-> > ----
-> >  drivers/iio/orientation/hid-sensor-rotation.c  | 18 ++++----------
-> > ----
-> >  drivers/iio/pressure/hid-sensor-press.c        | 18 ++++----------
-> > ----
-> >  .../iio/temperature/hid-sensor-temperature.c   | 12 +++---------
-> >  12 files changed, 55 insertions(+), 134 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c
-> > b/drivers/iio/accel/hid-sensor-accel-3d.c
-> > index 0d9e2def2b25..0ec0533448bc 100644
-> > --- a/drivers/iio/accel/hid-sensor-accel-3d.c
-> > +++ b/drivers/iio/accel/hid-sensor-accel-3d.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  enum accel_3d_channel {
-> > @@ -391,18 +389,13 @@ static int hid_accel_3d_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&accel_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  					&accel_state-  
-> > >common_attributes);  
-> >  	if (ret < 0) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -426,9 +419,7 @@ static int hid_accel_3d_probe(struct
-> > platform_device *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&accel_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &accel_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -443,8 +434,7 @@ static int hid_accel_3d_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, hsdev->usage);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&accel_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &accel_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-> > b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-> > index 906d87780419..ff375790b7e8 100644
-> > --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-> > +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-> > @@ -13,6 +13,8 @@
-> >  #include <linux/hid-sensor-hub.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/trigger.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include "hid-sensor-trigger.h"
-> > @@ -222,7 +224,8 @@ static int
-> > hid_sensor_data_rdy_trigger_set_state(struct iio_trigger *trig,
-> >  	return hid_sensor_power_state(iio_trigger_get_drvdata(trig),
-> > state);
-> >  }
-> >  
-> > -void hid_sensor_remove_trigger(struct hid_sensor_common *attrb)
-> > +void hid_sensor_remove_trigger(struct iio_dev *indio_dev,
-> > +			       struct hid_sensor_common *attrb)
-> >  {
-> >  	if (atomic_read(&attrb->runtime_pm_enable))
-> >  		pm_runtime_disable(&attrb->pdev->dev);
-> > @@ -233,6 +236,7 @@ void hid_sensor_remove_trigger(struct
-> > hid_sensor_common *attrb)
-> >  	cancel_work_sync(&attrb->work);
-> >  	iio_trigger_unregister(attrb->trigger);
-> >  	iio_trigger_free(attrb->trigger);
-> > +	iio_triggered_buffer_cleanup(indio_dev);
-> >  }
-> >  EXPORT_SYMBOL(hid_sensor_remove_trigger);
-> >  
-> > @@ -246,11 +250,18 @@ int hid_sensor_setup_trigger(struct iio_dev
-> > *indio_dev, const char *name,
-> >  	int ret;
-> >  	struct iio_trigger *trig;
-> >  
-> > +	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > +					 NULL, NULL);
-> > +	if (ret) {
-> > +		dev_err(&indio_dev->dev, "Triggered Buffer Setup
-> > Failed\n");
-> > +		return ret;
-> > +	}
-> > +
-> >  	trig = iio_trigger_alloc("%s-dev%d", name, indio_dev->id);
-> >  	if (trig == NULL) {
-> >  		dev_err(&indio_dev->dev, "Trigger Allocate Failed\n");
-> >  		ret = -ENOMEM;
-> > -		goto error_ret;
-> > +		goto error_triggered_buffer_cleanup;
-> >  	}
-> >  
-> >  	trig->dev.parent = indio_dev->dev.parent;
-> > @@ -284,7 +295,8 @@ int hid_sensor_setup_trigger(struct iio_dev
-> > *indio_dev, const char *name,
-> >  	iio_trigger_unregister(trig);
-> >  error_free_trig:
-> >  	iio_trigger_free(trig);
-> > -error_ret:
-> > +error_triggered_buffer_cleanup:
-> > +	iio_triggered_buffer_cleanup(indio_dev);
-> >  	return ret;
-> >  }
-> >  EXPORT_SYMBOL(hid_sensor_setup_trigger);
-> > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
-> > b/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
-> > index f47b940ff170..bb45cc89e551 100644
-> > --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
-> > +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.h
-> > @@ -13,7 +13,8 @@ extern const struct dev_pm_ops hid_sensor_pm_ops;
-> >  
-> >  int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char
-> > *name,
-> >  				struct hid_sensor_common *attrb);
-> > -void hid_sensor_remove_trigger(struct hid_sensor_common *attrb);
-> > +void hid_sensor_remove_trigger(struct iio_dev *indio_dev,
-> > +			       struct hid_sensor_common *attrb);
-> >  int hid_sensor_power_state(struct hid_sensor_common *st, bool
-> > state);
-> >  
-> >  #endif
-> > diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c
-> > b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-> > index 08cacbbf31e6..7f382aae1dfd 100644
-> > --- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
-> > +++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  enum gyro_3d_channel {
-> > @@ -326,18 +324,13 @@ static int hid_gyro_3d_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&gyro_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  					&gyro_state-  
-> > >common_attributes);  
-> >  	if (ret < 0) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -361,9 +354,7 @@ static int hid_gyro_3d_probe(struct
-> > platform_device *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&gyro_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &gyro_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -378,8 +369,7 @@ static int hid_gyro_3d_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_GYRO_3D);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&gyro_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &gyro_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/humidity/hid-sensor-humidity.c
-> > b/drivers/iio/humidity/hid-sensor-humidity.c
-> > index c99b54b0568d..d2318c4aab0f 100644
-> > --- a/drivers/iio/humidity/hid-sensor-humidity.c
-> > +++ b/drivers/iio/humidity/hid-sensor-humidity.c
-> > @@ -7,8 +7,6 @@
-> >  #include <linux/hid-sensor-hub.h>
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> >  #include <linux/module.h>
-> >  #include <linux/platform_device.h>
-> >  
-> > @@ -233,12 +231,8 @@ static int hid_humidity_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev,
-> > -					&iio_pollfunc_store_time, NULL,
-> > NULL);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> >  	atomic_set(&humid_st->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  				&humid_st->common_attributes);
-> >  	if (ret)
-> > @@ -261,7 +255,7 @@ static int hid_humidity_probe(struct
-> > platform_device *pdev)
-> >  error_remove_callback:
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_HUMIDITY);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&humid_st->common_attributes);
-> > +	hid_sensor_remove_trigger(indio_dev, &humid_st-  
-> > >common_attributes);  
-> >  	return ret;
-> >  }
-> >  
-> > @@ -274,7 +268,7 @@ static int hid_humidity_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	iio_device_unregister(indio_dev);
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_HUMIDITY);
-> > -	hid_sensor_remove_trigger(&humid_st->common_attributes);
-> > +	hid_sensor_remove_trigger(indio_dev, &humid_st-  
-> > >common_attributes);  
-> >  
-> >  	return 0;
-> >  }
-> > diff --git a/drivers/iio/light/hid-sensor-als.c
-> > b/drivers/iio/light/hid-sensor-als.c
-> > index b6cd299517d1..81fa2a422797 100644
-> > --- a/drivers/iio/light/hid-sensor-als.c
-> > +++ b/drivers/iio/light/hid-sensor-als.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  enum {
-> > @@ -308,18 +306,13 @@ static int hid_als_probe(struct platform_device
-> > *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&als_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  				&als_state->common_attributes);
-> >  	if (ret < 0) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -343,9 +336,7 @@ static int hid_als_probe(struct platform_device
-> > *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&als_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &als_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -360,8 +351,7 @@ static int hid_als_remove(struct platform_device
-> > *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_ALS);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&als_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &als_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/light/hid-sensor-prox.c
-> > b/drivers/iio/light/hid-sensor-prox.c
-> > index 7e1030af9ba3..e9c04df07344 100644
-> > --- a/drivers/iio/light/hid-sensor-prox.c
-> > +++ b/drivers/iio/light/hid-sensor-prox.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  #define CHANNEL_SCAN_INDEX_PRESENCE 0
-> > @@ -286,18 +284,13 @@ static int hid_prox_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&prox_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  				&prox_state->common_attributes);
-> >  	if (ret) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -321,9 +314,7 @@ static int hid_prox_probe(struct platform_device
-> > *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&prox_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &prox_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -338,8 +329,7 @@ static int hid_prox_remove(struct platform_device
-> > *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PROX);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&prox_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &prox_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-> > b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-> > index 25e60b233e08..0c09daf87794 100644
-> > --- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-> > +++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  enum magn_3d_channel {
-> > @@ -519,18 +517,13 @@ static int hid_magn_3d_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		return ret;
-> > -	}
-> >  	atomic_set(&magn_state->magn_flux_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  					&magn_state-  
-> > >magn_flux_attributes);  
-> >  	if (ret < 0) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		return ret;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -554,9 +547,7 @@ static int hid_magn_3d_probe(struct
-> > platform_device *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&magn_state->magn_flux_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &magn_state-  
-> > >magn_flux_attributes);  
-> >  	return ret;
-> >  }
-> >  
-> > @@ -569,8 +560,7 @@ static int hid_magn_3d_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_COMPASS_3D);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&magn_state->magn_flux_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &magn_state-  
-> > >magn_flux_attributes);  
-> >  
-> >  	return 0;
-> >  }
-> > diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c
-> > b/drivers/iio/orientation/hid-sensor-incl-3d.c
-> > index 00af68764cda..6aac8bea233a 100644
-> > --- a/drivers/iio/orientation/hid-sensor-incl-3d.c
-> > +++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
-> > @@ -15,8 +15,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  enum incl_3d_channel {
-> > @@ -346,18 +344,13 @@ static int hid_incl_3d_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&incl_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  					&incl_state-  
-> > >common_attributes);  
-> >  	if (ret) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -382,9 +375,7 @@ static int hid_incl_3d_probe(struct
-> > platform_device *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&incl_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &incl_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -399,8 +390,7 @@ static int hid_incl_3d_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev,
-> > HID_USAGE_SENSOR_INCLINOMETER_3D);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&incl_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &incl_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/orientation/hid-sensor-rotation.c
-> > b/drivers/iio/orientation/hid-sensor-rotation.c
-> > index 64ae7d04a200..b99f41240e3e 100644
-> > --- a/drivers/iio/orientation/hid-sensor-rotation.c
-> > +++ b/drivers/iio/orientation/hid-sensor-rotation.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  struct dev_rot_state {
-> > @@ -288,18 +286,13 @@ static int hid_dev_rot_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		return ret;
-> > -	}
-> >  	atomic_set(&rot_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  					&rot_state->common_attributes);
-> >  	if (ret) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		return ret;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -323,9 +316,7 @@ static int hid_dev_rot_probe(struct
-> > platform_device *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&rot_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &rot_state-  
-> > >common_attributes);  
-> >  	return ret;
-> >  }
-> >  
-> > @@ -338,8 +329,7 @@ static int hid_dev_rot_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, hsdev->usage);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&rot_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &rot_state-  
-> > >common_attributes);  
-> >  
-> >  	return 0;
-> >  }
-> > diff --git a/drivers/iio/pressure/hid-sensor-press.c
-> > b/drivers/iio/pressure/hid-sensor-press.c
-> > index 953235052155..5e6663f757ae 100644
-> > --- a/drivers/iio/pressure/hid-sensor-press.c
-> > +++ b/drivers/iio/pressure/hid-sensor-press.c
-> > @@ -14,8 +14,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> >  #include "../common/hid-sensors/hid-sensor-trigger.h"
-> >  
-> >  #define CHANNEL_SCAN_INDEX_PRESSURE 0
-> > @@ -290,18 +288,13 @@ static int hid_press_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = iio_triggered_buffer_setup(indio_dev,
-> > &iio_pollfunc_store_time,
-> > -		NULL, NULL);
-> > -	if (ret) {
-> > -		dev_err(&pdev->dev, "failed to initialize trigger
-> > buffer\n");
-> > -		goto error_free_dev_mem;
-> > -	}
-> >  	atomic_set(&press_state->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  				&press_state->common_attributes);
-> >  	if (ret) {
-> >  		dev_err(&pdev->dev, "trigger setup failed\n");
-> > -		goto error_unreg_buffer_funcs;
-> > +		goto error_free_dev_mem;
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > @@ -325,9 +318,7 @@ static int hid_press_probe(struct platform_device
-> > *pdev)
-> >  error_iio_unreg:
-> >  	iio_device_unregister(indio_dev);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&press_state->common_attributes);
-> > -error_unreg_buffer_funcs:
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &press_state-  
-> > >common_attributes);  
-> >  error_free_dev_mem:
-> >  	kfree(indio_dev->channels);
-> >  	return ret;
-> > @@ -342,8 +333,7 @@ static int hid_press_remove(struct
-> > platform_device *pdev)
-> >  
-> >  	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PRESSURE);
-> >  	iio_device_unregister(indio_dev);
-> > -	hid_sensor_remove_trigger(&press_state->common_attributes);
-> > -	iio_triggered_buffer_cleanup(indio_dev);
-> > +	hid_sensor_remove_trigger(indio_dev, &press_state-  
-> > >common_attributes);  
-> >  	kfree(indio_dev->channels);
-> >  
-> >  	return 0;
-> > diff --git a/drivers/iio/temperature/hid-sensor-temperature.c
-> > b/drivers/iio/temperature/hid-sensor-temperature.c
-> > index eda55b9c1e9b..8d1f434f109d 100644
-> > --- a/drivers/iio/temperature/hid-sensor-temperature.c
-> > +++ b/drivers/iio/temperature/hid-sensor-temperature.c
-> > @@ -7,8 +7,6 @@
-> >  #include <linux/hid-sensor-hub.h>
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> > -#include <linux/iio/triggered_buffer.h>
-> > -#include <linux/iio/trigger_consumer.h>
-> >  #include <linux/module.h>
-> >  #include <linux/platform_device.h>
-> >  
-> > @@ -230,12 +228,8 @@ static int hid_temperature_probe(struct
-> > platform_device *pdev)
-> >  	indio_dev->name = name;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev,
-> > -					&iio_pollfunc_store_time, NULL,
-> > NULL);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> >  	atomic_set(&temp_st->common_attributes.data_ready, 0);
-> > +
-> >  	ret = hid_sensor_setup_trigger(indio_dev, name,
-> >  				&temp_st->common_attributes);
-> >  	if (ret)
-> > @@ -258,7 +252,7 @@ static int hid_temperature_probe(struct
-> > platform_device *pdev)
-> >  error_remove_callback:
-> >  	sensor_hub_remove_callback(hsdev,
-> > HID_USAGE_SENSOR_TEMPERATURE);
-> >  error_remove_trigger:
-> > -	hid_sensor_remove_trigger(&temp_st->common_attributes);
-> > +	hid_sensor_remove_trigger(indio_dev, &temp_st-  
-> > >common_attributes);  
-> >  	return ret;
-> >  }
-> >  
-> > @@ -270,7 +264,7 @@ static int hid_temperature_remove(struct
-> > platform_device *pdev)
-> >  	struct temperature_state *temp_st = iio_priv(indio_dev);
-> >  
-> >  	sensor_hub_remove_callback(hsdev,
-> > HID_USAGE_SENSOR_TEMPERATURE);
-> > -	hid_sensor_remove_trigger(&temp_st->common_attributes);
-> > +	hid_sensor_remove_trigger(indio_dev, &temp_st-  
-> > >common_attributes);  
-> >  
-> >  	return 0;
-> >  }  
+> Thanks,
 > 
+> Matt
+> 
+> >
+> > Jonathan
+> >  
+> > >
+> > > Thanks,
+> > >
+> > > Matt
+> > >  
+> > > >
+> > > >  
+> > > > > +     else
+> > > > > +             chip = &atlas_ezo_devices[(unsigned long)of_id->data];
+> > > > > +
+> > > > > +     indio_dev->info = &atlas_info;
+> > > > > +     indio_dev->name = ATLAS_EZO_DRV_NAME;
+> > > > > +     indio_dev->channels = chip->channels;
+> > > > > +     indio_dev->num_channels = chip->num_channels;
+> > > > > +     indio_dev->modes = INDIO_DIRECT_MODE;
+> > > > > +     indio_dev->dev.parent = &client->dev;
+> > > > > +
+> > > > > +     data = iio_priv(indio_dev);
+> > > > > +     data->client = client;
+> > > > > +     data->chip = chip;
+> > > > > +     mutex_init(&data->lock);
+> > > > > +
+> > > > > +     return devm_iio_device_register(&client->dev, indio_dev);
+> > > > > +};
+> > > > > +
+> > > > > +static struct i2c_driver atlas_ezo_driver = {
+> > > > > +     .driver = {
+> > > > > +             .name   = ATLAS_EZO_DRV_NAME,
+> > > > > +             .of_match_table = atlas_ezo_dt_ids,
+> > > > > +     },
+> > > > > +     .probe          = atlas_ezo_probe,
+> > > > > +     .id_table       = atlas_ezo_id,
+> > > > > +};
+> > > > > +module_i2c_driver(atlas_ezo_driver);
+> > > > > +
+> > > > > +MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
+> > > > > +MODULE_DESCRIPTION("Atlas Scientific EZO sensors");
+> > > > > +MODULE_LICENSE("GPL");  
+> > > >  
+> >
+> >  
 

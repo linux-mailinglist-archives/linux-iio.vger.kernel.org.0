@@ -2,499 +2,240 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6615D1CDC95
-	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 16:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCE981CDDE2
+	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 16:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730359AbgEKOFg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 May 2020 10:05:36 -0400
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:35605 "EHLO
-        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730253AbgEKOFg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 May 2020 10:05:36 -0400
-X-Originating-IP: 78.193.40.249
-Received: from localhost (unknown [78.193.40.249])
-        (Authenticated sender: kamel.bouhara@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 83CFF2001B;
-        Mon, 11 May 2020 14:05:31 +0000 (UTC)
-From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>
-Subject: [PATCH v4 5/5] counter: Add microchip TCB capture counter
-Date:   Mon, 11 May 2020 16:05:05 +0200
-Message-Id: <20200511140505.1649111-6-kamel.bouhara@bootlin.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200511140505.1649111-1-kamel.bouhara@bootlin.com>
-References: <20200511140505.1649111-1-kamel.bouhara@bootlin.com>
+        id S1728000AbgEKO4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 May 2020 10:56:51 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:60256 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726068AbgEKO4u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 May 2020 10:56:50 -0400
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04BEoScJ030778;
+        Mon, 11 May 2020 10:56:34 -0400
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2173.outbound.protection.outlook.com [104.47.56.173])
+        by mx0b-00128a01.pphosted.com with ESMTP id 30wp9b58h3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 May 2020 10:56:33 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yc7vUbVg4Or/ZHYblG2wOoUEzXxbOl2OQo5pvCtruPX0BZZdUD+BvGCpTsee0JuWAfJE+/4j6PJybQSxVj43LHsN0Mn0VxCanRkhjoal3etyKEI9JlNTvtGZ/kZuc7qz2sTLh2jnIvXyVdf1lomdvT/z44PhT0YUHj+z2oa3rftpXzgFlCDReX2cjjWtV5Q/sfFxXMcfKixZFiXSBWJL48owTIGOAJEpFcX/NOcz3iRB0z4vRf5heTcWJ3rAoOWaJvMDE0MAtm6KMTW4mkiRB7WjO09hh3pMESK0Jgt2sTIhUSnqDNaomJ8ZIpkml8pXUi8FJkxZFqJ+4A8wXlgu3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UpHZj9Ux6PJM2mEHEDIryQJAT+snGH1wsI1HUknu7ZY=;
+ b=cI1SxnF41kc2TTtelALGFnltO1NWDgr+BXabTYgOMbivS6Xn0IghRsbkp/3IPx5lkMZvMemmkt5fhjUCS3ZiNbPk6ptb8q83/uMY3VkrWcOPyJYudBB9BszOaQjSqJZrkS7sTF9xXHGUK5kCM9Xo99GVeVjJMGlVy/1ZHStUMUAe6Osj9Yz+jh34hfLAYtElAjjc7nI8GAoq8LHz2HEl79yKiybD9Y/l75RMidTpFQbZpSrQry29NXNcct9z9E/r7/OiA20V2UpxPmYA+7dzyAKJF1HS5p8IZAE5bBsxIN3pn/k5fxqxkR/3kF6a6RsY6hK7wW7PrAJnp7Ye/wAuuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UpHZj9Ux6PJM2mEHEDIryQJAT+snGH1wsI1HUknu7ZY=;
+ b=T+8O+u5p4mEcdZj21I7L3lH7laHLFw69yOMm3u1YgEPGrFlGaxcxa71qi5wkV1HXnQ4NZxnKDyNovtvDN97ZydSG7U9h5Gy/1bR9GLClQjALuRHPXUXJitYJpSPNqcMKpYNVhI7nZRa855ZGd1a0kD3HoY1k9SF0AOEc1CQjZcA=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB3433.namprd03.prod.outlook.com (2603:10b6:5:ac::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.33; Mon, 11 May
+ 2020 14:56:32 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.2979.033; Mon, 11 May 2020
+ 14:56:32 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [RFC PATCH 00/14] iio: buffer: add support for multiple buffers
+Thread-Topic: [RFC PATCH 00/14] iio: buffer: add support for multiple buffers
+Thread-Index: AQHWJUAdPxP6vzcVf0GdP2M4m7Jctaifc8QAgAGoDQCAAZjjAIAAAUIAgAAoyACAAAXVAIAACUqAgAAQVwA=
+Date:   Mon, 11 May 2020 14:56:31 +0000
+Message-ID: <04fda2eb89244dd2bf8e024d4b4405eceffd016c.camel@analog.com>
+References: <20200508135348.15229-1-alexandru.ardelean@analog.com>
+         <a9a47e84-b933-cca6-dcfb-d97a51c8bdd4@metafoo.de>
+         <20200510110958.29046a18@archlinux>
+         <8c5d9ef5ed4ea9037c5459daa2044d1cd7c5db7a.camel@analog.com>
+         <c88b17c3-a9d6-e755-04e8-bc9f225e2a3b@metafoo.de>
+         <554fe46f0cdd1cafb313f534c0edd93f5686b806.camel@analog.com>
+         <7d2c8174e345bf8e241d48de65066d2606143503.camel@analog.com>
+         <9ae7e69b-f4ce-dd2b-d70b-2aac66b19814@metafoo.de>
+In-Reply-To: <9ae7e69b-f4ce-dd2b-d70b-2aac66b19814@metafoo.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [188.27.130.47]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 5135d340-acda-49a9-2fb1-08d7f5bb7e2f
+x-ms-traffictypediagnostic: DM6PR03MB3433:
+x-microsoft-antispam-prvs: <DM6PR03MB34338EF8DBC569D8A11EF583F9A10@DM6PR03MB3433.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 04004D94E2
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Acsms36ItUpeueUdYijeF4XR3QBtePkgCVJhxOgVP37CKsx8YCpXnxxN5xiFVyzJLA9PJBOUX2MWZyVOWZCiWPNJnITs7mKDTfBzwKWgOJD2buNkpEdOnWbC+Dns9OTqtWcXPpo7Zms0jPDl29dEMRNHAlfMnN6kFuZmE92VB4POJmmK6OViYjmNwly5xbKBIIRPYfqZu9IXuPvNkFXLECEDQikkg6NEN87SCD11yYqO0HDePRJvcWOz6xWJTE4WxND56wD0FAeg7/En86ENZwXhmLXrPrGutnHxcsma11y2t6Kkya/klQ3RYXZD1UA4ZboKVsR2DX0C91hN9wLZSlNPvHu+BLisTHFOwTcAfIVRB93MPBP+PcgB37cnCeTcReAWl05YA9fkeGI4JxZVoiLXPiWFMhSkH+g+HWR1jT0XQxGqNqsTucGQZTtIeUPyXAS9Xr4i2jPcZ1Cyvyy7GRI9sfCTib1p091U8d26/OYmMPDc2uMiS0L6mXywlStH3JmrnWkz73IcquhmH4VLtw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(346002)(376002)(136003)(39860400002)(396003)(33430700001)(66946007)(5660300002)(66446008)(64756008)(66556008)(36756003)(71200400001)(6486002)(4326008)(6512007)(2906002)(8676002)(110136005)(54906003)(33440700001)(86362001)(66476007)(8936002)(91956017)(76116006)(316002)(26005)(53546011)(6506007)(478600001)(186003)(2616005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: uXuI0AO5u7dFqcTJvdK11B0289Va++XJuaN2Lq5hOrOgkiB28qFAOP876VlasTzYu+tp9+hS1zwezbGvd7yKYBVaepK/ytVmnPRT+OIG5/WSCi7wdJBb0tnrbn3SEspSeHG2vQgWK/oq/bEDz7UEQTWiKlWM7AzBXH3zwDeGVmQgvuhDUqMEK+yihgbMUv2ES457PiCZJ/eWuGQOMPvr2qZaYnKtAOtn9ufyAeJsptkbVzW4m1XCKcZPgM5L0UTLu/osC71QOo/PN8jjIibYtxSsaoo3b8XJk+40qPbdn7WL2fBVvLq9CTinvhuac2AiAj3s4YjdbKVAz9jow6KdkLDqyhdSZmGAw9zMVx3L1DeR20R5vrpjyPOKLONdD33mtUKYHoz+SqPFBUV5cwJofr2T0bGshbALP8izRq+adIFftp96nO/Jw6OMqSVDVjUMchmm0G7X+55Rb0vmSG+Ni6s38wMLShkY7MVzgP4lxA0=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <24511EBAFDA16140B274A8789AB0A461@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5135d340-acda-49a9-2fb1-08d7f5bb7e2f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2020 14:56:31.9336
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ar+hbRHagkmhjLqLYwlbPX6jTo6ER33N2835IfH4X4J8TzB13MeG8yV0gt+H0yMc0hfxH9jkQyvRSyjqPvhdaK9dWsGqVyqoj2L4xAgmFOI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3433
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-11_07:2020-05-11,2020-05-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110117
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This drivers allows to use the capture mode of the Timer Counter Block
-hardware block available in Microchip SoCs through the counter subsystem.
-
-Two functions of the counter are supported for the moment: period
-capture and quadrature decoder. The latter is only supported by the
-SAMA5 series of SoCs.
-
-For the period capture mode a basic setup has been chosen that will
-reset the counter each time the period is actually reached. Of course
-the device offers much more possibilities.
-
-For quadrature mode, both channel 0 and 1 must be configured even if we
-only capture the position (no revolution/rotation).
-
-Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
----
- drivers/counter/Kconfig                 |  11 +
- drivers/counter/Makefile                |   1 +
- drivers/counter/microchip-tcb-capture.c | 397 ++++++++++++++++++++++++
- 3 files changed, 409 insertions(+)
- create mode 100644 drivers/counter/microchip-tcb-capture.c
-
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index c80fa76bb531..2de53ab0dd25 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -70,4 +70,15 @@ config FTM_QUADDEC
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ftm-quaddec.
- 
-+config MICROCHIP_TCB_CAPTURE
-+	tristate "Microchip Timer Counter Capture driver"
-+	depends on HAS_IOMEM && OF
-+	select REGMAP_MMIO
-+	help
-+	  Select this option to enable the Microchip Timer Counter Block
-+	  capture driver.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called microchip-tcb-capture.
-+
- endif # COUNTER
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index 55142d1f4c43..0a393f71e481 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -10,3 +10,4 @@ obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
- obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
- obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
- obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-+obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+= microchip-tcb-capture.o
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-new file mode 100644
-index 000000000000..f7b7743ddb94
---- /dev/null
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -0,0 +1,397 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/**
-+ * Copyright (C) 2020 Microchip
-+ *
-+ * Author: Kamel Bouhara <kamel.bouhara@bootlin.com>
-+ */
-+#include <linux/clk.h>
-+#include <linux/counter.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <soc/at91/atmel_tcb.h>
-+
-+#define ATMEL_TC_CMR_MASK	(ATMEL_TC_LDRA_RISING | ATMEL_TC_LDRB_FALLING | \
-+				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
-+				 ATMEL_TC_LDBSTOP)
-+
-+#define ATMEL_TC_QDEN			BIT(8)
-+#define ATMEL_TC_POSEN			BIT(9)
-+
-+struct mchp_tc_data {
-+	const struct atmel_tcb_config *tc_cfg;
-+	struct counter_device counter;
-+	struct regmap *regmap;
-+	int qdec_mode;
-+	int num_channels;
-+	int channel[2];
-+	bool trig_inverted;
-+};
-+
-+enum mchp_tc_count_function {
-+	MCHP_TC_FUNCTION_INCREASE,
-+	MCHP_TC_FUNCTION_QUADRATURE,
-+};
-+
-+static enum counter_count_function mchp_tc_count_functions[] = {
-+	[MCHP_TC_FUNCTION_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
-+	[MCHP_TC_FUNCTION_QUADRATURE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-+};
-+
-+enum mchp_tc_synapse_action {
-+	MCHP_TC_SYNAPSE_ACTION_NONE = 0,
-+	MCHP_TC_SYNAPSE_ACTION_RISING_EDGE,
-+	MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE,
-+	MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE
-+};
-+
-+static enum counter_synapse_action mchp_tc_synapse_actions[] = {
-+	[MCHP_TC_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
-+	[MCHP_TC_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-+	[MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-+	[MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE] = COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
-+};
-+
-+static struct counter_signal mchp_tc_count_signals[] = {
-+	{
-+		.id = 0,
-+		.name = "Channel A",
-+	},
-+	{
-+		.id = 1,
-+		.name = "Channel B",
-+	}
-+};
-+
-+static struct counter_synapse mchp_tc_count_synapses[] = {
-+	{
-+		.actions_list = mchp_tc_synapse_actions,
-+		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
-+		.signal = &mchp_tc_count_signals[0]
-+	},
-+	{
-+		.actions_list = mchp_tc_synapse_actions,
-+		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
-+		.signal = &mchp_tc_count_signals[1]
-+	}
-+};
-+
-+static int mchp_tc_count_function_get(struct counter_device *counter,
-+				      struct counter_count *count,
-+				      size_t *function)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+
-+	if (priv->qdec_mode)
-+		*function = MCHP_TC_FUNCTION_QUADRATURE;
-+	else
-+		*function = MCHP_TC_FUNCTION_INCREASE;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_function_set(struct counter_device *counter,
-+				      struct counter_count *count,
-+				      size_t function)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+	u32 bmr, cmr;
-+
-+	regmap_read(priv->regmap, ATMEL_TC_BMR, &bmr);
-+	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-+
-+	/* Set capture mode */
-+	cmr &= ~ATMEL_TC_WAVE;
-+
-+	switch (function) {
-+	case MCHP_TC_FUNCTION_INCREASE:
-+		priv->qdec_mode = 0;
-+		/* Set highest rate based on whether soc has gclk or not */
-+		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
-+		if (priv->tc_cfg->has_gclk)
-+			cmr |= ATMEL_TC_TIMER_CLOCK2;
-+		else
-+			cmr |= ATMEL_TC_TIMER_CLOCK1;
-+		/* Setup the period capture mode */
-+		cmr |=  ATMEL_TC_CMR_MASK;
-+		cmr &= ~(ATMEL_TC_ABETRG | ATMEL_TC_XC0);
-+		break;
-+	case MCHP_TC_FUNCTION_QUADRATURE:
-+		if (!priv->tc_cfg->has_qdec)
-+			return -EINVAL;
-+		/* In QDEC mode settings both channels 0 and 1 are required */
-+		if (priv->num_channels < 2 || priv->channel[0] != 0 ||
-+		    priv->channel[1] != 1) {
-+			pr_err("Invalid channels number or id for quadrature mode\n");
-+			return -EINVAL;
-+		}
-+		priv->qdec_mode = 1;
-+		bmr |= ATMEL_TC_QDEN | ATMEL_TC_POSEN;
-+		cmr |= ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_ABETRG | ATMEL_TC_XC0;
-+		break;
-+	}
-+
-+	regmap_write(priv->regmap, ATMEL_TC_BMR, bmr);
-+	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), cmr);
-+
-+	/* Enable clock and trigger counter */
-+	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-+		     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+
-+	if (priv->qdec_mode) {
-+		regmap_write(priv->regmap,
-+			     ATMEL_TC_REG(priv->channel[1], CMR), cmr);
-+		regmap_write(priv->regmap,
-+			     ATMEL_TC_REG(priv->channel[1], CCR),
-+			     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_signal_read(struct counter_device *counter,
-+				     struct counter_signal *signal,
-+				     enum counter_signal_value *val)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+	bool sigstatus;
-+	u32 sr;
-+
-+	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
-+
-+	if (priv->trig_inverted)
-+		sigstatus = (sr & ATMEL_TC_MTIOB);
-+	else
-+		sigstatus = (sr & ATMEL_TC_MTIOA);
-+
-+	*val = sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_action_get(struct counter_device *counter,
-+				    struct counter_count *count,
-+				    struct counter_synapse *synapse,
-+				    size_t *action)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+	u32 cmr;
-+
-+	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-+
-+	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-+
-+	if (cmr & ATMEL_TC_ETRGEDG_NONE)
-+		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-+	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-+		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
-+	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
-+		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
-+	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
-+		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_action_set(struct counter_device *counter,
-+				    struct counter_count *count,
-+				    struct counter_synapse *synapse,
-+				    size_t action)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+	u32 edge = ATMEL_TC_ETRGEDG_NONE;
-+
-+	/* QDEC mode is rising edge only */
-+	if (priv->qdec_mode)
-+		return -EINVAL;
-+
-+	switch (action) {
-+	case MCHP_TC_SYNAPSE_ACTION_NONE:
-+		edge = ATMEL_TC_ETRGEDG_NONE;
-+		break;
-+	case MCHP_TC_SYNAPSE_ACTION_RISING_EDGE:
-+		edge = ATMEL_TC_ETRGEDG_RISING;
-+		break;
-+	case MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE:
-+		edge = ATMEL_TC_ETRGEDG_FALLING;
-+		break;
-+	case MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE:
-+		edge = ATMEL_TC_ETRGEDG_BOTH;
-+		break;
-+	}
-+
-+	return regmap_write_bits(priv->regmap,
-+				ATMEL_TC_REG(priv->channel[0], CMR),
-+				ATMEL_TC_ETRGEDG, edge);
-+}
-+
-+static int mchp_tc_count_read(struct counter_device *counter,
-+			      struct counter_count *count,
-+			      unsigned long *val)
-+{
-+	struct mchp_tc_data *const priv = counter->priv;
-+	u32 cnt;
-+
-+	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CV), &cnt);
-+	*val = cnt;
-+
-+	return 0;
-+}
-+
-+static struct counter_count mchp_tc_counts[] = {
-+	{
-+		.id = 0,
-+		.name = "Timer Counter",
-+		.functions_list = mchp_tc_count_functions,
-+		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
-+		.synapses = mchp_tc_count_synapses,
-+		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-+	},
-+};
-+
-+static struct counter_ops mchp_tc_ops = {
-+	.signal_read  = mchp_tc_count_signal_read,
-+	.count_read   = mchp_tc_count_read,
-+	.function_get = mchp_tc_count_function_get,
-+	.function_set = mchp_tc_count_function_set,
-+	.action_get   = mchp_tc_count_action_get,
-+	.action_set   = mchp_tc_count_action_set
-+};
-+
-+static const struct atmel_tcb_config tcb_rm9200_config = {
-+		.counter_width = 16,
-+};
-+
-+static const struct atmel_tcb_config tcb_sam9x5_config = {
-+		.counter_width = 32,
-+};
-+
-+static const struct atmel_tcb_config tcb_sama5d2_config = {
-+		.counter_width = 32,
-+		.has_gclk = true,
-+		.has_qdec = true,
-+};
-+
-+static const struct atmel_tcb_config tcb_sama5d3_config = {
-+		.counter_width = 32,
-+		.has_qdec = true,
-+};
-+
-+static const struct of_device_id atmel_tc_of_match[] = {
-+	{ .compatible = "atmel,at91rm9200-tcb", .data = &tcb_rm9200_config, },
-+	{ .compatible = "atmel,at91sam9x5-tcb", .data = &tcb_sam9x5_config, },
-+	{ .compatible = "atmel,sama5d2-tcb", .data = &tcb_sama5d2_config, },
-+	{ .compatible = "atmel,sama5d3-tcb", .data = &tcb_sama5d3_config, },
-+	{ /* sentinel */ }
-+};
-+
-+static void mchp_tc_clk_remove(void *ptr)
-+{
-+	clk_disable_unprepare((struct clk *)ptr);
-+}
-+
-+static int mchp_tc_probe(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+	const struct atmel_tcb_config *tcb_config;
-+	const struct of_device_id *match;
-+	struct mchp_tc_data *priv;
-+	char clk_name[7];
-+	struct regmap *regmap;
-+	struct clk *clk[3];
-+	int channel;
-+	int ret, i;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	match = of_match_node(atmel_tc_of_match, np->parent);
-+	tcb_config = match->data;
-+	if (!tcb_config) {
-+		dev_err(&pdev->dev, "No matching parent node found\n");
-+		return -ENODEV;
-+	}
-+
-+	regmap = syscon_node_to_regmap(np->parent);
-+	if (IS_ERR(priv->regmap))
-+		return PTR_ERR(priv->regmap);
-+
-+	/* max. channels number is 2 when in QDEC mode */
-+	priv->num_channels = of_property_count_u32_elems(np, "reg");
-+	if (priv->num_channels < 0) {
-+		dev_err(&pdev->dev, "Invalid or missing channel\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Register channels and initialize clocks */
-+	for (i = 0; i < priv->num_channels; i++) {
-+		ret = of_property_read_u32_index(np, "reg", i, &channel);
-+		if (ret < 0 || channel > 2)
-+			return -ENODEV;
-+
-+		priv->channel[i] = channel;
-+
-+		snprintf(clk_name, sizeof(clk_name), "t%d_clk", channel);
-+
-+		clk[i] = of_clk_get_by_name(np->parent, clk_name);
-+		if (IS_ERR(clk[i])) {
-+			/* Fallback to t0_clk */
-+			clk[i] = of_clk_get_by_name(np->parent, "t0_clk");
-+			if (IS_ERR(clk[i]))
-+				return PTR_ERR(clk[i]);
-+		}
-+
-+		ret = clk_prepare_enable(clk[i]);
-+		if (ret)
-+			return ret;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev,
-+					       mchp_tc_clk_remove,
-+					       clk[i]);
-+		if (ret)
-+			return ret;
-+
-+		dev_dbg(&pdev->dev,
-+			"Initialized capture mode on channel %d\n",
-+			channel);
-+	}
-+
-+	priv->tc_cfg = tcb_config;
-+	priv->regmap = regmap;
-+	priv->counter.name = dev_name(&pdev->dev);
-+	priv->counter.parent = &pdev->dev;
-+	priv->counter.ops = &mchp_tc_ops;
-+	priv->counter.num_counts = ARRAY_SIZE(mchp_tc_counts);
-+	priv->counter.counts = mchp_tc_counts;
-+	priv->counter.num_signals = ARRAY_SIZE(mchp_tc_count_signals);
-+	priv->counter.signals = mchp_tc_count_signals;
-+	priv->counter.priv = priv;
-+
-+	return devm_counter_register(&pdev->dev, &priv->counter);
-+}
-+
-+static const struct of_device_id mchp_tc_dt_ids[] = {
-+	{ .compatible = "microchip,tcb-capture", },
-+	{ /* sentinel */ },
-+};
-+MODULE_DEVICE_TABLE(of, mchp_tc_dt_ids);
-+
-+static struct platform_driver mchp_tc_driver = {
-+	.probe = mchp_tc_probe,
-+	.driver = {
-+		.name = "microchip-tcb-capture",
-+		.of_match_table = mchp_tc_dt_ids,
-+	},
-+};
-+module_platform_driver(mchp_tc_driver);
-+
-+MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
-+MODULE_DESCRIPTION("Microchip TCB Capture driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.25.0
-
+T24gTW9uLCAyMDIwLTA1LTExIGF0IDE1OjU4ICswMjAwLCBMYXJzLVBldGVyIENsYXVzZW4gd3Jv
+dGU6DQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIDUvMTEvMjAgMzoyNCBQTSwgQXJkZWxlYW4sIEFs
+ZXhhbmRydSB3cm90ZToNCj4gPiBPbiBNb24sIDIwMjAtMDUtMTEgYXQgMTM6MDMgKzAwMDAsIEFy
+ZGVsZWFuLCBBbGV4YW5kcnUgd3JvdGU6DQo+ID4gPiBbRXh0ZXJuYWxdDQo+ID4gPiANCj4gPiA+
+IE9uIE1vbiwgMjAyMC0wNS0xMSBhdCAxMjozNyArMDIwMCwgTGFycy1QZXRlciBDbGF1c2VuIHdy
+b3RlOg0KPiA+ID4gPiBbRXh0ZXJuYWxdDQo+ID4gPiA+IA0KPiA+ID4gPiBPbiA1LzExLzIwIDEy
+OjMzIFBNLCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0KPiA+ID4gPiA+IE9uIFN1biwgMjAy
+MC0wNS0xMCBhdCAxMTowOSArMDEwMCwgSm9uYXRoYW4gQ2FtZXJvbiB3cm90ZToNCj4gPiA+ID4g
+PiA+IFtFeHRlcm5hbF0NCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gT24gU2F0LCA5IE1heSAy
+MDIwIDEwOjUyOjE0ICswMjAwDQo+ID4gPiA+ID4gPiBMYXJzLVBldGVyIENsYXVzZW4gPGxhcnNA
+bWV0YWZvby5kZT4gd3JvdGU6DQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gT24gNS84LzIw
+IDM6NTMgUE0sIEFsZXhhbmRydSBBcmRlbGVhbiB3cm90ZToNCj4gPiA+ID4gPiA+ID4gPiBbLi4u
+XQ0KPiA+ID4gPiA+ID4gPiA+IFdoYXQgSSBkb24ndCBsaWtlLCBpcyB0aGF0IGlpbzpkZXZpY2Uz
+IGhhcyBpaW86YnVmZmVyMzowICh0byAzKS4NCj4gPiA+ID4gPiA+ID4gPiBUaGlzIGlzIGJlY2F1
+c2UgdGhlICdidWZmZXItPmRldi5wYXJlbnQgPSAmaW5kaW9fZGV2LT5kZXYnLg0KPiA+ID4gPiA+
+ID4gPiA+IEJ1dCBJIGRvIGZlZWwgdGhpcyBpcyBjb3JyZWN0Lg0KPiA+ID4gPiA+ID4gPiA+IFNv
+LCBub3cgSSBkb24ndCBrbm93IHdoZXRoZXIgdG8gbGVhdmUgaXQgbGlrZSB0aGF0IG9yIHN5bWxp
+bmsgdG8NCj4gPiA+ID4gPiA+ID4gPiBzaG9ydGVyDQo+ID4gPiA+ID4gPiA+ID4gdmVyc2lvbnMg
+bGlrZSAnaWlvOmJ1ZmZlcjM6WScgLT4gJ2lpbzpkZXZpY2UzL2J1ZmZlclknLg0KPiA+ID4gPiA+
+ID4gPiA+IFRoZSByZWFzb24gZm9yIG5hbWluZyB0aGUgSUlPIGJ1ZmZlciBkZXZpY2VzIHRvICdp
+aW86YnVmZmVyWDpZJw0KPiA+ID4gPiA+ID4gPiA+IGlzDQo+ID4gPiA+ID4gPiA+ID4gbW9zdGx5
+IHRvIG1ha2UgdGhlIG5hbWVzIHVuaXF1ZS4gSXQgd291bGQgaGF2ZSBsb29rZWQgd2VpcmQgdG8N
+Cj4gPiA+ID4gPiA+ID4gPiBkbw0KPiA+ID4gPiA+ID4gPiA+ICcvZGV2L2J1ZmZlcjEnIGlmIEkg
+d291bGQgaGF2ZSBuYW1lZCB0aGUgYnVmZmVyIGRldmljZXMNCj4gPiA+ID4gPiA+ID4gPiAnYnVm
+ZmVyWCcuDQo+ID4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gU28sIG5vdyBJJ20gdGhp
+bmtpbmcgb2Ygd2hldGhlciBhbGwgdGhpcyBpcyBhY2NlcHRhYmxlLg0KPiA+ID4gPiA+ID4gPiA+
+IE9yIHdoYXQgaXMgYWNjZXB0YWJsZT8NCj4gPiA+ID4gPiA+ID4gPiBTaG91bGQgSSBzeW1saW5r
+ICdpaW86ZGV2aWNlMy9paW86YnVmZmVyMzowJyAtPg0KPiA+ID4gPiA+ID4gPiA+ICdpaW86ZGV2
+aWNlMy9idWZmZXIwJz8NCj4gPiA+ID4gPiA+ID4gPiBXaGF0IGVsc2Ugc2hvdWxkIEkgY29uc2lk
+ZXIgbW92aW5nIGZvcndhcmQ/DQo+ID4gPiA+ID4gPiA+ID4gV2hhdCBtZWFucyBmb3J3YXJkPw0K
+PiA+ID4gPiA+ID4gPiA+IFdoZXJlIGRpZCBJIGxlYXZlIG15IGJlZXI/DQo+ID4gPiA+ID4gPiA+
+IExvb2tpbmcgYXQgaG93IHRoZSAvZGV2LyBkZXZpY2VzIGFyZSBuYW1lZCBJIHRoaW5rIHdlIGNh
+biBwcm92aWRlDQo+ID4gPiA+ID4gPiA+IGENCj4gPiA+ID4gPiA+ID4gbmFtZQ0KPiA+ID4gPiA+
+ID4gPiB0aGF0IGlzIGRpZmZlcmVudCBmcm9tIHRoZSBkZXZfbmFtZSgpIG9mIHRoZSBkZXZpY2Uu
+IEhhdmUgYSBsb29rDQo+ID4gPiA+ID4gPiA+IGF0DQo+ID4gPiA+ID4gPiA+IGRldmljZV9nZXRf
+ZGV2bm9kZSgpIGluIGRyaXZlcnMvYmFzZS9jb3JlLmMuIFdlIHNob3VsZCBiZSBhYmxlIHRvDQo+
+ID4gPiA+ID4gPiA+IHByb3ZpZGUgdGhlIG5hbWUgZm9yIHRoZSBjaGFyZGV2IHRocm91Z2ggdGhl
+IGRldm5vZGUoKSBjYWxsYmFjay4NCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+IFdoaWxl
+IHdlIGFyZSBhdCB0aGlzLCBkbyB3ZSB3YW50IHRvIG1vdmUgdGhlIG5ldyBkZXZpY2VzIGludG8g
+YW4NCj4gPiA+ID4gPiA+ID4gaWlvDQo+ID4gPiA+ID4gPiA+IHN1YmZvbGRlcj8gU28gaWlvL2J1
+ZmZlcjA6MCBpbnN0ZWFkIG9mIGlpbzpidWZmZXIwOjA/DQo+ID4gPiA+ID4gPiBQb3NzaWJseSBv
+biB0aGUgZm9sZGVyLiAgSSBjYW4ndCBmb3IgdGhlIGxpZmUgb2YgbWUgcmVtZW1iZXIgd2h5IEkN
+Cj4gPiA+ID4gPiA+IGRlY2lkZWQNCj4gPiA+ID4gPiA+IG5vdCB0byBkbyB0aGF0IHRoZSBmaXJz
+dCB0aW1lIGFyb3VuZCAtIEknbGwgbGVhdmUgaXQgYXQgdGhlDQo+ID4gPiA+ID4gPiBteXN0ZXJp
+b3VzICJpdCBtYXkgdHVybiBvdXQgdG8gYmUgaGFyZGVyIHRoYW4geW91J2QgdGhpbmsuLi4iDQo+
+ID4gPiA+ID4gPiBIb3BlZnVsbHkgbm90IDspDQo+ID4gPiA+ID4gSSB3YXMgYWxzbyB0aGlua2lu
+ZyBhYm91dCB0aGUgL2Rldi9paW8gc3ViZm9sZGVyIHdoaWxlIGRvaW5nIHRoaXMuDQo+ID4gPiA+
+ID4gSSBjYW4gY29weSB0aGF0IGZyb20gL2Rldi9pbnB1dA0KPiA+ID4gPiA+IFRoZXkgc2VlbSB0
+byBkbyBpdCBhbHJlYWR5Lg0KPiA+ID4gPiA+IEkgZG9uJ3Qga25vdyBob3cgZGlmZmljdWx0IGl0
+IHdvdWxkIGJlLiBCdXQgaXQgbG9va3MgbGlrZSBhIGdvb2QNCj4gPiA+ID4gPiBwcmVjZWRlbnQu
+DQo+ID4gPiA+IEFsbCB5b3UgaGF2ZSB0byBkbyBpcyByZXR1cm4gImlpby8uLi4iIGZyb20gdGhl
+IGRldm5vZGUoKSBjYWxsYmFjay4NCj4gPiA+IEkgYWRtaXQgSSBkaWQgbm90IGxvb2sgY2xvc2Vs
+eSBpbnRvIGRyaXZlcnMvaW5wdXQvaW5wdXQuYyBiZWZvcmUNCj4gPiA+IG1lbnRpb25pbmcNCj4g
+PiA+IHRoaXMNCj4gPiA+IGFzIGFzIGdvb2QgcHJlY2VkZW50Lg0KPiA+ID4gDQo+ID4gPiBCdXQs
+IEkgbG9va3MgbGlrZSAvZGV2L2lucHB1dCBpcyBhIGNsYXNzLg0KPiA+ID4gV2hpbGUgSUlPIGRl
+dmljZXMgYXJlIGEgYnVzX3R5cGUgZGV2aWNlcy4NCj4gPiA+IFNob3VsZCB3ZSBzdGFydCBpbXBs
+ZW1lbnRpbmcgYW4gSUlPIGNsYXNzPyBvcj8NCj4gPiBXaGF0IEkgc2hvdWxkIGhhdmUgaGlnaGxp
+Z2h0ZWQgW2JlZm9yZV0gd2l0aCB0aGlzLCBpcyB0aGF0IHRoZXJlIGlzIG5vDQo+ID4gZGV2bm9k
+ZSgpDQo+ID4gY2FsbGJhY2sgZm9yIHRoZSBidXNfdHlwZSBbdHlwZV0uDQo+IEJ1dCB0aGVyZSBp
+cyBvbmUgaW4gZGV2aWNlX3R5cGUgOikNCg0KTWFueSB0aGFua3MgOikNClRoYXQgd29ya2VkIG5p
+Y2VseS4NCg0KSSBub3cgaGF2ZToNCg0Kcm9vdEBhbmFsb2c6fiMgbHMgL2Rldi9paW8vKg0KL2Rl
+di9paW8vaWlvOmRldmljZTAgIC9kZXYvaWlvL2lpbzpkZXZpY2UxDQoNCi9kZXYvaWlvL2Rldmlj
+ZTM6DQpidWZmZXIwICBidWZmZXIxICBidWZmZXIyICBidWZmZXIzDQoNCi9kZXYvaWlvL2Rldmlj
+ZTQ6DQpidWZmZXIwDQoNCg0KSXQgbG9va3MgbGlrZSBJIGNhbiBzaGlmdCB0aGVzZSBhcm91bmQg
+YXMgbmVlZGVkLg0KVGhpcyBpcyBqdXN0IGFuIGV4cGVyaW1lbnQuDQpJIG1hbmFnZWQgdG8gbW92
+ZSB0aGUgaWlvIGRldmljZXMgdW5kZXIgL2Rldi9paW8sIHRob3VnaCBwcm9iYWJseSB0aGUgSUlP
+DQpkZXZpY2VzIHdpbGwgc3RpbGwgYmUgYXJvdW5kIGFzIC9kZXYvaWlvOmRldmljZVggZm9yIGxl
+Z2FjeSByZWFzb25zLg0KDQpUd28gdGhpbmdzIHJlbWFpbiB1bnJlc29sdmVkLg0KMS4gVGhlIG5h
+bWUgb2YgdGhlIElJTyBidWZmZXIgZGV2aWNlLg0KDQpyb290QGFuYWxvZzovc3lzL2J1cy9paW8v
+ZGV2aWNlcyMgbHMgaWlvXDpkZXZpY2UzLw0KYnVmZmVyICAgICAgICAgIGluX3ZvbHRhZ2UwX3Rl
+c3RfbW9kZSAgICAgICAgICAgbmFtZQ0KZXZlbnRzICAgICAgICAgIGluX3ZvbHRhZ2UxX3Rlc3Rf
+bW9kZSAgICAgICAgICAgb2Zfbm9kZQ0KaWlvOmJ1ZmZlcjozOjAgIGluX3ZvbHRhZ2Vfc2FtcGxp
+bmdfZnJlcXVlbmN5ICAgcG93ZXINCmlpbzpidWZmZXI6MzoxICBpbl92b2x0YWdlX3NjYWxlICAg
+ICAgICAgICAgICAgIHNjYW5fZWxlbWVudHMNCmlpbzpidWZmZXI6MzoyICBpbl92b2x0YWdlX3Nj
+YWxlX2F2YWlsYWJsZSAgICAgIHN1YnN5c3RlbQ0KaWlvOmJ1ZmZlcjozOjMgIGluX3ZvbHRhZ2Vf
+dGVzdF9tb2RlX2F2YWlsYWJsZSAgdWV2ZW50DQoNCg0KUmlnaHQgbm93LCBlYWNoIGJ1ZmZlciBk
+ZXZpY2UgaXMgbmFtZWQgJ2lpbzpidWZmZXI6WDpZJy4NCk9uZSBzdWdnZXN0dGlvbiB3YXMgICdp
+aW86ZGV2aWNlWDpidWZmZXJZJw0KSSdtIHN1c3BlY3RpbmcgdGhlIGxhdHRlciBpcyBwcmVmZXJy
+ZWQgYXMgd2hlbiB5b3Ugc29ydCB0aGUgZm9sZGVycywgYnVmZmVycw0KY29tZSByaWdodCBhZnRl
+ciB0aGUgaWlvOmRldmljZVggZm9sZGVycyBpbiAvc3lzL2J1cy9paW8vZGV2aWNlcy4NCg0KSSBk
+b24ndCBmZWVsIGl0IG1hdHRlcnMgbXVjaCB0aGUgZGV2aWNlIG5hbWUgb2YgdGhlIElJTyBidWZm
+ZXIgaWYgd2Ugc3ltbGluayBpdA0KdG8gYSBzaG9ydGVyIGZvcm0uDQogDQpJJ20gZ3Vlc3Npbmcs
+IHdlIHN5bWxpbmsgdGhlc2UgZGV2aWNlcyB0byBzaG9ydC1oYW5kICdidWZmZXJZJyBmb2xkZXJz
+IGluIGVhY2gNCidpaW86ZGV2aWNlWCc/DQoNClNvLCB5b3UnZCBnZXQgc29tZXRoaW5nIGxpa2U6
+DQoNCmRyd3hyLXhyLXggOCByb290IHJvb3QgICAgMCBNYXkgMTEgMTQ6NDAgLg0KZHJ3eHIteHIt
+eCA0IHJvb3Qgcm9vdCAgICAwIE1heSAxMSAxNDozNSAuLg0KbHJ3eHJ3eHJ3eCAxIHJvb3Qgcm9v
+dCAgICAwIE1heSAxMSAxNDozNSBidWZmZXIgLT4gaWlvOmJ1ZmZlcjozOjANCmxyd3hyd3hyd3gg
+NCByb290IHJvb3QgICAgMCBNYXkgMTEgMTQ6MzUgYnVmZmVyMCAtPiBpaW86YnVmZmVyOjM6MA0K
+bHJ3eHJ3eHJ3eCA0IHJvb3Qgcm9vdCAgICAwIE1heSAxMSAxNDozNSBidWZmZXIxIC0+IGlpbzpi
+dWZmZXI6MzoxDQpscnd4cnd4cnd4IDQgcm9vdCByb290ICAgIDAgTWF5IDExIDE0OjM1IGJ1ZmZl
+cjIgLT4gaWlvOmJ1ZmZlcjozOjINCmxyd3hyd3hyd3ggNCByb290IHJvb3QgICAgMCBNYXkgMTEg
+MTQ6MzUgYnVmZmVyMyAtPiBpaW86YnVmZmVyOjM6Mw0KZHJ3eHJ3eHJ3eCAyIHJvb3Qgcm9vdCAg
+ICAwIE1heSAxMSAxNDozNSBldmVudHMNCmRyd3hyd3hyd3ggNCByb290IHJvb3QgICAgMCBNYXkg
+MTEgMTQ6MzUgaWlvOmJ1ZmZlcjozOjANCmRyd3hyd3hyd3ggNCByb290IHJvb3QgICAgMCBNYXkg
+MTEgMTQ6MzUgaWlvOmJ1ZmZlcjozOjENCmRyd3hyd3hyd3ggNCByb290IHJvb3QgICAgMCBNYXkg
+MTEgMTQ6MzUgaWlvOmJ1ZmZlcjozOjINCmRyd3hyd3hyd3ggNCByb290IHJvb3QgICAgMCBNYXkg
+MTEgMTQ6MzUgaWlvOmJ1ZmZlcjozOjMNCi1ydy1ydy1ydy0gMSByb290IHJvb3QgNDA5NiBNYXkg
+MTEgMTQ6MzUgaW5fdm9sdGFnZTBfdGVzdF9tb2RlDQotcnctcnctcnctIDEgcm9vdCByb290IDQw
+OTYgTWF5IDExIDE0OjM1IGluX3ZvbHRhZ2UxX3Rlc3RfbW9kZQ0KLXJ3LXJ3LXJ3LSAxIHJvb3Qg
+cm9vdCA0MDk2IE1heSAxMSAxNDozNSBpbl92b2x0YWdlX3NhbXBsaW5nX2ZyZXF1ZW5jeQ0KLXJ3
+LXJ3LXJ3LSAxIHJvb3Qgcm9vdCA0MDk2IE1heSAxMSAxNDozNSBpbl92b2x0YWdlX3NjYWxlDQot
+cnctcnctcnctIDEgcm9vdCByb290IDQwOTYgTWF5IDExIDE0OjM1IGluX3ZvbHRhZ2Vfc2NhbGVf
+YXZhaWxhYmxlDQotcnctcnctcnctIDEgcm9vdCByb290IDQwOTYgTWF5IDExIDE0OjM1IGluX3Zv
+bHRhZ2VfdGVzdF9tb2RlX2F2YWlsYWJsZQ0KLXJ3LXJ3LXJ3LSAxIHJvb3Qgcm9vdCA0MDk2IE1h
+eSAxMSAxNDozNSBuYW1lDQpscnd4cnd4cnd4IDEgcm9vdCByb290ICAgIDAgTWF5IDExIDE0OjM1
+IG9mX25vZGUgLT4gDQouLi8uLi8uLi8uLi8uLi9maXJtd2FyZS9kZXZpY2V0cmVlL2Jhc2UvZnBn
+YS1heGlAMC9heGktYWQ5NjgwLWhwY0A0NGExMDAwMA0KZHJ3eHJ3eHJ3eCAyIHJvb3Qgcm9vdCAg
+ICAwIE1heSAxMSAxNDozNSBwb3dlcg0KbHJ3eHJ3eHJ3eCAxIHJvb3Qgcm9vdCAgICAwIE1heSAx
+MSAxNDozNSBzY2FuX2VsZW1lbnRzIC0+DQppaW86YnVmZmVyOjM6MC9zY2FuX2VsZW1lbnRzDQps
+cnd4cnd4cnd4IDEgcm9vdCByb290ICAgIDAgTWF5IDExIDE0OjM1IHN1YnN5c3RlbSAtPiAuLi8u
+Li8uLi8uLi8uLi9idXMvaWlvDQotcnctcnctcnctIDEgcm9vdCByb290IDQwOTYgTWF5IDExIDE0
+OjM1IHVldmVudA0KDQoxYS4gL3N5cy9idXMvaWlvL2RldmljZXMgbG9va3MgbGlrZSB0aGlzOg0K
+aWlvOmJ1ZmZlcjozOjAgICh0aGlzIHdvdWxkIGJlY29tZSBpaW86ZGV2aWNlMzpidWZmZXIwICkN
+CmlpbzpidWZmZXI6MzoxDQppaW86YnVmZmVyDQo6MzoyDQppaW86YnVmZmVyOjM6Mw0KaWlvOmJ1
+ZmZlcjo0OjANCmlpbzpkZXZpY2UwDQppaW86ZGV2aWNlMQ0KaWlvOmRldmljZTINCmlpbzpkZXZp
+Y2UzDQppaW86DQpkZXZpY2U0DQoNCk9uZSBtaW5vciBpc3N1ZSBoZXJlIGlzIHRoYXQgdGhlIGJ1
+ZmZlcnMgZ2V0IGxpc3RlZCBpbiB0aGUgL3N5cy9idXMvaWlvL2RldmljZXMNCmZvbGRlciwgYmVj
+YXVzZSBJJ20gYWRkaW5nIHRoZW0gdG8gdGhlIGlpbyBidXMsIHRvIGJlIGFibGUgdG8gZ2V0IGEg
+Y2hhcmRldg0KW2Zyb20gdGhlIHByZS1hbGxvY2F0ZWQgY2hhcmRldiByZWdpb24gb2YgSUlPXS4N
+Cg0KbGliaWlvIGdldHMgYSBsaXR0bGUgY29uZnVzZWQsIGFzIGl0IHNlZXMgdGhlc2UgYnVmZmVy
+cyBhcmUgSUlPIGJ1ZmZlciBjYXBhYmxlDQpkZXZpY2VzOw0KDQoJaWlvOmJ1ZmZlcjozOjA6IChi
+dWZmZXIgY2FwYWJsZSkNCgkJMiBjaGFubmVscyBmb3VuZDoNCgkJCXZvbHRhZ2UwOiAgKGlucHV0
+LCBpbmRleDogMCwgZm9ybWF0OiBsZTpTMTQvMTY+PjApDQoJCQl2b2x0YWdlMTogIChpbnB1dCwg
+aW5kZXg6IDEsIGZvcm1hdDogbGU6UzE0LzE2Pj4wKQ0KCQk1IGRldmljZS1zcGVjaWZpYyBhdHRy
+aWJ1dGVzIGZvdW5kOg0KCQkJCWF0dHIgIDA6IGRhdGFfYXZhaWxhYmxlIHZhbHVlOiAwDQoJCQkJ
+YXR0ciAgMTogZW5hYmxlIHZhbHVlOiAwDQoJCQkJYXR0ciAgMjogbGVuZ3RoIHZhbHVlOiA0MDk2
+DQoJCQkJYXR0ciAgMzogbGVuZ3RoX2FsaWduX2J5dGVzIHZhbHVlOiA4DQoJCQkJYXR0ciAgNDog
+d2F0ZXJtYXJrIHZhbHVlOiAyMDQ4DQoJaWlvOmJ1ZmZlcjozOjE6IChidWZmZXIgY2FwYWJsZSkN
+Cg0KSG9wZWZ1bGx5LCB0aGlzIGlzIG5vdCBhIGJpZyBwcm9ibGVtLCBidXQgbGV0J3Mgc2VlLg0K
+DQoyLiBJIGtub3cgdGhpcyBpcyBbc3RpbGxdIHN0dXBpZCBub3c7IGJ1dCBhbnkgc3VnZ2VzdGlv
+bnMgb25lIGhvdyB0byBzeW1saW5rIA0KL2Rldi9paW86ZGV2aWNlMyAtPiAvZGV2L2lpby9kZXZp
+Y2UzL2J1ZmZlcjAgPw0KDQpSZWdhcmRpbmcgdGhpcyBvbmUsIEkgbWF5IHRyeSBhIGZldyB0aGlu
+Z3MsIGJ1dCBhbnkgc3VnZ2VzdGlvbiBpcyB3ZWxjb21lLg0KDQoNCg0KVGhhbmtzDQpBbGV4DQo=

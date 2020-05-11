@@ -2,236 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F681CE3CA
-	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 21:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA8261CE4E3
+	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 21:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731041AbgEKTUa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 May 2020 15:20:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728613AbgEKTU3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 11 May 2020 15:20:29 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D0EB206E6;
-        Mon, 11 May 2020 19:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589224828;
-        bh=h8tGE9qMIzJ9Bxj1OxssLWsbEC2G8vv9/jW1E9oLHUA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YSt/E9sqgnzLj/fsxQk1Zvzqz6o2sxA2QoPKDQdYMf6G2v8y2TwFCegOJKk33AfxX
-         74SX74RhlsKurvdbsblcjjnrzSZkqJFHFu/q54iyZOSKJ700X8WR3FHORWWYQqk0gB
-         COGF9a/rPs/xTiCtPKhyHZhcEkTIdYmdFKB0xKqs=
-Date:   Mon, 11 May 2020 20:20:23 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v4 10/11] iio: light: cm32181: Add support for parsing
- CPM0 and CPM1 ACPI tables
-Message-ID: <20200511202023.45f2d130@archlinux>
-In-Reply-To: <20200504125551.434647-10-hdegoede@redhat.com>
-References: <20200504125551.434647-1-hdegoede@redhat.com>
-        <20200504125551.434647-10-hdegoede@redhat.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729329AbgEKT4r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 May 2020 15:56:47 -0400
+Received: from www381.your-server.de ([78.46.137.84]:35182 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729049AbgEKT4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 May 2020 15:56:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=1UwqtZKMBfGFgyFnK3JlTll7tSdmM/BdA7mHFZYsJzI=; b=j+JUn/MhgUkPqExsnrfkzGZ8BG
+        eVFmHbN8APctUYEBnzp9XGlrVk+G+tQt2oS39gjja0IVzfuywUuZ3emonIQ6cG+nJp7z3nMqXnf6N
+        bD4BxGbezLl8nbZWgLUZH9B+kAj2LJBEjrzSJlL0/OL5KNShbohfHJn9Egz1FXDagzrRr5M11AaOb
+        apNK3cZR0HAkew4h3tk7Jv1jkL1TXfOsFYwEGXNasg/LQYluqKmqc/C/kdZNVNTskZzuz+nKPvyJc
+        I5+7E1IzrFqlnsbZQkV9CM/1AVXOTLJnFBCzv9VM2QNked2mI+PyjMATjJvNboQtV9n430Xp/7lWr
+        FWrVja+w==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1jYEXZ-00039o-G6; Mon, 11 May 2020 21:56:41 +0200
+Received: from [82.135.66.51] (helo=[192.168.178.20])
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1jYEXZ-000Cev-6U; Mon, 11 May 2020 21:56:41 +0200
+Subject: Re: [RFC PATCH 00/14] iio: buffer: add support for multiple buffers
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <20200508135348.15229-1-alexandru.ardelean@analog.com>
+ <a9a47e84-b933-cca6-dcfb-d97a51c8bdd4@metafoo.de>
+ <20200510110958.29046a18@archlinux>
+ <8c5d9ef5ed4ea9037c5459daa2044d1cd7c5db7a.camel@analog.com>
+ <c88b17c3-a9d6-e755-04e8-bc9f225e2a3b@metafoo.de>
+ <554fe46f0cdd1cafb313f534c0edd93f5686b806.camel@analog.com>
+ <7d2c8174e345bf8e241d48de65066d2606143503.camel@analog.com>
+ <9ae7e69b-f4ce-dd2b-d70b-2aac66b19814@metafoo.de>
+ <04fda2eb89244dd2bf8e024d4b4405eceffd016c.camel@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <fb6cc3f4-b133-4ba4-a8fb-84349355ebc3@metafoo.de>
+Date:   Mon, 11 May 2020 21:56:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <04fda2eb89244dd2bf8e024d4b4405eceffd016c.camel@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.2/25809/Mon May 11 14:16:55 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  4 May 2020 14:55:50 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On 5/11/20 4:56 PM, Ardelean, Alexandru wrote:
+> On Mon, 2020-05-11 at 15:58 +0200, Lars-Peter Clausen wrote:
+>> [External]
+>>
+>> On 5/11/20 3:24 PM, Ardelean, Alexandru wrote:
+>>> On Mon, 2020-05-11 at 13:03 +0000, Ardelean, Alexandru wrote:
+>>>> [External]
+>>>>
+>>>> On Mon, 2020-05-11 at 12:37 +0200, Lars-Peter Clausen wrote:
+>>>>> [External]
+>>>>>
+>>>>> On 5/11/20 12:33 PM, Ardelean, Alexandru wrote:
+>>>>>> On Sun, 2020-05-10 at 11:09 +0100, Jonathan Cameron wrote:
+>>>>>>> [External]
+>>>>>>>
+>>>>>>> On Sat, 9 May 2020 10:52:14 +0200
+>>>>>>> Lars-Peter Clausen <lars@metafoo.de> wrote:
+>>>>>>>
+>>>>>>>> On 5/8/20 3:53 PM, Alexandru Ardelean wrote:
+>>>>>>>>> [...]
+>>>>>>>>> What I don't like, is that iio:device3 has iio:buffer3:0 (to 3).
+>>>>>>>>> This is because the 'buffer->dev.parent = &indio_dev->dev'.
+>>>>>>>>> But I do feel this is correct.
+>>>>>>>>> So, now I don't know whether to leave it like that or symlink to
+>>>>>>>>> shorter
+>>>>>>>>> versions like 'iio:buffer3:Y' -> 'iio:device3/bufferY'.
+>>>>>>>>> The reason for naming the IIO buffer devices to 'iio:bufferX:Y'
+>>>>>>>>> is
+>>>>>>>>> mostly to make the names unique. It would have looked weird to
+>>>>>>>>> do
+>>>>>>>>> '/dev/buffer1' if I would have named the buffer devices
+>>>>>>>>> 'bufferX'.
+>>>>>>>>>
+>>>>>>>>> So, now I'm thinking of whether all this is acceptable.
+>>>>>>>>> Or what is acceptable?
+>>>>>>>>> Should I symlink 'iio:device3/iio:buffer3:0' ->
+>>>>>>>>> 'iio:device3/buffer0'?
+>>>>>>>>> What else should I consider moving forward?
+>>>>>>>>> What means forward?
+>>>>>>>>> Where did I leave my beer?
+>>>>>>>> Looking at how the /dev/ devices are named I think we can provide
+>>>>>>>> a
+>>>>>>>> name
+>>>>>>>> that is different from the dev_name() of the device. Have a look
+>>>>>>>> at
+>>>>>>>> device_get_devnode() in drivers/base/core.c. We should be able to
+>>>>>>>> provide the name for the chardev through the devnode() callback.
+>>>>>>>>
+>>>>>>>> While we are at this, do we want to move the new devices into an
+>>>>>>>> iio
+>>>>>>>> subfolder? So iio/buffer0:0 instead of iio:buffer0:0?
+>>>>>>> Possibly on the folder.  I can't for the life of me remember why I
+>>>>>>> decided
+>>>>>>> not to do that the first time around - I'll leave it at the
+>>>>>>> mysterious "it may turn out to be harder than you'd think..."
+>>>>>>> Hopefully not ;)
+>>>>>> I was also thinking about the /dev/iio subfolder while doing this.
+>>>>>> I can copy that from /dev/input
+>>>>>> They seem to do it already.
+>>>>>> I don't know how difficult it would be. But it looks like a good
+>>>>>> precedent.
+>>>>> All you have to do is return "iio/..." from the devnode() callback.
+>>>> I admit I did not look closely into drivers/input/input.c before
+>>>> mentioning
+>>>> this
+>>>> as as good precedent.
+>>>>
+>>>> But, I looks like /dev/inpput is a class.
+>>>> While IIO devices are a bus_type devices.
+>>>> Should we start implementing an IIO class? or?
+>>> What I should have highlighted [before] with this, is that there is no
+>>> devnode()
+>>> callback for the bus_type [type].
+>> But there is one in device_type :)
+> Many thanks :)
+> That worked nicely.
+>
+> I now have:
+>
+> root@analog:~# ls /dev/iio/*
+> /dev/iio/iio:device0  /dev/iio/iio:device1
+>
+> /dev/iio/device3:
+> buffer0  buffer1  buffer2  buffer3
+>
+> /dev/iio/device4:
+> buffer0
+>
+>
+> It looks like I can shift these around as needed.
+> This is just an experiment.
+> I managed to move the iio devices under /dev/iio, though probably the IIO
+> devices will still be around as /dev/iio:deviceX for legacy reasons.
+>
+> Two things remain unresolved.
+> 1. The name of the IIO buffer device.
+>
+> root@analog:/sys/bus/iio/devices# ls iio\:device3/
+> buffer          in_voltage0_test_mode           name
+> events          in_voltage1_test_mode           of_node
+> iio:buffer:3:0  in_voltage_sampling_frequency   power
+> iio:buffer:3:1  in_voltage_scale                scan_elements
+> iio:buffer:3:2  in_voltage_scale_available      subsystem
+> iio:buffer:3:3  in_voltage_test_mode_available  uevent
+>
+>
+> Right now, each buffer device is named 'iio:buffer:X:Y'.
+> One suggesttion was  'iio:deviceX:bufferY'
+> I'm suspecting the latter is preferred as when you sort the folders, buffers
+> come right after the iio:deviceX folders in /sys/bus/iio/devices.
+>
+> I don't feel it matters much the device name of the IIO buffer if we symlink it
+> to a shorter form.
+>   
+> I'm guessing, we symlink these devices to short-hand 'bufferY' folders in each
+> 'iio:deviceX'?
 
-> On ACPI based systems the CPLM3218 ACPI device node describing the
-> CM3218[1] sensor typically will have some extra tables with register
-> init values for initializing the sensor and calibration info.
-> 
-> This is based on a newer version of cm32181.c, with a copyright of:
-> 
->  * Copyright (C) 2014 Capella Microsystems Inc.
->  * Author: Kevin Tsai <ktsai@capellamicro.com>
->  *
->  * This program is free software; you can redistribute it and/or modify it
->  * under the terms of the GNU General Public License version 2, as published
->  * by the Free Software Foundation.
-> 
-> Which is floating around on the net in various places, but the changes
-> from this newer version never made it upstream.
-> 
-> This was tested on the following models: Acer Switch 10 SW5-012 (CM32181)
-> Asus T100TA (CM3218), Asus T100CHI (CM3218) and HP X2 10-n000nd (CM32181).
-> 
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Tiny thing 0-day picked up that I've just fixed and pushed out.
+I think that would be a bit excessive. Only for the legacy buffer we 
+need to have a symlink.
 
-> ---
-> Changes in v2:
-> - Factor out the parsing into a separate helper function
-> ---
->  drivers/iio/light/cm32181.c | 101 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 101 insertions(+)
-> 
-> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-> index a0812e3cba9b..5eeefa3ee4f1 100644
-> --- a/drivers/iio/light/cm32181.c
-> +++ b/drivers/iio/light/cm32181.c
-> @@ -4,6 +4,7 @@
->   * Author: Kevin Tsai <ktsai@capellamicro.com>
->   */
->  
-> +#include <linux/acpi.h>
->  #include <linux/delay.h>
->  #include <linux/err.h>
->  #include <linux/i2c.h>
-> @@ -53,6 +54,15 @@
->  
->  #define SMBUS_ALERT_RESPONSE_ADDRESS	0x0c
->  
-> +/* CPM0 Index 0: device-id (3218 or 32181), 1: Unknown, 2: init_regs_bitmap */
-> +#define CPM0_REGS_BITMAP		2
-> +#define CPM0_HEADER_SIZE		3
-> +
-> +/* CPM1 Index 0: lux_per_bit, 1: calibscale, 2: resolution (100000) */
-> +#define CPM1_LUX_PER_BIT		0
-> +#define CPM1_CALIBSCALE			1
-> +#define CPM1_SIZE			3
-> +
->  struct cm32181_chip_info {
->  	const char *name;
->  	const int *als_it_bits;
-> @@ -61,6 +71,7 @@ struct cm32181_chip_info {
->  };
->  
->  struct cm32181_chip {
-> +	struct device *dev;
->  	struct i2c_client *client;
->  	const struct cm32181_chip_info *info;
->  	struct mutex lock;
-> @@ -95,6 +106,92 @@ const struct cm32181_chip_info cm32181_chip_info = {
->  	.num_als_it = ARRAY_SIZE(cm32181_als_it_bits),
->  };
->  
-> +static int cm32181_read_als_it(struct cm32181_chip *cm32181, int *val2);
-> +
-> +#ifdef CONFIG_ACPI
-> +/**
-> + * cm32181_acpi_get_cpm() - Get CPM object from ACPI
-> + * @client	pointer of struct i2c_client.
-> + * @obj_name	pointer of ACPI object name.
-> + * @count	maximum size of return array.
-> + * @vals	pointer of array for return elements.
-> + *
-> + * Convert ACPI CPM table to array.
-> + *
-> + * Return: -ENODEV for fail.  Otherwise is number of elements.
-> + */
-> +static int cm32181_acpi_get_cpm(struct device *dev, char *obj_name,
-> +				u64 *values, int count)
-> +{
-> +	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-> +	union acpi_object *cpm, *elem;
-> +	acpi_handle handle;
-> +	acpi_status status;
-> +	int i;
-> +
-> +	handle = ACPI_HANDLE(dev);
-> +	if (!handle)
-> +		return -ENODEV;
-> +
-> +	status = acpi_evaluate_object(handle, obj_name, NULL, &buffer);
-> +	if (ACPI_FAILURE(status)) {
-> +		dev_err(dev, "object %s not found\n", obj_name);
-> +		return -ENODEV;
-> +	}
-> +
-> +	cpm = buffer.pointer;
-> +	if (cpm->package.count > count)
-> +		dev_warn(dev, "%s table contains %d values, only using first %d values\n",
-> +			 obj_name, cpm->package.count, count);
+> [...]
+> 2. I know this is [still] stupid now; but any suggestions one how to symlink
+> /dev/iio:device3 -> /dev/iio/device3/buffer0 ?
+>
+Does not seem to be possible. Userspace will have to take care of it. 
+This means we need to keep legacy devices in /dev/ and only new buffers 
+in /dev/iio/.
 
-cpm->package.count is unsigned.
-
-> +
-> +	count = min_t(int, cpm->package.count, count);
-> +	for (i = 0; i < count; i++) {
-> +		elem = &(cpm->package.elements[i]);
-> +		values[i] = elem->integer.value;
-> +	}
-> +
-> +	kfree(buffer.pointer);
-> +
-> +	return count;
-> +}
-> +
-> +static void cm32181_acpi_parse_cpm_tables(struct cm32181_chip *cm32181)
-> +{
-> +	u64 vals[CPM0_HEADER_SIZE + CM32181_CONF_REG_NUM];
-> +	struct device *dev = cm32181->dev;
-> +	int i, count;
-> +
-> +	count = cm32181_acpi_get_cpm(dev, "CPM0", vals, ARRAY_SIZE(vals));
-> +	if (count <= CPM0_HEADER_SIZE)
-> +		return;
-> +
-> +	count -= CPM0_HEADER_SIZE;
-> +
-> +	cm32181->init_regs_bitmap = vals[CPM0_REGS_BITMAP];
-> +	cm32181->init_regs_bitmap &= GENMASK(count - 1, 0);
-> +	for_each_set_bit(i, &cm32181->init_regs_bitmap, count)
-> +		cm32181->conf_regs[i] =	vals[CPM0_HEADER_SIZE + i];
-> +
-> +	count = cm32181_acpi_get_cpm(dev, "CPM1", vals, ARRAY_SIZE(vals));
-> +	if (count != CPM1_SIZE)
-> +		return;
-> +
-> +	cm32181->lux_per_bit = vals[CPM1_LUX_PER_BIT];
-> +
-> +	/* Check for uncalibrated devices */
-> +	if (vals[CPM1_CALIBSCALE] == CM32181_CALIBSCALE_DEFAULT)
-> +		return;
-> +
-> +	cm32181->calibscale = vals[CPM1_CALIBSCALE];
-> +	/* CPM1 lux_per_bit is for the current it value */
-> +	cm32181_read_als_it(cm32181, &cm32181->lux_per_bit_base_it);
-> +}
-> +#else
-> +static void cm32181_acpi_parse_cpm_tables(struct cm32181_chip *cm32181)
-> +{
-> +}
-> +#endif /* CONFIG_ACPI */
-> +
->  /**
->   * cm32181_reg_init() - Initialize CM32181 registers
->   * @cm32181:	pointer of struct cm32181.
-> @@ -134,6 +231,9 @@ static int cm32181_reg_init(struct cm32181_chip *cm32181)
->  	cm32181->lux_per_bit = CM32181_LUX_PER_BIT;
->  	cm32181->lux_per_bit_base_it = CM32181_LUX_PER_BIT_BASE_IT;
->  
-> +	if (ACPI_HANDLE(cm32181->dev))
-> +		cm32181_acpi_parse_cpm_tables(cm32181);
-> +
->  	/* Initialize registers*/
->  	for_each_set_bit(i, &cm32181->init_regs_bitmap, CM32181_CONF_REG_NUM) {
->  		ret = i2c_smbus_write_word_data(client, i,
-> @@ -376,6 +476,7 @@ static int cm32181_probe(struct i2c_client *client)
->  	}
->  
->  	cm32181 = iio_priv(indio_dev);
-> +	cm32181->dev = dev;
->  	cm32181->client = client;
->  
->  	mutex_init(&cm32181->lock);
 

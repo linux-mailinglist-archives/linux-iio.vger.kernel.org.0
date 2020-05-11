@@ -2,125 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10CF41CD6AD
-	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 12:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 956441CDA81
+	for <lists+linux-iio@lfdr.de>; Mon, 11 May 2020 14:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728683AbgEKKiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 May 2020 06:38:03 -0400
-Received: from www381.your-server.de ([78.46.137.84]:37078 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728209AbgEKKiD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 May 2020 06:38:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=E7nGXJbtt/k5x9QUqlVuoKuVtxO6ANKMbKDzRQDuE/U=; b=kvjPeIRqkktKS1wOItSxOcBzpN
-        SAlHDVlSLbcndI9YbOafxoj9cY1bD5gpv8CEvK1CsMVzFAQm9tyM3FeuKB3rfUsyqxdYpNbuD/eYS
-        NAQzJ+5qcu4CVimTpCGpUpMUeTIOAc6ue21HUKZiuj/9cqV0L3cz5+5UhiRPnpVFYASOaIw57cIrb
-        uUMY/HSLuAToVTVkuZ71CbkX/Pk4qna4fUvFyDLOlWzjVrY4bJOVhdmZXQhH9LwupptMJU0bOIAzw
-        ILGDQmi4Jif2mUkQL3mLRuzIeQNXHcnY2DhdikXb7MYDEgI5OnGFdBjfZW618X3wWVtCveG7UumIF
-        jH9m538Q==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jY5or-00013Q-A7; Mon, 11 May 2020 12:37:57 +0200
-Received: from [82.135.66.51] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jY5or-000Kt0-1x; Mon, 11 May 2020 12:37:57 +0200
-Subject: Re: [RFC PATCH 00/14] iio: buffer: add support for multiple buffers
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <20200508135348.15229-1-alexandru.ardelean@analog.com>
- <a9a47e84-b933-cca6-dcfb-d97a51c8bdd4@metafoo.de>
- <20200510110958.29046a18@archlinux>
- <8c5d9ef5ed4ea9037c5459daa2044d1cd7c5db7a.camel@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <c88b17c3-a9d6-e755-04e8-bc9f225e2a3b@metafoo.de>
-Date:   Mon, 11 May 2020 12:37:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1729207AbgEKMx5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 May 2020 08:53:57 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:37794 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726021AbgEKMx5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 May 2020 08:53:57 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04BCjEKM003361;
+        Mon, 11 May 2020 08:53:56 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 30wpc7wesp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 May 2020 08:53:55 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04BCrsEo038053
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 11 May 2020 08:53:54 -0400
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 11 May 2020 05:53:53 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 11 May 2020 05:53:52 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04BCro45017213;
+        Mon, 11 May 2020 08:53:51 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: buffer: remove attrcount_orig var from sysfs creation
+Date:   Mon, 11 May 2020 15:53:22 +0300
+Message-ID: <20200511125322.17147-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <8c5d9ef5ed4ea9037c5459daa2044d1cd7c5db7a.camel@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25808/Sun May 10 14:11:51 2020)
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-11_05:2020-05-11,2020-05-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=2 lowpriorityscore=0 spamscore=0 mlxlogscore=999
+ clxscore=1015 phishscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005110105
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/11/20 12:33 PM, Ardelean, Alexandru wrote:
-> On Sun, 2020-05-10 at 11:09 +0100, Jonathan Cameron wrote:
->> [External]
->>
->> On Sat, 9 May 2020 10:52:14 +0200
->> Lars-Peter Clausen <lars@metafoo.de> wrote:
->>
->>> On 5/8/20 3:53 PM, Alexandru Ardelean wrote:
->>>> [...]
->>>> What I don't like, is that iio:device3 has iio:buffer3:0 (to 3).
->>>> This is because the 'buffer->dev.parent = &indio_dev->dev'.
->>>> But I do feel this is correct.
->>>> So, now I don't know whether to leave it like that or symlink to shorter
->>>> versions like 'iio:buffer3:Y' -> 'iio:device3/bufferY'.
->>>> The reason for naming the IIO buffer devices to 'iio:bufferX:Y' is
->>>> mostly to make the names unique. It would have looked weird to do
->>>> '/dev/buffer1' if I would have named the buffer devices 'bufferX'.
->>>>
->>>> So, now I'm thinking of whether all this is acceptable.
->>>> Or what is acceptable?
->>>> Should I symlink 'iio:device3/iio:buffer3:0' -> 'iio:device3/buffer0'?
->>>> What else should I consider moving forward?
->>>> What means forward?
->>>> Where did I leave my beer?
->>> Looking at how the /dev/ devices are named I think we can provide a name
->>> that is different from the dev_name() of the device. Have a look at
->>> device_get_devnode() in drivers/base/core.c. We should be able to
->>> provide the name for the chardev through the devnode() callback.
->>>
->>> While we are at this, do we want to move the new devices into an iio
->>> subfolder? So iio/buffer0:0 instead of iio:buffer0:0?
->> Possibly on the folder.  I can't for the life of me remember why I decided
->> not to do that the first time around - I'll leave it at the
->> mysterious "it may turn out to be harder than you'd think..."
->> Hopefully not ;)
-> I was also thinking about the /dev/iio subfolder while doing this.
-> I can copy that from /dev/input
-> They seem to do it already.
-> I don't know how difficult it would be. But it looks like a good precedent.
+The variable no longer does anything.
+It should have been removed with commit 2e036804d773e ("iio: buffer: remove
+'scan_el_attrs' attribute group from buffer struct").
+That was about the last time this was needed.
 
-All you have to do is return "iio/..." from the devnode() callback.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
 
->
-> My concern regarding going to use stuff from core [like device_get_devnode()] is
-> that it seems to bypass some layers of kernel.
-> If I do 'git grep device_get_devnode', I get:
->
-> drivers/base/core.c:            name = device_get_devnode(dev, &mode, &uid,
-> &gid, &tmp);
-> drivers/base/core.c: * device_get_devnode - path of device node file
-> drivers/base/core.c:const char *device_get_devnode(struct device *dev,
-> drivers/base/devtmpfs.c:        req.name = device_get_devnode(dev, &req.mode,
-> &req.uid, &req.gid, &tmp);
-> drivers/base/devtmpfs.c:        req.name = device_get_devnode(dev, NULL, NULL,
-> NULL, &tmp);
-> include/linux/device.h:extern const char *device_get_devnode(struct device *dev,
-> (END)
->
-> So, basically, most uses of device_get_devnode() are in core code, and I feel
-> that this may be sanctioned somewhere by some core people, if I do it.
-> I could be wrong, but if you disagree, I'll take your word for it.
-You are not supposed to use the function itself, you should implement 
-the devnode() callback for the IIO bus, which is then used by the core 
-device_get_devnode() function.
+If desired (and still possible) this can be squashed in
+commit 2e036804d773e ("iio: buffer: remove 'scan_el_attrs' attribute group
+from buffer struct").
+
+ drivers/iio/industrialio-buffer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index eae39eaf49af..386c9231c2ee 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1244,7 +1244,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 	struct iio_dev_attr *p;
+ 	struct attribute **attr;
+ 	struct iio_buffer *buffer = indio_dev->buffer;
+-	int ret, i, attrn, attrcount, attrcount_orig = 0;
++	int ret, i, attrn, attrcount;
+ 	const struct iio_chan_spec *channels;
+ 
+ 	channels = indio_dev->channels;
+@@ -1288,7 +1288,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 
+ 	indio_dev->groups[indio_dev->groupcounter++] = &buffer->buffer_group;
+ 
+-	attrcount = attrcount_orig;
++	attrcount = 0;
+ 	INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
+ 	channels = indio_dev->channels;
+ 	if (channels) {
+@@ -1325,7 +1325,7 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 		ret = -ENOMEM;
+ 		goto error_free_scan_mask;
+ 	}
+-	attrn = attrcount_orig;
++	attrn = 0;
+ 
+ 	list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
+ 		buffer->scan_el_group.attrs[attrn++] = &p->dev_attr.attr;
+-- 
+2.17.1
 

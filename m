@@ -2,101 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 045CC1CF419
-	for <lists+linux-iio@lfdr.de>; Tue, 12 May 2020 14:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF71F1CF5C8
+	for <lists+linux-iio@lfdr.de>; Tue, 12 May 2020 15:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729382AbgELMRE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 May 2020 08:17:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726891AbgELMRD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 May 2020 08:17:03 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B238C061A0E
-        for <linux-iio@vger.kernel.org>; Tue, 12 May 2020 05:17:02 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id u4so10359342lfm.7
-        for <linux-iio@vger.kernel.org>; Tue, 12 May 2020 05:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AHRgMLmA3AvBWPfR6NKWwxmRE4rkD36q1pi3BiamBuk=;
-        b=zawdNdom/gNdPx47D4yLAoF6P7G0lSQgL3HWoaTE5pIWlvLTLXvSgmJEAGLFAG5VGb
-         /G7eaYc6og9aU4x4M7FTxm81UsoCa/45aiA5gY4tGQ2nVbaTMFmxcXsBl/dejya1fspB
-         vuywN7waQfGB/WfPQNp9AS0c8Tc7UP5ZRUi0fdRxxFlktSSVW9rccOOp2fxxlHUfQf5D
-         nEBX/9KNhiLH7lvfPT1ZjdrrfBc5k88EY57RUm+E8RKZ36irVE8C+CnyzGAJd56EWpX/
-         jE8zVu3h1jj2JT28gOJMBYBIh8b5mcGCW6IcPVx93BDudEuaAtSIbnMBWyTet65NItej
-         Gh0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AHRgMLmA3AvBWPfR6NKWwxmRE4rkD36q1pi3BiamBuk=;
-        b=jTJEAk1flTKiQaO7Y691tjnxCG9Bv6PnByb2YBKTEyqCWrItKJuV6+l1Ry6EOHqa2e
-         dIRn8jLWQmhiTodTfN+5V0IPe9e6t4wQKKnxvYu6lH7hxeZCyad6Fukf1KGeyrlSjwsr
-         rP5/XIX8YXpC41qgRodhobl63jsEquzv/N3MKA9qL6M318sMpvErGN8bnln5F/RU6DN9
-         4hdcohwtT7x1KeH4b/I9kU1ykLfg/FURp4mikuIGPEwJki3/5HQTJuGsWUaoccBzUN/S
-         01pJhNr44raHoCTCOLKlCfFdXIM97/7xGq8LnWeD5u8N6fdx54i7lvedZ7BU/dT59R83
-         AC6w==
-X-Gm-Message-State: AOAM530DLrb3w93TqGXxi+pJwb834myQasZ4MWHSHQNC8xZoCXq+zV6E
-        c4XmukH4q3pz4GoXawhRoRmylNQsK38Yt4oe/sqMSQ==
-X-Google-Smtp-Source: ABdhPJznRAGEou4bDAZ+Qk/iOY8Hj6nqKR5DclT1eBmeTxgT/t1dvz+w7MKesU2FRotY9nN6kN31SK96tUzVsopvN4M=
-X-Received: by 2002:ac2:5588:: with SMTP id v8mr14010972lfg.217.1589285820682;
- Tue, 12 May 2020 05:17:00 -0700 (PDT)
+        id S1730054AbgELN1p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 May 2020 09:27:45 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:9574 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727783AbgELN1n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 May 2020 09:27:43 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04CDMIfc025657;
+        Tue, 12 May 2020 15:27:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=+QVbU7pKjwzPGFYYPGKUWMEDgUaEdm0KEavReVltEBo=;
+ b=jE6drnut+pDhoj5a0iOHjZNlYrBKoU2KqGec8sjwv6QP9/V9fI924spx58KBmr+glQ6n
+ g/Q5mLrb0U+2idE/ZpEfWe2PzqKSsCIrbr2Rfd79CJ0OC8y0HuJYL8Z/9Ef5Ylpzdkns
+ 1mWYzn5vyj02ohs8sBIlpTPG4UtfA5nReA2r35eW0LAg9RT/aNiJwhQsl8jcllYsSswK
+ w5HPWbDlF3gETOMTpiH/9Mt2ScIcSMn+X939sJaND0HL47V5G+MgMeHcswDu7KDw88sy
+ uqlC1gAv+pbSQjUMcy2i4PABy2PfysrUtZhcmsdPOSvQ/4QsLdOQ9b+Lg0Iook36HAbE yw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 30wj9wgrnm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 May 2020 15:27:31 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B2FDB100038;
+        Tue, 12 May 2020 15:27:30 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A60FB2C38D2;
+        Tue, 12 May 2020 15:27:30 +0200 (CEST)
+Received: from localhost (10.75.127.47) by SFHDAG5NODE3.st.com (10.75.127.15)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 May 2020 15:27:30
+ +0200
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <jic23@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
+        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH] iio: adc: stm32-adc: fix a wrong error message when probing interrupts
+Date:   Tue, 12 May 2020 15:27:05 +0200
+Message-ID: <1589290025-23857-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-References: <20200430143019.1704-1-brgl@bgdev.pl> <20200430143019.1704-3-brgl@bgdev.pl>
-In-Reply-To: <20200430143019.1704-3-brgl@bgdev.pl>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 12 May 2020 14:16:49 +0200
-Message-ID: <CACRpkdbzyMY2uOZ4woKyv0otYyO9fK7zSsBaYHtCB6Z+Xtm7Mg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] irq/irq_sim: simplify the API
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-12_03:2020-05-11,2020-05-12 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 30, 2020 at 4:30 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+A wrong error message is printed out currently, like on STM32MP15:
+- stm32-adc-core 48003000.adc: IRQ index 2 not found.
 
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
->
-> The interrupt simulator API exposes a lot of custom data structures and
-> functions and doesn't reuse the interfaces already exposed by the irq
-> subsystem. This patch tries to address it.
->
-> We hide all the simulator-related data structures from users and instead
-> rely on the well-known irq domain. When creating the interrupt simulator
-> the user receives a pointer to a newly created irq_domain and can use it
-> to create mappings for simulated interrupts.
->
-> It is also possible to pass a handle to fwnode when creating the simulator
-> domain and retrieve it using irq_find_matching_fwnode().
->
-> The irq_sim_fire() function now only takes the virtual interrupt number
-> as argument - there's no need anymore to pass it any data structure linked
-> to the simulator.
->
-> We modify the two modules that use the simulator at the same time as
-> adding these changes in order to reduce the intermediate bloat that would
-> result when trying to migrate the drivers in separate patches.
->
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
+This is seen since commit 7723f4c5ecdb ("driver core: platform: Add an
+error message to platform_get_irq*()").
+The STM32 ADC core driver wrongly requests up to 3 interrupt lines. It
+should request only the necessary IRQs, based on the compatible:
+- stm32f4/h7 ADCs share a common interrupt
+- stm32mp1, has one interrupt line per ADC.
+So add the number of required interrupts to the compatible data.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
 
-Yours,
-Linus Walleij
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+---
+ drivers/iio/adc/stm32-adc-core.c | 34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index ebe5dbc..3586369 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -65,12 +65,14 @@ struct stm32_adc_priv;
+  * @clk_sel:	clock selection routine
+  * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+  * @has_syscfg: SYSCFG capability flags
++ * @num_irqs:	number of interrupt lines
+  */
+ struct stm32_adc_priv_cfg {
+ 	const struct stm32_adc_common_regs *regs;
+ 	int (*clk_sel)(struct platform_device *, struct stm32_adc_priv *);
+ 	u32 max_clk_rate_hz;
+ 	unsigned int has_syscfg;
++	unsigned int num_irqs;
+ };
+ 
+ /**
+@@ -375,21 +377,15 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
+ 	struct device_node *np = pdev->dev.of_node;
+ 	unsigned int i;
+ 
+-	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
++	/*
++	 * Interrupt(s) must be provided, depending on the compatible:
++	 * - stm32f4/h7 shares a common interrupt line.
++	 * - stm32mp1, has one line per ADC
++	 */
++	for (i = 0; i < priv->cfg->num_irqs; i++) {
+ 		priv->irq[i] = platform_get_irq(pdev, i);
+-		if (priv->irq[i] < 0) {
+-			/*
+-			 * At least one interrupt must be provided, make others
+-			 * optional:
+-			 * - stm32f4/h7 shares a common interrupt.
+-			 * - stm32mp1, has one line per ADC (either for ADC1,
+-			 *   ADC2 or both).
+-			 */
+-			if (i && priv->irq[i] == -ENXIO)
+-				continue;
+-
++		if (priv->irq[i] < 0)
+ 			return priv->irq[i];
+-		}
+ 	}
+ 
+ 	priv->domain = irq_domain_add_simple(np, STM32_ADC_MAX_ADCS, 0,
+@@ -400,9 +396,7 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
+ 		return -ENOMEM;
+ 	}
+ 
+-	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
+-		if (priv->irq[i] < 0)
+-			continue;
++	for (i = 0; i < priv->cfg->num_irqs; i++) {
+ 		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+ 		irq_set_handler_data(priv->irq[i], priv);
+ 	}
+@@ -420,11 +414,8 @@ static void stm32_adc_irq_remove(struct platform_device *pdev,
+ 		irq_dispose_mapping(irq_find_mapping(priv->domain, hwirq));
+ 	irq_domain_remove(priv->domain);
+ 
+-	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
+-		if (priv->irq[i] < 0)
+-			continue;
++	for (i = 0; i < priv->cfg->num_irqs; i++)
+ 		irq_set_chained_handler(priv->irq[i], NULL);
+-	}
+ }
+ 
+ static int stm32_adc_core_switches_supply_en(struct stm32_adc_priv *priv,
+@@ -824,6 +815,7 @@ static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
+ 	.regs = &stm32f4_adc_common_regs,
+ 	.clk_sel = stm32f4_adc_clk_sel,
+ 	.max_clk_rate_hz = 36000000,
++	.num_irqs = 1,
+ };
+ 
+ static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+@@ -831,6 +823,7 @@ static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+ 	.clk_sel = stm32h7_adc_clk_sel,
+ 	.max_clk_rate_hz = 36000000,
+ 	.has_syscfg = HAS_VBOOSTER,
++	.num_irqs = 1,
+ };
+ 
+ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+@@ -838,6 +831,7 @@ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+ 	.clk_sel = stm32h7_adc_clk_sel,
+ 	.max_clk_rate_hz = 40000000,
+ 	.has_syscfg = HAS_VBOOSTER | HAS_ANASWVDD,
++	.num_irqs = 2,
+ };
+ 
+ static const struct of_device_id stm32_adc_of_match[] = {
+-- 
+2.7.4
+

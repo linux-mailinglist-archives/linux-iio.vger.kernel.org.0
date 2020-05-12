@@ -2,164 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC521CF955
-	for <lists+linux-iio@lfdr.de>; Tue, 12 May 2020 17:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 264AC1CFA37
+	for <lists+linux-iio@lfdr.de>; Tue, 12 May 2020 18:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727882AbgELPhR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 May 2020 11:37:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37424 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727847AbgELPhR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 12 May 2020 11:37:17 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D895206CC;
-        Tue, 12 May 2020 15:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589297836;
-        bh=1O6ZykHvXDJEczjrH9LJuh8X1yHOP7Q/30u8pa72BCY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fqwakY8meehODH74gpckFTa+Mh+b6xO0w7sFxmlOy9XVG4nwxGnTy6d/fTPn2KKM2
-         FpnaUhXQ4zcFpBOJudkbcySubJ2+F+jCEnuxGUDYz6Hh3Axo6CPTcFQ7NCAH24bj08
-         0hH/vzANpANCy0xlayV1dZeLa4UcnByWyMsY1C90=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1jYWy2-00Bh0h-Rd; Tue, 12 May 2020 16:37:14 +0100
+        id S1725816AbgELQM1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 May 2020 12:12:27 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:36918 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725554AbgELQM0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 May 2020 12:12:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589299945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uX9QSrsP6SNGoecHj2+wNvMeZvXQ9loaQHcLwtT0KSI=;
+        b=GWQaBfKYEpImd578QR5QH7Xx1a9RSu+W87UOTvS1MW+6LCk3Os0w2dYg5EWPenTc+NFoS0
+        DH3/PX+mBdXOauemoNts3nkd/jk0DOvPXuxqQKveuOpACj8+b/HaywF79vcP5yMcw07tEj
+        v4D2eCar0gfYkKGLObeLNieRBzPZvrI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-121-HfnUPVYVPPO_PfuEi3fYvQ-1; Tue, 12 May 2020 12:12:16 -0400
+X-MC-Unique: HfnUPVYVPPO_PfuEi3fYvQ-1
+Received: by mail-wr1-f69.google.com with SMTP id j16so7131290wrw.20
+        for <linux-iio@vger.kernel.org>; Tue, 12 May 2020 09:12:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uX9QSrsP6SNGoecHj2+wNvMeZvXQ9loaQHcLwtT0KSI=;
+        b=azuW3xX2q/2qc89slPw0GddPTzUxbPK8C0zMBdL05Eg2TxxSUkjuZPjwgI23WTO3lv
+         /64bzAm8z/OosloTCpd8z5pWN3yFqaidJKftM8vaV02z6BAxbF+Lh4POSjLUFEkwDMlW
+         +wimzzw4s/A4H3F4jRu3WjdeBA258alfLvqAblLOvk0QCu2c+fNbynROZX2ZNQflGEc+
+         6rN53cNA+FgZ7CX2fBaeEP5QOzZIxL1WiN1SA3UgQKJXN3l8OoYfXebHQYx5UASBtyZf
+         EiB5RbLmJsLRy/8lOt3Ux5kAx7PUvDkVLgOV8KRA3cXi5G5uUlU+seWUtrmSFSU0uum6
+         EZCg==
+X-Gm-Message-State: AGi0PuY4vxaBLJlSRwIuMFtv+usxE3ZeEcZrcW+Wiee00NAqlq4z60DQ
+        IXs8ZDOH3Y8Urx+LQx1owmEmYaQSocp8Mti2OEOPdCJCzdpnamAQrVYbvo03P5lRLr8wV3D2zzn
+        1W833Yii5EKsrD9b37x0l
+X-Received: by 2002:a5d:6705:: with SMTP id o5mr26609518wru.426.1589299934885;
+        Tue, 12 May 2020 09:12:14 -0700 (PDT)
+X-Google-Smtp-Source: APiQypINmuOcgnkxWK2SR2cw4GR9aPlPVSuCgb5S27bmnibPcHn5OsS0s10/FyI4AvdddR+yZTwCKg==
+X-Received: by 2002:a5d:6705:: with SMTP id o5mr26609504wru.426.1589299934689;
+        Tue, 12 May 2020 09:12:14 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id s8sm22767395wrt.69.2020.05.12.09.12.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2020 09:12:14 -0700 (PDT)
+Subject: Re: linux-iio and Windows default orientations
+To:     Bastien Nocera <hadess@hadess.net>, linux-iio@vger.kernel.org
+References: <16f4bfe1c254798291507aca00afeb2c8b0978a7.camel@hadess.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <fad058f5-ba5c-0cf2-317f-c0bb8457846e@redhat.com>
+Date:   Tue, 12 May 2020 18:12:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 12 May 2020 16:37:14 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 2/2] irq/irq_sim: simplify the API
-In-Reply-To: <20200430143019.1704-3-brgl@bgdev.pl>
-References: <20200430143019.1704-1-brgl@bgdev.pl>
- <20200430143019.1704-3-brgl@bgdev.pl>
-User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <6568919d6cc3ee8f602a58354e3aff44@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: brgl@bgdev.pl, linus.walleij@linaro.org, jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, tglx@linutronix.de, jason@lakedaemon.net, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, bgolaszewski@baylibre.com, Jonathan.Cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+In-Reply-To: <16f4bfe1c254798291507aca00afeb2c8b0978a7.camel@hadess.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Bartosz,
+Hi,
 
-On 2020-04-30 15:30, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On 5/12/20 3:55 PM, Bastien Nocera wrote:
+> Hey,
 > 
-> The interrupt simulator API exposes a lot of custom data structures and
-> functions and doesn't reuse the interfaces already exposed by the irq
-> subsystem. This patch tries to address it.
+> I'm just dotting the is, and crossing the ts on a bunch of iio-sensor-
+> proxy documentation and wanted to revisit the IIO documentation,
+> compared to what Windows, and my implementation did.
 > 
-> We hide all the simulator-related data structures from users and 
-> instead
-> rely on the well-known irq domain. When creating the interrupt 
-> simulator
-> the user receives a pointer to a newly created irq_domain and can use 
-> it
-> to create mappings for simulated interrupts.
+> Does this:
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/Documentation/ABI/testing/sysfs-bus-iio#n1638
+> in particular the "Z" axis:
+> "Z is perpendicular to the screen plane and positive out of the screen"
 > 
-> It is also possible to pass a handle to fwnode when creating the 
-> simulator
-> domain and retrieve it using irq_find_matching_fwnode().
-> 
-> The irq_sim_fire() function now only takes the virtual interrupt number
-> as argument - there's no need anymore to pass it any data structure 
-> linked
-> to the simulator.
-> 
-> We modify the two modules that use the simulator at the same time as
-> adding these changes in order to reduce the intermediate bloat that 
-> would
-> result when trying to migrate the drivers in separate patches.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
-> ---
->  drivers/gpio/gpio-mockup.c          |  47 ++++--
->  drivers/iio/dummy/iio_dummy_evgen.c |  32 ++--
->  include/linux/irq_sim.h             |  34 ++---
->  kernel/irq/Kconfig                  |   1 +
->  kernel/irq/irq_sim.c                | 225 +++++++++++++++++-----------
->  5 files changed, 202 insertions(+), 137 deletions(-)
+> match this:
+> https://docs.microsoft.com/en-us/windows/uwp/devices-sensors/sensor-orientation
+> "with the positive z-axis extending out from the device."
 
-[...]
+Yes I believe that the 2 are stating the same, this is also how the
+Z axis works on Android I believe. If you put a phone or tablet
+flat on a table with the display up, then you will get a -1.0G or -9.8 m/s²
+reading since the gravity is pulling downwards (away from the front of
+the screen) with 1G.
 
->  /**
->   * irq_sim_fire - Enqueue an interrupt.
->   *
-> - * @sim:        The interrupt simulator object.
-> - * @offset:     Offset of the simulated interrupt which should be 
-> fired.
-> + * @virq:       Virtual interrupt number to fire. It must be 
-> associated with
-> + *              an existing interrupt simulator.
->   */
-> -void irq_sim_fire(struct irq_sim *sim, unsigned int offset)
-> +void irq_sim_fire(int virq)
->  {
-> -	if (sim->irqs[offset].enabled) {
-> -		set_bit(offset, sim->work_ctx.pending);
-> -		irq_work_queue(&sim->work_ctx.work);
-> +	struct irq_sim_irq_ctx *irq_ctx;
-> +	struct irq_data *irqd;
-> +
-> +	irqd = irq_get_irq_data(virq);
-> +	if (!irqd) {
-> +		pr_warn_ratelimited("%s: invalid irq number\n", __func__);
-> +		return;
->  	}
-> -}
-> -EXPORT_SYMBOL_GPL(irq_sim_fire);
+> This Microsoft page didn't exist when I changed the code to "match
+> Windows 10" in 2016:
+> https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/commit/35b6328cbdaa5efa30917c445962d64fd733fb02
 > 
-> -/**
-> - * irq_sim_irqnum - Get the allocated number of a dummy interrupt.
-> - *
-> - * @sim:        The interrupt simulator object.
-> - * @offset:     Offset of the simulated interrupt for which to 
-> retrieve
-> - *              the number.
-> - */
-> -int irq_sim_irqnum(struct irq_sim *sim, unsigned int offset)
-> -{
-> -	return sim->irqs[offset].irqnum;
-> +	irq_ctx = irq_data_get_irq_chip_data(irqd);
-> +
-> +	if (irq_ctx->enabled) {
-> +		set_bit(irqd_to_hwirq(irqd), irq_ctx->work_ctx->pending);
-> +		irq_work_queue(&irq_ctx->work_ctx->work);
-> +	}
->  }
-> -EXPORT_SYMBOL_GPL(irq_sim_irqnum);
-> +EXPORT_SYMBOL_GPL(irq_sim_fire);
+> (And just to double check, it seems that the other 2 axis do match in
+> their definitions, right?)
 
-Rather than using an ad-hoc API to queue an interrupt, why don't you
-actually implement the interface that already exists for this at
-the irqchip level (irq_set_irqchip_state, which allows the pending
-state to be set)?
+Yes I believe they do, and also again Android's definition.
 
-Thanks,
+Regards,
 
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Hans
+

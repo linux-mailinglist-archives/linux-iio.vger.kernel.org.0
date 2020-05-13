@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F57B1D0BF1
-	for <lists+linux-iio@lfdr.de>; Wed, 13 May 2020 11:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A04601D0BF7
+	for <lists+linux-iio@lfdr.de>; Wed, 13 May 2020 11:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727051AbgEMJXJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 May 2020 05:23:09 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:41865 "EHLO
+        id S1730822AbgEMJXl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 May 2020 05:23:41 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:28694 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727944AbgEMJXH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 May 2020 05:23:07 -0400
+        by vger.kernel.org with ESMTP id S1728354AbgEMJXk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 May 2020 05:23:40 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589361786; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1589361819; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=6WWwVsPPArhdY0nuvtWt0RLOjGecQuQ1BWm18rpTXPw=; b=xAw6ielE4OY0UMXciNk4Hmfnf6QdPAyFvf98Fud8XzUbaci5vtwzT0aBL1Yhi7iQmn0U+Wlh
- aP8qVJRrL6dKMgioMMRnlVsbO02ZSOX6EHRJz/KNCTi9LvT4t2qTQuFfbpi8Gbz5gZ7NBAJa
- 8e/9838giq2wKZhJxhveM3WTjrc=
+ bh=OnTsx3hVw260M58Fyrp9t3cwB0aY06cvTjRYOHHRa7E=; b=kmXjUuZb+FWBwJwLSMPazJqR/jTN4ewUG81gWNDq5fhCWX4gs0tTeSsNIRyWnm8FrCNhXNd9
+ qptO1SoM7zz0GYwo+b4ROfRyKqJ2w1aqVvVjyt2T6u/SVEdeqBWzdpn84EaIvEdK+a51zvd6
+ KBuzCtLfIyFJnq4aQqZuLeUjLV0=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebbbc70.7ffa503cfd50-smtp-out-n02;
- Wed, 13 May 2020 09:22:56 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ebbbc8f.7f460f2d6df8-smtp-out-n04;
+ Wed, 13 May 2020 09:23:27 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 30916C433D2; Wed, 13 May 2020 09:22:55 +0000 (UTC)
+        id 140DAC4478C; Wed, 13 May 2020 09:23:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -33,9 +33,9 @@ Received: from jprakash-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-O
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: jprakash)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 25CEFC433F2;
-        Wed, 13 May 2020 09:22:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 25CEFC433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9EC27C43636;
+        Wed, 13 May 2020 09:23:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9EC27C43636
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
 From:   Jishnu Prakash <jprakash@codeaurora.org>
@@ -53,11 +53,11 @@ To:     agross@kernel.org, bjorn.andersson@linaro.org,
         Mark Rutland <mark.rutland@arm.com>,
         Jishnu Prakash <jprakash@codeaurora.org>,
         Amit Kucheria <amit.kucheria@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
-Subject: [PATCH V4 1/5] iio: adc: Convert the QCOM SPMI ADC bindings to .yaml format
-Date:   Wed, 13 May 2020 14:52:12 +0530
-Message-Id: <1589361736-816-2-git-send-email-jprakash@codeaurora.org>
+        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc:     linux-arm-msm-owner@vger.kernel.org
+Subject: [PATCH V4 2/5] iio: adc: Add PMIC7 ADC bindings
+Date:   Wed, 13 May 2020 14:52:13 +0530
+Message-Id: <1589361736-816-3-git-send-email-jprakash@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1589361736-816-1-git-send-email-jprakash@codeaurora.org>
 References: <1589361736-816-1-git-send-email-jprakash@codeaurora.org>
@@ -66,455 +66,494 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the adc bindings from .txt to .yaml format.
+Add documentation for PMIC7 ADC peripheral.
+For the PMIC7-type PMICs, ADC peripheral is present in HW for the
+following PMICs: PMK8350, PM8350, PM8350b, PMR735a and PMR735b.
+Of these, only the ADC peripheral on PMK8350 is exposed directly to SW.
+If SW needs to communicate with ADCs on other PMICs, it specifies the
+PMIC to PMK8350 through the newly added SID register and communication
+between PMK8350 ADC and other PMIC ADCs is carried out through
+PBS(Programmable Boot Sequence) at the firmware level.
+
+In addition, add definitions for ADC channels and virtual channel
+definitions (combination of ADC channel number and PMIC SID number)
+per PMIC, to be used by ADC clients for PMIC7.
 
 Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
 Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
 Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../devicetree/bindings/iio/adc/qcom,spmi-vadc.txt | 173 --------------
- .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 252 +++++++++++++++++++++
- 2 files changed, 252 insertions(+), 173 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 38 ++++++++--
+ include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h    | 67 ++++++++++++++++
+ include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h   | 88 ++++++++++++++++++++++
+ include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h   | 46 +++++++++++
+ include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h   | 28 +++++++
+ include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h   | 28 +++++++
+ include/dt-bindings/iio/qcom,spmi-vadc.h           | 78 ++++++++++++++++++-
+ 7 files changed, 366 insertions(+), 7 deletions(-)
+ create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
+ create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
+ create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+ create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
+ create mode 100644 include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
-deleted file mode 100644
-index c878768..0000000
---- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
-+++ /dev/null
-@@ -1,173 +0,0 @@
--Qualcomm's SPMI PMIC ADC
--
--- SPMI PMIC voltage ADC (VADC) provides interface to clients to read
--  voltage. The VADC is a 15-bit sigma-delta ADC.
--- SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
--  voltage. The VADC is a 16-bit sigma-delta ADC.
--
--VADC node:
--
--- compatible:
--    Usage: required
--    Value type: <string>
--    Definition: Should contain "qcom,spmi-vadc".
--                Should contain "qcom,spmi-adc5" for PMIC5 ADC driver.
--                Should contain "qcom,spmi-adc-rev2" for PMIC rev2 ADC driver.
--                Should contain "qcom,pms405-adc" for PMS405 PMIC
--
--- reg:
--    Usage: required
--    Value type: <prop-encoded-array>
--    Definition: VADC base address in the SPMI PMIC register map.
--
--- #address-cells:
--    Usage: required
--    Value type: <u32>
--    Definition: Must be one. Child node 'reg' property should define ADC
--            channel number.
--
--- #size-cells:
--    Usage: required
--    Value type: <u32>
--    Definition: Must be zero.
--
--- #io-channel-cells:
--    Usage: required
--    Value type: <u32>
--    Definition: Must be one. For details about IIO bindings see:
--            Documentation/devicetree/bindings/iio/iio-bindings.txt
--
--- interrupts:
--    Usage: optional
--    Value type: <prop-encoded-array>
--    Definition: End of conversion interrupt.
--
--Channel node properties:
--
--- reg:
--    Usage: required
--    Value type: <u32>
--    Definition: ADC channel number.
--            See include/dt-bindings/iio/qcom,spmi-vadc.h
--
--- label:
--    Usage: required for "qcom,spmi-adc5" and "qcom,spmi-adc-rev2"
--    Value type: <empty>
--    Definition: ADC input of the platform as seen in the schematics.
--            For thermistor inputs connected to generic AMUX or GPIO inputs
--            these can vary across platform for the same pins. Hence select
--            the platform schematics name for this channel.
--
--- qcom,decimation:
--    Usage: optional
--    Value type: <u32>
--    Definition: This parameter is used to decrease ADC sampling rate.
--            Quicker measurements can be made by reducing decimation ratio.
--            - For compatible property "qcom,spmi-vadc", valid values are
--              512, 1024, 2048, 4096. If property is not found, default value
--              of 512 will be used.
--            - For compatible property "qcom,spmi-adc5", valid values are 250, 420
--              and 840. If property is not found, default value of 840 is used.
--            - For compatible property "qcom,spmi-adc-rev2", valid values are 256,
--              512 and 1024. If property is not present, default value is 1024.
--
--- qcom,pre-scaling:
--    Usage: optional
--    Value type: <u32 array>
--    Definition: Used for scaling the channel input signal before the signal is
--            fed to VADC. The configuration for this node is to know the
--            pre-determined ratio and use it for post scaling. Select one from
--            the following options.
--            <1 1>, <1 3>, <1 4>, <1 6>, <1 20>, <1 8>, <10 81>, <1 10>
--            If property is not found default value depending on chip will be used.
--
--- qcom,ratiometric:
--    Usage: optional
--    Value type: <empty>
--    Definition: Channel calibration type.
--            - For compatible property "qcom,spmi-vadc", if this property is
--              specified VADC will use the VDD reference (1.8V) and GND for
--              channel calibration. If property is not found, channel will be
--              calibrated with 0.625V and 1.25V reference channels, also
--              known as absolute calibration.
--            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
--              if this property is specified VADC will use the VDD reference
--              (1.875V) and GND for channel calibration. If property is not found,
--              channel will be calibrated with 0V and 1.25V reference channels,
--              also known as absolute calibration.
--
--- qcom,hw-settle-time:
--    Usage: optional
--    Value type: <u32>
--    Definition: Time between AMUX getting configured and the ADC starting
--            conversion. The 'hw_settle_time' is an index used from valid values
--            and programmed in hardware to achieve the hardware settling delay.
--            - For compatible property "qcom,spmi-vadc" and "qcom,spmi-adc-rev2",
--              Delay = 100us * (hw_settle_time) for hw_settle_time < 11,
--              and 2ms * (hw_settle_time - 10) otherwise.
--              Valid values are: 0, 100, 200, 300, 400, 500, 600, 700, 800,
--              900 us and 1, 2, 4, 6, 8, 10 ms.
--              If property is not found, channel will use 0us.
--            - For compatible property "qcom,spmi-adc5", delay = 15us for
--              value 0, 100us * (value) for values < 11,
--              and 2ms * (value - 10) otherwise.
--              Valid values are: 15, 100, 200, 300, 400, 500, 600, 700, 800,
--              900 us and 1, 2, 4, 6, 8, 10 ms
--              Certain controller digital versions have valid values of
--              15, 100, 200, 300, 400, 500, 600, 700, 1, 2, 4, 8, 16, 32, 64, 128 ms
--              If property is not found, channel will use 15us.
--
--- qcom,avg-samples:
--    Usage: optional
--    Value type: <u32>
--    Definition: Number of samples to be used for measurement.
--            Averaging provides the option to obtain a single measurement
--            from the ADC that is an average of multiple samples. The value
--            selected is 2^(value).
--            - For compatible property "qcom,spmi-vadc", valid values
--              are: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
--              If property is not found, 1 sample will be used.
--            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
--              valid values are: 1, 2, 4, 8, 16
--              If property is not found, 1 sample will be used.
--
--NOTE:
--
--For compatible property "qcom,spmi-vadc" following channels, also known as
--reference point channels, are used for result calibration and their channel
--configuration nodes should be defined:
--VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
--VADC_GND_REF and VADC_VDD_VADC.
--
--Example:
--
--#include <dt-bindings/iio/qcom,spmi-vadc.h>
--#include <linux/irq.h>
--/* ... */
--
--	/* VADC node */
--	pmic_vadc: vadc@3100 {
--		compatible = "qcom,spmi-vadc";
--		reg = <0x3100>;
--		interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		#io-channel-cells = <1>;
--		io-channel-ranges;
--
--		/* Channel node */
--		adc-chan@VADC_LR_MUX10_USB_ID {
--			reg = <VADC_LR_MUX10_USB_ID>;
--			qcom,decimation = <512>;
--			qcom,ratiometric;
--			qcom,hw-settle-time = <200>;
--			qcom,avg-samples = <1>;
--			qcom,pre-scaling = <1 3>;
--		};
--	};
--
--	/* IIO client node */
--	usb {
--		io-channels = <&pmic_vadc VADC_LR_MUX10_USB_ID>;
--		io-channel-names = "vadc";
--	};
 diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-new file mode 100644
-index 0000000..de8d243
---- /dev/null
+index de8d243..e6263b6 100644
+--- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-@@ -0,0 +1,252 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/qcom,spmi-vadc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Qualcomm's SPMI PMIC ADC
-+
-+maintainers:
-+  - Andy Gross <agross@kernel.org>
-+  - Bjorn Andersson <bjorn.andersson@linaro.org>
-+
-+description: |
-+  SPMI PMIC voltage ADC (VADC) provides interface to clients to read
-+  voltage. The VADC is a 15-bit sigma-delta ADC.
-+  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
-+  voltage. The VADC is a 16-bit sigma-delta ADC.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: qcom,pms405-adc
-+          - const: qcom,spmi-adc-rev2
-+
-+      - items:
-+        - enum:
-+          - qcom,spmi-vadc
-+          - qcom,spmi-adc5
-+          - qcom,spmi-adc-rev2
-+
-+  reg:
-+    description: VADC base address in the SPMI PMIC register map
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  '#io-channel-cells':
-+    const: 1
-+
-+  interrupts:
-+    maxItems: 1
-+    description:
-+      End of conversion interrupt.
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#address-cells'
-+  - '#size-cells'
-+  - '#io-channel-cells'
-+
-+patternProperties:
-+  "^.*@[0-9a-f]+$":
-+    type: object
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+      For compatible property "qcom,spmi-vadc" following channels, also known as
-+      reference point channels, are used for result calibration and their channel
-+      configuration nodes should be defined:
-+      VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
-+      VADC_GND_REF and VADC_VDD_VADC.
-+
-+    properties:
-+      reg:
-+        description: |
-+          ADC channel number.
-+          See include/dt-bindings/iio/qcom,spmi-vadc.h
-+
-+      label:
-+        $ref: /schemas/types.yaml#/definitions/string
-+        description: |
-+            ADC input of the platform as seen in the schematics.
-+            For thermistor inputs connected to generic AMUX or GPIO inputs
-+            these can vary across platform for the same pins. Hence select
-+            the platform schematics name for this channel.
-+
-+      qcom,decimation:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description: |
-+            This parameter is used to decrease ADC sampling rate.
-+            Quicker measurements can be made by reducing decimation ratio.
-+
-+      qcom,pre-scaling:
-+        description: |
-+            Used for scaling the channel input signal before the signal is
-+            fed to VADC. The configuration for this node is to know the
-+            pre-determined ratio and use it for post scaling. It is a pair of
-+            integers, denoting the numerator and denominator of the fraction by which
-+            input signal is multiplied. For example, <1 3> indicates the signal is scaled
-+            down to 1/3 of its value before ADC measurement.
-+            If property is not found default value depending on chip will be used.
-+        allOf:
-+          - $ref: /schemas/types.yaml#/definitions/uint32-array
-+        oneOf:
-+          - items:
-+            - const: 1
-+            - enum: [ 1, 3, 4, 6, 20, 8, 10 ]
-+
-+          - items:
-+            - const: 10
-+            - const: 81
-+
-+      qcom,ratiometric:
-+        description: |
-+            Channel calibration type.
-+            - For compatible property "qcom,spmi-vadc", if this property is
-+              specified VADC will use the VDD reference (1.8V) and GND for
-+              channel calibration. If property is not found, channel will be
-+              calibrated with 0.625V and 1.25V reference channels, also
-+              known as absolute calibration.
-+            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
-+              if this property is specified VADC will use the VDD reference (1.875V)
-+              and GND for channel calibration. If property is not found, channel
-+              will be calibrated with 0V and 1.25V reference channels, also known
-+              as absolute calibration.
-+        type: boolean
-+
-+      qcom,hw-settle-time:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description: |
-+            Time between AMUX getting configured and the ADC starting
-+            conversion. The 'hw_settle_time' is an index used from valid values
-+            and programmed in hardware to achieve the hardware settling delay.
-+
-+      qcom,avg-samples:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description: |
-+            Number of samples to be used for measurement.
-+            Averaging provides the option to obtain a single measurement
-+            from the ADC that is an average of multiple samples. The value
-+            selected is 2^(value).
-+
-+    required:
-+      - reg
-+
-+allOf:
+@@ -13,7 +13,7 @@ maintainers:
+ description: |
+   SPMI PMIC voltage ADC (VADC) provides interface to clients to read
+   voltage. The VADC is a 15-bit sigma-delta ADC.
+-  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
++  SPMI PMIC5/PMIC7 voltage ADC (ADC) provides interface to clients to read
+   voltage. The VADC is a 16-bit sigma-delta ADC.
+ 
+ properties:
+@@ -28,6 +28,7 @@ properties:
+           - qcom,spmi-vadc
+           - qcom,spmi-adc5
+           - qcom,spmi-adc-rev2
++          - qcom,spmi-adc7
+ 
+   reg:
+     description: VADC base address in the SPMI PMIC register map
+@@ -70,6 +71,8 @@ patternProperties:
+         description: |
+           ADC channel number.
+           See include/dt-bindings/iio/qcom,spmi-vadc.h
++          For PMIC7 ADC, the channel numbers are specified separately per PMIC
++          in the PMIC-specific files in include/dt-bindings/iio/.
+ 
+       label:
+         $ref: /schemas/types.yaml#/definitions/string
+@@ -113,11 +116,11 @@ patternProperties:
+               channel calibration. If property is not found, channel will be
+               calibrated with 0.625V and 1.25V reference channels, also
+               known as absolute calibration.
+-            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+-              if this property is specified VADC will use the VDD reference (1.875V)
+-              and GND for channel calibration. If property is not found, channel
+-              will be calibrated with 0V and 1.25V reference channels, also known
+-              as absolute calibration.
++            - For compatible property "qcom,spmi-adc5", "qcom,spmi-adc7" and
++              "qcom,spmi-adc-rev2", if this property is specified VADC will use
++              the VDD reference (1.875V) and GND for channel calibration. If
++              property is not found, channel will be calibrated with 0V and 1.25V
++              reference channels, also known as absolute calibration.
+         type: boolean
+ 
+       qcom,hw-settle-time:
+@@ -208,6 +211,29 @@ allOf:
+               enum: [ 1, 2, 4, 8, 16 ]
+               default: 1
+ 
 +  - if:
 +      properties:
 +        compatible:
 +          contains:
-+            const: qcom,spmi-vadc
++            const: qcom,spmi-adc7
 +
 +    then:
 +      patternProperties:
 +        "^.*@[0-9a-f]+$":
 +          properties:
 +            qcom,decimation:
-+              enum: [ 512, 1024, 2048, 4096 ]
-+              default: 512
++              enum: [ 85, 340, 1360 ]
++              default: 1360
 +
 +            qcom,hw-settle-time:
-+              enum: [ 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
-+                      4, 6, 8, 10 ]
-+              default: 0
-+
-+            qcom,avg-samples:
-+              enum: [ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 ]
-+              default: 1
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: qcom,spmi-adc-rev2
-+
-+    then:
-+      patternProperties:
-+        "^.*@[0-9a-f]+$":
-+          properties:
-+            qcom,decimation:
-+              enum: [ 256, 512, 1024 ]
-+              default: 1024
-+
-+            qcom,hw-settle-time:
-+              enum: [ 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
-+                      4, 6, 8, 10 ]
-+              default: 0
-+
-+            qcom,avg-samples:
-+              enum: [ 1, 2, 4, 8, 16 ]
-+              default: 1
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: qcom,spmi-adc5
-+
-+    then:
-+      patternProperties:
-+        "^.*@[0-9a-f]+$":
-+          properties:
-+            qcom,decimation:
-+              enum: [ 250, 420, 840 ]
-+              default: 840
-+
-+            qcom,hw-settle-time:
-+              enum: [ 15, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
-+                      4, 6, 8, 10, 16, 32, 64, 128 ]
++              enum: [ 15, 100, 200, 300, 400, 500, 600, 700, 1000, 2000, 4000,
++                      8000, 16000, 32000, 64000, 128000 ]
 +              default: 15
 +
 +            qcom,avg-samples:
 +              enum: [ 1, 2, 4, 8, 16 ]
 +              default: 1
 +
-+examples:
-+  - |
-+    spmi_bus {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      /* VADC node */
-+      pmic_vadc: adc@3100 {
-+        compatible = "qcom,spmi-vadc";
-+        reg = <0x3100>;
-+        interrupts = <0x0 0x31 0x0 0x1>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        #io-channel-cells = <1>;
-+        io-channel-ranges;
+ examples:
+   - |
+     spmi_bus {
+diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
+new file mode 100644
+index 0000000..9426f27
+--- /dev/null
++++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020, The Linux Foundation. All rights reserved.
++ */
 +
-+        /* Channel node */
-+        adc-chan@39 {
-+          reg = <0x39>;
-+          qcom,decimation = <512>;
-+          qcom,ratiometric;
-+          qcom,hw-settle-time = <200>;
-+          qcom,avg-samples = <1>;
-+          qcom,pre-scaling = <1 3>;
-+        };
++#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H
++#define _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H
 +
-+        adc-chan@9 {
-+          reg = <0x9>;
-+        };
++#ifndef PM8350_SID
++#define PM8350_SID					1
++#endif
 +
-+        adc-chan@a {
-+          reg = <0xa>;
-+        };
++/* ADC channels for PM8350_ADC for PMIC7 */
++#define PM8350_ADC7_REF_GND			(PM8350_SID << 8 | 0x0)
++#define PM8350_ADC7_1P25VREF			(PM8350_SID << 8 | 0x01)
++#define PM8350_ADC7_VREF_VADC			(PM8350_SID << 8 | 0x02)
++#define PM8350_ADC7_DIE_TEMP			(PM8350_SID << 8 | 0x03)
 +
-+        adc-chan@e {
-+          reg = <0xe>;
-+        };
++#define PM8350_ADC7_AMUX_THM1			(PM8350_SID << 8 | 0x04)
++#define PM8350_ADC7_AMUX_THM2			(PM8350_SID << 8 | 0x05)
++#define PM8350_ADC7_AMUX_THM3			(PM8350_SID << 8 | 0x06)
++#define PM8350_ADC7_AMUX_THM4			(PM8350_SID << 8 | 0x07)
++#define PM8350_ADC7_AMUX_THM5			(PM8350_SID << 8 | 0x08)
++#define PM8350_ADC7_GPIO1			(PM8350_SID << 8 | 0x0a)
++#define PM8350_ADC7_GPIO2			(PM8350_SID << 8 | 0x0b)
++#define PM8350_ADC7_GPIO3			(PM8350_SID << 8 | 0x0c)
++#define PM8350_ADC7_GPIO4			(PM8350_SID << 8 | 0x0d)
 +
-+        adc-chan@f {
-+          reg = <0xf>;
-+        };
-+      };
-+    };
++/* 30k pull-up1 */
++#define PM8350_ADC7_AMUX_THM1_30K_PU		(PM8350_SID << 8 | 0x24)
++#define PM8350_ADC7_AMUX_THM2_30K_PU		(PM8350_SID << 8 | 0x25)
++#define PM8350_ADC7_AMUX_THM3_30K_PU		(PM8350_SID << 8 | 0x26)
++#define PM8350_ADC7_AMUX_THM4_30K_PU		(PM8350_SID << 8 | 0x27)
++#define PM8350_ADC7_AMUX_THM5_30K_PU		(PM8350_SID << 8 | 0x28)
++#define PM8350_ADC7_GPIO1_30K_PU		(PM8350_SID << 8 | 0x2a)
++#define PM8350_ADC7_GPIO2_30K_PU		(PM8350_SID << 8 | 0x2b)
++#define PM8350_ADC7_GPIO3_30K_PU		(PM8350_SID << 8 | 0x2c)
++#define PM8350_ADC7_GPIO4_30K_PU		(PM8350_SID << 8 | 0x2d)
++
++/* 100k pull-up2 */
++#define PM8350_ADC7_AMUX_THM1_100K_PU		(PM8350_SID << 8 | 0x44)
++#define PM8350_ADC7_AMUX_THM2_100K_PU		(PM8350_SID << 8 | 0x45)
++#define PM8350_ADC7_AMUX_THM3_100K_PU		(PM8350_SID << 8 | 0x46)
++#define PM8350_ADC7_AMUX_THM4_100K_PU		(PM8350_SID << 8 | 0x47)
++#define PM8350_ADC7_AMUX_THM5_100K_PU		(PM8350_SID << 8 | 0x48)
++#define PM8350_ADC7_GPIO1_100K_PU		(PM8350_SID << 8 | 0x4a)
++#define PM8350_ADC7_GPIO2_100K_PU		(PM8350_SID << 8 | 0x4b)
++#define PM8350_ADC7_GPIO3_100K_PU		(PM8350_SID << 8 | 0x4c)
++#define PM8350_ADC7_GPIO4_100K_PU		(PM8350_SID << 8 | 0x4d)
++
++/* 400k pull-up3 */
++#define PM8350_ADC7_AMUX_THM1_400K_PU		(PM8350_SID << 8 | 0x64)
++#define PM8350_ADC7_AMUX_THM2_400K_PU		(PM8350_SID << 8 | 0x65)
++#define PM8350_ADC7_AMUX_THM3_400K_PU		(PM8350_SID << 8 | 0x66)
++#define PM8350_ADC7_AMUX_THM4_400K_PU		(PM8350_SID << 8 | 0x67)
++#define PM8350_ADC7_AMUX_THM5_400K_PU		(PM8350_SID << 8 | 0x68)
++#define PM8350_ADC7_GPIO1_400K_PU		(PM8350_SID << 8 | 0x6a)
++#define PM8350_ADC7_GPIO2_400K_PU		(PM8350_SID << 8 | 0x6b)
++#define PM8350_ADC7_GPIO3_400K_PU		(PM8350_SID << 8 | 0x6c)
++#define PM8350_ADC7_GPIO4_400K_PU		(PM8350_SID << 8 | 0x6d)
++
++/* 1/3 Divider */
++#define PM8350_ADC7_GPIO4_DIV3			(PM8350_SID << 8 | 0x8d)
++
++#define PM8350_ADC7_VPH_PWR			(PM8350_SID << 8 | 0x8e)
++
++#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM8350_H */
+diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
+new file mode 100644
+index 0000000..dc2497c
+--- /dev/null
++++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H
++#define _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H
++
++#ifndef PM8350B_SID
++#define PM8350B_SID					3
++#endif
++
++/* ADC channels for PM8350B_ADC for PMIC7 */
++#define PM8350B_ADC7_REF_GND			(PM8350B_SID << 8 | 0x0)
++#define PM8350B_ADC7_1P25VREF			(PM8350B_SID << 8 | 0x01)
++#define PM8350B_ADC7_VREF_VADC			(PM8350B_SID << 8 | 0x02)
++#define PM8350B_ADC7_DIE_TEMP			(PM8350B_SID << 8 | 0x03)
++
++#define PM8350B_ADC7_AMUX_THM1			(PM8350B_SID << 8 | 0x04)
++#define PM8350B_ADC7_AMUX_THM2			(PM8350B_SID << 8 | 0x05)
++#define PM8350B_ADC7_AMUX_THM3			(PM8350B_SID << 8 | 0x06)
++#define PM8350B_ADC7_AMUX_THM4			(PM8350B_SID << 8 | 0x07)
++#define PM8350B_ADC7_AMUX_THM5			(PM8350B_SID << 8 | 0x08)
++#define PM8350B_ADC7_AMUX_THM6			(PM8350B_SID << 8 | 0x09)
++#define PM8350B_ADC7_GPIO1			(PM8350B_SID << 8 | 0x0a)
++#define PM8350B_ADC7_GPIO2			(PM8350B_SID << 8 | 0x0b)
++#define PM8350B_ADC7_GPIO3			(PM8350B_SID << 8 | 0x0c)
++#define PM8350B_ADC7_GPIO4			(PM8350B_SID << 8 | 0x0d)
++
++#define PM8350B_ADC7_CHG_TEMP			(PM8350B_SID << 8 | 0x10)
++#define PM8350B_ADC7_USB_IN_V_16		(PM8350B_SID << 8 | 0x11)
++#define PM8350B_ADC7_VDC_16			(PM8350B_SID << 8 | 0x12)
++#define PM8350B_ADC7_CC1_ID			(PM8350B_SID << 8 | 0x13)
++#define PM8350B_ADC7_VREF_BAT_THERM		(PM8350B_SID << 8 | 0x15)
++#define PM8350B_ADC7_IIN_FB			(PM8350B_SID << 8 | 0x17)
++
++/* 30k pull-up1 */
++#define PM8350B_ADC7_AMUX_THM1_30K_PU		(PM8350B_SID << 8 | 0x24)
++#define PM8350B_ADC7_AMUX_THM2_30K_PU		(PM8350B_SID << 8 | 0x25)
++#define PM8350B_ADC7_AMUX_THM3_30K_PU		(PM8350B_SID << 8 | 0x26)
++#define PM8350B_ADC7_AMUX_THM4_30K_PU		(PM8350B_SID << 8 | 0x27)
++#define PM8350B_ADC7_AMUX_THM5_30K_PU		(PM8350B_SID << 8 | 0x28)
++#define PM8350B_ADC7_AMUX_THM6_30K_PU		(PM8350B_SID << 8 | 0x29)
++#define PM8350B_ADC7_GPIO1_30K_PU		(PM8350B_SID << 8 | 0x2a)
++#define PM8350B_ADC7_GPIO2_30K_PU		(PM8350B_SID << 8 | 0x2b)
++#define PM8350B_ADC7_GPIO3_30K_PU		(PM8350B_SID << 8 | 0x2c)
++#define PM8350B_ADC7_GPIO4_30K_PU		(PM8350B_SID << 8 | 0x2d)
++#define PM8350B_ADC7_CC1_ID_30K_PU		(PM8350B_SID << 8 | 0x33)
++
++/* 100k pull-up2 */
++#define PM8350B_ADC7_AMUX_THM1_100K_PU		(PM8350B_SID << 8 | 0x44)
++#define PM8350B_ADC7_AMUX_THM2_100K_PU		(PM8350B_SID << 8 | 0x45)
++#define PM8350B_ADC7_AMUX_THM3_100K_PU		(PM8350B_SID << 8 | 0x46)
++#define PM8350B_ADC7_AMUX_THM4_100K_PU		(PM8350B_SID << 8 | 0x47)
++#define PM8350B_ADC7_AMUX_THM5_100K_PU		(PM8350B_SID << 8 | 0x48)
++#define PM8350B_ADC7_AMUX_THM6_100K_PU		(PM8350B_SID << 8 | 0x49)
++#define PM8350B_ADC7_GPIO1_100K_PU		(PM8350B_SID << 8 | 0x4a)
++#define PM8350B_ADC7_GPIO2_100K_PU		(PM8350B_SID << 8 | 0x4b)
++#define PM8350B_ADC7_GPIO3_100K_PU		(PM8350B_SID << 8 | 0x4c)
++#define PM8350B_ADC7_GPIO4_100K_PU		(PM8350B_SID << 8 | 0x4d)
++#define PM8350B_ADC7_CC1_ID_100K_PU		(PM8350B_SID << 8 | 0x53)
++
++/* 400k pull-up3 */
++#define PM8350B_ADC7_AMUX_THM1_400K_PU		(PM8350B_SID << 8 | 0x64)
++#define PM8350B_ADC7_AMUX_THM2_400K_PU		(PM8350B_SID << 8 | 0x65)
++#define PM8350B_ADC7_AMUX_THM3_400K_PU		(PM8350B_SID << 8 | 0x66)
++#define PM8350B_ADC7_AMUX_THM4_400K_PU		(PM8350B_SID << 8 | 0x67)
++#define PM8350B_ADC7_AMUX_THM5_400K_PU		(PM8350B_SID << 8 | 0x68)
++#define PM8350B_ADC7_AMUX_THM6_400K_PU		(PM8350B_SID << 8 | 0x69)
++#define PM8350B_ADC7_GPIO1_400K_PU		(PM8350B_SID << 8 | 0x6a)
++#define PM8350B_ADC7_GPIO2_400K_PU		(PM8350B_SID << 8 | 0x6b)
++#define PM8350B_ADC7_GPIO3_400K_PU		(PM8350B_SID << 8 | 0x6c)
++#define PM8350B_ADC7_GPIO4_400K_PU		(PM8350B_SID << 8 | 0x6d)
++#define PM8350B_ADC7_CC1_ID_400K_PU		(PM8350B_SID << 8 | 0x73)
++
++/* 1/3 Divider */
++#define PM8350B_ADC7_GPIO1_DIV3			(PM8350B_SID << 8 | 0x8a)
++#define PM8350B_ADC7_GPIO2_DIV3			(PM8350B_SID << 8 | 0x8b)
++#define PM8350B_ADC7_GPIO3_DIV3			(PM8350B_SID << 8 | 0x8c)
++#define PM8350B_ADC7_GPIO4_DIV3			(PM8350B_SID << 8 | 0x8d)
++
++#define PM8350B_ADC7_VPH_PWR			(PM8350B_SID << 8 | 0x8e)
++#define PM8350B_ADC7_VBAT_SNS			(PM8350B_SID << 8 | 0x8f)
++
++#define PM8350B_ADC7_SBUx			(PM8350B_SID << 8 | 0x94)
++#define PM8350B_ADC7_VBAT_2S_MID		(PM8350B_SID << 8 | 0x96)
++
++#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM8350B_H */
+diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+new file mode 100644
+index 0000000..6c29687
+--- /dev/null
++++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
++#define _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
++
++#ifndef PMK8350_SID
++#define PMK8350_SID					0
++#endif
++
++/* ADC channels for PMK8350_ADC for PMIC7 */
++#define PMK8350_ADC7_REF_GND			(PMK8350_SID << 8 | 0x0)
++#define PMK8350_ADC7_1P25VREF			(PMK8350_SID << 8 | 0x01)
++#define PMK8350_ADC7_VREF_VADC			(PMK8350_SID << 8 | 0x02)
++#define PMK8350_ADC7_DIE_TEMP			(PMK8350_SID << 8 | 0x03)
++
++#define PMK8350_ADC7_AMUX_THM1			(PMK8350_SID << 8 | 0x04)
++#define PMK8350_ADC7_AMUX_THM2			(PMK8350_SID << 8 | 0x05)
++#define PMK8350_ADC7_AMUX_THM3			(PMK8350_SID << 8 | 0x06)
++#define PMK8350_ADC7_AMUX_THM4			(PMK8350_SID << 8 | 0x07)
++#define PMK8350_ADC7_AMUX_THM5			(PMK8350_SID << 8 | 0x08)
++
++/* 30k pull-up1 */
++#define PMK8350_ADC7_AMUX_THM1_30K_PU		(PMK8350_SID << 8 | 0x24)
++#define PMK8350_ADC7_AMUX_THM2_30K_PU		(PMK8350_SID << 8 | 0x25)
++#define PMK8350_ADC7_AMUX_THM3_30K_PU		(PMK8350_SID << 8 | 0x26)
++#define PMK8350_ADC7_AMUX_THM4_30K_PU		(PMK8350_SID << 8 | 0x27)
++#define PMK8350_ADC7_AMUX_THM5_30K_PU		(PMK8350_SID << 8 | 0x28)
++
++/* 100k pull-up2 */
++#define PMK8350_ADC7_AMUX_THM1_100K_PU		(PMK8350_SID << 8 | 0x44)
++#define PMK8350_ADC7_AMUX_THM2_100K_PU		(PMK8350_SID << 8 | 0x45)
++#define PMK8350_ADC7_AMUX_THM3_100K_PU		(PMK8350_SID << 8 | 0x46)
++#define PMK8350_ADC7_AMUX_THM4_100K_PU		(PMK8350_SID << 8 | 0x47)
++#define PMK8350_ADC7_AMUX_THM5_100K_PU		(PMK8350_SID << 8 | 0x48)
++
++/* 400k pull-up3 */
++#define PMK8350_ADC7_AMUX_THM1_400K_PU		(PMK8350_SID << 8 | 0x64)
++#define PMK8350_ADC7_AMUX_THM2_400K_PU		(PMK8350_SID << 8 | 0x65)
++#define PMK8350_ADC7_AMUX_THM3_400K_PU		(PMK8350_SID << 8 | 0x66)
++#define PMK8350_ADC7_AMUX_THM4_400K_PU		(PMK8350_SID << 8 | 0x67)
++#define PMK8350_ADC7_AMUX_THM5_400K_PU		(PMK8350_SID << 8 | 0x68)
++
++#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H */
+diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
+new file mode 100644
+index 0000000..d6df1b1
+--- /dev/null
++++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H
++#define _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H
++
++#ifndef PMR735A_SID
++#define PMR735A_SID					4
++#endif
++
++/* ADC channels for PMR735A_ADC for PMIC7 */
++#define PMR735A_ADC7_REF_GND			(PMR735A_SID << 8 | 0x0)
++#define PMR735A_ADC7_1P25VREF			(PMR735A_SID << 8 | 0x01)
++#define PMR735A_ADC7_VREF_VADC			(PMR735A_SID << 8 | 0x02)
++#define PMR735A_ADC7_DIE_TEMP			(PMR735A_SID << 8 | 0x03)
++
++#define PMR735A_ADC7_GPIO1			(PMR735A_SID << 8 | 0x0a)
++#define PMR735A_ADC7_GPIO2			(PMR735A_SID << 8 | 0x0b)
++#define PMR735A_ADC7_GPIO3			(PMR735A_SID << 8 | 0x0c)
++
++/* 100k pull-up2 */
++#define PMR735A_ADC7_GPIO1_100K_PU		(PMR735A_SID << 8 | 0x4a)
++#define PMR735A_ADC7_GPIO2_100K_PU		(PMR735A_SID << 8 | 0x4b)
++#define PMR735A_ADC7_GPIO3_100K_PU		(PMR735A_SID << 8 | 0x4c)
++
++#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMR735A_H */
+diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
+new file mode 100644
+index 0000000..8da0e7d
+--- /dev/null
++++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H
++#define _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H
++
++#ifndef PMR735B_SID
++#define PMR735B_SID					5
++#endif
++
++/* ADC channels for PMR735B_ADC for PMIC7 */
++#define PMR735B_ADC7_REF_GND			(PMR735B_SID << 8 | 0x0)
++#define PMR735B_ADC7_1P25VREF			(PMR735B_SID << 8 | 0x01)
++#define PMR735B_ADC7_VREF_VADC			(PMR735B_SID << 8 | 0x02)
++#define PMR735B_ADC7_DIE_TEMP			(PMR735B_SID << 8 | 0x03)
++
++#define PMR735B_ADC7_GPIO1			(PMR735B_SID << 8 | 0x0a)
++#define PMR735B_ADC7_GPIO2			(PMR735B_SID << 8 | 0x0b)
++#define PMR735B_ADC7_GPIO3			(PMR735B_SID << 8 | 0x0c)
++
++/* 100k pull-up2 */
++#define PMR735B_ADC7_GPIO1_100K_PU		(PMR735B_SID << 8 | 0x4a)
++#define PMR735B_ADC7_GPIO2_100K_PU		(PMR735B_SID << 8 | 0x4b)
++#define PMR735B_ADC7_GPIO3_100K_PU		(PMR735B_SID << 8 | 0x4c)
++
++#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMR735B_H */
+diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
+index 61d556d..08adfe2 100644
+--- a/include/dt-bindings/iio/qcom,spmi-vadc.h
++++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * Copyright (c) 2012-2014,2018 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2012-2014,2018,2020 The Linux Foundation. All rights reserved.
+  */
+ 
+ #ifndef _DT_BINDINGS_QCOM_SPMI_VADC_H
+@@ -221,4 +221,80 @@
+ 
+ #define ADC5_MAX_CHANNEL			0xc0
+ 
++/* ADC channels for ADC for PMIC7 */
++
++#define ADC7_REF_GND				0x00
++#define ADC7_1P25VREF				0x01
++#define ADC7_VREF_VADC				0x02
++#define ADC7_DIE_TEMP				0x03
++
++#define ADC7_AMUX_THM1				0x04
++#define ADC7_AMUX_THM2				0x05
++#define ADC7_AMUX_THM3				0x06
++#define ADC7_AMUX_THM4				0x07
++#define ADC7_AMUX_THM5				0x08
++#define ADC7_AMUX_THM6				0x09
++#define ADC7_GPIO1				0x0a
++#define ADC7_GPIO2				0x0b
++#define ADC7_GPIO3				0x0c
++#define ADC7_GPIO4				0x0d
++
++#define ADC7_CHG_TEMP				0x10
++#define ADC7_USB_IN_V_16			0x11
++#define ADC7_VDC_16				0x12
++#define ADC7_CC1_ID				0x13
++#define ADC7_VREF_BAT_THERM			0x15
++#define ADC7_IIN_FB				0x17
++
++/* 30k pull-up1 */
++#define ADC7_AMUX_THM1_30K_PU			0x24
++#define ADC7_AMUX_THM2_30K_PU			0x25
++#define ADC7_AMUX_THM3_30K_PU			0x26
++#define ADC7_AMUX_THM4_30K_PU			0x27
++#define ADC7_AMUX_THM5_30K_PU			0x28
++#define ADC7_AMUX_THM6_30K_PU			0x29
++#define ADC7_GPIO1_30K_PU			0x2a
++#define ADC7_GPIO2_30K_PU			0x2b
++#define ADC7_GPIO3_30K_PU			0x2c
++#define ADC7_GPIO4_30K_PU			0x2d
++#define ADC7_CC1_ID_30K_PU			0x33
++
++/* 100k pull-up2 */
++#define ADC7_AMUX_THM1_100K_PU			0x44
++#define ADC7_AMUX_THM2_100K_PU			0x45
++#define ADC7_AMUX_THM3_100K_PU			0x46
++#define ADC7_AMUX_THM4_100K_PU			0x47
++#define ADC7_AMUX_THM5_100K_PU			0x48
++#define ADC7_AMUX_THM6_100K_PU			0x49
++#define ADC7_GPIO1_100K_PU			0x4a
++#define ADC7_GPIO2_100K_PU			0x4b
++#define ADC7_GPIO3_100K_PU			0x4c
++#define ADC7_GPIO4_100K_PU			0x4d
++#define ADC7_CC1_ID_100K_PU			0x53
++
++/* 400k pull-up3 */
++#define ADC7_AMUX_THM1_400K_PU			0x64
++#define ADC7_AMUX_THM2_400K_PU			0x65
++#define ADC7_AMUX_THM3_400K_PU			0x66
++#define ADC7_AMUX_THM4_400K_PU			0x67
++#define ADC7_AMUX_THM5_400K_PU			0x68
++#define ADC7_AMUX_THM6_400K_PU			0x69
++#define ADC7_GPIO1_400K_PU			0x6a
++#define ADC7_GPIO2_400K_PU			0x6b
++#define ADC7_GPIO3_400K_PU			0x6c
++#define ADC7_GPIO4_400K_PU			0x6d
++#define ADC7_CC1_ID_400K_PU			0x73
++
++/* 1/3 Divider */
++#define ADC7_GPIO1_DIV3				0x8a
++#define ADC7_GPIO2_DIV3				0x8b
++#define ADC7_GPIO3_DIV3				0x8c
++#define ADC7_GPIO4_DIV3				0x8d
++
++#define ADC7_VPH_PWR				0x8e
++#define ADC7_VBAT_SNS				0x8f
++
++#define ADC7_SBUx				0x94
++#define ADC7_VBAT_2S_MID			0x96
++
+ #endif /* _DT_BINDINGS_QCOM_SPMI_VADC_H */
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
 a Linux Foundation Collaborative Project

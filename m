@@ -2,53 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E74C1D4FDF
-	for <lists+linux-iio@lfdr.de>; Fri, 15 May 2020 16:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5607C1D4FEB
+	for <lists+linux-iio@lfdr.de>; Fri, 15 May 2020 16:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgEOOEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 May 2020 10:04:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55710 "EHLO mail.kernel.org"
+        id S1726197AbgEOOFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 May 2020 10:05:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56442 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726163AbgEOOEB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 15 May 2020 10:04:01 -0400
+        id S1726168AbgEOOFH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 15 May 2020 10:05:07 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 625DF206B6;
-        Fri, 15 May 2020 14:04:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B845220657;
+        Fri, 15 May 2020 14:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589551440;
-        bh=sex7JNUla6voVpR/WRcdJuRGMegIfekb0zfkJDcPD0Y=;
+        s=default; t=1589551507;
+        bh=gXQ2pQpzqWh+O3oem3x7NnlGqBpa5WtSB9qSo8GHMdk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dcJGAWjUaFESCmcaNga6B6tPB3KWGot4IaEoB9XLLtVAvqMj8DzZ3LTqZOdliNllt
-         Bi701kctFe7cThLaA4DaDBzk6OCqhNktpENCUPrBjxfFTi4Sj5wkdtBolMwijIFp5k
-         7gRPNiXmw7tR1uk1hGR3AfKqwM20Hjkd6Q+NsO/8=
-Date:   Fri, 15 May 2020 16:03:58 +0200
+        b=CEEhqm+v38GSFGhm6dObbh6O/TSZzd21Jl4Or3cV3vaOy8SZazFJHZcSug9JAsZZ7
+         utch4en9j2l3s1gG2BIi3976PqkzBAqExp/lHfBWHJmwQTebMG7dh3TlgyXahdLxNL
+         RjoHDB/PW2OHPzvvTRDyrQ6qIIeu8d2OsvIxGTW0=
+Date:   Fri, 15 May 2020 16:05:04 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] 2nd set of IIO new device support, features and cleanups
- for the 5.8 cycle.
-Message-ID: <20200515140358.GA2184507@kroah.com>
-References: <20200512195801.28e6fafe@archlinux>
+Subject: Re: [PULL] 2nd set of IIO fixes for the 5.7 cycle.
+Message-ID: <20200515140504.GB2184507@kroah.com>
+References: <20200511201150.13576144@archlinux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200512195801.28e6fafe@archlinux>
+In-Reply-To: <20200511201150.13576144@archlinux>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 12, 2020 at 07:58:01PM +0100, Jonathan Cameron wrote:
-> The following changes since commit bf42304b55f59af5e71c86e46291705023dce62e:
+On Mon, May 11, 2020 at 08:11:50PM +0100, Jonathan Cameron wrote:
+> The following changes since commit c532cc617e6edc4398a9ec5c8f470833966f9f9f:
 > 
->   staging: vt6656: Use fls instead of for loop in vnt_update_top_rates (2020-04-23 13:39:51 +0200)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.8b
+>   Merge tag 'iio-fixes-for-5.7a' of git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-linus (2020-04-20 14:07:00 +0200)
 
-Pulled and pushed out,t hanks.
+Pulled and pushed out, thanks.
 
 greg k-h

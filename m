@@ -2,59 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BC831D56A1
-	for <lists+linux-iio@lfdr.de>; Fri, 15 May 2020 18:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828A91D56A9
+	for <lists+linux-iio@lfdr.de>; Fri, 15 May 2020 18:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbgEOQwB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 May 2020 12:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57238 "EHLO
+        id S1726249AbgEOQw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 May 2020 12:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726023AbgEOQwA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 May 2020 12:52:00 -0400
+        by vger.kernel.org with ESMTP id S1726023AbgEOQw2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 May 2020 12:52:28 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874CAC061A0C;
-        Fri, 15 May 2020 09:52:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C4E7C061A0C;
+        Fri, 15 May 2020 09:52:28 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: andrzej.p)
-        with ESMTPSA id 67BB42A32FD
+        with ESMTPSA id C9C712A333A
 From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-To:     linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
         Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
         kernel@collabora.com
-Subject: [PATCHv2 1/7] Input: add input_device_enabled()
-Date:   Fri, 15 May 2020 18:51:51 +0200
-Message-Id: <20200515165151.28670-1-andrzej.p@collabora.com>
+Subject: [PATCHv2 4/7] iio: adc: exynos: Use input_device_enabled()
+Date:   Fri, 15 May 2020 18:52:10 +0200
+Message-Id: <20200515165210.28813-1-andrzej.p@collabora.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200515164943.28480-1-andrzej.p@collabora.com>
 References: <20200515164943.28480-1-andrzej.p@collabora.com>
@@ -63,48 +40,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-A helper function for drivers to decide if the device is used or not.
-A lockdep check is introduced as inspecting ->users should be done under
-input device's mutex.
+A new helper is available, so use it. Inspecting 'users' member of
+input_dev requires taking device's mutex.
 
 Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 ---
- drivers/input/input.c | 8 ++++++++
- include/linux/input.h | 2 ++
- 2 files changed, 10 insertions(+)
+ drivers/iio/adc/exynos_adc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index 3cfd2c18eebd..41377bfa142d 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -2127,6 +2127,14 @@ void input_enable_softrepeat(struct input_dev *dev, int delay, int period)
- }
- EXPORT_SYMBOL(input_enable_softrepeat);
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 22131a677445..1253d94089a7 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -630,10 +630,13 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 	struct exynos_adc *info = dev_id;
+ 	struct iio_dev *dev = dev_get_drvdata(info->dev);
+ 	u32 x, y;
+-	bool pressed;
++	bool pressed, cont;
+ 	int ret;
  
-+bool input_device_enabled(struct input_dev *dev)
-+{
-+	lockdep_assert_held(&dev->mutex);
+-	while (info->input->users) {
++	mutex_lock(&info->input);
++	cont = input_device_enabled(info->input);
++	mutex_unlock(&info->input);
++	while (cont) {
+ 		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+ 		if (ret == -ETIMEDOUT)
+ 			break;
+@@ -651,6 +654,10 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 		input_sync(info->input);
+ 
+ 		usleep_range(1000, 1100);
 +
-+	return dev->users > 0;
-+}
-+EXPORT_SYMBOL_GPL(input_device_enabled);
-+
- /**
-  * input_register_device - register device with input core
-  * @dev: device to be registered
-diff --git a/include/linux/input.h b/include/linux/input.h
-index 56f2fd32e609..eda4587dba67 100644
---- a/include/linux/input.h
-+++ b/include/linux/input.h
-@@ -502,6 +502,8 @@ bool input_match_device_id(const struct input_dev *dev,
++		mutex_lock(&info->input);
++		cont = input_device_enabled(info->input);
++		mutex_unlock(&info->input);
+ 	}
  
- void input_enable_softrepeat(struct input_dev *dev, int delay, int period);
- 
-+bool input_device_enabled(struct input_dev *dev);
-+
- extern struct class input_class;
- 
- /**
+ 	writel(0, ADC_V1_CLRINTPNDNUP(info->regs));
 -- 
 2.17.1
 

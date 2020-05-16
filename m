@@ -2,153 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0AF31D58EF
-	for <lists+linux-iio@lfdr.de>; Fri, 15 May 2020 20:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6DC1D5DE0
+	for <lists+linux-iio@lfdr.de>; Sat, 16 May 2020 04:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726257AbgEOSTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 May 2020 14:19:19 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:46177 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726295AbgEOSTR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 May 2020 14:19:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589566755;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Fedn2inRka4QMAnXx9FxSm7/vZYS9uY++6sVEGlzAa0=;
-        b=FmfAuVh4QGkOpPgfhCFAuYt7jmv7Qagj1fzOAUyM01z8aAILrmmE7Ffn2dB4qTegdq1Shp
-        d/5G7ZCAVreovBNZmSD9zeIoqfER5+DTXru1T58BU9nfaNx7+GQTLlGXQU0xm81jmqojTk
-        ePaeUnUZj/WKqZMpPivCquDW6Q5eJEI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-60-sP0UmNO2PiuTztj5bEr_GQ-1; Fri, 15 May 2020 14:19:13 -0400
-X-MC-Unique: sP0UmNO2PiuTztj5bEr_GQ-1
-Received: by mail-wm1-f69.google.com with SMTP id f62so1548497wme.3
-        for <linux-iio@vger.kernel.org>; Fri, 15 May 2020 11:19:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Fedn2inRka4QMAnXx9FxSm7/vZYS9uY++6sVEGlzAa0=;
-        b=XMYHp0KedekGeqYwuuXWV4LG/1j5KDXa3oUR+daVLA+yhmMja/zSQS6pMaUQefp1D8
-         zbfuMYWv/tYuw8XvZwUxLl5g7tIAX5GVUvBmm93fwagUwAsMhXdfkqh/4uz2yUQBW8Nt
-         aKTi6kuSoyxTbTlSSpzUrQNJxFqdTETPlVLvA3oNftGZNTV//waCFjLIBIKFDgRe4wNa
-         5+cPmeFMHbHrzCc0xOxwAH+jcTmi8zO05wSdkXwMBWkHlTDZZAtwL5tICnBW+3d9Svw4
-         QfXb7gSZlRTxNwlU5K9RYSR70yMaxNr4Ug/fhRSy14A1X/F5Q8sstceBKL6lALQfBNQa
-         z+fw==
-X-Gm-Message-State: AOAM532JQxVLPbuVeK6neSt0o0qD9jAqNqrB1GJttoG9oiiiASvSYCJ3
-        TQhj0LvfxLe3r6XyNdQVjm5WGE/TE8cCPhz9XaGaJb9GkY6n7roxQro3gbhS4x+8SLQ/xXIEOzo
-        gFe+/ODDUZqA+xp4diSci
-X-Received: by 2002:a1c:b406:: with SMTP id d6mr5299519wmf.89.1589566752669;
-        Fri, 15 May 2020 11:19:12 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwEhyZogIb52tbS8Sjh71yaPa5wKbVCzzV1bSu62tN2QyZWoHUXHTTKTerADtg5ez9J3v5UBw==
-X-Received: by 2002:a1c:b406:: with SMTP id d6mr5299458wmf.89.1589566752273;
-        Fri, 15 May 2020 11:19:12 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id a15sm4604338wrw.56.2020.05.15.11.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2020 11:19:11 -0700 (PDT)
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
-Date:   Fri, 15 May 2020 20:19:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726550AbgEPC1H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 May 2020 22:27:07 -0400
+Received: from mail-co1nam11olkn2076.outbound.protection.outlook.com ([40.92.18.76]:19968
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726290AbgEPC1H (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 15 May 2020 22:27:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dWdb4MedUs9MfF++V/t8/afUnIG+rvHaVYwE4MmrsrNqCZzZjZjXv2Kr9xREpiVl7BQ2lZPQGvqynaNxvYoHIELn0Vl0HO5Xs+JFaWeuDLQE2+HJ25h/tog73Nd7OQrLMI9Dce4KtZdT93WLcDjhvF0p4qE8pj8iUhMMA7hvwxys4ycldMWgxEK9IWiTIDIYmjs93yvAa1TchgdvNJbujAtqHaRmBXXjfl2vmJPdwbynTyXZFVbKA6ggz8BWEkIFq6DhZdG6UMi4MpdjgLOqHRyOEX35yoBtaf1vN0plpLyn+7JggrcMyEWH6euZ4zcdNg40q1l+aAykzMEedMJebw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UVNVAFZTOwwJstyvvvTWd1OVamYABilzzRnXPGpGgy0=;
+ b=a81KHgupWVNQ07w/i2ryLfd+jyNwGjnXyqqSJyjocXOX/m2JJq7L5Q1kjxGOiPCQFOAffs/TibdNwa3hKInXknN6rXHHthqy4WmqtwYvXkgHJ3EJPiwtfrLZENMmAQ1EBd6RBJCpb863+M2SoUyivksPNp9jSGXHM3EXY9sDamvi6YP3J7CYgiOfMVlVtVpJdxIOfzbhJLqguFdOqwPbJNr2iZx/xOmme/7PjLhBrk+smw7BE+KtMwFln7Fprk0eyfbnOo6NZIWIqjvzkX1eTD2+wV3rdg1KepAL38DPYhiRTAiTzi2TLIRcn91xLjlmD4v3+NizMqcm7ySjcKYa9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=live.ca; dmarc=pass action=none header.from=live.ca; dkim=pass
+ header.d=live.ca; arc=none
+Received: from DM6NAM11FT026.eop-nam11.prod.protection.outlook.com
+ (2a01:111:e400:fc4d::4c) by
+ DM6NAM11HT164.eop-nam11.prod.protection.outlook.com (2a01:111:e400:fc4d::410)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.19; Sat, 16 May
+ 2020 02:27:05 +0000
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ (2a01:111:e400:fc4d::47) by DM6NAM11FT026.mail.protection.outlook.com
+ (2a01:111:e400:fc4d::161) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.19 via Frontend
+ Transport; Sat, 16 May 2020 02:27:04 +0000
+X-IncomingTopHeaderMarker: OriginalChecksum:80D9C4A243D668029C106F8882BA89A3D640E3D714831245CF8A3B6235BC8041;UpperCasedChecksum:7B22B67EC8BA4662BB2D87F0E04AC806088E427130B4962702CB440BFF59835A;SizeAsReceived:7724;Count:48
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::ad10:4127:4bc8:76fc]) by BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::ad10:4127:4bc8:76fc%6]) with mapi id 15.20.3000.022; Sat, 16 May 2020
+ 02:27:04 +0000
+From:   Jonathan Bakker <xc-racer2@live.ca>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, robh+dt@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     linus.walleij@linaro.org, Jonathan Bakker <xc-racer2@live.ca>
+Subject: [PATCH 0/2] iio: adc: Add a current from voltage driver
+Date:   Fri, 15 May 2020 19:26:17 -0700
+Message-ID: <BN6PR04MB066014AF936EF8ADCBF011A1A3BA0@BN6PR04MB0660.namprd04.prod.outlook.com>
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MWHPR15CA0057.namprd15.prod.outlook.com
+ (2603:10b6:301:4c::19) To BN6PR04MB0660.namprd04.prod.outlook.com
+ (2603:10b6:404:d9::21)
+X-Microsoft-Original-Message-ID: <20200516022619.30779-1-xc-racer2@live.ca>
 MIME-Version: 1.0
-In-Reply-To: <20200515164943.28480-1-andrzej.p@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from jon-hp-6570b.telus (2001:569:fb68:9c00:8067:f823:1e15:7520) by MWHPR15CA0057.namprd15.prod.outlook.com (2603:10b6:301:4c::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend Transport; Sat, 16 May 2020 02:27:02 +0000
+X-Mailer: git-send-email 2.20.1
+X-Microsoft-Original-Message-ID: <20200516022619.30779-1-xc-racer2@live.ca>
+X-TMN:  [tL/xLgLgJ2O3QdbhqOTdZwNdQz695nJW7IbzECOR2en4XLfB5mysbCNdkPKSvcj+]
+X-MS-PublicTrafficType: Email
+X-IncomingHeaderCount: 48
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-Correlation-Id: 6723c0b7-49ee-4890-d4d7-08d7f9409f06
+X-MS-TrafficTypeDiagnostic: DM6NAM11HT164:
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hnS+r/wuVll5o+L96yntVdua15SJDqP2Mk8JXYlSHluJf4YRiAuNR7RRytxmvvKV3sBa9GYHJv6ki1ynHx2YcG/lR8DbEFRbBUaBPuvwG0cd/tdXsHCNFHaXHNhSLDvqTq8IpA81IEiMff/MLbx58DCxXVIWt9oepHvN0Hp/PLjShvox91b2I/6lG576eqk0BTy2VPW6JFEw2OJPAz7BGKLyeT2UHHOaDDT+tVx8diizhsX4jfT/CZgGJ8Ffkfh7
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:0;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR04MB0660.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:;DIR:OUT;SFP:1901;
+X-MS-Exchange-AntiSpam-MessageData: gHFkulm66YAOBXy7bTR6XqsD0CS3+SHeyZjWvhferfnQ2Uz7w8+MI9WJF2CpeXUHASb/hbKPICCgz0hFLKXT1q2e24pGNmlX/MNIaTvzJTbr2B7Ph9HF1q4yY17mIsZvQYxBF9ifNh15pzkJrIpY1+VdgLBQVuiiWQg+fq253Kgz+VXiqOW7aRZaBhcyIyvRMGaFM/RiSmewXcPcB3ICOw==
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6723c0b7-49ee-4890-d4d7-08d7f9409f06
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2020 02:27:04.4789
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6NAM11HT164
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrezj,
+In the discussion around adding the GP2A002 light driver, there came
+up the question of what to do when a system emulates a current ADC
+by using a voltage ADC and a resistor.  Rather than adding it on
+a per-driver basis, it was suggested(1) to add a minimal IIO driver
+to support this situation.
 
-On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
-> Userspace might want to implement a policy to temporarily disregard input
-> from certain devices, including not treating them as wakeup sources.
-> 
-> An example use case is a laptop, whose keyboard can be folded under the
-> screen to create tablet-like experience. The user then must hold the laptop
-> in such a way that it is difficult to avoid pressing the keyboard keys. It
-> is therefore desirable to temporarily disregard input from the keyboard,
-> until it is folded back. This obviously is a policy which should be kept
-> out of the kernel, but the kernel must provide suitable means to implement
-> such a policy.
+The new driver is fairly simple - it simply takes a voltage ADC and
+a resistor value in ohms exposed as the scale and outputs a current.
 
-Actually libinput already binds together (inside libinput) SW_TABLET_MODE
-generating evdev nodes and e.g. internal keyboards on devices with 360°
-hinges for this reason. libinput simply closes the /dev/input/event#
-node when folded and re-opens it when the keyboard should become active
-again. Thus not only suppresses events but allows e.g. touchpads to
-enter runtime suspend mode which saves power. Typically closing the
-/dev/input/event# node will also disable the device as wakeup source.
+It has been tested on a first-gen Galaxy S device which has the above
+mentioned GP2A002 chip connected to the voltage ADC resistor complex.
 
-So I wonder what this series actually adds for functionality for
-userspace which can not already be achieved this way?
+1) https://lore.kernel.org/linux-iio/20200202150843.762c6897@archlinux/
 
-I also noticed that you keep the device open (do not call the
-input_device's close callback) when inhibited and just throw away
-any events generated. This seems inefficient and may lead to
-the internal state getting out of sync. What if a key is pressed
-while inhibited and then the device is uninhibited while the key
-is still pressed?  Now the press event is lost and userspace
-querying the current state will see the pressed key as being
-released.
+Jonathan Bakker (2):
+  dt-bindings: iio: adc: Add binding for current-from-voltage
+  iio: adc: Add current-from-voltage driver
 
-On top of this you add special inhibit and uninhibit callbacks
-and implement those for just a few devices. How do these differ
-from just closing the device and later opening it again ?
+ .../iio/adc/linux,current-from-voltage.yaml   |  47 +++++++
+ MAINTAINERS                                   |   8 ++
+ drivers/iio/adc/Kconfig                       |   9 ++
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/current-from-voltage.c        | 123 ++++++++++++++++++
+ 5 files changed, 188 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/linux,current-from-voltage.yaml
+ create mode 100644 drivers/iio/adc/current-from-voltage.c
 
-Also using a sysfs property for this is very weird given that the
-rest of the evdev interface is using ioctls for everything...
-
-So all in all I see a lot of question marks here and I think we
-need to have a detailed discussion about what use-cases this
-series tries to enable before moving forward with this.
-
-Regards,
-
-Hans
+-- 
+2.20.1
 

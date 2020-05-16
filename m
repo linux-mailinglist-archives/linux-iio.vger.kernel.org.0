@@ -2,43 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 683351D6275
-	for <lists+linux-iio@lfdr.de>; Sat, 16 May 2020 17:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92CD91D6283
+	for <lists+linux-iio@lfdr.de>; Sat, 16 May 2020 18:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726237AbgEPPz1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 May 2020 11:55:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44450 "EHLO mail.kernel.org"
+        id S1726298AbgEPQKi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 May 2020 12:10:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50276 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726228AbgEPPz0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 May 2020 11:55:26 -0400
+        id S1726297AbgEPQKh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 May 2020 12:10:37 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C76662053B;
-        Sat, 16 May 2020 15:55:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BFE882065C;
+        Sat, 16 May 2020 16:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589644525;
-        bh=w3CCcWm6V1+r6mkqdb83R+gfwrBuSQENSC2de/6Xc1o=;
+        s=default; t=1589645436;
+        bh=Qx3DPnLp4Vlp4WJ3u6wX1iOXw5Nit6PjtbPUDtvgjSc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wRyzvtGET4VFeDLEC8GBT+S72803Ki64eipuPsU/MdVUhxujOTBTlodnvAyIBxYa1
-         wXKLTRv4Z12vCoNw9/l/wBpXVXfuQ+MuAsZpkNNmO+1SMVljs686oeKOYTc/a0Fcy+
-         1sQW190myPaJK71fsN4b1RuFNd8U1IPaAddGcMwY=
-Date:   Sat, 16 May 2020 16:55:21 +0100
+        b=k6/tivZNjd8R8swJwDe/I/LbARHwE//1VTw75YxDTQnU4kjsOr8uOUUUIE4kHPLck
+         CcB7TEgVRbq+/1fFcOY8zHrtiPSDL/UewC/ncQrkAGtIkOpT9iRmJ51XotBV4MBRJ3
+         5Vh8E8jbb1joMTVcVXPQNABRc+WUhbUdeoCOJq/k=
+Date:   Sat, 16 May 2020 17:10:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: chemical: add atlas-ezo-sensor initial support
-Message-ID: <20200516165521.5ffc5799@archlinux>
-In-Reply-To: <CAJCx=g=06rz_p5mdJbmv38N-noASp+rsyVdmwxbZKD9yfeTNKA@mail.gmail.com>
-References: <20200428054107.16061-1-matt.ranostay@konsulko.com>
-        <20200428054107.16061-3-matt.ranostay@konsulko.com>
-        <20200503111726.3bb111c3@archlinux>
-        <CAJCx=gk373nJo=+4BVNk6+1G32SPOBgwAx0wYRMFPLkp2yQi3g@mail.gmail.com>
-        <20200508133851.000044fa@Huawei.com>
-        <CAJCx=gnbt+L=qF8CwkgSCHhcCvZaSdzPFekckd9FN6nUJGFURw@mail.gmail.com>
-        <20200510100030.7c1617d3@archlinux>
-        <CAJCx=g=06rz_p5mdJbmv38N-noASp+rsyVdmwxbZKD9yfeTNKA@mail.gmail.com>
+To:     <Eugen.Hristev@microchip.com>
+Cc:     <alexandru.ardelean@analog.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+        <Ludovic.Desroches@microchip.com>
+Subject: Re: [RFC PATCH] iio: __iio_update_buffers: Update mode before
+ preenable/after postdisable
+Message-ID: <20200516171032.29fa8e08@archlinux>
+In-Reply-To: <8551295e-c166-674e-c449-61ccb5bbef76@microchip.com>
+References: <20200430082455.1628-1-alexandru.ardelean@analog.com>
+        <0096231b-eda4-7685-3411-3de467618c25@microchip.com>
+        <dbd7fba9-ad26-fb8f-7a71-55b75951409f@microchip.com>
+        <8551295e-c166-674e-c449-61ccb5bbef76@microchip.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,377 +46,189 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 10 May 2020 16:03:33 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Thu, 14 May 2020 10:56:16 +0000
+<Eugen.Hristev@microchip.com> wrote:
 
-> On Sun, May 10, 2020 at 2:00 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Fri, 8 May 2020 10:49:41 -0700
-> > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-> >  
-> > > On Fri, May 8, 2020 at 5:39 AM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:  
-> > > >
-> > > > On Tue, 5 May 2020 21:22:00 -0700
-> > > > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-> > > >  
-> > > > > On Sun, May 3, 2020 at 3:17 AM Jonathan Cameron <jic23@kernel.org> wrote:  
-> > > > > >
-> > > > > > On Tue, 28 Apr 2020 08:41:07 +0300
-> > > > > > Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-> > > > > >  
-> > > > > > > Add driver for Atlas EZO line of sensors with initial support for
-> > > > > > > CO2 the sensor. This is effectively ASCII strings proxied over I2C
-> > > > > > > due to these series of sensors being by default UART.
-> > > > > > >
-> > > > > > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>  
-> > > > > >
-> > > > > > A few things inline - including a dive into a bit of the i2c subsystem
-> > > > > > that's been there for a few years, but never used ;)
-> > > > > >
-> > > > > > Jonathan
-> > > > > >  
-> > > > > > > ---
-> > > > > > >  drivers/iio/chemical/Kconfig            |  11 ++
-> > > > > > >  drivers/iio/chemical/Makefile           |   1 +
-> > > > > > >  drivers/iio/chemical/atlas-ezo-sensor.c | 173 ++++++++++++++++++++++++
-> > > > > > >  3 files changed, 185 insertions(+)
-> > > > > > >  create mode 100644 drivers/iio/chemical/atlas-ezo-sensor.c
-> > > > > > >
-> > > > > > > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> > > > > > > index a7e65a59bf42..7f21afd73b1c 100644
-> > > > > > > --- a/drivers/iio/chemical/Kconfig
-> > > > > > > +++ b/drivers/iio/chemical/Kconfig
-> > > > > > > @@ -22,6 +22,17 @@ config ATLAS_PH_SENSOR
-> > > > > > >         To compile this driver as module, choose M here: the
-> > > > > > >         module will be called atlas-ph-sensor.
-> > > > > > >
-> > > > > > > +config ATLAS_EZO_SENSOR
-> > > > > > > +     tristate "Atlas Scientific EZO sensors"
-> > > > > > > +     depends on I2C
-> > > > > > > +     help
-> > > > > > > +       Say Y here to build I2C interface support for the following
-> > > > > > > +       Atlas Scientific EZO sensors
-> > > > > > > +         * CO2 EZO Sensor
-> > > > > > > +
-> > > > > > > +       To compile this driver as module, choose M here: the
-> > > > > > > +       module will be called atlas-ezo-sensor.
-> > > > > > > +
-> > > > > > >  config BME680
-> > > > > > >       tristate "Bosch Sensortec BME680 sensor driver"
-> > > > > > >       depends on (I2C || SPI)
-> > > > > > > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> > > > > > > index 33d3a595dda9..aba4167db745 100644
-> > > > > > > --- a/drivers/iio/chemical/Makefile
-> > > > > > > +++ b/drivers/iio/chemical/Makefile
-> > > > > > > @@ -5,6 +5,7 @@
-> > > > > > >
-> > > > > > >  # When adding new entries keep the list in alphabetical order
-> > > > > > >  obj-$(CONFIG_ATLAS_PH_SENSOR)        += atlas-sensor.o
-> > > > > > > +obj-$(CONFIG_ATLAS_EZO_SENSOR)       += atlas-ezo-sensor.o
-> > > > > > >  obj-$(CONFIG_BME680) += bme680_core.o
-> > > > > > >  obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
-> > > > > > >  obj-$(CONFIG_BME680_SPI) += bme680_spi.o
-> > > > > > > diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
-> > > > > > > new file mode 100644
-> > > > > > > index 000000000000..1f972f525a46
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/drivers/iio/chemical/atlas-ezo-sensor.c
-> > > > > > > @@ -0,0 +1,173 @@
-> > > > > > > +// SPDX-License-Identifier: GPL-2.0+
-> > > > > > > +/*
-> > > > > > > + * atlas-ezo-sensor.c - Support for Atlas Scientific EZO sensors
-> > > > > > > + *
-> > > > > > > + * Copyright (C) 2020 Konsulko Group
-> > > > > > > + * Author: Matt Ranostay <matt.ranostay@konsulko.com>
-> > > > > > > + */
-> > > > > > > +
-> > > > > > > +#include <linux/module.h>
-> > > > > > > +#include <linux/init.h>
-> > > > > > > +#include <linux/delay.h>
-> > > > > > > +#include <linux/mutex.h>
-> > > > > > > +#include <linux/err.h>
-> > > > > > > +#include <linux/i2c.h>
-> > > > > > > +#include <linux/of_device.h>
-> > > > > > > +#include <linux/iio/iio.h>
-> > > > > > > +
-> > > > > > > +#define ATLAS_EZO_DRV_NAME           "atlas-ezo-sensor"
-> > > > > > > +#define ATLAS_CO2_INT_TIME_IN_MS     950
-> > > > > > > +
-> > > > > > > +enum {
-> > > > > > > +     ATLAS_CO2_EZO,
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +struct atlas_ezo_device {
-> > > > > > > +     const struct iio_chan_spec *channels;
-> > > > > > > +     int num_channels;
-> > > > > > > +     int delay;
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +struct atlas_ezo_data {
-> > > > > > > +     struct i2c_client *client;
-> > > > > > > +     struct atlas_ezo_device *chip;  
-> > > > > >
-> > > > > > const?  Seems like it's always a pointer to a constant structure.
-> > > > > >  
-> > > > > > > +     struct mutex lock;  
-> > > > > >
-> > > > > > Locks should 'always' have a comment to say what their scope is.
-> > > > > > Even when it appears obvious ;)
-> > > > > >  
-> > > > > > > +     u8 buffer[8];
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +static const struct iio_chan_spec atlas_co2_ezo_channels[] = {
-> > > > > > > +     {
-> > > > > > > +             .type = IIO_CONCENTRATION,
-> > > > > > > +             .modified = 1,
-> > > > > > > +             .channel2 = IIO_MOD_CO2,
-> > > > > > > +             .info_mask_separate =
-> > > > > > > +                     BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-> > > > > > > +             .scan_index = 0,
-> > > > > > > +             .scan_type = {
-> > > > > > > +                     .sign = 'u',
-> > > > > > > +                     .realbits = 32,
-> > > > > > > +                     .storagebits = 32,
-> > > > > > > +                     .endianness = IIO_CPU,
-> > > > > > > +             },
-> > > > > > > +     },
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +static struct atlas_ezo_device atlas_ezo_devices[] = {  
-> > > > > >
-> > > > > > const?
-> > > > > >  
-> > > > > > > +     [ATLAS_CO2_EZO] = {
-> > > > > > > +             .channels = atlas_co2_ezo_channels,
-> > > > > > > +             .num_channels = 1,
-> > > > > > > +             .delay = ATLAS_CO2_INT_TIME_IN_MS,
-> > > > > > > +     },
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
-> > > > > > > +                       struct iio_chan_spec const *chan,
-> > > > > > > +                       int *val, int *val2, long mask)
-> > > > > > > +{
-> > > > > > > +     struct atlas_ezo_data *data = iio_priv(indio_dev);
-> > > > > > > +     struct i2c_client *client = data->client;
-> > > > > > > +     int ret = 0;
-> > > > > > > +
-> > > > > > > +     if (chan->type != IIO_CONCENTRATION)
-> > > > > > > +             return -EINVAL;
-> > > > > > > +
-> > > > > > > +     switch (mask) {
-> > > > > > > +     case IIO_CHAN_INFO_RAW: {
-> > > > > > > +             int tmp;
-> > > > > > > +
-> > > > > > > +             mutex_lock(&data->lock);
-> > > > > > > +
-> > > > > > > +             tmp = i2c_smbus_write_byte(client, 'R');
-> > > > > > > +
-> > > > > > > +             if (tmp < 0) {
-> > > > > > > +                     mutex_unlock(&data->lock);
-> > > > > > > +                     return tmp;
-> > > > > > > +             }
-> > > > > > > +
-> > > > > > > +             msleep(data->chip->delay);
-> > > > > > > +
-> > > > > > > +             tmp = i2c_master_recv(client, data->buffer, sizeof(data->buffer));
-> > > > > > > +
-> > > > > > > +             // Confirm response code is 1 for success  
-> > > > > >
-> > > > > > Comment syntax /* */
-> > > > > >  
-> > > > > > > +             if (tmp < 0 || data->buffer[0] != 1) {
-> > > > > > > +                     mutex_unlock(&data->lock);
-> > > > > > > +                     return -EBUSY;
-> > > > > > > +             }
-> > > > > > > +
-> > > > > > > +             ret = kstrtol(data->buffer + 1, 10, (long *) val);  
-> > > > > >
-> > > > > > Use a local variable rather than casting like that which could in theory
-> > > > > > be unsafe.
-> > > > > >  
-> > > > > > > +
-> > > > > > > +             mutex_unlock(&data->lock);
-> > > > > > > +
-> > > > > > > +             return ret ? ret : IIO_VAL_INT;
-> > > > > > > +     }
-> > > > > > > +     case IIO_CHAN_INFO_SCALE:
-> > > > > > > +             *val = 1;
-> > > > > > > +             *val2 = 10000; /* 0.0001 */
-> > > > > > > +             return IIO_VAL_FRACTIONAL;  
-> > > > > >
-> > > > > > Could use VAL_INT_PLUS_MICRO to reduce the maths needed for
-> > > > > > a constant case like we have here where that representation
-> > > > > > is just as easy to read as this one.
-> > > > > >  
-> > > > > > > +     }
-> > > > > > > +  
-> > > > > >
-> > > > > > Can only get here in invalid path. So return -EINVAL and don't
-> > > > > > initialize ret above.
-> > > > > >  
-> > > > > > > +     return ret;
-> > > > > > > +}
-> > > > > > > +
-> > > > > > > +static const struct iio_info atlas_info = {
-> > > > > > > +     .read_raw = atlas_ezo_read_raw,
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +static const struct i2c_device_id atlas_ezo_id[] = {
-> > > > > > > +     { "atlas-co2-ezo", ATLAS_CO2_EZO },
-> > > > > > > +     {}
-> > > > > > > +};
-> > > > > > > +MODULE_DEVICE_TABLE(i2c, atlas_ezo_id);
-> > > > > > > +
-> > > > > > > +static const struct of_device_id atlas_ezo_dt_ids[] = {
-> > > > > > > +     { .compatible = "atlas,co2-ezo", .data = (void *)ATLAS_CO2_EZO, },
-> > > > > > > +     {}
-> > > > > > > +};
-> > > > > > > +MODULE_DEVICE_TABLE(of, atlas_ezo_dt_ids);
-> > > > > > > +
-> > > > > > > +static int atlas_ezo_probe(struct i2c_client *client,
-> > > > > > > +                    const struct i2c_device_id *id)
-> > > > > > > +{
-> > > > > > > +     struct atlas_ezo_data *data;
-> > > > > > > +     struct atlas_ezo_device *chip;
-> > > > > > > +     const struct of_device_id *of_id;
-> > > > > > > +     struct iio_dev *indio_dev;
-> > > > > > > +
-> > > > > > > +     indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> > > > > > > +     if (!indio_dev)
-> > > > > > > +             return -ENOMEM;
-> > > > > > > +
-> > > > > > > +     of_id = of_match_device(atlas_dt_ids, &client->dev);
-> > > > > > > +     if (!of_id)
-> > > > > > > +             chip = &atlas_ezo_devices[id->driver_data];  
-> > > > > >
-> > > > > > Given we are supposed to be transitioning away (slowly) from
-> > > > > > probe to probe_new, we shouldn't really be using id to do anything
-> > > > > > in here (directly anyway)
-> > > > > >
-> > > > > > Looking at i2c_of_match_device, there is some magic to match
-> > > > > > if we have initialized through the sysfs interface, so use that
-> > > > > > instead.
-> > > > > >
-> > > > > > https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-of.c#L224
-> > > > > >
-> > > > > > I 'think' that takes care of the case where we haven't instantiated
-> > > > > > via device tree.
-> > > > > >
-> > > > > > Interestingly it's a very little used function. But, the original discussion
-> > > > > > included a patch doing pretty much what I'm suggesting here:
-> > > > > >
-> > > > > > https://lore.kernel.org/patchwork/patch/728984/  
-> > > > >
-> > > > > Looks good but what about ACPI systems like x86? Which now my UP^2 is
-> > > > > my main development system now.  
-> > > >
-> > > > I'm not sure what you mean?  ACPI based probing doesn't use the old
-> > > > I2C ID table anyway.
-> > > >
-> > > > So three ways to work with them:
-> > > >
-> > > > 1) the sysfs interface as above.
-> > > > 2) actual ACPI IDs and bindings but those need specific support in
-> > > >    the driver.
-> > > > 3) PRP0001 ID and the magic device tree bindings.  You would need
-> > > >    to use the generic firmware calls, but you aren't currently doing
-> > > >    that.. It will be an issue for the above function but seems like
-> > > >    it would make sense to have a similar wrapper with the string based
-> > > >    fallback for that as well.
-> > > >
-> > > > So how are you instantiating this on your ACPI based board?  
-> > >
-> > > Manually using the new_device entry in /sys/bus/i2c/*
-> > >
-> > > # echo "atlas-co2-ezo 0x69" > new_device  
-> >
-> > That should be fine without the separate old style table.
-> > new_device_store
-> > https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L1026
-> >
-> > calls
-> > i2c_new_client_device
-> > https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L732
-> >
-> > which calls device_register
-> >
-> > That will result in device_add -> ... via  a long chain... -> __device_attach_driver  
-> > -> drv->bus->match which for the i2c subsystem is:  
-> > i2c_device_match
-> >
-> > which will call i2c_of_match_device if there is an of_match_table
-> > (before it tries the old style table)
-> >
-> > That function is the one which will happily match the name without the vendor id.
-> >
-> > Thus you should still be able to use that method without needing to register
-> > the old style table.  
+> On 04.05.2020 15:27, Eugen Hristev - M18282 wrote:
+> > On 30.04.2020 11:42, Eugen Hristev - M18282 wrote:  
+> >> On 30.04.2020 11:24, Alexandru Ardelean wrote:  
+> >>> From: Lars-Peter Clausen <lars@metafoo.de>
+> >>>
+> >>> It is clear that we transition to INDIO_DIRECT_MODE when disabling the
+> >>> buffer(s) and it is also clear that we transition from INDIO_DIRECT_MODE
+> >>> when enabling the buffer(s). So leaving the currentmode field
+> >>> INDIO_DIRECT_MODE until after the preenable() callback and updating it to
+> >>> INDIO_DIRECT_MODE before the postdisable() callback doesn't add additional
+> >>> value. On the other hand some drivers will need to perform different
+> >>> actions depending on which mode the device is going to operate in/was
+> >>> operating in.
+> >>>
+> >>> Moving the update of currentmode before preenable() and after postdisable()
+> >>> enables us to have drivers which perform mode dependent actions in those
+> >>> callbacks.
+> >>>
+> >>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> >>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> >>> ---
+> >>>
+> >>> This patch is also a V2 of this older patch from a while ago:
+> >>>     https://lore.kernel.org/linux-iio/1431525891-19285-5-git-send-email-lars@metafoo.de/
+> >>>
+> >>> However, in this recent context, it comes to fix this:
+> >>>     https://lore.kernel.org/linux-iio/b9ab676489de3575984dac5610fcf05fd8742a38.camel@analog.com/T/#mc09284c8f79250b92a52fd5b8d1f541d1c02c0c0
+> >>>
+> >>> At this point, I don't have a clear idea if this approach is good or
+> >>> not; since the motivation is to fix the at91 adc.
+> >>> Hence the RFC.
+> >>>
+> >>> Some excerpt from the AT91 discussion:
+> >>> -------------------------------------------------------------------
+> >>> I decided to do a bit of shell magic for this:
+> >>>
+> >>> get_files() {
+> >>> git grep -w iio_buffer_setup_ops  | grep drivers | cut -d: -f1 | sort | uniq
+> >>> }
+> >>>
+> >>> for file in $(get_files) ; do
+> >>>        if grep -q currentmode $file ; then
+> >>>            echo $file
+> >>>        fi
+> >>> done
+> >>>
+> >>> It finds 4 drivers.
+> >>> Though, `get_files()` will return 56 files.
+> >>>
+> >>> drivers/iio/accel/bmc150-accel-core.c
+> >>> drivers/iio/adc/at91-sama5d2_adc.c
+> >>> drivers/iio/adc/stm32-dfsdm-adc.c
+> >>> drivers/iio/magnetometer/rm3100-core.c
+> >>>
+> >>> The rm3100 driver doesn't do any checks in the setup_ops for 'currentmode' as
+> >>> far as I could see.
+> >>>
+> >>> So, Lars' patch could work nicely to fix this current case and not break others.
+> >>>
+> >>> Semantically though, it would sound nicer to have a 'nextmode' parameter
+> >>> somewhere; maybe on the setup_ops(indio_dev, nextmode)?
+> >>> Though, only those 3 drivers would really ever use it; so doing it like that
+> >>> sounds like overkill.
+> >>>
+> >>> So, we're left with Lars' patch or we could add an 'indio_dev->nextmode' field,
+> >>> that may be used in just these 3 drivers [which again: sounds overkill at this
+> >>> point in time].
+> >>>
+> >>> Alternatively, this 'indio_dev->currentmode' could be removed from all these 3
+> >>> drivers somehow. But that needs testing and a thorough understanding of all 3
+> >>> drivers and what they're doing, to do properly.
+> >>> -------------------------------------------------------------------  
+> >>
+> >> Hi Alex,
+> >>
+> >> Thanks for finding this. I will test this with the at91-sama5d2_adc
+> >> driver on Jonathan's testing branch. I will let you know of the results.
+> >>
+> >> Eugen  
+> > 
+> > Hi,
+> > 
+> > For sama5d2-xplained, hw trigger testing, at91-sama5d2_adc driver,
+> > Tested-by: Eugen Hristev <eugen.hristev@microchip.com>
+> > 
+> > I did not get my hands on the touchscreen yet, but hopefully soon.
+> > 
+> > Thanks again,
+> > Eugen  
 > 
-> Ah so still keep the old style table but just don't need to register it?
-If logic held (and seems it doesn't) you shouldn't have needed the old
-style table at all.
+> Hello Jonathan,
+> 
+> Without this patch, your current testing branch is broken for hardware 
+> trigger for at91-sama5d2_adc (including for-5.8b tag)
+> 
+> You want me to create a patch that fixes that in the driver, or you will 
+> take this patch maybe ?
 
-J
+Hmmm. Semantically I wasn't overly keen on this patch, but it does appear
+harmless and will kind of make more sense once the big rework Alex
+is doing is finished..  My concern was that preenable should see the
+currentmode as the one before enabling - so not a buffered mode, 
+and with this it doesn't.
+
+I sanity checked the cases identified and they all seem fine so
+let's go with it.
+
+We are a bit near the merge window for me to be absolutely sure I'll get
+another pull request out, so this might get shifted to the fixes branch
+if I miss that.
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
+
+Thanks,
+
+Jonathan
 
 > 
-> - Matt
+> Thanks !
+> Eugen
+> >>  
+> >>>
+> >>>     drivers/iio/industrialio-buffer.c | 8 +++-----
+> >>>     1 file changed, 3 insertions(+), 5 deletions(-)
+> >>>
+> >>> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> >>> index 30af8af8f312..efcc44b62946 100644
+> >>> --- a/drivers/iio/industrialio-buffer.c
+> >>> +++ b/drivers/iio/industrialio-buffer.c
+> >>> @@ -989,6 +989,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+> >>>            indio_dev->active_scan_mask = config->scan_mask;
+> >>>            indio_dev->scan_timestamp = config->scan_timestamp;
+> >>>            indio_dev->scan_bytes = config->scan_bytes;
+> >>> +       indio_dev->currentmode = config->mode;
+> >>>
+> >>>            iio_update_demux(indio_dev);
+> >>>
+> >>> @@ -1024,8 +1025,6 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+> >>>                            goto err_disable_buffers;
+> >>>            }
+> >>>
+> >>> -       indio_dev->currentmode = config->mode;
+> >>> -
+> >>>            if (indio_dev->setup_ops->postenable) {
+> >>>                    ret = indio_dev->setup_ops->postenable(indio_dev);
+> >>>                    if (ret) {
+> >>> @@ -1042,10 +1041,10 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+> >>>                                                 buffer_list)
+> >>>                    iio_buffer_disable(buffer, indio_dev);
+> >>>     err_run_postdisable:
+> >>> -       indio_dev->currentmode = INDIO_DIRECT_MODE;
+> >>>            if (indio_dev->setup_ops->postdisable)
+> >>>                    indio_dev->setup_ops->postdisable(indio_dev);
+> >>>     err_undo_config:
+> >>> +       indio_dev->currentmode = INDIO_DIRECT_MODE;
+> >>>            indio_dev->active_scan_mask = NULL;
+> >>>
+> >>>            return ret;
+> >>> @@ -1080,8 +1079,6 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+> >>>                            ret = ret2;
+> >>>            }
+> >>>
+> >>> -       indio_dev->currentmode = INDIO_DIRECT_MODE;
+> >>> -
+> >>>            if (indio_dev->setup_ops->postdisable) {
+> >>>                    ret2 = indio_dev->setup_ops->postdisable(indio_dev);
+> >>>                    if (ret2 && !ret)
+> >>> @@ -1090,6 +1087,7 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+> >>>
+> >>>            iio_free_scan_mask(indio_dev, indio_dev->active_scan_mask);
+> >>>            indio_dev->active_scan_mask = NULL;
+> >>> +       indio_dev->currentmode = INDIO_DIRECT_MODE;
+> >>>
+> >>>            return ret;
+> >>>     }
+> >>> --
+> >>> 2.17.1
+> >>>  
+> >>  
+> >   
 > 
-> >
-> > At least that's how I believe it is suppose to work.  Maybe I'm missing something!
-> >
-> > Jonathan
-> >  
-> > >
-> > > Thanks,
-> > >
-> > > Matt
-> > >  
-> > > >
-> > > > Jonathan
-> > > >  
-> > > > >
-> > > > > Thanks,
-> > > > >
-> > > > > Matt
-> > > > >  
-> > > > > >
-> > > > > >  
-> > > > > > > +     else
-> > > > > > > +             chip = &atlas_ezo_devices[(unsigned long)of_id->data];
-> > > > > > > +
-> > > > > > > +     indio_dev->info = &atlas_info;
-> > > > > > > +     indio_dev->name = ATLAS_EZO_DRV_NAME;
-> > > > > > > +     indio_dev->channels = chip->channels;
-> > > > > > > +     indio_dev->num_channels = chip->num_channels;
-> > > > > > > +     indio_dev->modes = INDIO_DIRECT_MODE;
-> > > > > > > +     indio_dev->dev.parent = &client->dev;
-> > > > > > > +
-> > > > > > > +     data = iio_priv(indio_dev);
-> > > > > > > +     data->client = client;
-> > > > > > > +     data->chip = chip;
-> > > > > > > +     mutex_init(&data->lock);
-> > > > > > > +
-> > > > > > > +     return devm_iio_device_register(&client->dev, indio_dev);
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +static struct i2c_driver atlas_ezo_driver = {
-> > > > > > > +     .driver = {
-> > > > > > > +             .name   = ATLAS_EZO_DRV_NAME,
-> > > > > > > +             .of_match_table = atlas_ezo_dt_ids,
-> > > > > > > +     },
-> > > > > > > +     .probe          = atlas_ezo_probe,
-> > > > > > > +     .id_table       = atlas_ezo_id,
-> > > > > > > +};
-> > > > > > > +module_i2c_driver(atlas_ezo_driver);
-> > > > > > > +
-> > > > > > > +MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
-> > > > > > > +MODULE_DESCRIPTION("Atlas Scientific EZO sensors");
-> > > > > > > +MODULE_LICENSE("GPL");  
-> > > > > >  
-> > > >
-> > > >  
-> >  
 

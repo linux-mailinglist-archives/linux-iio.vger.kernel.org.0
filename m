@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D651D61DF
-	for <lists+linux-iio@lfdr.de>; Sat, 16 May 2020 17:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 536581D61E4
+	for <lists+linux-iio@lfdr.de>; Sat, 16 May 2020 17:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbgEPPQc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 May 2020 11:16:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59512 "EHLO mail.kernel.org"
+        id S1726730AbgEPPVU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 May 2020 11:21:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60462 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726416AbgEPPQb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 May 2020 11:16:31 -0400
+        id S1726720AbgEPPVU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 May 2020 11:21:20 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C441206F4;
-        Sat, 16 May 2020 15:16:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA93B2065C;
+        Sat, 16 May 2020 15:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589642191;
-        bh=6Z9hb2te2K0czF9eC2paUQgDl+fVWCezJ+/uOWzzXJ4=;
+        s=default; t=1589642479;
+        bh=LVxp+/ayanEJJ26cFKX6UdrnhoIwfCg61e8m+b2QBFI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KxtFjtajna+Yf7zWSN5eXdFOiAJUdjkFb1PFk8Zlrb+wGEMWqwcbB3H5NP6DpdGE4
-         lFjZAUIiXyOmo3Jy59WQzhtix1dcQaHHySO5xj0+s/UKaZjhrwUhVHvO0ovkCW9LDW
-         aa/u2EZ54ZnCKOp3w6SBPTGv2IpSKz5rHyckFWKs=
-Date:   Sat, 16 May 2020 16:16:27 +0100
+        b=UdOsYxyCTzVjGieGd/j8mjWZMUWoPR2ObHRMm1/YwRDVbiC17LoA65OVNqmF7I4LL
+         n8AGFNzVJK99B1pEpIwz6VF2eG4DsF3vZoKDNUZ+QUMB12YxIwj9MSaPBrGc2nsIyp
+         SA3PZAGm/jSaWjRPDRVu3yzAnjSzWFm8dCzQG2SU=
+Date:   Sat, 16 May 2020 16:21:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Stefan Popa" <stefan.popa@analog.com>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: dac: ad5449: Replace indio_dev->mlock with own
+Subject: Re: [PATCH] iio: dac: ad5755: Replace indio_dev->mlock with own
  device lock
-Message-ID: <20200516161627.60782bd9@archlinux>
-In-Reply-To: <20200514090152.80436-1-sergiu.cuciurean@analog.com>
-References: <20200514090152.80436-1-sergiu.cuciurean@analog.com>
+Message-ID: <20200516162114.1d58ddea@archlinux>
+In-Reply-To: <20200514090608.80521-1-sergiu.cuciurean@analog.com>
+References: <20200514090608.80521-1-sergiu.cuciurean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,78 +46,123 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 14 May 2020 12:01:49 +0300
+On Thu, 14 May 2020 12:06:05 +0300
 Sergiu Cuciurean <sergiu.cuciurean@analog.com> wrote:
 
 > As part of the general cleanup of indio_dev->mlock, this change replaces
 > it with a local lock on the device's state structure.
+> This also changes some internal functions to pass the pointer to the
+> state-struct vs a ref to indio_dev just to access the state-struct again.
 > 
 > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Applied.
+Applied to the togreg branch of iio.git.
 
-Thanks,
+An observation on this one is that, with the local lock we always
+have the iio_priv() structure where we are calling the various
+write functions.  Those take the indio_dev and use it just to get
+the iio_priv().  May be worth a follow up to tidy that up and just
+pass the private state structure directly into the various write
+functions.
 
-J
+Jonathan
+
 > ---
->  drivers/iio/dac/ad5449.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+>  drivers/iio/dac/ad5755.c | 22 ++++++++++++++--------
+>  1 file changed, 14 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/iio/dac/ad5449.c b/drivers/iio/dac/ad5449.c
-> index fed3ebaccac4..d739b10e5236 100644
-> --- a/drivers/iio/dac/ad5449.c
-> +++ b/drivers/iio/dac/ad5449.c
-> @@ -56,11 +56,13 @@ struct ad5449_chip_info {
->   * @has_sdo:		whether the SDO line is connected
->   * @dac_cache:		Cache for the DAC values
->   * @data:		spi transfer buffers
-> + * @lock		lock to protect the data buffer during SPI ops
+> diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+> index 388ddd14bfd0..7723bd313fc6 100644
+> --- a/drivers/iio/dac/ad5755.c
+> +++ b/drivers/iio/dac/ad5755.c
+> @@ -82,6 +82,7 @@ struct ad5755_chip_info {
+>   * @pwr_down:	bitmask which contains  hether a channel is powered down or not
+>   * @ctrl:	software shadow of the channel ctrl registers
+>   * @channels:	iio channel spec for the device
+> + * @lock	lock to protect the data buffer during SPI ops
+>   * @data:	spi transfer buffers
 >   */
->  struct ad5449 {
->  	struct spi_device		*spi;
->  	const struct ad5449_chip_info	*chip_info;
->  	struct regulator_bulk_data	vref_reg[AD5449_MAX_VREFS];
+>  struct ad5755_state {
+> @@ -90,6 +91,7 @@ struct ad5755_state {
+>  	unsigned int			pwr_down;
+>  	unsigned int			ctrl[AD5755_NUM_CHANNELS];
+>  	struct iio_chan_spec		channels[AD5755_NUM_CHANNELS];
 > +	struct mutex			lock;
 >  
->  	bool has_sdo;
->  	uint16_t dac_cache[AD5449_MAX_CHANNELS];
-> @@ -87,10 +89,10 @@ static int ad5449_write(struct iio_dev *indio_dev, unsigned int addr,
->  	struct ad5449 *st = iio_priv(indio_dev);
+>  	/*
+>  	 * DMA (thus cache coherency maintenance) requires the
+> @@ -174,11 +176,12 @@ static int ad5755_write_ctrl_unlocked(struct iio_dev *indio_dev,
+>  static int ad5755_write(struct iio_dev *indio_dev, unsigned int reg,
+>  	unsigned int val)
+>  {
+> +	struct ad5755_state *st = iio_priv(indio_dev);
 >  	int ret;
 >  
 > -	mutex_lock(&indio_dev->mlock);
 > +	mutex_lock(&st->lock);
->  	st->data[0] = cpu_to_be16((addr << 12) | val);
->  	ret = spi_write(st->spi, st->data, 2);
+>  	ret = ad5755_write_unlocked(indio_dev, reg, val);
 > -	mutex_unlock(&indio_dev->mlock);
 > +	mutex_unlock(&st->lock);
 >  
 >  	return ret;
 >  }
-> @@ -112,7 +114,7 @@ static int ad5449_read(struct iio_dev *indio_dev, unsigned int addr,
+> @@ -186,11 +189,12 @@ static int ad5755_write(struct iio_dev *indio_dev, unsigned int reg,
+>  static int ad5755_write_ctrl(struct iio_dev *indio_dev, unsigned int channel,
+>  	unsigned int reg, unsigned int val)
+>  {
+> +	struct ad5755_state *st = iio_priv(indio_dev);
+>  	int ret;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&st->lock);
+>  	ret = ad5755_write_ctrl_unlocked(indio_dev, channel, reg, val);
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+>  
+>  	return ret;
+>  }
+> @@ -211,7 +215,7 @@ static int ad5755_read(struct iio_dev *indio_dev, unsigned int addr)
 >  		},
 >  	};
 >  
 > -	mutex_lock(&indio_dev->mlock);
 > +	mutex_lock(&st->lock);
->  	st->data[0] = cpu_to_be16(addr << 12);
->  	st->data[1] = cpu_to_be16(AD5449_CMD_NOOP);
 >  
-> @@ -123,7 +125,7 @@ static int ad5449_read(struct iio_dev *indio_dev, unsigned int addr,
->  	*val = be16_to_cpu(st->data[1]);
+>  	st->data[0].d32 = cpu_to_be32(AD5755_READ_FLAG | (addr << 16));
+>  	st->data[1].d32 = cpu_to_be32(AD5755_NOOP);
+> @@ -220,7 +224,7 @@ static int ad5755_read(struct iio_dev *indio_dev, unsigned int addr)
+>  	if (ret >= 0)
+>  		ret = be32_to_cpu(st->data[1].d32) & 0xffff;
+>  
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+>  
+>  	return ret;
+>  }
+> @@ -246,7 +250,7 @@ static int ad5755_set_channel_pwr_down(struct iio_dev *indio_dev,
+>  	struct ad5755_state *st = iio_priv(indio_dev);
+>  	unsigned int mask = BIT(channel);
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&st->lock);
+>  
+>  	if ((bool)(st->pwr_down & mask) == pwr_down)
+>  		goto out_unlock;
+> @@ -266,7 +270,7 @@ static int ad5755_set_channel_pwr_down(struct iio_dev *indio_dev,
+>  	}
 >  
 >  out_unlock:
 > -	mutex_unlock(&indio_dev->mlock);
 > +	mutex_unlock(&st->lock);
->  	return ret;
->  }
 >  
-> @@ -302,6 +304,8 @@ static int ad5449_spi_probe(struct spi_device *spi)
->  	indio_dev->channels = st->chip_info->channels;
->  	indio_dev->num_channels = st->chip_info->num_channels;
+>  	return 0;
+>  }
+> @@ -746,6 +750,8 @@ static int ad5755_probe(struct spi_device *spi)
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->num_channels = AD5755_NUM_CHANNELS;
 >  
 > +	mutex_init(&st->lock);
 > +
->  	if (st->chip_info->has_ctrl) {
->  		unsigned int ctrl = 0x00;
->  		if (pdata) {
+>  	if (spi->dev.of_node)
+>  		pdata = ad5755_parse_dt(&spi->dev);
+>  	else
 

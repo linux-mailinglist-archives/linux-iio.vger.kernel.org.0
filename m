@@ -2,34 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD8351D6B76
-	for <lists+linux-iio@lfdr.de>; Sun, 17 May 2020 19:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5C91D6B79
+	for <lists+linux-iio@lfdr.de>; Sun, 17 May 2020 19:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726290AbgEQRcH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 May 2020 13:32:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51242 "EHLO mail.kernel.org"
+        id S1726374AbgEQRcK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 May 2020 13:32:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726248AbgEQRcG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 17 May 2020 13:32:06 -0400
+        id S1726276AbgEQRcI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 17 May 2020 13:32:08 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC7FA207DA;
-        Sun, 17 May 2020 17:32:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D924A207ED;
+        Sun, 17 May 2020 17:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589736726;
-        bh=Z7VxFsNB9LM9hUPq/XJa4cJQiQ2taNpfFzDMic5EeQ4=;
+        s=default; t=1589736727;
+        bh=NiZEO/LT9+bk7JD9gP6ufZO1nUkn5GdrFt7XQqd370s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fBQ5Sdw9H6KXbXCqM2yfV5Ot3ggOlqfrZTSaHaoDcXmdSJb7ou2DwhSUUHdy5epEn
-         Qe6eplQpG45HectaVlUdTW904p3btjWdGpwzn5MlC3QvoauRS1P1Eyb3awr9ugafs1
-         khXw5miZR7w6hcYbl+/3BjEqn38zWbDSaE8Juh3A=
+        b=HVgTy8bqd9K6mPqaVmkD5LtPoXu5CfzGbh7PwedWBa6AkO5khiOMsDLJ5ITL3jmJ8
+         ZGgJ4MTPARzzd0FJyAH//F+0S60up18p/5mBeFF8BeXncGrMQMusVWI8bN1HsWLWtY
+         DpqUf+lMVK3JGEhrs4IyCdIex89fWug8VOqL14E4=
 From:   jic23@kernel.org
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 01/11] iio: accel: kxsd9: Fix alignment of local buffer.
-Date:   Sun, 17 May 2020 18:29:50 +0100
-Message-Id: <20200517173000.220819-2-jic23@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>
+Subject: [PATCH 02/11] iio:accel:mma8452: Fix timestamp alignment and prevent data leak.
+Date:   Sun, 17 May 2020 18:29:51 +0100
+Message-Id: <20200517173000.220819-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200517173000.220819-1-jic23@kernel.org>
 References: <20200517173000.220819-1-jic23@kernel.org>
@@ -42,53 +43,58 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-iio_push_to_buffers_with_timestamp assumes 8 byte alignment which
-is not guaranteed by an array of smaller elements.
+One of a class of bugs pointed out by Lars in a recent review.
+iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+to the size of the timestamp (8 bytes).  This is not guaranteed in
+this driver which uses a 16 byte u8 array on the stack.  As Lars also noted
+this anti pattern can involve a leak of data to userspace and that
+indeed can happen here.  We close both issues by moving to
+a suitable structure in the iio_priv() data with alignment
+ensured by use of an explicit c structure.  This data is allocated
+with kzalloc so no data can leak appart from previous readings.
 
+Fixes: c7eeea93ac60 ("iio: Add Freescale MMA8452Q 3-axis accelerometer driver")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Peter Meerwald <pmeerw@pmeerw.net>
 ---
- drivers/iio/accel/kxsd9.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/iio/accel/mma8452.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
-index 0b876b2dc5bd..f989e6ffda88 100644
---- a/drivers/iio/accel/kxsd9.c
-+++ b/drivers/iio/accel/kxsd9.c
-@@ -209,14 +209,20 @@ static irqreturn_t kxsd9_trigger_handler(int irq, void *p)
- 	const struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct kxsd9_state *st = iio_priv(indio_dev);
-+	/*
-+	 * Ensure correct positioning and alignment of timestamp.
-+	 * No need to zero initialize as all elements written.
-+	 */
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 00e100fc845a..704867ffda7a 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -110,6 +110,12 @@ struct mma8452_data {
+ 	int sleep_val;
+ 	struct regulator *vdd_reg;
+ 	struct regulator *vddio_reg;
++
++	/* Ensure correct alignment of time stamp when present */
 +	struct {
-+		__be16 chan[4];
++		__be16 channels[3];
 +		s64 ts;
-+	} hw_values;
++	} buffer;
+ };
+ 
+  /**
+@@ -1091,14 +1097,13 @@ static irqreturn_t mma8452_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct mma8452_data *data = iio_priv(indio_dev);
+-	u8 buffer[16]; /* 3 16-bit channels + padding + ts */
  	int ret;
--	/* 4 * 16bit values AND timestamp */
--	__be16 hw_values[8];
  
- 	ret = regmap_bulk_read(st->map,
- 			       KXSD9_REG_X,
--			       &hw_values,
--			       8);
-+			       hw_values.chan,
-+			       sizeof(hw_values.chan));
- 	if (ret) {
- 		dev_err(st->dev,
- 			"error reading data\n");
-@@ -224,7 +230,7 @@ static irqreturn_t kxsd9_trigger_handler(int irq, void *p)
- 	}
+-	ret = mma8452_read(data, (__be16 *)buffer);
++	ret = mma8452_read(data, data->buffer.channels);
+ 	if (ret < 0)
+ 		goto done;
  
- 	iio_push_to_buffers_with_timestamp(indio_dev,
--					   hw_values,
-+					   &hw_values,
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
  					   iio_get_time_ns(indio_dev));
- 	iio_trigger_notify_done(indio_dev->trig);
  
+ done:
 -- 
 2.26.2
 

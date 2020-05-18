@@ -2,156 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E11B51D73E1
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 11:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 071EC1D7583
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 12:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbgERJXM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 05:23:12 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:27234 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726279AbgERJXL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 05:23:11 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04I9H17F018541;
-        Mon, 18 May 2020 11:22:44 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=ed8LSXnQG+tlux2FuhY3S6F1qF+O17NCCBESiZMzfGE=;
- b=khcA87sH9LWjScV6dovE2U6oev5OAExticOqX0cSt+p4QiY4ex87jHH3HhgebjiAOIsA
- FRyFF9cZUrrwiTkpk+ZC1F6h8z1HnannGbiQSmeF14JsINshSkROZPAWCZsuhBo+qj5M
- r2ZJwKCsEkS1UBDDZMRmxO1CNcakFxYd0YidEtnzSuHArvVuZmSBPhrbAemzbpo5dcXd
- V+c1hnIPSsL5yobGjEalTXk/RTBIAmvfmSB2WsrkCeA/eDDrsj7G8yVLoL7wW5MYtHaa
- 0ap/LGgI3KIfH+TS9FQTsLhZeurf8R4++OxC1ZvvAVJGwHskkWuSxtU3uiyS7AtECIHq 7A== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3125xxjta7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 May 2020 11:22:44 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C0E3E10002A;
-        Mon, 18 May 2020 11:22:42 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node1.st.com [10.75.127.13])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A5CB42AE6BD;
-        Mon, 18 May 2020 11:22:42 +0200 (CEST)
-Received: from [10.211.8.57] (10.75.127.46) by SFHDAG5NODE1.st.com
- (10.75.127.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 18 May
- 2020 11:22:41 +0200
-Subject: Re: [PATCH] iio: stm32-dac: Replace indio_dev->mlock with own device
- lock
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        id S1726180AbgERKsU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 May 2020 06:48:20 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:38648 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726127AbgERKsU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 06:48:20 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 849C52A04C1
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200514085018.79948-1-sergiu.cuciurean@analog.com>
- <20200516163521.2812cf86@archlinux>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <9f271d8d-4ee9-1633-fb90-faca53072716@st.com>
-Date:   Mon, 18 May 2020 11:22:40 +0200
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+Date:   Mon, 18 May 2020 12:48:11 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200516163521.2812cf86@archlinux>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.46]
-X-ClientProxiedBy: SFHDAG5NODE3.st.com (10.75.127.15) To SFHDAG5NODE1.st.com
- (10.75.127.13)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-18_03:2020-05-15,2020-05-18 signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/16/20 5:35 PM, Jonathan Cameron wrote:
-> On Thu, 14 May 2020 11:50:12 +0300
-> Sergiu Cuciurean <sergiu.cuciurean@analog.com> wrote:
+Hi Hans,
+
+W dniu 15.05.2020 o 20:19, Hans de Goede pisze:
+> Hi Andrezj,
 > 
->> As part of the general cleanup of indio_dev->mlock, this change replaces
->> it with a local lock on the device's state structure.
+> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
+>> Userspace might want to implement a policy to temporarily disregard input
+>> from certain devices, including not treating them as wakeup sources.
 >>
->> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
->> ---
->>  drivers/iio/dac/stm32-dac.c | 12 ++++++++----
->>  1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
->> index f22c1d9129b2..74b9474c8590 100644
->> --- a/drivers/iio/dac/stm32-dac.c
->> +++ b/drivers/iio/dac/stm32-dac.c
->> @@ -26,9 +26,11 @@
->>  /**
->>   * struct stm32_dac - private data of DAC driver
->>   * @common:		reference to DAC common data
->> + * @lock: lock to protect the data buffer during regmap ops
+>> An example use case is a laptop, whose keyboard can be folded under the
+>> screen to create tablet-like experience. The user then must hold the laptop
+>> in such a way that it is difficult to avoid pressing the keyboard keys. It
+>> is therefore desirable to temporarily disregard input from the keyboard,
+>> until it is folded back. This obviously is a policy which should be kept
+>> out of the kernel, but the kernel must provide suitable means to implement
+>> such a policy.
 > 
-> In this particular case I'm not sure that's what mlock was being used for.
-> I think it's about avoiding races around checking if powered down and
-> actually doing it.
-
-Hi Sergiu,
-
-Indeed, purpose is to protect against a race here when reading CR, and
-updating it via regmap (this also makes the subsequent pm_runtime calls
-to be balanced based on this).
-(Side note: there is no data buffer involved for the DAC.)
-Could you please update the comment ?
-
-Thanks,
-Fabrice
-
+> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
+> generating evdev nodes and e.g. internal keyboards on devices with 360°
+> hinges for this reason. libinput simply closes the /dev/input/event#
+> node when folded and re-opens it when the keyboard should become active
+> again. Thus not only suppresses events but allows e.g. touchpads to
+> enter runtime suspend mode which saves power. Typically closing the
+> /dev/input/event# node will also disable the device as wakeup source.
 > 
+> So I wonder what this series actually adds for functionality for
+> userspace which can not already be achieved this way?
 > 
->>   */
->>  struct stm32_dac {
->>  	struct stm32_dac_common *common;
->> +	struct mutex		lock;
->>  };
->>  
->>  static int stm32_dac_is_enabled(struct iio_dev *indio_dev, int channel)
->> @@ -58,10 +60,10 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
->>  	int ret;
->>  
->>  	/* already enabled / disabled ? */
->> -	mutex_lock(&indio_dev->mlock);
->> +	mutex_lock(&dac->lock);
->>  	ret = stm32_dac_is_enabled(indio_dev, ch);
->>  	if (ret < 0 || enable == !!ret) {
->> -		mutex_unlock(&indio_dev->mlock);
->> +		mutex_unlock(&dac->lock);
->>  		return ret < 0 ? ret : 0;
->>  	}
->>  
->> @@ -69,13 +71,13 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
->>  		ret = pm_runtime_get_sync(dev);
->>  		if (ret < 0) {
->>  			pm_runtime_put_noidle(dev);
->> -			mutex_unlock(&indio_dev->mlock);
->> +			mutex_unlock(&dac->lock);
->>  			return ret;
->>  		}
->>  	}
->>  
->>  	ret = regmap_update_bits(dac->common->regmap, STM32_DAC_CR, msk, en);
->> -	mutex_unlock(&indio_dev->mlock);
->> +	mutex_unlock(&dac->lock);
->>  	if (ret < 0) {
->>  		dev_err(&indio_dev->dev, "%s failed\n", en ?
->>  			"Enable" : "Disable");
->> @@ -328,6 +330,8 @@ static int stm32_dac_probe(struct platform_device *pdev)
->>  	indio_dev->info = &stm32_dac_iio_info;
->>  	indio_dev->modes = INDIO_DIRECT_MODE;
->>  
->> +	mutex_init(&dac->lock);
->> +
->>  	ret = stm32_dac_chan_of_init(indio_dev);
->>  	if (ret < 0)
->>  		return ret;
-> 
+> I also noticed that you keep the device open (do not call the
+> input_device's close callback) when inhibited and just throw away
+
+I'm not sure if I understand you correctly, it is called:
+
++static inline void input_stop(struct input_dev *dev)
++{
++	if (dev->poller)
++		input_dev_poller_stop(dev->poller);
++	if (dev->close)
++		dev->close(dev);
+                 ^^^^^^^^^^^^^^^^
++static int input_inhibit(struct input_dev *dev)
++{
++	int ret = 0;
++
++	mutex_lock(&dev->mutex);
++
++	if (dev->inhibited)
++		goto out;
++
++	if (dev->users) {
++		if (dev->inhibit) {
++			ret = dev->inhibit(dev);
++			if (ret)
++				goto out;
++		}
++		input_stop(dev);
+                 ^^^^^^^^^^^^^^^^
+
+It will not be called when dev->users is zero, but if it is zero,
+then nobody has opened the device yet so there is nothing to close.
+
+Andrzej

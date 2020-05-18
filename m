@@ -2,190 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B411D787B
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 14:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C19071D79FD
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 15:35:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbgERMYS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 08:24:18 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:46901 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727005AbgERMYR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 08:24:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589804655;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aNddrvnjvVAzGmBCFtMQ5iaiY8jsBoqXulJlnAFXCC4=;
-        b=DOmeAOjqSMdffptC4r3ZaZiNZlgt9unz9FjAaT0eIKl6dJxXq5iEYgyuwfvxi1r9spl8NA
-        jMwSmhD7LwAZrDs4VaMXB8qw2SLN9QjHj3309EDlTImRr82C+4EXAXoysHBpeqCWQi/YAV
-        YRvF4dDi6k4I+O6iHQTjwn/F4vVdmu4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-121-i9xqUa14N8SiLNOioS7E2g-1; Mon, 18 May 2020 08:24:08 -0400
-X-MC-Unique: i9xqUa14N8SiLNOioS7E2g-1
-Received: by mail-wr1-f72.google.com with SMTP id g10so5591813wrr.10
-        for <linux-iio@vger.kernel.org>; Mon, 18 May 2020 05:24:08 -0700 (PDT)
+        id S1727853AbgERNfr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 May 2020 09:35:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49194 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727020AbgERNfr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 09:35:47 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A992EC061A0C;
+        Mon, 18 May 2020 06:35:45 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id y3so11938356wrt.1;
+        Mon, 18 May 2020 06:35:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=bCY5r4YTOkDM+fCZ3vFBdxf8tVG94ohdlsr2qJImxJ0=;
+        b=l4eOBhzhG4FQOhogJXhZgzRROXU0UmSKA9YdQFre/kLazF3z/zKhS3s0YWMN4z9OOZ
+         V3Gh/6pS4VB7/m+4UOhZlJnG3C9dkQQtCyoL6/bnKtU9LLpQcZ2vJPKMru1xmsX5xmxc
+         U9xCO/Sq0W++BDWQLcCs3oQWLLEhwUDzrmQWlIztfsG+K2rqa6d/hkJMnNtVF54D1PHU
+         vtmK+z0jV1xCALXfOCviQ0cuTmJwHpdm1pAth5sj+HdPpsQ+yX7eonAZ+bBdlG6xtcYd
+         9o1ADcVdG4ZkitxEHlWqhv/BLSQZa8ji4biOIWFKyTaRVMxRPdsxv1pZopKKo2RKb46s
+         84Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aNddrvnjvVAzGmBCFtMQ5iaiY8jsBoqXulJlnAFXCC4=;
-        b=jkR+zK1dA20dFsmGjRh+uVyQITjwrV9R3U90ZAlpWxSEwVzHZi3T0PVJC/IcU0CmXa
-         ELGXQ1dGaM1sfIFwcnfhqjN9Lcwum9T4E9sCLvggMG2GaovBrnGLQUZ/7TmIDJbdh3P4
-         Q3MUSueq+GkFr+JKZsYdCMeU6FHRQ1NL5Fd3E//LrBJgEppt6HGXGAENCzWcTuMG5ii4
-         Cs8Ajh4cJvW6XV52bdf2YzUXSPsLZgS+RXhDX0ZI6rvfzU9Zd6JPWutsLws7p6T9X8+L
-         Zkp4dPS5A3zMNjjsmNkeNcNZBXU8VQ9JyH4+4qIAqpVRpwJ95Tz9M1Uj/2HNB900HyPR
-         cLLQ==
-X-Gm-Message-State: AOAM531uJlqMoIO8re9BG2iv/lJS6ZWQ4SDtb2kIDHv5YcnAKlHreuLX
-        mdmmA6uwGVUxkK03D4e7uyXbnBUmWyOsGQfDEAg4VM3faczmQPzLRPOszE9rPVPvZY/8OGbLOM4
-        4Nn8mJQwZwOrUfdDrZEys
-X-Received: by 2002:adf:eac8:: with SMTP id o8mr19377381wrn.268.1589804647189;
-        Mon, 18 May 2020 05:24:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwLe3p91ExNY6QGf1SRfv5g2doyaKilcFhk73/bWJl/jln6ZVFltTOdpBm/OQccJvw+caL9KA==
-X-Received: by 2002:adf:eac8:: with SMTP id o8mr19377325wrn.268.1589804646888;
-        Mon, 18 May 2020 05:24:06 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id 18sm15993570wmj.19.2020.05.18.05.24.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2020 05:24:06 -0700 (PDT)
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bCY5r4YTOkDM+fCZ3vFBdxf8tVG94ohdlsr2qJImxJ0=;
+        b=CaOTZTMKwQMLUm8uKV4rr70GQX29NtntfW/jAcPQs5H6uLGzmGpitHuYw+BHBINeGT
+         KgQFyfth5LP0ANbz1M/RfCk2/9uNhzvjgMH588rSN6TVysIpKuE1QMNmxYFTlSA/T9lB
+         5t1Vh1LS1KDx2OTs1ETZgZKsxseB3BcLJiIzCuRu30UVfzuLVqYlnMH+6rZvmVeNLjM1
+         hsSQk4bGwdz9/zg6y/Geuyt/Jo10INR3ZTpuvqMi70SyPLm8/NCG7MLdvLCdteTVWLC3
+         tsQWNHZ3trTHXTzY2Vp1oaHpQLnH7Tz62Q5tT7x40AT0BS3zkEFK+3UWwSP91yfR0u2j
+         pPWA==
+X-Gm-Message-State: AOAM532BL9D4EPqsK8XpYoSCclTfckpYMFQmbx+6exURY88DjVAK3zpp
+        N//3KpbESXLqDJGVsin8P020Kl5nEqQ=
+X-Google-Smtp-Source: ABdhPJw743+7MGJW+NObPH/KwdEVW5t6sR88mX2brB2Xo7OtjjcsRxViETq9fNnLxc/LSBIj6LApBg==
+X-Received: by 2002:a5d:5706:: with SMTP id a6mr19125224wrv.141.1589808943895;
+        Mon, 18 May 2020 06:35:43 -0700 (PDT)
+Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
+        by smtp.googlemail.com with ESMTPSA id l19sm17086772wmj.14.2020.05.18.06.35.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2020 06:35:43 -0700 (PDT)
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
- <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
-Date:   Mon, 18 May 2020 14:24:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH 0/4] iio: imu: bmi160: added regulator and mount-matrix support
+Date:   Mon, 18 May 2020 15:33:44 +0200
+Message-Id: <20200518133358.18978-1-jonathan.albrieux@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Convert txt format documentation to yaml.
+Add documentation about vdd-supply, vddio-supply and mount-matrix.
 
-On 5/18/20 12:48 PM, Andrzej Pietrasiewicz wrote:
-> Hi Hans,
-> 
-> W dniu 15.05.2020 o 20:19, Hans de Goede pisze:
->> Hi Andrezj,
->>
->> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
->>> Userspace might want to implement a policy to temporarily disregard input
->>> from certain devices, including not treating them as wakeup sources.
->>>
->>> An example use case is a laptop, whose keyboard can be folded under the
->>> screen to create tablet-like experience. The user then must hold the laptop
->>> in such a way that it is difficult to avoid pressing the keyboard keys. It
->>> is therefore desirable to temporarily disregard input from the keyboard,
->>> until it is folded back. This obviously is a policy which should be kept
->>> out of the kernel, but the kernel must provide suitable means to implement
->>> such a policy.
->>
->> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
->> generating evdev nodes and e.g. internal keyboards on devices with 360°
->> hinges for this reason. libinput simply closes the /dev/input/event#
->> node when folded and re-opens it when the keyboard should become active
->> again. Thus not only suppresses events but allows e.g. touchpads to
->> enter runtime suspend mode which saves power. Typically closing the
->> /dev/input/event# node will also disable the device as wakeup source.
->>
->> So I wonder what this series actually adds for functionality for
->> userspace which can not already be achieved this way?
->>
->> I also noticed that you keep the device open (do not call the
->> input_device's close callback) when inhibited and just throw away
-> 
-> I'm not sure if I understand you correctly, it is called:
-> 
-> +static inline void input_stop(struct input_dev *dev)
-> +{
-> +    if (dev->poller)
-> +        input_dev_poller_stop(dev->poller);
-> +    if (dev->close)
-> +        dev->close(dev);
->                  ^^^^^^^^^^^^^^^^
-> +static int input_inhibit(struct input_dev *dev)
-> +{
-> +    int ret = 0;
-> +
-> +    mutex_lock(&dev->mutex);
-> +
-> +    if (dev->inhibited)
-> +        goto out;
-> +
-> +    if (dev->users) {
-> +        if (dev->inhibit) {
-> +            ret = dev->inhibit(dev);
-> +            if (ret)
-> +                goto out;
-> +        }
-> +        input_stop(dev);
->                  ^^^^^^^^^^^^^^^^
-> 
-> It will not be called when dev->users is zero, but if it is zero,
-> then nobody has opened the device yet so there is nothing to close.
+Add vdd-supply and vddio-supply support. Without this support, vdd and vddio
+should be set to always-on in device tree.
 
-Ah, I missed that.
+Add mount-matrix binding support. As chip could have different orientations
+a mount matrix support is needed to correctly translate these differences
 
-So if the device implements the inhibit call back then on
-inhibit it will get both the inhibit and close callback called?
+Jonathan Albrieux (4):
+  dt-bindings: iio: imu: bmi160: convert txt format to yaml
+  dt-bindings: iio: imu: bmi160: add regulators and mount-matrix
+  iio: imu: bmi160: added regulator support
+  iio: imu: bmi160: added mount-matrix support
 
-And what happens if the last user goes away and the device
-is not inhibited?
+ .../devicetree/bindings/iio/imu/bmi160.txt    |  37 ------
+ .../devicetree/bindings/iio/imu/bmi160.yaml   | 105 ++++++++++++++++++
+ drivers/iio/imu/bmi160/bmi160.h               |   3 +
+ drivers/iio/imu/bmi160/bmi160_core.c          |  47 +++++++-
+ 4 files changed, 154 insertions(+), 38 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
 
-I'm trying to understand here what the difference between the 2
-is / what the goal of having a separate inhibit callback ?
-
-IOW is there something which we want to do on close when
-the close is being done to inhibit the device, which we do
-not want to do on a normal close ?
-
-Regards,
-
-Hans
-
+-- 
+2.17.1
 

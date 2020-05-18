@@ -2,122 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F9D1D7A26
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 15:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED061D7A5F
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 15:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726958AbgERNiX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 09:38:23 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:64474 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726855AbgERNiX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 09:38:23 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04IDYv5n017131;
-        Mon, 18 May 2020 09:38:20 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 312d35nn4n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 May 2020 09:38:19 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04IDcIpe060429
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 18 May 2020 09:38:18 -0400
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 18 May 2020 06:38:17 -0700
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 18 May 2020 06:38:16 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 18 May 2020 06:38:16 -0700
-Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04IDcEMj025859;
-        Mon, 18 May 2020 09:38:14 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-CC:     <jic23@kernel.org>, <ak@it-klinger.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2] iio: proximity: ping: pass reference to IIO device as param to ping_read()
-Date:   Mon, 18 May 2020 16:38:13 +0300
-Message-ID: <20200518133813.403903-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
+        id S1727008AbgERNtU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 May 2020 09:49:20 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:40342 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726800AbgERNtT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 09:49:19 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id DF0382A0A3B
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+Date:   Mon, 18 May 2020 15:49:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-18_06:2020-05-15,2020-05-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005180121
+In-Reply-To: <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since there will be some changes to how iio_priv_to_dev() is implemented,
-it could be that the helper becomes a bit slower, as it will be hidden away
-in the IIO core.
+Hi Hans,
 
-But even without that rework, this looks like it can pass the 'indio_dev'
-object to ping_read() and obtain the state struct via iio_priv() which is a
-preferred practice than going back-n-forth (getting the state-struct, then
-using iio_priv_to_dev() to get the indio_dev object back).
+W dniu 18.05.2020 o 14:24, Hans de Goede pisze:
+> Hi,
+> 
+> On 5/18/20 12:48 PM, Andrzej Pietrasiewicz wrote:
+>> Hi Hans,
+>>
+>> W dniu 15.05.2020 o 20:19, Hans de Goede pisze:
+>>> Hi Andrezj,
+>>>
+>>> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
+>>>> Userspace might want to implement a policy to temporarily disregard input
+>>>> from certain devices, including not treating them as wakeup sources.
+>>>>
+>>>> An example use case is a laptop, whose keyboard can be folded under the
+>>>> screen to create tablet-like experience. The user then must hold the laptop
+>>>> in such a way that it is difficult to avoid pressing the keyboard keys. It
+>>>> is therefore desirable to temporarily disregard input from the keyboard,
+>>>> until it is folded back. This obviously is a policy which should be kept
+>>>> out of the kernel, but the kernel must provide suitable means to implement
+>>>> such a policy.
+>>>
+>>> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
+>>> generating evdev nodes and e.g. internal keyboards on devices with 360°
+>>> hinges for this reason. libinput simply closes the /dev/input/event#
+>>> node when folded and re-opens it when the keyboard should become active
+>>> again. Thus not only suppresses events but allows e.g. touchpads to
+>>> enter runtime suspend mode which saves power. Typically closing the
+>>> /dev/input/event# node will also disable the device as wakeup source.
+>>>
+>>> So I wonder what this series actually adds for functionality for
+>>> userspace which can not already be achieved this way?
+>>>
+>>> I also noticed that you keep the device open (do not call the
+>>> input_device's close callback) when inhibited and just throw away
+>>
+>> I'm not sure if I understand you correctly, it is called:
+>>
+>> +static inline void input_stop(struct input_dev *dev)
+>> +{
+>> +    if (dev->poller)
+>> +        input_dev_poller_stop(dev->poller);
+>> +    if (dev->close)
+>> +        dev->close(dev);
+>>                  ^^^^^^^^^^^^^^^^
+>> +static int input_inhibit(struct input_dev *dev)
+>> +{
+>> +    int ret = 0;
+>> +
+>> +    mutex_lock(&dev->mutex);
+>> +
+>> +    if (dev->inhibited)
+>> +        goto out;
+>> +
+>> +    if (dev->users) {
+>> +        if (dev->inhibit) {
+>> +            ret = dev->inhibit(dev);
+>> +            if (ret)
+>> +                goto out;
+>> +        }
+>> +        input_stop(dev);
+>>                  ^^^^^^^^^^^^^^^^
+>>
+>> It will not be called when dev->users is zero, but if it is zero,
+>> then nobody has opened the device yet so there is nothing to close.
+> 
+> Ah, I missed that.
+> 
+> So if the device implements the inhibit call back then on
+> inhibit it will get both the inhibit and close callback called?
+> 
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
+That's right. And conversely, upon uninhibit open() and uninhibit()
+callbacks will be invoked. Please note that just as with open()/close(),
+providing inhibit()/uninhibit() is optional.
 
-Changelog v1 -> v2:
-* split away from series
-* pass 'indio_dev' to ping_read() and get the info via iio_priv()
+> And what happens if the last user goes away and the device
+> is not inhibited?
 
- drivers/iio/proximity/ping.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+close() is called as usually.
 
-diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
-index 12b893c5b0ee..2e99eeb27f2e 100644
---- a/drivers/iio/proximity/ping.c
-+++ b/drivers/iio/proximity/ping.c
-@@ -89,14 +89,14 @@ static irqreturn_t ping_handle_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static int ping_read(struct ping_data *data)
-+static int ping_read(struct iio_dev *indio_dev)
- {
-+	struct ping_data *data = iio_priv(indio_dev);
- 	int ret;
- 	ktime_t ktime_dt;
- 	s64 dt_ns;
- 	u32 time_ns, distance_mm;
- 	struct platform_device *pdev = to_platform_device(data->dev);
--	struct iio_dev *indio_dev = iio_priv_to_dev(data);
- 
- 	/*
- 	 * just one read-echo-cycle can take place at a time
-@@ -228,7 +228,6 @@ static int ping_read_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *channel, int *val,
- 			    int *val2, long info)
- {
--	struct ping_data *data = iio_priv(indio_dev);
- 	int ret;
- 
- 	if (channel->type != IIO_DISTANCE)
-@@ -236,7 +235,7 @@ static int ping_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (info) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = ping_read(data);
-+		ret = ping_read(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		*val = ret;
--- 
-2.25.1
+> 
+> I'm trying to understand here what the difference between the 2
+> is / what the goal of having a separate inhibit callback ?
+> 
 
+Drivers have very different ideas about what it means to suspend/resume
+and open/close. The optional inhibit/uninhibit callbacks are meant for
+the drivers to know that it is this particular action going on.
+
+For inhibit() there's one more argument: close() does not return a value,
+so its meaning is "do some last cleanup" and as such it is not allowed
+to fail - whatever its effect is, we must deem it successful. inhibit()
+does return a value and so it is allowed to fail.
+
+All in all, it is up to the drivers to decide which callback they
+provide. Based on my work so far I would say that there are tens
+of simple cases where open() and close() are sufficient, out of total
+~400 users of input_allocate_device():
+
+$ git grep "input_allocate_device(" | grep -v ^Documentation | \
+cut -f1 -d: | sort | uniq | wc
+     390     390   13496
+
+Andrzej

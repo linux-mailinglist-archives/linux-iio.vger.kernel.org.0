@@ -2,162 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 984E21D7A1D
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 15:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F9D1D7A26
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 15:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727884AbgERNh2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 09:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49456 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726726AbgERNhX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 09:37:23 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79773C05BD09;
-        Mon, 18 May 2020 06:37:22 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id 50so11862604wrc.11;
-        Mon, 18 May 2020 06:37:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=uGj/EHUKtmvC6mOszdrKA/qYKAYI/PCc4BudRf6DR7o=;
-        b=oCucQLvjKY4OgRb/yeNCquPu1c0cwSmKsMn1eifkhfsCMT7XgTaC3u+2ggszg5BT+n
-         HMEmbVQY5nDxNDeqCwzHm34KRMITIJkX11EuytyrozUMmAQtYba8i8yPIjNzOCmtlCr/
-         iM0iifZJFegEuBiYzcSzOJrr7/3iat4viehMokp20D+xiADDv+r4s0ptvuq9GnS2e3uH
-         461Lk8S1uw/fO82Aw3oCfL1XBoE/IPZPy89bSh8rpsbywRDKR4HdfQHuduID17/Mq97U
-         irC20Y0orc1g7aqvbW/N1p40d+0j6r5BWOhZQiSXdHBXylQFdZWY1RG3+bqMkf/bcNY3
-         ElQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=uGj/EHUKtmvC6mOszdrKA/qYKAYI/PCc4BudRf6DR7o=;
-        b=Jyo9t5ZtucEljKV9kbsIkaMmT4VyufmfCveAu4WfJusrsvi9Pe/UxJwSYHqotrJD57
-         ZcMq2YnBCNWY2BayFZ/crrvmNguS4ntllFasYpV7xXSO7eAsy9sF9Vw7RLjBaEZCDxJ5
-         IuMoloP07kGtPX1jcYsuhg3uQ25vo7FSSPw8plh0LUW0MPQ2RRnSQNK2T/YEcCs86Gl4
-         63SSBdI4JXtqCE2duzp9uLaymLFCDSob8/+0gJQB3pcFlTnPF8sOZG4yya+glOm/1xfX
-         h9dOAdfaAo4v08a6wz2XdFCy4qbLmS3IOUt+J3savrK3IdnqpZ9zknf7ZouAOJLN0ptc
-         xWvg==
-X-Gm-Message-State: AOAM530YxiMHbdl9kl89sLlFt1kH64/r5L6dA5kIwWTwyvHqnWkgJw2q
-        e7YhFlqJpJLjcGTc89iZUWSvu+lWMXk=
-X-Google-Smtp-Source: ABdhPJw/jQG4GyBF5BdTtT1sopi05okIYUybE0FoSjCBIwTXlwtXFd401wOtOvd5h2pN6e1s2KB0RQ==
-X-Received: by 2002:a5d:66c5:: with SMTP id k5mr19518322wrw.17.1589809040661;
-        Mon, 18 May 2020 06:37:20 -0700 (PDT)
-Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id o26sm17054328wro.83.2020.05.18.06.37.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 06:37:20 -0700 (PDT)
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Steve Winslow <swinslow@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 3/3] iio: magnetometer: ak8975: Add gpio reset support
-Date:   Mon, 18 May 2020 15:36:38 +0200
-Message-Id: <20200518133645.19127-4-jonathan.albrieux@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200518133645.19127-1-jonathan.albrieux@gmail.com>
-References: <20200518133645.19127-1-jonathan.albrieux@gmail.com>
+        id S1726958AbgERNiX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 May 2020 09:38:23 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:64474 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726855AbgERNiX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 09:38:23 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04IDYv5n017131;
+        Mon, 18 May 2020 09:38:20 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312d35nn4n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 May 2020 09:38:19 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04IDcIpe060429
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 18 May 2020 09:38:18 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 18 May 2020 06:38:17 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 18 May 2020 06:38:16 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 18 May 2020 06:38:16 -0700
+Received: from saturn.ad.analog.com ([10.48.65.112])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04IDcEMj025859;
+        Mon, 18 May 2020 09:38:14 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <jic23@kernel.org>, <ak@it-klinger.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2] iio: proximity: ping: pass reference to IIO device as param to ping_read()
+Date:   Mon, 18 May 2020 16:38:13 +0300
+Message-ID: <20200518133813.403903-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-18_06:2020-05-15,2020-05-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005180121
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Set reset gpio to high on ak8975_power_on, set reset gpio to low on
-ak8975_power_off.
+Since there will be some changes to how iio_priv_to_dev() is implemented,
+it could be that the helper becomes a bit slower, as it will be hidden away
+in the IIO core.
 
-Without setting it to high on ak8975_power_on driver's probe fails
-on ak8975_who_i_am while checking for device identity for AK09911 chip
+But even without that rework, this looks like it can pass the 'indio_dev'
+object to ping_read() and obtain the state struct via iio_priv() which is a
+preferred practice than going back-n-forth (getting the state-struct, then
+using iio_priv_to_dev() to get the indio_dev object back).
 
-AK09911 has a reset gpio to handle register's reset. If reset gpio is
-set to low it will trigger the reset. AK09911 datasheed says that if not
-used reset pin should be connected to VID and this patch emulates this
-situation
-
-Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/magnetometer/ak8975.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 3c881541ae72..c1ba5cd2cb6c 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -358,6 +358,7 @@ struct ak8975_data {
- 	u8			asa[3];
- 	long			raw_to_gauss[3];
- 	struct gpio_desc	*eoc_gpiod;
-+	struct gpio_desc	*reset_gpiod;
- 	int			eoc_irq;
- 	wait_queue_head_t	data_ready_queue;
- 	unsigned long		flags;
-@@ -384,10 +385,13 @@ static int ak8975_power_on(const struct ak8975_data *data)
- 			 "Failed to enable specified Vid supply\n");
- 		return ret;
- 	}
-+
-+	gpiod_set_value_cansleep(data->reset_gpiod, 0);
-+
- 	/*
--	 * According to the datasheet the power supply rise time i 200us
-+	 * According to the datasheet the power supply rise time is 200us
- 	 * and the minimum wait time before mode setting is 100us, in
--	 * total 300 us. Add some margin and say minimum 500us here.
-+	 * total 300us. Add some margin and say minimum 500us here.
- 	 */
- 	usleep_range(500, 1000);
- 	return 0;
-@@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
- /* Disable attached power regulator if any. */
- static void ak8975_power_off(const struct ak8975_data *data)
- {
-+	gpiod_set_value_cansleep(data->reset_gpiod, 1);
-+
- 	regulator_disable(data->vid);
- 	regulator_disable(data->vdd);
+Changelog v1 -> v2:
+* split away from series
+* pass 'indio_dev' to ping_read() and get the info via iio_priv()
+
+ drivers/iio/proximity/ping.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
+index 12b893c5b0ee..2e99eeb27f2e 100644
+--- a/drivers/iio/proximity/ping.c
++++ b/drivers/iio/proximity/ping.c
+@@ -89,14 +89,14 @@ static irqreturn_t ping_handle_irq(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
  }
-@@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
- 	struct ak8975_data *data;
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
-+	struct gpio_desc *reset_gpiod;
- 	const void *match;
- 	unsigned int i;
- 	int err;
-@@ -856,6 +863,15 @@ static int ak8975_probe(struct i2c_client *client,
- 	if (eoc_gpiod)
- 		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
  
-+	/*
-+	 * If reset pin is provided then will be set to high on power on
-+	 * and to low on power off according to AK09911 datasheet
-+	 */
-+	reset_gpiod = devm_gpiod_get_optional(&client->dev,
-+					      "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(reset_gpiod))
-+		return PTR_ERR(reset_gpiod);
-+
- 	/* Register with IIO */
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (indio_dev == NULL)
-@@ -866,6 +882,7 @@ static int ak8975_probe(struct i2c_client *client,
+-static int ping_read(struct ping_data *data)
++static int ping_read(struct iio_dev *indio_dev)
+ {
++	struct ping_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 	ktime_t ktime_dt;
+ 	s64 dt_ns;
+ 	u32 time_ns, distance_mm;
+ 	struct platform_device *pdev = to_platform_device(data->dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(data);
  
- 	data->client = client;
- 	data->eoc_gpiod = eoc_gpiod;
-+	data->reset_gpiod = reset_gpiod;
- 	data->eoc_irq = 0;
+ 	/*
+ 	 * just one read-echo-cycle can take place at a time
+@@ -228,7 +228,6 @@ static int ping_read_raw(struct iio_dev *indio_dev,
+ 			    struct iio_chan_spec const *channel, int *val,
+ 			    int *val2, long info)
+ {
+-	struct ping_data *data = iio_priv(indio_dev);
+ 	int ret;
  
- 	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
+ 	if (channel->type != IIO_DISTANCE)
+@@ -236,7 +235,7 @@ static int ping_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = ping_read(data);
++		ret = ping_read(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+ 		*val = ret;
 -- 
-2.17.1
+2.25.1
 

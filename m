@@ -2,140 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85ED11D6E3A
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 02:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB8B1D6EBC
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 04:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbgERAKN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 May 2020 20:10:13 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:60152 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726246AbgERAKN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 May 2020 20:10:13 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04I09mdC067061;
-        Sun, 17 May 2020 19:09:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589760588;
-        bh=uHDWAbUPh1UGoZfwAFTrqfN3qYQnLykoq0dvdTPuMFA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=hie88stxMbkiRMXvjASjMp+Rxx2NDl6Y2cpBzHn6wOflat+IURp5MOcpRSi+NtniO
-         sNnbNTJzql8Zo0zC09SnTonGw/tJunXNeAwd5McnI0QhDpqde8dxx7fz+wEogb+Eic
-         OrMklhQ0gapcqmkCQlWZZ+S9SgViCV130LytuZqA=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04I09mMQ006889
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 17 May 2020 19:09:48 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 17
- May 2020 19:09:48 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Sun, 17 May 2020 19:09:48 -0500
-Received: from [10.250.38.163] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04I09lUg027513;
-        Sun, 17 May 2020 19:09:48 -0500
-Subject: Re: [PATCH 07/11] iio:health:afe4403 Fix timestamp alignment and
- prevent data leak.
-To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>
-CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-References: <20200517173000.220819-1-jic23@kernel.org>
- <20200517173000.220819-8-jic23@kernel.org>
-From:   "Andrew F. Davis" <afd@ti.com>
-Message-ID: <951a305b-b3b4-6cfc-f39a-f7458dfcb54b@ti.com>
-Date:   Sun, 17 May 2020 20:09:47 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726855AbgERCVi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 May 2020 22:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57044 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbgERCVh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 May 2020 22:21:37 -0400
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79136C061A0C;
+        Sun, 17 May 2020 19:21:37 -0700 (PDT)
+Received: by mail-qv1-xf42.google.com with SMTP id dh1so147142qvb.13;
+        Sun, 17 May 2020 19:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=MI/xOtYz1gKmyoKJ7JN1xfWZ15QiPgf/P/ZO62yZ6oI=;
+        b=ATj+O5u3xLLXibwinbzTTX1jNuGYZ7yx2aXg6N8/fU5CNNPweoDHEmTs4nGIE/u1OQ
+         zHBG64PAdb5oyvtlOyZ9Muu2RSjWkMJctTUKkUwKZzjgufadRvjkLFMkQus0bEXIwBV0
+         pS2QTnR3mmW+5pyleWnmKU5coIAygPIYOYtDHETq/UhDeqqOh+6Un5JJWt9Keyrm9gT3
+         8HcAxL7pWlyH7R0hoSj828jb+URux07n6Pgq8LQ+mmFuXi/IHVB6Sn7dbPE3cNGoyeUX
+         27vNOolqnkvwf2IQs6ddn0bwzOkpCT+Sm+z74BNHWVKwA+FeMe1TYpE/gRUcsx0LSpMS
+         zwTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MI/xOtYz1gKmyoKJ7JN1xfWZ15QiPgf/P/ZO62yZ6oI=;
+        b=mGAg+qz06Y+FTIVXMNVVa3yhcV/d3L9WHIikWwXoRDVjMnvDJk3y3ldeoeyo9PbvsI
+         /SZzMbGwbPguBPywtKcNkYV0YVOB+P0NpMkGqFPoZyXLyYQ6vuCv1nJe1LzCyAol/GUj
+         wFNPtXlA6100Qa/RvLPVTfT/92mOJqdm9V334iPdbHASWYmgAjB8ksMuhiryOG55amkC
+         HpMj1d4okFTl/u65kOyB9M2GwIbi7FEtPsX/172CLvGPMxxSJU6uucAyEwUc9uuv2BL7
+         O/7dVlPB/276pirJuNQxMaEsnQPpGn3KcpLmnpbSXUVyGAZczx+/zQYp77QFPV9os5EY
+         t5dA==
+X-Gm-Message-State: AOAM530f7uGiHVDep+iIZZ7O28gN9kcRumpgzD4J6hvK6C2RynbvLaEF
+        KFB6B4CyV1O+k6rPdKFtOzQ=
+X-Google-Smtp-Source: ABdhPJw0gRrAu197atVVJRuf4/d2wHUciiwN0loNhbPQ7UUg1uDhNwjlnggs6zRHotXXdp2W86VLNA==
+X-Received: by 2002:a0c:f203:: with SMTP id h3mr13677416qvk.131.1589768496671;
+        Sun, 17 May 2020 19:21:36 -0700 (PDT)
+Received: from renatolg ([2804:14c:118:3134:db0b:3b38:feb6:784c])
+        by smtp.gmail.com with ESMTPSA id i41sm8496262qte.15.2020.05.17.19.21.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2020 19:21:35 -0700 (PDT)
+From:   Renato Lui Geh <renatogeh@gmail.com>
+X-Google-Original-From: Renato Lui Geh <renatogeh@renatolg>
+Date:   Sun, 17 May 2020 23:21:29 -0300
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Michael.Hennerich@analog.com, renatogeh@gmail.com, lars@metafoo.de,
+        jic23@kernel.org, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        giuliano.belinassi@usp.br, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7780: Fix a resource handling path in
+ 'ad7780_probe()'
+Message-ID: <20200518022129.xkcuw4yxotnll7ym@renatolg>
+References: <20200517095953.278950-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200517173000.220819-8-jic23@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20200517095953.278950-1-christophe.jaillet@wanadoo.fr>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/17/20 1:29 PM, jic23@kernel.org wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> One of a class of bugs pointed out by Lars in a recent review.
-> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> to the size of the timestamp (8 bytes).  This is not guaranteed in
-> this driver which uses a 32 byte array of smaller elements on the stack.
-> As Lars also noted this anti pattern can involve a leak of data to
-> userspace and that indeed can happen here.  We close both issues by
-> moving to a suitable structure in the iio_priv() data with alignment
-> explicitly requested.  This data is allocated with kzalloc so no
-> data can leak appart from previous readings.
-> 
-> Fixes: eec96d1e2d31 ("iio: health: Add driver for the TI AFE4403 heart monitor")
-> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Andrew F. Davis <afd@ti.com>
-> ---
->  drivers/iio/health/afe4403.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-> index e9f87e42ff4f..a3507624b30f 100644
-> --- a/drivers/iio/health/afe4403.c
-> +++ b/drivers/iio/health/afe4403.c
-> @@ -65,6 +65,7 @@ static const struct reg_field afe4403_reg_fields[] = {
->   * @regulator: Pointer to the regulator for the IC
->   * @trig: IIO trigger for this device
->   * @irq: ADC_RDY line interrupt number
-> + * @buffer: Used to construct data layout to push into IIO buffer.
->   */
->  struct afe4403_data {
->  	struct device *dev;
-> @@ -74,6 +75,8 @@ struct afe4403_data {
->  	struct regulator *regulator;
->  	struct iio_trigger *trig;
->  	int irq;
-> +	/* Ensure suitable alignment for timestamp */
-> +	s32 buffer[8] __aligned(8);
+Acked-by: Renato Lui Geh <renatogeh@gmail.com>
 
-
-One of those fancy structs with the timestamp specified would be nice
-here like the other patches. IIRC we have 6 s32 channels, plus a s64 ts.
-
-Other than that everything looks good.
-
-Andrew
-
-
->  };
->  
->  enum afe4403_chan_id {
-> @@ -309,7 +312,6 @@ static irqreturn_t afe4403_trigger_handler(int irq, void *private)
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct afe4403_data *afe = iio_priv(indio_dev);
->  	int ret, bit, i = 0;
-> -	s32 buffer[8];
->  	u8 tx[4] = {AFE440X_CONTROL0, 0x0, 0x0, AFE440X_CONTROL0_READ};
->  	u8 rx[3];
->  
-> @@ -326,7 +328,7 @@ static irqreturn_t afe4403_trigger_handler(int irq, void *private)
->  		if (ret)
->  			goto err;
->  
-> -		buffer[i++] = get_unaligned_be24(&rx[0]);
-> +		afe->buffer[i++] = get_unaligned_be24(&rx[0]);
->  	}
->  
->  	/* Disable reading from the device */
-> @@ -335,7 +337,8 @@ static irqreturn_t afe4403_trigger_handler(int irq, void *private)
->  	if (ret)
->  		goto err;
->  
-> -	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-> +	iio_push_to_buffers_with_timestamp(indio_dev, afe->buffer,
-> +					   pf->timestamp);
->  err:
->  	iio_trigger_notify_done(indio_dev->trig);
->  
-> 
+On 05/17, Christophe JAILLET wrote:
+>If 'ad7780_init_gpios()' fails, we must not release some resources that
+>have not been allocated yet. Return directly instead.
+>
+>Fixes: 5bb30e7daf00 ("staging: iio: ad7780: move regulator to after GPIO init")
+>Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
+>Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>---
+> drivers/iio/adc/ad7780.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/iio/adc/ad7780.c b/drivers/iio/adc/ad7780.c
+>index f47606ebbbbe..b33fe6c3907e 100644
+>--- a/drivers/iio/adc/ad7780.c
+>+++ b/drivers/iio/adc/ad7780.c
+>@@ -329,7 +329,7 @@ static int ad7780_probe(struct spi_device *spi)
+>
+> 	ret = ad7780_init_gpios(&spi->dev, st);
+> 	if (ret)
+>-		goto error_cleanup_buffer_and_trigger;
+>+		return ret;
+>
+> 	st->reg = devm_regulator_get(&spi->dev, "avdd");
+> 	if (IS_ERR(st->reg))
+>-- 
+>2.25.1
+>

@@ -2,131 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E961D7DB0
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 18:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C4191D9026
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 08:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgERQCB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 12:02:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726958AbgERQCA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 12:02:00 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745C2C061A0C;
-        Mon, 18 May 2020 09:01:59 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id s8so12501818wrt.9;
-        Mon, 18 May 2020 09:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9SSAcWWQEWD0r3Pko5lkNYBqf2cJb3ilW4xHvkzbc9I=;
-        b=MArjN6+oacAwZQGLd8doq6gdFJ0WT4Kb25b+spk8eQpNEELJfKBkAiwG9HaZYt3kfV
-         n5AZKmlkj/DXuI/Rc0m4dWo4+ZJKH2LZVXZuQbQ735O0LaMitBaRTdBV3Bd7Fkjw8HoR
-         oRAFfSozNAKRNaKSL+j2nIDT4rV0zp0IFfAgnr3Z6rO6qoVDjDcRDgpJVTwSf1WxUFHm
-         Kdx0yV0GVZI52ulLcFDWl7DU1qRHEoRbMugSprRMnJj2p5jM9INfkX8ZnDYDjqcKBuVk
-         MavDletV6NJe2uUYog3u/jaK+4wROkr7iDFVoOivj4Rf152ZddwNy7kbAK2qGrSKKmr6
-         TVzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9SSAcWWQEWD0r3Pko5lkNYBqf2cJb3ilW4xHvkzbc9I=;
-        b=kwcyc+aff9wNLHOjU71gZzW7NA4JpBM4X8mplckvG+cwVtJiomBgtX8ujFqHLdSHdg
-         xrHuZqXaIIieY0xi9W1EGG6TrEhL2LtWCP085XMirkJ7Dov539gfV+tWr37b+lQWtQM9
-         HTLNB9jFpg5h0l96tRKCVTao5ha+7XC18lgAu1LQ67tOCrnL5+VME8ZmhxV8wmbP6k2G
-         tVqA/xNOanJaomG3GHWq1O2FgMbP9A6aNiIDMvPa2oeUqQI6iexI3MD1z800rTFFDATq
-         CivKJ0bhrk+sL26KZFBPJysl4HT4Tnp49gYzjFb9uPAiqb/5617coxMW8yJxOSLZRfV4
-         ERPQ==
-X-Gm-Message-State: AOAM533zfXtoREVUE3kGfUb47qd50xyuofyb+OfZ3FJFVW08foQpuosf
-        44nX1eLNiGjzRQi/NSPVjBg=
-X-Google-Smtp-Source: ABdhPJxlB/26iS1Qh1s66tzdQo+jkzTvK0fB4tNlbfmbOIrBYS3GZJGvXhEyqbh9cO61i0owgfIf9A==
-X-Received: by 2002:adf:e90b:: with SMTP id f11mr20601532wrm.364.1589817718065;
-        Mon, 18 May 2020 09:01:58 -0700 (PDT)
-Received: from ict14-OptiPlex-980 ([178.23.248.46])
-        by smtp.gmail.com with ESMTPSA id q5sm18237471wra.36.2020.05.18.09.01.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 18 May 2020 09:01:56 -0700 (PDT)
-Date:   Mon, 18 May 2020 18:01:20 +0200
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Steve Winslow <swinslow@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 3/3] iio: magnetometer: ak8975: Add gpio reset support
-Message-ID: <20200518160120.GA21361@ict14-OptiPlex-980>
-References: <20200518133645.19127-1-jonathan.albrieux@gmail.com>
- <20200518133645.19127-4-jonathan.albrieux@gmail.com>
- <CAHp75VdFJUNOtRyCNEGnvoOCZYoPvyhjC15_iC72JD-1sOavwA@mail.gmail.com>
+        id S1726870AbgESGgA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 19 May 2020 02:36:00 -0400
+Received: from balrog.mythic-beasts.com ([46.235.227.24]:37139 "EHLO
+        balrog.mythic-beasts.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726859AbgESGf7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 02:35:59 -0400
+Received: from [93.93.129.122] (port=42644 helo=erriapus.retrosnub.co.uk)
+        by balrog.mythic-beasts.com with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <jic23@jic23.retrosnub.co.uk>)
+        id 1javqw-0002HL-Pt; Tue, 19 May 2020 07:35:50 +0100
+Received: from [192.168.0.10] (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by erriapus.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 3AACE3A016A;
+        Tue, 19 May 2020 07:35:33 +0100 (BST)
+Date:   Mon, 18 May 2020 17:06:12 +0100
+User-Agent: K-9 Mail for Android
+In-Reply-To: <951a305b-b3b4-6cfc-f39a-f7458dfcb54b@ti.com>
+References: <20200517173000.220819-1-jic23@kernel.org> <20200517173000.220819-8-jic23@kernel.org> <951a305b-b3b4-6cfc-f39a-f7458dfcb54b@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdFJUNOtRyCNEGnvoOCZYoPvyhjC15_iC72JD-1sOavwA@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Subject: Re: [PATCH 07/11] iio:health:afe4403 Fix timestamp alignment and prevent data leak.
+To:     "Andrew F. Davis" <afd@ti.com>, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Message-ID: <83B13776-904F-4FCF-93A6-D430281E4B55@jic23.retrosnub.co.uk>
+X-Mythic-Source-External: YES
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 18, 2020 at 05:55:51PM +0300, Andy Shevchenko wrote:
-> On Mon, May 18, 2020 at 4:38 PM Jonathan Albrieux
-> <jonathan.albrieux@gmail.com> wrote:
-> 
-> > +       gpiod_set_value_cansleep(data->reset_gpiod, 1);
-> 
-> (1)
-> 
-> ...
-> 
-> > +       /*
-> > +        * If reset pin is provided then will be set to high on power on
-> > +        * and to low on power off according to AK09911 datasheet
-> > +        */
-> 
-> Wording is confusing, perhaps you have to use 'asserted / deasserted'.
 
-Thank you for the suggestion, I'll be working on rewording as soon as
-possible.
 
-> Btw, in (1) it's also "high" (asserted). I barely understand how it's
-> supposed to work in all cases?
-> 
-> > +       reset_gpiod = devm_gpiod_get_optional(&client->dev,
-> > +                                             "reset", GPIOD_OUT_HIGH);
-> > +       if (IS_ERR(reset_gpiod))
-> > +               return PTR_ERR(reset_gpiod);
-> 
+On 18 May 2020 01:09:47 BST, "Andrew F. Davis" <afd@ti.com> wrote:
+>On 5/17/20 1:29 PM, jic23@kernel.org wrote:
+>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> 
+>> One of a class of bugs pointed out by Lars in a recent review.
+>> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+>> to the size of the timestamp (8 bytes).  This is not guaranteed in
+>> this driver which uses a 32 byte array of smaller elements on the
+>stack.
+>> As Lars also noted this anti pattern can involve a leak of data to
+>> userspace and that indeed can happen here.  We close both issues by
+>> moving to a suitable structure in the iio_priv() data with alignment
+>> explicitly requested.  This data is allocated with kzalloc so no
+>> data can leak appart from previous readings.
+>> 
+>> Fixes: eec96d1e2d31 ("iio: health: Add driver for the TI AFE4403
+>heart monitor")
+>> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Cc: Andrew F. Davis <afd@ti.com>
+>> ---
+>>  drivers/iio/health/afe4403.c | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/iio/health/afe4403.c
+>b/drivers/iio/health/afe4403.c
+>> index e9f87e42ff4f..a3507624b30f 100644
+>> --- a/drivers/iio/health/afe4403.c
+>> +++ b/drivers/iio/health/afe4403.c
+>> @@ -65,6 +65,7 @@ static const struct reg_field afe4403_reg_fields[]
+>= {
+>>   * @regulator: Pointer to the regulator for the IC
+>>   * @trig: IIO trigger for this device
+>>   * @irq: ADC_RDY line interrupt number
+>> + * @buffer: Used to construct data layout to push into IIO buffer.
+>>   */
+>>  struct afe4403_data {
+>>  	struct device *dev;
+>> @@ -74,6 +75,8 @@ struct afe4403_data {
+>>  	struct regulator *regulator;
+>>  	struct iio_trigger *trig;
+>>  	int irq;
+>> +	/* Ensure suitable alignment for timestamp */
+>> +	s32 buffer[8] __aligned(8);
+>
+>
+>One of those fancy structs with the timestamp specified would be nice
+>here like the other patches. IIRC we have 6 s32 channels, plus a s64
+>ts.
 
-I'm sorry but I'm not sure about what you mean by saying all cases.
-Currently  I'm testing this driver on a msm8916 device having AK09911
-magnetometer. At the current stage the driver is failing on probe 
-because reset pin is not connected to VID (as datasheet requires in case
-of pin not being used). In case of reset pin not asserted, register's
-reset is triggered resulting in empty registers, leading to probe fail.
-For this reason pin is asserted during power on in order to have 
-informations in registers and deasserted before power off triggering
-a reset.
+I think we may only have some of those channels enabled.  So ts may be it several
+locations in the buffer. 
 
-A workaround that gets AK09911 working on device is by setting the
-reset pin always high on device tree. This way registers gets reset by
-a Power On Reset circuit autonomously and reset pin never triggers the
-reset.
+Hence we could use the structure approach but it might give a false sense
+of what is going on. 
 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+J
+>
+>Other than that everything looks good.
+>
+>Andrew
+>
+>
+>>  };
+>>  
+>>  enum afe4403_chan_id {
+>> @@ -309,7 +312,6 @@ static irqreturn_t afe4403_trigger_handler(int
+>irq, void *private)
+>>  	struct iio_dev *indio_dev = pf->indio_dev;
+>>  	struct afe4403_data *afe = iio_priv(indio_dev);
+>>  	int ret, bit, i = 0;
+>> -	s32 buffer[8];
+>>  	u8 tx[4] = {AFE440X_CONTROL0, 0x0, 0x0, AFE440X_CONTROL0_READ};
+>>  	u8 rx[3];
+>>  
+>> @@ -326,7 +328,7 @@ static irqreturn_t afe4403_trigger_handler(int
+>irq, void *private)
+>>  		if (ret)
+>>  			goto err;
+>>  
+>> -		buffer[i++] = get_unaligned_be24(&rx[0]);
+>> +		afe->buffer[i++] = get_unaligned_be24(&rx[0]);
+>>  	}
+>>  
+>>  	/* Disable reading from the device */
+>> @@ -335,7 +337,8 @@ static irqreturn_t afe4403_trigger_handler(int
+>irq, void *private)
+>>  	if (ret)
+>>  		goto err;
+>>  
+>> -	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+>pf->timestamp);
+>> +	iio_push_to_buffers_with_timestamp(indio_dev, afe->buffer,
+>> +					   pf->timestamp);
+>>  err:
+>>  	iio_trigger_notify_done(indio_dev->trig);
+>>  
+>> 
 
-Hoping to having answered to your question,
-Best regards,
-Jonathan Albrieux
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.

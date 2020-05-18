@@ -2,254 +2,361 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 920CF1D71F9
-	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 09:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640C71D727F
+	for <lists+linux-iio@lfdr.de>; Mon, 18 May 2020 10:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbgERHgh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 May 2020 03:36:37 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43489 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726997AbgERHgg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 03:36:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589787394;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lxahqT/LB/gKtsCv/S2+hQFfwmIb9ycLMKz+VyULbsI=;
-        b=JXxWOldnDOtH5s1ziif7kf5qaxsaEf710gDHONOzaO3SCDsWnIevGCzDIEkg/LFWYGUkx7
-        LkzbLDDe9QV2Hp2WijZepJtSe+ohknK+k8dVzZYPjFEOLQS83KJGOg8Fh3DU0OTtK+As0b
-        sVp6TV9amBKNnG1nV3qrvWQR/Y+SWws=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-117-7qWB-X_xPVWubt51c_zsEQ-1; Mon, 18 May 2020 03:36:31 -0400
-X-MC-Unique: 7qWB-X_xPVWubt51c_zsEQ-1
-Received: by mail-wr1-f70.google.com with SMTP id y7so5220913wrd.12
-        for <linux-iio@vger.kernel.org>; Mon, 18 May 2020 00:36:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lxahqT/LB/gKtsCv/S2+hQFfwmIb9ycLMKz+VyULbsI=;
-        b=oFfVsIE4M1vpGFEfC1P+ct7crunj+nEdO/2Vu1PiHAJOxTGKOv4OZQA6FFlrfL2wJM
-         VvsRIAxjbOdZ5x2bC1J9ugt9kKjPmzKDJcYJgUjsJIdRPG2uwubQ+Pgwth2xkT6R4YLw
-         Ah5FeHpgi5F1BthI70HIZejlvQpP8V8qv4Us9wDrC1A1NQh7phCWGnNTc3oV+WhoJ3GA
-         //ci1I+nKZ/Xd0utnjzT0ivVtQLGh2s7udyJzvu2L3v1us7uSJt7OwPzX3/piLMETMmZ
-         FHVFhbhZuNiu0caaMR7bM4e9v0f6ujy4OmFh+NyvlI6l9N1/ze1k2eVWkh+rQHA9YqZk
-         EYsA==
-X-Gm-Message-State: AOAM53221XSVsunRqx14aCtRombUm6vDMQ71FIpbqIWbzXrlesDijPCD
-        DYdmpY5vLiCpvrkodcPoCvm13zrTnppJC841tStsMq1A8vNXCp6JRmjXo3iTsZZKrzgh/TEpAz6
-        V4MtwBpK8ZE8DethfSe83
-X-Received: by 2002:adf:eb47:: with SMTP id u7mr8924155wrn.14.1589787390565;
-        Mon, 18 May 2020 00:36:30 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzz0SpVMXYaTfwKekGOfJXbmR9UFXcUMo3vR6hnkieQoqI8Z+UsfvdG56sJulcbF8oH7Hmmxg==
-X-Received: by 2002:adf:eb47:: with SMTP id u7mr8924093wrn.14.1589787390194;
-        Mon, 18 May 2020 00:36:30 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id f123sm15586970wmf.44.2020.05.18.00.36.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2020 00:36:29 -0700 (PDT)
-Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Peter Hutterer <peter.hutterer@who-t.net>
-Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
-        Benjamin Tissoires <btissoir@redhat.com>
-References: <20200506002746.GB89269@dtor-ws>
- <20200515164943.28480-1-andrzej.p@collabora.com>
- <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <20200517225510.GA205823@koala> <20200518024034.GL89269@dtor-ws>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <4eb8f557-370f-03bb-9a1d-3652d0ac8b08@redhat.com>
-Date:   Mon, 18 May 2020 09:36:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <20200518024034.GL89269@dtor-ws>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1726919AbgERIH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 May 2020 04:07:28 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54710 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726489AbgERIH1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 May 2020 04:07:27 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04I8019G014825;
+        Mon, 18 May 2020 04:07:24 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312a16wax3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 May 2020 04:07:24 -0400
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04I87NAG018988;
+        Mon, 18 May 2020 04:07:23 -0400
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312a16wax1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 May 2020 04:07:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QTl95umLHgyH9AU1pjZU/CfPmjQn1rKhKjGzdirjC5YY0w5tCMIwYBRoeFM934DaXSqYnvIobUt5SUa4ubqoA9gwDNvkNTZbuJJYOiPEgG5Trhu6sN6iglI8QyeeDruoOF2EYCDer/Y6A0TdACkKfq4vgcDviYjI5natVs3v1N/M1LVciAT6Au88eYZFGGdaNbYiAMtBbWgEZEfx6hAgIvVWnqVN2bkXSKgFsgkm222mhNpMKbU6AE4IiAb2Efa6E/s5ZExb1ch5XV2nBSsddgMNFwgPnCFjdXe7cYGiE8tAVQRmZwd65l48AOEXiafctqFgJQ1WWOlpc0PJqV12dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7AH/mGhyC86VrdpgcunQYF3orBFuEdNw4iDVXY/Jgy4=;
+ b=IvJL7k95sOhb8h+4gw1n7yy4Y/hRl7877mR1F8jpVOn1+zDoMETrKOVWV6k1HAIki8FdsEo+Ycu9Mq2uMG3/pU0OcpckHEw426BoMrxwMHaHFoW0ywWGH3IpgxDj9WH/YDHAB2Ei146RD7ns5LW1o/H6A86qg55xZAyZi7S/lP33ESKBX59ORfi3vuw26knllma2x43AJzdMYCrvC8K5xdwomPH2Ea7J+k6m7jAV1Ma/ueAMQDgcBToNXxWRl/rzXhVDl+AfVAKbdkX86NwrdSxeCY5uprxYjASkrKvhaOEswfQrMyunXyPZyco2NZGk6AR1zLivucVWqtSLhHI5JA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7AH/mGhyC86VrdpgcunQYF3orBFuEdNw4iDVXY/Jgy4=;
+ b=9W5cEE7OeaQFpCXMCmJ6+JVMr4Ml5LqXKtiZFKkH9kJksujmqXsMkzG7rj5wi0asa6LJNEpF8TT9MfacNl0PfN0JFtSe8OC9rh6NIoLp/vdl6+mFdJPIzuKL8IfCt0TjOA4V3qB6c6lZ1qE2wQbVSjGT02JR+6uz0ioMPzjAunU=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB4875.namprd03.prod.outlook.com (2603:10b6:5:189::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.20; Mon, 18 May
+ 2020 08:07:21 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3000.034; Mon, 18 May 2020
+ 08:07:21 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/3] iio: core: wrap IIO device into a iio_dev_priv object
+Thread-Topic: [PATCH 1/3] iio: core: wrap IIO device into a iio_dev_priv
+ object
+Thread-Index: AQHWJULNMHmpwZ2oJUyruOe5YwUEGaieU2qAgAABMACABEqWAIAAjUyAgAEpPwCABp4EgIACmG+A
+Date:   Mon, 18 May 2020 08:07:21 +0000
+Message-ID: <fa3d836fb91c0b6e7ee57cb059775c9ec0cefd4d.camel@analog.com>
+References: <20200508141306.17222-1-alexandru.ardelean@analog.com>
+         <20200508164015.0000223f@Huawei.com> <20200508164430.00001741@Huawei.com>
+         <b667b10489c65b541aacadd7975b0a6352672153.camel@analog.com>
+         <20200511184213.0000003c@Huawei.com>
+         <fa44556e2c10440a4b354591a3ebe379397a1f7e.camel@analog.com>
+         <20200516172913.38f05fc1@archlinux>
+In-Reply-To: <20200516172913.38f05fc1@archlinux>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 29177c96-b2e3-4577-4637-08d7fb027dd2
+x-ms-traffictypediagnostic: DM6PR03MB4875:
+x-microsoft-antispam-prvs: <DM6PR03MB48753309FB63BF70729684A8F9B80@DM6PR03MB4875.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 04073E895A
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: NlQMqCQCKps5k2wmS4Gp7XQWl5PJ8pnqfzcEs73W1IAjXgB43AOOCwXIFSNmW2puNoaeIj3R5KdonUjV4r4J+aZRvyXTr6taqsAcg3MNBLnDPTN1CCYHLNyrCpkb5Bugl8eSbIaUb45qwuCuP4sDkVZA4Jybxw/G8YNiEpTt/jrZg1pT4GljK4fMYemXPC7/h34GJDDYKBc+zF3poc2BFHRn5W2B6DfzfawkNHBls9WG61g2WpA+K45AbfgSAzfmvk1t+z7xAWu1NN6+N15u0Qi1Dk7FW9EPJwLpLbTPjC9Op+RRf6lviDoObAYkgZ9Aoa5wGE+SLRgLyuCSt6OtEAtsiRvvK/2yyFiILJCQiO/JADGP91p15swN0+D5p9DIPyK4su2fnNM8d5ELqNjrR/57oSHoQ4B3+KIyZjMnKPVi72FyEUj2gTHNhh7vFRQ/
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(366004)(136003)(346002)(376002)(2616005)(71200400001)(30864003)(26005)(6512007)(6506007)(8676002)(91956017)(76116006)(66946007)(66476007)(66556008)(2906002)(66446008)(64756008)(478600001)(36756003)(4326008)(86362001)(5660300002)(6916009)(54906003)(316002)(8936002)(6486002)(186003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: GxKPYKuPrtxa0ojrwIZFOZGHirqh8/cPAqCYcN3uBNaGeY6XLBdn50Jzd4+n4Ma6GOEHs8IOeArlqkNxMupPrpWZWZD75CogPwtregiYDjjr1ynK/B4/P3kCzRaRK3F4TtHL4HNyY288COXRhepa4OQUrW6/KJz6kSTVbMZcgHlTSwrTh3jTPrvjQQnpjDmVvtgl5RYgpeaoxEU7TxMLrghvj+odeOnOC6hYmNGSpxbbgHoDEHPeXxE8J/LfRYwbKI5ijGqOKoZrzMTXFXSHHMr+14N2MEf6o0DDasXILfOedsrAvfKwtaS+PDIsufmR5xN+1Y/2RAAivLkoetYAMwhcUpq3YVYNqJFimLCPoTQRjKc4dDeWNG3ox7v9N5Zmd1I5lX+Ay5Cnv+HGSqKjJ4Wk8R1xd0Ng4ee/NEH3wM9qQCU2nsa7r0+xWZ/55sD/Lj419OUWf+2gi5MDbF7/1MfJCuhtk0VDDPkhk3RA4Cs=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C33CC20F42BE56409DD18EA5981E4160@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29177c96-b2e3-4577-4637-08d7fb027dd2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2020 08:07:21.4833
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: W0IexVpTXKnha9jvEC8MylyGECTE91FsDWX9ImCE4FGp+eZCMC/t7Jyq+4/f3ewfLVLxpAxpt5UE/us3nbVXwluZTFfi8mHyg3ipCKvBit0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4875
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-18_02:2020-05-15,2020-05-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 spamscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 cotscore=-2147483648
+ suspectscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005180073
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-
-On 5/18/20 4:40 AM, Dmitry Torokhov wrote:
-> Hi Hans, Peter,
-> 
-> On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
->> On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
->>> Hi Andrezj,
->>>
->>> On 5/15/20 6:49 PM, Andrzej Pietrasiewicz wrote:
->>>> Userspace might want to implement a policy to temporarily disregard input
->>>> from certain devices, including not treating them as wakeup sources.
->>>>
->>>> An example use case is a laptop, whose keyboard can be folded under the
->>>> screen to create tablet-like experience. The user then must hold the laptop
->>>> in such a way that it is difficult to avoid pressing the keyboard keys. It
->>>> is therefore desirable to temporarily disregard input from the keyboard,
->>>> until it is folded back. This obviously is a policy which should be kept
->>>> out of the kernel, but the kernel must provide suitable means to implement
->>>> such a policy.
->>>
->>> Actually libinput already binds together (inside libinput) SW_TABLET_MODE
->>> generating evdev nodes and e.g. internal keyboards on devices with 360Ã‚Â°
->>> hinges for this reason. libinput simply closes the /dev/input/event#
->>> node when folded and re-opens it when the keyboard should become active
->>> again. Thus not only suppresses events but allows e.g. touchpads to
->>> enter runtime suspend mode which saves power. Typically closing the
->>> /dev/input/event# node will also disable the device as wakeup source.
->>>
->>> So I wonder what this series actually adds for functionality for
->>> userspace which can not already be achieved this way?
->>
->> Thanks Hans. To expand on this:
->> libinput has heuristics to guess which input devices (keyboards, touchpads)
->> are built-in ones. When the tablet mode switch is on, we disable these
->> devices internally (this is not visible to callers), and re-enable it again
->> later when the tablet mode switch is off again.
-> 
-> I think that is great that libinput has tried solving this for the
-> tablet mode, but unfortunately libinput only works for users of
-> libinput, leaving cases such as:
-> 
-> 1. In-kernel input handlers, such as SysRq, VT and others
-> 2. Systems that do not rely on libinput for userspace handing (Android,
-> Chrome OS)
-> 3. Systems with policies that are more complex than tablet mode only.
-> 
-> Because of libinput's inability to affect the kernel, and the presence
-> of "always on" input handlers (sysrq, VT keyboard, potentially others),
-> while libinput may control whether consumers receive events from certain
-> input devices, it will not allow power savings that an explicit
-> "inhibit" allows when coming from dedicated power policy manager.
-
-Ok, the sysrq and vt keyboard handlers keeping the device open and thus
-make it keep using power is a valid reason for a separate inhibit mechanism.
-
-> I think pushing policy decisions into a library, and trying to have all
-> clients agree with it, is much harder and leaks unnecessary knowledge
-> into quite a few layers. A dedicated power policy manager, that is not
-> only responsible for input device, but power state of the system as a
-> whole, is a very viable architecture.
-
-Well AFAIK the kernel-policy has always been to leave policy decisions
-up to userspace as much as possible, but this just adds a mechanism to
-implement the policy so that is fine.
-
->> This is done for keyboards and touchpads atm (and I think pointing sticks)
->> and where the heuristics fail we have extra quirks in place. For example
->> the Lenovo Yogas tend to disable the keyboard mechanically in tablet mode
->> but buttons (e.g. volume keys) around the screen send events through the
->> same event node. So on those devices we don't disable the keyboard.
->>
->> We've had this code for a few years now and the only changes to it have been
->> the various device quirks for devices that must not suspend the keyboard,
->> it's otherwise working as expected.
->>
->> If we ever have a device where we need to disable parts of the keyboard
->> only, we could address this with EVIOCSMASK but so far that hasn't been
->> necessary.
->>
->> I agree with Hans, right now I don't see the usefulness of this new sysfs
->> toggle. For it to be really useful you'd have to guarantee that it's
->> available for 100% of the devices and that's IMO unlikely to happen.
-> 
-> The inhibiting of the events works for 100% of input devices, the power
-> savings work for the ones that implement it. It is responsibility of
-> folds shipping the systems to make sure drivers they use support inhibit
-> if they believe it will help their battery life.
-> 
->>
->> Cheers,
->>     Peter
->>
->>> I also noticed that you keep the device open (do not call the
->>> input_device's close callback) when inhibited and just throw away
->>> any events generated. This seems inefficient and may lead to
->>> the internal state getting out of sync. What if a key is pressed
->>> while inhibited and then the device is uninhibited while the key
->>> is still pressed?  Now the press event is lost and userspace
->>> querying the current state will see the pressed key as being
->>> released.
-> 
-> This is a good point. We should look into signalling that some events
-> have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
-> it.
-> 
->>>
->>> On top of this you add special inhibit and uninhibit callbacks
->>> and implement those for just a few devices. How do these differ
->>> from just closing the device and later opening it again ?
-> 
-> I believe majority will simply reuse open/close callbacks. In Chrome OS
-> we have dedicated inhibit/uninhibit, but I would like to allow using
-> open/close as alternatives.
-
-Ack, maybe some driver flag to just call close on inhibit and
-open on unhibit (also taking input_device.users into account of course) ?
-
->>> Also using a sysfs property for this is very weird given that the
->>> rest of the evdev interface is using ioctls for everything...
-> 
-> This is not evdev interface, it is at the level above evdev (so that it
-> can affect all handlers, not only evdev). As such it is not bound by
-> evdev interface.
-
-Ok I can see how on some systems the process implementing the policy
-of when to inhibit would be separate from the process which has the
-device open. But in e.g. the libinput case it would be good if
-libinput could activate any potential power-savings by setting
-the inhibit flag.
-
-The problem with sysfs interfaces is that they typically require
-root rights and that they are not really compatible with FD
-passing. libinput runs as a normal user, getting a fd to the
-/dev/input/event# node passed by systemd-logind.
-
-As said I can see the reason for wanting a sysfs attribute for
-this, can we perhaps have both a sysfs interface and an ioctl?
-
-Note both could share the same boolean in the kernel, it would be
-up to userspace to not try and write to both. E.g. chrome-os
-would use the sysfs attr, libinput would use the ioctl.
-
-Regards,
-
-Hans
-
+T24gU2F0LCAyMDIwLTA1LTE2IGF0IDE3OjI5ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBUdWUsIDEyIE1heSAyMDIwIDExOjI2OjA4ICswMDAw
+DQo+ICJBcmRlbGVhbiwgQWxleGFuZHJ1IiA8YWxleGFuZHJ1LkFyZGVsZWFuQGFuYWxvZy5jb20+
+IHdyb3RlOg0KPiANCj4gPiBPbiBNb24sIDIwMjAtMDUtMTEgYXQgMTg6NDIgKzAxMDAsIEpvbmF0
+aGFuIENhbWVyb24gd3JvdGU6DQo+ID4gPiBbRXh0ZXJuYWxdDQo+ID4gPiANCj4gPiA+IE9uIE1v
+biwgMTEgTWF5IDIwMjAgMDk6MTY6MzIgKzAwMDANCj4gPiA+ICJBcmRlbGVhbiwgQWxleGFuZHJ1
+IiA8YWxleGFuZHJ1LkFyZGVsZWFuQGFuYWxvZy5jb20+IHdyb3RlOg0KPiA+ID4gICANCj4gPiA+
+ID4gT24gRnJpLCAyMDIwLTA1LTA4IGF0IDE2OjQ0ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdy
+b3RlOiAgDQo+ID4gPiA+ID4gW0V4dGVybmFsXQ0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IE9uIEZy
+aSwgOCBNYXkgMjAyMCAxNjo0MDoxNSArMDEwMA0KPiA+ID4gPiA+IEpvbmF0aGFuIENhbWVyb24g
+PEpvbmF0aGFuLkNhbWVyb25ASHVhd2VpLmNvbT4gd3JvdGU6DQo+ID4gPiA+ID4gICAgIA0KPiA+
+ID4gPiA+ID4gT24gRnJpLCA4IE1heSAyMDIwIDE3OjEzOjA0ICswMzAwDQo+ID4gPiA+ID4gPiBB
+bGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPiB3cm90ZToN
+Cj4gPiA+ID4gPiA+ICAgICANCj4gPiA+ID4gPiA+ID4gVGhlcmUgYXJlIHBsZW50eSBvZiBiYWQg
+ZGVzaWducyB3ZSB3YW50IHRvIGRpc2NvdXJhZ2Ugb3Igbm90IGhhdmUNCj4gPiA+ID4gPiA+ID4g
+dG8NCj4gPiA+ID4gPiA+ID4gcmV2aWV3DQo+ID4gPiA+ID4gPiA+IG1hbnVhbGx5IHVzdWFsbHkg
+YWJvdXQgYWNjZXNzaW5nIHByaXZhdGUgKG1hcmtlZCBhcyBbSU5URVJOXSkNCj4gPiA+ID4gPiA+
+ID4gZmllbGRzDQo+ID4gPiA+ID4gPiA+IG9mDQo+ID4gPiA+ID4gPiA+ICdzdHJ1Y3QgaWlvX2Rl
+dicuICAgICAgDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IFRoaXMgaGFzIGJlZW4gb24gdGhl
+IHRvZG8gbGlzdCBmb3IgbWFueSB5ZWFycyBzbyBncmVhdCB5b3UgYXJlDQo+ID4gPiA+ID4gPiBo
+YXZpbmcgYQ0KPiA+ID4gPiA+ID4gZ28uDQo+ID4gPiA+ID4gPiAgICAgIA0KPiA+ID4gPiA+ID4g
+PiBUaGlzIGlzIGRpZmZpY3VsdCwgYXMgYSBsb3Qgb2YgdXNlcnMgY29weSBkcml2ZXJzLCBhbmQg
+bm90IGFsd2F5cw0KPiA+ID4gPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+ID4gYmVzdA0KPiA+ID4g
+PiA+ID4gPiBleGFtcGxlcy4NCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+IEEgYmV0dGVy
+IGlkZWEgaXMgdG8gaGlkZSB0aG9zZSBmaWVsZHMgaW50byB0aGUgZnJhbWV3b3JrLg0KPiA+ID4g
+PiA+ID4gPiBGb3IgJ3N0cnVjdCBpaW9fZGV2JyB0aGlzIGlzIGEgJ3N0cnVjdCBpaW9fZGV2X3By
+aXYnIHdoaWNoIHdyYXBzIGENCj4gPiA+ID4gPiA+ID4gcHVibGljDQo+ID4gPiA+ID4gPiA+ICdz
+dHJ1Y3QgaWlvX2Rldicgb2JqZWN0Lg0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gSW4g
+dGhlIG5leHQgcGF0Y2hlcywgc29tZSBmaWVsZHMgd2lsbCBiZSBtb3ZlZCB0byB0aGlzIG5ldyBz
+dHJ1Y3QsDQo+ID4gPiA+ID4gPiA+IGVhY2gNCj4gPiA+ID4gPiA+ID4gd2l0aCBpdCdzIG93biBy
+ZXdvcmsuDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiBUaGlzIHJld29yayB3aWxsIG5v
+dCBiZSBjb21wbGV0ZVstYWJsZV0gZm9yIGEgd2hpbGUsIGFzIG1hbnkNCj4gPiA+ID4gPiA+ID4g
+ZmllbGRzDQo+ID4gPiA+ID4gPiA+IG5lZWQNCj4gPiA+ID4gPiA+ID4gc29tZSBkcml2ZXJzIHRv
+IGJlIHJld29ya2VkIGluIG9yZGVyIHRvIGZpbmFsaXplIHRoZW0NCj4gPiA+ID4gPiA+ID4gKGUu
+Zy4gJ2luZGlvX2Rldi0+bWxvY2snKS4NCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+IEJ1
+dCBzb21lIGZpZWxkcyBjYW4gYWxyZWFkeSBiZSBtb3ZlZCwgYW5kIGluIHRpbWUsIGFsbCBvZiB0
+aGVtIG1heQ0KPiA+ID4gPiA+ID4gPiBnZXQNCj4gPiA+ID4gPiA+ID4gdGhlcmUgKGluIHRoZSAn
+c3RydWN0IGlpb19kZXZfcHJpdicgb2JqZWN0KS4NCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4g
+PiA+IFdlIGFsc28gbmVlZCB0byBoaWRlIHRoZSBpbXBsZW1lbnRhdGlvbnMgZm9yICdpaW9fcHJp
+digpJyAmDQo+ID4gPiA+ID4gPiA+ICdpaW9fcHJpdl90b19kZXYoKScsIGFzIHRoZSBwb2ludGVy
+IGFyaXRobWV0aWMgd2lsbCBub3QgbWF0Y2ggb25jZQ0KPiA+ID4gPiA+ID4gPiB0aGluZ3MNCj4g
+PiA+ID4gPiA+ID4gYXJlIG1vdmVkLiAgICAgIA0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBU
+aGlzIGxhc3QgYml0IGhhcyB0aGUgZGlzYWR2YW50YWdlIG9mIHBvdGVudGlhbGx5IHB1dHRpbmcg
+YSBmdW5jdGlvbg0KPiA+ID4gPiA+ID4gY2FsbCBpbiBzb21lIGZhc3QgcGF0aHMgd2hlcmUgdGhl
+cmUgd2Fzbid0IG9uZSBiZWZvcmUuICAgIA0KPiA+ID4gPiANCj4gPiA+ID4gSG1tLg0KPiA+ID4g
+PiBJIHRoaW5rIHdlIGNhbiBjaGFuZ2UgdGhpcyB0byBoYXZlIGEgdm9pZCAqcHRyIGluIHRoZSBw
+dWJsaWMgaWlvLmgNCj4gPiA+ID4gaGVhZGVyDQo+ID4gPiA+IGFuZA0KPiA+ID4gPiB0aGF0IHBv
+aW50cyB0byB0aGUgcHJpdmF0ZSBkYXRhIGluIHRoZSBwcml2YXRlIHN0cnVjdCwgYW5kIHdlIGNv
+bXB1dGUgaXQNCj4gPiA+ID4gb25jZSwNCj4gPiA+ID4gYW5kIGp1c3QgcmV0dXJuIGl0Lg0KPiA+
+ID4gPiANCj4gPiA+ID4gc286DQo+ID4gPiA+IA0KPiA+ID4gPiBzdHJ1Y3QgaWlvX2Rldl9vcGFx
+dWU7DQo+ID4gPiA+IA0KPiA+ID4gPiBzdHJ1Y3QgaWlvX2RldiB7DQo+ID4gPiA+ICAgICBzdHJ1
+Y3QgaWlvX2Rldl9vcGFxdWUgKm9wYXF1ZTsgIC8vIGNvbXB1dGUgdGhpcyBkdXJpbmcNCj4gPiA+
+ID4gaWlvX2RldmljZV9hbGxvYygpDQo+ID4gPiA+ICAgICB2b2lkICpwcml2OyAgICAgICAgICAg
+ICAgICAgICAgIC8vIGNvbXB1dGUgdGhpcyBkdXJpbmcNCj4gPiA+ID4gaWlvX2RldmljZV9hbGxv
+YygpDQo+ID4gPiA+IH07DQo+ID4gPiA+IA0KPiA+ID4gPiBzdGF0aWMgaW5saW5lIHZvaWQgKmlp
+b19wcml2KGNvbnN0IHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gPiA+IHsNCj4gPiA+
+ID4gICAgICAgICByZXR1cm4gaW5kaW9fZGV2LT5wcml2Ow0KPiA+ID4gPiB9DQo+ID4gPiA+IA0K
+PiA+ID4gPiBbIG9yIGV2ZW4ganVzdCBjb252ZXJ0IGl0IHRvIGEgbWFjcm8gOyBubyBwcmVmZXJl
+bmNlIF0gIA0KPiA+ID4gDQo+ID4gPiBUaGF0IHdvcmtzIGZvciBtZSBhbmQgYXZvaWRzIGFueSBv
+ZiB0aGUgbWVzc3kgc3R1ZmYgYmVsb3cuDQo+ID4gPiANCj4gPiA+IE1ha2Ugc3VyZSB0byBhZGQg
+YSBjb21tZW50IHRoYXQgdGhlIHJlZ2lvbiB0aGF0IHBvaW50cyB0byBpcyBndWFyYW50ZWVkDQo+
+ID4gPiB0byBtYWludGFpbiBjYWNoZWxpbmUgYWxpZ25tZW50IGFzIHRoYXRzIGhpZGRlbiBub3cu
+ICANCj4gPiANCj4gPiAxIG5vdGU6IEkgd291bGQgc3RpbGwgbmVlZCB0byBoaWRlIHRoZSBpaW9f
+cHJpdl90b19kZXYoKSBpbXBsZW1lbnRhdGlvbi4NCj4gPiBJdCdzIGEgYml0IGhhcmQgbm90IHRv
+OyBvciBJIGNhbid0IGNvbWUgdXAgd2l0aCBhIGdvb2QgaWRlYSBub3csIGxpa2UgZm9yDQo+ID4g
+aWlvX3ByaXYoKS4NCj4gPiBUaGluZyBpcywgbm90IG1hbnkgZHJpdmVycyB1c2UgaXQsIGFuZCBp
+dCBsb29rcyBhIGJpdCBmdW5reSB0aGF0IHRoZXkgdXNlDQo+ID4gaXQuDQo+ID4gSXQgbG9va3Mg
+bGlrZSBlYWNoIGRyaXZlciBzaG91bGQganVzdCBrZWVwIChvciB1c2UpIGEgcmVmZXJlbmNlIHRv
+IHRoZQ0KPiA+IGlpb19kZXYNCj4gPiBvYmplY3QsIHNpbmNlIGl0IHNob3VsZCBiZSBpbiB0aGUg
+ZHJpdmVyIHNvbWV3aGVyZS4NCj4gPiANCj4gPiBNYXliZSB0aGlzIHNlcmllcyBuZWVkcyB0byBi
+ZSBleHRlbmRlZCB0byBjbGVhbi11cCB0aG9zZSB1c2VzDQo+ID4gb2YgaWlvX3ByaXZfdG9fZGV2
+KCkuDQo+IA0KPiBJIG5ldmVyIGxpa2VkIHRoYXQgaW50ZXJmYWNlLiAgSUlSQyB3ZSByZW1vdmVk
+IGl0IG9uY2UgYmVmb3JlIGJ1dA0KPiBpdCBzbnVjayBiYWNrIGluIGJlY2F1c2Ugb25lIG9mIHRo
+b3NlIGNhc2VzIHdhcyByZWFsbHkgZmlkZGx5IHdpdGggb3V0IGl0DQo+IChJIGNhbid0IHJlbWVt
+YmVyIHdoaWNoIHRob3VnaCA6KA0KPiANCj4gPiBBbmQgYSBxdWVzdGlvbjsgc2luY2UgSSBhbSBu
+b3QgY2xlYXIuDQo+ID4gT24gdGhlICd0b19paW9fZGV2X29wYXF1ZSgpJyA6IGlzIGl0IHByZWZl
+cnJlZCB0byBhY2Nlc3MgaXQgdmlhICdpbmRpb19kZXYtDQo+ID4gPiBvcGFxdWUnIG9yIHZpYSBw
+b2ludGVyIGFyaXRobWVudGljPyAgDQo+ID4gaS5lLiB0aGUgY2xhc3NpYyANCj4gPiAjZGVmaW5l
+IHRvX2lpb19kZXZfb3BhcXVlKGluZGlvX2RldikgICAgICAgICAgICBcDQo+ID4gICAgICAgICBj
+b250YWluZXJfb2YoaW5kaW9fZGV2LCBzdHJ1Y3QgaWlvX2Rldl9vcGFxdWUsIGluZGlvX2RldikN
+Cj4gDQo+IGNvbnRhaW5lciBvZiBJIHRoaW5rLiBUaG91Z2ggSSdtIG5vdCBxdWl0ZSBzdXJlIHdo
+YXQgeW91IG1lYW4gYnkNCj4gcG9pbnRlciBhcml0aG1ldGljIGFzIGFuIGFsdGVybmF0aXZlLi4N
+Cg0KSSB3YXMgcmVmZXJyaW5nIHRvIGNvbnRhaW5lcl9vZiBhcyBwb2ludGVyLWFyaXRobWV0aWMu
+DQoNCj4gDQo+ID4gZWl0aGVyIGlzIGZpbmUgZnJvbSBteSBzaWRlOyBpJ2xsIGp1c3QgZG8gdGhl
+IG1hY3JvLCBhbmQgdGhlbiB0aGUNCj4gPiBpbXBsZW1lbnRhdGlvbg0KPiA+IGNhbiBiZSBjaGFu
+Z2VkIGFzIGkgZ2V0IHRoZSBhbnN3ZXI7DQo+ID4gDQo+ID4gPiAgIA0KPiA+ID4gPiA+ID4gV2Ug
+bWF5IG5vdCBuZWVkIHRvICdmb3JjZWZ1bGx5JyBoaWRlIHRoZSBpbnRlcm5hbCBwYXJ0cy4gIE1h
+eSBiZQ0KPiA+ID4gPiA+ID4gZW5vdWdoIHRvIGp1c3QgbWFrZSB0aGVpciB1c2UgcmVhbGx5IG9i
+dmlvdXMuICBJZiB5b3UgaGF2ZSB0byBjYXN0DQo+ID4gPiA+ID4gPiB0byBhbiBpaW9fZGV2X3By
+aXYgdGhlbiB5b3UgYXJlIGRvaW5nIHNvbWV0aGluZyB2ZXJ5IHdyb25nLiAgICANCj4gPiA+ID4g
+PiANCj4gPiA+ID4gPiBOb3RlLCBkZWZpbml0ZWx5IGtlZXAgdGhlIHRvXyogbWFjcm8gb25seSBp
+biB0aGUgcHJpdmF0ZSBjb3JlIGhlYWRlci4NCj4gPiA+ID4gPiAgICAgDQo+ID4gPiA+ID4gPiBU
+aGUgb2xkIHN0aWNrIF9fIGluIGZyb250IG9mIGl0IG1heSBtYWtlIHRoYXQgZXZlbiBtb3JlIG9i
+dmlvdXMuDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IE5hbWluZyBpcyBhIGJpdCBjb25mdXNp
+bmcgdGhvdWdoLiAgaWlvX2Rldl9wcml2IHNvdW5kcyBsaWtlIHByaXZhdGUNCj4gPiA+ID4gPiA+
+IHRvIHRoZSBkZXZpY2UuLi4gaWlvX2Rldl9vcGFxdWUgbWF5YmU/ICAgIA0KPiA+ID4gPiANCj4g
+PiA+ID4gcmVnYXJkaW5nIHRoZSAnb3BhcXVlJyBwYXJ0LCB0aGF0IHdvdWxkIGJlIGEgJ3N0cnVj
+dCBpaW9fZGV2X29wYXF1ZSB7Jw0KPiA+ID4gPiB0aGF0DQo+ID4gPiA+IGxpdmVzIHNvbWV3aGVy
+ZSBsaWtlDQo+ID4gPiA+IA0KPiA+ID4gPiBzdHJ1Y3QgaWlvX2Rldl9vcGFxdWUgew0KPiA+ID4g
+PiAgICAgc3RydWN0IGlpb19kZXYgICBpbmRpb19kZXY7ICAvLyBwdWJsaWMgSUlPIGRldmljZSBw
+YXJ0DQo+ID4gPiA+ICAgICAuLi4gLy8gb3BhcXVlIElJTyBkZXZpY2UgcGFydHMNCj4gPiA+ID4g
+ICAgIC4uLiAvLyBpaW9fcHJpdiBkYXRhDQo+ID4gPiA+IH0NCj4gPiA+ID4gDQo+ID4gPiA+IFRo
+ZSBzdGljayBfXyBpbiBmcm9udCwgbWF5IHdvcmsganVzdCBmaW5lIGFzIHdlbGwuDQo+ID4gPiA+
+IA0KPiA+ID4gPiBQZXJzb25hbGx5LCBJIHdvdWxkIHByZWZlciB0byBmb3JjZWZ1bGx5IGhpZGUg
+c3R1ZmYsIGJlY2F1c2UgdGhlbiB0aGUNCj4gPiA+ID4gY29tcGlsZXINCj4gPiA+ID4gY291bGQg
+YWxzbyBiZSB1c2VmdWwgaW4gdGVsbGluZyBwZW9wbGUgbm90IHRvIHVzZSBzb21lIHByaXZhdGUg
+ZmllbGRzLg0KPiA+ID4gPiBQZW9wbGUgW2p1bmlvcnMgdXN1YWxseV0gbGlzdGVuIHRvIGNvbXBp
+bGVycyBtb3JlIHRoYW4gdGhleSBsaXN0ZW4gdG8NCj4gPiA+ID4gcmV2aWV3LQ0KPiA+ID4gPiBj
+b21tZW50cy4gDQo+ID4gPiA+IFdlIGNvdWxkIG1vdmUgdGhlICdzdHJ1Y3QgaWlvX2Rldl9vcGFx
+dWUnIGluICdpbmNsdWRlL2xpbnV4L2lpby9paW8tDQo+ID4gPiA+IG9wYXF1ZS5oJywNCj4gPiA+
+ID4gc28gdGhhdCBpZiB0aGV5IG5lZWQgdG8gYWNjZXNzIHNvbWUgZmllbGRzIGZvciBzb21lIGFk
+dmFuY2VkL2hhY2t5DQo+ID4gPiA+IGRlYnVnZ2luZywgaXQNCj4gPiA+ID4gc2hvdWxkIHdvcmsg
+YXMgd2VsbC4NCj4gPiA+ID4gDQo+ID4gPiA+IFN0aWxsLCBpZiBpdCdzIG1vcmUgcHJlZmVycmVk
+IHRvIHByZWZpeCB0aGVtLCBJIGNhbiBkbyB0aGF0IGFzIHdlbGwuDQo+ID4gPiA+IEJ1dCB3ZSBz
+aG91bGQgcHJlZml4IHRoZW0gYXMgd2UgbWFuYWdlIHRvIHNvbWVob3cgbWFrZSB0aGUgbW9yZSBv
+cGFxdWUsDQo+ID4gPiA+IG9yDQo+ID4gPiA+IHJlbW92ZSB0aGUgZmllbGRzIGZyb20gcGxhY2Vz
+IHRoZXkgc2hvdWxkIGJlIHVzZWQuDQo+ID4gPiA+IE90aGVyd2lzZSBpdCBpcyBwb2ludGxlc3Ms
+IGFzIHBlb3BsZSB3b3VsZCBjb3B5ICdpbmRpb19kZXYtPl9fbWxvY2snDQo+ID4gPiA+IGFueXdh
+eS4NCj4gPiA+ID4gDQo+ID4gPiA+ICAgDQo+ID4gPiA+ID4gPiAgICAgDQo+ID4gPiA+ID4gPiA+
+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFu
+YWxvZy5jb20+DQo+ID4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+
+ID4gSnVzdCBhcyBhIG5vdGUgaGVyZSwgSSd2ZSBiZWVuIHJ1bm5pbmcgdGhpcyBwYXRjaHNldCB3
+aXRob3V0IGENCj4gPiA+ID4gPiA+ID4gcHJvYmxlbQ0KPiA+ID4gPiA+ID4gPiBmb3IgMiB3ZWVr
+cyBub3cgaW4gYSB3b3JrIGJyYW5jaC4NCj4gPiA+ID4gPiA+ID4gQnV0IGl0J3Mgb25seSBiZWVu
+IGEgc2V0dXAsIHNvIG5vIGlkZWEgaWYgc29tZSBvdGhlciB0aGluZyBtYXkNCj4gPiA+ID4gPiA+
+ID4gY2F1c2UNCj4gPiA+ID4gPiA+ID4gYmlnZ2VyIGlzc3Vlcy4NCj4gPiA+ID4gPiA+ID4gDQo+
+ID4gPiA+ID4gPiA+IFRoaXMgc21hbGwgcGF0Y2hzZXQgaXMgbWVhbnQgdG8ga2lja3N0YXJ0IHRo
+aXMsIGZvciBHU29DIHBlb3BsZSBvcg0KPiA+ID4gPiA+ID4gPiBmb3INCj4gPiA+ID4gPiA+ID4g
+cGVvcGxlIHdhbnRpbmcgdG8gc3RhcnQgY29udHJpYnV0aW5nIHRvIElJTy4NCj4gPiA+ID4gPiA+
+ID4gDQo+ID4gPiA+ID4gPiA+ICBkcml2ZXJzL2lpby9paW9fY29yZS5oICAgICAgICAgIHwgMTEg
+KysrKysrKysrKysNCj4gPiA+ID4gPiA+ID4gIGRyaXZlcnMvaWlvL2luZHVzdHJpYWxpby1jb3Jl
+LmMgfCAzMiArKysrKysrKysrKysrKysrKysrKysrKysrKystDQo+ID4gPiA+ID4gPiA+IC0tLS0N
+Cj4gPiA+ID4gPiA+ID4gIGluY2x1ZGUvbGludXgvaWlvL2lpby5oICAgICAgICAgfCAxMiArKy0t
+LS0tLS0tLS0NCj4gPiA+ID4gPiA+ID4gIDMgZmlsZXMgY2hhbmdlZCwgNDAgaW5zZXJ0aW9ucygr
+KSwgMTUgZGVsZXRpb25zKC0pDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9paW8vaWlvX2NvcmUuaCBiL2RyaXZlcnMvaWlvL2lpb19jb3JlLmgNCj4g
+PiA+ID4gPiA+ID4gaW5kZXggZmQ5YTVmMWQ1ZTUxLi44NGYzYjQ1OTBjMDUgMTAwNjQ0DQo+ID4g
+PiA+ID4gPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2lpb19jb3JlLmgNCj4gPiA+ID4gPiA+ID4gKysr
+IGIvZHJpdmVycy9paW8vaWlvX2NvcmUuaA0KPiA+ID4gPiA+ID4gPiBAQCAtMTcsNiArMTcsMTcg
+QEAgc3RydWN0IGlpb19kZXY7DQo+ID4gPiA+ID4gPiA+ICANCj4gPiA+ID4gPiA+ID4gIGV4dGVy
+biBzdHJ1Y3QgZGV2aWNlX3R5cGUgaWlvX2RldmljZV90eXBlOw0KPiA+ID4gPiA+ID4gPiAgDQo+
+ID4gPiA+ID4gPiA+ICsvKioNCj4gPiA+ID4gPiA+ID4gKyAqIHN0cnVjdCBpaW9fZGV2X3ByaXYg
+LSBpbmR1c3RyaWFsIEkvTyBkZXZpY2UgcHJpdmF0ZQ0KPiA+ID4gPiA+ID4gPiBpbmZvcm1hdGlv
+bg0KPiA+ID4gPiA+ID4gPiArICogQGluZGlvX2RldjoJCQlwdWJsaWMgSUlPIGRldmljZSBvYmpl
+Y3QNCj4gPiA+ID4gPiA+ID4gKyAqLw0KPiA+ID4gPiA+ID4gPiArc3RydWN0IGlpb19kZXZfcHJp
+diB7DQo+ID4gPiA+ID4gPiA+ICsJc3RydWN0IGlpb19kZXYJCQlpbmRpb19kZXY7DQo+ID4gPiA+
+ID4gPiA+ICt9Ow0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICsjZGVmaW5lIHRvX2lp
+b19kZXZfcHJpdihpbmRpb19kZXYpCVwNCj4gPiA+ID4gPiA+ID4gKwljb250YWluZXJfb2YoaW5k
+aW9fZGV2LCBzdHJ1Y3QgaWlvX2Rldl9wcml2LCBpbmRpb19kZXYpDQo+ID4gPiA+ID4gPiA+ICsN
+Cj4gPiA+ID4gPiA+ID4gIGludCBfX2lpb19hZGRfY2hhbl9kZXZhdHRyKGNvbnN0IGNoYXIgKnBv
+c3RmaXgsDQo+ID4gPiA+ID4gPiA+ICAJCQkgICBzdHJ1Y3QgaWlvX2NoYW5fc3BlYyBjb25zdCAq
+Y2hhbiwNCj4gPiA+ID4gPiA+ID4gIAkJCSAgIHNzaXplX3QgKCpmdW5jKShzdHJ1Y3QgZGV2aWNl
+ICpkZXYsDQo+ID4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9pbmR1c3RyaWFs
+aW8tY29yZS5jDQo+ID4gPiA+ID4gPiA+IGIvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLQ0KPiA+
+ID4gPiA+ID4gPiBjb3JlLmMNCj4gPiA+ID4gPiA+ID4gaW5kZXggNDYyZDNlODEwMDEzLi5mMDg4
+OGRkODRkM2QgMTAwNjQ0DQo+ID4gPiA+ID4gPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2luZHVzdHJp
+YWxpby1jb3JlLmMNCj4gPiA+ID4gPiA+ID4gKysrIGIvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlv
+LWNvcmUuYw0KPiA+ID4gPiA+ID4gPiBAQCAtMTY0LDYgKzE2NCwyMyBAQCBzdGF0aWMgY29uc3Qg
+Y2hhciAqIGNvbnN0DQo+ID4gPiA+ID4gPiA+IGlpb19jaGFuX2luZm9fcG9zdGZpeFtdDQo+ID4g
+PiA+ID4gPiA+ID0gew0KPiA+ID4gPiA+ID4gPiAgCVtJSU9fQ0hBTl9JTkZPX1RIRVJNT0NPVVBM
+RV9UWVBFXSA9ICJ0aGVybW9jb3VwbGVfdHlwZSIsDQo+ID4gPiA+ID4gPiA+ICB9Ow0KPiA+ID4g
+PiA+ID4gPiAgDQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4gK3ZvaWQgKmlpb19wcml2
+KGNvbnN0IHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gPiA+ID4gPiA+ICt7DQo+ID4g
+PiA+ID4gPiA+ICsJc3RydWN0IGlpb19kZXZfcHJpdiAqaWlvX2Rldl9wcml2ID0gdG9faWlvX2Rl
+dl9wcml2KGluZGlvX2Rldik7DQo+ID4gPiA+ID4gPiA+ICsJcmV0dXJuIChjaGFyICopaWlvX2Rl
+dl9wcml2ICsgQUxJR04oc2l6ZW9mKHN0cnVjdCBpaW9fZGV2X3ByaXYpLA0KPiA+ID4gPiA+ID4g
+PiBJSU9fQUxJR04pOw0KPiA+ID4gPiA+ID4gPiArfQ0KPiA+ID4gPiA+ID4gPiArRVhQT1JUX1NZ
+TUJPTF9HUEwoaWlvX3ByaXYpOw0KPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ICtzdHJ1
+Y3QgaWlvX2RldiAqaWlvX3ByaXZfdG9fZGV2KHZvaWQgKnByaXYpDQo+ID4gPiA+ID4gPiA+ICt7
+DQo+ID4gPiA+ID4gPiA+ICsJc3RydWN0IGlpb19kZXZfcHJpdiAqaWlvX2Rldl9wcml2ID0NCj4g
+PiA+ID4gPiA+ID4gKwkJKHN0cnVjdCBpaW9fZGV2X3ByaXYgKikoKGNoYXIgKilwcml2IC0NCj4g
+PiA+ID4gPiA+ID4gKwkJCQkgIEFMSUdOKHNpemVvZihzdHJ1Y3QgaWlvX2Rldl9wcml2KSwNCj4g
+PiA+ID4gPiA+ID4gSUlPX0FMSUdOKSk7DQo+ID4gPiA+ID4gPiA+ICsJcmV0dXJuICZpaW9fZGV2
+X3ByaXYtPmluZGlvX2RldjsNCj4gPiA+ID4gPiA+ID4gK30NCj4gPiA+ID4gPiA+ID4gK0VYUE9S
+VF9TWU1CT0xfR1BMKGlpb19wcml2X3RvX2Rldik7DQo+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4g
+PiA+ID4gIC8qKg0KPiA+ID4gPiA+ID4gPiAgICogaWlvX2ZpbmRfY2hhbm5lbF9mcm9tX3NpKCkg
+LSBnZXQgY2hhbm5lbCBmcm9tIGl0cyBzY2FuIGluZGV4DQo+ID4gPiA+ID4gPiA+ICAgKiBAaW5k
+aW9fZGV2OgkJZGV2aWNlDQo+ID4gPiA+ID4gPiA+IEBAIC0xNDc2LDYgKzE0OTMsOCBAQCBzdGF0
+aWMgdm9pZA0KPiA+ID4gPiA+ID4gPiBpaW9fZGV2aWNlX3VucmVnaXN0ZXJfc3lzZnMoc3RydWN0
+DQo+ID4gPiA+ID4gPiA+IGlpb19kZXYgKmluZGlvX2RldikNCj4gPiA+ID4gPiA+ID4gIHN0YXRp
+YyB2b2lkIGlpb19kZXZfcmVsZWFzZShzdHJ1Y3QgZGV2aWNlICpkZXZpY2UpDQo+ID4gPiA+ID4g
+PiA+ICB7DQo+ID4gPiA+ID4gPiA+ICAJc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiA9IGRldl90
+b19paW9fZGV2KGRldmljZSk7DQo+ID4gPiA+ID4gPiA+ICsJc3RydWN0IGlpb19kZXZfcHJpdiAq
+aWlvX2Rldl9wcml2ID0gdG9faWlvX2Rldl9wcml2KGluZGlvX2Rldik7DQo+ID4gPiA+ID4gPiA+
+ICsNCj4gPiA+ID4gPiA+ID4gIAlpZiAoaW5kaW9fZGV2LT5tb2RlcyAmIElORElPX0FMTF9UUklH
+R0VSRURfTU9ERVMpDQo+ID4gPiA+ID4gPiA+ICAJCWlpb19kZXZpY2VfdW5yZWdpc3Rlcl90cmln
+Z2VyX2NvbnN1bWVyKGluZGlvX2Rldik7DQo+ID4gPiA+ID4gPiA+ICAJaWlvX2RldmljZV91bnJl
+Z2lzdGVyX2V2ZW50c2V0KGluZGlvX2Rldik7DQo+ID4gPiA+ID4gPiA+IEBAIC0xNDg0LDcgKzE1
+MDMsNyBAQCBzdGF0aWMgdm9pZCBpaW9fZGV2X3JlbGVhc2Uoc3RydWN0IGRldmljZQ0KPiA+ID4g
+PiA+ID4gPiAqZGV2aWNlKQ0KPiA+ID4gPiA+ID4gPiAgCWlpb19idWZmZXJfcHV0KGluZGlvX2Rl
+di0+YnVmZmVyKTsNCj4gPiA+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ID4gPiAgCWlkYV9zaW1wbGVf
+cmVtb3ZlKCZpaW9faWRhLCBpbmRpb19kZXYtPmlkKTsNCj4gPiA+ID4gPiA+ID4gLQlrZnJlZShp
+bmRpb19kZXYpOw0KPiA+ID4gPiA+ID4gPiArCWtmcmVlKGlpb19kZXZfcHJpdik7DQo+ID4gPiA+
+ID4gPiA+ICB9DQo+ID4gPiA+ID4gPiA+ICANCj4gPiA+ID4gPiA+ID4gIHN0cnVjdCBkZXZpY2Vf
+dHlwZSBpaW9fZGV2aWNlX3R5cGUgPSB7DQo+ID4gPiA+ID4gPiA+IEBAIC0xNDk4LDEwICsxNTE3
+LDExIEBAIHN0cnVjdCBkZXZpY2VfdHlwZSBpaW9fZGV2aWNlX3R5cGUgPSB7DQo+ID4gPiA+ID4g
+PiA+ICAgKiovDQo+ID4gPiA+ID4gPiA+ICBzdHJ1Y3QgaWlvX2RldiAqaWlvX2RldmljZV9hbGxv
+YyhpbnQgc2l6ZW9mX3ByaXYpDQo+ID4gPiA+ID4gPiA+ICB7DQo+ID4gPiA+ID4gPiA+ICsJc3Ry
+dWN0IGlpb19kZXZfcHJpdiAqaWlvX2Rldl9wcml2Ow0KPiA+ID4gPiA+ID4gPiAgCXN0cnVjdCBp
+aW9fZGV2ICpkZXY7DQo+ID4gPiA+ID4gPiA+ICAJc2l6ZV90IGFsbG9jX3NpemU7DQo+ID4gPiA+
+ID4gPiA+ICANCj4gPiA+ID4gPiA+ID4gLQlhbGxvY19zaXplID0gc2l6ZW9mKHN0cnVjdCBpaW9f
+ZGV2KTsNCj4gPiA+ID4gPiA+ID4gKwlhbGxvY19zaXplID0gc2l6ZW9mKHN0cnVjdCBpaW9fZGV2
+X3ByaXYpOw0KPiA+ID4gPiA+ID4gPiAgCWlmIChzaXplb2ZfcHJpdikgew0KPiA+ID4gPiA+ID4g
+PiAgCQlhbGxvY19zaXplID0gQUxJR04oYWxsb2Nfc2l6ZSwgSUlPX0FMSUdOKTsNCj4gPiA+ID4g
+PiA+ID4gIAkJYWxsb2Nfc2l6ZSArPSBzaXplb2ZfcHJpdjsNCj4gPiA+ID4gPiA+ID4gQEAgLTE1
+MDksMTAgKzE1MjksMTIgQEAgc3RydWN0IGlpb19kZXYgKmlpb19kZXZpY2VfYWxsb2MoaW50DQo+
+ID4gPiA+ID4gPiA+IHNpemVvZl9wcml2KQ0KPiA+ID4gPiA+ID4gPiAgCS8qIGVuc3VyZSAzMi1i
+eXRlIGFsaWdubWVudCBvZiB3aG9sZSBjb25zdHJ1Y3QgPyAqLw0KPiA+ID4gPiA+ID4gPiAgCWFs
+bG9jX3NpemUgKz0gSUlPX0FMSUdOIC0gMTsNCj4gPiA+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ID4g
+PiAtCWRldiA9IGt6YWxsb2MoYWxsb2Nfc2l6ZSwgR0ZQX0tFUk5FTCk7DQo+ID4gPiA+ID4gPiA+
+IC0JaWYgKCFkZXYpDQo+ID4gPiA+ID4gPiA+ICsJaWlvX2Rldl9wcml2ID0ga3phbGxvYyhhbGxv
+Y19zaXplLCBHRlBfS0VSTkVMKTsNCj4gPiA+ID4gPiA+ID4gKwlpZiAoIWlpb19kZXZfcHJpdikN
+Cj4gPiA+ID4gPiA+ID4gIAkJcmV0dXJuIE5VTEw7DQo+ID4gPiA+ID4gPiA+ICANCj4gPiA+ID4g
+PiA+ID4gKwlkZXYgPSAmaWlvX2Rldl9wcml2LT5pbmRpb19kZXY7DQo+ID4gPiA+ID4gPiA+ICsN
+Cj4gPiA+ID4gPiA+ID4gIAlkZXYtPmRldi5ncm91cHMgPSBkZXYtPmdyb3VwczsNCj4gPiA+ID4g
+PiA+ID4gIAlkZXYtPmRldi50eXBlID0gJmlpb19kZXZpY2VfdHlwZTsNCj4gPiA+ID4gPiA+ID4g
+IAlkZXYtPmRldi5idXMgPSAmaWlvX2J1c190eXBlOw0KPiA+ID4gPiA+ID4gPiBAQCAtMTUyNiw3
+ICsxNTQ4LDcgQEAgc3RydWN0IGlpb19kZXYgKmlpb19kZXZpY2VfYWxsb2MoaW50DQo+ID4gPiA+
+ID4gPiA+IHNpemVvZl9wcml2KQ0KPiA+ID4gPiA+ID4gPiAgCWlmIChkZXYtPmlkIDwgMCkgew0K
+PiA+ID4gPiA+ID4gPiAgCQkvKiBjYW5ub3QgdXNlIGEgZGV2X2VyciBhcyB0aGUgbmFtZSBpc24n
+dCBhdmFpbGFibGUgKi8NCj4gPiA+ID4gPiA+ID4gIAkJcHJfZXJyKCJmYWlsZWQgdG8gZ2V0IGRl
+dmljZSBpZFxuIik7DQo+ID4gPiA+ID4gPiA+IC0JCWtmcmVlKGRldik7DQo+ID4gPiA+ID4gPiA+
+ICsJCWtmcmVlKGlpb19kZXZfcHJpdik7DQo+ID4gPiA+ID4gPiA+ICAJCXJldHVybiBOVUxMOw0K
+PiA+ID4gPiA+ID4gPiAgCX0NCj4gPiA+ID4gPiA+ID4gIAlkZXZfc2V0X25hbWUoJmRldi0+ZGV2
+LCAiaWlvOmRldmljZSVkIiwgZGV2LT5pZCk7DQo+ID4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9p
+bmNsdWRlL2xpbnV4L2lpby9paW8uaCBiL2luY2x1ZGUvbGludXgvaWlvL2lpby5oDQo+ID4gPiA+
+ID4gPiA+IGluZGV4IDVmOWY0MzlhNGYwMS4uMzhjNGVhNTA1Mzk0IDEwMDY0NA0KPiA+ID4gPiA+
+ID4gPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2lpby9paW8uaA0KPiA+ID4gPiA+ID4gPiArKysgYi9p
+bmNsdWRlL2xpbnV4L2lpby9paW8uaA0KPiA+ID4gPiA+ID4gPiBAQCAtNjc4LDE2ICs2NzgsOCBA
+QCBzdGF0aWMgaW5saW5lIHZvaWQNCj4gPiA+ID4gPiA+ID4gKmlpb19kZXZpY2VfZ2V0X2RydmRh
+dGEoc3RydWN0DQo+ID4gPiA+ID4gPiA+IGlpb19kZXYgKmluZGlvX2RldikNCj4gPiA+ID4gPiA+
+ID4gICNkZWZpbmUgSUlPX0FMSUdOIEwxX0NBQ0hFX0JZVEVTDQo+ID4gPiA+ID4gPiA+ICBzdHJ1
+Y3QgaWlvX2RldiAqaWlvX2RldmljZV9hbGxvYyhpbnQgc2l6ZW9mX3ByaXYpOw0KPiA+ID4gPiA+
+ID4gPiAgDQo+ID4gPiA+ID4gPiA+IC1zdGF0aWMgaW5saW5lIHZvaWQgKmlpb19wcml2KGNvbnN0
+IHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gPiA+ID4gPiA+IC17DQo+ID4gPiA+ID4g
+PiA+IC0JcmV0dXJuIChjaGFyICopaW5kaW9fZGV2ICsgQUxJR04oc2l6ZW9mKHN0cnVjdCBpaW9f
+ZGV2KSwNCj4gPiA+ID4gPiA+ID4gSUlPX0FMSUdOKTsNCj4gPiA+ID4gPiA+ID4gLX0NCj4gPiA+
+ID4gPiA+ID4gLQ0KPiA+ID4gPiA+ID4gPiAtc3RhdGljIGlubGluZSBzdHJ1Y3QgaWlvX2RldiAq
+aWlvX3ByaXZfdG9fZGV2KHZvaWQgKnByaXYpDQo+ID4gPiA+ID4gPiA+IC17DQo+ID4gPiA+ID4g
+PiA+IC0JcmV0dXJuIChzdHJ1Y3QgaWlvX2RldiAqKSgoY2hhciAqKXByaXYgLQ0KPiA+ID4gPiA+
+ID4gPiAtCQkJCSAgQUxJR04oc2l6ZW9mKHN0cnVjdCBpaW9fZGV2KSwNCj4gPiA+ID4gPiA+ID4g
+SUlPX0FMSUdOKSk7DQo+ID4gPiA+ID4gPiA+IC19DQo+ID4gPiA+ID4gPiA+ICt2b2lkICppaW9f
+cHJpdihjb25zdCBzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2KTsNCj4gPiA+ID4gPiA+ID4gK3N0
+cnVjdCBpaW9fZGV2ICppaW9fcHJpdl90b19kZXYodm9pZCAqcHJpdik7DQo+ID4gPiA+ID4gPiA+
+ICANCj4gPiA+ID4gPiA+ID4gIHZvaWQgaWlvX2RldmljZV9mcmVlKHN0cnVjdCBpaW9fZGV2ICpp
+bmRpb19kZXYpOw0KPiA+ID4gPiA+ID4gPiAgc3RydWN0IGlpb19kZXYgKmRldm1faWlvX2Rldmlj
+ZV9hbGxvYyhzdHJ1Y3QgZGV2aWNlICpkZXYsIGludA0KPiA+ID4gPiA+ID4gPiBzaXplb2ZfcHJp
+dik7ICAgICAgDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gICAgIA0KPiA+ID4gDQo+ID4gPiAgIA0K

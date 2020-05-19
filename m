@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCD61D915E
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 09:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4361D9161
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 09:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728481AbgESHwB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 03:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51086 "EHLO
+        id S1728565AbgESHwE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 03:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726892AbgESHv7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 03:51:59 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E547C061A0C;
-        Tue, 19 May 2020 00:51:59 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id f134so2007860wmf.1;
-        Tue, 19 May 2020 00:51:59 -0700 (PDT)
+        with ESMTP id S1726892AbgESHwD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 03:52:03 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ACCFC061A0C;
+        Tue, 19 May 2020 00:52:03 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id 50so14663949wrc.11;
+        Tue, 19 May 2020 00:52:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=PioGi4Hba7haqtg57rWfjXP/P5pE/B0GcbWPRGco23Y=;
-        b=no/jebZAVylj/0ygMm+1Pw8/fW3BIzgnqv80UN/+fhFsIG7OF7iMmpq4qg8UhGyVCD
-         0eZNeeRrfsMNwvztPGs/fTp6WhLUVTtgNRQgEYMWXi0AxQyVQTWV+RT5QXMYEGNgYoqI
-         tzqEqfXDe1rapnkemHJ8bjzJW1C2TRGEEVdczbWKbLxZVBqWqyWUwLnlBAiaIDtKyzsB
-         NSrLC+z3r78PFMAi9/NA5LB/lZM4AyMtUlVKOZkl8lmdBjEBbmcEzEA7EMN5WPyf9K+8
-         Z5sg4kec0uNZamitnjdj8M7G1Tz9bG7A1BBH/CE4/lM/S89rkq5QEX2jM5kuHyrQsIju
-         UegA==
+        bh=+9q/lrH8Rz1lWaiznxolgZJjw54jdIA13oGlCCkqVWE=;
+        b=VFppNQKOwslJ52Bhq5aKyGSXmyfKM+y2ofM/uTjfNjFGd9ihqxIKnPgbhGXVPF6/hZ
+         GhtvBF3u3B2SfohsCfVczsf+2vu1p+xwr3VHtEm4PRoP4/B6f4jH26u2V7nujIfF30EN
+         DMjXrIHUTpSO3eRw099p5Bz35WAzW048regqgbVMt4t3IYCk1GGLnjFrmHjr+1wh85xM
+         nexPtzQ3AQThkprrL7lJ+fN4YiYup+IdCDaU4YESO7BmKAcciJT367yVWvbQ3oG7x2Xs
+         H6pR4ULWy9Q6ctuX5W65BKRCQb/2APLvqGTNYF5Q3S1CPWM5QZF+o00ATmALRK00LPRY
+         MPiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=PioGi4Hba7haqtg57rWfjXP/P5pE/B0GcbWPRGco23Y=;
-        b=Woov5chXqsOzLcBmxqDILrhstPS3wSH2YXp0RG0hRAu9l0YwmYbQbKrkvbH9obeGUm
-         Jg5XPRbjy0e9CR/+UiqM1I4TKK9HG7wxwAi3qTFFI5d8PlBcUSid1XkZrhtYAIgJ7iV2
-         98U5I6/cDLgR6yZvjon/vt6nS9qGjooiR4b0RLwVimazUN7ouuPa/52fm1gBOZ9ANTcp
-         tuzNvVhemPR2UIWXlxXLWWS3+EkNm4oB3Tnu+Nlbbl1KWICD7L/Wlgnlli+egUfbq2ch
-         bD+pN9Tr4xIQ+x4cvG3tn13bQL9+vHYNIDMfR14Mdj49CNBsZMirqYuyVkskkaKyYyU6
-         5Qaw==
-X-Gm-Message-State: AOAM532+GDRTg8jTWoluaOnNw6hAe96Gu5/bw9SOhExFLR0rRLjTS5K3
-        AbEKFDCwMmKJrLyKYEwGVYUUSaFcyS0=
-X-Google-Smtp-Source: ABdhPJzu5XcgOCcXEn2F/H45Ds7AkoAlpYhNJt7hsh6w13fOqzbbOSR0RRPezBF8FVLlQ3QMnsLOog==
-X-Received: by 2002:a1c:7914:: with SMTP id l20mr3816014wme.120.1589874717602;
-        Tue, 19 May 2020 00:51:57 -0700 (PDT)
+        bh=+9q/lrH8Rz1lWaiznxolgZJjw54jdIA13oGlCCkqVWE=;
+        b=IPjic6i5EdzMJ1jlOIRuOid7hMygLaHcZkDm55NdJeB6dE7R6POmKE/sfFBPCFjmPz
+         yMEOpedHoKApO1z2T2dm/acp79JYbyRY/7XI82SBaIHQJLIbgQukNGwOuEZ8BjjAgHT3
+         L9S0UqDdK88gFadcdH2/isSxP6ZHxCSvFLiHaAOJgJGdZ+3tuh16fr6iP0RgEvPwxHH0
+         kXuPV37R5Gcv0xOhMWCnwRknZlkK97Zr2ba55hAQoQ/CLxWn8SmW/wjDCVzkmJUEvzG5
+         2AXqdOWg7c4jqILTX/SdniWpFWzeDnQtOf9hjpAcAozLa1QYakgHeOBzsGc6GxWtqVYn
+         OJtg==
+X-Gm-Message-State: AOAM531liISiLThYrcFiswkycW8X1dleqswCI3dm+mLUSYkU3iNTQE88
+        Gj9vDjOZn3d7TT7sIIKf8LnPR8VcLhQ=
+X-Google-Smtp-Source: ABdhPJxIz2vOS+zMIvTdjRmEANZlTkljXpVaVGC6bSoPaePYn8jUR2aXIUq24cRHqc3d0fbDP9vtIA==
+X-Received: by 2002:adf:e985:: with SMTP id h5mr25204106wrm.239.1589874721123;
+        Tue, 19 May 2020 00:52:01 -0700 (PDT)
 Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id w18sm20019697wro.33.2020.05.19.00.51.56
+        by smtp.googlemail.com with ESMTPSA id w18sm20019697wro.33.2020.05.19.00.52.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2020 00:51:56 -0700 (PDT)
+        Tue, 19 May 2020 00:52:00 -0700 (PDT)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
@@ -54,11 +54,10 @@ Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v2 2/4] dt-bindings: iio: imu: bmi160: add regulators and mount-matrix
-Date:   Tue, 19 May 2020 09:50:58 +0200
-Message-Id: <20200519075111.6356-3-jonathan.albrieux@gmail.com>
+        Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v2 3/4] iio: imu: bmi160: added regulator support
+Date:   Tue, 19 May 2020 09:50:59 +0200
+Message-Id: <20200519075111.6356-4-jonathan.albrieux@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
 References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
@@ -67,56 +66,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add vdd-supply and vddio-supply support.
-Add mount-matrix support.
+v2: fixed missing description
+
+Add vdd-supply and vddio-supply support. Without this support vdd and vddio
+should be set to always-on in device tree
 
 Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 ---
- .../devicetree/bindings/iio/imu/bmi160.yaml   | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/iio/imu/bmi160/bmi160.h      |  2 ++
+ drivers/iio/imu/bmi160/bmi160_core.c | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-index 6b464ce5ed0b..5b13af7a209f 100644
---- a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-@@ -46,6 +46,21 @@ properties:
-       set if the specified interrupt pin should be configured as
-       open drain. If not set, defaults to push-pull.
+diff --git a/drivers/iio/imu/bmi160/bmi160.h b/drivers/iio/imu/bmi160/bmi160.h
+index 621f5309d735..923c3b274fde 100644
+--- a/drivers/iio/imu/bmi160/bmi160.h
++++ b/drivers/iio/imu/bmi160/bmi160.h
+@@ -3,10 +3,12 @@
+ #define BMI160_H_
  
-+  vdd-supply:
-+    maxItems: 1
-+    description: |
-+      an optional regulator that needs to be on to provide VDD power to
-+      the sensor.
+ #include <linux/iio/iio.h>
++#include <linux/regulator/consumer.h>
+ 
+ struct bmi160_data {
+ 	struct regmap *regmap;
+ 	struct iio_trigger *trig;
++	struct regulator_bulk_data supplies[2];
+ };
+ 
+ extern const struct regmap_config bmi160_regmap_config;
+diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
+index 6af65d6f1d28..9bbe0d8e6720 100644
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -15,6 +15,7 @@
+ #include <linux/delay.h>
+ #include <linux/irq.h>
+ #include <linux/of_irq.h>
++#include <linux/regulator/consumer.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/triggered_buffer.h>
+@@ -709,6 +710,12 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+ 	unsigned int val;
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 
++	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
++	if (ret) {
++		dev_err(dev, "Failed to enable regulators: %d\n", ret);
++		return ret;
++	}
 +
-+  vddio-supply:
-+    maxItems: 1
-+    description: |
-+      an optional regulator that needs to be on to provide the VDD IO power to
-+      the sensor.
+ 	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+ 	if (ret)
+ 		return ret;
+@@ -793,9 +800,17 @@ int bmi160_probe_trigger(struct iio_dev *indio_dev, int irq, u32 irq_type)
+ static void bmi160_chip_uninit(void *data)
+ {
+ 	struct bmi160_data *bmi_data = data;
++	struct device *dev = regmap_get_device(bmi_data->regmap);
++	int ret;
+ 
+ 	bmi160_set_mode(bmi_data, BMI160_GYRO, false);
+ 	bmi160_set_mode(bmi_data, BMI160_ACCEL, false);
 +
-+  mount-matrix:
-+    description: an optional 3x3 mounting rotation matrix
++	ret = regulator_bulk_disable(ARRAY_SIZE(bmi_data->supplies),
++				     bmi_data->supplies);
++	if (ret) {
++		dev_err(dev, "Failed to disable regulators: %d\n", ret);
++	}
+ }
+ 
+ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+@@ -815,6 +830,16 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+ 	dev_set_drvdata(dev, indio_dev);
+ 	data->regmap = regmap;
+ 
++	data->supplies[0].supply = "vdd";
++	data->supplies[1].supply = "vddio";
++	ret = devm_regulator_bulk_get(dev,
++				      ARRAY_SIZE(data->supplies),
++				      data->supplies);
++	if (ret) {
++		dev_err(dev, "Failed to get regulators: %d\n", ret);
++		return ret;
++	}
 +
- required:
-   - compatible
-   - reg
-@@ -61,9 +76,15 @@ examples:
-         bmi160@68 {
-                 compatible = "bosch,bmi160";
-                 reg = <0x68>;
-+                vdd-supply = <&pm8916_l17>;
-+                vddio-supply = <&pm8916_l6>;
-                 interrupt-parent = <&gpio4>;
-                 interrupts = <12 1>;
-                 interrupt-names = "INT1";
-+                mount-matrix = "0", "1", "0",
-+                               "-1", "0", "0",
-+                               "0", "0", "1";
-+                };
-         };
-   - |
-     // Example for SPI
+ 	ret = bmi160_chip_init(data, use_spi);
+ 	if (ret)
+ 		return ret;
+@@ -853,6 +878,6 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+ }
+ EXPORT_SYMBOL_GPL(bmi160_core_probe);
+ 
+-MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com");
++MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com>");
+ MODULE_DESCRIPTION("Bosch BMI160 driver");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.17.1
 

@@ -2,20 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C7C1D921B
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 10:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B600C1D921E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 10:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726494AbgESIhY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 04:37:24 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:19503 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgESIhY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 04:37:24 -0400
-X-Originating-IP: 78.193.40.249
+        id S1726721AbgESIh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 04:37:26 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:39403 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726121AbgESIh0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 04:37:26 -0400
 Received: from localhost (unknown [78.193.40.249])
         (Authenticated sender: kamel.bouhara@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 43E33240002;
-        Tue, 19 May 2020 08:37:21 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 847D620000D;
+        Tue, 19 May 2020 08:37:22 +0000 (UTC)
 From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -28,10 +27,12 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org,
         Kamel Bouhara <kamel.bouhara@bootlin.com>
-Subject: [PATCH v5 0/5] Microchip TCB Capture driver
-Date:   Tue, 19 May 2020 10:37:11 +0200
-Message-Id: <20200519083716.938384-1-kamel.bouhara@bootlin.com>
+Subject: [PATCH v5 1/5] ARM: at91: add atmel tcb capabilities
+Date:   Tue, 19 May 2020 10:37:12 +0200
+Message-Id: <20200519083716.938384-2-kamel.bouhara@bootlin.com>
 X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200519083716.938384-1-kamel.bouhara@bootlin.com>
+References: <20200519083716.938384-1-kamel.bouhara@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -39,71 +40,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+Some atmel socs have extra tcb capabilities that allow using a generic
+clock source or enabling a quadrature decoder.
 
-Here is a new counter driver to support Microchip TCB capture devices.
+Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+---
+ include/soc/at91/atmel_tcb.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Each SoC has two TCB blocks, each one including three independent
-channels.The following series adds support for two counter modes:
-increase and quadrature decoder.
-
-As for the atmel clocksource and pwm, the counter driver needs to fill
-some tcb capabilities in order to operate with the right configuration.
-This is achieved in first patch of this series.
-
-Please feel free to comment.
-
-Cheers,
-
-Changes in v5:
- - Fix duplicate keys errors in yaml dt-schema
-
-Changes in v4:
- - Use existing binding to document capture mode of the Microchip TCBs.
-
-Changes in v3:
- - Updated the brand name: s/atmel/microchip/.
- - Added missing kernel doc for new elements introduced in structure
-   atmel_tcb_config.
- - Removed useless blank line
- - Added an explicit clock removing path using devm_add_action_or_reset
-
-Changes in v2:
- - Fixed first patch not applying on mainline
- - Updated return code to -EINVAL when user is requesting qdec mode on
-   a counter device not supporting it.
- - Added an error case returning -EINVAL when action edge is performed
-   in
-   qdec mode.
- - Removed no need to explicity setting ops to NULL from static struct
-   as
-   it is the default value.
- - Changed confusing code by using snprintf for the sake of clarity.
- - Changed code to use ARRAY_SIZE so that future reviewers will know
-   that num_counts matches what's in the atmel_tc_count array without
-   having to check so themselves.
- - Fixed errors reported by dt_binding_check
-
-Alexandre Belloni (2):
-  dt-bindings: atmel-tcb: convert bindings to json-schema
-  dt-bindings: microchip: atmel,at91rm9200-tcb: add sama5d2 compatible
-
-Kamel Bouhara (3):
-  ARM: at91: add atmel tcb capabilities
-  dt-bindings: counter: microchip-tcb-capture counter
-  counter: Add microchip TCB capture counter
-
- .../devicetree/bindings/mfd/atmel-tcb.txt     |  56 ---
- .../soc/microchip/atmel,at91rm9200-tcb.yaml   | 176 ++++++++
- drivers/counter/Kconfig                       |  11 +
- drivers/counter/Makefile                      |   1 +
- drivers/counter/microchip-tcb-capture.c       | 397 ++++++++++++++++++
- include/soc/at91/atmel_tcb.h                  |   5 +
- 6 files changed, 590 insertions(+), 56 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mfd/atmel-tcb.txt
- create mode 100644 Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
- create mode 100644 drivers/counter/microchip-tcb-capture.c
-
---
+diff --git a/include/soc/at91/atmel_tcb.h b/include/soc/at91/atmel_tcb.h
+index c3c7200ce151..1d7071dc0bca 100644
+--- a/include/soc/at91/atmel_tcb.h
++++ b/include/soc/at91/atmel_tcb.h
+@@ -36,9 +36,14 @@ struct clk;
+ /**
+  * struct atmel_tcb_config - SoC data for a Timer/Counter Block
+  * @counter_width: size in bits of a timer counter register
++ * @has_gclk: boolean indicating if a timer counter has a generic clock
++ * @has_qdec: boolean indicating if a timer counter has a quadrature
++ * decoder.
+  */
+ struct atmel_tcb_config {
+ 	size_t	counter_width;
++	bool    has_gclk;
++	bool    has_qdec;
+ };
+ 
+ /**
+-- 
 2.25.0
 

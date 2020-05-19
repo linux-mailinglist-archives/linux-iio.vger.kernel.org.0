@@ -2,157 +2,219 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9BF1D9EFC
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 20:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D1261D9F0C
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 20:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgESSPk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 14:15:40 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2230 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726447AbgESSPk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 19 May 2020 14:15:40 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 578699F2B73643D873E3;
-        Tue, 19 May 2020 19:15:39 +0100 (IST)
-Received: from localhost (10.47.86.149) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Tue, 19 May
- 2020 19:15:38 +0100
-Date:   Tue, 19 May 2020 19:15:11 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Artur Rojek <contact@artur-rojek.eu>
-CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
-        <linux-input@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 2/7] IIO: Ingenic JZ47xx: Error check clk_enable
- calls.
-Message-ID: <20200519191511.00007c78@Huawei.com>
-In-Reply-To: <20200517194904.34758-2-contact@artur-rojek.eu>
-References: <20200517194904.34758-1-contact@artur-rojek.eu>
-        <20200517194904.34758-2-contact@artur-rojek.eu>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726697AbgESSUd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 14:20:33 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:32857 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726059AbgESSUc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 14:20:32 -0400
+Received: by mail-io1-f65.google.com with SMTP id k18so233767ion.0;
+        Tue, 19 May 2020 11:20:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=C/+WbZpW6fzoYD8VkS+1aw3FrtrjaYr1YvJ99Voi0R4=;
+        b=kO8SdHtPYtx4WlNekh///W47p5bLJ3HKmJnWO+tJLCb2e8IemaCxZIUTU0AgS80aFH
+         fzLJ2z2YhyeUchBnZVu7KdTC0eUgBGTYZ3Umt3dfU6yTORf6xKHCl6mIlKicXsA9fQbG
+         dx+N2pUM81o2XnPF7khQPlp7KZJ7TWLyEhF8GxRGR/zeXtp5peuFqLQACjDJzHn3VsPX
+         C/YvdGRX8AEwlTBYT1VkxZrzkhAD5rdV/J7JDfdfg2DJes/A+F9XL3rcMKbDu+FMoNNl
+         IGRIiaxjWsqPz6uNn5kLWT5eAqQZ8xO+xBWuOEmRnKX6DZbmEG7twp4KKnkKZyUM1jgA
+         zxyw==
+X-Gm-Message-State: AOAM531fA22VaGrZ6elvjc01gS+9XcjLleJRmoQAnVRCXaKHU2yeL2qb
+        tln5M1Ktts/gkW7f29+C+g==
+X-Google-Smtp-Source: ABdhPJy915OuehRkdPhEfoQo98D64T4fLNa9nG2JB08WidQt3qwfV8ozXd5uAN5DAlsvXCG3xjpzPg==
+X-Received: by 2002:a6b:b685:: with SMTP id g127mr214847iof.192.1589912431059;
+        Tue, 19 May 2020 11:20:31 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id j15sm101169ilk.0.2020.05.19.11.20.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2020 11:20:29 -0700 (PDT)
+Received: (nullmailer pid 409338 invoked by uid 1000);
+        Tue, 19 May 2020 18:20:28 -0000
+Date:   Tue, 19 May 2020 12:20:28 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: imu: bmi160: convert txt format
+ to yaml
+Message-ID: <20200519182028.GB342367@bogus>
+References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
+ <20200519075111.6356-2-jonathan.albrieux@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.86.149]
-X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200519075111.6356-2-jonathan.albrieux@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 17 May 2020 21:48:59 +0200
-Artur Rojek <contact@artur-rojek.eu> wrote:
-
-> Introduce error checks for the clk_enable calls used in this driver.
-> As part of the changes, move clk_enable/clk_disable calls out of
-> ingenic_adc_set_config and into respective logic of its callers.
+On Tue, May 19, 2020 at 09:50:57AM +0200, Jonathan Albrieux wrote:
+> Converts documentation from txt format to yaml 
 > 
-> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-> Tested-by: Paul Cercueil <paul@crapouillou.net>
-
-One trivial thing inline.
-
+> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 > ---
-> 
->  Changes:
-> 
->  v6: new patch
-> 
->  v7: no change
-> 
->  drivers/iio/adc/ingenic-adc.c | 23 ++++++++++++++++++++---
->  1 file changed, 20 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
-> index 39c0a609fc94..6c3bbba7c44b 100644
-> --- a/drivers/iio/adc/ingenic-adc.c
-> +++ b/drivers/iio/adc/ingenic-adc.c
-> @@ -73,7 +73,6 @@ static void ingenic_adc_set_config(struct ingenic_adc *adc,
->  {
->  	uint32_t cfg;
->  
-> -	clk_enable(adc->clk);
->  	mutex_lock(&adc->lock);
->  
->  	cfg = readl(adc->base + JZ_ADC_REG_CFG) & ~mask;
-> @@ -81,7 +80,6 @@ static void ingenic_adc_set_config(struct ingenic_adc *adc,
->  	writel(cfg, adc->base + JZ_ADC_REG_CFG);
->  
->  	mutex_unlock(&adc->lock);
-> -	clk_disable(adc->clk);
->  }
->  
->  static void ingenic_adc_enable(struct ingenic_adc *adc,
-> @@ -124,6 +122,8 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
->  				 long m)
->  {
->  	struct ingenic_adc *adc = iio_priv(iio_dev);
-> +	struct device *dev = iio_dev->dev.parent;
-> +	int ret;
->  
->  	switch (m) {
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -131,6 +131,14 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
->  		case INGENIC_ADC_BATTERY:
->  			if (!adc->soc_data->battery_vref_mode)
->  				return -EINVAL;
-> +
-> +			ret = clk_enable(adc->clk);
-> +			if (ret) {
-> +				dev_err(dev, "Failed to enable clock: %d\n",
-> +					ret);
-> +				return ret;
-> +			}
-> +
->  			if (val > JZ_ADC_BATTERY_LOW_VREF) {
->  				ingenic_adc_set_config(adc,
->  						       JZ_ADC_REG_CFG_BAT_MD,
-> @@ -142,6 +150,9 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
->  						       JZ_ADC_REG_CFG_BAT_MD);
->  				adc->low_vref_mode = true;
->  			}
-> +
-> +			clk_disable(adc->clk);
-> +
->  			return 0;
->  		default:
->  			return -EINVAL;
-> @@ -317,6 +328,13 @@ static int ingenic_adc_read_chan_info_raw(struct ingenic_adc *adc,
->  					  int *val)
->  {
->  	int bit, ret, engine = (chan->channel == INGENIC_ADC_BATTERY);
-> +	struct device *dev = iio_priv_to_dev(adc)->dev.parent;
-> +
-> +	ret = clk_enable(adc->clk);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to enable clock: %d\n", ret);
-> +		return ret;
-> +	}
+>  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
+>  .../devicetree/bindings/iio/imu/bmi160.yaml   | 84 +++++++++++++++++++
+>  2 files changed, 84 insertions(+), 37 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
 
-It almost certainly doesn't matter, but if we are going to move the clk enable
-outside the lock, we should do the same with the disable.
+Use compatible string for filename: bosch,bmi160.yaml
 
->  
->  	/* We cannot sample AUX/AUX2 in parallel. */
->  	mutex_lock(&adc->aux_lock);
-> @@ -325,7 +343,6 @@ static int ingenic_adc_read_chan_info_raw(struct ingenic_adc *adc,
->  		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, bit);
->  	}
->  
-> -	clk_enable(adc->clk);
->  	ret = ingenic_adc_capture(adc, engine);
->  	if (ret)
->  		goto out;
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> deleted file mode 100644
+> index 900c169de00f..000000000000
+> --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> +++ /dev/null
+> @@ -1,37 +0,0 @@
+> -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
+> -and externally connectable Magnetometer
+> -
+> -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> -
+> -Required properties:
+> - - compatible : should be "bosch,bmi160"
+> - - reg : the I2C address or SPI chip select number of the sensor
+> - - spi-max-frequency : set maximum clock frequency (only for SPI)
+> -
+> -Optional properties:
+> - - interrupts : interrupt mapping for IRQ
+> - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
+> -   input, set to "INT2" if INT2 pin should be used instead
+> - - drive-open-drain : set if the specified interrupt pin should be configured as
+> -   open drain. If not set, defaults to push-pull.
+> -
+> -Examples:
+> -
+> -bmi160@68 {
+> -	compatible = "bosch,bmi160";
+> -	reg = <0x68>;
+> -
+> -	interrupt-parent = <&gpio4>;
+> -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+> -	interrupt-names = "INT1";
+> -};
+> -
+> -bmi160@0 {
+> -	compatible = "bosch,bmi160";
+> -	reg = <0>;
+> -	spi-max-frequency = <10000000>;
+> -
+> -	interrupt-parent = <&gpio2>;
+> -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> -	interrupt-names = "INT2";
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+> new file mode 100644
+> index 000000000000..6b464ce5ed0b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+> @@ -0,0 +1,84 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/imu/bmi160.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bosch BMI160
+> +
+> +maintainers:
+> +  - can't find a mantainer, author is Daniel Baluta <daniel.baluta@intel.com>
 
+Would help to Cc him perhaps.
 
+> +
+> +description: |
+> +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
+> +  connectable Magnetometer
+> +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> +
+> +properties:
+> +  compatible:
+> +    const: bosch,bmi160
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: the I2C address or SPI chip select number of the sensor
+> +
+> +  spi-max-frequency:
+> +    maxItems: 1
+> +    description: set maximum clock frequency (required only for SPI)
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: interrupt mapping for IRQ
+
+No need for description if not adding anything unique for this device.
+
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 1
+> +    items:
+> +      enum:
+> +        - INT1
+> +        - INT2
+
+Just the enum is enough.
+
+> +    description: |
+> +      set to "INT1" if INT1 pin should be used as interrupt input, set
+> +      to "INT2" if INT2 pin should be used instead
+> +
+> +  drive-open-drain:
+> +    description: |
+> +      set if the specified interrupt pin should be configured as
+> +      open drain. If not set, defaults to push-pull.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    // Example for I2C
+> +    i2c@78b7000 {
+> +        reg = <0x78b6000 0x600>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        bmi160@68 {
+> +                compatible = "bosch,bmi160";
+> +                reg = <0x68>;
+> +                interrupt-parent = <&gpio4>;
+> +                interrupts = <12 1>;
+> +                interrupt-names = "INT1";
+> +        };
+> +  - |
+> +    // Example for SPI
+> +    spi@78b7000 {
+> +        reg = <0x78b7000 0x600>,
+> +              <0x7884000 0x23000>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        bmi160@0 {
+> +                compatible = "bosch,bmi160";
+> +                reg = <0>;
+> +                spi-max-frequency = <10000000>;
+> +                interrupt-parent = <&gpio2>;
+> +                interrupts = <12 1>;
+> +                interrupt-names = "INT2";
+> +        };
+> +    };
+> -- 
+> 2.17.1
+> 

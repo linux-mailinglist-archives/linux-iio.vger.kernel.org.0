@@ -2,54 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5B21D93C5
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 11:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C2DF1D9414
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 12:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726121AbgESJsk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 05:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbgESJsj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 05:48:39 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0F7C061A0C;
-        Tue, 19 May 2020 02:48:39 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id j5so15177330wrq.2;
-        Tue, 19 May 2020 02:48:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=TxO8/IXQNqCh0h2e7bYaTvlD1TxQQB6hOMKor8r5w+M=;
-        b=I1M/E+owJV4EfENz4l65z+14J0ht2BSRPF0lESD68h+3VDvnWexWznPnud07EhbS95
-         phb3Z4dBR3BslzYIE3FhThEHuh/xWKovhaNn+x49F1ysIzyeQPWm2kyAmT5/oHfidMlv
-         xgWjnBPSlh9ib2Z6tprfyDuGR9yHz0kVXkDVOucSpxq+fHDa2X1Pgemv2uq7tY9cvlRp
-         bGnF3dcWbA7Q79wzPJDJPKdO1eCU0CTHbrcA0FQtef336JmmzIU/kAzrm1/GALui9uGb
-         eVHhzrRWgia+Dd7bBbFM6r63YR/kHRIlsLxpEmQAUbqZ1z/PvNyZpuVKERCADPJPRsss
-         rjSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=TxO8/IXQNqCh0h2e7bYaTvlD1TxQQB6hOMKor8r5w+M=;
-        b=s+lClDz3nVVizjBH5QiDHh4SEjzdxdBwseGkZnAZgTitUHt5fadBpzwwsIfdY9ShgO
-         X9fn99dthuPR9oPp8Ckr2MeZ67I11ts9GrcRn9R+tonEVyjLkMwAj9CftHbx0sD4or7e
-         gPXyJ3j6jAqn4ZryR6+UqIGJ0osaeNpNRTCX8HXCMKFWvsR1gRYp30roA+sEoRM35gPi
-         AHjRdDq/ji8QnuJuEZY9F7X6M1wCyZ54vTbjDmlMF8QOieKCVzLHcVv6vr8sqHFObj1d
-         jewwb0l6YYPLd16exi/+7/9YeRNkBXIHpmtt3OqxyyMHuk42xDMREwQ7S4JI6ip994Zw
-         bAKA==
-X-Gm-Message-State: AOAM531UKvSKNAyX5fsHxbz6HK6onKMh+tea6gaUwWbuKeVhubPTa3Oi
-        GuPMF5wmZXDVitlZQLaPmz4=
-X-Google-Smtp-Source: ABdhPJxHzin111tuyClhSHahzHhjUR9f6GbkrVxzMT/CakjTJ3o6V77M8IpxpTfe7tKVRZAHiY+TWA==
-X-Received: by 2002:a5d:4702:: with SMTP id y2mr23759324wrq.136.1589881718095;
-        Tue, 19 May 2020 02:48:38 -0700 (PDT)
-Received: from ict14-OptiPlex-980 ([178.23.248.46])
-        by smtp.gmail.com with ESMTPSA id w13sm19591852wrm.28.2020.05.19.02.48.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 19 May 2020 02:48:37 -0700 (PDT)
-Date:   Tue, 19 May 2020 11:48:35 +0200
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1727050AbgESKIQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 06:08:16 -0400
+Received: from mga18.intel.com ([134.134.136.126]:27677 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725911AbgESKIP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 19 May 2020 06:08:15 -0400
+IronPort-SDR: 39h6fXfKL68fiT/VW7prhj0KD5UGl8/gTx/C1SKpa9RzzTmCztJiM7ROeTprnC4hTogg6L6hyV
+ 4zdnCNfE2EOA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 03:08:15 -0700
+IronPort-SDR: SjWFqbbimDqnm/TjnWpuDf0o3/YjENl1YCcC2qrTXp05DIM2wcwv1hDb4TRMTYUr8rYBbxnix7
+ URI5O6Ki7tuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,409,1583222400"; 
+   d="scan'208";a="264257366"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003.jf.intel.com with ESMTP; 19 May 2020 03:08:12 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jazAV-007c93-I1; Tue, 19 May 2020 13:08:15 +0300
+Date:   Tue, 19 May 2020 13:08:15 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
 Cc:     linux-kernel@vger.kernel.org,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
@@ -62,53 +42,51 @@ Cc:     linux-kernel@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Thomas Gleixner <tglx@linutronix.de>
 Subject: Re: [PATCH v2 0/3] iio: magnetometer: ak8975: Add gpio reset support
-Message-ID: <20200519094835.GB10391@ict14-OptiPlex-980>
+Message-ID: <20200519100815.GA1634618@smile.fi.intel.com>
 References: <20200519065749.4624-1-jonathan.albrieux@gmail.com>
  <20200519092212.GT1634618@smile.fi.intel.com>
+ <20200519094835.GB10391@ict14-OptiPlex-980>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200519092212.GT1634618@smile.fi.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200519094835.GB10391@ict14-OptiPlex-980>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 12:22:12PM +0300, Andy Shevchenko wrote:
-> On Tue, May 19, 2020 at 08:57:40AM +0200, Jonathan Albrieux wrote:
-> > Convert documentation from txt format to yaml. Add documentation about
-> > reset-gpio. 
-> 
-> Trailing white space (though it doesn't matter here, in cover letter).
-> 
+On Tue, May 19, 2020 at 11:48:35AM +0200, Jonathan Albrieux wrote:
+> On Tue, May 19, 2020 at 12:22:12PM +0300, Andy Shevchenko wrote:
+> > On Tue, May 19, 2020 at 08:57:40AM +0200, Jonathan Albrieux wrote:
 
-Ok will fix it!
+...
 
-> > Deassert reset on ak8975_power_on, assert reset on ak8975_power_off.
+> > I dunno if it's your first submission to Linux kernel project or other OSS,
+> > but here you missed a changelog. Rule of thumb is to provide a summary of
+> > the changes done in the history of the evolution of a patch series.
 > > 
-> > Without reset's deassertion during ak8975_power_on, driver's probe fails
-> > on ak8975_who_i_am while checking for device identity for AK09911 chip
-> > 
-> > AK09911 has an active low reset gpio to handle register's reset.
-> > AK09911 datasheed says that, if not used, reset pin should be connected
-> > to VID. This patch emulates this situation
 > 
-> I dunno if it's your first submission to Linux kernel project or other OSS,
-> but here you missed a changelog. Rule of thumb is to provide a summary of
-> the changes done in the history of the evolution of a patch series.
+> Oh thank you and sorry for not having included it. 
 > 
+> Does the changelog needs to be added to all patch files or just on the ones
+> subject of the changes?
 
-Oh thank you and sorry for not having included it. 
+Up to you and maintainer of the corresponding subsystem.
 
-Does the changelog needs to be added to all patch files or just on the ones
-subject of the changes?
+My common sense tells me that
+1) if there is a cover letter, just put a joined changelog there
+2) otherwise, put changelog in each patch.
 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+I saw in practice all possible variants, i.e.
+a) cover letter w/o changelog + changelog per patch;
+b) cover letter w/ changelog + changelog per patch;
+c) cover letter w/ changelog.
 
-Best regards,
-Jonathan Albrieux
+I think any of it is fine in general.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

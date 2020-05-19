@@ -2,219 +2,392 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1261D9F0C
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 20:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 325591D9F5F
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 20:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgESSUd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 14:20:33 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:32857 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726059AbgESSUc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 14:20:32 -0400
-Received: by mail-io1-f65.google.com with SMTP id k18so233767ion.0;
-        Tue, 19 May 2020 11:20:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=C/+WbZpW6fzoYD8VkS+1aw3FrtrjaYr1YvJ99Voi0R4=;
-        b=kO8SdHtPYtx4WlNekh///W47p5bLJ3HKmJnWO+tJLCb2e8IemaCxZIUTU0AgS80aFH
-         fzLJ2z2YhyeUchBnZVu7KdTC0eUgBGTYZ3Umt3dfU6yTORf6xKHCl6mIlKicXsA9fQbG
-         dx+N2pUM81o2XnPF7khQPlp7KZJ7TWLyEhF8GxRGR/zeXtp5peuFqLQACjDJzHn3VsPX
-         C/YvdGRX8AEwlTBYT1VkxZrzkhAD5rdV/J7JDfdfg2DJes/A+F9XL3rcMKbDu+FMoNNl
-         IGRIiaxjWsqPz6uNn5kLWT5eAqQZ8xO+xBWuOEmRnKX6DZbmEG7twp4KKnkKZyUM1jgA
-         zxyw==
-X-Gm-Message-State: AOAM531fA22VaGrZ6elvjc01gS+9XcjLleJRmoQAnVRCXaKHU2yeL2qb
-        tln5M1Ktts/gkW7f29+C+g==
-X-Google-Smtp-Source: ABdhPJy915OuehRkdPhEfoQo98D64T4fLNa9nG2JB08WidQt3qwfV8ozXd5uAN5DAlsvXCG3xjpzPg==
-X-Received: by 2002:a6b:b685:: with SMTP id g127mr214847iof.192.1589912431059;
-        Tue, 19 May 2020 11:20:31 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id j15sm101169ilk.0.2020.05.19.11.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2020 11:20:29 -0700 (PDT)
-Received: (nullmailer pid 409338 invoked by uid 1000);
-        Tue, 19 May 2020 18:20:28 -0000
-Date:   Tue, 19 May 2020 12:20:28 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: imu: bmi160: convert txt format
- to yaml
-Message-ID: <20200519182028.GB342367@bogus>
-References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
- <20200519075111.6356-2-jonathan.albrieux@gmail.com>
+        id S1729528AbgESSZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 14:25:36 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2231 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729053AbgESSZg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 19 May 2020 14:25:36 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id C3B5395E5F87BA105ED6;
+        Tue, 19 May 2020 19:25:33 +0100 (IST)
+Received: from localhost (10.47.86.149) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Tue, 19 May
+ 2020 19:25:33 +0100
+Date:   Tue, 19 May 2020 19:25:05 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Artur Rojek <contact@artur-rojek.eu>
+CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
+        <linux-input@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v7 7/7] input: joystick: Add ADC attached joystick
+ driver.
+Message-ID: <20200519192505.000031fb@Huawei.com>
+In-Reply-To: <20200517194904.34758-7-contact@artur-rojek.eu>
+References: <20200517194904.34758-1-contact@artur-rojek.eu>
+        <20200517194904.34758-7-contact@artur-rojek.eu>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200519075111.6356-2-jonathan.albrieux@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.86.149]
+X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 09:50:57AM +0200, Jonathan Albrieux wrote:
-> Converts documentation from txt format to yaml 
+On Sun, 17 May 2020 21:49:04 +0200
+Artur Rojek <contact@artur-rojek.eu> wrote:
+
+> Add a driver for joystick devices connected to ADC controllers
+> supporting the Industrial I/O subsystem.
 > 
-> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+For the rest of the patches I haven't commented on I'm
+find with this but will be looking for a dt review tag from Rob.
++ you'll want to fix the > which should be a | that is annoying Rob's
+bot (at least I guess that is what it is)
+
+
+Thanks,
+
+Jonathan
+
 > ---
->  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
->  .../devicetree/bindings/iio/imu/bmi160.yaml   | 84 +++++++++++++++++++
->  2 files changed, 84 insertions(+), 37 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-
-Use compatible string for filename: bosch,bmi160.yaml
-
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
-> deleted file mode 100644
-> index 900c169de00f..000000000000
-> --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
-> +++ /dev/null
-> @@ -1,37 +0,0 @@
-> -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
-> -and externally connectable Magnetometer
-> -
-> -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
-> -
-> -Required properties:
-> - - compatible : should be "bosch,bmi160"
-> - - reg : the I2C address or SPI chip select number of the sensor
-> - - spi-max-frequency : set maximum clock frequency (only for SPI)
-> -
-> -Optional properties:
-> - - interrupts : interrupt mapping for IRQ
-> - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
-> -   input, set to "INT2" if INT2 pin should be used instead
-> - - drive-open-drain : set if the specified interrupt pin should be configured as
-> -   open drain. If not set, defaults to push-pull.
-> -
-> -Examples:
-> -
-> -bmi160@68 {
-> -	compatible = "bosch,bmi160";
-> -	reg = <0x68>;
-> -
-> -	interrupt-parent = <&gpio4>;
-> -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
-> -	interrupt-names = "INT1";
-> -};
-> -
-> -bmi160@0 {
-> -	compatible = "bosch,bmi160";
-> -	reg = <0>;
-> -	spi-max-frequency = <10000000>;
-> -
-> -	interrupt-parent = <&gpio2>;
-> -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-> -	interrupt-names = "INT2";
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+>  Changes:
+> 
+>  v2: - sanity check supported channel format on probe,
+>      - rename adc_joystick_disable to a more sensible adc_joystick_cleanup, 
+>      - enforce correct axis order by checking the `reg` property of
+>        child nodes
+> 
+>  v3-v5: no change
+> 
+>  v6: - remove redundant `<linux/of.h>`
+>      - set `val` for each endianness case in their respective branches
+>      - pass received error codes to return value of `adc_joystick_set_axes`
+>      - change `(bits >> 3) > 2` to `bits > 16` for readability
+>      - drop `of_match_ptr`
+> 
+>  v7: no change
+> 
+>  drivers/input/joystick/Kconfig        |  10 +
+>  drivers/input/joystick/Makefile       |   1 +
+>  drivers/input/joystick/adc-joystick.c | 253 ++++++++++++++++++++++++++
+>  3 files changed, 264 insertions(+)
+>  create mode 100644 drivers/input/joystick/adc-joystick.c
+> 
+> diff --git a/drivers/input/joystick/Kconfig b/drivers/input/joystick/Kconfig
+> index 940b744639c7..efbc20ec5099 100644
+> --- a/drivers/input/joystick/Kconfig
+> +++ b/drivers/input/joystick/Kconfig
+> @@ -42,6 +42,16 @@ config JOYSTICK_A3D
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called a3d.
+>  
+> +config JOYSTICK_ADC
+> +	tristate "Simple joystick connected over ADC"
+> +	depends on IIO
+> +	select IIO_BUFFER_CB
+> +	help
+> +	  Say Y here if you have a simple joystick connected over ADC.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called adc-joystick.
+> +
+>  config JOYSTICK_ADI
+>  	tristate "Logitech ADI digital joysticks and gamepads"
+>  	select GAMEPORT
+> diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
+> index 8656023f6ef5..58232b3057d3 100644
+> --- a/drivers/input/joystick/Makefile
+> +++ b/drivers/input/joystick/Makefile
+> @@ -6,6 +6,7 @@
+>  # Each configuration option enables a list of files.
+>  
+>  obj-$(CONFIG_JOYSTICK_A3D)		+= a3d.o
+> +obj-$(CONFIG_JOYSTICK_ADC)		+= adc-joystick.o
+>  obj-$(CONFIG_JOYSTICK_ADI)		+= adi.o
+>  obj-$(CONFIG_JOYSTICK_AMIGA)		+= amijoy.o
+>  obj-$(CONFIG_JOYSTICK_AS5011)		+= as5011.o
+> diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
 > new file mode 100644
-> index 000000000000..6b464ce5ed0b
+> index 000000000000..a4ba8eac5a12
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-> @@ -0,0 +1,84 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/bmi160.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/input/joystick/adc-joystick.c
+> @@ -0,0 +1,253 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Input driver for joysticks connected over ADC.
+> + * Copyright (c) 2019-2020 Artur Rojek <contact@artur-rojek.eu>
+> + */
+> +#include <linux/ctype.h>
+> +#include <linux/input.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/consumer.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
 > +
-> +title: Bosch BMI160
+> +struct adc_joystick_axis {
+> +	u32 code;
+> +	s32 range[2];
+> +	s32 fuzz;
+> +	s32 flat;
+> +};
 > +
-> +maintainers:
-> +  - can't find a mantainer, author is Daniel Baluta <daniel.baluta@intel.com>
+> +struct adc_joystick {
+> +	struct input_dev *input;
+> +	struct iio_cb_buffer *buffer;
+> +	struct adc_joystick_axis *axes;
+> +	struct iio_channel *chans;
+> +	int num_chans;
+> +};
+> +
+> +static int adc_joystick_handle(const void *data, void *private)
+> +{
+> +	struct adc_joystick *joy = private;
+> +	enum iio_endian endianness;
+> +	int bytes, msb, val, i;
+> +	bool sign;
+> +
+> +	bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
+> +
+> +	for (i = 0; i < joy->num_chans; ++i) {
+> +		endianness = joy->chans[i].channel->scan_type.endianness;
+> +		msb = joy->chans[i].channel->scan_type.realbits - 1;
+> +		sign = (tolower(joy->chans[i].channel->scan_type.sign) == 's');
+> +
+> +		switch (bytes) {
+> +		case 1:
+> +			val = ((const u8 *)data)[i];
+> +			break;
+> +		case 2:
+> +			if (endianness == IIO_BE)
+> +				val = be16_to_cpu(((const u16 *)data)[i]);
+> +			else if (endianness == IIO_LE)
+> +				val = le16_to_cpu(((const u16 *)data)[i]);
+> +			else /* IIO_CPU */
+> +				val = ((const u16 *)data)[i];
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +
+> +		val >>= joy->chans[i].channel->scan_type.shift;
+> +		if (sign)
+> +			val = sign_extend32(val, msb);
+> +		else
+> +			val &= GENMASK(msb, 0);
+> +		input_report_abs(joy->input, joy->axes[i].code, val);
+> +	}
+> +
+> +	input_sync(joy->input);
+> +
+> +	return 0;
+> +}
+> +
+> +static int adc_joystick_open(struct input_dev *dev)
+> +{
+> +	struct adc_joystick *joy = input_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret = iio_channel_start_all_cb(joy->buffer);
+> +	if (ret)
+> +		dev_err(dev->dev.parent, "Unable to start callback buffer");
+> +
+> +	return ret;
+> +}
+> +
+> +static void adc_joystick_close(struct input_dev *dev)
+> +{
+> +	struct adc_joystick *joy = input_get_drvdata(dev);
+> +
+> +	iio_channel_stop_all_cb(joy->buffer);
+> +}
+> +
+> +static void adc_joystick_cleanup(void *data)
+> +{
+> +	iio_channel_release_all_cb(data);
+> +}
+> +
+> +static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
+> +{
+> +	struct adc_joystick_axis *axes;
+> +	struct fwnode_handle *child;
+> +	int num_axes, ret, i;
+> +
+> +	num_axes = device_get_child_node_count(dev);
+> +	if (!num_axes) {
+> +		dev_err(dev, "Unable to find child nodes");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (num_axes != joy->num_chans) {
+> +		dev_err(dev, "Got %d child nodes for %d channels",
+> +			num_axes, joy->num_chans);
+> +		return -EINVAL;
+> +	}
+> +
+> +	axes = devm_kmalloc_array(dev, num_axes, sizeof(*axes), GFP_KERNEL);
+> +	if (!axes)
+> +		return -ENOMEM;
+> +
+> +	device_for_each_child_node(dev, child) {
+> +		ret = fwnode_property_read_u32(child, "reg", &i);
+> +		if (ret) {
+> +			dev_err(dev, "reg invalid or missing");
+> +			goto err;
+> +		}
+> +
+> +		if (i >= num_axes) {
+> +			ret = -EINVAL;
+> +			dev_err(dev, "No matching axis for reg %d", i);
+> +			goto err;
+> +		}
+> +
+> +		ret = fwnode_property_read_u32(child, "linux,code",
+> +					     &axes[i].code);
+> +		if (ret) {
+> +			dev_err(dev, "linux,code invalid or missing");
+> +			goto err;
+> +		}
+> +
+> +		ret = fwnode_property_read_u32_array(child, "abs-range",
+> +						   axes[i].range, 2);
+> +		if (ret) {
+> +			dev_err(dev, "abs-range invalid or missing");
+> +			goto err;
+> +		}
+> +
+> +		fwnode_property_read_u32(child, "abs-fuzz",
+> +					 &axes[i].fuzz);
+> +		fwnode_property_read_u32(child, "abs-flat",
+> +					 &axes[i].flat);
+> +
+> +		input_set_abs_params(joy->input, axes[i].code,
+> +				     axes[i].range[0], axes[i].range[1],
+> +				     axes[i].fuzz,
+> +				     axes[i].flat);
+> +		input_set_capability(joy->input, EV_ABS, axes[i].code);
+> +	}
+> +
+> +	joy->axes = axes;
+> +
+> +	return 0;
+> +
+> +err:
+> +	fwnode_handle_put(child);
+> +	return ret;
+> +}
+> +
+> +static int adc_joystick_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct adc_joystick *joy;
+> +	struct input_dev *input;
+> +	int bits, ret, i;
+> +
+> +	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+> +	if (!joy)
+> +		return -ENOMEM;
+> +
+> +	joy->chans = devm_iio_channel_get_all(dev);
+> +	if (IS_ERR(joy->chans)) {
+> +		ret = PTR_ERR(joy->chans);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(dev, "Unable to get IIO channels");
+> +		return ret;
+> +	}
+> +
+> +	/* Count how many channels we got. NULL terminated. */
+> +	while (joy->chans[joy->num_chans].indio_dev)
+> +		joy->num_chans++;
+> +
+> +	bits = joy->chans[0].channel->scan_type.storagebits;
+> +	if (!bits || (bits > 16)) {
+> +		dev_err(dev, "Unsupported channel storage size");
+> +		return -EINVAL;
+> +	}
+> +	for (i = 1; i < joy->num_chans; ++i)
+> +		if (joy->chans[i].channel->scan_type.storagebits != bits) {
+> +			dev_err(dev, "Channels must have equal storage size");
+> +			return -EINVAL;
+> +		}
+> +
+> +	input = devm_input_allocate_device(dev);
+> +	if (!input) {
+> +		dev_err(dev, "Unable to allocate input device");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	joy->input = input;
+> +	input->name = pdev->name;
+> +	input->id.bustype = BUS_HOST;
+> +	input->open = adc_joystick_open;
+> +	input->close = adc_joystick_close;
+> +
+> +	ret = adc_joystick_set_axes(dev, joy);
+> +	if (ret)
+> +		return ret;
+> +
+> +	input_set_drvdata(input, joy);
+> +	ret = input_register_device(input);
+> +	if (ret) {
+> +		dev_err(dev, "Unable to register input device: %d", ret);
+> +		return ret;
+> +	}
+> +
+> +	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+> +	if (IS_ERR(joy->buffer)) {
+> +		dev_err(dev, "Unable to allocate callback buffer");
+> +		return PTR_ERR(joy->buffer);
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
+> +	if (ret)
+> +		dev_err(dev, "Unable to add action");
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct of_device_id adc_joystick_of_match[] = {
+> +	{ .compatible = "adc-joystick", },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, adc_joystick_of_match);
+> +
+> +static struct platform_driver adc_joystick_driver = {
+> +	.driver = {
+> +		.name = "adc-joystick",
+> +		.of_match_table = adc_joystick_of_match,
+> +	},
+> +	.probe = adc_joystick_probe,
+> +};
+> +module_platform_driver(adc_joystick_driver);
+> +
+> +MODULE_DESCRIPTION("Input driver for joysticks connected over ADC");
+> +MODULE_AUTHOR("Artur Rojek <contact@artur-rojek.eu>");
+> +MODULE_LICENSE("GPL");
 
-Would help to Cc him perhaps.
 
-> +
-> +description: |
-> +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
-> +  connectable Magnetometer
-> +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
-> +
-> +properties:
-> +  compatible:
-> +    const: bosch,bmi160
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: the I2C address or SPI chip select number of the sensor
-> +
-> +  spi-max-frequency:
-> +    maxItems: 1
-> +    description: set maximum clock frequency (required only for SPI)
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description: interrupt mapping for IRQ
-
-No need for description if not adding anything unique for this device.
-
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    maxItems: 1
-> +    items:
-> +      enum:
-> +        - INT1
-> +        - INT2
-
-Just the enum is enough.
-
-> +    description: |
-> +      set to "INT1" if INT1 pin should be used as interrupt input, set
-> +      to "INT2" if INT2 pin should be used instead
-> +
-> +  drive-open-drain:
-> +    description: |
-> +      set if the specified interrupt pin should be configured as
-> +      open drain. If not set, defaults to push-pull.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    // Example for I2C
-> +    i2c@78b7000 {
-> +        reg = <0x78b6000 0x600>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        bmi160@68 {
-> +                compatible = "bosch,bmi160";
-> +                reg = <0x68>;
-> +                interrupt-parent = <&gpio4>;
-> +                interrupts = <12 1>;
-> +                interrupt-names = "INT1";
-> +        };
-> +  - |
-> +    // Example for SPI
-> +    spi@78b7000 {
-> +        reg = <0x78b7000 0x600>,
-> +              <0x7884000 0x23000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        bmi160@0 {
-> +                compatible = "bosch,bmi160";
-> +                reg = <0>;
-> +                spi-max-frequency = <10000000>;
-> +                interrupt-parent = <&gpio2>;
-> +                interrupts = <12 1>;
-> +                interrupt-names = "INT2";
-> +        };
-> +    };
-> -- 
-> 2.17.1
-> 

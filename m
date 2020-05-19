@@ -2,34 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F78C1D9BE6
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 18:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51CDC1D9D1B
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 18:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729161AbgESQBl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 12:01:41 -0400
-Received: from mga11.intel.com ([192.55.52.93]:7761 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729089AbgESQBl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 19 May 2020 12:01:41 -0400
-IronPort-SDR: YGm6iid6lnj/vQmKp9sqBZsge8uHzSqxU/jy48viIBkj6JURjh633CdkK8zYsKTTH4BFINykaM
- LZ5kswIgIiyQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 09:01:40 -0700
-IronPort-SDR: 1Y/n7E8w3aaJVbDXpCS+Re2n7PRcfEj3aJ1T42ra9Cj6N7PVTfTCgsjxJb3pVHvmTlH6N69SqB
- le4LZ4hiY53w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; 
-   d="scan'208";a="411682609"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004.jf.intel.com with ESMTP; 19 May 2020 09:01:35 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jb4gT-007g4P-KB; Tue, 19 May 2020 19:01:37 +0300
-Date:   Tue, 19 May 2020 19:01:37 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+        id S1729399AbgESQon (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 12:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729358AbgESQom (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 12:44:42 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84672C08C5C0;
+        Tue, 19 May 2020 09:44:42 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id l18so143679wrn.6;
+        Tue, 19 May 2020 09:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VqC8rxTTkCeV8e6ysDgNotLUcsV868zIffxxJilbTVg=;
+        b=YWyV3xqfslc9r+swGji8dPqRm1Lfbv3kwe/eMh0BbjbO+6H5AF2bcnTJ8UEqFbe6mx
+         EQkaJ8rJYEmXKxSVFIorQsPnIp6mDtoedIxYUCRoglAfoj2wEbyNU3p/I8XOAqnvtOwS
+         LEqIQTJtyKttjObDOojC9GqgiNJksXGQN8dd521h9IZjpueNsCFSbvAwrbVzZ1qD8tpB
+         oTcvLk2IEZ/OW6VpyiOXrGxRflwQeWI9icXheaUSVFWXKEQJ/Ewa9QgIVHw3vKt+ethK
+         FGT/mLWh6jEcab3W2YWKrsmyFjAIuWnHhTNjtwJVU7d+pqMgfJuRSU2E7kzhaHOXSaW9
+         FiAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VqC8rxTTkCeV8e6ysDgNotLUcsV868zIffxxJilbTVg=;
+        b=Zx/TVhMvHLSDkci/pVsLjZRv4cx3DwDhWKAl68PvI4cQ9ct6O7CsY0rkDZWZc4OCj2
+         4gbzkv/yhgzjSzVWHqNXaQPkU/U/iyb4/aDdNEdVYma0IdnS44V3skWsoR+BlY3E7Ny4
+         hBXm1gHBg33x0DptWcMoTjkeDfvAC56Mw8t+Nj2tEmHp3xEFQIiCQbrWQw3OSvQ0kwye
+         WSW86EnabzgTAn4e7r85h8GdDPY2rFOTXJVNTc1wjyvBDpUry7OoUXplgK3erhBcH6EE
+         SuXXqYUrny1nuffgOouRB4FUEuYWRnj0RnpCD4J8k50xh7PWiEt736QPodOi0CJ8hX30
+         Rs6w==
+X-Gm-Message-State: AOAM532XYrEBygJc0AyndQLe6Qs0aUqov+eAjvoKpaGx4ZugP5s4Qub3
+        DBVLk6VY8CZvXGkb2YPslTg=
+X-Google-Smtp-Source: ABdhPJwSe6JzoKEGUpPYAynD9BDmuOFYIj6qReIqYmiaR8ffpFG20UDn7uYCl9Ig5eN+Td+tCyjfhw==
+X-Received: by 2002:a5d:6144:: with SMTP id y4mr27357671wrt.185.1589906681081;
+        Tue, 19 May 2020 09:44:41 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id j190sm271138wmb.33.2020.05.19.09.44.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 19 May 2020 09:44:39 -0700 (PDT)
+Date:   Tue, 19 May 2020 18:44:33 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Stephan Gerhold <stephan@gerhold.net>,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
@@ -50,39 +70,50 @@ Cc:     Stephan Gerhold <stephan@gerhold.net>,
         Rob Herring <robh+dt@kernel.org>
 Subject: Re: [PATCH v3 1/4] dt-bindings: iio: magnetometer: ak8975: convert
  txt format to yaml
-Message-ID: <20200519160137.GJ1634618@smile.fi.intel.com>
+Message-ID: <20200519164433.GA8726@ict14-OptiPlex-980>
 References: <20200519124402.26076-1-jonathan.albrieux@gmail.com>
  <20200519124402.26076-2-jonathan.albrieux@gmail.com>
  <20200519132207.GA4623@gerhold.net>
  <20200519140354.GB30573@ict14-OptiPlex-980>
+ <20200519160137.GJ1634618@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200519140354.GB30573@ict14-OptiPlex-980>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200519160137.GJ1634618@smile.fi.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 04:03:54PM +0200, Jonathan Albrieux wrote:
-> On Tue, May 19, 2020 at 03:22:07PM +0200, Stephan Gerhold wrote:
-> > On Tue, May 19, 2020 at 02:43:51PM +0200, Jonathan Albrieux wrote:
-
-...
-
-> > > +maintainers:
-> > > +  - can't find a mantainer, author is Laxman Dewangan <ldewangan@nvidia.com>
-> > 
-> > Should probably add someone here, although I'm not sure who either.
-> > 
+On Tue, May 19, 2020 at 07:01:37PM +0300, Andy Shevchenko wrote:
+> On Tue, May 19, 2020 at 04:03:54PM +0200, Jonathan Albrieux wrote:
+> > On Tue, May 19, 2020 at 03:22:07PM +0200, Stephan Gerhold wrote:
+> > > On Tue, May 19, 2020 at 02:43:51PM +0200, Jonathan Albrieux wrote:
 > 
-> Yep I couldn't find a maintainer for that driver..what to do in this case?
+> ...
+> 
+> > > > +maintainers:
+> > > > +  - can't find a mantainer, author is Laxman Dewangan <ldewangan@nvidia.com>
+> > > 
+> > > Should probably add someone here, although I'm not sure who either.
+> > > 
+> > 
+> > Yep I couldn't find a maintainer for that driver..what to do in this case?
+> 
+> Volunteer yourself!
+> 
 
-Volunteer yourself!
+While I'd really like to, I have to decline the offer as I currently don't have
+enought knowledge to become a maintainer :-) but thank you! (Who knows, maybe in
+a couple of year!) Now I'll make the final edits and will submit a new
+patchset soon with all the changes
 
--- 
-With Best Regards,
-Andy Shevchenko
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
-
+Best regards,
+Jonathan Albrieux

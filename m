@@ -2,162 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637951D907A
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 08:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054181D9157
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 09:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727077AbgESG6m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 02:58:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42732 "EHLO
+        id S1728027AbgESHvv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 03:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726881AbgESG6l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 02:58:41 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF962C061A0C;
-        Mon, 18 May 2020 23:58:40 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id e16so14534134wra.7;
-        Mon, 18 May 2020 23:58:40 -0700 (PDT)
+        with ESMTP id S1726943AbgESHvu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 03:51:50 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75985C061A0C;
+        Tue, 19 May 2020 00:51:50 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id e16so14699568wra.7;
+        Tue, 19 May 2020 00:51:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=VDmyzrySD4Ps31eGi/jgnHCXsN6EThrf0g6khOYg/JA=;
-        b=O59a8tWIvaWSO7HtdqtunTf7+/K5LaFq+VdCrxMS6b53oKh0BLDN5J59TBRs/d8Kdf
-         JCLzm73uJz38sMPsWJP7eZSlaGPV9b7Q0OvjdUloCD/y0Ezt3lAhMJADf3jYvoea2ENx
-         ctzn791eqzvOIXTuPVy1JSRsj25fuoJK9DMms6zJ9cwC2J2U+HLlCrntW66DvOB5HJfv
-         fEwZSQcRskrh0AD1TAk1H3bcP5vwKyySbD5zromoFzBHKj/ZUosrvpZnDDTHujWi+OQR
-         2ag6R4CAWOMNM93cUOx+zyRS5JdMDrFrhf0liWG0uJOpoWvKXGS3Ml7VjBARRqaTlvvg
-         GIOA==
+        h=from:to:cc:subject:date:message-id;
+        bh=oPqV/U6ZMKrfCAPX/g+ptuFFrR608MN26a6/3zmIm9U=;
+        b=Qx4FxYkRVjXqo1Bee59HHHicL1AVPpEWHYEEn1yxhHtRPxJKgfauplYwAp20Hy3kzz
+         OuMFhUNBdt5pmK/Bx1k2qDniw4rlOSnYFJ21NPosQw+gJ4fwRtocqjydkrS5UVZ6fYIp
+         2Uw36v+GODgo3DNtt0/39KY7D6+P7/7+jfe40PTkTU+bS7HN9IvOkIuInMz215QBJ/yI
+         S+bsHwCLhYIAvB9+fQcI4lrz62SSogApBqzLtTC5y3xuhIX9DOwLHyORI13esw0xRHiD
+         MMjAKMuZ+CVzPW361/tIXR4ipx423JQ5xX9iwxZXCB5mTODDDPXUUfDbTzFXg1ewc/ky
+         7vpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=VDmyzrySD4Ps31eGi/jgnHCXsN6EThrf0g6khOYg/JA=;
-        b=aWvVTj5vxXfW9EKigobvzOehmJUfhB1o+B/mTaRtemcFu3v1QXdI1xCiLsZtP/K1Ny
-         OmLrCpg/czj+vO1V3los4W9QtCzutJ97HpEWcYQ3Bx3lqT5BdD0f92jkuDNYvfrRG1rZ
-         zNptYypWkSfsUnBUgkpihARG88eAlxPQfpuY+WU5Ie+EMOuhYs9nlo7HdR0hx3Q9QkS8
-         aLDxGs/SWzwdOlZaocQp5bFL16X2cuhMQZyx4vvBu8F2mPs9kLUs6hDBlyUVIMr3SZV9
-         LFf+Z9Vr4w9ml3i/IhS1CxFMptWwlV9hoaPIWAEOfEof8xxg1dG1Bz/X7lubL1QMlKUf
-         Tu6w==
-X-Gm-Message-State: AOAM532GCR4xuWGzxGsYW2SCRmj3HIXcZaL4DDIunM52QQTe2AVIG4Tr
-        SyZdTh25yhl6RuYJ1xqafLAnY6TayvsGGg==
-X-Google-Smtp-Source: ABdhPJwwRa+ZKzjAn8nODGSc7yyEzdFyLKC/+Nuye0maZqgeufwZYQnzOfJck2YEm1F2QAz/G5bdDQ==
-X-Received: by 2002:adf:f783:: with SMTP id q3mr23694885wrp.348.1589871519170;
-        Mon, 18 May 2020 23:58:39 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=oPqV/U6ZMKrfCAPX/g+ptuFFrR608MN26a6/3zmIm9U=;
+        b=Z7i83//66gF5FyCa8J7SsVjm6DaWKN2Kvvba3qpipVDj9PI2kqm5CsTbYPzBU+A1lE
+         2i3YMqAci5CND/njWkj2BpZkHQB3BeGn6NWjc/Pg059mDpcEPHlo6d/Rdh4MFX+i5crE
+         tnTJb0+Tus/o6x3dvuPylSboaKBP58f91ziHSYpt+Got3Ul1swJrHTOBqarzGdpuOvLi
+         jQ1WEP5ezTRN2XQEzYj8XVYT+/74eoA8mch3tCsZ1e8n2dfeSKUDxwbV6+GzT+m9ar6O
+         kEmv5OcNZ650v2iUoVq7v3qzYVaH9eaeJyi94fKnEzZV5hYH3zQ7L/vUyBSYbprEjMO3
+         XhWg==
+X-Gm-Message-State: AOAM532Dnphbvl5It0JDPOtL8EZ9AGZHxiCVuabiel4Q/3voEBFu/XAX
+        OJswHgI3qoM+K2cWfSl0N6MvdnDDBks=
+X-Google-Smtp-Source: ABdhPJxtWNV9gW9Gu6NsxHHpnkmIO0W67f11Kv3Ql8NrcqBrMJfCm5F98MsSLTQqy72dH60DwEPoLA==
+X-Received: by 2002:a5d:6605:: with SMTP id n5mr26016134wru.198.1589874708018;
+        Tue, 19 May 2020 00:51:48 -0700 (PDT)
 Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id p7sm2597550wmc.24.2020.05.18.23.58.37
+        by smtp.googlemail.com with ESMTPSA id w18sm20019697wro.33.2020.05.19.00.51.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 23:58:38 -0700 (PDT)
+        Tue, 19 May 2020 00:51:46 -0700 (PDT)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
         linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Jilayne Lovejoy <opensource@jilayne.com>
-Subject: [PATCH v2 3/3] iio: magnetometer: ak8975: Add gpio reset support
-Date:   Tue, 19 May 2020 08:57:43 +0200
-Message-Id: <20200519065749.4624-4-jonathan.albrieux@gmail.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH v2 0/4] iio: imu: bmi160: added regulator and mount-matrix support
+Date:   Tue, 19 May 2020 09:50:56 +0200
+Message-Id: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200519065749.4624-1-jonathan.albrieux@gmail.com>
-References: <20200519065749.4624-1-jonathan.albrieux@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-According to AK09911 datasheet, if reset gpio is provided then 
-deassert reset on ak8975_power_on and assert reset on ak8975_power_off.
+v2: fixed missing description for iio: imu: bmi160: added regulator
+support
 
-Without reset's deassertion during ak8975_power_on, driver's probe fails on
-ak8975_who_i_am while checking for device identity for AK09911 chip
+Convert txt format documentation to yaml.
+Add documentation about vdd-supply, vddio-supply and mount-matrix.
 
-AK09911 has an active low reset gpio to handle register's reset.
-AK09911 datasheed says that, if not used, reset pin should be connected
-to VID. This patch emulates this situation
+Add vdd-supply and vddio-supply support. Without this support, vdd and
+vddio should be set to always-on in device tree.
 
-Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
----
- drivers/iio/magnetometer/ak8975.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+Add mount-matrix binding support. As chip could have different
+orientations a mount matrix support is needed to correctly translate
+these differences
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 3c881541ae72..84dea520db02 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -358,6 +358,7 @@ struct ak8975_data {
- 	u8			asa[3];
- 	long			raw_to_gauss[3];
- 	struct gpio_desc	*eoc_gpiod;
-+	struct gpio_desc	*reset_gpiod;
- 	int			eoc_irq;
- 	wait_queue_head_t	data_ready_queue;
- 	unsigned long		flags;
-@@ -384,10 +385,13 @@ static int ak8975_power_on(const struct ak8975_data *data)
- 			 "Failed to enable specified Vid supply\n");
- 		return ret;
- 	}
-+
-+	gpiod_set_value_cansleep(data->reset_gpiod, 0);
-+
- 	/*
--	 * According to the datasheet the power supply rise time i 200us
-+	 * According to the datasheet the power supply rise time is 200us
- 	 * and the minimum wait time before mode setting is 100us, in
--	 * total 300 us. Add some margin and say minimum 500us here.
-+	 * total 300us. Add some margin and say minimum 500us here.
- 	 */
- 	usleep_range(500, 1000);
- 	return 0;
-@@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
- /* Disable attached power regulator if any. */
- static void ak8975_power_off(const struct ak8975_data *data)
- {
-+	gpiod_set_value_cansleep(data->reset_gpiod, 1);
-+
- 	regulator_disable(data->vid);
- 	regulator_disable(data->vdd);
- }
-@@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
- 	struct ak8975_data *data;
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
-+	struct gpio_desc *reset_gpiod;
- 	const void *match;
- 	unsigned int i;
- 	int err;
-@@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
- 	if (eoc_gpiod)
- 		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
- 
-+	/*
-+	 * According to AK09911 datasheet, if reset gpio is provided then
-+	 * deassert reset on ak8975_power_on and assert reset on
-+	 * ak8975_power_off.
-+	 */
-+	reset_gpiod = devm_gpiod_get_optional(&client->dev,
-+					      "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(reset_gpiod))
-+		return PTR_ERR(reset_gpiod);
-+
- 	/* Register with IIO */
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (indio_dev == NULL)
-@@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
- 
- 	data->client = client;
- 	data->eoc_gpiod = eoc_gpiod;
-+	data->reset_gpiod = reset_gpiod;
- 	data->eoc_irq = 0;
- 
- 	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
+Jonathan Albrieux (4):
+  dt-bindings: iio: imu: bmi160: convert txt format to yaml
+  dt-bindings: iio: imu: bmi160: add regulators and mount-matrix
+  iio: imu: bmi160: added regulator support
+  iio: imu: bmi160: added mount-matrix support
+
+ .../devicetree/bindings/iio/imu/bmi160.txt    |  37 ------
+ .../devicetree/bindings/iio/imu/bmi160.yaml   | 105 ++++++++++++++++++
+ drivers/iio/imu/bmi160/bmi160.h               |   3 +
+ drivers/iio/imu/bmi160/bmi160_core.c          |  47 +++++++-
+ 4 files changed, 154 insertions(+), 38 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+
 -- 
 2.17.1
 

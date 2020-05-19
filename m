@@ -2,40 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DDD01D97A9
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 15:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA5D1D98D1
+	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 16:04:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728854AbgESN0e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 09:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46820 "EHLO
+        id S1729023AbgESOEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 May 2020 10:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726880AbgESN0e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 09:26:34 -0400
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15F5C08C5C0;
-        Tue, 19 May 2020 06:26:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1589894792;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=/iyQysFjE7xolBZ1naSvo7228GHiugrOaI4sO8bPUTk=;
-        b=fwr+dDGEkpoZpHRFsi8fcLwOsy/sYVESVb8GgLSpv79t4LUto9ST3ru1G2W+/CNwUq
-        jsKGEs64/RRB2TBFLOhxGwgyGUi/0C9R/12t0ttN6ghkc7h7qa4ziOZQH0bTDYb4fIhG
-        zfMC/tbsIUoA8ygDpRE9b0aSD1/Mo1N2L3fKZEfEuJTL1xOZP869A/CZ+/Hulugqnwh6
-        EIWjwN126W3TG9fRQZHxF1QPQaCMFZaD7X7Wc7+TX444DaIfLjlxyxxCLoAx+H17hnAU
-        u5Yauj09xAg7rlIo7bs97bvRPURUeYWWuh/+E7UPFhw770eXxnIwg1CFGQpUJnkc1yNy
-        sJsQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j9IczFaoo="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 46.6.2 DYNA|AUTH)
-        with ESMTPSA id 60b02dw4JDPDl1o
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Tue, 19 May 2020 15:25:13 +0200 (CEST)
-Date:   Tue, 19 May 2020 15:25:12 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+        with ESMTP id S1727057AbgESOD7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 10:03:59 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33403C08C5C0;
+        Tue, 19 May 2020 07:03:59 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id f13so3185483wmc.5;
+        Tue, 19 May 2020 07:03:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=9lcDor5zuXnF4Gt5fUGc93VK7uajZuFqXauDYxh+xvU=;
+        b=vcdjK3k2Yu31tWyCb0XlH/8mWbhzY5PQqQUHeh74Dy/Rgz3kajkNV2d3f+RoLBjYEi
+         HBhV5aM2mnBAO41vaMjjrXYexsuMlOsrjocWbhn/4JdUPVQahhLN95xZqT9KBi1qIW25
+         Wj1DLLN86c8rlyjqh57jmJei8A1EelaLd4aezCXAkXZnCJYZnDhxVXJI5EP8+qusF3K2
+         5JDCKqhuNmE1TEzCRLWA/O4UUMCs2ZWXccwteKzTdEcGcZ0OykESBbybVn7QN78M2soF
+         yX1pG6UaCTWggVEahvtjNGJfcTqOeYn5hdDqgIEwZnhQ6B6vmyS2ugUHjp+CbcelVDmM
+         3JMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=9lcDor5zuXnF4Gt5fUGc93VK7uajZuFqXauDYxh+xvU=;
+        b=cJ4HlI8XSHYYDBZFATHKP0/1twpw/E1uPlkZrXzohQvHwP/G/6YTlIjMlkrwWzaEId
+         6CBJCquuPEsSVi8IU6ZBA4zjWaKrYg4uqVueo2OChNjwJvSsJ8e/trhOp+Vil2tN6q4a
+         eiCcXO2tWYSate49nwrfq3jler8ivkmIV5U7eSiJYpTym4Byu+PNtT5dbzRsSqfCgY2q
+         br9kdA+GGm67HAHm6XNV7Vq72g3+Zl2oWulQ2O9rRuN48T2WH9qaNFd0sBwM5avyFAF3
+         m/qVGXqeKJRXHFNWKi78R74iCnymD8l/t/iGEZ79fB49hXXqNAidkbdCb6TzdZWOw+c3
+         QXMA==
+X-Gm-Message-State: AOAM533UIspogt6buiVPpq8cxtbhBMfJrVYwybqa/ysXI0fNYk7Dswbj
+        V7p8HszvjQUcNpwLBiR5VZw=
+X-Google-Smtp-Source: ABdhPJx6COI7v3FsV9jidXB6O2MZaPIvFJj9puOeFvnRZtYjlOw6pqgRPvc7JFgkqtUXy/nsSkBcSQ==
+X-Received: by 2002:a05:600c:34c:: with SMTP id u12mr5657663wmd.4.1589897037683;
+        Tue, 19 May 2020 07:03:57 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id r2sm21424457wrg.84.2020.05.19.07.03.56
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 19 May 2020 07:03:56 -0700 (PDT)
+Date:   Tue, 19 May 2020 16:03:54 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -53,105 +67,196 @@ Cc:     linux-kernel@vger.kernel.org,
         Steve Winslow <swinslow@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jonathan Cameron <jic23@kernel.org>,
-        Allison Randal <allison@lohutok.net>
-Subject: Re: [PATCH v3 4/4] iio: magnetometer: ak8975: Add gpio reset support
-Message-ID: <20200519132512.GC4623@gerhold.net>
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/4] dt-bindings: iio: magnetometer: ak8975: convert
+ txt format to yaml
+Message-ID: <20200519140354.GB30573@ict14-OptiPlex-980>
 References: <20200519124402.26076-1-jonathan.albrieux@gmail.com>
- <20200519124402.26076-5-jonathan.albrieux@gmail.com>
+ <20200519124402.26076-2-jonathan.albrieux@gmail.com>
+ <20200519132207.GA4623@gerhold.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200519124402.26076-5-jonathan.albrieux@gmail.com>
+In-Reply-To: <20200519132207.GA4623@gerhold.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 02:43:54PM +0200, Jonathan Albrieux wrote:
-> According to AK09911 datasheet, if reset gpio is provided then
-> deassert reset on ak8975_power_on() and assert reset on ak8975_power_off().
+On Tue, May 19, 2020 at 03:22:07PM +0200, Stephan Gerhold wrote:
+> On Tue, May 19, 2020 at 02:43:51PM +0200, Jonathan Albrieux wrote:
+> > Converts documentation from txt format to yaml.
+> > 
+> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > ---
+> >  .../bindings/iio/magnetometer/ak8975.txt      | 30 ---------
+> >  .../bindings/iio/magnetometer/ak8975.yaml     | 66 +++++++++++++++++++
+> >  2 files changed, 66 insertions(+), 30 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> >  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> > deleted file mode 100644
+> > index aa67ceb0d4e0..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> > +++ /dev/null
+> > @@ -1,30 +0,0 @@
+> > -* AsahiKASEI AK8975 magnetometer sensor
+> > -
+> > -Required properties:
+> > -
+> > -  - compatible : should be "asahi-kasei,ak8975"
+> > -  - reg : the I2C address of the magnetometer
+> > -
+> > -Optional properties:
+> > -
+> > -  - gpios : should be device tree identifier of the magnetometer DRDY pin
+> > -  - vdd-supply: an optional regulator that needs to be on to provide VDD
+> > -  - mount-matrix: an optional 3x3 mounting rotation matrix
+> > -
+> > -Example:
+> > -
+> > -ak8975@c {
+> > -        compatible = "asahi-kasei,ak8975";
+> > -        reg = <0x0c>;
+> > -        gpios = <&gpj0 7 0>;
+> > -        vdd-supply = <&ldo_3v3_gnss>;
+> > -        mount-matrix = "-0.984807753012208",  /* x0 */
+> > -                       "0",                   /* y0 */
+> > -                       "-0.173648177666930",  /* z0 */
+> > -                       "0",                   /* x1 */
+> > -                       "-1",                  /* y1 */
+> > -                       "0",                   /* z1 */
+> > -                       "-0.173648177666930",  /* x2 */
+> > -                       "0",                   /* y2 */
+> > -                       "0.984807753012208";   /* z2 */
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+> > new file mode 100644
+> > index 000000000000..86e3efa693a8
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+> > @@ -0,0 +1,66 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/magnetometer/ak8975.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: AsahiKASEI AK8975 magnetometer sensor
+> > +
+> > +maintainers:
+> > +  - can't find a mantainer, author is Laxman Dewangan <ldewangan@nvidia.com>
 > 
-> Without reset's deassertion during ak8975_power_on(), driver's probe fails
-> on ak8975_who_i_am while() checking for device identity for AK09911 chip.
+> Should probably add someone here, although I'm not sure who either.
 > 
-> AK09911 has an active low reset gpio to handle register's reset.
-> AK09911 datasheed says that, if not used, reset pin should be connected
 
-Another minor typo: datasheed -> datasheet
+Yep I couldn't find a maintainer for that driver..what to do in this case?
 
-In any case, FWIW:
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - "asahi-kasei,ak8975"
+> > +      - "ak8975"
+> > +      - "asahi-kasei,ak8963"
+> > +      - "ak8963"
+> > +      - "asahi-kasei,ak09911"
+> > +      - "ak09911"
+> > +      - "asahi-kasei,ak09912"
+> > +      - "ak09912"
+> > +
+> 
+> I wonder if the ones without vendor prefix (asahi-kasei,) should be
+> marked as deprecated somehow?
+> 
+> Looking at some other schemas I see either a "# deprecated" comment, or:
+> 
+> properties:
+>   compatible:
+>     oneOf:
+>       - const: asahi-kasei,ak8975
+>       - const: asahi-kasei,ak8963
+>       - const: asahi-kasei,ak09911
+>       - const: asahi-kasei,ak09912
+>       - const: ak8975
+>         deprecated: true
+>       - const: ak8963
+>         deprecated: true
+>       - const: ak09911
+>         deprecated: true
+>       - const: ak09912
+>         deprecated: true
+> 
+> (e.g. in Documentation/devicetree/bindings/sound/samsung,odroid.yaml)
+> I guess this one is preferred since it allows parsing those
+> compatibles as deprecated?
+> 
 
-> to VID. This patch emulates this situation.
+Ok I'll work on it
+
+> > +  reg:
+> > +    maxItems: 1
+> > +    description: the I2C address of the magnetometer
+> > +
+> > +  gpios:
+> > +    description: should be device tree identifier of the magnetometer DRDY pin
+> > +
+> > +  vdd-supply:
+> > +    maxItems: 1
+> > +    description: |
+> > +      an optional regulator that needs to be on to provide VDD power to
+> > +      the sensor.
+> > +
+> > +  mount-matrix:
+> > +    description: an optional 3x3 mounting rotation matrix
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c@78b7000 {
+> > +        reg = <0x78b6000 0x600>;
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        ak8975@c {
 > 
-> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> ---
->  drivers/iio/magnetometer/ak8975.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+> Per device tree specification this should preferably use a generic name
+> describing the function of the device, i.e. magnetometer@c.
 > 
-> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-> index fd368455cd7b..a23422aad97d 100644
-> --- a/drivers/iio/magnetometer/ak8975.c
-> +++ b/drivers/iio/magnetometer/ak8975.c
-> @@ -358,6 +358,7 @@ struct ak8975_data {
->  	u8			asa[3];
->  	long			raw_to_gauss[3];
->  	struct gpio_desc	*eoc_gpiod;
-> +	struct gpio_desc	*reset_gpiod;
->  	int			eoc_irq;
->  	wait_queue_head_t	data_ready_queue;
->  	unsigned long		flags;
-> @@ -384,6 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
->  			 "Failed to enable specified Vid supply\n");
->  		return ret;
->  	}
-> +
-> +	gpiod_set_value_cansleep(data->reset_gpiod, 0);
-> +
->  	/*
->  	 * According to the datasheet the power supply rise time is 200us
->  	 * and the minimum wait time before mode setting is 100us, in
-> @@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
->  /* Disable attached power regulator if any. */
->  static void ak8975_power_off(const struct ak8975_data *data)
->  {
-> +	gpiod_set_value_cansleep(data->reset_gpiod, 1);
-> +
->  	regulator_disable(data->vid);
->  	regulator_disable(data->vdd);
->  }
-> @@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
->  	struct ak8975_data *data;
->  	struct iio_dev *indio_dev;
->  	struct gpio_desc *eoc_gpiod;
-> +	struct gpio_desc *reset_gpiod;
->  	const void *match;
->  	unsigned int i;
->  	int err;
-> @@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
->  	if (eoc_gpiod)
->  		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
->  
-> +	/*
-> +	 * According to AK09911 datasheet, if reset GPIO is provided then
-> +	 * deassert reset on ak8975_power_on() and assert reset on
-> +	 * ak8975_power_off().
-> +	 */
-> +	reset_gpiod = devm_gpiod_get_optional(&client->dev,
-> +					      "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(reset_gpiod))
-> +		return PTR_ERR(reset_gpiod);
-> +
->  	/* Register with IIO */
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (indio_dev == NULL)
-> @@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
->  
->  	data->client = client;
->  	data->eoc_gpiod = eoc_gpiod;
-> +	data->reset_gpiod = reset_gpiod;
->  	data->eoc_irq = 0;
->  
->  	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
-> -- 
-> 2.17.1
+> > +            compatible = "asahi-kasei,ak8975";
+> > +            reg = <0x0c>;
+> > +            gpios = <&gpj0 7 0>;
+>
+
+Yes it would be better, I'll work on that too
+ 
+> I think using the dt-bindings constants for the GPIO flags is preferred
+> now, i.e. gpios = <&gpj0 7 GPIO_ACTIVE_HIGH>.
+> 
+> > +            vdd-supply = <&ldo_3v3_gnss>;
+> > +            mount-matrix = "-0.984807753012208",  /* x0 */
+> > +                           "0",                   /* y0 */
+> > +                           "-0.173648177666930",  /* z0 */
+> > +                           "0",                   /* x1 */
+> > +                           "-1",                  /* y1 */
+> > +                           "0",                   /* z1 */
+> > +                           "-0.173648177666930",  /* x2 */
+> > +                           "0",                   /* y2 */
+> > +                           "0.984807753012208";   /* z2 */
+> > +        };
+> > +    };
+> > -- 
+> > 2.17.1
+
+Thank you for having took the time to review, will work on edits right now.
+I just have a question: by creating the new patchset how can I deal with
+the "Reviewed by"? It's the first patch I submit and still haven't dealt
+with the full process,
+
+Best regards,
+Jonathan Albrieux

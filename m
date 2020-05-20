@@ -2,204 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB121DAA85
-	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 08:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 328931DAB27
+	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 08:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726502AbgETGTJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 May 2020 02:19:09 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:8290 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726489AbgETGTI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 02:19:08 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04K6H7tq010214;
-        Wed, 20 May 2020 02:18:49 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 312d35vb9w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 May 2020 02:18:49 -0400
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 04K6IldW042165
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 20 May 2020 02:18:48 -0400
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 19 May
- 2020 23:18:46 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 19 May 2020 23:18:46 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04K6IhC3024736;
-        Wed, 20 May 2020 02:18:43 -0400
-From:   Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-CC:     Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1726450AbgETG4a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 May 2020 02:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725998AbgETG4a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 02:56:30 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A24AC061A0E;
+        Tue, 19 May 2020 23:56:30 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id x12so1741088qts.9;
+        Tue, 19 May 2020 23:56:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=TB5FjjudCnoVQlZCNJ7wIvh0DQ8onthhTDmqoaW0vQQ=;
+        b=lfnFCgj5KUFNLZCdbrRAbiYgN4J25MNk1LUL2HnYGLen+N2nwKXDuHtH5CJxpWJk1M
+         iLDjRZUCxkuaDDAcB2K4tUWGe+EeprYuW9HfUu+QCemg7YTMImD/OF9IPjbBnoYnVKyx
+         hfkHtXI68iCtQI8tM270nE9xhucB9ZAg9QZ149HpeFhFVkvaSvTfbMN65We74dhBEl9C
+         lDQG9udVbiattf64yOAkZQFcjH1UoKVsV7Kz7mHWGJ2g/yLDADBj1FTeiFFchP50GAPt
+         CAQbbqDnjW/+SWwymOrCPmDwpAm5xAzhCVfpCLSVXPg2+2sqk0Xyk2nEtOUrDgS2SOn1
+         2qJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=TB5FjjudCnoVQlZCNJ7wIvh0DQ8onthhTDmqoaW0vQQ=;
+        b=LN94G3SkYqcCvRYYJL1QKJfLgRGpkGgx7zCcfUdeH02+IJIHQs/sULP3x9r9ITspns
+         JKtuaZJBfTePPT+537bS5FchVahMo0EUEbDtohhk7krXL2PuHa5kED9nWpRxpsNuEV2N
+         YbC1RrYh+5ImuOh0tFw30Y/oYF+TXgN1U6+HzsUd8OdM3kKOqck6JESdNj25E1PUx5nV
+         lXKtoUyc0LI8Z92a3ONYQ+vuGz8rSFed5PpNYSFXqwLCaywvn04g1xy6efKlvFPoSWNG
+         KI4blxeZJJ1fcwCkkfzyVozMzHwzmNOtHt4HXcmN1kVnE3FoKc6X04u3xevaQADFLb3u
+         oBKA==
+X-Gm-Message-State: AOAM532T+C1E+N+UngyMyB1pWXO/wRfeuOaje45pzrhBUV0PrW9WlXx2
+        uH/mayFpyRVLrOT6O+Lu8zU=
+X-Google-Smtp-Source: ABdhPJzZGRauvO9SJPW3cGCfiyGEjVM/OHM40naBh5ery73Gai7ADtfx+kYda7Yzt+XEoE2OZ2O4WA==
+X-Received: by 2002:ac8:302f:: with SMTP id f44mr3722990qte.121.1589957789285;
+        Tue, 19 May 2020 23:56:29 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id l186sm1497247qkf.89.2020.05.19.23.56.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 19 May 2020 23:56:28 -0700 (PDT)
+Date:   Wed, 20 May 2020 08:56:06 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH] iio: dac: ad5592r-base: Replace indio_dev->mlock with own device lock
-Date:   Wed, 20 May 2020 09:18:13 +0300
-Message-ID: <20200520061819.29056-1-sergiu.cuciurean@analog.com>
-X-Mailer: git-send-email 2.17.1
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Steve Winslow <swinslow@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/4] dt-bindings: iio: magnetometer: ak8975: convert
+ txt format to yaml
+Message-ID: <20200520065606.GA3361@ict14-OptiPlex-980>
+References: <20200519124402.26076-1-jonathan.albrieux@gmail.com>
+ <20200519124402.26076-2-jonathan.albrieux@gmail.com>
+ <20200519132207.GA4623@gerhold.net>
+ <20200519140354.GB30573@ict14-OptiPlex-980>
+ <20200519160137.GJ1634618@smile.fi.intel.com>
+ <20200519164433.GA8726@ict14-OptiPlex-980>
+ <20200519183705.000040e5@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-20_02:2020-05-19,2020-05-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=743
- suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005200053
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200519183705.000040e5@Huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As part of the general cleanup of indio_dev->mlock, this change replaces
-it with a local lock on the device's state structure.
+On Tue, May 19, 2020 at 06:37:05PM +0100, Jonathan Cameron wrote:
+> On Tue, 19 May 2020 18:44:33 +0200
+> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+> 
+> > On Tue, May 19, 2020 at 07:01:37PM +0300, Andy Shevchenko wrote:
+> > > On Tue, May 19, 2020 at 04:03:54PM +0200, Jonathan Albrieux wrote:  
+> > > > On Tue, May 19, 2020 at 03:22:07PM +0200, Stephan Gerhold wrote:  
+> > > > > On Tue, May 19, 2020 at 02:43:51PM +0200, Jonathan Albrieux wrote:  
+> > > 
+> > > ...
+> > >   
+> > > > > > +maintainers:
+> > > > > > +  - can't find a mantainer, author is Laxman Dewangan <ldewangan@nvidia.com>  
+> > > > > 
+> > > > > Should probably add someone here, although I'm not sure who either.
+> > > > >   
+> > > > 
+> > > > Yep I couldn't find a maintainer for that driver..what to do in this case?  
+> > > 
+> > > Volunteer yourself!
+> > >   
+> > 
+> > While I'd really like to, I have to decline the offer as I currently don't have
+> > enought knowledge to become a maintainer :-) but thank you! (Who knows, maybe in
+> > a couple of year!) Now I'll make the final edits and will submit a new
+> > patchset soon with all the changes
+> 
+> Don't be so hard on yourself.  We all get thrown in at the deep end :)
+> 
+> Note that being a driver maintainer (or even just the binding) really
+> just means you get cc'd on the patches and I'll make sure you've had time
+> to review them if you wish.   Best of all, if you have hardware (and time)
+> being able to test them, that is extremely useful (whether you are
+> maintaining the driver or not!) 
+> 
+> I closely review the majority of stuff that comes through IIO and in
+> the case of bindings we also have Rob and co. doing an amazing job.
+> We have some excellent additional reviewers who review IIO stuff all the
+> time, some of which have reviewed your patch I see.  Without them I'd
+> never survive the deluge.
+> 
+> Of course it's entirely your decision, but I'd definitely encourage you
+> to give it a go.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
 
-Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
----
- drivers/iio/dac/ad5592r-base.c | 28 +++++++++++++++-------------
- drivers/iio/dac/ad5592r-base.h |  1 +
- 2 files changed, 16 insertions(+), 13 deletions(-)
+Thank you for your encouraging words and for the trust! As a tester I will
+be very pleased to give an help on this hardware but as a maintainer I
+could contribute little to nothing at the moment and I'm not being hard
+with myself but currently I really have to focus on the basic concepts first
+and I'm lucky enought to have willing people helping me to do so :-)
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index e2110113e884..10109eb81db2 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -166,10 +166,10 @@ static int ad5592r_reset(struct ad5592r_state *st)
- 		udelay(1);
- 		gpiod_set_value(gpio, 1);
- 	} else {
--		mutex_lock(&iio_dev->mlock);
-+		mutex_lock(&st->lock);
- 		/* Writing this magic value resets the device */
- 		st->ops->reg_write(st, AD5592R_REG_RESET, 0xdac);
--		mutex_unlock(&iio_dev->mlock);
-+		mutex_unlock(&st->lock);
- 	}
- 
- 	udelay(250);
-@@ -247,7 +247,7 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
- 		}
- 	}
- 
--	mutex_lock(&iio_dev->mlock);
-+	mutex_lock(&st->lock);
- 
- 	/* Pull down unused pins to GND */
- 	ret = ops->reg_write(st, AD5592R_REG_PULLDOWN, pulldown);
-@@ -285,7 +285,7 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
- 		ret = -EIO;
- 
- err_unlock:
--	mutex_unlock(&iio_dev->mlock);
-+	mutex_unlock(&st->lock);
- 	return ret;
- }
- 
-@@ -314,11 +314,11 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
- 		if (!chan->output)
- 			return -EINVAL;
- 
--		mutex_lock(&iio_dev->mlock);
-+		mutex_lock(&st->lock);
- 		ret = st->ops->write_dac(st, chan->channel, val);
- 		if (!ret)
- 			st->cached_dac[chan->channel] = val;
--		mutex_unlock(&iio_dev->mlock);
-+		mutex_unlock(&st->lock);
- 		return ret;
- 	case IIO_CHAN_INFO_SCALE:
- 		if (chan->type == IIO_VOLTAGE) {
-@@ -333,12 +333,12 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
- 			else
- 				return -EINVAL;
- 
--			mutex_lock(&iio_dev->mlock);
-+			mutex_lock(&st->lock);
- 
- 			ret = st->ops->reg_read(st, AD5592R_REG_CTRL,
- 						&st->cached_gp_ctrl);
- 			if (ret < 0) {
--				mutex_unlock(&iio_dev->mlock);
-+				mutex_unlock(&st->lock);
- 				return ret;
- 			}
- 
-@@ -360,7 +360,7 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
- 
- 			ret = st->ops->reg_write(st, AD5592R_REG_CTRL,
- 						 st->cached_gp_ctrl);
--			mutex_unlock(&iio_dev->mlock);
-+			mutex_unlock(&st->lock);
- 
- 			return ret;
- 		}
-@@ -382,7 +382,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		mutex_lock(&iio_dev->mlock);
-+		mutex_lock(&st->lock);
- 
- 		if (!chan->output) {
- 			ret = st->ops->read_adc(st, chan->channel, &read_val);
-@@ -419,7 +419,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 		} else {
- 			int mult;
- 
--			mutex_lock(&iio_dev->mlock);
-+			mutex_lock(&st->lock);
- 
- 			if (chan->output)
- 				mult = !!(st->cached_gp_ctrl &
-@@ -437,7 +437,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 	case IIO_CHAN_INFO_OFFSET:
- 		ret = ad5592r_get_vref(st);
- 
--		mutex_lock(&iio_dev->mlock);
-+		mutex_lock(&st->lock);
- 
- 		if (st->cached_gp_ctrl & AD5592R_REG_CTRL_ADC_RANGE)
- 			*val = (-34365 * 25) / ret;
-@@ -450,7 +450,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 	}
- 
- unlock:
--	mutex_unlock(&iio_dev->mlock);
-+	mutex_unlock(&st->lock);
- 	return ret;
- }
- 
-@@ -625,6 +625,8 @@ int ad5592r_probe(struct device *dev, const char *name,
- 	iio_dev->info = &ad5592r_info;
- 	iio_dev->modes = INDIO_DIRECT_MODE;
- 
-+	mutex_init(&st->lock);
-+
- 	ad5592r_init_scales(st, ad5592r_get_vref(st));
- 
- 	ret = ad5592r_reset(st);
-diff --git a/drivers/iio/dac/ad5592r-base.h b/drivers/iio/dac/ad5592r-base.h
-index 4774e4cd9c11..23dac2f1ff8a 100644
---- a/drivers/iio/dac/ad5592r-base.h
-+++ b/drivers/iio/dac/ad5592r-base.h
-@@ -52,6 +52,7 @@ struct ad5592r_state {
- 	struct regulator *reg;
- 	struct gpio_chip gpiochip;
- 	struct mutex gpio_lock;	/* Protect cached gpio_out, gpio_val, etc. */
-+	struct mutex lock;
- 	unsigned int num_channels;
- 	const struct ad5592r_rw_ops *ops;
- 	int scale_avail[2][2];
--- 
-2.17.1
+Accepting to become the maintainer after the first contribution let me feels
+like I'm burning some foundamental stage. I really hope you understand!
 
+> 
+> 
+> > 
+> > > -- 
+> > > With Best Regards,
+> > > Andy Shevchenko
+> > > 
+> > >   
+> > 
+> > Best regards,
+> > Jonathan Albrieux
+> 
+> 
+
+Best regards,
+Jonathan Albrieux

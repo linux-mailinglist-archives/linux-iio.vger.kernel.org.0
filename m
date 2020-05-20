@@ -2,175 +2,204 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EA781DA32C
-	for <lists+linux-iio@lfdr.de>; Tue, 19 May 2020 23:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB121DAA85
+	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 08:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726203AbgESVDI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 May 2020 17:03:08 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:52776 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725998AbgESVDI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 May 2020 17:03:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1589922186; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AYssrVu0EdXtQCut6RKI0Q/slktx5/swJ4iGM1S+aPM=;
-        b=F4Aafco/wu2j6SCR/42PO2SWWsZNMwDACorK4ZocGNHgTHLYesolX8x3ADsIjVRcCaeZJw
-        a5yXWDDmGEllGmsRIvWGFO92zvZOSpoomh8E/dyp8fSIQ3b84t/y6Kfg9TX/LNQX+pRKwZ
-        oPY9+Afv3CTrx52VuqQ3M+tOmXGy35o=
-Date:   Tue, 19 May 2020 23:02:54 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v7 7/7] input: joystick: Add ADC attached joystick driver.
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        id S1726502AbgETGTJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 May 2020 02:19:09 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:8290 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726489AbgETGTI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 02:19:08 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04K6H7tq010214;
+        Wed, 20 May 2020 02:18:49 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312d35vb9w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 20 May 2020 02:18:49 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 04K6IldW042165
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 20 May 2020 02:18:48 -0400
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 19 May
+ 2020 23:18:46 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 19 May 2020 23:18:46 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04K6IhC3024736;
+        Wed, 20 May 2020 02:18:43 -0400
+From:   Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        linux-input <linux-input@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Message-Id: <USJLAQ.SNMLIAX3CX1J2@crapouillou.net>
-In-Reply-To: <CAHp75VcChHOrxrqBM==-_SaTL4vSojKmRWvkNn-CHLH99pcAuQ@mail.gmail.com>
-References: <20200517194904.34758-1-contact@artur-rojek.eu>
-        <20200517194904.34758-7-contact@artur-rojek.eu>
-        <CAHp75VcChHOrxrqBM==-_SaTL4vSojKmRWvkNn-CHLH99pcAuQ@mail.gmail.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH] iio: dac: ad5592r-base: Replace indio_dev->mlock with own device lock
+Date:   Wed, 20 May 2020 09:18:13 +0300
+Message-ID: <20200520061819.29056-1-sergiu.cuciurean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-20_02:2020-05-19,2020-05-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=743
+ suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005200053
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+As part of the general cleanup of indio_dev->mlock, this change replaces
+it with a local lock on the device's state structure.
 
-Le mar. 19 mai 2020 =E0 23:43, Andy Shevchenko=20
-<andy.shevchenko@gmail.com> a =E9crit :
-> On Sun, May 17, 2020 at 10:49 PM Artur Rojek <contact@artur-rojek.eu>=20
-> wrote:
->>=20
->>  Add a driver for joystick devices connected to ADC controllers
->>  supporting the Industrial I/O subsystem.
->=20
-> ...
->=20
->>  +static int adc_joystick_handle(const void *data, void *private)
->>  +{
->>  +       struct adc_joystick *joy =3D private;
->>  +       enum iio_endian endianness;
->>  +       int bytes, msb, val, i;
->>  +       bool sign;
->>  +
->>  +       bytes =3D joy->chans[0].channel->scan_type.storagebits >> 3;
->>  +
->>  +       for (i =3D 0; i < joy->num_chans; ++i) {
->>  +               endianness =3D=20
->> joy->chans[i].channel->scan_type.endianness;
->>  +               msb =3D joy->chans[i].channel->scan_type.realbits - 1;
->=20
->>  +               sign =3D=20
->> (tolower(joy->chans[i].channel->scan_type.sign) =3D=3D 's');
->=20
-> Do we need tolower()?
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+---
+ drivers/iio/dac/ad5592r-base.c | 28 +++++++++++++++-------------
+ drivers/iio/dac/ad5592r-base.h |  1 +
+ 2 files changed, 16 insertions(+), 13 deletions(-)
 
-I'll answer this one:
-
-The sign can be uppercase to specify that the value is sign-extended in=20
-all the storage bits.
-
--Paul
-
->>  +
->>  +               switch (bytes) {
->>  +               case 1:
->>  +                       val =3D ((const u8 *)data)[i];
->>  +                       break;
->>  +               case 2:
->>  +                       if (endianness =3D=3D IIO_BE)
->=20
->>  +                               val =3D be16_to_cpu(((const u16=20
->> *)data)[i]);
->=20
-> Yeah, you have to provide bitwise types to satisfy sparse.
-> Maybe using *_to_cpup() will cure this.
->=20
->>  +                       else if (endianness =3D=3D IIO_LE)
->>  +                               val =3D le16_to_cpu(((const u16=20
->> *)data)[i]);
->>  +                       else /* IIO_CPU */
->>  +                               val =3D ((const u16 *)data)[i];
->>  +                       break;
->>  +               default:
->>  +                       return -EINVAL;
->>  +               }
->>  +
->>  +               val >>=3D joy->chans[i].channel->scan_type.shift;
->>  +               if (sign)
->>  +                       val =3D sign_extend32(val, msb);
->>  +               else
->>  +                       val &=3D GENMASK(msb, 0);
->>  +               input_report_abs(joy->input, joy->axes[i].code,=20
->> val);
->>  +       }
->>  +
->>  +       input_sync(joy->input);
->>  +
->>  +       return 0;
->>  +}
->=20
-> ...
->=20
->>  +       /* Count how many channels we got. NULL terminated. */
->>  +       while (joy->chans[joy->num_chans].indio_dev)
->>  +               joy->num_chans++;
->=20
-> I don't see how useful this is. Why not simple do below...
->=20
->>  +       bits =3D joy->chans[0].channel->scan_type.storagebits;
->>  +       if (!bits || (bits > 16)) {
->>  +               dev_err(dev, "Unsupported channel storage size");
->>  +               return -EINVAL;
->>  +       }
->>  +       for (i =3D 1; i < joy->num_chans; ++i)
->>  +               if (joy->chans[i].channel->scan_type.storagebits !=3D=20
->> bits) {
->>  +                       dev_err(dev, "Channels must have equal=20
->> storage size");
->>  +                       return -EINVAL;
->>  +               }
->=20
-> ...something like
->=20
->   for (i =3D 0; joy->chans[i].indio_dev; i++) {
->     bits =3D joy->chans[i].channel->scan_type.storagebits;
->     if (bits ...) {
->       ...error handling...
->     }
->     if (bits !=3D joy->chans[0].channel->scan_type.storagebits) {
->       ...second level of error handling...
->     }
->  }
->=20
-> ...
->=20
->>  +static const struct of_device_id adc_joystick_of_match[] =3D {
->>  +       { .compatible =3D "adc-joystick", },
->=20
->>  +       { },
->=20
-> No need comma.
->=20
->>  +};
->=20
-> --
-> With Best Regards,
-> Andy Shevchenko
-
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index e2110113e884..10109eb81db2 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -166,10 +166,10 @@ static int ad5592r_reset(struct ad5592r_state *st)
+ 		udelay(1);
+ 		gpiod_set_value(gpio, 1);
+ 	} else {
+-		mutex_lock(&iio_dev->mlock);
++		mutex_lock(&st->lock);
+ 		/* Writing this magic value resets the device */
+ 		st->ops->reg_write(st, AD5592R_REG_RESET, 0xdac);
+-		mutex_unlock(&iio_dev->mlock);
++		mutex_unlock(&st->lock);
+ 	}
+ 
+ 	udelay(250);
+@@ -247,7 +247,7 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
+ 		}
+ 	}
+ 
+-	mutex_lock(&iio_dev->mlock);
++	mutex_lock(&st->lock);
+ 
+ 	/* Pull down unused pins to GND */
+ 	ret = ops->reg_write(st, AD5592R_REG_PULLDOWN, pulldown);
+@@ -285,7 +285,7 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
+ 		ret = -EIO;
+ 
+ err_unlock:
+-	mutex_unlock(&iio_dev->mlock);
++	mutex_unlock(&st->lock);
+ 	return ret;
+ }
+ 
+@@ -314,11 +314,11 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
+ 		if (!chan->output)
+ 			return -EINVAL;
+ 
+-		mutex_lock(&iio_dev->mlock);
++		mutex_lock(&st->lock);
+ 		ret = st->ops->write_dac(st, chan->channel, val);
+ 		if (!ret)
+ 			st->cached_dac[chan->channel] = val;
+-		mutex_unlock(&iio_dev->mlock);
++		mutex_unlock(&st->lock);
+ 		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		if (chan->type == IIO_VOLTAGE) {
+@@ -333,12 +333,12 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
+ 			else
+ 				return -EINVAL;
+ 
+-			mutex_lock(&iio_dev->mlock);
++			mutex_lock(&st->lock);
+ 
+ 			ret = st->ops->reg_read(st, AD5592R_REG_CTRL,
+ 						&st->cached_gp_ctrl);
+ 			if (ret < 0) {
+-				mutex_unlock(&iio_dev->mlock);
++				mutex_unlock(&st->lock);
+ 				return ret;
+ 			}
+ 
+@@ -360,7 +360,7 @@ static int ad5592r_write_raw(struct iio_dev *iio_dev,
+ 
+ 			ret = st->ops->reg_write(st, AD5592R_REG_CTRL,
+ 						 st->cached_gp_ctrl);
+-			mutex_unlock(&iio_dev->mlock);
++			mutex_unlock(&st->lock);
+ 
+ 			return ret;
+ 		}
+@@ -382,7 +382,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_RAW:
+-		mutex_lock(&iio_dev->mlock);
++		mutex_lock(&st->lock);
+ 
+ 		if (!chan->output) {
+ 			ret = st->ops->read_adc(st, chan->channel, &read_val);
+@@ -419,7 +419,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 		} else {
+ 			int mult;
+ 
+-			mutex_lock(&iio_dev->mlock);
++			mutex_lock(&st->lock);
+ 
+ 			if (chan->output)
+ 				mult = !!(st->cached_gp_ctrl &
+@@ -437,7 +437,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		ret = ad5592r_get_vref(st);
+ 
+-		mutex_lock(&iio_dev->mlock);
++		mutex_lock(&st->lock);
+ 
+ 		if (st->cached_gp_ctrl & AD5592R_REG_CTRL_ADC_RANGE)
+ 			*val = (-34365 * 25) / ret;
+@@ -450,7 +450,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 	}
+ 
+ unlock:
+-	mutex_unlock(&iio_dev->mlock);
++	mutex_unlock(&st->lock);
+ 	return ret;
+ }
+ 
+@@ -625,6 +625,8 @@ int ad5592r_probe(struct device *dev, const char *name,
+ 	iio_dev->info = &ad5592r_info;
+ 	iio_dev->modes = INDIO_DIRECT_MODE;
+ 
++	mutex_init(&st->lock);
++
+ 	ad5592r_init_scales(st, ad5592r_get_vref(st));
+ 
+ 	ret = ad5592r_reset(st);
+diff --git a/drivers/iio/dac/ad5592r-base.h b/drivers/iio/dac/ad5592r-base.h
+index 4774e4cd9c11..23dac2f1ff8a 100644
+--- a/drivers/iio/dac/ad5592r-base.h
++++ b/drivers/iio/dac/ad5592r-base.h
+@@ -52,6 +52,7 @@ struct ad5592r_state {
+ 	struct regulator *reg;
+ 	struct gpio_chip gpiochip;
+ 	struct mutex gpio_lock;	/* Protect cached gpio_out, gpio_val, etc. */
++	struct mutex lock;
+ 	unsigned int num_channels;
+ 	const struct ad5592r_rw_ops *ops;
+ 	int scale_avail[2][2];
+-- 
+2.17.1
 

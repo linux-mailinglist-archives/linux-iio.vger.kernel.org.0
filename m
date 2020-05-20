@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3270B1DAC33
-	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8545B1DAC36
+	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726489AbgETHcF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 May 2020 03:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47328 "EHLO
+        id S1726713AbgETHcI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 May 2020 03:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726309AbgETHcE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:32:04 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A84AC061A0E;
-        Wed, 20 May 2020 00:32:03 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id v4so1831063qte.3;
-        Wed, 20 May 2020 00:32:03 -0700 (PDT)
+        with ESMTP id S1726309AbgETHcI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:32:08 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FD2C061A0E;
+        Wed, 20 May 2020 00:32:08 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id f83so2561902qke.13;
+        Wed, 20 May 2020 00:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=hOveqjYBk1+7IoXrKWjzzpmC29NQEFV/46uICdldkHU=;
-        b=ewnxfr7Zn2WCDka8Z1ZE4YnqNTreQv7/AaL61dcWtTgXc0GQNWySm2h/5BWSX0NCDQ
-         F/HlvM4RsnlmK8ZPdAcCBhfEXfHIe9+TqoC2/9jgUGDF8i9kOtM4ev3CKnjnRJczlhzE
-         Z+xY2vv5qT8zjb58RDX67BzpS2gjUftTuiIte9hQ858DIO/6jo+0EzoPccCdRO2eMQie
-         mKHvn/NkR6x/yb0gltHkZ6yV+6j9Z52+w6TeCYBjY7qettgo3iAMGvNM2FtDyipmUWYC
-         1g2sjxsTvaoejVwZbEfQFXzwS4aI3FsKeyRRRiyBFljuuFwd/BLFQHR7VJS7eQ+sZ7El
-         RN/w==
+        bh=ru/VedSe7R+1+BFX/X1C1fyozp4gv15sJxfe6kqv7eI=;
+        b=l1cnWShyzk9WpD7pyxlfhmMLb+wtc9wEg7fKABXKL/TGoaRZcNmK/zMBcIYoeR6i1z
+         MoPSYxpn0RWpHFxdLsov2rafdry6nwoXRqwT7RGGO4sUfLnijEr8z0iuWO2tzL5rpfoz
+         NkaN2nsHS+ys+9WijxzaQ9NbAZMHx2zFoH+k5Br4QDWBJQxzHL1GjwubVZUq4koT5tRv
+         918czWDtlyduHSTwLlIlMMzIUP95ZPbzXikLUjvsI1js7e1hbAFMjudPiabmflNlzgoh
+         ewTQk/+0xHvKmI6ZFdAqgm8FzL86Tlk7RZ8zv7qJnaWPXo2TBTg9r7GtI6e3Pq/v8Oce
+         KgvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=hOveqjYBk1+7IoXrKWjzzpmC29NQEFV/46uICdldkHU=;
-        b=JZMzoqPw4j7fydET1ec09E08wHqKPqD2UBANqrbCvY33IdyFpXR512Od5fXPQ0LdH0
-         34PL7W5m3MlK/eMiKarDkNrYGEUf2btxhNK9sU74fCR8/082PxJZaY77IhLMSVAoYuE0
-         GBV8mx9CKqDFVFYj9oZmAzovjaVFq+lzwxHLBDLtibOZRxB8yyW2qOWa3IhLnKEqw7hX
-         z7fi7EmB2bOOayPhfe4pozL/7xLfb8oVR6JgzpwumEWq6p6HUxQk+w0t/6cVnKe3zPY+
-         LXRqgpgxNZIuuJ/XOLN2dMDsaCTTvzmaeyNa7nu5j4SeSEepiiBUA5/sPGlx91r8WlX9
-         JtaA==
-X-Gm-Message-State: AOAM531W9hXtn9ihEBjBTnGxf8K9MOaWG4ydmHo/cWwLT1RsiF2Nbewe
-        bZDRq2DwkSZhqEjRL55qaMHWaVg0MF221g==
-X-Google-Smtp-Source: ABdhPJw9RgHGLym+SQy81PxjQu8pnjhS+XinnafLQ/jGNlE19vEZoYzTm25HtL17j/xjVfRoApim0w==
-X-Received: by 2002:ac8:1381:: with SMTP id h1mr3746316qtj.98.1589959922061;
-        Wed, 20 May 2020 00:32:02 -0700 (PDT)
+        bh=ru/VedSe7R+1+BFX/X1C1fyozp4gv15sJxfe6kqv7eI=;
+        b=abcP7ddrTDv2ba6kHQL3AoJYWD95X3sA3ZLlTi3Q0evtE7IeUJdpUa0IDdnnpHFhQw
+         9d48Abn7SfBbSojRvBRPecVzsrMugjTBbfYOfp4ex9rByqvtxdoid6jHE51GVN6InFs5
+         2OwK3ooecWqIvROvcC+IOjbnkqYAvGAV8aP8BlBYETRkGpippdu+5j4kzpgT93EGRnxr
+         82CzKvmYaQx00ro+TDlujx5n0rX1iMIRgy0yzuw32/Qw7bvq7sqLfhwB/N+qQE9PKPiL
+         OzNhRh2veheOrRXyslQohUiQUeKS8Y7XWlRE/Z4frCsaJVZ9F5zl9tiruUfy1gmSSsXz
+         NyKA==
+X-Gm-Message-State: AOAM532WJSO6YksjaEW85Ytmdg+x1EsENl7ipGTJCQH6jKuCJ+xtM6EP
+        D6GGB66vEYy9Xnowq5Yrlaxdt4A1NryxqA==
+X-Google-Smtp-Source: ABdhPJzpfHTP0qAcbJMP7wqThG01HGbMM7NnPaLg9RG8U068gUNRZKc+3qgpT9Ut6IWTF5fkFwqkWQ==
+X-Received: by 2002:a37:628a:: with SMTP id w132mr3234893qkb.294.1589959926837;
+        Wed, 20 May 2020 00:32:06 -0700 (PDT)
 Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id w9sm1702540qtn.29.2020.05.20.00.31.59
+        by smtp.googlemail.com with ESMTPSA id w9sm1702540qtn.29.2020.05.20.00.32.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2020 00:32:01 -0700 (PDT)
+        Wed, 20 May 2020 00:32:06 -0700 (PDT)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -65,9 +65,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v4 3/4] iio: magnetometer: ak8975: Fix typo, uniform measurement unit style
-Date:   Wed, 20 May 2020 09:31:15 +0200
-Message-Id: <20200520073125.30808-4-jonathan.albrieux@gmail.com>
+Subject: [PATCH v4 4/4] iio: magnetometer: ak8975: Add gpio reset support
+Date:   Wed, 20 May 2020 09:31:16 +0200
+Message-Id: <20200520073125.30808-5-jonathan.albrieux@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200520073125.30808-1-jonathan.albrieux@gmail.com>
 References: <20200520073125.30808-1-jonathan.albrieux@gmail.com>
@@ -76,30 +76,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Minor comment style edits.
+According to AK09911 datasheet, if reset gpio is provided then
+deassert reset on ak8975_power_on() and assert reset on ak8975_power_off().
+
+Without reset's deassertion during ak8975_power_on(), driver's probe fails
+on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+
+AK09911 has an active low reset gpio to handle register's reset.
+AK09911 datasheet says that, if not used, reset pin should be connected
+to VID. This patch emulates this situation.
 
 Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- drivers/iio/magnetometer/ak8975.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/magnetometer/ak8975.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 3c881541ae72..fd368455cd7b 100644
+index fd368455cd7b..a23422aad97d 100644
 --- a/drivers/iio/magnetometer/ak8975.c
 +++ b/drivers/iio/magnetometer/ak8975.c
-@@ -385,9 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
+@@ -358,6 +358,7 @@ struct ak8975_data {
+ 	u8			asa[3];
+ 	long			raw_to_gauss[3];
+ 	struct gpio_desc	*eoc_gpiod;
++	struct gpio_desc	*reset_gpiod;
+ 	int			eoc_irq;
+ 	wait_queue_head_t	data_ready_queue;
+ 	unsigned long		flags;
+@@ -384,6 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
+ 			 "Failed to enable specified Vid supply\n");
  		return ret;
  	}
++
++	gpiod_set_value_cansleep(data->reset_gpiod, 0);
++
  	/*
--	 * According to the datasheet the power supply rise time i 200us
-+	 * According to the datasheet the power supply rise time is 200us
+ 	 * According to the datasheet the power supply rise time is 200us
  	 * and the minimum wait time before mode setting is 100us, in
--	 * total 300 us. Add some margin and say minimum 500us here.
-+	 * total 300us. Add some margin and say minimum 500us here.
- 	 */
- 	usleep_range(500, 1000);
- 	return 0;
+@@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
+ /* Disable attached power regulator if any. */
+ static void ak8975_power_off(const struct ak8975_data *data)
+ {
++	gpiod_set_value_cansleep(data->reset_gpiod, 1);
++
+ 	regulator_disable(data->vid);
+ 	regulator_disable(data->vdd);
+ }
+@@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
+ 	struct ak8975_data *data;
+ 	struct iio_dev *indio_dev;
+ 	struct gpio_desc *eoc_gpiod;
++	struct gpio_desc *reset_gpiod;
+ 	const void *match;
+ 	unsigned int i;
+ 	int err;
+@@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
+ 	if (eoc_gpiod)
+ 		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
+ 
++	/*
++	 * According to AK09911 datasheet, if reset GPIO is provided then
++	 * deassert reset on ak8975_power_on() and assert reset on
++	 * ak8975_power_off().
++	 */
++	reset_gpiod = devm_gpiod_get_optional(&client->dev,
++					      "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(reset_gpiod))
++		return PTR_ERR(reset_gpiod);
++
+ 	/* Register with IIO */
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (indio_dev == NULL)
+@@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
+ 
+ 	data->client = client;
+ 	data->eoc_gpiod = eoc_gpiod;
++	data->reset_gpiod = reset_gpiod;
+ 	data->eoc_irq = 0;
+ 
+ 	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
 -- 
 2.17.1
 

@@ -2,83 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BF21DABF0
-	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0104D1DAC1C
+	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726574AbgETHYa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 May 2020 03:24:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46076 "EHLO
+        id S1726463AbgETH3a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 May 2020 03:29:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbgETHY3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:24:29 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48EAC061A0E;
-        Wed, 20 May 2020 00:24:28 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id m11so2638050qka.4;
-        Wed, 20 May 2020 00:24:28 -0700 (PDT)
+        with ESMTP id S1726403AbgETH33 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:29:29 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27EAC061A0E;
+        Wed, 20 May 2020 00:29:28 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id i14so2578676qka.10;
+        Wed, 20 May 2020 00:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=O+/xss7Rkk0KX4d1uqXw1V60AVLQm9vIrr0+J5j1ifk=;
-        b=Tq2ySHkk83LU84YTlYvVc5VNGjs9Lzayz6d6h7gncoUixD7iuISoc089WPvJYg6uwP
-         HzAPNJHydT/OlIjblA6891NGMau5np5MQe4SQgPDBe7CP2mHSklXGmVoLes5Kn5r3vYO
-         xOQ8dc6VUypajI7kC0FeDP8Lnixd/xGN8MjJqeTi9uZdM04+8l5n0ftPtZ1C5mR4Xl/Z
-         d1BTw4xBKLn9w5y2wqaR03JFWoWphUL6v3Z06pZplgaBcAIX5eOZMTeyoX9sdGknGPeB
-         DhkF8uIeGdu7hFuxE2iSCHW+IukrXBtKhfyyYinIyXhDy1FAsHqIkSoU77MCofQaz51o
-         MBXw==
+        bh=HTou0WUXzDf0o0mQsx/duwk3hrNBz9rboYojoyLD5HQ=;
+        b=tZ2dpYJB4FNN/ruIH8/R+pf4rYd+0NckDU5SgH2l7b7nWMd+tV1DftkaYewtxWFKk9
+         kzSQXi3WUnrcDhIUb8BfU0C9cUi5arGmzK+72smcK69MaXPKLYdE7k3i2v/GBpy8mJyv
+         HLjKCXJH3Pj2sPK6hQOXO+yN1tN/RK3TqvDrEHMxZADeJx0u82Tx7aCDUSqsZYltcfJa
+         Dw9eRuJizPtErqOnV+EABghVnkK0fo0SgFrgsTVTVfC3ql3GK8MCd+atJZJiAuScL6RF
+         Ch53P1isQbeYqq40GhEoj4TjbEc+tVyqUNYxVmfE8z2yIKt9o37CusVqoZRrnvcjAK/v
+         q81Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=O+/xss7Rkk0KX4d1uqXw1V60AVLQm9vIrr0+J5j1ifk=;
-        b=TXMiggR1laqKZtDYcpphUcqeWyTIp+uFISRaOYTBFtXpDhBlvAWzpGLcEeqgg23D2r
-         //VK7NSck4dPmn56vN9+A+jfk+UiJIaRDSHLUbg0psLkHFM9Uzq+KRqNuFownBcvunH2
-         WSM4j1ZSLS9EIeXq3Dj01aBkW0g6mqWtEv+xJz/796TpKxRmbf3yDEnJc7Uu6HZfF0MG
-         jZ6/0brnzJsdxCEExMMygKX2baRKFG3SFKsyTtCBtJ3a5SU6eAesaBvhcLUDPsMU9dRv
-         yk5gAYDJp5bzPrJm2/hlrTOX7W/G4enuOG+HtWOL1fuRztW4x2HYWOvofspWqhcHoDxS
-         V4Ag==
-X-Gm-Message-State: AOAM532nEUARAHWg+5Y5AhwwcaEHurfwgbn66hGgseTx/Gb3tsyQu5uo
-        dtiLFigO7i7bHC0b6aG6S4W1Wg6VLkJBew==
-X-Google-Smtp-Source: ABdhPJwawYZ0CCaDY7dm/f5fn9KnmfwSKVvpJDj4r9YrIJ3nfF+sq8P2IsTItK2JldIX9saCc1s8Cw==
-X-Received: by 2002:a05:620a:346:: with SMTP id t6mr3337595qkm.210.1589959467858;
-        Wed, 20 May 2020 00:24:27 -0700 (PDT)
+        bh=HTou0WUXzDf0o0mQsx/duwk3hrNBz9rboYojoyLD5HQ=;
+        b=hd+pRQpSJw0BAsda3XsFO7HqelwXO9pzDH3forsHROmKmseZBYhMXlNJGU8KYJJwNG
+         iW8gUxQQD8C0HcOz52MD31WQlWhZ1XEyZPFzvefyeF1qjty6rMvfIXZIHrlDZxh8xPqD
+         voFk/z4DJ3T0cYM+0972EeJqKvDtBq4GFYCmdGESkp+Qy+0vX5XMzxns4Th9XoDQAcdY
+         XtEzaxH/9hp6M6buZNruWSkhw8dTRHjsmqzuMPLsuqas5dGQRSptohnbhAiyxBnob4V/
+         htFftuQ5XFzIDoZIu/ZT+6WkWAJgjSogozzqMhBAuEJgY+N37ELMJtRgv9Q2oYSe5t7w
+         /yCQ==
+X-Gm-Message-State: AOAM532Hdjwb0tHZpKW899AHLDbfWri5osC2NMWOKo1v0kf7RNZYa7p8
+        BpxPidl7NodO+wIyIIf9w5s=
+X-Google-Smtp-Source: ABdhPJxSr2e4My6HF39ER0wjT+rTL2Jx/3tBpkFRC1TW2tLEbOFEbU7rgeg3puCqKKnn2RGsFxr8fw==
+X-Received: by 2002:a37:8d85:: with SMTP id p127mr3040499qkd.35.1589959767869;
+        Wed, 20 May 2020 00:29:27 -0700 (PDT)
 Received: from ict14-OptiPlex-980 ([178.23.248.46])
-        by smtp.gmail.com with ESMTPSA id h188sm1614344qke.82.2020.05.20.00.24.25
+        by smtp.gmail.com with ESMTPSA id c26sm1551092qkm.98.2020.05.20.00.29.25
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 20 May 2020 00:24:27 -0700 (PDT)
-Date:   Wed, 20 May 2020 09:24:23 +0200
+        Wed, 20 May 2020 00:29:27 -0700 (PDT)
+Date:   Wed, 20 May 2020 09:29:22 +0200
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Rob Herring <robh@kernel.org>
 Cc:     linux-kernel@vger.kernel.org,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Daniel Baluta <daniel.baluta@nxp.com>
+        Jonathan Cameron <jic23@kernel.org>
 Subject: Re: [PATCH v2 1/4] dt-bindings: iio: imu: bmi160: convert txt format
  to yaml
-Message-ID: <20200520072423.GF3361@ict14-OptiPlex-980>
+Message-ID: <20200520072922.GG3361@ict14-OptiPlex-980>
 References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
  <20200519075111.6356-2-jonathan.albrieux@gmail.com>
- <20200519184933.00003f00@Huawei.com>
+ <20200519182028.GB342367@bogus>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200519184933.00003f00@Huawei.com>
+In-Reply-To: <20200519182028.GB342367@bogus>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 06:49:33PM +0100, Jonathan Cameron wrote:
-> On Tue, 19 May 2020 09:50:57 +0200
-> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
-> 
+On Tue, May 19, 2020 at 12:20:28PM -0600, Rob Herring wrote:
+> On Tue, May 19, 2020 at 09:50:57AM +0200, Jonathan Albrieux wrote:
 > > Converts documentation from txt format to yaml 
 > > 
 > > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
@@ -88,6 +84,12 @@ On Tue, May 19, 2020 at 06:49:33PM +0100, Jonathan Cameron wrote:
 > >  2 files changed, 84 insertions(+), 37 deletions(-)
 > >  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
 > >  create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+> 
+> Use compatible string for filename: bosch,bmi160.yaml
+>
+
+Ok thank you, will change filename.
+ 
 > > 
 > > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
 > > deleted file mode 100644
@@ -149,10 +151,10 @@ On Tue, May 19, 2020 at 06:49:33PM +0100, Jonathan Cameron wrote:
 > > +maintainers:
 > > +  - can't find a mantainer, author is Daniel Baluta <daniel.baluta@intel.com>
 > 
-> Daniel is still active in the kernel, just not at Intel any more. +CC
+> Would help to Cc him perhaps.
 > 
 
-Oh ok thank you! Daniel are you still maintaining this driver?
+Thank you, I will add him too on the next version.
 
 > > +
 > > +description: |
@@ -167,27 +169,20 @@ Oh ok thank you! Daniel are you still maintaining this driver?
 > > +  reg:
 > > +    maxItems: 1
 > > +    description: the I2C address or SPI chip select number of the sensor
-> 
-> As standard for i2c and spi, usually no need to have a description line for
-> this element.
-> 
-
-Thank you, will remove the description then.
-
 > > +
 > > +  spi-max-frequency:
 > > +    maxItems: 1
 > > +    description: set maximum clock frequency (required only for SPI)
-> 
-> Standard spi binding.  Probably doesn't need to be included here.
-> 
-
-So should I completely remove it from properties?
-
 > > +
 > > +  interrupts:
 > > +    maxItems: 1
 > > +    description: interrupt mapping for IRQ
+> 
+> No need for description if not adding anything unique for this device.
+> 
+
+Will remove it then.
+
 > > +
 > > +  interrupt-names:
 > > +    minItems: 1
@@ -196,6 +191,12 @@ So should I completely remove it from properties?
 > > +      enum:
 > > +        - INT1
 > > +        - INT2
+> 
+> Just the enum is enough.
+> 
+
+Ok, will clean this.
+
 > > +    description: |
 > > +      set to "INT1" if INT1 pin should be used as interrupt input, set
 > > +      to "INT2" if INT2 pin should be used instead
@@ -204,7 +205,6 @@ So should I completely remove it from properties?
 > > +    description: |
 > > +      set if the specified interrupt pin should be configured as
 > > +      open drain. If not set, defaults to push-pull.
-> 
 > > +
 > > +required:
 > > +  - compatible
@@ -217,15 +217,6 @@ So should I completely remove it from properties?
 > > +        reg = <0x78b6000 0x600>;
 > > +        #address-cells = <1>;
 > > +        #size-cells = <0>;
-> 
-> Take a look at some of the other binding examples.  We normally
-> just focus on the driver so don't supply details for the bus.
-> 
-> e.g. https://elixir.bootlin.com/linux/v5.7-rc6/source/Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml#L39
-> 
-
-Will check :-)
-
 > > +
 > > +        bmi160@68 {
 > > +                compatible = "bosch,bmi160";
@@ -251,10 +242,11 @@ Will check :-)
 > > +                interrupt-names = "INT2";
 > > +        };
 > > +    };
-> 
-> 
+> > -- 
+> > 2.17.1
+> > 
 
-Thank you,
+Thank you for your help,
 
 Best regards,
 Jonathan Albrieux

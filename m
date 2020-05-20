@@ -2,251 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0104D1DAC1C
-	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C7E1DAC28
+	for <lists+linux-iio@lfdr.de>; Wed, 20 May 2020 09:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbgETH3a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 May 2020 03:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46920 "EHLO
+        id S1726375AbgETHbp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 May 2020 03:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726403AbgETH33 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:29:29 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27EAC061A0E;
-        Wed, 20 May 2020 00:29:28 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id i14so2578676qka.10;
-        Wed, 20 May 2020 00:29:28 -0700 (PDT)
+        with ESMTP id S1726309AbgETHbo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 May 2020 03:31:44 -0400
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76339C061A0E;
+        Wed, 20 May 2020 00:31:44 -0700 (PDT)
+Received: by mail-qv1-xf41.google.com with SMTP id g20so876006qvb.9;
+        Wed, 20 May 2020 00:31:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=HTou0WUXzDf0o0mQsx/duwk3hrNBz9rboYojoyLD5HQ=;
-        b=tZ2dpYJB4FNN/ruIH8/R+pf4rYd+0NckDU5SgH2l7b7nWMd+tV1DftkaYewtxWFKk9
-         kzSQXi3WUnrcDhIUb8BfU0C9cUi5arGmzK+72smcK69MaXPKLYdE7k3i2v/GBpy8mJyv
-         HLjKCXJH3Pj2sPK6hQOXO+yN1tN/RK3TqvDrEHMxZADeJx0u82Tx7aCDUSqsZYltcfJa
-         Dw9eRuJizPtErqOnV+EABghVnkK0fo0SgFrgsTVTVfC3ql3GK8MCd+atJZJiAuScL6RF
-         Ch53P1isQbeYqq40GhEoj4TjbEc+tVyqUNYxVmfE8z2yIKt9o37CusVqoZRrnvcjAK/v
-         q81Q==
+        h=from:to:cc:subject:date:message-id;
+        bh=gaIm9s4mEnVH3V4H05vGC7PBgBmldd3HetRyrOGTO80=;
+        b=L189PUp3M27waln66S1LOQ6RpRED5ip+iNlo+6Ir6BBRAqKKduEN9KAazXm+1sStZi
+         NS34SUYl4XnZj46lv3a1W8N5DHpJPGw7YLmFOcn7SG32MB6daHmhJWtRJJAHjZi7jAxl
+         fFgns6fyavA9TXenwre5zXrPSZ9rRaDsZHIlw/CkgbO2MJ68ETS/dapucXgLeo3u+SNv
+         ZmwArlEI4Kzblw07mdn3FAyrUfRAMH6SuycJRNcre5rNGITQYSelHQcFBTTluS6xN6C6
+         a+ADVlumVmrqNKkV3lJdbtYi+KIsdlUnUeNQc0dtT//JepgPRLMb/I7tHlSKwBRnQeiu
+         4sCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HTou0WUXzDf0o0mQsx/duwk3hrNBz9rboYojoyLD5HQ=;
-        b=hd+pRQpSJw0BAsda3XsFO7HqelwXO9pzDH3forsHROmKmseZBYhMXlNJGU8KYJJwNG
-         iW8gUxQQD8C0HcOz52MD31WQlWhZ1XEyZPFzvefyeF1qjty6rMvfIXZIHrlDZxh8xPqD
-         voFk/z4DJ3T0cYM+0972EeJqKvDtBq4GFYCmdGESkp+Qy+0vX5XMzxns4Th9XoDQAcdY
-         XtEzaxH/9hp6M6buZNruWSkhw8dTRHjsmqzuMPLsuqas5dGQRSptohnbhAiyxBnob4V/
-         htFftuQ5XFzIDoZIu/ZT+6WkWAJgjSogozzqMhBAuEJgY+N37ELMJtRgv9Q2oYSe5t7w
-         /yCQ==
-X-Gm-Message-State: AOAM532Hdjwb0tHZpKW899AHLDbfWri5osC2NMWOKo1v0kf7RNZYa7p8
-        BpxPidl7NodO+wIyIIf9w5s=
-X-Google-Smtp-Source: ABdhPJxSr2e4My6HF39ER0wjT+rTL2Jx/3tBpkFRC1TW2tLEbOFEbU7rgeg3puCqKKnn2RGsFxr8fw==
-X-Received: by 2002:a37:8d85:: with SMTP id p127mr3040499qkd.35.1589959767869;
-        Wed, 20 May 2020 00:29:27 -0700 (PDT)
-Received: from ict14-OptiPlex-980 ([178.23.248.46])
-        by smtp.gmail.com with ESMTPSA id c26sm1551092qkm.98.2020.05.20.00.29.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 20 May 2020 00:29:27 -0700 (PDT)
-Date:   Wed, 20 May 2020 09:29:22 +0200
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=gaIm9s4mEnVH3V4H05vGC7PBgBmldd3HetRyrOGTO80=;
+        b=hzjX0lRaQAMTJasA4c8cy6H9KoA0rB63lKhJQb1YDpaeQj5UPKJ9Kf/JPymqk21o3/
+         DSnOf0lzMY4/ew1jmlDbCV1AeVghrwe+Wkv2Tpi5L4Sjrs9ZE2vviecrBW7hScyT7RjH
+         8vhRyKth5yRoibSfisZFqYpvlNaqV1Yp4Ggxipqb1E361WnXSXZtrevAOpjT4A58i4Wo
+         RkhlvprT1mq8nkVIcvZ2mhqhXOBh9UHBFcea+5/l4a9FJUur8rsgsUvHSu2BV5OgvXE7
+         HGE4MDCdAUi3o1mBypa5B5PwXZxEbT1UEo2ERNIrDivyCZGd3ir88G2wRASyiLt1yrPv
+         vMow==
+X-Gm-Message-State: AOAM531iumxRLr5PC+uiERO8r+aS6K5mcbKf00QrTieCFWmr+fI5lMa+
+        8t1k/R6bctKLQUXyzKFVDJa6iEVxb9+lkQ==
+X-Google-Smtp-Source: ABdhPJx7KDZ/cCn0kDH5eo1sxLGrfcympYeUIlyP1sLo07ELMWIpOYrAfxUorYSkK5wgsHqFgOYr0Q==
+X-Received: by 2002:ad4:5282:: with SMTP id v2mr3362063qvr.167.1589959903328;
+        Wed, 20 May 2020 00:31:43 -0700 (PDT)
+Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
+        by smtp.googlemail.com with ESMTPSA id w9sm1702540qtn.29.2020.05.20.00.31.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2020 00:31:42 -0700 (PDT)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+To:     linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Allison Randal <allison@lohutok.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE BINDINGS),
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: imu: bmi160: convert txt format
- to yaml
-Message-ID: <20200520072922.GG3361@ict14-OptiPlex-980>
-References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
- <20200519075111.6356-2-jonathan.albrieux@gmail.com>
- <20200519182028.GB342367@bogus>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200519182028.GB342367@bogus>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH v4 0/4] iio: magnetometer: ak8975: Add gpio reset support
+Date:   Wed, 20 May 2020 09:31:12 +0200
+Message-Id: <20200520073125.30808-1-jonathan.albrieux@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 19, 2020 at 12:20:28PM -0600, Rob Herring wrote:
-> On Tue, May 19, 2020 at 09:50:57AM +0200, Jonathan Albrieux wrote:
-> > Converts documentation from txt format to yaml 
-> > 
-> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> > ---
-> >  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
-> >  .../devicetree/bindings/iio/imu/bmi160.yaml   | 84 +++++++++++++++++++
-> >  2 files changed, 84 insertions(+), 37 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
-> >  create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-> 
-> Use compatible string for filename: bosch,bmi160.yaml
->
+v4:
+ - fix some typo
+ - use gpio's dt-bindings for more clarity in documentation
+ - set compatible properties without vendor prefix as deprecated
 
-Ok thank you, will change filename.
- 
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
-> > deleted file mode 100644
-> > index 900c169de00f..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
-> > +++ /dev/null
-> > @@ -1,37 +0,0 @@
-> > -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
-> > -and externally connectable Magnetometer
-> > -
-> > -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
-> > -
-> > -Required properties:
-> > - - compatible : should be "bosch,bmi160"
-> > - - reg : the I2C address or SPI chip select number of the sensor
-> > - - spi-max-frequency : set maximum clock frequency (only for SPI)
-> > -
-> > -Optional properties:
-> > - - interrupts : interrupt mapping for IRQ
-> > - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
-> > -   input, set to "INT2" if INT2 pin should be used instead
-> > - - drive-open-drain : set if the specified interrupt pin should be configured as
-> > -   open drain. If not set, defaults to push-pull.
-> > -
-> > -Examples:
-> > -
-> > -bmi160@68 {
-> > -	compatible = "bosch,bmi160";
-> > -	reg = <0x68>;
-> > -
-> > -	interrupt-parent = <&gpio4>;
-> > -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
-> > -	interrupt-names = "INT1";
-> > -};
-> > -
-> > -bmi160@0 {
-> > -	compatible = "bosch,bmi160";
-> > -	reg = <0>;
-> > -	spi-max-frequency = <10000000>;
-> > -
-> > -	interrupt-parent = <&gpio2>;
-> > -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-> > -	interrupt-names = "INT2";
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-> > new file mode 100644
-> > index 000000000000..6b464ce5ed0b
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
-> > @@ -0,0 +1,84 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/imu/bmi160.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Bosch BMI160
-> > +
-> > +maintainers:
-> > +  - can't find a mantainer, author is Daniel Baluta <daniel.baluta@intel.com>
-> 
-> Would help to Cc him perhaps.
-> 
+v3:
+ - fix patch messages style
+ - align reset gpio comment to kernel doc reccomendation
+ - introduce changelog.
+https://lore.kernel.org/linux-iio/20200519124402.26076-1-jonathan.albrieux@gmail.com/
 
-Thank you, I will add him too on the next version.
+v2:
+ - rewording of reset gpio comment and patch messages to better clarify
+   reset gpio behaviour.
+https://lore.kernel.org/linux-iio/20200518133645.19127-1-jonathan.albrieux@gmail.com/
 
-> > +
-> > +description: |
-> > +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
-> > +  connectable Magnetometer
-> > +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: bosch,bmi160
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +    description: the I2C address or SPI chip select number of the sensor
-> > +
-> > +  spi-max-frequency:
-> > +    maxItems: 1
-> > +    description: set maximum clock frequency (required only for SPI)
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +    description: interrupt mapping for IRQ
-> 
-> No need for description if not adding anything unique for this device.
-> 
+v1:
+ - initial patch submission.
+https://lore.kernel.org/linux-iio/20200519065749.4624-1-jonathan.albrieux@gmail.com/
 
-Will remove it then.
+Convert documentation from txt format to yaml. Add documentation about
+reset-gpio.
 
-> > +
-> > +  interrupt-names:
-> > +    minItems: 1
-> > +    maxItems: 1
-> > +    items:
-> > +      enum:
-> > +        - INT1
-> > +        - INT2
-> 
-> Just the enum is enough.
-> 
+Deassert reset on ak8975_power_on(), assert reset on ak8975_power_off().
 
-Ok, will clean this.
+Without reset's deassertion during ak8975_power_on(), driver's probe fails
+on ak8975_who_i_am() while checking for device identity for AK09911 chip.
 
-> > +    description: |
-> > +      set to "INT1" if INT1 pin should be used as interrupt input, set
-> > +      to "INT2" if INT2 pin should be used instead
-> > +
-> > +  drive-open-drain:
-> > +    description: |
-> > +      set if the specified interrupt pin should be configured as
-> > +      open drain. If not set, defaults to push-pull.
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    // Example for I2C
-> > +    i2c@78b7000 {
-> > +        reg = <0x78b6000 0x600>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        bmi160@68 {
-> > +                compatible = "bosch,bmi160";
-> > +                reg = <0x68>;
-> > +                interrupt-parent = <&gpio4>;
-> > +                interrupts = <12 1>;
-> > +                interrupt-names = "INT1";
-> > +        };
-> > +  - |
-> > +    // Example for SPI
-> > +    spi@78b7000 {
-> > +        reg = <0x78b7000 0x600>,
-> > +              <0x7884000 0x23000>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        bmi160@0 {
-> > +                compatible = "bosch,bmi160";
-> > +                reg = <0>;
-> > +                spi-max-frequency = <10000000>;
-> > +                interrupt-parent = <&gpio2>;
-> > +                interrupts = <12 1>;
-> > +                interrupt-names = "INT2";
-> > +        };
-> > +    };
-> > -- 
-> > 2.17.1
-> > 
+AK09911 has an active low reset gpio to handle register's reset.
+AK09911 datasheet says that, if not used, reset pin should be connected
+to VID. This patch emulates this situation.
 
-Thank you for your help,
+Jonathan Albrieux (4):
+  dt-bindings: iio: magnetometer: ak8975: convert txt format to yaml
+  dt-bindings: iio: magnetometer: ak8975: add gpio reset support
+  iio: magnetometer: ak8975: Fix typo, uniform measurement unit style
+  iio: magnetometer: ak8975: Add gpio reset support
 
-Best regards,
-Jonathan Albrieux
+ .../bindings/iio/magnetometer/ak8975.txt      | 30 --------
+ .../bindings/iio/magnetometer/ak8975.yaml     | 77 +++++++++++++++++++
+ drivers/iio/magnetometer/ak8975.c             | 22 +++++-
+ 3 files changed, 97 insertions(+), 32 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+
+-- 
+2.17.1
+

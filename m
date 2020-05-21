@@ -2,51 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0CC1DD5D8
-	for <lists+linux-iio@lfdr.de>; Thu, 21 May 2020 20:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90531DD5F2
+	for <lists+linux-iio@lfdr.de>; Thu, 21 May 2020 20:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729082AbgEUST1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 May 2020 14:19:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37138 "EHLO mail.kernel.org"
+        id S1728757AbgEUS1l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 May 2020 14:27:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728670AbgEUST1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 21 May 2020 14:19:27 -0400
+        id S1728240AbgEUS1l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 21 May 2020 14:27:41 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52A4E20738;
-        Thu, 21 May 2020 18:19:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 64125207D3;
+        Thu, 21 May 2020 18:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590085166;
-        bh=N5CsmBgzgRJ1qoSjQJyCqgE9IOj3hAVxpxWnjwMHcOw=;
+        s=default; t=1590085661;
+        bh=AJq8D1sezcTscWFiqfDbRHe+iBg/UCAk68lU7qLM8lE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Sid+RAofpJhvVSePV8bzGp+OZMlEJfxE7e+9xOWfDmVLegyKQnOgPc3nSTCPsC5hP
-         cA1F18rZmRreoph12CkIhK+B3aUHnjMRyG2RXLt2QMgmjtjzVIok24QNlTbalhEa/0
-         Yn+IsceiGCdvPfkRTpU8D7Sf3FEzdiKaCkv9zVdc=
-Date:   Thu, 21 May 2020 19:19:21 +0100
+        b=w8sYnXA6MaeQs1jOkoEPeFI9nt+VIVx0taLtldCp9peobh9Nsgf6zzDWVVcshMKmR
+         NsPgqmkPIgWI9s8XE6GhPILhnuDflKr5MnC0oHiDJNW4pe1dUzA6AIg7fv0WBZytdF
+         k7Z0JwLXj4i+nMfsRM7qvTx4vz5N9EMPqfluuAN8=
+Date:   Thu, 21 May 2020 19:27:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "alexandre.torgue@st.com" <alexandre.torgue@st.com>,
-        "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "ak@it-klinger.de" <ak@it-klinger.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eugen.hristev@microchip.com" <eugen.hristev@microchip.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 3/8] iio: at91_adc: pass ref to IIO device via param
- for int function
-Message-ID: <20200521191921.11473cba@archlinux>
-In-Reply-To: <99993df0dce7f7561e9659985265d6c1f5839208.camel@analog.com>
-References: <20200514131710.84201-1-alexandru.ardelean@analog.com>
-        <20200514131710.84201-4-alexandru.ardelean@analog.com>
-        <20200516181749.243c9515@archlinux>
-        <99993df0dce7f7561e9659985265d6c1f5839208.camel@analog.com>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-kernel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: imu: bmi160: convert txt
+ format to yaml
+Message-ID: <20200521192736.4818f17b@archlinux>
+In-Reply-To: <20200520072423.GF3361@ict14-OptiPlex-980>
+References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
+        <20200519075111.6356-2-jonathan.albrieux@gmail.com>
+        <20200519184933.00003f00@Huawei.com>
+        <20200520072423.GF3361@ict14-OptiPlex-980>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,92 +52,121 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 18 May 2020 08:32:11 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Wed, 20 May 2020 09:24:23 +0200
+Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
 
-> On Sat, 2020-05-16 at 18:17 +0100, Jonathan Cameron wrote:
-> > [External]
-> > 
-> > On Thu, 14 May 2020 16:17:05 +0300
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> On Tue, May 19, 2020 at 06:49:33PM +0100, Jonathan Cameron wrote:
+> > On Tue, 19 May 2020 09:50:57 +0200
+> > Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
 > >   
-> > > Since there will be some changes to how iio_priv_to_dev() is implemented,
-> > > it could be that the helper becomes a bit slower, as it will be hidden away
-> > > in the IIO core.
+> > > Converts documentation from txt format to yaml 
 > > > 
-> > > For this driver, the IIO device can be passed directly as a parameter to
-> > > the at91_ts_sample() function, thus making it immune to the change of
-> > > iio_priv_to_dev().
-> > > The function gets called in an interrupt context.
+> > > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
+> > >  .../devicetree/bindings/iio/imu/bmi160.yaml   | 84 +++++++++++++++++++
+> > >  2 files changed, 84 insertions(+), 37 deletions(-)
+> > >  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.yaml
 > > > 
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> > I wonder. Should we just pass the struct device?  It's only used for
-> > error printing I think, so we could make that explicit.  
+> > > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> > > deleted file mode 100644
+> > > index 900c169de00f..000000000000
+> > > --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> > > +++ /dev/null
+> > > @@ -1,37 +0,0 @@
+> > > -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
+> > > -and externally connectable Magnetometer
+> > > -
+> > > -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> > > -
+> > > -Required properties:
+> > > - - compatible : should be "bosch,bmi160"
+> > > - - reg : the I2C address or SPI chip select number of the sensor
+> > > - - spi-max-frequency : set maximum clock frequency (only for SPI)
+> > > -
+> > > -Optional properties:
+> > > - - interrupts : interrupt mapping for IRQ
+> > > - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
+> > > -   input, set to "INT2" if INT2 pin should be used instead
+> > > - - drive-open-drain : set if the specified interrupt pin should be configured as
+> > > -   open drain. If not set, defaults to push-pull.
+> > > -
+> > > -Examples:
+> > > -
+> > > -bmi160@68 {
+> > > -	compatible = "bosch,bmi160";
+> > > -	reg = <0x68>;
+> > > -
+> > > -	interrupt-parent = <&gpio4>;
+> > > -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+> > > -	interrupt-names = "INT1";
+> > > -};
+> > > -
+> > > -bmi160@0 {
+> > > -	compatible = "bosch,bmi160";
+> > > -	reg = <0>;
+> > > -	spi-max-frequency = <10000000>;
+> > > -
+> > > -	interrupt-parent = <&gpio2>;
+> > > -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> > > -	interrupt-names = "INT2";
+> > > -};
+> > > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+> > > new file mode 100644
+> > > index 000000000000..6b464ce5ed0b
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/imu/bmi160.yaml
+> > > @@ -0,0 +1,84 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/imu/bmi160.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Bosch BMI160
+> > > +
+> > > +maintainers:
+> > > +  - can't find a mantainer, author is Daniel Baluta <daniel.baluta@intel.com>  
+> > 
+> > Daniel is still active in the kernel, just not at Intel any more. +CC
+> >   
 > 
-> I was also thinking that for this series, [for some drivers] it would make sense
-> to put a reference to indio_dev on the state-struct; and just return it.
-> I'll see about it.
-> I am feeling that sometimes these IIO core cleanups end up being more than I
-> want to do. But I'll try to see about it. Maybe I can make time or delegate some
-> of this.
-
-Absolutely understood.  No problem if you don't have time / energy to
-do this stuff.  I very much appreciate it when you do, but I know how
-unrewarding it can be!
-
+> Oh ok thank you! Daniel are you still maintaining this driver?
 > 
-> My personal interest with them, is to reduce my complaints during reviews.
-> People starting to write IIO drivers: well, I can see their frustration [on
-> their faces] when I complain that they shouldn't use something, and they copied
-> it from somewhere.
+> > > +
+> > > +description: |
+> > > +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
+> > > +  connectable Magnetometer
+> > > +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: bosch,bmi160
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +    description: the I2C address or SPI chip select number of the sensor  
+> > 
+> > As standard for i2c and spi, usually no need to have a description line for
+> > this element.
+> >   
 > 
+> Thank you, will remove the description then.
+> 
+> > > +
+> > > +  spi-max-frequency:
+> > > +    maxItems: 1
+> > > +    description: set maximum clock frequency (required only for SPI)  
+> > 
+> > Standard spi binding.  Probably doesn't need to be included here.
+> >   
+> 
+> So should I completely remove it from properties?
 
-That's more or less the only reason I write IIO patches currently!
-Though I get to mostly avoid seeing the faces of those who fall
-into the traps of old code we should have tidied up years ago :(
-Not gotten near any of new hardware pile of IIO hardware in a long time.
-Plenty of other new hardware, but not IIO stuff!
+Yes
+
+
+Thanks,
 
 Jonathan
-
-> 
-> > 
-> > I'm not that bothered either way though.
-> > 
-> > Jonathan
-> >   
-> > > ---
-> > >  drivers/iio/adc/at91_adc.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-> > > index 0368b6dc6d60..5999defe47cd 100644
-> > > --- a/drivers/iio/adc/at91_adc.c
-> > > +++ b/drivers/iio/adc/at91_adc.c
-> > > @@ -287,13 +287,12 @@ static void handle_adc_eoc_trigger(int irq, struct
-> > > iio_dev *idev)
-> > >  	}
-> > >  }
-> > >  
-> > > -static int at91_ts_sample(struct at91_adc_state *st)
-> > > +static int at91_ts_sample(struct iio_dev *idev, struct at91_adc_state *st)
-> > >  {
-> > >  	unsigned int xscale, yscale, reg, z1, z2;
-> > >  	unsigned int x, y, pres, xpos, ypos;
-> > >  	unsigned int rxp = 1;
-> > >  	unsigned int factor = 1000;
-> > > -	struct iio_dev *idev = iio_priv_to_dev(st);
-> > >  
-> > >  	unsigned int xyz_mask_bits = st->res;
-> > >  	unsigned int xyz_mask = (1 << xyz_mask_bits) - 1;
-> > > @@ -449,7 +448,7 @@ static irqreturn_t at91_adc_9x5_interrupt(int irq, void
-> > > *private)
-> > >  
-> > >  		if (status & AT91_ADC_ISR_PENS) {
-> > >  			/* validate data by pen contact */
-> > > -			at91_ts_sample(st);
-> > > +			at91_ts_sample(idev, st);
-> > >  		} else {
-> > >  			/* triggered by event that is no pen contact, just read
-> > >  			 * them to clean the interrupt and discard all.  
-

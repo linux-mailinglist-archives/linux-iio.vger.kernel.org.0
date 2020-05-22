@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9151DE4BF
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 12:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E01E1DE4C9
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 12:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728641AbgEVKrA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 06:47:00 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30112 "EHLO
+        id S1729444AbgEVKrX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 06:47:23 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:43706 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728606AbgEVKrA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 06:47:00 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04MAkjCC023175;
-        Fri, 22 May 2020 06:46:45 -0400
+        by vger.kernel.org with ESMTP id S1728606AbgEVKrW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 06:47:22 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04MAb6YJ020019;
+        Fri, 22 May 2020 06:46:50 -0400
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 312a17e5wg-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 312d365gde-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 May 2020 06:46:45 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04MAki6W064254
+        Fri, 22 May 2020 06:46:49 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04MAkl5T064269
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 22 May 2020 06:46:44 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 22 May
- 2020 06:46:43 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 22 May 2020 06:46:43 -0400
+        Fri, 22 May 2020 06:46:48 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 03:46:46 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 03:46:32 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 22 May 2020 03:46:45 -0700
 Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04MAkaQq011641;
-        Fri, 22 May 2020 06:46:39 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04MAkaQr011641;
+        Fri, 22 May 2020 06:46:41 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
@@ -40,10 +44,11 @@ CC:     <jic23@kernel.org>, <shawnguo@kernel.org>,
         <s.hauer@pengutronix.de>, <mcoquelin.stm32@gmail.com>,
         <alexandre.torgue@st.com>, <linus.walleij@linaro.org>,
         <lorenzo.bianconi83@gmail.com>, <songqiang1304521@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 2/3] iio: adc: at91-sama5d2_adc: remove predisable/postenable hooks
-Date:   Fri, 22 May 2020 13:46:31 +0300
-Message-ID: <20200522104632.517470-2-alexandru.ardelean@analog.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Alexandru Ardelean" <alexandru.ardelean@analog.com>
+Subject: [PATCH 3/3] iio: remove iio_triggered_buffer_postenable()/iio_triggered_buffer_predisable()
+Date:   Fri, 22 May 2020 13:46:32 +0300
+Message-ID: <20200522104632.517470-3-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200522104632.517470-1-alexandru.ardelean@analog.com>
 References: <20200522104632.517470-1-alexandru.ardelean@analog.com>
@@ -53,66 +58,1275 @@ Content-Type:   text/plain; charset=US-ASCII
 X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
  definitions=2020-05-22_05:2020-05-22,2020-05-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=870 spamscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 lowpriorityscore=0 cotscore=-2147483648
- suspectscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005220088
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005220087
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This should be squashed into the first patch, but it's the more peculiar of
-the changes.
-I am not sure whether this is correct. The touchscreen channels shouldn't
-be enabled by the IIO framework. So, we may need a different way to handle
-those if needed.
+From: Lars-Peter Clausen <lars@metafoo.de>
 
+This patch should be squashed into the first one, as the first one is
+breaking the build (intentionally) to make the IIO core files easier to
+review.
+
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/iio/accel/adxl372.c                 | 20 +++--------
+ drivers/iio/accel/bmc150-accel-core.c       |  4 +--
+ drivers/iio/accel/kxcjk-1013.c              |  2 --
+ drivers/iio/accel/kxsd9.c                   |  2 --
+ drivers/iio/accel/st_accel_buffer.c         | 16 +++------
+ drivers/iio/accel/stk8312.c                 |  2 --
+ drivers/iio/accel/stk8ba50.c                |  2 --
+ drivers/iio/adc/ad7266.c                    |  2 --
+ drivers/iio/adc/ad7606.c                    |  3 +-
+ drivers/iio/adc/ad7766.c                    |  2 --
+ drivers/iio/adc/ad7768-1.c                  |  8 +----
+ drivers/iio/adc/ad7887.c                    |  2 --
+ drivers/iio/adc/ad_sigma_delta.c            |  5 ---
+ drivers/iio/adc/dln2-adc.c                  | 12 +------
+ drivers/iio/adc/mxs-lradc-adc.c             |  2 --
+ drivers/iio/adc/stm32-adc.c                 | 36 +++----------------
+ drivers/iio/adc/stm32-dfsdm-adc.c           | 39 +++------------------
+ drivers/iio/adc/ti-adc084s021.c             |  2 --
+ drivers/iio/adc/ti-ads1015.c                |  2 --
+ drivers/iio/adc/vf610_adc.c                 |  7 +---
+ drivers/iio/adc/xilinx-xadc-core.c          |  2 --
+ drivers/iio/chemical/atlas-sensor.c         |  6 +---
+ drivers/iio/dummy/iio_simple_dummy_buffer.c | 14 --------
+ drivers/iio/gyro/bmg160_core.c              |  2 --
+ drivers/iio/gyro/mpu3050-core.c             |  2 --
+ drivers/iio/gyro/st_gyro_buffer.c           | 15 ++------
+ drivers/iio/humidity/hdc100x.c              | 12 +------
+ drivers/iio/humidity/hts221_buffer.c        |  2 --
+ drivers/iio/light/gp2ap020a00f.c            | 10 ------
+ drivers/iio/light/isl29125.c                | 20 ++---------
+ drivers/iio/light/rpr0521.c                 |  2 --
+ drivers/iio/light/si1145.c                  |  2 --
+ drivers/iio/light/st_uvis25_core.c          |  2 --
+ drivers/iio/light/tcs3414.c                 | 20 ++---------
+ drivers/iio/light/vcnl4000.c                | 29 +++++----------
+ drivers/iio/magnetometer/bmc150_magn.c      |  2 --
+ drivers/iio/magnetometer/rm3100-core.c      |  2 --
+ drivers/iio/magnetometer/st_magn_buffer.c   | 26 ++------------
+ drivers/iio/potentiostat/lmp91000.c         | 13 ++-----
+ drivers/iio/pressure/st_pressure_buffer.c   | 26 ++------------
+ drivers/iio/pressure/zpa2326.c              | 18 +++-------
+ drivers/iio/proximity/sx9310.c              |  2 --
+ drivers/iio/proximity/sx9500.c              |  9 -----
+ 43 files changed, 50 insertions(+), 358 deletions(-)
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 9abbbdcc7420..f71071096392 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -937,14 +937,6 @@ static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+index 60daf04ce188..53697ca09a22 100644
+--- a/drivers/iio/accel/adxl372.c
++++ b/drivers/iio/accel/adxl372.c
+@@ -795,13 +795,9 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
+ 	unsigned int mask;
+ 	int i, ret;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adxl372_set_interrupts(st, ADXL372_INT1_MAP_FIFO_FULL_MSK, 0);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
+ 
+ 	mask = *indio_dev->active_scan_mask;
+ 
+@@ -810,10 +806,8 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
+ 			break;
+ 	}
+ 
+-	if (i == ARRAY_SIZE(adxl372_axis_lookup_table)) {
+-		ret = -EINVAL;
+-		goto err;
+-	}
++	if (i == ARRAY_SIZE(adxl372_axis_lookup_table))
++		return -EINVAL;
+ 
+ 	st->fifo_format = adxl372_axis_lookup_table[i].fifo_format;
+ 	st->fifo_set_size = bitmap_weight(indio_dev->active_scan_mask,
+@@ -833,14 +827,10 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
+ 	if (ret < 0) {
+ 		st->fifo_mode = ADXL372_FIFO_BYPASSED;
+ 		adxl372_set_interrupts(st, 0, 0);
+-		goto err;
++		return ret;
+ 	}
+ 
  	return 0;
+-
+-err:
+-	iio_triggered_buffer_predisable(indio_dev);
+-	return ret;
  }
  
--static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
--{
--	if (at91_adc_current_chan_is_touch(indio_dev))
--		return 0;
--
--	return iio_triggered_buffer_postenable(indio_dev);
--}
--
- static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct at91_adc_state *st = iio_priv(indio_dev);
-@@ -995,19 +987,9 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- 	return 0;
- }
+ static int adxl372_buffer_predisable(struct iio_dev *indio_dev)
+@@ -851,7 +841,7 @@ static int adxl372_buffer_predisable(struct iio_dev *indio_dev)
+ 	st->fifo_mode = ADXL372_FIFO_BYPASSED;
+ 	adxl372_configure_fifo(st);
  
--static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
--{
--	if (at91_adc_current_chan_is_touch(indio_dev))
--		return 0;
--
 -	return iio_triggered_buffer_predisable(indio_dev);
--}
--
- static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
- 	.preenable = &at91_adc_buffer_preenable,
- 	.postdisable = &at91_adc_buffer_postdisable,
--	.postenable = &at91_adc_buffer_postenable,
--	.predisable = &at91_adc_buffer_predisable,
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops adxl372_buffer_ops = {
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 121b4e89f038..a2ff7033202d 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -1411,7 +1411,7 @@ static int bmc150_accel_buffer_postenable(struct iio_dev *indio_dev)
+ 	int ret = 0;
+ 
+ 	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
+-		return iio_triggered_buffer_postenable(indio_dev);
++		return 0;
+ 
+ 	mutex_lock(&data->mutex);
+ 
+@@ -1443,7 +1443,7 @@ static int bmc150_accel_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct bmc150_accel_data *data = iio_priv(indio_dev);
+ 
+ 	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
+-		return iio_triggered_buffer_predisable(indio_dev);
++		return 0;
+ 
+ 	mutex_lock(&data->mutex);
+ 
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index c9924a65c32a..209b0e189fd4 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1027,9 +1027,7 @@ static const struct iio_chan_spec kxcjk1013_channels[] = {
+ 
+ static const struct iio_buffer_setup_ops kxcjk1013_buffer_setup_ops = {
+ 	.preenable		= kxcjk1013_buffer_preenable,
+-	.postenable		= iio_triggered_buffer_postenable,
+ 	.postdisable		= kxcjk1013_buffer_postdisable,
+-	.predisable		= iio_triggered_buffer_predisable,
  };
  
- static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *indio,
+ static const struct iio_info kxcjk1013_info = {
+diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
+index 0b876b2dc5bd..39da8a090822 100644
+--- a/drivers/iio/accel/kxsd9.c
++++ b/drivers/iio/accel/kxsd9.c
+@@ -252,8 +252,6 @@ static int kxsd9_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops kxsd9_buffer_setup_ops = {
+ 	.preenable = kxsd9_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = kxsd9_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
+index b5c814ef1637..c87f9a7d2453 100644
+--- a/drivers/iio/accel/st_accel_buffer.c
++++ b/drivers/iio/accel/st_accel_buffer.c
+@@ -33,13 +33,9 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	int err;
+ 
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err < 0)
+-		return err;
+-
+ 	err = st_sensors_set_axis_enable(indio_dev, indio_dev->active_scan_mask[0]);
+ 	if (err < 0)
+-		goto st_accel_buffer_predisable;
++		return err;
+ 
+ 	err = st_sensors_set_enable(indio_dev, true);
+ 	if (err < 0)
+@@ -49,8 +45,6 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ st_accel_buffer_enable_all_axis:
+ 	st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+-st_accel_buffer_predisable:
+-	iio_triggered_buffer_predisable(indio_dev);
+ 	return err;
+ }
+ 
+@@ -60,12 +54,10 @@ static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	err = st_sensors_set_enable(indio_dev, false);
+ 	if (err < 0)
+-		goto st_accel_buffer_predisable;
+-
+-	err = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
++		return err;
+ 
+-st_accel_buffer_predisable:
+-	err2 = iio_triggered_buffer_predisable(indio_dev);
++	err2 = st_sensors_set_axis_enable(indio_dev,
++					  ST_SENSORS_ENABLE_ALL_AXIS);
+ 	if (!err)
+ 		err = err2;
+ 
+diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
+index 58c160ccdee7..a7684545f12a 100644
+--- a/drivers/iio/accel/stk8312.c
++++ b/drivers/iio/accel/stk8312.c
+@@ -492,8 +492,6 @@ static int stk8312_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops stk8312_buffer_setup_ops = {
+ 	.preenable   = stk8312_buffer_preenable,
+-	.postenable  = iio_triggered_buffer_postenable,
+-	.predisable  = iio_triggered_buffer_predisable,
+ 	.postdisable = stk8312_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
+index c70ddec29eb4..1eec8dfceefe 100644
+--- a/drivers/iio/accel/stk8ba50.c
++++ b/drivers/iio/accel/stk8ba50.c
+@@ -376,8 +376,6 @@ static int stk8ba50_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops stk8ba50_buffer_setup_ops = {
+ 	.preenable   = stk8ba50_buffer_preenable,
+-	.postenable  = iio_triggered_buffer_postenable,
+-	.predisable  = iio_triggered_buffer_predisable,
+ 	.postdisable = stk8ba50_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+index c8524f098883..d365c89d34ab 100644
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -74,8 +74,6 @@ static int ad7266_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
+ 	.preenable = &ad7266_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &ad7266_postdisable,
+ };
+ 
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index e4683a68522a..a88e07869a69 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -499,7 +499,6 @@ static int ad7606_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+-	iio_triggered_buffer_postenable(indio_dev);
+ 	gpiod_set_value(st->gpio_convst, 1);
+ 
+ 	return 0;
+@@ -511,7 +510,7 @@ static int ad7606_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	gpiod_set_value(st->gpio_convst, 0);
+ 
+-	return iio_triggered_buffer_predisable(indio_dev);
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops ad7606_buffer_ops = {
+diff --git a/drivers/iio/adc/ad7766.c b/drivers/iio/adc/ad7766.c
+index bc388ea41754..0b6d27cb5f81 100644
+--- a/drivers/iio/adc/ad7766.c
++++ b/drivers/iio/adc/ad7766.c
+@@ -178,8 +178,6 @@ static const struct ad7766_chip_info ad7766_chip_info[] = {
+ 
+ static const struct iio_buffer_setup_ops ad7766_buffer_setup_ops = {
+ 	.preenable = &ad7766_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &ad7766_postdisable,
+ };
+ 
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 0d132708c429..addd802ed5d7 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -490,7 +490,6 @@ static int ad7768_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct ad7768_state *st = iio_priv(indio_dev);
+ 
+-	iio_triggered_buffer_postenable(indio_dev);
+ 	/*
+ 	 * Write a 1 to the LSB of the INTERFACE_FORMAT register to enter
+ 	 * continuous read mode. Subsequent data reads do not require an
+@@ -502,17 +501,12 @@ static int ad7768_buffer_postenable(struct iio_dev *indio_dev)
+ static int ad7768_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct ad7768_state *st = iio_priv(indio_dev);
+-	int ret;
+ 
+ 	/*
+ 	 * To exit continuous read mode, perform a single read of the ADC_DATA
+ 	 * reg (0x2C), which allows further configuration of the device.
+ 	 */
+-	ret = ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
+-	if (ret < 0)
+-		return ret;
+-
+-	return iio_triggered_buffer_predisable(indio_dev);
++	return ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
+ }
+ 
+ static const struct iio_buffer_setup_ops ad7768_buffer_ops = {
+diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
+index c6a3428e950a..7ce665601ce4 100644
+--- a/drivers/iio/adc/ad7887.c
++++ b/drivers/iio/adc/ad7887.c
+@@ -136,8 +136,6 @@ static irqreturn_t ad7887_trigger_handler(int irq, void *p)
+ 
+ static const struct iio_buffer_setup_ops ad7887_ring_setup_ops = {
+ 	.preenable = &ad7887_ring_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &ad7887_ring_postdisable,
+ };
+ 
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index dd3d54b3bc8b..3554ee6ee099 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -345,10 +345,6 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 	unsigned int channel;
+ 	int ret;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	channel = find_first_bit(indio_dev->active_scan_mask,
+ 				 indio_dev->masklength);
+ 	ret = ad_sigma_delta_set_channel(sigma_delta,
+@@ -441,7 +437,6 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ 
+ static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
+ 	.postenable = &ad_sd_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &ad_sd_buffer_postdisable,
+ 	.validate_scan_mask = &iio_validate_scan_mask_onehot,
+ };
+diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+index 65c7c9329b1c..e4616b4a790a 100644
+--- a/drivers/iio/adc/dln2-adc.c
++++ b/drivers/iio/adc/dln2-adc.c
+@@ -524,10 +524,6 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 	u16 conflict;
+ 	unsigned int trigger_chan;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	mutex_lock(&dln2->mutex);
+ 
+ 	/* Enable ADC */
+@@ -541,7 +537,6 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 				(int)conflict);
+ 			ret = -EBUSY;
+ 		}
+-		iio_triggered_buffer_predisable(indio_dev);
+ 		return ret;
+ 	}
+ 
+@@ -555,7 +550,6 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 		mutex_unlock(&dln2->mutex);
+ 		if (ret < 0) {
+ 			dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+-			iio_triggered_buffer_predisable(indio_dev);
+ 			return ret;
+ 		}
+ 	} else {
+@@ -568,7 +562,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+ {
+-	int ret, ret2;
++	int ret;
+ 	struct dln2_adc *dln2 = iio_priv(indio_dev);
+ 
+ 	mutex_lock(&dln2->mutex);
+@@ -586,10 +580,6 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (ret < 0)
+ 		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+ 
+-	ret2 = iio_triggered_buffer_predisable(indio_dev);
+-	if (ret == 0)
+-		ret = ret2;
+-
+ 	return ret;
+ }
+ 
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index 9d2f74c2489a..7f49586944a9 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -568,8 +568,6 @@ static bool mxs_lradc_adc_validate_scan_mask(struct iio_dev *iio,
+ 
+ static const struct iio_buffer_setup_ops mxs_lradc_adc_buffer_ops = {
+ 	.preenable = &mxs_lradc_adc_buffer_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &mxs_lradc_adc_buffer_postdisable,
+ 	.validate_scan_mask = &mxs_lradc_adc_validate_scan_mask,
+ };
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index ae622ee6d08c..cbc7f0467ae8 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -1482,7 +1482,7 @@ static int stm32_adc_dma_start(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
++static int stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	struct device *dev = indio_dev->dev.parent;
+@@ -1527,22 +1527,7 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+ 	return ret;
+ }
+ 
+-static int stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+-{
+-	int ret;
+-
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = __stm32_adc_buffer_postenable(indio_dev);
+-	if (ret < 0)
+-		iio_triggered_buffer_predisable(indio_dev);
+-
+-	return ret;
+-}
+-
+-static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
++static int stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	struct device *dev = indio_dev->dev.parent;
+@@ -1561,19 +1546,8 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+-}
+-
+-static int stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+-{
+-	int ret;
+-
+-	__stm32_adc_buffer_predisable(indio_dev);
+-
+-	ret = iio_triggered_buffer_predisable(indio_dev);
+-	if (ret < 0)
+-		dev_err(&indio_dev->dev, "predisable failed\n");
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops stm32_adc_buffer_setup_ops = {
+@@ -2016,7 +1990,7 @@ static int stm32_adc_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+-		__stm32_adc_buffer_predisable(indio_dev);
++		stm32_adc_buffer_predisable(indio_dev);
+ 
+ 	return pm_runtime_force_suspend(dev);
+ }
+@@ -2039,7 +2013,7 @@ static int stm32_adc_resume(struct device *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return __stm32_adc_buffer_postenable(indio_dev);
++	return stm32_adc_buffer_postenable(indio_dev);
+ }
+ #endif
+ 
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 76a60d93fe23..0f652165d781 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -993,7 +993,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
+ 	return 0;
+ }
+ 
+-static int __stm32_dfsdm_postenable(struct iio_dev *indio_dev)
++static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+@@ -1036,30 +1036,7 @@ static int __stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+ 	return ret;
+ }
+ 
+-static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+-{
+-	int ret;
+-
+-	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
+-		ret = iio_triggered_buffer_postenable(indio_dev);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	ret = __stm32_dfsdm_postenable(indio_dev);
+-	if (ret < 0)
+-		goto err_predisable;
+-
+-	return 0;
+-
+-err_predisable:
+-	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
+-		iio_triggered_buffer_predisable(indio_dev);
+-
+-	return ret;
+-}
+-
+-static void __stm32_dfsdm_predisable(struct iio_dev *indio_dev)
++static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 
+@@ -1071,14 +1048,6 @@ static void __stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+ 
+ 	if (adc->hwc)
+ 		iio_hw_consumer_disable(adc->hwc);
+-}
+-
+-static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+-{
+-	__stm32_dfsdm_predisable(indio_dev);
+-
+-	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
+-		iio_triggered_buffer_predisable(indio_dev);
+ 
+ 	return 0;
+ }
+@@ -1667,7 +1636,7 @@ static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+-		__stm32_dfsdm_predisable(indio_dev);
++		stm32_dfsdm_predisable(indio_dev);
+ 
+ 	return 0;
+ }
+@@ -1690,7 +1659,7 @@ static int __maybe_unused stm32_dfsdm_adc_resume(struct device *dev)
+ 	}
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+-		__stm32_dfsdm_postenable(indio_dev);
++		stm32_dfsdm_postenable(indio_dev);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
+index bdedf456ee05..75ec8a21d28e 100644
+--- a/drivers/iio/adc/ti-adc084s021.c
++++ b/drivers/iio/adc/ti-adc084s021.c
+@@ -187,8 +187,6 @@ static const struct iio_info adc084s021_info = {
+ 
+ static const struct iio_buffer_setup_ops adc084s021_buffer_setup_ops = {
+ 	.preenable = adc084s021_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = adc084s021_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 5ea4f45d6bad..efb55c2bccf4 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -788,8 +788,6 @@ static int ads1015_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops ads1015_buffer_setup_ops = {
+ 	.preenable	= ads1015_buffer_preenable,
+-	.postenable	= iio_triggered_buffer_postenable,
+-	.predisable	= iio_triggered_buffer_predisable,
+ 	.postdisable	= ads1015_buffer_postdisable,
+ 	.validate_scan_mask = &iio_validate_scan_mask_onehot,
+ };
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index cb7380bf07ca..72b363ea4074 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -724,13 +724,8 @@ static int vf610_adc_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct vf610_adc *info = iio_priv(indio_dev);
+ 	unsigned int channel;
+-	int ret;
+ 	int val;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	val = readl(info->regs + VF610_REG_ADC_GC);
+ 	val |= VF610_ADC_ADCON;
+ 	writel(val, info->regs + VF610_REG_ADC_GC);
+@@ -761,7 +756,7 @@ static int vf610_adc_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	writel(hc_cfg, info->regs + VF610_REG_ADC_HC0);
+ 
+-	return iio_triggered_buffer_predisable(indio_dev);
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
+diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+index d7fecab9252e..2e81aa390978 100644
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -839,8 +839,6 @@ static int xadc_preenable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops xadc_buffer_ops = {
+ 	.preenable = &xadc_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+ 	.postdisable = &xadc_postdisable,
+ };
+ 
+diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+index a6d996ab9a66..362cf766a79a 100644
+--- a/drivers/iio/chemical/atlas-sensor.c
++++ b/drivers/iio/chemical/atlas-sensor.c
+@@ -398,10 +398,6 @@ static int atlas_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct atlas_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	ret = pm_runtime_get_sync(&data->client->dev);
+ 	if (ret < 0) {
+ 		pm_runtime_put_noidle(&data->client->dev);
+@@ -425,7 +421,7 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	return iio_triggered_buffer_predisable(indio_dev);
++	return 0;
+ }
+ 
+ static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
+diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+index 17606eca42b4..8e13c53d4360 100644
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -99,20 +99,6 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+ }
+ 
+ static const struct iio_buffer_setup_ops iio_simple_dummy_buffer_setup_ops = {
+-	/*
+-	 * iio_triggered_buffer_postenable:
+-	 * Generic function that simply attaches the pollfunc to the trigger.
+-	 * Replace this to mess with hardware state before we attach the
+-	 * trigger.
+-	 */
+-	.postenable = &iio_triggered_buffer_postenable,
+-	/*
+-	 * iio_triggered_buffer_predisable:
+-	 * Generic function that simple detaches the pollfunc from the trigger.
+-	 * Replace this to put hardware state back again after the trigger is
+-	 * detached but before userspace knows we have disabled the ring.
+-	 */
+-	.predisable = &iio_triggered_buffer_predisable,
+ };
+ 
+ int iio_simple_dummy_configure_buffer(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 428ddfc13acb..0d0bfdd6036e 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -1051,8 +1051,6 @@ static int bmg160_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops bmg160_buffer_setup_ops = {
+ 	.preenable = bmg160_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = bmg160_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
+index 8e908a749f95..de1cd17d57f0 100644
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -662,8 +662,6 @@ static int mpu3050_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops mpu3050_buffer_setup_ops = {
+ 	.preenable = mpu3050_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = mpu3050_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/gyro/st_gyro_buffer.c b/drivers/iio/gyro/st_gyro_buffer.c
+index 9c92ff7a82be..7b86502d5da3 100644
+--- a/drivers/iio/gyro/st_gyro_buffer.c
++++ b/drivers/iio/gyro/st_gyro_buffer.c
+@@ -33,13 +33,9 @@ static int st_gyro_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	int err;
+ 
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err < 0)
+-		return err;
+-
+ 	err = st_sensors_set_axis_enable(indio_dev, indio_dev->active_scan_mask[0]);
+ 	if (err < 0)
+-		goto st_gyro_buffer_predisable;
++		return err;
+ 
+ 	err = st_sensors_set_enable(indio_dev, true);
+ 	if (err < 0)
+@@ -49,8 +45,6 @@ static int st_gyro_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ st_gyro_buffer_enable_all_axis:
+ 	st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+-st_gyro_buffer_predisable:
+-	iio_triggered_buffer_predisable(indio_dev);
+ 	return err;
+ }
+ 
+@@ -59,13 +53,8 @@ static int st_gyro_buffer_predisable(struct iio_dev *indio_dev)
+ 	int err, err2;
+ 
+ 	err = st_sensors_set_enable(indio_dev, false);
+-	if (err < 0)
+-		goto st_gyro_buffer_predisable;
+-
+-	err = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+ 
+-st_gyro_buffer_predisable:
+-	err2 = iio_triggered_buffer_predisable(indio_dev);
++	err2 = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+ 	if (!err)
+ 		err = err2;
+ 
+diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+index 7ecd2ffa3132..9243f8546cfb 100644
+--- a/drivers/iio/humidity/hdc100x.c
++++ b/drivers/iio/humidity/hdc100x.c
+@@ -278,17 +278,11 @@ static int hdc100x_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct hdc100x_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	/* Buffer is enabled. First set ACQ Mode, then attach poll func */
+ 	mutex_lock(&data->lock);
+ 	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE,
+ 				    HDC100X_REG_CONFIG_ACQ_MODE);
+ 	mutex_unlock(&data->lock);
+-	if (ret)
+-		iio_triggered_buffer_predisable(indio_dev);
+ 
+ 	return ret;
+ }
+@@ -296,16 +290,12 @@ static int hdc100x_buffer_postenable(struct iio_dev *indio_dev)
+ static int hdc100x_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct hdc100x_data *data = iio_priv(indio_dev);
+-	int ret, ret2;
++	int ret;
+ 
+ 	mutex_lock(&data->lock);
+ 	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE, 0);
+ 	mutex_unlock(&data->lock);
+ 
+-	ret2 = iio_triggered_buffer_predisable(indio_dev);
+-	if (ret == 0)
+-		ret = ret2;
+-
+ 	return ret;
+ }
+ 
+diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
+index 9fb3f33614d4..d18b39f30ea7 100644
+--- a/drivers/iio/humidity/hts221_buffer.c
++++ b/drivers/iio/humidity/hts221_buffer.c
+@@ -153,8 +153,6 @@ static int hts221_buffer_postdisable(struct iio_dev *iio_dev)
+ 
+ static const struct iio_buffer_setup_ops hts221_buffer_ops = {
+ 	.preenable = hts221_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = hts221_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+index 070d4cd0cf54..29d7af33efa1 100644
+--- a/drivers/iio/light/gp2ap020a00f.c
++++ b/drivers/iio/light/gp2ap020a00f.c
+@@ -1390,12 +1390,6 @@ static int gp2ap020a00f_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ 	mutex_lock(&data->lock);
+ 
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err < 0) {
+-		mutex_unlock(&data->lock);
+-		return err;
+-	}
+-
+ 	/*
+ 	 * Enable triggers according to the scan_mask. Enabling either
+ 	 * LIGHT_CLEAR or LIGHT_IR scan mode results in enabling ALS
+@@ -1430,8 +1424,6 @@ static int gp2ap020a00f_buffer_postenable(struct iio_dev *indio_dev)
+ 		err = -ENOMEM;
+ 
+ error_unlock:
+-	if (err < 0)
+-		iio_triggered_buffer_predisable(indio_dev);
+ 	mutex_unlock(&data->lock);
+ 
+ 	return err;
+@@ -1465,8 +1457,6 @@ static int gp2ap020a00f_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (err == 0)
+ 		kfree(data->buffer);
+ 
+-	iio_triggered_buffer_predisable(indio_dev);
+-
+ 	mutex_unlock(&data->lock);
+ 
+ 	return err;
+diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
+index 95611f5eff01..76065433a967 100644
+--- a/drivers/iio/light/isl29125.c
++++ b/drivers/iio/light/isl29125.c
+@@ -216,36 +216,20 @@ static const struct iio_info isl29125_info = {
+ static int isl29125_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct isl29125_data *data = iio_priv(indio_dev);
+-	int err;
+-
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err)
+-		return err;
+ 
+ 	data->conf1 |= ISL29125_MODE_RGB;
+-	err = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
++	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
+ 		data->conf1);
+-	if (err) {
+-		iio_triggered_buffer_predisable(indio_dev);
+-		return err;
+-	}
+-
+-	return 0;
+ }
+ 
+ static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct isl29125_data *data = iio_priv(indio_dev);
+-	int ret;
+ 
+ 	data->conf1 &= ~ISL29125_MODE_MASK;
+ 	data->conf1 |= ISL29125_MODE_PD;
+-	ret = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
++	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
+ 		data->conf1);
+-
+-	iio_triggered_buffer_predisable(indio_dev);
+-
+-	return ret;
+ }
+ 
+ static const struct iio_buffer_setup_ops isl29125_buffer_setup_ops = {
+diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
+index a0a7aeae5a82..e43c050cc766 100644
+--- a/drivers/iio/light/rpr0521.c
++++ b/drivers/iio/light/rpr0521.c
+@@ -570,8 +570,6 @@ static int rpr0521_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops rpr0521_buffer_setup_ops = {
+ 	.preenable = rpr0521_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = rpr0521_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index 0476c2bc8138..d409389ba38e 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -1171,8 +1171,6 @@ static bool si1145_validate_scan_mask(struct iio_dev *indio_dev,
+ 
+ static const struct iio_buffer_setup_ops si1145_buffer_setup_ops = {
+ 	.preenable = si1145_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.validate_scan_mask = si1145_validate_scan_mask,
+ };
+ 
+diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
+index d262c254b895..0951dbeb5d04 100644
+--- a/drivers/iio/light/st_uvis25_core.c
++++ b/drivers/iio/light/st_uvis25_core.c
+@@ -227,8 +227,6 @@ static int st_uvis25_buffer_postdisable(struct iio_dev *iio_dev)
+ 
+ static const struct iio_buffer_setup_ops st_uvis25_buffer_ops = {
+ 	.preenable = st_uvis25_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = st_uvis25_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
+index b542e5619ead..2dc3d5db5d08 100644
+--- a/drivers/iio/light/tcs3414.c
++++ b/drivers/iio/light/tcs3414.c
+@@ -243,35 +243,19 @@ static const struct iio_info tcs3414_info = {
+ static int tcs3414_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct tcs3414_data *data = iio_priv(indio_dev);
+-	int ret;
+-
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+ 
+ 	data->control |= TCS3414_CONTROL_ADC_EN;
+-	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
++	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+ 		data->control);
+-	if (ret)
+-		iio_triggered_buffer_predisable(indio_dev);
+-
+-	return ret;
+ }
+ 
+ static int tcs3414_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct tcs3414_data *data = iio_priv(indio_dev);
+-	int ret, ret2;
+ 
+ 	data->control &= ~TCS3414_CONTROL_ADC_EN;
+-	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
++	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+ 		data->control);
+-
+-	ret2 = iio_triggered_buffer_predisable(indio_dev);
+-	if (!ret)
+-		ret = ret2;
+-
+-	return ret;
+ }
+ 
+ static const struct iio_buffer_setup_ops tcs3414_buffer_setup_ops = {
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 2a4b3d331055..0fee767af026 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -957,29 +957,20 @@ static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev)
+ 	int ret;
+ 	int cmd;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	/* Do not enable the buffer if we are already capturing events. */
+-	if (vcnl4010_is_in_periodic_mode(data)) {
+-		ret = -EBUSY;
+-		goto end;
+-	}
++	if (vcnl4010_is_in_periodic_mode(data))
++		return -EBUSY;
+ 
+ 	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL,
+ 					VCNL4010_INT_PROX_EN);
+ 	if (ret < 0)
+-		goto end;
++		return ret;
+ 
+ 	cmd = VCNL4000_SELF_TIMED_EN | VCNL4000_PROX_EN;
++	
+ 	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, cmd);
+ 	if (ret < 0)
+-		goto end;
+-
+-	return 0;
+-end:
+-	iio_triggered_buffer_predisable(indio_dev);
++		i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL, 0);
+ 
+ 	return ret;
+ }
+@@ -987,18 +978,14 @@ static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev)
+ static int vcnl4010_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct vcnl4000_data *data = iio_priv(indio_dev);
+-	int ret, ret_disable;
++	int ret, ret2;
+ 
+ 	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL, 0);
+-	if (ret < 0)
+-		goto end;
+ 
+-	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
++	ret2 = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
+ 
+-end:
+-	ret_disable = iio_triggered_buffer_predisable(indio_dev);
+ 	if (ret == 0)
+-		ret = ret_disable;
++		ret = ret2;
+ 
+ 	return ret;
+ }
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index d4de16750b10..1422da8db803 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -836,8 +836,6 @@ static int bmc150_magn_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops bmc150_magn_buffer_setup_ops = {
+ 	.preenable = bmc150_magn_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = bmc150_magn_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index 43a2e420c9c4..96ad92a3c5d0 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -463,8 +463,6 @@ static int rm3100_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops rm3100_buffer_ops = {
+ 	.preenable = rm3100_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = rm3100_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/magnetometer/st_magn_buffer.c b/drivers/iio/magnetometer/st_magn_buffer.c
+index bb425c167a96..4917721fa2e5 100644
+--- a/drivers/iio/magnetometer/st_magn_buffer.c
++++ b/drivers/iio/magnetometer/st_magn_buffer.c
+@@ -31,34 +31,12 @@ int st_magn_trig_set_state(struct iio_trigger *trig, bool state)
+ 
+ static int st_magn_buffer_postenable(struct iio_dev *indio_dev)
+ {
+-	int err;
+-
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err < 0)
+-		return err;
+-
+-	err = st_sensors_set_enable(indio_dev, true);
+-	if (err < 0)
+-		goto st_magn_buffer_predisable;
+-
+-	return 0;
+-
+-st_magn_buffer_predisable:
+-	iio_triggered_buffer_predisable(indio_dev);
+-	return err;
++	return st_sensors_set_enable(indio_dev, true);
+ }
+ 
+ static int st_magn_buffer_predisable(struct iio_dev *indio_dev)
+ {
+-	int err, err2;
+-
+-	err = st_sensors_set_enable(indio_dev, false);
+-
+-	err2 = iio_triggered_buffer_predisable(indio_dev);
+-	if (!err)
+-		err = err2;
+-
+-	return err;
++	return st_sensors_set_enable(indio_dev, false);
+ }
+ 
+ static const struct iio_buffer_setup_ops st_magn_buffer_setup_ops = {
+diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
+index 2cb11da18e0f..5eac2dfae747 100644
+--- a/drivers/iio/potentiostat/lmp91000.c
++++ b/drivers/iio/potentiostat/lmp91000.c
+@@ -278,17 +278,8 @@ static const struct iio_trigger_ops lmp91000_trigger_ops = {
+ static int lmp91000_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct lmp91000_data *data = iio_priv(indio_dev);
+-	int err;
+ 
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err)
+-		return err;
+-
+-	err = iio_channel_start_all_cb(data->cb_buffer);
+-	if (err)
+-		iio_triggered_buffer_predisable(indio_dev);
+-
+-	return err;
++	return iio_channel_start_all_cb(data->cb_buffer);
+ }
+ 
+ static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
+@@ -297,7 +288,7 @@ static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	iio_channel_stop_all_cb(data->cb_buffer);
+ 
+-	return iio_triggered_buffer_predisable(indio_dev);
++	return 0;
+ }
+ 
+ static const struct iio_buffer_setup_ops lmp91000_buffer_setup_ops = {
+diff --git a/drivers/iio/pressure/st_pressure_buffer.c b/drivers/iio/pressure/st_pressure_buffer.c
+index 418dbf9e6e1e..7cf6f06797e1 100644
+--- a/drivers/iio/pressure/st_pressure_buffer.c
++++ b/drivers/iio/pressure/st_pressure_buffer.c
+@@ -31,34 +31,12 @@ int st_press_trig_set_state(struct iio_trigger *trig, bool state)
+ 
+ static int st_press_buffer_postenable(struct iio_dev *indio_dev)
+ {
+-	int err;
+-
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err < 0)
+-		return err;
+-
+-	err = st_sensors_set_enable(indio_dev, true);
+-	if (err < 0)
+-		goto st_press_buffer_predisable;
+-
+-	return 0;
+-
+-st_press_buffer_predisable:
+-	iio_triggered_buffer_predisable(indio_dev);
+-	return err;
++	return st_sensors_set_enable(indio_dev, true);
+ }
+ 
+ static int st_press_buffer_predisable(struct iio_dev *indio_dev)
+ {
+-	int err, err2;
+-
+-	err = st_sensors_set_enable(indio_dev, false);
+-
+-	err2 = iio_triggered_buffer_predisable(indio_dev);
+-	if (!err)
+-		err = err2;
+-
+-	return err;
++	return st_sensors_set_enable(indio_dev, false);
+ }
+ 
+ static const struct iio_buffer_setup_ops st_press_buffer_setup_ops = {
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 37fe851f89af..e082ad007b22 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -1240,12 +1240,7 @@ static int zpa2326_preenable_buffer(struct iio_dev *indio_dev)
+ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
+ {
+ 	const struct zpa2326_private *priv = iio_priv(indio_dev);
+-	int                           err;
+-
+-	/* Plug our own trigger event handler. */
+-	err = iio_triggered_buffer_postenable(indio_dev);
+-	if (err)
+-		goto err;
++	int                           err = 0;
+ 
+ 	if (!priv->waken) {
+ 		/*
+@@ -1254,7 +1249,7 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
+ 		 */
+ 		err = zpa2326_clear_fifo(indio_dev, 0);
+ 		if (err)
+-			goto err_buffer_predisable;
++			goto out;
+ 	}
+ 
+ 	if (!iio_trigger_using_own(indio_dev) && priv->waken) {
+@@ -1264,14 +1259,10 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
+ 		 */
+ 		err = zpa2326_config_oneshot(indio_dev, priv->irq);
+ 		if (err)
+-			goto err_buffer_predisable;
++			goto out;
+ 	}
+ 
+-	return 0;
+-
+-err_buffer_predisable:
+-	iio_triggered_buffer_predisable(indio_dev);
+-err:
++out:
+ 	zpa2326_err(indio_dev, "failed to enable buffering (%d)", err);
+ 
+ 	return err;
+@@ -1287,7 +1278,6 @@ static int zpa2326_postdisable_buffer(struct iio_dev *indio_dev)
+ static const struct iio_buffer_setup_ops zpa2326_buffer_setup_ops = {
+ 	.preenable   = zpa2326_preenable_buffer,
+ 	.postenable  = zpa2326_postenable_buffer,
+-	.predisable  = iio_triggered_buffer_predisable,
+ 	.postdisable = zpa2326_postdisable_buffer
+ };
+ 
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index d161f3061e35..764b147c8bde 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -736,8 +736,6 @@ static int sx9310_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops sx9310_buffer_setup_ops = {
+ 	.preenable = sx9310_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
+-	.predisable = iio_triggered_buffer_predisable,
+ 	.postdisable = sx9310_buffer_postdisable,
+ };
+ 
+diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
+index 287d288e40c2..129c14e9a359 100644
+--- a/drivers/iio/proximity/sx9500.c
++++ b/drivers/iio/proximity/sx9500.c
+@@ -680,10 +680,6 @@ static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct sx9500_data *data = iio_priv(indio_dev);
+ 	int ret = 0, i;
+ 
+-	ret = iio_triggered_buffer_postenable(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	mutex_lock(&data->mutex);
+ 
+ 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
+@@ -700,9 +696,6 @@ static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ 	mutex_unlock(&data->mutex);
+ 
+-	if (ret)
+-		iio_triggered_buffer_predisable(indio_dev);
+-
+ 	return ret;
+ }
+ 
+@@ -727,8 +720,6 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	mutex_unlock(&data->mutex);
+ 
+-	iio_triggered_buffer_predisable(indio_dev);
+-
+ 	return ret;
+ }
+ 
 -- 
 2.25.1
 

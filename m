@@ -2,137 +2,248 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4FDF1DE26A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 10:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 783611DE4C3
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 12:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728368AbgEVIuz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 04:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728152AbgEVIuy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 04:50:54 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA9DEC061A0E
-        for <linux-iio@vger.kernel.org>; Fri, 22 May 2020 01:50:54 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id y198so4932039pfb.4
-        for <linux-iio@vger.kernel.org>; Fri, 22 May 2020 01:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ayJW7EKR4q+HUt114gAioP8x67VenjQE2Awsf9EygYQ=;
-        b=gQu0JTELqHfltcHgxtlAJF4q8D2Ya5SrsLLNOakQCtKhiz/IFPQ+kA2N6ayhK0XQao
-         QIwJEevsP4ESI29PpSQFOeqf2xlinmg7I7VrKAVpPXxke9NK5pExKwd+5retpOPxSU/i
-         vyCflTeGHqUetSvTDOJbNmgIe4EeZ1m4HK5nxcu1cZfBFnIsMbqiDCfJR5oEdXWHQx3O
-         g03H0+jb1DPnBG2ws7U5i+//iw2GKZeJTcrX3INk7S8UnsOqXU38eJ3qCcwCFtbyQh9R
-         H+AQlcAEgE3wQCtjphMXxolUG/ef4zZbYKzdMTTXJwJ6KTALKWAznbEGEMPLx+066npS
-         VRwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ayJW7EKR4q+HUt114gAioP8x67VenjQE2Awsf9EygYQ=;
-        b=jZOg5JfQRSdJ4zuN8EJ7h1PDCrZ0KzkFiSvOOjTtr/E9s3KGn9Kbd8E6InkaIw/ZcQ
-         LfOjPejpnX94B8ZwtFOUU6Ww19PzULxCgCbhnKPLQS+42GEoNop8/Db8M9Yi8sYVBD13
-         4YJ91OAPa7wpxrbuyjG2S2JjMEfaE1zjJ8P9y8wW3WSJRz26f+gldNHHo0KMIYM0j/pD
-         cl6Ynygl5Pz4rIwmesUhn974FZPZvDW9DvHiufazFT3mRDWnZnfr/A2enZ1m5wiJta3C
-         eB5wJy55j3omPQZ18dC6cxggnpDfWW/QxugaIJkhws8u/4zG/5+E6wPuhHJ8jwwM7IG1
-         IwZw==
-X-Gm-Message-State: AOAM5302dQVwIWot87u5k3mqXzRVH2+QlS/8ru9XjrAPU000WxI5lw/r
-        AQgJ4/UtTcjQVE3XJSSmMWTol67wqCJNxyID9Hc=
-X-Google-Smtp-Source: ABdhPJyOCbZx/MpcAvHesHzLOnw04BsfK4OCzq4WNzjbylcgkUJFh9cuWCvOnU0qW8okDwE1v3wrZKBfvq7VGHwN1cE=
-X-Received: by 2002:a63:1c1:: with SMTP id 184mr13010244pgb.203.1590137454290;
- Fri, 22 May 2020 01:50:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200522014634.28505-1-dan@dlrobertson.com> <20200522014634.28505-2-dan@dlrobertson.com>
-In-Reply-To: <20200522014634.28505-2-dan@dlrobertson.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 22 May 2020 11:50:37 +0300
-Message-ID: <CAHp75Ve-ub+CAo2Q3XEAL1diph+7EVh=3L-wdnst-WJ8aM6Yxg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] iio: accel: bma400: add support for bma400 spi
-To:     Dan Robertson <dan@dlrobertson.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1728816AbgEVKrI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 06:47:08 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:35508 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728606AbgEVKrI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 06:47:08 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04MAjAGC032134;
+        Fri, 22 May 2020 06:46:42 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312a17e5we-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 May 2020 06:46:42 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04MAkf6d064238
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 22 May 2020 06:46:41 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 06:46:40 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 06:46:40 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 22 May 2020 06:46:40 -0400
+Received: from saturn.ad.analog.com ([10.48.65.112])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04MAkaQp011641;
+        Fri, 22 May 2020 06:46:36 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+CC:     <jic23@kernel.org>, <shawnguo@kernel.org>,
+        <s.hauer@pengutronix.de>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <linus.walleij@linaro.org>,
+        <lorenzo.bianconi83@gmail.com>, <songqiang1304521@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "Alexandru Ardelean" <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3] iio: Move attach/detach of the poll func to the core
+Date:   Fri, 22 May 2020 13:46:30 +0300
+Message-ID: <20200522104632.517470-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-22_05:2020-05-22,2020-05-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 spamscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 cotscore=-2147483648
+ suspectscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005220088
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, May 22, 2020 at 4:48 AM Dan Robertson <dan@dlrobertson.com> wrote:
->
-> Add basic support for the Bosch Sensortec BMA400 3-axes ultra-low power
-> accelerometer when configured to use SPI.
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-...
+All devices using a triggered buffer need to attach and detach the trigger
+to the device in order to properly work. Instead of doing this in each and
+every driver by hand move this into the core.
 
->         tristate "Bosch BMA400 3-Axis Accelerometer Driver"
->         select REGMAP
->         select BMA400_I2C if I2C
+At this point in time, all drivers should have been resolved to
+attach/detach the poll-function in the same order.
 
-> +       select BMA400_SPI if I2C
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ .../buffer/industrialio-triggered-buffer.c    | 10 +--------
+ drivers/iio/iio_core_trigger.h                | 17 ++++++++++++++
+ drivers/iio/industrialio-buffer.c             | 13 +++++++++++
+ drivers/iio/industrialio-trigger.c            | 22 ++++---------------
+ include/linux/iio/trigger_consumer.h          |  7 ------
+ 5 files changed, 35 insertions(+), 34 deletions(-)
 
-This is not right.
-
-...
-
-> +#include <linux/module.h>
-> +#include <linux/spi/spi.h>
-
-What's the point of dups (see below)?
-
-> +#include <linux/spi/spi.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-
-Keep them ordered?
-
-...
-
-> +#define BMA400_SPI_READ_BUFFER_SIZE (BMA400_MAX_SPI_READ + 1)
-
-Do wee need separate macro? It seems longer than explicit use.
-Do we need the original macro either?
-
-...
-
-> +       /*
-> +        * TODO(dlrobertson): What is a reasonable length to cap
-> +        * this at.
-> +        */
-
-Either drop this or fulfill. There is no way to leave such in the
-non-staging code.
-
-...
-
-> +       .read_flag_mask = BIT(7),
-
-#include <linux/bits.h>
-
-...
-
-> +static struct spi_driver bma400_spi_driver = {
-> +       .driver = {
-> +               .name = "bma400",
-> +               .of_match_table = bma400_of_spi_match,
-> +       },
-> +       .probe    = bma400_spi_probe,
-> +       .remove   = bma400_spi_remove,
-> +       .id_table = bma400_spi_ids,
-> +};
-
-> +
-
-This blank line is not needed.
-
-> +module_spi_driver(bma400_spi_driver);
-
+diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/iio/buffer/industrialio-triggered-buffer.c
+index e8046c1ecd6b..6c20a83f887e 100644
+--- a/drivers/iio/buffer/industrialio-triggered-buffer.c
++++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
+@@ -13,11 +13,6 @@
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/iio/trigger_consumer.h>
+ 
+-static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
+-	.postenable = &iio_triggered_buffer_postenable,
+-	.predisable = &iio_triggered_buffer_predisable,
+-};
+-
+ /**
+  * iio_triggered_buffer_setup() - Setup triggered buffer and pollfunc
+  * @indio_dev:		IIO device structure
+@@ -67,10 +62,7 @@ int iio_triggered_buffer_setup(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	/* Ring buffer functions - here trigger setup related */
+-	if (setup_ops)
+-		indio_dev->setup_ops = setup_ops;
+-	else
+-		indio_dev->setup_ops = &iio_triggered_buffer_setup_ops;
++	indio_dev->setup_ops = setup_ops;
+ 
+ 	/* Flag that polled ring buffering is possible */
+ 	indio_dev->modes |= INDIO_BUFFER_TRIGGERED;
+diff --git a/drivers/iio/iio_core_trigger.h b/drivers/iio/iio_core_trigger.h
+index e59fe2f36bbb..9d1a92cc6480 100644
+--- a/drivers/iio/iio_core_trigger.h
++++ b/drivers/iio/iio_core_trigger.h
+@@ -18,6 +18,12 @@ void iio_device_register_trigger_consumer(struct iio_dev *indio_dev);
+  **/
+ void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev);
+ 
++
++int iio_trigger_attach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf);
++int iio_trigger_detach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf);
++
+ #else
+ 
+ /**
+@@ -37,4 +43,15 @@ static void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
+ {
+ }
+ 
++static inline int iio_trigger_attach_poll_func(struct iio_trigger *trig,
++					       struct iio_poll_func *pf)
++{
++	return 0;
++}
++static inline int iio_trigger_detach_poll_func(struct iio_trigger *trig,
++					       struct iio_poll_func *pf)
++{
++	return 0;
++}
++
+ #endif /* CONFIG_TRIGGER_CONSUMER */
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index ec4f531994fa..88d756107fb2 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -20,6 +20,7 @@
+ 
+ #include <linux/iio/iio.h>
+ #include "iio_core.h"
++#include "iio_core_trigger.h"
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/buffer_impl.h>
+@@ -972,6 +973,13 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 		}
+ 	}
+ 
++	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
++		ret = iio_trigger_attach_poll_func(indio_dev->trig,
++						   indio_dev->pollfunc);
++		if (ret)
++			goto err_disable_buffers;
++	}
++
+ 	return 0;
+ 
+ err_disable_buffers:
+@@ -998,6 +1006,11 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+ 	if (list_empty(&indio_dev->buffer_list))
+ 		return 0;
+ 
++	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
++		iio_trigger_detach_poll_func(indio_dev->trig,
++					     indio_dev->pollfunc);
++	}
++
+ 	/*
+ 	 * If things go wrong at some step in disable we still need to continue
+ 	 * to perform the other steps, otherwise we leave the device in a
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index 53d1931f6be8..6f16357fd732 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -239,8 +239,8 @@ static void iio_trigger_put_irq(struct iio_trigger *trig, int irq)
+  * the relevant function is in there may be the best option.
+  */
+ /* Worth protecting against double additions? */
+-static int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+-					struct iio_poll_func *pf)
++int iio_trigger_attach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf)
+ {
+ 	int ret = 0;
+ 	bool notinuse
+@@ -290,8 +290,8 @@ static int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+ 	return ret;
+ }
+ 
+-static int iio_trigger_detach_poll_func(struct iio_trigger *trig,
+-					 struct iio_poll_func *pf)
++int iio_trigger_detach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf)
+ {
+ 	int ret = 0;
+ 	bool no_other_users
+@@ -705,17 +705,3 @@ void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
+ 	if (indio_dev->trig)
+ 		iio_trigger_put(indio_dev->trig);
+ }
+-
+-int iio_triggered_buffer_postenable(struct iio_dev *indio_dev)
+-{
+-	return iio_trigger_attach_poll_func(indio_dev->trig,
+-					    indio_dev->pollfunc);
+-}
+-EXPORT_SYMBOL(iio_triggered_buffer_postenable);
+-
+-int iio_triggered_buffer_predisable(struct iio_dev *indio_dev)
+-{
+-	return iio_trigger_detach_poll_func(indio_dev->trig,
+-					     indio_dev->pollfunc);
+-}
+-EXPORT_SYMBOL(iio_triggered_buffer_predisable);
+diff --git a/include/linux/iio/trigger_consumer.h b/include/linux/iio/trigger_consumer.h
+index c3c6ba5ec423..3aa2f132dd67 100644
+--- a/include/linux/iio/trigger_consumer.h
++++ b/include/linux/iio/trigger_consumer.h
+@@ -50,11 +50,4 @@ irqreturn_t iio_pollfunc_store_time(int irq, void *p);
+ 
+ void iio_trigger_notify_done(struct iio_trigger *trig);
+ 
+-/*
+- * Two functions for common case where all that happens is a pollfunc
+- * is attached and detached from a trigger
+- */
+-int iio_triggered_buffer_postenable(struct iio_dev *indio_dev);
+-int iio_triggered_buffer_predisable(struct iio_dev *indio_dev);
+-
+ #endif
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

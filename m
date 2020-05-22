@@ -2,184 +2,524 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 914831DE7AD
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 15:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5FCC1DE8BA
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 16:24:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729344AbgEVNIX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 09:08:23 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:22204 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729377AbgEVNIQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 09:08:16 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04MD77X3027265;
-        Fri, 22 May 2020 09:08:08 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 312d365vak-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 May 2020 09:08:07 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04MD859n028639
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 22 May 2020 09:08:05 -0400
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 22 May 2020 06:08:03 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 22 May 2020 06:08:03 -0700
-Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04MD81UG012565;
-        Fri, 22 May 2020 09:08:01 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: stm32-dfsdm-adc: keep a reference to the iio device on the state struct
-Date:   Fri, 22 May 2020 16:08:04 +0300
-Message-ID: <20200522130804.631508-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-22_05:2020-05-22,2020-05-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005220107
+        id S1729980AbgEVOYu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 10:24:50 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:51464 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729922AbgEVOYu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 10:24:50 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590157488; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=8GOA/5BmC3vORT2ziXzTX02X+aOMqRbNdgBUgtNnD/8=; b=KJPvCrd2fm9SHwH1IOw4yHVofgsaDp1wYAZoLGII8qRQvspo8ChD2k/vfGvvUUXRHFE6pRyW
+ izQi/b62ny14r640cosd5jtH72pqTIEie94PoPOaAfHKMCImM7mcirRo3WVUcEKKO3qBIJc8
+ 8Sif+YncvAebvkRg0K3pJe0vk70=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5ec7e0b0569a62550d09c814 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 22 May 2020 14:24:48
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 136C1C433CA; Fri, 22 May 2020 14:24:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from jprakash-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jprakash)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 47692C433C8;
+        Fri, 22 May 2020 14:24:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 47692C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
+From:   Jishnu Prakash <jprakash@codeaurora.org>
+To:     agross@kernel.org, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mka@chromium.org, linus.walleij@linaro.org,
+        Jonathan.Cameron@huawei.com, andy.shevchenko@gmail.com,
+        amit.kucheria@verdurent.com, smohanad@codeaurora.org,
+        kgunda@codeaurora.org, aghayal@codeaurora.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Jishnu Prakash <jprakash@codeaurora.org>,
+        linux-iio@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
+Subject: [PATCH V5 1/5] iio: adc: Convert the QCOM SPMI ADC bindings to .yaml format
+Date:   Fri, 22 May 2020 19:54:08 +0530
+Message-Id: <1590157452-27179-2-git-send-email-jprakash@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1590157452-27179-1-git-send-email-jprakash@codeaurora.org>
+References: <1590157452-27179-1-git-send-email-jprakash@codeaurora.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-We may want to get rid of the iio_priv_to_dev() helper. The reason is that
-we will hide some of the members of the iio_dev structure (to prevent
-drivers from accessing them directly), and that will also mean hiding the
-implementation of the iio_priv_to_dev() helper inside the IIO core.
+Convert the adc bindings from .txt to .yaml format.
 
-Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
-may not be fast anymore, so a general idea is to try to get rid of the
-iio_priv_to_dev() altogether.
-The iio_priv() helper won't be affected by the rework.
-
-For this driver, not using iio_priv_to_dev(), means keeping a reference to
-the IIO device on the state struct.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/iio/adc/qcom,spmi-vadc.txt | 173 --------------
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml           | 252 +++++++++++++++++++++
+ 2 files changed, 252 insertions(+), 173 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index 76a60d93fe23..ff7a6afa4558 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -69,6 +69,7 @@ struct stm32_dfsdm_dev_data {
- 
- struct stm32_dfsdm_adc {
- 	struct stm32_dfsdm *dfsdm;
-+	struct iio_dev *indio_dev;
- 	const struct stm32_dfsdm_dev_data *dev_data;
- 	unsigned int fl_id;
- 	unsigned int nconv;
-@@ -332,7 +333,7 @@ static int stm32_dfsdm_compute_all_osrs(struct iio_dev *indio_dev,
- 
- static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
- {
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	const struct iio_chan_spec *chan;
- 	unsigned int bit;
-@@ -352,7 +353,7 @@ static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
- 
- static void stm32_dfsdm_stop_channel(struct stm32_dfsdm_adc *adc)
- {
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	const struct iio_chan_spec *chan;
- 	unsigned int bit;
-@@ -422,7 +423,7 @@ static int stm32_dfsdm_filter_set_trig(struct stm32_dfsdm_adc *adc,
- 				       unsigned int fl_id,
- 				       struct iio_trigger *trig)
- {
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	u32 jextsel = 0, jexten = STM32_DFSDM_JEXTEN_DISABLED;
- 	int ret;
-@@ -451,7 +452,7 @@ static int stm32_dfsdm_channels_configure(struct stm32_dfsdm_adc *adc,
- 					  unsigned int fl_id,
- 					  struct iio_trigger *trig)
- {
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
- 	struct stm32_dfsdm_filter_osr *flo = &fl->flo[0];
-@@ -495,7 +496,7 @@ static int stm32_dfsdm_filter_configure(struct stm32_dfsdm_adc *adc,
- 					unsigned int fl_id,
- 					struct iio_trigger *trig)
- {
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
- 	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
-@@ -1314,7 +1315,7 @@ static const struct iio_info stm32_dfsdm_info_adc = {
- static irqreturn_t stm32_dfsdm_irq(int irq, void *arg)
- {
- 	struct stm32_dfsdm_adc *adc = arg;
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	struct regmap *regmap = adc->dfsdm->regmap;
- 	unsigned int status, int_en;
- 
-@@ -1569,6 +1570,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
- 
- 	adc = iio_priv(iio);
- 	adc->dfsdm = dev_get_drvdata(dev->parent);
-+	adc->indio_dev = iio;
- 
- 	iio->dev.parent = dev;
- 	iio->dev.of_node = np;
-@@ -1651,7 +1653,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
- static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
- {
- 	struct stm32_dfsdm_adc *adc = platform_get_drvdata(pdev);
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 
- 	if (adc->dev_data->type == DFSDM_AUDIO)
- 		of_platform_depopulate(&pdev->dev);
-@@ -1664,7 +1666,7 @@ static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
- static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
- {
- 	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 
- 	if (iio_buffer_enabled(indio_dev))
- 		__stm32_dfsdm_predisable(indio_dev);
-@@ -1675,7 +1677,7 @@ static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
- static int __maybe_unused stm32_dfsdm_adc_resume(struct device *dev)
- {
- 	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
--	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-+	struct iio_dev *indio_dev = adc->indio_dev;
- 	const struct iio_chan_spec *chan;
- 	struct stm32_dfsdm_channel *ch;
- 	int i, ret;
+diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
+deleted file mode 100644
+index c878768..0000000
+--- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.txt
++++ /dev/null
+@@ -1,173 +0,0 @@
+-Qualcomm's SPMI PMIC ADC
+-
+-- SPMI PMIC voltage ADC (VADC) provides interface to clients to read
+-  voltage. The VADC is a 15-bit sigma-delta ADC.
+-- SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
+-  voltage. The VADC is a 16-bit sigma-delta ADC.
+-
+-VADC node:
+-
+-- compatible:
+-    Usage: required
+-    Value type: <string>
+-    Definition: Should contain "qcom,spmi-vadc".
+-                Should contain "qcom,spmi-adc5" for PMIC5 ADC driver.
+-                Should contain "qcom,spmi-adc-rev2" for PMIC rev2 ADC driver.
+-                Should contain "qcom,pms405-adc" for PMS405 PMIC
+-
+-- reg:
+-    Usage: required
+-    Value type: <prop-encoded-array>
+-    Definition: VADC base address in the SPMI PMIC register map.
+-
+-- #address-cells:
+-    Usage: required
+-    Value type: <u32>
+-    Definition: Must be one. Child node 'reg' property should define ADC
+-            channel number.
+-
+-- #size-cells:
+-    Usage: required
+-    Value type: <u32>
+-    Definition: Must be zero.
+-
+-- #io-channel-cells:
+-    Usage: required
+-    Value type: <u32>
+-    Definition: Must be one. For details about IIO bindings see:
+-            Documentation/devicetree/bindings/iio/iio-bindings.txt
+-
+-- interrupts:
+-    Usage: optional
+-    Value type: <prop-encoded-array>
+-    Definition: End of conversion interrupt.
+-
+-Channel node properties:
+-
+-- reg:
+-    Usage: required
+-    Value type: <u32>
+-    Definition: ADC channel number.
+-            See include/dt-bindings/iio/qcom,spmi-vadc.h
+-
+-- label:
+-    Usage: required for "qcom,spmi-adc5" and "qcom,spmi-adc-rev2"
+-    Value type: <empty>
+-    Definition: ADC input of the platform as seen in the schematics.
+-            For thermistor inputs connected to generic AMUX or GPIO inputs
+-            these can vary across platform for the same pins. Hence select
+-            the platform schematics name for this channel.
+-
+-- qcom,decimation:
+-    Usage: optional
+-    Value type: <u32>
+-    Definition: This parameter is used to decrease ADC sampling rate.
+-            Quicker measurements can be made by reducing decimation ratio.
+-            - For compatible property "qcom,spmi-vadc", valid values are
+-              512, 1024, 2048, 4096. If property is not found, default value
+-              of 512 will be used.
+-            - For compatible property "qcom,spmi-adc5", valid values are 250, 420
+-              and 840. If property is not found, default value of 840 is used.
+-            - For compatible property "qcom,spmi-adc-rev2", valid values are 256,
+-              512 and 1024. If property is not present, default value is 1024.
+-
+-- qcom,pre-scaling:
+-    Usage: optional
+-    Value type: <u32 array>
+-    Definition: Used for scaling the channel input signal before the signal is
+-            fed to VADC. The configuration for this node is to know the
+-            pre-determined ratio and use it for post scaling. Select one from
+-            the following options.
+-            <1 1>, <1 3>, <1 4>, <1 6>, <1 20>, <1 8>, <10 81>, <1 10>
+-            If property is not found default value depending on chip will be used.
+-
+-- qcom,ratiometric:
+-    Usage: optional
+-    Value type: <empty>
+-    Definition: Channel calibration type.
+-            - For compatible property "qcom,spmi-vadc", if this property is
+-              specified VADC will use the VDD reference (1.8V) and GND for
+-              channel calibration. If property is not found, channel will be
+-              calibrated with 0.625V and 1.25V reference channels, also
+-              known as absolute calibration.
+-            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+-              if this property is specified VADC will use the VDD reference
+-              (1.875V) and GND for channel calibration. If property is not found,
+-              channel will be calibrated with 0V and 1.25V reference channels,
+-              also known as absolute calibration.
+-
+-- qcom,hw-settle-time:
+-    Usage: optional
+-    Value type: <u32>
+-    Definition: Time between AMUX getting configured and the ADC starting
+-            conversion. The 'hw_settle_time' is an index used from valid values
+-            and programmed in hardware to achieve the hardware settling delay.
+-            - For compatible property "qcom,spmi-vadc" and "qcom,spmi-adc-rev2",
+-              Delay = 100us * (hw_settle_time) for hw_settle_time < 11,
+-              and 2ms * (hw_settle_time - 10) otherwise.
+-              Valid values are: 0, 100, 200, 300, 400, 500, 600, 700, 800,
+-              900 us and 1, 2, 4, 6, 8, 10 ms.
+-              If property is not found, channel will use 0us.
+-            - For compatible property "qcom,spmi-adc5", delay = 15us for
+-              value 0, 100us * (value) for values < 11,
+-              and 2ms * (value - 10) otherwise.
+-              Valid values are: 15, 100, 200, 300, 400, 500, 600, 700, 800,
+-              900 us and 1, 2, 4, 6, 8, 10 ms
+-              Certain controller digital versions have valid values of
+-              15, 100, 200, 300, 400, 500, 600, 700, 1, 2, 4, 8, 16, 32, 64, 128 ms
+-              If property is not found, channel will use 15us.
+-
+-- qcom,avg-samples:
+-    Usage: optional
+-    Value type: <u32>
+-    Definition: Number of samples to be used for measurement.
+-            Averaging provides the option to obtain a single measurement
+-            from the ADC that is an average of multiple samples. The value
+-            selected is 2^(value).
+-            - For compatible property "qcom,spmi-vadc", valid values
+-              are: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+-              If property is not found, 1 sample will be used.
+-            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
+-              valid values are: 1, 2, 4, 8, 16
+-              If property is not found, 1 sample will be used.
+-
+-NOTE:
+-
+-For compatible property "qcom,spmi-vadc" following channels, also known as
+-reference point channels, are used for result calibration and their channel
+-configuration nodes should be defined:
+-VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
+-VADC_GND_REF and VADC_VDD_VADC.
+-
+-Example:
+-
+-#include <dt-bindings/iio/qcom,spmi-vadc.h>
+-#include <linux/irq.h>
+-/* ... */
+-
+-	/* VADC node */
+-	pmic_vadc: vadc@3100 {
+-		compatible = "qcom,spmi-vadc";
+-		reg = <0x3100>;
+-		interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		#io-channel-cells = <1>;
+-		io-channel-ranges;
+-
+-		/* Channel node */
+-		adc-chan@VADC_LR_MUX10_USB_ID {
+-			reg = <VADC_LR_MUX10_USB_ID>;
+-			qcom,decimation = <512>;
+-			qcom,ratiometric;
+-			qcom,hw-settle-time = <200>;
+-			qcom,avg-samples = <1>;
+-			qcom,pre-scaling = <1 3>;
+-		};
+-	};
+-
+-	/* IIO client node */
+-	usb {
+-		io-channels = <&pmic_vadc VADC_LR_MUX10_USB_ID>;
+-		io-channel-names = "vadc";
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+new file mode 100644
+index 0000000..de8d243
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+@@ -0,0 +1,252 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/qcom,spmi-vadc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm's SPMI PMIC ADC
++
++maintainers:
++  - Andy Gross <agross@kernel.org>
++  - Bjorn Andersson <bjorn.andersson@linaro.org>
++
++description: |
++  SPMI PMIC voltage ADC (VADC) provides interface to clients to read
++  voltage. The VADC is a 15-bit sigma-delta ADC.
++  SPMI PMIC5 voltage ADC (ADC) provides interface to clients to read
++  voltage. The VADC is a 16-bit sigma-delta ADC.
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - const: qcom,pms405-adc
++          - const: qcom,spmi-adc-rev2
++
++      - items:
++        - enum:
++          - qcom,spmi-vadc
++          - qcom,spmi-adc5
++          - qcom,spmi-adc-rev2
++
++  reg:
++    description: VADC base address in the SPMI PMIC register map
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  '#io-channel-cells':
++    const: 1
++
++  interrupts:
++    maxItems: 1
++    description:
++      End of conversion interrupt.
++
++required:
++  - compatible
++  - reg
++  - '#address-cells'
++  - '#size-cells'
++  - '#io-channel-cells'
++
++patternProperties:
++  "^.*@[0-9a-f]+$":
++    type: object
++    description: |
++      Represents the external channels which are connected to the ADC.
++      For compatible property "qcom,spmi-vadc" following channels, also known as
++      reference point channels, are used for result calibration and their channel
++      configuration nodes should be defined:
++      VADC_REF_625MV and/or VADC_SPARE1(based on PMIC version) VADC_REF_1250MV,
++      VADC_GND_REF and VADC_VDD_VADC.
++
++    properties:
++      reg:
++        description: |
++          ADC channel number.
++          See include/dt-bindings/iio/qcom,spmi-vadc.h
++
++      label:
++        $ref: /schemas/types.yaml#/definitions/string
++        description: |
++            ADC input of the platform as seen in the schematics.
++            For thermistor inputs connected to generic AMUX or GPIO inputs
++            these can vary across platform for the same pins. Hence select
++            the platform schematics name for this channel.
++
++      qcom,decimation:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: |
++            This parameter is used to decrease ADC sampling rate.
++            Quicker measurements can be made by reducing decimation ratio.
++
++      qcom,pre-scaling:
++        description: |
++            Used for scaling the channel input signal before the signal is
++            fed to VADC. The configuration for this node is to know the
++            pre-determined ratio and use it for post scaling. It is a pair of
++            integers, denoting the numerator and denominator of the fraction by which
++            input signal is multiplied. For example, <1 3> indicates the signal is scaled
++            down to 1/3 of its value before ADC measurement.
++            If property is not found default value depending on chip will be used.
++        allOf:
++          - $ref: /schemas/types.yaml#/definitions/uint32-array
++        oneOf:
++          - items:
++            - const: 1
++            - enum: [ 1, 3, 4, 6, 20, 8, 10 ]
++
++          - items:
++            - const: 10
++            - const: 81
++
++      qcom,ratiometric:
++        description: |
++            Channel calibration type.
++            - For compatible property "qcom,spmi-vadc", if this property is
++              specified VADC will use the VDD reference (1.8V) and GND for
++              channel calibration. If property is not found, channel will be
++              calibrated with 0.625V and 1.25V reference channels, also
++              known as absolute calibration.
++            - For compatible property "qcom,spmi-adc5" and "qcom,spmi-adc-rev2",
++              if this property is specified VADC will use the VDD reference (1.875V)
++              and GND for channel calibration. If property is not found, channel
++              will be calibrated with 0V and 1.25V reference channels, also known
++              as absolute calibration.
++        type: boolean
++
++      qcom,hw-settle-time:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: |
++            Time between AMUX getting configured and the ADC starting
++            conversion. The 'hw_settle_time' is an index used from valid values
++            and programmed in hardware to achieve the hardware settling delay.
++
++      qcom,avg-samples:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: |
++            Number of samples to be used for measurement.
++            Averaging provides the option to obtain a single measurement
++            from the ADC that is an average of multiple samples. The value
++            selected is 2^(value).
++
++    required:
++      - reg
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: qcom,spmi-vadc
++
++    then:
++      patternProperties:
++        "^.*@[0-9a-f]+$":
++          properties:
++            qcom,decimation:
++              enum: [ 512, 1024, 2048, 4096 ]
++              default: 512
++
++            qcom,hw-settle-time:
++              enum: [ 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
++                      4, 6, 8, 10 ]
++              default: 0
++
++            qcom,avg-samples:
++              enum: [ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 ]
++              default: 1
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: qcom,spmi-adc-rev2
++
++    then:
++      patternProperties:
++        "^.*@[0-9a-f]+$":
++          properties:
++            qcom,decimation:
++              enum: [ 256, 512, 1024 ]
++              default: 1024
++
++            qcom,hw-settle-time:
++              enum: [ 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
++                      4, 6, 8, 10 ]
++              default: 0
++
++            qcom,avg-samples:
++              enum: [ 1, 2, 4, 8, 16 ]
++              default: 1
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: qcom,spmi-adc5
++
++    then:
++      patternProperties:
++        "^.*@[0-9a-f]+$":
++          properties:
++            qcom,decimation:
++              enum: [ 250, 420, 840 ]
++              default: 840
++
++            qcom,hw-settle-time:
++              enum: [ 15, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1, 2,
++                      4, 6, 8, 10, 16, 32, 64, 128 ]
++              default: 15
++
++            qcom,avg-samples:
++              enum: [ 1, 2, 4, 8, 16 ]
++              default: 1
++
++examples:
++  - |
++    spmi_bus {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      /* VADC node */
++      pmic_vadc: adc@3100 {
++        compatible = "qcom,spmi-vadc";
++        reg = <0x3100>;
++        interrupts = <0x0 0x31 0x0 0x1>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        #io-channel-cells = <1>;
++        io-channel-ranges;
++
++        /* Channel node */
++        adc-chan@39 {
++          reg = <0x39>;
++          qcom,decimation = <512>;
++          qcom,ratiometric;
++          qcom,hw-settle-time = <200>;
++          qcom,avg-samples = <1>;
++          qcom,pre-scaling = <1 3>;
++        };
++
++        adc-chan@9 {
++          reg = <0x9>;
++        };
++
++        adc-chan@a {
++          reg = <0xa>;
++        };
++
++        adc-chan@e {
++          reg = <0xe>;
++        };
++
++        adc-chan@f {
++          reg = <0xf>;
++        };
++      };
++    };
 -- 
-2.25.1
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 

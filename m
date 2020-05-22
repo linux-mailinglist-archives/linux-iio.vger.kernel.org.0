@@ -2,137 +2,218 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBE7F1DE703
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 14:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7668E1DE7A8
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 15:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728801AbgEVMhZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 08:37:25 -0400
-Received: from sender4-op-o13.zoho.com ([136.143.188.13]:17346 "EHLO
-        sender4-op-o13.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728717AbgEVMhZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 08:37:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1590151021; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=hrktIqzAJv9FqVY5Ikr5sqX2LE0lcYlc/1JMo44Wfn/Rv80T3msq8wCapWT6Y81fhRtHhqEKdoTeFQ51wbxV171UQ7mFK3C0U/gIscZkzAdK+bqiubMHAqtE9zbWllVo21z436M51VMWhhNywLqrUgYg2hD5rKAkTL9107VXFok=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1590151021; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=mZ1e0SXgvMzbRIQI4bvRhkr1mCC9QcS23a6YhVvzefw=; 
-        b=GA68pHH+pV1itIEBKJUJOewbGn2QiZDIAu++YlOPyqMJ5m45xdJBwDSBiSk/hh6t6SbGChh2+xfpfbYLCUWhVsBwxoC5U6Nrops9/q5v5PdDy9h6BwAAO4QT0PCrgSb+Fsy23oeMx8Kntl/gvMn5GI8FEtoK93NJ/m0i12w5Ecw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
-        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
-Received: from gothmog.test (pool-96-255-47-18.washdc.fios.verizon.net [96.255.47.18]) by mx.zohomail.com
-        with SMTPS id 1590151019691533.96810357392; Fri, 22 May 2020 05:36:59 -0700 (PDT)
-Date:   Fri, 22 May 2020 12:36:55 +0000
-From:   Dan Robertson <dan@dlrobertson.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/1] iio: accel: bma400: add support for bma400 spi
-Message-ID: <20200522123655.GA28754@gothmog.test>
-References: <20200522014634.28505-1-dan@dlrobertson.com>
- <20200522014634.28505-2-dan@dlrobertson.com>
- <CAHp75Ve-ub+CAo2Q3XEAL1diph+7EVh=3L-wdnst-WJ8aM6Yxg@mail.gmail.com>
+        id S1729399AbgEVNHp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 09:07:45 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:34476 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729384AbgEVNHo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 09:07:44 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04MD4a7I023330;
+        Fri, 22 May 2020 09:07:35 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 312a17ejh8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 May 2020 09:07:34 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04MD7XlK028479
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 22 May 2020 09:07:33 -0400
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 06:07:32 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 22 May 2020 06:07:31 -0700
+Received: from saturn.ad.analog.com ([10.48.65.112])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04MD7Rhm012558;
+        Fri, 22 May 2020 09:07:27 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: stm32-adc: keep a reference to the iio device on the state struct
+Date:   Fri, 22 May 2020 16:07:19 +0300
+Message-ID: <20200522130719.630714-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ReaqsoxgOBHFXBhH"
-Content-Disposition: inline
-In-Reply-To: <CAHp75Ve-ub+CAo2Q3XEAL1diph+7EVh=3L-wdnst-WJ8aM6Yxg@mail.gmail.com>
-X-Zoho-Virus-Status: 2
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-22_05:2020-05-22,2020-05-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 spamscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 cotscore=-2147483648
+ suspectscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005220107
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+We may want to get rid of the iio_priv_to_dev() helper. The reason is that
+we will hide some of the members of the iio_dev structure (to prevent
+drivers from accessing them directly), and that will also mean hiding the
+implementation of the iio_priv_to_dev() helper inside the IIO core.
 
---ReaqsoxgOBHFXBhH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
+may not be fast anymore, so a general idea is to try to get rid of the
+iio_priv_to_dev() altogether.
+The iio_priv() helper won't be affected by the rework.
 
-On Fri, May 22, 2020 at 11:50:37AM +0300, Andy Shevchenko wrote:
-> On Fri, May 22, 2020 at 4:48 AM Dan Robertson <dan@dlrobertson.com> wrote:
-> >
-> > Add basic support for the Bosch Sensortec BMA400 3-axes ultra-low power
-> > accelerometer when configured to use SPI.
->=20
-> ...
->=20
-> >         tristate "Bosch BMA400 3-Axis Accelerometer Driver"
-> >         select REGMAP
-> >         select BMA400_I2C if I2C
->=20
-> > +       select BMA400_SPI if I2C
->=20
-> This is not right.
+For this driver, not using iio_priv_to_dev(), means keeping a reference to
+the IIO device on the state struct.
 
-Will fix in the second version.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/adc/stm32-adc.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-> > +#include <linux/module.h>
-> > +#include <linux/spi/spi.h>
->=20
-> What's the point of dups (see below)?
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index ae622ee6d08c..7e58c4443e3f 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -171,6 +171,7 @@ struct stm32_adc_cfg {
+ 
+ /**
+  * struct stm32_adc - private data of each ADC IIO instance
++ * @indio_dev:		back-reference to the IIO device object
+  * @common:		reference to ADC block common data
+  * @offset:		ADC instance register offset in ADC block
+  * @cfg:		compatible configuration data
+@@ -194,6 +195,7 @@ struct stm32_adc_cfg {
+  * @chan_name:		channel name array
+  */
+ struct stm32_adc {
++	struct iio_dev		*indio_dev;
+ 	struct stm32_adc_common	*common;
+ 	u32			offset;
+ 	const struct stm32_adc_cfg	*cfg;
+@@ -637,7 +639,7 @@ static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
+ 
+ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 	u32 val;
+ 
+@@ -654,7 +656,7 @@ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
+ 
+ static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 	u32 val;
+ 
+@@ -692,7 +694,7 @@ static void stm32h7_adc_enter_pwr_down(struct stm32_adc *adc)
+ 
+ static int stm32h7_adc_enable(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 	u32 val;
+ 
+@@ -715,7 +717,7 @@ static int stm32h7_adc_enable(struct stm32_adc *adc)
+ 
+ static void stm32h7_adc_disable(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 	u32 val;
+ 
+@@ -735,7 +737,7 @@ static void stm32h7_adc_disable(struct stm32_adc *adc)
+  */
+ static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int i, ret;
+ 	u32 lincalrdyw_mask, val;
+ 
+@@ -779,7 +781,7 @@ static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
+  */
+ static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int i, ret;
+ 	u32 lincalrdyw_mask, val;
+ 
+@@ -852,7 +854,7 @@ static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
+  */
+ static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 	u32 val;
+ 
+@@ -1228,7 +1230,7 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
+ {
+ 	struct stm32_adc *adc = data;
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+ 	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+ 
+@@ -1241,7 +1243,7 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
+ static irqreturn_t stm32_adc_isr(int irq, void *data)
+ {
+ 	struct stm32_adc *adc = data;
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+ 	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+ 
+@@ -1879,6 +1881,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	adc = iio_priv(indio_dev);
++	adc->indio_dev = indio_dev;
+ 	adc->common = dev_get_drvdata(pdev->dev.parent);
+ 	spin_lock_init(&adc->lock);
+ 	init_completion(&adc->completion);
+@@ -1990,7 +1993,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ static int stm32_adc_remove(struct platform_device *pdev)
+ {
+ 	struct stm32_adc *adc = platform_get_drvdata(pdev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	iio_device_unregister(indio_dev);
+@@ -2013,7 +2016,7 @@ static int stm32_adc_remove(struct platform_device *pdev)
+ static int stm32_adc_suspend(struct device *dev)
+ {
+ 	struct stm32_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+ 		__stm32_adc_buffer_predisable(indio_dev);
+@@ -2024,7 +2027,7 @@ static int stm32_adc_suspend(struct device *dev)
+ static int stm32_adc_resume(struct device *dev)
+ {
+ 	struct stm32_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = adc->indio_dev;
+ 	int ret;
+ 
+ 	ret = pm_runtime_force_resume(dev);
+-- 
+2.25.1
 
-An error on my part.
-
-> > +#define BMA400_SPI_READ_BUFFER_SIZE (BMA400_MAX_SPI_READ + 1)
->=20
-> Do wee need separate macro? It seems longer than explicit use.
-> Do we need the original macro either?
-
-I was just trying to avoid magic values. I have no problem with removing th=
-is
-though.
-
-> > +       /*
-> > +        * TODO(dlrobertson): What is a reasonable length to cap
-> > +        * this at.
-> > +        */
->=20
-> Either drop this or fulfill. There is no way to leave such in the
-> non-staging code.
-
-I'll drop this in the next patchset version if we stick with regmap_bus
-implementation. We never read more than two bytes in bma400_core, so
-this size should be fine.
-
-> > +       .read_flag_mask =3D BIT(7),
->=20
-> #include <linux/bits.h>
-
-Good catch.
-
-Thanks for the review. I will make the changes for the next patchset versio=
-n.
-
-Cheers,
-
- - Dan
-
---ReaqsoxgOBHFXBhH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJlBAABCABPFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl7Hx2IxFIAAAAAAFQAT
-cGthLWFkZHJlc3NAZ251cGcub3JnZGFuQGRscm9iZXJ0c29uLmNvbQAKCRBFxKZS
-xH5CpW/FEAChmvcfsfqSkjv2hBtVIhE3XCokeVnBfQGgmmRjptLCl2Oi9DsPgPqE
-eeq6Fw1d3ud+MNGXa4aE+M6KMkPKcipNWjrGvjGOxqkdh9IUioNCdhO5eLRakf2p
-8oYI21/GGrclORGghigzQhQB+8TTY/csqhmoNp5VYx/6L2F6DMayjZS/c8pb44cW
-a38FLwak0lkOU5ovi3w6lfqftN8FzcSv5lF7miG+FPKPkwFRxynjXfqWxYcCwEPS
-e0An5DQt6Xe3dBoLazV4Sn9Olhr9v24EH9a1ya5l33ZRIDJHiHT/gJrTkNKwldrh
-dOjOGmonQBE3jVUlBm94FqCq4ZQ+VRu7paJEouQRCI99Fj77vbVfx+THUAa3d+ZL
-yTb/mqif7IdseG2hJcMDVPaKBfagWeXVStD/Kjz7qw/TU4Lv93agH3FwlCACWAhW
-vQLUAOEg+eRb7369w9Clhe6V4+qrj7G+FKUziXgGgkmiN1wa0jQM8nkjqRjmqLoR
-Y6CbHeQHAxNDc6KNifsb9jrwWxSSEPVfN3vTIzPOXqYgTWw4Ncrkkos8GvAFyba9
-xn6aQwzSHvjw4na+oA0q4dt8hyUxhLlN5IFoYaj2axqxdIfvjRMLsn/2s6NsKcmU
-qDjF/L2YTgM8B7mN3GrdWcukpvHNUOTJOkYn2yCcncyrlOh6t7dddQ==
-=cjpz
------END PGP SIGNATURE-----
-
---ReaqsoxgOBHFXBhH--

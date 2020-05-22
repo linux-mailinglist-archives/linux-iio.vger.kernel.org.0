@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5A51DEC22
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 17:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA14D1DEC31
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 17:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730750AbgEVPiJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 11:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36290 "EHLO
+        id S1730124AbgEVPji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 11:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728433AbgEVPiH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 11:38:07 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3155C061A0E;
-        Fri, 22 May 2020 08:38:06 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id v2so276529pfv.7;
-        Fri, 22 May 2020 08:38:06 -0700 (PDT)
+        with ESMTP id S1727807AbgEVPji (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 11:39:38 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247C7C061A0E;
+        Fri, 22 May 2020 08:39:38 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id b12so4525395plz.13;
+        Fri, 22 May 2020 08:39:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7d6Zc97NBhItvRjzjZUUc48PU79OtYvfEiPWCQjEB6k=;
-        b=XIUzpkXUgXN4ekr2pr/QNKfYS+PLoKi359Ap1UqdXIlLp2VLZLP+DChRBbloXHl0qO
-         7pNz+EDhJdaOAG3SBQX5U3/dN+YB1sQa0HdCt5J2s1B0HrHYpKVp2tLLJq48Iht761yU
-         NA/IisBLdmx2Il5HfI+POLJpXfBwCWybjm6VBBYXLc6VDccfvTEQoO7SYWnwjeoTtrMj
-         XYTaU5NnSpXZvafqavsy+bqAVU2O2at+nFSf9Rw8i/DpnOX2jdcm2t9SAKeRZ1OkZV0C
-         pATE1NvYIirBQtPJX5wmj7xsloZD+ypOl8NbhFDzBv5KvlUJzhiC4qt0v2Vw+YGVcnSL
-         o0jA==
+        bh=mGfVO66NIASCYss1VEsqVK1IvyD8uVLJ356IsgZ5/h4=;
+        b=rUnmae/cB1FrAueUUbajtueRyWOc2uhmANZ7vbtYHd/H0owx2++n9JnnZh3dEH95pA
+         Ul6LmJ/+uvsDO0VVmB4QKrJ8pTsPs8rVhaRdp9FrDtP/AzRRVwoe8H0GB94w8cDwiPcA
+         2tybCQCCryC3WVY70+aS3nVzDRNInkV0LCW/kOzDkgtathVVFbc5n2KiCNrRIXasn257
+         VGhe8G8oi43rrdKLXljixWcvQchShYI977YYs8SgYAPdLLx7HkqmVFGu5TczHUGpKA6D
+         aBTfA3udMFAaWU62XYPKR3bDQY///qD87GPtaj68+Vz51OhjlRv/4Ta6KfkLqIRF2dVO
+         X++Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7d6Zc97NBhItvRjzjZUUc48PU79OtYvfEiPWCQjEB6k=;
-        b=uddXLMzVsi2o/QpvfGI31LgPkHQ7bwfxVqZot09Y4mwDXJtN9RYzNbpcj+aW63q99m
-         rZDbTPMGqTlMuJ8kzQ89Id9Z9gYKhtXvWLRPL0cdOTLgqhkEp3ZXurkN8ahgchyXBA9j
-         2aJ/l6jmmF8OY+5bO9Tf86E+6V4V+ZvTnx8yDJ6Za0hx9fItgoBUJ10MnDRi4fzttyWc
-         zLNomW4+nbRX+1NnRzCRYyZB3d4nAbSdhM47GHO+jHVP7dgSnerZ01Ja7HH02fQuhmqf
-         2OiaxuTdWITBXA2ApxTLxGh3eddC9ZAMl9I3qt/JetSAj4yoONGsp7dSSvBZcL078nvm
-         o83g==
-X-Gm-Message-State: AOAM532DIhcOBHtF0FHyFoC6h9bDzRebjQRMhN0vsO0HdkaY48t+SiiK
-        qbU6hxPtKksL9duZSPvwlRnMHSRGnQ81RWoCCso=
-X-Google-Smtp-Source: ABdhPJwO/L4Ya2h25wEeCWkhoA3A5fiVzMxVAIXSecKUCGMRueGRPQ/S/bLQTN0mYfvxRnBjkDvp1YOcgWg9UMIA/lo=
-X-Received: by 2002:a63:1c1:: with SMTP id 184mr14554351pgb.203.1590161886488;
- Fri, 22 May 2020 08:38:06 -0700 (PDT)
+        bh=mGfVO66NIASCYss1VEsqVK1IvyD8uVLJ356IsgZ5/h4=;
+        b=dQnx3a+AnWt9FMw6e417Ht9z3e4wOmGhkv0DbQrQ4KCwKS2EX74nwwu0POfz965tQR
+         BuiHzSM7iLgbscUEBuHkA+b/B71ZGLbuFPUdgLnssGghQ0VNWXV8djc0USpKehpeMGGc
+         xKSCdMYbXAcn70oV+Xm+++oct4JXESBZs+1UC+lvse1Nd3+t3tCu/tq1LtMNEIVLQE4p
+         rS6WNL3XDXxoKxpjYXIFBQDvADHlXdR73dXOsmd6nPHy6UGHJKPeg76MFz96MlFB8Pu/
+         g+t+clwK+FIDjP+W1LGs5R4EHX9/eXopzHjU/GenLwvbcg5qWVagrJAo3csBtMDg8jMY
+         kc9A==
+X-Gm-Message-State: AOAM533EVhvVyEDBF2+y93JV2Gvkk9bZO7E2EnnLgGZOvnSTUGrZ2qSj
+        2bkzCVuM+FKwjyrADrZblMR0AvGVdrAe8O1b3ZY=
+X-Google-Smtp-Source: ABdhPJy7ZsfZiErLwVjfyCmiFmRsFZFST+YwIMSHuHFuNfgjo3Komq6u9dkXOCjyyxp2eCLiiM2wMbaz51U544W/FfI=
+X-Received: by 2002:a17:90b:3651:: with SMTP id nh17mr5293146pjb.228.1590161977685;
+ Fri, 22 May 2020 08:39:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <1590157452-27179-1-git-send-email-jprakash@codeaurora.org> <1590157452-27179-4-git-send-email-jprakash@codeaurora.org>
-In-Reply-To: <1590157452-27179-4-git-send-email-jprakash@codeaurora.org>
+References: <1590157452-27179-1-git-send-email-jprakash@codeaurora.org> <1590157452-27179-5-git-send-email-jprakash@codeaurora.org>
+In-Reply-To: <1590157452-27179-5-git-send-email-jprakash@codeaurora.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 22 May 2020 18:37:55 +0300
-Message-ID: <CAHp75Vfgk0-Rye2We1A6_WTWMCK3D-WW4_T3CGPHc=-tB=6M9g@mail.gmail.com>
-Subject: Re: [PATCH V5 3/5] iio: adc: Add support for PMIC7 ADC
+Date:   Fri, 22 May 2020 18:39:26 +0300
+Message-ID: <CAHp75VcE9Q26HUn9cRH8TtjzCrFxSyu=J9XhT-m1Fs6=Gbh-8Q@mail.gmail.com>
+Subject: Re: [PATCH V5 4/5] iio: adc: Update debug prints
 To:     Jishnu Prakash <jprakash@codeaurora.org>
 Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
         devicetree <devicetree@vger.kernel.org>,
@@ -74,93 +74,97 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, May 22, 2020 at 5:25 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
 >
-> The ADC architecture on PMIC7 is changed as compared to PMIC5. The
-> major change from PMIC5 is that all SW communication to ADC goes through
-> PMK8350, which communicates with other PMICs through PBS when the ADC
-> on PMK8350 works in master mode. The SID register is used to identify the
-> PMICs with which the PBS needs to communicate. Add support for the same.
+> Change pr_err/pr_debug statements to dev_err/dev_dbg for
+> increased clarity.
+>
 
-Below should be in a separate patch, but it's a bikeshedding. So, I
-left it to maintainers to decide.
-Fine with me
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-...
+In the same way you should have patch with removal of ' < 0' parts.
 
-> @@ -285,7 +304,7 @@ static int adc5_configure(struct adc5_chip *adc,
+> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 >
->         /* Read registers 0x42 through 0x46 */
->         ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
-> -       if (ret < 0)
-> +       if (ret)
->                 return ret;
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index e1482fd..11eb97c 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -249,11 +249,11 @@ static int adc5_read_voltage_data(struct adc5_chip *adc, u16 *data)
+>         *data = (rslt_msb << 8) | rslt_lsb;
 >
->         /* Digital param selection */
-
-...
-
-> @@ -331,7 +391,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
+>         if (*data == ADC5_USR_DATA_CHECK) {
+> -               pr_err("Invalid data:0x%x\n", *data);
+> +               dev_err(adc->dev, "Invalid data:0x%x\n", *data);
+>                 return -EINVAL;
+>         }
+>
+> -       pr_debug("voltage raw code:0x%x\n", *data);
+> +       dev_dbg(adc->dev, "voltage raw code:0x%x\n", *data);
+>
+>         return 0;
+>  }
+> @@ -385,24 +385,24 @@ static int adc5_do_conversion(struct adc5_chip *adc,
+>
+>         ret = adc5_configure(adc, prop);
+>         if (ret) {
+> -               pr_err("ADC configure failed with %d\n", ret);
+> +               dev_err(adc->dev, "ADC configure failed with %d\n", ret);
+>                 goto unlock;
+>         }
 >
 >         if (adc->poll_eoc) {
 >                 ret = adc5_poll_wait_eoc(adc);
-> -               if (ret < 0) {
-> +               if (ret) {
->                         pr_err("EOC bit not set\n");
+>                 if (ret) {
+> -                       pr_err("EOC bit not set\n");
+> +                       dev_err(adc->dev, "EOC bit not set\n");
 >                         goto unlock;
 >                 }
-> @@ -341,7 +401,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
+>         } else {
+>                 ret = wait_for_completion_timeout(&adc->complete,
+>                                                         ADC5_CONV_TIMEOUT);
 >                 if (!ret) {
->                         pr_debug("Did not get completion timeout.\n");
+> -                       pr_debug("Did not get completion timeout.\n");
+> +                       dev_dbg(adc->dev, "Did not get completion timeout.\n");
 >                         ret = adc5_poll_wait_eoc(adc);
-> -                       if (ret < 0) {
-> +                       if (ret) {
->                                 pr_err("EOC bit not set\n");
+>                         if (ret) {
+> -                               pr_err("EOC bit not set\n");
+> +                               dev_err(adc->dev, "EOC bit not set\n");
 >                                 goto unlock;
 >                         }
-
-...
-
-> @@ -406,8 +519,38 @@ static int adc5_read_raw(struct iio_dev *indio_dev,
->         default:
+>                 }
+> @@ -724,7 +724,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
+>         channel_name = of_get_property(node,
+>                                 "label", NULL) ? : node->name;
+>         if (!channel_name) {
+> -               pr_err("Invalid channel name\n");
+> +               dev_err(dev, "Invalid channel name\n");
 >                 return -EINVAL;
 >         }
-> +}
->
-> -       return 0;
-
-(this one looks like standalone change from above)
-
-...
-
-> @@ -570,7 +762,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
->
->                 ret = adc5_read(adc, ADC5_USR_REVISION1, dig_version,
->                                                         sizeof(dig_version));
-> -               if (ret < 0) {
-> +               if (ret) {
->                         dev_err(dev, "Invalid dig version read %d\n", ret);
+>         prop->datasheet_name = channel_name;
+> @@ -767,7 +767,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
 >                         return ret;
 >                 }
-
-...
-
-> +       if (of_device_is_compatible(node, "qcom,spmi-adc7"))
-> +               indio_dev->info = &adc7_info;
-> +       else
-> +               indio_dev->info = &adc5_info;
-
-Can we use driver_data?
-
-...
-
-> +       if (adcmap7_die_temp[0].x > voltage) {
-> +               *result_mdec = DIE_TEMP_ADC7_SCALE_1;
-> +               return 0;
-
-> +       } else if (adcmap7_die_temp[i].x <= voltage) {
-
-As per previous comment, redundant 'else' and please use value of i
-directly here.
+>
+> -               pr_debug("dig_ver:minor:%d, major:%d\n", dig_version[0],
+> +               dev_dbg(dev, "dig_ver:minor:%d, major:%d\n", dig_version[0],
+>                                                 dig_version[1]);
+>                 /* Digital controller >= 5.3 have hw_settle_2 option */
+>                 if ((dig_version[0] >= ADC5_HW_SETTLE_DIFF_MINOR &&
+> @@ -971,7 +971,7 @@ static int adc5_probe(struct platform_device *pdev)
+>
+>         ret = adc5_get_dt_data(adc, node);
+>         if (ret) {
+> -               pr_err("adc get dt data failed\n");
+> +               dev_err(dev, "adc get dt data failed\n");
+>                 return ret;
+>         }
+>
+> --
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project
+>
 
 
 -- 

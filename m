@@ -2,139 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CC41DEBDC
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 17:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55CCF1DEBFC
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 17:36:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730114AbgEVPbS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 11:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
+        id S1730545AbgEVPgD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 11:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729851AbgEVPbR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 11:31:17 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDCCC061A0E;
-        Fri, 22 May 2020 08:31:17 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id z26so5338891pfk.12;
-        Fri, 22 May 2020 08:31:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SSLvHrUrUmnP+J7EUaDe7T1ErKWhhTBSuFxFKbP5p2U=;
-        b=BDzT50X4coOikh70Rqyz4HIZVxhBJy6tMg7dg9A0Bg1ifgpbm0V3hjmHvn1rMK3PEd
-         /qMrIu8iNjKTKRWpT8Jbk7dtDxRjGFKboNsPH2O9H11NdshCEZZL4n5czFNxzuorYO2V
-         QGgZuCQpICm2KGwKaoKHbPprG9wGuf+R/XU1p0tLI7QRX9YNCGCfu2gByZRBzIAB1N41
-         avM2FWs/qBUEqeJ+NOhEMOcmPJU1XIy2/Bm5fOOZX2U3qrt+1Q6HyZV9z1Ze6gsaPPDi
-         7CMey5aUjddyc3RXjMykO0TzXs+CznhwuR+9h/sRwVNqGpFkPJzuiucwbiEfeUc9hyYD
-         pslQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SSLvHrUrUmnP+J7EUaDe7T1ErKWhhTBSuFxFKbP5p2U=;
-        b=WEM+d2qKcQTKiVHLg2BwkV+am5RZaOY0sKaV5Os3v6GiSFQH1T1QEN7VURPuEaV1Jl
-         Nc/Y4g2+giZsag72adS/7YJqRpro3bEDuvrhiDXZWy01gbJ1KgcGnozwcXbLx8k7wAw8
-         kn0/l9R+ONNGfIq/0NssVF+LZiP2rzdGSjb/FEQUNOUpSOKp/r86w22JhydbfE18bJGC
-         aV25wdEbEasxTrSE/lZkbDNkHk+ezilreLNfCJUEHdw3YghVl7YOOUZLD8bhPKhX/qbK
-         tAlsIEMZlpTo/uiOYWif1X1WE5v9mdvUCLuucHihriG4JEQyV/jGxfMuXgHBksUrFrus
-         VxzA==
-X-Gm-Message-State: AOAM533qzoAySc+O+q1j6zqeUjMprx8zwctYjjAax7WMwuYXDrpIIR8E
-        l1qIjK+i2bPnvdHFImLW6xZhr7EfxDJAWg108rs=
-X-Google-Smtp-Source: ABdhPJzHqqj8fLHqrPYt8036814ISRqAPyzCPwkwOwKw/jPrnn09boo9l3HZ9RshYZIyO8CwzN4XLER+NW+Ss0UGdtY=
-X-Received: by 2002:a62:2f43:: with SMTP id v64mr4328523pfv.170.1590161476980;
- Fri, 22 May 2020 08:31:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <1589361736-816-1-git-send-email-jprakash@codeaurora.org>
- <1589361736-816-4-git-send-email-jprakash@codeaurora.org> <CAHp75VedM+=+m8WF=zPpUcizgCGareYuBzUfjKwesozVSY_gKg@mail.gmail.com>
- <50ad0f74-22cc-c74f-afa4-df654e29bebb@codeaurora.org>
-In-Reply-To: <50ad0f74-22cc-c74f-afa4-df654e29bebb@codeaurora.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 22 May 2020 18:31:05 +0300
-Message-ID: <CAHp75Vf0srsT6yonxiA1Lc8uP4=17u5E19iWfW7XGivfgJjFNg@mail.gmail.com>
-Subject: Re: [PATCH V4 3/5] iio: adc: Add support for PMIC7 ADC
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        smohanad@codeaurora.org, kgunda@codeaurora.org,
-        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1727807AbgEVPgC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 11:36:02 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B397C061A0E;
+        Fri, 22 May 2020 08:36:02 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 7F0622A38F6
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Peter Hutterer <peter.hutterer@who-t.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <20200517225510.GA205823@koala> <20200518024034.GL89269@dtor-ws>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
+Date:   Fri, 22 May 2020 17:35:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200518024034.GL89269@dtor-ws>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, May 22, 2020 at 2:58 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
-> On 5/13/2020 3:18 PM, Andy Shevchenko wrote:
-> > On Wed, May 13, 2020 at 12:23 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+Hi Hans, hi Dmitry,
 
-...
+W dniu 18.05.2020 o 04:40, Dmitry Torokhov pisze:
+> Hi Hans, Peter,
+> 
+> On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
+>> On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
+>>> Hi Andrezj,
+>>>
 
-> >> +static int qcom_vadc7_scale_hw_calib_die_temp(
-> >> +                               const struct vadc_prescale_ratio *prescale,
-> >> +                               const struct adc5_data *data,
-> >> +                               u16 adc_code, int *result_mdec)
-> >> +{
-> >> +
-> >> +       int voltage, vtemp0, temp, i = ARRAY_SIZE(adcmap7_die_temp) - 1;
-> > How assignment to i is useful?
->
->
-> I'm using it in adcmap7_die_temp[i] below, to keep it within the
-> character limit per line. I think it's more readable that way.
->
-> >
-> >> +       voltage = qcom_vadc_scale_code_voltage_factor(adc_code,
-> >> +                               prescale, data, 1);
-> >> +
-> >> +       if (adcmap7_die_temp[0].x > voltage) {
-> >> +               *result_mdec = DIE_TEMP_ADC7_SCALE_1;
-> >> +               return 0;
-> >> +       } else if (adcmap7_die_temp[i].x <= voltage) {
+<snip>
 
-I see now i in use, please, replace with direct meaning.
+>>
+>>> I also noticed that you keep the device open (do not call the
+>>> input_device's close callback) when inhibited and just throw away
+>>> any events generated. This seems inefficient and may lead to
+>>> the internal state getting out of sync. What if a key is pressed
+>>> while inhibited and then the device is uninhibited while the key
+>>> is still pressed?  Now the press event is lost and userspace
+>>> querying the current state will see the pressed key as being
+>>> released.
+> 
+> This is a good point. We should look into signalling that some events
+> have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
+> it.
+> 
 
-> > Redundant 'else'.
-> The expression is different, it's adcmap7_die_temp[i] here, not
-> adcmap7_die_temp[0].
+It seems to me that the situation Hans envisions is not possible,
+or will not be possible with a simple change. Let me explain.
 
-if (a) {
- ...
- return;
-} else if (b) {
- ...
-}
+For a start, let's recall that the input core prevents consecutive
+events of the same kind (type _and_ code _and_ value) from being
+delivered to handlers. The decision is made in input_get_disposition().
+For EV_KEY it is:
 
-'else' is redundant due to 'return'. Same when it's 'goto'.
+		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
 
-> >> +               *result_mdec = DIE_TEMP_ADC7_MAX;
-> >> +               return 0;
-> >> +       }
-> >> +
-> >> +       for (i = 0; i < ARRAY_SIZE(adcmap7_die_temp); i++)
-> >> +               if (adcmap7_die_temp[i].x > voltage)
-> >> +                       break;
-> >> +
-> >> +       vtemp0 = adcmap7_die_temp[i - 1].x;
-> >> +       voltage = voltage - vtemp0;
-> >> +       temp = div64_s64(voltage * DIE_TEMP_ADC7_SCALE_FACTOR,
-> >> +               adcmap7_die_temp[i - 1].y);
-> >> +       temp += DIE_TEMP_ADC7_SCALE_1 + (DIE_TEMP_ADC7_SCALE_2 * (i - 1));
-> >> +       *result_mdec = temp;
-> >> +
-> >> +       return 0;
-> >> +}
+			/* auto-repeat bypasses state updates */
+			if (value == 2) {
+				disposition = INPUT_PASS_TO_HANDLERS;
+				break;
+			}
 
--- 
-With Best Regards,
-Andy Shevchenko
+			if (!!test_bit(code, dev->key) != !!value) {
+
+				__change_bit(code, dev->key);
+				disposition = INPUT_PASS_TO_HANDLERS;
+			}
+		}
+
+Let's now focus on value != 2 (events other than auto-repeat).
+The disposition changes from the default INPUT_IGNORE_EVENT to
+INPUT_PASS_TO_HANDLERS only when the event in question changes
+the current state: either by releasing a pressed key, or by
+pressing a released key. Subsequent releases of a released key
+or subsequent presses of a pressed key will be ignored.
+
+What Hans points out is the possibility of uninhibiting a device
+while its key is pressed and then releasing the key. First of all,
+during inhibiting input_dev_release_keys() is called, so input_dev's
+internal state will be cleared of all pressed keys. Then the device
+- after being uninhibited - all of a sudden produces a key release
+event. It will be ignored as per the "subsequent releases of a
+released key" case, so the handlers will not be passed an unmatched
+key release event. Assuming that passing an unmatched key release
+event was Hans's concern, in this case it seems impossible.
+
+Now, the value of 2 (auto-repeat) needs some attention. There are two
+cases to consider: the device uses input core's software repeat or it
+uses its own (hardware) repeat.
+
+Let's consider the first case. The timer which generates auto-repeat
+is only started on a key press event and only stopped on a key release
+event. As such, if any auto-repeat was in progress when inhibiting
+happened, it must have been stopped as per input_dev_release_keys().
+Then the key is pressed and held after the device has been inhibited,
+and the device is being uninhibited. Since it uses software auto-repeat,
+no events will be reported by the device until the key is released,
+and, as explained above, the release event will be ignored.
+
+Let's consider the second case. The key is pressed and held after the
+device has been inhibited and the device is being uninhibited. The worst
+thing that can happen is unmatched key repeat events will start coming
+from the device. We must prevent them from reaching the handlers and
+ignore them instead. So I suggest something on the lines of:
+
+if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+
+			/* auto-repeat bypasses state updates */
+-			if (value == 2) {
++			if (value == 2 && test_bit(code, dev->key)) {
+				disposition = INPUT_PASS_TO_HANDLERS;
+				break;
+			}
+
+The intended meaning is "ignore key repeat events if the key is not
+pressed".
+
+With this small change I believe it is not possible to have neither
+unmatched release nor unmatched repeat being delivered to handlers.
+
+Regards,
+
+Andrzej

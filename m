@@ -2,459 +2,234 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C71B71DE20B
-	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 10:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D53BD1DE1C1
+	for <lists+linux-iio@lfdr.de>; Fri, 22 May 2020 10:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729151AbgEVIgl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 May 2020 04:36:41 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:23064 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729517AbgEVIge (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 04:36:34 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04M8XAYq016246;
-        Fri, 22 May 2020 04:36:32 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 312d3655pf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 May 2020 04:36:32 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 04M8aU1a063059
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 22 May 2020 04:36:30 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 22 May
- 2020 04:36:29 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 22 May 2020 04:36:29 -0400
-Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04M8ZhUS005306;
-        Fri, 22 May 2020 04:36:20 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <bcm-kernel-feedback-list@broadcom.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-input@vger.kernel.org>, <linux-aspeed@lists.ozlabs.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-rockchip@lists.infradead.org>, <linux-pm@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <devel@driverdev.osuosl.org>
-CC:     <vilhelm.gray@gmail.com>, <syednwaris@gmail.com>,
-        <fabrice.gasnier@st.com>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <jic23@kernel.org>,
-        <dan@dlrobertson.com>, <jikos@kernel.org>,
-        <srinivas.pandruvada@linux.intel.com>, <linus.walleij@linaro.org>,
-        <wens@csie.org>, <hdegoede@redhat.com>, <rjui@broadcom.com>,
-        <sbranden@broadcom.com>, <peda@axentia.se>, <kgene@kernel.org>,
-        <krzk@kernel.org>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
-        <ak@it-klinger.de>, <paul@crapouillou.net>, <milo.kim@ti.com>,
-        <vz@mleia.com>, <slemieux.tyco@gmail.com>, <khilman@baylibre.com>,
-        <matthias.bgg@gmail.com>, <agross@kernel.org>,
-        <bjorn.andersson@linaro.org>, <heiko@sntech.de>,
-        <orsonzhai@gmail.com>, <baolin.wang7@gmail.com>,
-        <zhang.lyra@gmail.com>, <mripard@kernel.org>, <tduszyns@gmail.com>,
-        <rmfrfs@gmail.com>, <lorenzo.bianconi83@gmail.com>,
-        <ktsai@capellamicro.com>, <songqiang1304521@gmail.com>,
-        <tomislav.denis@avl.com>, <eajames@linux.ibm.com>,
-        <dmitry.torokhov@gmail.com>, <coproscefalo@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 5/5] iio: remove left-over parent assignments
-Date:   Fri, 22 May 2020 11:22:08 +0300
-Message-ID: <20200522082208.383631-5-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200522082208.383631-1-alexandru.ardelean@analog.com>
-References: <20200522082208.383631-1-alexandru.ardelean@analog.com>
+        id S1728816AbgEVIZS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 May 2020 04:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728802AbgEVIZR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 May 2020 04:25:17 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE79BC061A0E;
+        Fri, 22 May 2020 01:25:15 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id v4so7699300qte.3;
+        Fri, 22 May 2020 01:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=XJsKRH19vB/cGeqHjSkLUZnV1D50ZWfC9CxNYPIMtuY=;
+        b=WT1eooU+uX39YaJnVBfcBwibdNR0GBbXNZ7UxW9dkBnZ6uo3Z8NAuBoJ/KLlGMvLuk
+         /FpXarQmNwRs2mMpODVT5yjKfleiByaCbuVk3bHQHdNMg32aarFM4JJOWuxE7SGS90M5
+         mLeTWV7UI43lbPMp9dRYb6FAyfKbuiB3JF6/akACi71rn9RxBnBFOZlounf58CiAF5Ed
+         DUgBaoMbrbtXyLWJ8iT7DYBK8W/uIoRhmZVdjeWDzgk1+GFpvpjPUCK0PfD7gUbhTarM
+         S5BXV41a0kQpTGaFoLcwppp9NlZLmGVwwliK7RHGlITo9l/DBBhjj/ZquFOjf6wTOEQd
+         aqpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=XJsKRH19vB/cGeqHjSkLUZnV1D50ZWfC9CxNYPIMtuY=;
+        b=LqhrpKqIPoMJggEMEeUxtCdXDtgeXDPsC01Mv3d3xYBwYpOyC0a8Ps1xP+YcnPOywj
+         zpgY6dNqtfnbioIymotSaav9+ZkYm6dtUJq5xGyz8jAkZR4Lfmlqjo1Zi1Wo+x1ybnX9
+         i/1Pk/7R8zEZ80jt8Sc2RHBKHNgexkH8WT/7VuKAqM6HxQitD+ZrgtIR3NCa+Q3JYB3J
+         mjDisOqZmYXiknQsU/7fCIo1LFce45BdvSmoNoh7svQgyUCXPu/6N014AUvFfY7Hfjo1
+         +4dNDDpr/Ot+BoP70RPKXI86lBCKbKL6k+thizgiIFNgdwuA6icb0EpzHel+EyIDhYjC
+         CK+Q==
+X-Gm-Message-State: AOAM530/KU+j2SkuFznsLYmcwYC6KpR/Z/oan9iWz72a5bgsWzlSw7FY
+        CaQtWdxo7pNncb6HO9RdH1I=
+X-Google-Smtp-Source: ABdhPJx84n0CAJh5FKdKOS8FIWCGtW9vmaMCZgQjSSdpcVpXYn/dDcrgwzR9SW2EGFoU5Mqmc7LBmA==
+X-Received: by 2002:ac8:6ece:: with SMTP id f14mr14505718qtv.135.1590135914681;
+        Fri, 22 May 2020 01:25:14 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id u16sm3397752qkm.107.2020.05.22.01.25.12
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 22 May 2020 01:25:14 -0700 (PDT)
+Date:   Fri, 22 May 2020 10:25:10 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-kernel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v2 3/4] iio: imu: bmi160: added regulator support
+Message-ID: <20200522082510.GC19742@ict14-OptiPlex-980>
+References: <20200519075111.6356-1-jonathan.albrieux@gmail.com>
+ <20200519075111.6356-4-jonathan.albrieux@gmail.com>
+ <20200519185535.00003cb7@Huawei.com>
+ <20200520071751.GD3361@ict14-OptiPlex-980>
+ <20200521193055.7ee7cf9c@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-22_05:2020-05-21,2020-05-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 cotscore=-2147483648
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- clxscore=1015 adultscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005220070
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200521193055.7ee7cf9c@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These were found by doing some shell magic:
-------------
-for file in $(git grep -w devm_iio_device_alloc | cut -d: -f1 | sort | uniq) ; do
-	if grep 'parent =' $file | grep -v trig | grep -vq devm_; then
-		echo "$file -> $(grep "parent =" $file)"
-	fi
-done
------------
+On Thu, May 21, 2020 at 07:30:55PM +0100, Jonathan Cameron wrote:
+> On Wed, 20 May 2020 09:17:51 +0200
+> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+> 
+> > On Tue, May 19, 2020 at 06:55:35PM +0100, Jonathan Cameron wrote:
+> > > On Tue, 19 May 2020 09:50:59 +0200
+> > > Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+> > >   
+> > > > v2: fixed missing description  
+> > > 
+> > > Don't put change log here....  
+> > 
+> > Yep I will put it in the cover letter
+> > 
+> > > > 
+> > > > Add vdd-supply and vddio-supply support. Without this support vdd and vddio
+> > > > should be set to always-on in device tree  
+> > > 
+> > > Kind of the opposite.  If they are always on we don't have to provide them
+> > > in the device tree.
+> > >   
+> > 
+> > I wrote that because, testing on msm8916, without setting the regulators to
+> > always on they were controlled by other components and it happened that
+> > the line wasn't ready during probe causing failure to load the module.
+> > 
+> > I will try to reword based on your comment, thank you.
+> 
+> Ah. Understood.  I'd give that explicit example in the patch description.
+> I'd assumed this was the normal case of they weren't being described
+> at all in DT, whereas you case is more complex.
+> 
+> Jonathan
+>
 
-The output is bearable [after the semantic patch is applied].
-There is a mix of trigger assignments with some iio device parent
-assignments that are removed via this patch.
+Yep, I omitted to describe the case I was in. I'll add it to next patch, thank
+you,
+ 
+> > 
+> > > A few trivial things inline.
+> > >   
+> > > > 
+> > > > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > > > ---  
+> > > 
+> > > Change log goes here so we don't end up keeping it in the git log.
+> > >   
+> > > >  drivers/iio/imu/bmi160/bmi160.h      |  2 ++
+> > > >  drivers/iio/imu/bmi160/bmi160_core.c | 27 ++++++++++++++++++++++++++-
+> > > >  2 files changed, 28 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/iio/imu/bmi160/bmi160.h b/drivers/iio/imu/bmi160/bmi160.h
+> > > > index 621f5309d735..923c3b274fde 100644
+> > > > --- a/drivers/iio/imu/bmi160/bmi160.h
+> > > > +++ b/drivers/iio/imu/bmi160/bmi160.h
+> > > > @@ -3,10 +3,12 @@
+> > > >  #define BMI160_H_
+> > > >  
+> > > >  #include <linux/iio/iio.h>
+> > > > +#include <linux/regulator/consumer.h>
+> > > >  
+> > > >  struct bmi160_data {
+> > > >  	struct regmap *regmap;
+> > > >  	struct iio_trigger *trig;
+> > > > +	struct regulator_bulk_data supplies[2];
+> > > >  };
+> > > >  
+> > > >  extern const struct regmap_config bmi160_regmap_config;
+> > > > diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
+> > > > index 6af65d6f1d28..9bbe0d8e6720 100644
+> > > > --- a/drivers/iio/imu/bmi160/bmi160_core.c
+> > > > +++ b/drivers/iio/imu/bmi160/bmi160_core.c
+> > > > @@ -15,6 +15,7 @@
+> > > >  #include <linux/delay.h>
+> > > >  #include <linux/irq.h>
+> > > >  #include <linux/of_irq.h>
+> > > > +#include <linux/regulator/consumer.h>
+> > > >  
+> > > >  #include <linux/iio/iio.h>
+> > > >  #include <linux/iio/triggered_buffer.h>
+> > > > @@ -709,6 +710,12 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+> > > >  	unsigned int val;
+> > > >  	struct device *dev = regmap_get_device(data->regmap);
+> > > >  
+> > > > +	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
+> > > > +	if (ret) {
+> > > > +		dev_err(dev, "Failed to enable regulators: %d\n", ret);
+> > > > +		return ret;
+> > > > +	}
+> > > > +
+> > > >  	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+> > > >  	if (ret)
+> > > >  		return ret;
+> > > > @@ -793,9 +800,17 @@ int bmi160_probe_trigger(struct iio_dev *indio_dev, int irq, u32 irq_type)
+> > > >  static void bmi160_chip_uninit(void *data)
+> > > >  {
+> > > >  	struct bmi160_data *bmi_data = data;
+> > > > +	struct device *dev = regmap_get_device(bmi_data->regmap);
+> > > > +	int ret;
+> > > >  
+> > > >  	bmi160_set_mode(bmi_data, BMI160_GYRO, false);
+> > > >  	bmi160_set_mode(bmi_data, BMI160_ACCEL, false);
+> > > > +
+> > > > +	ret = regulator_bulk_disable(ARRAY_SIZE(bmi_data->supplies),
+> > > > +				     bmi_data->supplies);
+> > > > +	if (ret) {
+> > > > +		dev_err(dev, "Failed to disable regulators: %d\n", ret);
+> > > > +	}  
+> > > No need for brackets around a 1 line if block
+> > >   
+> > 
+> > Thank you, I didn't noticed that :-)
+> > 
+> > > 	if (ret)
+> > > 		dev_err(dev, "failed to disable regulators: %d\n", ret);
+> > >   
+> > > >  }
+> > > >  
+> > > >  int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+> > > > @@ -815,6 +830,16 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+> > > >  	dev_set_drvdata(dev, indio_dev);
+> > > >  	data->regmap = regmap;
+> > > >  
+> > > > +	data->supplies[0].supply = "vdd";
+> > > > +	data->supplies[1].supply = "vddio";
+> > > > +	ret = devm_regulator_bulk_get(dev,
+> > > > +				      ARRAY_SIZE(data->supplies),
+> > > > +				      data->supplies);
+> > > > +	if (ret) {
+> > > > +		dev_err(dev, "Failed to get regulators: %d\n", ret);
+> > > > +		return ret;
+> > > > +	}
+> > > > +
+> > > >  	ret = bmi160_chip_init(data, use_spi);
+> > > >  	if (ret)
+> > > >  		return ret;
+> > > > @@ -853,6 +878,6 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
+> > > >  }
+> > > >  EXPORT_SYMBOL_GPL(bmi160_core_probe);
+> > > >  
+> > > > -MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com");
+> > > > +MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com>");  
+> > > 
+> > > Good fix but shouldn't be in this patch.   Put it a separate patch on it's own.
+> > >   
+> > 
+> > Ok will separate this fix into another patch, thank you!
+> > 
+> > > >  MODULE_DESCRIPTION("Bosch BMI160 driver");
+> > > >  MODULE_LICENSE("GPL v2");  
+> > > 
+> > >   
+> > 
+> > Best regards,
+> > Jonathan Albrieux
+> 
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/accel/kxcjk-1013.c                    | 1 -
- drivers/iio/accel/mma8452.c                       | 1 -
- drivers/iio/accel/mma9553.c                       | 1 -
- drivers/iio/adc/ad7192.c                          | 1 -
- drivers/iio/adc/hx711.c                           | 1 -
- drivers/iio/adc/max1363.c                         | 2 --
- drivers/iio/adc/mcp3911.c                         | 1 -
- drivers/iio/adc/qcom-spmi-iadc.c                  | 1 -
- drivers/iio/amplifiers/ad8366.c                   | 1 -
- drivers/iio/chemical/vz89x.c                      | 1 -
- drivers/iio/dac/ad5770r.c                         | 1 -
- drivers/iio/health/afe4403.c                      | 1 -
- drivers/iio/health/afe4404.c                      | 1 -
- drivers/iio/humidity/dht11.c                      | 1 -
- drivers/iio/humidity/hts221_core.c                | 1 -
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c        | 1 -
- drivers/iio/light/cm3605.c                        | 1 -
- drivers/iio/light/ltr501.c                        | 1 -
- drivers/iio/magnetometer/ak8975.c                 | 1 -
- drivers/iio/orientation/hid-sensor-rotation.c     | 1 -
- drivers/iio/potentiostat/lmp91000.c               | 1 -
- drivers/iio/proximity/ping.c                      | 1 -
- drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 1 -
- drivers/iio/proximity/srf04.c                     | 1 -
- drivers/iio/proximity/srf08.c                     | 1 -
- drivers/iio/temperature/tsys01.c                  | 1 -
- drivers/staging/iio/addac/adt7316.c               | 1 -
- 27 files changed, 28 deletions(-)
-
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index c9924a65c32a..6b93521c0e17 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -1311,7 +1311,6 @@ static int kxcjk1013_probe(struct i2c_client *client,
- 
- 	mutex_init(&data->mutex);
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = kxcjk1013_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(kxcjk1013_channels);
- 	indio_dev->available_scan_masks = kxcjk1013_scan_masks;
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 00e100fc845a..ef3df402fc3c 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1592,7 +1592,6 @@ static int mma8452_probe(struct i2c_client *client,
- 	i2c_set_clientdata(client, indio_dev);
- 	indio_dev->info = &mma8452_info;
- 	indio_dev->name = id->name;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = data->chip_info->channels;
- 	indio_dev->num_channels = data->chip_info->num_channels;
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index 312070dcf035..c15908faa381 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -1103,7 +1103,6 @@ static int mma9553_probe(struct i2c_client *client,
- 	if (ret < 0)
- 		return ret;
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = mma9553_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(mma9553_channels);
- 	indio_dev->name = name;
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 08ba1a8f05eb..a0837d7e9176 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -970,7 +970,6 @@ static int ad7192_probe(struct spi_device *spi)
- 
- 	spi_set_drvdata(spi, indio_dev);
- 	st->chip_info = of_device_get_match_data(&spi->dev);
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = st->chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
-diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
-index c8686558429b..6a173531d355 100644
---- a/drivers/iio/adc/hx711.c
-+++ b/drivers/iio/adc/hx711.c
-@@ -551,7 +551,6 @@ static int hx711_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "hx711";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &hx711_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = hx711_chan_spec;
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index 9d92017c79b2..cc1ba7bfc8e6 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -1652,8 +1652,6 @@ static int max1363_probe(struct i2c_client *client,
- 	if (ret)
- 		goto error_disable_reg;
- 
--	/* Establish that the iio_dev is a child of the i2c device */
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->dev.of_node = client->dev.of_node;
- 	indio_dev->name = id->name;
- 	indio_dev->channels = st->chip_info->channels;
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index dd52f08ec82e..818b92518c66 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -293,7 +293,6 @@ static int mcp3911_probe(struct spi_device *spi)
- 	if (ret)
- 		goto clk_disable;
- 
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->dev.of_node = spi->dev.of_node;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
-index 46858eddf1c3..1c90ad33a881 100644
---- a/drivers/iio/adc/qcom-spmi-iadc.c
-+++ b/drivers/iio/adc/qcom-spmi-iadc.c
-@@ -553,7 +553,6 @@ static int iadc_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	indio_dev->dev.parent = dev;
- 	indio_dev->dev.of_node = node;
- 	indio_dev->name = pdev->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-index 62167b87caea..2595e9cb0b2d 100644
---- a/drivers/iio/amplifiers/ad8366.c
-+++ b/drivers/iio/amplifiers/ad8366.c
-@@ -274,7 +274,6 @@ static int ad8366_probe(struct spi_device *spi)
- 	}
- 
- 	st->info = &ad8366_infos[st->type];
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->info = &ad8366_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/chemical/vz89x.c b/drivers/iio/chemical/vz89x.c
-index 415b39339d4e..5586eb8e12cd 100644
---- a/drivers/iio/chemical/vz89x.c
-+++ b/drivers/iio/chemical/vz89x.c
-@@ -382,7 +382,6 @@ static int vz89x_probe(struct i2c_client *client,
- 	data->last_update = jiffies - HZ;
- 	mutex_init(&data->lock);
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->info = &vz89x_info;
- 	indio_dev->name = dev_name(&client->dev);
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-index 2d7623b9b2c0..84dcf149261f 100644
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -651,7 +651,6 @@ static int ad5770r_probe(struct spi_device *spi)
- 		}
- 	}
- 
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->info = &ad5770r_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-index e9f87e42ff4f..ed230f12b2f8 100644
---- a/drivers/iio/health/afe4403.c
-+++ b/drivers/iio/health/afe4403.c
-@@ -509,7 +509,6 @@ static int afe4403_probe(struct spi_device *spi)
- 	}
- 
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->dev.parent = afe->dev;
- 	indio_dev->channels = afe4403_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(afe4403_channels);
- 	indio_dev->name = AFE4403_DRIVER_NAME;
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index e728bbb21ca8..3a3efae4695a 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -517,7 +517,6 @@ static int afe4404_probe(struct i2c_client *client,
- 	}
- 
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->dev.parent = afe->dev;
- 	indio_dev->channels = afe4404_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(afe4404_channels);
- 	indio_dev->name = AFE4404_DRIVER_NAME;
-diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
-index d05c6fdb758b..9a7819817488 100644
---- a/drivers/iio/humidity/dht11.c
-+++ b/drivers/iio/humidity/dht11.c
-@@ -321,7 +321,6 @@ static int dht11_probe(struct platform_device *pdev)
- 	init_completion(&dht11->completion);
- 	mutex_init(&dht11->lock);
- 	iio->name = pdev->name;
--	iio->dev.parent = &pdev->dev;
- 	iio->info = &dht11_iio_info;
- 	iio->modes = INDIO_DIRECT_MODE;
- 	iio->channels = dht11_chan_spec;
-diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
-index 9003671f14fb..c5d9bd0ee9a6 100644
---- a/drivers/iio/humidity/hts221_core.c
-+++ b/drivers/iio/humidity/hts221_core.c
-@@ -572,7 +572,6 @@ int hts221_probe(struct device *dev, int irq, const char *name,
- 		return err;
- 
- 	iio_dev->modes = INDIO_DIRECT_MODE;
--	iio_dev->dev.parent = hw->dev;
- 	iio_dev->available_scan_masks = hts221_scan_masks;
- 	iio_dev->channels = hts221_channels;
- 	iio_dev->num_channels = ARRAY_SIZE(hts221_channels);
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 4d604fe842e5..153f855db8d6 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1530,7 +1530,6 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	}
- 
- 	dev_set_drvdata(dev, indio_dev);
--	indio_dev->dev.parent = dev;
- 	/* name will be NULL when enumerated via ACPI */
- 	if (name)
- 		indio_dev->name = name;
-diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
-index 964ede49f662..4c83953672be 100644
---- a/drivers/iio/light/cm3605.c
-+++ b/drivers/iio/light/cm3605.c
-@@ -239,7 +239,6 @@ static int cm3605_probe(struct platform_device *pdev)
- 	led_trigger_register_simple("cm3605", &cm3605->led);
- 	led_trigger_event(cm3605->led, LED_FULL);
- 
--	indio_dev->dev.parent = dev;
- 	indio_dev->info = &cm3605_info;
- 	indio_dev->name = "cm3605";
- 	indio_dev->channels = cm3605_channels;
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 5a3fcb127cd2..4bac0646398d 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1480,7 +1480,6 @@ static int ltr501_probe(struct i2c_client *client,
- 	if ((partid >> 4) != data->chip_info->partid)
- 		return -ENODEV;
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->info = data->chip_info->info;
- 	indio_dev->channels = data->chip_info->channels;
- 	indio_dev->num_channels = data->chip_info->no_channels;
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 3c881541ae72..a5f67db11754 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -922,7 +922,6 @@ static int ak8975_probe(struct i2c_client *client,
- 	}
- 
- 	mutex_init(&data->lock);
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = ak8975_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(ak8975_channels);
- 	indio_dev->info = &ak8975_info;
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index b99f41240e3e..23bc61a7f018 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -281,7 +281,6 @@ static int hid_dev_rot_probe(struct platform_device *pdev)
- 	}
- 
- 	indio_dev->num_channels = ARRAY_SIZE(dev_rot_channels);
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &dev_rot_info;
- 	indio_dev->name = name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-index 2cb11da18e0f..2d601889c8c0 100644
---- a/drivers/iio/potentiostat/lmp91000.c
-+++ b/drivers/iio/potentiostat/lmp91000.c
-@@ -321,7 +321,6 @@ static int lmp91000_probe(struct i2c_client *client,
- 	indio_dev->channels = lmp91000_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(lmp91000_channels);
- 	indio_dev->name = LMP91000_DRV_NAME;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	i2c_set_clientdata(client, indio_dev);
- 
-diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
-index 12b893c5b0ee..abd92caebfbb 100644
---- a/drivers/iio/proximity/ping.c
-+++ b/drivers/iio/proximity/ping.c
-@@ -310,7 +310,6 @@ static int ping_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "ping";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &ping_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ping_chan_spec;
-diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-index 5b369645ef49..a8e716dbd24e 100644
---- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-+++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-@@ -270,7 +270,6 @@ static int lidar_probe(struct i2c_client *client,
- 	indio_dev->name = LIDAR_DRV_NAME;
- 	indio_dev->channels = lidar_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(lidar_channels);
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	i2c_set_clientdata(client, indio_dev);
-diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-index 568b76e06385..2a3acff431d7 100644
---- a/drivers/iio/proximity/srf04.c
-+++ b/drivers/iio/proximity/srf04.c
-@@ -317,7 +317,6 @@ static int srf04_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "srf04";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &srf04_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = srf04_chan_spec;
-diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
-index b23ce446b7be..6677221d5818 100644
---- a/drivers/iio/proximity/srf08.c
-+++ b/drivers/iio/proximity/srf08.c
-@@ -483,7 +483,6 @@ static int srf08_probe(struct i2c_client *client,
- 	}
- 
- 	indio_dev->name = id->name;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = srf08_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(srf08_channels);
-diff --git a/drivers/iio/temperature/tsys01.c b/drivers/iio/temperature/tsys01.c
-index d41f050c2fea..2c631a1ca33b 100644
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -160,7 +160,6 @@ static int tsys01_probe(struct iio_dev *indio_dev, struct device *dev)
- 
- 	indio_dev->info = &tsys01_info;
- 	indio_dev->name = dev->driver->name;
--	indio_dev->dev.parent = dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = tsys01_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(tsys01_channels);
-diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-index 9cb3d0e42c38..ccbafcaaf27e 100644
---- a/drivers/staging/iio/addac/adt7316.c
-+++ b/drivers/staging/iio/addac/adt7316.c
-@@ -2171,7 +2171,6 @@ int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
- 	if ((chip->id & ID_FAMILY_MASK) == ID_ADT75XX)
- 		chip->int_mask |= ADT7516_AIN_INT_MASK;
- 
--	indio_dev->dev.parent = dev;
- 	if ((chip->id & ID_FAMILY_MASK) == ID_ADT75XX)
- 		indio_dev->info = &adt7516_info;
- 	else
--- 
-2.25.1
-
+Best regards,
+Jonathan Albrieux

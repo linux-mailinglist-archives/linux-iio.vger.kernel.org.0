@@ -2,104 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D27411DF728
-	for <lists+linux-iio@lfdr.de>; Sat, 23 May 2020 14:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232B51DF9FF
+	for <lists+linux-iio@lfdr.de>; Sat, 23 May 2020 20:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387770AbgEWMUL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 May 2020 08:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59116 "EHLO
+        id S2388268AbgEWSAv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 May 2020 14:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729150AbgEWMUK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 May 2020 08:20:10 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AD4C061A0E;
-        Sat, 23 May 2020 05:20:10 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id l5so11373142edn.7;
-        Sat, 23 May 2020 05:20:10 -0700 (PDT)
+        with ESMTP id S1728488AbgEWSAn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 May 2020 14:00:43 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B91BC0253B9
+        for <linux-iio@vger.kernel.org>; Sat, 23 May 2020 11:00:40 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id a23so10988294qto.1
+        for <linux-iio@vger.kernel.org>; Sat, 23 May 2020 11:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=0eDh4QSckHASr5gJNa93QIawwkukXovHo+mlHmY4Lhs=;
-        b=abXODuSDPU+tSd/aKAtdwD4ZmcwhOK6kZpXLE+1Mt/0RNH7RLOueH2k+wCQRqgCtT6
-         YfKQDXCg07z+3VvEoz2zDnJnqF8w5WVgb6Lg32BuTYrgqjSlxQWab/q2OZ8lvyN0hs7G
-         HixW5Lu0fGx9fL39/3dDxIUlu+rdiw8LWY4Q91wN/6cxtfgV1zvR/YpySJeQutRwWUue
-         5A+a8Z/BPcebwaO6RDIcYHasM8pU/9k7F+t5dIAJGlxzqusMn4qxnaRTNbCT1y/+X6fY
-         8aMfms1rfJ3NNr2wde8rPzS1o6TtajZvnkxVPcK14+2OfA9aM7fOqJBvJqdo1kJSedos
-         bApQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
+        b=vhvRG4iP0p/cCM0/gHqK0xx0MaMNF3/azTtn5P0fCT1b4XLjGRAoR85FXgvwYtowP6
+         J1ev3dPiedOMtPyOzUYmKFEqsj6BkIi2lR8s0YRNLylOZ8MbeWQpwNTWDXPX57LUrKeO
+         FLL54WToKnc9WyFCTQNZdn8yjuqVF61dsdwJrbIWn1f8+mXNgwQXd1Xox425XdFJLCTr
+         UNYtD5Mkr7J8HytQpl125rrGiBWdOVTtdeDic18s2v1Ex5H4EMrCDseWe8z8QJUA2DPl
+         pMcmWf9nM5lni1dYRbVMyTKtLHSFCzrJM5oRvB7Hp9K31CMWsqtaG47ZQbJG6ZEre6uU
+         kwNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=0eDh4QSckHASr5gJNa93QIawwkukXovHo+mlHmY4Lhs=;
-        b=SG9DgMlDKwz32k12Rt44EcUAaAvyK6879Tf5h2Ud2jlJt3GVdxm+NsUlY5Al2WkV9i
-         0agLNwpxToNP7OtFeVpvpDLWuEqXiBZcsNPxH+Nk337WIhVNs6YJS+z7l7/wK7SjAw5F
-         vWZGJuNT0wX5ub3iHB1I7w6mbfcWQgegbRszO/070j4jpRfo/jgvZar5JSFKVUJmUkZ2
-         r0LdkMgnI5uqXfBi9GBp9t/z5NYbvR6YUr1zwRLorxj6VD73TGw3ve6a8x6S5ljvSRIj
-         o92s7tZzyu5u0kyaRD/7qlD44dyh7q6Rx1hmZtOA1i0rar1YoNXh6MgpGfv1rKSU1JlW
-         9QtA==
-X-Gm-Message-State: AOAM531cfnyAu2Eqxgky0WHhMHgt53203nQuFD6vgnEdA5IAFDk/R61h
-        rhnvXyybfAiqRVcCyYUaTFVMQqA1220=
-X-Google-Smtp-Source: ABdhPJw0WWrU6MYwaQyjtRK0gQ22IEoCRNxXM7wU4niVLiDiVFKlpp+B5SscpiO/jz0dd9+0GzUcQw==
-X-Received: by 2002:a50:f086:: with SMTP id v6mr7192187edl.140.1590236408350;
-        Sat, 23 May 2020 05:20:08 -0700 (PDT)
-Received: from [192.168.0.104] (p5dcfec14.dip0.t-ipconnect.de. [93.207.236.20])
-        by smtp.gmail.com with ESMTPSA id h12sm10038898ejk.103.2020.05.23.05.20.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 May 2020 05:20:07 -0700 (PDT)
-Subject: Re: [PATCH v11 2/6] mfd: mp2629: Add support for mps battery charger
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        sre@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20200430155810.21383-1-sravanhome@gmail.com>
- <20200430155810.21383-3-sravanhome@gmail.com> <20200519103741.GW271301@dell>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <75b6a2ee-2d90-17c2-4b2b-0ef6238e903e@gmail.com>
-Date:   Sat, 23 May 2020 14:20:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
+        b=NirVzc/8FgOllR9gU7d25rHme7MLoeDsj4kK/zUUUtM65mTct5CboL/kQMIdvxw/yo
+         UxLIoX/qG4nQmrPQjYt/2daW92AKRIVmeYEUN3N5gwUtuKPHP8eN7J06ZWx9r2sr5D1M
+         JvnVJpbG81hN8Yflqpc5OOvHEaLmIiHTID+bwioTodgfYiWU+fW+FkTacD9pAI+R9fJI
+         7ib7qocF6U/ZSkhbFts/n4zqcnVKqNYNtHHBKx/f8OnN3WsplvNbvz2GXUQ0dFHwZR7P
+         SCvANpWLCdZHtBpK/aqJ4qy+GLmTzc1QeSrqYllbtTzBL2P/mXQK9l7wReR1iZjvy7ED
+         sqww==
+X-Gm-Message-State: AOAM530LP35FCyN1nG0o6UhU+YjXARRZ5xMD2sfo17hG+XAXC8drVJBh
+        qXaqVPB+SdCViebsmmK5AuyZaKBJj0RWdhWKGojHaoRE
+X-Google-Smtp-Source: ABdhPJw4JSLl4s8hKmdikxPHOZTjp7LuShJQWo5DKJXfhdyHNpRWrWLXX1iWw/azZwGF2Nz0kU5bTrWvyq5YmK6naS0=
+X-Received: by 2002:ac8:1e16:: with SMTP id n22mr21502226qtl.78.1590256838401;
+ Sat, 23 May 2020 11:00:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200519103741.GW271301@dell>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Received: by 2002:a37:9fd3:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:37
+ -0700 (PDT)
+Reply-To: mrs.chantala2055@gmail.com
+From:   mrs chantal <mrs.chantalas1@gmail.com>
+Date:   Sat, 23 May 2020 18:00:37 +0000
+Message-ID: <CAMdkyyDY_0O7YgysHCjgRTJ=8-B7XurK7o1razRHDVOjgr2V2g@mail.gmail.com>
+Subject: jjCompliment
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
-
-On 19/05/20 12:37 pm, Lee Jones wrote:
-> On Thu, 30 Apr 2020, Saravanan Sekar wrote:
->
->> mp2629 is a highly-integrated switching-mode battery charge management
->> device for single-cell Li-ion or Li-polymer battery.
->>
->> Add MFD core enables chip access for ADC driver for battery readings,
->> and a power supply battery-charger driver
->>
->> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> ---
->>   drivers/mfd/Kconfig        |  9 +++++
->>   drivers/mfd/Makefile       |  2 +
->>   drivers/mfd/mp2629.c       | 79 ++++++++++++++++++++++++++++++++++++++
->>   include/linux/mfd/mp2629.h | 17 ++++++++
->>   4 files changed, 107 insertions(+)
->>   create mode 100644 drivers/mfd/mp2629.c
->>   create mode 100644 include/linux/mfd/mp2629.h
-> For my own reference (apply this as-is to your sign-off block):
->
->    Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
->
-Do I have to resend with above sign-off in all the patch?
-
-Thanks,
-Saravanan
-
+     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
+    letter to solicit your partnership to transfer $13.5 Million US
+    Dollars.I shall send you more information and procedures when I receive
+    positive response From you. Please send me a message in My private
+    email address is ( mrschantal066@gmail.com  )
+    Best Regards
+    MrS.Chantal

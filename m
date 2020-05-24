@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E681DFF0B
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 15:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6837B1DFF0F
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 15:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728619AbgEXNJY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 09:09:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54102 "EHLO mail.kernel.org"
+        id S1726161AbgEXNNL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 09:13:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55266 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726064AbgEXNJY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 09:09:24 -0400
+        id S1726064AbgEXNNL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 09:13:11 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F90C20787;
-        Sun, 24 May 2020 13:09:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2FBBF20787;
+        Sun, 24 May 2020 13:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590325763;
-        bh=2Yhi6AKFxMkREcrMyAjTyEAf6Iw0DqTol3b+5FGWzSs=;
+        s=default; t=1590325990;
+        bh=Lcf8VBXRWwR3/d5jNdn1zKLq0hrW94IIhtTMeUpk/Qs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iWZTut5b8mxLNhLlCnMOxg/R8R2+jNVX9r8MLjATtcpik9eWu58nOyjiWkTIQMpsm
-         PZ+70RsULak+qQgaOZEZWwEhK+yyxrOt/BvYWCNtGrI3VU8Cb4QjPS1deZvTckyiHi
-         3jNksUCj8e2rkha0ulieGFwr8G1SGc6AiqaAXuj0=
-Date:   Sun, 24 May 2020 14:09:19 +0100
+        b=l1OWd1cNWrdKlfgLyXcpYOANbARyD0Y9kAt+VzDNhgMP0eS8/7ABU3I5iCG6h+qDz
+         bVYT7R1FYK63LqRNYu7h+asIZiDJk/JvTfNC1LIyeBEZSVdcYjQXqh9amWdWeBpFDA
+         9zyZVPsk0iMy26L1lnYYMwnPNwhr6eGhxeR01ELc=
+Date:   Sun, 24 May 2020 14:13:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>,
@@ -31,11 +31,11 @@ Cc:     <linux-iio@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
         <alexandre.torgue@st.com>
-Subject: Re: [PATCH] iio: stm32-adc: keep a reference to the iio device on
- the state struct
-Message-ID: <20200524140919.30b63227@archlinux>
-In-Reply-To: <20200522130719.630714-1-alexandru.ardelean@analog.com>
-References: <20200522130719.630714-1-alexandru.ardelean@analog.com>
+Subject: Re: [PATCH] iio: stm32-dfsdm-adc: keep a reference to the iio
+ device on the state struct
+Message-ID: <20200524141306.139d7433@archlinux>
+In-Reply-To: <20200522130804.631508-1-alexandru.ardelean@analog.com>
+References: <20200522130804.631508-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,7 +45,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 May 2020 16:07:19 +0300
+On Fri, 22 May 2020 16:08:04 +0300
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
 > We may want to get rid of the iio_priv_to_dev() helper. The reason is that
@@ -63,157 +63,116 @@ Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > 
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-I don't particularly mind this approach, but an alternative would be to
-change the callbacks to take an iio_dev rather than the iio_priv()
-structure.  It's more invasive though as need to change what is
-provided via dev_get_drvdata for the adc device.
-It's possible I missed a path where this won't work for some reason though.
+As this one is a bit simpler, I think the case for just changing the callbacks
+to take the iio_dev directly is stronger than adding this level of indirection.
 
-Up to the driver maintainers on which one they prefer.
-
-Thanks,
+Again, perhaps I'm missing something.
 
 Jonathan
 
-
 > ---
->  drivers/iio/adc/stm32-adc.c | 27 +++++++++++++++------------
->  1 file changed, 15 insertions(+), 12 deletions(-)
+>  drivers/iio/adc/stm32-dfsdm-adc.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index ae622ee6d08c..7e58c4443e3f 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -171,6 +171,7 @@ struct stm32_adc_cfg {
+> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+> index 76a60d93fe23..ff7a6afa4558 100644
+> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> @@ -69,6 +69,7 @@ struct stm32_dfsdm_dev_data {
 >  
->  /**
->   * struct stm32_adc - private data of each ADC IIO instance
-> + * @indio_dev:		back-reference to the IIO device object
->   * @common:		reference to ADC block common data
->   * @offset:		ADC instance register offset in ADC block
->   * @cfg:		compatible configuration data
-> @@ -194,6 +195,7 @@ struct stm32_adc_cfg {
->   * @chan_name:		channel name array
->   */
->  struct stm32_adc {
-> +	struct iio_dev		*indio_dev;
->  	struct stm32_adc_common	*common;
->  	u32			offset;
->  	const struct stm32_adc_cfg	*cfg;
-> @@ -637,7 +639,7 @@ static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
+>  struct stm32_dfsdm_adc {
+>  	struct stm32_dfsdm *dfsdm;
+> +	struct iio_dev *indio_dev;
+>  	const struct stm32_dfsdm_dev_data *dev_data;
+>  	unsigned int fl_id;
+>  	unsigned int nconv;
+> @@ -332,7 +333,7 @@ static int stm32_dfsdm_compute_all_osrs(struct iio_dev *indio_dev,
 >  
->  static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
+>  static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
 >  {
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	const struct iio_chan_spec *chan;
+>  	unsigned int bit;
+> @@ -352,7 +353,7 @@ static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
+>  
+>  static void stm32_dfsdm_stop_channel(struct stm32_dfsdm_adc *adc)
+>  {
+> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
+> +	struct iio_dev *indio_dev = adc->indio_dev;
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	const struct iio_chan_spec *chan;
+>  	unsigned int bit;
+> @@ -422,7 +423,7 @@ static int stm32_dfsdm_filter_set_trig(struct stm32_dfsdm_adc *adc,
+>  				       unsigned int fl_id,
+>  				       struct iio_trigger *trig)
+>  {
+> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
+> +	struct iio_dev *indio_dev = adc->indio_dev;
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	u32 jextsel = 0, jexten = STM32_DFSDM_JEXTEN_DISABLED;
 >  	int ret;
->  	u32 val;
->  
-> @@ -654,7 +656,7 @@ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
->  
->  static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
+> @@ -451,7 +452,7 @@ static int stm32_dfsdm_channels_configure(struct stm32_dfsdm_adc *adc,
+>  					  unsigned int fl_id,
+>  					  struct iio_trigger *trig)
 >  {
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int ret;
->  	u32 val;
->  
-> @@ -692,7 +694,7 @@ static void stm32h7_adc_enter_pwr_down(struct stm32_adc *adc)
->  
->  static int stm32h7_adc_enable(struct stm32_adc *adc)
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
+>  	struct stm32_dfsdm_filter_osr *flo = &fl->flo[0];
+> @@ -495,7 +496,7 @@ static int stm32_dfsdm_filter_configure(struct stm32_dfsdm_adc *adc,
+>  					unsigned int fl_id,
+>  					struct iio_trigger *trig)
 >  {
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int ret;
->  	u32 val;
->  
-> @@ -715,7 +717,7 @@ static int stm32h7_adc_enable(struct stm32_adc *adc)
->  
->  static void stm32h7_adc_disable(struct stm32_adc *adc)
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
+>  	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
+> @@ -1314,7 +1315,7 @@ static const struct iio_info stm32_dfsdm_info_adc = {
+>  static irqreturn_t stm32_dfsdm_irq(int irq, void *arg)
 >  {
+>  	struct stm32_dfsdm_adc *adc = arg;
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int ret;
->  	u32 val;
+>  	struct regmap *regmap = adc->dfsdm->regmap;
+>  	unsigned int status, int_en;
 >  
-> @@ -735,7 +737,7 @@ static void stm32h7_adc_disable(struct stm32_adc *adc)
->   */
->  static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
+> @@ -1569,6 +1570,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+>  
+>  	adc = iio_priv(iio);
+>  	adc->dfsdm = dev_get_drvdata(dev->parent);
+> +	adc->indio_dev = iio;
+>  
+>  	iio->dev.parent = dev;
+>  	iio->dev.of_node = np;
+> @@ -1651,7 +1653,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+>  static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
 >  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int i, ret;
->  	u32 lincalrdyw_mask, val;
->  
-> @@ -779,7 +781,7 @@ static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
->   */
->  static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int i, ret;
->  	u32 lincalrdyw_mask, val;
->  
-> @@ -852,7 +854,7 @@ static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
->   */
->  static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int ret;
->  	u32 val;
->  
-> @@ -1228,7 +1230,7 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
->  static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  {
->  	struct stm32_adc *adc = data;
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = adc->indio_dev;
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
->  
-> @@ -1241,7 +1243,7 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  static irqreturn_t stm32_adc_isr(int irq, void *data)
->  {
->  	struct stm32_adc *adc = data;
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = adc->indio_dev;
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
->  
-> @@ -1879,6 +1881,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  
->  	adc = iio_priv(indio_dev);
-> +	adc->indio_dev = indio_dev;
->  	adc->common = dev_get_drvdata(pdev->dev.parent);
->  	spin_lock_init(&adc->lock);
->  	init_completion(&adc->completion);
-> @@ -1990,7 +1993,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  static int stm32_adc_remove(struct platform_device *pdev)
->  {
->  	struct stm32_adc *adc = platform_get_drvdata(pdev);
+>  	struct stm32_dfsdm_adc *adc = platform_get_drvdata(pdev);
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
 >  
->  	pm_runtime_get_sync(&pdev->dev);
->  	iio_device_unregister(indio_dev);
-> @@ -2013,7 +2016,7 @@ static int stm32_adc_remove(struct platform_device *pdev)
->  static int stm32_adc_suspend(struct device *dev)
+>  	if (adc->dev_data->type == DFSDM_AUDIO)
+>  		of_platform_depopulate(&pdev->dev);
+> @@ -1664,7 +1666,7 @@ static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
+>  static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
 >  {
->  	struct stm32_adc *adc = dev_get_drvdata(dev);
+>  	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
 >  
 >  	if (iio_buffer_enabled(indio_dev))
->  		__stm32_adc_buffer_predisable(indio_dev);
-> @@ -2024,7 +2027,7 @@ static int stm32_adc_suspend(struct device *dev)
->  static int stm32_adc_resume(struct device *dev)
+>  		__stm32_dfsdm_predisable(indio_dev);
+> @@ -1675,7 +1677,7 @@ static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
+>  static int __maybe_unused stm32_dfsdm_adc_resume(struct device *dev)
 >  {
->  	struct stm32_adc *adc = dev_get_drvdata(dev);
+>  	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
 > -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 > +	struct iio_dev *indio_dev = adc->indio_dev;
->  	int ret;
->  
->  	ret = pm_runtime_force_resume(dev);
+>  	const struct iio_chan_spec *chan;
+>  	struct stm32_dfsdm_channel *ch;
+>  	int i, ret;
 

@@ -2,114 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E5AD1DFC94
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 04:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BAFE1DFEB2
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 13:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388263AbgEXCvu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 May 2020 22:51:50 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:53384 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388262AbgEXCvu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 23 May 2020 22:51:50 -0400
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app2 (Coremail) with SMTP id by_KCgBXHpAl4cleagbCAQ--.44957S4;
-        Sun, 24 May 2020 10:51:21 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1728091AbgEXLlU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 07:41:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54004 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727101AbgEXLlU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 07:41:20 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D103B2075F;
+        Sun, 24 May 2020 11:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590320479;
+        bh=8ZAPT2spP3nkobeWSQ+7g6/OU1ai1KDStJyS50keCKs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DPC+Obpx7Oe8ECa/1kOLIOeOrM86DUyuz5pePhMZY9FTz0odbwNGvVztbXgR8oTa0
+         pxozpwFI5iPnOaXB/axSpJzq4uUon2qjEz1Kp7a/GoGNrWEPXycIvm1XTTXyZlNxic
+         Tzg7E2ROzj5fC2fLI1e/ISgHo5l+IR6ULWzRQnNs=
+Date:   Sun, 24 May 2020 12:41:14 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, daniel.baluta@nxp.com,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED 
+        DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: magnetometer: ak8974: Fix runtime PM imbalance on error
-Date:   Sun, 24 May 2020 10:51:17 +0800
-Message-Id: <20200524025117.15679-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: by_KCgBXHpAl4cleagbCAQ--.44957S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4rXrW7uFyUAF13Cry5twb_yoW8uFWkpr
-        WkZFy7trW8Xw12qF45ArnxuFy5Cay3Jry8CrZ0ka47ZFsxZa98tF4kJr1YvF18CFWkJF4U
-        Jr4vq39ruF12kF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUva1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8JwCF04k20xvY0x0EwIxG
-        rwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-        Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-        6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-        kF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv
-        67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
-        uYvjfUO_MaUUUUU
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgEJBlZdtORShQARsR
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/5] dt-bindings: iio: imu: bmi160: convert txt
+ format to yaml
+Message-ID: <20200524124114.7f4e785d@archlinux>
+In-Reply-To: <20200520194656.16218-2-jonathan.albrieux@gmail.com>
+References: <20200520194656.16218-1-jonathan.albrieux@gmail.com>
+        <20200520194656.16218-2-jonathan.albrieux@gmail.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When devm_regmap_init_i2c() returns an error code, a pairing
-runtime PM usage counter decrement is needed to keep the
-counter balanced. For error paths after ak8974_set_power(),
-ak8974_detect() and ak8974_reset(), things are the same.
+On Wed, 20 May 2020 21:46:40 +0200
+Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
 
-However, When iio_triggered_buffer_setup() returns an error
-code, we don't need such a decrement because there is already
-one before this call. Things are the same for other error paths
-after it.
+> Converts documentation from txt format to yaml.
+> 
+> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/iio/magnetometer/ak8974.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+A reminder on the maintainer bit as that thread crossed with
+this one.  Also, drop the spi-max-frequency as we don't need
+to mention it explicitly for this device.
 
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index d32996702110..c1bdb304eb9e 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -764,18 +764,24 @@ static int ak8974_probe(struct i2c_client *i2c,
- 	ak8974->map = devm_regmap_init_i2c(i2c, &ak8974_regmap_config);
- 	if (IS_ERR(ak8974->map)) {
- 		dev_err(&i2c->dev, "failed to allocate register map\n");
-+		pm_runtime_put_noidle(&i2c->dev);
-+		pm_runtime_disable(&i2c->dev);
- 		return PTR_ERR(ak8974->map);
- 	}
- 
- 	ret = ak8974_set_power(ak8974, AK8974_PWR_ON);
- 	if (ret) {
- 		dev_err(&i2c->dev, "could not power on\n");
-+		pm_runtime_put_noidle(&i2c->dev);
-+		pm_runtime_disable(&i2c->dev);
- 		goto power_off;
- 	}
- 
- 	ret = ak8974_detect(ak8974);
- 	if (ret) {
- 		dev_err(&i2c->dev, "neither AK8974 nor AMI30x found\n");
-+		pm_runtime_put_noidle(&i2c->dev);
-+		pm_runtime_disable(&i2c->dev);
- 		goto power_off;
- 	}
- 
-@@ -786,6 +792,8 @@ static int ak8974_probe(struct i2c_client *i2c,
- 	ret = ak8974_reset(ak8974);
- 	if (ret) {
- 		dev_err(&i2c->dev, "AK8974 reset failed\n");
-+		pm_runtime_put_noidle(&i2c->dev);
-+		pm_runtime_disable(&i2c->dev);
- 		goto power_off;
- 	}
- 
-@@ -851,7 +859,6 @@ static int ak8974_probe(struct i2c_client *i2c,
- cleanup_buffer:
- 	iio_triggered_buffer_cleanup(indio_dev);
- disable_pm:
--	pm_runtime_put_noidle(&i2c->dev);
- 	pm_runtime_disable(&i2c->dev);
- 	ak8974_set_power(ak8974, AK8974_PWR_OFF);
- power_off:
--- 
-2.17.1
+Thanks,
+
+Jonathan
+
+
+> ---
+>  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 ---------
+>  .../bindings/iio/imu/bosch,bmi160.yaml        | 76 +++++++++++++++++++
+>  2 files changed, 76 insertions(+), 37 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> deleted file mode 100644
+> index 900c169de00f..000000000000
+> --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> +++ /dev/null
+> @@ -1,37 +0,0 @@
+> -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
+> -and externally connectable Magnetometer
+> -
+> -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> -
+> -Required properties:
+> - - compatible : should be "bosch,bmi160"
+> - - reg : the I2C address or SPI chip select number of the sensor
+> - - spi-max-frequency : set maximum clock frequency (only for SPI)
+> -
+> -Optional properties:
+> - - interrupts : interrupt mapping for IRQ
+> - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
+> -   input, set to "INT2" if INT2 pin should be used instead
+> - - drive-open-drain : set if the specified interrupt pin should be configured as
+> -   open drain. If not set, defaults to push-pull.
+> -
+> -Examples:
+> -
+> -bmi160@68 {
+> -	compatible = "bosch,bmi160";
+> -	reg = <0x68>;
+> -
+> -	interrupt-parent = <&gpio4>;
+> -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+> -	interrupt-names = "INT1";
+> -};
+> -
+> -bmi160@0 {
+> -	compatible = "bosch,bmi160";
+> -	reg = <0>;
+> -	spi-max-frequency = <10000000>;
+> -
+> -	interrupt-parent = <&gpio2>;
+> -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> -	interrupt-names = "INT2";
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> new file mode 100644
+> index 000000000000..46cb4fde1165
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> @@ -0,0 +1,76 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/imu/bosch,bmi160.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bosch BMI160
+> +
+> +maintainers:
+> +  - Daniel Baluta <daniel.baluta@nxp.com> (?)
+
+Daniel's reply crossed with this.  Given he's moved on to other things
+he's not happy to be listed as maintainer here.
+
+Given other threads, either put yourself here if you are happy to maintain
+the binding, or fall back to me but use my kernel.org address.
+
+Jonathan Cameron <jic23@kernel.org>
+
+I don't mind either way.
+
+
+> +
+> +description: |
+> +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
+> +  connectable Magnetometer
+> +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> +
+> +properties:
+> +  compatible:
+> +    const: bosch,bmi160
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maxItems: 1
+
+spi-max-frequency doesn't need to be here at all.   We aren't trying to list
+all of the properties that might be present - but rather those that
+are either required or that are part of the description of the device.
+This one is a generic spi binding that may or may not be present.
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  interrupt-names:
+> +    enum:
+> +      - INT1
+> +      - INT2
+> +    description: |
+> +      set to "INT1" if INT1 pin should be used as interrupt input, set
+> +      to "INT2" if INT2 pin should be used instead
+> +
+> +  drive-open-drain:
+> +    description: |
+> +      set if the specified interrupt pin should be configured as
+> +      open drain. If not set, defaults to push-pull.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    // Example for I2C
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        bmi160@68 {
+> +                compatible = "bosch,bmi160";
+> +                reg = <0x68>;
+> +                interrupt-parent = <&gpio4>;
+> +                interrupts = <12 1>;
+> +                interrupt-names = "INT1";
+> +        };
+> +    };
+> +  - |
+> +    // Example for SPI
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        bmi160@0 {
+> +                compatible = "bosch,bmi160";
+> +                reg = <0>;
+> +                spi-max-frequency = <10000000>;
+> +                interrupt-parent = <&gpio2>;
+> +                interrupts = <12 1>;
+> +                interrupt-names = "INT2";
+> +        };
+> +    };
 

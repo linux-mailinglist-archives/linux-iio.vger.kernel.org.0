@@ -2,41 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA911E008C
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 18:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 353371E00A2
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 18:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728316AbgEXQZs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 12:25:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55876 "EHLO mail.kernel.org"
+        id S1728684AbgEXQko (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 12:40:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726851AbgEXQZs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 12:25:48 -0400
+        id S1727899AbgEXQko (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 12:40:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5530520787;
-        Sun, 24 May 2020 16:25:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 030DF20787;
+        Sun, 24 May 2020 16:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590337547;
-        bh=8Sow2b/gmRxdhLhwL/1TKHwvcuZIa5HKY7WTfS3ObwI=;
+        s=default; t=1590338443;
+        bh=vccSXEaHfRL+UwNBweWaA0wqxU43n1ZHmahZIMV99LM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lKUqdmL7BX21pzqiPn4lYuHypLtRe8EUcHU9E3pM0K1NNzzHlbFi7yv7uOzMEObL6
-         mJL0PVz+X0UcMZUPfPpWZ3va+Wu5GEAGNIJqBqcGA0yfTKn9RHZUevbSlKv/70CUFm
-         29ptM9hsJEneyIy1zYhNeH10rXnQWD4lYK2IE+yY=
-Date:   Sun, 24 May 2020 17:25:42 +0100
+        b=wf9ywyog6rPq0mLcfqzIvtv67NWYl+HSsM228j2gzjgEItASiBt54ma/mfbdmImk+
+         TInTpoGzhZVcFoXUhwTbV6YDWo+n9/gVTOG2usBg/Y6jsgZJsMAq7pKqfW3npQNlAp
+         YtiRk3ARpfVeidlaGY+nXqbQfjzaN/RPLus9yeZk=
+Date:   Sun, 24 May 2020 17:40:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v2 0/4] Introduce the Counter character device interface
-Message-ID: <20200524172542.31ff6ac7@archlinux>
-In-Reply-To: <cover.1589654470.git.vilhelm.gray@gmail.com>
-References: <cover.1589654470.git.vilhelm.gray@gmail.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>
+Subject: Re: [RFC PATCH 05/14] iio: core: register chardev only if needed
+Message-ID: <20200524174039.45867247@archlinux>
+In-Reply-To: <20200508135348.15229-6-alexandru.ardelean@analog.com>
+References: <20200508135348.15229-1-alexandru.ardelean@analog.com>
+        <20200508135348.15229-6-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,112 +42,156 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, 8 May 2020 16:53:39 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-...
-
-> The following are some questions I have about this patchset:
+> The final intent is to localize all buffer ops into the
+> industrialio-buffer.c file, to be able to add support for multiple buffers
+> per IIO device.
 > 
-> 1. Should the data format of the character device be configured via a
->    sysfs attribute?
+> We only need a chardev if we need to support buffers and/or events.
 > 
->    In this patchset, the first 196095 bytes of the character device are
->    dedicated as a selection area to choose which Counter components or
->    extensions should be exposed; the subsequent bytes are the actual
->    data for the Counter components and extensions that were selected.
-
-That sounds like the worst of all possible worlds.  Reality is you need
-to do some magic library so at that point you might as well have ioctl
-options to configure it.   I wonder if you can keep the data flow
-to be a simple 'read' from the chardev but move the control away from
-that.  Either control via some chrdevs but keep them to the 'set / get'
-if this element is going to turn up in the read or not.  You rapidly
-run into problems though, such as now to see how large a given element
-is going to be etc.  Plus ioctls are rather messier to extend than
-simply adding a new sysfs file.  Various subsystems do complex
-'descriptor' type approaches to get around this, or you could do
-self describing records rather than raw data - like an input
-ev_dev event.
-
+> With this change, a chardev will be created only if an IIO buffer is
+> attached OR an event_interface is configured.
 > 
->    Moving this selection to a sysfs attribute and dedicating the
->    character device to just data transfer might be a better design. If
->    such a design is chosen, should the selection attribute be
->    human-readable or binary?
-
-Sysfs basically requires things are more or less human readable.
-So if you go that way I think it needs to be.
-
+> Otherwise, no chardev will be created, and the IIO device will get
+> registered with the 'device_add()' call.
 > 
-> 2. How much space should allotted for strings?
+> Quite a lot of IIO devices don't really need a chardev, so this is a minor
+> improvement to the IIO core, as the IIO device will take up (slightly)
+> fewer resources.
 > 
->    Each Counter component and extension has a respective size allotted
->    for its data (u8 data is allotted 1 byte, u64 data is allotted 8
->    bytes, etc.); I have arbitrarily chosen to allot 64 bytes for
->    strings. Is this an apt size, or should string data be allotted more
->    or less space?
+> What's important to remember, is that removing a chardev also requires that
+> 'indio_dev->dev.devt' to be initialized. If it is, a '/dev/iio:deviceX'
+> file will be created by the kernel, regardless of whether it has a chardev
+> attached to it or not.
+> If that field is not initialized, cdev_device_{add,del}() behave{s} like
+> device_{add,del}().
+> 
+> Also, since we plan to add more chardevs for IIO buffers, we need to
+> consider now a separate IDA object just for chardevs.
+> Currently, the only benefit is that chardev IDs will be continuous.
+> However, when adding a chardev per IIO buffer, the IDs for the chardev
+> could outpace the IDs for IIO devices, so these should be decoupled.
 
-I'd go with that being big enough, but try to keep the expose interface
-such that the size can change it it needs to the in the future.
+Given we are still discussing the need for more chardevs I guess
+we can't look at patches after this one 'yet'.  Up until here they
+were all fine independent of the rest of the series.
 
-> 
-> 3. Should the owning component of an extension be handled by the device
->    driver or Counter subsystem?
-> 
->    The Counter subsystem figures out the owner (enum counter_owner_type)
->    for each component/extension in the counter-sysfs and counter-chrdev
->    code. When a callback must be executed, there are various switch
->    statements throughout the code to check whether the respective
->    Device, Signal, or Count version of the callback should be executed;
->    similarly, the appropriate owner type must match for the struct
->    counter_data macros such as COUNTER_DATA_DEVICE_U64,
->    COUNTER_DATA_SIGNAL_U64, COUNTER_DATA_COUNT_U64, etc.
-> 
->    All this complexity in the Counter subsystem code can be eliminated
->    if a single callback type with a `void *owner` parameter is defined
->    for use with all three owner types (Device, Signal, and Count). The
->    device driver would then be responsible for casting the callback
->    argument to the appropriate owner type; but in theory, this should
->    not be much of a problem since the device driver is responsible for
->    assigning the callbacks to the owning component anyway.
-
-Whilst its more complex for subsytem I think it's better to keep everything
-typed if we possibly can.  Always a trade off though, so use your discretion.
+I was wondering if I could pick up the first part as it is useful
+whatever path we take with the rest of the series!
 
 Jonathan
 
-
 > 
-> William Breathitt Gray (4):
->   counter: Internalize sysfs interface code
->   docs: counter: Update to reflect sysfs internalization
->   counter: Add character device interface
->   docs: counter: Document character device interface
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  drivers/iio/industrialio-core.c | 58 +++++++++++++++++++++++++++++----
+>  1 file changed, 51 insertions(+), 7 deletions(-)
 > 
->  Documentation/driver-api/generic-counter.rst |  275 +++-
->  MAINTAINERS                                  |    3 +-
->  drivers/counter/104-quad-8.c                 |  547 +++----
->  drivers/counter/Makefile                     |    1 +
->  drivers/counter/counter-chrdev.c             |  656 ++++++++
->  drivers/counter/counter-chrdev.h             |   16 +
->  drivers/counter/counter-core.c               |  187 +++
->  drivers/counter/counter-sysfs.c              |  881 +++++++++++
->  drivers/counter/counter-sysfs.h              |   14 +
->  drivers/counter/counter.c                    | 1496 ------------------
->  drivers/counter/ftm-quaddec.c                |   89 +-
->  drivers/counter/stm32-lptimer-cnt.c          |  161 +-
->  drivers/counter/stm32-timer-cnt.c            |  139 +-
->  drivers/counter/ti-eqep.c                    |  211 +--
->  include/linux/counter.h                      |  626 ++++----
->  include/linux/counter_enum.h                 |   45 -
->  include/uapi/linux/counter-types.h           |   45 +
->  17 files changed, 2826 insertions(+), 2566 deletions(-)
->  create mode 100644 drivers/counter/counter-chrdev.c
->  create mode 100644 drivers/counter/counter-chrdev.h
->  create mode 100644 drivers/counter/counter-core.c
->  create mode 100644 drivers/counter/counter-sysfs.c
->  create mode 100644 drivers/counter/counter-sysfs.h
->  delete mode 100644 drivers/counter/counter.c
->  delete mode 100644 include/linux/counter_enum.h
->  create mode 100644 include/uapi/linux/counter-types.h
-> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 32c489139cd2..d74279efeca4 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -35,6 +35,9 @@
+>  /* IDA to assign each registered device a unique id */
+>  static DEFINE_IDA(iio_ida);
+>  
+> +/* IDA to assign each registered character device a unique id */
+> +static DEFINE_IDA(iio_chrdev_ida);
+> +
+>  static dev_t iio_devt;
+>  
+>  #define IIO_DEV_MAX 256
+> @@ -1680,8 +1683,40 @@ static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
+>  	return 0;
+>  }
+>  
+> +static int iio_device_alloc_chrdev_id(struct device *dev)
+> +{
+> +	int id;
+> +
+> +	id = ida_simple_get(&iio_chrdev_ida, 0, 0, GFP_KERNEL);
+> +	if (id < 0) {
+> +		/* cannot use a dev_err as the name isn't available */
+> +		dev_err(dev, "failed to get device id\n");
+> +		return id;
+> +	}
+> +
+> +	dev->devt = MKDEV(MAJOR(iio_devt), id);
+> +
+> +	return 0;
+> +}
+> +
+> +static void iio_device_free_chrdev_id(struct device *dev)
+> +{
+> +	if (!dev->devt)
+> +		return;
+> +	ida_simple_remove(&iio_chrdev_ida, MINOR(dev->devt));
+> +}
+> +
+>  static const struct iio_buffer_setup_ops noop_ring_setup_ops;
+>  
+> +static const struct file_operations iio_event_fileops = {
+> +	.owner = THIS_MODULE,
+> +	.llseek = noop_llseek,
+> +	.unlocked_ioctl = iio_ioctl,
+> +	.compat_ioctl = compat_ptr_ioctl,
+> +	.open = iio_chrdev_open,
+> +	.release = iio_chrdev_release,
+> +};
+> +
+>  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  {
+>  	int ret;
+> @@ -1701,9 +1736,6 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	/* configure elements for the chrdev */
+> -	indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
+> -
+>  	iio_device_register_debugfs(indio_dev);
+>  
+>  	ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
+> @@ -1732,16 +1764,27 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+>  		indio_dev->setup_ops == NULL)
+>  		indio_dev->setup_ops = &noop_ring_setup_ops;
+>  
+> -	cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> +	if (indio_dev->buffer)
+> +		cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> +	else if (indio_dev->event_interface)
+> +		cdev_init(&indio_dev->chrdev, &iio_event_fileops);
+>  
+> -	indio_dev->chrdev.owner = this_mod;
+> +	if (indio_dev->buffer || indio_dev->event_interface) {
+> +		indio_dev->chrdev.owner = this_mod;
+> +
+> +		ret = iio_device_alloc_chrdev_id(&indio_dev->dev);
+> +		if (ret)
+> +			goto error_unreg_eventset;
+> +	}
+>  
+>  	ret = cdev_device_add(&indio_dev->chrdev, &indio_dev->dev);
+> -	if (ret < 0)
+> -		goto error_unreg_eventset;
+> +	if (ret)
+> +		goto error_free_chrdev_id;
+>  
+>  	return 0;
+>  
+> +error_free_chrdev_id:
+> +	iio_device_free_chrdev_id(&indio_dev->dev);
+>  error_unreg_eventset:
+>  	iio_device_unregister_eventset(indio_dev);
+>  error_free_sysfs:
+> @@ -1761,6 +1804,7 @@ EXPORT_SYMBOL(__iio_device_register);
+>  void iio_device_unregister(struct iio_dev *indio_dev)
+>  {
+>  	cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+> +	iio_device_free_chrdev_id(&indio_dev->dev);
+>  
+>  	mutex_lock(&indio_dev->info_exist_lock);
+>  
 

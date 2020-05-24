@@ -2,120 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C0111DFF36
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 15:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA72D1DFF60
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 16:31:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728403AbgEXNyl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 09:54:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42670 "EHLO mail.kernel.org"
+        id S1729004AbgEXObG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 10:31:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50064 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725873AbgEXNyl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 09:54:41 -0400
+        id S1728875AbgEXObG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 10:31:06 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D9CBD20776;
-        Sun, 24 May 2020 13:54:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D7A520787;
+        Sun, 24 May 2020 14:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590328480;
-        bh=lNY5bwD2IWRGQ8GGVNTkDd032tPyr6wbfzXC+8He9gw=;
+        s=default; t=1590330665;
+        bh=+uFSYwJVYAoZY9jwyDI7l6LKmMA7PkxsS64ouRUeJic=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UsLMt05sTxkz3a8fEenO5DfnsQhZGB2VyQzFbvaOSCozSuoVa+oWAJeOOWyMR/C1i
-         ffZA1kaCJhQHgSs+mLnh4McG7eeKc+0t65sp+noywP+ACpAo+vaFQZJbox74kBbfds
-         be6DSlTNCbw1nSjWlQldmzLi2UKuEoSmD/jeRYf4=
-Date:   Sun, 24 May 2020 14:54:36 +0100
+        b=eT8MRP1DN7vZlooI6reVU9m+cnqOnTRSu+U+ndzo79tyZEQgCdH/SCeRRPizMWFfD
+         KUwVeXfGJ21tySnVY0T5MQbThEdakCtsrdXL3l9fQV3NOTlePl3Z++URuv3pS6b2WP
+         geyIGUTOkUABAqzWoRyrWiFo4h9thKVLFog5JOCI=
+Date:   Sun, 24 May 2020 15:31:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <linus.walleij@linaro.org>,
-        <lorenzo.bianconi83@gmail.com>, <songqiang1304521@gmail.com>
-Subject: Re: [PATCH 2/3] iio: adc: at91-sama5d2_adc: remove
- predisable/postenable hooks
-Message-ID: <20200524145436.41aaeea2@archlinux>
-In-Reply-To: <20200522104632.517470-2-alexandru.ardelean@analog.com>
-References: <20200522104632.517470-1-alexandru.ardelean@analog.com>
-        <20200522104632.517470-2-alexandru.ardelean@analog.com>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: position: iqs624: remove usage of
+ iio_priv_to_dev()
+Message-ID: <20200524153101.70f8b5d3@archlinux>
+In-Reply-To: <20200523015340.GA2690@labundy.com>
+References: <20200522065322.9611-1-alexandru.ardelean@analog.com>
+        <20200523015340.GA2690@labundy.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 May 2020 13:46:31 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Fri, 22 May 2020 20:53:40 -0500
+Jeff LaBundy <jeff@labundy.com> wrote:
 
-> This should be squashed into the first patch, but it's the more peculiar =
-of
-> the changes.
-> I am not sure whether this is correct. The touchscreen channels shouldn't
-> be enabled by the IIO framework. So, we may need a different way to handle
-> those if needed.
->=20
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Hi Alexandru,
+> 
+> On Fri, May 22, 2020 at 09:53:22AM +0300, Alexandru Ardelean wrote:
+> > We may want to get rid of the iio_priv_to_dev() helper. That's a bit
+> > uncertain at this point. The reason is that we will hide some of the
+> > members of the iio_dev structure (to prevent drivers from accessing them
+> > directly), and that will also mean hiding the implementation of the
+> > iio_priv_to_dev() helper inside the IIO core.
+> > 
+> > Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
+> > may not be fast anymore, so a general idea is to try to get rid of the
+> > iio_priv_to_dev() altogether.
+> > 
+> > For this driver, removing iio_priv_to_dev() also means keeping a reference
+> > on the state struct.
+> > 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > ---
+> >  drivers/iio/position/iqs624-pos.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)  
+> 
+> As a customer of iio, I find it handy that there is an "inverse" to iio_priv.
+> In this particular case it saves the container iio_dev from storing a pointer
+> to itself.
+Hi Jeff,
 
-Hmm. Unfortunately I can't remember exactly what is going on here.
+The actual usecases for this function are rare - this being one of the
+few where it is justified due to the notifier chain stuff and need
+to embed that in a driver structure.
 
-=46rom a quick look my suspicion is we can handle this using the same
-'is it a triggered buffer' test as you now have in the core code.
+So I'd rather we did something a bit special in these few cases and
+made it harder for people to submit new drivers that jump backwards
+and forwards between the iio_dev and the iio_priv structure.
 
-The touchscreen path operates as a non triggered buffer (I think...)
+Doing it now is a side effect of Alex's work to make a large chunk
+of struct iio_dev opaque. It's easy to handle the forwards case with
+a nice macro / inline function as we can embed a pointer to the iio_priv
+in the 'internal' structure but the other way around has to involve
+an IIO core function call.  We could keep the function around and
+rely on an offputting name __iio_priv_to_dev maybe but those tend
+to get cut and past all over the place.
 
-I'm definitely looking for an ack and preferably a tested-by for this
-one.  You are right - it's non obvious!
+Thanks for being understanding as indeed this is less than elegant
+in this particular case!
+
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
+
+Thanks,
+
 
 Jonathan
 
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 18 ------------------
->  1 file changed, 18 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sa=
-ma5d2_adc.c
-> index 9abbbdcc7420..f71071096392 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -937,14 +937,6 @@ static int at91_adc_buffer_preenable(struct iio_dev =
-*indio_dev)
->  	return 0;
->  }
-> =20
-> -static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
-> -{
-> -	if (at91_adc_current_chan_is_touch(indio_dev))
-> -		return 0;
-> -
-> -	return iio_triggered_buffer_postenable(indio_dev);
-> -}
-> -
->  static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
->  {
->  	struct at91_adc_state *st =3D iio_priv(indio_dev);
-> @@ -995,19 +987,9 @@ static int at91_adc_buffer_postdisable(struct iio_de=
-v *indio_dev)
->  	return 0;
->  }
-> =20
-> -static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
-> -{
-> -	if (at91_adc_current_chan_is_touch(indio_dev))
-> -		return 0;
-> -
-> -	return iio_triggered_buffer_predisable(indio_dev);
-> -}
-> -
->  static const struct iio_buffer_setup_ops at91_buffer_setup_ops =3D {
->  	.preenable =3D &at91_adc_buffer_preenable,
->  	.postdisable =3D &at91_adc_buffer_postdisable,
-> -	.postenable =3D &at91_adc_buffer_postenable,
-> -	.predisable =3D &at91_adc_buffer_predisable,
->  };
-> =20
->  static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *ind=
-io,
+> 
+> That being said, this patch is perfectly fine and I have no objection if this
+> is the route you and Jonathan opt to take. And so:
+> 
+> Acked-by: Jeff LaBundy <jeff@labundy.com>
+> 
+> > 
+> > diff --git a/drivers/iio/position/iqs624-pos.c b/drivers/iio/position/iqs624-pos.c
+> > index 77096c31c2ba..520dafbdc48f 100644
+> > --- a/drivers/iio/position/iqs624-pos.c
+> > +++ b/drivers/iio/position/iqs624-pos.c
+> > @@ -23,6 +23,7 @@
+> >  
+> >  struct iqs624_pos_private {
+> >  	struct iqs62x_core *iqs62x;
+> > +	struct iio_dev *indio_dev;
+> >  	struct notifier_block notifier;
+> >  	struct mutex lock;
+> >  	bool angle_en;
+> > @@ -59,7 +60,7 @@ static int iqs624_pos_notifier(struct notifier_block *notifier,
+> >  
+> >  	iqs624_pos = container_of(notifier, struct iqs624_pos_private,
+> >  				  notifier);
+> > -	indio_dev = iio_priv_to_dev(iqs624_pos);
+> > +	indio_dev = iqs624_pos->indio_dev;
+> >  	timestamp = iio_get_time_ns(indio_dev);
+> >  
+> >  	iqs62x = iqs624_pos->iqs62x;
+> > @@ -98,7 +99,7 @@ static int iqs624_pos_notifier(struct notifier_block *notifier,
+> >  static void iqs624_pos_notifier_unregister(void *context)
+> >  {
+> >  	struct iqs624_pos_private *iqs624_pos = context;
+> > -	struct iio_dev *indio_dev = iio_priv_to_dev(iqs624_pos);
+> > +	struct iio_dev *indio_dev = iqs624_pos->indio_dev;
+> >  	int ret;
+> >  
+> >  	ret = blocking_notifier_chain_unregister(&iqs624_pos->iqs62x->nh,
+> > @@ -243,6 +244,7 @@ static int iqs624_pos_probe(struct platform_device *pdev)
+> >  
+> >  	iqs624_pos = iio_priv(indio_dev);
+> >  	iqs624_pos->iqs62x = iqs62x;
+> > +	iqs624_pos->indio_dev = indio_dev;
+> >  
+> >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> >  	indio_dev->dev.parent = &pdev->dev;
+> > -- 
+> > 2.25.1
+> >   
+> 
+> Kind regards,
+> Jeff LaBundy
 

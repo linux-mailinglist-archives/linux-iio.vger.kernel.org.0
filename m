@@ -2,52 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BF381DFF93
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 16:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4E11DFFC0
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 17:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729621AbgEXO7s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 10:59:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57142 "EHLO mail.kernel.org"
+        id S1729533AbgEXPQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 11:16:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34994 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727985AbgEXO7s (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 10:59:48 -0400
+        id S1727985AbgEXPQg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 11:16:36 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3972B2075F;
-        Sun, 24 May 2020 14:59:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6646320787;
+        Sun, 24 May 2020 15:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590332387;
-        bh=hUbItBAgSGlZqPVkWSi/SVUPdWhuXVn6bSIioJV3Lec=;
+        s=default; t=1590333395;
+        bh=2FjMq5CqiwAY5fC8rDcx/U7DYHduZlD4X0ERbxvKHpE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AF0H6dEnz5YsRDR1eB8CvYkEYnSvfX7HURkAxa+sCy2wVa3qfWsmDJYl2smasFBF3
-         A1X0/IHAdaNmFYuxk+JdT/ocLEk7aRBC74TTKt5FoeuFfEIU+0qvIOYFpeDvgXOrSI
-         c+sQab5ug0ToLnFdZYNPj8WWUePPf3k+epq4hVlM=
-Date:   Sun, 24 May 2020 15:59:42 +0100
+        b=ISVfhNOLXgKD9sOd8FeTBBgJeuBqstapCg6i7kg13yIjpa005dQ1O3h6Mb5xbhADt
+         GHe6iUn0HM7n6z6eopOrwGHlwNoXLwKxdPZUAceGMLH/zW5ucBLR+Aj0ThL8rByCtu
+         WeIlkyWw4OqirjTVLtLVIDYsLthFFRAVE6iHavsw=
+Date:   Sun, 24 May 2020 16:16:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Steve Winslow <swinslow@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 4/4] iio: magnetometer: ak8975: Add gpio reset
- support
-Message-ID: <20200524155942.6efddf1f@archlinux>
-In-Reply-To: <20200520163417.27805-5-jonathan.albrieux@gmail.com>
-References: <20200520163417.27805-1-jonathan.albrieux@gmail.com>
-        <20200520163417.27805-5-jonathan.albrieux@gmail.com>
+To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] counter: Add microchip TCB capture counter
+Message-ID: <20200524161624.2c932a30@archlinux>
+In-Reply-To: <20200519083716.938384-6-kamel.bouhara@bootlin.com>
+References: <20200519083716.938384-1-kamel.bouhara@bootlin.com>
+        <20200519083716.938384-6-kamel.bouhara@bootlin.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,95 +50,467 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 May 2020 18:34:09 +0200
-Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+On Tue, 19 May 2020 10:37:16 +0200
+Kamel Bouhara <kamel.bouhara@bootlin.com> wrote:
 
-> According to AK09911 datasheet, if reset gpio is provided then
-> deassert reset on ak8975_power_on() and assert reset on ak8975_power_off().
+> This drivers allows to use the capture mode of the Timer Counter Block
+> hardware block available in Microchip SoCs through the counter subsystem.
 > 
-> Without reset's deassertion during ak8975_power_on(), driver's probe fails
-> on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+> Two functions of the counter are supported for the moment: period
+> capture and quadrature decoder. The latter is only supported by the
+> SAMA5 series of SoCs.
 > 
-> AK09911 has an active low reset gpio to handle register's reset.
-> AK09911 datasheet says that, if not used, reset pin should be connected
-> to VID. This patch emulates this situation.
+> For the period capture mode a basic setup has been chosen that will
+> reset the counter each time the period is actually reached. Of course
+> the device offers much more possibilities.
 > 
-> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
-Looks good to me.  Just the minor stuff with the binding plus
-giving time for a binding review to go.
+> For quadrature mode, both channel 0 and 1 must be configured even if we
+> only capture the position (no revolution/rotation).
+> 
+> Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
 
-Thanks,
+Looks good to me.  After reviews from William, DT and maybe
+something from SoC side if intent is I'm taking this.
 
 Jonathan
 
 > ---
->  drivers/iio/magnetometer/ak8975.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  drivers/counter/Kconfig                 |  11 +
+>  drivers/counter/Makefile                |   1 +
+>  drivers/counter/microchip-tcb-capture.c | 397 ++++++++++++++++++++++++
+>  3 files changed, 409 insertions(+)
+>  create mode 100644 drivers/counter/microchip-tcb-capture.c
 > 
-> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-> index fd368455cd7b..a23422aad97d 100644
-> --- a/drivers/iio/magnetometer/ak8975.c
-> +++ b/drivers/iio/magnetometer/ak8975.c
-> @@ -358,6 +358,7 @@ struct ak8975_data {
->  	u8			asa[3];
->  	long			raw_to_gauss[3];
->  	struct gpio_desc	*eoc_gpiod;
-> +	struct gpio_desc	*reset_gpiod;
->  	int			eoc_irq;
->  	wait_queue_head_t	data_ready_queue;
->  	unsigned long		flags;
-> @@ -384,6 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
->  			 "Failed to enable specified Vid supply\n");
->  		return ret;
->  	}
-> +
-> +	gpiod_set_value_cansleep(data->reset_gpiod, 0);
-> +
->  	/*
->  	 * According to the datasheet the power supply rise time is 200us
->  	 * and the minimum wait time before mode setting is 100us, in
-> @@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
->  /* Disable attached power regulator if any. */
->  static void ak8975_power_off(const struct ak8975_data *data)
->  {
-> +	gpiod_set_value_cansleep(data->reset_gpiod, 1);
-> +
->  	regulator_disable(data->vid);
->  	regulator_disable(data->vdd);
->  }
-> @@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
->  	struct ak8975_data *data;
->  	struct iio_dev *indio_dev;
->  	struct gpio_desc *eoc_gpiod;
-> +	struct gpio_desc *reset_gpiod;
->  	const void *match;
->  	unsigned int i;
->  	int err;
-> @@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
->  	if (eoc_gpiod)
->  		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index c80fa76bb531..2de53ab0dd25 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -70,4 +70,15 @@ config FTM_QUADDEC
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ftm-quaddec.
 >  
-> +	/*
-> +	 * According to AK09911 datasheet, if reset GPIO is provided then
-> +	 * deassert reset on ak8975_power_on() and assert reset on
-> +	 * ak8975_power_off().
-> +	 */
-> +	reset_gpiod = devm_gpiod_get_optional(&client->dev,
-> +					      "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(reset_gpiod))
-> +		return PTR_ERR(reset_gpiod);
+> +config MICROCHIP_TCB_CAPTURE
+> +	tristate "Microchip Timer Counter Capture driver"
+> +	depends on HAS_IOMEM && OF
+> +	select REGMAP_MMIO
+> +	help
+> +	  Select this option to enable the Microchip Timer Counter Block
+> +	  capture driver.
 > +
->  	/* Register with IIO */
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (indio_dev == NULL)
-> @@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
->  
->  	data->client = client;
->  	data->eoc_gpiod = eoc_gpiod;
-> +	data->reset_gpiod = reset_gpiod;
->  	data->eoc_irq = 0;
->  
->  	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called microchip-tcb-capture.
+> +
+>  endif # COUNTER
+> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
+> index 55142d1f4c43..0a393f71e481 100644
+> --- a/drivers/counter/Makefile
+> +++ b/drivers/counter/Makefile
+> @@ -10,3 +10,4 @@ obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
+>  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
+>  obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
+>  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
+> +obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+= microchip-tcb-capture.o
+> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+> new file mode 100644
+> index 000000000000..f7b7743ddb94
+> --- /dev/null
+> +++ b/drivers/counter/microchip-tcb-capture.c
+> @@ -0,0 +1,397 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/**
+> + * Copyright (C) 2020 Microchip
+> + *
+> + * Author: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> + */
+> +#include <linux/clk.h>
+> +#include <linux/counter.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <soc/at91/atmel_tcb.h>
+> +
+> +#define ATMEL_TC_CMR_MASK	(ATMEL_TC_LDRA_RISING | ATMEL_TC_LDRB_FALLING | \
+> +				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
+> +				 ATMEL_TC_LDBSTOP)
+> +
+> +#define ATMEL_TC_QDEN			BIT(8)
+> +#define ATMEL_TC_POSEN			BIT(9)
+> +
+> +struct mchp_tc_data {
+> +	const struct atmel_tcb_config *tc_cfg;
+> +	struct counter_device counter;
+> +	struct regmap *regmap;
+> +	int qdec_mode;
+> +	int num_channels;
+> +	int channel[2];
+> +	bool trig_inverted;
+> +};
+> +
+> +enum mchp_tc_count_function {
+> +	MCHP_TC_FUNCTION_INCREASE,
+> +	MCHP_TC_FUNCTION_QUADRATURE,
+> +};
+> +
+> +static enum counter_count_function mchp_tc_count_functions[] = {
+> +	[MCHP_TC_FUNCTION_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
+> +	[MCHP_TC_FUNCTION_QUADRATURE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+> +};
+> +
+> +enum mchp_tc_synapse_action {
+> +	MCHP_TC_SYNAPSE_ACTION_NONE = 0,
+> +	MCHP_TC_SYNAPSE_ACTION_RISING_EDGE,
+> +	MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE,
+> +	MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE
+> +};
+> +
+> +static enum counter_synapse_action mchp_tc_synapse_actions[] = {
+> +	[MCHP_TC_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
+> +	[MCHP_TC_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
+> +	[MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
+> +	[MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE] = COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
+> +};
+> +
+> +static struct counter_signal mchp_tc_count_signals[] = {
+> +	{
+> +		.id = 0,
+> +		.name = "Channel A",
+> +	},
+> +	{
+> +		.id = 1,
+> +		.name = "Channel B",
+> +	}
+> +};
+> +
+> +static struct counter_synapse mchp_tc_count_synapses[] = {
+> +	{
+> +		.actions_list = mchp_tc_synapse_actions,
+> +		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
+> +		.signal = &mchp_tc_count_signals[0]
+> +	},
+> +	{
+> +		.actions_list = mchp_tc_synapse_actions,
+> +		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
+> +		.signal = &mchp_tc_count_signals[1]
+> +	}
+> +};
+> +
+> +static int mchp_tc_count_function_get(struct counter_device *counter,
+> +				      struct counter_count *count,
+> +				      size_t *function)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +
+> +	if (priv->qdec_mode)
+> +		*function = MCHP_TC_FUNCTION_QUADRATURE;
+> +	else
+> +		*function = MCHP_TC_FUNCTION_INCREASE;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mchp_tc_count_function_set(struct counter_device *counter,
+> +				      struct counter_count *count,
+> +				      size_t function)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +	u32 bmr, cmr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_BMR, &bmr);
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
+> +
+> +	/* Set capture mode */
+> +	cmr &= ~ATMEL_TC_WAVE;
+> +
+> +	switch (function) {
+> +	case MCHP_TC_FUNCTION_INCREASE:
+> +		priv->qdec_mode = 0;
+> +		/* Set highest rate based on whether soc has gclk or not */
+> +		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
+> +		if (priv->tc_cfg->has_gclk)
+> +			cmr |= ATMEL_TC_TIMER_CLOCK2;
+> +		else
+> +			cmr |= ATMEL_TC_TIMER_CLOCK1;
+> +		/* Setup the period capture mode */
+> +		cmr |=  ATMEL_TC_CMR_MASK;
+> +		cmr &= ~(ATMEL_TC_ABETRG | ATMEL_TC_XC0);
+> +		break;
+> +	case MCHP_TC_FUNCTION_QUADRATURE:
+> +		if (!priv->tc_cfg->has_qdec)
+> +			return -EINVAL;
+> +		/* In QDEC mode settings both channels 0 and 1 are required */
+> +		if (priv->num_channels < 2 || priv->channel[0] != 0 ||
+> +		    priv->channel[1] != 1) {
+> +			pr_err("Invalid channels number or id for quadrature mode\n");
+> +			return -EINVAL;
+> +		}
+> +		priv->qdec_mode = 1;
+> +		bmr |= ATMEL_TC_QDEN | ATMEL_TC_POSEN;
+> +		cmr |= ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_ABETRG | ATMEL_TC_XC0;
+> +		break;
+> +	}
+> +
+> +	regmap_write(priv->regmap, ATMEL_TC_BMR, bmr);
+> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), cmr);
+> +
+> +	/* Enable clock and trigger counter */
+> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CCR),
+> +		     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
+> +
+> +	if (priv->qdec_mode) {
+> +		regmap_write(priv->regmap,
+> +			     ATMEL_TC_REG(priv->channel[1], CMR), cmr);
+> +		regmap_write(priv->regmap,
+> +			     ATMEL_TC_REG(priv->channel[1], CCR),
+> +			     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mchp_tc_count_signal_read(struct counter_device *counter,
+> +				     struct counter_signal *signal,
+> +				     enum counter_signal_value *val)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +	bool sigstatus;
+> +	u32 sr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
+> +
+> +	if (priv->trig_inverted)
+> +		sigstatus = (sr & ATMEL_TC_MTIOB);
+> +	else
+> +		sigstatus = (sr & ATMEL_TC_MTIOA);
+> +
+> +	*val = sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mchp_tc_count_action_get(struct counter_device *counter,
+> +				    struct counter_count *count,
+> +				    struct counter_synapse *synapse,
+> +				    size_t *action)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +	u32 cmr;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
+> +
+> +	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> +
+> +	if (cmr & ATMEL_TC_ETRGEDG_NONE)
+> +		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
+> +		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
+> +		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
+> +	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
+> +		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mchp_tc_count_action_set(struct counter_device *counter,
+> +				    struct counter_count *count,
+> +				    struct counter_synapse *synapse,
+> +				    size_t action)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +	u32 edge = ATMEL_TC_ETRGEDG_NONE;
+> +
+> +	/* QDEC mode is rising edge only */
+> +	if (priv->qdec_mode)
+> +		return -EINVAL;
+> +
+> +	switch (action) {
+> +	case MCHP_TC_SYNAPSE_ACTION_NONE:
+> +		edge = ATMEL_TC_ETRGEDG_NONE;
+> +		break;
+> +	case MCHP_TC_SYNAPSE_ACTION_RISING_EDGE:
+> +		edge = ATMEL_TC_ETRGEDG_RISING;
+> +		break;
+> +	case MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE:
+> +		edge = ATMEL_TC_ETRGEDG_FALLING;
+> +		break;
+> +	case MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE:
+> +		edge = ATMEL_TC_ETRGEDG_BOTH;
+> +		break;
+> +	}
+> +
+> +	return regmap_write_bits(priv->regmap,
+> +				ATMEL_TC_REG(priv->channel[0], CMR),
+> +				ATMEL_TC_ETRGEDG, edge);
+> +}
+> +
+> +static int mchp_tc_count_read(struct counter_device *counter,
+> +			      struct counter_count *count,
+> +			      unsigned long *val)
+> +{
+> +	struct mchp_tc_data *const priv = counter->priv;
+> +	u32 cnt;
+> +
+> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CV), &cnt);
+> +	*val = cnt;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct counter_count mchp_tc_counts[] = {
+> +	{
+> +		.id = 0,
+> +		.name = "Timer Counter",
+> +		.functions_list = mchp_tc_count_functions,
+> +		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
+> +		.synapses = mchp_tc_count_synapses,
+> +		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
+> +	},
+> +};
+> +
+> +static struct counter_ops mchp_tc_ops = {
+> +	.signal_read  = mchp_tc_count_signal_read,
+> +	.count_read   = mchp_tc_count_read,
+> +	.function_get = mchp_tc_count_function_get,
+> +	.function_set = mchp_tc_count_function_set,
+> +	.action_get   = mchp_tc_count_action_get,
+> +	.action_set   = mchp_tc_count_action_set
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_rm9200_config = {
+> +		.counter_width = 16,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sam9x5_config = {
+> +		.counter_width = 32,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sama5d2_config = {
+> +		.counter_width = 32,
+> +		.has_gclk = true,
+> +		.has_qdec = true,
+> +};
+> +
+> +static const struct atmel_tcb_config tcb_sama5d3_config = {
+> +		.counter_width = 32,
+> +		.has_qdec = true,
+> +};
+> +
+> +static const struct of_device_id atmel_tc_of_match[] = {
+> +	{ .compatible = "atmel,at91rm9200-tcb", .data = &tcb_rm9200_config, },
+> +	{ .compatible = "atmel,at91sam9x5-tcb", .data = &tcb_sam9x5_config, },
+> +	{ .compatible = "atmel,sama5d2-tcb", .data = &tcb_sama5d2_config, },
+> +	{ .compatible = "atmel,sama5d3-tcb", .data = &tcb_sama5d3_config, },
+> +	{ /* sentinel */ }
+> +};
+> +
+> +static void mchp_tc_clk_remove(void *ptr)
+> +{
+> +	clk_disable_unprepare((struct clk *)ptr);
+> +}
+> +
+> +static int mchp_tc_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	const struct atmel_tcb_config *tcb_config;
+> +	const struct of_device_id *match;
+> +	struct mchp_tc_data *priv;
+> +	char clk_name[7];
+> +	struct regmap *regmap;
+> +	struct clk *clk[3];
+> +	int channel;
+> +	int ret, i;
+> +
+> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, priv);
+> +
+> +	match = of_match_node(atmel_tc_of_match, np->parent);
+> +	tcb_config = match->data;
+> +	if (!tcb_config) {
+> +		dev_err(&pdev->dev, "No matching parent node found\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	regmap = syscon_node_to_regmap(np->parent);
+> +	if (IS_ERR(priv->regmap))
+> +		return PTR_ERR(priv->regmap);
+> +
+> +	/* max. channels number is 2 when in QDEC mode */
+> +	priv->num_channels = of_property_count_u32_elems(np, "reg");
+> +	if (priv->num_channels < 0) {
+> +		dev_err(&pdev->dev, "Invalid or missing channel\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Register channels and initialize clocks */
+> +	for (i = 0; i < priv->num_channels; i++) {
+> +		ret = of_property_read_u32_index(np, "reg", i, &channel);
+> +		if (ret < 0 || channel > 2)
+> +			return -ENODEV;
+> +
+> +		priv->channel[i] = channel;
+> +
+> +		snprintf(clk_name, sizeof(clk_name), "t%d_clk", channel);
+> +
+> +		clk[i] = of_clk_get_by_name(np->parent, clk_name);
+> +		if (IS_ERR(clk[i])) {
+> +			/* Fallback to t0_clk */
+> +			clk[i] = of_clk_get_by_name(np->parent, "t0_clk");
+> +			if (IS_ERR(clk[i]))
+> +				return PTR_ERR(clk[i]);
+> +		}
+> +
+> +		ret = clk_prepare_enable(clk[i]);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = devm_add_action_or_reset(&pdev->dev,
+> +					       mchp_tc_clk_remove,
+> +					       clk[i]);
+> +		if (ret)
+> +			return ret;
+> +
+> +		dev_dbg(&pdev->dev,
+> +			"Initialized capture mode on channel %d\n",
+> +			channel);
+> +	}
+> +
+> +	priv->tc_cfg = tcb_config;
+> +	priv->regmap = regmap;
+> +	priv->counter.name = dev_name(&pdev->dev);
+> +	priv->counter.parent = &pdev->dev;
+> +	priv->counter.ops = &mchp_tc_ops;
+> +	priv->counter.num_counts = ARRAY_SIZE(mchp_tc_counts);
+> +	priv->counter.counts = mchp_tc_counts;
+> +	priv->counter.num_signals = ARRAY_SIZE(mchp_tc_count_signals);
+> +	priv->counter.signals = mchp_tc_count_signals;
+> +	priv->counter.priv = priv;
+> +
+> +	return devm_counter_register(&pdev->dev, &priv->counter);
+> +}
+> +
+> +static const struct of_device_id mchp_tc_dt_ids[] = {
+> +	{ .compatible = "microchip,tcb-capture", },
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, mchp_tc_dt_ids);
+> +
+> +static struct platform_driver mchp_tc_driver = {
+> +	.probe = mchp_tc_probe,
+> +	.driver = {
+> +		.name = "microchip-tcb-capture",
+> +		.of_match_table = mchp_tc_dt_ids,
+> +	},
+> +};
+> +module_platform_driver(mchp_tc_driver);
+> +
+> +MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
+> +MODULE_DESCRIPTION("Microchip TCB Capture driver");
+> +MODULE_LICENSE("GPL v2");
 

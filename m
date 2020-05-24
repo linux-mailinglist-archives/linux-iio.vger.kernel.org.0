@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A4E11DFFC0
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 17:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F971DFFE1
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 17:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729533AbgEXPQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 11:16:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34994 "EHLO mail.kernel.org"
+        id S1726799AbgEXPd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 11:33:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38180 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727985AbgEXPQg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 11:16:36 -0400
+        id S1726506AbgEXPd6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 11:33:58 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6646320787;
-        Sun, 24 May 2020 15:16:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 445AE207CB;
+        Sun, 24 May 2020 15:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590333395;
-        bh=2FjMq5CqiwAY5fC8rDcx/U7DYHduZlD4X0ERbxvKHpE=;
+        s=default; t=1590334438;
+        bh=GVY8Kqc55NYrcBz/PcTqRSIfP4aMITUPLaIvqt2hU9E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ISVfhNOLXgKD9sOd8FeTBBgJeuBqstapCg6i7kg13yIjpa005dQ1O3h6Mb5xbhADt
-         GHe6iUn0HM7n6z6eopOrwGHlwNoXLwKxdPZUAceGMLH/zW5ucBLR+Aj0ThL8rByCtu
-         WeIlkyWw4OqirjTVLtLVIDYsLthFFRAVE6iHavsw=
-Date:   Sun, 24 May 2020 16:16:24 +0100
+        b=PwMgLdqhEZf/ah3W2tDgNqi+pbwibJ9NnOA85V52lN3pbwMFAXzwVOuvj+OgMmIOL
+         oTwZ3tfRCa/gQ9G1TaHaxPijZ4GfAupN+D3v+EdVpZVjQWDiIPKWesBHB61oo4uvUJ
+         o/jrEssTIILXuJcjGWKWDfaWLaKZrRE4cmgSalW4=
+Date:   Sun, 24 May 2020 16:33:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] counter: Add microchip TCB capture counter
-Message-ID: <20200524161624.2c932a30@archlinux>
-In-Reply-To: <20200519083716.938384-6-kamel.bouhara@bootlin.com>
-References: <20200519083716.938384-1-kamel.bouhara@bootlin.com>
-        <20200519083716.938384-6-kamel.bouhara@bootlin.com>
+To:     "Andrew F. Davis" <afd@ti.com>
+Cc:     <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 07/11] iio:health:afe4403 Fix timestamp alignment and
+ prevent data leak.
+Message-ID: <20200524163354.79910d32@archlinux>
+In-Reply-To: <e28e67c9-a234-64da-2839-9434fc62c6ec@ti.com>
+References: <20200517173000.220819-1-jic23@kernel.org>
+        <20200517173000.220819-8-jic23@kernel.org>
+        <951a305b-b3b4-6cfc-f39a-f7458dfcb54b@ti.com>
+        <83B13776-904F-4FCF-93A6-D430281E4B55@jic23.retrosnub.co.uk>
+        <c0e4e79e-2a1a-07cd-dd4b-91a87333bc4f@ti.com>
+        <5763033E-38E7-434A-AAA9-E5D27FEDBA35@jic23.retrosnub.co.uk>
+        <20200521194530.08706fee@archlinux>
+        <e28e67c9-a234-64da-2839-9434fc62c6ec@ti.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,467 +50,159 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 May 2020 10:37:16 +0200
-Kamel Bouhara <kamel.bouhara@bootlin.com> wrote:
+On Thu, 21 May 2020 15:05:37 -0400
+"Andrew F. Davis" <afd@ti.com> wrote:
 
-> This drivers allows to use the capture mode of the Timer Counter Block
-> hardware block available in Microchip SoCs through the counter subsystem.
+> On 5/21/20 2:45 PM, Jonathan Cameron wrote:
+> > On Thu, 21 May 2020 15:44:43 +0100
+> > Jonathan Cameron <jic23@jic23.retrosnub.co.uk> wrote:
+> >   
+> >> On 21 May 2020 14:11:10 BST, "Andrew F. Davis" <afd@ti.com> wrote:  
+> >>>
+> >>>
+> >>> On 5/18/20 12:06 PM, Jonathan Cameron wrote:    
+> >>>>
+> >>>>
+> >>>> On 18 May 2020 01:09:47 BST, "Andrew F. Davis" <afd@ti.com> wrote:    
+> >>>>> On 5/17/20 1:29 PM, jic23@kernel.org wrote:    
+> >>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>>
+> >>>>>> One of a class of bugs pointed out by Lars in a recent review.
+> >>>>>> iio_push_to_buffers_with_timestamp assumes the buffer used is    
+> >>> aligned    
+> >>>>>> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> >>>>>> this driver which uses a 32 byte array of smaller elements on the    
+> >>>>> stack.    
+> >>>>>> As Lars also noted this anti pattern can involve a leak of data to
+> >>>>>> userspace and that indeed can happen here.  We close both issues by
+> >>>>>> moving to a suitable structure in the iio_priv() data with    
+> >>> alignment    
+> >>>>>> explicitly requested.  This data is allocated with kzalloc so no
+> >>>>>> data can leak appart from previous readings.
+> >>>>>>
+> >>>>>> Fixes: eec96d1e2d31 ("iio: health: Add driver for the TI AFE4403    
+> >>>>> heart monitor")    
+> >>>>>> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> >>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>> Cc: Andrew F. Davis <afd@ti.com>
+> >>>>>> ---
+> >>>>>>  drivers/iio/health/afe4403.c | 9 ++++++---
+> >>>>>>  1 file changed, 6 insertions(+), 3 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/drivers/iio/health/afe4403.c    
+> >>>>> b/drivers/iio/health/afe4403.c    
+> >>>>>> index e9f87e42ff4f..a3507624b30f 100644
+> >>>>>> --- a/drivers/iio/health/afe4403.c
+> >>>>>> +++ b/drivers/iio/health/afe4403.c
+> >>>>>> @@ -65,6 +65,7 @@ static const struct reg_field    
+> >>> afe4403_reg_fields[]    
+> >>>>> = {    
+> >>>>>>   * @regulator: Pointer to the regulator for the IC
+> >>>>>>   * @trig: IIO trigger for this device
+> >>>>>>   * @irq: ADC_RDY line interrupt number
+> >>>>>> + * @buffer: Used to construct data layout to push into IIO buffer.
+> >>>>>>   */
+> >>>>>>  struct afe4403_data {
+> >>>>>>  	struct device *dev;
+> >>>>>> @@ -74,6 +75,8 @@ struct afe4403_data {
+> >>>>>>  	struct regulator *regulator;
+> >>>>>>  	struct iio_trigger *trig;
+> >>>>>>  	int irq;
+> >>>>>> +	/* Ensure suitable alignment for timestamp */
+> >>>>>> +	s32 buffer[8] __aligned(8);    
+> >>>>>
+> >>>>>
+> >>>>> One of those fancy structs with the timestamp specified would be    
+> >>> nice    
+> >>>>> here like the other patches. IIRC we have 6 s32 channels, plus a s64
+> >>>>> ts.    
+> >>>>
+> >>>> I think we may only have some of those channels enabled.  So ts may    
+> >>> be it several    
+> >>>> locations in the buffer. 
+> >>>>     
+> >>>
+> >>> Might have been better to have the ts at the beginning, could have also
+> >>> helped with alignment for when an odd number of channels are enabled.    
+> >>
+> >> Perhaps but for many use cases we don't turn timestamps on and we would need to pad
+> >>  anyway for alignment of the fifo. 
+> >>  
+> >>>    
+> >>>> Hence we could use the structure approach but it might give a false    
+> >>> sense    
+> >>>> of what is going on. 
+> >>>>     
+> >>>
+> >>> That's true, it can always be cleaned later then.    
+> >>
+> >> Agreed. This is definitely something we can revisit sometime in the future.   
+> > 
+> > Formal Ack on applying the two afe patches?
+> >   
 > 
-> Two functions of the counter are supported for the moment: period
-> capture and quadrature decoder. The latter is only supported by the
-> SAMA5 series of SoCs.
-> 
-> For the period capture mode a basic setup has been chosen that will
-> reset the counter each time the period is actually reached. Of course
-> the device offers much more possibilities.
-> 
-> For quadrature mode, both channel 0 and 1 must be configured even if we
-> only capture the position (no revolution/rotation).
-> 
-> Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> Acked-by: Andrew F. Davis <afd@ti.com>
+Thanks.
 
-Looks good to me.  After reviews from William, DT and maybe
-something from SoC side if intent is I'm taking this.
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+These won't go anywhere now until after the merge window.
+
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/counter/Kconfig                 |  11 +
->  drivers/counter/Makefile                |   1 +
->  drivers/counter/microchip-tcb-capture.c | 397 ++++++++++++++++++++++++
->  3 files changed, 409 insertions(+)
->  create mode 100644 drivers/counter/microchip-tcb-capture.c
 > 
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index c80fa76bb531..2de53ab0dd25 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -70,4 +70,15 @@ config FTM_QUADDEC
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called ftm-quaddec.
->  
-> +config MICROCHIP_TCB_CAPTURE
-> +	tristate "Microchip Timer Counter Capture driver"
-> +	depends on HAS_IOMEM && OF
-> +	select REGMAP_MMIO
-> +	help
-> +	  Select this option to enable the Microchip Timer Counter Block
-> +	  capture driver.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called microchip-tcb-capture.
-> +
->  endif # COUNTER
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 55142d1f4c43..0a393f71e481 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -10,3 +10,4 @@ obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
->  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
->  obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
->  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-> +obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+= microchip-tcb-capture.o
-> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-> new file mode 100644
-> index 000000000000..f7b7743ddb94
-> --- /dev/null
-> +++ b/drivers/counter/microchip-tcb-capture.c
-> @@ -0,0 +1,397 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/**
-> + * Copyright (C) 2020 Microchip
-> + *
-> + * Author: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> + */
-> +#include <linux/clk.h>
-> +#include <linux/counter.h>
-> +#include <linux/mfd/syscon.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <soc/at91/atmel_tcb.h>
-> +
-> +#define ATMEL_TC_CMR_MASK	(ATMEL_TC_LDRA_RISING | ATMEL_TC_LDRB_FALLING | \
-> +				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
-> +				 ATMEL_TC_LDBSTOP)
-> +
-> +#define ATMEL_TC_QDEN			BIT(8)
-> +#define ATMEL_TC_POSEN			BIT(9)
-> +
-> +struct mchp_tc_data {
-> +	const struct atmel_tcb_config *tc_cfg;
-> +	struct counter_device counter;
-> +	struct regmap *regmap;
-> +	int qdec_mode;
-> +	int num_channels;
-> +	int channel[2];
-> +	bool trig_inverted;
-> +};
-> +
-> +enum mchp_tc_count_function {
-> +	MCHP_TC_FUNCTION_INCREASE,
-> +	MCHP_TC_FUNCTION_QUADRATURE,
-> +};
-> +
-> +static enum counter_count_function mchp_tc_count_functions[] = {
-> +	[MCHP_TC_FUNCTION_INCREASE] = COUNTER_COUNT_FUNCTION_INCREASE,
-> +	[MCHP_TC_FUNCTION_QUADRATURE] = COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-> +};
-> +
-> +enum mchp_tc_synapse_action {
-> +	MCHP_TC_SYNAPSE_ACTION_NONE = 0,
-> +	MCHP_TC_SYNAPSE_ACTION_RISING_EDGE,
-> +	MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE,
-> +	MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE
-> +};
-> +
-> +static enum counter_synapse_action mchp_tc_synapse_actions[] = {
-> +	[MCHP_TC_SYNAPSE_ACTION_NONE] = COUNTER_SYNAPSE_ACTION_NONE,
-> +	[MCHP_TC_SYNAPSE_ACTION_RISING_EDGE] = COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-> +	[MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE] = COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-> +	[MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE] = COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
-> +};
-> +
-> +static struct counter_signal mchp_tc_count_signals[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Channel A",
-> +	},
-> +	{
-> +		.id = 1,
-> +		.name = "Channel B",
-> +	}
-> +};
-> +
-> +static struct counter_synapse mchp_tc_count_synapses[] = {
-> +	{
-> +		.actions_list = mchp_tc_synapse_actions,
-> +		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
-> +		.signal = &mchp_tc_count_signals[0]
-> +	},
-> +	{
-> +		.actions_list = mchp_tc_synapse_actions,
-> +		.num_actions = ARRAY_SIZE(mchp_tc_synapse_actions),
-> +		.signal = &mchp_tc_count_signals[1]
-> +	}
-> +};
-> +
-> +static int mchp_tc_count_function_get(struct counter_device *counter,
-> +				      struct counter_count *count,
-> +				      size_t *function)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +
-> +	if (priv->qdec_mode)
-> +		*function = MCHP_TC_FUNCTION_QUADRATURE;
-> +	else
-> +		*function = MCHP_TC_FUNCTION_INCREASE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mchp_tc_count_function_set(struct counter_device *counter,
-> +				      struct counter_count *count,
-> +				      size_t function)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +	u32 bmr, cmr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_BMR, &bmr);
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-> +
-> +	/* Set capture mode */
-> +	cmr &= ~ATMEL_TC_WAVE;
-> +
-> +	switch (function) {
-> +	case MCHP_TC_FUNCTION_INCREASE:
-> +		priv->qdec_mode = 0;
-> +		/* Set highest rate based on whether soc has gclk or not */
-> +		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
-> +		if (priv->tc_cfg->has_gclk)
-> +			cmr |= ATMEL_TC_TIMER_CLOCK2;
-> +		else
-> +			cmr |= ATMEL_TC_TIMER_CLOCK1;
-> +		/* Setup the period capture mode */
-> +		cmr |=  ATMEL_TC_CMR_MASK;
-> +		cmr &= ~(ATMEL_TC_ABETRG | ATMEL_TC_XC0);
-> +		break;
-> +	case MCHP_TC_FUNCTION_QUADRATURE:
-> +		if (!priv->tc_cfg->has_qdec)
-> +			return -EINVAL;
-> +		/* In QDEC mode settings both channels 0 and 1 are required */
-> +		if (priv->num_channels < 2 || priv->channel[0] != 0 ||
-> +		    priv->channel[1] != 1) {
-> +			pr_err("Invalid channels number or id for quadrature mode\n");
-> +			return -EINVAL;
-> +		}
-> +		priv->qdec_mode = 1;
-> +		bmr |= ATMEL_TC_QDEN | ATMEL_TC_POSEN;
-> +		cmr |= ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_ABETRG | ATMEL_TC_XC0;
-> +		break;
-> +	}
-> +
-> +	regmap_write(priv->regmap, ATMEL_TC_BMR, bmr);
-> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), cmr);
-> +
-> +	/* Enable clock and trigger counter */
-> +	regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-> +		     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-> +
-> +	if (priv->qdec_mode) {
-> +		regmap_write(priv->regmap,
-> +			     ATMEL_TC_REG(priv->channel[1], CMR), cmr);
-> +		regmap_write(priv->regmap,
-> +			     ATMEL_TC_REG(priv->channel[1], CCR),
-> +			     ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mchp_tc_count_signal_read(struct counter_device *counter,
-> +				     struct counter_signal *signal,
-> +				     enum counter_signal_value *val)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +	bool sigstatus;
-> +	u32 sr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
-> +
-> +	if (priv->trig_inverted)
-> +		sigstatus = (sr & ATMEL_TC_MTIOB);
-> +	else
-> +		sigstatus = (sr & ATMEL_TC_MTIOA);
-> +
-> +	*val = sigstatus ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mchp_tc_count_action_get(struct counter_device *counter,
-> +				    struct counter_count *count,
-> +				    struct counter_synapse *synapse,
-> +				    size_t *action)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +	u32 cmr;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
-> +
-> +	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-> +
-> +	if (cmr & ATMEL_TC_ETRGEDG_NONE)
-> +		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-> +		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
-> +		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
-> +	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
-> +		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mchp_tc_count_action_set(struct counter_device *counter,
-> +				    struct counter_count *count,
-> +				    struct counter_synapse *synapse,
-> +				    size_t action)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +	u32 edge = ATMEL_TC_ETRGEDG_NONE;
-> +
-> +	/* QDEC mode is rising edge only */
-> +	if (priv->qdec_mode)
-> +		return -EINVAL;
-> +
-> +	switch (action) {
-> +	case MCHP_TC_SYNAPSE_ACTION_NONE:
-> +		edge = ATMEL_TC_ETRGEDG_NONE;
-> +		break;
-> +	case MCHP_TC_SYNAPSE_ACTION_RISING_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_RISING;
-> +		break;
-> +	case MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_FALLING;
-> +		break;
-> +	case MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE:
-> +		edge = ATMEL_TC_ETRGEDG_BOTH;
-> +		break;
-> +	}
-> +
-> +	return regmap_write_bits(priv->regmap,
-> +				ATMEL_TC_REG(priv->channel[0], CMR),
-> +				ATMEL_TC_ETRGEDG, edge);
-> +}
-> +
-> +static int mchp_tc_count_read(struct counter_device *counter,
-> +			      struct counter_count *count,
-> +			      unsigned long *val)
-> +{
-> +	struct mchp_tc_data *const priv = counter->priv;
-> +	u32 cnt;
-> +
-> +	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CV), &cnt);
-> +	*val = cnt;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct counter_count mchp_tc_counts[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Timer Counter",
-> +		.functions_list = mchp_tc_count_functions,
-> +		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
-> +		.synapses = mchp_tc_count_synapses,
-> +		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-> +	},
-> +};
-> +
-> +static struct counter_ops mchp_tc_ops = {
-> +	.signal_read  = mchp_tc_count_signal_read,
-> +	.count_read   = mchp_tc_count_read,
-> +	.function_get = mchp_tc_count_function_get,
-> +	.function_set = mchp_tc_count_function_set,
-> +	.action_get   = mchp_tc_count_action_get,
-> +	.action_set   = mchp_tc_count_action_set
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_rm9200_config = {
-> +		.counter_width = 16,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sam9x5_config = {
-> +		.counter_width = 32,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sama5d2_config = {
-> +		.counter_width = 32,
-> +		.has_gclk = true,
-> +		.has_qdec = true,
-> +};
-> +
-> +static const struct atmel_tcb_config tcb_sama5d3_config = {
-> +		.counter_width = 32,
-> +		.has_qdec = true,
-> +};
-> +
-> +static const struct of_device_id atmel_tc_of_match[] = {
-> +	{ .compatible = "atmel,at91rm9200-tcb", .data = &tcb_rm9200_config, },
-> +	{ .compatible = "atmel,at91sam9x5-tcb", .data = &tcb_sam9x5_config, },
-> +	{ .compatible = "atmel,sama5d2-tcb", .data = &tcb_sama5d2_config, },
-> +	{ .compatible = "atmel,sama5d3-tcb", .data = &tcb_sama5d3_config, },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static void mchp_tc_clk_remove(void *ptr)
-> +{
-> +	clk_disable_unprepare((struct clk *)ptr);
-> +}
-> +
-> +static int mchp_tc_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	const struct atmel_tcb_config *tcb_config;
-> +	const struct of_device_id *match;
-> +	struct mchp_tc_data *priv;
-> +	char clk_name[7];
-> +	struct regmap *regmap;
-> +	struct clk *clk[3];
-> +	int channel;
-> +	int ret, i;
-> +
-> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +
-> +	match = of_match_node(atmel_tc_of_match, np->parent);
-> +	tcb_config = match->data;
-> +	if (!tcb_config) {
-> +		dev_err(&pdev->dev, "No matching parent node found\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	regmap = syscon_node_to_regmap(np->parent);
-> +	if (IS_ERR(priv->regmap))
-> +		return PTR_ERR(priv->regmap);
-> +
-> +	/* max. channels number is 2 when in QDEC mode */
-> +	priv->num_channels = of_property_count_u32_elems(np, "reg");
-> +	if (priv->num_channels < 0) {
-> +		dev_err(&pdev->dev, "Invalid or missing channel\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Register channels and initialize clocks */
-> +	for (i = 0; i < priv->num_channels; i++) {
-> +		ret = of_property_read_u32_index(np, "reg", i, &channel);
-> +		if (ret < 0 || channel > 2)
-> +			return -ENODEV;
-> +
-> +		priv->channel[i] = channel;
-> +
-> +		snprintf(clk_name, sizeof(clk_name), "t%d_clk", channel);
-> +
-> +		clk[i] = of_clk_get_by_name(np->parent, clk_name);
-> +		if (IS_ERR(clk[i])) {
-> +			/* Fallback to t0_clk */
-> +			clk[i] = of_clk_get_by_name(np->parent, "t0_clk");
-> +			if (IS_ERR(clk[i]))
-> +				return PTR_ERR(clk[i]);
-> +		}
-> +
-> +		ret = clk_prepare_enable(clk[i]);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = devm_add_action_or_reset(&pdev->dev,
-> +					       mchp_tc_clk_remove,
-> +					       clk[i]);
-> +		if (ret)
-> +			return ret;
-> +
-> +		dev_dbg(&pdev->dev,
-> +			"Initialized capture mode on channel %d\n",
-> +			channel);
-> +	}
-> +
-> +	priv->tc_cfg = tcb_config;
-> +	priv->regmap = regmap;
-> +	priv->counter.name = dev_name(&pdev->dev);
-> +	priv->counter.parent = &pdev->dev;
-> +	priv->counter.ops = &mchp_tc_ops;
-> +	priv->counter.num_counts = ARRAY_SIZE(mchp_tc_counts);
-> +	priv->counter.counts = mchp_tc_counts;
-> +	priv->counter.num_signals = ARRAY_SIZE(mchp_tc_count_signals);
-> +	priv->counter.signals = mchp_tc_count_signals;
-> +	priv->counter.priv = priv;
-> +
-> +	return devm_counter_register(&pdev->dev, &priv->counter);
-> +}
-> +
-> +static const struct of_device_id mchp_tc_dt_ids[] = {
-> +	{ .compatible = "microchip,tcb-capture", },
-> +	{ /* sentinel */ },
-> +};
-> +MODULE_DEVICE_TABLE(of, mchp_tc_dt_ids);
-> +
-> +static struct platform_driver mchp_tc_driver = {
-> +	.probe = mchp_tc_probe,
-> +	.driver = {
-> +		.name = "microchip-tcb-capture",
-> +		.of_match_table = mchp_tc_dt_ids,
-> +	},
-> +};
-> +module_platform_driver(mchp_tc_driver);
-> +
-> +MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
-> +MODULE_DESCRIPTION("Microchip TCB Capture driver");
-> +MODULE_LICENSE("GPL v2");
+> > Thanks,
+> > 
+> > Jonathan  
+> >>
+> >> J  
+> >>>
+> >>> Andrew
+> >>>    
+> >>>> J    
+> >>>>>
+> >>>>> Other than that everything looks good.
+> >>>>>
+> >>>>> Andrew
+> >>>>>
+> >>>>>    
+> >>>>>>  };
+> >>>>>>  
+> >>>>>>  enum afe4403_chan_id {
+> >>>>>> @@ -309,7 +312,6 @@ static irqreturn_t afe4403_trigger_handler(int    
+> >>>>> irq, void *private)    
+> >>>>>>  	struct iio_dev *indio_dev = pf->indio_dev;
+> >>>>>>  	struct afe4403_data *afe = iio_priv(indio_dev);
+> >>>>>>  	int ret, bit, i = 0;
+> >>>>>> -	s32 buffer[8];
+> >>>>>>  	u8 tx[4] = {AFE440X_CONTROL0, 0x0, 0x0, AFE440X_CONTROL0_READ};
+> >>>>>>  	u8 rx[3];
+> >>>>>>  
+> >>>>>> @@ -326,7 +328,7 @@ static irqreturn_t afe4403_trigger_handler(int    
+> >>>>> irq, void *private)    
+> >>>>>>  		if (ret)
+> >>>>>>  			goto err;
+> >>>>>>  
+> >>>>>> -		buffer[i++] = get_unaligned_be24(&rx[0]);
+> >>>>>> +		afe->buffer[i++] = get_unaligned_be24(&rx[0]);
+> >>>>>>  	}
+> >>>>>>  
+> >>>>>>  	/* Disable reading from the device */
+> >>>>>> @@ -335,7 +337,8 @@ static irqreturn_t afe4403_trigger_handler(int    
+> >>>>> irq, void *private)    
+> >>>>>>  	if (ret)
+> >>>>>>  		goto err;
+> >>>>>>  
+> >>>>>> -	iio_push_to_buffers_with_timestamp(indio_dev, buffer,    
+> >>>>> pf->timestamp);    
+> >>>>>> +	iio_push_to_buffers_with_timestamp(indio_dev, afe->buffer,
+> >>>>>> +					   pf->timestamp);
+> >>>>>>  err:
+> >>>>>>  	iio_trigger_notify_done(indio_dev->trig);
+> >>>>>>  
+> >>>>>>    
+> >>>>     
+> >>  
+> >   
 

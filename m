@@ -2,37 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ACF31DFF6D
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 16:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D69A81DFF87
+	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 16:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729590AbgEXOkQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 10:40:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51612 "EHLO mail.kernel.org"
+        id S1729338AbgEXO5y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 May 2020 10:57:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56256 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727985AbgEXOkQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 May 2020 10:40:16 -0400
+        id S1728875AbgEXO5w (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 May 2020 10:57:52 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08DD220776;
-        Sun, 24 May 2020 14:40:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62835207DA;
+        Sun, 24 May 2020 14:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590331215;
-        bh=yIEzDF2w5ilFnOwqdE4xr2Y3GrRHLVbBFfvKp7lg9hc=;
+        s=default; t=1590332271;
+        bh=Ir8+//YCW7/EMwn4xgZG5V3ZxTNEqlIR9sSF+xwW0Mg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=stuMDjGMEGFTLy9DGuMHqcr02NzpDu1aTYlU9SLaVwST3Z/A3JAlr5gTmXVJEYZzo
-         AfZcw4sRJP/5tcGFMwKdads0Bcpizt7VJt6VoT6arnpJz/Us2GCg08hTqmkzW2D3Ki
-         TUrKlPFnYJosPF17vrC4zq44gRdvxvM1U6oT+vxU=
-Date:   Sun, 24 May 2020 15:40:12 +0100
+        b=aW0qrc2ozRETKJW3qbc7PtQ7Mt5gHD5ABHMn+Wc4O0Sx+aaP1ESsQOoGtKoXd+mli
+         xmEBZVmafyJ3EyepZ6dBbdTx52zE4DtQPTrnuEjYfT1HyWFNgik18mfFndZ2+oaSa+
+         Zw21c8PGis+bLD++n4Hgul5mXkEFxxXJq7ic1uuQ=
+Date:   Sun, 24 May 2020 15:57:45 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: iqs621: remove usage of iio_priv_to_dev()
-Message-ID: <20200524154012.057eb118@archlinux>
-In-Reply-To: <20200523015635.GB2690@labundy.com>
-References: <20200522065442.10203-1-alexandru.ardelean@analog.com>
-        <20200523015635.GB2690@labundy.com>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED 
+        DEVICE TREE BINDINGS),
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Steve Winslow <swinslow@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v5 1/4] dt-bindings: iio: magnetometer: ak8975: convert
+ format to yaml, add maintainer
+Message-ID: <20200524155745.3b9320db@archlinux>
+In-Reply-To: <20200520163417.27805-2-jonathan.albrieux@gmail.com>
+References: <20200520163417.27805-1-jonathan.albrieux@gmail.com>
+        <20200520163417.27805-2-jonathan.albrieux@gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,81 +58,158 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 May 2020 20:56:35 -0500
-Jeff LaBundy <jeff@labundy.com> wrote:
+On Wed, 20 May 2020 18:34:06 +0200
+Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
 
-> Hi Alexandru,
+> Converts documentation from txt format to yaml.
 > 
-> On Fri, May 22, 2020 at 09:54:42AM +0300, Alexandru Ardelean wrote:
-> > We may want to get rid of the iio_priv_to_dev() helper. That's a bit
-> > uncertain at this point. The reason is that we will hide some of the
-> > members of the iio_dev structure (to prevent drivers from accessing them
-> > directly), and that will also mean hiding the implementation of the
-> > iio_priv_to_dev() helper inside the IIO core.
-> > 
-> > Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
-> > may not be fast anymore, so a general idea is to try to get rid of the
-> > iio_priv_to_dev() altogether.
-> > 
-> > For this driver, removing iio_priv_to_dev() means keeping a reference
-> > on the state struct.
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  drivers/iio/light/iqs621-als.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)  
-> 
-> As with the iqs624 patch:
-> 
-> Acked-by: Jeff LaBundy <jeff@labundy.com>
+> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 
-Applied. thanks,
+An additional request inline.  Doesn't effect this patch 'as such'.
 
-J
+Also the file name thing just below here.
+
+> ---
+>  .../bindings/iio/magnetometer/ak8975.txt      | 30 --------
+>  .../bindings/iio/magnetometer/ak8975.yaml     | 71 +++++++++++++++++++
+File naming should match the compatible.
+
+ashahi-kasei,ak8975.yaml
+
+>  2 files changed, 71 insertions(+), 30 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
 > 
-> > 
-> > diff --git a/drivers/iio/light/iqs621-als.c b/drivers/iio/light/iqs621-als.c
-> > index b2988a782bd0..1a056e2446ab 100644
-> > --- a/drivers/iio/light/iqs621-als.c
-> > +++ b/drivers/iio/light/iqs621-als.c
-> > @@ -36,6 +36,7 @@
-> >  
-> >  struct iqs621_als_private {
-> >  	struct iqs62x_core *iqs62x;
-> > +	struct iio_dev *indio_dev;
-> >  	struct notifier_block notifier;
-> >  	struct mutex lock;
-> >  	bool light_en;
-> > @@ -103,7 +104,7 @@ static int iqs621_als_notifier(struct notifier_block *notifier,
-> >  
-> >  	iqs621_als = container_of(notifier, struct iqs621_als_private,
-> >  				  notifier);
-> > -	indio_dev = iio_priv_to_dev(iqs621_als);
-> > +	indio_dev = iqs621_als->indio_dev;
-> >  	timestamp = iio_get_time_ns(indio_dev);
-> >  
-> >  	mutex_lock(&iqs621_als->lock);
-> > @@ -191,7 +192,7 @@ static int iqs621_als_notifier(struct notifier_block *notifier,
-> >  static void iqs621_als_notifier_unregister(void *context)
-> >  {
-> >  	struct iqs621_als_private *iqs621_als = context;
-> > -	struct iio_dev *indio_dev = iio_priv_to_dev(iqs621_als);
-> > +	struct iio_dev *indio_dev = iqs621_als->indio_dev;
-> >  	int ret;
-> >  
-> >  	ret = blocking_notifier_chain_unregister(&iqs621_als->iqs62x->nh,
-> > @@ -551,6 +552,7 @@ static int iqs621_als_probe(struct platform_device *pdev)
-> >  
-> >  	iqs621_als = iio_priv(indio_dev);
-> >  	iqs621_als->iqs62x = iqs62x;
-> > +	iqs621_als->indio_dev = indio_dev;
-> >  
-> >  	if (iqs62x->dev_desc->prod_num == IQS622_PROD_NUM) {
-> >  		ret = regmap_read(iqs62x->regmap, IQS622_IR_THRESH_TOUCH,
-> > -- 
-> > 2.25.1
-> >   
-> 
-> Kind regards,
-> Jeff LaBundy
+> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> deleted file mode 100644
+> index aa67ceb0d4e0..000000000000
+> --- a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -* AsahiKASEI AK8975 magnetometer sensor
+> -
+> -Required properties:
+> -
+> -  - compatible : should be "asahi-kasei,ak8975"
+> -  - reg : the I2C address of the magnetometer
+> -
+> -Optional properties:
+> -
+> -  - gpios : should be device tree identifier of the magnetometer DRDY pin
+> -  - vdd-supply: an optional regulator that needs to be on to provide VDD
+> -  - mount-matrix: an optional 3x3 mounting rotation matrix
+> -
+> -Example:
+> -
+> -ak8975@c {
+> -        compatible = "asahi-kasei,ak8975";
+> -        reg = <0x0c>;
+> -        gpios = <&gpj0 7 0>;
+> -        vdd-supply = <&ldo_3v3_gnss>;
+> -        mount-matrix = "-0.984807753012208",  /* x0 */
+> -                       "0",                   /* y0 */
+> -                       "-0.173648177666930",  /* z0 */
+> -                       "0",                   /* x1 */
+> -                       "-1",                  /* y1 */
+> -                       "0",                   /* z1 */
+> -                       "-0.173648177666930",  /* x2 */
+> -                       "0",                   /* y2 */
+> -                       "0.984807753012208";   /* z2 */
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+> new file mode 100644
+> index 000000000000..8bde423a2ffa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
+> @@ -0,0 +1,71 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/magnetometer/ak8975.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: AsahiKASEI AK8975 magnetometer sensor
+> +
+> +maintainers:
+> +  - Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: asahi-kasei,ak8975
+> +      - const: asahi-kasei,ak8963
+> +      - const: asahi-kasei,ak09911
+> +      - const: asahi-kasei,ak09912
+> +      - const: ak8975
+> +        deprecated: true
+> +      - const: ak8963
+> +        deprecated: true
+> +      - const: ak09911
+> +        deprecated: true
+> +      - const: ak09912
+> +        deprecated: true
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: the I2C address of the magnetometer
+> +
+> +  gpios:
+> +    description: should be device tree identifier of the magnetometer DRDY pin
+
+Nothing to do with your patch obviously but this is horrible...
++ the driver will quite happily take an interrupt instead.
+
+Do you mind documenting the interrupt here as well?
+
+Should be a separate patch though.  So a follow up one to
+this one.  The 
+arch/arm/boot/dts/motorola-mapphone-common.dtsi
+does it that way, unlike the samsung s3 which uses the gpio
+binding (I think it's the only one against quite a few
+using interrupts).
+
+Also switch the example to an interrupts one so we don't
+encourage anyone to go the gpios route.
+
+Note can be a follow up if this series is otherwise ready to go.
+
+
+> +
+> +  vdd-supply:
+> +    maxItems: 1
+> +    description: |
+> +      an optional regulator that needs to be on to provide VDD power to
+> +      the sensor.
+> +
+> +  mount-matrix:
+> +    description: an optional 3x3 mounting rotation matrix
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c@78b7000 {
+> +        reg = <0x78b6000 0x600>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        magnetometer@c {
+> +            compatible = "asahi-kasei,ak8975";
+> +            reg = <0x0c>;
+> +            gpios = <&gpj0 7 GPIO_ACTIVE_HIGH>;
+> +            vdd-supply = <&ldo_3v3_gnss>;
+> +            mount-matrix = "-0.984807753012208",  /* x0 */
+> +                           "0",                   /* y0 */
+> +                           "-0.173648177666930",  /* z0 */
+> +                           "0",                   /* x1 */
+> +                           "-1",                  /* y1 */
+> +                           "0",                   /* z1 */
+> +                           "-0.173648177666930",  /* x2 */
+> +                           "0",                   /* y2 */
+> +                           "0.984807753012208";   /* z2 */
+> +        };
+> +    };
 

@@ -2,465 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2751E129F
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 18:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 099481E12EB
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 18:47:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731448AbgEYQ2A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 12:28:00 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:58756 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729338AbgEYQ17 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 12:27:59 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04PGR5Ar018914;
-        Mon, 25 May 2020 18:27:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=mK5xX80vuFkvmZhLsaCNBEAQnYbhUaMKCHYyJ0RTpJ8=;
- b=rcbAFrJgCSYfJsthIKa3htTubI3kcRF49HjXaPfWmfBtGfuNPC/42719l0APGVee0uF3
- 2t9R088srT+SuemATp+3YMeZW7QbWAJ/nbvyD/pdUCX/B6Syar/oz4A4gPDRY+nhOkIa
- wskfe3tWZT8FNwhZq2ijTL1Agdtk7DOpKYarpCRO9GZL4f+EeUGBlzCMWUmx4D3zGFjR
- iMmEL6yi3delNK2wyhQDN6NT2eRhesGTTMs1kZz7Lm6Wf27AtSn7dWvSIcIvkLa4J5Jc
- VvrLyGv4liEsvCmu9Cc1lJiimbXPKY/W8gm0m+LGSEeWDXbjHmAeMigOlYMygSzprKDG tw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 316tqgtvkv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 May 2020 18:27:41 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E388A10002A;
-        Mon, 25 May 2020 18:27:39 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CBB1C2B4D20;
-        Mon, 25 May 2020 18:27:39 +0200 (CEST)
-Received: from [10.211.0.68] (10.75.127.45) by SFHDAG5NODE3.st.com
- (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 May
- 2020 18:27:38 +0200
-Subject: Re: [PATCH v2] iio: stm32-adc: remove usage of iio_priv_to_dev()
- helper
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <olivier.moysan@st.com>
-References: <20200522130719.630714-1-alexandru.ardelean@analog.com>
- <20200525090720.72696-1-alexandru.ardelean@analog.com>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <447a0db3-0c20-859c-b5f2-7716c57a7e0e@st.com>
-Date:   Mon, 25 May 2020 18:27:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200525090720.72696-1-alexandru.ardelean@analog.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-25_09:2020-05-25,2020-05-25 signatures=0
+        id S2389116AbgEYQrg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 12:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387766AbgEYQrf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 12:47:35 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 727B2C061A0E;
+        Mon, 25 May 2020 09:47:35 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id h9so3935496qtj.7;
+        Mon, 25 May 2020 09:47:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=t8zEWUrm5GoCOEcVhpshh2tA+4Vj6BGZIYSk7nPV9Uo=;
+        b=gF2ae7jdmu3EfJ1DHBNkoCxIzaIPv8/KmuYxU6F0rIohBImh+YnijgzshZvoNS7NOR
+         yPj1KJn2/JDiVoU/YbAP7QHmTiT0AgMftNZs+u8DZ2U8nizkKjtxQKft/GYu7Qa61uel
+         fF36ryMgDX5f7Ra7Wxx/mypgpNArpN7TW7cGI3T+thspbqG9f6W/d1EflHu7hf7b587B
+         2IF6IaY/r4WMStLrKTZCjHr17T3G66tZFyojFD1LV+DVQ4lSSdWq3d6qRw9mPTcPPTVB
+         O50rq1X53p3GW5GlLfnRXlsF6qiWbywW3BG+Z7cMXbPyGk0ZptDEgdP/2FfwZQeM0QzG
+         GM9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=t8zEWUrm5GoCOEcVhpshh2tA+4Vj6BGZIYSk7nPV9Uo=;
+        b=TZgQEAHMETZdGE6LFbjO4xu60aZX/qjIvdnrZGubqCI2R638eFtXScPQvYCNaQ0QB0
+         uqYvFF/upKLCymFnA+YzCSmTpPCWA0uh9ZtBMPl834FNShM4eOALWL+UqKZEQBfQ0WLf
+         sk0M2Qrj0ArLBHwHqnlSdsl4UwmoqaDH1x+EZIqDAHLRoAPvoaN2S6s1zKPkIXEv28S/
+         PUeUnJ3EsMv2pANAFdwAzdDOzVbYO3/K+kpI2Z+cZfdwpqadGMMk7bYz7KOlS2gmlcs/
+         qggplm8QyHHtvWNsjDXZ8BymaOprvCJKGTCyckH+A7/1r3/BKyN0y3L62HHWZ2wqd25v
+         4V0g==
+X-Gm-Message-State: AOAM530KWy2zCT/wYS09O119+C9bDQQdyXQc7nvGVD++dTQ3qxDyMYeb
+        3Be1W0BmO4dTKHUEnK19B5jG4VLSi4w=
+X-Google-Smtp-Source: ABdhPJwlC1dvHr4PGrcdBP2nZFqf3pGAhOM27ptunP0xRjgGCZiMfRez+vSCSuVEN99GX+HcgzPVjw==
+X-Received: by 2002:aed:3b62:: with SMTP id q31mr3717224qte.293.1590425254143;
+        Mon, 25 May 2020 09:47:34 -0700 (PDT)
+Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
+        by smtp.googlemail.com with ESMTPSA id g5sm15559618qti.87.2020.05.25.09.47.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2020 09:47:33 -0700 (PDT)
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, daniel.baluta@gmail.com,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH v4 0/5] iio: imu: bmi160: added regulator and mount-matrix support
+Date:   Mon, 25 May 2020 18:45:59 +0200
+Message-Id: <20200525164615.14962-1-jonathan.albrieux@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/25/20 11:07 AM, Alexandru Ardelean wrote:
-> We may want to get rid of the iio_priv_to_dev() helper. The reason is that
-> we will hide some of the members of the iio_dev structure (to prevent
-> drivers from accessing them directly), and that will also mean hiding the
-> implementation of the iio_priv_to_dev() helper inside the IIO core.
-> 
-> Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
-> may not be fast anymore, so a general idea is to try to get rid of the
-> iio_priv_to_dev() altogether.
-> The iio_priv() helper won't be affected by the rework, as the iio_dev
-> struct will keep a reference to the private information.
-> 
-> For this driver, not using iio_priv_to_dev(), means reworking some paths to
-> pass the iio device and using iio_priv() to access the private information.
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
->  drivers/iio/adc/stm32-adc.c | 108 +++++++++++++++++++-----------------
->  1 file changed, 58 insertions(+), 50 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index ae622ee6d08c..9428c5c22712 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -162,10 +162,10 @@ struct stm32_adc_cfg {
->  	struct stm32_adc_trig_info	*trigs;
->  	bool clk_required;
->  	bool has_vregready;
-> -	int (*prepare)(struct stm32_adc *);
-> -	void (*start_conv)(struct stm32_adc *, bool dma);
-> -	void (*stop_conv)(struct stm32_adc *);
-> -	void (*unprepare)(struct stm32_adc *);
-> +	int (*prepare)(struct iio_dev *);
-> +	void (*start_conv)(struct iio_dev *, bool dma);
-> +	void (*stop_conv)(struct iio_dev *);
-> +	void (*unprepare)(struct iio_dev *);
->  	const unsigned int *smp_cycles;
->  };
->  
-> @@ -538,10 +538,11 @@ static void stm32_adc_set_res(struct stm32_adc *adc)
->  
->  static int stm32_adc_hw_stop(struct device *dev)
->  {
-> -	struct stm32_adc *adc = dev_get_drvdata(dev);
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  
->  	if (adc->cfg->unprepare)
-> -		adc->cfg->unprepare(adc);
-> +		adc->cfg->unprepare(indio_dev);
->  
->  	if (adc->clk)
->  		clk_disable_unprepare(adc->clk);
-> @@ -551,7 +552,8 @@ static int stm32_adc_hw_stop(struct device *dev)
->  
->  static int stm32_adc_hw_start(struct device *dev)
->  {
-> -	struct stm32_adc *adc = dev_get_drvdata(dev);
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  
->  	if (adc->clk) {
-> @@ -563,7 +565,7 @@ static int stm32_adc_hw_start(struct device *dev)
->  	stm32_adc_set_res(adc);
->  
->  	if (adc->cfg->prepare) {
-> -		ret = adc->cfg->prepare(adc);
-> +		ret = adc->cfg->prepare(indio_dev);
->  		if (ret)
->  			goto err_clk_dis;
->  	}
-> @@ -587,8 +589,10 @@ static int stm32_adc_hw_start(struct device *dev)
->   * conversions, in IIO buffer modes. Otherwise, use ADC interrupt with direct
->   * DR read instead (e.g. read_raw, or triggered buffer mode without DMA).
->   */
-> -static void stm32f4_adc_start_conv(struct stm32_adc *adc, bool dma)
-> +static void stm32f4_adc_start_conv(struct iio_dev *indio_dev, bool dma)
+v4:
+ - add maintainer
+ - clean up of documentation
+ - added case concerning the need to add regulators, see [PATCH v4 4/5] 
 
-Hi Alexandru,
+v3: 
+ - separate typo fix into another patch
+ - clean up of documentation
+ - clean up of patch messages
+https://lore.kernel.org/linux-iio/20200520194656.16218-1-jonathan.albrieux@gmail.com/
 
-I've tested your patch. I've no objection, but found few build warnings
-(some of these routines have kernel-doc style).
+v2: 
+ - fixed missing description for iio: imu: bmi160: added regulator
+   support
+https://lore.kernel.org/linux-iio/20200519075111.6356-1-jonathan.albrieux@gmail.com/
 
-Building with W=1 makes warnings appear, like:
-drivers/iio/adc/stm32-adc.c:593: warning: Function parameter or member
-'indio_dev' not described in 'stm32f4_adc_start_conv'
-drivers/iio/adc/stm32-adc.c:593: warning: Excess function parameter
-'adc' description in 'stm32f4_adc_start_conv'
-...
+v1:
+ - initial patch submission
+https://lore.kernel.org/linux-iio/20200518133358.18978-1-jonathan.albrieux@gmail.com/
 
-Could you update routine's doc as well ?
+Convert txt format documentation to yaml.
+Add documentation about vdd-supply, vddio-supply and mount-matrix.
 
-e.g. something like:
-- * @adc: stm32 adc instance
-+ * @indio_dev: IIO device
+Add vdd-supply and vddio-supply support.
 
->  {
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
-> +
->  	stm32_adc_set_bits(adc, STM32F4_ADC_CR1, STM32F4_SCAN);
->  
->  	if (dma)
-> @@ -605,8 +609,10 @@ static void stm32f4_adc_start_conv(struct stm32_adc *adc, bool dma)
->  		stm32_adc_set_bits(adc, STM32F4_ADC_CR2, STM32F4_SWSTART);
->  }
->  
-> -static void stm32f4_adc_stop_conv(struct stm32_adc *adc)
-> +static void stm32f4_adc_stop_conv(struct iio_dev *indio_dev)
->  {
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
-> +
->  	stm32_adc_clr_bits(adc, STM32F4_ADC_CR2, STM32F4_EXTEN_MASK);
->  	stm32_adc_clr_bits(adc, STM32F4_ADC_SR, STM32F4_STRT);
->  
-> @@ -615,8 +621,9 @@ static void stm32f4_adc_stop_conv(struct stm32_adc *adc)
->  			   STM32F4_ADON | STM32F4_DMA | STM32F4_DDS);
->  }
->  
-> -static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
-> +static void stm32h7_adc_start_conv(struct iio_dev *indio_dev, bool dma)
->  {
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	enum stm32h7_adc_dmngt dmngt;
->  	unsigned long flags;
->  	u32 val;
-> @@ -635,9 +642,9 @@ static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
->  	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_ADSTART);
->  }
->  
-> -static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
-> +static void stm32h7_adc_stop_conv(struct iio_dev *indio_dev)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  	u32 val;
->  
-> @@ -652,9 +659,9 @@ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
->  	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR, STM32H7_DMNGT_MASK);
->  }
->  
-> -static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
-> +static int stm32h7_adc_exit_pwr_down(struct iio_dev *indio_dev)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  	u32 val;
->  
-> @@ -690,9 +697,9 @@ static void stm32h7_adc_enter_pwr_down(struct stm32_adc *adc)
->  	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_DEEPPWD);
->  }
->  
-> -static int stm32h7_adc_enable(struct stm32_adc *adc)
-> +static int stm32h7_adc_enable(struct iio_dev *indio_dev)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  	u32 val;
->  
-> @@ -713,9 +720,9 @@ static int stm32h7_adc_enable(struct stm32_adc *adc)
->  	return ret;
->  }
->  
-> -static void stm32h7_adc_disable(struct stm32_adc *adc)
-> +static void stm32h7_adc_disable(struct iio_dev *indio_dev)
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  	u32 val;
->  
-> @@ -733,9 +740,9 @@ static void stm32h7_adc_disable(struct stm32_adc *adc)
->   * @adc: stm32 adc instance
->   * Note: Must be called once ADC is enabled, so LINCALRDYW[1..6] are writable
->   */
-> -static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
-> +static int stm32h7_adc_read_selfcalib(struct iio_dev *indio_dev)
+Add mount-matrix binding support. As chip could have different
+orientations a mount matrix support is needed to correctly translate
+these differences.
 
-Same here.
+Jonathan Albrieux (5):
+  dt-bindings: iio: imu: bmi160: convert format to yaml, add maintainer
+  dt-bindings: iio: imu: bmi160: add regulators and mount-matrix
+  iio: imu: bmi160: fix typo
+  iio: imu: bmi160: added regulator support
+  iio: imu: bmi160: added mount-matrix support
 
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int i, ret;
->  	u32 lincalrdyw_mask, val;
->  
-> @@ -777,9 +784,9 @@ static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
->   * @adc: stm32 adc instance
->   * Note: ADC must be enabled, with no on-going conversions.
->   */
-> -static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
-> +static int stm32h7_adc_restore_selfcalib(struct iio_dev *indio_dev)
+ .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
+ .../bindings/iio/imu/bosch,bmi160.yaml        | 91 +++++++++++++++++++
+ drivers/iio/imu/bmi160/bmi160.h               |  3 +
+ drivers/iio/imu/bmi160/bmi160_core.c          | 46 +++++++++-
+ 4 files changed, 139 insertions(+), 38 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
 
-Same here.
+-- 
+2.17.1
 
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int i, ret;
->  	u32 lincalrdyw_mask, val;
->  
-> @@ -850,9 +857,9 @@ static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
->   * @adc: stm32 adc instance
->   * Note: Must be called once ADC is out of power down.
->   */
-> -static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
-> +static int stm32h7_adc_selfcalib(struct iio_dev *indio_dev)
-
-Same here
-
->  {
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int ret;
->  	u32 val;
->  
-> @@ -912,30 +919,31 @@ static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
->   * - Only one input is selected for single ended (e.g. 'vinp')
->   * - Two inputs are selected for differential channels (e.g. 'vinp' & 'vinn')
->   */
-> -static int stm32h7_adc_prepare(struct stm32_adc *adc)
-> +static int stm32h7_adc_prepare(struct iio_dev *indio_dev)
-
-Same here.
-
-With the comments updated, you can add my:
-
-Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-
-Thanks for the patch,
-Fabrice
-
->  {
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	int calib, ret;
->  
-> -	ret = stm32h7_adc_exit_pwr_down(adc);
-> +	ret = stm32h7_adc_exit_pwr_down(indio_dev);
->  	if (ret)
->  		return ret;
->  
-> -	ret = stm32h7_adc_selfcalib(adc);
-> +	ret = stm32h7_adc_selfcalib(indio_dev);
->  	if (ret < 0)
->  		goto pwr_dwn;
->  	calib = ret;
->  
->  	stm32_adc_writel(adc, STM32H7_ADC_DIFSEL, adc->difsel);
->  
-> -	ret = stm32h7_adc_enable(adc);
-> +	ret = stm32h7_adc_enable(indio_dev);
->  	if (ret)
->  		goto pwr_dwn;
->  
->  	/* Either restore or read calibration result for future reference */
->  	if (calib)
-> -		ret = stm32h7_adc_restore_selfcalib(adc);
-> +		ret = stm32h7_adc_restore_selfcalib(indio_dev);
->  	else
-> -		ret = stm32h7_adc_read_selfcalib(adc);
-> +		ret = stm32h7_adc_read_selfcalib(indio_dev);
->  	if (ret)
->  		goto disable;
->  
-> @@ -944,16 +952,18 @@ static int stm32h7_adc_prepare(struct stm32_adc *adc)
->  	return 0;
->  
->  disable:
-> -	stm32h7_adc_disable(adc);
-> +	stm32h7_adc_disable(indio_dev);
->  pwr_dwn:
->  	stm32h7_adc_enter_pwr_down(adc);
->  
->  	return ret;
->  }
->  
-> -static void stm32h7_adc_unprepare(struct stm32_adc *adc)
-> +static void stm32h7_adc_unprepare(struct iio_dev *indio_dev)
->  {
-> -	stm32h7_adc_disable(adc);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
-> +
-> +	stm32h7_adc_disable(indio_dev);
->  	stm32h7_adc_enter_pwr_down(adc);
->  }
->  
-> @@ -1160,7 +1170,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
->  
->  	stm32_adc_conv_irq_enable(adc);
->  
-> -	adc->cfg->start_conv(adc, false);
-> +	adc->cfg->start_conv(indio_dev, false);
->  
->  	timeout = wait_for_completion_interruptible_timeout(
->  					&adc->completion, STM32_ADC_TIMEOUT);
-> @@ -1173,7 +1183,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
->  		ret = IIO_VAL_INT;
->  	}
->  
-> -	adc->cfg->stop_conv(adc);
-> +	adc->cfg->stop_conv(indio_dev);
->  
->  	stm32_adc_conv_irq_disable(adc);
->  
-> @@ -1227,8 +1237,8 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
->  
->  static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  {
-> -	struct stm32_adc *adc = data;
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = data;
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
->  
-> @@ -1240,8 +1250,8 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  
->  static irqreturn_t stm32_adc_isr(int irq, void *data)
->  {
-> -	struct stm32_adc *adc = data;
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = data;
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
->  
-> @@ -1514,7 +1524,7 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
->  	if (!adc->dma_chan)
->  		stm32_adc_conv_irq_enable(adc);
->  
-> -	adc->cfg->start_conv(adc, !!adc->dma_chan);
-> +	adc->cfg->start_conv(indio_dev, !!adc->dma_chan);
->  
->  	return 0;
->  
-> @@ -1547,7 +1557,7 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
->  	struct stm32_adc *adc = iio_priv(indio_dev);
->  	struct device *dev = indio_dev->dev.parent;
->  
-> -	adc->cfg->stop_conv(adc);
-> +	adc->cfg->stop_conv(indio_dev);
->  	if (!adc->dma_chan)
->  		stm32_adc_conv_irq_disable(adc);
->  
-> @@ -1891,7 +1901,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	indio_dev->info = &stm32_adc_iio_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_HARDWARE_TRIGGERED;
->  
-> -	platform_set_drvdata(pdev, adc);
-> +	platform_set_drvdata(pdev, indio_dev);
->  
->  	ret = of_property_read_u32(pdev->dev.of_node, "reg", &adc->offset);
->  	if (ret != 0) {
-> @@ -1905,7 +1915,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  
->  	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, stm32_adc_isr,
->  					stm32_adc_threaded_isr,
-> -					0, pdev->name, adc);
-> +					0, pdev->name, indio_dev);
->  	if (ret) {
->  		dev_err(&pdev->dev, "failed to request IRQ\n");
->  		return ret;
-> @@ -1989,8 +1999,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  
->  static int stm32_adc_remove(struct platform_device *pdev)
->  {
-> -	struct stm32_adc *adc = platform_get_drvdata(pdev);
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct stm32_adc *adc = iio_priv(indio_dev);
->  
->  	pm_runtime_get_sync(&pdev->dev);
->  	iio_device_unregister(indio_dev);
-> @@ -2012,8 +2022,7 @@ static int stm32_adc_remove(struct platform_device *pdev)
->  #if defined(CONFIG_PM_SLEEP)
->  static int stm32_adc_suspend(struct device *dev)
->  {
-> -	struct stm32_adc *adc = dev_get_drvdata(dev);
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
->  
->  	if (iio_buffer_enabled(indio_dev))
->  		__stm32_adc_buffer_predisable(indio_dev);
-> @@ -2023,8 +2032,7 @@ static int stm32_adc_suspend(struct device *dev)
->  
->  static int stm32_adc_resume(struct device *dev)
->  {
-> -	struct stm32_adc *adc = dev_get_drvdata(dev);
-> -	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
->  	int ret;
->  
->  	ret = pm_runtime_force_resume(dev);
-> 

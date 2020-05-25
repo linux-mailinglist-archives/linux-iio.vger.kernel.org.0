@@ -2,227 +2,254 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD6D21E07F6
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 09:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDE51E07FB
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 09:27:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389037AbgEYHZK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 03:25:10 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:6966 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388948AbgEYHZJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 03:25:09 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04P7Oste030909;
-        Mon, 25 May 2020 03:24:54 -0400
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2047.outbound.protection.outlook.com [104.47.66.47])
-        by mx0b-00128a01.pphosted.com with ESMTP id 316wkavtes-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 May 2020 03:24:53 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Xc8Sa5oVVxTCge75a+folxTb5hoNmVJiy3cwd8c6Qp9OAkKQsZmKv65ngAU3CmrieZjOlaCGkN5hnb+BJk7RSPgfFh/zU3WIaSgsbzNSz9YYbySs8+KEx13OYA1yLQLyUkfFvkpq6aXmLuRh+njcUglLpYlB4YeUTZ+0VMryRv1knDFEU6LdER1piAGtlpJGBUdg5YAFGLoWjGAA/9P02ufdCQXkzIBed6oi2UypBce4OcTd8/xXKv0hyYaCsLnhvbLfBsgCpoUwjg4d5xNBF6G2sNJhi1kpbWrV/PryQ4O2d7XAbJFfgjOJ/RCeKpptnVxagHINV9bA6GVR2UUvnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r67icGZxpCzpq55dZAv/FR/nzJif45DplNZ360hx08A=;
- b=NjLBOTRVU1KKpc/4ggTQW6Eg2TDKwgSCfP1Tn55I7GtZED6G3LfGYUuB8EdcyBoaouVI/fN6i0DVmPSXWKOCFk1GUV37xfcnNyiuOeDU0WjzjYqvsd05m/VMhhr/41s7F7WoLUh/pdUqYLYSfFzjDAPnQEOM0vO7t1rEy0vtUAl66UlO/K54LtxclQiw3A8+1KiehWySUQPLKHouJoYa257/QXzjtSnSr7DIaV8xwGP/yFk5onlGmvkpHR8AyZVCNPMWOEgQkeTxuW8+YMYTcLHGAANbPIjtntHJpoloqsatHDqtR6iPkm60m4QoggVro2PHs9n2SBB6if4FJNlB4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S2389064AbgEYH1N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 03:27:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388948AbgEYH1N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 03:27:13 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC2BC061A0E;
+        Mon, 25 May 2020 00:27:13 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id i68so13231852qtb.5;
+        Mon, 25 May 2020 00:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r67icGZxpCzpq55dZAv/FR/nzJif45DplNZ360hx08A=;
- b=tlZWmv/wAuuhdWKtgPzoppLOzXheF1zMp2UTLeNSIdewjnZSiRrM+neT0yJfktCGTB3GBxZMp6z0+naLSQ3PsLlWQshOUjUxLo7pXOhE0UonekE8y1ev162Hc5/clHLlWMyXLjuJhXnpx30rk/vxqQEhEnAVloRA5gYTZoiuMUc=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB4891.namprd03.prod.outlook.com (2603:10b6:5:15f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.27; Mon, 25 May
- 2020 07:24:51 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3021.029; Mon, 25 May 2020
- 07:24:51 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [RFC PATCH 07/14] iio: core: add simple centralized mechanism for
- ioctl() handlers
-Thread-Topic: [RFC PATCH 07/14] iio: core: add simple centralized mechanism
- for ioctl() handlers
-Thread-Index: AQHWJUAlEje8DC6BSEmVkOG3lxPu7qi3iwKAgAD1r4A=
-Date:   Mon, 25 May 2020 07:24:51 +0000
-Message-ID: <3773c98d27b5043dae7d293bc4ab8268ae204c16.camel@analog.com>
-References: <20200508135348.15229-1-alexandru.ardelean@analog.com>
-         <20200508135348.15229-8-alexandru.ardelean@analog.com>
-         <20200524174539.301026de@archlinux>
-In-Reply-To: <20200524174539.301026de@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 39e0743b-4524-4421-637a-08d8007cb69f
-x-ms-traffictypediagnostic: DM6PR03MB4891:
-x-microsoft-antispam-prvs: <DM6PR03MB48914E5A8789210719ED8489F9B30@DM6PR03MB4891.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0414DF926F
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: u/5GZFavCk1ulhJ0Jr2AOwKeEHfIy3/wQWJtp0rd/HC29UiGgxnb1TXYNm9uJcfgVivnPWOPxFWh7TFUpCAXqVxAJ1nUYVgd0dWHChTLv/YdVLfnbvmSMirHS8aPcKewT673d45HvBkVrYgQYHSWkazp0wUdUJsYQ26V3hK3Veuz+/BHHf3SaYG5DEuaZ4Cl9pXhOKPgWMHxCjkFtGi9XqsKnoID9q1DCq7lpL5YYCC4PSArmIMz2fzKeNzSD8idKu5rSrtpui46IzSCtOaIuLn7RyvPt+0TJA3pCDrzhJ+frmJe8d5zllxgzjMxmm/REaZUckQQZB5s3h7d45KyhQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(136003)(39860400002)(366004)(346002)(376002)(5660300002)(8676002)(2616005)(26005)(6506007)(36756003)(76116006)(66476007)(64756008)(66446008)(91956017)(66946007)(66556008)(8936002)(6916009)(86362001)(478600001)(186003)(4326008)(316002)(6512007)(2906002)(54906003)(71200400001)(6486002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: NPyiBc0x3FG9JpbMy5yGui3dhMyVwLavbo6MHZWWYRPoB2YdyP7ZSV7V6+rdFPqNxWIMdXZHqRW+l+DVt0GbdTnwkUwZ7oLy3kEep71M/1i01lwouR5QRX9zMdWrFo+j8ZGRT5eqwr8Yo8uNwXRPRh7y1OnvczZ5teMG4fmnPcSgjXY9uF3s8Jf5KB9n+rjmwRBjRqR4oa35/OcY9kEByOEGMbfKVfvJlBpX6S7L2veAA/i8aqsWf0PV1GYNnVZxIcQkpJt3wEtJMzMtHxwX2mlPyAMFxmkd78sHsynMllr34FbxP4rNyv/gx4LhFMv5ZiXTtWL/Q3RDdNieSaIwij0hc9TQMch+p6C9FWb44Ah8FzkKLzdVjelooPVvJvOCxQweG5cnv/qHopyXibCc9OkNQzhwgdHlPDKhKsHUOt67KJwZbBpNn5rrQXJeQzPNA1Hq/RLboGdF9L64HWrhuYCVMpKW4+7rPwasiMwMlyI=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <44745DECAC967C4898445B7DCEAA2BAA@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ajNAsOcF30eG4hqzyeyUa+xAGM7I/tH3z9ZvaPCi0Hs=;
+        b=M2fVxMqzJWTj9nG09QoCCO0x3CGpPIPDCEJXBd7mYtK10DN8F363Hl2sGFl16s/7VF
+         MUu4GknWz738PbJAO5JsvTicpFlCxb235wNKmSs/jbX7tfp3+FAMULjDyOt6HUWGEq2X
+         1uSgoC+hCH4YyfaJFgXAsoPyXIO0oENeuRamZf8NSVATr1otMLFXrIqYgFcfDdiD4pAF
+         DUUZrXQ35OmkhuL8L89qoUN9noLF6w+1M3ljyfX27Jx2SyyyN59RbxUZrimarjnEyRBe
+         82iXYebWod0GLcC/owOXWYniylb11Md2m4h9qdZ7V+gl0M5Xe+oHjKiXIcgYFpezp44J
+         S0Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ajNAsOcF30eG4hqzyeyUa+xAGM7I/tH3z9ZvaPCi0Hs=;
+        b=NFJrQHuBZMqxIsVRAywzwuPp+yEhW1I7Z8uN5UNn3cRmrrrZtk8ghd5THhqqIfjzRA
+         aw2+OOmba/yG1PUvPMI4ix4lxNT9xYWA6Z05elX6rvl7VscMOHIuru8c/8B9CPNE+mZ2
+         LaYclBxWPH/+MA8QEvsNGBTWQ0mn6Zm2SCG1uiQ8d3NlHOyMo4ThxZTwj8AF+xR2sTnu
+         T8kanSrAiNU6OyxK2YMs4TPWOH5kzOl0xAiXrNNEso9DlWHjQDM4gC8/MYbVEz2V0/MF
+         wW2OUNkuPI3w9pqjUkyTscJcPVjW8c5F4u5orTqk2hJV5kVYCsAxP7POaICz0oBCInrk
+         7tVw==
+X-Gm-Message-State: AOAM533yH5EwfzSd/E/FfNKeRmWAhixYYLgFTlDcaicqofMCSjbYJhdU
+        RDRRtoIR1DxW4zP0G/s2YT0=
+X-Google-Smtp-Source: ABdhPJw2kYo4SMNynj5nfsDzzktvz1erwmL4xIZjc6aVXyE3UYv/RojUlPMncQ3dnRqR54OVXr/vmQ==
+X-Received: by 2002:ac8:670b:: with SMTP id e11mr27643877qtp.365.1590391632372;
+        Mon, 25 May 2020 00:27:12 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id n31sm15641781qtc.36.2020.05.25.00.27.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 25 May 2020 00:27:11 -0700 (PDT)
+Date:   Mon, 25 May 2020 09:27:07 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, daniel.baluta@nxp.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/5] dt-bindings: iio: imu: bmi160: convert txt format
+ to yaml
+Message-ID: <20200525072707.GB18690@ict14-OptiPlex-980>
+References: <20200520194656.16218-1-jonathan.albrieux@gmail.com>
+ <20200520194656.16218-2-jonathan.albrieux@gmail.com>
+ <20200524124114.7f4e785d@archlinux>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39e0743b-4524-4421-637a-08d8007cb69f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 May 2020 07:24:51.1399
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3Jv8Pt/9dxwuW4dKf47q01H5rnrv92QnELwXsO5rHmFAPccbzmn1WkDiK2J7unYYL7tdDDkk2b5Jas+P4KnrogNG81Xvwt5jBEb9IQjVcG0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4891
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-25_02:2020-05-22,2020-05-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0
- cotscore=-2147483648 adultscore=0 suspectscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005250059
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200524124114.7f4e785d@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gU3VuLCAyMDIwLTA1LTI0IGF0IDE3OjQ1ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBGcmksIDggTWF5IDIwMjAgMTY6NTM6NDEgKzAzMDAN
-Cj4gQWxleGFuZHJ1IEFyZGVsZWFuIDxhbGV4YW5kcnUuYXJkZWxlYW5AYW5hbG9nLmNvbT4gd3Jv
-dGU6DQo+IA0KPiA+IFRoZSBhaW0gb2YgdGhpcyBpcyB0byByZWR1Y2UgdGhlIG9yZ2FuaXphdGlv
-biB2aW9sYXRpb24gb2YgaW9jdGwoKSBjYWxscyBpbg0KPiA+IElJTyBjb3JlLiBDdXJyZW50bHks
-IHNpbmNlIHRoZSBjaGFyZGV2IGlzIHNwbGl0IGFjcm9zcyBmaWxlcywgZXZlbnQgaW9jdGwoKQ0K
-PiA+IGNhbGxzIG5lZWQgdG8gYmUgY2FsbGVkIGluIGJ1ZmZlciBpb2N0bCgpIGNhbGxzLg0KPiA+
-IA0KPiA+IFRoZSAnaW5kdXN0cmlhbGlvLWNvcmUuYycgZmlsZSB3aWxsIHByb3ZpZGUgYSAnaWlv
-X2RldmljZV9pb2N0bCgpJyB3aGljaA0KPiA+IHdpbGwgaXRlcmF0ZSBvdmVyIGEgbGlzdCBvZiBp
-b2N0bHMgcmVnaXN0ZXJlZCB3aXRoIHRoZSBJSU8gZGV2aWNlLiBUaGVzZQ0KPiA+IGNhbiBiZSBl
-dmVudCBpb2N0bCgpIG9yIGJ1ZmZlciBpb2N0bCgpIGNhbGxzLCBvciBzb21ldGhpbmcgZWxzZS4N
-Cj4gPiBUaGlzIGlzIG5lZWRlZCwgc2luY2UgdGhlcmUgaXMgY3VycmVudGx5IG9uZSBjaGFyZGV2
-IHBlciBJSU8gZGV2aWNlIGFuZA0KPiA+IHRoYXQgaXMgdXNlZCBmb3IgYm90aCBldmVudCBoYW5k
-bGluZyBhbmQgcmVhZGluZyBmcm9tIHRoZSBidWZmZXIuDQo+ID4gDQo+ID4gRWFjaCBpb2N0bCgp
-IHdpbGwgaGF2ZSB0byByZXR1cm4gYSBJSU9fSU9DVExfVU5IQU5ETEVEIGNvZGUgKHdoaWNoIGlz
-DQo+ID4gcG9zaXRpdmUgMSksIGlmIHRoZSBpb2N0bCgpIGRpZCBub3QgaGFuZGxlIHRoZSBjYWxs
-IGluIGFueS4gVGhpcyBlbGltaW5hdGVzDQo+ID4gYW55IHBvdGVudGlhbCBhbWJpZ3VpdGllczsg
-aWYgd2Ugd2VyZSB0byBoYXZlIHVzZWQgZXJyb3IgY29kZXMgaXQgd291bGQNCj4gPiBoYXZlIGJl
-ZW4gdW5jZXJ0YWluIHdoZXRoZXIgdGhleSB3ZXJlIGFjdHVhbCBlcnJvcnMsIG9yIHdoZXRoZXIN
-Cj4gPiB0aGUgcmVnaXN0ZXJlZCBpb2N0bCgpIGRvZXNuJ3Qgc2VydmljZSB0aGUgY29tbWFuZC4N
-Cj4gPiANCj4gPiBJZiBhbnkgaW9jdGwoKSByZXR1cm5zIDAsIGl0IHdhcyBjb25zaWRlcmVkIHRo
-YXQgaXQgd2FzIHNlcnZpY2VkDQo+ID4gc3VjY2Vzc2Z1bGx5IGFuZCB0aGUgbG9vcCB3aWxsIGV4
-aXQuDQo+ID4gDQo+ID4gT25lIGFzc3VtcHRpb24gZm9yIGFsbCByZWdpc3RlcmVkIGlvY3RsKCkg
-aGFuZGxlcnMgaXMgdGhhdCB0aGV5IGFyZQ0KPiA+IHN0YXRpY2FsbHkgYWxsb2NhdGVkLCBzbyB0
-aGUgaWlvX2RldmljZV91bnJlZ2lzdGVyKCkgd2hpY2gganVzdCByZW1vdmUgYWxsDQo+ID4gb2Yg
-dGhlbSBmcm9tIHRoZSBkZXZpY2UncyBpb2N0bCgpIGhhbmRsZXIgbGlzdC4NCj4gPiANCj4gPiBB
-bHNvLCBzb21ldGhpbmcgdGhhdCBpcyBhIGJpdCBoYXJkIHRvIGRvIFthdCB0aGlzIHBvaW50XSBh
-bmQgbWF5IG5vdCBiZQ0KPiA+IHdvcnRoIHRoZSBlZmZvcnQgb2YgZG9pbmcsIGlzIHRvIGNoZWNr
-IHdoZXRoZXIgcmVnaXN0ZXJlZCBpb2N0bCgpDQo+ID4gY2FsbHMvY29tbWFuZHMgb3ZlcmxhcC4g
-VGhpcyBzaG91bGQgYmUgdW5saWtlbHkgdG8gaGFwcGVuLCBhbmQgc2hvdWxkIGdldA0KPiA+IGNh
-dWdodCBhdCByZXZpZXcgdGltZS4gVGhvdWdoLCBuZXcgaW9jdGwoKSBjYWxscyB3b3VsZCBsaWtl
-bHkgbm90IGJlIGFkZGVkDQo+ID4gdG9vIG9mdGVuLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6
-IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+IA0K
-PiBXZSBzZWVtIHRvIGhhdmUgZHJvcHBlZCB0aGUgbG9ja2luZyBpbiBoZXJlLiAgIFdoYXQgYW0g
-SSBtaXNzaW5nIHRoYXQNCj4gc3RvcHMgdXMgcmFjaW5nIGEgcmVtb3ZlIHdpdGggdGhlIGlvY3Rs
-PyAgSWYgdGhlcmUgaXMgYSByZWFzb24gdGhhdA0KPiBjYW4ndCByYWNlLCBwbGVhc2UgYWRkIGNv
-bW1lbnRzIHRoZXJlIHNvIEkgZG9uJ3Qgd29uZGVycyBzb21ldGltZSBpbg0KPiB0aGUgZnV0dXJl
-Lg0KPiANCg0KWWVhaC4NCk15IGJhZCBhYm91dCB0aGUgbG9ja2luZy4NCkkgaGF2ZSB0b28gbWFu
-eSBicmFuY2hlcyBmb3IgdGhpcyBzdHVmZi4NCkJ1dCBmb3IgdGhlIGNoYXJkZXYgc3BsaXQsIHRo
-ZXJlJ3MgYSBicmFuY2ggdGhhdCBzaG91bGQgaGF2ZSB0aGUgbG9ja2luZyBpbg0KcGxhY2UuDQpJ
-J2xsIHJlLWNoZWNrIHRoYXQsIHdoZW4gc2VuZGluZyBvbmx5IHRoZSBjaGFyZGV2IHNwbGl0IGFu
-eXdheS4NCg0KDQo+IFRoZSBjaGVjayBvbiBpaW9fZGV2LT5pbmZvIG1lYW5zIHdlIHdvbid0IHN0
-YXJ0IHRoZSBpb2N0bCBpZiB0aGUNCj4gcmVtb3ZlIGhhcyBiZWVuIGNhbGxlZCwgYnV0IGlmIHdl
-IHN3aXRjaCBpbW1lZGlhdGVseSBhZnRlciB0aGF0LA0KPiBhbnl0aGluZyBjYW4gaGFwcGVuIGJl
-Zm9yZSB3ZSBzdGFydCBjYWxsaW5nIHRoZSBpb2N0bHMuDQo+IA0KPiBKDQo+IA0KPiA+IC0tLQ0K
-PiA+ICBkcml2ZXJzL2lpby9paW9fY29yZS5oICAgICAgICAgIHwgMTQgKysrKysrKysrKysrKysN
-Cj4gPiAgZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWNvcmUuYyB8IDMzICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKw0KPiA+ICBpbmNsdWRlL2xpbnV4L2lpby9paW8uaCAgICAgICAg
-IHwgIDIgKysNCj4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA0OSBpbnNlcnRpb25zKCspDQo+ID4gDQo+
-ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2lpb19jb3JlLmggYi9kcml2ZXJzL2lpby9paW9f
-Y29yZS5oDQo+ID4gaW5kZXggYTUyN2E2NmJlOWU1Li4zNGMzZTE5MjI5ZDggMTAwNjQ0DQo+ID4g
-LS0tIGEvZHJpdmVycy9paW8vaWlvX2NvcmUuaA0KPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2lpb19j
-b3JlLmgNCj4gPiBAQCAtMTcsNiArMTcsMjAgQEAgc3RydWN0IGlpb19kZXY7DQo+ID4gIA0KPiA+
-ICBleHRlcm4gc3RydWN0IGRldmljZV90eXBlIGlpb19kZXZpY2VfdHlwZTsNCj4gPiAgDQo+ID4g
-KyNkZWZpbmUgSUlPX0lPQ1RMX1VOSEFORExFRAkxDQo+ID4gK3N0cnVjdCBpaW9faW9jdGxfaGFu
-ZGxlciB7DQo+ID4gKwlzdHJ1Y3QgbGlzdF9oZWFkIGVudHJ5Ow0KPiA+ICsJbG9uZyAoKmlvY3Rs
-KShzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LCBzdHJ1Y3QgZmlsZSAqZmlscCwNCj4gPiArCQkg
-ICAgICB1bnNpZ25lZCBpbnQgY21kLCB1bnNpZ25lZCBsb25nIGFyZyk7DQo+ID4gK307DQo+ID4g
-Kw0KPiA+ICtsb25nIGlpb19kZXZpY2VfaW9jdGwoc3RydWN0IGlpb19kZXYgKmluZGlvX2Rldiwg
-c3RydWN0IGZpbGUgKmZpbHAsDQo+ID4gKwkJICAgICAgdW5zaWduZWQgaW50IGNtZCwgdW5zaWdu
-ZWQgbG9uZyBhcmcpOw0KPiA+ICsNCj4gPiArdm9pZCBpaW9fZGV2aWNlX2lvY3RsX2hhbmRsZXJf
-cmVnaXN0ZXIoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwNCj4gPiArCQkJCSAgICAgICBzdHJ1
-Y3QgaWlvX2lvY3RsX2hhbmRsZXIgKmgpOw0KPiA+ICt2b2lkIGlpb19kZXZpY2VfaW9jdGxfaGFu
-ZGxlcl91bnJlZ2lzdGVyKHN0cnVjdCBpaW9faW9jdGxfaGFuZGxlciAqaCk7DQo+ID4gKw0KPiA+
-ICBpbnQgX19paW9fYWRkX2NoYW5fZGV2YXR0cihjb25zdCBjaGFyICpwb3N0Zml4LA0KPiA+ICAJ
-CQkgICBzdHJ1Y3QgaWlvX2NoYW5fc3BlYyBjb25zdCAqY2hhbiwNCj4gPiAgCQkJICAgc3NpemVf
-dCAoKmZ1bmMpKHN0cnVjdCBkZXZpY2UgKmRldiwNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
-aW8vaW5kdXN0cmlhbGlvLWNvcmUuYyBiL2RyaXZlcnMvaWlvL2luZHVzdHJpYWxpby0NCj4gPiBj
-b3JlLmMNCj4gPiBpbmRleCAzMmUwNDVjN2YwYzEuLjVkZjNhZjVlN2RjYiAxMDA2NDQNCj4gPiAt
-LS0gYS9kcml2ZXJzL2lpby9pbmR1c3RyaWFsaW8tY29yZS5jDQo+ID4gKysrIGIvZHJpdmVycy9p
-aW8vaW5kdXN0cmlhbGlvLWNvcmUuYw0KPiA+IEBAIC0xNTM0LDYgKzE1MzQsNyBAQCBzdHJ1Y3Qg
-aWlvX2RldiAqaWlvX2RldmljZV9hbGxvYyhpbnQgc2l6ZW9mX3ByaXYpDQo+ID4gIAl9DQo+ID4g
-IAlkZXZfc2V0X25hbWUoJmRldi0+ZGV2LCAiaWlvOmRldmljZSVkIiwgZGV2LT5pZCk7DQo+ID4g
-IAlJTklUX0xJU1RfSEVBRCgmZGV2LT5idWZmZXJfbGlzdCk7DQo+ID4gKwlJTklUX0xJU1RfSEVB
-RCgmZGV2LT5pb2N0bF9oYW5kbGVycyk7DQo+ID4gIA0KPiA+ICAJcmV0dXJuIGRldjsNCj4gPiAg
-fQ0KPiA+IEBAIC0xNTg3LDYgKzE1ODgsMzMgQEAgc3RydWN0IGlpb19kZXYgKmRldm1faWlvX2Rl
-dmljZV9hbGxvYyhzdHJ1Y3QgZGV2aWNlDQo+ID4gKmRldiwgaW50IHNpemVvZl9wcml2KQ0KPiA+
-ICB9DQo+ID4gIEVYUE9SVF9TWU1CT0xfR1BMKGRldm1faWlvX2RldmljZV9hbGxvYyk7DQo+ID4g
-IA0KPiA+ICt2b2lkIGlpb19kZXZpY2VfaW9jdGxfaGFuZGxlcl9yZWdpc3RlcihzdHJ1Y3QgaWlv
-X2RldiAqaW5kaW9fZGV2LA0KPiA+ICsJCQkJICAgICAgIHN0cnVjdCBpaW9faW9jdGxfaGFuZGxl
-ciAqaCkNCj4gPiArew0KPiA+ICsJLyogdGhpcyBhc3N1bWVzIHRoYXQgYWxsIGlvY3RsKCkgaGFu
-ZGxlcnMgYXJlIHN0YXRpY2FsbHkgYWxsb2NhdGVkICovDQo+ID4gKwlsaXN0X2FkZF90YWlsKCZo
-LT5lbnRyeSwgJmluZGlvX2Rldi0+aW9jdGxfaGFuZGxlcnMpOw0KPiA+ICt9DQo+ID4gKw0KPiA+
-ICtsb25nIGlpb19kZXZpY2VfaW9jdGwoc3RydWN0IGlpb19kZXYgKmluZGlvX2Rldiwgc3RydWN0
-IGZpbGUgKmZpbHAsDQo+ID4gKwkJICAgICAgdW5zaWduZWQgaW50IGNtZCwgdW5zaWduZWQgbG9u
-ZyBhcmcpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBpaW9faW9jdGxfaGFuZGxlciAqaDsNCj4gPiAr
-CWludCByZXQ7DQo+ID4gKw0KPiA+ICsJaWYgKCFpbmRpb19kZXYtPmluZm8pDQo+ID4gKwkJcmV0
-dXJuIC1FTk9ERVY7DQo+IA0KPiBUaGUgbG9ja2luZyBpcyBnb25lPyAgDQo+ID4gKw0KPiA+ICsJ
-bGlzdF9mb3JfZWFjaF9lbnRyeShoLCAmaW5kaW9fZGV2LT5pb2N0bF9oYW5kbGVycywgZW50cnkp
-IHsNCj4gPiArCQlyZXQgPSBoLT5pb2N0bChpbmRpb19kZXYsIGZpbHAsIGNtZCwgYXJnKTsNCj4g
-PiArCQlpZiAocmV0ID09IDApDQo+ID4gKwkJCXJldHVybiAwOw0KPiA+ICsJCWlmIChyZXQgIT0g
-SUlPX0lPQ1RMX1VOSEFORExFRCkNCj4gPiArCQkJcmV0dXJuIHJldDsNCj4gPiArCX0NCj4gPiAr
-DQo+ID4gKwlyZXR1cm4gLUVJTlZBTDsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgc3RhdGljIGludCBp
-aW9fY2hlY2tfdW5pcXVlX3NjYW5faW5kZXgoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikNCj4g
-PiAgew0KPiA+ICAJaW50IGksIGo7DQo+ID4gQEAgLTE3MjIsNiArMTc1MCw4IEBAIEVYUE9SVF9T
-WU1CT0woX19paW9fZGV2aWNlX3JlZ2lzdGVyKTsNCj4gPiAgICoqLw0KPiA+ICB2b2lkIGlpb19k
-ZXZpY2VfdW5yZWdpc3RlcihzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2KQ0KPiA+ICB7DQo+ID4g
-KwlzdHJ1Y3QgaWlvX2lvY3RsX2hhbmRsZXIgKmgsICp0Ow0KPiA+ICsNCj4gPiAgCWNkZXZfZGV2
-aWNlX2RlbChpbmRpb19kZXYtPmNocmRldiwgJmluZGlvX2Rldi0+ZGV2KTsNCj4gPiAgCWlpb19k
-ZXZpY2VfZnJlZV9jaHJkZXZfaWQoJmluZGlvX2Rldi0+ZGV2KTsNCj4gPiAgDQo+ID4gQEAgLTE3
-MzEsNiArMTc2MSw5IEBAIHZvaWQgaWlvX2RldmljZV91bnJlZ2lzdGVyKHN0cnVjdCBpaW9fZGV2
-ICppbmRpb19kZXYpDQo+ID4gIA0KPiA+ICAJaWlvX2Rpc2FibGVfYWxsX2J1ZmZlcnMoaW5kaW9f
-ZGV2KTsNCj4gPiAgDQo+ID4gKwlsaXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmUoaCwgdCwgJmluZGlv
-X2Rldi0+aW9jdGxfaGFuZGxlcnMsIGVudHJ5KQ0KPiA+ICsJCWxpc3RfZGVsKCZoLT5lbnRyeSk7
-DQo+ID4gKw0KPiA+ICAJaW5kaW9fZGV2LT5pbmZvID0gTlVMTDsNCj4gPiAgDQo+ID4gIAlpaW9f
-ZGV2aWNlX3dha2V1cF9ldmVudHNldChpbmRpb19kZXYpOw0KPiA+IGRpZmYgLS1naXQgYS9pbmNs
-dWRlL2xpbnV4L2lpby9paW8uaCBiL2luY2x1ZGUvbGludXgvaWlvL2lpby5oDQo+ID4gaW5kZXgg
-NTI5OTJiZTQ0ZTllLi5iNmNhOGQ4NTYyOWUgMTAwNjQ0DQo+ID4gLS0tIGEvaW5jbHVkZS9saW51
-eC9paW8vaWlvLmgNCj4gPiArKysgYi9pbmNsdWRlL2xpbnV4L2lpby9paW8uaA0KPiA+IEBAIC00
-ODgsNiArNDg4LDcgQEAgc3RydWN0IGlpb19idWZmZXJfc2V0dXBfb3BzIHsNCj4gPiAgICogQGN1
-cnJlbnRtb2RlOglbRFJJVkVSXSBjdXJyZW50IG9wZXJhdGluZyBtb2RlDQo+ID4gICAqIEBkZXY6
-CQlbRFJJVkVSXSBkZXZpY2Ugc3RydWN0dXJlLCBzaG91bGQgYmUgYXNzaWduZWQgYSBwYXJlbnQN
-Cj4gPiAgICoJCQlhbmQgb3duZXINCj4gPiArICogQGlvY3RsX2hhbmRsZXJzOglbSU5URVJOXSBs
-aXN0IG9mIHJlZ2lzdGVyZWQgaW9jdGwgaGFuZGxlcnMNCj4gPiAgICogQGV2ZW50X2ludGVyZmFj
-ZToJW0lOVEVSTl0gZXZlbnQgY2hyZGV2cyBhc3NvY2lhdGVkIHdpdGggaW50ZXJydXB0DQo+ID4g
-bGluZXMNCj4gPiAgICogQGJ1ZmZlcjoJCVtEUklWRVJdIGFueSBidWZmZXIgcHJlc2VudA0KPiA+
-ICAgKiBAYnVmZmVyX2xpc3Q6CVtJTlRFUk5dIGxpc3Qgb2YgYWxsIGJ1ZmZlcnMgY3VycmVudGx5
-IGF0dGFjaGVkDQo+ID4gQEAgLTUyOSw2ICs1MzAsNyBAQCBzdHJ1Y3QgaWlvX2RldiB7DQo+ID4g
-IAlpbnQJCQkJbW9kZXM7DQo+ID4gIAlpbnQJCQkJY3VycmVudG1vZGU7DQo+ID4gIAlzdHJ1Y3Qg
-ZGV2aWNlCQkJZGV2Ow0KPiA+ICsJc3RydWN0IGxpc3RfaGVhZAkJaW9jdGxfaGFuZGxlcnM7DQo+
-ID4gIA0KPiA+ICAJc3RydWN0IGlpb19ldmVudF9pbnRlcmZhY2UJKmV2ZW50X2ludGVyZmFjZTsN
-Cj4gPiAgDQo=
+On Sun, May 24, 2020 at 12:41:14PM +0100, Jonathan Cameron wrote:
+> On Wed, 20 May 2020 21:46:40 +0200
+> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+> 
+> > Converts documentation from txt format to yaml.
+> > 
+> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> 
+> A reminder on the maintainer bit as that thread crossed with
+> this one.  Also, drop the spi-max-frequency as we don't need
+> to mention it explicitly for this device.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+
+Thank you, I'll remove it today.
+
+> 
+> > ---
+> >  .../devicetree/bindings/iio/imu/bmi160.txt    | 37 ---------
+> >  .../bindings/iio/imu/bosch,bmi160.yaml        | 76 +++++++++++++++++++
+> >  2 files changed, 76 insertions(+), 37 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> >  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> > deleted file mode 100644
+> > index 900c169de00f..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+> > +++ /dev/null
+> > @@ -1,37 +0,0 @@
+> > -Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
+> > -and externally connectable Magnetometer
+> > -
+> > -https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> > -
+> > -Required properties:
+> > - - compatible : should be "bosch,bmi160"
+> > - - reg : the I2C address or SPI chip select number of the sensor
+> > - - spi-max-frequency : set maximum clock frequency (only for SPI)
+> > -
+> > -Optional properties:
+> > - - interrupts : interrupt mapping for IRQ
+> > - - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
+> > -   input, set to "INT2" if INT2 pin should be used instead
+> > - - drive-open-drain : set if the specified interrupt pin should be configured as
+> > -   open drain. If not set, defaults to push-pull.
+> > -
+> > -Examples:
+> > -
+> > -bmi160@68 {
+> > -	compatible = "bosch,bmi160";
+> > -	reg = <0x68>;
+> > -
+> > -	interrupt-parent = <&gpio4>;
+> > -	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+> > -	interrupt-names = "INT1";
+> > -};
+> > -
+> > -bmi160@0 {
+> > -	compatible = "bosch,bmi160";
+> > -	reg = <0>;
+> > -	spi-max-frequency = <10000000>;
+> > -
+> > -	interrupt-parent = <&gpio2>;
+> > -	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> > -	interrupt-names = "INT2";
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> > new file mode 100644
+> > index 000000000000..46cb4fde1165
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+> > @@ -0,0 +1,76 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/imu/bosch,bmi160.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Bosch BMI160
+> > +
+> > +maintainers:
+> > +  - Daniel Baluta <daniel.baluta@nxp.com> (?)
+> 
+> Daniel's reply crossed with this.  Given he's moved on to other things
+> he's not happy to be listed as maintainer here.
+> 
+> Given other threads, either put yourself here if you are happy to maintain
+> the binding, or fall back to me but use my kernel.org address.
+> 
+> Jonathan Cameron <jic23@kernel.org>
+> 
+> I don't mind either way.
+> 
+
+Thank you, I'll add you then for this binding.
+
+Thank for your help,
+
+Best regards,
+Jonathan Albrieux
+
+> 
+> > +
+> > +description: |
+> > +  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
+> > +  connectable Magnetometer
+> > +  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: bosch,bmi160
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  spi-max-frequency:
+> > +    maxItems: 1
+> 
+> spi-max-frequency doesn't need to be here at all.   We aren't trying to list
+> all of the properties that might be present - but rather those that
+> are either required or that are part of the description of the device.
+> This one is a generic spi binding that may or may not be present.
+> 
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  interrupt-names:
+> > +    enum:
+> > +      - INT1
+> > +      - INT2
+> > +    description: |
+> > +      set to "INT1" if INT1 pin should be used as interrupt input, set
+> > +      to "INT2" if INT2 pin should be used instead
+> > +
+> > +  drive-open-drain:
+> > +    description: |
+> > +      set if the specified interrupt pin should be configured as
+> > +      open drain. If not set, defaults to push-pull.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    // Example for I2C
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        bmi160@68 {
+> > +                compatible = "bosch,bmi160";
+> > +                reg = <0x68>;
+> > +                interrupt-parent = <&gpio4>;
+> > +                interrupts = <12 1>;
+> > +                interrupt-names = "INT1";
+> > +        };
+> > +    };
+> > +  - |
+> > +    // Example for SPI
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        bmi160@0 {
+> > +                compatible = "bosch,bmi160";
+> > +                reg = <0>;
+> > +                spi-max-frequency = <10000000>;
+> > +                interrupt-parent = <&gpio2>;
+> > +                interrupts = <12 1>;
+> > +                interrupt-names = "INT2";
+> > +        };
+> > +    };
+> 

@@ -2,103 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F34931E1349
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A591E13B4
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391310AbgEYRJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 13:09:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42928 "EHLO mail.kernel.org"
+        id S2388755AbgEYRwf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 13:52:35 -0400
+Received: from mga03.intel.com ([134.134.136.65]:1874 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391301AbgEYRJb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 May 2020 13:09:31 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3AC3F207D8;
-        Mon, 25 May 2020 17:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590426571;
-        bh=s3OTwiKGmtQFWWFLEttjDV3dHScyMzmuOmgsAQChbvY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x8AD/5yskj6IXoPdvfPZ4pgi647fiGgbshx6VI+ybASZ2r0H/xpu1VLbVGf42LH0L
-         YRQ520H7kU5RsZMrzf5CzPhAgvF+4SV2E3txET5W+Awdcq1+pugPJFrM25lpm39Z6u
-         hpC6sc/qXxpZ7V1lLITCkofiD95o9EGdgPlpMcjc=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Akinobu Mita <akinobu.mita@gmail.com>
-Subject: [PATCH 25/25] iio:adc:max1118 Fix alignment of timestamp and data leak issues
-Date:   Mon, 25 May 2020 18:06:28 +0100
-Message-Id: <20200525170628.503283-26-jic23@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200525170628.503283-1-jic23@kernel.org>
+        id S2388621AbgEYRwf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 May 2020 13:52:35 -0400
+IronPort-SDR: EYHir2+YA0lHUWWiX311pITdDVQg3ppPWkJ4n6c271eYuCie8HXw4GfeZ3banE3+Xkc3K5HC8L
+ gsYt4EqyHdCQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2020 10:52:34 -0700
+IronPort-SDR: N9eYChpweBH+Z2TwngucEBTFIUZL0lp+h6gGEjV1QsYUGzegPY7dxYs+ElThPUWs0DPz/9iYN5
+ pxTqfMgqPSBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,434,1583222400"; 
+   d="scan'208";a="254959989"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga007.fm.intel.com with ESMTP; 25 May 2020 10:52:32 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jdHHA-008ptc-6p; Mon, 25 May 2020 20:52:36 +0300
+Date:   Mon, 25 May 2020 20:52:36 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 19/25] iio:adc:ti-ads1015 Fix buffer element alignment
+Message-ID: <20200525175236.GG1634618@smile.fi.intel.com>
 References: <20200525170628.503283-1-jic23@kernel.org>
+ <20200525170628.503283-20-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200525170628.503283-20-jic23@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, May 25, 2020 at 06:06:22PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> One of a class of bugs pointed out by Lars in a recent review.
+> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> this driver which uses an array of smaller elements on the stack.
+> 
+> Here we use an explicit structure and rely on that to enforce
+> alignment on the stack.  Note there was never a data leak here
+> due to the explicit memset.
+> 
+> Fixes: ecc24e72f437 ("iio: adc: Add TI ADS1015 ADC driver support")
+> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/iio/adc/ti-ads1015.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+> index 5ea4f45d6bad..05853723dbdb 100644
+> --- a/drivers/iio/adc/ti-ads1015.c
+> +++ b/drivers/iio/adc/ti-ads1015.c
+> @@ -385,10 +385,14 @@ static irqreturn_t ads1015_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct ads1015_data *data = iio_priv(indio_dev);
+> -	s16 buf[8]; /* 1x s16 ADC val + 3x s16 padding +  4x s16 timestamp */
+> +	/* Ensure natural alignment for buffer elements */
+> +	struct {
+> +		s16 channel;
+> +		s64 ts;
+> +	} scan;
 
-One of a class of bugs pointed out by Lars in a recent review.
-iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses an array of smaller elements on the stack.
-As Lars also noted this anti pattern can involve a leak of data to
-userspace and that indeed can happen here.  We close both issues by
-moving to a suitable structure in the iio_priv() data.
+Hmm... On x86_32 and x86_64 this will give different padding. Is it okay from
+iio_push_to_buffers_with_timestamp() point of view?
 
-This data is allocated with kzalloc so no data can leak apart
-from previous readings.
+>  	int chan, ret, res;
+>  
+> -	memset(buf, 0, sizeof(buf));
+> +	memset(&scan, 0, sizeof(scan));
+>  
+>  	mutex_lock(&data->lock);
+>  	chan = find_first_bit(indio_dev->active_scan_mask,
+> @@ -399,10 +403,10 @@ static irqreturn_t ads1015_trigger_handler(int irq, void *p)
+>  		goto err;
+>  	}
+>  
+> -	buf[0] = res;
+> +	scan.channel = res;
+>  	mutex_unlock(&data->lock);
+>  
+> -	iio_push_to_buffers_with_timestamp(indio_dev, buf,
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+>  					   iio_get_time_ns(indio_dev));
+>  
+>  err:
+> -- 
+> 2.26.2
+> 
 
-Fixes: a9e9c7153e96 ("iio: adc: add max1117/max1118/max1119 ADC driver")
-Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
----
- drivers/iio/adc/max1118.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
-index 0c5d7aaf6826..32296cc6fa9b 100644
---- a/drivers/iio/adc/max1118.c
-+++ b/drivers/iio/adc/max1118.c
-@@ -35,6 +35,11 @@ struct max1118 {
- 	struct spi_device *spi;
- 	struct mutex lock;
- 	struct regulator *reg;
-+	/* Ensure natural alignment of buffer elements */
-+	struct {
-+		u8 channels[2];
-+		s64 ts;
-+	} scan;
- 
- 	u8 data ____cacheline_aligned;
- };
-@@ -165,7 +170,6 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct max1118 *adc = iio_priv(indio_dev);
--	u8 data[16] = { }; /* 2x 8-bit ADC data + padding + 8 bytes timestamp */
- 	int scan_index;
- 	int i = 0;
- 
-@@ -183,10 +187,10 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
- 			goto out;
- 		}
- 
--		data[i] = ret;
-+		adc->scan.channels[i] = ret;
- 		i++;
- 	}
--	iio_push_to_buffers_with_timestamp(indio_dev, data,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
- 					   iio_get_time_ns(indio_dev));
- out:
- 	mutex_unlock(&adc->lock);
 -- 
-2.26.2
+With Best Regards,
+Andy Shevchenko
+
 

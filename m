@@ -2,41 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8806C1E1348
+	by mail.lfdr.de (Postfix) with ESMTP id F34931E1349
 	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391309AbgEYRJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 13:09:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42918 "EHLO mail.kernel.org"
+        id S2391310AbgEYRJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 13:09:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42928 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391301AbgEYRJa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 May 2020 13:09:30 -0400
+        id S2391301AbgEYRJb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 May 2020 13:09:31 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6F6D2084C;
-        Mon, 25 May 2020 17:09:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3AC3F207D8;
+        Mon, 25 May 2020 17:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590426569;
-        bh=Wu6mvDbeHBOOgIe4UaMtENrclvA24EsKP2BStbE5TWg=;
+        s=default; t=1590426571;
+        bh=s3OTwiKGmtQFWWFLEttjDV3dHScyMzmuOmgsAQChbvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mcZjXG3GarrUmMruwaGFLISccDimDCzXgmB3K60G43wIfa+WPnFziq0VtYTgS/R6s
-         1EfJpKfTjm59UPdOLMpxyFeYrr134JuxYPXxQTEjfDlXPWL9lrh7bkK0ME5MFyZVF3
-         iNST4mBaY1g+YXMu0RrhzcMsKYxb2SAUGIXxPZYI=
+        b=x8AD/5yskj6IXoPdvfPZ4pgi647fiGgbshx6VI+ybASZ2r0H/xpu1VLbVGf42LH0L
+         YRQ520H7kU5RsZMrzf5CzPhAgvF+4SV2E3txET5W+Awdcq1+pugPJFrM25lpm39Z6u
+         hpC6sc/qXxpZ7V1lLITCkofiD95o9EGdgPlpMcjc=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Stefan=20Br=C3=BCns?= <stefan.bruens@rwth-aachen.de>,
-        Marc Titinger <mtitinger@baylibre.com>
-Subject: [PATCH 24/25] iio:adc:ina2xx Fix timestamp alignment issue.
-Date:   Mon, 25 May 2020 18:06:27 +0100
-Message-Id: <20200525170628.503283-25-jic23@kernel.org>
+        Akinobu Mita <akinobu.mita@gmail.com>
+Subject: [PATCH 25/25] iio:adc:max1118 Fix alignment of timestamp and data leak issues
+Date:   Mon, 25 May 2020 18:06:28 +0100
+Message-Id: <20200525170628.503283-26-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200525170628.503283-1-jic23@kernel.org>
 References: <20200525170628.503283-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -48,60 +46,59 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 One of a class of bugs pointed out by Lars in a recent review.
 iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
 to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses a 32 byte array of smaller elements on the stack.
+this driver which uses an array of smaller elements on the stack.
 As Lars also noted this anti pattern can involve a leak of data to
 userspace and that indeed can happen here.  We close both issues by
-moving to a suitable structure in the iio_priv() data with alignment
-explicitly requested.  This data is allocated with kzalloc so no
-data can leak apart from previous readings.
+moving to a suitable structure in the iio_priv() data.
 
-If we want this in older stables will need manual backport due to
-driver reworks.
+This data is allocated with kzalloc so no data can leak apart
+from previous readings.
 
-Fixes: c43a102e67db ("iio: ina2xx: add support for TI INA2xx Power Monitors")
+Fixes: a9e9c7153e96 ("iio: adc: add max1117/max1118/max1119 ADC driver")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Stefan Brüns <stefan.bruens@rwth-aachen.de>
-Cc: Marc Titinger <mtitinger@baylibre.com>
+Cc: Akinobu Mita <akinobu.mita@gmail.com>
 ---
- drivers/iio/adc/ina2xx-adc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/max1118.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-index bdd7cba6f6b0..ed2d069b791a 100644
---- a/drivers/iio/adc/ina2xx-adc.c
-+++ b/drivers/iio/adc/ina2xx-adc.c
-@@ -146,6 +146,8 @@ struct ina2xx_chip_info {
- 	int range_vbus; /* Bus voltage maximum in V */
- 	int pga_gain_vshunt; /* Shunt voltage PGA gain */
- 	bool allow_async_readout;
-+	/* data buffer needs space for channel data and timestap */
-+	unsigned short data[4 + sizeof(s64)/sizeof(short)] __aligned(8);
+diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
+index 0c5d7aaf6826..32296cc6fa9b 100644
+--- a/drivers/iio/adc/max1118.c
++++ b/drivers/iio/adc/max1118.c
+@@ -35,6 +35,11 @@ struct max1118 {
+ 	struct spi_device *spi;
+ 	struct mutex lock;
+ 	struct regulator *reg;
++	/* Ensure natural alignment of buffer elements */
++	struct {
++		u8 channels[2];
++		s64 ts;
++	} scan;
+ 
+ 	u8 data ____cacheline_aligned;
  };
+@@ -165,7 +170,6 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct max1118 *adc = iio_priv(indio_dev);
+-	u8 data[16] = { }; /* 2x 8-bit ADC data + padding + 8 bytes timestamp */
+ 	int scan_index;
+ 	int i = 0;
  
- static const struct ina2xx_config ina2xx_config[] = {
-@@ -738,8 +740,6 @@ static int ina2xx_conversion_ready(struct iio_dev *indio_dev)
- static int ina2xx_work_buffer(struct iio_dev *indio_dev)
- {
- 	struct ina2xx_chip_info *chip = iio_priv(indio_dev);
--	/* data buffer needs space for channel data and timestap */
--	unsigned short data[4 + sizeof(s64)/sizeof(short)];
- 	int bit, ret, i = 0;
- 	s64 time;
+@@ -183,10 +187,10 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
+ 			goto out;
+ 		}
  
-@@ -758,10 +758,10 @@ static int ina2xx_work_buffer(struct iio_dev *indio_dev)
- 		if (ret < 0)
- 			return ret;
- 
--		data[i++] = val;
-+		chip->data[i++] = val;
+-		data[i] = ret;
++		adc->scan.channels[i] = ret;
+ 		i++;
  	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data, time);
-+	iio_push_to_buffers_with_timestamp(indio_dev, chip->data, time);
- 
- 	return 0;
- };
+-	iio_push_to_buffers_with_timestamp(indio_dev, data,
++	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
+ 					   iio_get_time_ns(indio_dev));
+ out:
+ 	mutex_unlock(&adc->lock);
 -- 
 2.26.2
 

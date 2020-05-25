@@ -2,49 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 099481E12EB
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 18:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FAE1E12EE
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 18:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389116AbgEYQrg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 12:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
+        id S2391174AbgEYQrw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 12:47:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387766AbgEYQrf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 12:47:35 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 727B2C061A0E;
-        Mon, 25 May 2020 09:47:35 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id h9so3935496qtj.7;
-        Mon, 25 May 2020 09:47:35 -0700 (PDT)
+        with ESMTP id S2391128AbgEYQrw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 12:47:52 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDF3C061A0E;
+        Mon, 25 May 2020 09:47:50 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id v15so8257119qvr.8;
+        Mon, 25 May 2020 09:47:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=t8zEWUrm5GoCOEcVhpshh2tA+4Vj6BGZIYSk7nPV9Uo=;
-        b=gF2ae7jdmu3EfJ1DHBNkoCxIzaIPv8/KmuYxU6F0rIohBImh+YnijgzshZvoNS7NOR
-         yPj1KJn2/JDiVoU/YbAP7QHmTiT0AgMftNZs+u8DZ2U8nizkKjtxQKft/GYu7Qa61uel
-         fF36ryMgDX5f7Ra7Wxx/mypgpNArpN7TW7cGI3T+thspbqG9f6W/d1EflHu7hf7b587B
-         2IF6IaY/r4WMStLrKTZCjHr17T3G66tZFyojFD1LV+DVQ4lSSdWq3d6qRw9mPTcPPTVB
-         O50rq1X53p3GW5GlLfnRXlsF6qiWbywW3BG+Z7cMXbPyGk0ZptDEgdP/2FfwZQeM0QzG
-         GM9w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=kYPOBvUz2cZfQlHaw++XU6nzT3LZCLQVWMfDnD7/6D0=;
+        b=e5MDmmWiSAVy0jPTnVmv6jUtKzElCyhCVXrS8KLffM89ZlURNo+5k94jVRaUDOIZIC
+         VnQOUoLtVFl+tWeGP3jjCv3ddXEPq+sY+JyI5G/CUfmFO2/d0B97X352lvqnQGN7q985
+         GKOrLn6AJOJnYjgRZqrQuj4CzYiEvyilLg5xL77mJIVxxLeBVEs2o4TXdHrENmD9S2na
+         i3sou5INi6tX5gXUx3QVQu/6YDo3jy9fx1wqf7CL3F31XGLF5clb80dgxtDEKE3mx9ay
+         rNQhprDPEkua2dHchW3GF62Ipw6ntSKbVVG74xNBRVZTh+RR4F7OmdMKUngxeVMiMKlx
+         PP3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=t8zEWUrm5GoCOEcVhpshh2tA+4Vj6BGZIYSk7nPV9Uo=;
-        b=TZgQEAHMETZdGE6LFbjO4xu60aZX/qjIvdnrZGubqCI2R638eFtXScPQvYCNaQ0QB0
-         uqYvFF/upKLCymFnA+YzCSmTpPCWA0uh9ZtBMPl834FNShM4eOALWL+UqKZEQBfQ0WLf
-         sk0M2Qrj0ArLBHwHqnlSdsl4UwmoqaDH1x+EZIqDAHLRoAPvoaN2S6s1zKPkIXEv28S/
-         PUeUnJ3EsMv2pANAFdwAzdDOzVbYO3/K+kpI2Z+cZfdwpqadGMMk7bYz7KOlS2gmlcs/
-         qggplm8QyHHtvWNsjDXZ8BymaOprvCJKGTCyckH+A7/1r3/BKyN0y3L62HHWZ2wqd25v
-         4V0g==
-X-Gm-Message-State: AOAM530KWy2zCT/wYS09O119+C9bDQQdyXQc7nvGVD++dTQ3qxDyMYeb
-        3Be1W0BmO4dTKHUEnK19B5jG4VLSi4w=
-X-Google-Smtp-Source: ABdhPJwlC1dvHr4PGrcdBP2nZFqf3pGAhOM27ptunP0xRjgGCZiMfRez+vSCSuVEN99GX+HcgzPVjw==
-X-Received: by 2002:aed:3b62:: with SMTP id q31mr3717224qte.293.1590425254143;
-        Mon, 25 May 2020 09:47:34 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=kYPOBvUz2cZfQlHaw++XU6nzT3LZCLQVWMfDnD7/6D0=;
+        b=Gbswn+hYtTSzBFP3qUskochRpy1xeXWsNSa8oFezzmCVjAS5G0Q+e0CxzYhTOptDMj
+         FFEydHs0lpthBQfi5o1qDrxPh8erjg4bc+t8AdHBCSXxkGjB3CBjGJ3FzEndfXM5aS2e
+         IUoifCfUjohu0qLI0icsmSYu8/6yrnxpCj0Ev/Y/ydqL0HgDeU06l52xoBJrwpeKyeUh
+         flJ5nMeH1mOaY251P50jmrqM4AuyGQR7/l7q/b8IqFVOtxgR3ipbPbHd3SU1msqkxB1+
+         v3kTDGvErfZCvpkJJ1uIYJMGVwWemedIwcyUcXLlxsL/606EJmWFZfco+uyHDGfel5Ug
+         N0ow==
+X-Gm-Message-State: AOAM531rDL75Q9OYuxMaBTVWmT8Fk6QrGLwLO0Ii0/B9sLtwP2cNRvCF
+        Lcf37HEvk0AMzqyh5AS3deq9v49c4hE=
+X-Google-Smtp-Source: ABdhPJwXzWCFaanpmwp3aILi6QP/uEeXT1/PEY3iToe0bTQogx5UL2Kiz7M46BkF9gtJfb1ho3ZQmg==
+X-Received: by 2002:a0c:b354:: with SMTP id a20mr16623609qvf.205.1590425269171;
+        Mon, 25 May 2020 09:47:49 -0700 (PDT)
 Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id g5sm15559618qti.87.2020.05.25.09.47.31
+        by smtp.googlemail.com with ESMTPSA id g5sm15559618qti.87.2020.05.25.09.47.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2020 09:47:33 -0700 (PDT)
+        Mon, 25 May 2020 09:47:48 -0700 (PDT)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, daniel.baluta@gmail.com,
@@ -53,60 +54,154 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, daniel.baluta@gmail.com,
         DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v4 0/5] iio: imu: bmi160: added regulator and mount-matrix support
-Date:   Mon, 25 May 2020 18:45:59 +0200
-Message-Id: <20200525164615.14962-1-jonathan.albrieux@gmail.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH v4 1/5] dt-bindings: iio: imu: bmi160: convert format to yaml, add maintainer
+Date:   Mon, 25 May 2020 18:46:00 +0200
+Message-Id: <20200525164615.14962-2-jonathan.albrieux@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200525164615.14962-1-jonathan.albrieux@gmail.com>
+References: <20200525164615.14962-1-jonathan.albrieux@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-v4:
- - add maintainer
- - clean up of documentation
- - added case concerning the need to add regulators, see [PATCH v4 4/5] 
+Converts documentation from txt format to yaml.
 
-v3: 
- - separate typo fix into another patch
- - clean up of documentation
- - clean up of patch messages
-https://lore.kernel.org/linux-iio/20200520194656.16218-1-jonathan.albrieux@gmail.com/
-
-v2: 
- - fixed missing description for iio: imu: bmi160: added regulator
-   support
-https://lore.kernel.org/linux-iio/20200519075111.6356-1-jonathan.albrieux@gmail.com/
-
-v1:
- - initial patch submission
-https://lore.kernel.org/linux-iio/20200518133358.18978-1-jonathan.albrieux@gmail.com/
-
-Convert txt format documentation to yaml.
-Add documentation about vdd-supply, vddio-supply and mount-matrix.
-
-Add vdd-supply and vddio-supply support.
-
-Add mount-matrix binding support. As chip could have different
-orientations a mount matrix support is needed to correctly translate
-these differences.
-
-Jonathan Albrieux (5):
-  dt-bindings: iio: imu: bmi160: convert format to yaml, add maintainer
-  dt-bindings: iio: imu: bmi160: add regulators and mount-matrix
-  iio: imu: bmi160: fix typo
-  iio: imu: bmi160: added regulator support
-  iio: imu: bmi160: added mount-matrix support
-
- .../devicetree/bindings/iio/imu/bmi160.txt    | 37 --------
- .../bindings/iio/imu/bosch,bmi160.yaml        | 91 +++++++++++++++++++
- drivers/iio/imu/bmi160/bmi160.h               |  3 +
- drivers/iio/imu/bmi160/bmi160_core.c          | 46 +++++++++-
- 4 files changed, 139 insertions(+), 38 deletions(-)
+Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+---
+ .../devicetree/bindings/iio/imu/bmi160.txt    | 37 ---------
+ .../bindings/iio/imu/bosch,bmi160.yaml        | 75 +++++++++++++++++++
+ 2 files changed, 75 insertions(+), 37 deletions(-)
  delete mode 100644 Documentation/devicetree/bindings/iio/imu/bmi160.txt
  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
 
+diff --git a/Documentation/devicetree/bindings/iio/imu/bmi160.txt b/Documentation/devicetree/bindings/iio/imu/bmi160.txt
+deleted file mode 100644
+index 900c169de00f..000000000000
+--- a/Documentation/devicetree/bindings/iio/imu/bmi160.txt
++++ /dev/null
+@@ -1,37 +0,0 @@
+-Bosch BMI160 - Inertial Measurement Unit with Accelerometer, Gyroscope
+-and externally connectable Magnetometer
+-
+-https://www.bosch-sensortec.com/bst/products/all_products/bmi160
+-
+-Required properties:
+- - compatible : should be "bosch,bmi160"
+- - reg : the I2C address or SPI chip select number of the sensor
+- - spi-max-frequency : set maximum clock frequency (only for SPI)
+-
+-Optional properties:
+- - interrupts : interrupt mapping for IRQ
+- - interrupt-names : set to "INT1" if INT1 pin should be used as interrupt
+-   input, set to "INT2" if INT2 pin should be used instead
+- - drive-open-drain : set if the specified interrupt pin should be configured as
+-   open drain. If not set, defaults to push-pull.
+-
+-Examples:
+-
+-bmi160@68 {
+-	compatible = "bosch,bmi160";
+-	reg = <0x68>;
+-
+-	interrupt-parent = <&gpio4>;
+-	interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+-	interrupt-names = "INT1";
+-};
+-
+-bmi160@0 {
+-	compatible = "bosch,bmi160";
+-	reg = <0>;
+-	spi-max-frequency = <10000000>;
+-
+-	interrupt-parent = <&gpio2>;
+-	interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+-	interrupt-names = "INT2";
+-};
+diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+new file mode 100644
+index 000000000000..0d0ef84e22b9
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi160.yaml
+@@ -0,0 +1,75 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/bosch,bmi160.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch BMI160
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++description: |
++  Inertial Measurement Unit with Accelerometer, Gyroscope and externally
++  connectable Magnetometer
++  https://www.bosch-sensortec.com/bst/products/all_products/bmi160
++
++properties:
++  compatible:
++    const: bosch,bmi160
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  interrupt-names:
++    enum:
++      - INT1
++      - INT2
++    description: |
++      set to "INT1" if INT1 pin should be used as interrupt input, set
++      to "INT2" if INT2 pin should be used instead
++
++  drive-open-drain:
++    description: |
++      set if the specified interrupt pin should be configured as
++      open drain. If not set, defaults to push-pull.
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++    // Example for I2C
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        bmi160@68 {
++                compatible = "bosch,bmi160";
++                reg = <0x68>;
++                interrupt-parent = <&gpio4>;
++                interrupts = <12 IRQ_TYPE_EDGE_RISING>;
++                interrupt-names = "INT1";
++        };
++    };
++  - |
++    // Example for SPI
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        bmi160@0 {
++                compatible = "bosch,bmi160";
++                reg = <0>;
++                spi-max-frequency = <10000000>;
++                interrupt-parent = <&gpio2>;
++                interrupts = <12 IRQ_TYPE_EDGE_RISING>;
++                interrupt-names = "INT2";
++        };
++    };
 -- 
 2.17.1
 

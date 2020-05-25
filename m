@@ -2,262 +2,322 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D74FB1E0855
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 10:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C85131E08C6
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 10:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729370AbgEYIAJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 04:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbgEYIAI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 04:00:08 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695A7C061A0E;
-        Mon, 25 May 2020 01:00:08 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id o19so13227725qtr.10;
-        Mon, 25 May 2020 01:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=NJ+47DGF4F7WkxRuE7XbnET8amEXakvg2qvuPXqV+bc=;
-        b=IYONpDTKettYmDhqMJhb7Ox5XeVZb1uAKYiuqqsqEUmfQ+dUaquV1srNl6SpRlgOQD
-         WgDdFTMZXwenxvFX5oSAJtGZVejLes46s8WcT9F6qePaAaV1Z6SktriPZUMHFAFoToFr
-         2U2CdaYm3GuDeTcpj7ZgbjiO1aNV5P/mq4fZCfX05c666wAiaPQ3M5Hsj9qRO1VFKwD0
-         oNfbABfmtu0u5Fq7J6gJSzZkzpU0svIj6AFs7N0gGMeXD5m9sRvClm9kKOMlHa1caxqm
-         UfPsR4TEL966UCUG1UFtR+fXkFj/0mpnmUqtxQvNJtBPTlOOp3JUoTKgk+5MpuYheoW7
-         BkBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NJ+47DGF4F7WkxRuE7XbnET8amEXakvg2qvuPXqV+bc=;
-        b=g1ACOBhpgNGerOsQE2Z/PsvYN5TPZxdLwsw8Sw9o4SuSWqx8ivFlPT39n/m2RvqIcn
-         sxj619aXkQFb+FH8L/Asyh1MpNa5vL6+eGhXDvOg9ftCAHyMMNsmaL+nnZ3tncCyfzwy
-         OvC6kJPIgIq8YOST0oaqGedww+UvINRb6CoybGFummnL2ZKHzY72yhQF0Ft8PoyR57s6
-         sZEE7IhDJTVhpgYNyt5HDJua6/F4IR74Xb+nmnk52nQvb4mXsRGw7+hJVmza7tEimUSO
-         ImAFq2O9ntWyjERoIYPuqGlmLv0Fd50i8xBjdRDBiTbeotvYIThzuHZhWZy/6UR0LP5R
-         zepA==
-X-Gm-Message-State: AOAM5322NSktahj7W2wAPXxXHF3xSFwdLkPXZEGIOWlnM9LlmTyg4YKd
-        5AfIG1zORc2P3B7Rl1wU+fE=
-X-Google-Smtp-Source: ABdhPJxY8rGTlDu2XF5c4RFmtUcFN65rMM+uRtE79oNS5H4P0S0EKyJa2Mc+uwX8b2Aw5ZHD7z4mOw==
-X-Received: by 2002:ac8:7383:: with SMTP id t3mr604816qtp.221.1590393607166;
-        Mon, 25 May 2020 01:00:07 -0700 (PDT)
-Received: from ict14-OptiPlex-980 ([178.23.248.46])
-        by smtp.gmail.com with ESMTPSA id c3sm14271395qtp.24.2020.05.25.01.00.04
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 25 May 2020 01:00:06 -0700 (PDT)
-Date:   Mon, 25 May 2020 10:00:01 +0200
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Steve Winslow <swinslow@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v5 1/4] dt-bindings: iio: magnetometer: ak8975: convert
- format to yaml, add maintainer
-Message-ID: <20200525080001.GC18690@ict14-OptiPlex-980>
-References: <20200520163417.27805-1-jonathan.albrieux@gmail.com>
- <20200520163417.27805-2-jonathan.albrieux@gmail.com>
- <20200524155745.3b9320db@archlinux>
+        id S1727894AbgEYI06 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 04:26:58 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:63042 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726222AbgEYI06 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 04:26:58 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04P8PFpa020002;
+        Mon, 25 May 2020 04:26:48 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 316wp7x507-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 May 2020 04:26:48 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 04P8QlC5047948
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 25 May 2020 04:26:47 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 25 May 2020 04:26:46 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 25 May 2020 04:26:45 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 25 May 2020 04:26:45 -0400
+Received: from saturn.ad.analog.com ([10.48.65.112])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04P8QhCH008659;
+        Mon, 25 May 2020 04:26:44 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2] iio: stm32-dfsdm-adc: remove usage of iio_priv_to_dev() helper
+Date:   Mon, 25 May 2020 11:26:48 +0300
+Message-ID: <20200525082648.39656-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200522130804.631508-1-alexandru.ardelean@analog.com>
+References: <20200522130804.631508-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200524155745.3b9320db@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-25_03:2020-05-22,2020-05-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 cotscore=-2147483648
+ spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005250066
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 24, 2020 at 03:57:45PM +0100, Jonathan Cameron wrote:
-> On Wed, 20 May 2020 18:34:06 +0200
-> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
-> 
-> > Converts documentation from txt format to yaml.
-> > 
-> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> 
-> An additional request inline.  Doesn't effect this patch 'as such'.
-> 
-> Also the file name thing just below here.
-> 
-> > ---
-> >  .../bindings/iio/magnetometer/ak8975.txt      | 30 --------
-> >  .../bindings/iio/magnetometer/ak8975.yaml     | 71 +++++++++++++++++++
-> File naming should match the compatible.
-> 
-> ashahi-kasei,ak8975.yaml
->
+We may want to get rid of the iio_priv_to_dev() helper. The reason is that
+we will hide some of the members of the iio_dev structure (to prevent
+drivers from accessing them directly), and that will also mean hiding the
+implementation of the iio_priv_to_dev() helper inside the IIO core.
 
-Ok, I'll take this as general rule then :-)
+Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
+may not be fast anymore, so a general idea is to try to get rid of the
+iio_priv_to_dev() altogether.
+The iio_priv() helper won't be affected by the rework, as the iio_dev
+struct will keep a reference to the private information.
+
+For this driver, not using iio_priv_to_dev(), means reworking some paths to
+pass the iio device and using iio_priv() to access the private information.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+
+Changelog v1 -> v2:
+* changed some paths to pass a reference to ref to iio device and access
+  private state-struct via iio_priv()
+
+ drivers/iio/adc/stm32-dfsdm-adc.c | 65 ++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 76a60d93fe23..03dfc0b6ba98 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -330,9 +330,9 @@ static int stm32_dfsdm_compute_all_osrs(struct iio_dev *indio_dev,
+ 	return 0;
+ }
  
-> >  2 files changed, 71 insertions(+), 30 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
-> >  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
-> > deleted file mode 100644
-> > index aa67ceb0d4e0..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
-> > +++ /dev/null
-> > @@ -1,30 +0,0 @@
-> > -* AsahiKASEI AK8975 magnetometer sensor
-> > -
-> > -Required properties:
-> > -
-> > -  - compatible : should be "asahi-kasei,ak8975"
-> > -  - reg : the I2C address of the magnetometer
-> > -
-> > -Optional properties:
-> > -
-> > -  - gpios : should be device tree identifier of the magnetometer DRDY pin
-> > -  - vdd-supply: an optional regulator that needs to be on to provide VDD
-> > -  - mount-matrix: an optional 3x3 mounting rotation matrix
-> > -
-> > -Example:
-> > -
-> > -ak8975@c {
-> > -        compatible = "asahi-kasei,ak8975";
-> > -        reg = <0x0c>;
-> > -        gpios = <&gpj0 7 0>;
-> > -        vdd-supply = <&ldo_3v3_gnss>;
-> > -        mount-matrix = "-0.984807753012208",  /* x0 */
-> > -                       "0",                   /* y0 */
-> > -                       "-0.173648177666930",  /* z0 */
-> > -                       "0",                   /* x1 */
-> > -                       "-1",                  /* y1 */
-> > -                       "0",                   /* z1 */
-> > -                       "-0.173648177666930",  /* x2 */
-> > -                       "0",                   /* y2 */
-> > -                       "0.984807753012208";   /* z2 */
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
-> > new file mode 100644
-> > index 000000000000..8bde423a2ffa
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.yaml
-> > @@ -0,0 +1,71 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/magnetometer/ak8975.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: AsahiKASEI AK8975 magnetometer sensor
-> > +
-> > +maintainers:
-> > +  - Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - const: asahi-kasei,ak8975
-> > +      - const: asahi-kasei,ak8963
-> > +      - const: asahi-kasei,ak09911
-> > +      - const: asahi-kasei,ak09912
-> > +      - const: ak8975
-> > +        deprecated: true
-> > +      - const: ak8963
-> > +        deprecated: true
-> > +      - const: ak09911
-> > +        deprecated: true
-> > +      - const: ak09912
-> > +        deprecated: true
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +    description: the I2C address of the magnetometer
-> > +
-> > +  gpios:
-> > +    description: should be device tree identifier of the magnetometer DRDY pin
-> 
-> Nothing to do with your patch obviously but this is horrible...
-> + the driver will quite happily take an interrupt instead.
-> 
-> Do you mind documenting the interrupt here as well?
-> 
-> Should be a separate patch though.  So a follow up one to
-> this one.  The 
-> arch/arm/boot/dts/motorola-mapphone-common.dtsi
-> does it that way, unlike the samsung s3 which uses the gpio
-> binding (I think it's the only one against quite a few
-> using interrupts).
-> 
-> Also switch the example to an interrupts one so we don't
-> encourage anyone to go the gpios route.
-> 
-> Note can be a follow up if this series is otherwise ready to go.
-> 
+-static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
++static int stm32_dfsdm_start_channel(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	const struct iio_chan_spec *chan;
+ 	unsigned int bit;
+@@ -350,9 +350,9 @@ static int stm32_dfsdm_start_channel(struct stm32_dfsdm_adc *adc)
+ 	return 0;
+ }
+ 
+-static void stm32_dfsdm_stop_channel(struct stm32_dfsdm_adc *adc)
++static void stm32_dfsdm_stop_channel(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	const struct iio_chan_spec *chan;
+ 	unsigned int bit;
+@@ -418,11 +418,11 @@ static void stm32_dfsdm_stop_filter(struct stm32_dfsdm *dfsdm,
+ 			   DFSDM_CR1_DFEN_MASK, DFSDM_CR1_DFEN(0));
+ }
+ 
+-static int stm32_dfsdm_filter_set_trig(struct stm32_dfsdm_adc *adc,
++static int stm32_dfsdm_filter_set_trig(struct iio_dev *indio_dev,
+ 				       unsigned int fl_id,
+ 				       struct iio_trigger *trig)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	u32 jextsel = 0, jexten = STM32_DFSDM_JEXTEN_DISABLED;
+ 	int ret;
+@@ -447,11 +447,11 @@ static int stm32_dfsdm_filter_set_trig(struct stm32_dfsdm_adc *adc,
+ 	return 0;
+ }
+ 
+-static int stm32_dfsdm_channels_configure(struct stm32_dfsdm_adc *adc,
++static int stm32_dfsdm_channels_configure(struct iio_dev *indio_dev,
+ 					  unsigned int fl_id,
+ 					  struct iio_trigger *trig)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
+ 	struct stm32_dfsdm_filter_osr *flo = &fl->flo[0];
+@@ -491,11 +491,11 @@ static int stm32_dfsdm_channels_configure(struct stm32_dfsdm_adc *adc,
+ 	return 0;
+ }
+ 
+-static int stm32_dfsdm_filter_configure(struct stm32_dfsdm_adc *adc,
++static int stm32_dfsdm_filter_configure(struct iio_dev *indio_dev,
+ 					unsigned int fl_id,
+ 					struct iio_trigger *trig)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[fl_id];
+ 	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
+@@ -521,7 +521,7 @@ static int stm32_dfsdm_filter_configure(struct stm32_dfsdm_adc *adc,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = stm32_dfsdm_filter_set_trig(adc, fl_id, trig);
++	ret = stm32_dfsdm_filter_set_trig(indio_dev, fl_id, trig);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -729,21 +729,22 @@ static ssize_t dfsdm_adc_audio_set_spiclk(struct iio_dev *indio_dev,
+ 	return len;
+ }
+ 
+-static int stm32_dfsdm_start_conv(struct stm32_dfsdm_adc *adc,
++static int stm32_dfsdm_start_conv(struct iio_dev *indio_dev,
+ 				  struct iio_trigger *trig)
+ {
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	int ret;
+ 
+-	ret = stm32_dfsdm_channels_configure(adc, adc->fl_id, trig);
++	ret = stm32_dfsdm_channels_configure(indio_dev, adc->fl_id, trig);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = stm32_dfsdm_start_channel(adc);
++	ret = stm32_dfsdm_start_channel(indio_dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = stm32_dfsdm_filter_configure(adc, adc->fl_id, trig);
++	ret = stm32_dfsdm_filter_configure(indio_dev, adc->fl_id, trig);
+ 	if (ret < 0)
+ 		goto stop_channels;
+ 
+@@ -757,13 +758,14 @@ static int stm32_dfsdm_start_conv(struct stm32_dfsdm_adc *adc,
+ 	regmap_update_bits(regmap, DFSDM_CR1(adc->fl_id),
+ 			   DFSDM_CR1_CFG_MASK, 0);
+ stop_channels:
+-	stm32_dfsdm_stop_channel(adc);
++	stm32_dfsdm_stop_channel(indio_dev);
+ 
+ 	return ret;
+ }
+ 
+-static void stm32_dfsdm_stop_conv(struct stm32_dfsdm_adc *adc)
++static void stm32_dfsdm_stop_conv(struct iio_dev *indio_dev)
+ {
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 
+ 	stm32_dfsdm_stop_filter(adc->dfsdm, adc->fl_id);
+@@ -771,7 +773,7 @@ static void stm32_dfsdm_stop_conv(struct stm32_dfsdm_adc *adc)
+ 	regmap_update_bits(regmap, DFSDM_CR1(adc->fl_id),
+ 			   DFSDM_CR1_CFG_MASK, 0);
+ 
+-	stm32_dfsdm_stop_channel(adc);
++	stm32_dfsdm_stop_channel(indio_dev);
+ }
+ 
+ static int stm32_dfsdm_set_watermark(struct iio_dev *indio_dev,
+@@ -1017,7 +1019,7 @@ static int __stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+ 		goto stop_dfsdm;
+ 	}
+ 
+-	ret = stm32_dfsdm_start_conv(adc, indio_dev->trig);
++	ret = stm32_dfsdm_start_conv(indio_dev, indio_dev->trig);
+ 	if (ret) {
+ 		dev_err(&indio_dev->dev, "Can't start conversion\n");
+ 		goto err_stop_dma;
+@@ -1063,7 +1065,7 @@ static void __stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 
+-	stm32_dfsdm_stop_conv(adc);
++	stm32_dfsdm_stop_conv(indio_dev);
+ 
+ 	stm32_dfsdm_adc_dma_stop(indio_dev);
+ 
+@@ -1159,7 +1161,7 @@ static int stm32_dfsdm_single_conv(struct iio_dev *indio_dev,
+ 
+ 	adc->nconv = 1;
+ 	adc->smask = BIT(chan->scan_index);
+-	ret = stm32_dfsdm_start_conv(adc, NULL);
++	ret = stm32_dfsdm_start_conv(indio_dev, NULL);
+ 	if (ret < 0) {
+ 		regmap_update_bits(adc->dfsdm->regmap, DFSDM_CR2(adc->fl_id),
+ 				   DFSDM_CR2_REOCIE_MASK, DFSDM_CR2_REOCIE(0));
+@@ -1180,7 +1182,7 @@ static int stm32_dfsdm_single_conv(struct iio_dev *indio_dev,
+ 	else
+ 		ret = IIO_VAL_INT;
+ 
+-	stm32_dfsdm_stop_conv(adc);
++	stm32_dfsdm_stop_conv(indio_dev);
+ 
+ 	stm32_dfsdm_process_data(adc, res);
+ 
+@@ -1313,8 +1315,8 @@ static const struct iio_info stm32_dfsdm_info_adc = {
+ 
+ static irqreturn_t stm32_dfsdm_irq(int irq, void *arg)
+ {
+-	struct stm32_dfsdm_adc *adc = arg;
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = arg;
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	struct regmap *regmap = adc->dfsdm->regmap;
+ 	unsigned int status, int_en;
+ 
+@@ -1574,7 +1576,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+ 	iio->dev.of_node = np;
+ 	iio->modes = INDIO_DIRECT_MODE;
+ 
+-	platform_set_drvdata(pdev, adc);
++	platform_set_drvdata(pdev, iio);
+ 
+ 	ret = of_property_read_u32(dev->of_node, "reg", &adc->fl_id);
+ 	if (ret != 0 || adc->fl_id >= adc->dfsdm->num_fls) {
+@@ -1603,7 +1605,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+ 		return irq;
+ 
+ 	ret = devm_request_irq(dev, irq, stm32_dfsdm_irq,
+-			       0, pdev->name, adc);
++			       0, pdev->name, iio);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to request IRQ\n");
+ 		return ret;
+@@ -1650,8 +1652,8 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+ 
+ static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
+ {
+-	struct stm32_dfsdm_adc *adc = platform_get_drvdata(pdev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 
+ 	if (adc->dev_data->type == DFSDM_AUDIO)
+ 		of_platform_depopulate(&pdev->dev);
+@@ -1663,8 +1665,7 @@ static int stm32_dfsdm_adc_remove(struct platform_device *pdev)
+ 
+ static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
+ {
+-	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+ 		__stm32_dfsdm_predisable(indio_dev);
+@@ -1674,8 +1675,8 @@ static int __maybe_unused stm32_dfsdm_adc_suspend(struct device *dev)
+ 
+ static int __maybe_unused stm32_dfsdm_adc_resume(struct device *dev)
+ {
+-	struct stm32_dfsdm_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+ 	const struct iio_chan_spec *chan;
+ 	struct stm32_dfsdm_channel *ch;
+ 	int i, ret;
+-- 
+2.25.1
 
-Oh ok, will add a new patch for that in this series if you don't
-mind. It may even be better to split this series in two given
-the amount of changes to the documentation outnumbered the changes
-related to the driver itself, the first one regarding just the
-conversion to yaml and clean-up-related changes to documentation
-and the second one, depending on the first one, with the
-reset-related changes.
-
-Do you have advices on which of the two should be the best strategy?
-
-I'll prepare both the versions today in order to choose the right
-one once the path to follow has been decided,
-
-Thank you,
-
-Best regards,
-Jonathan Albrieux
-
-> 
-> > +
-> > +  vdd-supply:
-> > +    maxItems: 1
-> > +    description: |
-> > +      an optional regulator that needs to be on to provide VDD power to
-> > +      the sensor.
-> > +
-> > +  mount-matrix:
-> > +    description: an optional 3x3 mounting rotation matrix
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    i2c@78b7000 {
-> > +        reg = <0x78b6000 0x600>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        magnetometer@c {
-> > +            compatible = "asahi-kasei,ak8975";
-> > +            reg = <0x0c>;
-> > +            gpios = <&gpj0 7 GPIO_ACTIVE_HIGH>;
-> > +            vdd-supply = <&ldo_3v3_gnss>;
-> > +            mount-matrix = "-0.984807753012208",  /* x0 */
-> > +                           "0",                   /* y0 */
-> > +                           "-0.173648177666930",  /* z0 */
-> > +                           "0",                   /* x1 */
-> > +                           "-1",                  /* y1 */
-> > +                           "0",                   /* z1 */
-> > +                           "-0.173648177666930",  /* x2 */
-> > +                           "0",                   /* y2 */
-> > +                           "0.984807753012208";   /* z2 */
-> > +        };
-> > +    };
-> 

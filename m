@@ -2,291 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 266011E014D
-	for <lists+linux-iio@lfdr.de>; Sun, 24 May 2020 19:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD011E0773
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 09:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387838AbgEXRzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 May 2020 13:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387823AbgEXRzA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 May 2020 13:55:00 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70786C061A0E;
-        Sun, 24 May 2020 10:55:00 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id 190so15771441qki.1;
-        Sun, 24 May 2020 10:55:00 -0700 (PDT)
+        id S2388945AbgEYHD0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 03:03:26 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:30030 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388385AbgEYHD0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 May 2020 03:03:26 -0400
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04P6kNx1004885;
+        Mon, 25 May 2020 03:03:22 -0400
+Received: from nam02-bl2-obe.outbound.protection.outlook.com (mail-bl2nam02lp2058.outbound.protection.outlook.com [104.47.38.58])
+        by mx0b-00128a01.pphosted.com with ESMTP id 3170f7vfqm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 May 2020 03:03:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lZrp21bLjJsKvbJICdJhHhawL87cO6TJgvW31uGWM9iJNqV+C29A4BzGHNzdZEc7NTioeldVm+H3HBNsWzBE5neGHLKWEkhC0Me5GrNt3Wp2ybqsx+EkcSHEidwq+AivTq6RYy6tYCusKu2QUhO/gfQg6N5ZX/FhwLz7ExgF9OFTC88btlauqsmrT4IwwjSh9pTRzuEVCPMbCIg1KwsnhhSelcfvT2SIMAgSHAjWnVpQ8AkXoZaWwFd/JZ7+H8viyxQWB3bXnsMV9RQIuRIZhc7dbhkAueQlVsTiCHnwjfakY3bhTjdBNEq+AtBO+m4nmRgeXGqsFCPWHKDUrqj1+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lv4HQJpVuV62Bx5q6bXhawwZ/HTH9xH1ZVkqS+Y/ZE0=;
+ b=JSdIYEV2IdbdTTffymLkLVjwU8MAq1rvP5A+LoFaMPHMI8PYkpFo1qkdt+IREEiDxSdO9uUmsuY5Ea4wRLZp5+jA1QfYqnAWygN3a+/KfqhlpVIL9dKUBZanXtpPHn1R/IKHK6h0jHytuN4OYmR5NXlXzkomm2xECLPpJDhEccxM0yGPf+p/ShiCxMmGPBbuOvVLWXHst6Z/61ik02+tWycJM1F+FDLX6ad0ShdA3SF7Tp0wBxZ1ys4lkvjoFkDhGxbeoKYXWaXUa0QwdZwU3bSqoKV1rgpzsie9rgFTGqaNErglM2NafllrAzyDl2ZWFIKsg5KAseJofycMh+0a5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0dgnh/XaZsnwacjqggM181DcBPrR3laf+TeiM8m7vqk=;
-        b=tsOKr5FfJxEh2gzdUpv24NISVHfQ2j1WR3SZdntX/h7WRh5Gs4tMpF25dx49rQXWNb
-         kZqb9z0kKpbiBFEJ9zrft2UW4uufA6T3hQMyp3kqrgm1H1aZGuaS7iZdcRCgtMnYD4sk
-         r96cJeD24+Bwk6Zlbb2Pf7XKsiNvA0CORJvZftpLgSja+S4/YRnd3m0+k1W21riWv+73
-         4unw5UlpO2MDuwfohYX+dsO6N6CgtnV+B9vD9DlHTj0yUZlHPKDIR0oCWNn3y1lFdPjh
-         wNT66bj2zbO8imR0HNJjMKZ31b1XU8hJGb0y+YplK7p3SwUCJseQJgfAQcwVngI+Q70A
-         wHug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0dgnh/XaZsnwacjqggM181DcBPrR3laf+TeiM8m7vqk=;
-        b=Rsaf0IkmyyOd8PxDmXbnwLgzei4KsHSOV1YXeXsxuopPBg5WlkZrMXIjh2qtklO1p+
-         kJ+UK4VUuR7FQH8gWBu03LDagZCqVi70lasDLVP2c1VbQMfwVCKu17swZwf03jXcry1y
-         eYQO/abDqC/OquGhg2p0vAOYUFhMk+auekPp51oIjz0ety4n+Kx88q/Qv0QDveTmA9gm
-         i7YqD/OBIB/G7q5emZLD2aUfawFet5k+a90Fj3g3E4BgqNNs/kT21ukguF2kSTPOc9xA
-         XsA8/vyxNe48g/SlcXvVy6jRFd0eN4Qpu/ezwOkIPMohIMYLMFjylxl7BOGcOB6idZzk
-         SYDw==
-X-Gm-Message-State: AOAM5302ksLSejvCHDQIyoIhlSD0oKUhrUxmhskxR7bZBplCYE1TjTPb
-        YoBz4VdXyHZbnttrMEOBuHc=
-X-Google-Smtp-Source: ABdhPJw399VHSye1og2c9do32sx6Q/O+ccUqQyDmSrToFChiVuUNCU93D5mCvyjzW90eCmvsfRAwTw==
-X-Received: by 2002:a37:e101:: with SMTP id c1mr9554151qkm.433.1590342899068;
-        Sun, 24 May 2020 10:54:59 -0700 (PDT)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id x2sm8339443qke.42.2020.05.24.10.54.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2020 10:54:58 -0700 (PDT)
-Date:   Sun, 24 May 2020 13:54:39 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v2 0/4] Introduce the Counter character device interface
-Message-ID: <20200524175439.GA14300@shinobu>
-References: <cover.1589654470.git.vilhelm.gray@gmail.com>
- <20200524172542.31ff6ac7@archlinux>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lv4HQJpVuV62Bx5q6bXhawwZ/HTH9xH1ZVkqS+Y/ZE0=;
+ b=EDuyzar9b6m++WFMatdT/DaMMPHetPSajc4ns0mL02k4FypieORycDx++7TG//J8vQdk/HCy1u6aBRcnK/gDmww343CFyDGSi7G7KqDSPDYPFLA6eANVhrc3psFlZtbBaO5VMLwVkeJgqj1zgQZRvfb9dafW9Amu9VEH+lQMlLo=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB4825.namprd03.prod.outlook.com (2603:10b6:5:187::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.27; Mon, 25 May
+ 2020 07:03:21 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3021.029; Mon, 25 May 2020
+ 07:03:21 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: humidity: hts221: remove usage of iio_priv_to_dev()
+Thread-Topic: [PATCH] iio: humidity: hts221: remove usage of iio_priv_to_dev()
+Thread-Index: AQHWMAYdG9+q4gzWvkqfFaNeVADcTKi3UiOAgAETAIA=
+Date:   Mon, 25 May 2020 07:03:20 +0000
+Message-ID: <6ac8d9bbe81b0cd9777dc722024e870e951fd1bd.camel@analog.com>
+References: <20200522065616.10901-1-alexandru.ardelean@analog.com>
+         <20200524153913.3f3dfc00@archlinux>
+In-Reply-To: <20200524153913.3f3dfc00@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: ed5709df-99e5-4d66-bc5a-08d80079b597
+x-ms-traffictypediagnostic: DM6PR03MB4825:
+x-microsoft-antispam-prvs: <DM6PR03MB48254363E89A25A46AACC962F9B30@DM6PR03MB4825.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0414DF926F
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1YAW9hc5eXif6wcCK0B38MBycv/PGikoK1jYaIbJzKHVYIpKQDiq28YpdiIQYFtAOOlHzPIKh/+C26Y1UEpHBWEddkSFkOV/QdM5MDv2xK1sE/qOXsjXpB6Bd5aAOiF1mlPs4i2f8RSNJya/s7D80Z5E3ZEdWesWufcS0vL8GJIVh0e/7bkBIlrw/Y/p0354kMRxIjWzNZ7yULKEWcE1+dWbmS0QQRmqThDxIM6jE72TW9mKhKeIuSDV6ltrleJj47pSc6WM8KlhR1zwrpmlb5iLQ4Ff8Qfjgigvyo3OpcBeNN5t2gh15Ewi1gWDBTkq
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(346002)(39860400002)(376002)(136003)(366004)(6486002)(316002)(54906003)(26005)(6916009)(6512007)(478600001)(71200400001)(6506007)(8676002)(76116006)(8936002)(86362001)(186003)(64756008)(5660300002)(66556008)(66946007)(36756003)(91956017)(2906002)(4326008)(2616005)(66446008)(66476007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: psXDVa4iCWfPgSVZpWLI53HZ7v1wWQ02gPdOCHfAYcuG1tRYctZK5Ksyuw6bY//VKg4ryGbykxImHQZaxKH9ELekk8YPtdb+ruc44hWSXcZSZIznJP84tjPpGE5EnvPZF1z33pWRhV/dfHtR43yM8UEb2h3p+s+fM5HToShWqBdOdkDVjc0VuNqnMEdHDl4TsB2C5In7crI+Gx3PWUoVVNbqLu5TMQt/0Gu8g8M3kCa6O/3UvxJo3k/D9Rk8jHFI+cJbgcgHLE0isE0ZQz9wVSZSFnu4YIbuEOTG234ArtJdYSTaS7po3K53txFS9FF3B/i6uxx2wmx7N0h46mgd3lQ6h+B5JbZBcgPemoKffh5rGVe5QKO2ewWRQOmKcBn3OdzO6UVXyeussvs4VkV0P6QZ0r0LT7DIcSXmXgDw9dJjGE29NF/L1wSizZqPNRMcZGIAXsSUEXcoBtYbiTb8q3OwzlAIXUBXl4Xg9+oykBU=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E53B1696592F8443AC399F9D45CE4BA9@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
-Content-Disposition: inline
-In-Reply-To: <20200524172542.31ff6ac7@archlinux>
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed5709df-99e5-4d66-bc5a-08d80079b597
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 May 2020 07:03:20.7879
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DC9inPmu/3MNjMRgThF9GYcN6J3NkFHig+v7gH341aaTmNbBnViA2BRrLzPcMMSHHst9h9kqkI7MxH5OgqSCmEPx/BBhDY/iTsd72G8iIAw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4825
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-25_02:2020-05-22,2020-05-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
+ suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005250055
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---1yeeQ81UyVL57Vl7
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, May 24, 2020 at 05:25:42PM +0100, Jonathan Cameron wrote:
->=20
-> ...
->=20
-> > The following are some questions I have about this patchset:
-> >=20
-> > 1. Should the data format of the character device be configured via a
-> >    sysfs attribute?
-> >=20
-> >    In this patchset, the first 196095 bytes of the character device are
-> >    dedicated as a selection area to choose which Counter components or
-> >    extensions should be exposed; the subsequent bytes are the actual
-> >    data for the Counter components and extensions that were selected.
->=20
-> That sounds like the worst of all possible worlds.  Reality is you need
-> to do some magic library so at that point you might as well have ioctl
-> options to configure it.   I wonder if you can keep the data flow
-> to be a simple 'read' from the chardev but move the control away from
-> that.  Either control via some chrdevs but keep them to the 'set / get'
-> if this element is going to turn up in the read or not.  You rapidly
-> run into problems though, such as now to see how large a given element
-> is going to be etc.  Plus ioctls are rather messier to extend than
-> simply adding a new sysfs file.  Various subsystems do complex
-> 'descriptor' type approaches to get around this, or you could do
-> self describing records rather than raw data - like an input
-> ev_dev event.
-
-Yes I agree, I don't think combining nondata with data is good design --
-it's better if users are able to simply perform read/write on the
-character device without having to keep track of valid offsets and
-controls.
-
-After giving this some more thought, I believe human-readable sysfs
-attributes are the way to go to support configuration of the character
-device. I am thinking of a system like this:
-
-* Users configure the counter character device via a sysfs attribute
-  such as /sys/bus/counter/devices/counterX/chrdev_format or similar.
-
-* Users may write to this sysfs attribute to select the components they
-  want to interface -- the layout can be determined as well from the
-  order. For example:
-
-  # echo "C0 C3 C2" > /sys/bus/counter/devices/counter0/chrdev_format
-
-  This would select Counts 0, 3, and 2 (in that order) to be available
-  in the /dev/counter0 node as a contiguous memory region.
-
-  You can select extensions in a similar fashion:
-
-  # echo "C4E2 S1E0" > /sys/bus/counter/devices/counter0/chrdev_format
-
-  This would select extension 2 from Count 4, and extension 0 from
-  Signal 1.
-
-* Users may read from this chrdev_format sysfs attribute in order to see
-  the currently configured format of the character device.
-
-* Users may perform read/write operations on the /dev/counterX node
-  directly; the layout of the data is what they user has configured via
-  the chrdev_format sysfs attribute. For example:
-
-  # echo "C0 C1 S0 S1" > /sys/bus/counter/devices/counter0/chrdev_format
-
-  Yields the following /dev/counter0 memory layout:
-
-  +-----------------+------------------+----------+----------+
-  | Byte 0 - Byte 7 | Byte 8 - Byte 15 | Byte 16  | Byte 17  |
-  +-----------------+------------------+----------+----------+
-  | Count 0         | Count 1          | Signal 0 | Signal 2 |
-  +-----------------+------------------+----------+----------+
-
-* Users may perform select/poll operations on the /dev/counterX node.
-  Users can be notified if data is available or events have occurred.
-
-The benefit of this design is that the format is robust so users can
-choose the components they want to interface and in the layout they
-want. For example, if I am writing a userspace application to control a
-dual-axis positioning table, I can select the two counts I care about
-for the position axes. This allows me to read just those two values
-directly from /dev/counterX with a simple read() call, without having to
-fumble around seeking to an offset and parsing the layout.
-
-Similarly, support for future extensions is simple to implement. When
-timestamp support is implemented, users can just select the desired
-timestamp extension and read it directly from the /dev/counterX node;
-they should also be able to perform a select()/poll() call to be
-notified on new timestamps.
-
-So what do you think of this sort of design? I think there is a useful
-robustness to the simplicity of performing a single read/write call on
-/dev/counterX.
-
-> >=20
-> >    Moving this selection to a sysfs attribute and dedicating the
-> >    character device to just data transfer might be a better design. If
-> >    such a design is chosen, should the selection attribute be
-> >    human-readable or binary?
->=20
-> Sysfs basically requires things are more or less human readable.
-> So if you go that way I think it needs to be.
->=20
-> >=20
-> > 2. How much space should allotted for strings?
-> >=20
-> >    Each Counter component and extension has a respective size allotted
-> >    for its data (u8 data is allotted 1 byte, u64 data is allotted 8
-> >    bytes, etc.); I have arbitrarily chosen to allot 64 bytes for
-> >    strings. Is this an apt size, or should string data be allotted more
-> >    or less space?
->=20
-> I'd go with that being big enough, but try to keep the expose interface
-> such that the size can change it it needs to the in the future.
-
-Following along with the separation of control vs data as discussed
-above, we could support a more variable size by exposing it through a
-sysfs attribute (maybe a chrdev_string_size attribute or similar).
-
->=20
-> >=20
-> > 3. Should the owning component of an extension be handled by the device
-> >    driver or Counter subsystem?
-> >=20
-> >    The Counter subsystem figures out the owner (enum counter_owner_type)
-> >    for each component/extension in the counter-sysfs and counter-chrdev
-> >    code. When a callback must be executed, there are various switch
-> >    statements throughout the code to check whether the respective
-> >    Device, Signal, or Count version of the callback should be executed;
-> >    similarly, the appropriate owner type must match for the struct
-> >    counter_data macros such as COUNTER_DATA_DEVICE_U64,
-> >    COUNTER_DATA_SIGNAL_U64, COUNTER_DATA_COUNT_U64, etc.
-> >=20
-> >    All this complexity in the Counter subsystem code can be eliminated
-> >    if a single callback type with a `void *owner` parameter is defined
-> >    for use with all three owner types (Device, Signal, and Count). The
-> >    device driver would then be responsible for casting the callback
-> >    argument to the appropriate owner type; but in theory, this should
-> >    not be much of a problem since the device driver is responsible for
-> >    assigning the callbacks to the owning component anyway.
->=20
-> Whilst its more complex for subsytem I think it's better to keep everythi=
-ng
-> typed if we possibly can.  Always a trade off though, so use your discret=
-ion.
->=20
-> Jonathan
-
-I'm going to keep it all typed for now since I don't want to make too
-many changes at once. Since this is somewhat unrelated to the purpose of
-introducing Counter character devices, I'll postpone the discussion to a
-later date after the Counter character device interface is merged.
-
-William Breathitt Gray
-
->=20
->=20
-> >=20
-> > William Breathitt Gray (4):
-> >   counter: Internalize sysfs interface code
-> >   docs: counter: Update to reflect sysfs internalization
-> >   counter: Add character device interface
-> >   docs: counter: Document character device interface
-> >=20
-> >  Documentation/driver-api/generic-counter.rst |  275 +++-
-> >  MAINTAINERS                                  |    3 +-
-> >  drivers/counter/104-quad-8.c                 |  547 +++----
-> >  drivers/counter/Makefile                     |    1 +
-> >  drivers/counter/counter-chrdev.c             |  656 ++++++++
-> >  drivers/counter/counter-chrdev.h             |   16 +
-> >  drivers/counter/counter-core.c               |  187 +++
-> >  drivers/counter/counter-sysfs.c              |  881 +++++++++++
-> >  drivers/counter/counter-sysfs.h              |   14 +
-> >  drivers/counter/counter.c                    | 1496 ------------------
-> >  drivers/counter/ftm-quaddec.c                |   89 +-
-> >  drivers/counter/stm32-lptimer-cnt.c          |  161 +-
-> >  drivers/counter/stm32-timer-cnt.c            |  139 +-
-> >  drivers/counter/ti-eqep.c                    |  211 +--
-> >  include/linux/counter.h                      |  626 ++++----
-> >  include/linux/counter_enum.h                 |   45 -
-> >  include/uapi/linux/counter-types.h           |   45 +
-> >  17 files changed, 2826 insertions(+), 2566 deletions(-)
-> >  create mode 100644 drivers/counter/counter-chrdev.c
-> >  create mode 100644 drivers/counter/counter-chrdev.h
-> >  create mode 100644 drivers/counter/counter-core.c
-> >  create mode 100644 drivers/counter/counter-sysfs.c
-> >  create mode 100644 drivers/counter/counter-sysfs.h
-> >  delete mode 100644 drivers/counter/counter.c
-> >  delete mode 100644 include/linux/counter_enum.h
-> >  create mode 100644 include/uapi/linux/counter-types.h
-> >=20
->=20
-
---1yeeQ81UyVL57Vl7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl7KtNYACgkQhvpINdm7
-VJL6uBAApyDsjTpq8KEtfp560Oeh/amS86UJ/m5tlErp6h4IqSqon8w297PHw+Lp
-xOLagQqWRUHemDtlX/P8RkMjN4NR/wrMJ/m04qBHNKSrtlMHUxEvEKajt9AuPVQj
-DBv3ZkJOMBXGFEvirzkKBpZANZ8zw1+9M1hg3Nf2NJX3IIQVtrO+NgS/6fHS9yAt
-af9+IWXw0XkOVyThaDErjPEEihvKJhqIVjCObR4MtlnmRdwncVv5qbZDa4vMbQXc
-2rCkKi23rc6lJ4zyLz+mwnoaPMmzqGg8/+TmUmCjUeh7V/nPbQAf+g4zgJzX3OJg
-VH57Yt20bherWjVEOEjU/VhUleeg+RwB8sjMgU34c8bfDfoHCeO2108Wdza4WwO1
-8p5DPYoeDiiY3FPzUwcA6Q3Mfj2dLFsUW9dVi+uwqT9FnWU9lg4M8dURZcGWF3TW
-nnaprfVIeztWX3vuP3BCFSu8tdb8E8GsqA1g7nVlnx6NpHjM5BqjXxYIhlH+OaFs
-FxdyUTwUbzVqWd2EHcYqh44TllbiQwcjhVvmGAgbdOU4DwHLVfBLMovwMHBvGtJm
-k/SNtd23WGN++xjGePPM/1ASJ50iTQRV3czgErJ23AOPMdxuaAtKicGj2e3R+F/Q
-64CRnMw5WpDBwRXXfzAwhPzR8N7zaue/Spceae/2IWxlYemyzMQ=
-=LR3r
------END PGP SIGNATURE-----
-
---1yeeQ81UyVL57Vl7--
+T24gU3VuLCAyMDIwLTA1LTI0IGF0IDE1OjM5ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBGcmksIDIyIE1heSAyMDIwIDA5OjU2OjE2ICswMzAw
+DQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdy
+b3RlOg0KPiANCj4gPiBXZSBtYXkgd2FudCB0byBnZXQgcmlkIG9mIHRoZSBpaW9fcHJpdl90b19k
+ZXYoKSBoZWxwZXIuIFRoYXQncyBhIGJpdA0KPiA+IHVuY2VydGFpbiBhdCB0aGlzIHBvaW50LiBU
+aGUgcmVhc29uIGlzIHRoYXQgd2Ugd2lsbCBoaWRlIHNvbWUgb2YgdGhlDQo+ID4gbWVtYmVycyBv
+ZiB0aGUgaWlvX2RldiBzdHJ1Y3R1cmUgKHRvIHByZXZlbnQgZHJpdmVycyBmcm9tIGFjY2Vzc2lu
+ZyB0aGVtDQo+ID4gZGlyZWN0bHkpLCBhbmQgdGhhdCB3aWxsIGFsc28gbWVhbiBoaWRpbmcgdGhl
+IGltcGxlbWVudGF0aW9uIG9mIHRoZQ0KPiA+IGlpb19wcml2X3RvX2RldigpIGhlbHBlciBpbnNp
+ZGUgdGhlIElJTyBjb3JlLg0KPiA+IA0KPiA+IEhpZGluZyB0aGUgaW1wbGVtZW50YXRpb24gb2Yg
+aWlvX3ByaXZfdG9fZGV2KCkgaW1wbGllcyB0aGF0IHNvbWUgZmFzdC1wYXRocw0KPiA+IG1heSBu
+b3QgYmUgZmFzdCBhbnltb3JlLCBzbyBhIGdlbmVyYWwgaWRlYSBpcyB0byB0cnkgdG8gZ2V0IHJp
+ZCBvZiB0aGUNCj4gPiBpaW9fcHJpdl90b19kZXYoKSBhbHRvZ2V0aGVyLg0KPiA+IA0KPiA+IEZv
+ciB0aGlzIGRyaXZlciwgcmVtb3ZpbmcgdGhlIGlpb19wcml2X3RvX2RldigpIGhlbHBlciBtZWFu
+cyBwYXNzaW5nIHRoZQ0KPiA+IGlpb19kZXYgb2JqZWN0IG9uIGh0czIyMV9hbGxvY2F0ZV9idWZm
+ZXJzKCkgJiBodHMyMjFfYWxsb2NhdGVfdHJpZ2dlcigpLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYt
+Ynk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+
+IA0KPiBUaGUgaHRzMjIxX2h3IHN0cnVjdHVyZSBpcyBpbiBpaW9fcHJpdigpIHNvIHBlcmhhcHMg
+d2UgY291bGQNCj4gZHJvcCBwYXNzaW5nIHRoYXQgaW50byB0aGVzZSB0d28gY2FsbHMgYW5kIGdl
+dCBpdCBmcm9tIGlpb19wcml2DQo+IHdpdGhpbiB0aGUgZnVuY3Rpb25zPw0KPiANCj4gSSB0aWRp
+ZWQgdGhhdCB1cCB3aGlsc3QgYXBwbHlpbmcuICBTaG91dCBpZiB5b3UgZGlzYWdyZWUgYW5kIEkn
+bGwNCj4gYmFjayBpdCBvdXQgOikNCg0KRmluZSBieSBtZS4NCkkgdXN1YWxseSBnbywgZm9yIHRo
+ZSBsYXp5L25hcnJvdy12aWV3LXBhdGggc29tZXRpbWVzLCB3aGVuIGRvaW5nIHRoZXNlIGNoYW5n
+ZXMuDQpXaGljaCBbaW4gdGhpcyBjYXNlXSB3YXMgdG8gZ2V0IHJpZCBvZiBpaW9fcHJpdl90b19k
+ZXYoKQ0KDQo+IA0KPiBBcHBsaWVkIHRvIHRoZSB0aGUgdG9ncmVnIGJyYW5jaCBvZiBpaW8uZ2l0
+IGFuZCBwdXNoZWQgb3V0IGFzDQo+IHRlc3RpbmcgZm9yIHRoZSBhdXRvYnVpbGRlcnMgdG8gcGxh
+eSB3aXRoIGl0Lg0KPiANCj4gVGhhbmtzLA0KPiANCj4gSm9uYXRoYW4NCj4gDQo+ID4gLS0tDQo+
+ID4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2h0czIyMS5oICAgICAgICB8IDQgKystLQ0KPiA+ICBk
+cml2ZXJzL2lpby9odW1pZGl0eS9odHMyMjFfYnVmZmVyLmMgfCA3ICsrKy0tLS0NCj4gPiAgZHJp
+dmVycy9paW8vaHVtaWRpdHkvaHRzMjIxX2NvcmUuYyAgIHwgNCArKy0tDQo+ID4gIDMgZmlsZXMg
+Y2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL2lpby9odW1pZGl0eS9odHMyMjEuaCBiL2RyaXZlcnMvaWlvL2h1bWlk
+aXR5L2h0czIyMS5oDQo+ID4gaW5kZXggN2Q2NzcxZjdjZjQ3Li41NjkxNDY5MTA4ODUgMTAwNjQ0
+DQo+ID4gLS0tIGEvZHJpdmVycy9paW8vaHVtaWRpdHkvaHRzMjIxLmgNCj4gPiArKysgYi9kcml2
+ZXJzL2lpby9odW1pZGl0eS9odHMyMjEuaA0KPiA+IEBAIC00Niw3ICs0Niw3IEBAIGV4dGVybiBj
+b25zdCBzdHJ1Y3QgZGV2X3BtX29wcyBodHMyMjFfcG1fb3BzOw0KPiA+ICBpbnQgaHRzMjIxX3By
+b2JlKHN0cnVjdCBkZXZpY2UgKmRldiwgaW50IGlycSwgY29uc3QgY2hhciAqbmFtZSwNCj4gPiAg
+CQkgc3RydWN0IHJlZ21hcCAqcmVnbWFwKTsNCj4gPiAgaW50IGh0czIyMV9zZXRfZW5hYmxlKHN0
+cnVjdCBodHMyMjFfaHcgKmh3LCBib29sIGVuYWJsZSk7DQo+ID4gLWludCBodHMyMjFfYWxsb2Nh
+dGVfYnVmZmVycyhzdHJ1Y3QgaHRzMjIxX2h3ICpodyk7DQo+ID4gLWludCBodHMyMjFfYWxsb2Nh
+dGVfdHJpZ2dlcihzdHJ1Y3QgaHRzMjIxX2h3ICpodyk7DQo+ID4gK2ludCBodHMyMjFfYWxsb2Nh
+dGVfYnVmZmVycyhzdHJ1Y3QgaHRzMjIxX2h3ICpodywgc3RydWN0IGlpb19kZXYgKmlpb19kZXYp
+Ow0KPiA+ICtpbnQgaHRzMjIxX2FsbG9jYXRlX3RyaWdnZXIoc3RydWN0IGh0czIyMV9odyAqaHcs
+IHN0cnVjdCBpaW9fZGV2ICppaW9fZGV2KTsNCj4gPiAgDQo+ID4gICNlbmRpZiAvKiBIVFMyMjFf
+SCAqLw0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9odW1pZGl0eS9odHMyMjFfYnVmZmVy
+LmMNCj4gPiBiL2RyaXZlcnMvaWlvL2h1bWlkaXR5L2h0czIyMV9idWZmZXIuYw0KPiA+IGluZGV4
+IDlmYjNmMzM2MTRkNC4uNDhkNDY5ZWViMGU2IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlv
+L2h1bWlkaXR5L2h0czIyMV9idWZmZXIuYw0KPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2h1bWlkaXR5
+L2h0czIyMV9idWZmZXIuYw0KPiA+IEBAIC03MiwxMCArNzIsOSBAQCBzdGF0aWMgaXJxcmV0dXJu
+X3QgaHRzMjIxX3RyaWdnZXJfaGFuZGxlcl90aHJlYWQoaW50IGlycSwNCj4gPiB2b2lkICpwcml2
+YXRlKQ0KPiA+ICAJcmV0dXJuIElSUV9IQU5ETEVEOw0KPiA+ICB9DQo+ID4gIA0KPiA+IC1pbnQg
+aHRzMjIxX2FsbG9jYXRlX3RyaWdnZXIoc3RydWN0IGh0czIyMV9odyAqaHcpDQo+ID4gK2ludCBo
+dHMyMjFfYWxsb2NhdGVfdHJpZ2dlcihzdHJ1Y3QgaHRzMjIxX2h3ICpodywgc3RydWN0IGlpb19k
+ZXYgKmlpb19kZXYpDQo+ID4gIHsNCj4gPiAgCXN0cnVjdCBzdF9zZW5zb3JzX3BsYXRmb3JtX2Rh
+dGEgKnBkYXRhID0gZGV2X2dldF9wbGF0ZGF0YShody0+ZGV2KTsNCj4gPiAtCXN0cnVjdCBpaW9f
+ZGV2ICppaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGh3KTsNCj4gPiAgCWJvb2wgaXJxX2FjdGl2
+ZV9sb3cgPSBmYWxzZSwgb3Blbl9kcmFpbiA9IGZhbHNlOw0KPiA+ICAJdW5zaWduZWQgbG9uZyBp
+cnFfdHlwZTsNCj4gPiAgCWludCBlcnI7DQo+ID4gQEAgLTE5MCw5ICsxODksOSBAQCBzdGF0aWMg
+aXJxcmV0dXJuX3QgaHRzMjIxX2J1ZmZlcl9oYW5kbGVyX3RocmVhZChpbnQgaXJxLA0KPiA+IHZv
+aWQgKnApDQo+ID4gIAlyZXR1cm4gSVJRX0hBTkRMRUQ7DQo+ID4gIH0NCj4gPiAgDQo+ID4gLWlu
+dCBodHMyMjFfYWxsb2NhdGVfYnVmZmVycyhzdHJ1Y3QgaHRzMjIxX2h3ICpodykNCj4gPiAraW50
+IGh0czIyMV9hbGxvY2F0ZV9idWZmZXJzKHN0cnVjdCBodHMyMjFfaHcgKmh3LCBzdHJ1Y3QgaWlv
+X2RldiAqaWlvX2RldikNCj4gPiAgew0KPiA+IC0JcmV0dXJuIGRldm1faWlvX3RyaWdnZXJlZF9i
+dWZmZXJfc2V0dXAoaHctPmRldiwgaWlvX3ByaXZfdG9fZGV2KGh3KSwNCj4gPiArCXJldHVybiBk
+ZXZtX2lpb190cmlnZ2VyZWRfYnVmZmVyX3NldHVwKGh3LT5kZXYsIGlpb19kZXYsDQo+ID4gIAkJ
+CQkJTlVMTCwgaHRzMjIxX2J1ZmZlcl9oYW5kbGVyX3RocmVhZCwNCj4gPiAgCQkJCQkmaHRzMjIx
+X2J1ZmZlcl9vcHMpOw0KPiA+ICB9DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2h1bWlk
+aXR5L2h0czIyMV9jb3JlLmMNCj4gPiBiL2RyaXZlcnMvaWlvL2h1bWlkaXR5L2h0czIyMV9jb3Jl
+LmMNCj4gPiBpbmRleCA5MDAzNjcxZjE0ZmIuLjc3ZGZhNjVkZjg0MSAxMDA2NDQNCj4gPiAtLS0g
+YS9kcml2ZXJzL2lpby9odW1pZGl0eS9odHMyMjFfY29yZS5jDQo+ID4gKysrIGIvZHJpdmVycy9p
+aW8vaHVtaWRpdHkvaHRzMjIxX2NvcmUuYw0KPiA+IEBAIC02MjEsMTEgKzYyMSwxMSBAQCBpbnQg
+aHRzMjIxX3Byb2JlKHN0cnVjdCBkZXZpY2UgKmRldiwgaW50IGlycSwgY29uc3QNCj4gPiBjaGFy
+ICpuYW1lLA0KPiA+ICAJfQ0KPiA+ICANCj4gPiAgCWlmIChody0+aXJxID4gMCkgew0KPiA+IC0J
+CWVyciA9IGh0czIyMV9hbGxvY2F0ZV9idWZmZXJzKGh3KTsNCj4gPiArCQllcnIgPSBodHMyMjFf
+YWxsb2NhdGVfYnVmZmVycyhodywgaWlvX2Rldik7DQo+ID4gIAkJaWYgKGVyciA8IDApDQo+ID4g
+IAkJCXJldHVybiBlcnI7DQo+ID4gIA0KPiA+IC0JCWVyciA9IGh0czIyMV9hbGxvY2F0ZV90cmln
+Z2VyKGh3KTsNCj4gPiArCQllcnIgPSBodHMyMjFfYWxsb2NhdGVfdHJpZ2dlcihodywgaWlvX2Rl
+dik7DQo+ID4gIAkJaWYgKGVycikNCj4gPiAgCQkJcmV0dXJuIGVycjsNCj4gPiAgCX0NCg==

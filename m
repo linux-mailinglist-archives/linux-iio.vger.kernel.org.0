@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3FF1E1335
-	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E51B1E1336
+	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391277AbgEYRJM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 13:09:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42624 "EHLO mail.kernel.org"
+        id S2391280AbgEYRJO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 13:09:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388812AbgEYRJL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 May 2020 13:09:11 -0400
+        id S2388812AbgEYRJN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 May 2020 13:09:13 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5D52720870;
-        Mon, 25 May 2020 17:09:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C110920878;
+        Mon, 25 May 2020 17:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590426551;
-        bh=CvCCODs9v6cJ+sXq8doRK2RVNbHkTrQleIsyW0aZ3bg=;
+        s=default; t=1590426552;
+        bh=/K37xNWkiux7nVbz0T1QufBrgwbjsyiaXp95wAoXfbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BFgApHMvqKGJ4ngpQ8h8ZiWM9zDjFeKOWrDEf5/vqvCBBjISQ9EsNwMJvTqnIdmpE
-         DdSwtwpZq80oxC2aTDSVFYEUWEmZk+OjO4AhzD4qkO+uVkOFze5QA5fIbZP2x6zdTw
-         8lGcuFETGbQH9S7M7ECju2je3fw9Ljn4J+8avdLA=
+        b=XugG6PSgghvXabF3xfQp+XgVwL1N+f3BXmkgCcYBCbHtXkRAGHGN+/xy/+Bt1xa5z
+         ipAXG+lQP5q8SCpdtAjnpI0lIEd55ovdW0m0c7LIfhctUyn9PWEFcbjU0bSssxl0Aa
+         U6xkrHB+1n5XPxCYjj1z9m+c1Xk337X9fkh6+KF8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alison Schofield <amsfield22@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH 09/25] iio:humidity:hdc100x Fix alignment and data leak issues
-Date:   Mon, 25 May 2020 18:06:12 +0100
-Message-Id: <20200525170628.503283-10-jic23@kernel.org>
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Subject: [PATCH 10/25] iio:humidity:hts221 Fix alignment and data leak issues
+Date:   Mon, 25 May 2020 18:06:13 +0100
+Message-Id: <20200525170628.503283-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200525170628.503283-1-jic23@kernel.org>
 References: <20200525170628.503283-1-jic23@kernel.org>
@@ -51,58 +50,70 @@ this driver which uses an array of smaller elements on the stack.
 As Lars also noted this anti pattern can involve a leak of data to
 userspace and that indeed can happen here.  We close both issues by
 moving to a suitable structure in the iio_priv() data.
-This data is allocated with kzalloc so no data can leak apart
-from previous readings.
+This data is allocated with kzalloc so no data can leak
+apart from previous readings.
 
-Fixes: 16bf793f86b2 ("iio: humidity: hdc100x: add triggered buffer support for HDC100X")
+Fixes: e4a70e3e7d84 ("iio: humidity: add support to hts221 rh/temp combo device")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Alison Schofield <amsfield22@gmail.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
 ---
- drivers/iio/humidity/hdc100x.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/humidity/hts221.h        | 5 +++++
+ drivers/iio/humidity/hts221_buffer.c | 9 +++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 7ecd2ffa3132..fd825e281d4f 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -38,6 +38,11 @@ struct hdc100x_data {
+diff --git a/drivers/iio/humidity/hts221.h b/drivers/iio/humidity/hts221.h
+index 7c650df77556..6ad579ca9cef 100644
+--- a/drivers/iio/humidity/hts221.h
++++ b/drivers/iio/humidity/hts221.h
+@@ -39,6 +39,11 @@ struct hts221_hw {
  
- 	/* integration time of the sensor */
- 	int adc_int_us[2];
+ 	bool enabled;
+ 	u8 odr;
 +	/* Ensure natural alignment of timestamp */
 +	struct {
-+		__be16 channels[2];
++		__le16 channels[2];
 +		s64 ts;
 +	} scan;
  };
  
- /* integration time in us */
-@@ -322,7 +327,6 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
- 	struct i2c_client *client = data->client;
- 	int delay = data->adc_int_us[0] + data->adc_int_us[1];
- 	int ret;
--	s16 buf[8];  /* 2x s16 + padding + 8 byte timestamp */
+ extern const struct dev_pm_ops hts221_pm_ops;
+diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
+index 21c6c160462d..59ede9860185 100644
+--- a/drivers/iio/humidity/hts221_buffer.c
++++ b/drivers/iio/humidity/hts221_buffer.c
+@@ -160,7 +160,6 @@ static const struct iio_buffer_setup_ops hts221_buffer_ops = {
  
- 	/* dual read starts at temp register */
- 	mutex_lock(&data->lock);
-@@ -333,13 +337,13 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
- 	}
- 	usleep_range(delay, delay + 1000);
+ static irqreturn_t hts221_buffer_handler_thread(int irq, void *p)
+ {
+-	u8 buffer[ALIGN(2 * HTS221_DATA_SIZE, sizeof(s64)) + sizeof(s64)];
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *iio_dev = pf->indio_dev;
+ 	struct hts221_hw *hw = iio_priv(iio_dev);
+@@ -170,18 +169,20 @@ static irqreturn_t hts221_buffer_handler_thread(int irq, void *p)
+ 	/* humidity data */
+ 	ch = &iio_dev->channels[HTS221_SENSOR_H];
+ 	err = regmap_bulk_read(hw->regmap, ch->address,
+-			       buffer, HTS221_DATA_SIZE);
++			       &hw->scan.channels[0],
++			       sizeof(hw->scan.channels[0]));
+ 	if (err < 0)
+ 		goto out;
  
--	ret = i2c_master_recv(client, (u8 *)buf, 4);
-+	ret = i2c_master_recv(client, (u8 *)data->scan.channels, 4);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "cannot read sensor data\n");
- 		goto err;
- 	}
+ 	/* temperature data */
+ 	ch = &iio_dev->channels[HTS221_SENSOR_T];
+ 	err = regmap_bulk_read(hw->regmap, ch->address,
+-			       buffer + HTS221_DATA_SIZE, HTS221_DATA_SIZE);
++			       &hw->scan.channels[1],
++			       sizeof(hw->scan.channels[1]));
+ 	if (err < 0)
+ 		goto out;
  
--	iio_push_to_buffers_with_timestamp(indio_dev, buf,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
- 					   iio_get_time_ns(indio_dev));
- err:
- 	mutex_unlock(&data->lock);
+-	iio_push_to_buffers_with_timestamp(iio_dev, buffer,
++	iio_push_to_buffers_with_timestamp(iio_dev, &hw->scan,
+ 					   iio_get_time_ns(iio_dev));
+ 
+ out:
 -- 
 2.26.2
 

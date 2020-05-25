@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C6EF1E1347
+	by mail.lfdr.de (Postfix) with ESMTP id 8806C1E1348
 	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391308AbgEYRJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 13:09:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42902 "EHLO mail.kernel.org"
+        id S2391309AbgEYRJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 13:09:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391301AbgEYRJ2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 May 2020 13:09:28 -0400
+        id S2391301AbgEYRJa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 May 2020 13:09:30 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 825FA20899;
-        Mon, 25 May 2020 17:09:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C6F6D2084C;
+        Mon, 25 May 2020 17:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590426568;
-        bh=akRiI9CTbMvpt2jnNGW/thGQ9nPtuuI7mj741tEoFz4=;
+        s=default; t=1590426569;
+        bh=Wu6mvDbeHBOOgIe4UaMtENrclvA24EsKP2BStbE5TWg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YHaFuV7HjAjlqe0FNH7mBotrfgPbRm2lIbe3zQR1ec8gee8pR/KOZI5NwTjtk6kIA
-         D0wCzcOcPbIzSpvYFO6NynjviO7vaJFHI/y0EJb8Uo78dIh4+OBwYtNGCCETVJbOBN
-         /FaahbXimW9HodBDC1l9Y5upwZiDUg2TVW7IRpdA=
+        b=mcZjXG3GarrUmMruwaGFLISccDimDCzXgmB3K60G43wIfa+WPnFziq0VtYTgS/R6s
+         1EfJpKfTjm59UPdOLMpxyFeYrr134JuxYPXxQTEjfDlXPWL9lrh7bkK0ME5MFyZVF3
+         iNST4mBaY1g+YXMu0RrhzcMsKYxb2SAUGIXxPZYI=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Akinobu Mita <akinobu.mita@gmail.com>
-Subject: [PATCH 23/25] iio:adc:ti-adc12138 Fix alignment issue with timestamp
-Date:   Mon, 25 May 2020 18:06:26 +0100
-Message-Id: <20200525170628.503283-24-jic23@kernel.org>
+        =?UTF-8?q?Stefan=20Br=C3=BCns?= <stefan.bruens@rwth-aachen.de>,
+        Marc Titinger <mtitinger@baylibre.com>
+Subject: [PATCH 24/25] iio:adc:ina2xx Fix timestamp alignment issue.
+Date:   Mon, 25 May 2020 18:06:27 +0100
+Message-Id: <20200525170628.503283-25-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200525170628.503283-1-jic23@kernel.org>
 References: <20200525170628.503283-1-jic23@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -46,70 +48,60 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 One of a class of bugs pointed out by Lars in a recent review.
 iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
 to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses an array of smaller elements on the stack.
-
-We move to a suitable structure in the iio_priv() data with alignment
+this driver which uses a 32 byte array of smaller elements on the stack.
+As Lars also noted this anti pattern can involve a leak of data to
+userspace and that indeed can happen here.  We close both issues by
+moving to a suitable structure in the iio_priv() data with alignment
 explicitly requested.  This data is allocated with kzalloc so no
-data can leak apart from previous readings. Note that previously
-no leak at all could occur, but previous readings should never
-be a problem.
+data can leak apart from previous readings.
 
-Fixes: 50a6edb1b6e0 ("iio: adc: add ADC12130/ADC12132/ADC12138 ADC driver")
+If we want this in older stables will need manual backport due to
+driver reworks.
+
+Fixes: c43a102e67db ("iio: ina2xx: add support for TI INA2xx Power Monitors")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: Stefan Brüns <stefan.bruens@rwth-aachen.de>
+Cc: Marc Titinger <mtitinger@baylibre.com>
 ---
- drivers/iio/adc/ti-adc12138.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ina2xx-adc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-adc12138.c b/drivers/iio/adc/ti-adc12138.c
-index 68a9dcb8faa2..f764c3694a96 100644
---- a/drivers/iio/adc/ti-adc12138.c
-+++ b/drivers/iio/adc/ti-adc12138.c
-@@ -47,6 +47,8 @@ struct adc12138 {
- 	struct completion complete;
- 	/* The number of cclk periods for the S/H's acquisition time */
- 	unsigned int acquisition_time;
-+	 /* 16x 2 bytes ADC data + 8 bytes timestamp */
-+	__be16 data[20] __aligned(8);
+diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+index bdd7cba6f6b0..ed2d069b791a 100644
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -146,6 +146,8 @@ struct ina2xx_chip_info {
+ 	int range_vbus; /* Bus voltage maximum in V */
+ 	int pga_gain_vshunt; /* Shunt voltage PGA gain */
+ 	bool allow_async_readout;
++	/* data buffer needs space for channel data and timestap */
++	unsigned short data[4 + sizeof(s64)/sizeof(short)] __aligned(8);
+ };
  
- 	u8 tx_buf[2] ____cacheline_aligned;
- 	u8 rx_buf[2];
-@@ -329,7 +331,6 @@ static irqreturn_t adc12138_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct adc12138 *adc = iio_priv(indio_dev);
--	__be16 data[20] = { }; /* 16x 2 bytes ADC data + 8 bytes timestamp */
- 	__be16 trash;
- 	int ret;
- 	int scan_index;
-@@ -345,7 +346,7 @@ static irqreturn_t adc12138_trigger_handler(int irq, void *p)
- 		reinit_completion(&adc->complete);
+ static const struct ina2xx_config ina2xx_config[] = {
+@@ -738,8 +740,6 @@ static int ina2xx_conversion_ready(struct iio_dev *indio_dev)
+ static int ina2xx_work_buffer(struct iio_dev *indio_dev)
+ {
+ 	struct ina2xx_chip_info *chip = iio_priv(indio_dev);
+-	/* data buffer needs space for channel data and timestap */
+-	unsigned short data[4 + sizeof(s64)/sizeof(short)];
+ 	int bit, ret, i = 0;
+ 	s64 time;
  
- 		ret = adc12138_start_and_read_conv(adc, scan_chan,
--						   i ? &data[i - 1] : &trash);
-+					i ? &adc->data[i - 1] : &trash);
- 		if (ret) {
- 			dev_warn(&adc->spi->dev,
- 				 "failed to start conversion\n");
-@@ -362,7 +363,7 @@ static irqreturn_t adc12138_trigger_handler(int irq, void *p)
+@@ -758,10 +758,10 @@ static int ina2xx_work_buffer(struct iio_dev *indio_dev)
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		data[i++] = val;
++		chip->data[i++] = val;
  	}
  
- 	if (i) {
--		ret = adc12138_read_conv_data(adc, &data[i - 1]);
-+		ret = adc12138_read_conv_data(adc, &adc->data[i - 1]);
- 		if (ret) {
- 			dev_warn(&adc->spi->dev,
- 				 "failed to get conversion data\n");
-@@ -370,7 +371,7 @@ static irqreturn_t adc12138_trigger_handler(int irq, void *p)
- 		}
- 	}
+-	iio_push_to_buffers_with_timestamp(indio_dev, data, time);
++	iio_push_to_buffers_with_timestamp(indio_dev, chip->data, time);
  
--	iio_push_to_buffers_with_timestamp(indio_dev, data,
-+	iio_push_to_buffers_with_timestamp(indio_dev, adc->data,
- 					   iio_get_time_ns(indio_dev));
- out:
- 	mutex_unlock(&adc->lock);
+ 	return 0;
+ };
 -- 
 2.26.2
 

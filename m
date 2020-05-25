@@ -2,35 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AAA01E133E
+	by mail.lfdr.de (Postfix) with ESMTP id E559D1E133F
 	for <lists+linux-iio@lfdr.de>; Mon, 25 May 2020 19:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391303AbgEYRJU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 May 2020 13:09:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42778 "EHLO mail.kernel.org"
+        id S2391300AbgEYRJV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 May 2020 13:09:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42806 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391300AbgEYRJT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 25 May 2020 13:09:19 -0400
+        id S2391297AbgEYRJU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 25 May 2020 13:09:20 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E0AEC207D8;
-        Mon, 25 May 2020 17:09:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C67F20849;
+        Mon, 25 May 2020 17:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590426558;
-        bh=CNWGTwBeYGJWxxzCexMKu10P8TSjcAkE0sqNRE5lu/Y=;
+        s=default; t=1590426559;
+        bh=f/Nc+hedZHg36KsmzFlx/ePuPCJOi0vgAcBQ6L23fr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sizrp5LYo7GJMNudqMb88tGXDWwf8RTL1XxuJ6+vfGrOeSVGlt4HQD10AECzPHNgt
-         7Ta0An6fghqafHnbB/yeuXDXIUTL+61oEwbrXg7hwm/bxyJ9O306fw3Q1cfr2qP4pK
-         pEK7/wwkChI5ifx9ZkAWfl2GCCZ4YDX9oVmeDJjA=
+        b=gMBwNncBiWiGqwGuZIOXEAW8hDbdPMLKL5ZZsGJKarLetA3w4dlZDnuD/WmJGBopv
+         9eBBdag2NcId3pMApdBede0f8w4A7HWr+puLYhtkcuMVSY0g1eDkYaTdPPn+e9Pn0f
+         qYkYI4iYc+7WIYtuIcpeHtaw7iju8Vwe1+DU4K0I=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>
-Subject: [PATCH 15/25] iio:pressure:mpl3115 Force alignment of buffer
-Date:   Mon, 25 May 2020 18:06:18 +0100
-Message-Id: <20200525170628.503283-16-jic23@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 16/25] iio:adc:ti-adc081c Fix alignment and data leak issues
+Date:   Mon, 25 May 2020 18:06:19 +0100
+Message-Id: <20200525170628.503283-17-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200525170628.503283-1-jic23@kernel.org>
 References: <20200525170628.503283-1-jic23@kernel.org>
@@ -43,42 +42,58 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Whilst this is another case of the issue Lars reported with
-an array of elements of smaller than 8 bytes being passed
-to iio_push_to_buffers_with_timestamp, the solution here is
-a bit different from the other cases and relies on __aligned
-working on the stack (true since 4.6?)
+One of a class of bugs pointed out by Lars in a recent review.
+iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+to the size of the timestamp (8 bytes).  This is not guaranteed in
+this driver which uses an array of smaller elements on the stack.
+As Lars also noted this anti pattern can involve a leak of data to
+userspace and that indeed can happen here.  We close both issues by
+moving to a suitable structure in the iio_priv().
 
-This one is unusual.  We have to do an explicit memset each time
-as we are reading 3 bytes into a potential 4 byte channel which
-may sometimes be a 2 byte channel depending on what is enabled.
-As such, moving the buffer to the heap in the iio_priv structure
-doesn't save us much.  We can't use a nice explicit structure
-on the stack either as the data channels have different storage
-sizes and are all separately controlled.
+This data is allocated with kzalloc so no data can leak apart
+from previous readings.
 
-Fixes: cc26ad455f57 ("iio: Add Freescale MPL3115A2 pressure / temperature sensor driver")
+Fixes: 08e05d1fce5c (" ti-adc081c: Initial triggered buffer support")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
 ---
- drivers/iio/pressure/mpl3115.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ti-adc081c.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-index d066f3c5a8a6..1eb761befcbe 100644
---- a/drivers/iio/pressure/mpl3115.c
-+++ b/drivers/iio/pressure/mpl3115.c
-@@ -144,7 +144,8 @@ static irqreturn_t mpl3115_trigger_handler(int irq, void *p)
+diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+index 0235863ff77b..a5c1a438370d 100644
+--- a/drivers/iio/adc/ti-adc081c.c
++++ b/drivers/iio/adc/ti-adc081c.c
+@@ -33,6 +33,12 @@ struct adc081c {
+ 
+ 	/* 8, 10 or 12 */
+ 	int bits;
++
++	/* Ensure natural alignment of buffer elements */
++	struct {
++		u16 channel;
++		s64 ts;
++	} scan;
+ };
+ 
+ #define REG_CONV_RES 0x00
+@@ -128,14 +134,13 @@ static irqreturn_t adc081c_trigger_handler(int irq, void *p)
  	struct iio_poll_func *pf = p;
  	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct mpl3115_data *data = iio_priv(indio_dev);
--	u8 buffer[16]; /* 32-bit channel + 16-bit channel + padding + ts */
-+	/* 32-bit channel + 16-bit channel + padding + ts */
-+	u8 buffer[16] __aligned(8);
- 	int ret, pos = 0;
+ 	struct adc081c *data = iio_priv(indio_dev);
+-	u16 buf[8]; /* 2 bytes data + 6 bytes padding + 8 bytes timestamp */
+ 	int ret;
  
- 	mutex_lock(&data->lock);
+ 	ret = i2c_smbus_read_word_swapped(data->i2c, REG_CONV_RES);
+ 	if (ret < 0)
+ 		goto out;
+-	buf[0] = ret;
+-	iio_push_to_buffers_with_timestamp(indio_dev, buf,
++	data->scan.channel = ret;
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+ 					   iio_get_time_ns(indio_dev));
+ out:
+ 	iio_trigger_notify_done(indio_dev->trig);
 -- 
 2.26.2
 

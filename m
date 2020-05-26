@@ -2,147 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F6F1E27E5
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 19:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FEA01E2803
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 19:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388274AbgEZRGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 May 2020 13:06:11 -0400
-Received: from mga14.intel.com ([192.55.52.115]:9250 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726930AbgEZRGK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 26 May 2020 13:06:10 -0400
-IronPort-SDR: ROoRGZ0GiNdncUK4e92MyE+5KabTDIJ+ePqY5AJF6SJLekbowtRC9xhqZXTrnUI/RUeZrbL4tP
- MtNoy6romdgQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 10:06:10 -0700
-IronPort-SDR: azjX+2o24VhGFB5KCVqaYfHxqqM8dBJJsXawqgLnWa6WT9AhycykgNpCu/P0h2qadEi/U6FWQZ
- VxQChmvQKZzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,437,1583222400"; 
-   d="scan'208";a="255217651"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007.fm.intel.com with ESMTP; 26 May 2020 10:06:09 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jdd1o-0092Ur-Hn; Tue, 26 May 2020 20:06:12 +0300
-Date:   Tue, 26 May 2020 20:06:12 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 19/25] iio:adc:ti-ads1015 Fix buffer element alignment
-Message-ID: <20200526170612.GY1634618@smile.fi.intel.com>
-References: <20200525170628.503283-1-jic23@kernel.org>
- <20200525170628.503283-20-jic23@kernel.org>
- <20200525175236.GG1634618@smile.fi.intel.com>
- <da67e0e4-5889-eb87-7bc0-fac07ae54e57@metafoo.de>
- <20200526091556.GN1634618@smile.fi.intel.com>
- <20200526174328.0000673d@Huawei.com>
+        id S2388463AbgEZRLt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 13:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388373AbgEZRLs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 13:11:48 -0400
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE798C03E96D;
+        Tue, 26 May 2020 10:11:48 -0700 (PDT)
+Received: by mail-qv1-xf44.google.com with SMTP id r16so989557qvm.6;
+        Tue, 26 May 2020 10:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KYV7/EJY8skNu4Mtq/Qn2Agcp3CmHlLCDVh2doozBEU=;
+        b=JwgYEdJDQ/uIIcFwlKyXpzLsjqIz68AIdnPC+fopKjr0+O03ByCELarQloCi43hpXw
+         T4skqKg491ay9e6Ss90HK8Nz8iwTozfzoENWKGmYFDzw8/JWdLzNv1vEsPiVjQ5qm48p
+         gfP0L+3lFoFd4iP0aXgBGAbGM/06liMiMW5owj4yBX4gfq7ftW7MFTX5b2NCj2FqUeIl
+         d8tuenFc9nl9DDYiZ/WxeT9r5lqJGzNMFuuWMhTIywN0/MriK7DvMMBQnNmj9IMpardx
+         t+pjezF0N0pP9IY1xNd7UadO7Gdj/a58GkbLUZHz1wEteG6Uml7f2TS/1ijuIVzpbux/
+         KmHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KYV7/EJY8skNu4Mtq/Qn2Agcp3CmHlLCDVh2doozBEU=;
+        b=eEG1ePi+1kyPbcI7Ly1XS3jV28HYKKrZDgBpO63oDGjZMNyoPQKsnoRlSV7sCvQfcA
+         C7mEX+8AbM3eYlgURwpcNXSJqZ0aehrpFRo+O4O6RoO+DjaMwm7MxH3HoFHg4TThIEmo
+         okY/Sl7jPYdOKJeWAdNHQW7QYMJYj7tqpsEoWjklz1sHVnuUm0sfYk8ww6t8KA9GhdPF
+         cVpIhU5/WgrpdFP+Yj21qVxs+IsntGRIen18EME4vBPlImYkLsYkAtSj5jQeu070c9J0
+         JnJZj1JJfNq0VISm02goIL+vB3CQebUpTLmpYCt7G+hPgS4xn0r8v64OqOA45dFwJG8Z
+         EIgw==
+X-Gm-Message-State: AOAM532g691a38DCiMEdhGU3GREaxlI4OOHOcSFzKVkB7N6Vbn/Bw4J2
+        M1Wst5oAfkTT0k3Zm7h9QVU=
+X-Google-Smtp-Source: ABdhPJzEDF5z8a+BdBW6FzpI5b4GVQxMz0KacM8N1MLQOhuXRFKizNhj68n7e7J/KVVH4OHepYffww==
+X-Received: by 2002:ad4:57a2:: with SMTP id g2mr21036833qvx.137.1590513107751;
+        Tue, 26 May 2020 10:11:47 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id x1sm225275qts.63.2020.05.26.10.11.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 26 May 2020 10:11:46 -0700 (PDT)
+Date:   Tue, 26 May 2020 19:11:37 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v6 3/5] dt-bindings: iio: magnetometer: ak8975: add gpio
+ reset support
+Message-ID: <20200526171137.GA21760@ict14-OptiPlex-980>
+References: <20200525151117.32540-1-jonathan.albrieux@gmail.com>
+ <20200525151117.32540-4-jonathan.albrieux@gmail.com>
+ <CACRpkdZo4PsC9Y8seMfS33escA6ZVKWwnbW2BCFOKiX2gY8RDw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200526174328.0000673d@Huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CACRpkdZo4PsC9Y8seMfS33escA6ZVKWwnbW2BCFOKiX2gY8RDw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 26, 2020 at 05:43:28PM +0100, Jonathan Cameron wrote:
-> On Tue, 26 May 2020 12:15:56 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, May 26, 2020 at 10:11:44AM +0200, Lars-Peter Clausen wrote:
-> > > On 5/25/20 7:52 PM, Andy Shevchenko wrote:  
-> > > > On Mon, May 25, 2020 at 06:06:22PM +0100, Jonathan Cameron wrote:  
-> > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-
-...
-
-> > > > > +	struct {
-> > > > > +		s16 channel;
-> > > > > +		s64 ts;
-> > > > > +	} scan;  
-> > > > Hmm... On x86_32 and x86_64 this will give different padding. Is it okay from
-> > > > iio_push_to_buffers_with_timestamp() point of view?  
-> > > 
-> > > No, this is terrible. IIO expects 64 bit words to be 64 bit aligned. Looks
-> > > like we can't rely on implicit padding, but need to always explicitly
-> > > specify it.
-> > > 
-> > > Or maybe we can typedef and IIO timestamp type with an explicit __aligned
-> > > attribute. I wonder if that works... After having a quick look, the kernel
-> > > already defines aligned_u64, so maybe using that is an option.  
-> > 
-> > Another way is simple to provide offset of timestamp member as a parameter.
-> > Though, if it's an ABI, then alas, we need to align it properly.
-> > 
-> > Also, wouldn't be better to explicitly show the padding?
-> > 
-> > 	struct {
-> > 		s16 channel;
-> > 		s16 padding[3];
-> > 		s64 ts;
-> > 	} scan;
-> > 
-> > (matter of style though, just saying).
-> > 
+On Tue, May 26, 2020 at 11:22:07AM +0200, Linus Walleij wrote:
+> On Mon, May 25, 2020 at 5:13 PM Jonathan Albrieux
+> <jonathan.albrieux@gmail.com> wrote:
 > 
-> gah.  Thanks for pointing this out Andy.  I wanted to avoid explicitly
-> calling out empty padding because it seemed to me to be more likely to
-> be error prone than filling it in.
+> > Add reset-gpio support.
+> >
+> > Without reset's deassertion during ak8975_power_on(), driver's probe fails
+> > on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+> >
+> > AK09911 has an active low reset gpio to handle register's reset.
+> > AK09911 datasheet says that, if not used, reset pin should be connected
+> > to VID. This patch emulates this situation.
+> >
+> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 > 
-> I was trying to avoid using __aligned on the stack as it only works for
-> more recent kernels (due to gcc version changes) and some of these predate
-> that point.
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > 
-> I guess we just do it explicitly in all these cases.
-> 
-> The two patches that have already gone to Greg both have sufficient
-> data to ensure the structure is big enough (only 16 bytes padding in one and
-> none in the other).
-> 
-> I think we are also fine for the original question as well as it won't
-> matter if the whole structure is aligned to 4 bytes on x86_32 and
-> similar as an 8 byte write will be fine.
-> 
-> So fun question - do we want to enforce 8 byte alignment of the whole
-> structure, or simply the padding?
-> 
-> Maybe better to just do the padding explicitly as Andy suggested.
+> Yours,
+> Linus Walleij
 
-I have talked to colleague of mine, and we concluded (but without any
-documentation proved evidence, one needs basically to read C standard followed
-by ABI of all architectures supported by Linux) that the following will work.
+Thank you!!
 
-Consider your patch, which introduces natural alignment via struct:
-
-	struct scan {
-		s16 ...;
-		...
-		s64 ts;
-	};
-
-When we access ts as struct member like scan->ts, compiler makes sure that
-there will be no hardware exception (due to unaligned access). Now, we _assume_
-that dereferencing like
-
-	void *buf = &scan;
-	(int64_t *)buf[ts_offset] = value;
-
-will work flawlessly because above.
-
-If it's indeed a case, what we simple need is to pass ts offset into
-iio_push_to_buffers_with_timestamp().
-
-If it's not the case, we _additionally_ will need to replace
-	(int64_t *)buf[ts_offset] = value;
-by
-	put_unaligned(value, (int64_t *)...);
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best regards,
+Jonathan Albrieux

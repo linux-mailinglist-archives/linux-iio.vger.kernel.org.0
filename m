@@ -2,72 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BCAF1E1F51
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 12:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5940F1E200E
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 12:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728765AbgEZKGU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 May 2020 06:06:20 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:54598 "EHLO zju.edu.cn"
+        id S1727009AbgEZKsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 06:48:04 -0400
+Received: from spam.zju.edu.cn ([61.164.42.155]:57540 "EHLO zju.edu.cn"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728048AbgEZKGT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 26 May 2020 06:06:19 -0400
-Received: by ajax-webmail-mail-app3 (Coremail) ; Tue, 26 May 2020 18:05:49
- +0800 (GMT+08:00)
-X-Originating-IP: [222.205.78.173]
-Date:   Tue, 26 May 2020 18:05:49 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Linus Walleij" <linus.walleij@linaro.org>
-Cc:     "Kangjie Lu" <kjlu@umn.edu>, "Jonathan Cameron" <jic23@kernel.org>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: Re: Re: [PATCH] iio: magnetometer: ak8974: Fix runtime PM
- imbalance on error
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.10 build 20190906(84e8bf8f)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <CACRpkdYr7mprhK9rdWEfuuwb7hxxc5aS5LZqKf4x5OgMrvh4CQ@mail.gmail.com>
-References: <20200524025117.15679-1-dinghao.liu@zju.edu.cn>
- <CACRpkda9ENYMLZVnTzN2rn9UvsMOWpeDnOhh7zs4ttAJqgipKw@mail.gmail.com>
- <58a22985.cfec2.1724f66f322.Coremail.dinghao.liu@zju.edu.cn>
- <CACRpkdYr7mprhK9rdWEfuuwb7hxxc5aS5LZqKf4x5OgMrvh4CQ@mail.gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
-Message-ID: <5ad23cba.d1763.172507207bb.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cC_KCgC3YXj96cxece8JAA--.2665W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgYMBlZdtOUELAABs9
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbX0S07vEb7Iv0x
-        C_Ar1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJr0_GcWlV2xY628EF7xvwVC2z280aVAFwI0_Gc
-        CE3s1lV2xY628EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wCS07vEe2I262IYc4CY6c8I
-        j28IcVAaY2xG8wCS07vE5I8CrVACY4xI64kE6c02F40Ex7xfMIAIbVAv7VC0I7IYx2IY67
-        AKxVWUJVWUGwCS07vEYx0Ex4A2jsIE14v26r1j6r4UMIAIbVAm72CE4IkC6x0Yz7v_Jr0_
-        Gr1lV2xY6x02cVAKzwCS07vEc2xSY4AK67AK6r4DMIAIbVCY0x0Ix7I2Y4AK64vIr41lV2
-        xY6xAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCS07vE4x8a6x804xWlV2xY6xC20s026xCa
-        FVCjc4AY6r1j6r4UMIAIbVC20s026c02F40E14v26r1j6r18MIAIbVC20s026x8GjcxK67
-        AKxVWUGVWUWwCS07vEx4CE17CEb7AF67AKxVWUtVW8ZwCS07vEIxAIcVC0I7IYx2IY67AK
-        xVWUJVWUCwCS07vEIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIAIbVCI42IY6xAIw2
-        0EY4v20xvaj40_WFyUJVCq3wCS07vEIxAIcVC2z280aVAFwI0_Jr0_Gr1lV2xY6IIF0xvE
-        x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU=
+        id S1726977AbgEZKsE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 26 May 2020 06:48:04 -0400
+Received: from localhost.localdomain (unknown [222.205.78.173])
+        by mail-app4 (Coremail) with SMTP id cS_KCgAHD1O288xeGV4XAA--.8295S4;
+        Tue, 26 May 2020 18:47:22 +0800 (CST)
+From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
+To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] [v2] iio: magnetometer: ak8974: Fix runtime PM imbalance on error
+Date:   Tue, 26 May 2020 18:47:17 +0800
+Message-Id: <20200526104717.3181-1-dinghao.liu@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cS_KCgAHD1O288xeGV4XAA--.8295S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrW7Ww47tw15urW5WFWxJFb_yoW5XF4fpr
+        WkZFy7trW8Xa47XF4YyrsI9ry5Ca9xJry8CrZYk3WUZF1ayFZ8tFn7Jr1aqF18CFZ7JF45
+        JF48t39ruF129r7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUva1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8twCF04k20xvY0x0EwIxG
+        rwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+        Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
+        6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+        kF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv
+        67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
+        uYvjfUonmRUUUUU
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgcMBlZdtOUGZwABs1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiBXaGF0IGFib3V0IGp1c3QgbW92aW5nIHRoZSBwbV9ydW50aW1lX3B1dCgpIHVudGlsIHRoZSBl
-bmQKPiBvZiB0aGUgaW5pdGlhbGl6YXRpb24/IFJpZ2h0IGJlZm9yZSByZXR1cm4gMDsKPiBUaGVu
-IHdlIGNhbiBrZWVwIHRoaXMgbmljZSBnb3RvIGV4aXRzIGFzIHRoZXkgYXJlLgo+IAo+IE1heWJl
-IG1vdmUgYWxsIHRoZXNlIHRocmVlOgo+IAo+ICAgICAgIHBtX3J1bnRpbWVfc2V0X2F1dG9zdXNw
-ZW5kX2RlbGF5KCZpMmMtPmRldiwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIEFLODk3NF9BVVRPU1VTUEVORF9ERUxBWSk7Cj4gICAgICAgICBwbV9ydW50aW1lX3Vz
-ZV9hdXRvc3VzcGVuZCgmaTJjLT5kZXYpOwo+ICAgICAgICAgcG1fcnVudGltZV9wdXQoJmkyYy0+
-ZGV2KTsKPiAKCkdvb2QgaWRlYSEgVGhhbmsgeW91IGZvciB5b3VyIGFkdmljZSBhbmQgSSB3aWxs
-IGZpeCB0aGlzIAppbiB0aGUgbmV4dCB2ZXJzaW9uIG9mIHBhdGNoLiAKClJlZ2FyZHMsCkRpbmdo
-YW8=
+When devm_regmap_init_i2c() returns an error code, a pairing
+runtime PM usage counter decrement is needed to keep the
+counter balanced. For error paths after ak8974_set_power(),
+ak8974_detect() and ak8974_reset(), things are the same.
+
+However, When iio_triggered_buffer_setup() returns an error
+code, there will be two PM usgae counter decrements.
+
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+---
+
+Changelog:
+
+v2: - Change 3 goto targets from "power_off" to
+      "disabel_pm". Remove unused lable "power_off".
+      Move 3 PM runtime related calls to the end of
+      the function.
+---
+ drivers/iio/magnetometer/ak8974.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+index d32996702110..c48c67d4b371 100644
+--- a/drivers/iio/magnetometer/ak8974.c
++++ b/drivers/iio/magnetometer/ak8974.c
+@@ -764,19 +764,21 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 	ak8974->map = devm_regmap_init_i2c(i2c, &ak8974_regmap_config);
+ 	if (IS_ERR(ak8974->map)) {
+ 		dev_err(&i2c->dev, "failed to allocate register map\n");
++		pm_runtime_put_noidle(&i2c->dev);
++		pm_runtime_disable(&i2c->dev);
+ 		return PTR_ERR(ak8974->map);
+ 	}
+ 
+ 	ret = ak8974_set_power(ak8974, AK8974_PWR_ON);
+ 	if (ret) {
+ 		dev_err(&i2c->dev, "could not power on\n");
+-		goto power_off;
++		goto disable_pm;
+ 	}
+ 
+ 	ret = ak8974_detect(ak8974);
+ 	if (ret) {
+ 		dev_err(&i2c->dev, "neither AK8974 nor AMI30x found\n");
+-		goto power_off;
++		goto disable_pm;
+ 	}
+ 
+ 	ret = ak8974_selftest(ak8974);
+@@ -786,14 +788,9 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 	ret = ak8974_reset(ak8974);
+ 	if (ret) {
+ 		dev_err(&i2c->dev, "AK8974 reset failed\n");
+-		goto power_off;
++		goto disable_pm;
+ 	}
+ 
+-	pm_runtime_set_autosuspend_delay(&i2c->dev,
+-					 AK8974_AUTOSUSPEND_DELAY);
+-	pm_runtime_use_autosuspend(&i2c->dev);
+-	pm_runtime_put(&i2c->dev);
+-
+ 	indio_dev->dev.parent = &i2c->dev;
+ 	indio_dev->channels = ak8974_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(ak8974_channels);
+@@ -846,6 +843,11 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 		goto cleanup_buffer;
+ 	}
+ 
++	pm_runtime_set_autosuspend_delay(&i2c->dev,
++					 AK8974_AUTOSUSPEND_DELAY);
++	pm_runtime_use_autosuspend(&i2c->dev);
++	pm_runtime_put(&i2c->dev);
++
+ 	return 0;
+ 
+ cleanup_buffer:
+@@ -854,7 +856,6 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 	pm_runtime_put_noidle(&i2c->dev);
+ 	pm_runtime_disable(&i2c->dev);
+ 	ak8974_set_power(ak8974, AK8974_PWR_OFF);
+-power_off:
+ 	regulator_bulk_disable(ARRAY_SIZE(ak8974->regs), ak8974->regs);
+ 
+ 	return ret;
+-- 
+2.17.1
+

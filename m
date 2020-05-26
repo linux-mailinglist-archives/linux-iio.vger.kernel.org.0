@@ -2,168 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BCCA1E2CCD
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 21:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EE41E2EB7
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 21:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392224AbgEZTRr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 26 May 2020 15:17:47 -0400
-Received: from balrog.mythic-beasts.com ([46.235.227.24]:50807 "EHLO
-        balrog.mythic-beasts.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389654AbgEZTRo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 15:17:44 -0400
-Received: from [2a00:1098:80::1:1] (port=36112 helo=erriapus.retrosnub.co.uk)
-        by balrog.mythic-beasts.com with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1jdf4t-0006zj-6U; Tue, 26 May 2020 20:17:31 +0100
-Received: from [192.168.0.10] (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by erriapus.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 5BF033A010C;
-        Tue, 26 May 2020 20:17:10 +0100 (BST)
-Date:   Tue, 26 May 2020 20:17:11 +0100
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20200526170612.GY1634618@smile.fi.intel.com>
-References: <20200525170628.503283-1-jic23@kernel.org> <20200525170628.503283-20-jic23@kernel.org> <20200525175236.GG1634618@smile.fi.intel.com> <da67e0e4-5889-eb87-7bc0-fac07ae54e57@metafoo.de> <20200526091556.GN1634618@smile.fi.intel.com> <20200526174328.0000673d@Huawei.com> <20200526170612.GY1634618@smile.fi.intel.com>
+        id S2390440AbgEZTb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 15:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391236AbgEZTbX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 15:31:23 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70258C03E96D
+        for <linux-iio@vger.kernel.org>; Tue, 26 May 2020 12:31:23 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id s18so9419333ioe.2
+        for <linux-iio@vger.kernel.org>; Tue, 26 May 2020 12:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DnCQ4lhG/YlYramaw4jbZFb6k6+oix6HHllYpDJH5TM=;
+        b=UtwqVoUkoaR0/IG+IAuUWOLb+rGVK5ZgrvpCI9Flg17ZofTBZ1ng596vaqUvE3Ffzx
+         7lH/8douPtqW3ExINsuvY+rahTcVc7pj9olk2hfqw0UyW+5UQ4c7ExeX9GRRI7nJfq97
+         XaFv2szaHfOKAj6WTF2dFM4G5AtsE/epBelnE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DnCQ4lhG/YlYramaw4jbZFb6k6+oix6HHllYpDJH5TM=;
+        b=h4hLgFDlsW55vkltdAberXIKmdj1LZ36zyy6X4QHwz7eZdexy9CljPcViYMjxCneAT
+         /ppYcJLxom6UuEfeis+E6siXDgpnLwM7a6r9+ekmo1Dk/2CkPtuuIuVzxkCEW6E3oa2U
+         Ol62oLaJqBIWDOGawolQPvVPWbfLZIUZ16XzZtumVjxhwPAx/YC+lOf0n87c9jBZKX5M
+         Ood5XQA28uIVRaEiUxlLpezsPvj0ozHP30IkaCicdvcReY/8vRu8jSWgffiOcBFcxWeL
+         lcK60R0FYr3TNQ9kNvsrdIouD1M3nw7LTQr++Y11i/YiuFApTDEGZFFEzAaZHJP1zFyQ
+         R+Ng==
+X-Gm-Message-State: AOAM5322PBkTIg4wbrwRQdZsn+Tek1dh2wDgjM7RQm95e/Xm4eeb+6Pv
+        vJxBIgKJ9c36sErCYfTNS9q1h4moOhy23F6UR6L7Cg==
+X-Google-Smtp-Source: ABdhPJyWRdAwvnrcrWb9/2bGHNu3aJy7KyzXf//n491Fa8j8zyXQh9QBSQiyiStSe9GQrDIr+LVoFB3cuPFKAQ151rs=
+X-Received: by 2002:a6b:3e86:: with SMTP id l128mr11755785ioa.95.1590521482734;
+ Tue, 26 May 2020 12:31:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Subject: Re: [PATCH 19/25] iio:adc:ti-ads1015 Fix buffer element alignment
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Message-ID: <E1CB2D23-5B37-47E7-8782-ACC296EE5712@jic23.retrosnub.co.uk>
-X-Mythic-Source-External: YES
+References: <20200525170628.503283-1-jic23@kernel.org> <20200525170628.503283-10-jic23@kernel.org>
+In-Reply-To: <20200525170628.503283-10-jic23@kernel.org>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Tue, 26 May 2020 12:31:11 -0700
+Message-ID: <CAJCx=g=cCucvub6-kPq5+tGu5M+J_LqJDwmDCoHj-aLUGQk6kQ@mail.gmail.com>
+Subject: Re: [PATCH 09/25] iio:humidity:hdc100x Fix alignment and data leak issues
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alison Schofield <amsfield22@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, May 25, 2020 at 10:09 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> One of a class of bugs pointed out by Lars in a recent review.
+> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> this driver which uses an array of smaller elements on the stack.
+> As Lars also noted this anti pattern can involve a leak of data to
+> userspace and that indeed can happen here.  We close both issues by
+> moving to a suitable structure in the iio_priv() data.
+> This data is allocated with kzalloc so no data can leak apart
+> from previous readings.
+>
 
+Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
-On 26 May 2020 18:06:12 BST, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->On Tue, May 26, 2020 at 05:43:28PM +0100, Jonathan Cameron wrote:
->> On Tue, 26 May 2020 12:15:56 +0300
->> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->> > On Tue, May 26, 2020 at 10:11:44AM +0200, Lars-Peter Clausen wrote:
->> > > On 5/25/20 7:52 PM, Andy Shevchenko wrote:  
->> > > > On Mon, May 25, 2020 at 06:06:22PM +0100, Jonathan Cameron
->wrote:  
->> > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> Fixes: 16bf793f86b2 ("iio: humidity: hdc100x: add triggered buffer support for HDC100X")
+> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Alison Schofield <amsfield22@gmail.com>
+> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+> ---
+>  drivers/iio/humidity/hdc100x.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 >
->...
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 7ecd2ffa3132..fd825e281d4f 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -38,6 +38,11 @@ struct hdc100x_data {
 >
->> > > > > +	struct {
->> > > > > +		s16 channel;
->> > > > > +		s64 ts;
->> > > > > +	} scan;  
->> > > > Hmm... On x86_32 and x86_64 this will give different padding.
->Is it okay from
->> > > > iio_push_to_buffers_with_timestamp() point of view?  
->> > > 
->> > > No, this is terrible. IIO expects 64 bit words to be 64 bit
->aligned. Looks
->> > > like we can't rely on implicit padding, but need to always
->explicitly
->> > > specify it.
->> > > 
->> > > Or maybe we can typedef and IIO timestamp type with an explicit
->__aligned
->> > > attribute. I wonder if that works... After having a quick look,
->the kernel
->> > > already defines aligned_u64, so maybe using that is an option.  
->> > 
->> > Another way is simple to provide offset of timestamp member as a
->parameter.
->> > Though, if it's an ABI, then alas, we need to align it properly.
->> > 
->> > Also, wouldn't be better to explicitly show the padding?
->> > 
->> > 	struct {
->> > 		s16 channel;
->> > 		s16 padding[3];
->> > 		s64 ts;
->> > 	} scan;
->> > 
->> > (matter of style though, just saying).
->> > 
->> 
->> gah.  Thanks for pointing this out Andy.  I wanted to avoid
->explicitly
->> calling out empty padding because it seemed to me to be more likely
->to
->> be error prone than filling it in.
->> 
->> I was trying to avoid using __aligned on the stack as it only works
->for
->> more recent kernels (due to gcc version changes) and some of these
->predate
->> that point.
->> 
->> I guess we just do it explicitly in all these cases.
->> 
->> The two patches that have already gone to Greg both have sufficient
->> data to ensure the structure is big enough (only 16 bytes padding in
->one and
->> none in the other).
->> 
->> I think we are also fine for the original question as well as it
->won't
->> matter if the whole structure is aligned to 4 bytes on x86_32 and
->> similar as an 8 byte write will be fine.
->> 
->> So fun question - do we want to enforce 8 byte alignment of the whole
->> structure, or simply the padding?
->> 
->> Maybe better to just do the padding explicitly as Andy suggested.
+>         /* integration time of the sensor */
+>         int adc_int_us[2];
+> +       /* Ensure natural alignment of timestamp */
+> +       struct {
+> +               __be16 channels[2];
+> +               s64 ts;
+> +       } scan;
+>  };
 >
->I have talked to colleague of mine, and we concluded (but without any
->documentation proved evidence, one needs basically to read C standard
->followed
->by ABI of all architectures supported by Linux) that the following will
->work.
+>  /* integration time in us */
+> @@ -322,7 +327,6 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
+>         struct i2c_client *client = data->client;
+>         int delay = data->adc_int_us[0] + data->adc_int_us[1];
+>         int ret;
+> -       s16 buf[8];  /* 2x s16 + padding + 8 byte timestamp */
 >
->Consider your patch, which introduces natural alignment via struct:
+>         /* dual read starts at temp register */
+>         mutex_lock(&data->lock);
+> @@ -333,13 +337,13 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
+>         }
+>         usleep_range(delay, delay + 1000);
 >
->	struct scan {
->		s16 ...;
->		...
->		s64 ts;
->	};
+> -       ret = i2c_master_recv(client, (u8 *)buf, 4);
+> +       ret = i2c_master_recv(client, (u8 *)data->scan.channels, 4);
+>         if (ret < 0) {
+>                 dev_err(&client->dev, "cannot read sensor data\n");
+>                 goto err;
+>         }
 >
->When we access ts as struct member like scan->ts, compiler makes sure
->that
->there will be no hardware exception (due to unaligned access). Now, we
->_assume_
->that dereferencing like
+> -       iio_push_to_buffers_with_timestamp(indio_dev, buf,
+> +       iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+>                                            iio_get_time_ns(indio_dev));
+>  err:
+>         mutex_unlock(&data->lock);
+> --
+> 2.26.2
 >
->	void *buf = &scan;
->	(int64_t *)buf[ts_offset] = value;
->
->will work flawlessly because above.
->
->If it's indeed a case, what we simple need is to pass ts offset into
->iio_push_to_buffers_with_timestamp().
-
-Realistically it might work but doesn't help us. We need all receivers of that buffer to
- know the location of ts.  It has always been implicit like any other channel. 
- Rules are natural alignment so alignment is same as size of element. 
-
-Hence we need to ensure padding, but I'm not sure about alignment.  If padding was
-right for 8 byte alignment but whole structure had 4 byte alignment then I think we
- should be fine. So slightly more relaxed the ensuring ts is 8 byte aligned. 
-
-Might be easier to just align it though than explain this subtlety. 
-
-J
-
-
->
->If it's not the case, we _additionally_ will need to replace
->	(int64_t *)buf[ts_offset] = value;
->by
->	put_unaligned(value, (int64_t *)...);
-
--- 
-Sent from my Android device with K-9 Mail. Please excuse my brevity.

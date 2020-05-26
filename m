@@ -2,380 +2,466 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00271E22A6
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 15:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72FB1E233F
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 15:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726882AbgEZNGN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 May 2020 09:06:13 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:42714 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726555AbgEZNGM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 09:06:12 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04QD0TdQ021641;
-        Tue, 26 May 2020 09:05:56 -0400
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2056.outbound.protection.outlook.com [104.47.37.56])
-        by mx0b-00128a01.pphosted.com with ESMTP id 3170f7ynxx-1
+        id S1728148AbgEZNpk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 09:45:40 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:32968 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726618AbgEZNpj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 09:45:39 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04QDfhT7032104;
+        Tue, 26 May 2020 09:45:28 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3170r61gch-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 May 2020 09:05:56 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lYq39Svc3yZQmS5F25LzZTcL7Rw5wbvFiyuXPoW9HlW8ZhWMOFB3cdnduTRYxp4G4e8xkybiA0wGucRNvizl3uXzimPcpIfFK5LUUL1/rhDcmgA/w1myhKekQZJKEdQxyLJarKlFUobUIRgvrr8tikawXY/xVEuACG+20MZhHLOw96ptWw0L7gzLQkrVe5aKhbMacXLwvluIFjK8agDGNyd/dgaJlB95gzIsWdB45CiMX8cswC0qp1M56JrRpQNiQizKEmdAwCVnBuI6HW2SLZZHnbQ5cZbHTYK7YRBcy3ygqYVNKzqTYUm9KYv9xxZmDr2a1zUcjmAnhipydnmCWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8vEshS6PXhaSpORFoPHHQ4fMjlJhcdfV+kW9gghfP2k=;
- b=XrgXo7AJ0AB5hArELQxuKns278ixz87SjHgD7pa9Cr/EtWuIT6eMyvJ91/oL1i+isA/dvIgOWGsIkfFt+BH0dMgFIDTd7nb8wsJ5ba0C01cfWPDfhnWMk5SzQ1UtXEDv6AQnfj4pwiGt4Te8Au3NPzBJ4WH+x3moAdU5iV6MuXKtsEdT/JtW1aqpgD0nEqxKXXhc4mrrTFaalcUfe3wc9ZaTOa4OoqqxP1oc0nU0m5At+tEeAh2b8M4XoCoZtHy1PawOa3e3vyLPg0YluA65OSqIhOypmfXOy9ya1UJoG5qA3qfezbDhJHo0zPiY7T9ROgMmq1L11QkYmW73xxKP2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8vEshS6PXhaSpORFoPHHQ4fMjlJhcdfV+kW9gghfP2k=;
- b=w9mLqfvMemj68GzYRnSuexBob0KXVNx4v4Q8X5RIDO2AtBTwFuxRF/8ofpbzJSj68rCfsWbel8WpA0qiu4+d/GNjHykklaq07IRd3oKO+0XHZfDaYa1Q+cZSbAm6LWvDrTTFLpuWB881g3U3Ty2m4AbHtR7REtX+cWEQx2mSjKY=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB5066.namprd03.prod.outlook.com (2603:10b6:5:1e7::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.24; Tue, 26 May
- 2020 13:05:54 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3021.029; Tue, 26 May 2020
- 13:05:54 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "linux-stm32@st-md-mailman.stormreply.com" 
+        Tue, 26 May 2020 09:45:27 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 04QDjQxg023086
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 26 May 2020 09:45:26 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 26 May 2020 09:45:25 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 26 May 2020 09:45:25 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 26 May 2020 09:45:25 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04QDjMnC027868;
+        Tue, 26 May 2020 09:45:23 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>,
         <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        "fabrice.gasnier@st.com" <fabrice.gasnier@st.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "olivier.moysan@st.com" <olivier.moysan@st.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        "alexandre.torgue@st.com" <alexandre.torgue@st.com>
-Subject: Re: [PATCH v2] iio: stm32-adc: remove usage of iio_priv_to_dev()
- helper
-Thread-Topic: [PATCH v2] iio: stm32-adc: remove usage of iio_priv_to_dev()
- helper
-Thread-Index: AQHWMrFtJcu1getlvU+iqjcc3GVBS6i6V2KA
-Date:   Tue, 26 May 2020 13:05:54 +0000
-Message-ID: <1915a3a8035791855abbe4feb97a4abced31d20b.camel@analog.com>
-References: <20200522130719.630714-1-alexandru.ardelean@analog.com>
-         <20200525090720.72696-1-alexandru.ardelean@analog.com>
-         <447a0db3-0c20-859c-b5f2-7716c57a7e0e@st.com>
-In-Reply-To: <447a0db3-0c20-859c-b5f2-7716c57a7e0e@st.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: st-md-mailman.stormreply.com; dkim=none (message not
- signed) header.d=none;st-md-mailman.stormreply.com; dmarc=none action=none
- header.from=analog.com;
-x-originating-ip: [188.27.130.247]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 2a8b680a-b85c-4f08-2c89-08d80175863f
-x-ms-traffictypediagnostic: DM6PR03MB5066:
-x-microsoft-antispam-prvs: <DM6PR03MB506619DF6811DFD6ABA75AB0F9B00@DM6PR03MB5066.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-forefront-prvs: 041517DFAB
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1QJoObbg/RF58IUWwNJK7tbBaAmzHE9uKw2h3lGzXzPJzmniZkFL2DTCkolfWqEY23V97LOEeCAo5wB2La4ggg2hn24zwFoqGkUOWWSH6vMpmshum59nHtQKjGtO9iVwaakZSJ4vJSdh1xjSjp8Gg/QT9+CFKBnwE/58k3VfUiTyOqPOkoImmIfk7+ZyYLh4z5/3+YhXRfJv3QoduV/hnHidpkKxXMWHF/oslPDrDrC6D5AKQIknqRx2hO/cZ8TlajpUY3+qhq7yQWnDGjnHpCJSFqdH1KJh5LIBArHsudlYJk+M1tiw1vbOmoj0ZMLlqzTYyziwnNwPK+woXMQMyEs4DrObP7Zf2I4lFiX+5rl/1whrnqvzQWVWBnCm3rEf
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(136003)(376002)(396003)(39850400004)(366004)(346002)(26005)(66476007)(110136005)(186003)(66556008)(64756008)(91956017)(8676002)(66946007)(53546011)(30864003)(86362001)(478600001)(66446008)(8936002)(76116006)(316002)(6506007)(2906002)(54906003)(2616005)(6486002)(4326008)(6512007)(71200400001)(36756003)(5660300002)(309714004);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: cLZmXydIRkj5AWGpBEbKKYaDUUzatKNgnQFtT6xwM1i3bEx/kiTbx1q2apmF4JSDpgumgq/zm2brSmqPTpY3GEi9yDCBSJ8DZLPiJX364O1nnrVdI8rbnF9F8kvmYOgkieMRSmXQ/3cPQXy7qMe/eyW4GGz+hmUJBXeiZl3/0rGkFYwhtc0Sd2yxajHnHB5aOfjWZj7ALSjmFSHiYg/+iF0fpeMCPnCmqHVOeMmP2JxQ4cc5gYFwk2irJ5aFeml9KaKM/5Q3SUtQ4EBdGR93L1K6SM/KAGLOXEjBXTohGyl6NjvilN/yEvXk/JvbR6jcPuiRgM505c9h9XCEogc09NvN+JwZ1NMKc72AOtXwsgIjzcZxdTBdAChjNz2vLQ8CVjZwAaTk8au3AeRn0z8r4LZNYzz3ZBami5FyNKQkimH0OFp/L+zgdxi4txv25QCeZviCapAobm8UBWM1MGFrk4cPns82wbYXiX7kMBuF9qKBDeTgTGB5ym8g82mKoN09
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C3C0512F9427234C913ACD82C70C6B18@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <olivier.moysan@st.com>,
+        <fabrice.gasnier@st.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v3] iio: stm32-adc:  remove usage of iio_priv_to_dev() helper
+Date:   Tue, 26 May 2020 16:44:48 +0300
+Message-ID: <20200526134448.7328-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200525090720.72696-1-alexandru.ardelean@analog.com>
+References: <20200525090720.72696-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a8b680a-b85c-4f08-2c89-08d80175863f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 May 2020 13:05:54.6534
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aazUJevFNOEx9P45skQpEvs2ryOGH6N8qaNxWSTca5yoLgjzpi7CNYfkn4R1TIGVqrf/fP5ytwYjVwouX0nUOl1+0g+yL8rN1/0mzZigFEM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5066
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
  definitions=2020-05-26_02:2020-05-26,2020-05-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0 mlxscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005260099
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 spamscore=0 clxscore=1015 cotscore=-2147483648 adultscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005260105
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTA1LTI1IGF0IDE4OjI3ICswMjAwLCBGYWJyaWNlIEdhc25pZXIgd3JvdGU6
-DQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIDUvMjUvMjAgMTE6MDcgQU0sIEFsZXhhbmRydSBBcmRl
-bGVhbiB3cm90ZToNCj4gPiBXZSBtYXkgd2FudCB0byBnZXQgcmlkIG9mIHRoZSBpaW9fcHJpdl90
-b19kZXYoKSBoZWxwZXIuIFRoZSByZWFzb24gaXMNCj4gPiB0aGF0DQo+ID4gd2Ugd2lsbCBoaWRl
-IHNvbWUgb2YgdGhlIG1lbWJlcnMgb2YgdGhlIGlpb19kZXYgc3RydWN0dXJlICh0byBwcmV2ZW50
-DQo+ID4gZHJpdmVycyBmcm9tIGFjY2Vzc2luZyB0aGVtIGRpcmVjdGx5KSwgYW5kIHRoYXQgd2ls
-bCBhbHNvIG1lYW4gaGlkaW5nDQo+ID4gdGhlDQo+ID4gaW1wbGVtZW50YXRpb24gb2YgdGhlIGlp
-b19wcml2X3RvX2RldigpIGhlbHBlciBpbnNpZGUgdGhlIElJTyBjb3JlLg0KPiA+IA0KPiA+IEhp
-ZGluZyB0aGUgaW1wbGVtZW50YXRpb24gb2YgaWlvX3ByaXZfdG9fZGV2KCkgaW1wbGllcyB0aGF0
-IHNvbWUgZmFzdC0NCj4gPiBwYXRocw0KPiA+IG1heSBub3QgYmUgZmFzdCBhbnltb3JlLCBzbyBh
-IGdlbmVyYWwgaWRlYSBpcyB0byB0cnkgdG8gZ2V0IHJpZCBvZiB0aGUNCj4gPiBpaW9fcHJpdl90
-b19kZXYoKSBhbHRvZ2V0aGVyLg0KPiA+IFRoZSBpaW9fcHJpdigpIGhlbHBlciB3b24ndCBiZSBh
-ZmZlY3RlZCBieSB0aGUgcmV3b3JrLCBhcyB0aGUgaWlvX2Rldg0KPiA+IHN0cnVjdCB3aWxsIGtl
-ZXAgYSByZWZlcmVuY2UgdG8gdGhlIHByaXZhdGUgaW5mb3JtYXRpb24uDQo+ID4gDQo+ID4gRm9y
-IHRoaXMgZHJpdmVyLCBub3QgdXNpbmcgaWlvX3ByaXZfdG9fZGV2KCksIG1lYW5zIHJld29ya2lu
-ZyBzb21lDQo+ID4gcGF0aHMgdG8NCj4gPiBwYXNzIHRoZSBpaW8gZGV2aWNlIGFuZCB1c2luZyBp
-aW9fcHJpdigpIHRvIGFjY2VzcyB0aGUgcHJpdmF0ZQ0KPiA+IGluZm9ybWF0aW9uLg0KPiA+IA0K
-PiA+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFu
-QGFuYWxvZy5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvaWlvL2FkYy9zdG0zMi1hZGMuYyB8
-IDEwOCArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDU4IGluc2VydGlvbnMoKyksIDUwIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL2lpby9hZGMvc3RtMzItYWRjLmMgYi9kcml2ZXJzL2lpby9hZGMvc3Rt
-MzItYWRjLmMNCj4gPiBpbmRleCBhZTYyMmVlNmQwOGMuLjk0MjhjNWMyMjcxMiAxMDA2NDQNCj4g
-PiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvc3RtMzItYWRjLmMNCj4gPiArKysgYi9kcml2ZXJzL2lp
-by9hZGMvc3RtMzItYWRjLmMNCj4gPiBAQCAtMTYyLDEwICsxNjIsMTAgQEAgc3RydWN0IHN0bTMy
-X2FkY19jZmcgew0KPiA+ICAJc3RydWN0IHN0bTMyX2FkY190cmlnX2luZm8JKnRyaWdzOw0KPiA+
-ICAJYm9vbCBjbGtfcmVxdWlyZWQ7DQo+ID4gIAlib29sIGhhc192cmVncmVhZHk7DQo+ID4gLQlp
-bnQgKCpwcmVwYXJlKShzdHJ1Y3Qgc3RtMzJfYWRjICopOw0KPiA+IC0Jdm9pZCAoKnN0YXJ0X2Nv
-bnYpKHN0cnVjdCBzdG0zMl9hZGMgKiwgYm9vbCBkbWEpOw0KPiA+IC0Jdm9pZCAoKnN0b3BfY29u
-dikoc3RydWN0IHN0bTMyX2FkYyAqKTsNCj4gPiAtCXZvaWQgKCp1bnByZXBhcmUpKHN0cnVjdCBz
-dG0zMl9hZGMgKik7DQo+ID4gKwlpbnQgKCpwcmVwYXJlKShzdHJ1Y3QgaWlvX2RldiAqKTsNCj4g
-PiArCXZvaWQgKCpzdGFydF9jb252KShzdHJ1Y3QgaWlvX2RldiAqLCBib29sIGRtYSk7DQo+ID4g
-Kwl2b2lkICgqc3RvcF9jb252KShzdHJ1Y3QgaWlvX2RldiAqKTsNCj4gPiArCXZvaWQgKCp1bnBy
-ZXBhcmUpKHN0cnVjdCBpaW9fZGV2ICopOw0KPiA+ICAJY29uc3QgdW5zaWduZWQgaW50ICpzbXBf
-Y3ljbGVzOw0KPiA+ICB9Ow0KPiA+ICANCj4gPiBAQCAtNTM4LDEwICs1MzgsMTEgQEAgc3RhdGlj
-IHZvaWQgc3RtMzJfYWRjX3NldF9yZXMoc3RydWN0IHN0bTMyX2FkYw0KPiA+ICphZGMpDQo+ID4g
-IA0KPiA+ICBzdGF0aWMgaW50IHN0bTMyX2FkY19od19zdG9wKHN0cnVjdCBkZXZpY2UgKmRldikN
-Cj4gPiAgew0KPiA+IC0Jc3RydWN0IHN0bTMyX2FkYyAqYWRjID0gZGV2X2dldF9kcnZkYXRhKGRl
-dik7DQo+ID4gKwlzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gZGV2X2dldF9kcnZkYXRhKGRl
-dik7DQo+ID4gKwlzdHJ1Y3Qgc3RtMzJfYWRjICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0K
-PiA+ICANCj4gPiAgCWlmIChhZGMtPmNmZy0+dW5wcmVwYXJlKQ0KPiA+IC0JCWFkYy0+Y2ZnLT51
-bnByZXBhcmUoYWRjKTsNCj4gPiArCQlhZGMtPmNmZy0+dW5wcmVwYXJlKGluZGlvX2Rldik7DQo+
-ID4gIA0KPiA+ICAJaWYgKGFkYy0+Y2xrKQ0KPiA+ICAJCWNsa19kaXNhYmxlX3VucHJlcGFyZShh
-ZGMtPmNsayk7DQo+ID4gQEAgLTU1MSw3ICs1NTIsOCBAQCBzdGF0aWMgaW50IHN0bTMyX2FkY19o
-d19zdG9wKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gPiAgDQo+ID4gIHN0YXRpYyBpbnQgc3RtMzJf
-YWRjX2h3X3N0YXJ0KHN0cnVjdCBkZXZpY2UgKmRldikNCj4gPiAgew0KPiA+IC0Jc3RydWN0IHN0
-bTMyX2FkYyAqYWRjID0gZGV2X2dldF9kcnZkYXRhKGRldik7DQo+ID4gKwlzdHJ1Y3QgaWlvX2Rl
-diAqaW5kaW9fZGV2ID0gZGV2X2dldF9kcnZkYXRhKGRldik7DQo+ID4gKwlzdHJ1Y3Qgc3RtMzJf
-YWRjICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICAJaW50IHJldDsNCj4gPiAgDQo+
-ID4gIAlpZiAoYWRjLT5jbGspIHsNCj4gPiBAQCAtNTYzLDcgKzU2NSw3IEBAIHN0YXRpYyBpbnQg
-c3RtMzJfYWRjX2h3X3N0YXJ0KHN0cnVjdCBkZXZpY2UgKmRldikNCj4gPiAgCXN0bTMyX2FkY19z
-ZXRfcmVzKGFkYyk7DQo+ID4gIA0KPiA+ICAJaWYgKGFkYy0+Y2ZnLT5wcmVwYXJlKSB7DQo+ID4g
-LQkJcmV0ID0gYWRjLT5jZmctPnByZXBhcmUoYWRjKTsNCj4gPiArCQlyZXQgPSBhZGMtPmNmZy0+
-cHJlcGFyZShpbmRpb19kZXYpOw0KPiA+ICAJCWlmIChyZXQpDQo+ID4gIAkJCWdvdG8gZXJyX2Ns
-a19kaXM7DQo+ID4gIAl9DQo+ID4gQEAgLTU4Nyw4ICs1ODksMTAgQEAgc3RhdGljIGludCBzdG0z
-Ml9hZGNfaHdfc3RhcnQoc3RydWN0IGRldmljZSAqZGV2KQ0KPiA+ICAgKiBjb252ZXJzaW9ucywg
-aW4gSUlPIGJ1ZmZlciBtb2Rlcy4gT3RoZXJ3aXNlLCB1c2UgQURDIGludGVycnVwdCB3aXRoDQo+
-ID4gZGlyZWN0DQo+ID4gICAqIERSIHJlYWQgaW5zdGVhZCAoZS5nLiByZWFkX3Jhdywgb3IgdHJp
-Z2dlcmVkIGJ1ZmZlciBtb2RlIHdpdGhvdXQNCj4gPiBETUEpLg0KPiA+ICAgKi8NCj4gPiAtc3Rh
-dGljIHZvaWQgc3RtMzJmNF9hZGNfc3RhcnRfY29udihzdHJ1Y3Qgc3RtMzJfYWRjICphZGMsIGJv
-b2wgZG1hKQ0KPiA+ICtzdGF0aWMgdm9pZCBzdG0zMmY0X2FkY19zdGFydF9jb252KHN0cnVjdCBp
-aW9fZGV2ICppbmRpb19kZXYsIGJvb2wNCj4gPiBkbWEpDQo+IA0KPiBIaSBBbGV4YW5kcnUsDQo+
-IA0KPiBJJ3ZlIHRlc3RlZCB5b3VyIHBhdGNoLiBJJ3ZlIG5vIG9iamVjdGlvbiwgYnV0IGZvdW5k
-IGZldyBidWlsZCB3YXJuaW5ncw0KPiAoc29tZSBvZiB0aGVzZSByb3V0aW5lcyBoYXZlIGtlcm5l
-bC1kb2Mgc3R5bGUpLg0KPiANCj4gQnVpbGRpbmcgd2l0aCBXPTEgbWFrZXMgd2FybmluZ3MgYXBw
-ZWFyLCBsaWtlOg0KPiBkcml2ZXJzL2lpby9hZGMvc3RtMzItYWRjLmM6NTkzOiB3YXJuaW5nOiBG
-dW5jdGlvbiBwYXJhbWV0ZXIgb3IgbWVtYmVyDQo+ICdpbmRpb19kZXYnIG5vdCBkZXNjcmliZWQg
-aW4gJ3N0bTMyZjRfYWRjX3N0YXJ0X2NvbnYnDQo+IGRyaXZlcnMvaWlvL2FkYy9zdG0zMi1hZGMu
-Yzo1OTM6IHdhcm5pbmc6IEV4Y2VzcyBmdW5jdGlvbiBwYXJhbWV0ZXINCj4gJ2FkYycgZGVzY3Jp
-cHRpb24gaW4gJ3N0bTMyZjRfYWRjX3N0YXJ0X2NvbnYnDQo+IC4uLg0KPiANCj4gQ291bGQgeW91
-IHVwZGF0ZSByb3V0aW5lJ3MgZG9jIGFzIHdlbGwgPw0KDQpUaGFua3MuDQpXaWxsIHNlbmQgYSBW
-MyBzaG9ydGx5Lg0KVGhlIFc9MSBvcHRpb24gbG9va3MgaW50ZXJlc3RpbmcuDQpXZSBtaWdodCBn
-aXZlIHRoaXMgdG8gaW50ZXJucy9uZXctcGVvcGxlIHRvIGdldCB0aGVtIHN0YXJ0ZWQuDQoNCj4g
-DQo+IGUuZy4gc29tZXRoaW5nIGxpa2U6DQo+IC0gKiBAYWRjOiBzdG0zMiBhZGMgaW5zdGFuY2UN
-Cj4gKyAqIEBpbmRpb19kZXY6IElJTyBkZXZpY2UNCj4gDQo+ID4gIHsNCj4gPiArCXN0cnVjdCBz
-dG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gKw0KPiA+ICAJc3RtMzJf
-YWRjX3NldF9iaXRzKGFkYywgU1RNMzJGNF9BRENfQ1IxLCBTVE0zMkY0X1NDQU4pOw0KPiA+ICAN
-Cj4gPiAgCWlmIChkbWEpDQo+ID4gQEAgLTYwNSw4ICs2MDksMTAgQEAgc3RhdGljIHZvaWQgc3Rt
-MzJmNF9hZGNfc3RhcnRfY29udihzdHJ1Y3QNCj4gPiBzdG0zMl9hZGMgKmFkYywgYm9vbCBkbWEp
-DQo+ID4gIAkJc3RtMzJfYWRjX3NldF9iaXRzKGFkYywgU1RNMzJGNF9BRENfQ1IyLCBTVE0zMkY0
-X1NXU1RBUlQpOw0KPiA+ICB9DQo+ID4gIA0KPiA+IC1zdGF0aWMgdm9pZCBzdG0zMmY0X2FkY19z
-dG9wX2NvbnYoc3RydWN0IHN0bTMyX2FkYyAqYWRjKQ0KPiA+ICtzdGF0aWMgdm9pZCBzdG0zMmY0
-X2FkY19zdG9wX2NvbnYoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikNCj4gPiAgew0KPiA+ICsJ
-c3RydWN0IHN0bTMyX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiArDQo+ID4g
-IAlzdG0zMl9hZGNfY2xyX2JpdHMoYWRjLCBTVE0zMkY0X0FEQ19DUjIsIFNUTTMyRjRfRVhURU5f
-TUFTSyk7DQo+ID4gIAlzdG0zMl9hZGNfY2xyX2JpdHMoYWRjLCBTVE0zMkY0X0FEQ19TUiwgU1RN
-MzJGNF9TVFJUKTsNCj4gPiAgDQo+ID4gQEAgLTYxNSw4ICs2MjEsOSBAQCBzdGF0aWMgdm9pZCBz
-dG0zMmY0X2FkY19zdG9wX2NvbnYoc3RydWN0IHN0bTMyX2FkYw0KPiA+ICphZGMpDQo+ID4gIAkJ
-CSAgIFNUTTMyRjRfQURPTiB8IFNUTTMyRjRfRE1BIHwgU1RNMzJGNF9ERFMpOw0KPiA+ICB9DQo+
-ID4gIA0KPiA+IC1zdGF0aWMgdm9pZCBzdG0zMmg3X2FkY19zdGFydF9jb252KHN0cnVjdCBzdG0z
-Ml9hZGMgKmFkYywgYm9vbCBkbWEpDQo+ID4gK3N0YXRpYyB2b2lkIHN0bTMyaDdfYWRjX3N0YXJ0
-X2NvbnYoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwgYm9vbA0KPiA+IGRtYSkNCj4gPiAgew0K
-PiA+ICsJc3RydWN0IHN0bTMyX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiAg
-CWVudW0gc3RtMzJoN19hZGNfZG1uZ3QgZG1uZ3Q7DQo+ID4gIAl1bnNpZ25lZCBsb25nIGZsYWdz
-Ow0KPiA+ICAJdTMyIHZhbDsNCj4gPiBAQCAtNjM1LDkgKzY0Miw5IEBAIHN0YXRpYyB2b2lkIHN0
-bTMyaDdfYWRjX3N0YXJ0X2NvbnYoc3RydWN0IHN0bTMyX2FkYw0KPiA+ICphZGMsIGJvb2wgZG1h
-KQ0KPiA+ICAJc3RtMzJfYWRjX3NldF9iaXRzKGFkYywgU1RNMzJIN19BRENfQ1IsIFNUTTMySDdf
-QURTVEFSVCk7DQo+ID4gIH0NCj4gPiAgDQo+ID4gLXN0YXRpYyB2b2lkIHN0bTMyaDdfYWRjX3N0
-b3BfY29udihzdHJ1Y3Qgc3RtMzJfYWRjICphZGMpDQo+ID4gK3N0YXRpYyB2b2lkIHN0bTMyaDdf
-YWRjX3N0b3BfY29udihzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2KQ0KPiA+ICB7DQo+ID4gLQlz
-dHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGFkYyk7DQo+ID4gKwlz
-dHJ1Y3Qgc3RtMzJfYWRjICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICAJaW50IHJl
-dDsNCj4gPiAgCXUzMiB2YWw7DQo+ID4gIA0KPiA+IEBAIC02NTIsOSArNjU5LDkgQEAgc3RhdGlj
-IHZvaWQgc3RtMzJoN19hZGNfc3RvcF9jb252KHN0cnVjdCBzdG0zMl9hZGMNCj4gPiAqYWRjKQ0K
-PiA+ICAJc3RtMzJfYWRjX2Nscl9iaXRzKGFkYywgU1RNMzJIN19BRENfQ0ZHUiwgU1RNMzJIN19E
-TU5HVF9NQVNLKTsNCj4gPiAgfQ0KPiA+ICANCj4gPiAtc3RhdGljIGludCBzdG0zMmg3X2FkY19l
-eGl0X3B3cl9kb3duKHN0cnVjdCBzdG0zMl9hZGMgKmFkYykNCj4gPiArc3RhdGljIGludCBzdG0z
-Mmg3X2FkY19leGl0X3B3cl9kb3duKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gIHsN
-Cj4gPiAtCXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJpdl90b19kZXYoYWRjKTsN
-Cj4gPiArCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4g
-IAlpbnQgcmV0Ow0KPiA+ICAJdTMyIHZhbDsNCj4gPiAgDQo+ID4gQEAgLTY5MCw5ICs2OTcsOSBA
-QCBzdGF0aWMgdm9pZCBzdG0zMmg3X2FkY19lbnRlcl9wd3JfZG93bihzdHJ1Y3QNCj4gPiBzdG0z
-Ml9hZGMgKmFkYykNCj4gPiAgCXN0bTMyX2FkY19zZXRfYml0cyhhZGMsIFNUTTMySDdfQURDX0NS
-LCBTVE0zMkg3X0RFRVBQV0QpOw0KPiA+ICB9DQo+ID4gIA0KPiA+IC1zdGF0aWMgaW50IHN0bTMy
-aDdfYWRjX2VuYWJsZShzdHJ1Y3Qgc3RtMzJfYWRjICphZGMpDQo+ID4gK3N0YXRpYyBpbnQgc3Rt
-MzJoN19hZGNfZW5hYmxlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gIHsNCj4gPiAt
-CXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJpdl90b19kZXYoYWRjKTsNCj4gPiAr
-CXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gIAlpbnQg
-cmV0Ow0KPiA+ICAJdTMyIHZhbDsNCj4gPiAgDQo+ID4gQEAgLTcxMyw5ICs3MjAsOSBAQCBzdGF0
-aWMgaW50IHN0bTMyaDdfYWRjX2VuYWJsZShzdHJ1Y3Qgc3RtMzJfYWRjDQo+ID4gKmFkYykNCj4g
-PiAgCXJldHVybiByZXQ7DQo+ID4gIH0NCj4gPiAgDQo+ID4gLXN0YXRpYyB2b2lkIHN0bTMyaDdf
-YWRjX2Rpc2FibGUoc3RydWN0IHN0bTMyX2FkYyAqYWRjKQ0KPiA+ICtzdGF0aWMgdm9pZCBzdG0z
-Mmg3X2FkY19kaXNhYmxlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ID4gIHsNCj4gPiAt
-CXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJpdl90b19kZXYoYWRjKTsNCj4gPiAr
-CXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gIAlpbnQg
-cmV0Ow0KPiA+ICAJdTMyIHZhbDsNCj4gPiAgDQo+ID4gQEAgLTczMyw5ICs3NDAsOSBAQCBzdGF0
-aWMgdm9pZCBzdG0zMmg3X2FkY19kaXNhYmxlKHN0cnVjdCBzdG0zMl9hZGMNCj4gPiAqYWRjKQ0K
-PiA+ICAgKiBAYWRjOiBzdG0zMiBhZGMgaW5zdGFuY2UNCj4gPiAgICogTm90ZTogTXVzdCBiZSBj
-YWxsZWQgb25jZSBBREMgaXMgZW5hYmxlZCwgc28gTElOQ0FMUkRZV1sxLi42XSBhcmUNCj4gPiB3
-cml0YWJsZQ0KPiA+ICAgKi8NCj4gPiAtc3RhdGljIGludCBzdG0zMmg3X2FkY19yZWFkX3NlbGZj
-YWxpYihzdHJ1Y3Qgc3RtMzJfYWRjICphZGMpDQo+ID4gK3N0YXRpYyBpbnQgc3RtMzJoN19hZGNf
-cmVhZF9zZWxmY2FsaWIoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldikNCj4gDQo+IFNhbWUgaGVy
-ZS4NCj4gDQo+ID4gIHsNCj4gPiAtCXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJp
-dl90b19kZXYoYWRjKTsNCj4gPiArCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGlu
-ZGlvX2Rldik7DQo+ID4gIAlpbnQgaSwgcmV0Ow0KPiA+ICAJdTMyIGxpbmNhbHJkeXdfbWFzaywg
-dmFsOw0KPiA+ICANCj4gPiBAQCAtNzc3LDkgKzc4NCw5IEBAIHN0YXRpYyBpbnQgc3RtMzJoN19h
-ZGNfcmVhZF9zZWxmY2FsaWIoc3RydWN0DQo+ID4gc3RtMzJfYWRjICphZGMpDQo+ID4gICAqIEBh
-ZGM6IHN0bTMyIGFkYyBpbnN0YW5jZQ0KPiA+ICAgKiBOb3RlOiBBREMgbXVzdCBiZSBlbmFibGVk
-LCB3aXRoIG5vIG9uLWdvaW5nIGNvbnZlcnNpb25zLg0KPiA+ICAgKi8NCj4gPiAtc3RhdGljIGlu
-dCBzdG0zMmg3X2FkY19yZXN0b3JlX3NlbGZjYWxpYihzdHJ1Y3Qgc3RtMzJfYWRjICphZGMpDQo+
-ID4gK3N0YXRpYyBpbnQgc3RtMzJoN19hZGNfcmVzdG9yZV9zZWxmY2FsaWIoc3RydWN0IGlpb19k
-ZXYgKmluZGlvX2RldikNCj4gDQo+IFNhbWUgaGVyZS4NCj4gDQo+ID4gIHsNCj4gPiAtCXN0cnVj
-dCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJpdl90b19kZXYoYWRjKTsNCj4gPiArCXN0cnVj
-dCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gIAlpbnQgaSwgcmV0
-Ow0KPiA+ICAJdTMyIGxpbmNhbHJkeXdfbWFzaywgdmFsOw0KPiA+ICANCj4gPiBAQCAtODUwLDkg
-Kzg1Nyw5IEBAIHN0YXRpYyBpbnQgc3RtMzJoN19hZGNfcmVzdG9yZV9zZWxmY2FsaWIoc3RydWN0
-DQo+ID4gc3RtMzJfYWRjICphZGMpDQo+ID4gICAqIEBhZGM6IHN0bTMyIGFkYyBpbnN0YW5jZQ0K
-PiA+ICAgKiBOb3RlOiBNdXN0IGJlIGNhbGxlZCBvbmNlIEFEQyBpcyBvdXQgb2YgcG93ZXIgZG93
-bi4NCj4gPiAgICovDQo+ID4gLXN0YXRpYyBpbnQgc3RtMzJoN19hZGNfc2VsZmNhbGliKHN0cnVj
-dCBzdG0zMl9hZGMgKmFkYykNCj4gPiArc3RhdGljIGludCBzdG0zMmg3X2FkY19zZWxmY2FsaWIo
-c3RydWN0IGlpb19kZXYgKmluZGlvX2RldikNCj4gDQo+IFNhbWUgaGVyZQ0KPiANCj4gPiAgew0K
-PiA+IC0Jc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiA9IGlpb19wcml2X3RvX2RldihhZGMpOw0K
-PiA+ICsJc3RydWN0IHN0bTMyX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiAg
-CWludCByZXQ7DQo+ID4gIAl1MzIgdmFsOw0KPiA+ICANCj4gPiBAQCAtOTEyLDMwICs5MTksMzEg
-QEAgc3RhdGljIGludCBzdG0zMmg3X2FkY19zZWxmY2FsaWIoc3RydWN0IHN0bTMyX2FkYw0KPiA+
-ICphZGMpDQo+ID4gICAqIC0gT25seSBvbmUgaW5wdXQgaXMgc2VsZWN0ZWQgZm9yIHNpbmdsZSBl
-bmRlZCAoZS5nLiAndmlucCcpDQo+ID4gICAqIC0gVHdvIGlucHV0cyBhcmUgc2VsZWN0ZWQgZm9y
-IGRpZmZlcmVudGlhbCBjaGFubmVscyAoZS5nLiAndmlucCcgJg0KPiA+ICd2aW5uJykNCj4gPiAg
-ICovDQo+ID4gLXN0YXRpYyBpbnQgc3RtMzJoN19hZGNfcHJlcGFyZShzdHJ1Y3Qgc3RtMzJfYWRj
-ICphZGMpDQo+ID4gK3N0YXRpYyBpbnQgc3RtMzJoN19hZGNfcHJlcGFyZShzdHJ1Y3QgaWlvX2Rl
-diAqaW5kaW9fZGV2KQ0KPiANCj4gU2FtZSBoZXJlLg0KPiANCj4gV2l0aCB0aGUgY29tbWVudHMg
-dXBkYXRlZCwgeW91IGNhbiBhZGQgbXk6DQo+IA0KPiBBY2tlZC1ieTogRmFicmljZSBHYXNuaWVy
-IDxmYWJyaWNlLmdhc25pZXJAc3QuY29tPg0KPiANCj4gVGhhbmtzIGZvciB0aGUgcGF0Y2gsDQo+
-IEZhYnJpY2UNCj4gDQo+ID4gIHsNCj4gPiArCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19w
-cml2KGluZGlvX2Rldik7DQo+ID4gIAlpbnQgY2FsaWIsIHJldDsNCj4gPiAgDQo+ID4gLQlyZXQg
-PSBzdG0zMmg3X2FkY19leGl0X3B3cl9kb3duKGFkYyk7DQo+ID4gKwlyZXQgPSBzdG0zMmg3X2Fk
-Y19leGl0X3B3cl9kb3duKGluZGlvX2Rldik7DQo+ID4gIAlpZiAocmV0KQ0KPiA+ICAJCXJldHVy
-biByZXQ7DQo+ID4gIA0KPiA+IC0JcmV0ID0gc3RtMzJoN19hZGNfc2VsZmNhbGliKGFkYyk7DQo+
-ID4gKwlyZXQgPSBzdG0zMmg3X2FkY19zZWxmY2FsaWIoaW5kaW9fZGV2KTsNCj4gPiAgCWlmIChy
-ZXQgPCAwKQ0KPiA+ICAJCWdvdG8gcHdyX2R3bjsNCj4gPiAgCWNhbGliID0gcmV0Ow0KPiA+ICAN
-Cj4gPiAgCXN0bTMyX2FkY193cml0ZWwoYWRjLCBTVE0zMkg3X0FEQ19ESUZTRUwsIGFkYy0+ZGlm
-c2VsKTsNCj4gPiAgDQo+ID4gLQlyZXQgPSBzdG0zMmg3X2FkY19lbmFibGUoYWRjKTsNCj4gPiAr
-CXJldCA9IHN0bTMyaDdfYWRjX2VuYWJsZShpbmRpb19kZXYpOw0KPiA+ICAJaWYgKHJldCkNCj4g
-PiAgCQlnb3RvIHB3cl9kd247DQo+ID4gIA0KPiA+ICAJLyogRWl0aGVyIHJlc3RvcmUgb3IgcmVh
-ZCBjYWxpYnJhdGlvbiByZXN1bHQgZm9yIGZ1dHVyZSByZWZlcmVuY2UNCj4gPiAqLw0KPiA+ICAJ
-aWYgKGNhbGliKQ0KPiA+IC0JCXJldCA9IHN0bTMyaDdfYWRjX3Jlc3RvcmVfc2VsZmNhbGliKGFk
-Yyk7DQo+ID4gKwkJcmV0ID0gc3RtMzJoN19hZGNfcmVzdG9yZV9zZWxmY2FsaWIoaW5kaW9fZGV2
-KTsNCj4gPiAgCWVsc2UNCj4gPiAtCQlyZXQgPSBzdG0zMmg3X2FkY19yZWFkX3NlbGZjYWxpYihh
-ZGMpOw0KPiA+ICsJCXJldCA9IHN0bTMyaDdfYWRjX3JlYWRfc2VsZmNhbGliKGluZGlvX2Rldik7
-DQo+ID4gIAlpZiAocmV0KQ0KPiA+ICAJCWdvdG8gZGlzYWJsZTsNCj4gPiAgDQo+ID4gQEAgLTk0
-NCwxNiArOTUyLDE4IEBAIHN0YXRpYyBpbnQgc3RtMzJoN19hZGNfcHJlcGFyZShzdHJ1Y3Qgc3Rt
-MzJfYWRjDQo+ID4gKmFkYykNCj4gPiAgCXJldHVybiAwOw0KPiA+ICANCj4gPiAgZGlzYWJsZToN
-Cj4gPiAtCXN0bTMyaDdfYWRjX2Rpc2FibGUoYWRjKTsNCj4gPiArCXN0bTMyaDdfYWRjX2Rpc2Fi
-bGUoaW5kaW9fZGV2KTsNCj4gPiAgcHdyX2R3bjoNCj4gPiAgCXN0bTMyaDdfYWRjX2VudGVyX3B3
-cl9kb3duKGFkYyk7DQo+ID4gIA0KPiA+ICAJcmV0dXJuIHJldDsNCj4gPiAgfQ0KPiA+ICANCj4g
-PiAtc3RhdGljIHZvaWQgc3RtMzJoN19hZGNfdW5wcmVwYXJlKHN0cnVjdCBzdG0zMl9hZGMgKmFk
-YykNCj4gPiArc3RhdGljIHZvaWQgc3RtMzJoN19hZGNfdW5wcmVwYXJlKHN0cnVjdCBpaW9fZGV2
-ICppbmRpb19kZXYpDQo+ID4gIHsNCj4gPiAtCXN0bTMyaDdfYWRjX2Rpc2FibGUoYWRjKTsNCj4g
-PiArCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gKw0K
-PiA+ICsJc3RtMzJoN19hZGNfZGlzYWJsZShpbmRpb19kZXYpOw0KPiA+ICAJc3RtMzJoN19hZGNf
-ZW50ZXJfcHdyX2Rvd24oYWRjKTsNCj4gPiAgfQ0KPiA+ICANCj4gPiBAQCAtMTE2MCw3ICsxMTcw
-LDcgQEAgc3RhdGljIGludCBzdG0zMl9hZGNfc2luZ2xlX2NvbnYoc3RydWN0IGlpb19kZXYNCj4g
-PiAqaW5kaW9fZGV2LA0KPiA+ICANCj4gPiAgCXN0bTMyX2FkY19jb252X2lycV9lbmFibGUoYWRj
-KTsNCj4gPiAgDQo+ID4gLQlhZGMtPmNmZy0+c3RhcnRfY29udihhZGMsIGZhbHNlKTsNCj4gPiAr
-CWFkYy0+Y2ZnLT5zdGFydF9jb252KGluZGlvX2RldiwgZmFsc2UpOw0KPiA+ICANCj4gPiAgCXRp
-bWVvdXQgPSB3YWl0X2Zvcl9jb21wbGV0aW9uX2ludGVycnVwdGlibGVfdGltZW91dCgNCj4gPiAg
-CQkJCQkmYWRjLT5jb21wbGV0aW9uLA0KPiA+IFNUTTMyX0FEQ19USU1FT1VUKTsNCj4gPiBAQCAt
-MTE3Myw3ICsxMTgzLDcgQEAgc3RhdGljIGludCBzdG0zMl9hZGNfc2luZ2xlX2NvbnYoc3RydWN0
-IGlpb19kZXYNCj4gPiAqaW5kaW9fZGV2LA0KPiA+ICAJCXJldCA9IElJT19WQUxfSU5UOw0KPiA+
-ICAJfQ0KPiA+ICANCj4gPiAtCWFkYy0+Y2ZnLT5zdG9wX2NvbnYoYWRjKTsNCj4gPiArCWFkYy0+
-Y2ZnLT5zdG9wX2NvbnYoaW5kaW9fZGV2KTsNCj4gPiAgDQo+ID4gIAlzdG0zMl9hZGNfY29udl9p
-cnFfZGlzYWJsZShhZGMpOw0KPiA+ICANCj4gPiBAQCAtMTIyNyw4ICsxMjM3LDggQEAgc3RhdGlj
-IGludCBzdG0zMl9hZGNfcmVhZF9yYXcoc3RydWN0IGlpb19kZXYNCj4gPiAqaW5kaW9fZGV2LA0K
-PiA+ICANCj4gPiAgc3RhdGljIGlycXJldHVybl90IHN0bTMyX2FkY190aHJlYWRlZF9pc3IoaW50
-IGlycSwgdm9pZCAqZGF0YSkNCj4gPiAgew0KPiA+IC0Jc3RydWN0IHN0bTMyX2FkYyAqYWRjID0g
-ZGF0YTsNCj4gPiAtCXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBpaW9fcHJpdl90b19kZXYo
-YWRjKTsNCj4gPiArCXN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYgPSBkYXRhOw0KPiA+ICsJc3Ry
-dWN0IHN0bTMyX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiAgCWNvbnN0IHN0
-cnVjdCBzdG0zMl9hZGNfcmVnc3BlYyAqcmVncyA9IGFkYy0+Y2ZnLT5yZWdzOw0KPiA+ICAJdTMy
-IHN0YXR1cyA9IHN0bTMyX2FkY19yZWFkbChhZGMsIHJlZ3MtPmlzcl9lb2MucmVnKTsNCj4gPiAg
-DQo+ID4gQEAgLTEyNDAsOCArMTI1MCw4IEBAIHN0YXRpYyBpcnFyZXR1cm5fdCBzdG0zMl9hZGNf
-dGhyZWFkZWRfaXNyKGludA0KPiA+IGlycSwgdm9pZCAqZGF0YSkNCj4gPiAgDQo+ID4gIHN0YXRp
-YyBpcnFyZXR1cm5fdCBzdG0zMl9hZGNfaXNyKGludCBpcnEsIHZvaWQgKmRhdGEpDQo+ID4gIHsN
-Cj4gPiAtCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGRhdGE7DQo+ID4gLQlzdHJ1Y3QgaWlvX2Rl
-diAqaW5kaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGFkYyk7DQo+ID4gKwlzdHJ1Y3QgaWlvX2Rl
-diAqaW5kaW9fZGV2ID0gZGF0YTsNCj4gPiArCXN0cnVjdCBzdG0zMl9hZGMgKmFkYyA9IGlpb19w
-cml2KGluZGlvX2Rldik7DQo+ID4gIAljb25zdCBzdHJ1Y3Qgc3RtMzJfYWRjX3JlZ3NwZWMgKnJl
-Z3MgPSBhZGMtPmNmZy0+cmVnczsNCj4gPiAgCXUzMiBzdGF0dXMgPSBzdG0zMl9hZGNfcmVhZGwo
-YWRjLCByZWdzLT5pc3JfZW9jLnJlZyk7DQo+ID4gIA0KPiA+IEBAIC0xNTE0LDcgKzE1MjQsNyBA
-QCBzdGF0aWMgaW50IF9fc3RtMzJfYWRjX2J1ZmZlcl9wb3N0ZW5hYmxlKHN0cnVjdA0KPiA+IGlp
-b19kZXYgKmluZGlvX2RldikNCj4gPiAgCWlmICghYWRjLT5kbWFfY2hhbikNCj4gPiAgCQlzdG0z
-Ml9hZGNfY29udl9pcnFfZW5hYmxlKGFkYyk7DQo+ID4gIA0KPiA+IC0JYWRjLT5jZmctPnN0YXJ0
-X2NvbnYoYWRjLCAhIWFkYy0+ZG1hX2NoYW4pOw0KPiA+ICsJYWRjLT5jZmctPnN0YXJ0X2NvbnYo
-aW5kaW9fZGV2LCAhIWFkYy0+ZG1hX2NoYW4pOw0KPiA+ICANCj4gPiAgCXJldHVybiAwOw0KPiA+
-ICANCj4gPiBAQCAtMTU0Nyw3ICsxNTU3LDcgQEAgc3RhdGljIHZvaWQgX19zdG0zMl9hZGNfYnVm
-ZmVyX3ByZWRpc2FibGUoc3RydWN0DQo+ID4gaWlvX2RldiAqaW5kaW9fZGV2KQ0KPiA+ICAJc3Ry
-dWN0IHN0bTMyX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiAgCXN0cnVjdCBk
-ZXZpY2UgKmRldiA9IGluZGlvX2Rldi0+ZGV2LnBhcmVudDsNCj4gPiAgDQo+ID4gLQlhZGMtPmNm
-Zy0+c3RvcF9jb252KGFkYyk7DQo+ID4gKwlhZGMtPmNmZy0+c3RvcF9jb252KGluZGlvX2Rldik7
-DQo+ID4gIAlpZiAoIWFkYy0+ZG1hX2NoYW4pDQo+ID4gIAkJc3RtMzJfYWRjX2NvbnZfaXJxX2Rp
-c2FibGUoYWRjKTsNCj4gPiAgDQo+ID4gQEAgLTE4OTEsNyArMTkwMSw3IEBAIHN0YXRpYyBpbnQg
-c3RtMzJfYWRjX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UNCj4gPiAqcGRldikNCj4gPiAg
-CWluZGlvX2Rldi0+aW5mbyA9ICZzdG0zMl9hZGNfaWlvX2luZm87DQo+ID4gIAlpbmRpb19kZXYt
-Pm1vZGVzID0gSU5ESU9fRElSRUNUX01PREUgfCBJTkRJT19IQVJEV0FSRV9UUklHR0VSRUQ7DQo+
-ID4gIA0KPiA+IC0JcGxhdGZvcm1fc2V0X2RydmRhdGEocGRldiwgYWRjKTsNCj4gPiArCXBsYXRm
-b3JtX3NldF9kcnZkYXRhKHBkZXYsIGluZGlvX2Rldik7DQo+ID4gIA0KPiA+ICAJcmV0ID0gb2Zf
-cHJvcGVydHlfcmVhZF91MzIocGRldi0+ZGV2Lm9mX25vZGUsICJyZWciLCAmYWRjLT5vZmZzZXQp
-Ow0KPiA+ICAJaWYgKHJldCAhPSAwKSB7DQo+ID4gQEAgLTE5MDUsNyArMTkxNSw3IEBAIHN0YXRp
-YyBpbnQgc3RtMzJfYWRjX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UNCj4gPiAqcGRldikN
-Cj4gPiAgDQo+ID4gIAlyZXQgPSBkZXZtX3JlcXVlc3RfdGhyZWFkZWRfaXJxKCZwZGV2LT5kZXYs
-IGFkYy0+aXJxLA0KPiA+IHN0bTMyX2FkY19pc3IsDQo+ID4gIAkJCQkJc3RtMzJfYWRjX3RocmVh
-ZGVkX2lzciwNCj4gPiAtCQkJCQkwLCBwZGV2LT5uYW1lLCBhZGMpOw0KPiA+ICsJCQkJCTAsIHBk
-ZXYtPm5hbWUsIGluZGlvX2Rldik7DQo+ID4gIAlpZiAocmV0KSB7DQo+ID4gIAkJZGV2X2Vycigm
-cGRldi0+ZGV2LCAiZmFpbGVkIHRvIHJlcXVlc3QgSVJRXG4iKTsNCj4gPiAgCQlyZXR1cm4gcmV0
-Ow0KPiA+IEBAIC0xOTg5LDggKzE5OTksOCBAQCBzdGF0aWMgaW50IHN0bTMyX2FkY19wcm9iZShz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlDQo+ID4gKnBkZXYpDQo+ID4gIA0KPiA+ICBzdGF0aWMgaW50
-IHN0bTMyX2FkY19yZW1vdmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCj4gPiAgew0K
-PiA+IC0Jc3RydWN0IHN0bTMyX2FkYyAqYWRjID0gcGxhdGZvcm1fZ2V0X2RydmRhdGEocGRldik7
-DQo+ID4gLQlzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGFkYyk7
-DQo+ID4gKwlzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gcGxhdGZvcm1fZ2V0X2RydmRhdGEo
-cGRldik7DQo+ID4gKwlzdHJ1Y3Qgc3RtMzJfYWRjICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYp
-Ow0KPiA+ICANCj4gPiAgCXBtX3J1bnRpbWVfZ2V0X3N5bmMoJnBkZXYtPmRldik7DQo+ID4gIAlp
-aW9fZGV2aWNlX3VucmVnaXN0ZXIoaW5kaW9fZGV2KTsNCj4gPiBAQCAtMjAxMiw4ICsyMDIyLDcg
-QEAgc3RhdGljIGludCBzdG0zMl9hZGNfcmVtb3ZlKHN0cnVjdA0KPiA+IHBsYXRmb3JtX2Rldmlj
-ZSAqcGRldikNCj4gPiAgI2lmIGRlZmluZWQoQ09ORklHX1BNX1NMRUVQKQ0KPiA+ICBzdGF0aWMg
-aW50IHN0bTMyX2FkY19zdXNwZW5kKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gPiAgew0KPiA+IC0J
-c3RydWN0IHN0bTMyX2FkYyAqYWRjID0gZGV2X2dldF9kcnZkYXRhKGRldik7DQo+ID4gLQlzdHJ1
-Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGFkYyk7DQo+ID4gKwlzdHJ1
-Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gZGV2X2dldF9kcnZkYXRhKGRldik7DQo+ID4gIA0KPiA+
-ICAJaWYgKGlpb19idWZmZXJfZW5hYmxlZChpbmRpb19kZXYpKQ0KPiA+ICAJCV9fc3RtMzJfYWRj
-X2J1ZmZlcl9wcmVkaXNhYmxlKGluZGlvX2Rldik7DQo+ID4gQEAgLTIwMjMsOCArMjAzMiw3IEBA
-IHN0YXRpYyBpbnQgc3RtMzJfYWRjX3N1c3BlbmQoc3RydWN0IGRldmljZSAqZGV2KQ0KPiA+ICAN
-Cj4gPiAgc3RhdGljIGludCBzdG0zMl9hZGNfcmVzdW1lKHN0cnVjdCBkZXZpY2UgKmRldikNCj4g
-PiAgew0KPiA+IC0Jc3RydWN0IHN0bTMyX2FkYyAqYWRjID0gZGV2X2dldF9kcnZkYXRhKGRldik7
-DQo+ID4gLQlzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gaWlvX3ByaXZfdG9fZGV2KGFkYyk7
-DQo+ID4gKwlzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gZGV2X2dldF9kcnZkYXRhKGRldik7
-DQo+ID4gIAlpbnQgcmV0Ow0KPiA+ICANCj4gPiAgCXJldCA9IHBtX3J1bnRpbWVfZm9yY2VfcmVz
-dW1lKGRldik7DQo+ID4gDQo=
+We may want to get rid of the iio_priv_to_dev() helper. The reason is that
+we will hide some of the members of the iio_dev structure (to prevent
+drivers from accessing them directly), and that will also mean hiding the
+implementation of the iio_priv_to_dev() helper inside the IIO core.
+
+Hiding the implementation of iio_priv_to_dev() implies that some fast-paths
+may not be fast anymore, so a general idea is to try to get rid of the
+iio_priv_to_dev() altogether.
+The iio_priv() helper won't be affected by the rework, as the iio_dev
+struct will keep a reference to the private information.
+
+For this driver, not using iio_priv_to_dev(), means reworking some paths to
+pass the iio device and using iio_priv() to access the private information.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+
+Changelog v2 -> v3:
+- update doc-strings; warnings show-up during build with W=1 arg
+
+Changelog v1 -> v2:
+- converted to pass reference to IIO device in function hooks (vs
+  reference
+  to adc private data)
+
+ drivers/iio/adc/stm32-adc.c | 118 +++++++++++++++++++-----------------
+ 1 file changed, 63 insertions(+), 55 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index ae622ee6d08c..1dd97ec5571c 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -162,10 +162,10 @@ struct stm32_adc_cfg {
+ 	struct stm32_adc_trig_info	*trigs;
+ 	bool clk_required;
+ 	bool has_vregready;
+-	int (*prepare)(struct stm32_adc *);
+-	void (*start_conv)(struct stm32_adc *, bool dma);
+-	void (*stop_conv)(struct stm32_adc *);
+-	void (*unprepare)(struct stm32_adc *);
++	int (*prepare)(struct iio_dev *);
++	void (*start_conv)(struct iio_dev *, bool dma);
++	void (*stop_conv)(struct iio_dev *);
++	void (*unprepare)(struct iio_dev *);
+ 	const unsigned int *smp_cycles;
+ };
+ 
+@@ -538,10 +538,11 @@ static void stm32_adc_set_res(struct stm32_adc *adc)
+ 
+ static int stm32_adc_hw_stop(struct device *dev)
+ {
+-	struct stm32_adc *adc = dev_get_drvdata(dev);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 
+ 	if (adc->cfg->unprepare)
+-		adc->cfg->unprepare(adc);
++		adc->cfg->unprepare(indio_dev);
+ 
+ 	if (adc->clk)
+ 		clk_disable_unprepare(adc->clk);
+@@ -551,7 +552,8 @@ static int stm32_adc_hw_stop(struct device *dev)
+ 
+ static int stm32_adc_hw_start(struct device *dev)
+ {
+-	struct stm32_adc *adc = dev_get_drvdata(dev);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 
+ 	if (adc->clk) {
+@@ -563,7 +565,7 @@ static int stm32_adc_hw_start(struct device *dev)
+ 	stm32_adc_set_res(adc);
+ 
+ 	if (adc->cfg->prepare) {
+-		ret = adc->cfg->prepare(adc);
++		ret = adc->cfg->prepare(indio_dev);
+ 		if (ret)
+ 			goto err_clk_dis;
+ 	}
+@@ -579,7 +581,7 @@ static int stm32_adc_hw_start(struct device *dev)
+ 
+ /**
+  * stm32f4_adc_start_conv() - Start conversions for regular channels.
+- * @adc: stm32 adc instance
++ * @indio_dev: IIO device instance
+  * @dma: use dma to transfer conversion result
+  *
+  * Start conversions for regular channels.
+@@ -587,8 +589,10 @@ static int stm32_adc_hw_start(struct device *dev)
+  * conversions, in IIO buffer modes. Otherwise, use ADC interrupt with direct
+  * DR read instead (e.g. read_raw, or triggered buffer mode without DMA).
+  */
+-static void stm32f4_adc_start_conv(struct stm32_adc *adc, bool dma)
++static void stm32f4_adc_start_conv(struct iio_dev *indio_dev, bool dma)
+ {
++	struct stm32_adc *adc = iio_priv(indio_dev);
++
+ 	stm32_adc_set_bits(adc, STM32F4_ADC_CR1, STM32F4_SCAN);
+ 
+ 	if (dma)
+@@ -605,8 +609,10 @@ static void stm32f4_adc_start_conv(struct stm32_adc *adc, bool dma)
+ 		stm32_adc_set_bits(adc, STM32F4_ADC_CR2, STM32F4_SWSTART);
+ }
+ 
+-static void stm32f4_adc_stop_conv(struct stm32_adc *adc)
++static void stm32f4_adc_stop_conv(struct iio_dev *indio_dev)
+ {
++	struct stm32_adc *adc = iio_priv(indio_dev);
++
+ 	stm32_adc_clr_bits(adc, STM32F4_ADC_CR2, STM32F4_EXTEN_MASK);
+ 	stm32_adc_clr_bits(adc, STM32F4_ADC_SR, STM32F4_STRT);
+ 
+@@ -615,8 +621,9 @@ static void stm32f4_adc_stop_conv(struct stm32_adc *adc)
+ 			   STM32F4_ADON | STM32F4_DMA | STM32F4_DDS);
+ }
+ 
+-static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
++static void stm32h7_adc_start_conv(struct iio_dev *indio_dev, bool dma)
+ {
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	enum stm32h7_adc_dmngt dmngt;
+ 	unsigned long flags;
+ 	u32 val;
+@@ -635,9 +642,9 @@ static void stm32h7_adc_start_conv(struct stm32_adc *adc, bool dma)
+ 	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_ADSTART);
+ }
+ 
+-static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
++static void stm32h7_adc_stop_conv(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 	u32 val;
+ 
+@@ -652,9 +659,9 @@ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
+ 	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR, STM32H7_DMNGT_MASK);
+ }
+ 
+-static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
++static int stm32h7_adc_exit_pwr_down(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 	u32 val;
+ 
+@@ -690,9 +697,9 @@ static void stm32h7_adc_enter_pwr_down(struct stm32_adc *adc)
+ 	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_DEEPPWD);
+ }
+ 
+-static int stm32h7_adc_enable(struct stm32_adc *adc)
++static int stm32h7_adc_enable(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 	u32 val;
+ 
+@@ -713,9 +720,9 @@ static int stm32h7_adc_enable(struct stm32_adc *adc)
+ 	return ret;
+ }
+ 
+-static void stm32h7_adc_disable(struct stm32_adc *adc)
++static void stm32h7_adc_disable(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 	u32 val;
+ 
+@@ -730,12 +737,12 @@ static void stm32h7_adc_disable(struct stm32_adc *adc)
+ 
+ /**
+  * stm32h7_adc_read_selfcalib() - read calibration shadow regs, save result
+- * @adc: stm32 adc instance
++ * @indio_dev: IIO device instance
+  * Note: Must be called once ADC is enabled, so LINCALRDYW[1..6] are writable
+  */
+-static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
++static int stm32h7_adc_read_selfcalib(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int i, ret;
+ 	u32 lincalrdyw_mask, val;
+ 
+@@ -774,12 +781,12 @@ static int stm32h7_adc_read_selfcalib(struct stm32_adc *adc)
+ 
+ /**
+  * stm32h7_adc_restore_selfcalib() - Restore saved self-calibration result
+- * @adc: stm32 adc instance
++ * @indio_dev: IIO device instance
+  * Note: ADC must be enabled, with no on-going conversions.
+  */
+-static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
++static int stm32h7_adc_restore_selfcalib(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int i, ret;
+ 	u32 lincalrdyw_mask, val;
+ 
+@@ -847,12 +854,12 @@ static int stm32h7_adc_restore_selfcalib(struct stm32_adc *adc)
+ 
+ /**
+  * stm32h7_adc_selfcalib() - Procedure to calibrate ADC
+- * @adc: stm32 adc instance
++ * @indio_dev: IIO device instance
+  * Note: Must be called once ADC is out of power down.
+  */
+-static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
++static int stm32h7_adc_selfcalib(struct iio_dev *indio_dev)
+ {
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 	u32 val;
+ 
+@@ -903,7 +910,7 @@ static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
+ 
+ /**
+  * stm32h7_adc_prepare() - Leave power down mode to enable ADC.
+- * @adc: stm32 adc instance
++ * @indio_dev: IIO device instance
+  * Leave power down mode.
+  * Configure channels as single ended or differential before enabling ADC.
+  * Enable ADC.
+@@ -912,30 +919,31 @@ static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
+  * - Only one input is selected for single ended (e.g. 'vinp')
+  * - Two inputs are selected for differential channels (e.g. 'vinp' & 'vinn')
+  */
+-static int stm32h7_adc_prepare(struct stm32_adc *adc)
++static int stm32h7_adc_prepare(struct iio_dev *indio_dev)
+ {
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int calib, ret;
+ 
+-	ret = stm32h7_adc_exit_pwr_down(adc);
++	ret = stm32h7_adc_exit_pwr_down(indio_dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = stm32h7_adc_selfcalib(adc);
++	ret = stm32h7_adc_selfcalib(indio_dev);
+ 	if (ret < 0)
+ 		goto pwr_dwn;
+ 	calib = ret;
+ 
+ 	stm32_adc_writel(adc, STM32H7_ADC_DIFSEL, adc->difsel);
+ 
+-	ret = stm32h7_adc_enable(adc);
++	ret = stm32h7_adc_enable(indio_dev);
+ 	if (ret)
+ 		goto pwr_dwn;
+ 
+ 	/* Either restore or read calibration result for future reference */
+ 	if (calib)
+-		ret = stm32h7_adc_restore_selfcalib(adc);
++		ret = stm32h7_adc_restore_selfcalib(indio_dev);
+ 	else
+-		ret = stm32h7_adc_read_selfcalib(adc);
++		ret = stm32h7_adc_read_selfcalib(indio_dev);
+ 	if (ret)
+ 		goto disable;
+ 
+@@ -944,16 +952,18 @@ static int stm32h7_adc_prepare(struct stm32_adc *adc)
+ 	return 0;
+ 
+ disable:
+-	stm32h7_adc_disable(adc);
++	stm32h7_adc_disable(indio_dev);
+ pwr_dwn:
+ 	stm32h7_adc_enter_pwr_down(adc);
+ 
+ 	return ret;
+ }
+ 
+-static void stm32h7_adc_unprepare(struct stm32_adc *adc)
++static void stm32h7_adc_unprepare(struct iio_dev *indio_dev)
+ {
+-	stm32h7_adc_disable(adc);
++	struct stm32_adc *adc = iio_priv(indio_dev);
++
++	stm32h7_adc_disable(indio_dev);
+ 	stm32h7_adc_enter_pwr_down(adc);
+ }
+ 
+@@ -1160,7 +1170,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+ 
+ 	stm32_adc_conv_irq_enable(adc);
+ 
+-	adc->cfg->start_conv(adc, false);
++	adc->cfg->start_conv(indio_dev, false);
+ 
+ 	timeout = wait_for_completion_interruptible_timeout(
+ 					&adc->completion, STM32_ADC_TIMEOUT);
+@@ -1173,7 +1183,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+ 		ret = IIO_VAL_INT;
+ 	}
+ 
+-	adc->cfg->stop_conv(adc);
++	adc->cfg->stop_conv(indio_dev);
+ 
+ 	stm32_adc_conv_irq_disable(adc);
+ 
+@@ -1227,8 +1237,8 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+ 
+ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
+ {
+-	struct stm32_adc *adc = data;
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = data;
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+ 	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+ 
+@@ -1240,8 +1250,8 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
+ 
+ static irqreturn_t stm32_adc_isr(int irq, void *data)
+ {
+-	struct stm32_adc *adc = data;
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = data;
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+ 	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+ 
+@@ -1514,7 +1524,7 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+ 	if (!adc->dma_chan)
+ 		stm32_adc_conv_irq_enable(adc);
+ 
+-	adc->cfg->start_conv(adc, !!adc->dma_chan);
++	adc->cfg->start_conv(indio_dev, !!adc->dma_chan);
+ 
+ 	return 0;
+ 
+@@ -1547,7 +1557,7 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	struct device *dev = indio_dev->dev.parent;
+ 
+-	adc->cfg->stop_conv(adc);
++	adc->cfg->stop_conv(indio_dev);
+ 	if (!adc->dma_chan)
+ 		stm32_adc_conv_irq_disable(adc);
+ 
+@@ -1891,7 +1901,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	indio_dev->info = &stm32_adc_iio_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_HARDWARE_TRIGGERED;
+ 
+-	platform_set_drvdata(pdev, adc);
++	platform_set_drvdata(pdev, indio_dev);
+ 
+ 	ret = of_property_read_u32(pdev->dev.of_node, "reg", &adc->offset);
+ 	if (ret != 0) {
+@@ -1905,7 +1915,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+ 					stm32_adc_threaded_isr,
+-					0, pdev->name, adc);
++					0, pdev->name, indio_dev);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to request IRQ\n");
+ 		return ret;
+@@ -1989,8 +1999,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 
+ static int stm32_adc_remove(struct platform_device *pdev)
+ {
+-	struct stm32_adc *adc = platform_get_drvdata(pdev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
++	struct stm32_adc *adc = iio_priv(indio_dev);
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	iio_device_unregister(indio_dev);
+@@ -2012,8 +2022,7 @@ static int stm32_adc_remove(struct platform_device *pdev)
+ #if defined(CONFIG_PM_SLEEP)
+ static int stm32_adc_suspend(struct device *dev)
+ {
+-	struct stm32_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 
+ 	if (iio_buffer_enabled(indio_dev))
+ 		__stm32_adc_buffer_predisable(indio_dev);
+@@ -2023,8 +2032,7 @@ static int stm32_adc_suspend(struct device *dev)
+ 
+ static int stm32_adc_resume(struct device *dev)
+ {
+-	struct stm32_adc *adc = dev_get_drvdata(dev);
+-	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	int ret;
+ 
+ 	ret = pm_runtime_force_resume(dev);
+-- 
+2.17.1
+

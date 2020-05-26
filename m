@@ -2,98 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20C411E1DEE
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 11:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0A61E1E27
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 11:15:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731736AbgEZJH3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 May 2020 05:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731716AbgEZJHR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 05:07:17 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F32DC08C5C0;
-        Tue, 26 May 2020 02:07:17 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id c35so695378edf.5;
-        Tue, 26 May 2020 02:07:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=+S40BVUPgPSUdWykoDheY5kQW7B2En+DiDAHKy6z5dU=;
-        b=aDygklhGqGUfLYeA/rc8mhK9DamK2+T6P7wNaW1L3uA4jK3iRV96Q6c2bFsaMjDDzC
-         ZEa4nNcyHrxo3Aw/EsdG164KutYZeGlXVoY7FitvyiOZWRwiTR8bKEXkOYBY9k+Q+2wV
-         fsaIR9JvTLkdIAfrWy061l+A8w0tQ01SrcVLtGbtyTdpYOKsrE2ZZx0c3dgZEJ+WfbJo
-         ydWbGL5N4NSIg/GbEcHLNwNTbLec84U4Sf1tJ5PlHGsGEdxDPSkFDxEBKLN6XNiGL4Wk
-         WkbD0yqH0koQtzNEKj2hShwe9KGNM6KBmvgBmCKfFtx9QBkyEvwS9+9YYJ5Op+izNCJb
-         wGFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=+S40BVUPgPSUdWykoDheY5kQW7B2En+DiDAHKy6z5dU=;
-        b=rDFqzJAJ4Dmm/KI1LbEIfFwppfhIzWFVufoDVHbIh2qejTlP45vBHMOt/9CS4E0iEA
-         SWoK0412DxkopgsedwbDDPXkm7+31BN55upDkFNh6yEJ8SFp8EDL5KIaY2PQ9mNpwoRi
-         vjWVHz0rACJI/z0k1lix8/0DBoGH0E+2ZQJ72Lsnh0tUIrQHwaJ/1FGc6qBQCavWRy+/
-         vD5s8QqAzC95YMP7QzEI9hTWbfei/6L43J7mJCZkxQRo5PwJDwez8ozA8ojS/nqYMyoT
-         D5rrKvVqXyIXL/5/UHOwXqZMswN+9usKYmT3Cdo98p4sZhp+MTuYLFIEdqvR3hkF0b4o
-         25mQ==
-X-Gm-Message-State: AOAM5321noZYWmzx71PikK/5u9cZ/bDVAw5K9TFPZ1z5eyteERh2iwAx
-        DYKWVUMmBtrVkeRrqfFTBNEBY1gbD1A=
-X-Google-Smtp-Source: ABdhPJw7CpT9GgGjzICTDDEadxChbZGHAU3k5+0EHCDWM0fmFJWSxdLsJvK19Kj9IQ6MXkHGd9rSCg==
-X-Received: by 2002:a50:f182:: with SMTP id x2mr18993351edl.336.1590484036039;
-        Tue, 26 May 2020 02:07:16 -0700 (PDT)
-Received: from localhost.localdomain (p5b3f6e09.dip0.t-ipconnect.de. [91.63.110.9])
-        by smtp.gmail.com with ESMTPSA id c7sm17870535edj.54.2020.05.26.02.07.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 02:07:15 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     lee.jones@linaro.org, andy.shevchenko@gmail.com,
-        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        sravanhome@gmail.com
-Subject: [PATCH v12 6/6] MAINTAINERS: Add entry for mp2629 Battery Charger driver
-Date:   Tue, 26 May 2020 11:06:46 +0200
-Message-Id: <20200526090646.25827-7-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200526090646.25827-1-sravanhome@gmail.com>
-References: <20200526090646.25827-1-sravanhome@gmail.com>
+        id S1731605AbgEZJPz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 05:15:55 -0400
+Received: from mga17.intel.com ([192.55.52.151]:13834 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731600AbgEZJPz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 26 May 2020 05:15:55 -0400
+IronPort-SDR: 4IZCxMpLy2oht/86Qt2fqTQxN7Y4EtKOJdyLxE7veFGmd88q6MunZxg05uWOm2v4srhr6XBGDr
+ KYqkMpdUruZw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 02:15:54 -0700
+IronPort-SDR: O87iqakQ/xm2JIRQNTUI1kgP2mbHXX49IJxCmXoA3j5dMOj9rft2RWvs7vFStk8B5TKbayCiLs
+ ehdOS0QqMBQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,436,1583222400"; 
+   d="scan'208";a="442012951"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga005.jf.intel.com with ESMTP; 26 May 2020 02:15:53 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jdVgi-008xdo-KE; Tue, 26 May 2020 12:15:56 +0300
+Date:   Tue, 26 May 2020 12:15:56 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 19/25] iio:adc:ti-ads1015 Fix buffer element alignment
+Message-ID: <20200526091556.GN1634618@smile.fi.intel.com>
+References: <20200525170628.503283-1-jic23@kernel.org>
+ <20200525170628.503283-20-jic23@kernel.org>
+ <20200525175236.GG1634618@smile.fi.intel.com>
+ <da67e0e4-5889-eb87-7bc0-fac07ae54e57@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da67e0e4-5889-eb87-7bc0-fac07ae54e57@metafoo.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add MAINTAINERS entry for Monolithic Power Systems mp2629 Charger driver.
+On Tue, May 26, 2020 at 10:11:44AM +0200, Lars-Peter Clausen wrote:
+> On 5/25/20 7:52 PM, Andy Shevchenko wrote:
+> > On Mon, May 25, 2020 at 06:06:22PM +0100, Jonathan Cameron wrote:
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 32a95d162f06..0f82d5a7a614 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11358,10 +11358,15 @@ F:	drivers/tty/mxser.*
- MONOLITHIC POWER SYSTEM PMIC DRIVER
- M:	Saravanan Sekar <sravanhome@gmail.com>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
- F:	Documentation/devicetree/bindings/regulator/mps,mp*.yaml
-+F:	drivers/iio/adc/mp2629_adc.c
-+F:	drivers/mfd/mp2629.c
-+F:	drivers/power/supply/mp2629_charger.c
- F:	drivers/regulator/mp5416.c
- F:	drivers/regulator/mpq7920.c
- F:	drivers/regulator/mpq7920.h
-+F:	include/linux/mfd/mp2629.h
- 
- MR800 AVERMEDIA USB FM RADIO DRIVER
- M:	Alexey Klimov <klimov.linux@gmail.com>
+> > > -	s16 buf[8]; /* 1x s16 ADC val + 3x s16 padding +  4x s16 timestamp */
+> > > +	/* Ensure natural alignment for buffer elements */
+> > > +	struct {
+> > > +		s16 channel;
+> > > +		s64 ts;
+> > > +	} scan;
+> > Hmm... On x86_32 and x86_64 this will give different padding. Is it okay from
+> > iio_push_to_buffers_with_timestamp() point of view?
+> 
+> No, this is terrible. IIO expects 64 bit words to be 64 bit aligned. Looks
+> like we can't rely on implicit padding, but need to always explicitly
+> specify it.
+> 
+> Or maybe we can typedef and IIO timestamp type with an explicit __aligned
+> attribute. I wonder if that works... After having a quick look, the kernel
+> already defines aligned_u64, so maybe using that is an option.
+
+Another way is simple to provide offset of timestamp member as a parameter.
+Though, if it's an ABI, then alas, we need to align it properly.
+
+Also, wouldn't be better to explicitly show the padding?
+
+	struct {
+		s16 channel;
+		s16 padding[3];
+		s64 ts;
+	} scan;
+
+(matter of style though, just saying).
+
 -- 
-2.17.1
+With Best Regards,
+Andy Shevchenko
+
 

@@ -2,128 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EE41E2EB7
-	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 21:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 070041E30D8
+	for <lists+linux-iio@lfdr.de>; Tue, 26 May 2020 23:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390440AbgEZTb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 May 2020 15:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        id S2391575AbgEZVCt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 May 2020 17:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391236AbgEZTbX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 15:31:23 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70258C03E96D
-        for <linux-iio@vger.kernel.org>; Tue, 26 May 2020 12:31:23 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id s18so9419333ioe.2
-        for <linux-iio@vger.kernel.org>; Tue, 26 May 2020 12:31:23 -0700 (PDT)
+        with ESMTP id S2389124AbgEZVCr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 May 2020 17:02:47 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E345C061A0F;
+        Tue, 26 May 2020 14:02:47 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id x22so13172974lfd.4;
+        Tue, 26 May 2020 14:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DnCQ4lhG/YlYramaw4jbZFb6k6+oix6HHllYpDJH5TM=;
-        b=UtwqVoUkoaR0/IG+IAuUWOLb+rGVK5ZgrvpCI9Flg17ZofTBZ1ng596vaqUvE3Ffzx
-         7lH/8douPtqW3ExINsuvY+rahTcVc7pj9olk2hfqw0UyW+5UQ4c7ExeX9GRRI7nJfq97
-         XaFv2szaHfOKAj6WTF2dFM4G5AtsE/epBelnE=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8GEbzgI+bztUbMO5Sm0NmMZg/3FD1KT72eplUCOCNgI=;
+        b=o6pf/C+eDKKeKyR5Hu7iEdzMJa+zJM/GmLlz7R/4UWkjQ6puv+fWQmAhoV8NxD+E80
+         VfmtvosT+TiWUYYhrkm+NyC2OgvaqHXVpftBFVnkaexqg6XKzp0ryrEHfY/Cu97bUIyl
+         +EcHnb2vTO+zjoEf6lx5iTfO/xFoCRAj3m1EcNRnD2DT0EQyTKTU0abnjpZWS/3Yzsmc
+         KTEAiWQ161F0KBE/04PPQ6Z8HdHdVwEWRqcjPkUCV9hjsh5rilzyvwwkLpSsecL3y1G2
+         wbvakXDL008LgfU86HieSHRCulVqLuLMd8fYolAnkhezxtZLkKW4hyooGX+UPTCznXBT
+         sQfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DnCQ4lhG/YlYramaw4jbZFb6k6+oix6HHllYpDJH5TM=;
-        b=h4hLgFDlsW55vkltdAberXIKmdj1LZ36zyy6X4QHwz7eZdexy9CljPcViYMjxCneAT
-         /ppYcJLxom6UuEfeis+E6siXDgpnLwM7a6r9+ekmo1Dk/2CkPtuuIuVzxkCEW6E3oa2U
-         Ol62oLaJqBIWDOGawolQPvVPWbfLZIUZ16XzZtumVjxhwPAx/YC+lOf0n87c9jBZKX5M
-         Ood5XQA28uIVRaEiUxlLpezsPvj0ozHP30IkaCicdvcReY/8vRu8jSWgffiOcBFcxWeL
-         lcK60R0FYr3TNQ9kNvsrdIouD1M3nw7LTQr++Y11i/YiuFApTDEGZFFEzAaZHJP1zFyQ
-         R+Ng==
-X-Gm-Message-State: AOAM5322PBkTIg4wbrwRQdZsn+Tek1dh2wDgjM7RQm95e/Xm4eeb+6Pv
-        vJxBIgKJ9c36sErCYfTNS9q1h4moOhy23F6UR6L7Cg==
-X-Google-Smtp-Source: ABdhPJyWRdAwvnrcrWb9/2bGHNu3aJy7KyzXf//n491Fa8j8zyXQh9QBSQiyiStSe9GQrDIr+LVoFB3cuPFKAQ151rs=
-X-Received: by 2002:a6b:3e86:: with SMTP id l128mr11755785ioa.95.1590521482734;
- Tue, 26 May 2020 12:31:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200525170628.503283-1-jic23@kernel.org> <20200525170628.503283-10-jic23@kernel.org>
-In-Reply-To: <20200525170628.503283-10-jic23@kernel.org>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Tue, 26 May 2020 12:31:11 -0700
-Message-ID: <CAJCx=g=cCucvub6-kPq5+tGu5M+J_LqJDwmDCoHj-aLUGQk6kQ@mail.gmail.com>
-Subject: Re: [PATCH 09/25] iio:humidity:hdc100x Fix alignment and data leak issues
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8GEbzgI+bztUbMO5Sm0NmMZg/3FD1KT72eplUCOCNgI=;
+        b=NYOXjpbW+rvWfcewrEaOpkrsQjt7Q/6/jS+Ujvrdp47l0mSuVHbksAMV2jjOvd425w
+         jzHLW5PR9KRF8DIb+ZjMK5FEYmf5ZmWCfyrOsxo+1GPfqSlpq5TCFOABs4hUd69uVfb6
+         Xap/XvajxcI+g7euM7N4ZJSkLSbskerWYlvprc0ZJUwNzK5uT26wNr7W2IANvGelODVY
+         xTjdLCzDKRQn/A15pV8d6wSu4xmfgPC+ecVCwbF0U/tOPRqM/7PJHVJk3VfwcL/Wa9iO
+         EeIIOfN2Md2iFM9Sy+57iB2Y9dovrH6I+Sfh2MAH8fe8zVJPU1Nr45KwtlzaSUWwTMfl
+         A/Fw==
+X-Gm-Message-State: AOAM530fIxItY2vTHRXx0Az2dQxANzqHTA6Enhis/htkP+uSEh0l5oCq
+        LVPgvfAqoB3/bkooLQmtr94=
+X-Google-Smtp-Source: ABdhPJzyKtT85+/yHaFXfp7D5et++o5RZQ+pqHHb1QFxcI7thOIhmBLCC1FpkN96W1fiha4eqoLFMg==
+X-Received: by 2002:ac2:5cac:: with SMTP id e12mr1401821lfq.92.1590526965952;
+        Tue, 26 May 2020 14:02:45 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-22.NA.cust.bahnhof.se. [158.174.22.22])
+        by smtp.gmail.com with ESMTPSA id z133sm240443lfa.41.2020.05.26.14.02.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 14:02:44 -0700 (PDT)
+From:   Rikard Falkeborn <rikard.falkeborn@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alison Schofield <amsfield22@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+        linux-pm@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH 0/6] drivers/iio: Constify structs
+Date:   Tue, 26 May 2020 23:02:17 +0200
+Message-Id: <20200526210223.1672-1-rikard.falkeborn@gmail.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 25, 2020 at 10:09 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> One of a class of bugs pointed out by Lars in a recent review.
-> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> to the size of the timestamp (8 bytes).  This is not guaranteed in
-> this driver which uses an array of smaller elements on the stack.
-> As Lars also noted this anti pattern can involve a leak of data to
-> userspace and that indeed can happen here.  We close both issues by
-> moving to a suitable structure in the iio_priv() data.
-> This data is allocated with kzalloc so no data can leak apart
-> from previous readings.
->
+Constify a number of static structs to allow the compiler to put them in
+read-only memory. The patches are independent.
 
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Rikard Falkeborn (6):
+  iio: adc: max11100: Constify struct iio_chan_spec
+  iio: dac: ad5380: Constify struct iio_chan_spec_ext_info
+  iio: dac: ad5592r-base: Constify struct iio_chan_spec_ext_info
+  iio: dac: ad5686: Constify static struct iio_chan_spec
+  iio: light: stk3310: Constify regmap_config
+  iio: magnetometer: mmc35240: Constify struct reg_default
 
-> Fixes: 16bf793f86b2 ("iio: humidity: hdc100x: add triggered buffer support for HDC100X")
-> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Alison Schofield <amsfield22@gmail.com>
-> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
-> ---
->  drivers/iio/humidity/hdc100x.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> index 7ecd2ffa3132..fd825e281d4f 100644
-> --- a/drivers/iio/humidity/hdc100x.c
-> +++ b/drivers/iio/humidity/hdc100x.c
-> @@ -38,6 +38,11 @@ struct hdc100x_data {
->
->         /* integration time of the sensor */
->         int adc_int_us[2];
-> +       /* Ensure natural alignment of timestamp */
-> +       struct {
-> +               __be16 channels[2];
-> +               s64 ts;
-> +       } scan;
->  };
->
->  /* integration time in us */
-> @@ -322,7 +327,6 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
->         struct i2c_client *client = data->client;
->         int delay = data->adc_int_us[0] + data->adc_int_us[1];
->         int ret;
-> -       s16 buf[8];  /* 2x s16 + padding + 8 byte timestamp */
->
->         /* dual read starts at temp register */
->         mutex_lock(&data->lock);
-> @@ -333,13 +337,13 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
->         }
->         usleep_range(delay, delay + 1000);
->
-> -       ret = i2c_master_recv(client, (u8 *)buf, 4);
-> +       ret = i2c_master_recv(client, (u8 *)data->scan.channels, 4);
->         if (ret < 0) {
->                 dev_err(&client->dev, "cannot read sensor data\n");
->                 goto err;
->         }
->
-> -       iio_push_to_buffers_with_timestamp(indio_dev, buf,
-> +       iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
->                                            iio_get_time_ns(indio_dev));
->  err:
->         mutex_unlock(&data->lock);
-> --
-> 2.26.2
->
+ drivers/iio/adc/max11100.c          | 2 +-
+ drivers/iio/dac/ad5380.c            | 2 +-
+ drivers/iio/dac/ad5592r-base.c      | 2 +-
+ drivers/iio/dac/ad5686.c            | 8 ++++----
+ drivers/iio/dac/ad5686.h            | 2 +-
+ drivers/iio/light/stk3310.c         | 2 +-
+ drivers/iio/magnetometer/mmc35240.c | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
+
+-- 
+2.26.2
+

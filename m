@@ -2,137 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F401E4DA9
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 20:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C470A1E4E2A
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 21:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387505AbgE0S6Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 14:58:24 -0400
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:19064 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387507AbgE0S6J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 14:58:09 -0400
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04RIw4r4009036;
-        Wed, 27 May 2020 11:58:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- mime-version; s=pfpt1; bh=W5thYSFLHQBsEKsgqJfZTnjul6HJtPAMqubvEftwanY=;
- b=oxg85JOyKAK2kJNxf8I/zRKCzh5JZRu+3KH7jQbu5nkN8bcrg5q21PW9px86ZfeXjoX+
- TWl65+1XtOMK8CwS7R/DnkCqCSEmrycwf7nJONZgiGinAy8d+ly46Lz+oM1ZiTNFC8lW
- VTIng8V5E3B9k4gghyiWF3hJUabS5NMM6mJo0EF0ryH1UctiGWy2F9hRsLPrxHBaQF7s
- jZzWnxpJUrMsPS8eC/MZzZG0CPlPOh4HMMF1UQgpkUqG0EVu+L3sgtp7xo5xzOoIQBgN
- C/zDgDkwRWhQBXIyk4Iy7G2TlZzfGShI4+FQL0ux3t0nkdxTtVs3Er2WYuO2oSzkKy7a YQ== 
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2177.outbound.protection.outlook.com [104.47.58.177])
-        by mx0b-00328301.pphosted.com with ESMTP id 3185ap9ewx-3
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 May 2020 11:58:04 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VCXboOGIP5XI1cQ33KHZIYHwYyBgYpqVOsg3o4urlfVVoxW+ofpDXVG8/ln/5sLrMsiwWGGpzRqESKxAn1hXsrnG6gDo5biwGJ4Buvx1ufgxcHMCB09Q7e3PreVxGbcWAf+glxzrJbGovFN6RmJtWIs11lE/QJoYrDhvg3O5fLsiOmf1SQOERB7WthcqlDhMHJUO8MB/gx4S6dK7qlX0NlepSCFlwKCelOyrtRVwMh5U9IcSejE8izFjUnBIoevD0FauyutKHp6aAi9Pqf9VkKLtvLlfBDVaF1MYaFC3BZ3DTRJMc0lOz4MqWYH6loQ2ZkAhHM+mnQn0yyzqYYEWnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5thYSFLHQBsEKsgqJfZTnjul6HJtPAMqubvEftwanY=;
- b=UkuZfL/T6OuB2pm+EVRGkBM887arm5feAGNG0XcGbNNJJioHvBzeSK5tPupDTQid0NZ8/BcIFjG3YfDPPVp9buGFFcWHqja5h0jt0k0le2MozjHV2MM10hb8VtBSEK5dNz//8+8QPpGi81ccf2mFtdcogva7okDCP0wr9CDIqzm13XE817xhN4aJD/cKNkHR0g20jxDGYcM2cyuvjBJs48KuQvZXaEuTvz8XDfEIDsupRWzm+xbea9F2RgKpiVFDD7vg36THPv1pKILh6R0gAjHkdNl4QSuoANIhy3ReqRa4hc/VnuNKIq1EQStmi60KDaMVJtTuWNTMp/Pthy9THQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5thYSFLHQBsEKsgqJfZTnjul6HJtPAMqubvEftwanY=;
- b=NsbYOdmzr/gStxiyE+2AwMcUURNnd2N2x/EHTyUcwcCHydL6k5FRjwydczzEqdPBd7f4mLqIe6Ync3j8+PwwA3SrflLyXZ8MJvCzPFkdWZFQXy7GaDm85vQm4rcjjqypp2/6Z4ivuBR4Cb6MYzB+hhLVxOe4Ud0rLcBDReYchwc=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=invensense.com;
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
- by MN2PR12MB3151.namprd12.prod.outlook.com (2603:10b6:208:d1::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.23; Wed, 27 May
- 2020 18:58:00 +0000
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::8940:8e95:6996:cc0]) by MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::8940:8e95:6996:cc0%8]) with mapi id 15.20.3045.018; Wed, 27 May 2020
- 18:58:00 +0000
-From:   Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-To:     jic23@kernel.org, robh+dt@kernel.org, robh@kernel.org,
-        mchehab+huawei@kernel.org, davem@davemloft.net,
-        gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH v2 12/12] MAINTAINERS: add entry for inv_icm42600 6-axis imu sensor
-Date:   Wed, 27 May 2020 20:57:11 +0200
-Message-Id: <20200527185711.21331-13-jmaneyrol@invensense.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200527185711.21331-1-jmaneyrol@invensense.com>
-References: <20200527185711.21331-1-jmaneyrol@invensense.com>
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P265CA0168.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9::36) To MN2PR12MB4422.namprd12.prod.outlook.com
- (2603:10b6:208:265::9)
+        id S1726529AbgE0Taz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 15:30:55 -0400
+Received: from mout.web.de ([217.72.192.78]:49687 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725320AbgE0Taz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 27 May 2020 15:30:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1590607835;
+        bh=EXR2BiKOTwaciW/Mys75uSRQDsAkHJB0uiphyQGosvY=;
+        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
+        b=GcPehbpdOkHrpBT6VXF3UDmN8KOSe8oePZm9kkiAcXPKX1OC3u4tV9yZOzG/tdFuU
+         5ZayVsoMpMMfMyBoAbtZBkOIp3EqwJTI1RZDS04xLnfENlO19Zi9r0F4u3m0CuQXIW
+         85UZyDH5LUgdleRoonKuZ8Zx3Y17Ww+XQDodWPKA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.185.253]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MiuSs-1j7yBz2YTM-00elQk; Wed, 27
+ May 2020 21:30:35 +0200
+Cc:     linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: amplifiers: ad8366: Add the missed check for
+ devm_gpiod_get()
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Chuhong Yuan <hslester96@gmail.com>, linux-iio@vger.kernel.org
+Message-ID: <2b4d43a9-30db-95a3-1aa9-9efb278fd7f7@web.de>
+Date:   Wed, 27 May 2020 21:30:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from frgnb-buildozer.invcorp.invensense.com (77.157.193.39) by LO2P265CA0168.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:9::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.26 via Frontend Transport; Wed, 27 May 2020 18:57:58 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [77.157.193.39]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cb9f349d-0d77-45b2-8544-08d8026fe015
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3151:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR12MB31518A5F1C52ADA312B9C9B2C4B10@MN2PR12MB3151.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-Forefront-PRVS: 04163EF38A
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SLiBJqKCB3EiIfMvCVIqjMzi86d6ZzWTj/g/kfFhyeRXx0fb4uyz+ZXwmX1/EFSC+ZOuMauFtdqusoI9HH2qDGDaGvvY+xSyMIEVJvlBapYu9cJzDbia76ulo6bZeu9/p3oxSTvi2HRatXvZE1D94EbynIQ1QbH03jkfa8ji0JDOURua8mm1LgtrjPakXuGZiAG0q1lI5+NTU99FO31eLeCdruck7ny9HbS7tkgGOJbeohD58wbfxUgo6CzRnpsi8/IFLi7dZdzgwof77YRw6RVwImvCt9i6581VAtAZ6zVqDwMC76/jTzSTqtiEqRmD6S4cO0epTe7OskCHmg+vd6TqCshOokhtbceQBof2OVCMCO04pKKsC1hSuRDPfYYDUOA+SF1laztK553P7gcZFQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4422.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(136003)(39850400004)(346002)(366004)(396003)(376002)(966005)(16526019)(478600001)(107886003)(8676002)(5660300002)(186003)(8936002)(316002)(4744005)(6666004)(6486002)(1076003)(7696005)(66946007)(26005)(2616005)(956004)(2906002)(86362001)(36756003)(52116002)(4326008)(66556008)(66476007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: AVhl9lr5i156ZuVQpu2jDMkwUM2OMfqpHosGXnS4/ypAAYsmw3eCfRN/YOOBw1bdmR07tGM2C3LVXkZDP8uI8BfNF/mvz2taEVp8+u+TL/gIcGKSasW4BNqqXhigw0C89LqJe6U1ugRWc8+2gnntqHBsatUI400baH33dFoHxFxRU6OBbSoU78HGUcMcOL/o3wOLNIYSTMpV5VZVKIEHOFdoMkfPTTJp0yLzklRwxJetLnqraaMoxwijjZ5ncQTWbo4WKSAu6QwWO7GXlauWCO8fwC6sqg43yv/gSX92kaphUv1Ueox2vgg75ZVHsg4Du5STJtZjfAH2ToEAKubQozqmxc0E80KbdT2I8BclldRrFSq/P48p1T+WH3/iWIYLnkXl7Yv7Y0i74KlvBCGghIJqLqHxImdqcLyemF5o2L6SrUXW4rU6lrT2wnieFl1sJy27SWtrPgPYo2+bmz16J4f0w+I9UsqnhWupX5bL80s=
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb9f349d-0d77-45b2-8544-08d8026fe015
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2020 18:58:00.0069
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KSG5X/KlsY/HYrzD4X3B1/Y3+0WcltuPqEHesjjiOqsb6g6HTBJ8Ufb/rkmPQWYv0oEd8EFb1cWTHiQXmuEPkB259kBKwSm6Y5b/Tw0MfIM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3151
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-27_03:2020-05-27,2020-05-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 cotscore=-2147483648
- suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0 phishscore=0
- mlxscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
- spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005270145
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Do2W5RKgJEWiL6ta9m/xDuyNGeBLR6rKQvvf8xicOMbSOgw2e9e
+ be8ru+be5rwqvC3GNcveACYSECtNOEXgZkkO6fpOVR5XW0V3Uj17gBQxhw2fSZsseptNkMi
+ Isi+ZePbwmLiVyOqCSLotrc6+ppPjUari2606BgOw91lftgTL4smqUCWhYa7orwf6IPGy7C
+ TqM9Q88o5izVDfjxvsmEQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NSug1gAueNs=:tdpMi7t4iV3NazBmdxhWKp
+ SXAX18Qci5OoPjBVPLT2cnig/FXKQ9+D5CiAYZl+pmOhmbFctvPZLDSh2WU2zH8evjaFcJtmX
+ b8E+1EI/oZZrBigzc70UFWNMbP/JSao2DkutNffyBcLC5WXHmQ0aNCJaz25UGVcFwJcCSKBsf
+ rlaO7gXSu136Ve3q/bqzXtee3DONHe6lEAGUviI/JrISo8QZ4acs+LBDD7Rmn+bOUIdLVsENz
+ wOX4peleocGlgWp95HyFPmi7qDDZTxj6G9cmEpcB0G7nCMeY1R19zsYsco/hYSXWNmSuJ5cwv
+ LRshIxXVIwAR3H7dDRpUW8NhjMiL10LEHD2PZigW8xWUJLnxsqLn8CzRXVve8owOSfSkNJK58
+ 5/SxPMWU8NhVe9gdRbjsuO5r+TPsdMxp+O5ASLGcXOlFXAzuhSj8Dlu/WNyG8zeotGLZizFZm
+ MCuwjed0lUQiBKjBL1giCtsQFLI9yuwEza8M5j6FikqE5JQY3qowzv0C+Ly1tvuOSPqxIpmwr
+ qkUYl4RxUN+prNYGHZydaMdFRIYwOPDuvjeVj5bVvxxWNW2XgKmI62qTd2NOWhM2+GLw3QsSk
+ WhSHDbCIq28mC7lssCY6pykhlZskwBnC/wsvpS7/sMHpXQIiWhFtjiyHLYLuAN6DyD7eStt/y
+ LSY1zqtrlPHGQvJoqnsEy1bZVnSTXP5tFhv89IvLd0ynQt4JyUJZTfik2uUT/fqB3pVJaZ/wr
+ XTPgpjyYKxT61bpnqdYmbkCHNRLszJGoSTUVWYcfZPtNUtyXmEnMGTTtw/HZlmlI+Yei2+33X
+ sMxqyiYlvEXOqQ6j4DSVaQLB9ozLzG1HpGouO4MEhbwt5oxMmW3g1P4G8D/dbahVNSBYM4aBd
+ LI2ThLdGaE8a3r/s35MiX0HjCfqCgRe7iZyJJJnNpE1cCDLJLux2ItFJpxcnHqidiHWINnE/u
+ CQc9AJofyCTXc5EC4vXhEy6fpE5BJSSmrZYT0yQcAZKJR9+L7QnkB5NgsXTmvFuygbQEtVgXr
+ qreR/lykLjjeue4J1qm4Uc38cz3MJiG93esZ+pgAj8ChYGvz9lLGlRlGKw/hoRIy8c5jM0m0d
+ hoC5x3gOegZZQw4EYakCMuYTBFMbiEvRznTmFV9rBCgmvN6dUcg5O9NtQonigb3JwyBH19qUs
+ qfyWI8ACUY1dThV0SHgOoqtWxVo5cR+l1caI77p9xBAkyps21WO8iRbSSNssFYdFIAa7bPlBm
+ eJfFc0X5KsUXbFfaZ
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add MAINTAINERS entry for InvenSense ICM-426xx IMU device.
+> ad8366_probe() forgets to check the return value of devm_gpiod_get().
+> Add the missed check
 
-Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks for another completion of the exception handling.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 60ed2963efaa..cd8b5fece94d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8861,6 +8861,14 @@ F:	include/dt-bindings/interconnect/
- F:	include/linux/interconnect-provider.h
- F:	include/linux/interconnect.h
- 
-+INVENSENSE ICM-426xx IMU DRIVER
-+M:	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+W	https://invensense.tdk.com/
-+F:	Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-+F:	drivers/iio/imu/inv_icm42600/
-+
- INVENSENSE MPU-3050 GYROSCOPE DRIVER
- M:	Linus Walleij <linus.walleij@linaro.org>
- L:	linux-iio@vger.kernel.org
--- 
-2.17.1
 
+>                      to fix it.
+
+I suggest to replace this wording by the tag =E2=80=9CFixes=E2=80=9D for t=
+he commit message.
+
+Regards,
+Markus

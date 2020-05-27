@@ -2,193 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1481A1E4644
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 16:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 503D51E46F2
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 17:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388506AbgE0OoX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 10:44:23 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2250 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388395AbgE0OoX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 27 May 2020 10:44:23 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 6FDE3D37E52F5CDD50AD;
-        Wed, 27 May 2020 15:44:21 +0100 (IST)
-Received: from localhost (10.47.93.204) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 27 May
- 2020 15:44:21 +0100
-Date:   Wed, 27 May 2020 15:43:49 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 19/25] iio:adc:ti-ads1015 Fix buffer element alignment
-Message-ID: <20200527154349.00007f44@Huawei.com>
-In-Reply-To: <20200527123713.GO1634618@smile.fi.intel.com>
-References: <20200525170628.503283-1-jic23@kernel.org>
-        <20200525170628.503283-20-jic23@kernel.org>
-        <20200525175236.GG1634618@smile.fi.intel.com>
-        <da67e0e4-5889-eb87-7bc0-fac07ae54e57@metafoo.de>
-        <20200526091556.GN1634618@smile.fi.intel.com>
-        <20200526174328.0000673d@Huawei.com>
-        <20200526170612.GY1634618@smile.fi.intel.com>
-        <E1CB2D23-5B37-47E7-8782-ACC296EE5712@jic23.retrosnub.co.uk>
-        <20200526210313.GD1634618@smile.fi.intel.com>
-        <20200527124107.00001386@Huawei.com>
-        <20200527123713.GO1634618@smile.fi.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S2389408AbgE0PGD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 11:06:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389316AbgE0PGC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 11:06:02 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D575AC05BD1E;
+        Wed, 27 May 2020 08:06:02 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id g5so434210pfm.10;
+        Wed, 27 May 2020 08:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2r8qW1GbzwPbZg/HkuQqnA356Pshlg9uzOTT3+JhmRM=;
+        b=QsvhzIsNmgfUdK4CS9ZD1rrd26M+p3WwCI2iy5dW0YTISBuOcmd9J7yhgaCoNyrbPE
+         5v5bBYaiB2PM5xgznY2bF7s4/p8WhzDtDGCwxBOQnOLwQCGFlqI92KHSM98erLb9CTBT
+         vwe2uElL+9hmmdeqO/g9lWag7XpTevoybESaQuWPPchkL9CxaG0LZKh64qRi3PLXOE+o
+         YzcErXzwz1Pp6Fi3DxRYoBx4Lu9j3suZ6D6cOw3OfVPat4PsYDo3ks2nqOYOR1+kzkEM
+         g5PTI22fBZX2r8tJ8Xwop6ifXOzW7VyfG9glSqs+hmbR6mR8Jwnpi/8noV/pEaUYCu4y
+         /cBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2r8qW1GbzwPbZg/HkuQqnA356Pshlg9uzOTT3+JhmRM=;
+        b=UuudTWh5a5cyHLnNe2z5sk2yYugJDMSXKnZF2emkZM/jv43uwurxunsr3nEp6Lw3+t
+         obJjD6UqRPfkJh+Dw2Vihaa2KxIzS1G7WwHyK9AcwTaxWXcUwK7JvGv8x79xgnkuhApg
+         qCVCHs/YfyRPFcJSBAaNCq5tvACFj+CTzhBb5y21uy/AnL4VEMUsz5Th7l68o+Vx87Gv
+         KmrW8fa3C7SsQglr18V9mZaInSob/USkpdfP991nTW5WI9Voe//8SRJt2PgNtzUzmg9w
+         GReTPUgjmZS/+1ETV0YXjd+BHSj7WLMDce4VLxZm+CYD0z+TogmJd2geYLSubWKzopED
+         f28A==
+X-Gm-Message-State: AOAM530W5NNTRys7ICBrJPJ2Dlut/vTVdlN2C85krrBMRj1VhwbI7unE
+        UNgZbAmZhmLXWYfJ+n48oTs=
+X-Google-Smtp-Source: ABdhPJxJqNylx2TSCxCjRB/cji+ywky1bhvI30hSRJ3tF5o44Jb8SIM6ZokhFtUddHZ0KzH494D8ag==
+X-Received: by 2002:a62:5ac2:: with SMTP id o185mr4348006pfb.148.1590591962363;
+        Wed, 27 May 2020 08:06:02 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id a10sm2247999pgv.72.2020.05.27.08.05.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2020 08:06:01 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] iio: amplifiers: ad8366: add the missed check for devm_gpiod_get
+Date:   Wed, 27 May 2020 23:05:48 +0800
+Message-Id: <20200527150548.539000-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.93.204]
-X-ClientProxiedBy: lhreml731-chm.china.huawei.com (10.201.108.82) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 May 2020 15:37:13 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+ad8366_probe() forgets to check the return value of devm_gpiod_get().
+Add the missed check to fix it.
 
-> On Wed, May 27, 2020 at 12:41:07PM +0100, Jonathan Cameron wrote:
-> > On Wed, 27 May 2020 00:03:13 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
-> > > On Tue, May 26, 2020 at 08:17:11PM +0100, Jonathan Cameron wrote:  
-> > > > On 26 May 2020 18:06:12 BST, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:    
-> 
-> > > > Might be easier to just align it though than explain this subtlety.     
-> > > 
-> > > The easiest one seems to move ts to be first member of the struct / buffer. Problem solved.  
-> > 
-> > Sort of, but it brings other problems.
-> > 
-> > 1) Breaks userspace ABI.  Yes, no one should be relying on the ordering of
-> >    elements from a given sensor, but we all know someone will be.   As
-> >    things currently stand note we only have one actual report of there
-> >    being a case where the alignment stuff breaks down (before I broke it
-> >    much more significantly with this patch set!)
-> > 
-> > 2) We have to rework all the drivers, including the majority that use a suitably
-> >    aligned buffer anyway (typically ____cacheline_aligned for DMA safety).
-> >    The structure thing doesn't work any more because the timestamp is optional,
-> >    so we have to have the drivers do their alignment differently depending on whether
-> >    it is there or not, so we are back to use using __aligned(8) for all the buffers. 
-> >    At the end of the day, the iio_push_to_buffers_with_timestamp is only workable
-> >    because the timestamp is at the end of the buffer.  
-> 
-> I see.
-> 
-> > At this point I'm thinking we just stick to u8, u16 etc arrays.  At that point
-> > we either decide that we are happy to not backport past (IIRC) 4.19 where the minimum gcc
-> > version was increased such that __aligned(8) works on the stack, or we move them into
-> > the iio_priv() structure where __aligned(8) always worked and hence squash the issue
-> > of kernel data leaking without a memset on each scan. The only remaining question is
-> > whether we get extra clarity by using
-> > 
-> > struct {
-> > 	s16 channels[2];
-> > 	// I think we can actually drop the padding if marking the timestamp as
-> > 	// __aligned(8)
-> > 	u8 padding[4];
-> > 	s64 timestamp __aligned(8);
-> > } scan;
-> > 
-> > or 
-> > 
-> > s16 scan[8] __aligned(8);
-> > 
-> > 
-> > For the __aligned part this from the gcc docs looks helpful:
-> > 
-> > https://gcc.gnu.org/onlinedocs/gcc-4.6.4/gcc/Type-Attributes.html
-> > 
-> > "Note that the alignment of any given struct or union type is
-> > required by the ISO C standard to be at least a perfect multiple
-> > of the lowest common multiple of the alignments of all of the
-> > members of the struct or union in question. This means that you
-> > can effectively adjust the alignment of a struct or union type by
-> > attaching an aligned attribute to any one of the members of such a
-> > type, but the notation illustrated in the example above is a more
-> > obvious, intuitive, and readable way to request the compiler to
-> > adjust the alignment of an entire struct or union type. "  
-> 
-> This means that
-> 
-> struct sx {
-> 	u8 channel;
-> 	s64 ts;
-> };
-> 
-> struct sx y, *py = &y;
-> 
-> py will be always aligned to at least 8 bytes (per s64 type).
-> It has no effect on the members themselves.
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ drivers/iio/amplifiers/ad8366.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Ah. I cut too much out. 
-
-"This attribute specifies a minimum alignment (in bytes) for variables of the specified type."
-
-So taking...
-
-struct sx {
-	u8 channel;
-	s64 ts __aligned(8);
-};
-
-So if ts is __aligned(8) it will be aligned to 8 bytes, but so will the structure containing it.
-hence will will have 7 bytes of padding.
-
-There are a few similar users of this in kernel.  For example
-
-https://elixir.bootlin.com/linux/latest/source/include/linux/efi.h#L809
-
-Which after digging in the UEFI spec is because all variables in UEFI are
-defined to have natural alignment and the structures are aligned to the
-largest size.  So effectively same case we have.
-
-Lots of other cases, that one just had a convenient spec to point at.
-They mostly exist in uapi headers presumably to allow stuff to consistent
-across from x86_64 to x86_32 userspace.
-
-
-> 
-> > So I think that means we can safely do
-> > 
-> > struct {
-> > 	u8 channel;
-> > 	s64 ts __aligned(8);
-> > };  
-> 
-> I don't know how this attribute will affect *a member* of the struct. Perhaps
-> it's straightforward and GCC simple apply it to POD.
-> 
-> > and be guaranteed correct padding and alignment in what I think is
-> > a fairly readable form.  It's also self documenting so I can
-> > probably drop some of the explanatory comments.  
-> 
-> If it is documented, then I fully agree, otherwise will look
-> like a (fragile) hack.
-> 
-
-Agreed.  It seems to be documented and I'm reassured by the bunch
-of existing places this seems to be being used.
-Also helps that they are mostly for uapi consistency which is
-really want we are talking about here as well.
-
-Will let this sit for a few days before I do anything about a v2
-in the hope that someone will point out any more corner cases
-I should have known about!
-
-Jonathan
-
-
-
-
-
+diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
+index 62167b87caea..b996823c8d51 100644
+--- a/drivers/iio/amplifiers/ad8366.c
++++ b/drivers/iio/amplifiers/ad8366.c
+@@ -264,6 +264,10 @@ static int ad8366_probe(struct spi_device *spi)
+ 	case ID_HMC1119:
+ 		st->reset_gpio = devm_gpiod_get(&spi->dev, "reset",
+ 			GPIOD_OUT_HIGH);
++		if (IS_ERR(st->reset_gpio)) {
++			ret = PTR_ERR(st->reset_gpio);
++			goto error_disable_reg;
++		}
+ 		indio_dev->channels = ada4961_channels;
+ 		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
+ 		break;
+-- 
+2.26.2
 

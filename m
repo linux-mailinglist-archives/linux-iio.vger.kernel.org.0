@@ -2,98 +2,245 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DBB1E46F9
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 17:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E011E4758
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 17:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389627AbgE0PGN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 11:06:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50236 "EHLO
+        id S1729448AbgE0PaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 11:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389316AbgE0PGM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 11:06:12 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D737DC05BD1E;
-        Wed, 27 May 2020 08:06:12 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id n15so11950678pfd.0;
-        Wed, 27 May 2020 08:06:12 -0700 (PDT)
+        with ESMTP id S1729416AbgE0PaL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 11:30:11 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0968AC05BD1E;
+        Wed, 27 May 2020 08:30:11 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id h9so9256963qtj.7;
+        Wed, 27 May 2020 08:30:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sGrZKBWfZ9CzbVCqf0bzxeml/dCqTei6g4aLYiJ/QE4=;
-        b=MTxj59cROwN+53QYo4SSPVrpTjgGU1PkLYOSYGSCHQQSuo3EKGDjduRBdIVJd4yeUO
-         ykpuutiv1VYJx00VQ2a0UB6AVWfP/+CYxxDEsPAqb5HvAR9ZBNjI6okRkfJ1TXCNVsaq
-         q78/VzeQuwhteET3ohKSKEdMKpGa3Ky5nFYl3lwYs6aPP+NFRgA+0ozbwzryXYls1ayk
-         K1gNz+Tc8zZ2d1NYOrs1IRErPxA9uqksG2lhwYelhbmXm3+e8k7xvNtRW7+Bdl51fFnT
-         riWMwTbbtelwf8qBZPB6nQNr0W/iuIETaQtPDmDRxX28+OHSATPtH9CIIJ8iLVk1mbNU
-         sfAw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=zkunrZ0oeTCMztxG/OegBl2pml7XGAS8duP4C52EX6I=;
+        b=Oap9h53IlxWOHi0RDCE66AdYN29wfAsbfyk1QJ8LaluzX9rvKMepwlSxjc73mIDafz
+         70p2spgj38vRS+A7COVFSdEnfquX4eT2K1O+d9J5DHQsDd42rCDKqkvBpPZJoPL0oM+8
+         eFsL1Kuklf2RdebuF6n8QOK76x6Rx5oQn7ITcZdgt7v7vLgXQIJalvgup7hOwdVPebRK
+         jWpSbb7AFjdj5pA9koQuF6Umyp3MisLlDy4qw5QuUd4AcckwSIGvuy6ssY/Rf4R/zg1L
+         SGO4P/6OFpvNxXznbm4ydRYLwBTlnzyO4qmfpQNj5y8gUsXVOP02M7EzPkZweaDWwjb/
+         Cz3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sGrZKBWfZ9CzbVCqf0bzxeml/dCqTei6g4aLYiJ/QE4=;
-        b=XsC3eRBLpGnwnPo1cDSO59GdCTnN9o969ivzDRUTfwJH1Jf5EO8YmgbJ91N3saBZBR
-         R4tc3KNg/PTsqlXQ5tu3LC4CY1pFcITuRF3Udh+bOnsfwmHDeru7s7xz1Mpl0+iGWvaH
-         ehBcZikOM+yhrrp6vkFK5ajZsSHW9tVpOgoKs5p6Ltcot9+OZdwVm70EQe5WXNLF3pMJ
-         pTPmKQnKf0osn/+7DxMnRRZPeejz/vaY6DSyFtV/Cgd4St0jJj5jaknVD9KlIi6kOEDH
-         OJdZOWPHJT3RUAFxsS2S+NGnt9OAq/H/UeNDQmR/A8iSCKdw6Gsyhjbo1p8s4RwRCn2s
-         Xwkw==
-X-Gm-Message-State: AOAM533wVpH9YjHW5cMir0Xei5Yxofb2b+EPyrf2t5VWAB2dkabOC9Rt
-        7iY1vyZJ120vr3D8LElDz8Q=
-X-Google-Smtp-Source: ABdhPJx3z3qhHGI+z7lJTwJvKQ2pu9i5uE84i3LTWORyi9fzKV/Z1COWfzuoUQvUU5eziD6lGe6gmA==
-X-Received: by 2002:a05:6a00:1490:: with SMTP id v16mr4235765pfu.173.1590591972237;
-        Wed, 27 May 2020 08:06:12 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id q18sm2214682pgt.74.2020.05.27.08.06.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 08:06:11 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=zkunrZ0oeTCMztxG/OegBl2pml7XGAS8duP4C52EX6I=;
+        b=qszY34hWm1gjn1UrBD5YFVOkqDj+V0DG1zT64cXbREbKsoILhdiQ1EchoyYi4T88Ao
+         zAuZ5egL9Q1xrvlU6mLtp3PUbD6AVjy55S9JUUz5OLe+cnMHXmCYscXLSPAbSBVvXOyv
+         3D064SUZ46cSRy95fI558GEh/FZwPAEOaMxl1tMBzrZos3TzOARn1Sn2ITh8K50mAwSt
+         O6Sl8xXjjrv/S9vwEAok/YJ2L9yUoxBZRL/I3CHGF7ku1YA5eJAsgKbDTuxK0LiEy+go
+         GT456IPNFzxb6gQ+3shU/emu2asHxNaT9CB5lK1WnngHmsHAEdG0SzPXrMC6RQI6lLdu
+         JTvw==
+X-Gm-Message-State: AOAM532A0jhEat4upnDmOLJsNcCB/p+PTsO8Y6KrMGWqjMyKyBsxync8
+        Kc9wUxcF+pIxmasuf43tpFg=
+X-Google-Smtp-Source: ABdhPJy7Aid9jgwaunjEzd/i0WniQ3PXIiToFKc9WwZdimCPt06wxXiwafiDs+QXwN+BKXf7pwycGA==
+X-Received: by 2002:ac8:710f:: with SMTP id z15mr4782320qto.71.1590593409980;
+        Wed, 27 May 2020 08:30:09 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id c186sm1744441qkd.102.2020.05.27.08.30.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 27 May 2020 08:30:09 -0700 (PDT)
+Date:   Wed, 27 May 2020 17:29:58 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] iio: mma8452: add missed iio_device_unregister in probe failure
-Date:   Wed, 27 May 2020 23:06:06 +0800
-Message-Id: <20200527150606.539130-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v6 2/5] dt-bindings: iio: magnetometer: ak8975: convert
+ format to yaml, add maintainer
+Message-ID: <20200527152958.GA21548@ict14-OptiPlex-980>
+References: <20200525151117.32540-1-jonathan.albrieux@gmail.com>
+ <20200525151117.32540-3-jonathan.albrieux@gmail.com>
+ <20200526222847.GA492828@bogus>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200526222847.GA492828@bogus>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-mma8452_probe() calls iio_device_register() but misses to call
-iio_device_unregister() when probe fails.
-Add the missed call in error handler to fix it.
+On Tue, May 26, 2020 at 04:28:47PM -0600, Rob Herring wrote:
+> On Mon, May 25, 2020 at 05:10:36PM +0200, Jonathan Albrieux wrote:
+> > Converts documentation from txt format to yaml.
+> 
+> I would have converted to yaml and do any re-formatting/wording, then 
+> added 'interrupts', but this is fine.
+>
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/iio/accel/mma8452.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Thank you, I'll keep that in mind for future works like this one
+ 
+> 
+> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > ---
+> >  .../bindings/iio/magnetometer/ak8975.txt      | 37 ---------
+> >  .../iio/magnetometer/asahi-kasei,ak8975.yaml  | 78 +++++++++++++++++++
+> >  2 files changed, 78 insertions(+), 37 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> >  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt b/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> > deleted file mode 100644
+> > index 0576b9df0bf2..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+> > +++ /dev/null
+> > @@ -1,37 +0,0 @@
+> > -* AsahiKASEI AK8975 magnetometer sensor
+> > -
+> > -Required properties:
+> > -
+> > -  - compatible : should be "asahi-kasei,ak8975".
+> > -  - reg : the I2C address of the magnetometer.
+> > -
+> > -Optional properties:
+> > -
+> > -  - gpios : AK8975 has a "Data ready" pin (DRDY) which informs that data
+> > -      is ready to be read and is possible to listen on it. If used,
+> > -      this should be active high. Prefer interrupt over this.
+> > -
+> > -  - interrupts : interrupt for DRDY pin. Triggered on rising edge.
+> > -
+> > -  - vdd-supply: an optional regulator that needs to be on to provide VDD.
+> > -
+> > -  - mount-matrix: an optional 3x3 mounting rotation matrix.
+> > -
+> > -Example:
+> > -
+> > -ak8975@c {
+> > -        compatible = "asahi-kasei,ak8975";
+> > -        reg = <0x0c>;
+> > -        interrupt-parent = <&gpio6>;
+> > -        interrupts = <15 IRQ_TYPE_EDGE_RISING>;
+> > -        vdd-supply = <&ldo_3v3_gnss>;
+> > -        mount-matrix = "-0.984807753012208",  /* x0 */
+> > -                       "0",                   /* y0 */
+> > -                       "-0.173648177666930",  /* z0 */
+> > -                       "0",                   /* x1 */
+> > -                       "-1",                  /* y1 */
+> > -                       "0",                   /* z1 */
+> > -                       "-0.173648177666930",  /* x2 */
+> > -                       "0",                   /* y2 */
+> > -                       "0.984807753012208";   /* z2 */
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > new file mode 100644
+> > index 000000000000..a603659d5fa5
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > @@ -0,0 +1,78 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/magnetometer/asahi-kasei,ak8975.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: AsahiKASEI AK8975 magnetometer sensor
+> > +
+> > +maintainers:
+> > +  - Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - const: asahi-kasei,ak8975
+> > +      - const: asahi-kasei,ak8963
+> > +      - const: asahi-kasei,ak09911
+> > +      - const: asahi-kasei,ak09912
+> 
+> These 4 can be an enum.
+> 
+> > +      - const: ak8975
+> > +        deprecated: true
+> > +      - const: ak8963
+> > +        deprecated: true
+> > +      - const: ak09911
+> > +        deprecated: true
+> > +      - const: ak09912
+> > +        deprecated: true
+> 
+> And these 4 can be an enum+deprecated.
+> 
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +    description: the I2C address of the magnetometer.
+> 
+> Don't need a description.
+> 
+> > +
+> > +  gpios:
+> > +    description: |
+> > +      AK8975 has a "Data ready" pin (DRDY) which informs that data
+> > +      is ready to be read and is possible to listen on it. If used,
+> > +      this should be active high. Prefer interrupt over this.
+> 
+> Need to define how many GPIOs (maxItems: 1).
+> 
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 00e100fc845a..813bca7cfc3e 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1685,10 +1685,13 @@ static int mma8452_probe(struct i2c_client *client,
- 
- 	ret = mma8452_set_freefall_mode(data, false);
- 	if (ret < 0)
--		goto buffer_cleanup;
-+		goto unregister_device;
- 
- 	return 0;
- 
-+unregister_device:
-+	iio_device_unregister(indio_dev);
-+
- buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
- 
--- 
-2.26.2
+Ok, I'll edit those fields as soon as possible, thank you,
 
+Best regards,
+Jonathan Albrieux
+
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +    description: interrupt for DRDY pin. Triggered on rising edge.
+> > +
+> > +  vdd-supply:
+> > +    maxItems: 1
+> > +    description: |
+> > +      an optional regulator that needs to be on to provide VDD power to
+> > +      the sensor.
+> > +
+> > +  mount-matrix:
+> > +    description: an optional 3x3 mounting rotation matrix.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        magnetometer@c {
+> > +            compatible = "asahi-kasei,ak8975";
+> > +            reg = <0x0c>;
+> > +            interrupt-parent = <&gpio6>;
+> > +            interrupts = <15 IRQ_TYPE_EDGE_RISING>;
+> > +            vdd-supply = <&ldo_3v3_gnss>;
+> > +            mount-matrix = "-0.984807753012208",  /* x0 */
+> > +                           "0",                   /* y0 */
+> > +                           "-0.173648177666930",  /* z0 */
+> > +                           "0",                   /* x1 */
+> > +                           "-1",                  /* y1 */
+> > +                           "0",                   /* z1 */
+> > +                           "-0.173648177666930",  /* x2 */
+> > +                           "0",                   /* y2 */
+> > +                           "0.984807753012208";   /* z2 */
+> > +        };
+> > +    };
+> > -- 
+> > 2.17.1
+> > 

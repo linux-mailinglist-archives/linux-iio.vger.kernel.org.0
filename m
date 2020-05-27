@@ -2,157 +2,230 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC2D1E3786
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 06:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C84CD1E38DE
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 08:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgE0EvN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 00:51:13 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:25390 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725294AbgE0EvL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 00:51:11 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04R4nJOY025065;
-        Wed, 27 May 2020 00:50:49 -0400
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2175.outbound.protection.outlook.com [104.47.59.175])
-        by mx0a-00128a01.pphosted.com with ESMTP id 316wp83x2m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 May 2020 00:50:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mEB5Qa+dAMxcXcp9WhvBUzG3tvjkl5EuATeBopOH+Z0rtZ14ctMVY8p4+jcUTMoRRIuPMKgZeJwoQXG8OYxPzKRDvUsHhLYPjr1PtI0UGMTQFRwYQ7VgMfYKkBIaVIsEVzofk1aNtjiE32guLrD8BBkqTaGOCcmjk++O0eYPqrHlQxiE0C0hsnER2BtZ6hDbEuu+PhNUPJGtRrGH/Dn+BZ7ne0trnDB956DtrYZY1D46fGbYGhLV0UM4wpJ58F919fq24qDIDbTqE8h/eq8oZVEbimCvBMIBGfjZG/MphsXQHJuJaCNU8rONdBWE3JmjWo/cxM3SbM6sw8yjbz0gLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4/8ctwZ22mXMJOfgOe5LnbEVdleYVLR2Z67qLmI1il8=;
- b=C94v8uR62aabo8rTgbBAFtrK00z2dIjxnuqvAVUb1pH/s9LTlm8nSfGanZUonH0bKCaBzakTTPFXL55Kvcu49UOlDNq6pOS9go9saeYCtLgrvsrJGD4oAuXy+D36Jz4OAyyzS/fGGftlOAWn5fzJsiYEr0+niFQVPVkjQzssQcEVI4CwUc5dWY5KVYthXcE+T9wEJj1VwdRyMqGRstUWN8GF8k9sAIo+me3Q1odWnacnXKhnrVIFbzxTyLGshFUMU79HyX6G5VOjVFSumvuZo/dVeYA9xtNPHg+IJKTX5pz1BUjBLA6to/QLTeS4i/M30lJ0CRBi/R2sZW6t7fzvpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4/8ctwZ22mXMJOfgOe5LnbEVdleYVLR2Z67qLmI1il8=;
- b=2tZ+eKY8Zj4WbNCaTM4pDZR5kAYbTlAmee+1aLpsgitt6/iqLHR522T4P7KY8o9Qbf6QXKkH/RQt1CCkMv8eyaLosdt3xEo8/SiFO3J6zQcuh9aMq9u8VxeBdVuGhR+oVZ99PUw8QPhLJoL7iq+ESR2G5HOchAVAS278bf43ZBA=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB3739.namprd03.prod.outlook.com (2603:10b6:5:ac::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.24; Wed, 27 May
- 2020 04:50:47 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3021.029; Wed, 27 May 2020
- 04:50:47 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "rikard.falkeborn@gmail.com" <rikard.falkeborn@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/6] iio: dac: ad5686: Constify static struct
- iio_chan_spec
-Thread-Topic: [PATCH 4/6] iio: dac: ad5686: Constify static struct
- iio_chan_spec
-Thread-Index: AQHWM6ESg9sPwd1MM0+GtgRrZEjArai7XYGA
-Date:   Wed, 27 May 2020 04:50:46 +0000
-Message-ID: <d822bd34435902f096cdeb27ae0dc029d29bfb2c.camel@analog.com>
-References: <20200526210223.1672-1-rikard.falkeborn@gmail.com>
-         <20200526210223.1672-5-rikard.falkeborn@gmail.com>
-In-Reply-To: <20200526210223.1672-5-rikard.falkeborn@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [188.27.130.247]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 177431e4-4bcf-4a28-38f4-08d801f98575
-x-ms-traffictypediagnostic: DM6PR03MB3739:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR03MB373964812D2DD2B9850CF0EDF9B10@DM6PR03MB3739.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-forefront-prvs: 04163EF38A
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: D3gPemSJUVKJNvWAkkqo14vpAGWUGDvLMDaZHJsbd69xjpyvO0Hpg/tDqDgGVygF6nO2A23+UIJjr/wJ13biB1aOT7Ajk1zQ+DWfHvKQ7uJTKK+sgIQrQ5JYjo6FFAnkdRTVwydPwcgCy3gnONGnqr89sXxxktSFvdaKiiRNht8ntmKtprGwNav6EV6xMhScnt5peUkgLDpxXTEryAbexu/t/tHrITrRTzxFJpsTTVviI2JlHORpzCTMDkdAZnCjpWCYpOHP96R4rMBr5yngtLMVypHat7Px6MWRvQ6Nvtt0C2b1CcRs0eo2mt7aK/pQy81rrryZVThgTMztqY+A1w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(136003)(346002)(39850400004)(396003)(366004)(2906002)(4326008)(86362001)(478600001)(6506007)(71200400001)(110136005)(54906003)(316002)(6512007)(186003)(6486002)(8676002)(66946007)(2616005)(5660300002)(26005)(66476007)(66446008)(66556008)(36756003)(64756008)(8936002)(76116006)(83380400001)(91956017);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: RCiQtyiHR9jrrZMcBqmJTRlGCbdG6sVUWDTupbfm0z/4rTK7Z17nf8X4AuTdP1vkxJnQPddgj2CyJFfpOlLVkaGC/cY8p1Wztf4Pz5CrCRJNLBbuqk9sBbwSum8/luO9aCaasA3OmGcUhj7B7DA4Wkgsnu2S4rIDH/zVJ1IO+y3rd3PP1sfhrVvoYEbzMmoXELGW/lndG5wpClXFhfWc5LV1BBQi7cpfhGavp1mTmWfGTXkFl6MmsXbR8+sxWOp7YlCCuP18gWG+yIvzKINML9Iqca54jLWIfOLQZHaQXCsfIIdq8soKNw29Cw/5DaVTeyNJmU4VY6lRU6+TMX26m5tCsa20tKiFDsTeZrxRfR5UsgNZBc4E0XN507Mf+1jCltNlHgbcffZkdDuvOqMMr0AbzTb3Dja93AWwRiMkbML2uQK1fP4/TKrD+uDrSaV9HCulbwxqDlsswZGh8rXtbGxRpQplBM6OrLkpDPCfXHz3m6yDsShUAzouhukEeO5i
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F35C70B59D531948AB9934CF5DCD190A@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1725843AbgE0GNp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 02:13:45 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:36275 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725267AbgE0GNo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 02:13:44 -0400
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 136D858015D;
+        Wed, 27 May 2020 02:13:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute7.internal (MEProxy); Wed, 27 May 2020 02:13:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=who-t.net; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:content-transfer-encoding:in-reply-to; s=fm3; bh=E
+        b2Zi/zhilnTOPybbmMHYUfE4AbMTuPFBHFWd4pKlM0=; b=myNaYPVbSE/bsgXlo
+        oh4J0u8+RKSeoWguDxEY1sniQ7H1CLC1DUviAOiluwRKnU+HbOGUuZQXNRH92lWn
+        CP5Rzzec9LEJiCeN+Ff9mjBB0DtUDIXmTSEfL8YEB9+17DbglDtoNZZtLAE112b8
+        khUyKiJoGNVLDnna8guU4qC6viBLzWj+GpxHIo+zB7CnjHOCd0ZQIRhw5/7m9vY/
+        Yj7C3XWNAC5psU6dvjRIVURiZqOBz92Z36K206eTFf/bq/ifNgTTnjIbzBrZjg3q
+        Tfkj4cn+eXDhKAyatRYD2Vos73K06V6H/Kfehk5y3ehIAXxgp+y+lvwrl/mj/r55
+        dRbVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; bh=Eb2Zi/zhilnTOPybbmMHYUfE4AbMTuPFBHFWd4pKl
+        M0=; b=04/epPm1D2wOTZMoutIF3Vy4/qeeSFxcWJMBDeMEbBkgtQKqSRSnSMOuP
+        /gSiDhieoS4U1l/io/57V91qWzaq94E9iqNG5x3+1uzOt1N8PZlrrvKTA5bwuEjK
+        H/RJ21MzqkScKXfnSlFG8bF8IFtXLLyE4rVQD8vm9msqqG+whvogbzeAiN3PwFL3
+        2CtWwAJEkOcUp0UmJx2OZu777Ztq0MM9E1DeUE8TxovPqN70Sj/y8GztY3jPPxEg
+        Gbb6eZYmGz8SDs5j6BMtrLPmn0BjaZ1obMh0ov1ilOQ1jXwUwoS4Nt26hseAk59H
+        dw1Eo3YDvM6aQ9oVRWwcgHcTa4bjg==
+X-ME-Sender: <xms:FAXOXuTfGBXE5kLx25DxDcj_sCxZfhqZjcgi0OpCXQ4yZngNLi7H7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddvfedguddtudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefrvght
+    vghrucfjuhhtthgvrhgvrhcuoehpvghtvghrrdhhuhhtthgvrhgvrhesfihhohdqthdrnh
+    gvtheqnecuggftrfgrthhtvghrnhephfegveefhfekgfdukeffgeefkeevueelueeiuedt
+    gfejieeigeekjedugffgtdeknecukfhppeduudejrddvtddrieekrddufedvnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepphgvthgvrhdrhhhu
+    thhtvghrvghrseifhhhoqdhtrdhnvght
+X-ME-Proxy: <xmx:FAXOXjxI5LpjWDRAzHcUWqAxQAf4h4d5Ul0Tt1v-318sGVmhX9MyGA>
+    <xmx:FAXOXr0ByUJVjIZSWpte5srYt6qvxn0jRdvS6-XPtrFnHbSaQFn-yg>
+    <xmx:FAXOXqD3RMyRHhZhPEEBnmhr568wJN8cBugbgkBdZgCRQc2BLRgsQw>
+    <xmx:FwXOXgGvrPIZuN89tFkYJWJdGLTbVFDnuMsKg91SzQPf79Zmc2DJsg>
+Received: from koala (117-20-68-132.751444.bne.nbn.aussiebb.net [117.20.68.132])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 7F09C3280060;
+        Wed, 27 May 2020 02:13:30 -0400 (EDT)
+Date:   Wed, 27 May 2020 16:13:26 +1000
+From:   Peter Hutterer <peter.hutterer@who-t.net>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
+        Benjamin Tissoires <btissoir@redhat.com>
+Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
+Message-ID: <20200527061326.GA531660@koala>
+References: <20200506002746.GB89269@dtor-ws>
+ <20200515164943.28480-1-andrzej.p@collabora.com>
+ <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
+ <20200517225510.GA205823@koala>
+ <20200518024034.GL89269@dtor-ws>
+ <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 177431e4-4bcf-4a28-38f4-08d801f98575
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2020 04:50:46.8842
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /wLlYr+Kc++QVf9A1T1xHqxj5akbezvUUuPZaxuSPy5pkKK94xdb0ObLXcSQatqzFJ21dlem0jXQs6vlKhd7OqrqW6EPhkgzfAgxLeY6HV4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3739
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-27_01:2020-05-26,2020-05-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- phishscore=0 adultscore=0 mlxlogscore=974 impostorscore=0 clxscore=1015
- malwarescore=0 mlxscore=0 lowpriorityscore=0 cotscore=-2147483648
- spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005270035
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTA1LTI2IGF0IDIzOjAyICswMjAwLCBSaWthcmQgRmFsa2Vib3JuIHdyb3Rl
-Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBUaGVzZSBhcmUgbmV2ZXIgbW9kaWZpZWQgYW5kIGNhbiBi
-ZSBtYWRlIGNvbnN0IHRvIGFsbG93IHRoZSBjb21waWxlciB0bw0KPiBwdXQgaXQgaW4gcmVhZC1v
-bmx5IG1lbW9yeS4NCj4gDQo+IEJlZm9yZToNCj4gICAgdGV4dCAgICBkYXRhICAgICBic3MgICAg
-IGRlYyAgICAgaGV4IGZpbGVuYW1lDQo+ICAgIDY2NDIgICAxMjYwOCAgICAgIDY0ICAgMTkzMTQg
-ICAgNGI3MiBkcml2ZXJzL2lpby9kYWMvYWQ1Njg2Lm8NCj4gDQo+IEFmdGVyOg0KPiAgICB0ZXh0
-ICAgIGRhdGEgICAgIGJzcyAgICAgZGVjICAgICBoZXggZmlsZW5hbWUNCj4gICAxNjk0NiAgICAy
-MzA0ICAgICAgNjQgICAxOTMxNCAgICA0YjcyIGRyaXZlcnMvaWlvL2RhYy9hZDU2ODYubw0KPiAN
-Cg0KQWNrZWQtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxv
-Zy5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogUmlrYXJkIEZhbGtlYm9ybiA8cmlrYXJkLmZhbGtl
-Ym9ybkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5jIHwgOCAr
-KysrLS0tLQ0KPiAgZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5oIHwgMiArLQ0KPiAgMiBmaWxlcyBj
-aGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5jIGIvZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5jDQo+
-IGluZGV4IDhkZDY3ZGEwYTdkYS4uNmRlNDhmNjE4Yzk1IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJz
-L2lpby9kYWMvYWQ1Njg2LmMNCj4gKysrIGIvZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5jDQo+IEBA
-IC0yMDYsMTIgKzIwNiwxMiBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19jaGFuX3NwZWNfZXh0
-X2luZm8NCj4gYWQ1Njg2X2V4dF9pbmZvW10gPSB7DQo+ICB9DQo+ICANCj4gICNkZWZpbmUgREVD
-TEFSRV9BRDU2OTNfQ0hBTk5FTFMobmFtZSwgYml0cywgX3NoaWZ0KQkJXA0KPiAtc3RhdGljIHN0
-cnVjdCBpaW9fY2hhbl9zcGVjIG5hbWVbXSA9IHsJCQkJXA0KPiArc3RhdGljIGNvbnN0IHN0cnVj
-dCBpaW9fY2hhbl9zcGVjIG5hbWVbXSA9IHsJCQlcDQo+ICAJCUFENTg2OF9DSEFOTkVMKDAsIDAs
-IGJpdHMsIF9zaGlmdCksCQlcDQo+ICB9DQo+ICANCj4gICNkZWZpbmUgREVDTEFSRV9BRDU2ODZf
-Q0hBTk5FTFMobmFtZSwgYml0cywgX3NoaWZ0KQkJXA0KPiAtc3RhdGljIHN0cnVjdCBpaW9fY2hh
-bl9zcGVjIG5hbWVbXSA9IHsJCQkJXA0KPiArc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hhbl9z
-cGVjIG5hbWVbXSA9IHsJCQlcDQo+ICAJCUFENTg2OF9DSEFOTkVMKDAsIDEsIGJpdHMsIF9zaGlm
-dCksCQlcDQo+ICAJCUFENTg2OF9DSEFOTkVMKDEsIDIsIGJpdHMsIF9zaGlmdCksCQlcDQo+ICAJ
-CUFENTg2OF9DSEFOTkVMKDIsIDQsIGJpdHMsIF9zaGlmdCksCQlcDQo+IEBAIC0yMTksNyArMjE5
-LDcgQEAgc3RhdGljIHN0cnVjdCBpaW9fY2hhbl9zcGVjIG5hbWVbXSA9IHsJCQkNCj4gCVwNCj4g
-IH0NCj4gIA0KPiAgI2RlZmluZSBERUNMQVJFX0FENTY3Nl9DSEFOTkVMUyhuYW1lLCBiaXRzLCBf
-c2hpZnQpCQlcDQo+IC1zdGF0aWMgc3RydWN0IGlpb19jaGFuX3NwZWMgbmFtZVtdID0gewkJCQlc
-DQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19jaGFuX3NwZWMgbmFtZVtdID0gewkJCVwNCj4g
-IAkJQUQ1ODY4X0NIQU5ORUwoMCwgMCwgYml0cywgX3NoaWZ0KSwJCVwNCj4gIAkJQUQ1ODY4X0NI
-QU5ORUwoMSwgMSwgYml0cywgX3NoaWZ0KSwJCVwNCj4gIAkJQUQ1ODY4X0NIQU5ORUwoMiwgMiwg
-Yml0cywgX3NoaWZ0KSwJCVwNCj4gQEAgLTIzMSw3ICsyMzEsNyBAQCBzdGF0aWMgc3RydWN0IGlp
-b19jaGFuX3NwZWMgbmFtZVtdID0gewkJCQ0KPiAJXA0KPiAgfQ0KPiAgDQo+ICAjZGVmaW5lIERF
-Q0xBUkVfQUQ1Njc5X0NIQU5ORUxTKG5hbWUsIGJpdHMsIF9zaGlmdCkJCVwNCj4gLXN0YXRpYyBz
-dHJ1Y3QgaWlvX2NoYW5fc3BlYyBuYW1lW10gPSB7CQkJCVwNCj4gK3N0YXRpYyBjb25zdCBzdHJ1
-Y3QgaWlvX2NoYW5fc3BlYyBuYW1lW10gPSB7CQkJXA0KPiAgCQlBRDU4NjhfQ0hBTk5FTCgwLCAw
-LCBiaXRzLCBfc2hpZnQpLAkJXA0KPiAgCQlBRDU4NjhfQ0hBTk5FTCgxLCAxLCBiaXRzLCBfc2hp
-ZnQpLAkJXA0KPiAgCQlBRDU4NjhfQ0hBTk5FTCgyLCAyLCBiaXRzLCBfc2hpZnQpLAkJXA0KPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vZGFjL2FkNTY4Ni5oIGIvZHJpdmVycy9paW8vZGFjL2Fk
-NTY4Ni5oDQo+IGluZGV4IDUyMDA5YjVlZWY4OC4uYTE1ZjI5NzA1NzdlIDEwMDY0NA0KPiAtLS0g
-YS9kcml2ZXJzL2lpby9kYWMvYWQ1Njg2LmgNCj4gKysrIGIvZHJpdmVycy9paW8vZGFjL2FkNTY4
-Ni5oDQo+IEBAIC0xMDQsNyArMTA0LDcgQEAgdHlwZWRlZiBpbnQgKCphZDU2ODZfcmVhZF9mdW5j
-KShzdHJ1Y3QgYWQ1Njg2X3N0YXRlDQo+ICpzdCwgdTggYWRkcik7DQo+ICBzdHJ1Y3QgYWQ1Njg2
-X2NoaXBfaW5mbyB7DQo+ICAJdTE2CQkJCWludF92cmVmX212Ow0KPiAgCXVuc2lnbmVkIGludAkJ
-CW51bV9jaGFubmVsczsNCj4gLQlzdHJ1Y3QgaWlvX2NoYW5fc3BlYwkJKmNoYW5uZWxzOw0KPiAr
-CWNvbnN0IHN0cnVjdCBpaW9fY2hhbl9zcGVjCSpjaGFubmVsczsNCj4gIAllbnVtIGFkNTY4Nl9y
-ZWdtYXBfdHlwZQkJcmVnbWFwX3R5cGU7DQo+ICB9Ow0KPiAgDQo=
+Hi Andrzej,
+
+On Fri, May 22, 2020 at 05:35:56PM +0200, Andrzej Pietrasiewicz wrote:
+> Hi Hans, hi Dmitry,
+> 
+> W dniu 18.05.2020 o 04:40, Dmitry Torokhov pisze:
+> > Hi Hans, Peter,
+> > 
+> > On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
+> > > On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
+> > > > Hi Andrezj,
+> > > > 
+> 
+> <snip>
+> 
+> > > 
+> > > > I also noticed that you keep the device open (do not call the
+> > > > input_device's close callback) when inhibited and just throw away
+> > > > any events generated. This seems inefficient and may lead to
+> > > > the internal state getting out of sync. What if a key is pressed
+> > > > while inhibited and then the device is uninhibited while the key
+> > > > is still pressed?  Now the press event is lost and userspace
+> > > > querying the current state will see the pressed key as being
+> > > > released.
+> > 
+> > This is a good point. We should look into signalling that some events
+> > have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
+> > it.
+> > 
+> 
+> It seems to me that the situation Hans envisions is not possible,
+> or will not be possible with a simple change. Let me explain.
+> 
+> For a start, let's recall that the input core prevents consecutive
+> events of the same kind (type _and_ code _and_ value) from being
+> delivered to handlers. The decision is made in input_get_disposition().
+> For EV_KEY it is:
+> 
+> 		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+> 
+> 			/* auto-repeat bypasses state updates */
+> 			if (value == 2) {
+> 				disposition = INPUT_PASS_TO_HANDLERS;
+> 				break;
+> 			}
+> 
+> 			if (!!test_bit(code, dev->key) != !!value) {
+> 
+> 				__change_bit(code, dev->key);
+> 				disposition = INPUT_PASS_TO_HANDLERS;
+> 			}
+> 		}
+
+note that this isn't per-process state, userspace can get release events
+after open() for keys it never got the press event for. Simple test:
+type evtest<enter> and KEY_ENTER up is the first event you'll get.
+
+But otherwise I agree with you that press/release should always be balanced
+if input_dev_release_keys() is called on inhibit and with that autorepeat
+snippet below. At least I couldn't come up with any combination of multiple
+clients opening/closing/inhibiting that resulted in an unwanted release
+event after uninhibit.
+
+Cheers,
+   Peter
+
+> Let's now focus on value != 2 (events other than auto-repeat).
+> The disposition changes from the default INPUT_IGNORE_EVENT to
+> INPUT_PASS_TO_HANDLERS only when the event in question changes
+> the current state: either by releasing a pressed key, or by
+> pressing a released key. Subsequent releases of a released key
+> or subsequent presses of a pressed key will be ignored.
+>
+> What Hans points out is the possibility of uninhibiting a device
+> while its key is pressed and then releasing the key. First of all,
+> during inhibiting input_dev_release_keys() is called, so input_dev's
+> internal state will be cleared of all pressed keys. Then the device
+> - after being uninhibited - all of a sudden produces a key release
+> event. It will be ignored as per the "subsequent releases of a
+> released key" case, so the handlers will not be passed an unmatched
+> key release event. Assuming that passing an unmatched key release
+> event was Hans's concern, in this case it seems impossible.
+> 
+> Now, the value of 2 (auto-repeat) needs some attention. There are two
+> cases to consider: the device uses input core's software repeat or it
+> uses its own (hardware) repeat.
+> 
+> Let's consider the first case. The timer which generates auto-repeat
+> is only started on a key press event and only stopped on a key release
+> event. As such, if any auto-repeat was in progress when inhibiting
+> happened, it must have been stopped as per input_dev_release_keys().
+> Then the key is pressed and held after the device has been inhibited,
+> and the device is being uninhibited. Since it uses software auto-repeat,
+> no events will be reported by the device until the key is released,
+> and, as explained above, the release event will be ignored.
+> 
+> Let's consider the second case. The key is pressed and held after the
+> device has been inhibited and the device is being uninhibited. The worst
+> thing that can happen is unmatched key repeat events will start coming
+> from the device. We must prevent them from reaching the handlers and
+> ignore them instead. So I suggest something on the lines of:
+> 
+> if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+> 
+> 			/* auto-repeat bypasses state updates */
+> -			if (value == 2) {
+> +			if (value == 2 && test_bit(code, dev->key)) {
+> 				disposition = INPUT_PASS_TO_HANDLERS;
+> 				break;
+> 			}
+> 
+> The intended meaning is "ignore key repeat events if the key is not
+> pressed".
+> 
+> With this small change I believe it is not possible to have neither
+> unmatched release nor unmatched repeat being delivered to handlers.
+> 
+> Regards,
+> 
+> Andrzej

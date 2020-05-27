@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C470A1E4E2A
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 21:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2351E4EA9
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 21:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726529AbgE0Taz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 15:30:55 -0400
-Received: from mout.web.de ([217.72.192.78]:49687 "EHLO mout.web.de"
+        id S1726596AbgE0Tzo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 15:55:44 -0400
+Received: from mout.web.de ([217.72.192.78]:54575 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725320AbgE0Taz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 27 May 2020 15:30:55 -0400
+        id S1726114AbgE0Tzn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 27 May 2020 15:55:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1590607835;
-        bh=EXR2BiKOTwaciW/Mys75uSRQDsAkHJB0uiphyQGosvY=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=GcPehbpdOkHrpBT6VXF3UDmN8KOSe8oePZm9kkiAcXPKX1OC3u4tV9yZOzG/tdFuU
-         5ZayVsoMpMMfMyBoAbtZBkOIp3EqwJTI1RZDS04xLnfENlO19Zi9r0F4u3m0CuQXIW
-         85UZyDH5LUgdleRoonKuZ8Zx3Y17Ww+XQDodWPKA=
+        s=dbaedf251592; t=1590609326;
+        bh=T27Y2yQteWvALB9TWBmEGDpncjmBJToM5enDPLY97M4=;
+        h=X-UI-Sender-Class:Cc:Subject:To:From:Date;
+        b=oWBo2AeKQ0T4tf8R0ShJtASTriYjHT/iGZDV0UZGMaqs8C7f5a/vTVD17FdkxZwQr
+         nETia10MflJBv7QB5P00hZyifitxCZZfPFLbr3QGhedZ0qTcYKKKcJ6ZUaCV17lfUz
+         yh263VK4ok6WfbF+xr0gbCxk32JmOyoUEiDEFmeA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.135.185.253]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MiuSs-1j7yBz2YTM-00elQk; Wed, 27
- May 2020 21:30:35 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MNfU1-1jOJmP37Dn-00PHcm; Wed, 27
+ May 2020 21:55:26 +0200
 Cc:     linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: amplifiers: ad8366: Add the missed check for
- devm_gpiod_get()
+Subject: Re: [PATCH] iio: mma8452: Add missed iio_device_unregister() call in
+ mma8452_probe()
+To:     Chuhong Yuan <hslester96@gmail.com>, linux-iio@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,54 +73,59 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Chuhong Yuan <hslester96@gmail.com>, linux-iio@vger.kernel.org
-Message-ID: <2b4d43a9-30db-95a3-1aa9-9efb278fd7f7@web.de>
-Date:   Wed, 27 May 2020 21:30:32 +0200
+Message-ID: <818d7c1b-ab4f-f254-3ada-99fed5108f3f@web.de>
+Date:   Wed, 27 May 2020 21:55:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Do2W5RKgJEWiL6ta9m/xDuyNGeBLR6rKQvvf8xicOMbSOgw2e9e
- be8ru+be5rwqvC3GNcveACYSECtNOEXgZkkO6fpOVR5XW0V3Uj17gBQxhw2fSZsseptNkMi
- Isi+ZePbwmLiVyOqCSLotrc6+ppPjUari2606BgOw91lftgTL4smqUCWhYa7orwf6IPGy7C
- TqM9Q88o5izVDfjxvsmEQ==
+X-Provags-ID: V03:K1:dWosoVVMgHrU1/OcGJVy3BR/wd8A20C6qrQ/RgJSMltLjpE92aF
+ qmklttNpu4MHsF4+FQ8LtcXWsOjieiTDELQ85oohY0+8RCrc/eZ5IDsAtL4+++steEindqW
+ 0Eqqnxvn0I00EhWIbwnZf1Au953Lql5xOGeutZMYNHE9d9xvL3kkdcwIpnv5IHyckf31BFd
+ 8Pce4o77wz4jTmHL2Z+lg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NSug1gAueNs=:tdpMi7t4iV3NazBmdxhWKp
- SXAX18Qci5OoPjBVPLT2cnig/FXKQ9+D5CiAYZl+pmOhmbFctvPZLDSh2WU2zH8evjaFcJtmX
- b8E+1EI/oZZrBigzc70UFWNMbP/JSao2DkutNffyBcLC5WXHmQ0aNCJaz25UGVcFwJcCSKBsf
- rlaO7gXSu136Ve3q/bqzXtee3DONHe6lEAGUviI/JrISo8QZ4acs+LBDD7Rmn+bOUIdLVsENz
- wOX4peleocGlgWp95HyFPmi7qDDZTxj6G9cmEpcB0G7nCMeY1R19zsYsco/hYSXWNmSuJ5cwv
- LRshIxXVIwAR3H7dDRpUW8NhjMiL10LEHD2PZigW8xWUJLnxsqLn8CzRXVve8owOSfSkNJK58
- 5/SxPMWU8NhVe9gdRbjsuO5r+TPsdMxp+O5ASLGcXOlFXAzuhSj8Dlu/WNyG8zeotGLZizFZm
- MCuwjed0lUQiBKjBL1giCtsQFLI9yuwEza8M5j6FikqE5JQY3qowzv0C+Ly1tvuOSPqxIpmwr
- qkUYl4RxUN+prNYGHZydaMdFRIYwOPDuvjeVj5bVvxxWNW2XgKmI62qTd2NOWhM2+GLw3QsSk
- WhSHDbCIq28mC7lssCY6pykhlZskwBnC/wsvpS7/sMHpXQIiWhFtjiyHLYLuAN6DyD7eStt/y
- LSY1zqtrlPHGQvJoqnsEy1bZVnSTXP5tFhv89IvLd0ynQt4JyUJZTfik2uUT/fqB3pVJaZ/wr
- XTPgpjyYKxT61bpnqdYmbkCHNRLszJGoSTUVWYcfZPtNUtyXmEnMGTTtw/HZlmlI+Yei2+33X
- sMxqyiYlvEXOqQ6j4DSVaQLB9ozLzG1HpGouO4MEhbwt5oxMmW3g1P4G8D/dbahVNSBYM4aBd
- LI2ThLdGaE8a3r/s35MiX0HjCfqCgRe7iZyJJJnNpE1cCDLJLux2ItFJpxcnHqidiHWINnE/u
- CQc9AJofyCTXc5EC4vXhEy6fpE5BJSSmrZYT0yQcAZKJR9+L7QnkB5NgsXTmvFuygbQEtVgXr
- qreR/lykLjjeue4J1qm4Uc38cz3MJiG93esZ+pgAj8ChYGvz9lLGlRlGKw/hoRIy8c5jM0m0d
- hoC5x3gOegZZQw4EYakCMuYTBFMbiEvRznTmFV9rBCgmvN6dUcg5O9NtQonigb3JwyBH19qUs
- qfyWI8ACUY1dThV0SHgOoqtWxVo5cR+l1caI77p9xBAkyps21WO8iRbSSNssFYdFIAa7bPlBm
- eJfFc0X5KsUXbFfaZ
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2nDIr+8TVEQ=:gN8PC1+3hrrbr5e/esmdIX
+ 54Qw5nGK5CNGG9TK81D9m5NGc2bQBb1oLEgdbgfs6s1IKA/LULy2hvUSkwOGJhA0vQtHi4xj+
+ BC5FJ1YyR2lFaEEGif/5pTqnCtZvXtkidNH4ttrKjDFLXLcFicBLYwiR5XYipxDkLbXJcHt0V
+ JygQQYbUaucyndgkao0Mk+b1IGDzGQcPmf0hBGxMX9XGazuI1PtqGHiEAaPYivCG56fFyFk8m
+ SaKFrNBKtOv4IYqhdRYXm9OjAc6GRUOgqhNooim9/sg1E9dvpoLuemoI6KKS0ygJlAkuqhPZG
+ tJneLHCHT0bkvGYNpcSM+FY7/nWe5cE/baFHHeih9+5+V5AZGp89lI27nv3KEFoDYLzNGGQaN
+ /ajU+JLow1Bn5zLkRJ56r3nsJR5snC7GJaw1wvx0c2NLopurQAlCZBDrj5VdeGHYWTsf4HBky
+ kCoc0myq6elxcylFWr6H9x7yWWbhcajT5Qykdub09ojmNlxEMzvMLBXprXmQI5oeDnlo8XpuC
+ 6m5SGf0BMwTyvUdJuoFh3mtbcMIlxc8F9EdmfNNbVztN2uSEMrTSSC4KXxmKqY6CZltFyvp/g
+ K2/W1NuInlkmksN1V47Hir45OLsqEGQBiafdyjT+p8kAtnCg44xSqTvBnbUSkAsdz+AlMGEPD
+ lSs/eMItHIayyreGuej6GA2qev/Ov3yrEPKu6+RJqbtW1kGIux4w8dUj2yVitOa8Li2UPBTZ9
+ UGNnenird1zmqiBzNY4EX4QiFm4XDFI8aexf4onucfOBLtdAqMMDpL4gho1pVdqB3Bns5fIb9
+ CGN6lkHEITaaYPDY9u5xpr55DWPVtVZylUhpHru2kwtMhGo8CQ529lKKOTfAE3iVhklPn5Wwb
+ F9tW0zdNYGmnIgWJlraTh6tNKq+PpQgwHPPdvWwIJB1Z7j6xo8WRlSAWnenrBbsIKlS3312xb
+ 31qh+qFdhtujWdm7YuYVqV16KQ0GmVg6VEXnC4k2vhfbJHhjvy5CnY8sJCi73x59S/PcHNVM6
+ Maq2qaXVfMP0UI5BTo8OcwLE+dFXjznJoKnuBIzQK2ftellgo9WfYFG+nrSqCcd2lht/wImnP
+ zS/2x1L4g/0cuWZZsMII6Rm0YeEIqjIObbR1atCJzV4Eemta2J7RiUi7Kqx4mxYHN/Z52GoTu
+ HIPSX8Sz49/uOSnTINTNP9pyIPFK8cG/ToTW8P+4KXWy8GR+vPyOYMj7hdNnGaqbuTWxs1FcP
+ y2CZf5Yh8pQusJviJ
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> ad8366_probe() forgets to check the return value of devm_gpiod_get().
-> Add the missed check
+> mma8452_probe() calls iio_device_register() but misses to call
+> iio_device_unregister() when probe fails.
+> Add the missed call in error handler to fix it.
 
-Thanks for another completion of the exception handling.
+How do you think about a wording variant like the following?
+
+   Change description:
+   The function =E2=80=9Ciio_device_register=E2=80=9D was called here.
+   But the function =E2=80=9Ciio_device_unregister=E2=80=9D was not called=
+ after
+   a call of the function =E2=80=9Cmma8452_set_freefall_mode=E2=80=9D fail=
+ed.
+   Thus add the missed function call for one error case.
 
 
->                      to fix it.
-
-I suggest to replace this wording by the tag =E2=80=9CFixes=E2=80=9D for t=
-he commit message.
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D?
 
 Regards,
 Markus

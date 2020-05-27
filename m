@@ -2,63 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C84CD1E38DE
-	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 08:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D251E3956
+	for <lists+linux-iio@lfdr.de>; Wed, 27 May 2020 08:36:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725843AbgE0GNp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 May 2020 02:13:45 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:36275 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725267AbgE0GNo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 02:13:44 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 136D858015D;
-        Wed, 27 May 2020 02:13:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Wed, 27 May 2020 02:13:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=who-t.net; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:content-transfer-encoding:in-reply-to; s=fm3; bh=E
-        b2Zi/zhilnTOPybbmMHYUfE4AbMTuPFBHFWd4pKlM0=; b=myNaYPVbSE/bsgXlo
-        oh4J0u8+RKSeoWguDxEY1sniQ7H1CLC1DUviAOiluwRKnU+HbOGUuZQXNRH92lWn
-        CP5Rzzec9LEJiCeN+Ff9mjBB0DtUDIXmTSEfL8YEB9+17DbglDtoNZZtLAE112b8
-        khUyKiJoGNVLDnna8guU4qC6viBLzWj+GpxHIo+zB7CnjHOCd0ZQIRhw5/7m9vY/
-        Yj7C3XWNAC5psU6dvjRIVURiZqOBz92Z36K206eTFf/bq/ifNgTTnjIbzBrZjg3q
-        Tfkj4cn+eXDhKAyatRYD2Vos73K06V6H/Kfehk5y3ehIAXxgp+y+lvwrl/mj/r55
-        dRbVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; bh=Eb2Zi/zhilnTOPybbmMHYUfE4AbMTuPFBHFWd4pKl
-        M0=; b=04/epPm1D2wOTZMoutIF3Vy4/qeeSFxcWJMBDeMEbBkgtQKqSRSnSMOuP
-        /gSiDhieoS4U1l/io/57V91qWzaq94E9iqNG5x3+1uzOt1N8PZlrrvKTA5bwuEjK
-        H/RJ21MzqkScKXfnSlFG8bF8IFtXLLyE4rVQD8vm9msqqG+whvogbzeAiN3PwFL3
-        2CtWwAJEkOcUp0UmJx2OZu777Ztq0MM9E1DeUE8TxovPqN70Sj/y8GztY3jPPxEg
-        Gbb6eZYmGz8SDs5j6BMtrLPmn0BjaZ1obMh0ov1ilOQ1jXwUwoS4Nt26hseAk59H
-        dw1Eo3YDvM6aQ9oVRWwcgHcTa4bjg==
-X-ME-Sender: <xms:FAXOXuTfGBXE5kLx25DxDcj_sCxZfhqZjcgi0OpCXQ4yZngNLi7H7A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddvfedguddtudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefrvght
-    vghrucfjuhhtthgvrhgvrhcuoehpvghtvghrrdhhuhhtthgvrhgvrhesfihhohdqthdrnh
-    gvtheqnecuggftrfgrthhtvghrnhephfegveefhfekgfdukeffgeefkeevueelueeiuedt
-    gfejieeigeekjedugffgtdeknecukfhppeduudejrddvtddrieekrddufedvnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepphgvthgvrhdrhhhu
-    thhtvghrvghrseifhhhoqdhtrdhnvght
-X-ME-Proxy: <xmx:FAXOXjxI5LpjWDRAzHcUWqAxQAf4h4d5Ul0Tt1v-318sGVmhX9MyGA>
-    <xmx:FAXOXr0ByUJVjIZSWpte5srYt6qvxn0jRdvS6-XPtrFnHbSaQFn-yg>
-    <xmx:FAXOXqD3RMyRHhZhPEEBnmhr568wJN8cBugbgkBdZgCRQc2BLRgsQw>
-    <xmx:FwXOXgGvrPIZuN89tFkYJWJdGLTbVFDnuMsKg91SzQPf79Zmc2DJsg>
-Received: from koala (117-20-68-132.751444.bne.nbn.aussiebb.net [117.20.68.132])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 7F09C3280060;
-        Wed, 27 May 2020 02:13:30 -0400 (EDT)
-Date:   Wed, 27 May 2020 16:13:26 +1000
-From:   Peter Hutterer <peter.hutterer@who-t.net>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        id S1728488AbgE0Geg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 May 2020 02:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728483AbgE0Gef (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 May 2020 02:34:35 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3B88C061A0F;
+        Tue, 26 May 2020 23:34:35 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id c75so11331974pga.3;
+        Tue, 26 May 2020 23:34:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Lvwr1YAKNY9WMfoJU9GdyQAGCpa27iG61RB5+DG9+HU=;
+        b=ix0hzHaX0/bvm5aUekJKMV8QeyRNclPiKL4kC29OJXGd5CLBVgOCaeBJD1XAE2xE9Q
+         iA2XWct7NUT9Udlx+YLrc6YwdV67LYDVTSgP9Zskh8U4ybuwHcjhZ79fkJMfIpQFu9LY
+         C/r7mrd2gHilznrxGWHKuppf6Cllt5pUKICSdlW2nSgraYAf8aIyEapaJQ16hzNg7Jvl
+         iPO5vHKLvYQ9j8r5K7e1jW0nODLgzjZHxHw/Y3PDy1zzy2+GsO0CmN9QJMXIqidzqRHv
+         0sXSwNn8dCO4sc8sVUonenNlEvXrP/YLUBosYUIQB5S2IpScL4AwL7iFnycDTcVSAwrc
+         PA3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Lvwr1YAKNY9WMfoJU9GdyQAGCpa27iG61RB5+DG9+HU=;
+        b=MJ7xJ66bwBTVoQhiWANH95T9p57gm9O3anY7rmuyyz5PNttufweiJbDZ1UuCy3LBQT
+         Ns8OuAMbbml2D36/sS3nuqK+QBjMnN5fSYL/mXeAb7B6xgRYf776QiR2NDi+J8fpRipG
+         YKlPMfQ6hzadRpk9ECaz1oQ7qxeMJJOwpeGsJ5i/KSR3pdSrZpTMbLAqDwB8KQbd3Ilx
+         mcBzhWjp5R1hh0idZeBye9MISAkKx5UoBDcSSiONRuJ2nXfOHVw21sd80tezK8PK2dac
+         7sLDTojcw7nGcv+Unp7lfJ7Ss2eKS/WdU3MRIv5+eJehoo+hA9vWS8mR8thc0pWerEBX
+         D4lA==
+X-Gm-Message-State: AOAM532YLf8w9YaJA2VehkLG9//d36ptjXzz/QMeWvw0nv7CO/whq6So
+        6owIrDW+mVt8y1CTKBA7ohc=
+X-Google-Smtp-Source: ABdhPJy94qGzmuj+00p3Dh9npYlo29qvv4Wbqm86SBnhevdkWrqlXMuJueFxKKQb5We+HFd9b+yjbA==
+X-Received: by 2002:aa7:9302:: with SMTP id 2mr2399377pfj.164.1590561274736;
+        Tue, 26 May 2020 23:34:34 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id e21sm1190329pga.71.2020.05.26.23.34.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 23:34:34 -0700 (PDT)
+Date:   Tue, 26 May 2020 23:34:30 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
         linux-input@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
@@ -92,140 +85,223 @@ Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         kernel@collabora.com, Peter Hutterer <peter.hutterer@redhat.com>,
         Benjamin Tissoires <btissoir@redhat.com>
 Subject: Re: [PATCHv2 0/7] Support inhibiting input devices
-Message-ID: <20200527061326.GA531660@koala>
+Message-ID: <20200527063430.GJ89269@dtor-ws>
 References: <20200506002746.GB89269@dtor-ws>
  <20200515164943.28480-1-andrzej.p@collabora.com>
  <842b95bb-8391-5806-fe65-be64b02de122@redhat.com>
- <20200517225510.GA205823@koala>
- <20200518024034.GL89269@dtor-ws>
- <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
+ <e6030957-97dc-5b04-7855-bc14a78164c8@collabora.com>
+ <6d9921fc-5c2f-beda-4dcd-66d6970a22fe@redhat.com>
+ <09679de4-75d3-1f29-ec5f-8d42c84273dd@collabora.com>
+ <f674ba4f-bd83-0877-c730-5dc6ea09ae4b@redhat.com>
+ <2d224833-3a7e-bc7c-af15-1f803f466697@collabora.com>
+ <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <513f25c0-7125-c564-0090-052d626fe508@collabora.com>
+In-Reply-To: <aa2ce2ab-e5bc-9cb4-8b53-c1ef9348b646@redhat.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrzej,
-
-On Fri, May 22, 2020 at 05:35:56PM +0200, Andrzej Pietrasiewicz wrote:
-> Hi Hans, hi Dmitry,
+On Tue, May 19, 2020 at 11:36:34AM +0200, Hans de Goede wrote:
+> Hi,
 > 
-> W dniu 18.05.2020 o 04:40, Dmitry Torokhov pisze:
-> > Hi Hans, Peter,
+> On 5/19/20 11:02 AM, Andrzej Pietrasiewicz wrote:
+> > Hi Hans, Hi Dmitry,
 > > 
-> > On Mon, May 18, 2020 at 08:55:10AM +1000, Peter Hutterer wrote:
-> > > On Fri, May 15, 2020 at 08:19:10PM +0200, Hans de Goede wrote:
-> > > > Hi Andrezj,
+> > W dniu 18.05.2020 o 16:23, Hans de Goede pisze:
+> > > Hi,
+> > 
+> > <snip>
+> > 
+> > > > > > > 
+> > > > > > > So I wonder what this series actually adds for functionality for
+> > > > > > > userspace which can not already be achieved this way?
+> > > > > > > 
+> > > > > > > I also noticed that you keep the device open (do not call the
+> > > > > > > input_device's close callback) when inhibited and just throw away
+> > > > > > 
+> > > > > > I'm not sure if I understand you correctly, it is called:
+> > > > > > 
+> > > > > > +static inline void input_stop(struct input_dev *dev)
+> > > > > > +{
+> > > > > > +    if (dev->poller)
+> > > > > > +        input_dev_poller_stop(dev->poller);
+> > > > > > +    if (dev->close)
+> > > > > > +        dev->close(dev);
+> > > > > >                  ^^^^^^^^^^^^^^^^
+> > > > > > +static int input_inhibit(struct input_dev *dev)
+> > > > > > +{
+> > > > > > +    int ret = 0;
+> > > > > > +
+> > > > > > +    mutex_lock(&dev->mutex);
+> > > > > > +
+> > > > > > +    if (dev->inhibited)
+> > > > > > +        goto out;
+> > > > > > +
+> > > > > > +    if (dev->users) {
+> > > > > > +        if (dev->inhibit) {
+> > > > > > +            ret = dev->inhibit(dev);
+> > > > > > +            if (ret)
+> > > > > > +                goto out;
+> > > > > > +        }
+> > > > > > +        input_stop(dev);
+> > > > > >                  ^^^^^^^^^^^^^^^^
+> > > > > > 
+> > > > > > It will not be called when dev->users is zero, but if it is zero,
+> > > > > > then nobody has opened the device yet so there is nothing to close.
+> > > > > 
+> > > > > Ah, I missed that.
+> > > > > 
+> > > > > So if the device implements the inhibit call back then on
+> > > > > inhibit it will get both the inhibit and close callback called?
+> > > > > 
 > > > > 
-> 
-> <snip>
-> 
+> > > > That's right. And conversely, upon uninhibit open() and uninhibit()
+> > > > callbacks will be invoked. Please note that just as with open()/close(),
+> > > > providing inhibit()/uninhibit() is optional.
 > > > 
-> > > > I also noticed that you keep the device open (do not call the
-> > > > input_device's close callback) when inhibited and just throw away
-> > > > any events generated. This seems inefficient and may lead to
-> > > > the internal state getting out of sync. What if a key is pressed
-> > > > while inhibited and then the device is uninhibited while the key
-> > > > is still pressed?  Now the press event is lost and userspace
-> > > > querying the current state will see the pressed key as being
-> > > > released.
+> > > Ack.
+> > > 
+> > > > > And what happens if the last user goes away and the device
+> > > > > is not inhibited?
+> > > > 
+> > > > close() is called as usually.
+> > > 
+> > > But not inhibit, hmm, see below.
+> > > 
+> > > > > I'm trying to understand here what the difference between the 2
+> > > > > is / what the goal of having a separate inhibit callback ?
+> > > > > 
+> > > > 
+> > > > Drivers have very different ideas about what it means to suspend/resume
+> > > > and open/close. The optional inhibit/uninhibit callbacks are meant for
+> > > > the drivers to know that it is this particular action going on.
+> > > 
+> > > So the inhibit() callback triggers the "suspend" behavior ?
+> > > But shouldn't drivers which are capable of suspending the device
+> > > always do so on close() ?
+> > > 
+> > > Since your current proposal also calls close() on inhibit() I
+> > > really see little difference between an inhibit() and the last
+> > > user of the device closing it and IMHO unless there is a good
+> > > reason to actually differentiate the 2 it would be better
+> > > to only stick with the existing close() and in cases where
+> > > that does not put the device in a low-power mode yet, fix
+> > > the existing close() callback to do the low-power mode
+> > > setting instead of adding a new callback.
+> > > 
+> > > > For inhibit() there's one more argument: close() does not return a value,
+> > > > so its meaning is "do some last cleanup" and as such it is not allowed
+> > > > to fail - whatever its effect is, we must deem it successful. inhibit()
+> > > > does return a value and so it is allowed to fail.
+> > > 
+> > > Well, we could make close() return an error and at least in the inhibit()
+> > > case propagate that to userspace. I wonder if userspace is going to
+> > > do anything useful with that error though...
+
+It really can't do anything. Have you ever seen userspace handling
+errors from close()? And what can be done? A program is terminating, but
+the kernel says "no, you closing input device failed, you have to
+continue running indefinitely..."
+
+> > > 
+> > > In my experience errors during cleanup/shutdown are best logged
+> > > (using dev_err) and otherwise ignored, so that we try to clean up
+> > > as much possible. Unless the very first step of the shutdown process
+> > > fails the device is going to be in some twilight zone state anyways
+> > > at this point we might as well try to cleanup as much as possible.
 > > 
-> > This is a good point. We should look into signalling that some events
-> > have been dropped (via EV_SYN/SYN_DROPPED) so that clients are aware of
-> > it.
+> > What you say makes sense to me.
+> > @Dmitry?
+
+I will note here, that inhibit is closer to suspend() than to close(),
+and we do report errors for suspend(). Therefore we could conceivably
+try to handle errors if driver really wants to be fancy. But I think
+majority of cases will be quite happy with using close() and simply
+logging errors, as Hans said.
+
+That said, I think the way we should handle inhibit/uninhibit, is that
+if we have the callback defined, then we call it, and only call open and
+close if uninhibit or inhibit are _not_ defined.
+
 > > 
+> > > 
+> > > > All in all, it is up to the drivers to decide which callback they
+> > > > provide. Based on my work so far I would say that there are tens
+> > > > of simple cases where open() and close() are sufficient, out of total
+> > > > ~400 users of input_allocate_device():
+> > > > 
+> > > > $ git grep "input_allocate_device(" | grep -v ^Documentation | \
+> > > > cut -f1 -d: | sort | uniq | wc
+> > > >      390     390   13496
+> > > 
+> > > So can you explain a bit more about the cases where only having
+> > > open/close is not sufficient?  So far I have the feeling that
+> > > those are all we need and that we really do not need separate
+> > > [un]inhibit callbacks.
+> > 
+> > My primary concern was not being able to propagate inhibit() error
+> > to userspace, and then if we have inhibit(), uninhibit() should be
+> > there for completeness. If propagating the error to userspace can
+> > be neglected then yes, it seems open/close should be sufficient,
+> > even more because the real meaning of "open" is "prepare the device
+> > for generating input events".
+> > 
+> > To validate the idea of not introducing inhibit()/uninhibit() callbacks
+> > to implement device inhibiting/uninhibiting let's look at
+> > drivers/input/mouse/elan_i2c_core.c (PATCH 7/7):
+> > 
+> > static int elan_inhibit(struct input_dev *input)
+> > {
+> > [...]
+> > 
+> >      ret = mutex_lock_interruptible(&data->sysfs_mutex);
+> >      if (ret)
+> >          return ret;
+> > 
+> >      disable_irq(client->irq);
+> > 
+> >      ret = elan_disable_power(data);
+> >      if (ret)
+> >          enable_irq(client->irq);
+> > [...]
+> > }
+> > 
+> > First, close() does not exist in this driver. Of course this can be
+> > fixed. Then it doesn't return a value. Then, if either taking the
+> > mutex or disabling the power fails, the close() is still deemed
+> > successful. Is it ok?
 > 
-> It seems to me that the situation Hans envisions is not possible,
-> or will not be possible with a simple change. Let me explain.
-> 
-> For a start, let's recall that the input core prevents consecutive
-> events of the same kind (type _and_ code _and_ value) from being
-> delivered to handlers. The decision is made in input_get_disposition().
-> For EV_KEY it is:
-> 
-> 		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
-> 
-> 			/* auto-repeat bypasses state updates */
-> 			if (value == 2) {
-> 				disposition = INPUT_PASS_TO_HANDLERS;
-> 				break;
-> 			}
-> 
-> 			if (!!test_bit(code, dev->key) != !!value) {
-> 
-> 				__change_bit(code, dev->key);
-> 				disposition = INPUT_PASS_TO_HANDLERS;
-> 			}
-> 		}
+> Note I also mentioned another solution for the error propagation,
+> which would require a big "flag day" commit adding "return 0"
+> to all existing close callbacks, but otherwise should work for your
+> purposes:
 
-note that this isn't per-process state, userspace can get release events
-after open() for keys it never got the press event for. Simple test:
-type evtest<enter> and KEY_ENTER up is the first event you'll get.
+No, please, no flag days and no changing close() to return error, it
+makes no sense for close().
 
-But otherwise I agree with you that press/release should always be balanced
-if input_dev_release_keys() is called on inhibit and with that autorepeat
-snippet below. At least I couldn't come up with any combination of multiple
-clients opening/closing/inhibiting that resulted in an unwanted release
-event after uninhibit.
+> 
+> > Well, we could make close() return an error and at least in the inhibit()
+> > case propagate that to userspace. I wonder if userspace is going to
+> > do anything useful with that error though...
+> 
+> And I guess we could log an error that close failed in the old close() path
+> where we cannot propagate the error.
+> 
+> Also why the mutex_lock_interruptible() ?  If you change that to
+> a normal mutex_lock() you loose one of the possible 2 error cases and
+> I doubt anyone is going to do a CTRL-C of the process doing the
+> inhibiting (or that that process starts a timer using a signal
+> to ensure the inhibit does not take to long or some such).
 
-Cheers,
-   Peter
+Well, we have the dedicated callbacks in Chrome OS, so when I did the
+patch I could even handle Ctrl-C, so why not? But it indeed can easily
+be dropped in favor of straight mutex_lock().
 
-> Let's now focus on value != 2 (events other than auto-repeat).
-> The disposition changes from the default INPUT_IGNORE_EVENT to
-> INPUT_PASS_TO_HANDLERS only when the event in question changes
-> the current state: either by releasing a pressed key, or by
-> pressing a released key. Subsequent releases of a released key
-> or subsequent presses of a pressed key will be ignored.
->
-> What Hans points out is the possibility of uninhibiting a device
-> while its key is pressed and then releasing the key. First of all,
-> during inhibiting input_dev_release_keys() is called, so input_dev's
-> internal state will be cleared of all pressed keys. Then the device
-> - after being uninhibited - all of a sudden produces a key release
-> event. It will be ignored as per the "subsequent releases of a
-> released key" case, so the handlers will not be passed an unmatched
-> key release event. Assuming that passing an unmatched key release
-> event was Hans's concern, in this case it seems impossible.
-> 
-> Now, the value of 2 (auto-repeat) needs some attention. There are two
-> cases to consider: the device uses input core's software repeat or it
-> uses its own (hardware) repeat.
-> 
-> Let's consider the first case. The timer which generates auto-repeat
-> is only started on a key press event and only stopped on a key release
-> event. As such, if any auto-repeat was in progress when inhibiting
-> happened, it must have been stopped as per input_dev_release_keys().
-> Then the key is pressed and held after the device has been inhibited,
-> and the device is being uninhibited. Since it uses software auto-repeat,
-> no events will be reported by the device until the key is released,
-> and, as explained above, the release event will be ignored.
-> 
-> Let's consider the second case. The key is pressed and held after the
-> device has been inhibited and the device is being uninhibited. The worst
-> thing that can happen is unmatched key repeat events will start coming
-> from the device. We must prevent them from reaching the handlers and
-> ignore them instead. So I suggest something on the lines of:
-> 
-> if (is_event_supported(code, dev->keybit, KEY_MAX)) {
-> 
-> 			/* auto-repeat bypasses state updates */
-> -			if (value == 2) {
-> +			if (value == 2 && test_bit(code, dev->key)) {
-> 				disposition = INPUT_PASS_TO_HANDLERS;
-> 				break;
-> 			}
-> 
-> The intended meaning is "ignore key repeat events if the key is not
-> pressed".
-> 
-> With this small change I believe it is not possible to have neither
-> unmatched release nor unmatched repeat being delivered to handlers.
-> 
-> Regards,
-> 
-> Andrzej
+Thanks.
+
+-- 
+Dmitry

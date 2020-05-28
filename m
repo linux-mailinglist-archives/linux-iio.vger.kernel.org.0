@@ -2,150 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A9A1E654B
-	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 17:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60EB11E67B1
+	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 18:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403883AbgE1PBo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 May 2020 11:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403800AbgE1PBm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 May 2020 11:01:42 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6ACC08C5C6;
-        Thu, 28 May 2020 08:01:42 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id n141so3384388qke.2;
-        Thu, 28 May 2020 08:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=ru/VedSe7R+1+BFX/X1C1fyozp4gv15sJxfe6kqv7eI=;
-        b=gY02BO7j1hfkO7xiJppNT1VA/huyBuSeTxCzHxMDgCdPs2hZPHZA4Hb7RDN99RAwXo
-         1vUp0AIkVEQUKHMxpcD6hKK5H9YHqVfOLUE9MjorAy2+YVsApWCC1b0daaq2OkVcbRSr
-         wSFH89UeUm16lCXZl9woAiO2O/I4azVKFzv6hUoC6P1fl+HY1brKQOW5+9yCP4+qCtwJ
-         spX281uWTwZT2YgeT+7Wc70mhxexRyF8381oySA42ZwfnIcClWlUdQrnMexX6SlZA/1B
-         bgjtAWVQmuFPWPT1rB+/SfWq2tE4hCV7WqEEIBYo6gei70YU3XPbmsjQv1KurdJ3g6Kj
-         UIHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=ru/VedSe7R+1+BFX/X1C1fyozp4gv15sJxfe6kqv7eI=;
-        b=HFa6UZgLYA/5LrJ0uxm0LIKiyDetGe0/AQxxcGAY0T1CUB+lAd/KuDMQwFcXVUWTcp
-         9RKvYuakHVR2GmasfHra1/9IAmKKeowkdlfuV15LOphjYMeU3/dR77rMb+2OCKinEyuZ
-         bfoNK9EhaJ7wpaUF51wDVwjpRgGabfN+Qv/aa0efRecJttEh/yN34DWtdwcp8cdsKMhJ
-         H8vTd8Z8i8lYXbHdpm5VyjIl2F0+9bQnKVAQIC4XHILTPQ7ogT4ME/7eQnkTNH4bnEfP
-         uD/pMf7A4VEfLnsJZ6LqW36FTuRbMl63Citu7WXq8VvXC+cfbG/x56H+HAg7xXcatudW
-         cF2w==
-X-Gm-Message-State: AOAM532OrfFVlZedUB2Y6QBeTLno4MbwrD8APETc0wBdBP86g6YeSh26
-        H7lVBj+42Nh/X5smyT6KoWrBhFsaSLs=
-X-Google-Smtp-Source: ABdhPJymSeEM3dwFkTKYe6p4AbCg0clNODe/pHDF4729SUqxt3feu2P4iGlIHeubzLIqkRrS/cMq+g==
-X-Received: by 2002:a37:7745:: with SMTP id s66mr3231700qkc.429.1590678099683;
-        Thu, 28 May 2020 08:01:39 -0700 (PDT)
-Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
-        by smtp.googlemail.com with ESMTPSA id q32sm3901881qtf.36.2020.05.28.08.01.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 08:01:39 -0700 (PDT)
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S2405181AbgE1QrW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 May 2020 12:47:22 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:60961 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2405101AbgE1QrV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 May 2020 12:47:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590684439; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=T4tupt5NAgmORde5nrj9W65EYS8aJc0xInYBse0Y2do=; b=h/hrpo617JM2vt/vjqGOGoGEngRnoJfsjrWQsjNPqsD9cN+GdTw5GuPhDoxd2v2/XyxfbDuz
+ keJUjSqpF5uGUJFsZlZROgf4SZ/Kz1rHp1amefzHMvUTP7RKsE5HmPNvb5NYrBPv0WkhoOyk
+ o4DBVKZfhsgPpSRSsHPZ+vHdIZ0=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5ecfeb173ac6f4f603eb2b87 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 May 2020 16:47:19
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 21FA2C433CA; Thu, 28 May 2020 16:47:19 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from [192.168.1.102] (unknown [157.47.99.82])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jprakash)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B2C2C43391;
+        Thu, 28 May 2020 16:47:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B2C2C43391
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
+Subject: Re: [PATCH V5 3/5] iio: adc: Add support for PMIC7 ADC
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        smohanad@codeaurora.org, kgunda@codeaurora.org,
+        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS)
-Subject: [PATCH v7 5/5] iio: magnetometer: ak8975: Add gpio reset support
-Date:   Thu, 28 May 2020 17:01:05 +0200
-Message-Id: <20200528150106.12022-1-jonathan.albrieux@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        linux-arm-msm@vger.kernel.org,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm-msm-owner@vger.kernel.org
+References: <1590157452-27179-1-git-send-email-jprakash@codeaurora.org>
+ <1590157452-27179-4-git-send-email-jprakash@codeaurora.org>
+ <CAHp75Vfgk0-Rye2We1A6_WTWMCK3D-WW4_T3CGPHc=-tB=6M9g@mail.gmail.com>
+From:   Jishnu Prakash <jprakash@codeaurora.org>
+Message-ID: <81ef429e-48d5-48b3-b344-3a48c2287907@codeaurora.org>
+Date:   Thu, 28 May 2020 22:17:08 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <CAHp75Vfgk0-Rye2We1A6_WTWMCK3D-WW4_T3CGPHc=-tB=6M9g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-According to AK09911 datasheet, if reset gpio is provided then
-deassert reset on ak8975_power_on() and assert reset on ak8975_power_off().
+Hi Andy,
 
-Without reset's deassertion during ak8975_power_on(), driver's probe fails
-on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+On 5/22/2020 9:07 PM, Andy Shevchenko wrote:
+> On Fri, May 22, 2020 at 5:25 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+>> The ADC architecture on PMIC7 is changed as compared to PMIC5. The
+>> major change from PMIC5 is that all SW communication to ADC goes through
+>> PMK8350, which communicates with other PMICs through PBS when the ADC
+>> on PMK8350 works in master mode. The SID register is used to identify the
+>> PMICs with which the PBS needs to communicate. Add support for the same.
+> Below should be in a separate patch, but it's a bikeshedding. So, I
+> left it to maintainers to decide.
+> Fine with me
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>
+> ...
+>
+>> @@ -285,7 +304,7 @@ static int adc5_configure(struct adc5_chip *adc,
+>>
+>>          /* Read registers 0x42 through 0x46 */
+>>          ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
+>> -       if (ret < 0)
+>> +       if (ret)
+>>                  return ret;
+>>
+>>          /* Digital param selection */
+> ...
+>
+>> @@ -331,7 +391,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
+>>
+>>          if (adc->poll_eoc) {
+>>                  ret = adc5_poll_wait_eoc(adc);
+>> -               if (ret < 0) {
+>> +               if (ret) {
+>>                          pr_err("EOC bit not set\n");
+>>                          goto unlock;
+>>                  }
+>> @@ -341,7 +401,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
+>>                  if (!ret) {
+>>                          pr_debug("Did not get completion timeout.\n");
+>>                          ret = adc5_poll_wait_eoc(adc);
+>> -                       if (ret < 0) {
+>> +                       if (ret) {
+>>                                  pr_err("EOC bit not set\n");
+>>                                  goto unlock;
+>>                          }
+> ...
+>
+>> @@ -406,8 +519,38 @@ static int adc5_read_raw(struct iio_dev *indio_dev,
+>>          default:
+>>                  return -EINVAL;
+>>          }
+>> +}
+>>
+>> -       return 0;
+> (this one looks like standalone change from above)
+>
+> ...
+>
+>> @@ -570,7 +762,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
+>>
+>>                  ret = adc5_read(adc, ADC5_USR_REVISION1, dig_version,
+>>                                                          sizeof(dig_version));
+>> -               if (ret < 0) {
+>> +               if (ret) {
+>>                          dev_err(dev, "Invalid dig version read %d\n", ret);
+>>                          return ret;
+>>                  }
+> ...
+>
+>> +       if (of_device_is_compatible(node, "qcom,spmi-adc7"))
+>> +               indio_dev->info = &adc7_info;
+>> +       else
+>> +               indio_dev->info = &adc5_info;
+> Can we use driver_data?
+I'll make the change in a patch before this one in the next post.
+>
+> ...
+>
+>> +       if (adcmap7_die_temp[0].x > voltage) {
+>> +               *result_mdec = DIE_TEMP_ADC7_SCALE_1;
+>> +               return 0;
+>> +       } else if (adcmap7_die_temp[i].x <= voltage) {
+> As per previous comment, redundant 'else' and please use value of i
+> directly here.
+I'll add the change in the next post.
 
-AK09911 has an active low reset gpio to handle register's reset.
-AK09911 datasheet says that, if not used, reset pin should be connected
-to VID. This patch emulates this situation.
-
-Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
----
- drivers/iio/magnetometer/ak8975.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index fd368455cd7b..a23422aad97d 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -358,6 +358,7 @@ struct ak8975_data {
- 	u8			asa[3];
- 	long			raw_to_gauss[3];
- 	struct gpio_desc	*eoc_gpiod;
-+	struct gpio_desc	*reset_gpiod;
- 	int			eoc_irq;
- 	wait_queue_head_t	data_ready_queue;
- 	unsigned long		flags;
-@@ -384,6 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
- 			 "Failed to enable specified Vid supply\n");
- 		return ret;
- 	}
-+
-+	gpiod_set_value_cansleep(data->reset_gpiod, 0);
-+
- 	/*
- 	 * According to the datasheet the power supply rise time is 200us
- 	 * and the minimum wait time before mode setting is 100us, in
-@@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
- /* Disable attached power regulator if any. */
- static void ak8975_power_off(const struct ak8975_data *data)
- {
-+	gpiod_set_value_cansleep(data->reset_gpiod, 1);
-+
- 	regulator_disable(data->vid);
- 	regulator_disable(data->vdd);
- }
-@@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
- 	struct ak8975_data *data;
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
-+	struct gpio_desc *reset_gpiod;
- 	const void *match;
- 	unsigned int i;
- 	int err;
-@@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
- 	if (eoc_gpiod)
- 		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
- 
-+	/*
-+	 * According to AK09911 datasheet, if reset GPIO is provided then
-+	 * deassert reset on ak8975_power_on() and assert reset on
-+	 * ak8975_power_off().
-+	 */
-+	reset_gpiod = devm_gpiod_get_optional(&client->dev,
-+					      "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(reset_gpiod))
-+		return PTR_ERR(reset_gpiod);
-+
- 	/* Register with IIO */
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (indio_dev == NULL)
-@@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
- 
- 	data->client = client;
- 	data->eoc_gpiod = eoc_gpiod;
-+	data->reset_gpiod = reset_gpiod;
- 	data->eoc_irq = 0;
- 
- 	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
--- 
-2.17.1
-
+>
+>

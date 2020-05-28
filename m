@@ -2,81 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FBE1E637E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 16:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D261E64F4
+	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 16:58:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390987AbgE1OP4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 May 2020 10:15:56 -0400
-Received: from mga02.intel.com ([134.134.136.20]:58898 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390900AbgE1OPz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 May 2020 10:15:55 -0400
-IronPort-SDR: HXK+LhSV9SSrr5t7YGepnwPvGOTBrtl+0EjuLic17KRd6TxFNrZu46vkH+0L/3SSUGFeIad1GS
- XWoAUNwR9ZLQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2020 07:15:55 -0700
-IronPort-SDR: UfhZGBlq8mrOE9TmHKEwQR4hkC4xTJJHaeoJS1h9b16J23erIZMc0+2S8vrX1vlf/RCwebvWsv
- cf85N+umICmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,444,1583222400"; 
-   d="scan'208";a="310937745"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 28 May 2020 07:15:53 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D06F0230; Thu, 28 May 2020 17:15:52 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S2403812AbgE1O5r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 May 2020 10:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403787AbgE1O5p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 May 2020 10:57:45 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946CAC08C5C6;
+        Thu, 28 May 2020 07:57:45 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id w90so249078qtd.8;
+        Thu, 28 May 2020 07:57:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=xh10qpgo8ZBw04J26d6TmP95SZB7leV7haVSlHLd2KM=;
+        b=buvCKmjhmmNh95OXQOYAHAM2JXnioPPtZVlMoCCsXWBaJ3npB99IVwgHzFzJtc6zSP
+         zDjcxjevo3MiKIzQ9qD2q4UN54h+GgmyrSayNYjdsKD0gqkbwgsmER+rP6mJd3fHzcRd
+         5x01uE9OP109aSO+MJbm3KtnapOmJqn4wx2SWY1EPUOUJQTXW/88KJFjmZdBpEx+HfF5
+         ij8wcGSaSrH8O+zdmKr1AxorBSDOh/iFZm0o9Dxtm9KxvsVj6+cz7QttVQnGSbyYV/d3
+         AXZgy+kakANhfFsMRviQYQKjBwivSIHY0XkbNd7VFw2ELV/m7bMgGxgPRM3hpFmCr/Vh
+         jPWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=xh10qpgo8ZBw04J26d6TmP95SZB7leV7haVSlHLd2KM=;
+        b=uc2qwrgR7Q0npWB5pasIU6+oXyNh3xbIj0tbUFxODaEx9SOPBzNRhYYDHR2ZNUfEwM
+         Lr0PupT84Oi/LazVKLKLYJBTMqOYj8+YJvHhqzWBntEpc5+SlnhhX8QaILi8XIoVSPqf
+         eoIywXB4nV95MquKmgvgxqhHEer46ty9vcsHnRALhEc8On+o9kVindIFgCc9E9LtUHQI
+         W7xEdWbad3TKLxnmGUMXe7n/4oy+L+IdG+JDj87+xLsu39v0pga3W9FumGPp4yBzK7vp
+         hBz0zhWZim005gUUdCvrcgspZFXiAVlMbvUyV5b3HtKLW3mdmqxZy49PiU1Tar5atoet
+         ND9w==
+X-Gm-Message-State: AOAM531avRyRSXf08HwS0gcLmD3e8jhRgbwmacCRCmm/KDnC2kJNMNqz
+        0TzN8MqPX3o5neBAydhdZg0Jub1W7ic=
+X-Google-Smtp-Source: ABdhPJyWo3QAAo1dPoftO2PinkN6bcnQYbJ0FqVZ+8djxEm/X53BTqJcBHwILXOjtO5Ln5D/WVF+5w==
+X-Received: by 2002:ac8:e8f:: with SMTP id v15mr3413836qti.391.1590677864325;
+        Thu, 28 May 2020 07:57:44 -0700 (PDT)
+Received: from ict14-OptiPlex-980.kataweb.it ([178.23.248.46])
+        by smtp.googlemail.com with ESMTPSA id s74sm5116876qka.54.2020.05.28.07.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2020 07:57:43 -0700 (PDT)
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE BINDINGS), Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] iio: imu: inv_mpu6050: Drop double check for ACPI companion device
-Date:   Thu, 28 May 2020 17:15:52 +0300
-Message-Id: <20200528141552.57504-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH v7 0/5] iio: magnetometer: ak8975: Add gpio reset support
+Date:   Thu, 28 May 2020 16:56:03 +0200
+Message-Id: <20200528145631.11608-1-jonathan.albrieux@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-acpi_dev_get_resources() does perform the NULL pointer check against
-ACPI companion device which is given as function parameter. Thus,
-there is no need to duplicate this check in the caller.
+v7:
+ - fix documentation style, removing documentation unnecessary parts
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+v6:
+ - reword documentation for gpios, add interrupt documentation
+https://lore.kernel.org/linux-iio/20200525151117.32540-1-jonathan.albrieux@gmail.com/
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c
-index 2f8560ba4572..bf9bdaf6519a 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c
-@@ -101,8 +101,8 @@ static int inv_mpu_process_acpi_config(struct i2c_client *client,
- 				       unsigned short *primary_addr,
- 				       unsigned short *secondary_addr)
- {
-+	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
- 	const struct acpi_device_id *id;
--	struct acpi_device *adev;
- 	u32 i2c_addr = 0;
- 	LIST_HEAD(resources);
- 	int ret;
-@@ -112,10 +112,6 @@ static int inv_mpu_process_acpi_config(struct i2c_client *client,
- 	if (!id)
- 		return -ENODEV;
- 
--	adev = ACPI_COMPANION(&client->dev);
--	if (!adev)
--		return -ENODEV;
--
- 	ret = acpi_dev_get_resources(adev, &resources,
- 				     acpi_i2c_check_resource, &i2c_addr);
- 	if (ret < 0)
+v5:
+ - add maintainer
+https://lore.kernel.org/linux-iio/20200520163417.27805-1-jonathan.albrieux@gmail.com/
+
+v4:
+ - fix some typo
+ - use gpio's dt-bindings for more clarity in documentation
+ - set compatible properties without vendor prefix as deprecated
+https://lore.kernel.org/linux-iio/20200520073125.30808-1-jonathan.albrieux@gmail.com/
+
+v3:
+ - fix patch messages style
+ - align reset gpio comment to kernel doc reccomendation
+ - introduce changelog
+https://lore.kernel.org/linux-iio/20200519124402.26076-1-jonathan.albrieux@gmail.com/
+
+v2:
+ - rewording of reset gpio comment and patch messages to better clarify
+   reset gpio behaviour
+https://lore.kernel.org/linux-iio/20200518133645.19127-1-jonathan.albrieux@gmail.com/
+
+v1:
+ - initial patch submission
+https://lore.kernel.org/linux-iio/20200519065749.4624-1-jonathan.albrieux@gmail.com/
+
+Convert documentation from txt format to yaml. Add documentation about
+reset-gpio.
+
+Deassert reset on ak8975_power_on(), assert reset on ak8975_power_off().
+
+Without reset's deassertion during ak8975_power_on(), driver's probe fails
+on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+
+AK09911 has an active low reset gpio to handle register's reset.
+AK09911 datasheet says that, if not used, reset pin should be connected
+to VID. This patch emulates this situation.
+
+JonnyMe (5):
+  dt-bindings: iio: magnetometer: ak8975: reword gpios, add interrupts,
+    fix style
+  dt-bindings: iio: magnetometer: ak8975: convert format to yaml, add
+    maintainer
+  dt-bindings: iio: magnetometer: ak8975: add gpio reset support
+  iio: magnetometer: ak8975: Fix typo, uniform measurement unit style
+  iio: magnetometer: ak8975: Add gpio reset support
+
+ .../bindings/iio/magnetometer/ak8975.txt      | 30 -------
+ .../iio/magnetometer/asahi-kasei,ak8975.yaml  | 84 +++++++++++++++++++
+ drivers/iio/magnetometer/ak8975.c             | 22 ++++-
+ 3 files changed, 104 insertions(+), 32 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ak8975.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+
 -- 
-2.26.2
+2.17.1
 

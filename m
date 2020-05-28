@@ -2,106 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A4D1E57C9
-	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 08:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CA11E5837
+	for <lists+linux-iio@lfdr.de>; Thu, 28 May 2020 09:09:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726788AbgE1Gle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 May 2020 02:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54052 "EHLO
+        id S1725779AbgE1HJn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 May 2020 03:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725852AbgE1Gld (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 May 2020 02:41:33 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08ED2C05BD1E;
-        Wed, 27 May 2020 23:41:33 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id m1so6705486pgk.1;
-        Wed, 27 May 2020 23:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xzfk0QTgi6/ZS6UjMAM/WRlUJL7YMEP0oPEiXnwDjbc=;
-        b=Sn8azLpFXaF2AP6cYyf0p77HYmglOgaM/ECgzm941DaMtj0xhXjau5A8SMRfZ2ings
-         LKVnU0mEd0YtrhIoDaKJleOvGwAbcK4+fkGO+GiL4MKcB0s2Z4bj0cUmLNh0m8wbDY7U
-         AuvFah1r8oOmsXqhA35H6w7w2d3pOf2SqetY81xLuHF0/BdiYOuwTIs3vvaFpWW/Vffu
-         i0wio7A8hbSDpK0HIKiChfjiVZsY0QDO27CdVc6q1XZLiXq4OGnKTrZLNNwiIF9dR6+N
-         QbQn84hiH5WychLloUx/sCfSJcS+cRbJ8Vvs6vKegQV7TkkgMU4UvmD8sdRa5ug7JtEM
-         KixQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xzfk0QTgi6/ZS6UjMAM/WRlUJL7YMEP0oPEiXnwDjbc=;
-        b=c4pOp6xBfebzL+NDiUOuypn6oM1iBsl6TnmPKIKqvmwkXQFuNxEPiS8NIIU0r0gcoi
-         jeyk0h2ue5svfy/y1y8LoWhF0mKsrBARoX98gUK4tfpx6tMF6pYa2BkYzOaPy3VVerBC
-         ZMx9E6qBkXmvaXfJTf9w843PDWw43WRn11CUUEdMvRgTIBXUF7TycCX0iagUF30b7Vhb
-         pKL9CYTGW8WuJZppYVai2PUyYXa5GqsthcVihnPNMdh6+RCzHcDLJGO9ZpuEKdvdrGZH
-         quNm4lkwleg3zKIAQgDlnKcPnBvMJqq13NHEWIMjKxZo8gLIe5lrYqSF26Ky0ffV9WbF
-         FtDg==
-X-Gm-Message-State: AOAM5311ROEShqzd6WF3Qf8VjO/X4qM+UU5oiv74lzRHFvXoeSKsSmt9
-        nCsm9i8ut2zmqokta7OG+W0=
-X-Google-Smtp-Source: ABdhPJxkztDjS5/d3ynI5G5Qo4GmpJyAMlYAMeM3x//ALkvsFBDmNmB8aEiaOaRVHe3etmhKWs7BDw==
-X-Received: by 2002:a63:7d1d:: with SMTP id y29mr1488884pgc.189.1590648092571;
-        Wed, 27 May 2020 23:41:32 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id o11sm3736277pfd.195.2020.05.27.23.41.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 23:41:32 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Bijosh Thykkoottathil <bijosh.t@hotmail.com>,
-        Martin Kepplinger <martink@posteo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] iio: mma8452: Add missed iio_device_unregister() call in mma8452_probe()
-Date:   Thu, 28 May 2020 14:41:21 +0800
-Message-Id: <20200528064121.547001-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        with ESMTP id S1725601AbgE1HJn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 May 2020 03:09:43 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51961C05BD1E;
+        Thu, 28 May 2020 00:09:43 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id EBC5D2A3C90
+Received: by earth.universe (Postfix, from userid 1000)
+        id 356733C08C7; Thu, 28 May 2020 09:09:39 +0200 (CEST)
+Date:   Thu, 28 May 2020 09:09:39 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Saravanan Sekar <sravanhome@gmail.com>, andy.shevchenko@gmail.com,
+        robh+dt@kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [GIT PULL] Immutable branch between MFD, IIO and Power due for
+ the v5.8 merge window
+Message-ID: <20200528070939.7btxjwuqn7bhf4xe@earth.universe>
+References: <20200526090646.25827-1-sravanhome@gmail.com>
+ <20200526094702.GN3628@dell>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="u56qdvhxw5elq2g6"
+Content-Disposition: inline
+In-Reply-To: <20200526094702.GN3628@dell>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The function iio_device_register() was called in mma8452_probe().
-But the function iio_device_unregister() was not called after
-a call of the function mma8452_set_freefall_mode() failed.
-Thus add the missed function call for one error case.
 
-Fixes: 1a965d405fc6 ("drivers:iio:accel:mma8452: added cleanup provision in case of failure.")
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v2:
-  - Add fixes tag.
-  - Modify description.
+--u56qdvhxw5elq2g6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- drivers/iio/accel/mma8452.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Hi,
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 00e100fc845a..813bca7cfc3e 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1685,10 +1685,13 @@ static int mma8452_probe(struct i2c_client *client,
- 
- 	ret = mma8452_set_freefall_mode(data, false);
- 	if (ret < 0)
--		goto buffer_cleanup;
-+		goto unregister_device;
- 
- 	return 0;
- 
-+unregister_device:
-+	iio_device_unregister(indio_dev);
-+
- buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
- 
--- 
-2.26.2
+Thanks for taking care of it Lee, merged!
 
+-- Sebastian
+
+On Tue, May 26, 2020 at 10:47:02AM +0100, Lee Jones wrote:
+> Enjoy!
+>=20
+> The following changes since commit 8f3d9f354286745c751374f5f1fcafee6b3f31=
+36:
+>=20
+>   Linux 5.7-rc1 (2020-04-12 12:35:55 -0700)
+>=20
+> are available in the Git repository at:
+>=20
+>   git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git tags/ib-mfd-i=
+io-power-v5.8
+>=20
+> for you to fetch changes up to 904ac71f4b0c1c26ec47ff597cb3d3c7d36e618d:
+>=20
+>   MAINTAINERS: Add entry for mp2629 Battery Charger driver (2020-05-26 10=
+:42:02 +0100)
+>=20
+> ----------------------------------------------------------------
+> Immutable branch between MFD, IIO and Power due for the v5.8 merge window
+>=20
+> ----------------------------------------------------------------
+> Saravanan Sekar (6):
+>       dt-bindings: mfd: Add document bindings for mp2629
+>       mfd: mp2629: Add support for mps battery charger
+>       iio: adc: mp2629: Add support for mp2629 ADC driver
+>       power: supply: Add support for mps mp2629 battery charger
+>       power: supply: mp2629: Add impedance compensation config
+>       MAINTAINERS: Add entry for mp2629 Battery Charger driver
+>=20
+>  Documentation/ABI/testing/sysfs-class-power-mp2629 |   8 +
+>  .../devicetree/bindings/mfd/mps,mp2629.yaml        |  62 ++
+>  MAINTAINERS                                        |   5 +
+>  drivers/iio/adc/Kconfig                            |  10 +
+>  drivers/iio/adc/Makefile                           |   1 +
+>  drivers/iio/adc/mp2629_adc.c                       | 208 +++++++
+>  drivers/mfd/Kconfig                                |   9 +
+>  drivers/mfd/Makefile                               |   2 +
+>  drivers/mfd/mp2629.c                               |  79 +++
+>  drivers/power/supply/Kconfig                       |  10 +
+>  drivers/power/supply/Makefile                      |   1 +
+>  drivers/power/supply/mp2629_charger.c              | 669 +++++++++++++++=
+++++++
+>  include/linux/mfd/mp2629.h                         |  26 +
+>  13 files changed, 1090 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-power-mp2629
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+>  create mode 100644 drivers/iio/adc/mp2629_adc.c
+>  create mode 100644 drivers/mfd/mp2629.c
+>  create mode 100644 drivers/power/supply/mp2629_charger.c
+>  create mode 100644 include/linux/mfd/mp2629.h
+>=20
+> --=20
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+> Linaro Services Technical Lead
+> Linaro.org =E2=94=82 Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
+
+--u56qdvhxw5elq2g6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl7PY7IACgkQ2O7X88g7
++poM1Q/7BstB7OTUZNZlaC3toSNbFJvmHo/CweUuu6n3S6ma19S+EhqKyHMmnM7V
+d639+SscU+s9STHZVe25IRiQtq2SuXLvYtr0L5KyU7ImnLjck7zcLLV55omb9MdH
+OtXW1WaqFar+tnI73HJNgpvEc6uD/yJWsW2z4TZaMQCrvPeCiBQ5VYqfzRIjG9Ws
+F2WhzFpxwqq4C0FOPEuXRCbCQHYgyXr6de6meuEZg0SzMkKwN+ZMHDjJtTZu1xhT
+DqrbDq+3SnGUKbPXmLS043SCHvc4bSh1GY3i02lClmUa1bZXxevSPe+UVOL4rvst
+EmRxmgatGLI5BJIUg7IpIQUnX2bti6xfZRlG86HI+4OYVVDu/7XYRX0Eb6HR9TGQ
+hux2kdG70ziIkVFXpWobUOsyI7/OJ6CRjD+McejZuKRkzBTM6A9tmiZhdh0i3+cY
+VAQWLhf8sDcd9FRxSGX8pIB2/M0nSggh0BbbaZK6CjFHOooNrM6MfDE5K7wSa+lk
+xu/8X5NLFVRsQM8pfBd8Q3vQSioXBlrqaYNgX+5B5sGsPQWLzayu738StP+6SK2j
+ea4AU6ydsnkSbB/bs8MhxGAXIbY8vZWA/lo5xvg9v8QpTMiFGMRJiIvxneMhy7/w
+Z0SAo1anPC5lVefMxQc+rOjiD7Sc7dMvGfLv5ZCt6sQRTz78oic=
+=Y15j
+-----END PGP SIGNATURE-----
+
+--u56qdvhxw5elq2g6--

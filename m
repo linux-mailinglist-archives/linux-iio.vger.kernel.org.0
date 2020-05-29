@@ -2,142 +2,263 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 386991E7F0E
-	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 15:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DFB51E7F8D
+	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 16:03:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726827AbgE2Npl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 May 2020 09:45:41 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:37532 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726816AbgE2Npl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 May 2020 09:45:41 -0400
-Received: by mail-lj1-f196.google.com with SMTP id e4so2686835ljn.4;
-        Fri, 29 May 2020 06:45:38 -0700 (PDT)
+        id S1726549AbgE2ODw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 May 2020 10:03:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725901AbgE2ODw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 May 2020 10:03:52 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B4B7C03E969;
+        Fri, 29 May 2020 07:03:52 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id bg4so1201586plb.3;
+        Fri, 29 May 2020 07:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=+8BeeRU5yq84Y7xACwKjlFj8O/sTm7r6UQxGrXKL3S4=;
+        b=LBX7NcGjcyBVPH9aCqA99HJ4KnFCFHTxWNboCHWHg2r/aJJm5mLByb+hfCK9ZHIWDq
+         Fo3HsLz2q9aH1YK60dbyLiDLpcdtuem3wxqV9r0Tx8TK5R1MqK8QChtpj2+tK4t7cwfx
+         5pnf+vzVQ1w5TvNZPRovP2JvdjU+TGS38M/syflcU3GkgY8J+4OJZmoP3sPmiST4HVFp
+         mXbqzGxg61SKoj8D9gYpp0eqOnmdpYddesLribSDTSrTdwrH1EGhkFYG1Dt6H7r/DVIq
+         2x3ZfVyetr7Z+C3IYPDdHhZpwndlavP3MTxr19Ptk9323lq+e9oRXW/tPHreMSZ4XsIS
+         3uvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=l50zvieDLS4zKDw/YL/iLEviMA7HLF9b0G8jpz91/Yo=;
-        b=E3Qp9JqZLa6VcWCDr/nLMS2g0VwL6UOTMMUApYS+glsjAsuG6aMNixP1qqN+GfIORh
-         76RvhIeMgxFDxsRxfY+JSvc9XZrEjwAkWhBdBUMlCucaYoOL7a2Hxg8Mo1/Z3ESssb0s
-         e5Kb7mXP6Srlj8pzGkePqDzpfTxemlm4ojZDBCCfSB57W27k63bYf67B3iaifBtIf1+L
-         8DC9XGBm+Mf1Sc8o2XD+sZbreEb2X8F3lZ91iOVE7TUsN1ZgtwUq1msiD1TPDJnMix/P
-         hgIkMtxh6fgTDYpSxscuZrKnhK3QuOPo2dSiz5NGb0zGOWdhBgnlbxYBq4AxVC+Ymlvi
-         so9Q==
-X-Gm-Message-State: AOAM531/k2VQOsM0wzf/VcVfHoQBLuX1UGYAj6PEEm/8vk+94FyLpKoi
-        mWM+Wa4tXoMwj4fzOiNCTbg=
-X-Google-Smtp-Source: ABdhPJwwl/gV7oBpVa4coDOoCycUzZ0AhD4gCrOT5sULHYF43JsIPx3Rir1VcEeVkW0rvDRtthbbjA==
-X-Received: by 2002:a2e:9805:: with SMTP id a5mr4048592ljj.384.1590759938174;
-        Fri, 29 May 2020 06:45:38 -0700 (PDT)
-Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id c22sm400347lfi.79.2020.05.29.06.45.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2020 06:45:37 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1jefKH-0005Hq-OZ; Fri, 29 May 2020 15:45:33 +0200
-Date:   Fri, 29 May 2020 15:45:33 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "johan@kernel.org" <johan@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: [PATCH 4/5] iio: light: lm3533-als: remove explicit parent
- assignment
-Message-ID: <20200529134533.GD19480@localhost>
-References: <20200522082208.383631-1-alexandru.ardelean@analog.com>
- <20200522082208.383631-4-alexandru.ardelean@analog.com>
- <20200529101608.GC19480@localhost>
- <05500c815f4881a6aa86c809c5ac53e8af3f3e91.camel@analog.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=+8BeeRU5yq84Y7xACwKjlFj8O/sTm7r6UQxGrXKL3S4=;
+        b=I2vb8x+H5MLOJS3CjVjcp7owUl5TCpoCZeDxGTLPcImC/IlQ5Wxp+l+GyCKzM6cAhm
+         QYaxhaopAx1mYyxmn6hs0frj7Gi0XQB9bs+86HfB9OFvU9XCosiZxsT7vi74iqU6TMcx
+         FLKJSHqdRZvHN4rjDJTvA3ucb0gCkT2swZi3cIOk11AfRDtENWWMgVkGneHEt7Gcurbh
+         NBo8AI3skW/i1fKv80SLO2DqzTqmZs2CeVgSFeKVSz7wXOkoSiE50DR3y67ANHggqCxa
+         x5tdu2WIWvJsxFXiXSmDMuI7csjh8ZHVOCOus5cbo0m+MOKUbtVd/iaNyzPLwVmuqWaR
+         O5ag==
+X-Gm-Message-State: AOAM530UNH9Sv4SB8Rk87ROmhcnPkrLCzi12KaYQhUPG8Vezq4qSQD0/
+        4l1gGFLZf9NunsI3DyFSqZb11e068ZYtIRPyCQc=
+X-Google-Smtp-Source: ABdhPJxK/Dhov3cOO+ENzMiqgUnOFOHG45NHV82YolYh2ed/Y7nyHhn/DYvljwO2yf4T26yX+u70Wv21Fibyzchtv1Q=
+X-Received: by 2002:a17:90a:1704:: with SMTP id z4mr9509227pjd.181.1590761031400;
+ Fri, 29 May 2020 07:03:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05500c815f4881a6aa86c809c5ac53e8af3f3e91.camel@analog.com>
+References: <1590759730-32494-1-git-send-email-Sandeep.Singh@amd.com> <1590759730-32494-3-git-send-email-Sandeep.Singh@amd.com>
+In-Reply-To: <1590759730-32494-3-git-send-email-Sandeep.Singh@amd.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 29 May 2020 17:03:39 +0300
+Message-ID: <CAHp75VcLUwXPaEUE+vrkYKdqhe2hTDz5Q7mxqoYWJu3fX0G+JA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/4] SFH: PCI driver to add support of AMD sensor
+ fusion Hub using HID framework
+To:     Sandeep Singh <Sandeep.Singh@amd.com>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Shah, Nehal-bakulchandra" <Nehal-bakulchandra.Shah@amd.com>,
+        Richard Neumann <mail@richard-neumann.de>,
+        Shyam-sundar.S-k@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-[ Trimming CC to something more reasonable... ]
+On Fri, May 29, 2020 at 4:42 PM Sandeep Singh <Sandeep.Singh@amd.com> wrote=
+:
+>
+> From: Sandeep Singh <sandeep.singh@amd.com>
+>
+> AMD SFH uses HID over PCIe bus.SFH fw is part of MP2
+> processor (MP2 which is an ARM=C2=AE Cortex-M4 core based
+> co-processor to x86) and it runs on MP2 where in driver resides
+> on X86. This part of module will communicate with MP2 FW and
+> provide that data into DRAM
+>
+> Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
 
-On Fri, May 29, 2020 at 11:08:38AM +0000, Ardelean, Alexandru wrote:
-> On Fri, 2020-05-29 at 12:16 +0200, Johan Hovold wrote:
-> > On Fri, May 22, 2020 at 11:22:07AM +0300, Alexandru Ardelean wrote:
-> > > This assignment is the more peculiar of the bunch as it assigns the parent
-> > > of the platform-device's device (i.e. pdev->dev.parent) as the IIO device's
-> > > parent.
-> > > 
-> > > It's unclear whether this is intentional or not.
-> > > Hence it is in it's own patch.
-> > 
-> > Yeah, we have a few mfd drivers whose child drivers registers their
-> > class devices directly under the parent mfd device rather than the
-> > corresponding child platform device.
-> > 
-> > Since it's done consistently I think you need to update them all if you
-> > really want to change this. 
-> > 
-> > And it may not be worth it since at least in theory someone could now be
-> > relying on this topology.
-> 
-> Thanks for the feedback.
-> I guess, it could make sense to do here:
->       devm_iio_device_alloc(pdev->dev.parent, ...)
-> 
-> Currently it's:
->       devm_iio_device_alloc(&pdev->dev, ...)
-> 
-> That would make it slightly more consistent.  i.e. the life-time of
-> the object would be attached to the parent of the platform device,
-> versus the platform-device.
+> Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
 
-Not really. If you unbind the iio driver, the iio device gets
-deregistered (as it should be) and there's no need to keep it around any
-more.
+Why you are submitting code if Nehal's SoB last in the list?
 
-You'd essentially just leak resources every time you rebind the driver
-(e.g. during development).
+...
 
-And in fact, you could also introduce a use-after-free depending on if
-the parent mfd driver use devres to deregister its children.
+> Reported-by: kbuild test robot <lkp@intel.com>
 
-> Currently, as it is, the allocation [of the IIO device] is tied the
-> platform-device, and the IIO registration to the parent (of the
-> platform-device).
+I guess it's not applicable here, since it's a new code. Rather you
+may mentioned this in changelog in cover letter.
 
-Not quite; the iio device still gets deregistered when the platform
-device is unbound.
+...
 
-> I'm not super-familiar with the internals here, but does this sound a
-> bit wrong?
+> +       write64(0x0, privdata->mmio + AMD_C2P_MSG2);
 
-It's not a common pattern but not necessarily wrong per se.
+Hmm... What's write64()? Isn't it writeq()?
 
-> Is there a chance where the IIO device could be de-allocated, while
-> registered?
+...
 
-No, the device-managed iio device object is freed when the platform
-device is unbound and specifically after the iio device has been
-deregistered.
+> +       if (ACEL_EN  & activestatus) {
+> +               sensor_id[num_of_sensors] =3D ACCEL_IDX;
+> +               num_of_sensors++;
+> +       }
 
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > ---
-> > >  drivers/iio/light/lm3533-als.c | 1 -
-> > >  1 file changed, 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iio/light/lm3533-als.c b/drivers/iio/light/lm3533-als.c
-> > > index bc196c212881..0f380ec8d30c 100644
-> > > --- a/drivers/iio/light/lm3533-als.c
-> > > +++ b/drivers/iio/light/lm3533-als.c
-> > > @@ -852,7 +852,6 @@ static int lm3533_als_probe(struct platform_device
-> > > *pdev)
-> > >  	indio_dev->channels = lm3533_als_channels;
-> > >  	indio_dev->num_channels = ARRAY_SIZE(lm3533_als_channels);
-> > >  	indio_dev->name = dev_name(&pdev->dev);
-> > > -	indio_dev->dev.parent = pdev->dev.parent;
-> > >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> > >  
-> > >  	als = iio_priv(indio_dev);
+You can drop a lot of LOCs by doing
 
-Johan
+    if (ACEL_EN  & activestatus)
+        sensor_id[num_of_sensors++] =3D ACCEL_IDX;
+
+...
+
+> +       rc =3D pcim_iomap_regions(pdev, BIT(2), DRIVER_NAME);
+> +       if (rc)
+
+> +               goto err_pci_enable;
+
+Due to use of PCI managed functions error path is not needed at all.
+Return directly.
+
+...
+
+> +       rc =3D pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
+> +       if (rc) {
+> +               rc =3D pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
+> +               if (rc)
+> +                       goto err_dma_mask;
+> +       }
+
+rc =3D ...;
+if (rc)
+  rc =3D ...;
+if (rc)
+  return rc;
+
+...
+
+> +err_dma_mask:
+> +       pci_clear_master(pdev);
+
+PCI managed handling does it for you.
+
+> +err_pci_enable:
+> +       pci_set_drvdata(pdev, NULL);
+
+Driver code does this for you.
+
+> +       return rc;
+
+...
+
+> +       dev_info(&pdev->dev, "MP2 device found [%04x:%04x] (rev %x)\n",
+> +                pdev->vendor, pdev->device, pdev->revision);
+
+How is it useful? PCI core prints a lot of information which you may
+find in dmesg.
+
+...
+
+> +       privdata =3D devm_kzalloc(&pdev->dev, sizeof(*privdata), GFP_KERN=
+EL);
+> +       if (!privdata)
+
+> +               rc =3D -ENOMEM;
+
+How this has been tested?
+
+> +       privdata->pdev =3D pdev;
+
+> +       rc =3D amd_mp2_pci_init(privdata, pdev);
+> +       if (rc)
+> +               return rc;
+> +       return 0;
+
+return amd_mp2_pci_init(...);
+
+...
+
+> +static void amd_mp2_pci_remove(struct pci_dev *pdev)
+> +{
+> +       struct amd_mp2_dev *privdata =3D pci_get_drvdata(pdev);
+> +
+> +       amd_stop_all_sensors(privdata->pdev);
+
+> +       pci_clear_master(pdev);
+> +       pci_set_drvdata(pdev, NULL);
+
+Same comments as per error path in the ->probe()
+
+> +}
+
+...
+
+> +static const struct pci_device_id amd_mp2_pci_tbl[] =3D {
+> +       {PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_MP2)},
+
+Spaces, please,
+ { PCI...() },
+
+> +       {0}
+
+0 is not needed here.
+
+> +};
+
+...
+
+> +#ifndef PCIE_MP2_AMD_H
+> +#define PCIE_MP2_AMD_H
+
++ empty line
+
+> +#include <linux/io-64-nonatomic-lo-hi.h>
+> +#include <linux/pci.h>
+> +#include <linux/types.h>
+
+> +#define PCI_DEVICE_ID_AMD_MP2  0x15E4
+
+Why not in the C file?
+
+> +/* MP2 C2P Message Registers */
+> +#define AMD_C2P_MSG0   0x10500
+> +#define AMD_C2P_MSG1   0x10504
+> +#define AMD_C2P_MSG2   0x10508
+> +#define AMD_C2P_MSG3   0x1050c
+> +#define AMD_C2P_MSG4   0x10510
+> +#define AMD_C2P_MSG5   0x10514
+> +#define AMD_C2P_MSG6   0x10518
+> +#define AMD_C2P_MSG7   0x1051c
+> +#define AMD_C2P_MSG8   0x10520
+> +#define AMD_C2P_MSG9   0x10524
+> +
+> +/* MP2 P2C Message Registers */
+> +#define AMD_P2C_MSG0   0x10680 /*Do not use*/
+> +#define AMD_P2C_MSG1   0x10684
+> +#define AMD_P2C_MSG2   0x10688
+> +#define AMD_P2C_MSG3   0x1068C /*MP2 debug info*/
+> +#define AMD_P2C_MSG_INTEN      0x10690 /*MP2 int gen register*/
+> +#define AMD_P2C_MSG_INTSTS     0x10694 /*Interrupt sts*/
+
+Do you need all these in the header?
+
+...
+
+> +#define write64 lo_hi_writeq
+> +#define read64 lo_hi_readq
+
+Why?! You have writeq() definition or use lo_hi_*() directly.
+
+...
+
+> +int amd_mp2_get_sensor_num(struct pci_dev *dev, u8 *sensor_id);
+
++ blank line
+
+> +#endif
+
+--=20
+With Best Regards,
+Andy Shevchenko

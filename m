@@ -2,83 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D961E7D37
-	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 14:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 908181E7E99
+	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 15:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725865AbgE2M3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 May 2020 08:29:34 -0400
-Received: from first.geanix.com ([116.203.34.67]:52664 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726687AbgE2M3d (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 29 May 2020 08:29:33 -0400
-Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id BE1ED2023DF5;
-        Fri, 29 May 2020 12:29:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1590755370; bh=mupuMuyvjpAaSMtY6QgGFZq5vdtcHfuLa7bEJEkbtGg=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Nm++LVF2RkLsFWmHCd/vEdiklK84V7Ud+Mwh7QROklmwXQjcC/6jNEP2kwjaYzxO8
-         pMcV7G1uO8MeyQ3XqmC2pVUY52aO09aayFGYwuocQu+fj0VEbR9oL15atGG6JKQ9ms
-         hCtSiai4/TY87yYTZJ+KZv2uTGYwwcXOtxuIhoQ7g4H5/kcicIVWFXPwRRfIq8R3mG
-         OVic9mU+VdaNInF4lbKbl12gYU/Up7rx4IvtgLugtZ4srG07gvn0CzTJx7H8pY0Mv5
-         67ZHXu58U+RjKzjW6YwsXyf/b2MJ2/8FWSJBufsrpA+G0WTZFHy6w+ARjjb9/e7m5g
-         R33pS4FMklBOw==
-Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <54cb146d-e54e-acae-e89c-075521b8e7dc@geanix.com>
- <20200528210711.GD5419@localhost.localdomain>
- <3c629741-43f1-3d3a-2b40-40ddfd773e86@geanix.com>
- <20200529074443.GA3198@localhost.localdomain>
- <5bb0fca9-97a4-4bad-1314-1f275ab632ff@geanix.com>
- <20200529085052.GC3198@localhost.localdomain>
- <08c824c2-dfb2-7a5c-b6fd-8258d6ce3808@geanix.com>
- <20200529121616.GD3198@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <4a4c7141-acbf-3a7d-3d0b-6c056c8f9ed8@geanix.com>
-Date:   Fri, 29 May 2020 14:29:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726629AbgE2N0Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 May 2020 09:26:16 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:45702 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726792AbgE2N0P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 May 2020 09:26:15 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 904CF1C0389; Fri, 29 May 2020 15:26:14 +0200 (CEST)
+Date:   Fri, 29 May 2020 15:26:04 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, david@lechnology.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+Subject: Re: [PATCH v2 4/4] docs: counter: Document character device interface
+Message-ID: <20200529132604.GB1339@bug>
+References: <cover.1589654470.git.vilhelm.gray@gmail.com>
+ <db0a9206d31c82f8381316ef5ff9872bfb53665b.1589654470.git.vilhelm.gray@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200529121616.GD3198@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db0a9206d31c82f8381316ef5ff9872bfb53665b.1589654470.git.vilhelm.gray@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 29/05/2020 14.16, Lorenzo Bianconi wrote:
-> On May 29, Sean Nyekjaer wrote:
->>
->>>
->>> Ack, values seem properly updated, while values reported to the upserspace are
->>> using wrong value? could you please try to dump ts samples reading the hw queue
->>> after the resume?
->>>
->>> Regards,
->>> Lorenzo
->>>
->>
->> I have add the raw timestamps to the trace:
->> https://gist.github.com/sknsean/1eb3c074d6f2d134632582a4771322bb
->>
->> Both with and without the proposed patch :)
->>
->> /Sean
+On Sat 2020-05-16 15:20:02, William Breathitt Gray wrote:
+> This patch adds high-level documentation about the Counter subsystem
+> character device interface.
 > 
-> are these values from the hw FIFO? can you please add sensor->ts_ref to the trace and
-> a log into st_lsm6dsx_reset_hw_ts?
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> ---
+>  Documentation/driver-api/generic-counter.rst | 112 +++++++++++++------
+>  1 file changed, 76 insertions(+), 36 deletions(-)
+> 
+> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+> index 8f85c30dea0b..58045b33b576 100644
+> --- a/Documentation/driver-api/generic-counter.rst
+> +++ b/Documentation/driver-api/generic-counter.rst
 
-The values are from the timestamp got when reading /dev/iio:deviceX.
-Will add hw FIFO and ts_ref stamps to the trace next Tuesday
+> +
+> +Counter chrdev
+> +--------------
+> +Translates counter data to the standard Counter character device; data
+> +is transferred via standard character device read/write calls.
+> +
+> +Sysfs Interface
+> +===============
+> +
+> +Several sysfs attributes are generated by the Generic Counter interface,
+> +and reside under the `/sys/bus/counter/devices/counterX` directory,
+> +where `X` is to the respective counter device id. Please see
+> +Documentation/ABI/testing/sysfs-bus-counter for detailed information on
+> +each Generic Counter interface sysfs attribute.
+> +
+> +Through these sysfs attributes, programs and scripts may interact with
+> +the Generic Counter paradigm Counts, Signals, and Synapses of respective
+> +counter devices.
+> +
+> +Counter Character Device
+> +========================
+> +
+> +Counter character device nodes are created under the `/dev` directory as
+> +`counterX`, where `X` is the respective counter device id. Defines for
+> +the standard Counter data types are exposed via the userspace
+> +`include/uapi/linux/counter-types.h` file.
+> +
+> +The first 196095 bytes of the character device serve as a control
+> +selection area where control exposure of desired Counter components and
+> +extensions may be selected. Each byte serves as a boolean selection
+> +indicator for a respective Counter component or extension. The format of
+> +this area is as follows:
+> +
+> +* For each device extension, a byte is required.
+> +* For each Signal, a byte is reserved for the Signal component, and a
+> +  byte is reserved for each Signal extension.
+> +* For each Count, a byte is reserved for the Count component, a byte is
+> +  reserved for the count function, a byte is reserved for each Synapse
+> +  action, and byte is reserved for each Count extension.
+> +
+> +The selected Counter components and extensions may then be interfaced
+> +after the first 196095 bytes via standard character device read/write
+> +operations. The number of bytes available for each component or
+> +extension is dependent on their respective data type: u8 will have 1
+> +byte available, u64 will have 8 bytes available, strings will have 64
+> +bytes available, etc.
 
-/Sean
+This looks like very, very strange interface, and not described in detail
+required to understand it.
+
+Could you take a look at input subsystem, /dev/input/event0? Perhaps it is 
+directly usable, and if not something similar should probably be acceptable.
+
+Best regards,
+									Pavel

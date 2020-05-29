@@ -2,67 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A99F1E76B2
-	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 09:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F3F1E775C
+	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 09:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbgE2HcK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 May 2020 03:32:10 -0400
-Received: from first.geanix.com ([116.203.34.67]:50504 "EHLO first.geanix.com"
+        id S1725833AbgE2Hou (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 May 2020 03:44:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54194 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725817AbgE2HcI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 29 May 2020 03:32:08 -0400
-Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id D3B522023E91;
-        Fri, 29 May 2020 07:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1590737525; bh=NqOtCXKPYOLg3CUzk322t/tL+gdzHl0wbUUlAMXbpmQ=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Lu2u0LxoF3zjweXh5k0674ZaPi+1HWXUtOUsY5GqA8+e5vTFHnlF8WCep24LU8fEP
-         c18gXYeSGK2Pin4MP2DuQVxZTUnJ3tbQz+8Hzq6iJQJKgKfGukSxqFlA4B4ceSUDDz
-         BL2WaRle2wHmnqxYs6GnvT1n+hngOhAimEfO0Yi+hELKYM4acDaJaIRBOeyZ8c4Rgv
-         tOqc51zuW4ypxyFuo7XFi6rhl6gDAaFx6io3HkbEOidfMGBXHbkGds02KlR8ZnIUxl
-         GOcoIEb8JkoYZbyvCPG7rkt133j3Je4UNKaW0hC0bkD+t9Fi/wa4m+TZndsCitz/bD
-         dSHaiDdNw9THw==
-Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        id S1725914AbgE2Hou (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 29 May 2020 03:44:50 -0400
+Received: from localhost (unknown [151.48.140.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4F51D2074D;
+        Fri, 29 May 2020 07:44:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590738289;
+        bh=bbRnKORJVO/YVU55FZR9Anisc5Ub4m8oieKhhfxupwg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WucZ+eYhusJF0e0CNMSY0DzJdb6kgbCplH4Hp/+E4CvK7ocnqmSUZJCbncUqBs9C7
+         L/bPy3gt1ebCUizF6py9kmRN68p0hvhInkgIhIosyheTRE9gEyr6HgE25yIRxVtL0m
+         fGgY43NL2vgb/vKbq9BKe4URd4GKbbifoFgnfxr0=
+Date:   Fri, 29 May 2020 09:44:43 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Nyekjaer <sean@geanix.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
+Message-ID: <20200529074443.GA3198@localhost.localdomain>
 References: <54cb146d-e54e-acae-e89c-075521b8e7dc@geanix.com>
  <20200528210711.GD5419@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <3c629741-43f1-3d3a-2b40-40ddfd773e86@geanix.com>
-Date:   Fri, 29 May 2020 09:32:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+ <3c629741-43f1-3d3a-2b40-40ddfd773e86@geanix.com>
 MIME-Version: 1.0
-In-Reply-To: <20200528210711.GD5419@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+Content-Disposition: inline
+In-Reply-To: <3c629741-43f1-3d3a-2b40-40ddfd773e86@geanix.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
->>
->> Could a solution, be to call st_lsm6dsx_reset_hw_ts() in st_lsm6dsx_resume()
->> ?
-> 
-> yes, I think so. Could you please try to patch below? Thanks.
-> 
+--mYCpIKhGyMATD0i+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi Lorenzo,
+On May 29, Sean Nyekjaer wrote:
+>=20
+> > >=20
+> > > Could a solution, be to call st_lsm6dsx_reset_hw_ts() in st_lsm6dsx_r=
+esume()
+> > > ?
+> >=20
+> > yes, I think so. Could you please try to patch below? Thanks.
+> >=20
+>=20
+> Hi Lorenzo,
+>=20
+> I have tried your patch, and the timestamp seems to behave like before.
+>=20
+> https://gist.github.com/sknsean/959d3421f66cb49144e7841a8a08a2be
+> Sorry NTP have been connected for a while :)
+>=20
+> I will enable some more debug to trace what is happening.
+>=20
+> /Sean
 
-I have tried your patch, and the timestamp seems to behave like before.
+Hi Sean,
 
-https://gist.github.com/sknsean/959d3421f66cb49144e7841a8a08a2be
-Sorry NTP have been connected for a while :)
+thx for testing. Is the FIFO enabled before the suspend (in other words, is
+st_lsm6dsx_resume_fifo running in st_lsm6dsx_resume?) what is the value of
+sensor->ts_ref after the resume?
 
-I will enable some more debug to trace what is happening.
+Regards,
+Lorenzo
 
-/Sean
+--mYCpIKhGyMATD0i+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXtC9aQAKCRA6cBh0uS2t
+rJiBAP9w4fl7vPnlFD4phJbL20XpAUCbuQSDdsRtQ0ut2b+VOAEAqfDEfOM2dZXq
+27OoNRfF3A43uOoXvUWa2qIGtZ/p/w8=
+=acW0
+-----END PGP SIGNATURE-----
+
+--mYCpIKhGyMATD0i+--

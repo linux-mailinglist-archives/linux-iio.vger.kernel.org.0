@@ -2,107 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 908181E7E99
-	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 15:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D341E7ED1
+	for <lists+linux-iio@lfdr.de>; Fri, 29 May 2020 15:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726629AbgE2N0Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 May 2020 09:26:16 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:45702 "EHLO
+        id S1726638AbgE2Nd4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 May 2020 09:33:56 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:46728 "EHLO
         jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726792AbgE2N0P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 May 2020 09:26:15 -0400
+        with ESMTP id S1726549AbgE2Nd4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 May 2020 09:33:56 -0400
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 904CF1C0389; Fri, 29 May 2020 15:26:14 +0200 (CEST)
-Date:   Fri, 29 May 2020 15:26:04 +0200
+        id C71731C0388; Fri, 29 May 2020 15:33:54 +0200 (CEST)
+Date:   Fri, 29 May 2020 15:33:46 +0200
 From:   Pavel Machek <pavel@ucw.cz>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v2 4/4] docs: counter: Document character device interface
-Message-ID: <20200529132604.GB1339@bug>
-References: <cover.1589654470.git.vilhelm.gray@gmail.com>
- <db0a9206d31c82f8381316ef5ff9872bfb53665b.1589654470.git.vilhelm.gray@gmail.com>
+To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Steve Winslow <swinslow@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 3/3] iio: magnetometer: ak8975: Add gpio reset support
+Message-ID: <20200529133346.GC1339@bug>
+References: <20200518133645.19127-1-jonathan.albrieux@gmail.com>
+ <20200518133645.19127-4-jonathan.albrieux@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <db0a9206d31c82f8381316ef5ff9872bfb53665b.1589654470.git.vilhelm.gray@gmail.com>
+In-Reply-To: <20200518133645.19127-4-jonathan.albrieux@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat 2020-05-16 15:20:02, William Breathitt Gray wrote:
-> This patch adds high-level documentation about the Counter subsystem
-> character device interface.
+Hi!
+
+> AK09911 has a reset gpio to handle register's reset. If reset gpio is
+> set to low it will trigger the reset. AK09911 datasheed says that if not
+> used reset pin should be connected to VID and this patch emulates this
+> situation
 > 
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 > ---
->  Documentation/driver-api/generic-counter.rst | 112 +++++++++++++------
->  1 file changed, 76 insertions(+), 36 deletions(-)
+>  drivers/iio/magnetometer/ak8975.c | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-> index 8f85c30dea0b..58045b33b576 100644
-> --- a/Documentation/driver-api/generic-counter.rst
-> +++ b/Documentation/driver-api/generic-counter.rst
+>  	/*
+> -	 * According to the datasheet the power supply rise time i 200us
+> +	 * According to the datasheet the power supply rise time is 200us
+>  	 * and the minimum wait time before mode setting is 100us, in
+> -	 * total 300 us. Add some margin and say minimum 500us here.
+> +	 * total 300us. Add some margin and say minimum 500us here.
+>  	 */
+>  	usleep_range(500, 1000);
 
-> +
-> +Counter chrdev
-> +--------------
-> +Translates counter data to the standard Counter character device; data
-> +is transferred via standard character device read/write calls.
-> +
-> +Sysfs Interface
-> +===============
-> +
-> +Several sysfs attributes are generated by the Generic Counter interface,
-> +and reside under the `/sys/bus/counter/devices/counterX` directory,
-> +where `X` is to the respective counter device id. Please see
-> +Documentation/ABI/testing/sysfs-bus-counter for detailed information on
-> +each Generic Counter interface sysfs attribute.
-> +
-> +Through these sysfs attributes, programs and scripts may interact with
-> +the Generic Counter paradigm Counts, Signals, and Synapses of respective
-> +counter devices.
-> +
-> +Counter Character Device
-> +========================
-> +
-> +Counter character device nodes are created under the `/dev` directory as
-> +`counterX`, where `X` is the respective counter device id. Defines for
-> +the standard Counter data types are exposed via the userspace
-> +`include/uapi/linux/counter-types.h` file.
-> +
-> +The first 196095 bytes of the character device serve as a control
-> +selection area where control exposure of desired Counter components and
-> +extensions may be selected. Each byte serves as a boolean selection
-> +indicator for a respective Counter component or extension. The format of
-> +this area is as follows:
-> +
-> +* For each device extension, a byte is required.
-> +* For each Signal, a byte is reserved for the Signal component, and a
-> +  byte is reserved for each Signal extension.
-> +* For each Count, a byte is reserved for the Count component, a byte is
-> +  reserved for the count function, a byte is reserved for each Synapse
-> +  action, and byte is reserved for each Count extension.
-> +
-> +The selected Counter components and extensions may then be interfaced
-> +after the first 196095 bytes via standard character device read/write
-> +operations. The number of bytes available for each component or
-> +extension is dependent on their respective data type: u8 will have 1
-> +byte available, u64 will have 8 bytes available, strings will have 64
-> +bytes available, etc.
-
-This looks like very, very strange interface, and not described in detail
-required to understand it.
-
-Could you take a look at input subsystem, /dev/input/event0? Perhaps it is 
-directly usable, and if not something similar should probably be acceptable.
+I'd assume that datasheet added some safety margin too, and there's another one in usleep...
+So I believe usleep..(300) should be okay..
 
 Best regards,
-									Pavel
+										Pavel

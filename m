@@ -2,107 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE431E989C
-	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 17:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833551E98A7
+	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 17:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727013AbgEaPk0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 May 2020 11:40:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54344 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726081AbgEaPk0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 May 2020 11:40:26 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB41620659;
-        Sun, 31 May 2020 15:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590939626;
-        bh=ZihwhZLxsqzhnXkpIKIJp7j0qhmfl7QS0mKBa+pmKOg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tp1Sv1rUKr6NrKiTwxlXF4s0pdEoq4kByy9NBdZGnj+otXZHgL3vPTm3kV/UlDZcy
-         IR70NT10/iVsHYN4bHayiWg2mM/gVhkFaHgFv23m99x35bH7xvtwmDNpiWgetRj8lO
-         EKkSDV4lAJJImd26X+G1XZaAVuYfJvZc8FKw6Yfo=
-Date:   Sun, 31 May 2020 16:40:20 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <linus.walleij@linaro.org>,
-        <lorenzo.bianconi83@gmail.com>, <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 3/3] iio: remove
- iio_triggered_buffer_postenable()/iio_triggered_buffer_predisable()
-Message-ID: <20200531164020.765822dc@archlinux>
-In-Reply-To: <20200525113855.178821-3-alexandru.ardelean@analog.com>
-References: <20200525113855.178821-1-alexandru.ardelean@analog.com>
-        <20200525113855.178821-3-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727994AbgEaPqS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 May 2020 11:46:18 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:51683 "EHLO
+        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726193AbgEaPqS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 May 2020 11:46:18 -0400
+Received: from pro2.mail.ovh.net (unknown [10.108.1.191])
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 7F74754B9C51;
+        Sun, 31 May 2020 17:46:15 +0200 (CEST)
+Received: from localhost (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 31 May
+ 2020 17:46:14 +0200
+Date:   Sun, 31 May 2020 17:44:06 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v2 4/4] dt-bindings: iio: scd30: add device binding file
+Message-ID: <20200531154406.GA27246@arch>
+References: <20200530213630.87159-1-tomasz.duszynski@octakon.com>
+ <20200530213630.87159-5-tomasz.duszynski@octakon.com>
+ <20200531111914.56dbff8b@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20200531111914.56dbff8b@archlinux>
+X-Originating-IP: [89.70.180.118]
+X-ClientProxiedBy: DAG2EX2.emp2.local (172.16.2.12) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 15080021879647853650
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeffedgledtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhepleekkeeuhfdtleehlefgffeltedthfekveefueevteeuvdejgeejtdetueffgeefnecuffhomhgrihhnpeguvghvihgtvghtrhgvvgdrohhrghenucfkpheptddrtddrtddrtddpkeelrdejtddrudektddruddukeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehpmhgvvghrfiesphhmvggvrhifrdhnvght
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 May 2020 14:38:55 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Sun, May 31, 2020 at 11:19:14AM +0100, Jonathan Cameron wrote:
+> On Sat, 30 May 2020 23:36:30 +0200
+> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+>
+> > Add SCD30 sensor binding file.
+> >
+> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > ---
+> >  .../iio/chemical/sensirion,scd30.yaml         | 68 +++++++++++++++++++
+> >  MAINTAINERS                                   |  1 +
+> >  2 files changed, 69 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+> > new file mode 100644
+> > index 000000000000..34cc3925d64d
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+> > @@ -0,0 +1,68 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/chemical/sensirion,scd30.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Sensirion SCD30 carbon dioxide sensor
+> > +
+> > +maintainers:
+> > +  - Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > +
+> > +description: |
+> > +  Air quality sensor capable of measuring co2 concentration, temperature
+> > +  and relative humidity.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - sensirion,scd30
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  vdd-supply: true
+> > +
+> > +  sensirion,sel-gpios:
+> > +    description: GPIO connected to the SEL line
+> > +    maxItems: 1
+> > +
+> > +  sensirion,pwm-gpios:
+> > +    description: GPIO connected to the PWM line
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    # include <dt-bindings/interrupt-controller/irq.h>
+> > +    i2c {
+> > +      #address-cells = <1>;
+> > +      #size-cells = <0>;
+> > +
+> > +      scd30@61 {
+>
+> Nodes should have generic names.  Not sure we have an appropriate
+> one in the spec, but as main focus of people using this will be
+> c02 herpas
+>
+> 	c02@61?
+>
 
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> 
-> This patch should be squashed into the first one, as the first one is
-> breaking the build (intentionally) to make the IIO core files easier to
-> review.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
+There are already a few recommended node names ending with '-sensor' on the list
+like air-pollution-sensor or temperature-sensor. I'd say co2-sensor would work
+here.
 
-Friend poke.  Version log?
-
-Other than the wistful comment below (which I'm not expecting you to
-do anything about btw!) whole series looks good to me.
-
-These are obviously no functional changes (I think) so it's only really patch 2 that
-could do with more eyes and acks.
-
-Far as I can tell that case is fine as well because of the protections
-on being in the right mode, but more eyes on that would be great.
-
-So assuming that's fine, what commit message do you want me to use for
-the fused single patch?
-
-Thanks,
-
-Jonathan
-
->  static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
-> diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> index 17606eca42b4..8e13c53d4360 100644
-> --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> @@ -99,20 +99,6 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
->  }
->  
->  static const struct iio_buffer_setup_ops iio_simple_dummy_buffer_setup_ops = {
-> -	/*
-> -	 * iio_triggered_buffer_postenable:
-> -	 * Generic function that simply attaches the pollfunc to the trigger.
-> -	 * Replace this to mess with hardware state before we attach the
-> -	 * trigger.
-> -	 */
-> -	.postenable = &iio_triggered_buffer_postenable,
-> -	/*
-> -	 * iio_triggered_buffer_predisable:
-> -	 * Generic function that simple detaches the pollfunc from the trigger.
-> -	 * Replace this to put hardware state back again after the trigger is
-> -	 * detached but before userspace knows we have disabled the ring.
-> -	 */
-> -	.predisable = &iio_triggered_buffer_predisable,
->  };
->  
-Hmm. Guess we should probably 'invent' a reason to illustrate the bufer
-ops in the dummy example.  Anyone feeling creative?
+> Rob may well have a better suggestion!
+>
+> > +        compatible = "sensirion,scd30";
+> > +        reg = <0x61>;
+> > +        vdd-supply = <&vdd>;
+> > +        interrupt-parent = <&gpio0>;
+> > +        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+> > +      };
+> > +    };
+> > +  - |
+> > +    # include <dt-bindings/interrupt-controller/irq.h>
+> > +    serial {
+> > +      scd30 {
+> > +        compatible = "sensirion,scd30";
+> > +        vdd-supply = <&vdd>;
+> > +        interrupt-parent = <&gpio0>;
+> > +        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+> > +      };
+> > +    };
+> > +
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 5db4b446c8ba..0ab9cf39e051 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -15140,6 +15140,7 @@ F:	include/uapi/linux/phantom.h
+> >  SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
+> >  M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> >  S:	Maintained
+> > +F:	Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+> >  F:	drivers/iio/chemical/scd30.h
+> >  F:	drivers/iio/chemical/scd30_core.c
+> >  F:	drivers/iio/chemical/scd30_i2c.c
+>

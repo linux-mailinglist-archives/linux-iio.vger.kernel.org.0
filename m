@@ -2,144 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 944511E93F9
-	for <lists+linux-iio@lfdr.de>; Sat, 30 May 2020 23:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 263CB1E9511
+	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 05:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729376AbgE3Viv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 May 2020 17:38:51 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:45909 "EHLO
-        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729340AbgE3Viu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 May 2020 17:38:50 -0400
-Received: from pro2.mail.ovh.net (unknown [10.109.143.168])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id F325F54AA49B;
-        Sat, 30 May 2020 23:38:47 +0200 (CEST)
-Received: from arch.lan (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sat, 30 May
- 2020 23:38:42 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <robh+dt@kernel.org>, <jic23@kernel.org>,
-        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH v2 4/4] dt-bindings: iio: scd30: add device binding file
-Date:   Sat, 30 May 2020 23:36:30 +0200
-Message-ID: <20200530213630.87159-5-tomasz.duszynski@octakon.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200530213630.87159-1-tomasz.duszynski@octakon.com>
-References: <20200530213630.87159-1-tomasz.duszynski@octakon.com>
+        id S1729604AbgEaDCS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 May 2020 23:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729026AbgEaDCS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 May 2020 23:02:18 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15DEC03E969
+        for <linux-iio@vger.kernel.org>; Sat, 30 May 2020 20:02:16 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id y13so5950657eju.2
+        for <linux-iio@vger.kernel.org>; Sat, 30 May 2020 20:02:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cfmTntAEPWRlQlCg5U4Mzgy/d8I2dp1hdtZBqlTws2E=;
+        b=F3QSNltsZrT6qJJ7BiKFQDNnHVexqL1cxuXZfvugt6vmRoO39NnkLV9VU6pq540ldi
+         Il2uV9E36zyw3Diyyocz57yTdYlScgu26cUzpgbn+N0XdDmQU27SwW+r6jmV6mPnmRGf
+         ZQ79UMoCdCJ98+5e/lUgBSYQ3Xba13pqTdkFQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cfmTntAEPWRlQlCg5U4Mzgy/d8I2dp1hdtZBqlTws2E=;
+        b=ua91YnTyS2WP3GbwJjZW9DqdDp+uo3jdsABJRqlmEbY/Bw8OZd6GL1UIEYGR1ZbExY
+         lBZfQ5qyX2oyqpZ4KIerogii2fSVihpphv230czYnPtovg6hWgJpmnOVrJu8JPDu0lC0
+         IZn3SSsLWdFqBvWeQzMSxBWbZvI5c/3QTG6VM10B3cL3c8ZGgR9pB1qRqVRmN/rM1Jkz
+         +FAumeIII0B6jOndu4a4GnjUh3s5KyauiPRdKqOuSrcZBLv+j6JyseG1EiOh2fRsLNcZ
+         JNXTK6eTpmA/LKJKf1kfr8p9iVnL9qWxEjSERjEzjejxpuaepITNGSJKFQ1aDd6Yg8+F
+         o4dA==
+X-Gm-Message-State: AOAM532HhLuaOGQCH3PkPb5VMK+mV8qiQxdRPTYrmm+Wo1sKUS5JrXl7
+        eN79QqQrof9ITHGCbgNcPjw0v9PdPcNNpw==
+X-Google-Smtp-Source: ABdhPJzf4YsAmc6ZvN1OHcHfCU4AStPBjZbPhXIBlp6L2usdVQ4gKVcwpjzb41G3P0tEyPDgSJsf0Q==
+X-Received: by 2002:a17:906:b097:: with SMTP id x23mr13713119ejy.227.1590894134480;
+        Sat, 30 May 2020 20:02:14 -0700 (PDT)
+Received: from taos.konsulko.bg (lan.nucleusys.com. [92.247.61.126])
+        by smtp.gmail.com with ESMTPSA id dd7sm11872805edb.19.2020.05.30.20.02.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2020 20:02:13 -0700 (PDT)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH] iio: chemical: atlas-ezo-sensor: move ret variable scope in atlas_ezo_read_raw()
+Date:   Sun, 31 May 2020 06:02:08 +0300
+Message-Id: <20200531030208.12167-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [89.70.180.118]
-X-ClientProxiedBy: DAG2EX1.emp2.local (172.16.2.11) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 15161368149047467031
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeftddgudeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffojghfggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhepvdffkeeuteekhfetudffffdtudethedvvdevhefhkeffgeeufeevteejiedttdelnecuffhomhgrihhnpeguvghvihgtvghtrhgvvgdrohhrghenucfkpheptddrtddrtddrtddpkeelrdejtddrudektddruddukeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehprhhovddrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomhdprhgtphhtthhopehpmhgvvghrfiesphhmvggvrhifrdhnvght
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add SCD30 sensor binding file.
+Move ret variable to the IIO_CHAN_INFO_RAW switch since currently
+only used within that scope.
 
-Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 ---
- .../iio/chemical/sensirion,scd30.yaml         | 68 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 69 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+ drivers/iio/chemical/atlas-ezo-sensor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
-new file mode 100644
-index 000000000000..34cc3925d64d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/chemical/sensirion,scd30.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sensirion SCD30 carbon dioxide sensor
-+
-+maintainers:
-+  - Tomasz Duszynski <tomasz.duszynski@octakon.com>
-+
-+description: |
-+  Air quality sensor capable of measuring co2 concentration, temperature
-+  and relative humidity.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - sensirion,scd30
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+
-+  sensirion,sel-gpios:
-+    description: GPIO connected to the SEL line
-+    maxItems: 1
-+
-+  sensirion,pwm-gpios:
-+    description: GPIO connected to the PWM line
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    # include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      scd30@61 {
-+        compatible = "sensirion,scd30";
-+        reg = <0x61>;
-+        vdd-supply = <&vdd>;
-+        interrupt-parent = <&gpio0>;
-+        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+      };
-+    };
-+  - |
-+    # include <dt-bindings/interrupt-controller/irq.h>
-+    serial {
-+      scd30 {
-+        compatible = "sensirion,scd30";
-+        vdd-supply = <&vdd>;
-+        interrupt-parent = <&gpio0>;
-+        interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+      };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5db4b446c8ba..0ab9cf39e051 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15140,6 +15140,7 @@ F:	include/uapi/linux/phantom.h
- SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
- M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
- F:	drivers/iio/chemical/scd30.h
- F:	drivers/iio/chemical/scd30_core.c
- F:	drivers/iio/chemical/scd30_i2c.c
+diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
+index f5a6d8ec6d4d..a94eb8a6bf32 100644
+--- a/drivers/iio/chemical/atlas-ezo-sensor.c
++++ b/drivers/iio/chemical/atlas-ezo-sensor.c
+@@ -69,13 +69,13 @@ static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct atlas_ezo_data *data = iio_priv(indio_dev);
+ 	struct i2c_client *client = data->client;
+-	int ret = 0;
+ 
+ 	if (chan->type != IIO_CONCENTRATION)
+ 		return -EINVAL;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW: {
++		int ret;
+ 		long tmp;
+ 
+ 		mutex_lock(&data->lock);
+@@ -110,7 +110,7 @@ static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct iio_info atlas_info = {
 -- 
-2.26.2
+2.20.1
 

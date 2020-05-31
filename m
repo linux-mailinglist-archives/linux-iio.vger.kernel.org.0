@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 220251E9748
-	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 13:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276271E974F
+	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 13:36:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728076AbgEaLen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 May 2020 07:34:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37968 "EHLO mail.kernel.org"
+        id S1727963AbgEaLgR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 May 2020 07:36:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725898AbgEaLem (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 May 2020 07:34:42 -0400
+        id S1725898AbgEaLgQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 May 2020 07:36:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 968FC206F1;
-        Sun, 31 May 2020 11:34:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AB7E420671;
+        Sun, 31 May 2020 11:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590924882;
-        bh=dPuBXXaCmn2eZU1EusuJUsYMIvzA740nALAGYHJCIio=;
+        s=default; t=1590924976;
+        bh=Rv/7V6ux7Uy8b3nh+5x7UlhqkHYK1bQnCpnuxjo3nxk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OrKYpw8jcmTq8KRB127KUb/NLeQgccxfNQlYP5qAsrZhn7CmTC0ua3WqfBY7rHIyR
-         kJ/FVHwy7cyQ3t7YOWvAnMm+IqbRanRE3RZKOoVYRXtwbHDnvEfqSPobPALbjjhJgW
-         +qVDgaVLE1M4v1gb3GEAYMFE9o1BIPRs5qjTyoig=
-Date:   Sun, 31 May 2020 12:34:37 +0100
+        b=ZqHAPhyjHF2l+Z7E9FojBBpdxFgTAfTVO+Y2mj8CyIeP3cW6uczGE4kZp1FkFRNMb
+         018bPK4G3YLHzAgfb5eqvipWmSNuxI6jcJqaEijbwKG8ypJngHKOXxCiBiOpUaoHlX
+         xDPwD+lcPzq9neKB8XROxHuOX4nV0O5j+b3AuuGg=
+Date:   Sun, 31 May 2020 12:36:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 Cc:     robh+dt@kernel.org, robh@kernel.org, mchehab+huawei@kernel.org,
         davem@davemloft.net, gregkh@linuxfoundation.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/12] iio: imu: inv_icm42600: add core of new
+Subject: Re: [PATCH v2 02/12] iio: imu: inv_icm42600: add I2C driver for
  inv_icm42600 driver
-Message-ID: <20200531123437.05b3df36@archlinux>
-In-Reply-To: <20200527185711.21331-2-jmaneyrol@invensense.com>
+Message-ID: <20200531123611.794883c4@archlinux>
+In-Reply-To: <20200527185711.21331-3-jmaneyrol@invensense.com>
 References: <20200527185711.21331-1-jmaneyrol@invensense.com>
-        <20200527185711.21331-2-jmaneyrol@invensense.com>
+        <20200527185711.21331-3-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,106 +45,128 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 May 2020 20:57:00 +0200
+On Wed, 27 May 2020 20:57:01 +0200
 Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
 
-> Core component of a new driver for InvenSense ICM-426xx devices.
-> It includes registers definition, main probe/setup, and device
-> utility functions.
+> Add I2C driver for InvenSense ICM-426xxx devices.
 > 
-> ICM-426xx devices are latest generation of 6-axis IMU,
-> gyroscope+accelerometer and temperature sensor. This device
-> includes a 2K FIFO, supports I2C/I3C/SPI, and provides
-> intelligent motion features like pedometer, tilt detection,
-> and tap detection.
+> Configure bus signal slew rates as indicated in the datasheet.
 > 
 > Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 
-A few things inline.
+Looks fine to me.
 
-Either I'm missing something or I'm guessing vddio is not controllable
-on your test board.
+J
 
 > ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h   | 372 ++++++++++
->  .../iio/imu/inv_icm42600/inv_icm42600_core.c  | 635 ++++++++++++++++++
->  2 files changed, 1007 insertions(+)
->  create mode 100644 drivers/iio/imu/inv_icm42600/inv_icm42600.h
->  create mode 100644 drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+>  .../iio/imu/inv_icm42600/inv_icm42600_i2c.c   | 100 ++++++++++++++++++
+>  1 file changed, 100 insertions(+)
+>  create mode 100644 drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
 > 
-
-...
-
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
 > new file mode 100644
-> index 000000000000..81b171d6782c
+> index 000000000000..4789cead23b3
 > --- /dev/null
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-
-> +const struct iio_mount_matrix *
-> +inv_icm42600_get_mount_matrix(const struct iio_dev *indio_dev,
-> +			      const struct iio_chan_spec *chan)
-> +{
-> +	const struct inv_icm42600_state *st =
-> +			iio_device_get_drvdata((struct iio_dev *)indio_dev);
-
-If you review my patch to the core, I can get that applied and we can drop
-the ugly cast from here!
-
-Just waiting for someone to sanity check it.
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2020 InvenSense, Inc.
+> + */
 > +
-> +	return &st->orientation;
-> +}
-...
-
-> +/* Runtime suspend will turn off sensors that are enabled by iio devices. */
-> +static int __maybe_unused inv_icm42600_runtime_suspend(struct device *dev)
+> +#include <linux/kernel.h>
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/i2c.h>
+> +#include <linux/regmap.h>
+> +#include <linux/property.h>
+> +
+> +#include "inv_icm42600.h"
+> +
+> +static int inv_icm42600_i2c_bus_setup(struct inv_icm42600_state *st)
 > +{
-> +	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+> +	unsigned int mask, val;
 > +	int ret;
 > +
-> +	mutex_lock(&st->lock);
-> +
-> +	/* disable all sensors */
-> +	ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
-> +					 INV_ICM42600_SENSOR_MODE_OFF, false,
-> +					 NULL);
+> +	/* setup interface registers */
+> +	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
+> +				 INV_ICM42600_INTF_CONFIG6_MASK,
+> +				 INV_ICM42600_INTF_CONFIG6_I3C_EN);
 > +	if (ret)
-> +		goto error_unlock;
+> +		return ret;
 > +
-> +	regulator_disable(st->vddio_supply);
-
-Don't seem to turn this on again in runtime_resume..
-Why?  Definitely needs at least a comment.
-
+> +	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
+> +				 INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY, 0);
+> +	if (ret)
+> +		return ret;
 > +
-> +error_unlock:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
+> +	/* set slew rates for I2C and SPI */
+> +	mask = INV_ICM42600_DRIVE_CONFIG_I2C_MASK |
+> +	       INV_ICM42600_DRIVE_CONFIG_SPI_MASK;
+> +	val = INV_ICM42600_DRIVE_CONFIG_I2C(INV_ICM42600_SLEW_RATE_12_36NS) |
+> +	      INV_ICM42600_DRIVE_CONFIG_SPI(INV_ICM42600_SLEW_RATE_12_36NS);
+> +	ret = regmap_update_bits(st->map, INV_ICM42600_REG_DRIVE_CONFIG,
+> +				 mask, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* disable SPI bus */
+> +	return regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG0,
+> +				  INV_ICM42600_INTF_CONFIG0_UI_SIFS_CFG_MASK,
+> +				  INV_ICM42600_INTF_CONFIG0_UI_SIFS_CFG_SPI_DIS);
 > +}
 > +
-> +/* Sensors are enabled by iio devices, no need to turn them back on here. */
-> +static int __maybe_unused inv_icm42600_runtime_resume(struct device *dev)
+> +static int inv_icm42600_probe(struct i2c_client *client)
 > +{
-> +	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-> +	int ret;
+> +	const void *match;
+> +	enum inv_icm42600_chip chip;
+> +	struct regmap *regmap;
 > +
-> +	mutex_lock(&st->lock);
+> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_I2C_BLOCK))
+> +		return -ENOTSUPP;
 > +
-> +	ret = inv_icm42600_enable_regulator_vddio(st);
+> +	match = device_get_match_data(&client->dev);
+> +	if (!match)
+> +		return -EINVAL;
+> +	chip = (enum inv_icm42600_chip)match;
 > +
-> +	mutex_unlock(&st->lock);
-> +	return ret;
+> +	regmap = devm_regmap_init_i2c(client, &inv_icm42600_regmap_config);
+> +	if (IS_ERR(regmap))
+> +		return PTR_ERR(regmap);
+> +
+> +	return inv_icm42600_core_probe(regmap, chip, inv_icm42600_i2c_bus_setup);
 > +}
 > +
-> +const struct dev_pm_ops inv_icm42600_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(inv_icm42600_suspend, inv_icm42600_resume)
-> +	SET_RUNTIME_PM_OPS(inv_icm42600_runtime_suspend,
-> +			   inv_icm42600_runtime_resume, NULL)
+> +static const struct of_device_id inv_icm42600_of_matches[] = {
+> +	{
+> +		.compatible = "invensense,icm42600",
+> +		.data = (void *)INV_CHIP_ICM42600,
+> +	}, {
+> +		.compatible = "invensense,icm42602",
+> +		.data = (void *)INV_CHIP_ICM42602,
+> +	}, {
+> +		.compatible = "invensense,icm42605",
+> +		.data = (void *)INV_CHIP_ICM42605,
+> +	}, {
+> +		.compatible = "invensense,icm42622",
+> +		.data = (void *)INV_CHIP_ICM42622,
+> +	},
+> +	{}
 > +};
-> +EXPORT_SYMBOL_GPL(inv_icm42600_pm_ops);
+> +MODULE_DEVICE_TABLE(of, inv_icm42600_of_matches);
+> +
+> +static struct i2c_driver inv_icm42600_driver = {
+> +	.driver = {
+> +		.name = "inv-icm42600-i2c",
+> +		.of_match_table = inv_icm42600_of_matches,
+> +		.pm = &inv_icm42600_pm_ops,
+> +	},
+> +	.probe_new = inv_icm42600_probe,
+> +};
+> +module_i2c_driver(inv_icm42600_driver);
 > +
 > +MODULE_AUTHOR("InvenSense, Inc.");
-> +MODULE_DESCRIPTION("InvenSense ICM-426xx device driver");
+> +MODULE_DESCRIPTION("InvenSense ICM-426xx I2C driver");
 > +MODULE_LICENSE("GPL");
 

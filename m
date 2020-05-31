@@ -2,398 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCABA1E98A8
-	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 17:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0DA1E98BC
+	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 18:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728012AbgEaPwP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 May 2020 11:52:15 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:44331 "EHLO
-        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726081AbgEaPwP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 May 2020 11:52:15 -0400
-Received: from pro2.mail.ovh.net (unknown [10.108.16.132])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 5765854B9DAB;
-        Sun, 31 May 2020 17:52:11 +0200 (CEST)
-Received: from localhost (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 31 May
- 2020 17:52:10 +0200
-Date:   Sun, 31 May 2020 17:50:01 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+        id S1728175AbgEaQH0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 May 2020 12:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbgEaQHY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 May 2020 12:07:24 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53807C061A0E;
+        Sun, 31 May 2020 09:07:24 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id t18so9039799wru.6;
+        Sun, 31 May 2020 09:07:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=CapCgV2d1NhfCbTsaerBgABIVhriquurUVOB7tln1bE=;
+        b=KbyogYbBVkVVnBSfemSzcInJA586nTECQHMzcraM0avbirJ3uEYPTe/z24nIEjHCj0
+         DqP2P572K5zvO7ZLxayE5PSUle3ozdGIWVoBKYWu45GFW/bF9l9u0hVPRH9iAzOcGQBD
+         e+26q1fNBFqObO1hWxoJMud/VXY0XLXht579Uj/BrXmNopN0+iY0ubmpWYZCeAUmwbp3
+         LfV+gKpEEGHxNt/n+j/cVU+MIaueGZ3V4/5KRdqEWa0dx54aHD8Ok5lpbuj+TmYv6aKq
+         KJJBcvuAI37QO3eWaWDv7IH3r7d8WSZ4ekrs9CIRcbPNC5KThtHvZQXMQlb3UXfGrzgo
+         6XWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CapCgV2d1NhfCbTsaerBgABIVhriquurUVOB7tln1bE=;
+        b=GIt2DAuFovH6OlhxxdXXgqzYPudrhFHYoOOhr0EqYahX+lektD56rOJkqmAKMVfAfF
+         2lE/YeI7v8dJG6tS4JgHzxffjuMnEIigvGC/Q61kpcnYnn3riignzrNgMgH4loqbhCYY
+         p1FZbkCb9ECeCQBvZytD9Fx8g3xz6itPHPfdE8r20anIdqnhEtUq2D67ojuzgAFFkvtS
+         ktCWGwjNr+mTlL2ewRCCrQKd5jjo0SqcoJRNVu2ig1VhWdh53TPjKmmOVdzhJf98i/Of
+         Nejhc51kNctBcpz2nzxJyTRgUYj2n461119TvqQCRqArj89IogR5HSmQmnDFadCorEZX
+         EC4w==
+X-Gm-Message-State: AOAM531bj/pIdfKzEEKGrVk4g+x0zgC++Z8wdw5hpD4mYzNLcVR5F4hU
+        mg9DZLMIMAkH0eA8A1wVeaw=
+X-Google-Smtp-Source: ABdhPJy48omdtNwC30dug5asQ1sEOcuySKSi4OIT7l8izh4UcyVNkpDADbpkNJMDk9nO6CSGNJ5RgQ==
+X-Received: by 2002:adf:82d0:: with SMTP id 74mr16964161wrc.138.1590941242781;
+        Sun, 31 May 2020 09:07:22 -0700 (PDT)
+Received: from jonathan-N53SV ([151.81.100.29])
+        by smtp.gmail.com with ESMTPSA id 1sm8593355wmz.13.2020.05.31.09.07.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 31 May 2020 09:07:22 -0700 (PDT)
+Date:   Sun, 31 May 2020 18:07:19 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
-        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v2 3/4] iio: chemical: scd30: add serial interface driver
-Message-ID: <20200531155001.GB27246@arch>
-References: <20200530213630.87159-1-tomasz.duszynski@octakon.com>
- <20200530213630.87159-4-tomasz.duszynski@octakon.com>
- <20200531111518.2340197a@archlinux>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] iio: magnetometer: ak8975: Add gpio reset support
+Message-ID: <20200531160719.GB19272@jonathan-N53SV>
+References: <20200528150106.12022-1-jonathan.albrieux@gmail.com>
+ <20200531120230.27093a41@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200531111518.2340197a@archlinux>
-X-Originating-IP: [89.70.180.118]
-X-ClientProxiedBy: DAG2EX1.emp2.local (172.16.2.11) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 15180226969403415634
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeffedgledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnheptdehveethfffudetjeeftdekueehjeegjedvteffgfevkefffeegffeugeehgfejnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
+In-Reply-To: <20200531120230.27093a41@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 31, 2020 at 11:15:18AM +0100, Jonathan Cameron wrote:
-> On Sat, 30 May 2020 23:36:29 +0200
-> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
->
-> > Add serial interface driver for the SCD30 sensor.
-> >
-> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
->
-> Ah Now I see why you had those extra elements in the iio_priv
-> structure.
->
-
-Indeed. That the whole point of having them. I'll add a short
-explanation what those elements are for.
-
-> Hmm. serdev_device callbacks using the top level device drvdata
-> is a bit annoying.  Really feels to me like they should have
-> their own priv data for those callbacks given the device
-> drvdata gets used for so many other things.
->
-> Oh well. Guess this is the best we can do!
->
+On Sun, May 31, 2020 at 12:02:30PM +0100, Jonathan Cameron wrote:
+> On Thu, 28 May 2020 17:01:05 +0200
+> Jonathan Albrieux <jonathan.albrieux@gmail.com> wrote:
+> 
+> > According to AK09911 datasheet, if reset gpio is provided then
+> > deassert reset on ak8975_power_on() and assert reset on ak8975_power_off().
+> > 
+> > Without reset's deassertion during ak8975_power_on(), driver's probe fails
+> > on ak8975_who_i_am() while checking for device identity for AK09911 chip.
+> > 
+> > AK09911 has an active low reset gpio to handle register's reset.
+> > AK09911 datasheet says that, if not used, reset pin should be connected
+> > to VID. This patch emulates this situation.
+> > 
+> > Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+> 
+> Applied.  Thanks,
+> 
 > Jonathan
 >
+
+Thank you!
+
+Best regards,
+Jonathan Albrieux
+ 
 > > ---
-> >  MAINTAINERS                         |   1 +
-> >  drivers/iio/chemical/Kconfig        |  11 ++
-> >  drivers/iio/chemical/Makefile       |   1 +
-> >  drivers/iio/chemical/scd30_serial.c | 266 ++++++++++++++++++++++++++++
-> >  4 files changed, 279 insertions(+)
-> >  create mode 100644 drivers/iio/chemical/scd30_serial.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 13aed3473b7e..5db4b446c8ba 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -15143,6 +15143,7 @@ S:	Maintained
-> >  F:	drivers/iio/chemical/scd30.h
-> >  F:	drivers/iio/chemical/scd30_core.c
-> >  F:	drivers/iio/chemical/scd30_i2c.c
-> > +F:	drivers/iio/chemical/scd30_serial.c
-> >
-> >  SENSIRION SPS30 AIR POLLUTION SENSOR DRIVER
-> >  M:	Tomasz Duszynski <tduszyns@gmail.com>
-> > diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> > index 970d34888c2e..10bb431bc3ce 100644
-> > --- a/drivers/iio/chemical/Kconfig
-> > +++ b/drivers/iio/chemical/Kconfig
-> > @@ -107,6 +107,17 @@ config SCD30_I2C
-> >  	  To compile this driver as a module, choose M here: the module will
-> >  	  be called scd30_i2c.
-> >
-> > +config SCD30_SERIAL
-> > +	tristate "SCD30 carbon dioxide sensor serial driver"
-> > +	depends on SCD30_CORE && SERIAL_DEV_BUS
-> > +	select CRC16
-> > +	help
-> > +	  Say Y here to build support for the Sensirion SCD30 serial interface
-> > +	  driver.
+> >  drivers/iio/magnetometer/ak8975.c | 18 ++++++++++++++++++
+> >  1 file changed, 18 insertions(+)
+> > 
+> > diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+> > index fd368455cd7b..a23422aad97d 100644
+> > --- a/drivers/iio/magnetometer/ak8975.c
+> > +++ b/drivers/iio/magnetometer/ak8975.c
+> > @@ -358,6 +358,7 @@ struct ak8975_data {
+> >  	u8			asa[3];
+> >  	long			raw_to_gauss[3];
+> >  	struct gpio_desc	*eoc_gpiod;
+> > +	struct gpio_desc	*reset_gpiod;
+> >  	int			eoc_irq;
+> >  	wait_queue_head_t	data_ready_queue;
+> >  	unsigned long		flags;
+> > @@ -384,6 +385,9 @@ static int ak8975_power_on(const struct ak8975_data *data)
+> >  			 "Failed to enable specified Vid supply\n");
+> >  		return ret;
+> >  	}
 > > +
-> > +	  To compile this driver as a module, choose M here: the module will
-> > +	  be called scd30_serial.
+> > +	gpiod_set_value_cansleep(data->reset_gpiod, 0);
 > > +
-> >  config SENSIRION_SGP30
-> >  	tristate "Sensirion SGPxx gas sensors"
-> >  	depends on I2C
-> > diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> > index 0966ca34e34b..fef63dd5bf92 100644
-> > --- a/drivers/iio/chemical/Makefile
-> > +++ b/drivers/iio/chemical/Makefile
-> > @@ -14,6 +14,7 @@ obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
-> >  obj-$(CONFIG_PMS7003) += pms7003.o
-> >  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
-> >  obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
-> > +obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
-> >  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
-> >  obj-$(CONFIG_SPS30) += sps30.o
-> >  obj-$(CONFIG_VZ89X)		+= vz89x.o
-> > diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
-> > new file mode 100644
-> > index 000000000000..07d7d3110fe0
-> > --- /dev/null
-> > +++ b/drivers/iio/chemical/scd30_serial.c
-> > @@ -0,0 +1,266 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Sensirion SCD30 carbon dioxide sensor serial driver
-> > + *
-> > + * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> > + */
-> > +#include <linux/crc16.h>
-> > +#include <linux/device.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/jiffies.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/property.h>
-> > +#include <linux/serdev.h>
-> > +#include <linux/string.h>
-> > +#include <linux/types.h>
-> > +#include <asm/unaligned.h>
+> >  	/*
+> >  	 * According to the datasheet the power supply rise time is 200us
+> >  	 * and the minimum wait time before mode setting is 100us, in
+> > @@ -396,6 +400,8 @@ static int ak8975_power_on(const struct ak8975_data *data)
+> >  /* Disable attached power regulator if any. */
+> >  static void ak8975_power_off(const struct ak8975_data *data)
+> >  {
+> > +	gpiod_set_value_cansleep(data->reset_gpiod, 1);
 > > +
-> > +#include "scd30.h"
-> > +
-> > +#define SCD30_SERDEV_ADDR 0x61
-> > +#define SCD30_SERDEV_WRITE 0x06
-> > +#define SCD30_SERDEV_READ 0x03
-> > +#define SCD30_SERDEV_MAX_BUF_SIZE 17
-> > +#define SCD30_SERDEV_RX_HEADER_SIZE 3
-> > +#define SCD30_SERDEV_CRC_SIZE 2
-> > +#define SCD30_SERDEV_TIMEOUT msecs_to_jiffies(200)
-> > +
-> > +struct scd30_serdev_priv {
-> > +	struct completion meas_ready;
-> > +	char *buf;
-> > +	int num_expected;
-> > +	int num;
-> > +};
-> > +
-> > +static u16 scd30_serdev_cmd_lookup_tbl[] = {
-> > +	[CMD_START_MEAS] = 0x0036,
-> > +	[CMD_STOP_MEAS] = 0x0037,
-> > +	[CMD_MEAS_INTERVAL] = 0x0025,
-> > +	[CMD_MEAS_READY] = 0x0027,
-> > +	[CMD_READ_MEAS] = 0x0028,
-> > +	[CMD_ASC] = 0x003a,
-> > +	[CMD_FRC] = 0x0039,
-> > +	[CMD_TEMP_OFFSET] = 0x003b,
-> > +	[CMD_FW_VERSION] = 0x0020,
-> > +	[CMD_RESET] = 0x0034,
-> > +};
-> > +
-> > +static u16 scd30_serdev_calc_crc(const char *buf, int size)
-> > +{
-> > +	return crc16(0xffff, buf, size);
-> > +}
-> > +
-> > +static int scd30_serdev_xfer(struct scd30_state *state, char *txbuf, int txsize,
-> > +			     char *rxbuf, int rxsize)
-> > +{
-> > +	struct serdev_device *serdev = to_serdev_device(state->dev);
-> > +	struct scd30_serdev_priv *priv = state->priv;
-> > +	int ret;
-> > +
-> > +	priv->buf = rxbuf;
-> > +	priv->num_expected = rxsize;
-> > +	priv->num = 0;
-> > +
-> > +	ret = serdev_device_write(serdev, txbuf, txsize, SCD30_SERDEV_TIMEOUT);
-> > +	if (ret < txsize)
-> > +		return ret < 0 ? ret : -EIO;
-> > +
-> > +	ret = wait_for_completion_interruptible_timeout(&priv->meas_ready,
-> > +							SCD30_SERDEV_TIMEOUT);
-> > +	if (ret > 0)
-> > +		ret = 0;
-> > +	else if (!ret)
-> > +		ret = -ETIMEDOUT;
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd,
-> > +				u16 arg, void *response, int size)
-> > +{
+> >  	regulator_disable(data->vid);
+> >  	regulator_disable(data->vdd);
+> >  }
+> > @@ -839,6 +845,7 @@ static int ak8975_probe(struct i2c_client *client,
+> >  	struct ak8975_data *data;
+> >  	struct iio_dev *indio_dev;
+> >  	struct gpio_desc *eoc_gpiod;
+> > +	struct gpio_desc *reset_gpiod;
+> >  	const void *match;
+> >  	unsigned int i;
+> >  	int err;
+> > @@ -856,6 +863,16 @@ static int ak8975_probe(struct i2c_client *client,
+> >  	if (eoc_gpiod)
+> >  		gpiod_set_consumer_name(eoc_gpiod, "ak_8975");
+> >  
 > > +	/*
-> > +	 * Communication over serial line is based on modbus protocol (or rather
-> > +	 * its variation called modbus over serial to be precise). Upon
-> > +	 * receiving a request device should reply with response.
-> > +	 *
-> > +	 * Frame below represents a request message. Each field takes
-> > +	 * exactly one byte.
-> > +	 *
-> > +	 * +------+------+-----+-----+-------+-------+-----+-----+
-> > +	 * | dev  | op   | reg | reg | byte1 | byte0 | crc | crc |
-> > +	 * | addr | code | msb | lsb |       |       | lsb | msb |
-> > +	 * +------+------+-----+-----+-------+-------+-----+-----+
-> > +	 *
-> > +	 * The message device replies with depends on the 'op code' field from
-> > +	 * the request. In case it was set to SCD30_SERDEV_WRITE sensor should
-> > +	 * reply with unchanged request. Otherwise 'op code' was set to
-> > +	 * SCD30_SERDEV_READ and response looks like the one below. As with
-> > +	 * request, each field takes one byte.
-> > +	 *
-> > +	 * +------+------+--------+-------+-----+-------+-----+-----+
-> > +	 * | dev  | op   | num of | byte0 | ... | byteN | crc | crc |
-> > +	 * | addr | code | bytes  |       |     |       | lsb | msb |
-> > +	 * +------+------+--------+-------+-----+-------+-----+-----+
+> > +	 * According to AK09911 datasheet, if reset GPIO is provided then
+> > +	 * deassert reset on ak8975_power_on() and assert reset on
+> > +	 * ak8975_power_off().
 > > +	 */
-> > +	char txbuf[SCD30_SERDEV_MAX_BUF_SIZE] = { SCD30_SERDEV_ADDR },
-> > +	     rxbuf[SCD30_SERDEV_MAX_BUF_SIZE], *rsp = response;
-> > +	int ret, rxsize, txsize = 2;
-> > +	u16 crc;
+> > +	reset_gpiod = devm_gpiod_get_optional(&client->dev,
+> > +					      "reset", GPIOD_OUT_HIGH);
+> > +	if (IS_ERR(reset_gpiod))
+> > +		return PTR_ERR(reset_gpiod);
 > > +
-> > +	put_unaligned_be16(scd30_serdev_cmd_lookup_tbl[cmd], txbuf + txsize);
-> > +	txsize += 2;
-> > +
-> > +	if (rsp) {
-> > +		txbuf[1] = SCD30_SERDEV_READ;
-> > +		if (cmd == CMD_READ_MEAS)
-> > +			/* number of u16 words to read */
-> > +			put_unaligned_be16(size / 2, txbuf + txsize);
-> > +		else
-> > +			put_unaligned_be16(0x0001, txbuf + txsize);
-> > +		txsize += 2;
-> > +		crc = scd30_serdev_calc_crc(txbuf, txsize);
-> > +		put_unaligned_le16(crc, txbuf + txsize);
-> > +		txsize += 2;
-> > +		rxsize = SCD30_SERDEV_RX_HEADER_SIZE + size +
-> > +			 SCD30_SERDEV_CRC_SIZE;
-> > +	} else {
-> > +		if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
-> > +			arg = 0x0001;
-> > +
-> > +		txbuf[1] = SCD30_SERDEV_WRITE;
-> > +		put_unaligned_be16(arg, txbuf + txsize);
-> > +		txsize += 2;
-> > +		crc = scd30_serdev_calc_crc(txbuf, txsize);
-> > +		put_unaligned_le16(crc, txbuf + txsize);
-> > +		txsize += 2;
-> > +		rxsize = txsize;
-> > +	}
-> > +
-> > +	ret = scd30_serdev_xfer(state, txbuf, txsize, rxbuf, rxsize);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	switch (txbuf[1]) {
-> > +	case SCD30_SERDEV_WRITE:
-> > +		if (memcmp(txbuf, txbuf, txsize)) {
-> > +			dev_err(state->dev, "wrong message received\n");
-> > +			return -EIO;
-> > +		}
-> > +		break;
-> > +	case SCD30_SERDEV_READ:
-> > +		if (rxbuf[2] != (rxsize -
-> > +				 SCD30_SERDEV_RX_HEADER_SIZE -
-> > +				 SCD30_SERDEV_CRC_SIZE)) {
-> > +			dev_err(state->dev,
-> > +				"received data size does not match header\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		rxsize -= SCD30_SERDEV_CRC_SIZE;
-> > +		crc = get_unaligned_le16(rxbuf + rxsize);
-> > +		if (crc != scd30_serdev_calc_crc(rxbuf, rxsize)) {
-> > +			dev_err(state->dev, "data integrity check failed\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		rxsize -= SCD30_SERDEV_RX_HEADER_SIZE;
-> > +		memcpy(rsp, rxbuf + SCD30_SERDEV_RX_HEADER_SIZE, rxsize);
-> > +		break;
-> > +	default:
-> > +		dev_err(state->dev, "received unknown op code\n");
-> > +		return -EIO;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int scd30_serdev_receive_buf(struct serdev_device *serdev,
-> > +				    const unsigned char *buf, size_t size)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-> > +	struct scd30_serdev_priv *priv;
-> > +	struct scd30_state *state;
-> > +	int num;
-> > +
-> > +	if (!indio_dev)
-> > +		return 0;
-> > +
-> > +	state = iio_priv(indio_dev);
-> > +	priv = state->priv;
-> > +
-> > +	/* just in case sensor puts some unexpected bytes on the bus */
-> > +	if (!priv->buf)
-> > +		return 0;
-> > +
-> > +	if (priv->num + size >= priv->num_expected)
-> > +		num = priv->num_expected - priv->num;
-> > +	else
-> > +		num = size;
-> > +
-> > +	memcpy(priv->buf + priv->num, buf, num);
-> > +	priv->num += num;
-> > +
-> > +	if (priv->num == priv->num_expected) {
-> > +		priv->buf = NULL;
-> > +		complete(&priv->meas_ready);
-> > +	}
-> > +
-> > +	return num;
-> > +}
-> > +
-> > +static const struct serdev_device_ops scd30_serdev_ops = {
-> > +	.receive_buf = scd30_serdev_receive_buf,
-> > +	.write_wakeup = serdev_device_write_wakeup,
-> > +};
-> > +
-> > +static int scd30_serdev_probe(struct serdev_device *serdev)
-> > +{
-> > +	struct device *dev = &serdev->dev;
-> > +	struct scd30_serdev_priv *priv;
-> > +	int irq, ret;
-> > +
-> > +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> > +	if (!priv)
-> > +		return -ENOMEM;
-> > +
-> > +	init_completion(&priv->meas_ready);
-> > +	serdev_device_set_client_ops(serdev, &scd30_serdev_ops);
-> > +
-> > +	ret = devm_serdev_device_open(dev, serdev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	serdev_device_set_baudrate(serdev, 19200);
-> > +	serdev_device_set_flow_control(serdev, false);
-> > +
-> > +	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	irq = fwnode_irq_get(dev_fwnode(dev), 0);
-> > +
-> > +	return scd30_probe(dev, irq, KBUILD_MODNAME, priv,
-> > +			   scd30_serdev_command);
-> > +}
-> > +
-> > +static const struct of_device_id scd30_serdev_of_match[] = {
-> > +	{ .compatible = "sensirion,scd30" },
-> > +	{ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, scd30_serdev_of_match);
-> > +
-> > +static struct serdev_device_driver scd30_serdev_driver = {
-> > +	.driver = {
-> > +		.name = KBUILD_MODNAME,
-> > +		.of_match_table = scd30_serdev_of_match,
-> > +		.pm = &scd30_pm_ops,
-> > +	},
-> > +	.probe = scd30_serdev_probe,
-> > +};
-> > +module_serdev_device_driver(scd30_serdev_driver);
-> > +
-> > +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-> > +MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor serial driver");
-> > +MODULE_LICENSE("GPL v2");
->
+> >  	/* Register with IIO */
+> >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> >  	if (indio_dev == NULL)
+> > @@ -866,6 +883,7 @@ static int ak8975_probe(struct i2c_client *client,
+> >  
+> >  	data->client = client;
+> >  	data->eoc_gpiod = eoc_gpiod;
+> > +	data->reset_gpiod = reset_gpiod;
+> >  	data->eoc_irq = 0;
+> >  
+> >  	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
+> 

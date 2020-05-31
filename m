@@ -2,40 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 566641E97F4
-	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 15:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC0D1E97F8
+	for <lists+linux-iio@lfdr.de>; Sun, 31 May 2020 15:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbgEaNsx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 May 2020 09:48:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49904 "EHLO mail.kernel.org"
+        id S1727815AbgEaNws (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 May 2020 09:52:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50428 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725889AbgEaNsw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 31 May 2020 09:48:52 -0400
+        id S1726008AbgEaNwr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 31 May 2020 09:52:47 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3EB04206F1;
-        Sun, 31 May 2020 13:48:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 79BA7206F0;
+        Sun, 31 May 2020 13:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590932932;
-        bh=wKxxJ69sCKK08/CajGt2YX8NU6dfARAeeUDi0+P5S+s=;
+        s=default; t=1590933167;
+        bh=MP0bby8ApBLP5qC3WQDDp0KLz0RVbo6emdeY3WwLhFc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0tL0wqworscs11HLvnA+TA05Y04ORhsVNDuK8ty3U3Cf2fY4tBIF+Z0IcFDiVDhuO
-         tIUVxBsT5pTZdzbkzIIZ3+KxNaTT2e0jhTldfcLAydhJAO/U610u1ukXFuv9WlcgvM
-         ApvBUUD96tymMgEYdQ8ezSlnJLnvkj7rrB4owzLk=
-Date:   Sun, 31 May 2020 14:48:48 +0100
+        b=cJg24hu5/IbOSkPlOQPNSfj+3S/Hog6Fi2lGn8Fy2Adrpr7sMjHBZU40uNBJHBOK7
+         3f2uxf60CreEOXK6iEw70fukj7U3mvb4G0ClCBHsXkV0QEZxFIaJ0UoqghvgOVoDLG
+         72JnYDnRpib2Twqx9O4P6bfIxY+em9/kUWxkC/pA=
+Date:   Sun, 31 May 2020 14:52:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
+To:     Christian Oder <me@myself5.de>
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] iio: magnetometer: mmc35240: Constify struct
- reg_default
-Message-ID: <20200531144848.4af9a574@archlinux>
-In-Reply-To: <20200526210223.1672-7-rikard.falkeborn@gmail.com>
-References: <20200526210223.1672-1-rikard.falkeborn@gmail.com>
-        <20200526210223.1672-7-rikard.falkeborn@gmail.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Chuhong Yuan <hslester96@gmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: mxc4005: add support for mxc6655
+Message-ID: <20200531145242.1dbf35d2@archlinux>
+In-Reply-To: <CAO6HPN1OfyJBxGO-8-jL6BNqxRfZzDkOkytNLpqAJam=2MPJ8w@mail.gmail.com>
+References: <20200529200550.357118-1-me@myself5.de>
+        <20200531112951.085507de@archlinux>
+        <CAO6HPN1OfyJBxGO-8-jL6BNqxRfZzDkOkytNLpqAJam=2MPJ8w@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,43 +49,132 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 26 May 2020 23:02:23 +0200
-Rikard Falkeborn <rikard.falkeborn@gmail.com> wrote:
+On Sun, 31 May 2020 15:16:00 +0200
+Christian Oder <me@myself5.de> wrote:
 
-> mmc35240_reg_defaults is not modified and can be made const to allow the
-> compiler to put it in read-only memory.
+> Hi Jonathan,
 > 
-> Before:
->    text    data     bss     dec     hex filename
->    9759    3288     128   13175    3377 drivers/iio/magnetometer/mmc35240.o
+> I tested the sensor on a Chuwi Hi10 X and only went by what I've seen in other
+> commits before[1].
 > 
-> After:
->    text    data     bss     dec     hex filename
->    9823    3224     128   13175    3377 drivers/iio/magnetometer/mmc35240.o
+> I just ran another test to see what entry is necessary and it appears the sensor
+> still works when removing the i2c entry, but is not working anymore when
+> removing the ACPI match. I got the ACPI IDs from udevadm info -e[2].
+> Would that mean, that I should remove the i2c entry given it's working fine
+> with ACPI on its own then, or am I missing something?
+The i2c entry is fine.
 > 
-> Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+> I'm also successfully using the ACPI ID for the touchscreen orientation quirk
+> in systemd[3].
+Great.  That means it is out there so is a defacto binding even if
+there isn't an official Doc.  Sadly a lot of device manufacturers
+don't do this stuff the way they are supposed to!
+
+> 
+> > Adding an explicit DT binding table would also be
+> > good if that is method you are using to probe this (or PRP0001
+> > from acpi which uses the dt bindings table)  
+> 
+> Frankly, I have no idea how to do that or if that would still be required when
+> using ACPI. Can you point me in a rough direction in case it's still needed?
+
+It's all good given you've confirmed the ID is out there in the wild.
+
 Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+autobuilders to poke at.
+
+Note we've missed the merge window now so this will take a while to get
+into the mainline kernel - should be in linux-next in a few weeks though.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/magnetometer/mmc35240.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
-> index 1787d656d009..f27586716b5c 100644
-> --- a/drivers/iio/magnetometer/mmc35240.c
-> +++ b/drivers/iio/magnetometer/mmc35240.c
-> @@ -459,7 +459,7 @@ static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int reg)
->  	}
->  }
->  
-> -static struct reg_default mmc35240_reg_defaults[] = {
-> +static const struct reg_default mmc35240_reg_defaults[] = {
->  	{ MMC35240_REG_CTRL0,  0x00 },
->  	{ MMC35240_REG_CTRL1,  0x00 },
->  };
+> Regards,
+> Christian
+> 
+> ---
+> 
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/iio/accel/mxc6255.c?h=v5.6.15&id=06777c562a50a09c4a2becfb2bf63c762a45df17
+> 
+> [2]
+> P: /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:22/MXC6655:00
+> L: 0
+> E: DEVPATH=/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:22/MXC6655:00
+> E: SUBSYSTEM=acpi
+> E: MODALIAS=acpi:MXC6655:MXC6655:
+> E: USEC_INITIALIZED=5319671
+> E: ID_VENDOR_FROM_DATABASE=The Linux Foundation
+> 
+> P: /devices/pci0000:00/0000:00:16.0/i2c_designware.0/i2c-0/i2c-MXC6655:00
+> L: 0
+> E: DEVPATH=/devices/pci0000:00/0000:00:16.0/i2c_designware.0/i2c-0/i2c-MXC6655:00
+> E: SUBSYSTEM=i2c
+> E: MODALIAS=acpi:MXC6655:MXC6655:
+> 
+> [3]
+> https://github.com/systemd/systemd/commit/5e0676c2cad60b1ea029b9bfb9737e1967abb93a
+> 
+> On Sun, May 31, 2020 at 12:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Fri, 29 May 2020 22:05:49 +0200
+> > Christian Oder <me@myself5.de> wrote:
+> >  
+> > > The mxc6655 is fully working with the existing mxc4005 driver.
+> > > Add support for it.
+> > >
+> > > Signed-off-by: Christian Oder <me@myself5.de>  
+> >
+> > One query on ACPI bindings.  What is there already may
+> > be missleading :(
+> >
+> >  
+> > > ---
+> > >  drivers/iio/accel/mxc4005.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+> > > index 3d5bea651923..3b8614352cb4 100644
+> > > --- a/drivers/iio/accel/mxc4005.c
+> > > +++ b/drivers/iio/accel/mxc4005.c
+> > > @@ -474,12 +474,14 @@ static int mxc4005_probe(struct i2c_client *client,
+> > >
+> > >  static const struct acpi_device_id mxc4005_acpi_match[] = {
+> > >       {"MXC4005",     0},
+> > > +     {"MXC6655",     0},  
+> >
+> > Do we have a reference for these ACPI bindings?  While they may seem
+> > obvious, memsic don't have a registered PNP or ACPI ID that I can
+> > find.  If these are in the wild (i.e. in shipping firmware) then we
+> > can take them as defacto bindings, otherwise we should avoid making
+> > them so by putting them in the driver.
+> >
+> > Quite a few similar bindings got in a while back that I should have
+> > noticed, but I wasn't so familiar with ACPI back then.  Some
+> > scrubbing of these has gone on recently, but there are lots still
+> > left in IIO.
+> >
+> > If we aren't sure, then drop the ACPI addition and just leave the
+> > i2c one below.  Adding an explicit DT binding table would also be
+> > good if that is method you are using to probe this (or PRP0001
+> > from acpi which uses the dt bindings table)
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >
+> >  
+> > >       { },
+> > >  };
+> > >  MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
+> > >
+> > >  static const struct i2c_device_id mxc4005_id[] = {
+> > >       {"mxc4005",     0},
+> > > +     {"mxc6655",     0},
+> > >       { },
+> > >  };
+> > >  MODULE_DEVICE_TABLE(i2c, mxc4005_id);  
+> >  
 

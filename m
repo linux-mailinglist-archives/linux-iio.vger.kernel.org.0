@@ -2,185 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A161EC0C8
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jun 2020 19:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681781EC15E
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jun 2020 19:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbgFBRO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 Jun 2020 13:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725969AbgFBRO0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Jun 2020 13:14:26 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E540C05BD1E;
-        Tue,  2 Jun 2020 10:14:26 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id f3so5322103pfd.11;
-        Tue, 02 Jun 2020 10:14:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yDKEOQW3zzKg27PHbCCQiuGUgsLSAgNyAkY4CZ592P8=;
-        b=QX2NqYaKI02lh99tfRoYpKssbJuXJc/viEZOCaPdRM99I9ujjBp6i7QH/PeX/tZycn
-         WHBIWtyV1hP5huS546uhTOS+LThr94j5tz6Ytm7yuUDzP2Ntot5OEccGlPDIQcSd3Vza
-         T6nqJAtB+XUcaulomzKKodYKIKUqrmvs/z6fwSZt3tlF4ppjuV1+UdpNxDp7fedu6Trm
-         nyH6xrjmVUrdc5dfTAoe3+DXAoH2LaOxhP4E1+pcwa5lEKXB75YVOskFvj2+TKK2Kj+z
-         sV28XsrrAossb/smm1uc9+CHSs2wJUHOM2G4mtFcNetg+Mum+uyipAAlRzjYDaGn8UsF
-         DtYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yDKEOQW3zzKg27PHbCCQiuGUgsLSAgNyAkY4CZ592P8=;
-        b=KG/9NOJb0egoZDv9CI1zHoKprhCqSsr8vX6oLpbgsay8Oivvot2MA2+GepVtQdYs67
-         UHEhA9piFGTGTXx29TK0BKSsTyfhUlCEIw7ZczbIgUedGPzlkJaICseSax7gOlWn7zXA
-         rFdO5w3k6doUpmnClQ6pcLQ/f2M2xJecyD1aMlMsTCTotkcY5BP+tPA9hB+hdKNn2rKF
-         QzGCdti+qtD7rDZ7n/NHnjTim+JBzYyd2G/AR4aGx0kx4Hds30WzY/TE16UUyTgRplVJ
-         wiVXFtLXDBkIWpU3j7l//bpTWwNo7TvTRP34VW5OxIDRWJO1tCvXq64sCDWCE1SL1y4/
-         ZOPQ==
-X-Gm-Message-State: AOAM533sByq5Phfliyv/omYYQ0bbvTdVgrUkAitBzpKVtMm7ygbnnexf
-        H8wW14Ti7pSzeeBQ6iP05LNoU7qEDu3BF2HiGPU=
-X-Google-Smtp-Source: ABdhPJy3SFp0xIUMraAbk46rfGFxgJiu2JNz+q3JZrwYxxiOHdwNt/JtImJZKe7Hak4dhv1iLWMNHf7biOdORb/ORPc=
-X-Received: by 2002:a63:305:: with SMTP id 5mr24196734pgd.74.1591118065723;
- Tue, 02 Jun 2020 10:14:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200602164723.28858-1-tomasz.duszynski@octakon.com> <20200602164723.28858-3-tomasz.duszynski@octakon.com>
-In-Reply-To: <20200602164723.28858-3-tomasz.duszynski@octakon.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 2 Jun 2020 20:14:13 +0300
-Message-ID: <CAHp75Vc60q1PC9j6KR1-OJHxw=nBAHt9zJK=h9f27yJxMHpb8A@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] iio: chemical: scd30: add I2C interface driver
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        id S1726217AbgFBRvH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 Jun 2020 13:51:07 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:53673 "EHLO
+        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726019AbgFBRvH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Jun 2020 13:51:07 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.143.250])
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 7A652550CCA6;
+        Tue,  2 Jun 2020 19:51:04 +0200 (CEST)
+Received: from localhost (34.103.240.103) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Tue, 2 Jun 2020
+ 19:51:03 +0200
+Date:   Tue, 2 Jun 2020 19:48:46 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Peter Meerwald <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 2/4] iio: chemical: scd30: add I2C interface driver
+Message-ID: <20200602174846.GB2668@arch>
+References: <20200602164723.28858-1-tomasz.duszynski@octakon.com>
+ <20200602164723.28858-3-tomasz.duszynski@octakon.com>
+ <CAHp75Vc60q1PC9j6KR1-OJHxw=nBAHt9zJK=h9f27yJxMHpb8A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vc60q1PC9j6KR1-OJHxw=nBAHt9zJK=h9f27yJxMHpb8A@mail.gmail.com>
+X-Originating-IP: [34.103.240.103]
+X-ClientProxiedBy: DAG3EX2.emp2.local (172.16.2.22) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 10486631732823481503
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudefjedgkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfhfgggtuggjihesthdtredttddtjeenucfhrhhomhepvfhomhgrshiiucffuhhsiiihnhhskhhiuceothhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtheevtefhffduteejfedtkeeuheejgeejvdetfffgveekffefgeffueeghefgjeenucfkpheptddrtddrtddrtddpfeegrddutdefrddvgedtrddutdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 2, 2020 at 7:49 PM Tomasz Duszynski
-<tomasz.duszynski@octakon.com> wrote:
+Hello Andy,
+
+On Tue, Jun 02, 2020 at 08:14:13PM +0300, Andy Shevchenko wrote:
+> On Tue, Jun 2, 2020 at 7:49 PM Tomasz Duszynski
+> <tomasz.duszynski@octakon.com> wrote:
+> >
+> > Add I2C interface driver for the SCD30 sensor.
 >
-> Add I2C interface driver for the SCD30 sensor.
+> ...
+>
+> > +static u16 scd30_i2c_cmd_lookup_tbl[] = {
+> > +       [CMD_START_MEAS] = 0x0010,
+> > +       [CMD_STOP_MEAS] = 0x0104,
+> > +       [CMD_MEAS_INTERVAL] = 0x4600,
+> > +       [CMD_MEAS_READY] = 0x0202,
+> > +       [CMD_READ_MEAS] = 0x0300,
+> > +       [CMD_ASC] = 0x5306,
+> > +       [CMD_FRC] = 0x5204,
+> > +       [CMD_TEMP_OFFSET] = 0x5403,
+> > +       [CMD_FW_VERSION] = 0xd100,
+> > +       [CMD_RESET] = 0xd304,
+>
+> Keep sorted by value?
+>
 
-...
+I'd rather leave it as is simply because order here matches order in
+sensor datasheet.
 
-> +static u16 scd30_i2c_cmd_lookup_tbl[] = {
-> +       [CMD_START_MEAS] = 0x0010,
-> +       [CMD_STOP_MEAS] = 0x0104,
-> +       [CMD_MEAS_INTERVAL] = 0x4600,
-> +       [CMD_MEAS_READY] = 0x0202,
-> +       [CMD_READ_MEAS] = 0x0300,
-> +       [CMD_ASC] = 0x5306,
-> +       [CMD_FRC] = 0x5204,
-> +       [CMD_TEMP_OFFSET] = 0x5403,
-> +       [CMD_FW_VERSION] = 0xd100,
-> +       [CMD_RESET] = 0xd304,
+> > +};
+>
+> ...
+>
+> > +       ret = i2c_master_send(client, txbuf, txsize);
+>
+> > +       if (ret != txsize)
+> > +               return ret < 0 ? ret : -EIO;
+>
+> Wouldn't be better
+>
+>   if (ret < 0)
+>     return ret;
+>   if (ret != txsize)
+>     return -EIO;
+>
+> ?
+>
 
-Keep sorted by value?
+Hmm, okay. Perhaps slightly easier to read.
 
-> +};
+> > +       if (!rxbuf)
+> > +               return 0;
+> > +
+> > +       ret = i2c_master_recv(client, rxbuf, rxsize);
+>
+> > +       if (ret != rxsize)
+> > +               return ret < 0 ? ret : -EIO;
+>
+> Ditto.
+>
+> ...
+>
+> > +static int scd30_i2c_command(struct scd30_state *state, enum scd30_cmd cmd,
+> > +                            u16 arg, void *response, int size)
+> > +{
+> > +       char crc, buf[SCD30_I2C_MAX_BUF_SIZE], *rsp = response;
+> > +       int i, ret;
+>
+> i -> offset ?
+>
 
-...
+'i' is shorter and I am lazy :).
 
-> +       ret = i2c_master_send(client, txbuf, txsize);
+> > +       put_unaligned_be16(scd30_i2c_cmd_lookup_tbl[cmd], buf);
+> > +       i = 2;
+> > +
+> > +       if (rsp) {
+> > +               /* each two bytes are followed by a crc8 */
+> > +               size += size / 2;
+> > +       } else {
+> > +               put_unaligned_be16(arg, buf + i);
+> > +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
+> > +               i += 2;
+>
+> > +               buf[i] = crc;
+> > +               i += 1;
+>
+> buf[offset++] = crc; ?
+>
 
-> +       if (ret != txsize)
-> +               return ret < 0 ? ret : -EIO;
+I'd rather stick to what I have now. It looks more consistent.
 
-Wouldn't be better
+> > +               /* commands below don't take an argument */
+> > +               if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
+> > +                       i -= 3;
+> > +       }
+> > +
+> > +       ret = scd30_i2c_xfer(state, buf, i, buf, size);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       /* validate received data and strip off crc bytes */
+> > +       for (i = 0; i < size; i += 3) {
+> > +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
+> > +               if (crc != buf[i + 2]) {
+> > +                       dev_err(state->dev, "data integrity check failed\n");
+> > +                       return -EIO;
+> > +               }
+> > +
+>
+> > +               *rsp++ = buf[i];
+>
+> + 0 (for the sake of consistency?
+>
 
-  if (ret < 0)
-    return ret;
-  if (ret != txsize)
-    return -EIO;
+Adding 0 is a little bit odd.
 
-?
+> > +               *rsp++ = buf[i + 1];
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+>
+> ...
+>
+> > +static struct i2c_driver scd30_i2c_driver = {
+> > +       .driver = {
+>
+> > +               .name = KBUILD_MODNAME,
+>
+> Better to hard code.
+>
 
-> +       if (!rxbuf)
-> +               return 0;
-> +
-> +       ret = i2c_master_recv(client, rxbuf, rxsize);
+I seriously doubt anyone will ever want to change module name. What for?
 
-> +       if (ret != rxsize)
-> +               return ret < 0 ? ret : -EIO;
-
-Ditto.
-
-...
-
-> +static int scd30_i2c_command(struct scd30_state *state, enum scd30_cmd cmd,
-> +                            u16 arg, void *response, int size)
-> +{
-> +       char crc, buf[SCD30_I2C_MAX_BUF_SIZE], *rsp = response;
-> +       int i, ret;
-
-i -> offset ?
-
-> +       put_unaligned_be16(scd30_i2c_cmd_lookup_tbl[cmd], buf);
-> +       i = 2;
-> +
-> +       if (rsp) {
-> +               /* each two bytes are followed by a crc8 */
-> +               size += size / 2;
-> +       } else {
-> +               put_unaligned_be16(arg, buf + i);
-> +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-> +               i += 2;
-
-> +               buf[i] = crc;
-> +               i += 1;
-
-buf[offset++] = crc; ?
-
-> +               /* commands below don't take an argument */
-> +               if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
-> +                       i -= 3;
-> +       }
-> +
-> +       ret = scd30_i2c_xfer(state, buf, i, buf, size);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* validate received data and strip off crc bytes */
-> +       for (i = 0; i < size; i += 3) {
-> +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-> +               if (crc != buf[i + 2]) {
-> +                       dev_err(state->dev, "data integrity check failed\n");
-> +                       return -EIO;
-> +               }
-> +
-
-> +               *rsp++ = buf[i];
-
-+ 0 (for the sake of consistency?
-
-> +               *rsp++ = buf[i + 1];
-> +       }
-> +
-> +       return 0;
-> +}
-
-...
-
-> +static struct i2c_driver scd30_i2c_driver = {
-> +       .driver = {
-
-> +               .name = KBUILD_MODNAME,
-
-Better to hard code.
-
-> +               .of_match_table = scd30_i2c_of_match,
-> +               .pm = &scd30_pm_ops,
-> +       },
-> +       .probe_new = scd30_i2c_probe,
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
+> > +               .of_match_table = scd30_i2c_of_match,
+> > +               .pm = &scd30_pm_ops,
+> > +       },
+> > +       .probe_new = scd30_i2c_probe,
+> > +};
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

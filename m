@@ -2,105 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD911ECC8D
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 11:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D66D51ECD22
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 12:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgFCJ0V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Jun 2020 05:26:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726159AbgFCJ0U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jun 2020 05:26:20 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B609AC05BD43;
-        Wed,  3 Jun 2020 02:26:20 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id m1so1399047pgk.1;
-        Wed, 03 Jun 2020 02:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZPr+aQAATVUkvplzbC3lCmk20hrbatLRa0Nqdzu8JGg=;
-        b=CRUMWWfNqtHTw24ZIWxApphaL2vDf74zguV2SHALour4ZAEdb2+x+71ulAmZzzHno4
-         45TO4kMT1dYBXjkKPPjTvF8t2Xg0SpXM9r39e2YW0ae24zRIRIVo9MOKIM0RXnU7mBPz
-         SLb0GAxH9DfIQi1+tw0GSOHbm5iw1jSVgFU9ztC5RKvMJ0PBaOcbGWDbH6a4xusFB3wZ
-         9DIeCAIS+fmWOSGmYNcqFnZi4lTTUvy7LmLHElkjfUCBrumSwxgEeT3IHVWNAnmhLYks
-         BAqX3R5wsMWWQZz9zqSkyDPK0hKTOhaRi84rbfqstbJ7rIzp7esvDrbyYI0IDnGgY35+
-         owlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZPr+aQAATVUkvplzbC3lCmk20hrbatLRa0Nqdzu8JGg=;
-        b=pMaHSQAGPFShvYe1wo0cJmjDC81rean6SANFzr34IXeWAh2+OMmCaZbkojRBlTmnDA
-         ViS4gwEaWbA4SZ8obiOUy0cmJeVkx2xfG6l/HO0OgBD9VdZoHMYUOWlWOkXX6IQ1YJuV
-         nZdP6b36L5vglvclw28lTDk5GX8jruQYj9DIa9t0S7xipWRtwWANKtpvmM4NSQr8LYNC
-         t4SgwMhZ+o0B2P7B65g6lONjDJ7jWK6nFm8rbKR9i6bs0saYqpWzNXY69qK46eZwIXzp
-         HfQ37SGHSXZX5gOEumpbjgNxYx5QDGupw9wEY0fNDzCAVsT2+APfSxrQCfSOIUjclMIa
-         0XOw==
-X-Gm-Message-State: AOAM5329eJ3g11k2ZF0/IUE8b8fioM9jvCIreFf12jnLz4AZhMYD9RQF
-        dbWY1kV5DF4FT6vXY9XOwBA=
-X-Google-Smtp-Source: ABdhPJxsDx9t2mNzXR4FOD0cCfNVH5B5nRh0OHbOq+wv91eZasB/PFvbFsgwn4jAQpFqpWuQwaLYtA==
-X-Received: by 2002:a17:90a:734b:: with SMTP id j11mr4521220pjs.114.1591176380348;
-        Wed, 03 Jun 2020 02:26:20 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id u19sm1514224pfk.98.2020.06.03.02.26.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2020 02:26:19 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Paul Cercueil <paul.cercueil@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v3] iio: amplifiers: ad8366: Change devm_gpiod_get() to optional and add the missed check
-Date:   Wed,  3 Jun 2020 17:26:10 +0800
-Message-Id: <20200603092610.1424489-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        id S1725888AbgFCKFR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Jun 2020 06:05:17 -0400
+Received: from first.geanix.com ([116.203.34.67]:58028 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726159AbgFCKFQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 3 Jun 2020 06:05:16 -0400
+Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
+        by first.geanix.com (Postfix) with ESMTPSA id EE3072120BC4;
+        Wed,  3 Jun 2020 10:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1591178713; bh=2KBt6SkDNGYVuLGHF6gQxQy6vOmGcd5CwzDOrDlKhj4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=WapZttPhqJPpOF1L0rmlHFDWQt3thKdsGvSLjyc3pHjHYixmoWr/Kg2rNAxowDv41
+         LuNb/ZXz34VZGs9o2p2jUOBgNZgMaX9WTg56H0Msx3zo/ARgxSeLQn8Ha7nrrPsebd
+         IrbVJSUNUGfkhFFZOkhdqwUzD6e64rtW7bMhtgsXX5KJabft8MUmrziw3P13o6nkyv
+         TnPSqMF+PpyS4BKeFhZX82z7h87YUsmXie8h+AWXsVDp48AropWXsY3XYQ0j5NhuPL
+         XX1x9jDM/2Sv9SpiBlr3qPE/T0xsvZvwCR8HlxpcSpKqo80iuC6+E++n7YNEZB/UQs
+         X9DgleBCTW2+w==
+Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20200528210711.GD5419@localhost.localdomain>
+ <3c629741-43f1-3d3a-2b40-40ddfd773e86@geanix.com>
+ <20200529074443.GA3198@localhost.localdomain>
+ <5bb0fca9-97a4-4bad-1314-1f275ab632ff@geanix.com>
+ <20200529085052.GC3198@localhost.localdomain>
+ <08c824c2-dfb2-7a5c-b6fd-8258d6ce3808@geanix.com>
+ <20200529121616.GD3198@localhost.localdomain>
+ <26401237-5e3b-faf7-35c7-9d6e22f6d239@geanix.com>
+ <b3363da1-033b-4afa-59cd-28328ec32066@geanix.com>
+ <e9964fda-3b83-2e23-299a-7ab7d50529af@geanix.com>
+ <20200603080619.GA544784@lore-desk.lan>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <91165f5d-8cba-3ea2-67dc-99d65bce3d19@geanix.com>
+Date:   Wed, 3 Jun 2020 12:05:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200603080619.GA544784@lore-desk.lan>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US-large
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since if there is no GPIO, nothing happens, replace devm_gpiod_get()
-with devm_gpiod_get_optional().
-Also add IS_ERR() to fix the missing-check bug.
 
-Fixes: cee211f4e5a0 ("iio: amplifiers: ad8366: Add support for the ADA4961 DGA")
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v3:
-  - Change devm_gpiod_get() to optional.
-  - Modify description.
 
- drivers/iio/amplifiers/ad8366.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On 03/06/2020 10.06, Lorenzo Bianconi wrote:
+>>
+>>
+>> On 02/06/2020 15.39, Sean Nyekjaer wrote:
+>>>>> are these values from the hw FIFO? can you please add
+>>>>> sensor->ts_ref to the trace and
+>>>>> a log into st_lsm6dsx_reset_hw_ts?
+>>>>>
+>>>>
+>>>> Hi,
+>>>>
+>>>> This certainly looks weird,
+>>>>
+>>>> https://gist.github.com/sknsean/b32bae140008cf446a8fea58e305da47
+>>>>
+>>>> Seems like the ts_ref is updated and used but not read/used in
+>>>> userspace...
+>>>>
+>>>> /Sean
+>>>
+>>> added to st_lsm6dsx_read_fifo :
+>>>
+>>> printk("ts_ref %lld, ts %lld, sample_time %lld\n", acc_sensor->ts_ref,
+>>> ts, acc_sensor->ts_ref + ts);
+>>>
+>>> https://gist.github.com/sknsean/3ad1e9e05cb0e2ef811a3c83492a1980
+>>>
+>>> Suspend again was 15sec
+>>>
+>>> /Sean
+>>
+>> Hi,
+>>
+>> Some more findings :)
+>> https://gist.github.com/sknsean/d31e48b65515361309cd238dcf68600f
+>>
+>> To me it looks like ktime_get_real_ns() isn't ready or updated when we are
+>> calling iio_get_time_ns().
+>> If we look in the trace ktime_get_real_ns() it's ready when we are getting
+>> the first sample after suspend.
+>>
+>> Running with this patch:
+>> https://gist.github.com/sknsean/415d1b9c34f20db4419a0c61a58eb188
+>> +
+>> The first from this thread.
+>>
+>> /Sean
+> 
+> Hi Sean,
+> 
+> looking at the logs I guess we should not reset the sensor hw ts. Could you
+> please try the below patch?
+> 
+> Regards,
+> Lorenzo
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 0b776cb91928..4f8a9bcee77b 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -2445,6 +2445,8 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
+>   		if (!(hw->suspend_mask & BIT(sensor->id)))
+>   			continue;
+>   
+> +		sensor->ts_ref = iio_get_time_ns(hw->iio_devs[i]);
+> +
+>   		if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
+>   		    sensor->id == ST_LSM6DSX_ID_EXT1 ||
+>   		    sensor->id == ST_LSM6DSX_ID_EXT2)
+> 
 
-diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-index 62167b87caea..8819e8997f76 100644
---- a/drivers/iio/amplifiers/ad8366.c
-+++ b/drivers/iio/amplifiers/ad8366.c
-@@ -262,8 +262,12 @@ static int ad8366_probe(struct spi_device *spi)
- 	case ID_ADA4961:
- 	case ID_ADL5240:
- 	case ID_HMC1119:
--		st->reset_gpio = devm_gpiod_get(&spi->dev, "reset",
-+		st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
- 			GPIOD_OUT_HIGH);
-+		if (IS_ERR(st->reset_gpio)) {
-+			ret = PTR_ERR(st->reset_gpio);
-+			goto error_disable_reg;
-+		}
- 		indio_dev->channels = ada4961_channels;
- 		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
- 		break;
--- 
-2.26.2
+Hmm, suspend again for 15s.
 
+https://gist.github.com/sknsean/911ae4ae2e74ebe1e7eca1405c645ff1
+
+[  105.520634] PM: suspend exit
+[  105.540206] ts_ref 1591097307780181385, ts 2861700000, sample_time 
+1591097310641881385
+
+[  105.548416] ktime_get_real_ns: 1591097322928175385
+
+CLOCK_REALTIME isn't ready in the resume function. I think we need to 
+link it to CLOCK_BOOTTIME (Which ticking under suspend) instead.
+
+/Sean

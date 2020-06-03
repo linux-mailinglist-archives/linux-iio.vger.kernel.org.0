@@ -2,281 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C173E1ECE5C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 13:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E481ECE5F
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 13:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725883AbgFCL3t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Jun 2020 07:29:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725833AbgFCL3s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jun 2020 07:29:48 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC46C08C5C0;
-        Wed,  3 Jun 2020 04:29:48 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id y18so726178plr.4;
-        Wed, 03 Jun 2020 04:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SYDjEnMgktBuo6DQ1R8FXp/4FpW7wh5KhHgaA/MCrC0=;
-        b=kiYRKNXTleel/idLEGZwK9UEaeJLEnR5m/VKB1rPaL47Lyah3lhtvoJ6Fbo/6xwr6r
-         aj6DJ1QrVIRXuz9eLzn+aqmIcvrk4Z1aUYmjJDY20gZ6JltKfzQmAH5/t8ALSfzsbITc
-         j+wY1PnYh+SZDsUCADDL4giBHXvWvdKee6dPnom0a4kuRLpKjR129MVb1S4EAMMfb06z
-         fklytk5YoIBI7Bw6zjTeGqgHxTZBNhElpM6k9BZXqJvfVUaBEgA/TcyiUS/Moyvkz/6o
-         s87fCtXg3kgAVI5q2EW0bUHS9m9YNzKK2N2icdzmZPwNNFSr4yF1FD1C9CppIpwDXqke
-         m8cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SYDjEnMgktBuo6DQ1R8FXp/4FpW7wh5KhHgaA/MCrC0=;
-        b=uoeSL0Yg67Iq1hql6rlUF6ESUEmHiceDKhwTtB1NNXmNGY3EuZp+BaDZMtgerhqXGL
-         wRSgnzkJAfr0lI7CGEmzDeZgPFhff3usY/HkK+hzKSwYIPKDvhRKDTLTY6de9pKgSHex
-         NXT38qJV9n0hm16in8JtZsGD5oFk+pIvzJ9oGObvZchS1S0xR+iFWrGP7xGoqA4PrhS7
-         qzN+ylr1W2vxyxnNg+Ggc0IakQP4GUGJ/wBdZ7meAHVrIZVpfR8oY2+eDtDz0uDkBd/T
-         6Atppxk8OwQvgBAodETuklmTRhfQ5/r9Vp3t0e23hD3AqL8alW1PrAskIlWWqaWoX3LX
-         HlYQ==
-X-Gm-Message-State: AOAM531OgWSHvej0V2URVM/p/fg5gQybjohFkeba+zDLkgGO+1Ss8mY7
-        63ykOlCH3aDVX/pPTr0MaKnolnjM+QFSRNiyarg=
-X-Google-Smtp-Source: ABdhPJwdso2nwPBvupIiAPgeIIBx0RbV4afBtdZXGJS6P6Gf51Z77H3U4cd6KGmw0Vzf1gImBRVZTGkAQRoBzZweINg=
-X-Received: by 2002:a17:902:6ac2:: with SMTP id i2mr29919248plt.18.1591183788151;
- Wed, 03 Jun 2020 04:29:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200603084441.33952-1-tomasz.duszynski@octakon.com> <20200603084441.33952-3-tomasz.duszynski@octakon.com>
-In-Reply-To: <20200603084441.33952-3-tomasz.duszynski@octakon.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 3 Jun 2020 14:29:36 +0300
-Message-ID: <CAHp75VfF2KXS8NtPGqCRm3SA_pxz5-XmSSu7b_ytRP6TjaE5xw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] iio: chemical: scd30: add I2C interface driver
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+        id S1726021AbgFCL3y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Jun 2020 07:29:54 -0400
+Received: from first.geanix.com ([116.203.34.67]:36242 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725833AbgFCL3y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 3 Jun 2020 07:29:54 -0400
+Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
+        by first.geanix.com (Postfix) with ESMTPSA id 2C2912120C35;
+        Wed,  3 Jun 2020 11:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1591183791; bh=wBeM75o3LXSmgZFB4aEQiYoDWU9YesiU0wIFkA5czVk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=jFJlLxmc4HaGkDsYES3AXnjFReCTAPQrAvpWr+8aI4Q3mmRdPfRtuzUCXdKxiSdDB
+         TXcCXHARTPMEp+2zaTRlaBjwyOzeCFTD6fWfcf9/DCV7ZLNklLEr1viiTxtRGD6BZU
+         J4vDFiAj5s6XZOXXmCmKzvzGA/BqwS6+5Z8f3BbExlmUQo4SbCheIwvh9b3Rbd9eHo
+         5ZtsXKVywGgES198PeaQ0ygMhiUD6F6172myIfVrJlxyIS4ZhL7qVFmeYjiir5g8h/
+         USlQoypqot0njyiL/dNxk9E1g+rSDV7j+WJXAirFjKihcvyBKVhgdyz8KK8a+eFRsI
+         4/9bBuPYpuhNg==
+Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20200529085052.GC3198@localhost.localdomain>
+ <08c824c2-dfb2-7a5c-b6fd-8258d6ce3808@geanix.com>
+ <20200529121616.GD3198@localhost.localdomain>
+ <26401237-5e3b-faf7-35c7-9d6e22f6d239@geanix.com>
+ <b3363da1-033b-4afa-59cd-28328ec32066@geanix.com>
+ <e9964fda-3b83-2e23-299a-7ab7d50529af@geanix.com>
+ <20200603080619.GA544784@lore-desk.lan>
+ <91165f5d-8cba-3ea2-67dc-99d65bce3d19@geanix.com>
+ <20200603102841.GC544784@lore-desk.lan>
+ <d3288925-0891-8c72-b0e7-2b71ff50e1d3@geanix.com>
+ <20200603105105.GD544784@lore-desk.lan>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <a6716a15-abf9-3218-00b8-fb7f257e5649@geanix.com>
+Date:   Wed, 3 Jun 2020 13:29:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
+MIME-Version: 1.0
+In-Reply-To: <20200603105105.GD544784@lore-desk.lan>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US-large
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 3, 2020 at 11:47 AM Tomasz Duszynski
-<tomasz.duszynski@octakon.com> wrote:
->
-> Add I2C interface driver for the SCD30 sensor.
->
-
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> ---
->  MAINTAINERS                      |   1 +
->  drivers/iio/chemical/Kconfig     |  11 +++
->  drivers/iio/chemical/Makefile    |   1 +
->  drivers/iio/chemical/scd30_i2c.c | 139 +++++++++++++++++++++++++++++++
->  4 files changed, 152 insertions(+)
->  create mode 100644 drivers/iio/chemical/scd30_i2c.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 41a509cca6f1..13aed3473b7e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15142,6 +15142,7 @@ M:      Tomasz Duszynski <tomasz.duszynski@octakon.com>
->  S:     Maintained
->  F:     drivers/iio/chemical/scd30.h
->  F:     drivers/iio/chemical/scd30_core.c
-> +F:     drivers/iio/chemical/scd30_i2c.c
->
->  SENSIRION SPS30 AIR POLLUTION SENSOR DRIVER
->  M:     Tomasz Duszynski <tduszyns@gmail.com>
-> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> index 99e852b67e55..970d34888c2e 100644
-> --- a/drivers/iio/chemical/Kconfig
-> +++ b/drivers/iio/chemical/Kconfig
-> @@ -96,6 +96,17 @@ config SCD30_CORE
->           To compile this driver as a module, choose M here: the module will
->           be called scd30_core.
->
-> +config SCD30_I2C
-> +       tristate "SCD30 carbon dioxide sensor I2C driver"
-> +       depends on SCD30_CORE && I2C
-> +       select CRC8
-> +       help
-> +         Say Y here to build support for the Sensirion SCD30 I2C interface
-> +         driver.
-> +
-> +         To compile this driver as a module, choose M here: the module will
-> +         be called scd30_i2c.
-> +
->  config SENSIRION_SGP30
->         tristate "Sensirion SGPxx gas sensors"
->         depends on I2C
-> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> index c9804b041ecd..0966ca34e34b 100644
-> --- a/drivers/iio/chemical/Makefile
-> +++ b/drivers/iio/chemical/Makefile
-> @@ -13,6 +13,7 @@ obj-$(CONFIG_CCS811)          += ccs811.o
->  obj-$(CONFIG_IAQCORE)          += ams-iaq-core.o
->  obj-$(CONFIG_PMS7003) += pms7003.o
->  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
-> +obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
->  obj-$(CONFIG_SENSIRION_SGP30)  += sgp30.o
->  obj-$(CONFIG_SPS30) += sps30.o
->  obj-$(CONFIG_VZ89X)            += vz89x.o
-> diff --git a/drivers/iio/chemical/scd30_i2c.c b/drivers/iio/chemical/scd30_i2c.c
-> new file mode 100644
-> index 000000000000..875892a070ee
-> --- /dev/null
-> +++ b/drivers/iio/chemical/scd30_i2c.c
-> @@ -0,0 +1,139 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Sensirion SCD30 carbon dioxide sensor i2c driver
-> + *
-> + * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> + *
-> + * I2C slave address: 0x61
-> + */
-> +#include <linux/crc8.h>
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/types.h>
-> +#include <asm/unaligned.h>
-> +
-> +#include "scd30.h"
-> +
-> +#define SCD30_I2C_MAX_BUF_SIZE 18
-> +#define SCD30_I2C_CRC8_POLYNOMIAL 0x31
-> +
-> +static u16 scd30_i2c_cmd_lookup_tbl[] = {
-> +       [CMD_START_MEAS] = 0x0010,
-> +       [CMD_STOP_MEAS] = 0x0104,
-> +       [CMD_MEAS_INTERVAL] = 0x4600,
-> +       [CMD_MEAS_READY] = 0x0202,
-> +       [CMD_READ_MEAS] = 0x0300,
-> +       [CMD_ASC] = 0x5306,
-> +       [CMD_FRC] = 0x5204,
-> +       [CMD_TEMP_OFFSET] = 0x5403,
-> +       [CMD_FW_VERSION] = 0xd100,
-> +       [CMD_RESET] = 0xd304,
-> +};
-> +
-> +DECLARE_CRC8_TABLE(scd30_i2c_crc8_tbl);
-> +
-> +static int scd30_i2c_xfer(struct scd30_state *state, char *txbuf, int txsize,
-> +                         char *rxbuf, int rxsize)
-> +{
-> +       struct i2c_client *client = to_i2c_client(state->dev);
-> +       int ret;
-> +
-> +       /*
-> +        * repeated start is not supported hence instead of sending two i2c
-> +        * messages in a row we send one by one
-> +        */
-> +       ret = i2c_master_send(client, txbuf, txsize);
-> +       if (ret < 0)
-> +               return ret;
-> +       if (ret != txsize)
-> +               return -EIO;
-> +
-> +       if (!rxbuf)
-> +               return 0;
-> +
-> +       ret = i2c_master_recv(client, rxbuf, rxsize);
-> +       if (ret < 0)
-> +               return ret;
-> +       if (ret != rxsize)
-> +               return -EIO;
-> +
-> +       return 0;
-> +}
-> +
-> +static int scd30_i2c_command(struct scd30_state *state, enum scd30_cmd cmd, u16 arg,
-> +                            void *response, int size)
-> +{
-> +       char buf[SCD30_I2C_MAX_BUF_SIZE];
-> +       char *rsp = response;
-> +       int i, ret;
-> +       char crc;
-> +
-> +       put_unaligned_be16(scd30_i2c_cmd_lookup_tbl[cmd], buf);
-> +       i = 2;
-> +
-> +       if (rsp) {
-> +               /* each two bytes are followed by a crc8 */
-> +               size += size / 2;
-> +       } else {
-> +               put_unaligned_be16(arg, buf + i);
-> +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-> +               i += 2;
-> +               buf[i] = crc;
-> +               i += 1;
-> +
-> +               /* commands below don't take an argument */
-> +               if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
-> +                       i -= 3;
-> +       }
-> +
-> +       ret = scd30_i2c_xfer(state, buf, i, buf, size);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* validate received data and strip off crc bytes */
-> +       for (i = 0; i < size; i += 3) {
-> +               crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-> +               if (crc != buf[i + 2]) {
-> +                       dev_err(state->dev, "data integrity check failed\n");
-> +                       return -EIO;
-> +               }
-> +
-> +               *rsp++ = buf[i];
-> +               *rsp++ = buf[i + 1];
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int scd30_i2c_probe(struct i2c_client *client)
-> +{
-> +       if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-> +               return -EOPNOTSUPP;
-> +
-> +       crc8_populate_msb(scd30_i2c_crc8_tbl, SCD30_I2C_CRC8_POLYNOMIAL);
-> +
-> +       return scd30_probe(&client->dev, client->irq, client->name, NULL, scd30_i2c_command);
-> +}
-> +
-> +static const struct of_device_id scd30_i2c_of_match[] = {
-> +       { .compatible = "sensirion,scd30" },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(of, scd30_i2c_of_match);
-> +
-> +static struct i2c_driver scd30_i2c_driver = {
-> +       .driver = {
-> +               .name = KBUILD_MODNAME,
-> +               .of_match_table = scd30_i2c_of_match,
-> +               .pm = &scd30_pm_ops,
-> +       },
-> +       .probe_new = scd30_i2c_probe,
-> +};
-> +module_i2c_driver(scd30_i2c_driver);
-> +
-> +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-> +MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor i2c driver");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 2.27.0
->
 
 
--- 
-With Best Regards,
-Andy Shevchenko
+On 03/06/2020 12.51, Lorenzo Bianconi wrote:
+>>>>
+>>>> Hmm, suspend again for 15s.
+>>>>
+>>>> https://gist.github.com/sknsean/911ae4ae2e74ebe1e7eca1405c645ff1
+>>>>
+>>>> [  105.520634] PM: suspend exit
+>>>> [  105.540206] ts_ref 1591097307780181385, ts 2861700000, sample_time
+>>>> 1591097310641881385
+>>>>
+>>>> [  105.548416] ktime_get_real_ns: 1591097322928175385
+>>>>
+>>>> CLOCK_REALTIME isn't ready in the resume function. I think we need to link
+>>>> it to CLOCK_BOOTTIME (Which ticking under suspend) instead.
+>>>
+>>> With latest patch it seems to me the time reported is now monotonic so it seems
+>>> correct. What is the clocktype you set? you can check it in:
+>>> /sys/bus/iio/devices/iio:device<x>/current_timestamp_clock
+>>
+>> default: realtime
+>>
+>> In the dump above the ktime_get_real_ns(first fifo dump after suspend) -
+>> ts_ref + ts is = 12,286294 sec...
+>>
+>> /Sean
+> 
+> right. Could you please add to the dump log the ts_ref value in st_lsm6dsx_resume()
+> just after iio_get_time_ns()?
+> 
+Sure,
+
+[  173.849649] ktime_get_real_ns: 1591097391339190269
+
+[  173.855244] ts_ref 1591097386868224810, ts 4488650000, sample_time 
+1591097391356874810
+
+[  173.855272] ktime_get_real_ns: 1591097391344812894
+
+[  173.861256] PM: suspend devices took 0.080 seconds
+
+[  173.875214] Disabling non-boot CPUs ...
+[  173.887482] sensor->ts_ref[1] = 1591097391377130644
+
+[  173.906546] PM: resume devices took 0.020 seconds
+
+[  174.028152] OOM killer enabled.
+[  174.031331] Restarting tasks ... done.
+[  174.078636] PM: suspend exit
+[  174.127877] ts_ref 1591097391377130644, ts 4531750000, sample_time 
+1591097395908880644
+
+[  174.136383] ktime_get_real_ns: 1591097405112347968
+
+[  174.145841] ts_ref 1591097391377130644, ts 4570200000, sample_time 
+1591097395947330644
+
+[  174.154031] ktime_get_real_ns: 1591097405129995760
+
+Missing 13,73 sec :(
+
+If the CLOCK_REALTIME was updated in resume(), I think the first patch 
+proposal was better.
+
+/Sean

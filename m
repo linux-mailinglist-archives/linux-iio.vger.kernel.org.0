@@ -2,436 +2,471 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31EB01ECE9F
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 13:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27FE1ECEA4
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jun 2020 13:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726268AbgFCLlD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Jun 2020 07:41:03 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:28664 "EHLO
+        id S1725983AbgFCLl7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Jun 2020 07:41:59 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:44796 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726146AbgFCLkj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jun 2020 07:40:39 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 053BcChb032414;
-        Wed, 3 Jun 2020 07:40:37 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 31e4sks5q8-1
+        by vger.kernel.org with ESMTP id S1725854AbgFCLl6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jun 2020 07:41:58 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 053BdejG022901;
+        Wed, 3 Jun 2020 07:41:54 -0400
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2177.outbound.protection.outlook.com [104.47.57.177])
+        by mx0a-00128a01.pphosted.com with ESMTP id 31e4scs6dk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 03 Jun 2020 07:40:37 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 053Beah1004333
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 3 Jun 2020 07:40:36 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 3 Jun 2020 07:40:35 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 3 Jun 2020 07:40:35 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 3 Jun 2020 07:40:34 -0400
-Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 053BeOtM017839;
-        Wed, 3 Jun 2020 07:40:32 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <johan@kernel.org>, <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 6/6] iio: remove left-over parent assignments
-Date:   Wed, 3 Jun 2020 14:40:23 +0300
-Message-ID: <20200603114023.175102-7-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200603114023.175102-1-alexandru.ardelean@analog.com>
+        Wed, 03 Jun 2020 07:41:53 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bYjLWUMgkKtkdbX0/tF9CuqoCiBwy7fjgp1om86BAlih7Ojde4LUDxFg4jKKlw5n8DpfPn3YccURDDmV/XTKNOf+rWQQA1dLLFieQf6y03N/4WgVIS9fDAPxPD3l/ai2M3RRuqALb32Ob82Y3Z1iPqqQZnTawwv+mNO6fINj2iKM+8kgsPFw9oS8u5yZ9J5teSsSlcSGlcfy3FxU+yomACqPENDipE8WnTOGc7WpG0owSUvT1cbVex6H3+gKCpL+D/ckLnOfGf1CXohLhkrmU0zixmm4pcAMNMxBfixF6bQbNsD4JySm5OzNrRGFhDmRx2rQNLPVgSqR7SrARJaWwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KPjeiG4JsGkLIKXzfQLUO9SxjPBXyhzy+ELHdJISYTI=;
+ b=Go15B6rmnSi7FhSUg0OMTipYFbIToD0Z3BHHfJXjsrw5ZXNa5BsRqW//sxAiFbMllC5tgP6OnKU2h//P0ePc/jORbrZ7ADnY2HwPLiWP8TTtjP1WeK5Ot8N9BdEOTs+VU9yJ0kA8Ggh/2eWZzY/fCJjNKtbXXW41LZzK53cwjCs3dsj7cbSXSFdB3Aw8v9Gxb5c+NSw6Gcd7fgNL1tTfx00lilhOrDnkkrnwPwAN1zpunK24FiYQ/eyadrInNGCuPXheyyKOKFoAtOoksdYispTwRBE/3e5t/dfu/2twjUZGkawkkfwo24WbSrZ+qtQsjdcNStW+lp6kp9aCcSWsnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KPjeiG4JsGkLIKXzfQLUO9SxjPBXyhzy+ELHdJISYTI=;
+ b=I/1tbzrfjBJwU0W3LU6oCTEqLJcdv2k/5qeLySQ//AX2fXqJv8nC6xDfU/RxXUI2Upjmoh1mWSJdeOLqP6qHlnxlRM7thLyLuk2NfYNIvd4jbL5nYzG5oNU1b6WC0em9XzqfNAuxve/kM11/SSHep56y7/ctr0z4fcygccyNYV0=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB3449.namprd03.prod.outlook.com (2603:10b6:5:ae::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18; Wed, 3 Jun
+ 2020 11:41:52 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::e02f:b3c0:d1e9:5eaf%3]) with mapi id 15.20.3066.018; Wed, 3 Jun 2020
+ 11:41:52 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "johan@kernel.org" <johan@kernel.org>
+Subject: Re: [PATCH v2 0/6] iio: core: pass parent device as parameter during
+ allocation
+Thread-Topic: [PATCH v2 0/6] iio: core: pass parent device as parameter during
+ allocation
+Thread-Index: AQHWOZvI/qcuUw1oZkaX1o/OqtafqKjGxM2A
+Date:   Wed, 3 Jun 2020 11:41:52 +0000
+Message-ID: <0049dcc6f543e41978bbb7c731b43ab20e6f647d.camel@analog.com>
 References: <20200603114023.175102-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20200603114023.175102-1-alexandru.ardelean@analog.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 81557bf9-4a63-4869-2427-08d807b31bf6
+x-ms-traffictypediagnostic: DM6PR03MB3449:
+x-microsoft-antispam-prvs: <DM6PR03MB34494096D6A98026FE72C600F9880@DM6PR03MB3449.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2512;
+x-forefront-prvs: 04238CD941
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GHLN+mEj1ldEef8c99S+brQJfGp0GPaerVxbxZvih5LfQFVGv+6+bUEEEcAALLlAr4DxLH6Q1tc8CL1Yw6NwazZC5F2arA0hh3eBpco2SWda9QtMlY0HQZnQWKQXO5wPxM+KOfizl9Z94uTvDUgHNBjw+yNfp7/haxZsmALf2/PVQQcgnmh+yE3ddnEVFte+QxmvP3l5U5MENkmDIFQYF9slbHhLwmrI9RdnXFQafkXjQze247KtcGHgGm6YKvQA6RDFt1Au2MVD2gV/6zQ/ybWd9NgPkVx755oqy+7Ag8q9FG9wb32DY98pcSNWkFd+PYg0QcxM5C4HURNJcPo3MQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(39860400002)(366004)(396003)(136003)(346002)(376002)(5660300002)(2616005)(8936002)(83380400001)(8676002)(86362001)(110136005)(4326008)(6506007)(54906003)(71200400001)(36756003)(316002)(478600001)(76116006)(30864003)(66946007)(91956017)(6486002)(2906002)(6512007)(26005)(186003)(66556008)(64756008)(66446008)(66476007)(579004);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: koPiOyZJsQyrfi+/CJcb6vqYFr0E/loW+G8MMQeJLfeKoGMsMt/Usz1Jf/isbvA7kWoI5S5L5gWhrS5mTAsoWRb/I6uxZkuFv2AlonsyBLWKDwwRaHtys44B/bnB0h9IoBSSCr+JJKuZm7Sa3qDyVO+99s6pSUQIfWcpummQsaJEVnaGhuxg7Mx9Rx2n6vfRX6eL5c2flBIHA/QGCjTN0jg+Xp1sp//gqrawh3n+f126cnT/5VLq3aek7jTBVChazC0NzWWGJQg95bFTFqWN3wdPpE31SFVcNR3FhNS+Yya4Y7WASIRlEmsZEUeyWZtba9Wdt69F0CQOoJyKZqg0bGSeNUXRIQAB32iGdXCmkw36InwWatJazlIUsMiyaUKWUnN6+BDGQgrNRgngJ36w/hYDmFfg4E5a5XdMwXO5YbOdz6GLcpa78bm2ivvacsvlmNWLNcE1Qh4O4HLo8VHGrvdQLp+oqH9nNAx2114BI4k=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <952437F805C3FD4394188A507B9FF850@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81557bf9-4a63-4869-2427-08d807b31bf6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jun 2020 11:41:52.1052
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VVnuUncVrqKnI8DOvnMG2mJ3bnFXCQDF75k4mCUF5iJF5wxjrphQ0bF9BK0McYTru3j2v2idIOeOu9e/j55nKPaB5sYKTmlg1cLbltZbgto=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3449
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
  definitions=2020-06-03_11:2020-06-02,2020-06-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- cotscore=-2147483648 lowpriorityscore=0 phishscore=0 clxscore=1015
- mlxscore=0 spamscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006030092
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ cotscore=-2147483648 clxscore=1015 phishscore=0 mlxscore=0 impostorscore=0
+ suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006030093
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These were found by doing some shell magic:
-------------
-for file in $(git grep -w devm_iio_device_alloc | cut -d: -f1 | sort | uniq) ; do
-	if grep 'parent =' $file | grep -v trig | grep -vq devm_; then
-		echo "$file -> $(grep "parent =" $file)"
-	fi
-done
------------
-
-The output is bearable [after the semantic patch is applied].
-There is a mix of trigger assignments with some iio device parent
-assignments that are removed via this patch.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/accel/kxcjk-1013.c                    | 1 -
- drivers/iio/accel/mma8452.c                       | 1 -
- drivers/iio/accel/mma9553.c                       | 1 -
- drivers/iio/adc/ad7192.c                          | 1 -
- drivers/iio/adc/hx711.c                           | 1 -
- drivers/iio/adc/max1363.c                         | 2 --
- drivers/iio/adc/mcp3911.c                         | 1 -
- drivers/iio/adc/qcom-spmi-iadc.c                  | 1 -
- drivers/iio/amplifiers/ad8366.c                   | 1 -
- drivers/iio/chemical/vz89x.c                      | 1 -
- drivers/iio/dac/ad5770r.c                         | 1 -
- drivers/iio/health/afe4403.c                      | 1 -
- drivers/iio/health/afe4404.c                      | 1 -
- drivers/iio/humidity/dht11.c                      | 1 -
- drivers/iio/humidity/hts221_core.c                | 1 -
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c        | 1 -
- drivers/iio/light/cm3605.c                        | 1 -
- drivers/iio/light/ltr501.c                        | 1 -
- drivers/iio/magnetometer/ak8975.c                 | 1 -
- drivers/iio/orientation/hid-sensor-rotation.c     | 1 -
- drivers/iio/potentiostat/lmp91000.c               | 1 -
- drivers/iio/proximity/ping.c                      | 1 -
- drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 1 -
- drivers/iio/proximity/srf04.c                     | 1 -
- drivers/iio/proximity/srf08.c                     | 1 -
- drivers/iio/temperature/tsys01.c                  | 1 -
- drivers/staging/iio/addac/adt7316.c               | 1 -
- 27 files changed, 28 deletions(-)
-
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index c9924a65c32a..6b93521c0e17 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -1311,7 +1311,6 @@ static int kxcjk1013_probe(struct i2c_client *client,
- 
- 	mutex_init(&data->mutex);
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = kxcjk1013_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(kxcjk1013_channels);
- 	indio_dev->available_scan_masks = kxcjk1013_scan_masks;
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 00e100fc845a..ef3df402fc3c 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1592,7 +1592,6 @@ static int mma8452_probe(struct i2c_client *client,
- 	i2c_set_clientdata(client, indio_dev);
- 	indio_dev->info = &mma8452_info;
- 	indio_dev->name = id->name;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = data->chip_info->channels;
- 	indio_dev->num_channels = data->chip_info->num_channels;
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index 312070dcf035..c15908faa381 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -1103,7 +1103,6 @@ static int mma9553_probe(struct i2c_client *client,
- 	if (ret < 0)
- 		return ret;
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = mma9553_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(mma9553_channels);
- 	indio_dev->name = name;
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 08ba1a8f05eb..a0837d7e9176 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -970,7 +970,6 @@ static int ad7192_probe(struct spi_device *spi)
- 
- 	spi_set_drvdata(spi, indio_dev);
- 	st->chip_info = of_device_get_match_data(&spi->dev);
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = st->chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
-diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
-index c8686558429b..6a173531d355 100644
---- a/drivers/iio/adc/hx711.c
-+++ b/drivers/iio/adc/hx711.c
-@@ -551,7 +551,6 @@ static int hx711_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "hx711";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &hx711_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = hx711_chan_spec;
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index 9d92017c79b2..cc1ba7bfc8e6 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -1652,8 +1652,6 @@ static int max1363_probe(struct i2c_client *client,
- 	if (ret)
- 		goto error_disable_reg;
- 
--	/* Establish that the iio_dev is a child of the i2c device */
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->dev.of_node = client->dev.of_node;
- 	indio_dev->name = id->name;
- 	indio_dev->channels = st->chip_info->channels;
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index dd52f08ec82e..818b92518c66 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -293,7 +293,6 @@ static int mcp3911_probe(struct spi_device *spi)
- 	if (ret)
- 		goto clk_disable;
- 
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->dev.of_node = spi->dev.of_node;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
-index 46858eddf1c3..1c90ad33a881 100644
---- a/drivers/iio/adc/qcom-spmi-iadc.c
-+++ b/drivers/iio/adc/qcom-spmi-iadc.c
-@@ -553,7 +553,6 @@ static int iadc_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	indio_dev->dev.parent = dev;
- 	indio_dev->dev.of_node = node;
- 	indio_dev->name = pdev->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-index 62167b87caea..2595e9cb0b2d 100644
---- a/drivers/iio/amplifiers/ad8366.c
-+++ b/drivers/iio/amplifiers/ad8366.c
-@@ -274,7 +274,6 @@ static int ad8366_probe(struct spi_device *spi)
- 	}
- 
- 	st->info = &ad8366_infos[st->type];
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->info = &ad8366_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/chemical/vz89x.c b/drivers/iio/chemical/vz89x.c
-index 415b39339d4e..5586eb8e12cd 100644
---- a/drivers/iio/chemical/vz89x.c
-+++ b/drivers/iio/chemical/vz89x.c
-@@ -382,7 +382,6 @@ static int vz89x_probe(struct i2c_client *client,
- 	data->last_update = jiffies - HZ;
- 	mutex_init(&data->lock);
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->info = &vz89x_info;
- 	indio_dev->name = dev_name(&client->dev);
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-index 2d7623b9b2c0..84dcf149261f 100644
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -651,7 +651,6 @@ static int ad5770r_probe(struct spi_device *spi)
- 		}
- 	}
- 
--	indio_dev->dev.parent = &spi->dev;
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->info = &ad5770r_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-index e9f87e42ff4f..ed230f12b2f8 100644
---- a/drivers/iio/health/afe4403.c
-+++ b/drivers/iio/health/afe4403.c
-@@ -509,7 +509,6 @@ static int afe4403_probe(struct spi_device *spi)
- 	}
- 
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->dev.parent = afe->dev;
- 	indio_dev->channels = afe4403_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(afe4403_channels);
- 	indio_dev->name = AFE4403_DRIVER_NAME;
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index e728bbb21ca8..3a3efae4695a 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -517,7 +517,6 @@ static int afe4404_probe(struct i2c_client *client,
- 	}
- 
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->dev.parent = afe->dev;
- 	indio_dev->channels = afe4404_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(afe4404_channels);
- 	indio_dev->name = AFE4404_DRIVER_NAME;
-diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
-index d05c6fdb758b..9a7819817488 100644
---- a/drivers/iio/humidity/dht11.c
-+++ b/drivers/iio/humidity/dht11.c
-@@ -321,7 +321,6 @@ static int dht11_probe(struct platform_device *pdev)
- 	init_completion(&dht11->completion);
- 	mutex_init(&dht11->lock);
- 	iio->name = pdev->name;
--	iio->dev.parent = &pdev->dev;
- 	iio->info = &dht11_iio_info;
- 	iio->modes = INDIO_DIRECT_MODE;
- 	iio->channels = dht11_chan_spec;
-diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
-index 7ce1bd1defa0..16657789dc45 100644
---- a/drivers/iio/humidity/hts221_core.c
-+++ b/drivers/iio/humidity/hts221_core.c
-@@ -572,7 +572,6 @@ int hts221_probe(struct device *dev, int irq, const char *name,
- 		return err;
- 
- 	iio_dev->modes = INDIO_DIRECT_MODE;
--	iio_dev->dev.parent = hw->dev;
- 	iio_dev->available_scan_masks = hts221_scan_masks;
- 	iio_dev->channels = hts221_channels;
- 	iio_dev->num_channels = ARRAY_SIZE(hts221_channels);
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 4d604fe842e5..153f855db8d6 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1530,7 +1530,6 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	}
- 
- 	dev_set_drvdata(dev, indio_dev);
--	indio_dev->dev.parent = dev;
- 	/* name will be NULL when enumerated via ACPI */
- 	if (name)
- 		indio_dev->name = name;
-diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
-index 964ede49f662..4c83953672be 100644
---- a/drivers/iio/light/cm3605.c
-+++ b/drivers/iio/light/cm3605.c
-@@ -239,7 +239,6 @@ static int cm3605_probe(struct platform_device *pdev)
- 	led_trigger_register_simple("cm3605", &cm3605->led);
- 	led_trigger_event(cm3605->led, LED_FULL);
- 
--	indio_dev->dev.parent = dev;
- 	indio_dev->info = &cm3605_info;
- 	indio_dev->name = "cm3605";
- 	indio_dev->channels = cm3605_channels;
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 5a3fcb127cd2..4bac0646398d 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1480,7 +1480,6 @@ static int ltr501_probe(struct i2c_client *client,
- 	if ((partid >> 4) != data->chip_info->partid)
- 		return -ENODEV;
- 
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->info = data->chip_info->info;
- 	indio_dev->channels = data->chip_info->channels;
- 	indio_dev->num_channels = data->chip_info->no_channels;
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index a23422aad97d..03d71f796177 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -940,7 +940,6 @@ static int ak8975_probe(struct i2c_client *client,
- 	}
- 
- 	mutex_init(&data->lock);
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->channels = ak8975_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(ak8975_channels);
- 	indio_dev->info = &ak8975_info;
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index b99f41240e3e..23bc61a7f018 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -281,7 +281,6 @@ static int hid_dev_rot_probe(struct platform_device *pdev)
- 	}
- 
- 	indio_dev->num_channels = ARRAY_SIZE(dev_rot_channels);
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &dev_rot_info;
- 	indio_dev->name = name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-index 2cb11da18e0f..2d601889c8c0 100644
---- a/drivers/iio/potentiostat/lmp91000.c
-+++ b/drivers/iio/potentiostat/lmp91000.c
-@@ -321,7 +321,6 @@ static int lmp91000_probe(struct i2c_client *client,
- 	indio_dev->channels = lmp91000_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(lmp91000_channels);
- 	indio_dev->name = LMP91000_DRV_NAME;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	i2c_set_clientdata(client, indio_dev);
- 
-diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
-index 2e99eeb27f2e..1283ac1c2e03 100644
---- a/drivers/iio/proximity/ping.c
-+++ b/drivers/iio/proximity/ping.c
-@@ -309,7 +309,6 @@ static int ping_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "ping";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &ping_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ping_chan_spec;
-diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-index 5b369645ef49..a8e716dbd24e 100644
---- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-+++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-@@ -270,7 +270,6 @@ static int lidar_probe(struct i2c_client *client,
- 	indio_dev->name = LIDAR_DRV_NAME;
- 	indio_dev->channels = lidar_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(lidar_channels);
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	i2c_set_clientdata(client, indio_dev);
-diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-index 568b76e06385..2a3acff431d7 100644
---- a/drivers/iio/proximity/srf04.c
-+++ b/drivers/iio/proximity/srf04.c
-@@ -317,7 +317,6 @@ static int srf04_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	indio_dev->name = "srf04";
--	indio_dev->dev.parent = &pdev->dev;
- 	indio_dev->info = &srf04_iio_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = srf04_chan_spec;
-diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
-index b23ce446b7be..6677221d5818 100644
---- a/drivers/iio/proximity/srf08.c
-+++ b/drivers/iio/proximity/srf08.c
-@@ -483,7 +483,6 @@ static int srf08_probe(struct i2c_client *client,
- 	}
- 
- 	indio_dev->name = id->name;
--	indio_dev->dev.parent = &client->dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = srf08_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(srf08_channels);
-diff --git a/drivers/iio/temperature/tsys01.c b/drivers/iio/temperature/tsys01.c
-index d41f050c2fea..2c631a1ca33b 100644
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -160,7 +160,6 @@ static int tsys01_probe(struct iio_dev *indio_dev, struct device *dev)
- 
- 	indio_dev->info = &tsys01_info;
- 	indio_dev->name = dev->driver->name;
--	indio_dev->dev.parent = dev;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = tsys01_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(tsys01_channels);
-diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-index 9cb3d0e42c38..ccbafcaaf27e 100644
---- a/drivers/staging/iio/addac/adt7316.c
-+++ b/drivers/staging/iio/addac/adt7316.c
-@@ -2171,7 +2171,6 @@ int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
- 	if ((chip->id & ID_FAMILY_MASK) == ID_ADT75XX)
- 		chip->int_mask |= ADT7516_AIN_INT_MASK;
- 
--	indio_dev->dev.parent = dev;
- 	if ((chip->id & ID_FAMILY_MASK) == ID_ADT75XX)
- 		indio_dev->info = &adt7516_info;
- 	else
--- 
-2.25.1
-
+T24gV2VkLCAyMDIwLTA2LTAzIGF0IDE0OjQwICswMzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3Jv
+dGU6DQo+IFRoaXMgcGF0Y2ggdXBkYXRlcyB0aGUge2Rldm1ffWlpb19kZXZpY2VfYWxsb2MoKSBm
+dW5jdGlvbnMgdG8gYXV0b21hdGljYWxseQ0KPiBhc3NpZ24gdGhlIHBhcmVudCBkZXZpY2Ugb24g
+YWxsb2NhdGlvbi4NCj4gRm9yIGlpb19kZXZpY2VfYWxsb2MoKSB0aGlzIG1lYW5zIGEgbmV3IHBh
+cmFtZXRlci4NCj4gRm9yIGRldm1faWlvX2RldmljZV9hbGxvYygpIHRoaXMgbWVhbnMgYSBuZXcg
+YmVoYXZpb3I7IHRoZSBkZXZpY2Ugb2JqZWN0IGlzDQo+IHRoZSBwYXJlbnQuIEZvciB0aGlzIG9u
+ZSwgdGhpcyBpcyB0aGUgY29tbW9uIGNhc2UgZm9yIG1vc3QgZHJpdmVycyAoZXhjZXB0DQo+IG9u
+ZTogJ2xtMzUzMy1hbHMnKS4NCj4gDQo+IEZvciB0aGUgc3BlY2lhbCBjYXNlcyBhbiBpaW9fZGV2
+aWNlX3NldF9wYXJlbnQoKSBoYXMgYmVlbiBjcmVhdGVkIHRvIGNoYW5nZQ0KPiB0aGUgcGFyZW50
+IGJldHdlZSBhbGxvY2F0aW9uICYgcmVnaXN0cmF0aW9uLg0KPiBUaGUgcHVycG9zZSBvZiB0aGlz
+IGhlbHBlciwgaXMgbW9zdGx5IHRvIGhpZ2hsaWdodCB0aGUgbmV3IGJlaGF2aW9yIG9mDQo+IGRl
+dm1faWlvX2RldmljZV9hbGxvYygpLg0KPiANCj4gVGhpcyBwYXRjaHNldCBhbHNvIHJlbW92ZXMg
+ZXhwbGljaXQgcGFyZW50IGFzc2lnbm1lbnRzIGZyb20gbW9zdCBJSU8NCj4gZHJpdmVycyAoZXhj
+ZXB0IGZvciBsbTM1MzMtYWxzKS4NCj4gDQo+IFVzaW5nIGEgc2VtYW50aWMgcGF0Y2gsIGFib3V0
+IDMwMyBkcml2ZXJzIGFyZSB1cGRhdGVkLCBhbmQgc29tZSBuZWVkZWQgc29tZQ0KPiBtYW51YWwg
+YXR0ZW50aW9uLiBUaGlzIGlzIHByb2JhYmx5IGR1ZSB0byBzb21lIGxpbWl0YXRpb25zIG9mIHNw
+YXRjaC4gQXQNCj4gbGVhc3QgaW4gc29tZSBjYXNlcyB0aGUgcGFyZW50IGRldmljZSBpcyBub3Qg
+dGhlIHNhbWUgdmFyaWFibGUgYXMgcGFzc2VkIHRvDQo+IGRldm1faWlvX2RldmljZV9hbGxvYygp
+LCBPUiB0aGUgcGFyZW50IGFzc2lnbm1lbnQgaXMgbW92ZWQgdG8gYSBzZXBhcmF0ZQ0KPiBmdW5j
+dGlvbiB0aGFuIHdoZXJlIGRldm1faWlvX2RldmljZV9hbGxvYygpIGlzIGNhbGxlZC4NCj4gDQoN
+CkZvcmdvdCB0byBleHBsaWNpdGx5IENDIEpvbmF0aGFuLg0KQnV0IEknbSBob3BpbmcgdGhpcyBz
+aG93cyB1cCBmcm9tIHRoZSBsaXN0Lg0KDQo+IENoYW5nZWxvZyB2MSAtPiB2MjoNCj4gKiBhZGRl
+ZCBpaW9fZGV2aWNlX3NldF9wYXJlbnQoKSBoZWxwZXIgKG5ldyBjb21taXQpDQo+ICogdXBkYXRl
+IGNvbW1pdCBmb3IgbG0zNTMzLWFscyB0byB1c2UgaWlvX2RldmljZV9zZXRfcGFyZW50KCkNCj4g
+DQo+IEFsZXhhbmRydSBBcmRlbGVhbiAoNik6DQo+ICAgaWlvOiBjb3JlOiBwYXNzIHBhcmVudCBk
+ZXZpY2UgYXMgcGFyYW1ldGVyIGR1cmluZyBhbGxvY2F0aW9uDQo+ICAgaWlvOiBjb3JlOiBhZGQg
+aWlvX2RldmljZV9zZXRfcGFyZW50KCkgaGVscGVyDQo+ICAgaWlvOiByZW1vdmUgZXhwbGljaXQg
+SUlPIGRldmljZSBwYXJlbnQgYXNzaWdubWVudA0KPiAgIGlpbzogcmVtb3ZlIGxlZnQtb3ZlciBj
+b21tZW50cyBhYm91dCBwYXJlbnQgYXNzaWdubWVudA0KPiAgIGlpbzogbGlnaHQ6IGxtMzUzMy1h
+bHM6IHVzZSBpaW9fZGV2aWNlX3NldF9wYXJlbnQoKSB0byBhc3NpZ24gcGFyZW50DQo+ICAgaWlv
+OiByZW1vdmUgbGVmdC1vdmVyIHBhcmVudCBhc3NpZ25tZW50cw0KPiANCj4gIGRyaXZlcnMvY291
+bnRlci8xMDQtcXVhZC04LmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvY291
+bnRlci9zdG0zMi1scHRpbWVyLWNudC5jICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2FkaXMxNjIwMS5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2FkaXMxNjIwOS5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2FkeGwzNDVfY29yZS5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2FkeGwzNzIuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2JtYTE4MC5jICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2JtYTIyMF9zcGkuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2JtYTQwMF9jb3JlLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2JtYzE1MC1hY2NlbC1jb3JlLmMgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2RhMjgwLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2RhMzExLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2RtYXJkMDYuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2RtYXJkMDkuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2RtYXJkMTAuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2hpZC1zZW5zb3ItYWNjZWwtM2QuYyAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2t4Y2prLTEwMTMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL2t4c2Q5LmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21jMzIzMC5jICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21tYTc0NTVfY29yZS5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21tYTc2NjAuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21tYTg0NTIuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21tYTk1NTEuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL21tYTk1NTMuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL214YzQwMDUuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL214YzYyNTUuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL3NjYTMwMDAuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL3NzcF9hY2NlbF9zZW5zb3IuYyAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL3N0azgzMTIuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FjY2VsL3N0azhiYTUwLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hYjg1MDAtZ3BhZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcwOTFyLWJhc2UuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcxMjQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcxOTIuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcyNjYuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcyOTEuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcyOTIuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDcyOTguYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlv
+L2FkYy9hZDc0NzYuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyIC0tDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NjA2LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NzY2LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NzY4LTEuYyAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NzgwLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NzkxLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3NzkzLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL2lp
+by9hZGMvYWQ3ODg3LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMiAtLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2FkNzkyMy5jICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2FkNzk0OS5jICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2FkNzk5eC5jICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2FkaS1heGktYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2FzcGVlZF9hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2F0OTEtc2FtYTVkMl9hZGMuYyAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2F0OTFfYWRjLmMgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2F4cDIweF9hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2F4cDI4OF9hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2JjbV9pcHJvY19hZGMuYyAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2JlcmxpbjItYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2NjMTAwMDFfYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2NwY2FwLWFkYy5jICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2RhOTE1MC1ncGFkYy5jICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2RsbjItYWRjLmMgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2VudmVsb3BlLWRldGVjdG9yLmMgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2VwOTN4eF9hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2V4eW5vc19hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2ZzbC1pbXgyNS1nY3EuYyAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2hpODQzNS5jICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2h4NzExLmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2lteDdkX2FkYy5jICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2luYTJ4eC1hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2luZ2VuaWMtYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2ludGVsX21yZmxkX2FkYy5jICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2xwODc4OF9hZGMuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2xwYzE4eHhfYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2xwYzMyeHhfYWRjLmMgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2x0YzI0NzEuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL2x0YzI0ODUuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL21heDEwMjcuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL21heDExMTAwLmMgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL21heDExMTguYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL21heDEyNDEuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9p
+aW8vYWRjL21heDEzNjMuYyAgICAgICAgICAgICAgICAgICAgIHwgIDIgLS0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tYXg5NjExLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tY3AzMjB4LmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tY3AzNDIyLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tY3AzOTExLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tZW5fejE4OF9hZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tZXNvbl9zYXJhZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9tdDY1NzdfYXV4YWRjLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9teHMtbHJhZGMtYWRjLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9uYXU3ODAyLmMgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9ucGNtX2FkYy5jICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9wYWxtYXNfZ3BhZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9xY29tLXBtOHh4eC14b2FkYy5jICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9xY29tLXNwbWktYWRjNS5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9xY29tLXNwbWktaWFkYy5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9xY29tLXNwbWktdmFkYy5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9yY2FyLWd5cm9hZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9ybjV0NjE4LWFkYy5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9yb2NrY2hpcF9zYXJhZGMuYyAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zYzI3eHhfYWRjLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zZF9hZGNfbW9kdWxhdG9yLmMgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zcGVhcl9hZGMuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zdG0zMi1hZGMuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zdG0zMi1kZnNkbS1hZGMuYyAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zdG1wZS1hZGMuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zdHgxMDQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy9zdW40aS1ncGFkYy1paW8uYyAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMwODFjLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMwODMyLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMwODRzMDIxLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMxMDhzMTAyLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMxMjEzOC5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMxMjhzMDUyLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZGMxNjFzNjI2LmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZHMxMDE1LmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZHMxMjRzMDguYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZHM3OTUwLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZHM4MzQ0LmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS1hZHM4Njg4LmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aS10bGM0NTQxLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90aV9hbTMzNXhfYWRjLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90d2w0MDMwLW1hZGMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy90d2w2MDMwLWdwYWRjLmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy92ZjYxMF9hZGMuYyAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy92aXBlcmJvYXJkX2FkYy5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FkYy94aWxpbngteGFkYy1jb3JlLmMgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FmZS9paW8tcmVzY2FsZS5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FtcGxpZmllcnMvYWQ4MzY2LmMgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2FtcGxpZmllcnMvaG1jNDI1YS5jICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL2Ftcy1pYXEtY29yZS5jICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL2F0bGFzLXNlbnNvci5jICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL2JtZTY4MF9jb3JlLmMgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL2NjczgxMS5jICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL3BtczcwMDMuYyAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL3NncDMwLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL3NwczMwLmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2NoZW1pY2FsL3Z6ODl4LmMgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2RhYy9hZDUwNjQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2RhYy9hZDUzNjAuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2RhYy9hZDUzODAuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2RhYy9hZDU0MjEuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxIC0NCj4gIGRyaXZlcnMv
+aWlvL2RhYy9hZDU0NDYuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyIC0tDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NDQ5LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NTA0LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NTkyci1iYXNlLmMgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NjI0cl9zcGkuYyAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1Njg2LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NzU1LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NzU4LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NzYxLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NzY0LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1Nzcwci5jICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ1NzkxLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ3MzAzLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvYWQ4ODAxLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvY2lvLWRhYy5jICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvZHBvdC1kYWMuYyAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvZHM0NDI0LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvbHBjMTh4eF9kYWMuYyAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvbHRjMTY2MC5jICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvbHRjMjYzMi5jICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJz
+L2lpby9kYWMvbTYyMzMyLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMyAtLS0NCj4gIGRyaXZl
+cnMvaWlvL2RhYy9tYXg1MTcuYyAgICAgICAgICAgICAgICAgICAgICB8ICAzIC0tLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL21heDU4MjEuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL21jcDQ3MjUuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL21jcDQ5MjIuYyAgICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3N0bTMyLWRhYy5jICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3RpLWRhYzA4MnMwODUuYyAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3RpLWRhYzU1NzEuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3RpLWRhYzczMTEuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3RpLWRhYzc2MTIuYyAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZGFjL3ZmNjEwX2RhYy5jICAgICAgICAgICAgICAgICAgIHwgIDEgLQ0KPiAgZHJp
+dmVycy9paW8vZHVtbXkvaWlvX3NpbXBsZV9kdW1teS5jICAgICAgICAgIHwgMTQgKysrKysrLS0t
+LS0NCj4gIGRyaXZlcnMvaWlvL2ZyZXF1ZW5jeS9hZDk1MjMuYyAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ZyZXF1ZW5jeS9hZGY0MzUwLmMgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ZyZXF1ZW5jeS9hZGY0MzcxLmMgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYWRpczE2MDgwLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYWRpczE2MTMwLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYWRpczE2MTM2LmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYWRpczE2MjYwLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYWR4cnM0NTAuYyAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vYm1nMTYwX2NvcmUuYyAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vZnhhczIxMDAyY19jb3JlLmMgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vaGlkLXNlbnNvci1neXJvLTNkLmMgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vaXRnMzIwMF9jb3JlLmMgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vbXB1MzA1MC1jb3JlLmMgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2d5cm8vc3NwX2d5cm9fc2Vuc29yLmMgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2hlYWx0aC9hZmU0NDAzLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2hlYWx0aC9hZmU0NDA0LmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2hlYWx0aC9tYXgzMDEwMC5jICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2hlYWx0aC9tYXgzMDEwMi5jICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2FtMjMxNS5jICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2RodDExLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2hkYzEwMHguYyAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2hpZC1zZW5zb3ItaHVtaWRpdHkuYyAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2h0czIyMV9jb3JlLmMgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L2h0dTIxLmMgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L3NpNzAwNS5jICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2h1bWlkaXR5L3NpNzAyMC5jICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9hZGlzMTY0MDAuYyAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9hZGlzMTY0NjAuYyAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9hZGlzMTY0NzUuYyAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9hZGlzMTY0ODAuYyAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9ibWkxNjAvYm1pMTYwX2NvcmUuYyAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9meG9zODcwMF9jb3JlLmMgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9pbnZfbXB1NjA1MC9pbnZfbXB1X2NvcmUuYyAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9rbXg2MS5jICAgICAgICAgICAgICAgICAgICAgICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfY29yZS5jICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfc2h1Yi5jICB8ICAx
+IC0NCj4gIGRyaXZlcnMvaWlvL2luZHVzdHJpYWxpby1jb3JlLmMgICAgICAgICAgICAgICB8IDEx
+ICsrKysrLS0tLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYWNwaS1hbHMuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYWRqZF9zMzExLmMgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYWR1eDEwMjAuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYWwzMDEwLmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYWwzMzIwYS5jICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYXBkczkzMDAuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYXBkczk5NjAuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYmgxNzUwLmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvYmgxNzgwLmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvY20zMjE4MS5jICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvY20zMjMyLmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvY20zMzIzLmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvY20zNjA1LmMgICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvY20zNjY1MS5jICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvZ3AyYXAwMDIuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvZ3AyYXAwMjBhMDBmLmMgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMuYyAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1wcm94LmMgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaXFzNjIxLWFscy5jICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaXNsMjkwMTguYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaXNsMjkwMjguYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvaXNsMjkxMjUuYyAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvanNhMTIxMi5jICAgICAgICAgICAgICAg
+ICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9paW8vbGlnaHQvbG0zNTMzLWFscy5jICAgICAgICAgICAg
+ICAgIHwgIDIgKy0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L2x0cjUwMS5jICAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L2x2MDEwNGNzLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L21heDQ0MDAwLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L21heDQ0MDA5LmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L25vYTEzMDUuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L29wdDMwMDEuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3BhMTIyMDMwMDEuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3JwcjA1MjEuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3NpMTEzMy5jICAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3NpMTE0NS5jICAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3N0X3V2aXMyNV9jb3JlLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3N0azMzMTAuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RjczM0MTQuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RjczM0NzIuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RzbDI1NjMuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RzbDI1ODMuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RzbDI3NzIuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3RzbDQ1MzEuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3VzNTE4MmQuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3Zjbmw0MDAwLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3Zjbmw0MDM1LmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3ZlbWw2MDMwLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3ZlbWw2MDcwLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3ZsNjE4MC5jICAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL2xpZ2h0L3pvcHQyMjAxLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9hazg5NzQuYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9hazg5NzUuYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9ibWMxNTBfbWFnbi5jICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9oaWQtc2Vuc29yLW1hZ24t
+M2QuYyB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9obWM1ODQzX2NvcmUuYyAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9tYWczMTEwLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9tbWMzNTI0MC5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9ybTMxMDAtY29yZS5jICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL211bHRpcGxleGVyL2lpby1tdXguYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL29yaWVudGF0aW9uL2hpZC1zZW5zb3ItaW5jbC0z
+ZC5jICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL29yaWVudGF0aW9uL2hpZC1zZW5zb3Itcm90YXRp
+b24uYyB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Bvc2l0aW9uL2lxczYyNC1wb3MuYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvYWQ1MjcyLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvZHMxODAzLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWF4NTQzMi5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWF4NTQ4MS5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWF4NTQ4Ny5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWNwNDAxOC5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWNwNDEwMTAuYyAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWNwNDEzMS5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvbWNwNDUzMS5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvbWV0ZXIvdHBsMDEwMi5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3BvdGVudGlvc3RhdC9sbXA5MTAwMC5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2FicDA2MG1nLmMgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2JtcDI4MC1jb3JlLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2RsaGw2MGQuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2RwczMxMC5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2hpZC1zZW5zb3ItcHJlc3MuYyAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2hwMDMuYyAgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2hwMjA2Yy5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL2ljcDEwMTAwLmMgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL21wbDExNS5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL21wbDMxMTUuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL21zNTYzNy5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL3Q1NDAzLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3ByZXNzdXJlL3pwYTIzMjYuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9hczM5MzUuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9pc2wyOTUwMS5jICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9tYjEyMzIuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9waW5nLmMgICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIC4uLi9paW8vcHJveGltaXR5L3B1bHNlZGxpZ2h0LWxpZGFyLWxpdGUt
+djIuYyB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9yZmQ3NzQwMi5jICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9zcmYwNC5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9zcmYwOC5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9zeDkzMTAuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS9zeDk1MDAuYyAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Byb3hpbWl0eS92bDUzbDB4LWkyYy5jICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Jlc29sdmVyL2FkMnMxMjAwLmMgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3Jlc29sdmVyL2FkMnM5MC5jICAgICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIC4uLi9paW8vdGVtcGVyYXR1cmUvaGlkLXNlbnNvci10ZW1wZXJhdHVy
+ZS5jICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL2lxczYyMGF0LXRlbXAuYyAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL2x0YzI5ODMuYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL21heDMxODU2LmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL21heGltX3RoZXJtb2NvdXBs
+ZS5jICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL21seDkwNjE0LmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL21seDkwNjMyLmMgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL3RtcDAwNi5jICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL3RtcDAwNy5jICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL3RzeXMwMS5jICAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL3RzeXMwMmQuYyAgICAgICAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaWlvL3RyaWdnZXIvc3RtMzItdGltZXItdHJpZ2dlci5j
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvaW5wdXQvdG91Y2hzY3JlZW4vdHNjMjAwN19paW8uYyAg
+ICAgICB8ICAxIC0NCj4gIGRyaXZlcnMvcGxhdGZvcm0veDg2L3Rvc2hpYmFfYWNwaS5jICAgICAg
+ICAgICB8ICAzICstLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9Eb2N1bWVudGF0aW9uL2Rldmlj
+ZS50eHQgIHwgIDQgKy0tLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9hY2NlbC9hZGlzMTYyMDMu
+YyAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9hY2NlbC9hZGlzMTYyNDAu
+YyAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9hZGMvYWQ3MjgwYS5jICAg
+ICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9hZGMvYWQ3ODE2LmMgICAg
+ICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9hZGRhYy9hZHQ3MzE2LmMg
+ICAgICAgICAgIHwgIDEgLQ0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9jZGMvYWQ3MTUwLmMgICAg
+ICAgICAgICAgIHwgIDIgLS0NCj4gIGRyaXZlcnMvc3RhZ2luZy9paW8vY2RjL2FkNzc0Ni5jICAg
+ICAgICAgICAgICB8ICAyIC0tDQo+ICBkcml2ZXJzL3N0YWdpbmcvaWlvL2ZyZXF1ZW5jeS9hZDk4
+MzIuYyAgICAgICAgfCAgMSAtDQo+ICBkcml2ZXJzL3N0YWdpbmcvaWlvL2ZyZXF1ZW5jeS9hZDk4
+MzQuYyAgICAgICAgfCAgMSAtDQo+ICAuLi4vc3RhZ2luZy9paW8vaW1wZWRhbmNlLWFuYWx5emVy
+L2FkNTkzMy5jICAgfCAgMSAtDQo+ICBkcml2ZXJzL3N0YWdpbmcvaWlvL3Jlc29sdmVyL2FkMnMx
+MjEwLmMgICAgICAgfCAgMSAtDQo+ICBpbmNsdWRlL2xpbnV4L2lpby9paW8uaCAgICAgICAgICAg
+ICAgICAgICAgICAgfCAyNCArKysrKysrKysrKysrKysrKy0tDQo+ICAzMzUgZmlsZXMgY2hhbmdl
+ZCwgMzkgaW5zZXJ0aW9ucygrKSwgMzU4IGRlbGV0aW9ucygtKQ0KPiANCg==

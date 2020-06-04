@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F751EE978
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jun 2020 19:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 377FF1EE982
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jun 2020 19:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730229AbgFDRdu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Jun 2020 13:33:50 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2280 "EHLO huawei.com"
+        id S1730183AbgFDRfX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Jun 2020 13:35:23 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2281 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730225AbgFDRdt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 4 Jun 2020 13:33:49 -0400
+        id S1729998AbgFDRfX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 4 Jun 2020 13:35:23 -0400
 Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 6E7DA16FDD645861FE83;
-        Thu,  4 Jun 2020 18:33:47 +0100 (IST)
+        by Forcepoint Email with ESMTP id E4705494E0476DA16F7B;
+        Thu,  4 Jun 2020 18:35:21 +0100 (IST)
 Received: from localhost (10.47.94.122) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Thu, 4 Jun 2020
- 18:33:46 +0100
-Date:   Thu, 4 Jun 2020 18:33:03 +0100
+ 18:35:21 +0100
+Date:   Thu, 4 Jun 2020 18:34:40 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Gene Chen <gene.chen.richtek@gmail.com>
-CC:     <jic23@kernel.org>, <matthias.bgg@gmail.com>, <knaack.h@gmx.de>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <gene_chen@richtek.com>,
-        <Wilma.Wu@mediatek.com>, <shufan_lee@richtek.com>,
-        <cy_huang@richtek.com>, <benjamin.chao@mediatek.com>
-Subject: Re: [PATCH] iio: adc: mt6360: Add ADC driver for MT6360
-Message-ID: <20200604183303.000006a6@Huawei.com>
-In-Reply-To: <1591239631-12265-1-git-send-email-gene.chen.richtek@gmail.com>
-References: <1591239631-12265-1-git-send-email-gene.chen.richtek@gmail.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "johan@kernel.org" <johan@kernel.org>
+Subject: Re: [PATCH v2 0/6] iio: core: pass parent device as parameter
+ during allocation
+Message-ID: <20200604183440.00003fb3@Huawei.com>
+In-Reply-To: <0049dcc6f543e41978bbb7c731b43ab20e6f647d.camel@analog.com>
+References: <20200603114023.175102-1-alexandru.ardelean@analog.com>
+        <0049dcc6f543e41978bbb7c731b43ab20e6f647d.camel@analog.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -47,579 +46,389 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 4 Jun 2020 11:00:31 +0800
-Gene Chen <gene.chen.richtek@gmail.com> wrote:
+On Wed, 3 Jun 2020 11:41:52 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> From: Gene Chen <gene_chen@richtek.com>
+> On Wed, 2020-06-03 at 14:40 +0300, Alexandru Ardelean wrote:
+> > This patch updates the {devm_}iio_device_alloc() functions to automatically
+> > assign the parent device on allocation.
+> > For iio_device_alloc() this means a new parameter.
+> > For devm_iio_device_alloc() this means a new behavior; the device object is
+> > the parent. For this one, this is the common case for most drivers (except
+> > one: 'lm3533-als').
+> > 
+> > For the special cases an iio_device_set_parent() has been created to change
+> > the parent betwee allocation & registration.
+> > The purpose of this helper, is mostly to highlight the new behavior of
+> > devm_iio_device_alloc().
+> > 
+> > This patchset also removes explicit parent assignments from most IIO
+> > drivers (except for lm3533-als).
+> > 
+> > Using a semantic patch, about 303 drivers are updated, and some needed some
+> > manual attention. This is probably due to some limitations of spatch. At
+> > least in some cases the parent device is not the same variable as passed to
+> > devm_iio_device_alloc(), OR the parent assignment is moved to a separate
+> > function than where devm_iio_device_alloc() is called.
+> >   
 > 
-> Add MT6360 ADC driver include Charger Current, Voltage, and
-> Temperature.
+> Forgot to explicitly CC Jonathan.
+> But I'm hoping this shows up from the list.
+
+No problem.  I filter anything going to the list into the same folder
+whether or not I'm cc'd :) Well several folders on different machines via
+different email addresses, but you get the idea...
+
+
 > 
-> Signed-off-by: Gene Chen <gene_chen@richtek.com>
-> base-commit: 098c4adf249c198519a4abebe482b1e6b8c50e47
-
-Hi Gene,
-
-Comments inline.
-
-I'd like to understand more in particularly on why the thread, rather than
-using one of the standard triggers that handles that for you?
-(I can think of a few reasons but better to hear from you!)
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/Kconfig      |  11 ++
->  drivers/iio/adc/Makefile     |   1 +
->  drivers/iio/adc/mt6360-adc.c | 419 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 431 insertions(+)
->  create mode 100644 drivers/iio/adc/mt6360-adc.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 12bb8b7..a9736ec 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -657,6 +657,17 @@ config MCP3911
->  	  This driver can also be built as a module. If so, the module will be
->  	  called mcp3911.
->  
-> +config MEDIATEK_MT6360_ADC
-> +	tristate "Mediatek MT6360 ADC Part"
-> +	depends on MFD_MT6360
-> +	select IIO_BUFFER
-> +	select IIO_KFIFO_BUF
-> +	help
-> +	  Say Y here to enable MT6360 ADC Part.
-> +	  Integrated for System Monitoring include
-> +	  Charger and Battery Current, Voltage and
-> +	  Terperature
-
-Temperature
-
-> +
->  config MEDIATEK_MT6577_AUXADC
->  	tristate "MediaTek AUXADC driver"
->  	depends on ARCH_MEDIATEK || COMPILE_TEST
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 6378078..4209776 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -62,6 +62,7 @@ obj-$(CONFIG_MAX9611) += max9611.o
->  obj-$(CONFIG_MCP320X) += mcp320x.o
->  obj-$(CONFIG_MCP3422) += mcp3422.o
->  obj-$(CONFIG_MCP3911) += mcp3911.o
-> +obj-$(CONFIG_MEDIATEK_MT6360_ADC) += mt6360-adc.o
->  obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
->  obj-$(CONFIG_MEN_Z188_ADC) += men_z188_adc.o
->  obj-$(CONFIG_MESON_SARADC) += meson_saradc.o
-> diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
-> new file mode 100644
-> index 0000000..bc9c488
-> --- /dev/null
-> +++ b/drivers/iio/adc/mt6360-adc.c
-> @@ -0,0 +1,419 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2020 MediaTek Inc.
-> + *
-> + * Author: Gene Chen <gene_chen@richtek.com>
-> + */
-> +
-> +#include <linux/completion.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/kfifo_buf.h>
-> +#include <linux/init.h>
-> +#include <linux/irq.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/kernel.h>
-> +#include <linux/kthread.h>
-> +#include <linux/ktime.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +#include <linux/mfd/mt6360.h>
-> +
-> +/* CHG_CTRL3 0x13 */
-> +#define MT6360_AICR_MASK	(0xFC)
-> +#define MT6360_AICR_SHFT	(2)
-> +#define MT6360_AICR_400MA	(0x6)
-> +/* ADC_CONFIG 0x56 */
-> +#define MT6360_ADCEN_SHFT	(7)
-> +/* ADC_RPT_1 0x5A */
-> +#define MT6360_PREFERCH_MASK	(0xF0)
-> +#define MT6360_PREFERCH_SHFT	(4)
-> +#define MT6360_RPTCH_MASK	(0x0F)
-
-No need for brackets around raw numbers.
-
-> +
-> +enum {
-> +	MT6360_CHAN_USBID = 0,
-> +	MT6360_CHAN_VBUSDIV5,
-> +	MT6360_CHAN_VBUSDIV2,
-> +	MT6360_CHAN_VSYS,
-> +	MT6360_CHAN_VBAT,
-> +	MT6360_CHAN_IBUS,
-> +	MT6360_CHAN_IBAT,
-> +	MT6360_CHAN_CHG_VDDP,
-> +	MT6360_CHAN_TEMP_JC,
-> +	MT6360_CHAN_VREF_TS,
-> +	MT6360_CHAN_TS,
-> +	MT6360_CHAN_MAX,
-> +};
-> +
-> +struct mt6360_adc_data {
-> +	struct device *dev;
-> +	struct regmap *regmap;
-> +	struct task_struct *scan_task;
-> +	struct completion adc_complete;
-> +	struct mutex adc_lock;
-> +	ktime_t last_off_timestamps[MT6360_CHAN_MAX];
-> +	int irq;
-> +};
-> +
-> +static inline int mt6360_adc_val_converte(int val, int multiplier,
-> +					   int offset, int divisor)
-> +{
-> +	return ((val * multiplier) + offset) / divisor;
-> +}
-> +
-> +static int mt6360_adc_get_process_val(struct mt6360_adc_data *info,
-> +				      int chan_idx, int *val)
-> +{
-> +	unsigned int regval = 0;
-> +	int ret;
-> +	const struct converter {
-> +		int multiplier;
-> +		int offset;
-> +		int divisor;
-> +	} adc_converter[MT6360_CHAN_MAX] = {
-> +		{ 1250, 0, 1}, /* USBID */
-> +		{ 6250, 0, 1}, /* VBUSDIV5 */
-> +		{ 2500, 0, 1}, /* VBUSDIV2 */
-> +		{ 1250, 0, 1}, /* VSYS */
-> +		{ 1250, 0, 1}, /* VBAT */
-> +		{ 2500, 0, 1}, /* IBUS */
-> +		{ 2500, 0, 1}, /* IBAT */
-> +		{ 1250, 0, 1}, /* CHG_VDDP */
-> +		{ 105, -8000, 100}, /* TEMP_JC */
-> +		{ 1250, 0, 1}, /* VREF_TS */
-> +		{ 1250, 0, 1}, /* TS */
-> +	}, sp_ibus_adc_converter = { 1900, 0, 1 }, *sel_converter;
-> +
-> +	if (chan_idx < 0 || chan_idx >= MT6360_CHAN_MAX)
-> +		return -EINVAL;
-> +	sel_converter = adc_converter + chan_idx;
-> +	if (chan_idx == MT6360_CHAN_IBUS) {
-> +		/* ibus chan will be affected by aicr config */
-> +		/* if aicr < 400, apply the special ibus converter */
-> +		ret = regmap_read(info->regmap, MT6360_PMU_CHG_CTRL3, &regval);
-> +		if (ret < 0)
-> +			return ret;
-> +		regval = (regval & MT6360_AICR_MASK) >> MT6360_AICR_SHFT;
-> +		if (regval < MT6360_AICR_400MA)
-> +			sel_converter = &sp_ibus_adc_converter;
-> +	}
-> +	*val = mt6360_adc_val_converte(*val, sel_converter->multiplier,
-> +				 sel_converter->offset, sel_converter->divisor);
-As mentioned below. Preference is always for linear conversion to be left
-to consumers, either in userspace or when in kernel let the core code
-deal with applying them.
-
-So unless I'm missing something we should have offset and scale provided
-via appropriate IIO_INFO elements and read_raw callbacks.
-
-> +	return 0;
-> +}
-> +
-> +static int mt6360_adc_read_raw(struct iio_dev *iio_dev,
-> +			       const struct iio_chan_spec *chan,
-> +			       int *val, int *val2, long mask)
-> +{
-> +	struct mt6360_adc_data *mad = iio_priv(iio_dev);
-> +	long timeout;
-> +	u8 tmp[2], rpt[3];
-> +	ktime_t start_t, predict_end_t;
-> +	int ret;
-> +
-> +	mutex_lock(&mad->adc_lock);
-> +	/* select preferred channel that we want */
-> +	ret = regmap_update_bits(mad->regmap,
-> +				 MT6360_PMU_ADC_RPT_1, MT6360_PREFERCH_MASK,
-> +				 chan->channel << MT6360_PREFERCH_SHFT);
-> +	if (ret < 0)
-> +		goto err_adc_init;
-
-Blank line here would help readability a tiny bit.
-Same in other cases where you have a statement then an error handling block.
-
-> +	/* enable adc channel we want and adc_en */
-> +	memset(tmp, 0, sizeof(tmp));
-> +	tmp[0] |= BIT(MT6360_ADCEN_SHFT);
-> +	tmp[(chan->channel / 8) ? 0 : 1] |= BIT(chan->channel % 8);
-
-Hmm. This a write into a 16 bit big endian buffer I think. Would it better
-to just treat it as an __be16?
-
-> +	ret = regmap_bulk_write(mad->regmap,
-> +				MT6360_PMU_ADC_CONFIG, tmp, sizeof(tmp));
-> +	if (ret < 0)
-> +		goto err_adc_init;
-> +	start_t = ktime_get();
-> +	predict_end_t = ktime_add_ms(
-> +				   mad->last_off_timestamps[chan->channel], 50);
-> +	if (ktime_after(start_t, predict_end_t))
-> +		predict_end_t = ktime_add_ms(start_t, 25);
-> +	else
-> +		predict_end_t = ktime_add_ms(start_t, 75);
-> +	enable_irq(mad->irq);
-
-So why do we need to only enable the irq here. I would have assumed it
-would not happen until we trigger a read?
-
-> +retry:
-> +	reinit_completion(&mad->adc_complete);
-
-Always reinit completion before enabling the irq.  Too many races happen when doing
-it the other way around.
-
-> +	/* wait for conversion to complete */
-> +	timeout = wait_for_completion_interruptible_timeout(
-> +				     &mad->adc_complete, msecs_to_jiffies(200));
-> +	if (timeout == 0) {
-> +		ret = -ETIMEDOUT;
-> +		goto err_adc_conv;
-> +	} else if (timeout < 0) {
-> +		ret = -EINTR;
-> +		goto err_adc_conv;
-> +	}
-> +	memset(rpt, 0, sizeof(rpt));
-If reading the whole size of rpt we should never need to zero it.
-
-> +	ret = regmap_bulk_read(mad->regmap,
-> +			       MT6360_PMU_ADC_RPT_1, rpt, sizeof(rpt));
-> +	if (ret < 0)
-> +		goto err_adc_conv;
-> +	/* get report channel */
-> +	if ((rpt[0] & MT6360_RPTCH_MASK) != chan->channel) {
-> +		dev_dbg(&iio_dev->dev,
-> +			"not wanted channel report [%02x]\n", rpt[0]);
-> +		goto retry;
-> +	}
-> +	if (!ktime_after(ktime_get(), predict_end_t)) {
-> +		dev_dbg(&iio_dev->dev, "time is not after 26ms chan_time\n");
-> +		goto retry;
-> +	}
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		*val = (rpt[1] << 8) | rpt[2];
-As mentioned below. It's normally an either / or for processed and raw.
-When conversion is linear we prefer to push the maths to userspace.
-If it's not you have no real choice but to do it in kernel and the raw
-reading isn't much use.
-
-> +		break;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		*val = (rpt[1] << 8) | rpt[2];
-> +		ret = mt6360_adc_get_process_val(mad, chan->channel, val);
-> +		if (ret < 0)
-> +			goto err_adc_conv;
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +	ret = IIO_VAL_INT;
-> +err_adc_conv:
-> +	disable_irq(mad->irq);
-> +	/* whatever disable all channel and keep adc_en*/
-> +	memset(tmp, 0, sizeof(tmp));
-> +	tmp[0] |= BIT(MT6360_ADCEN_SHFT);
-> +	regmap_bulk_write(mad->regmap, MT6360_PMU_ADC_CONFIG, tmp, sizeof(tmp));
-> +	mad->last_off_timestamps[chan->channel] = ktime_get();
-> +	/* set prefer channel to 0xf */
-> +	regmap_update_bits(mad->regmap, MT6360_PMU_ADC_RPT_1,
-> +			   MT6360_PREFERCH_MASK, 0xF << MT6360_PREFERCH_SHFT);
-> +err_adc_init:
-> +	mutex_unlock(&mad->adc_lock);
-> +	return ret;
-> +}
-> +
-> +static const struct iio_info mt6360_adc_iio_info = {
-> +	.read_raw = mt6360_adc_read_raw,
-> +};
-> +
-> +#define MT6360_ADC_CHAN(_idx, _type) {				\
-> +	.type = _type,						\
-> +	.channel = MT6360_CHAN_##_idx,				\
-> +	.scan_index = MT6360_CHAN_##_idx,			\
-> +	.scan_type =  {						\
-> +		.sign = 's',					\
-> +		.realbits = 32,					\
-> +		.storagebits = 32,				\
-> +		.shift = 0,					\
-> +		.endianness = IIO_CPU,				\
-> +	},							\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-> +				BIT(IIO_CHAN_INFO_PROCESSED),	\
-
-It very rarely makes sense to provide both raw and processed.
-Why are you doing so here?
-
-> +	.datasheet_name = #_idx,				\
-> +	.indexed = 1,						\
-> +}
-> +
-> +static const struct iio_chan_spec mt6360_adc_channels[] = {
-> +	MT6360_ADC_CHAN(USBID, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(VBUSDIV5, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(VBUSDIV2, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(VSYS, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(VBAT, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(IBUS, IIO_CURRENT),
-> +	MT6360_ADC_CHAN(IBAT, IIO_CURRENT),
-> +	MT6360_ADC_CHAN(CHG_VDDP, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(TEMP_JC, IIO_TEMP),
-> +	MT6360_ADC_CHAN(VREF_TS, IIO_VOLTAGE),
-> +	MT6360_ADC_CHAN(TS, IIO_VOLTAGE),
-> +	IIO_CHAN_SOFT_TIMESTAMP(MT6360_CHAN_MAX),
-> +};
-> +
-> +static irqreturn_t mt6360_pmu_adc_donei_handler(int irq, void *data)
-> +{
-> +	struct mt6360_adc_data *mad = iio_priv(data);
-> +
-> +	complete(&mad->adc_complete);
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int mt6360_adc_scan_task_threadfn(void *data)
-> +{
-> +	struct mt6360_adc_data *mad = data;
-> +	struct iio_dev *indio_dev = iio_priv_to_dev(mad);
-> +	int channel_vals[MT6360_CHAN_MAX];
-
-__aligned(8) for the above as iio_push_to_buffers_with_timestamp
-needs to be able to write an aligned 8 byte timestamp.
-Also is that buffer long enough to allow for that timestamp?
-
-}
-
-> +	int i, bit, var = 0;
-> +	int ret;
-> +
-> +	while (!kthread_should_stop()) {
-
-So this is spinning as fast as possible?   Seems like some sort
-of delay should be in here.   Why not use an existing trigger
-to do this given it's sample on demand?
-We have both the hrtimer trigger and a tight loop trigger
-to handle usecases like this?
-
-Is it todo with in kernel consumers?
-
-
-> +		memset(channel_vals, 0, sizeof(channel_vals));
-> +		i = 0;
-> +		for_each_set_bit(bit, indio_dev->active_scan_mask,
-> +				 indio_dev->masklength) {
-> +			ret = mt6360_adc_read_raw(indio_dev,
-> +						  mt6360_adc_channels + bit,
-> +						  &var, NULL,
-> +						  IIO_CHAN_INFO_PROCESSED);
-> +			if (ret < 0)
-> +				dev_err(mad->dev, "get adc[%d] fail\n", bit);
-> +			channel_vals[i++] = var;
-> +			if (kthread_should_stop())
-> +				goto out;
-> +		}
-> +		iio_push_to_buffers_with_timestamp(indio_dev, channel_vals,
-> +						   iio_get_time_ns(indio_dev));
-> +	}
-> +out:
-> +	do_exit(0);
-> +	return 0;
-> +}
-> +
-> +static int mt6360_adc_iio_post_enable(struct iio_dev *iio_dev)
-> +{
-> +	struct mt6360_adc_data *mad = iio_priv(iio_dev);
-> +
-> +	mad->scan_task = kthread_run(mt6360_adc_scan_task_threadfn, mad,
-> +				     "scan_thread.%s", dev_name(&iio_dev->dev));
-> +	return PTR_ERR_OR_ZERO(mad->scan_task);
-> +}
-> +
-> +static int mt6360_adc_iio_pre_disable(struct iio_dev *iio_dev)
-> +{
-> +	struct mt6360_adc_data *mad = iio_priv(iio_dev);
-> +
-> +	if (mad->scan_task) {
-
-How could you get here without this being true?
-
-> +		kthread_stop(mad->scan_task);
-> +		mad->scan_task = NULL;
-> +	}
-> +	return 0;
-> +}
-> +
-> +static const struct iio_buffer_setup_ops mt6360_adc_iio_setup_ops = {
-> +	.postenable = mt6360_adc_iio_post_enable,
-> +	.predisable = mt6360_adc_iio_pre_disable,
-> +};
-> +
-> +static int mt6360_adc_iio_device_register(struct iio_dev *indio_dev)
-> +{
-> +	struct mt6360_adc_data *mad = iio_priv(indio_dev);
-> +	struct iio_buffer *buffer;
-> +	int ret;
-> +
-> +	indio_dev->name = dev_name(mad->dev);
-> +	indio_dev->dev.parent = mad->dev;
-> +	indio_dev->dev.of_node = mad->dev->of_node;
-> +	indio_dev->info = &mt6360_adc_iio_info;
-> +	indio_dev->channels = mt6360_adc_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(mt6360_adc_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
-> +	indio_dev->setup_ops = &mt6360_adc_iio_setup_ops;
-> +	buffer = devm_iio_kfifo_allocate(mad->dev);
-> +	if (!buffer)
-> +		return -ENOMEM;
-> +	iio_device_attach_buffer(indio_dev, buffer);
-> +	ret = devm_iio_device_register(mad->dev, indio_dev);
-> +	if (ret < 0) {
-Where possible use simple if (ret) as is can slightly simplify flow.
-> +		dev_err(mad->dev, "Failed to register iio device\n");
-> +		return ret;
-> +	}
-> +	return 0;
-
-	return ret; drop it out of the above brackets having changed
-the check.
-
-> +}
-> +
-> +static inline int mt6360_adc_reset(struct mt6360_adc_data *info)
-> +{
-> +	u8 tmp[3] = {0x80, 0, 0};
-> +	ktime_t all_off_time;
-> +	int i;
-> +
-> +	all_off_time = ktime_get();
-> +	for (i = 0; i < MT6360_CHAN_MAX; i++)
-> +		info->last_off_timestamps[i] = all_off_time;
-> +	/* enable adc_en, clear adc_chn_en/zcv/en/adc_wait_t/adc_idle_t */
-> +	return regmap_bulk_write(info->regmap,
-> +				 MT6360_PMU_ADC_CONFIG, tmp, sizeof(tmp));
-> +}
-> +
-> +static int mt6360_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct mt6360_adc_data *mad;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*mad));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	mad = iio_priv(indio_dev);
-> +	mad->dev = &pdev->dev;
-> +	init_completion(&mad->adc_complete);
-> +	mutex_init(&mad->adc_lock);
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	mad->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-> +	if (!mad->regmap) {
-> +		dev_err(&pdev->dev, "Failed to get parent regmap\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = mt6360_adc_reset(mad);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "Failed to reset adc\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = mt6360_adc_iio_device_register(indio_dev);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "Failed to register iio device\n");
-> +		return ret;
-> +	}
-> +
-> +	mad->irq = platform_get_irq_byname(pdev, "adc_donei");
-> +	if (mad->irq < 0) {
-> +		dev_err(&pdev->dev, "Failed to get adc_done irq\n");
-> +		return mad->irq;
-> +	}
-> +
-> +	irq_set_status_flags(mad->irq, IRQ_NOAUTOEN);
-> +	ret = devm_request_threaded_irq(&pdev->dev, mad->irq, NULL,
-> +					mt6360_pmu_adc_donei_handler,
-> +					IRQF_TRIGGER_FALLING, "adc_donei",
-> +					platform_get_drvdata(pdev));
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "Failed to register adc_done irq\n");
-> +		return ret;
-> +	}
-
-It's unusual to register an interrupt 'after' we have made the userspace
-and inkernel ABIs available (as they can often cause the interrupt to fire).
-
-So I'd normally expect the iio_device_register call to be very last one
-in probe.  Why is it not in this case?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int mt6360_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct mt6360_adc_data *mad = platform_get_drvdata(pdev);
-> +
-> +	if (mad->scan_task)
-> +		kthread_stop(mad->scan_task);
-
-I'm a bit surprised this is needed.  Remove should result in
-iio_device_unregister being called which should smoothly shut
-down any buffered capture that is ongoing and I would have
-assumed would hence stop the thread.
-
-You may have an ordering issue though.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id __maybe_unused mt6360_adc_of_id[] = {
-> +	{ .compatible = "mediatek,mt6360_adc", },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, mt6360_adc_of_id);
-> +
-> +static struct platform_driver mt6360_adc_driver = {
-> +	.driver = {
-> +		.name = "mt6360_adc",
-> +		.owner = THIS_MODULE,
-> +		.of_match_table = of_match_ptr(mt6360_adc_of_id),
-
-Whilst it is fairly unlikely I guess that someone might want to use
-ACPI to probe this lets not prevent it without good reason
-(via the magic PRP0001) ID so please drop the of_match_ptr protection.
-
-> +	},
-> +	.probe = mt6360_adc_probe,
-> +	.remove = mt6360_adc_remove,
-> +};
-> +module_platform_driver(mt6360_adc_driver);
-> +
-> +MODULE_AUTHOR("Gene Chen <gene_chen@richtek.com>");
-> +MODULE_DESCRIPTION("MT6360 ADC Driver");
-> +MODULE_LICENSE("GPL v2");
+> > Changelog v1 -> v2:
+> > * added iio_device_set_parent() helper (new commit)
+> > * update commit for lm3533-als to use iio_device_set_parent()
+> > 
+> > Alexandru Ardelean (6):
+> >   iio: core: pass parent device as parameter during allocation
+> >   iio: core: add iio_device_set_parent() helper
+> >   iio: remove explicit IIO device parent assignment
+> >   iio: remove left-over comments about parent assignment
+> >   iio: light: lm3533-als: use iio_device_set_parent() to assign parent
+> >   iio: remove left-over parent assignments
+> > 
+> >  drivers/counter/104-quad-8.c                  |  1 -
+> >  drivers/counter/stm32-lptimer-cnt.c           |  1 -
+> >  drivers/iio/accel/adis16201.c                 |  1 -
+> >  drivers/iio/accel/adis16209.c                 |  1 -
+> >  drivers/iio/accel/adxl345_core.c              |  1 -
+> >  drivers/iio/accel/adxl372.c                   |  1 -
+> >  drivers/iio/accel/bma180.c                    |  1 -
+> >  drivers/iio/accel/bma220_spi.c                |  1 -
+> >  drivers/iio/accel/bma400_core.c               |  1 -
+> >  drivers/iio/accel/bmc150-accel-core.c         |  1 -
+> >  drivers/iio/accel/da280.c                     |  1 -
+> >  drivers/iio/accel/da311.c                     |  1 -
+> >  drivers/iio/accel/dmard06.c                   |  1 -
+> >  drivers/iio/accel/dmard09.c                   |  1 -
+> >  drivers/iio/accel/dmard10.c                   |  1 -
+> >  drivers/iio/accel/hid-sensor-accel-3d.c       |  1 -
+> >  drivers/iio/accel/kxcjk-1013.c                |  1 -
+> >  drivers/iio/accel/kxsd9.c                     |  1 -
+> >  drivers/iio/accel/mc3230.c                    |  1 -
+> >  drivers/iio/accel/mma7455_core.c              |  1 -
+> >  drivers/iio/accel/mma7660.c                   |  1 -
+> >  drivers/iio/accel/mma8452.c                   |  1 -
+> >  drivers/iio/accel/mma9551.c                   |  1 -
+> >  drivers/iio/accel/mma9553.c                   |  1 -
+> >  drivers/iio/accel/mxc4005.c                   |  1 -
+> >  drivers/iio/accel/mxc6255.c                   |  1 -
+> >  drivers/iio/accel/sca3000.c                   |  1 -
+> >  drivers/iio/accel/ssp_accel_sensor.c          |  1 -
+> >  drivers/iio/accel/stk8312.c                   |  1 -
+> >  drivers/iio/accel/stk8ba50.c                  |  1 -
+> >  drivers/iio/adc/ab8500-gpadc.c                |  1 -
+> >  drivers/iio/adc/ad7091r-base.c                |  1 -
+> >  drivers/iio/adc/ad7124.c                      |  1 -
+> >  drivers/iio/adc/ad7192.c                      |  1 -
+> >  drivers/iio/adc/ad7266.c                      |  1 -
+> >  drivers/iio/adc/ad7291.c                      |  1 -
+> >  drivers/iio/adc/ad7292.c                      |  1 -
+> >  drivers/iio/adc/ad7298.c                      |  1 -
+> >  drivers/iio/adc/ad7476.c                      |  2 --
+> >  drivers/iio/adc/ad7606.c                      |  1 -
+> >  drivers/iio/adc/ad7766.c                      |  1 -
+> >  drivers/iio/adc/ad7768-1.c                    |  1 -
+> >  drivers/iio/adc/ad7780.c                      |  1 -
+> >  drivers/iio/adc/ad7791.c                      |  1 -
+> >  drivers/iio/adc/ad7793.c                      |  1 -
+> >  drivers/iio/adc/ad7887.c                      |  2 --
+> >  drivers/iio/adc/ad7923.c                      |  1 -
+> >  drivers/iio/adc/ad7949.c                      |  1 -
+> >  drivers/iio/adc/ad799x.c                      |  1 -
+> >  drivers/iio/adc/adi-axi-adc.c                 |  1 -
+> >  drivers/iio/adc/aspeed_adc.c                  |  1 -
+> >  drivers/iio/adc/at91-sama5d2_adc.c            |  1 -
+> >  drivers/iio/adc/at91_adc.c                    |  1 -
+> >  drivers/iio/adc/axp20x_adc.c                  |  1 -
+> >  drivers/iio/adc/axp288_adc.c                  |  1 -
+> >  drivers/iio/adc/bcm_iproc_adc.c               |  1 -
+> >  drivers/iio/adc/berlin2-adc.c                 |  1 -
+> >  drivers/iio/adc/cc10001_adc.c                 |  1 -
+> >  drivers/iio/adc/cpcap-adc.c                   |  1 -
+> >  drivers/iio/adc/da9150-gpadc.c                |  1 -
+> >  drivers/iio/adc/dln2-adc.c                    |  1 -
+> >  drivers/iio/adc/envelope-detector.c           |  1 -
+> >  drivers/iio/adc/ep93xx_adc.c                  |  1 -
+> >  drivers/iio/adc/exynos_adc.c                  |  1 -
+> >  drivers/iio/adc/fsl-imx25-gcq.c               |  1 -
+> >  drivers/iio/adc/hi8435.c                      |  1 -
+> >  drivers/iio/adc/hx711.c                       |  1 -
+> >  drivers/iio/adc/imx7d_adc.c                   |  1 -
+> >  drivers/iio/adc/ina2xx-adc.c                  |  1 -
+> >  drivers/iio/adc/ingenic-adc.c                 |  1 -
+> >  drivers/iio/adc/intel_mrfld_adc.c             |  1 -
+> >  drivers/iio/adc/lp8788_adc.c                  |  1 -
+> >  drivers/iio/adc/lpc18xx_adc.c                 |  1 -
+> >  drivers/iio/adc/lpc32xx_adc.c                 |  1 -
+> >  drivers/iio/adc/ltc2471.c                     |  1 -
+> >  drivers/iio/adc/ltc2485.c                     |  1 -
+> >  drivers/iio/adc/max1027.c                     |  1 -
+> >  drivers/iio/adc/max11100.c                    |  1 -
+> >  drivers/iio/adc/max1118.c                     |  1 -
+> >  drivers/iio/adc/max1241.c                     |  1 -
+> >  drivers/iio/adc/max1363.c                     |  2 --
+> >  drivers/iio/adc/max9611.c                     |  1 -
+> >  drivers/iio/adc/mcp320x.c                     |  1 -
+> >  drivers/iio/adc/mcp3422.c                     |  1 -
+> >  drivers/iio/adc/mcp3911.c                     |  1 -
+> >  drivers/iio/adc/men_z188_adc.c                |  1 -
+> >  drivers/iio/adc/meson_saradc.c                |  1 -
+> >  drivers/iio/adc/mt6577_auxadc.c               |  1 -
+> >  drivers/iio/adc/mxs-lradc-adc.c               |  1 -
+> >  drivers/iio/adc/nau7802.c                     |  1 -
+> >  drivers/iio/adc/npcm_adc.c                    |  1 -
+> >  drivers/iio/adc/palmas_gpadc.c                |  1 -
+> >  drivers/iio/adc/qcom-pm8xxx-xoadc.c           |  1 -
+> >  drivers/iio/adc/qcom-spmi-adc5.c              |  1 -
+> >  drivers/iio/adc/qcom-spmi-iadc.c              |  1 -
+> >  drivers/iio/adc/qcom-spmi-vadc.c              |  1 -
+> >  drivers/iio/adc/rcar-gyroadc.c                |  1 -
+> >  drivers/iio/adc/rn5t618-adc.c                 |  1 -
+> >  drivers/iio/adc/rockchip_saradc.c             |  1 -
+> >  drivers/iio/adc/sc27xx_adc.c                  |  1 -
+> >  drivers/iio/adc/sd_adc_modulator.c            |  1 -
+> >  drivers/iio/adc/spear_adc.c                   |  1 -
+> >  drivers/iio/adc/stm32-adc.c                   |  1 -
+> >  drivers/iio/adc/stm32-dfsdm-adc.c             |  1 -
+> >  drivers/iio/adc/stmpe-adc.c                   |  1 -
+> >  drivers/iio/adc/stx104.c                      |  1 -
+> >  drivers/iio/adc/sun4i-gpadc-iio.c             |  1 -
+> >  drivers/iio/adc/ti-adc081c.c                  |  1 -
+> >  drivers/iio/adc/ti-adc0832.c                  |  1 -
+> >  drivers/iio/adc/ti-adc084s021.c               |  1 -
+> >  drivers/iio/adc/ti-adc108s102.c               |  1 -
+> >  drivers/iio/adc/ti-adc12138.c                 |  1 -
+> >  drivers/iio/adc/ti-adc128s052.c               |  1 -
+> >  drivers/iio/adc/ti-adc161s626.c               |  1 -
+> >  drivers/iio/adc/ti-ads1015.c                  |  1 -
+> >  drivers/iio/adc/ti-ads124s08.c                |  1 -
+> >  drivers/iio/adc/ti-ads7950.c                  |  1 -
+> >  drivers/iio/adc/ti-ads8344.c                  |  1 -
+> >  drivers/iio/adc/ti-ads8688.c                  |  1 -
+> >  drivers/iio/adc/ti-tlc4541.c                  |  1 -
+> >  drivers/iio/adc/ti_am335x_adc.c               |  1 -
+> >  drivers/iio/adc/twl4030-madc.c                |  1 -
+> >  drivers/iio/adc/twl6030-gpadc.c               |  1 -
+> >  drivers/iio/adc/vf610_adc.c                   |  1 -
+> >  drivers/iio/adc/viperboard_adc.c              |  1 -
+> >  drivers/iio/adc/xilinx-xadc-core.c            |  1 -
+> >  drivers/iio/afe/iio-rescale.c                 |  1 -
+> >  drivers/iio/amplifiers/ad8366.c               |  1 -
+> >  drivers/iio/amplifiers/hmc425a.c              |  1 -
+> >  drivers/iio/chemical/ams-iaq-core.c           |  1 -
+> >  drivers/iio/chemical/atlas-sensor.c           |  1 -
+> >  drivers/iio/chemical/bme680_core.c            |  1 -
+> >  drivers/iio/chemical/ccs811.c                 |  1 -
+> >  drivers/iio/chemical/pms7003.c                |  1 -
+> >  drivers/iio/chemical/sgp30.c                  |  1 -
+> >  drivers/iio/chemical/sps30.c                  |  1 -
+> >  drivers/iio/chemical/vz89x.c                  |  1 -
+> >  drivers/iio/dac/ad5064.c                      |  1 -
+> >  drivers/iio/dac/ad5360.c                      |  1 -
+> >  drivers/iio/dac/ad5380.c                      |  1 -
+> >  drivers/iio/dac/ad5421.c                      |  1 -
+> >  drivers/iio/dac/ad5446.c                      |  2 --
+> >  drivers/iio/dac/ad5449.c                      |  1 -
+> >  drivers/iio/dac/ad5504.c                      |  1 -
+> >  drivers/iio/dac/ad5592r-base.c                |  1 -
+> >  drivers/iio/dac/ad5624r_spi.c                 |  1 -
+> >  drivers/iio/dac/ad5686.c                      |  1 -
+> >  drivers/iio/dac/ad5755.c                      |  1 -
+> >  drivers/iio/dac/ad5758.c                      |  1 -
+> >  drivers/iio/dac/ad5761.c                      |  1 -
+> >  drivers/iio/dac/ad5764.c                      |  1 -
+> >  drivers/iio/dac/ad5770r.c                     |  1 -
+> >  drivers/iio/dac/ad5791.c                      |  1 -
+> >  drivers/iio/dac/ad7303.c                      |  1 -
+> >  drivers/iio/dac/ad8801.c                      |  1 -
+> >  drivers/iio/dac/cio-dac.c                     |  1 -
+> >  drivers/iio/dac/dpot-dac.c                    |  1 -
+> >  drivers/iio/dac/ds4424.c                      |  1 -
+> >  drivers/iio/dac/lpc18xx_dac.c                 |  1 -
+> >  drivers/iio/dac/ltc1660.c                     |  1 -
+> >  drivers/iio/dac/ltc2632.c                     |  1 -
+> >  drivers/iio/dac/m62332.c                      |  3 ---
+> >  drivers/iio/dac/max517.c                      |  3 ---
+> >  drivers/iio/dac/max5821.c                     |  1 -
+> >  drivers/iio/dac/mcp4725.c                     |  1 -
+> >  drivers/iio/dac/mcp4922.c                     |  1 -
+> >  drivers/iio/dac/stm32-dac.c                   |  1 -
+> >  drivers/iio/dac/ti-dac082s085.c               |  1 -
+> >  drivers/iio/dac/ti-dac5571.c                  |  1 -
+> >  drivers/iio/dac/ti-dac7311.c                  |  1 -
+> >  drivers/iio/dac/ti-dac7612.c                  |  1 -
+> >  drivers/iio/dac/vf610_dac.c                   |  1 -
+> >  drivers/iio/dummy/iio_simple_dummy.c          | 14 ++++++-----
+> >  drivers/iio/frequency/ad9523.c                |  1 -
+> >  drivers/iio/frequency/adf4350.c               |  1 -
+> >  drivers/iio/frequency/adf4371.c               |  1 -
+> >  drivers/iio/gyro/adis16080.c                  |  1 -
+> >  drivers/iio/gyro/adis16130.c                  |  1 -
+> >  drivers/iio/gyro/adis16136.c                  |  1 -
+> >  drivers/iio/gyro/adis16260.c                  |  1 -
+> >  drivers/iio/gyro/adxrs450.c                   |  1 -
+> >  drivers/iio/gyro/bmg160_core.c                |  1 -
+> >  drivers/iio/gyro/fxas21002c_core.c            |  1 -
+> >  drivers/iio/gyro/hid-sensor-gyro-3d.c         |  1 -
+> >  drivers/iio/gyro/itg3200_core.c               |  1 -
+> >  drivers/iio/gyro/mpu3050-core.c               |  1 -
+> >  drivers/iio/gyro/ssp_gyro_sensor.c            |  1 -
+> >  drivers/iio/health/afe4403.c                  |  1 -
+> >  drivers/iio/health/afe4404.c                  |  1 -
+> >  drivers/iio/health/max30100.c                 |  1 -
+> >  drivers/iio/health/max30102.c                 |  1 -
+> >  drivers/iio/humidity/am2315.c                 |  1 -
+> >  drivers/iio/humidity/dht11.c                  |  1 -
+> >  drivers/iio/humidity/hdc100x.c                |  1 -
+> >  drivers/iio/humidity/hid-sensor-humidity.c    |  1 -
+> >  drivers/iio/humidity/hts221_core.c            |  1 -
+> >  drivers/iio/humidity/htu21.c                  |  1 -
+> >  drivers/iio/humidity/si7005.c                 |  1 -
+> >  drivers/iio/humidity/si7020.c                 |  1 -
+> >  drivers/iio/imu/adis16400.c                   |  1 -
+> >  drivers/iio/imu/adis16460.c                   |  1 -
+> >  drivers/iio/imu/adis16475.c                   |  1 -
+> >  drivers/iio/imu/adis16480.c                   |  1 -
+> >  drivers/iio/imu/bmi160/bmi160_core.c          |  1 -
+> >  drivers/iio/imu/fxos8700_core.c               |  1 -
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  1 -
+> >  drivers/iio/imu/kmx61.c                       |  1 -
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  1 -
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c  |  1 -
+> >  drivers/iio/industrialio-core.c               | 11 +++++----
+> >  drivers/iio/light/acpi-als.c                  |  1 -
+> >  drivers/iio/light/adjd_s311.c                 |  1 -
+> >  drivers/iio/light/adux1020.c                  |  1 -
+> >  drivers/iio/light/al3010.c                    |  1 -
+> >  drivers/iio/light/al3320a.c                   |  1 -
+> >  drivers/iio/light/apds9300.c                  |  1 -
+> >  drivers/iio/light/apds9960.c                  |  1 -
+> >  drivers/iio/light/bh1750.c                    |  1 -
+> >  drivers/iio/light/bh1780.c                    |  1 -
+> >  drivers/iio/light/cm32181.c                   |  1 -
+> >  drivers/iio/light/cm3232.c                    |  1 -
+> >  drivers/iio/light/cm3323.c                    |  1 -
+> >  drivers/iio/light/cm3605.c                    |  1 -
+> >  drivers/iio/light/cm36651.c                   |  1 -
+> >  drivers/iio/light/gp2ap002.c                  |  1 -
+> >  drivers/iio/light/gp2ap020a00f.c              |  1 -
+> >  drivers/iio/light/hid-sensor-als.c            |  1 -
+> >  drivers/iio/light/hid-sensor-prox.c           |  1 -
+> >  drivers/iio/light/iqs621-als.c                |  1 -
+> >  drivers/iio/light/isl29018.c                  |  1 -
+> >  drivers/iio/light/isl29028.c                  |  1 -
+> >  drivers/iio/light/isl29125.c                  |  1 -
+> >  drivers/iio/light/jsa1212.c                   |  1 -
+> >  drivers/iio/light/lm3533-als.c                |  2 +-
+> >  drivers/iio/light/ltr501.c                    |  1 -
+> >  drivers/iio/light/lv0104cs.c                  |  1 -
+> >  drivers/iio/light/max44000.c                  |  1 -
+> >  drivers/iio/light/max44009.c                  |  1 -
+> >  drivers/iio/light/noa1305.c                   |  1 -
+> >  drivers/iio/light/opt3001.c                   |  1 -
+> >  drivers/iio/light/pa12203001.c                |  1 -
+> >  drivers/iio/light/rpr0521.c                   |  1 -
+> >  drivers/iio/light/si1133.c                    |  1 -
+> >  drivers/iio/light/si1145.c                    |  1 -
+> >  drivers/iio/light/st_uvis25_core.c            |  1 -
+> >  drivers/iio/light/stk3310.c                   |  1 -
+> >  drivers/iio/light/tcs3414.c                   |  1 -
+> >  drivers/iio/light/tcs3472.c                   |  1 -
+> >  drivers/iio/light/tsl2563.c                   |  1 -
+> >  drivers/iio/light/tsl2583.c                   |  1 -
+> >  drivers/iio/light/tsl2772.c                   |  1 -
+> >  drivers/iio/light/tsl4531.c                   |  1 -
+> >  drivers/iio/light/us5182d.c                   |  1 -
+> >  drivers/iio/light/vcnl4000.c                  |  1 -
+> >  drivers/iio/light/vcnl4035.c                  |  1 -
+> >  drivers/iio/light/veml6030.c                  |  1 -
+> >  drivers/iio/light/veml6070.c                  |  1 -
+> >  drivers/iio/light/vl6180.c                    |  1 -
+> >  drivers/iio/light/zopt2201.c                  |  1 -
+> >  drivers/iio/magnetometer/ak8974.c             |  1 -
+> >  drivers/iio/magnetometer/ak8975.c             |  1 -
+> >  drivers/iio/magnetometer/bmc150_magn.c        |  1 -
+> >  drivers/iio/magnetometer/hid-sensor-magn-3d.c |  1 -
+> >  drivers/iio/magnetometer/hmc5843_core.c       |  1 -
+> >  drivers/iio/magnetometer/mag3110.c            |  1 -
+> >  drivers/iio/magnetometer/mmc35240.c           |  1 -
+> >  drivers/iio/magnetometer/rm3100-core.c        |  1 -
+> >  drivers/iio/multiplexer/iio-mux.c             |  1 -
+> >  drivers/iio/orientation/hid-sensor-incl-3d.c  |  1 -
+> >  drivers/iio/orientation/hid-sensor-rotation.c |  1 -
+> >  drivers/iio/position/iqs624-pos.c             |  1 -
+> >  drivers/iio/potentiometer/ad5272.c            |  1 -
+> >  drivers/iio/potentiometer/ds1803.c            |  1 -
+> >  drivers/iio/potentiometer/max5432.c           |  1 -
+> >  drivers/iio/potentiometer/max5481.c           |  1 -
+> >  drivers/iio/potentiometer/max5487.c           |  1 -
+> >  drivers/iio/potentiometer/mcp4018.c           |  1 -
+> >  drivers/iio/potentiometer/mcp41010.c          |  1 -
+> >  drivers/iio/potentiometer/mcp4131.c           |  1 -
+> >  drivers/iio/potentiometer/mcp4531.c           |  1 -
+> >  drivers/iio/potentiometer/tpl0102.c           |  1 -
+> >  drivers/iio/potentiostat/lmp91000.c           |  1 -
+> >  drivers/iio/pressure/abp060mg.c               |  1 -
+> >  drivers/iio/pressure/bmp280-core.c            |  1 -
+> >  drivers/iio/pressure/dlhl60d.c                |  1 -
+> >  drivers/iio/pressure/dps310.c                 |  1 -
+> >  drivers/iio/pressure/hid-sensor-press.c       |  1 -
+> >  drivers/iio/pressure/hp03.c                   |  1 -
+> >  drivers/iio/pressure/hp206c.c                 |  1 -
+> >  drivers/iio/pressure/icp10100.c               |  1 -
+> >  drivers/iio/pressure/mpl115.c                 |  1 -
+> >  drivers/iio/pressure/mpl3115.c                |  1 -
+> >  drivers/iio/pressure/ms5637.c                 |  1 -
+> >  drivers/iio/pressure/t5403.c                  |  1 -
+> >  drivers/iio/pressure/zpa2326.c                |  1 -
+> >  drivers/iio/proximity/as3935.c                |  1 -
+> >  drivers/iio/proximity/isl29501.c              |  1 -
+> >  drivers/iio/proximity/mb1232.c                |  1 -
+> >  drivers/iio/proximity/ping.c                  |  1 -
+> >  .../iio/proximity/pulsedlight-lidar-lite-v2.c |  1 -
+> >  drivers/iio/proximity/rfd77402.c              |  1 -
+> >  drivers/iio/proximity/srf04.c                 |  1 -
+> >  drivers/iio/proximity/srf08.c                 |  1 -
+> >  drivers/iio/proximity/sx9310.c                |  1 -
+> >  drivers/iio/proximity/sx9500.c                |  1 -
+> >  drivers/iio/proximity/vl53l0x-i2c.c           |  1 -
+> >  drivers/iio/resolver/ad2s1200.c               |  1 -
+> >  drivers/iio/resolver/ad2s90.c                 |  1 -
+> >  .../iio/temperature/hid-sensor-temperature.c  |  1 -
+> >  drivers/iio/temperature/iqs620at-temp.c       |  1 -
+> >  drivers/iio/temperature/ltc2983.c             |  1 -
+> >  drivers/iio/temperature/max31856.c            |  1 -
+> >  drivers/iio/temperature/maxim_thermocouple.c  |  1 -
+> >  drivers/iio/temperature/mlx90614.c            |  1 -
+> >  drivers/iio/temperature/mlx90632.c            |  1 -
+> >  drivers/iio/temperature/tmp006.c              |  1 -
+> >  drivers/iio/temperature/tmp007.c              |  1 -
+> >  drivers/iio/temperature/tsys01.c              |  1 -
+> >  drivers/iio/temperature/tsys02d.c             |  1 -
+> >  drivers/iio/trigger/stm32-timer-trigger.c     |  1 -
+> >  drivers/input/touchscreen/tsc2007_iio.c       |  1 -
+> >  drivers/platform/x86/toshiba_acpi.c           |  3 +--
+> >  drivers/staging/iio/Documentation/device.txt  |  4 +---
+> >  drivers/staging/iio/accel/adis16203.c         |  1 -
+> >  drivers/staging/iio/accel/adis16240.c         |  1 -
+> >  drivers/staging/iio/adc/ad7280a.c             |  1 -
+> >  drivers/staging/iio/adc/ad7816.c              |  1 -
+> >  drivers/staging/iio/addac/adt7316.c           |  1 -
+> >  drivers/staging/iio/cdc/ad7150.c              |  2 --
+> >  drivers/staging/iio/cdc/ad7746.c              |  2 --
+> >  drivers/staging/iio/frequency/ad9832.c        |  1 -
+> >  drivers/staging/iio/frequency/ad9834.c        |  1 -
+> >  .../staging/iio/impedance-analyzer/ad5933.c   |  1 -
+> >  drivers/staging/iio/resolver/ad2s1210.c       |  1 -
+> >  include/linux/iio/iio.h                       | 24 +++++++++++++++++--
+> >  335 files changed, 39 insertions(+), 358 deletions(-)
+> >   
 
 

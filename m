@@ -2,18 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4FD21EFF05
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jun 2020 19:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC7E1EFEFA
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jun 2020 19:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgFEReX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Jun 2020 13:34:23 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:39126 "EHLO
+        id S1728193AbgFEReL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Jun 2020 13:34:11 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:39248 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728056AbgFERd5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Jun 2020 13:33:57 -0400
+        with ESMTP id S1728074AbgFERd7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Jun 2020 13:33:59 -0400
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: andrzej.p)
-        with ESMTPSA id AFFDA2A5089
+        with ESMTPSA id 6441C2A5091
 From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
         Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
         kernel@collabora.com
-Subject: [PATCH v3 5/7] iio: adc: exynos: Use input_device_enabled()
-Date:   Fri,  5 Jun 2020 19:33:33 +0200
-Message-Id: <20200605173335.13753-6-andrzej.p@collabora.com>
+Subject: [PATCH v3 6/7] platform/x86: thinkpad_acpi: Use input_device_enabled()
+Date:   Fri,  5 Jun 2020 19:33:34 +0200
+Message-Id: <20200605173335.13753-7-andrzej.p@collabora.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200605173335.13753-1-andrzej.p@collabora.com>
 References: <20200604072853.GP89269@dtor-ws>
@@ -63,45 +63,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-A new helper is available, so use it. Inspecting 'users' member of
-input_dev requires taking device's mutex.
+Use the new helper. Inspecting input device's 'users' member needs to be
+done under device's mutex, so add appropriate invocations.
 
 Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Acked-by: Henrique de Moraes Holschuh <hmh@hmh.eng.br>
 ---
- drivers/iio/adc/exynos_adc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 22131a677445..294715bafe25 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -630,10 +630,13 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
- 	struct exynos_adc *info = dev_id;
- 	struct iio_dev *dev = dev_get_drvdata(info->dev);
- 	u32 x, y;
--	bool pressed;
-+	bool pressed, cont;
- 	int ret;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 0f704484ae1d..8ae11b8c3ebb 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -2671,9 +2671,10 @@ static void hotkey_poll_setup(const bool may_warn)
+ 	const u32 poll_driver_mask = hotkey_driver_mask & hotkey_source_mask;
+ 	const u32 poll_user_mask = hotkey_user_mask & hotkey_source_mask;
  
--	while (info->input->users) {
-+	mutex_lock(&info->input->mutex);
-+	cont = input_device_enabled(info->input);
-+	mutex_unlock(&info->input->mutex);
-+	while (cont) {
- 		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
- 		if (ret == -ETIMEDOUT)
- 			break;
-@@ -651,6 +654,10 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
- 		input_sync(info->input);
- 
- 		usleep_range(1000, 1100);
-+
-+		mutex_lock(&info->input->mutex);
-+		cont = input_device_enabled(info->input);
-+		mutex_unlock(&info->input->mutex);
++	mutex_lock(&tpacpi_inputdev->mutex);
+ 	if (hotkey_poll_freq > 0 &&
+ 	    (poll_driver_mask ||
+-	     (poll_user_mask && tpacpi_inputdev->users > 0))) {
++	     (poll_user_mask && input_device_enabled(tpacpi_inputdev)))) {
+ 		if (!tpacpi_hotkey_task) {
+ 			tpacpi_hotkey_task = kthread_run(hotkey_kthread,
+ 					NULL, TPACPI_NVRAM_KTHREAD_NAME);
+@@ -2690,6 +2691,7 @@ static void hotkey_poll_setup(const bool may_warn)
+ 				  poll_user_mask, poll_driver_mask);
+ 		}
  	}
++	mutex_unlock(&tpacpi_inputdev->mutex);
+ }
  
- 	writel(0, ADC_V1_CLRINTPNDNUP(info->regs));
+ static void hotkey_poll_setup_safe(const bool may_warn)
 -- 
 2.17.1
 

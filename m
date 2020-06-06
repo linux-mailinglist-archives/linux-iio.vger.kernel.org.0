@@ -2,132 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C66181F0089
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jun 2020 21:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED5F1F06F0
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jun 2020 16:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727877AbgFETuI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Jun 2020 15:50:08 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:41599 "EHLO rere.qmqm.pl"
+        id S1726132AbgFFOYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Jun 2020 10:24:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44652 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727868AbgFETuH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 5 Jun 2020 15:50:07 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 49dtXG0LfBz4D;
-        Fri,  5 Jun 2020 21:49:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1591386603; bh=nw6ZPbzMEGEU3ympvmvF/EBnKh28J/TObnDHFEogcNM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZQGk/WcmQdG+yyITewmCzwmMOtBeMJF66LJXev36YPIF5HrC5ZHZ2yLz3vJylFOY2
-         WT3VOkjF3kAcjfTkMR4gxIzFUE/sY5FqXj8AFOnZJ4Tr6DOXWsqghWyoTnW+bmLd7W
-         jwf7lDWpwE9H61I5VhaqXwCJeCG+3Lg1TEqxk1KZ6vhl2INRouIoCb0udoubFJKGQI
-         IsEim/o9vF8TNZ0H+HPzCDx+zT08J5O7Oou9dsj0/dTuOSTcvd1399RdkvL5g6/Eot
-         j+wtjmvTFf8Ae7wTPa5xvRXyXIACc/X1FvT/PQI7a7lj4fzSUFS7z0POvlS/mwXhVU
-         JIdjeHtEOaibA==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Fri, 5 Jun 2020 21:49:48 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com
-Subject: Re: [PATCH v3 5/7] iio: adc: exynos: Use input_device_enabled()
-Message-ID: <20200605194948.GC9553@qmqm.qmqm.pl>
-References: <20200604072853.GP89269@dtor-ws>
- <20200605173335.13753-1-andrzej.p@collabora.com>
- <20200605173335.13753-6-andrzej.p@collabora.com>
+        id S1726089AbgFFOYe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 6 Jun 2020 10:24:34 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CEA542073E;
+        Sat,  6 Jun 2020 14:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591453474;
+        bh=Y1/f4/nH+s0u6ptB+tYdwkbkOTRyoRPPpr6YE9YAX3s=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=hM7y9iEb5U9FrzWlhkUeD//h9AnHYCC/ixU4SWQUKrdCAIAkIkp710KGoUXDhTOg9
+         OyK7DbIST6Q8v8xYsSvr8X70byJCupLNGq+RVDKYT/RhYfWBW1UlwzEfAoYto8og9p
+         Bxi3/KY6XXRt3WyXbsHpVLPVqiPtUsIhZDJ8NC+Q=
+Date:   Sat, 6 Jun 2020 15:24:30 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: make iio_device_get_drvdata take a const struct
+ iio_dev *.
+Message-ID: <20200606152430.023c9ef6@archlinux>
+In-Reply-To: <SA0PR12MB44290C81C03F7DAEE315DBFBC48B0@SA0PR12MB4429.namprd12.prod.outlook.com>
+References: <20200521175322.247947-1-jic23@kernel.org>
+        <SA0PR12MB44290C81C03F7DAEE315DBFBC48B0@SA0PR12MB4429.namprd12.prod.outlook.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200605173335.13753-6-andrzej.p@collabora.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 05, 2020 at 07:33:33PM +0200, Andrzej Pietrasiewicz wrote:
-> A new helper is available, so use it. Inspecting 'users' member of
-> input_dev requires taking device's mutex.
+On Tue, 2 Jun 2020 07:39:52 +0000
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+
+> Hi Jonathan,
 > 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> simple and perfect.
+> 
+> Thanks,
+> JB
+> 
+> Reviewed-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+
+Applied.
+
+
+Thanks,
+
+Jonathan
+
+> 
+> ________________________________
+> From: jic23@kernel.org <jic23@kernel.org>
+> Sent: Thursday, May 21, 2020 19:53
+> To: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+> Subject: [PATCH] iio: make iio_device_get_drvdata take a const struct iio_dev *.
+> 
+>  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
+> 
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> As this just calls dev_get_drvdata underneath which is happy with
+> a const struct device * we should change and avoid potentially
+> casting away a const in order to then put it back again.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
 > ---
->  drivers/iio/adc/exynos_adc.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  include/linux/iio/iio.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-> index 22131a677445..294715bafe25 100644
-> --- a/drivers/iio/adc/exynos_adc.c
-> +++ b/drivers/iio/adc/exynos_adc.c
-> @@ -630,10 +630,13 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
->  	struct exynos_adc *info = dev_id;
->  	struct iio_dev *dev = dev_get_drvdata(info->dev);
->  	u32 x, y;
-> -	bool pressed;
-> +	bool pressed, cont;
->  	int ret;
->  
-> -	while (info->input->users) {
-> +	mutex_lock(&info->input->mutex);
-> +	cont = input_device_enabled(info->input);
-> +	mutex_unlock(&info->input->mutex);
-> +	while (cont) {
->  		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
->  		if (ret == -ETIMEDOUT)
->  			break;
-> @@ -651,6 +654,10 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
->  		input_sync(info->input);
->  
->  		usleep_range(1000, 1100);
-> +
-> +		mutex_lock(&info->input->mutex);
-> +		cont = input_device_enabled(info->input);
-> +		mutex_unlock(&info->input->mutex);
->  	}
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index a1be82e74c93..e846a0a7001e 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -669,7 +669,7 @@ static inline void iio_device_set_drvdata(struct iio_dev *indio_dev, void *data)
+>   *
+>   * Returns the data previously set with iio_device_set_drvdata()
+>   */
+> -static inline void *iio_device_get_drvdata(struct iio_dev *indio_dev)
+> +static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+>  {
+>          return dev_get_drvdata(&indio_dev->dev);
+>  }
+> --
+> 2.26.2
+> 
 
-The mutex doesn't really protect anything here, but I would nevertheless
-suggest this sequence instead:
-
-lock()
-while (test) {
-	unlock()
-	...
-	lock()
-}
-unlock()
-
-Best Regards,
-Micha³ Miros³aw

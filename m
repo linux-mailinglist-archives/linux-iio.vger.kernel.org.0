@@ -2,78 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D731F0D29
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 18:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484A81F0D82
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbgFGQex (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 12:34:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58540 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726688AbgFGQex (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 12:34:53 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2B732067B;
-        Sun,  7 Jun 2020 16:34:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591547692;
-        bh=sOThE1IKe9KBjuIXTWEJeaPX99JKbVjdIbglgHpFnYg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Tori27Qxc6eVrPCDaK1Ef0g+MdEo/lMT0btUGMBNqg3nZgYKneK8/VH3E6RIEXNix
-         zVlUZpwIV+42YsQX4Vsb1090Bp+2Z/cwQZC+Ia6Bpg9bBUagoAi1NFBQZAvoz/mukB
-         OWoVgxyFXsw/tBXNAFXwxxBTVVyOd27UEr1CSpVo=
-Date:   Sun, 7 Jun 2020 17:34:49 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 01/32] iio: accel: kxsd9: Fix alignment of local buffer.
-Message-ID: <20200607173449.5d357e3b@archlinux>
-In-Reply-To: <CAHp75Ves+9VpAN80RgML=-_2=AyrpYM72Pi6sM6CWxdptiAn2Q@mail.gmail.com>
-References: <20200607155408.958437-1-jic23@kernel.org>
-        <20200607155408.958437-2-jic23@kernel.org>
-        <CAHp75Ves+9VpAN80RgML=-_2=AyrpYM72Pi6sM6CWxdptiAn2Q@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726883AbgFGSAp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 14:00:45 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:51801 "EHLO
+        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726841AbgFGSAp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:00:45 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.156.68])
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 6911955D9B70;
+        Sun,  7 Jun 2020 20:00:42 +0200 (CEST)
+Received: from arch.lan (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 7 Jun 2020
+ 20:00:35 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, <jic23@kernel.org>,
+        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Subject: [PATCH v5 0/4] Add support for SCD30 sensor
+Date:   Sun, 7 Jun 2020 19:58:08 +0200
+Message-ID: <20200607175812.95777-1-tomasz.duszynski@octakon.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [89.70.180.118]
+X-ClientProxiedBy: DAG2EX2.emp2.local (172.16.2.12) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 3119305692199738391
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudegledguddvvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffoggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhephedtgefgkeduvdekheeggefghffhteekleetvdekvddtveeutdetueefueehieetnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 Jun 2020 19:05:15 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Following series adds support for Sensirion SCD30 sensor module capable of
+measuring carbon dioxide, temperature and relative humidity. CO2 measurements
+base on NDIR principle while temperature and relative humidity are measured by
+the on board SHT31. As for sensor communication, both I2C and serial interfaces
+are supported.
 
-> On Sun, Jun 7, 2020 at 6:57 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > iio_push_to_buffers_with_timestamp assumes 8 byte alignment which
-> > is not guaranteed by an array of smaller elements.
-> >
-> > Note that whilst in this particular case the alignment forcing
-> > of the ts element is not strictly necessary it acts as good
-> > documentation.  
-> 
-> ...
-> 
-> > +       struct {
-> > +               __be16 chan[4];
-> > +               s64 ts __aligned(8);
-> > +       } hw_values;  
-> 
-> I'm not sure what __aligned can do better here? It's naturally will be
-> 8 alignment (struct itself due to s64 followed by 4*__be16).
-> 
-Mainly I put it in all cases even when not needed to ensure that
-copy and paste versions keep the alignment statement.  Here I agree
-it does nothing but if someone adds another channel to a driver
-they might miss that they also need to then add the __aligned(8)
-for the timestamp.
+v5:
+* set pressure calibration via output channel
+* use kstrtobool() to read value into _enabled attribute
+* drop explicit parent asignment as the default one is good enough
+  (seems 'iio: core: pass parent device as parameter during allocation'
+   series was accepted)
 
-Jonathan
+v4:
+* improve formatting
+* improve error handling readability
+* fix message validity check on serial write
+
+v3:
+* simplify code by scaling temperature & humidity in _read_meas()
+* update realbits in scan types
+* s/adjecent/adjacent
+* drop IIO_CHAN_INFO_RAW from _write_raw_get_fmt because there's no raw
+  output channel
+* rework locking in _read_raw
+* fix endianess problem on BE machine
+* align timestamp properly before pushing to buffers
+* explain why interrupt gets disabled after registration
+* add trigger validation
+* drop SCALE for temperature and humidity channel as they are processed
+* register action which stops measuring after starting measurements
+* spit generic calibration attr into two doing specific things
+* add comment explaining why priv in struct scd30_state is for
+* rename node in binding example to co2-sensor
+
+v2:
+* move asm/byteorder.h towards the bottom of include list
+* make channel address names in enum more specific
+* add postfixes to defines and extra comments
+* drop unneeded i2c include from scd30 header
+* break generic command sending function into specialized options
+* expose automatic calibration and forced calibration via the same attr
+* use SAMP_FREQ to set frequency instead of meas_interval attr
+* use CALISCALE to set pressure compensation instead of pressure_comp attr
+* use CALIBBIAS to set temperature offset instead of temp_offset attr
+* fix order in MAINTAINERS
+* drop attribute allowing one to reset sensor
+* as we have dt probing drop board file based probing (i2c_device_id)
+* merge patches touching related files
+* use fwnode API to retrieve interrupt from dt
+* fix interrupt-parent spelling
+* change binding license
+* drop supply from required property
+
+Tomasz Duszynski (4):
+  iio: chemical: scd30: add core driver
+  iio: chemical: scd30: add I2C interface driver
+  iio: chemical: scd30: add serial interface driver
+  dt-bindings: iio: scd30: add device binding file
+
+ Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 +
+ .../iio/chemical/sensirion,scd30.yaml         |  68 ++
+ MAINTAINERS                                   |   9 +
+ drivers/iio/chemical/Kconfig                  |  33 +
+ drivers/iio/chemical/Makefile                 |   3 +
+ drivers/iio/chemical/scd30.h                  |  78 ++
+ drivers/iio/chemical/scd30_core.c             | 770 ++++++++++++++++++
+ drivers/iio/chemical/scd30_i2c.c              | 139 ++++
+ drivers/iio/chemical/scd30_serial.c           | 263 ++++++
+ 9 files changed, 1397 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+ create mode 100644 drivers/iio/chemical/scd30.h
+ create mode 100644 drivers/iio/chemical/scd30_core.c
+ create mode 100644 drivers/iio/chemical/scd30_i2c.c
+ create mode 100644 drivers/iio/chemical/scd30_serial.c
+
+--
+2.27.0
 

@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54BD51F0D87
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36FD1F0D8D
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgFGSAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 14:00:47 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:57955 "EHLO
+        id S1726861AbgFGSA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 14:00:57 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:49423 "EHLO
         smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726738AbgFGSAq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:00:46 -0400
+        by vger.kernel.org with ESMTP id S1726830AbgFGSAp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:00:45 -0400
 Received: from pro2.mail.ovh.net (unknown [10.109.156.68])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id A5CA155D9B71;
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id DA14D55D9B72;
         Sun,  7 Jun 2020 20:00:42 +0200 (CEST)
 Received: from arch.lan (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 7 Jun 2020
- 20:00:35 +0200
+ 20:00:36 +0200
 From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
 To:     <linux-iio@vger.kernel.org>
 CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh+dt@kernel.org>, <jic23@kernel.org>,
         <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH v5 1/4] iio: chemical: scd30: add core driver
-Date:   Sun, 7 Jun 2020 19:58:09 +0200
-Message-ID: <20200607175812.95777-2-tomasz.duszynski@octakon.com>
+Subject: [PATCH v5 2/4] iio: chemical: scd30: add I2C interface driver
+Date:   Sun, 7 Jun 2020 19:58:10 +0200
+Message-ID: <20200607175812.95777-3-tomasz.duszynski@octakon.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -34,7 +34,7 @@ Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [89.70.180.118]
 X-ClientProxiedBy: DAG2EX2.emp2.local (172.16.2.12) To DAG2EX1.emp2.local
  (172.16.2.11)
-X-Ovh-Tracer-Id: 3119305693500627991
+X-Ovh-Tracer-Id: 3119305694721235991
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
 X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudegledguddvvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffoggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhephedtgefgkeduvdekheeggefghffhteekleetvdekvddtveeutdetueefueehieetnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
@@ -43,971 +43,207 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add Sensirion SCD30 carbon dioxide core driver.
+Add I2C interface driver for the SCD30 sensor.
 
 Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
- Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 +
- MAINTAINERS                                   |   6 +
- drivers/iio/chemical/Kconfig                  |  11 +
- drivers/iio/chemical/Makefile                 |   1 +
- drivers/iio/chemical/scd30.h                  |  78 ++
- drivers/iio/chemical/scd30_core.c             | 770 ++++++++++++++++++
- 6 files changed, 900 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
- create mode 100644 drivers/iio/chemical/scd30.h
- create mode 100644 drivers/iio/chemical/scd30_core.c
+ MAINTAINERS                      |   1 +
+ drivers/iio/chemical/Kconfig     |  11 +++
+ drivers/iio/chemical/Makefile    |   1 +
+ drivers/iio/chemical/scd30_i2c.c | 139 +++++++++++++++++++++++++++++++
+ 4 files changed, 152 insertions(+)
+ create mode 100644 drivers/iio/chemical/scd30_i2c.c
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-scd30 b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-new file mode 100644
-index 000000000000..b9712f390bec
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-scd30
-@@ -0,0 +1,34 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_auto_enable
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Contaminants build-up in the measurement chamber or optical
-+		elements deterioration leads to sensor drift.
-+
-+		One can compensate for sensor drift by using automatic self
-+		calibration procedure (asc).
-+
-+		Writing 1 or 0 to this attribute will respectively activate or
-+		deactivate asc.
-+
-+		Upon reading current asc status is returned.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/calibration_forced_value
-+Date:		June 2020
-+KernelVersion:	5.8
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Contaminants build-up in the measurement chamber or optical
-+		elements deterioration leads to sensor drift.
-+
-+		One can compensate for sensor drift by using forced
-+		recalibration (frc). This is useful in case there's known
-+		co2 reference available nearby the sensor.
-+
-+		Picking value from the range [400 1 2000] and writing it to the
-+		sensor will set frc.
-+
-+		Upon reading current frc value is returned. Note that after
-+		power cycling default value (i.e 400) is returned even though
-+		internally sensor had recalibrated itself.
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 60ed2963efaa..41a509cca6f1 100644
+index 41a509cca6f1..13aed3473b7e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -15137,6 +15137,12 @@ S:	Maintained
- F:	drivers/misc/phantom.c
- F:	include/uapi/linux/phantom.h
+@@ -15142,6 +15142,7 @@ M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
+ S:	Maintained
+ F:	drivers/iio/chemical/scd30.h
+ F:	drivers/iio/chemical/scd30_core.c
++F:	drivers/iio/chemical/scd30_i2c.c
  
-+SENSIRION SCD30 CARBON DIOXIDE SENSOR DRIVER
-+M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
-+S:	Maintained
-+F:	drivers/iio/chemical/scd30.h
-+F:	drivers/iio/chemical/scd30_core.c
-+
  SENSIRION SPS30 AIR POLLUTION SENSOR DRIVER
  M:	Tomasz Duszynski <tduszyns@gmail.com>
- S:	Maintained
 diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index 7f21afd73b1c..99e852b67e55 100644
+index 99e852b67e55..970d34888c2e 100644
 --- a/drivers/iio/chemical/Kconfig
 +++ b/drivers/iio/chemical/Kconfig
-@@ -85,6 +85,17 @@ config PMS7003
+@@ -96,6 +96,17 @@ config SCD30_CORE
  	  To compile this driver as a module, choose M here: the module will
- 	  be called pms7003.
+ 	  be called scd30_core.
  
-+config SCD30_CORE
-+	tristate "SCD30 carbon dioxide sensor driver"
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
++config SCD30_I2C
++	tristate "SCD30 carbon dioxide sensor I2C driver"
++	depends on SCD30_CORE && I2C
++	select CRC8
 +	help
-+	  Say Y here to build support for the Sensirion SCD30 sensor with carbon
-+	  dioxide, relative humidity and temperature sensing capabilities.
++	  Say Y here to build support for the Sensirion SCD30 I2C interface
++	  driver.
 +
 +	  To compile this driver as a module, choose M here: the module will
-+	  be called scd30_core.
++	  be called scd30_i2c.
 +
  config SENSIRION_SGP30
  	tristate "Sensirion SGPxx gas sensors"
  	depends on I2C
 diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index aba4167db745..c9804b041ecd 100644
+index c9804b041ecd..0966ca34e34b 100644
 --- a/drivers/iio/chemical/Makefile
 +++ b/drivers/iio/chemical/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_BME680_SPI) += bme680_spi.o
- obj-$(CONFIG_CCS811)		+= ccs811.o
+@@ -13,6 +13,7 @@ obj-$(CONFIG_CCS811)		+= ccs811.o
  obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
  obj-$(CONFIG_PMS7003) += pms7003.o
-+obj-$(CONFIG_SCD30_CORE) += scd30_core.o
+ obj-$(CONFIG_SCD30_CORE) += scd30_core.o
++obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
  obj-$(CONFIG_SPS30) += sps30.o
  obj-$(CONFIG_VZ89X)		+= vz89x.o
-diff --git a/drivers/iio/chemical/scd30.h b/drivers/iio/chemical/scd30.h
+diff --git a/drivers/iio/chemical/scd30_i2c.c b/drivers/iio/chemical/scd30_i2c.c
 new file mode 100644
-index 000000000000..f60127bfe0f4
+index 000000000000..875892a070ee
 --- /dev/null
-+++ b/drivers/iio/chemical/scd30.h
-@@ -0,0 +1,78 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SCD30_H
-+#define _SCD30_H
-+
-+#include <linux/completion.h>
-+#include <linux/device.h>
-+#include <linux/mutex.h>
-+#include <linux/pm.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/types.h>
-+
-+struct scd30_state;
-+
-+enum scd30_cmd {
-+	/* start continuous measurement with pressure compensation */
-+	CMD_START_MEAS,
-+	/* stop continuous measurement */
-+	CMD_STOP_MEAS,
-+	/* set/get measurement interval */
-+	CMD_MEAS_INTERVAL,
-+	/* check whether new measurement is ready */
-+	CMD_MEAS_READY,
-+	/* get measurement */
-+	CMD_READ_MEAS,
-+	/* turn on/off automatic self calibration */
-+	CMD_ASC,
-+	/* set/get forced recalibration value */
-+	CMD_FRC,
-+	/* set/get temperature offset */
-+	CMD_TEMP_OFFSET,
-+	/* get firmware version */
-+	CMD_FW_VERSION,
-+	/* reset sensor */
-+	CMD_RESET,
-+	/*
-+	 * Command for altitude compensation was omitted intentionally because
-+	 * the same can be achieved by means of CMD_START_MEAS which takes
-+	 * pressure above the sea level as an argument.
-+	 */
-+};
-+
-+#define SCD30_MEAS_COUNT 3
-+
-+typedef int (*scd30_command_t)(struct scd30_state *state, enum scd30_cmd cmd, u16 arg,
-+			       void *response, int size);
-+
-+struct scd30_state {
-+	/* serialize access to the device */
-+	struct mutex lock;
-+	struct device *dev;
-+	struct regulator *vdd;
-+	struct completion meas_ready;
-+	/*
-+	 * priv pointer is solely for serdev driver private data. We keep it
-+	 * here because driver_data inside dev has been already used for iio and
-+	 * struct serdev_device doesn't have one.
-+	 */
-+	void *priv;
-+	int irq;
-+	/*
-+	 * no way to retrieve current ambient pressure compensation value from
-+	 * the sensor so keep one around
-+	 */
-+	u16 pressure_comp;
-+	u16 meas_interval;
-+	int meas[SCD30_MEAS_COUNT];
-+
-+	scd30_command_t command;
-+};
-+
-+int scd30_suspend(struct device *dev);
-+int scd30_resume(struct device *dev);
-+
-+static __maybe_unused SIMPLE_DEV_PM_OPS(scd30_pm_ops, scd30_suspend, scd30_resume);
-+
-+int scd30_probe(struct device *dev, int irq, const char *name, void *priv, scd30_command_t command);
-+
-+#endif
-diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-new file mode 100644
-index 000000000000..1f4e0ad291a5
---- /dev/null
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -0,0 +1,770 @@
++++ b/drivers/iio/chemical/scd30_i2c.c
+@@ -0,0 +1,139 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Sensirion SCD30 carbon dioxide sensor core driver
++ * Sensirion SCD30 carbon dioxide sensor i2c driver
 + *
 + * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
++ *
++ * I2C slave address: 0x61
 + */
-+#include <linux/bits.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
++#include <linux/crc8.h>
 +#include <linux/device.h>
 +#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/types.h>
-+#include <linux/interrupt.h>
-+#include <linux/irqreturn.h>
-+#include <linux/jiffies.h>
-+#include <linux/kernel.h>
++#include <linux/i2c.h>
++#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/string.h>
-+#include <linux/sysfs.h>
 +#include <linux/types.h>
-+#include <asm/byteorder.h>
++#include <asm/unaligned.h>
 +
 +#include "scd30.h"
 +
-+#define SCD30_PRESSURE_COMP_MIN_MBAR 700
-+#define SCD30_PRESSURE_COMP_MAX_MBAR 1400
-+#define SCD30_PRESSURE_COMP_DEFAULT 1013
-+#define SCD30_MEAS_INTERVAL_MIN_S 2
-+#define SCD30_MEAS_INTERVAL_MAX_S 1800
-+#define SCD30_MEAS_INTERVAL_DEFAULT SCD30_MEAS_INTERVAL_MIN_S
-+#define SCD30_FRC_MIN_PPM 400
-+#define SCD30_FRC_MAX_PPM 2000
-+#define SCD30_TEMP_OFFSET_MAX 655360
-+#define SCD30_EXTRA_TIMEOUT_PER_S 250
++#define SCD30_I2C_MAX_BUF_SIZE 18
++#define SCD30_I2C_CRC8_POLYNOMIAL 0x31
 +
-+enum {
-+	SCD30_CONC,
-+	SCD30_TEMP,
-+	SCD30_HR,
++static u16 scd30_i2c_cmd_lookup_tbl[] = {
++	[CMD_START_MEAS] = 0x0010,
++	[CMD_STOP_MEAS] = 0x0104,
++	[CMD_MEAS_INTERVAL] = 0x4600,
++	[CMD_MEAS_READY] = 0x0202,
++	[CMD_READ_MEAS] = 0x0300,
++	[CMD_ASC] = 0x5306,
++	[CMD_FRC] = 0x5204,
++	[CMD_TEMP_OFFSET] = 0x5403,
++	[CMD_FW_VERSION] = 0xd100,
++	[CMD_RESET] = 0xd304,
 +};
 +
-+static int scd30_command_write(struct scd30_state *state, enum scd30_cmd cmd, u16 arg)
-+{
-+	return state->command(state, cmd, arg, NULL, 0);
-+}
++DECLARE_CRC8_TABLE(scd30_i2c_crc8_tbl);
 +
-+static int scd30_command_read(struct scd30_state *state, enum scd30_cmd cmd, u16 *val)
++static int scd30_i2c_xfer(struct scd30_state *state, char *txbuf, int txsize,
++			  char *rxbuf, int rxsize)
 +{
-+	__be16 tmp;
++	struct i2c_client *client = to_i2c_client(state->dev);
 +	int ret;
 +
-+	ret = state->command(state, cmd, 0, &tmp, sizeof(tmp));
-+	*val = be16_to_cpup(&tmp);
-+
-+	return ret;
-+}
-+
-+static int scd30_reset(struct scd30_state *state)
-+{
-+	int ret;
-+	u16 val;
-+
-+	ret = scd30_command_write(state, CMD_RESET, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* sensor boots up within 2 secs */
-+	msleep(2000);
 +	/*
-+	 * Power-on-reset causes sensor to produce some glitch on i2c bus and
-+	 * some controllers end up in error state. Try to recover by placing
-+	 * any data on the bus.
++	 * repeated start is not supported hence instead of sending two i2c
++	 * messages in a row we send one by one
 +	 */
-+	scd30_command_read(state, CMD_MEAS_READY, &val);
++	ret = i2c_master_send(client, txbuf, txsize);
++	if (ret < 0)
++		return ret;
++	if (ret != txsize)
++		return -EIO;
 +
-+	return 0;
-+}
-+
-+/* simplified float to fixed point conversion with a scaling factor of 0.01 */
-+static int scd30_float_to_fp(int float32)
-+{
-+	int fraction, shift,
-+	    mantissa = float32 & GENMASK(22, 0),
-+	    sign = float32 & BIT(31) ? -1 : 1,
-+	    exp = (float32 & ~BIT(31)) >> 23;
-+
-+	/* special case 0 */
-+	if (!exp && !mantissa)
++	if (!rxbuf)
 +		return 0;
 +
-+	exp -= 127;
-+	if (exp < 0) {
-+		exp = -exp;
-+		/* return values ranging from 1 to 99 */
-+		return sign * ((((BIT(23) + mantissa) * 100) >> 23) >> exp);
-+	}
++	ret = i2c_master_recv(client, rxbuf, rxsize);
++	if (ret < 0)
++		return ret;
++	if (ret != rxsize)
++		return -EIO;
 +
-+	/* return values starting at 100 */
-+	shift = 23 - exp;
-+	float32 = BIT(exp) + (mantissa >> shift);
-+	fraction = mantissa & GENMASK(shift - 1, 0);
-+
-+	return sign * (float32 * 100 + ((fraction * 100) >> shift));
++	return 0;
 +}
 +
-+static int scd30_read_meas(struct scd30_state *state)
++static int scd30_i2c_command(struct scd30_state *state, enum scd30_cmd cmd, u16 arg,
++			     void *response, int size)
 +{
++	char buf[SCD30_I2C_MAX_BUF_SIZE];
++	char *rsp = response;
 +	int i, ret;
++	char crc;
 +
-+	ret = state->command(state, CMD_READ_MEAS, 0, state->meas, sizeof(state->meas));
++	put_unaligned_be16(scd30_i2c_cmd_lookup_tbl[cmd], buf);
++	i = 2;
++
++	if (rsp) {
++		/* each two bytes are followed by a crc8 */
++		size += size / 2;
++	} else {
++		put_unaligned_be16(arg, buf + i);
++		crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
++		i += 2;
++		buf[i] = crc;
++		i += 1;
++
++		/* commands below don't take an argument */
++		if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
++			i -= 3;
++	}
++
++	ret = scd30_i2c_xfer(state, buf, i, buf, size);
 +	if (ret)
 +		return ret;
 +
-+	be32_to_cpu_array(state->meas, state->meas, ARRAY_SIZE(state->meas));
-+
-+	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
-+		state->meas[i] = scd30_float_to_fp(state->meas[i]);
-+
-+	/*
-+	 * co2 is left unprocessed while temperature and humidity are scaled
-+	 * to milli deg C and milli percent respectively.
-+	 */
-+	state->meas[SCD30_TEMP] *= 10;
-+	state->meas[SCD30_HR] *= 10;
-+
-+	return 0;
-+}
-+
-+static int scd30_wait_meas_irq(struct scd30_state *state)
-+{
-+	int ret, timeout;
-+
-+	reinit_completion(&state->meas_ready);
-+	enable_irq(state->irq);
-+	timeout = msecs_to_jiffies(state->meas_interval * (1000 + SCD30_EXTRA_TIMEOUT_PER_S));
-+	ret = wait_for_completion_interruptible_timeout(&state->meas_ready, timeout);
-+	if (ret > 0)
-+		ret = 0;
-+	else if (!ret)
-+		ret = -ETIMEDOUT;
-+
-+	disable_irq(state->irq);
-+
-+	return ret;
-+}
-+
-+static int scd30_wait_meas_poll(struct scd30_state *state)
-+{
-+	int timeout = state->meas_interval * SCD30_EXTRA_TIMEOUT_PER_S, tries = 5;
-+
-+	do {
-+		int ret;
-+		u16 val;
-+
-+		ret = scd30_command_read(state, CMD_MEAS_READY, &val);
-+		if (ret)
++	/* validate received data and strip off crc bytes */
++	for (i = 0; i < size; i += 3) {
++		crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
++		if (crc != buf[i + 2]) {
++			dev_err(state->dev, "data integrity check failed\n");
 +			return -EIO;
-+
-+		/* new measurement available */
-+		if (val)
-+			break;
-+
-+		msleep_interruptible(timeout);
-+	} while (--tries);
-+
-+	return tries ? 0 : -ETIMEDOUT;
-+}
-+
-+static int scd30_read_poll(struct scd30_state *state)
-+{
-+	int ret;
-+
-+	ret = scd30_wait_meas_poll(state);
-+	if (ret)
-+		return ret;
-+
-+	return scd30_read_meas(state);
-+}
-+
-+static int scd30_read(struct scd30_state *state)
-+{
-+	if (state->irq > 0)
-+		return scd30_wait_meas_irq(state);
-+
-+	return scd30_read_poll(state);
-+}
-+
-+static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			  int *val, int *val2, long mask)
-+{
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+	u16 tmp;
-+
-+	mutex_lock(&state->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+	case IIO_CHAN_INFO_PROCESSED:
-+		if (chan->output) {
-+			*val = state->pressure_comp;
-+			ret = IIO_VAL_INT;
-+			break;
 +		}
 +
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			break;
-+
-+		ret = scd30_read(state);
-+		if (ret) {
-+			iio_device_release_direct_mode(indio_dev);
-+			break;
-+		}
-+
-+		*val = state->meas[chan->address];
-+		iio_device_release_direct_mode(indio_dev);
-+		ret = IIO_VAL_INT;
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		*val2 = 1;
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
-+		if (ret)
-+			break;
-+
-+		*val = 0;
-+		*val2 = 1000000000 / tmp;
-+		ret = IIO_VAL_INT_PLUS_NANO;
-+		break;
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
-+		if (ret)
-+			break;
-+
-+		*val = tmp;
-+		ret = IIO_VAL_INT;
-+		break;
++		*rsp++ = buf[i];
++		*rsp++ = buf[i + 1];
 +	}
-+	mutex_unlock(&state->lock);
-+
-+	return ret;
-+}
-+
-+static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			   int val, int val2, long mask)
-+{
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	mutex_lock(&state->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val)
-+			break;
-+
-+		val = 1000000000 / val2;
-+		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
-+			break;
-+
-+		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
-+		if (ret)
-+			break;
-+
-+		state->meas_interval = val;
-+		break;
-+	case IIO_CHAN_INFO_RAW:
-+		switch (chan->type) {
-+		case IIO_PRESSURE:
-+			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
-+			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
-+				break;
-+
-+			ret = scd30_command_write(state, CMD_START_MEAS, val);
-+			if (ret)
-+				break;
-+
-+			state->pressure_comp = val;
-+			break;
-+		default:
-+			break;
-+		}
-+		break;
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
-+			break;
-+		/*
-+		 * Manufacturer does not explicitly specify min/max sensible
-+		 * values hence check is omitted for simplicity.
-+		 */
-+		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
-+	}
-+	mutex_unlock(&state->lock);
-+
-+	return ret;
-+}
-+
-+static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+				   long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_RAW:
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		return IIO_VAL_INT;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static const int scd30_pressure_raw_available[] = {
-+	SCD30_PRESSURE_COMP_MIN_MBAR, 1, SCD30_PRESSURE_COMP_MAX_MBAR,
-+};
-+
-+static const int scd30_temp_calibbias_available[] = {
-+	0, 10, SCD30_TEMP_OFFSET_MAX,
-+};
-+
-+static int scd30_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			    const int **vals, int *type, int *length, long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		*vals = scd30_pressure_raw_available;
-+		*type = IIO_VAL_INT;
-+
-+		return IIO_AVAIL_RANGE;
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		*vals = scd30_temp_calibbias_available;
-+		*type = IIO_VAL_INT;
-+
-+		return IIO_AVAIL_RANGE;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static ssize_t sampling_frequency_available_show(struct device *dev, struct device_attribute *attr,
-+						 char *buf)
-+{
-+	int i = SCD30_MEAS_INTERVAL_MIN_S;
-+	ssize_t len = 0;
-+
-+	do {
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ", 1000000000 / i);
-+		/*
-+		 * Not all values fit PAGE_SIZE buffer hence print every 6th
-+		 * (each frequency differs by 6s in time domain from the
-+		 * adjacent). Unlisted but valid ones are still accepted.
-+		 */
-+		i += 6;
-+	} while (i <= SCD30_MEAS_INTERVAL_MAX_S);
-+
-+	buf[len - 1] = '\n';
-+
-+	return len;
-+}
-+
-+static ssize_t calibration_auto_enable_show(struct device *dev, struct device_attribute *attr,
-+					    char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret;
-+	u16 val;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd30_command_read(state, CMD_ASC, &val);
-+	mutex_unlock(&state->lock);
-+
-+	return ret ?: sprintf(buf, "%d\n", val);
-+}
-+
-+static ssize_t calibration_auto_enable_store(struct device *dev, struct device_attribute *attr,
-+					     const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	bool val;
-+	int ret;
-+
-+	ret = kstrtobool(buf, &val);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd30_command_write(state, CMD_ASC, val);
-+	mutex_unlock(&state->lock);
-+
-+	return ret ?: len;
-+}
-+
-+static ssize_t calibration_forced_value_show(struct device *dev, struct device_attribute *attr,
-+					     char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret;
-+	u16 val;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd30_command_read(state, CMD_FRC, &val);
-+	mutex_unlock(&state->lock);
-+
-+	return ret ?: sprintf(buf, "%d\n", val);
-+}
-+
-+static ssize_t calibration_forced_value_store(struct device *dev, struct device_attribute *attr,
-+					      const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret;
-+	u16 val;
-+
-+	ret = kstrtou16(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val < SCD30_FRC_MIN_PPM || val > SCD30_FRC_MAX_PPM)
-+		return -EINVAL;
-+
-+	mutex_lock(&state->lock);
-+	ret = scd30_command_write(state, CMD_FRC, val);
-+	mutex_unlock(&state->lock);
-+
-+	return ret ?: len;
-+}
-+
-+static IIO_DEVICE_ATTR_RO(sampling_frequency_available, 0);
-+static IIO_DEVICE_ATTR_RW(calibration_auto_enable, 0);
-+static IIO_DEVICE_ATTR_RW(calibration_forced_value, 0);
-+
-+static struct attribute *scd30_attrs[] = {
-+	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-+	&iio_dev_attr_calibration_auto_enable.dev_attr.attr,
-+	&iio_dev_attr_calibration_forced_value.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group scd30_attr_group = {
-+	.attrs = scd30_attrs,
-+};
-+
-+static const struct iio_info scd30_info = {
-+	.attrs = &scd30_attr_group,
-+	.read_raw = scd30_read_raw,
-+	.write_raw = scd30_write_raw,
-+	.write_raw_get_fmt = scd30_write_raw_get_fmt,
-+	.read_avail = scd30_read_avail,
-+};
-+
-+#define SCD30_CHAN_SCAN_TYPE(_sign, _realbits) .scan_type = { \
-+	.sign = _sign, \
-+	.realbits = _realbits, \
-+	.storagebits = 32, \
-+	.endianness = IIO_CPU, \
-+}
-+
-+static const struct iio_chan_spec scd30_channels[] = {
-+	{
-+		/*
-+		 * this channel is special in a sense we are pretending that
-+		 * sensor is able to change measurement chamber pressure but in
-+		 * fact we're just setting pressure compensation value
-+		 */
-+		.type = IIO_PRESSURE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_RAW),
-+		.output = 1,
-+		.scan_index = -1,
-+	},
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.channel2 = IIO_MOD_CO2,
-+		.address = SCD30_CONC,
-+		.scan_index = SCD30_CONC,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.modified = 1,
-+
-+		SCD30_CHAN_SCAN_TYPE('u', 20),
-+	},
-+	{
-+		.type = IIO_TEMP,
-+		.address = SCD30_TEMP,
-+		.scan_index = SCD30_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-+				      BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+
-+		SCD30_CHAN_SCAN_TYPE('s', 18),
-+	},
-+	{
-+		.type = IIO_HUMIDITYRELATIVE,
-+		.address = SCD30_HR,
-+		.scan_index = SCD30_HR,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+
-+		SCD30_CHAN_SCAN_TYPE('u', 17),
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
-+int __maybe_unused scd30_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct scd30_state *state  = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = scd30_command_write(state, CMD_STOP_MEAS, 0);
-+	if (ret)
-+		return ret;
-+
-+	return regulator_disable(state->vdd);
-+}
-+EXPORT_SYMBOL(scd30_suspend);
-+
-+int __maybe_unused scd30_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(state->vdd);
-+	if (ret)
-+		return ret;
-+
-+	return scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
-+}
-+EXPORT_SYMBOL(scd30_resume);
-+
-+static void scd30_stop_meas(void *data)
-+{
-+	struct scd30_state *state = data;
-+
-+	scd30_command_write(state, CMD_STOP_MEAS, 0);
-+}
-+
-+static void scd30_disable_regulator(void *data)
-+{
-+	struct scd30_state *state = data;
-+
-+	regulator_disable(state->vdd);
-+}
-+
-+static irqreturn_t scd30_irq_handler(int irq, void *priv)
-+{
-+	struct iio_dev *indio_dev = priv;
-+
-+	if (iio_buffer_enabled(indio_dev)) {
-+		iio_trigger_poll(indio_dev->trig);
-+
-+		return IRQ_HANDLED;
-+	}
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static irqreturn_t scd30_irq_thread_handler(int irq, void *priv)
-+{
-+	struct iio_dev *indio_dev = priv;
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = scd30_read_meas(state);
-+	if (ret)
-+		goto out;
-+
-+	complete_all(&state->meas_ready);
-+out:
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t scd30_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	struct {
-+		int data[SCD30_MEAS_COUNT];
-+		s64 ts __aligned(8);
-+	} scan = { 0, };
-+	int ret;
-+
-+	mutex_lock(&state->lock);
-+	if (!iio_trigger_using_own(indio_dev))
-+		ret = scd30_read_poll(state);
-+	else
-+		ret = scd30_read_meas(state);
-+	memcpy(scan.data, state->meas, sizeof(state->meas));
-+	mutex_unlock(&state->lock);
-+	if (ret)
-+		goto out;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
-+}
-+
-+static int scd30_set_trigger_state(struct iio_trigger *trig, bool state)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct scd30_state *st = iio_priv(indio_dev);
-+
-+	if (state)
-+		enable_irq(st->irq);
-+	else
-+		disable_irq(st->irq);
 +
 +	return 0;
 +}
 +
-+static const struct iio_trigger_ops scd30_trigger_ops = {
-+	.set_trigger_state = scd30_set_trigger_state,
-+	.validate_device = iio_trigger_validate_own_device,
++static int scd30_i2c_probe(struct i2c_client *client)
++{
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
++		return -EOPNOTSUPP;
++
++	crc8_populate_msb(scd30_i2c_crc8_tbl, SCD30_I2C_CRC8_POLYNOMIAL);
++
++	return scd30_probe(&client->dev, client->irq, client->name, NULL, scd30_i2c_command);
++}
++
++static const struct of_device_id scd30_i2c_of_match[] = {
++	{ .compatible = "sensirion,scd30" },
++	{ }
 +};
++MODULE_DEVICE_TABLE(of, scd30_i2c_of_match);
 +
-+static int scd30_setup_trigger(struct iio_dev *indio_dev)
-+{
-+	struct scd30_state *state = iio_priv(indio_dev);
-+	struct device *dev = indio_dev->dev.parent;
-+	struct iio_trigger *trig;
-+	int ret;
-+
-+	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name, indio_dev->id);
-+	if (!trig) {
-+		dev_err(dev, "failed to allocate trigger\n");
-+		return -ENOMEM;
-+	}
-+
-+	trig->dev.parent = dev;
-+	trig->ops = &scd30_trigger_ops;
-+	iio_trigger_set_drvdata(trig, indio_dev);
-+
-+	ret = devm_iio_trigger_register(dev, trig);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->trig = iio_trigger_get(trig);
-+
-+	ret = devm_request_threaded_irq(dev, state->irq, scd30_irq_handler,
-+					scd30_irq_thread_handler, IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					indio_dev->name, indio_dev);
-+	if (ret)
-+		dev_err(dev, "failed to request irq\n");
-+
-+	/*
-+	 * Interrupt is enabled just before taking a fresh measurement
-+	 * and disabled afterwards. This means we need to disable it here
-+	 * to keep calls to enable/disable balanced.
-+	 */
-+	disable_irq(state->irq);
-+
-+	return ret;
-+}
-+
-+int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
-+		scd30_command_t command)
-+{
-+	static const unsigned long scd30_scan_masks[] = { 0x07, 0x00 };
-+	struct scd30_state *state;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+	u16 val;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	state = iio_priv(indio_dev);
-+	state->dev = dev;
-+	state->priv = priv;
-+	state->irq = irq;
-+	state->pressure_comp = SCD30_PRESSURE_COMP_DEFAULT;
-+	state->meas_interval = SCD30_MEAS_INTERVAL_DEFAULT;
-+	state->command = command;
-+	mutex_init(&state->lock);
-+	init_completion(&state->meas_ready);
-+
-+	dev_set_drvdata(dev, indio_dev);
-+
-+	indio_dev->info = &scd30_info;
-+	indio_dev->name = name;
-+	indio_dev->channels = scd30_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(scd30_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = scd30_scan_masks;
-+
-+	state->vdd = devm_regulator_get(dev, "vdd");
-+	if (IS_ERR(state->vdd)) {
-+		if (PTR_ERR(state->vdd) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+
-+		dev_err(dev, "failed to get regulator\n");
-+		return PTR_ERR(state->vdd);
-+	}
-+
-+	ret = regulator_enable(state->vdd);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, scd30_disable_regulator, state);
-+	if (ret)
-+		return ret;
-+
-+	ret = scd30_reset(state);
-+	if (ret) {
-+		dev_err(dev, "failed to reset device: %d\n", ret);
-+		return ret;
-+	}
-+
-+	if (state->irq > 0) {
-+		ret = scd30_setup_trigger(indio_dev);
-+		if (ret) {
-+			dev_err(dev, "failed to setup trigger: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL, scd30_trigger_handler, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = scd30_command_read(state, CMD_FW_VERSION, &val);
-+	if (ret) {
-+		dev_err(dev, "failed to read firmware version: %d\n", ret);
-+		return ret;
-+	}
-+	dev_info(dev, "firmware version: %d.%d\n", val >> 8, (char)val);
-+
-+	ret = scd30_command_write(state, CMD_MEAS_INTERVAL, state->meas_interval);
-+	if (ret) {
-+		dev_err(dev, "failed to set measurement interval: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
-+	if (ret) {
-+		dev_err(dev, "failed to start measurement: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, scd30_stop_meas, state);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+EXPORT_SYMBOL(scd30_probe);
++static struct i2c_driver scd30_i2c_driver = {
++	.driver = {
++		.name = KBUILD_MODNAME,
++		.of_match_table = scd30_i2c_of_match,
++		.pm = &scd30_pm_ops,
++	},
++	.probe_new = scd30_i2c_probe,
++};
++module_i2c_driver(scd30_i2c_driver);
 +
 +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-+MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor core driver");
++MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor i2c driver");
 +MODULE_LICENSE("GPL v2");
 -- 
 2.27.0

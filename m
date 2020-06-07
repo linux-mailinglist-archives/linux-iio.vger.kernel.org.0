@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 896481F0C24
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 16:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C023C1F0C26
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 16:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgFGOv3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 10:51:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39734 "EHLO mail.kernel.org"
+        id S1726535AbgFGOz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 10:55:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41042 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726535AbgFGOv3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 10:51:29 -0400
+        id S1726528AbgFGOz0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Jun 2020 10:55:26 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A426E2067B;
-        Sun,  7 Jun 2020 14:51:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 61F5A2067B;
+        Sun,  7 Jun 2020 14:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591541488;
-        bh=8SxteX4XQVXytBfKNR93s2bfYO4m0se0LPkOaE8Xxsg=;
+        s=default; t=1591541725;
+        bh=87Ee+2E8sUCFLyonw7G8rzy7vhuBn0nAQinH2YYCPZE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bukEQ7f6UIaceB+fmE9SvKw1/a3luHuk6WD4uWuxjBImzxXNJliw2I+DhITD1YcC3
-         2tuHgQ+kxuWBbTG5HnL/1AZs6NybrI0t96BksMCZazOt1RvbcrT4uO4NWF025h8qAD
-         Z9go8obauxwf4QK2MJDMG2hK+g6n5FkwKxLbdYpM=
-Date:   Sun, 7 Jun 2020 15:51:24 +0100
+        b=B4HdqzODeSXnxW2QQMfKVzP9EIIUo19kV8OMPT8lM0/jFjxlHZlgetuvxl0aV4PvH
+         vcr1GAlhcqJDIvZnAjK9YtBDMM5sq2g7my8snQh69sRBgw2rsazBNcGnrZdKwVdJaH
+         Nd3YATBeYAxB7Y9QuYLXP3Y8hMaj2KxR3R6YeJ9Q=
+Date:   Sun, 7 Jun 2020 15:55:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alison Schofield <amsfield22@gmail.com>
-Subject: Re: [PATCH 09/25] iio:humidity:hdc100x Fix alignment and data leak
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Subject: Re: [PATCH 10/25] iio:humidity:hts221 Fix alignment and data leak
  issues
-Message-ID: <20200607155124.099d82d2@archlinux>
-In-Reply-To: <CAJCx=g=cCucvub6-kPq5+tGu5M+J_LqJDwmDCoHj-aLUGQk6kQ@mail.gmail.com>
+Message-ID: <20200607155521.71923310@archlinux>
+In-Reply-To: <20200526075230.GA339643@localhost.localdomain>
 References: <20200525170628.503283-1-jic23@kernel.org>
-        <20200525170628.503283-10-jic23@kernel.org>
-        <CAJCx=g=cCucvub6-kPq5+tGu5M+J_LqJDwmDCoHj-aLUGQk6kQ@mail.gmail.com>
+        <20200525170628.503283-11-jic23@kernel.org>
+        <20200526075230.GA339643@localhost.localdomain>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,13 +46,11 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 26 May 2020 12:31:11 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Tue, 26 May 2020 09:52:30 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> On Mon, May 25, 2020 at 10:09 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
+> > 
 > > One of a class of bugs pointed out by Lars in a recent review.
 > > iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
 > > to the size of the timestamp (8 bytes).  This is not guaranteed in
@@ -60,74 +58,88 @@ Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 > > As Lars also noted this anti pattern can involve a leak of data to
 > > userspace and that indeed can happen here.  We close both issues by
 > > moving to a suitable structure in the iio_priv() data.
-> > This data is allocated with kzalloc so no data can leak apart
-> > from previous readings.
-> >  
+> > This data is allocated with kzalloc so no data can leak
+> > apart from previous readings.
+> > 
+> > Fixes: e4a70e3e7d84 ("iio: humidity: add support to hts221 rh/temp combo device")
+> > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>  
 > 
-> Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> Hi Jonathan,
+> 
+> I guess you can drop HTS221_DATA_SIZE now since it seems no longer used.
+> 
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-This is one of the cases that Andy pointed out will be inconsistent
-on x86_32.  That only requires 4 byte alignment for the s64 so here
-we end up with the wrong amount of padding.  I've fixed that up
-in v2 with s64 ts __aligned(8);
+This patch suffers from the issue with padding on x86_32 that
+Andy pointed out.  For v2 I've added explicit __aligned(8)
 
-I've assumed the ack still stands given this is a fairly obscure corner.
+Also dropped HTS221_DATA_SIZE as you suggested.
 
-Thanks,
+I've kept the Ack. Shout if you'd rather I didn't!
 
 Jonathan
 
 > 
-> > Fixes: 16bf793f86b2 ("iio: humidity: hdc100x: add triggered buffer support for HDC100X")
-> > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Alison Schofield <amsfield22@gmail.com>
-> > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
 > > ---
-> >  drivers/iio/humidity/hdc100x.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> > index 7ecd2ffa3132..fd825e281d4f 100644
-> > --- a/drivers/iio/humidity/hdc100x.c
-> > +++ b/drivers/iio/humidity/hdc100x.c
-> > @@ -38,6 +38,11 @@ struct hdc100x_data {
-> >
-> >         /* integration time of the sensor */
-> >         int adc_int_us[2];
-> > +       /* Ensure natural alignment of timestamp */
-> > +       struct {
-> > +               __be16 channels[2];
-> > +               s64 ts;
-> > +       } scan;
-> >  };
-> >
-> >  /* integration time in us */
-> > @@ -322,7 +327,6 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
-> >         struct i2c_client *client = data->client;
-> >         int delay = data->adc_int_us[0] + data->adc_int_us[1];
-> >         int ret;
-> > -       s16 buf[8];  /* 2x s16 + padding + 8 byte timestamp */
-> >
-> >         /* dual read starts at temp register */
-> >         mutex_lock(&data->lock);
-> > @@ -333,13 +337,13 @@ static irqreturn_t hdc100x_trigger_handler(int irq, void *p)
-> >         }
-> >         usleep_range(delay, delay + 1000);
-> >
-> > -       ret = i2c_master_recv(client, (u8 *)buf, 4);
-> > +       ret = i2c_master_recv(client, (u8 *)data->scan.channels, 4);
-> >         if (ret < 0) {
-> >                 dev_err(&client->dev, "cannot read sensor data\n");
-> >                 goto err;
-> >         }
-> >
-> > -       iio_push_to_buffers_with_timestamp(indio_dev, buf,
-> > +       iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-> >                                            iio_get_time_ns(indio_dev));
-> >  err:
-> >         mutex_unlock(&data->lock);
-> > --
-> > 2.26.2
+> >  drivers/iio/humidity/hts221.h        | 5 +++++
+> >  drivers/iio/humidity/hts221_buffer.c | 9 +++++----
+> >  2 files changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/iio/humidity/hts221.h b/drivers/iio/humidity/hts221.h
+> > index 7c650df77556..6ad579ca9cef 100644
+> > --- a/drivers/iio/humidity/hts221.h
+> > +++ b/drivers/iio/humidity/hts221.h
+> > @@ -39,6 +39,11 @@ struct hts221_hw {
 > >  
+> >  	bool enabled;
+> >  	u8 odr;
+> > +	/* Ensure natural alignment of timestamp */
+> > +	struct {
+> > +		__le16 channels[2];
+> > +		s64 ts;
+> > +	} scan;
+> >  };
+> >  
+> >  extern const struct dev_pm_ops hts221_pm_ops;
+> > diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
+> > index 21c6c160462d..59ede9860185 100644
+> > --- a/drivers/iio/humidity/hts221_buffer.c
+> > +++ b/drivers/iio/humidity/hts221_buffer.c
+> > @@ -160,7 +160,6 @@ static const struct iio_buffer_setup_ops hts221_buffer_ops = {
+> >  
+> >  static irqreturn_t hts221_buffer_handler_thread(int irq, void *p)
+> >  {
+> > -	u8 buffer[ALIGN(2 * HTS221_DATA_SIZE, sizeof(s64)) + sizeof(s64)];
+> >  	struct iio_poll_func *pf = p;
+> >  	struct iio_dev *iio_dev = pf->indio_dev;
+> >  	struct hts221_hw *hw = iio_priv(iio_dev);
+> > @@ -170,18 +169,20 @@ static irqreturn_t hts221_buffer_handler_thread(int irq, void *p)
+> >  	/* humidity data */
+> >  	ch = &iio_dev->channels[HTS221_SENSOR_H];
+> >  	err = regmap_bulk_read(hw->regmap, ch->address,
+> > -			       buffer, HTS221_DATA_SIZE);
+> > +			       &hw->scan.channels[0],
+> > +			       sizeof(hw->scan.channels[0]));
+> >  	if (err < 0)
+> >  		goto out;
+> >  
+> >  	/* temperature data */
+> >  	ch = &iio_dev->channels[HTS221_SENSOR_T];
+> >  	err = regmap_bulk_read(hw->regmap, ch->address,
+> > -			       buffer + HTS221_DATA_SIZE, HTS221_DATA_SIZE);
+> > +			       &hw->scan.channels[1],
+> > +			       sizeof(hw->scan.channels[1]));
+> >  	if (err < 0)
+> >  		goto out;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(iio_dev, buffer,
+> > +	iio_push_to_buffers_with_timestamp(iio_dev, &hw->scan,
+> >  					   iio_get_time_ns(iio_dev));
+> >  
+> >  out:
+> > -- 
+> > 2.26.2
+> >   
 

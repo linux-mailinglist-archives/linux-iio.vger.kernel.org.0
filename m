@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 509F91F0C9A
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA9D1F0C9B
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726679AbgFGP4W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 11:56:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57256 "EHLO mail.kernel.org"
+        id S1726683AbgFGP4X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 11:56:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57268 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726631AbgFGP4V (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 11:56:21 -0400
+        id S1726631AbgFGP4X (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Jun 2020 11:56:23 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84C622075A;
-        Sun,  7 Jun 2020 15:56:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BE53020659;
+        Sun,  7 Jun 2020 15:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591545381;
-        bh=f81nAf9BqkdQk8vYQ1vXUOwvadJk4lSnv1mV+jpZpas=;
+        s=default; t=1591545382;
+        bh=/7HMEYxm0+mVyu1uPDL2YHgHNIiwgf7MN4rKB8pGQ3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sNGiMvjCvrq+cpbZmUyOpfpKULeZUczZ6jqElT9ppqzK1+weEfNh/8cRaQyEfZeGx
-         pNjMwkFrmCu+o8tADLzkDB6FC2kmaHYoD6KMzoFXZRlmCKcuHp2drYYKaCd/Vrj4oU
-         CsqGfgxpIqihEMtoUYubiu/jHuqbTYwMPBntLw40=
+        b=kgYoFIEIWlEREVKJt4s9ZQm7Qpi9gKcxEbtGn1Q0NbMJd4bvku+ckaAs6Q94XW+zB
+         EeTsJR4OBesRsbJ17IqMsqk6k4umBtDPSHCXwnriiRQRJCrplMvKmx+8RZPxyZt4tZ
+         hup2HMGUUivNNsoLj8xn6gZRmbidIueScVlnMfns=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 05/32] iio:gyro:itg3200: Fix timestamp alignment and prevent data leak.
-Date:   Sun,  7 Jun 2020 16:53:41 +0100
-Message-Id: <20200607155408.958437-6-jic23@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andreas Klinger <ak@it-klinger.de>
+Subject: [PATCH 06/32] iio:proximity:mb1232: Fix timestamp alignment and prevent data leak.
+Date:   Sun,  7 Jun 2020 16:53:42 +0100
+Message-Id: <20200607155408.958437-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200607155408.958437-1-jic23@kernel.org>
 References: <20200607155408.958437-1-jic23@kernel.org>
@@ -46,50 +47,62 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 One of a class of bugs pointed out by Lars in a recent review.
 iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
 to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses a 16 byte array of smaller elements on the stack.
-This is fixed by using an explicit c structure. As there are no
-holes in the structure, there is no possiblity of data leakage
-in this case.
+this driver which uses a 16 byte s16 array on the stack   As Lars also noted
+this anti pattern can involve a leak of data to userspace and that
+indeed can happen here.  We close both issues by moving to
+a suitable structure in the iio_priv() data with alignment
+ensured by use of an explicit c structure.  This data is allocated
+with kzalloc so no data can leak appart from previous readings.
 
-The explicit alignment of ts is not strictly necessary but potentially
-makes the code slightly less fragile.
+In this case the forced alignment of the ts is necessary to ensure
+correct padding on x86_32 where the s64 would only be 4 byte aligned.
 
-Fixes: 36e0371e7764 ("iio:itg3200: Use iio_push_to_buffers_with_timestamp()")
+Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Andreas Klinger <ak@it-klinger.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/gyro/itg3200_buffer.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/iio/proximity/mb1232.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/gyro/itg3200_buffer.c b/drivers/iio/gyro/itg3200_buffer.c
-index d3fbe9d86467..1c3c1bd53374 100644
---- a/drivers/iio/gyro/itg3200_buffer.c
-+++ b/drivers/iio/gyro/itg3200_buffer.c
-@@ -46,13 +46,20 @@ static irqreturn_t itg3200_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct itg3200 *st = iio_priv(indio_dev);
--	__be16 buf[ITG3200_SCAN_ELEMENTS + sizeof(s64)/sizeof(u16)];
--
--	int ret = itg3200_read_all_channels(st->i2c, buf);
-+	/*
-+	 * Ensure correct alignment and padding including for the
-+	 * timestamp that may be inserted.
-+	 */
+diff --git a/drivers/iio/proximity/mb1232.c b/drivers/iio/proximity/mb1232.c
+index 654564c45248..ad4b1fb2607a 100644
+--- a/drivers/iio/proximity/mb1232.c
++++ b/drivers/iio/proximity/mb1232.c
+@@ -40,6 +40,11 @@ struct mb1232_data {
+ 	 */
+ 	struct completion	ranging;
+ 	int			irqnr;
++	/* Ensure correct alignment of data to push to IIO buffer */
 +	struct {
-+		__be16 buf[ITG3200_SCAN_ELEMENTS];
++		s16 distance;
 +		s64 ts __aligned(8);
 +	} scan;
-+
-+	int ret = itg3200_read_all_channels(st->i2c, scan.buf);
- 	if (ret < 0)
- 		goto error_ret;
+ };
  
--	iio_push_to_buffers_with_timestamp(indio_dev, buf, pf->timestamp);
-+	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ static irqreturn_t mb1232_handle_irq(int irq, void *dev_id)
+@@ -113,17 +118,13 @@ static irqreturn_t mb1232_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct mb1232_data *data = iio_priv(indio_dev);
+-	/*
+-	 * triggered buffer
+-	 * 16-bit channel + 48-bit padding + 64-bit timestamp
+-	 */
+-	s16 buffer[8] = { 0 };
  
+-	buffer[0] = mb1232_read_distance(data);
+-	if (buffer[0] < 0)
++	data->scan.distance = mb1232_read_distance(data);
++	if (data->scan.distance < 0)
+ 		goto err;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
++					   pf->timestamp);
+ 
+ err:
  	iio_trigger_notify_done(indio_dev->trig);
- 
 -- 
 2.26.2
 

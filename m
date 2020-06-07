@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB02D1F0CA8
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4288B1F0CAA
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726745AbgFGP4l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 11:56:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57514 "EHLO mail.kernel.org"
+        id S1726752AbgFGP4m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 11:56:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57528 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726703AbgFGP4l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 11:56:41 -0400
+        id S1726703AbgFGP4m (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Jun 2020 11:56:42 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 79B28206F6;
-        Sun,  7 Jun 2020 15:56:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D90E320723;
+        Sun,  7 Jun 2020 15:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591545400;
-        bh=1ProLWL3iF3ZlhoS+5Y3dYFaj2FebM+LgdJaSC3sAJk=;
+        s=default; t=1591545401;
+        bh=otkcmb0TXx88PkiLyOyxReINExJ5dBj+ADctCQ/EKl4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aW5hMztsvsquiRlppQJWKyKy4LtpaCCw3bFz+Hy4T0nMhDCt446sk3qfx/+Kq9cjG
-         tZVRTVNzIfhXJQwuYH7t01r95SgVQhbUepZhF+y+1fPP08jKpL/+VRxn38OdClIEjx
-         S0FdLoWxtHbpnPFg7oBe/hpyli6iaPd7n06JzToU=
+        b=vDeSOzQMsbcje8tbTl3d87TaD47MfWWnJjqV7fgRgx6JiBU31eZWh/02zQ6L3nEN2
+         nV5Hzk2zkiQjbPNNTxmFpW4Z/i1eu4QAgMljsMPcILv5O6UJYrYMNkGNEWx/Bv6in7
+         SdFs2WH7zZCYGohFUXIvB0632gi4mLKkhfk0xrgo=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Subject: [PATCH 19/32] iio:imu:st_lsm6dsx Fix alignment and data leak issues
-Date:   Sun,  7 Jun 2020 16:53:55 +0100
-Message-Id: <20200607155408.958437-20-jic23@kernel.org>
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Subject: [PATCH 20/32] iio:imu:inv_mpu6050 Fix dma and ts alignment and data leak issues.
+Date:   Sun,  7 Jun 2020 16:53:56 +0100
+Message-Id: <20200607155408.958437-21-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200607155408.958437-1-jic23@kernel.org>
 References: <20200607155408.958437-1-jic23@kernel.org>
@@ -44,130 +44,121 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-One of a class of bugs pointed out by Lars in a recent review.
-iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses an array of smaller elements on the stack.
-As Lars also noted this anti pattern can involve a leak of data to
-userspace and that indeed can happen here.  We close both issues by
-moving to a set of suitable structures in the iio_priv() data.
+This case is a bit different to the rest of the series.  The driver
+was doing a regmap_bulk_read into a buffer that wasn't dma safe
+as it was on the stack with no guarantee of it being in a cacheline
+on it's own.   Fixing that also dealt with the data leak and
+alignment issues that Lars-Peter pointed out.
 
-This data is allocated with kzalloc so no data can leak apart from
-previous readings.
+Also removed some unaligned handling as we are now aligned.
 
-For the tagged path the data is aligned by using __aligned(8) for
-the buffer on the stack.
+Fixes tag is for the dma safe buffer issue. Potentially we would
+need to backport timestamp alignment futher but that is a totally
+different patch.
 
-There has been a lot of churn in this driver, so likely backports
-may be needed for stable.
-
-Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Fixes: fd64df16f40e ("iio: imu: inv_mpu6050: Add SPI support for MPU6000")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  5 +++
- .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 36 ++++++++++---------
- 2 files changed, 25 insertions(+), 16 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  |  8 +++++---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 12 ++++++------
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index b56df409ed0f..5f821ef467da 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -411,6 +411,11 @@ struct st_lsm6dsx_hw {
- 	const struct st_lsm6dsx_settings *settings;
- 
- 	struct iio_mount_matrix orientation;
-+	/* Ensure natural alignment of buffer elements */
-+	struct {
-+		__le16 channels[3];
-+		s64 ts __aligned(8);
-+	} gyro_scan, acc_scan, ext_scan;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index cd38b3fccc7b..e4df2d51b689 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -122,6 +122,9 @@ struct inv_mpu6050_chip_config {
+ 	u8 user_ctrl;
  };
  
- static __maybe_unused const struct iio_event_spec st_lsm6dsx_event = {
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index afd00daeefb2..bebbc2bb37f7 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -341,9 +341,6 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 	int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
- 	u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
- 	u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
--	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
--	u8 acc_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
--	u8 ext_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
- 	bool reset_ts = false;
- 	__le16 fifo_status;
- 	s64 ts = 0;
-@@ -404,19 +401,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
++/* 6 + 6 + 2 + 7 (for MPU9x50) = 21 round up to 24 and plus 8 */
++#define INV_MPU6050_OUTPUT_DATA_SIZE         32
++
+ /**
+  *  struct inv_mpu6050_hw - Other important hardware information.
+  *  @whoami:	Self identification byte from WHO_AM_I register
+@@ -165,6 +168,7 @@ struct inv_mpu6050_hw {
+  *  @magn_raw_to_gauss:	coefficient to convert mag raw value to Gauss.
+  *  @magn_orient:       magnetometer sensor chip orientation if available.
+  *  @suspended_sensors:	sensors mask of sensors turned off for suspend
++ *  @data:		dma safe buffer used for bulk reads.
+  */
+ struct inv_mpu6050_state {
+ 	struct mutex lock;
+@@ -190,6 +194,7 @@ struct inv_mpu6050_state {
+ 	s32 magn_raw_to_gauss[3];
+ 	struct iio_mount_matrix magn_orient;
+ 	unsigned int suspended_sensors;
++	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] ____cacheline_aligned;
+ };
  
- 		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
- 			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
--				memcpy(gyro_buff, &hw->buff[offset],
--				       ST_LSM6DSX_SAMPLE_SIZE);
--				offset += ST_LSM6DSX_SAMPLE_SIZE;
-+				memcpy(hw->gyro_scan.channels,
-+				       &hw->buff[offset],
-+				       sizeof(hw->gyro_scan.channels));
-+				offset += sizeof(hw->gyro_scan.channels);
- 			}
- 			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
--				memcpy(acc_buff, &hw->buff[offset],
--				       ST_LSM6DSX_SAMPLE_SIZE);
--				offset += ST_LSM6DSX_SAMPLE_SIZE;
-+				memcpy(hw->acc_scan.channels,
-+				       &hw->buff[offset],
-+				       sizeof(hw->acc_scan.channels));
-+				offset += sizeof(hw->acc_scan.channels);
- 			}
- 			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
--				memcpy(ext_buff, &hw->buff[offset],
--				       ST_LSM6DSX_SAMPLE_SIZE);
--				offset += ST_LSM6DSX_SAMPLE_SIZE;
-+				memcpy(hw->ext_scan.channels,
-+				       &hw->buff[offset],
-+				       sizeof(hw->ext_scan.channels));
-+				offset += sizeof(hw->ext_scan.channels);
- 			}
+ /*register and associated bit definition*/
+@@ -334,9 +339,6 @@ struct inv_mpu6050_state {
+ #define INV_ICM20608_TEMP_OFFSET	     8170
+ #define INV_ICM20608_TEMP_SCALE		     3059976
  
- 			if (ts_sip-- > 0) {
-@@ -446,19 +446,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
--					gyro_buff, gyro_sensor->ts_ref + ts);
-+					&hw->gyro_scan,
-+					gyro_sensor->ts_ref + ts);
- 				gyro_sip--;
- 			}
- 			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_ACC],
--					acc_buff, acc_sensor->ts_ref + ts);
-+					&hw->acc_scan,
-+					acc_sensor->ts_ref + ts);
- 				acc_sip--;
- 			}
- 			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
--					ext_buff, ext_sensor->ts_ref + ts);
-+					&hw->ext_scan,
-+					ext_sensor->ts_ref + ts);
- 				ext_sip--;
- 			}
- 			sip++;
-@@ -543,7 +546,8 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw *hw)
- {
- 	u16 pattern_len = hw->sip * ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
- 	u16 fifo_len, fifo_diff_mask;
--	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE], tag;
-+	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);
-+	u8 tag;
- 	bool reset_ts = false;
- 	int i, err, read_len;
- 	__le16 fifo_status;
+-/* 6 + 6 + 2 + 7 (for MPU9x50) = 21 round up to 24 and plus 8 */
+-#define INV_MPU6050_OUTPUT_DATA_SIZE         32
+-
+ #define INV_MPU6050_REG_INT_PIN_CFG	0x37
+ #define INV_MPU6050_ACTIVE_HIGH		0x00
+ #define INV_MPU6050_ACTIVE_LOW		0x80
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 9511e4715e2c..554c16592d47 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -13,7 +13,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/poll.h>
+ #include <linux/math64.h>
+-#include <asm/unaligned.h>
+ #include "inv_mpu_iio.h"
+ 
+ /**
+@@ -121,7 +120,6 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+ 	size_t bytes_per_datum;
+ 	int result;
+-	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
+ 	u16 fifo_count;
+ 	s64 timestamp;
+ 	int int_status;
+@@ -160,11 +158,12 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	 * read fifo_count register to know how many bytes are inside the FIFO
+ 	 * right now
+ 	 */
+-	result = regmap_bulk_read(st->map, st->reg->fifo_count_h, data,
++	result = regmap_bulk_read(st->map, st->reg->fifo_count_h,
++				  st->data,
+ 				  INV_MPU6050_FIFO_COUNT_BYTE);
+ 	if (result)
+ 		goto end_session;
+-	fifo_count = get_unaligned_be16(&data[0]);
++	fifo_count = be16_to_cpup((__be16 *)&st->data[0]);
+ 
+ 	/*
+ 	 * Handle fifo overflow by resetting fifo.
+@@ -182,7 +181,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	inv_mpu6050_update_period(st, pf->timestamp, nb);
+ 	for (i = 0; i < nb; ++i) {
+ 		result = regmap_bulk_read(st->map, st->reg->fifo_r_w,
+-					  data, bytes_per_datum);
++					  st->data, bytes_per_datum);
+ 		if (result)
+ 			goto flush_fifo;
+ 		/* skip first samples if needed */
+@@ -191,7 +190,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 			continue;
+ 		}
+ 		timestamp = inv_mpu6050_get_timestamp(st);
+-		iio_push_to_buffers_with_timestamp(indio_dev, data, timestamp);
++		iio_push_to_buffers_with_timestamp(indio_dev, st->data,
++						   timestamp);
+ 	}
+ 
+ end_session:
 -- 
 2.26.2
 

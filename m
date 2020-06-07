@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F36FD1F0D8D
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC1A1F0D85
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726861AbgFGSA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 14:00:57 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:49423 "EHLO
+        id S1726872AbgFGSAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 14:00:47 -0400
+Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:58289 "EHLO
         smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726830AbgFGSAp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:00:45 -0400
+        by vger.kernel.org with ESMTP id S1726861AbgFGSAq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:00:46 -0400
 Received: from pro2.mail.ovh.net (unknown [10.109.156.68])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id DA14D55D9B72;
-        Sun,  7 Jun 2020 20:00:42 +0200 (CEST)
+        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 15FDE55D9B73;
+        Sun,  7 Jun 2020 20:00:43 +0200 (CEST)
 Received: from arch.lan (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 7 Jun 2020
- 20:00:36 +0200
+ 20:00:37 +0200
 From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
 To:     <linux-iio@vger.kernel.org>
 CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh+dt@kernel.org>, <jic23@kernel.org>,
         <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: [PATCH v5 2/4] iio: chemical: scd30: add I2C interface driver
-Date:   Sun, 7 Jun 2020 19:58:10 +0200
-Message-ID: <20200607175812.95777-3-tomasz.duszynski@octakon.com>
+Subject: [PATCH v5 3/4] iio: chemical: scd30: add serial interface driver
+Date:   Sun, 7 Jun 2020 19:58:11 +0200
+Message-ID: <20200607175812.95777-4-tomasz.duszynski@octakon.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -34,7 +34,7 @@ Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [89.70.180.118]
 X-ClientProxiedBy: DAG2EX2.emp2.local (172.16.2.12) To DAG2EX1.emp2.local
  (172.16.2.11)
-X-Ovh-Tracer-Id: 3119305694721235991
+X-Ovh-Tracer-Id: 3119587170018810903
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
 X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudegledguddvvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffoggfgtghisehtkeertdertddtnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnhephedtgefgkeduvdekheeggefghffhteekleetvdekvddtveeutdetueefueehieetnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
@@ -43,207 +43,331 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add I2C interface driver for the SCD30 sensor.
+Add serial interface driver for the SCD30 sensor.
 
 Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
- MAINTAINERS                      |   1 +
- drivers/iio/chemical/Kconfig     |  11 +++
- drivers/iio/chemical/Makefile    |   1 +
- drivers/iio/chemical/scd30_i2c.c | 139 +++++++++++++++++++++++++++++++
- 4 files changed, 152 insertions(+)
- create mode 100644 drivers/iio/chemical/scd30_i2c.c
+ MAINTAINERS                         |   1 +
+ drivers/iio/chemical/Kconfig        |  11 ++
+ drivers/iio/chemical/Makefile       |   1 +
+ drivers/iio/chemical/scd30_serial.c | 263 ++++++++++++++++++++++++++++
+ 4 files changed, 276 insertions(+)
+ create mode 100644 drivers/iio/chemical/scd30_serial.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 41a509cca6f1..13aed3473b7e 100644
+index 13aed3473b7e..5db4b446c8ba 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -15142,6 +15142,7 @@ M:	Tomasz Duszynski <tomasz.duszynski@octakon.com>
- S:	Maintained
+@@ -15143,6 +15143,7 @@ S:	Maintained
  F:	drivers/iio/chemical/scd30.h
  F:	drivers/iio/chemical/scd30_core.c
-+F:	drivers/iio/chemical/scd30_i2c.c
+ F:	drivers/iio/chemical/scd30_i2c.c
++F:	drivers/iio/chemical/scd30_serial.c
  
  SENSIRION SPS30 AIR POLLUTION SENSOR DRIVER
  M:	Tomasz Duszynski <tduszyns@gmail.com>
 diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index 99e852b67e55..970d34888c2e 100644
+index 970d34888c2e..10bb431bc3ce 100644
 --- a/drivers/iio/chemical/Kconfig
 +++ b/drivers/iio/chemical/Kconfig
-@@ -96,6 +96,17 @@ config SCD30_CORE
+@@ -107,6 +107,17 @@ config SCD30_I2C
  	  To compile this driver as a module, choose M here: the module will
- 	  be called scd30_core.
+ 	  be called scd30_i2c.
  
-+config SCD30_I2C
-+	tristate "SCD30 carbon dioxide sensor I2C driver"
-+	depends on SCD30_CORE && I2C
-+	select CRC8
++config SCD30_SERIAL
++	tristate "SCD30 carbon dioxide sensor serial driver"
++	depends on SCD30_CORE && SERIAL_DEV_BUS
++	select CRC16
 +	help
-+	  Say Y here to build support for the Sensirion SCD30 I2C interface
++	  Say Y here to build support for the Sensirion SCD30 serial interface
 +	  driver.
 +
 +	  To compile this driver as a module, choose M here: the module will
-+	  be called scd30_i2c.
++	  be called scd30_serial.
 +
  config SENSIRION_SGP30
  	tristate "Sensirion SGPxx gas sensors"
  	depends on I2C
 diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index c9804b041ecd..0966ca34e34b 100644
+index 0966ca34e34b..fef63dd5bf92 100644
 --- a/drivers/iio/chemical/Makefile
 +++ b/drivers/iio/chemical/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_CCS811)		+= ccs811.o
- obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
+@@ -14,6 +14,7 @@ obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
  obj-$(CONFIG_PMS7003) += pms7003.o
  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
-+obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
+ obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
++obj-$(CONFIG_SCD30_SERIAL) += scd30_serial.o
  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
  obj-$(CONFIG_SPS30) += sps30.o
  obj-$(CONFIG_VZ89X)		+= vz89x.o
-diff --git a/drivers/iio/chemical/scd30_i2c.c b/drivers/iio/chemical/scd30_i2c.c
+diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
 new file mode 100644
-index 000000000000..875892a070ee
+index 000000000000..06f85eb1a4dd
 --- /dev/null
-+++ b/drivers/iio/chemical/scd30_i2c.c
-@@ -0,0 +1,139 @@
++++ b/drivers/iio/chemical/scd30_serial.c
+@@ -0,0 +1,263 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Sensirion SCD30 carbon dioxide sensor i2c driver
++ * Sensirion SCD30 carbon dioxide sensor serial driver
 + *
 + * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-+ *
-+ * I2C slave address: 0x61
 + */
-+#include <linux/crc8.h>
++#include <linux/crc16.h>
 +#include <linux/device.h>
 +#include <linux/errno.h>
-+#include <linux/i2c.h>
++#include <linux/iio/iio.h>
++#include <linux/jiffies.h>
 +#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
++#include <linux/property.h>
++#include <linux/serdev.h>
++#include <linux/string.h>
 +#include <linux/types.h>
 +#include <asm/unaligned.h>
 +
 +#include "scd30.h"
 +
-+#define SCD30_I2C_MAX_BUF_SIZE 18
-+#define SCD30_I2C_CRC8_POLYNOMIAL 0x31
++#define SCD30_SERDEV_ADDR 0x61
++#define SCD30_SERDEV_WRITE 0x06
++#define SCD30_SERDEV_READ 0x03
++#define SCD30_SERDEV_MAX_BUF_SIZE 17
++#define SCD30_SERDEV_RX_HEADER_SIZE 3
++#define SCD30_SERDEV_CRC_SIZE 2
++#define SCD30_SERDEV_TIMEOUT msecs_to_jiffies(200)
 +
-+static u16 scd30_i2c_cmd_lookup_tbl[] = {
-+	[CMD_START_MEAS] = 0x0010,
-+	[CMD_STOP_MEAS] = 0x0104,
-+	[CMD_MEAS_INTERVAL] = 0x4600,
-+	[CMD_MEAS_READY] = 0x0202,
-+	[CMD_READ_MEAS] = 0x0300,
-+	[CMD_ASC] = 0x5306,
-+	[CMD_FRC] = 0x5204,
-+	[CMD_TEMP_OFFSET] = 0x5403,
-+	[CMD_FW_VERSION] = 0xd100,
-+	[CMD_RESET] = 0xd304,
++struct scd30_serdev_priv {
++	struct completion meas_ready;
++	char *buf;
++	int num_expected;
++	int num;
 +};
 +
-+DECLARE_CRC8_TABLE(scd30_i2c_crc8_tbl);
++static u16 scd30_serdev_cmd_lookup_tbl[] = {
++	[CMD_START_MEAS] = 0x0036,
++	[CMD_STOP_MEAS] = 0x0037,
++	[CMD_MEAS_INTERVAL] = 0x0025,
++	[CMD_MEAS_READY] = 0x0027,
++	[CMD_READ_MEAS] = 0x0028,
++	[CMD_ASC] = 0x003a,
++	[CMD_FRC] = 0x0039,
++	[CMD_TEMP_OFFSET] = 0x003b,
++	[CMD_FW_VERSION] = 0x0020,
++	[CMD_RESET] = 0x0034,
++};
 +
-+static int scd30_i2c_xfer(struct scd30_state *state, char *txbuf, int txsize,
-+			  char *rxbuf, int rxsize)
++static u16 scd30_serdev_calc_crc(const char *buf, int size)
 +{
-+	struct i2c_client *client = to_i2c_client(state->dev);
++	return crc16(0xffff, buf, size);
++}
++
++static int scd30_serdev_xfer(struct scd30_state *state, char *txbuf, int txsize,
++			     char *rxbuf, int rxsize)
++{
++	struct serdev_device *serdev = to_serdev_device(state->dev);
++	struct scd30_serdev_priv *priv = state->priv;
 +	int ret;
 +
-+	/*
-+	 * repeated start is not supported hence instead of sending two i2c
-+	 * messages in a row we send one by one
-+	 */
-+	ret = i2c_master_send(client, txbuf, txsize);
++	priv->buf = rxbuf;
++	priv->num_expected = rxsize;
++	priv->num = 0;
++
++	ret = serdev_device_write(serdev, txbuf, txsize, SCD30_SERDEV_TIMEOUT);
 +	if (ret < 0)
 +		return ret;
 +	if (ret != txsize)
 +		return -EIO;
 +
-+	if (!rxbuf)
-+		return 0;
-+
-+	ret = i2c_master_recv(client, rxbuf, rxsize);
++	ret = wait_for_completion_interruptible_timeout(&priv->meas_ready, SCD30_SERDEV_TIMEOUT);
 +	if (ret < 0)
 +		return ret;
-+	if (ret != rxsize)
-+		return -EIO;
++	if (!ret)
++		return -ETIMEDOUT;
 +
 +	return 0;
 +}
 +
-+static int scd30_i2c_command(struct scd30_state *state, enum scd30_cmd cmd, u16 arg,
-+			     void *response, int size)
++static int scd30_serdev_command(struct scd30_state *state, enum scd30_cmd cmd, u16 arg,
++				void *response, int size)
 +{
-+	char buf[SCD30_I2C_MAX_BUF_SIZE];
++	/*
++	 * Communication over serial line is based on modbus protocol (or rather
++	 * its variation called modbus over serial to be precise). Upon
++	 * receiving a request device should reply with response.
++	 *
++	 * Frame below represents a request message. Each field takes
++	 * exactly one byte.
++	 *
++	 * +------+------+-----+-----+-------+-------+-----+-----+
++	 * | dev  | op   | reg | reg | byte1 | byte0 | crc | crc |
++	 * | addr | code | msb | lsb |       |       | lsb | msb |
++	 * +------+------+-----+-----+-------+-------+-----+-----+
++	 *
++	 * The message device replies with depends on the 'op code' field from
++	 * the request. In case it was set to SCD30_SERDEV_WRITE sensor should
++	 * reply with unchanged request. Otherwise 'op code' was set to
++	 * SCD30_SERDEV_READ and response looks like the one below. As with
++	 * request, each field takes one byte.
++	 *
++	 * +------+------+--------+-------+-----+-------+-----+-----+
++	 * | dev  | op   | num of | byte0 | ... | byteN | crc | crc |
++	 * | addr | code | bytes  |       |     |       | lsb | msb |
++	 * +------+------+--------+-------+-----+-------+-----+-----+
++	 */
++	char txbuf[SCD30_SERDEV_MAX_BUF_SIZE] = { SCD30_SERDEV_ADDR },
++	     rxbuf[SCD30_SERDEV_MAX_BUF_SIZE];
++	int ret, rxsize, txsize = 2;
 +	char *rsp = response;
-+	int i, ret;
-+	char crc;
++	u16 crc;
 +
-+	put_unaligned_be16(scd30_i2c_cmd_lookup_tbl[cmd], buf);
-+	i = 2;
++	put_unaligned_be16(scd30_serdev_cmd_lookup_tbl[cmd], txbuf + txsize);
++	txsize += 2;
 +
 +	if (rsp) {
-+		/* each two bytes are followed by a crc8 */
-+		size += size / 2;
++		txbuf[1] = SCD30_SERDEV_READ;
++		if (cmd == CMD_READ_MEAS)
++			/* number of u16 words to read */
++			put_unaligned_be16(size / 2, txbuf + txsize);
++		else
++			put_unaligned_be16(0x0001, txbuf + txsize);
++		txsize += 2;
++		crc = scd30_serdev_calc_crc(txbuf, txsize);
++		put_unaligned_le16(crc, txbuf + txsize);
++		txsize += 2;
++		rxsize = SCD30_SERDEV_RX_HEADER_SIZE + size + SCD30_SERDEV_CRC_SIZE;
 +	} else {
-+		put_unaligned_be16(arg, buf + i);
-+		crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-+		i += 2;
-+		buf[i] = crc;
-+		i += 1;
-+
-+		/* commands below don't take an argument */
 +		if ((cmd == CMD_STOP_MEAS) || (cmd == CMD_RESET))
-+			i -= 3;
++			arg = 0x0001;
++
++		txbuf[1] = SCD30_SERDEV_WRITE;
++		put_unaligned_be16(arg, txbuf + txsize);
++		txsize += 2;
++		crc = scd30_serdev_calc_crc(txbuf, txsize);
++		put_unaligned_le16(crc, txbuf + txsize);
++		txsize += 2;
++		rxsize = txsize;
 +	}
 +
-+	ret = scd30_i2c_xfer(state, buf, i, buf, size);
++	ret = scd30_serdev_xfer(state, txbuf, txsize, rxbuf, rxsize);
 +	if (ret)
 +		return ret;
 +
-+	/* validate received data and strip off crc bytes */
-+	for (i = 0; i < size; i += 3) {
-+		crc = crc8(scd30_i2c_crc8_tbl, buf + i, 2, CRC8_INIT_VALUE);
-+		if (crc != buf[i + 2]) {
++	switch (txbuf[1]) {
++	case SCD30_SERDEV_WRITE:
++		if (memcmp(txbuf, rxbuf, txsize)) {
++			dev_err(state->dev, "wrong message received\n");
++			return -EIO;
++		}
++		break;
++	case SCD30_SERDEV_READ:
++		if (rxbuf[2] != (rxsize - SCD30_SERDEV_RX_HEADER_SIZE - SCD30_SERDEV_CRC_SIZE)) {
++			dev_err(state->dev, "received data size does not match header\n");
++			return -EIO;
++		}
++
++		rxsize -= SCD30_SERDEV_CRC_SIZE;
++		crc = get_unaligned_le16(rxbuf + rxsize);
++		if (crc != scd30_serdev_calc_crc(rxbuf, rxsize)) {
 +			dev_err(state->dev, "data integrity check failed\n");
 +			return -EIO;
 +		}
 +
-+		*rsp++ = buf[i];
-+		*rsp++ = buf[i + 1];
++		rxsize -= SCD30_SERDEV_RX_HEADER_SIZE;
++		memcpy(rsp, rxbuf + SCD30_SERDEV_RX_HEADER_SIZE, rxsize);
++		break;
++	default:
++		dev_err(state->dev, "received unknown op code\n");
++		return -EIO;
 +	}
 +
 +	return 0;
 +}
 +
-+static int scd30_i2c_probe(struct i2c_client *client)
++static int scd30_serdev_receive_buf(struct serdev_device *serdev,
++				    const unsigned char *buf, size_t size)
 +{
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-+		return -EOPNOTSUPP;
++	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
++	struct scd30_serdev_priv *priv;
++	struct scd30_state *state;
++	int num;
 +
-+	crc8_populate_msb(scd30_i2c_crc8_tbl, SCD30_I2C_CRC8_POLYNOMIAL);
++	if (!indio_dev)
++		return 0;
 +
-+	return scd30_probe(&client->dev, client->irq, client->name, NULL, scd30_i2c_command);
++	state = iio_priv(indio_dev);
++	priv = state->priv;
++
++	/* just in case sensor puts some unexpected bytes on the bus */
++	if (!priv->buf)
++		return 0;
++
++	if (priv->num + size >= priv->num_expected)
++		num = priv->num_expected - priv->num;
++	else
++		num = size;
++
++	memcpy(priv->buf + priv->num, buf, num);
++	priv->num += num;
++
++	if (priv->num == priv->num_expected) {
++		priv->buf = NULL;
++		complete(&priv->meas_ready);
++	}
++
++	return num;
 +}
 +
-+static const struct of_device_id scd30_i2c_of_match[] = {
++static const struct serdev_device_ops scd30_serdev_ops = {
++	.receive_buf = scd30_serdev_receive_buf,
++	.write_wakeup = serdev_device_write_wakeup,
++};
++
++static int scd30_serdev_probe(struct serdev_device *serdev)
++{
++	struct device *dev = &serdev->dev;
++	struct scd30_serdev_priv *priv;
++	int irq, ret;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	init_completion(&priv->meas_ready);
++	serdev_device_set_client_ops(serdev, &scd30_serdev_ops);
++
++	ret = devm_serdev_device_open(dev, serdev);
++	if (ret)
++		return ret;
++
++	serdev_device_set_baudrate(serdev, 19200);
++	serdev_device_set_flow_control(serdev, false);
++
++	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
++	if (ret)
++		return ret;
++
++	irq = fwnode_irq_get(dev_fwnode(dev), 0);
++
++	return scd30_probe(dev, irq, KBUILD_MODNAME, priv, scd30_serdev_command);
++}
++
++static const struct of_device_id scd30_serdev_of_match[] = {
 +	{ .compatible = "sensirion,scd30" },
 +	{ }
 +};
-+MODULE_DEVICE_TABLE(of, scd30_i2c_of_match);
++MODULE_DEVICE_TABLE(of, scd30_serdev_of_match);
 +
-+static struct i2c_driver scd30_i2c_driver = {
++static struct serdev_device_driver scd30_serdev_driver = {
 +	.driver = {
 +		.name = KBUILD_MODNAME,
-+		.of_match_table = scd30_i2c_of_match,
++		.of_match_table = scd30_serdev_of_match,
 +		.pm = &scd30_pm_ops,
 +	},
-+	.probe_new = scd30_i2c_probe,
++	.probe = scd30_serdev_probe,
 +};
-+module_i2c_driver(scd30_i2c_driver);
++module_serdev_device_driver(scd30_serdev_driver);
 +
 +MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
-+MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor i2c driver");
++MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor serial driver");
 +MODULE_LICENSE("GPL v2");
 -- 
 2.27.0

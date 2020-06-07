@@ -2,107 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7CA1F0CB6
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF7191F0CC1
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 18:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726789AbgFGP46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 11:56:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57718 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726703AbgFGP46 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 11:56:58 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E8612077D;
-        Sun,  7 Jun 2020 15:56:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591545418;
-        bh=Jt2G0C25ddMVmJpl8LbsERNxLCJDO1grGNi1SJTVETA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zW7qjx9qvMeGz9UyV2UEaT2+u4OU2i4+6sOzHuCVEvluaH7X8pkn219rlqkO++Nvq
-         6o/kaR8sHyfdn4db86rODAgk7krXKmaApXW5K48xqVeemAE/ZJMik/f+kK/qxxafVF
-         fvBJcS3ryThf99b2Em3w86MoJWpXBmRx9S1VTFBk=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Akinobu Mita <akinobu.mita@gmail.com>
-Subject: [PATCH 32/32] iio:adc:max1118 Fix alignment of timestamp and data leak issues
-Date:   Sun,  7 Jun 2020 16:54:08 +0100
-Message-Id: <20200607155408.958437-33-jic23@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200607155408.958437-1-jic23@kernel.org>
-References: <20200607155408.958437-1-jic23@kernel.org>
+        id S1726607AbgFGQFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 12:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726548AbgFGQFd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 12:05:33 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CCF5C08C5C3
+        for <linux-iio@vger.kernel.org>; Sun,  7 Jun 2020 09:05:33 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id d10so7606042pgn.4
+        for <linux-iio@vger.kernel.org>; Sun, 07 Jun 2020 09:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZyrCkEdEemKi1aPBkHMRQDF+z/OxX0U7rIOvB40P7kU=;
+        b=nTIPFNOUj+JpmdjdQtlxNEvpRrUiXZJZzCiVHODMwkGQHZIV/PpnHO1h7G0Leb2D06
+         dslFglvS7LZRiVyNobFHXh8iQWc5QLgqnqub01dGzrz+LFsl/+Q49b+3+yzlXpui+7Bu
+         NNg3LJXMCTu3wruekRMi3zu6r4lG46QszScFG8hLYNhdlM2iDp36ouHcvA3i0H4QpEZI
+         OVOrcG7yRawj6UN1pxLnCNGQ9Jy9LJ0i6MWal7Kr4cKjKamLyK2KcRXCVTx3YNs2M2RO
+         kf1xJecu6Kxa8SRyYPD/P9cFNctFItochAMFDLR2qKakYpKljE/MnaCXxZTZA+FFc9FE
+         dY+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZyrCkEdEemKi1aPBkHMRQDF+z/OxX0U7rIOvB40P7kU=;
+        b=Qf1qZGyqgcU9qdjHsg2AM0O1nHCGytjZGpmZlSho8NdKUdfEklgK0IkGNenUmR93+e
+         2ZebknKO9cbT75BlVi6vBkAhb5o45cONiN075qHV3vOsHq+uTX4ywPy3WlVjBdOhzH38
+         u4jHMy8jGAtyZGGHXCbkfTtXikZXQfdjmooxBU2S07We56BJBQMx4c/QyJkBelS+uO+l
+         vs/0t1dozKqTTJs9thp0laqiRnl0jHTwHHBJsVUUnlObvbNBvHmnQE7vjmU3O0L0N50G
+         rtIVRCoT25j8lprfnoWO7kHvQ/UrxVHXLtBJi2qfrMSWTdQLZq5NrrgjaJWgkcFDL/dV
+         Bfuw==
+X-Gm-Message-State: AOAM530D8LpU13Xn7aLjTLeQyKCw9sogcnoG2hmnbA8DwQAWuYH+wuqz
+        2ve7RZv6OZWTLeVoh3m9u5GAxjL6P8HUdoIbfirZqGNyob4=
+X-Google-Smtp-Source: ABdhPJwiOv2eTcuM2dez0Pgm1GCIE45SqB19ghHl38vbohH3ex//PHWpyWk6xVbNxSAGq7tSNbr/BIDN4mLOrNK+gIk=
+X-Received: by 2002:a63:305:: with SMTP id 5mr16515614pgd.74.1591545932406;
+ Sun, 07 Jun 2020 09:05:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200607155408.958437-1-jic23@kernel.org> <20200607155408.958437-2-jic23@kernel.org>
+In-Reply-To: <20200607155408.958437-2-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 7 Jun 2020 19:05:15 +0300
+Message-ID: <CAHp75Ves+9VpAN80RgML=-_2=AyrpYM72Pi6sM6CWxdptiAn2Q@mail.gmail.com>
+Subject: Re: [PATCH 01/32] iio: accel: kxsd9: Fix alignment of local buffer.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Jun 7, 2020 at 6:57 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> iio_push_to_buffers_with_timestamp assumes 8 byte alignment which
+> is not guaranteed by an array of smaller elements.
+>
+> Note that whilst in this particular case the alignment forcing
+> of the ts element is not strictly necessary it acts as good
+> documentation.
 
-One of a class of bugs pointed out by Lars in a recent review.
-iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses an array of smaller elements on the stack.
-As Lars also noted this anti pattern can involve a leak of data to
-userspace and that indeed can happen here.  We close both issues by
-moving to a suitable structure in the iio_priv() data.
+...
 
-This data is allocated with kzalloc so no data can leak apart
-from previous readings.
+> +       struct {
+> +               __be16 chan[4];
+> +               s64 ts __aligned(8);
+> +       } hw_values;
 
-The explicit alignment of ts is necessary to ensure correct padding
-on architectures where s64 is only 4 bytes aligned such as x86_32.
+I'm not sure what __aligned can do better here? It's naturally will be
+8 alignment (struct itself due to s64 followed by 4*__be16).
 
-Fixes: a9e9c7153e96 ("iio: adc: add max1117/max1118/max1119 ADC driver")
-Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/max1118.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
-index 273fbea2a515..af68d6165b68 100644
---- a/drivers/iio/adc/max1118.c
-+++ b/drivers/iio/adc/max1118.c
-@@ -35,6 +35,11 @@ struct max1118 {
- 	struct spi_device *spi;
- 	struct mutex lock;
- 	struct regulator *reg;
-+	/* Ensure natural alignment of buffer elements */
-+	struct {
-+		u8 channels[2];
-+		s64 ts __aligned(8);
-+	} scan;
- 
- 	u8 data ____cacheline_aligned;
- };
-@@ -165,7 +170,6 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct max1118 *adc = iio_priv(indio_dev);
--	u8 data[16] = { }; /* 2x 8-bit ADC data + padding + 8 bytes timestamp */
- 	int scan_index;
- 	int i = 0;
- 
-@@ -183,10 +187,10 @@ static irqreturn_t max1118_trigger_handler(int irq, void *p)
- 			goto out;
- 		}
- 
--		data[i] = ret;
-+		adc->scan.channels[i] = ret;
- 		i++;
- 	}
--	iio_push_to_buffers_with_timestamp(indio_dev, data,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
- 					   iio_get_time_ns(indio_dev));
- out:
- 	mutex_unlock(&adc->lock);
 -- 
-2.26.2
-
+With Best Regards,
+Andy Shevchenko

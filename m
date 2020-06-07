@@ -2,36 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A5A1F0CA3
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB6F21F0CA4
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 17:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726714AbgFGP4c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 11:56:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57410 "EHLO mail.kernel.org"
+        id S1726715AbgFGP4e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 11:56:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57428 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726703AbgFGP4c (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 11:56:32 -0400
+        id S1726703AbgFGP4e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 7 Jun 2020 11:56:34 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1014120748;
-        Sun,  7 Jun 2020 15:56:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CE212078C;
+        Sun,  7 Jun 2020 15:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591545392;
-        bh=0kB/tB6TPZqTzGb6+NEUJ5B+RCiWr3Z2M0u4dfsTbj0=;
+        s=default; t=1591545393;
+        bh=nJDWVOzM0afylRhWaEUTTdsW0SwOaqzkiktGFmVbPwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sp1DMWVcQlr/0dvTM4wPmUolljL1VwYBqvigPOtOu20fpzZ3ZEARyx/otikyuK8n6
-         NosX5YKxhulCfsr734f1SMVSxSQG0X7F+3FVVWM1XTXtBStavuuDlUSB/LibbxUIGp
-         xTB2K8ULa1wAQ7QvP2M+rdWw+dNhIKPm1OvRjUiw=
+        b=ocLHgJae/igYvzPUz5hm/FBA3ZAf3YqPqI2c35+W17jFkjXyAJc/EvrKnGenXWsqC
+         aE5um6V7KMeUfNbNGHIcrW32U9c1zc8WoJYSz8l4P5sVpbGX6wLtMtkrrNWpa6qXan
+         J9woQMqFv4VWANOrcurkI5p/abRpdtkOu7n62vbM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Gregor Boirie <gregor.boirie@parrot.com>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 13/32] iio:magnetometer:ak8974: Fix alignment and data leak issues
-Date:   Sun,  7 Jun 2020 16:53:49 +0100
-Message-Id: <20200607155408.958437-14-jic23@kernel.org>
+Subject: [PATCH 14/32] iio:magnetometer:ak8975 Fix alignment and data leak issues.
+Date:   Sun,  7 Jun 2020 16:53:50 +0100
+Message-Id: <20200607155408.958437-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200607155408.958437-1-jic23@kernel.org>
 References: <20200607155408.958437-1-jic23@kernel.org>
@@ -52,57 +53,68 @@ As Lars also noted this anti pattern can involve a leak of data to
 userspace and that indeed can happen here.  We close both issues by
 moving to a suitable structure in the iio_priv() data.
 
-This data is allocated with kzalloc so no data can leak appart from
+This data is allocated with kzalloc so no data can leak apart from
 previous readings.
 
-Fixes: 7c94a8b2ee8cf ("iio: magn: add a driver for AK8974")
+The explicit alignment of ts is not necessary in this case as by
+coincidence the padding will end up the same, however I consider
+it to make the code less fragile and have included it.
+
+Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: Gregor Boirie <gregor.boirie@parrot.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/magnetometer/ak8974.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/magnetometer/ak8975.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index c2260c84f7f1..ea09b549ec4e 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -192,6 +192,11 @@ struct ak8974 {
- 	bool drdy_irq;
- 	struct completion drdy_complete;
- 	bool drdy_active_low;
-+	/* Ensure timestamp is naturally aligned */
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index 03d71f796177..14d66fd11aa3 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -366,6 +366,12 @@ struct ak8975_data {
+ 	struct iio_mount_matrix orientation;
+ 	struct regulator	*vdd;
+ 	struct regulator	*vid;
++
++	/* Ensure natural alignment of timestamp */
 +	struct {
-+		__le16 channels[3];
++		s16 channels[3];
 +		s64 ts __aligned(8);
 +	} scan;
  };
  
- static const char ak8974_reg_avdd[] = "avdd";
-@@ -657,7 +662,6 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- {
- 	struct ak8974 *ak8974 = iio_priv(indio_dev);
+ /* Enable attached power regulator if any. */
+@@ -793,7 +799,6 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+ 	const struct i2c_client *client = data->client;
+ 	const struct ak_def *def = data->def;
  	int ret;
--	__le16 hw_values[8]; /* Three axes + 64bit padding */
+-	s16 buff[8]; /* 3 x 16 bits axis values + 1 aligned 64 bits timestamp */
+ 	__le16 fval[3];
  
- 	pm_runtime_get_sync(&ak8974->i2c->dev);
- 	mutex_lock(&ak8974->lock);
-@@ -667,13 +671,13 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- 		dev_err(&ak8974->i2c->dev, "error triggering measure\n");
- 		goto out_unlock;
- 	}
--	ret = ak8974_getresult(ak8974, hw_values);
-+	ret = ak8974_getresult(ak8974, ak8974->scan.channels);
- 	if (ret) {
- 		dev_err(&ak8974->i2c->dev, "error getting measures\n");
- 		goto out_unlock;
- 	}
+ 	mutex_lock(&data->lock);
+@@ -816,11 +821,14 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+ 	mutex_unlock(&data->lock);
  
--	iio_push_to_buffers_with_timestamp(indio_dev, hw_values,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
+ 	/* Clamp to valid range. */
+-	buff[0] = clamp_t(s16, le16_to_cpu(fval[0]), -def->range, def->range);
+-	buff[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
+-	buff[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
+-
+-	iio_push_to_buffers_with_timestamp(indio_dev, buff,
++	data->scan.channels[0] =
++		clamp_t(s16, le16_to_cpu(fval[0]), -def->range, def->range);
++	data->scan.channels[1] =
++		clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
++	data->scan.channels[2] =
++		clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
  					   iio_get_time_ns(indio_dev));
+ 	return;
  
-  out_unlock:
 -- 
 2.26.2
 

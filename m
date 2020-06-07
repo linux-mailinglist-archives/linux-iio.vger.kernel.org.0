@@ -2,104 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C67E1F0D92
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 20:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC951F0F8C
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jun 2020 22:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726835AbgFGSFc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 14:05:32 -0400
-Received: from smtpout1.mo803.mail-out.ovh.net ([79.137.123.219]:58515 "EHLO
-        smtpout1.mo803.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726714AbgFGSFb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 14:05:31 -0400
-Received: from pro2.mail.ovh.net (unknown [10.109.138.11])
-        by mo803.mail-out.ovh.net (Postfix) with ESMTPS id 91ED555D9CBB;
-        Sun,  7 Jun 2020 20:05:29 +0200 (CEST)
-Received: from localhost (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sun, 7 Jun 2020
- 20:05:29 +0200
-Date:   Sun, 7 Jun 2020 20:03:13 +0200
-From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 21/32] iio:pressure:ms5611 Fix buffer element alignment
-Message-ID: <20200607180313.GA95841@arch>
-References: <20200607155408.958437-1-jic23@kernel.org>
- <20200607155408.958437-22-jic23@kernel.org>
+        id S1726993AbgFGUYS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 16:24:18 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53638 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726093AbgFGUYS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 16:24:18 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 44C241C0BD2; Sun,  7 Jun 2020 22:24:15 +0200 (CEST)
+Date:   Sun, 7 Jun 2020 22:24:14 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com
+Subject: Re: [PATCH v3 0/7] Support inhibiting input devices
+Message-ID: <20200607202414.GB13138@amd>
+References: <20200604072853.GP89269@dtor-ws>
+ <20200605173335.13753-1-andrzej.p@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="E39vaYmALEf/7YXx"
 Content-Disposition: inline
-In-Reply-To: <20200607155408.958437-22-jic23@kernel.org>
-X-Originating-IP: [89.70.180.118]
-X-ClientProxiedBy: DAG3EX2.emp2.local (172.16.2.22) To DAG2EX1.emp2.local
- (172.16.2.11)
-X-Ovh-Tracer-Id: 3200370488883895378
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudegledguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnheptdehveethfffudetjeeftdekueehjeegjedvteffgfevkefffeegffeugeehgfejnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtoheplhgrrhhssehmvghtrghfohhordguvg
+In-Reply-To: <20200605173335.13753-1-andrzej.p@collabora.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 07, 2020 at 04:53:57PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> One of a class of bugs pointed out by Lars in a recent review.
-> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> to the size of the timestamp (8 bytes).  This is not guaranteed in
-> this driver which uses an array of smaller elements on the stack.
-> Here there is no data leak possibility so use an explicit structure
-> on the stack to ensure alignment and nice readable fashion.
->
-> The forced alignment of ts isn't strictly necessary in this driver
-> as the padding will be correct anyway (there isn't any).  However
-> it is probably less fragile to have it there and it acts as
-> documentation of the requirement.
->
 
-Looks good.
-Acked-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+--E39vaYmALEf/7YXx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Fixes: 713bbb4efb9dc ("iio: pressure: ms5611: Add triggered buffer support")
-> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/pressure/ms5611_core.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
-> index d451bb9dffc8..214b0d25f598 100644
-> --- a/drivers/iio/pressure/ms5611_core.c
-> +++ b/drivers/iio/pressure/ms5611_core.c
-> @@ -212,16 +212,21 @@ static irqreturn_t ms5611_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct ms5611_state *st = iio_priv(indio_dev);
-> -	s32 buf[4]; /* s32 (pressure) + s32 (temp) + 2 * s32 (timestamp) */
-> +	/* Ensure buffer elements are naturally aligned */
-> +	struct {
-> +		s32 channels[2];
-> +		s64 ts __aligned(8);
-> +	} scan;
->  	int ret;
->
->  	mutex_lock(&st->lock);
-> -	ret = ms5611_read_temp_and_pressure(indio_dev, &buf[1], &buf[0]);
-> +	ret = ms5611_read_temp_and_pressure(indio_dev, &scan.channels[1],
-> +					    &scan.channels[0]);
->  	mutex_unlock(&st->lock);
->  	if (ret < 0)
->  		goto err;
->
-> -	iio_push_to_buffers_with_timestamp(indio_dev, buf,
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
->  					   iio_get_time_ns(indio_dev));
->
->  err:
-> --
-> 2.26.2
->
+On Fri 2020-06-05 19:33:28, Andrzej Pietrasiewicz wrote:
+> Userspace might want to implement a policy to temporarily disregard input
+> from certain devices.
+
+Wow, you certainly cc a lot of lists.
+
+> An example use case is a convertible laptop, whose keyboard can be folded
+> under the screen to create tablet-like experience. The user then must hold
+> the laptop in such a way that it is difficult to avoid pressing the keybo=
+ard
+> keys. It is therefore desirable to temporarily disregard input from the
+> keyboard, until it is folded back. This obviously is a policy which should
+> be kept out of the kernel, but the kernel must provide suitable means to
+> implement such a policy.
+>=20
+> Due to interactions with suspend/resume, a helper has been added for driv=
+ers
+> to decide if the device is being used or not (PATCH 1/7) and it has been
+> applied to relevant drivers (PATCH 2,4,5,6/7).
+
+But is that a right way to implement it?
+
+We want this for cellphones, too -- touchscreen should be disabled
+while the device is locked in the pocket -- but we really want the
+touchscreen hardware to be powered down in that case (because it keeps
+SoC busy and eats a _lot_ of electricity).
+
+But simplistic "receive an event and then drop it if device is
+inhibited" does not allow that...
+
+Best regards,
+								Pavel
+							=09
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--E39vaYmALEf/7YXx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl7dTO4ACgkQMOfwapXb+vKNuACgw3cpx7Z15Nm3EAs8yyTuu1RS
+DsYAn1yorcZKMbA2oKpOoVakbRalRIie
+=Dt1J
+-----END PGP SIGNATURE-----
+
+--E39vaYmALEf/7YXx--

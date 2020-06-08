@@ -2,81 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB9E1F16DA
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 12:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A2DC1F173C
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 13:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729280AbgFHKmO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 06:42:14 -0400
-Received: from mga01.intel.com ([192.55.52.88]:18713 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729415AbgFHKmL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Jun 2020 06:42:11 -0400
-IronPort-SDR: IPRKY+LnvXy4XyUINUADCC/aQuZb7IClvr1fne1eUX6gUs/ehfvpE9nTxYqA8v9QXyATW7cZRy
- i8wzDArpu9UA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2020 03:42:09 -0700
-IronPort-SDR: i/vTBN45wcStAf/eEOQcwz/Xrcxgv6uPoYZ0elZxnTt1i+pDMN0KegHoanJFQQpDnIL3a+Vmzp
- ZP7YbLi/Ol7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,487,1583222400"; 
-   d="scan'208";a="259404287"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga007.jf.intel.com with ESMTP; 08 Jun 2020 03:42:07 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1jiFEI-00BejF-8S; Mon, 08 Jun 2020 13:42:10 +0300
-Date:   Mon, 8 Jun 2020 13:42:10 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 20/32] iio:imu:inv_mpu6050 Fix dma and ts alignment and
- data leak issues.
-Message-ID: <20200608104210.GH2428291@smile.fi.intel.com>
-References: <20200607155408.958437-1-jic23@kernel.org>
- <20200607155408.958437-21-jic23@kernel.org>
- <MN2PR12MB44220F9CE7BDF5ACA3DEF4A4C4850@MN2PR12MB4422.namprd12.prod.outlook.com>
+        id S1729467AbgFHLJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 07:09:30 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2290 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729439AbgFHLJ3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 8 Jun 2020 07:09:29 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 53537D8BE93D230426A4;
+        Mon,  8 Jun 2020 12:09:27 +0100 (IST)
+Received: from localhost (10.47.27.61) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 8 Jun 2020
+ 12:09:26 +0100
+Date:   Mon, 8 Jun 2020 12:08:43 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Syed Nayyar Waris <syednwaris@gmail.com>
+CC:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 1/3] counter: 104-quad-8: Add lock guards - generic
+ interface
+Message-ID: <20200608120843.00007870@Huawei.com>
+In-Reply-To: <CACG_h5qG7xU0kL1-Hn8q4S338ESAzz4qjN56Z8Bfi9ekYRTTzg@mail.gmail.com>
+References: <20200316124929.GA389@syed.domain.name>
+        <20200318020506.GA45571@icarus>
+        <20200322175831.74e10aa7@archlinux>
+        <CACG_h5qctM0S2buQHHNnJ_qVY6YY2wYruj9aTKH9RiJ=9_LfoQ@mail.gmail.com>
+        <20200404150633.2421decd@archlinux>
+        <CACG_h5o=V_y33krqojmANnqG+Uf7FJmOVmkY-MGZ+zLJR+Q2YQ@mail.gmail.com>
+        <20200607040850.GA80713@shinobu>
+        <CACG_h5qG7xU0kL1-Hn8q4S338ESAzz4qjN56Z8Bfi9ekYRTTzg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <MN2PR12MB44220F9CE7BDF5ACA3DEF4A4C4850@MN2PR12MB4422.namprd12.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.27.61]
+X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 08, 2020 at 10:24:11AM +0000, Jean-Baptiste Maneyrol wrote:
-> Hi Jonathan,
+On Sun, 7 Jun 2020 11:00:53 +0530
+Syed Nayyar Waris <syednwaris@gmail.com> wrote:
+
+> On Sun, Jun 7, 2020 at 9:39 AM William Breathitt Gray
+> <vilhelm.gray@gmail.com> wrote:
+> >
+> > On Sun, Jun 07, 2020 at 09:28:40AM +0530, Syed Nayyar Waris wrote:  
+> > > On Sat, Apr 4, 2020 at 7:36 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > >
+> > > > On Mon, 30 Mar 2020 23:54:32 +0530
+> > > > Syed Nayyar Waris <syednwaris@gmail.com> wrote:
+> > > >  
+> > > > > Hi Jonathan
+> > > > >  
+> > > > > >Looks good.  I'm not sure right now which tree I'll take this through
+> > > > > >(depends on whether it looks like we'll get an rc8 and hence I can sneak
+> > > > > >it in for the coming merge window or not).
+> > > > > >
+> > > > > >So poke me if I seem to have forgotten to apply this in a week or so.  
+> > > > >
+> > > > > Gentle Reminder.
+> > > > > Thanks !
+> > > > > Syed Nayyar Waris  
+> > > >
+> > > > Thanks.  I've applied it to the fixes-togreg branch of iio.git which will go
+> > > > upstream after the merge window closes.
+> > > >
+> > > > Thanks,
+> > > >
+> > > > Jonathan
+> > > >  
+> > >
+> > > HI Jonathan,
+> > >
+> > > I think only the patch [1/3] has been applied. Patches [2/3] and [3/3] have not.
+> > >
+> > > The three patches were:
+> > > https://lore.kernel.org/patchwork/patch/1210135/
+> > > https://lore.kernel.org/patchwork/patch/1210136/
+> > > https://lore.kernel.org/patchwork/patch/1210137/
+> > >
+> > > The last 2 patches need to be applied, I think.
+> > >
+> > > Regards
+> > > Syed Nayyar Waris  
+> >
+> > Just a heads-up: the relevant bugs are present in the 5.7 release so it
+> > would be prudent to tag those two patches with respective Fixes lines.
+> >
+> > William Breathitt Gray  
 > 
-> as stated before, I think this is a good opportunity to fix FIFO data reading by replacing regmap_bulk_read by regmap_noinc_read.
-> Otherwise it could also be done in another patch.
+> Mentioning below, the 'Fixes' tags just for reference:
+> For patch [2/3]: counter: 104-quad-8: Add lock guards - differential encoder.
+> Fixes: bbef69e088c3 ("counter: 104-quad-8: Support Differential
+> Encoder Cable Status")
+> 
+> For patch [3/3]: counter: 104-quad-8: Add lock guards - filter clock prescaler.
+> Fixes: 9b74dddf79be ("counter: 104-quad-8: Support Filter Clock Prescaler")
+> 
+> I have replied on the v5 patches [2/3] and [3/3] with the (above)
+> 'Fixes' tags. I have added the tags in the message.
+> 
+> I think that was what you meant.
+> 
+Gah. I lost them.   I feel slightly less guilty though because they aren't
+all in a thread so are scattered randomly in my email.
 
-It seems I didn't get this series to my work email, so, sorry for answering here.
+Please keep a given version of a patch set in a single thread.  git will
+do this by default unless you've specifically told it not to...
 
-> -       result = regmap_bulk_read(st->map, st->reg->fifo_count_h, data,
-> +       result = regmap_bulk_read(st->map, st->reg->fifo_count_h,
+Ideally always use a cover letter as well except for single patch patch sets.
 
-> +                                 st->data,
->                                    INV_MPU6050_FIFO_COUNT_BYTE);
+I'll sort these next time I'm on the right computer.
 
-Now this can be one line :-)
+Jonathan
 
-...
-
-> -               iio_push_to_buffers_with_timestamp(indio_dev, data, timestamp);
-> +               iio_push_to_buffers_with_timestamp(indio_dev, st->data,
-> +                                                  timestamp);
-
-And this seems redundant change.
-
--- 
-With Best Regards,
-Andy Shevchenko
+> Regards
+> Syed Nayyar Waris
 
 

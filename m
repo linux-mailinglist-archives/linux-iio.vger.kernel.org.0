@@ -2,222 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0D11F1046
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 00:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6E61F11DE
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 05:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726788AbgFGWd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 18:33:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46042 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726764AbgFGWd6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 7 Jun 2020 18:33:58 -0400
-Received: from localhost (unknown [151.48.128.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 102CB206F6;
-        Sun,  7 Jun 2020 22:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591569236;
-        bh=OuhXRnz1XUwkcOeWescU0cHhWP6Nx48Q8GrFaKy7d0A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WNqT2TPCUWR1Dj4PY4oWWKUDUSbAdiiD/5LVX05yZ7kvDZLwO4LjSSAdcJ9YRLuwZ
-         90KEOMJtuk5BKcMiDVB60thoY3Vd/0f/ouqy+Q5Dt4lO/PGwwq3qF/cnjdBFDAguXR
-         x3OKeP8rcS2PC73/gH/BDxSdlHQJ0TMsCI2TWAlA=
-Date:   Mon, 8 Jun 2020 00:33:51 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Subject: Re: [PATCH 19/32] iio:imu:st_lsm6dsx Fix alignment and data leak
- issues
-Message-ID: <20200607223351.GB893522@lore-desk.lan>
-References: <20200607155408.958437-1-jic23@kernel.org>
- <20200607155408.958437-20-jic23@kernel.org>
+        id S1728802AbgFHDsC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Jun 2020 23:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728763AbgFHDsA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 23:48:00 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE3CC08C5C3;
+        Sun,  7 Jun 2020 20:47:59 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id a13so15435334ilh.3;
+        Sun, 07 Jun 2020 20:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1BVaUAixWvTt5WtErptsO3tP6DKbMMPVMIbp5bkToTg=;
+        b=GPZbee1Wrp9z8b27aPeqkytHNsHLuyoMrLecMsczdjrjhHLmGzgX1gEcZU6x0wUW0Y
+         3dhCTyXptIlrdFwbuYyAtabHVwExW6Dc5T0E4xiCwPJ1SnaQb3xP7Yqe3CX4xqAK3bmK
+         B0So2hHw1CJyOObYlkRnt7LBoMLR5vMh6u34hXEBsKbpvdkbx8XDD0lGbOURLpWfsdXi
+         FiVv9/JWXxVfns8TAnRS5aVeAfDpsabNwngaVLuKc6CD+kF9uCwAVvlNwFXZ1XlbD7tj
+         SkDpMSVT2ZnQCiwNSydq0aA2lnvDRRKCDglzgO71TWp53dz+ozxYpeszI8bqNa99jg+f
+         cjlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1BVaUAixWvTt5WtErptsO3tP6DKbMMPVMIbp5bkToTg=;
+        b=T7DjojzD4oAc494xaYpUDHiF7Srjl3Ez1F4Z6YtIrU8WCpcQGKkeMPk7FXNLAHMnlU
+         HlL/JtQKlUoFUVi5welkmz7k/VG7Okpl7p4y3oBcdWVAdi5DP0csm/3mk+tOIezm6d/h
+         Pa5Irntg+aJqRMXOm3C+36R4xJBYlOsT5Jg2WI3KdZxNq9g6TMwvT0+lTCmrVRpNHyq8
+         41KS8VV8KOXX2R+TbYPZbiquLD2Sf6QLph7llnpZtxlYO9Q0A99LLrX3ONRB6UB56dHR
+         BCyefuBed96vkPnWsvG83uo+XRtaq48gtnqMY++g9qdzXIKlGi+Om6oJRqnhnwHRolgD
+         /srw==
+X-Gm-Message-State: AOAM532d2u4iH/QaDABWFWcO3XbKv2+lHFQvdaECfHbu5E0H35K2pac3
+        e8271Yl4gAZvhAwjRPOIRgjXe/Wx5ABW1wbAMUg=
+X-Google-Smtp-Source: ABdhPJykuldEnjkxysg7fzHCYSvtqif6Tsc2jA5532TVy0njbI9trWfbZiGLz9x25D5eNF5Is+vHlZx5gdwA797Gfz8=
+X-Received: by 2002:a05:6e02:4d:: with SMTP id i13mr21094586ilr.227.1591588078478;
+ Sun, 07 Jun 2020 20:47:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MW5yreqqjyrRcusr"
-Content-Disposition: inline
-In-Reply-To: <20200607155408.958437-20-jic23@kernel.org>
+References: <20200605024445.35672-1-navid.emamdoost@gmail.com>
+ <20200606171153.6824a326@archlinux> <CAHp75VeRaS0JBRSyr+MeCbkVsscLyxkag00eY+pMPXZ6Jvb2zQ@mail.gmail.com>
+In-Reply-To: <CAHp75VeRaS0JBRSyr+MeCbkVsscLyxkag00eY+pMPXZ6Jvb2zQ@mail.gmail.com>
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Date:   Sun, 7 Jun 2020 22:47:47 -0500
+Message-ID: <CAEkB2ETaiZM9aQsH8_eeBSDPzTpjSLpWSeHV1S3mMxMjM+_TyA@mail.gmail.com>
+Subject: Re: [PATCH] io: pressure: zpa2326: handle pm_runtime_get_sync failure
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "emamd001@umn.edu" <emamd001@umn.edu>,
+        "wu000273@umn.edu" <wu000273@umn.edu>,
+        "kjlu@umn.edu" <kjlu@umn.edu>,
+        "smccaman@umn.edu" <smccaman@umn.edu>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---MW5yreqqjyrRcusr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> One of a class of bugs pointed out by Lars in a recent review.
-> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> to the size of the timestamp (8 bytes).  This is not guaranteed in
-> this driver which uses an array of smaller elements on the stack.
-> As Lars also noted this anti pattern can involve a leak of data to
-> userspace and that indeed can happen here.  We close both issues by
-> moving to a set of suitable structures in the iio_priv() data.
->=20
-> This data is allocated with kzalloc so no data can leak apart from
-> previous readings.
->=20
-> For the tagged path the data is aligned by using __aligned(8) for
-> the buffer on the stack.
->=20
-> There has been a lot of churn in this driver, so likely backports
-> may be needed for stable.
+On Sat, Jun 6, 2020 at 2:29 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+>
+>
+> On Saturday, June 6, 2020, Jonathan Cameron <jic23@kernel.org> wrote:
+>>
+>> On Thu,  4 Jun 2020 21:44:44 -0500
+>> Navid Emamdoost <navid.emamdoost@gmail.com> wrote:
+>>
+>> > Calling pm_runtime_get_sync increments the counter even in case of
+>> > failure, causing incorrect ref count. Call pm_runtime_put if
+>> > pm_runtime_get_sync fails.
+>> >
+>> > Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+>>
+>> Hi Navid,
+>>
+>> This looks to be a fix, be it for a case that we are hopefully
+>> unlikely to ever hit.  Please could you add an appropriate
+>> Fixes tag so we can work out how far to backport it?
+>>
+>> Patch looks good to me so if you just reply with a suitable
+>> tag I can add it whilst applying.
 
 Hi Jonathan,
+Here is the fixes tag:
 
-I added just some nitpicks inline, but it seems to me the patch is fine.
-I guess we can address them with a followup patch if you agree, no need to
-resend this huge series :)
+Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+>
+>
+> Should not be "iio: ..." in the prefix?
 
->=20
-> Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
-> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  5 +++
->  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 36 ++++++++++---------
->  2 files changed, 25 insertions(+), 16 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
-_lsm6dsx/st_lsm6dsx.h
-> index b56df409ed0f..5f821ef467da 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -411,6 +411,11 @@ struct st_lsm6dsx_hw {
->  	const struct st_lsm6dsx_settings *settings;
-> =20
->  	struct iio_mount_matrix orientation;
-> +	/* Ensure natural alignment of buffer elements */
-> +	struct {
-> +		__le16 channels[3];
-> +		s64 ts __aligned(8);
-> +	} gyro_scan, acc_scan, ext_scan;
->  };
+Yes! It should be "iio" in the patch name.
 
-it seems to me doing something like:
 
-struct {
-	__le16 channels[3];
-	s64 ts __aligned(8);
-} scan[3];
+>>
+>>
+>> Thanks,
+>>
+>> Jonathan
+>>
+>> > ---
+>> >  drivers/iio/pressure/zpa2326.c | 4 +++-
+>> >  1 file changed, 3 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+>> > index 99dfe33ee402..245f2e2d412b 100644
+>> > --- a/drivers/iio/pressure/zpa2326.c
+>> > +++ b/drivers/iio/pressure/zpa2326.c
+>> > @@ -664,8 +664,10 @@ static int zpa2326_resume(const struct iio_dev *indio_dev)
+>> >       int err;
+>> >
+>> >       err = pm_runtime_get_sync(indio_dev->dev.parent);
+>> > -     if (err < 0)
+>> > +     if (err < 0) {
+>> > +             pm_runtime_put(indio_dev->dev.parent);
+>> >               return err;
+>> > +     }
+>> >
+>> >       if (err > 0) {
+>> >               /*
+>>
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
-would be better if for example we want to add support for more external dev=
-ices
-for untagged FIFO devices
 
-> =20
->  static __maybe_unused const struct iio_event_spec st_lsm6dsx_event =3D {
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index afd00daeefb2..bebbc2bb37f7 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -341,9 +341,6 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  	int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
->  	u16 fifo_len, pattern_len =3D hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
->  	u16 fifo_diff_mask =3D hw->settings->fifo_ops.fifo_diff.mask;
-> -	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> -	u8 acc_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> -	u8 ext_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
->  	bool reset_ts =3D false;
->  	__le16 fifo_status;
->  	s64 ts =3D 0;
-> @@ -404,19 +401,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> =20
->  		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
->  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
-> -				memcpy(gyro_buff, &hw->buff[offset],
-> -				       ST_LSM6DSX_SAMPLE_SIZE);
-> -				offset +=3D ST_LSM6DSX_SAMPLE_SIZE;
-> +				memcpy(hw->gyro_scan.channels,
-> +				       &hw->buff[offset],
-> +				       sizeof(hw->gyro_scan.channels));
-> +				offset +=3D sizeof(hw->gyro_scan.channels);
->  			}
->  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
-> -				memcpy(acc_buff, &hw->buff[offset],
-> -				       ST_LSM6DSX_SAMPLE_SIZE);
-> -				offset +=3D ST_LSM6DSX_SAMPLE_SIZE;
-> +				memcpy(hw->acc_scan.channels,
-> +				       &hw->buff[offset],
-> +				       sizeof(hw->acc_scan.channels));
-> +				offset +=3D sizeof(hw->acc_scan.channels);
->  			}
->  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
-> -				memcpy(ext_buff, &hw->buff[offset],
-> -				       ST_LSM6DSX_SAMPLE_SIZE);
-> -				offset +=3D ST_LSM6DSX_SAMPLE_SIZE;
-> +				memcpy(hw->ext_scan.channels,
-> +				       &hw->buff[offset],
-> +				       sizeof(hw->ext_scan.channels));
-> +				offset +=3D sizeof(hw->ext_scan.channels);
->  			}
-> =20
->  			if (ts_sip-- > 0) {
-> @@ -446,19 +446,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
->  				iio_push_to_buffers_with_timestamp(
->  					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
-> -					gyro_buff, gyro_sensor->ts_ref + ts);
-> +					&hw->gyro_scan,
-> +					gyro_sensor->ts_ref + ts);
->  				gyro_sip--;
->  			}
->  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
->  				iio_push_to_buffers_with_timestamp(
->  					hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> -					acc_buff, acc_sensor->ts_ref + ts);
-> +					&hw->acc_scan,
-> +					acc_sensor->ts_ref + ts);
->  				acc_sip--;
->  			}
->  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
->  				iio_push_to_buffers_with_timestamp(
->  					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
-> -					ext_buff, ext_sensor->ts_ref + ts);
-> +					&hw->ext_scan,
-> +					ext_sensor->ts_ref + ts);
->  				ext_sip--;
->  			}
->  			sip++;
-> @@ -543,7 +546,8 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw =
-*hw)
->  {
->  	u16 pattern_len =3D hw->sip * ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
->  	u16 fifo_len, fifo_diff_mask;
-> -	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE], tag;
-> +	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);
-
-here we can use hw->scan[0] and drop the array on the stack
-
-> +	u8 tag;
->  	bool reset_ts =3D false;
->  	int i, err, read_len;
->  	__le16 fifo_status;
-> --=20
-> 2.26.2
->=20
-
---MW5yreqqjyrRcusr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXt1rTAAKCRA6cBh0uS2t
-rHk1AQCtQUkajfC6T7FtQZw1H6IB6ZNOU5/dQ86cUO989gCH7gD6A/oTRgWIWI5X
-q912sYFIyrMVzh21OkgfBhlnRxv77gk=
-=X+8R
------END PGP SIGNATURE-----
-
---MW5yreqqjyrRcusr--
+-- 
+Navid.

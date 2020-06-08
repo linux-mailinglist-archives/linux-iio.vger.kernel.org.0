@@ -2,146 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6E61F11DE
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 05:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69B941F1284
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 07:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728802AbgFHDsC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Jun 2020 23:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56166 "EHLO
+        id S1728173AbgFHFhm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 01:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728763AbgFHDsA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Jun 2020 23:48:00 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE3CC08C5C3;
-        Sun,  7 Jun 2020 20:47:59 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id a13so15435334ilh.3;
-        Sun, 07 Jun 2020 20:47:59 -0700 (PDT)
+        with ESMTP id S1726929AbgFHFhm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 01:37:42 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A55C08C5C3;
+        Sun,  7 Jun 2020 22:37:42 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ne5so2810589pjb.5;
+        Sun, 07 Jun 2020 22:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1BVaUAixWvTt5WtErptsO3tP6DKbMMPVMIbp5bkToTg=;
-        b=GPZbee1Wrp9z8b27aPeqkytHNsHLuyoMrLecMsczdjrjhHLmGzgX1gEcZU6x0wUW0Y
-         3dhCTyXptIlrdFwbuYyAtabHVwExW6Dc5T0E4xiCwPJ1SnaQb3xP7Yqe3CX4xqAK3bmK
-         B0So2hHw1CJyOObYlkRnt7LBoMLR5vMh6u34hXEBsKbpvdkbx8XDD0lGbOURLpWfsdXi
-         FiVv9/JWXxVfns8TAnRS5aVeAfDpsabNwngaVLuKc6CD+kF9uCwAVvlNwFXZ1XlbD7tj
-         SkDpMSVT2ZnQCiwNSydq0aA2lnvDRRKCDglzgO71TWp53dz+ozxYpeszI8bqNa99jg+f
-         cjlw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RTapcU6gK7wVagdpIBy1syxYRT4o5dx2x3mb/55IfwQ=;
+        b=DITjcqepAg/aiVMxe1Gh2awTCmo91vVu3S9mlVdU3hgfcPrStCTsiH/eLXmFFx4VRn
+         o+ChFk5Yofnb659Ehd5fQWdqZmVijpUVnFuGNuFhMOE72kvC1E3+mfpKEr/ZswrbVsJy
+         sipQ8XyZUaVEwcIfHzLeHoRReoDiJt10fqtwJ3c4BO29KFNyabOsxQSftZ67b+4X3i7i
+         XR9li74InWK9fBIdE0y17Jbyz8DsjgWa/+fMyP1yne5aCzj4UJD1nLwMXWmxvqe9Spvq
+         wc9P1vraN5a+3iQ96WNuaUdHrp7GU+r2Ij6WnopwS0BjnouSD1RBVYKA1uSNqvSLb6Py
+         s/Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1BVaUAixWvTt5WtErptsO3tP6DKbMMPVMIbp5bkToTg=;
-        b=T7DjojzD4oAc494xaYpUDHiF7Srjl3Ez1F4Z6YtIrU8WCpcQGKkeMPk7FXNLAHMnlU
-         HlL/JtQKlUoFUVi5welkmz7k/VG7Okpl7p4y3oBcdWVAdi5DP0csm/3mk+tOIezm6d/h
-         Pa5Irntg+aJqRMXOm3C+36R4xJBYlOsT5Jg2WI3KdZxNq9g6TMwvT0+lTCmrVRpNHyq8
-         41KS8VV8KOXX2R+TbYPZbiquLD2Sf6QLph7llnpZtxlYO9Q0A99LLrX3ONRB6UB56dHR
-         BCyefuBed96vkPnWsvG83uo+XRtaq48gtnqMY++g9qdzXIKlGi+Om6oJRqnhnwHRolgD
-         /srw==
-X-Gm-Message-State: AOAM532d2u4iH/QaDABWFWcO3XbKv2+lHFQvdaECfHbu5E0H35K2pac3
-        e8271Yl4gAZvhAwjRPOIRgjXe/Wx5ABW1wbAMUg=
-X-Google-Smtp-Source: ABdhPJykuldEnjkxysg7fzHCYSvtqif6Tsc2jA5532TVy0njbI9trWfbZiGLz9x25D5eNF5Is+vHlZx5gdwA797Gfz8=
-X-Received: by 2002:a05:6e02:4d:: with SMTP id i13mr21094586ilr.227.1591588078478;
- Sun, 07 Jun 2020 20:47:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200605024445.35672-1-navid.emamdoost@gmail.com>
- <20200606171153.6824a326@archlinux> <CAHp75VeRaS0JBRSyr+MeCbkVsscLyxkag00eY+pMPXZ6Jvb2zQ@mail.gmail.com>
-In-Reply-To: <CAHp75VeRaS0JBRSyr+MeCbkVsscLyxkag00eY+pMPXZ6Jvb2zQ@mail.gmail.com>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Sun, 7 Jun 2020 22:47:47 -0500
-Message-ID: <CAEkB2ETaiZM9aQsH8_eeBSDPzTpjSLpWSeHV1S3mMxMjM+_TyA@mail.gmail.com>
-Subject: Re: [PATCH] io: pressure: zpa2326: handle pm_runtime_get_sync failure
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RTapcU6gK7wVagdpIBy1syxYRT4o5dx2x3mb/55IfwQ=;
+        b=mGHQBi0X0VUkABufhg1+Ev4KMP42P+k50fcovQFKnSKOF2ea/BrHawmIGd4egpI30r
+         a7juQPETJ3JbxVxWf7pdRiwVx52iHAiY39QupBk6wn3W/c2dspeFWGBc6v1knh7hYdAY
+         T4XewmmbvKlPz70DTG/zvpsnGxLtJoaKMXCMqiCyBiKHz1c+s6DcbS12cIJmv+Ngt9wq
+         Ci5vK26b7dreo4sMMpLKLt2qOMdwQZ9v+lwWlHHkOK8/7IdnA4dsVpgXGcg6x89IDxsM
+         IE7wg1o5PsYpKn/u7ULuF8Hqjap+oQweW7b0lf2/IZajDIjhEjcAEMaNJZXxjwnv6rV3
+         wnYg==
+X-Gm-Message-State: AOAM532mYJAlZHifT2eiitCzUn7x4pVBDH9g7t06sP0lLO7H4JzQxcyc
+        YgCQKVM09me4iG/znjO9RhU=
+X-Google-Smtp-Source: ABdhPJzN5CaIdVRcGxuqJwlU7nQJooHDxxicu9iq+KnTRKt689A3cjTNxnb8ofRVOYLQTpNcwc0RwQ==
+X-Received: by 2002:a17:90a:c283:: with SMTP id f3mr14534964pjt.166.1591594661380;
+        Sun, 07 Jun 2020 22:37:41 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3c2a:73a9:c2cf:7f45])
+        by smtp.gmail.com with ESMTPSA id k14sm4926474pgn.94.2020.06.07.22.37.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Jun 2020 22:37:40 -0700 (PDT)
+Date:   Sun, 7 Jun 2020 22:37:37 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "emamd001@umn.edu" <emamd001@umn.edu>,
-        "wu000273@umn.edu" <wu000273@umn.edu>,
-        "kjlu@umn.edu" <kjlu@umn.edu>,
-        "smccaman@umn.edu" <smccaman@umn.edu>
-Content-Type: text/plain; charset="UTF-8"
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com
+Subject: Re: [PATCH v3 0/7] Support inhibiting input devices
+Message-ID: <20200608053737.GS89269@dtor-ws>
+References: <20200604072853.GP89269@dtor-ws>
+ <20200605173335.13753-1-andrzej.p@collabora.com>
+ <20200607202414.GB13138@amd>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200607202414.GB13138@amd>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jun 6, 2020 at 2:29 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
->
->
-> On Saturday, June 6, 2020, Jonathan Cameron <jic23@kernel.org> wrote:
->>
->> On Thu,  4 Jun 2020 21:44:44 -0500
->> Navid Emamdoost <navid.emamdoost@gmail.com> wrote:
->>
->> > Calling pm_runtime_get_sync increments the counter even in case of
->> > failure, causing incorrect ref count. Call pm_runtime_put if
->> > pm_runtime_get_sync fails.
->> >
->> > Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
->>
->> Hi Navid,
->>
->> This looks to be a fix, be it for a case that we are hopefully
->> unlikely to ever hit.  Please could you add an appropriate
->> Fixes tag so we can work out how far to backport it?
->>
->> Patch looks good to me so if you just reply with a suitable
->> tag I can add it whilst applying.
+On Sun, Jun 07, 2020 at 10:24:14PM +0200, Pavel Machek wrote:
+> On Fri 2020-06-05 19:33:28, Andrzej Pietrasiewicz wrote:
+> > Userspace might want to implement a policy to temporarily disregard input
+> > from certain devices.
+> 
+> Wow, you certainly cc a lot of lists.
+> 
+> > An example use case is a convertible laptop, whose keyboard can be folded
+> > under the screen to create tablet-like experience. The user then must hold
+> > the laptop in such a way that it is difficult to avoid pressing the keyboard
+> > keys. It is therefore desirable to temporarily disregard input from the
+> > keyboard, until it is folded back. This obviously is a policy which should
+> > be kept out of the kernel, but the kernel must provide suitable means to
+> > implement such a policy.
+> > 
+> > Due to interactions with suspend/resume, a helper has been added for drivers
+> > to decide if the device is being used or not (PATCH 1/7) and it has been
+> > applied to relevant drivers (PATCH 2,4,5,6/7).
+> 
+> But is that a right way to implement it?
+> 
+> We want this for cellphones, too -- touchscreen should be disabled
+> while the device is locked in the pocket -- but we really want the
+> touchscreen hardware to be powered down in that case (because it keeps
+> SoC busy and eats a _lot_ of electricity).
+> 
+> But simplistic "receive an event and then drop it if device is
+> inhibited" does not allow that...
 
-Hi Jonathan,
-Here is the fixes tag:
+I do not think you read the entirety of this patch series...
 
-Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
-
->
->
->
-> Should not be "iio: ..." in the prefix?
-
-Yes! It should be "iio" in the patch name.
-
-
->>
->>
->> Thanks,
->>
->> Jonathan
->>
->> > ---
->> >  drivers/iio/pressure/zpa2326.c | 4 +++-
->> >  1 file changed, 3 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
->> > index 99dfe33ee402..245f2e2d412b 100644
->> > --- a/drivers/iio/pressure/zpa2326.c
->> > +++ b/drivers/iio/pressure/zpa2326.c
->> > @@ -664,8 +664,10 @@ static int zpa2326_resume(const struct iio_dev *indio_dev)
->> >       int err;
->> >
->> >       err = pm_runtime_get_sync(indio_dev->dev.parent);
->> > -     if (err < 0)
->> > +     if (err < 0) {
->> > +             pm_runtime_put(indio_dev->dev.parent);
->> >               return err;
->> > +     }
->> >
->> >       if (err > 0) {
->> >               /*
->>
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
-
+Thanks.
 
 -- 
-Navid.
+Dmitry

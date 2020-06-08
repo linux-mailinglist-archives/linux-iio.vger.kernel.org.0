@@ -2,38 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5C81F2D2A
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jun 2020 02:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D6E1F2D27
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jun 2020 02:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731819AbgFIAao (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 20:30:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36772 "EHLO mail.kernel.org"
+        id S1731615AbgFIAan (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 20:30:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36806 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728689AbgFHXPl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:15:41 -0400
+        id S1729046AbgFHXPm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:15:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 38AF920774;
-        Mon,  8 Jun 2020 23:15:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A4C32076A;
+        Mon,  8 Jun 2020 23:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658141;
-        bh=akfoKOdXJ3nxOOg0mrjcJjFqNX/LMUB2tLMlgEKl0Ik=;
+        s=default; t=1591658142;
+        bh=k0fASL0Pv0bHmJ68PchARdT65FgmTMuBEqKx09B/Gs4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yHYX2tjLt64JrKpstAgIYB3y2WKt+EoK+gr5w43MnY5l3NzXaT7KsTfzOt1Jq4vc5
-         ngIpXJdKbUnjIKDVi75n/FvuXjeg2mnnBb7lAV6P2NDAW/9HyXbeSckUmTcC7QymeD
-         8UAxJhKdOx+IBqfZoFp1ECxDk3LNSE/dMqpx4x40=
+        b=fjGc/qoK44jiff90+WGJFQnIaxXDmR1AZdVsvnBrgCd8RQmPVNeFIaVu554Mqa4Su
+         QSaDjkdb+lf31f0ik1ekgsP/sWzd3R3Y24HYKxdUALtuz7c4TAMaN6bMdvvDw3CWkV
+         wbppzrI7DVcziN9b6V1tnlj3sH1tiQ4M2PyOJgdY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>, Stable@vger.kernel.org,
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.6 174/606] iio: adc: stm32-dfsdm: fix device used to request dma
-Date:   Mon,  8 Jun 2020 19:04:59 -0400
-Message-Id: <20200608231211.3363633-174-sashal@kernel.org>
+        linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 175/606] iio: sca3000: Remove an erroneous 'get_device()'
+Date:   Mon,  8 Jun 2020 19:05:00 -0400
+Message-Id: <20200608231211.3363633-175-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
 References: <20200608231211.3363633-1-sashal@kernel.org>
@@ -46,110 +45,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Fabrice Gasnier <fabrice.gasnier@st.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit b455d06e6fb3c035711e8aab1ca18082ccb15d87 upstream.
+commit 928edefbc18cd8433f7df235c6e09a9306e7d580 upstream.
 
-DMA channel request should use device struct from platform device struct.
-Currently it's using iio device struct. But at this stage when probing,
-device struct isn't yet registered (e.g. device_register is done in
-iio_device_register). Since commit 71723a96b8b1 ("dmaengine: Create
-symlinks between DMA channels and slaves"), a warning message is printed
-as the links in sysfs can't be created, due to device isn't yet registered:
-- Cannot create DMA slave symlink
-- Cannot create DMA dma:rx symlink
+This looks really unusual to have a 'get_device()' hidden in a 'dev_err()'
+call.
+Remove it.
 
-Fix this by using device struct from platform device to request dma chan.
+While at it add a missing \n at the end of the message.
 
-Fixes: eca949800d2d ("IIO: ADC: add stm32 DFSDM support for PDM microphone")
-
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+Fixes: 574fb258d636 ("Staging: IIO: VTI sca3000 series accelerometer driver (spi)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/iio/accel/sca3000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index 76a60d93fe23..506bf519f64c 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -62,7 +62,7 @@ enum sd_converter_type {
- 
- struct stm32_dfsdm_dev_data {
- 	int type;
--	int (*init)(struct iio_dev *indio_dev);
-+	int (*init)(struct device *dev, struct iio_dev *indio_dev);
- 	unsigned int num_channels;
- 	const struct regmap_config *regmap_cfg;
- };
-@@ -1365,11 +1365,12 @@ static void stm32_dfsdm_dma_release(struct iio_dev *indio_dev)
- 	}
- }
- 
--static int stm32_dfsdm_dma_request(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_dma_request(struct device *dev,
-+				   struct iio_dev *indio_dev)
- {
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
- 
--	adc->dma_chan = dma_request_chan(&indio_dev->dev, "rx");
-+	adc->dma_chan = dma_request_chan(dev, "rx");
- 	if (IS_ERR(adc->dma_chan)) {
- 		int ret = PTR_ERR(adc->dma_chan);
- 
-@@ -1425,7 +1426,7 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
- 					  &adc->dfsdm->ch_list[ch->channel]);
- }
- 
--static int stm32_dfsdm_audio_init(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-@@ -1452,10 +1453,10 @@ static int stm32_dfsdm_audio_init(struct iio_dev *indio_dev)
- 	indio_dev->num_channels = 1;
- 	indio_dev->channels = ch;
- 
--	return stm32_dfsdm_dma_request(indio_dev);
-+	return stm32_dfsdm_dma_request(dev, indio_dev);
- }
- 
--static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
-+static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-@@ -1499,17 +1500,17 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
- 	init_completion(&adc->completion);
- 
- 	/* Optionally request DMA */
--	ret = stm32_dfsdm_dma_request(indio_dev);
-+	ret = stm32_dfsdm_dma_request(dev, indio_dev);
+diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+index 66d768d971e1..6e429072e44a 100644
+--- a/drivers/iio/accel/sca3000.c
++++ b/drivers/iio/accel/sca3000.c
+@@ -980,7 +980,7 @@ static int sca3000_read_data(struct sca3000_state *st,
+ 	st->tx[0] = SCA3000_READ_REG(reg_address_high);
+ 	ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
  	if (ret) {
- 		if (ret != -ENODEV) {
- 			if (ret != -EPROBE_DEFER)
--				dev_err(&indio_dev->dev,
-+				dev_err(dev,
- 					"DMA channel request failed with %d\n",
- 					ret);
- 			return ret;
- 		}
- 
--		dev_dbg(&indio_dev->dev, "No DMA support\n");
-+		dev_dbg(dev, "No DMA support\n");
- 		return 0;
- 	}
- 
-@@ -1622,7 +1623,7 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
- 		adc->dfsdm->fl_list[adc->fl_id].sync_mode = val;
- 
- 	adc->dev_data = dev_data;
--	ret = dev_data->init(iio);
-+	ret = dev_data->init(dev, iio);
- 	if (ret < 0)
+-		dev_err(get_device(&st->us->dev), "problem reading register");
++		dev_err(&st->us->dev, "problem reading register\n");
  		return ret;
+ 	}
  
 -- 
 2.25.1

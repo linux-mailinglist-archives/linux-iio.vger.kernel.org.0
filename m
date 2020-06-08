@@ -2,82 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5694F1F18A3
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 14:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 474B41F19B7
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 15:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729665AbgFHMUo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 08:20:44 -0400
-Received: from first.geanix.com ([116.203.34.67]:41658 "EHLO first.geanix.com"
+        id S1728955AbgFHNO6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 09:14:58 -0400
+Received: from mga11.intel.com ([192.55.52.93]:50330 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729657AbgFHMUo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Jun 2020 08:20:44 -0400
-Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id 86B4E2120CEC;
-        Mon,  8 Jun 2020 12:20:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1591618841; bh=S8/KI5ud2rD65ga8Au68tEG5mzA/HPuBa3OzB2H8zZ0=;
-        h=Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=CAk2jgRbSzNueIJDRxZo+vmx3Cz3H8owkfzw61gZtiLjVd8PGRR6f4Fe7VKFnXR/f
-         kWtYqP8xKG7avuHIFBOZ/FThhEooonm1z5/XDnUmJ7Z1o+54KRXCASdsA6sStdKDZN
-         ktaXp8bNg+5aFZN02D/yZHGPB1hQSF2UL1LSuEwhaVa3mpgVmnNZqGNaGL0vonYg0l
-         cQ8rJ+qVt7P2PtrW+jygOjyco5BmLXYgDd2hjMMq4dx2KUbTe7SKUQJO7uutaAoC80
-         L9Qm7Lr1yuCUK79gZKibpPDDRIIn4zFbkn6ijkRPgX839OibQkSkxGWtUcaJ42s1bb
-         lGg3c9YZfUAqQ==
-Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>
-References: <20200603080619.GA544784@lore-desk.lan>
- <91165f5d-8cba-3ea2-67dc-99d65bce3d19@geanix.com>
- <20200603102841.GC544784@lore-desk.lan>
- <d3288925-0891-8c72-b0e7-2b71ff50e1d3@geanix.com>
- <20200603105105.GD544784@lore-desk.lan>
- <a6716a15-abf9-3218-00b8-fb7f257e5649@geanix.com>
- <20200603121227.GE544784@lore-desk.lan>
- <55fb09cf-76ab-0c42-7283-0836838f2deb@geanix.com>
- <20200603125630.GF544784@lore-desk.lan>
- <2d60c115-a634-c25f-b50b-38f13cac6229@geanix.com>
- <20200603134033.GG544784@lore-desk.lan>
- <2d8b2b9b-5e63-1254-04d9-8b9be0d91877@geanix.com>
-Message-ID: <fbef0ac8-e313-c20c-9300-9dee00588102@geanix.com>
-Date:   Mon, 8 Jun 2020 14:20:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1728245AbgFHNO6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 8 Jun 2020 09:14:58 -0400
+IronPort-SDR: wuXBHYpvrgjipBGAQUUhsinOsNcvjvWd2/OMmCW9vxS5CkqIu3pVRavRT1B9eZVM+rZF1jjlvc
+ AHA4I6pQL64g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2020 06:14:57 -0700
+IronPort-SDR: G9pebWYHsjpl8zsILwrFJHaOQOU8GxtlCCwX1DC5L8jq2WYpxfbfHQ9lbZxTCiSM1i+gyaFgnG
+ hylY96HugLsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,487,1583222400"; 
+   d="scan'208";a="274219010"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006.jf.intel.com with ESMTP; 08 Jun 2020 06:14:55 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jiHcA-00BgdG-OH; Mon, 08 Jun 2020 16:14:58 +0300
+Date:   Mon, 8 Jun 2020 16:14:58 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dan Murphy <dmurphy@ti.com>
+Subject: Re: [PATCH 27/32] iio:adc:ti-ads124s08 Fix alignment and data leak
+ issues.
+Message-ID: <20200608131458.GP2428291@smile.fi.intel.com>
+References: <20200607155408.958437-1-jic23@kernel.org>
+ <20200607155408.958437-28-jic23@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2d8b2b9b-5e63-1254-04d9-8b9be0d91877@geanix.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200607155408.958437-28-jic23@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Thomas,
+On Sun, Jun 07, 2020 at 04:54:03PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> One of a class of bugs pointed out by Lars in a recent review.
+> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> this driver which uses an array of smaller elements on the stack.
+> As Lars also noted this anti pattern can involve a leak of data to
+> userspace and that indeed can happen here.  We close both issues by
+> moving to a suitable structure in the iio_priv() data with alignment
+> explicitly requested.  This data is allocated with kzalloc so no
+> data can leak apart from previous readings.
 
-I have a question regarding CLOCK_REALTIME and CLOCK_BOOTTIME when 
-resuming from suspend.
+> +	/*
+> +	 * Used to correctly align data.
+> +	 * Ensure timestamp is naturally aligned.
+> +	 */
 
-We have run into problems with 
-drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c + the first patch from 
-Lorenzo Bianconi in this thread.
-The accelerometer have an internal FIFO that includes a timestamp. When 
-we resume from suspend,
-the driver resets the fifo ts counter and sets an internal reference to 
-that time.
-But to me it looks like both CLOCK_REALTIME and CLOCK_BOOTIME aren't 
-ready when st_lsm6dsx_resume() is called.
+> +	u32 buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
 
-If this is a limitation, can you point to other drivers that have been 
-able to workaround it?
-Or can we wait for a flag or similar?
+Can't you rather provide a struct as well?
 
-Best regards,
-Sean Nyekjaer
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

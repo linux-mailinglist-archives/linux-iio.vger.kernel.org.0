@@ -2,104 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B9721F188C
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 14:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5694F1F18A3
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 14:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729694AbgFHMMf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 08:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729666AbgFHMMc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 08:12:32 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2219C08C5C3
-        for <linux-iio@vger.kernel.org>; Mon,  8 Jun 2020 05:12:31 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id w15so10020154lfe.11
-        for <linux-iio@vger.kernel.org>; Mon, 08 Jun 2020 05:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TBN6LwR1xQ7giOqILnPE//JlJlIgyTPuIyOhAD+Fs0g=;
-        b=DfM0dsqO0f/Qnck/+Ah62rrhJWnxesv6sNiGtGlrUMkIZe0uxoX3qyYJ/QidMJamvz
-         L6Bnwt3S8/SXA6KWjuV0bzahAGv1Sl1x5CS5ZEehyidgKzWz4cs/2fohftpz4t03IhmP
-         CIv70QYr+yH0TB6vG8xKqYy3fw6Phyc4Ob7FxTujExXWYnwYzNFN5dt5DjZOB2jtHVyi
-         pScpc+vtrc/434ZaGx0d5mEXfZ/lyQGuLIT9J5uRdtiXT2AiODcOPqwI9F21ZHqEftmT
-         +8AxS85z10y6qTHVnRXGdeaO6dgqPm/WflvEoPVFPCoCi/JhDSoY89tbNu6R2JazK7tp
-         A7tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TBN6LwR1xQ7giOqILnPE//JlJlIgyTPuIyOhAD+Fs0g=;
-        b=ZO82EiyA2KaCdCBA5L35A/TKvK1aD+QaF3+eTghPJpxzU6aKsTFRJo5wB4XVZwYVcg
-         Vpgc8riDa1Say+xkLSUKEY1sv4ZLMT1JJsdJ0gVLZJcHf3tsSrGHJH8cK17mreaMou78
-         0aqm8H6aw/b7hV9PgOmm/YPfETvQWNLTTRhlgcu4gCGzPZUWetvIapopQzCycBxVYUfx
-         7aSde6+sCSG2GHr/9ZX37dEPUmfzCPkbc2er4HiIqbaj4z+v+xOvZUfF1QwFyzXYQt0l
-         C9hgSTkR95e0YMUB7c59X+ynziOk2Uu5KRQVTqZdaLnsFzWaAVBARRYGCOevpzKXEMyU
-         NAvQ==
-X-Gm-Message-State: AOAM530sZkL7maCYrgYUjBgzQfGB3PRhhxHqabfemxzonIDmquIY471B
-        CYTef9jGCV/TkUE2CWJs5sx3vkZ18z4MkKd1A5oPBA==
-X-Google-Smtp-Source: ABdhPJxmk7CcERIdwxefncHfN7iBpWg2VOzmqMraSrfW9OEJJz2SzxogXSAbo+g1hJ04P05NhatbtFCl4F1ofn3LcNs=
-X-Received: by 2002:a19:c8cb:: with SMTP id y194mr12833236lff.89.1591618349925;
- Mon, 08 Jun 2020 05:12:29 -0700 (PDT)
+        id S1729665AbgFHMUo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 08:20:44 -0400
+Received: from first.geanix.com ([116.203.34.67]:41658 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729657AbgFHMUo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 8 Jun 2020 08:20:44 -0400
+Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
+        by first.geanix.com (Postfix) with ESMTPSA id 86B4E2120CEC;
+        Mon,  8 Jun 2020 12:20:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1591618841; bh=S8/KI5ud2rD65ga8Au68tEG5mzA/HPuBa3OzB2H8zZ0=;
+        h=Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=CAk2jgRbSzNueIJDRxZo+vmx3Cz3H8owkfzw61gZtiLjVd8PGRR6f4Fe7VKFnXR/f
+         kWtYqP8xKG7avuHIFBOZ/FThhEooonm1z5/XDnUmJ7Z1o+54KRXCASdsA6sStdKDZN
+         ktaXp8bNg+5aFZN02D/yZHGPB1hQSF2UL1LSuEwhaVa3mpgVmnNZqGNaGL0vonYg0l
+         cQ8rJ+qVt7P2PtrW+jygOjyco5BmLXYgDd2hjMMq4dx2KUbTe7SKUQJO7uutaAoC80
+         L9Qm7Lr1yuCUK79gZKibpPDDRIIn4zFbkn6ijkRPgX839OibQkSkxGWtUcaJ42s1bb
+         lGg3c9YZfUAqQ==
+Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+References: <20200603080619.GA544784@lore-desk.lan>
+ <91165f5d-8cba-3ea2-67dc-99d65bce3d19@geanix.com>
+ <20200603102841.GC544784@lore-desk.lan>
+ <d3288925-0891-8c72-b0e7-2b71ff50e1d3@geanix.com>
+ <20200603105105.GD544784@lore-desk.lan>
+ <a6716a15-abf9-3218-00b8-fb7f257e5649@geanix.com>
+ <20200603121227.GE544784@lore-desk.lan>
+ <55fb09cf-76ab-0c42-7283-0836838f2deb@geanix.com>
+ <20200603125630.GF544784@lore-desk.lan>
+ <2d60c115-a634-c25f-b50b-38f13cac6229@geanix.com>
+ <20200603134033.GG544784@lore-desk.lan>
+ <2d8b2b9b-5e63-1254-04d9-8b9be0d91877@geanix.com>
+Message-ID: <fbef0ac8-e313-c20c-9300-9dee00588102@geanix.com>
+Date:   Mon, 8 Jun 2020 14:20:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200526104717.3181-1-dinghao.liu@zju.edu.cn> <CACRpkdZi=UaGES_bupj_fQB+sPj5zOvONdCn7_Rs_j9mcukAAQ@mail.gmail.com>
- <20200531150000.20d1ec61@archlinux>
-In-Reply-To: <20200531150000.20d1ec61@archlinux>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 8 Jun 2020 14:12:18 +0200
-Message-ID: <CACRpkdZy0Pip1ii0g+PYpnkO21e6=J0ZXzudEgvEycCbmWYJxA@mail.gmail.com>
-Subject: Re: [PATCH] [v2] iio: magnetometer: ak8974: Fix runtime PM imbalance
- on error
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Dinghao Liu <dinghao.liu@zju.edu.cn>, Kangjie Lu <kjlu@umn.edu>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <2d8b2b9b-5e63-1254-04d9-8b9be0d91877@geanix.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on fdf6823a942a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Thomas,
 
-sorry for missing this :(
+I have a question regarding CLOCK_REALTIME and CLOCK_BOOTTIME when 
+resuming from suspend.
 
-On Sun, May 31, 2020 at 4:00 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Tue, 26 May 2020 13:13:56 +0200
-> Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> > On Tue, May 26, 2020 at 12:47 PM Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
-> >
-> > > When devm_regmap_init_i2c() returns an error code, a pairing
-> > > runtime PM usage counter decrement is needed to keep the
-> > > counter balanced. For error paths after ak8974_set_power(),
-> > > ak8974_detect() and ak8974_reset(), things are the same.
-> > >
-> > > However, When iio_triggered_buffer_setup() returns an error
-> > > code, there will be two PM usgae counter decrements.
-> > >
-> > > Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-> > > ---
-> > >
-> > > Changelog:
-> > >
-> > > v2: - Change 3 goto targets from "power_off" to
-> > >       "disabel_pm". Remove unused lable "power_off".
-> > >       Move 3 PM runtime related calls to the end of
-> > >       the function.
-> >
-> > Thanks for fixing this Dinghao!
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->
-> Could I have a fixes tag for this one?
+We have run into problems with 
+drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c + the first patch from 
+Lorenzo Bianconi in this thread.
+The accelerometer have an internal FIFO that includes a timestamp. When 
+we resume from suspend,
+the driver resets the fifo ts counter and sets an internal reference to 
+that time.
+But to me it looks like both CLOCK_REALTIME and CLOCK_BOOTIME aren't 
+ready when st_lsm6dsx_resume() is called.
 
-It's been  there since the beginning so:
-Fixes: 7c94a8b2ee8c ("iio: magn: add a driver for AK8974")
+If this is a limitation, can you point to other drivers that have been 
+able to workaround it?
+Or can we wait for a flag or similar?
 
-Yours,
-Linus Walleij
+Best regards,
+Sean Nyekjaer
+

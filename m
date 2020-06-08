@@ -2,84 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 362B01F1A8C
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 16:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976041F1A92
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 16:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbgFHOHZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 10:07:25 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2293 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728988AbgFHOHZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Jun 2020 10:07:25 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 3AF54E9978B6C2029929;
-        Mon,  8 Jun 2020 15:07:24 +0100 (IST)
-Received: from localhost (10.47.27.61) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 8 Jun 2020
- 15:07:23 +0100
-Date:   Mon, 8 Jun 2020 15:06:40 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Dan Murphy <dmurphy@ti.com>
-Subject: Re: [PATCH 27/32] iio:adc:ti-ads124s08 Fix alignment and data leak
- issues.
-Message-ID: <20200608150640.000053a6@Huawei.com>
-In-Reply-To: <20200608131458.GP2428291@smile.fi.intel.com>
-References: <20200607155408.958437-1-jic23@kernel.org>
-        <20200607155408.958437-28-jic23@kernel.org>
-        <20200608131458.GP2428291@smile.fi.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726097AbgFHOJI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 10:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726092AbgFHOJI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 10:09:08 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231AAC08C5C2;
+        Mon,  8 Jun 2020 07:09:08 -0700 (PDT)
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jiISS-00083D-MF; Mon, 08 Jun 2020 16:09:00 +0200
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 22334100F9F; Mon,  8 Jun 2020 16:09:00 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Sean Nyekjaer <sean@geanix.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: IIO timestamp get skewed when suspending (st_lsm6dsx)
+In-Reply-To: <fbef0ac8-e313-c20c-9300-9dee00588102@geanix.com>
+References: <20200603080619.GA544784@lore-desk.lan> <91165f5d-8cba-3ea2-67dc-99d65bce3d19@geanix.com> <20200603102841.GC544784@lore-desk.lan> <d3288925-0891-8c72-b0e7-2b71ff50e1d3@geanix.com> <20200603105105.GD544784@lore-desk.lan> <a6716a15-abf9-3218-00b8-fb7f257e5649@geanix.com> <20200603121227.GE544784@lore-desk.lan> <55fb09cf-76ab-0c42-7283-0836838f2deb@geanix.com> <20200603125630.GF544784@lore-desk.lan> <2d60c115-a634-c25f-b50b-38f13cac6229@geanix.com> <20200603134033.GG544784@lore-desk.lan> <2d8b2b9b-5e63-1254-04d9-8b9be0d91877@geanix.com> <fbef0ac8-e313-c20c-9300-9dee00588102@geanix.com>
+Date:   Mon, 08 Jun 2020 16:09:00 +0200
+Message-ID: <87k10habur.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.27.61]
-X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 8 Jun 2020 16:14:58 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Sean,
 
-> On Sun, Jun 07, 2020 at 04:54:03PM +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > One of a class of bugs pointed out by Lars in a recent review.
-> > iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> > to the size of the timestamp (8 bytes).  This is not guaranteed in
-> > this driver which uses an array of smaller elements on the stack.
-> > As Lars also noted this anti pattern can involve a leak of data to
-> > userspace and that indeed can happen here.  We close both issues by
-> > moving to a suitable structure in the iio_priv() data with alignment
-> > explicitly requested.  This data is allocated with kzalloc so no
-> > data can leak apart from previous readings.  
-> 
-> > +	/*
-> > +	 * Used to correctly align data.
-> > +	 * Ensure timestamp is naturally aligned.
-> > +	 */  
-> 
-> > +	u32 buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);  
-> 
-> Can't you rather provide a struct as well?
-> 
-Not without giving a false impression of where the time stamp is in the resulting
-buffer.
+Sean Nyekjaer <sean@geanix.com> writes:
+> I have a question regarding CLOCK_REALTIME and CLOCK_BOOTTIME when 
+> resuming from suspend.
+>
+> We have run into problems with
+> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c + the first patch from
+> Lorenzo Bianconi in this thread.  The accelerometer have an internal
+> FIFO that includes a timestamp. When we resume from suspend, the
+> driver resets the fifo ts counter and sets an internal reference to
+> that time.
+>
+> But to me it looks like both CLOCK_REALTIME and CLOCK_BOOTIME aren't 
+> ready when st_lsm6dsx_resume() is called.
 
-I'm not keen to do that because it'll lead to people fundamentally misunderstanding
-the dynamic nature of IIO buffer packing.
+That depends on your system. Timekeeping is resumed way before drivers
+are resumed, but the suspend time injection might happen late when there
+is no early device to read from. In this case it happens when the RTC is
+resumed.
 
-Here it could start at byte 8, 16, 24, 32, 48, 64 I think.
+If the IIO driver resumes before the RTC which injects the suspend time,
+then the core time is still in the past. And RTC is using the default
+resume mechanism, so depending on device/class registration order this
+might be the case. Deferring to the PM & RTC wizards.
 
-It's more than possible I've gotten one of these wrong and missed a restriction
-on the layout in a given device though!
+Thanks,
 
-Jonathan
+        tglx
+
 

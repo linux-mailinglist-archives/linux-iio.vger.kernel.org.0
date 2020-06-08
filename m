@@ -2,21 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 307EA1F17B0
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 13:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9131F1788
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jun 2020 13:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729626AbgFHLXZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 07:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729611AbgFHLWc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 07:22:32 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17B2C08C5C2;
-        Mon,  8 Jun 2020 04:22:31 -0700 (PDT)
+        id S1729630AbgFHLWg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 07:22:36 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:34600 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729613AbgFHLWf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 07:22:35 -0400
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: andrzej.p)
-        with ESMTPSA id 9040A2A35C1
+        with ESMTPSA id 9DA192A35D8
 From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -54,9 +51,9 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
         Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
         kernel@collabora.com
-Subject: [PATCH v4 4/7] ACPI: button: Use input_device_enabled() helper
-Date:   Mon,  8 Jun 2020 13:22:08 +0200
-Message-Id: <20200608112211.12125-5-andrzej.p@collabora.com>
+Subject: [PATCH v4 5/7] iio: adc: exynos: Use input_device_enabled()
+Date:   Mon,  8 Jun 2020 13:22:09 +0200
+Message-Id: <20200608112211.12125-6-andrzej.p@collabora.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200608112211.12125-1-andrzej.p@collabora.com>
 References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
@@ -66,35 +63,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-A new helper is available, so use it.
+A new helper is available, so use it. Inspecting 'users' member of
+input_dev requires taking device's mutex.
 
 Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 ---
- drivers/acpi/button.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/exynos_adc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index ff7ab291f678..4deb2b48d03c 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -411,7 +411,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
- 		input = button->input;
- 		if (button->type == ACPI_BUTTON_TYPE_LID) {
- 			mutex_lock(&button->input->mutex);
--			users = button->input->users;
-+			users = input_device_enabled(button->input);
- 			mutex_unlock(&button->input->mutex);
- 			if (users)
- 				acpi_lid_update_state(device, true);
-@@ -460,7 +460,7 @@ static int acpi_button_resume(struct device *dev)
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 22131a677445..9a1ddda8c5db 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -633,7 +633,9 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 	bool pressed;
+ 	int ret;
  
- 	button->suspended = false;
- 	mutex_lock(&input->mutex);
--	if (button->type == ACPI_BUTTON_TYPE_LID && input->users) {
-+	if (button->type == ACPI_BUTTON_TYPE_LID && input_device_enabled(input)) {
- 		button->last_state = !!acpi_lid_evaluate_state(device);
- 		button->last_time = ktime_get();
- 		acpi_lid_initialize_state(device);
+-	while (info->input->users) {
++	mutex_lock(&info->input->mutex);
++	while (input_device_enabled(info->input)) {
++		mutex_unlock(&info->input->mutex);
+ 		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+ 		if (ret == -ETIMEDOUT)
+ 			break;
+@@ -651,6 +653,8 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 		input_sync(info->input);
+ 
+ 		usleep_range(1000, 1100);
++
++		mutex_lock(&info->input->mutex);
+ 	}
+ 
+ 	writel(0, ADC_V1_CLRINTPNDNUP(info->regs));
 -- 
 2.17.1
 

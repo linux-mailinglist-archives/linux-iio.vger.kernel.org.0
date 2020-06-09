@@ -2,208 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F601F4745
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jun 2020 21:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA8A1F4977
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jun 2020 00:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389295AbgFITlx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Jun 2020 15:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
+        id S1728560AbgFIWkR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Jun 2020 18:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389390AbgFITlr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jun 2020 15:41:47 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942EBC05BD1E
-        for <linux-iio@vger.kernel.org>; Tue,  9 Jun 2020 12:41:47 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id n23so10713116pgb.12
-        for <linux-iio@vger.kernel.org>; Tue, 09 Jun 2020 12:41:47 -0700 (PDT)
+        with ESMTP id S1728108AbgFIWkR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jun 2020 18:40:17 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D31C05BD1E;
+        Tue,  9 Jun 2020 15:40:17 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id q8so225373qkm.12;
+        Tue, 09 Jun 2020 15:40:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=l8eunt1wTSxU0bEfA0XN6C1T6L3rOZuiLFejw2nwip4=;
-        b=ruE4hjz3pLJMLbbrNhyGM2wmjtv/yEAX7RQ65VLEKsUNDxPUB7dkXqr3f5ACcCXhcn
-         aRlKnTen0k6bBDFNeGhLz6lrMVD5rno/q+JtAUqN8fAQ8nOJcA/u931gCeYNBl7L/ljP
-         fIWDxh/S+Mm7fz0EoQsIto9LGE+eU6I2xLd2Q=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MAUXZKtBQZj6B5Rk9FG9z3WffsCtrNY4aCuD4cUBdPc=;
+        b=YJflalIkp0KvIL27dtyF6mJD8QQVEqO9eeK32hEzzrhc8R4XGR8zDIgNYhe8VBAFr1
+         QTqZwF7AiUHee1tIkA6rcCjrc/Cw3JH/k8s6KsW86D49fqhCf7pIklHfgVRMZcUVSUc3
+         qkXh807NBKX98Yq8Heqr8dhKk8fgwIMHXsWnzuLxHkdlMqtPtSYINZ+xopFGu08R+ABJ
+         OajJ0AXZkA7g38Iu8m7ucC4WQWI90dbbo8jCBvjRA4JSHt+wYIIqO6N2bSIBlMZxkyR4
+         CgIthjnT7BmDw+GBQ5z5VTJqF7eKW6VC6YpSxf+Rm+joTYNILEnSSOs8BaFF/4tbY9Py
+         +0Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=l8eunt1wTSxU0bEfA0XN6C1T6L3rOZuiLFejw2nwip4=;
-        b=t38rnH2y0CkJqWFWZaWFu1yc91O15juo5Xy1ExtC0OckAh8VJjKFv8wugdHNJHXpgm
-         dbhiaa0pf0Xjfzbtp+J5s9k65Ii2hWv3EyCN8/4Zq40fxqwwxI8SDFik0JY6Kav3cavy
-         MXHsGr1rsMWYf8OgMFZJ17zG1Qd+ql6yL0HT0HtdQ13smchcW1UMQdWDIwD4gtltH7PW
-         +NmVFrT6aGeQZ9rC4Pt9XE5+HwynBDzldN36vTlsoSieuzzofXRQ3QKiGMATotIOTraU
-         B19I+jQodeOF4k3joI+7tMzNQQpGiGMhV+QbxLL97M09MxtFXaXa3tNYCfvUDaibFCEQ
-         Zwkg==
-X-Gm-Message-State: AOAM532XmF8UB3NzIguuflMeIKEGh42mTd8TxODZCq8iagertfYqdBMR
-        8pItRCfuOMFvHrGNjIHsMAeDuQ==
-X-Google-Smtp-Source: ABdhPJznRrSlwdqBVG3fkzMQO1tulZGBggqtnCHGpEjS+L2AKETok6W3sMkMGTE19HEhCq3x4GgwkQ==
-X-Received: by 2002:a62:7b41:: with SMTP id w62mr25571818pfc.142.1591731707117;
-        Tue, 09 Jun 2020 12:41:47 -0700 (PDT)
-Received: from ubuntu.Home (anon-42-81.vpn.ipredator.se. [46.246.42.81])
-        by smtp.gmail.com with ESMTPSA id z85sm10563627pfc.66.2020.06.09.12.41.44
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MAUXZKtBQZj6B5Rk9FG9z3WffsCtrNY4aCuD4cUBdPc=;
+        b=HUFvKaokN03vg2vJqR5OA2q7xif9Ld8CEgPEpwXj/b6zw5MtjXp6h9CT4iUpetjcwS
+         fXAVnvNeRplHx0jLZzCyzCFWRL1sR9feJL6Bh5NyOayHO9ikTEQQunlzgipFjbfTbC89
+         pWuiKZTIrCpfBl+sDTndgtYUfAWLnU7IDmbGxlEFIWsl655EZsY+1WsvQYvHJ8qlDTtw
+         SZtkZ+B6JtNjEanLQ/3kWRAUznJpT4Z7C7ow9Vy/s/lsnb35eBrjqxO5vmvDJyeEY9kR
+         38sRwwghvKPrIoVXT8MO8IJj6dPqpL2V9BfQUv1eJoKdoreTNYl1fEWP8ldexLbS8Lag
+         vDTg==
+X-Gm-Message-State: AOAM532H+MbH6x/VTzKdmv+H+mo5k6VPNVS4oEPTAPWLk9uTJQAGkkev
+        UdcyI9F5kWQW/f0eF8/1/Q==
+X-Google-Smtp-Source: ABdhPJxLUvoEA0NFM0tB152OFCyhMpvWeKW4QTmDwJliy056wjYh0HVDJ8Hp7CgxnkyaKyjsPUhtVg==
+X-Received: by 2002:a05:620a:4e5:: with SMTP id b5mr168395qkh.341.1591742416350;
+        Tue, 09 Jun 2020 15:40:16 -0700 (PDT)
+Received: from localhost.localdomain ([142.119.96.191])
+        by smtp.googlemail.com with ESMTPSA id l69sm11282893qke.112.2020.06.09.15.40.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2020 12:41:46 -0700 (PDT)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH 3/3] iio: chemical: atlas-ezo-sensor: add support for O2 sensor
-Date:   Tue,  9 Jun 2020 12:41:17 -0700
-Message-Id: <20200609194117.5837-4-matt.ranostay@konsulko.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200609194117.5837-1-matt.ranostay@konsulko.com>
-References: <20200609194117.5837-1-matt.ranostay@konsulko.com>
+        Tue, 09 Jun 2020 15:40:15 -0700 (PDT)
+From:   Keyur Patel <iamkeyur96@gmail.com>
+Cc:     Keyur Patel <iamkeyur96@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: cros_ec: fix spelling mistake
+Date:   Tue,  9 Jun 2020 18:39:52 -0400
+Message-Id: <20200609223955.107506-1-iamkeyur96@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for the Atlas EZO O2 chemical sensor which required
-some refactoring of the driver and parsing of i2c transfer.
+Fix typo: "tigger" --> "trigger"
 
-Sensor data is converted by the scaling value from percent to
-IIO_CONCENTRATION.
-
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Signed-off-by: Keyur Patel <iamkeyur96@gmail.com>
 ---
- drivers/iio/chemical/atlas-ezo-sensor.c | 74 ++++++++++++++++++-------
- 1 file changed, 55 insertions(+), 19 deletions(-)
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
-index a94eb8a6bf32..94188c84e65f 100644
---- a/drivers/iio/chemical/atlas-ezo-sensor.c
-+++ b/drivers/iio/chemical/atlas-ezo-sensor.c
-@@ -16,10 +16,11 @@
- #include <linux/iio/iio.h>
- 
- #define ATLAS_EZO_DRV_NAME		"atlas-ezo-sensor"
--#define ATLAS_CO2_INT_TIME_IN_MS	950
-+#define ATLAS_INT_TIME_IN_MS		950
- 
- enum {
- 	ATLAS_CO2_EZO,
-+	ATLAS_O2_EZO,
- };
- 
- struct atlas_ezo_device {
-@@ -38,31 +39,54 @@ struct atlas_ezo_data {
- 	u8 buffer[8];
- };
- 
-+#define ATLAS_CONCENTRATION_CHANNEL(_modifier) \
-+	{ \
-+		.type = IIO_CONCENTRATION, \
-+		.modified = 1,\
-+		.channel2 = _modifier, \
-+		.info_mask_separate = \
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE), \
-+		.scan_index = 0, \
-+		.scan_type =  { \
-+			.sign = 'u', \
-+			.realbits = 32, \
-+			.storagebits = 32, \
-+			.endianness = IIO_CPU, \
-+		}, \
-+	}
-+
- static const struct iio_chan_spec atlas_co2_ezo_channels[] = {
--	{
--		.type = IIO_CONCENTRATION,
--		.modified = 1,
--		.channel2 = IIO_MOD_CO2,
--		.info_mask_separate =
--			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
--		.scan_index = 0,
--		.scan_type = {
--			.sign = 'u',
--			.realbits = 32,
--			.storagebits = 32,
--			.endianness = IIO_CPU,
--		},
--	},
-+	ATLAS_CONCENTRATION_CHANNEL(IIO_MOD_CO2),
-+};
-+
-+static const struct iio_chan_spec atlas_o2_ezo_channels[] = {
-+	ATLAS_CONCENTRATION_CHANNEL(IIO_MOD_O2),
- };
- 
- static struct atlas_ezo_device atlas_ezo_devices[] = {
- 	[ATLAS_CO2_EZO] = {
- 		.channels = atlas_co2_ezo_channels,
- 		.num_channels = 1,
--		.delay = ATLAS_CO2_INT_TIME_IN_MS,
-+		.delay = ATLAS_INT_TIME_IN_MS,
- 	},
-+	[ATLAS_O2_EZO] = {
-+		.channels = atlas_o2_ezo_channels,
-+		.num_channels = 1,
-+		.delay = ATLAS_INT_TIME_IN_MS,
-+	}
- };
- 
-+static void atlas_ezo_sanitize(char *buf)
-+{
-+	char *ptr = strchr(buf, '.');
-+
-+	if (!ptr)
-+		return;
-+
-+	for (; *ptr; ptr++)
-+		*ptr = *(ptr + 1);
-+}
-+
- static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
- 			  struct iio_chan_spec const *chan,
- 			  int *val, int *val2, long mask)
-@@ -96,6 +120,9 @@ static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
- 			return -EBUSY;
- 		}
- 
-+		/* removing floating point for fixed number representation */
-+		atlas_ezo_sanitize(data->buffer + 2);
-+
- 		ret = kstrtol(data->buffer + 1, 10, &tmp);
- 
- 		*val = tmp;
-@@ -105,9 +132,16 @@ static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
- 		return ret ? ret : IIO_VAL_INT;
- 	}
- 	case IIO_CHAN_INFO_SCALE:
--		*val = 0;
--		*val2 = 100; /* 0.0001 */
--		return IIO_VAL_INT_PLUS_MICRO;
-+		switch (chan->channel2) {
-+		case IIO_MOD_CO2:
-+			*val = 0;
-+			*val2 = 100; /* 0.0001 */
-+			return IIO_VAL_INT_PLUS_MICRO;
-+		case IIO_MOD_O2:
-+			*val = 100;
-+			return IIO_VAL_INT;
-+		}
-+		return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -119,12 +153,14 @@ static const struct iio_info atlas_info = {
- 
- static const struct i2c_device_id atlas_ezo_id[] = {
- 	{ "atlas-co2-ezo", ATLAS_CO2_EZO },
-+	{ "atlas-o2-ezo", ATLAS_O2_EZO },
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, atlas_ezo_id);
- 
- static const struct of_device_id atlas_ezo_dt_ids[] = {
- 	{ .compatible = "atlas,co2-ezo", .data = (void *)ATLAS_CO2_EZO, },
-+	{ .compatible = "atlas,o2-ezo", .data = (void *)ATLAS_O2_EZO, },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, atlas_ezo_dt_ids);
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index c831915ca7e5..4888fb23d801 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -352,7 +352,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 		} else {
+ 			/*
+ 			 * The only way to get samples in buffer is to set a
+-			 * software tigger (systrig, hrtimer).
++			 * software trigger (systrig, hrtimer).
+ 			 */
+ 			ret = devm_iio_triggered_buffer_setup(
+ 					dev, indio_dev, NULL, trigger_capture,
 -- 
-2.25.1
+2.26.2
 

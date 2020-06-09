@@ -2,114 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89EBF1F2D0D
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jun 2020 02:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75A8A1F3273
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jun 2020 05:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730119AbgFIAa3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jun 2020 20:30:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36838 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730089AbgFHXPo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:15:44 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D3B9220659;
-        Mon,  8 Jun 2020 23:15:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658144;
-        bh=NIvfnbAIw5QiLc2iBkfIAXHTrtRPZKfqnsnYAz9ZcoA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zAxxxOiPCejfHMqXscA2CSRKCvkRBq0/TkIGlgCdQbm4O9rOx60/9FHTj+D9Hcm/H
-         2MdfuaqIumRBfCjavvluZ2v6QX8VH+RV9sFfdZtlZfa8thuzxoObCsw+v85XT4zL0U
-         KhN36uMRH3HNZf0Hc9S6c52bnAxw6006N2JDdHWs=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 177/606] iio: adc: ti-ads8344: Fix channel selection
-Date:   Mon,  8 Jun 2020 19:05:02 -0400
-Message-Id: <20200608231211.3363633-177-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
-References: <20200608231211.3363633-1-sashal@kernel.org>
+        id S1726907AbgFIDB1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Jun 2020 23:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45470 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726884AbgFIDB0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jun 2020 23:01:26 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7B0C03E969
+        for <linux-iio@vger.kernel.org>; Mon,  8 Jun 2020 20:01:24 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id h5so19579718wrc.7
+        for <linux-iio@vger.kernel.org>; Mon, 08 Jun 2020 20:01:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/SmwDWkJ4stL4qv6js29DIgr2yazMzqUZLwr+w5ebWU=;
+        b=Q/k0j6yD6ZU04LwWFDj/iiySIFrvvly2WoOzPeML0/16KKXsTGKjuWTCgzvKiJqI0F
+         2HAnCOB7aOUYXUkLErqYiuBHb9NsaxYmkFep/fOmqkF5FOKD743skvuIytaYsq/w6MNy
+         hwNyyzdixDSorUFU0+I+pI5WxRHq+aKlSlhdU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/SmwDWkJ4stL4qv6js29DIgr2yazMzqUZLwr+w5ebWU=;
+        b=QlBlQEE0dnJKitow1Yzg9uZdOiU3V2W45CMXzbgkV8ciQeLs85CLJnzDTXkdEDNa1n
+         Cz1+ahcB5xJOlti3AKQbdrNEM1Y6J3Pmkz2vE7AbyS7euBBwg0NY9zKlkeJGOHf5wo96
+         B238ywgO0v48vNNjESuTbE3kcaJPnq/rMWdG4SnaKjBdfIGJ2yoF3y40fQKPiMxmkwNo
+         5sUklWOkt6hLoc2vGgdRAe9O623kwf0Ae8AefFRYfMJUlfYgIvkupEgRfx9O7+KaggiQ
+         ZJ5VtdHLnZxPO5/UeTaZDcAsIBpn7uHhPm4Jkb6oZF5FaHJSi35AwnU1fraf2D+dWuuK
+         hl4w==
+X-Gm-Message-State: AOAM530RuvCPzs1stC9/uG/aD7988sVJOLqmQVDoAiTbLYorZsaLndw9
+        9gv1XweTYTVhDNl1tVBUfgSY+xMjoQA=
+X-Google-Smtp-Source: ABdhPJzhtrvhSnDsRfU36JxmMOUHcTc3JAUIV3adMAPBiVsqsMhpFbUCQxX5p2XXyxVHki8mGDQ8qA==
+X-Received: by 2002:a5d:6789:: with SMTP id v9mr2043868wru.124.1591671683070;
+        Mon, 08 Jun 2020 20:01:23 -0700 (PDT)
+Received: from taos.konsulko.bg (lan.nucleusys.com. [92.247.61.126])
+        by smtp.gmail.com with ESMTPSA id t8sm1615282wro.56.2020.06.08.20.01.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2020 20:01:22 -0700 (PDT)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH] iio: core: add missing IIO_MOD_H2/ETHANOL string identifiers
+Date:   Tue,  9 Jun 2020 06:01:16 +0300
+Message-Id: <20200609030116.23013-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+Add missing strings to iio_modifier_names[] for proper modification
+of channels.
 
-commit bcfa1e253d2e329e1ebab5c89f3c73f6dd17606c upstream.
-
-During initial submission the selection of the channel was done using
-the scan_index member of the iio_chan_spec structure. It was an abuse
-because this member is supposed to be used with a buffer so it was
-removed.
-
-However there was still the need to be able to known how to select a
-channel, the correct member to store this information is address.
-
-Thanks to this it is possible to select any other channel than the
-channel 0.
-
-Fixes: 8dd2d7c0fed7 ("iio: adc: Add driver for the TI ADS8344 A/DC chips")
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b170f7d48443d (iio: Add modifiers for ethanol and H2 gases)
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 ---
- drivers/iio/adc/ti-ads8344.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/industrialio-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
-index abe4b56c847c..8a8792010c20 100644
---- a/drivers/iio/adc/ti-ads8344.c
-+++ b/drivers/iio/adc/ti-ads8344.c
-@@ -32,16 +32,17 @@ struct ads8344 {
- 	u8 rx_buf[3];
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 1527f01a44f1..352533342702 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -130,6 +130,8 @@ static const char * const iio_modifier_names[] = {
+ 	[IIO_MOD_PM2P5] = "pm2p5",
+ 	[IIO_MOD_PM4] = "pm4",
+ 	[IIO_MOD_PM10] = "pm10",
++	[IIO_MOD_ETHANOL] = "ethanol",
++	[IIO_MOD_H2] = "h2",
  };
  
--#define ADS8344_VOLTAGE_CHANNEL(chan, si)				\
-+#define ADS8344_VOLTAGE_CHANNEL(chan, addr)				\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.indexed = 1,						\
- 		.channel = chan,					\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-+		.address = addr,					\
- 	}
- 
--#define ADS8344_VOLTAGE_CHANNEL_DIFF(chan1, chan2, si)			\
-+#define ADS8344_VOLTAGE_CHANNEL_DIFF(chan1, chan2, addr)		\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.indexed = 1,						\
-@@ -50,6 +51,7 @@ struct ads8344 {
- 		.differential = 1,					\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-+		.address = addr,					\
- 	}
- 
- static const struct iio_chan_spec ads8344_channels[] = {
-@@ -105,7 +107,7 @@ static int ads8344_read_raw(struct iio_dev *iio,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		mutex_lock(&adc->lock);
--		*value = ads8344_adc_conversion(adc, channel->scan_index,
-+		*value = ads8344_adc_conversion(adc, channel->address,
- 						channel->differential);
- 		mutex_unlock(&adc->lock);
- 		if (*value < 0)
+ /* relies on pairs of these shared then separate */
 -- 
-2.25.1
+2.20.1
 

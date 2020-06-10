@@ -2,97 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FA8A1F4977
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jun 2020 00:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 018631F4AD9
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jun 2020 03:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728560AbgFIWkR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Jun 2020 18:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728108AbgFIWkR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jun 2020 18:40:17 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D31C05BD1E;
-        Tue,  9 Jun 2020 15:40:17 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id q8so225373qkm.12;
-        Tue, 09 Jun 2020 15:40:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MAUXZKtBQZj6B5Rk9FG9z3WffsCtrNY4aCuD4cUBdPc=;
-        b=YJflalIkp0KvIL27dtyF6mJD8QQVEqO9eeK32hEzzrhc8R4XGR8zDIgNYhe8VBAFr1
-         QTqZwF7AiUHee1tIkA6rcCjrc/Cw3JH/k8s6KsW86D49fqhCf7pIklHfgVRMZcUVSUc3
-         qkXh807NBKX98Yq8Heqr8dhKk8fgwIMHXsWnzuLxHkdlMqtPtSYINZ+xopFGu08R+ABJ
-         OajJ0AXZkA7g38Iu8m7ucC4WQWI90dbbo8jCBvjRA4JSHt+wYIIqO6N2bSIBlMZxkyR4
-         CgIthjnT7BmDw+GBQ5z5VTJqF7eKW6VC6YpSxf+Rm+joTYNILEnSSOs8BaFF/4tbY9Py
-         +0Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MAUXZKtBQZj6B5Rk9FG9z3WffsCtrNY4aCuD4cUBdPc=;
-        b=HUFvKaokN03vg2vJqR5OA2q7xif9Ld8CEgPEpwXj/b6zw5MtjXp6h9CT4iUpetjcwS
-         fXAVnvNeRplHx0jLZzCyzCFWRL1sR9feJL6Bh5NyOayHO9ikTEQQunlzgipFjbfTbC89
-         pWuiKZTIrCpfBl+sDTndgtYUfAWLnU7IDmbGxlEFIWsl655EZsY+1WsvQYvHJ8qlDTtw
-         SZtkZ+B6JtNjEanLQ/3kWRAUznJpT4Z7C7ow9Vy/s/lsnb35eBrjqxO5vmvDJyeEY9kR
-         38sRwwghvKPrIoVXT8MO8IJj6dPqpL2V9BfQUv1eJoKdoreTNYl1fEWP8ldexLbS8Lag
-         vDTg==
-X-Gm-Message-State: AOAM532H+MbH6x/VTzKdmv+H+mo5k6VPNVS4oEPTAPWLk9uTJQAGkkev
-        UdcyI9F5kWQW/f0eF8/1/Q==
-X-Google-Smtp-Source: ABdhPJxLUvoEA0NFM0tB152OFCyhMpvWeKW4QTmDwJliy056wjYh0HVDJ8Hp7CgxnkyaKyjsPUhtVg==
-X-Received: by 2002:a05:620a:4e5:: with SMTP id b5mr168395qkh.341.1591742416350;
-        Tue, 09 Jun 2020 15:40:16 -0700 (PDT)
-Received: from localhost.localdomain ([142.119.96.191])
-        by smtp.googlemail.com with ESMTPSA id l69sm11282893qke.112.2020.06.09.15.40.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2020 15:40:15 -0700 (PDT)
-From:   Keyur Patel <iamkeyur96@gmail.com>
-Cc:     Keyur Patel <iamkeyur96@gmail.com>,
+        id S1725999AbgFJB2O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Jun 2020 21:28:14 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:40293 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725944AbgFJB2M (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 9 Jun 2020 21:28:12 -0400
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 49hTrh691xz8r;
+        Wed, 10 Jun 2020 03:28:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1591752489; bh=GKakFZj7r0PwB6e2LKfOoZiiZ9swBqGVdyd905VRjjc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JcyUlr+WvHTHmVp9QAURy3vHUtHVVvuUk1Xc6U+oronaswAv4sPlpbwXkVXPI8OAh
+         +ZCIKP6b32XkKvBIkcDKfm7t5TkDfmLGkNf74ukWIjaGqoW7qPfkxtWoih0Eomc4q/
+         w2zgsXY6Ruhf8XUqJzx4KoGN+dBRlxxN21IxsSv4ms6v4OXw8WDPGKcSmtcRlDrzu+
+         SXD6KNjcaDfhF9rBu5rWcpoycCx3SX/hJ8Ihse3BcYOPhIiNqNAicuPBIwHgj3I9AF
+         SpBhhg7k+AJoi+ZsRdKBumYPce06a6uaA4FP/36CK0TBm0UvejlWb02cPOjzHiUszs
+         CUzBf4na9/iZw==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.102.2 at mail
+Date:   Wed, 10 Jun 2020 03:28:01 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: cros_ec: fix spelling mistake
-Date:   Tue,  9 Jun 2020 18:39:52 -0400
-Message-Id: <20200609223955.107506-1-iamkeyur96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com
+Subject: Re: [PATCH v4 5/7] iio: adc: exynos: Use input_device_enabled()
+Message-ID: <20200610012801.GA11530@qmqm.qmqm.pl>
+References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
+ <20200608112211.12125-1-andrzej.p@collabora.com>
+ <20200608112211.12125-6-andrzej.p@collabora.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200608112211.12125-6-andrzej.p@collabora.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix typo: "tigger" --> "trigger"
+On Mon, Jun 08, 2020 at 01:22:09PM +0200, Andrzej Pietrasiewicz wrote:
+> A new helper is available, so use it. Inspecting 'users' member of
+> input_dev requires taking device's mutex.
+[...]
+> --- a/drivers/iio/adc/exynos_adc.c
+> +++ b/drivers/iio/adc/exynos_adc.c
+> @@ -633,7 +633,9 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+>  	bool pressed;
+>  	int ret;
+>  
+> -	while (info->input->users) {
+> +	mutex_lock(&info->input->mutex);
+> +	while (input_device_enabled(info->input)) {
+> +		mutex_unlock(&info->input->mutex);
+>  		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+>  		if (ret == -ETIMEDOUT)
+>  			break;
+> @@ -651,6 +653,8 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+>  		input_sync(info->input);
+>  
+>  		usleep_range(1000, 1100);
+> +
+> +		mutex_lock(&info->input->mutex);
+>  	}
 
-Signed-off-by: Keyur Patel <iamkeyur96@gmail.com>
----
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Missed an mutex_unlock() here.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index c831915ca7e5..4888fb23d801 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -352,7 +352,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 		} else {
- 			/*
- 			 * The only way to get samples in buffer is to set a
--			 * software tigger (systrig, hrtimer).
-+			 * software trigger (systrig, hrtimer).
- 			 */
- 			ret = devm_iio_triggered_buffer_setup(
- 					dev, indio_dev, NULL, trigger_capture,
--- 
-2.26.2
+>  
+>  	writel(0, ADC_V1_CLRINTPNDNUP(info->regs));
 
+Best Regards,
+Micha³ Miros³aw

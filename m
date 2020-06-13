@@ -2,216 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 458A61F7576
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jun 2020 10:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57BD91F81C3
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jun 2020 10:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbgFLIsB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Jun 2020 04:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
+        id S1726362AbgFMITY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Jun 2020 04:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726292AbgFLIsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Jun 2020 04:48:01 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CBCC03E96F;
-        Fri, 12 Jun 2020 01:48:00 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id ADEDA2A52ED
-Subject: Re: [PATCH v4 0/7] Support inhibiting input devices
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
-        linux-input@vger.kernel.org,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+        with ESMTP id S1725783AbgFMITX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Jun 2020 04:19:23 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC5F0C03E96F;
+        Sat, 13 Jun 2020 01:19:22 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id v24so4694254plo.6;
+        Sat, 13 Jun 2020 01:19:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=cKZcMqArBz9X4rHGW4KhCsa5aMipNmtz0BtqjL31pOg=;
+        b=HY64l0bHbuLUB4rEv2+YOeiTdTwoa7FNhGB7qTI5yZR+Cjrqstc39WEHhIrNk+VFeu
+         Q+ZgZQswm7Aeuc6/00c3ybDLkrukuXouazZkKOAZTfrZong3Gnoo4qOjs/U3tD/E5+IX
+         211CW+0du2Ol1aGBFxE4J+jt+OXiFDPa5ksk/w6vpGwex6E8Feq+Q+5zVVEjkQjcg1iJ
+         2UuLI1Ta05PJmdfuaMMqXI5eTcWWkLuObcof/m1eLR/1uKnf/Q5DFOuYGJkPAfhoQGZO
+         aNge5COJvtCp0Gr6Rp83s3oUf+hfZkaLlbpHpn7JlMst84LDIamZEnp+2W40k7mBwJyk
+         y2Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=cKZcMqArBz9X4rHGW4KhCsa5aMipNmtz0BtqjL31pOg=;
+        b=NzkRMtUmzm/N5UAHFCqWMXdyo/7odRr7t35uXJCPnnSt7omW7G+Idi5riDr/iv7mwd
+         Aax7C4m4yMbuKxsIhJHxFhij0d50u5HK069qHILcnAqTOak1hZAilDCvqCWucHG6OlgD
+         xJc/TfpsZur86LsAbYwn/peHI5JSW9WAdDvrwIeqGGZvSxz/ksxAJerzYL3RbMiUGi1b
+         j2ErPLD7CSIe60R9bGy8pTqcB+QaF0LFRI/Nj8xJfBy6wLvqCTt+G6hegfknhEYDmBSo
+         ynSgyDZC6BI5l+kGQy21ZaS7ehJxaHOgtv0W9+H8gOtWtA63Em3mUUv41rKUHI/Pb1lV
+         jOdg==
+X-Gm-Message-State: AOAM532ovU0Rxvd1fCMOH07hyNjnKAFWi+xiwWICJIHhLxWQ0Z3wG5XK
+        RE7BcYzWC3+3sIczZnHPl1c=
+X-Google-Smtp-Source: ABdhPJyGmQrKnFQWVG5fMTU5uipONzIFT84K/obEhdoOMHU44yyZFYfq4TbyU3sS3LLIOCT+Gof1Eg==
+X-Received: by 2002:a17:90b:1108:: with SMTP id gi8mr2615297pjb.144.1592036362086;
+        Sat, 13 Jun 2020 01:19:22 -0700 (PDT)
+Received: from localhost.localdomain ([2409:4072:5:6ac6:29af:f9d7:e4ec:8901])
+        by smtp.gmail.com with ESMTPSA id nl8sm7633203pjb.13.2020.06.13.01.19.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 13 Jun 2020 01:19:21 -0700 (PDT)
+From:   Mugilraj D <dmugil2000@gmail.com>
+Cc:     Mugilraj D <dmugil2000@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        Collabora Kernel ML <kernel@collabora.com>
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
- <20200608112211.12125-1-andrzej.p@collabora.com>
- <964ca07a-3da5-101f-7edf-64bdeec98a4b@redhat.com>
- <CAJZ5v0hB2ra2K=dd9ZjVyy1V2b1PmFHm79uDO2HtHU1D_4YUbw@mail.gmail.com>
- <6136f26c-e090-e025-af55-4c5f3a6aec92@collabora.com>
- <3e61c9c1-b211-da9f-c55b-b44eb6522f2a@redhat.com>
- <2d5fd063-66bc-c707-4041-84a17c0a7d04@collabora.com>
- <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <16342ec8-2c8e-d030-b253-0db534f04ba6@collabora.com>
-Date:   Fri, 12 Jun 2020 10:47:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Bakker <xc-racer2@live.ca>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: accel: Replace symbolic permissions with octal permissions
+Date:   Sat, 13 Jun 2020 13:49:01 +0530
+Message-Id: <1592036351-10166-1-git-send-email-dmugil2000@gmail.com>
+X-Mailer: git-send-email 2.7.4
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Hans,
+Resolve following checkpatch issue:
+WARNING: Symbolic permissions 'S_IRUGO' are not preferred. Consider
+using octal permissions '0444'.
 
-W dniu 12.06.2020 o 10:30, Hans de Goede pisze:
-> Hi,
-> 
-> On 6/10/20 3:41 PM, Andrzej Pietrasiewicz wrote:
->> Hi Hans,
->>
->> W dniu 10.06.2020 o 15:21, Hans de Goede pisze:
->>> Hi,
->>>
->>> On 6/10/20 3:12 PM, Andrzej Pietrasiewicz wrote:
->>>> Hi All,
->>>>
->>>> W dniu 10.06.2020 o 12:38, Rafael J. Wysocki pisze:
->>>>> On Wed, Jun 10, 2020 at 11:50 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>>>>>
->>>>>> Hi All,
->>>>>>
->>>>>> On 6/8/20 1:22 PM, Andrzej Pietrasiewicz wrote:
->>>>>>> This is a quick respin of v3, with just two small changes, please see
->>>>>>> the changelog below.
->>>>>>>
->>>>>>> Userspace might want to implement a policy to temporarily disregard input
->>>>>>> from certain devices.
->>>>>>>
->>>>>>> An example use case is a convertible laptop, whose keyboard can be folded
->>>>>>> under the screen to create tablet-like experience. The user then must hold
->>>>>>> the laptop in such a way that it is difficult to avoid pressing the keyboard
->>>>>>> keys. It is therefore desirable to temporarily disregard input from the
->>>>>>> keyboard, until it is folded back. This obviously is a policy which should
->>>>>>> be kept out of the kernel, but the kernel must provide suitable means to
->>>>>>> implement such a policy.
->>>>>>
->>>>>> First of all sorry to start a somewhat new discussion about this
->>>>>> while this patch set is also somewhat far along in the review process,
->>>>>> but I believe what I discuss below needs to be taken into account.
->>>>>>
->>>>>> Yesterday I have been looking into why an Asus T101HA would not stay
->>>>>> suspended when the LID is closed. The cause is that the USB HID multi-touch
->>>>>> touchpad in the base of the device starts sending events when the screen
->>>>>> gets close to the touchpad (so when the LID is fully closed) and these
->>>>>> events are causing a wakeup from suspend. HID multi-touch devices
->>>>>> do have a way to tell them to fully stop sending events, also disabling
->>>>>> the USB remote wakeup the device is doing. The question is when to tell
->>>>>> it to not send events though ...
->>>>>>
->>>>>> So now I've been thinking about how to fix this and I believe that there
->>>>>> is some interaction between this problem and this patch-set.
->>>>>>
->>>>>> The problem I'm seeing on the T101HA is about wakeups, so the question
->>>>>> which I want to discuss is:
->>>>>>
->>>>>> 1. How does inhibiting interact with enabling /
->>>>>> disabling the device as a wakeup source ?
->>>>>>
->>>>>> 2. Since we have now made inhibiting equal open/close how does open/close
->>>>>> interact with a device being a wakeup source ?
->>>>>>
->>>>>> And my own initial (to be discussed) answers to these questions:
->>>>>>
->>>>>> 1. It seems to me that when a device is inhibited it should not be a
->>>>>> wakeup source, so where possible a input-device-driver should disable
->>>>>> a device's wakeup capabilities on suspend if inhibited
->>>>>
->>>>> If "inhibit" means "do not generate any events going forward", then
->>>>> this must also cover wakeup events, so I agree.
->>>>
->>>> I agree, too.
->>>>
->>>>>
->>>>>> 2. This one is trickier I don't think we have really clearly specified
->>>>>> any behavior here. The default behavior of most drivers seems to be
->>>>>> using something like this in their suspend callback:
->>>>>>
->>>>>>           if (device_may_wakeup(dev))
->>>>>>                   enable_irq_wake(data->irq);
->>>>>>           else if (input->users)
->>>>>>                   foo_stop_receiving_events(data);
->>>>>>
->>>>>> Since this is what most drivers seem to do I believe we should keep
->>>>>> this as is and that we should just clearly document that if the
->>>>>> input_device has users (has been opened) or not does not matter
->>>>>> for its wakeup behavior.
->>>>>>
->>>>>> Combining these 2 answers leads to this new pseudo code template
->>>>>> for an input-device's suspend method:
->>>>>>
->>>>>>          /*
->>>>>>           * If inhibited we have already disabled events and
->>>>>>           * we do NOT want to setup the device as wake source.
->>>>>>           */
->>>>>>          if (input->inhibited)
->>>>>>                  return 0;
->>>>
->>>> Right, if a device is inhibited it shouldn't become a wakeup source,
->>>> because that would contradict the purpose of being inhibited.
->>>
->>> Ack. Note I do think that we need to document this (and more
->>> in general the answer to both questions from above) clearly so
->>> that going forward if there are any questions about how this is
->>> supposed to work we can just point to the docs.
->>>
->>> Can you do a follow-up patch, or include a patch in your next
->>> version which documents this (once we agree on what "this"
->>> exactly is) ?
->>
->> Sure I can. Just need to know when "this" becomes stable enough ;)
->> If this series otherwise looks mature enough I would opt for a
->> follow-up patch.
-> 
-> FWIW after my flip-flop to agreeing with Dmitry that the 2
-> (inhibit vs wakeup) should be completely orthogonal this new
-> policy is stable/mature from my pov (and consistent with how
-> we handle wakeup vs input_dev->users).
-> 
-> I still think it would be good to do a follow-up documentation
-> patch documenting that these (and esp. inhibit) are orthogonal.
-> 
-> This will mean for example that if a device is inhibit but
-> still wakeup enabled and the device's close method silences
-> the devices, that it needs to be unsilenced in suspend.
-> This might be worth mentioning in the docs even though
-> drivers which silence the device on close should already
-> unsilence the device on suspend when it is wakeup-enabled.
-> 
-> Note maybe we should give it a couple of days for others to
-> give their opinion before you submit the follow-up documentation
-> patch.
-> 
+Signed-off-by: Mugilraj D <dmugil2000@gmail.com>
+---
+ drivers/iio/accel/bma180.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-True. I will send something after the weekend.
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index 265722e..b716347 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -531,14 +531,13 @@ static ssize_t bma180_show_scale_avail(struct device *dev,
+ }
+ 
+ static IIO_DEVICE_ATTR(in_accel_filter_low_pass_3db_frequency_available,
+-	S_IRUGO, bma180_show_filter_freq_avail, NULL, 0);
++	0444, bma180_show_filter_freq_avail, NULL, 0);
+ 
+ static IIO_DEVICE_ATTR(in_accel_scale_available,
+-	S_IRUGO, bma180_show_scale_avail, NULL, 0);
++	0444, bma180_show_scale_avail, NULL, 0);
+ 
+ static struct attribute *bma180_attributes[] = {
+-	&iio_dev_attr_in_accel_filter_low_pass_3db_frequency_available.
+-		dev_attr.attr,
++	&iio_dev_attr_in_accel_filter_low_pass_3db_frequency_available.dev_attr.attr,
+ 	&iio_dev_attr_in_accel_scale_available.dev_attr.attr,
+ 	NULL,
+ };
+-- 
+2.7.4
 
-Andrzej

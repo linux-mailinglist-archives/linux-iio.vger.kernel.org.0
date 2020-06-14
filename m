@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 200D41F88E7
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jun 2020 15:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A18C01F88EE
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jun 2020 15:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbgFNNRn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Jun 2020 09:17:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49548 "EHLO mail.kernel.org"
+        id S1727043AbgFNNYe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Jun 2020 09:24:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53912 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726925AbgFNNRn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Jun 2020 09:17:43 -0400
+        id S1726925AbgFNNYe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Jun 2020 09:24:34 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 16743206D7;
-        Sun, 14 Jun 2020 13:17:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CBFBE2068E;
+        Sun, 14 Jun 2020 13:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592140662;
-        bh=++eWGQXrMWbaOFfTJbiV3sV2IYNlyVegRPfYlHUt6dw=;
+        s=default; t=1592141072;
+        bh=YzCaYpF9WB1DUeKodk40zNx6k/5IyKHYyDIJWj5qYnI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qlTzM7yWyCXf/T7Ck7IPddkZbl6zSwEPAI3w9qVmN7cjqHiNJVD33oF5eZJQjW/ok
-         f/rFx9ynb2sOK7nRb/pImOEdWm+C+wKMJxjvkulfzYmEkg+xTMwi5dIZ+WCOBRZtKs
-         y3rKSfbQ7UVgvADoMO5CpjXj1f5ceUDS++hdCamg=
-Date:   Sun, 14 Jun 2020 14:17:38 +0100
+        b=ocWL200uZaUj1w9/WyH0xM3f5XkzBQykddNwevm0NhcyOLEeyd4cAjIabqFJxKFKT
+         /imwZNxkdR1g+MFk8fXoEqhGTA0GmECbM70zZAHND8UXrxUNceflzeixaJSoUdfjwM
+         MDdsWSX7N5/HAOcZ01+l6BP2GVoerLI0oraQnU/Y=
+Date:   Sun, 14 Jun 2020 14:24:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
-        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v5 0/4] Add support for SCD30 sensor
-Message-ID: <20200614141738.0645a954@archlinux>
-In-Reply-To: <20200607175812.95777-1-tomasz.duszynski@octakon.com>
-References: <20200607175812.95777-1-tomasz.duszynski@octakon.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: Remove superfluous of_node assignments
+Message-ID: <20200614142427.262fe1e6@archlinux>
+In-Reply-To: <CAHp75VfyL5tPR7GOH6ih+24ExfQjmVWhLdwXoBLUpXBNCP9Gog@mail.gmail.com>
+References: <20200613121715.11898-1-lars@metafoo.de>
+        <CAHp75VfyL5tPR7GOH6ih+24ExfQjmVWhLdwXoBLUpXBNCP9Gog@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,102 +45,829 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 Jun 2020 19:58:08 +0200
-Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+On Sun, 14 Jun 2020 12:24:16 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Following series adds support for Sensirion SCD30 sensor module capable of
-> measuring carbon dioxide, temperature and relative humidity. CO2 measurements
-> base on NDIR principle while temperature and relative humidity are measured by
-> the on board SHT31. As for sensor communication, both I2C and serial interfaces
-> are supported.
+> On Sat, Jun 13, 2020 at 3:18 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
+> >
+> > If a driver does not assign an of_node to a IIO device to IIO core will
+> > automatically assign the of_node of the parent device. This automatic
+> > assignment is done in the iio_device_register() function.
+> >
+> > There is a fair amount of drivers that currently manually assign the
+> > of_node of the IIO device. All but 4 of them can make use of the automatic
+> > assignment though.
+> >
+> > The exceptions are:
+> >  * mxs-lradc-adc: Which uses the of_node of the parent of the parent.
+> >  * stm32-dfsdm-adc, stm32-adc and stm32-dac: Which reference the of_node
+> >    assigned to the IIO device before iio_device_register() is called.
+> >
+> > All other drivers are updated to use automatic assignment. This reduces
+> > the amount of boilerplate code involved in setting up the IIO device.
+> >  
+> 
+> FWIW,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+> I consider it an extremely right step to do. Actually we need to
+> switch to fwnode / device property API at the end.
 
-Hi Tomasz,
+Agreed on both fronts.  Will take a little while though to get
+through all the drivers.  I'm also a tiny bit nervous that there
+might be some gotchas hidden in the device property API changes
+as I'm not familiar enough with them yet to do an 'automatic'
+review...  That always makes me nervous when we can't track down
+someone to test on a real system.
 
-All looks good to me.
+We'll get there in the end though.
 
-I'll let it sit on the list a bit longer though to give time for anyone
-else to review if they wish and ideally pick up a DT review if
-Rob has time.  It isn't unheard of me to somehow loose a set down
-the back of the sofa, so do poke me if I seem to to have lost this
-in a few weeks time! (I'll try not to of course!)
+Applied this to the togreg branch of iio.git and pushed out as
+testing for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > 
-> v5:
-> * set pressure calibration via output channel
-> * use kstrtobool() to read value into _enabled attribute
-> * drop explicit parent asignment as the default one is good enough
->   (seems 'iio: core: pass parent device as parameter during allocation'
->    series was accepted)
+> > The patch has mostly been auto-generated with the following semantic patch
+> >
+> > // <smpl>
+> > @exists@
+> > expression indio_dev;
+> > expression parent;
+> > @@
+> > indio_dev = \(devm_iio_device_alloc\|iio_device_alloc\)(&parent, ...)
+> > ...
+> > -indio_dev->dev.of_node = parent.of_node;
+> >
+> > @exists@
+> > expression indio_dev;
+> > expression parent;
+> > @@
+> > indio_dev = \(devm_iio_device_alloc\|iio_device_alloc\)(parent, ...)
+> > ...
+> > -indio_dev->dev.of_node = parent->of_node;
+> > // </smpl>
+> >
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > ---
+> > Inspired by Alex's series of remove manual parent assignment
+> > ---
+> >  drivers/iio/accel/ssp_accel_sensor.c      | 1 -
+> >  drivers/iio/adc/ab8500-gpadc.c            | 1 -
+> >  drivers/iio/adc/ad7266.c                  | 1 -
+> >  drivers/iio/adc/ad7291.c                  | 1 -
+> >  drivers/iio/adc/ad7298.c                  | 1 -
+> >  drivers/iio/adc/ad7476.c                  | 1 -
+> >  drivers/iio/adc/ad7791.c                  | 1 -
+> >  drivers/iio/adc/ad7793.c                  | 1 -
+> >  drivers/iio/adc/ad7887.c                  | 1 -
+> >  drivers/iio/adc/ad7923.c                  | 1 -
+> >  drivers/iio/adc/ad7949.c                  | 1 -
+> >  drivers/iio/adc/ad799x.c                  | 1 -
+> >  drivers/iio/adc/axp20x_adc.c              | 1 -
+> >  drivers/iio/adc/bcm_iproc_adc.c           | 1 -
+> >  drivers/iio/adc/cpcap-adc.c               | 1 -
+> >  drivers/iio/adc/da9150-gpadc.c            | 1 -
+> >  drivers/iio/adc/envelope-detector.c       | 1 -
+> >  drivers/iio/adc/exynos_adc.c              | 1 -
+> >  drivers/iio/adc/hi8435.c                  | 1 -
+> >  drivers/iio/adc/ina2xx-adc.c              | 1 -
+> >  drivers/iio/adc/lp8788_adc.c              | 1 -
+> >  drivers/iio/adc/max1027.c                 | 1 -
+> >  drivers/iio/adc/max11100.c                | 1 -
+> >  drivers/iio/adc/max1363.c                 | 2 --
+> >  drivers/iio/adc/max9611.c                 | 1 -
+> >  drivers/iio/adc/mcp320x.c                 | 1 -
+> >  drivers/iio/adc/mcp3422.c                 | 1 -
+> >  drivers/iio/adc/mcp3911.c                 | 1 -
+> >  drivers/iio/adc/meson_saradc.c            | 1 -
+> >  drivers/iio/adc/nau7802.c                 | 1 -
+> >  drivers/iio/adc/qcom-pm8xxx-xoadc.c       | 1 -
+> >  drivers/iio/adc/qcom-spmi-adc5.c          | 1 -
+> >  drivers/iio/adc/qcom-spmi-iadc.c          | 1 -
+> >  drivers/iio/adc/qcom-spmi-vadc.c          | 1 -
+> >  drivers/iio/adc/rcar-gyroadc.c            | 1 -
+> >  drivers/iio/adc/rockchip_saradc.c         | 1 -
+> >  drivers/iio/adc/sd_adc_modulator.c        | 1 -
+> >  drivers/iio/adc/sun4i-gpadc-iio.c         | 1 -
+> >  drivers/iio/adc/ti-adc081c.c              | 1 -
+> >  drivers/iio/adc/ti-adc0832.c              | 1 -
+> >  drivers/iio/adc/ti-adc084s021.c           | 1 -
+> >  drivers/iio/adc/ti-adc128s052.c           | 1 -
+> >  drivers/iio/adc/ti-adc161s626.c           | 1 -
+> >  drivers/iio/adc/ti-ads1015.c              | 1 -
+> >  drivers/iio/adc/ti-ads124s08.c            | 1 -
+> >  drivers/iio/adc/ti-ads8344.c              | 1 -
+> >  drivers/iio/adc/ti-ads8688.c              | 1 -
+> >  drivers/iio/adc/twl4030-madc.c            | 1 -
+> >  drivers/iio/adc/vf610_adc.c               | 1 -
+> >  drivers/iio/adc/xilinx-xadc-core.c        | 1 -
+> >  drivers/iio/dac/ds4424.c                  | 1 -
+> >  drivers/iio/dac/ti-dac5571.c              | 1 -
+> >  drivers/iio/dac/ti-dac7311.c              | 1 -
+> >  drivers/iio/dac/vf610_dac.c               | 1 -
+> >  drivers/iio/pressure/dlhl60d.c            | 1 -
+> >  drivers/iio/temperature/max31856.c        | 1 -
+> >  drivers/iio/trigger/stm32-timer-trigger.c | 1 -
+> >  57 files changed, 58 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/ssp_accel_sensor.c b/drivers/iio/accel/ssp_accel_sensor.c
+> > index 3102b507e22a..474477e91b5e 100644
+> > --- a/drivers/iio/accel/ssp_accel_sensor.c
+> > +++ b/drivers/iio/accel/ssp_accel_sensor.c
+> > @@ -108,7 +108,6 @@ static int ssp_accel_probe(struct platform_device *pdev)
+> >         spd->type = SSP_ACCELEROMETER_SENSOR;
+> >
+> >         indio_dev->name = ssp_accel_device_name;
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &ssp_accel_iio_info;
+> >         indio_dev->modes = INDIO_BUFFER_SOFTWARE;
+> >         indio_dev->channels = ssp_acc_channels;
+> > diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
+> > index b264f88cf9d9..7fdc5d2d1d35 100644
+> > --- a/drivers/iio/adc/ab8500-gpadc.c
+> > +++ b/drivers/iio/adc/ab8500-gpadc.c
+> > @@ -1163,7 +1163,6 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+> >
+> >         pm_runtime_put(dev);
+> >
+> > -       indio_dev->dev.of_node = np;
+> >         indio_dev->name = "ab8500-gpadc";
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &ab8500_gpadc_info;
+> > diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+> > index 715d39b200df..3dc15ec04f66 100644
+> > --- a/drivers/iio/adc/ad7266.c
+> > +++ b/drivers/iio/adc/ad7266.c
+> > @@ -437,7 +437,6 @@ static int ad7266_probe(struct spi_device *spi)
+> >         spi_set_drvdata(spi, indio_dev);
+> >         st->spi = spi;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &ad7266_info;
+> > diff --git a/drivers/iio/adc/ad7291.c b/drivers/iio/adc/ad7291.c
+> > index dbba62ad5e16..62fde2aad282 100644
+> > --- a/drivers/iio/adc/ad7291.c
+> > +++ b/drivers/iio/adc/ad7291.c
+> > @@ -502,7 +502,6 @@ static int ad7291_probe(struct i2c_client *client,
+> >         indio_dev->channels = ad7291_channels;
+> >         indio_dev->num_channels = ARRAY_SIZE(ad7291_channels);
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->info = &ad7291_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
+> > index 26768b15c0de..733fb1256456 100644
+> > --- a/drivers/iio/adc/ad7298.c
+> > +++ b/drivers/iio/adc/ad7298.c
+> > @@ -312,7 +312,6 @@ static int ad7298_probe(struct spi_device *spi)
+> >         st->spi = spi;
+> >
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = ad7298_channels;
+> >         indio_dev->num_channels = ARRAY_SIZE(ad7298_channels);
+> > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+> > index 6286e230f55b..66c55ae67791 100644
+> > --- a/drivers/iio/adc/ad7476.c
+> > +++ b/drivers/iio/adc/ad7476.c
+> > @@ -300,7 +300,6 @@ static int ad7476_probe(struct spi_device *spi)
+> >
+> >         st->spi = spi;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = st->chip_info->channel;
+> > diff --git a/drivers/iio/adc/ad7791.c b/drivers/iio/adc/ad7791.c
+> > index b636cf0a8f19..d57ad966e17c 100644
+> > --- a/drivers/iio/adc/ad7791.c
+> > +++ b/drivers/iio/adc/ad7791.c
+> > @@ -425,7 +425,6 @@ static int ad7791_probe(struct spi_device *spi)
+> >
+> >         spi_set_drvdata(spi, indio_dev);
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = st->info->channels;
+> > diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
+> > index b858723c144b..5e980a06258e 100644
+> > --- a/drivers/iio/adc/ad7793.c
+> > +++ b/drivers/iio/adc/ad7793.c
+> > @@ -818,7 +818,6 @@ static int ad7793_probe(struct spi_device *spi)
+> >
+> >         spi_set_drvdata(spi, indio_dev);
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = st->chip_info->channels;
+> > diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
+> > index 0f93f5c8965d..d1d43fb700ba 100644
+> > --- a/drivers/iio/adc/ad7887.c
+> > +++ b/drivers/iio/adc/ad7887.c
+> > @@ -264,7 +264,6 @@ static int ad7887_probe(struct spi_device *spi)
+> >         spi_set_drvdata(spi, indio_dev);
+> >         st->spi = spi;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->info = &ad7887_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+> > index 6f1996cfd1e5..bd3ce6b16a38 100644
+> > --- a/drivers/iio/adc/ad7923.c
+> > +++ b/drivers/iio/adc/ad7923.c
+> > @@ -315,7 +315,6 @@ static int ad7923_probe(struct spi_device *spi)
+> >         info = &ad7923_chip_info[spi_get_device_id(spi)->driver_data];
+> >
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = info->channels;
+> >         indio_dev->num_channels = info->num_channels;
+> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> > index c6676d317356..c6754ab54afa 100644
+> > --- a/drivers/iio/adc/ad7949.c
+> > +++ b/drivers/iio/adc/ad7949.c
+> > @@ -243,7 +243,6 @@ static int ad7949_spi_probe(struct spi_device *spi)
+> >                 return -ENOMEM;
+> >         }
+> >
+> > -       indio_dev->dev.of_node = dev->of_node;
+> >         indio_dev->info = &ad7949_spi_info;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> > diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
+> > index 6a389bbbffaa..cfd814fca5bb 100644
+> > --- a/drivers/iio/adc/ad799x.c
+> > +++ b/drivers/iio/adc/ad799x.c
+> > @@ -814,7 +814,6 @@ static int ad799x_probe(struct i2c_client *client,
+> >
+> >         st->client = client;
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->name = id->name;
+> >         indio_dev->info = st->chip_config->info;
+> >
+> > diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> > index b138f1a1fb51..798ff2d89691 100644
+> > --- a/drivers/iio/adc/axp20x_adc.c
+> > +++ b/drivers/iio/adc/axp20x_adc.c
+> > @@ -668,7 +668,6 @@ static int axp20x_probe(struct platform_device *pdev)
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> >         info->regmap = axp20x_dev->regmap;
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> >         if (!pdev->dev.of_node) {
+> > diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
+> > index 9bf29c2384a4..936da32faa9d 100644
+> > --- a/drivers/iio/adc/bcm_iproc_adc.c
+> > +++ b/drivers/iio/adc/bcm_iproc_adc.c
+> > @@ -573,7 +573,6 @@ static int iproc_adc_probe(struct platform_device *pdev)
+> >         }
+> >
+> >         indio_dev->name = "iproc-static-adc";
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &iproc_adc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = iproc_adc_iio_channels;
+> > diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
+> > index 9b0d6d7c90e9..004e7fee1fb2 100644
+> > --- a/drivers/iio/adc/cpcap-adc.c
+> > +++ b/drivers/iio/adc/cpcap-adc.c
+> > @@ -985,7 +985,6 @@ static int cpcap_adc_probe(struct platform_device *pdev)
+> >         init_waitqueue_head(&ddata->wq_data_avail);
+> >
+> >         indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->channels = cpcap_adc_channels;
+> >         indio_dev->num_channels = ARRAY_SIZE(cpcap_adc_channels);
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > diff --git a/drivers/iio/adc/da9150-gpadc.c b/drivers/iio/adc/da9150-gpadc.c
+> > index 3461e26a89bd..7a7a54a7ed76 100644
+> > --- a/drivers/iio/adc/da9150-gpadc.c
+> > +++ b/drivers/iio/adc/da9150-gpadc.c
+> > @@ -354,7 +354,6 @@ static int da9150_gpadc_probe(struct platform_device *pdev)
+> >         }
+> >
+> >         indio_dev->name = dev_name(dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &da9150_gpadc_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = da9150_gpadc_channels;
+> > diff --git a/drivers/iio/adc/envelope-detector.c b/drivers/iio/adc/envelope-detector.c
+> > index 77e60d160d02..2a4fd3bb64cf 100644
+> > --- a/drivers/iio/adc/envelope-detector.c
+> > +++ b/drivers/iio/adc/envelope-detector.c
+> > @@ -343,7 +343,6 @@ static int envelope_detector_probe(struct platform_device *pdev)
+> >         INIT_DELAYED_WORK(&env->comp_timeout, envelope_detector_timeout);
+> >
+> >         indio_dev->name = dev_name(dev);
+> > -       indio_dev->dev.of_node = dev->of_node;
+> >         indio_dev->info = &envelope_detector_info;
+> >         indio_dev->channels = &envelope_detector_iio_channel;
+> >         indio_dev->num_channels = 1;
+> > diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+> > index 27606fa7c7bb..7d23b6c33284 100644
+> > --- a/drivers/iio/adc/exynos_adc.c
+> > +++ b/drivers/iio/adc/exynos_adc.c
+> > @@ -867,7 +867,6 @@ static int exynos_adc_probe(struct platform_device *pdev)
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &exynos_adc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = exynos_adc_iio_channels;
+> > diff --git a/drivers/iio/adc/hi8435.c b/drivers/iio/adc/hi8435.c
+> > index dd23b8593b7b..127e78243233 100644
+> > --- a/drivers/iio/adc/hi8435.c
+> > +++ b/drivers/iio/adc/hi8435.c
+> > @@ -488,7 +488,6 @@ static int hi8435_probe(struct spi_device *spi)
+> >         spi_set_drvdata(spi, idev);
+> >         mutex_init(&priv->lock);
+> >
+> > -       idev->dev.of_node       = spi->dev.of_node;
+> >         idev->name              = spi_get_device_id(spi)->name;
+> >         idev->modes             = INDIO_DIRECT_MODE;
+> >         idev->info              = &hi8435_info;
+> > diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+> > index 467f48b6f451..6ba94a410040 100644
+> > --- a/drivers/iio/adc/ina2xx-adc.c
+> > +++ b/drivers/iio/adc/ina2xx-adc.c
+> > @@ -1015,7 +1015,6 @@ static int ina2xx_probe(struct i2c_client *client,
+> >         }
+> >
+> >         indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         if (id->driver_data == ina226) {
+> >                 indio_dev->channels = ina226_channels;
+> >                 indio_dev->num_channels = ARRAY_SIZE(ina226_channels);
+> > diff --git a/drivers/iio/adc/lp8788_adc.c b/drivers/iio/adc/lp8788_adc.c
+> > index 6e32d2ac1ace..8fb57e375529 100644
+> > --- a/drivers/iio/adc/lp8788_adc.c
+> > +++ b/drivers/iio/adc/lp8788_adc.c
+> > @@ -198,7 +198,6 @@ static int lp8788_adc_probe(struct platform_device *pdev)
+> >         adc->lp = lp;
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         ret = lp8788_iio_map_register(indio_dev, lp->pdata, adc);
+> >         if (ret)
+> >                 return ret;
+> > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+> > index b489cb14ea0d..9e993ccd14de 100644
+> > --- a/drivers/iio/adc/max1027.c
+> > +++ b/drivers/iio/adc/max1027.c
+> > @@ -440,7 +440,6 @@ static int max1027_probe(struct spi_device *spi)
+> >         mutex_init(&st->lock);
+> >
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->info = &max1027_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = st->info->channels;
+> > diff --git a/drivers/iio/adc/max11100.c b/drivers/iio/adc/max11100.c
+> > index a5a4e82b8bd2..57734f9742f6 100644
+> > --- a/drivers/iio/adc/max11100.c
+> > +++ b/drivers/iio/adc/max11100.c
+> > @@ -115,7 +115,6 @@ static int max11100_probe(struct spi_device *spi)
+> >         state = iio_priv(indio_dev);
+> >         state->spi = spi;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = "max11100";
+> >         indio_dev->info = &max11100_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> > index cc1ba7bfc8e6..d8da5da74b77 100644
+> > --- a/drivers/iio/adc/max1363.c
+> > +++ b/drivers/iio/adc/max1363.c
+> > @@ -1593,7 +1593,6 @@ static int max1363_probe(struct i2c_client *client,
+> >         if (!indio_dev)
+> >                 return -ENOMEM;
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         ret = iio_map_array_register(indio_dev, client->dev.platform_data);
+> >         if (ret < 0)
+> >                 return ret;
+> > @@ -1652,7 +1651,6 @@ static int max1363_probe(struct i2c_client *client,
+> >         if (ret)
+> >                 goto error_disable_reg;
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->name = id->name;
+> >         indio_dev->channels = st->chip_info->channels;
+> >         indio_dev->num_channels = st->chip_info->num_channels;
+> > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> > index f0fdd08cea91..d7f150abbaac 100644
+> > --- a/drivers/iio/adc/max9611.c
+> > +++ b/drivers/iio/adc/max9611.c
+> > @@ -545,7 +545,6 @@ static int max9611_probe(struct i2c_client *client,
+> >         if (ret)
+> >                 return ret;
+> >
+> > -       indio_dev->dev.of_node  = client->dev.of_node;
+> >         indio_dev->name         = of_id->data;
+> >         indio_dev->modes        = INDIO_DIRECT_MODE;
+> >         indio_dev->info         = &indio_info;
+> > diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+> > index ee1f65f011a3..e533f1064cf8 100644
+> > --- a/drivers/iio/adc/mcp320x.c
+> > +++ b/drivers/iio/adc/mcp320x.c
+> > @@ -384,7 +384,6 @@ static int mcp320x_probe(struct spi_device *spi)
+> >         adc = iio_priv(indio_dev);
+> >         adc->spi = spi;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &mcp320x_info;
+> > diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
+> > index 56a4768185ea..40e0d3ed05a5 100644
+> > --- a/drivers/iio/adc/mcp3422.c
+> > +++ b/drivers/iio/adc/mcp3422.c
+> > @@ -347,7 +347,6 @@ static int mcp3422_probe(struct i2c_client *client,
+> >
+> >         mutex_init(&adc->lock);
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->name = dev_name(&client->dev);
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &mcp3422_info;
+> > diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> > index 818b92518c66..e573da5397bb 100644
+> > --- a/drivers/iio/adc/mcp3911.c
+> > +++ b/drivers/iio/adc/mcp3911.c
+> > @@ -293,7 +293,6 @@ static int mcp3911_probe(struct spi_device *spi)
+> >         if (ret)
+> >                 goto clk_disable;
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &mcp3911_info;
+> > diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+> > index 1026cb199aa3..93c2252c0b89 100644
+> > --- a/drivers/iio/adc/meson_saradc.c
+> > +++ b/drivers/iio/adc/meson_saradc.c
+> > @@ -1208,7 +1208,6 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
+> >         priv->param = match_data->param;
+> >
+> >         indio_dev->name = match_data->name;
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &meson_sar_adc_iio_info;
+> >
+> > diff --git a/drivers/iio/adc/nau7802.c b/drivers/iio/adc/nau7802.c
+> > index e2ed9f575a46..07c85434b568 100644
+> > --- a/drivers/iio/adc/nau7802.c
+> > +++ b/drivers/iio/adc/nau7802.c
+> > @@ -430,7 +430,6 @@ static int nau7802_probe(struct i2c_client *client,
+> >
+> >         i2c_set_clientdata(client, indio_dev);
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->name = dev_name(&client->dev);
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &nau7802_info;
+> > diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > index d3225965a1af..368ee4ef71a4 100644
+> > --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > @@ -933,7 +933,6 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+> >                 goto out_disable_vref;
+> >         }
+> >
+> > -       indio_dev->dev.of_node = np;
+> >         indio_dev->name = variant->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &pm8xxx_xoadc_info;
+> > diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> > index 2f8379a98ae5..faecae8b1728 100644
+> > --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> > +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> > @@ -982,7 +982,6 @@ static int adc5_probe(struct platform_device *pdev)
+> >                         return ret;
+> >         }
+> >
+> > -       indio_dev->dev.of_node = node;
+> >         indio_dev->name = pdev->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = adc->data->info;
+> > diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
+> > index 1c90ad33a881..acbda6636dc5 100644
+> > --- a/drivers/iio/adc/qcom-spmi-iadc.c
+> > +++ b/drivers/iio/adc/qcom-spmi-iadc.c
+> > @@ -553,7 +553,6 @@ static int iadc_probe(struct platform_device *pdev)
+> >                 return ret;
+> >         }
+> >
+> > -       indio_dev->dev.of_node = node;
+> >         indio_dev->name = pdev->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &iadc_info;
+> > diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+> > index 1f1bb747c8e1..b0388f8a69f4 100644
+> > --- a/drivers/iio/adc/qcom-spmi-vadc.c
+> > +++ b/drivers/iio/adc/qcom-spmi-vadc.c
+> > @@ -907,7 +907,6 @@ static int vadc_probe(struct platform_device *pdev)
+> >         if (ret)
+> >                 return ret;
+> >
+> > -       indio_dev->dev.of_node = node;
+> >         indio_dev->name = pdev->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &vadc_info;
+> > diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+> > index 8591d3871791..d2c1419e72a0 100644
+> > --- a/drivers/iio/adc/rcar-gyroadc.c
+> > +++ b/drivers/iio/adc/rcar-gyroadc.c
+> > @@ -516,7 +516,6 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> >         indio_dev->name = DRIVER_NAME;
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &rcar_gyroadc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+> > index dabcd3e1365f..d32ec8dfedf5 100644
+> > --- a/drivers/iio/adc/rockchip_saradc.c
+> > +++ b/drivers/iio/adc/rockchip_saradc.c
+> > @@ -307,7 +307,6 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &rockchip_saradc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/sd_adc_modulator.c b/drivers/iio/adc/sd_adc_modulator.c
+> > index c32bb7bb5a96..1d6c246609c8 100644
+> > --- a/drivers/iio/adc/sd_adc_modulator.c
+> > +++ b/drivers/iio/adc/sd_adc_modulator.c
+> > @@ -32,7 +32,6 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
+> >         if (!iio)
+> >                 return -ENOMEM;
+> >
+> > -       iio->dev.of_node = dev->of_node;
+> >         iio->name = dev_name(dev);
+> >         iio->info = &iio_sd_mod_iio_info;
+> >         iio->modes = INDIO_BUFFER_HARDWARE;
+> > diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+> > index 06b02f5b1721..99b43f28e879 100644
+> > --- a/drivers/iio/adc/sun4i-gpadc-iio.c
+> > +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+> > @@ -619,7 +619,6 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
+> >         info->indio_dev = indio_dev;
+> >         init_completion(&info->completion);
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &sun4i_gpadc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+> > index e44e7a40a36b..82e524b3db88 100644
+> > --- a/drivers/iio/adc/ti-adc081c.c
+> > +++ b/drivers/iio/adc/ti-adc081c.c
+> > @@ -181,7 +181,6 @@ static int adc081c_probe(struct i2c_client *client,
+> >         if (err < 0)
+> >                 return err;
+> >
+> > -       iio->dev.of_node = client->dev.of_node;
+> >         iio->name = dev_name(&client->dev);
+> >         iio->modes = INDIO_DIRECT_MODE;
+> >         iio->info = &adc081c_info;
+> > diff --git a/drivers/iio/adc/ti-adc0832.c b/drivers/iio/adc/ti-adc0832.c
+> > index 054db3425afa..3eb3ba5fb610 100644
+> > --- a/drivers/iio/adc/ti-adc0832.c
+> > +++ b/drivers/iio/adc/ti-adc0832.c
+> > @@ -245,7 +245,6 @@ static int adc0832_probe(struct spi_device *spi)
+> >         mutex_init(&adc->lock);
+> >
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->info = &adc0832_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
+> > index 376a0cf1f4ff..f22f004c1eb6 100644
+> > --- a/drivers/iio/adc/ti-adc084s021.c
+> > +++ b/drivers/iio/adc/ti-adc084s021.c
+> > @@ -211,7 +211,6 @@ static int adc084s021_probe(struct spi_device *spi)
+> >         spi_set_drvdata(spi, indio_dev);
+> >
+> >         /* Initiate the Industrial I/O device */
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &adc084s021_info;
+> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> > index 4eca6404661c..c1552b0fee04 100644
+> > --- a/drivers/iio/adc/ti-adc128s052.c
+> > +++ b/drivers/iio/adc/ti-adc128s052.c
+> > @@ -152,7 +152,6 @@ static int adc128_probe(struct spi_device *spi)
+> >
+> >         spi_set_drvdata(spi, indio_dev);
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &adc128_info;
+> > diff --git a/drivers/iio/adc/ti-adc161s626.c b/drivers/iio/adc/ti-adc161s626.c
+> > index d6f28d478a73..f27ca3161530 100644
+> > --- a/drivers/iio/adc/ti-adc161s626.c
+> > +++ b/drivers/iio/adc/ti-adc161s626.c
+> > @@ -179,7 +179,6 @@ static int ti_adc_probe(struct spi_device *spi)
+> >                 return -ENOMEM;
+> >
+> >         indio_dev->info = &ti_adc_info;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = TI_ADC_DRV_NAME;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         spi_set_drvdata(spi, indio_dev);
+> > diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+> > index 629c631e8f5c..1a5f520080d2 100644
+> > --- a/drivers/iio/adc/ti-ads1015.c
+> > +++ b/drivers/iio/adc/ti-ads1015.c
+> > @@ -939,7 +939,6 @@ static int ads1015_probe(struct i2c_client *client,
+> >
+> >         mutex_init(&data->lock);
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->name = ADS1015_DRV_NAME;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >
+> > diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
+> > index dacaa7255a3b..2844fe5714b9 100644
+> > --- a/drivers/iio/adc/ti-ads124s08.c
+> > +++ b/drivers/iio/adc/ti-ads124s08.c
+> > @@ -325,7 +325,6 @@ static int ads124s_probe(struct spi_device *spi)
+> >         ads124s_priv->spi = spi;
+> >
+> >         indio_dev->name = spi_id->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = ads124s_priv->chip_info->channels;
+> >         indio_dev->num_channels = ads124s_priv->chip_info->num_channels;
+> > diff --git a/drivers/iio/adc/ti-ads8344.c b/drivers/iio/adc/ti-ads8344.c
+> > index 7d99a67082a4..565b00d6ae1b 100644
+> > --- a/drivers/iio/adc/ti-ads8344.c
+> > +++ b/drivers/iio/adc/ti-ads8344.c
+> > @@ -146,7 +146,6 @@ static int ads8344_probe(struct spi_device *spi)
+> >         mutex_init(&adc->lock);
+> >
+> >         indio_dev->name = dev_name(&spi->dev);
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->info = &ads8344_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = ads8344_channels;
+> > diff --git a/drivers/iio/adc/ti-ads8688.c b/drivers/iio/adc/ti-ads8688.c
+> > index 011e5c8b5afd..16bcb37eebb7 100644
+> > --- a/drivers/iio/adc/ti-ads8688.c
+> > +++ b/drivers/iio/adc/ti-ads8688.c
+> > @@ -449,7 +449,6 @@ static int ads8688_probe(struct spi_device *spi)
+> >         st->spi = spi;
+> >
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = st->chip_info->channels;
+> >         indio_dev->num_channels = st->chip_info->num_channels;
+> > diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
+> > index e5602169e681..50fbe56ec571 100644
+> > --- a/drivers/iio/adc/twl4030-madc.c
+> > +++ b/drivers/iio/adc/twl4030-madc.c
+> > @@ -772,7 +772,6 @@ static int twl4030_madc_probe(struct platform_device *pdev)
+> >         madc->dev = &pdev->dev;
+> >
+> >         iio_dev->name = dev_name(&pdev->dev);
+> > -       iio_dev->dev.of_node = pdev->dev.of_node;
+> >         iio_dev->info = &twl4030_madc_iio_info;
+> >         iio_dev->modes = INDIO_DIRECT_MODE;
+> >         iio_dev->channels = twl4030_madc_iio_channels;
+> > diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+> > index 1e3ef5dd0bc6..f5637bf38d37 100644
+> > --- a/drivers/iio/adc/vf610_adc.c
+> > +++ b/drivers/iio/adc/vf610_adc.c
+> > @@ -860,7 +860,6 @@ static int vf610_adc_probe(struct platform_device *pdev)
+> >         init_completion(&info->completion);
+> >
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &vf610_adc_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = vf610_adc_iio_channels;
+> > diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+> > index aeefd9768203..69be9e82fe3e 100644
+> > --- a/drivers/iio/adc/xilinx-xadc-core.c
+> > +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> > @@ -1221,7 +1221,6 @@ static int xadc_probe(struct platform_device *pdev)
+> >         if (IS_ERR(xadc->base))
+> >                 return PTR_ERR(xadc->base);
+> >
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->name = "xadc";
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->info = &xadc_info;
+> > diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
+> > index 86eec0df1174..79527fbc250a 100644
+> > --- a/drivers/iio/dac/ds4424.c
+> > +++ b/drivers/iio/dac/ds4424.c
+> > @@ -230,7 +230,6 @@ static int ds4424_probe(struct i2c_client *client,
+> >         i2c_set_clientdata(client, indio_dev);
+> >         data->client = client;
+> >         indio_dev->name = id->name;
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >
+> >         data->vcc_reg = devm_regulator_get(&client->dev, "vcc");
+> >         if (IS_ERR(data->vcc_reg)) {
+> > diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
+> > index 502552716e1e..f08c0a859ad4 100644
+> > --- a/drivers/iio/dac/ti-dac5571.c
+> > +++ b/drivers/iio/dac/ti-dac5571.c
+> > @@ -321,7 +321,6 @@ static int dac5571_probe(struct i2c_client *client,
+> >         i2c_set_clientdata(client, indio_dev);
+> >         data->client = client;
+> >
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->info = &dac5571_info;
+> >         indio_dev->name = id->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> > diff --git a/drivers/iio/dac/ti-dac7311.c b/drivers/iio/dac/ti-dac7311.c
+> > index d20cee33daba..a5ff6131009b 100644
+> > --- a/drivers/iio/dac/ti-dac7311.c
+> > +++ b/drivers/iio/dac/ti-dac7311.c
+> > @@ -251,7 +251,6 @@ static int ti_dac_probe(struct spi_device *spi)
+> >         spi->bits_per_word = 16;
+> >         spi_setup(spi);
+> >
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->info = &ti_dac_info;
+> >         indio_dev->name = spi_get_device_id(spi)->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> > diff --git a/drivers/iio/dac/vf610_dac.c b/drivers/iio/dac/vf610_dac.c
+> > index 344b55307c60..b70c6ef8d4db 100644
+> > --- a/drivers/iio/dac/vf610_dac.c
+> > +++ b/drivers/iio/dac/vf610_dac.c
+> > @@ -199,7 +199,6 @@ static int vf610_dac_probe(struct platform_device *pdev)
+> >         platform_set_drvdata(pdev, indio_dev);
+> >
+> >         indio_dev->name = dev_name(&pdev->dev);
+> > -       indio_dev->dev.of_node = pdev->dev.of_node;
+> >         indio_dev->info = &vf610_dac_iio_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = vf610_dac_iio_channels;
+> > diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
+> > index 7afe37c97575..ab779a3be015 100644
+> > --- a/drivers/iio/pressure/dlhl60d.c
+> > +++ b/drivers/iio/pressure/dlhl60d.c
+> > @@ -311,7 +311,6 @@ static int dlh_probe(struct i2c_client *client,
+> >         st->use_interrupt = false;
+> >
+> >         indio_dev->name = id->name;
+> > -       indio_dev->dev.of_node = client->dev.of_node;
+> >         indio_dev->info = &dlh_info;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels =  dlh_channels;
+> > diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
+> > index ffc54289fca7..1954322e43be 100644
+> > --- a/drivers/iio/temperature/max31856.c
+> > +++ b/drivers/iio/temperature/max31856.c
+> > @@ -417,7 +417,6 @@ static int max31856_probe(struct spi_device *spi)
+> >         spi_set_drvdata(spi, indio_dev);
+> >
+> >         indio_dev->info = &max31856_info;
+> > -       indio_dev->dev.of_node = spi->dev.of_node;
+> >         indio_dev->name = id->name;
+> >         indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = max31856_channels;
+> > diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+> > index e7459ad3d6cd..3aa9e8bba005 100644
+> > --- a/drivers/iio/trigger/stm32-timer-trigger.c
+> > +++ b/drivers/iio/trigger/stm32-timer-trigger.c
+> > @@ -727,7 +727,6 @@ static struct stm32_timer_trigger *stm32_setup_counter_device(struct device *dev
+> >         indio_dev->modes = INDIO_HARDWARE_TRIGGERED;
+> >         indio_dev->num_channels = 1;
+> >         indio_dev->channels = &stm32_trigger_channel;
+> > -       indio_dev->dev.of_node = dev->of_node;
+> >
+> >         ret = devm_iio_device_register(dev, indio_dev);
+> >         if (ret)
+> > --
+> > 2.20.1
+> >  
 > 
-> v4:
-> * improve formatting
-> * improve error handling readability
-> * fix message validity check on serial write
-> 
-> v3:
-> * simplify code by scaling temperature & humidity in _read_meas()
-> * update realbits in scan types
-> * s/adjecent/adjacent
-> * drop IIO_CHAN_INFO_RAW from _write_raw_get_fmt because there's no raw
->   output channel
-> * rework locking in _read_raw
-> * fix endianess problem on BE machine
-> * align timestamp properly before pushing to buffers
-> * explain why interrupt gets disabled after registration
-> * add trigger validation
-> * drop SCALE for temperature and humidity channel as they are processed
-> * register action which stops measuring after starting measurements
-> * spit generic calibration attr into two doing specific things
-> * add comment explaining why priv in struct scd30_state is for
-> * rename node in binding example to co2-sensor
-> 
-> v2:
-> * move asm/byteorder.h towards the bottom of include list
-> * make channel address names in enum more specific
-> * add postfixes to defines and extra comments
-> * drop unneeded i2c include from scd30 header
-> * break generic command sending function into specialized options
-> * expose automatic calibration and forced calibration via the same attr
-> * use SAMP_FREQ to set frequency instead of meas_interval attr
-> * use CALISCALE to set pressure compensation instead of pressure_comp attr
-> * use CALIBBIAS to set temperature offset instead of temp_offset attr
-> * fix order in MAINTAINERS
-> * drop attribute allowing one to reset sensor
-> * as we have dt probing drop board file based probing (i2c_device_id)
-> * merge patches touching related files
-> * use fwnode API to retrieve interrupt from dt
-> * fix interrupt-parent spelling
-> * change binding license
-> * drop supply from required property
-> 
-> Tomasz Duszynski (4):
->   iio: chemical: scd30: add core driver
->   iio: chemical: scd30: add I2C interface driver
->   iio: chemical: scd30: add serial interface driver
->   dt-bindings: iio: scd30: add device binding file
-> 
->  Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 +
->  .../iio/chemical/sensirion,scd30.yaml         |  68 ++
->  MAINTAINERS                                   |   9 +
->  drivers/iio/chemical/Kconfig                  |  33 +
->  drivers/iio/chemical/Makefile                 |   3 +
->  drivers/iio/chemical/scd30.h                  |  78 ++
->  drivers/iio/chemical/scd30_core.c             | 770 ++++++++++++++++++
->  drivers/iio/chemical/scd30_i2c.c              | 139 ++++
->  drivers/iio/chemical/scd30_serial.c           | 263 ++++++
->  9 files changed, 1397 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
->  create mode 100644 drivers/iio/chemical/scd30.h
->  create mode 100644 drivers/iio/chemical/scd30_core.c
->  create mode 100644 drivers/iio/chemical/scd30_i2c.c
->  create mode 100644 drivers/iio/chemical/scd30_serial.c
-> 
-> --
-> 2.27.0
 > 
 

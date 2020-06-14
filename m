@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5041F88E3
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jun 2020 15:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 200D41F88E7
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jun 2020 15:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727038AbgFNNPw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Jun 2020 09:15:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48090 "EHLO mail.kernel.org"
+        id S1726939AbgFNNRn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Jun 2020 09:17:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726925AbgFNNPv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Jun 2020 09:15:51 -0400
+        id S1726925AbgFNNRn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Jun 2020 09:17:43 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 14CD2206D7;
-        Sun, 14 Jun 2020 13:15:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16743206D7;
+        Sun, 14 Jun 2020 13:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592140550;
-        bh=WbHgzaZ0tGmUeII0qMtwKp7soUXZ40jam2hrCr4ruBw=;
+        s=default; t=1592140662;
+        bh=++eWGQXrMWbaOFfTJbiV3sV2IYNlyVegRPfYlHUt6dw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ah/bS4UrgBjVM4vR6aG4D0tFb3+RytJ8FJdYP5vvl4dS7QfHay41vHskJvD4rfONm
-         u/lsPGtl0L8GDET5GDfuCU1iEy7dhhm1mu08LwICCyAHZ0Cf40GJuYfVyCq9CQW4hS
-         0AFAWLHuHoQV3+SLRlZCPa7EWvwumapTu+vSS8aM=
-Date:   Sun, 14 Jun 2020 14:15:46 +0100
+        b=qlTzM7yWyCXf/T7Ck7IPddkZbl6zSwEPAI3w9qVmN7cjqHiNJVD33oF5eZJQjW/ok
+         f/rFx9ynb2sOK7nRb/pImOEdWm+C+wKMJxjvkulfzYmEkg+xTMwi5dIZ+WCOBRZtKs
+         y3rKSfbQ7UVgvADoMO5CpjXj1f5ceUDS++hdCamg=
+Date:   Sun, 14 Jun 2020 14:17:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org, kbuild-all@lists.01.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, andy.shevchenko@gmail.com, pmeerw@pmeerw.net
-Subject: Re: [PATCH v5 1/4] iio: chemical: scd30: add core driver
-Message-ID: <20200614141546.7a1af2f5@archlinux>
-In-Reply-To: <202006090426.ENCJHJ1n%lkp@intel.com>
-References: <20200607175812.95777-2-tomasz.duszynski@octakon.com>
-        <202006090426.ENCJHJ1n%lkp@intel.com>
+To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v5 0/4] Add support for SCD30 sensor
+Message-ID: <20200614141738.0645a954@archlinux>
+In-Reply-To: <20200607175812.95777-1-tomasz.duszynski@octakon.com>
+References: <20200607175812.95777-1-tomasz.duszynski@octakon.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,73 +42,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 Jun 2020 04:18:56 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Sun, 7 Jun 2020 19:58:08 +0200
+Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
 
-> Hi Tomasz,
-> 
-> I love your patch! Perhaps something to improve:
-> 
-> [auto build test WARNING on iio/togreg]
-> [also build test WARNING on robh/for-next linux/master v5.7]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Tomasz-Duszynski/Add-support-for-SCD30-sensor/20200608-020304
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> compiler: gcc-9 (Debian 9.3.0-13) 9.3.0
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+> Following series adds support for Sensirion SCD30 sensor module capable of
+> measuring carbon dioxide, temperature and relative humidity. CO2 measurements
+> base on NDIR principle while temperature and relative humidity are measured by
+> the on board SHT31. As for sensor communication, both I2C and serial interfaces
+> are supported.
 
-I'll tidy this up whilst applying assuming nothing else comes up.
-No comment on it's validity as a warning, but in my view it
-is always squashing warnings to keep the noise low for any
-more useful ones (as long as it's not too costly).
+Hi Tomasz,
+
+All looks good to me.
+
+I'll let it sit on the list a bit longer though to give time for anyone
+else to review if they wish and ideally pick up a DT review if
+Rob has time.  It isn't unheard of me to somehow loose a set down
+the back of the sofa, so do poke me if I seem to to have lost this
+in a few weeks time! (I'll try not to of course!)
+
+Thanks,
 
 Jonathan
 
 > 
+> v5:
+> * set pressure calibration via output channel
+> * use kstrtobool() to read value into _enabled attribute
+> * drop explicit parent asignment as the default one is good enough
+>   (seems 'iio: core: pass parent device as parameter during allocation'
+>    series was accepted)
 > 
-> cppcheck warnings: (new ones prefixed by >>)
+> v4:
+> * improve formatting
+> * improve error handling readability
+> * fix message validity check on serial write
 > 
-> >> drivers/iio/chemical/scd30_core.c:93:31: warning: Clarify calculation precedence for '&' and '?'. [clarifyCalculation]  
->         sign = float32 & BIT(31) ? -1 : 1,
->                                  ^
+> v3:
+> * simplify code by scaling temperature & humidity in _read_meas()
+> * update realbits in scan types
+> * s/adjecent/adjacent
+> * drop IIO_CHAN_INFO_RAW from _write_raw_get_fmt because there's no raw
+>   output channel
+> * rework locking in _read_raw
+> * fix endianess problem on BE machine
+> * align timestamp properly before pushing to buffers
+> * explain why interrupt gets disabled after registration
+> * add trigger validation
+> * drop SCALE for temperature and humidity channel as they are processed
+> * register action which stops measuring after starting measurements
+> * spit generic calibration attr into two doing specific things
+> * add comment explaining why priv in struct scd30_state is for
+> * rename node in binding example to co2-sensor
 > 
-> vim +93 drivers/iio/chemical/scd30_core.c
+> v2:
+> * move asm/byteorder.h towards the bottom of include list
+> * make channel address names in enum more specific
+> * add postfixes to defines and extra comments
+> * drop unneeded i2c include from scd30 header
+> * break generic command sending function into specialized options
+> * expose automatic calibration and forced calibration via the same attr
+> * use SAMP_FREQ to set frequency instead of meas_interval attr
+> * use CALISCALE to set pressure compensation instead of pressure_comp attr
+> * use CALIBBIAS to set temperature offset instead of temp_offset attr
+> * fix order in MAINTAINERS
+> * drop attribute allowing one to reset sensor
+> * as we have dt probing drop board file based probing (i2c_device_id)
+> * merge patches touching related files
+> * use fwnode API to retrieve interrupt from dt
+> * fix interrupt-parent spelling
+> * change binding license
+> * drop supply from required property
 > 
->     87	
->     88	/* simplified float to fixed point conversion with a scaling factor of 0.01 */
->     89	static int scd30_float_to_fp(int float32)
->     90	{
->     91		int fraction, shift,
->     92		    mantissa = float32 & GENMASK(22, 0),
->   > 93		    sign = float32 & BIT(31) ? -1 : 1,  
->     94		    exp = (float32 & ~BIT(31)) >> 23;
->     95	
->     96		/* special case 0 */
->     97		if (!exp && !mantissa)
->     98			return 0;
->     99	
->    100		exp -= 127;
->    101		if (exp < 0) {
->    102			exp = -exp;
->    103			/* return values ranging from 1 to 99 */
->    104			return sign * ((((BIT(23) + mantissa) * 100) >> 23) >> exp);
->    105		}
->    106	
->    107		/* return values starting at 100 */
->    108		shift = 23 - exp;
->    109		float32 = BIT(exp) + (mantissa >> shift);
->    110		fraction = mantissa & GENMASK(shift - 1, 0);
->    111	
->    112		return sign * (float32 * 100 + ((fraction * 100) >> shift));
->    113	}
->    114	
+> Tomasz Duszynski (4):
+>   iio: chemical: scd30: add core driver
+>   iio: chemical: scd30: add I2C interface driver
+>   iio: chemical: scd30: add serial interface driver
+>   dt-bindings: iio: scd30: add device binding file
 > 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>  Documentation/ABI/testing/sysfs-bus-iio-scd30 |  34 +
+>  .../iio/chemical/sensirion,scd30.yaml         |  68 ++
+>  MAINTAINERS                                   |   9 +
+>  drivers/iio/chemical/Kconfig                  |  33 +
+>  drivers/iio/chemical/Makefile                 |   3 +
+>  drivers/iio/chemical/scd30.h                  |  78 ++
+>  drivers/iio/chemical/scd30_core.c             | 770 ++++++++++++++++++
+>  drivers/iio/chemical/scd30_i2c.c              | 139 ++++
+>  drivers/iio/chemical/scd30_serial.c           | 263 ++++++
+>  9 files changed, 1397 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-scd30
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,scd30.yaml
+>  create mode 100644 drivers/iio/chemical/scd30.h
+>  create mode 100644 drivers/iio/chemical/scd30_core.c
+>  create mode 100644 drivers/iio/chemical/scd30_i2c.c
+>  create mode 100644 drivers/iio/chemical/scd30_serial.c
+> 
+> --
+> 2.27.0
+> 
 

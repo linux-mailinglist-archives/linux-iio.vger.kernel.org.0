@@ -2,297 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD571FC3C6
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jun 2020 03:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0EFC1FC7BD
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jun 2020 09:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726986AbgFQBlA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Jun 2020 21:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53658 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbgFQBkp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Jun 2020 21:40:45 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC210C061573;
-        Tue, 16 Jun 2020 18:40:43 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id c185so601084qke.7;
-        Tue, 16 Jun 2020 18:40:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=iWwCvXGLu1d/G++bm7Oxn/c4JGmCfQ82ajY1qfafTpE=;
-        b=HIgvMYLotp2h5l+AVet4rhc5L93WzEhO+AOYx5JGqwBg+NTBJL2yCwhpsqqPX2xeIV
-         SEU3TQJ0/txS7XZIvCLkliGTluk0Uf9rDIxorpCz/0K45cQfhBuBRiej69bQGz6pMAXU
-         OwDImDm792HuORCnRGS0kEq/isnW5VVTInw5FmylN+Ktp8xstSzo1ZbkGffqQg/xmOQD
-         rnFthKu55yM2WGGzRf3eXRPhe/EWwUep6x4aBZN3enj1jNQ+3z/lDvsISBGQ3aj8zcoO
-         M3z/xA+HYEX6wtUYhxX3DXHrGj7PmrQleDVp0i9sTG3/H3id753GZy3poMwwY57Rxz1z
-         on/w==
+        id S1725536AbgFQHol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jun 2020 03:44:41 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:46707 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726600AbgFQHol (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Jun 2020 03:44:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592379880;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LdQWvEMUJWYJ0ayIlG9RiKefcYkYap4fRHuTq5TItU8=;
+        b=E0n7SLeEUnJIeWiXfh5C7gE/EROJVhAdJvR6bcAak5whHcOTpmJIF0jLf0lkogWa1DzmY+
+        BNwyBFgkj4YamkhdVk6Dm6DeiRppQk4qA/0XSHYgr6t+iGw+6eOQ33RZeNySouE4w2Pi0v
+        yEhQkuTjMk+ZOuGf6CtQ42SdzRsbzuw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-425-4jBTCr1DMTWwJ0jdCkiWyw-1; Wed, 17 Jun 2020 03:44:38 -0400
+X-MC-Unique: 4jBTCr1DMTWwJ0jdCkiWyw-1
+Received: by mail-ej1-f69.google.com with SMTP id d14so644275ejt.14
+        for <linux-iio@vger.kernel.org>; Wed, 17 Jun 2020 00:44:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=iWwCvXGLu1d/G++bm7Oxn/c4JGmCfQ82ajY1qfafTpE=;
-        b=lsGoOX6pCRzVVLjEZNvD+2N9x/mneENrzJcMWmE1kDIkxWrbX/mk33w4f4c8xjVSVX
-         kmyYrzEIwgvXdP47q5vrz4yJIpb4O7thoq/52okaxCy99wx9miwJmV37BFkqbsGQ3hp7
-         ipHk3NC6poXqmOW8bRTNHdhkZ7IcyWeGs6iq1tmH2l3NCT6L5RDsI8QgtRcQ2EoSk3rN
-         G5lF6gfzGGRNdmSzdmxHwVEyBWQYOsiHNGoN/cwG/hrkGpP1NmoBvJKbudTgB1XGfJu7
-         bJqLHpaqEhnaNiRb4REe3K+z1YXYzMordRbXxR5fAdwpu+2Ql9oxFNMRTc91dmJt/GO/
-         3qTQ==
-X-Gm-Message-State: AOAM532TeWfHeASSgmuckkT5Uke6Pfmii/Vz6RvuURg2aE5VHPWwv4Zm
-        Voi7uFdTOniKrCW4v1yJx0o=
-X-Google-Smtp-Source: ABdhPJwE3D3cZ9qs43mDkPVXfw5Jp+J/fhH36c9wvJ3LklRXK0DNFu/9EuqwqrvQbUSn0+uZ2ek82Q==
-X-Received: by 2002:a37:9cc7:: with SMTP id f190mr23211573qke.236.1592358042991;
-        Tue, 16 Jun 2020 18:40:42 -0700 (PDT)
-Received: from localhost.localdomain (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id a14sm1917014qkn.16.2020.06.16.18.40.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2020 18:40:42 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v3 4/4] docs: counter: Document character device interface
-Date:   Tue, 16 Jun 2020 21:40:02 -0400
-Message-Id: <061c85baa1c2e1bf1510b6235a82b44ba2a89931.1592341702.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1592341702.git.vilhelm.gray@gmail.com>
-References: <cover.1592341702.git.vilhelm.gray@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=LdQWvEMUJWYJ0ayIlG9RiKefcYkYap4fRHuTq5TItU8=;
+        b=e1HWwBXNkVHg3vgqP42b010LnP2EM05GJmswP3pSqiUYZfg+evaEx7Ur3fkLV/amRP
+         C3j7iSGye7BVb1jKsRyPufVkr9gKPNxHUltUpXRcE8jYbLqQmSiaAo3nHZzLmJ2whCdp
+         05DlZeb1lvnllb855/RdSjqYmKeGYgYDtVpkOUV5reCydfVv0/sAEYpbyvx04CKgpd+N
+         OuF6SGSSS1HVPEBRdNrQcnvyLcgnt/ZK9CKRHtUofdhnKRRQKbZi/Woghs8QrIPVR1YJ
+         nqngnEfiv1tY0KAjpz1RherDtj+M6anPdVRbaKklyVcht/6fX5ImNPVwY6qP+XAmnM/B
+         b8KQ==
+X-Gm-Message-State: AOAM5333g+DhVpayZwm0SHeBZE8Y2HZgL/ZGXkCaipFYbuMlN0jEuOPs
+        RA6jDY7uDvMzipgA5Ci/orstNR2BbWfcglXfNNTplhWsixUdeT7I1LogGRk3hXlkovg37CzZgBv
+        65AZl6g4n1wa0Qa2bzQvX
+X-Received: by 2002:a17:906:e47:: with SMTP id q7mr6349225eji.279.1592379877126;
+        Wed, 17 Jun 2020 00:44:37 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJztAsLsgDaFxPRHVMxQyWpwuzemyHiIKlOYzD7aKaYp8CK5bsLlyAMtEHuAjaMc+cKU/OAdZw==
+X-Received: by 2002:a17:906:e47:: with SMTP id q7mr6349200eji.279.1592379876894;
+        Wed, 17 Jun 2020 00:44:36 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id i12sm12619661ejz.122.2020.06.17.00.44.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2020 00:44:36 -0700 (PDT)
+Subject: Re: [PATCH] Input: document inhibiting
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>, Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        kernel@collabora.com
+References: <40988408-8f36-3a52-6439-34084de6b129@redhat.com>
+ <20200616172909.21625-1-andrzej.p@collabora.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <f9007f37-c526-5fa4-3188-a554d2434177@redhat.com>
+Date:   Wed, 17 Jun 2020 09:44:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200616172909.21625-1-andrzej.p@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch adds high-level documentation about the Counter subsystem
-character device interface.
+Hi,
 
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- Documentation/ABI/testing/sysfs-bus-counter  |  31 +++++
- Documentation/driver-api/generic-counter.rst | 132 ++++++++++++++-----
- 2 files changed, 127 insertions(+), 36 deletions(-)
+On 6/16/20 7:29 PM, Andrzej Pietrasiewicz wrote:
+> Document inhibiting input devices and its relation to being
+> a wakeup source.
+> 
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> ---
+> 
+> @Hans, @Dmitry,
+> 
+> My fist attempt at documenting inhibiting. Kindly look at it to see if I haven't got anything
+> wrong.
+> 
+> Andrzej
+> 
+>   Documentation/input/input-programming.rst | 36 +++++++++++++++++++++++
+>   1 file changed, 36 insertions(+)
+> 
+> diff --git a/Documentation/input/input-programming.rst b/Documentation/input/input-programming.rst
+> index 45a4c6e05e39..0cd1ad4504fb 100644
+> --- a/Documentation/input/input-programming.rst
+> +++ b/Documentation/input/input-programming.rst
+> @@ -164,6 +164,42 @@ disconnects. Calls to both callbacks are serialized.
+>   The open() callback should return a 0 in case of success or any nonzero value
+>   in case of failure. The close() callback (which is void) must always succeed.
+>   
+> +Inhibiting input devices
+> +~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +Inhibiting a device means ignoring input events from it. As such it is about maintaining
+> +relationships with input handlers - either an already existing relationships, or
+> +relationships to be established while the device is in inhibited state.
+> +
+> +If a device is inhibited, no input handler will receive events from it.
+> +
+> +The fact that nobody wants events from the device is exploited further, by calling device's
+> +close() (if there are users) and open() (if there are users) on inhibit and uninhibit
+> +operations, respectively. Indeed, the meaning of close() is to stop providing events
+> +to the input core and that of open() is to start providing events to the input core.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
-index 566bd99fe0a5..8533a8732544 100644
---- a/Documentation/ABI/testing/sysfs-bus-counter
-+++ b/Documentation/ABI/testing/sysfs-bus-counter
-@@ -193,6 +193,37 @@ Description:
- 		both edges:
- 			Any state transition.
- 
-+What:		/sys/bus/counter/devices/counterX/chrdev_format
-+KernelVersion:	5.9
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Data format of the respective character device node of the
-+		Counter. Reading this attribute returns the current data format
-+		of the respective character device node; writing to this
-+		attribute sets the current data format of the respective
-+		character device node. This attribute interfaces via the
-+		following format:
-+
-+		Components/extensions are specified by a character identifier
-+		and an index offset; whitespace serves as delimiters. The
-+		following character identifiers are supported:
-+
-+		C: Count
-+		S: Signal
-+		E: Extension
-+		A: Synapse Action
-+		F: Count Function
-+
-+		Count/Signal extensions may be specified by first specifying the
-+		respective owning component then the desired extension
-+		immediately following without delimiting whitespace; Synapse
-+		Action and Count Function are specified in a similar manner.
-+
-+		For example, "C4 C2E6 C0F S7E1 C3A4 S5" would specify the
-+		following data format: Count 4, Count 2's Extension 6, Count 0's
-+		Count Function, Signal 7's Extension 1, Count 3's Synapse Action
-+		4, Signal 5.
-+
- What:		/sys/bus/counter/devices/counterX/name
- KernelVersion:	5.2
- Contact:	linux-iio@vger.kernel.org
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index 8aaa6cd37fd4..d46ce65d1488 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -223,19 +223,6 @@ whether an input line is differential or single-ended) and instead focus
- on the core idea of what the data and process represent (e.g. position
- as interpreted from quadrature encoding data).
- 
--Userspace Interface
--===================
--
--Several sysfs attributes are generated by the Generic Counter interface,
--and reside under the /sys/bus/counter/devices/counterX directory, where
--counterX refers to the respective counter device. Please see
--Documentation/ABI/testing/sysfs-bus-counter for detailed
--information on each Generic Counter interface sysfs attribute.
--
--Through these sysfs attributes, programs and scripts may interact with
--the Generic Counter paradigm Counts, Signals, and Synapses of respective
--counter devices.
--
- Driver API
- ==========
- 
-@@ -378,13 +365,13 @@ driver is exemplified by the following::
-                 +----------------------------+          |
-                 | Processes data from device |   -------------------
-                 |----------------------------|  / driver callbacks /
--                | Type: unsigned long        |  -------------------
-+                | Type: u64                  |  -------------------
-                 | Value: 42                  |          |
-                 +----------------------------+          |
-                         |                               |
--                 ----------------                       |
--                / unsigned long /                       |
--                ----------------                        |
-+                 ----------                             |
-+                / u64     /                             |
-+                ----------                              |
-                         |                               |
-                         |                               V
-                         |               +----------------------+
-@@ -399,25 +386,32 @@ driver is exemplified by the following::
-                         |               / driver callbacks /
-                         |               -------------------
-                         |                       |
--                +-------+                       |
-+                +-------+---------------+       |
-+                |                       |       |
-+                |               +-------|-------+
-+                |               |       |
-+                V               |       V
-+        +--------------------+  |  +---------------------+
-+        | Counter sysfs      |<-+->| Counter chrdev      |
-+        +--------------------+     +---------------------+
-+        | Translates to the  |     | Translates to the   |
-+        | standard Counter   |     | standard Counter    |
-+        | sysfs output       |     | character device    |
-+        |--------------------|     |---------------------+
-+        | Type: const char * |     | Type: u64           |
-+        | Value: "42"        |     | Value: 42           |
-+        +--------------------+     +---------------------+
-                 |                               |
--                |               +---------------+
--                |               |
--                V               |
--        +--------------------+  |
--        | Counter sysfs      |<-+
--        +--------------------+
--        | Translates to the  |
--        | standard Counter   |
--        | sysfs output       |
--        |--------------------|
--        | Type: const char * |
--        | Value: "42"        |
--        +--------------------+
--                |
--         ---------------
--        / const char * /
--        ---------------
-+         ---------------                 ----------
-+        / const char * /                / u64     /
-+        ---------------                 ----------
-+                |                               |
-+                |                               V
-+                |                       +-----------+
-+                |                       | read      |
-+                |                       +-----------+
-+                |                       \ Count: 42 /
-+                |                        -----------
-                 |
-                 V
-         +--------------------------------------------------+
-@@ -426,7 +420,7 @@ driver is exemplified by the following::
-         \ Count: "42"                                      /
-          --------------------------------------------------
- 
--There are three primary components involved:
-+There are four primary components involved:
- 
- Counter device driver
- ---------------------
-@@ -446,3 +440,69 @@ and vice versa.
- Please refer to the `Documentation/ABI/testing/sysfs-bus-counter` file
- for a detailed breakdown of the available Generic Counter interface
- sysfs attributes.
-+
-+Counter chrdev
-+--------------
-+Translates counter data to the standard Counter character device; data
-+is transferred via standard character device read/write calls.
-+
-+Sysfs Interface
-+===============
-+
-+Several sysfs attributes are generated by the Generic Counter interface,
-+and reside under the `/sys/bus/counter/devices/counterX` directory,
-+where `X` is to the respective counter device id. Please see
-+Documentation/ABI/testing/sysfs-bus-counter for detailed information on
-+each Generic Counter interface sysfs attribute.
-+
-+Through these sysfs attributes, programs and scripts may interact with
-+the Generic Counter paradigm Counts, Signals, and Synapses of respective
-+counter devices.
-+
-+Counter Character Device
-+========================
-+
-+Counter character device nodes are created under the `/dev` directory as
-+`counterX`, where `X` is the respective counter device id. Defines for
-+the standard Counter data types are exposed via the userspace
-+`include/uapi/linux/counter-types.h` file.
-+
-+A `/sys/bus/counter/devices/counterX/chrdev_format` sysfs attribute is
-+available to expose the character device data format.
-+
-+Users may write to this sysfs attribute to select the components they
-+want to interface -- the layout can be determined as well from the
-+order. For example::
-+
-+# echo "C0 C3 C2" > /sys/bus/counter/devices/counter0/chrdev_format
-+
-+This would select Counts 0, 3, and 2 (in that order) to be available
-+in the `/dev/counter0` node as a contiguous memory region.
-+
-+Users can select extensions in a similar fashion::
-+
-+# echo "C4E2 S1E0" > /sys/bus/counter/devices/counter0/chrdev_format
-+
-+This would select extension 2 from Count 4, and extension 0 from
-+Signal 1.
-+
-+Users may read from this `chrdev_format` sysfs attribute in order to see
-+the currently configured format of the character device.
-+
-+Users may perform read/write operations on the `/dev/counterX` node
-+directly; the layout of the data is what they user has configured via
-+the chrdev_format sysfs attribute. For example::
-+
-+# echo "C0 C1 S0 S1" > /sys/bus/counter/devices/counter0/chrdev_format
-+
-+Yields the following `/dev/counter0` memory layout::
-+
-+        +-----------------+------------------+----------+----------+
-+        | Byte 0 - Byte 7 | Byte 8 - Byte 15 | Byte 16  | Byte 17  |
-+        +-----------------+------------------+----------+----------+
-+        | Count 0         | Count 1          | Signal 0 | Signal 2 |
-+        +-----------------+------------------+----------+----------+
-+
-+The number of bytes allotted for each component or extension is
-+determined by its respective data type: u8 will have 1 byte allotted,
-+u64 will have 8 bytes allotted, etc.
--- 
-2.26.2
+Maybe add the following here? :
+
+Calling the device's close() method on inhibit (if there are users) allows the driver
+to save power. Either by directly powering down the device or by releasing the
+runtime-pm reference it got in open() when the driver is using runtime-pm.
+
+Otherwise this looks good to me. Thank you for doing this, we (including myself)
+really need to get better at doucmenting all sorts of kernel things. Often we have
+these long discussions about something on the mailinglist and then everyone is
+expected to just know what was decided from the on, which really doesn't work all
+that well.
+
+> +
+> +Inhibiting and uninhibiting is orthogonal to opening and closing the device by input
+> +handlers. Userspace might want to inhibit a device in anticipation before any handler is
+> +positively matched against it.
+> +
+> +Inhibiting and uninhibiting is orthogonal to device's being a wakeup source, too. Being a
+> +wakeup source plays a role when the system is sleeping, not when the system is operating.
+> +How drivers should program their interaction between inhibiting, sleeping and being a wakeup
+> +source is driver-specific.
+> +
+> +Taking the analogy with the network devices - bringing a network interface down doesn't mean
+> +that it should be impossible to be wake the system up on LAN through this interface. So, there
+> +may be input drivers which should be considered wakeup sources even when inhibited. Actually,
+> +in many i2c input devices their interrupt is declared a wakeup interrupt and its handling
+> +happens in driver's core, which is not aware of input-specific inhibit (nor should it be).
+> +Composite devices containing several interfaces can be inhibited on a per-interface basis and
+> +e.g. inhibiting one interface shouldn't affect the device's capability of being a wakeup source.
+> +
+> +If a device is to be considered a wakeup source while inhibited, special care must be taken when
+> +programming its suspend(), as it might need to call device's open(). Depending on what close()
+> +means for the device in question not opening() it before going to sleep might make it impossible
+> +to provide any wakeup events. The device is going to sleep anyway.
+> +
+>   Basic event types
+>   ~~~~~~~~~~~~~~~~~
+>   
+> 
+
+
+Regards,
+
+Hans
 

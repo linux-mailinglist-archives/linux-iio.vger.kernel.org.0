@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7F81FDD75
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 03:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891AD1FE15F
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 03:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731651AbgFRB0V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Jun 2020 21:26:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33814 "EHLO mail.kernel.org"
+        id S1731089AbgFRByT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jun 2020 21:54:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33416 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731645AbgFRB0U (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:26:20 -0400
+        id S1731593AbgFRB0G (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:26:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1520520897;
-        Thu, 18 Jun 2020 01:26:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45038221EE;
+        Thu, 18 Jun 2020 01:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443579;
-        bh=Dwsp6Z4kPZv3ymP53cYNbkg+qUMWFYj7QbpPlxBj5Cs=;
+        s=default; t=1592443566;
+        bh=8wmSA5mDv91XQMT17xDbwQK9q9+I7CK31t05/RQ6/Ko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DVSFdpsrGQnsuVPGigG79qGSjuch6QV8VvrBjfXwFOom3iqVVgB/GQ9JNz0ibs/hf
-         xDSQ8/Un7s2TwYXXvTlZ5mSTCV72lxXcFuIczNQvIJoe/Sz7i5AUnJen+KFKhIVqaR
-         V48Z7GaqHgo6VypVP1i6yZeh46b/n2m09wPqbm3A=
+        b=WpovVxLpT3toIRZSlm1cctZwWHCb9ZoWvT4YTaKitTw3m9gI2B9BRwcX3UHcLsG/j
+         kH4nodRg7FBJXhwQhsNDA03Zj83GLKT8Ezpx30/A8rula4oY4qDWAAUD38+78KCt2D
+         MYYdpeq3WJEsP9gnV6Pl01NymzIC9DPvMxZoKJgA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andreas Klinger <ak@it-klinger.de>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 015/108] iio: bmp280: fix compensation of humidity
-Date:   Wed, 17 Jun 2020 21:24:27 -0400
-Message-Id: <20200618012600.608744-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 004/108] iio: pressure: bmp280: Tolerate IRQ before registering
+Date:   Wed, 17 Jun 2020 21:24:16 -0400
+Message-Id: <20200618012600.608744-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618012600.608744-1-sashal@kernel.org>
 References: <20200618012600.608744-1-sashal@kernel.org>
@@ -43,48 +44,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Andreas Klinger <ak@it-klinger.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit dee2dabc0e4115b80945fe2c91603e634f4b4686 ]
+[ Upstream commit 97b31a6f5fb95b1ec6575b78a7240baddba34384 ]
 
-Limit the output of humidity compensation to the range between 0 and 100
-percent.
+With DEBUG_SHIRQ enabled we have a kernel crash
 
-Depending on the calibration parameters of the individual sensor it
-happens, that a humidity above 100 percent or below 0 percent is
-calculated, which don't make sense in terms of relative humidity.
+[  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
 
-Add a clamp to the compensation formula as described in the datasheet of
-the sensor in chapter 4.2.3.
+...
 
-Although this clamp is documented, it was never in the driver of the
-kernel.
+[  116.606571] Call Trace:
+[  116.609023]  <IRQ>
+[  116.611047]  complete+0x34/0x50
+[  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
 
-It depends on the circumstances (calibration parameters, temperature,
-humidity) if one can see a value above 100 percent without the clamp.
-The writer of this patch was working with this type of sensor without
-noting this error. So it seems to be a rare event when this bug occures.
+because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
+ought to be able to handle an interrupt happening before request_irq() returns.
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/pressure/bmp280-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 3204dff34e0a..ae415b4e381a 100644
+index 5f625ffa2a88..3204dff34e0a 100644
 --- a/drivers/iio/pressure/bmp280-core.c
 +++ b/drivers/iio/pressure/bmp280-core.c
-@@ -182,6 +182,8 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
- 		+ (s32)2097152) * H2 + 8192) >> 14);
- 	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)H1) >> 4;
+@@ -651,7 +651,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
+ 	unsigned int ctrl;
  
-+	var = clamp_val(var, 0, 419430400);
+ 	if (data->use_eoc)
+-		init_completion(&data->done);
++		reinit_completion(&data->done);
+ 
+ 	ret = regmap_write(data->regmap, BMP280_REG_CTRL_MEAS, ctrl_meas);
+ 	if (ret)
+@@ -907,6 +907,9 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+ 			"trying to enforce it\n");
+ 		irq_trig = IRQF_TRIGGER_RISING;
+ 	}
 +
- 	return var >> 12;
- };
- 
++	init_completion(&data->done);
++
+ 	ret = devm_request_threaded_irq(dev,
+ 			irq,
+ 			bmp085_eoc_irq,
 -- 
 2.25.1
 

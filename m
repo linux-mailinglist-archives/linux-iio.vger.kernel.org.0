@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AAF11FE2A4
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA831FE919
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731033AbgFRBXj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Jun 2020 21:23:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57460 "EHLO mail.kernel.org"
+        id S1730318AbgFRCw6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jun 2020 22:52:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731018AbgFRBXi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:23:38 -0400
+        id S1727022AbgFRBIR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:08:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B853521974;
-        Thu, 18 Jun 2020 01:23:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C73AB21D79;
+        Thu, 18 Jun 2020 01:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443417;
-        bh=OTuaHqvEqmAQRLH9EV+L9+Tbjn9g6XBVYj3cfaOysE4=;
+        s=default; t=1592442496;
+        bh=stORPdFsRhgx7toJ62y60iPkcRMSoNPQRIYfOj7ngAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otMOaBJOSLZ/qztgZ5ye1KbsXRXFm46tY8P8agVwRzY6xRzq7drdTpFmIr8BtlMzO
-         tEIvGsFVdyfZSGioeDIv6r8GuDEwcoAwRtQdlow+PQW2Q5w0NqRmzcTRkDz1IUEdVo
-         iWKqXxBvxqRUvuGoajsu0SeuTCRMYBqmv+Z+Qb1Y=
+        b=KLsPm7hJnbWbkeWByc7TbddDGdfXiM7IJdPEwC0VRcWWWay0APjydJYo+HVo8RQ26
+         sH3xveTsD/GQ+6jyKvcdWBX0Ge2eHLChKieWBOrEkO24ZKs4roW88YUsDVqqEsCKuY
+         ofempq+g2dYtDMYfgOm8Ym2Zphuo8SDiqqZSqhPk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 059/172] iio: buffer: Don't allow buffers without any channels enabled to be activated
-Date:   Wed, 17 Jun 2020 21:20:25 -0400
-Message-Id: <20200618012218.607130-59-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 008/388] iio: pressure: bmp280: Tolerate IRQ before registering
+Date:   Wed, 17 Jun 2020 21:01:45 -0400
+Message-Id: <20200618010805.600873-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618012218.607130-1-sashal@kernel.org>
-References: <20200618012218.607130-1-sashal@kernel.org>
+In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
+References: <20200618010805.600873-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,67 +44,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit b7329249ea5b08b2a1c2c3f24a2f4c495c4f14b8 ]
+[ Upstream commit 97b31a6f5fb95b1ec6575b78a7240baddba34384 ]
 
-Before activating a buffer make sure that at least one channel is enabled.
-Activating a buffer with 0 channels enabled doesn't make too much sense and
-disallowing this case makes sure that individual driver don't have to add
-special case code to handle it.
+With DEBUG_SHIRQ enabled we have a kernel crash
 
-Currently, without this patch enabling a buffer is possible and no error is
-produced. With this patch -EINVAL is returned.
+[  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
 
-An example of execution with this patch and some instrumented print-code:
-   root@analog:~# cd /sys/bus/iio/devices/iio\:device3/buffer
-   root@analog:/sys/bus/iio/devices/iio:device3/buffer# echo 1 > enable
-   0: iio_verify_update 748 indio_dev->masklength 2 *insert_buffer->scan_mask 00000000
-   1: iio_verify_update 753
-   2:__iio_update_buffers 1115 ret -22
-   3: iio_buffer_store_enable 1241 ret -22
-   -bash: echo: write error: Invalid argument
-1, 2 & 3 are exit-error paths. 0 the first print in iio_verify_update()
-rergardless of error path.
+...
 
-Without this patch (and same instrumented print-code):
-   root@analog:~# cd /sys/bus/iio/devices/iio\:device3/buffer
-   root@analog:/sys/bus/iio/devices/iio:device3/buffer# echo 1 > enable
-   0: iio_verify_update 748 indio_dev->masklength 2 *insert_buffer->scan_mask 00000000
-   root@analog:/sys/bus/iio/devices/iio:device3/buffer#
-Buffer is enabled with no error.
+[  116.606571] Call Trace:
+[  116.609023]  <IRQ>
+[  116.611047]  complete+0x34/0x50
+[  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
 
-Note from Jonathan: Probably not suitable for automatic application to stable.
-This has been there from the very start.  It tidies up an odd corner
-case but won't effect any 'real' users.
+because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
+ought to be able to handle an interrupt happening before request_irq() returns.
 
-Fixes: 84b36ce5f79c0 ("staging:iio: Add support for multiple buffers")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-buffer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/pressure/bmp280-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index a0d089afa1a2..b1e9ac5ecdac 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -691,6 +691,13 @@ static int iio_verify_update(struct iio_dev *indio_dev,
- 	bool scan_timestamp;
- 	unsigned int modes;
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 29c209cc1108..2540e7c2358c 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -713,7 +713,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
+ 	unsigned int ctrl;
  
-+	if (insert_buffer &&
-+	    bitmap_empty(insert_buffer->scan_mask, indio_dev->masklength)) {
-+		dev_dbg(&indio_dev->dev,
-+			"At least one scan element must be enabled first\n");
-+		return -EINVAL;
-+	}
+ 	if (data->use_eoc)
+-		init_completion(&data->done);
++		reinit_completion(&data->done);
+ 
+ 	ret = regmap_write(data->regmap, BMP280_REG_CTRL_MEAS, ctrl_meas);
+ 	if (ret)
+@@ -969,6 +969,9 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+ 			"trying to enforce it\n");
+ 		irq_trig = IRQF_TRIGGER_RISING;
+ 	}
 +
- 	memset(config, 0, sizeof(*config));
- 	config->watermark = ~0;
- 
++	init_completion(&data->done);
++
+ 	ret = devm_request_threaded_irq(dev,
+ 			irq,
+ 			bmp085_eoc_irq,
 -- 
 2.25.1
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0BC61FE5A6
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D321FE57B
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:26:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728523AbgFRC1f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Jun 2020 22:27:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47554 "EHLO mail.kernel.org"
+        id S1733173AbgFRC0I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jun 2020 22:26:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48196 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729619AbgFRBQl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:16:41 -0400
+        id S1729355AbgFRBRG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:17:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 54672206F1;
-        Thu, 18 Jun 2020 01:16:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 84A0121D82;
+        Thu, 18 Jun 2020 01:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443001;
-        bh=uq/vJ5FGrTpOVRKK3JW4bg+gc1FHs5ImLSPzkZZ8Tqo=;
+        s=default; t=1592443026;
+        bh=2cMtX8fwpKcEiA6q2xD7o+IaXiYer2+ESCtWjkQfOTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=diLoyWPOkOmdEZiplogAPUjPlUWgsvcz4+ZKUa1RgWlfa8MtIH6ZlvSaNCw3g0yZv
-         rdtHOOrcAfu+OL3EsEbp3y1f/GAoflVWcOO6OoYm23/eLVcfv7wiYzHzPSjSrNB0nb
-         h9XWgT7HeKzMHIKKRmGUlJg8xx+iU6o+um8+Xjb4=
+        b=TfutdW6N2wzatsNXXMiXbi3wl9e+9lLOjdJghxqnipqCZcE7XWdT4Z8ZskvD7uAZ5
+         wOwKOblKDryPy+2uemuC9YXAJY9xYAJ6v2aTVBRupDfB6FF1RnpW/s+yes7SK7NleN
+         9CX1TXd6QeQNKSHN/VClrDbzcFH8MVl846unkMD8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Andreas Klinger <ak@it-klinger.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 007/266] iio: light: isl29125: fix iio_triggered_buffer_{predisable,postenable} positions
-Date:   Wed, 17 Jun 2020 21:12:12 -0400
-Message-Id: <20200618011631.604574-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 026/266] iio: bmp280: fix compensation of humidity
+Date:   Wed, 17 Jun 2020 21:12:31 -0400
+Message-Id: <20200618011631.604574-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
 References: <20200618011631.604574-1-sashal@kernel.org>
@@ -43,85 +43,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Andreas Klinger <ak@it-klinger.de>
 
-[ Upstream commit 9b7a12c3e090cf3fba6f66f1f23abbc6e0e86021 ]
+[ Upstream commit dee2dabc0e4115b80945fe2c91603e634f4b4686 ]
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+Limit the output of humidity compensation to the range between 0 and 100
+percent.
 
-For the predisable hook, the disable code should occur before detaching
-the poll func, and for the postenable hook, the poll func should be
-attached before the enable code.
+Depending on the calibration parameters of the individual sensor it
+happens, that a humidity above 100 percent or below 0 percent is
+calculated, which don't make sense in terms of relative humidity.
 
-This change reworks the predisable/postenable hooks so that the pollfunc is
-attached/detached in the correct position.
-It also balances the calls a bit, by grouping the preenable and the
-iio_triggered_buffer_postenable() into a single
-isl29125_buffer_postenable() function.
+Add a clamp to the compensation formula as described in the datasheet of
+the sensor in chapter 4.2.3.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Although this clamp is documented, it was never in the driver of the
+kernel.
+
+It depends on the circumstances (calibration parameters, temperature,
+humidity) if one can see a value above 100 percent without the clamp.
+The writer of this patch was working with this type of sensor without
+noting this error. So it seems to be a rare event when this bug occures.
+
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/isl29125.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
-index e37894f0ae0b..95611f5eff01 100644
---- a/drivers/iio/light/isl29125.c
-+++ b/drivers/iio/light/isl29125.c
-@@ -213,13 +213,24 @@ static const struct iio_info isl29125_info = {
- 	.attrs = &isl29125_attribute_group,
- };
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 084a1d56cc2f..0a95afaa48fe 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -264,6 +264,8 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
+ 		+ (s32)2097152) * calib->H2 + 8192) >> 14);
+ 	var -= ((((var >> 15) * (var >> 15)) >> 7) * (s32)calib->H1) >> 4;
  
--static int isl29125_buffer_preenable(struct iio_dev *indio_dev)
-+static int isl29125_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct isl29125_data *data = iio_priv(indio_dev);
-+	int err;
++	var = clamp_val(var, 0, 419430400);
 +
-+	err = iio_triggered_buffer_postenable(indio_dev);
-+	if (err)
-+		return err;
- 
- 	data->conf1 |= ISL29125_MODE_RGB;
--	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-+	err = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
- 		data->conf1);
-+	if (err) {
-+		iio_triggered_buffer_predisable(indio_dev);
-+		return err;
-+	}
-+
-+	return 0;
- }
- 
- static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
-@@ -227,19 +238,18 @@ static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
- 	struct isl29125_data *data = iio_priv(indio_dev);
- 	int ret;
- 
--	ret = iio_triggered_buffer_predisable(indio_dev);
--	if (ret < 0)
--		return ret;
--
- 	data->conf1 &= ~ISL29125_MODE_MASK;
- 	data->conf1 |= ISL29125_MODE_PD;
--	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-+	ret = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
- 		data->conf1);
-+
-+	iio_triggered_buffer_predisable(indio_dev);
-+
-+	return ret;
- }
- 
- static const struct iio_buffer_setup_ops isl29125_buffer_setup_ops = {
--	.preenable = isl29125_buffer_preenable,
--	.postenable = &iio_triggered_buffer_postenable,
-+	.postenable = isl29125_buffer_postenable,
- 	.predisable = isl29125_buffer_predisable,
+ 	return var >> 12;
  };
  
 -- 

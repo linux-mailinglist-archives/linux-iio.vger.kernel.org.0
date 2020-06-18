@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C2C1FE7FC
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F0A1FE6E5
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jun 2020 04:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgFRBK6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Jun 2020 21:10:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38588 "EHLO mail.kernel.org"
+        id S2387658AbgFRChM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jun 2020 22:37:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728677AbgFRBK5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:10:57 -0400
+        id S1727111AbgFRBNo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:13:44 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB7B920FC3;
-        Thu, 18 Jun 2020 01:10:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 59C1B221EB;
+        Thu, 18 Jun 2020 01:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592442656;
-        bh=4c9S6FURyonScEFoga9oPeWRSMUvU8RRm/1RiPP9Ne8=;
+        s=default; t=1592442824;
+        bh=EIJbw7mKgkDtoV/1GnE7maH6brijqvufX+8YAgg0Br4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E+lYJfrkwUteFnjeqU/ljtlEqVOw0oHjVUm8x2xOOolHKDQly+I8lZst8efelpXNe
-         oPcP67z2lYFcy8o2hejMCbFHn9Dx7xnA9gyPrKdTfN7tbNAjFZCh1pGbcaUuPKf2D7
-         qaeY2FC10dYv/fyelsl+eK9dWx4Ud6CFl1p851Ak=
+        b=i6jneSvyEPsmasmNOgTiidalOKkMZp6rfkaokmUejmzlUDVJ5tAzRFS3CswAfPgZB
+         HMLAYB6EAi798jA9T0MjVEQPEwjV8KXn+XN30LeHEcxOZ4DLuP28g2KKL/C6yFr7l8
+         i2xJPPOHdWG+6Zi2WDCr68yvrqu1toCevEYOVTE0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        kbuild test robot <lkp@intel.com>,
+Cc:     Jonathan Bakker <xc-racer2@live.ca>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 128/388] iio: buffer-dmaengine: use %zu specifier for sprintf(align)
-Date:   Wed, 17 Jun 2020 21:03:45 -0400
-Message-Id: <20200618010805.600873-128-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 260/388] iio: light: gp2ap002: Take runtime PM reference on light read
+Date:   Wed, 17 Jun 2020 21:05:57 -0400
+Message-Id: <20200618010805.600873-260-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
 References: <20200618010805.600873-1-sashal@kernel.org>
@@ -44,38 +44,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Jonathan Bakker <xc-racer2@live.ca>
 
-[ Upstream commit 6eb3b8acfd079104571c207d4524743b6acc6550 ]
+[ Upstream commit f6dbf83c17cb223ceabd7c42d441414f3e0e8a86 ]
 
-The 'size_t' type behaves differently on 64-bit architectures, and causes
-compiler a warning of the sort "format '%u' expects argument of type
-'unsigned int', but argument 3 has type 'size_t {aka long unsigned int}'".
+The light sensor needs the regulators to be enabled which means
+the runtime PM needs to be on.  This only happened when the
+proximity part of the chip was enabled.
 
-This change adds the correct specifier for the 'align' field.
+As fallout from this change, only report changes to the prox
+state in the interrupt handler when it is explicitly enabled.
 
-Fixes: 4538c18568099 ("iio: buffer-dmaengine: Report buffer length requirements")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Fixes: 97d642e23037 ("iio: light: Add a driver for Sharp GP2AP002x00F")
+Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/gp2ap002.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index b129693af0fd..94da3b1ca3a2 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -134,7 +134,7 @@ static ssize_t iio_dmaengine_buffer_get_length_align(struct device *dev,
- 	struct dmaengine_buffer *dmaengine_buffer =
- 		iio_buffer_to_dmaengine_buffer(indio_dev->buffer);
+diff --git a/drivers/iio/light/gp2ap002.c b/drivers/iio/light/gp2ap002.c
+index b7ef16b28280..7a2679bdc987 100644
+--- a/drivers/iio/light/gp2ap002.c
++++ b/drivers/iio/light/gp2ap002.c
+@@ -158,6 +158,9 @@ static irqreturn_t gp2ap002_prox_irq(int irq, void *d)
+ 	int val;
+ 	int ret;
  
--	return sprintf(buf, "%u\n", dmaengine_buffer->align);
-+	return sprintf(buf, "%zu\n", dmaengine_buffer->align);
++	if (!gp2ap002->enabled)
++		goto err_retrig;
++
+ 	ret = regmap_read(gp2ap002->map, GP2AP002_PROX, &val);
+ 	if (ret) {
+ 		dev_err(gp2ap002->dev, "error reading proximity\n");
+@@ -247,6 +250,8 @@ static int gp2ap002_read_raw(struct iio_dev *indio_dev,
+ 	struct gp2ap002 *gp2ap002 = iio_priv(indio_dev);
+ 	int ret;
+ 
++	pm_runtime_get_sync(gp2ap002->dev);
++
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+@@ -255,13 +260,21 @@ static int gp2ap002_read_raw(struct iio_dev *indio_dev,
+ 			if (ret < 0)
+ 				return ret;
+ 			*val = ret;
+-			return IIO_VAL_INT;
++			ret = IIO_VAL_INT;
++			goto out;
+ 		default:
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out;
+ 		}
+ 	default:
+-		return -EINVAL;
++		ret = -EINVAL;
+ 	}
++
++out:
++	pm_runtime_mark_last_busy(gp2ap002->dev);
++	pm_runtime_put_autosuspend(gp2ap002->dev);
++
++	return ret;
  }
  
- static IIO_DEVICE_ATTR(length_align_bytes, 0444,
+ static int gp2ap002_init(struct gp2ap002 *gp2ap002)
 -- 
 2.25.1
 

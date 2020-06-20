@@ -2,141 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0DE201687
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jun 2020 18:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E042021AA
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jun 2020 07:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395060AbgFSQbx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Jun 2020 12:31:53 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2346 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2395042AbgFSQbv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:31:51 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 8C2554A4460EE215B62C;
-        Fri, 19 Jun 2020 17:31:50 +0100 (IST)
-Received: from localhost (10.52.127.178) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 19 Jun
- 2020 17:31:50 +0100
-Date:   Fri, 19 Jun 2020 17:31:01 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Sasha Levin <sashal@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        "Alexandru Ardelean" <alexandru.ardelean@analog.com>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 4.4 03/60] iio: light: isl29125: fix
- iio_triggered_buffer_{predisable,postenable} positions
-Message-ID: <20200619173101.000045a2@Huawei.com>
-In-Reply-To: <20200618013004.610532-3-sashal@kernel.org>
-References: <20200618013004.610532-1-sashal@kernel.org>
-        <20200618013004.610532-3-sashal@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1725554AbgFTF07 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Jun 2020 01:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47872 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725320AbgFTF07 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Jun 2020 01:26:59 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65AF3C06174E
+        for <linux-iio@vger.kernel.org>; Fri, 19 Jun 2020 22:26:58 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id x93so9379674ede.9
+        for <linux-iio@vger.kernel.org>; Fri, 19 Jun 2020 22:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=+oWGMiFvVh+zsUyRHYlGqjPl/IgrfreREp+rzdWsLHE=;
+        b=rkEWjABv5OaKeB1OqJa8otKPouPSOMA1FOt8wRnoM/1EeSkrcJaEZHxb6Y7eRb8ETU
+         LR8oJxzg1ZmPQm2t7OK5wQuHd+O66fzhV6k6erO+4hFRTUE8Cd8hVM5KiTiH6OmFS1vS
+         MU+9UZE1jHiXWIquX9Rw/Eye6Mq1kV6LSfse+ITdz4h/QRIFvXkdFPR/tPVboc6Wi14N
+         WIVjfeAixeQZmhPTQ1q627FG6ICxeKvrn620TdVvoAQum4lK+Uwha3uDQanO7Z3FdQgA
+         UtpHsNRttLjnSDqHSdTARAoIzibwtYvvWlz5fA4PbbTT2dEeZFIBYIGS0pAcoNTYeVsR
+         Z4Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=+oWGMiFvVh+zsUyRHYlGqjPl/IgrfreREp+rzdWsLHE=;
+        b=kJhvY9gZr6U7KHn08wS/bUwhQrI7T+8V0q85P5WmU+ovW98P2MUjGeaP7xzzx1VGRb
+         W6xDIK6DV8Kr8Rg1o9HPXgeNMkdKf1s40mht6OuRz1vqfZBqY9+c7OW/rkFkLF8tBYyw
+         GUnxDsX9j87muGdow2WP0k5sZKFNfBbJigLSwX8++CtiI+5je69nqSWG4XvF2o25q9p2
+         BCacQOmhAlXoI19mzugXEXnudQ2cb+/aSrR2HUJ8xHrgk3qDhU80tRGSJkEAgURe7nUT
+         xGafia5AenZvrAn2ie8idf7VJ1SAGtutMGIyL90cdreewUVQjOMY4+2bjMSwwol81TLR
+         7P/g==
+X-Gm-Message-State: AOAM531KEUabo8zY9/uQ0QpHJUgUCnt7rjPRq+tVNvavy0usJtR51uSj
+        pRRNR4+vH2BSsmesjsJ3lvaHx7xLvHIEGioR8iA=
+X-Google-Smtp-Source: ABdhPJzCZ+dWBeIWbM9RCJI4kYXq8Di/Wq95jFsGATegBPckIXO4OBouwuLmwj/4rEO2ZW8udbYwEIYr5M+fl10talc=
+X-Received: by 2002:aa7:c758:: with SMTP id c24mr6531252eds.290.1592630817042;
+ Fri, 19 Jun 2020 22:26:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.127.178]
-X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Received: by 2002:a17:907:b0d:0:0:0:0 with HTTP; Fri, 19 Jun 2020 22:26:56
+ -0700 (PDT)
+Reply-To: andrew.bdoyle@hotmail.com
+From:   Secretary United Nation <xi12890grfd@gmail.com>
+Date:   Sat, 20 Jun 2020 06:26:56 +0100
+Message-ID: <CACG7DjqP2L=pO9f++YePisbd2kEv7G=TWAJAnu6J4u3cNNLG4w@mail.gmail.com>
+Subject: Quick Response
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 17 Jun 2020 21:29:07 -0400
-Sasha Levin <sashal@kernel.org> wrote:
+This is to inform you that due to Covid19 pandemic the United Nation
+in conduction with the US Government, has approved payout to
+individuals and families badly affected by the pandemic.
 
-> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> 
-> [ Upstream commit 9b7a12c3e090cf3fba6f66f1f23abbc6e0e86021 ]
-> 
-> The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-> the poll functions.
-> 
-> For the predisable hook, the disable code should occur before detaching
-> the poll func, and for the postenable hook, the poll func should be
-> attached before the enable code.
-> 
-> This change reworks the predisable/postenable hooks so that the pollfunc is
-> attached/detached in the correct position.
-> It also balances the calls a bit, by grouping the preenable and the
-> iio_triggered_buffer_postenable() into a single
-> isl29125_buffer_postenable() function.
-> 
+To this effect United Nation and the US Government has approved
+US$25,000.00 dollars for singles, $50,000.00 dollars for families. To
+be eligible, you are to contact the below mentioned,to verify your
+identity before payment is made out to you. Note this is to avoid
+double claiming all over the world.
 
-This is really part of some rework.  It doesn't 'fix' a bug
-as such (I think), but rather a bit of logical inconsistency.
+To begin your claim, contact the Zonal coordinator as below:
 
-Shouldn't do any harm though beyond adding noise to stable.
-I added notes to some of these to mark them as not stable material,
-but clearly missed this one. Sorry about that.
+Mr. Andrew B. Doyle
+Email: andrew.bdoyle@hotmail.com
 
-Jonathan
+Your's sincerely,
 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/iio/light/isl29125.c | 28 +++++++++++++++++++---------
->  1 file changed, 19 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
-> index e2945a20e5f6..60388a41ec8c 100644
-> --- a/drivers/iio/light/isl29125.c
-> +++ b/drivers/iio/light/isl29125.c
-> @@ -215,13 +215,24 @@ static const struct iio_info isl29125_info = {
->  	.driver_module = THIS_MODULE,
->  };
->  
-> -static int isl29125_buffer_preenable(struct iio_dev *indio_dev)
-> +static int isl29125_buffer_postenable(struct iio_dev *indio_dev)
->  {
->  	struct isl29125_data *data = iio_priv(indio_dev);
-> +	int err;
-> +
-> +	err = iio_triggered_buffer_postenable(indio_dev);
-> +	if (err)
-> +		return err;
->  
->  	data->conf1 |= ISL29125_MODE_RGB;
-> -	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> +	err = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
->  		data->conf1);
-> +	if (err) {
-> +		iio_triggered_buffer_predisable(indio_dev);
-> +		return err;
-> +	}
-> +
-> +	return 0;
->  }
->  
->  static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
-> @@ -229,19 +240,18 @@ static int isl29125_buffer_predisable(struct iio_dev *indio_dev)
->  	struct isl29125_data *data = iio_priv(indio_dev);
->  	int ret;
->  
-> -	ret = iio_triggered_buffer_predisable(indio_dev);
-> -	if (ret < 0)
-> -		return ret;
-> -
->  	data->conf1 &= ~ISL29125_MODE_MASK;
->  	data->conf1 |= ISL29125_MODE_PD;
-> -	return i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
-> +	ret = i2c_smbus_write_byte_data(data->client, ISL29125_CONF1,
->  		data->conf1);
-> +
-> +	iio_triggered_buffer_predisable(indio_dev);
-> +
-> +	return ret;
->  }
->  
->  static const struct iio_buffer_setup_ops isl29125_buffer_setup_ops = {
-> -	.preenable = isl29125_buffer_preenable,
-> -	.postenable = &iio_triggered_buffer_postenable,
-> +	.postenable = isl29125_buffer_postenable,
->  	.predisable = isl29125_buffer_predisable,
->  };
->  
-
-
+Charlotte Pierce
+For Secretary United Nation.

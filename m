@@ -2,148 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD0B2024F6
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jun 2020 17:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E54F202534
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jun 2020 18:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727768AbgFTP5p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Jun 2020 11:57:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56962 "EHLO mail.kernel.org"
+        id S1726139AbgFTQZH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Jun 2020 12:25:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52636 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgFTP5p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 20 Jun 2020 11:57:45 -0400
+        id S1726043AbgFTQZH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Jun 2020 12:25:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB85823D6A;
-        Sat, 20 Jun 2020 15:57:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8B3E123EB1;
+        Sat, 20 Jun 2020 16:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592668664;
-        bh=D8fKktaZdo0jD0i4fAQUF+z6/90romTLM3ZgSwzvpY8=;
+        s=default; t=1592670306;
+        bh=qUtSjUjPvNBnBbSWkg0Yoe4X48Rh2Xe4XKAQk/9Yb20=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pP6GKyBHjzZRcJx+iJFjVnoR2m7N67RQfT0Bm48HzxTwn/NPvrKJennJn5qtMW7A6
-         XWs9wB6b/eUtJcm1UKKlpAcNqOMDywl+aCTbaTc9WvlyB3E/UomafaAif3mEpR1rGF
-         BplKzw7hKoY66Q6EEC9wx43AN2/CjzSQOs+w4xz4=
-Date:   Sat, 20 Jun 2020 16:57:39 +0100
+        b=t1wOnCfX4boWny47NBKBLzKJEcTciUV5bhq7YJ4ubdq8i+MMXSdIDfm7ggILXc+3Q
+         bSUlvDwG0YXSOAfuXErlpt/WavbGDcQcwlR1Hjrx7NYocBP8ofxtPvnxcBgAb9DR2L
+         yOeTvxNF4kenkhFZGmOUWvuUE3v10dcFG5yCs/6s=
+Date:   Sat, 20 Jun 2020 17:25:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature sensor
- support
-Message-ID: <20200620165739.29694b9b@archlinux>
-In-Reply-To: <MN2PR12MB4422148948CF6FC7953A6D2AC49F0@MN2PR12MB4422.namprd12.prod.outlook.com>
-References: <20200608204250.3291-1-jmaneyrol@invensense.com>
-        <20200608204250.3291-7-jmaneyrol@invensense.com>
-        <fd4918b6-a55f-4047-7f18-b796a8ccd020@metafoo.de>
-        <MN2PR12MB4422148948CF6FC7953A6D2AC49F0@MN2PR12MB4422.namprd12.prod.outlook.com>
+To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v5 1/4] iio: chemical: scd30: add core driver
+Message-ID: <20200620172502.0d532081@archlinux>
+In-Reply-To: <20200607175812.95777-2-tomasz.duszynski@octakon.com>
+References: <20200607175812.95777-2-tomasz.duszynski@octakon.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 Jun 2020 20:35:13 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On Sun, 7 Jun 2020 19:58:09 +0200
+Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
 
-> Hello Lars,
->=20
-> for the temperature data, the problem is that temperature in the FIFO (us=
-ed in buffer) is not in the same format than when reading the register.
->=20
-> Reading the temperature register return a full precision value on 16 bits=
-. I am using a PROCESSED attribute for it.
-> Temperature data in buffer (coming from the FIFO) is on 8 bits in lower p=
-recision. It is reported as raw data, thus the need of the offset and scale=
- values.
->=20
-> So offset and scale values are only for transforming the temperature data=
- from the buffer, and direct read is a full precision already processed in =
-m=C2=B0C.
+> Add Sensirion SCD30 carbon dioxide core driver.
+> 
+> Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 
-That is a problem.  We have no means of describing it in IIO.
+A few things I'd missed showed up in warnings when I applied this and
+ran a sparse check.  Please fix up and send a v6.
+Also sanity check the rest with sparse. Note if I'd missed this 0-day
+would have sent use these warnings.
 
-If the channel is processed via sysfs the assumption would normally
-be that it is processed in the buffer as well. We don't really
-have any means of describing the two separately.
+Thanks,
 
-In cases where we've seen this before the way around it was to
-change the data in the fifo so that the scaling was the same as the
-sysfs channel (usually it's just a bit of padding).
+Jonathan
 
-Can we do that here?  Looks like the ratio is 1:64 so should
-be possible.=20
+> +
+> +static int scd30_read_meas(struct scd30_state *state)
+> +{
+> +	int i, ret;
+> +
+> +	ret = state->command(state, CMD_READ_MEAS, 0, state->meas, sizeof(state->meas));
+> +	if (ret)
+> +		return ret;
+> +
+> +	be32_to_cpu_array(state->meas, state->meas, ARRAY_SIZE(state->meas));
 
+The type of the input to the above has the wrong endian markings.
 
+CHECK   drivers/iio/chemical/scd30_core.c
+drivers/iio/chemical/scd30_core.c:123:40: warning: incorrect type in argument 2 (different base types)
+drivers/iio/chemical/scd30_core.c:123:40:    expected restricted __be32 const [usertype] *src
+drivers/iio/chemical/scd30_core.c:123:40:    got int *
 
->=20
-> Thanks for the review,
-> JB
->=20
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> Sent: Sunday, June 14, 2020 17:10
-> To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>; jic23@kernel.org <=
-jic23@kernel.org>; robh+dt@kernel.org <robh+dt@kernel.org>; robh@kernel.org=
- <robh@kernel.org>; mchehab+huawei@kernel.org <mchehab+huawei@kernel.org>; =
-davem@davemloft.net <davem@davemloft.net>; gregkh@linuxfoundation.org <greg=
-kh@linuxfoundation.org>
-> Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; devicetree@vge=
-r.kernel.org <devicetree@vger.kernel.org>; linux-kernel@vger.kernel.org <li=
-nux-kernel@vger.kernel.org>
-> Subject: Re: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature sen=
-sor support=20
-> =C2=A0
-> =C2=A0CAUTION: This email originated from outside of the organization. Pl=
-ease make sure the sender is who they say they are and do not click links o=
-r open attachments unless you recognize the sender and know the content is =
-safe.
->=20
-> On 6/8/20 10:42 PM, Jean-Baptiste Maneyrol wrote:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_PROCESSED:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ret =3D iio_device_claim_direct_mode(indio_dev);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 if (ret)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ret =3D inv_icm42600_temp_read(st, &temp);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 iio_device_release_direct_mode(indio_dev);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 if (ret)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 *val =3D temp;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 return IIO_VAL_INT;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_SCALE:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 *val =3D 483;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 *val2 =3D 91787;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 return IIO_VAL_INT_PLUS_MICRO;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_OFFSET:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 *val =3D 25000;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 return IIO_VAL_INT; =20
->=20
-> If the data is returned processed there is no need to specify scale and=20
-> offset.
->=20
-> But since the transformation to turn the data into standard units is a=20
-> simple linear transform the preferred way to handle this is to return=20
-> RAW data and specify scale and offset.
+Whilst you could use a cast, it would be tidier to use an array of __be32.
+ 
+> +
+> +	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
+> +		state->meas[i] = scd30_float_to_fp(state->meas[i]);
+> +
+> +	/*
+> +	 * co2 is left unprocessed while temperature and humidity are scaled
+> +	 * to milli deg C and milli percent respectively.
+> +	 */
+> +	state->meas[SCD30_TEMP] *= 10;
+> +	state->meas[SCD30_HR] *= 10;
+> +
+> +	return 0;
+> +}
+> +
 
+...
+
+> +
+> +static irqreturn_t scd30_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct scd30_state *state = iio_priv(indio_dev);
+> +	struct {
+> +		int data[SCD30_MEAS_COUNT];
+> +		s64 ts __aligned(8);
+> +	} scan = { 0, };
+should be scan = { {0, }, }; or something like that
+as first element happens to be an array.
+
+Actually there is padding in here you need to zero I think.
+So memset is a better bet.
+
+> +	int ret;
+> +
+> +	mutex_lock(&state->lock);
+> +	if (!iio_trigger_using_own(indio_dev))
+> +		ret = scd30_read_poll(state);
+> +	else
+> +		ret = scd30_read_meas(state);
+> +	memcpy(scan.data, state->meas, sizeof(state->meas));
+> +	mutex_unlock(&state->lock);
+> +	if (ret)
+> +		goto out;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> +out:
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +	return IRQ_HANDLED;
+> +}
+> +
+...

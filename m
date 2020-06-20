@@ -2,59 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84635202562
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jun 2020 18:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CAB220257F
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jun 2020 19:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgFTQkl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Jun 2020 12:40:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59636 "EHLO mail.kernel.org"
+        id S1727090AbgFTRDk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Jun 2020 13:03:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgFTQkk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 20 Jun 2020 12:40:40 -0400
+        id S1726838AbgFTRDk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Jun 2020 13:03:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0FCBF208D5;
-        Sat, 20 Jun 2020 16:40:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0267223F5C;
+        Sat, 20 Jun 2020 17:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592671239;
-        bh=lfSzalvbtneZ8u/8cfqsrPZxTlT9H2bEBJMac45J2rA=;
+        s=default; t=1592672619;
+        bh=5ExWZeDgn4XctCO1tk7fL1vKWtcGrb17U3975/pbKIE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pAqd9F3Tq6dKNOl+JLqJE94RTQ8RA+y2gHkD6XfvR23ET/VKwBv5V31BLXxbqORxC
-         3tEOumxZSSOl3VnVbkNYDhfJNyGl3GxvfxUZUC9fF9dwpynj8udwgyIUwhu5r5dG9y
-         FhO9dXAkwG/O4ajHz9/8n5Ex3NYsdsO3I2KSd64c=
-Date:   Sat, 20 Jun 2020 17:40:33 +0100
+        b=Hapf0lvVPtmpls+tb6NWkfkTCiEFhBIJmpPSJ/26SHuJUGSTaH9dXnVRC3xWPlb3a
+         +368Vixbe5Fs5U0IQFneD9o7mCcXO5nX5BDWa+NRn9ZzKP9glqVOZhiz7gqdh4cmwj
+         yrBQ6t3y2L8EAF8QUf2phA3I5+k303+HIrinYdZo=
+Date:   Sat, 20 Jun 2020 18:03:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "Eugen.Hristev@microchip.com" <Eugen.Hristev@microchip.com>,
-        "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        "songqiang1304521@gmail.com" <songqiang1304521@gmail.com>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
-        "alexandre.torgue@st.com" <alexandre.torgue@st.com>
-Subject: Re: [PATCH v2 3/3] iio: remove
- iio_triggered_buffer_postenable()/iio_triggered_buffer_predisable()
-Message-ID: <20200620174033.2ffec237@archlinux>
-In-Reply-To: <8ae96d9defc521ae3b8ac37ebfc9dd0f5b32cfb3.camel@analog.com>
-References: <20200525113855.178821-1-alexandru.ardelean@analog.com>
-        <20200525113855.178821-3-alexandru.ardelean@analog.com>
-        <20200531164020.765822dc@archlinux>
-        <a0253d719a4390f65668789e5fc182ec19355f17.camel@analog.com>
-        <20200602095406.00005add@Huawei.com>
-        <37ef45f4-9330-86ea-77c1-3138bb88601b@microchip.com>
-        <0eeae8e8c2c1a3f21e15c1931bacb197a8245104.camel@analog.com>
-        <e17fc5b3-fc6b-5980-7294-6d0a151138da@microchip.com>
-        <8ae96d9defc521ae3b8ac37ebfc9dd0f5b32cfb3.camel@analog.com>
+To:     Gene Chen <gene.chen.richtek@gmail.com>
+Cc:     lee.jones@linaro.org, jacek.anaszewski@gmail.com, pavel@ucw.cz,
+        matthias.bgg@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, dmurphy@ti.com, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        gene_chen@richtek.com, shufan_lee@richtek.com,
+        cy_huang@richtek.com, benjamin.chao@mediatek.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] iio: adc: mt6360: Add ADC driver for MT6360
+Message-ID: <20200620180333.7fad5446@archlinux>
+In-Reply-To: <1592567631-20363-4-git-send-email-gene.chen.richtek@gmail.com>
+References: <1592567631-20363-1-git-send-email-gene.chen.richtek@gmail.com>
+        <1592567631-20363-4-git-send-email-gene.chen.richtek@gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,199 +48,482 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Jun 2020 13:37:16 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Fri, 19 Jun 2020 19:53:50 +0800
+Gene Chen <gene.chen.richtek@gmail.com> wrote:
 
-> On Thu, 2020-06-18 at 13:01 +0000, Eugen.Hristev@microchip.com wrote:
-> > On 17.06.2020 16:52, Ardelean, Alexandru wrote:  
-> > > On Wed, 2020-06-17 at 13:37 +0000, Eugen.Hristev@microchip.com wrote:  
-> > > > [External]
-> > > > 
-> > > > On 02.06.2020 11:54, Jonathan Cameron wrote:  
-> > > > > On Tue, 2 Jun 2020 07:50:23 +0000
-> > > > > "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
-> > > > >   
-> > > > > > On Sun, 2020-05-31 at 16:40 +0100, Jonathan Cameron wrote:  
-> > > > > > > On Mon, 25 May 2020 14:38:55 +0300
-> > > > > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > > > > > >   
-> > > > > > > > From: Lars-Peter Clausen <lars@metafoo.de>
-> > > > > > > > 
-> > > > > > > > This patch should be squashed into the first one, as the
-> > > > > > > > first one is
-> > > > > > > > breaking the build (intentionally) to make the IIO core files
-> > > > > > > > easier
-> > > > > > > > to
-> > > > > > > > review.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > > > > > > Signed-off-by: Alexandru Ardelean <  
-> > > > > > > > alexandru.ardelean@analog.com>  
-> > > > > > > > ---  
-> > > > > > > 
-> > > > > > > Friend poke.  Version log?  
-> > > > > > 
-> > > > > > Version log is in the first patch.
-> > > > > > I was wondering if I omitted it.
-> > > > > > Seems, this time I didn't. But I admit, it probably would have
-> > > > > > been better
-> > > > > > here.  
-> > > > > Ah fair enough.  That works fine if there is a cover letter but not
-> > > > > so much just putting things in the first patch!  
-> > > > > > > Other than the wistful comment below (which I'm not expecting
-> > > > > > > you to
-> > > > > > > do anything about btw!) whole series looks good to me.
-> > > > > > > 
-> > > > > > > These are obviously no functional changes (I think) so it's
-> > > > > > > only really
-> > > > > > > patch 2 that
-> > > > > > > could do with more eyes and acks.
-> > > > > > > 
-> > > > > > > Far as I can tell that case is fine as well because of the
-> > > > > > > protections
-> > > > > > > on being in the right mode, but more eyes on that would be
-> > > > > > > great.
-> > > > > > > 
-> > > > > > > So assuming that's fine, what commit message do you want me to
-> > > > > > > use for
-> > > > > > > the fused single patch?  
-> > > > > > 
-> > > > > > Commit message-wise: I think the message in the first commit
-> > > > > > would be
-> > > > > > mostly sufficient.
-> > > > > > No idea what other description would be needed.
-> > > > > > 
-> > > > > > So, maybe something like:
-> > > > > > 
-> > > > > > ---------------------------------------------------------------
-> > > > > > -------
-> > > > > > All devices using a triggered buffer need to attach and detach
-> > > > > > the trigger
-> > > > > > to the device in order to properly work. Instead of doing this in
-> > > > > > each and
-> > > > > > every driver by hand move this into the core.
-> > > > > > 
-> > > > > > At this point in time, all drivers should have been resolved to
-> > > > > > attach/detach the poll-function in the same order.
-> > > > > > 
-> > > > > > This patch removes all explicit calls of
-> > > > > > iio_triggered_buffer_postenable()
-> > > > > > & iio_triggered_buffer_predisable() in all drivers, since the
-> > > > > > core handles
-> > > > > > now the pollfunc attach/detach.
-> > > > > > 
-> > > > > > The more peculiar change is for the 'at91-sama5d2_adc' driver,
-> > > > > > since it's
-> > > > > > not obvious that removing the hooks doesn't break anything**
-> > > > > > ---------------------------------------------------------------
-> > > > > > -------
-> > > > > >   
-> > > > > 
-> > > > > Looks good.
-> > > > >   
-> > > > > > ** for the comment about 'at91-sama5d2_adc', we really do need to
-> > > > > > get some
-> > > > > > testing; otherwise this risks breaking it.  
-> > > > 
-> > > > Hi,
-> > > > 
-> > > > I can test it, do we have any patchwork so I can easily download the
-> > > > patches ?
-> > > > I have issues when applying them.  
-> > > 
-> > > Is this good?
-> > > 
-> > > https://urldefense.com/v3/__https://patchwork.kernel.org/patch/11568743/__;!!A3Ni8CS0y2Y!sOycjyvbMtVr_UDFBvb0vdcf9ONdhs0VBLhTcuYO4qnuZmazm5342mRE2T-119Sk7-d50A$ 
-> > > Series:
-> > > https://urldefense.com/v3/__https://patchwork.kernel.org/project/linux-iio/list/?series=293141__;!!A3Ni8CS0y2Y!sOycjyvbMtVr_UDFBvb0vdcf9ONdhs0VBLhTcuYO4qnuZmazm5342mRE2T-119TNWi1mbQ$ 
-> > > 
-> > > Many thanks
-> > > Alex  
-> > 
-> > On at91-sama5d2-adc driver, sama5d2-xplained board,
-> > Tested-by: Eugen Hristev <eugen.hristev@microchip.com>
-> > 
-> > I applied all three patches and tested together with the other patch on 
-> > sama5d2-adc driver.
-> > It looks to be working fine. If I discover something later, I will let 
-> > you know.
-> > Thanks  
+> From: Gene Chen <gene_chen@richtek.com>
 > 
-> Also thanks from my side for testing.
-
-Great.  Thanks for testing Eugen!
-
-Applied and flattened into a single patch as discussed previously
-using a slightly edited version of your cover letter to reflect
-that Eugen was able to test it.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.  Was a bit of fuzz but I don't think
-anything significant.
-
-Thanks for all your hard work driving this one through!
+> Add MT6360 ADC driver include Charger Current, Voltage, and
+> Temperature.
+> 
+> Signed-off-by: Gene Chen <gene_chen@richtek.com>
+I've taken a quick look and highlighted a few things.
+As mentioned in my reply to the cover letter please make sure to cc
+the IIO mailing list. I'm far from the only person who might review
+this driver and more to the point I look there first rather than
+checking my personal email so you are bit lucky I noticed this today!
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/Kconfig      |  11 ++
+>  drivers/iio/adc/Makefile     |   1 +
+>  drivers/iio/adc/mt6360-adc.c | 388 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 400 insertions(+)
+>  create mode 100644 drivers/iio/adc/mt6360-adc.c
 > 
-> 
-> >   
-> > > > Thanks !
-> > > >   
-> > > > > Agreed.
-> > > > >   
-> > > > > > > Thanks,
-> > > > > > > 
-> > > > > > > Jonathan
-> > > > > > >   
-> > > > > > > >    static const struct iio_trigger_ops
-> > > > > > > > atlas_interrupt_trigger_ops = {
-> > > > > > > > diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > > > > > > > b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > > > > > > > index 17606eca42b4..8e13c53d4360 100644
-> > > > > > > > --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > > > > > > > +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-> > > > > > > > @@ -99,20 +99,6 @@ static irqreturn_t
-> > > > > > > > iio_simple_dummy_trigger_h(int
-> > > > > > > > irq, void *p)
-> > > > > > > >    }
-> > > > > > > > 
-> > > > > > > >    static const struct iio_buffer_setup_ops
-> > > > > > > > iio_simple_dummy_buffer_setup_ops = {
-> > > > > > > > - /*
-> > > > > > > > -  * iio_triggered_buffer_postenable:
-> > > > > > > > -  * Generic function that simply attaches the pollfunc to
-> > > > > > > > the
-> > > > > > > > trigger.
-> > > > > > > > -  * Replace this to mess with hardware state before we
-> > > > > > > > attach the
-> > > > > > > > -  * trigger.
-> > > > > > > > -  */
-> > > > > > > > - .postenable = &iio_triggered_buffer_postenable,
-> > > > > > > > - /*
-> > > > > > > > -  * iio_triggered_buffer_predisable:
-> > > > > > > > -  * Generic function that simple detaches the pollfunc from
-> > > > > > > > the
-> > > > > > > > trigger.
-> > > > > > > > -  * Replace this to put hardware state back again after the
-> > > > > > > > trigger
-> > > > > > > > is
-> > > > > > > > -  * detached but before userspace knows we have disabled the
-> > > > > > > > ring.
-> > > > > > > > -  */
-> > > > > > > > - .predisable = &iio_triggered_buffer_predisable,
-> > > > > > > >    };
-> > > > > > > >   
-> > > > > > > Hmm. Guess we should probably 'invent' a reason to illustrate
-> > > > > > > the bufer
-> > > > > > > ops in the dummy example.  Anyone feeling creative?  
-> > > > > > _______________________________________________
-> > > > > > linux-arm-kernel mailing list
-> > > > > > linux-arm-kernel@lists.infradead.org
-> > > > > > https://urldefense.com/v3/__http://lists.infradead.org/mailman/listinfo/linux-arm-kernel__;!!A3Ni8CS0y2Y!ulH92S3o_JWLMQfg5VBrFknwc_-a0K5AHpJBrTEB-RtYEp7PnRJ9jA_EacOzFQmbNIKO-Q$  
-> > > _______________________________________________
-> > > linux-arm-kernel mailing list
-> > > linux-arm-kernel@lists.infradead.org
-> > > https://urldefense.com/v3/__http://lists.infradead.org/mailman/listinfo/linux-arm-kernel__;!!A3Ni8CS0y2Y!sOycjyvbMtVr_UDFBvb0vdcf9ONdhs0VBLhTcuYO4qnuZmazm5342mRE2T-119RWwM-1NA$ 
-> > >   
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index ff35696..7c77424 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -702,6 +702,17 @@ config MCP3911
+>  	  This driver can also be built as a module. If so, the module will be
+>  	  called mcp3911.
+>  
+> +config MEDIATEK_MT6360_ADC
+> +	tristate "Mediatek MT6360 ADC Part"
+> +	depends on MFD_MT6360
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	help
+> +	  Say Y here to enable MT6360 ADC Part.
+> +	  Integrated for System Monitoring include
+> +	  Charger and Battery Current, Voltage and
+> +	  Temperature
+> +
+>  config MEDIATEK_MT6577_AUXADC
+>  	tristate "MediaTek AUXADC driver"
+>  	depends on ARCH_MEDIATEK || COMPILE_TEST
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 90f94ad..5fca90a 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -65,6 +65,7 @@ obj-$(CONFIG_MAX9611) += max9611.o
+>  obj-$(CONFIG_MCP320X) += mcp320x.o
+>  obj-$(CONFIG_MCP3422) += mcp3422.o
+>  obj-$(CONFIG_MCP3911) += mcp3911.o
+> +obj-$(CONFIG_MEDIATEK_MT6360_ADC) += mt6360-adc.o
+>  obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
+>  obj-$(CONFIG_MEN_Z188_ADC) += men_z188_adc.o
+>  obj-$(CONFIG_MESON_SARADC) += meson_saradc.o
+> diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
+> new file mode 100644
+> index 0000000..a8ca80d
+> --- /dev/null
+> +++ b/drivers/iio/adc/mt6360-adc.c
+> @@ -0,0 +1,388 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2020 MediaTek Inc.
+> + *
+> + * Author: Gene Chen <gene_chen@richtek.com>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/completion.h>
+> +#include <linux/mutex.h>
+> +#include <linux/regmap.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/ktime.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +
+> +#define MT6360_REG_PMUCHGCTRL3	0x313
+> +#define MT6360_REG_PMUADCCFG	0x356
+> +#define MT6360_REG_PMUADCRPT1	0x35A
+> +
+> +/* PMUCHGCTRL3 0x313 */
+> +#define MT6360_AICR_MASK	0xFC
+> +#define MT6360_AICR_SHFT	2
+> +#define MT6360_AICR_400MA	0x6
+> +/* PMUADCCFG 0x356 */
+> +#define MT6360_ADCEN_MASK	0x8000
+> +/* PMUADCRPT1 0x35A */
+> +#define MT6360_PREFERCH_MASK	0xF0
+> +#define MT6360_PREFERCH_SHFT	4
+> +#define MT6360_RPTCH_MASK	0x0F
+> +
+> +enum {
+> +	MT6360_CHAN_USBID = 0,
+> +	MT6360_CHAN_VBUSDIV5,
+> +	MT6360_CHAN_VBUSDIV2,
+> +	MT6360_CHAN_VSYS,
+> +	MT6360_CHAN_VBAT,
+> +	MT6360_CHAN_IBUS,
+> +	MT6360_CHAN_IBAT,
+> +	MT6360_CHAN_CHG_VDDP,
+> +	MT6360_CHAN_TEMP_JC,
+> +	MT6360_CHAN_VREF_TS,
+> +	MT6360_CHAN_TS,
+> +	MT6360_CHAN_MAX,
+> +};
+> +
+> +struct mt6360_adc_data {
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	struct completion adc_complete;
+> +	struct mutex adc_lock;
+> +	ktime_t last_off_timestamps[MT6360_CHAN_MAX];
+> +	int irq;
+> +};
+> +
+> +static inline int mt6360_adc_val_converter(int val, int multiplier,
+> +					   int offset, int divisor)
+> +{
+> +	return ((val * multiplier) + offset) / divisor;
+> +}
+> +
+> +static int mt6360_adc_convert_processed_val(struct mt6360_adc_data *info,
+> +					    int chan_idx, int *val)
+> +{
+> +	unsigned int regval = 0;
+> +	const struct converter {
+> +		int multiplier;
+> +		int offset;
+> +		int divisor;
+> +	} adc_converter[MT6360_CHAN_MAX] = {
+> +		{ 1250, 0, 1}, /* USBID */
+> +		{ 6250, 0, 1}, /* VBUSDIV5 */
+> +		{ 2500, 0, 1}, /* VBUSDIV2 */
+> +		{ 1250, 0, 1}, /* VSYS */
+> +		{ 1250, 0, 1}, /* VBAT */
+> +		{ 2500, 0, 1}, /* IBUS */
+> +		{ 2500, 0, 1}, /* IBAT */
+> +		{ 1250, 0, 1}, /* CHG_VDDP */
+> +		{ 105, -8000, 100}, /* TEMP_JC */
+> +		{ 1250, 0, 1}, /* VREF_TS */
+> +		{ 1250, 0, 1}, /* TS */
+> +	}, sp_ibus_adc_converter = { 1900, 0, 1 }, *sel_converter;
+> +	int ret;
+> +
+> +	sel_converter = adc_converter + chan_idx;
+> +	if (chan_idx == MT6360_CHAN_IBUS) {
+> +		/* ibus chan will be affected by aicr config */
+> +		/* if aicr < 400, apply the special ibus converter */
+> +		ret = regmap_read(info->regmap,
+> +				  MT6360_REG_PMUCHGCTRL3, &regval);
+> +		if (ret)
+> +			return ret;
+> +
+> +		regval = (regval & MT6360_AICR_MASK) >> MT6360_AICR_SHFT;
+> +		if (regval < MT6360_AICR_400MA)
+> +			sel_converter = &sp_ibus_adc_converter;
+> +	}
+> +
+> +	*val = mt6360_adc_val_converter(*val, sel_converter->multiplier,
+> +					sel_converter->offset,
+> +					sel_converter->divisor);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6360_adc_read_processed(struct mt6360_adc_data *mad,
+> +				     int channel, int *val)
+> +{
+> +	u16 adc_enable;
+> +	u8 rpt[3];
+> +	ktime_t start_t, predict_end_t;
+> +	long timeout;
+> +	int value, ret;
+> +
+> +	mutex_lock(&mad->adc_lock);
+> +
+> +	/* select preferred channel that we want */
+> +	ret = regmap_update_bits(mad->regmap,
+> +				 MT6360_REG_PMUADCRPT1, MT6360_PREFERCH_MASK,
+> +				 channel << MT6360_PREFERCH_SHFT);
+> +	if (ret)
+> +		goto out_adc;
+> +
+> +	/* enable adc channel we want and adc_en */
+> +	adc_enable = MT6360_ADCEN_MASK | BIT(channel);
+> +	adc_enable = cpu_to_be16(adc_enable);
+> +	ret = regmap_raw_write(mad->regmap, MT6360_REG_PMUADCCFG,
+> +			       (void *)&adc_enable, sizeof(u16));
+> +	if (ret)
+> +		goto out_adc;
+> +
+> +	start_t = ktime_get();
+> +	predict_end_t = ktime_add_ms(mad->last_off_timestamps[channel], 50);
+> +
+> +	if (ktime_after(start_t, predict_end_t))
+> +		predict_end_t = ktime_add_ms(start_t, 25);
+> +	else
+> +		predict_end_t = ktime_add_ms(start_t, 75);
+> +
+> +	enable_irq(mad->irq);
+> +adc_retry:
+> +	reinit_completion(&mad->adc_complete);
+> +
+> +	/* wait for conversion to complete */
+> +	timeout = wait_for_completion_timeout(&mad->adc_complete,
+> +					      msecs_to_jiffies(200));
+> +	if (timeout == 0) {
+> +		ret = -ETIMEDOUT;
+> +		goto out_adc_conv;
+> +	} else if (timeout < 0) {
+> +		ret = -EINTR;
+> +		goto out_adc_conv;
+> +	}
+> +
+> +	ret = regmap_raw_read(mad->regmap,
+> +			      MT6360_REG_PMUADCRPT1, rpt, sizeof(rpt));
+> +	if (ret)
+> +		goto out_adc_conv;
+> +
+> +	/* check the current reported channel */
+> +	if ((rpt[0] & MT6360_RPTCH_MASK) != channel) {
+> +		dev_dbg(mad->dev,
+> +			"not wanted channel report [%02x]\n", rpt[0]);
+> +		goto adc_retry;
+> +	}
+> +
+> +	if (!ktime_after(ktime_get(), predict_end_t)) {
+> +		dev_dbg(mad->dev, "time is not after one adc_conv_t\n");
+> +		goto adc_retry;
+> +	}
+> +
+> +	value = (rpt[1] << 8) | rpt[2];
+> +
+> +	ret = mt6360_adc_convert_processed_val(mad, channel, &value);
+> +	if (ret)
+> +		goto out_adc_conv;
+> +
+> +	*val = value;
+> +	ret = IIO_VAL_INT;
+> +
+> +out_adc_conv:
+> +	disable_irq(mad->irq);
+> +	adc_enable = MT6360_ADCEN_MASK;
+> +	adc_enable = cpu_to_be16(adc_enable);
+> +	regmap_raw_write(mad->regmap, MT6360_REG_PMUADCCFG,
+> +			 (void *)&adc_enable, sizeof(u16));
+> +	mad->last_off_timestamps[channel] = ktime_get();
+> +	/* set prefer channel to 0xf */
+> +	regmap_update_bits(mad->regmap, MT6360_REG_PMUADCRPT1,
+> +			   MT6360_PREFERCH_MASK, 0xF << MT6360_PREFERCH_SHFT);
+> +out_adc:
+> +	mutex_unlock(&mad->adc_lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int mt6360_adc_read_raw(struct iio_dev *iio_dev,
+> +			       const struct iio_chan_spec *chan,
+> +			       int *val, int *val2, long mask)
+> +{
+> +	struct mt6360_adc_data *mad = iio_priv(iio_dev);
+> +
+> +	if (mask == IIO_CHAN_INFO_PROCESSED)
+> +		return mt6360_adc_read_processed(mad, chan->channel, val);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static const struct iio_info mt6360_adc_iio_info = {
+> +	.read_raw = mt6360_adc_read_raw,
+> +};
+> +
+> +#define MT6360_ADC_CHAN(_idx, _type) {				\
+> +	.type = _type,						\
+> +	.channel = MT6360_CHAN_##_idx,				\
+> +	.scan_index = MT6360_CHAN_##_idx,			\
+> +	.scan_type =  {						\
+> +		.sign = 's',					\
+> +		.realbits = 32,					\
+> +		.storagebits = 32,				\
+> +		.shift = 0,					\
+
+shift = 0 is an obvious default so no need to specify it.
+
+> +		.endianness = IIO_CPU,				\
+> +	},							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),	\
+> +	.extend_name = #_idx,					\
+
+Extend name means you are defining new userspace ABI, so that
+needs to be documented so we can discuss the necessity of doing so.
+Documentation/ABI/testing/sysfs-bus-iio-*
+ 
+> +	.datasheet_name = #_idx,				\
+> +	.indexed = 1,						\
+> +}
+> +
+> +static const struct iio_chan_spec mt6360_adc_channels[] = {
+> +	MT6360_ADC_CHAN(USBID, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(VBUSDIV5, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(VBUSDIV2, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(VSYS, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(VBAT, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(IBUS, IIO_CURRENT),
+> +	MT6360_ADC_CHAN(IBAT, IIO_CURRENT),
+> +	MT6360_ADC_CHAN(CHG_VDDP, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(TEMP_JC, IIO_TEMP),
+> +	MT6360_ADC_CHAN(VREF_TS, IIO_VOLTAGE),
+> +	MT6360_ADC_CHAN(TS, IIO_VOLTAGE),
+> +	IIO_CHAN_SOFT_TIMESTAMP(MT6360_CHAN_MAX),
+> +};
+> +
+> +static irqreturn_t mt6360_pmu_adc_donei_handler(int irq, void *data)
+> +{
+> +	struct mt6360_adc_data *mad = iio_priv(data);
+> +
+> +	complete(&mad->adc_complete);
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t mt6360_adc_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	/* 11 ch s32 numbers + 1 s64 timestamp */
+> +	s32 data[MT6360_CHAN_MAX + 2] = { };
+
+IIO requires that the timestamp that may be inserted in here
+by iio_push_to_buffers_with_timestamp is 64 bit aligned.
+
+In theory this array can be only 32 bit aligned.  Hence tell
+the compiler about this requirement with __aligned(8).
+
+Note we are slowly working our way through fixing various historical
+drivers that fell into this hole so you will currently find drivers
+with this same problem in tree.
+
+> +	int i = 0, bit, val, ret;
+> +
+> +	for_each_set_bit(bit,
+> +			 indio_dev->active_scan_mask, indio_dev->masklength) {
+
+Given the new relaxed view on the line length as long as it's below 100 and
+helps readability, put the above on one line.
+
+> +		const struct iio_chan_spec *chan = indio_dev->channels + bit;
+> +
+> +		ret = mt6360_adc_read_raw(indio_dev, chan, &val,
+> +					  NULL, IIO_CHAN_INFO_PROCESSED);
+> +		if (ret != IIO_VAL_INT) {
+> +			dev_warn(&indio_dev->dev,
+> +				 "Failed to get %d conversion val\n", bit);
+> +			goto out;
+> +		}
+> +
+> +		data[i++] = val;
+> +	}
+> +	iio_push_to_buffers_with_timestamp(indio_dev,
+> +					   data, iio_get_time_ns(indio_dev));
+> +out:
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static inline int mt6360_adc_reset(struct mt6360_adc_data *info)
+> +{
+> +	u8 configs[3] = {0x80, 0, 0};
+> +	ktime_t all_off_time;
+> +	int i;
+> +
+> +	all_off_time = ktime_get();
+> +	for (i = 0; i < MT6360_CHAN_MAX; i++)
+> +		info->last_off_timestamps[i] = all_off_time;
+> +
+> +	/* enable adc_en, clear adc_chn_en/zcv_en/adc_wait_t/adc_idle_t */
+> +	return regmap_raw_write(info->regmap,
+> +				MT6360_REG_PMUADCCFG, configs, sizeof(configs));
+> +}
+> +
+> +static int mt6360_adc_probe(struct platform_device *pdev)
+> +{
+> +	struct mt6360_adc_data *mad;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*mad));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	mad = iio_priv(indio_dev);
+> +	mad->dev = &pdev->dev;
+> +	init_completion(&mad->adc_complete);
+> +	mutex_init(&mad->adc_lock);
+> +
+> +	mad->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	if (!mad->regmap) {
+> +		dev_err(&pdev->dev, "Failed to get parent regmap\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret = mt6360_adc_reset(mad);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "Failed to reset adc\n");
+> +		return ret;
+> +	}
+> +
+> +	mad->irq = platform_get_irq_byname(pdev, "adc_donei");
+> +	if (mad->irq < 0) {
+> +		dev_err(&pdev->dev, "Failed to get adc_done irq\n");
+> +		return mad->irq;
+> +	}
+> +
+> +	irq_set_status_flags(mad->irq, IRQ_NOAUTOEN);
+> +	ret = devm_request_threaded_irq(&pdev->dev, mad->irq, NULL,
+> +					mt6360_pmu_adc_donei_handler,
+> +					IRQF_TRIGGER_NONE, "adc_donei",
+> +					indio_dev);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to register adc_done irq\n");
+> +		return ret;
+> +	}
+> +
+> +	indio_dev->name = dev_name(&pdev->dev);
+> +	indio_dev->dev.parent = &pdev->dev;
+> +	indio_dev->info = &mt6360_adc_iio_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = mt6360_adc_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(mt6360_adc_channels);
+> +
+> +	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, NULL,
+> +					      mt6360_adc_trigger_handler, NULL);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to allocate iio trigger buffer\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to register iio device\n");
+> +		return ret;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, indio_dev);
+
+I can't immediately see where we use it?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id __maybe_unused mt6360_adc_of_id[] = {
+> +	{ .compatible = "mediatek,mt6360-adc", },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, mt6360_adc_of_id);
+> +
+> +static struct platform_driver mt6360_adc_driver = {
+> +	.driver = {
+> +		.name = "mt6360-adc",
+> +		.of_match_table = mt6360_adc_of_id,
+> +	},
+> +	.probe = mt6360_adc_probe,
+> +};
+> +module_platform_driver(mt6360_adc_driver);
+> +
+> +MODULE_AUTHOR("Gene Chen <gene_chen@richtek.com>");
+> +MODULE_DESCRIPTION("MT6360 ADC Driver");
+> +MODULE_LICENSE("GPL v2");
 

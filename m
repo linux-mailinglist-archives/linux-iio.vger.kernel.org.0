@@ -2,318 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA203202A78
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jun 2020 14:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC47B202B71
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jun 2020 17:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730078AbgFUMcD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Jun 2020 08:32:03 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:8940 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730072AbgFUMcD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Jun 2020 08:32:03 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05LCUDMG007247;
-        Sun, 21 Jun 2020 08:31:47 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 31sfc5abfr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 21 Jun 2020 08:31:46 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 05LCVjQH040927
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Sun, 21 Jun 2020 08:31:45 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Sun, 21 Jun
- 2020 08:31:44 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Sun, 21 Jun 2020 08:31:44 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 05LCVWVg007980;
-        Sun, 21 Jun 2020 08:31:42 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <knaack.h@gmx.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v3 7/7] iio: core: move event interface on the opaque struct
-Date:   Sun, 21 Jun 2020 15:33:45 +0300
-Message-ID: <20200621123345.2469-8-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200621123345.2469-1-alexandru.ardelean@analog.com>
-References: <20200621123345.2469-1-alexandru.ardelean@analog.com>
+        id S1730363AbgFUPnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Jun 2020 11:43:05 -0400
+Received: from smtpout1.mo528.mail-out.ovh.net ([46.105.34.251]:56875 "EHLO
+        smtpout1.mo528.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730356AbgFUPnF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Jun 2020 11:43:05 -0400
+Received: from pro2.mail.ovh.net (unknown [10.109.143.237])
+        by mo528.mail-out.ovh.net (Postfix) with ESMTPS id 0C88D63E478B;
+        Sun, 21 Jun 2020 17:43:02 +0200 (CEST)
+Received: from localhost (89.70.180.118) by DAG2EX1.emp2.local (172.16.2.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Sun, 21 Jun
+ 2020 17:43:01 +0200
+Date:   Sun, 21 Jun 2020 17:40:37 +0200
+From:   Tomasz Duszynski <tomasz.duszynski@octakon.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        <andy.shevchenko@gmail.com>, <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v5 1/4] iio: chemical: scd30: add core driver
+Message-ID: <20200621154037.GA13809@arch>
+References: <20200607175812.95777-2-tomasz.duszynski@octakon.com>
+ <20200620172502.0d532081@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-21_05:2020-06-19,2020-06-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=2 spamscore=0
- priorityscore=1501 mlxlogscore=999 cotscore=-2147483648 bulkscore=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0 adultscore=0
- clxscore=1015 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006210101
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20200620172502.0d532081@archlinux>
+X-Originating-IP: [89.70.180.118]
+X-ClientProxiedBy: DAG2EX1.emp2.local (172.16.2.11) To DAG2EX1.emp2.local
+ (172.16.2.11)
+X-Ovh-Tracer-Id: 9225060887347813458
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudektddgleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkfhggtggujghisehttdertddttdejnecuhfhrohhmpefvohhmrghsiicuffhushiihihnshhkihcuoehtohhmrghsiidrughushiihihnshhkihesohgtthgrkhhonhdrtghomheqnecuggftrfgrthhtvghrnheptdehveethfffudetjeeftdekueehjeegjedvteffgfevkefffeegffeugeehgfejnecukfhppedtrddtrddtrddtpdekledrjedtrddukedtrdduudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhrohdvrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepthhomhgrshiirdguuhhsiiihnhhskhhisehotghtrghkohhnrdgtohhmpdhrtghpthhtohepphhmvggvrhifsehpmhgvvghrfidrnhgvth
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Same as with other private fields, this moves the event interface reference
-to the opaque IIO device object, to be invisible to drivers.
+On Sat, Jun 20, 2020 at 05:25:02PM +0100, Jonathan Cameron wrote:
+> On Sun, 7 Jun 2020 19:58:09 +0200
+> Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+>
+> > Add Sensirion SCD30 carbon dioxide core driver.
+> >
+> > Signed-off-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+>
+> A few things I'd missed showed up in warnings when I applied this and
+> ran a sparse check.  Please fix up and send a v6.
+> Also sanity check the rest with sparse. Note if I'd missed this 0-day
+> would have sent use these warnings.
+>
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/industrialio-core.c  |  5 ++-
- drivers/iio/industrialio-event.c | 68 +++++++++++++++++++-------------
- include/linux/iio/iio-opaque.h   |  2 +
- include/linux/iio/iio.h          |  3 --
- 4 files changed, 45 insertions(+), 33 deletions(-)
+Ah, forgot to add C=2 to prior building. Thanks for catching this.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 051cb05a8da7..12550f59caa4 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -205,7 +205,8 @@ EXPORT_SYMBOL(iio_read_const_attr);
- int iio_device_set_clock(struct iio_dev *indio_dev, clockid_t clock_id)
- {
- 	int ret;
--	const struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	const struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 
- 	ret = mutex_lock_interruptible(&indio_dev->mlock);
- 	if (ret)
-@@ -1436,7 +1437,7 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
- 			attrcount += ret;
- 		}
- 
--	if (indio_dev->event_interface)
-+	if (iio_dev_opaque->event_interface)
- 		clk = &dev_attr_current_timestamp_clock.attr;
- 
- 	if (indio_dev->name)
-diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index 5b17c92d3b50..2ab4d4c44427 100644
---- a/drivers/iio/industrialio-event.c
-+++ b/drivers/iio/industrialio-event.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>
- #include <linux/wait.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/iio-opaque.h>
- #include "iio_core.h"
- #include <linux/iio/sysfs.h>
- #include <linux/iio/events.h>
-@@ -62,7 +63,8 @@ bool iio_event_enabled(const struct iio_event_interface *ev_int)
-  **/
- int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp)
- {
--	struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 	struct iio_event_data ev;
- 	int copied;
- 
-@@ -96,7 +98,8 @@ static __poll_t iio_event_poll(struct file *filep,
- 			     struct poll_table_struct *wait)
- {
- 	struct iio_dev *indio_dev = filep->private_data;
--	struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 	__poll_t events = 0;
- 
- 	if (!indio_dev->info)
-@@ -116,7 +119,8 @@ static ssize_t iio_event_chrdev_read(struct file *filep,
- 				     loff_t *f_ps)
- {
- 	struct iio_dev *indio_dev = filep->private_data;
--	struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 	unsigned int copied;
- 	int ret;
- 
-@@ -165,7 +169,8 @@ static ssize_t iio_event_chrdev_read(struct file *filep,
- static int iio_event_chrdev_release(struct inode *inode, struct file *filep)
- {
- 	struct iio_dev *indio_dev = filep->private_data;
--	struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 
- 	clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
- 
-@@ -184,7 +189,8 @@ static const struct file_operations iio_event_chrdev_fileops = {
- 
- int iio_event_getfd(struct iio_dev *indio_dev)
- {
--	struct iio_event_interface *ev_int = indio_dev->event_interface;
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
- 	int fd;
- 
- 	if (ev_int == NULL)
-@@ -343,6 +349,7 @@ static int iio_device_add_event(struct iio_dev *indio_dev,
- 	enum iio_event_type type, enum iio_event_direction dir,
- 	enum iio_shared_by shared_by, const unsigned long *mask)
- {
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	ssize_t (*show)(struct device *, struct device_attribute *, char *);
- 	ssize_t (*store)(struct device *, struct device_attribute *,
- 		const char *, size_t);
-@@ -376,7 +383,7 @@ static int iio_device_add_event(struct iio_dev *indio_dev,
- 
- 		ret = __iio_add_chan_devattr(postfix, chan, show, store,
- 			 (i << 16) | spec_index, shared_by, &indio_dev->dev,
--			&indio_dev->event_interface->dev_attr_list);
-+			&iio_dev_opaque->event_interface->dev_attr_list);
- 		kfree(postfix);
- 
- 		if ((ret == -EBUSY) && (shared_by != IIO_SEPARATE))
-@@ -469,6 +476,7 @@ static void iio_setup_ev_int(struct iio_event_interface *ev_int)
- static const char *iio_event_group_name = "events";
- int iio_device_register_eventset(struct iio_dev *indio_dev)
- {
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	struct iio_dev_attr *p;
- 	int ret = 0, attrcount_orig = 0, attrcount, attrn;
- 	struct attribute **attr;
-@@ -477,14 +485,14 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
- 	      iio_check_for_dynamic_events(indio_dev)))
- 		return 0;
- 
--	indio_dev->event_interface =
-+	iio_dev_opaque->event_interface =
- 		kzalloc(sizeof(struct iio_event_interface), GFP_KERNEL);
--	if (indio_dev->event_interface == NULL)
-+	if (iio_dev_opaque->event_interface == NULL)
- 		return -ENOMEM;
- 
--	INIT_LIST_HEAD(&indio_dev->event_interface->dev_attr_list);
-+	INIT_LIST_HEAD(&iio_dev_opaque->event_interface->dev_attr_list);
- 
--	iio_setup_ev_int(indio_dev->event_interface);
-+	iio_setup_ev_int(iio_dev_opaque->event_interface);
- 	if (indio_dev->info->event_attrs != NULL) {
- 		attr = indio_dev->info->event_attrs->attrs;
- 		while (*attr++ != NULL)
-@@ -498,35 +506,35 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
- 		attrcount += ret;
- 	}
- 
--	indio_dev->event_interface->group.name = iio_event_group_name;
--	indio_dev->event_interface->group.attrs = kcalloc(attrcount + 1,
--							  sizeof(indio_dev->event_interface->group.attrs[0]),
-+	iio_dev_opaque->event_interface->group.name = iio_event_group_name;
-+	iio_dev_opaque->event_interface->group.attrs = kcalloc(attrcount + 1,
-+							  sizeof(iio_dev_opaque->event_interface->group.attrs[0]),
- 							  GFP_KERNEL);
--	if (indio_dev->event_interface->group.attrs == NULL) {
-+	if (iio_dev_opaque->event_interface->group.attrs == NULL) {
- 		ret = -ENOMEM;
- 		goto error_free_setup_event_lines;
- 	}
- 	if (indio_dev->info->event_attrs)
--		memcpy(indio_dev->event_interface->group.attrs,
-+		memcpy(iio_dev_opaque->event_interface->group.attrs,
- 		       indio_dev->info->event_attrs->attrs,
--		       sizeof(indio_dev->event_interface->group.attrs[0])
-+		       sizeof(iio_dev_opaque->event_interface->group.attrs[0])
- 		       *attrcount_orig);
- 	attrn = attrcount_orig;
- 	/* Add all elements from the list. */
- 	list_for_each_entry(p,
--			    &indio_dev->event_interface->dev_attr_list,
-+			    &iio_dev_opaque->event_interface->dev_attr_list,
- 			    l)
--		indio_dev->event_interface->group.attrs[attrn++] =
-+		iio_dev_opaque->event_interface->group.attrs[attrn++] =
- 			&p->dev_attr.attr;
- 	indio_dev->groups[indio_dev->groupcounter++] =
--		&indio_dev->event_interface->group;
-+		&iio_dev_opaque->event_interface->group;
- 
- 	return 0;
- 
- error_free_setup_event_lines:
--	iio_free_chan_devattr_list(&indio_dev->event_interface->dev_attr_list);
--	kfree(indio_dev->event_interface);
--	indio_dev->event_interface = NULL;
-+	iio_free_chan_devattr_list(&iio_dev_opaque->event_interface->dev_attr_list);
-+	kfree(iio_dev_opaque->event_interface);
-+	iio_dev_opaque->event_interface = NULL;
- 	return ret;
- }
- 
-@@ -539,16 +547,20 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
-  */
- void iio_device_wakeup_eventset(struct iio_dev *indio_dev)
- {
--	if (indio_dev->event_interface == NULL)
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+
-+	if (iio_dev_opaque->event_interface == NULL)
- 		return;
--	wake_up(&indio_dev->event_interface->wait);
-+	wake_up(&iio_dev_opaque->event_interface->wait);
- }
- 
- void iio_device_unregister_eventset(struct iio_dev *indio_dev)
- {
--	if (indio_dev->event_interface == NULL)
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-+
-+	if (iio_dev_opaque->event_interface == NULL)
- 		return;
--	iio_free_chan_devattr_list(&indio_dev->event_interface->dev_attr_list);
--	kfree(indio_dev->event_interface->group.attrs);
--	kfree(indio_dev->event_interface);
-+	iio_free_chan_devattr_list(&iio_dev_opaque->event_interface->dev_attr_list);
-+	kfree(iio_dev_opaque->event_interface->group.attrs);
-+	kfree(iio_dev_opaque->event_interface);
- }
-diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-index af6c69a40169..f2e94196d31f 100644
---- a/include/linux/iio/iio-opaque.h
-+++ b/include/linux/iio/iio-opaque.h
-@@ -6,6 +6,7 @@
- /**
-  * struct iio_dev_opaque - industrial I/O device opaque information
-  * @indio_dev:			public industrial I/O device information
-+ * @event_interface:		event chrdevs associated with interrupt lines
-  * @buffer_list:		list of all buffers currently attached
-  * @channel_attr_list:		keep track of automatically created channel
-  *				attributes
-@@ -17,6 +18,7 @@
-  */
- struct iio_dev_opaque {
- 	struct iio_dev			indio_dev;
-+	struct iio_event_interface	*event_interface;
- 	struct list_head		buffer_list;
- 	struct list_head		channel_attr_list;
- 	struct attribute_group		chan_attr_group;
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 219847f6f5c6..e2df67a3b9ab 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -488,7 +488,6 @@ struct iio_buffer_setup_ops {
-  * @currentmode:	[DRIVER] current operating mode
-  * @dev:		[DRIVER] device structure, should be assigned a parent
-  *			and owner
-- * @event_interface:	[INTERN] event chrdevs associated with interrupt lines
-  * @buffer:		[DRIVER] any buffer present
-  * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
-  * @mlock:		[INTERN] lock used to prevent simultaneous device state
-@@ -527,8 +526,6 @@ struct iio_dev {
- 	int				currentmode;
- 	struct device			dev;
- 
--	struct iio_event_interface	*event_interface;
--
- 	struct iio_buffer		*buffer;
- 	int				scan_bytes;
- 	struct mutex			mlock;
--- 
-2.17.1
+> Thanks,
+>
+> Jonathan
+>
+> > +
+> > +static int scd30_read_meas(struct scd30_state *state)
+> > +{
+> > +	int i, ret;
+> > +
+> > +	ret = state->command(state, CMD_READ_MEAS, 0, state->meas, sizeof(state->meas));
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	be32_to_cpu_array(state->meas, state->meas, ARRAY_SIZE(state->meas));
+>
+> The type of the input to the above has the wrong endian markings.
+>
+> CHECK   drivers/iio/chemical/scd30_core.c
+> drivers/iio/chemical/scd30_core.c:123:40: warning: incorrect type in argument 2 (different base types)
+> drivers/iio/chemical/scd30_core.c:123:40:    expected restricted __be32 const [usertype] *src
+> drivers/iio/chemical/scd30_core.c:123:40:    got int *
+>
+> Whilst you could use a cast, it would be tidier to use an array of __be32.
+>
 
+Here's the only place where it's a __be32. All other places assume
+cpu endianess which means changing array type generates a few other warnings
+here and there. So I'd prefer to be lazy here and use a cast :).
+
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(state->meas); i++)
+> > +		state->meas[i] = scd30_float_to_fp(state->meas[i]);
+> > +
+> > +	/*
+> > +	 * co2 is left unprocessed while temperature and humidity are scaled
+> > +	 * to milli deg C and milli percent respectively.
+> > +	 */
+> > +	state->meas[SCD30_TEMP] *= 10;
+> > +	state->meas[SCD30_HR] *= 10;
+> > +
+> > +	return 0;
+> > +}
+> > +
+>
+> ...
+>
+> > +
+> > +static irqreturn_t scd30_trigger_handler(int irq, void *p)
+> > +{
+> > +	struct iio_poll_func *pf = p;
+> > +	struct iio_dev *indio_dev = pf->indio_dev;
+> > +	struct scd30_state *state = iio_priv(indio_dev);
+> > +	struct {
+> > +		int data[SCD30_MEAS_COUNT];
+> > +		s64 ts __aligned(8);
+> > +	} scan = { 0, };
+> should be scan = { {0, }, }; or something like that
+> as first element happens to be an array.
+>
+> Actually there is padding in here you need to zero I think.
+> So memset is a better bet.
+>
+
+Sure.
+
+> > +	int ret;
+> > +
+> > +	mutex_lock(&state->lock);
+> > +	if (!iio_trigger_using_own(indio_dev))
+> > +		ret = scd30_read_poll(state);
+> > +	else
+> > +		ret = scd30_read_meas(state);
+> > +	memcpy(scan.data, state->meas, sizeof(state->meas));
+> > +	mutex_unlock(&state->lock);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> > +out:
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> ...

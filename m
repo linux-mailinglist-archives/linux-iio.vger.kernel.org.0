@@ -2,169 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A050B203158
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jun 2020 10:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5667203335
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jun 2020 11:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725907AbgFVIFV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Jun 2020 04:05:21 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:1120 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725883AbgFVIFT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Jun 2020 04:05:19 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05M7xtHq007586;
-        Mon, 22 Jun 2020 04:05:16 -0400
-Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2059.outbound.protection.outlook.com [104.47.36.59])
-        by mx0b-00128a01.pphosted.com with ESMTP id 31sf37d1a3-1
+        id S1726391AbgFVJVs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Jun 2020 05:21:48 -0400
+Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:38904 "EHLO
+        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726934AbgFVJVr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Jun 2020 05:21:47 -0400
+Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
+        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05M9IJWp001983;
+        Mon, 22 Jun 2020 02:21:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt1;
+ bh=klk+aE5baUWQFrUFKtJJ73/Yw6rDl9zaA1XpSQOvk1A=;
+ b=pVOARI8JJFquaNLxPUn2VkZAsdYMglc2HD91j8f1tpPzcLzrSTLhUAo+7wngAvWiF/yh
+ RCnAcR7BQ3yDMXqgB44MV5LARqFS0TTStsgih10r9p0sIueaxvnxT2vp7smrqXbaKk6V
+ VMveQaGz2LpyGSrJ28RzgDePOpC3XF2clAMlH0IbpFdRMBrT1mU9opZzCgNsLe6m3nqH
+ UJ2b1nWT9WKLhmFXNZ1/1Cb5oci6BtHQASl2AZR1Ol3UpDxNGGbTbumuYdmI5hKtQ4Sr
+ N270Hgfsabuw99C87kZXOAcw3zJ3b+aNu8qp/gfH2j5sR3+s/htv8cy5VVY0De33q16l Xw== 
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2107.outbound.protection.outlook.com [104.47.55.107])
+        by mx0b-00328301.pphosted.com with ESMTP id 31sedp0pxp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 Jun 2020 04:05:16 -0400
+        Mon, 22 Jun 2020 02:21:28 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L/zULQzpGCj7RIxbI17CA4musGQQtRXtPsoYTScjE69WmcqUxvqqbwvKTKS/uymsJs4S6l5bn1Ajarhhupk+sdKK+jUxKCbVJHad1/mIgfeb0UUtz6eW860M4d5pVDz9OjzOPequrGnYjNpXztm9xRJ+ER3wKcEzWbHjvOMHwFN0tgU0EhjUEcE35YZkMnAHowChJUDSdXG/70u042UzK5rPiKHUEHGuH3PgGfHw5gyzClud3qGWcK3b9FRADHxEaV6ffFsb2H/eIC7kwgCCVsS4tXD85OO8OoRt3BPdUIbUNNsIxy7mBRuJCZjQ53qRI6gNhFcZRq1WBcKFUJk3Lw==
+ b=kZVFUhyFuL9MuVHbyO3cKrvvR7xzOlpkCCwFR0L4g/7Ncjtd5txyW03Cxb8jZAjLPoqFDwsnnoTKn5sfYPY+ywjI9IU0skXCQ8vSY3+5K+V9P4Q0CBC4HT2vn+nS7wCLufkvCTJUcPMx7MwZiBqMqXqTIKF68EHi0W/Lr2ytg0DA1D4qdt8XJLX5zX84a/H6+arJtNjLcK736An2Yw87iNooQ+b5acQ1/qV2NiHNQYURNyQDOCBR1P494GwJGBXJA6WURXLdsQmTiPCtlF6QSenX7oBv1VMeKuc2IUQX1XfEUPiR1cLz2eZ3K+PrfLwCqWlglGBvy0T/0/XQcfvHcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xToXUgyZdzxOhFpo35qjKYJdRTzrr63ednNkgH5AtiI=;
- b=LFdPxgwoBf31rc7D9UVmPlOvJcWM9HgTD1MbAwEzs+tOGzToCN+uoJDV2o68y8LCryII2r6r/UsinCbdrxUtid8+n0lskv+Y58D7A3UDyaonXUNFp/6aWwt0YKxQeyOTh54shn2HlAHYMBGcqy+Z/+qPMHe9aeGzo6bln5QbagAbGZHiDOfEVo4ZOT7YtDu5mi0n0S0kL6FZNu1IGMsXg5S4B3YrFU6ajN/qWEVoLo/lkERq32hIj68phKgGhQv4jU9RgDdAwLD1t7TI6qtq1tLBRfSe6B8S7K514Mq4HJjsjudpsQT8bPmo/YduUu4isnzULQ6Vnb/VItw1nSoB+A==
+ bh=klk+aE5baUWQFrUFKtJJ73/Yw6rDl9zaA1XpSQOvk1A=;
+ b=Lnehak5waUfW+sZf/hM5s2tv8GLQ/1d2kXSWrChT0uoCRMrKn0ISxnQQnQcp6eNI+ZlVtzbx5UVMQsEEoURfle0ETFnBGB2Jn5baSxnOPsSxR0gtz+yBCIoiR3ThU2lbeRyaKrvJTTAJxWUlfRyW5k7Gb+qXcqnfMpg4RXLiMgyypo8XGetwG3s/ba2S/AICixMSNsnH0VnIZ6INQTCR7g6ofSlvD+/9CK1NV62HTJ3gi6mWjL2vD1haQCyxlUs4d0kVhspZr5CjvrEe+5jnzmnFNvFzCcLYpdlGp135yje+TH73mjh7NG4LZklIplCapDDd+WwDvgk5aBsG4xPcgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+ smtp.mailfrom=invensense.com; dmarc=pass action=none
+ header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xToXUgyZdzxOhFpo35qjKYJdRTzrr63ednNkgH5AtiI=;
- b=KPlFe5eNmE+R06n6+4vBFDpzg4gsHjCVGTTLWaPPvXEwNT1zA0oyLUTkcuJxcRzRWgc4wqdLOeKhIOHXm/Pfl7sXUI8pqFO+QDXMAL+aEJXFcllg52nWn5nL05aML2DSRNTdNqg+2YVPavSKHnQ2w9IU/KeyFmuS7JmfrK+ZQkU=
-Received: from MWHPR03MB3199.namprd03.prod.outlook.com (2603:10b6:301:3f::29)
- by MWHPR03MB3087.namprd03.prod.outlook.com (2603:10b6:301:46::23) with
+ bh=klk+aE5baUWQFrUFKtJJ73/Yw6rDl9zaA1XpSQOvk1A=;
+ b=fDrpV1azUGFVe4VB74JFoNdC/UvLoDyv8my4XyqfKyC3vvpQQJWwXCTPrsUvWAqAZZ7KtlYxZQmms4QoKbOJnfVHdPj7yIEt1cLg+3lFp5n8QQh07e91SGRcBPtF/ZoPVGHn6LjqE/SHvKp7FWu4dIW4HNFIqiVXd3/Tidg8qN4=
+Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
+ by BL0PR12MB2465.namprd12.prod.outlook.com (2603:10b6:207:45::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.23; Mon, 22 Jun
- 2020 08:05:13 +0000
-Received: from MWHPR03MB3199.namprd03.prod.outlook.com
- ([fe80::41d5:c2a2:5c61:404b]) by MWHPR03MB3199.namprd03.prod.outlook.com
- ([fe80::41d5:c2a2:5c61:404b%5]) with mapi id 15.20.3109.026; Mon, 22 Jun 2020
- 08:05:13 +0000
-From:   "Berghe, Darius" <Darius.Berghe@analog.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v1 3/3] iio:adc:ltc2471: add dt binding yaml
-Thread-Topic: [PATCH v1 3/3] iio:adc:ltc2471: add dt binding yaml
-Thread-Index: AQHWRxfiZTDXvULAjUShILSZOmnVSKjkSYUA
-Date:   Mon, 22 Jun 2020 08:05:13 +0000
-Message-ID: <053ba6af36636cb5b87c885ef1c6e157405e4412.camel@analog.com>
-References: <20200617133523.58158-1-darius.berghe@analog.com>
-         <20200617133523.58158-3-darius.berghe@analog.com>
-         <20200620163124.29d9cd38@archlinux>
-In-Reply-To: <20200620163124.29d9cd38@archlinux>
-Accept-Language: ro-RO, en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.24; Mon, 22 Jun
+ 2020 09:21:25 +0000
+Received: from MN2PR12MB4422.namprd12.prod.outlook.com
+ ([fe80::8940:8e95:6996:cc0]) by MN2PR12MB4422.namprd12.prod.outlook.com
+ ([fe80::8940:8e95:6996:cc0%7]) with mapi id 15.20.3109.026; Mon, 22 Jun 2020
+ 09:21:25 +0000
+From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature sensor
+ support
+Thread-Topic: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature sensor
+ support
+Thread-Index: AQHWPdWIUjAhv0WNM0u1pU/hnDKuy6jYQFCAgABZXLeACSG0gIACtcSW
+Date:   Mon, 22 Jun 2020 09:21:25 +0000
+Message-ID: <MN2PR12MB4422E5AC39A8B85304058AF4C4970@MN2PR12MB4422.namprd12.prod.outlook.com>
+References: <20200608204250.3291-1-jmaneyrol@invensense.com>
+        <20200608204250.3291-7-jmaneyrol@invensense.com>
+        <fd4918b6-a55f-4047-7f18-b796a8ccd020@metafoo.de>
+        <MN2PR12MB4422148948CF6FC7953A6D2AC49F0@MN2PR12MB4422.namprd12.prod.outlook.com>,<20200620165739.29694b9b@archlinux>
+In-Reply-To: <20200620165739.29694b9b@archlinux>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
-x-originating-ip: [137.71.226.54]
+ header.d=none;kernel.org; dmarc=none action=none header.from=invensense.com;
+x-originating-ip: [91.174.78.156]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 62ebbe47-09dd-4131-e20e-08d81682fde4
-x-ms-traffictypediagnostic: MWHPR03MB3087:
-x-microsoft-antispam-prvs: <MWHPR03MB30876EF373AC2E62210B30C696970@MWHPR03MB3087.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-ms-office365-filtering-correlation-id: c97e11ee-f5c1-4c92-ca4b-08d8168da312
+x-ms-traffictypediagnostic: BL0PR12MB2465:
+x-microsoft-antispam-prvs: <BL0PR12MB2465904EE3EB6692D8E48873C4970@BL0PR12MB2465.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-forefront-prvs: 0442E569BC
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: C0AjcqbczQgniVbMpncg2QTblIB9zFqfT19UMEFMofa4UTdAyN6Mb+qRxxTvPITm6h6k+toR/2oiqb/6sm/r+WO0P9aP6Ak/L1sf4L7SHjDD/QvzMxhfiU0kIMCgmwaCv2noV6E6K1NY+criK3C6SjhCTBhlBDemxyAItw4u1UNlq3prIYAmJ33BZpqrYVBywSMLl0xCrAQwrbewrZNWi5Gkumb9nBJuKtU1pAuo0C4oZp0U73aYohmgVBCfSpOFBLBXzw+28ktmKxgdQVJGklY7XvpiTiuuXnyKyL/OEiTOZCXk0emM7Odf7DwPSohB69R94WBvryCEETOlb8mjFWd9BUHn1jZM+gYMmdSbbH0Y0twLPcSARagoofJ9HAWTeFDLCwlmwt+TiBFlHnJP7A==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR03MB3199.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(39860400002)(346002)(376002)(396003)(83380400001)(66476007)(2906002)(6512007)(66446008)(64756008)(66556008)(8676002)(966005)(86362001)(478600001)(66946007)(76116006)(8936002)(91956017)(2616005)(5660300002)(36756003)(6486002)(71200400001)(6916009)(316002)(186003)(4326008)(26005)(54906003)(6506007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: xM/3u/zOKPm4CjNxVX65oM6CxZYLBMRVrVk/VfkfviHvWOi6UJO4DFbfcUp9uVJaqOl6bXPllQszWao++/mwg/8gTQKhODtOiLxHt9XYBL6DE7h7V0iLBG3yX4KFsc1f6YrSBYmDgzQRWCCHEGu0mmDD1dWlfYi3LMjqQBLVO5Xceub35FIVSJBkfwEhlnyYBVtPoAnRF0dP/qFwTuIopdTkoP0Bx41XuoqNULo9eQwGnJbEZ78vctct8z9o34lUEHxU5PlXVn4A8C2eLYGwwjUiQBfBn30jRdjB2B9N/Y8dS3GK57PNwQMclI3Ib3mSDvmnJ+d8fH5kMlvnCF53hVjtHcRpXVtxPpTnk2DH01t8BEMHM3Ln/SGkOIbsL4TQJtmTw+7AnuHK2p0fduR7dasyt1177OkLfG6d7gfbyXGPcoL5hHfZ76/sfbDVSFUaBa+sM3q80fOYGJB5pr05/AXE9A+/kQzve12rJEuOViY=
+x-microsoft-antispam-message-info: mtyn4JALIocPZyZ3zTdwb4ZRdhHphMnokxlzo3pzHLcU4Bpd3FkxAx5qkfMQKnVfLdJnUy1fL6OZwrpWQcLU/EZIapFmSQxHbwJfigqy7ymTAmmfk6bG52trfAIWGL3YVgtNqO4BAqUEoHlfnCuTCocD8A6hgyERCrpuqBcfzfBd0XDneZdJu1x5IfVnmvas2kkgrTWv/TUtRlkCNe7Tg6/gIN5M2pdqc+rFvmLYTppOCZeb1aNZHLumDuXceMQ9ERY8y7HgzKbSMkuZiKnuLd5JLpG4Xnv9OksxVVhRfipeAmEn6T2LpfGU9t+kwj1xq1CQ6EtHR40KwCUN40F8WA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4422.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(376002)(396003)(39850400004)(71200400001)(66476007)(55016002)(2906002)(66556008)(9686003)(8936002)(66446008)(64756008)(91956017)(8676002)(478600001)(86362001)(33656002)(66946007)(76116006)(7416002)(5660300002)(52536014)(6916009)(316002)(186003)(7696005)(4326008)(6506007)(26005)(54906003)(53546011);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: PDHg/XcjQMTrMXLVn4aoSeB1luAwjJAjU8OdP+5zAgZYusf27Bppc9NYQ7iaJQ2Q2ywCOc+FGOjgiZZ2goKoEyhrWrMab+WjtWGH2ww6eEGzNq9RjFiu5UQjAu50HIUg5HNrdEdgPMisjtgQy4AWPjaRkmfY3o8zFOdoFvElsKkzO6kLU3/9KpdP+8INYi3QYcRlZ4HdJVoGb8HqJzKiWK2OzzSadY4SNZ8QG6QeeetN0oVzyPzvdhtL9PCibda3I6hhb0Grzc4NxqoubXVedrG6UPG6cEliYrBeC0/Wue8mu4TX3Y1uDamZ7M5xGlwRQvDc1nfhpQMUrn21ibfTPM2v+TE1TcNUwpWbRApsAJm4FezBa4tdYnY4riJQowFhjKHUurWmNiAK3KpwSx6wAQtRHcEsNNKJqpqECu/zqrVV1NM7Yvb55WRHGXnO4MAvAFVaaKUEDg2ENeW/tF6zgazZHsc3mH84APQNXHTUZD8=
 x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B77727A003F96648A21EF3C0CD1D51AD@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62ebbe47-09dd-4131-e20e-08d81682fde4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2020 08:05:13.2311
+X-OriginatorOrg: invensense.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c97e11ee-f5c1-4c92-ca4b-08d8168da312
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2020 09:21:25.3389
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JL+iWnAyzeTaR89QlbkWoVO8TJM2R9XB1awpUhP+BoEyIuPJ/Pdd7paB8TOcwcvbRzJBdbrJ7TwcFCB8XdtveV4pFG1r0lJ1bJiKCTiSyQQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB3087
+X-MS-Exchange-CrossTenant-userprincipalname: wig64MO75UXcSm4dCHBHYRmstnEjFkClY5UkpgcHsI67NbR7rOjQWMlmk2qJnObEJXwzUmD4By/5zd/08iFM6YDpCDzci3uAUEqW6x3ypv8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB2465
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-22_02:2020-06-22,2020-06-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- cotscore=-2147483648 clxscore=1015 bulkscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- phishscore=0 spamscore=0 adultscore=0 suspectscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006220060
+ definitions=2020-06-22_03:2020-06-22,2020-06-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
+ adultscore=0 mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 cotscore=-2147483648
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006220071
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gU2F0LCAyMDIwLTA2LTIwIGF0IDE2OjMxICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBXZWQsIDE3IEp1biAyMDIwIDE2OjM1OjIzICswMzAw
-DQo+IERhcml1cyBCZXJnaGUgPGRhcml1cy5iZXJnaGVAYW5hbG9nLmNvbT4gd3JvdGU6DQo+IA0K
-PiA+IEFkZCBkdCBiaW5kaW5nIGRvY3VtZW50YXRpb24gZm9yIGx0YzI0NzEgZHJpdmVyLiBUaGlz
-IGNvdmVycyBhbGwgc3VwcG9ydGVkDQo+ID4gZGV2aWNlcy4NCj4gPiANCj4gPiBTaWduZWQtb2Zm
-LWJ5OiBEYXJpdXMgQmVyZ2hlIDxkYXJpdXMuYmVyZ2hlQGFuYWxvZy5jb20+DQo+IEEgZmV3IHRo
-aW5ncyBpbmxpbmUgYnV0IGJhc2ljYWxseSBmaW5lLg0KPiANCj4gV2Ugc2hvdWxkIGhvd2V2ZXIg
-YWxzbyB0aGluayBhYm91dCBkb2N1bWVudGluZyBwb3dlciBzdXBwbGllcy4NCj4gRXZlbiB0aG91
-Z2ggdGhlIGRyaXZlciBkb2Vzbid0IGN1cnJlbnRseSBjb250cm9sIHRoZSBiaW5kaW5nIHNob3Vs
-ZA0KPiBiZSBhcyBjb21wbGV0ZSBhcyBwb3NzaWJsZS4NCj4gDQo+IEpvbmF0aGFuDQo+IA0KSGkg
-Sm9uYXRoYW4sDQoNCkFuZCB0aGFua3MgZm9yIHRoZSByZXZpZXcgIQ0KDQpUaGlzIGNoaXBzIGhh
-dmUgYSBmaXhlZCBpbnRlcm5hbCB2cmVmIG9mIDEuMjVWIHRoYXQgaXMgb3V0cHV0IG9uIHRoZSBS
-RUZPVVQgcGluLCB0aGVyZSBpcyBubyBwbGFjZSBmb3IgY29uZmlndXJhdGlvbiBoZXJlLiBPciBw
-ZXJoYXBzIGRpZCB5b3UgbWVhbiB0aGUgVkNDICgyLjdWLTUuNVYpID8gSSdtIG5vdCBzdXJlIHdo
-YXQgdGhlIGFkZGVkIHZhbHVlIHdvdWxkIGJlIHRvIGFkZCB2cmVmLXN1cHBseSBhbmQgdmNjLXN1
-cHBseSB0byB5YW1sIGlmIHRoZXkgYXJlIG5vdCBpbXBsZW1lbnRlZC4gSSBmaW5kIGl0IGNvbmZ1
-c2luZy4NCg0KPiA+IC0tLQ0KPiA+ICAuLi4vYmluZGluZ3MvaWlvL2FkYy9hZGksbHRjMjQ3MS55
-YW1sICAgICAgICAgfCA1MiArKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCA1MiBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9u
-L2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksbHRjMjQ3MS55YW1sDQo+ID4gDQo+ID4g
-ZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL2Fk
-aSxsdGMyNDcxLnlhbWwgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2Fk
-Yy9hZGksbHRjMjQ3MS55YW1sDQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAw
-MDAwMDAwMDAwMDAuLjBiODRlMTRlYzk4NA0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9E
-b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksbHRjMjQ3MS55YW1s
-DQo+ID4gQEAgLTAsMCArMSw1MiBAQA0KPiA+ICsjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiAo
-R1BMLTIuMC1vbmx5IE9SIEJTRC0yLUNsYXVzZSkNCj4gPiArIyBDb3B5cmlnaHQgMjAyMCBBbmFs
-b2cgRGV2aWNlcyBJbmMuDQo+ID4gKyVZQU1MIDEuMg0KPiA+ICstLS0NCj4gPiArJGlkOiBodHRw
-czovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cDovL2RldmljZXRyZWUub3JnL3NjaGVtYXMvYmlu
-ZGluZ3MvaWlvL2FkYy9hZGksbHRjMjQ3MS55YW1sKl9fO0l3ISFBM05pOENTMHkyWSF2VXBEd1Nz
-bGNhTnJjM2RiNkFRNngzZ3pZSGJSX1d4T3RReVBpbmtlWkNqZ3BpUTRlbEViak16RHMxT0dFWVpv
-dTRFJCANCj4gPiArJHNjaGVtYTogaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHA6Ly9k
-ZXZpY2V0cmVlLm9yZy9tZXRhLXNjaGVtYXMvY29yZS55YW1sKl9fO0l3ISFBM05pOENTMHkyWSF2
-VXBEd1NzbGNhTnJjM2RiNkFRNngzZ3pZSGJSX1d4T3RReVBpbmtlWkNqZ3BpUTRlbEViak16RHMx
-T0c0Y21SdVc0JCANCj4gPiArDQo+ID4gK3RpdGxlOiBBbmFsb2cgRGV2aWNlcyBMVEMyNDcxIDE2
-LWJpdCBJMkMgU2lnbWEtRGVsdGEgQURDDQo+ID4gKw0KPiA+ICttYWludGFpbmVyczoNCj4gPiAr
-ICAtIE1pa2UgTG9vaWptYW5zIDxtaWtlLmxvb2lqbWFuc0B0b3BpYy5ubD4NCj4gPiArDQo+ID4g
-K2Rlc2NyaXB0aW9uOiB8DQo+ID4gKyAgQW5hbG9nIERldmljZXMgTFRDMjQ3MSAoc2luZ2xlLWVu
-ZGVkKSBhbmQgTFRDMjQ3MyAoZGlmZmVyZW50aWFsKSAxNi1iaXQNCj4gPiArICBJMkMgU2lnbWEt
-RGVsdGEgQURDIHdpdGggc2VsZWN0YWJsZSAyMDgvODMzc3BzIG91dHB1dCByYXRlLg0KPiA+ICsg
-IGh0dHBzOi8vd3d3LmFuYWxvZy5jb20vbWVkaWEvZW4vdGVjaG5pY2FsLWRvY3VtZW50YXRpb24v
-ZGF0YS1zaGVldHMvMjQ3MTNmYi5wZGYNCj4gPiArDQo+ID4gKyAgQW5hbG9nIERldmljZXMgTFRD
-MjQ2MSAoc2luZ2xlLWVuZGVkKSBhbmQgTFRDMjQ2MyAoZGlmZmVyZW50aWFsKSAxNi1iaXQNCj4g
-PiArICBJMkMgU2lnbWEtRGVsdGEgQURDIHdpdGggNjBzcHMgb3V0cHV0IHJhdGUuDQo+ID4gKyAg
-aHR0cHM6Ly93d3cuYW5hbG9nLmNvbS9tZWRpYS9lbi90ZWNobmljYWwtZG9jdW1lbnRhdGlvbi9k
-YXRhLXNoZWV0cy8yNDYxM2ZhLnBkZg0KPiANCj4gUHV0IHRoZXNlIHR3byBibG9ja3MgaW4gbnVt
-ZXJpYyBvcmRlci4gIElmIHdlIGVuZCB1cCBhZGRpbmcgYSBidW5jaCBtb3JlDQo+IGRldmljZXMg
-aXQgd2lsbCBiZSBtdWNoIG1vcmUgY29uc2lzdGVudCBpZiB0aGV5IGFyZSBvcmRlci4NCj4gDQoN
-CkFjaywgd2lsbCBkby4NCg0KPiA+ICsNCj4gPiArcHJvcGVydGllczoNCj4gPiArICBjb21wYXRp
-YmxlOg0KPiA+ICsgICAgZW51bToNCj4gPiArICAgICAgLSBhZGksbHRjMjQ3MQ0KPiA+ICsgICAg
-ICAtIGFkaSxsdGMyNDczDQo+ID4gKyAgICAgIC0gYWRpLGx0YzI0NjENCj4gPiArICAgICAgLSBh
-ZGksbHRjMjQ2Mw0KPiANCj4gUHV0IHRoZW0gaW4gbnVtZXJpYyBvcmRlci4NCj4gDQoNCkFjaywg
-d2lsbCBkby4NCg0KPiA+ICsNCj4gPiArICByZWc6DQo+ID4gKyAgICBtYXhJdGVtczogMQ0KPiA+
-ICsNCj4gPiArcmVxdWlyZWQ6DQo+ID4gKyAgLSBjb21wYXRpYmxlDQo+ID4gKyAgLSByZWcNCj4g
-PiArDQo+ID4gK2V4YW1wbGVzOg0KPiA+ICsgIC0gfA0KPiA+ICsgICAgaTJjMCB7DQo+ID4gKyAg
-ICAgIGx0YzI0NjFAMTQgew0KPiANCj4gU2hvdWxkIHVzZSBhIGdlbmVyaWMgbmFtZQ0KPiBhZGNA
-MTQNCj4gDQoNCkFjaywgd2lsbCBkby4NCg0KPiA+ICsgICAgICAgIGNvbXBhdGlibGUgPSAibHRj
-MjQ2MSI7DQo+ID4gKyAgICAgICAgcmVnID0gPDB4MTQ+Ow0KPiA+ICsgICAgICB9Ow0KPiA+ICsg
-ICAgfTsNCj4gPiArICAtIHwNCj4gPiArICAgIGkyYzAgew0KPiANCj4gTm90IGEgbG90IG9mIHBv
-aW50IGluIHR3byBleGFtcGxlcyBnaXZlbiBob3cgc2ltaWxhciB0aGV5IGFyZS4NCj4gSSdkIGp1
-c3Qga2VlcCB0aGUgb25lLiANCj4gDQoNCkFjaywgd2lsbCBkby4NCkkgb25seSBjaG9zZSB0byBn
-aXZlIHR3byBleGFtcGxlcyBiZWNhdXNlIHRoZSBjaGlwIGhhcyAyIHBvc3NpYmxlIEkyQyBzbGF2
-ZSBhZGRyZXNzZXMgMHgxNCBhbmQgMHg1NCBkZXBlbmRpbmcgb24gdGhlIEFPIHBpbiB2YWx1ZSBi
-ZWluZyBsb3cgb3IgaGlnaC4gQnV0IHlvdSdyZSByaWdodCwgdGhleSdyZSB0b28gc2ltcGxlIGFu
-ZCBzaW1pbGFyLg0KDQpCZXN0IHJlZ2FyZHMsDQpEYXJpdXMNCg0KPiA+ICsgICAgICBsdGMyNDcz
-QDU0IHsNCj4gPiArICAgICAgICBjb21wYXRpYmxlID0gImx0YzI0NzMiOw0KPiA+ICsgICAgICAg
-IHJlZyA9IDwweDU0PjsNCj4gPiArICAgICAgfTsNCj4gPiArICAgIH07DQo+ID4gKw0K
+Hi Jonathan,=0A=
+=0A=
+no problem, I can rework temperature to have the same raw output for both c=
+ases (with just decreased resolution for the FIFO case).=0A=
+=0A=
+v4 series is coming soon with the fix.=0A=
+=0A=
+Thanks,=0A=
+JB=0A=
+=0A=
+From: Jonathan Cameron <jic23@kernel.org>=0A=
+Sent: Saturday, June 20, 2020 17:57=0A=
+To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>=0A=
+Cc: Lars-Peter Clausen <lars@metafoo.de>; robh+dt@kernel.org <robh+dt@kerne=
+l.org>; robh@kernel.org <robh@kernel.org>; mchehab+huawei@kernel.org <mcheh=
+ab+huawei@kernel.org>; davem@davemloft.net <davem@davemloft.net>; gregkh@li=
+nuxfoundation.org <gregkh@linuxfoundation.org>; linux-iio@vger.kernel.org <=
+linux-iio@vger.kernel.org>; devicetree@vger.kernel.org <devicetree@vger.ker=
+nel.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>=0A=
+Subject: Re: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature senso=
+r support =0A=
+=A0=0A=
+=A0CAUTION: This email originated from outside of the organization. Please =
+make sure the sender is who they say they are and do not click links or ope=
+n attachments unless you recognize the sender and know the content is safe.=
+=0A=
+=0A=
+On Sun, 14 Jun 2020 20:35:13 +0000=0A=
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:=0A=
+=0A=
+> Hello Lars,=0A=
+> =0A=
+> for the temperature data, the problem is that temperature in the FIFO (us=
+ed in buffer) is not in the same format than when reading the register.=0A=
+> =0A=
+> Reading the temperature register return a full precision value on 16 bits=
+. I am using a PROCESSED attribute for it.=0A=
+> Temperature data in buffer (coming from the FIFO) is on 8 bits in lower p=
+recision. It is reported as raw data, thus the need of the offset and scale=
+ values.=0A=
+> =0A=
+> So offset and scale values are only for transforming the temperature data=
+ from the buffer, and direct read is a full precision already processed in =
+m=B0C.=0A=
+=0A=
+That is a problem.=A0 We have no means of describing it in IIO.=0A=
+=0A=
+If the channel is processed via sysfs the assumption would normally=0A=
+be that it is processed in the buffer as well. We don't really=0A=
+have any means of describing the two separately.=0A=
+=0A=
+In cases where we've seen this before the way around it was to=0A=
+change the data in the fifo so that the scaling was the same as the=0A=
+sysfs channel (usually it's just a bit of padding).=0A=
+=0A=
+Can we do that here?=A0 Looks like the ratio is 1:64 so should=0A=
+be possible. =0A=
+=0A=
+=0A=
+=0A=
+> =0A=
+> Thanks for the review,=0A=
+> JB=0A=
+> =0A=
+> From: Lars-Peter Clausen <lars@metafoo.de>=0A=
+> Sent: Sunday, June 14, 2020 17:10=0A=
+> To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>; jic23@kernel.org <=
+jic23@kernel.org>; robh+dt@kernel.org <robh+dt@kernel.org>; robh@kernel.org=
+ <robh@kernel.org>; mchehab+huawei@kernel.org <mchehab+huawei@kernel.org>; =
+davem@davemloft.net <davem@davemloft.net>; gregkh@linuxfoundation.org <greg=
+kh@linuxfoundation.org>=0A=
+> Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; devicetree@vge=
+r.kernel.org <devicetree@vger.kernel.org>; linux-kernel@vger.kernel.org <li=
+nux-kernel@vger.kernel.org>=0A=
+> Subject: Re: [PATCH v3 06/13] iio: imu: inv_icm42600: add temperature sen=
+sor support =0A=
+> =A0=0A=
+> =A0CAUTION: This email originated from outside of the organization. Pleas=
+e make sure the sender is who they say they are and do not click links or o=
+pen attachments unless you recognize the sender and know the content is saf=
+e.=0A=
+> =0A=
+> On 6/8/20 10:42 PM, Jean-Baptiste Maneyrol wrote:=0A=
+> > +=A0=A0=A0=A0 case IIO_CHAN_INFO_PROCESSED:=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D iio_device_claim_direct_m=
+ode(indio_dev);=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (ret)=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return re=
+t;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D inv_icm42600_temp_read(st=
+, &temp);=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 iio_device_release_direct_mode(in=
+dio_dev);=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (ret)=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return re=
+t;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *val =3D temp;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return IIO_VAL_INT;=0A=
+> > +=A0=A0=A0=A0 case IIO_CHAN_INFO_SCALE:=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *val =3D 483;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *val2 =3D 91787;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return IIO_VAL_INT_PLUS_MICRO;=0A=
+> > +=A0=A0=A0=A0 case IIO_CHAN_INFO_OFFSET:=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *val =3D 25000;=0A=
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return IIO_VAL_INT;=A0 =0A=
+> =0A=
+> If the data is returned processed there is no need to specify scale and =
+=0A=
+> offset.=0A=
+> =0A=
+> But since the transformation to turn the data into standard units is a =
+=0A=
+> simple linear transform the preferred way to handle this is to return =0A=
+> RAW data and specify scale and offset.=0A=

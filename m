@@ -2,165 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8342204B40
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jun 2020 09:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9477204BD0
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jun 2020 10:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731780AbgFWHbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Jun 2020 03:31:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:37712 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731716AbgFWHb3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Jun 2020 03:31:29 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592897489; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=lakqupZmsNZf5TreKphxpnROhQ0dpQJl4y7QgjtKSMI=; b=IDvlLT4QnKBqDcfJdEmGy4zmipFVTJdTQZN6iNusTcvaqIQWcSGii+Zn8u8cKm14JmIwyYNy
- dCjiB14SqUTXKTF/p/ocoWP5UW9HjU9ZU5KIDXOtFwxoPVY4IZteEwFpX5cWtkuN+tNK7EeD
- Y8/8UqftQCbWWRQzN50/uv8maTg=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n14.prod.us-west-2.postgun.com with SMTP id
- 5ef1afd05866879c76642e47 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 07:31:28
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 92F30C433B1; Tue, 23 Jun 2020 07:31:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from jprakash-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jprakash)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE071C433C6;
-        Tue, 23 Jun 2020 07:31:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE071C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jprakash@codeaurora.org
-From:   Jishnu Prakash <jprakash@codeaurora.org>
-To:     agross@kernel.org, bjorn.andersson@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mka@chromium.org, linus.walleij@linaro.org,
-        Jonathan.Cameron@huawei.com, andy.shevchenko@gmail.com,
-        amit.kucheria@verdurent.com, smohanad@codeaurora.org,
-        kgunda@codeaurora.org, aghayal@codeaurora.org,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1731603AbgFWIBM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Jun 2020 04:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731516AbgFWIBM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Jun 2020 04:01:12 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F15C061573;
+        Tue, 23 Jun 2020 01:01:12 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id j1so9731347pfe.4;
+        Tue, 23 Jun 2020 01:01:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TDH4ZfrBuoWx+BiIJhwwh/FBQ8J1kbRargPKwEZiV2U=;
+        b=d+uI922mr0oQu2pI3Bl9AxYVkOLmjht77lyasvbxW2g20pZChmks5C4hrEJKE1iUs3
+         fJGUETnz7ARQYllkMrVg4FCydRSOBdgfhY7BSnKOU1/DEB3/jh8sevqo47L3pJnUzB5q
+         oZ7Xg60zRpul9N1h70nI4GJNX0/M4PkSLdIuMp/JW9+tziPf+33gPyfscDThy65e4ZIb
+         CsZ5Cz7D/W8wmFOpoDxOsp1X4wrZAFv7g8lDgb8a5iM1ilY+Bb0/yy8Zfs8rPHHm1rpd
+         S9xL96ogn6HCjcShGpt50WyqSdqGbAwyHIUSHjK7hglVnZrzMa/f+E3wTlWpRa96HZ1s
+         Kg7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TDH4ZfrBuoWx+BiIJhwwh/FBQ8J1kbRargPKwEZiV2U=;
+        b=oia6nhbDFa6tHF0XrSczUNFZSxjS4gREgISiebk9qcUF3AG7D0my7gIxaSkvIpqSgC
+         aSxJabwMQq/fyJfx6Mw0RQ5FVswEznHv6FW8hG1b8NS2dktM6OmaGN8DEn+Yn1A7E4+2
+         h0JxUEKgctoT+LXo+C/3vkx5d+GV5HQT6B0lyzTmvqBXCnARMyzMaD9Z1hwrxIgFZgrG
+         cW7FtmxSFR54PbzvkfHTA/aSgpjGI7as0j5TXDV9E21ieSGwEiDAF/PA88GMPjg9+d0t
+         TDcODNdPtEux+f3aljWfO2f9l9zYIjliL4EjnLxj2xIyZ8SFUFLmqpfqGTnwSmyBvspM
+         kntw==
+X-Gm-Message-State: AOAM531JGE1Tmh+98gWxn8Ym70vbwknFNFt8MguuIfYlbMKdfVlm/5iR
+        989r+lKXsapGr7C7AYGmm4bcTmaS6mlzAXyyITg=
+X-Google-Smtp-Source: ABdhPJzxISO0ZpY7F9TVRtbWJLoGkKaST1kxWhY9HiMj9vCRgtrIL7u54bzGieMgLzRuseOzra/4MyeNG14p3hh2HpU=
+X-Received: by 2002:a63:f042:: with SMTP id s2mr15816496pgj.4.1592899271743;
+ Tue, 23 Jun 2020 01:01:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <1592897399-24089-1-git-send-email-jprakash@codeaurora.org> <1592897399-24089-4-git-send-email-jprakash@codeaurora.org>
+In-Reply-To: <1592897399-24089-4-git-send-email-jprakash@codeaurora.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 23 Jun 2020 11:00:58 +0300
+Message-ID: <CAHp75Vd4V3nkaMhRA9kGSzwq22ALyvL-0xSUxpyS08jbmAe=ow@mail.gmail.com>
+Subject: Re: [PATCH V7 3/7] iio: adc: Add info property under adc_data
+To:     Jishnu Prakash <jprakash@codeaurora.org>
+Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        smohanad@codeaurora.org, kgunda@codeaurora.org,
+        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     linux-arm-msm-owner@vger.kernel.org,
-        Jishnu Prakash <jprakash@codeaurora.org>
-Subject: [PATCH V7 7/7] iio: adc: Combine read functions for PMIC5 and PMIC7
-Date:   Tue, 23 Jun 2020 12:59:59 +0530
-Message-Id: <1592897399-24089-8-git-send-email-jprakash@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1592897399-24089-1-git-send-email-jprakash@codeaurora.org>
-References: <1592897399-24089-1-git-send-email-jprakash@codeaurora.org>
+        linux-arm-msm@vger.kernel.org,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm-msm-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a common function used for read_raw callback for both PMIC5
-and PMIC7 ADCs.
+On Tue, Jun 23, 2020 at 10:31 AM Jishnu Prakash <jprakash@codeaurora.org> wrote:
+>
+> Add info property under adc_data to support adding ADC variants
+> which may use different iio_info than the one defined for PMIC5.
+>
 
-Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
----
- drivers/iio/adc/qcom-spmi-adc5.c | 49 ++++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 30 deletions(-)
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index 0f9af66..88efadb 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -449,6 +449,11 @@ static int adc7_do_conversion(struct adc5_chip *adc,
- 	return ret;
- }
- 
-+typedef int (*adc_do_conversion)(struct adc5_chip *adc,
-+			struct adc5_channel_prop *prop,
-+			struct iio_chan_spec const *chan,
-+			u16 *data_volt, u16 *data_cur);
-+
- static irqreturn_t adc5_isr(int irq, void *dev_id)
- {
- 	struct adc5_chip *adc = dev_id;
-@@ -487,9 +492,9 @@ static int adc7_of_xlate(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
- 
--static int adc5_read_raw(struct iio_dev *indio_dev,
-+static int adc_read_raw_common(struct iio_dev *indio_dev,
- 			 struct iio_chan_spec const *chan, int *val, int *val2,
--			 long mask)
-+			 long mask, adc_do_conversion do_conv)
- {
- 	struct adc5_chip *adc = iio_priv(indio_dev);
- 	struct adc5_channel_prop *prop;
-@@ -500,8 +505,8 @@ static int adc5_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_PROCESSED:
--		ret = adc5_do_conversion(adc, prop, chan,
--				&adc_code_volt, &adc_code_cur);
-+		ret = do_conv(adc, prop, chan,
-+					&adc_code_volt, &adc_code_cur);
- 		if (ret)
- 			return ret;
- 
-@@ -518,36 +523,20 @@ static int adc5_read_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
--static int adc7_read_raw(struct iio_dev *indio_dev,
-+static int adc5_read_raw(struct iio_dev *indio_dev,
- 			 struct iio_chan_spec const *chan, int *val, int *val2,
- 			 long mask)
- {
--	struct adc5_chip *adc = iio_priv(indio_dev);
--	struct adc5_channel_prop *prop;
--	u16 adc_code_volt, adc_code_cur;
--	int ret;
--
--	prop = &adc->chan_props[chan->address];
--
--	switch (mask) {
--	case IIO_CHAN_INFO_PROCESSED:
--		ret = adc7_do_conversion(adc, prop, chan,
--					&adc_code_volt, &adc_code_cur);
--		if (ret)
--			return ret;
--
--		ret = qcom_adc5_hw_scale(prop->scale_fn_type,
--			&adc5_prescale_ratios[prop->prescale],
--			adc->data,
--			adc_code_volt, val);
--
--		if (ret)
--			return ret;
-+	return adc_read_raw_common(indio_dev, chan, val, val2,
-+				mask, adc5_do_conversion);
-+}
- 
--		return IIO_VAL_INT;
--	default:
--		return -EINVAL;
--	}
-+static int adc7_read_raw(struct iio_dev *indio_dev,
-+			 struct iio_chan_spec const *chan, int *val, int *val2,
-+			 long mask)
-+{
-+	return adc_read_raw_common(indio_dev, chan, val, val2,
-+				mask, adc7_do_conversion);
- }
- 
- static const struct iio_info adc5_info = {
+> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c   | 4 +++-
+>  drivers/iio/adc/qcom-vadc-common.h | 1 +
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index 21fdcde..0fa1d37 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -629,6 +629,7 @@ static const struct adc5_data adc5_data_pmic = {
+>         .full_scale_code_volt = 0x70e4,
+>         .full_scale_code_cur = 0x2710,
+>         .adc_chans = adc5_chans_pmic,
+> +       .info = &adc5_info,
+>         .decimation = (unsigned int [ADC5_DECIMATION_SAMPLES_MAX])
+>                                 {250, 420, 840},
+>         .hw_settle_1 = (unsigned int [VADC_HW_SETTLE_SAMPLES_MAX])
+> @@ -643,6 +644,7 @@ static const struct adc5_data adc5_data_pmic_rev2 = {
+>         .full_scale_code_volt = 0x4000,
+>         .full_scale_code_cur = 0x1800,
+>         .adc_chans = adc5_chans_rev2,
+> +       .info = &adc5_info,
+>         .decimation = (unsigned int [ADC5_DECIMATION_SAMPLES_MAX])
+>                                 {256, 512, 1024},
+>         .hw_settle_1 = (unsigned int [VADC_HW_SETTLE_SAMPLES_MAX])
+> @@ -777,7 +779,7 @@ static int adc5_probe(struct platform_device *pdev)
+>         indio_dev->dev.of_node = node;
+>         indio_dev->name = pdev->name;
+>         indio_dev->modes = INDIO_DIRECT_MODE;
+> -       indio_dev->info = &adc5_info;
+> +       indio_dev->info = adc->data->info;
+>         indio_dev->channels = adc->iio_chans;
+>         indio_dev->num_channels = adc->nchannels;
+>
+> diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+> index e074902a..6a7553f 100644
+> --- a/drivers/iio/adc/qcom-vadc-common.h
+> +++ b/drivers/iio/adc/qcom-vadc-common.h
+> @@ -136,6 +136,7 @@ struct adc5_data {
+>         const u32       full_scale_code_volt;
+>         const u32       full_scale_code_cur;
+>         const struct adc5_channels *adc_chans;
+> +       const struct iio_info *info;
+>         unsigned int    *decimation;
+>         unsigned int    *hw_settle_1;
+>         unsigned int    *hw_settle_2;
+> --
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project
+>
+
+
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
-
+With Best Regards,
+Andy Shevchenko

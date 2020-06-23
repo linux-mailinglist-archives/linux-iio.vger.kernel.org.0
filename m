@@ -2,144 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6B4204BE2
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jun 2020 10:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400A9205065
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jun 2020 13:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731534AbgFWIEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Jun 2020 04:04:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51052 "EHLO
+        id S1732495AbgFWLQ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Jun 2020 07:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731516AbgFWIEM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Jun 2020 04:04:12 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2321FC061573;
-        Tue, 23 Jun 2020 01:04:12 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id d10so6892294pls.5;
-        Tue, 23 Jun 2020 01:04:12 -0700 (PDT)
+        with ESMTP id S1732438AbgFWLQ0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Jun 2020 07:16:26 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0DABC061573
+        for <linux-iio@vger.kernel.org>; Tue, 23 Jun 2020 04:16:25 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id v3so12611223wrc.1
+        for <linux-iio@vger.kernel.org>; Tue, 23 Jun 2020 04:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gQQ6b8/L+9sBz/aiKlXca9tRv5gX+sjabdZJB9mU9RE=;
-        b=alyRb/xuu63Uprh7RDa9xQ4rmpLhmeZbNXp0OLqJlJ2k/omRlsKHSrPar0/n6J0iil
-         l16u+1Rlo77I1yBuOqTMhjrG1uYoIzzpFFhUVw8xHlLa2yfVOC56onewRfXob4Qfh+rI
-         jQLz9Zv71H5G5Y+s3tAfQU6Sp6Op2K0CgjbOcG/JD3Y03PZSJZiCNuclmuUgyMqJ2Vcp
-         Qv4nYIi5f0RUF4ShwGHnF3bCyVryU6vEMIztg1mo3Je/+GYsK2GZYL1UBekpLWPD3YuN
-         7Hg2GijtFcUaixhesxGUIOpEL6V13+ckVR/2SC0WK9RGZwqAoWZPrHxFzjVIthuJC90z
-         WQJg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=El7mhPczl6zDV1AJSVGvVhdB3yWX0GV4TdgpKOETgDUDSEQEbTrvvk6vHjFGJyRivD
+         9uFlmmefZSUDsHrNg9jWWsWS8Qc1q9VuBM6EDipBpNt3Zee6QVer295zzr6Lm5mL26+O
+         gzYTGC3UtzbasZTpwVi2tghIkGD8qLJPM/OKzQvopYyr5fNKC7+IXHSy9QywjtAbAE6O
+         eNgmGwVXCwVZD48z5+ZziPkV4LZhbeC3MwWbVhcBwIm/EmmnwA4w2lakJ/Hr7ZCJ4SXH
+         Tv+aqcYTBkQ7XJlgGddwhQpgbhZ5rOwvIQh81TrV9+W5/e58Cm5K/9C5MPtLFZNIrm1t
+         kjKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gQQ6b8/L+9sBz/aiKlXca9tRv5gX+sjabdZJB9mU9RE=;
-        b=ps6pVC2yU707bQWi3U1FMNqjgKeZ11a5MJCL3OW6srn6n+FqvxiBveEAgtQbfgcrF/
-         LI5DY20gCvu4/ejMod7aBdqmfNDxyD5WD4GOVuotfzaI/p/OEvNqwXvfByKwLBL7Rw3C
-         FEdmpkmqTAhPz3P9TR6nsAmhTkXsF3KRp1wyGJrq//xVK9uHNXZEvLa7Mejm23jIoDWw
-         oKAuaTotW2bSPIH0eOzB8oKQppfdnCw6Gq0PyBZOCoIAlVZThiRbvMbJY3cqFK9qc0Ts
-         4pAydCYMbRbTr7Em0ljYnl5TImzNKHo06Qn1xWi6OcVrgvaKHvjKsvGBoYt4nbdZyYP8
-         OkUw==
-X-Gm-Message-State: AOAM533tWk2dw0Xw/sqpRizec+GUCmKpbo/Supl5cUzo2fQInM3bPUVf
-        OrpheTgk3z9eNNv9dz29pQtjzvdIJrT19awyQmw=
-X-Google-Smtp-Source: ABdhPJwNa0rny5GUWzYvpOwoLS8vL/Q94xTUMDogzOmjviOFyXXHjtdD6h5tWeOr8wax60CpPKWwbjtIVzpGXxUa/Ew=
-X-Received: by 2002:a17:90a:b30d:: with SMTP id d13mr21917940pjr.181.1592899451496;
- Tue, 23 Jun 2020 01:04:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=IL0DIdoMrV1ZnejTX/2PC1MAt/rPmlX3YT3oOkNha01zM9+mUcxw5HFE3V3aKUru2k
+         /5TSTH4h48hdOVogsfHZuTlv0mX0MYqUpoDn8+GGpNfpBkb4PMmg/gmLqJQC6mxjSfpU
+         9tAz8TVKJn3in0fMOlgT0/IQEtE3Gh5u2LlnUPChpuarLjG3iQZ4v7Zd6GNYN6O/zZUI
+         WswloHkwFTxCyoHr8DRHRvKV4w2QvyUqlG9SjwQuuBLpD7gWLz1uzLCcC/m8F3uJYch9
+         95Nc/OMogdyQDC8kDntEgVXy/Lwy9c1FV4ANrWI7vNdGK8h7GXgm9ya8tibe4eze5HMc
+         8hLg==
+X-Gm-Message-State: AOAM532t2M5J/KWb7Th9NV4xX5b+ba8I8R7EvADshhaFY6vtBMBJW9Ha
+        Eq/Fz/ZksqImFPuTKpnG8gW31WXxA2dO/rDQBwA=
+X-Google-Smtp-Source: ABdhPJzvy9uqLBBT5FD0RyBMgHNNB8JPeL4KZV4DQXiaGd69/J17MXOrDmXuaGztTz9Gbidgke1EGYWXnuCnQthXZdk=
+X-Received: by 2002:a5d:6088:: with SMTP id w8mr9307227wrt.49.1592910984526;
+ Tue, 23 Jun 2020 04:16:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <1592897399-24089-1-git-send-email-jprakash@codeaurora.org> <1592897399-24089-6-git-send-email-jprakash@codeaurora.org>
-In-Reply-To: <1592897399-24089-6-git-send-email-jprakash@codeaurora.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 23 Jun 2020 11:03:58 +0300
-Message-ID: <CAHp75VcvvQJOqrarS8BvneZkX+DusUtGV5DS34_T4BOFKpGECQ@mail.gmail.com>
-Subject: Re: [PATCH V7 5/7] iio: adc: Update return value checks
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        smohanad@codeaurora.org, kgunda@codeaurora.org,
-        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm-msm-owner@vger.kernel.org
+Received: by 2002:a1c:f002:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:16:23
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <paulwiliam782@gmail.com>
+Date:   Tue, 23 Jun 2020 12:16:23 +0100
+Message-ID: <CAHqcnY1jJ+-VY-xgeJUGH3xq3KTX6UpsyNM29CbKAdthK14QOA@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 10:31 AM Jishnu Prakash <jprakash@codeaurora.org> wrote:
->
-> Clean up some return value checks to make code more compact.
->
+Greetings From Mrs. Sarah Koffi
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-> Signed-off-by: Jishnu Prakash <jprakash@codeaurora.org>
-> ---
->  drivers/iio/adc/qcom-spmi-adc5.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-> index dcc7599..3022313 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -301,7 +301,7 @@ static int adc5_configure(struct adc5_chip *adc,
->
->         /* Read registers 0x42 through 0x46 */
->         ret = adc5_read(adc, ADC5_USR_DIG_PARAM, buf, sizeof(buf));
-> -       if (ret < 0)
-> +       if (ret)
->                 return ret;
->
->         /* Digital param selection */
-> @@ -388,7 +388,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
->
->         if (adc->poll_eoc) {
->                 ret = adc5_poll_wait_eoc(adc);
-> -               if (ret < 0) {
-> +               if (ret) {
->                         pr_err("EOC bit not set\n");
->                         goto unlock;
->                 }
-> @@ -398,7 +398,7 @@ static int adc5_do_conversion(struct adc5_chip *adc,
->                 if (!ret) {
->                         pr_debug("Did not get completion timeout.\n");
->                         ret = adc5_poll_wait_eoc(adc);
-> -                       if (ret < 0) {
-> +                       if (ret) {
->                                 pr_err("EOC bit not set\n");
->                                 goto unlock;
->                         }
-> @@ -516,8 +516,6 @@ static int adc5_read_raw(struct iio_dev *indio_dev,
->         default:
->                 return -EINVAL;
->         }
-> -
-> -       return 0;
->  }
->
->  static int adc7_read_raw(struct iio_dev *indio_dev,
-> @@ -761,7 +759,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip *adc,
->
->                 ret = adc5_read(adc, ADC5_USR_REVISION1, dig_version,
->                                                         sizeof(dig_version));
-> -               if (ret < 0) {
-> +               if (ret) {
->                         dev_err(dev, "Invalid dig version read %d\n", ret);
->                         return ret;
->                 }
-> --
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
->
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
--- 
-With Best Regards,
-Andy Shevchenko
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi

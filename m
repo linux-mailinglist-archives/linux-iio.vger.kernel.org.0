@@ -2,156 +2,228 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5034420C2DC
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jun 2020 17:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F9620C31E
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jun 2020 18:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbgF0Px1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jun 2020 11:53:27 -0400
-Received: from mout.web.de ([217.72.192.78]:57895 "EHLO mout.web.de"
+        id S1725900AbgF0Qkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jun 2020 12:40:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52732 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725900AbgF0Px1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jun 2020 11:53:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1593273167;
-        bh=jBLarFFV68yP/ulxiShESeLYxTUIzO7337IHXE5BTEc=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=aStGqG0DX7WgCwmgAtu8frhJfnn9rXxvCYFwztsh8YIvyuJfdHootnZhIaIArQVph
-         +pC5QfhXydtr52xeVdm/1uNCWH5EBeeO9N+w7gnXh8X10NDfJSHKIT8paQcS6O8Ad9
-         5PLoDLtB5nLvukMHoPRN1cmvvdb+4ECet+DQMFe4=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.65.31]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M9IOj-1jiu8u0PqR-006MyB; Sat, 27
- Jun 2020 17:52:47 +0200
-Subject: Re: [v2] iio: magnetometer: ak8974: Fix runtime PM imbalance on error
- in ak8974_probe()
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>, Kangjie Lu <kjlu@umn.edu>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-References: <dd84c12f-277d-27e7-3727-4592e530e4ed@web.de>
- <68225325-ba51-7aab-6fef-6f234f4068d1@web.de>
- <20200627155304.54ade781@archlinux>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <8249fead-3a2c-f11e-eaef-e74c4c755f53@web.de>
-Date:   Sat, 27 Jun 2020 17:52:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1725831AbgF0Qkk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jun 2020 12:40:40 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C04AF20674;
+        Sat, 27 Jun 2020 16:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593276039;
+        bh=SVEjpSjxSWxRPqQhAq+Fl2LSbcXLhNqvibbtrHls+2o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BLKXtyi19DHD2ixX9W1DPwE/XbIM022S6lFTDvY87CvJfHkMZnp0zjdfA7cpZuG3L
+         NAdHxNV9THlY3x2caK1AKz4XEgE40VqYFSQ7/OWzDdZhs1AQ6KsLw02hYNg9TX1WDE
+         zPdLoUxS6s1AorhoRfbt9b6gByF6N4KeQtFcFddA=
+Date:   Sat, 27 Jun 2020 17:40:35 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>, <knaack.h@gmx.de>
+Subject: Re: [PATCH v3 2/7] iio: core: wrap IIO device into an
+ iio_dev_opaque object
+Message-ID: <20200627174035.04e659bc@archlinux>
+In-Reply-To: <20200621123345.2469-3-alexandru.ardelean@analog.com>
+References: <20200621123345.2469-1-alexandru.ardelean@analog.com>
+        <20200621123345.2469-3-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200627155304.54ade781@archlinux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KHrXvtUMk7XqUeSEdxdgLWbAOuBkzyazK+S2W03u7cmNHnpeAnW
- 3RFKZSFvH9bFUX5XbrwkYkoYNW4xSPc9Yx0Ep/OFzlOXbaOL8w5sGhhUsBomoGy1O3Y3hF7
- rieAoCgzBGHme+SJcgX618KKt60CC0WUI5cZg7T8xqq4T5JvkWgcky/fOvr2IEB2npYmvS8
- pEnz//YcUZM2kQnveh7pA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SUVz35uRdVc=:dwcl63RMUru48LfelduSbt
- f9RS0B7qjuVbDFzOFZ98FznbxeRFOGNvcxIYRKJqqxLNsy71sRh97W45GsJTb511EPrwn+yKx
- K+ii0nVtN1nXqD8fV8HOPpWuNywFnghni3DOrx9EJ7OimDLu4vnIh7/ya93muMHasbo09kV6w
- y7N2GzKVbO/AVZ2LucRNOe7lk9aW1L+CdLFQkKYVszO24uSVwYdaAaOsGG7VWzV2UrzsVz8pC
- 8oe++YE5R29+5u/QmRzuZ4p9Dc8sGe5eE8WrD4FEjRxAo0JIxRGEslqhWf3CUDeWyDAX9Z/GS
- GS+aYuZaR/iYxK+UzPSmv1eYr8aX/OLGeGhEA30r/7ckI58lYW3x5s+5w3bjfleEOd3c6NNvU
- Kkr1SGiSthYtTEMj3woV4EttWA/lF2C3CZU0CIqjcgn2C4Bht0HX9P4ViTsFa3+2h8sL3S/R9
- +8GMGS/UgshEK1AV3x/8VlsmG08Nz7cUYl9uBQJvuWUu+ZX4ddJEfvPs3NkWiETmGfFLYpC+t
- 8hwryPwPVn+XCBcNh1XqEUDTtlYk1E10VftTgdUQG9UJzbS7XN6xNiG1cky20Z+v7K5UcF5DL
- SrWiQ09nAM0zxBqX/D65gmBjiqXTj3Da2nWb2lyGO39YVKxKR4491jsZx6nFrit6vgYI9CxrA
- E31inCItjCXlrxsN0Y96dTtm1d/ORPjC4BN+40Tak8y9orkDkpdcuGTGRzzxzWTmYHgleHAWG
- 0B+zMPgg/Lrkm5qjvfUbICxKqP/sCVvF2oFteKgIo3QjeZr7+VEDwL19Ls1AuN/qHBq5T+9bi
- kg+yRa7NOAvuMxkErK6fW7zX8W4niXXaI2b5OMuUL2bAGnns9pmyUWK8wlrf9JiT5b/OuYjS4
- XRvptdA78wkF2qDrnVP1NmyroXXdtR8I4103Bm1OS2rAinx0pNaNv5NdBiAllreLCtO9UaD+L
- WaA/uiFQ8AvjM7cy1hRP+ztSq9BOWtrrXGefS5HTFlBgSoQZcBffAzKv+21mwhkc4qBoolJFa
- U3DArorwsEBQhNlqyvG+nHqETqw7iZHzDjyH8Qv+S1NExi05g62ttvMiVzy6jPFkwiZAv9lS+
- CcH1FTXtHjzW8NiSYs7kBdPOKnhgX18zmFV2lGPWVk7It2I3vQyE9APsG6KMEjrV34VJZBscQ
- BqSQ2dbXjDCxeTg8qbYQjchpL4n0NDai76te7zkor3OZ1rcqOKkHz6IckB02xdXCDtVZ+0dc7
- Qq7nVF/AbUys5bJAl
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
->> How were the chances that my patch review comments would be taken
->> better into account?
->> https://lore.kernel.org/linux-iio/dd84c12f-277d-27e7-3727-4592e530e4ed@=
-web.de/
->> https://lkml.org/lkml/2020/5/31/152
->
-> I'm not sure why, but your reply did not have a reply-to field in the he=
-ader
-> as such my email client did not present it alongside the patch.
+On Sun, 21 Jun 2020 15:33:40 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-There are some factors involved for this undesirable effect.
+> There are plenty of bad designs we want to discourage or not have to review
+> manually usually about accessing private (marked as [INTERN]) fields of
+> 'struct iio_dev'.
+> 
+> Sometimes users copy drivers that are not always the best examples.
+> 
+> A better idea is to hide those fields into the framework.
+> For 'struct iio_dev' this is a 'struct iio_dev_opaque' which wraps a public
+> 'struct iio_dev' object.
+> 
+> In the next series, some fields will be moved to this new struct, each with
+> it's own rework.
+> 
+> This rework will not be complete-able for a while, as many fields need some
+> drivers to be reworked in order to finalize them (e.g. 'indio_dev->mlock').
+> 
+> But some fields can already be moved, and in time, all of them may get
+> there (in the 'struct iio_dev_opaque' object).
+> 
+> Since a lot of drivers also call 'iio_priv()', in order to preserve
+> fast-paths (where this matters), the public iio_dev object will have a
+> 'priv' field that will have the pointer to the private information already
+> computed. The reference returned by this field should be guaranteed to be
+> cacheline aligned.
+> 
+> As for the 'iio_priv_to_dev()' helper, this needs to be hidden away. There
+> aren't many users of this helper, and arguably drivers shouldn't need to
+> use it in any fast-paths, as they can maintain a reference to the IIO
+> device.
+Dropped this bit as previous patch deleted iio_priv_to_dev :)
+> 
+> The opaque parts will be moved into the 'include/linux/iio/iio-opaque.h'
+> header. Should the hidden information be required for some debugging or
+> some special needs, it can be made available via this header.
+> Otherwise, only the IIO core files should include this file.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Example:
-My software selection contains open issues in the handling of mailto links
-according to the communication interface =E2=80=9Cpublic inbox=E2=80=9D.
+I've applied this as it stands, but I wonder if we should combine
+this with the existing iio-core.h header.
+
+Can do that later if it makes sense.
+
+Jonathan
 
 
-> Hence I missed it when applying.
 
-Can my approach for a patch review reminder get more attention?
+> ---
+>  drivers/iio/industrialio-core.c | 19 +++++++++++++------
+>  include/linux/iio/iio-opaque.h  | 17 +++++++++++++++++
+>  include/linux/iio/iio.h         |  6 +++++-
+>  3 files changed, 35 insertions(+), 7 deletions(-)
+>  create mode 100644 include/linux/iio/iio-opaque.h
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 75661661aaba..33e2953cf021 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/debugfs.h>
+>  #include <linux/mutex.h>
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/iio-opaque.h>
+>  #include "iio_core.h"
+>  #include "iio_core_trigger.h"
+>  #include <linux/iio/sysfs.h>
+> @@ -1473,6 +1474,8 @@ static void iio_device_unregister_sysfs(struct iio_dev *indio_dev)
+>  static void iio_dev_release(struct device *device)
+>  {
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(device);
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +
+>  	if (indio_dev->modes & INDIO_ALL_TRIGGERED_MODES)
+>  		iio_device_unregister_trigger_consumer(indio_dev);
+>  	iio_device_unregister_eventset(indio_dev);
+> @@ -1481,7 +1484,7 @@ static void iio_dev_release(struct device *device)
+>  	iio_buffer_put(indio_dev->buffer);
+>  
+>  	ida_simple_remove(&iio_ida, indio_dev->id);
+> -	kfree(indio_dev);
+> +	kfree(iio_dev_opaque);
+>  }
+>  
+>  struct device_type iio_device_type = {
+> @@ -1495,10 +1498,11 @@ struct device_type iio_device_type = {
+>   **/
+>  struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  {
+> +	struct iio_dev_opaque *iio_dev_opaque;
+>  	struct iio_dev *dev;
+>  	size_t alloc_size;
+>  
+> -	alloc_size = sizeof(struct iio_dev);
+> +	alloc_size = sizeof(struct iio_dev_opaque);
+>  	if (sizeof_priv) {
+>  		alloc_size = ALIGN(alloc_size, IIO_ALIGN);
+>  		alloc_size += sizeof_priv;
+> @@ -1506,11 +1510,14 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  	/* ensure 32-byte alignment of whole construct ? */
+>  	alloc_size += IIO_ALIGN - 1;
+>  
+> -	dev = kzalloc(alloc_size, GFP_KERNEL);
+> -	if (!dev)
+> +	iio_dev_opaque = kzalloc(alloc_size, GFP_KERNEL);
+> +	if (!iio_dev_opaque)
+>  		return NULL;
+>  
+> -	dev->dev.parent = parent;
+> +	dev = &iio_dev_opaque->indio_dev;
+> +	dev->priv = (char *)iio_dev_opaque +
+> +		ALIGN(sizeof(struct iio_dev_opaque), IIO_ALIGN);
+> +
+>  	dev->dev.groups = dev->groups;
+>  	dev->dev.type = &iio_device_type;
+>  	dev->dev.bus = &iio_bus_type;
+> @@ -1524,7 +1531,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  	if (dev->id < 0) {
+>  		/* cannot use a dev_err as the name isn't available */
+>  		pr_err("failed to get device id\n");
+> -		kfree(dev);
+> +		kfree(iio_dev_opaque);
+>  		return NULL;
+>  	}
+>  	dev_set_name(&dev->dev, "iio:device%d", dev->id);
+> diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+> new file mode 100644
+> index 000000000000..1375674f14cd
+> --- /dev/null
+> +++ b/include/linux/iio/iio-opaque.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _INDUSTRIAL_IO_OPAQUE_H_
+> +#define _INDUSTRIAL_IO_OPAQUE_H_
+> +
+> +/**
+> + * struct iio_dev_opaque - industrial I/O device opaque information
+> + * @indio_dev:			public industrial I/O device information
+> + */
+> +struct iio_dev_opaque {
+> +	struct iio_dev			indio_dev;
+> +};
+> +
+> +#define to_iio_dev_opaque(indio_dev)		\
+> +	container_of(indio_dev, struct iio_dev_opaque, indio_dev)
+> +
+> +#endif
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index 10a6d97a8e3e..86112e35ae5f 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -522,6 +522,8 @@ struct iio_buffer_setup_ops {
+>   * @flags:		[INTERN] file ops related flags including busy flag.
+>   * @debugfs_dentry:	[INTERN] device specific debugfs dentry.
+>   * @cached_reg_addr:	[INTERN] cached register address for debugfs reads.
+> + * @priv:		[DRIVER] reference to driver's private information
+> + *			**MUST** be accessed **ONLY** via iio_priv() helper
+>   */
+>  struct iio_dev {
+>  	int				id;
+> @@ -571,6 +573,7 @@ struct iio_dev {
+>  	char				read_buf[20];
+>  	unsigned int			read_buf_len;
+>  #endif
+> +	void				*priv;
+>  };
+>  
+>  const struct iio_chan_spec
+> @@ -698,9 +701,10 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+>  #define IIO_ALIGN L1_CACHE_BYTES
+>  struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
+>  
+> +/* The information at the returned address is guaranteed to be cacheline aligned */
+>  static inline void *iio_priv(const struct iio_dev *indio_dev)
+>  {
+> -	return (char *)indio_dev + ALIGN(sizeof(struct iio_dev), IIO_ALIGN);
+> +	return indio_dev->priv;
+>  }
+>  
+>  void iio_device_free(struct iio_dev *indio_dev);
 
-
-> Agreed it would have been nicer to have fixed those typos.
-
-Thanks for this positive feedback.
-
-
-> However, they don't affect comprehensibility of the message
-> so I'm not that worried about having them in the log.
-
-Can you get other concerns around the quality of commit messages?
-
-
-Will it become more interesting to take another look at jump targets
-for the exception handling?
-
-Regards,
-Markus

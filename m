@@ -2,153 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C9220C3B1
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jun 2020 21:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C47520C48B
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 00:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726012AbgF0TVD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jun 2020 15:21:03 -0400
-Received: from vern.gendns.com ([98.142.107.122]:35408 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725932AbgF0TVD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jun 2020 15:21:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=oFxURIxj9myDfJcM8l9lS1bZv4B4c/d/WWg4QVvvxCg=; b=K5yW/T7aiN3k8SM7hUdIzsp2Ex
-        vpB+NQsAapYuDACPwbG06es4XZ/yGb3quQ96XDPO+Z08ch2uFEaLN9DWfRDrXunOpHRs7lN18k7fp
-        Xk7E4DJy+XK0GrlhioDBZno3Vvcw1gKP6poO5PEqDuu/0OCUGgtTRlUxCNEoahyfT2bTQjGUuB5aP
-        Ov/uHspQt3ij42IEvPf8PeVCB6OIAqjEih+igZTiC2mjhTMs3cbrqeWPZnwAlhQp4Rrngah+huLiL
-        kfGGjQ3mfM8t7XUfmq8d8Ps4ztnEQhZicAwply/QXg9VRPq5Eo878dYd125RGO+m6ANLCbDYt5CAZ
-        Uunzhtsg==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:48498 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1jpGNj-0005ES-0L; Sat, 27 Jun 2020 15:20:55 -0400
-Subject: Re: [PATCH v3 3/4] counter: Add character device interface
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-References: <cover.1592341702.git.vilhelm.gray@gmail.com>
- <afe40ef2e24ecaca44fc229f7983cf4cde3374a8.1592341702.git.vilhelm.gray@gmail.com>
- <8fae0659-56df-c0b5-7c0d-220feefed2b4@lechnology.com>
- <20200621195347.GA59797@shinobu>
- <47ad15e7-05ce-d463-b6af-406365b3c3b4@lechnology.com>
- <20200627181748.GA8254@shinobu>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <cc1c347a-3363-c563-de81-06dbb464a29d@lechnology.com>
-Date:   Sat, 27 Jun 2020 14:20:52 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1725907AbgF0WEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jun 2020 18:04:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50912 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725917AbgF0WEP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jun 2020 18:04:15 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD755C061794
+        for <linux-iio@vger.kernel.org>; Sat, 27 Jun 2020 15:04:14 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id x3so695563pfo.9
+        for <linux-iio@vger.kernel.org>; Sat, 27 Jun 2020 15:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=N6kPulua2YSlM8imcShAj91mdG3FVs3SsXSz87fb1+u3nd7u7PFa6MKJ279dIRDWxh
+         0Ldfj86Lh7w+Xrc1R5Ac12lp/bi6BKorqLlDMWYld1qOBhdJB4N7Na0XiYaHB8nKtBEn
+         57C/Tzw6MUWAOIXcOnRxxN4MeNm7iQhU/hvtXzHXK0vqQBasxFJE8WhTf5ke+LZ6XEZm
+         /oWHd42QW3NLQJh3kf1TRlauenW2jL1Poq5HUYmLYngCGGUW3fX0WLGx3ldU3AhEukyR
+         HJCMoV5irc6uSRF+aDmFQnYTlSn+N9B5n6b9ltoSvd3dHTYHCaXSwIr77k6vqrwMxy85
+         lwfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=GE0Hs8iMetFbTs3jxndYzHS4IsrnLZ0Eu3s3pmmP26b/i9L2U6cosKWvtuqnU7sKOf
+         lFAgun6NZPjdqGR0n/0GH996dlJWeVuoX2JaVQ1eFc75oTcvGKnl9R7TT2yob/tOcTx8
+         BG+DHNpQEBB+A6sutgMfiixfWO8OMy2ekzPrnEuWoZ8P8b7wyqrJ+nS9GZ5HeBSpTLFM
+         QMIBBvnXJjYOPDUDCzb0LQ471xuxhA74ak7NCgQJ5db8hQ2WNTC9cx4CEXoLG42J81tI
+         P6lBM/M5lnRguU8IMakyRyl4oieUXq6magI9utphs1KYcvtd2PadkU7shcTft2cuTayh
+         +fbw==
+X-Gm-Message-State: AOAM532xIOTqtAzue7Y2ZbjFYyjAm96TCCsZhdWsYJweW1wog8WGxbBP
+        kDlynMbjLU4lZS/76XNOAt1LOFW3XC5mlTsO4tM9+XaYnWQ=
+X-Google-Smtp-Source: ABdhPJwHv45zwmNuK/YSX2uBVAIqQ2zLOwtA+ngiZqoTP9Rs9Xn2gCCD3OWXiVcvkiJ+PU31Rp2ZvkRVy2hsrxlhX9g=
+X-Received: by 2002:a92:7749:: with SMTP id s70mr10069248ilc.259.1593295098567;
+ Sat, 27 Jun 2020 14:58:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200627181748.GA8254@shinobu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Received: by 2002:a4f:4e46:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:58:17
+ -0700 (PDT)
+From:   lookman joe <mrlookmanjoe@gmail.com>
+Date:   Sat, 27 Jun 2020 22:58:17 +0100
+Message-ID: <CAG9X5Hfvk-fmbqs9+RtHRqyUu35f9-A5+EbwjPrw9eVNH09ftg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/27/20 1:17 PM, William Breathitt Gray wrote:
-> On Mon, Jun 22, 2020 at 09:08:48AM -0500, David Lechner wrote:
->> On 6/21/20 2:53 PM, William Breathitt Gray wrote:
->>> For example, in the dual-axes positioning table scenario, a user
->>> application would likely want to know the exact X and Y position at the
->>> time of a given event -- that means an event should provide two Count
->>> values (and possibly associated device flags) when it occurs. I'm not
->>> sure yet how the struct counter_event should be defined in order to
->>> support this; we will need to indicate the format of data as well as
->>> provide the data itself. Perhaps, we can handle this by providing an
->>> unique id field so that only a single datum (e.g. a single count value)
->>> is provided via the value field, but subsequent struct counter_event
->>> items share the same id so that the user knows that a particular datum
->>> is part of a larger group of data for a specific event.
->>
->> The timestamp could act as the "id" to correlate multiple values of a
->> single event.
-> 
-> Okay, I see how that can work. So the /dev/counterX character nodes
-> would return a stream of data structures that look something like this:
-> 
-> struct counter_event {
-> 	/**
-> 	 * Best approximation of when event occurred in nanoseconds.
-> 	 * Same timestamp value indicates data is part of same event.
-> 	 */
-> 	struct timeval time;
-> 	/**
-> 	 * Type of event that triggered. This would correlate with the
-> 	 * IRQ set up for the device.
-> 	 */
-> 	__u16 type;
-> 	/**
-> 	 * Type of data represented by the value member. This enables
-> 	 * the user to extract the right datatype from the value field.
-> 	 */
-> 	__u16 code;
-> 	/** The value recorded when the event fired. */
-> 	__u64 value;
-> };
-> 
-> In fact, this data structure looks a lot like struct input_event; would
-> it make sense to use that for this? I suppose we can't because we need
-> to support 64-bit value for our use cases.
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
 
-Yes, since counter is its own subsystem, it makes sense to have its own
-data types.
+Below is the sender=E2=80=99s information
 
-> 
-> Userspace also requires a way to enable the events and configure them to
-> report the data it wants. So perhaps the following sysfs attributes
-> would accomplish such:
-> 
-> * /sys/bus/devices/counterX/eventY_enable:
->    Users can enable/disable event Y.
-> * /sys/bus/devices/counterX/eventY_config:
->    Data to get when event Y is triggered (e.g. Counts, extensions, etc.).
 
-This is one of the questions I had too that I don't have a good answer to.
 
-If we want to allow the use case of multiple "consumers" for a single
-chardev where each consumer wants different events (e.g program X opens
-/dev/counter0 and wants only events A and B while program Y opens the
-same /dev/counter0 and wants only events A and C) then it would make
-sense to use an ioctl for configuration of events so that each open
-file descriptor could be configured differently.
+1. MG. REFERENCE NO#: 36360857
 
-But if we only want to allow one user of a counter, then configuring
-via sysfs as you have suggested is probably fine.
+2. SENDER'S NAME: Johnson Williams
 
-I think I might make sense to us an ioctl in any case though if we are
-going to use the same code values to configure the event.
+3. AMOUNT TO PICKUP: US$10,000
 
-> 
-> Here's another concern for latency-sensitive applications: should we
-> handle writing data to the devices? While we have real-life examples of
-> latency-sensitive read operations, I'm not sure if a user will ever need
-> to write to a counter device within some realtime critical deadline --
-> I think write operations are primarily done for the purpose of
-> configuring the device for operation rather than during it. So perhaps
-> we don't need to worry about this use case because users can write data
-> via the existing sysfs interface.
 
-Agreed.
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments

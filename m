@@ -2,157 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0772420CA5E
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 22:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C318F20CB20
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jun 2020 01:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbgF1UeK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jun 2020 16:34:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726011AbgF1UeK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jun 2020 16:34:10 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 833EA206E9;
-        Sun, 28 Jun 2020 20:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593376449;
-        bh=f150PUxzlRF1ro795mRP6yAR7C3HpuYBEnqGNJDwC94=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NFikk0dlPhNRJb7iSJhvodRnuuH6Pze6PBIwYW9dszhVTYvZIoWukiCzTGv/CFS+n
-         pg7GhsWWsAD+KIXSgFtBa/BPbRYvaA1a5RAue/zCsRB7byjRaUDlZ+3GxHClCxz0Vl
-         7mfBAL2VyCeaOfRtvJ3Pm75o+48MFN7GTm2FcxZ4=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH] dt-bindings: iio: accel: kionix,kxsd9 yaml conversion.
-Date:   Sun, 28 Jun 2020 21:32:05 +0100
-Message-Id: <20200628203205.49915-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.27.0
+        id S1726399AbgF1Xum (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jun 2020 19:50:42 -0400
+Received: from anchovy1.45ru.net.au ([203.30.46.145]:38955 "EHLO
+        anchovy1.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726350AbgF1Xum (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jun 2020 19:50:42 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Jun 2020 19:50:41 EDT
+Received: (qmail 29094 invoked by uid 5089); 28 Jun 2020 23:43:59 -0000
+Received: by simscan 1.2.0 ppid: 29014, pid: 29015, t: 0.0770s
+         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
+Received: from unknown (HELO ?192.168.0.22?) (preid@electromag.com.au@203.59.235.95)
+  by anchovy1.45ru.net.au with ESMTPA; 28 Jun 2020 23:43:58 -0000
+Subject: Re: [PATCH 21/23] iio:adc:ti-tlc4541: Drop CONFIG_OF and of_match_ptr
+ protections.
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     alexandru.Ardelean@analog.com,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20200628123654.32830-1-jic23@kernel.org>
+ <20200628123654.32830-22-jic23@kernel.org>
+From:   Phil Reid <preid@electromag.com.au>
+Message-ID: <ba126f3c-b1f8-0d21-c95a-bda1573b047e@electromag.com.au>
+Date:   Mon, 29 Jun 2020 07:43:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200628123654.32830-22-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 28/06/2020 20:36, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> These stop us using ACPI PRP0001 to instantiate the device.
+> I am slowly clearly out use of these in IIO to avoid this being coppied
+> into new drivers.
+> 
+> Here I also included mod_devicetable.h as we are using of_match_id
+> which is defined in there and hence it is best practice to include
+> it directly.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Phil Reid <preid@electromag.com.au>
 
-Convert and flesh out a bit the binding docs for this simple 3 axis
-accelerometer.
+Reviewed-by: Phil Reid <preid@electromag.com.au>
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-
-Sorry, typo in iio mailing list in first try at sending this out.
-
-.../bindings/iio/accel/kionix,kxsd9.txt       | 22 -------
- .../bindings/iio/accel/kionix,kxsd9.yaml      | 65 +++++++++++++++++++
- 2 files changed, 65 insertions(+), 22 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.txt
- create mode 100644 Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.txt b/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.txt
-deleted file mode 100644
-index b25bf3a77e0f..000000000000
---- a/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.txt
-+++ /dev/null
-@@ -1,22 +0,0 @@
--Kionix KXSD9 Accelerometer device tree bindings
--
--Required properties:
-- - compatible: 		should be set to "kionix,kxsd9"
-- - reg:			i2c slave address
--
--Optional properties:
-- - vdd-supply:		The input supply for VDD
-- - iovdd-supply:	The input supply for IOVDD
-- - interrupts:		The movement detection interrupt
-- - mount-matrix:	See mount-matrix.txt
--
--Example:
--
--kxsd9@18 {
--	compatible = "kionix,kxsd9";
--	reg = <0x18>;
--	interrupt-parent = <&foo>;
--	interrupts = <57 IRQ_TYPE_EDGE_FALLING>;
--	iovdd-supply = <&bar>;
--	vdd-supply = <&baz>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.yaml b/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.yaml
-new file mode 100644
-index 000000000000..d61ab4fa3d71
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/kionix,kxsd9.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Kionix KXSD9 Accelerometer
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description: |
-+  3 axis 12 bit accelerometer with +-8G range on all axes. Also has a
-+  12 bit auxiliary ADC channel. Interface is either SPI or I2C.
-+
-+properties:
-+  compatible:
-+    const: kionix,kxsd9
-+
-+  reg:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+  iovdd-supply: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  mount-matrix:
-+    description: an optional 3x3 mounting rotation matrix.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    # include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        accel@18 {
-+            compatible = "kionix,kxsd9";
-+            reg = <0x18>;
-+            iovdd-supply = <&iovdd>;
-+            vdd-supply = <&vdd>;
-+            interrupts = <57 IRQ_TYPE_EDGE_FALLING>;
-+            mount-matrix = "-0.984807753012208", "0",  "-0.173648177666930",
-+                           "0",                  "-1", "0",
-+                           "-0.173648177666930", "0",  "0.984807753012208";
-+        };
-+    };
-+  - |
-+    # include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        accel@0 {
-+            compatible = "kionix,kxsd9";
-+            reg = <0>;
-+            spi-max-frequency = <10000000>;
-+        };
-+    };
-+...
--- 
-2.27.0
+> ---
+>   drivers/iio/adc/ti-tlc4541.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-tlc4541.c b/drivers/iio/adc/ti-tlc4541.c
+> index 432238246519..53359a2e5bea 100644
+> --- a/drivers/iio/adc/ti-tlc4541.c
+> +++ b/drivers/iio/adc/ti-tlc4541.c
+> @@ -24,6 +24,7 @@
+>   #include <linux/iio/triggered_buffer.h>
+>   #include <linux/kernel.h>
+>   #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>   #include <linux/regulator/consumer.h>
+>   #include <linux/slab.h>
+>   #include <linux/spi/spi.h>
+> @@ -235,14 +236,12 @@ static int tlc4541_remove(struct spi_device *spi)
+>   	return 0;
+>   }
+>   
+> -#ifdef CONFIG_OF
+>   static const struct of_device_id tlc4541_dt_ids[] = {
+>   	{ .compatible = "ti,tlc3541", },
+>   	{ .compatible = "ti,tlc4541", },
+>   	{}
+>   };
+>   MODULE_DEVICE_TABLE(of, tlc4541_dt_ids);
+> -#endif
+>   
+>   static const struct spi_device_id tlc4541_id[] = {
+>   	{"tlc3541", TLC3541},
+> @@ -254,7 +253,7 @@ MODULE_DEVICE_TABLE(spi, tlc4541_id);
+>   static struct spi_driver tlc4541_driver = {
+>   	.driver = {
+>   		.name   = "tlc4541",
+> -		.of_match_table = of_match_ptr(tlc4541_dt_ids),
+> +		.of_match_table = tlc4541_dt_ids,
+>   	},
+>   	.probe          = tlc4541_probe,
+>   	.remove         = tlc4541_remove,
+> 
 

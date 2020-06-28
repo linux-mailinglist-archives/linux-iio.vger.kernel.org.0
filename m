@@ -2,37 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A321C20C7FF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 14:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A84220C800
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 14:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgF1MjF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jun 2020 08:39:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53090 "EHLO mail.kernel.org"
+        id S1726316AbgF1MjH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jun 2020 08:39:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53100 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726373AbgF1MjF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jun 2020 08:39:05 -0400
+        id S1726373AbgF1MjG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 28 Jun 2020 08:39:06 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 22C4B208B6;
-        Sun, 28 Jun 2020 12:39:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A56AE20738;
+        Sun, 28 Jun 2020 12:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593347945;
-        bh=wg5Pg+8P6WOTrxR8szcB8s+eO4PjjMh9OumP07CxuHQ=;
+        s=default; t=1593347946;
+        bh=cyIhB9UJiXDOtLIWMJ2O9p1GGj0vCZZv7qByZCulUIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hT8JXES9ySwnNfY27ktTRt2Toslb6h1TBpGdHFoCfa0xO95N1W7/f0owap+aEJ2mq
-         lJEKcFQf3RzhRaXdpOUnxutt3FSHiqhNgqyRwSyIvoV1rdJaOMrQXC5+c/oDF1l4d9
-         hE/WYNGHrTtX2epU0bvBTJAeVfU/uMPOIJwGlmXo=
+        b=veldQ0N9Xg/gvBQVxnw+R+/B36XoFvWjL+CLTJlTK+mdiEuu5QZZGYbC80ODblikn
+         tdHKSQ3pERtxigZa1MUgneiv4WDgO0OPJKOsCv7f3AiJiUT8ibElGTD8yVI6MIigDY
+         JCYHTJyZdkkMzthZoBAGdyUhVGtAryUGIav6tUiA=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     alexandru.Ardelean@analog.com,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Subject: [PATCH 04/23] iio:adc:hi8435: Drop of_match_ptr protection.
-Date:   Sun, 28 Jun 2020 13:36:35 +0100
-Message-Id: <20200628123654.32830-5-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 05/23] iio:adc:max1363: Drop of_match_ptr and use generic device_get_match_data
+Date:   Sun, 28 Jun 2020 13:36:36 +0100
+Message-Id: <20200628123654.32830-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200628123654.32830-1-jic23@kernel.org>
 References: <20200628123654.32830-1-jic23@kernel.org>
@@ -45,40 +43,67 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Allows use of ACPI with PRP0001 and is generally something we are
-trying to avoid having people cut and paste into new drivers without
-thinking about it.
+Allows driver to use ACPI PRP0001 binding and there was no particular
+advantage in having the protections in this driver.
+
+Mostly this part of an effort to remove as many OF specific bits
+of handling from IIO and use the generic forms where possible.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Vladimir Barinov <vladimir.barinov@cogentembedded.com>
-Cc: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 ---
- drivers/iio/adc/hi8435.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/max1363.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/hi8435.c b/drivers/iio/adc/hi8435.c
-index 235374ec7bab..074c30970465 100644
---- a/drivers/iio/adc/hi8435.c
-+++ b/drivers/iio/adc/hi8435.c
-@@ -15,8 +15,7 @@
- #include <linux/iio/triggered_event.h>
- #include <linux/interrupt.h>
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index d8da5da74b77..420e2ec154fc 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -22,8 +22,8 @@
+ #include <linux/slab.h>
+ #include <linux/err.h>
  #include <linux/module.h>
 -#include <linux/of.h>
 -#include <linux/of_device.h>
 +#include <linux/mod_devicetable.h>
- #include <linux/spi/spi.h>
- #include <linux/gpio/consumer.h>
++#include <linux/property.h>
  
-@@ -539,7 +538,7 @@ MODULE_DEVICE_TABLE(spi, hi8435_id);
- static struct spi_driver hi8435_driver = {
- 	.driver	= {
- 		.name		= DRV_NAME,
--		.of_match_table	= of_match_ptr(hi8435_dt_ids),
-+		.of_match_table	= hi8435_dt_ids,
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -1529,8 +1529,6 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
+ }
+ 
+-#ifdef CONFIG_OF
+-
+ #define MAX1363_COMPATIBLE(of_compatible, cfg) {		\
+ 			.compatible = of_compatible,		\
+ 			.data = &max1363_chip_info_tbl[cfg],	\
+@@ -1578,7 +1576,6 @@ static const struct of_device_id max1363_of_match[] = {
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, max1363_of_match);
+-#endif
+ 
+ static int max1363_probe(struct i2c_client *client,
+ 			 const struct i2c_device_id *id)
+@@ -1613,7 +1610,7 @@ static int max1363_probe(struct i2c_client *client,
+ 	/* this is only used for device removal purposes */
+ 	i2c_set_clientdata(client, indio_dev);
+ 
+-	st->chip_info = of_device_get_match_data(&client->dev);
++	st->chip_info = device_get_match_data(&client->dev);
+ 	if (!st->chip_info)
+ 		st->chip_info = &max1363_chip_info_tbl[id->driver_data];
+ 	st->client = client;
+@@ -1756,7 +1753,7 @@ MODULE_DEVICE_TABLE(i2c, max1363_id);
+ static struct i2c_driver max1363_driver = {
+ 	.driver = {
+ 		.name = "max1363",
+-		.of_match_table = of_match_ptr(max1363_of_match),
++		.of_match_table = max1363_of_match,
  	},
- 	.probe		= hi8435_probe,
- 	.id_table	= hi8435_id,
+ 	.probe = max1363_probe,
+ 	.remove = max1363_remove,
 -- 
 2.27.0
 

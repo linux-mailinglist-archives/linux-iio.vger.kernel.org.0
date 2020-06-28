@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2DA20C810
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 14:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A8F20C811
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 14:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgF1Mj3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jun 2020 08:39:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53350 "EHLO mail.kernel.org"
+        id S1726459AbgF1Mjb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jun 2020 08:39:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53364 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726567AbgF1Mj3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jun 2020 08:39:29 -0400
+        id S1726410AbgF1Mja (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 28 Jun 2020 08:39:30 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A9B320885;
-        Sun, 28 Jun 2020 12:39:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CE66C20738;
+        Sun, 28 Jun 2020 12:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593347969;
-        bh=vwQW7FDmT1YTvO3DuZTf8cH5c6+6KYXMKhSmm5sMUAo=;
+        s=default; t=1593347970;
+        bh=9eNDv1CmBLwsXlChrkB+Yomsxb7eXDjKajABk03fLm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DtF5a68I7QIXvzz1z7EuGu08iW7wADFUt6ISUUj04GdgLp1qQ+iWulz8nNSdASXNJ
-         6t8rXOEjqnTDBM5Yxi1R3M/5fPwLiSWo3XNHXEexG0Qr90Q10s5wXxI7oSlVX8IcR5
-         JYV/oEwpYdYZAitUPKy9QtUyMQAA6riGmflCpO2A=
+        b=bsMKwraAPfnmIkkpc8QiDjHw0wSNeQ0jso3jLEXynBn22PLebnUKCgSMhrxOGpTVg
+         HO/E9ZfjKWKY3QKxod5bzkcAFXwvKm7jfdinQ7RdN/EC/e667oZ1t4ziI6UCugQFqE
+         33SAXZ4DQ3ku+gBPYeOD9c8zkdIjWqi/TOhgRNqM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     alexandru.Ardelean@analog.com,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Phil Reid <preid@electromag.com.au>
-Subject: [PATCH 21/23] iio:adc:ti-tlc4541: Drop CONFIG_OF and of_match_ptr protections.
-Date:   Sun, 28 Jun 2020 13:36:52 +0100
-Message-Id: <20200628123654.32830-22-jic23@kernel.org>
+        Raveendra Padasalagi <raveendra.padasalagi@broadcom.com>
+Subject: [PATCH 22/23] iio:adc:bcm_iproc: Drop of_match_ptr protection and switch to mod_devicetable.h
+Date:   Sun, 28 Jun 2020 13:36:53 +0100
+Message-Id: <20200628123654.32830-23-jic23@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200628123654.32830-1-jic23@kernel.org>
 References: <20200628123654.32830-1-jic23@kernel.org>
@@ -44,56 +44,42 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These stop us using ACPI PRP0001 to instantiate the device.
-I am slowly clearly out use of these in IIO to avoid this being coppied
-into new drivers.
+Whilst it's unlikely that this driver will ever be instantiated from
+ACPI PRP0001 there is little advantage in using the of_match_ptr
+protection.  The switch of header is because we only use of_match_id
+in here and that is defined in mod_devicetable.h not of.h.
 
-Here I also included mod_devicetable.h as we are using of_match_id
-which is defined in there and hence it is best practice to include
-it directly.
+Note the main reason for this patch is to avoid providing instances
+of of_match_ptr being used in IIO that might get copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Phil Reid <preid@electromag.com.au>
+Cc: Raveendra Padasalagi <raveendra.padasalagi@broadcom.com>
 ---
- drivers/iio/adc/ti-tlc4541.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/bcm_iproc_adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-tlc4541.c b/drivers/iio/adc/ti-tlc4541.c
-index 432238246519..53359a2e5bea 100644
---- a/drivers/iio/adc/ti-tlc4541.c
-+++ b/drivers/iio/adc/ti-tlc4541.c
-@@ -24,6 +24,7 @@
- #include <linux/iio/triggered_buffer.h>
- #include <linux/kernel.h>
+diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
+index 936da32faa9d..44e1e53ada72 100644
+--- a/drivers/iio/adc/bcm_iproc_adc.c
++++ b/drivers/iio/adc/bcm_iproc_adc.c
+@@ -4,7 +4,7 @@
+  */
+ 
  #include <linux/module.h>
+-#include <linux/of.h>
 +#include <linux/mod_devicetable.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
-@@ -235,14 +236,12 @@ static int tlc4541_remove(struct spi_device *spi)
- 	return 0;
- }
- 
--#ifdef CONFIG_OF
- static const struct of_device_id tlc4541_dt_ids[] = {
- 	{ .compatible = "ti,tlc3541", },
- 	{ .compatible = "ti,tlc4541", },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, tlc4541_dt_ids);
--#endif
- 
- static const struct spi_device_id tlc4541_id[] = {
- 	{"tlc3541", TLC3541},
-@@ -254,7 +253,7 @@ MODULE_DEVICE_TABLE(spi, tlc4541_id);
- static struct spi_driver tlc4541_driver = {
- 	.driver = {
- 		.name   = "tlc4541",
--		.of_match_table = of_match_ptr(tlc4541_dt_ids),
-+		.of_match_table = tlc4541_dt_ids,
+ #include <linux/io.h>
+ #include <linux/clk.h>
+ #include <linux/mfd/syscon.h>
+@@ -617,7 +617,7 @@ static struct platform_driver iproc_adc_driver = {
+ 	.remove	= iproc_adc_remove,
+ 	.driver	= {
+ 		.name	= "iproc-static-adc",
+-		.of_match_table = of_match_ptr(iproc_adc_of_match),
++		.of_match_table = iproc_adc_of_match,
  	},
- 	.probe          = tlc4541_probe,
- 	.remove         = tlc4541_remove,
+ };
+ module_platform_driver(iproc_adc_driver);
 -- 
 2.27.0
 

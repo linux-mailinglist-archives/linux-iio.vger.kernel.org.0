@@ -2,120 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B8EF20C8D2
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 17:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7222720C949
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jun 2020 19:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbgF1Px3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jun 2020 11:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
+        id S1726060AbgF1RoI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jun 2020 13:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbgF1Px3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jun 2020 11:53:29 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CFD8C03E979
-        for <linux-iio@vger.kernel.org>; Sun, 28 Jun 2020 08:53:29 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jpZcV-0003Rk-TU; Sun, 28 Jun 2020 17:53:27 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jpZcV-0000f4-Gc; Sun, 28 Jun 2020 17:53:27 +0200
-Date:   Sun, 28 Jun 2020 17:53:24 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, alexandru.Ardelean@analog.com,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Subject: Re: [PATCH 09/23] iio:adc:ltc2497 drop of_match_ptr protection
-Message-ID: <20200628155324.y257v4tf5xvzb5xh@pengutronix.de>
-References: <20200628123654.32830-1-jic23@kernel.org>
- <20200628123654.32830-10-jic23@kernel.org>
+        with ESMTP id S1726059AbgF1RoI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jun 2020 13:44:08 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D03C03E979
+        for <linux-iio@vger.kernel.org>; Sun, 28 Jun 2020 10:44:08 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id y18so6189933plr.4
+        for <linux-iio@vger.kernel.org>; Sun, 28 Jun 2020 10:44:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sOVfKwmmQNZr2G352QOaABowV/XDqba7e5uUpidjSTo=;
+        b=jh9hcN17TwJcJSyWGQ0yN4PrII+/jU3FybguQnfb+509RC+ef7TSPZOr8OE7vkjVLX
+         xA4QNoG7tfN/z3H36urNdb/JN36PrHLD44+4mK0Fjsg8mffC7uRYPKvLZmzUQqy3gMpK
+         WIDmqo26+8ICQ8/e8OIbYV5DVXEiwV+wxC95Hu/e6+wztekCYOxIQMSY7ric74iQdMoL
+         /NBjua+cyTfAeRe8fR4Oz4XlmbJkSDyxp7B0Xsj0Dw94SBzdfE6H4KSrOkD66zBg4cOE
+         dFh3ZwcYr+kYtExMa2jyyl+V86zge/v9aFUSgufNTNA+3XUcCeKr3sAzqykj11aWU+zm
+         2h/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sOVfKwmmQNZr2G352QOaABowV/XDqba7e5uUpidjSTo=;
+        b=ZJScORz2G9EjSnJiq5xKADVwIJ+3mZOEvTkTza8cYvotR7Ft4JQFmZUHFErRlc6Fty
+         QCREjtvHM2SheS1qPQLn0tUP4NNd776fOmLzxUzLxHCxzz/Rf5nk0U9wi2Yo6CaxnWhB
+         +YkZhv//xrbgNVc/RaBHJatyQspAn0hkwRxhY6NldGwjw8/auOZEYIKmXtiOLtms8ruo
+         kqGOsbUpsOehHtzMHIozZl7Wg3+MGa3tuXXYB+OdkfmPwV8p65TRKI+sLprJvA4mMwgi
+         O3i8NJMW8V2M6iu77Td0YItdB7qPw3xffVZDZ6HPJlYHQtu/qbHHlTqDzNRqvXVeJf3/
+         v2XA==
+X-Gm-Message-State: AOAM53385xAAsYpwVMJcxXVoEBJpUowtD7KDsyyvaHDOaI15m5YJqpsr
+        n/5dGDLMhXmsZCxD+2M/7Z0IFkhKxb3+Hxnmo4g=
+X-Google-Smtp-Source: ABdhPJy2Yu9CY7fU3zcCSxUkY8LU0HgNA2herx+ESbxgzbk3PXqaQECWfAKOrllmm+0eLie2mJ7B/Rr8Q4ixSSqteMA=
+X-Received: by 2002:a17:902:7611:: with SMTP id k17mr10649450pll.255.1593366246791;
+ Sun, 28 Jun 2020 10:44:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wykm4kxbgrij3fmo"
-Content-Disposition: inline
-In-Reply-To: <20200628123654.32830-10-jic23@kernel.org>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+References: <20200628123654.32830-1-jic23@kernel.org> <20200628123654.32830-3-jic23@kernel.org>
+In-Reply-To: <20200628123654.32830-3-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 28 Jun 2020 20:43:50 +0300
+Message-ID: <CAHp75Vdfe=5gwM9wRpVq5+OQeSALQOhcVyENUaNDaXZpYnnRyQ@mail.gmail.com>
+Subject: Re: [PATCH 02/23] iio:adc:axp20x: Convert from OF to generic fw /
+ device properties
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Quentin Schulz <quentin.schulz@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Jun 28, 2020 at 3:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
---wykm4kxbgrij3fmo
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Whilst fairly unlikely anyone will ever use this driver with anything
+> other than DT, we are trying to move IIO over to the generic interfaces
+> where easy to do so.
+>
+> In this case this involved moving to generic check on presence
+> of fw_node, generic device_get_match_data and dropping the of_match_ptr
+> protection.  Also relevant header changes to have property.h and
+> mod_devicetable.h only.
 
-On Sun, Jun 28, 2020 at 01:36:40PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> This prevents the driver being used with ACPI PRP0001 based
-> bindings. Also switch include to mod_devicetable.h which devices
-> the used id structure.
->=20
-> Note this is most about removing something I don't want want cut
-> and paste into new driver rather than any thought that this particular
-> driver will be used in an ACPI system (though it might!)
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
-> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/iio/adc/ltc2497.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
-> index 5db63d7c6bc5..1adddf5a88a9 100644
-> --- a/drivers/iio/adc/ltc2497.c
-> +++ b/drivers/iio/adc/ltc2497.c
-> @@ -11,7 +11,7 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/driver.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
-> +#include <linux/mod_devicetable.h>
-> =20
->  #include "ltc2497.h"
-> =20
-> @@ -98,7 +98,7 @@ MODULE_DEVICE_TABLE(of, ltc2497_of_match);
->  static struct i2c_driver ltc2497_driver =3D {
->  	.driver =3D {
->  		.name =3D "ltc2497",
-> -		.of_match_table =3D of_match_ptr(ltc2497_of_match),
-> +		.of_match_table =3D ltc2497_of_match,
+...
 
-This was the copy source of ltc2496_driver. there the change was fine,
-so it is here:
+> -               info->data = (struct axp_data *)of_device_get_match_data(dev);
+> +               info->data = (struct axp_data *)device_get_match_data(dev);
 
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Casting is not needed, but if you remove it it reveals a hidden const
+qualifier drop.
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---wykm4kxbgrij3fmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl74vPEACgkQwfwUeK3K
-7AmJRgf+OtxFqoQH16AKOqO01RwICqzOg62ws3wg+r1KMGdVQ8BZLiiHUZaUuUjt
-9eV9Or/3jrGl+xawfdWSeAKIh+5DUPwqumTP78P7hpadsJMSNGetl7ejbDED7A4q
-4LKb9iWv7DxTj4anf1/DIMY6NiGE7Vk2uNaX5hqsT1J/UDvE6uMdkNy4RJgLa+il
-DEuac9giiRpVpBt4yljWagdSYTuzrnAewca6oztWBkXFXsPiy6oFvus4U3VISr42
-UfzyHTA27tf9eeG4YlBhIyqKrAi0l4wBKUNRmtNfrnACGCqmQswrVLKvWTSpVRcF
-IuOhEi5HGOd74IqXRSc7g96Ot4QxcA==
-=u5cA
------END PGP SIGNATURE-----
-
---wykm4kxbgrij3fmo--
+-- 
+With Best Regards,
+Andy Shevchenko

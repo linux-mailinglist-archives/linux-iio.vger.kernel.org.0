@@ -2,67 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF02120D436
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jun 2020 21:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6771820D56F
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jun 2020 21:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730468AbgF2TGU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Jun 2020 15:06:20 -0400
-Received: from www381.your-server.de ([78.46.137.84]:46342 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729371AbgF2TGT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Jun 2020 15:06:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=XTvylXMPIsFqnfKIAoIZyVNDNeQ+X85fQ4qzs7EoduI=; b=QmS0Aewli0daeHBXlQwTsOn3q8
-        nxxCcTfjv0G918ucLK364sfDiZ91JAjTS/vodpcC/V244DUIQuEIBIEH2vWKXKlsE7YRbLF7oQimb
-        4WGK573xw3tWw+x5VPRI5YzFPQAywNBHwCh7GS290PTK2XdwdwJULDdFnIRR5CqvhBu7x+0IPkylD
-        T9piIkYmf3XtbUBsUQclk6WUICtkzHfiGnTmVyT+f+DrDuaYHOqXUe1iLHDH+mhDaZ6tv0ecdAfMM
-        1yrN1oZiQsR1e2BvNuwKe6axxYw+RegZiFYdydZD6nrIQYnb62CLtkqi/4Mx7+QO7qKnS3j/P155M
-        5+f/NxDw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jpz6c-00045S-1Z; Mon, 29 Jun 2020 21:06:14 +0200
-Received: from [82.135.70.27] (helo=[192.168.178.20])
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jpz6b-000Gpr-SC; Mon, 29 Jun 2020 21:06:13 +0200
-Subject: Re: Interest in a virtual IIO microconf?
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <20200628133607.61d31ed1@archlinux>
- <2fd40a0d341cbe7dded2fa9b2f53b4f87b1a2ab8.camel@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <d7124f0b-99cb-0213-329d-dbade7d5a56d@metafoo.de>
-Date:   Mon, 29 Jun 2020 21:06:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1731911AbgF2TQd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Jun 2020 15:16:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44020 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731900AbgF2TQF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Jun 2020 15:16:05 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBA1C08C5FD
+        for <linux-iio@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id e64so13461524iof.12
+        for <linux-iio@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
+         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
+         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
+         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
+         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
+         3NGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=uI5qqvvae+1+LIR+iLtWgsUmSK+7WCcxvbuEiLK0UcUaWxiSvyCWsux4FQiOjwSxUr
+         QqZnWK6BCL1sudD7TOtTTkGHUtd3wWxLHGsRNRCfk+MoTZNrwdbhWlFbGpFetwx31Jdn
+         mKnxp7bwSmZyfIAZBBG+OF8tYZ7E+j129kAK6QagoR6gb2v40qQOAWju9kFHPIRhMzwy
+         M0TvcAUWcTTR7/gfYBImH7NaFn9E574lMmVS8fQspaOo1Is/2UL3A3T82CuLhmWIIYWW
+         q4TtMxOZT2kLqg4FDElHvFSSQyOU2rY+XEk2rBL/SM6gxze8J5eQMMAKSowDU1MVCQNF
+         snPw==
+X-Gm-Message-State: AOAM533n8QqAzOcPN7/YTuzJ0N7RNbKfgtEpb1lr9qc0AqidTqf/+Gdb
+        DlhrCfJr+gA1LH2lG8EzNGZN8zRaVsNpP5eTJIU=
+X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
+X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
+ Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <2fd40a0d341cbe7dded2fa9b2f53b4f87b1a2ab8.camel@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.3/25858/Mon Jun 29 15:30:49 2020)
+Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
+ -0700 (PDT)
+Reply-To: mrs.victoria.alexander2@gmail.com
+From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
+Date:   Mon, 29 Jun 2020 12:15:58 -0700
+Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/29/20 3:51 PM, Ardelean, Alexandru wrote:
-> There's also an internal idea we had, where we can extend the IIO dummy
-> driver [or create a new one], to load data and read-back [as a replay for
-> userspace].
-> We never got to do it, but would be curios of other did.
+Dear friend,
 
-Like this?
 
-https://github.com/larsclausen/linux/blob/iio-high-speed-4.19/drivers/iio/dummy/iio_virtual_dma_loopback.c
+I have a business container transaction what that some of( $13million dollars)
 
+ I would like to discuss with you. If you are interested, please
+contact my email
+
+address (mrs.victoria.alexander2@gmail.com)
+
+My WhatsApp number but only message (+19293737780)
+
+Please do not reply if you are not ready
+Thanks

@@ -2,124 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B648720F42A
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jun 2020 14:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A1820F7FA
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jun 2020 17:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733044AbgF3MK1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Jun 2020 08:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60334 "EHLO
+        id S1732793AbgF3PMO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Jun 2020 11:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733049AbgF3MK0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jun 2020 08:10:26 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D1D2C03E97A
-        for <linux-iio@vger.kernel.org>; Tue, 30 Jun 2020 05:10:26 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id k15so18159258otp.8
-        for <linux-iio@vger.kernel.org>; Tue, 30 Jun 2020 05:10:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NAGbdMKehJWxVlFr926dVUaKEFdL3dy5MG19MRyLbvI=;
-        b=o31V1ZHOjDOtIAN1jxax4laiARUXPgXnugPc1/4XM8WMjPSFHvToHuXOCwr8b6553o
-         DD3YKEwTm4+CfJahjqIORUg/UTHjboKMM5TuFnY2zKY2I0dmFZI87Ij9hA4NRF4+KFG4
-         yWkH5zKmFhH4uQhUHJarZjzMSM2qE589nU27UPRDXFhnOkO7Y2YZ51mOLE8dy8Cb46rR
-         R8IcfZCVXQdvau7deKcyFFPXLBa1L5e/C97DU15/1cSl5GvQXExB+gKMiKt1Wt1Yx18c
-         OfjxNkK53zUySfTva7QQ/7kjE8TYr12Zol3Ot8Fkb/jmXreYFq0y5WdK2C/E1ThLoXHd
-         TS8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NAGbdMKehJWxVlFr926dVUaKEFdL3dy5MG19MRyLbvI=;
-        b=Tg0/JZJ7qXQr5vXNxhTUjzKYSl444t59G2gz3ydlcDZbnV2RyR6/YwYe2yiNTaOW50
-         IH6gQ1jCLnM/mAdrwcaWtAIBbu2C7C2AWFOskRSzID8scvYXUmrrwtZ9CS1mrcFf99x8
-         g/vHOfZJXDGEHquzyRd4jGBGRUx98BRMUHw1STSjrk6b92LhmLENDH92quFZ0xI68roX
-         QcilR00J6d4igVK5JFNZgnZZPscdPFCzPxF9oGtX5jjQN1H+mAJCGna8OZH0fX+9YnYV
-         qdzP/u9UT6L33/T+tR9YPTFJWDnaxgDuRUV3z88VQkxQfxCyP23spPCqAFPtw5P8vtIx
-         GxNg==
-X-Gm-Message-State: AOAM530eMde0rCrRovobogg9NpJYsBwZlrB039klQHZJmex0SwgyzRNQ
-        H5oHp1urj74AXfXCpUktLKeMWMfBAJpZqs3183nPYg==
-X-Google-Smtp-Source: ABdhPJw2q4etsQZ39OpngsI1fW2rJDW4wZr4IX5R00YqLdMFCViWYY17CGQyW/rchwxHK0PaipZZaeBJGlqE8HeogaI=
-X-Received: by 2002:a9d:39f5:: with SMTP id y108mr17820882otb.262.1593519025244;
- Tue, 30 Jun 2020 05:10:25 -0700 (PDT)
+        with ESMTP id S1731186AbgF3PMO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jun 2020 11:12:14 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7966C061755
+        for <linux-iio@vger.kernel.org>; Tue, 30 Jun 2020 08:12:14 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 301792A0938
+Subject: Re: [PATCH] iio: cros_ec: Use default frequencies when EC returns
+ invalid information
+To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
+        bleung@chromium.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org
+References: <20200630075933.3056990-1-gwendal@chromium.org>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <6ef3d7ea-31f3-09fb-f0c0-61e9999e5761@collabora.com>
+Date:   Tue, 30 Jun 2020 17:12:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200621193549.2070434-1-dmitry.baryshkov@linaro.org>
- <20200621193549.2070434-6-dmitry.baryshkov@linaro.org> <CAHLCerOqWWr3i32tRgGfep12YfDufw-WU80VWUsUNpDDZ13D-w@mail.gmail.com>
-In-Reply-To: <CAHLCerOqWWr3i32tRgGfep12YfDufw-WU80VWUsUNpDDZ13D-w@mail.gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Tue, 30 Jun 2020 15:10:13 +0300
-Message-ID: <CAA8EJppAQgmS7VVCjVe8QST2RQU46mXO2jtUPFY30mH9sVu_rQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] arm64: dts: sm8250-dts: add thermal zones using
- pmic's adc-tm5
-To:     Amit Kucheria <amit.kucheria@verdurent.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200630075933.3056990-1-gwendal@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Hi Gwendal,
 
-On Tue, 30 Jun 2020 at 08:06, Amit Kucheria <amit.kucheria@verdurent.com> wrote:
-> On Mon, Jun 22, 2020 at 1:06 AM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
-> >
-> > Port thermal zones definitions from msm-4.19 tree. Enable and add
-> > channel configuration to PMIC's ADC-TM definitions. Declare thermal
-> > zones and respective trip points.
-> >
-> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > ---
-> >  arch/arm64/boot/dts/qcom/sm8250-mtp.dts | 237 ++++++++++++++++++++++++
-> >  1 file changed, 237 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
->
-> IMO, this should be separated in the pmic dts file like we do for
-> other QC platforms since the PMICs tend to be used in multiple
-> platforms.
+Thank you for the patch.
 
-Unlike other PMIC/tsens thermal zones, these definitions are quite
-specific to the board from my point of view.
+On 30/6/20 9:59, Gwendal Grignou wrote:
+> Minimal and maximal frequencies supported by a sensor is queried.
+> On some older machines, these frequencies are not returned properly and
+> the EC returns 0 instead.
+> When returned maximal frequency is 0, ignore the information and use
+> default frequencies instead.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  .../common/cros_ec_sensors/cros_ec_sensors_core.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 36e3f20891f05..8437ff659260b 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -289,7 +289,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  	struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
+>  	struct cros_ec_dev *ec = sensor_hub->ec;
+>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+> -	u32 ver_mask;
+> +	u32 ver_mask, temp;
+>  	int frequencies[ARRAY_SIZE(state->frequencies) / 2] = { 0 };
+>  	int ret, i;
+>  
+> @@ -345,8 +345,17 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  						 &frequencies[2],
+>  						 &state->fifo_max_event_count);
+>  		} else {
+> -			frequencies[1] = state->resp->info_3.min_frequency;
+> -			frequencies[2] = state->resp->info_3.max_frequency;
+> +			if (state->resp->info_3.max_frequency == 0) {
 
-> > index aa37eb112d85..78f0cf582a9a 100644
-> > --- a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-> > +++ b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-> > @@ -24,6 +24,104 @@ chosen {
-> >                 stdout-path = "serial0:115200n8";
-> >         };
-> >
-> > +       thermal-zones {
-> > +               xo-therm {
-> > +                       polling-delay-passive = <0>;
-> > +                       polling-delay = <0>;
-> > +                       thermal-sensors = <&pm8150_adc_tm 0>;
-> > +                       trips {
-> > +                               active-config0 {
-> > +                                       temperature = <125000>;
-> > +                                       hysteresis = <1000>;
-> > +                                       type = "passive";
-> > +                               };
-> > +                       };
-> > +               };
-> > +
+I might miss some use cases but I am wondering if this can be OR'ed with the
+above if, so there is only one call to get_default_min_max_freq
 
+> +				get_default_min_max_freq(state->resp->info.type,
+> +							 &frequencies[1],
+> +							 &frequencies[2],
+> +							 &temp);
 
+and use &state->fifo_max_event_count instead of temp, so you don't need to
+create a new variable that is not used anymore. Or is in purpose?
 
--- 
-With best wishes
-Dmitry
+> +			} else {
+> +				frequencies[1] =
+> +					state->resp->info_3.min_frequency;
+
+nit: I think that you can take advantage of the new 100 character line length
+limit, here.
+
+> +				frequencies[2] =
+> +					state->resp->info_3.max_frequency;
+
+nit: ditto
+
+> +			}
+>  			state->fifo_max_event_count =
+>  			    state->resp->info_3.fifo_max_event_count;
+>  		}
+> 

@@ -2,125 +2,296 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 791B5210E25
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jul 2020 16:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5632112EA
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jul 2020 20:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727014AbgGAO4a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jul 2020 10:56:30 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:42046 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726854AbgGAO43 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jul 2020 10:56:29 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 061EtrS5003069;
-        Wed, 1 Jul 2020 16:56:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=nGDxePmF8IHyOLxj56WyGmH8rDztYQ7/Xj77p7TVsIY=;
- b=wpXgP/rpD0IANM8/tkoEOdkQWEETKMnvIvHdvYz/RnTNlb/T9hYWhL/hRDfBxv8YFH/g
- q0pcI2muFSjnAz89Zjo6N3lL1hZpAkjfYj8kevyScHcluxdmTEDW05zjQciBmBcxr4wR
- O4MhmBrZZT46RR5YuFouOnSL2usw1wHaDvrHKzKHtWtkOLNclPEjCiZO3b0xVMwvG7Zy
- L3FNKVzXsCmTpk2tpDh1v5S4scfP48xfXDozmU7kqAisBH+mcX79tA68FBB7zVWlSsbe
- yW8HHdy0eoVr9uEBDqdcHSFtRvHlFo7D4HeEGKZyyNA9f2G3LKcv2C8iT4dUYhE7glVN cg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 31wuk1jsy0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 01 Jul 2020 16:56:11 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1F6E210002A;
-        Wed,  1 Jul 2020 16:56:10 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0F0502BE22C;
-        Wed,  1 Jul 2020 16:56:10 +0200 (CEST)
-Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 1 Jul 2020 16:56:09
- +0200
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>, <rafael.j.wysocki@intel.com>
-CC:     <rjw@rjwysocki.net>, <ulf.hansson@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [RESEND PATCH v2] iio: adc: stm32-adc: fix runtime autosuspend delay when slow polling
-Date:   Wed, 1 Jul 2020 16:55:28 +0200
-Message-ID: <1593615328-5180-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1725535AbgGASmI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jul 2020 14:42:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53314 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725440AbgGASmI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 1 Jul 2020 14:42:08 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F2B2020748;
+        Wed,  1 Jul 2020 18:42:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593628926;
+        bh=SGzBlv6qFvyDNHfk7aechs86/O7qr6E6QM6Q0HVdS7w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=eOLnsih+XR6nvj9wm2mPrE03duUQ1rtTdnCPVrM1pnHLXCBNw5HjBVL2xeLmre15K
+         0s3F9w6ekTVKqf4lBFj0suigXV7Q/YY8F5MmAFkjwluGsKk6Ibu13QJJdlniUZNGeF
+         Hkb0qk79CGkHV41W/aRZykzZdbq4SLTg6r85Qmkw=
+Date:   Wed, 1 Jul 2020 19:42:00 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH v4 4/7] iio: core: move debugfs data on the private iio
+ dev info
+Message-ID: <20200701194200.716a263b@archlinux>
+In-Reply-To: <3ad8e37bc439f0619f63010809fb0080b61a1b56.camel@analog.com>
+References: <20200630045708.14166-1-alexandru.ardelean@analog.com>
+        <20200630045708.14166-5-alexandru.ardelean@analog.com>
+        <3ad8e37bc439f0619f63010809fb0080b61a1b56.camel@analog.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG3NODE1.st.com (10.75.127.7) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-01_08:2020-07-01,2020-07-01 signatures=0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When the ADC is runtime suspended and starting a conversion, the stm32-adc
-driver calls pm_runtime_get_sync() that gets cascaded to the parent
-(e.g. runtime resume of stm32-adc-core driver). This also kicks the
-autosuspend delay (e.g. 2s) of the parent.
-Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
-capture) won't kick the autosuspend delay for the parent (stm32-adc-core
-driver) as already active.
+On Tue, 30 Jun 2020 04:58:06 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-Currently, this makes the stm32-adc-core driver go in suspend state
-every 2s when doing slow polling. As an example, doing a capture, e.g.
-cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
-isn't refreshed. Once it expires, the parent immediately falls into
-runtime suspended state, in between two captures, as soon as the child
-driver falls into runtime suspend state:
-- e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
-  autosuspend delay of the child.
-- stm32-adc-core switches off regulators, clocks and so on.
-- They get switched on back again 100ms later in this example (at 2.2s).
+> On Tue, 2020-06-30 at 07:57 +0300, Alexandru Ardelean wrote:
+> > This change moves all iio_dev debugfs fields to the iio_dev_priv object.
+> > It's not the biggest advantage yet (to the whole thing of
+> > abstractization)
+> > but it's a start.
+> > 
+> > The iio_get_debugfs_dentry() function (which is moved in
+> > industrialio-core.c) needs to also be guarded against the CONFIG_DEBUG_FS
+> > symbol, when it isn't defined. We do want to keep the inline definition
+> > in
+> > the iio.h header, so that the compiler can better infer when to compile
+> > out
+> > debugfs code that is related to the IIO debugfs directory.
+> >   
+> 
+> Well, pretty much only this patch changed since V3.
+> I thought about maybe re-doing just this patch, then I thought maybe I'd
+> get a minor complaint that I should re-send the series.
+> 
+> Either way, I prefer a complaint on this V4 series-re-send than if I were
+> to have re-sent just this patch.
 
-So, use runtime_idle() callback in stm32-adc-core driver to call
-pm_runtime_mark_last_busy() for the parent driver (stm32-adc-core),
-to avoid this.
+Either way worked.
 
-Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
+However this doesn't pass my basic build test. Config condition
+is reversed. 
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
-Changes in v2:
-- Use runtime_idle callback in stm32-adc-core driver, instead of refreshing
-  last_busy from the child (for the parent) at many place. Initial patch v1
-  looked like "somewhat adhoc solution" as commented by Jonathan.
----
- drivers/iio/adc/stm32-adc-core.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Fixed up and pushed out as testing.
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 0e2068e..3586369 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -794,6 +794,13 @@ static int stm32_adc_core_runtime_resume(struct device *dev)
- {
- 	return stm32_adc_core_hw_start(dev);
- }
-+
-+static int stm32_adc_core_runtime_idle(struct device *dev)
-+{
-+	pm_runtime_mark_last_busy(dev);
-+
-+	return 0;
-+}
- #endif
- 
- static const struct dev_pm_ops stm32_adc_core_pm_ops = {
-@@ -801,7 +808,7 @@ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
- 				pm_runtime_force_resume)
- 	SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
- 			   stm32_adc_core_runtime_resume,
--			   NULL)
-+			   stm32_adc_core_runtime_idle)
- };
- 
- static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
--- 
-2.7.4
+
+Jonathan
+
+> 
+> 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > ---
+> >  drivers/iio/industrialio-core.c | 46 +++++++++++++++++++++++----------
+> >  include/linux/iio/iio-opaque.h  | 10 +++++++
+> >  include/linux/iio/iio.h         | 13 +---------
+> >  3 files changed, 44 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-
+> > core.c
+> > index 27005ba4d09c..64174052641a 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -165,6 +165,19 @@ static const char * const iio_chan_info_postfix[] =
+> > {
+> >  	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
+> >  };
+> >  
+> > +#if !defined(CONFIG_DEBUG_FS)
+
+Don't we want this if it is defined.
+
+> > +/**
+> > + * There's also a CONFIG_DEBUG_FS guard in include/linux/iio/iio.h for
+> > + * iio_get_debugfs_dentry() to make it inline if CONFIG_DEBUG_FS is
+> > undefined
+> > + */
+> > +struct dentry *iio_get_debugfs_dentry(struct iio_dev *indio_dev)
+> > +{
+> > +	struct iio_dev_opaque *iio_dev_opaque =
+> > to_iio_dev_opaque(indio_dev);
+> > +	return iio_dev_opaque->debugfs_dentry;
+> > +}
+> > +EXPORT_SYMBOL_GPL(iio_get_debugfs_dentry);
+> > +#endif
+> > +
+> >  /**
+> >   * iio_find_channel_from_si() - get channel from its scan index
+> >   * @indio_dev:		device
+> > @@ -308,35 +321,37 @@ static ssize_t iio_debugfs_read_reg(struct file
+> > *file, char __user *userbuf,
+> >  			      size_t count, loff_t *ppos)
+> >  {
+> >  	struct iio_dev *indio_dev = file->private_data;
+> > +	struct iio_dev_opaque *iio_dev_opaque =
+> > to_iio_dev_opaque(indio_dev);
+> >  	unsigned val = 0;
+> >  	int ret;
+> >  
+> >  	if (*ppos > 0)
+> >  		return simple_read_from_buffer(userbuf, count, ppos,
+> > -					       indio_dev->read_buf,
+> > -					       indio_dev->read_buf_len);
+> > +					       iio_dev_opaque->read_buf,
+> > +					       iio_dev_opaque-  
+> > >read_buf_len);  
+> >  
+> >  	ret = indio_dev->info->debugfs_reg_access(indio_dev,
+> > -						  indio_dev-  
+> > >cached_reg_addr,  
+> > +						  iio_dev_opaque-  
+> > >cached_reg_addr,  
+> >  						  0, &val);
+> >  	if (ret) {
+> >  		dev_err(indio_dev->dev.parent, "%s: read failed\n",
+> > __func__);
+> >  		return ret;
+> >  	}
+> >  
+> > -	indio_dev->read_buf_len = snprintf(indio_dev->read_buf,
+> > -					   sizeof(indio_dev->read_buf),
+> > -					   "0x%X\n", val);
+> > +	iio_dev_opaque->read_buf_len = snprintf(iio_dev_opaque->read_buf,
+> > +					      sizeof(iio_dev_opaque-  
+> > >read_buf),  
+> > +					      "0x%X\n", val);
+> >  
+> >  	return simple_read_from_buffer(userbuf, count, ppos,
+> > -				       indio_dev->read_buf,
+> > -				       indio_dev->read_buf_len);
+> > +				       iio_dev_opaque->read_buf,
+> > +				       iio_dev_opaque->read_buf_len);
+> >  }
+> >  
+> >  static ssize_t iio_debugfs_write_reg(struct file *file,
+> >  		     const char __user *userbuf, size_t count, loff_t
+> > *ppos)
+> >  {
+> >  	struct iio_dev *indio_dev = file->private_data;
+> > +	struct iio_dev_opaque *iio_dev_opaque =
+> > to_iio_dev_opaque(indio_dev);
+> >  	unsigned reg, val;
+> >  	char buf[80];
+> >  	int ret;
+> > @@ -351,10 +366,10 @@ static ssize_t iio_debugfs_write_reg(struct file
+> > *file,
+> >  
+> >  	switch (ret) {
+> >  	case 1:
+> > -		indio_dev->cached_reg_addr = reg;
+> > +		iio_dev_opaque->cached_reg_addr = reg;
+> >  		break;
+> >  	case 2:
+> > -		indio_dev->cached_reg_addr = reg;
+> > +		iio_dev_opaque->cached_reg_addr = reg;
+> >  		ret = indio_dev->info->debugfs_reg_access(indio_dev, reg,
+> >  							  val, NULL);
+> >  		if (ret) {
+> > @@ -378,23 +393,28 @@ static const struct file_operations
+> > iio_debugfs_reg_fops = {
+> >  
+> >  static void iio_device_unregister_debugfs(struct iio_dev *indio_dev)
+> >  {
+> > -	debugfs_remove_recursive(indio_dev->debugfs_dentry);
+> > +	struct iio_dev_opaque *iio_dev_opaque =
+> > to_iio_dev_opaque(indio_dev);
+> > +	debugfs_remove_recursive(iio_dev_opaque->debugfs_dentry);
+> >  }
+> >  
+> >  static void iio_device_register_debugfs(struct iio_dev *indio_dev)
+> >  {
+> > +	struct iio_dev_opaque *iio_dev_opaque;
+> > +
+> >  	if (indio_dev->info->debugfs_reg_access == NULL)
+> >  		return;
+> >  
+> >  	if (!iio_debugfs_dentry)
+> >  		return;
+> >  
+> > -	indio_dev->debugfs_dentry =
+> > +	iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > +
+> > +	iio_dev_opaque->debugfs_dentry =
+> >  		debugfs_create_dir(dev_name(&indio_dev->dev),
+> >  				   iio_debugfs_dentry);
+> >  
+> >  	debugfs_create_file("direct_reg_access", 0644,
+> > -			    indio_dev->debugfs_dentry, indio_dev,
+> > +			    iio_dev_opaque->debugfs_dentry, indio_dev,
+> >  			    &iio_debugfs_reg_fops);
+> >  }
+> >  #else
+> > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-
+> > opaque.h
+> > index 1375674f14cd..b3f234b4c1e9 100644
+> > --- a/include/linux/iio/iio-opaque.h
+> > +++ b/include/linux/iio/iio-opaque.h
+> > @@ -6,9 +6,19 @@
+> >  /**
+> >   * struct iio_dev_opaque - industrial I/O device opaque information
+> >   * @indio_dev:			public industrial I/O device
+> > information
+> > + * @debugfs_dentry:		device specific debugfs dentry
+> > + * @cached_reg_addr:		cached register address for debugfs reads
+> > + * @read_buf:			read buffer to be used for the
+> > initial reg read
+> > + * @read_buf_len:		data length in @read_buf
+> >   */
+> >  struct iio_dev_opaque {
+> >  	struct iio_dev			indio_dev;
+> > +#if defined(CONFIG_DEBUG_FS)
+> > +	struct dentry			*debugfs_dentry;
+> > +	unsigned			cached_reg_addr;
+> > +	char				read_buf[20];
+> > +	unsigned int			read_buf_len;
+> > +#endif
+> >  };
+> >  
+> >  #define to_iio_dev_opaque(indio_dev)		\
+> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > index 86112e35ae5f..bb0aae11a111 100644
+> > --- a/include/linux/iio/iio.h
+> > +++ b/include/linux/iio/iio.h
+> > @@ -520,8 +520,6 @@ struct iio_buffer_setup_ops {
+> >   * @groups:		[INTERN] attribute groups
+> >   * @groupcounter:	[INTERN] index of next attribute group
+> >   * @flags:		[INTERN] file ops related flags including busy
+> > flag.
+> > - * @debugfs_dentry:	[INTERN] device specific debugfs dentry.
+> > - * @cached_reg_addr:	[INTERN] cached register address for debugfs reads.
+> >   * @priv:		[DRIVER] reference to driver's private information
+> >   *			**MUST** be accessed **ONLY** via iio_priv() helper
+> >   */
+> > @@ -567,12 +565,6 @@ struct iio_dev {
+> >  	int				groupcounter;
+> >  
+> >  	unsigned long			flags;
+> > -#if defined(CONFIG_DEBUG_FS)
+> > -	struct dentry			*debugfs_dentry;
+> > -	unsigned			cached_reg_addr;
+> > -	char				read_buf[20];
+> > -	unsigned int			read_buf_len;
+> > -#endif
+> >  	void				*priv;
+> >  };
+> >  
+> > @@ -727,10 +719,7 @@ static inline bool iio_buffer_enabled(struct iio_dev
+> > *indio_dev)
+> >   * @indio_dev:		IIO device structure for device
+> >   **/
+> >  #if defined(CONFIG_DEBUG_FS)
+> > -static inline struct dentry *iio_get_debugfs_dentry(struct iio_dev
+> > *indio_dev)
+> > -{
+> > -	return indio_dev->debugfs_dentry;
+> > -}
+> > +struct dentry *iio_get_debugfs_dentry(struct iio_dev *indio_dev);
+> >  #else
+> >  static inline struct dentry *iio_get_debugfs_dentry(struct iio_dev
+> > *indio_dev)
+> >  {  
 

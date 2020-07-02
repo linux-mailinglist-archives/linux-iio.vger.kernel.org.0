@@ -2,134 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FA32121F5
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jul 2020 13:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C153B21294A
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jul 2020 18:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728502AbgGBLRL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jul 2020 07:17:11 -0400
-Received: from sonic316-13.consmr.mail.bf2.yahoo.com ([74.6.130.123]:45822
-        "EHLO sonic316-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728501AbgGBLRK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jul 2020 07:17:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1593688629; bh=NQQqU1PeFJSsC+ymHCz198coL/kqcVSY9gUcHqcpdis=; h=Date:From:Reply-To:Subject:References:From:Subject; b=d+SPetLPWDdjNO1S37zMWG5NExf6F3eAQS4OYISDoV5MHRYDKXYEAQD7YezAzc//UWA+hAV3EFe91JHr6IzaaIsfJ9SISYHXGvvGWdlYNnoTwl4D976Bvb4I4RT0sLTm3pceWBP2zYoHBDIt8ca3VfAyZAsJayN7D1JG5HFkd1e7xDAgIfUcofn3Lf24jSAh6+5auekcEYGSZRylETY8GFbbe2Vs5dliFi0zbFlX/M0IeXXbWuLixYPk81ayEYZ7ONZBF42k2BaLcrEh/U+yZx+wN6iYzGJi4vMSaMBXbgE4BbQtSc7IXmLcfEMCIi7BCNlLb4fD/vyK5Sn+S4ikCg==
-X-YMail-OSG: 6lqJBoYVM1kaHDT7v0u7obhcJ9_o1lNJgmQtH.nl7IoTJa2f1GNSisAWcyTXU9i
- zNlAmUhCzDDSAC9K4qXxReJ.egbKeQ02mDK4h1FU7JakpYbaurj7J6CLDuTgJ78EBt9n8Acm0uxy
- kAL5..By61M6aD2oi4rjhvdOtzUmMtg0ePmWz4n4IxCPs6H90BvLqSlz0hsisUBMJHb4G_biu4RY
- PhzKYEstPvuvbPXz4h.Bn7kiMBBKP6Np3U6GfIe1uY0erO5LXahf_1R4A4blb8tAsvo9aU6h8Pbu
- qSIybBXV6XH14DEVKDY4vsMDCqhNSkSBxxgAHlkq0qHVPtZhSCTdSOLxzw6loLJMHUrIk_90eWJa
- Y4_sVGbJVk.YgAyIxSPeeAntOWWwh8cGJB9X7BeWHR1uqOAhuzbj6lWif_hYcsOM2tn5ZAH3J6es
- kJRjFDFZByauo6Y2khdvIMf2TaSvgV6mryxjhqBiynf__GsYwtDi0rb_qL0fuZG27S3qqKAbcjFx
- z74.XsKUQuZvuiFg2rf5BESVYO4IMV3V8CBmj7EXkqokff.g4evmOeB3n1e0nmmXan40LwY3jjix
- mrOgBxfbIMyK5A3LPCjdXwo8aHSwm8dIDe8SRfwWJrpDpWAauAHc_hMA1AeuIcyfpW7bMnnlKrV_
- erqOT2Dsuc3GaoNkRqQ8XSfNo0NopkQJ26DEeD7vwqmWQKn58CLyTBLXoOWtui4vbj.iMxFAbyMB
- qSrI8yijWWTOWVZD.L6e3p9mjaoB2C8ASoG.3ZUob89c7G3XIof5phzQOTz0ZY0Q.nDS5.u3xPdF
- U1YFQkHyENf5XfclcBizGo72nmZAz1lTDrjW3T7vdhh6Lu6N25alfpGsjQM0nt7Pdxv6theMt.UJ
- pMoix8jovO8xCwTxV2N2Kjn1lwypQPJezzESN8PWkdO0DBo9ZBXNGjn7EsVgSFnt0gd7tUpiJ38o
- oQ4X7YRdRAOz3WppHTF2lTEHGcFQFAIlEl45Jz6og3gSghM9oPXDMoy7.TsrGYlEhNhxp4RtrdZC
- jVJS33TwiRseqfuOdlO5k.mPx9OIKLyYWftRJqtIihKhqxfaO8Q04WNWkU4CVP9yFBT1jj_x6fVr
- kHt7i38Fu2Y2pTp4X.lgLh_LBAe_2TSZcDhTSNi7JEcTPz6PEveI1GAljU0POk9XLDHPNMm3f.7u
- vxB8yGAs2epUHWVEJ82HlbtQ3OijchzjxHFRTww_NYNiObRIMwBxPfUeYoX_sPwrn7lAAjdSq567
- 8QY6RbMRVecFl37WxOiFubM3ojjU700YkPuDNqWiZiQUz5KLLMR5lNmbCmYowGbi1
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Thu, 2 Jul 2020 11:17:09 +0000
-Date:   Thu, 2 Jul 2020 11:17:05 +0000 (UTC)
-From:   Marilis Mannik <mariliis.manniik@gmail.com>
-Reply-To: manniik.mariliis@gmail.com
-Message-ID: <1351281970.158395.1593688625919@mail.yahoo.com>
-Subject: Urgent From Hospital
+        id S1726371AbgGBQZR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jul 2020 12:25:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726082AbgGBQZR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jul 2020 12:25:17 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5A7C08C5C1
+        for <linux-iio@vger.kernel.org>; Thu,  2 Jul 2020 09:25:17 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id q15so27651797wmj.2
+        for <linux-iio@vger.kernel.org>; Thu, 02 Jul 2020 09:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7AvexTnflQTx+HPLZVCvwg7Wb7VYLoxDJot1+g9yUDc=;
+        b=kPgariWQ1He9Btx0hrJy3AppzHXfqTkj15F3Qsuo8IWxk8m6yiKbqO8elL/FsOszcJ
+         A4acPaHcp9u7XtZlLpr4OnGnj6majx9m7L23go8BKcWrq8xmiGjAFcdjJgKtOaQ0AQN7
+         wZJeLz+fcaGmCTPqlgAFEyVkqjYHN3aI+p3/GnWLZh6NWLQi4suVrqeyFOy76dO8u/E+
+         wLeXCOcM4Sziet7tPPAkMZTWGQIUiez7YJScOmXog1s3DPRxJi0o7gBYJ7UD2ZKSWbPg
+         b9+3lmqZkKso7p7g1B3cXtdtn7ICVqOV0FtV7EjIH1DTSQWuXztVqyby6Hwsh7XXWxw+
+         JzVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7AvexTnflQTx+HPLZVCvwg7Wb7VYLoxDJot1+g9yUDc=;
+        b=FIB8+fk3FnZa9t0BHHbj7IVtyrb9G+0TvEcSFc2b7z0nut6987GZ61Uc6brhUyG2Sz
+         cCpMnOA+v0l4Sfywv0vV9KYJ9r2mm0k3YyNlt+KEmo50dQLEyofzsHKcYPrFKiwqeOKz
+         k0gszFwHCG0I1hha2RLljuLRYQLt3tvP/OG9bdr3UvzOZgdf4IxfsRv6phhgmipcu71+
+         LPaaDGZA6rnXZRFUG2jmHLhYRqtqXCZA3+9NAhgeZF9K9AmQKDBYL4pEewx7hZ401QEy
+         kkkdNvqGxFxFxN92EIkP4GUMV7XnSU1twV1/CMb8sYbG9QTSkA551Qg6ftnE7CCaBwx/
+         iV+Q==
+X-Gm-Message-State: AOAM532EQFXAzTpVJeBYb+grlqeAla4P0ziBqQQk7ZezJz5Vp804ENV+
+        ynCuxPdzk/QTO9QmsyhLdktSsKu0Qk8=
+X-Google-Smtp-Source: ABdhPJzm9+NQZ1kati+9qc7RUkch8SPFB0vQJEmu3uSKR9jiTNVW/G/QZ8yYF+/SqdYJzZDF+Ylv+A==
+X-Received: by 2002:a05:600c:2249:: with SMTP id a9mr31061773wmm.163.1593707115947;
+        Thu, 02 Jul 2020 09:25:15 -0700 (PDT)
+Received: from debian-brgl.home (lfbn-nic-1-68-20.w2-15.abo.wanadoo.fr. [2.15.159.20])
+        by smtp.gmail.com with ESMTPSA id z25sm10428001wmk.28.2020.07.02.09.25.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2020 09:25:15 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH RFT] iio: adc: xilinx-xadc: use devm_krealloc()
+Date:   Thu,  2 Jul 2020 18:25:09 +0200
+Message-Id: <20200702162509.11254-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1351281970.158395.1593688625919.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
+Use the managed variant of krealloc() and shrink the code a bit.
 
-Hello=C2=A0My=C2=A0Beloved
-this=C2=A0is=C2=A0Ms=C2=A0Marilis=C2=A0Mannik=C2=A0from=C2=A0Estonia=C2=A0w=
-riting=C2=A0from=C2=A0the=C2=A0hospital=C2=A0here=C2=A0in=C2=A0Ivory=C2=A0C=
-oast;Dear=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0know=C2=A0that=C2=A0I'm=C2=
-=A0dying=C2=A0here=C2=A0in=C2=A0this=C2=A0hospital=C2=A0right=C2=A0now=C2=
-=A0which=C2=A0i=C2=A0don't=C2=A0know=C2=A0if=C2=A0i=C2=A0will=C2=A0see=C2=
-=A0some=C2=A0few=C2=A0days=C2=A0to=C2=A0come.
+Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+---
+NOTE: this patch depends on the series adding devm_krealloc() which is
+not yet accepted.
 
-My=C2=A0Beloved,=C2=A0i=C2=A0was=C2=A0informed=C2=A0by=C2=A0my=C2=A0doctor=
-=C2=A0that=C2=A0i=C2=A0got=C2=A0poisoned=C2=A0and=C2=A0it=C2=A0affected=C2=
-=A0my=C2=A0liver=C2=A0and=C2=A0i=C2=A0can=C2=A0only=C2=A0live=C2=A0for=C2=
-=A0some=C2=A0days.=C2=A0The=C2=A0reason=C2=A0why=C2=A0i=C2=A0contacted=C2=
-=A0you=C2=A0today=C2=A0is=C2=A0because=C2=A0i=C2=A0know=C2=A0that=C2=A0my=
-=C2=A0step=C2=A0mother=C2=A0wanted=C2=A0to=C2=A0kill=C2=A0me=C2=A0and=C2=A0=
-take=C2=A0my=C2=A0inheritance=C2=A0from=C2=A0my=C2=A0late=C2=A0Father.=C2=
-=A0I=C2=A0have=C2=A0a=C2=A0little=C2=A0adopted=C2=A0child=C2=A0named=C2=A0A=
-ndrew=C2=A0C.=C2=A0Mannik=C2=A0that=C2=A0i=C2=A0adopted=C2=A0in=C2=A0this=
-=C2=A0Country=C2=A0when=C2=A0my=C2=A0late=C2=A0Father=C2=A0was=C2=A0alive=
-=C2=A0and=C2=A0$3.5=C2=A0million=C2=A0Dollars=C2=A0i=C2=A0inherited=C2=A0fr=
-om=C2=A0my=C2=A0late=C2=A0father.=C2=A0My=C2=A0step=C2=A0mother=C2=A0and=C2=
-=A0her=C2=A0children=C2=A0they=C2=A0are=C2=A0after=C2=A0Andrew=C2=A0right=
-=C2=A0now=C2=A0because=C2=A0they=C2=A0found=C2=A0out=C2=A0that=C2=A0Andrew=
-=C2=A0was=C2=A0aware=C2=A0of=C2=A0the=C2=A0poison,=C2=A0and=C2=A0because=C2=
-=A0i=C2=A0handed=C2=A0the=C2=A0documents=C2=A0of=C2=A0the=C2=A0fund=C2=A0ov=
-er=C2=A0to=C2=A0him=C2=A0the=C2=A0day=C2=A0my=C2=A0step=C2=A0Mother=C2=A0po=
-isoned=C2=A0my=C2=A0food,=C2=A0for=C2=A0that=C2=A0reason=C2=A0they=C2=A0do=
-=C2=A0not=C2=A0want=C2=A0Andrew=C2=A0to=C2=A0expose=C2=A0them,=C2=A0so=C2=
-=A0they=C2=A0are=C2=A0doing=C2=A0everything=C2=A0possible=C2=A0to=C2=A0kill=
-=C2=A0him.
+Greg,
 
-My=C2=A0Beloved,=C2=A0please=C2=A0i=C2=A0want=C2=A0you=C2=A0to=C2=A0help=C2=
-=A0him=C2=A0out=C2=A0of=C2=A0this=C2=A0country=C2=A0with=C2=A0the=C2=A0mone=
-y,=C2=A0he=C2=A0is=C2=A0the=C2=A0only=C2=A0one=C2=A0taking=C2=A0good=C2=A0c=
-are=C2=A0of=C2=A0me=C2=A0here=C2=A0in=C2=A0this=C2=A0hospital=C2=A0right=C2=
-=A0now=C2=A0and=C2=A0even=C2=A0this=C2=A0email=C2=A0you=C2=A0are=C2=A0readi=
-ng=C2=A0now=C2=A0he=C2=A0is=C2=A0the=C2=A0one=C2=A0helping=C2=A0me=C2=A0out=
-.=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0get=C2=A0back=C2=A0to=C2=A0me=C2=
-=A0so=C2=A0that=C2=A0he=C2=A0will=C2=A0give=C2=A0you=C2=A0the=C2=A0document=
-s=C2=A0of=C2=A0the=C2=A0fund=C2=A0and=C2=A0he=C2=A0will=C2=A0direct=C2=A0yo=
-u=C2=A0to=C2=A0a=C2=A0well=C2=A0known=C2=A0lawyer=C2=A0that=C2=A0i=C2=A0hav=
-e=C2=A0appointed,=C2=A0the=C2=A0lawyer=C2=A0will=C2=A0assist=C2=A0you=C2=A0=
-to=C2=A0change=C2=A0the=C2=A0documents=C2=A0of=C2=A0the=C2=A0fund=C2=A0to=
-=C2=A0your=C2=A0name=C2=A0to=C2=A0enable=C2=A0the=C2=A0bank=C2=A0transfer=
-=C2=A0the=C2=A0money=C2=A0to=C2=A0you..
+here's just a quick example of a second user of devm_krealloc(). This time
+we're reallocing memory allocated with devm_kmemdup(). Hopefully this is
+enough to prove this helper is useful enough to merge it.
 
-This=C2=A0is=C2=A0the=C2=A0favor=C2=A0i=C2=A0need=C2=A0when=C2=A0you=C2=A0h=
-ave=C2=A0gotten=C2=A0the=C2=A0fund:
+I can't test it due to lack of HW though.
 
-(1)=C2=A0Keep=C2=A030%=C2=A0of=C2=A0the=C2=A0money=C2=A0for=C2=A0Andrew=C2=
-=A0until=C2=A0he=C2=A0finish=C2=A0his=C2=A0studies=C2=A0to=C2=A0become=C2=
-=A0a=C2=A0man=C2=A0as=C2=A0he=C2=A0has=C2=A0been=C2=A0there=C2=A0for=C2=A0m=
-e=C2=A0as=C2=A0my=C2=A0lovely=C2=A0Son=C2=A0and=C2=A0i=C2=A0promised=C2=A0t=
-o=C2=A0support=C2=A0him=C2=A0in=C2=A0life=C2=A0to=C2=A0become=C2=A0a=C2=A0m=
-edical=C2=A0Doctor=C2=A0because=C2=A0he=C2=A0always=C2=A0desire=C2=A0for=C2=
-=A0it=C2=A0with=C2=A0the=C2=A0scholarship=C2=A0he=C2=A0had=C2=A0won=C2=A0so=
-=C2=A0far.=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0take=C2=A0him=C2=A0along=
-=C2=A0with=C2=A0you=C2=A0to=C2=A0your=C2=A0country=C2=A0and=C2=A0establish=
-=C2=A0him=C2=A0as=C2=A0your=C2=A0son.
+ drivers/iio/adc/xilinx-xadc-core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-(2)=C2=A0Give=C2=A020%=C2=A0of=C2=A0the=C2=A0money=C2=A0to=C2=A0handicap=C2=
-=A0people=C2=A0and=C2=A0charity=C2=A0organization.=C2=A0The=C2=A0remaining=
-=C2=A050%=C2=A0should=C2=A0be=C2=A0yours=C2=A0for=C2=A0your=C2=A0help=C2=A0=
-to=C2=A0Andrew.
+diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+index d7fecab9252e..5bdbe502e983 100644
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -1094,6 +1094,7 @@ MODULE_DEVICE_TABLE(of, xadc_of_match_table);
+ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
+ 	unsigned int *conf)
+ {
++	struct device *dev = indio_dev->dev.parent;
+ 	struct xadc *xadc = iio_priv(indio_dev);
+ 	struct iio_chan_spec *channels, *chan;
+ 	struct device_node *chan_node, *child;
+@@ -1138,7 +1139,8 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
+ 		*conf |= XADC_CONF0_MUX | XADC_CONF0_CHAN(ext_mux_chan);
+ 	}
+ 
+-	channels = kmemdup(xadc_channels, sizeof(xadc_channels), GFP_KERNEL);
++	channels = devm_kmemdup(dev, xadc_channels,
++				sizeof(xadc_channels), GFP_KERNEL);
+ 	if (!channels)
+ 		return -ENOMEM;
+ 
+@@ -1174,8 +1176,9 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
+ 	of_node_put(chan_node);
+ 
+ 	indio_dev->num_channels = num_channels;
+-	indio_dev->channels = krealloc(channels, sizeof(*channels) *
+-					num_channels, GFP_KERNEL);
++	indio_dev->channels = devm_krealloc(dev, channels,
++					    sizeof(*channels) * num_channels,
++					    GFP_KERNEL);
+ 	/* If we can't resize the channels array, just use the original */
+ 	if (!indio_dev->channels)
+ 		indio_dev->channels = channels;
+@@ -1229,14 +1232,14 @@ static int xadc_probe(struct platform_device *pdev)
+ 
+ 	ret = xadc_parse_dt(indio_dev, pdev->dev.of_node, &conf0);
+ 	if (ret)
+-		goto err_device_free;
++		return ret;
+ 
+ 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
+ 		ret = iio_triggered_buffer_setup(indio_dev,
+ 			&iio_pollfunc_store_time, &xadc_trigger_handler,
+ 			&xadc_buffer_ops);
+ 		if (ret)
+-			goto err_device_free;
++			return ret;
+ 
+ 		xadc->convst_trigger = xadc_alloc_trigger(indio_dev, "convst");
+ 		if (IS_ERR(xadc->convst_trigger)) {
+@@ -1354,8 +1357,6 @@ static int xadc_probe(struct platform_device *pdev)
+ err_triggered_buffer_cleanup:
+ 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
+ 		iio_triggered_buffer_cleanup(indio_dev);
+-err_device_free:
+-	kfree(indio_dev->channels);
+ 
+ 	return ret;
+ }
+@@ -1375,7 +1376,6 @@ static int xadc_remove(struct platform_device *pdev)
+ 	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
+ 	clk_disable_unprepare(xadc->clk);
+ 	kfree(xadc->data);
+-	kfree(indio_dev->channels);
+ 
+ 	return 0;
+ }
+-- 
+2.26.1
 
-Note;=C2=A0This=C2=A0should=C2=A0be=C2=A0a=C2=A0code=C2=A0between=C2=A0you=
-=C2=A0and=C2=A0my=C2=A0son=C2=A0Andrew=C2=A0in=C2=A0this=C2=A0transaction=
-=C2=A0"Hospital"=C2=A0any=C2=A0mail=C2=A0from=C2=A0him,=C2=A0the=C2=A0Lawye=
-r=C2=A0he=C2=A0will=C2=A0direct=C2=A0you=C2=A0to,=C2=A0without=C2=A0this=C2=
-=A0code=C2=A0"Hospital"=C2=A0is=C2=A0not=C2=A0from=C2=A0the=C2=A0Andrew,=C2=
-=A0the=C2=A0Lawyer=C2=A0or=C2=A0myself=C2=A0as=C2=A0i=C2=A0don't=C2=A0know=
-=C2=A0what=C2=A0will=C2=A0happen=C2=A0to=C2=A0me=C2=A0in=C2=A0the=C2=A0next=
-=C2=A0few=C2=A0hours.
-
-Finally,=C2=A0write=C2=A0me=C2=A0back=C2=A0so=C2=A0that=C2=A0Andrew=C2=A0wi=
-ll=C2=A0send=C2=A0you=C2=A0his=C2=A0pictures=C2=A0to=C2=A0be=C2=A0sure=C2=
-=A0of=C2=A0whom=C2=A0you=C2=A0are=C2=A0dealing=C2=A0with.=C2=A0Andrew=C2=A0=
-is=C2=A014years=C2=A0now,=C2=A0therefore=C2=A0guide=C2=A0him.=C2=A0And=C2=
-=A0if=C2=A0i=C2=A0don't=C2=A0hear=C2=A0from=C2=A0you=C2=A0i=C2=A0will=C2=A0=
-look=C2=A0for=C2=A0another=C2=A0person=C2=A0or=C2=A0any=C2=A0organization.
-
-May=C2=A0Almighty=C2=A0God=C2=A0bless=C2=A0you=C2=A0and=C2=A0use=C2=A0you=
-=C2=A0to=C2=A0accomplish=C2=A0my=C2=A0wish.=C2=A0Pray=C2=A0for=C2=A0me=C2=
-=A0always.
-Ms=C2=A0Marilis=C2=A0Mannik

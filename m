@@ -2,152 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0DC2145E2
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 14:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D97E2146EB
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 17:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728002AbgGDMbV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jul 2020 08:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbgGDMbU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jul 2020 08:31:20 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6D9C061794;
-        Sat,  4 Jul 2020 05:31:20 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id e13so30999188qkg.5;
-        Sat, 04 Jul 2020 05:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=wXVeQpxCI+iwkYlezHWcf0l5BZQJCmNvUa2xktmhOME=;
-        b=E1+xoB3rYQ0NBSpfC4fscDTPs9mkC68MYowA8nh/JRikBI2XWSsFtvSpAqy9F494RE
-         0leKOD5qmSi0BkobZ42sbTeyMRO7wxm14RZRZOhOxIkiX3nPIdCcI07bLj4olC9wYduq
-         4uzBC4jqPKxwUhCHDDzrmTxxBr2d8T2olx/cn7pGcxJV0QBlkCfqUQ1Z4WLwivN3O4AS
-         I4IC7dmrAZnY0A3r6sKrIcJAKFfJ5q/E6PEw3Ki+nZJnq+/3of4oB/1jISH3toeyuS33
-         oW2FXmHLG7fLa359OKo8IrsP7AmFyTc4Cg0SKXtooxgf9uEF1gpG0pbPkyOSx9tEkoXI
-         Ujcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wXVeQpxCI+iwkYlezHWcf0l5BZQJCmNvUa2xktmhOME=;
-        b=cXeXnrW8rCJvnx00uR3VuX6ptamlzVDZPVasyNNkV8B6pfHk2Jgj6ZeeUV0/eQlT3G
-         05YiRkiIOXsMMfkg+1XqMYzRi5rpNP3LtugYraQFfHYAcY6hzw8uID7+Sa8qbCdk119Q
-         g/VjtpezpOcizJ91IHaxD4MosEILchlxXUDOm4bmjFXhRQkelOwBIPRiVmiX/EhW1b9U
-         Kp/Aj3EOL9ImvkYlarngoyisKuOZ9nD104JqsuQidr9dUTCR7Va7Ea2lcunIIzgv4+Fx
-         nAumeDqcZjTpSZkeU/37Kz+lV7T6pBwNmS/ilEvSduDoRHwOVnGSVbr4b2sh+wwnaIB8
-         QoQg==
-X-Gm-Message-State: AOAM530JipXxAEbQJ4UKV1xcvSNCd/cvmZayADwnl8th5A5YweFne69s
-        Jkl/hOsFD/ILR3oidmHKx6g=
-X-Google-Smtp-Source: ABdhPJxUcAycygrd/AP+v+wLXYj/t4ZGB/H3x+bdq/DHUXVvrvZSnflEAQw0KbOs9WzSAMnXvd0YaQ==
-X-Received: by 2002:a37:6589:: with SMTP id z131mr39309316qkb.235.1593865879534;
-        Sat, 04 Jul 2020 05:31:19 -0700 (PDT)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id a25sm14159031qtk.40.2020.07.04.05.31.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2020 05:31:18 -0700 (PDT)
-Date:   Sat, 4 Jul 2020 08:31:16 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-doc@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        dmaengine@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, Jon Mason <jdmason@kudzu.us>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Allen Hubbe <allenbh@gmail.com>, linux-ntb@googlegroups.com,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, linux-nvdimm@lists.01.org,
-        linux-usb@vger.kernel.org, Eli Billauer <eli.billauer@gmail.com>
-Subject: Re: [PATCH 00/17] Documentation/driver-api: eliminate duplicated
- words
-Message-ID: <20200704123116.GB5194@shinobu>
-References: <20200704034502.17199-1-rdunlap@infradead.org>
+        id S1726643AbgGDPdf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jul 2020 11:33:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48170 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726405AbgGDPdf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Jul 2020 11:33:35 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F26D20747;
+        Sat,  4 Jul 2020 15:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593876814;
+        bh=Cf8jYvmEMjlkd5Kh2lEDejZXr1RcS80lVl4jJtD+NU8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=TFKWC4yz+ixS0dy03DWb5vFl2OYdhXbpaAxlI8r/e1EcrUy/7J2mX6Lo2iMjAIuF5
+         umqiQwDc5HWU7ppHbY+OlHe7VqtpzQKuQvUpMJ0gizUmJBWUxzw+2F5j7ozccLqyUF
+         PjubUYNwMVADJRtg5GZdsF6sfX7N1lUbgLWUQLrI=
+Date:   Sat, 4 Jul 2020 16:33:30 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: bmc150_magn: Document missing
+ compatibles
+Message-ID: <20200704163330.5d5973b1@archlinux>
+In-Reply-To: <20200629064925.GA5879@kozik-lap>
+References: <20200617101259.12525-1-krzk@kernel.org>
+        <20200620164049.5aa91365@archlinux>
+        <20200622051940.GA4021@kozik-lap>
+        <20200627155714.15478f60@archlinux>
+        <20200629064925.GA5879@kozik-lap>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cvVnyQ+4j833TQvp"
-Content-Disposition: inline
-In-Reply-To: <20200704034502.17199-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 29 Jun 2020 08:49:25 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
---cvVnyQ+4j833TQvp
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jul 03, 2020 at 08:44:45PM -0700, Randy Dunlap wrote:
-> Remove occurrences of duplicated words in Documentation/driver-api/.
+> On Sat, Jun 27, 2020 at 03:57:14PM +0100, Jonathan Cameron wrote:
+> > On Mon, 22 Jun 2020 07:19:40 +0200
+> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >  =20
+> > > On Sat, Jun 20, 2020 at 04:40:49PM +0100, Jonathan Cameron wrote: =20
+> > > > On Wed, 17 Jun 2020 12:12:59 +0200
+> > > > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > >    =20
+> > > > > The driver supports also BMC156B and BMM150B so document the comp=
+atibles
+> > > > > for these devices.
+> > > > >=20
+> > > > > Fixes: 9d75db36df14 ("iio: magn: Add support for BMM150 magnetome=
+ter")
+> > > > > Cc: <stable@vger.kernel.org>
+> > > > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > > >=20
+> > > > > ---
+> > > > >=20
+> > > > > The fixes tag is not accurate but at least offer some backporting=
+.   =20
+> > > >=20
+> > > > I'm not sure we generally bother backporting a missing section of b=
+inding
+> > > > documentation. Particularly as this doc isn't in yaml yet so it's n=
+ot
+> > > > as though any automated checking is likely to be occurring.
+> > > >=20
+> > > > Rob, any views on backporting this sort of missing id addition?
+> > > >=20
+> > > > One side comment here is that the devices that are magnetometers on=
+ly
+> > > > should never have had the _magn prefix in their compatibles. We only
+> > > > do that for devices in incorporating several sensors in one package
+> > > > (like the bmc150) where we have multiple drivers for the different
+> > > > sensors incorporated. We are too late to fix that now though.  It
+> > > > may make sense to mark the _magn variants deprecated though and
+> > > > add the ones without the _magn postfix.   =20
+> > >=20
+> > > I can add proper compatibles and mark these as deprecated but actually
+> > > the driver should not have additional compatibles in first place - all
+> > > devices are just compatible with bosch,bmc150. =20
+> >=20
+> > Why not?  Whilst the devices may be compatible in theory, it's not unus=
+ual
+> > for subtle differences to emerge later.   As such we tend to at least
+> > support the most specific compatible possible for a part - though we
+> > can use fallback compatibles. =20
 >=20
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: dmaengine@vger.kernel.org
-> Cc: Luis Chamberlain <mcgrof@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Cc: linux-iio@vger.kernel.org
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: linux-media@vger.kernel.org
-> Cc: Jon Mason <jdmason@kudzu.us>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Allen Hubbe <allenbh@gmail.com>
-> Cc: linux-ntb@googlegroups.com
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: linux-nvdimm@lists.01.org
-> Cc: linux-usb@vger.kernel.org
-> Cc: Eli Billauer <eli.billauer@gmail.com>
+> It does not strictly harm but have in mind that adding is always
+> possible (when you spot the difference between devices). But it is
+> entirely different with removal - it takes time to deprecate one and to
+> remove it.
 >=20
+> There is just no benefit for adding new compatibles for really
+> compatible devices. The module device table just grows. It makes sense
+> however to document in bindings that given compatible serves family of
+> devices.
 >=20
->  Documentation/driver-api/dmaengine/provider.rst        |    2 +-
->  Documentation/driver-api/driver-model/platform.rst     |    2 +-
->  Documentation/driver-api/firmware/built-in-fw.rst      |    2 +-
->  Documentation/driver-api/firmware/direct-fs-lookup.rst |    2 +-
->  Documentation/driver-api/firmware/firmware_cache.rst   |    2 +-
->  Documentation/driver-api/firmware/request_firmware.rst |    2 +-
->  Documentation/driver-api/generic-counter.rst           |    2 +-
->  Documentation/driver-api/iio/buffers.rst               |    2 +-
->  Documentation/driver-api/media/cec-core.rst            |    2 +-
->  Documentation/driver-api/media/dtv-frontend.rst        |    6 +++---
->  Documentation/driver-api/media/v4l2-controls.rst       |    4 ++--
->  Documentation/driver-api/media/v4l2-dev.rst            |    2 +-
->  Documentation/driver-api/ntb.rst                       |    2 +-
->  Documentation/driver-api/nvdimm/nvdimm.rst             |    2 +-
->  Documentation/driver-api/uio-howto.rst                 |    2 +-
->  Documentation/driver-api/usb/URB.rst                   |    2 +-
->  Documentation/driver-api/xillybus.rst                  |    2 +-
->  17 files changed, 20 insertions(+), 20 deletions(-)
+> Somehow driver developers got impression that they need to make a commit
+> like "Add support for xyz123 device" adding only compatible, to bring
+> support for new device. But the support was already there so just
+> document that xyz001 is compatible with xyz123.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Whilst I agree the compatible is not really necessary, it is often
+non trivial to establish two parts are actual compatible. Manufacturers
+have an annoying habit of not actually saying so on their datasheets.
+So it is useful to add documentation for the support so that a grep
+will identify the driver supports it.
 
---cvVnyQ+4j833TQvp
-Content-Type: application/pgp-signature; name="signature.asc"
+I don't have a problem with people adding the ID particularly as they
+are often not entirely sure the parts are compatible.  I'm not fussed
+if they don't do so of course.
 
------BEGIN PGP SIGNATURE-----
+Ideal in my view is to list multiple compatibles in the dts files
+in this case to allow us to support any differences if any turn up
+in the future.=20
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl8AdpQACgkQhvpINdm7
-VJIBvxAAqwgnnmzKHJ8nY2Ip3r9kE7Fygjzlzj9bHCF7iXLQVTYqC4W7cN0q0Bfu
-QotqGgl0sAWKftn9qkvUzFI6TFRROjPuzPdDPucm+pQ5pW2m6HIEOgK42qjcuHLn
-wvVJmYNuV3L+Y6NQtUS1PBulobtAYL8fMMhtQiG6rialiiB6yaJeHkpU7BP5cdUn
-+n6i9IJIdl9//biQjBd5FQy7wqPLr+aXBZLAMSWT+hKl0huWGUXmFBTmcGLkGhAT
-OEKrj9H7j8U7CmavcpNe0bHRLlucKl3a1wQTtf6CV+SwfaaFEtKhaEKEIsB4M9QI
-sRvbV0gY9yJX2y3DabCS61B/EcCA2htBnk++AlNY+HvfXckvW9+g4xaMcCAU0cow
-1EFaMIVEGWrEuaBIRDQJX5f9n97Wvc0Zp2B/hlxYvSo1xmaCObehZ9+UecKCW1C0
-71A8NFc0cYiELXFZmQ+Vf7I9K3UeaRBaeoB8r4YEBNOO3JhmHq9E8re8ULoMvEse
-HKZyuoGyoOhW27cZXoBw1ymZZ07Nnmpupyukmh9wQllQcMj5smqQAcbCtBNCcqXb
-L+dlXBeIpE+KZHRFJ/2RtmDX903PaDcZ0Y5+NZUJsvt/KJCzg1rASkGcHC6lVTLj
-4jBBZt4JmxUWKLxsdnkHXb12eTXPB7DkjhCiSThpm1A2Re9P4Jg=
-=6Gqy
------END PGP SIGNATURE-----
+=46rom a purely practical basis, if I'm writing a DTS I'd much rather
+it matched up with my BOM rather than having to 'know' that two parts
+are compatible.
 
---cvVnyQ+4j833TQvp--
+Jonathan
+
+>=20
+> Best regards,
+> Krzysztof
+>=20
+

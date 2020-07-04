@@ -2,105 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0119E214796
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 18:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66B51214797
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 18:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbgGDQ4l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jul 2020 12:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726632AbgGDQ4l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jul 2020 12:56:41 -0400
-Received: from saturn.retrosnub.co.uk (saturn.retrosnub.co.uk [IPv6:2a00:1098:86::1:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F995C061794
-        for <linux-iio@vger.kernel.org>; Sat,  4 Jul 2020 09:56:41 -0700 (PDT)
+        id S1726669AbgGDQ6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jul 2020 12:58:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726643AbgGDQ6k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Jul 2020 12:58:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 2C0E19E00E1;
-        Sat,  4 Jul 2020 17:56:38 +0100 (BST)
-Date:   Sat, 4 Jul 2020 17:56:36 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     linux-iio@vger.kernel.org
-Cc:     alexandru.Ardelean@analog.com,
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5815720723;
+        Sat,  4 Jul 2020 16:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593881920;
+        bh=S4Vtkk7hqOdMamEw6xJhux/pYg6QkFMPFZyt1p2Q0O8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KTDTjlRMyxInzlYszTcBkysoo8Ex0nJznPeKjSYBXF65eY7zP1r+9qM7hfuNdgdTc
+         ChQB09Te3pj0JaSHH1ox6u6gePYRY2UEWRN41rWNgnG3IQaaBGxyUNMclybDDrUGYy
+         CQTKHbMJ0/wCJHDVWuNc0LFn8EyP8K/L4bwk88IY=
+Date:   Sat, 4 Jul 2020 17:58:35 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     linux-iio@vger.kernel.org, alexandru.Ardelean@analog.com,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>
-Subject: Re: [PATCH 06/23] iio:adc:max1027: drop of_match_ptr and CONFIG_OF
- protections
-Message-ID: <20200704175636.73eb8508@archlinux>
-In-Reply-To: <20200628123654.32830-7-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 07/23] iio:adc:ltc2496: Drop of_match_ptr and use
+ mod_devicetable.h
+Message-ID: <20200704175835.1b995322@archlinux>
+In-Reply-To: <20200628155221.jujln4b24jlorpbk@pengutronix.de>
 References: <20200628123654.32830-1-jic23@kernel.org>
-        <20200628123654.32830-7-jic23@kernel.org>
+        <20200628123654.32830-8-jic23@kernel.org>
+        <20200628155221.jujln4b24jlorpbk@pengutronix.de>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 28 Jun 2020 13:36:37 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 28 Jun 2020 17:52:21 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> These just prevent the driver being used with ACPI PRP0001
-> and provide no major benefits.
-> 
-> Part of clearing these out in general in IIO to avoid cut and paste
-> repetition in new drivers.  Also include mod_devicetable.h as we
-> directly make use of of_device_id which is defined in there.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Philippe Reynes <tremyfr@yahoo.fr>
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to poke at it.
+> Hallo Jonathan,
+>=20
+> On Sun, Jun 28, 2020 at 01:36:38PM +0100, Jonathan Cameron wrote:
+> > @@ -96,7 +96,7 @@ MODULE_DEVICE_TABLE(of, ltc2496_of_match);
+> >  static struct spi_driver ltc2496_driver =3D {
+> >  	.driver =3D {
+> >  		.name =3D "ltc2496",
+> > -		.of_match_table =3D of_match_ptr(ltc2496_of_match),
+> > +		.of_match_table =3D ltc2496_of_match, =20
+>=20
+> The usage of of_match_ptr would only make sense here if ltc2496_of_match
+> was defined conditionally. As this isn't the case:
+>=20
+> Reviewed-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Thanks,=20
+
+Applied to the togreg branch of iio.git and pushed out as testing to
+see if we missed anything.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/max1027.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index 9e993ccd14de..ca1dff3924ff 100644
-> --- a/drivers/iio/adc/max1027.c
-> +++ b/drivers/iio/adc/max1027.c
-> @@ -14,6 +14,7 @@
->  
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/spi/spi.h>
->  #include <linux/delay.h>
->  
-> @@ -79,7 +80,6 @@ static const struct spi_device_id max1027_id[] = {
->  };
->  MODULE_DEVICE_TABLE(spi, max1027_id);
->  
-> -#ifdef CONFIG_OF
->  static const struct of_device_id max1027_adc_dt_ids[] = {
->  	{ .compatible = "maxim,max1027" },
->  	{ .compatible = "maxim,max1029" },
-> @@ -90,7 +90,6 @@ static const struct of_device_id max1027_adc_dt_ids[] = {
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, max1027_adc_dt_ids);
-> -#endif
->  
->  #define MAX1027_V_CHAN(index, depth)					\
->  	{								\
-> @@ -518,7 +517,7 @@ static int max1027_probe(struct spi_device *spi)
->  static struct spi_driver max1027_driver = {
->  	.driver = {
->  		.name	= "max1027",
-> -		.of_match_table = of_match_ptr(max1027_adc_dt_ids),
-> +		.of_match_table = max1027_adc_dt_ids,
->  	},
->  	.probe		= max1027_probe,
->  	.id_table	= max1027_id,
+>=20
+> Thanks
+> Uwe
+>=20
 

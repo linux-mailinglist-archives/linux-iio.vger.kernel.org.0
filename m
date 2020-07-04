@@ -2,43 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7F8214756
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 18:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B534E21475D
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 18:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbgGDQZU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jul 2020 12:25:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57582 "EHLO mail.kernel.org"
+        id S1726639AbgGDQ3V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jul 2020 12:29:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58224 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726632AbgGDQZU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Jul 2020 12:25:20 -0400
+        id S1726632AbgGDQ3V (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Jul 2020 12:29:21 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D455206B6;
-        Sat,  4 Jul 2020 16:25:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3BC66206B6;
+        Sat,  4 Jul 2020 16:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593879919;
-        bh=d9wAKSTFHHfxUvA3cee6eoc0gwiwFmyHySjzcuoinZo=;
+        s=default; t=1593880160;
+        bh=5uivsfNv00vVOwSQdVj9OXMpaD34v95Uj4LXUPLTFWU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fPm54MQVRkUW/71xgv1U7kehxg5oPGZW1FMgemryS9ozx/rw3vEHBvXo22MZS23n3
-         CBHXZVfLDJAq+FPTMyxC0QsyivVzLj/sRSpPWhekXVZclLtj8OCnUlZTjFJGU5Py6Y
-         KlKwDag1SZSR/rO7FVrpwh1ZA5C4AKTia/zuUCg8=
-Date:   Sat, 4 Jul 2020 17:25:13 +0100
+        b=AgHHxI2Xg+fwSDdyC+obuEolaT6UeI2CrljEPQYvdEyk0f2g7gxRLhObL9qnbpFbp
+         UyB0jq/KwNFOZjYIi4cG1uPcIway9yg/8c8vlOmA6eQEIRxn5XhTkzMaS2oku5KUW7
+         ddmp0Ru+p1eR4PU5rB8i3PXf8tGkbO0RhB/SMPLU=
+Date:   Sat, 4 Jul 2020 17:29:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, tomislav.denis@avl.com, ak@it-klinger.de,
-        lukas@wunner.de, sergiu.cuciurean@analog.com,
-        andriy.shevchenko@linux.intel.com, christophe.jaillet@wanadoo.fr,
-        gregory.clement@bootlin.com, alexandre.belloni@bootlin.com,
-        sre@kernel.org, matt.ranostay@konsulko.com, hslester96@gmail.com,
-        chris.lesiak@licor.com, alexandru.ardelean@analog.com,
-        dannenberg@ti.com, dpfrey@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Replace HTTP links with HTTPS ones: drivers/iio
-Message-ID: <20200704172513.03815356@archlinux>
-In-Reply-To: <20200703223124.16081-1-grandmaster@al2klimov.de>
-References: <20200703223124.16081-1-grandmaster@al2klimov.de>
+To:     Ondrej Jirman <megous@megous.com>
+Cc:     linux-kernel@vger.kernel.org, Icenowy Zheng <icenowy@aosc.io>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS)
+Subject: Re: [PATCH] iio: light: stk3310: add chip id for STK3311-X variant
+Message-ID: <20200704172916.7a8a7359@archlinux>
+In-Reply-To: <20200703194406.110855-1-megous@megous.com>
+References: <20200703194406.110855-1-megous@megous.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,85 +45,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  4 Jul 2020 00:31:24 +0200
-"Alexander A. Klimov" <grandmaster@al2klimov.de> wrote:
+On Fri,  3 Jul 2020 21:44:05 +0200
+Ondrej Jirman <megous@megous.com> wrote:
 
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
+> From: Icenowy Zheng <icenowy@aosc.io>
 > 
-> Deterministic algorithm:
-> For each file:
->   If not .svg:
->     For each line:
->       If doesn't contain `\bxmlns\b`:
->         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
->           If both the HTTP and HTTPS versions
->           return 200 OK and serve the same content:
->             Replace HTTP with HTTPS.
+> The STK3311 chip has a variant called STK3311-X, which has a different
+> chip id of 0x12.
 > 
-> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-> ---
->  Continuing my work started at 93431e0607e5.
+> Add the chip id to the driver.
 > 
->  If there are any URLs to be removed completely or at least not HTTPSified:
->  Just clearly say so and I'll *undo my change*.
->  See also https://lkml.org/lkml/2020/6/27/64
-> 
->  If there are any valid, but yet not changed URLs:
->  See https://lkml.org/lkml/2020/6/26/837
-> 
+> Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+> Signed-off-by: Ondrej Jirman <megous@megous.com>
 
-I did a quick click through of the resulting links. 
+Given this is clearly not quite compatible with the stk3311 probably
+best to also add a an id to the of id table.  Any idea what else
+is different?
 
-> diff --git a/drivers/iio/humidity/si7020.c b/drivers/iio/humidity/si7020.c
-> index b938f07eed64..612cecbf8e7e 100644
-> --- a/drivers/iio/humidity/si7020.c
-> +++ b/drivers/iio/humidity/si7020.c
-> @@ -13,7 +13,7 @@
->   *
->   * Data Sheets:
->   *   Si7013: http://www.silabs.com/Support%20Documents/TechnicalDocs/Si7013.pdf
-> - *   Si7020: http://www.silabs.com/Support%20Documents/TechnicalDocs/Si7020.pdf
-> + *   Si7020: https://www.silabs.com/Support%20Documents/TechnicalDocs/Si7020.pdf
->   *   Si7021: http://www.silabs.com/Support%20Documents/TechnicalDocs/Si7021.pdf
-The original and new link don't actually work. 
-
-Seems they have changed the doc name. Not sure what the A20 reflects but there
-doesn't seem to be any other variant of each of these.
-
-https://www.silabs.com/documents/public/data-sheets/Si7013-A20.pdf
-https://www.silabs.com/documents/public/data-sheets/Si7020-A20.pdf
-https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf
-
-
-
->   */
->  
-> diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
-> index 4d220c835c75..172fc9df1140 100644
-> --- a/drivers/iio/light/isl29028.c
-> +++ b/drivers/iio/light/isl29028.c
-> @@ -8,7 +8,7 @@
->   *
->   * Datasheets:
->   *  - http://www.intersil.com/content/dam/Intersil/documents/isl2/isl29028.pdf
-> - *  - http://www.intersil.com/content/dam/Intersil/documents/isl2/isl29030.pdf
-> + *  - https://www.intersil.com/content/dam/Intersil/documents/isl2/isl29030.pdf
-
-I'm not getting anywhere with this link.  Given intersil seems to have
-be bought be renesas
-
-https://www.renesas.com/eu/en/www/doc/datasheet/isl29028a.pdf (not 100% sure this is
-compatible with the non a version.
-
-Not finding anything on the isl29030 so probably best to just drop that reference.
-
-
->   */
->  
->  #include <linux/module.h>
-
-The rest seem fine.  Thanks for doing this.
+Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/light/stk3310.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+> index 185c24a75ae6..1a8401d198a4 100644
+> --- a/drivers/iio/light/stk3310.c
+> +++ b/drivers/iio/light/stk3310.c
+> @@ -37,6 +37,7 @@
+>  
+>  #define STK3310_CHIP_ID_VAL			0x13
+>  #define STK3311_CHIP_ID_VAL			0x1D
+> +#define STK3311X_CHIP_ID_VAL			0x12
+>  #define STK3335_CHIP_ID_VAL			0x51
+>  #define STK3310_PSINT_EN			0x01
+>  #define STK3310_PS_MAX_VAL			0xFFFF
+> @@ -453,6 +454,7 @@ static int stk3310_init(struct iio_dev *indio_dev)
+>  
+>  	if (chipid != STK3310_CHIP_ID_VAL &&
+>  	    chipid != STK3311_CHIP_ID_VAL &&
+> +	    chipid != STK3311X_CHIP_ID_VAL &&
+>  	    chipid != STK3335_CHIP_ID_VAL) {
+>  		dev_err(&client->dev, "invalid chip id: 0x%x\n", chipid);
+>  		return -ENODEV;
+

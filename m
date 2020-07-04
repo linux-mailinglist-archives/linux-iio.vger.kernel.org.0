@@ -2,78 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B51214797
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 18:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADAD0214799
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 19:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbgGDQ6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jul 2020 12:58:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37528 "EHLO mail.kernel.org"
+        id S1726669AbgGDRAR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jul 2020 13:00:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38278 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726643AbgGDQ6k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Jul 2020 12:58:40 -0400
+        id S1726643AbgGDRAQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Jul 2020 13:00:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5815720723;
-        Sat,  4 Jul 2020 16:58:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D04D2064C;
+        Sat,  4 Jul 2020 17:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593881920;
-        bh=S4Vtkk7hqOdMamEw6xJhux/pYg6QkFMPFZyt1p2Q0O8=;
+        s=default; t=1593882016;
+        bh=EPRCEo3CPvecZllK0XrguMxXwf2n1bD9aNgDCMzllf0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KTDTjlRMyxInzlYszTcBkysoo8Ex0nJznPeKjSYBXF65eY7zP1r+9qM7hfuNdgdTc
-         ChQB09Te3pj0JaSHH1ox6u6gePYRY2UEWRN41rWNgnG3IQaaBGxyUNMclybDDrUGYy
-         CQTKHbMJ0/wCJHDVWuNc0LFn8EyP8K/L4bwk88IY=
-Date:   Sat, 4 Jul 2020 17:58:35 +0100
+        b=UdGd+0AMhxcrW8fsE8khRXtdcyBX73w5/eBJzBTPKahu6ZFFr++eXfIvqnMy8PYbB
+         mh/fWzThKKBZ/2ibWTC568LkfDx0PXllVIrOcPXOMM++xoqkhCWhA2NYY8BqbBTMqv
+         2UVIoAsrgDNEdEBlIHhv7SzEIV924j0D5lVfhuSU=
+Date:   Sat, 4 Jul 2020 18:00:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>
 Cc:     linux-iio@vger.kernel.org, alexandru.Ardelean@analog.com,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 07/23] iio:adc:ltc2496: Drop of_match_ptr and use
- mod_devicetable.h
-Message-ID: <20200704175835.1b995322@archlinux>
-In-Reply-To: <20200628155221.jujln4b24jlorpbk@pengutronix.de>
+Subject: Re: [PATCH 08/23] iio:adc:cpcap-adc: Drop of_match_ptr protection
+ and use device_get_match_data
+Message-ID: <20200704180012.68a10bb3@archlinux>
+In-Reply-To: <20200629152111.GO53169@atomide.com>
 References: <20200628123654.32830-1-jic23@kernel.org>
-        <20200628123654.32830-8-jic23@kernel.org>
-        <20200628155221.jujln4b24jlorpbk@pengutronix.de>
+        <20200628123654.32830-9-jic23@kernel.org>
+        <20200629152111.GO53169@atomide.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 28 Jun 2020 17:52:21 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+On Mon, 29 Jun 2020 08:21:11 -0700
+Tony Lindgren <tony@atomide.com> wrote:
 
-> Hallo Jonathan,
->=20
-> On Sun, Jun 28, 2020 at 01:36:38PM +0100, Jonathan Cameron wrote:
-> > @@ -96,7 +96,7 @@ MODULE_DEVICE_TABLE(of, ltc2496_of_match);
-> >  static struct spi_driver ltc2496_driver =3D {
-> >  	.driver =3D {
-> >  		.name =3D "ltc2496",
-> > -		.of_match_table =3D of_match_ptr(ltc2496_of_match),
-> > +		.of_match_table =3D ltc2496_of_match, =20
->=20
-> The usage of of_match_ptr would only make sense here if ltc2496_of_match
-> was defined conditionally. As this isn't the case:
->=20
-> Reviewed-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Thanks,=20
-
-Applied to the togreg branch of iio.git and pushed out as testing to
-see if we missed anything.
+> * Jonathan Cameron <jic23@kernel.org> [200628 12:40]:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Part of a slow effort to avoid OF specific code in IIO.
+> > 
+> > Whilst the main advantages of this are not likely to be seen in this
+> > particular driver (ACPI support via PRP0001) the change proposed
+> > does make things a bit more maintainable and also ensures that
+> > this particular (now) anti-patern is less likely to be cut and
+> > paste into new drivers.  
+> 
+> Acked-by: Tony Lindgren <tony@atomide.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
->=20
-> Thanks
-> Uwe
->=20
 

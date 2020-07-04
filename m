@@ -2,91 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB7B62147E5
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 20:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7ED42147E6
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jul 2020 20:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbgGDSUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jul 2020 14:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45512 "EHLO
+        id S1726927AbgGDSWc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jul 2020 14:22:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726643AbgGDSUW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jul 2020 14:20:22 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C9EC061794
-        for <linux-iio@vger.kernel.org>; Sat,  4 Jul 2020 11:20:22 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id z5so16503334pgb.6
-        for <linux-iio@vger.kernel.org>; Sat, 04 Jul 2020 11:20:22 -0700 (PDT)
+        with ESMTP id S1726926AbgGDSWb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jul 2020 14:22:31 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 741BCC061794
+        for <linux-iio@vger.kernel.org>; Sat,  4 Jul 2020 11:22:31 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id ch3so130022pjb.5
+        for <linux-iio@vger.kernel.org>; Sat, 04 Jul 2020 11:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=jDeZ+s2iTZ8p8+JmgfyDT0UiOnqavohY0nCjK43Dmiw=;
-        b=bwYMpFRZxJN9RjyqqzATx7/qIbxLmmETRgEYcxude0HGmi+lk8WyAWrkF404E1A8lh
-         62f9JGaDlAsOPZuDfgkoTGWypykrgGDEKuZBC1yOHm6j/qa/DzacavyCIqiEIeVq7Cwd
-         wD3f1o8d47kELbis0WIsCSub+Bp3iMfolzVxFGqF70mChgae7AyLTnJNjn72e1YDQ0Wl
-         I8WeLYnG3b3kCr+nSF8KbffjSa9L8rkNCBbd0ffSvoTGeuPmprXGNVGUdeuHmlWRz5eS
-         6rXAoqpJrz3qGnLCl1uVrIgiuJIRhtBFoQ867RyGZQXV0V0Ks0w5k1cooWu251AsuU42
-         vV0w==
+        bh=cUpbZeWmdonOJK5SiBIDC12fXxJk3LGYHtfEjmwd5oU=;
+        b=dzTsFosRm13MI+SmkkWB1BLDUQHPVwuV+xphNkWJgtbS2AeY3SVgjSw9gAwehM5ubK
+         hBZzrXDzgPx77ZUVvA25K4x8ve6Hhp1MEHsnJ6bv7VXCiRwWZPV393PLg+tdVIISaG+M
+         +wkTPuleSMFxEB4a8KBUE9YsJJ/b7j+TT/+yNEhzSqmlRUOzLeOi+DM2bBJs0KwGfSyN
+         GZZJWrcz3xMaIYn5espXx/BHEVO0ezQd/0se9WDM0I6/q/OXITqoSFk4wVJxAr3XKakW
+         pb7TPH5S7NNLCiY/xILn4HCxuKFckJg9MtX1ll7x+97y166RwmRnC7q27jUAgQ+DeGxA
+         otrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=jDeZ+s2iTZ8p8+JmgfyDT0UiOnqavohY0nCjK43Dmiw=;
-        b=l9CXh/EQHlbfGbEv1DeVHc+FuUdxdsZGjj2Dq8HBaiqU3EZn6GgYnGGMimq8GoMUl0
-         cMU5iWnHG7eWyPiMpRxAW9iSPHzX1iqSQstdsjqkX+BqG4wBDtnTWfx8Bz2l6Ioe+aUb
-         nQcbAjSgz+HC6UbBFmBjxHlM1iskBr2Z7qCtRIO3eYPT/DKk9XP9/K534QLleagU9lQB
-         IJLUHSxhuijLza4iocFJklCx+jCnD/n4GWtJIxw8ndskhaOWHdVktMr8w+8aWRJpb87F
-         QBAUxnnJfrkVRqqjYIjKInwgjthnqBkLawNyeI4Ffdqq7qLsOSVeYqWOI8DGM8htx/7j
-         5ASg==
-X-Gm-Message-State: AOAM5312MCOOLIK7iN1oTxL9DlxNAve/kceN4KbKXTM1RFsO5L5QO5jE
-        Cw6PFWR71aUqnkfBB0qjEuOH8bnL8JAYWg++Tcc=
-X-Google-Smtp-Source: ABdhPJzTDPjS5bDU1/p1ofu1IEfI74ZSxRDiA6q5pb0oIzhahi9Btf/OVY0rB4/cVtt1kn5uznu48a9lbYwfGREZ8Kw=
-X-Received: by 2002:a63:a05f:: with SMTP id u31mr27761572pgn.4.1593886821739;
- Sat, 04 Jul 2020 11:20:21 -0700 (PDT)
+        bh=cUpbZeWmdonOJK5SiBIDC12fXxJk3LGYHtfEjmwd5oU=;
+        b=gIosc51eOZiK0EEXF299I7BIUHIggPkwKlTLoJSQg576mU0KS0YPi5ABqgqlqdEaQ6
+         DXT5AsqTXElxBXZKBPGrdKta/AnSNDxziVKX9W37v4xBwRLHfAOtG7/Oa0zytPYm/xTP
+         nlkMnlA1RmDf0C4A27jhZWu9FC2aiiFQg0f9WguRXpoWCxMKlzXneLAzh9TmaWH3TssG
+         NvdvP7bg9LQGHtf2jdrkiH9urTfKEHoj/WbvHTIuxtb+xvlZJvQ67RoemcihVDPGwygu
+         a5K8DHwuf+pHyaFoUPwq7nMGpG9UySAJCAA1zSRhm3JUaW6rBq5I+118/CdYY4EqCj6b
+         WIGQ==
+X-Gm-Message-State: AOAM531TN695Eoa0J7kIfQGz9AwiPLz/8hpzWrqzXIU/7zp7MOzB4HwC
+        8X8iW9BG9yr+7Px76oDqZf4dsPVamE7KGXHGVWk=
+X-Google-Smtp-Source: ABdhPJxPMvQTtvnleWJyWHa/6+w3IdLWy0X5SfPTbVy8XE8giURVTvyA4Dw9w8G0Ey5Hff+LSjqEce7O2FQj1+wE3g0=
+X-Received: by 2002:a17:90b:3547:: with SMTP id lt7mr18145323pjb.181.1593886950899;
+ Sat, 04 Jul 2020 11:22:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200628123654.32830-1-jic23@kernel.org> <20200628123654.32830-20-jic23@kernel.org>
- <CAHp75Vfba8cJkhZVpRyspc7CgrmYy0BjvuBjb4==BFMsa-tCyg@mail.gmail.com> <20200704165832.5dafe051@archlinux>
-In-Reply-To: <20200704165832.5dafe051@archlinux>
+References: <20200628123654.32830-1-jic23@kernel.org> <20200628123654.32830-23-jic23@kernel.org>
+ <CAHp75Vf7vfEo9vrL3GseZNfSZWugQtKrks+eCvR+z0NKMgMzAA@mail.gmail.com> <20200704165943.4a6c0f5f@archlinux>
+In-Reply-To: <20200704165943.4a6c0f5f@archlinux>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 4 Jul 2020 21:20:05 +0300
-Message-ID: <CAHp75Vf_jZgntP+53cRCsesRkdN5U64VCnav8D1yhVjtyKxN-g@mail.gmail.com>
-Subject: Re: [PATCH 19/23] iio:adc:ti-adc128s052: drop of_match_ptr protection
+Date:   Sat, 4 Jul 2020 21:22:14 +0300
+Message-ID: <CAHp75Vfhz3Rcj1O3yiBVLBrnSFpQSw1U0Cu89tdqC3SgDo0Aqg@mail.gmail.com>
+Subject: Re: [PATCH 22/23] iio:adc:bcm_iproc: Drop of_match_ptr protection and
+ switch to mod_devicetable.h
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Alexandru Ardelean <alexandru.Ardelean@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>
+        Raveendra Padasalagi <raveendra.padasalagi@broadcom.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jul 4, 2020 at 6:58 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Tue, 30 Jun 2020 10:22:45 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Sun, Jun 28, 2020 at 3:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
-
-> The problem is that not all vendors have an ACPI manufacturer ID
-> (or a PNP one). They could probably get one but smaller manufacturers
-> are never going to bother.
-
-I understand and this is a real flaw in the ACPI process. But users
-(customers) should do something about it.
-
-> > That said, the commit message is misleading a bit here (it might be
-> > useful for the components which are not supported by existing ACPI ID.
+On Sat, Jul 4, 2020 at 6:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> I'm a bit dubious about encouraging people to use an Intel ID. If it
-> were issued by TI for a TI part that would be a different matter.
+> On Tue, 30 Jun 2020 10:25:24 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+>
+> > On Sun, Jun 28, 2020 at 3:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Whilst it's unlikely that this driver will ever be instantiated from
+> > > ACPI PRP0001 there is little advantage in using the of_match_ptr
+> > > protection.  The switch of header is because we only use of_match_id
+> > > in here and that is defined in mod_devicetable.h not of.h.
+> > >
+> > > Note the main reason for this patch is to avoid providing instances
+> > > of of_match_ptr being used in IIO that might get copied into new drivers.
+> > >
+> >
+> > Commit message is misleading. The change won't help with ACPI due to
+> > syscon_regmap_lookup_by_phandle() call.
+>
+> I'd missed that.  I'll drop this one.
 
-Here it's an ID corresponding to one of the supported components, so,
-PRP0001 makes sense for the rest.
-Rephrase the message to be more align with the reality (as per
-previous comment on the patch with same matter).
+Actually in this case, if it's not done yet, I prefer to see in
+Kconfig something like
 
-> Obviously there is no problem with Intel issuing an ID, or anyone else
-> doing so.
+depends on OF || COMPILE_TEST
+
+to explicitly show that "yes, you may compile it, but it requires OF
+to function with usefulness".
 
 -- 
 With Best Regards,

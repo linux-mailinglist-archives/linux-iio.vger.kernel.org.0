@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0BA214C3A
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jul 2020 13:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004C2214C43
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jul 2020 13:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726480AbgGELzD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Jul 2020 07:55:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56784 "EHLO mail.kernel.org"
+        id S1726833AbgGEL7k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Jul 2020 07:59:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbgGELzD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Jul 2020 07:55:03 -0400
+        id S1726454AbgGEL7j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Jul 2020 07:59:39 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E04582073E;
-        Sun,  5 Jul 2020 11:55:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B676920708;
+        Sun,  5 Jul 2020 11:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593950102;
-        bh=PySaQ9280ijbHQQr9O4QujlwIn0LScfCX/BaELoUy5o=;
+        s=default; t=1593950379;
+        bh=jbRIrixoWn2wn5oaON87KKkPJd5FmrO9b7ka7N4hgrk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RqanaMKwwfzNgOIWn4Iepy9x2SyFj3yhUFFqac1wnsQwrkSSrs93uM3ro9SvymKVM
-         KOYYo0liVxn8kMBMHRvI5n4R7Hjv2HU5r3INtnx0Q9Dmr43FVVgL9PEQm5xcdbqmP1
-         D7kFG62KuI5hbDpEKBjkjTbyFco8RlRMnET4hMz4=
-Date:   Sun, 5 Jul 2020 12:54:59 +0100
+        b=ANj26gvSSKhAJ6k+Pnrg6oJP4v0rt8rdFOz/5D7I6wlHQKJeTVj+5OGSsz6xJuOQt
+         5trO/iUy3WPHHsh2DOuSjRBR8XpWJFNIz8JSxaBZ8lRlFTB/HsYm2XGdoSd0UZ6uk/
+         SAO3o8UXeiBHbaO1CgPjfj/S/bqPnn3JhNxTnASM=
+Date:   Sun, 5 Jul 2020 12:59:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Cc:     <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 21/32] iio:pressure:ms5611 Fix buffer element alignment
-Message-ID: <20200705125459.32fb5457@archlinux>
-In-Reply-To: <20200607180313.GA95841@arch>
-References: <20200607155408.958437-1-jic23@kernel.org>
-        <20200607155408.958437-22-jic23@kernel.org>
-        <20200607180313.GA95841@arch>
+To:     Renato Lui Geh <renatogeh@gmail.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Michael.Hennerich@analog.com, lars@metafoo.de, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, giuliano.belinassi@usp.br,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7780: Fix a resource handling path in
+ 'ad7780_probe()'
+Message-ID: <20200705125935.025cfa12@archlinux>
+In-Reply-To: <20200518022129.xkcuw4yxotnll7ym@renatolg>
+References: <20200517095953.278950-1-christophe.jaillet@wanadoo.fr>
+        <20200518022129.xkcuw4yxotnll7ym@renatolg>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,73 +46,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 Jun 2020 20:03:13 +0200
-Tomasz Duszynski <tomasz.duszynski@octakon.com> wrote:
+On Sun, 17 May 2020 23:21:29 -0300
+Renato Lui Geh <renatogeh@gmail.com> wrote:
 
-> On Sun, Jun 07, 2020 at 04:53:57PM +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > One of a class of bugs pointed out by Lars in a recent review.
-> > iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> > to the size of the timestamp (8 bytes).  This is not guaranteed in
-> > this driver which uses an array of smaller elements on the stack.
-> > Here there is no data leak possibility so use an explicit structure
-> > on the stack to ensure alignment and nice readable fashion.
-> >
-> > The forced alignment of ts isn't strictly necessary in this driver
-> > as the padding will be correct anyway (there isn't any).  However
-> > it is probably less fragile to have it there and it acts as
-> > documentation of the requirement.
-> >  
+> Acked-by: Renato Lui Geh <renatogeh@gmail.com>
 > 
-> Looks good.
-> Acked-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-I'm picking up those patch in the series for which I have an ack to
-cut down on the number we need to consider in the next version.
+> On 05/17, Christophe JAILLET wrote:
+> >If 'ad7780_init_gpios()' fails, we must not release some resources that
+> >have not been allocated yet. Return directly instead.
+> >
+> >Fixes: 5bb30e7daf00 ("staging: iio: ad7780: move regulator to after GPIO init")
+> >Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
+> >Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> 
-> > Fixes: 713bbb4efb9dc ("iio: pressure: ms5611: Add triggered buffer support")
-> > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/iio/pressure/ms5611_core.c | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >---
+> > drivers/iio/adc/ad7780.c | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
-> > index d451bb9dffc8..214b0d25f598 100644
-> > --- a/drivers/iio/pressure/ms5611_core.c
-> > +++ b/drivers/iio/pressure/ms5611_core.c
-> > @@ -212,16 +212,21 @@ static irqreturn_t ms5611_trigger_handler(int irq, void *p)
-> >  	struct iio_poll_func *pf = p;
-> >  	struct iio_dev *indio_dev = pf->indio_dev;
-> >  	struct ms5611_state *st = iio_priv(indio_dev);
-> > -	s32 buf[4]; /* s32 (pressure) + s32 (temp) + 2 * s32 (timestamp) */
-> > +	/* Ensure buffer elements are naturally aligned */
-> > +	struct {
-> > +		s32 channels[2];
-> > +		s64 ts __aligned(8);
-> > +	} scan;
-> >  	int ret;
+> >diff --git a/drivers/iio/adc/ad7780.c b/drivers/iio/adc/ad7780.c
+> >index f47606ebbbbe..b33fe6c3907e 100644
+> >--- a/drivers/iio/adc/ad7780.c
+> >+++ b/drivers/iio/adc/ad7780.c
+> >@@ -329,7 +329,7 @@ static int ad7780_probe(struct spi_device *spi)
 > >
-> >  	mutex_lock(&st->lock);
-> > -	ret = ms5611_read_temp_and_pressure(indio_dev, &buf[1], &buf[0]);
-> > +	ret = ms5611_read_temp_and_pressure(indio_dev, &scan.channels[1],
-> > +					    &scan.channels[0]);
-> >  	mutex_unlock(&st->lock);
-> >  	if (ret < 0)
-> >  		goto err;
+> > 	ret = ad7780_init_gpios(&spi->dev, st);
+> > 	if (ret)
+> >-		goto error_cleanup_buffer_and_trigger;
+> >+		return ret;
 > >
-> > -	iio_push_to_buffers_with_timestamp(indio_dev, buf,
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
-> >  					   iio_get_time_ns(indio_dev));
-> >
-> >  err:
-> > --
-> > 2.26.2
+> > 	st->reg = devm_regulator_get(&spi->dev, "avdd");
+> > 	if (IS_ERR(st->reg))
+> >-- 
+> >2.25.1
 > >  
 

@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DABF5214C16
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jul 2020 13:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3162A214C19
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jul 2020 13:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726480AbgGELmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Jul 2020 07:42:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54290 "EHLO mail.kernel.org"
+        id S1726480AbgGELoC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Jul 2020 07:44:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54538 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbgGELmL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 Jul 2020 07:42:11 -0400
+        id S1726454AbgGELoB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 5 Jul 2020 07:44:01 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 193F220723;
-        Sun,  5 Jul 2020 11:42:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3EB1F20723;
+        Sun,  5 Jul 2020 11:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593949331;
-        bh=M5lEzul0LZKkMuAjrm9xknPvHKG1Xnnpk4YILGpJdyY=;
+        s=default; t=1593949441;
+        bh=Mp0OZ78nKDygctQuSPpG5pCPpNwfGBfIkMaAgxyxlgk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fa3JuskL8doZgWAjrB6Pdr1KDhmYjPh4Eeezve5p4fbRTEejdQPwKGUaAZkvfyqNL
-         hHSp2aQ5GOY8sZ9HDQo9zH4rEjuKn86cu25MryIt+RjfFflt8uMMcqXAdx+40pSbXP
-         66i4q/xV8dSYXWhynMwjDyrK8AAov3+135hCu3vk=
-Date:   Sun, 5 Jul 2020 12:42:06 +0100
+        b=UUqEYHLz1jzcke1pGxQF9VXIJDx/1mfdx+z3QmWqqtQ4KIThRRoLhXQdkpNn5FuXD
+         LNi6xLl4LfXQ2/W/hMaofuy69VuKg7KHNhwjuPFF/WT3NcySR2um8KN4hK0t4x4Fib
+         EB4BR9YRTa66ilVKuo+ECqxw8CrLYx3ifZgu2sK8=
+Date:   Sun, 5 Jul 2020 12:43:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: Re: [PATCH 11/32] iio:light:st_uvis25 Fix timestamp alignment and
- prevent data leak.
-Message-ID: <20200705124206.05b46693@archlinux>
-In-Reply-To: <20200607155408.958437-12-jic23@kernel.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 13/32] iio:magnetometer:ak8974: Fix alignment and data
+ leak issues
+Message-ID: <20200705124357.1fc7316d@archlinux>
+In-Reply-To: <20200607155408.958437-14-jic23@kernel.org>
 References: <20200607155408.958437-1-jic23@kernel.org>
-        <20200607155408.958437-12-jic23@kernel.org>
+        <20200607155408.958437-14-jic23@kernel.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,7 +45,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  7 Jun 2020 16:53:47 +0100
+On Sun,  7 Jun 2020 16:53:49 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -56,67 +56,64 @@ Jonathan Cameron <jic23@kernel.org> wrote:
 > this driver which uses an array of smaller elements on the stack.
 > As Lars also noted this anti pattern can involve a leak of data to
 > userspace and that indeed can happen here.  We close both issues by
-> moving to a suitable structure in the iio_priv()
+> moving to a suitable structure in the iio_priv() data.
 > 
-> This data is allocated with kzalloc so no data can leak apart
-> from previous readings.
+> This data is allocated with kzalloc so no data can leak appart from
+> previous readings.
 > 
-> Fixes: 3025c8688c1e ("iio: light: add support for UVIS25 sensor")
+> Fixes: 7c94a8b2ee8cf ("iio: magn: add a driver for AK8974")
 > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-I'm going to pick up all the ones in this series that I have had
-an Ack for. 
+Applied to the fixes-togreg branch of iio.git. I'm picking up
+all the ones in the series which I have had positive feedback on.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/light/st_uvis25.h      | 5 +++++
->  drivers/iio/light/st_uvis25_core.c | 6 +++---
->  2 files changed, 8 insertions(+), 3 deletions(-)
+>  drivers/iio/magnetometer/ak8974.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/light/st_uvis25.h b/drivers/iio/light/st_uvis25.h
-> index 78bc56aad129..283086887caf 100644
-> --- a/drivers/iio/light/st_uvis25.h
-> +++ b/drivers/iio/light/st_uvis25.h
-> @@ -27,6 +27,11 @@ struct st_uvis25_hw {
->  	struct iio_trigger *trig;
->  	bool enabled;
->  	int irq;
+> diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+> index c2260c84f7f1..ea09b549ec4e 100644
+> --- a/drivers/iio/magnetometer/ak8974.c
+> +++ b/drivers/iio/magnetometer/ak8974.c
+> @@ -192,6 +192,11 @@ struct ak8974 {
+>  	bool drdy_irq;
+>  	struct completion drdy_complete;
+>  	bool drdy_active_low;
 > +	/* Ensure timestamp is naturally aligned */
 > +	struct {
-> +		u8 chan;
+> +		__le16 channels[3];
 > +		s64 ts __aligned(8);
 > +	} scan;
 >  };
 >  
->  extern const struct dev_pm_ops st_uvis25_pm_ops;
-> diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
-> index 4d001d50e775..818b8faea73c 100644
-> --- a/drivers/iio/light/st_uvis25_core.c
-> +++ b/drivers/iio/light/st_uvis25_core.c
-> @@ -234,17 +234,17 @@ static const struct iio_buffer_setup_ops st_uvis25_buffer_ops = {
->  
->  static irqreturn_t st_uvis25_buffer_handler_thread(int irq, void *p)
+>  static const char ak8974_reg_avdd[] = "avdd";
+> @@ -657,7 +662,6 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
 >  {
-> -	u8 buffer[ALIGN(sizeof(u8), sizeof(s64)) + sizeof(s64)];
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *iio_dev = pf->indio_dev;
->  	struct st_uvis25_hw *hw = iio_priv(iio_dev);
->  	int err;
+>  	struct ak8974 *ak8974 = iio_priv(indio_dev);
+>  	int ret;
+> -	__le16 hw_values[8]; /* Three axes + 64bit padding */
 >  
-> -	err = regmap_read(hw->regmap, ST_UVIS25_REG_OUT_ADDR, (int *)buffer);
-> +	err = regmap_read(hw->regmap, ST_UVIS25_REG_OUT_ADDR,
-> +			  (unsigned int *)&hw->scan.chan);
->  	if (err < 0)
->  		goto out;
+>  	pm_runtime_get_sync(&ak8974->i2c->dev);
+>  	mutex_lock(&ak8974->lock);
+> @@ -667,13 +671,13 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
+>  		dev_err(&ak8974->i2c->dev, "error triggering measure\n");
+>  		goto out_unlock;
+>  	}
+> -	ret = ak8974_getresult(ak8974, hw_values);
+> +	ret = ak8974_getresult(ak8974, ak8974->scan.channels);
+>  	if (ret) {
+>  		dev_err(&ak8974->i2c->dev, "error getting measures\n");
+>  		goto out_unlock;
+>  	}
 >  
-> -	iio_push_to_buffers_with_timestamp(iio_dev, buffer,
-> +	iio_push_to_buffers_with_timestamp(iio_dev, &hw->scan,
->  					   iio_get_time_ns(iio_dev));
+> -	iio_push_to_buffers_with_timestamp(indio_dev, hw_values,
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
+>  					   iio_get_time_ns(indio_dev));
 >  
->  out:
+>   out_unlock:
 

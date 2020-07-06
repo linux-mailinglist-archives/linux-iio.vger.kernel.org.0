@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2524921569A
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 13:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1377921569E
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 13:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728921AbgGFLoI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jul 2020 07:44:08 -0400
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:38725 "EHLO
-        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728845AbgGFLoI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jul 2020 07:44:08 -0400
+        id S1729008AbgGFLoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jul 2020 07:44:10 -0400
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:40573 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728967AbgGFLoK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jul 2020 07:44:10 -0400
 X-Originating-IP: 86.202.118.225
 Received: from localhost (lfbn-lyo-1-23-225.w86-202.abo.wanadoo.fr [86.202.118.225])
         (Authenticated sender: kamel.bouhara@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 153292000A;
-        Mon,  6 Jul 2020 11:44:04 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 8467AC0016;
+        Mon,  6 Jul 2020 11:44:06 +0000 (UTC)
 From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -27,10 +27,11 @@ To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>
-Subject: [PATCH v6 3/5] dt-bindings: microchip: atmel,at91rm9200-tcb: add sama5d2 compatible
-Date:   Mon,  6 Jul 2020 13:43:45 +0200
-Message-Id: <20200706114347.174452-4-kamel.bouhara@bootlin.com>
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v6 4/5] dt-bindings: counter: microchip-tcb-capture counter
+Date:   Mon,  6 Jul 2020 13:43:46 +0200
+Message-Id: <20200706114347.174452-5-kamel.bouhara@bootlin.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200706114347.174452-1-kamel.bouhara@bootlin.com>
 References: <20200706114347.174452-1-kamel.bouhara@bootlin.com>
@@ -41,85 +42,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Describe the devicetree binding for the Microchip TCB module.
+Each counter blocks exposes three independent counters.
 
-The sama5d2 TC block TIMER_CLOCK1 is different from the at91sam9x5 one.
-Instead of being MCK / 2, it is the TCB GCLK.
+However, when configured in quadrature decoder, both channel <0> and <1>
+are required for speed/position and rotation capture (yet only the
+position is captured).
 
-Cc: Rob Herring <robh+dt@kernel.org>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../soc/microchip/atmel,at91rm9200-tcb.yaml   | 42 +++++++++++++++----
- 1 file changed, 33 insertions(+), 9 deletions(-)
+ .../soc/microchip/atmel,at91rm9200-tcb.yaml   | 32 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
-index 9d680e0b9109..d226fd7d5258 100644
+index d226fd7d5258..3cd0b70cd6cf 100644
 --- a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
 +++ b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
-@@ -19,6 +19,7 @@ properties:
-       - enum:
-           - atmel,at91rm9200-tcb
-           - atmel,at91sam9x5-tcb
-+          - atmel,sama5d2-tcb
-       - const: simple-mfd
-       - const: syscon
+@@ -52,14 +52,20 @@ properties:
  
-@@ -36,15 +37,6 @@ properties:
-     description:
-       List of clock names. Always includes t0_clk and slow clk. Also includes
-       t1_clk and t2_clk if a clock per channel is available.
--    oneOf:
--      - items:
--        - const: t0_clk
--        - const: slow_clk
--      - items:
--        - const: t0_clk
--        - const: t1_clk
--        - const: t2_clk
--        - const: slow_clk
-     minItems: 2
-     maxItems: 4
- 
-@@ -75,6 +67,38 @@ patternProperties:
-       - compatible
-       - reg
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: atmel,sama5d2-tcb
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 3
-+          maxItems: 3
-+        clock-names:
-+          items:
-+            - const: t0_clk
-+            - const: gclk
-+            - const: slow_clk
-+    else:
-+      properties:
-+        clocks:
-+          minItems: 2
-+          maxItems: 4
-+        clock-names:
-+          oneOf:
-+            - items:
-+              - const: t0_clk
-+              - const: slow_clk
-+            - items:
-+              - const: t0_clk
-+              - const: t1_clk
-+              - const: t2_clk
-+              - const: slow_clk
+ patternProperties:
+   "^timer@[0-2]$":
+-    description: The timer block channels that are used as timers.
++    description: The timer block channels that are used as timers or counters.
+     type: object
+     properties:
+       compatible:
+-        const: atmel,tcb-timer
++        items:
++          - enum:
++              - atmel,tcb-timer
++              - microchip,tcb-capture
+       reg:
+         description:
+-          List of channels to use for this particular timer.
++          List of channels to use for this particular timer. In Microchip TCB capture
++          mode channels are registered as a counter devices, for the qdec mode TCB0's
++          channel <0> and <1> are required.
 +
- required:
-   - compatible
-   - reg
+         minItems: 1
+         maxItems: 3
+ 
+@@ -153,3 +159,23 @@ examples:
+                         reg = <1>;
+                 };
+         };
++    /* TCB0 Capture with QDEC: */
++        timer@f800c000 {
++                compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
++                #address-cells = <1>;
++                #size-cells = <0>;
++                reg = <0xfff7c000 0x100>;
++                interrupts = <18 4>;
++                clocks = <&tcb0_clk>, <&clk32k>;
++                clock-names = "t0_clk", "slow_clk";
++
++                timer@0 {
++                        compatible = "microchip,tcb-capture";
++                        reg = <0>, <1>;
++                };
++
++                timer@2 {
++                        compatible = "atmel,tcb-timer";
++                        reg = <2>;
++                };
++        };
 -- 
 2.26.2
 

@@ -2,157 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA3F2153A9
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 10:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA7E21568F
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 13:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728648AbgGFIDL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jul 2020 04:03:11 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:1510 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728169AbgGFIDK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jul 2020 04:03:10 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06681bJh005600;
-        Mon, 6 Jul 2020 04:03:09 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 322pp5dmft-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Jul 2020 04:03:09 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0668382B016851
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 6 Jul 2020 04:03:08 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 6 Jul 2020
- 04:03:07 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 6 Jul 2020 04:03:07 -0400
-Received: from saturn.ad.analog.com ([10.48.65.100])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 066832Se010445;
-        Mon, 6 Jul 2020 04:03:05 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 3/3] iio: dac: ad5592r: localize locks only where needed in ad5592r_read_raw()
-Date:   Mon, 6 Jul 2020 14:02:59 +0300
-Message-ID: <20200706110259.23947-3-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200706110259.23947-1-alexandru.ardelean@analog.com>
-References: <20200706110259.23947-1-alexandru.ardelean@analog.com>
+        id S1728899AbgGFLoD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jul 2020 07:44:03 -0400
+Received: from relay2-d.mail.gandi.net ([217.70.183.194]:50463 "EHLO
+        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728845AbgGFLoD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jul 2020 07:44:03 -0400
+X-Originating-IP: 86.202.118.225
+Received: from localhost (lfbn-lyo-1-23-225.w86-202.abo.wanadoo.fr [86.202.118.225])
+        (Authenticated sender: kamel.bouhara@bootlin.com)
+        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 204804000F;
+        Mon,  6 Jul 2020 11:44:00 +0000 (UTC)
+From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: [PATCH v6 0/5] Microchip TCB Capture driver
+Date:   Mon,  6 Jul 2020 13:43:42 +0200
+Message-Id: <20200706114347.174452-1-kamel.bouhara@bootlin.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-06_04:2020-07-06,2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- cotscore=-2147483648 mlxscore=0 mlxlogscore=940 malwarescore=0 bulkscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007060064
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since there was a recently discovered issue with these locks, it probably
-makes sense to cleanup the code a bit, to prevent it from being used as an
-example/reference.
+Hello,
 
-This change moves the lock only where it is explicitly needed to protect
-resources from potential concurrent accesses.
+Here is a new counter driver to support Microchip TCB capture devices.
 
-It also reworks the switch statements to do direct returns vs caching the
-return value on a variable.
+Each SoC has two TCB blocks, each one including three independent
+channels.The following series adds support for two counter modes:
+increase and quadrature decoder.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/dac/ad5592r-base.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+As for the atmel clocksource and pwm, the counter driver needs to fill
+some tcb capabilities in order to operate with the right configuration.
+This is achieved in first patch of this series.
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 7ea79e9bfa1d..f697b20efb6e 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -380,32 +380,32 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		mutex_lock(&st->lock);
--
- 		if (!chan->output) {
-+			mutex_lock(&st->lock);
- 			ret = st->ops->read_adc(st, chan->channel, &read_val);
-+			mutex_unlock(&st->lock);
- 			if (ret)
--				goto unlock;
-+				return ret;
- 
- 			if ((read_val >> 12 & 0x7) != (chan->channel & 0x7)) {
- 				dev_err(st->dev, "Error while reading channel %u\n",
- 						chan->channel);
--				ret = -EIO;
--				goto unlock;
-+				return -EIO;
- 			}
- 
- 			read_val &= GENMASK(11, 0);
- 
- 		} else {
-+			mutex_lock(&st->lock);
- 			read_val = st->cached_dac[chan->channel];
-+			mutex_unlock(&st->lock);
- 		}
- 
- 		dev_dbg(st->dev, "Channel %u read: 0x%04hX\n",
- 				chan->channel, read_val);
- 
- 		*val = (int) read_val;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = ad5592r_get_vref(st);
- 
-@@ -425,11 +425,13 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 			mult = !!(st->cached_gp_ctrl &
- 				AD5592R_REG_CTRL_ADC_RANGE);
- 
-+		mutex_unlock(&st->lock);
-+
- 		*val *= ++mult;
- 
- 		*val2 = chan->scan_type.realbits;
--		ret = IIO_VAL_FRACTIONAL_LOG2;
--		break;
-+
-+		return IIO_VAL_FRACTIONAL_LOG2;
- 	case IIO_CHAN_INFO_OFFSET:
- 		ret = ad5592r_get_vref(st);
- 
-@@ -439,15 +441,13 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 			*val = (-34365 * 25) / ret;
- 		else
- 			*val = (-75365 * 25) / ret;
--		ret =  IIO_VAL_INT;
--		break;
-+
-+		mutex_unlock(&st->lock);
-+
-+		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
- 	}
--
--unlock:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static int ad5592r_write_raw_get_fmt(struct iio_dev *indio_dev,
--- 
-2.25.1
+Please feel free to comment.
+
+Cheers,
+
+Changes in v6:
+ - Rebased on top of v5.8-rc3
+ - Added Alexandre's ack
+ - Added Rob's ack
+
+Changes in v5:
+ - Fix duplicate keys errors in yaml dt-schema
+
+Changes in v4:
+ - Use existing binding to document capture mode of the Microchip TCBs.
+
+Changes in v3:
+ - Updated the brand name: s/atmel/microchip/.
+ - Added missing kernel doc for new elements introduced in structure
+   atmel_tcb_config.
+ - Removed useless blank line
+ - Added an explicit clock removing path using devm_add_action_or_reset
+
+Changes in v2:
+ - Fixed first patch not applying on mainline
+ - Updated return code to -EINVAL when user is requesting qdec mode on
+   a counter device not supporting it.
+ - Added an error case returning -EINVAL when action edge is performed
+   in
+   qdec mode.
+ - Removed no need to explicity setting ops to NULL from static struct
+   as
+   it is the default value.
+ - Changed confusing code by using snprintf for the sake of clarity.
+ - Changed code to use ARRAY_SIZE so that future reviewers will know
+   that num_counts matches what's in the atmel_tc_count array without
+   having to check so themselves.
+ - Fixed errors reported by dt_binding_check
+
+Alexandre Belloni (2):
+  dt-bindings: atmel-tcb: convert bindings to json-schema
+  dt-bindings: microchip: atmel,at91rm9200-tcb: add sama5d2 compatible
+
+Kamel Bouhara (3):
+  ARM: at91: add atmel tcb capabilities
+  dt-bindings: counter: microchip-tcb-capture counter
+  counter: Add microchip TCB capture counter
+
+ .../devicetree/bindings/mfd/atmel-tcb.txt     |  56 ---
+ .../soc/microchip/atmel,at91rm9200-tcb.yaml   | 181 ++++++++
+ drivers/counter/Kconfig                       |  11 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/microchip-tcb-capture.c       | 397 ++++++++++++++++++
+ include/soc/at91/atmel_tcb.h                  |   5 +
+ 6 files changed, 595 insertions(+), 56 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mfd/atmel-tcb.txt
+ create mode 100644 Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+ create mode 100644 drivers/counter/microchip-tcb-capture.c
+
+--
+2.26.2
 

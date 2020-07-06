@@ -2,157 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E395C215380
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 09:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 460A82153A7
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jul 2020 10:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728711AbgGFHve (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jul 2020 03:51:34 -0400
-Received: from first.geanix.com ([116.203.34.67]:50650 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728258AbgGFHve (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 Jul 2020 03:51:34 -0400
-Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id D43D72260689;
-        Mon,  6 Jul 2020 07:51:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1594021891; bh=Kh87M4Ly4yTXldCRas6Fx1Hr37VGDaSUeY3ind/u/ts=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=R8ashBHXByOeW9gxm8igXGnreSeOH1HOF9rPzkaU/ZidRumTYVJQGOeojMV2dGbGT
-         uJYquIzRP7FJv8IhvedGbYjBsBOjbIEd8nLJvg1/FONKQi08m+z/RMWaVMZQVqaBi8
-         y8KJVYA04vsK3AITJmmgWykAKaJEFpPZwZbADQq957SSydXB8UkahQwq5x/ZVBV0tW
-         7gQxOjKaLizbtWuWthJgZgQtJqyN6ZWQr3cQrHx8MXxgaZmpsTGWo+EHJfB9GggBSx
-         dUWbKba9bsve1x/5wRe5XT7LNjxMDEZmVP0Q2WLj3rtZJSMLboHrSXgb7BasmU0D7d
-         0/aZiOWe4VeAg==
-Subject: Re: [PATCH] dt-bindings: iio: ti,ads8688 yaml conversion
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20200705131720.240574-1-jic23@kernel.org>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <905c1b8a-7902-580c-4df1-21c6eb1ebf0b@geanix.com>
-Date:   Mon, 6 Jul 2020 09:51:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728211AbgGFIDJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jul 2020 04:03:09 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:64784 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728169AbgGFIDJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jul 2020 04:03:09 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06681obf005680;
+        Mon, 6 Jul 2020 04:03:08 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 322pp5dmfq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Jul 2020 04:03:07 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 066836ff016845
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 6 Jul 2020 04:03:06 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 6 Jul 2020 04:03:05 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 6 Jul 2020 04:03:05 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 6 Jul 2020 04:03:05 -0400
+Received: from saturn.ad.analog.com ([10.48.65.100])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 066832Sc010445;
+        Mon, 6 Jul 2020 04:03:03 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3] iio: dac: ad5592r: fix unbalanced mutex unlocks in ad5592r_read_raw()
+Date:   Mon, 6 Jul 2020 14:02:57 +0300
+Message-ID: <20200706110259.23947-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200705131720.240574-1-jic23@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on ff3d05386fc5
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-06_04:2020-07-06,2020-07-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
+ cotscore=-2147483648 mlxscore=0 mlxlogscore=833 malwarescore=0 bulkscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2007060064
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+There are 2 exit paths where the lock isn't held, but try to unlock the
+mutex when exiting. In these places we should just return from the
+function.
 
+A neater approach would be to cleanup the ad5592r_read_raw(), but that
+would make this patch more difficult to backport to stable versions.
 
-On 05/07/2020 15.17, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Fairly simple binding.  Most of the changes were filling in information
-> not previously found in the binding.  I dropped the previous explicit
-> mention of spi-max-frequency as that is covered by the generic SPI
-> binding.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Sean Nyekjaer <sean@geanix.com>
-Acked-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->
-> Sean, are you fine with being explicitly listed at the maintainer
-> of this binding?  Previously we didn't have that formally laid
-> out in the old txt bindings but it's now a required field.
-Yes :)
->
-> I'm going to slowly work my way through some of the simpler yaml conversions
-> over the next few months.   Of course I welcome anyone else taking
-> some of these on but for purposes of review, please keep it to only
-> a few at a time.
->
->   .../bindings/iio/adc/ti,ads8688.yaml          | 45 +++++++++++++++++++
->   .../bindings/iio/adc/ti-ads8688.txt           | 20 ---------
->   2 files changed, 45 insertions(+), 20 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads8688.yaml
->   delete mode 100644 Documentation/devicetree/bindings/iio/adc/ti-ads8688.txt
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads8688.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads8688.yaml
-> new file mode 100644
-> index 000000000000..97fe6cbb2efa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads8688.yaml
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads8688.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments' ADS8684 and ADS8688 ADC chip
-> +
-> +maintainers:
-> +  - Sean Nyekjaer <sean@geanix.com>
-> +
-> +description: |
-> +   SPI 16bit ADCs with 4/8 channels.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,ads8684
-> +      - ti,ads8688
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vref-supply:
-> +    description: Optional external reference.  If not supplied, assume
-> +      REFSEL input tied low to enable the internal reference.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            compatible = "ti,ads8688";
-> +            reg = <0>;
-> +            vref-supply = <&vdd_supply>;
-> +            spi-max-frequency = <1000000>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti-ads8688.txt b/Documentation/devicetree/bindings/iio/adc/ti-ads8688.txt
-> deleted file mode 100644
-> index a02337d7efa4..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/ti-ads8688.txt
-> +++ /dev/null
-> @@ -1,20 +0,0 @@
-> -* Texas Instruments' ADS8684 and ADS8688 ADC chip
-> -
-> -Required properties:
-> - - compatible: Should be "ti,ads8684" or "ti,ads8688"
-> - - reg: spi chip select number for the device
-> -
-> -Recommended properties:
-> - - spi-max-frequency: Definition as per
-> -		Documentation/devicetree/bindings/spi/spi-bus.txt
-> -
-> -Optional properties:
-> - - vref-supply: The regulator supply for ADC reference voltage
-> -
-> -Example:
-> -adc@0 {
-> -	compatible = "ti,ads8688";
-> -	reg = <0>;
-> -	vref-supply = <&vdd_supply>;
-> -	spi-max-frequency = <1000000>;
-> -};
+Fixes 56ca9db862bf3: ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/dac/ad5592r-base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index 5c4e5ff70380..cc4875660a69 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -413,7 +413,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+ 
+-			ret = IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_MICRO;
+ 		} else {
+ 			int mult;
+ 
+@@ -444,7 +444,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 		ret =  IIO_VAL_INT;
+ 		break;
+ 	default:
+-		ret = -EINVAL;
++		return -EINVAL;
+ 	}
+ 
+ unlock:
+-- 
+2.25.1
 

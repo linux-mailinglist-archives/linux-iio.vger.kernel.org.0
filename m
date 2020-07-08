@@ -2,104 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D43FF2182EE
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jul 2020 10:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD9421876A
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jul 2020 14:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728408AbgGHI5l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Jul 2020 04:57:41 -0400
-Received: from mail-eopbgr150129.outbound.protection.outlook.com ([40.107.15.129]:41188
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728382AbgGHI5l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 8 Jul 2020 04:57:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BygA0d/nnFTvQL9JtNz7tYICEG+eVRgJ6vpl6m76EYtGs7mAYkNnUD6iCJAv2ARQLsfSc+K4V1POJ9csIx/rAdn2eR0Bgqd24zYr3M3jS8Ig2mndWAvds05iv5Ppec52qUZqcPhQlp9KkfN7Iln0LVBXhOZi3s1OSZs3SFCQoznfV9q3y06mMZfHjMCnELwBv8pvgYhT+q2QW3VROIhICtv2y+2V8jXpN+kH/fLbThcdSmdc0MaQKWXuLnnI0UhN1TgRKgOWmggGwfPZhRcJ4GNmL9563RRf59UsgrhJD669uBPL7uJwGITCAqMfl2t6YdM6+pd57Xk/Kd7AeUM9bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=671DwwJuuP05FT7p+A+S3RXswVT0jFi1Aa1eQzYCJrA=;
- b=mnIsrqdgB8oZbfVbNDOEyjJc2aL7gVNWb9QRmOGXAeWspoBXawspmM57a9+4EkHUNXqGj01IO4oLTjo4Pvf2MsxObh/GmjUktRze2gE6wxPo0f8eUtZ48ssg0Q1bDEC9kJlgkFM3EMo7TIMfq+ilTQjEEmDmDJ9dMmF1ZCdEDrXURh0xGEVws1XVPnhu4wtrVOaiFDVU0Y/F0LpODd79ry4ymRsTxAJv0U8L2KRwNTwbgWkmHWt2ejoJ+QVUn6NqyNn6yJ2AoBre3ZcvQbuipPeuI1Y/EzUHIZ1Yst+QzZfxxNyheFbu9xTllVbE20zJkwqpX5muWClf84SfVDNpZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
+        id S1729170AbgGHMda (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Jul 2020 08:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729171AbgGHMd3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Jul 2020 08:33:29 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA469C08E81E
+        for <linux-iio@vger.kernel.org>; Wed,  8 Jul 2020 05:33:29 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id k23so46693730iom.10
+        for <linux-iio@vger.kernel.org>; Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=671DwwJuuP05FT7p+A+S3RXswVT0jFi1Aa1eQzYCJrA=;
- b=Po6HAAmB1cCj8exb4nSlHr61bwJB5/Q8jhxs2HcIF1tFK5VX4Rwzklxlooy97BDmviduThezoqhB7lDCAYydq+dR18DBJZ7HBDIr5zXNJW4eE+tiYIQ4pIAC+1rDPjHiLbjQrua8zBT1jF8eBEo+nG8c4O9lZ9zGudKtaLyvJXM=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=norphonic.com;
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com (2603:10a6:20b:86::11)
- by AM6PR06MB4786.eurprd06.prod.outlook.com (2603:10a6:20b:34::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.23; Wed, 8 Jul
- 2020 08:57:37 +0000
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::98d7:2b02:1f27:e8e0]) by AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::98d7:2b02:1f27:e8e0%4]) with mapi id 15.20.3174.022; Wed, 8 Jul 2020
- 08:57:37 +0000
-User-agent: mu4e 0.9.18; emacs 25.2.2
-From:   Eugene Zaikonnikov <ez@norphonic.com>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     "linux-iio\@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v8 2/2] Device tree bindings for TI HDC20x0 humidity and temperature sensors
-In-reply-to: <3309CDF6-5DED-44E4-972B-6D741ABE541E@norphonic.com>
-Date:   Wed, 08 Jul 2020 10:57:34 +0200
-Message-ID: <86sge2crk1.fsf@norphonic.com>
-Content-Type: text/plain
-X-ClientProxiedBy: OL1P279CA0056.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:e10:15::7) To AM6PR06MB5430.eurprd06.prod.outlook.com
- (2603:10a6:20b:86::11)
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
+        b=CtDA46Te1kJYGFqAkgr9Vub/YrG6WB2S+VlEURQEEM4x6m9sjli+Jz/yotFRmV/AMR
+         T/h2d+e8At09eChsFX2C+mUFLH+FsdwAy78KAtzHqTPpG69rhvmbmMUpZSALFUdgKxT3
+         rKV4TF8A0J+Za5tWsTPtObTKnCJJSeTUvLM0KCUCLapZUiUA/CE0qJguNsnmAcBYT7Bw
+         PUSSiRKtit7eL05YbTu8d4vZk3Rk52mtpEQs926eluhEg6IUrqIesfOKILheZFFzZp0P
+         0kRnPxRkSyAb2gIupk6cQmoDhkGW5ga2ONIfRh7Ui0T+vXHI9OfE4hLpnUDNkQjQgdsE
+         pxTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
+        b=Mixjwx0bli5el0ZT8c34XWhicAJFkEzneAxZEO9sHWUSBHjiwX3eZfrPpx7DFHirbR
+         1flaG0m6+hcXqOCioz2cbmBvynKdcCNVPqTCQr+DYOmVlXtw9mHNdePqD+wDPCNOUrBr
+         V0P19gjCmFvRMplqh80qDVaDyZP/VNMWIQTmTSbRLHP9BxfcA6tP0VCOOwK5oHdJDR2p
+         nPC5A6ZD5F9q9ySmu/1IcTaTFhZx2FdxGuqmT617XsNWrrsYjDUH0/pYWH/zCp+1xvdY
+         stmz9lO+tGYrPCLJMx0IpbMcpKmWvT3Mrtkjgs9FkwmBmf4f82pGElW5TbZjIwNsvo4v
+         zjbA==
+X-Gm-Message-State: AOAM531uz9obmKfFRwu+SXgZeg8jhbzea2x8ywkRK30fKjcrO6ajNejd
+        8CP6GaU1SwkwYsl7oCyLpol8GNOq9L/4fwvFqbk=
+X-Google-Smtp-Source: ABdhPJy69qBRFRW2d2u+0xyGHVfmVbQRW6SQ4gKLQIvGwSNWfhZDhNcIlxNh+7AirNZFy3An0aJSkt25Q8y7juQZu8o=
+X-Received: by 2002:a05:6638:12c7:: with SMTP id v7mr64754290jas.56.1594211609022;
+ Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sta-eugenez.norphonic.com (62.97.226.122) by OL1P279CA0056.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:15::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.21 via Frontend Transport; Wed, 8 Jul 2020 08:57:37 +0000
-X-Originating-IP: [62.97.226.122]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f069fa9f-b1a0-4c92-6945-08d8231cf66a
-X-MS-TrafficTypeDiagnostic: AM6PR06MB4786:
-X-Microsoft-Antispam-PRVS: <AM6PR06MB4786377230BCF039A1198DEDCA670@AM6PR06MB4786.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-Forefront-PRVS: 04583CED1A
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AN/sRTu92bhF3QhRZFNoG9TjVk+tfH0bhvfQiORYv7hXMu9l+mSB8ObSUR0JDeFpld6GgAu3nCjEpIyjaZ3U4Vrop97ej7gPoTFFi93KNZkFhwPlT6nZaRlidasHZQW5xtpM7Y3wyQJwuVf2bwF/eP2WsxMrz/1i3NVQXwYsznJGhNUM5XU5obts3EDjWYNsdZnzM5r0NhEUrSMokIZDF8YvlbPAYc5miDNTpAUyUYOV7RfiOeXQtUllSw2FoB/yzZ9qRStVVV2LXUfwe1GGTlLwsXiqvBq1wisJ/DNDvAOEBe4AztscipyYCeiEw6XG83PI2BV6s/QijeB4RAsZuw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB5430.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(39830400003)(136003)(366004)(396003)(346002)(376002)(8936002)(186003)(52116002)(66946007)(7696005)(66556008)(508600001)(66476007)(4326008)(26005)(86362001)(2616005)(956004)(6486002)(316002)(16526019)(4744005)(54906003)(5660300002)(2906002)(6666004)(8676002)(36756003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: 40goUS8GmLrGgjhxrb8jF5vw5NO9tFVtsko+QS6PrgZQ8snJRXURjj6LjhPclCN11ob9J6UVLO75KSFW+7wYAwNhYUSLGnjWC3s99jXgVZVlYXonu0JfX6QMWZ3+S3wfpJukEY2Eh8dMFZoqRxuYNry6iT4qhLuXzeEsWnnjEmL5zy/mC+5ncU56ftJQWYuZ3o0xax7weurs/vqr53qrVbY/G6R2l3rrPRlB4rS70IJ81gXISum+9KFSqLCpgiAj1PcRC1aJ/S2ncErjiv7K6W1yGhBEZyGqkrGkmG2zDd7fodvMSSjhL0HRyRnCmWZ7WfRl3vDWo2QG3XjTsglJlDRxC9YW4ThbkhRwadAiOTbMOqHUcxsnEWipMVipmlg1TJ0phIP5GG+KAYDFyEx6n+CyJROfgBcDiF/MDN8H4q7AoaIQ1ygu/mMzGPP9NJMof7iAksCBp1nHkwKpCLnbBWMmHwNN/yLJHABr2g8dtBE=
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f069fa9f-b1a0-4c92-6945-08d8231cf66a
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR06MB5430.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2020 08:57:37.5289
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bjyOAt1Svth23rBPDFjmr/J6rbsqIfMMVjVwdhKpOJk0Sde9f8PeAYJUMqa6xcfC/dEr+q9ESmWv++2K9Twc3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB4786
+Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:28
+ -0700 (PDT)
+Reply-To: mmsafiatou057@gmail.com
+From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
+Date:   Wed, 8 Jul 2020 12:33:28 +0000
+Message-ID: <CALJAiTVXhrKZYOHVoupnx6hmXXD0i2k4MOSO6HW+mj1BAydXhA@mail.gmail.com>
+Subject: My Dear Beloved One,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> On Tue, 26 May 2020 at 12:35:08 -0600, Rob Herring wrote:
+My Dear Beloved One,
 
-[...]
+I greet you in the name of God almighty the givers of all good things
+in life. Please kindly pardon me for any inconvenience this letter may
+cost you because I know it may come to you as a surprise as we have no
+previous correspondence.  I sent this mail praying for it to reach you
+in good health, since I myself are in a very critical health condition
+in which I sleep every night without knowing if I may be alive to see
+the next day.
 
->
-> Run 'git log --oneline <path>' and follow convention for $subject lines. 
-> (Hint: dt-bindings: iio: ...)
+I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
+Alphonso Zoungrana from Paris France but based here in Burkina Faso
+West Africa since eight years ago as a business woman dealing with
+gold exportation and Sales. We have been married for years before his
+sudden death although we were childless. I have been diagnosed with
+ovarian cancer and I have been battling with the sickness when my late
+lovely husband of a blessed memory was alive. May his soul rest in
+peace, Amen.
 
-The driver is outside source control in this tree, hope it's OK.
+My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
+Hundred Thousand Euros in a fix/suspense account in one of the prime
+bank here in Burkina Faso. Recently, my Doctor told me that I have few
+days to live due to the cancer problem. The one that disturbs me most
+is my blood pressure sickness.
 
-Fixing the rest.
+Having known my health condition I decided to seek for your kind
+assistance to transfer this fund into your account and you will use it
+to establish an orphanage home in my name. I will give you more
+details about the project as soon as I receive your reply in my
+private email (mmsafiatou057@gmail.com) to handle this project because
+I do not want to state all here until I see your reply, desire and
+commitment to handle this project.
 
--- 
-Regards,
-
-  Eugene Zaikonnikov
-
-  Norphonic AS
-  Tel: +47 98 23 97 73
+My Regards to your family.
+Mrs. Safiatou Zoungrana.

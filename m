@@ -2,26 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D4A21A451
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jul 2020 18:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B78221A4FF
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jul 2020 18:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgGIQFQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jul 2020 12:05:16 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:54543 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbgGIQFQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jul 2020 12:05:16 -0400
-Received: from webmail.gandi.net (webmail15.sd4.0x35.net [10.200.201.15])
-        (Authenticated sender: contact@artur-rojek.eu)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPA id 9DA5B1BF20B;
-        Thu,  9 Jul 2020 16:05:11 +0000 (UTC)
+        id S1726497AbgGIQmU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jul 2020 12:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39064 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbgGIQmU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jul 2020 12:42:20 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FADCC08C5CE;
+        Thu,  9 Jul 2020 09:42:20 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id t11so1238263pfq.11;
+        Thu, 09 Jul 2020 09:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yOR+9StZCul8bBrAKPaQ/GhvI1UNu403RqQyrxCjABU=;
+        b=ZhpHog7Tu/i8/tgWaUMQD64GTbdNqncLqvCVWer/FpGbv/EGa9YX6Mw8GPxHjeAi85
+         3wyc7Yutd6qnfW7sv/rL9V61c2QcD86CkVOU1Ouu/dLe3ophdzSTtlPV0uBeK+HI0Ucv
+         0ttI8oLisoICRbDk8EqkNv4v4dwZrfw4+vodF87rEMAjxBwMXy/xcA86xipt0GuTSuyN
+         pNCDDySpI45N3ubEhJSxcOmrd91DxJv6bHPlhHTYqf43nZWICfMgMS8YyujkcQ/HaHVA
+         +KY9aIHp+HTxSFjtQt0QyMjFa0x7YNz5Y+DwquUysDNT1ryIjKq4AXhiM1IrqBS7r6uK
+         hO6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yOR+9StZCul8bBrAKPaQ/GhvI1UNu403RqQyrxCjABU=;
+        b=ldqwir1yjigJcG4nUytyqT2Obrdt/vO7uvwMM+28xkc+JVLBNy45TJcYmqx5amLb4Y
+         HsQQ0mFkr07sHvrJkD6e5461JU8kzOz4F0GLBdbGCI7V1QGlhxU+zYKydPCMFj3JhMD6
+         qfSlOQEHWzaOJiDU6R3OiLluN31AsTY5OFpKCCVJTRzfBB2TiZM/5DUH5JKyHkCYq/I6
+         ta1+feweJSwubsPCGz3sfYzB1TmUvRBbnt4mkeYqBygLtbp3whKS9q5160Y4o/PCYZik
+         2DrGOY/ZuJrZ9aryy80L79JANwouv7gyHxcW8WbpwEv049KTbpouM9+QJt/wE2QwSkQp
+         RKgg==
+X-Gm-Message-State: AOAM53114vuq7gcTC2kdvRDV1Mjc/i01E4q5MKGgdNVPZglbsjITqn1k
+        KFjG4A9CPFmpfM44AN09ARFGVtEKV/xMYYfteUk=
+X-Google-Smtp-Source: ABdhPJwrdtkru6pbIR5By3jq9i0VIVHJXJHGbH/RZB1O3LCipYHDkjz6NIdmtD5Y49jn25sM2VgPcpS5g7X79nd4N70=
+X-Received: by 2002:a05:6a00:790:: with SMTP id g16mr23296458pfu.36.1594312939767;
+ Thu, 09 Jul 2020 09:42:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 09 Jul 2020 18:05:11 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20200709152200.10039-1-contact@artur-rojek.eu>
+ <CAHp75VcwgL8pH+pH9TnsuwbWr=wSFu37sX8sTkbkfk+iBv7Jng@mail.gmail.com> <9865deba48fdb1b5bb522ae7cabef7bc@artur-rojek.eu>
+In-Reply-To: <9865deba48fdb1b5bb522ae7cabef7bc@artur-rojek.eu>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 9 Jul 2020 19:42:03 +0300
+Message-ID: <CAHp75Vd51z_MDRno_wSXpSS9zj0kCntmFqYSHbOr-dds7NhPsw@mail.gmail.com>
+Subject: Re: [PATCH v8 0/6] iio/adc: ingenic: Cleanups & add touchscreen mode.
+To:     Artur Rojek <contact@artur-rojek.eu>
 Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -32,75 +62,32 @@ Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         devicetree <devicetree@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 0/6] iio/adc: ingenic: Cleanups & add touchscreen mode.
-In-Reply-To: <CAHp75VcwgL8pH+pH9TnsuwbWr=wSFu37sX8sTkbkfk+iBv7Jng@mail.gmail.com>
-References: <20200709152200.10039-1-contact@artur-rojek.eu>
- <CAHp75VcwgL8pH+pH9TnsuwbWr=wSFu37sX8sTkbkfk+iBv7Jng@mail.gmail.com>
-Message-ID: <9865deba48fdb1b5bb522ae7cabef7bc@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-User-Agent: Roundcube Webmail/1.3.13
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hey Andy,
+On Thu, Jul 9, 2020 at 7:05 PM Artur Rojek <contact@artur-rojek.eu> wrote:
+>
+> Hey Andy,
+>
+> On 2020-07-09 17:43, Andy Shevchenko wrote:
+> > On Thu, Jul 9, 2020 at 6:22 PM Artur Rojek <contact@artur-rojek.eu>
+> > wrote:
+> >>
+> >> Hi all,
+> >>
+> >> v8 of this patchset introduces some structural changes, which I deemed
+> >> worthy highlighting here:
+> >
+> > Can you remind me if I gave you tags on the previous version?
+> I received no tags from you on this patchset so far.
 
-On 2020-07-09 17:43, Andy Shevchenko wrote:
-> On Thu, Jul 9, 2020 at 6:22 PM Artur Rojek <contact@artur-rojek.eu> 
-> wrote:
->> 
->> Hi all,
->> 
->> v8 of this patchset introduces some structural changes, which I deemed
->> worthy highlighting here:
-> 
-> Can you remind me if I gave you tags on the previous version?
-I received no tags from you on this patchset so far.
+Thanks for reminding me!
 
-Cheers,
-Artur
 
-> If so, is the above the reason to drop them?
-> 
->> 
->>  - adc-joystick related changes have been dropped from this patchset 
->> and
->>    will be upstreamed separately. Their only connection to this 
->> patchset
->>    was that they used INGENIC_ADC_TOUCH_* defines in the DTS example,
->>    causing trouble to Rob's scripts.
->> 
->>  - Integrated Paul's changes, which introduce an ADCMD low-level 
->> command
->>    feature. These changes affect patches 5/6 and 6/6, with the former
->>    requiring Rob to re-ack.
->> 
->> Cheers,
->> Artur
->> 
->> Artur Rojek (5):
->>   dt-bindings: iio/adc: Convert ingenic-adc docs to YAML.
->>   IIO: Ingenic JZ47xx: Error check clk_enable calls.
->>   IIO: Ingenic JZ47xx: Add xlate cb to retrieve correct channel idx
->>   dt-bindings: iio/adc: Add touchscreen idx for JZ47xx SoC ADC
->>   IIO: Ingenic JZ47xx: Add touchscreen mode.
->> 
->> Paul Cercueil (1):
->>   iio/adc: ingenic: Retrieve channels list from soc data struct
->> 
->>  .../bindings/iio/adc/ingenic,adc.txt          |  49 ---
->>  .../bindings/iio/adc/ingenic,adc.yaml         |  71 ++++
->>  drivers/iio/adc/Kconfig                       |   1 +
->>  drivers/iio/adc/ingenic-adc.c                 | 386 
->> ++++++++++++++++--
->>  include/dt-bindings/iio/adc/ingenic,adc.h     |   6 +
->>  5 files changed, 426 insertions(+), 87 deletions(-)
->>  delete mode 100644 
->> Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
->>  create mode 100644 
->> Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
->> 
->> --
->> 2.27.0
->> 
+
+-- 
+With Best Regards,
+Andy Shevchenko

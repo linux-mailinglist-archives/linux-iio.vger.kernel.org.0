@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BE921A378
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jul 2020 17:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B6F21A38D
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jul 2020 17:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbgGIPWo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jul 2020 11:22:44 -0400
-Received: from relay6-d.mail.gandi.net ([217.70.183.198]:44849 "EHLO
+        id S1728209AbgGIPXG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jul 2020 11:23:06 -0400
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:32927 "EHLO
         relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726852AbgGIPWo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jul 2020 11:22:44 -0400
+        with ESMTP id S1728239AbgGIPWq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jul 2020 11:22:46 -0400
 X-Originating-IP: 195.189.32.242
 Received: from pc.localdomain (unknown [195.189.32.242])
         (Authenticated sender: contact@artur-rojek.eu)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 53BC0C0008;
-        Thu,  9 Jul 2020 15:22:39 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 396F8C0010;
+        Thu,  9 Jul 2020 15:22:42 +0000 (UTC)
 From:   Artur Rojek <contact@artur-rojek.eu>
 To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -26,11 +26,10 @@ To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 Cc:     Heiko Stuebner <heiko@sntech.de>,
         Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Artur Rojek <contact@artur-rojek.eu>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v8 1/6] dt-bindings: iio/adc: Convert ingenic-adc docs to YAML.
-Date:   Thu,  9 Jul 2020 17:21:55 +0200
-Message-Id: <20200709152200.10039-2-contact@artur-rojek.eu>
+        linux-kernel@vger.kernel.org, Artur Rojek <contact@artur-rojek.eu>
+Subject: [PATCH v8 2/6] IIO: Ingenic JZ47xx: Error check clk_enable calls.
+Date:   Thu,  9 Jul 2020 17:21:56 +0200
+Message-Id: <20200709152200.10039-3-contact@artur-rojek.eu>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200709152200.10039-1-contact@artur-rojek.eu>
 References: <20200709152200.10039-1-contact@artur-rojek.eu>
@@ -41,165 +40,111 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the textual documentation of Device Tree bindings for the
-Ingenic JZ47xx SoCs ADC controller to YAML.
-
-The `interrupts` property is now explicitly listed and marked as
-required. While missing from the previous textual documentation, this
-property has been used with all the boards which probe this driver.
+Introduce error checks for the clk_enable calls used in this driver.
+As part of the changes, move clk_enable/clk_disable calls out of
+ingenic_adc_set_config and into respective logic of its callers.
 
 Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
 Tested-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: Rob Herring <robh@kernel.org>
 ---
 
  Changes:
 
  v6: new patch
 
- v7: - specify `maxItems: 1` for single entry properties
-     - get rid of redundant descriptions of said properties
+ v7: no change
 
- v8: no change
+ v8: move `clk_disable` outside the lock
 
- .../bindings/iio/adc/ingenic,adc.txt          | 49 -------------
- .../bindings/iio/adc/ingenic,adc.yaml         | 71 +++++++++++++++++++
- 2 files changed, 71 insertions(+), 49 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+ drivers/iio/adc/ingenic-adc.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
-deleted file mode 100644
-index cd9048cf9dcf..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.txt
-+++ /dev/null
-@@ -1,49 +0,0 @@
--* Ingenic JZ47xx ADC controller IIO bindings
--
--Required properties:
--
--- compatible: Should be one of:
--  * ingenic,jz4725b-adc
--  * ingenic,jz4740-adc
--  * ingenic,jz4770-adc
--- reg: ADC controller registers location and length.
--- clocks: phandle to the SoC's ADC clock.
--- clock-names: Must be set to "adc".
--- #io-channel-cells: Must be set to <1> to indicate channels are selected
--  by index.
--
--ADC clients must use the format described in iio-bindings.txt, giving
--a phandle and IIO specifier pair ("io-channels") to the ADC controller.
--
--Example:
--
--#include <dt-bindings/iio/adc/ingenic,adc.h>
--
--adc: adc@10070000 {
--	compatible = "ingenic,jz4740-adc";
--	#io-channel-cells = <1>;
--
--	reg = <0x10070000 0x30>;
--
--	clocks = <&cgu JZ4740_CLK_ADC>;
--	clock-names = "adc";
--
--	interrupt-parent = <&intc>;
--	interrupts = <18>;
--};
--
--adc-keys {
--	...
--	compatible = "adc-keys";
--	io-channels = <&adc INGENIC_ADC_AUX>;
--	io-channel-names = "buttons";
--	...
--};
--
--battery {
--	...
--	compatible = "ingenic,jz4740-battery";
--	io-channels = <&adc INGENIC_ADC_BATTERY>;
--	io-channel-names = "battery";
--	...
--};
-diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-new file mode 100644
-index 000000000000..9f414dbdae86
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2019-2020 Artur Rojek
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+index 39c0a609fc94..c1946a9f1cca 100644
+--- a/drivers/iio/adc/ingenic-adc.c
++++ b/drivers/iio/adc/ingenic-adc.c
+@@ -73,7 +73,6 @@ static void ingenic_adc_set_config(struct ingenic_adc *adc,
+ {
+ 	uint32_t cfg;
+ 
+-	clk_enable(adc->clk);
+ 	mutex_lock(&adc->lock);
+ 
+ 	cfg = readl(adc->base + JZ_ADC_REG_CFG) & ~mask;
+@@ -81,7 +80,6 @@ static void ingenic_adc_set_config(struct ingenic_adc *adc,
+ 	writel(cfg, adc->base + JZ_ADC_REG_CFG);
+ 
+ 	mutex_unlock(&adc->lock);
+-	clk_disable(adc->clk);
+ }
+ 
+ static void ingenic_adc_enable(struct ingenic_adc *adc,
+@@ -124,6 +122,8 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
+ 				 long m)
+ {
+ 	struct ingenic_adc *adc = iio_priv(iio_dev);
++	struct device *dev = iio_dev->dev.parent;
++	int ret;
+ 
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_SCALE:
+@@ -131,6 +131,14 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
+ 		case INGENIC_ADC_BATTERY:
+ 			if (!adc->soc_data->battery_vref_mode)
+ 				return -EINVAL;
 +
-+title: Ingenic JZ47xx ADC controller IIO bindings
++			ret = clk_enable(adc->clk);
++			if (ret) {
++				dev_err(dev, "Failed to enable clock: %d\n",
++					ret);
++				return ret;
++			}
 +
-+maintainers:
-+  - Artur Rojek <contact@artur-rojek.eu>
+ 			if (val > JZ_ADC_BATTERY_LOW_VREF) {
+ 				ingenic_adc_set_config(adc,
+ 						       JZ_ADC_REG_CFG_BAT_MD,
+@@ -142,6 +150,9 @@ static int ingenic_adc_write_raw(struct iio_dev *iio_dev,
+ 						       JZ_ADC_REG_CFG_BAT_MD);
+ 				adc->low_vref_mode = true;
+ 			}
 +
-+description: >
-+  Industrial I/O subsystem bindings for ADC controller found in
-+  Ingenic JZ47xx SoCs.
++			clk_disable(adc->clk);
 +
-+  ADC clients must use the format described in iio-bindings.txt, giving
-+  a phandle and IIO specifier pair ("io-channels") to the ADC controller.
+ 			return 0;
+ 		default:
+ 			return -EINVAL;
+@@ -317,6 +328,13 @@ static int ingenic_adc_read_chan_info_raw(struct ingenic_adc *adc,
+ 					  int *val)
+ {
+ 	int bit, ret, engine = (chan->channel == INGENIC_ADC_BATTERY);
++	struct device *dev = iio_priv_to_dev(adc)->dev.parent;
 +
-+properties:
-+  compatible:
-+    enum:
-+      - ingenic,jz4725b-adc
-+      - ingenic,jz4740-adc
-+      - ingenic,jz4770-adc
-+
-+  '#io-channel-cells':
-+    const: 1
-+    description:
-+      Must be set to <1> to indicate channels are selected by index.
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: adc
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - '#io-channel-cells'
-+  - reg
-+  - clocks
-+  - clock-names
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/jz4740-cgu.h>
-+    #include <dt-bindings/iio/adc/ingenic,adc.h>
-+
-+    adc@10070000 {
-+            compatible = "ingenic,jz4740-adc";
-+            #io-channel-cells = <1>;
-+
-+            reg = <0x10070000 0x30>;
-+
-+            clocks = <&cgu JZ4740_CLK_ADC>;
-+            clock-names = "adc";
-+
-+            interrupt-parent = <&intc>;
-+            interrupts = <18>;
-+    };
++	ret = clk_enable(adc->clk);
++	if (ret) {
++		dev_err(dev, "Failed to enable clock: %d\n", ret);
++		return ret;
++	}
+ 
+ 	/* We cannot sample AUX/AUX2 in parallel. */
+ 	mutex_lock(&adc->aux_lock);
+@@ -325,7 +343,6 @@ static int ingenic_adc_read_chan_info_raw(struct ingenic_adc *adc,
+ 		ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_AUX_MD, bit);
+ 	}
+ 
+-	clk_enable(adc->clk);
+ 	ret = ingenic_adc_capture(adc, engine);
+ 	if (ret)
+ 		goto out;
+@@ -342,8 +359,8 @@ static int ingenic_adc_read_chan_info_raw(struct ingenic_adc *adc,
+ 
+ 	ret = IIO_VAL_INT;
+ out:
+-	clk_disable(adc->clk);
+ 	mutex_unlock(&adc->aux_lock);
++	clk_disable(adc->clk);
+ 
+ 	return ret;
+ }
 -- 
 2.27.0
 

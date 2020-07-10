@@ -2,140 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D1D21B122
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jul 2020 10:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6C0221B18C
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jul 2020 10:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbgGJIVw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jul 2020 04:21:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
+        id S1727851AbgGJIpF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jul 2020 04:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgGJIVw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jul 2020 04:21:52 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3551DC08C5CE
-        for <linux-iio@vger.kernel.org>; Fri, 10 Jul 2020 01:21:52 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 2E6E22A6789
-Subject: Re: [PATCH v3] iio: cros_ec_accel_legacy: Add Read Only frequency
- entries
-To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
-        bleung@chromium.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org
-References: <20200709180924.2437466-1-gwendal@chromium.org>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <853ea3f1-83d8-2a4a-8994-1351d36cbe66@collabora.com>
-Date:   Fri, 10 Jul 2020 10:21:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S1727818AbgGJIpE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jul 2020 04:45:04 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AACC08E6DC
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jul 2020 01:45:04 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id y13so2758213lfe.9
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jul 2020 01:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=cioExXRotHIMxiwKwu2USDWbnniKfaLdy155QlT1KvM=;
+        b=XP3F2xNpx+SEnNCKpnlcG/jg5uJabTKcJrYB7nqOBxwkX/Ds8EtexO5ec0gUG0KXVz
+         qLf+HUB188ZZOF0MUZuP7GD4jVyYrooyHXio1wDXJbBa+O49ve89d4ocCoxqQT4TA+xQ
+         oRbzKFV5BVxOy/dJNHuuk3X2HtEHV1x7/NOOob0AJZ9XTIHD5LpACsw1gxFtXu7J5/19
+         OQ9nmbd8MPFGx6pDsEjvzqRc8O5gyoesLuHG4woFp4On3oh69FBCsnKZt3UHM8UC8cCD
+         mwvHFm2EFTu01zG71bpAdR0pu4C7AP6UGnAcLhW082c9Zy931EUzAlQINSkJ86pQ1o+5
+         klNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=cioExXRotHIMxiwKwu2USDWbnniKfaLdy155QlT1KvM=;
+        b=XACDRdgha83H9PnIbofbG6YXPvoGED0JpD3BsLx/6IIZlOZbonnl+k6GMsNjs3BqsG
+         uq3moBlR4bN2+MHaw3nnfBJzNVA1cAM3yCMciCGNBD65d8gqcEKQySIg0OAizg2SFKmC
+         gOcy+DyI3lv0l/jUvP2mGk5wDnjxYfwjB7qsRpgao0dE3Wj2bbN+UdRSah19m+ZrozhY
+         wHCM7en+n2msmtJdYM3xBSySAE+LpQXDFCl5GGqGHGnZQYjkLO/LjljuYT1U2664op3k
+         7AH2ydyau7mu6p1cEti9Bzj1R6IkU1JIeW3bMmrnBTZ+q8vzIuiYhhDsU7Ddzj0lFz2W
+         XCTQ==
+X-Gm-Message-State: AOAM532GNmv/zJZs1DmztEu89mYcI/JYSAYFKhaItW15adzjr5LCs7Nr
+        y0YGGSwdZY0LrKEJgpRMwBeY98rp/ifi1wWDRkS+51FBjEo=
+X-Google-Smtp-Source: ABdhPJziS0/5lKSrVC2/H4mpSIeiJ4Yc/4Th6olL0s9qjwHxvJk/lx8eWBPUC3USsFd6cVj+eSPJf6UhzMcu52f42cg=
+X-Received: by 2002:a19:64c:: with SMTP id 73mr43572773lfg.0.1594370702524;
+ Fri, 10 Jul 2020 01:45:02 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200709180924.2437466-1-gwendal@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:5609:0:0:0:0:0 with HTTP; Fri, 10 Jul 2020 01:45:02
+ -0700 (PDT)
+Reply-To: markbill883@gmail.com
+From:   "Mr.Mark. Bill" <johnson0paul8@gmail.com>
+Date:   Fri, 10 Jul 2020 01:45:02 -0700
+Message-ID: <CAGT6c6tCUdJahNSwmP-xuTfEDYo8bWqfxDa-u6do8eG9sKWJ9g@mail.gmail.com>
+Subject: Congratulations
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Gwendal,
+CONGRATULATIONS!!!!  Congratulations
 
-On 9/7/20 20:09, Gwendal Grignou wrote:
-> Report to user space that 10Hz is the sampling frequency of
-> the accelerometers in legacy mode, and it can not be changed.
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+we proudly bring to your notice that your profile has win in the
+www.google.com online draws of the FREE LOTTO PROMOTIONS. You have
+been selected as the second
+category winner in www.google.com draws done via computer ballot
+system, there were no tickets purchased. Your email address was
+selected from the World Wide Web and was attached to your winning
+numbers FLC/7088. You have been awarded lump sum of money for 2nd
+category winner in the online draws. The sum of (1,850,000.00 Euros)
 
-Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Contact Person: Mr.Mark. Bill
 
-> ---
-> Changes since v2:
-> - fix compilation warning
-> Changes since v1:
-> - Use a static array to store the single frequency allowed.
-> 
->  drivers/iio/accel/cros_ec_accel_legacy.c | 46 +++++++++++++++++++++++-
->  1 file changed, 45 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-> index 2532b9ad33842..b6f3471b62dcf 100644
-> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
-> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-> @@ -33,6 +33,11 @@
->   */
->  #define ACCEL_LEGACY_NSCALE 9586168
->  
-> +/*
-> + * Sensor frequency is hard-coded to 10Hz.
-> + */
-> +static const int cros_ec_legacy_sample_freq[] = { 10, 0 };
-> +
->  static int cros_ec_accel_legacy_read_cmd(struct iio_dev *indio_dev,
->  				  unsigned long scan_mask, s16 *data)
->  {
-> @@ -96,6 +101,11 @@ static int cros_ec_accel_legacy_read(struct iio_dev *indio_dev,
->  		*val = 0;
->  		ret = IIO_VAL_INT;
->  		break;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = cros_ec_legacy_sample_freq[0];
-> +		*val2 = cros_ec_legacy_sample_freq[1];
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
->  	default:
->  		ret = cros_ec_sensors_core_read(st, chan, val, val2,
->  				mask);
-> @@ -120,9 +130,39 @@ static int cros_ec_accel_legacy_write(struct iio_dev *indio_dev,
->  	return -EINVAL;
->  }
->  
-> +/**
-> + * cros_ec_accel_legacy_read_avail() - get available values
-> + * @indio_dev:		pointer to state information for device
-> + * @chan:	channel specification structure table
-> + * @vals:	list of available values
-> + * @type:	type of data returned
-> + * @length:	number of data returned in the array
-> + * @mask:	specifies which values to be requested
-> + *
-> + * Return:	an error code or IIO_AVAIL_LIST
-> + */
-> +static int cros_ec_accel_legacy_read_avail(struct iio_dev *indio_dev,
-> +					   struct iio_chan_spec const *chan,
-> +					   const int **vals,
-> +					   int *type,
-> +					   int *length,
-> +					   long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*length = ARRAY_SIZE(cros_ec_legacy_sample_freq);
-> +		*vals = cros_ec_legacy_sample_freq;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		return IIO_AVAIL_LIST;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
->  static const struct iio_info cros_ec_accel_legacy_info = {
->  	.read_raw = &cros_ec_accel_legacy_read,
->  	.write_raw = &cros_ec_accel_legacy_write,
-> +	.read_avail = &cros_ec_accel_legacy_read_avail,
->  };
->  
->  /*
-> @@ -142,7 +182,11 @@ static const struct iio_info cros_ec_accel_legacy_info = {
->  		.info_mask_separate =					\
->  			BIT(IIO_CHAN_INFO_RAW) |			\
->  			BIT(IIO_CHAN_INFO_CALIBBIAS),			\
-> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE),	\
-> +		.info_mask_shared_by_all =				\
-> +			BIT(IIO_CHAN_INFO_SCALE) |			\
-> +			BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-> +		.info_mask_shared_by_all_available =			\
-> +			BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
->  		.ext_info = cros_ec_sensors_ext_info,			\
->  		.scan_type = {						\
->  			.sign = 's',					\
-> 
+Email  (  mark.bill@planetmail.net
+
+google.com Lotto claim agent
+
+Thanks
+Mr.Mark. Bill
+Director

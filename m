@@ -2,137 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E286E21C413
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jul 2020 13:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14FD221C4C4
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jul 2020 17:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbgGKLtl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jul 2020 07:49:41 -0400
-Received: from first.geanix.com ([116.203.34.67]:44842 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726342AbgGKLtl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Jul 2020 07:49:41 -0400
-Received: from [192.168.100.99] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id C501620249F3;
-        Sat, 11 Jul 2020 11:49:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1594468177; bh=1DqkpjW+8C2KCKw5XE/qPQvlJf78p6+49XM8768LfYE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=TEw6QIyTu2JUvqVEwutAoof/6d6TR7Obl4pJSm8WJN94gqeSrTm29h3W04q6jrYyO
-         XUABHsi8SL+cgMWjD+/4ht8fsFpU6mfUgxXMPMls0iiTpRrpZVmVrIo5CUKN+YFcN3
-         W+WogMpiQaZ8QiDMWvaTmyCiViKFD0og5oiKfF0+SCsdpkz7LJxxvB5XJYnLcMiQ8X
-         /bC1TpNyCLL1OlhlZsZnrDZuhEFRSJYlm1KUT/Zio8BuibcztFdj+m3gmRuU79bBHJ
-         7OMqAonQeuk//2Wc5SkJL+Vs+f9fizQuE+d/Hb9/OPe9X9+1vn1JxPNz3VFRDclU68
-         k53+1nCud0V6w==
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: reset hw ts after resume
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
-References: <15dadc531c5b30819a72b289ccd5c25e04f73657.1594388801.git.lorenzo@kernel.org>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <f639082c-91b9-c056-673d-2835ba05ac03@geanix.com>
-Date:   Sat, 11 Jul 2020 13:49:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728497AbgGKPIl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jul 2020 11:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45160 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728330AbgGKPIl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jul 2020 11:08:41 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C328C08C5DD;
+        Sat, 11 Jul 2020 08:08:41 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id x11so3441285plo.7;
+        Sat, 11 Jul 2020 08:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IQvs3fHvv9Fkjtgdt9Tsxnn3h6ei6m8hcchByCZR5HY=;
+        b=epAoZmB/f07JzI9Yc+QctLwKc0hvk4AvWpFa/BT9ZouzIYPP9i8z2n5NrA65EKv/ce
+         alBjQSbjOiB+jqnI+cxqp1TMFlqAP3VUWEe090EruPIhzL37jfFkvHgBiwL/p5+FJWOt
+         fHp9T37FE1Zcv3RMB9tP8hk692s9V3v4l+1K9BM6Jnjh49lpyaJ3X2qg5Rv813tHQ7Ne
+         xPLVV/UZ6yb8wXsbEWlqKroZNzQrWeUwwpY/DJ5OoURTpxvPvQ+203SexbO8wSW8MaAB
+         0dmn4p42I3uuQotJAAuy5tO4SgYKJmv0VfyHYCUOLINc/h2mWrpDfeJz6vy0rTfUf6GX
+         AtRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IQvs3fHvv9Fkjtgdt9Tsxnn3h6ei6m8hcchByCZR5HY=;
+        b=ao746FefwpbugGw2Hde4Y55rTx81sAwT7SI16UFyioxiqKFCntVokFujToEIbpqw2w
+         juxX3bDlh69xPC0lqdz8LrdjrlFWIdLcpPcSw6Oom6RkX5dPXMdwoGz6x7MnMdKuxBDl
+         OyKnGcR+VK+WAVYZCXecN23Smvv2UWKoSRQ8kfUzd1YWXfevGh/JMAlLqRpKnpy5wN1E
+         UK4TVC2M0igDvhKUUJdCnlS2+fqLBJIEJ63MgkQh0NYLIQJozHt54lTku3ide2x98isa
+         isyBBY65xSemy/0SlWaoDPp7B2xdRuv7IRLJjzJtyDVETMC+U0fbY5RByzssU6Xn7TlP
+         vSgQ==
+X-Gm-Message-State: AOAM532Y9TtHtkxMd/TCrBbgGau53FPjV5jgdQThEZ+F5kx1LPVawVKh
+        NdbX1PtaEQRKfIYDkEPRBxrdI7uMhX/B6ThrmmM=
+X-Google-Smtp-Source: ABdhPJxB7TW81S/w+nmuDCmaMiUAOIzAO7PFV1t2WxYhZWoZCzifxtm649ch0qn1OIqOD+IhxA6yZfMc2omHXRBZCZM=
+X-Received: by 2002:a17:902:7611:: with SMTP id k17mr63884975pll.255.1594480120624;
+ Sat, 11 Jul 2020 08:08:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <15dadc531c5b30819a72b289ccd5c25e04f73657.1594388801.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on ff3d05386fc5
+References: <20200710161516.11625-1-brgl@bgdev.pl> <20200710161516.11625-2-brgl@bgdev.pl>
+In-Reply-To: <20200710161516.11625-2-brgl@bgdev.pl>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 11 Jul 2020 18:08:24 +0300
+Message-ID: <CAHp75VfTDmyWWxAAky-CmuvO2ge0T1q+woJ8MxjdRQqNJwHS4w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] devres: provide devm_krealloc()
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 10/07/2020 15.49, Lorenzo Bianconi wrote:
-> Reset hw time sampling after the device resume in order to keep timing
-> in sync
+On Fri, Jul 10, 2020 at 7:17 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 >
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  3 +--
->   .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 23 ++++++++++++-------
->   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  2 +-
->   3 files changed, 17 insertions(+), 11 deletions(-)
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 >
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index b56df409ed0f..529970195b39 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -436,8 +436,7 @@ int st_lsm6dsx_update_watermark(struct st_lsm6dsx_sensor *sensor,
->   				u16 watermark);
->   int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable);
->   int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw);
-> -int st_lsm6dsx_set_fifo_mode(struct st_lsm6dsx_hw *hw,
-> -			     enum st_lsm6dsx_fifo_mode fifo_mode);
-> +int st_lsm6dsx_resume_fifo(struct st_lsm6dsx_hw *hw);
->   int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw);
->   int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw *hw);
->   int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u32 odr, u8 *val);
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index afd00daeefb2..7de10bd636ea 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -184,8 +184,8 @@ static int st_lsm6dsx_update_decimators(struct st_lsm6dsx_hw *hw)
->   	return err;
->   }
->   
-> -int st_lsm6dsx_set_fifo_mode(struct st_lsm6dsx_hw *hw,
-> -			     enum st_lsm6dsx_fifo_mode fifo_mode)
-> +static int st_lsm6dsx_set_fifo_mode(struct st_lsm6dsx_hw *hw,
-> +				    enum st_lsm6dsx_fifo_mode fifo_mode)
->   {
->   	unsigned int data;
->   
-> @@ -302,6 +302,18 @@ static int st_lsm6dsx_reset_hw_ts(struct st_lsm6dsx_hw *hw)
->   	return 0;
->   }
->   
-> +int st_lsm6dsx_resume_fifo(struct st_lsm6dsx_hw *hw)
+> Implement the managed variant of krealloc(). This function works with
+> all memory allocated by devm_kmalloc() (or devres functions using it
+> implicitly like devm_kmemdup(), devm_kstrdup() etc.).
+>
+> Managed realloc'ed chunks can be manually released with devm_kfree().
+
+...
+
+>    devm_kfree()
+>    devm_kmalloc()
+>    devm_kmalloc_array()
+> +  devm_krealloc()
+>    devm_kmemdup()
+>    devm_kstrdup()
+>    devm_kvasprintf()
+
+Order?
+
+...
+
+> +void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
+
+Do we really need the 'new_' prefix in the parameter?
+
 > +{
-> +	int err;
-> +
-> +	/* reset hw ts counter */
-> +	err = st_lsm6dsx_reset_hw_ts(hw);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	return st_lsm6dsx_set_fifo_mode(hw, ST_LSM6DSX_FIFO_CONT);
-> +}
-> +
->   /*
->    * Set max bulk read to ST_LSM6DSX_MAX_WORD_LEN/ST_LSM6DSX_MAX_TAGGED_WORD_LEN
->    * in order to avoid a kmalloc for each bus access
-> @@ -675,12 +687,7 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
->   		goto out;
->   
->   	if (fifo_mask) {
-> -		/* reset hw ts counter */
-> -		err = st_lsm6dsx_reset_hw_ts(hw);
-> -		if (err < 0)
-> -			goto out;
-> -
-> -		err = st_lsm6dsx_set_fifo_mode(hw, ST_LSM6DSX_FIFO_CONT);
-> +		err = st_lsm6dsx_resume_fifo(hw);
->   		if (err < 0)
->   			goto out;
->   	}
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index c8ddeb3f48ff..346c24281d26 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2457,7 +2457,7 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
->   	}
->   
->   	if (hw->fifo_mask)
-> -		err = st_lsm6dsx_set_fifo_mode(hw, ST_LSM6DSX_FIFO_CONT);
-> +		err = st_lsm6dsx_resume_fifo(hw);
->   
->   	return err;
->   }
+> +       struct devres *old_dr, *new_dr;
+> +       struct list_head old_head;
+> +       unsigned long flags;
+> +       void *ret = NULL;
+> +       size_t tot_size;
 
+tot -> total.
+
+> +
+> +       if (unlikely(!new_size)) {
+> +               devm_kfree(dev, ptr);
+> +               return ZERO_SIZE_PTR;
+> +       }
+
+I guess here we need a comment of the possibilities below to have
+ZERO_SIZE_PTR as input.
+
+> +       if (unlikely(ZERO_OR_NULL_PTR(ptr)))
+> +               return devm_kmalloc(dev, new_size, gfp);
+> +
+> +       if (WARN_ON(is_kernel_rodata((unsigned long)ptr)))
+> +               /*
+> +                * We cannot reliably realloc a const string returned by
+> +                * devm_kstrdup_const().
+> +                */
+> +               return NULL;
+> +
+> +       if (!check_dr_size(new_size, &tot_size))
+> +               return NULL;
+> +
+> +       spin_lock_irqsave(&dev->devres_lock, flags);
+> +
+> +       old_dr = find_dr(dev, devm_kmalloc_release, devm_kmalloc_match, ptr);
+
+> +       if (WARN_ON(!old_dr))
+
+Under spin lock? I would rather see spin unlock followed by WARN.
+
+> +               /* Memory chunk not managed or managed by a different device. */
+> +               goto out;
+> +
+> +       old_head = old_dr->node.entry;
+> +
+> +       new_dr = krealloc(old_dr, tot_size, gfp);
+> +       if (!new_dr)
+> +               goto out;
+> +
+> +       if (new_dr != old_dr)
+> +               list_replace(&old_head, &new_dr->node.entry);
+> +
+> +       ret = new_dr->data;
+> +
+> +out:
+> +       spin_unlock_irqrestore(&dev->devres_lock, flags);
+> +       return ret;
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko

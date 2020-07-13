@@ -2,63 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 220E421DE62
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jul 2020 19:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65ECF21E06E
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jul 2020 21:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730291AbgGMRUJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jul 2020 13:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729703AbgGMRUJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jul 2020 13:20:09 -0400
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E9DC061755;
-        Mon, 13 Jul 2020 10:20:09 -0700 (PDT)
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 4E32760C;
-        Mon, 13 Jul 2020 17:20:08 +0000 (UTC)
-Date:   Mon, 13 Jul 2020 11:20:07 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, Jon Mason <jdmason@kudzu.us>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Allen Hubbe <allenbh@gmail.com>, linux-ntb@googlegroups.com,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, linux-nvdimm@lists.01.org,
-        linux-usb@vger.kernel.org, Eli Billauer <eli.billauer@gmail.com>
-Subject: Re: [PATCH 00/17] Documentation/driver-api: eliminate duplicated
- words
-Message-ID: <20200713112007.4a7597ca@lwn.net>
-In-Reply-To: <20200704034502.17199-1-rdunlap@infradead.org>
-References: <20200704034502.17199-1-rdunlap@infradead.org>
-Organization: LWN.net
+        id S1726617AbgGMTFp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jul 2020 15:05:45 -0400
+Received: from mail-il1-f193.google.com ([209.85.166.193]:46095 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726321AbgGMTFp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jul 2020 15:05:45 -0400
+Received: by mail-il1-f193.google.com with SMTP id p15so4531258ilh.13;
+        Mon, 13 Jul 2020 12:05:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=KrvcQ3XXk1KzrgC6nT6teiKkOx2wvAzWo3+7umnWakI=;
+        b=Ezjx3XcsktzLE4tXb/dpKq8DtswUPJY5SBdG4LKQPHMdXvasLnddjw2SgNSq3ePfIq
+         UHDJLvtFxwsSHV0wK2HWD4KPpBzw1Bp0T7INIuCRV+ukWodcZkQ7brgH9S/hU+SzIaCh
+         wRcFYfH4lN5ou1covnr7ivzQ3YWUvTWy4z4BsvGGEEEARxCYTmgqaBeTF5orvieELpuo
+         48CU3vKHs06SmBo+cseO8+smkrKPZCeDVrjPzM9Nni6it0O/pyMvmiRqObGFw/BKpmE9
+         VyCtzOkbp5jTB4+LecOGW50zE6y2OpdC2X9RpRSWVP2ROxvb0wRBXMgeIYv54aIIWz/Y
+         1ofw==
+X-Gm-Message-State: AOAM531hWL2LjH4+8uVq6hY0HoNW0mSeYI5gsv4/kgfiHhehpuoPmrsI
+        9FJ08ViVmWhYSof0fuJ9+Q==
+X-Google-Smtp-Source: ABdhPJzI5P2l/De91UCc2ApLOJll02gpiZ1KuuMFwDXuiZHOiQC9FRAd9TMA2QCnxrkIHZs5vlNOqA==
+X-Received: by 2002:a92:bb0b:: with SMTP id w11mr1278077ili.238.1594667144105;
+        Mon, 13 Jul 2020 12:05:44 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id c9sm8627870ilm.57.2020.07.13.12.05.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2020 12:05:43 -0700 (PDT)
+Received: (nullmailer pid 551183 invoked by uid 1000);
+        Mon, 13 Jul 2020 19:05:42 -0000
+Date:   Mon, 13 Jul 2020 13:05:42 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Hartmut Knaack <knaack.h@gmx.de>, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: bmc150_magn: Document and fix
+ missing compatibles
+Message-ID: <20200713190542.GA551135@bogus>
+References: <20200629100537.20365-1-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200629100537.20365-1-krzk@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  3 Jul 2020 20:44:45 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
+On Mon, 29 Jun 2020 12:05:36 +0200, Krzysztof Kozlowski wrote:
+> The driver supports also BMC156B and BMM150B.  Add existing compatibles
+> marking the BMM150B one as deprecated (due to redundant suffix "_magn"
+> because the device unlike two others is a magnetometer only).  Introduce
+> a new, proper compatible for the deprecated one.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> ---
+> 
+> Changes since v2:
+> 1. Add compatible only for bmm150.
+> 
+> Changes since v1:
+> 1. Mark old compatibles as deprecated, add new one.
+> ---
+>  .../devicetree/bindings/iio/magnetometer/bmc150_magn.txt    | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
 
-> Remove occurrences of duplicated words in Documentation/driver-api/.
-
-So most of these, it seems, have been picked up elsewhere.  I grabbed #12
-and #13; all that's left is the media ones, which I presume Mauro will
-take.
-
-Thanks,
-
-jon
+Reviewed-by: Rob Herring <robh@kernel.org>

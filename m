@@ -2,535 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3BA821CB48
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jul 2020 22:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E291421CE94
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jul 2020 07:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729254AbgGLUQS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jul 2020 16:16:18 -0400
-Received: from crapouillou.net ([89.234.176.41]:54636 "EHLO crapouillou.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729012AbgGLUQS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 12 Jul 2020 16:16:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1594584974; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EKxKe+OHWSliKAjEw9lsWdj2LNHN97IDSrIYWRHi+AU=;
-        b=s86+3IcTTMhBNto3LPvATTNUzxtb1YXJrUTKMtKnRe6NOtZ50DWLh9RyY9WWBzXo7jPjL9
-        SIJ/Ijq+CWR6PjT25YKUw1RT3UR1yVUaWszzB17mjyFoAtf5c/gTi6PcGvjkykq4DdbRPc
-        Cu0yvn/2euDVHb+X52GkpoWKorvo/1E=
-Date:   Sun, 12 Jul 2020 22:16:04 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v8 6/6] IIO: Ingenic JZ47xx: Add touchscreen mode.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-Id: <SMHDDQ.A6DG0J6PD8U92@crapouillou.net>
-In-Reply-To: <20200712141946.7d8f802f@archlinux>
+        id S1728799AbgGMFIC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jul 2020 01:08:02 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:9042 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725920AbgGMFIC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jul 2020 01:08:02 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06D57lgW027425;
+        Mon, 13 Jul 2020 01:07:47 -0400
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2053.outbound.protection.outlook.com [104.47.44.53])
+        by mx0a-00128a01.pphosted.com with ESMTP id 327ab4kskp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Jul 2020 01:07:46 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=at4k78oWH5I+1fwquGBFrQLtmamXk9H0mpSmJLNGovG7Fi3kNAwJvtZavc2TpNhiPC9R/M9VGi1tj1j0gbdu65qJYgWVn5IyeXHEU8fsXw/3aKI0CS7eDZ87gEotmzmMMqDjnB+TQpTnADYTe0IddzpV2amxsGTl4ObUfXsIuLr/b4V5OinGCylm4JyCPC5IlbGtA7xqViTjKMvL8i4IC9VhNO4a9jbLUnHWoY8l36iVsJZyFI1hazrnn5Ep636BnNqLfJOBQgHktnVE4GiRS/cFSq1atV6xDyuAHtcI9e3axU4t28xuPJQBcg5uEemtfUfhU8/2JB/NyYB1aMuNHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PyLNJg9mAwZJC6w7guyLBYmYEA4XzhEyWKalD4RgREc=;
+ b=YxfdmXAwFsyPkpysspUFUS9DL9HSF2F2JqlxqBTkgBkklirKN6ohjyvJT2c6RhPaEsamdr7CMRNhquSGXDJke6K8ihGV83ooLR+cgosaXv+P2i6GpifsfMraKf39gpJ8yBXPCTr4rLFIGwYzTzq7QKG5NzH2aFcR5cDIKA/eZJja6DyR1mq0ptz+wr1/ND6HOF7IGq0eq9nQM6vdDM6odGIbtVtmp9TYqxNrNqJpZhDJ2/rZgSl+haMxoXdKWnWzFWvyibEm/Vuj5La7V1Xm845qDZJvUS3emk7yZy/rxD5yitpTU9u9Ygh0uICzixn6hzLPsYyD706vPkPm9Qpstg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PyLNJg9mAwZJC6w7guyLBYmYEA4XzhEyWKalD4RgREc=;
+ b=R7Lw2FbTWxEN3Df4zAR1dLixw6RhK3xH1wKFgwnDfuedQy/FaDz+I5JzHELzgqvi9krttNng74qEF22PFbhXESgjqoVNnN4LW7sM3mpaBdfm6QEld6q4MhfsnD68E0IH5OOM0Iv5QaqVM8Iobs4cDRm6YFOMNUD3W/q4fAD59Js=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB3931.namprd03.prod.outlook.com (2603:10b6:5:4b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Mon, 13 Jul
+ 2020 05:07:45 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c1c3:9cbb:449c:ac0a]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c1c3:9cbb:449c:ac0a%7]) with mapi id 15.20.3174.025; Mon, 13 Jul 2020
+ 05:07:45 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "contact@artur-rojek.eu" <contact@artur-rojek.eu>
+CC:     "ezequiel@vanguardiasur.com.ar" <ezequiel@vanguardiasur.com.ar>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "paul@crapouillou.net" <paul@crapouillou.net>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "heiko@sntech.de" <heiko@sntech.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v8 2/6] IIO: Ingenic JZ47xx: Error check clk_enable calls.
+Thread-Topic: [PATCH v8 2/6] IIO: Ingenic JZ47xx: Error check clk_enable
+ calls.
+Thread-Index: AQHWVgTo84dbJEvIi0y+LdDlMC9+5qkD3I8AgAEee4A=
+Date:   Mon, 13 Jul 2020 05:07:44 +0000
+Message-ID: <526dc4337ce1b5fcac94923c2b5533852a7b2739.camel@analog.com>
 References: <20200709152200.10039-1-contact@artur-rojek.eu>
-        <20200709152200.10039-7-contact@artur-rojek.eu>
-        <20200712141946.7d8f802f@archlinux>
+         <20200709152200.10039-3-contact@artur-rojek.eu>
+         <20200712130222.76bf32ed@archlinux>
+In-Reply-To: <20200712130222.76bf32ed@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [188.27.128.12]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d22a6b1b-383e-47dc-3251-08d826eaada3
+x-ms-traffictypediagnostic: DM6PR03MB3931:
+x-microsoft-antispam-prvs: <DM6PR03MB3931839145D79DE894D9241AF9600@DM6PR03MB3931.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: uML8PN1y5+5kVmckiQ5HFgyQsCpLcD/uRfc7tCTBBKOs3LqCvM1dzqVxaF/fAAdZdem1d8pYxgFP+mSOPPWmBCQqy/YrmSU34DFb/HxSKicESwZbPSADIbLGRa3bXq0ZAKEGhXnc83f4Uq2BgRA3gBJ9IuPUds1UwryGNmpeEgrS2ixuzg2ZBSgCGvvebcEwDrCJGMLm9Lme5cSAIJAeUwvWIrbnlZZaIa2ivGrkKiamPsKCSwmqxJCSJaz1aT3klaD8T54D8a6j0ESS/Qg0I4Q9cNY8Y8sNe3BxhNDdQPMgntJ+zuIX6uU7CvW2TwVs
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4411.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(366004)(396003)(376002)(39860400002)(136003)(36756003)(5660300002)(6486002)(8936002)(2906002)(6506007)(2616005)(316002)(71200400001)(86362001)(110136005)(8676002)(186003)(26005)(6512007)(478600001)(66446008)(64756008)(66556008)(66476007)(66946007)(54906003)(76116006)(91956017)(4326008)(83380400001)(7416002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: yU8dm6/OLqSQhKBRue2NAjkRR2ucjX6utQWHS63h7ssb0bZyOQD2mIvSy2pYNb2epZKnPWvLN8Zzmzm0/1HoMn2Z1aP+qgxPFy2XCykmb92Pw8tr1Qei1OdESVtuI4ddj6fDX+XFGAMHby0iWuaSLctHUoB6t2vnOlDbuz8rr0ovzKl1lqU5a4lgznjp10z+8OWK2Q7YF8S/+0FbVOjvst7Mnidl7JfkYQXWrAnM4/nqAcI0XczCEY3cuPq71Iis3DixZluPyLEHyDo68RH0aRY6cyGxYYtuvLLUJGQnC6HWc8xDHf3HtroLXgtbXweRRwsWJT2dCSRJ9QRZHAjg+TFiOSTGA2PCXJw8t9NR6m+bXz5LCs7SesSdD9jfYtfIE9oklhJD1ebg6hka4SvE9w45JdfYTjCOjWY6ucbjNqYdYKjALhMfsGkKasCFsM31DpcJikBX8JcxsHTlT6pP3nbXZjPbGUTGlkQAoD9X5qg=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E7AB8802FB92EF469C7220C509209C13@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB4411.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d22a6b1b-383e-47dc-3251-08d826eaada3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jul 2020 05:07:44.8072
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: U0lQAqj7fAlrIp/lup9RT/8Rpj7EPTxPsZq64kRWbdhi9O4CY0UyITfpGwaGyZVU/SHjx179OF0aNHvX9CzW9icvOSQr3vUF9UgP4To+y/8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3931
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-13_03:2020-07-10,2020-07-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 adultscore=0 clxscore=1011 lowpriorityscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007130037
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-Le dim. 12 juil. 2020 =E0 14:19, Jonathan Cameron <jic23@kernel.org> a=20
-=E9crit :
-> On Thu,  9 Jul 2020 17:22:00 +0200
-> Artur Rojek <contact@artur-rojek.eu> wrote:
->=20
->>  The SADC component in JZ47xx SoCs provides support for touchscreen
->>  operations (pen position and pen down pressure) in single-ended and
->>  differential modes.
->>=20
->>  The touchscreen component of SADC takes a significant time to=20
->> stabilize
->>  after first receiving the clock and a delay of 50ms has been=20
->> empirically
->>  proven to be a safe value before data sampling can begin.
->>=20
->>  Of the known hardware to use this controller, GCW Zero and Anbernic=20
->> RG-350
->>  utilize the touchscreen mode by having their joystick(s) attached=20
->> to the
->>  X/Y positive/negative input pins.
->>=20
->>  JZ4770 and later SoCs introduce a low-level command feature. With=20
->> it, up
->>  to 32 commands can be programmed, each one corresponding to a=20
->> sampling
->>  job. It allows to change the low-voltage reference, the high-voltage
->>  reference, have them connected to VCC, GND, or one of the X-/X+ or=20
->> Y-/Y+
->>  pins.
->>=20
->>  This patch introduces support for 6 stream-capable channels:
->>  - channel #0 samples X+/GND
->>  - channel #1 samples Y+/GND
->>  - channel #2 samples X-/GND
->>  - channel #3 samples Y-/GND
->>  - channel #4 samples X+/X-
->>  - channel #5 samples Y+/Y-
->=20
-> The one thing I noticed on this read was that we are slightly=20
-> stretching
-> the normal IIO channel definitions.  The claim is that each of these=20
-> channels
-> is a POSITIONREALTIVE channel, whereas that isn't really true.  They=20
-> are
-> related to the position, but as I understand it not directly=20
-> measuring it
-> (particularly X+ - X-) which is pretty much a reference voltage (I=20
-> think!)
->=20
-> We might be better off just describing these as voltage channels, with
-> 4 and 5 described as differential voltage channels.  The problem there
-> being that it doesn't describe the fact that the measurements are with
-> particular voltages also being applied to the touch screen.
->=20
-> Perhaps we are best off just leaving it as you have it and being a bit
-> 'odd'.  What do you think?  Having written this down I think perhaps=20
-> leaving
-> it alone is the best plan :(
-
-That's up to you really. These ADC channels will measure voltage, but=20
-they are supposed to be used with a touchscreen, that's why we went=20
-with POSITIONRELATIVE. However, with the kind of devices we're working=20
-with, they are never used as such, so using VOLTAGE would work too.
-
-> Otherwise this all looks fine to me.
->=20
-> Thanks,
->=20
-> Jonathan
->=20
->>=20
->>  Being able to sample X-/GND and Y-/GND is useful on some devices,=20
->> where
->>  one joystick is connected to the X+/Y+ pins, and a second joystick=20
->> is
->>  connected to the X-/Y- pins.
->>=20
->>  All the boards which probe this driver have the interrupt provided=20
->> from
->>  Device Tree, with no need to handle a case where the IRQ was not=20
->> provided.
->>=20
->>  Co-developed-by: Paul Cercueil <paul@crapouillou.net>
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
->>  ---
->>=20
->>   Changes:
->>=20
->>   v2: - improve description of the touchscreen mode,
->>       - get rid of the unneeded kfifo,
->>       - drop IIO_BUFFER_CB from Kconfig,
->>       - remove extended names from the touchscreen channels
->>=20
->>   v3: remove unneeded `linux/iio/kfifo_buf.h` include
->>=20
->>   v4: clarify irq provider source in the patch description
->>=20
->>   v5: no change
->>=20
->>   v6: - correct the spelling of Device Tree and IRQ in commit message
->>       - don't omit trailing commas from initializer lists
->>       - error check `clk_enable`
->>       - remove redundant `dev_err` from `platform_get_irq` error=20
->> check
->>=20
->>   v7: no change
->>=20
->>   v8: add support for ADCMD low-level command feature
->>=20
->>   drivers/iio/adc/Kconfig       |   1 +
->>   drivers/iio/adc/ingenic-adc.c | 250=20
->> +++++++++++++++++++++++++++++++++-
->>   2 files changed, 249 insertions(+), 2 deletions(-)
->>=20
->>  diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->>  index ff3569635ce0..5b57437cef75 100644
->>  --- a/drivers/iio/adc/Kconfig
->>  +++ b/drivers/iio/adc/Kconfig
->>  @@ -500,6 +500,7 @@ config INA2XX_ADC
->>   config INGENIC_ADC
->>   	tristate "Ingenic JZ47xx SoCs ADC driver"
->>   	depends on MIPS || COMPILE_TEST
->>  +	select IIO_BUFFER
->>   	help
->>   	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC=20
->> unit.
->>=20
->>  diff --git a/drivers/iio/adc/ingenic-adc.c=20
->> b/drivers/iio/adc/ingenic-adc.c
->>  index 0233a9055c86..976aea46fede 100644
->>  --- a/drivers/iio/adc/ingenic-adc.c
->>  +++ b/drivers/iio/adc/ingenic-adc.c
->>  @@ -8,7 +8,9 @@
->>=20
->>   #include <dt-bindings/iio/adc/ingenic,adc.h>
->>   #include <linux/clk.h>
->>  +#include <linux/iio/buffer.h>
->>   #include <linux/iio/iio.h>
->>  +#include <linux/interrupt.h>
->>   #include <linux/io.h>
->>   #include <linux/iopoll.h>
->>   #include <linux/kernel.h>
->>  @@ -20,19 +22,46 @@
->>   #define JZ_ADC_REG_CFG			0x04
->>   #define JZ_ADC_REG_CTRL			0x08
->>   #define JZ_ADC_REG_STATUS		0x0c
->>  +#define JZ_ADC_REG_ADSAME		0x10
->>  +#define JZ_ADC_REG_ADWAIT		0x14
->>   #define JZ_ADC_REG_ADTCH		0x18
->>   #define JZ_ADC_REG_ADBDAT		0x1c
->>   #define JZ_ADC_REG_ADSDAT		0x20
->>  +#define JZ_ADC_REG_ADCMD		0x24
->>   #define JZ_ADC_REG_ADCLK		0x28
->>=20
->>   #define JZ_ADC_REG_ENABLE_PD		BIT(7)
->>   #define JZ_ADC_REG_CFG_AUX_MD		(BIT(0) | BIT(1))
->>   #define JZ_ADC_REG_CFG_BAT_MD		BIT(4)
->>  +#define JZ_ADC_REG_CFG_SAMPLE_NUM(n)	((n) << 10)
->>  +#define JZ_ADC_REG_CFG_PULL_UP(n)	((n) << 16)
->>  +#define JZ_ADC_REG_CFG_CMD_SEL		BIT(22)
->>  +#define JZ_ADC_REG_CFG_TOUCH_OPS_MASK	(BIT(31) | GENMASK(23, 10))
->>   #define JZ_ADC_REG_ADCLK_CLKDIV_LSB	0
->>   #define JZ4725B_ADC_REG_ADCLK_CLKDIV10US_LSB	16
->>   #define JZ4770_ADC_REG_ADCLK_CLKDIV10US_LSB	8
->>   #define JZ4770_ADC_REG_ADCLK_CLKDIVMS_LSB	16
->>=20
->>  +#define JZ_ADC_REG_ADCMD_YNADC		BIT(7)
->>  +#define JZ_ADC_REG_ADCMD_YPADC		BIT(8)
->>  +#define JZ_ADC_REG_ADCMD_XNADC		BIT(9)
->>  +#define JZ_ADC_REG_ADCMD_XPADC		BIT(10)
->>  +#define JZ_ADC_REG_ADCMD_VREFPYP	BIT(11)
->>  +#define JZ_ADC_REG_ADCMD_VREFPXP	BIT(12)
->>  +#define JZ_ADC_REG_ADCMD_VREFPXN	BIT(13)
->>  +#define JZ_ADC_REG_ADCMD_VREFPAUX	BIT(14)
->>  +#define JZ_ADC_REG_ADCMD_VREFPVDD33	BIT(15)
->>  +#define JZ_ADC_REG_ADCMD_VREFNYN	BIT(16)
->>  +#define JZ_ADC_REG_ADCMD_VREFNXP	BIT(17)
->>  +#define JZ_ADC_REG_ADCMD_VREFNXN	BIT(18)
->>  +#define JZ_ADC_REG_ADCMD_VREFAUX	BIT(19)
->>  +#define JZ_ADC_REG_ADCMD_YNGRU		BIT(20)
->>  +#define JZ_ADC_REG_ADCMD_XNGRU		BIT(21)
->>  +#define JZ_ADC_REG_ADCMD_XPGRU		BIT(22)
->>  +#define JZ_ADC_REG_ADCMD_YPSUP		BIT(23)
->>  +#define JZ_ADC_REG_ADCMD_XNSUP		BIT(24)
->>  +#define JZ_ADC_REG_ADCMD_XPSUP		BIT(25)
->>  +
->>   #define JZ_ADC_AUX_VREF				3300
->>   #define JZ_ADC_AUX_VREF_BITS			12
->>   #define JZ_ADC_BATTERY_LOW_VREF			2500
->>  @@ -44,6 +73,14 @@
->>   #define JZ4770_ADC_BATTERY_VREF			6600
->>   #define JZ4770_ADC_BATTERY_VREF_BITS		12
->>=20
->>  +#define JZ_ADC_IRQ_AUX			BIT(0)
->>  +#define JZ_ADC_IRQ_BATTERY		BIT(1)
->>  +#define JZ_ADC_IRQ_TOUCH		BIT(2)
->>  +#define JZ_ADC_IRQ_PEN_DOWN		BIT(3)
->>  +#define JZ_ADC_IRQ_PEN_UP		BIT(4)
->>  +#define JZ_ADC_IRQ_PEN_DOWN_SLEEP	BIT(5)
->>  +#define JZ_ADC_IRQ_SLEEP		BIT(7)
->>  +
->>   struct ingenic_adc;
->>=20
->>   struct ingenic_adc_soc_data {
->>  @@ -69,6 +106,61 @@ struct ingenic_adc {
->>   	bool low_vref_mode;
->>   };
->>=20
->>  +static void ingenic_adc_set_adcmd(struct iio_dev *iio_dev,=20
->> unsigned long mask)
->>  +{
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +
->>  +	mutex_lock(&adc->lock);
->>  +
->>  +	/* Init ADCMD */
->>  +	readl(adc->base + JZ_ADC_REG_ADCMD);
->>  +
->>  +	if (mask & 0x3) {
->>  +		/* Second channel (INGENIC_ADC_TOUCH_YP): sample YP vs. GND */
->>  +		writel(JZ_ADC_REG_ADCMD_XNGRU
->>  +		       | JZ_ADC_REG_ADCMD_VREFNXN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_YPADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +
->>  +		/* First channel (INGENIC_ADC_TOUCH_XP): sample XP vs. GND */
->>  +		writel(JZ_ADC_REG_ADCMD_YNGRU
->>  +		       | JZ_ADC_REG_ADCMD_VREFNYN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_XPADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +	}
->>  +
->>  +	if (mask & 0xc) {
->>  +		/* Fourth channel (INGENIC_ADC_TOUCH_YN): sample YN vs. GND */
->>  +		writel(JZ_ADC_REG_ADCMD_XNGRU
->>  +		       | JZ_ADC_REG_ADCMD_VREFNXN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_YNADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +
->>  +		/* Third channel (INGENIC_ADC_TOUCH_XN): sample XN vs. GND */
->>  +		writel(JZ_ADC_REG_ADCMD_YNGRU
->>  +		       | JZ_ADC_REG_ADCMD_VREFNYN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_XNADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +	}
->>  +
->>  +	if (mask & 0x30) {
->>  +		/* Sixth channel (INGENIC_ADC_TOUCH_YD): sample YP vs. YN */
->>  +		writel(JZ_ADC_REG_ADCMD_VREFNYN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_YPADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +
->>  +		/* Fifth channel (INGENIC_ADC_TOUCH_XD): sample XP vs. XN */
->>  +		writel(JZ_ADC_REG_ADCMD_VREFNXN | JZ_ADC_REG_ADCMD_VREFPVDD33
->>  +		       | JZ_ADC_REG_ADCMD_XPADC,
->>  +		       adc->base + JZ_ADC_REG_ADCMD);
->>  +	}
->>  +
->>  +	/* We're done */
->>  +	writel(0, adc->base + JZ_ADC_REG_ADCMD);
->>  +
->>  +	mutex_unlock(&adc->lock);
->>  +}
->>  +
->>   static void ingenic_adc_set_config(struct ingenic_adc *adc,
->>   				   uint32_t mask,
->>   				   uint32_t val)
->>  @@ -288,6 +380,72 @@ static const struct iio_chan_spec=20
->> jz4740_channels[] =3D {
->>   };
->>=20
->>   static const struct iio_chan_spec jz4770_channels[] =3D {
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_XP,
->=20
-> Ah. sorry. I should have noticed this much earlier.
->=20
-> These aren't position channels as such.  They are channels
-> that are then processed into position in combination.
->=20
-> Problem is I'm not sure how we 'should' describe then.
->=20
-> Perhaps this is the best we can do.
-
-We could have the two differencial channels as IIO_POSITIONRELATIVE,=20
-and the four single-ended ones as IIO_VOLTAGE.
-
-Cheers,
--Paul
-
->>  +		.scan_index =3D 0,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_YP,
->>  +		.scan_index =3D 1,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_XN,
->>  +		.scan_index =3D 2,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_YN,
->>  +		.scan_index =3D 3,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_XD,
->>  +		.scan_index =3D 4,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>  +	{
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_YD,
->>  +		.scan_index =3D 5,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16,
->>  +		},
->>  +	},
->>   	{
->>   		.extend_name =3D "aux",
->>   		.type =3D IIO_VOLTAGE,
->>  @@ -490,13 +648,89 @@ static const struct iio_info ingenic_adc_info=20
->> =3D {
->>   	.of_xlate =3D ingenic_adc_of_xlate,
->>   };
->>=20
->>  +static int ingenic_adc_buffer_enable(struct iio_dev *iio_dev)
->>  +{
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +	int ret;
->>  +
->>  +	ret =3D clk_enable(adc->clk);
->>  +	if (ret) {
->>  +		dev_err(iio_dev->dev.parent, "Failed to enable clock: %d\n",
->>  +			ret);
->>  +		return ret;
->>  +	}
->>  +
->>  +	/* It takes significant time for the touchscreen hw to stabilize.=20
->> */
->>  +	msleep(50);
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK,
->>  +			       JZ_ADC_REG_CFG_SAMPLE_NUM(4) |
->>  +			       JZ_ADC_REG_CFG_PULL_UP(4));
->>  +
->>  +	writew(80, adc->base + JZ_ADC_REG_ADWAIT);
->>  +	writew(2, adc->base + JZ_ADC_REG_ADSAME);
->>  +	writeb((u8)~JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_CTRL);
->>  +	writel(0, adc->base + JZ_ADC_REG_ADTCH);
->>  +
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_CMD_SEL,
->>  +			       JZ_ADC_REG_CFG_CMD_SEL);
->>  +	ingenic_adc_set_adcmd(iio_dev, iio_dev->active_scan_mask[0]);
->>  +
->>  +	ingenic_adc_enable(adc, 2, true);
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static int ingenic_adc_buffer_disable(struct iio_dev *iio_dev)
->>  +{
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +
->>  +	ingenic_adc_enable(adc, 2, false);
->>  +
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_CMD_SEL, 0);
->>  +
->>  +	writeb(0xff, adc->base + JZ_ADC_REG_CTRL);
->>  +	writeb(0xff, adc->base + JZ_ADC_REG_STATUS);
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK, 0);
->>  +	writew(0, adc->base + JZ_ADC_REG_ADSAME);
->>  +	writew(0, adc->base + JZ_ADC_REG_ADWAIT);
->>  +	clk_disable(adc->clk);
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static const struct iio_buffer_setup_ops ingenic_buffer_setup_ops=20
->> =3D {
->>  +	.postenable =3D &ingenic_adc_buffer_enable,
->>  +	.predisable =3D &ingenic_adc_buffer_disable
->>  +};
->>  +
->>  +static irqreturn_t ingenic_adc_irq(int irq, void *data)
->>  +{
->>  +	struct iio_dev *iio_dev =3D data;
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +	unsigned long mask =3D iio_dev->active_scan_mask[0];
->>  +	unsigned int i;
->>  +	u32 tdat[3];
->>  +
->>  +	for (i =3D 0; i < ARRAY_SIZE(tdat); mask >>=3D 2, i++) {
->>  +		if (mask & 0x3)
->>  +			tdat[i] =3D readl(adc->base + JZ_ADC_REG_ADTCH);
->>  +		else
->>  +			tdat[i] =3D 0;
->>  +	}
->>  +
->>  +	iio_push_to_buffers(iio_dev, tdat);
->>  +	writeb(JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_STATUS);
->>  +
->>  +	return IRQ_HANDLED;
->>  +}
->>  +
->>   static int ingenic_adc_probe(struct platform_device *pdev)
->>   {
->>   	struct device *dev =3D &pdev->dev;
->>   	struct iio_dev *iio_dev;
->>   	struct ingenic_adc *adc;
->>   	const struct ingenic_adc_soc_data *soc_data;
->>  -	int ret;
->>  +	int irq, ret;
->>=20
->>   	soc_data =3D device_get_match_data(dev);
->>   	if (!soc_data)
->>  @@ -511,6 +745,17 @@ static int ingenic_adc_probe(struct=20
->> platform_device *pdev)
->>   	mutex_init(&adc->aux_lock);
->>   	adc->soc_data =3D soc_data;
->>=20
->>  +	irq =3D platform_get_irq(pdev, 0);
->>  +	if (irq < 0)
->>  +		return irq;
->>  +
->>  +	ret =3D devm_request_irq(dev, irq, ingenic_adc_irq, 0,
->>  +			       dev_name(dev), iio_dev);
->>  +	if (ret < 0) {
->>  +		dev_err(dev, "Failed to request irq: %d\n", ret);
->>  +		return ret;
->>  +	}
->>  +
->>   	adc->base =3D devm_platform_ioremap_resource(pdev, 0);
->>   	if (IS_ERR(adc->base))
->>   		return PTR_ERR(adc->base);
->>  @@ -550,7 +795,8 @@ static int ingenic_adc_probe(struct=20
->> platform_device *pdev)
->>=20
->>   	iio_dev->dev.parent =3D dev;
->>   	iio_dev->name =3D "jz-adc";
->>  -	iio_dev->modes =3D INDIO_DIRECT_MODE;
->>  +	iio_dev->modes =3D INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
->>  +	iio_dev->setup_ops =3D &ingenic_buffer_setup_ops;
->>   	iio_dev->channels =3D soc_data->channels;
->>   	iio_dev->num_channels =3D soc_data->num_channels;
->>   	iio_dev->info =3D &ingenic_adc_info;
->=20
-
-
+T24gU3VuLCAyMDIwLTA3LTEyIGF0IDEzOjAyICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBPbiBUaHUsICA5IEp1bCAyMDIwIDE3OjIxOjU2ICswMjAwDQo+IEFydHVyIFJvamVrIDxj
+b250YWN0QGFydHVyLXJvamVrLmV1PiB3cm90ZToNCj4gDQo+ID4gSW50cm9kdWNlIGVycm9yIGNo
+ZWNrcyBmb3IgdGhlIGNsa19lbmFibGUgY2FsbHMgdXNlZCBpbiB0aGlzIGRyaXZlci4NCj4gPiBB
+cyBwYXJ0IG9mIHRoZSBjaGFuZ2VzLCBtb3ZlIGNsa19lbmFibGUvY2xrX2Rpc2FibGUgY2FsbHMg
+b3V0IG9mDQo+ID4gaW5nZW5pY19hZGNfc2V0X2NvbmZpZyBhbmQgaW50byByZXNwZWN0aXZlIGxv
+Z2ljIG9mIGl0cyBjYWxsZXJzLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IEFydHVyIFJvamVr
+IDxjb250YWN0QGFydHVyLXJvamVrLmV1Pg0KPiA+IFRlc3RlZC1ieTogUGF1bCBDZXJjdWVpbCA8
+cGF1bEBjcmFwb3VpbGxvdS5uZXQ+DQo+IEFwcGxpZWQuDQo+IA0KPiBUaGFua3MsDQo+IA0KPiBK
+b25hdGhhbg0KPiANCj4gPiAtLS0NCj4gPiANCj4gPiAgQ2hhbmdlczoNCj4gPiANCj4gPiAgdjY6
+IG5ldyBwYXRjaA0KPiA+IA0KPiA+ICB2Nzogbm8gY2hhbmdlDQo+ID4gDQo+ID4gIHY4OiBtb3Zl
+IGBjbGtfZGlzYWJsZWAgb3V0c2lkZSB0aGUgbG9jaw0KPiA+IA0KPiA+ICBkcml2ZXJzL2lpby9h
+ZGMvaW5nZW5pYy1hZGMuYyB8IDI1ICsrKysrKysrKysrKysrKysrKysrKy0tLS0NCj4gPiAgMSBm
+aWxlIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9pbmdlbmljLWFkYy5jIGIvZHJpdmVycy9paW8v
+YWRjL2luZ2VuaWMtDQo+ID4gYWRjLmMNCj4gPiBpbmRleCAzOWMwYTYwOWZjOTQuLmMxOTQ2YTlm
+MWNjYSAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvaW5nZW5pYy1hZGMuYw0KPiA+
+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9pbmdlbmljLWFkYy5jDQo+ID4gQEAgLTczLDcgKzczLDYg
+QEAgc3RhdGljIHZvaWQgaW5nZW5pY19hZGNfc2V0X2NvbmZpZyhzdHJ1Y3QgaW5nZW5pY19hZGMN
+Cj4gPiAqYWRjLA0KPiA+ICB7DQo+ID4gIAl1aW50MzJfdCBjZmc7DQo+ID4gIA0KPiA+IC0JY2xr
+X2VuYWJsZShhZGMtPmNsayk7DQo+ID4gIAltdXRleF9sb2NrKCZhZGMtPmxvY2spOw0KPiA+ICAN
+Cj4gPiAgCWNmZyA9IHJlYWRsKGFkYy0+YmFzZSArIEpaX0FEQ19SRUdfQ0ZHKSAmIH5tYXNrOw0K
+PiA+IEBAIC04MSw3ICs4MCw2IEBAIHN0YXRpYyB2b2lkIGluZ2VuaWNfYWRjX3NldF9jb25maWco
+c3RydWN0IGluZ2VuaWNfYWRjDQo+ID4gKmFkYywNCj4gPiAgCXdyaXRlbChjZmcsIGFkYy0+YmFz
+ZSArIEpaX0FEQ19SRUdfQ0ZHKTsNCj4gPiAgDQo+ID4gIAltdXRleF91bmxvY2soJmFkYy0+bG9j
+ayk7DQo+ID4gLQljbGtfZGlzYWJsZShhZGMtPmNsayk7DQo+ID4gIH0NCj4gPiAgDQo+ID4gIHN0
+YXRpYyB2b2lkIGluZ2VuaWNfYWRjX2VuYWJsZShzdHJ1Y3QgaW5nZW5pY19hZGMgKmFkYywNCj4g
+PiBAQCAtMTI0LDYgKzEyMiw4IEBAIHN0YXRpYyBpbnQgaW5nZW5pY19hZGNfd3JpdGVfcmF3KHN0
+cnVjdCBpaW9fZGV2DQo+ID4gKmlpb19kZXYsDQo+ID4gIAkJCQkgbG9uZyBtKQ0KPiA+ICB7DQo+
+ID4gIAlzdHJ1Y3QgaW5nZW5pY19hZGMgKmFkYyA9IGlpb19wcml2KGlpb19kZXYpOw0KPiA+ICsJ
+c3RydWN0IGRldmljZSAqZGV2ID0gaWlvX2Rldi0+ZGV2LnBhcmVudDsNCj4gPiArCWludCByZXQ7
+DQo+ID4gIA0KPiA+ICAJc3dpdGNoIChtKSB7DQo+ID4gIAljYXNlIElJT19DSEFOX0lORk9fU0NB
+TEU6DQo+ID4gQEAgLTEzMSw2ICsxMzEsMTQgQEAgc3RhdGljIGludCBpbmdlbmljX2FkY193cml0
+ZV9yYXcoc3RydWN0IGlpb19kZXYNCj4gPiAqaWlvX2RldiwNCj4gPiAgCQljYXNlIElOR0VOSUNf
+QURDX0JBVFRFUlk6DQo+ID4gIAkJCWlmICghYWRjLT5zb2NfZGF0YS0+YmF0dGVyeV92cmVmX21v
+ZGUpDQo+ID4gIAkJCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiArDQo+ID4gKwkJCXJldCA9IGNsa19l
+bmFibGUoYWRjLT5jbGspOw0KPiA+ICsJCQlpZiAocmV0KSB7DQo+ID4gKwkJCQlkZXZfZXJyKGRl
+diwgIkZhaWxlZCB0byBlbmFibGUgY2xvY2s6DQo+ID4gJWRcbiIsDQo+ID4gKwkJCQkJcmV0KTsN
+Cj4gPiArCQkJCXJldHVybiByZXQ7DQo+ID4gKwkJCX0NCj4gPiArDQo+ID4gIAkJCWlmICh2YWwg
+PiBKWl9BRENfQkFUVEVSWV9MT1dfVlJFRikgew0KPiA+ICAJCQkJaW5nZW5pY19hZGNfc2V0X2Nv
+bmZpZyhhZGMsDQo+ID4gIAkJCQkJCSAgICAgICBKWl9BRENfUkVHX0NGR19CQVRfTQ0KPiA+IEQs
+DQo+ID4gQEAgLTE0Miw2ICsxNTAsOSBAQCBzdGF0aWMgaW50IGluZ2VuaWNfYWRjX3dyaXRlX3Jh
+dyhzdHJ1Y3QgaWlvX2Rldg0KPiA+ICppaW9fZGV2LA0KPiA+ICAJCQkJCQkgICAgICAgSlpfQURD
+X1JFR19DRkdfQkFUX00NCj4gPiBEKTsNCj4gPiAgCQkJCWFkYy0+bG93X3ZyZWZfbW9kZSA9IHRy
+dWU7DQo+ID4gIAkJCX0NCj4gPiArDQo+ID4gKwkJCWNsa19kaXNhYmxlKGFkYy0+Y2xrKTsNCj4g
+PiArDQo+ID4gIAkJCXJldHVybiAwOw0KPiA+ICAJCWRlZmF1bHQ6DQo+ID4gIAkJCXJldHVybiAt
+RUlOVkFMOw0KPiA+IEBAIC0zMTcsNiArMzI4LDEzIEBAIHN0YXRpYyBpbnQgaW5nZW5pY19hZGNf
+cmVhZF9jaGFuX2luZm9fcmF3KHN0cnVjdA0KPiA+IGluZ2VuaWNfYWRjICphZGMsDQo+ID4gIAkJ
+CQkJICBpbnQgKnZhbCkNCj4gPiAgew0KPiA+ICAJaW50IGJpdCwgcmV0LCBlbmdpbmUgPSAoY2hh
+bi0+Y2hhbm5lbCA9PSBJTkdFTklDX0FEQ19CQVRURVJZKTsNCj4gPiArCXN0cnVjdCBkZXZpY2Ug
+KmRldiA9IGlpb19wcml2X3RvX2RldihhZGMpLT5kZXYucGFyZW50Ow0KDQpUaGlzIHVzZXMgaWlv
+X3ByaXZfdG9fZGV2KCksIHdoaWNoIHNob3VsZCBiZSByZW1vdmVkIFtpZiBpdCBoYXNuJ3QgYmVl
+bg0KYWxyZWFkeV0uDQpBbHNvLCB3aXRoIHRoZSBpaW9fZGV2X29wYXF1ZSBzdHJ1Y3QvdHlwZSwg
+dXNpbmcgdGhlIGlpb19wcml2X3RvX2RldigpDQpoZWxwZXIgc2hvdWxkbid0IHdvcmssIG9yIHNo
+b3VsZCBnaXZlIHVuZGVmaW5lZCBiZWhhdmlvciwgYXMgdGhlIG9mZnNldCB0bw0KdGhlIHByaXZh
+dGUgZGF0YSBzaG91bGQgYmUgbWF0Y2hlZCBhZ2FpbnN0IGlpb19kZXZfb3BhcXVlIChhbmQgbm90
+DQppaW9fZGV2KS4NCg0KTG9va2luZyBhdCB0aGlzIGNvZGUsIGl0IGxvb2tzIGxpa2UgaW5nZW5p
+Y19hZGNfcmVhZF9jaGFuX2luZm9fcmF3KCkgY2FuDQp0YWtlIGFuICdpbmRpb19kZXYnIHJlZmVy
+ZW5jZSBhbmQgb2J0YWluIHRoZSBwcml2YXRlIGluZm9ybWF0aW9uIHZpYQ0KaWlvX3ByaXYoKQ0K
+DQpNYXliZSBbZm9yIHNvbWVdIHRoZXJlJ3MgYSBxdWVzdGlvbiBhcyB0byB3aHkgaWlvX3ByaXZf
+dG9fZGV2KCkgaXMgYmVpbmcNCnJlbW92ZWQuDQpUaGUgYW5zd2VyIGlzOiBiZWNhdXNlIHRoZSBp
+aW9fZGV2X29wYXF1ZSBzdHJ1Y3QvdHlwZSB3YXMgaW50cm9kdWNlZCB0bw0KaGlkZSBzb21lIGlp
+b19kZXYgW0lOVEVSTl0gZmllbGRzOyB0aGUgbWFpbiByZWFzb24gZm9yIGhpZGluZyB0aGVtIFth
+c2lkZQ0KZnJvbSBnb29kIGNvZGluZyBwcmFjdGljZSwgYW5kIGJlY2F1c2UgdGhleSBiZWxvbmcg
+dG8gdGhlIElJTyBmcmFtZXdvcmtdIGlzDQp0byBub3QgaGF2ZSB0byByZXZpZXcgbmV3IGRyaXZl
+cnMgYmVpbmcgY29waWVkL2FkYXB0ZWQgZnJvbSBvbGQgZHJpdmVycy4NCg0KTmF0dXJhbGx5LCB0
+aGUgaWlvX3ByaXZfdG9fZGV2KCkgY291bGQgaGF2ZSBiZWVuIGtlcHQgYXJvdW5kIFtpbiBhIHJl
+d29ya2VkDQpmb3JtXSwgYnV0IGl0IGRpZG4ndCBtYWtlIG11Y2ggc2Vuc2UsIHNpbmNlIG1vc3Qg
+dXNlcnMgb2YgaWlvX3ByaXZfdG9fZGV2KCkNCmNvdWxkIGFjY2VzcyBhIHJlZmVyZW5jZSB0byBp
+bmRpb19kZXYgd2l0aG91dCBtdWNoL2FueSBoYXNzbGUuDQoNCj4gPiArDQo+ID4gKwlyZXQgPSBj
+bGtfZW5hYmxlKGFkYy0+Y2xrKTsNCj4gPiArCWlmIChyZXQpIHsNCj4gPiArCQlkZXZfZXJyKGRl
+diwgIkZhaWxlZCB0byBlbmFibGUgY2xvY2s6ICVkXG4iLCByZXQpOw0KPiA+ICsJCXJldHVybiBy
+ZXQ7DQo+ID4gKwl9DQo+ID4gIA0KPiA+ICAJLyogV2UgY2Fubm90IHNhbXBsZSBBVVgvQVVYMiBp
+biBwYXJhbGxlbC4gKi8NCj4gPiAgCW11dGV4X2xvY2soJmFkYy0+YXV4X2xvY2spOw0KPiA+IEBA
+IC0zMjUsNyArMzQzLDYgQEAgc3RhdGljIGludCBpbmdlbmljX2FkY19yZWFkX2NoYW5faW5mb19y
+YXcoc3RydWN0DQo+ID4gaW5nZW5pY19hZGMgKmFkYywNCj4gPiAgCQlpbmdlbmljX2FkY19zZXRf
+Y29uZmlnKGFkYywgSlpfQURDX1JFR19DRkdfQVVYX01ELCBiaXQpOw0KPiA+ICAJfQ0KPiA+ICAN
+Cj4gPiAtCWNsa19lbmFibGUoYWRjLT5jbGspOw0KPiA+ICAJcmV0ID0gaW5nZW5pY19hZGNfY2Fw
+dHVyZShhZGMsIGVuZ2luZSk7DQo+ID4gIAlpZiAocmV0KQ0KPiA+ICAJCWdvdG8gb3V0Ow0KPiA+
+IEBAIC0zNDIsOCArMzU5LDggQEAgc3RhdGljIGludCBpbmdlbmljX2FkY19yZWFkX2NoYW5faW5m
+b19yYXcoc3RydWN0DQo+ID4gaW5nZW5pY19hZGMgKmFkYywNCj4gPiAgDQo+ID4gIAlyZXQgPSBJ
+SU9fVkFMX0lOVDsNCj4gPiAgb3V0Og0KPiA+IC0JY2xrX2Rpc2FibGUoYWRjLT5jbGspOw0KPiA+
+ICAJbXV0ZXhfdW5sb2NrKCZhZGMtPmF1eF9sb2NrKTsNCj4gPiArCWNsa19kaXNhYmxlKGFkYy0+
+Y2xrKTsNCj4gPiAgDQo+ID4gIAlyZXR1cm4gcmV0Ow0KPiA+ICB9DQo=

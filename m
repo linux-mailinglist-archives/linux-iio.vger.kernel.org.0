@@ -2,103 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7A421F3D5
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jul 2020 16:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5E021F550
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jul 2020 16:48:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbgGNOXH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jul 2020 10:23:07 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:34086 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725955AbgGNOXG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jul 2020 10:23:06 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06EEMR2k018763;
-        Tue, 14 Jul 2020 10:22:52 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 327ab4rv35-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jul 2020 10:22:52 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 06EEMpOk015305
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 14 Jul 2020 10:22:51 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 14 Jul 2020 10:22:50 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 14 Jul 2020 10:22:49 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 14 Jul 2020 10:22:48 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 06EEMjUb020477;
-        Tue, 14 Jul 2020 10:22:46 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        "Alexandru Ardelean" <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: trigger: Staticise stub functions
-Date:   Tue, 14 Jul 2020 17:24:56 +0300
-Message-ID: <20200714142456.67054-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726187AbgGNOsl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jul 2020 10:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725803AbgGNOsl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jul 2020 10:48:41 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0417FC061755
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jul 2020 07:48:41 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id f23so17547055iof.6
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jul 2020 07:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GD6BIvUqA5Oi+YyOCn6l+FUN1jjJuNH169fVbfbKorw=;
+        b=yUOzy5EUMjvhqbWr7ZrVYyrIXLxGpaCLUABbU4iuOkQWVkI5kWR8EW71NcPvUxuIZ1
+         yv6KVrznNf3pOZ2zxgzZfhzGAq6CJ2gDZYqDqo3j9Bk0cVALNvQSwhOFsGOARQeNHT/C
+         LcwQT5zZJbnUWa9mO7mr9WTKE+quzSZvGYPk/mMQFfFhsdrqjT5bB/ma4kWT94Gg9ReO
+         sE+xEhAgwNxozTG28Z26XHB3HVOMJ1mAHkxWnDiZLGz6NW7+sjCdXAva8jkgw3lQIgaI
+         vALLud2M7dzQTvcp2ZeCjnIQZqeYsGRZ+iBIQwan4fv/awCo21DTphl8METczjZC3O/P
+         95hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GD6BIvUqA5Oi+YyOCn6l+FUN1jjJuNH169fVbfbKorw=;
+        b=UW5n0rI/2YCPb2gleMpzykoWek3ItnYMM/owMUOPsxx6CPbfhc1E59aaU8RJktfwHI
+         QbspA3iEWTjfLHX4K3P5QqN61X73t2p2MTSQzM8FcjUaZleTcNx71c66S7y8HjPXX7v7
+         G8blZ42f3KfzimuoMsmen6LzJfcbWUCGn3REuzupFMjQNh6+7yI7Z68yCMOKyO+3qoLq
+         fd79fUCiCncpdYyUZopAwVlp01G2BTFw9cUE+rUPh446G8ZYphiq/80dsT4LQ4aQnU3u
+         jAbYULXZrLbXlajTaD2UvGBwdqOu4Y6S6uM8zGDEnNYNejal+/KxhliDghnwoT8m54dx
+         sQ2A==
+X-Gm-Message-State: AOAM532S10B2MgrN7eUsOv4QGrsUsXraJCys+hBuJq2nnoKNT+oxYRml
+        MnnIgkpByO2ClXfR+fmO6ewT3/FMZq6N2SRKuhu2bg==
+X-Google-Smtp-Source: ABdhPJxIy/+FbmPkRdLd+fE4QlG6dYCLWsG7ljD32Q9xSWvwS+DinNGEDchWYGgv2nA8UdXC+iuV+myzSOcs7T9TWeA=
+X-Received: by 2002:a05:6602:2103:: with SMTP id x3mr5304596iox.130.1594738120270;
+ Tue, 14 Jul 2020 07:48:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-14_04:2020-07-14,2020-07-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 mlxlogscore=999
- malwarescore=0 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007140111
+References: <20200713145934.18243-1-brgl@bgdev.pl> <20200713145934.18243-2-brgl@bgdev.pl>
+ <20200713192901.GD3703480@smile.fi.intel.com>
+In-Reply-To: <20200713192901.GD3703480@smile.fi.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 14 Jul 2020 16:48:29 +0200
+Message-ID: <CAMRc=Me66Yi-zXVEOgHW3m_TtaEAz4QMQUJRjeS0WKayJBHC9w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] devres: provide devm_krealloc()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+On Mon, Jul 13, 2020 at 9:29 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Jul 13, 2020 at 04:59:32PM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > Implement the managed variant of krealloc(). This function works with
+> > all memory allocated by devm_kmalloc() (or devres functions using it
+> > implicitly like devm_kmemdup(), devm_kstrdup() etc.).
+> >
+> > Managed realloc'ed chunks can be manually released with devm_kfree().
+> >
+> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > ---
+> >  .../driver-api/driver-model/devres.rst        |  1 +
+> >  drivers/base/devres.c                         | 67 +++++++++++++++++++
+> >  include/linux/device.h                        |  2 +
+> >  3 files changed, 70 insertions(+)
+> >
+> > diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+> > index eaaaafc21134f..f318a5c0033c1 100644
+> > --- a/Documentation/driver-api/driver-model/devres.rst
+> > +++ b/Documentation/driver-api/driver-model/devres.rst
+> > @@ -354,6 +354,7 @@ MEM
+> >    devm_kmalloc()
+> >    devm_kmalloc_array()
+> >    devm_kmemdup()
+> > +  devm_krealloc()
+> >    devm_kstrdup()
+> >    devm_kvasprintf()
+> >    devm_kzalloc()
+> > diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+> > index ed615d3b9cf15..1775d35462300 100644
+> > --- a/drivers/base/devres.c
+> > +++ b/drivers/base/devres.c
+> > @@ -837,6 +837,73 @@ void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp)
+> >  }
+> >  EXPORT_SYMBOL_GPL(devm_kmalloc);
+> >
+> > +/**
+> > + * devm_krealloc - Resource-managed krealloc()
+> > + * @dev: Device to re-allocate memory for
+> > + * @ptr: Pointer to the memory chunk to re-allocate
+> > + * @new_size: New allocation size
+> > + * @gfp: Allocation gfp flags
+> > + *
+> > + * Managed krealloc(). Resizes the memory chunk allocated with devm_kmalloc().
+> > + * Behaves similarly to regular krealloc(): if @ptr is NULL or ZERO_SIZE_PTR,
+> > + * it's the equivalent of devm_kmalloc(). If new_size is zero, it returns
+>
+> 'it frees the previously allocated memory and returns'
+>
+> > + * ZERO_SIZE_PTR. This function doesn't change the order in which the release
+> > + * callback for the re-alloc'ed devres will be called (except when falling back
+> > + * to devm_kmalloc()
+>
+> 'or when freeing resources when new_size is zero'
+>
 
-Make sure that the trigger function stubs are all static inline. Otherwise
-we'll get linker errors due to multiple definitions of the same function.
+This is nit-picking but ok. :)
 
-Fixes f8c6f4e9a40d4: ("iio: trigger: Staticise stub functions")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
+[snip!]
 
-FWIW: we can skip the Fixes tag from my side; this has been present for
-a while.
-I just bumped into it while sync-ing the ADI tree with some upstream
-stuff.
+> > +++ b/include/linux/device.h
+> > @@ -206,6 +206,8 @@ int devres_release_group(struct device *dev, void *id);
+> >
+> >  /* managed devm_k.alloc/kfree for device drivers */
+> >  void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp) __malloc;
+>
+> > +void *devm_krealloc(struct device *dev, void *ptr, size_t size,
+> > +                 gfp_t gfp) __must_check;
+>
+> Strange indentation, also you can move __must_check to the beginning of the
+> declaration.
+>
 
- drivers/iio/iio_core_trigger.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+There's nothing wrong with this indentation, what do you mean?
+__must_check is usually put at the end of the line.
 
-diff --git a/drivers/iio/iio_core_trigger.h b/drivers/iio/iio_core_trigger.h
-index 9d1a92cc6480..374816bc3e73 100644
---- a/drivers/iio/iio_core_trigger.h
-+++ b/drivers/iio/iio_core_trigger.h
-@@ -30,7 +30,7 @@ int iio_trigger_detach_poll_func(struct iio_trigger *trig,
-  * iio_device_register_trigger_consumer() - set up an iio_dev to use triggers
-  * @indio_dev: iio_dev associated with the device that will consume the trigger
-  **/
--static int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
-+static inline int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
- {
- 	return 0;
- }
-@@ -39,7 +39,7 @@ static int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
-  * iio_device_unregister_trigger_consumer() - reverse the registration process
-  * @indio_dev: iio_dev associated with the device that consumed the trigger
-  **/
--static void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
-+static inline void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
- {
- }
- 
--- 
-2.17.1
+[snip!]
 
+Bart

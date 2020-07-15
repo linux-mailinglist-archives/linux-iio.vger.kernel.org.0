@@ -2,150 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D91220CB8
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jul 2020 14:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547EF2214F7
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jul 2020 21:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730224AbgGOMLZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jul 2020 08:11:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37178 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728801AbgGOMLZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 15 Jul 2020 08:11:25 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 205922065D;
-        Wed, 15 Jul 2020 12:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594815084;
-        bh=EXu1kOfMT0TfeYMt5SaQKguRAQVoN7/43lBZkGikHUM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vifp9O6mgxoldHa1gdB3O/MPEwFJarzgHlOglCwDg9iGGVKJFT6kaHW3mtbCPcPHj
-         ETtBNeazYeFCsIRnLJHRJkQvbfHKEQHuMI+BRs4ePqhh2ebe3lGLThb0Rdi/tdRoeY
-         pwvyzapVPMv9HuWGVMQuVNk12A8vuHsvcL2fQu6w=
-Date:   Wed, 15 Jul 2020 13:11:21 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH] iio: buffer: fix attach/detach pollfunc order
-Message-ID: <20200715131121.23f5a952@archlinux>
-In-Reply-To: <20200715041629.81435-1-alexandru.ardelean@analog.com>
-References: <20200715041629.81435-1-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726465AbgGOTRT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jul 2020 15:17:19 -0400
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:21685 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726722AbgGOTRS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jul 2020 15:17:18 -0400
+Date:   Wed, 15 Jul 2020 19:17:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1594840636;
+        bh=QhkUqE57JqFDC+H1LrZlpubSLL3MhRo3rrBT3FK8MQI=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=gSjbT5o8TgI1hWPElAl4stLc1cTFrlFDQ4ts4L0c1cRnMgv0uswkjE8ADdDgTlvzB
+         70mK5ZSj3tMX9OKWCs8w9p0MiIQmA2zlV4HRLZYwosHv1w+39GAweCcGsmKCzAJRQI
+         k1wZ39QXfszPYRhsTwKp3jrokPuxDOxOor1a9VjA=
+To:     jic23@kernel.org
+From:   Colton Lewis <colton.w.lewis@protonmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Colton Lewis <colton.w.lewis@protonmail.com>
+Reply-To: Colton Lewis <colton.w.lewis@protonmail.com>
+Subject: [PATCH] iio: Correct kernel-doc inconsistency
+Message-ID: <20200715191656.29437-1-colton.w.lewis@protonmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on mail.protonmail.ch
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Jul 2020 07:16:29 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+Silence documentation build warning by correcting kernel-doc comment
+for iio_dev struct.
 
-> The original patch was error-ed by the submitter (me) and not by the author
-> (Lars).
-> After looking through the discussion logs (on email), it seems that this
-> order was wrong for the start, even though the order implemented in the
-> drivers was correct.
-> 
-> Discussions:
-> - first RFC: https://lore.kernel.org/linux-iio/20180622135322.3459-1-alexandru.ardelean@analog.com/
-> - 2nd patch: https://lore.kernel.org/linux-iio/20181219140912.22582-1-alexandru.ardelean@analog.com/
-> - final patch-sets:
->   https://lore.kernel.org/linux-iio/20200522104632.517470-1-alexandru.ardelean@analog.com/
->   https://lore.kernel.org/linux-iio/20200525113855.178821-1-alexandru.ardelean@analog.com/
-> 
-> The last one was applied.
-> 
-> The idea is that pollfunc should be attached before calling the
-> 'indio_dev->setup_ops->postenable' hook and should be detached after
-> calling the 'indio_dev->setup_ops->predisable' hook.
-> 
-> While the drivers were updated to take this into account, the change to the
-> IIO core was somehow omitted and was made wrong.
-> 
-> This change fixes the order to the proper form.
-> 
-> Fixes f11d59d87b862: ("iio: Move attach/detach of the poll func to the core")
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Great thanks.
+./include/linux/iio/iio.h:574: warning: Function parameter or member 'read_=
+buf' not described in 'iio_dev'
+./include/linux/iio/iio.h:574: warning: Function parameter or member 'read_=
+buf_len' not described in 'iio_dev'
 
-Applied to the togreg branch of iio.git. 
+Signed-off-by: Colton Lewis <colton.w.lewis@protonmail.com>
+---
+ include/linux/iio/iio.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks,
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index a1be82e74c93..48049b344e6c 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -522,6 +522,8 @@ struct iio_buffer_setup_ops {
+  * @flags:=09=09[INTERN] file ops related flags including busy flag.
+  * @debugfs_dentry:=09[INTERN] device specific debugfs dentry.
+  * @cached_reg_addr:=09[INTERN] cached register address for debugfs reads.
++ * @read_buf:=09=09[INTERN] cached register contents for debugfs reads
++ * @read_buf_len:=09[INTERN] length of @read_buf
+  */
+ struct iio_dev {
+ =09int=09=09=09=09id;
+--=20
+2.26.2
 
-Jonathan
-
-> ---
->  drivers/iio/industrialio-buffer.c | 31 ++++++++++++++++++-------------
->  1 file changed, 18 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 2aec8b85f40d..a7d7e5143ed2 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -971,24 +971,29 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
->  			goto err_disable_buffers;
->  	}
->  
-> +	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-> +		ret = iio_trigger_attach_poll_func(indio_dev->trig,
-> +						   indio_dev->pollfunc);
-> +		if (ret)
-> +			goto err_disable_buffers;
-> +	}
-> +
->  	if (indio_dev->setup_ops->postenable) {
->  		ret = indio_dev->setup_ops->postenable(indio_dev);
->  		if (ret) {
->  			dev_dbg(&indio_dev->dev,
->  			       "Buffer not started: postenable failed (%d)\n", ret);
-> -			goto err_disable_buffers;
-> +			goto err_detach_pollfunc;
->  		}
->  	}
->  
-> -	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-> -		ret = iio_trigger_attach_poll_func(indio_dev->trig,
-> -						   indio_dev->pollfunc);
-> -		if (ret)
-> -			goto err_disable_buffers;
-> -	}
-> -
->  	return 0;
->  
-> +err_detach_pollfunc:
-> +	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-> +		iio_trigger_detach_poll_func(indio_dev->trig,
-> +					     indio_dev->pollfunc);
-> +	}
->  err_disable_buffers:
->  	list_for_each_entry_continue_reverse(buffer, &iio_dev_opaque->buffer_list,
->  					     buffer_list)
-> @@ -1014,11 +1019,6 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
->  	if (list_empty(&iio_dev_opaque->buffer_list))
->  		return 0;
->  
-> -	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-> -		iio_trigger_detach_poll_func(indio_dev->trig,
-> -					     indio_dev->pollfunc);
-> -	}
-> -
->  	/*
->  	 * If things go wrong at some step in disable we still need to continue
->  	 * to perform the other steps, otherwise we leave the device in a
-> @@ -1032,6 +1032,11 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
->  			ret = ret2;
->  	}
->  
-> +	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-> +		iio_trigger_detach_poll_func(indio_dev->trig,
-> +					     indio_dev->pollfunc);
-> +	}
-> +
->  	list_for_each_entry(buffer, &iio_dev_opaque->buffer_list, buffer_list) {
->  		ret2 = iio_buffer_disable(buffer, indio_dev);
->  		if (ret2 && !ret)
 

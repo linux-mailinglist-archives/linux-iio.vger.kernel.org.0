@@ -2,61 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 978A821F980
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jul 2020 20:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86C52220343
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jul 2020 06:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729191AbgGNSdw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jul 2020 14:33:52 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:34494 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726817AbgGNSdw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 14 Jul 2020 14:33:52 -0400
-Received: from x2f7fa33.dyn.telefonica.de ([2.247.250.51] helo=phil.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <heiko@sntech.de>)
-        id 1jvPkR-0008K2-BR; Tue, 14 Jul 2020 20:33:47 +0200
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/6] iio/adc: ingenic: Cleanups & add touchscreen mode.
-Date:   Tue, 14 Jul 2020 20:33:46 +0200
-Message-ID: <12263784.1eIgeU1MTH@phil>
-In-Reply-To: <20200709152200.10039-1-contact@artur-rojek.eu>
-References: <20200709152200.10039-1-contact@artur-rojek.eu>
+        id S1726458AbgGOEOj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jul 2020 00:14:39 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30824 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725977AbgGOEOj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jul 2020 00:14:39 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06F4ADUS011648;
+        Wed, 15 Jul 2020 00:14:24 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3279gmjwhr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Jul 2020 00:14:24 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 06F4ENvk019877
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 15 Jul 2020 00:14:23 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Wed, 15 Jul
+ 2020 00:14:22 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 15 Jul 2020 00:14:22 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 06F4EIVr029729;
+        Wed, 15 Jul 2020 00:14:19 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: buffer: fix attach/detach pollfunc order
+Date:   Wed, 15 Jul 2020 07:16:29 +0300
+Message-ID: <20200715041629.81435-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-15_02:2020-07-14,2020-07-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007150033
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Artur,
+The original patch was error-ed by the submitter (me) and not by the author
+(Lars).
+After looking through the discussion logs (on email), it seems that this
+order was wrong for the start, even though the order implemented in the
+drivers was correct.
 
-Am Donnerstag, 9. Juli 2020, 17:21:54 CEST schrieb Artur Rojek:
-> Hi all,
-> 
-> v8 of this patchset introduces some structural changes, which I deemed
-> worthy highlighting here:
-> 
->  - adc-joystick related changes have been dropped from this patchset and
->    will be upstreamed separately. Their only connection to this patchset
->    was that they used INGENIC_ADC_TOUCH_* defines in the DTS example,
->    causing trouble to Rob's scripts.
+Discussions:
+- first RFC: https://lore.kernel.org/linux-iio/20180622135322.3459-1-alexandru.ardelean@analog.com/
+- 2nd patch: https://lore.kernel.org/linux-iio/20181219140912.22582-1-alexandru.ardelean@analog.com/
+- final patch-sets:
+  https://lore.kernel.org/linux-iio/20200522104632.517470-1-alexandru.ardelean@analog.com/
+  https://lore.kernel.org/linux-iio/20200525113855.178821-1-alexandru.ardelean@analog.com/
 
-as I'm mainly eyeing your adc-joystick patch ... did you post that already
-somewhere - separately as you wrote?
+The last one was applied.
 
-Thanks
-Heiko
+The idea is that pollfunc should be attached before calling the
+'indio_dev->setup_ops->postenable' hook and should be detached after
+calling the 'indio_dev->setup_ops->predisable' hook.
 
+While the drivers were updated to take this into account, the change to the
+IIO core was somehow omitted and was made wrong.
+
+This change fixes the order to the proper form.
+
+Fixes f11d59d87b862: ("iio: Move attach/detach of the poll func to the core")
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/industrialio-buffer.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 2aec8b85f40d..a7d7e5143ed2 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -971,24 +971,29 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 			goto err_disable_buffers;
+ 	}
+ 
++	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
++		ret = iio_trigger_attach_poll_func(indio_dev->trig,
++						   indio_dev->pollfunc);
++		if (ret)
++			goto err_disable_buffers;
++	}
++
+ 	if (indio_dev->setup_ops->postenable) {
+ 		ret = indio_dev->setup_ops->postenable(indio_dev);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+ 			       "Buffer not started: postenable failed (%d)\n", ret);
+-			goto err_disable_buffers;
++			goto err_detach_pollfunc;
+ 		}
+ 	}
+ 
+-	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
+-		ret = iio_trigger_attach_poll_func(indio_dev->trig,
+-						   indio_dev->pollfunc);
+-		if (ret)
+-			goto err_disable_buffers;
+-	}
+-
+ 	return 0;
+ 
++err_detach_pollfunc:
++	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
++		iio_trigger_detach_poll_func(indio_dev->trig,
++					     indio_dev->pollfunc);
++	}
+ err_disable_buffers:
+ 	list_for_each_entry_continue_reverse(buffer, &iio_dev_opaque->buffer_list,
+ 					     buffer_list)
+@@ -1014,11 +1019,6 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+ 	if (list_empty(&iio_dev_opaque->buffer_list))
+ 		return 0;
+ 
+-	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
+-		iio_trigger_detach_poll_func(indio_dev->trig,
+-					     indio_dev->pollfunc);
+-	}
+-
+ 	/*
+ 	 * If things go wrong at some step in disable we still need to continue
+ 	 * to perform the other steps, otherwise we leave the device in a
+@@ -1032,6 +1032,11 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+ 			ret = ret2;
+ 	}
+ 
++	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
++		iio_trigger_detach_poll_func(indio_dev->trig,
++					     indio_dev->pollfunc);
++	}
++
+ 	list_for_each_entry(buffer, &iio_dev_opaque->buffer_list, buffer_list) {
+ 		ret2 = iio_buffer_disable(buffer, indio_dev);
+ 		if (ret2 && !ret)
+-- 
+2.17.1
 

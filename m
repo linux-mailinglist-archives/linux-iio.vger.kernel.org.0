@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91743222498
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jul 2020 16:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315E4222495
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jul 2020 16:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729216AbgGPOAH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jul 2020 10:00:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
+        id S1729202AbgGPOAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jul 2020 10:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729147AbgGPN77 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jul 2020 09:59:59 -0400
+        with ESMTP id S1729197AbgGPOAB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jul 2020 10:00:01 -0400
 Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFCFC08C5DB
-        for <linux-iio@vger.kernel.org>; Thu, 16 Jul 2020 06:59:59 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id k6so7203536wrn.3
-        for <linux-iio@vger.kernel.org>; Thu, 16 Jul 2020 06:59:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A718DC08C5C0
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jul 2020 07:00:00 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id z13so7180970wrw.5
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jul 2020 07:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Fxti/ROfl2G3M6gtYz5bbB24uIJ/yIrzz6aDgoU+YhY=;
-        b=sPXdRyUrAhHuTpuewy5VfCaU8QEjM1NaNAfcP84fpBcu50J3lpb1HY52y8zutzFjFN
-         YmTSRpW8jZX5AGVMjqgoEerb2+UU3NqVNXsAsjWipg2eVPj+HGNB1gHrBV4Ec0zkHEIr
-         Ak7tX6sy9RzXsd9VjDh+j+5xKbEU59b6nwSPNF4E44nUFe+voE+UfA0Vkn/sdH4XUfta
-         N8I0u5FcCE9ARjwwDsGwhdrNgdnXKrhIfxyff6Wu/wv9WqOsfspMeko4vS3BXmUCCMkc
-         +V/AWxJ7GsxvErjrTV0s8qlTXYu1ocvWMkvzUzOO3QRbTECQyOc3eizmnKqLv7m1eiBh
-         zprw==
+        bh=yhAlYdV5Ne68CM+OfBERNX54x9vjQJ2ipPF8jNzEsTE=;
+        b=YFHjdhb3nz8ipEzJ5Z806+yAFjm+JnCtifCj6oH7xDw7KtUOJ803J24ZjjOOOhC5SY
+         If9NQFbI1uNzn53+X4WA3nqiVRBvRaKaoXJM9NtJWkvQn6GgpyaJHFkcYmUdivz4Tnak
+         9LrnSDlGMHCPbNeUqzcR7y1eiZCJI+3+i3g5AesZsCYEfEPIAHZ9Sv80NNIflvXhbZFF
+         trvIALQsI4z7xNXWhb5jZsiTVhHjN8z6ugz7+X67NnBZ9XEH0+HKETaP+WHDLLkgd96L
+         fUqTlXxcQ0wjCzXjsdNA8mYUHYEPIJRbgB6GQfu3GsNkpy1pZcuZXu/pEzf7o+2i5du9
+         xBJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Fxti/ROfl2G3M6gtYz5bbB24uIJ/yIrzz6aDgoU+YhY=;
-        b=XBoORXRA0dIhAKxTBnROcToEY+v1n4VT7omaBjv984RgBl9qjcoJPngDXMGeTK934E
-         5SRHAn5lAkqxfBqrZbBA5PP+0UyOjtOb6IqY6RbqkMGuAxicOe4RXg+GQ6qjTABRhUip
-         A4QJiSAAc1khXmgsB/qu9+sDN/sqzZ3dcvG0wGWm1eoVFTph8TIEGgJulzUhqGcr5k/o
-         rHsRNWhu2v3vx1usrr18kbLSuabVvrPOpff9z6mbTmTJv7hQ19doQE2iHPqmAlf9EbfY
-         LzimAvA92Va/d/uq+4cLv9lVJrlzISVTCTorMFZnea4krGB/gxYen4o3Fi+qNtf3agXd
-         1DZg==
-X-Gm-Message-State: AOAM5311WSLO51+X0DZXUj0muscYKn39WS9adVxkoL3hK5Iack16iWoz
-        cE0cesCU0C9Z1Fa0PSGS1BR27w==
-X-Google-Smtp-Source: ABdhPJzM/jUx9vNqBhmh4/2ZUSjp3tre1unOwqfSVQ5aaqX4Xt96FB0tgeJaU8jAp7Fs4XGKDQQLWw==
-X-Received: by 2002:adf:f452:: with SMTP id f18mr5192867wrp.78.1594907998275;
-        Thu, 16 Jul 2020 06:59:58 -0700 (PDT)
+        bh=yhAlYdV5Ne68CM+OfBERNX54x9vjQJ2ipPF8jNzEsTE=;
+        b=sfzdVnVPexnyaaFll/VhgywCFrLNffLZ+y2Cb1F0Q/B8vNCPU+C3V2bjFrl9fxRoqG
+         zpgqcf10l4GMdoBejvspsYuabVjbiqadtP1ayWJJ4cDm6OupYN0s3u5XWdO7+Oa33jeQ
+         m7ES8QmitgaEF2wVN5kshdwM2MKsJdr8WTQX8E8gsOuhOuJdANVXiYoEirnbc9EmS8w/
+         A5RYJ8lxmBt9vlzLsXVHT3CeOJXHd+G4LV/VM+ILtFZWR89yGfx4J7AF9/MkI5cZVUtB
+         0iQBWxIHbTqmhT5iqdohQeVG+i8EVTtzGNKfBiWUJKlWZo11HN3qWj3DlNzynLe0dLlu
+         vAaQ==
+X-Gm-Message-State: AOAM5316N/WoyzjIRQCOG40YVKXuLV134OfvNfZGsuxrSiQgBbLiE04B
+        V4DIKTSiiqscQJKPKdUVc05emg==
+X-Google-Smtp-Source: ABdhPJwCAMel7xrEfrRY7L+G7+cweQnfelaWTowsT3p/jtlurNSyRj2+Bif0CrPV/qz9AQShAUeY8Q==
+X-Received: by 2002:a5d:6412:: with SMTP id z18mr5144810wru.310.1594907999384;
+        Thu, 16 Jul 2020 06:59:59 -0700 (PDT)
 Received: from localhost.localdomain ([2.31.163.61])
-        by smtp.gmail.com with ESMTPSA id x18sm9351001wrq.13.2020.07.16.06.59.57
+        by smtp.gmail.com with ESMTPSA id x18sm9351001wrq.13.2020.07.16.06.59.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2020 06:59:57 -0700 (PDT)
+        Thu, 16 Jul 2020 06:59:58 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
         Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH 21/30] iio: dac: ad5449: Fix kerneldoc attribute formatting for 'lock'
-Date:   Thu, 16 Jul 2020 14:59:19 +0100
-Message-Id: <20200716135928.1456727-22-lee.jones@linaro.org>
+Subject: [PATCH 22/30] iio: dac: ad5755: Fix kerneldoc attribute formatting for 'lock'
+Date:   Thu, 16 Jul 2020 14:59:20 +0100
+Message-Id: <20200716135928.1456727-23-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200716135928.1456727-1-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
@@ -70,27 +70,27 @@ Kerneldoc expects attributes/parameters to be in '@*.: ' format.
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/iio/dac/ad5449.c:75: warning: Function parameter or member 'lock' not described in 'ad5449'
+ drivers/iio/dac/ad5755.c:105: warning: Function parameter or member 'lock' not described in 'ad5755_state'
 
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/iio/dac/ad5449.c | 2 +-
+ drivers/iio/dac/ad5755.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/dac/ad5449.c b/drivers/iio/dac/ad5449.c
-index d739b10e52362..e9530835479af 100644
---- a/drivers/iio/dac/ad5449.c
-+++ b/drivers/iio/dac/ad5449.c
-@@ -56,7 +56,7 @@ struct ad5449_chip_info {
-  * @has_sdo:		whether the SDO line is connected
-  * @dac_cache:		Cache for the DAC values
-  * @data:		spi transfer buffers
-- * @lock		lock to protect the data buffer during SPI ops
-+ * @lock:		lock to protect the data buffer during SPI ops
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index 7723bd313fc6e..bee4ed0ce91a8 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -82,7 +82,7 @@ struct ad5755_chip_info {
+  * @pwr_down:	bitmask which contains  hether a channel is powered down or not
+  * @ctrl:	software shadow of the channel ctrl registers
+  * @channels:	iio channel spec for the device
+- * @lock	lock to protect the data buffer during SPI ops
++ * @lock:	lock to protect the data buffer during SPI ops
+  * @data:	spi transfer buffers
   */
- struct ad5449 {
- 	struct spi_device		*spi;
+ struct ad5755_state {
 -- 
 2.25.1
 

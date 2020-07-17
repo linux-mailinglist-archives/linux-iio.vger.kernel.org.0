@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE132224112
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jul 2020 18:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398DD2240ED
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jul 2020 18:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgGQQ51 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jul 2020 12:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38578 "EHLO
+        id S1727786AbgGQQ4U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jul 2020 12:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727826AbgGQQ4S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jul 2020 12:56:18 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1391DC0619D4
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:18 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id o2so18257630wmh.2
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:18 -0700 (PDT)
+        with ESMTP id S1727848AbgGQQ4T (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jul 2020 12:56:19 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55522C0619D7
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:19 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id w3so18194037wmi.4
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Rc1gRiFLnICYkzZdrxG6wdBxb95IGqTfJLICTNXyrKU=;
-        b=gaLDHhRpwR3ip7ByImygRyE6T8KMhCeOwINKf9nI53AuRbCKThVlZPnVDsTMqvNHJr
-         6eHtvKSEeHZjAueJq6jCt0C+F6/cIB+tiCdInlV3ZF9xmO3wWYA0yy5/VwsJOPWe2/8q
-         +VfSlqQz/dug0MDcHgCo/egx2F0DXeTGm0/phPlQlUgla81RscMXC/yUh0b7+1im/Y4A
-         7LV1NJT/INVpyBK42/jJ4xS8iUBaMYfzX+LyFdTfCdoFBM/1K26iPwbzAFVnFpJin3l9
-         xYMHogy8enMH8Ek2t1lbTVQxdDlwuYwKO9RREuiWNY0pTU7erHOC062a7K11ocyst6xX
-         3/cw==
+        bh=l9KL9HYXYgn6Rpl6BIijuJhUjr4NXdIWWmHfn/aX7y4=;
+        b=uGY7fLW6qHw0et20UC3kHdd/8MYDxlSOWeQea54xURu68895NqIfNpQmb7zeDx2jal
+         BmiDZWuiJCPY/VZmfubpUqLVnO0T3Yb+tul7GQODb1HKyfDZYhhVgDQtoUOTznE8TWSc
+         eZggPH8MYF1UZ14ZnuOAa7P6PU/qpUjLaXR9oxCQDwwx6AvPeadxxoGS7680CWMDBcIV
+         9iQoaCYJy918i0CcOWNFVJvBmnFRBZerJZOffW7GOLXYRm/kAzI6ECQ9+TcVqmt43rRY
+         58jPPxGOl6Zn8kf63cwptde45XH8vb5uxq+thHdJFhAi495FjquGtGjXoCZgiaB0z9K9
+         o3/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Rc1gRiFLnICYkzZdrxG6wdBxb95IGqTfJLICTNXyrKU=;
-        b=MUBNFs8eL9kD8VLwKrJkMjys15LmDjuLPKbqiZZ0SUwuaC4kDkkVGOx1P6sL/e8UmD
-         6qg6EEpnynQcrO6I2s/TFR5pTIY7wKRG202k8yGm3RPtiKE7bIB94U4ET3ny1FAAdkab
-         GEC13SrVsP+WF0bTD1tPz4G8jKXcs5XmegHwDwRvhsBNfcIqC9bbdWZJ7o5ZUPyeOXjK
-         YjG6PooYuzCiA3B4Bk5DeXKDmEOTInbT2sbV1ECVk0g0LekY9JSfYc2I8jldMBeALw01
-         BT4kPZPtPE+XH6O49lbcGx5czPTN+XOUzPNVT27CWcXPiw355KN8+rUmnJSbkkuzwLfo
-         +YEg==
-X-Gm-Message-State: AOAM532MD/eADEq6BYKoEMYayEHoJzsTcEumRyDBEcfuMhiIh4Gbm8Db
-        S/OihlQnB2r9LIJsnma5CAUiOg==
-X-Google-Smtp-Source: ABdhPJw/s3gzHYxgswWOyt+xbyCAaW5RvtiZ/PHKOLabQjqpNF/+Uib5bhmOWwZTw4eLFK5k75RoBQ==
-X-Received: by 2002:a7b:c313:: with SMTP id k19mr10345994wmj.67.1595004976743;
-        Fri, 17 Jul 2020 09:56:16 -0700 (PDT)
+        bh=l9KL9HYXYgn6Rpl6BIijuJhUjr4NXdIWWmHfn/aX7y4=;
+        b=o655yx7zXHd6cmhu03pXcQ2CF45xrLCYUB956glHMPTpoai/djsxO4Jzt7t7wIN2iQ
+         mxmKQ0fsZnAB6O4ZWzK2WMZKnFOMP4nXzCjooz8fxxNfkBWnxYwVy9nP1yqAbj5nENvw
+         0NbJ7dyIcV1oIkJ9M3C4hA0E0OmugRchiqsfvkyg+ZQnURh4zeX+y1WJNBrKDgq5MQB9
+         jsaqyP+S2iNlSY4T06nj5JWPr4vhCHjaIoSUEvd7YuPqhSa/LP6Snp2k/YbJNiqGcLlC
+         w3M3AR6K7w0AtFJVAvsLgNpdTf5mylrv0U5ljb/h0zb39WOSoANm/U1D/d3df4EqiLeg
+         Gbgw==
+X-Gm-Message-State: AOAM532vM5YyQpDFcFoPepjqm8G+d5OaJLz/D3hgSQ9XCsFseQaI5dzJ
+        PZIb75/IkRB4F8eZ69yDTkrmKw==
+X-Google-Smtp-Source: ABdhPJwolaFtALJ8b06cyO8m7AqyQP6KwwYk6G75p3joMVOgZdxFOGPzU5mARmnYEYjb71TVU+u7tQ==
+X-Received: by 2002:a1c:2e57:: with SMTP id u84mr10870067wmu.52.1595004978069;
+        Fri, 17 Jul 2020 09:56:18 -0700 (PDT)
 Received: from localhost.localdomain ([2.27.167.94])
-        by smtp.gmail.com with ESMTPSA id k4sm14941516wrp.86.2020.07.17.09.56.15
+        by smtp.gmail.com with ESMTPSA id k4sm14941516wrp.86.2020.07.17.09.56.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 09:56:16 -0700 (PDT)
+        Fri, 17 Jul 2020 09:56:17 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 16/30] iio: accel: sca3000: Fix 2 misspellings and demote nonconforming kerneldocs
-Date:   Fri, 17 Jul 2020 17:55:24 +0100
-Message-Id: <20200717165538.3275050-17-lee.jones@linaro.org>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH 17/30] iio: gyro: adxrs450: Change ordering of compiler attribute macro
+Date:   Fri, 17 Jul 2020 17:55:25 +0100
+Message-Id: <20200717165538.3275050-18-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200717165538.3275050-1-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
@@ -66,68 +66,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Kerneldoc gets confused if the variable does not follow the
+type/attribute definitions.
+
 Fixes the following W=1 kernel build warning(s):
 
- drivers/iio/accel/sca3000.c:210: warning: Function parameter or member 'mot_det_mult_xz' not described in 'sca3000_chip_info'
- drivers/iio/accel/sca3000.c:210: warning: Function parameter or member 'mot_det_mult_y' not described in 'sca3000_chip_info'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'indio_dev' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'chan' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'type' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'dir' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'info' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'val' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:871: warning: Function parameter or member 'val2' not described in 'sca3000_read_event_value'
- drivers/iio/accel/sca3000.c:1110: warning: Function parameter or member 'indio_dev' not described in 'sca3000_read_event_config'
- drivers/iio/accel/sca3000.c:1110: warning: Function parameter or member 'chan' not described in 'sca3000_read_event_config'
- drivers/iio/accel/sca3000.c:1110: warning: Function parameter or member 'type' not described in 'sca3000_read_event_config'
- drivers/iio/accel/sca3000.c:1110: warning: Function parameter or member 'dir' not described in 'sca3000_read_event_config'
+ drivers/iio/gyro/adxrs450.c:79: warning: Function parameter or member '____cacheline_aligned' not described in 'adxrs450_state'
 
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/iio/accel/sca3000.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/gyro/adxrs450.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-index 6e429072e44a4..3952187166ffa 100644
---- a/drivers/iio/accel/sca3000.c
-+++ b/drivers/iio/accel/sca3000.c
-@@ -186,9 +186,9 @@ struct sca3000_state {
-  * @option_mode_2_freq:		option mode 2 sampling frequency
-  * @option_mode_2_3db_freq:	3db cutoff frequency of the low pass filter for
-  * the second option mode.
-- * @mod_det_mult_xz:		Bit wise multipliers to calculate the threshold
-+ * @mot_det_mult_xz:		Bit wise multipliers to calculate the threshold
-  * for motion detection in the x and z axis.
-- * @mod_det_mult_y:		Bit wise multipliers to calculate the threshold
-+ * @mot_det_mult_y:		Bit wise multipliers to calculate the threshold
-  * for motion detection in the y axis.
-  *
-  * This structure is used to hold information about the functionality of a given
-@@ -859,9 +859,9 @@ static ssize_t sca3000_read_av_freq(struct device *dev,
-  */
- static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(sca3000_read_av_freq);
+diff --git a/drivers/iio/gyro/adxrs450.c b/drivers/iio/gyro/adxrs450.c
+index b00c0eb442493..e00b97e30cf9d 100644
+--- a/drivers/iio/gyro/adxrs450.c
++++ b/drivers/iio/gyro/adxrs450.c
+@@ -73,7 +73,7 @@ enum {
+ struct adxrs450_state {
+ 	struct spi_device	*us;
+ 	struct mutex		buf_lock;
+-	__be32			tx ____cacheline_aligned;
++	__be32 ____cacheline_aligned tx;
+ 	__be32			rx;
  
--/**
-+/*
-  * sca3000_read_event_value() - query of a threshold or period
-- **/
-+ */
- static int sca3000_read_event_value(struct iio_dev *indio_dev,
- 				    const struct iio_chan_spec *chan,
- 				    enum iio_event_type type,
-@@ -1100,9 +1100,9 @@ static irqreturn_t sca3000_event_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
--/**
-+/*
-  * sca3000_read_event_config() what events are enabled
-- **/
-+ */
- static int sca3000_read_event_config(struct iio_dev *indio_dev,
- 				     const struct iio_chan_spec *chan,
- 				     enum iio_event_type type,
+ };
 -- 
 2.25.1
 

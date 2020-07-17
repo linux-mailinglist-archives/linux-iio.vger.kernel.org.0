@@ -2,106 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22494224125
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jul 2020 18:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA152224124
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jul 2020 18:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbgGQQ6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jul 2020 12:58:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38488 "EHLO
+        id S1727010AbgGQQ4E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jul 2020 12:56:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726944AbgGQQ4D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jul 2020 12:56:03 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8320C0619D2
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:02 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id o11so11886720wrv.9
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:02 -0700 (PDT)
+        with ESMTP id S1726996AbgGQQ4E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jul 2020 12:56:04 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD07C0619D2
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:03 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id q15so15965817wmj.2
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jul 2020 09:56:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lIupI+tKAOz6AMhKMQ/MUZEWjIHVvy3yhlR142kJJzQ=;
-        b=C7HneBkEgxiePq6cP+uc0msARkXKZ68uMEWX9XvHJk51XE/BiAVtq27WtsiRaWpZOl
-         blIPdgePFo/nZeZ1gGvbiyp6TXMBSerIKtneJiwHtDGhX3/19NJd9qNmpRmEAOcUInjE
-         Joe3OOs7tX+fan+SF++O2aDxnMg6VJQNfwqM/hTuZ4VIQcR8NDL0ukAmnVHHLyhL6cjA
-         BiPU9T/6ho43X4D/ukf7LCo72Ha6TdYmz7wne2DouxCak7hk442qzdOgHuEiGgKAx4Of
-         JA16zWN7T2bMrYEvs/D+rqAHHbROXFn23jNHTHTADeK4nBcwhUjM5TBGRGvGVLOWMKZU
-         mKmg==
+        bh=fAAjM1mVIkO+nJSIb50glO5h9HOq0tsEwp52kRso+4M=;
+        b=diGqESAPD2yg592c8LXDZUadk/s4W30i0sy1gOfHfVL8rkg/bSc9SLulra7mzvbh6q
+         tuEL6z3Ah/YSeL14hltOCwWppAmPt9ShSHMKVUYb1l9qxcXUKIq3zTM4yzvIsbo3iu4q
+         Ykl7tRihGTqXOJZh9Cs0qp94pb/2FYwjxDujVZoKALn49L4H3l4V5PCd5jLqVtsS7beD
+         22JzY3Ro0UmLJsBfPgiEIAOxKd3eSn0tZAWAokfmdtwS1UnVx4x70bW1Hh+KxeUgefEx
+         u0NqUPGOR33Su4RnGuvF9P8VjlNBWNlC/ezdUIbKIArdrdAqQTZGQ9DjBwz8xh5LjUs3
+         uwFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lIupI+tKAOz6AMhKMQ/MUZEWjIHVvy3yhlR142kJJzQ=;
-        b=Jj0O7UZyUZJLvbjSKtu55PZETIMRVrBzTKD1FIL1jvjGcqFlv4TjUHp2/Op025gnBE
-         pxTNL7eiVcN7UMjR99zB9ntGUqzrd+/XxfO3HgepyF+IeoEMnvrrVSYMXmZNu/JnLv5L
-         FV842GKarZkm0NkwpNSWByr+rN5LMOzuIJo5HiCYbPHYGl9qNTmXKwloWKy/PxK1J7QA
-         I3rm3YAbmJqO1ibwKZy/Q10sb33lGavicb0TPIrSqrzBWTZEFZW5vhgdZyGTgxK6C5Ur
-         q/skeT5QL7DdNTfAmRrOOM7pOsKXoyCrXcHCFQBpX+8Ckk+aqj/Uffs2C2y+gprN8AZa
-         5NMg==
-X-Gm-Message-State: AOAM530RPvogeAHE/lLHPHbmiNKqfeAJ0VNOEz91MLLtOgAoHgZsi5iN
-        logeYXLHJ2VK2QLiViIAi4ryww==
-X-Google-Smtp-Source: ABdhPJzK3GbkD2rzZrYM3yoqQYRKGWTe1avEC7a2sRHmTBdmjWCN1HXe7dJK1gVWJjCwVAE7KRFK0Q==
-X-Received: by 2002:a5d:69c5:: with SMTP id s5mr11229093wrw.197.1595004961514;
-        Fri, 17 Jul 2020 09:56:01 -0700 (PDT)
+        bh=fAAjM1mVIkO+nJSIb50glO5h9HOq0tsEwp52kRso+4M=;
+        b=gjE1/m8MqI0Tp4EG6fwENUAWEoo9QReHXR8qUDtfGeoFEuSIDa1KjzPn0Jmf8vUxpz
+         UMddv/3lKfHmaos9rbP9ncdKBEitD4P6yADCWexY6ZjzawvGuJsT+11xE6CTDBd+EebU
+         6URGhDQjDTeL4wkoSwQ8HHdts5ReXISaaHhqpHJp2LCc9o74MuwRuXIQcF1typts+TZu
+         JwhWFlOWsbw7e9WCzmUDHw3ftzClSdhRn+Kzhgel/IRCSQ5ud2afAjJQy8Kb88iwj/qk
+         9Tm/sMwmzZg0/yPjsxQ0liv5RHaHjJDva1bNf94jPTBBWv+T+8TzHMqSAZvWOn4uTS5I
+         dHcQ==
+X-Gm-Message-State: AOAM533e3NTX3KMMlr7pR01LeZCMCU9fEE/Z2CFv3bB70a2WHLWa+Oa2
+        WcexuOq4JC5XhL8gq+un28K9Qw==
+X-Google-Smtp-Source: ABdhPJxBjePr/D/nJshvCMDW+pFxohRxj6BB8ic0aMowVQ5331Lh4fFUBQZq7R8GCcKKIDDyto7/3g==
+X-Received: by 2002:a05:600c:2154:: with SMTP id v20mr10975426wml.185.1595004962476;
+        Fri, 17 Jul 2020 09:56:02 -0700 (PDT)
 Received: from localhost.localdomain ([2.27.167.94])
-        by smtp.gmail.com with ESMTPSA id k4sm14941516wrp.86.2020.07.17.09.56.00
+        by smtp.gmail.com with ESMTPSA id k4sm14941516wrp.86.2020.07.17.09.56.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 09:56:01 -0700 (PDT)
+        Fri, 17 Jul 2020 09:56:02 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        J Keerthy <j-keerthy@ti.com>,
-        Mikko Ylinen <mikko.k.ylinen@nokia.com>,
-        Amit Kucheria <amit.kucheria@canonical.com>
-Subject: [PATCH 03/30] iio: adc: twl4030-madc: Fix misnamed struct attribute
-Date:   Fri, 17 Jul 2020 17:55:11 +0100
-Message-Id: <20200717165538.3275050-4-lee.jones@linaro.org>
+        Josef Gajdusek <atx@atx.name>
+Subject: [PATCH 04/30] iio: magnetometer: hmc5843: 'hmc5843_pm_ops' is unused in 1 of 3 files including hmc5843_core.h
+Date:   Fri, 17 Jul 2020 17:55:12 +0100
+Message-Id: <20200717165538.3275050-5-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200717165538.3275050-1-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+We know that it's okay for 'hmc5843_pm_ops' to be unused here.
+
 Fixes the following W=1 kernel build warning(s):
 
- drivers/iio/adc/twl4030-madc.c:170: warning: Function parameter or member 'usb3v1' not described in 'twl4030_madc_data'
+ In file included from include/linux/device.h:25,
+ from include/linux/iio/iio.h:10,
+ from drivers/iio/magnetometer/hmc5843_core.c:16:
+ drivers/iio/magnetometer/hmc5843.h:55:26: warning: ‘hmc5843_pm_ops’ defined but not used [-Wunused-const-variable=]
+ 55 | static SIMPLE_DEV_PM_OPS(hmc5843_pm_ops,
+ | ^~~~~~~~~~~~~~
+ include/linux/pm.h:354:25: note: in definition of macro ‘SIMPLE_DEV_PM_OPS’
+ 354 | const struct dev_pm_ops name = { | ^~~~
 
-Cc: J Keerthy <j-keerthy@ti.com>
-Cc: Mikko Ylinen <mikko.k.ylinen@nokia.com>
-Cc: Amit Kucheria <amit.kucheria@canonical.com>
+Cc: Josef Gajdusek <atx@atx.name>
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/iio/adc/twl4030-madc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/magnetometer/hmc5843.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
-index 826d8295e9b3c..882a678b44690 100644
---- a/drivers/iio/adc/twl4030-madc.c
-+++ b/drivers/iio/adc/twl4030-madc.c
-@@ -153,7 +153,7 @@ enum sample_type {
-  * struct twl4030_madc_data - a container for madc info
-  * @dev:		Pointer to device structure for madc
-  * @lock:		Mutex protecting this data structure
-- * @regulator:		Pointer to bias regulator for madc
-+ * @usb3v1:		Pointer to bias regulator for madc
-  * @requests:		Array of request struct corresponding to SW1, SW2 and RT
-  * @use_second_irq:	IRQ selection (main or co-processor)
-  * @imr:		Interrupt mask register of MADC
-@@ -161,7 +161,7 @@ enum sample_type {
-  */
- struct twl4030_madc_data {
- 	struct device *dev;
--	struct mutex lock;	/* mutex protecting this data structure */
-+	struct mutex lock;
- 	struct regulator *usb3v1;
- 	struct twl4030_madc_request requests[TWL4030_MADC_NUM_METHODS];
- 	bool use_second_irq;
+diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
+index b0dee87a8b20e..3f6c0b6629415 100644
+--- a/drivers/iio/magnetometer/hmc5843.h
++++ b/drivers/iio/magnetometer/hmc5843.h
+@@ -52,9 +52,9 @@ int hmc5843_common_suspend(struct device *dev);
+ int hmc5843_common_resume(struct device *dev);
+ 
+ #ifdef CONFIG_PM_SLEEP
+-static SIMPLE_DEV_PM_OPS(hmc5843_pm_ops,
+-		hmc5843_common_suspend,
+-		hmc5843_common_resume);
++static __maybe_unused SIMPLE_DEV_PM_OPS(hmc5843_pm_ops,
++					hmc5843_common_suspend,
++					hmc5843_common_resume);
+ #define HMC5843_PM_OPS (&hmc5843_pm_ops)
+ #else
+ #define HMC5843_PM_OPS NULL
 -- 
 2.25.1
 

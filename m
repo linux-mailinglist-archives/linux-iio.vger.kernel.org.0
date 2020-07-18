@@ -2,42 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA87224CA7
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22406224CA9
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728145AbgGRPtC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:49:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47570 "EHLO mail.kernel.org"
+        id S1726648AbgGRPtt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 11:49:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47914 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728067AbgGRPtC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:49:02 -0400
+        id S1726411AbgGRPts (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 11:49:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AEF5F2073A;
-        Sat, 18 Jul 2020 15:48:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D4532073A;
+        Sat, 18 Jul 2020 15:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595087341;
-        bh=pEl8KODEFgHV8GmG/W/YsfjCB8esG6jeHPpKHcUUqrA=;
+        s=default; t=1595087388;
+        bh=W96QVLmUrwdDzuZ+3SqRNc7HL9yRRN8t8XTKde8uQLc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GnBiHFDFcfVxNT51t8vmcmt4Ot1tREesgzEOKvj5LAcWaR0ZArOWiAwikfmtM4NhM
-         sOc/J2XTeLRhI7znH9hiX8MtQfSuWjVwCWj7WeS1dvBMTVVwZtluoB+0wyRYmIYVbc
-         QV5j9Yyyg6tEJx6WTwTxZ6L9sQtehsxdMLAawX94=
-Date:   Sat, 18 Jul 2020 16:48:56 +0100
+        b=uohpt1uhFsW+fNn3Q8Uh/yzAqAIKTcQEXePbclsTTX6HTur/MlP1kBu9fgQ6tM0FB
+         15zMrT77AO3j6iaVSVkyLc6zoFyfFadHZgS2et0Q2j8nHDOEwHf8zsjD7F46EfGbVq
+         mkaE0heUfzrczJjoi1VvszAH6TqWDV0i0zZbBgJ4=
+Date:   Sat, 18 Jul 2020 16:49:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH 13/30] iio: adc: at91_adc: Fix 'bad line' warning
-Message-ID: <20200718164856.78c2a155@archlinux>
-In-Reply-To: <20200717165538.3275050-14-lee.jones@linaro.org>
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH 14/30] iio: adc: at91-sama5d2_adc: Struct kerneldoc
+ titles need to start with 'struct '
+Message-ID: <20200718164943.79305dff@archlinux>
+In-Reply-To: <20200717165538.3275050-15-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
-        <20200717165538.3275050-14-lee.jones@linaro.org>
+        <20200717165538.3275050-15-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,37 +48,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Jul 2020 17:55:21 +0100
+On Fri, 17 Jul 2020 17:55:22 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
-> All lines should start with ' *'.
-> 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/adc/at91_adc.c:160: warning: bad line:                         (Interruptions registers mostly)
+>  drivers/iio/adc/at91-sama5d2_adc.c:360: warning: cannot understand function prototype: 'struct at91_adc_dma '
+>  drivers/iio/adc/at91-sama5d2_adc.c:379: warning: cannot understand function prototype: 'struct at91_adc_touch '
 > 
+> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+> Cc: Eugen Hristev <eugen.hristev@microchip.com>
 > Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
 > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-> Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Applied
+Applied.
+
+Thanks,
+
+Jonathan
 
 > ---
->  drivers/iio/adc/at91_adc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/adc/at91-sama5d2_adc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-> index 0368b6dc6d60a..c5ea75cd88fa8 100644
-> --- a/drivers/iio/adc/at91_adc.c
-> +++ b/drivers/iio/adc/at91_adc.c
-> @@ -157,7 +157,7 @@
->   * struct at91_adc_reg_desc - Various informations relative to registers
->   * @channel_base:	Base offset for the channel data registers
->   * @drdy_mask:		Mask of the DRDY field in the relevant registers
-> -			(Interruptions registers mostly)
-> + *			(Interruptions registers mostly)
->   * @status_register:	Offset of the Interrupt Status Register
->   * @trigger_register:	Offset of the Trigger setup register
->   * @mr_prescal_mask:	Mask of the PRESCAL field in the adc MR register
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index 9abbbdcc74200..c7fe749419b28 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -347,7 +347,7 @@ struct at91_adc_trigger {
+>  };
+>  
+>  /**
+> - * at91_adc_dma - at91-sama5d2 dma information struct
+> + * struct at91_adc_dma - at91-sama5d2 dma information struct
+>   * @dma_chan:		the dma channel acquired
+>   * @rx_buf:		dma coherent allocated area
+>   * @rx_dma_buf:		dma handler for the buffer
+> @@ -369,7 +369,7 @@ struct at91_adc_dma {
+>  };
+>  
+>  /**
+> - * at91_adc_touch - at91-sama5d2 touchscreen information struct
+> + * struct at91_adc_touch - at91-sama5d2 touchscreen information struct
+>   * @sample_period_val:		the value for periodic trigger interval
+>   * @touching:			is the pen touching the screen or not
+>   * @x_pos:			temporary placeholder for pressure computation
 

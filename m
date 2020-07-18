@@ -2,34 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6763224CFE
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C798A224D00
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726604AbgGRQ0J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 12:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56820 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726346AbgGRQ0J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jul 2020 12:26:09 -0400
-Received: from saturn.retrosnub.co.uk (saturn.retrosnub.co.uk [IPv6:2a00:1098:86::1:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A899C0619D2
-        for <linux-iio@vger.kernel.org>; Sat, 18 Jul 2020 09:26:09 -0700 (PDT)
+        id S1727825AbgGRQ1k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 12:27:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726346AbgGRQ1k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 12:27:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id C67F99E0030;
-        Sat, 18 Jul 2020 17:26:05 +0100 (BST)
-Date:   Sat, 18 Jul 2020 17:26:04 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Tachici, Alexandru" <Alexandru.Tachici@analog.com>
-Subject: Re: [PATCH v4 2/2] iio: adc: ad7192: move ad7192_of_match table
- closer to the end of the file
-Message-ID: <20200718172604.4257a4f8@archlinux>
-In-Reply-To: <191e9880ea3dd0e127b102f006c208f31d57c421.camel@analog.com>
-References: <20200415055804.17971-1-alexandru.ardelean@analog.com>
-        <20200415055804.17971-2-alexandru.ardelean@analog.com>
-        <191e9880ea3dd0e127b102f006c208f31d57c421.camel@analog.com>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3EDA12080D;
+        Sat, 18 Jul 2020 16:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595089660;
+        bh=6IXEM/Ew6XODAtUiOIC0Y7ZZ+5YYWMBMsAf6AGNt6NU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=wuX/JIvwzWATp3/voXlQAF0+mBooQnUcPhpOgxqIhn6ZTIrV/09NGF/5KDgJCyfsH
+         fxTnbPBalD5IKW2I3pECosi5CFpOFnI/gp0PjZjsBNy/0AhfCcyWJXhuOpdnZMjzS3
+         8lmC0elV56CUdA9eumnc1RDTfMGAg7iFK9CpzgRk=
+Date:   Sat, 18 Jul 2020 17:27:36 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: accel: kionix,kxsd9 yaml conversion.
+Message-ID: <20200718172736.3c92f8f0@archlinux>
+In-Reply-To: <20200715202514.GA759901@bogus>
+References: <20200628203205.49915-1-jic23@kernel.org>
+        <20200715202514.GA759901@bogus>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,76 +43,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Jul 2020 16:11:39 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Wed, 15 Jul 2020 14:25:14 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On Wed, 2020-04-15 at 08:58 +0300, Alexandru Ardelean wrote:
-> > The change is more cosmetic. There is no need to reference this table in
-> > the probe function since 'of_device_get_match_data' is used, which
-> > obtains
-> > this information from the driver object.  
+> On Sun, 28 Jun 2020 21:32:05 +0100, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Convert and flesh out a bit the binding docs for this simple 3 axis
+> > accelerometer.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > 
+> > Sorry, typo in iio mailing list in first try at sending this out.
+> > 
+> > .../bindings/iio/accel/kionix,kxsd9.txt       | 22 -------
+> >  .../bindings/iio/accel/kionix,kxsd9.yaml      | 65 +++++++++++++++++++
+> >  2 files changed, 65 insertions(+), 22 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.txt
+> >  create mode 100644 Documentation/devicetree/bindings/iio/accel/kionix,kxsd9.yaml
+> >   
 > 
-> This looks like it could be applied now.
-> The iio/testing branch seems to have patch [1/2].
-Thanks.
-
+> Reviewed-by: Rob Herring <robh@kernel.org>
 Applied.
 
-Jonathan
+Thanks,
 
-> 
-> Thanks
-> Alex
-> 
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  drivers/iio/adc/ad7192.c | 18 +++++++++---------
-> >  1 file changed, 9 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> > index 1431f555daa6..fd89a5115c55 100644
-> > --- a/drivers/iio/adc/ad7192.c
-> > +++ b/drivers/iio/adc/ad7192.c
-> > @@ -908,15 +908,6 @@ static int ad7192_channels_config(struct iio_dev
-> > *indio_dev)
-> >  	return 0;
-> >  }
-> >  
-> > -static const struct of_device_id ad7192_of_match[] = {
-> > -	{ .compatible = "adi,ad7190", .data =
-> > &ad7192_chip_info_tbl[ID_AD7190] },
-> > -	{ .compatible = "adi,ad7192", .data =
-> > &ad7192_chip_info_tbl[ID_AD7192] },
-> > -	{ .compatible = "adi,ad7193", .data =
-> > &ad7192_chip_info_tbl[ID_AD7193] },
-> > -	{ .compatible = "adi,ad7195", .data =
-> > &ad7192_chip_info_tbl[ID_AD7195] },
-> > -	{}
-> > -};
-> > -MODULE_DEVICE_TABLE(of, ad7192_of_match);
-> > -
-> >  static int ad7192_probe(struct spi_device *spi)
-> >  {
-> >  	struct ad7192_state *st;
-> > @@ -1050,6 +1041,15 @@ static int ad7192_remove(struct spi_device *spi)
-> >  	return 0;
-> >  }
-> >  
-> > +static const struct of_device_id ad7192_of_match[] = {
-> > +	{ .compatible = "adi,ad7190", .data =
-> > &ad7192_chip_info_tbl[ID_AD7190] },
-> > +	{ .compatible = "adi,ad7192", .data =
-> > &ad7192_chip_info_tbl[ID_AD7192] },
-> > +	{ .compatible = "adi,ad7193", .data =
-> > &ad7192_chip_info_tbl[ID_AD7193] },
-> > +	{ .compatible = "adi,ad7195", .data =
-> > &ad7192_chip_info_tbl[ID_AD7195] },
-> > +	{}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, ad7192_of_match);
-> > +
-> >  static struct spi_driver ad7192_driver = {
-> >  	.driver = {
-> >  		.name	= "ad7192",  
-
+J

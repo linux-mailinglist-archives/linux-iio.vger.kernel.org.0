@@ -2,42 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46CA8224C32
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87450224C36
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726619AbgGRPE7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:04:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35938 "EHLO mail.kernel.org"
+        id S1726453AbgGRPF6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 11:05:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36156 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726344AbgGRPE7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:04:59 -0400
+        id S1726155AbgGRPF6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 11:05:58 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D68612065D;
-        Sat, 18 Jul 2020 15:04:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3C2D42067D;
+        Sat, 18 Jul 2020 15:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595084698;
-        bh=AAZPwQTU94R3L/QF22yxuFg1zBYZopItzGUsuLf8eIc=;
+        s=default; t=1595084757;
+        bh=jj/XrXFFLzYgXOaVzl2PD4A1ReBY9X+TER5hVC5F5YM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CaZ/g7ubXGxlkcOaOs2tbnOSLM7dFTYTLf3ULk6VCUl90SMLCaGPuqa82Vm9+fJXM
-         HJB9aH6Cv1FZHDh/uFGPS4No6pcsHVJJr8RQry71bi8qsEXNpfjrPUXufP7z/seQlP
-         trpFIqyQGby3AhH6yrjZRtGUL08DTYf0D6TLi2HE=
-Date:   Sat, 18 Jul 2020 16:04:54 +0100
+        b=i1EGHB5I8OT0s1qFhm6UBOZ8PU/T17FKt8BVTPiaIZSJeBqrRKxobdS6rLUIZPE8M
+         N3nvHziwMlctkqUcF0ZluAWRMgcbmJ8FLR6NNtXqoj6kNWjaXcgqW1SRp/ev4ZRW6c
+         LDWoE4ev7zw4qHnNYnTnjlJ35rAAhhouRo+Mec84=
+Date:   Sat, 18 Jul 2020 16:05:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 19/30] iio: dac: ad5064: Fix a few kerneldoc
- misdemeanours
-Message-ID: <20200718160454.1a722eea@archlinux>
-In-Reply-To: <20200716135928.1456727-20-lee.jones@linaro.org>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 20/30] iio: dac: ad5446: Complete 'struct ad5446_state'
+ doc and demote unworthy kerneldocs
+Message-ID: <20200718160553.7362307c@archlinux>
+In-Reply-To: <20200716135928.1456727-21-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
-        <20200716135928.1456727-20-lee.jones@linaro.org>
+        <20200716135928.1456727-21-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,69 +45,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Jul 2020 14:59:17 +0100
+On Thu, 16 Jul 2020 14:59:18 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
-> Misspelling, missing description and compiler attribute ordering.
-> 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/dac/ad5064.c:71: warning: bad line:                         internal vref.
->  drivers/iio/dac/ad5064.c:83: warning: Function parameter or member 'channels' not described in 'ad5064_chip_info'
->  drivers/iio/dac/ad5064.c:125: warning: Function parameter or member 'lock' not described in 'ad5064_state'
->  drivers/iio/dac/ad5064.c:125: warning: Function parameter or member '____cacheline_aligned' not described in 'ad5064_state'
+>  drivers/iio/dac/ad5446.c:48: warning: Function parameter or member 'dev' not described in 'ad5446_state'
+>  drivers/iio/dac/ad5446.c:48: warning: Function parameter or member 'cached_val' not described in 'ad5446_state'
+>  drivers/iio/dac/ad5446.c:48: warning: Function parameter or member 'pwr_down_mode' not described in 'ad5446_state'
+>  drivers/iio/dac/ad5446.c:48: warning: Function parameter or member 'pwr_down' not described in 'ad5446_state'
+>  drivers/iio/dac/ad5446.c:48: warning: Function parameter or member 'lock' not described in 'ad5446_state'
+>  drivers/iio/dac/ad5446.c:323: warning: cannot understand function prototype: 'enum ad5446_supported_spi_device_ids '
+>  drivers/iio/dac/ad5446.c:545: warning: cannot understand function prototype: 'enum ad5446_supported_i2c_device_ids '
 > 
 > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Mark Brown <broonie@kernel.org>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Holding this one for that discussion around kernel-doc handing of
-___cacheline_aligned
+Seems simple so applied.
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/dac/ad5064.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/iio/dac/ad5446.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/dac/ad5064.c b/drivers/iio/dac/ad5064.c
-> index 303f6d1a5f311..d7109f8f52efa 100644
-> --- a/drivers/iio/dac/ad5064.c
-> +++ b/drivers/iio/dac/ad5064.c
-> @@ -68,8 +68,8 @@ enum ad5064_regmap_type {
->   * struct ad5064_chip_info - chip specific information
->   * @shared_vref:	whether the vref supply is shared between channels
->   * @internal_vref:	internal reference voltage. 0 if the chip has no
-> -			internal vref.
-> - * @channel:		channel specification
-> + *			internal vref.
-> + * @channels:		channel specification
->   * @num_channels:	number of channels
->   * @regmap_type:	register map layout variant
->   */
-> @@ -98,6 +98,7 @@ typedef int (*ad5064_write_func)(struct ad5064_state *st, unsigned int cmd,
->   * @use_internal_vref:	set to true if the internal reference voltage should be
->   *			used.
->   * @write:		register write callback
-> + * @lock:		maintain consistency between cached and dev state
->   * @data:		i2c/spi transfer buffers
+> diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> index 8f8afc8999bc7..15c314f08a007 100644
+> --- a/drivers/iio/dac/ad5446.c
+> +++ b/drivers/iio/dac/ad5446.c
+> @@ -29,11 +29,14 @@
+>  
+>  /**
+>   * struct ad5446_state - driver instance specific data
+> - * @spi:		spi_device
+> + * @dev:		this device
+>   * @chip_info:		chip model specific constants, available modes etc
+>   * @reg:		supply regulator
+>   * @vref_mv:		actual reference voltage used
+> - * @lock		lock to protect the data buffer during write ops
+> + * @cached_val:		store/retrieve values during power down
+> + * @pwr_down_mode:	power down mode (1k, 100k or tristate)
+> + * @pwr_down:		true if the device is in power down
+> + * @lock:		lock to protect the data buffer during write ops
 >   */
 >  
-> @@ -111,7 +112,6 @@ struct ad5064_state {
->  	bool				use_internal_vref;
+>  struct ad5446_state {
+> @@ -313,7 +316,7 @@ static int ad5660_write(struct ad5446_state *st, unsigned val)
+>  	return spi_write(spi, data, sizeof(data));
+>  }
 >  
->  	ad5064_write_func		write;
-> -	/* Lock used to maintain consistency between cached and dev state */
->  	struct mutex lock;
+> -/**
+> +/*
+>   * ad5446_supported_spi_device_ids:
+>   * The AD5620/40/60 parts are available in different fixed internal reference
+>   * voltage options. The actual part numbers may look differently
+> @@ -535,7 +538,7 @@ static int ad5622_write(struct ad5446_state *st, unsigned val)
+>  	return i2c_master_send(client, (char *)&data, sizeof(data));
+>  }
 >  
->  	/*
-> @@ -121,7 +121,7 @@ struct ad5064_state {
->  	union {
->  		u8 i2c[3];
->  		__be32 spi;
-> -	} data ____cacheline_aligned;
-> +	} ____cacheline_aligned data;
->  };
->  
->  enum ad5064_type {
+> -/**
+> +/*
+>   * ad5446_supported_i2c_device_ids:
+>   * The AD5620/40/60 parts are available in different fixed internal reference
+>   * voltage options. The actual part numbers may look differently
 

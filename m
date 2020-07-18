@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 050CE224C3B
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF39224C3D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbgGRPGn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:06:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36322 "EHLO mail.kernel.org"
+        id S1727055AbgGRPHL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 11:07:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726155AbgGRPGn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:06:43 -0400
+        id S1726155AbgGRPHL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 11:07:11 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2E672067D;
-        Sat, 18 Jul 2020 15:06:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 923AC2067D;
+        Sat, 18 Jul 2020 15:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595084803;
-        bh=t0z2caHrsGxqx5zm/IpJscoZlnfLaHkqhTZ14zCOVNo=;
+        s=default; t=1595084831;
+        bh=jS/YTU1E8oqW8NlV057QylGhukIF1sN2V6MqBKpcozI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TCS3/JdX2nhAHK5115ws2c874oDoWI3qwrZ61CDu5iIBvVnuMB0C0Q0MB04tRtVOn
-         zXKoxtUZ0Z8bbxQpB3VVeoAnn+aFNorLJ2TxpUlGZQ+ClABu54CdiPywvUZcRfXSHf
-         Gjn54yYb2GJWYw/v6jOpAtdQfwDDQWRD5mspmbiI=
-Date:   Sat, 18 Jul 2020 16:06:39 +0100
+        b=hh/gaMw3+q9ujmoSOOPHO3Th7RhquY6NdOPtlJ/1AFX3aA14rtOJu3yZLclAixKQ5
+         AH176oxpCB7nZ7XHJNz61mX0kpKwCEmeuIW7mZzuA/yT1RnTRV6S0KErheltgNLNa7
+         0NnI3CINtL7BEcolPTZEmhrly2dbU22SDCq4hnPE=
+Date:   Sat, 18 Jul 2020 16:07:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
@@ -32,7 +32,7 @@ Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         Michael Hennerich <Michael.Hennerich@analog.com>
 Subject: Re: [PATCH 21/30] iio: dac: ad5449: Fix kerneldoc attribute
  formatting for 'lock'
-Message-ID: <20200718160639.12deb2cf@archlinux>
+Message-ID: <20200718160706.11885e7f@archlinux>
 In-Reply-To: <20200716135928.1456727-22-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
         <20200716135928.1456727-22-lee.jones@linaro.org>
@@ -57,8 +57,6 @@ Lee Jones <lee.jones@linaro.org> wrote:
 > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
 Applied
-
-J
 
 > ---
 >  drivers/iio/dac/ad5449.c | 2 +-

@@ -2,39 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A50224C5F
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AE4224C61
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726344AbgGRPRd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:17:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38970 "EHLO mail.kernel.org"
+        id S1726551AbgGRPST (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 11:18:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39344 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726155AbgGRPRd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:17:33 -0400
+        id S1726344AbgGRPST (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 11:18:19 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EB1C20775;
-        Sat, 18 Jul 2020 15:17:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7186A20775;
+        Sat, 18 Jul 2020 15:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595085452;
-        bh=BKNVe9fgnfqAHXaTZBDQXkmm6++oSD277VPzoltC4t8=;
+        s=default; t=1595085499;
+        bh=xYkPp9E7IfYHLCoHPTUXJOewHyFUrkxmseuBTKtauZE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=s42pLxPyMt7gImBXNBgaVoHkq3TeaCW/j6jzSa/ngTX3ouORea9/7T4obK+xxcFZJ
-         zwjJ1UTz+O8poGCWD8KjlEKsJVVqhf6bsFpJuTdvpoz98p6EQHJVk1gNIjyoN+xOaE
-         ya6eEJwLSRSYeWCAuUh0csSMLHUWb56e6GqCmvtY=
-Date:   Sat, 18 Jul 2020 16:17:28 +0100
+        b=mcb0ETvvZ+lnP7JiMxPXzcRcqjMk9rfFvr9Rd0eGmu3gaB68Av9RI2q/10GZx4ckm
+         6kHnjjUp3IUkxX7NnBKO7aRrKGRw0vR2RL7ZMPwxVcuUddRinHRo7cRrZWiCLj4cqF
+         dwhv7vA85bNOxMBXvqnLW6G9aGRLcd6rEk4/VtZw=
+Date:   Sat, 18 Jul 2020 16:18:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Baluta <daniel.baluta@intel.com>
-Subject: Re: [PATCH 29/30] iio: imu: kmx61: Fix formatting in kerneldoc
- function headers
-Message-ID: <20200718161728.2faa55f2@archlinux>
-In-Reply-To: <20200716135928.1456727-30-lee.jones@linaro.org>
+        linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 30/30] iio: dac: ad7303: Complete 'struct ad7303_state'
+ doc and reorder compiler attribute
+Message-ID: <20200718161814.06844591@archlinux>
+In-Reply-To: <20200716135928.1456727-31-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
-        <20200716135928.1456727-30-lee.jones@linaro.org>
+        <20200716135928.1456727-31-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,62 +47,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Jul 2020 14:59:27 +0100
+On Thu, 16 Jul 2020 14:59:28 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
-> Kerneldoc expects attributes/parameters to be in '@*.: ' format.
+> Kerneldoc gets confused if the variable does not follow the
+> type/attribute definitions.
 > 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/imu/kmx61.c:327: warning: Function parameter or member 'data' not described in 'kmx61_set_mode'
->  drivers/iio/imu/kmx61.c:327: warning: Function parameter or member 'mode' not described in 'kmx61_set_mode'
->  drivers/iio/imu/kmx61.c:327: warning: Function parameter or member 'device' not described in 'kmx61_set_mode'
->  drivers/iio/imu/kmx61.c:327: warning: Function parameter or member 'update' not described in 'kmx61_set_mode'
->  drivers/iio/imu/kmx61.c:731: warning: Function parameter or member 'data' not described in 'kmx61_set_power_state'
->  drivers/iio/imu/kmx61.c:731: warning: Function parameter or member 'on' not described in 'kmx61_set_power_state'
->  drivers/iio/imu/kmx61.c:731: warning: Function parameter or member 'device' not described in 'kmx61_set_power_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'vdd_reg' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'vref_reg' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'lock' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member '____cacheline_aligned' not described in 'ad7303_state'
 > 
-> Cc: Daniel Baluta <daniel.baluta@intel.com>
+> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Applied.
+Holding this one pending that earlier discussion on whether we should
+screen ____cacheline_aligned out in kernel-doc script.
+
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/imu/kmx61.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  drivers/iio/dac/ad7303.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
-> index e67466100aff4..d0cee2e09884d 100644
-> --- a/drivers/iio/imu/kmx61.c
-> +++ b/drivers/iio/imu/kmx61.c
-> @@ -312,10 +312,10 @@ static int kmx61_convert_wake_up_odr_to_bit(int val, int val2)
+> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
+> index 15af8a1cce3eb..05d8dc88d4fad 100644
+> --- a/drivers/iio/dac/ad7303.c
+> +++ b/drivers/iio/dac/ad7303.c
+> @@ -29,6 +29,9 @@
+>   * @spi:		the device for this driver instance
+>   * @config:		cached config register value
+>   * @dac_cache:		current DAC raw value (chip does not support readback)
+> + * @vdd_reg:		reference to VDD regulator
+> + * @vref_reg:		reference to VREF regulator
+> + * @lock:		protect writes and cache updates
+>   * @data:		spi transfer buffer
+>   */
 >  
->  /**
->   * kmx61_set_mode() - set KMX61 device operating mode
-> - * @data - kmx61 device private data pointer
-> - * @mode - bitmask, indicating operating mode for @device
-> - * @device - bitmask, indicating device for which @mode needs to be set
-> - * @update - update stby bits stored in device's private  @data
-> + * @data: kmx61 device private data pointer
-> + * @mode: bitmask, indicating operating mode for @device
-> + * @device: bitmask, indicating device for which @mode needs to be set
-> + * @update: update stby bits stored in device's private  @data
->   *
->   * For each sensor (accelerometer/magnetometer) there are two operating modes
->   * STANDBY and OPERATION. Neither accel nor magn can be disabled independently
-> @@ -718,9 +718,9 @@ static int kmx61_setup_any_motion_interrupt(struct kmx61_data *data,
+> @@ -45,7 +48,7 @@ struct ad7303_state {
+>  	 * DMA (thus cache coherency maintenance) requires the
+>  	 * transfer buffers to live in their own cache lines.
+>  	 */
+> -	__be16 data ____cacheline_aligned;
+> +	__be16 ____cacheline_aligned data;
+>  };
 >  
->  /**
->   * kmx61_set_power_state() - set power state for kmx61 @device
-> - * @data - kmx61 device private pointer
-> - * @on - power state to be set for @device
-> - * @device - bitmask indicating device for which @on state needs to be set
-> + * @data: kmx61 device private pointer
-> + * @on: power state to be set for @device
-> + * @device: bitmask indicating device for which @on state needs to be set
->   *
->   * Notice that when ACC power state needs to be set to ON and MAG is in
->   * OPERATION then we know that kmx61_runtime_resume was already called
+>  static int ad7303_write(struct ad7303_state *st, unsigned int chan,
 

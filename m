@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F34BB224CCD
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A66224CCF
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgGRQCA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 12:02:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54072 "EHLO mail.kernel.org"
+        id S1726411AbgGRQCs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 12:02:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54594 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726411AbgGRQCA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 12:02:00 -0400
+        id S1726155AbgGRQCs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 12:02:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DEF782070E;
-        Sat, 18 Jul 2020 16:01:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91B9B2076A;
+        Sat, 18 Jul 2020 16:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595088120;
-        bh=eAMYUyUZgeBUT/qaiLZ7N0AmHyAQozUZGMTOnbP95QQ=;
+        s=default; t=1595088167;
+        bh=gCPyaXj3gDoDhRpX1/bqGUHn2gPCArtpU+D0BR05GpE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=InamNM0xeX83vyyulwRyL4YY3OcBsZNZeViFegzX8JPc44qQAudgCVog+6jcuYFL2
-         oG9h7yXEYxFhW220OSCjstj/Q4fkC4rvb1Il02gk8guLwP6YTqj1aJDBlX/7dHHzMz
-         4u4qSHX1ERrzRjuGH57ay9RcjtjKJ63LPcNTz3Y0=
-Date:   Sat, 18 Jul 2020 17:01:55 +0100
+        b=d3EZhN95LHOi7blKYCQ8bSx/EHR2nvkUzhHMqLt7wnShygX2M1lDSFb5llcugQMGB
+         5aLKrPCY/fL2FWUuqlhaBW8jjkaixfb2EluffzclP7QaSe76u4fLzcJdvXl+51ELGj
+         FFp6yFtfn3zvpHZT4TjpBcBn0jkbO6OX3vl5qBjU=
+Date:   Sat, 18 Jul 2020 17:02:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Pradeep Goudagunta <pgoudagunta@nvidia.com>
-Subject: Re: [PATCH 23/30] iio: adc: palmas_gpadc: Demote non-conforming
- kerneldoc header
-Message-ID: <20200718170155.0d8db232@archlinux>
-In-Reply-To: <20200717165538.3275050-24-lee.jones@linaro.org>
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Subject: Re: [PATCH 24/30] iio: imu: inv_mpu6050: inv_mpu_core: Demote
+ obvious misuse of kerneldoc to standard comment blocks
+Message-ID: <20200718170243.7d5ae3a9@archlinux>
+In-Reply-To: <20200717165538.3275050-25-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
-        <20200717165538.3275050-24-lee.jones@linaro.org>
+        <20200717165538.3275050-25-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,26 +45,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Jul 2020 17:55:31 +0100
+On Fri, 17 Jul 2020 17:55:32 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
-> Very few of the struct attributes have been documented here.
+> No attempt has been made to document any of the demoted functions here.
 > 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'dev' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'palmas' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'irq' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'irq_auto_0' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'irq_auto_1' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'adc_info' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'conv_completion' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'wakeup1_data' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'wakeup2_data' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'wakeup1_enable' not described in 'palmas_gpadc'
->  drivers/iio/adc/palmas_gpadc.c:114: warning: Function parameter or member 'wakeup2_enable' not described in 'palmas_gpadc'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:444: warning: Function parameter or member 'st' not described in 'inv_mpu6050_set_lpf_regs'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:444: warning: Function parameter or member 'val' not described in 'inv_mpu6050_set_lpf_regs'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:480: warning: Function parameter or member 'indio_dev' not described in 'inv_mpu6050_init_config'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:862: warning: Function parameter or member 'st' not described in 'inv_mpu6050_set_lpf'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:862: warning: Function parameter or member 'rate' not described in 'inv_mpu6050_set_lpf'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:893: warning: Function parameter or member 'dev' not described in 'inv_mpu6050_fifo_rate_store'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:893: warning: Function parameter or member 'attr' not described in 'inv_mpu6050_fifo_rate_store'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:893: warning: Function parameter or member 'buf' not described in 'inv_mpu6050_fifo_rate_store'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:893: warning: Function parameter or member 'count' not described in 'inv_mpu6050_fifo_rate_store'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:954: warning: Function parameter or member 'dev' not described in 'inv_fifo_rate_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:954: warning: Function parameter or member 'attr' not described in 'inv_fifo_rate_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:954: warning: Function parameter or member 'buf' not described in 'inv_fifo_rate_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:975: warning: Function parameter or member 'dev' not described in 'inv_attr_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:975: warning: Function parameter or member 'attr' not described in 'inv_attr_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:975: warning: Function parameter or member 'buf' not described in 'inv_attr_show'
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c:1282: warning: Function parameter or member 'st' not described in 'inv_check_and_setup_chip'
 > 
-> Cc: Pradeep Goudagunta <pgoudagunta@nvidia.com>
+> Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
 Applied.
 
@@ -73,28 +78,74 @@ Thanks,
 Jonathan
 
 > ---
->  drivers/iio/adc/palmas_gpadc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> index 46e595eb889fa..81b0a76a767e8 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -76,7 +76,7 @@ static struct palmas_gpadc_info palmas_gpadc_info[] = {
->  	PALMAS_ADC_INFO(IN15, 0, 0, 0, 0, INVALID, INVALID, true),
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 4d604fe842e5d..f6b2b2e8f1010 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -433,7 +433,7 @@ static int inv_mpu6050_set_gyro_fsr(struct inv_mpu6050_state *st,
+>  	return regmap_write(st->map, st->reg->gyro_config, data);
+>  }
+>  
+> -/**
+> +/*
+>   *  inv_mpu6050_set_lpf_regs() - set low pass filter registers, chip dependent
+>   *
+>   *  MPU60xx/MPU9150 use only 1 register for accelerometer + gyroscope
+> @@ -467,7 +467,7 @@ static int inv_mpu6050_set_lpf_regs(struct inv_mpu6050_state *st,
+>  	return regmap_write(st->map, st->reg->accel_lpf, val);
+>  }
+>  
+> -/**
+> +/*
+>   *  inv_mpu6050_init_config() - Initialize hardware, disable FIFO.
+>   *
+>   *  Initial configuration:
+> @@ -847,7 +847,7 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
+>  	return result;
+>  }
+>  
+> -/**
+> +/*
+>   *  inv_mpu6050_set_lpf() - set low pass filer based on fifo rate.
+>   *
+>   *                  Based on the Nyquist principle, the bandwidth of the low
+> @@ -884,7 +884,7 @@ static int inv_mpu6050_set_lpf(struct inv_mpu6050_state *st, int rate)
+>  	return 0;
+>  }
+>  
+> -/**
+> +/*
+>   * inv_mpu6050_fifo_rate_store() - Set fifo rate.
+>   */
+>  static ssize_t
+> @@ -945,7 +945,7 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
+>  	return count;
+>  }
+>  
+> -/**
+> +/*
+>   * inv_fifo_rate_show() - Get the current sampling rate.
+>   */
+>  static ssize_t
+> @@ -962,7 +962,7 @@ inv_fifo_rate_show(struct device *dev, struct device_attribute *attr,
+>  	return scnprintf(buf, PAGE_SIZE, "%u\n", fifo_rate);
+>  }
+>  
+> -/**
+> +/*
+>   * inv_attr_show() - calling this function will show current
+>   *                    parameters.
+>   *
+> @@ -1275,7 +1275,7 @@ static const struct iio_info mpu_info = {
+>  	.debugfs_reg_access = &inv_mpu6050_reg_access,
 >  };
 >  
 > -/**
 > +/*
->   * struct palmas_gpadc - the palmas_gpadc structure
->   * @ch0_current:	channel 0 current source setting
->   *			0: 0 uA
-> @@ -94,7 +94,6 @@ static struct palmas_gpadc_info palmas_gpadc_info[] = {
->   * This is the palmas_gpadc structure to store run-time information
->   * and pointers for this driver instance.
+>   *  inv_check_and_setup_chip() - check and setup chip.
 >   */
-> -
->  struct palmas_gpadc {
->  	struct device			*dev;
->  	struct palmas			*palmas;
+>  static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
 

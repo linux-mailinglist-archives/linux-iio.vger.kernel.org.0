@@ -2,41 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B46E7224CDB
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18708224CDF
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:13:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgGRQIa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 12:08:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57044 "EHLO mail.kernel.org"
+        id S1726829AbgGRQNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 12:13:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726829AbgGRQIa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 12:08:30 -0400
+        id S1726411AbgGRQNO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 12:13:14 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75F232073A;
-        Sat, 18 Jul 2020 16:08:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 29C162070E;
+        Sat, 18 Jul 2020 16:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595088510;
-        bh=IgWASNzW3tr6+SzNmBPcPrb48Zc+oZWMEdPLbXn+3Uo=;
+        s=default; t=1595088794;
+        bh=e554OwEh/JVBkbBwC3gyWMTLTXY+2kQFnjc/gfeyC08=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EmnlrX5cG/76tgUZUozfWqwBoW41VdvBffUTzF2xk7o+MSqLOnq5N5UMPKRtKEPKl
-         qe0e2wsdNW8Tl8b19nsiGYoMKEzD+h61GDA/phBWq52ji+9o0V0bhMy3jfFkLOCLvY
-         wuoUOHYMuiz0/KlL3DKt/HnwXD+TEAQ8P3nXNmYM=
-Date:   Sat, 18 Jul 2020 17:08:25 +0100
+        b=XqPB8NXLfKr8Q1U42KRegWlcILXr8o4DFYqvvCEX2Pq+PWZK+kwpB2yrkZcP77+tA
+         TE/2I6+GG9+zRoseQveGTNHah1tCHSwBfd2sihuGfumVafTQHMrz7VcoqIOK3QENZc
+         l0JsxtTSgTlK9EMMHtL7rkj8T4Ur1OQrgRchZ7gY=
+Date:   Sat, 18 Jul 2020 17:13:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Samu Onkalo <samu.p.onkalo@nokia.com>
-Subject: Re: [PATCH 27/30] iio: magnetometer: ak8974: Add description for
- ak8974's 'scan' attribute
-Message-ID: <20200718170825.635137c6@archlinux>
-In-Reply-To: <20200717165538.3275050-28-lee.jones@linaro.org>
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Subject: Re: [PATCH 28/30] iio: imu: st_lsm6dsx: st_lsm6dsx_shub: Demote
+ obvious misuse of kerneldoc to standard comment blocks
+Message-ID: <20200718171310.3a710610@archlinux>
+In-Reply-To: <20200717165538.3275050-29-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
-        <20200717165538.3275050-28-lee.jones@linaro.org>
+        <20200717165538.3275050-29-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,38 +45,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Jul 2020 17:55:35 +0100
+On Fri, 17 Jul 2020 17:55:36 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
+> No attempt has been made to document any of the demoted functions here.
+> 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/magnetometer/ak8974.c:200: warning: Function parameter or member 'scan' not described in 'ak8974'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:174: warning: Function parameter or member 'hw' not described in 'st_lsm6dsx_shub_read_output'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:174: warning: Function parameter or member 'data' not described in 'st_lsm6dsx_shub_read_output'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:174: warning: Function parameter or member 'len' not described in 'st_lsm6dsx_shub_read_output'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:205: warning: Function parameter or member 'hw' not described in 'st_lsm6dsx_shub_write_reg'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:205: warning: Function parameter or member 'addr' not described in 'st_lsm6dsx_shub_write_reg'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:205: warning: Function parameter or member 'data' not described in 'st_lsm6dsx_shub_write_reg'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:205: warning: Function parameter or member 'len' not described in 'st_lsm6dsx_shub_write_reg'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:285: warning: Function parameter or member 'sensor' not described in 'st_lsm6dsx_shub_read'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:285: warning: Function parameter or member 'addr' not described in 'st_lsm6dsx_shub_read'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:285: warning: Function parameter or member 'data' not described in 'st_lsm6dsx_shub_read'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:285: warning: Function parameter or member 'len' not described in 'st_lsm6dsx_shub_read'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:335: warning: Function parameter or member 'sensor' not described in 'st_lsm6dsx_shub_write'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:335: warning: Function parameter or member 'addr' not described in 'st_lsm6dsx_shub_write'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:335: warning: Function parameter or member 'data' not described in 'st_lsm6dsx_shub_write'
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c:335: warning: Function parameter or member 'len' not described in 'st_lsm6dsx_shub_write'
 > 
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Samu Onkalo <samu.p.onkalo@nokia.com>
+> Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuidlers to play with it.
+Applied.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/magnetometer/ak8974.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-> index 91c39352fba26..4d6d8b699f037 100644
-> --- a/drivers/iio/magnetometer/ak8974.c
-> +++ b/drivers/iio/magnetometer/ak8974.c
-> @@ -180,6 +180,7 @@
->   * @drdy_irq: uses the DRDY IRQ line
->   * @drdy_complete: completion for DRDY
->   * @drdy_active_low: the DRDY IRQ is active low
-> + * @scan: timestamps
->   */
->  struct ak8974 {
->  	struct i2c_client *i2c;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index c1f83fe0d8dad..9a14dde4795da 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -163,7 +163,7 @@ static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
+>  	msleep((2000000U / odr) + 1);
+>  }
+>  
+> -/**
+> +/*
+>   * st_lsm6dsx_shub_read_output - read i2c controller register
+>   *
+>   * Read st_lsm6dsx i2c controller register
+> @@ -195,7 +195,7 @@ st_lsm6dsx_shub_read_output(struct st_lsm6dsx_hw *hw, u8 *data,
+>  	return err;
+>  }
+>  
+> -/**
+> +/*
+>   * st_lsm6dsx_shub_write_reg - write i2c controller register
+>   *
+>   * Write st_lsm6dsx i2c controller register
+> @@ -273,7 +273,7 @@ static int st_lsm6dsx_shub_master_enable(struct st_lsm6dsx_sensor *sensor,
+>  	return err;
+>  }
+>  
+> -/**
+> +/*
+>   * st_lsm6dsx_shub_read - read data from slave device register
+>   *
+>   * Read data from slave device register. SLV0 is used for
+> @@ -323,7 +323,7 @@ st_lsm6dsx_shub_read(struct st_lsm6dsx_sensor *sensor, u8 addr,
+>  					 sizeof(config));
+>  }
+>  
+> -/**
+> +/*
+>   * st_lsm6dsx_shub_write - write data to slave device register
+>   *
+>   * Write data from slave device register. SLV0 is used for
 

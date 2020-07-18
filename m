@@ -2,103 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7273A224CF4
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1774F224CF9
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728353AbgGRQPm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 12:15:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60582 "EHLO mail.kernel.org"
+        id S1726959AbgGRQTG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 12:19:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33568 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728272AbgGRQPm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 12:15:42 -0400
+        id S1726604AbgGRQTG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 12:19:06 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E574B2070E;
-        Sat, 18 Jul 2020 16:15:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 045EE2070E;
+        Sat, 18 Jul 2020 16:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595088941;
-        bh=RYYoGC33ot2PTRIYQJZqtzM135KyMAhZ0Tx+A5h+stA=;
+        s=default; t=1595089145;
+        bh=5/QUCAv18TlotvDcbNU1UNonfnJZOuPtW3GBSlb47Ts=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JWLi2lyx4YSiRifXIlLL/T8pCbT9SIoBCxNOFhI80RH4g0Tc/1TMcho7HEY+JIjXD
-         d4cy5LVdNWrfb+SzAh8BDuGSGMWuQrf4tKTf7Ynxvdpg8HE7v4d4bon5LB1GShrJ99
-         8kJ+axZKoGc1Ga/eMDNEXlmuo7PuasBRey3baCL4=
-Date:   Sat, 18 Jul 2020 17:15:36 +0100
+        b=mKD8lrz7Eg92MsQXvnXwXBCz+jmbun4z0MhcKkkShu+Sz2GVLVpAt6brLw2hdBOEp
+         Jgh7KFA9GuntnVyU0P6BWsIpNxa226EIo7GGcP95G9N19AtzH+ksBECjBFgz9t7jpo
+         J+W7kUj76gw4FJKX+9BUSKPH/oQKsCnHtlMI5xJA=
+Date:   Sat, 18 Jul 2020 17:19:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-Cc:     Lee Jones <lee.jones@linaro.org>, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 30/30] iio: adc: rockchip_saradc: Demote Demote
- seemingly unintentional kerneldoc header
-Message-ID: <20200718171536.5b5ac001@archlinux>
-In-Reply-To: <4422628.h3HLAr0T0d@diego>
-References: <20200717165538.3275050-1-lee.jones@linaro.org>
-        <20200717165538.3275050-31-lee.jones@linaro.org>
-        <4422628.h3HLAr0T0d@diego>
+To:     Colton Lewis <colton.w.lewis@protonmail.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: Correct kernel-doc inconsistency
+Message-ID: <20200718171902.13fd2571@archlinux>
+In-Reply-To: <20200715191656.29437-1-colton.w.lewis@protonmail.com>
+References: <20200715191656.29437-1-colton.w.lewis@protonmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Jul 2020 21:10:27 +0200
-Heiko St=C3=BCbner <heiko@sntech.de> wrote:
+On Wed, 15 Jul 2020 19:17:09 +0000
+Colton Lewis <colton.w.lewis@protonmail.com> wrote:
 
-> Am Freitag, 17. Juli 2020, 18:55:38 CEST schrieb Lee Jones:
-> > This is the only use of kerneldoc in the source file and no
-> > descriptions are provided.
-> >=20
-> > Fixes the following W=3D1 kernel build warning(s):
-> >=20
-> >  drivers/iio/adc/rockchip_saradc.c:190: warning: Function parameter or =
-member 'reset' not described in 'rockchip_saradc_reset_controller'
-> >=20
-> > Cc: Heiko Stuebner <heiko@sntech.de>
-> > Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> > Cc: linux-rockchip@lists.infradead.org
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org> =20
->=20
-> Subject-line says "Demote Demote..."
->=20
-> Otherwise
-> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Fixed up and applied.
+> Silence documentation build warning by correcting kernel-doc comment
+> for iio_dev struct.
+> 
+> ./include/linux/iio/iio.h:574: warning: Function parameter or member 'read_buf' not described in 'iio_dev'
+> ./include/linux/iio/iio.h:574: warning: Function parameter or member 'read_buf_len' not described in 'iio_dev'
+> 
+> Signed-off-by: Colton Lewis <colton.w.lewis@protonmail.com>
+Hi Colton,
 
-Thanks for whole set Lee.
+Thanks for the patch, but these elements have moved and now have docs
+(very recent!)  See the testing branch of iio.git on git.kernel.org
+
 
 Jonathan
 
->=20
->=20
-> > ---
-> >  drivers/iio/adc/rockchip_saradc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockch=
-ip_saradc.c
-> > index 582ba047c4a67..cf4ec59c1dab0 100644
-> > --- a/drivers/iio/adc/rockchip_saradc.c
-> > +++ b/drivers/iio/adc/rockchip_saradc.c
-> > @@ -183,7 +183,7 @@ static const struct of_device_id rockchip_saradc_ma=
-tch[] =3D {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, rockchip_saradc_match);
-> > =20
-> > -/**
-> > +/*
-> >   * Reset SARADC Controller.
-> >   */
-> >  static void rockchip_saradc_reset_controller(struct reset_control *res=
-et)
-> >  =20
->=20
->=20
->=20
->=20
+> ---
+>  include/linux/iio/iio.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index a1be82e74c93..48049b344e6c 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -522,6 +522,8 @@ struct iio_buffer_setup_ops {
+>   * @flags:		[INTERN] file ops related flags including busy flag.
+>   * @debugfs_dentry:	[INTERN] device specific debugfs dentry.
+>   * @cached_reg_addr:	[INTERN] cached register address for debugfs reads.
+> + * @read_buf:		[INTERN] cached register contents for debugfs reads
+> + * @read_buf_len:	[INTERN] length of @read_buf
+>   */
+>  struct iio_dev {
+>  	int				id;
 

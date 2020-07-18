@@ -2,44 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AEE224C29
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD1C224C2B
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgGRPAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:00:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35318 "EHLO mail.kernel.org"
+        id S1726528AbgGRPBf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 11:01:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35406 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726411AbgGRPAv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:00:51 -0400
+        id S1726411AbgGRPBf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 11:01:35 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9EC172065D;
-        Sat, 18 Jul 2020 15:00:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4E51A2065D;
+        Sat, 18 Jul 2020 15:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595084451;
-        bh=26CBZjL7uvp6pS4YJG28uV1EtS6Ger0+vvpXKdu430E=;
+        s=default; t=1595084494;
+        bh=gxH/xToLjTC3LMvZ+tQz8IzUaNEmHWP2nLAYUtM600o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=c6y2Jzwsq9GEB8orElY1PDFiEzojam1SOGInKYWRa3q0d78aF8VaE0+yxfyQ4NAGP
-         forLr72tGJa/59KF+SPTU9j0rdR2+04BJeUxAyI0phuq85OrMH1QK3kh7vhsJ3bjhc
-         OzgYJ56E9U3yCpBOYGfwJfIpsvxlZMQBkap/jH28=
-Date:   Sat, 18 Jul 2020 16:00:46 +0100
+        b=o4wGFm9mDJiWP9mqG0uy85JzZXWAY6k/ZVV4N89iev5okfpeCMX6S6bMTxum7mefj
+         bNTFn7uKs5iIzY/Thh0UUc+Q/hj3S1uBa02z/zmcIcCD4Vmmzs2H+iYNuuH4FHG/NK
+         aVUsVJPeCS9cZj5EG+ZVbVQjw+qa+aLtKBIDHcWg=
+Date:   Sat, 18 Jul 2020 16:01:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH 15/30] iio: dummy: iio_dummy_evgen: Demote file header
- and supply description for 'irq_sim_domain'
-Message-ID: <20200718160046.5d1c8abb@archlinux>
-In-Reply-To: <CAMpxmJU1NZniOOofWykaHmpJDD=ZDw2HpRofDHHF01fvr_JZfA@mail.gmail.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 16/30] iio: adc: ad7887: Demote seemingly unintentional
+ kerneldoc header
+Message-ID: <20200718160130.71f12545@archlinux>
+In-Reply-To: <20200716135928.1456727-17-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
-        <20200716135928.1456727-16-lee.jones@linaro.org>
-        <CAMpxmJU1NZniOOofWykaHmpJDD=ZDw2HpRofDHHF01fvr_JZfA@mail.gmail.com>
+        <20200716135928.1456727-17-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,60 +45,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Jul 2020 11:24:40 +0200
-Bartosz Golaszewski <bgolaszewski@baylibre.com> wrote:
+On Thu, 16 Jul 2020 14:59:14 +0100
+Lee Jones <lee.jones@linaro.org> wrote:
 
-> On Thu, Jul 16, 2020 at 3:59 PM Lee Jones <lee.jones@linaro.org> wrote:
-> >
-> > File headers are not good candidates for kerneldoc.
-> >
-> > Fixes the following W=1 kernel build warning(s):
-> >
-> >  drivers/iio/dummy/iio_dummy_evgen.c:30: warning: Cannot understand  * @regs: irq regs we are faking
-> >  on line 30 - I thought it was a doc line
-> >  drivers/iio/dummy/iio_dummy_evgen.c:42: warning: Function parameter or member 'irq_sim_domain' not described in 'iio_dummy_eventgen'
-> >
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > ---
-> >  drivers/iio/dummy/iio_dummy_evgen.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/dummy/iio_dummy_evgen.c b/drivers/iio/dummy/iio_dummy_evgen.c
-> > index ee85d596e5284..1febbbff0ded6 100644
-> > --- a/drivers/iio/dummy/iio_dummy_evgen.c
-> > +++ b/drivers/iio/dummy/iio_dummy_evgen.c
-> > @@ -1,5 +1,5 @@
-> >  // SPDX-License-Identifier: GPL-2.0-only
-> > -/**
-> > +/*
-> >   * Copyright (c) 2011 Jonathan Cameron
-> >   *
-> >   * Companion module to the iio simple dummy example driver.
-> > @@ -27,11 +27,13 @@
-> >  #define IIO_EVENTGEN_NO 10
-> >
-> >  /**
-> > + * struct iio_dummy_eventgen
+> This is the only use of function related kerneldoc in the sourcefile
+> and no descriptions are provided.
+> 
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/iio/adc/ad7887.c:119: warning: Function parameter or member 'irq' not described in 'ad7887_trigger_handler'
+>  drivers/iio/adc/ad7887.c:119: warning: Function parameter or member 'p' not described in 'ad7887_trigger_handler'
+> 
+> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Applied.
 
-Good to say what this structure is.  Perhaps "event generator specific state"
+Thanks,
 
-> >   * @regs: irq regs we are faking
-> >   * @lock: protect the evgen state
-> >   * @inuse: mask of which irqs are connected
-> >   * @irq_sim: interrupt simulator
-> >   * @base: base of irq range
-> > + * @irq_sim_domain: irq domain  
+Jonathan
+
+> ---
+>  drivers/iio/adc/ad7887.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> To be even more clear: this could say: "interrupt simulator domain".
-> 
-> Bartosz
-> 
-> >   */
-> >  struct iio_dummy_eventgen {
-> >         struct iio_dummy_regs regs[IIO_EVENTGEN_NO];
-> > --
-> > 2.25.1
-> >  
+> diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
+> index c6a3428e950a9..bbaa0a3daea3c 100644
+> --- a/drivers/iio/adc/ad7887.c
+> +++ b/drivers/iio/adc/ad7887.c
+> @@ -109,7 +109,7 @@ static int ad7887_ring_postdisable(struct iio_dev *indio_dev)
+>  	return spi_sync(st->spi, &st->msg[AD7887_CH0]);
+>  }
+>  
+> -/**
+> +/*
+>   * ad7887_trigger_handler() bh of trigger launched polling to ring buffer
+>   *
+>   * Currently there is no option in this driver to disable the saving of
 

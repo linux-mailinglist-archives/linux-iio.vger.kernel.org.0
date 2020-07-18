@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A96DB224CC8
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 17:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55F8F224CCB
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jul 2020 18:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726959AbgGRP7z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jul 2020 11:59:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52890 "EHLO mail.kernel.org"
+        id S1726411AbgGRQAi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jul 2020 12:00:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53380 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726411AbgGRP7z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jul 2020 11:59:55 -0400
+        id S1726155AbgGRQAi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jul 2020 12:00:38 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 817522076A;
-        Sat, 18 Jul 2020 15:59:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2641D2070E;
+        Sat, 18 Jul 2020 16:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595087995;
-        bh=CP3p2govezDlK2FpqZiBjhP4KxaTQqaBw290MEpQbh0=;
+        s=default; t=1595088037;
+        bh=QRRTW3VgCAydzJZpqZ+JaipKjgR0sd4k2PtilOz4w6s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HPkP+ruFHvUsgyLElIGzyQGMlNSgHXJ/cQyKMIUBib+zieOP/BrVoVh+FcUZzdeDW
-         HliaJuS8UIcOdqmnPtoHed4febxmKXz4eu76Fw9WAX3imkNS2IgOzICcWr7wwxT81z
-         ivN/glYCKdYdjCOnr6mZvgNcQZnpuFp/lyTOSl0E=
-Date:   Sat, 18 Jul 2020 16:59:50 +0100
+        b=vr9spAtTKWdT+ZRAGLTXtyMB8Ml5JO/jhsNtgRmxYTUyiUZN7jz3foqXiTfhvPhCX
+         7SK2vFzAsFavHzgviFEpld7UwzJqa/Ge3N1zxw5BhPQieFUSEu/GDB7G1/o2g1CBc+
+         KS9c4kkdEVwGR/PxyCWH2ShdFHo/kGZI0xI//ptM=
+Date:   Sat, 18 Jul 2020 17:00:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH 21/30] iio: adc: max9611: Demote obvious misuse of
- kerneldoc to standard comment blocks
-Message-ID: <20200718165950.594d8b72@archlinux>
-In-Reply-To: <20200717165538.3275050-22-lee.jones@linaro.org>
+        linux-iio@vger.kernel.org, Oskar Andero <oskar.andero@gmail.com>,
+        Bendorff Jensen <abj@rosetechnology.dk>,
+        Soren Andersen <san@rosetechnology.dk>
+Subject: Re: [PATCH 22/30] iio: adc: mcp320x: Change ordering of compiler
+ attribute macro
+Message-ID: <20200718170033.751130a7@archlinux>
+In-Reply-To: <20200717165538.3275050-23-lee.jones@linaro.org>
 References: <20200717165538.3275050-1-lee.jones@linaro.org>
-        <20200717165538.3275050-22-lee.jones@linaro.org>
+        <20200717165538.3275050-23-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,49 +46,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Jul 2020 17:55:29 +0100
+On Fri, 17 Jul 2020 17:55:30 +0100
 Lee Jones <lee.jones@linaro.org> wrote:
 
-> No attempt has been made to document any of the demoted structs here.
+> Kerneldoc gets confused if the variable does not follow th
+> type/attribute definitions.
 > 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/iio/adc/max9611.c:117: warning: cannot understand function prototype: 'const unsigned int max9611_mux_conf[][2] = '
->  drivers/iio/adc/max9611.c:145: warning: cannot understand function prototype: 'const unsigned int max9611_gain_conf[][2] = '
+>  drivers/iio/adc/mcp320x.c:96: warning: Function parameter or member '____cacheline_aligned' not described in 'mcp320x'
 > 
-> Cc: Jacopo Mondi <jacopo+renesas@jmondi.org>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Oskar Andero <oskar.andero@gmail.com>
+> Cc: Bendorff Jensen <abj@rosetechnology.dk>
+> Cc: Soren Andersen <san@rosetechnology.dk>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Applied
+Holding this one whilst we discuss the right fix for this sort of issue.
 
-Thanks,
-
-Jonathan
-
+J
 > ---
->  drivers/iio/adc/max9611.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/mcp320x.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-> index 04d5ff7d2c8ec..3a361299a70f4 100644
-> --- a/drivers/iio/adc/max9611.c
-> +++ b/drivers/iio/adc/max9611.c
-> @@ -110,7 +110,7 @@ enum max9611_conf_ids {
->  	CONF_TEMP,
+> diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+> index 2c0eb5de110ca..191a8f644ffe7 100644
+> --- a/drivers/iio/adc/mcp320x.c
+> +++ b/drivers/iio/adc/mcp320x.c
+> @@ -91,7 +91,7 @@ struct mcp320x {
+>  	struct mutex lock;
+>  	const struct mcp320x_chip_info *chip_info;
+>  
+> -	u8 tx_buf ____cacheline_aligned;
+> +	u8 ____cacheline_aligned tx_buf;
+>  	u8 rx_buf[4];
 >  };
 >  
-> -/**
-> +/*
->   * max9611_mux_conf - associate ADC mux configuration with register address
->   *		      where data shall be read from
->   */
-> @@ -133,7 +133,7 @@ enum max9611_csa_gain_params {
->  	CSA_GAIN_OFFS_RAW,
->  };
->  
-> -/**
-> +/*
->   * max9611_csa_gain_conf - associate gain multiplier with LSB and
->   *			   offset values.
->   *
 

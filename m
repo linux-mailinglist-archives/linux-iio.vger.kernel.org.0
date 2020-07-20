@@ -2,75 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70DFE225470
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 00:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA12225815
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 09:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726159AbgGSWQ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jul 2020 18:16:27 -0400
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:53269 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726156AbgGSWQ1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jul 2020 18:16:27 -0400
-Received: from webmail.gandi.net (webmail15.sd4.0x35.net [10.200.201.15])
-        (Authenticated sender: contact@artur-rojek.eu)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPA id DE1C0FF803;
-        Sun, 19 Jul 2020 22:16:23 +0000 (UTC)
+        id S1726017AbgGTHDm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jul 2020 03:03:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725845AbgGTHDl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jul 2020 03:03:41 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95895C0619D2
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jul 2020 00:03:41 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id ls15so9737395pjb.1
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jul 2020 00:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GZoWTQVkgnpP7gasu4wtrIk5xapwZJTLKPseEPRLNvs=;
+        b=UtVnqD31pt/ZtgJEhdMU6TGM4RSQPtcTkNCIgJ0FRMnMEptf9BGl01UtQPC/f7+56u
+         OJhgXfdlS8cIhd5GCdERbkXjEKroPcovVVpK1TGA7Ri3gXPtdjgbFN4zYa1I1v8snJaN
+         Zf8a0l60GyePC8irM7dQPnCUoBTCEhH7ltNzs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GZoWTQVkgnpP7gasu4wtrIk5xapwZJTLKPseEPRLNvs=;
+        b=OFgzZ6QEa+auoEvWUROkoZqGqdyg/X3jeCGi+gz1XR6Qo4jK4lS8XUDGFBuWQ1xkQS
+         9YrGUFwvAdD0A0U855ztf9qLas1/K7vRR/bPSkXlROAbrIsVZaYd3bjQ+85c2LpGg3gc
+         DWC5i5DsaXD1flk6/QxxSVRXwILDgRW/MVDXpSDOVVWaPeLYzec2U4QlYU2dLYs6T16p
+         H5DP+ih4ncF0DLGtrvas7wTw2+qhRB3Va8d68CzyAzfp5PyO9QVs1xwL8/H9oaj5Wp1r
+         Uv3rZdh9MmYNGPKmriy2JUWWQ7RHRxYS20HEcQKNo81RMrYmbfsgTMgajlvyzMtPpELD
+         YV5w==
+X-Gm-Message-State: AOAM532L9PJu+rhb/aiAGcEXF01M6fwwi6/s4Y09HW2vo+wYlfIoCNzw
+        CsIsGAqlYkp1ngZHLqjc2YsnWjcLgTSuzA==
+X-Google-Smtp-Source: ABdhPJx2PnQtfSni5fegrOgXEH580CDhShARD2qvbyUkFr/wt5qImirWuBuQUgIBbyNW2LinJIdgcA==
+X-Received: by 2002:a17:902:be17:: with SMTP id r23mr16793228pls.284.1595228620871;
+        Mon, 20 Jul 2020 00:03:40 -0700 (PDT)
+Received: from ubuntu.Home (anon-62-111.vpn.ipredator.se. [46.246.62.111])
+        by smtp.gmail.com with ESMTPSA id gn5sm10613862pjb.23.2020.07.20.00.03.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2020 00:03:40 -0700 (PDT)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH v2 0/3] iio: chemical: atlas-ezo-sensor: add support for O2 sensor
+Date:   Mon, 20 Jul 2020 00:03:27 -0700
+Message-Id: <20200720070330.259954-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 20 Jul 2020 00:16:23 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Heiko Stuebner <heiko@sntech.de>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/6] iio/adc: ingenic: Cleanups & add touchscreen mode.
-In-Reply-To: <12263784.1eIgeU1MTH@phil>
-References: <20200709152200.10039-1-contact@artur-rojek.eu>
- <12263784.1eIgeU1MTH@phil>
-Message-ID: <60b5e2ea0ae9884a0506688a1c8670a5@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-User-Agent: Roundcube Webmail/1.3.14
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2020-07-14 20:33, Heiko Stuebner wrote:
-> Hi Artur,
-> 
-> Am Donnerstag, 9. Juli 2020, 17:21:54 CEST schrieb Artur Rojek:
->> Hi all,
->> 
->> v8 of this patchset introduces some structural changes, which I deemed
->> worthy highlighting here:
->> 
->>  - adc-joystick related changes have been dropped from this patchset 
->> and
->>    will be upstreamed separately. Their only connection to this 
->> patchset
->>    was that they used INGENIC_ADC_TOUCH_* defines in the DTS example,
->>    causing trouble to Rob's scripts.
-> 
-> as I'm mainly eyeing your adc-joystick patch ... did you post that 
-> already
-> somewhere - separately as you wrote?
-> 
-> Thanks
-> Heiko
+Add support for Alas EZO O2 sensor, rework driver to allow this to be done, and
+added IIO_MOD_O2 modifier.
 
-Hi Heiko,
+Changes from v1:
+* rebased on modifier changes for IIO_MOD_H2/ETHANOL string identifiers
 
-sorry for a late reply. As you have surely noticed in your mailbox, I 
-have sent the adc-joystick changes in the following series:
-https://lore.kernel.org/linux-input/20200719221103.91644-1-contact@artur-rojek.eu/
+Matt Ranostay (3):
+  iio: add IIO_MOD_O2 modifier
+  dt-bindings: iio: chemical: add O2 EZO module documentation
+  iio: chemical: atlas-ezo-sensor: add support for O2 sensor
 
-Regards,
-Artur
+ Documentation/ABI/testing/sysfs-bus-iio       |  2 +
+ .../bindings/iio/chemical/atlas,sensor.yaml   |  2 +
+ drivers/iio/chemical/atlas-ezo-sensor.c       | 74 ++++++++++++++-----
+ drivers/iio/industrialio-core.c               |  1 +
+ include/uapi/linux/iio/types.h                |  1 +
+ tools/iio/iio_event_monitor.c                 |  2 +
+ 6 files changed, 63 insertions(+), 19 deletions(-)
+
+-- 
+2.27.0
+

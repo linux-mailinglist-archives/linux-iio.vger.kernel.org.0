@@ -2,115 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF31D2272AE
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jul 2020 01:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F78227381
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jul 2020 02:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728025AbgGTXRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jul 2020 19:17:07 -0400
-Received: from crapouillou.net ([89.234.176.41]:40192 "EHLO crapouillou.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727986AbgGTXRG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Jul 2020 19:17:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1595287023; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QAeOX6l8QHvY1cS+Pj+8mgaWEO4yfMys+MgR7AGFpTc=;
-        b=U53XZbq33UJn2lny40KSf1gG/0qtpEB2GbT6b/g3WuYiLhArTZjfEvus04HJ76lUp2ELdI
-        qryOCWQRCzY/7j2oWBwxjB8oEslzgv72Mrp2TKghohFenpaw77ekGim+49jvdD+SceJ9f5
-        9Y6+UNrfdR3sLZVpbmNTBOWkHX5SjQQ=
-Date:   Tue, 21 Jul 2020 01:16:55 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 2/2] iio: afe: rescale: Implement write_raw
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Peter Rosin <peda@axentia.se>, od@zcrc.me,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <7CJSDQ.D8SUUUMJPNE02@crapouillou.net>
-In-Reply-To: <20200215183249.2100b6e9@archlinux>
-References: <20200210225438.112660-1-paul@crapouillou.net>
-        <20200210225438.112660-2-paul@crapouillou.net>
-        <20200215183249.2100b6e9@archlinux>
+        id S1726648AbgGUAKY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jul 2020 20:10:24 -0400
+Received: from sender4-op-o17.zoho.com ([136.143.188.17]:17701 "EHLO
+        sender4-op-o17.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726535AbgGUAKY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jul 2020 20:10:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1595290202; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=cKH4Wo1HiibKhmokUIzQx9OJE/pOsrpMW/hAvLUzX36UkTdZiGojgscXp5AaASJ1IKh+OZNYyPvEEHNKuU6oB/WdcMKtC33vy0fE1/QdiBuPFGOY56OR7o3l3SBGaqm+3Uyt9KUy9WqO5Bu1u7h7vuKods72kEVn2XWHH1onQOw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1595290202; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=5fAIcCiENZeYUY+85HQsJ14KuCLvPFwxMbYgoCRA+QE=; 
+        b=WwQolUXyJsieZ/7Tn0tsAvXERwTcTWpRuJ9RArK1CyfjvHxMwr5aEYb7V1mbU77cEBSNwZdENTuM7M96TZI7V4RsZI9BQY0UEeAgEB12qCmTf6+vVFWTTS56cF36rAKjy7hNGdhy0gv9u5hL5zXQejYmI4wb/9MYakFTCFQ5a90=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-108-28-30-30.washdc.fios.verizon.net [108.28.30.30]) by mx.zohomail.com
+        with SMTPS id 1595290197277736.5520462670838; Mon, 20 Jul 2020 17:09:57 -0700 (PDT)
+Date:   Mon, 20 Jul 2020 23:50:28 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iio: accel: bma400: add PM_SLEEP support
+Message-ID: <20200720235028.GA13636@nessie>
+References: <20200715050226.9751-1-dan@dlrobertson.com>
+ <20200715050226.9751-2-dan@dlrobertson.com>
+ <CAHp75Vc0H0C01kBsVHfmD6QbS-6Wh3R7HCua8RQ+2vHrQUqoig@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2fHTh5uZTiUOsy+g"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vc0H0C01kBsVHfmD6QbS-6Wh3R7HCua8RQ+2vHrQUqoig@mail.gmail.com>
+X-Zoho-Virus-Status: 1
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
 
-Le sam. 15 f=E9vr. 2020 =E0 18:32, Jonathan Cameron <jic23@kernel.org> a=20
-=E9crit :
-> On Mon, 10 Feb 2020 19:54:38 -0300
-> Paul Cercueil <paul@crapouillou.net> wrote:
+--2fHTh5uZTiUOsy+g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Jul 15, 2020 at 08:44:59AM +0300, Andy Shevchenko wrote:
+> On Wed, Jul 15, 2020 at 8:05 AM Dan Robertson <dan@dlrobertson.com> wrote:
+> >
+> >  - Add system sleep ops if CONFIG_PM_SLEEP is set.
+> >  - Add attribute for setting the power mode of the
+> >    device.
 >=20
->>  Implement write_raw by converting the value if writing the scale, or
->>  just calling the managed channel driver's write_raw otherwise.
->>=20
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   drivers/iio/afe/iio-rescale.c | 22 ++++++++++++++++++++++
->>   1 file changed, 22 insertions(+)
->>=20
->>  diff --git a/drivers/iio/afe/iio-rescale.c=20
->> b/drivers/iio/afe/iio-rescale.c
->>  index 95802d9ee25e..a48f6af9316d 100644
->>  --- a/drivers/iio/afe/iio-rescale.c
->>  +++ b/drivers/iio/afe/iio-rescale.c
->>  @@ -35,6 +35,27 @@ struct rescale {
->>   	int *scale_data;
->>   };
->>=20
->>  +static int rescale_write_raw(struct iio_dev *indio_dev,
->>  +			     struct iio_chan_spec const *chan,
->>  +			     int val, int val2, long mask)
->>  +{
->>  +	struct rescale *rescale =3D iio_priv(indio_dev);
->>  +	unsigned long long tmp;
->>  +
->>  +	switch (mask) {
->>  +	case IIO_CHAN_INFO_SCALE:
->>  +		tmp =3D val * 1000000000LL;
->>  +		do_div(tmp, rescale->numerator);
->>  +		tmp *=3D rescale->denominator;
->>  +		do_div(tmp, 1000000000LL);
->>  +		return iio_write_channel_attribute(rescale->source, tmp, 0,
->>  +						   IIO_CHAN_INFO_SCALE);
+> ...
 >=20
-> Why is val2 always 0?  Won't that only work if the backend device
-> has integer scales?
+> > -static const struct iio_chan_spec_ext_info bma400_ext_info[] =3D {
+>=20
+> > -};
+> > -
+> > -#define BMA400_ACC_CHANNEL(_axis) { \
+>=20
+> > -}
+> > -
+> > -static const struct iio_chan_spec bma400_channels[] =3D {
+>=20
+> > -};
+> > -
+>=20
+> I'm not sure how this part is related.
+>=20
+> ...
 
-Sorry, somehow I didn't see your answer.
+Moving things around for the power mode switching endpoint.
 
-Indeed, this will only work if the backend device has integer scales,=20
-but what should I do? Just pass 'val2' instead of 0? Will the value be=20
-correct if I only apply the scale ratio to 'val'?
+> > +static const char * const bma400_power_modes[] =3D {
+> > +       "sleep",
+> > +       "low-power",
+> > +       "normal"
+>=20
+> Missed comma.
+>=20
+> > +};
+>=20
+> ...
+>=20
+> > +#ifdef CONFIG_PM_SLEEP
+>=20
+> __maybe_unused looks better.
+
+Good point.
+
+Thanks for the review! I'll address your comments in v2 of the patchset.
 
 Cheers,
--Paul
 
+ - Dan
 
->>  +	default:
->>  +		return iio_write_channel_attribute(rescale->source,
->>  +						   val, val2, mask);
->>  +	}
->>  +}
->>  +
->>   static int rescale_convert(struct rescale *rescale, int type,
->>   			   const int val, const int val2,
->>   			   int *val_out, int *val2_out)
->>  @@ -110,6 +131,7 @@ static int rescale_read_avail(struct iio_dev=20
->> *indio_dev,
->>   }
->>=20
->>   static const struct iio_info rescale_info =3D {
->>  +	.write_raw =3D rescale_write_raw,
->>   	.read_raw =3D rescale_read_raw,
->>   	.read_avail =3D rescale_read_avail,
->>   };
->=20
+--2fHTh5uZTiUOsy+g
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCAAdFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl8WLcQACgkQRcSmUsR+
+QqUdjRAAmLyPkQ0ymHHzoWgBK2vn0s2J0HXZX3nVQkPXL4iCwLOdzU5NtSG+FMBg
+KGDatFJxYXZfOm2JUIo/oXWbF3v1es52Xa/3KDjv5TrPUwlOWe8XFsHe8gyZDzkt
+GamOSRwNZay0tY9yAzfbjdPd1qfyjXOiosO4c9J0oXIbJsdYLPf+b7lWlXxZwPmm
+BqQ5eluYdCtJ1FaBTLMAlbNGv6QTT9BIK+0T02NmUvvxO1dk+ks1luNxrpox3tL/
+QwOpHWYrTmUW6+ftabtMcoFUhIa7XxZfJCLj/4S2xGMNNt1WxfzUy4YMPhuAwf9e
+lSZHga0xQ/IevRqS1fwC7D47cl+Id4T7vLs0PApvCFLZ6suJ9zZ1Ne2PqJULkrJI
+JroNHWZ9aU+R5k2uELza27BIaMj7KRaMFZac4/7m2FsnE2iPPvlkgT6W54r85lnh
+CJDms+2aaJcR4AyRY6eHa3asgP2YSjPLUbqSwHfEc4Wes+S5NrsGrNM0oa9wOD3o
+GTxomxHHqsRUfOzwgQA+tDjOem2CzjcP8jyvO2OSlBz6z9/c7MqXsab7aLCM+AD2
+Ze9sx7I22keeG62jhiTDZ4+yKEMD132XGM5QqjAfeIkGcXOHJra+GETomIfeW+Dg
+sjdNdkTWIXghkCrnK7+NrQTMFJWkS5uszjsmFA5f5XznkSBXGNU=
+=RU+h
+-----END PGP SIGNATURE-----
+
+--2fHTh5uZTiUOsy+g--

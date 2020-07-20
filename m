@@ -2,80 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85DEE226150
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 15:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1189226F9E
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 22:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726012AbgGTNuo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jul 2020 09:50:44 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:24330 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725792AbgGTNuo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jul 2020 09:50:44 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06KDgnQt024504;
-        Mon, 20 Jul 2020 09:50:43 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 32bx03y1ve-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Jul 2020 09:50:43 -0400
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 06KDofvx061768
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 20 Jul 2020 09:50:42 -0400
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 20 Jul
- 2020 06:50:40 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 20 Jul 2020 06:50:40 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 06KDobut003232;
-        Mon, 20 Jul 2020 09:50:37 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: Kconfig: ad8366: add entry for HMC1119 chip
-Date:   Mon, 20 Jul 2020 16:52:37 +0300
-Message-ID: <20200720135237.72835-1-alexandru.ardelean@analog.com>
+        id S1731188AbgGTUWt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jul 2020 16:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729893AbgGTUWt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jul 2020 16:22:49 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31207C061794;
+        Mon, 20 Jul 2020 13:22:49 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id t15so485626pjq.5;
+        Mon, 20 Jul 2020 13:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=8bjrXDZyMWjpGVDsBPulb9TLRFHHT3dN0jgYqBommVo=;
+        b=ILuskQVn1e7trX9LpFdOjAGK6bgm6Vm9eNmxtzYcDDG7Ep5djtuBMe25PuV914Kr+x
+         45pZbuM7RwazbpqpD0xWn7+jyPDkWhV3BAYep/dT/oRk8QqK6notTRXYyycy0EIXyzse
+         LjiAG8gGVEZWCElL9IZPU7FSametRmGsnqmokjNT1Lg+sjz9xWvOI6X3GgZpbat7fOsc
+         0G/Wh66t6SiZiVV7IE+KOhGxWStr93MdQAXxv1MC6RUQfQ71cqUv9wTb15aK2IWj0Lfv
+         2SAPmWtRC0zETsQ/J37Hx9QWJx+iinp4STUsAnaPSs9ke6XQDqyCBNYtFXU7O0nBh9RK
+         G3yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=8bjrXDZyMWjpGVDsBPulb9TLRFHHT3dN0jgYqBommVo=;
+        b=t32PbTRPiAK/72pZ4FhbSmtvejmT+R0b5b6bwqWkgAwANIxV+UGftXcuw4FzZLfwvy
+         x6CVmNGY0xm2K2VuUPr31JIaTi24T/qgEMMzexxDZnuQ+LcAlClmEOXUS/ISjN0v2X1k
+         w6PkADOgUELiCU3OfLitL8AqhCBqWrbiGDvLnUzbFgsTix9L2rVMSEfPJfVMU8XBkfJD
+         44rZ8ZXWrj7OJlt9f6qypUtIf+XDyrdq92UTFNvxeAaNXJd6Kwn4oEnrvQczkpmQxdEP
+         Abrsz1qQvZWvGP6TD5PWN1sfVtRs3c6xpnz1YQumpWNizvPkCjgTN307z48WgBxvtQML
+         s2BA==
+X-Gm-Message-State: AOAM531em8NH94A96yX6jDC1np16wytcU/waWOTgQOgtj/SHySnSI1QP
+        2WwllDFqfDVKqY6+ayGhibb3b2UN
+X-Google-Smtp-Source: ABdhPJyp4TAkT9bdZInushMMYP9C2SJ+kcSbtcSv2kg1Mtp5b/BDzaXllFs1InU9WEoBmZMfEKrPxw==
+X-Received: by 2002:a17:902:b943:: with SMTP id h3mr19850760pls.38.1595276568625;
+        Mon, 20 Jul 2020 13:22:48 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 129sm17218136pfv.161.2020.07.20.13.22.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 20 Jul 2020 13:22:47 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu-Hsuan Hsu <yuhsuan@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH v2 0/4] platform/chrome: cros_ec_proto: Convert EC error codes to Linux error codes
+Date:   Mon, 20 Jul 2020 13:22:39 -0700
+Message-Id: <20200720202243.180230-1-linux@roeck-us.net>
 X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-20_09:2020-07-20,2020-07-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 clxscore=1015 spamscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=627
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007200096
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The change is mostly cosmetic. When looking into the menuconfig help of the
-ad8366 driver, the HMC1119 chip should also show up (since the driver
-supports it).
+The EC reports a variety of error codes. Most of those, with the exception
+of EC_RES_INVALID_VERSION, are converted to -EPROTO. As result, the actual
+error code gets lost. In cros_ec_cmd_xfer_status(), convert all EC errors
+to Linux error codes to report a more meaningful error to the caller to aid
+debugging.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/amplifiers/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+To prepare for this change, handle error codes other than -EPROTO for all
+callers of cros_ec_cmd_xfer_status(). Specifically, no longer assume that
+-EPROTO reflects an error from the EC and all other error codes reflect a
+transfer error.
 
-diff --git a/drivers/iio/amplifiers/Kconfig b/drivers/iio/amplifiers/Kconfig
-index 9b02c9a2bc8a..5eb1357a9c78 100644
---- a/drivers/iio/amplifiers/Kconfig
-+++ b/drivers/iio/amplifiers/Kconfig
-@@ -18,6 +18,7 @@ config AD8366
- 	    AD8366 Dual-Digital Variable Gain Amplifier (VGA)
- 	    ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
- 	    ADL5240 Digitally controlled variable gain amplifier (VGA)
-+	    HMC1119 0.25 dB LSB, 7-Bit, Silicon Digital Attenuator
- 
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ad8366.
--- 
-2.17.1
+v2: Add patches 1/4 to 3/4 to handle callers of cros_ec_cmd_xfer_status()
 
+----------------------------------------------------------------
+Guenter Roeck (4):
+      iio: cros_ec: Accept -EOPNOTSUPP as 'not supported' error code
+      cros_ec_lightbar: Accept more error codes from cros_ec_cmd_xfer_status
+      platform/chrome: cros_ec_sysfs: Report range of error codes from EC
+      platform/chrome: cros_ec_proto: Convert EC error codes to Linux error codes
+
+ .../iio/common/cros_ec_sensors/cros_ec_sensors.c   |  2 +-
+ drivers/platform/chrome/cros_ec_lightbar.c         | 10 +++---
+ drivers/platform/chrome/cros_ec_proto.c            | 37 +++++++++++++++++-----
+ drivers/platform/chrome/cros_ec_sysfs.c            | 24 ++++++--------
+ 4 files changed, 43 insertions(+), 30 deletions(-)

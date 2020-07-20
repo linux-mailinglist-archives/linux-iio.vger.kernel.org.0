@@ -2,101 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A85226121
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 15:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0EF4226143
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jul 2020 15:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725934AbgGTNi5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jul 2020 09:38:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59384 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725936AbgGTNi5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Jul 2020 09:38:57 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AC63422CAF;
-        Mon, 20 Jul 2020 13:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595252336;
-        bh=czVg5VP9cic+HNMM9EeJP1WPX3dNun3L9ybH81L69GU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jITVCBjAUt2cPaPDVBBKtC66dsFGpZkRHHVtvGaHcFY4mt6+CHsnnrq3FPq5A9yIy
-         QSrH4PalL86AcHlQ0uBw9M1q1ba3oTJFUaNx7ey77ZGUdVR5a8YPFbKcWSa0LjW9lZ
-         wd+QY+Wx460OdY9EMF3JvTwKUcDtaTdJ/Hdbdbec=
-Date:   Mon, 20 Jul 2020 14:38:51 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Microchip TCB Capture driver
-Message-ID: <20200720143851.2fced464@archlinux>
-In-Reply-To: <20200715213003.GD23553@piout.net>
-References: <20200706114347.174452-1-kamel.bouhara@bootlin.com>
-        <20200712143534.278ea3c7@archlinux>
-        <20200715213003.GD23553@piout.net>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726046AbgGTNqx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jul 2020 09:46:53 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:14326 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725792AbgGTNqw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jul 2020 09:46:52 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06KDgkiF024488;
+        Mon, 20 Jul 2020 09:46:51 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 32bx03y1mk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 20 Jul 2020 09:46:51 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 06KDkofh047422
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 20 Jul 2020 09:46:50 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 20 Jul
+ 2020 09:46:49 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 20 Jul 2020 09:46:48 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 06KDklKW003129;
+        Mon, 20 Jul 2020 09:46:47 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: adxl372: change indentation for of_table
+Date:   Mon, 20 Jul 2020 16:48:39 +0300
+Message-ID: <20200720134839.71124-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-20_09:2020-07-20,2020-07-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 clxscore=1015 spamscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007200096
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Jul 2020 23:30:03 +0200
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+The change is mostly stylistic. The table should be indented with tabs
+instead of spaces.
 
-> Hi Jonathan,
-> 
-> On 12/07/2020 14:35:34+0100, Jonathan Cameron wrote:
-> > On Mon,  6 Jul 2020 13:43:42 +0200
-> > Kamel Bouhara <kamel.bouhara@bootlin.com> wrote:
-> >   
-> > > Hello,
-> > > 
-> > > Here is a new counter driver to support Microchip TCB capture devices.
-> > > 
-> > > Each SoC has two TCB blocks, each one including three independent
-> > > channels.The following series adds support for two counter modes:
-> > > increase and quadrature decoder.
-> > > 
-> > > As for the atmel clocksource and pwm, the counter driver needs to fill
-> > > some tcb capabilities in order to operate with the right configuration.
-> > > This is achieved in first patch of this series.
-> > > 
-> > > Please feel free to comment.  
-> > 
-> > As far as I can see we have all the necessary acks etc and it looks
-> > good to me as well.
-> > 
-> > Shall I do an immutable branch with the whole lot or should we split it
-> > up?  Patches 1 and 5 need to go through the same tree, but bindings
-> > could go via another route.  I'm also fine if the whole lot goes
-> > via the appropriate soc tree if that is easier.
-> >   
-> 
-> I think the best would be an immutable branch as I have another series
-> that depends on the three preliminary patches that should go through the
-> clocksource/tip tree this cycle:
-> 
-> https://lore.kernel.org/linux-arm-kernel/20200710230813.1005150-1-alexandre.belloni@bootlin.com/
-I've pushed applied the patches to an immutable branch
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-5.8-tcb
-and merged that into the togreg branch of iio.git which is pushed out as testing or
-the autobuilders to play with it.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/accel/adxl372_spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-
-Jonathan
-
-> 
-> 
+diff --git a/drivers/iio/accel/adxl372_spi.c b/drivers/iio/accel/adxl372_spi.c
+index 3ef7e3a4804e..7741890674c1 100644
+--- a/drivers/iio/accel/adxl372_spi.c
++++ b/drivers/iio/accel/adxl372_spi.c
+@@ -40,8 +40,8 @@ static const struct spi_device_id adxl372_spi_id[] = {
+ MODULE_DEVICE_TABLE(spi, adxl372_spi_id);
+ 
+ static const struct of_device_id adxl372_of_match[] = {
+-        { .compatible = "adi,adxl372" },
+-        { },
++	{ .compatible = "adi,adxl372" },
++	{ },
+ };
+ MODULE_DEVICE_TABLE(of, adxl372_of_match);
+ 
+-- 
+2.17.1
 

@@ -2,59 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B900E228837
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jul 2020 20:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E2122883D
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jul 2020 20:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729015AbgGUS3V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jul 2020 14:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35332 "EHLO
+        id S1726763AbgGUSaZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jul 2020 14:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726658AbgGUS3U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jul 2020 14:29:20 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F6A3C061794
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jul 2020 11:29:20 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id e8so12330323pgc.5
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jul 2020 11:29:20 -0700 (PDT)
+        with ESMTP id S1726458AbgGUSaZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jul 2020 14:30:25 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E3C7C061794
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jul 2020 11:30:25 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id u185so11121352pfu.1
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jul 2020 11:30:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GEfVyHpPfB6xcmy3whs2E4kinDnpEVD88pZ16wpYHCs=;
-        b=pdABKYl9y/mAfwEgQa/ElaKbjUDLUwvvK3Bi71skVdoz3d9h3DH0vpPlVoulVdpNO6
-         u0aiAI59s/a/ChvOVSL0GQ2T/Sk1NaLtHfcLaW1EhCFhk65riJmdwsapcyUUAlYZmuyT
-         tZEMU6/IvC4SMq5KcOIlsGYGFL7TUn3wLV/KItpVT0naoKIve5rTxD/RqRLi6w4DsJKg
-         yWB1IFhJbd/SFLyiiM6/auSLBycIoVEZ6aqncBibOx7JEFgJ8X4GzbbtXJ+gGjoRvOPs
-         M7kCTHngIOrP3FXwRSM4RZg+W2tmuFzqQmaZor+kEVYNcOHwZswfYdFud9bi+lp724/k
-         QCGA==
+        bh=Snkx6cmyZAV4gjTVC54MUU1lQkQpKMap8pcrGocF2xQ=;
+        b=aUtIP7E5I1bvwescRkzSVPy1kf+SAj4AaU38NBps3slMjCgt2FiS61DpkGEk5tJJvJ
+         I5jCPpmy56A4pnkkuWmAb6r2q95b2Wh6LfIng1AB19T8r3+2SJq1hQ++XqrigVSzrf53
+         2aCsW+J9E4vPXjVFvwJb0GxFQI60cM0Hs8DWeBkobL7QBvddivIo/kpS0sg0+XLijs4K
+         S4zQWaRnpDoRGoH1WG+M27BU556+vJjepGL3p0t9++K4EWec+uobUNMTIXD6eTcbNvCQ
+         flvJcTLsrK+ur5UymWRKf2/hN+hxDYMe8+GMarktlcC9HLzZWsNRMrTy96UjIKiypH2o
+         KbHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GEfVyHpPfB6xcmy3whs2E4kinDnpEVD88pZ16wpYHCs=;
-        b=hsPyRB5UwMhd3pAQo3u7OnWfI0seda02SQvyJJygzIBq01uQwX0XfomFSAg8XkXGFZ
-         CgY3oIBMLw5ojbL6sXTOqbjeaiaBO2TeZioIJsOeSgq+IfE3oL2H6i14pT+vy+Hf8X6Q
-         7fG+d7Ubde5O9D1VBA5dtaP+89t+m8GwQAtBS0NvISIcZbmEy2e8Lw9g+vr69gTW9tbn
-         W6cXMQ2R//W0Em1ZsQrcRUNA26IacmBvLt+B6uyF5wLeBaSwTG3J0vMp5yB4iskTAGZH
-         Fa1zD6gt5oisTWvShzWTj+1BDY4C4A5FS8eYfkvDNLgRsUNPV0OZnJloEMBYI1wAygI5
-         7RuQ==
-X-Gm-Message-State: AOAM530EKUr4I+W4tDLDnH0hcx/VaJ7keZGm77nvbMQ/ZosxO1sOLfZF
-        gPKQnkQNPQ7/cIFaNuWQG+1W4ROHLDiMFaCGdY0=
-X-Google-Smtp-Source: ABdhPJxJBSATN5YYanu1rX/5gEeR8uzBeH66IDXYKHvnbsgaBLA7sKtfJ/G/rI9Q+vyPz6IIhizhbAeMriJGlait5gk=
-X-Received: by 2002:aa7:8bcb:: with SMTP id s11mr24555831pfd.170.1595356159880;
- Tue, 21 Jul 2020 11:29:19 -0700 (PDT)
+        bh=Snkx6cmyZAV4gjTVC54MUU1lQkQpKMap8pcrGocF2xQ=;
+        b=tZGnoZiRL+2c1J3BC6x+hzzsFi/IjYrYMvO4XRq+OC6fdYIHYOIUuUnISS+mMSeZen
+         3AfENSi2TIw6ZXhY17dapmLqM7YLci3ooo+5AGbYfR67MI/UcFKHSaLcMxPj2S7yRhdP
+         wNhkA9Tm0klCwtVCwQHpRbWuPEnyHyMJbRHrhMEQpucW4uO93eNGO7mCBTsiw2kkT0c4
+         Ulc4p4yja4PrCgL1jMV9UWNgvSw8EN7eJaXpD3VPLQmqKOUr9VLlcVlUnUds9LrsJ+XT
+         RkpHUHJSNSXGq9tMSGOilslOZwXTHv8TsWocOC6uIncfYxbHVq7Z4+GO4shlXiKb874x
+         z7HA==
+X-Gm-Message-State: AOAM532VCvtaRY66Gx8yG+ymMzvIp+xZ8HFFmEi46uSeYNXrYa1pKX32
+        nB+WG/wOpkboYZncxAuu/U+udVC1jHXQUAYGHHo=
+X-Google-Smtp-Source: ABdhPJx0yfobOdc5JshAD3q6GP8z6JVqLiHTNs+4PNohxSLxrGvyJAz1v3n5ZXlm5BKsP9tWRyNrFBzmPMOHviETatg=
+X-Received: by 2002:a63:a05f:: with SMTP id u31mr22979347pgn.4.1595356224743;
+ Tue, 21 Jul 2020 11:30:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200721171444.825099-1-jic23@kernel.org> <20200721171444.825099-2-jic23@kernel.org>
-In-Reply-To: <20200721171444.825099-2-jic23@kernel.org>
+References: <20200721171444.825099-1-jic23@kernel.org> <20200721171444.825099-3-jic23@kernel.org>
+In-Reply-To: <20200721171444.825099-3-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 21 Jul 2020 21:29:02 +0300
-Message-ID: <CAHp75VehvPa3Z-or4zGmEOgj-+8cXfJSj5w-ghbnCSVPumyPTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] iio:adc:axp20x: Convert from OF to generic fw /
- device properties
+Date:   Tue, 21 Jul 2020 21:30:08 +0300
+Message-ID: <CAHp75VfPm0m=QwcYUx=iPLSmd2iK-dd5MswipAzqKDmYZBWO=Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] iio:adc:ti-adc081c: Drop ACPI ids that seem very
+ unlikely to be official.
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Quentin Schulz <quentin.schulz@bootlin.com>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -65,96 +64,78 @@ On Tue, Jul 21, 2020 at 8:16 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Whilst fairly unlikely anyone will ever use this driver with anything
-> other than DT, we are trying to move IIO over to the generic interfaces
-> where easy to do so.
->
-> In this case this involved moving to generic check on presence
-> of fw_node, generic device_get_match_data and dropping the of_match_ptr
+> We have no known users of these in the wild.
+> it seems very unlikely these are real IDS having the form ADCXXXX
 
-Please refer to the
-- fwnode
-- function()
+IDS -> IDs
 
-as established practice in the documentation (and thus commit messages).
+> as that ID is owned by Achnor Datacomm not TI.
 
-> protection.  Also relevant header changes to have property.h and
-> mod_devicetable.h only.
+After addressing above typo fix,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
 >
-> Also drop the casting away of a const in favour of retaining
-> the const throughout.
->
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Quentin Schulz <quentin.schulz@bootlin.com>
 > ---
 > v1->v2
+> New patch
+>  drivers/iio/adc/ti-adc081c.c | 24 +-----------------------
+>  1 file changed, 1 insertion(+), 23 deletions(-)
 >
-> * Avoid the casting away of const by keeping it const throughout.
->
-> drivers/iio/adc/axp20x_adc.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-> index 798ff2d89691..3e0c0233b431 100644
-> --- a/drivers/iio/adc/axp20x_adc.c
-> +++ b/drivers/iio/adc/axp20x_adc.c
-> @@ -9,10 +9,10 @@
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
+> diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+> index 9426f70a8005..8bc04cfae465 100644
+> --- a/drivers/iio/adc/ti-adc081c.c
+> +++ b/drivers/iio/adc/ti-adc081c.c
+> @@ -19,7 +19,6 @@
+>  #include <linux/i2c.h>
 >  #include <linux/module.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/thermal.h>
+>  #include <linux/mod_devicetable.h>
+> -#include <linux/acpi.h>
 >
-> @@ -67,7 +67,7 @@ struct axp_data;
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -153,17 +152,7 @@ static int adc081c_probe(struct i2c_client *client,
+>         if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+>                 return -EOPNOTSUPP;
 >
->  struct axp20x_adc_iio {
->         struct regmap           *regmap;
-> -       struct axp_data         *data;
-> +       const struct axp_data   *data;
+> -       if (ACPI_COMPANION(&client->dev)) {
+> -               const struct acpi_device_id *ad_id;
+> -
+> -               ad_id = acpi_match_device(client->dev.driver->acpi_match_table,
+> -                                         &client->dev);
+> -               if (!ad_id)
+> -                       return -ENODEV;
+> -               model = &adcxx1c_models[ad_id->driver_data];
+> -       } else {
+> -               model = &adcxx1c_models[id->driver_data];
+> -       }
+> +       model = &adcxx1c_models[id->driver_data];
+>
+>         iio = devm_iio_device_alloc(&client->dev, sizeof(*adc));
+>         if (!iio)
+> @@ -238,21 +227,10 @@ static const struct of_device_id adc081c_of_match[] = {
 >  };
+>  MODULE_DEVICE_TABLE(of, adc081c_of_match);
 >
->  enum axp20x_adc_channel_v {
-> @@ -670,15 +670,15 @@ static int axp20x_probe(struct platform_device *pdev)
->         info->regmap = axp20x_dev->regmap;
->         indio_dev->modes = INDIO_DIRECT_MODE;
->
-> -       if (!pdev->dev.of_node) {
-
-> +       if (!dev_fwnode(&pdev->dev)) {
-
-After the below change I think you may use positive conditional.
-
->                 const struct platform_device_id *id;
->
->                 id = platform_get_device_id(pdev);
-> -               info->data = (struct axp_data *)id->driver_data;
-> +               info->data = (const struct axp_data *)id->driver_data;
->         } else {
->                 struct device *dev = &pdev->dev;
-
-This is probably good to have for the entire ->probe(). Or drop it
-here completely.
-
-> -               info->data = (struct axp_data *)of_device_get_match_data(dev);
-> +               info->data = device_get_match_data(dev);
->         }
->
->         indio_dev->name = platform_get_device_id(pdev)->name;
-> @@ -742,7 +742,7 @@ static int axp20x_remove(struct platform_device *pdev)
->  static struct platform_driver axp20x_adc_driver = {
+> -#ifdef CONFIG_ACPI
+> -static const struct acpi_device_id adc081c_acpi_match[] = {
+> -       { "ADC081C", ADC081C },
+> -       { "ADC101C", ADC101C },
+> -       { "ADC121C", ADC121C },
+> -       { }
+> -};
+> -MODULE_DEVICE_TABLE(acpi, adc081c_acpi_match);
+> -#endif
+> -
+>  static struct i2c_driver adc081c_driver = {
 >         .driver = {
->                 .name = "axp20x-adc",
-> -               .of_match_table = of_match_ptr(axp20x_adc_of_match),
-> +               .of_match_table = axp20x_adc_of_match,
+>                 .name = "adc081c",
+>                 .of_match_table = adc081c_of_match,
+> -               .acpi_match_table = ACPI_PTR(adc081c_acpi_match),
 >         },
->         .id_table = axp20x_adc_id_match,
->         .probe = axp20x_probe,
+>         .probe = adc081c_probe,
+>         .remove = adc081c_remove,
 > --
 > 2.27.0
 >

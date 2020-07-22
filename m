@@ -2,220 +2,235 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 000B1229AFD
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 17:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D1A229BD9
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 17:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727810AbgGVPIK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 11:08:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33844 "EHLO mail.kernel.org"
+        id S1726973AbgGVPxJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 11:53:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35492 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726717AbgGVPIK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 22 Jul 2020 11:08:10 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726427AbgGVPxJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 22 Jul 2020 11:53:09 -0400
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5DD2220709;
-        Wed, 22 Jul 2020 15:08:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7662E206F5;
+        Wed, 22 Jul 2020 15:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595430489;
-        bh=NwhYqXJUBlFdPgUynuHJ8u1JB6X7r/x6jYWed7dRf6k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tae02p9YGsjct6xUOq45UEFMlueiGNBBik+MewsHKltSVhjlvvMN3AZ64DzG75mXc
-         nLr3gWJnXoVGZUlgSO5KzgmD+BQ6Labq8AzAscTAN5YtleIVsruDHMOebcN68VGEXd
-         MYA2oIgtMtGnCyfaHLk0uX0rpkfV9LHaffuriegA=
-Date:   Wed, 22 Jul 2020 16:08:05 +0100
+        s=default; t=1595433188;
+        bh=YR5xMQmwUe60CvTtxOhr6pn8WQ7RQxar/NvVFOi4/g8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LVADNUst+L0lxDwxKYp5912q7YrL4398HF3y9U9+COmDbGks/QiR9IXEWiSWC9SlJ
+         dueUaV83c9d3EF+CpFRiW0oqUqZqi/Uc62x+O7w63hKmdYVKktcGEA6AYK1dqANWoA
+         PJ3EWZV49YOhapmFzCvAu6JVBHVcBpZXBjI8J3ko=
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+To:     linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Subject: Re: [PATCH 19/32] iio:imu:st_lsm6dsx Fix alignment and data leak
- issues
-Message-ID: <20200722160805.2910297e@archlinux>
-In-Reply-To: <20200607223351.GB893522@lore-desk.lan>
-References: <20200607155408.958437-1-jic23@kernel.org>
-        <20200607155408.958437-20-jic23@kernel.org>
-        <20200607223351.GB893522@lore-desk.lan>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 00/27] IIO: Fused set 1 and 2 of timestamp alignment fixes
+Date:   Wed, 22 Jul 2020 16:50:36 +0100
+Message-Id: <20200722155103.979802-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 8 Jun 2020 00:33:51 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > One of a class of bugs pointed out by Lars in a recent review.
-> > iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> > to the size of the timestamp (8 bytes).  This is not guaranteed in
-> > this driver which uses an array of smaller elements on the stack.
-> > As Lars also noted this anti pattern can involve a leak of data to
-> > userspace and that indeed can happen here.  We close both issues by
-> > moving to a set of suitable structures in the iio_priv() data.
-> > 
-> > This data is allocated with kzalloc so no data can leak apart from
-> > previous readings.
-> > 
-> > For the tagged path the data is aligned by using __aligned(8) for
-> > the buffer on the stack.
-> > 
-> > There has been a lot of churn in this driver, so likely backports
-> > may be needed for stable.  
-> 
-> Hi Jonathan,
-> 
-> I added just some nitpicks inline, but it seems to me the patch is fine.
-> I guess we can address them with a followup patch if you agree, no need to
-> resend this huge series :)
-> 
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> 
-Hi Lorenzo,
+These are back again. Please take a look at them.  I'm fairly sure these
+are all 'safe' but really don't like taking patches without the surety of
+a second pair of eyes having taken a look at them. That is particularly
+true of fixes for long term issues like these ones.
 
-I finally got back to this.
+Changes since v2:
+* bmc150-accel: Use sizeof() for channel size (Andy Shevchenko)
+* st_uvis25: Use local variable for regmap call (Andy Shevchenko)
+* st_lsm6dsx: Use array of scan[] rather than 3 structures (Lorenzo Bianconi)
+* inv_mpu6050: Add patch switching to a regmap_noinc_read (Jean-Baptiste Maneyrol)
+* ina2xx: Use a structure (previously failed to notice that works here)
+* I've added clarifying notes to patch descriptions based on questions asked.
+  These were mainly about why we didn't use the structure approach everywhere
+  and why I've forced alignment in places it wasn't strictly needed.
 
-> > 
-> > Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
-> > Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  5 +++
-> >  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 36 ++++++++++---------
-> >  2 files changed, 25 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > index b56df409ed0f..5f821ef467da 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > @@ -411,6 +411,11 @@ struct st_lsm6dsx_hw {
-> >  	const struct st_lsm6dsx_settings *settings;
-> >  
-> >  	struct iio_mount_matrix orientation;
-> > +	/* Ensure natural alignment of buffer elements */
-> > +	struct {
-> > +		__le16 channels[3];
-> > +		s64 ts __aligned(8);
-> > +	} gyro_scan, acc_scan, ext_scan;
-> >  };  
-> 
-> it seems to me doing something like:
-> 
-> struct {
-> 	__le16 channels[3];
-> 	s64 ts __aligned(8);
-> } scan[3];
-> 
-> would be better if for example we want to add support for more external devices
-> for untagged FIFO devices
+Previous cover letter:
+A few notes based on questions on v1.
 
-Fair enough. I'll do that bit.
+1. Why not use put_unaligned to avoid the whole thing?
+   This interface can pass directly to a variety of in kernel users
+   who would reasonably assume that we have true natural alignment.
+   When it gets passed directly is subtle as it depends on whether
+   the demux has to realign the data or not.  So enabling an extra
+   channel could result in a previously working alignment no longer
+   being true.
+   
+   Even if this is fine for existing usecases we are likely to
+   store up subtle long term issues if we don't fix it explicitly.
+   It's also worth noting that the data channel sometimes suffered
+   the same problem as the timestamp.
 
-> 
-> >  
-> >  static __maybe_unused const struct iio_event_spec st_lsm6dsx_event = {
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > index afd00daeefb2..bebbc2bb37f7 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > @@ -341,9 +341,6 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >  	int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
-> >  	u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
-> >  	u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
-> > -	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> > -	u8 acc_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> > -	u8 ext_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> >  	bool reset_ts = false;
-> >  	__le16 fifo_status;
-> >  	s64 ts = 0;
-> > @@ -404,19 +401,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >  
-> >  		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
-> >  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
-> > -				memcpy(gyro_buff, &hw->buff[offset],
-> > -				       ST_LSM6DSX_SAMPLE_SIZE);
-> > -				offset += ST_LSM6DSX_SAMPLE_SIZE;
-> > +				memcpy(hw->gyro_scan.channels,
-> > +				       &hw->buff[offset],
-> > +				       sizeof(hw->gyro_scan.channels));
-> > +				offset += sizeof(hw->gyro_scan.channels);
-> >  			}
-> >  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
-> > -				memcpy(acc_buff, &hw->buff[offset],
-> > -				       ST_LSM6DSX_SAMPLE_SIZE);
-> > -				offset += ST_LSM6DSX_SAMPLE_SIZE;
-> > +				memcpy(hw->acc_scan.channels,
-> > +				       &hw->buff[offset],
-> > +				       sizeof(hw->acc_scan.channels));
-> > +				offset += sizeof(hw->acc_scan.channels);
-> >  			}
-> >  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
-> > -				memcpy(ext_buff, &hw->buff[offset],
-> > -				       ST_LSM6DSX_SAMPLE_SIZE);
-> > -				offset += ST_LSM6DSX_SAMPLE_SIZE;
-> > +				memcpy(hw->ext_scan.channels,
-> > +				       &hw->buff[offset],
-> > +				       sizeof(hw->ext_scan.channels));
-> > +				offset += sizeof(hw->ext_scan.channels);
-> >  			}
-> >  
-> >  			if (ts_sip-- > 0) {
-> > @@ -446,19 +446,22 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
-> >  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
-> >  				iio_push_to_buffers_with_timestamp(
-> >  					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
-> > -					gyro_buff, gyro_sensor->ts_ref + ts);
-> > +					&hw->gyro_scan,
-> > +					gyro_sensor->ts_ref + ts);
-> >  				gyro_sip--;
-> >  			}
-> >  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
-> >  				iio_push_to_buffers_with_timestamp(
-> >  					hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> > -					acc_buff, acc_sensor->ts_ref + ts);
-> > +					&hw->acc_scan,
-> > +					acc_sensor->ts_ref + ts);
-> >  				acc_sip--;
-> >  			}
-> >  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
-> >  				iio_push_to_buffers_with_timestamp(
-> >  					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
-> > -					ext_buff, ext_sensor->ts_ref + ts);
-> > +					&hw->ext_scan,
-> > +					ext_sensor->ts_ref + ts);
-> >  				ext_sip--;
-> >  			}
-> >  			sip++;
-> > @@ -543,7 +546,8 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw *hw)
-> >  {
-> >  	u16 pattern_len = hw->sip * ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-> >  	u16 fifo_len, fifo_diff_mask;
-> > -	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE], tag;
-> > +	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);  
-> 
-> here we can use hw->scan[0] and drop the array on the stack
+2. Why not specify explicit padding?
+   In my view this is error prone in comparisom with relying on
+   c to do the hard work for us.
 
-This gets trickier because the scan can have other types of data in it.
-The timestamp doesn't match with our carefully created structure for scan[].
+3. Why not move the timestamp to the start?
+   ABI breakage and as timestamp is optional (no obvious from the
+   iio_push_to_buffers_with_timestamp call) we can end up having
+   to shift the rest of the data within that call.
+   
+Changes since v1.
 
-Hence I'd rather leave this one be, or define another structure to
-accommodate it.
+Andy Schevchenko pointed out that on x86_32 s64 elements are only
+aligned to 4 bytes.  Where I had tried to use a structure to avoid
+explicit need to list the padding, there were some cases where
+this results in insufficient padding being inserted.
 
-Jonathan
+This doesn't affect the few patches that had already been applied and
+sent upstream. (which was lucky ;)
 
-> 
-> > +	u8 tag;
-> >  	bool reset_ts = false;
-> >  	int i, err, read_len;
-> >  	__le16 fifo_status;
-> > -- 
-> > 2.26.2
-> >   
+The fix was to take advantage of __aligned(8) which (according to
+my reading of the c spec and the gcc docs) enforces the alignment of
+both the element within a structure and the structure itself.
+The kernel now requires a recent enough version of GCC to ensure this
+works both on the stack and heap.  This is done in lots of other
+userspace interfaces. In some cases iio_push_to_buffers_with_ts
+is aligning data for passing to userspace, be it via a kfifo
+so it is sensible we should use the same solution.
+
+Note that we could have used u64_aligned but there is no equivalent
+for s64 and explicit use of __aligned(8) is common in
+the kernel so we adopt this here.
+
+Note that there were about 8 drivers that would have been broken with
+v1 of the patch.  I have also forced alignment of timestamps in cases
+where (mostly by coincidence) we would have been fine (padding was
+less than 4 bytes anyway.  I did this partly to reduce fragility if
+other elements are added in future and also to avoid cut and paste
+errors in new drivers.
+
+There were a few other minor tidying up changes inline with reviews
+of v1.
+
+I've kept tags given for v1 on basis the changes are minor. Shout if
+you disagree.
+
+Version 1 part 1 cover letter.
+
+Lars noted in a recent review [1] of the adis16475 that we had an issue around
+the alignment requirements of iio_push_to_buffers_with_timestamp.
+Whilst it's not documented, that function assumes that the overall buffer
+is 8 byte aligned, to ensure the timestamp is itself naturally aligned.
+We have drivers that use arrays (typically on the stack) that do
+not guarantee this alignment.
+
+We could have fixed this by using a put_unaligned to write the timestamp
+but I think that just pushes the problem down the line.  If we were to
+have a consumer buffer wanting all the channels in the current
+active_scanmask then it will get the raw buffer from the driver passed
+straight through.  It seems odd to me if we allow passing a buffer
+that is not naturally aligned through to a consumer.
+Hence I'm proposing to fix up all existing drivers that might pass
+a buffer with insufficient alignment guarantees.
+Sometimes the timestamp is guaranteed to be in a particular location,
+in which case we can use C structure alignment guarantees to fix this
+in a nice readable fashion.  In other cases, the timestamp location
+depends on which channels are enabled, and in those case we can
+use explicit alignment __aligned(8) to ensure the whole array is
+appropriately aligned.
+
+Lars-Peter also noted that, in many of these cases, there are holes
+in the stack array that we never write.  Those provide a potential
+leak of kernel data to userspace.  For drivers where this applies
+we either need to zero those holes each time, or allocate the buffer
+on the heap (only once), ensuring it is zeroed at that time.
+We may leak previous values from the sensor but currently that seems
+unlikely to present any form of security risk.
+
+As such, this first set contains a mixture of fixes.  Where there
+are no possible holes, the buffer is kept on the stack but a
+c structure is used to guarantee appropriate alignment.  Where
+there are holes, the buffer is moved into the iio_priv() accessed
+data private structure. A c structure or __aligned(8) is used
+as appropriate.
+
+I've stopped at this point rather than doing all the drivers Lars
+found in order to both throttle the review burden and also to
+see find any general problems with the fixes before doign futher
+similar series.  A few of the remaining ones will be rather more
+complex to deal with.
+
+These have been there a long time, so whilst they are fixes we
+will want in stable I'm not that bothered if it takes us a little
+while to get them there!
+
+[1] https://www.spinics.net/lists/devicetree/msg350590.html
+[2] https://patchwork.kernel.org/cover/11554215/
+
+Jonathan Cameron (27):
+  iio: accel: kxsd9: Fix alignment of local buffer.
+  iio:accel:mma8452: Fix timestamp alignment and prevent data leak.
+  iio:accel:bmc150-accel: Fix timestamp alignment and prevent data leak.
+  iio:accel:mma7455: Fix timestamp alignment and prevent data leak.
+  iio:gyro:itg3200: Fix timestamp alignment and prevent data leak.
+  iio:proximity:mb1232: Fix timestamp alignment and prevent data leak.
+  iio:chemical:ccs811: Fix timestamp alignment and prevent data leak.
+  iio:light:si1145: Fix timestamp alignment and prevent data leak.
+  iio:light:max44000 Fix timestamp alignment and prevent data leak.
+  iio:light:rpr0521 Fix timestamp alignment and prevent data leak.
+  iio:light:st_uvis25 Fix timestamp alignment and prevent data leak.
+  iio:light:ltr501 Fix timestamp alignment issue.
+  iio:magnetometer:ak8975 Fix alignment and data leak issues.
+  iio:magnetometer:mag3110 Fix alignment and data leak issues.
+  iio:imu:bmi160 Fix alignment and data leak issues
+  iio:imu:st_lsm6dsx Fix alignment and data leak issues
+  iio:imu:inv_mpu6050 Fix dma and ts alignment and data leak issues.
+  iio:imu:inv_mpu6050: Use regmap_noinc_read for fifo reads.
+  iio:pressure:mpl3115 Force alignment of buffer
+  iio:adc:ti-adc081c Fix alignment and data leak issues
+  iio:adc:ti-adc084s021 Fix alignment and data leak issues.
+  iio:adc:ti-adc084s021 Tidy up endian types
+  iio:adc:ti-ads124s08 Fix alignment and data leak issues.
+  iio:adc:ti-adc0832 Fix alignment issue with timestamp
+  iio:adc:ti-adc12138 Fix alignment issue with timestamp
+  iio:adc:ina2xx Fix timestamp alignment issue.
+  iio:adc:max1118 Fix alignment of timestamp and data leak issues
+
+ drivers/iio/accel/bmc150-accel-core.c         | 15 ++++++--
+ drivers/iio/accel/kxsd9.c                     | 16 ++++++---
+ drivers/iio/accel/mma7455_core.c              | 16 ++++++---
+ drivers/iio/accel/mma8452.c                   | 11 ++++--
+ drivers/iio/adc/ina2xx-adc.c                  | 11 +++---
+ drivers/iio/adc/max1118.c                     | 10 ++++--
+ drivers/iio/adc/ti-adc081c.c                  | 11 ++++--
+ drivers/iio/adc/ti-adc0832.c                  |  7 ++--
+ drivers/iio/adc/ti-adc084s021.c               | 20 ++++++-----
+ drivers/iio/adc/ti-adc12138.c                 |  9 ++---
+ drivers/iio/adc/ti-ads124s08.c                | 10 ++++--
+ drivers/iio/chemical/ccs811.c                 | 13 ++++---
+ drivers/iio/gyro/itg3200_buffer.c             | 15 +++++---
+ drivers/iio/imu/bmi160/bmi160.h               |  2 ++
+ drivers/iio/imu/bmi160/bmi160_core.c          |  5 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  8 +++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 14 ++++----
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  6 ++++
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 36 ++++++++++---------
+ drivers/iio/light/ltr501.c                    | 15 ++++----
+ drivers/iio/light/max44000.c                  | 12 ++++---
+ drivers/iio/light/rpr0521.c                   | 17 ++++++---
+ drivers/iio/light/si1145.c                    |  7 ++--
+ drivers/iio/light/st_uvis25.h                 |  5 +++
+ drivers/iio/light/st_uvis25_core.c            |  8 +++--
+ drivers/iio/magnetometer/ak8975.c             | 16 ++++++---
+ drivers/iio/magnetometer/mag3110.c            | 13 ++++---
+ drivers/iio/pressure/mpl3115.c                |  3 +-
+ drivers/iio/proximity/mb1232.c                | 17 ++++-----
+ 29 files changed, 229 insertions(+), 119 deletions(-)
+
+-- 
+2.27.0
 

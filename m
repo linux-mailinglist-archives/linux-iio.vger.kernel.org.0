@@ -2,136 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE90C2291B5
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 09:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EAF2291FF
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 09:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbgGVHIY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 03:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727096AbgGVHIY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 03:08:24 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA83C061794;
-        Wed, 22 Jul 2020 00:08:23 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id n24so1021701otr.13;
-        Wed, 22 Jul 2020 00:08:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vv6mjOP8SpjjnDhw8GwlKnMXEsutI46n6lzkUQF8tkw=;
-        b=UFU9MpvRS/y+TNwXyc45b4mqyFH6w3m8D1C0tN60EEcFpYc4bRF19z5MXiYySiz6ZU
-         g9Xcv0K8DSPsnfbg+f21mbWDNiUf/+Rt4DuVbSH7PNWJowvBUun2h3tWPv/ESqnDc/OH
-         +h/+8mPMzS/ebXWyEN2F2zlfl47YeglMj3ncgarka8towJP5EBlpJqX/c01gKOJYcplj
-         L6M+RDEO7fzgEPbVsl4QLRzk7WE1iyf11lYrIYeZIFAmNKKdEk9KZtE0BxkeyIepwVIs
-         ZfaNrFXA20q+TsUG4lU0kg7hiHY5uuQMWJfeAghj7oWi7k4s4VUn8/ks2BWGnX6fEia1
-         iA7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vv6mjOP8SpjjnDhw8GwlKnMXEsutI46n6lzkUQF8tkw=;
-        b=VCq5qX6VTcENaSnNMCqwu5oAL9C2cGcjRfSrRnfa73YqFIdbCJVcIiD31lGPimLiCn
-         HGSGlnLGfBZxe5kg+hCNIB3J4scQe28YRGsh12Mi8asxQjBvs9zhI6RM70xAnePv5G7Z
-         hbRczZOdUskJcL6pe8Q9RNgnVeCP4VsamBC53S7yB4il8taJxFSR04+AQ8tTsRKkLUH4
-         KqTqPUgMJaIFoCmyNoXTDRo3aJiBQzcWRGFit824NPH0cCFT0El/hm7SXqGidhE33C0A
-         419aSUCW3SPSPeJls8u3GKjR2MjRrl+wFfSXP3WnsBOxG6K/IptkGrukhCvZw33D9jQ5
-         l5zQ==
-X-Gm-Message-State: AOAM531eYs4hnF6dw/b/ospomoy5VcdabQq6dlhTRn0RJK5E0I2S6Qyn
-        egG77DXbp5IrMO3yeAZo8niZOBJcMvTgZEHB/gHAdr7u
-X-Google-Smtp-Source: ABdhPJxo9vG64VfOkf3OIlEGKsqkTeBufeBPKshJUoFIMN/OBuB2EImQdg9wl4uRrJgeDDdFvHP5z9eJ1uBW0/3RAS8=
-X-Received: by 2002:a05:6830:19eb:: with SMTP id t11mr26935831ott.207.1595401703383;
- Wed, 22 Jul 2020 00:08:23 -0700 (PDT)
+        id S1729566AbgGVHUR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 03:20:17 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:2644 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729025AbgGVHUR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 03:20:17 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06M7EqgJ001349;
+        Wed, 22 Jul 2020 03:20:16 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 32cv1456w4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Jul 2020 03:20:16 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 06M7KFYo000995
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 22 Jul 2020 03:20:15 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 22 Jul 2020 03:20:13 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 22 Jul 2020 03:20:13 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 22 Jul 2020 03:20:13 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 06M7K8FA017930;
+        Wed, 22 Jul 2020 03:20:09 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2] iio: frequency: ad9523: convert rest of driver to device managed functions
+Date:   Wed, 22 Jul 2020 10:22:01 +0300
+Message-ID: <20200722072201.64127-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200721112409.220536-1-alexandru.ardelean@analog.com>
+References: <20200721112409.220536-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-References: <20200720134931.71537-1-alexandru.ardelean@analog.com> <CAHp75VfmvGgCK3Cg1nxPtYeF1Y9oQAKST1bAnKXxB2hpd8=feg@mail.gmail.com>
-In-Reply-To: <CAHp75VfmvGgCK3Cg1nxPtYeF1Y9oQAKST1bAnKXxB2hpd8=feg@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Wed, 22 Jul 2020 10:08:12 +0300
-Message-ID: <CA+U=DsrqGkhpbu32b0F8uzihtwbJVSbPQ7xOtHq8UgmM7-2peA@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: adxl372: Add OF device ID table
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-22_03:2020-07-22,2020-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ clxscore=1015 adultscore=0 suspectscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007220054
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 21, 2020 at 9:39 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Mon, Jul 20, 2020 at 4:48 PM Alexandru Ardelean
-> <alexandru.ardelean@analog.com> wrote:
-> >
-> > From: Stefan Popa <stefan.popa@analog.com>
-> >
-> > The driver does not have a struct of_device_id table, but supported
-> > devices are registered via Device Trees. This patch adds OF device ID
-> > table.
-> >
-> > Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  drivers/iio/accel/adxl372_i2c.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/drivers/iio/accel/adxl372_i2c.c b/drivers/iio/accel/adxl372_i2c.c
-> > index e1affe480c77..5197d1eb6803 100644
-> > --- a/drivers/iio/accel/adxl372_i2c.c
-> > +++ b/drivers/iio/accel/adxl372_i2c.c
-> > @@ -8,6 +8,8 @@
-> >  #include <linux/i2c.h>
-> >  #include <linux/module.h>
-> >  #include <linux/regmap.h>
->
->
-> > +#include <linux/of.h>
-> > +#include <linux/of_device.h>
->
-> With the huge patch series from Jonathan I think you may learn that
-> proper header here is
->
-> mod_devicetable.h.
+The driver pretty much uses device managed functions. The only left-over is
+the iio_device_register() function, which also requires an action-or-reset
+hook to disable the regulator on the remove and error path.
 
-yep;
-thanks for pointing that out;
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
 
->
->
-> >
-> >  #include "adxl372.h"
-> >
-> > @@ -46,9 +48,16 @@ static const struct i2c_device_id adxl372_i2c_id[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, adxl372_i2c_id);
-> >
-> > +static const struct of_device_id adxl372_of_match[] = {
-> > +       { .compatible = "adi,adxl372" },
->
-> > +       { },
->
-> No comma, please!
->
-> > +};
-> > +MODULE_DEVICE_TABLE(of, adxl372_of_match);
-> > +
-> >  static struct i2c_driver adxl372_i2c_driver = {
-> >         .driver = {
-> >                 .name = "adxl372_i2c",
-> > +               .of_match_table = adxl372_of_match,
-> >         },
-> >         .probe = adxl372_i2c_probe,
-> >         .id_table = adxl372_i2c_id,
-> > --
-> > 2.17.1
-> >
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Changelog v1 -> v2:
+* removed 'probed' message at the end of probe; mostly log spam
+
+ drivers/iio/frequency/ad9523.c | 60 ++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
+index 334e1d779d6d..bdb0bc3b12dd 100644
+--- a/drivers/iio/frequency/ad9523.c
++++ b/drivers/iio/frequency/ad9523.c
+@@ -969,6 +969,13 @@ static int ad9523_setup(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
++static void ad9523_reg_disable(void *data)
++{
++	struct regulator *reg = data;
++
++	regulator_disable(reg);
++}
++
+ static int ad9523_probe(struct spi_device *spi)
+ {
+ 	struct ad9523_platform_data *pdata = spi->dev.platform_data;
+@@ -994,21 +1001,22 @@ static int ad9523_probe(struct spi_device *spi)
+ 		ret = regulator_enable(st->reg);
+ 		if (ret)
+ 			return ret;
++
++		ret = devm_add_action_or_reset(&spi->dev, ad9523_reg_disable,
++					       st->reg);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
+ 		GPIOD_OUT_HIGH);
+-	if (IS_ERR(st->pwrdown_gpio)) {
+-		ret = PTR_ERR(st->pwrdown_gpio);
+-		goto error_disable_reg;
+-	}
++	if (IS_ERR(st->pwrdown_gpio))
++		return PTR_ERR(st->pwrdown_gpio);
+ 
+ 	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+ 		GPIOD_OUT_LOW);
+-	if (IS_ERR(st->reset_gpio)) {
+-		ret = PTR_ERR(st->reset_gpio);
+-		goto error_disable_reg;
+-	}
++	if (IS_ERR(st->reset_gpio))
++		return PTR_ERR(st->reset_gpio);
+ 
+ 	if (st->reset_gpio) {
+ 		udelay(1);
+@@ -1017,10 +1025,8 @@ static int ad9523_probe(struct spi_device *spi)
+ 
+ 	st->sync_gpio = devm_gpiod_get_optional(&spi->dev, "sync",
+ 		GPIOD_OUT_HIGH);
+-	if (IS_ERR(st->sync_gpio)) {
+-		ret = PTR_ERR(st->sync_gpio);
+-		goto error_disable_reg;
+-	}
++	if (IS_ERR(st->sync_gpio))
++		return PTR_ERR(st->sync_gpio);
+ 
+ 	spi_set_drvdata(spi, indio_dev);
+ 	st->spi = spi;
+@@ -1035,34 +1041,9 @@ static int ad9523_probe(struct spi_device *spi)
+ 
+ 	ret = ad9523_setup(indio_dev);
+ 	if (ret < 0)
+-		goto error_disable_reg;
+-
+-	ret = iio_device_register(indio_dev);
+-	if (ret)
+-		goto error_disable_reg;
+-
+-	dev_info(&spi->dev, "probed %s\n", indio_dev->name);
+-
+-	return 0;
+-
+-error_disable_reg:
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
+-
+-	return ret;
+-}
+-
+-static int ad9523_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct ad9523_state *st = iio_priv(indio_dev);
+-
+-	iio_device_unregister(indio_dev);
+-
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
++		return ret;
+ 
+-	return 0;
++	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+ static const struct spi_device_id ad9523_id[] = {
+@@ -1076,7 +1057,6 @@ static struct spi_driver ad9523_driver = {
+ 		.name	= "ad9523",
+ 	},
+ 	.probe		= ad9523_probe,
+-	.remove		= ad9523_remove,
+ 	.id_table	= ad9523_id,
+ };
+ module_spi_driver(ad9523_driver);
+-- 
+2.17.1
+

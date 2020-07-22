@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 439FE229BE4
+	by mail.lfdr.de (Postfix) with ESMTP id B99B9229BE5
 	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 17:53:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729201AbgGVPxZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 11:53:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35662 "EHLO mail.kernel.org"
+        id S1729249AbgGVPx0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 11:53:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35684 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726427AbgGVPxZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 22 Jul 2020 11:53:25 -0400
+        id S1726427AbgGVPx0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 22 Jul 2020 11:53:26 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BBFFB20771;
-        Wed, 22 Jul 2020 15:53:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4CBFC208E4;
+        Wed, 22 Jul 2020 15:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595433204;
-        bh=TZ4FEWAjKvmXqgkVVlnaXf+ULLHl8K8W0YsSzflV640=;
+        s=default; t=1595433206;
+        bh=9/Nc7AOxF+tbHgakEOl8OJWkFEiVTOk+Wrzfl1AmJXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQsfQx43RSPWtWCsBn4eIozzwpTJ3IZigMLU737MCM+WGIV6Sm3saFkyr9TXPr7ii
-         W/FOktrsstQztFB6wBabyoemT9vK4tYEjCq5r1nfWrytdJ2fqS5VhDkemN3/sCNLYB
-         6lzVewp4pX/W41PWpr4VZqI0qwfGySQT3ZFcEI0A=
+        b=JkXUXWygPfDnAdR3j742J3Qgzon7UggDjimF0s7zJ3u+bbBNTXKCd75He5NDjj+aM
+         tUuOqIUmhEI3OE+onN4+SUvyubyIP64/oh5+J5GfPCrqKJ1Kln4+cuNpxobvA28u76
+         TfMdfJTYisCTFq4HmhIHk29vpWZQUAIyE62Qq5Os=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH v3 11/27] iio:light:st_uvis25 Fix timestamp alignment and prevent data leak.
-Date:   Wed, 22 Jul 2020 16:50:47 +0100
-Message-Id: <20200722155103.979802-12-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 12/27] iio:light:ltr501 Fix timestamp alignment issue.
+Date:   Wed, 22 Jul 2020 16:50:48 +0100
+Message-Id: <20200722155103.979802-13-jic23@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200722155103.979802-1-jic23@kernel.org>
 References: <20200722155103.979802-1-jic23@kernel.org>
@@ -49,69 +48,70 @@ One of a class of bugs pointed out by Lars in a recent review.
 iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
 to the size of the timestamp (8 bytes).  This is not guaranteed in
 this driver which uses an array of smaller elements on the stack.
-As Lars also noted this anti pattern can involve a leak of data to
-userspace and that indeed can happen here.  We close both issues by
-moving to a suitable structure in the iio_priv()
+Here we use a structure on the stack.  The driver already did an
+explicit memset so no data leak was possible.
 
-This data is allocated with kzalloc so no data can leak apart
-from previous readings.
+Forced alignment of ts is not strictly necessary but probably makes
+the code slightly less fragile.
 
-A local unsigned int variable is used for the regmap call so it
-is clear there is no potential issue with writing into the padding
-of the structure.
+Note there has been some rework in this driver of the years, so no
+way this will apply cleanly all the way back.
 
-Fixes: 3025c8688c1e ("iio: light: add support for UVIS25 sensor")
+Fixes: 2690be905123 ("iio: Add Lite-On ltr501 ambient light / proximity sensor driver")
 Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/st_uvis25.h      | 5 +++++
- drivers/iio/light/st_uvis25_core.c | 8 +++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/iio/light/ltr501.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/light/st_uvis25.h b/drivers/iio/light/st_uvis25.h
-index 78bc56aad129..283086887caf 100644
---- a/drivers/iio/light/st_uvis25.h
-+++ b/drivers/iio/light/st_uvis25.h
-@@ -27,6 +27,11 @@ struct st_uvis25_hw {
- 	struct iio_trigger *trig;
- 	bool enabled;
- 	int irq;
-+	/* Ensure timestamp is naturally aligned */
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 4bac0646398d..b4323d2db0b1 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1243,13 +1243,16 @@ static irqreturn_t ltr501_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ltr501_data *data = iio_priv(indio_dev);
+-	u16 buf[8];
 +	struct {
-+		u8 chan;
++		u16 channels[3];
 +		s64 ts __aligned(8);
 +	} scan;
- };
+ 	__le16 als_buf[2];
+ 	u8 mask = 0;
+ 	int j = 0;
+ 	int ret, psdata;
  
- extern const struct dev_pm_ops st_uvis25_pm_ops;
-diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
-index a18a82e6bbf5..50d9850256fc 100644
---- a/drivers/iio/light/st_uvis25_core.c
-+++ b/drivers/iio/light/st_uvis25_core.c
-@@ -232,17 +232,19 @@ static const struct iio_buffer_setup_ops st_uvis25_buffer_ops = {
+-	memset(buf, 0, sizeof(buf));
++	memset(&scan, 0, sizeof(scan));
  
- static irqreturn_t st_uvis25_buffer_handler_thread(int irq, void *p)
- {
--	u8 buffer[ALIGN(sizeof(u8), sizeof(s64)) + sizeof(s64)];
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *iio_dev = pf->indio_dev;
- 	struct st_uvis25_hw *hw = iio_priv(iio_dev);
-+	unsigned int val;
- 	int err;
+ 	/* figure out which data needs to be ready */
+ 	if (test_bit(0, indio_dev->active_scan_mask) ||
+@@ -1268,9 +1271,9 @@ static irqreturn_t ltr501_trigger_handler(int irq, void *p)
+ 		if (ret < 0)
+ 			return ret;
+ 		if (test_bit(0, indio_dev->active_scan_mask))
+-			buf[j++] = le16_to_cpu(als_buf[1]);
++			scan.channels[j++] = le16_to_cpu(als_buf[1]);
+ 		if (test_bit(1, indio_dev->active_scan_mask))
+-			buf[j++] = le16_to_cpu(als_buf[0]);
++			scan.channels[j++] = le16_to_cpu(als_buf[0]);
+ 	}
  
--	err = regmap_read(hw->regmap, ST_UVIS25_REG_OUT_ADDR, (int *)buffer);
-+	err = regmap_read(hw->regmap, ST_UVIS25_REG_OUT_ADDR, &val);
- 	if (err < 0)
- 		goto out;
+ 	if (mask & LTR501_STATUS_PS_RDY) {
+@@ -1278,10 +1281,10 @@ static irqreturn_t ltr501_trigger_handler(int irq, void *p)
+ 				       &psdata, 2);
+ 		if (ret < 0)
+ 			goto done;
+-		buf[j++] = psdata & LTR501_PS_DATA_MASK;
++		scan.channels[j++] = psdata & LTR501_PS_DATA_MASK;
+ 	}
  
--	iio_push_to_buffers_with_timestamp(iio_dev, buffer,
-+	hw->scan.chan = val & 0xFF;
-+
-+	iio_push_to_buffers_with_timestamp(iio_dev, &hw->scan,
- 					   iio_get_time_ns(iio_dev));
+-	iio_push_to_buffers_with_timestamp(indio_dev, buf,
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+ 					   iio_get_time_ns(indio_dev));
  
- out:
+ done:
 -- 
 2.27.0
 

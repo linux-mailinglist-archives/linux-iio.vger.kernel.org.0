@@ -2,81 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0379229E4C
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 19:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D108C22A03D
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 21:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729306AbgGVRTC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 13:19:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35288 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726938AbgGVRTC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 22 Jul 2020 13:19:02 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 363E92071A;
-        Wed, 22 Jul 2020 17:19:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595438341;
-        bh=ia3Drrpb8R286Xl10CkSuL9nEqLtKvC8Ftw8IXrdn/s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Llbo/CbeIrHS36qg4Tav3ymVIZ6aEUb70v3+IRetVM7dfFtTJ05OA67XrrwaYZ6Y7
-         DOH5dhovSD6XxQjJXy9IrN4W3avampo7relGtesnasxUuwBe2q8f5X2xzD9xKnJH2I
-         +lEtbG7fHzaVDIH8mEbYE1D/wqf+fVmDMVPMK64o=
-Date:   Wed, 22 Jul 2020 18:18:57 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org
-Cc:     Jacopo Mondi <jacopo@jmondi.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/3] dt-bindings: iio: adc: Maxim ADC yaml conversions
-Message-ID: <20200722181857.57917132@archlinux>
-In-Reply-To: <20200722171224.989138-1-jic23@kernel.org>
-References: <20200722171224.989138-1-jic23@kernel.org>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726535AbgGVTnc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 15:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbgGVTnc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 15:43:32 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E087DC0619DC
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 12:43:31 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id p1so1503161pls.4
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 12:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jnl+WGxDXlCYlZvXTHQwvTshqD0cDitqZeDay/qzFiE=;
+        b=DPifj3BVcNJYi9lW7eP+sjYXwCCsvmVYNLacg3HmhgPlb2KyxvN3EepYKUkARfOiZk
+         Xdtqd9mo5Re2B/OAEzAttnytRCNBvkhTXwKs7tomEFvnDtiYscKs2fNrKdAqnwkOk4Lm
+         Jdm6W/klYOH6sh8os3UabOrVbYh9NljQUjPRj09Gof8tEUGS0meGcQ1Z5WDdnBHeQhuD
+         6jwDVCDudVp0Qks9B3WS4pnNjopnf3H0XID8RhxNtelgVaDBuryOqsvbePEBpRxkiQW2
+         W97Tm/l+G1Mpay/hcaPvhknvvrzj2mnrR7fLVrhjZTJ8u2wQXhPRJUv6LQZTZSYY4ZY8
+         WYog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jnl+WGxDXlCYlZvXTHQwvTshqD0cDitqZeDay/qzFiE=;
+        b=kCwA23JWs8R897GvqRfmkI3qDY1cwR40fsJLPc8yb+2eUzXrzjz9IF2A7I9wCTUtdW
+         E19nRnOvuSeX1DILzmmDE2peFljO/Xe6iUoQm4XuBDLzZA8khlZzMTOjzZrQBy49FyaZ
+         1zNolQ3yLJ0uJuGiRnwAvyeNNDVMBtwABst69HwB90SbBe2RWAXynGJu+bMWUyku3imO
+         xMNkXVcDWnjRcHASF7q3VbQ8OMSCGiqbG5+C6LclpQta3yhuWTis4W49uzM+4XI52Ly1
+         7E6xeIzAe9Ekzwh2aMLMAUNuGEz8OdIdi9eni0lnPz0tYA1OU3O6bBDTPzFa380Gvlr7
+         sKhA==
+X-Gm-Message-State: AOAM532t3XfIxF2vST3Et4aZBRhiWzUpTVC8fpEQwJGUUIU1wLPdz0s8
+        s5mufzYItmWq4t2rss5tJvIjMSD/3IrnoAxmBlgFoZxa
+X-Google-Smtp-Source: ABdhPJx9pi8wootq+GUVJoP+dPfpxZAsuD+ts1gCLe/ROr6iVPhrytGqCF4DQD1uQUlFE8fqFKyeR2mOPMLJ+TmArUw=
+X-Received: by 2002:a17:90b:3547:: with SMTP id lt7mr873589pjb.181.1595447011371;
+ Wed, 22 Jul 2020 12:43:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200722155103.979802-1-jic23@kernel.org> <20200722155103.979802-9-jic23@kernel.org>
+In-Reply-To: <20200722155103.979802-9-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 22 Jul 2020 22:43:15 +0300
+Message-ID: <CAHp75VdFQYtkA-g2S=Vcvk3Sxp7duTihr3XGfzbUEB5xM4UbTg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/27] iio:light:si1145: Fix timestamp alignment and
+ prevent data leak.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Jul 2020 18:12:21 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
-
+On Wed, Jul 22, 2020 at 6:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> These 3 are all fairly simple (I think) so should be uncontroversial.
-> My biggest question is with Jacopi and Akinobu are happy to be
-> explicitly listed as maintainers for these bindings.
+>
+> One of a class of bugs pointed out by Lars in a recent review.
+> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> this driver which uses a 24 byte array of smaller elements on the stack.
+> As Lars also noted this anti pattern can involve a leak of data to
+> userspace and that indeed can happen here.  We close both issues by
+> moving to a suitable array in the iio_priv() data with alignment
+> explicitly requested.  This data is allocated with kzalloc so no
+> data can leak appart from previous readings.
+>
+> Depending on the enabled channels, the  location of the timestamp
+> can be at various aligned offsets through the buffer.  As such we
+> any use of a structure to enforce this alignment would incorrectly
+> suggest a single location for the timestamp.
 
-I'll leave these for now, but just realised I didn't put
-additionalProperties: false in the last 2 and I'm fairly sure
-it should be fine to do so in both of them.
+...
 
-Jonathan
+> +       /* Ensure timestamp will be naturally aligned if present */
+> +       u8 buffer[24] __aligned(8);
 
+Why can't we use proper structure here?
 
-> 
-> Jonathan Cameron (3):
->   dt-bindings: iio: adc: maxim,max11100 yaml conversion
->   dt-bindings: iio: adc: maxim,max1118 yaml conversion
->   dt-bindings: iio: adc: maxim,max9611 yaml conversions
-> 
->  .../devicetree/bindings/iio/adc/max11100.txt  | 18 ------
->  .../devicetree/bindings/iio/adc/max1118.txt   | 21 -------
->  .../devicetree/bindings/iio/adc/max9611.txt   | 27 ---------
->  .../bindings/iio/adc/maxim,max11100.yaml      | 49 +++++++++++++++
->  .../bindings/iio/adc/maxim,max1118.yaml       | 59 +++++++++++++++++++
->  .../bindings/iio/adc/maxim,max9611.yaml       | 49 +++++++++++++++
->  6 files changed, 157 insertions(+), 66 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/max11100.txt
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/max1118.txt
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/max9611.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max11100.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max9611.yaml
-> 
+> @@ -445,7 +447,6 @@ static irqreturn_t si1145_trigger_handler(int irq, void *private)
+>          *   6*2 bytes channels data + 4 bytes alignment +
+>          *   8 bytes timestamp
+>          */
+> -       u8 buffer[24];
 
+Seems even the old comment shows how it should look like...
+
+-- 
+With Best Regards,
+Andy Shevchenko

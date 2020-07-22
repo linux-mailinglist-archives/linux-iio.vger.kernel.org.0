@@ -2,94 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1E622A0F9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 22:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C204322A195
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 23:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbgGVUyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 16:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55456 "EHLO
+        id S1726841AbgGVVwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 17:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726447AbgGVUyq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 16:54:46 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373BBC0619DC
-        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 13:54:46 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id d1so1576179plr.8
-        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 13:54:46 -0700 (PDT)
+        with ESMTP id S1726462AbgGVVwZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 17:52:25 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22792C0619DC
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 14:52:25 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id t11so1957936pfq.11
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jul 2020 14:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=52uV824Z5mOz5zC5EVNI88VW705agysq2X5RKF+y3e4=;
-        b=qs8irUU/sr7JEJnqEJXYPMz/Ag9PaKligBZGJDfj6UVpszoLKVppHKcJuo6NaWldXN
-         C2RfOwpjjwICnU66be/9H40S2PiHzdNKodiQYxHPFddsswBFfSWhfX636FIK72aqxcVE
-         dCkSIY6lqR+cGcGQHLy0ZVIS13+SsR3M3mWriTuTmBnHaGGb6ukCNyGo7gEdAdDdCqxL
-         T54AYPIOdkvNiW2UP/qvu8Zwst5EX33KTuj0Ndh2XNem1i+M8KIWdJ51gNvmtqlyjfUL
-         LtS6022o1UM+9/rzs1Oub33/3vP5/YEPWEbqlAPiqrGnLZ59Yd6Qnh76k+ZM1DfZIfFG
-         OOPA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=UhpBIu+fLyut9dkZQ1QoXg5xvF8Rpu4aR+akPmAgts0=;
+        b=RLTODLA/Lv2X1LiEJMRsgc8cNZLE9C5T132aE7qQLBOXWc8QuVmBhxMkDZyIs4ILA1
+         Rc/qAJhNpeW5X/DMkTMJ8N4C40LEwItk2SehAFqOQJ/H+BLOwqxlh/P0cZ66Z3J40TG3
+         T04R6lhah09KRP3L9AA+zZ6zzlrvfFamkFCWo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=52uV824Z5mOz5zC5EVNI88VW705agysq2X5RKF+y3e4=;
-        b=dE//OTDz69Yo62aPW4QJwQVj+AoqWuArOBdecVlHh9nBR8RucCVKNr2NF5/EV9gtbD
-         olzqRpGGMqwXoU6YWdX9NJksps7H2Uq2Tygb1ERL/XCSvJvcZE+3IXPEGMR+Gl2kfoUw
-         kKef7rI9WVyhjvaR0q+WpNIGinKbtL91NdtMPr/mA/MpBBMqgzxn9vFkrxsa4h9tcz50
-         cRhDaJ1jpqfGTbs7UcmPOXzp5xKAFKS2rW2+04vv0RxmkxcaOyKJdo9wmBClXuCBxlIS
-         +swU6Iqt0sbwupYj4UZgK0EF0zKnKSfFBPbRHhOAEzTI9ZCZ4l0Y9gpmyCrKncA+wvjc
-         kCwA==
-X-Gm-Message-State: AOAM531rOX30CXNTHaD9ZhK2OAFzOttEV0VQeVZ/blhWE9E+KizpIUXp
-        FqCFI2dTqPf2hvNdYgQd/LPzerUtTvSWMoh1KFs=
-X-Google-Smtp-Source: ABdhPJw4dcWnVStU2kAexvDXfN+iQVHA60HlaTFHYOxcdn0DaSZmflwJUIV7qw2W+QuoiUWwLjSnEzZCKiOYR0NgdDU=
-X-Received: by 2002:a17:902:9a4b:: with SMTP id x11mr1074294plv.255.1595451285705;
- Wed, 22 Jul 2020 13:54:45 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=UhpBIu+fLyut9dkZQ1QoXg5xvF8Rpu4aR+akPmAgts0=;
+        b=CuynkxjVzXbCReXDTYzvWiZW4YlAY2AH7bEn9FbquKsYhOR5NNR7H2EzENSdWUj3RU
+         LnJIlN2bAYoeUKsKUEymxX2mgOqbsVFGX1Pz/4qAVcnOHtSylk0yZyPAuckZ6BXyJX78
+         vSZOMTpbtNz61B1gITMbd8z99RkEzZMmzigFV5qRKFeN4rQOIWYzFWWCV6Aki/oYu7Y3
+         Hzj6PgNPC45zTgObePH7xFRdiIy7zVvW5eaFAHvGk2stSoPmQZ10PoZz0/ySnJgyfULD
+         AQOJ0yl3FAJewIO/hwyM5H1bvckU7s3F3kjtDJQiIyuZ3fDsWhtDzhjSal+RIeyYLpBT
+         s/aw==
+X-Gm-Message-State: AOAM531BgpWDBLn+TqUgmBTxNPXeXUXJPmAVTy0Ww1ow5CCkKYfZy7zF
+        R6nAGLJ5VZt2AU2HWmAjMMP9mA==
+X-Google-Smtp-Source: ABdhPJwxx7XnDDEsAXreWtClyszsrsNFCBByut9XE2cHvwjdxXzfOxKQE/tmd47A0ziamdP54HnVxQ==
+X-Received: by 2002:a62:8096:: with SMTP id j144mr1533250pfd.78.1595454744632;
+        Wed, 22 Jul 2020 14:52:24 -0700 (PDT)
+Received: from google.com ([2620:15c:202:1:8edc:d4ff:fe53:350d])
+        by smtp.gmail.com with ESMTPSA id m17sm570134pfo.182.2020.07.22.14.52.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2020 14:52:23 -0700 (PDT)
+Date:   Wed, 22 Jul 2020 14:52:20 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Benson Leung <bleung@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu-Hsuan Hsu <yuhsuan@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Nicolas Boichat <drinkcat@chromium.org>,
+        Aseda Aboagye <aaboagye@chromium.org>
+Subject: Re: [PATCH v2 4/4] platform/chrome: cros_ec_proto: Convert EC error
+ codes to Linux error codes
+Message-ID: <20200722215220.GA2137556@google.com>
+References: <20200720202243.180230-1-linux@roeck-us.net>
+ <20200720202243.180230-5-linux@roeck-us.net>
+ <401aec54-ff21-7e0f-85dc-e32435df2672@collabora.com>
+ <20200721142320.GA20067@roeck-us.net>
 MIME-Version: 1.0
-References: <20200722155103.979802-1-jic23@kernel.org> <20200722155103.979802-24-jic23@kernel.org>
-In-Reply-To: <20200722155103.979802-24-jic23@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Jul 2020 23:54:29 +0300
-Message-ID: <CAHp75Vc5UiY1pBvyS=rQ1RjhVcDGNYgkVhvB6UB4kvuNg0a5CA@mail.gmail.com>
-Subject: Re: [PATCH v3 23/27] iio:adc:ti-ads124s08 Fix alignment and data leak issues.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Murphy <dmurphy@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200721142320.GA20067@roeck-us.net>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 6:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> One of a class of bugs pointed out by Lars in a recent review.
-> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
-> to the size of the timestamp (8 bytes).  This is not guaranteed in
-> this driver which uses an array of smaller elements on the stack.
-> As Lars also noted this anti pattern can involve a leak of data to
-> userspace and that indeed can happen here.  We close both issues by
-> moving to a suitable structure in the iio_priv() data with alignment
-> explicitly requested.  This data is allocated with kzalloc so no
-> data can leak apart from previous readings.
->
-> In this driver the timestamp can end up in various different locations
-> depending on what other channels are enabled.  As a result, we don't
-> use a structure to specify it's position as that would be missleading.
++ drinkcat, aseda
 
-...
+On Tue, Jul 21, 2020 at 07:23:20AM -0700, Guenter Roeck wrote:
+> On Tue, Jul 21, 2020 at 01:29:01PM +0200, Enric Balletbo i Serra wrote:
+> > On 20/7/20 22:22, Guenter Roeck wrote:
+> > > +	[EC_RES_INVALID_HEADER_VERSION] = -EBADMSG,
+> 
+> Any idea for EC_RES_INVALID_HEADER_VERSION ? I am not entirely happy
+> with -EBADMSG: the error is distinctly different to CRC errors.
+> EPROTONOSUPPORT as well, maybe, or something else ?
 
-> +       /*
-> +        * Used to correctly align data.
-> +        * Ensure timestamp is naturally aligned.
-> +        */
-> +       u32 buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
+FWIW, these (INVALID_HEADER_VERSION, INVALID_HEADER_CRC,
+INVALID_DATA_CRC) aren't actually used on any firmware yet. This has
+been open forever:
+https://crbug.com/787159
+Added here:
+https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/780452/
 
-u32 vs. u16?
+Unfortunately, the linked design doc (still in draft) is not public.
 
--- 
-With Best Regards,
-Andy Shevchenko
+My understanding is that while they're not all exactly the same (CRC is
+different than the others), they are all still supposed to represent
+"corrupt request [from the Application Processor]". EBADMSG seems good
+enough to me.
+
+Brian
+
+P.S. for those added late -- you can grab the whole thread from here:
+https://lore.kernel.org/lkml/20200720202243.180230-1-linux@roeck-us.net/
+or in mbox form:
+https://lore.kernel.org/lkml/20200720202243.180230-1-linux@roeck-us.net/t.mbox.gz

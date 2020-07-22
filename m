@@ -2,115 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1272C2295E3
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 12:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F1022994C
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jul 2020 15:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731151AbgGVKXi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jul 2020 06:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726153AbgGVKXi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jul 2020 06:23:38 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFB74C0619DC;
-        Wed, 22 Jul 2020 03:23:37 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id o13so990220pgf.0;
-        Wed, 22 Jul 2020 03:23:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=351AZ2ekNDQ3m5sRAihkmJTU7M8Jo1Yfnte60wYBP14=;
-        b=RKQFyU7Z0jmcWuaFp3mPqomB4elfcjfPsGGbVGUeVH7pNz1N7B3QlSKSKeEVwE0GwJ
-         v0FMMi05JhglpwUcvnqQFgsaA/AkhjsAcu0QT62f0c/BvJ22NPxdZzcsvToc8hYEZXSg
-         +KvQRDm5kJ7qjev+0WgkRtCl+nO4V4Lx9ogrT8XZwjTqqJx42DisqG7Fed44iZlKD4/K
-         77Ef26mQcJxunrv06/NWkLC4FdJ1kspGDEqs+6DyatqTK/PeSipS64cCgmYl96sGsqqQ
-         Z0H5b+TMwVOR94ztgy1nHZkjwVbkOadhUY+eyj6dxHX12w/Vo2SqsC9OXLBRJwDkwFPv
-         90qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=351AZ2ekNDQ3m5sRAihkmJTU7M8Jo1Yfnte60wYBP14=;
-        b=BU4DF3PNtRJYnrnSuiSRAK/CKiO3VoGeHKWL/dNppmyPg7UmnPxRjaJAY6oSBBsGR+
-         JlURbtDN+JjygXzIdpuaTQ5QeUmaw2dAml/oA5oDUGTryBAuaUwDjdRGujdJ8zo/b4j3
-         EjDn8+TsJk3z6uF9lcQCGgUYmTYk01Q1Erzptf+vKQZkwIfw5zU4Xmmo2IeRCNM7bous
-         04VlzsXJigc5PQh7b6Ehn8oGwUUVMsk73WwqA5wyD8Tmzw0lMySE6/OdwBMVUfAwpO/o
-         bOhyxivOU9tEo/ae+3FetBd3VVqi76StZDq7pItXOrVcEzvDvy++Z8FYdU5FUxYG9agc
-         fSBQ==
-X-Gm-Message-State: AOAM5332aZ6KcA8KZ1homv4zahLyDXC3QHmvt/ugwEO8apk6p2VrESI7
-        9Rfr/Zhuq7I4EM2qbkcJ86PElzQ2hR54Dko8Wb1HXoeT
-X-Google-Smtp-Source: ABdhPJznhHV4wRh1vVD3DRvPc5ORyCZWKGQAPgNl60Kc27nGzVkS/w4wM4PCmFTDGiEhu1h2Tr7X33OVxCsHGWBvdF0=
-X-Received: by 2002:a62:7657:: with SMTP id r84mr27188292pfc.130.1595413417435;
- Wed, 22 Jul 2020 03:23:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200721181926.27046-1-nish.malpani25@gmail.com>
- <CAHp75Vdr+Uo2uw3mzYP+LMRgp-eyi+YjG=O+wGVqyYx-+MRCaw@mail.gmail.com>
- <7ba8469a-dd8c-1686-6d26-e2a4cbfedce9@gmail.com> <CAHp75VdYVC9n7-2MH62J46N0p+sNSE9QVwonor5QfdnvL4hoLg@mail.gmail.com>
- <5cb55101-af5c-b6a2-d770-9717f8a463cc@gmail.com>
-In-Reply-To: <5cb55101-af5c-b6a2-d770-9717f8a463cc@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Jul 2020 13:23:22 +0300
-Message-ID: <CAHp75Vc5e0HfVe04yzyfGC_qqhcPNnJOHXcADLfz+RKMuFBbcA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: gyro: Add driver support for ADXRS290
-To:     Nishant Malpani <nish.malpani25@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        darius.berghe@analog.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1727825AbgGVNjH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jul 2020 09:39:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59532 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726567AbgGVNjH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 22 Jul 2020 09:39:07 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B43DE2071A;
+        Wed, 22 Jul 2020 13:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595425146;
+        bh=eDiZyEkIDW8Ek1aco3KIqulU2kly4R3HKbvQQ1+gLe8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=L99qtUc3+fRMlY+nlumYh6vYyQCjgFnE52IKIZsEy8/wQQ88n9Q8waheGIWekX0HO
+         /PW1k+vqYf8nvrx/Kxf0AztLN9fWIhhr8CqyKN5jM8IAUw4zMUb1zlMNilkG6DDYJL
+         rbMHu0WHR6zjcyjUjgYQQB8H2mLe0PFzlSJZQWE0=
+Date:   Wed, 22 Jul 2020 14:39:02 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 3/3] iio: chemical: atlas-ezo-sensor: add support for
+ O2 sensor
+Message-ID: <20200722143902.3d00f01b@archlinux>
+In-Reply-To: <CAJCx=g=+zunxptnoLva7VGXqkU0Kwn9xxkTjKeO0F1VeXwSTTw@mail.gmail.com>
+References: <20200720070330.259954-1-matt.ranostay@konsulko.com>
+        <20200720070330.259954-4-matt.ranostay@konsulko.com>
+        <CAHp75VcuwLoX5Xxb-BGPKE6BWnDJq=O5knV6u8wWXYsLHfGL9Q@mail.gmail.com>
+        <CAJCx=g=+zunxptnoLva7VGXqkU0Kwn9xxkTjKeO0F1VeXwSTTw@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 12:40 PM Nishant Malpani
-<nish.malpani25@gmail.com> wrote:
-> On 22/07/20 3:08 am, Andy Shevchenko wrote:
-> > On Tue, Jul 21, 2020 at 11:35 PM Nishant Malpani
-> > <nish.malpani25@gmail.com> wrote:
-> >> On 22/07/20 1:16 am, Andy Shevchenko wrote:
+On Tue, 21 Jul 2020 21:38:11 -0700
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-...
-
-> > Can't you declare table as const int?
+> On Tue, Jul 21, 2020 at 11:46 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 > >
-> I'm not sure I understand you completely here; do you mean const int *?
-> So, an array of alternate integer and fractional parts? I suppose that's
-> possible but we'd be introducing unwanted complexity I feel - for
-> example, currently the index of the 3db frequency in the table is used
-> to directly map & set bits in the filter register corresponding to that
-> frequency but with the approach you share, we'd have to apply a
-> transformation (div by 2) to set the same bits in the filter register.
-> Do you think the added complexity justifies the removal of the casting?
-
-It was a question. If you think it is too much, don't change :-)
-
-...
-
-> >>>> +       /* max transition time to measurement mode */
-> >>>> +       msleep_interruptible(ADXRS290_MAX_TRANSITION_TIME_MS);
-> >>>
-> >>> I'm not sure what the point of interruptible variant here?
-> >>>
-> >> I referred Documentation/timers/timers-howto.rst for this.
-> >> My reasoning was shaped to use the interruptible variant because the
-> >> transition settles in a time *less than* 100ms and since 100ms is quite
-> >> a huge time to sleep, it should be interrupted in case a signal arrives.
+> > On Mon, Jul 20, 2020 at 10:05 AM Matt Ranostay
+> > <matt.ranostay@konsulko.com> wrote:  
+> > >
+> > > Add support for the Atlas EZO O2 chemical sensor which required
+> > > some refactoring of the driver and parsing of i2c transfer.
+> > >
+> > > Sensor data is converted by the scaling value from percent to
+> > > IIO_CONCENTRATION.  
 > >
-> > This is probe of the device,
-> > What are the expectations here?
+> > ...
+> >  
+> > > +static void atlas_ezo_sanitize(char *buf)
+> > > +{
+> > > +       char *ptr = strchr(buf, '.');
+> > > +
+> > > +       if (!ptr)
+> > > +               return;
+> > > +
+> > > +       for (; *ptr; ptr++)
+> > > +               *ptr = *(ptr + 1);
+> > > +}  
 > >
-> I fail to understand why this can't be used in the probe() but perhaps
-> in a routine to standby/resume. Could you please elaborate?
+> > NIH of memmove()? Why?  
+> 
+> Mainly since I forgot that POSIX function. I'll fix it up when possible
+> 
+> - Matt
 
-I didn't say it can not be used, what I'm asking is what are the
-expectations of the interruptible part here.
-In other words what is the benefit that makes you choose this over
-plain msleep().
+I've dropped the series for now.  Lets just have a v3 with these
+bits tidied up. It will have to wait for the next cycle however as I'll
+be doing what is probably the last pull for this cycle in a few minutes.
 
+Thanks,
 
--- 
-With Best Regards,
-Andy Shevchenko
+Jonathan
+
+> 
+> >
+> > And actually to avoid strlen() you may do it other way around, i.e
+> > shift integer part one character right and return new buffer pointer.
+> >
+> >
+> > if (!ptr)
+> >   return buf;
+> >
+> > memmove(buf + 1, buf, ptr - buf);
+> > return buf + 1;
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko  
+

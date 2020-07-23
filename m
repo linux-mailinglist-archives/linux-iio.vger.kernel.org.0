@@ -2,73 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BDAA22B891
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jul 2020 23:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391F222B9EB
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jul 2020 01:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726334AbgGWVWe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jul 2020 17:22:34 -0400
-Received: from mail-il1-f196.google.com ([209.85.166.196]:41437 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726029AbgGWVWd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jul 2020 17:22:33 -0400
-Received: by mail-il1-f196.google.com with SMTP id q3so5574967ilt.8;
-        Thu, 23 Jul 2020 14:22:33 -0700 (PDT)
+        id S1726818AbgGWXDr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jul 2020 19:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44438 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbgGWXDr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jul 2020 19:03:47 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B037C0619D3
+        for <linux-iio@vger.kernel.org>; Thu, 23 Jul 2020 16:03:47 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id k1so4063291pjt.5
+        for <linux-iio@vger.kernel.org>; Thu, 23 Jul 2020 16:03:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qw4QtLf9h0dWLD1tLtdlpFNq04wjyH0zPYPXjM/kNIY=;
+        b=QR5ItLor0G1ODYiyoFtXeR0oP5/b1Ng0XOrIZ67H5PQ65lNBqm7ziVSp4jeuDAhF1w
+         XVwtBEizARYrTc4q1TZXcyo7kM7Jzzr0aenLJ8DQapULqgomEt1uBfaf67sm+PpYCgQd
+         eJMPzArtkXGhsiHMAZ6YhrlIjKzrrhrhm+h64=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OJ57T581vc5PeC3dDJScbWKVMa1D4jQ/zhnzNifzw9Q=;
-        b=tArhQ5AASqcaPSf9cNlS6hytKA6mI7u3XpOn0pKi8Rtl+xhToGBd/W6eFcZeYM8u84
-         Ofg6h1LNvQEdUg/n9Oqwar1JQTxotBoIJ7tsBYK9Cpok6AfZndRpAl6wqoOm3I9AyTP0
-         FPCmFLWXhOKzzz+o//unVPv0oqviQInVu5FfDUhhMn21dSAowqMNx47vwDnzYwzjI2ka
-         HUFGJC1isZg0YxW1j5Ev9Zj0T0Ij9R9Ib3huHfWloqn4J65E6MJeIBgcT6otY/qgdMKR
-         CERhxHbv/cREhDFCr5eRKvC8E5b2WUGQitNgDRJMPUVEjRM7rn8YCc1DArbo40srqkvF
-         O+PA==
-X-Gm-Message-State: AOAM531oYqFJRUiKmaPzfyrVBiFoDOMSKiRWHIMRGsRhZiwUKd+kiraN
-        +m7NyCOqKgXdxv0+kBraqw==
-X-Google-Smtp-Source: ABdhPJwzC8OH3Mz3FyBavKzPCckG/RRrF9p2NAjnBrtkJ8Q8NBT2pnlr1Ur1wfpwZpiNTnMEhHHaAw==
-X-Received: by 2002:a92:da51:: with SMTP id p17mr7030616ilq.44.1595539353289;
-        Thu, 23 Jul 2020 14:22:33 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id f2sm2082536ioc.52.2020.07.23.14.22.32
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qw4QtLf9h0dWLD1tLtdlpFNq04wjyH0zPYPXjM/kNIY=;
+        b=XCyb5cn1qycvPinCWKvSjpwNNL/c9AHLW/wffTmwNcgGD748F625A7NB/dTRkvkD8v
+         WuzSTvKRKx+4fCk6US2a3W0T67O29Sz4sAYrdAerjDYf5deYsOp8cxHoOXU2EdYviEMv
+         +Cue/hjtTBiEZYNbIvUMEHkWqql7Qy8gd9HTq0FRVlU3Ba8jf8Kdhwnmz4cWwwxD6dn3
+         ARNooF7E99e0mcEn2e+D9e5kwxVr3r1eJOsZtRsZMw+kkOD6QON/NJy9rtiiB3V1Cm6O
+         XGunrBfp4q7Bpt3lFI4UmWT5pVlpxmtf+eVOhlOt7524UJATvdeXj7ElNn38GkTSZaMW
+         FjTg==
+X-Gm-Message-State: AOAM530oR/MMtjycsXC2vO92JvrH/8lGZ58zdi7z5BA8YX3elrz0B5Ic
+        Aez5xhdnKRF1j14UMsAuPQ761w==
+X-Google-Smtp-Source: ABdhPJxnr7q4Kieh9u6L2nh1D98Gdl4HPX9AzDRpPhjGvo8uPCnIV38Eg6hloV6Fm1l2ExDQKMC9qA==
+X-Received: by 2002:a17:902:9683:: with SMTP id n3mr5631358plp.65.1595545426415;
+        Thu, 23 Jul 2020 16:03:46 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
+        by smtp.gmail.com with ESMTPSA id k98sm3816070pjb.42.2020.07.23.16.03.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2020 14:22:32 -0700 (PDT)
-Received: (nullmailer pid 881539 invoked by uid 1000);
-        Thu, 23 Jul 2020 21:22:31 -0000
-Date:   Thu, 23 Jul 2020 15:22:31 -0600
-From:   Rob Herring <robh@kernel.org>
+        Thu, 23 Jul 2020 16:03:45 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: iio: adc: maxim,max9611 yaml conversions
-Message-ID: <20200723212231.GA881485@bogus>
-References: <20200722171224.989138-1-jic23@kernel.org>
- <20200722171224.989138-4-jic23@kernel.org>
+        Douglas Anderson <dianders@chromium.org>,
+        Daniel Campello <campello@chromium.org>
+Subject: [PATCH 0/3] Some sx9310 iio driver updates
+Date:   Thu, 23 Jul 2020 16:03:41 -0700
+Message-Id: <20200723230344.1422750-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.28.0.rc0.105.gf9edc3c819-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200722171224.989138-4-jic23@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Jul 2020 18:12:24 +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Straight forward conversion of this binding for this
-> current sense amplifier and ADC.
-> 
-> Cc: Jacopo Mondi <jacopo@jmondi.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  .../devicetree/bindings/iio/adc/max9611.txt   | 27 ----------
->  .../bindings/iio/adc/maxim,max9611.yaml       | 49 +++++++++++++++++++
->  2 files changed, 49 insertions(+), 27 deletions(-)
-> 
+These three patches are only related because I'm looking at this driver.
+The first one resend the DT binding for the driver that was merged in 
+v5.8-rc1 with a small change to update for proper regulators. The second
+patch fixes a few printks that are missing newlines and should
+be totally non-trivial to apply. The final patch adds support to enable
+the svdd supply so that this driver can work on a board I have where the
+svdd supply isn't enabled at boot and needs to be turned on before this
+driver starts to communicate with the chip.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Daniel Campello (1):
+  dt-bindings: iio: Add bindings for sx9310 sensor
+
+Stephen Boyd (2):
+  iio: sx9310: Add newlines to printks
+  iio: sx9310: Enable regulator for svdd supply
+
+ .../iio/proximity/semtech,sx9310.yaml         | 60 +++++++++++++++++++
+ drivers/iio/proximity/sx9310.c                | 59 ++++++++++++++----
+ 2 files changed, 106 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Daniel Campello <campello@chromium.org>
+
+base-commit: b3a9e3b9622ae10064826dccb4f7a52bd88c7407
+-- 
+Sent by a computer, using git, on the internet
+

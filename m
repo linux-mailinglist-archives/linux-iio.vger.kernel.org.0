@@ -2,158 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D60F22C3F5
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jul 2020 13:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AC2C22C645
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jul 2020 15:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726842AbgGXLCQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jul 2020 07:02:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726114AbgGXLCO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jul 2020 07:02:14 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F2DC0619D3;
-        Fri, 24 Jul 2020 04:02:14 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id a14so4920864pfi.2;
-        Fri, 24 Jul 2020 04:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nA0wOT43rTAqi8O7/YsvVt72X7BqcnXDtD4IHwFFIXU=;
-        b=HxqE5gqQNqfaNKzS1ilKxfQpGiTZ8NePzMT5W2YJWHmeSbN+BhSF/hw3DNFpJPL83X
-         l1YDYyuknLcrdoQp20G++ik5vhBXS9cJbF0SuwNuj3AxQk4lQG1DPjr2630M876SY3hS
-         wL7aCVloUpE7T/4vorm79/GwOWFIhtCDpSYk6RIO5leu2Nm2DHGzEiBqoh6kHE2/zsIl
-         M8utH22QL83kDrL79Mwyjh3M8u8C6oMP1Vsmu1BI+dtAkGjUY2KM/qDeq6WY+igsAFhM
-         JSmjTxhGx+aZ01x6RjqnbFtWOTtZG3OCOaoEdDTpxsoWNaI3i+auqKofcYYcKEDniHuh
-         orhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nA0wOT43rTAqi8O7/YsvVt72X7BqcnXDtD4IHwFFIXU=;
-        b=OpEJOnzBHz4kGOudCW16dzovSUhOVA6y3BM1W0lRI+MPoLVFgOsOIRANMc0LQEl+Us
-         2m/gY1Bs78dkzpHV9mHkhAuUmoEA/7Iax6FgUJG5obv1be6q9xvwOE2k0qjd6xQgrCoW
-         gIE6GKrlMqd+Ewl8ZKi6Whg/JU4RRsHx/LsqOZxfTnilyTqy77J+VzqwqaLbSULUdiEw
-         h/BWaZdGb6MMZQ5f9hjekRVJUcXv6FUMw8rYwmFPREsR6NDMIpVhyq1YE4xNH8DaMw8s
-         K8fF8PRnXHF2OYoKWoBnfODmUHjg0MlEnMD+v3gSeLaydXQe8LEUA4ny+8PWDHjtRbhe
-         t/UA==
-X-Gm-Message-State: AOAM532CmSJ3neCpit+RtGb6IAdO5JUZD4KCPdL9NE3qvvMasDH6Uzmn
-        7QyNPCLIUdgRmC4ipiQUo+c=
-X-Google-Smtp-Source: ABdhPJyeXHsUI+poEKhq9tZ3GXzcpp1IOnGnv8pclRIdA/uoa0dg5qx9zUj/0imG/m9OOEq+CunWJQ==
-X-Received: by 2002:a62:7a07:: with SMTP id v7mr8182260pfc.76.1595588533917;
-        Fri, 24 Jul 2020 04:02:13 -0700 (PDT)
-Received: from nish-HP-Pavilion ([2409:4072:195:617:d028:8959:a8a3:a7bc])
-        by smtp.gmail.com with ESMTPSA id t29sm6053212pfq.50.2020.07.24.04.02.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2020 04:02:13 -0700 (PDT)
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-To:     jic23@kernel.org, robh+dt@kernel.org
-Cc:     dragos.bogdan@analog.com, darius.berghe@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [v3 2/2] dt-bindings: iio: gyro: Add DT binding doc for ADXRS290
-Date:   Fri, 24 Jul 2020 16:32:07 +0530
-Message-Id: <20200724110207.24456-1-nish.malpani25@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726845AbgGXNYq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jul 2020 09:24:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34534 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726826AbgGXNYq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 24 Jul 2020 09:24:46 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 480D1206D7;
+        Fri, 24 Jul 2020 13:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595597084;
+        bh=4z1/bmUznRinKUdWY6aWYIBGEwRBUUbAdUZSqMcyOBc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SmpO6zc+ZuhbxqKkL5uICah+JraY0XPPS4SWKneXFPskhLg1PRrZS1VvLCRppv8dr
+         K8782LpmV+2uJuH4yV5YcId/scA3ctaQRBEAS7rIQSx/2Dtl+3WLnRY53z1EcS5/oI
+         Qi0HHuZ8N5jqrN+QHfAwAnW9um0b8tqNemXUGYCg=
+Date:   Fri, 24 Jul 2020 15:24:46 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Fabrizio Benedetti <fabrizio.benedetti.82@gmail.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: fb_agm1264k-fl.c: Replaced udelay by
+ usleep_range
+Message-ID: <20200724132446.GB316746@kroah.com>
+References: <20200724100907.GA8977@fbenedet-HP>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200724100907.GA8977@fbenedet-HP>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add devicetree binding document for ADXRS290, a dual-axis MEMS gyroscope.
+On Fri, Jul 24, 2020 at 12:09:07PM +0200, Fabrizio Benedetti wrote:
+> This patch replace udelay with usleep_range
+> according to the Documentation/timers/timers-howto.txt .
+> The usleep_range have a range that is >= of udelay.
+> 
+> Signed-off-by: Fabrizio Benedetti <fabrizio.benedetti.82@gmail.com>
+> ---
+>  drivers/staging/fbtft/fb_agm1264k-fl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/fbtft/fb_agm1264k-fl.c b/drivers/staging/fbtft/fb_agm1264k-fl.c
+> index eeeeec97ad27..4a67a660bb17 100644
+> --- a/drivers/staging/fbtft/fb_agm1264k-fl.c
+> +++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
+> @@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
+>  	dev_dbg(par->info->device, "%s()\n", __func__);
+>  
+>  	gpiod_set_value(par->gpio.reset, 0);
+> -	udelay(20);
+> +	usleep_range(20, 25);
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
----
+And are you sure that 25 is ok here?
 
-No changes in v3.
+Unless you have the hardware, don't make up random numbers for things
+like delays :)
 
-Changes in v2:
-  - use 'const' instead of 'enum' while setting the compatible string
-    since only a single item is expected
-  - add 'additionalProperties: false'
----
- .../bindings/iio/gyroscope/adi,adxrs290.yaml  | 53 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 54 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
+Also, be sure you use the correct mailing lists, why did you ignore the
+output of scripts/get_maintainer.pl for this patch?
 
-diff --git a/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml b/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
-new file mode 100644
-index 000000000000..61adb2c2454b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2020 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/gyroscope/adi,adxrs290.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADXRS290 Dual-Axis MEMS Gyroscope
-+
-+maintainers:
-+  - Nishant Malpani <nish.malpani25@gmail.com>
-+
-+description: |
-+  Bindings for the Analog Devices ADXRS290 dual-axis MEMS gyroscope device.
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADXRS290.pdf
-+
-+properties:
-+  compatible:
-+    const: adi,adxrs290
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 5000000
-+
-+  spi-cpol: true
-+
-+  spi-cpha: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-max-frequency
-+  - spi-cpol
-+  - spi-cpha
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        gyro@0 {
-+                   compatible = "adi,adxrs290";
-+                   reg = <0>;
-+                   spi-max-frequency = <5000000>;
-+                   spi-cpol;
-+                   spi-cpha;
-+        };
-+    };
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 71ae9b184179..bb2cd4ee140c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1103,6 +1103,7 @@ M:	Nishant Malpani <nish.malpani25@gmail.com>
- L:	linux-iio@vger.kernel.org
- S:	Supported
- F:	drivers/iio/gyro/adxrs290.c
-+F:	Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
- 
- ANALOG DEVICES INC ASOC CODEC DRIVERS
- M:	Lars-Peter Clausen <lars@metafoo.de>
--- 
-2.20.1
+thanks,
 
+greg k-h

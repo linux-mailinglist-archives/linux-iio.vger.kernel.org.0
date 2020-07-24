@@ -2,70 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B06222CF9A
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jul 2020 22:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B3B22CFA9
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jul 2020 22:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgGXUjj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jul 2020 16:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48860 "EHLO
+        id S1726455AbgGXUnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jul 2020 16:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726742AbgGXUjj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jul 2020 16:39:39 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8FCCC0619E4
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:39:38 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id c11so2494626vkn.11
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:39:38 -0700 (PDT)
+        with ESMTP id S1726493AbgGXUnm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jul 2020 16:43:42 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64083C0619E4
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:43:42 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id b13so5527371edz.7
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ugfc4z1Sse9ZbIN/IxhzK+fXKHAP5kdvENEw9KlUA4k=;
-        b=J1sP4XCuyJ7w/J6wNht2mFKaTFqYcEq9mdPZvQB7bFqZB/nkzSCgqNvi4+rhcwghzD
-         KxrDKPm7diaDemEPG4Aid4QYfnHaAo4oulmyUgrjY9WJECEvdwHlYK4a+bHX3Qs90ERj
-         Ko87bt6yXlGZi76FHOTuiI1fNxLmJeBLJ6KAA=
+        bh=GsJgK7I58ZbRpNM3/ClUx7KPh0wfxlGWyzakGfdqg3Y=;
+        b=PF0R3SfHH8RVUjcPLj8/BK4who6GgfWlSRk1IUrGLn5lMqksU9S2WfWaTFWfn1agHN
+         l9xBEpq0RBjDb+TQ9M73cXP15o7saZ4PnuWAZiQU/KjuzniJXhheegYkG91Y9KuBMVM4
+         y0QX7h5FIyBoURUdHzn5Wt8R4U/7Yu+nUOkxg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ugfc4z1Sse9ZbIN/IxhzK+fXKHAP5kdvENEw9KlUA4k=;
-        b=otIJ8oVYo+c16dI0J/aDbPw+cNYh22r0t/SOT0/IfippOjGhHBvJEcVp+zsDbFPRfZ
-         VlT3Ees4mSpnjrWkWUKjqWsO1K2HWwL2SYxc91yhymxVvZDbRWzB2lj0tYAVfQhfAPCB
-         khxBbZtPAizs5CYBwrBFoW2/XQpr4lDyGSvYRJySEBVjzxQiVSon51hbpqq5GSc+Hjv3
-         y2A4qLaKn0nKHor8u4wt0zkYRrZZylYxt9UU+lfs++VSGd6l9ahaTEoUUiZBOBTLsCim
-         4HpcDZ98B8KOrech199bZw/1xrY3Os3+5t9uZY5FHhffLlNPR5m0pah/XJ3vo7+i/taQ
-         CvxA==
-X-Gm-Message-State: AOAM530obG6EtV+C5OaTM5C9LpN4cgBBWTGArtehPzBWTN7FkbzqedzM
-        mEHifqpp0rZ0SHiiOLFsvzhQUGgzCNE=
-X-Google-Smtp-Source: ABdhPJxz2yj2ACFRe7/xdmKoUbVP4RKkZMFxKx5yO0moO6XEr0SsxctqnXezgoZCL44iB4UydN3vXQ==
-X-Received: by 2002:a1f:788c:: with SMTP id t134mr8512457vkc.30.1595623177587;
-        Fri, 24 Jul 2020 13:39:37 -0700 (PDT)
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com. [209.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 185sm255544vkr.15.2020.07.24.13.39.36
+        bh=GsJgK7I58ZbRpNM3/ClUx7KPh0wfxlGWyzakGfdqg3Y=;
+        b=KQGIKggtGloktctJmo6i/pahavPgahzXBCzvnktb1I+eHAEXNWL76kslgbRfJUf8ph
+         lhufA/3QW9uJFe+oJrhG61QG4M0Y3FjFlqvhJgBevTmV1ZE53CAcZlinOlcU4j4Rprz7
+         VQu47ilnG0hzpcuwpl/lTkVbxz2gNI4KyqCY/gpyPqdynTCAcdf6OY+nozO55EsX6WOL
+         Qw7odtfk6/e7hxN02YQiiltiItcDDJ9acXZQ7NzoeFBcPKNUbg70+Et4GWEko5RPz/r5
+         jfnI5gaxSLLDpbXsQllzEgX5UtFlYpKQtCxr9G/IXVf5JhTaq1p2XxNOKuIDt/MluRBB
+         pWYQ==
+X-Gm-Message-State: AOAM532hZHDtTZ3I+5m6ptbGuNiGmKeeSZzIfx19yuJWdqApYIOnnuNK
+        k2alkVGkDsTHzz1yNiaWWypNa7+LGHE=
+X-Google-Smtp-Source: ABdhPJyuuP1xRWc0OIUsgQ55eFY/gbf+OHjOnt9GofJulugg+wPbgbBULModPPWabfyaeaCB5HEjyA==
+X-Received: by 2002:a50:fe16:: with SMTP id f22mr10721488edt.315.1595623420197;
+        Fri, 24 Jul 2020 13:43:40 -0700 (PDT)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
+        by smtp.gmail.com with ESMTPSA id g25sm298755ejh.110.2020.07.24.13.43.39
         for <linux-iio@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2020 13:39:36 -0700 (PDT)
-Received: by mail-vk1-f182.google.com with SMTP id g22so2501006vke.9
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:39:36 -0700 (PDT)
-X-Received: by 2002:a1f:b68b:: with SMTP id g133mr2763682vkf.59.1595623176252;
- Fri, 24 Jul 2020 13:39:36 -0700 (PDT)
+        Fri, 24 Jul 2020 13:43:39 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id k20so1667722wmi.5
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 13:43:39 -0700 (PDT)
+X-Received: by 2002:a1c:7d12:: with SMTP id y18mr3870968wmc.115.1595623418776;
+ Fri, 24 Jul 2020 13:43:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200723230344.1422750-1-swboyd@chromium.org> <20200723230344.1422750-2-swboyd@chromium.org>
-In-Reply-To: <20200723230344.1422750-2-swboyd@chromium.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 24 Jul 2020 13:39:25 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VRDWH8wgX5EC3S_dw_riDoY=X4EVY8BbD3ctmA6Wi+GA@mail.gmail.com>
-Message-ID: <CAD=FV=VRDWH8wgX5EC3S_dw_riDoY=X4EVY8BbD3ctmA6Wi+GA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: Add bindings for sx9310 sensor
+References: <20200723230344.1422750-1-swboyd@chromium.org> <20200723230344.1422750-3-swboyd@chromium.org>
+In-Reply-To: <20200723230344.1422750-3-swboyd@chromium.org>
+From:   Daniel Campello <campello@chromium.org>
+Date:   Fri, 24 Jul 2020 14:43:02 -0600
+X-Gmail-Original-Message-ID: <CAHcu+VaW56YSj2NiPvLNZBtgbVUHrBOACKXU18wg2j3M7_TQsQ@mail.gmail.com>
+Message-ID: <CAHcu+VaW56YSj2NiPvLNZBtgbVUHrBOACKXU18wg2j3M7_TQsQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] iio: sx9310: Add newlines to printks
 To:     Stephen Boyd <swboyd@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Daniel Campello <campello@chromium.org>,
         LKML <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>
+        Douglas Anderson <dianders@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -74,22 +74,21 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi,
 
-On Thu, Jul 23, 2020 at 4:03 PM Stephen Boyd <swboyd@chromium.org> wrote:
+On Thu, Jul 23, 2020 at 5:03 PM Stephen Boyd <swboyd@chromium.org> wrote:
 >
-> From: Daniel Campello <campello@chromium.org>
+> Printks in the kernel have newlines at the end. Add them to the few
+> printks in this driver.
 >
-> Adds device tree bandings for sx9310 sensor.
->
-> Signed-off-by: Daniel Campello <campello@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Daniel Campello <campello@chromium.org>
 > Cc: Hartmut Knaack <knaack.h@gmx.de>
 > Cc: Lars-Peter Clausen <lars@metafoo.de>
 > Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Cc: Rob Herring <robh+dt@kernel.org>
 > Cc: Douglas Anderson <dianders@chromium.org>
-> [swboyd@chromium.org: Add both regulators and make them optional]
+> Fixes: 72ad02b15d63 ("iio: Add SEMTECH SX9310/9311 sensor driver")
 > Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 > ---
->  .../iio/proximity/semtech,sx9310.yaml         | 60 +++++++++++++++++++
->  1 file changed, 60 insertions(+)
+>  drivers/iio/proximity/sx9310.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Daniel Campello <campello@chromium.org>

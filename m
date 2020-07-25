@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4956322D326
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jul 2020 02:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBF8D22D32F
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jul 2020 02:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbgGYAOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jul 2020 20:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
+        id S1726576AbgGYARl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jul 2020 20:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726576AbgGYAOq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jul 2020 20:14:46 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F29CC0619D3
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:14:46 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id g7so3342273ejw.12
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:14:46 -0700 (PDT)
+        with ESMTP id S1726613AbgGYARk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jul 2020 20:17:40 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08418C0619E4
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:17:39 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id d18so8164835edv.6
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Z+Vu9pSlrXeJ0YA5vWHf53k6LVNR1H6tyHZmx21hYRQ=;
-        b=SjdFktkRZL5d9npLMGNf69oDrZeerMTNoyzDanecRnbmMLkkCIovy5VZzvZI9H6ZrE
-         wf7ggS1ZDWHplJE+/Rr6YYYW2Z/GmcKEAOxxbY8kHCtfA1cZZuMsSF4unXlrp05YmoKp
-         BzaKkLMhAS/juljjaUHYbMbZIBZuyPfCEsagQ=
+        bh=h+Khyx7k9UOvsWviHkgBl07QUgeTKR6vK8nRDrh7xTU=;
+        b=adUoi3lyM0wk7wJv1lUjSJ5JUtOA11ausxEEkI1YK/ueraqEIdmpoMmo62pZpBrtbj
+         55VP3Xe6fjSNc/bMBhA8gey0pISp6LZC3TS4BrOtO8ExLGvUuAgybg3g1T/VpVrpzpoD
+         U0P1WS35S/zYd+Ju56PXVOXNlb83a52fdVD/Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Z+Vu9pSlrXeJ0YA5vWHf53k6LVNR1H6tyHZmx21hYRQ=;
-        b=Y44yEmHuW7dWG4MUe/0fZOF+T7ysdbFqF3jDr/Sm1BpfWvdOaB44rsymhLWfmmBQjq
-         Mn3Tx05aPtksyI75EBzOSSlYvYvrj7Al0d0bWbqua3VFnuhdx5/+0wG+acRdHyTa5x2v
-         arwi/ys2pQvf3rzQjI9geceb864jAkdgp08vK5x5xZwofEKrdFwjupKoj1XKHa5twm4E
-         OgBi7QVOCmuI+0rwUOEUbJrXungQstFe/yO+whk/gsaomCQXdwY1PJPnElwiiGKT+gFl
-         3kd9o8m/sPHy5WSWscvMl6G7iEmzNkk9off0E+ZZRt+49jW91U00ifb+hPcrjoCzXkUR
-         eaLw==
-X-Gm-Message-State: AOAM530uFAbGMH3XLcnWvkxBNWcXpIrlhzcaiMMTaDoZLzKruDMYO0K3
-        cXuRlsAkw2tafEUvaWJYyiXy/cSdIkw=
-X-Google-Smtp-Source: ABdhPJyuHEsZdrXQEWWsTkTDrrRzQXBFvfC5eSn5rPUBazHPvkMp97HnktMlge71Er9B8+KFriu0tg==
-X-Received: by 2002:a17:906:2f17:: with SMTP id v23mr11193237eji.343.1595636084972;
-        Fri, 24 Jul 2020 17:14:44 -0700 (PDT)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
-        by smtp.gmail.com with ESMTPSA id bz14sm1630319ejc.88.2020.07.24.17.14.44
+        bh=h+Khyx7k9UOvsWviHkgBl07QUgeTKR6vK8nRDrh7xTU=;
+        b=nTRYwjy+4rhuc4Oz9+MGwQql5IJZgjEtLKonWm8cLGRa+PHUI4AFifPNm+jmFUClR6
+         1b0iXyOAzspgqfZ0qLi7xpiVm9Yv4VzFNLj/iqHU0FBL3r9btPmCN1K+S7ELFVMWIZLT
+         6/Zskh0rDWjBLyE4aWsbBRN+bKrk5gBPVTBvw0BaUGqbHo17VDX9ali6p5ambROQT+RX
+         cobAVE/HAJ6DmT+EIZvBW5tYdt53M116m0XsrRPIODZUpD9Vmj8Um+Klzen41F3/uE4u
+         DrteLdL+hXrmSijDn+H6EyltJuX9dQtufeCUt26Ne8gldm61x5/0T1wK1Jj53g9F0GrJ
+         t/4Q==
+X-Gm-Message-State: AOAM533U//ORURruLXZ0Ys8BiifFbpmY+zbiOZIwZ29Maz/Ea+VzvLYJ
+        gQtKY+n6YRqzag8zUltSQfwdQZHRNYw=
+X-Google-Smtp-Source: ABdhPJwC1T+1UGfpbpTxKbFg6RW1vvV1z/oHPVA5n3VZmS9iEDNButmo2MNa2cHTxgO+OUwaG7h+Mw==
+X-Received: by 2002:a50:c355:: with SMTP id q21mr11392370edb.121.1595636257329;
+        Fri, 24 Jul 2020 17:17:37 -0700 (PDT)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com. [209.85.128.47])
+        by smtp.gmail.com with ESMTPSA id q25sm1704503edb.58.2020.07.24.17.17.36
         for <linux-iio@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2020 17:14:44 -0700 (PDT)
-Received: by mail-wr1-f54.google.com with SMTP id f7so9729530wrw.1
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:14:44 -0700 (PDT)
-X-Received: by 2002:a5d:6744:: with SMTP id l4mr8918727wrw.105.1595636083918;
- Fri, 24 Jul 2020 17:14:43 -0700 (PDT)
+        Fri, 24 Jul 2020 17:17:36 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id t142so3258394wmt.4
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jul 2020 17:17:36 -0700 (PDT)
+X-Received: by 2002:a1c:4c16:: with SMTP id z22mr10508784wmf.103.1595636256044;
+ Fri, 24 Jul 2020 17:17:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200724213329.899216-1-swboyd@chromium.org> <20200724213329.899216-4-swboyd@chromium.org>
-In-Reply-To: <20200724213329.899216-4-swboyd@chromium.org>
+References: <20200724213329.899216-1-swboyd@chromium.org> <20200724213329.899216-5-swboyd@chromium.org>
+In-Reply-To: <20200724213329.899216-5-swboyd@chromium.org>
 From:   Daniel Campello <campello@chromium.org>
-Date:   Fri, 24 Jul 2020 18:14:07 -0600
-X-Gmail-Original-Message-ID: <CAHcu+Va3wWW_5eONbdD_VL2H3p-u3-jv_MxBR7G5hFwCr6w+tA@mail.gmail.com>
-Message-ID: <CAHcu+Va3wWW_5eONbdD_VL2H3p-u3-jv_MxBR7G5hFwCr6w+tA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] iio: sx9310: whoami is unsigned
+Date:   Fri, 24 Jul 2020 18:17:00 -0600
+X-Gmail-Original-Message-ID: <CAHcu+VbPbpqzc1xVqWZ9Uq0NRigpNDiNbkWupedOpOXVO6SN3Q@mail.gmail.com>
+Message-ID: <CAHcu+VbPbpqzc1xVqWZ9Uq0NRigpNDiNbkWupedOpOXVO6SN3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] iio: sx9310: Drop channel_users[]
 To:     Stephen Boyd <swboyd@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -74,9 +74,7 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jul 24, 2020 at 3:33 PM Stephen Boyd <swboyd@chromium.org> wrote:
 >
-> This is an unsigned value, actually it's a u8 but regmap doesn't handle
-> that easily. Let's make it unsigned throughout so that we don't need to
-> worry about signed vs. unsigned comparison behavior.
+> This struct member isn't used. Drop it.
 >
 > Cc: Gwendal Grignou <gwendal@chromium.org>
 > Cc: Daniel Campello <campello@chromium.org>

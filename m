@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3F522DF1E
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jul 2020 14:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF00322DF20
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jul 2020 14:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727846AbgGZMnI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jul 2020 08:43:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44438 "EHLO mail.kernel.org"
+        id S1726106AbgGZMqR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jul 2020 08:46:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727038AbgGZMnH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 Jul 2020 08:43:07 -0400
+        id S1726042AbgGZMqR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Jul 2020 08:46:17 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 58F9B2076A;
-        Sun, 26 Jul 2020 12:43:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CDA6E2076A;
+        Sun, 26 Jul 2020 12:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595767387;
-        bh=rD1nqH0BQds6In7swJllLJX+GDj9Q+kPi3fN2kFuZg8=;
+        s=default; t=1595767576;
+        bh=FI/9nCBY/E5Ixrb7yl4SCIjDKbdKdR6Lkz97qpX4NqE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HSaFUNV/4NLoHCg1VodFMbHzZKRFNJ8jqhFlOQEO5M8+Zzs4o9MdrZKnoFbd7j5Ng
-         Tp76SmsyRvOaQFTy8bXfK3M6jyjApUnHqf8WxmHYgtvyDqqdwSqN7KHATmljMpReFZ
-         I6hpv13/ZeOOtA8NmbJCTeCFFyhQqN7pfQzzGAmU=
-Date:   Sun, 26 Jul 2020 13:43:03 +0100
+        b=fNXKd+bN7yEgi5T+MYwxCkO4OfJhMZ8tdSwJXH6zCbe6tfMi6PrDhlWXxcfUqxPsv
+         limpYOeYJ9lvrsOsqTp975/fRuJrj/wepoQ83XpmG7mroE7SsQpOWoWuGrZpznKSfz
+         6w5+taCgOqvaFNmOSzps0v8x8och5LcDEvvqmZR0=
+Date:   Sun, 26 Jul 2020 13:46:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH v2] iio: trigger: make stub functions static inline
-Message-ID: <20200726134303.35c01f07@archlinux>
-In-Reply-To: <20200720135133.72154-1-alexandru.ardelean@analog.com>
-References: <20200714142456.67054-1-alexandru.ardelean@analog.com>
-        <20200720135133.72154-1-alexandru.ardelean@analog.com>
+To:     Nishant Malpani <nish.malpani25@gmail.com>
+Cc:     dragos.bogdan@analog.com, darius.berghe@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: gyro: Add driver support for ADXRS290
+Message-ID: <20200726134613.6c483a81@archlinux>
+In-Reply-To: <91b82340-832c-6e02-c595-613322926337@gmail.com>
+References: <20200715092757.14563-1-nish.malpani25@gmail.com>
+        <e369f36c-ec9e-0f90-674f-06c7d51d8b5e@gmail.com>
+        <20200720121315.38500910@archlinux>
+        <91b82340-832c-6e02-c595-613322926337@gmail.com>
 X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,55 +44,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Jul 2020 16:51:33 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Wed, 22 Jul 2020 00:25:48 +0530
+Nishant Malpani <nish.malpani25@gmail.com> wrote:
 
-> From: Lars-Peter Clausen <lars@metafoo.de>
+> Hello Jonathan,
 > 
-> Make sure that the trigger function stubs are all static inline.
-> Otherwise we might see compiler warnings about declared but unused
-> functions.
+> Thanks a lot for the detailed review. Comments inline...
 > 
-> Fixes 77712e5fbe2e4: ("Staging: iio: Staticise non-exported functions")
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-As it's only warning suppression I'm not going to rush this one.
+...
+> 
+> >>> +#define ADXRS290_REG_SN0	0x04 /* Serial Number Registers, 4 bytes */
+> >>> +#define ADXRS290_REG_DATAX0	0x08 /* Roll Rate o/p Data Regs, 2 bytes */
+> >>> +#define ADXRS290_REG_DATAY0	0x0A /* Pitch Rate o/p Data Regs, 2 bytes */  
+> > 
+> > Are we actually right to map roll and pitch to x and y?
+> > If so we should probably add that to the docs somewhere.  We need to document
+> > which one maps to x and which to y as that mapping is far from obvious!
+> >   
+> "The ADXRS290 is an x-axis and y-axis rate sensing device that
+> is also called a roll and pitch rate sensing device" (datasheet pg. 4). 
+> I think I'm right in marking the DATA X-axis register as the roll rate 
+> and similarly the DATA Y-axis register as the pitch rate.
+> 
+> Also, I thought it is a known convention to use x for roll, y for pitch, 
+> etc. [2]. But you're right, its not very obvious. Where do I document it?
+> 
+> [2] https://en.wikipedia.org/wiki/Aircraft_principal_axes#Principal_axes
 
-applied to the togreg branch of iio.git
+Documentation/ABI/testing/sysfs-bus-iio
+
 
 Thanks,
 
 Jonathan
-
-> ---
-> 
-> Changelog v1 -> v2:
-> * fix commit description & title
-> * added proper Fixes tag
-> 
->  drivers/iio/iio_core_trigger.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/iio_core_trigger.h b/drivers/iio/iio_core_trigger.h
-> index 9d1a92cc6480..374816bc3e73 100644
-> --- a/drivers/iio/iio_core_trigger.h
-> +++ b/drivers/iio/iio_core_trigger.h
-> @@ -30,7 +30,7 @@ int iio_trigger_detach_poll_func(struct iio_trigger *trig,
->   * iio_device_register_trigger_consumer() - set up an iio_dev to use triggers
->   * @indio_dev: iio_dev associated with the device that will consume the trigger
->   **/
-> -static int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
-> +static inline int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
->  {
->  	return 0;
->  }
-> @@ -39,7 +39,7 @@ static int iio_device_register_trigger_consumer(struct iio_dev *indio_dev)
->   * iio_device_unregister_trigger_consumer() - reverse the registration process
->   * @indio_dev: iio_dev associated with the device that consumed the trigger
->   **/
-> -static void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
-> +static inline void iio_device_unregister_trigger_consumer(struct iio_dev *indio_dev)
->  {
->  }
->  
 

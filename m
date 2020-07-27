@@ -2,65 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E16D22EE3E
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jul 2020 16:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95D6E22F32B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jul 2020 16:58:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728536AbgG0OGD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jul 2020 10:06:03 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43076 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726222AbgG0OGD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jul 2020 10:06:03 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1k03lR-0001ev-5a; Mon, 27 Jul 2020 14:06:01 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] counter: microchip-tcb-capture: remove ATMEL_TC_ETRGEDG_NONE bit check
-Date:   Mon, 27 Jul 2020 15:06:00 +0100
-Message-Id: <20200727140600.112562-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1729745AbgG0O54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jul 2020 10:57:56 -0400
+Received: from mailout06.rmx.de ([94.199.90.92]:57669 "EHLO mailout06.rmx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728743AbgG0O54 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Jul 2020 10:57:56 -0400
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout06.rmx.de (Postfix) with ESMTPS id 4BFjbM0xLcz9tVS;
+        Mon, 27 Jul 2020 16:57:51 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin02.retarus.com (Postfix) with ESMTPS id 4BFjZw2vNzz2TTLj;
+        Mon, 27 Jul 2020 16:57:28 +0200 (CEST)
+Received: from N95HX1G2.wgnetz.xx (192.168.54.121) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Mon, 27 Jul
+ 2020 16:57:28 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Christian Eggers <ceggers@arri.de>, <stable@vger.kernel.org>,
+        "Hartmut Knaack" <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: trigger: sysfs: Disable irqs before calling iio_trigger_poll()
+Date:   Mon, 27 Jul 2020 16:57:13 +0200
+Message-ID: <20200727145714.4377-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.54.121]
+X-RMX-ID: 20200727-165728-4BFjZw2vNzz2TTLj-0@kdin02
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+iio_trigger_poll() calls generic_handle_irq(). This function expects to
+be run with local IRQs disabled.
 
-The macro ATMEL_TC_ETRGEDG_NONE is defined as 0 << 8 which is zero and
-hence the check cmr & ATMEL_TC_ETRGEDG_NONE can never be true. Since
-*action is already assigned MCHP_TC_SYNAPSE_ACTION_NONE then this check
-and set is redundant dead code and can be removed.
-
-Addresses-Coverity: ("Logically dead code")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Cc: stable@vger.kernel.org
 ---
- drivers/counter/microchip-tcb-capture.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iio/trigger/iio-trig-sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index f7b7743ddb94..119640d6d6ab 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -185,9 +185,7 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
+diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
+index e09e58072872..66a96b1632f8 100644
+--- a/drivers/iio/trigger/iio-trig-sysfs.c
++++ b/drivers/iio/trigger/iio-trig-sysfs.c
+@@ -94,7 +94,9 @@ static void iio_sysfs_trigger_work(struct irq_work *work)
+ 	struct iio_sysfs_trig *trig = container_of(work, struct iio_sysfs_trig,
+ 							work);
  
- 	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
++	local_irq_disable();
+ 	iio_trigger_poll(trig->trig);
++	local_irq_enable();
+ }
  
--	if (cmr & ATMEL_TC_ETRGEDG_NONE)
--		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
--	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-+	if (cmr & ATMEL_TC_ETRGEDG_RISING)
- 		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
- 	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
- 		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
+ static ssize_t iio_sysfs_trigger_poll(struct device *dev,
 -- 
-2.27.0
+Christian Eggers
+Embedded software developer
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 

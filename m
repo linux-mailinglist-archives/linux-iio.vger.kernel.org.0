@@ -2,128 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2189622F696
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jul 2020 19:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB4C22F787
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jul 2020 20:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729927AbgG0R0v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jul 2020 13:26:51 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2542 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726617AbgG0R0u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Jul 2020 13:26:50 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 0CDD76F1B6A00EEE974C;
-        Mon, 27 Jul 2020 18:26:49 +0100 (IST)
-Received: from localhost (10.227.96.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 27 Jul
- 2020 18:26:48 +0100
-Date:   Mon, 27 Jul 2020 18:26:47 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        id S1729356AbgG0SPD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jul 2020 14:15:03 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36487 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728214AbgG0SPD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jul 2020 14:15:03 -0400
+Received: by mail-io1-f66.google.com with SMTP id t15so9045455iob.3;
+        Mon, 27 Jul 2020 11:15:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YYtw9YpjryNj+P7sa7ru3omMiZtT2NKQkuKuKcuEOlo=;
+        b=XvtbHvt7eq4TVhAVk/grZjhQZbiqfFnZgi+1gGPndNhRoCz/Y9bXSZETHr5GoK9Jpt
+         BTF7/+RSBkF+YCCNfUaFxBN3lkcuYzNNpZ03T3G1m2sNMkzrxQJrSF8Ei9F28nEJQBu5
+         MOUvXardMIMjmJrw5t/n2Io8qwqCkWdrgzDUMNDq/ycnxZixLILo6VW1abxNeq0GQcmj
+         qrx56xx0Ra8G1KOqRzzxwrh19WABumDTvdId9LgGQhQ+iGyR8Lox2UaeoGfw5mpARhHX
+         za84boVdhKnJB8Cbp2x6XiByky+V5Rrqgrs3QbXZFEDWlxaMGyaYZmCnUIH84QAVCtpT
+         /S0Q==
+X-Gm-Message-State: AOAM533E3D/XTtWhk3oGdwcyoGaIz9GO5ye8vT9HIyi0wgJORFFxV1Zm
+        wHQESouOMimyZ2HIcS0Ixf6DmaMN4g==
+X-Google-Smtp-Source: ABdhPJxw3k8fI2bDsS359EwMlDuaaKCNDuNufmiHEEdYDjipxMFi7lqPsgIdQi6mLZJlEs4bF4ND4g==
+X-Received: by 2002:a5d:9347:: with SMTP id i7mr25043985ioo.40.1595873702435;
+        Mon, 27 Jul 2020 11:15:02 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id i9sm8913885ile.48.2020.07.27.11.15.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2020 11:15:02 -0700 (PDT)
+Received: (nullmailer pid 640299 invoked by uid 1000);
+        Mon, 27 Jul 2020 18:15:01 -0000
+Date:   Mon, 27 Jul 2020 12:15:01 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Darius Berghe <darius.berghe@analog.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <jic23@kernel.org>, <robh@kernel.org>
-Subject: Re: [PATCH v3 2/3] ltc2471: ltc2461/ltc2463 compatible strings
-Message-ID: <20200727182647.00002e3c@huawei.com>
-In-Reply-To: <20200727135834.84093-3-darius.berghe@analog.com>
+Cc:     jic23@kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] ltc2471 driver yaml
+Message-ID: <20200727181501.GA639934@bogus>
 References: <20200727135834.84093-1-darius.berghe@analog.com>
-        <20200727135834.84093-3-darius.berghe@analog.com>
-Organization: Huawei tech. R&D (UK)  Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+ <20200727135834.84093-4-darius.berghe@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.227.96.57]
-X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200727135834.84093-4-darius.berghe@analog.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Jul 2020 16:58:33 +0300
-Darius Berghe <darius.berghe@analog.com> wrote:
-
-> Add compatible strings for these devices in the existing ltc2471
-> driver.
+On Mon, 27 Jul 2020 16:58:34 +0300, Darius Berghe wrote:
+> Add dt binding documentation for ltc2471 driver. This covers all supported
+> devices.
 > 
 > Signed-off-by: Darius Berghe <darius.berghe@analog.com>
-
-Hi Darius,
-
-A few additional minor comments from me.
-
 > ---
->  drivers/iio/adc/ltc2471.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
+>  .../bindings/iio/adc/adi,ltc2471.yaml         | 49 +++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ltc2471.yaml
 > 
-> diff --git a/drivers/iio/adc/ltc2471.c b/drivers/iio/adc/ltc2471.c
-> index e1c4e966524d..8c57203b1fe4 100644
-> --- a/drivers/iio/adc/ltc2471.c
-> +++ b/drivers/iio/adc/ltc2471.c
-> @@ -1,5 +1,7 @@
->  /*
-> - * Driver for Linear Technology LTC2471 and LTC2473 voltage monitors
-> + * Driver for Linear Technology LTC2461, LTC2463, LTC2471 and LTC2473 voltage
-> + * monitors.
-> + * The LTC2463 is identical to the 2461, but reports a differential signal.
->   * The LTC2473 is identical to the 2471, but reports a differential signal.
->   *
->   * Copyright (C) 2017 Topic Embedded Products
-> @@ -17,8 +19,10 @@
->  #include <linux/mod_devicetable.h>
->  
->  enum ltc2471_chips {
-> +	ltc2461,
-> +	ltc2463,
->  	ltc2471,
-> -	ltc2473,
-> +	ltc2473
 
-Why drop the comma?  We've just added two new devices. Seems possible there
-may be more in the future!
 
->  };
->  
->  struct ltc2471_data {
-> @@ -122,7 +126,7 @@ static int ltc2471_i2c_probe(struct i2c_client *client,
->  	indio_dev->name = id->name;
->  	indio_dev->info = &ltc2471_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	if (id->driver_data == ltc2473)
-> +	if (id->driver_data == ltc2473 || id->driver_data == ltc2463)
-If the only use of driver_data is going to be this check, then just set it
-to 2473 for the 2463 and 2473.  It's not uncommon to do this when we have
-a bunch of devices that look the same to software.
+My bot found errors running 'make dt_binding_check' on your patch:
 
->  		indio_dev->channels = ltc2473_channel;
->  	else
->  		indio_dev->channels = ltc2471_channel;
-> @@ -139,6 +143,8 @@ static int ltc2471_i2c_probe(struct i2c_client *client,
->  }
->  
->  static const struct i2c_device_id ltc2471_i2c_id[] = {
-> +	{ "ltc2461", ltc2461 },
-> +	{ "ltc2463", ltc2463 },
->  	{ "ltc2471", ltc2471 },
->  	{ "ltc2473", ltc2473 },
->  	{}
-> @@ -146,6 +152,8 @@ static const struct i2c_device_id ltc2471_i2c_id[] = {
->  MODULE_DEVICE_TABLE(i2c, ltc2471_i2c_id);
->  
->  static const struct of_device_id ltc2471_of_match[] = {
-> +	{ .compatible = "adi,ltc2461" },
-> +	{ .compatible = "adi,ltc2463" },
->  	{ .compatible = "adi,ltc2471" },
->  	{ .compatible = "adi,ltc2473" },
->  	{}
-> @@ -163,6 +171,6 @@ static struct i2c_driver ltc2471_i2c_driver = {
->  
->  module_i2c_driver(ltc2471_i2c_driver);
->  
-> -MODULE_DESCRIPTION("LTC2471/LTC2473 ADC driver");
-> +MODULE_DESCRIPTION("LTC2461/LTC2463/LTC2471/LTC2473 ADC driver");
->  MODULE_AUTHOR("Topic Embedded Products");
->  MODULE_LICENSE("GPL v2");
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/iio/adc/adi,ltc2471.yaml#
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dts:22.13-26: Warning (reg_format): /example-0/i2c0/adc@14:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dts:20.18-23.13: Warning (avoid_default_addr_size): /example-0/i2c0/adc@14: Relying on default #address-cells value
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dts:20.18-23.13: Warning (avoid_default_addr_size): /example-0/i2c0/adc@14: Relying on default #size-cells value
+Documentation/devicetree/bindings/iio/adc/adi,ltc2471.example.dt.yaml: Warning (unique_unit_address): Failed prerequisite 'avoid_default_addr_size'
+
+
+See https://patchwork.ozlabs.org/patch/1336970
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.
 

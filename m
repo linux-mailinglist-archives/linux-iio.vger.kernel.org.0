@@ -2,106 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EB1231494
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 23:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DC1123149A
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 23:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728149AbgG1V0t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 17:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44036 "EHLO
+        id S1729462AbgG1V3A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 17:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729437AbgG1V0s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 17:26:48 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12028C0619D4
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 14:26:48 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t142so924071wmt.4
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 14:26:47 -0700 (PDT)
+        with ESMTP id S1729437AbgG1V27 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 17:28:59 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82AD4C0619D4
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 14:28:59 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id k71so704580pje.0
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 14:28:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4COYxTSTRnEzjznO2W6thCBJlNbZdidcvO9PjI7DyOk=;
-        b=vhJzTBeIpGarovZTpfjGx2Wa4L/R56gWYMM4br6jBZCGiL2RRlaYq6F4HADG0Jjh7q
-         7Shwf2OOdpkL8UVhuKmh7ZmlASrWEca4vvwloDyjOrKINAPXNaHEGtDRpr0znTDrmaua
-         483jKJ7GAIXEtLrDBZcp2eBOuVkAkNJne8hkdo8Q5YJSQ0zCAMZNG4bjgm6bLgy53Rdc
-         8nkfTTqq/EjxzgNheidLNbMFafSvM+iXL2mqii/7G62yoWSTo0zW+7CrOFteXyjjABxc
-         I6doe35twysT/7Csc71/R79KFQHEslNiMmAxLzM+m+Z/SZfijuV9ZxBPlryaFjXwSmYr
-         4Ujw==
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=kPGoT8s13omTFNLCI8y7UaQObCEr5Pzu6OocwkPR56Y=;
+        b=V5MukAfmPZeP4aIDTIhSue8ndeaeyGkhpdAHPu2hyKKHhOzb1iz8DoClfumxbPXtlV
+         N93kujMyBKOCP/idEO/LXjf4GNbna4zE7cgBq52Jv35fyyxO7u7YAofQNnubN9m7mW+A
+         oaA9D09fzYr3DaRrgaHZdqjAF6ClKK4d6Pxqw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4COYxTSTRnEzjznO2W6thCBJlNbZdidcvO9PjI7DyOk=;
-        b=aHAb2k9toxDHj+M0499AYye0Pw08z8OYCGvF0NjyXmAWdogJAQYnUSthlq1E0pGJ7X
-         lFIpcT/i1U/NjFKIfATtNJPFkaLnfGjCfR1W87zIM6sRvfOPW1wbwy9HP4ubFHzrzmEa
-         pyylGPga75P5wmCWRVnlks3whW12rP3+8+JNegB6FsbI8wCjYI56+ZNTMamt0F9etwxw
-         HmgQE9l4QKkG9Kam+EAVmxPBqUYNmt1l0Y4RGTtmgKjZVatOHBra4aCJFItfFYMDiVZw
-         vNiDahrUsquxTZQiPUZVCJGmpLogffyKl5KpWVCpzUE0KzL7ki6+rJ/7z0BKXxafeRty
-         Z63g==
-X-Gm-Message-State: AOAM530GnVXB+findsZSZGNwTh815owQK+FTQWKdUN+vCH2snTB0fBXD
-        U96RcTTHQpypPzJjwFXvbHgocCxUN8VA8AzzSfceAw==
-X-Google-Smtp-Source: ABdhPJxRU30KGbLhwtAg0ELxyVwt4UfnHqz95LfEc0Qp6GL8XOPE3pFebCMm7ev+0CUib1mosoa7cggc2QZ9CjzdnSY=
-X-Received: by 2002:a1c:7d12:: with SMTP id y18mr5391985wmc.115.1595971605637;
- Tue, 28 Jul 2020 14:26:45 -0700 (PDT)
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=kPGoT8s13omTFNLCI8y7UaQObCEr5Pzu6OocwkPR56Y=;
+        b=MlLpL1u1/W9xdB2C2WrkynMLZFMALluvFdCKJGFopwmqGy25wSmsFN+R+HLn+asHWo
+         cehYU9gS4f1s0GCbWsMj3P2KLeNgqL/S2S/s6ICnppCP447C6YqxDNTt+CXBSKICXY/j
+         Qj4rYHJi5Gn6oYq8jpLBA0CQ5xsOwmIR6QQ5dq4H/98XNF69NfRyfu0eP+juEbxEE4Mn
+         o5LyYou4SY+71dJoR+m44A3rBJ2hzW1AkzVOHLAQ0onOy2gCZr+4cZ9YTu0k+KxeiFpT
+         BTe/qcAETFdFJX5kWFhZSeln+pUWSQY6y7jprcFivdl/z7aHCMURjSyMGiOML0qkJFnm
+         EMQQ==
+X-Gm-Message-State: AOAM530dE/q8+xuJFF4Zqfm1v0A7CtLc4RzpcBGevDiBu1iZzplCUch4
+        rxfck2LQNClnAfZqjIux00nFrA==
+X-Google-Smtp-Source: ABdhPJy0cOg/GfVtiku/hOfqRfko3DsvECjRR2zpYmFdCae290d7JSv7mlpJxoudN1Jln3ld6Y2Nww==
+X-Received: by 2002:a17:902:b58f:: with SMTP id a15mr25193175pls.87.1595971738617;
+        Tue, 28 Jul 2020 14:28:58 -0700 (PDT)
+Received: from chromium.org ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
+        by smtp.gmail.com with ESMTPSA id t1sm18950308pgq.66.2020.07.28.14.28.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2020 14:28:57 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
- <20200728151258.1222876-1-campello@chromium.org> <20200728091057.6.I27a5605d9cb3ff643ef040c4ef932a30df9a8fac@changeid>
- <CAHp75VfLYqPpO5M6GaHfSBBkQoZpnVTHFKVX5k9Pu_RjMO-whw@mail.gmail.com>
-In-Reply-To: <CAHp75VfLYqPpO5M6GaHfSBBkQoZpnVTHFKVX5k9Pu_RjMO-whw@mail.gmail.com>
-From:   Daniel Campello <campello@google.com>
-Date:   Tue, 28 Jul 2020 15:26:09 -0600
-Message-ID: <CAHcu+VbxtAz-2y9FLdraqhYjzHKmi-5O=MioSU1caupT_y6PrQ@mail.gmail.com>
-Subject: Re: [PATCH 06/15] iio: sx9310: Align memory
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAHcu+Va0DVm1Pw__jYF_EhZHSQnSqb_zex2NN1M67zc=FTAitA@mail.gmail.com>
+References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid> <20200728151258.1222876-1-campello@chromium.org> <20200728091057.4.I33c50453845a8167969130d514af86e573b6ef31@changeid> <CAHp75VcRBCmRdGh5WVGDY28AzNhBufkoNkrEZ7uEFCW2MsJ=qg@mail.gmail.com> <CAHcu+Va0DVm1Pw__jYF_EhZHSQnSqb_zex2NN1M67zc=FTAitA@mail.gmail.com>
+Subject: Re: [PATCH 04/15] iio: sx9310: Remove acpi and of table macros
+From:   Stephen Boyd <swboyd@chromium.org>
 Cc:     LKML <devicetree@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
         Douglas Anderson <dianders@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Stephen Boyd <swboyd@chromium.org>,
         linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Campello <campello@chromium.org>
+Date:   Tue, 28 Jul 2020 14:28:56 -0700
+Message-ID: <159597173651.1360974.12339018912922779958@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 12:11 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Tue, Jul 28, 2020 at 6:15 PM Daniel Campello <campello@chromium.org> wrote:
+Quoting Daniel Campello (2020-07-28 13:47:15)
+> On Tue, Jul 28, 2020 at 12:09 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 > >
-> > Use __aligned(8) to ensure that the timestamp is correctly aligned
-> > when we call push_to_buffers
+> > On Tue, Jul 28, 2020 at 6:16 PM Daniel Campello <campello@chromium.org>=
+ wrote:
+> > >
+> > > Avoids unused warnings due to acpi/of table macros.
+> > >
 > >
-> > Signed-off-by: Daniel Campello <campello@chromium.org>
-> > ---
-> >
-> >  drivers/iio/proximity/sx9310.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> > index de52afd7c13333..fb5c16f2aa6b1a 100644
-> > --- a/drivers/iio/proximity/sx9310.c
-> > +++ b/drivers/iio/proximity/sx9310.c
-> > @@ -131,8 +131,8 @@ struct sx9310_data {
-> >          */
-> >         bool prox_stat[SX9310_NUM_CHANNELS];
-> >         bool trigger_enabled;
-> > -       __be16 buffer[SX9310_NUM_CHANNELS +
-> > -                     4]; /* 64-bit data + 64-bit timestamp */
-> > +       /* 64-bit data + 64-bit timestamp buffer */
-> > +       __be16 buffer[SX9310_NUM_CHANNELS + 4] __aligned(8);
->
-> If the data amount (channels) is always the same, please, use struct approach.
-> Otherwise put a comment explaining dynamic data.
-I'm not sure what you mean here. I have a comment above for the size
-of the array.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+> > At the same time I would check if mod_devicetable.h is included.
+> I did the following and no error showed up:
+> #ifndef LINUX_MOD_DEVICETABLE_H
+> #error Missing include
+> #endif
+
+That's fine, but it's usually better to avoid implicit include
+dependencies so that order of includes doesn't matter and so that if the
+headers change outside of this driver this driver doesn't have to be
+fixed to include something it needs like mod_devicetable.h

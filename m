@@ -2,80 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08FC22312F4
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 21:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C1923138A
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 22:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730027AbgG1TnB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 15:43:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
+        id S1728559AbgG1UHl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 16:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729699AbgG1TnA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 15:43:00 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A57F8C0619D2
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:43:00 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id z188so3710655pfc.6
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:43:00 -0700 (PDT)
+        with ESMTP id S1728292AbgG1UHk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 16:07:40 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57456C0619D2
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:07:40 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id g19so8108299ejc.9
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:content-transfer-encoding:in-reply-to:references
-         :subject:from:cc:to:date:message-id:user-agent;
-        bh=vnxwi5iPCJkQKF4flCKDFiMcmGVkTk/FZPhjrVn7vQ8=;
-        b=lGILnOI2EA2ePNYpXzRAJhVcrhFB5Z+3mS7RTR0wzoPvklGepKua58mr9TZ3zuL0VU
-         dYg64ioAyhPP6TnZY+ZxqgWDb5liZYowK2t4+fhaQCN+o5WeoEU0z4A6AXz1+4TQ3fnr
-         Zbge8OACGr5Fj8DXtHimT1BBBOOPSv4jI1IKs=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qnz0jOHGhQ7071N749Two4h1HroTIuj/RiP18x35OOI=;
+        b=Fw2kRNbpJHyRS+1no8N05uMus3XPhZET++7DGlfe6jJSIZSAzilD13sbJKzlBvIKZU
+         VZxNwziJ0lu/iYgED5pnjaYig4DCwmb0+QuLlzBik3D/tlKW9LuxoTkPxVRciQOOKID1
+         A3x28H2/8Eksk7/cKrMVrDL+p/piLtAk8Szms=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding
-         :in-reply-to:references:subject:from:cc:to:date:message-id
-         :user-agent;
-        bh=vnxwi5iPCJkQKF4flCKDFiMcmGVkTk/FZPhjrVn7vQ8=;
-        b=N2yWy/WF3qXk1/J7K5qzsr+l/ASjARRVYgVRg3qY2PI1CitknanEXPN3pGk8XNPWBW
-         qTppIRyjmG5nICqnEkCavRDH6hW7SCFXI1LA+RFCREYZrPji8QEdtxxmzx1q6mLnJPUh
-         x7fkEK6nCDTmy8b/RG6116fOF5gognQshlZleygs/6fHUnDETbo6qkrDDgqjROBtp+hw
-         5ugUjUOJHzNCepOME3jaf1AWX1yaZJcKDTsXSvpSSZkQSKq3F0nNTU4bt3NjZQ1QQA/c
-         3osOxt6nCoPBpYOS55438Qo1CqWn+lfVIqZZ6jozm2b77+9FqaVF+iCODTPUCSRLsGaJ
-         GP9w==
-X-Gm-Message-State: AOAM532vrXROQyKnf+o76oghuQu6IwCl62qE6Bw8t+nxi5qNlMpkX1se
-        Cwv4WoUCbdzjzXSPkl5AxPQuow==
-X-Google-Smtp-Source: ABdhPJx/Gpp+X34yyUGrc2pTEF69GOO3vQr5iwhFpQeyJ7MgTI61ZKxOdL1srQX1mC2VDW9ZhI+mXQ==
-X-Received: by 2002:a62:2e45:: with SMTP id u66mr1993692pfu.121.1595965380254;
-        Tue, 28 Jul 2020 12:43:00 -0700 (PDT)
-Received: from chromium.org ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id o11sm19315046pfp.88.2020.07.28.12.42.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 12:42:59 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qnz0jOHGhQ7071N749Two4h1HroTIuj/RiP18x35OOI=;
+        b=EtWXm5x07pBqi2xOpxTxgvOzGpjQarVuiBEkm14X/vrqq0zlX0f5c7dhrLSUiqyXTF
+         mHbbRZiD4d7hJc5vbO2kAKOfYMtpfoSQK7OwF0BVVMg5DkqtDbBFf0r/o2BwAKgYhXSL
+         cBZRDswRJdfhH7wRZeyfu7+HB0nZyU1OnkNPtVpC9CAbAdT66xdk8Ziz5hHlOc3a2I5B
+         oS3aideMvXSd+iOzoAnyg2PajXnaVDaYzy0j03nRd9d2NkBSuDn2xCx6Sptil+nb/QPQ
+         KeWvCxtbBQ5D4XHLnH5honQltt6idIxe9ny49ZhaCJC585grqcvCSIoviLHS7Sya2Bf8
+         uJqw==
+X-Gm-Message-State: AOAM532czswTMweCFsxFlLfDiAFNQAF2U4s1OI9agv8LFIENCVo2dxKU
+        TgO/WdAXGsWWp/PSif3xU1JrzHK9qKU=
+X-Google-Smtp-Source: ABdhPJzitlR/2G0jX+G6tQ+ZCHCwWzX/yvv/V4URpBqNE5ORT9uAedWygemZVI3K6xsJ06KVkOM3UQ==
+X-Received: by 2002:a17:906:248b:: with SMTP id e11mr25753747ejb.280.1595966858661;
+        Tue, 28 Jul 2020 13:07:38 -0700 (PDT)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com. [209.85.128.44])
+        by smtp.gmail.com with ESMTPSA id p21sm52980eds.11.2020.07.28.13.07.37
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jul 2020 13:07:37 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id f18so708912wmc.0
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:07:37 -0700 (PDT)
+X-Received: by 2002:a7b:c953:: with SMTP id i19mr5308631wml.103.1595966856934;
+ Tue, 28 Jul 2020 13:07:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200728091057.2.Idb6af9292f18f54be0b62cede52b481063738707@changeid>
-References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid> <20200728151258.1222876-1-campello@chromium.org> <20200728091057.2.Idb6af9292f18f54be0b62cede52b481063738707@changeid>
-Subject: Re: [PATCH 02/15] iio: sx9310: Update macros declarations
-From:   Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Daniel Campello <campello@chromium.org>,
+References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
+ <20200728151258.1222876-1-campello@chromium.org> <20200728091057.3.I2a1314232ace4323af96f9981c1e1a4f31f78049@changeid>
+ <CAHp75VfOhoJrHEnC_Wh2qnOMX0pT1Jx92B0TFQ5=cfZsTSNSOg@mail.gmail.com>
+In-Reply-To: <CAHp75VfOhoJrHEnC_Wh2qnOMX0pT1Jx92B0TFQ5=cfZsTSNSOg@mail.gmail.com>
+From:   Daniel Campello <campello@chromium.org>
+Date:   Tue, 28 Jul 2020 14:07:00 -0600
+X-Gmail-Original-Message-ID: <CAHcu+VaDBj87stJ9JJkuerJkr8=-g68FhUUnKvfpN8uYaMBUhQ@mail.gmail.com>
+Message-ID: <CAHcu+VaDBj87stJ9JJkuerJkr8=-g68FhUUnKvfpN8uYaMBUhQ@mail.gmail.com>
+Subject: Re: [PATCH 03/15] iio: sx9310: Fix irq handling
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Douglas Anderson <dianders@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-To:     Daniel Campello <campello@chromium.org>,
-        LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Date:   Tue, 28 Jul 2020 12:42:58 -0700
-Message-ID: <159596537832.1360974.10421899531703700889@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Daniel Campello (2020-07-28 08:12:45)
-> Follows spec sheet for macro declarations.
->=20
-> Signed-off-by: Daniel Campello <campello@chromium.org>
-> ---
+On Tue, Jul 28, 2020 at 12:08 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Jul 28, 2020 at 6:14 PM Daniel Campello <campello@chromium.org> wrote:
+> >
+> > Fixes enable/disable irq handling at various points. The driver needs to
+> > only enable/disable irqs if there is an actual irq handler installed.
+>
+> > -       enable_irq(data->client->irq);
+> > +       if (!ret)
+> > +               enable_irq(data->client->irq);
+> >
+> >         return ret;
+> >  }
+>
+> Can it be a usual pattern?
+>
+>   if (ret)
+>     return ret;
+>   ...
+>   return 0;
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+I think this way is more readable. The alternative would have to be
+something like this:
+
+....
+if (ret)
+  goto out;
+mutex_unlock(&data->mutex);
+enable_irq(data->client->irq);
+return 0;
+
+out:
+mutex_unlock(&data->mutex);
+return ret;
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+
+Regards,
+Daniel Campello

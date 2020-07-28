@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1420F2312E1
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 21:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BEAB2312E4
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 21:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732882AbgG1Tkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 15:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55622 "EHLO
+        id S1729927AbgG1Tl0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 15:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728927AbgG1Tkj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 15:40:39 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63805C061794
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:40:39 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id s15so1109925pgc.8
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:40:39 -0700 (PDT)
+        with ESMTP id S1728896AbgG1TlZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 15:41:25 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFB0C061794
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:41:25 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id b9so10497039plx.6
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 12:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:content-transfer-encoding:in-reply-to:references
          :subject:from:cc:to:date:message-id:user-agent;
-        bh=JnSoXvhnrCfqq1IVWszLYrvihUBdm83Lj44jYdRdMcc=;
-        b=iv4onD3Q0axPdhjPEQWHtuqyzI77tyLiN+xmtu+WNHS9v9p/q/rDCJ8iyKFN/gqtxb
-         tPgvAIFTgJ2rCYVu0wXWuUe40pCCt/cAMTlQ7haEDHYEJC++ZGQWVET3Bf/wARWgPqN3
-         jVE5YRzQGHlUqg+xYBtPJ6PxLXrZ7C23fDmVM=
+        bh=Tt1oB5/JSSIBPEzmzmS6Al56/2k10JRnudrRTsEkyZQ=;
+        b=VuMywMwH4C3Ma1CCFFnox7L/OmRNnabVKzronEoZ8l7QdrS7X5/ruXnrNyq8alv7LW
+         1G+/r/eNciDtwh7ZSnopK2Fs3z33cMoCMidZlzUQcmIJNqnMerfcU6fFrp/yg9J5Znc0
+         46kAToYneS/NNtzmdKWno8JYWL3gg2S10G+qY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:content-transfer-encoding
          :in-reply-to:references:subject:from:cc:to:date:message-id
          :user-agent;
-        bh=JnSoXvhnrCfqq1IVWszLYrvihUBdm83Lj44jYdRdMcc=;
-        b=HQXXyembU2XxInGYjGaWXeGYacNRFrpr8u1DYw6zSQwU8PEVHyuBl+w4LS2eKC2BUE
-         1zwsFAXwng/0cy6yQvebYdOH4DPXB1bNiAOv2f22rQSeqA1IcUVLzj31qR8RpTQuUblp
-         s2fgViZO3986aUDg63fR6xy98UEuTrviJRpnpDowsFZAzsFMEkxyzND9niPIsF0OCUBj
-         bVpO8fN11zj8ImPEETRliH+Pm/Icf9RsKAenniuGKqQZrZJC0CDnpyQ4lKxiEgTyao41
-         0Abos+jdOVs7XkXjVPgF6ljh5DAr95GNBm1CLVzzlRhdMOX02irnJA7RQZuQ1nTooJam
-         tmYQ==
-X-Gm-Message-State: AOAM531ufeCb5pb+y6rhFhCQcns7TxBPrdmwzh2tlZxnQOeBb+GnK8DR
-        Yu5Hcl50JY2UPS/E1x5foAluew==
-X-Google-Smtp-Source: ABdhPJwdqO+peLZuIrIf2EXNYz9eMWKLPKmq06FaQ4DBBzeI8IjM+GcWNrZ8R37eE4hwpm1iVcMfRg==
-X-Received: by 2002:a63:d446:: with SMTP id i6mr24699884pgj.438.1595965238995;
-        Tue, 28 Jul 2020 12:40:38 -0700 (PDT)
+        bh=Tt1oB5/JSSIBPEzmzmS6Al56/2k10JRnudrRTsEkyZQ=;
+        b=rD95wINhghIQmOYRnpbHjwAFub4dzzsIuq87Mj6LH5bEmp4yuBRu/wi6of2twhZbpp
+         h918QqmcOqHVNbf6kxNlhYb/0h83BboFNVRcvwFMHAVde62OikBRGCYVA+g+8TJG5PNg
+         rYRM2cjcwsdOMlHdVvMHOMUCZbNfVFTBu21qcbB/5SeZIe7+hLBZ5gFXxoROX+1Xb7uZ
+         OJuSuEdLrC248MUZv5esxWCyci5Z8rPArd0A4osozLX4etSAJTp7j5sBwoSRHPA3JozP
+         EAobyH7YiuaekSvDdH8a7eirOKE+MUX4v2/FhHoyejfaMT7WOCcSA5OK+w4uP3oWjq2t
+         ZmHQ==
+X-Gm-Message-State: AOAM533YgxtNWyKmexnsJONHOrECgt30N+tfG2iBNnRZhQIjXpBrLmY+
+        grLDggYclA3yFyi0Wy3rIW8D3w==
+X-Google-Smtp-Source: ABdhPJwlkYDk4n1LB04qDyenqfvxkpJupbQgya8o8bgR/rB9e/SY9pWSIBYqYLvMJRDPFGVNQitSoQ==
+X-Received: by 2002:a17:90a:2a09:: with SMTP id i9mr6035315pjd.50.1595965285476;
+        Tue, 28 Jul 2020 12:41:25 -0700 (PDT)
 Received: from chromium.org ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id u23sm18952725pgn.26.2020.07.28.12.40.38
+        by smtp.gmail.com with ESMTPSA id o16sm5792491pfu.188.2020.07.28.12.41.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 12:40:38 -0700 (PDT)
+        Tue, 28 Jul 2020 12:41:25 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200728091057.10.Ibe84fae61cd914c116e6d59ffeb644f1cbecd601@changeid>
-References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid> <20200728151258.1222876-1-campello@chromium.org> <20200728091057.10.Ibe84fae61cd914c116e6d59ffeb644f1cbecd601@changeid>
-Subject: Re: [PATCH 10/15] iio: sx9310: Simplify error return handling
+In-Reply-To: <20200728091057.11.I126c3f697e0b7ee951ea24ac60ce79d368790de9@changeid>
+References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid> <20200728151258.1222876-1-campello@chromium.org> <20200728091057.11.I126c3f697e0b7ee951ea24ac60ce79d368790de9@changeid>
+Subject: Re: [PATCH 11/15] iio: sx9310: Use variable to hold &client->dev
 From:   Stephen Boyd <swboyd@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Daniel Campello <campello@chromium.org>,
@@ -63,50 +63,18 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
 To:     Daniel Campello <campello@chromium.org>,
         LKML <devicetree@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Date:   Tue, 28 Jul 2020 12:40:37 -0700
-Message-ID: <159596523705.1360974.7169089810545711557@swboyd.mtv.corp.google.com>
+Date:   Tue, 28 Jul 2020 12:41:23 -0700
+Message-ID: <159596528373.1360974.13960095456763695577@swboyd.mtv.corp.google.com>
 User-Agent: alot/0.9.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Daniel Campello (2020-07-28 08:12:53)
-> @@ -368,13 +368,13 @@ static int sx9310_wait_for_sample(struct sx9310_dat=
-a *data)
->  static int sx9310_read_proximity(struct sx9310_data *data,
->                                  const struct iio_chan_spec *chan, int *v=
-al)
->  {
-> -       int ret =3D 0;
-> +       int ret;
->         __be16 rawval;
-> =20
->         mutex_lock(&data->mutex);
-> =20
->         ret =3D sx9310_get_read_channel(data, chan->channel);
-> -       if (ret < 0)
-> +       if (ret)
->                 goto out;
-> =20
->         if (data->client->irq) {
-> @@ -394,11 +394,11 @@ static int sx9310_read_proximity(struct sx9310_data=
- *data,
-> =20
->         mutex_lock(&data->mutex);
-> =20
-> -       if (ret < 0)
-> +       if (ret)
->                 goto out_disable_irq;
+Quoting Daniel Campello (2020-07-28 08:12:54)
+> Improves readability by storing &client->dev in a local variable.
+>=20
+> Signed-off-by: Daniel Campello <campello@chromium.org>
+> ---
 
-Why is this condition checked after grabbing the mutex? Shouldn't it be
-checked before grabbing the mutex? Or is that supposed to be a
-mutex_unlock()?
-
-> =20
->         ret =3D sx9310_read_prox_data(data, chan, &rawval);
-> -       if (ret < 0)
-> +       if (ret)
->                 goto out_disable_irq;
-> =20
->         *val =3D sign_extend32(be16_to_cpu(rawval),
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>

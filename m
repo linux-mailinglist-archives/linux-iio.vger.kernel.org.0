@@ -2,103 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FF7A23142F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 22:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8A3231435
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 22:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728745AbgG1Urz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 16:47:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
+        id S1728453AbgG1Usa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 16:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728788AbgG1Ury (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 16:47:54 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D09C0619D2
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:47:54 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id kq25so9075859ejb.3
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:47:54 -0700 (PDT)
+        with ESMTP id S1728202AbgG1Usa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 16:48:30 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6684AC061794
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:48:30 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id ha11so708286pjb.1
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:48:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ExajQAZpNTd+joqebqoVtMbLAI74qmTPLZGYxWwu4D0=;
-        b=i9sjjh5UAFRZq+C3SoLUFHBEFZe6/rz5SKiFPjmp8dcIsULItKWNbWHaJLPdjgA3Mj
-         TmKlkfab84dkU55DoSBegy1MTK+TCHgJKsRJtDKe0ppHkw9hqFaosw/z/OPlicU5HoFK
-         om2qlX+kETm4XnxUxtAKkwLggUd0PsUuko2zc=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LlQewahdhsPckNPSzzDVJ3WH731NYXJ0lt4sgv3xG4I=;
+        b=fBInYdWKn71gr4DauDTi2NW47uFu5ON9YD3mrq9aPgokNNY7ayJCa3Q/BObSkGuVtt
+         0N1z7RNFWHu2JKhMGuGsifRmlT0lFLWI1CpFSxiTa0M9anAy1NkUTYbCLcjIB/7+23DI
+         oYQMANt2kt8qfbmecMNbvrswv0IoiwRDkbIqg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ExajQAZpNTd+joqebqoVtMbLAI74qmTPLZGYxWwu4D0=;
-        b=fgdS+hXLEq9pTi8y741Z+Z2dvkjKBI/SwojUy6hfpCXZvLXGyZl/5YupKMzEawCxnE
-         K3MEyfNucZTJhE96lN0UknFpsp36U6hUAwmR3uAv8R1OcGnxSY8zvgCEMgn8MiLpeW/n
-         iUEb4POdOc5Fl5ml6Nw5L68Xk3NllGp3pEBSUbsmyweIQTbpl9vlHw1dZWQM0OoKe6zK
-         Co0h80aHbQQAhrdFX6rMwHRGEsMXJAwPMFK7OxVcjqNS2lmdGs78b4B+2pX1t3ZQ5TNi
-         BIsjPVkMwc+x9vMQcJTWuDb0nZHSZXSi9LiBCocoOA9ZBb5LUsba3m9O+QEQ8rK6thP9
-         CITg==
-X-Gm-Message-State: AOAM533YWqCRDZqOjpC5FBOi5ToRIpop7sbFrQjI6iKX3FSqOyFBI2dy
-        DVKz/8NE4CDMKH0OJXD0cR5CUEqzs0Q=
-X-Google-Smtp-Source: ABdhPJymeI9Fl31LG3BBCzDHtr0OiFz9TeS4TJDxvDo+6CrkBjLI/0/4z/Rs5KxcRFIU3pCvZMPqgw==
-X-Received: by 2002:a17:907:11c3:: with SMTP id va3mr17305072ejb.497.1595969273102;
-        Tue, 28 Jul 2020 13:47:53 -0700 (PDT)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
-        by smtp.gmail.com with ESMTPSA id r9sm123737edt.1.2020.07.28.13.47.51
-        for <linux-iio@vger.kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LlQewahdhsPckNPSzzDVJ3WH731NYXJ0lt4sgv3xG4I=;
+        b=SzLdhVp8RKPBZgIDjgmQXFOV7UFbpndWHyq7qdHZz26sgy79WNSlAB3RvaCiN/H5uv
+         RP4DF0Yhnh/dg245wYh+SuiHaPGR4iBhQiJe2kBc+23fIzwNTQBPbKNv5ARXndVpX86N
+         xU3sjguVcVH19nsczQmRbTPDZWVBamp5qc0+Zn9CFTJgrWXCsCSeUe/mTv7u4r7vZd6M
+         uRm/xuceFsHuCm6/sLxdb/0oMOX3/YH6pxfmaCEFT71KDKUl53cowERZ4gs8jRCF7f66
+         V84i0Ri7MYpG+Vf/XiW5KR5CmInHbvj9bvjCzZZQW99Ziu4ohZeB5a4MqAyxbfDRkf5v
+         PCMw==
+X-Gm-Message-State: AOAM530le0Imo1jqLHJPowiyjBbbAV7HnIXjIVet+T+U7lISeQVllBvC
+        dZzBr7ZLk9Q8JmFUjU92S/OTGg0Ncvk=
+X-Google-Smtp-Source: ABdhPJzJD7vZxto+2gqxzjgSOs0Ph8dL/bTvV0T2N3NIIdlyn+CqDiEXK+U6xILhVqsS8ydjvNfqJQ==
+X-Received: by 2002:a17:902:968a:: with SMTP id n10mr25066159plp.67.1595969309893;
+        Tue, 28 Jul 2020 13:48:29 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:7220:84ff:fe09:94fe])
+        by smtp.gmail.com with ESMTPSA id a129sm9826038pfd.165.2020.07.28.13.48.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2020 13:47:52 -0700 (PDT)
-Received: by mail-wm1-f52.google.com with SMTP id d190so774870wmd.4
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 13:47:51 -0700 (PDT)
-X-Received: by 2002:a7b:cc0b:: with SMTP id f11mr3518054wmh.79.1595969271235;
- Tue, 28 Jul 2020 13:47:51 -0700 (PDT)
+        Tue, 28 Jul 2020 13:48:29 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, bleung@chromium.org, enric.balletbo@collabora.com
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v2] iio: cros_ec: Set Gyroscope default frequency to 25Hz
+Date:   Tue, 28 Jul 2020 13:48:25 -0700
+Message-Id: <20200728204825.3312921-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.28.0.rc0.142.g3c755180ce-goog
 MIME-Version: 1.0
-References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
- <20200728151258.1222876-1-campello@chromium.org> <20200728091057.4.I33c50453845a8167969130d514af86e573b6ef31@changeid>
- <CAHp75VcRBCmRdGh5WVGDY28AzNhBufkoNkrEZ7uEFCW2MsJ=qg@mail.gmail.com>
-In-Reply-To: <CAHp75VcRBCmRdGh5WVGDY28AzNhBufkoNkrEZ7uEFCW2MsJ=qg@mail.gmail.com>
-From:   Daniel Campello <campello@chromium.org>
-Date:   Tue, 28 Jul 2020 14:47:15 -0600
-X-Gmail-Original-Message-ID: <CAHcu+Va0DVm1Pw__jYF_EhZHSQnSqb_zex2NN1M67zc=FTAitA@mail.gmail.com>
-Message-ID: <CAHcu+Va0DVm1Pw__jYF_EhZHSQnSqb_zex2NN1M67zc=FTAitA@mail.gmail.com>
-Subject: Re: [PATCH 04/15] iio: sx9310: Remove acpi and of table macros
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        kbuild test robot <lkp@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 12:09 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Tue, Jul 28, 2020 at 6:16 PM Daniel Campello <campello@chromium.org> wrote:
-> >
-> > Avoids unused warnings due to acpi/of table macros.
-> >
->
-> At the same time I would check if mod_devicetable.h is included.
-I did the following and no error showed up:
-#ifndef LINUX_MOD_DEVICETABLE_H
-#error Missing include
-#endif
+BMI160 Minimium gyroscope frequency in normal mode is 25Hz.
+When older EC firmware do not report their sensors frequencies,
+use 25Hz as the minimum for gyroscope to be sure it works on BMI160.
 
->
-> > Signed-off-by: Daniel Campello <campello@chromium.org>
-> > Reported-by: kbuild test robot <lkp@intel.com>
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Fixes: ae7b02ad2f32d ("iio: common: cros_ec_sensors: Expose cros_ec_sensors
+frequency range via iio sysfs")
 
-Regards,
-Daniel Campello
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
+Change since v1: Fix spelling.
+
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index 156848d27c473..213837c2ecee2 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -85,10 +85,13 @@ static void get_default_min_max_freq(enum motionsensor_type type,
+ 
+ 	switch (type) {
+ 	case MOTIONSENSE_TYPE_ACCEL:
+-	case MOTIONSENSE_TYPE_GYRO:
+ 		*min_freq = 12500;
+ 		*max_freq = 100000;
+ 		break;
++	case MOTIONSENSE_TYPE_GYRO:
++		*min_freq = 25000;
++		*max_freq = 100000;
++		break;
+ 	case MOTIONSENSE_TYPE_MAG:
+ 		*min_freq = 5000;
+ 		*max_freq = 25000;
+-- 
+2.28.0.rc0.142.g3c755180ce-goog
+

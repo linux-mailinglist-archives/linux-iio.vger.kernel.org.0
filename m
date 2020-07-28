@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A61B2315FD
+	by mail.lfdr.de (Postfix) with ESMTP id F3B662315FF
 	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 01:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730239AbgG1XFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 19:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59304 "EHLO
+        id S1730222AbgG1XFv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 19:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730222AbgG1XFt (ORCPT
+        with ESMTP id S1730230AbgG1XFt (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 19:05:49 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C278CC0619D8
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 16:05:47 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id t18so17772805ilh.2
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 16:05:47 -0700 (PDT)
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82FAC0619DB
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 16:05:48 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id s21so17726968ilk.5
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 16:05:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AM59jIQYU2CvWOeFM3ngOpDG1QHH1+7BTtSJzp1GFow=;
-        b=FEh+/FwgUzqP+c5bzHLYHINr+d192UCaIZiMxxT67ECRBXi+JBTwyim6DMlrKBPLdM
-         zyC8o+DppB6BHO2L4XRveDASnVzPOsbTxgLMwbhEHigBwLC0H1tvUJ+wNlRxLkBa4Ctw
-         SmMveWRwhdCahFGFdsifE4Eqse1/dkEAvyq1A=
+        bh=OeAFLDuJ/KgJd+XW6ikx+c1G0tNORrQK8vXV6J41koI=;
+        b=QwM92j+bBCFCVDC0lS9QQPgLQzr8ZMnuG/AFQscxKohzVKRTer1RN0iTDwecdKXnnc
+         mbgswCsMW8UUSR053i98AqzT54c/xcrOegouKvpXmu7OxGUMXBAS98aSWRFt5+lRBEXQ
+         bni4KT+n7grQZUwmirmTIUrk2griitv08iJ+w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AM59jIQYU2CvWOeFM3ngOpDG1QHH1+7BTtSJzp1GFow=;
-        b=rQhug996b0Z3ikxAI650GE65Y5fZNQ4Qm4CT5pHwFypflF2MO6hJf5rA9SxBoXwqtw
-         z/iRiCC8PPPvGTdAQopI0PbXhfAeaq8hwUZfbGG9EHuQmE+Ej60JGVufGoOgk9Al24Jn
-         nyAjkSy9CvIDhAi0+ugPSI9RJNiZl+mxCP7LgY2DK7ANHjwGBh4tzv5WLaNbtkYxtVRk
-         wJvu+tATKd0JJu9yo3jnJLwcf2z+iqbVW5wC4xNLw9kO3G2fyXFOcUD16lTeyvAQAQs2
-         pl3JxUD+T976kpBc1YsPFH0m8a+6F4btH97zvLUz8VhRti2lRVep5AlYRAemzTS9a8R4
-         H10Q==
-X-Gm-Message-State: AOAM532BJOz9MNLHl5j3a1hPha5dnYxSUtrxQwUxAiiBoqL/zA69rr+B
-        xL9jLkkMGhEjY1QyBkqhzqap8w==
-X-Google-Smtp-Source: ABdhPJxvRCgWq7gqc0hnPFB/W3nKDK5a7ATpFyEVwGjnraxwV/R33ljGYEyoojjknLpWN3J8FIqn9w==
-X-Received: by 2002:a92:89c9:: with SMTP id w70mr23431764ilk.250.1595977547204;
-        Tue, 28 Jul 2020 16:05:47 -0700 (PDT)
+        bh=OeAFLDuJ/KgJd+XW6ikx+c1G0tNORrQK8vXV6J41koI=;
+        b=uDMGLttNcQGg0zNdR7baiQ8q4ttX1Edw7TsOnXu6Umk2yuzSH5YGPwDTUUM+4trWT2
+         m1KvmZjmZDTPYLBnNZPzHQGKiOr5HsUzYfCo0Fa3gggeIiKk4aYrycfnaQ1uGRQpf5aL
+         U1lzSLbQn3orNIcokTveByvk4dqCzcIIeoHZagyFVPftX2hs0eIoSd3JILhBBo575215
+         zx2ijXZsMz52PYePQnhPHIYnIPJHt9MN30wiNTRXP1DHDoRXYnu/eBX1fYeyEWEBJBt3
+         JDQQmWBLXbeHj8Ztn6tMVpLAOzRnqSlL1mDHbv4LuDWlCeuHtJ0unHPt6PJRqle0VZAW
+         pvvA==
+X-Gm-Message-State: AOAM532gCui/rIzlXuQ1ThJLDM6VghTUnS6hZ8Z92nCCoEIZnQvog+IU
+        dBwpX0FlWWjxzq3BWJMLsddADg==
+X-Google-Smtp-Source: ABdhPJzh8S09J9zsjrzxnNQsPfIv2wPdrEDHQ8sfMZnIY3dENChJQCpUn/EmtXk+F8YmyONSkgbHVA==
+X-Received: by 2002:a92:c7d0:: with SMTP id g16mr3004218ilk.101.1595977548184;
+        Tue, 28 Jul 2020 16:05:48 -0700 (PDT)
 Received: from derch.Home (97-122-92-59.hlrn.qwest.net. [97.122.92.59])
-        by smtp.gmail.com with ESMTPSA id w10sm148945ilo.10.2020.07.28.16.05.46
+        by smtp.gmail.com with ESMTPSA id w10sm148945ilo.10.2020.07.28.16.05.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 16:05:46 -0700 (PDT)
+        Tue, 28 Jul 2020 16:05:47 -0700 (PDT)
 From:   Daniel Campello <campello@chromium.org>
 To:     LKML <devicetree@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
@@ -52,15 +52,13 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Douglas Anderson <dianders@chromium.org>,
         Daniel Campello <campello@chromium.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Enrico Granata <egranata@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
-Subject: [PATCH v2 13/14] iio: sx9310: Drop channel_users[]
-Date:   Tue, 28 Jul 2020 17:05:19 -0600
-Message-Id: <20200728170317.v2.13.Ia5c5fdbdfff576ab5d034cde46c25cc66a4baf50@changeid>
+Subject: [PATCH v2 14/14] iio: sx9310: Enable vdd and svdd regulators at probe
+Date:   Tue, 28 Jul 2020 17:05:20 -0600
+Message-Id: <20200728170317.v2.14.Ib7bdc8340021d8515b430498fb6686eedf22c9f2@changeid>
 X-Mailer: git-send-email 2.28.0.163.g6104cc2f0b6-goog
 In-Reply-To: <20200728230520.2011240-1-campello@chromium.org>
 References: <20200728151258.1222876-1-campello@chromium.org>
@@ -74,33 +72,86 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Stephen Boyd <swboyd@chromium.org>
 
-This struct member isn't used. Drop it.
+Enable the main power supply (vdd) and digital IO power supply (svdd)
+during probe so that the i2c communication and device works properly on
+boards that aggressively power gate these supplies.
 
-Fixes: 72ad02b15d63 ("iio: Add SEMTECH SX9310/9311 sensor driver")
 Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Daniel Campello <campello@chromium.org>
 Signed-off-by: Daniel Campello <campello@chromium.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
 
 Changes in v2: None
 
- drivers/iio/proximity/sx9310.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/proximity/sx9310.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index b15ace422862ff..6607732edd034a 100644
+index 6607732edd034a..163b18f91955bd 100644
 --- a/drivers/iio/proximity/sx9310.c
 +++ b/drivers/iio/proximity/sx9310.c
-@@ -132,7 +132,6 @@ struct sx9310_data {
- 	struct completion completion;
- 	unsigned long chan_read;
- 	unsigned long chan_event;
--	int channel_users[SX9310_NUM_CHANNELS];
- 	unsigned int whoami;
- };
+@@ -19,6 +19,7 @@
+ #include <linux/module.h>
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
  
+ #include <linux/iio/buffer.h>
+@@ -119,6 +120,7 @@ struct sx9310_data {
+ 	struct i2c_client *client;
+ 	struct iio_trigger *trig;
+ 	struct regmap *regmap;
++	struct regulator_bulk_data supplies[2];
+ 	/*
+ 	 * Last reading of the proximity status for each channel.
+ 	 * We only send an event to user space when this changes.
+@@ -874,6 +876,13 @@ static int sx9310_set_indio_dev_name(struct device *dev,
+ 	return 0;
+ }
+ 
++static void sx9310_regulator_disable(void *_data)
++{
++	struct sx9310_data *data = _data;
++
++	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
++}
++
+ static int sx9310_probe(struct i2c_client *client)
+ {
+ 	int ret;
+@@ -887,6 +896,8 @@ static int sx9310_probe(struct i2c_client *client)
+ 
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
++	data->supplies[0].supply = "vdd";
++	data->supplies[1].supply = "svdd";
+ 	mutex_init(&data->mutex);
+ 	init_completion(&data->completion);
+ 
+@@ -894,6 +905,21 @@ static int sx9310_probe(struct i2c_client *client)
+ 	if (IS_ERR(data->regmap))
+ 		return PTR_ERR(data->regmap);
+ 
++	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->supplies),
++				      data->supplies);
++	if (ret)
++		return ret;
++
++	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
++	if (ret)
++		return ret;
++	/* Must wait for Tpor time after initial power up */
++	usleep_range(1000, 1100);
++
++	ret = devm_add_action_or_reset(dev, sx9310_regulator_disable, data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(data->regmap, SX9310_REG_WHOAMI, &data->whoami);
+ 	if (ret) {
+ 		dev_err(dev, "error in reading WHOAMI register: %d\n", ret);
 -- 
 2.28.0.163.g6104cc2f0b6-goog
 

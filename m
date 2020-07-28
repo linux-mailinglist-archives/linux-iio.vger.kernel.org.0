@@ -2,130 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9319230CFB
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 17:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3172230D2C
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jul 2020 17:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730647AbgG1PFh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jul 2020 11:05:37 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:34017 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730505AbgG1PFg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 11:05:36 -0400
-Received: from ThinkCentre ([81.14.225.83]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MybbH-1kzNwi3tL3-00z1gU; Tue, 28 Jul 2020 17:05:22 +0200
-Message-ID: <c8046227481b367a3a1bbd123234279fcde76f87.camel@richard-neumann.de>
-Subject: Re: [PATCH v5 0/4] SFH: Add Support for AMD Sensor Fusion Hub
-From:   Richard Neumann <mail@richard-neumann.de>
-To:     Marco Felsch <m.felsch@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Sandeep Singh <Sandeep.Singh@amd.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Shah, Nehal-bakulchandra" <Nehal-bakulchandra.Shah@amd.com>,
-        Shyam-sundar.S-k@amd.com
-Date:   Tue, 28 Jul 2020 17:05:20 +0200
-In-Reply-To: <20200728145833.xc53dpvwu7deqzjw@pengutronix.de>
-References: <1590759730-32494-1-git-send-email-Sandeep.Singh@amd.com>
-         <CAHp75VeDAc9pP16wf10xvJn6t34cTXkPAXHus1aSL_07HN3EAA@mail.gmail.com>
-         <20200728145833.xc53dpvwu7deqzjw@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 
+        id S1730651AbgG1PNE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jul 2020 11:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730499AbgG1PND (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jul 2020 11:13:03 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98410C0619D2
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 08:13:03 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id q75so12952078iod.1
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jul 2020 08:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=WI3fumWYUK+x328Qo7vj3Eg0qcEK6KoFgm7ErCr4104=;
+        b=h7elNg17cYKsZqrZyaL2ZdS9YLt+W+ZWu55JLROmCbh1O95nsJ/+NZlCy0qQ4UL2Mr
+         qW3EZC2DlmQ0QGl21rf5q4DJPRlUfBiphwDy69CfIt02HtxvnRUNv/FYZO3cNo+ysuOq
+         9qbmC1nesGgKDu5RmF9LfZzbIxIVRt318tjZk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=WI3fumWYUK+x328Qo7vj3Eg0qcEK6KoFgm7ErCr4104=;
+        b=n8w4dCFloOmaG3SOknj4Dkzrg73Pw+MxfINAf+880TD9cnKohH+jiOqgw3h+EBrFlR
+         AmkCCj7Fi4TFmbf76W3FSnxJYTM6PV2/nBPOBJBxy2IcJz9dxVfyDcsyxpTWLrHW7iTT
+         fZItbfCLh7gx+KAlpw9Ts/WxwgJWsawe6IVn2i9ac2/Fha8FDUWHjF9a6kt1VQQ4zz37
+         WrNe0E6W7OcJ4/DrflPaJbLSHyuq/QFEw5xE6FbrfxqqorHD+18UN7ufFXX8LLzLx2Cj
+         7LJC01DvSNOOcojIh5shUNr7mbyRPHfrieYJJAOfuF6KkufyJSLa6OA93K7SsTm9OI9Y
+         OJsA==
+X-Gm-Message-State: AOAM533poaB0Q7R+Z1WbaYlPcvOYCPF4odtbaLn//mQRWMiSSCxdQ0yr
+        OsO1lBlSok0ECq9ZGCaPxeoO/A==
+X-Google-Smtp-Source: ABdhPJz16mmv05HpXxjY6ax+58ko05ihbP6i/A3DYP1AdvM9yMATQllxrAzERVsTsaADDG8IlFk9oA==
+X-Received: by 2002:a05:6602:2c83:: with SMTP id i3mr28854532iow.144.1595949182954;
+        Tue, 28 Jul 2020 08:13:02 -0700 (PDT)
+Received: from derch.Home (97-122-92-59.hlrn.qwest.net. [97.122.92.59])
+        by smtp.gmail.com with ESMTPSA id q70sm6399781ili.49.2020.07.28.08.13.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2020 08:13:02 -0700 (PDT)
+From:   Daniel Campello <campello@chromium.org>
+To:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>, linux-iio@vger.kernel.org
+Subject: [PATCH 00/15] sx9310 iio driver updates
+Date:   Tue, 28 Jul 2020 09:12:43 -0600
+Message-Id: <20200728151258.1222876-1-campello@chromium.org>
+X-Mailer: git-send-email 2.28.0.rc0.142.g3c755180ce-goog
+In-Reply-To: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
+References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:NXpkszrA9og9+kV2+FrWLRxHSACXOXAN44gfv0kU+p4LQT/Io5H
- 2/Hw0JiTYCJFf3aSLCjG8hma09jM0U9LheVGLa33OiBj+wiYNarF6DAVX2hvMnlFi8B4qly
- GJDxcUvHJfpkPtRSa/KQrIiL7r+twhOjA73G4P+cZswHkMwv4rYuiTtwqgJsC/2ftbQp9HC
- YWyWuePQq6jBfsIFT6WeA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FUtYt8PjYvQ=:/YEAIYjBV3wjZmEkEK7s6z
- f1KSafvjIzWum6u2HgtKN8axM3B7EiFgTYc7K2ESamx5lFzWLPXkt2jNc9OjtXd9pkbUVUppT
- 965u54QtxFRa2vecyyrAFYA8qnuA6OsGO533cTSWheISZthn4wAOcIeh6hRs1vS/pZl/ACRQX
- +psug9I+XGFz9j7k6is64UrGHXeA000SyK1frmA+6BdDg+on8Ksga2pPMpf8BWOIPHnutELpK
- ojjhxiY3CLGp79ZJ0JcPbXjyHyTi9qz7baVqO5fy24cD6qY1rQpx8poa/hGqATpfK5SrPKBS3
- vkSkk61h1gBaEFMOLbGYL3PKG6Q61Az+eZuNdocyHGId/DJV7spr2BR8FSuXKzeFuEnUKejUW
- 0NOXH0Zwg7KN5rixF843/N/BIRCdx/UFQPfw7ELmWMDd3twidzAKSD0NmSf/ihBVW4EoAKVXB
- GPGJ1c4Qp03Qf4glC91YL5QMVEBdrMWv0LnhdPK5Gbc1Mp7anRQKoWZ13Ow4DrpbLr49kBfDJ
- hpa4103NAZpA1lxsDRC0cn9p4UNrDtAB/8ShRiZFFqCK91z+MZXvjvhfQmQ/neNcW0AXA/9mE
- EuUu3gjIpk3zqoW7HbRO49H8CRN0lWvjiEbMmoQPJ8pL4sd2UGbgWQHjIr0HVfxN/nyiWJI2s
- ebAB2bpTsf+3TaxjdGL6C4Z/Gir9BjtREJ12+WknhvaJu+wWtjpFwASvV32AvW8+jxEZJkO53
- 4k0ZEvyL9OGcpqKiagTPvQZcn76WgNGseSpassRETSQylTpBESSSofY4dSsHJK2BUgc2RMIuF
- gB2YIJnPok/ma5DoBtjSvV5CUJa1hiMScVqzuBniCN4F9wQhwS7vPulj5qLU9FaYs3/cTZY
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+The first patch resends the DT binding for the driver that was merged in
+v5.8-rc1 with a small change to update for proper regulators. The second
+through the eleventh patch fixes several issues dropped from v8 to v9
+when the initial patch was merged. The twelveth patch fixes a few
+printks that are missing newlines and should be totally non-trivial to
+apply. The thirteenth patch drops channel_users because it's unused. The
+final patch adds support to enable the svdd and vdd supplies so that
+this driver can work on a board where the svdd supply isn't enabled at
+boot and needs to be turned on before this driver starts to communicate
+with the chip.
 
-Am Dienstag, den 28.07.2020, 16:58 +0200 schrieb Marco Felsch:
-> Hi,
-> 
-> On 20-05-29 17:21, Andy Shevchenko wrote:
-> > On Fri, May 29, 2020 at 4:42 PM Sandeep Singh <
-> > Sandeep.Singh@amd.com> wrote:
-> > > From: Sandeep Singh <sandeep.singh@amd.com>
-> > > 
-> > > AMD SFH(Sensor Fusion Hub) is HID based driver.SFH FW
-> > > is part of MP2 processor (MP2 which is an ARM® Cortex-M4
-> > > core based co-processor to x86) and it runs on MP2 where
-> > > in driver resides on X86.The driver functionalities are
-> > > divided  into three parts:-
-> > > 
-> > > 1: amd-mp2-pcie:-       This module will communicate with MP2 FW
-> > > and
-> > >                         provide that data into DRAM.
-> > > 2: Client driver :-     This part for driver will use dram data
-> > > and
-> > >                         convert that data into HID format based
-> > > on
-> > >                         HID reports.
-> > > 3: Transport driver :-  This part of driver will communicate with
-> > >                         HID core. Communication between devices
-> > > and
-> > >                         HID core is mostly done via HID reports
-> > > 
-> > > In terms of architecture it is much more reassembles like
-> > > ISH(Intel Integrated Sensor Hub). However the major difference
-> > > is all the hid reports are generated as part of kernel driver.
-> > > AMD SFH driver taken reference from ISH in terms of
-> > > design and functionalities at fewer location.
-> > > 
-> > > AMD sensor fusion Hub is part of a SOC 17h family based
-> > > platforms.
-> > > The solution is working well on several OEM products.
-> > > AMD SFH uses HID over PCIe bus.
-> > > 
-> > 
-> > I can't believe this is fifth version.
-> > Guys, you have to do much more work on these drivers.
-> 
-> Is there any active development addressing Andy's comments? Else can
-> we
-> support you to bring these patches mainline?
-> 
-> Regards,
->   Marco
 
-I did some major refactoring¹ on the v4 patch series and am currently
-providing it for Arch Linux as a DKMS package in the AUR².
-A teensy bit of my changes seems to have influenced the v5 version but
-I actually did some major changes, like strictly separating the HID,
-platform and PCI driver parts.
-I did not submit my changes for upstream so far, since I do not want to
-undermine AMD's work on this nor cause competing driver
-implementations.
+Daniel Campello (12):
+  dt-bindings: iio: Add bindings for sx9310 sensor
+  iio: sx9310: Update macros declarations
+  iio: sx9310: Fix irq handling
+  iio: sx9310: Remove acpi and of table macros
+  iio: sx9310: Change from .probe to .probe_new
+  iio: sx9310: Align memory
+  iio: sx9310: Use long instead of int for channel bitmaps
+  iio: sx9310: Use regmap_read_poll_timeout() for compensation
+  iio: sx9310: Update copyright
+  iio: sx9310: Simplify error return handling
+  iio: sx9310: Use variable to hold &client->dev
+  iio: sx9310: Miscellaneous format fixes
 
-Sincerely,
+Stephen Boyd (3):
+  iio: sx9310: Add newlines to printks
+  iio: sx9310: Drop channel_users[]
+  iio: sx9310: Enable vdd and svdd regulators at probe
 
-Richard
+ .../iio/proximity/semtech,sx9310.yaml         |  60 +++
+ drivers/iio/proximity/sx9310.c                | 407 +++++++++---------
+ 2 files changed, 263 insertions(+), 204 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
 
-[1] https://github.com/conqp/linux/tree/amd-sfh-hid/drivers/hid/amd-sfh-hid
-[2] https://aur.archlinux.org/packages/amd-sfh-hid-dkms/
+--
+2.28.0.rc0.142.g3c755180ce-goog
 

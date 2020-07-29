@@ -2,110 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D802319F4
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 09:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E50C231A00
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 09:05:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726536AbgG2HAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 03:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47220 "EHLO
+        id S1727007AbgG2HFb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 03:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726314AbgG2HAe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 03:00:34 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBE6BC061794;
-        Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id p3so13756961pgh.3;
-        Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
+        with ESMTP id S1726548AbgG2HFb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 03:05:31 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC49BC061794;
+        Wed, 29 Jul 2020 00:05:30 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id l12so2692575pgt.13;
+        Wed, 29 Jul 2020 00:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ydyx9gtyvmjZ7DrRhj6TptEXl3PlUz8eNLH76DjhVhI=;
-        b=PqL8pV7jeLa+Sx/5vyatxOYMcI8YgDyaPSfT5MHX228lN5/+6lKwG/nCn2BCAf1eHV
-         tL85v+PZL0W83EI+HbLt6LVl59AXxCDymxMcjfHJPAhiq+l42/0ZParzgfyo79k+jx/e
-         n7W/n870mX62FNWZqSq8yFxzEYBj1IBARrjO7LG+DScnKlvaqT7AGRz3BsoDtvwp17d6
-         CxShQ3Vc/Bx29wGE48leAtbphv3tAWhSX47vD0FzVoIk/oXScDdYKODO2JSSd3XJhqrT
-         vtJ+TAGRkKN7V5gJ3J70A39jfZSuzNB33ZQWyCOkFQPAGHMIRUSH35Vgv7ouKvJuP3oM
-         e36A==
+        bh=aqneD3uac2LdOmEkTebU7/iHb0Bb9C+xYvrOoegSBgs=;
+        b=Lh3i7c+OL3d+WLkPoNum5UxxmjDrhR7GDKRz6sULoHyatpZS2MPkG9So13ntBRx7vY
+         Ceyk6+qTG/biB3GeJ1fr+xMwbIN4uXvFksnueRi9RYeLaWN+wdeq+on+DX4NjbbKTfqZ
+         vBbQeTn43whAKfi8uNc4FsePsP8Q0l7xpi9kB2fRfzyYHKP7/VNfmBXFktwyafjt0lqx
+         cLSkpuZAewmbzaJhUhkGHDN6rzOrclI5xZMHEmAdzGmC0iB+knOpFr3FI73kM0KbaXvn
+         /SRU8m1xO/bi525c8tfsyb7nRtEZrLShkV2cqgd58TE8OK+v0ZNZUBcbFeti8CIp87GY
+         sakg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ydyx9gtyvmjZ7DrRhj6TptEXl3PlUz8eNLH76DjhVhI=;
-        b=Ozjs9AiQxBstWy/TaBuQn13QQ+w94jFQ5hIXGy/Uuj4rY+LL2KM1Lip+SsM2VzKKOp
-         1h9Vbhsgs/gTrlqJk4vIVWnS3sKb+6fd0b0nVplG4cDd36cxGfNqgyDg3yU0c14hOyE8
-         z0uFsMCOzcG87SQBMdIDk46wWeBHrUBrKHCeR0cXrgd9/rrF8lS4sIb1HR82+Ct3TG++
-         fCT0PfYNW3+Qq7NSSqtRMp65NEKprJfXEtV2dJtoXu1AVUawhNQb0VNUzvlhzGWqUKzz
-         EiJFU07YZqwSEWjRjM9/M5nJr/+JIxjvj5Tuqz2zmMlbxSZDk5Zy2bPqlx1vWsDCHCI6
-         7j/A==
-X-Gm-Message-State: AOAM530uHfJWttqCDTT5DMzv5ZFb0cPrU+ZBU8Idz2ptmUoKyyEtCYpE
-        g5gffOcSuY8r8Y6sLO3Dnz1YIyHhtjU6dULkdZ0=
-X-Google-Smtp-Source: ABdhPJzBMOmiIIjC3eY9ECf9YCG3ZIfdKn8E7fsAp6Hs/425acmqVQ4MsWmW7EpO1KaETDSiv6QBEGWthO77dNs+MNc=
-X-Received: by 2002:a63:924b:: with SMTP id s11mr27118530pgn.74.1596006034356;
- Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
+        bh=aqneD3uac2LdOmEkTebU7/iHb0Bb9C+xYvrOoegSBgs=;
+        b=WI7oM8aaMij8/mNCzSRuB5Dzp3aKgf3A7CnkMssG5b+/PLYKLtJB+5n+TuDdeYoTaB
+         8vHMaXNg6OqaRI0o1nNilGE6LO+O/zQmtvKOcYpNW2nEIJVG/HscFFhlKlgfsyAI0Afc
+         ST3N1U+jruKTlZvS2uVT8g0aDrExiLeNu6UBXYO66NEl4S1u9vo0XmAJz1gxiygSZ6wc
+         M5wpPhSsZosfu9+awaSJaT9SbLLRzA0+bPpj6/xvGAt04OcgH/3bGRU8ado/1bcrvZvQ
+         I49usvEgWPCnc+2XZCLaUAML/i7ligoW/4hJ6DZypLeeBNugSffdm4blg6SaRk5dDH65
+         7tqQ==
+X-Gm-Message-State: AOAM530oDSGwZ5bkuM0vUEANIwlz9mv9/y8xYJw8JwkBZE872m0I8zWQ
+        8pZ7Af+BSowtftv+ESTuXaqf/m6p+cyLNudo6mo=
+X-Google-Smtp-Source: ABdhPJyk6o8rBmKoUdAMTmnz/y0G9FAdd8Efbgcb4Gh9SbYuQB7jrAq58GKL82gQqlt6ZSrBU6EBHu/xHQRRLV+ACfo=
+X-Received: by 2002:a63:ce41:: with SMTP id r1mr28668169pgi.203.1596006330322;
+ Wed, 29 Jul 2020 00:05:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200728151258.1222876-1-campello@chromium.org>
- <20200728230520.2011240-1-campello@chromium.org> <20200728170317.v2.7.Iecaa50e469918a385b3e5dab375e442540ea2ad4@changeid>
- <159598461271.1360974.15436404116157938506@swboyd.mtv.corp.google.com>
-In-Reply-To: <159598461271.1360974.15436404116157938506@swboyd.mtv.corp.google.com>
+References: <20200729003243.32097-1-b18007@students.iitmandi.ac.in>
+In-Reply-To: <20200729003243.32097-1-b18007@students.iitmandi.ac.in>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jul 2020 10:00:16 +0300
-Message-ID: <CAHp75Vc_3VYAkVcTCAXzqxqFnpQ4Qi=iPSFW_sUjYGO=o6YMtA@mail.gmail.com>
-Subject: Re: [PATCH v2 07/14] iio: sx9310: Use long instead of int for channel bitmaps
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Daniel Campello <campello@chromium.org>,
-        LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
+Date:   Wed, 29 Jul 2020 10:05:14 +0300
+Message-ID: <CAHp75VcmMf5dt7mu9N0C=6Rej-WzZ0EpzntHYCQkgNLVZkPbgg@mail.gmail.com>
+Subject: Re: [PATCH] Staging : iio : Fixed a punctuation and a spelling mistake.
+To:     Ankit Baluni <b18007@students.iitmandi.ac.in>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 29, 2020 at 4:03 AM Stephen Boyd <swboyd@chromium.org> wrote:
-> Quoting Daniel Campello (2020-07-28 16:05:13)
-> > Uses for_each_set_bit() macro to loop over channel bitmaps.
-
-...
-
-> > +       unsigned long chan_prox_stat;
+On Wed, Jul 29, 2020 at 3:34 AM Ankit Baluni
+<b18007@students.iitmandi.ac.in> wrote:
 >
-> This can be DECLARE_BITMAP(chan_prox_stat, SX9310_NUM_CHANNELS)
+> Added a missing comma and changed 'it it useful' to 'it is useful'.
 
-> > +       unsigned long chan_read;
-> > +       unsigned long chan_event;
->
-> Same for these?
-
-...
-
-> > +       prox_changed = (data->chan_prox_stat ^ val) & data->chan_event;
->
-> I was expecting:
->
->
->         bitmap_xor(&prox_changed, &data->chan_prox_stat, &val, SX9310_NUM_CHANNELS);
->         bitmap_and(&prox_changed, &data->chan_event, SX9310_NUM_CHANNELS);
-
-I agree with this. On a small number of channels (up to 32) it will be
-reduced to simple operations, but will leave a possibility to have
-more with easy redefine.
-
-(though _and() above misses one argument AFAICT)
-
-...
-
-> > +       unsigned long channels = 0;
->
-> Use DECLARE_BITMAP(channels, SX9310_NUM_CHANNELS)?
-
+Please, drop spaces before : in the subject line. In all patches you
+submitted there is such an issue.
 
 -- 
 With Best Regards,

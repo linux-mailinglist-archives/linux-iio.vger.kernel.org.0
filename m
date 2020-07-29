@@ -2,87 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A8D4231B2D
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 10:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4837D231B42
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 10:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgG2I1A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 04:27:00 -0400
-Received: from fallback20.mail.ru ([185.5.136.252]:48774 "EHLO
-        fallback20.mail.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726536AbgG2I1A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 04:27:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=FzI6tZMbt/R0+rSszFjKdj74FEFRvfkp3Ku74CsnY/A=;
-        b=JvifuAN91LWUtlTP1efawh1gBa4kuFoquLoe9ZLaRpmO1A6/Ek77Um0TZTJyAZ5lCKbKdV3QAHGHHb7DySjN6xBf4D7Dk6fzZhcgYy0KLQAaqALVGVmbWv9GpBuntsWuSvTLh2sRim9Eyk+SPHcvRwUCSRgB0x68f93t4FqbYL0=;
-Received: from [10.161.64.58] (port=55200 helo=smtp50.i.mail.ru)
-        by fallback20.m.smailru.net with esmtp (envelope-from <fido_max@inbox.ru>)
-        id 1k0hQN-0004LL-Iz; Wed, 29 Jul 2020 11:26:56 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=FzI6tZMbt/R0+rSszFjKdj74FEFRvfkp3Ku74CsnY/A=;
-        b=JvifuAN91LWUtlTP1efawh1gBa4kuFoquLoe9ZLaRpmO1A6/Ek77Um0TZTJyAZ5lCKbKdV3QAHGHHb7DySjN6xBf4D7Dk6fzZhcgYy0KLQAaqALVGVmbWv9GpBuntsWuSvTLh2sRim9Eyk+SPHcvRwUCSRgB0x68f93t4FqbYL0=;
-Received: by smtp50.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
-        id 1k0hQ8-0003MG-Df; Wed, 29 Jul 2020 11:26:40 +0300
-Subject: Re: [PATCH] iio: adc: ti-ads1015: fix conversion when CONFIG_PM is
- not set
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1726797AbgG2IeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 04:34:22 -0400
+Received: from mga11.intel.com ([192.55.52.93]:14119 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726299AbgG2IeW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Jul 2020 04:34:22 -0400
+IronPort-SDR: /+XJbQt/T6tcFpCeWg+5/d4dHC8NcwjkdX1TUeObzaWLJN4bH+zftm8OnzUed8fCBpEyeD0oKG
+ 2q/Y0TrQCKbw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9696"; a="149222005"
+X-IronPort-AV: E=Sophos;i="5.75,409,1589266800"; 
+   d="scan'208";a="149222005"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2020 01:34:22 -0700
+IronPort-SDR: cFBSlrGGkxa6jxqb+55m7agHATOc8LcEqIQlJNuSctxMrRbTYWYzc9VeSPrVATEVjPbTnrUsxK
+ psHxcvAvnoxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,409,1589266800"; 
+   d="scan'208";a="330331689"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga007.jf.intel.com with ESMTP; 29 Jul 2020 01:34:20 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1k0hXX-004eYT-Lu; Wed, 29 Jul 2020 11:34:19 +0300
+Date:   Wed, 29 Jul 2020 11:34:19 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Maxim Kochetkov <fido_max@inbox.ru>
 Cc:     bigunclemax@gmail.com, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1015: fix conversion when CONFIG_PM is
+ not set
+Message-ID: <20200729083419.GM3703480@smile.fi.intel.com>
 References: <20200729075908.10463-1-fido_max@inbox.ru>
  <20200729082128.GJ3703480@smile.fi.intel.com>
-From:   Maxim Kochetkov <fido_max@inbox.ru>
-Message-ID: <5bfad7df-ee64-f94a-003b-06320b9fad0f@inbox.ru>
-Date:   Wed, 29 Jul 2020 11:26:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <5bfad7df-ee64-f94a-003b-06320b9fad0f@inbox.ru>
 MIME-Version: 1.0
-In-Reply-To: <20200729082128.GJ3703480@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD90521F83352E4771D993A5AF778ACCB6BD626CC7DA16DF88C182A05F538085040C2CA46D4983468D44DBEBCFF96989244A530695E06003E925F70375E164E67E1
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE78E88BD1CA827EF00C2099A533E45F2D0395957E7521B51C2CFCAF695D4D8E9FCEA1F7E6F0F101C6778DA827A17800CE74EB183AD45C8BEFBEA1F7E6F0F101C674E70A05D1297E1BBC6CDE5D1141D2B1CE894D00361F348800ABBA125B02E5E6C6791D0820EC505A09FA2833FD35BB23D9E625A9149C048EE9ECD01F8117BC8BEA471835C12D1D9774AD6D5ED66289B524E70A05D1297E1BBF6B57BC7E64490611E7FA7ABCAF51C92176DF2183F8FC7C07E7E81EEA8A9722B8941B15DA834481F9449624AB7ADAF37E2071C6999E77799D8FC6C240DEA76428AA50765F7900637A2D8A1A6CFF8D4D6D81D268191BDAD3DBD4B6F7A4D31EC0B7A15B7713DBEF166D81D268191BDAD3D78DA827A17800CE7E34610862E5853DDEC76A7562686271E8729DE7A884B61D135872C767BF85DA29E625A9149C048EE1B544F03EFBC4D573650B6F8DE40EA5F4AD6D5ED66289B524E70A05D1297E1BB35872C767BF85DA227C277FBC8AE2E8B9F5955FECEF5819E75ECD9A6C639B01B4E70A05D1297E1BBC6867C52282FAC85D9B7C4F32B44FF57285124B2A10EEC6C00306258E7E6ABB4E4A6367B16DE6309
-X-C8649E89: 33A8ECA4AF48A872707AC3AD012DFF9B2CBE3B0280CCAD82A230F7639BE59F72D39AF07C61583D7D
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojbl0bm2lVv3IpazKuAuhGEA==
-X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB244ACD2DA397360A76725F385C9060CCD22DC8CD00009A478AEE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
-X-Mras: Ok
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B43A7801844A72E373BDE407F6AFEC0A43CC3F7EA2573C0A3F049FFFDB7839CE9EB969E7E82AF4D4E22E6A2FF17A881D525FAA5127445D842048A75CFE8623B9BD
-X-7FA49CB5: 0D63561A33F958A51453B523D9B6476B0254EA931EFC5E022CAD022E63613EF48941B15DA834481FA18204E546F3947C1D471462564A2E19F6B57BC7E64490618DEB871D839B7333395957E7521B51C2545D4CF71C94A83E9FA2833FD35BB23D27C277FBC8AE2E8BAA867293B0326636D2E47CDBA5A96583A67CD397AD5B4748AD7EC71F1DB884274AD6D5ED66289B5278DA827A17800CE783B01AA35CFCE167D32BA5DBAC0009BE395957E7521B51C20B4866841D68ED3567F23339F89546C55F5C1EE8F4F765FC09937EC86AE39D5175ECD9A6C639B01BBD4B6F7A4D31EC0BC0CAF46E325F83A522CA9DD8327EE4930A3850AC1BE2E735F43AACC0BCEB2632C4224003CC836476C0CAF46E325F83A50BF2EBBBDD9D6B0F05F538519369F3743B503F486389A921A5CC5B56E945C8DA
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojbl0bm2lVv3J12kxj97U6Fg==
-X-Mailru-MI: 800
-X-Mailru-Sender: A5480F10D64C90054F94DD2E9EA85DB616491A79AAC9634EAE967868DF060506B03078242870122EC099ADC76E806A99D50E20E2BC48EF5A30D242760C51EA9CEAB4BC95F72C04283CDA0F3B3F5B9367
-X-Mras: Ok
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5bfad7df-ee64-f94a-003b-06320b9fad0f@inbox.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In case of CONFIG_PM is not set:
-
-static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
-{
-	return -ENOSYS;
-}
-
-and ads1015_read_raw failed at:
-
-		ret = ads1015_set_power_state(data, false);
-		if (ret < 0)
-			goto release_direct;
-
-29.07.2020 11:21, Andy Shevchenko wrote:
-> On Wed, Jul 29, 2020 at 10:59:07AM +0300, Maxim Kochetkov wrote:
->> To stop conversion ads1015_set_power_state function use unimplemented
->> function pm_runtime_put_autosuspend if CONFIG_PM is not set.
->> If CONFIG_PM is disabled, there is no need to start/stop conversion.
->> Fix it by adding return 0 function variant if CONFIG_PM is not set.
+On Wed, Jul 29, 2020 at 11:26:51AM +0300, Maxim Kochetkov wrote:
+> In case of CONFIG_PM is not set:
 > 
-> I'm wondering if you check the real code (assembly) for any difference.
+> static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
+> {
+> 	return -ENOSYS;
+> }
 > 
-> All calls AFAICS are statically defined in !CONFIG_PM case and compiler/linker
-> should be clever enough to drop this completely. Isn't it the case?
+> and ads1015_read_raw failed at:
 > 
+> 		ret = ads1015_set_power_state(data, false);
+> 		if (ret < 0)
+> 			goto release_direct;
+> 
+
+I see. Please, elaborate all this in the commit message for v2.
+
+P.S. Avoid top postings!
+
+> 29.07.2020 11:21, Andy Shevchenko wrote:
+> > On Wed, Jul 29, 2020 at 10:59:07AM +0300, Maxim Kochetkov wrote:
+> > > To stop conversion ads1015_set_power_state function use unimplemented
+> > > function pm_runtime_put_autosuspend if CONFIG_PM is not set.
+> > > If CONFIG_PM is disabled, there is no need to start/stop conversion.
+> > > Fix it by adding return 0 function variant if CONFIG_PM is not set.
+> > 
+> > I'm wondering if you check the real code (assembly) for any difference.
+> > 
+> > All calls AFAICS are statically defined in !CONFIG_PM case and compiler/linker
+> > should be clever enough to drop this completely. Isn't it the case?
+> > 
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

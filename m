@@ -2,112 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DDE6231CCE
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 12:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C088C232335
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 19:12:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726480AbgG2Kir (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 06:38:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726476AbgG2Kir (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 06:38:47 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7BFFC061794;
-        Wed, 29 Jul 2020 03:38:45 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id u185so12739529pfu.1;
-        Wed, 29 Jul 2020 03:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OOt4am3ptH3bamAsHkPtkKBdiD36zwsqmzqbepXBWe8=;
-        b=XD6KRO6w63ECQYGfBkLoQt17DuEmY+HHbmecVpVQ/Dye7/R2WatECNMg/Cmyx+/ouM
-         H7PfoB/r8C97XyCP5VsRUc3AeK6wOAUOuIXALkj8koSqlFAVZNvUm2G9+eRtjVm18cbj
-         b1Ioczc3J0prvsJyRP0nWrBEh7bq1/Ham3sd/hGY7c/PweS5ZcmTxX8lQLoWBkZWIL9g
-         ldith4ETV8JcFUWzZukT22w67q7FSMFR1M10L6GgqVMdSaSVI7xIs87KJt+RWXHeI0nc
-         IgPXyewpZr3MuTmUDEP+bWVriX264EIFBYgwI3zkjBSshDX9D847ePk7/dejH6pnp7Fa
-         FbYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OOt4am3ptH3bamAsHkPtkKBdiD36zwsqmzqbepXBWe8=;
-        b=LCQGiPEwf562ba9Ovu9fQPUYNXDUAPuD6OHEBmOCfuAZWwDl2pYpou4W1dD/tQE01Y
-         qOwZIYdvKo7GDMM1BUNWFn/VjxMNj6e7fmdIZW96v42tZ/Uk5rjvQrnlMdb64R0DuCEY
-         pLR+Ea6tEXUJaN8s7JoyOfRVtjywQUMvKUrfuJJK1C+k92e2cwSXkrETDJw3Mrbpa8+G
-         7HRTQe7ck4k9VD51oz/OWY/PZZDudQcOYGUDpL7nnAh6snZCzEB0RB/GYSPDl0NEy08G
-         s2RTOvGIHcKVZB8zm5Lq60ylGz11DWO3oCX2acXlm8nETmEwNH4C85zmpp+2nDsHr5PN
-         ywgw==
-X-Gm-Message-State: AOAM532OWX/8WVPY6O3UxVlq+VYFTneDoFQX0UHVSipg1p9a6BZL+EeN
-        3REmVt1tUsvZOU0/U08Ds51S5V30K5tN69OlvZo=
-X-Google-Smtp-Source: ABdhPJzC1lAmhZulWVw4qiVD9FP1U166ENhLOQOFnXgSQ/Llia+le+rSXDIzcFNIr0FAW8wTygu45FQnF6S8QQzNE3w=
-X-Received: by 2002:a62:758f:: with SMTP id q137mr10134826pfc.170.1596019125374;
- Wed, 29 Jul 2020 03:38:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAHp75VcmMf5dt7mu9N0C=6Rej-WzZ0EpzntHYCQkgNLVZkPbgg@mail.gmail.com>
- <20200729081155.3228-1-b18007@students.iitmandi.ac.in>
-In-Reply-To: <20200729081155.3228-1-b18007@students.iitmandi.ac.in>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jul 2020 13:38:28 +0300
-Message-ID: <CAHp75VdCBWLLMT7jm0CO+oK8eZf7cSMOM5sb9xZ1Po1_YFAMxw@mail.gmail.com>
-Subject: Re: [PATCH -v2] Staging: iio: Fixed a punctuation and a spelling mistake.
-To:     Ankit Baluni <b18007@students.iitmandi.ac.in>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1726476AbgG2RMi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 13:12:38 -0400
+Received: from mga09.intel.com ([134.134.136.24]:56217 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726365AbgG2RMi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Jul 2020 13:12:38 -0400
+IronPort-SDR: npehCSKej0B8TTOrWC9LCHq9kzT5oBLWP2FnNcmLEE1f/illdWDEZQe6pDBOC+VhkU0bf4Qnyl
+ hFG2b+6hBDqw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9697"; a="152696472"
+X-IronPort-AV: E=Sophos;i="5.75,411,1589266800"; 
+   d="scan'208";a="152696472"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2020 10:12:37 -0700
+IronPort-SDR: oWkvcZTwpwl3OcUXiSbJgNuAG/RFXg7dr4ByMf1SNKGdhNosoSy8lSSWGobIcE7CXpoKm9Fngx
+ GhuGhrHCmrIA==
+X-IronPort-AV: E=Sophos;i="5.75,411,1589266800"; 
+   d="scan'208";a="464932285"
+Received: from spandruv-mobl.amr.corp.intel.com ([10.255.229.136])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2020 10:12:36 -0700
+Message-ID: <a870c6cc8a498e46d06106be9d83e4f7cbebf717.camel@linux.intel.com>
+Subject: Re: [PATCH v3 03/27] iio:accel:bmc150-accel: Fix timestamp
+ alignment and prevent data leak.
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date:   Wed, 29 Jul 2020 10:12:36 -0700
+In-Reply-To: <20200722155103.979802-4-jic23@kernel.org>
+References: <20200722155103.979802-1-jic23@kernel.org>
+         <20200722155103.979802-4-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 29, 2020 at 11:12 AM Ankit Baluni
-<b18007@students.iitmandi.ac.in> wrote:
->
-> Added a missing comma and changed 'it it useful' to 'it is useful'.
+On Wed, 2020-07-22 at 16:50 +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> One of a class of bugs pointed out by Lars in a recent review.
+> iio_push_to_buffers_with_timestamp assumes the buffer used is aligned
+> to the size of the timestamp (8 bytes).  This is not guaranteed in
+> this driver which uses a 16 byte array of smaller elements on the
+> stack.
+> As Lars also noted this anti pattern can involve a leak of data to
+> userspace and that indeed can happen here.  We close both issues by
+> moving
+> to a suitable structure in the iio_priv() data with alignment
+> ensured by use of an explicit c structure.  This data is allocated
+> with kzalloc so no data can leak appart from previous readings.
+> 
+> Fixes tag is beyond some major refactoring so likely manual
+> backporting
+> would be needed to get that far back.
+> 
+> Whilst the force alignment of the ts is not strictly necessary, it
+> does make the code less fragile.
+> 
+> Fixes: 3bbec9773389 ("iio: bmc150_accel: add support for hardware
+> fifo")
+> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Ankit Baluni <b18007@students.iitmandi.ac.in>
 > ---
-> Changes in -v2:
->         -Remove space before ':' in subject line.
->
->  drivers/staging/iio/Documentation/overview.txt | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/staging/iio/Documentation/overview.txt b/drivers/staging/iio/Documentation/overview.txt
-> index ebdc64f451d7..00409d5dab4e 100644
-> --- a/drivers/staging/iio/Documentation/overview.txt
-> +++ b/drivers/staging/iio/Documentation/overview.txt
-> @@ -9,7 +9,7 @@ The aim is to fill the gap between the somewhat similar hwmon and
->  input subsystems.  Hwmon is very much directed at low sample rate
->  sensors used in applications such as fan speed control and temperature
->  measurement.  Input is, as its name suggests focused on input
-> -devices. In some cases there is considerable overlap between these and
-> +devices. In some cases, there is considerable overlap between these and
->  IIO.
->
->  A typical device falling into this category would be connected via SPI
-> @@ -38,7 +38,7 @@ series and Analog Devices ADXL345 accelerometers.  Each buffer supports
->  polling to establish when data is available.
->
->  * Trigger and software buffer support. In many data analysis
-> -applications it it useful to be able to capture data based on some
-> +applications it is useful to be able to capture data based on some
->  external signal (trigger).  These triggers might be a data ready
->  signal, a gpio line connected to some external system or an on
->  processor periodic interrupt.  A single trigger may initialize data
-> --
-> 2.25.1
->
+>  drivers/iio/accel/bmc150-accel-core.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c
+> b/drivers/iio/accel/bmc150-accel-core.c
+> index 24864d9dfab5..48435865fdaf 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -189,6 +189,14 @@ struct bmc150_accel_data {
+>  	struct mutex mutex;
+>  	u8 fifo_mode, watermark;
+>  	s16 buffer[8];
+> +	/*
+> +	 * Ensure there is sufficient space and correct alignment for
+> +	 * the timestamp if enabled
+> +	 */
+> +	struct {
+> +		__le16 channels[3];
+> +		s64 ts __aligned(8);
+> +	} scan;
+>  	u8 bw_bits;
+>  	u32 slope_dur;
+>  	u32 slope_thres;
+> @@ -922,15 +930,16 @@ static int __bmc150_accel_fifo_flush(struct
+> iio_dev *indio_dev,
+>  	 * now.
+>  	 */
+>  	for (i = 0; i < count; i++) {
+> -		u16 sample[8];
+>  		int j, bit;
+>  
+>  		j = 0;
+>  		for_each_set_bit(bit, indio_dev->active_scan_mask,
+>  				 indio_dev->masklength)
+> -			memcpy(&sample[j++], &buffer[i * 3 + bit], 2);
+> +			memcpy(&data->scan.channels[j++], &buffer[i * 3
+> + bit],
+> +			       sizeof(data->scan.channels[0]));
+>  
+> -		iio_push_to_buffers_with_timestamp(indio_dev, sample,
+> tstamp);
+> +		iio_push_to_buffers_with_timestamp(indio_dev, &data-
+> >scan,
+> +						   tstamp);
+>  
+>  		tstamp += sample_period;
+>  	}
 
-
--- 
-With Best Regards,
-Andy Shevchenko

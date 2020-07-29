@@ -2,63 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E80A42319CC
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 08:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D2E2319D1
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 08:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbgG2Gws (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 02:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45990 "EHLO
+        id S1726336AbgG2GzI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 02:55:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgG2Gws (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 02:52:48 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A900C061794;
-        Tue, 28 Jul 2020 23:52:48 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id i92so1128942pje.0;
-        Tue, 28 Jul 2020 23:52:48 -0700 (PDT)
+        with ESMTP id S1726290AbgG2GzH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 02:55:07 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA52C061794;
+        Tue, 28 Jul 2020 23:55:06 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id e22so1583097pjt.3;
+        Tue, 28 Jul 2020 23:55:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Am/TtCrrFfKaXzlFwmxItzz2ITP6WZphTK/VPluVd2M=;
-        b=H556AlVJ3PQbgvszJ3rDpBSedjj6NHM8AiBtkDSGSk3h+9vrKtaqRzDb7pu5tr4X8L
-         VkAIhR6IJO7JCR5QwjBlhhBmDpXSVhDOlmgoZfDzNJFXWSUObQ8b5FG4fnDEiviay7mf
-         JYHWprbM3olkcW3XBdztpfRIAtzyDxy3lwdVj5dOIM1N3llDSu+2UmG2XojD/XYU1hX5
-         H0YvOk9+mNvPIOA3Djw5/t8OJpDgYzMG2IQ8iuILcjsDv9+KHkroszFIaSS5rfvh0OjN
-         wXhUmFjH5pabpyIRR3/tx5rIpbTQ0ZoGLGUejWZ395oWOk7FJEkEToy4cplCeaB+jjpl
-         LN9A==
+        bh=U92rYb0+TwGY8zlPAefy1rRg023bgbGHmt6DlPysSbE=;
+        b=VY6IUoYjKXKRjRWH0ph58QPyVXNjhf1ZrmDeymuKLS34LOaCvII7jQi/p9QBtzpRDf
+         I1oZFIZsAkiUmiVX9antZvETncgRdreGJNXoyyTrAWkMh/eJt8SMA5rcJfVZzyWK2IvL
+         jC5TZ+hRNbYfJ8H1EKaliqMMn/v6/Kvs2dFcTAq298FW7f3BYyr0WszmoUL7htFkxDtm
+         qK5if0Zzf9fVJmWaFjIga89to7YQpmFVvQukJJ+7g4nU4bFg0gbB9eh3s62n+UxOukDY
+         7zOcRlxkC79KIv9n9kuW9gRHMsr07KieZeiEmnR03aYYcaAlT1ro7Wt7a84EmljQhY1B
+         2/Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Am/TtCrrFfKaXzlFwmxItzz2ITP6WZphTK/VPluVd2M=;
-        b=P8McIeSQVCTxB9MBDneZBUtQa9djaxLwRhZJtdlcMtakJ+Q+dkruch6W5YOkFRuMw+
-         UR9X+NiWSftW2P2ZMnvZGzeezDkQaXDt9iSy0d843pKOSRPR6E+2TxD8GyUZtlbmmNB5
-         YSyFqq1cS0PqY+9TRG6VfmJefgVlpRMpAoZUpJriP1WUw3sImTrcUTXakJAQ/KROoNgw
-         6ryftmaZOjB15pnbqMa1lJtD17FI6xldOz7Iyw2Shq6oHWcl9xj9998yijBxfPkiGr0R
-         zEUmzluXOIF+njfprN4MFutLiwhIbMvtU+sUGNyUVTsJ5HkCAhMX+AKhUOEfwM8YJHCp
-         jpdw==
-X-Gm-Message-State: AOAM532aRivAKYQ82xF2hAb1NICariEvT+S79yVGd9VtnIALX5ffvA+O
-        ecdHt9END1ELwsLRADkQTWfm0MWcjk0mMY7yKfs=
-X-Google-Smtp-Source: ABdhPJwF4/zcqOFXvt7wM9A0X11E9f0a+SFZxtElBWQOlf1Ie76TxW7/SBaEQzrkzP1MKJBI1UukqNBoS5bUnf5iIvE=
-X-Received: by 2002:a17:902:4b:: with SMTP id 69mr10863883pla.18.1596005567346;
- Tue, 28 Jul 2020 23:52:47 -0700 (PDT)
+        bh=U92rYb0+TwGY8zlPAefy1rRg023bgbGHmt6DlPysSbE=;
+        b=Foaac5k8T8dTncH7bajZb36TWW8Y3Zs+u9/fHZLO9zzhcCXpOvxI6L4844g6YvETVj
+         PmEv9GHYzoBRTzM76ot7NV/MJrta0BpG5zkJJ1wbCxBT5kEL0ospfXKzUX39j7TJ+2jX
+         a9m4CTuVq32LUfC3Y5OM2h8OPVfXur4bdOecdqupRal52wcZ+51gjJsZ2pqof9E2q2H6
+         vkSj4mHwTcarhp1DolWTKzpL63VgzBgLsSYyU0DxaQRmuTmZ+EGsn14BnA2l3TvRdepB
+         G0ewL9mN0X9hykJdnmjcBhXbIF3GjZjHJzmMlZd9MSum7+fpmMFBgRkldhnmrSvdY89v
+         EA6g==
+X-Gm-Message-State: AOAM532/lG/HkjxOzeiLbNFn1agHqmSs7qpwCpfEQID+gPO5mGKsD12v
+        JcKGPVC2J4ThpeURfRaF7Zg7WsNadPyN3wgVKfc=
+X-Google-Smtp-Source: ABdhPJxlzMpzxpTX2nZWp7zuUifsx3/qC2nScve7EvSpqfgAtH56PXOrZv3AreiCKdsRuYfWKzRL4h5c52N8VIIhzX8=
+X-Received: by 2002:a17:90a:390f:: with SMTP id y15mr817996pjb.181.1596005705069;
+ Tue, 28 Jul 2020 23:55:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200724183954.1.I2e29ae25368ba8a72a9e44121cfbc36ead8ecc6b@changeid>
- <20200728151258.1222876-1-campello@chromium.org> <20200728091057.6.I27a5605d9cb3ff643ef040c4ef932a30df9a8fac@changeid>
- <CAHp75VfLYqPpO5M6GaHfSBBkQoZpnVTHFKVX5k9Pu_RjMO-whw@mail.gmail.com> <CAHcu+VbxtAz-2y9FLdraqhYjzHKmi-5O=MioSU1caupT_y6PrQ@mail.gmail.com>
-In-Reply-To: <CAHcu+VbxtAz-2y9FLdraqhYjzHKmi-5O=MioSU1caupT_y6PrQ@mail.gmail.com>
+References: <20200728151258.1222876-1-campello@chromium.org>
+ <20200728230520.2011240-1-campello@chromium.org> <20200728170317.v2.4.I9bf713a86d6076b44441ef5f534f9c240271699a@changeid>
+In-Reply-To: <20200728170317.v2.4.I9bf713a86d6076b44441ef5f534f9c240271699a@changeid>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jul 2020 09:52:30 +0300
-Message-ID: <CAHp75VejNVhRhVEPimbj3S4zMPTsiBgk3qmMAX+jfYN2_i2G0A@mail.gmail.com>
-Subject: Re: [PATCH 06/15] iio: sx9310: Align memory
-To:     Daniel Campello <campello@google.com>
+Date:   Wed, 29 Jul 2020 09:54:48 +0300
+Message-ID: <CAHp75VdYnXsB2KKkJZg-JRoSEkLz91BQwxaYR1uFMbbzU=M_WQ@mail.gmail.com>
+Subject: Re: [PATCH v2 04/14] iio: sx9310: Remove acpi and of table macros
+To:     Daniel Campello <campello@chromium.org>
 Cc:     LKML <devicetree@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
         Douglas Anderson <dianders@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
@@ -70,28 +68,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 29, 2020 at 12:26 AM Daniel Campello <campello@google.com> wrote:
-> On Tue, Jul 28, 2020 at 12:11 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Tue, Jul 28, 2020 at 6:15 PM Daniel Campello <campello@chromium.org> wrote:
+On Wed, Jul 29, 2020 at 2:05 AM Daniel Campello <campello@chromium.org> wrote:
+>
+> Avoids unused warnings due to acpi/of table macros.
 
-...
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> > > -       __be16 buffer[SX9310_NUM_CHANNELS +
-> > > -                     4]; /* 64-bit data + 64-bit timestamp */
-> > > +       /* 64-bit data + 64-bit timestamp buffer */
-> > > +       __be16 buffer[SX9310_NUM_CHANNELS + 4] __aligned(8);
-> >
-> > If the data amount (channels) is always the same, please, use struct approach.
-> > Otherwise put a comment explaining dynamic data.
-> I'm not sure what you mean here. I have a comment above for the size
-> of the array.
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Daniel Campello <campello@chromium.org>
+> ---
+>
+> Changes in v2:
+>  - Added #include <linux/mod_devicetable.h>
+>
+>  drivers/iio/proximity/sx9310.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index 108d82ba81146e..04b646ae8a1009 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -15,8 +15,8 @@
+>  #include <linux/i2c.h>
+>  #include <linux/irq.h>
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/of.h>
+>  #include <linux/pm.h>
+>  #include <linux/regmap.h>
+>  #include <linux/slab.h>
+> @@ -1051,8 +1051,8 @@ MODULE_DEVICE_TABLE(i2c, sx9310_id);
+>  static struct i2c_driver sx9310_driver = {
+>         .driver = {
+>                 .name   = "sx9310",
+> -               .acpi_match_table = ACPI_PTR(sx9310_acpi_match),
+> -               .of_match_table = of_match_ptr(sx9310_of_match),
+> +               .acpi_match_table = sx9310_acpi_match,
+> +               .of_match_table = sx9310_of_match,
+>                 .pm = &sx9310_pm_ops,
+>         },
+>         .probe          = sx9310_probe,
+> --
+> 2.28.0.163.g6104cc2f0b6-goog
+>
 
-Here [1] was a discussion about commenting on the dynamic amount of
-data [see the cover letter and replies to it] in the buffer and the
-struct approach [e.g. very first patch in the series].
-
-[1]: https://lore.kernel.org/linux-iio/MN2PR12MB43905A2256F98BB5EFCE7DD3C4770@MN2PR12MB4390.namprd12.prod.outlook.com/T/
 
 -- 
 With Best Regards,

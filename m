@@ -2,65 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D2E2319D1
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 08:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D802319F4
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 09:00:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726336AbgG2GzI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 02:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        id S1726536AbgG2HAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 03:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgG2GzH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 02:55:07 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA52C061794;
-        Tue, 28 Jul 2020 23:55:06 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id e22so1583097pjt.3;
-        Tue, 28 Jul 2020 23:55:06 -0700 (PDT)
+        with ESMTP id S1726314AbgG2HAe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 03:00:34 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBE6BC061794;
+        Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id p3so13756961pgh.3;
+        Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=U92rYb0+TwGY8zlPAefy1rRg023bgbGHmt6DlPysSbE=;
-        b=VY6IUoYjKXKRjRWH0ph58QPyVXNjhf1ZrmDeymuKLS34LOaCvII7jQi/p9QBtzpRDf
-         I1oZFIZsAkiUmiVX9antZvETncgRdreGJNXoyyTrAWkMh/eJt8SMA5rcJfVZzyWK2IvL
-         jC5TZ+hRNbYfJ8H1EKaliqMMn/v6/Kvs2dFcTAq298FW7f3BYyr0WszmoUL7htFkxDtm
-         qK5if0Zzf9fVJmWaFjIga89to7YQpmFVvQukJJ+7g4nU4bFg0gbB9eh3s62n+UxOukDY
-         7zOcRlxkC79KIv9n9kuW9gRHMsr07KieZeiEmnR03aYYcaAlT1ro7Wt7a84EmljQhY1B
-         2/Uw==
+        bh=Ydyx9gtyvmjZ7DrRhj6TptEXl3PlUz8eNLH76DjhVhI=;
+        b=PqL8pV7jeLa+Sx/5vyatxOYMcI8YgDyaPSfT5MHX228lN5/+6lKwG/nCn2BCAf1eHV
+         tL85v+PZL0W83EI+HbLt6LVl59AXxCDymxMcjfHJPAhiq+l42/0ZParzgfyo79k+jx/e
+         n7W/n870mX62FNWZqSq8yFxzEYBj1IBARrjO7LG+DScnKlvaqT7AGRz3BsoDtvwp17d6
+         CxShQ3Vc/Bx29wGE48leAtbphv3tAWhSX47vD0FzVoIk/oXScDdYKODO2JSSd3XJhqrT
+         vtJ+TAGRkKN7V5gJ3J70A39jfZSuzNB33ZQWyCOkFQPAGHMIRUSH35Vgv7ouKvJuP3oM
+         e36A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=U92rYb0+TwGY8zlPAefy1rRg023bgbGHmt6DlPysSbE=;
-        b=Foaac5k8T8dTncH7bajZb36TWW8Y3Zs+u9/fHZLO9zzhcCXpOvxI6L4844g6YvETVj
-         PmEv9GHYzoBRTzM76ot7NV/MJrta0BpG5zkJJ1wbCxBT5kEL0ospfXKzUX39j7TJ+2jX
-         a9m4CTuVq32LUfC3Y5OM2h8OPVfXur4bdOecdqupRal52wcZ+51gjJsZ2pqof9E2q2H6
-         vkSj4mHwTcarhp1DolWTKzpL63VgzBgLsSYyU0DxaQRmuTmZ+EGsn14BnA2l3TvRdepB
-         G0ewL9mN0X9hykJdnmjcBhXbIF3GjZjHJzmMlZd9MSum7+fpmMFBgRkldhnmrSvdY89v
-         EA6g==
-X-Gm-Message-State: AOAM532/lG/HkjxOzeiLbNFn1agHqmSs7qpwCpfEQID+gPO5mGKsD12v
-        JcKGPVC2J4ThpeURfRaF7Zg7WsNadPyN3wgVKfc=
-X-Google-Smtp-Source: ABdhPJxlzMpzxpTX2nZWp7zuUifsx3/qC2nScve7EvSpqfgAtH56PXOrZv3AreiCKdsRuYfWKzRL4h5c52N8VIIhzX8=
-X-Received: by 2002:a17:90a:390f:: with SMTP id y15mr817996pjb.181.1596005705069;
- Tue, 28 Jul 2020 23:55:05 -0700 (PDT)
+        bh=Ydyx9gtyvmjZ7DrRhj6TptEXl3PlUz8eNLH76DjhVhI=;
+        b=Ozjs9AiQxBstWy/TaBuQn13QQ+w94jFQ5hIXGy/Uuj4rY+LL2KM1Lip+SsM2VzKKOp
+         1h9Vbhsgs/gTrlqJk4vIVWnS3sKb+6fd0b0nVplG4cDd36cxGfNqgyDg3yU0c14hOyE8
+         z0uFsMCOzcG87SQBMdIDk46wWeBHrUBrKHCeR0cXrgd9/rrF8lS4sIb1HR82+Ct3TG++
+         fCT0PfYNW3+Qq7NSSqtRMp65NEKprJfXEtV2dJtoXu1AVUawhNQb0VNUzvlhzGWqUKzz
+         EiJFU07YZqwSEWjRjM9/M5nJr/+JIxjvj5Tuqz2zmMlbxSZDk5Zy2bPqlx1vWsDCHCI6
+         7j/A==
+X-Gm-Message-State: AOAM530uHfJWttqCDTT5DMzv5ZFb0cPrU+ZBU8Idz2ptmUoKyyEtCYpE
+        g5gffOcSuY8r8Y6sLO3Dnz1YIyHhtjU6dULkdZ0=
+X-Google-Smtp-Source: ABdhPJzBMOmiIIjC3eY9ECf9YCG3ZIfdKn8E7fsAp6Hs/425acmqVQ4MsWmW7EpO1KaETDSiv6QBEGWthO77dNs+MNc=
+X-Received: by 2002:a63:924b:: with SMTP id s11mr27118530pgn.74.1596006034356;
+ Wed, 29 Jul 2020 00:00:34 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200728151258.1222876-1-campello@chromium.org>
- <20200728230520.2011240-1-campello@chromium.org> <20200728170317.v2.4.I9bf713a86d6076b44441ef5f534f9c240271699a@changeid>
-In-Reply-To: <20200728170317.v2.4.I9bf713a86d6076b44441ef5f534f9c240271699a@changeid>
+ <20200728230520.2011240-1-campello@chromium.org> <20200728170317.v2.7.Iecaa50e469918a385b3e5dab375e442540ea2ad4@changeid>
+ <159598461271.1360974.15436404116157938506@swboyd.mtv.corp.google.com>
+In-Reply-To: <159598461271.1360974.15436404116157938506@swboyd.mtv.corp.google.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jul 2020 09:54:48 +0300
-Message-ID: <CAHp75VdYnXsB2KKkJZg-JRoSEkLz91BQwxaYR1uFMbbzU=M_WQ@mail.gmail.com>
-Subject: Re: [PATCH v2 04/14] iio: sx9310: Remove acpi and of table macros
-To:     Daniel Campello <campello@chromium.org>
-Cc:     LKML <devicetree@vger.kernel.org>,
+Date:   Wed, 29 Jul 2020 10:00:16 +0300
+Message-ID: <CAHp75Vc_3VYAkVcTCAXzqxqFnpQ4Qi=iPSFW_sUjYGO=o6YMtA@mail.gmail.com>
+Subject: Re: [PATCH v2 07/14] iio: sx9310: Use long instead of int for channel bitmaps
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Daniel Campello <campello@chromium.org>,
+        LKML <devicetree@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        kbuild test robot <lkp@intel.com>,
         Douglas Anderson <dianders@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Stephen Boyd <swboyd@chromium.org>,
         linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
@@ -68,50 +69,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 29, 2020 at 2:05 AM Daniel Campello <campello@chromium.org> wrote:
->
-> Avoids unused warnings due to acpi/of table macros.
+On Wed, Jul 29, 2020 at 4:03 AM Stephen Boyd <swboyd@chromium.org> wrote:
+> Quoting Daniel Campello (2020-07-28 16:05:13)
+> > Uses for_each_set_bit() macro to loop over channel bitmaps.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+...
 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Daniel Campello <campello@chromium.org>
-> ---
+> > +       unsigned long chan_prox_stat;
 >
-> Changes in v2:
->  - Added #include <linux/mod_devicetable.h>
+> This can be DECLARE_BITMAP(chan_prox_stat, SX9310_NUM_CHANNELS)
+
+> > +       unsigned long chan_read;
+> > +       unsigned long chan_event;
 >
->  drivers/iio/proximity/sx9310.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Same for these?
+
+...
+
+> > +       prox_changed = (data->chan_prox_stat ^ val) & data->chan_event;
 >
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index 108d82ba81146e..04b646ae8a1009 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -15,8 +15,8 @@
->  #include <linux/i2c.h>
->  #include <linux/irq.h>
->  #include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
->  #include <linux/pm.h>
->  #include <linux/regmap.h>
->  #include <linux/slab.h>
-> @@ -1051,8 +1051,8 @@ MODULE_DEVICE_TABLE(i2c, sx9310_id);
->  static struct i2c_driver sx9310_driver = {
->         .driver = {
->                 .name   = "sx9310",
-> -               .acpi_match_table = ACPI_PTR(sx9310_acpi_match),
-> -               .of_match_table = of_match_ptr(sx9310_of_match),
-> +               .acpi_match_table = sx9310_acpi_match,
-> +               .of_match_table = sx9310_of_match,
->                 .pm = &sx9310_pm_ops,
->         },
->         .probe          = sx9310_probe,
-> --
-> 2.28.0.163.g6104cc2f0b6-goog
+> I was expecting:
 >
+>
+>         bitmap_xor(&prox_changed, &data->chan_prox_stat, &val, SX9310_NUM_CHANNELS);
+>         bitmap_and(&prox_changed, &data->chan_event, SX9310_NUM_CHANNELS);
+
+I agree with this. On a small number of channels (up to 32) it will be
+reduced to simple operations, but will leave a possibility to have
+more with easy redefine.
+
+(though _and() above misses one argument AFAICT)
+
+...
+
+> > +       unsigned long channels = 0;
+>
+> Use DECLARE_BITMAP(channels, SX9310_NUM_CHANNELS)?
 
 
 -- 

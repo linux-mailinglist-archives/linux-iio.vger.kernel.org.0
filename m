@@ -2,102 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CFBB231A63
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 09:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3B5231AB5
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jul 2020 09:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727904AbgG2HeH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jul 2020 03:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52346 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727840AbgG2HeG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 03:34:06 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444C6C061794
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jul 2020 00:34:06 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id d4so13806182pgk.4
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jul 2020 00:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=students-iitmandi-ac-in.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=S46xE3v5DrbbnFv9e5puvYo4jscSSSdvbX89O6S8DDQ=;
-        b=mESkiXFMivLhqN+hGYqTZVr3mN/jt1bqIxIHckD0DfO/9C3R9bmGRkrhHMyVhOQcoy
-         GdkeVscfEWP1leXKC1bGouS5MufyBHXD5G5lsuoKmX3lXpZqtPrmTctMcCcKQFsY/sSG
-         sijp+8fAUc11tD7KTGeRK3cdLk2PIFzkpAE04fe1OdyKz0q7s8EbN05DXiKW7xSWlvX/
-         XHSxZtXofboZkPxVM2HGgyONOsMxH3TPe1/nxjEnpXp/zn5tSrb5ofRvpbIleIsRkckt
-         SnpxHOdzLaI501flwHQyzGsdvrZVd/bS7XRo3Rfmjn0TC4DH3482nNrC0bAHIupJeaXT
-         BGGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=S46xE3v5DrbbnFv9e5puvYo4jscSSSdvbX89O6S8DDQ=;
-        b=axZ7Cllm/11mnNkvTOaKDykUigocjgTh2a9Gh0ZX6z3YkZQNb8Dac3XGVAViFHb48A
-         GdsKyKWxvCo5w7DoRs15gcqA9sqR7RBlyF39MmYR/Infx3rh8x9sgzqxAGzwL5x9w9VT
-         ojKHFqh/QDRJT4GjtQ0QjqirMv+OaKJu6GLYV5WKfmF6gmHRvebyf5nEYtpdhPsD9BVT
-         XH+XlFsEHZJGyLBswWZlzrlBJvmnFdWyizSNZI2L1WAAbO6YoewHeFKDhcBsSQKcIair
-         WYXz2KZu729v4g+LOpBIdPf5mFfiq5qsX1suRvS5NhaY8foOOuztJ2cYMfpXVfygWxJr
-         iW7Q==
-X-Gm-Message-State: AOAM530VQ6NHHdOfMsCqFOKhRpuLCH1Y63BZ4RMdt+Wz179WH/6NG+i0
-        J47iwp9taIftBwEsN/5+RbGIXA==
-X-Google-Smtp-Source: ABdhPJwEFJVQwnTn+RUWmMfKUkxfJ2XNy5pVytSLsFeiPOx7vgLfLVmhBW1T+huugVjy9C5qeKhquA==
-X-Received: by 2002:a63:6fcd:: with SMTP id k196mr29332268pgc.251.1596008045763;
-        Wed, 29 Jul 2020 00:34:05 -0700 (PDT)
-Received: from devil-VirtualBox.www.tendawifi.com ([103.198.174.215])
-        by smtp.gmail.com with ESMTPSA id bv17sm1210956pjb.0.2020.07.29.00.34.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2020 00:34:04 -0700 (PDT)
-From:   Ankit Baluni <b18007@students.iitmandi.ac.in>
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Ankit Baluni <b18007@students.iitmandi.ac.in>
-Subject: [PATCH] Staging: iio: Fixed a punctuation and a spelling mistake.
-Date:   Wed, 29 Jul 2020 13:03:52 +0530
-Message-Id: <20200729073352.1586-1-b18007@students.iitmandi.ac.in>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <CAHp75VcmMf5dt7mu9N0C=6Rej-WzZ0EpzntHYCQkgNLVZkPbgg@mail.gmail.com>
-References: <CAHp75VcmMf5dt7mu9N0C=6Rej-WzZ0EpzntHYCQkgNLVZkPbgg@mail.gmail.com>
+        id S1727979AbgG2H7x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jul 2020 03:59:53 -0400
+Received: from fallback13.mail.ru ([94.100.179.30]:58808 "EHLO
+        fallback13.mail.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727059AbgG2H7x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jul 2020 03:59:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=3fa8RFKjs5/eLABjYBvhcRWbXI9ViB/wI2i1z+xTyGY=;
+        b=mZf+zAvKB8KeTCda+dX91NAKUZT4kFyHHrPScRngvBXBdbSRJC3DbsxHYtoLdCdpNeSuWpsf8pCEqVu+uSUqCrP7Jk0NvK9GregV9tJOCbhcVHjPdfDwf313Tidqrnvu1Maq0m/k1iF9R1+euEOQ30oTwZhc5juxWD00rCPGxW8=;
+Received: from [10.161.25.37] (port=33762 helo=smtp60.i.mail.ru)
+        by fallback13.m.smailru.net with esmtp (envelope-from <fido_max@inbox.ru>)
+        id 1k0h08-0000xU-P8; Wed, 29 Jul 2020 10:59:49 +0300
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=3fa8RFKjs5/eLABjYBvhcRWbXI9ViB/wI2i1z+xTyGY=;
+        b=mZf+zAvKB8KeTCda+dX91NAKUZT4kFyHHrPScRngvBXBdbSRJC3DbsxHYtoLdCdpNeSuWpsf8pCEqVu+uSUqCrP7Jk0NvK9GregV9tJOCbhcVHjPdfDwf313Tidqrnvu1Maq0m/k1iF9R1+euEOQ30oTwZhc5juxWD00rCPGxW8=;
+Received: by smtp60.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
+        id 1k0gzz-0006Kh-6v; Wed, 29 Jul 2020 10:59:39 +0300
+From:   Maxim Kochetkov <fido_max@inbox.ru>
+Cc:     bigunclemax@gmail.com, Maxim Kochetkov <fido_max@inbox.ru>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ti-ads1015: fix conversion when CONFIG_PM is not set
+Date:   Wed, 29 Jul 2020 10:59:07 +0300
+Message-Id: <20200729075908.10463-1-fido_max@inbox.ru>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-7564579A: 646B95376F6C166E
+X-77F55803: 4F1203BC0FB41BD90521F83352E4771D993A5AF778ACCB6BD626CC7DA16DF88C182A05F53808504029DC496DEEEB89501932489FB8A54D596D0B58E080D7C80BF2A5A0F2AACCC7CB
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7978947DCA0D4215FEA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F79006371895637A5F0B45FF8638F802B75D45FF5571747095F342E8C7A0BC55FA0FE5FC1ECBB32B1B289FC7BA662DC30B7A2373D3D44096FD8F85F2389733CBF5DBD5E913377AFFFEAFD269176DF2183F8FC7C0A3E989B1926288338941B15DA834481FCF19DD082D7633A0E7DDDDC251EA7DABA471835C12D1D977725E5C173C3A84C3CF36E64A7E3F8E58117882F4460429728AD0CFFFB425014E09623437467D3AE276E601842F6C81A19E625A9149C048EE7B96B19DC4093321F206494F22AA87D6D8FC6C240DEA76429449624AB7ADAF37B2D370F7B14D4BC40A6AB1C7CE11FEE3FD04FE2AD1523FDB9735652A29929C6CC4224003CC8364767A15B7713DBEF166A7F4EDE966BC389F9E8FC8737B5C2249BDB2DFE734BD6C7C089D37D7C0E48F6CCF19DD082D7633A0E7DDDDC251EA7DABAAAE862A0553A39223F8577A6DFFEA7CE31A2885C41F97C443847C11F186F3C5E7DDDDC251EA7DABCC89B49CDF41148FA8EF81845B15A4842623479134186CDE6BA297DBC24807EABDAD6C7F3747799A
+X-C8649E89: EBB7AE862102F8157F69ED8697A74C3F65EFCD698A4D0A16881DBFC9FC99910044CD825B82ED7068
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojbl0bm2lVv3IuJKNyOiYHdg==
+X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB24BD2D83D0D925C654C403DFFB4822EE44AC90A8F9D9BFD8A8EE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
+X-Mras: Ok
+X-7564579A: 646B95376F6C166E
+X-77F55803: 6242723A09DB00B43A7801844A72E373BDE407F6AFEC0A433A29991C6D1240E4049FFFDB7839CE9EB969E7E82AF4D4E2A040CA83889AFC6C6916E1F39D14DC337D1E73DB6B2E3940
+X-7FA49CB5: 0D63561A33F958A560901FAB13B8EA56A8927752ED17BC0FED3ADAC3660D3CA88941B15DA834481FA18204E546F3947C0A6B3CD6EB70C818117882F4460429724CE54428C33FAD30A8DF7F3B2552694A4A5EC4583E1CDF108941B15DA834481F8AA50765F7900637F924B32C592EA89F389733CBF5DBD5E9B5C8C57E37DE458BB4E76B3161857BFDD32BA5DBAC0009BE9E8FC8737B5C22496CA36251E56197FE76E601842F6C81A12EF20D2F80756B5FDA63EEEA5E5E9D65089D37D7C0E48F6CA18204E546F3947C29C2079CDE5AC98057739F23D657EF2BC8A9BA7A39EFB7666BA297DBC24807EA089D37D7C0E48F6C8AA50765F7900637AD0424077D726551EFF80C71ABB335746BA297DBC24807EA27F269C8F02392CD20465B3A5AADEC6827F269C8F02392CD5571747095F342E88FB05168BE4CE3AF
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojbl0bm2lVv3L3S8xTD+SNEQ==
+X-Mailru-MI: 800
+X-Mailru-Sender: A5480F10D64C9005631A4012884FA1630C4A2E81BE2FD80F9A84FF1F07161318E1934491450442A6C099ADC76E806A99D50E20E2BC48EF5A30D242760C51EA9CEAB4BC95F72C04283CDA0F3B3F5B9367
+X-Mras: Ok
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Added a missing comma and changed 'it it useful' to 'it is useful'.
+To stop conversion ads1015_set_power_state function use unimplemented
+function pm_runtime_put_autosuspend if CONFIG_PM is not set.
+If CONFIG_PM is disabled, there is no need to start/stop conversion.
+Fix it by adding return 0 function variant if CONFIG_PM is not set.
 
-Signed-off-by: Ankit Baluni <b18007@students.iitmandi.ac.in>
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
 ---
-Changes in -v2:
-	-Remove space before ':' in subject line.
+ drivers/iio/adc/ti-ads1015.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
- drivers/staging/iio/Documentation/overview.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/iio/Documentation/overview.txt b/drivers/staging/iio/Documentation/overview.txt
-index ebdc64f451d7..00409d5dab4e 100644
---- a/drivers/staging/iio/Documentation/overview.txt
-+++ b/drivers/staging/iio/Documentation/overview.txt
-@@ -9,7 +9,7 @@ The aim is to fill the gap between the somewhat similar hwmon and
- input subsystems.  Hwmon is very much directed at low sample rate
- sensors used in applications such as fan speed control and temperature
- measurement.  Input is, as its name suggests focused on input
--devices. In some cases there is considerable overlap between these and
-+devices. In some cases, there is considerable overlap between these and
- IIO.
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 5ea4f45d6bad..64fe3b2a6ec6 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -316,6 +316,7 @@ static const struct iio_chan_spec ads1115_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(ADS1015_TIMESTAMP),
+ };
  
- A typical device falling into this category would be connected via SPI
-@@ -38,7 +38,7 @@ series and Analog Devices ADXL345 accelerometers.  Each buffer supports
- polling to establish when data is available.
++#ifdef CONFIG_PM
+ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
+ {
+ 	int ret;
+@@ -333,6 +334,15 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
+ 	return ret < 0 ? ret : 0;
+ }
  
- * Trigger and software buffer support. In many data analysis
--applications it it useful to be able to capture data based on some
-+applications it is useful to be able to capture data based on some
- external signal (trigger).  These triggers might be a data ready
- signal, a gpio line connected to some external system or an on
- processor periodic interrupt.  A single trigger may initialize data
++#else /* !CONFIG_PM */
++
++static int ads1015_set_power_state(struct ads1015_data *data, bool on)
++{
++	return 0;
++}
++
++#endif /* !CONFIG_PM */
++
+ static
+ int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
+ {
 -- 
-2.25.1
+2.27.0
 

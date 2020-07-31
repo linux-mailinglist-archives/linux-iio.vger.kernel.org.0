@@ -2,110 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C30D234BB9
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jul 2020 21:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1555D234C77
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jul 2020 22:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725818AbgGaTrN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Jul 2020 15:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbgGaTrN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Jul 2020 15:47:13 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1CBC061574;
-        Fri, 31 Jul 2020 12:47:13 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id t10so12570453plz.10;
-        Fri, 31 Jul 2020 12:47:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CCtzz/ikDkJ40Y/Or+xxVZzqpUQAfxOSoGmmOXHGcF0=;
-        b=kZgyyXZzlTSotlgAD3426upKCbCWC8tIK3CDvULUFCFRt2C5J8Y60BGLkoyLmbrwDB
-         1bKOcMzeCkT7P71wRZMeodZQbczAFXiTr5o4wVPCeHqoZ35KjV9xsG/WBA1ikQfZQnjR
-         yQBqIfYq4jE9tm1TG0vQpVa5qKTSSDO2PQgqPl5IF6yopJLXKk+ncUkx9VdXHw4ULV/C
-         +tvmnTVjCnbSpDB2vcHkSIIk+V52ulaIis8UqN6K2a/TE96jg5dOLnnI5R+fwC1dJkmy
-         Ubh4Ym97N9r3mk+lctxG2p2gY0Pdpn5LcG8gwSn0LRF+JAw/3/YpCMr4lo3mKS8ezwH6
-         T68Q==
+        id S1727949AbgGaUrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Jul 2020 16:47:45 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:45895 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727941AbgGaUro (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Jul 2020 16:47:44 -0400
+Received: by mail-il1-f194.google.com with SMTP id f68so4547268ilh.12;
+        Fri, 31 Jul 2020 13:47:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CCtzz/ikDkJ40Y/Or+xxVZzqpUQAfxOSoGmmOXHGcF0=;
-        b=AXPTRC6ktOvjf/WHvEtq7zBSzR5vXixaufCBAVhB3s8eRznyeVxd++0KPC8gFdBvnZ
-         4FRw45B/WVWphlkHARfVmee99DVbzDvXNzSFr/hLUCu+R/tiuHhzzIVXXO91uDdyCB/y
-         az35DVMBwBQcEzaT3eYd+FCWXT/Uj5ELLPMO/rofjx/Ir3q55fzfHw5gp1Qa2af1iz6j
-         Om5pFKINEEK6OABf+xLomD/N38IzVoRgGexY8jiCouYykbaSualxhfci+bf9HuODl5Bz
-         p8d4xNnz9fNF4Yo7w8OLEKO31O6eHXTTxDRBGyoRgkUw9hoXR23NkU87NCSdONxd9ui6
-         GDhg==
-X-Gm-Message-State: AOAM530Lhf8WGEVa0cRdqinTNbo/Lstn12qRREpr9bQrjy75ifLJtN41
-        Z2hKxfhpzzy2FATqNNZJHsJ8WOmHV44IY6QWSrA=
-X-Google-Smtp-Source: ABdhPJyDJn9A53QZee7pWSd5gmobL0PoAUBAt3fINUbvQ28dAdLqpDrPWrPnlfdzaRiwkcEDasBWqEIKqNkA4AZ84m0=
-X-Received: by 2002:a17:90a:fa06:: with SMTP id cm6mr5729991pjb.129.1596224832360;
- Fri, 31 Jul 2020 12:47:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200731164853.3020946-1-campello@chromium.org> <20200731104555.v3.15.I4c344a6793007001bbb3c1c08e96d3acf893b36b@changeid>
-In-Reply-To: <20200731104555.v3.15.I4c344a6793007001bbb3c1c08e96d3acf893b36b@changeid>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 31 Jul 2020 22:46:55 +0300
-Message-ID: <CAHp75Vcyv_sbgEWEzFeSnmoMzQqrS+obogKJhjPajX1FDutF4w@mail.gmail.com>
-Subject: Re: [PATCH v3 15/15] iio: sx9310: Use irq trigger flags from firmware
-To:     Daniel Campello <campello@chromium.org>
-Cc:     LKML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MO2GV7Q7hJc5Zuy2tX2Bw37DgW3Q604di6mfkd5jHpo=;
+        b=Ksx0z7ZmBm7jUz7PZFfO59M+K2Z1oaAoCP2ct6KQ5Lt6RIczS3C5/IIevhpqQhGcWa
+         jkyAjVxLHm8pr2jQjbeLeYyLrYGgcYXZilZqMl+xZfv9mePzefoNqMTjxkicS1Ew1X4t
+         e76m0VocLQYRc8QsAjWOjRQlDh4P/ngv5t0TROwYXf0aSrPT95alsvowhDQVBz6oNj+j
+         SPx/Dk1FGxtmNXCN92qG67xcoTCDtBiku5x6oVKVtN8s1iW3yJWl6rsB2f5ETu3CiDYk
+         6BQ5LeL1FHbucaHnmRKuJh81p0HThYqDXF+H9+32LWwxqYw1r5RlfeqlWbXvAOmvfJHa
+         jH0w==
+X-Gm-Message-State: AOAM533B2os8QvMZ84DLeZRv+IgzduhaN7LWAL0ZbmBy+jmuLuFMrrG5
+        qHITBfKHRygaailE2RgNiA==
+X-Google-Smtp-Source: ABdhPJxvJk5Gfz+s8v5Gkz1xsf+wqIVtzcYiRafEuoMdOS5wIy1uW0boqjp6Ljc92wFmT+CR6tdUOA==
+X-Received: by 2002:a92:9fcb:: with SMTP id z72mr5562602ilk.195.1596228463994;
+        Fri, 31 Jul 2020 13:47:43 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id 142sm5498355ilc.40.2020.07.31.13.47.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2020 13:47:43 -0700 (PDT)
+Received: (nullmailer pid 757897 invoked by uid 1000);
+        Fri, 31 Jul 2020 20:47:42 -0000
+Date:   Fri, 31 Jul 2020 14:47:42 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Christian Eggers <ceggers@arri.de>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>, devicetree@vger.kernel.org,
+        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        Rob Herring <robh+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jiri Kosina <trivial@kernel.org>
+Subject: Re: [PATCH] dt-bindings: iio: io-channel-mux: Fix compatible string
+ in example code
+Message-ID: <20200731204742.GA756942@bogus>
+References: <20200727101605.24384-1-ceggers@arri.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200727101605.24384-1-ceggers@arri.de>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 31, 2020 at 7:49 PM Daniel Campello <campello@chromium.org> wrote:
->
-> From: Stephen Boyd <swboyd@chromium.org>
->
-> We shouldn't need to set default irq trigger flags here as the firmware
-> should have properly indicated the trigger type, i.e. level low, in the
-> DT or ACPI tables.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-> Signed-off-by: Daniel Campello <campello@chromium.org>
+On Mon, 27 Jul 2020 12:16:05 +0200, Christian Eggers wrote:
+> The correct compatible string is "gpio-mux" (see
+> bindings/mux/gpio-mux.txt).
+> 
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> Cc: stable@vger.kernel.org
 > ---
->
-> Changes in v3:
->  - Added irq trigger flags commit to the series.
->
-> Changes in v2: None
->
->  drivers/iio/proximity/sx9310.c | 2 +-
+>  .../devicetree/bindings/iio/multiplexer/io-channel-mux.txt      | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index a20cd6a4dad729..c41fa7f6558e3f 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -951,7 +951,7 @@ static int sx9310_probe(struct i2c_client *client)
->                 ret = devm_request_threaded_irq(dev, client->irq,
->                                                 sx9310_irq_handler,
->                                                 sx9310_irq_thread_handler,
-> -                                               IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-> +                                               IRQF_ONESHOT,
->                                                 "sx9310_event", indio_dev);
->                 if (ret)
->                         return ret;
-> --
-> 2.28.0.163.g6104cc2f0b6-goog
->
+> 
 
-
--- 
-With Best Regards,
-Andy Shevchenko
+Added 'v4.13+' to stable tag and applied, thanks!

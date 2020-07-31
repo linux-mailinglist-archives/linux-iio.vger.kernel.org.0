@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF18233FA8
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jul 2020 09:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC764233FAE
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jul 2020 09:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731479AbgGaHCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Jul 2020 03:02:11 -0400
-Received: from mailout10.rmx.de ([94.199.88.75]:51475 "EHLO mailout10.rmx.de"
+        id S1731541AbgGaHCx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Jul 2020 03:02:53 -0400
+Received: from mailout09.rmx.de ([94.199.88.74]:54839 "EHLO mailout09.rmx.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731375AbgGaHCK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 31 Jul 2020 03:02:10 -0400
+        id S1731375AbgGaHCx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 31 Jul 2020 03:02:53 -0400
 Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mailout10.rmx.de (Postfix) with ESMTPS id 4BHyrb3XV4z36mZ;
-        Fri, 31 Jul 2020 09:02:07 +0200 (CEST)
+        by mailout09.rmx.de (Postfix) with ESMTPS id 4BHysN3DlZzbmq2;
+        Fri, 31 Jul 2020 09:02:48 +0200 (CEST)
 Received: from mta.arri.de (unknown [217.111.95.66])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by kdin01.retarus.com (Postfix) with ESMTPS id 4BHyrD4GQkz2xwy;
-        Fri, 31 Jul 2020 09:01:48 +0200 (CEST)
+        by kdin01.retarus.com (Postfix) with ESMTPS id 4BHyrb3MGvz2yrR;
+        Fri, 31 Jul 2020 09:02:07 +0200 (CEST)
 Received: from N95HX1G2.localdomain (192.168.54.61) by mta.arri.de
  (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Fri, 31 Jul
- 2020 09:01:23 +0200
+ 2020 09:01:58 +0200
 From:   Christian Eggers <ceggers@arri.de>
 To:     Rob Herring <robh+dt@kernel.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -35,39 +35,98 @@ CC:     Hartmut Knaack <knaack.h@gmx.de>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         "Christian Eggers" <ceggers@arri.de>
-Subject: [PATCH v4 0/2] iio: light: Support AMS AS73211 digital XYZ sensor
-Date:   Fri, 31 Jul 2020 09:01:12 +0200
-Message-ID: <20200731070114.40471-1-ceggers@arri.de>
+Subject: [PATCH v4 1/2] dt-bindings: iio: light: add AMS AS73211 support
+Date:   Fri, 31 Jul 2020 09:01:13 +0200
+Message-ID: <20200731070114.40471-2-ceggers@arri.de>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200731070114.40471-1-ceggers@arri.de>
+References: <20200731070114.40471-1-ceggers@arri.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [192.168.54.61]
-X-RMX-ID: 20200731-090152-4BHyrD4GQkz2xwy-0@kdin01
+X-RMX-ID: 20200731-090207-4BHyrb3MGvz2yrR-0@kdin01
 X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-his series adds support for the AMS AS73211 digital XYZ sensor.
+Add DT bindings for AMS AS73211 XYZ True Color Sensor.
 
-Changes in v4:
----------------
-- Integrated 2nd review from Andy Shevchenko
-- Use more devm_ functions in as73211_probe()
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
+ .../bindings/iio/light/ams,as73211.yaml       | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/ams,as73211.yaml
 
-Changes in v3:
----------------
-- Integrated comments from Andy Shevchenko
-- Integrated comments from Jonathan Cameron
+diff --git a/Documentation/devicetree/bindings/iio/light/ams,as73211.yaml b/Documentation/devicetree/bindings/iio/light/ams,as73211.yaml
+new file mode 100644
+index 000000000000..0e8cd02759b3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/ams,as73211.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/ams,as73211.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: AMS AS73211 JENCOLOR(R) Digital XYZ Sensor
++
++maintainers:
++  - Christian Eggers <ceggers@arri.de>
++
++description: |
++  XYZ True Color Sensor with I2C Interface
++  https://ams.com/documents/20143/36005/AS73211_DS000556_3-01.pdf/a65474c0-b302-c2fd-e30a-c98df87616df
++
++properties:
++  compatible:
++    enum:
++      - ams,as73211
++
++  reg:
++    description:
++      I2C address of the device (0x74...0x77).
++    maxItems: 1
++
++  interrupts:
++    description:
++      Interrupt specifier for the READY interrupt generated by the device.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        as73211@74 {
++            compatible = "ams,as73211";
++            reg = <0x74>;
++            pinctrl-names = "default";
++            pinctrl-0 = <&pinctrl_color_sensor>;
++            interrupt-parent = <&gpio2>;
++            interrupts = <19 IRQ_TYPE_EDGE_RISING>; /* READY */
++        };
++    };
++...
+-- 
+Christian Eggers
+Embedded software developer
 
-Changes in v2:
----------------
-- Fix $id in dt binding
-- Document full I2C address range in "reg" property
-- Move "buffer" member out of "struct as73211_data"
-- Fix sparse warnings by using correct data types
-
-
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 

@@ -2,156 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4AA12353EA
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 20:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4D22353EC
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 20:03:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbgHASBF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Aug 2020 14:01:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54630 "EHLO mail.kernel.org"
+        id S1725883AbgHASDZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Aug 2020 14:03:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55688 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725803AbgHASBF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 Aug 2020 14:01:05 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725803AbgHASDZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 Aug 2020 14:03:25 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A16A2206E9;
-        Sat,  1 Aug 2020 18:01:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 21C11206E9;
+        Sat,  1 Aug 2020 18:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596304864;
-        bh=tT/luxSQGi0reuYFUc+RvZ6WJAsuKcxPjk/nasshXdk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=usavGl+H6gUdnUUNT03XbpGRWHsG1IlpfZgnhrzKN5T381M+aXFpoKuaJyeAcVLBB
-         vlpVDvVhu+B86rjbdXijhdu+wo6Kb+LQzKGWzTt7gCHaXDj4BwzSW9P3qG2Nmp/EML
-         3n6tK7sdUtDYLsFC3lxSmT5DEMXh7/izRf9vYdms=
+        s=default; t=1596305005;
+        bh=RpumIN1K0OiBojvxX6BEGp1Ji0SqZsnWgJjwSc1Pz/I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=bAzzRgFEJjGSE6CogM9RMGXleBtQTQfNQAO/KbYwmH1ICDdQOjtwRAL7JcaRscQ6R
+         rMqmTPX+e83J7ohN8bQjoXDpHFE/cuWVxNiVpZp+9OzEdL9ho78b75QNU0YMCg79SH
+         FALWlhMJKhz+J3FoNFZG0BAQ2lwP32oEIMqvvvQs=
+Date:   Sat, 1 Aug 2020 19:03:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>
-Subject: [PATCH V2] dt-bindings: iio: adc: maxim,max1118 yaml conversion
-Date:   Sat,  1 Aug 2020 18:58:50 +0100
-Message-Id: <20200801175850.1140006-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.27.0
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] platform_data: ad7793.h: drop a duplicated word
+Message-ID: <20200801190321.3a61e22b@archlinux>
+In-Reply-To: <20200719003040.20848-1-rdunlap@infradead.org>
+References: <20200719003040.20848-1-rdunlap@infradead.org>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sat, 18 Jul 2020 17:30:40 -0700
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-Simple device with a simple conversion.  Special handling needed
-for the max1118 which is the only supported part that has an external
-reference voltage.
+> Drop the repeated word "and" in a comment.
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+Applied to the togreg branch of iio.git
 
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-v2:
-* Added additionalProperties: false. Other changes are to make this work.
-* Move the vref-supply definition up
-* Add an else clause
+Thanks,
 
-.../devicetree/bindings/iio/adc/max1118.txt   | 21 -------
- .../bindings/iio/adc/maxim,max1118.yaml       | 62 +++++++++++++++++++
- 2 files changed, 62 insertions(+), 21 deletions(-)
+Jonathan
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/max1118.txt b/Documentation/devicetree/bindings/iio/adc/max1118.txt
-deleted file mode 100644
-index cf33d0b15a6d..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/max1118.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* MAX1117/MAX1118/MAX1119 8-bit, dual-channel ADCs
--
--Required properties:
-- - compatible: Should be one of
--	* "maxim,max1117"
--	* "maxim,max1118"
--	* "maxim,max1119"
-- - reg: spi chip select number for the device
-- - (max1118 only) vref-supply: The regulator supply for ADC reference voltage
--
--Recommended properties:
-- - spi-max-frequency: Definition as per
--		Documentation/devicetree/bindings/spi/spi-bus.txt
--
--Example:
--adc@0 {
--	compatible = "maxim,max1118";
--	reg = <0>;
--	vref-supply = <&vdd_supply>;
--	spi-max-frequency = <1000000>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml
-new file mode 100644
-index 000000000000..e948b3e37b0c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml
-@@ -0,0 +1,62 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/maxim,max1118.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Maxim MAX1118 and similar ADCs
-+
-+maintainers:
-+  - Akinobu Mita <akinobu.mita@gmail.com>
-+
-+description: |
-+    Dual channel 8bit ADCs.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - maxim,max1117
-+      - maxim,max1118
-+      - maxim,max1119
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 5000000
-+
-+  vref-supply:
-+    description: External reference, needed to establish input scaling
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        const: maxim,max1118
-+then:
-+  required:
-+    - vref-supply
-+else:
-+  properties:
-+    vref-supply: false
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "maxim,max1118";
-+            reg = <0>;
-+            vref-supply = <&adc_vref>;
-+            spi-max-frequency = <1000000>;
-+        };
-+    };
-+...
--- 
-2.27.0
+> ---
+>  include/linux/platform_data/ad7793.h |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- linux-next-20200717.orig/include/linux/platform_data/ad7793.h
+> +++ linux-next-20200717/include/linux/platform_data/ad7793.h
+> @@ -40,7 +40,7 @@ enum ad7793_bias_voltage {
+>   * enum ad7793_refsel - AD7793 reference voltage selection
+>   * @AD7793_REFSEL_REFIN1: External reference applied between REFIN1(+)
+>   *	and REFIN1(-).
+> - * @AD7793_REFSEL_REFIN2: External reference applied between REFIN2(+) and
+> + * @AD7793_REFSEL_REFIN2: External reference applied between REFIN2(+)
+>   *	and REFIN1(-). Only valid for AD7795/AD7796.
+>   * @AD7793_REFSEL_INTERNAL: Internal 1.17 V reference.
+>   */
 

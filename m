@@ -2,84 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68688234DC9
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 00:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1DA2350FF
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 09:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbgGaWsC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Jul 2020 18:48:02 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:37062 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726099AbgGaWsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Jul 2020 18:48:01 -0400
-Received: by mail-io1-f65.google.com with SMTP id w12so19590354iom.4;
-        Fri, 31 Jul 2020 15:48:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/d64ZvxnYLAa4ivT6GpHFLsQPwpa3um8E44Lb+XHnVM=;
-        b=WnWfwIp6To646z8ZYHnJGO6dQerk9DrXRfx8fb8kWdkPimrbnL6c/igoDsYoRsTPdL
-         yFnwTrTv7RfqJ2WycsipAVA191gftyWcbr3KouhOdtUGPzsB7UtSVRDybQ9lTfelkwRp
-         Wp3LHNvL3ZpKInqLJmdm2BFQFYLKeBsKiaNtjyVadpFtKW4grwVbka1QB3TaMj/Ohmwe
-         A6Q5QQml4vc/Xzc0EdO/NKdGpY3yTznB8i6HSNXz5mD5U0qF/KjtRVgrl0ncKCy3ZQMv
-         8tf5CBspfBM4zwoeV+G4HI7PWZ3wm+PgdszjJj7CJYFjkGAaBC3SPwqGAJ59HAmwzxJL
-         XMIw==
-X-Gm-Message-State: AOAM532nI4PQYwJAAal/AdsMBKXYhNahRyM0qnRp1oV+K1d2PesPs1Fe
-        Uxbtu7xpxZV6wH2MhJ7MKw==
-X-Google-Smtp-Source: ABdhPJzEyDvTpEnTuMpltjNhY3vCPr2jJn8FZNM5dRXRCf0C3CB3SCaZx1OhN3DDkgnP1FTWuFefXg==
-X-Received: by 2002:a6b:700d:: with SMTP id l13mr5685565ioc.135.1596235680423;
-        Fri, 31 Jul 2020 15:48:00 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id h9sm5465140ilc.59.2020.07.31.15.47.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 15:47:59 -0700 (PDT)
-Received: (nullmailer pid 951611 invoked by uid 1000);
-        Fri, 31 Jul 2020 22:47:58 -0000
-Date:   Fri, 31 Jul 2020 16:47:58 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Daniel Campello <campello@chromium.org>
-Cc:     LKML <devicetree@vger.kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>, linux-iio@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        id S1726338AbgHAHVh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Aug 2020 03:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36322 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbgHAHVh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Aug 2020 03:21:37 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9544C06174A
+        for <linux-iio@vger.kernel.org>; Sat,  1 Aug 2020 00:21:36 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1k1lpj-0005h2-W5; Sat, 01 Aug 2020 09:21:32 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1k1lpi-0001it-Gr; Sat, 01 Aug 2020 09:21:30 +0200
+Date:   Sat, 1 Aug 2020 09:21:30 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v3 01/15] dt-bindings: iio: Add bindings for sx9310 sensor
-Message-ID: <20200731224758.GA951535@bogus>
-References: <20200731164853.3020946-1-campello@chromium.org>
- <20200731104555.v3.1.I0925046377211b8b6f06764857f03b4ab592bddb@changeid>
+        Benson Leung <bleung@chromium.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>
+Subject: Re: [PATCH v3 4/6] pwm: cros-ec: Accept more error codes from
+ cros_ec_cmd_xfer_status
+Message-ID: <20200801072130.tmm7b4vtizshmmyo@pengutronix.de>
+References: <20200726220101.29059-1-linux@roeck-us.net>
+ <20200726220101.29059-5-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="3weddawyjtsgyw2o"
 Content-Disposition: inline
-In-Reply-To: <20200731104555.v3.1.I0925046377211b8b6f06764857f03b4ab592bddb@changeid>
+In-Reply-To: <20200726220101.29059-5-linux@roeck-us.net>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 31 Jul 2020 10:48:38 -0600, Daniel Campello wrote:
-> Adds device tree bandings for sx9310 sensor.
-> 
-> Signed-off-by: Daniel Campello <campello@chromium.org>
-> Cc: Hartmut Knaack <knaack.h@gmx.de>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> [swboyd@chromium.org: Add both regulators and make them optional]
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-> ---
-> 
-> Changes in v3: None
-> Changes in v2:
->  - Added #io-channel-cells as a required property
-> 
->  .../iio/proximity/semtech,sx9310.yaml         | 65 +++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
-> 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+--3weddawyjtsgyw2o
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Jul 26, 2020 at 03:00:59PM -0700, Guenter Roeck wrote:
+> Since commit c5cd2b47b203 ("platform/chrome: cros_ec_proto: Report command
+> not supported") we can no longer assume that cros_ec_cmd_xfer_status()
+> reports -EPROTO for all errors returned by the EC itself. A follow-up
+> patch will change cros_ec_cmd_xfer_status() to report additional errors
+> reported by the EC as distinguished Linux error codes.
+>=20
+> Handle this change by no longer assuming that only -EPROTO is used
+> to report all errors returned by the EC itself. Instead, support both
+> the old and the new error codes.
+>=20
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Yu-Hsuan Hsu <yuhsuan@chromium.org>
+> Cc: Prashant Malani <pmalani@chromium.org>
+> Cc: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> v3: Added patch
+>=20
+>  drivers/pwm/pwm-cros-ec.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/pwm/pwm-cros-ec.c b/drivers/pwm/pwm-cros-ec.c
+> index 09c08dee099e..ef05fba1bd37 100644
+> --- a/drivers/pwm/pwm-cros-ec.c
+> +++ b/drivers/pwm/pwm-cros-ec.c
+> @@ -213,20 +213,27 @@ static int cros_ec_num_pwms(struct cros_ec_device *=
+ec)
+>  		u32 result =3D 0;
+> =20
+>  		ret =3D __cros_ec_pwm_get_duty(ec, i, &result);
+> -		/* We want to parse EC protocol errors */
+> -		if (ret < 0 && !(ret =3D=3D -EPROTO && result))
+> -			return ret;
+> -
+>  		/*
+>  		 * We look for SUCCESS, INVALID_COMMAND, or INVALID_PARAM
+>  		 * responses; everything else is treated as an error.
+>  		 */
+
+This comment is at least misleading now.
+
+> -		if (result =3D=3D EC_RES_INVALID_COMMAND)
+> +		switch (ret) {
+> +		case -EOPNOTSUPP:	/* invalid command */
+>  			return -ENODEV;
+
+My first reaction here was to wonder why -EOPNOTSUPP isn't passed to the
+upper layer. OK, this is a loop to test the number of available devices.
+
+> -		else if (result =3D=3D EC_RES_INVALID_PARAM)
+> +		case -EINVAL:		/* invalid parameter */
+>  			return i;
+> -		else if (result)
+> +		case -EPROTO:
+> +			/* Old or new error return code: Handle both */
+> +			if (result =3D=3D EC_RES_INVALID_COMMAND)
+> +				return -ENODEV;
+> +			else if (result =3D=3D EC_RES_INVALID_PARAM)
+> +				return i;
+
+If I understand correctly this surprising calling convention (output
+parameter is filled even though the function returned an error) is the
+old one that is to be fixed.
+
+>  			return -EPROTO;
+> +		default:
+> +			if (ret < 0)
+> +				return ret;
+> +			break;
+> +		}
+>  	}
+> =20
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--3weddawyjtsgyw2o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl8lF/cACgkQwfwUeK3K
+7Aljxwf8CdiR6S9sD/CztU399KIbaE0uKqUCKCvY1/0R0KU7g8DOkHY3cQiONyZa
+FxSU5PoBJygDvyyIxIH/IMJ1EM1LIQICzLEg+M+13vlIo8uJFLqZo2CmjjDGhRfw
+svh2w9hQvw/g2nXiNm5AlAvmWfKdmd5Z0ltOpefhPmJxGFe8wqgpkN4bYmbA4VcD
+MEQz4A6+67fqrbEpIXlGSN7wflWFqkYFyG1dfPnBuP0CLxt8jrwCO2w79ljqEggE
+b0Y7FEXtgp9vVOodHFrmq4+MWvdhneoBk3xz2FTjON3UzZs2UfmGI5QwIIipkcvs
+1TZNyp5DFlpOciTzPyZCccXgP70jMg==
+=226A
+-----END PGP SIGNATURE-----
+
+--3weddawyjtsgyw2o--

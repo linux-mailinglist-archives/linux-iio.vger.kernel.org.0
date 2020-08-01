@@ -2,159 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D1DA2350FF
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 09:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7530C2352A7
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 15:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbgHAHVh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Aug 2020 03:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36322 "EHLO
+        id S1726807AbgHANzT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Aug 2020 09:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgHAHVh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Aug 2020 03:21:37 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9544C06174A
-        for <linux-iio@vger.kernel.org>; Sat,  1 Aug 2020 00:21:36 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k1lpj-0005h2-W5; Sat, 01 Aug 2020 09:21:32 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k1lpi-0001it-Gr; Sat, 01 Aug 2020 09:21:30 +0200
-Date:   Sat, 1 Aug 2020 09:21:30 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>
-Subject: Re: [PATCH v3 4/6] pwm: cros-ec: Accept more error codes from
- cros_ec_cmd_xfer_status
-Message-ID: <20200801072130.tmm7b4vtizshmmyo@pengutronix.de>
-References: <20200726220101.29059-1-linux@roeck-us.net>
- <20200726220101.29059-5-linux@roeck-us.net>
+        with ESMTP id S1725778AbgHANzS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Aug 2020 09:55:18 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2D7C06174A
+        for <linux-iio@vger.kernel.org>; Sat,  1 Aug 2020 06:55:18 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id a5so20341985wrm.6
+        for <linux-iio@vger.kernel.org>; Sat, 01 Aug 2020 06:55:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xksakG98Jh6UZslbGLGPyvID9dXYb3/p9C0EfVE2aII=;
+        b=NfyezWKwiPkaLT1WPMriq3Qfm/bsAxVvle+3tNYwwfDNuUz+jhR98VnEKfKd89BnqX
+         T0SbOnTJFW79B0lME0GpuIruRdhJFY8gKIf9Y/cabuEM4nOoi/9Jfx3GYqBoPamocmQG
+         rj2RWdh2y7kFrywEMjvhVj4rVAlvpwLdx8JqjluRF33ZNgTs7t9zfCRH6fJT5iCdLmhS
+         3A8lcHAFzW7VZdME+5sM2HdNExkZ0RRsStsmwVjcethrsDYvsZ/xKQ3fizBdYffKefeF
+         2LzJV8NZ4LuZpXinOUk3UPdlCYFvGO1mqYhUwEQITxZA+I4ZKpJKkS0wSA3giz0ZMxcj
+         8X+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xksakG98Jh6UZslbGLGPyvID9dXYb3/p9C0EfVE2aII=;
+        b=nkJRzekv0ermM2mE83gkBFA37+6Djp0ITtkstaGUrvIwcfiX39peBv+/7KaZdmRtyh
+         sHb5dSRS0dNWbLpmlNnCaQykjn2CJz8tp/1xa+Vh1Ou3OBMoI4LVM2v+MmCvWoxKPfAd
+         bqb1B0MmoPaUdp7mwsXj9NDr/oTBfTZlU9NqP6HEXH3B68853lSDVtutT5GvH+InnRV3
+         3Kw88hgFMvaz8LZDsWroOgqgwfh5jaA11BhI7nS6olzBa50HoNNPwlr2wUuIXxDUlOOo
+         eevJ0xvCWVFfrLQzChq7bW8qanS3KBReZ0nqn+Fdm4Yyj09irNqNPMNaNEC0mLyd12ZE
+         B1NA==
+X-Gm-Message-State: AOAM531rjFUPlMILdIF9JXCV4OyCG/Fi/1fOzvUVRCfSneJABGT8xIqc
+        o+631Z9EdxSdLVlvcHEmcMOhwHutvSc=
+X-Google-Smtp-Source: ABdhPJwKpT65ITbXAbpk3TIvKooYqQtJUnaZukd5wEE8QUR9B4t+bKPhYfPUM/NO9aBhmNyBPTxYKQ==
+X-Received: by 2002:adf:dd4f:: with SMTP id u15mr7652068wrm.275.1596290115254;
+        Sat, 01 Aug 2020 06:55:15 -0700 (PDT)
+Received: from localhost.localdomain (host185127036212.static.fidoka.tech. [185.127.36.212])
+        by smtp.gmail.com with ESMTPSA id g25sm14901913wmh.35.2020.08.01.06.55.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2020 06:55:14 -0700 (PDT)
+From:   Angelo Compagnucci <angelo.compagnucci@gmail.com>
+X-Google-Original-From: Angelo Compagnucci <angelo@amarulasolutions.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Angelo Compagnucci <angelo@amarulasolutions.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Subject: [PATCH] iio: adc: mcp3422: fix locking scope
+Date:   Sat,  1 Aug 2020 15:55:11 +0200
+Message-Id: <20200801135511.342869-1-angelo@amarulasolutions.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3weddawyjtsgyw2o"
-Content-Disposition: inline
-In-Reply-To: <20200726220101.29059-5-linux@roeck-us.net>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Locking should be held for the entire reading sequence involving setting
+the channel, waiting for the channel switch and reading from the
+channel.
+If not, reading from a channel can result mixing with the reading from
+another channel.
 
---3weddawyjtsgyw2o
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+---
+ drivers/iio/adc/mcp3422.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-On Sun, Jul 26, 2020 at 03:00:59PM -0700, Guenter Roeck wrote:
-> Since commit c5cd2b47b203 ("platform/chrome: cros_ec_proto: Report command
-> not supported") we can no longer assume that cros_ec_cmd_xfer_status()
-> reports -EPROTO for all errors returned by the EC itself. A follow-up
-> patch will change cros_ec_cmd_xfer_status() to report additional errors
-> reported by the EC as distinguished Linux error codes.
->=20
-> Handle this change by no longer assuming that only -EPROTO is used
-> to report all errors returned by the EC itself. Instead, support both
-> the old and the new error codes.
->=20
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Cc: Yu-Hsuan Hsu <yuhsuan@chromium.org>
-> Cc: Prashant Malani <pmalani@chromium.org>
-> Cc: Brian Norris <briannorris@chromium.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> v3: Added patch
->=20
->  drivers/pwm/pwm-cros-ec.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
->=20
-> diff --git a/drivers/pwm/pwm-cros-ec.c b/drivers/pwm/pwm-cros-ec.c
-> index 09c08dee099e..ef05fba1bd37 100644
-> --- a/drivers/pwm/pwm-cros-ec.c
-> +++ b/drivers/pwm/pwm-cros-ec.c
-> @@ -213,20 +213,27 @@ static int cros_ec_num_pwms(struct cros_ec_device *=
-ec)
->  		u32 result =3D 0;
-> =20
->  		ret =3D __cros_ec_pwm_get_duty(ec, i, &result);
-> -		/* We want to parse EC protocol errors */
-> -		if (ret < 0 && !(ret =3D=3D -EPROTO && result))
-> -			return ret;
-> -
->  		/*
->  		 * We look for SUCCESS, INVALID_COMMAND, or INVALID_PARAM
->  		 * responses; everything else is treated as an error.
->  		 */
+diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
+index d86c0b5d80a3..02a60fb164cd 100644
+--- a/drivers/iio/adc/mcp3422.c
++++ b/drivers/iio/adc/mcp3422.c
+@@ -96,16 +96,12 @@ static int mcp3422_update_config(struct mcp3422 *adc, u8 newconfig)
+ {
+ 	int ret;
+ 
+-	mutex_lock(&adc->lock);
+-
+ 	ret = i2c_master_send(adc->i2c, &newconfig, 1);
+ 	if (ret > 0) {
+ 		adc->config = newconfig;
+ 		ret = 0;
+ 	}
+ 
+-	mutex_unlock(&adc->lock);
+-
+ 	return ret;
+ }
+ 
+@@ -138,6 +134,8 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
+ 	u8 config;
+ 	u8 req_channel = channel->channel;
+ 
++	mutex_lock(&adc->lock);
++
+ 	if (req_channel != MCP3422_CHANNEL(adc->config)) {
+ 		config = adc->config;
+ 		config &= ~MCP3422_CHANNEL_MASK;
+@@ -150,7 +148,11 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
+ 		msleep(mcp3422_read_times[MCP3422_SAMPLE_RATE(adc->config)]);
+ 	}
+ 
+-	return mcp3422_read(adc, value, &config);
++	ret = mcp3422_read(adc, value, &config);
++
++	mutex_unlock(&adc->lock);
++
++	return ret;
+ }
+ 
+ static int mcp3422_read_raw(struct iio_dev *iio,
+-- 
+2.25.1
 
-This comment is at least misleading now.
-
-> -		if (result =3D=3D EC_RES_INVALID_COMMAND)
-> +		switch (ret) {
-> +		case -EOPNOTSUPP:	/* invalid command */
->  			return -ENODEV;
-
-My first reaction here was to wonder why -EOPNOTSUPP isn't passed to the
-upper layer. OK, this is a loop to test the number of available devices.
-
-> -		else if (result =3D=3D EC_RES_INVALID_PARAM)
-> +		case -EINVAL:		/* invalid parameter */
->  			return i;
-> -		else if (result)
-> +		case -EPROTO:
-> +			/* Old or new error return code: Handle both */
-> +			if (result =3D=3D EC_RES_INVALID_COMMAND)
-> +				return -ENODEV;
-> +			else if (result =3D=3D EC_RES_INVALID_PARAM)
-> +				return i;
-
-If I understand correctly this surprising calling convention (output
-parameter is filled even though the function returned an error) is the
-old one that is to be fixed.
-
->  			return -EPROTO;
-> +		default:
-> +			if (ret < 0)
-> +				return ret;
-> +			break;
-> +		}
->  	}
-> =20
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---3weddawyjtsgyw2o
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl8lF/cACgkQwfwUeK3K
-7Aljxwf8CdiR6S9sD/CztU399KIbaE0uKqUCKCvY1/0R0KU7g8DOkHY3cQiONyZa
-FxSU5PoBJygDvyyIxIH/IMJ1EM1LIQICzLEg+M+13vlIo8uJFLqZo2CmjjDGhRfw
-svh2w9hQvw/g2nXiNm5AlAvmWfKdmd5Z0ltOpefhPmJxGFe8wqgpkN4bYmbA4VcD
-MEQz4A6+67fqrbEpIXlGSN7wflWFqkYFyG1dfPnBuP0CLxt8jrwCO2w79ljqEggE
-b0Y7FEXtgp9vVOodHFrmq4+MWvdhneoBk3xz2FTjON3UzZs2UfmGI5QwIIipkcvs
-1TZNyp5DFlpOciTzPyZCccXgP70jMg==
-=226A
------END PGP SIGNATURE-----
-
---3weddawyjtsgyw2o--

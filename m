@@ -2,166 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB30923532E
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 18:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD97D235360
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 18:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgHAQFf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Aug 2020 12:05:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54796 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726309AbgHAQFe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 Aug 2020 12:05:34 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1AD8B206D4;
-        Sat,  1 Aug 2020 16:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596297934;
-        bh=vW/nC/AAxomOowUDa99B5YwQCZRyKOXDNcqrGOfEerE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dRrny1QBOWumlSaZFW/QpXkHCuKbeCKgA790j+ENfR6T0H3lw2vDeGsk5DWsNGA3e
-         uzJ618W2eAunokNml9NwqhoCj/kpHzjg2HKqp8Lis+WjgRZ6+S/K+x91vFBERtn9IE
-         P4onTSxpa6O1nS6zc3hvX2Ru/XzfPTU65M44vM6s=
-Date:   Sat, 1 Aug 2020 17:05:29 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Berghe, Darius" <Darius.Berghe@analog.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>
-Subject: Re: [PATCH v3 2/3] ltc2471: ltc2461/ltc2463 compatible strings
-Message-ID: <20200801170529.29caf1c3@archlinux>
-In-Reply-To: <MWHPR03MB319956D095B2715835D0BF1A96730@MWHPR03MB3199.namprd03.prod.outlook.com>
-References: <20200727135834.84093-1-darius.berghe@analog.com>
-        <20200727135834.84093-3-darius.berghe@analog.com>
-        <20200727182647.00002e3c@huawei.com>
-        <MWHPR03MB319956D095B2715835D0BF1A96730@MWHPR03MB3199.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726300AbgHAQcX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Aug 2020 12:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725841AbgHAQcX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Aug 2020 12:32:23 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B656C06174A;
+        Sat,  1 Aug 2020 09:32:23 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id bh1so5653586plb.12;
+        Sat, 01 Aug 2020 09:32:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=hf4wmlXbM8Y1yfz9A2PpnBfNHx4wDDGWjHytvgX2LxI=;
+        b=Bw0nxA/COTG5Slp7a8BT19ay7Kl7PnTXGtZVh1lQcVIbGXWR5QsGE+r+YA5werwNi4
+         DkzaLAbdsyVmgw0Q7c1j+IBv+BJx5J6L2K475N/KpG/Pwmp1RJZnVyXtd0A5KsXT8YEx
+         6sCvSwapnZagXXME/lTs3c6OYx9nDkSjCBkHaLIFvhVqVSttM7Atk9490M3P07kljHOc
+         VuBzEuAHTJyp8gSxTTz8jPurcRQ3K3dOWuuMf3zDs8NyBWN3u8RqF8hUFnu+Epjf+5jF
+         hvoKO49faLwnQE0qH1YKwKDnCCTjm1KbFF0PiQ1p60C7lT3FD8ggouqTV1OULsl/matz
+         kxjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=hf4wmlXbM8Y1yfz9A2PpnBfNHx4wDDGWjHytvgX2LxI=;
+        b=mJbNDqZ8BSUzATErG+/fWvqT6XLMZfMH/wd3X3uSk2uJJZe/5nWKZbXGhDEjvg/rFQ
+         4T1f14/IZC69/oWUZZ1jk5jCZUoT923yw1NGKxAcEbwRDTdqw8pd6kN00v1vEc1bOM4A
+         0sjh7KeFDGy+llE5Y2Qevp/DL4TrSN1mucyTqL+ebWWEjJ66klpNegMcIr8RfrzbzosD
+         J0vhrgRydNMcVdLfLzbUpICdSTjH49R2FoF/DMgeGDHIeZsslB/I6LNNQOz09LTiDmca
+         LyHmoCp/pEnT9pDdjL72FnUwNyn7GN7VJBv1bSxiMHPRpXDo92FQQFKbhD2vCKa8Ust1
+         PGhg==
+X-Gm-Message-State: AOAM530A1CzFz7OXdy3BzQ8aC5+Lf6UaAS7Wy5O6hQknsP3pFtjvtKR9
+        HCM8CRZre9AP0SElP/jy688=
+X-Google-Smtp-Source: ABdhPJzN4tP6ZRTtNtqh69LTmOfZNNBAZvVVlURQwpZDqwti5NjmrMd2FcsPDVoZ6iQEQrjm3HzGxQ==
+X-Received: by 2002:a17:90a:2723:: with SMTP id o32mr8975915pje.97.1596299542624;
+        Sat, 01 Aug 2020 09:32:22 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p10sm14252739pgn.6.2020.08.01.09.32.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 01 Aug 2020 09:32:21 -0700 (PDT)
+Date:   Sat, 1 Aug 2020 09:32:19 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>
+Subject: Re: [PATCH v3 4/6] pwm: cros-ec: Accept more error codes from
+ cros_ec_cmd_xfer_status
+Message-ID: <20200801163219.GA230759@roeck-us.net>
+References: <20200726220101.29059-1-linux@roeck-us.net>
+ <20200726220101.29059-5-linux@roeck-us.net>
+ <20200801072130.tmm7b4vtizshmmyo@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200801072130.tmm7b4vtizshmmyo@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Jul 2020 06:24:03 +0000
-"Berghe, Darius" <Darius.Berghe@analog.com> wrote:
+On Sat, Aug 01, 2020 at 09:21:30AM +0200, Uwe Kleine-König wrote:
+> On Sun, Jul 26, 2020 at 03:00:59PM -0700, Guenter Roeck wrote:
+> > Since commit c5cd2b47b203 ("platform/chrome: cros_ec_proto: Report command
+> > not supported") we can no longer assume that cros_ec_cmd_xfer_status()
+> > reports -EPROTO for all errors returned by the EC itself. A follow-up
+> > patch will change cros_ec_cmd_xfer_status() to report additional errors
+> > reported by the EC as distinguished Linux error codes.
+> > 
+> > Handle this change by no longer assuming that only -EPROTO is used
+> > to report all errors returned by the EC itself. Instead, support both
+> > the old and the new error codes.
+> > 
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > Cc: Yu-Hsuan Hsu <yuhsuan@chromium.org>
+> > Cc: Prashant Malani <pmalani@chromium.org>
+> > Cc: Brian Norris <briannorris@chromium.org>
+> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> > ---
+> > v3: Added patch
+> > 
+> >  drivers/pwm/pwm-cros-ec.c | 21 ++++++++++++++-------
+> >  1 file changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/pwm/pwm-cros-ec.c b/drivers/pwm/pwm-cros-ec.c
+> > index 09c08dee099e..ef05fba1bd37 100644
+> > --- a/drivers/pwm/pwm-cros-ec.c
+> > +++ b/drivers/pwm/pwm-cros-ec.c
+> > @@ -213,20 +213,27 @@ static int cros_ec_num_pwms(struct cros_ec_device *ec)
+> >  		u32 result = 0;
+> >  
+> >  		ret = __cros_ec_pwm_get_duty(ec, i, &result);
+> > -		/* We want to parse EC protocol errors */
+> > -		if (ret < 0 && !(ret == -EPROTO && result))
+> > -			return ret;
+> > -
+> >  		/*
+> >  		 * We look for SUCCESS, INVALID_COMMAND, or INVALID_PARAM
+> >  		 * responses; everything else is treated as an error.
+> >  		 */
+> 
+> This comment is at least misleading now.
+> 
+Good point. I'll rephrase.
 
-> Hi Jonathan,
+> > -		if (result == EC_RES_INVALID_COMMAND)
+> > +		switch (ret) {
+> > +		case -EOPNOTSUPP:	/* invalid command */
+> >  			return -ENODEV;
 > 
-> Thanks for review, comments inline.
+> My first reaction here was to wonder why -EOPNOTSUPP isn't passed to the
+> upper layer. OK, this is a loop to test the number of available devices.
 > 
-> > -----Original Message-----
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Sent: Monday, July 27, 2020 8:27 PM
-> > To: Berghe, Darius <Darius.Berghe@analog.com>
-> > Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > devicetree@vger.kernel.org; jic23@kernel.org; robh@kernel.org
-> > Subject: Re: [PATCH v3 2/3] ltc2471: ltc2461/ltc2463 compatible strings
-> > 
-> > [External]
-> > 
-> > On Mon, 27 Jul 2020 16:58:33 +0300
-> > Darius Berghe <darius.berghe@analog.com> wrote:
-> >   
-> > > Add compatible strings for these devices in the existing ltc2471
-> > > driver.
-> > >
-> > > Signed-off-by: Darius Berghe <darius.berghe@analog.com>  
-> > 
-> > Hi Darius,
-> > 
-> > A few additional minor comments from me.
-> >   
-> > > ---
-> > >  drivers/iio/adc/ltc2471.c | 16 ++++++++++++----
-> > >  1 file changed, 12 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/adc/ltc2471.c b/drivers/iio/adc/ltc2471.c
-> > > index e1c4e966524d..8c57203b1fe4 100644
-> > > --- a/drivers/iio/adc/ltc2471.c
-> > > +++ b/drivers/iio/adc/ltc2471.c
-> > > @@ -1,5 +1,7 @@
-> > >  /*
-> > > - * Driver for Linear Technology LTC2471 and LTC2473 voltage monitors
-> > > + * Driver for Linear Technology LTC2461, LTC2463, LTC2471 and LTC2473
-> > > + voltage
-> > > + * monitors.
-> > > + * The LTC2463 is identical to the 2461, but reports a differential signal.
-> > >   * The LTC2473 is identical to the 2471, but reports a differential signal.
-> > >   *
-> > >   * Copyright (C) 2017 Topic Embedded Products @@ -17,8 +19,10 @@
-> > > #include <linux/mod_devicetable.h>
-> > >
-> > >  enum ltc2471_chips {
-> > > +	ltc2461,
-> > > +	ltc2463,
-> > >  	ltc2471,
-> > > -	ltc2473,
-> > > +	ltc2473  
-> > 
-> > Why drop the comma?  We've just added two new devices. Seems possible
-> > there may be more in the future!
-> >   
-> 
-> Ok, will leave it there in v4.
-> 
-> > >  };
-> > >
-> > >  struct ltc2471_data {
-> > > @@ -122,7 +126,7 @@ static int ltc2471_i2c_probe(struct i2c_client  
-> > *client,  
-> > >  	indio_dev->name = id->name;
-> > >  	indio_dev->info = &ltc2471_info;
-> > >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> > > -	if (id->driver_data == ltc2473)
-> > > +	if (id->driver_data == ltc2473 || id->driver_data == ltc2463)  
-> > If the only use of driver_data is going to be this check, then just set it to 2473
-> > for the 2463 and 2473.  It's not uncommon to do this when we have a bunch
-> > of devices that look the same to software.  
-> 
-> Yes the chips are similar but there is at least one feature which requires this level 
-> of distinguishing them: the sampling rate (60sps for ltc2461/3 and selectable 208/833sps 
-> for ltc2471/3). It's not used anywhere for now but I can see it being implemented
-> as standard IIO dev attribute sampling frequency.
+I'll be happy to add a comment.
 
-Fair enough.  Perhaps a note in the patch description so no one asks the question
-on the next version?
+> > -		else if (result == EC_RES_INVALID_PARAM)
+> > +		case -EINVAL:		/* invalid parameter */
+> >  			return i;
+> > -		else if (result)
+> > +		case -EPROTO:
+> > +			/* Old or new error return code: Handle both */
+> > +			if (result == EC_RES_INVALID_COMMAND)
+> > +				return -ENODEV;
+> > +			else if (result == EC_RES_INVALID_PARAM)
+> > +				return i;
+> 
+> If I understand correctly this surprising calling convention (output
+> parameter is filled even though the function returned an error) is the
+> old one that is to be fixed.
+> 
+Sorry, I don't get your point. This is the old convention, correct,
+which we still want to support at this point. Plus, it matches the
+current code, as surprosing as it may be.
 
+Guenter
+
+> >  			return -EPROTO;
+> > +		default:
+> > +			if (ret < 0)
+> > +				return ret;
+> > +			break;
+> > +		}
+> >  	}
+> >  
 > 
-> >   
-> > >  		indio_dev->channels = ltc2473_channel;
-> > >  	else
-> > >  		indio_dev->channels = ltc2471_channel; @@ -139,6 +143,8  
-> > @@ static  
-> > > int ltc2471_i2c_probe(struct i2c_client *client,  }
-> > >
-> > >  static const struct i2c_device_id ltc2471_i2c_id[] = {
-> > > +	{ "ltc2461", ltc2461 },
-> > > +	{ "ltc2463", ltc2463 },
-> > >  	{ "ltc2471", ltc2471 },
-> > >  	{ "ltc2473", ltc2473 },
-> > >  	{}
-> > > @@ -146,6 +152,8 @@ static const struct i2c_device_id ltc2471_i2c_id[]
-> > > = {  MODULE_DEVICE_TABLE(i2c, ltc2471_i2c_id);
-> > >
-> > >  static const struct of_device_id ltc2471_of_match[] = {
-> > > +	{ .compatible = "adi,ltc2461" },
-> > > +	{ .compatible = "adi,ltc2463" },
-> > >  	{ .compatible = "adi,ltc2471" },
-> > >  	{ .compatible = "adi,ltc2473" },
-> > >  	{}
-> > > @@ -163,6 +171,6 @@ static struct i2c_driver ltc2471_i2c_driver = {
-> > >
-> > >  module_i2c_driver(ltc2471_i2c_driver);
-> > >
-> > > -MODULE_DESCRIPTION("LTC2471/LTC2473 ADC driver");
-> > > +MODULE_DESCRIPTION("LTC2461/LTC2463/LTC2471/LTC2473 ADC  
-> > driver");  
-> > >  MODULE_AUTHOR("Topic Embedded Products");  MODULE_LICENSE("GPL  
-> > v2");  
+> Best regards
+> Uwe
 > 
+> -- 
+> Pengutronix e.K.                           | Uwe Kleine-König            |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
 

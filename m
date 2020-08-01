@@ -2,99 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0C823537D
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 18:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4AA12353EA
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Aug 2020 20:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbgHAQqk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Aug 2020 12:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725841AbgHAQqk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Aug 2020 12:46:40 -0400
-Received: from saturn.retrosnub.co.uk (saturn.retrosnub.co.uk [IPv6:2a00:1098:86::1:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3740C06174A
-        for <linux-iio@vger.kernel.org>; Sat,  1 Aug 2020 09:46:39 -0700 (PDT)
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 089DF9E0058;
-        Sat,  1 Aug 2020 17:46:36 +0100 (BST)
-Date:   Sat, 1 Aug 2020 17:46:33 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Angelo Compagnucci <angelo.compagnucci@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Angelo Compagnucci <angelo@amarulasolutions.com>
-Subject: Re: [PATCH] iio: adc: mcp3422: fix locking scope
-Message-ID: <20200801174633.08cee9d1@archlinux>
-In-Reply-To: <20200801135511.342869-1-angelo@amarulasolutions.com>
-References: <20200801135511.342869-1-angelo@amarulasolutions.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1725939AbgHASBF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Aug 2020 14:01:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54630 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725803AbgHASBF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 Aug 2020 14:01:05 -0400
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A16A2206E9;
+        Sat,  1 Aug 2020 18:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596304864;
+        bh=tT/luxSQGi0reuYFUc+RvZ6WJAsuKcxPjk/nasshXdk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=usavGl+H6gUdnUUNT03XbpGRWHsG1IlpfZgnhrzKN5T381M+aXFpoKuaJyeAcVLBB
+         vlpVDvVhu+B86rjbdXijhdu+wo6Kb+LQzKGWzTt7gCHaXDj4BwzSW9P3qG2Nmp/EML
+         3n6tK7sdUtDYLsFC3lxSmT5DEMXh7/izRf9vYdms=
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Akinobu Mita <akinobu.mita@gmail.com>
+Subject: [PATCH V2] dt-bindings: iio: adc: maxim,max1118 yaml conversion
+Date:   Sat,  1 Aug 2020 18:58:50 +0100
+Message-Id: <20200801175850.1140006-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  1 Aug 2020 15:55:11 +0200
-Angelo Compagnucci <angelo.compagnucci@gmail.com> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Locking should be held for the entire reading sequence involving setting
-> the channel, waiting for the channel switch and reading from the
-> channel.
-> If not, reading from a channel can result mixing with the reading from
-> another channel.
-> 
-> Signed-off-by: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Simple device with a simple conversion.  Special handling needed
+for the max1118 which is the only supported part that has an external
+reference voltage.
 
-Looks like we should be backporting this.  Fixes tag please.
+Cc: Akinobu Mita <akinobu.mita@gmail.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+v2:
+* Added additionalProperties: false. Other changes are to make this work.
+* Move the vref-supply definition up
+* Add an else clause
 
-Jonathan
+.../devicetree/bindings/iio/adc/max1118.txt   | 21 -------
+ .../bindings/iio/adc/maxim,max1118.yaml       | 62 +++++++++++++++++++
+ 2 files changed, 62 insertions(+), 21 deletions(-)
 
-> ---
->  drivers/iio/adc/mcp3422.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
-> index d86c0b5d80a3..02a60fb164cd 100644
-> --- a/drivers/iio/adc/mcp3422.c
-> +++ b/drivers/iio/adc/mcp3422.c
-> @@ -96,16 +96,12 @@ static int mcp3422_update_config(struct mcp3422 *adc, u8 newconfig)
->  {
->  	int ret;
->  
-> -	mutex_lock(&adc->lock);
-> -
->  	ret = i2c_master_send(adc->i2c, &newconfig, 1);
->  	if (ret > 0) {
->  		adc->config = newconfig;
->  		ret = 0;
->  	}
->  
-> -	mutex_unlock(&adc->lock);
-> -
->  	return ret;
->  }
->  
-> @@ -138,6 +134,8 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
->  	u8 config;
->  	u8 req_channel = channel->channel;
->  
-> +	mutex_lock(&adc->lock);
-> +
->  	if (req_channel != MCP3422_CHANNEL(adc->config)) {
->  		config = adc->config;
->  		config &= ~MCP3422_CHANNEL_MASK;
-> @@ -150,7 +148,11 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
->  		msleep(mcp3422_read_times[MCP3422_SAMPLE_RATE(adc->config)]);
->  	}
->  
-> -	return mcp3422_read(adc, value, &config);
-> +	ret = mcp3422_read(adc, value, &config);
-> +
-> +	mutex_unlock(&adc->lock);
-> +
-> +	return ret;
->  }
->  
->  static int mcp3422_read_raw(struct iio_dev *iio,
+diff --git a/Documentation/devicetree/bindings/iio/adc/max1118.txt b/Documentation/devicetree/bindings/iio/adc/max1118.txt
+deleted file mode 100644
+index cf33d0b15a6d..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/max1118.txt
++++ /dev/null
+@@ -1,21 +0,0 @@
+-* MAX1117/MAX1118/MAX1119 8-bit, dual-channel ADCs
+-
+-Required properties:
+- - compatible: Should be one of
+-	* "maxim,max1117"
+-	* "maxim,max1118"
+-	* "maxim,max1119"
+- - reg: spi chip select number for the device
+- - (max1118 only) vref-supply: The regulator supply for ADC reference voltage
+-
+-Recommended properties:
+- - spi-max-frequency: Definition as per
+-		Documentation/devicetree/bindings/spi/spi-bus.txt
+-
+-Example:
+-adc@0 {
+-	compatible = "maxim,max1118";
+-	reg = <0>;
+-	vref-supply = <&vdd_supply>;
+-	spi-max-frequency = <1000000>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml
+new file mode 100644
+index 000000000000..e948b3e37b0c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1118.yaml
+@@ -0,0 +1,62 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/maxim,max1118.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Maxim MAX1118 and similar ADCs
++
++maintainers:
++  - Akinobu Mita <akinobu.mita@gmail.com>
++
++description: |
++    Dual channel 8bit ADCs.
++
++properties:
++  compatible:
++    enum:
++      - maxim,max1117
++      - maxim,max1118
++      - maxim,max1119
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vref-supply:
++    description: External reference, needed to establish input scaling
++
++if:
++  properties:
++    compatible:
++      contains:
++        const: maxim,max1118
++then:
++  required:
++    - vref-supply
++else:
++  properties:
++    vref-supply: false
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "maxim,max1118";
++            reg = <0>;
++            vref-supply = <&adc_vref>;
++            spi-max-frequency = <1000000>;
++        };
++    };
++...
+-- 
+2.27.0
 

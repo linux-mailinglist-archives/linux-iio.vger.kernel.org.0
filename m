@@ -2,155 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C29AD239C1D
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Aug 2020 23:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 738EB239E8C
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 07:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbgHBVLq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Aug 2020 17:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42786 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725925AbgHBVLq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Aug 2020 17:11:46 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0803DC06174A;
-        Sun,  2 Aug 2020 14:11:46 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id c12so17898834qtn.9;
-        Sun, 02 Aug 2020 14:11:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Fb/5Z4B9XTfuOtDzpHUsVEiu68aR/8vaP+1Ul+5zysY=;
-        b=A/40hBU26L6V8L9Q9KC9iqoc+cuwy+OeTq6dxy+WtYDAgzmFhIOILnphkvgPpsmI15
-         CMOr74ofUFFqh2JwgrbhUe2SJlwBxN+il7sjtV9TOd2/0+agZ+DUK/vn4DOsVD15GVRF
-         1U/WHc6SI9XHVvVZq/UTkf67ANDtINQvYqewjRmYdnx1vs9zugBK4LNQXyHI/ATiZZ3E
-         P1ghMB2RnKSu/fsYiPEj4/Bd9X/Iq/VMeERH2QzXxqpxzWudnafHWmMjV3+8raxQySBw
-         oiHfkKafR0RJJpZz5XKgqQ/SbwG17N+Q6irN+ohboHPFmy0dqrDPcH9GylHU37+F6++p
-         0EiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Fb/5Z4B9XTfuOtDzpHUsVEiu68aR/8vaP+1Ul+5zysY=;
-        b=sM14ULRbadwQa9CRujYIEIFvx5T8GYGjjZ5YtspGfG43jMnAZmK5RQJsBoTS8ej9KV
-         7iEcLt9l3fKrsxlDE+VzGykSKiIpfQ2KdYqV8zD3HtR4xnn66LXDUm4X5ylgACZukwcb
-         VUDePESLbyiqennrnrfvct3tWYj5dj3s9XzCjKvBlbNbJzrWf0xC/JEO4h5EHhj0Jewk
-         4KnV6+iOiHYm3//u4i/M/Szv0r0tUiU6ibvl2u8QQKUH11VP8gZjVaZ+7/nnRA0JTxC9
-         n4PPlWdPrfIWkmw3/s7I8LK4Ant4WbXihNCKyrIW5WHb+3vOTwusqGAFiTe9X6OllQFM
-         MuHw==
-X-Gm-Message-State: AOAM5307k22P/Xof1+hiFydMNH46QR/ma/HFyYACnbqRMK3zNnx66Rnv
-        91YLGSeUCt83RCTt153nKN0=
-X-Google-Smtp-Source: ABdhPJxJoXweorg+JFUfS6GWb438JSRsl1RcLLbLR+eW5jhNlDZUf5HAuHFcCAZNWdq1qNGO/6FrqQ==
-X-Received: by 2002:ac8:24d:: with SMTP id o13mr13596339qtg.154.1596402705134;
-        Sun, 02 Aug 2020 14:11:45 -0700 (PDT)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id q68sm17443130qke.123.2020.08.02.14.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 14:11:44 -0700 (PDT)
-Date:   Sun, 2 Aug 2020 17:11:42 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v4 3/5] counter: Add character device interface
-Message-ID: <20200802211142.GB606173@shinobu>
-References: <cover.1595358237.git.vilhelm.gray@gmail.com>
- <08b3ac7349a59ba7fa5cd438bbe78360842ccd11.1595358237.git.vilhelm.gray@gmail.com>
- <415ee9ad-255e-cee7-22a6-ffa977999691@lechnology.com>
- <a287770b-c263-f1db-bcc4-d901d3ff3c7c@lechnology.com>
+        id S1727787AbgHCFEd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Aug 2020 01:04:33 -0400
+Received: from smtp50.i.mail.ru ([94.100.177.110]:50338 "EHLO smtp50.i.mail.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725268AbgHCFEd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 3 Aug 2020 01:04:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=jFClZAitQVX8dfdHAPcgu5CfSDI2b00fr26Sug/Z3ks=;
+        b=ZCVckxSlNV45k98X+fjvdwZ/Jf38Gemp0pTnbwyT5WpTguzdcdx4tCXrvfzcluKDt/8nNohXXDCpCrJFaMxIo6zoBoPPeGbQeq1JhkZYRAUR+MTfgqpXeusK2Ua/zr65o4fYHk3x+FXIt1gwv3y6+gr+AVnOk4Vk2K4RqRWtQkc=;
+Received: by smtp50.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
+        id 1k2SeE-0002HH-6y; Mon, 03 Aug 2020 08:04:30 +0300
+From:   Maxim Kochetkov <fido_max@inbox.ru>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>, linux-iio@vger.kernel.org,
+        bigunclemax@gmail.com
+Subject: [PATCH v4] iio: adc: ti-ads1015: fix conversion when CONFIG_PM is not set
+Date:   Mon,  3 Aug 2020 08:04:05 +0300
+Message-Id: <20200803050405.6008-1-fido_max@inbox.ru>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="NDin8bjvE/0mNLFQ"
-Content-Disposition: inline
-In-Reply-To: <a287770b-c263-f1db-bcc4-d901d3ff3c7c@lechnology.com>
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp50.i.mail.ru; auth=pass smtp.auth=fido_max@inbox.ru smtp.mailfrom=fido_max@inbox.ru
+X-7564579A: EEAE043A70213CC8
+X-77F55803: 4F1203BC0FB41BD9F6142ABD4516DDC5A2D982546C3CE171B029ED5D454F1AED182A05F5380850406CDB04496B28DDBDC56D621051061BB9045CF3475978C02B2AF3AA84D1BC82F4
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE77EA152918BB9CDE0EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F790063704C003DD579243BB8638F802B75D45FF5571747095F342E8C7A0BC55FA0FE5FC4F646EA12E97C399509445AF06E0B0EC53B61925EDBDC505389733CBF5DBD5E913377AFFFEAFD269A417C69337E82CC2CC7F00164DA146DAFE8445B8C89999725571747095F342E8C26CFBAC0749D213D2E47CDBA5A9658378DA827A17800CE7820CF4CC0E318EFB9FA2833FD35BB23DF004C906525384309383FD4D963104D47B076A6E789B0E975F5C1EE8F4F765FC544D829C8904DC0E3AA81AA40904B5D9CF19DD082D7633A0446828A5085A663B3AA81AA40904B5D98AA50765F7900637337D68F6C54F44F3D81D268191BDAD3D18080C068C56568E156CCFE7AF13BCA413377AFFFEAFD26923F8577A6DFFEA7C53BCA8182662C30C93EC92FD9297F6715571747095F342E857739F23D657EF2BD5E8D9A59859A8B6B1CFA6D474D4A6A4089D37D7C0E48F6C5571747095F342E857739F23D657EF2B6825BDBE14D8E7028C9DFF55498CEFB0BD9CCCA9EDD067B1EDA766A37F9254B7
+X-C8649E89: 5EBC1E3F9DBD6DA5A28F9D70ED05EA5D186ABD224CAA768138D56274015788E99D7014CA8465526A
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojS4EufNoo6iev+VaXmKSwag==
+X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB24FFE3706629A605FD5A834DD1BA7C6635CC5E4764E02DF62AEE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
+X-Mras: Ok
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+To stop conversion ads1015_set_power_state() function call unimplemented
+function __pm_runtime_suspend() from pm_runtime_put_autosuspend()
+if CONFIG_PM is not set.
+In case of CONFIG_PM is not set: __pm_runtime_suspend() returns -ENOSYS,
+so ads1015_read_raw() failed because ads1015_set_power_state() returns an
+error.
 
---NDin8bjvE/0mNLFQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If CONFIG_PM is disabled, there is no need to start/stop conversion.
+Fix it by adding return 0 function variant if CONFIG_PM is not set.
 
-On Thu, Jul 30, 2020 at 05:49:37PM -0500, David Lechner wrote:
-> On 7/28/20 7:20 PM, David Lechner wrote:
-> > On 7/21/20 2:35 PM, William Breathitt Gray wrote:
-> >> This patch introduces a character device interface for the Counter
-> >> subsystem. Device data is exposed through standard character device re=
-ad
-> >> operations. Device data is gathered when a Counter event is pushed by
-> >> the respective Counter device driver. Configuration is handled via ioc=
-tl
-> >> operations on the respective Counter character device node.
-> >=20
-> > This sounds similar to triggers and buffers in the iio subsystem. And
-> > I can see how it might be useful in some cases. But I think it would not
-> > give the desired results when performance is important.
-> >=20
->=20
-> By the way, I really appreciate the work you have done here. When reviewi=
-ng
-> code, it is easy to point out what is wrong or we don't like and to not
-> mention all the parts that are good. And there is a lot of really good wo=
-rk
-> here already.
->=20
-> I've been working on this all week to try out some of my suggestions and
-> I'm not getting very far. This is a very difficult problem to solve!
->=20
-> I just wanted to mention this since I responded to this patch series
-> already but I am still learning and trying things. So I may have more/
-> different feedback in the future and I may decide some of my suggestions
-> are not so good. :-)
->=20
-> And one more thing, there was a nice talk at the Embedded Linux
-> Conference last month about lessons learned from designing a userspace
-> API for the GPIO subsystem [1]. Unfortunately, there is no video yet,
-> but the slides might have some helpful ideas about mistakes to avoid.
->=20
-> [1]: https://elinux.org/ELC_2020_Presentations
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
+Fixes: ecc24e72f437 ("iio: adc: Add TI ADS1015 ADC driver support")
+Tested-by: Maxim Kiselev <bigunclemax@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jic23@kernel.org>
+---
+ drivers/iio/adc/ti-ads1015.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Thanks! I appreciate the words of encouragement. :-)
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 5ea4f45d6bad..64fe3b2a6ec6 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -316,6 +316,7 @@ static const struct iio_chan_spec ads1115_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(ADS1015_TIMESTAMP),
+ };
+ 
++#ifdef CONFIG_PM
+ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
+ {
+ 	int ret;
+@@ -333,6 +334,15 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
+ 	return ret < 0 ? ret : 0;
+ }
+ 
++#else /* !CONFIG_PM */
++
++static int ads1015_set_power_state(struct ads1015_data *data, bool on)
++{
++	return 0;
++}
++
++#endif /* !CONFIG_PM */
++
+ static
+ int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
+ {
+-- 
+2.27.0
 
-This is a big endeavor so I'm expecting a lot of mistakes and changes
-along the way. Since we're designing a new userspace interface as well,
-I want to make sure it's correct before we commit it, because when it's
-finally introduced we're basically stuck with it. So I'm happy when
-mistakes are found because it saves me from having to live with those
-later after the interface is live.
-
-I'll respond to your PATCH 3/5 review later this week or coming weekend
-when I get the chance.
-
-Thanks again,
-
-William Breathitt Gray
-
---NDin8bjvE/0mNLFQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl8nLA0ACgkQhvpINdm7
-VJInMhAAqVGmbjhms6aBJfCZ+LH6WB9U1RvePeF1nw9cH70V1Wiw0/OLYGMYm1YX
-zuhQrO8cc20cSWVQgrdl2m6ykbhShMGK1BzJiMW+ehYVdUZWOygKrNJRxxzGyo2m
-DLHJox16JauHPhwZhxCx+ZDmzDbC0P99H16CsGYccxlFkbGb4MZgOtG1xtw/wM3h
-1ctob4WXoRdwZcHzFAsDZoLjrdkSPcArMDcLeNcThdcsex33WPT+Toexlo6ILnPi
-aWalbYwymW7jybV6OsN9T+ENN+6gIPGIHcJlLvL26slXgvrxfZXL4gHY0yOgsmew
-1b63J9MfIFNrZOYT4kXR1iMPCloeTqLzwbNuNI+rPjzIVLAiAEUp6WruCsEY37l0
-+wcq+L38ZnC1fWqP3DdnsYhTFbU0cuqbDhQpyvLMCV0kRCKcd8ifoe4BcUdhcHRe
-edgLdRPmqu/rp9EpNPQ1UFWcmQ1brSXWH5J4nWlx1Ay31Fqu6lgJvGfIq/LphT5Q
-kJ+uPq4sUFnttPYwolNcnRHjXPTdn8/a4KdrNm7k1uGXek2NgQhy6gBkR68Ii4hX
-dpD/Os7d5WP3AZY7sVsIpJ2vDR37+s1s/MOWoFz5z9cLsItiErt9EgNclNagwXzS
-0KHohQrPWLr5MTPzG7ELJpfZVks8ej5AlY9TONpIcqahGvWuWMo=
-=g0cP
------END PGP SIGNATURE-----
-
---NDin8bjvE/0mNLFQ--

@@ -2,90 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 855B823AA9C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 18:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A6923AB8D
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 19:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbgHCQh1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Aug 2020 12:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbgHCQh1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Aug 2020 12:37:27 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071D8C06174A
-        for <linux-iio@vger.kernel.org>; Mon,  3 Aug 2020 09:37:27 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id 189so2742008pfd.9
-        for <linux-iio@vger.kernel.org>; Mon, 03 Aug 2020 09:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xJnxaTVIT3BRuXWtvMUIk8cOE9dIAP6EbW+OfGPSRpo=;
-        b=OG6XFrleRytXdHnvdVHR3bFagl4hxohqseBPtEN/II+vY+b4xYqXwVjklWPXWxVqVk
-         u++hzPVd2vJYHba6YXJIjGVu4RssVgMuybdakIebCWg/nHMsj9TBjtt4Ky5LCD3M4cY7
-         mqjuUvN97D82eUPcOtKXWjzX/niNYInDkHEIF1O9rnfUVLP9FfGT0A8dlBqBJSDymu8i
-         2C26AfxL56vvd0KW5FUSbF4CDd94BftUd9qusrqAkCam4SBV3RVcKhfLWBYdohnuuYkB
-         AhTK4caV7xpvreFA3v+7l+QgtQOqVD1Aeo8PdGt4qTzTr0UyWasakqwhiA8aT+7X9ONs
-         xxOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xJnxaTVIT3BRuXWtvMUIk8cOE9dIAP6EbW+OfGPSRpo=;
-        b=QyAJuofG2ykChYgikITPOzv7nfxiaSuCpD88iEI1ZkOKNybtFlArq2wOvlnu3UkOuW
-         oJd6FJmflRknPRuirfmjoXk+i7npgB/9CZ/EmqqQcFBMwWyNsqcp5MNEmxDNQ8ImyZf6
-         dweQ7VKjU6QsfqXoUHtpz2Ri+WcYPWunrrIyHP4GlXGN9NfwWAejiHeVI8/xu4GEBfzq
-         QFvFgdM0tzgdJnDIyA/02CsaiI8y75szh8kJpYq4WbuIb2BBeSjDgya/VvEAQ99XVR7q
-         lHEh98hVr91R5VVvb+KtWg7D9LiUeSVnaxy0cQ0MvKJh45Xv9fxgDGpJVOiRdPLcOHex
-         xwQQ==
-X-Gm-Message-State: AOAM531KPFIYaMytKOo3/fe3GZmudFPilWECgSY7rqqVAU6qhePzO4PZ
-        MMi43gyP5KuNL4YW5yIrnGRcViT14B1AqSsEcdA=
-X-Google-Smtp-Source: ABdhPJzdASYzRWjivOHM2yy8nzFaony8/xaAYIyXYdHeCbUIeL6athLGwe+3Cf2DvaPyZYfeYdY42pgD9p+c1nvUQ7s=
-X-Received: by 2002:a63:924b:: with SMTP id s11mr15127602pgn.74.1596472646489;
- Mon, 03 Aug 2020 09:37:26 -0700 (PDT)
+        id S1726878AbgHCRUy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Aug 2020 13:20:54 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:10752 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727803AbgHCRUy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Aug 2020 13:20:54 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 073H4tdq023250;
+        Mon, 3 Aug 2020 13:20:52 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 32n69efbae-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Aug 2020 13:20:52 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 073HKokS063783
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 3 Aug 2020 13:20:51 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 3 Aug 2020 10:20:49 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 3 Aug 2020 10:20:49 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 3 Aug 2020 10:20:49 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 073HKlag008684;
+        Mon, 3 Aug 2020 13:20:48 -0400
+From:   <alexandru.tachici@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>
+Subject: [PATCH v4 0/3] iio: accel: adxl372: add peak mode
+Date:   Mon, 3 Aug 2020 20:22:16 +0300
+Message-ID: <20200803172219.33911-1-alexandru.tachici@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <86d053d1re.fsf@norphonic.com> <CAHp75VfgFN9YBHo9T8fgswUCnhdb3L5nGEi3_yONvZp5_vduUw@mail.gmail.com>
- <867dufdc2a.fsf@norphonic.com>
-In-Reply-To: <867dufdc2a.fsf@norphonic.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 3 Aug 2020 19:37:11 +0300
-Message-ID: <CAHp75VfVjGEbGxuG8xoHY56FTpZNkRxLAgAUswEbRgraKd6HQQ@mail.gmail.com>
-Subject: Re: [PATCH v9 1/2] iio: humidity: Add TI HDC20x0 support
-To:     Eugene Zaikonnikov <ez@norphonic.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, development@norphonic.com,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-03_15:2020-08-03,2020-08-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 spamscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008030123
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 3, 2020 at 5:44 PM Eugene Zaikonnikov <ez@norphonic.com> wrote:
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-> Sorry for the attachments, it was an accident.
-I hope the next version will be sent properly.
+This series adds the possibility to configure
+the device, from sysfs, to work in peak mode. This enables
+adxl372 to capture only over threshold accelerations.
 
-> > On Fri, Jul 10, 2020 at 2:54 PM Eugene Zaikonnikov <ez@norphonic.com> wrote:
->
-> [...]
->
-> > 8. It's one line
-> > ret = i2c_smbus_write_byte_data(client,
-> >     HDC2010_REG_MEASUREMENT_CONF, tmp);
-> >
-> > Ditto:
-> > dev_warn(&client->dev, "Unable to restore default AMM\n");
-> >
-> Must be misunderstanding something, as neither of these fits 80 column
-> fill if made into one line. Found also couple other places I need in
-> fact to wrap down to 80.
+1. Create sysfs files for falling_period/rising_period
+and thresh_falling_value/thresh_rising_value in events/ dir.
+Set INT1 reg for activity/inactivity and push
+event code in events fifo on irq.
 
-For how many? And since it's a new driver you may use 100.
-Besides that there is no limitation for the messages for a long time
-(see dev_warn() example above).
+2. Document use of iio events sysfs files.
+
+Alexandru Tachici (2):
+  iio: accel: adxl372: add event interface
+  docs: iio: Add adxl372 documentation
+
+1. Device FIFO can now be set in peak mode and only over the
+threshold accelerations will be stored. Driver sets adxl372
+FIFO in peak mode when the peak iio:trigger is selected.
+
+Stefan Popa (1):
+  iio: accel: adxl372: Add support for FIFO peak mode
+
+  Changelog v3 -> v4:
+  - add mutex for threshold write so that writing the two
+  registers becomes atomic
+  - added a trigger for peak mode, when selected in the trigger
+  user interface, adxl372 will start recording only peak acceleration
+  data in the fifo
+  - added a adxl372.rst doc file explaining the use of iio events sysfs
+
+ Documentation/iio/adxl372.rst |  46 +++++
+ Documentation/iio/index.rst   |   1 +
+ drivers/iio/accel/adxl372.c   | 328 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 367 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/iio/adxl372.rst
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.20.1
+

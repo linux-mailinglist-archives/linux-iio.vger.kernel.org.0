@@ -2,155 +2,282 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7047123AD13
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 21:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76EC823ADDE
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 22:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727813AbgHCTb7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Aug 2020 15:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727918AbgHCTbz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Aug 2020 15:31:55 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB59CC061756
-        for <linux-iio@vger.kernel.org>; Mon,  3 Aug 2020 12:31:54 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id 6so29169362qtt.0
-        for <linux-iio@vger.kernel.org>; Mon, 03 Aug 2020 12:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RvzegeXfDF+FVdvZWpUY2C/JYcGtzK0e5Km4cAoPNN8=;
-        b=jSmTnJX12hJqDm4wSS6o7mGjoyl/+MvIhk0XVP7uEzSk09YcYc0nfbe7zl7aGuS6wC
-         SZGNqDDIANha72buny9X6caEYisJ0XYhId0is+ZwGaTqeHILDvgTJPVKJvBN+9ZYXvZP
-         0/nufiyHW+XAHqa5hL6CByacEB0uNBoHAuc4Kis0WamHtXH5CUsWqOiezhW9OIyk69+N
-         oPiQemIU1078XmA59msE3KdOqcmq1SdKyAOJGFHHKvknx5m21uk7o6pQX+nWrZAsH1Oj
-         YYTBVnF2EOEmJM9paMatW2pjQOsHClWl2IDuqTaFsRERReRg3AsBTwZj2m1vAcJQ5fLE
-         ctSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RvzegeXfDF+FVdvZWpUY2C/JYcGtzK0e5Km4cAoPNN8=;
-        b=DyyurwCpVV18chq9R9/0QMocdTyEdZEJ61+XYtDmrIdUi0MCTMPCWxM3lmoAeIjrRP
-         ppt6K57zsE4AAfo/dSAv6c0ktso1rJkY2Y/qe9NBGfewrLdW/s2n6tAuxiQ3iSmkXom5
-         2KF66Cfmaz0D96e02s18UbxU8B6CpfQ9rA+H5wPuuhHVJUi8ghBq1EUr4bXN2iMdrjJD
-         UUlJ+6gf19ul67i5ay1aLGnn+es97Ht2NRZZcDLL4IkWrZBprtgHNjGSHzH4qAdK7D7R
-         tF/65fgXWYiHbFIvjMm7PPsWcG1brHyi4rYPFS4KW2HXthYP97twWRSvK6mOVq3hJmqC
-         wNJA==
-X-Gm-Message-State: AOAM533Lt3ZUqeOX2rHlGNPfbkiuCF9fAXFsx9XC5ollIKaw6azqaJho
-        viWmnq3SxUDQJS+yvGWEgX8Gtw3kN2Uj6N+z5cgvWA==
-X-Google-Smtp-Source: ABdhPJyAJVak0FjVUTJi1mcLTSkaBZWjBpWRxzk7IIBX2OckQU/gStJWBE/N9Odcq/m1cUmnKTfpgZfhgTWyUcthDaU=
-X-Received: by 2002:ac8:72cc:: with SMTP id o12mr17678716qtp.27.1596483113936;
- Mon, 03 Aug 2020 12:31:53 -0700 (PDT)
+        id S1728555AbgHCUA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Aug 2020 16:00:57 -0400
+Received: from vern.gendns.com ([98.142.107.122]:41804 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727091AbgHCUA5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 3 Aug 2020 16:00:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=UJzRmylWfjrnipPQYAhPIalbv2nKs4dkhNDQ4EPqfk8=; b=VIt3eudOyQGyXMxI2srAD0acVT
+        nmex0VeQiBTzTbF/yLrQcFPWxmykkhOuoJcpQ8vsEvzWr6D86/s8QxweKjWzwo6XttlQy4aFn7PR7
+        nEb5y0Si9iv8CNWwFw0NHARLykuAVnROy2oWHTByLnig6NFmPzNAORY8oWLKCuxALo4A6vzfp86r3
+        qR/phht0nbWw4PqkcdEh6g6q7WQETNjhzTr3eSMfaw39FSuFlMRODZHCiw90Iu4jEbL8apMWCxTGm
+        b0BqzwrHlkGJPFntwZdLTF5bDx7gWKVvwF3rWKe321EnWTGLheru0TTMcwlHz94MBOHxEME+GU4Eo
+        tWSsQNPQ==;
+Received: from [2600:1700:4830:165f::19e] (port=34650)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1k2gde-00018T-Nf; Mon, 03 Aug 2020 16:00:50 -0400
+Subject: Re: [PATCH v4 1/5] counter: Internalize sysfs interface code
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        David.Laight@ACULAB.COM
+References: <cover.1595358237.git.vilhelm.gray@gmail.com>
+ <e13d43849f68af8227c6aaa0ef672b459d47e9ab.1595358237.git.vilhelm.gray@gmail.com>
+ <7209ac3d-d1ca-1b4c-b22c-8d98b13742e2@lechnology.com>
+ <20200802210415.GA606173@shinobu>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
+Date:   Mon, 3 Aug 2020 15:00:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200802083458.24323-1-brgl@bgdev.pl> <20200802083458.24323-2-brgl@bgdev.pl>
- <CAHp75Vfm_vUKZOGkNp+0uTe0b=vk8yDyjs7XPdw_1GRauTBx4g@mail.gmail.com>
-In-Reply-To: <CAHp75Vfm_vUKZOGkNp+0uTe0b=vk8yDyjs7XPdw_1GRauTBx4g@mail.gmail.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 3 Aug 2020 21:31:42 +0200
-Message-ID: <CAMpxmJXvJRekVAbSAi7XTjmM33dN1bSDWPLjfufhwTk7KQMMDA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] devres: provide devm_krealloc()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200802210415.GA606173@shinobu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 2, 2020 at 12:42 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
+On 8/2/20 4:04 PM, William Breathitt Gray wrote:
+> On Tue, Jul 28, 2020 at 05:45:53PM -0500, David Lechner wrote:
+>> On 7/21/20 2:35 PM, William Breathitt Gray wrote:
+>>> This is a reimplementation of the Generic Counter driver interface.
 
-[snip]
+...
 
->
-> I was thinking about this bit... Shouldn't we rather issue a simple
-> dev_warn() and return the existing pointer?
-> For example in some cases we might want to have resources coming
-> either from heap or from constant. Then, if at some circumstances we
-> would like to extend that memory (only for non-constant cases) we
-> would need to manage this ourselves. Otherwise we may simply call
-> krealloc().
-> It seems that devm_kstrdup_const returns an initial pointer. Getting
-> NULL is kinda inconvenient (and actually dev_warn() might also be
-> quite a noise, however I would give a message to the user, because
-> it's something worth checking).
->
+>>> -F:	include/linux/counter_enum.h
+>>> +F:	include/uapi/linux/counter.h
+>>
+>> Seems odd to be introducing a uapi header here since this patch doesn't
+>> make any changes to userspace.
+> 
+> These defines are needed by userspace for the character device
+> interface, but I see your point that at this point in the patchset they
+> don't need to be exposed yet.
+> 
+> I could create temporary include/linux/counter_types.h to house these
+> defines, and then later move them to include/uapi/linux/counter.h in the
+> character device interface introduction patch. Do you think I should do
+> so?
 
-But this is inconsistent behavior: if you pass a pointer to ro memory
-to devm_krealloc() it will not resize it but by returning a valid
-pointer it will make you think it did -> you end up writing to ro
-memory in good faith.
+Since this patch is independent of the chardev changes and probably ready
+to merge after one more round of review, I would say it probably makes
+sense to just leave them in counter.h for now and move them to uapi when
+the chardev interface is finalized. This way, we can just merge this patch
+as soon as it is ready.
 
-> ...
->
-> > +       spin_lock_irqsave(&dev->devres_lock, flags);
-> > +       old_dr = find_dr(dev, devm_kmalloc_release, devm_kmalloc_match, ptr);
-> > +       spin_unlock_irqrestore(&dev->devres_lock, flags);
->
-> > +       if (!old_dr) {
->
-> I would have this under spin lock b/c of below.
->
-> > +               WARN(1, "Memory chunk not managed or managed by a different device.");
-> > +               return NULL;
-> > +       }
->
-> > +       old_head = old_dr->node.entry;
->
-> This would be still better to be under spin lock.
->
-> > +       new_dr = krealloc(old_dr, total_size, gfp);
-> > +       if (!new_dr)
-> > +               return NULL;
->
-> And perhaps spin lock taken already here.
->
-> > +       if (new_dr != old_dr) {
-> > +               spin_lock_irqsave(&dev->devres_lock, flags);
-> > +               list_replace(&old_head, &new_dr->node.entry);
-> > +               spin_unlock_irqrestore(&dev->devres_lock, flags);
-> > +       }
->
-> Yes, I understand that covering more code under spin lock does not fix
-> any potential race, but at least it minimizes scope of the code that
-> is not under it to see exactly what is problematic.
->
-> I probably will think more about a better approach to avoid potential races.
+> 
+>>>    
+>>>    CPMAC ETHERNET DRIVER
+>>>    M:	Florian Fainelli <f.fainelli@gmail.com>
+>>> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+>>> index 78766b6ec271..0f20920073d6 100644
+>>> --- a/drivers/counter/104-quad-8.c
+>>> +++ b/drivers/counter/104-quad-8.c
+>>> @@ -621,7 +621,7 @@ static const struct iio_chan_spec quad8_channels[] = {
+>>>    };
+>>>    
+>>>    static int quad8_signal_read(struct counter_device *counter,
+>>> -	struct counter_signal *signal, enum counter_signal_value *val)
+>>> +			     struct counter_signal *signal, u8 *val)
+>>
+>> I'm not a fan of replacing enum types with u8 everywhere in this patch.
+>> But if we have to for technical reasons (e.g. causes compiler error if
+>> we don't) then it would be helpful to add comments giving the enum type
+>> everywhere like this instance where u8 is actually an enum value.
+>>
+>> If we use u32 as the generic type for enums instead of u8, I think the
+>> compiler will happlily let us use enum type and u32 interchangeably and
+>> not complain.
+> 
+> I switched to fixed-width types after the suggestion by David Laight:
+> https://lkml.org/lkml/2020/5/3/159. I'll CC David Laight just in case he
+> wants to chime in again.
+> 
+> Enum types would be nice for making the valid values explicit, but there
+> is one benefit I have appreciated from the move to fixed-width types:
+> there has been a significant reduction of duplicate code; before, we had
+> a different read function for each different enum type, but now we use a
+> single function to handle them all.
 
-My thinking behind this was this: we already have users who call
-devres_find() and do something with the retrieved resources without
-holding the devres_lock - so it's assumed that users are sane enough
-to not be getting in each other's way. Now I see that the difference
-is that here we're accessing the list node and it can change if
-another thread is adding a different devres to the same device. So
-this should definitely be protected somehow.
+Yes, what I was trying to explain is that by using u32 instead of u8, I
+think we can actually do both.
 
-I think that we may have to give up using real krealloc() and instead
-just reimplement its behavior in the following way:
+The function pointers in struct counter_device *counter would use u32 as a
+generic enum value in the declaration, but then the actual implementations
+could still use the proper enum type.
 
-Still outside of spinlock check if the new total size is smaller or
-equal to the previous one. If so: return the same pointer. If not:
-allocate a new devres as if it were for devm_kmalloc() but don't add
-it to the list yet. Take the spinlock - check if we can find the
-devres - if not: kfree() the new and old chunk and return NULL. If
-yes: copy the contents of the devres node into the new chunk as well
-as the memory contents. Replace the old one on the list and free it.
-Release spinlock and return.
+> 
+>>> +		device_del(&counter->dev);
+>>> +		counter_sysfs_free(counter);
+>>
+>> Should sysfs be freed before deleting device? I think sysfs might be
+>> using dev still.
+> 
+> I think it's the other way around isn't it? The Counter sysfs memory
+> should stay alive for the lifetime of the device. Once the device is
+> deleted, there's nothing left to access those struct attributes, so that
+> memory can now be freed. Correct me if my reasoning is wrong here.
 
-Does that work?
+I think you are right. I was thinking that device_del() would free
+memory, but it doesn't. It also looks like other drivers call
+device_put() after this, so maybe needed here too?
 
-Bart
+>>> +static ssize_t counter_data_u8_show(struct device *dev,
+>>> +				    struct device_attribute *attr, char *buf)
+>>> +{
+>>> +	const struct counter_attribute *const a = to_counter_attribute(attr);
+>>> +	struct counter_device *const counter = dev_get_drvdata(dev);
+>>> +	const struct counter_available *const avail = a->data.priv;
+>>> +	int err;
+>>> +	u8 data;
+>>> +
+>>> +	switch (a->type) {
+>>
+>> I don't understand the use of the word "owner" here. What is being "owned"?
+>>
+>> Perhaps "component" would be a better choice?
+> 
+> I wasn't too set on calling this "owner" either, but I'm not sure if
+> "component" would make sense either because I wouldn't label a device
+> attribute as belonging to any particular component (in fact it's quite
+> the opposite).
+> 
+> Perhaps the word "scope" would be better. What do you think? Or would
+> that be too vague as well.
+
+"scope" makes sense to me.
+
+>>> -/**
+>>> - * struct counter_signal_ext - Counter Signal extensions
+>>> - * @name:	attribute name
+>>> - * @read:	read callback for this attribute; may be NULL
+>>> - * @write:	write callback for this attribute; may be NULL
+>>> - * @priv:	data private to the driver
+>>> - */
+>>> -struct counter_signal_ext {
+>>> +enum counter_data_type {
+>>> +	COUNTER_DATA_TYPE_U8,
+>>> +	COUNTER_DATA_TYPE_U64,
+>>> +	COUNTER_DATA_TYPE_BOOL,
+>>> +	COUNTER_DATA_TYPE_SIGNAL,
+>>
+>> Does this mean signal name?
+> 
+> This represents the signal values "high" or "low". With the introduction
+> of this patchset, these values are no longer strings internally so I
+> gave them their own data type here.
+
+Ah, OK. So maybe COUNTER_DATA_TYPE_SIGNAL_LEVEL would be a better name.
+
+> 
+>>> +	COUNTER_DATA_TYPE_COUNT_FUNCTION,
+>>> +	COUNTER_DATA_TYPE_SYNAPSE_ACTION,
+>>> +	COUNTER_DATA_TYPE_ENUM,
+>>
+>> Why do some enums get their own type while others use a common
+>> generic ENUM type?
+> 
+> COUNTER_DATA_TYPE_ENUM is intended for driver-specific Counter enums.
+> This allows driver authors to define their own Counter enums so that we
+> don't pollute the Generic Counter interface with enums that are unique
+> to individual drivers.
+> 
+>>> +	COUNTER_DATA_TYPE_COUNT_DIRECTION,
+>>> +	COUNTER_DATA_TYPE_COUNT_MODE,
+>>
+>> Would be nice to group all COUNTER_DATA_TYPE_COUNT_* together
+> 
+> I assume you're referring to COUNTER_DATA_TYPE_COUNT_FUNCTION being
+> separate from these two. That's because a "count function" is actually
+> part of the Generic Counter paradigm: it's the trigger operation for the
+> Synapse.
+> 
+> In retrospect, I should have named it "trigger operation" or something
+> similar when I developed the paradigm originally, but hindsight is
+> 20/20 (I'd probably rename "Synapse" to something else too if I could).
+> It's unfortunately too late to rename this because we've exposed it to
+> userspace already as a named sysfs attribute.
+> 
+> Perhaps I can rename this enum constant however to
+> COUNTER_DATA_TYPE_FUNCTION, or similar, to differentiate it from the
+> Count extensions.
+> 
+
+Yes, I think COUNTER_DATA_TYPE_FUNCTION would be sufficient and avoid
+confusion.
+
+>>>    /**
+>>>     * struct counter_device - Counter data structure
+>>> - * @name:		name of the device as it appears in the datasheet
+>>> + * @name:		name of the device
+>>>     * @parent:		optional parent device providing the counters
+>>> - * @device_state:	internal device state container
+>>> - * @ops:		callbacks from driver
+>>> + * @signal_read:	optional read callback for Signals. The read value of
+>>> + *			the respective Signal should be passed back via the
+>>> + *			value parameter.
+>>> + * @count_read:		optional read callback for Counts. The read value of the
+>>> + *			respective Count should be passed back via the value
+>>> + *			parameter.
+>>> + * @count_write:	optional write callback for Counts. The write value for
+>>> + *			the respective Count is passed in via the value
+>>> + *			parameter.
+>>> + * @function_read:	optional read callback the Count function modes. The
+>>> + *			read function mode of the respective Count should be
+>>> + *			passed back via the function parameter.
+>>> + * @function_write:	option write callback for Count function modes. The
+>>> + *			function mode to write for the respective Count is
+>>> + *			passed in via the function parameter.
+>>> + * @action_read:	optional read callback the Synapse action modes. The
+>>> + *			read action mode of the respective Synapse should be
+>>> + *			passed back via the action parameter.
+>>> + * @action_write:	option write callback for Synapse action modes. The
+>>> + *			action mode to write for the respective Synapse is
+>>> + *			passed in via the action parameter.
+>>>     * @signals:		array of Signals
+>>
+>> Why not keep the ops struct?
+> 
+> Defining static ops structures in the drivers seemed to have no
+> advantage when those callbacks are always used via the counter_device
+> structure. I decided it'd be simpler to just set them directly in the
+> counter_device structure then.
+> 
+> I could reorganize them into an ops structure again if there's enough
+> interest.
+
+I've been working on really constrained systems lately where every byte
+counts, so this stuck out to me since there would be a copy of all
+functions for each counter instance. But probably not that big of a deal
+in the Linux kernel. :-)
+

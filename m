@@ -2,76 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 445A223AFE1
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 23:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C2723B12C
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 01:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbgHCV62 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Aug 2020 17:58:28 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44938 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726239AbgHCV62 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Aug 2020 17:58:28 -0400
-Received: by mail-io1-f68.google.com with SMTP id v6so24895386iow.11;
-        Mon, 03 Aug 2020 14:58:28 -0700 (PDT)
+        id S1728823AbgHCXnD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Aug 2020 19:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33658 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728490AbgHCXmB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Aug 2020 19:42:01 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A308C061756
+        for <linux-iio@vger.kernel.org>; Mon,  3 Aug 2020 16:42:01 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id x1so12333672ilp.7
+        for <linux-iio@vger.kernel.org>; Mon, 03 Aug 2020 16:42:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=REBhfBv0y9iheUmDMAD5SkNTWPE8KTprJ/7qrn9ga3c=;
+        b=BwL27FbFizHtr8CZDR3cITVgiP+qWBE5wP5lYLn5rgwHEns8KBZg/OK6bN4uOe2Hj/
+         toKEV82gKnsOULOibiH6turbMrtUIpvAqaHN8hbV/newGCaAg0PrYsIqNA8BHuad2EUX
+         mY0h1crzvcOz14F6VfjDSBtJlMJ3JiobWv7Ck=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Tk9R+9ti9qwUNfwKpXRUC+vzSncyu3vSdfJgtp7CwUU=;
-        b=kzBOmE65ybLCj29oUwVkPnu8XZBqKjVbDyTq2U+RL06GR+egy4SycIlXnmBybO1YLk
-         NQgdKN8PEdb1bl5ViMi1efGQFWTaPr/7VQCrzPw8pmjAZ3iMbQ0951wDG4qwErfv0S7h
-         D4QEsgfuIdVAsst4qtRtQPm2ShjR7PRs8MwTgym+OVD0n7aTufg1vlc6J+0wATi3Bacp
-         yNYWGXvOsS7jSF21D/PsQz4AX1xZIRcjsMYvswHlCAz5ltkArtwfHwDEZ3uAz6VQ/IMS
-         2Tbb04yf4c8J//ULphyz0GCf7oMBerGU23hcUVkq/p1TLwWE8hQNyPEIUx3a4gA7qom7
-         7fMw==
-X-Gm-Message-State: AOAM5327+fVX9xP+bEusrhhXql26xZW2qXqiEsyrvNUqlnYW4CH3+NB/
-        aSbc0vVGt+3VDXRoGPVJVQ==
-X-Google-Smtp-Source: ABdhPJzZkYiklS4YCr+61tDmXUEFuV6zWukOJ7e4K8TI/LNRT9xwQpUwcG+0wzjSA//q2jkGmfwAQw==
-X-Received: by 2002:a02:76d0:: with SMTP id z199mr2075134jab.39.1596491907624;
-        Mon, 03 Aug 2020 14:58:27 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id p3sm11398308ilc.45.2020.08.03.14.58.26
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=REBhfBv0y9iheUmDMAD5SkNTWPE8KTprJ/7qrn9ga3c=;
+        b=QNMS593li++dPMwITaIL1EMH9H9O2Bif/USCSJxy9aciAtwojioq39IQmGQbEoHfzQ
+         93mGJ5I90RWzgo2DPpCkc4KVQ5yjSGzJ3NrMtgelcFKsu1XnaGeKFc54QUfjOVi/fhPb
+         +lJQku3kQ/v5nTc93aVUba78L/23xwn8Yt71TWbWrG2NeDHFtXX92xNZELHIHmw9/MNw
+         2BZq8DrWxEdxtF32PYSgoSBZRqLUf3Ksqp6ZF1fUaHcd3L9A5vNfPB7JSsIf9LSRSSFG
+         IWo017mwRAnq+Q9V8ElMGf/rL0T1HRE1OdMuY5ClM7wPEqhC/AJfr3diITp1cuqRxWQB
+         3ZLg==
+X-Gm-Message-State: AOAM532sEJkI0R0sRFoJZfzzcXESK/IRedjvhb/j/vu8E4ZnR/l3lyE8
+        683owYZZs1LDe9bVXlKVLsmHEg==
+X-Google-Smtp-Source: ABdhPJxXgPUqxVxsiaMbVWQZoOwwsc+ysCkOr8SgJMnz1sCbbrdYGP3wICNYwI62CvtKlmGJAR1vMw==
+X-Received: by 2002:a05:6e02:cac:: with SMTP id 12mr1972194ilg.175.1596498119359;
+        Mon, 03 Aug 2020 16:41:59 -0700 (PDT)
+Received: from derch.Home (97-122-92-59.hlrn.qwest.net. [97.122.92.59])
+        by smtp.gmail.com with ESMTPSA id g2sm5468435ioe.4.2020.08.03.16.41.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2020 14:58:26 -0700 (PDT)
-Received: (nullmailer pid 3211639 invoked by uid 1000);
-        Mon, 03 Aug 2020 21:58:26 -0000
-Date:   Mon, 3 Aug 2020 15:58:26 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH V2] dt-bindings: iio: adc: maxim,max1118 yaml conversion
-Message-ID: <20200803215826.GA3211566@bogus>
-References: <20200801175850.1140006-1-jic23@kernel.org>
+        Mon, 03 Aug 2020 16:41:58 -0700 (PDT)
+From:   Daniel Campello <campello@chromium.org>
+To:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>, linux-iio@vger.kernel.org
+Subject: [PATCH v4 00/15] sx9310 iio driver updates
+Date:   Mon,  3 Aug 2020 17:41:39 -0600
+Message-Id: <20200803234154.320400-1-campello@chromium.org>
+X-Mailer: git-send-email 2.28.0.163.g6104cc2f0b6-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200801175850.1140006-1-jic23@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 01 Aug 2020 18:58:50 +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Simple device with a simple conversion.  Special handling needed
-> for the max1118 which is the only supported part that has an external
-> reference voltage.
-> 
-> Cc: Akinobu Mita <akinobu.mita@gmail.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v2:
-> * Added additionalProperties: false. Other changes are to make this work.
-> * Move the vref-supply definition up
-> * Add an else clause
-> 
-> .../devicetree/bindings/iio/adc/max1118.txt   | 21 -------
->  .../bindings/iio/adc/maxim,max1118.yaml       | 62 +++++++++++++++++++
->  2 files changed, 62 insertions(+), 21 deletions(-)
-> 
+The first patch resends the DT binding for the driver that was merged in
+v5.8-rc1 with a small change to update for proper regulators. The second
+through the eleventh patch fixes several issues dropped from v8 to v9
+when the initial patch was merged.  The twelveth patch drops
+channel_users because it's unused. The thirteenth patch adds support to
+enable the svdd and vdd supplies so that this driver can work on a board
+where the svdd supply isn't enabled at boot and needs to be turned on
+before this driver starts to communicate with the chip. The final patch
+updates irq trigger flags.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Changes in v4:
+ - Updated macro SX9310_REG_STAT1_COMPSTAT_MASK at call site.
+ - Use FIELD_GET/FIELD_PREP instead of manual shift.
+ - Reverted condition check logic on enable/disable_irq methods.
+ - Use pointer to buffer struct on iio_push_to_buffers_with_timestamp().
+
+Changes in v3:
+ - Moved irq presence check down to lower methods
+ - Changed buffer to struct type to align timestamp memory properly.
+ - Added static assert for number of channels.
+ - Added irq trigger flags commit to the series.
+
+Changes in v2:
+ - Added #io-channel-cells as a required property
+ - Reordered error handling on sx9310_resume()
+ - Added #include <linux/mod_devicetable.h>
+ - Added '\n' to dev_err()
+ - Fixed commit message from "iio: sx9310: Align memory"
+ - Changed prox_stat to chan_prox_stat bitmap.
+ - Fixed dev_err() message
+ - Added '\n' to dev_err()
+
+Daniel Campello (12):
+  dt-bindings: iio: Add bindings for sx9310 sensor
+  iio: sx9310: Update macros declarations
+  iio: sx9310: Fix irq handling
+  iio: sx9310: Remove acpi and of table macros
+  iio: sx9310: Change from .probe to .probe_new
+  iio: sx9310: Fixes various memory handling
+  iio: sx9310: Use long instead of int for channel bitmaps
+  iio: sx9310: Use regmap_read_poll_timeout() for compensation
+  iio: sx9310: Update copyright
+  iio: sx9310: Simplify error return handling
+  iio: sx9310: Use variable to hold &client->dev
+  iio: sx9310: Miscellaneous format fixes
+
+Stephen Boyd (3):
+  iio: sx9310: Drop channel_users[]
+  iio: sx9310: Enable vdd and svdd regulators at probe
+  iio: sx9310: Use irq trigger flags from firmware
+
+ .../iio/proximity/semtech,sx9310.yaml         |  65 +++
+ drivers/iio/proximity/sx9310.c                | 421 +++++++++---------
+ 2 files changed, 276 insertions(+), 210 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+
+--
+2.28.0.163.g6104cc2f0b6-goog
+

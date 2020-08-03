@@ -2,94 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 738EB239E8C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 07:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01159239EA7
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Aug 2020 07:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbgHCFEd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Aug 2020 01:04:33 -0400
-Received: from smtp50.i.mail.ru ([94.100.177.110]:50338 "EHLO smtp50.i.mail.ru"
+        id S1726993AbgHCFQv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Aug 2020 01:16:51 -0400
+Received: from mailout09.rmx.de ([94.199.88.74]:53497 "EHLO mailout09.rmx.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbgHCFEd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 3 Aug 2020 01:04:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail;
-        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=jFClZAitQVX8dfdHAPcgu5CfSDI2b00fr26Sug/Z3ks=;
-        b=ZCVckxSlNV45k98X+fjvdwZ/Jf38Gemp0pTnbwyT5WpTguzdcdx4tCXrvfzcluKDt/8nNohXXDCpCrJFaMxIo6zoBoPPeGbQeq1JhkZYRAUR+MTfgqpXeusK2Ua/zr65o4fYHk3x+FXIt1gwv3y6+gr+AVnOk4Vk2K4RqRWtQkc=;
-Received: by smtp50.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
-        id 1k2SeE-0002HH-6y; Mon, 03 Aug 2020 08:04:30 +0300
-From:   Maxim Kochetkov <fido_max@inbox.ru>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        id S1726824AbgHCFQu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 3 Aug 2020 01:16:50 -0400
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout09.rmx.de (Postfix) with ESMTPS id 4BKmMd4xzCzbj4g;
+        Mon,  3 Aug 2020 07:16:45 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin02.retarus.com (Postfix) with ESMTPS id 4BKmMK0C8lz2TTLy;
+        Mon,  3 Aug 2020 07:16:29 +0200 (CEST)
+Received: from n95hx1g2.localnet (192.168.54.30) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Mon, 3 Aug
+ 2020 07:16:16 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <stable@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>, linux-iio@vger.kernel.org,
-        bigunclemax@gmail.com
-Subject: [PATCH v4] iio: adc: ti-ads1015: fix conversion when CONFIG_PM is not set
-Date:   Mon,  3 Aug 2020 08:04:05 +0300
-Message-Id: <20200803050405.6008-1-fido_max@inbox.ru>
-X-Mailer: git-send-email 2.27.0
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: trigger: sysfs: Disable irqs before calling iio_trigger_poll()
+Date:   Mon, 3 Aug 2020 07:16:14 +0200
+Message-ID: <2272098.D4WoNcAbr4@n95hx1g2>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+In-Reply-To: <20200801170234.2953b087@archlinux>
+References: <20200727145714.4377-1-ceggers@arri.de> <20200801170234.2953b087@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp50.i.mail.ru; auth=pass smtp.auth=fido_max@inbox.ru smtp.mailfrom=fido_max@inbox.ru
-X-7564579A: EEAE043A70213CC8
-X-77F55803: 4F1203BC0FB41BD9F6142ABD4516DDC5A2D982546C3CE171B029ED5D454F1AED182A05F5380850406CDB04496B28DDBDC56D621051061BB9045CF3475978C02B2AF3AA84D1BC82F4
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE77EA152918BB9CDE0EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F790063704C003DD579243BB8638F802B75D45FF5571747095F342E8C7A0BC55FA0FE5FC4F646EA12E97C399509445AF06E0B0EC53B61925EDBDC505389733CBF5DBD5E913377AFFFEAFD269A417C69337E82CC2CC7F00164DA146DAFE8445B8C89999725571747095F342E8C26CFBAC0749D213D2E47CDBA5A9658378DA827A17800CE7820CF4CC0E318EFB9FA2833FD35BB23DF004C906525384309383FD4D963104D47B076A6E789B0E975F5C1EE8F4F765FC544D829C8904DC0E3AA81AA40904B5D9CF19DD082D7633A0446828A5085A663B3AA81AA40904B5D98AA50765F7900637337D68F6C54F44F3D81D268191BDAD3D18080C068C56568E156CCFE7AF13BCA413377AFFFEAFD26923F8577A6DFFEA7C53BCA8182662C30C93EC92FD9297F6715571747095F342E857739F23D657EF2BD5E8D9A59859A8B6B1CFA6D474D4A6A4089D37D7C0E48F6C5571747095F342E857739F23D657EF2B6825BDBE14D8E7028C9DFF55498CEFB0BD9CCCA9EDD067B1EDA766A37F9254B7
-X-C8649E89: 5EBC1E3F9DBD6DA5A28F9D70ED05EA5D186ABD224CAA768138D56274015788E99D7014CA8465526A
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojS4EufNoo6iev+VaXmKSwag==
-X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB24FFE3706629A605FD5A834DD1BA7C6635CC5E4764E02DF62AEE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
-X-Mras: Ok
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [192.168.54.30]
+X-RMX-ID: 20200803-071635-4BKmMK0C8lz2TTLy-0@kdin02
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To stop conversion ads1015_set_power_state() function call unimplemented
-function __pm_runtime_suspend() from pm_runtime_put_autosuspend()
-if CONFIG_PM is not set.
-In case of CONFIG_PM is not set: __pm_runtime_suspend() returns -ENOSYS,
-so ads1015_read_raw() failed because ads1015_set_power_state() returns an
-error.
+On Saturday, 1 August 2020, 18:02:34 CEST, Jonathan Cameron wrote:
+> On Mon, 27 Jul 2020 16:57:13 +0200
+> 
+> Christian Eggers <ceggers@arri.de> wrote:
+> > iio_trigger_poll() calls generic_handle_irq(). This function expects to
+> > be run with local IRQs disabled.
+> 
+> Was there an error or warning that lead to this patch?
+[   17.448466] 000: ------------[ cut here ]------------
+[   17.448481] 000: WARNING: CPU: 0 PID: 9 at kernel/irq/handle.c:152 __handle_irq_event_percpu+0x55/0xae
+[   17.448511] 000: irq 236 handler irq_default_primary_handler+0x1/0x4 enabled interrupts
+[   17.448526] 000: Modules linked in: bridge stp llc usb_f_ncm u_ether libcomposite sd_mod configfs cdc_acm usb_storage scsi_mod ci_hdrc_imx ci_hdrc st_magn_spi ulpi st_sensors_spi ehci_hcd regmap_spi tcpm roles st_magn_i2c typec st_sensors_i2c udc_core st_magn as73211 st_sensors imx_thermal usb49xx usbcore industrialio_triggered_buffer rtc_rv3028 kfifo_buf at24 usb_common nls_base i2c_dev usbmisc_imx phy_mxs_usb anatop_regulator imx2_wdt imx_fan spidev leds_pwm leds_gpio led_class iio_trig_sysfs imx6sx_adc industrialio fixed at25 spi_imx spi_bitbang imx_napi dev imx_sdma virt_dma nfsv3 nfs lockd grace sunrpc ksz9477_i2c ksz9477 tag_ksz ksz_common dsa_core phylink regmap_i2c i2c_imx i2c_core fec ptp pps_core micrel
+[   17.448712] 000: CPU: 0 PID: 9 Comm: ksoftirqd/0 Not tainted 5.4.47-rt28+ #446
+[   17.448723] 000: Hardware name: Freescale i.MX6 Ultralite (Device Tree)
+[   17.448738] 000: [<c0108265>] (unwind_backtrace) from [<c01070a7>] (show_stack+0xb/0xc)
+[   17.448754] 000: [<c01070a7>] (show_stack) from [<c0110673>] (__warn+0x7b/0x8c)
+[   17.448772] 000: [<c0110673>] (__warn) from [<c01106b5>] (warn_slowpath_fmt+0x31/0x50)
+[   17.448787] 000: [<c01106b5>] (warn_slowpath_fmt) from [<c012be53>] (__handle_irq_event_percpu+0x55/0xae)
+[   17.448807] 000: [<c012be53>] (__handle_irq_event_percpu) from [<c012bec5>] (handle_irq_event_percpu+0x19/0x40)
+[   17.448823] 000: [<c012bec5>] (handle_irq_event_percpu) from [<c012bf2b>] (handle_irq_event+0x3f/0x5c)
+[   17.448839] 000: [<c012bf2b>] (handle_irq_event) from [<c012dd73>] (handle_simple_irq+0x67/0x6a)
+[   17.448854] 000: [<c012dd73>] (handle_simple_irq) from [<c012b915>] (generic_handle_irq+0xd/0x16)
+[   17.448870] 000: [<c012b915>] (generic_handle_irq) from [<bf8fcf05>] (iio_trigger_poll+0x33/0x44 [industrialio])
+[   17.448962] 000: [<bf8fcf05>] (iio_trigger_poll [industrialio]) from [<c0147b93>] (irq_work_run_list+0x43/0x66)
+[   17.449010] 000: [<c0147b93>] (irq_work_run_list) from [<c013804f>] (run_timer_softirq+0x7/0x3c)
+[   17.449029] 000: [<c013804f>] (run_timer_softirq) from [<c01022cf>] (__do_softirq+0x10f/0x160)
+[   17.449045] 000: [<c01022cf>] (__do_softirq) from [<c0112255>] (run_ksoftirqd+0x19/0x2c)
+[   17.449061] 000: [<c0112255>] (run_ksoftirqd) from [<c012153b>] (smpboot_thread_fn+0x13b/0x140)
+[   17.449078] 000: [<c012153b>] (smpboot_thread_fn) from [<c011f823>] (kthread+0xa3/0xac)
+[   17.449095] 000: [<c011f823>] (kthread) from [<c01010f1>] (ret_from_fork+0x11/0x20)
+[   17.449110] 000: Exception stack(0xc2063fb0 to 0xc2063ff8)
+[   17.449119] 000: 3fa0:                                     00000000 00000000 00000000 00000000
+[   17.449130] 000: 3fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[   17.449139] 000: 3fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[   17.449146] 000: ---[ end trace 0000000000000002 ]---
 
-If CONFIG_PM is disabled, there is no need to start/stop conversion.
-Fix it by adding return 0 function variant if CONFIG_PM is not set.
 
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
-Fixes: ecc24e72f437 ("iio: adc: Add TI ADS1015 ADC driver support")
-Tested-by: Maxim Kiselev <bigunclemax@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jonathan Cameron <jic23@kernel.org>
----
- drivers/iio/adc/ti-ads1015.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 5ea4f45d6bad..64fe3b2a6ec6 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -316,6 +316,7 @@ static const struct iio_chan_spec ads1115_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(ADS1015_TIMESTAMP),
- };
- 
-+#ifdef CONFIG_PM
- static int ads1015_set_power_state(struct ads1015_data *data, bool on)
- {
- 	int ret;
-@@ -333,6 +334,15 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
- 	return ret < 0 ? ret : 0;
- }
- 
-+#else /* !CONFIG_PM */
-+
-+static int ads1015_set_power_state(struct ads1015_data *data, bool on)
-+{
-+	return 0;
-+}
-+
-+#endif /* !CONFIG_PM */
-+
- static
- int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
- {
--- 
-2.27.0
+> Or can you point to what call in generic_handle_irq is making the
+> assumption that we are breaking?
+> 
+> Given this is using the irq_work framework I'm wondering if this is
+> a more general problem?
+
+If I understand correctly, the kernel temporarily disables hardware interrupts
+while hardware irq handlers are run. In case of the iio-trig-hrtim and iio-trig-sysfs
+interrupts, __handle_irq_event_percpu() is not called from a hardware irq
+(where interrupts would be disabled), but from software.
+
+Similar examples found here:
+0a29ac5bd3 ("net: usb: lan78xx: Disable interrupts before calling generic_handle_irq()")
+
+and
+drivers/i2c/busses/i2c-cht-wc.c:103
+
+
+> 
+> Basically more info please!
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+Regards
+Christian
+
+
 

@@ -2,100 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB6A23B6D3
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 10:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E21923B7E2
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 11:39:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726058AbgHDIfD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Aug 2020 04:35:03 -0400
-Received: from www381.your-server.de ([78.46.137.84]:33268 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729654AbgHDIfC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Aug 2020 04:35:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=S5HW9YqmHmV1Y/k3CNQcKpnE6tmv04nycPktPNyk1BY=; b=PjOXiOw7/ykfaOcQjQdMrJkjM6
-        I39GnTow0nG6T6T/u7lxrm6gEVrStXbsD+tKkwy9OjDvESf3fH0nXsfEoxyWq3WX4GRJ8/3OEkXq9
-        /qgTTPU7ebjy6JI9b4olZfRALbrfwKIKhTgVX6ji49b5AipxL5IWdk26l7ldozFZ81l7zGsW8Wrr2
-        jf/UMYRYpohaMlBGNd3einTt6apXdzUZHO0c+HDJkeNp6Z70wJkTFofuaAgSPtuleCvzU0lFGtRw3
-        IeF3KCa9JKk7UO946Zf7NOF1eHgA9RTWKD7eaDaao9u+Jch3L0Q99OvsMrqRMJ8pTaR9l5O5zIoLS
-        m5iG12Hg==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1k2sPM-0001M6-0A; Tue, 04 Aug 2020 10:34:52 +0200
-Received: from [2001:a61:2517:6d01:9e5c:8eff:fe01:8578]
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1k2sPL-0003rl-P0; Tue, 04 Aug 2020 10:34:51 +0200
-Subject: Re: [PATCH v5 2/2] iio: light: as73211: New driver
-To:     Christian Eggers <ceggers@arri.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1726036AbgHDJjK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Aug 2020 05:39:10 -0400
+Received: from smtp2.axis.com ([195.60.68.18]:17802 "EHLO smtp2.axis.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725832AbgHDJjK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 4 Aug 2020 05:39:10 -0400
+X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Aug 2020 05:39:09 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; l=3621; q=dns/txt; s=axis-central1;
+  t=1596533949; x=1628069949;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ur+3d5KYc/6ZODjpCmOML5mGvcwU68NauvMIWuR/6Zw=;
+  b=NFjOP9z8Ec2EwW2IcXwM3ZaFk+3aTrUCM0gW2ltvVak7ycUYFKDYj73q
+   0qLhCP8FV84TNbtuhHsFm/vfHURK+e/MeJbT5zIP/PvZ1dY8MZR61N2KJ
+   MSfaRVhKZmsZ8jQwJvpOgX4BXqerx0DITgQRayCwEmQjaJVx7MLDxiYu+
+   Vzb1y/P7XPIW8az4A3Z0z8THv4glct1fUBRAI5Ha7PQar8UbGeD5iAYiX
+   eZbkkHqxCE4vsSfUtt4oGychFA3i1aSaGFGIdttB5QHR2QbCWqmNW24Mb
+   Qo72rBZF4J6Cr+mfzwi4f+YCAEAgbQOfH3r8Yox/Pg+GkeBe9V95DQjUc
+   g==;
+IronPort-SDR: W/ZhIggQ9sgXnQlPxeMjJeFMuoWE7tNFPVpMn0u4KtQ2/dd1yF3x94QqeWqXbDhk9eXjREClru
+ TRtAOlNYCZmXQnZZlqMwTMN4U04TRGm8FKH2Thx7f8pZIvg8IpVahLXt6rwGZbQJPhaV3JkOhx
+ YCEwz3FGHwgvF6qnqNBTRwcJwepn+dDgRscD/nyheQyfmPh0k7qDgIRJSiFBKJ/sxpSQmdcvkx
+ IG/q0ccxMJNahsU9PloYmpmP+OxbtXG1AXQm9iPR6SFvvAxr6Skyc+/qR7NR1A+zBONhNw1wJ4
+ blE=
+X-IronPort-AV: E=Sophos;i="5.75,433,1589234400"; 
+   d="scan'208";a="11151079"
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20200802163735.76617-1-ceggers@arri.de>
- <20200802163735.76617-3-ceggers@arri.de>
- <CAHp75Vev64E86OWm+eV=1o4ZDs0Xh_Y1z6V54GmpRwWmjD7=eA@mail.gmail.com>
- <2356337.HYKpEJ1Wej@n95hx1g2>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <2e5f6884-66a4-f8e7-6579-247599183d9e@metafoo.de>
-Date:   Tue, 4 Aug 2020 10:34:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+CC:     <kernel@axis.com>, <sean@geanix.com>, <linux-iio@vger.kernel.org>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>
+Subject: [PATCH] iio: dac: dac5571: Support powerdown for multi-channel
+Date:   Tue, 4 Aug 2020 11:31:38 +0200
+Message-ID: <20200804093138.2114-1-vincent.whitchurch@axis.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <2356337.HYKpEJ1Wej@n95hx1g2>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/25893/Mon Aug  3 17:01:47 2020)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/4/20 9:40 AM, Christian Eggers wrote:
-> On Sunday, 2 August 2020, 20:02:35 CEST, Andy Shevchenko wrote:
->> Thanks for an update, my comments below.
-> Thanks for the review. Please see below for my questions.
->
-> Best regards
-> Christian
->
->> On Sun, Aug 2, 2020 at 7:40 PM Christian Eggers <ceggers@arri.de> wrote:
->>> Datasheet:
->>> https://ams.com/documents/20143/36005/AS73211_DS000556_3-01.pdf/a65474c0-
->>> b302-c2fd-e30a-c98df87616df
->> Do we need the UUID after the document file name?
-> I have send AMS an inquiry. Not sure whether I will get an answer. I will wait
-> a few days until sending v6.
->
->>> +#define AS73211_OFFSET_TEMP (-66.9)
->>> +#define AS73211_SCALE_TEMP  0.05
->> In the kernel we don't do float arithmetic. How these are being used?
-> Does this restriction also apply for compile time constants? I am quite
-> sure that all calculations using these defines will be evaluated at compile
-> time. If found a number of other places where probably the same is done:
->
-> find . -name '*.c' | xargs grep "#define.*[0-9]\.[0-9]" | grep -v '"' | grep -v "\/\*.*[0-9]\.[0-9]"
+The driver currently only allows channel 0 to be powered down but the
+multi-channel variants of the hardware allow each channel to be powered
+down separately and with separate power down modes.  Add support for
+this.
 
-I believe it is implementation defined. The compiler is free to generate 
-floating math and do the conversion at runtime. Although it is probably 
-safe to assume that no reasonable compiler will do this for your code. 
-If only we had constexpr in C, then there was a way to make it 
-guaranteed that the conversion happens during compile time.
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+---
+ drivers/iio/dac/ti-dac5571.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-But I agree with you, it would be nice to have a cleaner way of 
-declaring fixed point numbers without having to pay attention to how 
-many 0s you have to put after the least significant digit.
+diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
+index 3a2bb0efe50d..ce8c3d646fb1 100644
+--- a/drivers/iio/dac/ti-dac5571.c
++++ b/drivers/iio/dac/ti-dac5571.c
+@@ -47,8 +47,8 @@ struct dac5571_data {
+ 	struct mutex lock;
+ 	struct regulator *vref;
+ 	u16 val[4];
+-	bool powerdown;
+-	u8 powerdown_mode;
++	bool powerdown[4];
++	u8 powerdown_mode[4];
+ 	struct dac5571_spec const *spec;
+ 	int (*dac5571_cmd)(struct dac5571_data *data, int channel, u16 val);
+ 	int (*dac5571_pwrdwn)(struct dac5571_data *data, int channel, u8 pwrdwn);
+@@ -125,7 +125,7 @@ static int dac5571_get_powerdown_mode(struct iio_dev *indio_dev,
+ {
+ 	struct dac5571_data *data = iio_priv(indio_dev);
+ 
+-	return data->powerdown_mode;
++	return data->powerdown_mode[chan->channel];
+ }
+ 
+ static int dac5571_set_powerdown_mode(struct iio_dev *indio_dev,
+@@ -135,17 +135,17 @@ static int dac5571_set_powerdown_mode(struct iio_dev *indio_dev,
+ 	struct dac5571_data *data = iio_priv(indio_dev);
+ 	int ret = 0;
+ 
+-	if (data->powerdown_mode == mode)
++	if (data->powerdown_mode[chan->channel] == mode)
+ 		return 0;
+ 
+ 	mutex_lock(&data->lock);
+-	if (data->powerdown) {
++	if (data->powerdown[chan->channel]) {
+ 		ret = data->dac5571_pwrdwn(data, chan->channel,
+ 					   DAC5571_POWERDOWN(mode));
+ 		if (ret)
+ 			goto out;
+ 	}
+-	data->powerdown_mode = mode;
++	data->powerdown_mode[chan->channel] = mode;
+ 
+  out:
+ 	mutex_unlock(&data->lock);
+@@ -167,7 +167,7 @@ static ssize_t dac5571_read_powerdown(struct iio_dev *indio_dev,
+ {
+ 	struct dac5571_data *data = iio_priv(indio_dev);
+ 
+-	return sprintf(buf, "%d\n", data->powerdown);
++	return sprintf(buf, "%d\n", data->powerdown[chan->channel]);
+ }
+ 
+ static ssize_t dac5571_write_powerdown(struct iio_dev *indio_dev,
+@@ -183,19 +183,20 @@ static ssize_t dac5571_write_powerdown(struct iio_dev *indio_dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (data->powerdown == powerdown)
++	if (data->powerdown[chan->channel] == powerdown)
+ 		return len;
+ 
+ 	mutex_lock(&data->lock);
+ 	if (powerdown)
+ 		ret = data->dac5571_pwrdwn(data, chan->channel,
+-			    DAC5571_POWERDOWN(data->powerdown_mode));
++			    DAC5571_POWERDOWN(data->powerdown_mode[chan->channel]));
+ 	else
+-		ret = data->dac5571_cmd(data, chan->channel, data->val[0]);
++		ret = data->dac5571_cmd(data, chan->channel,
++				data->val[chan->channel]);
+ 	if (ret)
+ 		goto out;
+ 
+-	data->powerdown = powerdown;
++	data->powerdown[chan->channel] = powerdown;
+ 
+  out:
+ 	mutex_unlock(&data->lock);
+@@ -209,9 +210,9 @@ static const struct iio_chan_spec_ext_info dac5571_ext_info[] = {
+ 		.name	   = "powerdown",
+ 		.read	   = dac5571_read_powerdown,
+ 		.write	   = dac5571_write_powerdown,
+-		.shared	   = IIO_SHARED_BY_TYPE,
++		.shared	   = IIO_SEPARATE,
+ 	},
+-	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE, &dac5571_powerdown_mode),
++	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &dac5571_powerdown_mode),
+ 	IIO_ENUM_AVAILABLE("powerdown_mode", &dac5571_powerdown_mode),
+ 	{},
+ };
+@@ -276,7 +277,7 @@ static int dac5571_write_raw(struct iio_dev *indio_dev,
+ 		if (val >= (1 << data->spec->resolution) || val < 0)
+ 			return -EINVAL;
+ 
+-		if (data->powerdown)
++		if (data->powerdown[chan->channel])
+ 			return -EBUSY;
+ 
+ 		mutex_lock(&data->lock);
+-- 
+2.25.1
 

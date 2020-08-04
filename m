@@ -2,128 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1C923B5EA
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 09:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95BA623B62F
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 09:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729930AbgHDHma (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Aug 2020 03:42:30 -0400
-Received: from mailout11.rmx.de ([94.199.88.76]:37719 "EHLO mailout11.rmx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726808AbgHDHma (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 4 Aug 2020 03:42:30 -0400
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mailout11.rmx.de (Postfix) with ESMTPS id 4BLRYF45jsz3ybM;
-        Tue,  4 Aug 2020 09:42:25 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by kdin01.retarus.com (Postfix) with ESMTPS id 4BLRY03tZlz2xNM;
-        Tue,  4 Aug 2020 09:42:12 +0200 (CEST)
-Received: from n95hx1g2.localnet (192.168.54.102) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Tue, 4 Aug
- 2020 09:40:12 +0200
-From:   Christian Eggers <ceggers@arri.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 2/2] iio: light: as73211: New driver
-Date:   Tue, 4 Aug 2020 09:40:11 +0200
-Message-ID: <2356337.HYKpEJ1Wej@n95hx1g2>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <CAHp75Vev64E86OWm+eV=1o4ZDs0Xh_Y1z6V54GmpRwWmjD7=eA@mail.gmail.com>
-References: <20200802163735.76617-1-ceggers@arri.de> <20200802163735.76617-3-ceggers@arri.de> <CAHp75Vev64E86OWm+eV=1o4ZDs0Xh_Y1z6V54GmpRwWmjD7=eA@mail.gmail.com>
+        id S1729640AbgHDH6P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Aug 2020 03:58:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727066AbgHDH6P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Aug 2020 03:58:15 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24028C06174A
+        for <linux-iio@vger.kernel.org>; Tue,  4 Aug 2020 00:58:15 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id g19so29200031ioh.8
+        for <linux-iio@vger.kernel.org>; Tue, 04 Aug 2020 00:58:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kMZf2t9EcjlJ4jvHRNWow+fwJFtPbegbegr9EI3Rn3I=;
+        b=gTJwN5BL9ze+SRbn2vAaVUOswNTugj2bAhZr/Y0GfGZkFZLVvt5l5nRZjN88rsS2Nz
+         05WVcCBG27/xPlsb/hjPo5Iau0aPcwp2sDMNp2E2M8K9L+WHLmY3UchhwKlXf49mHZMO
+         nCIA9IoAk0+dtyF+nAVFVRirPeX8s7dZ2ol5+ojbfn5odwrsgzioTkOszEd+6F747u/t
+         AH8FWX1WzRmhfnXTaKLYoIzNrgLxpeUM0FZiRhB6BTyQL7XqOWfDOUrWyNFTHzRNC4V7
+         b4n1AxP2TBKZmV9re43OZ495tglmvaler52wLc6TNvLhND+x881+JLv6iTGSRFBiCh5V
+         gNxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kMZf2t9EcjlJ4jvHRNWow+fwJFtPbegbegr9EI3Rn3I=;
+        b=XwUTZZCMi1gMpXhF2ulDQ/fMbNNwLKqZZWR5se/1v6Wb5G3vIeDV9FOO5RviJOx25v
+         IUxYPV7dPLnSFFBIfjsSP2ylujWSlq8tWiRrVCRIAhWhJsPqctevEIRt5jjIB/7/ykEC
+         13+tAeXqI9x1/UOGITR1H1i0SJVATgGJ41LmTA30nHg8rADvMp4E7p4b8p2xvkN2YM1e
+         mMHKp6V2Z1S//HbOXEhmKU2xmZrp6znVZT6PD+2GU3nROWpRbyhkC7cJHjF12Bd9N9Cd
+         fg0FWb6FZEEYxD9GzM3o3rca7c8OaKTSwquWNJ3IFd0NzzoKxfyRVRJHxW1xZvasA9eC
+         FXPw==
+X-Gm-Message-State: AOAM530BQySd70Ci58OHG6WQ4Yj7rICa02sTRKqaYkRqRUHrdVDSFGEB
+        TV/hOlE60h/q/Nt3E0YglpMhVbUQEw2epe4wZZfesQ==
+X-Google-Smtp-Source: ABdhPJy1L3R+qgiqlRzr8WKIrpgTbp+M9wSv7fjCzoXuZEvcxj/HVoDdZcPtPcQltAlCaNi4V/ltgb7GuNBIk1UBBGM=
+X-Received: by 2002:a6b:ba89:: with SMTP id k131mr3815610iof.133.1596527893889;
+ Tue, 04 Aug 2020 00:58:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Originating-IP: [192.168.54.102]
-X-RMX-ID: 20200804-094212-4BLRY03tZlz2xNM-0@kdin01
-X-RMX-SOURCE: 217.111.95.66
+References: <20200803151656.332559-1-cmo@melexis.com> <CAHp75VfmSfmezqwwRfHZ797Y9rYDu3hgL5vGvPwbzGjCXsKWcQ@mail.gmail.com>
+In-Reply-To: <CAHp75VfmSfmezqwwRfHZ797Y9rYDu3hgL5vGvPwbzGjCXsKWcQ@mail.gmail.com>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Tue, 4 Aug 2020 09:57:38 +0200
+Message-ID: <CAKv63uuFNOksmDUKEapvX60gg9QE+32Dak_2=M2cYeueFiHjPg@mail.gmail.com>
+Subject: Re: [PATCH] iio:temperature:mlx90632: Reduce number of equal calulcations
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sunday, 2 August 2020, 20:02:35 CEST, Andy Shevchenko wrote:
-> Thanks for an update, my comments below.
+Hi Andy,
+Thanks for the comments. This is indeed a cut-out section of what I
+wanted to submit next.
 
-Thanks for the review. Please see below for my questions.
+On Mon, 3 Aug 2020 at 18:35, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+>
+> On Mon, Aug 3, 2020 at 6:17 PM Crt Mori <cmo@melexis.com> wrote:
+> >
+> > TAdut4 was calculated each iteration although it did not change. In light
+> > of near future additions of the Extended range DSP calculations, this
+> > function refactoring will help reduce unrelated changes in that series as
+> > well as reduce the number of new functions needed.
+>
+> Okay!
+>
+> > Also converted shifts in this function of signed integers to divisions as
+> > that is less implementation-defined behavior.
+>
+> This is what I'm wondering about. Why?
+>
+> ...
 
-Best regards
-Christian
+The reason for this is that whenever something is wrong with the
+calculation I am looking into the shifts which are
+implementation-defined and might not keep the signed bit. Division
+however would.
 
-> On Sun, Aug 2, 2020 at 7:40 PM Christian Eggers <ceggers@arri.de> wrote:
-> > Datasheet:
-> > https://ams.com/documents/20143/36005/AS73211_DS000556_3-01.pdf/a65474c0-
-> > b302-c2fd-e30a-c98df87616df
-> Do we need the UUID after the document file name?
-I have send AMS an inquiry. Not sure whether I will get an answer. I will wait
-a few days until sending v6.
+>
+> > -       Ha_customer = ((s64)Ha * 1000000LL) >> 14ULL;
+> > -       Hb_customer = ((s64)Hb * 100) >> 10ULL;
+> > +       Ha_customer = div64_s64((s64)Ha * 1000000LL, 16384);
+> > +       Hb_customer = div64_s64((s64)Hb * 100, 1024);
+>
+> Have you checked the code on 32-bit machines?
+> As far as I can see the div64_*64() do not have power of two divisor
+> optimizations. I bet it will generate a bulk of unneeded code.
+>
+> ...
+>
+> > -       calcedKsTO = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
+> > -                            * 1000LL)) >> 36LL;
+> > -       calcedKsTA = ((s64)(Fb * (TAdut - 25 * 1000000LL))) >> 36LL;
+> > -       Alpha_corr = div64_s64((((s64)(Fa * 10000000000LL) >> 46LL)
+> > -                               * Ha_customer), 1000LL);
+>
+> > +       calcedKsTO = div64_s64((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
+> > +                                    * 1000LL), 68719476736);
+> > +       calcedKsTA = div64_s64((s64)(Fb * (TAdut - 25 * 1000000LL)), 68719476736);
+> > +       Alpha_corr = div64_s64(div64_s64((s64)(Fa * 10000000000LL), 70368744177664)
+> > +                              * Ha_customer, 1000LL);
+>
+> This is less readable and full of magic numbers in comparison to the
+> above (however, also full of magics, but at least gives better hint).
+>
+> ...
 
-> > +#define AS73211_OFFSET_TEMP (-66.9)
-> > +#define AS73211_SCALE_TEMP  0.05
-> 
-> In the kernel we don't do float arithmetic. How these are being used?
-Does this restriction also apply for compile time constants? I am quite 
-sure that all calculations using these defines will be evaluated at compile
-time. If found a number of other places where probably the same is done:
-
-find . -name '*.c' | xargs grep "#define.*[0-9]\.[0-9]" | grep -v '"' | grep -v "\/\*.*[0-9]\.[0-9]"
-
-> > +               *val2 = (AS73211_OFFSET_TEMP - (int)AS73211_OFFSET_TEMP) *
-> > 1000000;
-> > 
-> > +                       *val2 = (AS73211_SCALE_TEMP -
-> > (int)AS73211_SCALE_TEMP) * 1000000;
-> Magic 1000000 multiplier.
-I think that in the context of IIO_VAL_INT_PLUS_MICRO this isn't quite magic. Using
-1000000 directly seems quite usual:
-
-find drivers/iio/ -type f | xargs grep "val2 = .*1000000"
-
-> I think here you got them always 0. And to fix that you need to
-> redefine (with also units included in the name) above constants like
-> #define ..._OFFSET_TEMP_mC 66500
-> ... _SCALE_TEMP_?? 50
-a scale factor has no unit
-
-> 
-> Consider to use definitions from
-> https://elixir.bootlin.com/linux/latest/source/include/linux/units.h
-There are only definition for milli celsius. For IIO_VAL_INT_PLUS_MICRO I would
-require micro celsius.
-
-If I have the freedom, I would keep it as it is. Else I would suggest the following:
-#define AS73211_OFFSET_TEMP_INT (-66)
-#define AS73211_OFFSET_TEMP_MICRO 900000
-#define AS73211_SCALE_TEMP_INT 0
-#define AS73211_SCALE_TEMP_MICRO 50000
-
-> > +       }}
-> > +
-> > +       return -EINVAL;
-> 
-> Make it default case.
-changed. Is there any benefit? My IDE's syntax checker now complains
-"No return, in a function returning non-void". But gcc is happy with this.
-
-> > +       ret = devm_iio_device_register(dev, indio_dev);
-> > +       if (ret < 0)
-> > +               return ret;
-> > +
-> > +       return 0;
-> 
->   return devm_iio_device_register();
-changed. I prefer the original pattern as it would produce less changed lines
-if something needs to inserted later.
-
-
-
+These are coefficients so there is not much to unmagic. I can keep the
+shifts, if you think that is more readable or add comments after lines
+with 2^46 or something?
+>
+> > +       TAdut4 = (div64_s64(TAdut, 10000LL) + 27315) *
+> > +               (div64_s64(TAdut, 10000LL) + 27315) *
+> > +               (div64_s64(TAdut, 10000LL)  + 27315) *
+> > +               (div64_s64(TAdut, 10000LL) + 27315);
+>
+> Shouldn't you switch to definitions from units.h? (perhaps as a separate change)
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

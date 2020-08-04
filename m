@@ -2,120 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73AD423B8B1
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 12:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 576E723BB84
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Aug 2020 15:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbgHDKYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Aug 2020 06:24:03 -0400
-Received: from mail-am6eur05on2118.outbound.protection.outlook.com ([40.107.22.118]:11136
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726167AbgHDKYC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 4 Aug 2020 06:24:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IgciYfxZwynAsDlb5LHUFiJe+spP2PRr7GPCKGWzdsNNHgGz/mg0BqCG89KuY4Vvg8xs1+YBv8sRFn0GH3G+cY5BzdcXEML7OulLA1knH8B5sARN3Puvu8Zvqo2vdM++ouWBFo5Vyp7lkGJAF48tg56Q6znf/UEb26QgjdZE8eXGAe1L/eUDqrNTdLny8JSjV7zyxbIYJjQ2Jw7BYp3MJHIsH+B2mmmklD5H9nap36Y65zUytd6gJs+t6nFEFlcq9YI7IV/TfKuZN3LWgbptzgvWSyCuPdckQXqmB6BaFThswTpNpQyauPbKPZhzYPV1I2nPKVxDqi1Pi3myywWkgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9fEEi4lA9VECFAOa9BY8c27/4Y9RXDR/VpQWksNp+ic=;
- b=JEKSpUOzM7Obui3arogiTl0kqyZHDDBepU+B8DYEix3HX/sr/bzQVmfLNeDCZnKt7hapfZWOiqkAYTZBTa6bCmMd7M58hIX7VkCTBWKBY6zBtHkm/KLxb7cZjv/2TJTU2L3+3gbvv4b7+Mse8Nvt37e0gaAjOS8CTH3B15YWwM5WtKYpBv1Q6U9DNnaZhvKCNvV0tIuV39MBoBeeN5Kw6tjrKfyyBzEGW0vLvnMNpHh6ZUnVw+/OC7x7eTb60wr85HxpVm5RqDnRkZ4mUE+m+I9KlqqbWS1NlrHSShjQTFRBepHxbuUXfKVtshyF7XSI+MJENMMHpEQmYawLrh5OVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
+        id S1728627AbgHDN4V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Aug 2020 09:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52272 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbgHDN4S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Aug 2020 09:56:18 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41E1C06174A
+        for <linux-iio@vger.kernel.org>; Tue,  4 Aug 2020 06:56:17 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id a21so42512338ejj.10
+        for <linux-iio@vger.kernel.org>; Tue, 04 Aug 2020 06:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9fEEi4lA9VECFAOa9BY8c27/4Y9RXDR/VpQWksNp+ic=;
- b=ayqn6p6oXQdayqtgaC6qHkKHXwrf72SZETQPrJlWLjbxJJ3mY5Ylg3pAMlxeAWtcgORZqkUvU3OOrPAHB9ff/cXSukx40Ebd7INv6i6Gdt1OBWCCm9mtwz5YCj5R1/bqk6AY5tKaSNpYuTibck5DG63uLGPrId3jVocQVVZZBv8=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=norphonic.com;
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com (2603:10a6:20b:86::11)
- by AM6PR06MB4787.eurprd06.prod.outlook.com (2603:10a6:20b:5d::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.20; Tue, 4 Aug
- 2020 10:23:59 +0000
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::3c50:d581:638e:fe8d]) by AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::3c50:d581:638e:fe8d%6]) with mapi id 15.20.3239.022; Tue, 4 Aug 2020
- 10:23:59 +0000
-References: <86d053d1re.fsf@norphonic.com> <CAHp75VfgFN9YBHo9T8fgswUCnhdb3L5nGEi3_yONvZp5_vduUw@mail.gmail.com> <20200712115444.49dc18c6@archlinux>
-User-agent: mu4e 0.9.18; emacs 25.2.2
-From:   Eugene Zaikonnikov <ez@norphonic.com>
+        d=melexis.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WzDswwBfXvOnych9mKo86pvZBTTMjA75hoRZ23jMux8=;
+        b=pmGgt5uNMDYr7vjNTIYqQDZw2nFS3qKA/7RvWdEmlg6MUlWxX/ooGUDm1hoPzxBMul
+         NpjY26NP+K3PAFwDJq8Rz5EtNCLnohoUm0vT3gqcoGUwkcjhephDD6Nk1hzDDrsenADy
+         R61GKcqfYiB2j73tkADN1vWO2kLoN63PzUq7q+t+kJ5NtMDucH9wn0TJZkzftcWY2mDH
+         N1udxl/7iHsNvdmfRzBTZ+DTSRCbw/GCKVPlkjDRH4Laki1LCf6W2CNrLo9UkUC7v9fy
+         72qnF8TXmn6l9zclNVoVmqh5PArB4RevO9Iqc9l6Soszra8nGAyWuEkC1VApdcHkdTI7
+         2CIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WzDswwBfXvOnych9mKo86pvZBTTMjA75hoRZ23jMux8=;
+        b=f5dQJU2GZYDiyXABtN8qUeBbVGCT6VQngUmvxZacsPNp6xbKDBhJ1U0LadL7Xox5WK
+         Ym0bmy+I1pbmH4lVYL3imcwijgzqn378/RqsQMHbJrP+rxRdRqNX6bLjfDdu/qdd/gFB
+         a8Dzv2s305staeRWhmYdoORpEHg9Ro4eLrwId7b7CjaC8RkWCfjtmjqv0CyEoVvDtcu9
+         mXTkAZdIblbFyY9/ahavGcB1nrwSJsJusa88cKY2QVff6TLIBsira5jm2rl/um4p7NUL
+         ALgHf0NeulfS0PQHZ5aobcyBUCk40xlq3sRwzze7B9fUv8yM+2C/mqXcb658YNYWYdpS
+         LcIQ==
+X-Gm-Message-State: AOAM532SDKjicM3dvQ0P2tDvREErcpb6XJ3cRNWcC4tKtGRTLjEsDD0V
+        VbgquA6WgXtrhGcL1FNVnX/xRg==
+X-Google-Smtp-Source: ABdhPJw91afCFXRk5zcL8K32et29oN+/1gU363aw7cgOdED79D7kHcsR2pgFw0GTKeXlVN6Viw6jcw==
+X-Received: by 2002:a17:906:74d0:: with SMTP id z16mr21232387ejl.51.1596549376286;
+        Tue, 04 Aug 2020 06:56:16 -0700 (PDT)
+Received: from localhost.localdomain (ptr-4xajgyum9863qf6si3v.18120a2.ip6.access.telenet.be. [2a02:1810:a421:dd00:2092:7f6b:4676:cab])
+        by smtp.gmail.com with ESMTPSA id r25sm18361473edy.93.2020.08.04.06.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2020 06:56:15 -0700 (PDT)
+From:   Crt Mori <cmo@melexis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        development@norphonic.com, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v9 1/2] iio: humidity: Add TI HDC20x0 support
-In-reply-to: <20200712115444.49dc18c6@archlinux>
-Date:   Tue, 04 Aug 2020 12:23:56 +0200
-Message-ID: <86zh7ak8ub.fsf@norphonic.com>
-Content-Type: text/plain
-X-ClientProxiedBy: OL1P279CA0070.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:e10:15::21) To AM6PR06MB5430.eurprd06.prod.outlook.com
- (2603:10a6:20b:86::11)
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Crt Mori <cmo@melexis.com>
+Subject: [PATCH v2] iio:temperature:mlx90632: Reduce number of equal calculations
+Date:   Tue,  4 Aug 2020 15:55:55 +0200
+Message-Id: <20200804135555.95186-1-cmo@melexis.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sta-eugenez.norphonic.com (62.97.226.122) by OL1P279CA0070.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:15::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.16 via Frontend Transport; Tue, 4 Aug 2020 10:23:58 +0000
-X-Originating-IP: [62.97.226.122]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 00a9fb8c-8801-49e4-348c-08d838608047
-X-MS-TrafficTypeDiagnostic: AM6PR06MB4787:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM6PR06MB47878EA7EC55B8B88E9036C2CA4A0@AM6PR06MB4787.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PxjoHgym/hcAlqPdvyWFPlNsBaTwxtsqmtIYryjBoOAt+Bs8Itrel0oSSAvi6a0hWjC4JxPLmarPDd8gJD5hHmFNNO5y/m8OFFSeYQSM6BVK10ilLgLJwD/jpDkMsmY98DjkhXNWCB4lZ0qGfla9E7TyYAh8qpeBvnz4dSM8zXPPAuMuutjamxlE/D9pPWurOTX9hGTkJySouINvF4kt2M+NRbgDv2HjArY3WnOP0jqBpBuxNH1+t2AY3/6KlCZy3Kj4Prt6kYqK64/exAueSJBLl21E7J9w0itLMwN73flxdYV1FbSqsg41P8ZGGTwT
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB5430.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(136003)(396003)(346002)(39830400003)(366004)(8676002)(6486002)(8936002)(956004)(26005)(4744005)(2616005)(2906002)(186003)(66556008)(16526019)(66476007)(4326008)(66946007)(54906003)(508600001)(5660300002)(6916009)(52116002)(316002)(7696005)(86362001)(36756003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: SmIGjzehkOa4VqJm1hRA9+C5EuYGZqga6KaHJ8Du3vZcbtaiRIr7Gvs/3QaEnLJmr2bykZi2sTKKDZobbI3HcakfOaFwK7M1u/SuoWVpCoVBjl3ddphMWooBuscb7fGyqoubhzuiBPQHdAVVRQNjtWecsxlbsuzzI9zvmIdkDz5PTDwHG79JAP7FV7ZcldQSxOUB5JAMdaPXJM1OnjNKJ327zGipPKJJ8WtcFivWSQJIT2NzibU/jUDTRFMieGiOnqrFkjSkJywiiqW5JgTaDChNqsIsD6G/TmV7s+z0D01fUBAcd66jveo1xNUz20vJDavC9UMguBcM6CBrcUCm/bmH0y1kTLSmEYAZEVV74U2eXUn3eIyfSqR8xKmcONF6I4QfThMDWDz5VETRW7UIzkBb33DKcF8F7VcZ19Wddb7E7jKm6IJYZFoGnnWPqb7BHXbPTPXC1OUc6FdM4qMfQVHsrB8Taq1lkGPQw/QHKtLSqGL2NFoQGL+k6pxlY/MraWIroRjWDR41oYKwe3HOh/ymEg30oMvNtw9Zmp/rGMEoR/CX2JqgK9B9dvES5RYrw3IKGF7O+n2ARh4eIXm0bNFqb71vv+yjk1vP0XlcnWl2WZ4bMoINIPzalK1XNSj3AnwDK+LF7JVLpRIn1FV+Xw==
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00a9fb8c-8801-49e4-348c-08d838608047
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR06MB5430.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2020 10:23:59.5529
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: csFBVOuSkJGMwWbtCPG0t31L0YGx8X6S+9HfaShUcYOp2LPX9D497eMuyDv1Awe5vwDuQGze+kPCRwQasnUmIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB4787
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+TAdut4 was calculated each iteration although it did not change. In light
+of near future additions of the Extended range DSP calculations, this
+function refactoring will help reduce unrelated changes in that series as
+well as reduce the number of new functions needed.
 
-Jonathan Cameron <jic23@kernel.org> writes:
+Signed-off-by: Crt Mori <cmo@melexis.com>
+---
+ drivers/iio/temperature/mlx90632.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-> On Sat, 11 Jul 2020 18:27:09 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 51b812bcff2e..763a148a0095 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -374,11 +374,11 @@ static s32 mlx90632_calc_temp_ambient(s16 ambient_new_raw, s16 ambient_old_raw,
+ }
+ 
+ static s32 mlx90632_calc_temp_object_iteration(s32 prev_object_temp, s64 object,
+-					       s64 TAdut, s32 Fa, s32 Fb,
++					       s64 TAdut, s64 TAdut4, s32 Fa, s32 Fb,
+ 					       s32 Ga, s16 Ha, s16 Hb,
+ 					       u16 emissivity)
+ {
+-	s64 calcedKsTO, calcedKsTA, ir_Alpha, TAdut4, Alpha_corr;
++	s64 calcedKsTO, calcedKsTA, ir_Alpha, Alpha_corr;
+ 	s64 Ha_customer, Hb_customer;
+ 
+ 	Ha_customer = ((s64)Ha * 1000000LL) >> 14ULL;
+@@ -393,10 +393,6 @@ static s32 mlx90632_calc_temp_object_iteration(s32 prev_object_temp, s64 object,
+ 	Alpha_corr = emissivity * div64_s64(Alpha_corr, 100000LL);
+ 	Alpha_corr = div64_s64(Alpha_corr, 1000LL);
+ 	ir_Alpha = div64_s64((s64)object * 10000000LL, Alpha_corr);
+-	TAdut4 = (div64_s64(TAdut, 10000LL) + 27315) *
+-		(div64_s64(TAdut, 10000LL) + 27315) *
+-		(div64_s64(TAdut, 10000LL)  + 27315) *
+-		(div64_s64(TAdut, 10000LL) + 27315);
+ 
+ 	return (int_sqrt64(int_sqrt64(ir_Alpha * 1000000000000LL + TAdut4))
+ 		- 27315 - Hb_customer) * 10;
+@@ -406,17 +402,21 @@ static s32 mlx90632_calc_temp_object(s64 object, s64 ambient, s32 Ea, s32 Eb,
+ 				     s32 Fa, s32 Fb, s32 Ga, s16 Ha, s16 Hb,
+ 				     u16 tmp_emi)
+ {
+-	s64 kTA, kTA0, TAdut;
++	s64 kTA, kTA0, TAdut, TAdut4;
+ 	s64 temp = 25000;
+ 	s8 i;
+ 
+ 	kTA = (Ea * 1000LL) >> 16LL;
+ 	kTA0 = (Eb * 1000LL) >> 8LL;
+ 	TAdut = div64_s64(((ambient - kTA0) * 1000000LL), kTA) + 25 * 1000000LL;
++	TAdut4 = (div64_s64(TAdut, 10000LL) + 27315) *
++		(div64_s64(TAdut, 10000LL) + 27315) *
++		(div64_s64(TAdut, 10000LL)  + 27315) *
++		(div64_s64(TAdut, 10000LL) + 27315);
+ 
+ 	/* Iterations of calculation as described in datasheet */
+ 	for (i = 0; i < 5; ++i) {
+-		temp = mlx90632_calc_temp_object_iteration(temp, object, TAdut,
++		temp = mlx90632_calc_temp_object_iteration(temp, object, TAdut, TAdut4,
+ 							   Fa, Fb, Ga, Ha, Hb,
+ 							   tmp_emi);
+ 	}
+-- 
+2.25.1
 
-[...]
-
->> 4. IIO_CONST_ATTR can be one line, but hey don't we have IIO core to
->> take care of it?
->
-> For that one, we could indeed use the read_avail callback here
-> for the out_current_heater_raw_available. I've not yet started insisting
-> on this because of the huge number of drivers that predate introduction of
-> that stuff to the core and as a result a lack of good examples.
-> Eugene, if you are happy to change this one over to that and hence act
-> as an example it would be great!
->
-Just looked into that.
-
-We use this driver here with trees as early as 4.9.11, and it does not
-appear to have this callback in iio_info yet. Hope it's OK as it is in
-this iteration.
-
---
-Regards,
-
-  Eugene Zaikonnikov
-
-  Norphonic AS
-  Tel: +47 98 23 97 73

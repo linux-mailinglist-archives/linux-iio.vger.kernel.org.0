@@ -2,110 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E808423E098
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Aug 2020 20:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3015423E0D6
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Aug 2020 20:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729319AbgHFSgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Aug 2020 14:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728498AbgHFSfe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Aug 2020 14:35:34 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA9AC0617A5
-        for <linux-iio@vger.kernel.org>; Thu,  6 Aug 2020 11:35:21 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k3kjS-0004BS-94; Thu, 06 Aug 2020 20:35:14 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k3kjR-0007aU-Sj; Thu, 06 Aug 2020 20:35:13 +0200
-Date:   Thu, 6 Aug 2020 20:35:13 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] pwm: cros-ec: Accept more error codes from
- cros_ec_cmd_xfer_status
-Message-ID: <20200806183513.nbaeonm5sevjvxkb@pengutronix.de>
-References: <20200806153308.204605-1-linux@roeck-us.net>
- <20200806153308.204605-5-linux@roeck-us.net>
+        id S1729079AbgHFSir (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Aug 2020 14:38:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60656 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726899AbgHFSin (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Aug 2020 14:38:43 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 878AF221E3;
+        Thu,  6 Aug 2020 18:38:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596739123;
+        bh=2kQR9I4zXt/WNULI01GY/ypUOHIRns3YKmoIz1UaEr4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=fRTYpEGCjZWeocG4aY97dzfbZvAO437sqaVl2VpUuxiYy7sElhR1g3gUyoezzPBMS
+         9hojTb0yDIbtJjxuXpZpdoi+mIF/q0DYfIMi0exfQeg05CMS6LCSTCIOG/8qsYEX3X
+         ydTPApw7fIA7o+rGUqq8tYAhmdGBDpfk9d4phDC4=
+Date:   Thu, 6 Aug 2020 19:38:38 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Daniel Campello <campello@chromium.org>
+Cc:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 11/15] iio: sx9310: Use variable to hold &client->dev
+Message-ID: <20200806193838.092d1567@archlinux>
+In-Reply-To: <20200803175559.v5.11.If9d9c0fe089e43ea2dbc7900b6d61cd05c66f1f7@changeid>
+References: <20200803235815.778997-1-campello@chromium.org>
+        <20200803175559.v5.11.If9d9c0fe089e43ea2dbc7900b6d61cd05c66f1f7@changeid>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="prp6ta2dfdqjn5v6"
-Content-Disposition: inline
-In-Reply-To: <20200806153308.204605-5-linux@roeck-us.net>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon,  3 Aug 2020 17:58:11 -0600
+Daniel Campello <campello@chromium.org> wrote:
 
---prp6ta2dfdqjn5v6
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Improves readability by storing &client->dev in a local variable.
+> 
+> Signed-off-by: Daniel Campello <campello@chromium.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+This one needed some tweaking to apply as the parent is now
+set by the core code.
 
-Hello,
+Applied (and the ones before I didn't metion) to the togreg branch
+of iio.git and pushed out as testing,
 
-On Thu, Aug 06, 2020 at 08:33:05AM -0700, Guenter Roeck wrote:
-> Since commit c5cd2b47b203 ("platform/chrome: cros_ec_proto: Report command
-> not supported") we can no longer assume that cros_ec_cmd_xfer_status()
-> reports -EPROTO for all errors returned by the EC itself. A follow-up
-> patch will change cros_ec_cmd_xfer_status() to report additional errors
-> reported by the EC as distinguished Linux error codes.
->=20
-> Handle this change by no longer assuming that only -EPROTO is used
-> to report all errors returned by the EC itself. Instead, support both
-> the old and the new error codes.
->=20
-> Add a comment describing cros_ec_num_pwms() to explain its functionality.
->=20
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Cc: Yu-Hsuan Hsu <yuhsuan@chromium.org>
-> Cc: Prashant Malani <pmalani@chromium.org>
-> Cc: Brian Norris <briannorris@chromium.org>
-> Acked-by: Thierry Reding <thierry.reding@gmail.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Thanks,
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Jonathan
 
-Best regards
-Uwe
+> ---
+> 
+> Changes in v5: None
+> Changes in v4: None
+> Changes in v3: None
+> Changes in v2:
+>  - Added '\n' to dev_err()
+> 
+>  drivers/iio/proximity/sx9310.c | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index adb707e2d79612..589052d2d1146e 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -887,11 +887,12 @@ static int sx9310_set_indio_dev_name(struct device *dev,
+>  static int sx9310_probe(struct i2c_client *client)
+>  {
+>  	int ret;
+> +	struct device *dev = &client->dev;
+>  	struct iio_dev *indio_dev;
+>  	struct sx9310_data *data;
+>  
+> -	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> -	if (indio_dev == NULL)
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+>  	data = iio_priv(indio_dev);
+> @@ -905,17 +906,16 @@ static int sx9310_probe(struct i2c_client *client)
+>  
+>  	ret = regmap_read(data->regmap, SX9310_REG_WHOAMI, &data->whoami);
+>  	if (ret) {
+> -		dev_err(&client->dev, "error in reading WHOAMI register: %d",
+> -			ret);
+> +		dev_err(dev, "error in reading WHOAMI register: %d\n", ret);
+>  		return ret;
+>  	}
+>  
+> -	ret = sx9310_set_indio_dev_name(&client->dev, indio_dev, data->whoami);
+> +	ret = sx9310_set_indio_dev_name(dev, indio_dev, data->whoami);
+>  	if (ret)
+>  		return ret;
+>  
+> -	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(&client->dev));
+> -	indio_dev->dev.parent = &client->dev;
+> +	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(dev));
+> +	indio_dev->dev.parent = dev;
+>  	indio_dev->channels = sx9310_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(sx9310_channels);
+>  	indio_dev->info = &sx9310_info;
+> @@ -927,7 +927,7 @@ static int sx9310_probe(struct i2c_client *client)
+>  		return ret;
+>  
+>  	if (client->irq) {
+> -		ret = devm_request_threaded_irq(&client->dev, client->irq,
+> +		ret = devm_request_threaded_irq(dev, client->irq,
+>  						sx9310_irq_handler,
+>  						sx9310_irq_thread_handler,
+>  						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+> @@ -935,29 +935,29 @@ static int sx9310_probe(struct i2c_client *client)
+>  		if (ret)
+>  			return ret;
+>  
+> -		data->trig =
+> -			devm_iio_trigger_alloc(&client->dev, "%s-dev%d",
+> -					       indio_dev->name, indio_dev->id);
+> +		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+> +						    indio_dev->name,
+> +						    indio_dev->id);
+>  		if (!data->trig)
+>  			return -ENOMEM;
+>  
+> -		data->trig->dev.parent = &client->dev;
+> +		data->trig->dev.parent = dev;
+>  		data->trig->ops = &sx9310_trigger_ops;
+>  		iio_trigger_set_drvdata(data->trig, indio_dev);
+>  
+> -		ret = devm_iio_trigger_register(&client->dev, data->trig);
+> +		ret = devm_iio_trigger_register(dev, data->trig);
+>  		if (ret)
+>  			return ret;
+>  	}
+>  
+> -	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+>  					      iio_pollfunc_store_time,
+>  					      sx9310_trigger_handler,
+>  					      &sx9310_buffer_setup_ops);
+>  	if (ret)
+>  		return ret;
+>  
+> -	return devm_iio_device_register(&client->dev, indio_dev);
+> +	return devm_iio_device_register(dev, indio_dev);
+>  }
+>  
+>  static int __maybe_unused sx9310_suspend(struct device *dev)
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---prp6ta2dfdqjn5v6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl8sTV4ACgkQwfwUeK3K
-7Ak7Xwf/bIpQ0ms3aJzAL2lKasQAGjulu7pJpdL40M8US0eyiWsAEWMEbxFoO7Ha
-W2ICAFrAFn6KUTuSPzSOIWOxqcxKE4uDxXKTvh98I9FkFXAY7VKFn32Dbshh+hhZ
-7NxJfdO7YM1evP67JxWrADaNlKbRij0KSGRPFnJ3mzt4XaiDCdUJX3opo9cyDglP
-rX8m/vpdUF8GDgCyh9YjskLqEV56kEzb0WNEVc9jqwkuMEQ6g2silpvtmFnbPpa3
-ZmCPcH2eOqz61dAOdjPdCGAeQmTY7zrXBkw2I4zXWButDK4/9q7yelYOISMMkrO1
-qohHip3HBU5CTDOp52IMtEWlkZauTw==
-=x1Y7
------END PGP SIGNATURE-----
-
---prp6ta2dfdqjn5v6--

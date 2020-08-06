@@ -2,39 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1814323E01E
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Aug 2020 20:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8836223E0FD
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Aug 2020 20:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726934AbgHFSFx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Aug 2020 14:05:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44606 "EHLO mail.kernel.org"
+        id S1727021AbgHFSjs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Aug 2020 14:39:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726927AbgHFSF3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Aug 2020 14:05:29 -0400
+        id S1727965AbgHFS34 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Aug 2020 14:29:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D8982206A2;
-        Thu,  6 Aug 2020 18:05:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F226A206C3;
+        Thu,  6 Aug 2020 18:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596737128;
-        bh=7sDGk0cuRvKpwl0wjGQQORXcJOfy5qUAfrD9AR4suV4=;
+        s=default; t=1596737661;
+        bh=jD2yBCbhOW8PLc+72HGrYz/PLEHVEovpi/J0s74KXuk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qDVKR1Q8SOhlcBYyvzGbAx6d/ZXEhGCx+WAd5yDqWr54rlRGXKe07Parn0LftjmGM
-         U6wY6LBST7W8oOx2MwnSWuRvuc0NyXbpnNzc8rv9YKaFdQsilTIptKL7x8+tzyfwEM
-         G1y9cQI+//X8o6qkuRmFDV8J39knvZKei+WXxXxw=
-Date:   Thu, 6 Aug 2020 19:05:23 +0100
+        b=E43hqRJau1bJUUxCkPeMjdUe487Wb4evuCdWpX5pihfQJFPlmTKSFjrz55qji79L2
+         9SHZdJgdt3h6MPqYbyseGeO+e/v5doPNHvetEHuheUev/qZBSuJHFFANYTQjOVjHaX
+         uVesxPqHPUwlHYWf67dsIRzN8nPKgfgiHDCRFeTU=
+Date:   Thu, 6 Aug 2020 19:14:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH V2] dt-bindings: iio: adc: maxim,max1118 yaml conversion
-Message-ID: <20200806190523.712d2115@archlinux>
-In-Reply-To: <20200803215826.GA3211566@bogus>
-References: <20200801175850.1140006-1-jic23@kernel.org>
-        <20200803215826.GA3211566@bogus>
+To:     Daniel Campello <campello@chromium.org>
+Cc:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 01/15] dt-bindings: iio: Add bindings for sx9310
+ sensor
+Message-ID: <20200806191416.379d7184@archlinux>
+In-Reply-To: <20200803175559.v5.1.I0925046377211b8b6f06764857f03b4ab592bddb@changeid>
+References: <20200803235815.778997-1-campello@chromium.org>
+        <20200803175559.v5.1.I0925046377211b8b6f06764857f03b4ab592bddb@changeid>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,34 +50,111 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 3 Aug 2020 15:58:26 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Mon,  3 Aug 2020 17:58:01 -0600
+Daniel Campello <campello@chromium.org> wrote:
 
-> On Sat, 01 Aug 2020 18:58:50 +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Simple device with a simple conversion.  Special handling needed
-> > for the max1118 which is the only supported part that has an external
-> > reference voltage.
-> > 
-> > Cc: Akinobu Mita <akinobu.mita@gmail.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> > v2:
-> > * Added additionalProperties: false. Other changes are to make this work.
-> > * Move the vref-supply definition up
-> > * Add an else clause
-> > 
-> > .../devicetree/bindings/iio/adc/max1118.txt   | 21 -------
-> >  .../bindings/iio/adc/maxim,max1118.yaml       | 62 +++++++++++++++++++
-> >  2 files changed, 62 insertions(+), 21 deletions(-)
-> >   
+> Adds device tree bindings for sx9310 sensor.
 > 
+> Signed-off-by: Daniel Campello <campello@chromium.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> [swboyd@chromium.org: Add both regulators and make them optional]
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 > Reviewed-by: Rob Herring <robh@kernel.org>
-Thanks,  
+> ---
+I'm not totally sold on the io-channel-cells being required
+but lets leave it there.
 
-Applied to the togreg branch off iio.git and pushed out as testing for autobuilders
-etc.
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke at it.
+
+Thanks,
 
 Jonathan
+
+> 
+> Changes in v5: None
+> Changes in v4: None
+> Changes in v3: None
+> Changes in v2:
+>  - Added #io-channel-cells as a required property
+> 
+>  .../iio/proximity/semtech,sx9310.yaml         | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> new file mode 100644
+> index 00000000000000..5739074d3592fe
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Semtech's SX9310 capacitive proximity sensor
+> +
+> +maintainers:
+> +  - Daniel Campello <campello@chromium.org>
+> +
+> +description: |
+> +  Semtech's SX9310/SX9311 capacitive proximity/button solution.
+> +
+> +  Specifications about the devices can be found at:
+> +  https://www.semtech.com/products/smart-sensing/sar-sensors/sx9310
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - semtech,sx9310
+> +      - semtech,sx9311
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description:
+> +      The sole interrupt generated by the device used to announce the
+> +      preceding reading request has finished and that data is
+> +      available or that a close/far proximity event has happened.
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Main power supply
+> +
+> +  svdd-supply:
+> +    description: Host interface power supply
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      proximity@28 {
+> +        compatible = "semtech,sx9310";
+> +        reg = <0x28>;
+> +        interrupt-parent = <&pio>;
+> +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
+> +        vdd-supply = <&pp3300_a>;
+> +        svdd-supply = <&pp1800_prox>;
+> +        #io-channel-cells = <1>;
+> +      };
+> +    };
 

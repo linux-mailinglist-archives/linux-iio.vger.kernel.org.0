@@ -2,116 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99C9523E7F5
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Aug 2020 09:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5300423EA00
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Aug 2020 11:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbgHGH27 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Aug 2020 03:28:59 -0400
-Received: from mail-eopbgr70095.outbound.protection.outlook.com ([40.107.7.95]:38290
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726038AbgHGH26 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 Aug 2020 03:28:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d7bVLKB5ZHtpkb0PDdvC3sDDE5oFRAcQfDNlKcjYp/qsRKwoZSfsbTC4y/0ZsEjzwe2qB7gq7aFnyFkPQ/tT28CX+bx41VvC7jo0xI+/33E+F0bjOqQIo45NyUMS6ZEhXkVtV8JU3lSkErhy8VMiTXE/H2+DsUzd002tv39yzHavXlgdABp9JygAKcgnkJicuPbYiJBvK7WnFijqFaCwfbE9KKPUh+LXakVAfNIK4JUlij3h4RkbWnDcrAz8kiZfce95y3j+IyXl4G0jPcwIfn3eFs5bbdG8mrnGyZh/yrl6JdPqCQwlpaf/saPMcSul7ONc0ubGBOVVmxeB3yo6IA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2x1KtIfYfQ5fRXzz4pIyn/9U5565+MMJ2G9TZazGB9Q=;
- b=SvWcETb/G9QyVbOZoAGw0EV30BFuKHTInu0a+swoeDKD6rJiU/zrbrGY4prnuo1jkosPvfMR5Q1heoKYIjhBkpcxpjpCbq0u3rqYJvWesi7TmZqDah2GGMNTb0lU/CrvPsu+f4BqyZTwHOTnY/8Q2EquSfmPg6zTkmPZ947CO9MDvahv2jIiYC7RoGNcBqZY6TZy0OdY9zkFlhxjA3R08eCZBkEM2NN0thulSU9KF72qacDXF2h7SjLY0QCT7YN1Q3ewB2Uq2FwCE+1KRz30rfMmbJnz01nH7W+wgSFYSV3Rp+yCepzqKMRnUJpFMPBsG3OQnodKu15ekOG1CXYOFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
+        id S1728091AbgHGJTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Aug 2020 05:19:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728057AbgHGJTl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Aug 2020 05:19:41 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F201BC061574
+        for <linux-iio@vger.kernel.org>; Fri,  7 Aug 2020 02:19:40 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id c16so1326661ejx.12
+        for <linux-iio@vger.kernel.org>; Fri, 07 Aug 2020 02:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2x1KtIfYfQ5fRXzz4pIyn/9U5565+MMJ2G9TZazGB9Q=;
- b=iX+QYr/XKCOIpuJtauqnU9e+GhcdzU24/Pk0g4WP21t6vzeETAuwBuMnFRs3QegLLaa7bIOV3utwuWlDPQN3KC6LWKM/9oepZA3dKqeM+YdlFi7qP9eON9nYiJ8MoUezLKsKeunTj3Eza+IHr7+c3nUGpJ99RjBxt0sTu6F2uTM=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=norphonic.com;
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com (2603:10a6:20b:86::11)
- by AM5PR06MB3121.eurprd06.prod.outlook.com (2603:10a6:206:8::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.19; Fri, 7 Aug
- 2020 07:28:54 +0000
-Received: from AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::3c50:d581:638e:fe8d]) by AM6PR06MB5430.eurprd06.prod.outlook.com
- ([fe80::3c50:d581:638e:fe8d%6]) with mapi id 15.20.3261.020; Fri, 7 Aug 2020
- 07:28:54 +0000
-References: <86d053d1re.fsf@norphonic.com> <CAHp75VfgFN9YBHo9T8fgswUCnhdb3L5nGEi3_yONvZp5_vduUw@mail.gmail.com> <20200712115444.49dc18c6@archlinux> <86zh7ak8ub.fsf@norphonic.com> <20200806194626.6e7b2545@archlinux>
-User-agent: mu4e 0.9.18; emacs 25.2.2
-From:   Eugene Zaikonnikov <ez@norphonic.com>
+        d=melexis.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jxCUiL1FgWun2oC51QoDOmsN9jreLX8epfpkWFsx2MA=;
+        b=ms8t+iMzVGY/AiuJHjGuoQ4w1Y9S7Xjvy7NUnJjnQh9L8/eX/bWYkh3uxg4QSRzTrp
+         FDpu/K8/qRT+WkWsIKL3rL+zaeG9yKsAnTH0MvnF7Pn8CcmteOSNezu796bmapFUIFB3
+         eFSf44WIv5BbezA0X+Ygiv+k+yUvQykmHaQCWE142C9uM5JB9SMzRNcrZm92S4HaQIX3
+         D41TZ//8acERYK+qAOKDwhb7P2nGOJW6Y+Zy5xR+I0AmahiVBSW6t6RX5/iCr2sbXkwY
+         DhUGDcwqSxiRZnycOeC2FBUQWj/Fa5pSb+fokeUuCzmisddYzsDFFCIiZnt28gUOKzOf
+         Y69A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jxCUiL1FgWun2oC51QoDOmsN9jreLX8epfpkWFsx2MA=;
+        b=uASnrntFIxVEtBAO4IHt3aWon9JrSjqB1pE7Y1Ne4Hza55vO2uLUYzfcXL3bO2SNx+
+         IVWIIC25ovefaoab9bJf+0zGBL6JPPLV0pr2C2KleSjV44lDUmRLEZcKl7qMiW7Xh0c2
+         eIONlIYjhCtgFTAvjA8w3DJODeeCu99JWZvpMD3hj8TeAEE8dNl6FVU4GaL1Al8RsuF6
+         GwOnYPo/5PuJ2LUEuUF5hgjtaECWo+7y+6oxdG6JyVEMjQg7xcDK41Sg4aCaDcZOYGpQ
+         HIm6kvUerpUC+fLspVnRuidtHys4t0x8kj6SmNXmZ/09umOBGp0XodGW/PxcwXOG3gE4
+         WY8Q==
+X-Gm-Message-State: AOAM531MlhIhiZTgJCM2MMWt9zPQq0glVb47O6gnlTd/242rBx+1eDTu
+        WC+ZLXVS/5eO8G7SKc3rd09rPQ==
+X-Google-Smtp-Source: ABdhPJxd7gZXcwVRKebPmvX3I6NP1L9SSgH8T2ts7fHpYdS8WQVMmrVruN+hzykqwl+nsx2Rj+T/Mw==
+X-Received: by 2002:a17:906:7c4f:: with SMTP id g15mr8273162ejp.82.1596791978373;
+        Fri, 07 Aug 2020 02:19:38 -0700 (PDT)
+Received: from localhost.localdomain (ptr-4xajgyum9863qf6si3v.18120a2.ip6.access.telenet.be. [2a02:1810:a421:dd00:2092:7f6b:4676:cab])
+        by smtp.gmail.com with ESMTPSA id i5sm5156739edt.52.2020.08.07.02.19.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2020 02:19:37 -0700 (PDT)
+From:   Crt Mori <cmo@melexis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        development@norphonic.com, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v9 1/2] iio: humidity: Add TI HDC20x0 support
-In-reply-to: <20200806194626.6e7b2545@archlinux>
-Date:   Fri, 07 Aug 2020 09:28:52 +0200
-Message-ID: <86lfiq3oej.fsf@norphonic.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SV0P279CA0052.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:f10:13::21) To AM6PR06MB5430.eurprd06.prod.outlook.com
- (2603:10a6:20b:86::11)
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Crt Mori <cmo@melexis.com>
+Subject: [PATCH 0/2] iio: temperature: mlx90632: Add extended calibration calculations
+Date:   Fri,  7 Aug 2020 11:19:00 +0200
+Message-Id: <20200807091900.967047-1-cmo@melexis.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sta-eugenez.norphonic.com (62.97.226.122) by SV0P279CA0052.NORP279.PROD.OUTLOOK.COM (2603:10a6:f10:13::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.19 via Frontend Transport; Fri, 7 Aug 2020 07:28:54 +0000
-X-Originating-IP: [62.97.226.122]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 48e308cf-6666-4c67-9968-08d83aa38a1e
-X-MS-TrafficTypeDiagnostic: AM5PR06MB3121:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM5PR06MB3121BD998645FA1ABDC5E5E9CA490@AM5PR06MB3121.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1303;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: pGPhaFTldw5BLuUQVxNyrJK62yGzZco3Pze7onh/LeFhapksE9TPFOTZIjMnX7+LWQz/El2nyHwX2QGIyBJMemJne/uw9gdpmyA5mRQcriL/fI0piXWKoa7y3Qfwgt6hYdg4rDwMIJ9eRP7r1jza5aGQyX1deVvB7Cq6w+eyZrU5HTKwkjMp77KEHFOHAh5p5ecK1wRa4FyBMiPxYd8It5iD8R4D/BgmYnbt/spTxH/UxDi2df74TzPoFROdfMH9ElhBLv8LCK3Y1iG9YocIcpIFLN4cnMqo3yPDWwmrCLta6vZmRAevJTmHxwtluj/w
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR06MB5430.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(39830400003)(346002)(396003)(376002)(2616005)(956004)(54906003)(316002)(6486002)(2906002)(8936002)(52116002)(7696005)(8676002)(6916009)(36756003)(86362001)(26005)(508600001)(5660300002)(4326008)(16526019)(186003)(66476007)(66946007)(66556008)(4744005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: eTslkxrK7+MH7oCCj1ugnCvnaF6HSK7l19NX7lbKzzRqi3B3o/KmqFhN6lZMwtzEryfwtp4nyEztzfFwkaJRG0HTbsNI5vvlc81PPWtSSsdQXGXupQNY6fTneSG2rftAwvukPldnWkf1giuLn03GlF6kympHfiOGBrajyPXkvxEPdAD19zaLH1+6EPndbQk+bvfOy8rt7paHzT4KDEVYPQRnmouSWTHUP/puPzIPoRzHk7ZeKfrDTxg3KPuCXUFFMi1qS4XbGo14edEMmJoZ4w8YDMJHY6oz1OklUtan0TGn/22vNEzAuSamS7ttqT/aUbD7j36EJMj4fcyfG48hb5Cscc5agBBkFrApQWk55U54vkIL2p2kL1i3tkH7vjPjw6SXe5JrAbBFqh/TXbcbzoR20TW3y7oc+QdFjh3dClXUhJPSiswmP+W8wZ3OAecqEpxB3lUF5DmFyvHTN0IGchmCcY2tTG4zYvxBEUXJaKXZU0CIOhqEQxO9wm7OcycAS8o5HHDUl1+GqSlYPuqpgghAMRf268h46TnvoXUzQdbqSiRjPghqhBLDEDXWS797jvH3uK1vWEG2afBan5pxCcFch6eFd5jDkLe28JKVJOyDxFl7V4/Qs1wY5NOgtlgi6bI/y+MXef2qY+SFDu832A==
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48e308cf-6666-4c67-9968-08d83aa38a1e
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR06MB5430.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2020 07:28:54.6345
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gmctb9v/X6MlhEmIJFI66CE6bewcEqPWPFNpB6kF0ZJHhv8r9hnqaFxbdihQDyfMjDhoFMKmQPhiNdLUd1GUWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR06MB3121
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Since the second patch is dependent on the first and was still not
+merged, I have decided to send them together. First patch just makes
+second one more readable as it splits out the repeated calculation and
+that enables the second patch to tweak the variable to the new
+condition.
 
-Jonathan Cameron <jic23@kernel.org> writes:
+Crt Mori (2):
+  iio:temperature:mlx90632: Reduce number of equal calulcations
+  iio:temperature:mlx90632: Adding extended calibration option
 
-> On Tue, 04 Aug 2020 12:23:56 +0200
-> Eugene Zaikonnikov <ez@norphonic.com> wrote:
+ drivers/iio/temperature/mlx90632.c | 235 +++++++++++++++++++++++++++--
+ 1 file changed, 225 insertions(+), 10 deletions(-)
 
-[...]
+-- 
+2.25.1
 
->> We use this driver here with trees as early as 4.9.11, and it does not
->> appear to have this callback in iio_info yet. Hope it's OK as it is in
->> this iteration.
-> OK.   It is more than possible that someone will post patches tidying
-> that up though and I'm not going to reject them to make life easier
-> for your older trees.  For now, put a note in the commit log though
-> so I don't forget it.
->
-That's reasonable. We didn't plan to sit on 4.9.x for so long and we'll
-eventually move to newer trees on all products here too. I may as well
-tidy this part up myself later in the year, along with fuller support
-for device features.
-
---
-Regards,
-
-  Eugene Zaikonnikov
-
-  Norphonic AS
-  Tel: +47 98 23 97 73

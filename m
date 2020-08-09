@@ -2,128 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E85623FEA2
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 15:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5F823FEA9
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 16:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726070AbgHIN71 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 09:59:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgHIN70 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Aug 2020 09:59:26 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83194C061756;
-        Sun,  9 Aug 2020 06:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=oWaAVN9sykw0k8emUxb5wR5jVQ2o1BQPhSy1+U7qzfo=; b=dwB1HrHVbcF0ijM9GFl6ucXzXt
-        FbQeUXzkeE1IKxVGEWzwlkKuuy30Yj21HbhKusxteFAb3y3Bzp25Fv+FjPXXWSLcHBhNhjEPxGZIK
-        5ZcVAQ4jMJXCjNhtslJ4SbtpPgDjYk35EPUF5UjAVeTpkCeiLTuLP5Vlmfg6i47pMVpeBilVwa/y/
-        cIhOEOXd2r3FPWa0eGHHbWN1Xo0XRwRr5VPOE/IR+tMQm3EyA67Yxd+/Eje5ed4tcBPtqevvDORJQ
-        K9f+fdF/PwbB73uK2y+XsLrUVxNQJ2i6iJ05y4mxLZjF7/letkuCkxqzxXF8p0OCXsldkDLnWGyC2
-        MjDClEMQ==;
-Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1k4lr5-0007d5-9Q; Sun, 09 Aug 2020 13:59:19 +0000
-Subject: Re: [PATCH v6 2/4] SFH: PCIe driver to add support of AMD sensor
- fusion
-To:     Sandeep Singh <Sandeep.Singh@amd.com>, jikos@kernel.org,
-        benjamin.tissoires@redhat.com, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, srinivas.pandruvada@linux.intel.com,
-        jic23@kernel.org, linux-iio@vger.kernel.org, hdegoede@redhat.com,
-        Nehal-bakulchandra.Shah@amd.com, andy.shevchenko@gmail.com,
-        mail@richard-neumann.de, m.felsch@pengutronix.de
-Cc:     Shyam-sundar.S-k@amd.com
-References: <20200809102511.2657644-1-Sandeep.Singh@amd.com>
- <20200809102511.2657644-3-Sandeep.Singh@amd.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <3ef30a57-08b4-5908-b13e-c1a52cdc135d@infradead.org>
-Date:   Sun, 9 Aug 2020 06:59:14 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726293AbgHIOF7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 10:05:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55894 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726210AbgHIOF6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 10:05:58 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D8BF1206E9;
+        Sun,  9 Aug 2020 14:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596981957;
+        bh=E8pdcQefksj6ezRyMJ4aaYsCS2+ceUhuLgL1ee3DFTY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ndKbxIXzrRjuFpfTAQANn9uLoChEyhUG/5P4oA0C5ZECIDyXc0zO2emYk+obny1tr
+         QKH7hP5RM9jPFOymxw68MEelUNsTbtLPviHCkYPO4R7AYXLu48ZgMRuaWuI7yAXiMV
+         s4rmod9X9qBfy+qhbiBYIU2gO6/PiKFc4Xvde+JQ=
+Date:   Sun, 9 Aug 2020 15:05:54 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Raveendra Padasalagi <raveendra.padasalagi@broadcom.com>
+Subject: Re: [PATCH v2 5/5] iio:adc:bcm_iproc: Drop of_match_ptr protection
+ and switch to mod_devicetable.h
+Message-ID: <20200809150554.167e9ec2@archlinux>
+In-Reply-To: <CAHp75VftkmabMn1qdJy4Pp0dQPsX1Fcia84PjTAv-xr1BdJStQ@mail.gmail.com>
+References: <20200721171444.825099-1-jic23@kernel.org>
+        <20200721171444.825099-6-jic23@kernel.org>
+        <CAHp75VftkmabMn1qdJy4Pp0dQPsX1Fcia84PjTAv-xr1BdJStQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200809102511.2657644-3-Sandeep.Singh@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/9/20 3:25 AM, Sandeep Singh wrote:
-> From: Sandeep Singh <sandeep.singh@amd.com>
+On Tue, 21 Jul 2020 21:34:48 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+
+> On Tue, Jul 21, 2020 at 8:16 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > This driver cannot be instantiated from ACPI due to it's use of
+> > syscon_regmap_lookup_by_phandle() but in the interests of clearing
+> > this anti pattern out of IIO, let us switch to an explicit
+> > check in kconfig and remove the protections on the of_match_table  
 > 
-> AMD SFH uses HID over PCIe bus.SFH fw is part of MP2 processor
-> (MP2 which is an ARM® Cortex-M4 core based co-processor to x86) and
-> it runs on MP2 where in driver resides on X86. This part of module
-> will communicate with MP2 FW and provide that data into DRAM
+> Kconfig
 > 
-> Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
-> Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
-> ---
->  drivers/hid/Kconfig                    |   2 +
->  drivers/hid/Makefile                   |   2 +
->  drivers/hid/amd-sfh-hid/Kconfig        |  21 ++++
->  drivers/hid/amd-sfh-hid/Makefile       |  15 +++
->  drivers/hid/amd-sfh-hid/amd_mp2_pcie.c | 162 +++++++++++++++++++++++++
->  drivers/hid/amd-sfh-hid/amd_mp2_pcie.h |  83 +++++++++++++
->  6 files changed, 285 insertions(+)
->  create mode 100644 drivers/hid/amd-sfh-hid/Kconfig
->  create mode 100644 drivers/hid/amd-sfh-hid/Makefile
->  create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.c
->  create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.h
+> > The switch of header is because we only use of_device_id
+> > in here and that is defined in mod_devicetable.h not of.h.  
+> 
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke at it.
 
-Hi,
+Thanks,
 
-> diff --git a/drivers/hid/amd-sfh-hid/Kconfig b/drivers/hid/amd-sfh-hid/Kconfig
-> new file mode 100644
-> index 000000000000..e73cf9fe1324
-> --- /dev/null
-> +++ b/drivers/hid/amd-sfh-hid/Kconfig
-> @@ -0,0 +1,21 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +menu "AMD SFH HID support"
-> +	depends on X86_64 || COMPILE_TEST
-> +	depends on PCI
-> +
-> +config AMD_SFH_HID
-> +	tristate "AMD Sensor Fusion Hub"
-> +	select HID
+Jonathan
 
-How about
-	depends on HID
-
-We try hard not to select/enable entire subsystems just because one driver
-wants it.
-
-Also, HID depends on INPUT, so it's not safe to select HID unless INPUT is
-already enabled.
-
-> +	help
-> +	If you say yes to this option, support will be included for the AMD
-> +	Sensor Fusion Hub.
-> +	This driver will enable sensors functionality to user through HID
-> +	framework. Basically this driver will get data from MP2 FW
-
-s/FW/firmware/
-or is it "framework" ?
-
-> +	and provide that data to HID framework.
-> +	MP2 which is an ARM® Cortex-M4 core based co-processor to x86.
-> +
-> +	This driver can also be built as modules. If so, the modules will
-
-	                        built as a module. If so, the module will
-
-> +	be  called amd-sfhtp-hid.
-> +	Say Y or M here if you want to support AMD SFH. If unsure, say N.
-> +
-> +endmenu
-
-thanks.
--- 
-~Randy
+> 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Raveendra Padasalagi <raveendra.padasalagi@broadcom.com>
+> > ---
+> >  * Use Kconfig change to make it explicit you can build the driver
+> >    without OF, but it won't do anything terribly useful.
+> >  drivers/iio/adc/Kconfig         | 2 +-
+> >  drivers/iio/adc/bcm_iproc_adc.c | 4 ++--
+> >  2 files changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index 66d9cc073157..f495d01a79b9 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -340,7 +340,7 @@ config AXP288_ADC
+> >
+> >  config BCM_IPROC_ADC
+> >         tristate "Broadcom IPROC ADC driver"
+> > -       depends on ARCH_BCM_IPROC || COMPILE_TEST
+> > +       depends on (ARCH_BCM_IPROC && OF) || COMPILE_TEST
+> >         depends on MFD_SYSCON
+> >         default ARCH_BCM_CYGNUS
+> >         help
+> > diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
+> > index 936da32faa9d..44e1e53ada72 100644
+> > --- a/drivers/iio/adc/bcm_iproc_adc.c
+> > +++ b/drivers/iio/adc/bcm_iproc_adc.c
+> > @@ -4,7 +4,7 @@
+> >   */
+> >
+> >  #include <linux/module.h>
+> > -#include <linux/of.h>
+> > +#include <linux/mod_devicetable.h>
+> >  #include <linux/io.h>
+> >  #include <linux/clk.h>
+> >  #include <linux/mfd/syscon.h>
+> > @@ -617,7 +617,7 @@ static struct platform_driver iproc_adc_driver = {
+> >         .remove = iproc_adc_remove,
+> >         .driver = {
+> >                 .name   = "iproc-static-adc",
+> > -               .of_match_table = of_match_ptr(iproc_adc_of_match),
+> > +               .of_match_table = iproc_adc_of_match,
+> >         },
+> >  };
+> >  module_platform_driver(iproc_adc_driver);
+> > --
+> > 2.27.0
+> >  
+> 
+> 
 

@@ -2,169 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B222323FF9A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 19:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE25323FF9E
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 19:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbgHIRvv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 13:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726234AbgHIRvu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Aug 2020 13:51:50 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C15C061787;
-        Sun,  9 Aug 2020 10:51:49 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id t6so3212183qvw.1;
-        Sun, 09 Aug 2020 10:51:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=n0x8YNxsCm7bGHeqbF8zvvR+sEvGuDkwyk/DAgXQhHw=;
-        b=S3Iu1VC36rllT2s/b3IGvShcgQCYwpTombmTvT1JjcO53Se++BrGPfwLnk2xaZHEF9
-         DxK+kzM6G3uurL1qyVeBfPOcgCIGYORyMsExe0q8yvod6CSnZ/71K9Rvupf2a/KmqMhF
-         RRzFBT0+FCutZXj9u5OeN1fYhxoAm56KD7n5MZssC1kSSMWq4mEMrrOIkQp1dxZ3PJIB
-         OpMB8TtMAHOXKlBcb/zL6xNtjRLq6Ic+zjKgLYayJCfHHdtF6CNam+3owtyNvqVH1k30
-         GRG6Tz5HILGt1L8kx1TSRiBn9/5ZHwXpiSXbLJkvTOobQBq7R0qvY6mmyc/2VSBQ1XUS
-         f7gQ==
+        id S1726236AbgHIR4B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 13:56:01 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:37631 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726175AbgHIR4A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Aug 2020 13:56:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596995759;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=kb4As6QnUipHSR9EGfDVMrFaM6W9OhoAZ0L2Q4XubgE=;
+        b=Pa7lvSpCzkAvMCY14oUEuyBHls5aChEemAwqFjkkeJpuwvWQZ0e5yjegkGxZ4cwSQ45SYv
+        pOMy++UHGlhg+9IYQ5vnM22IumJPNb7qHSq72OHUR0x/VbiCssq2ZTqkcb+rbw72/P0LKD
+        U6sbHLj+LF9ze/N+KNRxzZWtLz/rR10=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-224-MkM8U7E7PjWTUieoX0v-uQ-1; Sun, 09 Aug 2020 13:55:57 -0400
+X-MC-Unique: MkM8U7E7PjWTUieoX0v-uQ-1
+Received: by mail-qk1-f197.google.com with SMTP id c191so5601879qkb.4
+        for <linux-iio@vger.kernel.org>; Sun, 09 Aug 2020 10:55:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=n0x8YNxsCm7bGHeqbF8zvvR+sEvGuDkwyk/DAgXQhHw=;
-        b=djB7P8av9Jn0gy7g65hHfVIdNQoDErizoEQIpLk5YWMLZGaYHoTb6rkPqAlhqeV5Sm
-         TgUfKzzn5hAI3rp6WUchU7Dk6oHMIzT8Y9jtpXra0H5FD83T/noO4aRfwba80GUz16D4
-         0yb5Am0rtND5s0siYw8G5sCwM0bexN8kb35wDJdBL9KrvI2gflE/s9bi0DSK7S+DGSQ4
-         KLI7VnkgyvYN4jCpDtenI8SmHRwgY46PdOlnsJKaYjgfS3hoxojRqIhY5Q2sbyy7D8JF
-         GbJtKUPv/EEYxdMxFfIKsmOXwInmH0DYQhX3aVfnKx8H4qhK9jHwgjriKsjHGf4C3F9X
-         h16A==
-X-Gm-Message-State: AOAM533lo1/ASwI0nShjbzE3Z8d/G0OgMm6hE1ZTluXqYZVLFPcgCFXC
-        hpMfZtneiKeHLgq9pUbynj4=
-X-Google-Smtp-Source: ABdhPJz12sgXjE+X2nALn9osOEpYrHt9vHeEldiICmpuV68vmmG56WGukiYmWeKacikankoCPBRBtw==
-X-Received: by 2002:a0c:d64b:: with SMTP id e11mr18066172qvj.169.1596995508936;
-        Sun, 09 Aug 2020 10:51:48 -0700 (PDT)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id i18sm13211332qtv.39.2020.08.09.10.51.47
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=kb4As6QnUipHSR9EGfDVMrFaM6W9OhoAZ0L2Q4XubgE=;
+        b=C756i9C8JrLiDHIolXG7xrURNl0t/N9Mh8UnvyuNvBfMMLZ39q806A/5iStMT+fQFL
+         6mhEuG1joeS7HPWiZ0uQyE3YwKeXAgNt2apnVaVU46kZa2JJIcTgitraw5JY7QmdUclC
+         Hq8eA/42jOO8vTPbeFhKw2hHwjkmpuF5NxKLMGcWcCKiq9uJkNmFsmM5mjnW++HwQGJS
+         pxVqZgSb5YnrzSWzaImqvHyckjxtFeVxaw4BajB1VnPz8J2275hwLRJjq3rhvXe1WJ7h
+         JNKg2olwnrWAEnLlT2EbtqCp9hM7KwrkrviBGUx3f3wIz4jaUu29izDq/YuvZffhEdEF
+         pmdg==
+X-Gm-Message-State: AOAM530uky6yr8UfQFDoKzt27YdKhUEmfoFiuK0p95i/B/4WPiPz/9m2
+        cKbWgxj08Y48BVnUw40Assj/naZFQRR+KVzlpJtl6ECGNMQIKSv82NIrkoobgPR9NOZuhZX+qXM
+        vZ041g/wbcJWspckL8Az5
+X-Received: by 2002:a05:6214:1454:: with SMTP id b20mr24186760qvy.35.1596995757065;
+        Sun, 09 Aug 2020 10:55:57 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJypmVs8T4/JUVZH5FRUjEF6IWonIJRDAHozvFIxE/LMFPndjZIaLJZu9ATTeB+HcLxWKFofkw==
+X-Received: by 2002:a05:6214:1454:: with SMTP id b20mr24186747qvy.35.1596995756845;
+        Sun, 09 Aug 2020 10:55:56 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id w2sm11832536qkf.6.2020.08.09.10.55.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2020 10:51:48 -0700 (PDT)
-Date:   Sun, 9 Aug 2020 13:51:45 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, david@lechnology.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v4 0/5] Introduce the Counter character device interface
-Message-ID: <20200809175145.GB6542@shinobu>
-References: <cover.1595358237.git.vilhelm.gray@gmail.com>
- <20200809144800.6b067dea@archlinux>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0ntfKIWw70PvrIHh"
-Content-Disposition: inline
-In-Reply-To: <20200809144800.6b067dea@archlinux>
+        Sun, 09 Aug 2020 10:55:56 -0700 (PDT)
+From:   trix@redhat.com
+To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] iio: imu: st_lsm6dsx: check st_lsm6dsx_shub_read_output return
+Date:   Sun,  9 Aug 2020 10:55:51 -0700
+Message-Id: <20200809175551.6794-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Tom Rix <trix@redhat.com>
 
---0ntfKIWw70PvrIHh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+clang static analysis reports this represenative problem
 
-On Sun, Aug 09, 2020 at 02:48:00PM +0100, Jonathan Cameron wrote:
-> On Tue, 21 Jul 2020 15:35:46 -0400
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> > The following are some questions I have about this patchset:
-> >=20
-> > 1. Should I support multiple file descriptors for the character device
-> >    in this introduction patchset?
-> >=20
-> >    I intend to add support for multiple file descriptors to the Counter
-> >    character device, but I restricted this patchset to a single file
-> >    descriptor to simplify the code logic for the sake of review. If
-> >    there is enough interest, I can add support for multiple file
-> >    descriptors in the next revision; I anticipate that this should be
-> >    simple to implement through the allocation of a kfifo for each file
-> >    descriptor during the open callback.
->=20
-> What is the use case?  I can conjecture one easily enough, but I'm not
-> sure how real it actually is.  We've been around this question a few
-> times in IIO :)
->=20
-> Certainly makes sense to design an interface that would allow you to
-> add this support later if needed though.
+st_lsm6dsx_shub.c:540:8: warning: Assigned value is garbage or undefined
+        *val = (s16)le16_to_cpu(*((__le16 *)data));
+             ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-I don't have any particular use case in mind, but I figured it would be
-useful. For example, a counter device can have multiple channels with
-their own events, but any particular channel might be counting the
-signals of an independent device unrelated to the other channels; in
-this scenario, two independent user applications might need access to
-the same counter device.
+data is set with
 
-Of course, supporting multiple file descriptors is something that can be
-added later so perhaps it's best for us to wait until the need arises
-with a real-life use case.
+	err = st_lsm6dsx_shub_read(sensor, ch->address, data, len);
+	if (err < 0)
+		return err;
 
-> >=20
-> > 2. Should struct counter_event have a union for different value types,
-> >    or just a value u8 array?
-> >=20
-> >    Currently I expose the event data value via a union containing the
-> >    various possible Counter data types (value_u8 and value_u64). It is
-> >    up to the user to select the right union member for the data they
-> >    received. Would it make sense to return this data in a u8 array
-> >    instead, with the expectation that the user will cast to the
-> >    necessary data type?
->=20
-> Be careful on alignment if you do that. We would need to ensure that the
-> buffer is suitable aligned for a cast to work as expected.
+The problem with st_lsm6dsx_shub_read() is this statement
 
-That's a fair point. It's probably safer to continue with a union which
-also has the benefit of making the possible returned types clearer to
-see in the code.
+	err = st_lsm6dsx_shub_read_output(hw, data,
+					  len & ST_LS6DSX_READ_OP_MASK);
 
-> >=20
-> > 3. How should errors be returned for Counter data reads performed by
-> >    Counter events?
-> >=20
-> >    Counter events are configured with a list of Counter data read
-> >    operations to perform for the user. Any one of those data reads can
-> >    return an error code, but not necessarily all of them. Currently, the
-> >    code exits early when an error code is returned. Should the code
-> >    instead continue on, saving the error code to the struct
-> >    counter_event for userspace to handle?
->=20
-> I'd argue that errors are expected to be rare, so it isn't a problem
-> to just fault out hard on the first one.
+The err value is never checked.
+So check err.
 
-All right, that should help keep the error logic simple too then.
+Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
 
-William Breathitt Gray
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---0ntfKIWw70PvrIHh
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+index ed83471dc7dd..8c8d8870ca07 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+@@ -313,6 +313,8 @@ st_lsm6dsx_shub_read(struct st_lsm6dsx_sensor *sensor, u8 addr,
+ 
+ 	err = st_lsm6dsx_shub_read_output(hw, data,
+ 					  len & ST_LS6DSX_READ_OP_MASK);
++	if (err < 0)
++		return err;
+ 
+ 	st_lsm6dsx_shub_master_enable(sensor, false);
+ 
+-- 
+2.18.1
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl8wN6YACgkQhvpINdm7
-VJJS2A//eaJ/jtLitKdyaRHiFbB4//bIf3sPQQxG2eJSu3eztaFphLlkMxdDijrY
-OiBq5wsBkHYvcpy/z2A+XqY/PFzCpMrr/tAyuxiEeKB95WjzTUZl59CbUDOqqtwz
-8wx1DcymzHfvwun1AQDfXPyMXD/Np0zdQTaY2vmjyllC5otFSfW2VfFh/RIzxQ2A
-FCtP9ogxam3Pl1GZ20e76C8f+tH8M25xP9Aj3h8R7XV2NiR6xE/WuhOlsmfAHyue
-cvYBfyS8YnTvZaDu1L88kqgEoXqJXqTXKTfxRYLRgEQD0DN/i7IndPgApUoya93O
-kBiGMexlfBeGOMaMgs29ZoFUflyg6ZjxcgrlCGt7jGHP8cmTex6TDw3f/BSGloPq
-ED5rh5rPnYzWy0mqenPgZU2V6VCZeApcGwhakCpSYFVdM4Lp4yiktdFTpzC9LkXY
-jeQvOXAespYNJH1llge4DfLwctqclMZVJg0flDDCUCQA75sy6vrPE73Nb+T3XChu
-TEu+P8gRFJbxi9Rg/l/7p+P30s4e2a1YKJfWdYStcHSougEHJq+9x8zUaejWAMwo
-YB8+NaDRnhUi6DVgTLwrib6uvwOyGj94P2qn8Y1RhkqUzQh0vSlG0z/gyss298H8
-WCSZNFOLbS9pTLd77PpNxf7HkBCkg+/M14ZmjimDQMZwRMP0yGA=
-=+ft6
------END PGP SIGNATURE-----
-
---0ntfKIWw70PvrIHh--

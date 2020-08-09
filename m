@@ -2,72 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E19C23FCF0
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 07:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2164823FD38
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 09:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726097AbgHIFvw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 01:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39264 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725988AbgHIFvv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Aug 2020 01:51:51 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E33C061756
-        for <linux-iio@vger.kernel.org>; Sat,  8 Aug 2020 22:51:51 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id jp10so6215999ejb.0
-        for <linux-iio@vger.kernel.org>; Sat, 08 Aug 2020 22:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=snYPqYzMcRAFVusSDm1wEdLO3zZSz5O+T7SH8YmSs98=;
-        b=V4F23PYcaY6QfBJFVK/yPtnXqycr0JSkjP6smjdrS14X3JsVb1u68+7pEvOwdXLjV/
-         aIw740+pusDQdQHqK/8w7WkGE22wnVK4JLvwc5jRbdO8UarAZ7KkjwIzlnP95zP5ewNR
-         CxzxD4CnpkV/tDnYHQoP468saGTOEeLHsmbyftW3nmRsdpqR1JwIVxR0rq99Rty5CswA
-         gnq5PfgKbgMF4//CTGvu10BEYvsvsEsBX9vCcDJV5q9shi25f+7Pi9i40B3qAs94O8cZ
-         9+WRjK10FrFfnt39g/Sg/eY2TvQDnyjaewxP5gAoghd3Ztkyz6WtNeSLDFJlfyDbkMoM
-         RDUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=snYPqYzMcRAFVusSDm1wEdLO3zZSz5O+T7SH8YmSs98=;
-        b=VFpEoaU0qjVVYInnS0rtd5i4eKgjnNBviioRpJmMgII/gA4bJaAndl90qevN3snJKn
-         NcQh1VbnFSsHfvVFRo6vDciCnP6WjBpKORmbjdTrwZF82br5Rk1Wg/6dJpnu+bf0FOBk
-         FsSrESDmUqQvOWthMNeN2xRLF/AnEyU4ILPqkHGcKT+UR8h6dNPMjmybz9iE6/4g8xf5
-         k8kZYRVcq1oOH9IGC/CSCIwLX555Vhwcv2e6dLr6/v1p/R+tcGmuVRJGcYHx4WwSvQFs
-         C8TIjyCYKl453yVLGZufot5OcknmPayX9ZxgXNeX9yyRE8t71m/kuK6d05IMZKCmPBiN
-         O3Iw==
-X-Gm-Message-State: AOAM5309hlWv3xrqS1KRcZ/leEoPcmZqn7Sy0oOvpO0aReK/+hkViBHL
-        Mgm0LIGDrS8arpkAyPVvIp8=
-X-Google-Smtp-Source: ABdhPJweNtaEt7ABbqZwvHu2ObEwrQXKqGPvKDKrMbpZBoW5+Yzs6E1yORX68HNXomW3a7MG6kFtyg==
-X-Received: by 2002:a17:906:c7d3:: with SMTP id dc19mr16349232ejb.495.1596952310133;
-        Sat, 08 Aug 2020 22:51:50 -0700 (PDT)
-Received: from [192.168.0.108] ([196.171.37.220])
-        by smtp.gmail.com with ESMTPSA id qn10sm9790336ejb.39.2020.08.08.22.51.45
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sat, 08 Aug 2020 22:51:49 -0700 (PDT)
-Message-ID: <5f2f8ef5.1c69fb81.c9092.8c0c@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726098AbgHIHo2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 03:44:28 -0400
+Received: from mailout05.rmx.de ([94.199.90.90]:53858 "EHLO mailout05.rmx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726050AbgHIHo1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 03:44:27 -0400
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout05.rmx.de (Postfix) with ESMTPS id 4BPWMB117cz9x91;
+        Sun,  9 Aug 2020 09:44:22 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin01.retarus.com (Postfix) with ESMTPS id 4BPWLg2sk0z2xDN;
+        Sun,  9 Aug 2020 09:43:55 +0200 (CEST)
+Received: from N95HX1G2.wgnetz.xx (192.168.54.10) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Sun, 9 Aug
+ 2020 09:43:55 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Christian Eggers <ceggers@arri.de>
+Subject: [PATCH] iio: documentation: light: Add as73211 sysfs documentation
+Date:   Sun, 9 Aug 2020 09:43:35 +0200
+Message-ID: <20200809074335.23734-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200808171443.114c8e05@archlinux>
+References: <20200808171443.114c8e05@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Hello
-To:     Recipients <karijokarijo5@gmail.com>
-From:   "Sophia" <karijokarijo5@gmail.com>
-Date:   Sun, 09 Aug 2020 05:51:32 +0000
-Reply-To: sophiawillians00@gmail.com
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.54.10]
+X-RMX-ID: 20200809-094355-4BPWLg2sk0z2xDN-0@kdin01
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Dear,
+The driver for the as73211 light sensor provides the following not yet
+documented sysfs entries:
+- in_intensity_(x|y|z)_raw
+- in_intensity_(x|y|z)_scale
+- in_intensity_sampling_frequency(_available)
+- in_intensity_hardwaregain(_available)
+- in_intensity_integration_time
 
-How are you doing,
-My name is Sophia Williams
-Please reply, so that we can know more better =
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
 
-and share photos,
-Thank you.
+On Thursday, 6 August 2020, 19:44:51 CEST, Jonathan Cameron wrote:
+Hi Jonathan,
+
+> Hi Christian,
+> 
+> I'll take this, but please send a follow up patch to add documentation
+> for in_intensity_x_raw and all the other new ABI this adds in
+> Documentation/ABI/testing/sysfs-bus-iio
+> I should have mentioned that earlier, but kind of assumed we already
+> had these documented for some reason!  
+> [...]
+> Insert them into the relevant groups that already exist.  In some cases
+> it will just be adding an entry with no specific explanation.
+> For the _raw attribute add a bit more info about what x, y and z are
+> (basically just say they are from cie1931 (I think?)
+
+I added all sysfs entries which were not present in 5.8-rc6.
+
+Best regards
+Christian
+
+ Documentation/ABI/testing/sysfs-bus-iio | 26 ++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index d3e53a6d8331..14ae4bf053c5 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -40,6 +40,7 @@ Description:
+ 		buffered samples and events for device X.
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency
+ What:		/sys/bus/iio/devices/iio:deviceX/buffer/sampling_frequency
+ What:		/sys/bus/iio/devices/triggerX/sampling_frequency
+ KernelVersion:	2.6.35
+@@ -55,6 +56,7 @@ Description:
+ 		then it is to be found in the base device directory.
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
+ What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
+ What:		/sys/.../iio:deviceX/buffer/sampling_frequency_available
+ What:		/sys/bus/iio/devices/triggerX/sampling_frequency_available
+@@ -374,6 +376,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_scale
+ What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_scale
+ What:		/sys/bus/iio/devices/iio:deviceX/in_countY_scale
+ What:		/sys/bus/iio/devices/iio:deviceX/in_angl_scale
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_scale
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_scale
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_scale
+ KernelVersion:	2.6.35
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+@@ -484,6 +489,7 @@ Description:
+ 		are listed in this attribute.
+ 
+ What		/sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain
+ What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_red_hardwaregain
+ What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_green_hardwaregain
+ What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_blue_hardwaregain
+@@ -494,6 +500,13 @@ Description:
+ 		Hardware applied gain factor. If shared across all channels,
+ 		<type>_hardwaregain is used.
+ 
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain_available
++KernelVersion:	5.10
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Lists all available hardware applied gain factors. Shared across all
++		channels.
++
+ What:		/sys/.../in_accel_filter_low_pass_3db_frequency
+ What:		/sys/.../in_magn_filter_low_pass_3db_frequency
+ What:		/sys/.../in_anglvel_filter_low_pass_3db_frequency
+@@ -1333,6 +1346,7 @@ Description:
+ 		standardised CIE Erythemal Action Spectrum. UV index values range
+ 		from 0 (low) to >=11 (extreme).
+ 
++What:		/sys/.../iio:deviceX/in_intensity_integration_time
+ What:		/sys/.../iio:deviceX/in_intensity_red_integration_time
+ What:		/sys/.../iio:deviceX/in_intensity_green_integration_time
+ What:		/sys/.../iio:deviceX/in_intensity_blue_integration_time
+@@ -1342,7 +1356,8 @@ KernelVersion:	3.12
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		This attribute is used to get/set the integration time in
+-		seconds.
++		seconds. If shared across all channels, <type>_integration_time
++		is used.
+ 
+ What:		/sys/.../iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_integration_time
+ KernelVersion:	4.0
+@@ -1739,3 +1754,12 @@ KernelVersion:	5.5
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		One of the following thermocouple types: B, E, J, K, N, R, S, T.
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_raw
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_raw
++What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_raw
++KernelVersion:	5.10
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Unscaled light intensity according to CIE 1931/DIN 5033 color space.
++		Units after application of scale are nano nanowatts per square meter.
+-- 
+Christian Eggers
+Embedded software developer
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+

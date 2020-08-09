@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3EBF23FDCB
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 13:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD0023FDCD
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 13:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgHILUB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 07:20:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53920 "EHLO mail.kernel.org"
+        id S1726323AbgHILUC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 07:20:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726199AbgHILUB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 Aug 2020 07:20:01 -0400
+        id S1726199AbgHILUC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 07:20:02 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61CFD206E9;
-        Sun,  9 Aug 2020 11:19:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C95F920716;
+        Sun,  9 Aug 2020 11:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596972000;
-        bh=v5q4uRk0HDMOm1sRyCARO2rfzcScDo6WU31sLgpF0sk=;
+        s=default; t=1596972001;
+        bh=YzI06x2VtwyLUH1SPEtarEcOok5X9Xg6xMPI3fOMg1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hXUpfyjZEwoVX20nXwoTGr4MyiylW0Gkk+mHU+z/IYTYe8sUBXzQkIL8n+FIIa5YI
-         cg7XDbM+5TysgypReB2+POwl9fib/cKeVF02VLzR8l2XtL1yVlpmlHsmd8n25x/DDR
-         YBCIUeUytRpLZKSzrn9yYzPkIDpPRvdyLorCenZY=
+        b=T3PDVTw+IyIiacQJjOgMAktxiJNuniHdmMrvqgAF6tawyP5D3Ddsgafi9A4WbavO+
+         McbWrEFHk+ZymTTMrFVGFEROaFt8lOAr2kD6+/ePh/VYEG6+DkBbOHogQ1zFAYq4Ag
+         Fu6jo95lf1PKIjOSwVEz6AWmKaJNDal9TFhKkrr8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Oskar Andero <oskar.andero@gmail.com>
-Subject: [PATCH 01/13] dt-bindings: iio: adc: microchip,mcp3201 yaml conversion.
-Date:   Sun,  9 Aug 2020 12:17:41 +0100
-Message-Id: <20200809111753.156236-2-jic23@kernel.org>
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Subject: [PATCH 02/13] dt-bindings: trivial-devices: Add mcp342x ADCs and drop separate binding doc.
+Date:   Sun,  9 Aug 2020 12:17:42 +0100
+Message-Id: <20200809111753.156236-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200809111753.156236-1-jic23@kernel.org>
 References: <20200809111753.156236-1-jic23@kernel.org>
@@ -43,185 +43,69 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Drops the deprecated compatibles without the vendor name.
-Whilst the driver continues to support these for old dt blobs,
-any dt bindings that are actuallly verified against this document should
-be fixed to add the vendor name.
-
-Enforces rule that spi-cpol == spi-cpha.  Is there a cleaner way to
-do this?
-
-Added the #io-channel-cells property to allow for consumers.
+These i2c devices have simple bindings, well described by trivial-device.yaml
+so rather than convert the binding doc to yaml, let us just add them to
+trivial devices and drop the old binding document.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Oskar Andero <oskar.andero@gmail.com>
+Cc: Angelo Compagnucci <angelo.compagnucci@gmail.com>
 ---
- .../devicetree/bindings/iio/adc/mcp320x.txt   | 57 ------------
- .../bindings/iio/adc/microchip,mcp3201.yaml   | 93 +++++++++++++++++++
- 2 files changed, 93 insertions(+), 57 deletions(-)
+ .../devicetree/bindings/iio/adc/mcp3422.txt   | 19 -------------------
+ .../devicetree/bindings/trivial-devices.yaml  | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/mcp320x.txt b/Documentation/devicetree/bindings/iio/adc/mcp320x.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/mcp3422.txt b/Documentation/devicetree/bindings/iio/adc/mcp3422.txt
 deleted file mode 100644
-index 56373d643f76..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/mcp320x.txt
+index 82bcce07255d..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/mcp3422.txt
 +++ /dev/null
-@@ -1,57 +0,0 @@
--* Microchip Analog to Digital Converter (ADC)
--
--The node for this driver must be a child node of a SPI controller, hence
--all mandatory properties described in
--
--        Documentation/devicetree/bindings/spi/spi-bus.txt
--
--must be specified.
+@@ -1,19 +0,0 @@
+-* Microchip mcp3421/2/3/4/6/7/8 chip family (ADC)
 -
 -Required properties:
--	- compatible:  	Must be one of the following, depending on the
--			model:
--				"mcp3001" (DEPRECATED)
--				"mcp3002" (DEPRECATED)
--				"mcp3004" (DEPRECATED)
--				"mcp3008" (DEPRECATED)
--				"mcp3201" (DEPRECATED)
--				"mcp3202" (DEPRECATED)
--				"mcp3204" (DEPRECATED)
--				"mcp3208" (DEPRECATED)
--				"mcp3301" (DEPRECATED)
+- - compatible: Should be
+-	"microchip,mcp3421" or
+-	"microchip,mcp3422" or
+-	"microchip,mcp3423" or
+-	"microchip,mcp3424" or
+-	"microchip,mcp3425" or
+-	"microchip,mcp3426" or
+-	"microchip,mcp3427" or
+-	"microchip,mcp3428"
+- - reg: I2C address for the device
 -
--				"microchip,mcp3001"
--				"microchip,mcp3002"
--				"microchip,mcp3004"
--				"microchip,mcp3008"
--				"microchip,mcp3201"
--				"microchip,mcp3202"
--				"microchip,mcp3204"
--				"microchip,mcp3208"
--				"microchip,mcp3301"
--				"microchip,mcp3550-50"
--				"microchip,mcp3550-60"
--				"microchip,mcp3551"
--				"microchip,mcp3553"
--
--			NOTE: The use of the compatibles with no vendor prefix
--			is deprecated and only listed because old DT use them.
--
--	- spi-cpha, spi-cpol (boolean):
--			Either SPI mode (0,0) or (1,1) must be used, so specify
--			none or both of spi-cpha, spi-cpol.  The MCP3550/1/3
--			is more efficient in mode (1,1) as only 3 instead of
--			4 bytes need to be read from the ADC, but not all SPI
--			masters support it.
--
--	- vref-supply:	Phandle to the external reference voltage supply.
--
--Examples:
--spi_controller {
--	mcp3x0x@0 {
--		compatible = "microchip,mcp3002";
--		reg = <0>;
--		spi-max-frequency = <1000000>;
--		vref-supply = <&vref_reg>;
--	};
+-Example:
+-adc@0 {
+-	compatible = "microchip,mcp3424";
+-	reg = <0x68>;
 -};
-diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3201.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3201.yaml
-new file mode 100644
-index 000000000000..38dfb856da62
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3201.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/microchip,mcp3201.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Microchip mcp3201 and similar ADCs
-+
-+maintainers:
-+  - Oskar Andero <oskar.andero@gmail.com>
-+
-+description: |
-+   Family of simple ADCs with an I2C inteface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - microchip,mcp3001
-+      - microchip,mcp3002
-+      - microchip,mcp3004
-+      - microchip,mcp3008
-+      - microchip,mcp3201
-+      - microchip,mcp3202
-+      - microchip,mcp3204
-+      - microchip,mcp3208
-+      - microchip,mcp3301
-+      - microchip,mcp3550-50
-+      - microchip,mcp3550-60
-+      - microchip,mcp3551
-+      - microchip,mcp3553
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency: true
-+  spi-cpha: true
-+  spi-cpol: true
-+
-+  vref-supply:
-+    description: External reference.
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+allOf:
-+  - if:
-+      required:
-+        - spi-cpha
-+    then:
-+      required:
-+        - spi-cpol
-+    else:
-+      properties:
-+        spi-cpol: false
-+  - if:
-+      required:
-+        - spi-cpol
-+    then:
-+      required:
-+        - spi-cpha
-+    else:
-+      properties:
-+        spi-cpha: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - vref-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "microchip,mcp3002";
-+            reg = <0>;
-+            vref-supply = <&vref_reg>;
-+            spi-cpha;
-+            spi-cpol;
-+            #io-channel-cells = <1>;
-+        };
-+        adc@1 {
-+            compatible = "microchip,mcp3002";
-+            reg = <1>;
-+            vref-supply = <&vref_reg>;
-+            spi-max-frequency = <1500000>;
-+        };
-+    };
-+...
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 4165352a590a..837592ec62aa 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -130,6 +130,22 @@ properties:
+           - mcube,mc3230
+             # MEMSIC 2-axis 8-bit digital accelerometer
+           - memsic,mxc6225
++            # Microchip differential I2C ADC, 1 Channel, 18 bit
++          - microchip,mcp3421
++            # Microchip differential I2C ADC, 2 Channel, 18 bit
++          - microchip,mcp3422
++            # Microchip differential I2C ADC, 2 Channel, 18 bit
++          - microchip,mcp3423
++            # Microchip differential I2C ADC, 4 Channel, 18 bit
++          - microchip,mcp3424
++            # Microchip differential I2C ADC, 1 Channel, 16 bit
++          - microchip,mcp3425
++            # Microchip differential I2C ADC, 2 Channel, 16 bit
++          - microchip,mcp3426
++            # Microchip differential I2C ADC, 2 Channel, 16 bit
++          - microchip,mcp3427
++            # Microchip differential I2C ADC, 4 Channel, 16 bit
++          - microchip,mcp3428
+             # Microchip 7-bit Single I2C Digital POT (5k)
+           - microchip,mcp4017-502
+             # Microchip 7-bit Single I2C Digital POT (10k)
 -- 
 2.28.0
 

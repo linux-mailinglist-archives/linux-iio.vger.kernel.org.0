@@ -2,47 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A15D523FE97
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 15:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C2B23FE9B
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 15:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726070AbgHINm2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 09:42:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44832 "EHLO mail.kernel.org"
+        id S1726070AbgHINsL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 09:48:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726009AbgHINm1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 Aug 2020 09:42:27 -0400
+        id S1726009AbgHINsH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 09:48:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8E9E6206B6;
-        Sun,  9 Aug 2020 13:42:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9DDEF206B2;
+        Sun,  9 Aug 2020 13:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596980546;
-        bh=z5ggloJNSGbzFqqy5FHmnwMWQ3MZ9nRoSWZRpWR9klU=;
+        s=default; t=1596980886;
+        bh=QFbCWOIw77RPUSpBEnXe/qUsqDO2Fuu1fu/YIqmRp7U=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2pP5p4l1UBj7LXtrfSEqaHQi1n0qTCP2tOejp5K7tgGCUl6sNPoRWR4+F2B1j36ln
-         Fxh9c6u9oZyaisvh5P5Jd3KjTd7l82acjPoytbL3BDvwbNcUOWSlv/RqjfDf98xFkM
-         IVcCj3Fm7boVUIEUt1TtKu+9xLkxS1x8Be74b/pM=
-Date:   Sun, 9 Aug 2020 14:42:21 +0100
+        b=MQUwZzNFX77Gyl0xvoJxmAgvhqPoqlBHOB1sH8j7Nx+PBTWHuD+wZr82yCEDSXuxc
+         AiYMnxxiFcqd4usf8MwHlq7uvzzCNpYfPOQXVnhtlf2bKuGANZBA8OcyPNrCl3hZ9q
+         MAv6nbJaAIL3TeYKX7QfMYk9+vlTngGD3Iqs+qZc=
+Date:   Sun, 9 Aug 2020 14:48:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <david@lechnology.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, david@lechnology.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
         patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        David.Laight@ACULAB.COM
-Subject: Re: [PATCH v4 1/5] counter: Internalize sysfs interface code
-Message-ID: <20200809144221.6947ea6e@archlinux>
-In-Reply-To: <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+Subject: Re: [PATCH v4 0/5] Introduce the Counter character device interface
+Message-ID: <20200809144800.6b067dea@archlinux>
+In-Reply-To: <cover.1595358237.git.vilhelm.gray@gmail.com>
 References: <cover.1595358237.git.vilhelm.gray@gmail.com>
-        <e13d43849f68af8227c6aaa0ef672b459d47e9ab.1595358237.git.vilhelm.gray@gmail.com>
-        <7209ac3d-d1ca-1b4c-b22c-8d98b13742e2@lechnology.com>
-        <20200802210415.GA606173@shinobu>
-        <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,93 +46,206 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 3 Aug 2020 15:00:49 -0500
-David Lechner <david@lechnology.com> wrote:
+On Tue, 21 Jul 2020 15:35:46 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> On 8/2/20 4:04 PM, William Breathitt Gray wrote:
-> > On Tue, Jul 28, 2020 at 05:45:53PM -0500, David Lechner wrote:  
-> >> On 7/21/20 2:35 PM, William Breathitt Gray wrote:  
-> >>> This is a reimplementation of the Generic Counter driver interface.  
+> Changes in v4:
+>  - Reimplement character device interface to report Counter events
+>  - Implement Counter timestamps
+>  - Implement poll() support
+>  - Convert microchip-tcb-capture.c to new driver interface
+>  - Add IRQ support for the 104-quad-8 Counter driver
 > 
-> ...
+> Over the past couple years we have noticed some shortcomings with the
+> Counter sysfs interface. Although useful in the majority of situations,
+> there are certain use-cases where interacting through sysfs attributes
+> can become cumbersome and inefficient. A desire to support more advanced
+> functionality such as timestamps, multi-axes positioning tables, and
+> other such latency-sensitive applications, has motivated a reevaluation
+> of the Counter subsystem. I believe a character device interface will be
+> helpful for this more niche area of counter device use.
 > 
-> >>> -F:	include/linux/counter_enum.h
-> >>> +F:	include/uapi/linux/counter.h  
-> >>
-> >> Seems odd to be introducing a uapi header here since this patch doesn't
-> >> make any changes to userspace.  
-> > 
-> > These defines are needed by userspace for the character device
-> > interface, but I see your point that at this point in the patchset they
-> > don't need to be exposed yet.
-> > 
-> > I could create temporary include/linux/counter_types.h to house these
-> > defines, and then later move them to include/uapi/linux/counter.h in the
-> > character device interface introduction patch. Do you think I should do
-> > so?  
+> To quell any concerns from the offset: this patchset makes no changes to
+> the existing Counter sysfs userspace interface -- existing userspace
+> applications will continue to work with no modifications necessary. I
+> request that driver maintainers please test their applications to verify
+> that this is true, and report any discrepancies if they arise.
 > 
-> Since this patch is independent of the chardev changes and probably ready
-> to merge after one more round of review, I would say it probably makes
-> sense to just leave them in counter.h for now and move them to uapi when
-> the chardev interface is finalized. This way, we can just merge this patch
-> as soon as it is ready.
+> However, this patchset does contain a major reimplementation of the
+> Counter subsystem core and driver API. A reimplementation was necessary
+> in order to separate the sysfs code from the counter device drivers and
+> internalize it as a dedicated component of the core Counter subsystem
+> module. A minor benefit from all of this is that the sysfs interface is
+> now ensured a certain amount of consistency because the translation is
+> performed outside of individual counter device drivers.
 > 
-Agreed.
+> Essentially, the reimplementation has enabled counter device drivers to
+> pass and handle data as native C datatypes now rather than the sysfs
+> strings from before. A high-level view of how a count value is passed
+> down from a counter device driver can be exemplified by the following:
+> 
+>                  ----------------------
+>                 / Counter device       \
+>                 +----------------------+
+>                 | Count register: 0x28 |
+>                 +----------------------+
+>                         |
+>                  -----------------
+>                 / raw count data /
+>                 -----------------
+>                         |
+>                         V
+>                 +----------------------------+
+>                 | Counter device driver      |----------+
+>                 +----------------------------+          |
+>                 | Processes data from device |   -------------------
+>                 |----------------------------|  / driver callbacks /
+>                 | Type: u64                  |  -------------------
+>                 | Value: 42                  |          |
+>                 +----------------------------+          |
+>                         |                               |
+>                  ----------                             |
+>                 / u64     /                             |
+>                 ----------                              |
+>                         |                               |
+>                         |                               V
+>                         |               +----------------------+
+>                         |               | Counter core         |
+>                         |               +----------------------+
+>                         |               | Routes device driver |
+>                         |               | callbacks to the     |
+>                         |               | userspace interfaces |
+>                         |               +----------------------+
+>                         |                       |
+>                         |                -------------------
+>                         |               / driver callbacks /
+>                         |               -------------------
+>                         |                       |
+>                 +-------+---------------+       |
+>                 |                       |       |
+>                 |               +-------|-------+
+>                 |               |       |
+>                 V               |       V
+>         +--------------------+  |  +---------------------+
+>         | Counter sysfs      |<-+->| Counter chrdev      |
+>         +--------------------+     +---------------------+
+>         | Translates to the  |     | Translates to the   |
+>         | standard Counter   |     | standard Counter    |
+>         | sysfs output       |     | character device    |
+>         |--------------------|     |---------------------+
+>         | Type: const char * |     | Type: u64           |
+>         | Value: "42"        |     | Value: 42           |
+>         +--------------------+     +---------------------+
+>                 |                               |
+>          ---------------                 -----------------------
+>         / const char * /                / struct counter_event /
+>         ---------------                 -----------------------
+>                 |                               |
+>                 |                               V
+>                 |                       +-----------+
+>                 |                       | read      |
+>                 |                       +-----------+
+>                 |                       \ Count: 42 /
+>                 |                        -----------
+>                 |
+>                 V
+>         +--------------------------------------------------+
+>         | `/sys/bus/counter/devices/counterX/countY/count` |
+>         +--------------------------------------------------+
+>         \ Count: "42"                                      /
+>          --------------------------------------------------
+> 
+> Counter device data is exposed through standard character device read
+> operations. Device data is gathered when a Counter event is pushed by
+> the respective Counter device driver. Configuration is handled via ioctl
+> operations on the respective Counter character device node.
+> 
+> The following are some questions I have about this patchset:
+> 
+> 1. Should I support multiple file descriptors for the character device
+>    in this introduction patchset?
+> 
+>    I intend to add support for multiple file descriptors to the Counter
+>    character device, but I restricted this patchset to a single file
+>    descriptor to simplify the code logic for the sake of review. If
+>    there is enough interest, I can add support for multiple file
+>    descriptors in the next revision; I anticipate that this should be
+>    simple to implement through the allocation of a kfifo for each file
+>    descriptor during the open callback.
 
-...
+What is the use case?  I can conjecture one easily enough, but I'm not
+sure how real it actually is.  We've been around this question a few
+times in IIO :)
 
-> >>>    /**
-> >>>     * struct counter_device - Counter data structure
-> >>> - * @name:		name of the device as it appears in the datasheet
-> >>> + * @name:		name of the device
-> >>>     * @parent:		optional parent device providing the counters
-> >>> - * @device_state:	internal device state container
-> >>> - * @ops:		callbacks from driver
-> >>> + * @signal_read:	optional read callback for Signals. The read value of
-> >>> + *			the respective Signal should be passed back via the
-> >>> + *			value parameter.
-> >>> + * @count_read:		optional read callback for Counts. The read value of the
-> >>> + *			respective Count should be passed back via the value
-> >>> + *			parameter.
-> >>> + * @count_write:	optional write callback for Counts. The write value for
-> >>> + *			the respective Count is passed in via the value
-> >>> + *			parameter.
-> >>> + * @function_read:	optional read callback the Count function modes. The
-> >>> + *			read function mode of the respective Count should be
-> >>> + *			passed back via the function parameter.
-> >>> + * @function_write:	option write callback for Count function modes. The
-> >>> + *			function mode to write for the respective Count is
-> >>> + *			passed in via the function parameter.
-> >>> + * @action_read:	optional read callback the Synapse action modes. The
-> >>> + *			read action mode of the respective Synapse should be
-> >>> + *			passed back via the action parameter.
-> >>> + * @action_write:	option write callback for Synapse action modes. The
-> >>> + *			action mode to write for the respective Synapse is
-> >>> + *			passed in via the action parameter.
-> >>>     * @signals:		array of Signals  
-> >>
-> >> Why not keep the ops struct?  
-> > 
-> > Defining static ops structures in the drivers seemed to have no
-> > advantage when those callbacks are always used via the counter_device
-> > structure. I decided it'd be simpler to just set them directly in the
-> > counter_device structure then.
-> > 
-> > I could reorganize them into an ops structure again if there's enough
-> > interest.  
+Certainly makes sense to design an interface that would allow you to
+add this support later if needed though.
+
+
 > 
-> I've been working on really constrained systems lately where every byte
-> counts, so this stuck out to me since there would be a copy of all
-> functions for each counter instance. But probably not that big of a deal
-> in the Linux kernel. :-)
+> 2. Should struct counter_event have a union for different value types,
+>    or just a value u8 array?
 > 
-In addition to that..
+>    Currently I expose the event data value via a union containing the
+>    various possible Counter data types (value_u8 and value_u64). It is
+>    up to the user to select the right union member for the data they
+>    received. Would it make sense to return this data in a u8 array
+>    instead, with the expectation that the user will cast to the
+>    necessary data type?
 
-There are other advantages to keeping an ops structure including
-easy function order randomization (for security), plus
-the fact that we want to make any function pointers build time assignments
-if we possibly can.  Makes them harder to attack.
+Be careful on alignment if you do that. We would need to ensure that the
+buffer is suitable aligned for a cast to work as expected.
 
-So in more recent kernel code we try to use ops structures wherever possible.
+> 
+> 3. How should errors be returned for Counter data reads performed by
+>    Counter events?
+> 
+>    Counter events are configured with a list of Counter data read
+>    operations to perform for the user. Any one of those data reads can
+>    return an error code, but not necessarily all of them. Currently, the
+>    code exits early when an error code is returned. Should the code
+>    instead continue on, saving the error code to the struct
+>    counter_event for userspace to handle?
 
-Jonathan
+I'd argue that errors are expected to be rare, so it isn't a problem
+to just fault out hard on the first one.
+
+> 
+> William Breathitt Gray (5):
+>   counter: Internalize sysfs interface code
+>   docs: counter: Update to reflect sysfs internalization
+>   counter: Add character device interface
+>   docs: counter: Document character device interface
+>   counter: 104-quad-8: Add IRQ support for the ACCES 104-QUAD-8
+> 
+>  .../ABI/testing/sysfs-bus-counter-104-quad-8  |   32 +
+>  Documentation/driver-api/generic-counter.rst  |  363 +++-
+>  .../userspace-api/ioctl/ioctl-number.rst      |    1 +
+>  MAINTAINERS                                   |    2 +-
+>  drivers/counter/104-quad-8.c                  |  753 +++++----
+>  drivers/counter/Kconfig                       |    6 +-
+>  drivers/counter/Makefile                      |    1 +
+>  drivers/counter/counter-chrdev.c              |  441 +++++
+>  drivers/counter/counter-chrdev.h              |   16 +
+>  drivers/counter/counter-core.c                |  188 +++
+>  drivers/counter/counter-sysfs.c               |  849 ++++++++++
+>  drivers/counter/counter-sysfs.h               |   14 +
+>  drivers/counter/counter.c                     | 1496 -----------------
+>  drivers/counter/ftm-quaddec.c                 |   59 +-
+>  drivers/counter/microchip-tcb-capture.c       |  104 +-
+>  drivers/counter/stm32-lptimer-cnt.c           |  161 +-
+>  drivers/counter/stm32-timer-cnt.c             |  139 +-
+>  drivers/counter/ti-eqep.c                     |  211 +--
+>  include/linux/counter.h                       |  633 +++----
+>  include/linux/counter_enum.h                  |   45 -
+>  include/uapi/linux/counter.h                  |   90 +
+>  21 files changed, 2919 insertions(+), 2685 deletions(-)
+>  create mode 100644 drivers/counter/counter-chrdev.c
+>  create mode 100644 drivers/counter/counter-chrdev.h
+>  create mode 100644 drivers/counter/counter-core.c
+>  create mode 100644 drivers/counter/counter-sysfs.c
+>  create mode 100644 drivers/counter/counter-sysfs.h
+>  delete mode 100644 drivers/counter/counter.c
+>  delete mode 100644 include/linux/counter_enum.h
+>  create mode 100644 include/uapi/linux/counter.h
+> 
+

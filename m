@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9DA23FE12
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 13:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2DA523FE45
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 14:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbgHILz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 07:55:26 -0400
-Received: from mga14.intel.com ([192.55.52.115]:63660 "EHLO mga14.intel.com"
+        id S1726175AbgHIMhH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 08:37:07 -0400
+Received: from mga06.intel.com ([134.134.136.31]:19197 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726296AbgHILz0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 Aug 2020 07:55:26 -0400
-IronPort-SDR: 24T9H6RFv0K7jRb/6rgZ0xKvGp2Kzfk6+4xrgRvvExdEBzFl9ZtzKKD8BxJiiWyNTVLg7EOU1g
- RiVuzvEk5FsQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9707"; a="152627196"
+        id S1726009AbgHIMhD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 08:37:03 -0400
+IronPort-SDR: rAe6VT3YdIIXo15fJfhm+L+dOmExDPjXxQC+TMYzoeGMfiOsX63bQWzsp8jG2VC/B0OEd8gF89
+ iecmaBj4cPSA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9707"; a="214937607"
 X-IronPort-AV: E=Sophos;i="5.75,453,1589266800"; 
-   d="gz'50?scan'50,208,50";a="152627196"
+   d="gz'50?scan'50,208,50";a="214937607"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2020 04:55:25 -0700
-IronPort-SDR: jQHAxrMURSJe5DuQ8qJkKU45uMXAyb67nDIKTmVMiRK2U7U8N+5vAD2S1403YCbS9PHWsv59Be
- abnUAcP0IDCA==
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2020 05:13:38 -0700
+IronPort-SDR: +FgeAQ5lLXZCgXat1pnUVDTY4JYCRH79ctTAQatsLVskTG0XK6x+UGX/e34Uajbq3c8tN3es2b
+ JLozqZg78VCA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.75,453,1589266800"; 
-   d="gz'50?scan'50,208,50";a="494032096"
+   d="gz'50?scan'50,208,50";a="468743823"
 Received: from lkp-server02.sh.intel.com (HELO 5ad9e2f13e37) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 09 Aug 2020 04:55:21 -0700
+  by orsmga005.jf.intel.com with ESMTP; 09 Aug 2020 05:13:34 -0700
 Received: from kbuild by 5ad9e2f13e37 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1k4jv6-00008p-Ly; Sun, 09 Aug 2020 11:55:20 +0000
-Date:   Sun, 9 Aug 2020 19:54:51 +0800
+        id 1k4kCk-000091-9t; Sun, 09 Aug 2020 12:13:34 +0000
+Date:   Sun, 9 Aug 2020 20:12:56 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Sandeep Singh <Sandeep.Singh@amd.com>, jikos@kernel.org,
         benjamin.tissoires@redhat.com, linux-kernel@vger.kernel.org,
@@ -39,14 +39,14 @@ To:     Sandeep Singh <Sandeep.Singh@amd.com>, jikos@kernel.org,
         jic23@kernel.org, linux-iio@vger.kernel.org, hdegoede@redhat.com,
         Nehal-bakulchandra.Shah@amd.com, andy.shevchenko@gmail.com
 Cc:     kbuild-all@lists.01.org
-Subject: Re: [PATCH v6 2/4] SFH: PCIe driver to add support of AMD sensor
- fusion
-Message-ID: <202008091948.gtKbqI8X%lkp@intel.com>
-References: <20200809102511.2657644-3-Sandeep.Singh@amd.com>
+Subject: Re: [PATCH v6 4/4] SFH: Create HID report to Enable support of AMD
+ sensor fusion Hub (SFH)
+Message-ID: <202008092002.YR0mvy9R%lkp@intel.com>
+References: <20200809102511.2657644-5-Sandeep.Singh@amd.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="FCuugMFkClbJLl1L"
+Content-Type: multipart/mixed; boundary="CE+1k2dSO48ffgeK"
 Content-Disposition: inline
-In-Reply-To: <20200809102511.2657644-3-Sandeep.Singh@amd.com>
+In-Reply-To: <20200809102511.2657644-5-Sandeep.Singh@amd.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -54,7 +54,7 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---FCuugMFkClbJLl1L
+--CE+1k2dSO48ffgeK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -83,42 +83,92 @@ Reported-by: kernel test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
-   drivers/hid/amd-sfh-hid/amd_mp2_pcie.c: In function 'amd_mp2_pci_init':
->> drivers/hid/amd-sfh-hid/amd_mp2_pcie.c:107:2: warning: ignoring return value of 'pcim_enable_device', declared with attribute warn_unused_result [-Wunused-result]
-     107 |  pcim_enable_device(pdev);
-         |  ^~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/hid/amd-sfh-hid/amdsfh_hid_client.c: In function 'amd_sfh_hid_client_init':
+>> drivers/hid/amd-sfh-hid/amdsfh_hid_client.c:140:6: warning: variable 'rc' set but not used [-Wunused-but-set-variable]
+     140 |  int rc, i;
+         |      ^~
 
-vim +/pcim_enable_device +107 drivers/hid/amd-sfh-hid/amd_mp2_pcie.c
+vim +/rc +140 drivers/hid/amd-sfh-hid/amdsfh_hid_client.c
 
-   101	
-   102	static int amd_mp2_pci_init(struct amd_mp2_dev *privdata, struct pci_dev *pdev)
-   103	{
-   104		int rc;
-   105	
-   106		pci_set_drvdata(pdev, privdata);
- > 107		pcim_enable_device(pdev);
-   108		pcim_iomap_regions(pdev, BIT(2), DRIVER_NAME);
-   109	
-   110		privdata->mmio = pcim_iomap_table(pdev)[2];
-   111		pci_set_master(pdev);
-   112	
-   113		rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
-   114		if (rc)
-   115			rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-   116		return rc;
-   117	}
-   118	
+6d2f42dac8a703 Sandeep Singh 2020-08-09  131  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  132  int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+6d2f42dac8a703 Sandeep Singh 2020-08-09  133  {
+6d2f42dac8a703 Sandeep Singh 2020-08-09  134  	struct amdtp_cl_data *cl_data = privdata->cl_data;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  135  	struct amd_mp2_sensor_info info;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  136  	struct device *dev;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  137  	u32 feature_report_size;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  138  	u32 input_report_size;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  139  	u8 cl_idx;
+6d2f42dac8a703 Sandeep Singh 2020-08-09 @140  	int rc, i;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  141  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  142  	dev = &privdata->pdev->dev;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  143  	cl_data = kzalloc(sizeof(*cl_data), GFP_KERNEL);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  144  	if (!cl_data)
+6d2f42dac8a703 Sandeep Singh 2020-08-09  145  		return -ENOMEM;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  146  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  147  	cl_data->num_hid_devices = amd_mp2_get_sensor_num(privdata, &cl_data->sensor_idx[0]);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  148  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  149  	INIT_DELAYED_WORK(&cl_data->work, amd_sfh_work);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  150  	INIT_DELAYED_WORK(&cl_data->work_buffer, amd_sfh_work_buffer);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  151  	INIT_LIST_HEAD(&req_list.list);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  152  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  153  	for (i = 0; i < cl_data->num_hid_devices; i++) {
+6d2f42dac8a703 Sandeep Singh 2020-08-09  154  		cl_data->sensor_virt_addr[i] = dma_alloc_coherent(dev, sizeof(int) * 8,
+6d2f42dac8a703 Sandeep Singh 2020-08-09  155  								  &cl_data->sensor_phys_addr[i],
+6d2f42dac8a703 Sandeep Singh 2020-08-09  156  								  GFP_KERNEL);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  157  		cl_data->sensor_sts[i] = 0;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  158  		cl_data->sensor_requested_cnt[i] = 0;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  159  		cl_data->cur_hid_dev = i;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  160  		cl_idx = cl_data->sensor_idx[i];
+6d2f42dac8a703 Sandeep Singh 2020-08-09  161  		cl_data->report_descr_sz[i] = get_descr_sz(cl_idx, descr_size);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  162  		if (!cl_data->report_descr_sz[i])
+6d2f42dac8a703 Sandeep Singh 2020-08-09  163  			return -EINVAL;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  164  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  165  		feature_report_size = get_descr_sz(cl_idx, feature_size);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  166  		if (!feature_report_size)
+6d2f42dac8a703 Sandeep Singh 2020-08-09  167  			return -EINVAL;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  168  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  169  		input_report_size =  get_descr_sz(cl_idx, input_size);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  170  		if (!input_report_size)
+6d2f42dac8a703 Sandeep Singh 2020-08-09  171  			return -EINVAL;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  172  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  173  		cl_data->feature_report[i] = kzalloc(feature_report_size, GFP_KERNEL);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  174  		if (!cl_data->feature_report[i])
+6d2f42dac8a703 Sandeep Singh 2020-08-09  175  			return -ENOMEM;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  176  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  177  		cl_data->input_report[i] = kzalloc(input_report_size, GFP_KERNEL);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  178  		if (!cl_data->input_report[i])
+6d2f42dac8a703 Sandeep Singh 2020-08-09  179  			return -ENOMEM;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  180  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  181  		info.period = PERIOD;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  182  		info.sensor_idx = cl_idx;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  183  		info.phys_address = cl_data->sensor_phys_addr[i];
+6d2f42dac8a703 Sandeep Singh 2020-08-09  184  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  185  		cl_data->report_descr[i] = kzalloc(cl_data->report_descr_sz[i], GFP_KERNEL);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  186  		if (!cl_data->report_descr[i])
+6d2f42dac8a703 Sandeep Singh 2020-08-09  187  			return -ENOMEM;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  188  
+6d2f42dac8a703 Sandeep Singh 2020-08-09  189  		rc = get_report_descriptor(cl_idx, cl_data->report_descr[i]);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  190  		rc = amdtp_hid_probe(cl_data->cur_hid_dev, cl_data);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  191  		amd_start_sensor(privdata, info);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  192  		cl_data->sensor_sts[i] = 1;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  193  	}
+6d2f42dac8a703 Sandeep Singh 2020-08-09  194  	privdata->cl_data = cl_data;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  195  	schedule_delayed_work(&cl_data->work_buffer, PERIOD);
+6d2f42dac8a703 Sandeep Singh 2020-08-09  196  	return 0;
+6d2f42dac8a703 Sandeep Singh 2020-08-09  197  }
+6d2f42dac8a703 Sandeep Singh 2020-08-09  198  
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---FCuugMFkClbJLl1L
+--CE+1k2dSO48ffgeK
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICELgL18AAy5jb25maWcAlFxbc9w2sn7Pr5iSX3YfktXNc5xzSg8gCc4gQxI0Ac5FL6yx
+H4sICJbkL18AAy5jb25maWcAlFxbc9w2sn7Pr5iSX3YfktXNc5xzSg8gCc4gQxI0Ac5FL6yx
 PHZUkSWXNMom++tPN3hDA+DIm6rdZL5u3BqNvgHUu5/ezdjr8enb/nh/t394+Hv29fB4eN4f
 D59nX+4fDv83S+SskHrGE6F/Aebs/vH1r38937/c/Tl7/8uHX85nq8Pz4+FhFj89frn/+gpN
 758ef3r3UyyLVCyaOG7WvFJCFo3mW31zZprOr39+wI5+/np3N/vHIo7/Ofv1l6tfzs+sZkI1
@@ -1341,4 +1391,4 @@ ZN/wXdXxHIeDl4md5Bw1z3uM6zaRRb6UCBqQrjNzVHu5py0jjDIfqSunSdf5aZGdJoIK2d+q
 bLZ2rSqBmIpqg6kWV7vtcDE+44zdLv/E8yQLBDRwSmnnYZj4oJzJgSNv47tC8QAgcuZymHAU
 ALnJP7j0OR4muKmu2cCb+HPoaCDzjejCCfR/nLvokYpABAA=
 
---FCuugMFkClbJLl1L--
+--CE+1k2dSO48ffgeK--

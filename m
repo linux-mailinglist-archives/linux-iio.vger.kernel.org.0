@@ -2,109 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D3323FF24
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 17:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1972D23FF72
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 19:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726229AbgHIP7s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 11:59:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35803 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726175AbgHIP7r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Aug 2020 11:59:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596988784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=xG+8uieNrMAP0UGTh1w832zRGIBKTtCxlShJe5RBqBY=;
-        b=dxBNrcTa6ohjcTdxtSU3u/KqS2oh4TwuGdGJ4BaHXyBNURZQ9XBny0isOVWIIRNGc1jTqW
-        C+hB+dBip1+mXlW326TKj9GKlQwT1phAo+o7k8vUeDzze85ely+8hAR//INedhLTQWPSM8
-        vNDDS8Andd1gsdEtKnYnkrDsoW5kl+0=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-386-B1gTnhZjPCOqTS5jnsp74g-1; Sun, 09 Aug 2020 11:59:42 -0400
-X-MC-Unique: B1gTnhZjPCOqTS5jnsp74g-1
-Received: by mail-qt1-f199.google.com with SMTP id q7so5817606qtd.1
-        for <linux-iio@vger.kernel.org>; Sun, 09 Aug 2020 08:59:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=xG+8uieNrMAP0UGTh1w832zRGIBKTtCxlShJe5RBqBY=;
-        b=bLyyuNzxk/9uDOgcGvEzyw7AegrPY2MXNgS0yb/dyqE8ARCmiRDrbLu7GdTRbiYA7x
-         CPb9LTVyzKdVyXAV6TCBN0icH2kpMwSAQvT+h8+Ev58imnDtUu9lSthNUC1z9hDfwfle
-         NKWq+CnZ0hjM+uJ01CWmpTR1vdj8N+cSptJHtXxxlmkQ6sM8SfRXGXCTcep1hObpnLoG
-         Q9Xgqby1eIqh5x4BYrFO851FtN37GJtGfES3k/vVAfYF2JSvUFSRL1sMFDHkiepyRLad
-         TZFuxUvfkH8eXn7OPR7i131T1FVl7Mk1/UwZSJkTQgJLKrrvCTHwocazrCKimdYDlLpe
-         z0Bg==
-X-Gm-Message-State: AOAM532/LuHkSduxV2w50JxZCYFLRNzXXW6dENuzYqjjgquro9HY23ox
-        nxjYH2SPxdv7Xoq+bYa1eq4K6ni7XQyz0vdYcyaVQNABSCSdyi2DKel9jgq9AKcEzqUqQLEQppo
-        ZoRKYFXNLbpjZzC8zwDPt
-X-Received: by 2002:a05:620a:676:: with SMTP id a22mr22806363qkh.8.1596988782402;
-        Sun, 09 Aug 2020 08:59:42 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzek1KpoZ0Rpa2MTqiHLJFcD8g4Cwdl2ExzIA00XyXHgllNcIpXqt/H9tlORP5vMgXoeqUj/w==
-X-Received: by 2002:a05:620a:676:: with SMTP id a22mr22806349qkh.8.1596988782146;
-        Sun, 09 Aug 2020 08:59:42 -0700 (PDT)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id k48sm14978268qtk.44.2020.08.09.08.59.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2020 08:59:41 -0700 (PDT)
-From:   trix@redhat.com
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, jmaneyrol@invensense.com,
-        mirq-linux@rere.qmqm.pl, lee.jones@linaro.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: check for temp_fifo_enable
-Date:   Sun,  9 Aug 2020 08:59:36 -0700
-Message-Id: <20200809155936.16898-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.1
+        id S1726323AbgHIRRq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 13:17:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53972 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726175AbgHIRRp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 13:17:45 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4437C206CD;
+        Sun,  9 Aug 2020 17:17:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596993465;
+        bh=HqCmB91dp9wJXUfZ4P5DScloKB8YtYKjt9MQu6txdqg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=fLdTc83DSJBXydjL8xsSdkGOFtvcZaODxnZ9PXYicXoeA3It8/S8Y9UbvAgssERZj
+         Jcs3YHDKZ0kXI6450A/y9RKCxcnck58sH4pCP75mRxaLA1COIqfKurqZl45PFLhNDU
+         nlXjDhcXzufco+Y7OwSZKha+V66BMIC8sKnr+YXs=
+Date:   Sun, 9 Aug 2020 18:07:21 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 01/27] iio: accel: kxsd9: Fix alignment of local
+ buffer.
+Message-ID: <20200809180721.643946ab@archlinux>
+In-Reply-To: <20200722155103.979802-2-jic23@kernel.org>
+References: <20200722155103.979802-1-jic23@kernel.org>
+        <20200722155103.979802-2-jic23@kernel.org>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+On Wed, 22 Jul 2020 16:50:37 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-clang static analysis reports this problem
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> iio_push_to_buffers_with_timestamp assumes 8 byte alignment which
+> is not guaranteed by an array of smaller elements.
+> 
+> Note that whilst in this particular case the alignment forcing
+> of the ts element is not strictly necessary it acts as good
+> documentation.  Doing this where not necessary should cut
+> down on the number of cut and paste introduced errors elsewhere.
+> 
+> Reported-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-inv_mpu_ring.c:181:18: warning: Division by zero
-        nb = fifo_count / bytes_per_datum;
-             ~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+Thanks,
 
-This is a false positive.
-Dividing by 0 is protected by this check
+Jonathan
 
-	if (!(st->chip_config.accl_fifo_enable |
-		st->chip_config.gyro_fifo_enable |
-		st->chip_config.magn_fifo_enable))
-		goto end_session;
-	bytes_per_datum = 0;
 
-But there is another fifo, temp_fifo
 
-	if (st->chip_config.temp_fifo_enable)
-		bytes_per_datum += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
-
-Which would be skipped if it was the only enabled fifo.
-So add to the check.
-
-Fixes: 2e4c0a5e2576 ("iio: imu: inv_mpu6050: add fifo temperature data support")
-
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-index b533fa2dad0a..5240a400dcb4 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -141,6 +141,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 
- 	if (!(st->chip_config.accl_fifo_enable |
- 		st->chip_config.gyro_fifo_enable |
-+		st->chip_config.temp_fifo_enable |
- 		st->chip_config.magn_fifo_enable))
- 		goto end_session;
- 	bytes_per_datum = 0;
--- 
-2.18.1
+> ---
+>  drivers/iio/accel/kxsd9.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
+> index 66b2e4cf24cf..0e18b92e2099 100644
+> --- a/drivers/iio/accel/kxsd9.c
+> +++ b/drivers/iio/accel/kxsd9.c
+> @@ -209,14 +209,20 @@ static irqreturn_t kxsd9_trigger_handler(int irq, void *p)
+>  	const struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct kxsd9_state *st = iio_priv(indio_dev);
+> +	/*
+> +	 * Ensure correct positioning and alignment of timestamp.
+> +	 * No need to zero initialize as all elements written.
+> +	 */
+> +	struct {
+> +		__be16 chan[4];
+> +		s64 ts __aligned(8);
+> +	} hw_values;
+>  	int ret;
+> -	/* 4 * 16bit values AND timestamp */
+> -	__be16 hw_values[8];
+>  
+>  	ret = regmap_bulk_read(st->map,
+>  			       KXSD9_REG_X,
+> -			       &hw_values,
+> -			       8);
+> +			       hw_values.chan,
+> +			       sizeof(hw_values.chan));
+>  	if (ret) {
+>  		dev_err(st->dev,
+>  			"error reading data\n");
+> @@ -224,7 +230,7 @@ static irqreturn_t kxsd9_trigger_handler(int irq, void *p)
+>  	}
+>  
+>  	iio_push_to_buffers_with_timestamp(indio_dev,
+> -					   hw_values,
+> +					   &hw_values,
+>  					   iio_get_time_ns(indio_dev));
+>  	iio_trigger_notify_done(indio_dev->trig);
+>  
 

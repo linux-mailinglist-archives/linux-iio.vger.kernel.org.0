@@ -2,41 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9B323FE90
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 15:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A15D523FE97
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Aug 2020 15:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726120AbgHINc0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Aug 2020 09:32:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42982 "EHLO mail.kernel.org"
+        id S1726070AbgHINm2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Aug 2020 09:42:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726070AbgHINc0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 Aug 2020 09:32:26 -0400
+        id S1726009AbgHINm1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Aug 2020 09:42:27 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4F98206B6;
-        Sun,  9 Aug 2020 13:32:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8E9E6206B6;
+        Sun,  9 Aug 2020 13:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596979945;
-        bh=x6hX5hmHtgNXUpMMJKzfq2gMV3FBFrP/xYq9lyBrJcs=;
+        s=default; t=1596980546;
+        bh=z5ggloJNSGbzFqqy5FHmnwMWQ3MZ9nRoSWZRpWR9klU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cdU7jvqsvRA99y1tAOZjJre7pKdrkjgJGNC1NJRQStZ5+VBClhBupnCfrwhR7ZzcI
-         h2FTdhTCSM5lC/pYXU76djpASYaCUEBvFVY3mMKl15iQHwU4N97qFmhQYMY9KnH8g4
-         eXfoW2EWAD6HUzECMNTluDfaat1XoE0MAf5Z2+0M=
-Date:   Sun, 9 Aug 2020 14:32:22 +0100
+        b=2pP5p4l1UBj7LXtrfSEqaHQi1n0qTCP2tOejp5K7tgGCUl6sNPoRWR4+F2B1j36ln
+         Fxh9c6u9oZyaisvh5P5Jd3KjTd7l82acjPoytbL3BDvwbNcUOWSlv/RqjfDf98xFkM
+         IVcCj3Fm7boVUIEUt1TtKu+9xLkxS1x8Be74b/pM=
+Date:   Sun, 9 Aug 2020 14:42:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/4] iio:temperature:mlx90632: Adding extended
- calibration option
-Message-ID: <20200809143222.4e19ea38@archlinux>
-In-Reply-To: <CAKv63uv-+r6M=G2rviSedgdCUd_0nzHKWXK363bJNERTQHRYXA@mail.gmail.com>
-References: <20200808121026.1300375-1-cmo@melexis.com>
-        <20200808121026.1300375-3-cmo@melexis.com>
-        <CAHp75VfWk7pCy4Osv0uY0UH4yFS=PRGbE1CNCakuRFTE33SDJg@mail.gmail.com>
-        <CAKv63uv-+r6M=G2rviSedgdCUd_0nzHKWXK363bJNERTQHRYXA@mail.gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        David.Laight@ACULAB.COM
+Subject: Re: [PATCH v4 1/5] counter: Internalize sysfs interface code
+Message-ID: <20200809144221.6947ea6e@archlinux>
+In-Reply-To: <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
+References: <cover.1595358237.git.vilhelm.gray@gmail.com>
+        <e13d43849f68af8227c6aaa0ef672b459d47e9ab.1595358237.git.vilhelm.gray@gmail.com>
+        <7209ac3d-d1ca-1b4c-b22c-8d98b13742e2@lechnology.com>
+        <20200802210415.GA606173@shinobu>
+        <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,121 +52,93 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 8 Aug 2020 23:57:59 +0200
-Crt Mori <cmo@melexis.com> wrote:
+On Mon, 3 Aug 2020 15:00:49 -0500
+David Lechner <david@lechnology.com> wrote:
 
-> Hi,
-> I am very sorry you missed them, I thought you saw it (reply on v3 of
-> the patch). Maybe something happened to that mail, as it contained
-> link to datasheet, so I will omit it now.
+> On 8/2/20 4:04 PM, William Breathitt Gray wrote:
+> > On Tue, Jul 28, 2020 at 05:45:53PM -0500, David Lechner wrote:  
+> >> On 7/21/20 2:35 PM, William Breathitt Gray wrote:  
+> >>> This is a reimplementation of the Generic Counter driver interface.  
 > 
-> Except for the order, only the remarks below are still open (did you
-> get the polling trail I did?)
+> ...
 > 
-> On Sat, 8 Aug 2020 at 22:04, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Sat, Aug 8, 2020 at 3:11 PM Crt Mori <cmo@melexis.com> wrote:  
-> > >
-> > > For some time the market wants medical grade accuracy in medical range,
-> > > while still retaining the declared accuracy outside of the medical range
-> > > within the same sensor. That is why we created extended calibration
-> > > which is automatically switched to when object temperature is too high.
-> > >
-> > > This patch also introduces the object_ambient_temperature variable which
-> > > is needed for more accurate calculation of the object infra-red
-> > > footprint as sensor's ambient temperature might be totally different
-> > > than what the ambient temperature is at object and that is why we can
-> > > have some more errors which can be eliminated. Currently this temperature
-> > > is fixed at 25, but the interface to adjust it by user (with external
-> > > sensor or just IR measurement of the other object which acts as ambient),
-> > > will be introduced in another commit.  
-> >
-> > The kernel doc patch should go before this patch.
-> >
-> > ...
-> >  
-> > > +       *ambient_new_raw = (s16)read_tmp;  
-> >  
-> > > +       *ambient_old_raw = (s16)read_tmp;  
-> >
-> > Sorry, did I miss your answer about these castings all over the patch?
-> >  
+> >>> -F:	include/linux/counter_enum.h
+> >>> +F:	include/uapi/linux/counter.h  
+> >>
+> >> Seems odd to be introducing a uapi header here since this patch doesn't
+> >> make any changes to userspace.  
+> > 
+> > These defines are needed by userspace for the character device
+> > interface, but I see your point that at this point in the patchset they
+> > don't need to be exposed yet.
+> > 
+> > I could create temporary include/linux/counter_types.h to house these
+> > defines, and then later move them to include/uapi/linux/counter.h in the
+> > character device interface introduction patch. Do you think I should do
+> > so?  
 > 
-> These castings are in fact needed. You read unsigned integer, but the
-> return value is signed integer. Without the cast it did not extend the
-> signed bit, but just wrote the value to signed. Also I find it more
-> obvious with casts, that I did not "accidentally" convert to signed.
+> Since this patch is independent of the chardev changes and probably ready
+> to merge after one more round of review, I would say it probably makes
+> sense to just leave them in counter.h for now and move them to uapi when
+> the chardev interface is finalized. This way, we can just merge this patch
+> as soon as it is ready.
+> 
+Agreed.
 
-Should we perhaps be making this explicit for the cases where we
-are sign extending?  That doesn't include these two as the lvalue
-is s16, but does include some of the others.
+...
 
-sign_extend32(read_tmp, 15)
+> >>>    /**
+> >>>     * struct counter_device - Counter data structure
+> >>> - * @name:		name of the device as it appears in the datasheet
+> >>> + * @name:		name of the device
+> >>>     * @parent:		optional parent device providing the counters
+> >>> - * @device_state:	internal device state container
+> >>> - * @ops:		callbacks from driver
+> >>> + * @signal_read:	optional read callback for Signals. The read value of
+> >>> + *			the respective Signal should be passed back via the
+> >>> + *			value parameter.
+> >>> + * @count_read:		optional read callback for Counts. The read value of the
+> >>> + *			respective Count should be passed back via the value
+> >>> + *			parameter.
+> >>> + * @count_write:	optional write callback for Counts. The write value for
+> >>> + *			the respective Count is passed in via the value
+> >>> + *			parameter.
+> >>> + * @function_read:	optional read callback the Count function modes. The
+> >>> + *			read function mode of the respective Count should be
+> >>> + *			passed back via the function parameter.
+> >>> + * @function_write:	option write callback for Count function modes. The
+> >>> + *			function mode to write for the respective Count is
+> >>> + *			passed in via the function parameter.
+> >>> + * @action_read:	optional read callback the Synapse action modes. The
+> >>> + *			read action mode of the respective Synapse should be
+> >>> + *			passed back via the action parameter.
+> >>> + * @action_write:	option write callback for Synapse action modes. The
+> >>> + *			action mode to write for the respective Synapse is
+> >>> + *			passed in via the action parameter.
+> >>>     * @signals:		array of Signals  
+> >>
+> >> Why not keep the ops struct?  
+> > 
+> > Defining static ops structures in the drivers seemed to have no
+> > advantage when those callbacks are always used via the counter_device
+> > structure. I decided it'd be simpler to just set them directly in the
+> > counter_device structure then.
+> > 
+> > I could reorganize them into an ops structure again if there's enough
+> > interest.  
+> 
+> I've been working on really constrained systems lately where every byte
+> counts, so this stuck out to me since there would be a copy of all
+> functions for each counter instance. But probably not that big of a deal
+> in the Linux kernel. :-)
+> 
+In addition to that..
 
-> 
-> > ...
-> >  
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_1(17), &read_tmp);
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_2(17), &read_tmp);
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_1(18), &read_tmp);
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_2(18), &read_tmp);
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_1(19), &read_tmp);
-> > > +       ret = regmap_read(regmap, MLX90632_RAM_2(19), &read_tmp);  
-> >
-> > What so special about these magic 17, 18, 19? Can you provide definitions?
-> >  
-> When we started 0 to 19 were all open for access, from userspace, then
-> only 1 and 2 were used with calculations, and now we use 17, 18 and
-> 19. Matter of fact is, I can't provide a descriptive name as it
-> depends on DSP version and as you can see now within the same DSP
-> version, also on the ID part. While RAM3 vs RAM1 and RAM2 could be
-> named RAM_OBJECT1, RAM_OBJECT2, RAM_AMBIENT, knowing our development
-> that might not be true in the next configuration, so I rather keep the
-> naming as in the datasheet.
-Normal solution for that is to version the defines as well.
+There are other advantages to keeping an ops structure including
+easy function order randomization (for security), plus
+the fact that we want to make any function pointers build time assignments
+if we possibly can.  Makes them harder to attack.
 
-MLX90632_FW3_RAM_1_AMBIENT etc
-When a new version changes this, then you introduced new defines to
-support that firmware.
-
-> 
-> > ...
-> >  
-> > > +       int tries = 4;  
-> >  
-> > > +       while (tries-- > 0) {
-> > > +               ret = mlx90632_perform_measurement(data);
-> > > +               if (ret < 0)
-> > > +                       goto read_unlock;
-> > > +
-> > > +               if (ret == 19)
-> > > +                       break;
-> > > +       }
-> > > +       if (tries < 0) {
-> > > +               ret = -ETIMEDOUT;
-> > > +               goto read_unlock;
-> > > +       }  
-> >
-> > Please avoid ping-pong type of changes in the same series (similar way
-> > as for kernel doc), which means don't introduce something you are
-> > going to change later on. Patch to move to do {} while () should go
-> > before this one.  
-> 
-> OK, will fix that ordering in v5, but will wait till we solve also
-> above discussions to avoid adding new versions.
-> 
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko  
-> 
-> And about that voodoo stuff with numbers:
-> 
-> Honestly, the equation is in the datasheet[1] and this is just making
-> floating point to fixed point with proper intermediate scaling
-> (initially I had defines of TENTOX, but that was not desired). There
-> is no better explanation of this voodoo.
-
-We all love fixed point arithmetic :)
+So in more recent kernel code we try to use ops structures wherever possible.
 
 Jonathan

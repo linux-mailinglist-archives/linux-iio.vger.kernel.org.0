@@ -2,165 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E462401BB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 07:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9E2240314
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 10:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbgHJFZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Aug 2020 01:25:47 -0400
-Received: from mailout02.rmx.de ([62.245.148.41]:40642 "EHLO mailout02.rmx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725763AbgHJFZr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 Aug 2020 01:25:47 -0400
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mailout02.rmx.de (Postfix) with ESMTPS id 4BQ4Dj3T1szNr0V;
-        Mon, 10 Aug 2020 07:25:41 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by kdin01.retarus.com (Postfix) with ESMTPS id 4BQ4D83Gmnz2xhm;
-        Mon, 10 Aug 2020 07:25:12 +0200 (CEST)
-Received: from N95HX1G2.wgnetz.xx (192.168.54.33) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Mon, 10 Aug
- 2020 07:25:11 +0200
-From:   Christian Eggers <ceggers@arri.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Christian Eggers <ceggers@arri.de>
-Subject: [PATCH v2] iio: documentation: light: Add as73211 sysfs documentation
-Date:   Mon, 10 Aug 2020 07:24:47 +0200
-Message-ID: <20200810052447.12381-1-ceggers@arri.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200809123000.5131effd@archlinux>
-References: <20200809123000.5131effd@archlinux>
+        id S1725984AbgHJIBl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Aug 2020 04:01:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52526 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725846AbgHJIBk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Aug 2020 04:01:40 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F34C061756
+        for <linux-iio@vger.kernel.org>; Mon, 10 Aug 2020 01:01:40 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id d22so4742509pfn.5
+        for <linux-iio@vger.kernel.org>; Mon, 10 Aug 2020 01:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2M+hWY57ToYAt5QrVv379XNqX96RixZbB1Pn/ixjYCE=;
+        b=hFBhfRncAAGpaswZHvJa2kc+lQFBEIkOJl639ePLlrwOnMbvfDIvLZXhH3e5oG4p/5
+         XbMbYAaImgjnVB9cTRkreMVcrqkTDicWvkHM0MqFbjZ8a7clUJcB2ntQ7Nu8lmZpBmDw
+         l/0WyLWr9/dVESduyQItSt37D+8pFA5SYHK7pEFkXl/XIyyfUsHrTBVZQOFj+yPrr6ki
+         2VxIE82nERMrhGvP/NV0vZ+lqMKHllW7SH1dufqvMv7atH4pWPQe0B1UxFQT9oAhYsuI
+         YvE6rQXD3U8csqIwvrpd/YkQ1x1gCFfyQEUsVo/+Ivrml/jcbEVsJZzvxZiPq/WENM/C
+         mmIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2M+hWY57ToYAt5QrVv379XNqX96RixZbB1Pn/ixjYCE=;
+        b=ICWPxN+/ks/AKTEqgsVHWNOqI8NxVWC2Clf7B3S2DQEGiiIOfippo2vfqUHUgu9Zdj
+         oTAiqFVNnOuUmILMXKr1DurQZyQCJfM58IqoNALre0iV6RZMtkGcbORMLlincr0cexz7
+         dRjpvd/kQg35ftYgxeO4BkCvn8QHsBtsoNGFFKvH5eIX3W43dXDL6NNP1VArwaBsRHa4
+         OgYW3P6IWC1+ABM1xV8s2RIRfe0RKtViLok9FNia41x5peKsYmLUA+LDT3fFrC07DenQ
+         spqoGgLTsWSPEMj9uUVlgx9qUUizqVtx3kJ9v7zLgSOAwjlTulSWUnKEYgSYoRbvG3Ul
+         3txQ==
+X-Gm-Message-State: AOAM531ShSifpbz7Zm+F/NWVdq+WoqUSxjGfYCSLjrgN/IBwOVat3HWU
+        yprUM7iNPmNKch0/OqO5GXhYwRQJDlb82afMhliL3wtEUqg=
+X-Google-Smtp-Source: ABdhPJz9xai6nx1isSVYWDaXUurZNdblabVasddRUSSMQPpr7X8o+3u+L5Glle1h+vOh1+4+3/5UiMQFxodeG1MNK4w=
+X-Received: by 2002:a63:f24a:: with SMTP id d10mr20643046pgk.4.1597046499465;
+ Mon, 10 Aug 2020 01:01:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.54.33]
-X-RMX-ID: 20200810-072512-4BQ4D83Gmnz2xhm-0@kdin01
-X-RMX-SOURCE: 217.111.95.66
+References: <20200809141305.205993-1-jic23@kernel.org>
+In-Reply-To: <20200809141305.205993-1-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 10 Aug 2020 11:01:22 +0300
+Message-ID: <CAHp75VfLNRmEQ3L217H05My4+9Erhj9+EDd8ONX5bM+=gP5bwg@mail.gmail.com>
+Subject: Re: [PATCH v3] iio:adc:axp20x: Convert from OF to generic fw / device properties
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Quentin Schulz <quentin.schulz@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver for the as73211 light sensor provides the following not yet
-documented sysfs entries:
-- in_intensity_(x|y|z)_raw
-- in_intensity_(x|y|z)_scale
-- in_intensity_sampling_frequency(_available)
-- in_intensity_hardwaregain(_available)
-- in_intensity_integration_time
+On Sun, Aug 9, 2020 at 5:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Whilst fairly unlikely anyone will ever use this driver with anything
+> other than DT, we are trying to move IIO over to the generic interfaces
+> where easy to do so.
+>
+> In this case this involved moving to generic check on presence
+> of fwnode, generic device_get_match_data() and dropping the of_match_ptr
+> protection.  Also relevant header changes to have property.h and
+> mod_devicetable.h only.
+>
+> Also drop the casting away of a const in favour of retaining
+> the const throughout.
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
----
-Jonathan Cameron:
-> If it is shared across 'ALL' channels then it will be just integration_time
-> If it is shared across all channels of a given type, it will be <type>_integration_time.
-changed.
 
-Best regards
-Christian Eggers
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
- Documentation/ABI/testing/sysfs-bus-iio | 26 ++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Quentin Schulz <quentin.schulz@bootlin.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+> V3 changes: Tidy up the commit message as suggested by
+> Andy Schevchenko.
+>
+> drivers/iio/adc/axp20x_adc.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> index 798ff2d89691..3e0c0233b431 100644
+> --- a/drivers/iio/adc/axp20x_adc.c
+> +++ b/drivers/iio/adc/axp20x_adc.c
+> @@ -9,10 +9,10 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/io.h>
+>  #include <linux/module.h>
+> -#include <linux/of.h>
+> -#include <linux/of_device.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/thermal.h>
+>
+> @@ -67,7 +67,7 @@ struct axp_data;
+>
+>  struct axp20x_adc_iio {
+>         struct regmap           *regmap;
+> -       struct axp_data         *data;
+> +       const struct axp_data   *data;
+>  };
+>
+>  enum axp20x_adc_channel_v {
+> @@ -670,15 +670,15 @@ static int axp20x_probe(struct platform_device *pdev)
+>         info->regmap = axp20x_dev->regmap;
+>         indio_dev->modes = INDIO_DIRECT_MODE;
+>
+> -       if (!pdev->dev.of_node) {
+> +       if (!dev_fwnode(&pdev->dev)) {
+>                 const struct platform_device_id *id;
+>
+>                 id = platform_get_device_id(pdev);
+> -               info->data = (struct axp_data *)id->driver_data;
+> +               info->data = (const struct axp_data *)id->driver_data;
+>         } else {
+>                 struct device *dev = &pdev->dev;
+>
+> -               info->data = (struct axp_data *)of_device_get_match_data(dev);
+> +               info->data = device_get_match_data(dev);
+>         }
+>
+>         indio_dev->name = platform_get_device_id(pdev)->name;
+> @@ -742,7 +742,7 @@ static int axp20x_remove(struct platform_device *pdev)
+>  static struct platform_driver axp20x_adc_driver = {
+>         .driver = {
+>                 .name = "axp20x-adc",
+> -               .of_match_table = of_match_ptr(axp20x_adc_of_match),
+> +               .of_match_table = axp20x_adc_of_match,
+>         },
+>         .id_table = axp20x_adc_id_match,
+>         .probe = axp20x_probe,
+> --
+> 2.28.0
+>
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index d3e53a6d8331..388560149875 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -40,6 +40,7 @@ Description:
- 		buffered samples and events for device X.
- 
- What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency
- What:		/sys/bus/iio/devices/iio:deviceX/buffer/sampling_frequency
- What:		/sys/bus/iio/devices/triggerX/sampling_frequency
- KernelVersion:	2.6.35
-@@ -55,6 +56,7 @@ Description:
- 		then it is to be found in the base device directory.
- 
- What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
- What:		/sys/.../iio:deviceX/buffer/sampling_frequency_available
- What:		/sys/bus/iio/devices/triggerX/sampling_frequency_available
-@@ -374,6 +376,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_scale
- What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_scale
- What:		/sys/bus/iio/devices/iio:deviceX/in_countY_scale
- What:		/sys/bus/iio/devices/iio:deviceX/in_angl_scale
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_scale
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_scale
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_scale
- KernelVersion:	2.6.35
- Contact:	linux-iio@vger.kernel.org
- Description:
-@@ -484,6 +489,7 @@ Description:
- 		are listed in this attribute.
- 
- What		/sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain
- What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_red_hardwaregain
- What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_green_hardwaregain
- What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_blue_hardwaregain
-@@ -494,6 +500,13 @@ Description:
- 		Hardware applied gain factor. If shared across all channels,
- 		<type>_hardwaregain is used.
- 
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain_available
-+KernelVersion:	5.10
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Lists all available hardware applied gain factors. Shared across all
-+		channels.
-+
- What:		/sys/.../in_accel_filter_low_pass_3db_frequency
- What:		/sys/.../in_magn_filter_low_pass_3db_frequency
- What:		/sys/.../in_anglvel_filter_low_pass_3db_frequency
-@@ -1333,6 +1346,7 @@ Description:
- 		standardised CIE Erythemal Action Spectrum. UV index values range
- 		from 0 (low) to >=11 (extreme).
- 
-+What:		/sys/.../iio:deviceX/in_intensity_integration_time
- What:		/sys/.../iio:deviceX/in_intensity_red_integration_time
- What:		/sys/.../iio:deviceX/in_intensity_green_integration_time
- What:		/sys/.../iio:deviceX/in_intensity_blue_integration_time
-@@ -1342,7 +1356,8 @@ KernelVersion:	3.12
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		This attribute is used to get/set the integration time in
--		seconds.
-+		seconds. If shared across all channels of a given type,
-+		<type>_integration_time is used.
- 
- What:		/sys/.../iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_integration_time
- KernelVersion:	4.0
-@@ -1739,3 +1754,12 @@ KernelVersion:	5.5
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		One of the following thermocouple types: B, E, J, K, N, R, S, T.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_raw
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_raw
-+What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_raw
-+KernelVersion:	5.10
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Unscaled light intensity according to CIE 1931/DIN 5033 color space.
-+		Units after application of scale are nano nanowatts per square meter.
+
 -- 
-Christian Eggers
-Embedded software developer
-
-Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
-
+With Best Regards,
+Andy Shevchenko

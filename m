@@ -2,83 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B386240407
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 11:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DDD240464
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 11:58:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgHJJbr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Aug 2020 05:31:47 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54784 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726705AbgHJJbr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Aug 2020 05:31:47 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07A9JvDJ029678;
-        Mon, 10 Aug 2020 05:31:46 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 32snw56aeh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Aug 2020 05:31:45 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 07A9Vic4061700
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 10 Aug 2020 05:31:44 -0400
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 10 Aug
- 2020 02:31:42 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 10 Aug 2020 02:31:42 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 07A9VdXQ023493;
-        Mon, 10 Aug 2020 05:31:41 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>
-Subject: [PATCH v5 2/2] iio: accel: adxl372: Add additional trigger ABI docs
-Date:   Mon, 10 Aug 2020 12:32:57 +0300
-Message-ID: <20200810093257.65929-3-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200810093257.65929-1-alexandru.tachici@analog.com>
-References: <20200810093257.65929-1-alexandru.tachici@analog.com>
+        id S1726627AbgHJJ61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Aug 2020 05:58:27 -0400
+Received: from mailout12.rmx.de ([94.199.88.78]:56707 "EHLO mailout12.rmx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726304AbgHJJ60 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 Aug 2020 05:58:26 -0400
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout12.rmx.de (Postfix) with ESMTPS id 4BQBHM3FBQzRkq5;
+        Mon, 10 Aug 2020 11:58:23 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin01.retarus.com (Postfix) with ESMTPS id 4BQBH65lWPz2xbQ;
+        Mon, 10 Aug 2020 11:58:10 +0200 (CEST)
+Received: from n95hx1g2.localnet (192.168.54.71) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Mon, 10 Aug
+ 2020 11:57:47 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Pavel Machek <pavel@ucw.cz>
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Hartmut Knaack" <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: documentation: light: Add as73211 sysfs documentation
+Date:   Mon, 10 Aug 2020 11:57:46 +0200
+Message-ID: <4688751.agSyimv0uN@n95hx1g2>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+In-Reply-To: <20200810090054.GA8495@localhost>
+References: <20200808171443.114c8e05@archlinux> <20200809074335.23734-1-ceggers@arri.de> <20200810090054.GA8495@localhost>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-10_03:2020-08-06,2020-08-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008100068
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [192.168.54.71]
+X-RMX-ID: 20200810-115812-4BQBH65lWPz2xbQ-0@kdin01
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Monday, 10 August 2020, 11:00:54 CEST, Pavel Machek wrote:
+> Hi!
+> 
+> > The driver for the as73211 light sensor provides the following not yet
+> > documented sysfs entries:
+> > - in_intensity_(x|y|z)_raw
+> > - in_intensity_(x|y|z)_scale
+> > - in_intensity_sampling_frequency(_available)
+> > - in_intensity_hardwaregain(_available)
+> 
+> Should that be hardware_gain ?
+drivers/iio/industrialio-core.c:
+[IIO_CHAN_INFO_HARDWAREGAIN] = "hardwaregain",
 
-Document use of additional trigger supplied by driver.
+> 							
+Pavel
+regards
+Christian
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- Documentation/ABI/testing/sysfs-bus-iio-accel-adxl372 | 7 +++++++
- 1 file changed, 7 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-accel-adxl372
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-accel-adxl372 b/Documentation/ABI/testing/sysfs-bus-iio-accel-adxl372
-new file mode 100644
-index 000000000000..47e34f865ca1
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-accel-adxl372
-@@ -0,0 +1,7 @@
-+What:		/sys/bus/iio/devices/triggerX/name = "adxl372-devX-peak"
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		The adxl372 accelerometer kernel module provides an additional trigger,
-+		which sets the device in a mode in which it will record only the peak acceleration
-+		sensed over the set period of time in the events sysfs.
--- 
-2.20.1
+
+
 

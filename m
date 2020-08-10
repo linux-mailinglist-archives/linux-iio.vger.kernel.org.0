@@ -2,62 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BADFE24031D
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 10:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D271E240335
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Aug 2020 10:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726092AbgHJIDC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Aug 2020 04:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
+        id S1726029AbgHJII4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Aug 2020 04:08:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbgHJIDC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Aug 2020 04:03:02 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC83C061756;
-        Mon, 10 Aug 2020 01:03:02 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id f10so4356801plj.8;
-        Mon, 10 Aug 2020 01:03:02 -0700 (PDT)
+        with ESMTP id S1726021AbgHJIIz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Aug 2020 04:08:55 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C61C061756;
+        Mon, 10 Aug 2020 01:08:55 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id f193so4740799pfa.12;
+        Mon, 10 Aug 2020 01:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EIVYbfl60/LCAXTYgKZTMLflQoCrjmA+x5UQf4DHC8U=;
-        b=BLFDPlRaEIp2bEVswqI1V3rY6FhRvyvhrKzRCgp8XtqofWcIO+R2xg8xsxH+g2ewCL
-         rKZodlVz6vEJ7jlUQlvTofVSMkNZbEA2ofzmZ3Ll51KfOTeZiFe05PYW7MLdHw6hegtL
-         rxNbcrLM8whucUuOnBpyL91evVA3dVoD9m2ZX2Up7xDYXIxhnUaip/iP3x8LFfm9+he/
-         LSEPg3VY2l/QFnbByOpMMZoPEPResMdy6KsbmIVNE2HHBDDMBLllUuZnvn4c5AQjGgY4
-         9Om+TeqtZnUgAeaRCIX3vxbJR8Jbq45fYYcREg5j3DGJ0cSHEUJGr+YdBHyMl5AIBY5E
-         nEaA==
+        bh=Y5RQ0WwBDdVj5r5k2hkM3cpnmzSwMY7YNRulx0YXxtM=;
+        b=pED1iKL08KoHo6CLSIwODFFD6nysIPi+SYm1lyNFMiIALEXsi6pwVNxrKvUlDeMgFb
+         jMq3Uxl4WG6k56azcWn/RX1GUnSmfUg8l/VjE1a/jzn1fQU+/cVbCSec69sE0EXlgA7W
+         HXXR+yiy+3B1X9WIIQ5i8nSA6sgeU+l3nmvgTkOQ9C87AGn8IiimPT9+o6G1H7PPODHV
+         Qs+lnStTZtjSqBGkXQpX7W5RnSEU4dfaxIy7bVy6f643DxND5jkRnA3vgeRw9pScNuHl
+         wffhymtJffCRzYqO5i9bTuypzQEszgaync5Gxoge4sOL7D9xcPGvR/jWeRsPQcdVqQqH
+         KJNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EIVYbfl60/LCAXTYgKZTMLflQoCrjmA+x5UQf4DHC8U=;
-        b=tvES0O1BfZT5pDr/3/k2ynTMYbwwnl9k02PRazNFak+OMGxpHzwB7z7P8N5TLGIpZ1
-         Rm5TDDo6swmd2XpCJohFFLTGXX/c6V5K+aBZhh3oZ3w1y7iWdozyhrI84/StGwBkwojq
-         VNeFhCbdKy8Fw6aOJaJzWFbFUybLvD71oJjNtudMZVII3czkHBoUuGcPEnHpSlYAWGCa
-         fwyvVd9NxpnBWDbzgMSk9ELANqVdZdONnBwBioPvVhor9FZBdm9JahFRFSfZxJTih/4P
-         OD/1dIbDRe9984Klv9x2gEN2wLk4aKjQvy+O21ywm2Hw8LoxH1JCW+5NFPZF3+Ge6zto
-         0qow==
-X-Gm-Message-State: AOAM531yfB1xKFn013vqTQZWY+K3YJHqepLSHgdz283097+CVJgmsJp5
-        7Ry1sP66KxRap74jI6mwcQdF6WfEz+be2viIcWTi97f4kdLi5A==
-X-Google-Smtp-Source: ABdhPJwHVCVP7tW6XE3VLpw262gbkqCVMj2TlQmrMSM9cSxkzFlBa9Yn9IC/QE5FWG2bR7VFa1pw8Jie3rkVmrEHBQo=
-X-Received: by 2002:a17:902:8491:: with SMTP id c17mr22749650plo.262.1597046581567;
- Mon, 10 Aug 2020 01:03:01 -0700 (PDT)
+        bh=Y5RQ0WwBDdVj5r5k2hkM3cpnmzSwMY7YNRulx0YXxtM=;
+        b=qaMiB7mUBoDQYd1XlAOP0iKQWVaQzVH1VnpFgW4kxHCO/tGuk9OUoyVit/66mmXurl
+         4zZiZRrjRshEYvRdzdEQYXNsLybUdjjifwYJZQ1gBT9GPbdH620jbejDaxRDShqin7Cq
+         jrGp/DlelZRmUGDCfunDcBfeYdb06G/mKKKrOWpNfrodKyCdRx8dmlbfXxTSnw5v0KeK
+         txsIC6j3ckV2GODlN5a/oPUt2w+BhGkQJrFr1jRlhOWhbgniIvU+9rueHQgnYDEkBJDG
+         j3LyG4EcAuCK1lZlkBc2vup3D1nDviVgWZN3RRAlb+nI4RBf12KntggqnTuPMn0sxaNB
+         lK/A==
+X-Gm-Message-State: AOAM533/CkNq6NAtNthhtTQGjG6HB1Y57nSvGw/ugQCBQ/M1twqvsRNq
+        we3bxPWUeuyqQBLXJENk3XYDU7FKunu3c8D29xw=
+X-Google-Smtp-Source: ABdhPJw7VelfDGME9GV6apg9YyInQ/tDzBB0irEirwAiYjqB7XtHiMJyuygV1lwD4I03Rq94+h8YDRfzrtJcQQyNHMg=
+X-Received: by 2002:a62:158e:: with SMTP id 136mr24887514pfv.36.1597046935089;
+ Mon, 10 Aug 2020 01:08:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200809155936.16898-1-trix@redhat.com>
-In-Reply-To: <20200809155936.16898-1-trix@redhat.com>
+References: <20200809175551.6794-1-trix@redhat.com>
+In-Reply-To: <20200809175551.6794-1-trix@redhat.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 10 Aug 2020 11:02:45 +0300
-Message-ID: <CAHp75VdEBjxYS_4g2j=ofjFWuGyTK5Me=9mMNcy5ienUUs67Ag@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: check for temp_fifo_enable
+Date:   Mon, 10 Aug 2020 11:08:39 +0300
+Message-ID: <CAHp75Vcomp1mDUm5houAm2j2b2HtxAP8Z78Vfcdmgm_g+bbt7w@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: check st_lsm6dsx_shub_read_output return
 To:     trix@redhat.com
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Lee Jones <lee.jones@linaro.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -66,66 +64,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 9, 2020 at 7:00 PM <trix@redhat.com> wrote:
+On Sun, Aug 9, 2020 at 8:56 PM <trix@redhat.com> wrote:
 >
 > From: Tom Rix <trix@redhat.com>
 >
-> clang static analysis reports this problem
+> clang static analysis reports this represenative problem
 >
-> inv_mpu_ring.c:181:18: warning: Division by zero
->         nb = fifo_count / bytes_per_datum;
->              ~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+> st_lsm6dsx_shub.c:540:8: warning: Assigned value is garbage or undefined
+>         *val = (s16)le16_to_cpu(*((__le16 *)data));
+>              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 >
-> This is a false positive.
-> Dividing by 0 is protected by this check
+> data is set with
 >
->         if (!(st->chip_config.accl_fifo_enable |
->                 st->chip_config.gyro_fifo_enable |
->                 st->chip_config.magn_fifo_enable))
->                 goto end_session;
->         bytes_per_datum = 0;
+>         err = st_lsm6dsx_shub_read(sensor, ch->address, data, len);
+>         if (err < 0)
+>                 return err;
 >
-> But there is another fifo, temp_fifo
+> The problem with st_lsm6dsx_shub_read() is this statement
 >
->         if (st->chip_config.temp_fifo_enable)
->                 bytes_per_datum += INV_MPU6050_BYTES_PER_TEMP_SENSOR;
+>         err = st_lsm6dsx_shub_read_output(hw, data,
+>                                           len & ST_LS6DSX_READ_OP_MASK);
 >
-> Which would be skipped if it was the only enabled fifo.
-> So add to the check.
+> The err value is never checked.
+> So check err.
 >
 
-> Fixes: 2e4c0a5e2576 ("iio: imu: inv_mpu6050: add fifo temperature data support")
+
+> Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
 >
 > Signed-off-by: Tom Rix <trix@redhat.com>
 
-There shouldn't be a blank line in between.
+You see, the commit message can be divided to three sections
 
-Other than that,
+1. Title / very short description
+2. Detailed description
+3. Tag block
+
+Each of them has some specific rules:
+1. One quite short line prefixed by subsystem / driver in the
+specified format (usually gathered by reading git log against the
+module in question)
+2. Should explain why this change is done
+3. Should be one tag -- one line, no blank lines in between.
+
+Hope, you will use this in the future.
+
+After addressing that (perhaps Jonathan will do it for you)
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-
-
 > ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> index b533fa2dad0a..5240a400dcb4 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> @@ -141,6 +141,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index ed83471dc7dd..8c8d8870ca07 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -313,6 +313,8 @@ st_lsm6dsx_shub_read(struct st_lsm6dsx_sensor *sensor, u8 addr,
 >
->         if (!(st->chip_config.accl_fifo_enable |
->                 st->chip_config.gyro_fifo_enable |
-> +               st->chip_config.temp_fifo_enable |
->                 st->chip_config.magn_fifo_enable))
->                 goto end_session;
->         bytes_per_datum = 0;
+>         err = st_lsm6dsx_shub_read_output(hw, data,
+>                                           len & ST_LS6DSX_READ_OP_MASK);
+> +       if (err < 0)
+> +               return err;
+>
+>         st_lsm6dsx_shub_master_enable(sensor, false);
+>
 > --
 > 2.18.1
 >
 
 
---
+-- 
 With Best Regards,
 Andy Shevchenko

@@ -2,163 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B08241558
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Aug 2020 05:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4DC524156A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Aug 2020 05:48:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728127AbgHKDf4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Aug 2020 23:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34842 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727821AbgHKDf4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Aug 2020 23:35:56 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4CFC06174A
-        for <linux-iio@vger.kernel.org>; Mon, 10 Aug 2020 20:35:55 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id t4so9433547iln.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Aug 2020 20:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OoAFxkYHimwlRMa0O33F9oj8ETqTc94/er1Fur1K2VY=;
-        b=OepbOosG6cVp2QSTFhL6XRyoHNakaPaNFOjozWqbYfosEqMX+WEzxxScojKtGMvvBh
-         NL92h45L4Q8UT4Mln8VCF+hKD8lbhUEfDsyr5TUgjdw6dzVkbuj4LUEMmjbVpWUmRasS
-         UB2ZC9MqSedOctbI9clxo5voblVc20ql18fOo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OoAFxkYHimwlRMa0O33F9oj8ETqTc94/er1Fur1K2VY=;
-        b=tnJz0lFQ4gQMD/Oorfw7eBkozjrCG2ZQduqAMtfu4aKnqXzezE88598YUs9FXnu5i6
-         INM17oAQWHsJ61Y8UN3NlVPWagyvG4elr7lKTekkTFKD4rZ2DYnPOWMMbEjOZv0uO7ih
-         Cy7DbU4Z2eeR6+dNrI3NQtHfvBFiI1NPG+byRGOnmmnSaykvG51hYNo1gJwxFQ+jKogl
-         RmgafYqC1RjL1PMFjgpChhnDSUpKlURWARnnokQa3k6HCeWCbUBO3XgI8fdTQU8S85Hq
-         HWyZ2UnPzzEDdCHRAwM30Us93adjcNwpenXYICtZhbeysqyyTovfExuIhBi31GNcqqze
-         kT4w==
-X-Gm-Message-State: AOAM530IvAP2caiCzqtnUgwTj1kYe+yBtum19AX9nHLJbSsFwFhAmtG0
-        wuBxGSagN5c9V8DbysELLmURoOXvqo7DHrcn9Lo41w==
-X-Google-Smtp-Source: ABdhPJzsL8VPLkqDmEWhkcpZ6013wkdMp5Ww0FbcTTMftOWeLIyT7Jiyb+9JEV9ChpDiiWLsCsPueJ9z/FwRsMjgWoA=
-X-Received: by 2002:a05:6e02:c71:: with SMTP id f17mr8440565ilj.98.1597116955080;
- Mon, 10 Aug 2020 20:35:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200809111753.156236-1-jic23@kernel.org> <20200809111753.156236-6-jic23@kernel.org>
-In-Reply-To: <20200809111753.156236-6-jic23@kernel.org>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Mon, 10 Aug 2020 20:35:43 -0700
-Message-ID: <CAJCx=gkytma0DvFxiJn_phipQQHCwr6NF5EMzk++XPNSzSRP5g@mail.gmail.com>
-Subject: Re: [PATCH 05/13] dt-bindings: iio: adc: ti,adc161s626 yaml conversion.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1728194AbgHKDsN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Aug 2020 23:48:13 -0400
+Received: from inva021.nxp.com ([92.121.34.21]:41262 "EHLO inva021.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727861AbgHKDsN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 Aug 2020 23:48:13 -0400
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 21CC6201D83;
+        Tue, 11 Aug 2020 05:48:12 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 632EB20073C;
+        Tue, 11 Aug 2020 05:48:08 +0200 (CEST)
+Received: from 10.192.242.69 (shlinux2.ap.freescale.net [10.192.224.44])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 3982D402DD;
+        Tue, 11 Aug 2020 05:48:03 +0200 (CEST)
+From:   Anson Huang <Anson.Huang@nxp.com>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, alexandru.ardelean@analog.com,
+        hslester96@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Linux-imx@nxp.com
+Subject: [PATCH 1/3] iio: accel: mma8452: Use dev_err_probe() to simplify error handling
+Date:   Tue, 11 Aug 2020 11:43:14 +0800
+Message-Id: <1597117396-2894-1-git-send-email-Anson.Huang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 9, 2020 at 4:20 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Simple conversion for this ADC driver.  Note that I haven't put
-> limits on the spi-max-sampling-frequency because the adc161s626
-> doesn't state one clearly defined value.
->
-> Added the #io-channel-cells property to allow for consumers.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+dev_err_probe() can reduce code size, uniform error handling and record the
+defer probe reason etc., use it to simplify the code.
 
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+---
+ drivers/iio/accel/mma8452.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index ba27f86..9b5f23b 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -1538,22 +1538,14 @@ static int mma8452_probe(struct i2c_client *client,
+ 	data->chip_info = match->data;
+ 
+ 	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+-	if (IS_ERR(data->vdd_reg)) {
+-		if (PTR_ERR(data->vdd_reg) == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-
+-		dev_err(&client->dev, "failed to get VDD regulator!\n");
+-		return PTR_ERR(data->vdd_reg);
+-	}
++	if (IS_ERR(data->vdd_reg))
++		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_reg),
++				     "failed to get VDD regulator!\n");
+ 
+ 	data->vddio_reg = devm_regulator_get(&client->dev, "vddio");
+-	if (IS_ERR(data->vddio_reg)) {
+-		if (PTR_ERR(data->vddio_reg) == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-
+-		dev_err(&client->dev, "failed to get VDDIO regulator!\n");
+-		return PTR_ERR(data->vddio_reg);
+-	}
++	if (IS_ERR(data->vddio_reg))
++		return dev_err_probe(&client->dev, PTR_ERR(data->vddio_reg),
++				     "failed to get VDDIO regulator!\n");
+ 
+ 	ret = regulator_enable(data->vdd_reg);
+ 	if (ret) {
+-- 
+2.7.4
 
-> ---
->  .../bindings/iio/adc/ti,adc161s626.yaml       | 51 +++++++++++++++++++
->  .../bindings/iio/adc/ti-adc161s626.txt        | 18 -------
->  2 files changed, 51 insertions(+), 18 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,adc161s626.yaml b/Documentation/devicetree/bindings/iio/adc/ti,adc161s626.yaml
-> new file mode 100644
-> index 000000000000..3f4f334d6f73
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,adc161s626.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,adc161s626.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments ADC141S626 and ADC161S626 ADCs
-> +
-> +maintainers:
-> +  - Matt Ranostay <matt.ranostay@konsulko.com>
-> +
-> +description: |
-> +  Single channel 14/16bit differential ADCs
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,adc141s626
-> +      - ti,adc161s626
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency: true
-> +
-> +  vdda-supply: true
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            compatible = "ti,adc161s626";
-> +            vdda-supply = <&vdda_fixed>;
-> +            reg = <0>;
-> +            spi-max-frequency = <4300000>;
-> +            #io-channel-cells = <1>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti-adc161s626.txt b/Documentation/devicetree/bindings/iio/adc/ti-adc161s626.txt
-> deleted file mode 100644
-> index 3d25011f0c99..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/ti-adc161s626.txt
-> +++ /dev/null
-> @@ -1,18 +0,0 @@
-> -* Texas Instruments ADC141S626 and ADC161S626 chips
-> -
-> -Required properties:
-> - - compatible: Should be "ti,adc141s626" or "ti,adc161s626"
-> - - reg: spi chip select number for the device
-> - - vdda-supply: supply voltage to VDDA pin
-> -
-> -Recommended properties:
-> - - spi-max-frequency: Definition as per
-> -               Documentation/devicetree/bindings/spi/spi-bus.txt
-> -
-> -Example:
-> -adc@0 {
-> -       compatible = "ti,adc161s626";
-> -       vdda-supply = <&vdda_fixed>;
-> -       reg = <0>;
-> -       spi-max-frequency = <4300000>;
-> -};
-> --
-> 2.28.0
->

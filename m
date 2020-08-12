@@ -2,96 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EDC242882
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 13:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF869242D2F
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 18:29:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726871AbgHLLC2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Aug 2020 07:02:28 -0400
-Received: from mailout06.rmx.de ([94.199.90.92]:44187 "EHLO mailout06.rmx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726404AbgHLLC1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 12 Aug 2020 07:02:27 -0400
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mailout06.rmx.de (Postfix) with ESMTPS id 4BRRcG0M7Sz9tNn;
-        Wed, 12 Aug 2020 13:02:22 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by kdin01.retarus.com (Postfix) with ESMTPS id 4BRRbx2bRCz2xjY;
-        Wed, 12 Aug 2020 13:02:05 +0200 (CEST)
-Received: from n95hx1g2.localnet (192.168.54.41) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Wed, 12 Aug
- 2020 13:01:52 +0200
-From:   Christian Eggers <ceggers@arri.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-CC:     Jonathan Cameron <jic23@kernel.org>, <stable@vger.kernel.org>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: trigger: sysfs: Disable irqs before calling iio_trigger_poll()
-Date:   Wed, 12 Aug 2020 13:01:51 +0200
-Message-ID: <3847827.rc3nFVyU9p@n95hx1g2>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <a59d204e-aeb0-2649-5e6f-f07815713d1a@metafoo.de>
-References: <20200727145714.4377-1-ceggers@arri.de> <4871626.01MspNxQH7@n95hx1g2> <a59d204e-aeb0-2649-5e6f-f07815713d1a@metafoo.de>
+        id S1726521AbgHLQ3K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Aug 2020 12:29:10 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:36328 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726515AbgHLQ3J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Aug 2020 12:29:09 -0400
+Received: by mail-il1-f194.google.com with SMTP id z3so2353452ilh.3;
+        Wed, 12 Aug 2020 09:29:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=shJhchmhhxZdr1NjkF9w+CnbvrxJFiRWP6z3qBoGUtw=;
+        b=SWpsr1EyBAZDbOneufuZzcRrBg3I7z+s1Cnpjm3QLg5surGbiMLTWouYlDdfyUGMw6
+         nYAOFFRLQU4ei6AnbNR0MmgAXlVfN9Rcka+nU3UHNj9emWQVbhv2CvYSL69YwFHUA7cT
+         NcY1r6TGEPk7qaWkWXob/6o6yUrFl6F0jeo8XTt/15ykOk3jl5GlzkpE4ehjEeCPNIJ8
+         OQrJtv/wKqM6IaD8D3jWyOqOzbBCqaDaxDS3t8v4idNoMQdNQE8ZHHxHpbRZV94o1a+l
+         TyDuw+RpHTPBuGEN18uIU9Ska6jc5wTIgzq3+Sgq9h+CQa6yC6GVOswnEcNe9cQgGL0U
+         BdRw==
+X-Gm-Message-State: AOAM533vnzy8fIPUcK7SZHtFopsJpj5CVwdp3iTyVX0fVF7oV2/kHaVR
+        GYLocBL0GgsZJkSorkqF5w==
+X-Google-Smtp-Source: ABdhPJzSlQrhly9yRpohPOBo/vEguu5epEQwZDFNln5sX5E6aUSVttUZbUYTh+M4AvJVJGs9qDlT9A==
+X-Received: by 2002:a92:4957:: with SMTP id w84mr497980ila.164.1597249748802;
+        Wed, 12 Aug 2020 09:29:08 -0700 (PDT)
+Received: from xps15 ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id n3sm1300931ilj.29.2020.08.12.09.29.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2020 09:29:08 -0700 (PDT)
+Received: (nullmailer pid 2324129 invoked by uid 1000);
+        Wed, 12 Aug 2020 16:29:07 -0000
+Date:   Wed, 12 Aug 2020 10:29:07 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        devicetree@vger.kernel.org, Akinobu Mita <akinobu.mita@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 08/13] dt-bindings: iio: adc: ti,adc12138 yaml conversion.
+Message-ID: <20200812162907.GA2323853@bogus>
+References: <20200809111753.156236-1-jic23@kernel.org>
+ <20200809111753.156236-9-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Originating-IP: [192.168.54.41]
-X-RMX-ID: 20200812-130211-4BRRbx2bRCz2xjY-0@kdin01
-X-RMX-SOURCE: 217.111.95.66
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200809111753.156236-9-jic23@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lars
-
-On Monday, 3 August 2020, 08:52:54 CEST, Lars-Peter Clausen wrote:
-> On 8/3/20 8:44 AM, Christian Eggers wrote:
-> > ...
-> > is my patch sufficient, or would you prefer a different solution?
+On Sun, 09 Aug 2020 12:17:48 +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> The code in normal upstream is correct, there is no need to patch it
-> since iio_sysfs_trigger_work() always runs with IRQs disabled.
+> Simple binding conversion.  Only addition was #io-channel-cells to
+> allow for potential consumers of the channels on this device.
 > 
-> >> Are you using a non-upstream kernel? Maybe a RT kernel?
-> > 
-> > I use v5.4.<almost-latest>-rt
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Akinobu Mita <akinobu.mita@gmail.com>
+> ---
+>  .../bindings/iio/adc/ti,adc12138.yaml         | 85 +++++++++++++++++++
+>  .../bindings/iio/adc/ti-adc12138.txt          | 37 --------
+>  2 files changed, 85 insertions(+), 37 deletions(-)
 > 
-> That explains it. Have a look at
-> 0200-irqwork-push-most-work-into-softirq-context.patch.
-> 
-> The right fix for this issue is to add the following snippet to the RT
-> patchset.
-> 
-> diff --git a/drivers/iio/trigger/iio-trig-sysfs.c
-> b/drivers/iio/trigger/iio-trig-sysfs.c
-> --- a/drivers/iio/trigger/iio-trig-sysfs.c
-> +++ b/drivers/iio/trigger/iio-trig-sysfs.c
-> @@ -161,6 +161,7 @@ static int iio_sysfs_trigger_probe(int id)
->       iio_trigger_set_drvdata(t->trig, t);
-> 
->       init_irq_work(&t->work, iio_sysfs_trigger_work);
-> +    t->work.flags = IRQ_WORK_HARD_IRQ;
-> 
->       ret = iio_trigger_register(t->trig);
->       if (ret)
-
-I can confirm that this works for iio-trig-sysfs on 5.4.54-rt32. Currently I 
-do not use iio-trig-hrtimer, but if I remember correctly, the problem was also 
-present there.
-
-Do you want to apply your patch for mainline? In contrast to v5.4, 
-IRQ_WORK_HARD_IRQ is already available there (moved to smp_types.h). 
-Unfortunately I cannot test it on mainline for now, as my BSP stuff is not 
-ported yet.
-
-Best regards
-Christian
 
 
+My bot found errors running 'make dt_binding_check' on your patch:
 
+Error: Documentation/devicetree/bindings/iio/adc/ti,adc12138.example.dts:26.34-35 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:330: Documentation/devicetree/bindings/iio/adc/ti,adc12138.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1334: dt_binding_check] Error 2
+
+
+See https://patchwork.ozlabs.org/patch/1342594
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.
 

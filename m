@@ -2,88 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF869242D2F
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 18:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6B4242D49
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 18:30:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbgHLQ3K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Aug 2020 12:29:10 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:36328 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbgHLQ3J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Aug 2020 12:29:09 -0400
-Received: by mail-il1-f194.google.com with SMTP id z3so2353452ilh.3;
-        Wed, 12 Aug 2020 09:29:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=shJhchmhhxZdr1NjkF9w+CnbvrxJFiRWP6z3qBoGUtw=;
-        b=SWpsr1EyBAZDbOneufuZzcRrBg3I7z+s1Cnpjm3QLg5surGbiMLTWouYlDdfyUGMw6
-         nYAOFFRLQU4ei6AnbNR0MmgAXlVfN9Rcka+nU3UHNj9emWQVbhv2CvYSL69YwFHUA7cT
-         NcY1r6TGEPk7qaWkWXob/6o6yUrFl6F0jeo8XTt/15ykOk3jl5GlzkpE4ehjEeCPNIJ8
-         OQrJtv/wKqM6IaD8D3jWyOqOzbBCqaDaxDS3t8v4idNoMQdNQE8ZHHxHpbRZV94o1a+l
-         TyDuw+RpHTPBuGEN18uIU9Ska6jc5wTIgzq3+Sgq9h+CQa6yC6GVOswnEcNe9cQgGL0U
-         BdRw==
-X-Gm-Message-State: AOAM533vnzy8fIPUcK7SZHtFopsJpj5CVwdp3iTyVX0fVF7oV2/kHaVR
-        GYLocBL0GgsZJkSorkqF5w==
-X-Google-Smtp-Source: ABdhPJzSlQrhly9yRpohPOBo/vEguu5epEQwZDFNln5sX5E6aUSVttUZbUYTh+M4AvJVJGs9qDlT9A==
-X-Received: by 2002:a92:4957:: with SMTP id w84mr497980ila.164.1597249748802;
-        Wed, 12 Aug 2020 09:29:08 -0700 (PDT)
-Received: from xps15 ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id n3sm1300931ilj.29.2020.08.12.09.29.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2020 09:29:08 -0700 (PDT)
-Received: (nullmailer pid 2324129 invoked by uid 1000);
-        Wed, 12 Aug 2020 16:29:07 -0000
-Date:   Wed, 12 Aug 2020 10:29:07 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org, Akinobu Mita <akinobu.mita@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 08/13] dt-bindings: iio: adc: ti,adc12138 yaml conversion.
-Message-ID: <20200812162907.GA2323853@bogus>
+        id S1726627AbgHLQad (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Aug 2020 12:30:33 -0400
+Received: from vern.gendns.com ([98.142.107.122]:47632 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726976AbgHLQac (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 12 Aug 2020 12:30:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=FHX9wopVRHyoaKb8ehO3LKXTuA6JJa1bUHlwgljK24E=; b=khcFk5jWpuPdEtYEQtFDKUzAlk
+        BtHqGYFPdF4nN+8rTHB1uQDfUY+jWknzFdMFheVYUXyML33eEhZZiT1RPu+0EFjzFSQMevN6l8KSk
+        sTatPazqr0pfH2yeG4l0Iww+06lKhn/Ik+FIFHf7YfcEH3hHy45A+3v3eoGjo2LHGRiM8/xws1kT0
+        v5B96mrvweXPC1zlZ8A+sox00wEBYEDN6O8/qXrJl5QtqZHIKVPfOXawQsR+SlTTeiJLhVIjFUBSg
+        DGl9TstycwAfJjLxNzjgdPD3Ir3T0abijUv3Jhq7rIqkiDAZxwKMBfP4NgnHlyJ87ieWkwcHP8VCS
+        WvP35J/A==;
+Received: from [2600:1700:4830:165f::19e] (port=57330)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1k5te1-0007SV-KF; Wed, 12 Aug 2020 12:30:29 -0400
+Subject: Re: [PATCH 10/13] dt-bindings: iio: adc: ti,ads7950 binding
+ conversion
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20200809111753.156236-1-jic23@kernel.org>
- <20200809111753.156236-9-jic23@kernel.org>
+ <20200809111753.156236-11-jic23@kernel.org>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <5a4f6244-8840-e871-4a15-b63ad461be4a@lechnology.com>
+Date:   Wed, 12 Aug 2020 11:30:28 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200809111753.156236-9-jic23@kernel.org>
+In-Reply-To: <20200809111753.156236-11-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 09 Aug 2020 12:17:48 +0100, Jonathan Cameron wrote:
+On 8/9/20 6:17 AM, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Simple binding conversion.  Only addition was #io-channel-cells to
-> allow for potential consumers of the channels on this device.
+> Simple conversion.  This binding already had the
+> that is necessary, I'm happy to leave it as previously documented.
+
+This commit message doesn't make sense to me. It should probably
+just say "this converts the device tree bindings to yml" or so.
+
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Akinobu Mita <akinobu.mita@gmail.com>
+> Cc: David Lechner <david@lechnology.com>
 > ---
->  .../bindings/iio/adc/ti,adc12138.yaml         | 85 +++++++++++++++++++
->  .../bindings/iio/adc/ti-adc12138.txt          | 37 --------
->  2 files changed, 85 insertions(+), 37 deletions(-)
+>   .../bindings/iio/adc/ti,ads7950.yaml          | 64 +++++++++++++++++++
+>   .../bindings/iio/adc/ti-ads7950.txt           | 23 -------
+>   2 files changed, 64 insertions(+), 23 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml
+> new file mode 100644
+> index 000000000000..a759d9064718
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/ti,ads7950.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments ADS7950 and similar ADCs
+> +
+> +maintainers:
+> +  - David Lechner <david@lechnology.com>
+> +
+> +description: |
+> +  Family of 4-16 channel, 8-12 bit ADCs with SPI interface.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,ads7950
+> +      - ti,ads7951
+> +      - ti,ads7952
+> +      - ti,ads7953
+> +      - ti,ads7954
+> +      - ti,ads7955
+> +      - ti,ads7956
+> +      - ti,ads7957
+> +      - ti,ads7958
+> +      - ti,ads7959
+> +      - ti,ads7960
+> +      - ti,ads7961
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency: true
 
+According to the datasheet, max frequency is 20MHz, so this can be:
 
-My bot found errors running 'make dt_binding_check' on your patch:
+spi-max-frequency:
+   maximum: 20000000
 
-Error: Documentation/devicetree/bindings/iio/adc/ti,adc12138.example.dts:26.34-35 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:330: Documentation/devicetree/bindings/iio/adc/ti,adc12138.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1334: dt_binding_check] Error 2
+> +
+> +  vref-supply:
+> +    description: Supply the 2.5V or 5V reference voltage
 
+Should this say "Supplies ..."?
 
-See https://patchwork.ozlabs.org/patch/1342594
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vref-supply
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        adc@0 {
+> +            compatible = "ti,ads7957";
+> +            reg = <0>;
+> +            vref-supply = <&refin_supply>;
+> +            spi-max-frequency = <10000000>;
+> +            #io-channel-cells = <1>;
+> +        };
+> +    };
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure dt-schema is up to date:
-
-pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
-
-Please check and re-submit.
 

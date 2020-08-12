@@ -2,75 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F28F24286C
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 12:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EDC242882
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Aug 2020 13:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbgHLK4B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Aug 2020 06:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727849AbgHLKzj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Aug 2020 06:55:39 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34475C061353
-        for <linux-iio@vger.kernel.org>; Wed, 12 Aug 2020 03:54:23 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id x2so1101372ybf.12
-        for <linux-iio@vger.kernel.org>; Wed, 12 Aug 2020 03:54:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h1Wep4bWm4c6UJ7FpYIC1ACXuPoB2ZCMfU6PJTjxU/k=;
-        b=eHtAeuj7bl+NqyA/LfsHaO+6oyAIxBkO+xaPddsTkjseO3G/4FMwJLJZ3d+diuxq/O
-         YffChG6lM/ut84kiK2GdqizvnXUTzqNXiKNeOCFMCHYmku2UrRGBn1y3T1OsOwMYOEKv
-         LBmDv2mjmGXbF3KwlPMtLwFc3xM6G+0bvX65YPeFgFlF5FcqfYFe6/ujnqj6ZwqtqzRx
-         CRsXYh37MAdT1niXt9HvyCtXxvFJMDNle0UTFpVQ2TzE6EUtu97WN+v6jDd+jOD/fhNs
-         NHhfILPNMrGbOKQ0K/3+sSXJpmcDIWxt9q3WVW0iG0t9vhqzhK4edfeGY8dzuTRSQOKD
-         0iWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h1Wep4bWm4c6UJ7FpYIC1ACXuPoB2ZCMfU6PJTjxU/k=;
-        b=aKyNk7P4wJ5EACgmq/uz0yd6SQskg9ToF6hxRmY4RGRgTFlZUaRxSe6FRrsTV1pKNs
-         U9eD/Xnz9XjbqfNuUlXOvdcRAPAzEvVUz/SgwB4Skp+/ovnGvbTFFbhyetIma4nViuoC
-         vg09yonYPUR0kEZ86H59gPnMaAyzP6pXVfgVpzB2VN8w26Nl8UNBIJGdQcUT6kW3hJDR
-         rQMmklzqBnepyelaHcSsw+GWuJbwXkiAMHMSMEz3rcZPPRAfvACgD334VbzUqYh6H3q0
-         1/2a0lsRU3FRlcOreqP+Wgg+YxbXn3lQjtoTulaSMpPqVq5h+ZDWU78vzfjSxEtd7Omu
-         uxnQ==
-X-Gm-Message-State: AOAM530aTdsTZay1F0aW5r2fPjZr/0bMBTyBMQEKzw7+dgs0rYn3WtKP
-        38pCsE3mFoUn9vj7IO2DCcxfRbzuerb4rDZj+G0=
-X-Google-Smtp-Source: ABdhPJxlNC8oUTUc5nL8/QI7Vh+VC7WTqcpf0G2Ip8kZv1WBdyY0VUrpvwJDuXU1Jl7EvF/Yh6KiQFr+AHCrWs7YdRU=
-X-Received: by 2002:a25:234a:: with SMTP id j71mr54485670ybj.504.1597229657758;
- Wed, 12 Aug 2020 03:54:17 -0700 (PDT)
+        id S1726871AbgHLLC2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Aug 2020 07:02:28 -0400
+Received: from mailout06.rmx.de ([94.199.90.92]:44187 "EHLO mailout06.rmx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726404AbgHLLC1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 12 Aug 2020 07:02:27 -0400
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout06.rmx.de (Postfix) with ESMTPS id 4BRRcG0M7Sz9tNn;
+        Wed, 12 Aug 2020 13:02:22 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin01.retarus.com (Postfix) with ESMTPS id 4BRRbx2bRCz2xjY;
+        Wed, 12 Aug 2020 13:02:05 +0200 (CEST)
+Received: from n95hx1g2.localnet (192.168.54.41) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Wed, 12 Aug
+ 2020 13:01:52 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+CC:     Jonathan Cameron <jic23@kernel.org>, <stable@vger.kernel.org>,
+        "Hartmut Knaack" <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: trigger: sysfs: Disable irqs before calling iio_trigger_poll()
+Date:   Wed, 12 Aug 2020 13:01:51 +0200
+Message-ID: <3847827.rc3nFVyU9p@n95hx1g2>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+In-Reply-To: <a59d204e-aeb0-2649-5e6f-f07815713d1a@metafoo.de>
+References: <20200727145714.4377-1-ceggers@arri.de> <4871626.01MspNxQH7@n95hx1g2> <a59d204e-aeb0-2649-5e6f-f07815713d1a@metafoo.de>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:229b:0:0:0:0 with HTTP; Wed, 12 Aug 2020 03:54:17
- -0700 (PDT)
-Reply-To: alexanadi0005@gmail.com
-From:   Alex Anadi <diplomatagency2011@gmail.com>
-Date:   Wed, 12 Aug 2020 11:54:17 +0100
-Message-ID: <CAG2PG9VSNH2ukcO6fsJhaDp9DqTRw4ujLo-DJjtej2T=gVdW3A@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [192.168.54.41]
+X-RMX-ID: 20200812-130211-4BRRbx2bRCz2xjY-0@kdin01
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Attention: Sir/Madam,
+Hi Lars
 
-Compliments of the season.
+On Monday, 3 August 2020, 08:52:54 CEST, Lars-Peter Clausen wrote:
+> On 8/3/20 8:44 AM, Christian Eggers wrote:
+> > ...
+> > is my patch sufficient, or would you prefer a different solution?
+> 
+> The code in normal upstream is correct, there is no need to patch it
+> since iio_sysfs_trigger_work() always runs with IRQs disabled.
+> 
+> >> Are you using a non-upstream kernel? Maybe a RT kernel?
+> > 
+> > I use v5.4.<almost-latest>-rt
+> 
+> That explains it. Have a look at
+> 0200-irqwork-push-most-work-into-softirq-context.patch.
+> 
+> The right fix for this issue is to add the following snippet to the RT
+> patchset.
+> 
+> diff --git a/drivers/iio/trigger/iio-trig-sysfs.c
+> b/drivers/iio/trigger/iio-trig-sysfs.c
+> --- a/drivers/iio/trigger/iio-trig-sysfs.c
+> +++ b/drivers/iio/trigger/iio-trig-sysfs.c
+> @@ -161,6 +161,7 @@ static int iio_sysfs_trigger_probe(int id)
+>       iio_trigger_set_drvdata(t->trig, t);
+> 
+>       init_irq_work(&t->work, iio_sysfs_trigger_work);
+> +    t->work.flags = IRQ_WORK_HARD_IRQ;
+> 
+>       ret = iio_trigger_register(t->trig);
+>       if (ret)
 
-I am Mr Alex Anadi a senior staff of Computer Telex Dept of central
-bank of Nigeria.
+I can confirm that this works for iio-trig-sysfs on 5.4.54-rt32. Currently I 
+do not use iio-trig-hrtimer, but if I remember correctly, the problem was also 
+present there.
 
-I decided to contact you because of the prevailing security report
-reaching my office and the intense nature of polity in Nigeria.
+Do you want to apply your patch for mainline? In contrast to v5.4, 
+IRQ_WORK_HARD_IRQ is already available there (moved to smp_types.h). 
+Unfortunately I cannot test it on mainline for now, as my BSP stuff is not 
+ported yet.
 
-This is to inform you about the recent plan of federal government of
-Nigeria to send your fund to you via diplomatic immunity CASH DELIVERY
-SYSTEM valued at $10.6 Million United states dollars only, contact me
-for further details.
+Best regards
+Christian
 
-Regards,
-Mr Alex Anadi.
+
+
+

@@ -2,138 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79243243148
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 01:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A897E243435
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 08:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgHLXFW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Aug 2020 19:05:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56976 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726533AbgHLXFV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 12 Aug 2020 19:05:21 -0400
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B05822BF3;
-        Wed, 12 Aug 2020 23:05:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597273520;
-        bh=6kwxpshrOlbOHxWnmXC6+dWtt2L5X/Drj58h8rpdMCA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=pXDZRt76CPWxVlpilBeAf66pO/Ch1+UOaSOgdUpIGMcw2xAS2mFHBEgkKJVucyrd/
-         hFrdQmO7EEU0DOv8a5XHHMAntvFEpH8ijK+mCysryubzOS2R2XGypW54K9swm6SsIs
-         b7zU39V5JMU64Uhe2oipgDLWWHGgSe5VXnIpigps=
-Received: by mail-oi1-f170.google.com with SMTP id u63so3384377oie.5;
-        Wed, 12 Aug 2020 16:05:20 -0700 (PDT)
-X-Gm-Message-State: AOAM531IZBzkm9SW7u4Ll0dz2BzE1TEIB7GJrdP7SZFkd9Fl6578K6/D
-        TZuN3gv5Y+jYhGEA04MJz9gQHCjYIc3va2d6mQ==
-X-Google-Smtp-Source: ABdhPJx2qQebZiNBPQzgE1fpdypeYG9ycnPVX3JxYluiX5nbkNkxeZlpxpCsMAonDMWnL7JIOVI286FePABwvHucHl8=
-X-Received: by 2002:aca:bb82:: with SMTP id l124mr1235268oif.106.1597273520003;
- Wed, 12 Aug 2020 16:05:20 -0700 (PDT)
+        id S1726100AbgHMGxQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 02:53:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725978AbgHMGxP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 02:53:15 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 985DDC061757
+        for <linux-iio@vger.kernel.org>; Wed, 12 Aug 2020 23:53:15 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1k676l-0005EP-FS; Thu, 13 Aug 2020 08:53:03 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1k676j-0002oU-6l; Thu, 13 Aug 2020 08:53:01 +0200
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>, trivial@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] Documentation: ABI: iio: fix some spelling mistakes
+Date:   Thu, 13 Aug 2020 08:52:20 +0200
+Message-Id: <20200813065220.23256-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20200812203618.2656699-1-robh@kernel.org> <f5dedf2d8d8057de3eaa2f9126f44cebb0653b09.camel@perches.com>
-In-Reply-To: <f5dedf2d8d8057de3eaa2f9126f44cebb0653b09.camel@perches.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 12 Aug 2020 17:05:08 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKBzqMHMMRwBJUjomxOpZAop_+TXBjLCb6ntwZzNMy=3Q@mail.gmail.com>
-Message-ID: <CAL_JsqKBzqMHMMRwBJUjomxOpZAop_+TXBjLCb6ntwZzNMy=3Q@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
-To:     Joe Perches <joe@perches.com>
-Cc:     devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        Linux HWMON List <linux-hwmon@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux-ALSA <alsa-devel@alsa-project.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: afa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 12, 2020 at 4:32 PM Joe Perches <joe@perches.com> wrote:
->
-> On Wed, 2020-08-12 at 14:36 -0600, Rob Herring wrote:
-> > Clean-up incorrect indentation, extra spaces, long lines, and missing
-> > EOF newline in schema files. Most of the clean-ups are for list
-> > indentation which should always be 2 spaces more than the preceding
->                                      ^
-> > keyword.
+This fixes some typos found while browsing the documentation.
 
-keyword is the key part...
+Cc: trivial@kernel.org
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/ABI/testing/sysfs-bus-iio | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> []
-> > diff --git a/Documentation/devicetree/bindings/arm/arm,integrator.yaml b/Documentation/devicetree/bindings/arm/arm,integrator.yaml
-> > index 192ded470e32..f0daf990e077 100644
-> > --- a/Documentation/devicetree/bindings/arm/arm,integrator.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/arm,integrator.yaml
-> > @@ -67,9 +67,9 @@ patternProperties:
-> >        compatible:
-> >          items:
-> >            - enum:
-> > -            - arm,integrator-ap-syscon
-> > -            - arm,integrator-cp-syscon
-> > -            - arm,integrator-sp-syscon
-> > +              - arm,integrator-ap-syscon
-> > +              - arm,integrator-cp-syscon
-> > +              - arm,integrator-sp-syscon
->
-> Confused a bit here.
->           - enum:
->         10 spaces to dash
-> old line:
->             - arm,integrator-ap-syscon
->         12 spaces to dash
-> new line:
->               - arm,integrator-ap-syscon
->         14 spaces to dash
->
-> Is it supposed to be 2 spaces more than the preceding line
-> or 4 more?
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index d3e53a6d8331..ef86702678c7 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -49,9 +49,9 @@ Description:
+ 		resulting sampling frequency.  In many devices this
+ 		parameter has an effect on input filters etc. rather than
+ 		simply controlling when the input is sampled.  As this
+-		effects data ready triggers, hardware buffers and the sysfs
++		affects data ready triggers, hardware buffers and the sysfs
+ 		direct access interfaces, it may be found in any of the
+-		relevant directories.  If it effects all of the above
++		relevant directories.  If it affects all of the above
+ 		then it is to be found in the base device directory.
+ 
+ What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
+@@ -1013,7 +1013,7 @@ What:		/sys/.../events/in_activity_running_thresh_falling_en
+ KernelVersion:	3.19
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+-		Enables or disables activitity events. Depending on direction
++		Enables or disables activity events. Depending on direction
+ 		an event is generated when sensor ENTERS or LEAVES a given state.
+ 
+ What:		/sys/.../events/in_activity_still_thresh_rising_value
+-- 
+2.28.0
 
-If the preceding line is a list entry (i.e. starts with '-'), then
-it's 4 more spaces. It's always 2 more spaces than the preceding
-keyword start (aka json-schema vocabulary).
-
-Arguably, this style is a bit inconsistent in that the '-' counts
-toward as indentation of the current line, but not the preceding line.
-However, I think this style is a bit less error prone and easier to
-review. With the other style (always N more spaces) it's harder to
-distinguish lists vs. dicts. For example, you can have something like
-this:
-
-- key:
-  - foo
-  - bar
-
-- key:
-    foo
-    bar
-
-- key:
-  - foo
-    bar
-
-All 3 of these could be valid. Which one was intended? (Can't really
-tell here, but you can with actual DT schema.)
-
-Rob

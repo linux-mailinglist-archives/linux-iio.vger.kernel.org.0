@@ -2,97 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF64A2437DB
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 11:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A325D243894
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 12:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726053AbgHMJqg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Aug 2020 05:46:36 -0400
-Received: from www381.your-server.de ([78.46.137.84]:56548 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726048AbgHMJqf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 05:46:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=/xGO+cFZgO3cJVLAGH4bB/pNEDCxzoetsTPK3J1y/NQ=; b=GWylLszoOlFfZrG7CAGz9ENlKL
-        tw8KloPCQ0TDSI6ouCQLdRbIBDxSYtY3d7jQg19NKeDS1LQ7blkoJKTSOLTFQJuA+opdsaJQnIKxH
-        ffdJQqjb7ht6wh8NR5QA4bivJp0X4OSlgNTPNHYkXmCcrwFOf77w3w3J5XJC5sS0c0Z04KH68eExU
-        GE5JB6nJ2CSa3BOB5V0nOqFrANK7nrIBiZe+oNpW0i28E2VHjBctD1PXPVO8t5wSmQ+LGYHWucICr
-        I82tpiNW0QBTO6jMqAoQ/jcZWYnzh4fzAFXGN+lcjPf3KCVppQlkaG6sCCLDlUVpb7pp91HRRPzZL
-        F5ABSBPw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1k69oc-0006th-T0; Thu, 13 Aug 2020 11:46:30 +0200
-Received: from [2001:a61:2517:6d01:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1k69oc-000L5d-Nu; Thu, 13 Aug 2020 11:46:30 +0200
-Subject: Re: [PATCH 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in hard
- interrupt context
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Christian Eggers <ceggers@arri.de>, linux-iio@vger.kernel.org,
-        tglx@linutronix.de
-References: <20200813075358.13310-1-lars@metafoo.de>
- <20200813091107.kjelslak2jxkkc42@linutronix.de>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <930e6dc4-df6f-416b-0df3-dab7177af974@metafoo.de>
-Date:   Thu, 13 Aug 2020 11:46:30 +0200
+        id S1726252AbgHMKbf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 13 Aug 2020 06:31:35 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:35289 "EHLO
+        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726048AbgHMKbf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 06:31:35 -0400
+Received: from [37.161.87.136] (port=46755 helo=[192.168.42.162])
+        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1k6AW9-000FlW-5k; Thu, 13 Aug 2020 12:31:29 +0200
+Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-media@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org
+References: <20200812203618.2656699-1-robh@kernel.org>
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+Message-ID: <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
+Date:   Thu, 13 Aug 2020 12:31:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200813091107.kjelslak2jxkkc42@linutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200812203618.2656699-1-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/25901/Thu Aug 13 09:01:24 2020)
+Content-Transfer-Encoding: 8BIT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/13/20 11:11 AM, Sebastian Andrzej Siewior wrote:
-> On 2020-08-13 09:53:57 [+0200], Lars-Peter Clausen wrote:
->> On PREEMPT_RT enabled kernels unmarked hrtimers are moved into soft
->> interrupt expiry mode by default.
->>
->> The IIO hrtimer-trigger needs to run in hard interrupt context since it
->> will end up calling generic_handle_irq() which has the requirement to run
->> in hard interrupt context.
->>
->> Explicitly specify that the timer needs to run in hard interrupt context by
->> using the HRTIMER_MODE_REL_HARD flag.
-> No, I don't think that this is good. It basically renders threaded-irqs
-> in context of IIO useless. This also requires that the IRQ-handler in
-> question runs with IRQs disabled / uses raw_spinlock_t which is in not
-> good idea either.
+Hi Rob,
 
-It should not affect the IRQ handlers of individual drivers. The hrtimer 
-triggers acts like an IRQ chip and will call generic_handle_irq() to 
-multiplex the interrupt handling onto all consumers. As far as I 
-understand it there is a requirement that generic_handle_irq() is called 
-in hard irq context, even with PREEMT_RT=y.
+On 12/08/20 22:36, Rob Herring wrote:
+> Clean-up incorrect indentation, extra spaces, long lines, and missing
+> EOF newline in schema files. Most of the clean-ups are for list
+> indentation which should always be 2 spaces more than the preceding
+> keyword.
+> 
+> Found with yamllint (which I plan to integrate into the checks).
 
-If you are running with forced IRQ threads the only thing that will then 
-happen in the actual hard IRQ context is the launching of the IRQ 
-threads. Th e IRQ handler of the device driver will run in a threaded IRQ.
+[...]
 
->
-> Has this change (including the second patch in thread) been tested on RT
-> in terms of locking and latency?
+> diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> index 3d4e1685cc55..28c6461b9a9a 100644
+> --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> @@ -95,10 +95,10 @@ allOf:
+>        # Devices without builtin crystal
+>        properties:
+>          clock-names:
+> -            minItems: 1
+> -            maxItems: 2
+> -            items:
+> -              enum: [ xin, clkin ]
+> +          minItems: 1
+> +          maxItems: 2
+> +          items:
+> +            enum: [ xin, clkin ]
+>          clocks:
+>            minItems: 1
+>            maxItems: 2
 
-It has not been tested in terms of latency. But like I said if you are 
-running with forced IRQ threads the effect should be minimal.
+Thanks for noticing, LGTM.
 
-Without this patch there is an correctness issue when PREEMT_RT=y since 
-generic_handle_irq() runs with interrupts on which breaks its internal 
-assumptions.
+[...]
+
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> index d7dac16a3960..36dc7b56a453 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> @@ -33,8 +33,8 @@ properties:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>  
+>    touchscreen-min-pressure:
+> -    description: minimum pressure on the touchscreen to be achieved in order for the
+> -                 touchscreen driver to report a touch event.
+> +    description: minimum pressure on the touchscreen to be achieved in order
+> +      for the touchscreen driver to report a touch event.
+
+Out of personal taste, I find the original layout more pleasant and
+readable. This third option is also good, especially for long descriptions:
+
+  description:
+    minimum pressure on the touchscreen to be achieved in order for the
+    touchscreen driver to report a touch event.
+
+At first glance yamllint seems to support exactly these two by default:
+
+> With indentation: {spaces: 4, check-multi-line-strings: true}
+> 
+> the following code snippet would PASS:
+> 
+> Blaise Pascal:
+>     Je vous écris une longue lettre parce que
+>     je n'ai pas le temps d'en écrire une courte.
+> 
+> the following code snippet would PASS:
+> 
+> Blaise Pascal: Je vous écris une longue lettre parce que
+>                je n'ai pas le temps d'en écrire une courte.
+> 
+> the following code snippet would FAIL:
+> 
+> Blaise Pascal: Je vous écris une longue lettre parce que
+>   je n'ai pas le temps d'en écrire une courte.
+> 
+(https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.indentation)
+
+
+-- 
+Luca
 

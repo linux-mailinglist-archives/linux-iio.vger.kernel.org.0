@@ -2,138 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A325D243894
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 12:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 149982438F7
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 12:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726252AbgHMKbf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 13 Aug 2020 06:31:35 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:35289 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726048AbgHMKbf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 06:31:35 -0400
-Received: from [37.161.87.136] (port=46755 helo=[192.168.42.162])
-        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1k6AW9-000FlW-5k; Thu, 13 Aug 2020 12:31:29 +0200
-Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
-To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-media@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org
-References: <20200812203618.2656699-1-robh@kernel.org>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
-Date:   Thu, 13 Aug 2020 12:31:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726100AbgHMKy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 06:54:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726072AbgHMKy0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 06:54:26 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2245C061757;
+        Thu, 13 Aug 2020 03:54:25 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id y6so2473252plt.3;
+        Thu, 13 Aug 2020 03:54:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=026T1eG5lZk+Wr91d+c3pl0tT533eyHDT1un/ZVIEiQ=;
+        b=N5g4MUvi3aX7cw4+QxHxSCaHu0HzL9AeTap8dDQfgMkVFxtzETldAZzXAdpY+jbNKI
+         CnnDbCPonLGmZrJdN7NEEJDjfxb8qUzHsLv/Ht0wEKYnNJJ9tPTZBWShQBw5+h8Pn4hr
+         LbZ1kcQ+QPko2tFgW4ASzqfIx1Zbb2Ycczf36/dJqP2cF1XkhEFgn3a/gBQGBhZvxUlA
+         AOSfrlPRvT4Ep/bInbBDA9WeERb9K1nRXQsQGp9zu6JBBLTGC7uNVI9LLb9/bd/Gf6dy
+         CotDoqyxdwYd9pUJ0oltzGOeeVyMTFYzHngH5BObxCr6NOtOxCcGZux2ntnRQ7jSW7zW
+         FBxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=026T1eG5lZk+Wr91d+c3pl0tT533eyHDT1un/ZVIEiQ=;
+        b=Twzj6UGKVsn/GJmxCse1+QiFMW08AHruxMzYoPGLNJWQBK+wdddQ2APiI51EyytjhV
+         5JO3HpsQRIZ5uCH9/AxM+GC3ge0rWKUhWhn7QO7VyORF9M2Reo7xadP/luGEBuo3ptD8
+         Oe5zlGVE5PYCq+pBG2EQewdG0r5gGWNsTz3xgBxk2z9fr9KbE6e0vP8YKPtf1jwMK4Ob
+         b42YosDcj0W48zeaozGmxrPvTxvGTG6rQRqucB7frgNp6h27cIFpc0rbOS1IDEb/XaTs
+         dIN0W4O/wHNFoHV4HkPv65lHRcslsCfCuOqx2YDDszU340Elic5VnSItUEHMv9a7E509
+         aSww==
+X-Gm-Message-State: AOAM5334nUIn5w8Hiwwz+SwURHVWhPdCD4vBEu84/GxhKKEDVyBz/Loy
+        W0ZrplGAeemZSL+kn/du2z7Imb50REUaR1yG4wI=
+X-Google-Smtp-Source: ABdhPJz3SSmn8gR4W4NFbW4GPuuVS3v88BRlmU6R2ZhnspZZTqdHUwI6xo75LP306ipW5G/4PtsGz7q0ZvJzqiuD8LU=
+X-Received: by 2002:a17:90a:bc41:: with SMTP id t1mr4332425pjv.181.1597316065322;
+ Thu, 13 Aug 2020 03:54:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200812203618.2656699-1-robh@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20200813075125.4949-1-cmo@melexis.com> <20200813075125.4949-3-cmo@melexis.com>
+In-Reply-To: <20200813075125.4949-3-cmo@melexis.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 13 Aug 2020 13:54:09 +0300
+Message-ID: <CAHp75Vc3_WkUQOaC86aKe9Fh88Zpip3brShyR64KjXJBt5rrng@mail.gmail.com>
+Subject: Re: [PATCH v5 2/5] iio:temperature:mlx90632: Add kerneldoc to the
+ internal struct
+To:     Crt Mori <cmo@melexis.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob,
+On Thu, Aug 13, 2020 at 10:53 AM Crt Mori <cmo@melexis.com> wrote:
+>
+> Document internal/private struct for mlx90632 device.
 
-On 12/08/20 22:36, Rob Herring wrote:
-> Clean-up incorrect indentation, extra spaces, long lines, and missing
-> EOF newline in schema files. Most of the clean-ups are for list
-> indentation which should always be 2 spaces more than the preceding
-> keyword.
-> 
-> Found with yamllint (which I plan to integrate into the checks).
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[...]
-
-> diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
-> index 3d4e1685cc55..28c6461b9a9a 100644
-> --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
-> +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
-> @@ -95,10 +95,10 @@ allOf:
->        # Devices without builtin crystal
->        properties:
->          clock-names:
-> -            minItems: 1
-> -            maxItems: 2
-> -            items:
-> -              enum: [ xin, clkin ]
-> +          minItems: 1
-> +          maxItems: 2
-> +          items:
-> +            enum: [ xin, clkin ]
->          clocks:
->            minItems: 1
->            maxItems: 2
-
-Thanks for noticing, LGTM.
-
-[...]
-
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
-> index d7dac16a3960..36dc7b56a453 100644
-> --- a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
-> @@ -33,8 +33,8 @@ properties:
->      $ref: /schemas/types.yaml#/definitions/uint32
->  
->    touchscreen-min-pressure:
-> -    description: minimum pressure on the touchscreen to be achieved in order for the
-> -                 touchscreen driver to report a touch event.
-> +    description: minimum pressure on the touchscreen to be achieved in order
-> +      for the touchscreen driver to report a touch event.
-
-Out of personal taste, I find the original layout more pleasant and
-readable. This third option is also good, especially for long descriptions:
-
-  description:
-    minimum pressure on the touchscreen to be achieved in order for the
-    touchscreen driver to report a touch event.
-
-At first glance yamllint seems to support exactly these two by default:
-
-> With indentation: {spaces: 4, check-multi-line-strings: true}
-> 
-> the following code snippet would PASS:
-> 
-> Blaise Pascal:
->     Je vous écris une longue lettre parce que
->     je n'ai pas le temps d'en écrire une courte.
-> 
-> the following code snippet would PASS:
-> 
-> Blaise Pascal: Je vous écris une longue lettre parce que
->                je n'ai pas le temps d'en écrire une courte.
-> 
-> the following code snippet would FAIL:
-> 
-> Blaise Pascal: Je vous écris une longue lettre parce que
->   je n'ai pas le temps d'en écrire une courte.
-> 
-(https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.indentation)
+> Signed-off-by: Crt Mori <cmo@melexis.com>
+> ---
+>  drivers/iio/temperature/mlx90632.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+> index c3de10ba5b1e..ce75f5a3486b 100644
+> --- a/drivers/iio/temperature/mlx90632.c
+> +++ b/drivers/iio/temperature/mlx90632.c
+> @@ -89,9 +89,16 @@
+>  #define MLX90632_MAX_MEAS_NUM  31 /**< Maximum measurements in list */
+>  #define MLX90632_SLEEP_DELAY_MS 3000 /**< Autosleep delay */
+>
+> +/**
+> + * struct mlx90632_data - private data for the MLX90632 device
+> + * @client: I2C client of the device
+> + * @lock: Internal mutex for multiple reads for single measurement
+> + * @regmap: Regmap of the device
+> + * @emissivity: Object emissivity from 0 to 1000 where 1000 = 1.
+> + */
+>  struct mlx90632_data {
+>         struct i2c_client *client;
+> -       struct mutex lock; /* Multiple reads for single measurement */
+> +       struct mutex lock;
+>         struct regmap *regmap;
+>         u16 emissivity;
+>  };
+> --
+> 2.25.1
+>
 
 
 -- 
-Luca
-
+With Best Regards,
+Andy Shevchenko

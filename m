@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9BBB243583
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 09:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84DBC243586
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 09:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbgHMHxh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Aug 2020 03:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
+        id S1726682AbgHMHxl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 03:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726730AbgHMHxf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 03:53:35 -0400
+        with ESMTP id S1726750AbgHMHxh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 03:53:37 -0400
 Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B843C061383
-        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:34 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id t10so5144247ejs.8
-        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFF3C061757
+        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:36 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id kq25so5163363ejb.3
+        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=melexis.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=H716/ny+VwLvqf3OlboNaoEvwFPsYMCsbjX1X3A4gC4=;
-        b=abpNV3esUVwPWLIgeNO2eZOQu/97txRESyenRXPaQ/NABWq5zFeEFlBduVNheUDkKK
-         3bcekscbFyvzIf7ymqnFAIZpJngpkuLRAbTkjx7iU/lfp/aZ3osLWQXikqqAc2GhE556
-         8KhqYusS3yqOjv4M3IBOz50dYIGMh4PtXCSBKEBEM+EG77uxo00gYGupfp6IxhdAsh+d
-         HkwqNInNLs+f3WzGetAZi9DHWpmZWlWM7f/4RuMOibcpjC3grzXH4eCPhpVtqYwksOWq
-         EamirUs0zOOoJwoQSZmvSiCJ8J8BPgN8fwnnWyZOz/tPgRUXxGRevZILD8Yph4M3H498
-         9tmQ==
+        bh=iLtk0FyRSsg4NjQXnsWcSYnmcbd4LI7Xy7HwQ4PY8ek=;
+        b=qE9eBPtxzunYqjd4M9pnFOEaOq15YPauise+mixIGTj6WkaqwpD7QSnlcb71UfYHmy
+         g9ADFXR+FG8B/sWwLtlhHdey57JYE8Xwovt/GjUh0zoyw84bzh3woXvxjWZuTx+O6WRM
+         00IOu+qdBMFBGOlUm4/Czr5Jk6qc1tKpmXOKRiT5sUIXEWlqbxOFi3abQDgYsekMLjD7
+         7jNPeKATAQBVzBDcF/DcZrbGCv5Dsi7f/S+Lr8HjFU3im8WpB7KgMdupd5M2dq+GssKF
+         NW81neRciEx3r0wV1lZxv0cTamsfrvaB7VaDWH5+97KrU77goBjqCbwPPoet0epU2nBg
+         NH+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=H716/ny+VwLvqf3OlboNaoEvwFPsYMCsbjX1X3A4gC4=;
-        b=XgLj8FuxdDoXaYT2o91X2icKMs8kL0zRLljbgwySlcwZUtmK6cXO7+Z4r/qAD+UX7c
-         hE2zdt8xvRxRMkUZstnEMCSiOHJhyiFL4KtcEnJo8Q11sqtCKw6Cyn5o2vFchr3Lqnmi
-         eS/QJQ85TWUO9+lf/w/zi4bGtoD9/t4nsA0jqaaBfgLztaKU7Oh+hAZElW5hIxnJYwwL
-         CuVHDDfoGCkycm+UlvYrXVmShPUV2zV1yN3mmQoYtYlhphP0Fu8mV8+jUYP33/OWHuOt
-         sYFbsrVq3wX7Y/q6mosTvcxGzDivuHPQLeu3gNykVWdIyKGKPP2ruPEaBBBdGr2D5SxM
-         I45g==
-X-Gm-Message-State: AOAM530etjJplmyKDt96iQCDInQJEf3o5jI+M2Cz4hOMsuUGtQnSzZ7A
-        SnrXRpQpS4/AYANAtFscWK7FaA==
-X-Google-Smtp-Source: ABdhPJw5S1eNv2gDKEOcpsTL7o7287PQ07aE6slCfJ950bwDR+8wb15NGda7KIxIm0OHb/aDG5pEXw==
-X-Received: by 2002:a17:906:a182:: with SMTP id s2mr3471751ejy.526.1597305213125;
-        Thu, 13 Aug 2020 00:53:33 -0700 (PDT)
+        bh=iLtk0FyRSsg4NjQXnsWcSYnmcbd4LI7Xy7HwQ4PY8ek=;
+        b=oOdanvpVe0jtLM30xczAhtoFYWSwUCNqUsk/SRhuxe8a82Y0m0WBZp9PjhHuAnI47e
+         cJy015ky8CuHr8p4uKAH4b78eJtGTA1kiKPVBPh20TAqPgn0ZaHjaRR90FMzfB0IL7M/
+         sM4nyGC1cOAmporGssdYIAE5BhUM4LnQeIOqtb0aLbvwgkb3GrV7dXAxMmLODReTciQ5
+         RcDbgIQMtXipwsPgaLDoW1f7ilxva4zAVGkdDJE4Se/KgQfhkg3U4gjhfGQ4NF/4q79L
+         pFh6rCCq4fiX9DvlKP3XViDL6t+xWGPY0cOP9w7yyVNVh/8NfrCmkkjO3N3mzt5GgCfk
+         XtrA==
+X-Gm-Message-State: AOAM532L7sBroNgSKdEYJLEqvEM5r+uTRbV3M02FtvYBiBfrVH2++sil
+        pukiMIBFiqe/JxW8/QMoyknoqhxLk0Sycw==
+X-Google-Smtp-Source: ABdhPJxRzjgRLqcxiZFzApJ+2X0+6tigHOg/DNggzZMRsm4PyZBDw4h26zP7RPyF3gU2j7L8jqQAeg==
+X-Received: by 2002:a17:906:3a85:: with SMTP id y5mr3495576ejd.507.1597305215332;
+        Thu, 13 Aug 2020 00:53:35 -0700 (PDT)
 Received: from localhost.localdomain (ptr-4xajgyw9mz6ybkfgzn4.18120a2.ip6.access.telenet.be. [2a02:1810:a421:dd00:8d0a:592c:7d6d:8770])
-        by smtp.gmail.com with ESMTPSA id br25sm3363449ejb.25.2020.08.13.00.53.31
+        by smtp.gmail.com with ESMTPSA id br25sm3363449ejb.25.2020.08.13.00.53.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2020 00:53:32 -0700 (PDT)
+        Thu, 13 Aug 2020 00:53:34 -0700 (PDT)
 From:   Crt Mori <cmo@melexis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Crt Mori <cmo@melexis.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v5 4/5] iio:temperature:mlx90632: Adding extended calibration option
-Date:   Thu, 13 Aug 2020 09:51:24 +0200
-Message-Id: <20200813075125.4949-5-cmo@melexis.com>
+Subject: [PATCH v5 5/5] iio:temperature:mlx90632: Some stylefixing leftovers
+Date:   Thu, 13 Aug 2020 09:51:25 +0200
+Message-Id: <20200813075125.4949-6-cmo@melexis.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200813075125.4949-1-cmo@melexis.com>
 References: <20200813075125.4949-1-cmo@melexis.com>
@@ -65,378 +65,123 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-For some time the market wants medical grade accuracy in medical range,
-while still retaining the declared accuracy outside of the medical range
-within the same sensor. That is why we created extended calibration
-which is automatically switched to when object temperature is too high.
-
-This patch also introduces the object_ambient_temperature variable which
-is needed for more accurate calculation of the object infra-red
-footprint as sensor's ambient temperature might be totally different
-than what the ambient temperature is at object and that is why we can
-have some more errors which can be eliminated. Currently this temperature
-is fixed at 25, but the interface to adjust it by user (with external
-sensor or just IR measurement of the other object which acts as ambient),
-will be introduced in another commit.
+There is some inconsistency and whitespace cleanup performed in this
+patch. It was done on top of my other patches, but I can rebase to head
+of the togreg branch if it would go in sooner.
 
 Signed-off-by: Crt Mori <cmo@melexis.com>
 ---
- drivers/iio/temperature/mlx90632.c | 224 ++++++++++++++++++++++++++++-
- 1 file changed, 222 insertions(+), 2 deletions(-)
+ drivers/iio/temperature/mlx90632.c | 41 ++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index d87c792b7e72..9fa8c078c037 100644
+index 9fa8c078c037..4ef13509fb0f 100644
 --- a/drivers/iio/temperature/mlx90632.c
 +++ b/drivers/iio/temperature/mlx90632.c
-@@ -11,6 +11,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/kernel.h>
-+#include <linux/limits.h>
- #include <linux/module.h>
- #include <linux/math64.h>
- #include <linux/of.h>
-@@ -58,6 +59,8 @@
- /* Control register address - volatile */
- #define MLX90632_REG_CONTROL	0x3001 /* Control Register address */
- #define   MLX90632_CFG_PWR_MASK		GENMASK(2, 1) /* PowerMode Mask */
-+#define   MLX90632_CFG_MTYP_MASK		GENMASK(8, 4) /* Meas select Mask */
-+
- /* PowerModes statuses */
- #define MLX90632_PWR_STATUS(ctrl_val) (ctrl_val << 1)
- #define MLX90632_PWR_STATUS_HALT MLX90632_PWR_STATUS(0) /* hold */
-@@ -65,6 +68,18 @@
- #define MLX90632_PWR_STATUS_STEP MLX90632_PWR_STATUS(2) /* step */
- #define MLX90632_PWR_STATUS_CONTINUOUS MLX90632_PWR_STATUS(3) /* continuous*/
- 
-+/* Measurement types */
-+#define MLX90632_MTYP_MEDICAL 0
-+#define MLX90632_MTYP_EXTENDED 17
-+
-+/* Measurement type select*/
-+#define MLX90632_MTYP_STATUS(ctrl_val) (ctrl_val << 4)
-+#define MLX90632_MTYP_STATUS_MEDICAL MLX90632_MTYP_STATUS(MLX90632_MTYP_MEDICAL)
-+#define MLX90632_MTYP_STATUS_EXTENDED MLX90632_MTYP_STATUS(MLX90632_MTYP_EXTENDED)
-+
-+/* I2C command register - volatile */
-+#define MLX90632_REG_I2C_CMD    0x3005 /* I2C command Register address */
-+
- /* Device status register - volatile */
- #define MLX90632_REG_STATUS	0x3fff /* Device status register */
- #define   MLX90632_STAT_BUSY		BIT(10) /* Device busy indicator */
-@@ -78,9 +93,21 @@
- #define MLX90632_RAM_2(meas_num)	(MLX90632_ADDR_RAM + 3 * meas_num + 1)
+@@ -94,6 +94,9 @@
  #define MLX90632_RAM_3(meas_num)	(MLX90632_ADDR_RAM + 3 * meas_num + 2)
  
-+/* Name important RAM_MEAS channels */
-+#define MLX90632_RAM_DSP5_EXTENDED_AMBIENT_1 MLX90632_RAM_3(17)
-+#define MLX90632_RAM_DSP5_EXTENDED_AMBIENT_2 MLX90632_RAM_3(18)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_1 MLX90632_RAM_1(17)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_2 MLX90632_RAM_2(17)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_3 MLX90632_RAM_1(18)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_4 MLX90632_RAM_2(18)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_5 MLX90632_RAM_1(19)
-+#define MLX90632_RAM_DSP5_EXTENDED_OBJECT_6 MLX90632_RAM_2(19)
+ /* Name important RAM_MEAS channels */
++#define MLX90632_RAM_DSP5_AMBIENT_1 MLX90632_RAM_3(1)
++#define MLX90632_RAM_DSP5_AMBIENT_2 MLX90632_RAM_3(2)
 +
- /* Magic constants */
- #define MLX90632_ID_MEDICAL	0x0105 /* EEPROM DSPv5 Medical device id */
- #define MLX90632_ID_CONSUMER	0x0205 /* EEPROM DSPv5 Consumer device id */
-+#define MLX90632_ID_EXTENDED	0x0505 /* EEPROM DSPv5 Extended range device id */
-+#define MLX90632_ID_MASK	GENMASK(14, 0) /* DSP version and device ID in EE_VERSION */
+ #define MLX90632_RAM_DSP5_EXTENDED_AMBIENT_1 MLX90632_RAM_3(17)
+ #define MLX90632_RAM_DSP5_EXTENDED_AMBIENT_2 MLX90632_RAM_3(18)
+ #define MLX90632_RAM_DSP5_EXTENDED_OBJECT_1 MLX90632_RAM_1(17)
+@@ -111,10 +114,10 @@
  #define MLX90632_DSP_VERSION	5 /* DSP version */
  #define MLX90632_DSP_MASK	GENMASK(7, 0) /* DSP version in EE_VERSION */
  #define MLX90632_RESET_CMD	0x0006 /* Reset sensor (address or global) */
-@@ -88,6 +115,7 @@
- #define MLX90632_REF_3		12LL /**< ResCtrlRef value of Channel 3 */
- #define MLX90632_MAX_MEAS_NUM	31 /**< Maximum measurements in list */
- #define MLX90632_SLEEP_DELAY_MS 3000 /**< Autosleep delay */
-+#define MLX90632_EXTENDED_LIMIT 27000 /* Extended mode raw value limit */
+-#define MLX90632_REF_12		12LL /**< ResCtrlRef value of Ch 1 or Ch 2 */
+-#define MLX90632_REF_3		12LL /**< ResCtrlRef value of Channel 3 */
+-#define MLX90632_MAX_MEAS_NUM	31 /**< Maximum measurements in list */
+-#define MLX90632_SLEEP_DELAY_MS 3000 /**< Autosleep delay */
++#define MLX90632_REF_12 	12LL /* ResCtrlRef value of Ch 1 or Ch 2 */
++#define MLX90632_REF_3		12LL /* ResCtrlRef value of Channel 3 */
++#define MLX90632_MAX_MEAS_NUM	31 /* Maximum measurements in list */
++#define MLX90632_SLEEP_DELAY_MS 3000 /* Autosleep delay */
+ #define MLX90632_EXTENDED_LIMIT 27000 /* Extended mode raw value limit */
  
  /**
-  * struct mlx90632_data - private data for the MLX90632 device
-@@ -95,16 +123,23 @@
-  * @lock: Internal mutex for multiple reads for single measurement
-  * @regmap: Regmap of the device
-  * @emissivity: Object emissivity from 0 to 1000 where 1000 = 1.
-+ * @mtyp: Measurement type physical sensor configuration for extended range
-+ *        calculations
-+ * @object_ambient_temperature: Ambient temperature at object (might differ of
-+ *                              the ambient temperature of sensor.
-  */
- struct mlx90632_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
- 	struct regmap *regmap;
- 	u16 emissivity;
-+	u8 mtyp;
-+	u32 object_ambient_temperature;
- };
+@@ -285,12 +288,12 @@ static int mlx90632_read_ambient_raw(struct regmap *regmap,
+ 	int ret;
+ 	unsigned int read_tmp;
  
- static const struct regmap_range mlx90632_volatile_reg_range[] = {
- 	regmap_reg_range(MLX90632_REG_I2C_ADDR, MLX90632_REG_CONTROL),
-+	regmap_reg_range(MLX90632_REG_I2C_CMD, MLX90632_REG_I2C_CMD),
- 	regmap_reg_range(MLX90632_REG_STATUS, MLX90632_REG_STATUS),
- 	regmap_reg_range(MLX90632_RAM_1(0),
- 			 MLX90632_RAM_3(MLX90632_MAX_MEAS_NUM)),
-@@ -120,6 +155,7 @@ static const struct regmap_range mlx90632_read_reg_range[] = {
- 	regmap_reg_range(MLX90632_EE_CTRL, MLX90632_EE_I2C_ADDR),
- 	regmap_reg_range(MLX90632_EE_Ha, MLX90632_EE_Hb),
- 	regmap_reg_range(MLX90632_REG_I2C_ADDR, MLX90632_REG_CONTROL),
-+	regmap_reg_range(MLX90632_REG_I2C_CMD, MLX90632_REG_I2C_CMD),
- 	regmap_reg_range(MLX90632_REG_STATUS, MLX90632_REG_STATUS),
- 	regmap_reg_range(MLX90632_RAM_1(0),
- 			 MLX90632_RAM_3(MLX90632_MAX_MEAS_NUM)),
-@@ -204,6 +240,26 @@ static int mlx90632_perform_measurement(struct mlx90632_data *data)
- 	return (reg_status & MLX90632_STAT_CYCLE_POS) >> 2;
- }
- 
-+static int mlx90632_set_meas_type(struct regmap *regmap, u8 type)
-+{
-+	int ret;
-+
-+	if ((type != MLX90632_MTYP_MEDICAL) && (type != MLX90632_MTYP_EXTENDED))
-+		return -EINVAL;
-+
-+	ret = regmap_write(regmap, MLX90632_REG_I2C_CMD, MLX90632_RESET_CMD);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
-+				 (MLX90632_CFG_MTYP_MASK | MLX90632_CFG_PWR_MASK),
-+				 (MLX90632_MTYP_STATUS(type) | MLX90632_PWR_STATUS_HALT));
-+	if (ret < 0)
-+		return ret;
-+
-+	return mlx90632_pwr_continuous(regmap);
-+}
-+
- static int mlx90632_channel_new_select(int perform_ret, uint8_t *channel_new,
- 				       uint8_t *channel_old)
- {
-@@ -305,6 +361,104 @@ static int mlx90632_read_all_channel(struct mlx90632_data *data,
- 	return ret;
- }
- 
-+static int mlx90632_read_ambient_raw_extended(struct regmap *regmap,
-+					      s16 *ambient_new_raw, s16 *ambient_old_raw)
-+{
-+	unsigned int read_tmp;
-+	int ret;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_AMBIENT_1, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	*ambient_new_raw = (s16)read_tmp;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_AMBIENT_2, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	*ambient_old_raw = (s16)read_tmp;
-+
-+	return 0;
-+}
-+
-+static int mlx90632_read_object_raw_extended(struct regmap *regmap, s16 *object_new_raw)
-+{
-+	unsigned int read_tmp;
-+	s32 read;
-+	int ret;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_1, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = (s16)read_tmp;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_2, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = read - (s16)read_tmp;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_3, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = read - (s16)read_tmp;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_4, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = (read + (s16)read_tmp) / 2;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_5, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = read + (s16)read_tmp;
-+
-+	ret = regmap_read(regmap, MLX90632_RAM_DSP5_EXTENDED_OBJECT_6, &read_tmp);
-+	if (ret < 0)
-+		return ret;
-+	read = read + (s16)read_tmp;
-+
-+	if (read > S16_MAX || read < S16_MIN)
-+		return -ERANGE;
-+
-+	*object_new_raw = read;
-+
-+	return 0;
-+}
-+
-+static int mlx90632_read_all_channel_extended(struct mlx90632_data *data, s16 *object_new_raw,
-+					      s16 *ambient_new_raw, s16 *ambient_old_raw)
-+{
-+	int tries = 4;
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+	ret = mlx90632_set_meas_type(data->regmap, MLX90632_MTYP_EXTENDED);
-+	if (ret < 0)
-+		goto read_unlock;
-+
-+	do {
-+		ret = mlx90632_perform_measurement(data);
-+		if (ret < 0)
-+			goto read_unlock;
-+	} while ((ret != 19) && tries--);
-+
-+	if (tries < 0) {
-+		ret = -ETIMEDOUT;
-+		goto read_unlock;
-+	}
-+
-+	ret = mlx90632_read_object_raw_extended(data->regmap, object_new_raw);
-+	if (ret < 0)
-+		goto read_unlock;
-+
-+	ret = mlx90632_read_ambient_raw_extended(data->regmap, ambient_new_raw, ambient_old_raw);
-+
-+read_unlock:
-+	(void) mlx90632_set_meas_type(data->regmap, MLX90632_MTYP_MEDICAL);
-+
-+	mutex_unlock(&data->lock);
-+	return ret;
-+}
-+
- static int mlx90632_read_ee_register(struct regmap *regmap, u16 reg_lsb,
- 				     s32 *reg_value)
- {
-@@ -359,9 +513,23 @@ static s64 mlx90632_preprocess_temp_obj(s16 object_new_raw, s16 object_old_raw,
- 	return div64_s64((tmp << 19ULL), 1000LL);
- }
- 
-+static s64 mlx90632_preprocess_temp_obj_extended(s16 object_new_raw, s16 ambient_new_raw,
-+						 s16 ambient_old_raw, s16 Ka)
-+{
-+	s64 VR_IR, kKa, tmp;
-+
-+	kKa = ((s64)Ka * 1000LL) >> 10ULL;
-+	VR_IR = (s64)ambient_old_raw * 1000000LL +
-+		kKa * div64_s64((s64)ambient_new_raw * 1000LL,
-+				MLX90632_REF_3);
-+	tmp = div64_s64(
-+			div64_s64((s64) object_new_raw * 1000000000000LL, MLX90632_REF_12),
-+			VR_IR);
-+	return div64_s64(tmp << 19ULL, 1000LL);
-+}
-+
- static s32 mlx90632_calc_temp_ambient(s16 ambient_new_raw, s16 ambient_old_raw,
--				      s32 P_T, s32 P_R, s32 P_G, s32 P_O,
--				      s16 Gb)
-+				      s32 P_T, s32 P_R, s32 P_G, s32 P_O, s16 Gb)
- {
- 	s64 Asub, Bsub, Ablock, Bblock, Cblock, AMB, sum;
- 
-@@ -433,6 +601,31 @@ static s32 mlx90632_calc_temp_object(s64 object, s64 ambient, s32 Ea, s32 Eb,
- 	return temp;
- }
- 
-+static s32 mlx90632_calc_temp_object_extended(s64 object, s64 ambient, s64 reflected,
-+					      s32 Ea, s32 Eb, s32 Fa, s32 Fb, s32 Ga,
-+					      s16 Ha, s16 Hb, u16 tmp_emi)
-+{
-+	s64 kTA, kTA0, TAdut, TAdut4, Tr4, TaTr4;
-+	s64 temp = 25000;
-+	s8 i;
-+
-+	kTA = (Ea * 1000LL) >> 16LL;
-+	kTA0 = (Eb * 1000LL) >> 8LL;
-+	TAdut = div64_s64((ambient - kTA0) * 1000000LL, kTA) + 25 * 1000000LL;
-+	Tr4 = mlx90632_calc_ta4(reflected, 10);
-+	TAdut4 = mlx90632_calc_ta4(TAdut, 10000LL);
-+	TaTr4 = Tr4 - div64_s64(Tr4 - TAdut4, tmp_emi) * 1000;
-+
-+	/* Iterations of calculation as described in datasheet */
-+	for (i = 0; i < 5; ++i) {
-+		temp = mlx90632_calc_temp_object_iteration(temp, object, TAdut, TaTr4,
-+							   Fa / 2, Fb, Ga, Ha, Hb,
-+							   tmp_emi);
-+	}
-+
-+	return temp;
-+}
-+
- static int mlx90632_calc_object_dsp105(struct mlx90632_data *data, int *val)
- {
- 	s32 ret;
-@@ -480,6 +673,26 @@ static int mlx90632_calc_object_dsp105(struct mlx90632_data *data, int *val)
+-	ret = regmap_read(regmap, MLX90632_RAM_3(1), &read_tmp);
++	ret = regmap_read(regmap, MLX90632_RAM_DSP5_AMBIENT_1, &read_tmp);
  	if (ret < 0)
  		return ret;
+ 	*ambient_new_raw = (s16)read_tmp;
  
-+	if (object_new_raw > MLX90632_EXTENDED_LIMIT &&
-+	    data->mtyp == MLX90632_MTYP_EXTENDED) {
-+		ret = mlx90632_read_all_channel_extended(data, &object_new_raw,
-+							 &ambient_new_raw, &ambient_old_raw);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Use extended mode calculations */
-+		ambient = mlx90632_preprocess_temp_amb(ambient_new_raw,
-+						       ambient_old_raw, Gb);
-+		object = mlx90632_preprocess_temp_obj_extended(object_new_raw,
-+							       ambient_new_raw,
-+							       ambient_old_raw, Ka);
-+		*val = mlx90632_calc_temp_object_extended(object, ambient,
-+							  data->object_ambient_temperature,
-+							  Ea, Eb, Fa, Fb, Ga,
-+							  Ha, Hb, data->emissivity);
-+		return 0;
-+	}
-+
- 	ambient = mlx90632_preprocess_temp_amb(ambient_new_raw,
- 					       ambient_old_raw, Gb);
- 	object = mlx90632_preprocess_temp_obj(object_new_raw,
-@@ -653,6 +866,7 @@ static int mlx90632_probe(struct i2c_client *client,
- 	i2c_set_clientdata(client, indio_dev);
- 	mlx90632->client = client;
- 	mlx90632->regmap = regmap;
-+	mlx90632->mtyp = MLX90632_MTYP_MEDICAL;
- 
- 	mutex_init(&mlx90632->lock);
- 	indio_dev->name = id->name;
-@@ -672,12 +886,17 @@ static int mlx90632_probe(struct i2c_client *client,
- 		dev_err(&client->dev, "read of version failed: %d\n", ret);
+-	ret = regmap_read(regmap, MLX90632_RAM_3(2), &read_tmp);
++	ret = regmap_read(regmap, MLX90632_RAM_DSP5_AMBIENT_2, &read_tmp);
+ 	if (ret < 0)
  		return ret;
- 	}
-+	read = read & MLX90632_ID_MASK;
- 	if (read == MLX90632_ID_MEDICAL) {
- 		dev_dbg(&client->dev,
- 			"Detected Medical EEPROM calibration %x\n", read);
- 	} else if (read == MLX90632_ID_CONSUMER) {
- 		dev_dbg(&client->dev,
- 			"Detected Consumer EEPROM calibration %x\n", read);
-+	} else if (read == MLX90632_ID_EXTENDED) {
-+		dev_dbg(&client->dev,
-+			"Detected Extended range EEPROM calibration %x\n", read);
-+		mlx90632->mtyp = MLX90632_MTYP_EXTENDED;
+ 	*ambient_old_raw = (s16)read_tmp;
+@@ -488,11 +491,11 @@ static s64 mlx90632_preprocess_temp_amb(s16 ambient_new_raw,
+ 
+ 	kGb = ((s64)Gb * 1000LL) >> 10ULL;
+ 	VR_Ta = (s64)ambient_old_raw * 1000000LL +
+-		kGb * div64_s64(((s64)ambient_new_raw * 1000LL),
+-			(MLX90632_REF_3));
++		kGb * div64_s64((s64)ambient_new_raw * 1000LL,
++			MLX90632_REF_3);
+ 	tmp = div64_s64(
+-			 div64_s64(((s64)ambient_new_raw * 1000000000000LL),
+-				   (MLX90632_REF_3)), VR_Ta);
++			 div64_s64((s64)ambient_new_raw * 1000000000000LL,
++				   MLX90632_REF_3), VR_Ta);
+ 	return div64_s64(tmp << 19ULL, 1000LL);
+ }
+ 
+@@ -504,13 +507,13 @@ static s64 mlx90632_preprocess_temp_obj(s16 object_new_raw, s16 object_old_raw,
+ 
+ 	kKa = ((s64)Ka * 1000LL) >> 10ULL;
+ 	VR_IR = (s64)ambient_old_raw * 1000000LL +
+-		kKa * div64_s64(((s64)ambient_new_raw * 1000LL),
+-			(MLX90632_REF_3));
++		kKa * div64_s64((s64)ambient_new_raw * 1000LL,
++			MLX90632_REF_3);
+ 	tmp = div64_s64(
+-			div64_s64(((s64)((object_new_raw + object_old_raw) / 2)
+-				   * 1000000000000LL), (MLX90632_REF_12)),
++			div64_s64((s64)((object_new_raw + object_old_raw) / 2)
++				   * 1000000000000LL, MLX90632_REF_12),
+ 			VR_IR);
+-	return div64_s64((tmp << 19ULL), 1000LL);
++	return div64_s64(tmp << 19ULL, 1000LL);
+ }
+ 
+ static s64 mlx90632_preprocess_temp_obj_extended(s16 object_new_raw, s16 ambient_new_raw,
+@@ -560,8 +563,8 @@ static s32 mlx90632_calc_temp_object_iteration(s32 prev_object_temp, s64 object,
+ 	calcedKsTO = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
+ 			     * 1000LL)) >> 36LL;
+ 	calcedKsTA = ((s64)(Fb * (TAdut - 25 * 1000000LL))) >> 36LL;
+-	Alpha_corr = div64_s64((((s64)(Fa * 10000000000LL) >> 46LL)
+-				* Ha_customer), 1000LL);
++	Alpha_corr = div64_s64(((s64)(Fa * 10000000000LL) >> 46LL)
++				* Ha_customer, 1000LL);
+ 	Alpha_corr *= ((s64)(1 * 1000000LL + calcedKsTO + calcedKsTA));
+ 	Alpha_corr = emissivity * div64_s64(Alpha_corr, 100000LL);
+ 	Alpha_corr = div64_s64(Alpha_corr, 1000LL);
+@@ -589,7 +592,7 @@ static s32 mlx90632_calc_temp_object(s64 object, s64 ambient, s32 Ea, s32 Eb,
+ 
+ 	kTA = (Ea * 1000LL) >> 16LL;
+ 	kTA0 = (Eb * 1000LL) >> 8LL;
+-	TAdut = div64_s64(((ambient - kTA0) * 1000000LL), kTA) + 25 * 1000000LL;
++	TAdut = div64_s64((ambient - kTA0) * 1000000LL, kTA) + 25 * 1000000LL;
+ 	TAdut4 = mlx90632_calc_ta4(TAdut, 10000LL);
+ 
+ 	/* Iterations of calculation as described in datasheet */
+@@ -899,7 +902,7 @@ static int mlx90632_probe(struct i2c_client *client,
+ 		mlx90632->mtyp = MLX90632_MTYP_EXTENDED;
  	} else if ((read & MLX90632_DSP_MASK) == MLX90632_DSP_VERSION) {
  		dev_dbg(&client->dev,
- 			"Detected Unknown EEPROM calibration %x\n", read);	
-@@ -689,6 +908,7 @@ static int mlx90632_probe(struct i2c_client *client,
- 	}
- 
- 	mlx90632->emissivity = 1000;
-+	mlx90632->object_ambient_temperature = 25000; /* 25 degrees milliCelsius */
- 
- 	pm_runtime_disable(&client->dev);
- 	ret = pm_runtime_set_active(&client->dev);
+-			"Detected Unknown EEPROM calibration %x\n", read);	
++			"Detected Unknown EEPROM calibration %x\n", read);
+ 	} else {
+ 		dev_err(&client->dev,
+ 			"Wrong DSP version %x (expected %x)\n",
 -- 
 2.25.1
 

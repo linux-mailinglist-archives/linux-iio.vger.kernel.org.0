@@ -2,81 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A897E243435
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 08:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7332434E3
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 09:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbgHMGxQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Aug 2020 02:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725978AbgHMGxP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 02:53:15 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 985DDC061757
-        for <linux-iio@vger.kernel.org>; Wed, 12 Aug 2020 23:53:15 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id S1726144AbgHMHXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 03:23:32 -0400
+Received: from www381.your-server.de ([78.46.137.84]:59098 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726048AbgHMHXb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 03:23:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=/rw/ABEPjiEaBAOAgD9xWsMZr2Q2LaEmkUB2HMr+Svs=; b=Gm8ESdJLYpDNxyf/U+jMLWs/pK
+        /2mh67+0zN0hkS66KjpRCgaPdtZ5UIJsPuUcqZpd8y3Q6aw2haFUZUPLyA6TKZgmMkK2u02Bpoo5o
+        3D1ArL1nj9QJemWrceaEGFQvRpKERKbzdgNU9HPAQB3BIZNrJ4fqCmvxsrZOLxOG/18oMA0gYGn3r
+        Jt4aAfIeC0nhw8PJdpbPTFAtmaF3Uq6gHcu58Dqf9jsYELisKLTiKrxIl/i5Ke+35bEYFiEeoeWUf
+        qGdSujWzFXhmyI3ThwvIhOXWgKeqYc6jVMszTr1cnW7V7pLbQIb25uQLIgJXOQVi5VCJj7uJJghf5
+        APhc4y3A==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1k67a8-0003PW-H7; Thu, 13 Aug 2020 09:23:24 +0200
+Received: from [2001:a61:2517:6d01:9e5c:8eff:fe01:8578]
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1k676l-0005EP-FS; Thu, 13 Aug 2020 08:53:03 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1k676j-0002oU-6l; Thu, 13 Aug 2020 08:53:01 +0200
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        (envelope-from <lars@metafoo.de>)
+        id 1k67a8-0003wM-Az; Thu, 13 Aug 2020 09:23:24 +0200
+Subject: Re: [PATCH] iio: trigger: sysfs: Disable irqs before calling
+ iio_trigger_poll()
+To:     Christian Eggers <ceggers@arri.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>, trivial@kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Documentation: ABI: iio: fix some spelling mistakes
-Date:   Thu, 13 Aug 2020 08:52:20 +0200
-Message-Id: <20200813065220.23256-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.28.0
+References: <20200727145714.4377-1-ceggers@arri.de>
+ <4871626.01MspNxQH7@n95hx1g2>
+ <a59d204e-aeb0-2649-5e6f-f07815713d1a@metafoo.de>
+ <3847827.rc3nFVyU9p@n95hx1g2>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <f6fc5fbe-5c51-fe9a-670e-4b5201353356@metafoo.de>
+Date:   Thu, 13 Aug 2020 09:23:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: afa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <3847827.rc3nFVyU9p@n95hx1g2>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/25900/Mon Aug 10 14:44:29 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This fixes some typos found while browsing the documentation.
+On 8/12/20 1:01 PM, Christian Eggers wrote:
+> Hi Lars
+>
+> On Monday, 3 August 2020, 08:52:54 CEST, Lars-Peter Clausen wrote:
+>> On 8/3/20 8:44 AM, Christian Eggers wrote:
+>>> ...
+>>> is my patch sufficient, or would you prefer a different solution?
+>> The code in normal upstream is correct, there is no need to patch it
+>> since iio_sysfs_trigger_work() always runs with IRQs disabled.
+>>
+>>>> Are you using a non-upstream kernel? Maybe a RT kernel?
+>>> I use v5.4.<almost-latest>-rt
+>> That explains it. Have a look at
+>> 0200-irqwork-push-most-work-into-softirq-context.patch.
+>>
+>> The right fix for this issue is to add the following snippet to the RT
+>> patchset.
+>>
+>> diff --git a/drivers/iio/trigger/iio-trig-sysfs.c
+>> b/drivers/iio/trigger/iio-trig-sysfs.c
+>> --- a/drivers/iio/trigger/iio-trig-sysfs.c
+>> +++ b/drivers/iio/trigger/iio-trig-sysfs.c
+>> @@ -161,6 +161,7 @@ static int iio_sysfs_trigger_probe(int id)
+>>        iio_trigger_set_drvdata(t->trig, t);
+>>
+>>        init_irq_work(&t->work, iio_sysfs_trigger_work);
+>> +    t->work.flags = IRQ_WORK_HARD_IRQ;
+>>
+>>        ret = iio_trigger_register(t->trig);
+>>        if (ret)
+> I can confirm that this works for iio-trig-sysfs on 5.4.54-rt32. Currently I
+> do not use iio-trig-hrtimer, but if I remember correctly, the problem was also
+> present there.
 
-Cc: trivial@kernel.org
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Documentation/ABI/testing/sysfs-bus-iio | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Similar story, I think. On mainline hrtimers run in hardirq mode by 
+default, whereas in RT they run in softirq mode by default. So we 
+haven't see the issue in mainline.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index d3e53a6d8331..ef86702678c7 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -49,9 +49,9 @@ Description:
- 		resulting sampling frequency.  In many devices this
- 		parameter has an effect on input filters etc. rather than
- 		simply controlling when the input is sampled.  As this
--		effects data ready triggers, hardware buffers and the sysfs
-+		affects data ready triggers, hardware buffers and the sysfs
- 		direct access interfaces, it may be found in any of the
--		relevant directories.  If it effects all of the above
-+		relevant directories.  If it affects all of the above
- 		then it is to be found in the base device directory.
- 
- What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
-@@ -1013,7 +1013,7 @@ What:		/sys/.../events/in_activity_running_thresh_falling_en
- KernelVersion:	3.19
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Enables or disables activitity events. Depending on direction
-+		Enables or disables activity events. Depending on direction
- 		an event is generated when sensor ENTERS or LEAVES a given state.
- 
- What:		/sys/.../events/in_activity_still_thresh_rising_value
--- 
-2.28.0
+To fix this we need to explicitly specify that the IIO hrtimer always 
+needs to run in hardirq mode by using the HRTIMER_MODE_REL_HARD flag. 
+I'll send a patch.
+
+> Do you want to apply your patch for mainline? In contrast to v5.4,
+> IRQ_WORK_HARD_IRQ is already available there (moved to smp_types.h).
+> Unfortunately I cannot test it on mainline for now, as my BSP stuff is not
+> ported yet.
+
+Sounds like a plan :)
 

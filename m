@@ -2,112 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9940424356F
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 09:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F82A243579
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 09:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726756AbgHMHvK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Aug 2020 03:51:10 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:38760 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726106AbgHMHvJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 03:51:09 -0400
-Received: by mail-ot1-f65.google.com with SMTP id q9so4110499oth.5;
-        Thu, 13 Aug 2020 00:51:08 -0700 (PDT)
+        id S1726192AbgHMHxO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 03:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726557AbgHMHxN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 03:53:13 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C850C061757
+        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:13 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id di22so3452477edb.12
+        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 00:53:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JMQG+gPDVY3OFt2LOxuYy2xvWRV/+Hl/ipweeI0yGEA=;
+        b=I0XV0l07OpHFTazOJDjoA8vG0u0p9cnmSyNO5wcXQ/QL9inGUKmPADU+WcUalfo0FN
+         eYNtX08tea3gafGqht3b90rSeph9poJ5ivuYfZaAhf7EVEv5FXjtVD4JcKs+7nX+N2mo
+         cOi/RmwUeI5vR0oiuk/liKShssFXFOI/uc93h/12us/96cTzPMbJJBJoQi7UFc8Rh+q/
+         JhAAQme0aCgsW90tglMLbE7bcusspPAzpFmdE5FOb9KYC430mLWKmlmE19S/fWbIdivx
+         Df7DQ/6Y5SwHu09PviVOpGYwFWyU+/Nv+oQjFNXQ0dYr0JYH9VhIe5PG5sqpj5AfKZHF
+         s0rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eU62SrftExeZEPFtSlHLsBRzbUkLx1KNOgZc6VKFeBQ=;
-        b=RKVY0mqqakUrEXk4TORV8A5/ZSMY0dexhKfXyaOKBp8tYT6+lN9tMY1gCu59dMSnI/
-         6Av5sXCLtCtfska6KBUfoUvPLN8QSlHGcwX+BKv8ZNWhNtirhMGElzBnWp56J7vtBCeA
-         RTsTm+tpM0JqO6hs1Zx9oL0KiDPnHu2wr8nXIFBaGz9jqMUEyZCYMyj21d8ckpZmX8IH
-         sIyh51oPoVvqSR3qDoGMDZJhbXuz4s9KHdaT9j4oPeIaqxws0OL9u53GcL8uZhE7hrov
-         ikjJM0LMxR/OG4BC9tZAySXGXWwQpPbcG9j3oyJJCCrBhecUJhWEIB5ZPymwSBlP+imO
-         EXuw==
-X-Gm-Message-State: AOAM531KpbVTNZA6DQGhlLakjE36ZGk11NQSWXrXhgb2m/BrbDAUDZAN
-        GTNNlK5/qceLxjH+paJhJQLuqYhFPre+GsLWPoc=
-X-Google-Smtp-Source: ABdhPJzAAKS8g3t/W5mSJd2Vboc2FEvoNvVXoru7u4kNP7jabPCwVCki2JjTk/fEfMzVv8QAFC24k07bLAU2LYhSK+k=
-X-Received: by 2002:a05:6830:1b79:: with SMTP id d25mr2990956ote.107.1597305067462;
- Thu, 13 Aug 2020 00:51:07 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JMQG+gPDVY3OFt2LOxuYy2xvWRV/+Hl/ipweeI0yGEA=;
+        b=rkcTObVCpaSoUTnE4taOA90HazBFG7PujNEWYP4JPdx7n95wC/X6L8DrLqk1opu28o
+         8IOafsN6SAWdKYC1bwy26zexyGhjMdm2iKfAj9uTwJbuiaP2ry4MRmKLNGnDCPJ0Vobf
+         /8srhRq0SvHyNYXB7ZaBPOp7JddJphrFwIBp1C/UK+bRLUkCtac/huGQcn5zvmWFKdpF
+         80cEiiN+dQw3iYv2Esvgsx1yGlnrG0puZSTbNcHCVjXY9+kz9RoFymR+ZiJuOM/Z/8jh
+         uAsVRN7/ZqRt1WX9sZ30WlPFPRl7urMP2UZw/QniS7VnaydhwpEOZ9wHVqdUevz0bhEM
+         UzFQ==
+X-Gm-Message-State: AOAM531y1FVXAejF0tQ/OzwbNRcJFmSor5i1uyy0h3DVqAQee817cwfM
+        mSfF5gsaqkwrtqmZ7DpoWtSUMw==
+X-Google-Smtp-Source: ABdhPJzqHGAZMCVQjzPfnf4zndzNAsrqiDkUQNTYamQYsbpGFmywFa+VGhKv00SKkT7ci+GFRVDxhw==
+X-Received: by 2002:a05:6402:304b:: with SMTP id bu11mr3480450edb.106.1597305191659;
+        Thu, 13 Aug 2020 00:53:11 -0700 (PDT)
+Received: from localhost.localdomain (ptr-4xajgyw9mz6ybkfgzn4.18120a2.ip6.access.telenet.be. [2a02:1810:a421:dd00:8d0a:592c:7d6d:8770])
+        by smtp.gmail.com with ESMTPSA id br25sm3363449ejb.25.2020.08.13.00.53.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2020 00:53:10 -0700 (PDT)
+From:   Crt Mori <cmo@melexis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Crt Mori <cmo@melexis.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v5 0/5] iio: temperature: mlx90632: Add extended calibration calculations
+Date:   Thu, 13 Aug 2020 09:51:20 +0200
+Message-Id: <20200813075125.4949-1-cmo@melexis.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200812203618.2656699-1-robh@kernel.org>
-In-Reply-To: <20200812203618.2656699-1-robh@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 13 Aug 2020 09:50:55 +0200
-Message-ID: <CAMuHMdVXvSRF-G_TYu4P+Bqa2FZJWsUCyzqFur3Rb-tBExfbsw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
-To:     Rob Herring <robh@kernel.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-hwmon@vger.kernel.org,
-        linux-rtc@vger.kernel.org,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        linux-input@vger.kernel.org, linux-clk <linux-clk@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob,
+Add extended calibration calculations for the new subversion of DSP5.
 
-On Wed, Aug 12, 2020 at 10:36 PM Rob Herring <robh@kernel.org> wrote:
-> Clean-up incorrect indentation, extra spaces, long lines, and missing
-> EOF newline in schema files. Most of the clean-ups are for list
-> indentation which should always be 2 spaces more than the preceding
-> keyword.
->
-> Found with yamllint (which I plan to integrate into the checks).
+V5 review comments from Andy Shevchenko <andy.shevchenko@gmail.com:
+	 -  Swap order of patches to avoid re-doing the calculations
+	 - Add fixed name defines for Ambient and Object RAM temperature
+	   channels as per suggestion of the Jonathan Cameron <jic23@kernel.org>
+V5:
+	 - Add style changes patch along with current series.
 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+V4 review comments from Andy Shevchenko <andy.shevchenko@gmail.com>:
+	 - Move the function creation for Ta4 to first patch
+	 - Add kernel doc patch for documenting internal struct
+	 - Add patch to convert while loops to do-while loops for
+	   polling
 
-Thanks for your patch!
+V3 review comments from Andy Shevchenko <andy.shevchenko@gmail.com>:
+	 - Change commit message text to more proper English as per suggestions
+	 - Drop unneeded brackets and parentheses
+	 - Use defines from limits.h
+	 - Remove userspace typedefs as leftovers from porting
+	 - Testing of timeout loops with iopoll.h was no successful,
+	   because delay between measurements is 10ms, but we need to
+	   fill at least 3 channels, so final timeout should be 40ms
+	   which is out of scope of usleep function
+	 - Fixing some typos in comments
 
-> --- a/Documentation/devicetree/bindings/clock/renesas,cpg-clocks.yaml
-> +++ b/Documentation/devicetree/bindings/clock/renesas,cpg-clocks.yaml
-> @@ -24,9 +24,9 @@ properties:
->        - const: renesas,r8a7778-cpg-clocks # R-Car M1
->        - const: renesas,r8a7779-cpg-clocks # R-Car H1
->        - items:
-> -        - enum:
-> -            - renesas,r7s72100-cpg-clocks # RZ/A1H
-> -        - const: renesas,rz-cpg-clocks    # RZ/A1
-> +          - enum:
-> +              - renesas,r7s72100-cpg-clocks # RZ/A1H
-> +          - const: renesas,rz-cpg-clocks    # RZ/A1
+V2 review comments from Andy Shevchenko <andy.shevchenko@gmail.com>:
+	 - Convert divison back to shifts to make it more readable
 
-This change breaks alignment of the comments at the end of each line.
+Crt Mori (5):
+  iio:temperature:mlx90632: Reduce number of equal calulcations
+  iio:temperature:mlx90632: Add kerneldoc to the internal struct
+  iio:temperature:mlx90632: Convert polling while loop to do-while
+  iio:temperature:mlx90632: Adding extended calibration option
+  iio:temperature:mlx90632: Some stylefixing leftovers
 
->        - const: renesas,sh73a0-cpg-clocks  # SH-Mobile AG5
-
-(I only checked the files I care about)
-
-If you don't update commit  e0fe7fc6f2ca0781 ("dt-bindings: Whitespace
-clean-ups in schema files"), I can send a patch after v5.9-rc1.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+ drivers/iio/temperature/mlx90632.c | 301 +++++++++++++++++++++++++----
+ 1 file changed, 267 insertions(+), 34 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.25.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

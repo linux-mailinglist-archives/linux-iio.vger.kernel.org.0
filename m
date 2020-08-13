@@ -2,110 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558D924394D
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 13:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF3A243954
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Aug 2020 13:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726102AbgHMLYk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Aug 2020 07:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42004 "EHLO
+        id S1726102AbgHML1p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Aug 2020 07:27:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726100AbgHMLYj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 07:24:39 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A51F5C061757;
-        Thu, 13 Aug 2020 04:24:39 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id u20so2673939pfn.0;
-        Thu, 13 Aug 2020 04:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/zriuZjSj9xj6/8fSPTT22Tss8liWtUy8xFTyXoU7yc=;
-        b=RACy3nGsdFg0Fh3cY1pec6ZHDW/idUPIscW7C7rGAtfhfrk2GlEu8kdWw8GDTL/G/Y
-         rVdyGUPjUVFmoEhwXIr9z8/k38tx4oN6Ut4CFvLnGAh3rUh002GwkI19Nhc1qYZ+uzQy
-         kJn89akKBKKHXmtgHaW8l8/ExET1IIekAdK9+IE/abe+2LLEpIFKX8/MpUTbz0k8B60S
-         NrMBsmzNjXEYhtnK7YKITD4cptUUgXOnx70nPvxWy5yias6o2/3Al8HeoRAGD52fYVei
-         rw70CEvdwLEzp9I4hnM0ydJ+mFUgCeAZaF3AcQYspu+XRMPRbiHqfOR7pI5gX77lW5EI
-         ZBnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/zriuZjSj9xj6/8fSPTT22Tss8liWtUy8xFTyXoU7yc=;
-        b=PpKiva4s5uaHttXjXMcXZTSWLxkeW8Ju4Tsvl+YLQG7mPys/Gs2hj7U576IqD1NHYF
-         kkujU8dzADy2h9sj9+kJI+rZMxVs4NodOwtP0dF4LGL4fjsm+akt95BPbW1LlvToxz9s
-         XiN+S5pq7egbsz4pgwNmhmLdEFwSCUQXPWLJBV8ElhNYrvCgMFh06PCXMLZiWiX7MNcq
-         R9IeCtsvYadId82zwC6BWyzvSHTchJ0J8K4Bb+TAaMxZEWkmZ/6lzL+AEzj8T9NJlk7t
-         a4ZnEyyvY0pMpeUw/0x1KDNiGh7ZYkS42TxMfJPPDycz0rqkMpi1nFQnW7x8b3o4qD4d
-         W26g==
-X-Gm-Message-State: AOAM532kDnqswv3IybmSNFlWv+NOl1p2S2TfPPCIb1Rb2q8h7M1MhiZ2
-        st5Jg24YTbwPMA2n0SUg4sGdaL+V42MTTrBd9bNHQWT9zts=
-X-Google-Smtp-Source: ABdhPJzIkZApoDQ5oXbvk6Qqc/hVXxYMbJMPBQWt6vVX9AgOrIwlDctn2NxT7KNHfIDV7wXWA8f3BSG/ZvRAcfZP3j4=
-X-Received: by 2002:a63:f24a:: with SMTP id d10mr3188515pgk.4.1597317879199;
- Thu, 13 Aug 2020 04:24:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200813075125.4949-1-cmo@melexis.com> <20200813075125.4949-4-cmo@melexis.com>
- <CAHp75VfNwb5uBp=H0295LEJjXy1+=V5yvSN1PHbtMYzgg=_EAA@mail.gmail.com> <CAKv63uv=b60B9RXBJF4HEhMOowu-qbGrv7LsmJVvkkERSida-A@mail.gmail.com>
-In-Reply-To: <CAKv63uv=b60B9RXBJF4HEhMOowu-qbGrv7LsmJVvkkERSida-A@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 13 Aug 2020 14:24:23 +0300
-Message-ID: <CAHp75Vd+3SopKog6uhSKoOLn+tECsQfs7kRbJsrMZEbNRpk8bQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] iio:temperature:mlx90632: Convert polling while
- loop to do-while
-To:     Crt Mori <cmo@melexis.com>
+        with ESMTP id S1726100AbgHML1o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Aug 2020 07:27:44 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE96C061757
+        for <linux-iio@vger.kernel.org>; Thu, 13 Aug 2020 04:27:44 -0700 (PDT)
+Date:   Thu, 13 Aug 2020 13:27:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1597318063;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CFP3PIp6DHRFBywTyc+gcTV8pYXmkO76zYTsiYYkL4c=;
+        b=xT5DWhjRD4t2jnTG9cG3/PKmLFoB307AuJDGdfef8gLO+lUwd7hVHwPJIcFAHr8fwfCIry
+        JQv8c4S0LM+a59jQG6D3mrQM5CbZcMQ9HeaIyjxTdbQYzujE4fdqMX2MNJXwD/LIzPS+Xp
+        5X8bj9n3mYqNmm+9OKYbk3qGPjQ1j8CT5y+s167alGEi8ig1R7CaxxOq102fCjm7UI3p2c
+        a/lkORvaBQ70nO6UFJfw9e+QAB2GfQaJy2UE+mPcd60nwlha9zQ/0GvCd8AQKrUJHt8Ri6
+        nTtAEzUzmWrUpr8Wj8oe8C/o7tBjY9pInKKojZ7SOlXdAXk78R/MAFCg7NOKtA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1597318063;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CFP3PIp6DHRFBywTyc+gcTV8pYXmkO76zYTsiYYkL4c=;
+        b=LMPp1nnVbZhJmAYKMEKqw0o7QlJ76MUvNnSP1wCSuK9ctQauO5EgUJA4T9hPoTcKQKE2H8
+        VPnhbjop4uMioaAA==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Christian Eggers <ceggers@arri.de>, linux-iio@vger.kernel.org,
+        tglx@linutronix.de
+Subject: Re: [PATCH 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in hard
+ interrupt context
+Message-ID: <20200813112741.grdytusuwrlskpwa@linutronix.de>
+References: <20200813075358.13310-1-lars@metafoo.de>
+ <20200813091107.kjelslak2jxkkc42@linutronix.de>
+ <930e6dc4-df6f-416b-0df3-dab7177af974@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <930e6dc4-df6f-416b-0df3-dab7177af974@metafoo.de>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 13, 2020 at 2:14 PM Crt Mori <cmo@melexis.com> wrote:
->
-> On Thu, 13 Aug 2020 at 13:03, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Thu, Aug 13, 2020 at 10:53 AM Crt Mori <cmo@melexis.com> wrote:
-> > >
-> > > Reduce number of lines and improve readability to convert polling while
-> > > loops to do-while. The iopoll.h interface was not used, because we
-> > > require more than 20ms timeout, because time for sensor to perform a
-> > > measurement is around 10ms and it needs to perform measurements for each
-> > > channel (which currently is 3).
-> >
-> > I don't see how it prevents using iopoll.h. It uses usleep_range()
-> > under the hood in the same way you did here, but open coded.
-> >
->
-> One loop is indeed 10ms and that is not the problem, the problem is
-> that timeout is at least 3 calls of this data ready (3 channels), so
-> that is at minimum 30ms of timeout, or it could even be 4 in worse
-> case scenario and that is outside of the range for usleep to measure.
-> So in case of the other loop, where we wait 200ms for channel refresh
-> it is also out of scope. Timeout should be in number of tries or in
-> msleep range if you ask me.
+On 2020-08-13 11:46:30 [+0200], Lars-Peter Clausen wrote:
+> 
+> It should not affect the IRQ handlers of individual drivers. The hrtimer
+> triggers acts like an IRQ chip and will call generic_handle_irq() to
+> multiplex the interrupt handling onto all consumers. As far as I understand
+> it there is a requirement that generic_handle_irq() is called in hard irq
+> context, even with PREEMT_RT=y.
 
-I still didn't buy it. You have in both cases usleep_range(). Why in
-your case it's okay and in regmap_read_poll_timeout() is not?
+That is correct.
 
-> > ...
-> >
-> > > -       while (tries-- > 0) {
-> > > +       do {
-> > >                 ret = regmap_read(data->regmap, MLX90632_REG_STATUS,
-> > >                                   &reg_status);
-> > >                 if (ret < 0)
-> > >                         return ret;
-> > > -               if (reg_status & MLX90632_STAT_DATA_RDY)
-> > > -                       break;
-> > >                 usleep_range(10000, 11000);
-> > > -       }
-> > > +       } while (!(reg_status & MLX90632_STAT_DATA_RDY) && tries--);
-> > >
-> > >         if (tries < 0) {
-> > >                 dev_err(&data->client->dev, "data not ready");
+> If you are running with forced IRQ threads the only thing that will then
+> happen in the actual hard IRQ context is the launching of the IRQ threads.
+> Th e IRQ handler of the device driver will run in a threaded IRQ.
 
--- 
-With Best Regards,
-Andy Shevchenko
+So if it is really just the wakeup of the IRQ-thread then it should be
+okay.
+One thing: iio_trigger_poll() may invoke iio_trigger_notify_done(). This
+would invoke trig->ops->try_reenable callback if available.
+I grepped and found
+- bma180_trig_try_reen() 
+  It appears to perform i2c_smbus_read_byte_data() and smbus sounds
+  sleeping. I don't know if it attempts to acquire any spinlock_t but it
+  will be wrong on RT.
+
+- bmc150_accel_trig_try_reen()
+  This one has mutex_lock() which is wrong even on !RT in this context
+  (unless the previous `if' saves us).
+
+- mxc4005_trigger_try_reen()
+  This one uses regmap_write(). regmap internally uses a lock and the
+  config does not disable / provide a lock. This means
+  regmap_lock_mutex() is used (or regmap_lock_spinlock() in case of
+  bus->fast_io but I doubt it with i2c).
+
+Am I looking somehow wrong at this or did just nobody try the
+combination of one of the three drivers here together with the hrtimer
+trigger?
+
+> > 
+> > Has this change (including the second patch in thread) been tested on RT
+> > in terms of locking and latency?
+> 
+> It has not been tested in terms of latency. But like I said if you are
+> running with forced IRQ threads the effect should be minimal.
+> 
+> Without this patch there is an correctness issue when PREEMT_RT=y since
+> generic_handle_irq() runs with interrupts on which breaks its internal
+> assumptions.
+
+I'm trying to understand the scope of the change. As I said above, if it
+is just wakeup of the thread, then it is fine. I have memory of people
+running iio drivers (or triggers) in hardirq-context for $reason and try
+avoid something like this.
+
+Sebastian

@@ -2,61 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A06245291
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Aug 2020 23:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D63852453B3
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 00:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729166AbgHOVxD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Aug 2020 17:53:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        id S1728557AbgHOWE0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Aug 2020 18:04:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729160AbgHOVwn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Aug 2020 17:52:43 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BECEEC0F26EF;
-        Sat, 15 Aug 2020 11:14:18 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id w17so9177833edt.8;
-        Sat, 15 Aug 2020 11:14:18 -0700 (PDT)
+        with ESMTP id S1728552AbgHOVvC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Aug 2020 17:51:02 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1C1C061388
+        for <linux-iio@vger.kernel.org>; Fri, 14 Aug 2020 17:33:36 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id x25so5347737pff.4
+        for <linux-iio@vger.kernel.org>; Fri, 14 Aug 2020 17:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
+        d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=uINicZ+DHLLF2gMCG0S676L3/FxAXJzjhmV0ZOtqSWw=;
-        b=Gdr6dMreL94m8umOuQw9Gnk6ALyI4bOz2J1jkX35OCYz3vZKzzenUPY7Ou4pt7B8ef
-         YJsst3uPEBlvpkwDPyewbZgJgOjgiNwSsczgytdaT+7aoMkT41HAqp+y/SVjxqTuRE0K
-         w2TcKieWe9IP4o56pK8MOrDoPjfJdTjQtaivDkmWUJGgNvm0ieiOkqHu6StyMDfph4qN
-         xpF8wCfpRrbEf5ADtrMk6uvpQsPpO2jlcaUdvc4fRSxf2A3KkfZICjMcQYaL5SYfqSsq
-         ZDtY2tMvamx8CHjoldemO2Qx+I3oPj8zYp0ulm/kGNiz+45hySJIQTTeji3rPUIAUdo/
-         r05A==
+        bh=k1jIv0RVsh8QFJKNNGoBmL/qTETkSqOi/OBQJ3ZeiJk=;
+        b=RR46SWN5SZ1DhXQHb5Pda5dg70Uzl3YutEI7aEX5/NJL/JMIZfQvgpP2waOM1/lnnG
+         vY7DEj4/D+x3IhYt9CvKCMILtiIHNZPJ9bQ5KEDhUg9s9CY8sdHZ5WSDfmOj/BIKLC3w
+         pOnDgyGVRazXNfW21IVa3vcspv3t3Pb3O5Pm4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=uINicZ+DHLLF2gMCG0S676L3/FxAXJzjhmV0ZOtqSWw=;
-        b=Az7zTCM8OdH5h+J79ksAyUfw1C6mQkKyx+SlJbKnbH0cgxNMEFZAB229dTOM+8f3t6
-         QbezhudbIY5J/JuOYSTf43wE/MCJmiwIQDxvOeuScxPwPav6wZsMeYvj3bWD/eYh9kSz
-         6Y9bIRKE3Zbh6PIhpe3o8efm54F1+uM3/EoEWnqym/drm6UMrgdMTMN6xH9g0sII9mQ/
-         uBg7ZcCFHLq7MIcnWQIOmqnByndo6ZFvgED1/u5E+cFuY47BxLBLTSNUjLrnNQx0NMvo
-         IOxOpp+C2fL/LTSXHUHzaZvrqEGrVspjZ/rgnBwfSaBK2fHkM+lingMn+Xo9V9nHPe45
-         NcqQ==
-X-Gm-Message-State: AOAM532JlT0yrTvbYizwv2m0u23R37susDScHf9MUuUtCdvgGDGUdpHa
-        3majkpuTt6soIOEzVKYUV4Q=
-X-Google-Smtp-Source: ABdhPJwUM4wX2FiiLD7s/Ocw/648bw8oWRk3tLISpQebRyQQAOcj3KJ3d7OnMxtmXJxUG4ZpOd+/8w==
-X-Received: by 2002:aa7:de13:: with SMTP id h19mr7587769edv.322.1597515257318;
-        Sat, 15 Aug 2020 11:14:17 -0700 (PDT)
-Received: from localhost.localdomain (p200300f1371a97000000000000000fcc.dip0.t-ipconnect.de. [2003:f1:371a:9700::fcc])
-        by smtp.googlemail.com with ESMTPSA id u13sm10353549eje.9.2020.08.15.11.14.16
+        bh=k1jIv0RVsh8QFJKNNGoBmL/qTETkSqOi/OBQJ3ZeiJk=;
+        b=CYW6fPuILGOmHpGIYN8BF9Hxev/+JbBoD8ihFTDDmvm7JZ4hJE2eBC1Jw3Oybbwlx6
+         Bpz6XWcaDs3YKTGaONGbmftVUDkPuhnjfEVawd5C88sqx4GSYwEkjJfVJSwq73Q/ouMf
+         R10yONoO2/hat3SprsM1h9zxg36F+4Vb+w1bjV+KJfz8zsI5P6N0H/M74FWtnFOAzFSL
+         gnWl3kVJmc9qIK723zE5KWW3qzVujIjBvFWM2MwgeQRLeJVsg2G7fBSSAxA/Eq1JrW2P
+         VRZXid0fYrEhLxVWtZahWQVR2yUK2RiEffNVHMMo7F0vDcz1Zd3URMxtm+eqxXg8mu4K
+         DqpA==
+X-Gm-Message-State: AOAM532G7n3oAORjaecARyoB4DvPRaU+GnLnYugE4GeRSN8RgsQKY4ou
+        RbJp81XPVhpRwmBHq2014mAeUYkM56HRAKgO
+X-Google-Smtp-Source: ABdhPJxYVoX0M363jvtDkKljhn5EqHyfltmzlMN+2VKtko6YkU3dQt+S7wmIjGM470458oJr8jBSRw==
+X-Received: by 2002:a62:6083:: with SMTP id u125mr3632348pfb.286.1597451615679;
+        Fri, 14 Aug 2020 17:33:35 -0700 (PDT)
+Received: from localhost.localdomain ([172.58.46.233])
+        by smtp.gmail.com with ESMTPSA id k12sm9224817pjp.38.2020.08.14.17.33.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2020 11:14:16 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org
-Cc:     knaack.h@gmx.de, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH for-5.9] iio: adc: meson-saradc: Use the parent device to look up the calib data
-Date:   Sat, 15 Aug 2020 20:13:55 +0200
-Message-Id: <20200815181355.407034-1-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.28.0
+        Fri, 14 Aug 2020 17:33:35 -0700 (PDT)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH] iio: health: max30102: update author's email
+Date:   Fri, 14 Aug 2020 06:49:41 -0700
+Message-Id: <20200814134941.10576-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -64,39 +59,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On the older-gen 32-bit SoCs the meson-saradc driver is used to read the
-SoC temperature. This requires reading calibration data from the eFuse.
+Update email to author's current employer
 
-Looking up the calibration data nvmem-cell requires the OF device_node
-pointer to be available in the struct device which is passed to
-devm_nvmem_cell_get(). This however got lost with commit 8cb631ccbb1952
-("iio: Remove superfluous of_node assignments") from indio_dev->dev. As
-devm_nvmem_cell_get() is called in the initialization phase the
-device_node is not yet available because the NVMEM cell is looked up
-before iio_device_register() is called (which would then set the
-device_node automatically).
-Use the parent device to look up the NVMEM cell instead to fix this
-issue.
-
-Fixes: 8cb631ccbb1952 ("iio: Remove superfluous of_node assignments")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 ---
- drivers/iio/adc/meson_saradc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/health/max30102.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index 93c2252c0b89..1a9189ba69ae 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -707,7 +707,7 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
- 	size_t read_len;
- 	int ret;
+diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
+index 9b47d9472a4f..bb504e993f19 100644
+--- a/drivers/iio/health/max30102.c
++++ b/drivers/iio/health/max30102.c
+@@ -2,7 +2,7 @@
+ /*
+  * max30102.c - Support for MAX30102 heart rate and pulse oximeter sensor
+  *
+- * Copyright (C) 2017 Matt Ranostay <matt@ranostay.consulting>
++ * Copyright (C) 2017 Matt Ranostay <matt.ranostay@konsulko.com>
+  *
+  * Support for MAX30105 optical particle sensor
+  * Copyright (C) 2017 Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+@@ -632,6 +632,6 @@ static struct i2c_driver max30102_driver = {
+ };
+ module_i2c_driver(max30102_driver);
  
--	temperature_calib = devm_nvmem_cell_get(&indio_dev->dev,
-+	temperature_calib = devm_nvmem_cell_get(indio_dev->dev.parent,
- 						"temperature_calib");
- 	if (IS_ERR(temperature_calib)) {
- 		ret = PTR_ERR(temperature_calib);
+-MODULE_AUTHOR("Matt Ranostay <matt@ranostay.consulting>");
++MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
+ MODULE_DESCRIPTION("MAX30102 heart rate/pulse oximeter and MAX30105 particle sensor driver");
+ MODULE_LICENSE("GPL");
 -- 
-2.28.0
+2.27.0
 

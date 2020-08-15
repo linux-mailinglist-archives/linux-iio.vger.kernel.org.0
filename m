@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2330E245335
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Aug 2020 23:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF2E24526F
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Aug 2020 23:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727790AbgHOVvn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Aug 2020 17:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S1728489AbgHOVvE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Aug 2020 17:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728694AbgHOVvg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Aug 2020 17:51:36 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D600FC0A3BE4;
-        Sat, 15 Aug 2020 09:33:32 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id s16so9283440qtn.7;
-        Sat, 15 Aug 2020 09:33:32 -0700 (PDT)
+        with ESMTP id S1728497AbgHOVuy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Aug 2020 17:50:54 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBCCC0F26D2;
+        Sat, 15 Aug 2020 10:24:04 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id d14so11255957qke.13;
+        Sat, 15 Aug 2020 10:24:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=UdXi5X9JdCDwyXidCVEz2m+8ZLjKmBUqZLTQciSb2xE=;
-        b=VeyC3/j14NqkY/CTqvegy+SlcVkPkObQSuCMJPNHGh6GOlJ9veJftRkGQKz6KX0dAg
-         8GCa9k16hpbcwcrA3S/Iu06iEPUkIza6fv4M4jYFDFr3wvRgAc+EfVs+QcsHLF2xIq0h
-         yvgdHUMc3dZod9aBh4QRs4uXGSAzRUvcOGhtx1xy8mmsQU6cjqKju41+vtxG1uMQYIlX
-         8r4BVaKyjzM9+gATHvwhVMrKqSXiJg5hybVAHxwOlDcMf2Q5Gh+qqKZGxD2N9HHl95eW
-         97HJDB8pUBwklrkKvtYRuPYz4uaU9LGil+TeuWihYkvuNVzjhbwV7wVuDBReEwoxdlNu
-         XNGg==
+        bh=HnO8ySn99wiYKJRBKH7R7CHnt3CnVqgZ16aaVTDsdIA=;
+        b=hBc8Pa8i6phyMNbFEwe0sfNgfeDIHRCp5rmIjFYiqXNa9wBqrjfeak4WYgrnUvuBch
+         N5h4olykSIfetVAon7mSgJQZYnLxRlnyGyDOwtxLWaTnNueQgSsj9c9NfgQftRz86UhD
+         l6suIlC3XuEtUnJhysXLbP4tn6bWSO60vts9Kg62LK6/tA9GACUBFGlcX8JdxW644vM/
+         qc1sJ3WHVdep7IFPNx1d8euT2h44O4Q+IYZIJ7Wgld/lHi85wSuZCTcA+XDwO4WWTQVs
+         wU8izH9xtZO0lQl8RcE7H1UW7dkHPY1nXIOF8oH31lWND5T8aodSrCW82lFQ/sGLTFf5
+         IcHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=UdXi5X9JdCDwyXidCVEz2m+8ZLjKmBUqZLTQciSb2xE=;
-        b=HeE1FV3OJNDDcTtE0sDKq9jItHkZ/+VFh+o2nTfsoL9KcaKIdMyHISTVP7BJ+/x4dF
-         bqoQTphNQ29J2d9H/Hxgk5hXv8mCLOLK07O6CkU4Il+8d9dcTdDSEaJySHgIVwDtncb5
-         XtfszE9Z0LrtegGbB14hkS87HQqZmtQhDoK/JOZ/YEzdnGgYoafjkyDuVcEnABt/P1MZ
-         P46tXHm01iINGXUty46xgKWGyNvW58jei8Y49bxCfg1tdep8etCRv/yz+4CQEyiRvra6
-         wo+JZHMlBAcLRT5Cv9367n0AapSjX906+NK3XFMwVLf0lSM9XFu7P517kx1jsLargVv0
-         EsiA==
-X-Gm-Message-State: AOAM530Yz7Nl9ecIplaHlPeDIlxxK7UpD+iCJo/bgcGGrwhVYsDS/i4Q
-        obPubR5gmjdx8+lIpWcrH0o=
-X-Google-Smtp-Source: ABdhPJyas3G6c7pqXG85ao3UCV84kja33y6oh2GPi3FAyAoVakAfHZOXxJf6Mg0auBHpyf4tO4inpg==
-X-Received: by 2002:aed:3728:: with SMTP id i37mr6901689qtb.347.1597509209094;
-        Sat, 15 Aug 2020 09:33:29 -0700 (PDT)
+        bh=HnO8ySn99wiYKJRBKH7R7CHnt3CnVqgZ16aaVTDsdIA=;
+        b=T7/ksaxMEScOchvVmCkS/nzlfT0q+kXQOINIreo464skbf2DDtP2bvGTPZuy4Lqp1K
+         cbCwzNUkFnEVmRpDBw7E/ldnGYn+rfKWc/FlbQNdK3/xf7ls5AiHZ14vDiICVQf14q9+
+         dErVwLjiq7bOLig6+VVtiFU35L+//Y7m5OQUTny7qEyy95dVLY32K4MgzwMVcC512gUN
+         RPxdeesHH+7fgBj2+eVGZJdDQYyPgyHrXvNXzlbrbWe9xp9gqaBgKw5m9ggotGijUlUG
+         Fb6NXlmmQw0YAtFnYGIPd8VhPOgWiEfZwKXvO2zvnKIIYj3KmsT9PXnDiAAFnJr18Chm
+         0GoQ==
+X-Gm-Message-State: AOAM532yD6Ewg54sfn5Tk4grtCdWo2O0+ny3OJRK4Xlb5Il5/3ucM8SO
+        0sj+E03BbPkyrdTPasv2jZY=
+X-Google-Smtp-Source: ABdhPJxLrKfqc2+Hxa1KySAQMZCRflp9mpZXqdRviGeYaFZnTwwALF9S79Q6jzehxEz0ugE5cIu6ug==
+X-Received: by 2002:a37:6703:: with SMTP id b3mr6562187qkc.111.1597512242816;
+        Sat, 15 Aug 2020 10:24:02 -0700 (PDT)
 Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id r18sm14063798qtc.90.2020.08.15.09.33.26
+        by smtp.gmail.com with ESMTPSA id h13sm13485387qtu.7.2020.08.15.10.24.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2020 09:33:28 -0700 (PDT)
-Date:   Sat, 15 Aug 2020 12:33:11 -0400
+        Sat, 15 Aug 2020 10:24:01 -0700 (PDT)
+Date:   Sat, 15 Aug 2020 13:23:59 -0400
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     David Lechner <david@lechnology.com>
 Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
@@ -56,169 +56,288 @@ Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
         patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        David.Laight@ACULAB.COM
-Subject: Re: [PATCH v4 1/5] counter: Internalize sysfs interface code
-Message-ID: <20200815163255.GA6974@shinobu>
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+Subject: Re: [PATCH v4 3/5] counter: Add character device interface
+Message-ID: <20200815172359.GB6974@shinobu>
 References: <cover.1595358237.git.vilhelm.gray@gmail.com>
- <e13d43849f68af8227c6aaa0ef672b459d47e9ab.1595358237.git.vilhelm.gray@gmail.com>
- <7209ac3d-d1ca-1b4c-b22c-8d98b13742e2@lechnology.com>
- <20200802210415.GA606173@shinobu>
- <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
- <20200809191500.GC6542@shinobu>
- <ca6337f5-b28b-a19e-735c-3cd124570c27@lechnology.com>
+ <08b3ac7349a59ba7fa5cd438bbe78360842ccd11.1595358237.git.vilhelm.gray@gmail.com>
+ <415ee9ad-255e-cee7-22a6-ffa977999691@lechnology.com>
+ <20200809145107.GA6542@shinobu>
+ <ddf07574-56f3-ad5f-b417-6ed9a3ba78cb@lechnology.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/NkBOFFp2J2Af1nK"
+        protocol="application/pgp-signature"; boundary="3siQDZowHQqNOShm"
 Content-Disposition: inline
-In-Reply-To: <ca6337f5-b28b-a19e-735c-3cd124570c27@lechnology.com>
+In-Reply-To: <ddf07574-56f3-ad5f-b417-6ed9a3ba78cb@lechnology.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---/NkBOFFp2J2Af1nK
+--3siQDZowHQqNOShm
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 10, 2020 at 05:48:07PM -0500, David Lechner wrote:
->=20
-> >>>>>    =20
-> >>>>>     CPMAC ETHERNET DRIVER
-> >>>>>     M:	Florian Fainelli <f.fainelli@gmail.com>
-> >>>>> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-qua=
-d-8.c
-> >>>>> index 78766b6ec271..0f20920073d6 100644
-> >>>>> --- a/drivers/counter/104-quad-8.c
-> >>>>> +++ b/drivers/counter/104-quad-8.c
-> >>>>> @@ -621,7 +621,7 @@ static const struct iio_chan_spec quad8_channel=
-s[] =3D {
-> >>>>>     };
-> >>>>>    =20
-> >>>>>     static int quad8_signal_read(struct counter_device *counter,
-> >>>>> -	struct counter_signal *signal, enum counter_signal_value *val)
-> >>>>> +			     struct counter_signal *signal, u8 *val)
-> >>>>
-> >>>> I'm not a fan of replacing enum types with u8 everywhere in this pat=
-ch.
-> >>>> But if we have to for technical reasons (e.g. causes compiler error =
-if
-> >>>> we don't) then it would be helpful to add comments giving the enum t=
-ype
-> >>>> everywhere like this instance where u8 is actually an enum value.
-> >>>>
-> >>>> If we use u32 as the generic type for enums instead of u8, I think t=
-he
-> >>>> compiler will happlily let us use enum type and u32 interchangeably =
-and
-> >>>> not complain.
-> >>>
-> >>> I switched to fixed-width types after the suggestion by David Laight:
-> >>> https://lkml.org/lkml/2020/5/3/159. I'll CC David Laight just in case=
- he
-> >>> wants to chime in again.
-> >>>
-> >>> Enum types would be nice for making the valid values explicit, but th=
-ere
-> >>> is one benefit I have appreciated from the move to fixed-width types:
-> >>> there has been a significant reduction of duplicate code; before, we =
-had
-> >>> a different read function for each different enum type, but now we us=
-e a
-> >>> single function to handle them all.
+On Mon, Aug 10, 2020 at 06:02:16PM -0500, David Lechner wrote:
+> On 8/9/20 9:51 AM, William Breathitt Gray wrote:
+> > On Tue, Jul 28, 2020 at 07:20:03PM -0500, David Lechner wrote:
+> >> On 7/21/20 2:35 PM, William Breathitt Gray wrote:
+> >>> This patch introduces a character device interface for the Counter
+> >>> subsystem. Device data is exposed through standard character device r=
+ead
+> >>> operations. Device data is gathered when a Counter event is pushed by
+> >>> the respective Counter device driver. Configuration is handled via io=
+ctl
+> >>> operations on the respective Counter character device node.
 > >>
-> >> Yes, what I was trying to explain is that by using u32 instead of u8, I
-> >> think we can actually do both.
+> >> This sounds similar to triggers and buffers in the iio subsystem. And
+> >> I can see how it might be useful in some cases. But I think it would n=
+ot
+> >> give the desired results when performance is important.
 > >>
-> >> The function pointers in struct counter_device *counter would use u32 =
-as a
-> >> generic enum value in the declaration, but then the actual implementat=
-ions
-> >> could still use the proper enum type.
+> >> Thinking through a few cases here...
+> >>
+> >> Suppose there was a new counter device that used the I2C bus. This wou=
+ld
+> >> either have to be periodically polled for events or it might have a
+> >> separate GPIO line to notify the MCU. In any case, with the proposed
+> >> implementation, there would be a separate I2C transaction for each data
+> >> point for that event. So none of the data for that event would actually
+> >> be from the same point in time. And with I2C, this time difference cou=
+ld
+> >> be significant.
+> >>
+> >> With the TI eQEP I have been working with, there are special latched
+> >> registers for some events. To make use of these with events, we would =
+have
+> >> add extensions for each one we want to use (and expose it in sysfs). B=
+ut
+> >> really, the fact that we are using a latched register should be an
+> >> implementation detail in the driver and not something userspace should=
+ have
+> >> to know about.
+> >>
+> >> So, I'm wondering if it would make sense to keep things simpler and ha=
+ve
+> >> events like the input subsystem where the event value is directly tied
+> >> to the event. It would probably be rare for an event to have more than
+> >> one or two values. And error events probably would not have a value at
+> >> all.
+> >>
+> >> For example, with the TI eQEP, there is a unit timer time out event.
+> >> This latches the position count, the timer count and the timer period.
+> >> To translate this to an event data structure, the latched time would
+> >> be the event timestamp and the position count would be the event value.
+> >> The timer period should already be known since we would have configured
+> >> the timer ourselves. There is also a count event that works similarly.
+> >> In this case, the latched time would be the event timestamp and the
+> >> latched timer period would be the event value. We would know the count
+> >> already since we get an event for each count (and a separate direction
+> >> change event if the direction changes).
 > >=20
-> > Oh, I see what you mean now. So for example:
+> > There are use-cases where it would be useful to have the extension reads
+> > occur as close to the event trigger as possible (e.g. multiple-axes
+> > positioning with boundary sensor flags) so I don't think this
+> > functionality should be completely abadoned, but I think your argument
+> > for standard event types makes sense.
 > >=20
-> >      int (*signal_read)(struct counter_device *counter,
-> >                         struct counter_signal *signal, u8 *val)
+> > We could treat those extensions reads as an optional feature that can be
+> > enabled and configured by ioctls. However, the use-case you are
+> > concerned with, we can redesign Counter events to return specific data
+> > based on the specific event type.
 > >=20
-> > This will become instead:
+> > For example, we could have a COUNTER_EVENT_INDEX which occurs when an
+> > Index signal edge is detected, and the return data is the Count value
+> > for that channel; we can also have a COUNTER_EVENT_TIMEOUT which occurs
+> > when a unit timer times out, and returns the data you mentioned you are
+> > interested in seeing.
 > >=20
-> >      int (*signal_read)(struct counter_device *counter,
-> >                         struct counter_signal *signal, u32 *val)
-> >=20
-> > Then in the driver callback implementation we use the enum type we need:
-> >=20
-> >      enum counter_signal_level signal_level =3D COUNTER_SIGNAL_HIGH;
-> >      ...
-> >      *val =3D signal_level;
-> >=20
-> > Is that what you have in mind?
-> >=20
->=20
-> Yes.
->=20
-> Additionally, if we have...
+> > These Counter event types would be standard, so user applications
+> > wouldn't need to know driver/device implementation details, but instead
+> > just follow the API to get the data they expect for that particular
+> > event type. Would this kind of design work for your needs?
 >=20
 >=20
->        int (*x_write)(struct counter_device *counter,
->                       ..., u32 val)
->  =20
-> We should be able to define the implementation as:
->=20
-> static int my_driver_x_write(struct counter_device *counter,
->                               ..., enum some_type val)
-> {
-> 	...
-> }
->=20
-> Not sure if it works if val is a pointer though. Little-
-> endian systems would probably be fine, but maybe not big-
-> endian combined with -fshort-enums compiler flag.
->=20
->=20
->        int (*x_read)(struct counter_device *counter,
->                      ..., u32 *val)
->  =20
->=20
-> static int my_driver_x_read(struct counter_device *counter,
->                              ..., enum some_type *val)
-> {
-> 	...
-> }
+> Yes. After trying (and failing) to implement my suggestions here, I
+> came to the conclusion that it was not sufficient to only have one
+> value per event. And it doesn't seem as obvious as I initially thought
+> which should be the "standard" value for an event in some cases.
 
-Regardless of endianness for pointers, will targets that have
--fshort-enums enabled by default present a problem here? I imagine that
-in these cases enum some_type will have a size of unsigned char because
-that is the first type that can represent all the values:
-https://gcc.gnu.org/onlinedocs/gcc/Structures-unions-enumerations-and-bit-f=
-ields-implementation.html
+I agree, after thinking this over a second I realized it's not as
+apparent as I had hoped to determine what value would be most useful in
+general. I think the uses of counter devices are too varied, so it's
+probably best to leave it to the user to choose what value they want to
+gather for the respective events.
 
-What I'm worried about is whether we can gurantee u32 val can be swapped
-out with enum some_type val -- or if this is not possible because some
-architectures will be built with -fshort-enums enabled?
+The good thing is that the interface is flexible enough for us to
+defined new COUNTER_COMPONENT_TYPE_XXX types to extend the kind of data
+that can be gathered on an event push. This provides us with a path we
+can go down to implement the kind of data read you need without the
+latency overhead of executing multiple Counter Extension read
+operations (allowing for a single I2C transaction instead for example).
+
+However, standard event types (e.g. COUNTER_EVENT_INDEX) are something I
+find prudent to define, lest each driver end up with their own differing
+definitions of what "Event 0" actually means.
+
+> >>>
+> >>> When `counter_push_event(counter, 1)` is called for example, it will =
+go
+> >>> down the list for Event 1 and execute the read callbacks for Signal 0,
+> >>> Signal 0 Extension 0, and Extension 4 -- the data returned for each is
+> >>> pushed to a kfifo as a `struct counter_event`, which userspace can
+> >>> retrieve via a standard read operation on the respective character
+> >>> device node.
+> >>>
+> >>> Userspace
+> >>> ---------
+> >>> Userspace applications can configure Counter events via ioctl operati=
+ons
+> >>> on the Counter character device node. There following ioctl codes are
+> >>> supported and provided by the `linux/counter.h` userspace header file:
+> >>>
+> >>> * COUNTER_CLEAR_WATCHES_IOCTL:
+> >>>     Clear all Counter watches from all events
+> >>>
+> >>> * COUNTER_SET_WATCH_IOCTL:
+> >>>     Set a Counter watch on the specified event
+> >>>
+> >>> To configure events to gather Counter data, users first populate a
+> >>> `struct counter_watch` with the relevant event id and the information
+> >>> for the desired Counter component from which to read, and then pass it
+> >>> via the `COUNTER_SET_WATCH_IOCTL` ioctl command.
+> >>>
+> >>> Userspace applications can then execute a `read` operation (optionally
+> >>> calling `poll` first) on the Counter character device node to retrieve
+> >>> `struct counter_event` elements with the desired data.
+> >>>
+> >>> For example, the following userspace code opens `/dev/counter0`,
+> >>> configures Event 0 to gather Count 0 and Count 1, and prints out the
+> >>> data as it becomes available on the character device node:
+> >>>
+> >>>       #include <fcntl.h>
+> >>>       #include <linux/counter.h>
+> >>>       #include <poll.h>
+> >>>       #include <stdio.h>
+> >>>       #include <sys/ioctl.h>
+> >>>       #include <unistd.h>
+> >>>
+> >>>       struct counter_watch watches[2] =3D {
+> >>>               {
+> >>>                       .event =3D 0,
+> >>>                       .component.owner_type =3D COUNTER_OWNER_TYPE_CO=
+UNT,
+> >>>                       .component.owner_id =3D 0,
+> >>>                       .component.type =3D COUNTER_COMPONENT_TYPE_COUN=
+T,
+> >>>               },
+> >>>               {
+> >>>                       .event =3D 0,
+> >>>                       .component.owner_type =3D COUNTER_OWNER_TYPE_CO=
+UNT,
+> >>>                       .component.owner_id =3D 1,
+> >>>                       .component.type =3D COUNTER_COMPONENT_TYPE_COUN=
+T,
+> >>>               },
+> >>>       };
+> >>>
+> >>>       int main(void)
+> >>>       {
+> >>>               struct pollfd pfd =3D { .events =3D POLLIN };
+> >>>               struct counter_event event_data[2];
+> >>>
+> >>>               pfd.fd =3D open("/dev/counter0", O_RDWR);
+> >>>
+> >>>               ioctl(pfd.fd, COUNTER_SET_WATCH_IOCTL, watches);
+> >>>               ioctl(pfd.fd, COUNTER_SET_WATCH_IOCTL, watches + 1);
+> >>
+> >> What enables events? If an event is enabled for each of these ioctls,
+> >> then we have a race condition where events events from the first watch
+> >> can start to be queued before the second watch is added. So we would
+> >> have to flush the chardev first before polling, otherwise the assumpti=
+on
+> >> that event_data[0] is owner_id=3D0 and event_data[1] is owner_id=3D1 is
+> >> not true.
+> >=20
+> > That's a good point, we could theoretically have a situation where an
+> > event is pushed before the configuration of watches is complete. I'm not
+> > sure if the solution is to implement an enable/disable ioctl to control
+> > when events are recorded, or a flush ioctl to remove the invalid events
+> > in the queue.
+> >=20
+> >> This is also racy if we want to clear watches and set up new watches
+> >> at runtime. There would be a period of time where there were no watches
+> >> and we could miss events.
+> >=20
+> > I'm not sure how typical this use-case is -- would an operator ever want
+> > to change watch configuration on-the-fly? I assumed watches configured
+> > once at the start of a production run, and then stay essentially static
+> > until the production stops.
+>=20
+> The use case I am thinking of is measuring motor speed in robotics. At
+> low speed, we need an event for each count increase. But at high speed,
+> this would be too many events and we instead need a periodic event based
+> on the timer timeout. A maneuver may require operating at both high and
+> low speeds without stopping and so we would want to be able to switch
+> back and forth without interruption.
+
+That's a fair use case, and I think have a well-defined swap mechanism
+in place is good regardless, so I'll go ahead implement this.
+
+> >=20
+> > Well regardless, if we want to support this kind of functionality we
+> > will need to implement a kind of atomic replacement for all watches with
+> > new ones. This shouldn't be too difficult to achieve: buffer the desired
+> > watches instead, and then activate them together atomically via a new
+> > ioctl command.
+> >=20
+> >> With my suggested changes of having fixed values per event and generic
+> >> events, we could just have a single ioctl to enable and disable events.
+> >> This would probably need to take an array of event descriptors as an
+> >> argument where event descriptors contain the component type/id and the
+> >> event to enable.
+> >=20
+> > I agree with having specified data for particular event types, but I
+> > think we should still be able to support general extension watches as an
+> > optional functionality. In fact, I don't think we'll need to implement
+> > enable/disable event ioctl commands.
+> >=20
+> > The current implementation only records events if the user is watching
+> > for them (i.e. a watch has been set); if no one is watching for these
+> > events, they are just silently dropped by the counter_event_push
+> > function. If we implement an ioctl to atomically set the watches, there
+> > is no need to explicitly enable/disable events: events will always
+> > report the specified data for those their respective type -- the watch
+> > data is extra optional data and will start flowing automatically when
+> > atomically activated.
+> >=20
+>=20
+> This sounds reasonable to me.
+
+Ack. :-)
 
 William Breathitt Gray
 
---/NkBOFFp2J2Af1nK
+--3siQDZowHQqNOShm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl84DkcACgkQhvpINdm7
-VJIMkxAAqCR+3cgDGKBMJ0a2SGKYclj8fhdGCxcN4vBaX7BTLdGt9uTejIBoMp4q
-1IUyEoXhgzQbwAU19ZXovtu0qVd6YZSYOIPfHcG63QgWClFbsrF1KQVcDryJkdlL
-mSap7y7MAP8XvawxmUUUQ5hYQYkgT41o1KilQYTcBe4uiyhICTA2ZIl07b1y2ZyC
-u/ZayKBLY37P2P2T07W6HU3mIIuPTiJEXFzHrrSCB6DnzhtDxzwqbaUAjM6gLpGg
-aRsUBKnbs7bxO4SiQVq1kFkm9TGRnqwXI0JZq8dZ7UdT49CqkocJKPWvBYsW2hGw
-Dx8nrlIdN6XOokcHlWhRKXg5SanuqCJqjuHvCM+/PfohLfteT6NOkDkGdUtrS5w5
-7KGn5BLGiC1trXIBsZtKThSJNniQC2GXDuTZrqHWgNW6Lb9dGQWAwaHtvv4ngd26
-n6f4kfmQGrTf/DQ8B34z3pYxVmPrSYVNYFYwRzGSkoeBc9HGIU+X68RrHnVzQY8N
-HWsluxVlBD2Zt8vK/+W2sG5gQXr1R2PFXPYsn/dm3zDYWlhqoOK1nGuJXbrwvI8f
-QBelsICf3bQcObF3kvOFV7QtWS0u36IjjsMunzUVsY6fCHomfsijIFcCmN8ui2mw
-HBZ7enuTvV7dX0u7yxvce7gRlTuGjEzRXik9kf6p+NsTKpwNgus=
-=ZYDv
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl84GiUACgkQhvpINdm7
+VJJhRQ/+O0RouM5Kkp49LY8+FqOa33Pm0SvXB1en9eITdVamkDfP4YgqChyvMRNY
+ML8EacNrxH/qL9HULkHVMtPPxOFrBaBQ1lL8Rl8mMJCiLETd7GmWsuv6tLCRGeXp
+GgHbOX+3MTnICeTxie+cXElJSgAe5sW7FXlXEhQ71m7PCtFKFAq/dCSwMiTMzqyI
+dPJg0+XyejKGNexLtlboKMGcX5v5s1O1CDW5uX9vrUrhZbsCsx4ELjgafUOMTXOM
+elklQOIj1M/8Ccxr6CRV6i0V+TeWvdOD1YAGOv+rb9yyMhWHIwBtCIg0ZAMTEYQ7
+I3qQ5hvfFpaMNYuSrThQorbgYn2Ap0lU7x7cH2J+lAeAqr5XoJjvbgvj5AOwI9ew
+TksvgUT1TdqPXOJNVwE9/B2XbylXIJdGYT15DvTerpZZv4Ycp+CLL5GNhlIovOFG
+i4Aiu3RxSqK0Nf8ENxApthEIndyuesZEjwPyHxxmBfMgUKSC4DgxBxIX4y9xaJEP
+wWRcf6tQ3Ty09VaWBmUHRAioozDgrRTtLdUDXJex285HrTYgxZLne7QYpXNpj1Ip
+0Cp8KvXWG0v37h+4Vio5MHw8wKZSKCMZn64msy4sQiF4ieOcps2Mw/KOw6PbgLy8
+rbBgCkiHPX7RaadTlezjtufL5ns+/QnzL6H595ITEXwrwIVdsT8=
+=os1s
 -----END PGP SIGNATURE-----
 
---/NkBOFFp2J2Af1nK--
+--3siQDZowHQqNOShm--

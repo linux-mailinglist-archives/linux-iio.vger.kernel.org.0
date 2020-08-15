@@ -2,154 +2,223 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D45244CAE
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Aug 2020 18:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2330E245335
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Aug 2020 23:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbgHNQa2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Aug 2020 12:30:28 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:58597 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728099AbgHNQa1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Aug 2020 12:30:27 -0400
-Received: from [37.160.38.175] (port=40734 helo=[192.168.42.162])
-        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1k6cay-0001mB-F9; Fri, 14 Aug 2020 18:30:20 +0200
-Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        Linux HWMON List <linux-hwmon@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux-ALSA <alsa-devel@alsa-project.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>
-References: <20200812203618.2656699-1-robh@kernel.org>
- <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
- <CAL_JsqKekx0VO4NROwLrgrU8+L584HaLHM9i3kCZvU+g5myeGw@mail.gmail.com>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <f1963eb9-283f-e903-2a3a-4f324d71d418@lucaceresoli.net>
-Date:   Fri, 14 Aug 2020 18:30:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727790AbgHOVvn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Aug 2020 17:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728694AbgHOVvg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Aug 2020 17:51:36 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D600FC0A3BE4;
+        Sat, 15 Aug 2020 09:33:32 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id s16so9283440qtn.7;
+        Sat, 15 Aug 2020 09:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=UdXi5X9JdCDwyXidCVEz2m+8ZLjKmBUqZLTQciSb2xE=;
+        b=VeyC3/j14NqkY/CTqvegy+SlcVkPkObQSuCMJPNHGh6GOlJ9veJftRkGQKz6KX0dAg
+         8GCa9k16hpbcwcrA3S/Iu06iEPUkIza6fv4M4jYFDFr3wvRgAc+EfVs+QcsHLF2xIq0h
+         yvgdHUMc3dZod9aBh4QRs4uXGSAzRUvcOGhtx1xy8mmsQU6cjqKju41+vtxG1uMQYIlX
+         8r4BVaKyjzM9+gATHvwhVMrKqSXiJg5hybVAHxwOlDcMf2Q5Gh+qqKZGxD2N9HHl95eW
+         97HJDB8pUBwklrkKvtYRuPYz4uaU9LGil+TeuWihYkvuNVzjhbwV7wVuDBReEwoxdlNu
+         XNGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=UdXi5X9JdCDwyXidCVEz2m+8ZLjKmBUqZLTQciSb2xE=;
+        b=HeE1FV3OJNDDcTtE0sDKq9jItHkZ/+VFh+o2nTfsoL9KcaKIdMyHISTVP7BJ+/x4dF
+         bqoQTphNQ29J2d9H/Hxgk5hXv8mCLOLK07O6CkU4Il+8d9dcTdDSEaJySHgIVwDtncb5
+         XtfszE9Z0LrtegGbB14hkS87HQqZmtQhDoK/JOZ/YEzdnGgYoafjkyDuVcEnABt/P1MZ
+         P46tXHm01iINGXUty46xgKWGyNvW58jei8Y49bxCfg1tdep8etCRv/yz+4CQEyiRvra6
+         wo+JZHMlBAcLRT5Cv9367n0AapSjX906+NK3XFMwVLf0lSM9XFu7P517kx1jsLargVv0
+         EsiA==
+X-Gm-Message-State: AOAM530Yz7Nl9ecIplaHlPeDIlxxK7UpD+iCJo/bgcGGrwhVYsDS/i4Q
+        obPubR5gmjdx8+lIpWcrH0o=
+X-Google-Smtp-Source: ABdhPJyas3G6c7pqXG85ao3UCV84kja33y6oh2GPi3FAyAoVakAfHZOXxJf6Mg0auBHpyf4tO4inpg==
+X-Received: by 2002:aed:3728:: with SMTP id i37mr6901689qtb.347.1597509209094;
+        Sat, 15 Aug 2020 09:33:29 -0700 (PDT)
+Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id r18sm14063798qtc.90.2020.08.15.09.33.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2020 09:33:28 -0700 (PDT)
+Date:   Sat, 15 Aug 2020 12:33:11 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        David.Laight@ACULAB.COM
+Subject: Re: [PATCH v4 1/5] counter: Internalize sysfs interface code
+Message-ID: <20200815163255.GA6974@shinobu>
+References: <cover.1595358237.git.vilhelm.gray@gmail.com>
+ <e13d43849f68af8227c6aaa0ef672b459d47e9ab.1595358237.git.vilhelm.gray@gmail.com>
+ <7209ac3d-d1ca-1b4c-b22c-8d98b13742e2@lechnology.com>
+ <20200802210415.GA606173@shinobu>
+ <4061c9e4-775e-b7a6-14fa-446de4fae537@lechnology.com>
+ <20200809191500.GC6542@shinobu>
+ <ca6337f5-b28b-a19e-735c-3cd124570c27@lechnology.com>
 MIME-Version: 1.0
-In-Reply-To: <CAL_JsqKekx0VO4NROwLrgrU8+L584HaLHM9i3kCZvU+g5myeGw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/NkBOFFp2J2Af1nK"
+Content-Disposition: inline
+In-Reply-To: <ca6337f5-b28b-a19e-735c-3cd124570c27@lechnology.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
 
-On 14/08/20 16:51, Rob Herring wrote:
-> On Thu, Aug 13, 2020 at 4:31 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
->>
->> Hi Rob,
->>
->> On 12/08/20 22:36, Rob Herring wrote:
->>> Clean-up incorrect indentation, extra spaces, long lines, and missing
->>> EOF newline in schema files. Most of the clean-ups are for list
->>> indentation which should always be 2 spaces more than the preceding
->>> keyword.
->>>
->>> Found with yamllint (which I plan to integrate into the checks).
->>
->> [...]
->>
->>> diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
->>> index 3d4e1685cc55..28c6461b9a9a 100644
->>> --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
->>> +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
->>> @@ -95,10 +95,10 @@ allOf:
->>>        # Devices without builtin crystal
->>>        properties:
->>>          clock-names:
->>> -            minItems: 1
->>> -            maxItems: 2
->>> -            items:
->>> -              enum: [ xin, clkin ]
->>> +          minItems: 1
->>> +          maxItems: 2
->>> +          items:
->>> +            enum: [ xin, clkin ]
->>>          clocks:
->>>            minItems: 1
->>>            maxItems: 2
->>
->> Thanks for noticing, LGTM.
->>
->> [...]
->>
->>> diff --git a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
->>> index d7dac16a3960..36dc7b56a453 100644
->>> --- a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
->>> +++ b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
->>> @@ -33,8 +33,8 @@ properties:
->>>      $ref: /schemas/types.yaml#/definitions/uint32
->>>
->>>    touchscreen-min-pressure:
->>> -    description: minimum pressure on the touchscreen to be achieved in order for the
->>> -                 touchscreen driver to report a touch event.
->>> +    description: minimum pressure on the touchscreen to be achieved in order
->>> +      for the touchscreen driver to report a touch event.
->>
->> Out of personal taste, I find the original layout more pleasant and
->> readable. This third option is also good, especially for long descriptions:
->>
->>   description:
->>     minimum pressure on the touchscreen to be achieved in order for the
->>     touchscreen driver to report a touch event.
->>
->> At first glance yamllint seems to support exactly these two by default:
->>
->>> With indentation: {spaces: 4, check-multi-line-strings: true}
-> 
-> Turning on check-multi-line-strings results in 10K+ warnings, so no.
-> 
-> The other issue is the style ruamel.yaml wants to write out is as the
-> patch does above. This matters when doing some scripted
-> transformations where we read in the files and write them back out. I
-> can somewhat work around that by first doing a pass with no changes
-> and then another pass with the actual changes, but that's completely
-> scriptable. Hopefully, ruamel learns to preserve the style better.
+--/NkBOFFp2J2Af1nK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Kind of sad, but I understand the reason as far as my understanding of
-the yaml world allows. Thanks for the explanation.
+On Mon, Aug 10, 2020 at 05:48:07PM -0500, David Lechner wrote:
+>=20
+> >>>>>    =20
+> >>>>>     CPMAC ETHERNET DRIVER
+> >>>>>     M:	Florian Fainelli <f.fainelli@gmail.com>
+> >>>>> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-qua=
+d-8.c
+> >>>>> index 78766b6ec271..0f20920073d6 100644
+> >>>>> --- a/drivers/counter/104-quad-8.c
+> >>>>> +++ b/drivers/counter/104-quad-8.c
+> >>>>> @@ -621,7 +621,7 @@ static const struct iio_chan_spec quad8_channel=
+s[] =3D {
+> >>>>>     };
+> >>>>>    =20
+> >>>>>     static int quad8_signal_read(struct counter_device *counter,
+> >>>>> -	struct counter_signal *signal, enum counter_signal_value *val)
+> >>>>> +			     struct counter_signal *signal, u8 *val)
+> >>>>
+> >>>> I'm not a fan of replacing enum types with u8 everywhere in this pat=
+ch.
+> >>>> But if we have to for technical reasons (e.g. causes compiler error =
+if
+> >>>> we don't) then it would be helpful to add comments giving the enum t=
+ype
+> >>>> everywhere like this instance where u8 is actually an enum value.
+> >>>>
+> >>>> If we use u32 as the generic type for enums instead of u8, I think t=
+he
+> >>>> compiler will happlily let us use enum type and u32 interchangeably =
+and
+> >>>> not complain.
+> >>>
+> >>> I switched to fixed-width types after the suggestion by David Laight:
+> >>> https://lkml.org/lkml/2020/5/3/159. I'll CC David Laight just in case=
+ he
+> >>> wants to chime in again.
+> >>>
+> >>> Enum types would be nice for making the valid values explicit, but th=
+ere
+> >>> is one benefit I have appreciated from the move to fixed-width types:
+> >>> there has been a significant reduction of duplicate code; before, we =
+had
+> >>> a different read function for each different enum type, but now we us=
+e a
+> >>> single function to handle them all.
+> >>
+> >> Yes, what I was trying to explain is that by using u32 instead of u8, I
+> >> think we can actually do both.
+> >>
+> >> The function pointers in struct counter_device *counter would use u32 =
+as a
+> >> generic enum value in the declaration, but then the actual implementat=
+ions
+> >> could still use the proper enum type.
+> >=20
+> > Oh, I see what you mean now. So for example:
+> >=20
+> >      int (*signal_read)(struct counter_device *counter,
+> >                         struct counter_signal *signal, u8 *val)
+> >=20
+> > This will become instead:
+> >=20
+> >      int (*signal_read)(struct counter_device *counter,
+> >                         struct counter_signal *signal, u32 *val)
+> >=20
+> > Then in the driver callback implementation we use the enum type we need:
+> >=20
+> >      enum counter_signal_level signal_level =3D COUNTER_SIGNAL_HIGH;
+> >      ...
+> >      *val =3D signal_level;
+> >=20
+> > Is that what you have in mind?
+> >=20
+>=20
+> Yes.
+>=20
+> Additionally, if we have...
+>=20
+>=20
+>        int (*x_write)(struct counter_device *counter,
+>                       ..., u32 val)
+>  =20
+> We should be able to define the implementation as:
+>=20
+> static int my_driver_x_write(struct counter_device *counter,
+>                               ..., enum some_type val)
+> {
+> 	...
+> }
+>=20
+> Not sure if it works if val is a pointer though. Little-
+> endian systems would probably be fine, but maybe not big-
+> endian combined with -fshort-enums compiler flag.
+>=20
+>=20
+>        int (*x_read)(struct counter_device *counter,
+>                      ..., u32 *val)
+>  =20
+>=20
+> static int my_driver_x_read(struct counter_device *counter,
+>                              ..., enum some_type *val)
+> {
+> 	...
+> }
 
-[For idt,versaclock5.yaml, plus an overview of whole patch]
-Reviewed-by: Luca Ceresoli <luca@lucaceresoli.net>
+Regardless of endianness for pointers, will targets that have
+-fshort-enums enabled by default present a problem here? I imagine that
+in these cases enum some_type will have a size of unsigned char because
+that is the first type that can represent all the values:
+https://gcc.gnu.org/onlinedocs/gcc/Structures-unions-enumerations-and-bit-f=
+ields-implementation.html
 
--- 
-Luca
+What I'm worried about is whether we can gurantee u32 val can be swapped
+out with enum some_type val -- or if this is not possible because some
+architectures will be built with -fshort-enums enabled?
+
+William Breathitt Gray
+
+--/NkBOFFp2J2Af1nK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl84DkcACgkQhvpINdm7
+VJIMkxAAqCR+3cgDGKBMJ0a2SGKYclj8fhdGCxcN4vBaX7BTLdGt9uTejIBoMp4q
+1IUyEoXhgzQbwAU19ZXovtu0qVd6YZSYOIPfHcG63QgWClFbsrF1KQVcDryJkdlL
+mSap7y7MAP8XvawxmUUUQ5hYQYkgT41o1KilQYTcBe4uiyhICTA2ZIl07b1y2ZyC
+u/ZayKBLY37P2P2T07W6HU3mIIuPTiJEXFzHrrSCB6DnzhtDxzwqbaUAjM6gLpGg
+aRsUBKnbs7bxO4SiQVq1kFkm9TGRnqwXI0JZq8dZ7UdT49CqkocJKPWvBYsW2hGw
+Dx8nrlIdN6XOokcHlWhRKXg5SanuqCJqjuHvCM+/PfohLfteT6NOkDkGdUtrS5w5
+7KGn5BLGiC1trXIBsZtKThSJNniQC2GXDuTZrqHWgNW6Lb9dGQWAwaHtvv4ngd26
+n6f4kfmQGrTf/DQ8B34z3pYxVmPrSYVNYFYwRzGSkoeBc9HGIU+X68RrHnVzQY8N
+HWsluxVlBD2Zt8vK/+W2sG5gQXr1R2PFXPYsn/dm3zDYWlhqoOK1nGuJXbrwvI8f
+QBelsICf3bQcObF3kvOFV7QtWS0u36IjjsMunzUVsY6fCHomfsijIFcCmN8ui2mw
+HBZ7enuTvV7dX0u7yxvce7gRlTuGjEzRXik9kf6p+NsTKpwNgus=
+=ZYDv
+-----END PGP SIGNATURE-----
+
+--/NkBOFFp2J2Af1nK--

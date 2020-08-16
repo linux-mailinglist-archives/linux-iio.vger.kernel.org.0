@@ -2,42 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED622245714
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8AB524571E
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728985AbgHPJ1m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 05:27:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44878 "EHLO mail.kernel.org"
+        id S1729123AbgHPJgp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 05:36:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725986AbgHPJ1i (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Aug 2020 05:27:38 -0400
+        id S1726278AbgHPJgo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Aug 2020 05:36:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9754B2067C;
-        Sun, 16 Aug 2020 09:27:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D2682065C;
+        Sun, 16 Aug 2020 09:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597570058;
-        bh=vyaYKZtn/gjNKMZCuB+6vm9tSNJKQL8DxOgcCxLRYoY=;
+        s=default; t=1597570603;
+        bh=juovi0J4Pza8QjxX62PquhxnT2vWe5L7cKG6gR8LUqY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GRq8hsCRXyHipm3CTTG25wEoq9JLSKszbcuJSJItwMRQ1B5ye2gQyBB0FJMyb8gIW
-         V+09GvAeN4JHvlQEo3oChVBT/fgLuOyvXP+qzPfE91Zs089A+OtaBdHMQGVw6eD6RN
-         xcg/PTGdOmVi6hz/76FFn9V2osCet0+Wl3aXFY6M=
-Date:   Sun, 16 Aug 2020 10:27:33 +0100
+        b=0WLEEcwMhr52vvlDJ3kLscapI/Q7bR7OlEp8i+jjcnAzZV0pSnzF7cWEANGf5t76I
+         1Bzx6KySkUZBwBKkwrxT0qm2Ts7vyMIpVzxENw2qOgatAe9jTARVnliO5v/u9ZI+Zy
+         yQz52jltvSFH5dDcIUFIleJ/jykll4+GBeZZSjwg=
+Date:   Sun, 16 Aug 2020 10:36:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+To:     Daniel Campello <campello@chromium.org>
+Cc:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio/dac: convert ltc2632.txt to lltc,ltc2632.yaml
-Message-ID: <20200816102733.7fa1d3ce@archlinux>
-In-Reply-To: <20200810033806.15503-1-chris.ruehl@gtsys.com.hk>
-References: <20200810033806.15503-1-chris.ruehl@gtsys.com.hk>
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 07/15] iio: sx9310: Use long instead of int for
+ channel bitmaps
+Message-ID: <20200816103638.4669f841@archlinux>
+In-Reply-To: <20200806193057.163e2363@archlinux>
+References: <20200803235815.778997-1-campello@chromium.org>
+        <20200803175559.v5.7.Iecaa50e469918a385b3e5dab375e442540ea2ad4@changeid>
+        <20200806193057.163e2363@archlinux>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,178 +51,153 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 Aug 2020 11:37:52 +0800
-Chris Ruehl <chris.ruehl@gtsys.com.hk> wrote:
+On Thu, 6 Aug 2020 19:30:57 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Hi Chris,
-
-This will need a dt-binding maintainer review, but in the meantime...
-
-Look at the title for dt-bindings patches and match that format.
-
-One question for Rob inline.   A quick grep suggests we are
-very inconsistent on whether we use the multiline block
-thing for description fields or not.
-
-Is it needed?
-
-> Conversion of the ltc2632 to yaml format and name the file to
-> 'lltc,ltc2632.yaml'.
+> On Mon,  3 Aug 2020 17:58:07 -0600
+> Daniel Campello <campello@chromium.org> wrote:
 > 
-> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-> ---
-> v6:
-> Remove tab and drop unused label
-> Related patches already in linux-next.
-> [PATCH v5 1/3] iio: documentation ltc2632_chip_info add num_channels
-> linux-next commit: 6f1c9e0da9aae51177457731357ae8a2c8af27cd
-> PATCH v5 2/3] iio: DAC extension for ltc2634-12/10/8
-> linux-next commit: aefa5bc87c808dd08db2fc79ebdbf19ed4af7be2
+> > Uses for_each_set_bit() macro to loop over channel bitmaps.
+> > 
+> > Signed-off-by: Daniel Campello <campello@chromium.org>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Reviewed-by: Stephen Boyd <swboyd@chromium.org>  
+> Applied,
 > 
->  .../bindings/iio/dac/lltc,ltc2632.yaml        | 77 +++++++++++++++++++
->  .../devicetree/bindings/iio/dac/ltc2632.txt   | 49 ------------
->  2 files changed, 77 insertions(+), 49 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
->  delete mode 100644 Documentation/devicetree/bindings/iio/dac/ltc2632.txt
+> Thanks,
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-> new file mode 100644
-> index 000000000000..edf804d0aca2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-> @@ -0,0 +1,77 @@
-> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
-> +
-> +maintainers:
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  Bindings for the Linear Technology LTC2632/2634/2636 DAC
-> +  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC263[246].pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - lltc,ltc2632-l12
-> +      - lltc,ltc2632-l10
-> +      - lltc,ltc2632-l8
-> +      - lltc,ltc2632-h12
-> +      - lltc,ltc2632-h10
-> +      - lltc,ltc2632-h8
-> +      - lltc,ltc2634-l12
-> +      - lltc,ltc2634-l10
-> +      - lltc,ltc2634-l8
-> +      - lltc,ltc2634-h12
-> +      - lltc,ltc2634-h10
-> +      - lltc,ltc2634-h8
-> +      - lltc,ltc2636-l12
-> +      - lltc,ltc2636-l10
-> +      - lltc,ltc2636-l8
-> +      - lltc,ltc2636-h12
-> +      - lltc,ltc2636-h10
-> +      - lltc,ltc2636-h8
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
-> +  vref-supply:
-> +    description:
-Does this need a | ?
+> Jonathan
 
-> +      Phandle to the external reference voltage supply. This should
-> +      only be set if there is an external reference voltage connected to the VREF
-> +      pin. If the property is not set the internal reference is used.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    vref: regulator-vref {
-> +        compatible = "regulator-fixed";
-> +        regulator-name = "vref-ltc2632";
-> +        regulator-min-microvolt = <1250000>;
-> +        regulator-max-microvolt = <1250000>;
-> +        regulator-always-on;
-> +    };
-> +
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      dac@0 {
-> +        compatible = "lltc,ltc2632";
-> +        reg = <0>;    /* CS0 */
-> +        spi-max-frequency = <1000000>;
-> +        vref-supply = <&vref>;
-> +      };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt b/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> deleted file mode 100644
-> index 1ab9570cf219..000000000000
-> --- a/Documentation/devicetree/bindings/iio/dac/ltc2632.txt
-> +++ /dev/null
-> @@ -1,49 +0,0 @@
-> -Linear Technology LTC2632/2634/2636 DAC
-> -
-> -Required properties:
-> - - compatible: Has to contain one of the following:
-> -	lltc,ltc2632-l12
-> -	lltc,ltc2632-l10
-> -	lltc,ltc2632-l8
-> -	lltc,ltc2632-h12
-> -	lltc,ltc2632-h10
-> -	lltc,ltc2632-h8
-> -	lltc,ltc2634-l12
-> -	lltc,ltc2634-l10
-> -	lltc,ltc2634-l8
-> -	lltc,ltc2634-h12
-> -	lltc,ltc2634-h10
-> -	lltc,ltc2634-h8
-> -	lltc,ltc2636-l12
-> -	lltc,ltc2636-l10
-> -	lltc,ltc2636-l8
-> -	lltc,ltc2636-h12
-> -	lltc,ltc2636-h10
-> -	lltc,ltc2636-h8
-> -
-> -Property rules described in Documentation/devicetree/bindings/spi/spi-bus.txt
-> -apply. In particular, "reg" and "spi-max-frequency" properties must be given.
-> -
-> -Optional properties:
-> -	- vref-supply: Phandle to the external reference voltage supply. This should
-> -	  only be set if there is an external reference voltage connected to the VREF
-> -	  pin. If the property is not set the internal reference is used.
-> -
-> -Example:
-> -
-> -	vref: regulator-vref {
-> -		compatible = "regulator-fixed";
-> -		regulator-name = "vref-ltc2632";
-> -		regulator-min-microvolt = <1250000>;
-> -		regulator-max-microvolt = <1250000>;
-> -		regulator-always-on;
-> -	};
-> -
-> -	spi_master {
-> -		dac: ltc2632@0 {
-> -			compatible = "lltc,ltc2632-l12";
-> -			reg = <0>; /* CS0 */
-> -			spi-max-frequency = <1000000>;
-> -			vref-supply = <&vref>; /* optional */
-> -		};
-> -	};
+0-day sent a rather silly warning on this, but in the interests of
+suppressing noisy warnings I've fixed it...
+
+> 
+> > ---
+> > 
+> > Changes in v5: None
+> > Changes in v4: None
+> > Changes in v3:
+> >  - Added static assert for number of channels.
+> > 
+> > Changes in v2:
+> >  - Changed prox_stat to chan_prox_stat bitmap.
+> > 
+> >  drivers/iio/proximity/sx9310.c | 39 ++++++++++++++++++----------------
+> >  1 file changed, 21 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> > index 127b1ba79e2dea..f78500b8a5841e 100644
+> > --- a/drivers/iio/proximity/sx9310.c
+> > +++ b/drivers/iio/proximity/sx9310.c
+> > @@ -119,6 +119,7 @@
+> >  
+> >  /* 4 hardware channels, as defined in STAT0: COMB, CS2, CS1 and CS0. */
+> >  #define SX9310_NUM_CHANNELS				4
+> > +static_assert(SX9310_NUM_CHANNELS < BITS_PER_LONG);
+> >  
+> >  struct sx9310_data {
+> >  	/* Serialize access to registers and channel configuration */
+> > @@ -130,7 +131,7 @@ struct sx9310_data {
+> >  	 * Last reading of the proximity status for each channel.
+> >  	 * We only send an event to user space when this changes.
+> >  	 */
+> > -	bool prox_stat[SX9310_NUM_CHANNELS];
+> > +	unsigned long chan_prox_stat;
+> >  	bool trigger_enabled;
+> >  	/* Ensure correct alignment of timestamp when present. */
+> >  	struct {
+> > @@ -140,7 +141,8 @@ struct sx9310_data {
+> >  	/* Remember enabled channels and sample rate during suspend. */
+> >  	unsigned int suspend_ctrl0;
+> >  	struct completion completion;
+> > -	unsigned int chan_read, chan_event;
+> > +	unsigned long chan_read;
+> > +	unsigned long chan_event;
+> >  	int channel_users[SX9310_NUM_CHANNELS];
+> >  	unsigned int whoami;
+> >  };
+> > @@ -283,15 +285,16 @@ static const struct regmap_config sx9310_regmap_config = {
+> >  };
+> >  
+> >  static int sx9310_update_chan_en(struct sx9310_data *data,
+> > -				 unsigned int chan_read,
+> > -				 unsigned int chan_event)
+> > +				 unsigned long chan_read,
+> > +				 unsigned long chan_event)
+> >  {
+> >  	int ret;
+> > +	unsigned long channels = chan_read | chan_event;
+> >  
+> > -	if ((data->chan_read | data->chan_event) != (chan_read | chan_event)) {
+> > +	if ((data->chan_read | data->chan_event) != channels) {
+> >  		ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
+> >  					 SX9310_REG_PROX_CTRL0_SENSOREN_MASK,
+> > -					 chan_read | chan_event);
+> > +					 channels);
+> >  		if (ret)
+> >  			return ret;
+> >  	}
+> > @@ -532,6 +535,7 @@ static void sx9310_push_events(struct iio_dev *indio_dev)
+> >  	unsigned int val, chan;
+> >  	struct sx9310_data *data = iio_priv(indio_dev);
+> >  	s64 timestamp = iio_get_time_ns(indio_dev);
+> > +	unsigned long prox_changed;
+> >  
+> >  	/* Read proximity state on all channels */
+> >  	ret = regmap_read(data->regmap, SX9310_REG_STAT0, &val);
+> > @@ -540,24 +544,23 @@ static void sx9310_push_events(struct iio_dev *indio_dev)
+> >  		return;
+> >  	}
+> >  
+> > -	for (chan = 0; chan < SX9310_NUM_CHANNELS; chan++) {
+> > +	/*
+> > +	 * Only iterate over channels with changes on proximity status that have
+> > +	 * events enabled.
+> > +	 */
+> > +	prox_changed = (data->chan_prox_stat ^ val) & data->chan_event;
+> > +
+> > +	for_each_set_bit(chan, &prox_changed, SX9310_NUM_CHANNELS) {
+> >  		int dir;
+> >  		u64 ev;
+> > -		bool new_prox = val & BIT(chan);
+> > -
+> > -		if (!(data->chan_event & BIT(chan)))
+> > -			continue;
+> > -		if (new_prox == data->prox_stat[chan])
+> > -			/* No change on this channel. */
+> > -			continue;
+> >  
+> > -		dir = new_prox ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
+> > +		dir = val & BIT(chan) ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
+
+cpp check is moaning about no brackets around
+val & BIT(CHAN) so I've added some.
+
+> >  		ev = IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan,
+> >  					  IIO_EV_TYPE_THRESH, dir);
+> >  
+> >  		iio_push_event(indio_dev, ev, timestamp);
+> > -		data->prox_stat[chan] = new_prox;
+> >  	}
+> > +	data->chan_prox_stat = val;
+> >  }
+> >  
+> >  static irqreturn_t sx9310_irq_thread_handler(int irq, void *private)
+> > @@ -714,13 +717,13 @@ static irqreturn_t sx9310_trigger_handler(int irq, void *private)
+> >  static int sx9310_buffer_preenable(struct iio_dev *indio_dev)
+> >  {
+> >  	struct sx9310_data *data = iio_priv(indio_dev);
+> > -	unsigned int channels = 0;
+> > +	unsigned long channels = 0;
+> >  	int bit, ret;
+> >  
+> >  	mutex_lock(&data->mutex);
+> >  	for_each_set_bit(bit, indio_dev->active_scan_mask,
+> >  			 indio_dev->masklength)
+> > -		channels |= BIT(indio_dev->channels[bit].channel);
+> > +		__set_bit(indio_dev->channels[bit].channel, &channels);
+> >  
+> >  	ret = sx9310_update_chan_en(data, channels, data->chan_event);
+> >  	mutex_unlock(&data->mutex);  
+> 
 

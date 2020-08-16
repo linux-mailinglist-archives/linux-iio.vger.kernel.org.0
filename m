@@ -2,122 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CCD245709
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D2E24570C
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726022AbgHPJSv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 05:18:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39948 "EHLO mail.kernel.org"
+        id S1728687AbgHPJUG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 05:20:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40582 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725943AbgHPJSt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Aug 2020 05:18:49 -0400
+        id S1728674AbgHPJUF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Aug 2020 05:20:05 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8444B2067C;
-        Sun, 16 Aug 2020 09:18:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3DA412067C;
+        Sun, 16 Aug 2020 09:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597569529;
-        bh=9a6w3KyO0awE4sodC5lUb5Pq0ywGpwzaZMqWwAtg0PA=;
+        s=default; t=1597569604;
+        bh=WBmP4wVBoF6Wgy+kmDHHQXrEUgXHLh6fbfHlsyLxDOw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J8mZ8zCx/oKLRz9or6KrIx/B6sE4g/z26lkb7+NRAR9Tig8NdjsQ/iJePiZA4xEu6
-         h7OwuZOC8L29o+776S/pCwlr/MlcUjbFZmp4tmOYZ0k/lhysVRuh4bu1yCwseg8CZJ
-         JE2PCGnMjzvuk/dq/ruUI9fneF0eOohE+JjlcTb0=
-Date:   Sun, 16 Aug 2020 10:18:44 +0100
+        b=T/ZkK4TmKtUCoLkw3WBQV1g60pg99MWU8AXPJPMpunvbGgZeEPp0TsOcnhmesqQMe
+         9DPMOvOdMN1dZtncURJCiQ0RRD6l62ir7dxNxO4S3UhQbU3K/8qvnE4Goh2yTqHy4n
+         g55lre7p23o3Hnyo1n5zJM9tOZ+kklLN0VpjU2k4=
+Date:   Sun, 16 Aug 2020 10:19:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Christian Eggers <ceggers@arri.de>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: documentation: light: Add as73211 sysfs
+Subject: Re: [PATCH v2] iio: documentation: light: Add as73211 sysfs
  documentation
-Message-ID: <20200816101844.79e1c5c5@archlinux>
-In-Reply-To: <2320252.sbR73lAtI7@n95hx1g2>
-References: <20200808171443.114c8e05@archlinux>
-        <4688751.agSyimv0uN@n95hx1g2>
-        <20200810123540.sdzbtpgwkyqjg6ag@duo.ucw.cz>
-        <2320252.sbR73lAtI7@n95hx1g2>
+Message-ID: <20200816101959.10154727@archlinux>
+In-Reply-To: <20200810052447.12381-1-ceggers@arri.de>
+References: <20200809123000.5131effd@archlinux>
+        <20200810052447.12381-1-ceggers@arri.de>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 Aug 2020 15:24:39 +0200
+On Mon, 10 Aug 2020 07:24:47 +0200
 Christian Eggers <ceggers@arri.de> wrote:
 
-> Hi Pavel,
->=20
-> On Monday, 10 August 2020, 14:35:40 CEST, Pavel Machek wrote:
-> > On Mon 2020-08-10 11:57:46, Christian Eggers wrote: =20
-> > > On Monday, 10 August 2020, 11:00:54 CEST, Pavel Machek wrote: =20
-> > > > Hi!
-> > > > =20
-> > > > > The driver for the as73211 light sensor provides the following no=
-t yet
-> > > > > documented sysfs entries:
-> > > > > - in_intensity_(x|y|z)_raw
-> > > > > - in_intensity_(x|y|z)_scale
-> > > > > - in_intensity_sampling_frequency(_available)
-> > > > > - in_intensity_hardwaregain(_available) =20
-> > > >
-> > > > Should that be hardware_gain ? =20
-> > >
-> > > drivers/iio/industrialio-core.c:
-> > > [IIO_CHAN_INFO_HARDWAREGAIN] =3D "hardwaregain", =20
-> >
-> > Yep. Fix that before people start to really use it. =20
-> it's too late! IIO_CHAN_INFO_HARDWAREGAIN was introduced back in 2012. My
-> patch only adds "hardwaregain" in a new context (of "intensity").
+> The driver for the as73211 light sensor provides the following not yet
+> documented sysfs entries:
+> - in_intensity_(x|y|z)_raw
+> - in_intensity_(x|y|z)_scale
+> - in_intensity_sampling_frequency(_available)
+> - in_intensity_hardwaregain(_available)
+> - in_intensity_integration_time
+> 
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+Applied.
 
-Why do you think that is broken?
-
-It was a deliberate decision to try and stop putting _'s into new
-elements because it was making userspace parsing harder.  hardwaregain
-is a single 'token' in that file name.
-
-We are stuck with some older forms that predate that decision
-and a few that are closely related to existing elements and hence
-had to maintain the 'spacing'.  Those have to be special cased
-in tokenizing code. We don't want to introduced any more though.
-
-One or two may have snuck through when we weren't awake of course.
+Thanks,
 
 Jonathan
 
->=20
-> > =20
->         Pavel
->=20
-> regards
-> Christian
->=20
->=20
->=20
->=20
-> ________________________________
->  [http://assets.arri.com/media/sign/2020-04-03-E-mail-signature-Stellar2_=
-V1.jpg] <https://microsites.arri.com/stellar/>
->=20
-> Get all the latest information from www.arri.com<https://www.arri.com/>, =
-Facebook<https://www.facebook.com/TeamARRI>, Twitter<https://twitter.com/AR=
-RIChannel>, Instagram<https://instagram.com/arri> and YouTube<https://www.y=
-outube.com/user/ARRIChannel>.
->=20
-> Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-> Sitz: M=C3=BCnchen - Registergericht: Amtsgericht M=C3=BCnchen - Handelsr=
-egisternummer: HRA 57918
-> Pers=C3=B6nlich haftender Gesellschafter: Arnold & Richter Cine Technik G=
-mbH
-> Sitz: M=C3=BCnchen - Registergericht: Amtsgericht M=C3=BCnchen - Handelsr=
-egisternummer: HRB 54477
-> Gesch=C3=A4ftsf=C3=BChrer: Dr. Michael Neuh=C3=A4user; Stephan Schenk; Wa=
-lter Trauninger; Markus Zeiler
+> ---
+> Jonathan Cameron:
+> > If it is shared across 'ALL' channels then it will be just integration_time
+> > If it is shared across all channels of a given type, it will be <type>_integration_time.  
+> changed.
+> 
+> Best regards
+> Christian Eggers
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio | 26 ++++++++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index d3e53a6d8331..388560149875 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -40,6 +40,7 @@ Description:
+>  		buffered samples and events for device X.
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/sampling_frequency
+>  What:		/sys/bus/iio/devices/triggerX/sampling_frequency
+>  KernelVersion:	2.6.35
+> @@ -55,6 +56,7 @@ Description:
+>  		then it is to be found in the base device directory.
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
+>  What:		/sys/.../iio:deviceX/buffer/sampling_frequency_available
+>  What:		/sys/bus/iio/devices/triggerX/sampling_frequency_available
+> @@ -374,6 +376,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_scale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_scale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_countY_scale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_angl_scale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_scale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_scale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_scale
+>  KernelVersion:	2.6.35
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> @@ -484,6 +489,7 @@ Description:
+>  		are listed in this attribute.
+>  
+>  What		/sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_red_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_green_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_blue_hardwaregain
+> @@ -494,6 +500,13 @@ Description:
+>  		Hardware applied gain factor. If shared across all channels,
+>  		<type>_hardwaregain is used.
+>  
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_hardwaregain_available
+> +KernelVersion:	5.10
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Lists all available hardware applied gain factors. Shared across all
+> +		channels.
+> +
+>  What:		/sys/.../in_accel_filter_low_pass_3db_frequency
+>  What:		/sys/.../in_magn_filter_low_pass_3db_frequency
+>  What:		/sys/.../in_anglvel_filter_low_pass_3db_frequency
+> @@ -1333,6 +1346,7 @@ Description:
+>  		standardised CIE Erythemal Action Spectrum. UV index values range
+>  		from 0 (low) to >=11 (extreme).
+>  
+> +What:		/sys/.../iio:deviceX/in_intensity_integration_time
+>  What:		/sys/.../iio:deviceX/in_intensity_red_integration_time
+>  What:		/sys/.../iio:deviceX/in_intensity_green_integration_time
+>  What:		/sys/.../iio:deviceX/in_intensity_blue_integration_time
+> @@ -1342,7 +1356,8 @@ KernelVersion:	3.12
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		This attribute is used to get/set the integration time in
+> -		seconds.
+> +		seconds. If shared across all channels of a given type,
+> +		<type>_integration_time is used.
+>  
+>  What:		/sys/.../iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_integration_time
+>  KernelVersion:	4.0
+> @@ -1739,3 +1754,12 @@ KernelVersion:	5.5
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		One of the following thermocouple types: B, E, J, K, N, R, S, T.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_x_raw
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_y_raw
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_z_raw
+> +KernelVersion:	5.10
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Unscaled light intensity according to CIE 1931/DIN 5033 color space.
+> +		Units after application of scale are nano nanowatts per square meter.
 

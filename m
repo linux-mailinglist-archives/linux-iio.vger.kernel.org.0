@@ -2,79 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 409BE245723
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 808C2245728
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 11:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729164AbgHPJkN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 05:40:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50752 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729162AbgHPJkM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Aug 2020 05:40:12 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E4A91206C0;
-        Sun, 16 Aug 2020 09:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597570812;
-        bh=vPpeiVud4FvYKTclYglm+JI/kvxIy5SLU23p5fkd89U=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D49AnQq9rAXvMmcrYWPpYlAoRpW2BHstVnak7OedIoBaveTdCidXWLpBN8ow6X3K6
-         dK6JkxgvPF0F2bf2C6kYqpM82mmbXPyd+H7bSXrlQRt7adstOlgMRf0h8jxpXDWN+m
-         Gow+ldEc3HvHT1w5OZtZdFE6lNqoyj5JGzpbI+d4=
-Date:   Sun, 16 Aug 2020 10:40:09 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Daniel Palmer <daniel@0x0f.com>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] iio: st-accel: Add support for Silan SC7A20 and
- SC7A30E
-Message-ID: <20200816104009.76cb3870@archlinux>
-In-Reply-To: <CAFr9PXkPXOef1rSKbHSEFdSJiogwQN2hdM+fdEpkcfTa93igvg@mail.gmail.com>
-References: <20200811134846.3981475-1-daniel@0x0f.com>
-        <20200811134846.3981475-3-daniel@0x0f.com>
-        <20200816095215.6f3513d2@archlinux>
-        <CAFr9PXkPXOef1rSKbHSEFdSJiogwQN2hdM+fdEpkcfTa93igvg@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726706AbgHPJwL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 05:52:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726184AbgHPJwK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 05:52:10 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFCC5C061786
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 02:52:09 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id g7so4925195plq.1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 02:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VL6nq0qaTJ+GRJy40TipwrD+abMEw0hOcrvmfHdWqvI=;
+        b=A8Te0aqwzwPCgWYaax2mMUropOCdy/MTbMBs97NSF3yJIcusfszw3FlgnoELgdGclS
+         dkpLVaGzF6bUfUUycT8aDmDg+61H+hhfk/jBVXQm64W1ITW9wLhPTnAcJOxgkw6bw5Tx
+         dowzKamfxQPCdPWDcgYl24EvDYSxC5qRzdhAMoWw4gZoP9GxExCwai/J8apPrllWcv8x
+         6+0KbeE3yKGrxrDh9MK2jItUgK+w1T6sBRobppdt36lRImYxeKL8WS8m+XtuBaNYSUSy
+         6k44LFQvaTlvE79kRhXTHRLPPB+wOtsu5aGcoIrniEk9xmo0c9+UIJZRQmK/RKKlrvpv
+         m0zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VL6nq0qaTJ+GRJy40TipwrD+abMEw0hOcrvmfHdWqvI=;
+        b=GLlg9HxCz4VTZD4QPUZRrZT31m30wE+9Fr7LbcJYXhhGiG6xUgp6XN/gKduOh1MYkr
+         vs7XNiUzpQrhn4Xsx4ajwFPCWMy9aekL0A+lGbQRrjYzQBFXPeJuLkroEBzMnFotCDVD
+         ZVah+RMcozc8VwjP/Tvx8z30rbGe7Pq+PBPetEpXEM2B5dcyWoBDeR7gsK9LkRlFyjhh
+         XRgxbXj6ZqNpLHtGxKTuzYGAnBrdlOiJbtaqoe0xxOrYYN/9/u9MRVg9wGegBBXYqper
+         9PX2AVLQ3W7zb4cLDmTlARKKufuz1YYCRs7klkVckNTwZaGKnhXhgJWazAdITYCqZN4s
+         TGPg==
+X-Gm-Message-State: AOAM5337I6cpY+ITNpdIYH2OVO3PLbd5Uz5i6o7GvezOJPGol2VRCS3a
+        n/0NwyxXzRDHDQyWrgKseS88r75nJ5aXKQQKMM4=
+X-Google-Smtp-Source: ABdhPJz6Og47SJhJZ9IgxtouRJ//rzbqQyJD0Qf1voX09ih2pgbL6F6W3s6MYrwyK/bAECUT1MdvNW80bHxxUN3deA4=
+X-Received: by 2002:a17:90a:bc41:: with SMTP id t1mr8181615pjv.181.1597571529328;
+ Sun, 16 Aug 2020 02:52:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200814134941.10576-1-matt.ranostay@konsulko.com>
+In-Reply-To: <20200814134941.10576-1-matt.ranostay@konsulko.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 16 Aug 2020 12:51:53 +0300
+Message-ID: <CAHp75VeP24wrWk49Gic-fR72kU+1sBQD-OCW88ji1ZYShSsNXQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: health: max30102: update author's email
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 16 Aug 2020 18:27:03 +0900
-Daniel Palmer <daniel@0x0f.com> wrote:
+On Sun, Aug 16, 2020 at 1:06 AM Matt Ranostay
+<matt.ranostay@konsulko.com> wrote:
+>
+> Update email to author's current employer
 
-> Hi Jonathan,
-> 
-> On Sun, 16 Aug 2020 at 17:52, Jonathan Cameron <jic23@kernel.org> wrote:
-> > Same issue with sign off.  
-> 
-> I didn't think that was needed for an RFC. I'll add the sign off to the v1.
+> - * Copyright (C) 2017 Matt Ranostay <matt@ranostay.consulting>
+> + * Copyright (C) 2017 Matt Ranostay <matt.ranostay@konsulko.com>
 
-I'd always put them in anyway as RFCs sometimes get picked up if the
-comments are all positive!
+> -MODULE_AUTHOR("Matt Ranostay <matt@ranostay.consulting>");
+> +MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
 
-> 
-> > + Needs to be added to the device tree documentation in
-> > Documentation/devicetree/bindings/iio/st-sensors.txt  
-> 
-> I'll add that in. Other than that was the change OK? I wasn't sure a
-> massive copy/paste
-> would be acceptable.
+This is actually an interesting question, had you been working already
+for your current employer?
+If no, I don't think this is a proper change in the code (of course it
+might require your new contract, then it's probably fine, I dunno). It
+would be a good change for MAINTAINERS, though.
+If yes, the commit message doesn't clarify this.
 
-It's always a trade off with cases like this on whether we want to
-add complexity to the code to handle different WAI values, or just
-have a bit more constant data and replicate stuff.
+In any case, just my 2 cents for the future changes like this, since
+the patch already applied.
 
-I'm fine with the replicating options, but of course others may not be.
-
-Jonathan
-
-> 
-> Thanks,
-> 
-> Daniel
-
+-- 
+With Best Regards,
+Andy Shevchenko

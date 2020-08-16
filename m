@@ -2,78 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07BBF24577D
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 14:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 836A12457F6
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 16:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgHPMAV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 08:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34362 "EHLO
+        id S1729548AbgHPOaC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 10:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726259AbgHPL74 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 07:59:56 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D09EC061786
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 04:59:55 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id t14so11664718wmi.3
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 04:59:54 -0700 (PDT)
+        with ESMTP id S1729437AbgHPO3E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 10:29:04 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A53C061359
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 07:28:36 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 9so11259049wmj.5
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 07:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0x0f.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Jgq0Z6pXlni31D4ItEMINr7qL6V0bVNcfG6H+Jh9kBo=;
-        b=fNbnChqgev9RLJAdISUKWLt/xqBHKZ5rGjA4vDvUM+sL00Kr8xyKPwpj6K8wvkNrVj
-         eKdFV/I4tAGApmnMBuc88sNUSlt15q82/Cy+DXguQM1Y2whPMfIq673DFY9ECb+e0Jvz
-         tME7oDr45qm21gJS6VMVQLTRkZLkEQbtcXwvk=
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
+         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
+         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
+         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
+         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
+         yMKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Jgq0Z6pXlni31D4ItEMINr7qL6V0bVNcfG6H+Jh9kBo=;
-        b=KJgN5hmReEQVvoLoOwuzsVOmMUABuTbiDmwIsUj1OOrP61avCqRR04kv9M7ma5ea9P
-         9iVq14IV499aWNgko3g+V8Pi1102NkBfDdNrtBZ99+h3Fd9m56x6TG/wNE4BEgWVoe02
-         uxdqWY9gcBWYANafjL3smjCFPLwWcnLYuSzcSa8flThGBJah5mHlDU67PafMzUUmLWNF
-         mx1OwbX0pqd+VnthQ4qUmSqCGpxg2ETtAJgXGAHAYXnb+ISmrNaE+5d9+1zcsMOlVFhN
-         2n7M3IPOeE6xPBbCgCyFHyru7kbuMwZ2yLJVky/gPqjs/M7ziYkJ7AXPa5CofJeoF3hc
-         xR0w==
-X-Gm-Message-State: AOAM533qboWmFXmKq4uZ1SYYbnyWnulQYpSwRk3Ifucv8gYy/OyhLbgg
-        mVofuJnsp879MX1sJllhhWrO327EYY6nerqRCSlvFQ==
-X-Google-Smtp-Source: ABdhPJxqA03wzmb66p7Q48xNLzQOVhftQxNRBj0TSrjWM2XAXVUigh/RZJKfUpkEpySJysOMJ5OergccG3d0wK350X0=
-X-Received: by 2002:a1c:5f54:: with SMTP id t81mr10249596wmb.2.1597579193031;
- Sun, 16 Aug 2020 04:59:53 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=PCiC77dDsLUzrMqZvBjfC4Uf8mzvS1AAhnZorbHXqVadW1eQhjDwm9ENNprjlCTHwu
+         jLJ+bwBZQRzeyOLQiPk5tiERXcr8F9YiaLSKDMGwxvkaI8ClgBJj8WnKqybSkq3vBbgi
+         VWPeacLjoWI3s3AvgtFXWlgY5nfAVg5WffMzx7CepjnYSoJ0DIXF+VfLioYD7T7U0tqU
+         ugEbZ3n2VlOLmKsR6A5BtL6A0+T+xrW2Ic8i3htLLaoSJJki6+i8jPjhsz0+zO2IOPtQ
+         olt8dSon0D2v1pGhdxvLOfoax2LMSlQQaDo5ZKFNsYDaq2D26BtTadkx+ZT0tekrSSN+
+         cwkA==
+X-Gm-Message-State: AOAM5308ERQCsuH5ChNYRPQ4PxCbuH8EkUkTXCidmGMU6YA3iTeXnXT4
+        ijshNltK+6HpNDdBqNT5+ytqNP2K1U9zzbsR59VCoIaxPJI=
+X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
+X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
+ Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200811134846.3981475-1-daniel@0x0f.com> <20200811134846.3981475-3-daniel@0x0f.com>
- <CAHp75VcreDeik-pCQPXV2RQVAEPFNRjGS8Mutvxwog1khVka4g@mail.gmail.com>
-In-Reply-To: <CAHp75VcreDeik-pCQPXV2RQVAEPFNRjGS8Mutvxwog1khVka4g@mail.gmail.com>
-From:   Daniel Palmer <daniel@0x0f.com>
-Date:   Sun, 16 Aug 2020 20:59:57 +0900
-Message-ID: <CAFr9PXma7_FUVZbGk7kzfc1xgYH8WdMWj6FZuO4wO=kNp=iR-w@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] iio: st-accel: Add support for Silan SC7A20 and SC7A30E
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
+Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
+Date:   Sun, 16 Aug 2020 07:28:30 -0700
+Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+--=20
+Dear Friend,
 
-On Sun, 16 Aug 2020 at 18:55, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> No SoB tag?! Hint: `git commit -a -s --amend` would fix this if you
-> have properly configured Git.
->
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
-Sorry I wasn't aware it was needed for an RFC.
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
 
-> On top of that, can you add Datasheet: tag with links to the actual
-> component datasheets?
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
 
-I will do that for the v1 of the patch series. All of the datasheets
-I've found so far are mostly Chinese
-but the register tables are in English. I've collected them together
-here: http://linux-chenxing.org/silan/index.html
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
 
-Cheers,
+My Regards.
 
-Daniel
+Mr. Scott Donald
+CEO

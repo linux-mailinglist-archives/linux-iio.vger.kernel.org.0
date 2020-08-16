@@ -2,38 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3A72456CE
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 10:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D2C2456D3
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 10:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726403AbgHPIpk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 04:45:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56280 "EHLO mail.kernel.org"
+        id S1726320AbgHPIui (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 04:50:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58906 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725966AbgHPIpi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Aug 2020 04:45:38 -0400
+        id S1726054AbgHPIuh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Aug 2020 04:50:37 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C1C622065C;
-        Sun, 16 Aug 2020 08:45:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D54A2065C;
+        Sun, 16 Aug 2020 08:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597567537;
-        bh=yhubSh2OGXhJ/RdPAv90EkLHgNzIDGfA5xtx5P1Bbg8=;
+        s=default; t=1597567837;
+        bh=ABDwvuz2XUNkyftQULHLpjYNTrJrDYwZhm4hjZeHHxc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IaE126ZERG2hrah5BQLizKVpedwVDN3qp9pA8FS69v+wW0S70hxu0Hc95/MruQwuP
-         scUViHimuCBgKGtMdsZj6T/f1wD8OEpccBcx6rmskC59/KAa2lm4q83yZXQeyxSMoX
-         k77UkIL5rYz7w6e4EsUaamJpibcEoMOKjOAVvi1E=
-Date:   Sun, 16 Aug 2020 09:45:31 +0100
+        b=xz+LH3WWtpDO9u6gtneOQQo0nBz0Y8wRQff5pvhwK2Wn9aXv4DNn5L28P8DS7HQ1A
+         dsyLqLUiPIA0NJ+swxnz9z9gye+LY2UDCSC7dya6+YVyQzB84H5sPbgFtiI/8Ni21n
+         7x66ZWT5qMCP7DmXeJd63Qf2vYsNu6Br1KhzYSmI=
+Date:   Sun, 16 Aug 2020 09:50:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>, trivial@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: ABI: iio: fix some spelling mistakes
-Message-ID: <20200816094531.004adc9c@archlinux>
-In-Reply-To: <20200813065220.23256-1-a.fatoum@pengutronix.de>
-References: <20200813065220.23256-1-a.fatoum@pengutronix.de>
+To:     Daniel Palmer <daniel@0x0f.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] dt-bindings: vendor-prefixes: Add vendor prefix
+ for Silan
+Message-ID: <20200816095033.196461e7@archlinux>
+In-Reply-To: <20200811134846.3981475-2-daniel@0x0f.com>
+References: <20200811134846.3981475-1-daniel@0x0f.com>
+        <20200811134846.3981475-2-daniel@0x0f.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,46 +42,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 13 Aug 2020 08:52:20 +0200
-Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On Tue, 11 Aug 2020 22:48:45 +0900
+Daniel Palmer <daniel@0x0f.com> wrote:
 
-> This fixes some typos found while browsing the documentation.
+> Add a prefix for Hangzhou Silan Microelectronics Co., Ltd.
 > 
-> Cc: trivial@kernel.org
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Applied to the togreg branch of iio.git.
+> Website: http://www.silan.com.cn/
+
+No sign off so I can't take this.  See the bit about Developer's Certificate of
+Origin in Documentation/process/SubmittingPatches.rst
+
+ + needs to be cc'd to the devicetree list and maintainers.
 
 Thanks,
 
 Jonathan
 
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index d3e53a6d8331..ef86702678c7 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -49,9 +49,9 @@ Description:
->  		resulting sampling frequency.  In many devices this
->  		parameter has an effect on input filters etc. rather than
->  		simply controlling when the input is sampled.  As this
-> -		effects data ready triggers, hardware buffers and the sysfs
-> +		affects data ready triggers, hardware buffers and the sysfs
->  		direct access interfaces, it may be found in any of the
-> -		relevant directories.  If it effects all of the above
-> +		relevant directories.  If it affects all of the above
->  		then it is to be found in the base device directory.
->  
->  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
-> @@ -1013,7 +1013,7 @@ What:		/sys/.../events/in_activity_running_thresh_falling_en
->  KernelVersion:	3.19
->  Contact:	linux-iio@vger.kernel.org
->  Description:
-> -		Enables or disables activitity events. Depending on direction
-> +		Enables or disables activity events. Depending on direction
->  		an event is generated when sensor ENTERS or LEAVES a given state.
->  
->  What:		/sys/.../events/in_activity_still_thresh_rising_value
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> index f3d847832fdc..5d18c0607b05 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -934,6 +934,8 @@ patternProperties:
+>      description: Shiratech Solutions
+>    "^si-en,.*":
+>      description: Si-En Technology Ltd.
+> +  "^silan,.*":
+> +    description: Hangzhou Silan Microelectronics Co., Ltd.
+>    "^si-linux,.*":
+>      description: Silicon Linux Corporation
+>    "^sifive,.*":
 

@@ -2,96 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 836A12457F6
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Aug 2020 16:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A2A12459D7
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Aug 2020 00:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729548AbgHPOaC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 10:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
+        id S1728057AbgHPWTj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 18:19:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729437AbgHPO3E (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 10:29:04 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A53C061359
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 07:28:36 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 9so11259049wmj.5
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 07:28:35 -0700 (PDT)
+        with ESMTP id S1726089AbgHPWTh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 18:19:37 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E2FCC061786
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 15:19:37 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id p18so9101015ilm.7
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 15:19:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
-         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
-         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
-         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
-         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
-         yMKA==
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AkcZzuMa0KWX54HQ/i8rwQk69v0uhXTqDlHr6CvRGf0=;
+        b=oLoM24c9W9QDfQEka2Py1zyaf4vtAeCE3QWy7IyEXp3VfZte+2RzrAIcXnc/Nft6gO
+         s96HwoD3W5h64atKhTUzx7hpVlDArLHuiI4svL79mBWpM+3b5Gue/1x4hmhvMu/2a7Hg
+         y3FqV2Hu3t1YQmdQRlpHIXiVWPBK8prlJ4XYs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=PCiC77dDsLUzrMqZvBjfC4Uf8mzvS1AAhnZorbHXqVadW1eQhjDwm9ENNprjlCTHwu
-         jLJ+bwBZQRzeyOLQiPk5tiERXcr8F9YiaLSKDMGwxvkaI8ClgBJj8WnKqybSkq3vBbgi
-         VWPeacLjoWI3s3AvgtFXWlgY5nfAVg5WffMzx7CepjnYSoJ0DIXF+VfLioYD7T7U0tqU
-         ugEbZ3n2VlOLmKsR6A5BtL6A0+T+xrW2Ic8i3htLLaoSJJki6+i8jPjhsz0+zO2IOPtQ
-         olt8dSon0D2v1pGhdxvLOfoax2LMSlQQaDo5ZKFNsYDaq2D26BtTadkx+ZT0tekrSSN+
-         cwkA==
-X-Gm-Message-State: AOAM5308ERQCsuH5ChNYRPQ4PxCbuH8EkUkTXCidmGMU6YA3iTeXnXT4
-        ijshNltK+6HpNDdBqNT5+ytqNP2K1U9zzbsR59VCoIaxPJI=
-X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
-X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
- Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AkcZzuMa0KWX54HQ/i8rwQk69v0uhXTqDlHr6CvRGf0=;
+        b=qcyMlAf1m51sWswg/KylE/6z3d6e2MUybOM1+sGZJ0JqoGz1wS9mMZd7NQY/wzrmSN
+         cfAxkMeXxlUwq6oY4vMJxG01zQ3WiJFNN16YKI8EYOaoTaoU/P6rOj6Cl1JciLgTmvFT
+         mBVtHcru2wF9yGJtRFP9Wnr1UA3oJstPGBrwD11lSWOU6f4EUSFFAjIJZzIu7NkBHdw1
+         7xQgCnjpgzBJ/qsWIfPI9YqEsgT7RZ4AHSY7jbuj1t+NBX368UDn1kxnnMWpkMaTppQl
+         OAyYy2EcjQIK7KRr0+UGb4OseQPcF3uBaz3dszl8VnTd1VdhIidgzQzLdqpInLZD8Jas
+         SKbA==
+X-Gm-Message-State: AOAM531DDXOlYq9EZI7L1zFLv2UEiu+m924oTLnMJ+rXlZZXYYaZrQVx
+        bbSrRJDhSCluszX33DpXmteXkc3m+5Fqoxny7di2eA==
+X-Google-Smtp-Source: ABdhPJySERcXu7AlxAUAMVgLDOch9W2eq584oKVC2lPlxK3oODrvqWnqNer+pnocJ0TnvtP9X2c1lomIajxcwzFU8/o=
+X-Received: by 2002:a92:4989:: with SMTP id k9mr11882013ilg.177.1597616376543;
+ Sun, 16 Aug 2020 15:19:36 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
-Date:   Sun, 16 Aug 2020 07:28:30 -0700
-Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
-Subject: Hello, Please
-To:     undisclosed-recipients:;
+References: <20200814134941.10576-1-matt.ranostay@konsulko.com> <CAHp75VeP24wrWk49Gic-fR72kU+1sBQD-OCW88ji1ZYShSsNXQ@mail.gmail.com>
+In-Reply-To: <CAHp75VeP24wrWk49Gic-fR72kU+1sBQD-OCW88ji1ZYShSsNXQ@mail.gmail.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sun, 16 Aug 2020 15:19:25 -0700
+Message-ID: <CAJCx=gkDBUZ+ozJAsi43ff_frRGTZXdE1PEbtpyYjcFUubvi8g@mail.gmail.com>
+Subject: Re: [PATCH] iio: health: max30102: update author's email
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Dear Friend,
+On Sun, Aug 16, 2020 at 2:52 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sun, Aug 16, 2020 at 1:06 AM Matt Ranostay
+> <matt.ranostay@konsulko.com> wrote:
+> >
+> > Update email to author's current employer
+>
+> > - * Copyright (C) 2017 Matt Ranostay <matt@ranostay.consulting>
+> > + * Copyright (C) 2017 Matt Ranostay <matt.ranostay@konsulko.com>
+>
+> > -MODULE_AUTHOR("Matt Ranostay <matt@ranostay.consulting>");
+> > +MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
+>
+> This is actually an interesting question, had you been working already
+> for your current employer?
 
-I'm Mr. Scott Donald a Successful businessMan dealing with
-Exportation, I got your mail contact through search to let you know my
-intension and my Ugly Situation Am a dying Man here in Los Angeles
-California Hospital Bed in (USA), I Lost my Wife and my only Daughter
-for Covid-19 and I also have a problem in my Health and I can die
-anytime I Know,
+Yes I was, but this was for my independent contracting company (that
+has been dissolved, and the email clearly won't work anymore)
+for a presentation on iio.
 
-I have a project that I am about to hand over to you. and I already
-instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
-of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
-able you
-to give 50% of this fund to Charitable Home in your State and take 50%
-don't think otherwise and why would anybody send someone you barely
-know to help you deliver a message, help me do this for the happiness
-of my soul and for God to mercy me and my Family and give Us a good
-place.
+Pretty sure Konsulko doesn't have any issue with copyright assignment
+to them :).
+Also retroactive assignments are quite legal (under US law at least,
+also IANAL) as long you of course own the copyright.
 
-please, do as I said there was someone from your State that I deeply
-love so very very much and I miss her so badly I have no means to
-reach any Charitable Home there. that is why I go for a personal
-search of the Country and State and I got your mail contact through
-search to let you know my Bitterness and please, help me is getting
-Dark I ask my Doctor to help me keep you notice failure for me to
-reach you in person Your urgent Response, here is my Doctor Whats-app
-Number for urgent notice +13019692737
+Good questions though!
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you.
+- Matt
 
-My Regards.
-
-Mr. Scott Donald
-CEO
+> If no, I don't think this is a proper change in the code (of course it
+> might require your new contract, then it's probably fine, I dunno). It
+> would be a good change for MAINTAINERS, though.
+> If yes, the commit message doesn't clarify this.
+>
+> In any case, just my 2 cents for the future changes like this, since
+> the patch already applied.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

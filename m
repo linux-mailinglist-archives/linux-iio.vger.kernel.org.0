@@ -2,56 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E89245A57
+	by mail.lfdr.de (Postfix) with ESMTP id B3F37245A58
 	for <lists+linux-iio@lfdr.de>; Mon, 17 Aug 2020 02:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbgHQAvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Aug 2020 20:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39306 "EHLO
+        id S1726656AbgHQAvC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Aug 2020 20:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbgHQAvA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 20:51:00 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6908C061786
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 17:50:59 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id l2so13243964wrc.7
-        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 17:50:59 -0700 (PDT)
+        with ESMTP id S1726089AbgHQAvB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Aug 2020 20:51:01 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60FCC061786
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 17:51:00 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id p14so11926475wmg.1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Aug 2020 17:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TTEkQANijUR64LKDOWIWQzZQ8ax9HXFhFBb/D2Ez4Ck=;
-        b=Rpg/OGCC2ZJWcRXUfY2GMNP33pBZ8kqJUBHvh6i/sqbU697NzfurM+BGNFwK5V/Eh7
-         Pl4oRhYV2t4ix+HsFLMtV41Df70zPZW9OidKTF8oKnL1MZ5zIXmkswvSpXnMhfAgGmi6
-         d6Uujt6k6vBeiGjCpFN6clSJZNW2OACUb4ZFA=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=uPXUJGG/urnZWIGvOG0Oo9fZAeznk7ypl0i8BvRFFN0=;
+        b=pqldIbp87u9cmjz3e8AiIQdo4euscVRdB4Gc7e+935AWRF/ZScHxeB0PUW26FqjaT1
+         CVZ1RnCVpLF9kRbwbQ6Mk9QwwstoXU78a4cjBKWc7zQYkGA/PCHlBcDulfDsPMAsS+lU
+         q7v66GuyNxQJFBldW6k70ylyHUizGzL/gEKtc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TTEkQANijUR64LKDOWIWQzZQ8ax9HXFhFBb/D2Ez4Ck=;
-        b=JHvS2/s+UbFRrsDs3N0qnlsMuFKZxoOMk+IZhwUlFSo4NyXAzQMCSzNNcYGKrhBDIh
-         39p+v8Z9kAfav3yTRGMsARwpOrKyYc/TRjpIoz7uHeQLMvy93fX0OEESspwQwSeZX3v9
-         ahv4vFCarZaSTGDy9mzvBcwqR5PLexzqmBNOQERVGw4XO+dJdSmMe+n7D7ybk1X3hivf
-         s5+J7qgPRy8Gb0VNux0gRVsYygP2DZsycY2NTCOO8trBzPX64qARZA6ea+vuNkOHS1rS
-         ooBFcbi3elKMbZdOOfOnxYNoXEau9IknCWDOruib3VvbV8BYn7gF+jEQ/sOhkKQL3PsX
-         /Lmg==
-X-Gm-Message-State: AOAM530PJFriXB8zaMLSpxG/r9Au8DUHFEvJ9/QNEbiU7sG/hNpyLrmw
-        6ZX+xPxSDR1y9uLZtOwXpPZJDkHspwQo5Md6
-X-Google-Smtp-Source: ABdhPJxEyEbMiXUTVWtTEiwdef5BnbS75H7vwNSGeo4EmUu3Qk8tnpWibuknLM94nj4o4TJfh9YNcQ==
-X-Received: by 2002:a5d:6646:: with SMTP id f6mr12688783wrw.155.1597625458310;
-        Sun, 16 Aug 2020 17:50:58 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=uPXUJGG/urnZWIGvOG0Oo9fZAeznk7ypl0i8BvRFFN0=;
+        b=WWdP41W2xbgWHWUrnC4I55dcRsIMoD97cYXxLSjxikGKfVSZdnPYkqD4yu6wwUA38W
+         9LsdnG5SGEs/qblwcigB2yvebk6kBGIXQUSGeBJ5KHxtk+YPTBScwRQTkZMwP/RgOHKV
+         8OSDGh43V+SvavuYNbkxdVH6IeSFSDBZBhiNX2aVwB//XlQ4lOns1SA/9OPfivmMYEqc
+         zaIrpvrwnXO8O+XTci53xHjjLqq2MAg2hAxPkZQ6Li/s3ONbg3IkULStjUUCzcpv3USW
+         +/n2eBmzlevpdGPF0cRGOWDGnAvId1alOAKaC/zST7LYc4sU5zgNOoxxwv3hRSu4isqT
+         KKZQ==
+X-Gm-Message-State: AOAM5303iy4IRjE86pLatcf1j33V6am4QbhoCd+M1aVi/W2quVMMJniD
+        KpkEJ/7guzvmpb2DcvTgZhUOoP2SucEh8Ytg
+X-Google-Smtp-Source: ABdhPJwp+GNCPwTrHNjI11jdoplRpoy+ezOD0IwWLjiTA/hhVt87fQgHiptdwxzH2Vq4xjgQyKW8JQ==
+X-Received: by 2002:a1c:9a06:: with SMTP id c6mr11801115wme.23.1597625459390;
+        Sun, 16 Aug 2020 17:50:59 -0700 (PDT)
 Received: from taos.konsulko.bg (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id b139sm29892711wmd.19.2020.08.16.17.50.56
+        by smtp.gmail.com with ESMTPSA id b139sm29892711wmd.19.2020.08.16.17.50.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2020 17:50:57 -0700 (PDT)
+        Sun, 16 Aug 2020 17:50:58 -0700 (PDT)
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
 To:     jic23@kernel.org
 Cc:     linux-iio@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH v2 0/2] iio: chemical: atlas-ezo-sensor: add humidity sensor support
-Date:   Mon, 17 Aug 2020 03:50:50 +0300
-Message-Id: <20200817005052.11565-1-matt.ranostay@konsulko.com>
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH v2 1/2] dt-bindings: iio: chemical: add Atlas EZO Humidity module documentation
+Date:   Mon, 17 Aug 2020 03:50:51 +0300
+Message-Id: <20200817005052.11565-2-matt.ranostay@konsulko.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200817005052.11565-1-matt.ranostay@konsulko.com>
+References: <20200817005052.11565-1-matt.ranostay@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -59,19 +62,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Changes from v1:
-* fix channel type to correct IIO_HUMIDITYRELATIVE
-* fix scaling value to take in accountt the floating point is removed
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+---
+ .../devicetree/bindings/iio/chemical/atlas,sensor.yaml          | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Matt Ranostay (2):
-  dt-bindings: iio: chemical: add Atlas EZO Humidity module
-    documentation
-  iio: chemical: atlas-ezo-sensor: add humidity sensor support
-
- .../bindings/iio/chemical/atlas,sensor.yaml   |  2 +
- drivers/iio/chemical/atlas-ezo-sensor.c       | 37 ++++++++++++++++++-
- 2 files changed, 38 insertions(+), 1 deletion(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
+index 46496dc250f2..f1130d613735 100644
+--- a/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
++++ b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
+@@ -20,6 +20,7 @@ description: |
+     http://www.atlas-scientific.com/_files/_datasheets/_oem/RTD_oem_datasheet.pdf
+     http://www.atlas-scientific.com/_files/_datasheets/_probe/EZO_CO2_Datasheet.pdf
+     https://www.atlas-scientific.com/files/EZO_O2_datasheet.pdf
++    https://www.atlas-scientific.com/files/EZO_HUM_Datasheet.pdf
+ 
+ properties:
+   compatible:
+@@ -31,6 +32,7 @@ properties:
+       - atlas,rtd-sm
+       - atlas,co2-ezo
+       - atlas,o2-ezo
++      - atlas,hum-ezo
+ 
+   reg:
+      maxItems: 1
 -- 
 2.20.1
 

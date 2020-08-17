@@ -2,155 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 366B1246DA9
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Aug 2020 19:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 182A8246F2B
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Aug 2020 19:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389378AbgHQRJr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Aug 2020 13:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388507AbgHQRGG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Aug 2020 13:06:06 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E17C061348
-        for <linux-iio@vger.kernel.org>; Mon, 17 Aug 2020 10:05:44 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id z18so15690330wrm.12
-        for <linux-iio@vger.kernel.org>; Mon, 17 Aug 2020 10:05:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=QPQnmI/58kOYJX5JO2+CM6DvjdssZDc2jVBjt8SVn9Y=;
-        b=YuiXi/kinFP88R0aPiCU55Nprn56KeOKbH+KhhoCxduo6j7FzXH12C+I/rUVFF2MTP
-         rUNab8Es+pEUJ0mOl0o47LkZ9vxB88jk2clqVQO4YC3EMN54iij8Dg8f1X9T9s8V8I+t
-         K67UfagZ+rIkHxaCUmX6dl/fnHdP01O4+yLsnKvnlNwfJ0VVDsBuk2m/Wi0mwtG58Ypl
-         AT44t4dH86MBjKLlQOp8xEQEF9c3YypxpUYLgQAuAR9MU4UWZR68FGdiuu+hNZEmv4Tm
-         pX8UkOQzp2mYLfUXDwUq29cTK6tNS0ySm+dy5EOekUvDleo+l/oguSRijKxKZraz93xt
-         27hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=QPQnmI/58kOYJX5JO2+CM6DvjdssZDc2jVBjt8SVn9Y=;
-        b=lM9BhcR51De1VLZFqNkneV1j+bllB8WeoQ96MPyBcg3hyK1A4pho7U/B3pnoE1FydY
-         1xttHx3QniGgulTrlctXQOm9xhyU0s3i4UL7NKn+y58zHa5y9IBS1CLI/f8f/1PZrCZi
-         iYFn6PMPSNBVwETzC+j5A2Wk/mYjahIcqiToOjiKEy67daetUZFkRkyaqfySSF9hU/rs
-         7Pop/vt/amWSKwNb8aGZwUnCTOkKhttn85uH3hTbpPOHPI4Vc09bcfojPJ4L6Xc+WnVQ
-         wdELSvE4TJHqu41AfytmZO+/W4tWTFGIfzrSQltWTQDg+yjPolhP6zzpOUFXaNeIiwfx
-         IfKg==
-X-Gm-Message-State: AOAM533cdBxyg7+HbzSNTxg36LYHgsBb+S0XBQNC/SXoA4frCGwY3zcK
-        34qo+w5q4EBQyQBIOb7R/jxj0Q==
-X-Google-Smtp-Source: ABdhPJzidFcB7ZIzIx5H9eHYngnMFhnJsHpdbQQUC3IPtgHxLJxrUgwpePI6OmXWPyKufiK3Jko02g==
-X-Received: by 2002:adf:ef92:: with SMTP id d18mr17541341wro.71.1597683943032;
-        Mon, 17 Aug 2020 10:05:43 -0700 (PDT)
-Received: from debian-brgl.home (lfbn-nic-1-68-20.w2-15.abo.wanadoo.fr. [2.15.159.20])
-        by smtp.gmail.com with ESMTPSA id k184sm29747177wme.1.2020.08.17.10.05.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 10:05:42 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        id S2388952AbgHQRni (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Aug 2020 13:43:38 -0400
+Received: from mga04.intel.com ([192.55.52.120]:15588 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389020AbgHQRng (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 17 Aug 2020 13:43:36 -0400
+IronPort-SDR: 7qTGAf6WCxdsON/v/hgHw5/Ruc4bSQc7PZ9i29PEWvrfqNz+I8Kkgi/dNKxVCo72h9xmm4CruZ
+ 6ckFsnnnbj4w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9716"; a="152171570"
+X-IronPort-AV: E=Sophos;i="5.76,324,1592895600"; 
+   d="scan'208";a="152171570"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2020 10:43:35 -0700
+IronPort-SDR: EsGJDlG2Elfx4PTVo5feMiTZDFCT7ABc4DH894/gUpMct7O9/tuNSP2eKBlobYUnIYJDzVDwcx
+ ONdxB+GKxpZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,324,1592895600"; 
+   d="scan'208";a="326478021"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 17 Aug 2020 10:43:32 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1k7j6C-009TgH-Dv; Mon, 17 Aug 2020 20:39:08 +0300
+Date:   Mon, 17 Aug 2020 20:39:08 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Michal Simek <michal.simek@xilinx.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v7 3/3] iio: adc: xilinx-xadc: use devm_krealloc()
-Date:   Mon, 17 Aug 2020 19:05:35 +0200
-Message-Id: <20200817170535.17041-4-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200817170535.17041-1-brgl@bgdev.pl>
+        Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v7 1/3] devres: provide devm_krealloc()
+Message-ID: <20200817173908.GS1891694@smile.fi.intel.com>
 References: <20200817170535.17041-1-brgl@bgdev.pl>
+ <20200817170535.17041-2-brgl@bgdev.pl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200817170535.17041-2-brgl@bgdev.pl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Mon, Aug 17, 2020 at 07:05:33PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> 
+> Implement the managed variant of krealloc(). This function works with
+> all memory allocated by devm_kmalloc() (or devres functions using it
+> implicitly like devm_kmemdup(), devm_kstrdup() etc.).
+> 
+> Managed realloc'ed chunks can be manually released with devm_kfree().
 
-Use the managed variant of krealloc() and shrink the code a bit.
+Thanks for an update! My comments / questions below.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/xilinx-xadc-core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+...
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index d0b7ef296afb..f93c34fe5873 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1092,6 +1092,7 @@ MODULE_DEVICE_TABLE(of, xadc_of_match_table);
- static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 	unsigned int *conf)
- {
-+	struct device *dev = indio_dev->dev.parent;
- 	struct xadc *xadc = iio_priv(indio_dev);
- 	struct iio_chan_spec *channels, *chan;
- 	struct device_node *chan_node, *child;
-@@ -1136,7 +1137,8 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 		*conf |= XADC_CONF0_MUX | XADC_CONF0_CHAN(ext_mux_chan);
- 	}
- 
--	channels = kmemdup(xadc_channels, sizeof(xadc_channels), GFP_KERNEL);
-+	channels = devm_kmemdup(dev, xadc_channels,
-+				sizeof(xadc_channels), GFP_KERNEL);
- 	if (!channels)
- 		return -ENOMEM;
- 
-@@ -1172,8 +1174,9 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 	of_node_put(chan_node);
- 
- 	indio_dev->num_channels = num_channels;
--	indio_dev->channels = krealloc(channels, sizeof(*channels) *
--					num_channels, GFP_KERNEL);
-+	indio_dev->channels = devm_krealloc(dev, channels,
-+					    sizeof(*channels) * num_channels,
-+					    GFP_KERNEL);
- 	/* If we can't resize the channels array, just use the original */
- 	if (!indio_dev->channels)
- 		indio_dev->channels = channels;
-@@ -1225,14 +1228,14 @@ static int xadc_probe(struct platform_device *pdev)
- 
- 	ret = xadc_parse_dt(indio_dev, pdev->dev.of_node, &conf0);
- 	if (ret)
--		goto err_device_free;
-+		return ret;
- 
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
- 		ret = iio_triggered_buffer_setup(indio_dev,
- 			&iio_pollfunc_store_time, &xadc_trigger_handler,
- 			&xadc_buffer_ops);
- 		if (ret)
--			goto err_device_free;
-+			return ret;
- 
- 		xadc->convst_trigger = xadc_alloc_trigger(indio_dev, "convst");
- 		if (IS_ERR(xadc->convst_trigger)) {
-@@ -1350,8 +1353,6 @@ static int xadc_probe(struct platform_device *pdev)
- err_triggered_buffer_cleanup:
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
- 		iio_triggered_buffer_cleanup(indio_dev);
--err_device_free:
--	kfree(indio_dev->channels);
- 
- 	return ret;
- }
-@@ -1371,7 +1372,6 @@ static int xadc_remove(struct platform_device *pdev)
- 	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
- 	clk_disable_unprepare(xadc->clk);
- 	kfree(xadc->data);
--	kfree(indio_dev->channels);
- 
- 	return 0;
- }
+> +static struct devres *to_devres(void *data)
+> +{
+> +	return (struct devres *)((u8 *)data - ALIGN(sizeof(struct devres),
+> +						    ARCH_KMALLOC_MINALIGN));
+
+Do you really need both explicit castings?
+
+> +}
+
+...
+
+> +	total_old_size = ksize(to_devres(ptr));
+
+But how you can guarantee this pointer:
+ - belongs to devres,
+ - hasn't gone while you run a ksize()?
+
+...
+
+> +	new_dr = alloc_dr(devm_kmalloc_release,
+> +			  total_new_size, gfp, dev_to_node(dev));
+
+Can you move some parameters to the previous line?
+
+> +	if (!new_dr)
+> +		return NULL;
+
+...
+
+> +	spin_lock_irqsave(&dev->devres_lock, flags);
+> +
+> +	old_dr = find_dr(dev, devm_kmalloc_release, devm_kmalloc_match, ptr);
+> +	if (!old_dr) {
+> +		spin_unlock_irqrestore(&dev->devres_lock, flags);
+> +		devres_free(new_dr);
+> +		WARN(1, "Memory chunk not managed or managed by a different device.");
+> +		return NULL;
+> +	}
+> +
+> +	replace_dr(dev, &old_dr->node, &new_dr->node);
+> +
+> +	spin_unlock_irqrestore(&dev->devres_lock, flags);
+> +
+> +	memcpy(new_dr->data, old_dr->data, devres_data_size(total_old_size));
+
+But new_dr may concurrently gone at this point, no? It means memcpy() should be
+under spin lock.
+
 -- 
-2.26.1
+With Best Regards,
+Andy Shevchenko
+
 

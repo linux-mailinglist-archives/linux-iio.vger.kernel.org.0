@@ -2,73 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C74C247C27
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Aug 2020 04:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74941247C2A
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Aug 2020 04:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgHRC2f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Aug 2020 22:28:35 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:40635 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726324AbgHRC2d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Aug 2020 22:28:33 -0400
-Received: by mail-io1-f65.google.com with SMTP id b17so19686440ion.7;
-        Mon, 17 Aug 2020 19:28:33 -0700 (PDT)
+        id S1726370AbgHRC3D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Aug 2020 22:29:03 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44330 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726324AbgHRC3B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Aug 2020 22:29:01 -0400
+Received: by mail-io1-f66.google.com with SMTP id v6so19611686iow.11;
+        Mon, 17 Aug 2020 19:29:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=cjzogNP5tTTXxoVLvj1gyI8tv/q78wYu/fnSVZqZ+/8=;
-        b=fh1ojDibsfZLLOr8k52ImcXuwYNqwqCUgVIiMbssKiFjusiYZP705Iy2Q+jcEZEQfn
-         7pPOgK5uWZq7lTTN6IBBJ1hdc8P67tHVJDjdzTIPkAhAZKGb4pKntSpTd6mFgNmKIv20
-         Ris75J5E/meT+BDx1MAgOZu0NpLkr9ZuYdzyV4enOEUQbw7lwRrDe5cRUOOKUSbK+UCF
-         /sbZzXWK+lgPfauc9LxE/XYCpbSSSPEExRLPkc5FahthgEQATZjyMHUIE9kk3DBNxQ6C
-         tr8/um2z1t5LoHtlqXhS6V5oFnySXA8ZW1DInfRilI5I4APYDhOYGHefwQmAs+f0D+w9
-         gY6g==
-X-Gm-Message-State: AOAM531QBl+yF5+CtSZXvbz4nCfCcIfIh3kIG1qyJkz+aauf7Ym6zKg0
-        DT9gzAvtq1N3UKpOXspQeg==
-X-Google-Smtp-Source: ABdhPJzpsUa7SGdZE8214ZXBbMN958PR7m5g+fbVxLcNX8xwjKwsZF2I2qc4EISOFat1W2Al7504Lw==
-X-Received: by 2002:a6b:e006:: with SMTP id z6mr14416973iog.118.1597717712644;
-        Mon, 17 Aug 2020 19:28:32 -0700 (PDT)
+        bh=xOPGCZNMbLcnvdYWcfK6GCF8gWrkDTrkpCZJdkRcfKc=;
+        b=mhX5qrLgeM1gOFW0sJuKlbOUonpxmPj5wBzgd+pnHuvEn+q/H11qxhOWkDWSUxwTAL
+         YGzmC3BLLJAzYKUAZobWVE3OM+g9DyQ3zqNZ54RHg8oSBdiq6CtRwILS3ThdRVDHCTz6
+         EXiMAl6i3eYPCjhZICH6jmj/i3+0Y8/RSRPdijA1hIRsBAqS9nP7fiAsMBWMhgwrt3KP
+         kHm/g6ntRAKdgLxhp+EWyliiVRPVLTrRK8OnGSKfrKnsqMFckn6JaouxO2FgabfxUyOp
+         rW8FSsnAzwBuC7UeKudpc6jwQaI1nQjGH/1uxUfYqx7CTYh0O4oBE+JMGWvm/DrpaCCS
+         717g==
+X-Gm-Message-State: AOAM531Tk3LsuLl+7jJ/vvaHfOhELwkqxRMUQu77Lb51IR10U4/QMKnz
+        fZ9rhZ5TEluCiBwFG9UCLA==
+X-Google-Smtp-Source: ABdhPJwrNg5vAaqjlbFMABScdEtrRIR1qvk+8bQOHKwfa4SLCAMhJ3NQx56SJ/nNy4YbROZJjRtJhw==
+X-Received: by 2002:a5d:9a86:: with SMTP id c6mr14973585iom.27.1597717740341;
+        Mon, 17 Aug 2020 19:29:00 -0700 (PDT)
 Received: from xps15 ([64.188.179.249])
-        by smtp.gmail.com with ESMTPSA id r7sm9845867ioj.42.2020.08.17.19.28.31
+        by smtp.gmail.com with ESMTPSA id q200sm10333700iod.5.2020.08.17.19.28.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 19:28:32 -0700 (PDT)
-Received: (nullmailer pid 2168803 invoked by uid 1000);
-        Tue, 18 Aug 2020 02:28:30 -0000
-Date:   Mon, 17 Aug 2020 20:28:30 -0600
+        Mon, 17 Aug 2020 19:28:59 -0700 (PDT)
+Received: (nullmailer pid 2169650 invoked by uid 1000);
+        Tue, 18 Aug 2020 02:28:57 -0000
+Date:   Mon, 17 Aug 2020 20:28:57 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>
-Subject: Re: [PATCH 04/13] dt-bindings: iio: adc: lltc,ltc2497 yaml
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH 05/13] dt-bindings: iio: adc: ti,adc161s626 yaml
  conversion.
-Message-ID: <20200818022830.GA2168744@bogus>
+Message-ID: <20200818022857.GA2169563@bogus>
 References: <20200809111753.156236-1-jic23@kernel.org>
- <20200809111753.156236-5-jic23@kernel.org>
+ <20200809111753.156236-6-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200809111753.156236-5-jic23@kernel.org>
+In-Reply-To: <20200809111753.156236-6-jic23@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 09 Aug 2020 12:17:44 +0100, Jonathan Cameron wrote:
+On Sun, 09 Aug 2020 12:17:45 +0100, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Very simple binding for this i2c device with a reference supply.
+> Simple conversion for this ADC driver.  Note that I haven't put
+> limits on the spi-max-sampling-frequency because the adc161s626
+> doesn't state one clearly defined value.
 > 
 > Added the #io-channel-cells property to allow for consumers.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
+> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
 > ---
->  .../bindings/iio/adc/lltc,ltc2497.yaml        | 44 +++++++++++++++++++
->  .../devicetree/bindings/iio/adc/ltc2497.txt   | 13 ------
->  2 files changed, 44 insertions(+), 13 deletions(-)
+>  .../bindings/iio/adc/ti,adc161s626.yaml       | 51 +++++++++++++++++++
+>  .../bindings/iio/adc/ti-adc161s626.txt        | 18 -------
+>  2 files changed, 51 insertions(+), 18 deletions(-)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>

@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 394A62497C3
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Aug 2020 09:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC392497CC
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Aug 2020 09:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726435AbgHSHxw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Aug 2020 03:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
+        id S1726750AbgHSHzu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Aug 2020 03:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbgHSHxv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Aug 2020 03:53:51 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7B6C061389
-        for <linux-iio@vger.kernel.org>; Wed, 19 Aug 2020 00:53:51 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id m20so17328885eds.2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Aug 2020 00:53:51 -0700 (PDT)
+        with ESMTP id S1726211AbgHSHzo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Aug 2020 03:55:44 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D61C061389
+        for <linux-iio@vger.kernel.org>; Wed, 19 Aug 2020 00:55:43 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id c10so17314937edk.6
+        for <linux-iio@vger.kernel.org>; Wed, 19 Aug 2020 00:55:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=AyHxYnikk4aL0fAERJoWnAheKV+1tCKTGdC7Xl7sb8k=;
-        b=cB58bQMA27QO3ZewJJh4p1oonryO3ZlxeQ56Qfu1+i4ishR0NxKZMzBbd/XGUcHvXa
-         RYuo6WTDW94ziNhhvgj3TjqgdQkxyj9qQoXCB/d6C/ZBUjbeAKXID+vRC3vQJRqdE1wB
-         s28JgnnjscoFOsz5KnGeByXNLBHtCXe92wVVdAus6gxHruvX9iSNekKVkdxT6JKfqDn3
-         /mMuvY6NnUxqIfxvXcvefb7Zd+QsyqrdHxb/M2vEtP23fg8MN2uppKjIDyd5xCxFBzvS
-         z54rDjFwIZufnXLnvK1coLyQG+81knUeCLD8jMVp+idw9WibVy1n6j2UFh5RyZDz82SH
-         sOkA==
+        b=L9Jpn8ffSRf3ZEwBYMKZLoRYgscGcvbz/nJmYH9ofKB2qIKLgXYSIkqq1IvY9WCsy8
+         w8U35LkOGvBrLkqymNXD9XipLOOkKMIS6d9eIv6X8p2VmlVDFNEMKSAR48BZL3OCdlg0
+         s5qRNd617UeGttJR75yOPvLyqq4SE9F9g4BrwbNc11RizJIAT03QB3nPH42xhjdu7Btu
+         RkaAo8xtLA1WYauAqhlTQNSU/HU9JnmZYKa64VHDCZ8ig0EbRK9nWHi82/9Z03OYhzcW
+         Qstwe33pyWSqJwZ6A0wqIeBATxrEXkmakF2xXlvFNYOaLKCUVNUAEdL96mG6f5IVXpZT
+         Z95w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=AyHxYnikk4aL0fAERJoWnAheKV+1tCKTGdC7Xl7sb8k=;
-        b=gz4pdsuPu+t31TjZqa+zZ2kkPyYhPPpnehYXRn7Yaxb0w+Nqkyr0027jog2ff/edrh
-         YRtEist7sK66YTI7njJUsv5Cl+FuSS4cqUUvMrZi5h6CX8zv2wTXrLpY527kuVi3u8hp
-         30LE6/C+rSIAoCqYMUejWauUUb7BjBJ/U+R6MsNSyrbZdApzIM/5nQexC/Y6+8TJrXjc
-         rdDEyb0FQS+NsdEzaP85koXfruZ6T8mv6tLEayuUjM8eLorD3/KGTr38o2efplnaly+L
-         3DWaDpc63Cp8YC/vDaBpRbNtEXiIfpYauf3jMMlpbMODF8nDokIqqKgD70tE/nIKmB6q
-         Wmbg==
-X-Gm-Message-State: AOAM5303SoxvLJdzA10cSocjQO7HvloGsDPGBYTcIFW2IZgMptKfTNj2
-        T+UKdcpa5e6nvhK7UPk0biFd1cXm8rE=
-X-Google-Smtp-Source: ABdhPJwcPIf3lfUtGWhQfX/LRfYTAKnkK4PoQxCZsUzo2bebQTWr2VJaAX3rMkfcIfdE3QasTfdPEQ==
-X-Received: by 2002:a05:6402:12d0:: with SMTP id k16mr24108201edx.199.1597823629538;
-        Wed, 19 Aug 2020 00:53:49 -0700 (PDT)
+        b=Zx67VY0bLB4wyVk67twy9xq4YDatOn3TbcQy4FuodujBbp89pUFs0WXXB3aKKJ3WPT
+         WVH5Zmu5I9TK+aDcUlWYr49feoMdFiQl6b7LBWR16tvSVCkn2Qi3y/fG+rh33TAuNoWV
+         nPzzKwr0ucobb5vzxRzhfj0Kd/KeKAG7VZNGeI6mY25mhPx8ofhjj1TltzgYaQQZgSgh
+         Haog+t5saeOG8NZizgTjKLOjO6/ShKVNtbNpWh/RazMXgUgJGB0TnTvaFyqTCgehkiWV
+         nLR0sqAocThB7F3RX3hcp1SIbjwweOSdE3Ow7tznPI//oER1juFhZl06/KG1GAmOrVe7
+         v9VA==
+X-Gm-Message-State: AOAM533rWxtbSayeNe0IoLHV3vMcLObRBLI06268tTVnAFrR9QHeOeIh
+        SJ8GIETPisp3xvSKmhDr7Ox+lPPW6J0=
+X-Google-Smtp-Source: ABdhPJwWMHtRFlh5e1ovv1LlgG9Ljay209u7Q4SfI3lPUJq4mLF291EMWMpPPxG13a/Rgn7TtklwCw==
+X-Received: by 2002:a05:6402:84e:: with SMTP id b14mr22931444edz.115.1597823742089;
+        Wed, 19 Aug 2020 00:55:42 -0700 (PDT)
 Received: from localhost.localdomain (host185100178123.static.fidoka.tech. [185.100.178.123])
-        by smtp.gmail.com with ESMTPSA id z17sm17276199edi.19.2020.08.19.00.53.48
+        by smtp.gmail.com with ESMTPSA id qp16sm18425902ejb.89.2020.08.19.00.55.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 00:53:48 -0700 (PDT)
-From:   Angelo Compagnucci <angelo.compagnucci@gmail.com>
-X-Google-Original-From: Angelo Compagnucci <angelo@amarulasolutions.com>
+        Wed, 19 Aug 2020 00:55:41 -0700 (PDT)
+From:   angelo.compagnucci@gmail.com
 To:     linux-iio@vger.kernel.org
 Cc:     Angelo Compagnucci <angelo.compagnucci@gmail.com>
 Subject: [PATCH v2] iio: adc: mcp3422: fix locking scope
-Date:   Wed, 19 Aug 2020 09:53:45 +0200
-Message-Id: <20200819075345.1392772-1-angelo@amarulasolutions.com>
+Date:   Wed, 19 Aug 2020 09:55:25 +0200
+Message-Id: <20200819075525.1395248-1-angelo.compagnucci@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit

@@ -2,160 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2DC424C515
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 20:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B89324C5D2
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 20:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbgHTSKD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Aug 2020 14:10:03 -0400
-Received: from mail-bn7nam10on2068.outbound.protection.outlook.com ([40.107.92.68]:43232
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726819AbgHTSKC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 20 Aug 2020 14:10:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HKM75xdjPOBxoyxZZCUbhCpQYgOhIDvQaScb/O94ICE5Flb3Gu657NFyTD+RofmnyzUM3tqzgRh69YHMf4ajtM+DNZVWGIQppwCRUuEb3iTQ2qk7o9HRbtlNOVO/HXqgbAh4BEtab1grmLt5ILOYbz/urFzoXpACrwdyHIWtriNkGY+hMxXl8KBlvvlcGYNn5+GMfRx3XL6rOGS2anUWJgTMgoXnpZClDU5RHgA/bGB50fmChc9rkfju0c8x0RfD13k45A5Tvwvcef4KIPLdsW3//RHwKvhv6XWbTyi/OouHJLoyl6G94L+iEl60B+YSLrNWfzs63rtVJOj1pK79wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2V2es0Anfz+eC2uZbriqy6jOeJ12Hq5a3VwcieB39H4=;
- b=IITf3mS8dGv0rUxgV8vlIxnnNr3xHRqDeHaWjavsCysUuTk2DDmnGjOVDpX448Cmnb8Bvst4na4wBJd2ZytTGuL7NVczTBv/iqH2+JSD3Tkdq0ERn/3ResxvMApWFvmXQfaCzfohauaWEU55AoHAzJEwMGCQOg1iFVxZZgc8sHOiVmqcKvRwV/2rj9+UUB1m0+xrOWX6e0M4Xqsp6OIzfkk69g/FgoSjGNFLsIQYjOw5uqBRgUyPJ8X3JonWAF/Ncqwv/+ZnKDe1wuzict/AaRrOyyyK58hqiFbySTP8yInQstydgZDC5+DKuYLI+GGiRYtFhyYT9a6qIjvrF0L+cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
+        id S1727880AbgHTSvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Aug 2020 14:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbgHTSvS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Aug 2020 14:51:18 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F392C061386
+        for <linux-iio@vger.kernel.org>; Thu, 20 Aug 2020 11:51:18 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id z18so3101047wrm.12
+        for <linux-iio@vger.kernel.org>; Thu, 20 Aug 2020 11:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2V2es0Anfz+eC2uZbriqy6jOeJ12Hq5a3VwcieB39H4=;
- b=BER7hRPH39Q7zEmeNtiiMahT7GRWcMM5et9rQXmEOF0CaKow7RjeazPWiR8PmE7zihFpByPH4HBC9Cq3594RRGG8d3z+2hGPUKF6fibXtyULDfx1hz60N8l1zG8OoNhMOH9zHxXxr7/WJulx0YEht491Ew2uDRUzJAZsRe98fXk=
-Received: from SA0PR11CA0065.namprd11.prod.outlook.com (2603:10b6:806:d2::10)
- by BYAPR02MB5223.namprd02.prod.outlook.com (2603:10b6:a03:67::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.24; Thu, 20 Aug
- 2020 18:09:58 +0000
-Received: from SN1NAM02FT027.eop-nam02.prod.protection.outlook.com
- (2603:10b6:806:d2:cafe::a9) by SA0PR11CA0065.outlook.office365.com
- (2603:10b6:806:d2::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25 via Frontend
- Transport; Thu, 20 Aug 2020 18:09:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT027.mail.protection.outlook.com (10.152.72.99) with Microsoft SMTP
- Server id 15.20.3305.24 via Frontend Transport; Thu, 20 Aug 2020 18:09:58
- +0000
-Received: from [149.199.38.66] (port=33806 helo=smtp.xilinx.com)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1k8p0K-0002ZE-Tx; Thu, 20 Aug 2020 11:09:36 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by smtp.xilinx.com with smtp (Exim 4.63)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1k8p0g-0007u3-8G; Thu, 20 Aug 2020 11:09:58 -0700
-Received: from xsj-pvapsmtp01 (xsj-smtp1.xilinx.com [149.199.38.66])
-        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 07KI9uO5014545;
-        Thu, 20 Aug 2020 11:09:56 -0700
-Received: from [172.19.2.102] (helo=xsjanandash50.xilinx.com)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1k8p0e-0007ty-2y; Thu, 20 Aug 2020 11:09:56 -0700
-From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, michal.simek@xilinx.com, git@xilinx.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc:     anandash@xilinx.com,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH] iio: Fixed IIO_VAL_FRACTIONAL calcuation for negative values
-Date:   Thu, 20 Aug 2020 11:09:44 -0700
-Message-Id: <1597946984-25844-1-git-send-email-anand.ashok.dumbre@xilinx.com>
-X-Mailer: git-send-email 2.7.4
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-PublicTrafficType: Email
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6ameYpcCA2W6630D7Ht8ESefas4lH/iMvLqK3bNcEnI=;
+        b=mC1/OzJHy2Q6KdGaj8c/Xxnq3vlZKin57UYP/FhZHGChWhTrRL0+zkQNFqeZolsP2J
+         93Dbh46OdIPyFugBQlqsm1gAhoYg4CwJpsZjeaw47CIsY7/tocWRIX5Mmj4W7Cm3whb2
+         gbjsgb1YIruGDmtvd8CUqcIYdejOUMNNX0pUMqwOo6YhW0fOlP25apL8VD1vnaV53qz7
+         ekb6+3Whv94Y70IDNeS7JggOgM63GK5mz2Wy6bdpJI3PtAECGqsdp/Sie6jqhgfn3yci
+         F359UzzzTBoRxkBu4ltLiPfO5j9iRssEhfpu33LwtAn0mqS3PzVQu2LpSR7BilSCPcA9
+         44Cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6ameYpcCA2W6630D7Ht8ESefas4lH/iMvLqK3bNcEnI=;
+        b=NRiksfXwMZJm+gziqP4EFub2QI1hDwI0CzSV5ICE5YZcDh8fg0o2/vbG2o+mU8/jip
+         C9Yj+xTOVEc3vz9MGOMO2x+3uw2xa47naH6rPzdi8xUi6x9b3z7qlss3OgReNqcnw6Bb
+         YCIos2WE0BWU5MF6d49ieu6AdkiCMKqnN5yZcCMzR9MCmxy3kmEXL2QVyzcipedF2LP4
+         CaEblw0c4Oqk/Ujh+j7hwQeeYyysWE2XkVesf8nz8IgvDMGtZJuYLY+H9+r4jV1q9O/F
+         VZPL251u3v6vMN8++4jygJHSy/5OrcaCAXgKC707BMq44ue5VZzayiv1WJSHQ5UlDZhu
+         b1kg==
+X-Gm-Message-State: AOAM5311S4uz363psVPyJ5IruF9FVzEECo0P2MboedJHHCmQ2jQ+QoT+
+        w3PHVv+JJbMOpjElGfiTfHkCbtnkzbyFhA==
+X-Google-Smtp-Source: ABdhPJx7JoCSuUmAo6zDhTt4HTnEcwB1mBZ6Nf/XfN5adGcmnixz1MRo1Mz+9qa1RMBohOjLfw1ktg==
+X-Received: by 2002:adf:82d5:: with SMTP id 79mr96433wrc.282.1597949476975;
+        Thu, 20 Aug 2020 11:51:16 -0700 (PDT)
+Received: from debian-brgl.home (lfbn-nic-1-68-20.w2-15.abo.wanadoo.fr. [2.15.159.20])
+        by smtp.gmail.com with ESMTPSA id q2sm5694019wro.8.2020.08.20.11.51.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 11:51:16 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v8 0/3] devres: provide and use devm_krealloc()
+Date:   Thu, 20 Aug 2020 20:51:07 +0200
+Message-Id: <20200820185110.17828-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: a28ec4d3-64f8-498c-0c2d-08d845343fe5
-X-MS-TrafficTypeDiagnostic: BYAPR02MB5223:
-X-Microsoft-Antispam-PRVS: <BYAPR02MB5223E17A8688243180F824A4A95A0@BYAPR02MB5223.namprd02.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: O2c/znD0h5VT1LDLEIrI1Dspp8wjD0DRQLpC1d4VfebpQB3/LMBloo/ilJ2r4iF2eNwd+rEQWW+q+4sXPmpy7pZcwV5r4OCjmpmmwLaH00TcDeRrizbNX9UQ+ABHGkmuA0s0S5WmFijUSbqSVdTAUO+g6LgXhLsPjtvap7DB9O1Oq7Aq5jLs4OMMjGc3sb0gJpgE6BzIviXP45Jm7ut2MteVZ8fddVSBi8Hmvv1aisk8ujkWFtae0DyJSVJ6M6gw85rYfH3xNMipwlqrOqPye5RbdaEpRvU0d+M5NPcgyXWMpoIi0n9O3c3udJFlTXN87Gg57svWGdfrTaBC+yftPVhxPibB7sT96o3EUcvYWRFKILkYvex9pxDH4jFU69Aswgf4YMk8Mn6NMoUqqz2TsQ==
-X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFS:(136003)(376002)(39860400002)(346002)(396003)(46966005)(5660300002)(8936002)(47076004)(70586007)(8676002)(4326008)(81166007)(70206006)(9786002)(426003)(336012)(356005)(83380400001)(82740400003)(2906002)(82310400002)(2616005)(107886003)(478600001)(186003)(316002)(26005)(7696005)(6666004)(36756003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2020 18:09:58.5426
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a28ec4d3-64f8-498c-0c2d-08d845343fe5
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT027.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB5223
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch fixes IIO_VAL_FRACTIONAL calculation for negative
-values where the exponent is 0.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
----
- drivers/iio/industrialio-core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Regular krealloc() obviously can't work with managed memory. This series
+implements devm_krealloc() and adds two first users with hope that this
+helper will be adopted by other drivers currently using non-managed
+krealloc().
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-cor=
-e.c
-index f72c2dc..cd43b17 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -554,6 +554,7 @@ static ssize_t __iio_format_value(char *buf, size_t len=
-, unsigned int type,
- {
-        unsigned long long tmp;
-        int tmp0, tmp1;
-+       s64 tmp2;
-        bool scale_db =3D false;
+v1 -> v2:
+- remove leftover call to hwmon_device_unregister() from pmbus_core.c
+- add a patch extending devm_kmalloc() to handle zero size case
+- use WARN_ON() instead of WARN_ONCE() in devm_krealloc() when passed
+  a pointer to non-managed memory
+- correctly handle the case when devm_krealloc() is passed a pointer to
+  memory in .rodata (potentially returned by devm_kstrdup_const())
+- correctly handle ZERO_SIZE_PTR passed as the ptr argument in devm_krealloc()
 
-        switch (type) {
-@@ -576,10 +577,13 @@ static ssize_t __iio_format_value(char *buf, size_t l=
-en, unsigned int type,
-                else
-                        return snprintf(buf, len, "%d.%09u", vals[0], vals[=
-1]);
-        case IIO_VAL_FRACTIONAL:
--               tmp =3D div_s64((s64)vals[0] * 1000000000LL, vals[1]);
-+               tmp2 =3D div_s64((s64)vals[0] * 1000000000LL, vals[1]);
-                tmp1 =3D vals[1];
--               tmp0 =3D (int)div_s64_rem(tmp, 1000000000, &tmp1);
--               return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
-+               tmp0 =3D (int)div_s64_rem(tmp2, 1000000000, &tmp1);
-+               if ((tmp2 < 0) && (tmp0 =3D=3D 0))
-+                       return snprintf(buf, len, "-%d.%09u", tmp0, abs(tmp=
-1));
-+               else
-+                       return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1=
-));
-        case IIO_VAL_FRACTIONAL_LOG2:
-                tmp =3D shift_right((s64)vals[0] * 1000000000LL, vals[1]);
-                tmp0 =3D (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
---
-2.7.4
+v2 -> v3:
+- drop already applied patches
+- collect Acks
+- add an additional user in iio
 
-This email and any attachments are intended for the sole use of the named r=
-ecipient(s) and contain(s) confidential information that may be proprietary=
-, privileged or copyrighted under applicable law. If you are not the intend=
-ed recipient, do not read, copy, or forward this email message or any attac=
-hments. Delete this email message and any attachments immediately.
+v3 -> v4:
+- add the kerneldoc for devm_krealloc()
+- WARN() outside of spinlock
+- rename local variable
+
+v4 -> v5:
+- tweak the kerneldoc
+
+v5 -> v6:
+- tweak the devres_lock handling in devm_krealloc()
+
+v6 -> v7:
+- rework devm_krealloc() to avoid calling krealloc() with spinlock taken
+
+v7 -> v8:
+- drop unnecessary explicit pointer casting in to_devres()
+- check the return value of ksize() to make sure the pointer actually
+  points to a dynamically allocated chunk
+- add more comments to explain the locking strategy and resource handling
+
+Bartosz Golaszewski (3):
+  devres: provide devm_krealloc()
+  hwmon: pmbus: use more devres helpers
+  iio: adc: xilinx-xadc: use devm_krealloc()
+
+ .../driver-api/driver-model/devres.rst        |   1 +
+ drivers/base/devres.c                         | 114 ++++++++++++++++++
+ drivers/hwmon/pmbus/pmbus_core.c              |  28 ++---
+ drivers/iio/adc/xilinx-xadc-core.c            |  16 +--
+ include/linux/device.h                        |   2 +
+ 5 files changed, 134 insertions(+), 27 deletions(-)
+
+-- 
+2.26.1
+

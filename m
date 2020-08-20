@@ -2,84 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7012824BD87
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 15:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1895524BDA4
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 15:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730355AbgHTNHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Aug 2020 09:07:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34242 "EHLO
+        id S1728746AbgHTNKL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Aug 2020 09:10:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728918AbgHTNHV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Aug 2020 09:07:21 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63BAC061385;
-        Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id q1so611254pjd.1;
-        Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
+        with ESMTP id S1728947AbgHTNJz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Aug 2020 09:09:55 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B9DC061385;
+        Thu, 20 Aug 2020 06:09:55 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id h2so1027769plr.0;
+        Thu, 20 Aug 2020 06:09:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KqAsHDETQOry6yr0jg3Z6xIgB+xnOYYAudJegp+z6Xg=;
-        b=WdBUSZcfs2umRDboNZztXlEAAV7GXKDNIeb3Qb2tD03c5LMqg/0C6EmPXDfMC4vGWL
-         flyFLLiEZhr4QCDVgE3+cb2zmhMWitLjXqJ0jj0o4gYEw/evnDkw549tkqmeEGscRXiM
-         1ZB7RY9M0hxS28Kea7vrFQwB13yMu4HdnhSCKzBywdTbdjHcXiMtNyG0gf6YqYz6WqcB
-         9YmTgQO2wTo3eDMwEH9314ukhV0zyWbjsQoImrKwTmjhsu8rzPuPZeN8L/ViGy97D60m
-         ZOvHlwd0+bLn5hL72D8Z7pc0CdOU3wnfqxyVHVM20A6dASHAcEzFQF+rxu70wU3I3XLh
-         Cs9g==
+         :cc:content-transfer-encoding;
+        bh=rcpRkVJoKyVY/3B/RffNTzv0GP7F/59KL5DNPGHvfJo=;
+        b=Kf51tNS8rKp5fAVzk8nTv6XAPFRnqZ12quyqy90P+iGzGjaHGiEmXk215a5rwrkSjP
+         A9fpL2d/oKHqMZuzlceR1N+yUW37/wGUuyGI2rqGbYRU4IfIu5Y5Xr36e6nNOACeKDpE
+         hfe6IgfeFgaMbOu9luA8b0ZnspPXVfd/jy/6pJSbyFsGc1+Ta5JD6ea2V5uans9mXq7m
+         l6TwHmRnHyAJU+1xiDgPliP16TTvr+pXxZ8kr6J5VOUDEERoejv26SWpqR4NShZ/2zwd
+         lepX0NPt7T5uK2lT7kOUp6EYB2b1xwt0bdWHRlJ/+qcEwRRLSwYtreuJh/ptx6IZcWPF
+         VAUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KqAsHDETQOry6yr0jg3Z6xIgB+xnOYYAudJegp+z6Xg=;
-        b=Pzv1M0ZNfF+X4Av74M8Z4Khsdmj3Ks1vUqu/uTENRnCHWk3BRzRmVwofOd//seYbHz
-         X+p9Zhp5/KCiXiW3B65R33LbC4NixRmCatrAhz6Us1w1gmjmKRe7lGGpQw0relFxNtxv
-         CsonANaYrEk4fxYfAPhVgoNYN4/lhC6QMdZyFfWNyTQDSrZz5tLFFONDjObPKuA96Ocg
-         mtNYm7fcZzzMnz4EpYE9+L9heaHyA9EJJmx8+piCtMwvLl7/sJDS30NiU2W66fy9wy+m
-         iMJYuvlX72wowEzAJkKaK2ARxFyb2NuVbxGXBzC0NKpluQ8VSHtJTEQUgstUqcg0M0nS
-         TFCg==
-X-Gm-Message-State: AOAM5307qfckB3gxlEDTLQKHNeauvC2Knr2NVwEj3nLrNWGj5f0IdtgS
-        V0WubRwTcC69/oNXC+iVpLC7UahNPRNR59n4DNM=
-X-Google-Smtp-Source: ABdhPJzTHllU7kCzBoIpVPf6oizdkQ2tk+JvmqjlKxXsncAf9YDI/4BREQa+apJHkj8ZH65udItiUhcbOlKL8p4kbqc=
-X-Received: by 2002:a17:902:b098:: with SMTP id p24mr2309156plr.255.1597928840300;
- Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=rcpRkVJoKyVY/3B/RffNTzv0GP7F/59KL5DNPGHvfJo=;
+        b=XDR6QuSRZND/3w/D4H2bucl7ZHvbuNEiGyYGGjxY/NkQpwL9QdobTgu5JHX7+ouuSk
+         WiuXVp04bWdYqVhseZxYsoNOqAZ4NGr7YmEi54+jjtAVddfOiUZU4Ef1/F4j99Gio4wK
+         RZ50DV9tUfwoRiM1dZOMhJesoJke0dW3p01K4qqnPfDSFYK/dy2JeNMiLT3psJl3TLA5
+         0icNCbmXmLRIXNz8f8oKEqIgISBuyp5piiEfusF/4nfXGyw/3X89BylJwkKRD0vq6J+t
+         HMuIDG3xZ+g4oA8qFHhk8MQUlCDjqR+Bc/UalyRYks6TsLhmuovYdzJMdUGIBbJ5Fy8W
+         9FSg==
+X-Gm-Message-State: AOAM533JAHufeMrL2Lb8k/tai78dj+LmJYQ7kjqsUPkBbkXibhfjec5l
+        2nH6R17amEu3iVgCBZLXw4bnwGgOH8JMtDEq3W0=
+X-Google-Smtp-Source: ABdhPJyu0tldf5JCV8BFWNDw6/Y2eW0lJLDaQEyv+8zGx6tjmMIqt1bgmh6TEetWI13G8rBzfiKhrUCbyej3YoEdjxk=
+X-Received: by 2002:a17:90a:bc41:: with SMTP id t1mr2347505pjv.181.1597928994060;
+ Thu, 20 Aug 2020 06:09:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <1597892486-3236-1-git-send-email-tiantao6@hisilicon.com>
- <CA+U=DsojNXFxT812=i-0ceRGUV3gJXhMMb-ungP=DO166jjZMA@mail.gmail.com> <CAHp75VdqrczNjsgR7JZTsK8+=RmgFopGJ1VZdD4+BYxBHMHukg@mail.gmail.com>
-In-Reply-To: <CAHp75VdqrczNjsgR7JZTsK8+=RmgFopGJ1VZdD4+BYxBHMHukg@mail.gmail.com>
+References: <1597912282-31254-1-git-send-email-anand.ashok.dumbre@xilinx.com>
+In-Reply-To: <1597912282-31254-1-git-send-email-anand.ashok.dumbre@xilinx.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 20 Aug 2020 16:07:04 +0300
-Message-ID: <CAHp75Vf1C17eQzbuaxukzqxTgKO9Lv6fKDZ5JqfwMFWcvbMxFA@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: adi-axi-adc: Use kobj_to_dev() instead of container_of()
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Tian Tao <tiantao6@hisilicon.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Date:   Thu, 20 Aug 2020 16:09:37 +0300
+Message-ID: <CAHp75VeHut83MwpN8VNycXetcH1W0uu0TNm7o5BHrqp-9BB_gQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: Fixed IIO_VAL_FRACTIONAL calcuation for negative values
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>, git <git@xilinx.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 4:05 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Thu, Aug 20, 2020 at 12:10 PM Alexandru Ardelean
-> <ardeleanalex@gmail.com> wrote:
-> > On Thu, Aug 20, 2020 at 6:04 AM Tian Tao <tiantao6@hisilicon.com> wrote:
+On Thu, Aug 20, 2020 at 11:32 AM Anand Ashok Dumbre
+<anand.ashok.dumbre@xilinx.com> wrote:
 
-> > > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > > +       struct device *dev = kobj_to_dev(kobj);
+> This email and any attachments are intended for the sole use of the named=
+ recipient(s) and contain(s) confidential information that may be proprieta=
+ry, privileged or copyrighted under applicable law. If you are not the inte=
+nded recipient, do not read, copy, or forward this email message or any att=
+achments. Delete this email message and any attachments immediately.
 
-> And now this can be one line since dev is not used separately.
+This is not the footer that allows you to do open source.
 
-On the other hand perhaps one object per line is better to read.
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko

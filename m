@@ -2,53 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0462424BD78
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 15:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7012824BD87
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Aug 2020 15:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728830AbgHTNGG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Aug 2020 09:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
+        id S1730355AbgHTNHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Aug 2020 09:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728871AbgHTNGB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Aug 2020 09:06:01 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59459C061385;
-        Thu, 20 Aug 2020 06:06:01 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id g15so1008628plj.6;
-        Thu, 20 Aug 2020 06:06:01 -0700 (PDT)
+        with ESMTP id S1728918AbgHTNHV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Aug 2020 09:07:21 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63BAC061385;
+        Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id q1so611254pjd.1;
+        Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=diWOF1th57LrHj7EG5tnoK7CBPOeUfDwxvRZ4lqQiP0=;
-        b=DeUdFyknlpSmv5kkr6H1ATJsndaWr8MvMFne3KWTmGJG2YERGgiOrFBxV8km9lA2JU
-         Oa6V7i+KP6qIv/FWA1Np283lXNOL3vRdGSIfwsFfjMhZKMY0/wcj28w6WCZAlYqMricd
-         Be3+/O982WCiUXb4tsZAS9OEr/KdI9lmibNYy3XMw9HIowe2Rcv/4LpCoaBXo9dP8yXh
-         CRznHv/OOUqYi5+iTNJzawAu6SO/kUXt4h3YBtZjIChyxiaFt77BG+zh/9lOdN6NSMog
-         sVhkkOprbhTKlcnllopmB/AHS/eMfTPZmxPZ3XGQs2b2kqpFwjs1pyjTdZrCAtPc062G
-         wvig==
+        bh=KqAsHDETQOry6yr0jg3Z6xIgB+xnOYYAudJegp+z6Xg=;
+        b=WdBUSZcfs2umRDboNZztXlEAAV7GXKDNIeb3Qb2tD03c5LMqg/0C6EmPXDfMC4vGWL
+         flyFLLiEZhr4QCDVgE3+cb2zmhMWitLjXqJ0jj0o4gYEw/evnDkw549tkqmeEGscRXiM
+         1ZB7RY9M0hxS28Kea7vrFQwB13yMu4HdnhSCKzBywdTbdjHcXiMtNyG0gf6YqYz6WqcB
+         9YmTgQO2wTo3eDMwEH9314ukhV0zyWbjsQoImrKwTmjhsu8rzPuPZeN8L/ViGy97D60m
+         ZOvHlwd0+bLn5hL72D8Z7pc0CdOU3wnfqxyVHVM20A6dASHAcEzFQF+rxu70wU3I3XLh
+         Cs9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=diWOF1th57LrHj7EG5tnoK7CBPOeUfDwxvRZ4lqQiP0=;
-        b=e//lRh9AMYuQTZVwCmflB4EyxTOOHT/7Onqa91elCj610CNrtA3bod7IeRBtwSDEGF
-         sHNq9qpd4SLqvsfppmieYjXA8Db2tVoKnD3r7OyODmFLU6QqMcbuxorlMiUCQ4L7rIFH
-         bHfGQ/56RrDfVAemhXD+iDNFvL+WJprfrYXIOeZfydVzrBPZt0fpREqsfoSjxHpmFms0
-         9w6Cci7qAQ51+QvuFXFTErR85EO8XupODV7Pk+5Q2hoqeZWyX3sD7ZboeyRUfXjzMQnG
-         M+gnQxmAfmkL8lG4iRKyj/sUOZVOHQb1VZbKyX4vs9T9ZeWyxYBtUR0ErPzCiBRMAi1u
-         87/A==
-X-Gm-Message-State: AOAM533griJg3l0fI7SoYTGrwcsvbhPzBQp6HZK/av8Huz8A/nCUgS+l
-        Z83WmxuqKqZHM1ifYxkQFVuijs31fV5ktcDoTNg=
-X-Google-Smtp-Source: ABdhPJxA7srVMSku0uu1P5zHAAAti2hEfo+ytXQ/cTrfBTaGNEDKCsEeSr7WtE6tLnyFBWb9/IWKQ2RbXaPhzu0Togo=
-X-Received: by 2002:a17:90a:bc41:: with SMTP id t1mr2333932pjv.181.1597928760579;
- Thu, 20 Aug 2020 06:06:00 -0700 (PDT)
+        bh=KqAsHDETQOry6yr0jg3Z6xIgB+xnOYYAudJegp+z6Xg=;
+        b=Pzv1M0ZNfF+X4Av74M8Z4Khsdmj3Ks1vUqu/uTENRnCHWk3BRzRmVwofOd//seYbHz
+         X+p9Zhp5/KCiXiW3B65R33LbC4NixRmCatrAhz6Us1w1gmjmKRe7lGGpQw0relFxNtxv
+         CsonANaYrEk4fxYfAPhVgoNYN4/lhC6QMdZyFfWNyTQDSrZz5tLFFONDjObPKuA96Ocg
+         mtNYm7fcZzzMnz4EpYE9+L9heaHyA9EJJmx8+piCtMwvLl7/sJDS30NiU2W66fy9wy+m
+         iMJYuvlX72wowEzAJkKaK2ARxFyb2NuVbxGXBzC0NKpluQ8VSHtJTEQUgstUqcg0M0nS
+         TFCg==
+X-Gm-Message-State: AOAM5307qfckB3gxlEDTLQKHNeauvC2Knr2NVwEj3nLrNWGj5f0IdtgS
+        V0WubRwTcC69/oNXC+iVpLC7UahNPRNR59n4DNM=
+X-Google-Smtp-Source: ABdhPJzTHllU7kCzBoIpVPf6oizdkQ2tk+JvmqjlKxXsncAf9YDI/4BREQa+apJHkj8ZH65udItiUhcbOlKL8p4kbqc=
+X-Received: by 2002:a17:902:b098:: with SMTP id p24mr2309156plr.255.1597928840300;
+ Thu, 20 Aug 2020 06:07:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <1597892486-3236-1-git-send-email-tiantao6@hisilicon.com> <CA+U=DsojNXFxT812=i-0ceRGUV3gJXhMMb-ungP=DO166jjZMA@mail.gmail.com>
-In-Reply-To: <CA+U=DsojNXFxT812=i-0ceRGUV3gJXhMMb-ungP=DO166jjZMA@mail.gmail.com>
+References: <1597892486-3236-1-git-send-email-tiantao6@hisilicon.com>
+ <CA+U=DsojNXFxT812=i-0ceRGUV3gJXhMMb-ungP=DO166jjZMA@mail.gmail.com> <CAHp75VdqrczNjsgR7JZTsK8+=RmgFopGJ1VZdD4+BYxBHMHukg@mail.gmail.com>
+In-Reply-To: <CAHp75VdqrczNjsgR7JZTsK8+=RmgFopGJ1VZdD4+BYxBHMHukg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 20 Aug 2020 16:05:44 +0300
-Message-ID: <CAHp75VdqrczNjsgR7JZTsK8+=RmgFopGJ1VZdD4+BYxBHMHukg@mail.gmail.com>
+Date:   Thu, 20 Aug 2020 16:07:04 +0300
+Message-ID: <CAHp75Vf1C17eQzbuaxukzqxTgKO9Lv6fKDZ5JqfwMFWcvbMxFA@mail.gmail.com>
 Subject: Re: [PATCH] iio: adc: adi-axi-adc: Use kobj_to_dev() instead of container_of()
 To:     Alexandru Ardelean <ardeleanalex@gmail.com>
 Cc:     Tian Tao <tiantao6@hisilicon.com>,
@@ -66,26 +67,18 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 12:10 PM Alexandru Ardelean
-<ardeleanalex@gmail.com> wrote:
-> On Thu, Aug 20, 2020 at 6:04 AM Tian Tao <tiantao6@hisilicon.com> wrote:
-> >
-> > Use kobj_to_dev() instead of container_of()
+On Thu, Aug 20, 2020 at 4:05 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Thu, Aug 20, 2020 at 12:10 PM Alexandru Ardelean
+> <ardeleanalex@gmail.com> wrote:
+> > On Thu, Aug 20, 2020 at 6:04 AM Tian Tao <tiantao6@hisilicon.com> wrote:
 
-> Good point.
->
-> Acked-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > -       struct device *dev = container_of(kobj, struct device, kobj);
+> > > +       struct device *dev = kobj_to_dev(kobj);
 
-...
+> And now this can be one line since dev is not used separately.
 
-> > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > +       struct device *dev = kobj_to_dev(kobj);
-> >         struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-
-And now this can be one line since dev is not used separately.
-
-> >         struct adi_axi_adc_state *st = iio_priv(indio_dev);
-> >         struct adi_axi_adc_conv *conv = &st->client->conv;
+On the other hand perhaps one object per line is better to read.
 
 -- 
 With Best Regards,

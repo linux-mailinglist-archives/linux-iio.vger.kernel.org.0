@@ -2,56 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F4324D10E
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 10:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE9D24D337
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 12:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728179AbgHUI7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Aug 2020 04:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726805AbgHUI7c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Aug 2020 04:59:32 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F4CC061386
-        for <linux-iio@vger.kernel.org>; Fri, 21 Aug 2020 01:59:31 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id g14so1040530iom.0
-        for <linux-iio@vger.kernel.org>; Fri, 21 Aug 2020 01:59:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/0dxk+YAxU8AGUSVq8I4mdsBmmP3C22pS73+np6hl8U=;
-        b=b0Bt5iIIABnBan/+FeypOshmjGN854M+FsnCjPSB93/mARJJbae1tfhKhTDKAlf2BR
-         Y7V/EMRRZM3S46/1jcqWMfs0rPEgDZtGqEh73v8jpk7FtOQPS1dFWBmqVSOX80ViseRC
-         SiCFTiG51XfWRxXOtBQJsbYTiFR+9F1f9Jqtvplv70dGOLyeV8/dhXJzKE+NGg1HLIeA
-         LTT3UyGc7NsCj4q9UJZQ06pEqgUB/U7MFLwRem15MZWKMDsD9fEoWQ/tLJ5oOMug6h9a
-         5lWN55kd3V3bhFSEpm1JtDWp06QM+D4jagJI4NesOy8gYfIBy+LZkJ1oWuKJ1TAF6DLF
-         k7QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/0dxk+YAxU8AGUSVq8I4mdsBmmP3C22pS73+np6hl8U=;
-        b=JhYoXPoTNmoix57c97LAiDcbVF5K6o0Stua8mEiz8R9kfmOEmNwjmy3gTiC7u7ch2G
-         kXJUlt/aEbOKUtcv7vuh90Ky4g9zjNPHwSPMdVPmZ09roc6zgv4UL1/UxVtpotim+N8J
-         ToR4rZgLcmo+rmh2nF6DkN1+ZzN/4l7lIPrNftFkbI6jJPtl4RUWuhl6OCb5ezJKiq9d
-         o01DjId0mgKOejQAMB+pqpAUHuEH+t39hUQUXsC3b3P/gZQHD5jxXy+NDx8gXcfSYNz9
-         40cuWYWixByP6T0TgfzbxM6V7Z4Jv2BZ+yH5ehb7QJdxcLe5yCeR7PY7814YTniVqMYp
-         Favg==
-X-Gm-Message-State: AOAM533xqLlcfsLGYmGT09MwUd+NnDMuyF8LuPlMCc74Xu5mA/1hXBnl
-        s/St94hZozN5KyaegWw45Qh2G9Nv+UjaZxXpT8FtBQ==
-X-Google-Smtp-Source: ABdhPJxZMDfLVTuLtK0UKeNOHbpwzyh/MLQSbRYHKv4AYJ0os+C4fhkoB2hzOWyUFbN60IpBxRqSGZ3GGupzW5LQIWA=
-X-Received: by 2002:a5e:8f06:: with SMTP id c6mr1548343iok.119.1598000370739;
- Fri, 21 Aug 2020 01:59:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200820185110.17828-1-brgl@bgdev.pl> <20200820185110.17828-2-brgl@bgdev.pl>
- <20200821081555.GG1891694@smile.fi.intel.com>
-In-Reply-To: <20200821081555.GG1891694@smile.fi.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 21 Aug 2020 10:59:19 +0200
-Message-ID: <CAMRc=Me=D1cOsaRqK-BwHT7f-_=3=eciduA=G95FfE2e_XUWfg@mail.gmail.com>
-Subject: Re: [PATCH v8 1/3] devres: provide devm_krealloc()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1728015AbgHUKvf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Aug 2020 06:51:35 -0400
+Received: from mga07.intel.com ([134.134.136.100]:26746 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728218AbgHUKvZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Aug 2020 06:51:25 -0400
+IronPort-SDR: QfG2kwKXAUpGt/bbPReZCfSA/Nfi/bj2vo8KqIF4OvjmW6eQyb3NzqNi+VJeLjCWwpzeB82ul7
+ ibrBae9w6KIA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="219800997"
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="219800997"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2020 03:51:24 -0700
+IronPort-SDR: emp+PiYWpmZnAXCHODRvwRxv6bYsWXhzCA/k6wD/LcuxCXUXXMig+vBUxPjZK3dffZbJnIBOH7
+ wCtvYqPT0iwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="327730791"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 21 Aug 2020 03:51:21 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1k94dj-00AK4V-2U; Fri, 21 Aug 2020 13:51:19 +0300
+Date:   Fri, 21 Aug 2020 13:51:19 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -63,61 +44,92 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v8 1/3] devres: provide devm_krealloc()
+Message-ID: <20200821105119.GL1891694@smile.fi.intel.com>
+References: <20200820185110.17828-1-brgl@bgdev.pl>
+ <20200820185110.17828-2-brgl@bgdev.pl>
+ <20200821081555.GG1891694@smile.fi.intel.com>
+ <CAMRc=Me=D1cOsaRqK-BwHT7f-_=3=eciduA=G95FfE2e_XUWfg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMRc=Me=D1cOsaRqK-BwHT7f-_=3=eciduA=G95FfE2e_XUWfg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 10:35 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Aug 20, 2020 at 08:51:08PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Fri, Aug 21, 2020 at 10:59:19AM +0200, Bartosz Golaszewski wrote:
+> On Fri, Aug 21, 2020 at 10:35 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Thu, Aug 20, 2020 at 08:51:08PM +0200, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+
+...
+
+> > > +static struct devres *to_devres(void *data)
+> > > +{
+> > > +     return data - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> > > +}
+> > > +
+> > > +static size_t devres_data_size(size_t total_size)
+> > > +{
+> > > +     return total_size - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> > > +}
 > >
-> > Implement the managed variant of krealloc(). This function works with
-> > all memory allocated by devm_kmalloc() (or devres functions using it
-> > implicitly like devm_kmemdup(), devm_kstrdup() etc.).
+> > I'm fine with above, but here is a side note, perhaps
 > >
-> > Managed realloc'ed chunks can be manually released with devm_kfree().
+> >         offsetof(struct devres, data)
 > >
-> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> ...
->
-> > +static struct devres *to_devres(void *data)
-> > +{
-> > +     return data - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
-> > +}
-> > +
-> > +static size_t devres_data_size(size_t total_size)
-> > +{
-> > +     return total_size - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
-> > +}
->
-> I'm fine with above, but here is a side note, perhaps
->
->         offsetof(struct devres, data)
->
-> will be more practical (no duplication of alignment and hence slightly better
-> maintenance)? (Note, I didn't check if it provides the correct result)
->
+> > will be more practical (no duplication of alignment and hence slightly better
+> > maintenance)? (Note, I didn't check if it provides the correct result)
+> >
+> 
+> Hi Andy,
+> 
+> The data pointer in struct devres is defined as:
+> 
+>     u8 __aligned(ARCH_KMALLOC_MINALIGN) data[];
+> 
+> And this value (assigned the value of ARCH_DMA_MINALIGN) varies from
+> one arch to another. I wasn't really sure if offsetof() would work for
+> every case so I went with something very explicit.
 
-Hi Andy,
+I have checked with a small program simulating to_devres() with your variant,
+offsetof() and container_of().
 
-The data pointer in struct devres is defined as:
+The result is this: if MINALIGN < sizeof(long) and since struct is unpacked the
+offsetof(), and thus container_of(), gives correct result, while ALIGN()
+approach mistakenly moves pointer too back.
 
-    u8 __aligned(ARCH_KMALLOC_MINALIGN) data[];
+Test results
+~~~~~~~~~~~~
+sizeof(devres), ALIGN(data), resulting 3 pointers against NULL followed by
+actual pointer of allocated struct and 3 pointers against it.
 
-And this value (assigned the value of ARCH_DMA_MINALIGN) varies from
-one arch to another. I wasn't really sure if offsetof() would work for
-every case so I went with something very explicit.
+% for i in 1 2 4; do gcc -O2 -Wall -DSZ=$i -o test test.c && ./test | head -n1; done
+szof: 24 a: 24 0xffffffffffffffe8 0xffffffffffffffef 0xffffffffffffffef, 0x55a3aa91e2a0: 0x55a3aa91e299 0x55a3aa91e2a0 0x55a3aa91e2a0
+szof: 24 a: 24 0xffffffffffffffe8 0xffffffffffffffee 0xffffffffffffffee, 0x563d7b88b2a0: 0x563d7b88b29a 0x563d7b88b2a0 0x563d7b88b2a0
+szof: 24 a: 24 0xffffffffffffffe8 0xffffffffffffffec 0xffffffffffffffec, 0x557d08cf82a0: 0x557d08cf829c 0x557d08cf82a0 0x557d08cf82a0
 
-> Another side note: do we have existing users of these helpers?
->
+% for i in 1 2 4; do gcc -m32 -O2 -Wall -DSZ=$i -o test test.c && ./test | head -n1; done
+szof: 12 a: 12 0xfffffff4 0xfffffff7 0xfffffff7, 0x584301a0: 0x5843019d 0x584301a0 0x584301a0
+szof: 12 a: 12 0xfffffff4 0xfffffff6 0xfffffff6, 0x57bd61a0: 0x57bd619e 0x57bd61a0 0x57bd61a0
+szof: 12 a: 12 0xfffffff4 0xfffffff4 0xfffffff4, 0x56b491a0: 0x56b491a0 0x56b491a0 0x56b491a0
 
-Which ones? Because I assume you're not referring to the ones I'm
-adding in this patch. :)
+I think you need to change this to use container_of() and offsetof().
 
-Bart
+> > Another side note: do we have existing users of these helpers?
+> 
+> Which ones? Because I assume you're not referring to the ones I'm
+> adding in this patch. :)
+
+Opposite, the ones you are introduced here. Meaning that we might convert
+existing user(s) in the separate change(s) later on.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

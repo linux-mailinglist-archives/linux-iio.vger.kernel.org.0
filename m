@@ -2,189 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7762F24D8E3
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 17:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86E424D93A
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 18:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727921AbgHUPjq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Aug 2020 11:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55290 "EHLO
+        id S1727845AbgHUQAT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Aug 2020 12:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727882AbgHUPjo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Aug 2020 11:39:44 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C56FC061573;
-        Fri, 21 Aug 2020 08:39:44 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id b11so1034449pld.7;
-        Fri, 21 Aug 2020 08:39:44 -0700 (PDT)
+        with ESMTP id S1727864AbgHUQAP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Aug 2020 12:00:15 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD604C061573
+        for <linux-iio@vger.kernel.org>; Fri, 21 Aug 2020 09:00:14 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id b16so2211709ioj.4
+        for <linux-iio@vger.kernel.org>; Fri, 21 Aug 2020 09:00:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DG7naCvPgXGiCExgkvnWZgl1bCrL3Q2lEpDgpQnU+oc=;
-        b=vfWoBBcABnl1L+FQhlYO0Kcp/ayXOi3lNY5u+Pg9rExEtAo5n5L1bYY1aLa7UaJslG
-         RBwzAE4HCKMefIUI5hsDH7hmPnxTnoiFwe2QqRADiTypj6ghx9jtZjQEcVezj7DrKrTx
-         97j2rj+ZC6QCCDwUO4H3J8BDOW0BUl27gEFEuOG3bT98SZiArfePGwoRCmlZju/xM/Mm
-         nAvBUipvwscITtXhbLs1tDnhJ37s9t/wUKTy/N/aM9gIWTp1/cfnIp49juLMntrhywPs
-         NrGblDB+HegbgCr3FpYV1KNWPMazGRVfVyI25x44LBKjajQDOKyed3H+13AoRm8qRRxG
-         At6Q==
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LWjzEcPwT/6hwotRNTIY9NaBUTyN7quweFTkYLEKd40=;
+        b=jDClVLEKJWhVolsUnITnsSQo1HZzq0iWZfsy/liv4zabUX+ksQm7q238ZH77pv1pww
+         IE2xpVnuJb0uUGalHSvWp5hGTYvxUx0+HkDPoxchFCTb86f4kJvl+QgU/xdEwcfd12or
+         N0oR8zb3+O+MdVq+R3wLWUjrLcP38QTN/0dRYdDDE3yysc+3hHqQz4J+GexYsxP1PLHE
+         AowSSCByJw/nNarcPN/7VDb3U/wCv5B3QN6KbccLZuljorjIguGphz9/a/CGgn3oG543
+         6yAp00g7o29yBR/8IX02hwpwdvpe2OV+yxIF42nETH+66Ebc2yEb3h5XPuCtnhZoBK6c
+         mvwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=DG7naCvPgXGiCExgkvnWZgl1bCrL3Q2lEpDgpQnU+oc=;
-        b=uAjlRFtitgAga322HS3rRQttKBBTCc3zN3i5BxN3i1TzQ+aQZ0nOAuT9VNF41/ESxj
-         5JMSRfYEhZJGa+qkYWt8gLlhMTw+N7m5zVcc0mTYd+9UWk+sBZP4lit6tnpVo6CxAUpv
-         iZfZ3EmydeWTal359dpjkSLwwgsp7ZqIjvW0eGFBxXUwYhDxBZx/an5Ze0nd/uhTV6tN
-         05IM2Gs+f/GhQgWU9xrm5gtX67cv62WSqUIDnP4NjKhOqd5mh9M5UP9O3sMMq0q17cQO
-         ltO+0UffMpPnep1HAmsq3jjIiYEgg/wVIeRLJV/SWdx2nteKtsJArfDxuIa+HeaGHo6B
-         yh/A==
-X-Gm-Message-State: AOAM532QxFP851c/BBFwgGXipC2qT741f6KoySp/RwWtsz893wKzP2KY
-        uVLskWyxWdkIBVjoWJYmeOZErXG0ROc=
-X-Google-Smtp-Source: ABdhPJzv73uXqomQdzD1Z1czOKY8qchPEpQg7dDizoFqem1pofcozWvAkUm3cSke91BfhFuTAWBaEw==
-X-Received: by 2002:a17:90b:11c4:: with SMTP id gv4mr2899721pjb.198.1598024383854;
-        Fri, 21 Aug 2020 08:39:43 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e125sm2992507pfh.69.2020.08.21.08.39.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Aug 2020 08:39:42 -0700 (PDT)
-Subject: Re: [PATCH v4 0/7] platform/chrome: cros_ec_proto: Convert EC error
- codes to Linux error codes
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200806153308.204605-1-linux@roeck-us.net>
- <0dfbce79-0413-de27-a2cb-a687ab2fd9d8@collabora.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <ce0bfe13-38b8-1891-802c-84b4148333d1@roeck-us.net>
-Date:   Fri, 21 Aug 2020 08:39:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LWjzEcPwT/6hwotRNTIY9NaBUTyN7quweFTkYLEKd40=;
+        b=hcrL3EvjY8rkv7+Y6LEOENKiuEyz8OeZt05GunAB+azTqpvgDjnky/deZXyu2exWDU
+         S9CXOhposFEBbCqpQlLNWwMalmAm1K7V2QhTRv+RTQrdKKBwrQW3mzIyOh0VxW38bSO2
+         0C7EGdKg+dkA5mscUGcO1+3631j4o0AWBU2SPXak4PIG3MfUqdxH/Xx5wCYQFyuBjlRx
+         PiTBNVukbMHdvZ7KRxXzDIu485Iidx9qqBO3C2e0LzFaeStM4nrIPvSJruOcKIFz521i
+         CirX6/UPEI8LYgWCdp11u72PymZ+jC0bKfhXy29DTOPdvOyp9jAGj4PZLUDZDeG4L+Qh
+         blDg==
+X-Gm-Message-State: AOAM5303/OVFawc10pouf4bOAwMC/8kIo/dAHXilq5qNA6olVXRN2IAf
+        F77FqByMZj2eLiKZSCou4ohJHx2R0zLEOtI8ifU9Lg==
+X-Google-Smtp-Source: ABdhPJwBm13KEUhNRpo7vk4oIVXm7ASv7AuOGK/3nYoePGcCxW34adTWVSkCHauITkFQuVHyKmTrX4EY/gRMqEK65h4=
+X-Received: by 2002:a5d:8cce:: with SMTP id k14mr2831399iot.13.1598025613850;
+ Fri, 21 Aug 2020 09:00:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <0dfbce79-0413-de27-a2cb-a687ab2fd9d8@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200820185110.17828-1-brgl@bgdev.pl> <20200820185110.17828-2-brgl@bgdev.pl>
+ <20200821081555.GG1891694@smile.fi.intel.com> <CAMRc=Me=D1cOsaRqK-BwHT7f-_=3=eciduA=G95FfE2e_XUWfg@mail.gmail.com>
+ <20200821105119.GL1891694@smile.fi.intel.com> <20200821110403.GP1891694@smile.fi.intel.com>
+In-Reply-To: <20200821110403.GP1891694@smile.fi.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Fri, 21 Aug 2020 18:00:02 +0200
+Message-ID: <CAMRc=MfLkBRKu9ofSUGH=k3hxiJk-g=MMvab2awcsmeyF4RAKg@mail.gmail.com>
+Subject: Re: [PATCH v8 1/3] devres: provide devm_krealloc()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/21/20 1:21 AM, Enric Balletbo i Serra wrote:
-> Hi Guenter et all,
-> 
-> On 6/8/20 17:33, Guenter Roeck wrote:
->> The EC reports a variety of error codes. Most of those, with the exception
->> of EC_RES_INVALID_VERSION, are converted to -EPROTO. As result, the actual
->> error code gets lost. In cros_ec_cmd_xfer_status(), convert all EC errors
->> to Linux error codes to report a more meaningful error to the caller to aid
->> debugging.
->>
->> To prepare for this change, handle error codes other than -EPROTO for all
->> callers of cros_ec_cmd_xfer_status(). Specifically, no longer assume that
->> -EPROTO reflects an error from the EC and all other error codes reflect a
->> transfer error.
->>
->> v2: Add patches 1/4 to 3/4 to handle callers of cros_ec_cmd_xfer_status()
->> v3: Add patches 4/6 and 5/6 to handle additional callers of
->> 	cros_ec_cmd_xfer_status()
->>     Use -ENOPROTOOPT for EC_RES_INVALID_VERSION
->>     Implement function to convert error codes
->> v4: Add coments describing the functionality of cros_ec_num_pwms().
->>     Add patch 7/7 to clean up cros_ec_num_pwms() after the new error code
->>     support has been implemented.
->>     Rebased series to v5.8.
->>
->> ----------------------------------------------------------------
->> Guenter Roeck (7):
->>       iio: cros_ec: Accept -EOPNOTSUPP as 'not supported' error code
->>       cros_ec_lightbar: Accept more error codes from cros_ec_cmd_xfer_status
->>       platform/chrome: cros_ec_sysfs: Report range of error codes from EC
->>       pwm: cros-ec: Accept more error codes from cros_ec_cmd_xfer_status
->>       platform/input: cros_ec: Replace -ENOTSUPP with -ENOPROTOOPT
->>       platform/chrome: cros_ec_proto: Convert EC error codes to Linux error codes
->>       pwm: cros-ec: Simplify EC error handling
->>
->>  .../iio/common/cros_ec_sensors/cros_ec_sensors.c   |  2 +-
->>  drivers/input/keyboard/cros_ec_keyb.c              |  2 +-
->>  drivers/platform/chrome/cros_ec_lightbar.c         | 10 ++---
->>  drivers/platform/chrome/cros_ec_proto.c            | 52 +++++++++++++++++-----
->>  drivers/platform/chrome/cros_ec_sysfs.c            | 24 ++++------
->>  drivers/pwm/pwm-cros-ec.c                          | 37 +++++++--------
->>  6 files changed, 74 insertions(+), 53 deletions(-)
->>
-> 
-> The patches LGTM, and if the other maintainers are fine, I'd like to queue all
-> these through the chrome-platform tree.
-> 
-> I noticed, thought, that KernelCI reported a regression on Kevin that I'll try
-> to debug at the beginning of next week.
-> 
-> [    3.821203] cros-ec-spi spi2.0: Wrong size 1/3: 0 != 4
-> [    3.827320] cros-ec-keyb ff200000.spi:ec@0:keyboard-controller: cannot
-> register non-matrix inputs: -71
-> [    3.838506] cros-ec-keyb: probe of ff200000.spi:ec@0:keyboard-controller
-> failed with error -71
-> [    3.853492] cros-ec-spi spi2.0: Chrome EC device registered
-> 
+On Fri, Aug 21, 2020 at 1:04 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Aug 21, 2020 at 01:51:19PM +0300, Andy Shevchenko wrote:
+> > On Fri, Aug 21, 2020 at 10:59:19AM +0200, Bartosz Golaszewski wrote:
+> > > On Fri, Aug 21, 2020 at 10:35 AM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Thu, Aug 20, 2020 at 08:51:08PM +0200, Bartosz Golaszewski wrote:
+>
+> ...
+>
+> > > > > +static struct devres *to_devres(void *data)
+> > > > > +{
+> > > > > +     return data - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> > > > > +}
+> > > > > +
+> > > > > +static size_t devres_data_size(size_t total_size)
+> > > > > +{
+> > > > > +     return total_size - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> > > > > +}
+>
+> > > The data pointer in struct devres is defined as:
+> > >
+> > >     u8 __aligned(ARCH_KMALLOC_MINALIGN) data[];
+> > >
+> > > And this value (assigned the value of ARCH_DMA_MINALIGN) varies from
+> > > one arch to another. I wasn't really sure if offsetof() would work for
+> > > every case so I went with something very explicit.
+> >
+> > I have checked with a small program simulating to_devres() with your variant,
+> > offsetof() and container_of().
+> >
+> > The result is this: if MINALIGN < sizeof(long) and since struct is unpacked the
+> > offsetof(), and thus container_of(), gives correct result, while ALIGN()
+> > approach mistakenly moves pointer too back.
+>
+> ...
+>
+> > I think you need to change this to use container_of() and offsetof().
+>
+> To be clear, there is probably no real problem, except unlikely possible
+> MINALIGN=4 on 64-bit arch, but for sake of the correctness.
+>
 
-Easy to debug. cros_ec_cmd_xfer_status() now returns 0 for success and < 0 for errors.
-It needs to return the receive length if there is no error. I'll send v5 with a fix,
-and sorry for the trouble.
+Thanks for taking the time to check it. I'll switch to container_of()
+for (hopefully) the last iteration.
 
-Thanks,
-Guenter
+Bart

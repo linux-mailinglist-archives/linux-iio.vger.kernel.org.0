@@ -2,107 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E21C24D078
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 10:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10EC724D09E
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Aug 2020 10:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726345AbgHUIVe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Aug 2020 04:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725965AbgHUIVd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Aug 2020 04:21:33 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C218C061385;
-        Fri, 21 Aug 2020 01:21:33 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 5BC6E29AED4
-Subject: Re: [PATCH v4 0/7] platform/chrome: cros_ec_proto: Convert EC error
- codes to Linux error codes
-To:     Guenter Roeck <linux@roeck-us.net>
+        id S1726879AbgHUIfl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Aug 2020 04:35:41 -0400
+Received: from mga18.intel.com ([134.134.136.126]:62770 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726757AbgHUIfj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Aug 2020 04:35:39 -0400
+IronPort-SDR: 473IjoKoSUySt7XxSerjKtpL6iZBXxpCmGyzfmrrMpAygYiGX/PRP8DzUz3NKGGBnO/QsWDCh9
+ aOolRDmSCPlQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="143124538"
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="143124538"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2020 01:35:38 -0700
+IronPort-SDR: kPINq9ixWXyPpch7brhxnjMiBn6ePSw4V+gQnwsz0I5/NakVFttvyHIM9Z+bHNE0Nqf18ENI3v
+ F+cuKaXVHgOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; 
+   d="scan'208";a="327705621"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008.jf.intel.com with ESMTP; 21 Aug 2020 01:35:35 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1k92DL-00AI66-Dw; Fri, 21 Aug 2020 11:15:55 +0300
+Date:   Fri, 21 Aug 2020 11:15:55 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Yu-Hsuan Hsu <yuhsuan@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200806153308.204605-1-linux@roeck-us.net>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <0dfbce79-0413-de27-a2cb-a687ab2fd9d8@collabora.com>
-Date:   Fri, 21 Aug 2020 10:21:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v8 1/3] devres: provide devm_krealloc()
+Message-ID: <20200821081555.GG1891694@smile.fi.intel.com>
+References: <20200820185110.17828-1-brgl@bgdev.pl>
+ <20200820185110.17828-2-brgl@bgdev.pl>
 MIME-Version: 1.0
-In-Reply-To: <20200806153308.204605-1-linux@roeck-us.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200820185110.17828-2-brgl@bgdev.pl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Guenter et all,
-
-On 6/8/20 17:33, Guenter Roeck wrote:
-> The EC reports a variety of error codes. Most of those, with the exception
-> of EC_RES_INVALID_VERSION, are converted to -EPROTO. As result, the actual
-> error code gets lost. In cros_ec_cmd_xfer_status(), convert all EC errors
-> to Linux error codes to report a more meaningful error to the caller to aid
-> debugging.
+On Thu, Aug 20, 2020 at 08:51:08PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> To prepare for this change, handle error codes other than -EPROTO for all
-> callers of cros_ec_cmd_xfer_status(). Specifically, no longer assume that
-> -EPROTO reflects an error from the EC and all other error codes reflect a
-> transfer error.
+> Implement the managed variant of krealloc(). This function works with
+> all memory allocated by devm_kmalloc() (or devres functions using it
+> implicitly like devm_kmemdup(), devm_kstrdup() etc.).
 > 
-> v2: Add patches 1/4 to 3/4 to handle callers of cros_ec_cmd_xfer_status()
-> v3: Add patches 4/6 and 5/6 to handle additional callers of
-> 	cros_ec_cmd_xfer_status()
->     Use -ENOPROTOOPT for EC_RES_INVALID_VERSION
->     Implement function to convert error codes
-> v4: Add coments describing the functionality of cros_ec_num_pwms().
->     Add patch 7/7 to clean up cros_ec_num_pwms() after the new error code
->     support has been implemented.
->     Rebased series to v5.8.
+> Managed realloc'ed chunks can be manually released with devm_kfree().
 > 
-> ----------------------------------------------------------------
-> Guenter Roeck (7):
->       iio: cros_ec: Accept -EOPNOTSUPP as 'not supported' error code
->       cros_ec_lightbar: Accept more error codes from cros_ec_cmd_xfer_status
->       platform/chrome: cros_ec_sysfs: Report range of error codes from EC
->       pwm: cros-ec: Accept more error codes from cros_ec_cmd_xfer_status
->       platform/input: cros_ec: Replace -ENOTSUPP with -ENOPROTOOPT
->       platform/chrome: cros_ec_proto: Convert EC error codes to Linux error codes
->       pwm: cros-ec: Simplify EC error handling
-> 
->  .../iio/common/cros_ec_sensors/cros_ec_sensors.c   |  2 +-
->  drivers/input/keyboard/cros_ec_keyb.c              |  2 +-
->  drivers/platform/chrome/cros_ec_lightbar.c         | 10 ++---
->  drivers/platform/chrome/cros_ec_proto.c            | 52 +++++++++++++++++-----
->  drivers/platform/chrome/cros_ec_sysfs.c            | 24 ++++------
->  drivers/pwm/pwm-cros-ec.c                          | 37 +++++++--------
->  6 files changed, 74 insertions(+), 53 deletions(-)
-> 
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The patches LGTM, and if the other maintainers are fine, I'd like to queue all
-these through the chrome-platform tree.
+...
 
-I noticed, thought, that KernelCI reported a regression on Kevin that I'll try
-to debug at the beginning of next week.
+> +static struct devres *to_devres(void *data)
+> +{
+> +	return data - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> +}
+> +
+> +static size_t devres_data_size(size_t total_size)
+> +{
+> +	return total_size - ALIGN(sizeof(struct devres), ARCH_KMALLOC_MINALIGN);
+> +}
 
-[    3.821203] cros-ec-spi spi2.0: Wrong size 1/3: 0 != 4
-[    3.827320] cros-ec-keyb ff200000.spi:ec@0:keyboard-controller: cannot
-register non-matrix inputs: -71
-[    3.838506] cros-ec-keyb: probe of ff200000.spi:ec@0:keyboard-controller
-failed with error -71
-[    3.853492] cros-ec-spi spi2.0: Chrome EC device registered
+I'm fine with above, but here is a side note, perhaps
 
-Thanks,
- Enric
+	offsetof(struct devres,	data)
+
+will be more practical (no duplication of alignment and hence slightly better
+maintenance)? (Note, I didn't check if it provides the correct result)
+
+Another side note: do we have existing users of these helpers?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

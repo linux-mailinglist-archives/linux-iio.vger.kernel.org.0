@@ -2,168 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E3024F6E1
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Aug 2020 11:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD7924FA6F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Aug 2020 11:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729486AbgHXJG4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Aug 2020 05:06:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39278 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728790AbgHXJGy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Aug 2020 05:06:54 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19CDC061573;
-        Mon, 24 Aug 2020 02:06:53 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id f193so4480120pfa.12;
-        Mon, 24 Aug 2020 02:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=kUkHyWifMBTnLUKfuOlzPEWC4L6WTYZmfRcQtW7YpF0=;
-        b=Z7JfQloKaTjiT0H4ASAyjMkzOVg0yvKyOhrTwAaHBfJbVfCJcgfcC/td6BJwaNPz4C
-         ff9ViiFoPralIJ8iinxqg7EGJesq/N2dB6tFIsnDAyq1IwXuvT2ySJe6YoK0eLBEko46
-         0gfp6pg5DKGU5U+h2TigbaH1m/PVqGMqTfJSkcgUAduItvIzaIFLJ9uX00Yh2EHCHyBh
-         YcrWAACm2yCl8VSUoxJh+oo406KRROv9VENVUPjD/59wOX2eXxvtyBY80Y7yo6BqS4t1
-         fbMGY+0drYrqVOB04LqRnl/lgluQ/L7NZMK1/3dMZH0sBEJwYUeuJh0342DPyCrTr+I2
-         kjdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=kUkHyWifMBTnLUKfuOlzPEWC4L6WTYZmfRcQtW7YpF0=;
-        b=Z7BH/W7901IBeO8jFQIaCnkPYhpOXgrHkVlMOjOCGqoXdm65gdFUHgtHuXVjYvMGfd
-         g6trMIUw779RuyvScIJOWzjIHKsdwwo2W2GjmlaR5z63i7YhLu1mR6SswSOsYlsSG/ZJ
-         CMTRYlLQeGvT5/5feosdmPbJtLAOxcvW3xe9n626S+XCFJ+rkxLXYWvGbzma5apM9vkv
-         URhe8YeN/Fd73D7WGdyyyAGC93zuWvex/3W+4Ef/mKbWu4Dn8XmUO+oeToNg1pPnHZz/
-         gpuFv20XuJif6SNt0LoIYR7SGFy4lGSgI8oJhCuGXJ0XsVjAHBkrggZMp11R+3dTPoQt
-         Hbig==
-X-Gm-Message-State: AOAM5321WX/9h9g0JCHWwyQuAyHsJ7tM6WuMkONUol5UWXTuLznHff+2
-        DvLZ4IRexeiwpPBX8RwpQdw=
-X-Google-Smtp-Source: ABdhPJw14xcNmXa1rR9IVlAIv+z1Xu6egOA/ZqBXZ3+NIiQOsygfcNGkj27A9h4zWhIQbWn+tiZxpQ==
-X-Received: by 2002:a63:5c08:: with SMTP id q8mr2956738pgb.222.1598260013533;
-        Mon, 24 Aug 2020 02:06:53 -0700 (PDT)
-Received: from localhost.localdomain ([2402:7500:484:931d:1b34:35e8:fe10:8c7a])
-        by smtp.gmail.com with ESMTPSA id c20sm9220988pjv.31.2020.08.24.02.06.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Aug 2020 02:06:53 -0700 (PDT)
-From:   Gene Chen <gene.chen.richtek@gmail.com>
-To:     jic23@kernel.org, matthias.bgg@gmail.com
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        gene_chen@richtek.com, Wilma.Wu@mediatek.com,
-        shufan_lee@richtek.com, cy_huang@richtek.com,
-        benjamin.chao@mediatek.com
-Subject: [PATCH v3 2/2] Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
-Date:   Mon, 24 Aug 2020 17:06:25 +0800
-Message-Id: <1598259985-12517-3-git-send-email-gene.chen.richtek@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1598259985-12517-1-git-send-email-gene.chen.richtek@gmail.com>
-References: <1598259985-12517-1-git-send-email-gene.chen.richtek@gmail.com>
+        id S1728953AbgHXJ4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Aug 2020 05:56:13 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5172 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728211AbgHXIgG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Aug 2020 04:36:06 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07O8S0Fa010434;
+        Mon, 24 Aug 2020 04:36:04 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 333094wgka-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 24 Aug 2020 04:36:04 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 07O8a351003516
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 24 Aug 2020 04:36:03 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 24 Aug
+ 2020 04:36:02 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 24 Aug 2020 04:36:02 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 07O8a0Lg005561;
+        Mon, 24 Aug 2020 04:36:00 -0400
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [RFC PATCH v2] iio: core: Add optional symbolic label to a device channel
+Date:   Mon, 24 Aug 2020 11:36:46 +0300
+Message-ID: <20200824083646.84886-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-24_07:2020-08-24,2020-08-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ phishscore=0 mlxscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008240063
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Gene Chen <gene_chen@richtek.com>
+If a label is defined in the device tree for this channel add that
+to the channel specific attributes. This is useful for userspace to
+be able to identify an individual channel.
 
-Add ABI documentation for mt6360 ADC sysfs interfaces.
-
-Signed-off-by: Gene Chen <gene_chen@richtek.com>
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 ---
- Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360 | 83 ++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
+ Changes in v2:
+	- Move label check before "read_raw" callback.
+	- Move the responsability to of parsing channel labels, to the
+	  driver.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360 b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
-new file mode 100644
-index 0000000..9dab17e
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
-@@ -0,0 +1,83 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/usbid_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 USBID ADC
-+		Reading returns current voltage in uV
+ drivers/iio/industrialio-core.c | 10 ++++++++--
+ include/linux/iio/iio.h         |  2 ++
+ include/linux/iio/types.h       |  1 +
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 1527f01a44f1..32277e94f02d 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -135,6 +135,7 @@ static const char * const iio_modifier_names[] = {
+ /* relies on pairs of these shared then separate */
+ static const char * const iio_chan_info_postfix[] = {
+ 	[IIO_CHAN_INFO_RAW] = "raw",
++	[IIO_CHAN_INFO_LABEL] = "label",
+ 	[IIO_CHAN_INFO_PROCESSED] = "input",
+ 	[IIO_CHAN_INFO_SCALE] = "scale",
+ 	[IIO_CHAN_INFO_OFFSET] = "offset",
+@@ -653,14 +654,18 @@ static ssize_t iio_read_channel_info(struct device *dev,
+ 	int ret;
+ 	int val_len = 2;
+ 
+-	if (indio_dev->info->read_raw_multi)
++	if (indio_dev->info->read_raw_multi) {
+ 		ret = indio_dev->info->read_raw_multi(indio_dev, this_attr->c,
+ 							INDIO_MAX_RAW_ELEMENTS,
+ 							vals, &val_len,
+ 							this_attr->address);
+-	else
++	} else {
+ 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
+ 				    &vals[0], &vals[1], this_attr->address);
++		if (ret < 0 && this_attr->address == IIO_CHAN_INFO_LABEL &&
++			this_attr->c->label_name)
++			return sprintf(buf, "%s\n", this_attr->c->label_name);
++	}
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -1399,6 +1404,7 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+ 			attrcount_orig++;
+ 	}
+ 	attrcount = attrcount_orig;
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/vbusdiv5_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 VBUS ADC with high accuracy
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/vbusdiv2_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 VBUS ADC with low accuracy
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/vsys_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 VSYS ADC
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/vbat_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 VBAT ADC
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/ibus_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 IBUS ADC
-+		Reading returns current in uA
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/ibat_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 IBAT ADC
-+		Reading returns current in uA
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/chg_vddp_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 CHG_VDDP ADC
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/temp_jc_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 IC junction temperature
-+		Reading returns current temperature in degree
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/vref_ts_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 VREF_TS ADC
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/ts_input
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 TS ADC
-+		Reading returns current voltage in uV
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/timestamp
-+KernelVersion:	5.8.0
-+Contact:	gene_chen@richtek.com
-+Description:
-+		Indicated MT6360 timestamp
-+		Reading returns current timestamp in ms
+ 	/*
+ 	 * New channel registration method - relies on the fact a group does
+ 	 * not need to be initialized if its name is NULL.
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index a1be82e74c93..39209f3b62be 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -223,6 +223,7 @@ struct iio_event_spec {
+  *			correspond to the first name that the channel is referred
+  *			to by in the datasheet (e.g. IND), or the nearest
+  *			possible compound name (e.g. IND-INC).
++ * @label_name:		Unique name to identify which channel this is.
+  * @modified:		Does a modifier apply to this channel. What these are
+  *			depends on the channel type.  Modifier is set in
+  *			channel2. Examples are IIO_MOD_X for axial sensors about
+@@ -260,6 +261,7 @@ struct iio_chan_spec {
+ 	const struct iio_chan_spec_ext_info *ext_info;
+ 	const char		*extend_name;
+ 	const char		*datasheet_name;
++	const char		*label_name;
+ 	unsigned		modified:1;
+ 	unsigned		indexed:1;
+ 	unsigned		output:1;
+diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+index e6fd3645963c..c8f65f476eb2 100644
+--- a/include/linux/iio/types.h
++++ b/include/linux/iio/types.h
+@@ -34,6 +34,7 @@ enum iio_available_type {
+ 
+ enum iio_chan_info_enum {
+ 	IIO_CHAN_INFO_RAW = 0,
++	IIO_CHAN_INFO_LABEL,
+ 	IIO_CHAN_INFO_PROCESSED,
+ 	IIO_CHAN_INFO_SCALE,
+ 	IIO_CHAN_INFO_OFFSET,
 -- 
-2.7.4
+2.17.1
 

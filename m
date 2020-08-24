@@ -2,147 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD7924FA6F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Aug 2020 11:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 639122506A6
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Aug 2020 19:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728953AbgHXJ4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Aug 2020 05:56:13 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5172 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728211AbgHXIgG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Aug 2020 04:36:06 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07O8S0Fa010434;
-        Mon, 24 Aug 2020 04:36:04 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 333094wgka-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Aug 2020 04:36:04 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 07O8a351003516
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 24 Aug 2020 04:36:03 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 24 Aug
- 2020 04:36:02 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 24 Aug 2020 04:36:02 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 07O8a0Lg005561;
-        Mon, 24 Aug 2020 04:36:00 -0400
-From:   Cristian Pop <cristian.pop@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, Cristian Pop <cristian.pop@analog.com>
-Subject: [RFC PATCH v2] iio: core: Add optional symbolic label to a device channel
-Date:   Mon, 24 Aug 2020 11:36:46 +0300
-Message-ID: <20200824083646.84886-1-cristian.pop@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726429AbgHXRjI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Aug 2020 13:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35242 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726086AbgHXRjG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Aug 2020 13:39:06 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1E6C061573
+        for <linux-iio@vger.kernel.org>; Mon, 24 Aug 2020 10:39:05 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id o21so9025845wmc.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Aug 2020 10:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NHqg/CRd3ImS5C9/z0529f/sgF1Y8XoJ8ekTa/Kbeao=;
+        b=ua8GVG/wkZhFJ0nIz55IgC5mKz64cCXHEZh8OOq+bgoz7H1Jx6HwMl4N1S5vVT5wnd
+         mno1udnNO1eRtrBmID3NCP+QZTMJBaA9kail1BX9zI42pqVXxqgOeUeLmdrUc61fF8UZ
+         ZXUjrZ+W9pm2GwriQ3Gwfdbr3wYQKqGAsgh7CLuJJqCswrR0Kl3ZctHiDD9vGCLUZcA1
+         Ctai4tRtrkCU5qZ+6GHuWGppBdzhu1cSWG4XtZv7xUghqrOajjhVCWRlBXmLGXNTIAgm
+         Knw1sB06QFJU8qfzkuhkFoid/ptQrThXWttttA7kvk2NviUj9k6mBc01BxwBImLvlKwy
+         bLZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NHqg/CRd3ImS5C9/z0529f/sgF1Y8XoJ8ekTa/Kbeao=;
+        b=Eb5Ez4gRzICPRBbn9cwukKW/v9TxqsZQ2sbdhg6TXiDe5r3N/Rfin3yplkFT4rS6kB
+         JSNyY8QLvNyZAhIrFsmYk7mCRe1uPiORdetDNYKXisLtBZO7zathKOiVm9oVUiIONDyT
+         8aYFbLdc9LqPL+wFCqHEP7TLzvFZOPSRdXhUcKIqZB2rmxgCUwXbqkFfmzuDw52FbUuV
+         FfztfNylfMs6Lf/FbpxOw+0kkxjCtPVWJJ/af12e6wt5b814y8CSt4Tikqdb592Dh0oR
+         NNqD8wo/KKscJMrBhVHU9ar2nuA7gTFggrUBunrDB4S9uy3z21nBZx/eZsjROca8LZCA
+         SOfQ==
+X-Gm-Message-State: AOAM532oeUBC5ssxHEgEEQSqa7pKDJZ37dqQ/cu25Jc+i3YYNOGBjul7
+        jtygSTtDtylW+xhCgC7lt9iB5A==
+X-Google-Smtp-Source: ABdhPJyzldmOEXlL6891aI7qL7sR+2Tl5GOk5HnmHxIL3oR6HsnWwls74S99vrVXQdme8MY2daqqOw==
+X-Received: by 2002:a1c:6555:: with SMTP id z82mr344446wmb.67.1598290743340;
+        Mon, 24 Aug 2020 10:39:03 -0700 (PDT)
+Received: from debian-brgl.home (lfbn-nic-1-68-20.w2-15.abo.wanadoo.fr. [2.15.159.20])
+        by smtp.gmail.com with ESMTPSA id y24sm471977wmi.17.2020.08.24.10.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2020 10:39:02 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v9 0/3] devres: provide and use devm_krealloc()
+Date:   Mon, 24 Aug 2020 19:38:56 +0200
+Message-Id: <20200824173859.4910-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-24_07:2020-08-24,2020-08-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- phishscore=0 mlxscore=0 bulkscore=0 adultscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008240063
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-If a label is defined in the device tree for this channel add that
-to the channel specific attributes. This is useful for userspace to
-be able to identify an individual channel.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Signed-off-by: Cristian Pop <cristian.pop@analog.com>
----
- Changes in v2:
-	- Move label check before "read_raw" callback.
-	- Move the responsability to of parsing channel labels, to the
-	  driver.
+Regular krealloc() obviously can't work with managed memory. This series
+implements devm_krealloc() and adds two first users with hope that this
+helper will be adopted by other drivers currently using non-managed
+krealloc().
 
- drivers/iio/industrialio-core.c | 10 ++++++++--
- include/linux/iio/iio.h         |  2 ++
- include/linux/iio/types.h       |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
+v1 -> v2:
+- remove leftover call to hwmon_device_unregister() from pmbus_core.c
+- add a patch extending devm_kmalloc() to handle zero size case
+- use WARN_ON() instead of WARN_ONCE() in devm_krealloc() when passed
+  a pointer to non-managed memory
+- correctly handle the case when devm_krealloc() is passed a pointer to
+  memory in .rodata (potentially returned by devm_kstrdup_const())
+- correctly handle ZERO_SIZE_PTR passed as the ptr argument in devm_krealloc()
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 1527f01a44f1..32277e94f02d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -135,6 +135,7 @@ static const char * const iio_modifier_names[] = {
- /* relies on pairs of these shared then separate */
- static const char * const iio_chan_info_postfix[] = {
- 	[IIO_CHAN_INFO_RAW] = "raw",
-+	[IIO_CHAN_INFO_LABEL] = "label",
- 	[IIO_CHAN_INFO_PROCESSED] = "input",
- 	[IIO_CHAN_INFO_SCALE] = "scale",
- 	[IIO_CHAN_INFO_OFFSET] = "offset",
-@@ -653,14 +654,18 @@ static ssize_t iio_read_channel_info(struct device *dev,
- 	int ret;
- 	int val_len = 2;
- 
--	if (indio_dev->info->read_raw_multi)
-+	if (indio_dev->info->read_raw_multi) {
- 		ret = indio_dev->info->read_raw_multi(indio_dev, this_attr->c,
- 							INDIO_MAX_RAW_ELEMENTS,
- 							vals, &val_len,
- 							this_attr->address);
--	else
-+	} else {
- 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
- 				    &vals[0], &vals[1], this_attr->address);
-+		if (ret < 0 && this_attr->address == IIO_CHAN_INFO_LABEL &&
-+			this_attr->c->label_name)
-+			return sprintf(buf, "%s\n", this_attr->c->label_name);
-+	}
- 
- 	if (ret < 0)
- 		return ret;
-@@ -1399,6 +1404,7 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
- 			attrcount_orig++;
- 	}
- 	attrcount = attrcount_orig;
-+
- 	/*
- 	 * New channel registration method - relies on the fact a group does
- 	 * not need to be initialized if its name is NULL.
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index a1be82e74c93..39209f3b62be 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -223,6 +223,7 @@ struct iio_event_spec {
-  *			correspond to the first name that the channel is referred
-  *			to by in the datasheet (e.g. IND), or the nearest
-  *			possible compound name (e.g. IND-INC).
-+ * @label_name:		Unique name to identify which channel this is.
-  * @modified:		Does a modifier apply to this channel. What these are
-  *			depends on the channel type.  Modifier is set in
-  *			channel2. Examples are IIO_MOD_X for axial sensors about
-@@ -260,6 +261,7 @@ struct iio_chan_spec {
- 	const struct iio_chan_spec_ext_info *ext_info;
- 	const char		*extend_name;
- 	const char		*datasheet_name;
-+	const char		*label_name;
- 	unsigned		modified:1;
- 	unsigned		indexed:1;
- 	unsigned		output:1;
-diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-index e6fd3645963c..c8f65f476eb2 100644
---- a/include/linux/iio/types.h
-+++ b/include/linux/iio/types.h
-@@ -34,6 +34,7 @@ enum iio_available_type {
- 
- enum iio_chan_info_enum {
- 	IIO_CHAN_INFO_RAW = 0,
-+	IIO_CHAN_INFO_LABEL,
- 	IIO_CHAN_INFO_PROCESSED,
- 	IIO_CHAN_INFO_SCALE,
- 	IIO_CHAN_INFO_OFFSET,
+v2 -> v3:
+- drop already applied patches
+- collect Acks
+- add an additional user in iio
+
+v3 -> v4:
+- add the kerneldoc for devm_krealloc()
+- WARN() outside of spinlock
+- rename local variable
+
+v4 -> v5:
+- tweak the kerneldoc
+
+v5 -> v6:
+- tweak the devres_lock handling in devm_krealloc()
+
+v6 -> v7:
+- rework devm_krealloc() to avoid calling krealloc() with spinlock taken
+
+v7 -> v8:
+- drop unnecessary explicit pointer casting in to_devres()
+- check the return value of ksize() to make sure the pointer actually
+  points to a dynamically allocated chunk
+- add more comments to explain the locking strategy and resource handling
+
+v8 -> v9:
+- use container_of() and offsetoff() instead of manual offset calculations
+- use kfree() instead of devres_free() in error path as the latter expects
+  the pointer to devres data, not devres node
+
+Bartosz Golaszewski (3):
+  devres: provide devm_krealloc()
+  hwmon: pmbus: use more devres helpers
+  iio: adc: xilinx-xadc: use devm_krealloc()
+
+ .../driver-api/driver-model/devres.rst        |   1 +
+ drivers/base/devres.c                         | 105 ++++++++++++++++++
+ drivers/hwmon/pmbus/pmbus_core.c              |  28 ++---
+ drivers/iio/adc/xilinx-xadc-core.c            |  16 +--
+ include/linux/device.h                        |   2 +
+ 5 files changed, 125 insertions(+), 27 deletions(-)
+
 -- 
-2.17.1
+2.26.1
 

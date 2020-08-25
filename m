@@ -2,253 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F5A25166C
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Aug 2020 12:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920652518CD
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Aug 2020 14:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729753AbgHYKQT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Aug 2020 06:16:19 -0400
-Received: from aclms1.advantech.com.tw ([61.58.41.199]:15030 "EHLO
-        ACLMS1.advantech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728117AbgHYKQS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Aug 2020 06:16:18 -0400
-Received: from taipei09.ADVANTECH.CORP (unverified [172.20.0.236]) by ACLMS1.advantech.com.tw
- (Clearswift SMTPRS 5.6.0) with ESMTP id <Te1333e83e4ac14014b1204@ACLMS1.advantech.com.tw>;
- Tue, 25 Aug 2020 18:16:16 +0800
-Received: from localhost (172.16.12.96) by taipei09.ADVANTECH.CORP
- (172.20.0.236) with Microsoft SMTP Server (TLS) id 15.0.1395.4; Tue, 25 Aug
- 2020 18:16:15 +0800
-From:   William Sung <william.sung@advantech.com.tw>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        Campion Kang <Campion.Kang@advantech.com.tw>
-Subject: [PATCH v2] iio: dac: ad5593r: Dynamically set AD5593R channel modes
-Date:   Tue, 25 Aug 2020 18:16:14 +0800
-Message-ID: <20200825101614.2462-1-william.sung@advantech.com.tw>
-X-Mailer: git-send-email 2.17.1
+        id S1726856AbgHYMqI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Aug 2020 08:46:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726038AbgHYMqG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Aug 2020 08:46:06 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64E0FC061574;
+        Tue, 25 Aug 2020 05:46:06 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id h12so6751137pgm.7;
+        Tue, 25 Aug 2020 05:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=py5+igg5KiFdh7KxKzplCQAotknCjgGJlLRzcQCkBK4=;
+        b=SivCnJfYQBFAN78enEIGNE+PC9UJxWadffE9Nx+lppZiU7rsGEDsd0H73J6B9L7A/8
+         rluWfnvx2BTuOxanMQ/SC3VpePAwh2MhHZzIE04P9A+ZTxbLn9f89lgDX/lt/JHgRA9+
+         LVgy1GjHb6XZIkm+b1pli/hClkSCixw/tvha7YRpzqt/ERTGvKVAg0tMCeL6VlxgJHBQ
+         xQdgdkxWQyXW28YhUEnEipcDU6wabQWU3vPkwbfeetKtbvbA8GZQ9i0kPNulsd3MgMBf
+         DTX2ZZdSasNJhgb3RqvK7eSK5ygO2K83vGPwi28hl0RHxfPZKFrGpEqWRQcVHNMrRx7I
+         6alw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=py5+igg5KiFdh7KxKzplCQAotknCjgGJlLRzcQCkBK4=;
+        b=hJ7nWolwaaWGNc/mwvdFTnRi4MhWyqItuLj9dxjsxCWR7jjEs3JtZ0Z+GA7G0WQgsG
+         hns7bSlMYKKJJyHFAMcNdmE8vcfT1AjjjTBI3zb0I0/JxS8HkWgppNtdofyTCq2iHdyq
+         0ccDjrSPrQdLKkHcop8EpP7RmYKffd2ssd5I4TdwD9MfgQ3P6aAVJoidudpKkEUq2wbw
+         uwHu579EpPmHvGuik8bnZaKcXidcYv1iv67WVh7wDyy1z5RkTxL43e81ndZPXhC8nklx
+         evDXBNeDQBvjwqcXlfUxsORgvuad2fOOIic1PmgUnL5Y8XyrbQm0Fp6cUxSQ6lwliIOZ
+         gyeg==
+X-Gm-Message-State: AOAM5336LGlVaC0YcJyhuxw/UmG1G6zowGlAmHHxCz+EaETUKxxWtdp3
+        CUw8oyh2n+/fU+1QRtMjVIA=
+X-Google-Smtp-Source: ABdhPJwENMvsDKcpajfQFR2oGmxz1FNWuRnRwLSgBXBs8ugW7t9Zgx79LDG9scrYCAkTeBmBkwmKaw==
+X-Received: by 2002:a62:7b8b:: with SMTP id w133mr7929458pfc.286.1598359565866;
+        Tue, 25 Aug 2020 05:46:05 -0700 (PDT)
+Received: from nish-HP-Pavilion ([2409:4072:619:dc6c:a526:a3b6:4686:f6fb])
+        by smtp.gmail.com with ESMTPSA id s4sm15293952pfh.128.2020.08.25.05.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2020 05:46:05 -0700 (PDT)
+From:   Nishant Malpani <nish.malpani25@gmail.com>
+To:     jic23@kernel.org
+Cc:     dragos.bogdan@analog.com, darius.berghe@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Nishant Malpani <nish.malpani25@gmail.com>
+Subject: [PATCH 1/1] iio: gyro: adxrs290: Insert missing mutex initialization call
+Date:   Tue, 25 Aug 2020 18:15:52 +0530
+Message-Id: <20200825124552.11155-1-nish.malpani25@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.16.12.96]
-X-ClientProxiedBy: ACLDAG.ADVANTECH.CORP (172.20.2.88) To
- taipei09.ADVANTECH.CORP (172.20.0.236)
-X-StopIT: No
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To use ad5593r more flexibly, we use the module parameter to setting the
-channel modes dynamically whenever the module probe up. Users can pass
-the channel modes to the module parameter for allocating the
-functionality of channels as desired.
+Insert a missing mutex_init() call during the probe that initializes
+the driver's local lock to unlocked state.
 
-For example:
-* Use in the kernel command line:
-Users can add the module parameter in the kernel command line such as
-
-    "ad5593r.ch_mode=88001122"
-
-"88001122" means the channel mode setting for each channel. The most
-left side indicates the mode of channel 7, and the most right side
-indicates the mode of channel 0.
-
-* Use when manually probe the module:
-Similar to the kernel command line usage, users can enter
-
-    "modprobe ad5593r ch_mode=88001122"
-
-to start the ad5593r module with the desired channel mode setting.
-
-v2: Fix the patch description and remove redundant for loop
-
-Signed-off-by: William Sung <william.sung@advantech.com.tw>
+Fixes: 2c8920fff145 ("iio: gyro: Add driver support for ADXRS290")
+Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
 ---
- drivers/iio/dac/ad5592r-base.c | 33 ++++++++++++++++++++---
- drivers/iio/dac/ad5592r-base.h |  4 +++
- drivers/iio/dac/ad5593r.c      | 48 ++++++++++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+), 3 deletions(-)
+ drivers/iio/gyro/adxrs290.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index cc4875660a69..cd69a34fa21e 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -21,6 +21,10 @@
+diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
+index 38bab4e3eee9..ff989536d2fb 100644
+--- a/drivers/iio/gyro/adxrs290.c
++++ b/drivers/iio/gyro/adxrs290.c
+@@ -385,6 +385,8 @@ static int adxrs290_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = ARRAY_SIZE(adxrs290_channels);
+ 	indio_dev->info = &adxrs290_info;
  
- #include "ad5592r-base.h"
- 
-+/* Parameters for dynamic channel mode setting */
-+static u8 update_channel_mode;
-+static u8 new_channel_modes[AD559XR_CHANNEL_NR];
++	mutex_init(&st->lock);
 +
- static int ad5592r_gpio_get(struct gpio_chip *chip, unsigned offset)
- {
- 	struct ad5592r_state *st = gpiochip_get_data(chip);
-@@ -132,7 +136,7 @@ static int ad5592r_gpio_init(struct ad5592r_state *st)
- 
- 	st->gpiochip.label = dev_name(st->dev);
- 	st->gpiochip.base = -1;
--	st->gpiochip.ngpio = 8;
-+	st->gpiochip.ngpio = AD559XR_CHANNEL_NR;
- 	st->gpiochip.parent = st->dev;
- 	st->gpiochip.can_sleep = true;
- 	st->gpiochip.direction_input = ad5592r_gpio_direction_input;
-@@ -287,6 +291,14 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
- 	return ret;
- }
- 
-+static void ad5592r_set_def_channel_modes(struct ad5592r_state *st)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(st->channel_modes); i++)
-+		st->channel_modes[i] = new_channel_modes[i];
-+}
-+
- static int ad5592r_reset_channel_modes(struct ad5592r_state *st)
- {
- 	int i;
-@@ -532,6 +544,10 @@ static int ad5592r_alloc_channels(struct iio_dev *iio_dev)
- 			st->channel_offstate[reg] = tmp;
- 	}
- 
-+	/* Update default channel modes set by external module */
-+	if (update_channel_mode == 1)
-+		ad5592r_set_def_channel_modes(st);
-+
- 	channels = devm_kcalloc(st->dev,
- 			1 + 2 * num_channels, sizeof(*channels),
- 			GFP_KERNEL);
-@@ -567,7 +583,7 @@ static int ad5592r_alloc_channels(struct iio_dev *iio_dev)
- 	}
- 
- 	channels[curr_channel].type = IIO_TEMP;
--	channels[curr_channel].channel = 8;
-+	channels[curr_channel].channel = AD559XR_CHANNEL_NR;
- 	channels[curr_channel].info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 				   BIT(IIO_CHAN_INFO_SCALE) |
- 				   BIT(IIO_CHAN_INFO_OFFSET);
-@@ -589,6 +605,17 @@ static void ad5592r_init_scales(struct ad5592r_state *st, int vref_mV)
- 		div_s64_rem(tmp * 2, 1000000000LL, &st->scale_avail[1][1]);
- }
- 
-+void ad5592r_update_default_channel_modes(u8 *new_modes)
-+{
-+	int idx = 0;
-+
-+	update_channel_mode = 1;
-+	for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++)
-+		new_channel_modes[idx] = new_modes[idx];
-+
-+}
-+EXPORT_SYMBOL_GPL(ad5592r_update_default_channel_modes);
-+
- int ad5592r_probe(struct device *dev, const char *name,
- 		const struct ad5592r_rw_ops *ops)
- {
-@@ -603,7 +630,7 @@ int ad5592r_probe(struct device *dev, const char *name,
- 	st = iio_priv(iio_dev);
- 	st->dev = dev;
- 	st->ops = ops;
--	st->num_channels = 8;
-+	st->num_channels = AD559XR_CHANNEL_NR;
- 	dev_set_drvdata(dev, iio_dev);
- 
- 	st->reg = devm_regulator_get_optional(dev, "vref");
-diff --git a/drivers/iio/dac/ad5592r-base.h b/drivers/iio/dac/ad5592r-base.h
-index 23dac2f1ff8a..40ad6369e660 100644
---- a/drivers/iio/dac/ad5592r-base.h
-+++ b/drivers/iio/dac/ad5592r-base.h
-@@ -39,6 +39,9 @@ enum ad5592r_registers {
- #define AD5592R_REG_CTRL_ADC_RANGE	BIT(5)
- #define AD5592R_REG_CTRL_DAC_RANGE	BIT(4)
- 
-+/* Define quantity of channels of AD5592R/AD5593R */
-+#define AD559XR_CHANNEL_NR		8
-+
- struct ad5592r_rw_ops {
- 	int (*write_dac)(struct ad5592r_state *st, unsigned chan, u16 value);
- 	int (*read_adc)(struct ad5592r_state *st, unsigned chan, u16 *value);
-@@ -69,6 +72,7 @@ struct ad5592r_state {
- 	__be16 spi_msg_nop;
- };
- 
-+void ad5592r_update_default_channel_modes(u8 *new_modes);
- int ad5592r_probe(struct device *dev, const char *name,
- 		const struct ad5592r_rw_ops *ops);
- int ad5592r_remove(struct device *dev);
-diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
-index 1fbe9c019c7f..a19331d91406 100644
---- a/drivers/iio/dac/ad5593r.c
-+++ b/drivers/iio/dac/ad5593r.c
-@@ -21,6 +21,10 @@
- #define AD5593R_MODE_GPIO_READBACK	(6 << 4)
- #define AD5593R_MODE_REG_READBACK	(7 << 4)
- 
-+/* Parameters for dynamic channel mode setting */
-+static char *ch_mode = "";
-+module_param(ch_mode, charp, 0400);
-+
- static int ad5593r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
- {
- 	struct i2c_client *i2c = to_i2c_client(st->dev);
-@@ -92,9 +96,53 @@ static const struct ad5592r_rw_ops ad5593r_rw_ops = {
- 	.gpio_read = ad5593r_gpio_read,
- };
- 
-+static void ad5593r_check_new_channel_mode(void)
-+{
-+	char *new_mode = NULL, tmp[2];
-+	u8 new_ch_modes[AD559XR_CHANNEL_NR];
-+	int idx = 0;
-+
-+	if (strlen(ch_mode) != AD559XR_CHANNEL_NR)
-+		return;
-+
-+	new_mode = ch_mode;
-+
-+	/* Check if all channel modes are valid */
-+	for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
-+		switch (new_mode[idx]) {
-+		case '0':
-+		case '1':
-+		case '2':
-+		case '3':
-+		case '8':
-+			continue;
-+		default:
-+			/* There is invalid mode exist, ignore the settings */
-+			pr_err("%s: invalid(%c) in index(%d)\n",
-+				__func__, new_mode[idx], idx);
-+			return;
-+		}
-+	}
-+
-+	/* Set the new modes to ad5592r-base driver to setup the new channel modes */
-+	memset(tmp, 0, 2);
-+	for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
-+		tmp[0] = new_mode[idx];
-+		if (kstrtou8(tmp, 10, &new_ch_modes[AD559XR_CHANNEL_NR - idx - 1])) {
-+			/* Something error when converting the string to integer */
-+			/* Ignore this settings */
-+			pr_err("%s: kstr error idx(%d)\n", __func__, idx);
-+			return;
-+		}
-+	}
-+
-+	ad5592r_update_default_channel_modes(new_ch_modes);
-+}
-+
- static int ad5593r_i2c_probe(struct i2c_client *i2c,
- 		const struct i2c_device_id *id)
- {
-+	ad5593r_check_new_channel_mode();
- 	return ad5592r_probe(&i2c->dev, id->name, &ad5593r_rw_ops);
- }
- 
+ 	val = spi_w8r8(spi, ADXRS290_READ_REG(ADXRS290_REG_ADI_ID));
+ 	if (val != ADXRS290_ADI_ID) {
+ 		dev_err(&spi->dev, "Wrong ADI ID 0x%02x\n", val);
 -- 
-2.17.1
+2.20.1
 

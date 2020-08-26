@@ -2,150 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95F87252794
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 08:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9390252821
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 09:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726125AbgHZGnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Aug 2020 02:43:05 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:2790 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725786AbgHZGnF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 02:43:05 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07Q6UGXc026770;
-        Wed, 26 Aug 2020 02:43:04 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 332w764kfc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Aug 2020 02:43:04 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 07Q6h2sU015706
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 26 Aug 2020 02:43:03 -0400
-Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 25 Aug 2020 23:43:01 -0700
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 25 Aug 2020 23:42:37 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 25 Aug 2020 23:43:01 -0700
-Received: from saturn.ad.analog.com ([10.48.65.100])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 07Q6gwen018958;
-        Wed, 26 Aug 2020 02:42:59 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: frequency: adf4350: Replace indio_dev->mlock with own device lock
-Date:   Wed, 26 Aug 2020 09:42:57 +0300
-Message-ID: <20200826064257.53475-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726240AbgHZHEO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Aug 2020 03:04:14 -0400
+Received: from mail-eopbgr50110.outbound.protection.outlook.com ([40.107.5.110]:65195
+        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726751AbgHZHEM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Aug 2020 03:04:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K26D+is/YdbWnb1Pi7vtsmBdmjlaTbumKYuJjbhg3unxopX6RxwcacfkH1mICI6W4X3R5cdqYOL502yYqzzNroqKriGEeC5gM3hmR27LGHaB86dUwr7Boipy2Qh0YnvPtTwdtzwR7nsZRqLrfP6mLETOf6AtxDIF9SvLN3o1zeQkhqCXyCM67szUfx+q+O9WMxhAhoFN1dcPKzxdF2XSVTleLw2C04+D9szslk7ekh9BhiXaw+naQNE6NzH7IxUjEo2pY2FAMlOFX2dw4oMh6Xmso5aPY72Pnp4CFth5HBZYk6NYHaxDCcL468m5PYktB0etqKH/IdWqgRUKor176A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2MFGdBTVaSxo/0snqsSPGuQHI5k6d6ekW5sdAyUe+ZM=;
+ b=EMMGUANTPIYriGi11hgDswn/ClNSLLTSHi8MPCQmViyMPwcRLdCZZIUUROFD8e5nPqZJ7y6PWRxhMbldGZMhl+zUjsjpf1oFvhFXN8D1nMKlaMBfi/p+3M47bTBPyJk57fTQJy/MBQQkwHIMWPylheMHY/VoFbpEu9ZQ7PKbypkrFAO71soHP8YlstN1uQupF1t50rR1LKgTf0L/TRbPYEU9lhadgAZvrApVNzJN4vs4Y++lPmsrzmK+qTvVAQrO8X59N6njCI/CwMQgyT/7dOLXxHBf7TPZzJmgXBqNq+uNVOsGD3CIygi3zEUSEgpbxmu7lKNldwOFd+Y6exEPYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2MFGdBTVaSxo/0snqsSPGuQHI5k6d6ekW5sdAyUe+ZM=;
+ b=Z9haUe+k0481/oTlMmFdTv7RBpFEScnEtLr5ggE6/llGAT4aDRlLKU8qRtO4fdR6EfuGcK18/ki6ZEXZJotwrkz9ImeHj1jRrhT4mRiiTaBMlqqMc9mj1uOBwoyjhQMxFR4Mmdtmj6TXDFDoN3noe/UhfJIJwULcjkviSX8QJo8=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=axentia.se;
+Received: from VE1PR02MB5487.eurprd02.prod.outlook.com (2603:10a6:803:115::17)
+ by VI1PR02MB5358.eurprd02.prod.outlook.com (2603:10a6:803:92::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25; Wed, 26 Aug
+ 2020 07:04:10 +0000
+Received: from VE1PR02MB5487.eurprd02.prod.outlook.com
+ ([fe80::808c:ab48:64b2:ecf0]) by VE1PR02MB5487.eurprd02.prod.outlook.com
+ ([fe80::808c:ab48:64b2:ecf0%3]) with mapi id 15.20.3326.019; Wed, 26 Aug 2020
+ 07:04:10 +0000
+Subject: Re: [PATCH] iio: dpot-dac: fix code comment in dpot_dac_read_raw()
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200826000844.GA16807@embeddedor>
+From:   Peter Rosin <peda@axentia.se>
+Organization: Axentia Technologies AB
+Message-ID: <3fb79fa8-e86b-111b-a4a7-5da767d40b52@axentia.se>
+Date:   Wed, 26 Aug 2020 09:04:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+In-Reply-To: <20200826000844.GA16807@embeddedor>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: HE1PR05CA0207.eurprd05.prod.outlook.com
+ (2603:10a6:3:f9::31) To VE1PR02MB5487.eurprd02.prod.outlook.com
+ (2603:10a6:803:115::17)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-26_03:2020-08-25,2020-08-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=590 spamscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0
- malwarescore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2008260050
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.13.3] (85.226.217.78) by HE1PR05CA0207.eurprd05.prod.outlook.com (2603:10a6:3:f9::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19 via Frontend Transport; Wed, 26 Aug 2020 07:04:09 +0000
+X-Originating-IP: [85.226.217.78]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a24b5f59-8530-4cdb-ec68-08d8498e3b06
+X-MS-TrafficTypeDiagnostic: VI1PR02MB5358:
+X-Microsoft-Antispam-PRVS: <VI1PR02MB53582411C60E2E8423E99703BC540@VI1PR02MB5358.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FHFDPaNbFRZJ3QqohMXisMMq/4DWnFlD6IgxtRVsGPoQluYfFF6EZDHQyi3293mlGLIn4Kjeb8ethAWOO37pQDWq8x535KbtAdHHP18nTcw20Pu6qUoAxrcQgRoZX4KHrvNfAYxFHPFYLOaSGv5IwsNwNagdT1XWoYE9CvhsTcoStVsmyXtVjewep4ujJORr4PgdsYvOkx5QtxBcNM04d8vUoADyKDmpgee7D2/qmLgGDdm9KCG9GZRCAYMSJYls6/ThTYbiJu+e38SCOXPFELCuHinNwIsQPva7AyjEyxCzxi9gf4pV/StXNu6iprYfNA0kZ8m1Qgq08XSi+IvTbO8g7N2+l5rGfiC7PMU1C26gkcFLn2Ho5HRhfGEOxyaV
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR02MB5487.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(366004)(39830400003)(346002)(396003)(376002)(2616005)(110136005)(66556008)(31696002)(52116002)(66946007)(4744005)(16576012)(4326008)(31686004)(478600001)(86362001)(6486002)(36916002)(8936002)(6666004)(186003)(8676002)(53546011)(956004)(5660300002)(66476007)(26005)(36756003)(2906002)(16526019)(316002)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: fpr38LN0ccT5IhFwYU1JWqI1c1SyPt7L/y97d9Sf2YZvcrIgBSt1WAf3ozsYxfdXefz9lawKrVcqS2BWe5IjKegHK3S1rIF7NgNyNRPfZ3r1NtrEfZbpY6riEtyek9s6ZE4m70JuLU7RmeyO7Pr1esJs60NxE46MgcVNQAKSC61vUljX3UeU+WRs9kqJqmUfwHInpgjtk52/hbmvvBPJ9mcTHxYAFiJCi5+BDxb8ISwhwsKnbgrjjKr0rS0+TTdCRw2+ylFqLB61jx3KMKIIAYrnYQvGrqnKUVAvKdqCa4rD/mO+dNaECX9h1IUMjF58x1EXk0pOhsgwQiIS3Le/61z9sa9bWY8Ih+9pDaCMcAYYAWnQELWMxX+Hxem2XxiLSkwvjokFpNYSVjNDSptasUPTPCl1NaDqtL2xEioyuJvRp2TFT+snQQTL57HV+MpmYV7LZ4aIWQLAK1f3GMqxr27WNA0HpRBM6QrNorAxd9OFgrSwsWHM8LUvyS6gpQSZzDYHJmjYlI4hiUdxBITIqoS1Fb01KE2VmhzS3YseuReLPv0FtAJy45rUK0HZpWSgJBxRKSF7aSa/ddwpptDO9amM+m5NawUlLeZtFU3KiOS4+CJSHmIQg0u4Fhan+4akaiwuowCdrWI2czBokE8yWA==
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: a24b5f59-8530-4cdb-ec68-08d8498e3b06
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR02MB5487.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2020 07:04:10.0696
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iJ24Kg+aCEWDTnxS9uVUN6KTeFcVyhD8iKXH/f8UxoNZ4qP/SRMcfbWK+HNtdvYD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR02MB5358
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Hi!
 
-As part of the general cleanup of indio_dev->mlock, this change replaces
-it with a local lock on the device's state structure.
+On 2020-08-26 02:08, Gustavo A. R. Silva wrote:
+> After the replacement of the /* fall through */ comment with the
+> fallthrough pseudo-keyword macro, the natural reading of a code
+> comment was broken.
+> 
+> Fix the natural reading of such a comment and make it intelligible.
+> 
+> Reported-by: Peter Rosin <peda@axentia.se>
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/frequency/adf4350.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Excellent, thanks for the quick turnaround!
 
-diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-index 409c9c47161e..3f37a57cd3c3 100644
---- a/drivers/iio/frequency/adf4350.c
-+++ b/drivers/iio/frequency/adf4350.c
-@@ -47,6 +47,7 @@ struct adf4350_state {
- 	unsigned long			regs[6];
- 	unsigned long			regs_hw[6];
- 	unsigned long long		freq_req;
-+	struct mutex			lock;
- 	/*
- 	 * DMA (thus cache coherency maintenance) requires the
- 	 * transfer buffers to live in their own cache lines.
-@@ -99,7 +100,7 @@ static int adf4350_reg_access(struct iio_dev *indio_dev,
- 	if (reg > ADF4350_REG5)
- 		return -EINVAL;
- 
--	mutex_lock(&indio_dev->mlock);
-+	mutex_lock(&st->lock);
- 	if (readval == NULL) {
- 		st->regs[reg] = writeval & ~(BIT(0) | BIT(1) | BIT(2));
- 		ret = adf4350_sync_config(st);
-@@ -107,7 +108,7 @@ static int adf4350_reg_access(struct iio_dev *indio_dev,
- 		*readval =  st->regs_hw[reg];
- 		ret = 0;
- 	}
--	mutex_unlock(&indio_dev->mlock);
-+	mutex_unlock(&st->lock);
- 
- 	return ret;
- }
-@@ -254,7 +255,7 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	mutex_lock(&indio_dev->mlock);
-+	mutex_lock(&st->lock);
- 	switch ((u32)private) {
- 	case ADF4350_FREQ:
- 		ret = adf4350_set_freq(st, readin);
-@@ -295,7 +296,7 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
- 	default:
- 		ret = -EINVAL;
- 	}
--	mutex_unlock(&indio_dev->mlock);
-+	mutex_unlock(&st->lock);
- 
- 	return ret ? ret : len;
- }
-@@ -309,7 +310,7 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
- 	unsigned long long val;
- 	int ret = 0;
- 
--	mutex_lock(&indio_dev->mlock);
-+	mutex_lock(&st->lock);
- 	switch ((u32)private) {
- 	case ADF4350_FREQ:
- 		val = (u64)((st->r0_int * st->r1_mod) + st->r0_fract) *
-@@ -338,7 +339,7 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
- 		ret = -EINVAL;
- 		val = 0;
- 	}
--	mutex_unlock(&indio_dev->mlock);
-+	mutex_unlock(&st->lock);
- 
- 	return ret < 0 ? ret : sprintf(buf, "%llu\n", val);
- }
-@@ -539,6 +540,8 @@ static int adf4350_probe(struct spi_device *spi)
- 	indio_dev->channels = &adf4350_chan;
- 	indio_dev->num_channels = 1;
- 
-+	mutex_init(&st->lock);
-+
- 	st->chspc = pdata->channel_spacing;
- 	if (clk) {
- 		st->clk = clk;
--- 
-2.25.1
+And just to be explicit, this fix is for 5.9.
 
+Acked-by: Peter Rosin <peda@axentia.se>
+
+Cheers,
+Peter

@@ -2,256 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EC2D25346D
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 18:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9303F253473
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 18:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726972AbgHZQK3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Aug 2020 12:10:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
+        id S1726739AbgHZQL5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Aug 2020 12:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbgHZQKV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 12:10:21 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 669C5C061574;
-        Wed, 26 Aug 2020 09:10:20 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id mt12so1099750pjb.4;
-        Wed, 26 Aug 2020 09:10:20 -0700 (PDT)
+        with ESMTP id S1726718AbgHZQLy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 12:11:54 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2311C061574;
+        Wed, 26 Aug 2020 09:11:54 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id v15so1265823pgh.6;
+        Wed, 26 Aug 2020 09:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=dzkKMaEYRSqK3qJ/7RKMF0nr0rmaw4l1yJHr2LcyJrQ=;
-        b=GUM4b+AKt4DXs9Czm1/g7FEUizlZoYNy2a13HKf6jY4MB/UtxnZis4YdlNbgnv0gng
-         VLgyepIPIP+r3HqOxtcXfRJOT8V7yK3/geJJFC4lH9ZkeKrvKSRo5tgNGS1jFwqbuW4w
-         mIYO6h8SNnsvEq+7tnBZVzNICRpRqO4mKjRfclvaEicY3IT/MBm3Z25ahf5To6Qy9Dmj
-         ZXGlgdmZQb9uwS8VglWPRo+Do6XZl7+U0fqkBKz93N3/oH+S5dRF8ZiefspOZswDrGuS
-         Mc0OEGPL7xKO0zfmXYaD3yZoZ6uzDWFsuFt4Wq1bCmA6r0pmVK6yEsL7oNTZ5wWtIr+R
-         NFqg==
+        bh=zsYZAfrXc5MeghLrjOcFJHSLrkET4/mbfNye+K52LEs=;
+        b=ho7pR70PLK4pWYXy56s39sAMeCR8VnI49sdZXzQ8nM145F9YoyZCf+uIe4M7qlpvJa
+         NIDtYdTEbfiYOokGLfTUUGCHInjvrvca2fkwJYF0Mc2W5znA22QhIGnrwD711e7JwPM3
+         zq9kCdg8hFwUJYU7fsabfNPmM+wyehG6U8XzBauc/sjzJEvvpKotkH2/SogxM8Za7wfw
+         XHQHt9RX2aX4jmmTA4O8KnIgjcMe96wG7JVinvUglxQB70njCjyEGO2T2QjBvWzAhSDr
+         QzNoalb7+BDUOIyFY+s0dXR+C8Cd5vGJiYX5RHV6mq2d8Obtzx4HPfkCK/x1FZl4KjtJ
+         ps1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=dzkKMaEYRSqK3qJ/7RKMF0nr0rmaw4l1yJHr2LcyJrQ=;
-        b=VnYecQZjoyBVoCq5b3vJP0ay4g+m/hMjpLpZgnyJDGc0GVI6vfglsIUIKibhjBVPm+
-         HiOxAsM9k7DA699NNnOEGyMo5wsRt8/9wJvHztIsVbHDARhl+d9ENaI5TEsn66xjrohl
-         R7ATO2rHPoxgDmRGhfc78GKRihIbqsINY6yYLJw+OdtxdK/0sMnXC8AZK2ZL3T7TADKw
-         SayIMgUZS28o9tuB+IOb1c1H1Xpu+IgcYxvRta77l6Q7Qj4XVjngHbzrT2FG4wIZ/JwI
-         uG2atwhEQG1F+0XbyFcrakHUd4rbPLYOou+8lxdpNUrNcpCtEgoftRYBArF+4GogjG9Q
-         VIkQ==
-X-Gm-Message-State: AOAM532S9DQOmPWmlewJTC2Ye/JS/LpbxmXURcuJJbySLHRIri72jaUD
-        NUYsUjM/0Gh+2JcuO97eKbAdh8BBAHV0bl+SuhA=
-X-Google-Smtp-Source: ABdhPJxjUO7auQGz1uE0L/pbKqExRjpwrx9ZKnA6VZu1uXt4iuNvtzNdZeMz+Ss+KiwIbV4Sfv0XzdnBKKO4+yfbwcQ=
-X-Received: by 2002:a17:902:407:: with SMTP id 7mr12502214ple.167.1598458219927;
- Wed, 26 Aug 2020 09:10:19 -0700 (PDT)
+        bh=zsYZAfrXc5MeghLrjOcFJHSLrkET4/mbfNye+K52LEs=;
+        b=hoWbYw+ckaKdnPDM1ZldxmpbBMNWLVJeNHMsIaIZ8SlHwHynrOKYSrEYp2WrXW1NX/
+         DFBRW1CLBBeXV8IqybrzPS+mdKDElKx991gj1MPFKX3mF75hS8qJS8QP9UVyvYeJ0Mva
+         pvz3cSszpmd+a3D81GHHfRQusQk9FmvPaZEsNV/Q+Fhd4ZmR3oWAVdg16+zzsmY6L2sC
+         OPmnbHABl9a1awbpOdaM3dddx/b0GVOjsGUUwnpV7ZbOIY3R4Q//p4s5wzj2wFGzv0AO
+         Bre00yX0FmJGhkhtuFIdHZNFsNmiGRFwy5IiquFiB6qGODu2JSlc8NCud5yJ3y+VX7cQ
+         Ogxw==
+X-Gm-Message-State: AOAM5316rYKB8yhgEvdoclIokmaxX9Ct7CY9IflSq3vc9I5mnYflBecm
+        ELS2eJ0qOQy7F9bQnedmRwy4MevkF6vang+kHFA=
+X-Google-Smtp-Source: ABdhPJwvViCX/Q+1MORK3UVIYSoHDtdr3LFoUGJtmYBqlAFBcaoxy1m1GJQ3IlE/k8EJxz54maZnY3EoQb5939behlA=
+X-Received: by 2002:a63:ec18:: with SMTP id j24mr10754089pgh.74.1598458313621;
+ Wed, 26 Aug 2020 09:11:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200825124711.11455-1-nish.malpani25@gmail.com> <20200825124711.11455-2-nish.malpani25@gmail.com>
-In-Reply-To: <20200825124711.11455-2-nish.malpani25@gmail.com>
+References: <20200826095247.16368-1-ceggers@arri.de>
+In-Reply-To: <20200826095247.16368-1-ceggers@arri.de>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 26 Aug 2020 19:10:03 +0300
-Message-ID: <CAHp75VfHFo41S=Bhs2MB6Te6VAn+yCteys6XcYgciNZu9VppJg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: gyro: adxrs290: Add triggered buffer support
-To:     Nishant Malpani <nish.malpani25@gmail.com>
+Date:   Wed, 26 Aug 2020 19:11:37 +0300
+Message-ID: <CAHp75VfBMXPyH80d0hrUqohC4wvgBNSSNp4N86JcfiWSfWHs+w@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: as73211: Fix AS73211_CREG1_GAIN_1
+To:     Christian Eggers <ceggers@arri.de>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
-        darius.berghe@analog.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 4:11 PM Nishant Malpani
-<nish.malpani25@gmail.com> wrote:
+On Wed, Aug 26, 2020 at 12:55 PM Christian Eggers <ceggers@arri.de> wrote:
 >
-> Provide a way for continuous data capture by setting up buffer support. The
-> data ready signal exposed at the SYNC pin of the ADXRS290 is exploited as
-> a hardware interrupt which triggers to fill the buffer.
+> Wrong value was introduced during review process.
+
+Ooops, long reviews have their outcomes...
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> ---
+> Patch against jic23/iio.git, branch testing
 >
-> Triggered buffer setup was tested with both hardware trigger (DATA_RDY) and
-> software triggers (sysfs-trig & hrtimer).
-
-...
-
-> +static int adxrs290_set_mode(struct iio_dev *indio_dev, enum adxrs290_mode mode)
-> +{
-> +       struct adxrs290_state *st = iio_priv(indio_dev);
-> +       int val, ret;
-> +
-> +       mutex_lock(&st->lock);
-> +
-> +       if (st->mode == mode) {
-
-> +               ret = 0;
-
-Can be done outside of mutex.
-
-> +               goto done;
-> +       }
-> +
-
-> +       val = spi_w8r8(st->spi, ADXRS290_READ_REG(ADXRS290_REG_POWER_CTL));
-> +       if (val < 0) {
-> +               ret = val;
-> +               goto done;
-> +       }
-
-Consider other way around
- ret = ...
- ...
- val = ret;
-
-> +       switch (mode) {
-> +       case ADXRS290_MODE_STANDBY:
-> +               val &= ~ADXRS290_MEASUREMENT;
-> +               break;
-> +       case ADXRS290_MODE_MEASUREMENT:
-> +               val |= ADXRS290_MEASUREMENT;
-> +               break;
-> +       default:
-> +               ret = -EINVAL;
-> +               goto done;
-> +       }
-> +
-> +       ret = adxrs290_spi_write_reg(st->spi,
-> +                                    ADXRS290_REG_POWER_CTL,
-> +                                    val);
-> +       if (ret < 0) {
-> +               dev_err(&st->spi->dev, "unable to set mode: %d\n", ret);
-> +               goto done;
-> +       }
-> +
-> +       /* update cached mode */
-> +       st->mode = mode;
-> +
-> +done:
-> +       mutex_unlock(&st->lock);
-> +       return ret;
-> +}
-
-...
-
-> +                               goto err_release;
+>  drivers/iio/light/as73211.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> -                       return IIO_VAL_INT;
-> +                       ret = IIO_VAL_INT;
-> +                       break;
->                 default:
-> -                       return -EINVAL;
-> +                       ret = -EINVAL;
-> +                       break;
->                 }
-
-> +err_release:
-
-I didn't get the purpose of this. Wasn't the break statement enough?
-
-> +               iio_device_release_direct_mode(indio_dev);
-> +               return ret;
->         case IIO_CHAN_INFO_SCALE:
->                 switch (chan->type) {
->                 case IIO_ANGL_VEL:
-
-...
-
-> +                       goto err_release;
-
-Ditto.
-
-> +               }
-> +
->                 /* caching the updated state of the high-pass filter */
->                 st->hpf_3db_freq_idx = hpf_idx;
->                 /* retrieving the current state of the low-pass filter */
->                 lpf_idx = st->lpf_3db_freq_idx;
-> -               return adxrs290_set_filter_freq(indio_dev, lpf_idx, hpf_idx);
-> +               ret = adxrs290_set_filter_freq(indio_dev, lpf_idx, hpf_idx);
-> +               break;
-> +
-> +       default:
-> +               ret = -EINVAL;
-> +               break;
->         }
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index 3383aaacbf52..e76747b99b92 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -56,7 +56,7 @@
+>  #define AS73211_AGEN_MUT(x)       FIELD_PREP(AS73211_AGEN_MUT_MASK, (x))
 >
-> -       return -EINVAL;
-> +err_release:
-> +       iio_device_release_direct_mode(indio_dev);
-> +       return ret;
+>  #define AS73211_CREG1_GAIN_MASK   GENMASK(7, 4)
+> -#define AS73211_CREG1_GAIN_1      13
+> +#define AS73211_CREG1_GAIN_1      11
+>  #define AS73211_CREG1_TIME_MASK   GENMASK(3, 0)
+>
+>  #define AS73211_CREG3_CCLK_MASK   GENMASK(1, 0)
+> @@ -217,7 +217,7 @@ static void as73211_integration_time_calc_avail(struct as73211_data *data)
+>
+>  static unsigned int as73211_gain(struct as73211_data *data)
+>  {
+> -       /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
+> +       /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
+>         return BIT(AS73211_CREG1_GAIN_1 - FIELD_GET(AS73211_CREG1_GAIN_MASK, data->creg1));
 >  }
+>
+> @@ -473,7 +473,7 @@ static int _as73211_write_raw(struct iio_dev *indio_dev,
+>                 if (val < 0 || !is_power_of_2(val) || val2)
+>                         return -EINVAL;
+>
+> -               /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
+> +               /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
+>                 reg_bits = AS73211_CREG1_GAIN_1 - ilog2(val);
+>                 if (!FIELD_FIT(AS73211_CREG1_GAIN_MASK, reg_bits))
+>                         return -EINVAL;
+> --
+> Christian Eggers
+> Embedded software developer
+>
+> Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+> Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+> Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+> Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+> Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+>
 
-...
-
-> +       val = (state ? ADXRS290_SYNC(ADXRS290_DATA_RDY_OUT) : 0);
-
-Purpose of outer parentheses?
-
-...
-
-> +static int adxrs290_probe_trigger(struct iio_dev *indio_dev)
-> +{
-> +       struct adxrs290_state *st = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       if (!st->spi->irq) {
-> +               dev_info(&st->spi->dev, "no irq, using polling\n");
-> +               return 0;
-> +       }
-> +
-> +       st->dready_trig = devm_iio_trigger_alloc(&st->spi->dev,
-> +                                                "%s-dev%d",
-> +                                                indio_dev->name,
-> +                                                indio_dev->id);
-> +       if (!st->dready_trig)
-> +               return -ENOMEM;
-> +
-> +       st->dready_trig->dev.parent = &st->spi->dev;
-> +       st->dready_trig->ops = &adxrs290_trigger_ops;
-> +       iio_trigger_set_drvdata(st->dready_trig, indio_dev);
-> +
-> +       ret = devm_request_irq(&st->spi->dev, st->spi->irq,
-> +                              &iio_trigger_generic_data_rdy_poll,
-> +                              IRQF_ONESHOT,
-> +                              "adxrs290_irq", st->dready_trig);
-> +       if (ret < 0) {
-
-> +               dev_err(&st->spi->dev, "request irq %d failed\n", st->spi->irq);
-> +               return ret;
-
-return dev_err_probe(...);
-
-> +       }
-> +
-> +       ret = devm_iio_trigger_register(&st->spi->dev, st->dready_trig);
-> +       if (ret) {
-
-> +               dev_err(&st->spi->dev, "iio trigger register failed\n");
-> +               return ret;
-
-return dev_err_probe(...);
-
-> +       }
-> +
-> +       indio_dev->trig = iio_trigger_get(st->dready_trig);
-> +
-> +       return 0;
-> +}
-
-...
-
-> +       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +                                             &iio_pollfunc_store_time,
-> +                                             &adxrs290_trigger_handler, NULL);
-> +       if (ret < 0) {
-
-> +               dev_err(&spi->dev, "iio triggered buffer setup failed\n");
-> +               return ret;
-
-return dev_err_probe(...);
-
-> +       }
 
 -- 
 With Best Regards,

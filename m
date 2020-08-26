@@ -2,154 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8A3253164
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 16:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA21253452
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 18:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727892AbgHZOes (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Aug 2020 10:34:48 -0400
-Received: from gateway33.websitewelcome.com ([192.185.145.82]:29188 "EHLO
-        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727851AbgHZOeF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 10:34:05 -0400
-X-Greylist: delayed 1349 seconds by postgrey-1.27 at vger.kernel.org; Wed, 26 Aug 2020 10:34:04 EDT
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
-        by gateway33.websitewelcome.com (Postfix) with ESMTP id B31FDD4ACAE
-        for <linux-iio@vger.kernel.org>; Wed, 26 Aug 2020 09:11:18 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Aw90kABiHCjCVAw90kvwwL; Wed, 26 Aug 2020 09:11:18 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zjhse/FdkYykAw66hElfMJS7WpkoVBBgeOuv4l8H0mI=; b=WonjVT3Md+eEiOf7zV0LEK/sYx
-        IxAUTcYSsj9CeGSGXoEijNf7GoOGc7mkLkI8dSCQkeVELbQcnHg5ZhWGGr8cgIBK4IdioewzqQo+/
-        eZrjI5J+wlXKa7Hg6ByxCx7bHsAE/nLzn3IZKXLat7RzkAugo69BJQL9EIgCzRHy01q/f9sXT8xp8
-        r6gxO5ENGRgE5OuFc6f4/4YwytCUTlK3mYeQAFzU8beWKwQIiXlPidSeWBuh4B2XFajT9hi7G1WXA
-        EBR6bX74pKCgeInM3Vlz21Y+To9DZuUgzyPcnDL7L99TV+pGzf0ewWFmQUM9jzDBEV/tYe86bqD3u
-        4rY0KJOg==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:52424 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1kAw90-0048wd-7J; Wed, 26 Aug 2020 09:11:18 -0500
-Subject: Re: [PATCH] iio: dpot-dac: fix code comment in dpot_dac_read_raw()
-To:     Peter Rosin <peda@axentia.se>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        id S1727069AbgHZQEL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Aug 2020 12:04:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45132 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726977AbgHZQEF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 12:04:05 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E380AC061574;
+        Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id mt12so1091990pjb.4;
+        Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZYnA2SCibgRU/WISqM1t5OcPtNJ/1IEgy+sMsxjqVJc=;
+        b=Ro0RoIoFpw5yQk7ZvooJCT1WTUGt+wJ5SOxQ4f0Hz3xvWR0RlQ1z7jyCWeP7xkl/Ic
+         q00Wx1MNqZP9XDzgLXaU+axSjPQtLSrVzHcgfK1VnVirdcVsMEjOagJAVtBG6I4+YaG7
+         RuYWM/PGaRhBScXWkMIh7T9Uj4r49q+wyBx9JFJ7AYSSkjk7dIihmLN2A/6+uBobGbN0
+         Gfqvc30Zxf6OwyzpId329jBAUbvOSZMMVOmCwRMvxpcC4UvrqI0TyEHwHY8f4Z7zU2Vq
+         2qOWkwHkPhHZcsbJQREZFRFiQWCKOa/tFQP6T3XLIo0j1AHS0vRNEYMcz0lRvqZ7TbWy
+         9HXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZYnA2SCibgRU/WISqM1t5OcPtNJ/1IEgy+sMsxjqVJc=;
+        b=bPpQ4zCR65ItC0VnoRpLkwt6+bkPXs3nwfD2XC1DMsGPOo6KtniUKaLExheqaLQtvt
+         Y2KLIwOSwmICh8ImyiCrWHL3SJsGqxfdJYTqP0wsYz1PmGC3fh7hhvdQBN2Ve9cJOHrb
+         KLmsFDcq/xWNWcAJdVY1s211qp6Qbt1dowfFIRvZyINQGv5lM0Sm4mkVyxH8pVZItjKH
+         jbfOnDtqze4b7JGIMlsdUNAx3iFrThbsPcO74gdTW0fwBK2dcmy2yi2vKKd1zzxIeonx
+         WCHfqmVcaulPRmmZ0lF+g2vX1tP35Mdmat37J4NUfrJ9wlet0XFAUgUMNGmJFv2RwnB6
+         AzMw==
+X-Gm-Message-State: AOAM532R34fDcXSNnKU3OsYVX06ZfB75sT9MZ1pdJvYZ87AZltWBxbmw
+        R57RbIDJzVeZvmZfdbvC+dy+D9kPUat1PhY0Q5k=
+X-Google-Smtp-Source: ABdhPJwddMhqWnxN6SgtsR1zQqgZSBxBX3NV/CXneRN/Ee/tMrxaF7NKqcX5ii/Sj9Izi1h8FF/iOg5M8g1U2crrIBE=
+X-Received: by 2002:a17:90b:509:: with SMTP id r9mr6883860pjz.228.1598457843192;
+ Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200825101614.2462-1-william.sung@advantech.com.tw>
+In-Reply-To: <20200825101614.2462-1-william.sung@advantech.com.tw>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 26 Aug 2020 19:03:46 +0300
+Message-ID: <CAHp75VceTBHJ1p3amCQ0PpDSEP8L5+Tf-Qro69+G1WZBrt2oDw@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: dac: ad5593r: Dynamically set AD5593R channel modes
+To:     William Sung <william.sung@advantech.com.tw>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200826000844.GA16807@embeddedor>
- <3fb79fa8-e86b-111b-a4a7-5da767d40b52@axentia.se>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- AP7RWS474w==
-Message-ID: <3528f053-70d8-bd12-8683-3c1ed0b4d6e7@embeddedor.com>
-Date:   Wed, 26 Aug 2020 09:17:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <3fb79fa8-e86b-111b-a4a7-5da767d40b52@axentia.se>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1kAw90-0048wd-7J
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:52424
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 7
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        AceLan Kao <acelan.kao@canonical.com>,
+        Campion Kang <Campion.Kang@advantech.com.tw>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Tue, Aug 25, 2020 at 1:19 PM William Sung
+<william.sung@advantech.com.tw> wrote:
+>
+> To use ad5593r more flexibly, we use the module parameter to setting the
+> channel modes dynamically whenever the module probe up. Users can pass
+> the channel modes to the module parameter for allocating the
+> functionality of channels as desired.
+>
+> For example:
+> * Use in the kernel command line:
+> Users can add the module parameter in the kernel command line such as
+>
+>     "ad5593r.ch_mode=88001122"
+>
+> "88001122" means the channel mode setting for each channel. The most
+> left side indicates the mode of channel 7, and the most right side
+> indicates the mode of channel 0.
+>
+> * Use when manually probe the module:
+> Similar to the kernel command line usage, users can enter
+>
+>     "modprobe ad5593r ch_mode=88001122"
+>
+> to start the ad5593r module with the desired channel mode setting.
 
-On 8/26/20 02:04, Peter Rosin wrote:
-> Hi!
-> 
-> On 2020-08-26 02:08, Gustavo A. R. Silva wrote:
->> After the replacement of the /* fall through */ comment with the
->> fallthrough pseudo-keyword macro, the natural reading of a code
->> comment was broken.
->>
->> Fix the natural reading of such a comment and make it intelligible.
->>
->> Reported-by: Peter Rosin <peda@axentia.se>
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Excellent, thanks for the quick turnaround!
-> 
+> v2: Fix the patch description and remove redundant for loop
 
-No problem. :)
+This should go after the cutter '---' line below.
 
-> And just to be explicit, this fix is for 5.9.
-> 
-> Acked-by: Peter Rosin <peda@axentia.se>
-> 
+> Signed-off-by: William Sung <william.sung@advantech.com.tw>
+> ---
 
-If you don't mind I can add this to my tree for 5.9-rc4
-and send it directly to Linus.
+...
 
-Thanks
---
-Gustavo
+> +/* Parameters for dynamic channel mode setting */
+> +static u8 update_channel_mode;
+> +static u8 new_channel_modes[AD559XR_CHANNEL_NR];
+
+Huh?! Global variables?!
+
+...
+
+> +static void ad5592r_set_def_channel_modes(struct ad5592r_state *st)
+> +{
+> +       int i;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(st->channel_modes); i++)
+> +               st->channel_modes[i] = new_channel_modes[i];
+> +}
+
+NIH of memcpy() ?
+
+...
+
+> +void ad5592r_update_default_channel_modes(u8 *new_modes)
+> +{
+> +       int idx = 0;
+> +
+> +       update_channel_mode = 1;
+> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++)
+> +               new_channel_modes[idx] = new_modes[idx];
+
+> +
+
+Redundant blank line.
+
+> +}
+
+Ditto (see memcpy() above).
+
+> +EXPORT_SYMBOL_GPL(ad5592r_update_default_channel_modes);
+
+What?!
+
+...
+
+> +/* Parameters for dynamic channel mode setting */
+> +static char *ch_mode = "";
+> +module_param(ch_mode, charp, 0400);
+
+We have sysfs ABI, what's wrong with it?
+
+...
+
+> +static void ad5593r_check_new_channel_mode(void)
+> +{
+> +       char *new_mode = NULL, tmp[2];
+> +       u8 new_ch_modes[AD559XR_CHANNEL_NR];
+
+> +       int idx = 0;
+
+Redundant assignment.
+Also for new_mode.
+
+> +
+
+> +       if (strlen(ch_mode) != AD559XR_CHANNEL_NR)
+
+This is interesting...
+
+> +               return;
+> +
+> +       new_mode = ch_mode;
+> +
+> +       /* Check if all channel modes are valid */
+> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
+> +               switch (new_mode[idx]) {
+> +               case '0':
+> +               case '1':
+> +               case '2':
+> +               case '3':
+> +               case '8':
+> +                       continue;
+> +               default:
+> +                       /* There is invalid mode exist, ignore the settings */
+
+> +                       pr_err("%s: invalid(%c) in index(%d)\n",
+> +                               __func__, new_mode[idx], idx);
+
+Oh...
+
+> +                       return;
+> +               }
+> +       }
+> +
+> +       /* Set the new modes to ad5592r-base driver to setup the new channel modes */
+> +       memset(tmp, 0, 2);
+> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
+> +               tmp[0] = new_mode[idx];
+
+> +               if (kstrtou8(tmp, 10, &new_ch_modes[AD559XR_CHANNEL_NR - idx - 1])) {
+
+Shadowing errors?
+
+> +                       /* Something error when converting the string to integer */
+> +                       /* Ignore this settings */
+
+Wrong style of comment.
+
+> +                       pr_err("%s: kstr error idx(%d)\n", __func__, idx);
+> +                       return;
+> +               }
+> +       }
+> +
+> +       ad5592r_update_default_channel_modes(new_ch_modes);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko

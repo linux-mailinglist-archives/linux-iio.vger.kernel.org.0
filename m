@@ -2,216 +2,256 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA21253452
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 18:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC2D25346D
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Aug 2020 18:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgHZQEL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Aug 2020 12:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45132 "EHLO
+        id S1726972AbgHZQK3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Aug 2020 12:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726977AbgHZQEF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 12:04:05 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E380AC061574;
-        Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id mt12so1091990pjb.4;
-        Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
+        with ESMTP id S1726718AbgHZQKV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Aug 2020 12:10:21 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 669C5C061574;
+        Wed, 26 Aug 2020 09:10:20 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id mt12so1099750pjb.4;
+        Wed, 26 Aug 2020 09:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZYnA2SCibgRU/WISqM1t5OcPtNJ/1IEgy+sMsxjqVJc=;
-        b=Ro0RoIoFpw5yQk7ZvooJCT1WTUGt+wJ5SOxQ4f0Hz3xvWR0RlQ1z7jyCWeP7xkl/Ic
-         q00Wx1MNqZP9XDzgLXaU+axSjPQtLSrVzHcgfK1VnVirdcVsMEjOagJAVtBG6I4+YaG7
-         RuYWM/PGaRhBScXWkMIh7T9Uj4r49q+wyBx9JFJ7AYSSkjk7dIihmLN2A/6+uBobGbN0
-         Gfqvc30Zxf6OwyzpId329jBAUbvOSZMMVOmCwRMvxpcC4UvrqI0TyEHwHY8f4Z7zU2Vq
-         2qOWkwHkPhHZcsbJQREZFRFiQWCKOa/tFQP6T3XLIo0j1AHS0vRNEYMcz0lRvqZ7TbWy
-         9HXQ==
+        bh=dzkKMaEYRSqK3qJ/7RKMF0nr0rmaw4l1yJHr2LcyJrQ=;
+        b=GUM4b+AKt4DXs9Czm1/g7FEUizlZoYNy2a13HKf6jY4MB/UtxnZis4YdlNbgnv0gng
+         VLgyepIPIP+r3HqOxtcXfRJOT8V7yK3/geJJFC4lH9ZkeKrvKSRo5tgNGS1jFwqbuW4w
+         mIYO6h8SNnsvEq+7tnBZVzNICRpRqO4mKjRfclvaEicY3IT/MBm3Z25ahf5To6Qy9Dmj
+         ZXGlgdmZQb9uwS8VglWPRo+Do6XZl7+U0fqkBKz93N3/oH+S5dRF8ZiefspOZswDrGuS
+         Mc0OEGPL7xKO0zfmXYaD3yZoZ6uzDWFsuFt4Wq1bCmA6r0pmVK6yEsL7oNTZ5wWtIr+R
+         NFqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZYnA2SCibgRU/WISqM1t5OcPtNJ/1IEgy+sMsxjqVJc=;
-        b=bPpQ4zCR65ItC0VnoRpLkwt6+bkPXs3nwfD2XC1DMsGPOo6KtniUKaLExheqaLQtvt
-         Y2KLIwOSwmICh8ImyiCrWHL3SJsGqxfdJYTqP0wsYz1PmGC3fh7hhvdQBN2Ve9cJOHrb
-         KLmsFDcq/xWNWcAJdVY1s211qp6Qbt1dowfFIRvZyINQGv5lM0Sm4mkVyxH8pVZItjKH
-         jbfOnDtqze4b7JGIMlsdUNAx3iFrThbsPcO74gdTW0fwBK2dcmy2yi2vKKd1zzxIeonx
-         WCHfqmVcaulPRmmZ0lF+g2vX1tP35Mdmat37J4NUfrJ9wlet0XFAUgUMNGmJFv2RwnB6
-         AzMw==
-X-Gm-Message-State: AOAM532R34fDcXSNnKU3OsYVX06ZfB75sT9MZ1pdJvYZ87AZltWBxbmw
-        R57RbIDJzVeZvmZfdbvC+dy+D9kPUat1PhY0Q5k=
-X-Google-Smtp-Source: ABdhPJwddMhqWnxN6SgtsR1zQqgZSBxBX3NV/CXneRN/Ee/tMrxaF7NKqcX5ii/Sj9Izi1h8FF/iOg5M8g1U2crrIBE=
-X-Received: by 2002:a17:90b:509:: with SMTP id r9mr6883860pjz.228.1598457843192;
- Wed, 26 Aug 2020 09:04:03 -0700 (PDT)
+        bh=dzkKMaEYRSqK3qJ/7RKMF0nr0rmaw4l1yJHr2LcyJrQ=;
+        b=VnYecQZjoyBVoCq5b3vJP0ay4g+m/hMjpLpZgnyJDGc0GVI6vfglsIUIKibhjBVPm+
+         HiOxAsM9k7DA699NNnOEGyMo5wsRt8/9wJvHztIsVbHDARhl+d9ENaI5TEsn66xjrohl
+         R7ATO2rHPoxgDmRGhfc78GKRihIbqsINY6yYLJw+OdtxdK/0sMnXC8AZK2ZL3T7TADKw
+         SayIMgUZS28o9tuB+IOb1c1H1Xpu+IgcYxvRta77l6Q7Qj4XVjngHbzrT2FG4wIZ/JwI
+         uG2atwhEQG1F+0XbyFcrakHUd4rbPLYOou+8lxdpNUrNcpCtEgoftRYBArF+4GogjG9Q
+         VIkQ==
+X-Gm-Message-State: AOAM532S9DQOmPWmlewJTC2Ye/JS/LpbxmXURcuJJbySLHRIri72jaUD
+        NUYsUjM/0Gh+2JcuO97eKbAdh8BBAHV0bl+SuhA=
+X-Google-Smtp-Source: ABdhPJxjUO7auQGz1uE0L/pbKqExRjpwrx9ZKnA6VZu1uXt4iuNvtzNdZeMz+Ss+KiwIbV4Sfv0XzdnBKKO4+yfbwcQ=
+X-Received: by 2002:a17:902:407:: with SMTP id 7mr12502214ple.167.1598458219927;
+ Wed, 26 Aug 2020 09:10:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200825101614.2462-1-william.sung@advantech.com.tw>
-In-Reply-To: <20200825101614.2462-1-william.sung@advantech.com.tw>
+References: <20200825124711.11455-1-nish.malpani25@gmail.com> <20200825124711.11455-2-nish.malpani25@gmail.com>
+In-Reply-To: <20200825124711.11455-2-nish.malpani25@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 26 Aug 2020 19:03:46 +0300
-Message-ID: <CAHp75VceTBHJ1p3amCQ0PpDSEP8L5+Tf-Qro69+G1WZBrt2oDw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: dac: ad5593r: Dynamically set AD5593R channel modes
-To:     William Sung <william.sung@advantech.com.tw>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
+Date:   Wed, 26 Aug 2020 19:10:03 +0300
+Message-ID: <CAHp75VfHFo41S=Bhs2MB6Te6VAn+yCteys6XcYgciNZu9VppJg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: gyro: adxrs290: Add triggered buffer support
+To:     Nishant Malpani <nish.malpani25@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        darius.berghe@analog.com,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        Campion Kang <Campion.Kang@advantech.com.tw>
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 1:19 PM William Sung
-<william.sung@advantech.com.tw> wrote:
+On Tue, Aug 25, 2020 at 4:11 PM Nishant Malpani
+<nish.malpani25@gmail.com> wrote:
 >
-> To use ad5593r more flexibly, we use the module parameter to setting the
-> channel modes dynamically whenever the module probe up. Users can pass
-> the channel modes to the module parameter for allocating the
-> functionality of channels as desired.
+> Provide a way for continuous data capture by setting up buffer support. The
+> data ready signal exposed at the SYNC pin of the ADXRS290 is exploited as
+> a hardware interrupt which triggers to fill the buffer.
 >
-> For example:
-> * Use in the kernel command line:
-> Users can add the module parameter in the kernel command line such as
->
->     "ad5593r.ch_mode=88001122"
->
-> "88001122" means the channel mode setting for each channel. The most
-> left side indicates the mode of channel 7, and the most right side
-> indicates the mode of channel 0.
->
-> * Use when manually probe the module:
-> Similar to the kernel command line usage, users can enter
->
->     "modprobe ad5593r ch_mode=88001122"
->
-> to start the ad5593r module with the desired channel mode setting.
-
-> v2: Fix the patch description and remove redundant for loop
-
-This should go after the cutter '---' line below.
-
-> Signed-off-by: William Sung <william.sung@advantech.com.tw>
-> ---
+> Triggered buffer setup was tested with both hardware trigger (DATA_RDY) and
+> software triggers (sysfs-trig & hrtimer).
 
 ...
 
-> +/* Parameters for dynamic channel mode setting */
-> +static u8 update_channel_mode;
-> +static u8 new_channel_modes[AD559XR_CHANNEL_NR];
-
-Huh?! Global variables?!
-
-...
-
-> +static void ad5592r_set_def_channel_modes(struct ad5592r_state *st)
+> +static int adxrs290_set_mode(struct iio_dev *indio_dev, enum adxrs290_mode mode)
 > +{
-> +       int i;
+> +       struct adxrs290_state *st = iio_priv(indio_dev);
+> +       int val, ret;
 > +
-> +       for (i = 0; i < ARRAY_SIZE(st->channel_modes); i++)
-> +               st->channel_modes[i] = new_channel_modes[i];
-> +}
-
-NIH of memcpy() ?
-
-...
-
-> +void ad5592r_update_default_channel_modes(u8 *new_modes)
-> +{
-> +       int idx = 0;
+> +       mutex_lock(&st->lock);
 > +
-> +       update_channel_mode = 1;
-> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++)
-> +               new_channel_modes[idx] = new_modes[idx];
+> +       if (st->mode == mode) {
 
-> +
+> +               ret = 0;
 
-Redundant blank line.
+Can be done outside of mutex.
 
-> +}
-
-Ditto (see memcpy() above).
-
-> +EXPORT_SYMBOL_GPL(ad5592r_update_default_channel_modes);
-
-What?!
-
-...
-
-> +/* Parameters for dynamic channel mode setting */
-> +static char *ch_mode = "";
-> +module_param(ch_mode, charp, 0400);
-
-We have sysfs ABI, what's wrong with it?
-
-...
-
-> +static void ad5593r_check_new_channel_mode(void)
-> +{
-> +       char *new_mode = NULL, tmp[2];
-> +       u8 new_ch_modes[AD559XR_CHANNEL_NR];
-
-> +       int idx = 0;
-
-Redundant assignment.
-Also for new_mode.
-
-> +
-
-> +       if (strlen(ch_mode) != AD559XR_CHANNEL_NR)
-
-This is interesting...
-
-> +               return;
-> +
-> +       new_mode = ch_mode;
-> +
-> +       /* Check if all channel modes are valid */
-> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
-> +               switch (new_mode[idx]) {
-> +               case '0':
-> +               case '1':
-> +               case '2':
-> +               case '3':
-> +               case '8':
-> +                       continue;
-> +               default:
-> +                       /* There is invalid mode exist, ignore the settings */
-
-> +                       pr_err("%s: invalid(%c) in index(%d)\n",
-> +                               __func__, new_mode[idx], idx);
-
-Oh...
-
-> +                       return;
-> +               }
+> +               goto done;
 > +       }
 > +
-> +       /* Set the new modes to ad5592r-base driver to setup the new channel modes */
-> +       memset(tmp, 0, 2);
-> +       for (idx = 0; idx < AD559XR_CHANNEL_NR; idx++) {
-> +               tmp[0] = new_mode[idx];
 
-> +               if (kstrtou8(tmp, 10, &new_ch_modes[AD559XR_CHANNEL_NR - idx - 1])) {
+> +       val = spi_w8r8(st->spi, ADXRS290_READ_REG(ADXRS290_REG_POWER_CTL));
+> +       if (val < 0) {
+> +               ret = val;
+> +               goto done;
+> +       }
 
-Shadowing errors?
+Consider other way around
+ ret = ...
+ ...
+ val = ret;
 
-> +                       /* Something error when converting the string to integer */
-> +                       /* Ignore this settings */
-
-Wrong style of comment.
-
-> +                       pr_err("%s: kstr error idx(%d)\n", __func__, idx);
-> +                       return;
-> +               }
+> +       switch (mode) {
+> +       case ADXRS290_MODE_STANDBY:
+> +               val &= ~ADXRS290_MEASUREMENT;
+> +               break;
+> +       case ADXRS290_MODE_MEASUREMENT:
+> +               val |= ADXRS290_MEASUREMENT;
+> +               break;
+> +       default:
+> +               ret = -EINVAL;
+> +               goto done;
 > +       }
 > +
-> +       ad5592r_update_default_channel_modes(new_ch_modes);
+> +       ret = adxrs290_spi_write_reg(st->spi,
+> +                                    ADXRS290_REG_POWER_CTL,
+> +                                    val);
+> +       if (ret < 0) {
+> +               dev_err(&st->spi->dev, "unable to set mode: %d\n", ret);
+> +               goto done;
+> +       }
+> +
+> +       /* update cached mode */
+> +       st->mode = mode;
+> +
+> +done:
+> +       mutex_unlock(&st->lock);
+> +       return ret;
 > +}
+
+...
+
+> +                               goto err_release;
+>
+> -                       return IIO_VAL_INT;
+> +                       ret = IIO_VAL_INT;
+> +                       break;
+>                 default:
+> -                       return -EINVAL;
+> +                       ret = -EINVAL;
+> +                       break;
+>                 }
+
+> +err_release:
+
+I didn't get the purpose of this. Wasn't the break statement enough?
+
+> +               iio_device_release_direct_mode(indio_dev);
+> +               return ret;
+>         case IIO_CHAN_INFO_SCALE:
+>                 switch (chan->type) {
+>                 case IIO_ANGL_VEL:
+
+...
+
+> +                       goto err_release;
+
+Ditto.
+
+> +               }
+> +
+>                 /* caching the updated state of the high-pass filter */
+>                 st->hpf_3db_freq_idx = hpf_idx;
+>                 /* retrieving the current state of the low-pass filter */
+>                 lpf_idx = st->lpf_3db_freq_idx;
+> -               return adxrs290_set_filter_freq(indio_dev, lpf_idx, hpf_idx);
+> +               ret = adxrs290_set_filter_freq(indio_dev, lpf_idx, hpf_idx);
+> +               break;
+> +
+> +       default:
+> +               ret = -EINVAL;
+> +               break;
+>         }
+>
+> -       return -EINVAL;
+> +err_release:
+> +       iio_device_release_direct_mode(indio_dev);
+> +       return ret;
+>  }
+
+...
+
+> +       val = (state ? ADXRS290_SYNC(ADXRS290_DATA_RDY_OUT) : 0);
+
+Purpose of outer parentheses?
+
+...
+
+> +static int adxrs290_probe_trigger(struct iio_dev *indio_dev)
+> +{
+> +       struct adxrs290_state *st = iio_priv(indio_dev);
+> +       int ret;
+> +
+> +       if (!st->spi->irq) {
+> +               dev_info(&st->spi->dev, "no irq, using polling\n");
+> +               return 0;
+> +       }
+> +
+> +       st->dready_trig = devm_iio_trigger_alloc(&st->spi->dev,
+> +                                                "%s-dev%d",
+> +                                                indio_dev->name,
+> +                                                indio_dev->id);
+> +       if (!st->dready_trig)
+> +               return -ENOMEM;
+> +
+> +       st->dready_trig->dev.parent = &st->spi->dev;
+> +       st->dready_trig->ops = &adxrs290_trigger_ops;
+> +       iio_trigger_set_drvdata(st->dready_trig, indio_dev);
+> +
+> +       ret = devm_request_irq(&st->spi->dev, st->spi->irq,
+> +                              &iio_trigger_generic_data_rdy_poll,
+> +                              IRQF_ONESHOT,
+> +                              "adxrs290_irq", st->dready_trig);
+> +       if (ret < 0) {
+
+> +               dev_err(&st->spi->dev, "request irq %d failed\n", st->spi->irq);
+> +               return ret;
+
+return dev_err_probe(...);
+
+> +       }
+> +
+> +       ret = devm_iio_trigger_register(&st->spi->dev, st->dready_trig);
+> +       if (ret) {
+
+> +               dev_err(&st->spi->dev, "iio trigger register failed\n");
+> +               return ret;
+
+return dev_err_probe(...);
+
+> +       }
+> +
+> +       indio_dev->trig = iio_trigger_get(st->dready_trig);
+> +
+> +       return 0;
+> +}
+
+...
+
+> +       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> +                                             &iio_pollfunc_store_time,
+> +                                             &adxrs290_trigger_handler, NULL);
+> +       if (ret < 0) {
+
+> +               dev_err(&spi->dev, "iio triggered buffer setup failed\n");
+> +               return ret;
+
+return dev_err_probe(...);
+
+> +       }
 
 -- 
 With Best Regards,

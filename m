@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C772A254E46
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29813254E4C
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726834AbgH0T1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 15:27:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58698 "EHLO mail.kernel.org"
+        id S1727013AbgH0T16 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 15:27:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbgH0T1u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Aug 2020 15:27:50 -0400
+        id S1726120AbgH0T14 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Aug 2020 15:27:56 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0A528207CD;
-        Thu, 27 Aug 2020 19:27:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8553D22B4D;
+        Thu, 27 Aug 2020 19:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598556469;
-        bh=nO07OHVtqYTYYgYXG9kFf3Gxi+yDeW2oQQkBmlm177s=;
+        s=default; t=1598556476;
+        bh=egvRrbp3SIvUqDFHa2E5ojGok/WhL9H00xW2YWNmE9c=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=k2f7aVJFj4bXD51NGX2cAVppPH/aVQDanfa8llcV1nYctPMf6LmiIC/KJbJmb8WHD
-         9eSWB3C7sSdZhBRMpSTtKkNtAWEc3q0dVkFWVgYs3YhXfGIR2mRl5rCiKcZJ+9oSmf
-         RmEnwuBTnbt7fXl4frQrycGFpDI6oZGYa32S4y+c=
+        b=YrqYvR2AFqNkPyVJe8qYG4DwCpi44gE0L+dWdiTNupGsESrLiEdUQ1/dg/fGiy2cE
+         aE4M1q2MnNgR1L12x9H27RkOAvWZKejkBXU8LcGWsGJAXulas6ZLM8WZ9HHczVpBtL
+         PywOhp7u4UvaZ2baefJuOq1Gta7E5W9ikO03GgvQ=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -47,9 +47,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-samsung-soc@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 04/18] iio: adc: exynos_adc: Simplify with dev_err_probe()
-Date:   Thu, 27 Aug 2020 21:26:28 +0200
-Message-Id: <20200827192642.1725-4-krzk@kernel.org>
+Subject: [PATCH v2 05/18] iio: adc: ltc2497: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 21:26:29 +0200
+Message-Id: <20200827192642.1725-5-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200827192642.1725-1-krzk@kernel.org>
 References: <20200827192642.1725-1-krzk@kernel.org>
@@ -68,29 +68,29 @@ Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Changes since v1:
 1. Wrap dev_err_probe() lines at 100 character
 ---
- drivers/iio/adc/exynos_adc.c | 9 ++-------
+ drivers/iio/adc/ltc2497-core.c | 9 ++-------
  1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 7d23b6c33284..40585a96c848 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -844,13 +844,8 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/iio/adc/ltc2497-core.c b/drivers/iio/adc/ltc2497-core.c
+index 9b8fd9c32364..d337ed96bbb0 100644
+--- a/drivers/iio/adc/ltc2497-core.c
++++ b/drivers/iio/adc/ltc2497-core.c
+@@ -180,13 +180,8 @@ int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev)
+ 		return ret;
  
- 	info->vdd = devm_regulator_get(&pdev->dev, "vdd");
--	if (IS_ERR(info->vdd)) {
--		if (PTR_ERR(info->vdd) != -EPROBE_DEFER)
--			dev_err(&pdev->dev,
--				"failed getting regulator, err = %ld\n",
--				PTR_ERR(info->vdd));
--		return PTR_ERR(info->vdd);
+ 	ddata->ref = devm_regulator_get(dev, "vref");
+-	if (IS_ERR(ddata->ref)) {
+-		if (PTR_ERR(ddata->ref) != -EPROBE_DEFER)
+-			dev_err(dev, "Failed to get vref regulator: %pe\n",
+-				ddata->ref);
+-
+-		return PTR_ERR(ddata->ref);
 -	}
-+	if (IS_ERR(info->vdd))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(info->vdd), "failed getting regulator");
++	if (IS_ERR(ddata->ref))
++		return dev_err_probe(dev, PTR_ERR(ddata->ref), "Failed to get vref regulator\n");
  
- 	ret = regulator_enable(info->vdd);
- 	if (ret)
+ 	ret = regulator_enable(ddata->ref);
+ 	if (ret < 0) {
 -- 
 2.17.1
 

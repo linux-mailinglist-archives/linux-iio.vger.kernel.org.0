@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29258254FA5
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 22:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E88254FAB
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 22:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbgH0UB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 16:01:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
+        id S1726147AbgH0UC0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 16:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726120AbgH0UB6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 16:01:58 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BEBC061264;
-        Thu, 27 Aug 2020 13:01:58 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id p37so4136449pgl.3;
-        Thu, 27 Aug 2020 13:01:58 -0700 (PDT)
+        with ESMTP id S1726120AbgH0UCZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 16:02:25 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CDEC061264;
+        Thu, 27 Aug 2020 13:02:25 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id 17so4331181pfw.9;
+        Thu, 27 Aug 2020 13:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=l6QdgtQwuCtCJCOXFFSMuQPOtSKidk6SZriT8+KhQKU=;
-        b=B784LqlhlWCORMwjfseGM9afIz00NTvMypFlKUBZTooVep4/T0/aixsxongGyx3wDz
-         Vg2+U4LCeAI7Yib+KiJZ24l/0/FfhRaidOdFvUUWRes3nDyPcm5VV2ogvlsIYbadSuA+
-         7hVKFLzj3mIih5YVGxJste5+4zT0jWH6QCHJ7a599HH1cEynJHhvbDzUrJNcVg+2LdYU
-         vJz7JB1MzlPVeFxH+Ywz5BuZVnrsLEQqYGbsgA9TxfLbz9vHqcNbp9L8M3BveliFy6F6
-         slZQAUspB+XSx2BvCSYHwxT68ofD/WjT3JZJ47bsp376mZrFgkcUnV3hrR2G7TeJh8k8
-         Kv3A==
+        bh=jZGo/LXMWA743P+olH7TRkE+L3lrjbqKbRZ3LxAQjPo=;
+        b=dTu6o2U3wIn+j1v+r3MXNSN35FUN+T2Ga+C6IEZhOqyDDBfBE3A597INaQykc/zK5N
+         e29lSW8oIy3von1EDSHzrXAVeRMAvW1ed+lYOELqagYL5sR2inJeqwfBbqXV4FK6sCMk
+         Hfm42l4h/LTOWilsOGK7JOMAPAdmKuTI7ri15EU81fGomSsgujOEykmO3j5u3b8d00JT
+         y6G7L3ZjYiblAjxovxtPZnHCI16Md4+vLhzEs1tK7lNien1ry4pAHrXAiN3tLj6C5xlc
+         yK8rJWblvVYrsonzu63yJ/EgonbAcYBoDqsF2KrONQ8csAQTA+38zWBBwcTvD1DPUifV
+         GLSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l6QdgtQwuCtCJCOXFFSMuQPOtSKidk6SZriT8+KhQKU=;
-        b=l8szXOi/DYJwIhABmRWGWl79sDUNNKQK9scLYO9LNm1C/osSC3Jb2Ip1lCtUIMeCDu
-         4FEB1QNTQLRg+cC/+6+cN10Oi9IW6rzSoDjV85sZuapfJgfTBC5TzC5U9uaM6CJCJH2t
-         OyyRx/+giCENSzJ8UALgT8OPplNgy3JiheuRjUyoLJjby6idem6aiKZDyMMn3AIluRwi
-         Hm3BZR+Gf9LF2+XQOPouJE4xlPyy3CJ/L/7LzQJzbihgCfi25sB5AGAxeKzk7GnSfdWH
-         UU9m98hS7AA5iXnVxhseWbXJhLUWTwVPiEOGa7aBtVyIl7fdCoenC4QtKJ5n7qE9Bnp9
-         WtAw==
-X-Gm-Message-State: AOAM533idCed/yGLPsxowVGgzoEgaePqGwbZjuQsc6/LgyT2HJY0yFdi
-        C7hVGa6qnIrRL0l15cbFXGuQim+r+QheCSFxP5U=
-X-Google-Smtp-Source: ABdhPJzCSEzURvMIShpRrKsXdEjhN4LSdnjS+SJS9io1bcAC4MW3DZYDijZQo+ehN/ojjLNrNphCrhRo/58GmQug+Io=
-X-Received: by 2002:a17:902:8208:: with SMTP id x8mr6322386pln.65.1598558517933;
- Thu, 27 Aug 2020 13:01:57 -0700 (PDT)
+        bh=jZGo/LXMWA743P+olH7TRkE+L3lrjbqKbRZ3LxAQjPo=;
+        b=mS4xUPJAIs6/fgjpcWp1vmIfjkQyihn4P+Y7q2SRTA6rmUh37dVoBgGjG+zLH98zXG
+         5oRefqZBb003vDawErEhRVmO7eWcUL6jnV/4PobB2zvQyOgZBYsaw/jlnTw9YWjjJggv
+         nqGt2+LuM9K1GN+FoMNhGI5fhPa6KgJo8sp2aNPFLX0RTRfuyU2e8i8hTCOBRDG57nYv
+         xmY8rJfSMzJEaEHAnPZ255/+COmlkeCixqby9TtAirZM+sPhSCq9XOXRJJyppk+w/rSK
+         qJ0Ji0cQCZ7q27NQRbcpP5M8S9suLBFgpmJbTzcpFy8sV1ksiAfGvkSOG1d6YveXHE/M
+         +K/Q==
+X-Gm-Message-State: AOAM531aelGRC0R/4qKJpP5AacIF90RkXKZ9EykLBpmVjG+8rLH7NjQt
+        nMcx1PgBo4vcPgHMMhLy5IPlLTg2GjaRLFYzHng=
+X-Google-Smtp-Source: ABdhPJyrJVOQaAjVOgzTH9Ia08ZxKIpsXNc3Mfx5rESAlYI8qMYgqJ1+s8Yh5E+7TlXUKU+iWqHjdU0n6g2EX6jm0oE=
+X-Received: by 2002:aa7:95b8:: with SMTP id a24mr17478277pfk.219.1598558545190;
+ Thu, 27 Aug 2020 13:02:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-17-krzk@kernel.org>
-In-Reply-To: <20200827192642.1725-17-krzk@kernel.org>
+References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-18-krzk@kernel.org>
+In-Reply-To: <20200827192642.1725-18-krzk@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 27 Aug 2020 23:01:41 +0300
-Message-ID: <CAHp75VfoaSvnECbtQ_HRNBrnQK6avvnmymrgcge5wLPH89_Vnw@mail.gmail.com>
-Subject: Re: [PATCH v2 17/18] iio: magnetometer: mag3110: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 23:02:08 +0300
+Message-ID: <CAHp75Vc4R_PkVSYFGNr0UO5yJ+dLGhVV-G7vznGnNu_aCVoTVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 18/18] iio: magnetometer: iio-mux: Simplify with dev_err_probe()
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -86,42 +86,27 @@ Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  drivers/iio/magnetometer/mag3110.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
+>  drivers/iio/multiplexer/iio-mux.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
-> index 4d305a21c379..838b13c8bb3d 100644
-> --- a/drivers/iio/magnetometer/mag3110.c
-> +++ b/drivers/iio/magnetometer/mag3110.c
-> @@ -476,22 +476,14 @@ static int mag3110_probe(struct i2c_client *client,
->         data = iio_priv(indio_dev);
+> diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
+> index 6910218fdb00..d219d4a86657 100644
+> --- a/drivers/iio/multiplexer/iio-mux.c
+> +++ b/drivers/iio/multiplexer/iio-mux.c
+> @@ -354,11 +354,8 @@ static int mux_probe(struct platform_device *pdev)
+>                 return -ENODEV;
 >
->         data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
-> -       if (IS_ERR(data->vdd_reg)) {
-> -               if (PTR_ERR(data->vdd_reg) == -EPROBE_DEFER)
-> -                       return -EPROBE_DEFER;
-> -
-> -               dev_err(&client->dev, "failed to get VDD regulator!\n");
-> -               return PTR_ERR(data->vdd_reg);
+>         parent = devm_iio_channel_get(dev, "parent");
+> -       if (IS_ERR(parent)) {
+> -               if (PTR_ERR(parent) != -EPROBE_DEFER)
+> -                       dev_err(dev, "failed to get parent channel\n");
+> -               return PTR_ERR(parent);
 > -       }
-> +       if (IS_ERR(data->vdd_reg))
-> +               return dev_err_probe(&client->dev, PTR_ERR(data->vdd_reg),
-> +                                    "failed to get VDD regulator!\n");
+> +       if (IS_ERR(parent))
+> +               return dev_err_probe(dev, PTR_ERR(parent), "failed to get parent channel\n");
 >
->         data->vddio_reg = devm_regulator_get(&client->dev, "vddio");
-> -       if (IS_ERR(data->vddio_reg)) {
-> -               if (PTR_ERR(data->vddio_reg) == -EPROBE_DEFER)
-> -                       return -EPROBE_DEFER;
-> -
-> -               dev_err(&client->dev, "failed to get VDDIO regulator!\n");
-> -               return PTR_ERR(data->vddio_reg);
-> -       }
-> +       if (IS_ERR(data->vddio_reg))
-> +               return dev_err_probe(&client->dev, PTR_ERR(data->vddio_reg),
-> +                                    "failed to get VDDIO regulator!\n");
->
->         ret = regulator_enable(data->vdd_reg);
->         if (ret) {
+>         sizeof_ext_info = iio_get_channel_ext_info_count(parent);
+>         if (sizeof_ext_info) {
 > --
 > 2.17.1
 >

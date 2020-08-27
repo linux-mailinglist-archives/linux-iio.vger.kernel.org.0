@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F456254E5F
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5EAD254E66
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727077AbgH0T20 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 15:28:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59454 "EHLO mail.kernel.org"
+        id S1727839AbgH0T2b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 15:28:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59574 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726120AbgH0T2Y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Aug 2020 15:28:24 -0400
+        id S1726197AbgH0T2a (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Aug 2020 15:28:30 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74BFA22B4D;
-        Thu, 27 Aug 2020 19:28:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8AAA207CD;
+        Thu, 27 Aug 2020 19:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598556503;
-        bh=3+33wDqccjLt1IW1JITAEzv6bEHTJjyXXG+OssmK9rQ=;
+        s=default; t=1598556510;
+        bh=JDW+si4kpBNxVKzKilmgyZMG73ode2zg5DMZD3yhgec=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=0+G/pIC3rpLk7+CqejrJwWKzVKKXn8om7yQs2W/uP1slHC9vF3UjVQJlzIgWYG0lS
-         XCn7bzmnVki6A3zYbqI5fAbm9f+4jfcfKUT6XDRfORWIKEuIxcaIvTwPHFr1nZb63a
-         GiPwwSq+YYgD57ttqO6BDbETNhatSlgSCrfuBgzs=
+        b=ox3ATot+EWc0ejxtrSSuOXWOBfPNHIY48U6UZqrsszLrWw2grNY5Ca0wTT0ZHuYIU
+         PynzLstLMlDwxkT6dMacAIYEjrsGcxd7+HRuK/ZlBlJZEF3S5z5DNTmWpqMPFH0xs8
+         CZsFrlTBBAwzKmqUzPKYyBoFTMIz2SxrvzqkJ/kE=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -47,9 +47,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-samsung-soc@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 09/18] iio: afe: iio-rescale: Simplify with dev_err_probe()
-Date:   Thu, 27 Aug 2020 21:26:33 +0200
-Message-Id: <20200827192642.1725-9-krzk@kernel.org>
+Subject: [PATCH v2 10/18] iio: amplifiers: hmc425a: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 21:26:34 +0200
+Message-Id: <20200827192642.1725-10-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200827192642.1725-1-krzk@kernel.org>
 References: <20200827192642.1725-1-krzk@kernel.org>
@@ -68,27 +68,28 @@ Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Changes since v1:
 1. Wrap dev_err_probe() lines at 100 character
 ---
- drivers/iio/afe/iio-rescale.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/iio/amplifiers/hmc425a.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-index 69c0f277ada0..8cd9645c50e8 100644
---- a/drivers/iio/afe/iio-rescale.c
-+++ b/drivers/iio/afe/iio-rescale.c
-@@ -276,11 +276,8 @@ static int rescale_probe(struct platform_device *pdev)
- 	int ret;
+diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
+index 582708924e4f..bde11df4bb9e 100644
+--- a/drivers/iio/amplifiers/hmc425a.c
++++ b/drivers/iio/amplifiers/hmc425a.c
+@@ -201,12 +201,8 @@ static int hmc425a_probe(struct platform_device *pdev)
+ 	st->gain = st->chip_info->default_gain;
  
- 	source = devm_iio_channel_get(dev, NULL);
--	if (IS_ERR(source)) {
--		if (PTR_ERR(source) != -EPROBE_DEFER)
--			dev_err(dev, "failed to get source channel\n");
--		return PTR_ERR(source);
+ 	st->gpios = devm_gpiod_get_array(&pdev->dev, "ctrl", GPIOD_OUT_LOW);
+-	if (IS_ERR(st->gpios)) {
+-		ret = PTR_ERR(st->gpios);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "failed to get gpios\n");
+-		return ret;
 -	}
-+	if (IS_ERR(source))
-+		return dev_err_probe(dev, PTR_ERR(source), "failed to get source channel\n");
++	if (IS_ERR(st->gpios))
++		return dev_err_probe(&pdev->dev, PTR_ERR(st->gpios), "failed to get gpios\n");
  
- 	sizeof_ext_info = iio_get_channel_ext_info_count(source);
- 	if (sizeof_ext_info) {
+ 	if (st->gpios->ndescs != st->chip_info->num_gpios) {
+ 		dev_err(&pdev->dev, "%d GPIOs needed to operate\n",
 -- 
 2.17.1
 

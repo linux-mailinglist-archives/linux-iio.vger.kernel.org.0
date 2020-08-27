@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C52254F80
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70AF254F85
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727979AbgH0Tzn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 15:55:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
+        id S1726400AbgH0T4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 15:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727863AbgH0Tzm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 15:55:42 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C42C06121B;
-        Thu, 27 Aug 2020 12:55:42 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id q93so3097853pjq.0;
-        Thu, 27 Aug 2020 12:55:42 -0700 (PDT)
+        with ESMTP id S1726246AbgH0T4I (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 15:56:08 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3C80C061264;
+        Thu, 27 Aug 2020 12:56:07 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id p11so4321135pfn.11;
+        Thu, 27 Aug 2020 12:56:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zKJLemoVLYYxLBYCuDxkTU6hysuqtvkOfMWKltUpHmg=;
-        b=aHv8XBuvf3mu31R7gKeKtuhgl1EoOsKrQs5CzuB4CzH9W+US75wwPQkCadexNhNh8Y
-         0aNGjmQg3w5t6xy7olIU3pLgnxAKjeBpK4hvGZeHopw6+XaKY3sCmgG8BERcRAN5hbty
-         o90oICnyLq0PNZgSAc9Vx68ynwtaBo929qt8T5KVuCBUcgZ8iN8NKp4zsjEHhXsubYNi
-         i20SB1o6xkpoYW5/YSmIBPyAI7ziv/N6WHGyTfxG80rFCPalXkVksf0FNDPmLSK41pL4
-         NumTs+7qpXLhoWktPnOAmSOHDxt0X0RQs0eC41ysk8HCQtMo5qeBU9DzR1qJh77FoN7c
-         QTYw==
+        bh=YLa56i743GyYyvzZsbp7wDSdWi+EGIOQBt69Q105LwQ=;
+        b=SR0DcGiRNSloexRgT5hNz4a+LfcqsIQj20wgCxHugcf+XgWQvmGFw0bnb0I7KbH+/c
+         ogmXVcx8dsIt5IUDS/nGPWPBDatpaPAfM4P20TV5kzuntmfkhHwjvY9r9zW/CV8eKDUc
+         oyYKZqYPt8LQaH829LamjzKyYe8CKpA8OZQMHcTyINmYvBZQ4Df4AnE1g6asyOOpkfCD
+         TLQ5THGMgBFl8C5iKS2IuJ5aKQKMbHXw2v1y9jSF9m0qwPaLjYSjfuAZwAOemI2Rj0bw
+         NMvemTfF1vk0wlIrV2GWv254XcKVuSD1++6tqd8PyFVcEvx3nMHuigVsvGKhuYalkxEc
+         wSqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zKJLemoVLYYxLBYCuDxkTU6hysuqtvkOfMWKltUpHmg=;
-        b=jojwB8mHym9ZXe13eieDdfgsIhXHSa3vRbk9MaAiYG2mWPSFKMQEhYSm4Ntd1+KSY/
-         DkExgHG2cq5R5SV+MeRTuICE9wVe4/1gcL8VIClVgt6gXobvNqC6k6UjIrSomydMC2Ng
-         bxOJvYw0MX2t/BRK+vCmm390tikNPIOhXa/YlZzjcQyrIQyLZ34l+WQy7YWHUuLCAU4E
-         5DCJ8N4reaPf90u877FF7zV8Q0H6ljVJ1a51Kqq91EO89PlEFE8yss2PXCIPCpvHY9pX
-         Wx9YhFfxMBEF5jZeZ6ClpKZkzBsLJBwzQM94CqMHp66muOF2Vw7+huIJ/JP1xDpul5l7
-         R5fg==
-X-Gm-Message-State: AOAM530Ns0hsewABPS6Jvc5xrWdOdBvMizi0bHi3Cn37M/tNtqjBsCY6
-        YI7N2MlhX9hfdD3fHgEJg8drFX13YZhJ8ukNOfk=
-X-Google-Smtp-Source: ABdhPJzWsp6WVsNzpr3PrSg5dBnXCuc4a+cBQMZrivfL7x35pwluAfdNM04pSMxxwhkDuruCwpYH6X8QYAVfVIkpaUg=
-X-Received: by 2002:a17:90a:e7cb:: with SMTP id kb11mr384454pjb.181.1598558141774;
- Thu, 27 Aug 2020 12:55:41 -0700 (PDT)
+        bh=YLa56i743GyYyvzZsbp7wDSdWi+EGIOQBt69Q105LwQ=;
+        b=GJZP0fEp/v4KuWgi1S0LBWM6TDZ39NwvE0HqE2DIXIA2nOEtWnyAYAJRXUYMwoMxBn
+         SwRs48DpaoIoAs8OUfDIH+l6irGYZIP3ZHAnaC1su4tGWzM50vq+KAfRZ6R00P05/6L1
+         FJn8YwF+UE7I55duIQmN5YMj1CluMbCvAy5r1kpxDJjQNuxW8sdERJZ5p1pQK2VKHvUZ
+         j//zp5gkrTYH+KZ4Y32Lyf9NSjRVitrqidhSkQ9mPEbxiVmrvrJzHl54KFUVKlzZOxZ/
+         v3eD6juKNbZerQJh8psdmEk3x744B5FQslPQop8UzFNQhHDn9YvSYjxlyGb04aXD//UZ
+         Ukfw==
+X-Gm-Message-State: AOAM532OMH4EZhm44HPBRrn5KrSD5vOvYVdkd4gvaTexz4aaoMJusfD1
+        WUbK2av6/12fW9MjeKhnljbGCGsq2lmHGwoDngg=
+X-Google-Smtp-Source: ABdhPJzz9OgKhOSf0QaPl+XE+7282MSmPn4HpuGGEVGW9DN6uF+vFghnleghHOCVxElQYmTrlTqoeuz0+DPlkRO0bPw=
+X-Received: by 2002:a63:ec18:: with SMTP id j24mr15250227pgh.74.1598558167388;
+ Thu, 27 Aug 2020 12:56:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-11-krzk@kernel.org>
-In-Reply-To: <20200827192642.1725-11-krzk@kernel.org>
+References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-12-krzk@kernel.org>
+In-Reply-To: <20200827192642.1725-12-krzk@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 27 Aug 2020 22:55:25 +0300
-Message-ID: <CAHp75VcQHTeAtw7zKkie+9re_GRpgdDKrR+Fq-77+mVEYDcFkw@mail.gmail.com>
-Subject: Re: [PATCH v2 11/18] iio: chemical: scd30: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 22:55:51 +0300
+Message-ID: <CAHp75VezGhnwphb4JAkVeQtGQhDoH-AtkA2b-GvSwGFta6y+Jg@mail.gmail.com>
+Subject: Re: [PATCH v2 12/18] iio: dac: dpot-dac: Simplify with dev_err_probe()
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -87,37 +87,39 @@ On Thu, Aug 27, 2020 at 10:28 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Acked-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
->
 > ---
+>  drivers/iio/dac/dpot-dac.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
 >
-> Changes since v1:
-> 1. Wrap dev_err_probe() lines at 100 character
-> 2. Add Ack
-> ---
->  drivers/iio/chemical/scd30_core.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+> diff --git a/drivers/iio/dac/dpot-dac.c b/drivers/iio/dac/dpot-dac.c
+> index be61c3b01e8b..2258535b8a42 100644
+> --- a/drivers/iio/dac/dpot-dac.c
+> +++ b/drivers/iio/dac/dpot-dac.c
+> @@ -183,18 +183,14 @@ static int dpot_dac_probe(struct platform_device *pdev)
+>         indio_dev->num_channels = 1;
 >
-> diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-> index eac76972f83e..4d0d798c7cd3 100644
-> --- a/drivers/iio/chemical/scd30_core.c
-> +++ b/drivers/iio/chemical/scd30_core.c
-> @@ -705,13 +705,8 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
->         indio_dev->available_scan_masks = scd30_scan_masks;
->
->         state->vdd = devm_regulator_get(dev, "vdd");
-> -       if (IS_ERR(state->vdd)) {
-> -               if (PTR_ERR(state->vdd) == -EPROBE_DEFER)
-> -                       return -EPROBE_DEFER;
-> -
-> -               dev_err(dev, "failed to get regulator\n");
-> -               return PTR_ERR(state->vdd);
+>         dac->vref = devm_regulator_get(dev, "vref");
+> -       if (IS_ERR(dac->vref)) {
+> -               if (PTR_ERR(dac->vref) != -EPROBE_DEFER)
+> -                       dev_err(&pdev->dev, "failed to get vref regulator\n");
+> -               return PTR_ERR(dac->vref);
 > -       }
-> +       if (IS_ERR(state->vdd))
-> +               return dev_err_probe(dev, PTR_ERR(state->vdd), "failed to get regulator\n");
+> +       if (IS_ERR(dac->vref))
+> +               return dev_err_probe(&pdev->dev, PTR_ERR(dac->vref),
+> +                                    "failed to get vref regulator\n");
 >
->         ret = regulator_enable(state->vdd);
->         if (ret)
+>         dac->dpot = devm_iio_channel_get(dev, "dpot");
+> -       if (IS_ERR(dac->dpot)) {
+> -               if (PTR_ERR(dac->dpot) != -EPROBE_DEFER)
+> -                       dev_err(dev, "failed to get dpot input channel\n");
+> -               return PTR_ERR(dac->dpot);
+> -       }
+> +       if (IS_ERR(dac->dpot))
+> +               return dev_err_probe(&pdev->dev, PTR_ERR(dac->dpot),
+> +                                    "failed to get dpot input channel\n");
+>
+>         ret = iio_get_channel_type(dac->dpot, &type);
+>         if (ret < 0)
 > --
 > 2.17.1
 >

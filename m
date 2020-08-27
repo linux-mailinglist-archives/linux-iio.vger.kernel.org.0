@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2F4254F9B
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 22:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB7E254F9E
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 22:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726322AbgH0UAV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 16:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
+        id S1726236AbgH0UA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 16:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726120AbgH0UAV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 16:00:21 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74731C061264;
-        Thu, 27 Aug 2020 13:00:21 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id k15so4321448pfc.12;
-        Thu, 27 Aug 2020 13:00:21 -0700 (PDT)
+        with ESMTP id S1726120AbgH0UA5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Aug 2020 16:00:57 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CB0C061264;
+        Thu, 27 Aug 2020 13:00:56 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id 31so4108595pgy.13;
+        Thu, 27 Aug 2020 13:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=J7FsTR8MREGabBVt8LZ1j+20Xw6tV3sc64t+TrTmz1s=;
-        b=H9Avjr9TBzYfwPOkz9EdvQOD/Hp2R/foNgj3n1RhDeUBaZ+T5lK3N+jmOVnF21fOPt
-         cveijGliKTaLjmDGdxLWA8yVPczBusBiXh8fEduLfVMgyZ0AxHteuhJDmjK+uvJjLgPq
-         hM8m0PARzvkixd1ZpgNhwBjSF1Ql6JaTzlrCF6hmmq+YjKNxQIvus1kjO8clKsH8C/t2
-         Nr82ezEM0MgwJqZL7nrR3nrQCfjaqM4GPuz/FwXoB+2fw+2pY2HJ58nma+QCs85J+WsJ
-         mBjjdnKmcvQsh0zyRUoV3RFVkHHilb03CsDzzWN0tKOzpTSWidOkEcJRc4N+Npaqr7Eh
-         iyLA==
+        bh=6PibWI1WPUcSBuRxCpQduFOuzkYtMaBM/7TN/dC+YiE=;
+        b=b7gOG6wgCzT8BP986bm1kkzzFNR5NMwx61bMRrJN7WECwQlCKbLJ0mj+ASuG3rLlY6
+         sqRQr5z+Q5tmBHLiaNmXtpOJF/m8HhJKOC0N3BnLyEbvLECd9gi43KZGF2mLOy/Fx4eF
+         agm1klSih22rh2dQo7IKSSeLNshpUwc1PCIvsvcCgIR4zda8EF+aBJ++duzL8wRoYBRC
+         lV+0tCCiFNxVlpGSz7CUbjh0RX+LcmJ5edho3Lr1QZwtUFcqdZGWYHGcG5ZsUTsQWcFN
+         mA0KZnlMJH3puC9gFYa7jPr92KVbp1OjVTWGkYZ+h+qUcWiPSjgBhwkVisWpkBweIh4Z
+         T5ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=J7FsTR8MREGabBVt8LZ1j+20Xw6tV3sc64t+TrTmz1s=;
-        b=fbeD/6r7Vl27Y2IqIeZ6zvwNxmU23eLlH3MsoN/g240zWVGH/HGJIdL8f/BZ8WCEQt
-         Yre5rFnP7qrynbF9l+8PxTN7t3r4wbX72Yr838hFTdf0xYzd9Mq269xUf54aQ/fT4VAv
-         HFDEKIspaFNBhYTl53aFTT0qH6jnz/T+9a+02MsZyyTDUbEan0fvy5PMTu9R3YseKS22
-         7b0VCiOfXpwO3A9pn0Cf7Li+zsWUIVl/6g2zPhGAq9O8ARlShglQsKw2+JdZXACN00R9
-         LNUxHB33T4oNXukKMNK9iGU3ZeDgYEV7d7IOyKoVNNNtTImmb+fdBXOrPYZHqV/LcG9J
-         Dx3A==
-X-Gm-Message-State: AOAM533NYVqpbWLiet/0R4FzWAJ3lUoatolrG/z6JjaHSN2ShDsdbXMs
-        hTM3wEERTS+v849sJu4X8rLU4+wBnkai9vPLmDQ=
-X-Google-Smtp-Source: ABdhPJzMVgucetaUrBARc94LCHK9ltEz39VRjcWxPvDTspL6QeAi4Dc29DqGVOxpjkKfh4YtQxfRbS/CdGszBd3FklY=
-X-Received: by 2002:a63:f24a:: with SMTP id d10mr15673608pgk.4.1598558421035;
- Thu, 27 Aug 2020 13:00:21 -0700 (PDT)
+        bh=6PibWI1WPUcSBuRxCpQduFOuzkYtMaBM/7TN/dC+YiE=;
+        b=Hgc/B/u/oJU7b5temJ8sEsxInv1lkofBzDPuGAnJxRndyf8E2zApjOgpt9t7B+skPq
+         99gWNhNUo/YFCWo/6QRvd+SAR9ROHakiRKdle9vSWmtIf1yWjkqRshd4Vufqi5YpAb0K
+         jNXnymRT1L8m0JnnTIrnrdjioBcGlfqnilKtRtzDEbZ6QefgzTU7zpXwRntEK4uS0w/x
+         JzVno2xisBvH+2kLLwpmmb2qHRQ/J2gMLm279UfD8WbVxMIjLRtLsG7RccErWjVVamFC
+         /D6J44IKcwlShiKPB/gyC1HNcxNvo+3KHhKVwG39ktZjNI8o7PQF2iMJdSI5s8TrQlNc
+         sEIw==
+X-Gm-Message-State: AOAM532DiADWclD/C2ClxJv8ytBzYrFScQJbXmL7gjI7fm3/SWIqw8h+
+        ccqJAjPd4tO4TgqtYu50rJOmhI2PZ6Vz/fqHats=
+X-Google-Smtp-Source: ABdhPJyEG1MTF89o46Q1T9Rrytm05a/DG3yol0nSkedmBByh0DN6BD25pKcq0V/H+yCjPfC4PIEK9jFZo90rwd/rC5g=
+X-Received: by 2002:a62:9215:: with SMTP id o21mr6817717pfd.268.1598558456196;
+ Thu, 27 Aug 2020 13:00:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-14-krzk@kernel.org>
-In-Reply-To: <20200827192642.1725-14-krzk@kernel.org>
+References: <20200827192642.1725-1-krzk@kernel.org> <20200827192642.1725-15-krzk@kernel.org>
+In-Reply-To: <20200827192642.1725-15-krzk@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 27 Aug 2020 23:00:05 +0300
-Message-ID: <CAHp75VdQYzuiXBXYBrwaLKzZDZWtyT1_kLAWVU0G7fXTi8fAGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 14/18] iio: light: isl29018: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 23:00:39 +0300
+Message-ID: <CAHp75VeC248LYFUX2q-EU9c-d1pO2Fr0TCbS_U5+SaoQt3gn_A@mail.gmail.com>
+Subject: Re: [PATCH v2 15/18] iio: light: tsl2772: Simplify with dev_err_probe()
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -77,7 +77,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 27, 2020 at 10:28 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Thu, Aug 27, 2020 at 10:29 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
 > Common pattern of handling deferred probe can be simplified with
 > dev_err_probe().  Less code and also it prints the error value.
@@ -85,30 +85,36 @@ On Thu, Aug 27, 2020 at 10:28 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+>
 > ---
->  drivers/iio/light/isl29018.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/iio/light/isl29018.c b/drivers/iio/light/isl29018.c
-> index ac8ad0f32689..2689867467a8 100644
-> --- a/drivers/iio/light/isl29018.c
-> +++ b/drivers/iio/light/isl29018.c
-> @@ -746,12 +746,9 @@ static int isl29018_probe(struct i2c_client *client,
->         chip->suspended = false;
+> Changes since v1:
+> 1. Wrap dev_err_probe() lines at 100 character
+> ---
+>  drivers/iio/light/tsl2772.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
 >
->         chip->vcc_reg = devm_regulator_get(&client->dev, "vcc");
-> -       if (IS_ERR(chip->vcc_reg)) {
-> -               err = PTR_ERR(chip->vcc_reg);
-> -               if (err != -EPROBE_DEFER)
-> -                       dev_err(&client->dev, "failed to get VCC regulator!\n");
-> -               return err;
+> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> index 735399405417..d79205361dfa 100644
+> --- a/drivers/iio/light/tsl2772.c
+> +++ b/drivers/iio/light/tsl2772.c
+> @@ -1776,14 +1776,8 @@ static int tsl2772_probe(struct i2c_client *clientp,
+>         ret = devm_regulator_bulk_get(&clientp->dev,
+>                                       ARRAY_SIZE(chip->supplies),
+>                                       chip->supplies);
+> -       if (ret < 0) {
+> -               if (ret != -EPROBE_DEFER)
+> -                       dev_err(&clientp->dev,
+> -                               "Failed to get regulators: %d\n",
+> -                               ret);
+> -
+> -               return ret;
 > -       }
-> +       if (IS_ERR(chip->vcc_reg))
-> +               return dev_err_probe(&client->dev, PTR_ERR(chip->vcc_reg),
-> +                                    "failed to get VCC regulator!\n");
+> +       if (ret < 0)
+> +               return dev_err_probe(&clientp->dev, ret, "Failed to get regulators\n");
 >
->         err = regulator_enable(chip->vcc_reg);
->         if (err) {
+>         ret = regulator_bulk_enable(ARRAY_SIZE(chip->supplies), chip->supplies);
+>         if (ret < 0) {
 > --
 > 2.17.1
 >

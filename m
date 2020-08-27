@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5EAD254E66
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4B3254E68
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbgH0T2b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 15:28:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59574 "EHLO mail.kernel.org"
+        id S1726197AbgH0T2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 15:28:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59764 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726197AbgH0T2a (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Aug 2020 15:28:30 -0400
+        id S1726266AbgH0T2h (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Aug 2020 15:28:37 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C8AAA207CD;
-        Thu, 27 Aug 2020 19:28:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6FD6322CAF;
+        Thu, 27 Aug 2020 19:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598556510;
-        bh=JDW+si4kpBNxVKzKilmgyZMG73ode2zg5DMZD3yhgec=;
+        s=default; t=1598556516;
+        bh=X1W0PzSz8JAQ2Wim9RQvp9YS6C8n7Io0DSsH6zFBFQc=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=ox3ATot+EWc0ejxtrSSuOXWOBfPNHIY48U6UZqrsszLrWw2grNY5Ca0wTT0ZHuYIU
-         PynzLstLMlDwxkT6dMacAIYEjrsGcxd7+HRuK/ZlBlJZEF3S5z5DNTmWpqMPFH0xs8
-         CZsFrlTBBAwzKmqUzPKYyBoFTMIz2SxrvzqkJ/kE=
+        b=Gsfd2caeBHKY0vWdsUPo4XNAU+ooS5fvtQ2z5WHLpESCCzoR689Z9u9buf1i5PARP
+         AVNXERHSAWrKZDJ5YR67LdHEDzY74qCW772IKe3wcoZj2OB23Qps8pvMkH0xsoyui8
+         PmBIa4o9PfYpbUd/BL691P4eUcDuSfG88hTLJugY=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -47,9 +47,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-samsung-soc@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 10/18] iio: amplifiers: hmc425a: Simplify with dev_err_probe()
-Date:   Thu, 27 Aug 2020 21:26:34 +0200
-Message-Id: <20200827192642.1725-10-krzk@kernel.org>
+Subject: [PATCH v2 11/18] iio: chemical: scd30: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 21:26:35 +0200
+Message-Id: <20200827192642.1725-11-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200827192642.1725-1-krzk@kernel.org>
 References: <20200827192642.1725-1-krzk@kernel.org>
@@ -62,34 +62,37 @@ Common pattern of handling deferred probe can be simplified with
 dev_err_probe().  Less code and also it prints the error value.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 
 ---
 
 Changes since v1:
 1. Wrap dev_err_probe() lines at 100 character
+2. Add Ack
 ---
- drivers/iio/amplifiers/hmc425a.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/iio/chemical/scd30_core.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
-index 582708924e4f..bde11df4bb9e 100644
---- a/drivers/iio/amplifiers/hmc425a.c
-+++ b/drivers/iio/amplifiers/hmc425a.c
-@@ -201,12 +201,8 @@ static int hmc425a_probe(struct platform_device *pdev)
- 	st->gain = st->chip_info->default_gain;
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index eac76972f83e..4d0d798c7cd3 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -705,13 +705,8 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+ 	indio_dev->available_scan_masks = scd30_scan_masks;
  
- 	st->gpios = devm_gpiod_get_array(&pdev->dev, "ctrl", GPIOD_OUT_LOW);
--	if (IS_ERR(st->gpios)) {
--		ret = PTR_ERR(st->gpios);
--		if (ret != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "failed to get gpios\n");
--		return ret;
+ 	state->vdd = devm_regulator_get(dev, "vdd");
+-	if (IS_ERR(state->vdd)) {
+-		if (PTR_ERR(state->vdd) == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-
+-		dev_err(dev, "failed to get regulator\n");
+-		return PTR_ERR(state->vdd);
 -	}
-+	if (IS_ERR(st->gpios))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(st->gpios), "failed to get gpios\n");
++	if (IS_ERR(state->vdd))
++		return dev_err_probe(dev, PTR_ERR(state->vdd), "failed to get regulator\n");
  
- 	if (st->gpios->ndescs != st->chip_info->num_gpios) {
- 		dev_err(&pdev->dev, "%d GPIOs needed to operate\n",
+ 	ret = regulator_enable(state->vdd);
+ 	if (ret)
 -- 
 2.17.1
 

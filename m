@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B03D4254E7B
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93CB5254E7E
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Aug 2020 21:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726706AbgH0T3L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Aug 2020 15:29:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60544 "EHLO mail.kernel.org"
+        id S1727993AbgH0T3R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Aug 2020 15:29:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726266AbgH0T3J (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Aug 2020 15:29:09 -0400
+        id S1726834AbgH0T3Q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Aug 2020 15:29:16 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA8CF207CD;
-        Thu, 27 Aug 2020 19:29:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D6488207DF;
+        Thu, 27 Aug 2020 19:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598556549;
-        bh=GnutIt+TO9LZh41tsda2ONgqol06Pt/b5uPr/laCiio=;
+        s=default; t=1598556556;
+        bh=IwI1yLwibpqLSvKtz6KPbHm1WiYgsAWbmgv2aJsQJOw=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=JIu9t4iB3t4wASTcUjY+KceZdOEiZKWk++pSkZ/EivlZb8x/1bupBD05Oh/UFHd2R
-         E3MVI7CW3Ryup1nX6vknyd2OanoimFf+ss9/qwEpSYPzs0u7AL4C0zrRuSYR5inGY9
-         qV7eDaQkS4Cfdjs3tykzTy1i3jWymjkY9q/uPQlI=
+        b=vtbotEUI+bvibX2D43FsTLH26PlKZEy7m0cG1phXdOGdBCIGjdY1KJ4y4lcaKSOtI
+         Ci3M4WhVLHIqI9iQISXKSVhPBVS9GAg8rncntyQQrE6aznu7Zk3Yrjk8CU/AiQReJm
+         exZY8KUhxGicwDLMwoIAOWIjnRmdHNy2y4bnx9rs=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -47,9 +47,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-samsung-soc@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 15/18] iio: light: tsl2772: Simplify with dev_err_probe()
-Date:   Thu, 27 Aug 2020 21:26:39 +0200
-Message-Id: <20200827192642.1725-15-krzk@kernel.org>
+Subject: [PATCH v2 16/18] iio: magnetometer: ak8974: Simplify with dev_err_probe()
+Date:   Thu, 27 Aug 2020 21:26:40 +0200
+Message-Id: <20200827192642.1725-16-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200827192642.1725-1-krzk@kernel.org>
 References: <20200827192642.1725-1-krzk@kernel.org>
@@ -68,29 +68,30 @@ Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Changes since v1:
 1. Wrap dev_err_probe() lines at 100 character
 ---
- drivers/iio/light/tsl2772.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/iio/magnetometer/ak8974.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-index 735399405417..d79205361dfa 100644
---- a/drivers/iio/light/tsl2772.c
-+++ b/drivers/iio/light/tsl2772.c
-@@ -1776,14 +1776,8 @@ static int tsl2772_probe(struct i2c_client *clientp,
- 	ret = devm_regulator_bulk_get(&clientp->dev,
- 				      ARRAY_SIZE(chip->supplies),
- 				      chip->supplies);
+diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+index cbb44e401c0a..548c686e29d6 100644
+--- a/drivers/iio/magnetometer/ak8974.c
++++ b/drivers/iio/magnetometer/ak8974.c
+@@ -843,15 +843,8 @@ static int ak8974_probe(struct i2c_client *i2c,
+ 	ret = devm_regulator_bulk_get(&i2c->dev,
+ 				      ARRAY_SIZE(ak8974->regs),
+ 				      ak8974->regs);
 -	if (ret < 0) {
 -		if (ret != -EPROBE_DEFER)
--			dev_err(&clientp->dev,
--				"Failed to get regulators: %d\n",
--				ret);
+-			dev_err(&i2c->dev, "cannot get regulators: %d\n", ret);
+-		else
+-			dev_dbg(&i2c->dev,
+-				"regulators unavailable, deferring probe\n");
 -
 -		return ret;
 -	}
 +	if (ret < 0)
-+		return dev_err_probe(&clientp->dev, ret, "Failed to get regulators\n");
++		return dev_err_probe(&i2c->dev, ret, "cannot get regulators\n");
  
- 	ret = regulator_bulk_enable(ARRAY_SIZE(chip->supplies), chip->supplies);
+ 	ret = regulator_bulk_enable(ARRAY_SIZE(ak8974->regs), ak8974->regs);
  	if (ret < 0) {
 -- 
 2.17.1

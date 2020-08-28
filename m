@@ -2,131 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B72C325570C
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Aug 2020 11:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20812557A8
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Aug 2020 11:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728501AbgH1JAq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Aug 2020 05:00:46 -0400
-Received: from mail-ej1-f66.google.com ([209.85.218.66]:32897 "EHLO
-        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728455AbgH1JAo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Aug 2020 05:00:44 -0400
-Received: by mail-ej1-f66.google.com with SMTP id a21so564477ejp.0;
-        Fri, 28 Aug 2020 02:00:42 -0700 (PDT)
+        id S1728269AbgH1Jag (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Aug 2020 05:30:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728016AbgH1Jaf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Aug 2020 05:30:35 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C441C061264;
+        Fri, 28 Aug 2020 02:30:35 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id t11so211775plr.5;
+        Fri, 28 Aug 2020 02:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6auKxjABp8YXUIlDJF9wtAGoOtymbxc4WRIaQCnHnVM=;
+        b=naRW4w7le/y5do4SyfWsvc3IZ5gXnazcX9lYqMnQYkXxoH0qkqZM+3s99LoxOA14Ba
+         t+eFc1J4jBI9BtHtSGRx10SI3UEXsE+6LpctMy3wsYEbEKDvvkdmZEL/pCK2zqKW5E2s
+         9mwgjcw2maacFVMBTUG3GZJUqFZEN2UfT0mxdiAXauVEKLDfGCol3ApCPvB6VjAcwuqE
+         dXHPWQy3MqvJpYXhaDcMDlz4ZkADvo4MKkPru9Ab+kGwsKv1DpLc9WmtC0jBQeUNdxet
+         cAAvnyViT6uZTt9D8YZLIkpt1ZtpyBM3/Lqlk/z60W7SD5soIsUtfR67i97EJuhdCJtH
+         foSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=BoGGK/CeRvP+1P6A40PXG1dSM618NDQKChv/ftgEPFk=;
-        b=guLKbhtJnPk/1XY7+iSihpzZk1QEXhbCIuYJKb5HBo8Bld7AmD3ro1At34nYUoe4Nx
-         JIxhRRj5JSiIVddA3vsiCs5rjoZRiG1XM5+KDicA6hnxpwmGyidxgQGqgJtM/Jn1iIgc
-         le8h29ShTtmUJ60YFc50kEiwQhUKNeip12Z1CEzbhuLXctwL1+qLyUWTiKIDAt+5MllO
-         1g1WBqYAm6MyMJEFCY8zS0Ta0M7eT0wB1yOcFxh9u9UuH6lkJNlPuZbFWsmDJmFC2y5W
-         UHrx56e1WG16J+5MTxDwxc6V0MLcneZJnjLEKEYgk7zi4+0UXcI1tNwOWA3ZYaLANhMw
-         f0gw==
-X-Gm-Message-State: AOAM532UyOS7WSo5Nkr1EDwxNkE6HAismFQ07nNIp2wvy66cK8PT0ecv
-        ySaF65iBH/xsp42nEuAtDgZ/JYQSApNeTbx2
-X-Google-Smtp-Source: ABdhPJyJXWNff4qgN77yujQ0S8TX7b6tdnQWjdtoPIPC5tlF6n/b5lr2j8ZBFOvEx9vm66q7OEHoFQ==
-X-Received: by 2002:a17:906:2a0d:: with SMTP id j13mr795771eje.474.1598605241866;
-        Fri, 28 Aug 2020 02:00:41 -0700 (PDT)
-Received: from pi3 ([194.230.155.216])
-        by smtp.googlemail.com with ESMTPSA id d23sm312329ejj.74.2020.08.28.02.00.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 02:00:40 -0700 (PDT)
-Date:   Fri, 28 Aug 2020 11:00:38 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6auKxjABp8YXUIlDJF9wtAGoOtymbxc4WRIaQCnHnVM=;
+        b=YQxMDhupt6hRqv1nyN3Ym5032xxo/TXIWmhxhRRlRygqi8WsrecF0HYK5RqSBxotEW
+         024tQkGCVXmBOe5jBW5Ug1DU50giKIq8jb/trL0kWiIu/f/CUruFBak1ro64wMGcAEQ/
+         3wKzvYlHDMyI59uSz62/k2vMVCVvVvR/0gotS3xaHzkFba/ZGjyAVxr7OqcR/2dyTSWQ
+         Gl0WnZ1RGH9YIpVqbTvv3DDtQB+0taWtXn0sF5XzKw8F+dnp7c4nfEQDwCpTwD/7oVLl
+         tp5vRLb9rghnlimhH5bk8+fz/+9zTMzsXLbeyyMee9CW4i0qID7tAO2LtFVYBh1NqLcs
+         K5Tg==
+X-Gm-Message-State: AOAM533Cd1qqkkAZcUHNocRP1/AHoQKN59XTnz2p3XzL0UhQtFDsvG9x
+        mSSX9+QgXKLEXiXKKoQBXnmKgs99VekIFMav7IM=
+X-Google-Smtp-Source: ABdhPJzk3I3Y5B5oN+gAHy9JGTl43ke6auVS++wh6yF16T11jn259sPUb2TXq+hzFsHBPx2u+g3H2qlV7QXqw1wsd08=
+X-Received: by 2002:a17:90b:509:: with SMTP id r9mr490987pjz.228.1598607034956;
+ Fri, 28 Aug 2020 02:30:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200827202452.27714-1-krzk@kernel.org> <CAHp75VdE-Nxr7yDPPyRjG2vJZs-nkZowi+daUJTKK348Su_Pow@mail.gmail.com>
+ <20200828090038.GA17717@pi3>
+In-Reply-To: <20200828090038.GA17717@pi3>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 28 Aug 2020 12:30:18 +0300
+Message-ID: <CAHp75Vcz7ByVFSTeXLn7AvNcOgr=bw26mrmi=DsCfC9khro_kQ@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Move Hartmut Knaack to Credits
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>
-Subject: Re: [PATCH] MAINTAINERS: Move Hartmut Knaack to Credits
-Message-ID: <20200828090038.GA17717@pi3>
-References: <20200827202452.27714-1-krzk@kernel.org>
- <CAHp75VdE-Nxr7yDPPyRjG2vJZs-nkZowi+daUJTKK348Su_Pow@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdE-Nxr7yDPPyRjG2vJZs-nkZowi+daUJTKK348Su_Pow@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 28, 2020 at 11:20:58AM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 27, 2020 at 11:25 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Fri, Aug 28, 2020 at 12:00 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On Fri, Aug 28, 2020 at 11:20:58AM +0300, Andy Shevchenko wrote:
+> > On Thu, Aug 27, 2020 at 11:25 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > >
+> > > Hartmut Knaack was an active reviewer and contributor to the IIO
+> > > subsystem and drivers.  However last message on LKML from him was sent
+> > > in October 2015.
 > >
-> > Hartmut Knaack was an active reviewer and contributor to the IIO
-> > subsystem and drivers.  However last message on LKML from him was sent
-> > in October 2015.
-> 
-> But this is not a problem we solve here. His address is invalid for a
-> long time...
-
-I did not receive any bounces so I cannot confirm it. However I can
-quote you if you are sure that email is not valid.
-
-> 
-> > In thanks for Hartmut's effort, move him name to the Credits.
+> > But this is not a problem we solve here. His address is invalid for a
+> > long time...
+>
+> I did not receive any bounces so I cannot confirm it. However I can
+> quote you if you are sure that email is not valid.
+>
 > >
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > Cc: linux-iio <linux-iio@vger.kernel.org>
-> 
-> > Cc: Hartmut Knaack <knaack.h@gmx.de>
-> 
-> ...and this?!
-
-Since email is not bouncing, he might still receive it.
-
-> 
-> Reported-by: ?
-
-Reported-by is for problems/bugs, so here Suggested feels better.
-
-Best regards,
-Krzysztof
-
-> 
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > ---
-> >  CREDITS     | 4 ++++
-> >  MAINTAINERS | 1 -
-> >  2 files changed, 4 insertions(+), 1 deletion(-)
+> > > In thanks for Hartmut's effort, move him name to the Credits.
+> > >
+> > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > Cc: linux-iio <linux-iio@vger.kernel.org>
 > >
-> > diff --git a/CREDITS b/CREDITS
-> > index 32ee70a7562e..edb81e3159b1 100644
-> > --- a/CREDITS
-> > +++ b/CREDITS
-> > @@ -1953,6 +1953,10 @@ S: Am Bergfried 10
-> >  S: 63225 Langen
-> >  S: Germany
+> > > Cc: Hartmut Knaack <knaack.h@gmx.de>
 > >
-> > +N: Hartmut Knaack
-> > +E: knaack.h@gmx.de
-> > +D: IIO subsystem and drivers
-> > +
-> >  N: Alain L. Knaff
-> >  E: Alain.Knaff@lll.lu
-> >  D: floppy driver
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 523ac1602b62..1276833532c4 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -8532,7 +8532,6 @@ F:        drivers/iio/multiplexer/iio-mux.c
-> >
-> >  IIO SUBSYSTEM AND DRIVERS
-> >  M:     Jonathan Cameron <jic23@kernel.org>
-> > -R:     Hartmut Knaack <knaack.h@gmx.de>
-> >  R:     Lars-Peter Clausen <lars@metafoo.de>
-> >  R:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> >  L:     linux-iio@vger.kernel.org
-> > --
-> > 2.17.1
-> >
-> 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+> > ...and this?!
+>
+> Since email is not bouncing, he might still receive it.
+
+Hmm... I'm a bit puzzled now. It seems gmx.net has some policies in
+places that make my replies to your emails (patches) bounced, but this
+one is okay. Strange...
+
+> > Reported-by: ?
+>
+> Reported-by is for problems/bugs, so here Suggested feels better.
+
+Okay, works for me.
+
+-- 
+With Best Regards,
+Andy Shevchenko

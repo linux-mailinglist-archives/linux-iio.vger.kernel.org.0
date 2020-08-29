@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E3925652D
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 08:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0441256532
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 08:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726559AbgH2GsK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 02:48:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40374 "EHLO mail.kernel.org"
+        id S1726537AbgH2GsP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 02:48:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40552 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725886AbgH2GsJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 02:48:09 -0400
+        id S1725886AbgH2GsM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 02:48:12 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1B5D92137B;
-        Sat, 29 Aug 2020 06:48:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8F36F21473;
+        Sat, 29 Aug 2020 06:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598683689;
-        bh=K83T+JXtESA0TpwgWdU6Z3Vl8lzC3/2+GqaR3PlsHoM=;
+        s=default; t=1598683692;
+        bh=33QUtFhKd3vgFdrs9V7vjN8bhfHfPOFBEs807yqJTy0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zTVALHupfoniHQUm20051KrWI84bHOmJyP/hwatzCG0rANIzfPOmJmaqR/DuaU+Wm
-         tS4bqbiP8NA8TnXPOl7PzZCRf+Wa4eN8qkd9N3p91VtViDeCGp411Qr2EAHqVhuJbF
-         wbxeZaRfF2FHkTRRyevIzHU3ERkdVU8P5FZhMG3w=
+        b=t/KnJ9CCBKHeRoBU9R9NcQBXtGQUvnGSSp/nMljOr+8LyxPl6dyVxWp2EtdN1LJrP
+         jBY4dpR7F0VB6pwiBn5q5gTPnff4zZIx/5OHZcqdEJSIlAce1BOGkV3sPhacGPBEtv
+         y+8GauNsfHY8duxUSJ274xajuI6MYgGzCLwMIL20=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -38,9 +38,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-stm32@st-md-mailman.stormreply.com
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v3 02/18] iio: accel: mma8452: Simplify with dev_err_probe()
-Date:   Sat, 29 Aug 2020 08:47:10 +0200
-Message-Id: <20200829064726.26268-2-krzk@kernel.org>
+Subject: [PATCH v3 03/18] iio: adc: envelope-detector: Simplify with dev_err_probe()
+Date:   Sat, 29 Aug 2020 08:47:11 +0200
+Message-Id: <20200829064726.26268-3-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200829064726.26268-1-krzk@kernel.org>
 References: <20200829064726.26268-1-krzk@kernel.org>
@@ -55,42 +55,50 @@ dev_err_probe().  Less code and also it prints the error value.
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/accel/mma8452.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 4e6e70250048..104b87b98455 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1538,22 +1538,14 @@ static int mma8452_probe(struct i2c_client *client,
- 	data->chip_info = match->data;
+Changes since v2:
+1. Wrap dev_err_probe() lines at 80 character
+
+Changes since v1:
+1. Wrap dev_err_probe() lines at 100 character
+---
+ drivers/iio/adc/envelope-detector.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/adc/envelope-detector.c b/drivers/iio/adc/envelope-detector.c
+index 2a4fd3bb64cf..d73eac36153f 100644
+--- a/drivers/iio/adc/envelope-detector.c
++++ b/drivers/iio/adc/envelope-detector.c
+@@ -348,11 +348,9 @@ static int envelope_detector_probe(struct platform_device *pdev)
+ 	indio_dev->num_channels = 1;
  
- 	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
--	if (IS_ERR(data->vdd_reg)) {
--		if (PTR_ERR(data->vdd_reg) == -EPROBE_DEFER)
--			return -EPROBE_DEFER;
--
--		dev_err(&client->dev, "failed to get VDD regulator!\n");
--		return PTR_ERR(data->vdd_reg);
+ 	env->dac = devm_iio_channel_get(dev, "dac");
+-	if (IS_ERR(env->dac)) {
+-		if (PTR_ERR(env->dac) != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get dac input channel\n");
+-		return PTR_ERR(env->dac);
 -	}
-+	if (IS_ERR(data->vdd_reg))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_reg),
-+				     "failed to get VDD regulator!\n");
++	if (IS_ERR(env->dac))
++		return dev_err_probe(dev, PTR_ERR(env->dac),
++				     "failed to get dac input channel\n");
  
- 	data->vddio_reg = devm_regulator_get(&client->dev, "vddio");
--	if (IS_ERR(data->vddio_reg)) {
--		if (PTR_ERR(data->vddio_reg) == -EPROBE_DEFER)
--			return -EPROBE_DEFER;
--
--		dev_err(&client->dev, "failed to get VDDIO regulator!\n");
--		return PTR_ERR(data->vddio_reg);
+ 	env->comp_irq = platform_get_irq_byname(pdev, "comp");
+ 	if (env->comp_irq < 0)
+@@ -360,11 +358,9 @@ static int envelope_detector_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_irq(dev, env->comp_irq, envelope_detector_comp_isr,
+ 			       0, "envelope-detector", env);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to request interrupt\n");
+-		return ret;
 -	}
-+	if (IS_ERR(data->vddio_reg))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->vddio_reg),
-+				     "failed to get VDDIO regulator!\n");
- 
- 	ret = regulator_enable(data->vdd_reg);
- 	if (ret) {
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to request interrupt\n");
++
+ 	env->comp_irq_trigger = irq_get_trigger_type(env->comp_irq);
+ 	if (env->comp_irq_trigger & IRQF_TRIGGER_RISING)
+ 		env->comp_irq_trigger_inv |= IRQF_TRIGGER_FALLING;
 -- 
 2.17.1
 

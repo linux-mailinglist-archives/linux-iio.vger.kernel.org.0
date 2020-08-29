@@ -2,92 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF862568D8
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B2CB2568DF
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbgH2Pyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:54:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54310 "EHLO mail.kernel.org"
+        id S1728401AbgH2P5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:57:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55208 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728350AbgH2Pyk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:54:40 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728310AbgH2P5l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:57:41 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 674BB20707;
-        Sat, 29 Aug 2020 15:54:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1FDB220CC7;
+        Sat, 29 Aug 2020 15:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598716477;
-        bh=xeclwPlbfWVpsZXJD1ZTevUTmrD53fLqalk6KYlC4es=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=H3y2Wm6WEr9qH3jjCTSPXBsu56ecB1byWrvclK7JmMekckl+9pQxsQbBfNdYIcNwv
-         ju5UbU+LNShlCPYjtNLl4h5cLRJDlKQuXlwjogbRhP3uw0n4lOXSe9QIAAbMXLNVbn
-         8lk+4LtOSd6ynU9MoFwT28KlvqfhrKzm6MMxi+Nc=
-Date:   Sat, 29 Aug 2020 16:54:33 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     bleung@chromium.org, enric.balletbo@collabora.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2] platform: cros_ec: Reduce ligthbar get version
- command
-Message-ID: <20200829165433.57b0e5e4@archlinux>
-In-Reply-To: <20200826002945.394562-1-gwendal@chromium.org>
-References: <20200826002945.394562-1-gwendal@chromium.org>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        s=default; t=1598716661;
+        bh=YHcSw/hqKHXdDTuCSO/5dUdyJsCtyVzZTzxsaX4IgQ0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=AkdJQsqeMBVFlI4TSshlD/nSJrK5ARHEAUHmsDHccDh8eYv3qeyks8P0oSmoUP1JF
+         /iMp71OeOFuKi9TvL5EkWjLwmy/PieLf1t36ev8C2wbtY+MRYbbYCwZ2065fej+fR3
+         VcDQp+02Yv7vLoOzgcYh7Rd3umJh2zYrAwUQtTBc=
+Received: by mail-ed1-f51.google.com with SMTP id q4so1766357eds.3;
+        Sat, 29 Aug 2020 08:57:41 -0700 (PDT)
+X-Gm-Message-State: AOAM533X3b+rBCm3X1gdI75cDONhEabyGt/OVq6nKibSUyY/1Zu4uivV
+        WxevJS99DFvzDyYQGBiw6lHCINmcnnKeK5eOyoo=
+X-Google-Smtp-Source: ABdhPJx/hw+xUReRY08qMnVSvo8WfizFrkcGJBp6fVnLKoNLq4zUQsZf+SAHKYqnu6aW9Akvgdww2mqhRltNtho15Ik=
+X-Received: by 2002:a05:6402:515:: with SMTP id m21mr1264650edv.348.1598716659667;
+ Sat, 29 Aug 2020 08:57:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200826161539.20788-1-krzk@kernel.org> <20200829162102.602a3424@archlinux>
+In-Reply-To: <20200829162102.602a3424@archlinux>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Sat, 29 Aug 2020 17:57:28 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPfOBR16_UjW5-Xv+9n4OFuOL9Aykzm2zqjx+G3KYHEkGA@mail.gmail.com>
+Message-ID: <CAJKOXPfOBR16_UjW5-Xv+9n4OFuOL9Aykzm2zqjx+G3KYHEkGA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: magnetometer: mag3110: Simplify with dev_err_probe()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Peter Rosin <peda@axentia.se>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 25 Aug 2020 17:29:45 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Sat, 29 Aug 2020 at 17:21, Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed, 26 Aug 2020 18:15:38 +0200
+> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> > Common pattern of handling deferred probe can be simplified with
+> > dev_err_probe().  Less code and also it prints the error value.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> I'm a lazy person, so if you have a series like this where you decide
+> to post a new version without anyone having commented on it, please
+> send a quick reply to say you have done that.  Avoids me
+> applying wrong versions of things!
 
-> By default, the lightbar commands are set to the
-> biggest lightbar command and response. That length is greater than 128
-> bytes and may not work on all machines.
-> But all EC are probed for lightbar by sending a get version request.
-> Set that request size precisely.
-> 
-> Before the command would be:
-> cros_ec_cmd: version: 0, command: EC_CMD_LIGHTBAR_CMD, outsize: 194, insize: 128, result: 0
-> Afer:
-> cros_ec_cmd: version: 0, command: EC_CMD_LIGHTBAR_CMD, outsize: 1, insize: 8, result: 0
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Hi Gwendal,
+It was the part of v3 (18 patches) which you just applied so these two
+you can skip.
 
-Description seems to me to suggest this is a fix?
-Are there known machines on which it doesn't work currently?
+Sorry for not mentioning it.
 
-If so, please can I have a fixes tag.  If it's just a precaution
-against future problems then let me know and I can add it for the
-next merge window.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes since v1:
-> - Remove BUG and TEST fields.
-> 
->  drivers/platform/chrome/cros_ec_lightbar.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/platform/chrome/cros_ec_lightbar.c b/drivers/platform/chrome/cros_ec_lightbar.c
-> index b59180bff5a3e..ef61298c30bdd 100644
-> --- a/drivers/platform/chrome/cros_ec_lightbar.c
-> +++ b/drivers/platform/chrome/cros_ec_lightbar.c
-> @@ -116,6 +116,8 @@ static int get_lightbar_version(struct cros_ec_dev *ec,
->  
->  	param = (struct ec_params_lightbar *)msg->data;
->  	param->cmd = LIGHTBAR_CMD_VERSION;
-> +	msg->outsize = sizeof(param->cmd);
-> +	msg->result = sizeof(resp->version);
->  	ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
->  	if (ret < 0) {
->  		ret = 0;
-
+Best regards,
+Krzysztof

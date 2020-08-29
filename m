@@ -2,58 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58087256384
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 01:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187FC256393
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 02:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726536AbgH1XcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Aug 2020 19:32:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
+        id S1726762AbgH2AB3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Aug 2020 20:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbgH1XcP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Aug 2020 19:32:15 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A751C061232
-        for <linux-iio@vger.kernel.org>; Fri, 28 Aug 2020 16:32:15 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id t11so368723plr.5
-        for <linux-iio@vger.kernel.org>; Fri, 28 Aug 2020 16:32:15 -0700 (PDT)
+        with ESMTP id S1726797AbgH2ABY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Aug 2020 20:01:24 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A977FC061232
+        for <linux-iio@vger.kernel.org>; Fri, 28 Aug 2020 17:01:24 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id j11so379780plk.9
+        for <linux-iio@vger.kernel.org>; Fri, 28 Aug 2020 17:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=6beHee0w3/XIk3d7z2ZbFXD768rRlzXR8rEgKWWEzAM=;
-        b=BTeJPiuO31ZdggJziUvD/w04aZ+GClaDj/8zTBjCn9CM5+s9nQigd0BsrdhXXgNx1s
-         lbFbW4pP1i8mSI86sTdkomkQhJNztpDO2kAH5DTbFjfGUsyB7YKpAM7S7Hb4Nb5+A3AZ
-         CX/D9bxOli6PfvcVgB0Z2JoTSeSUrfVHK2bPs=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WP5DuUAAG+qcaTHe2FLLmzgJobs8Ub99cEAnEEBXuUY=;
+        b=MPHYleUx8NXhjcAnguiZgLc8Hc6XDR5fa10bzuEXqMIdBJH8bS89r+x1MKa7c1wUpU
+         ZnY2HhQkn5h2hHTqrzPsavaBqNe6hyLnIppKHgqzjbUlfw9oKloXIEnC1DK9+uaK9dyZ
+         +c1Ns+MjuYF05yj8hWwZpfYLz0fMbpkX2emLo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6beHee0w3/XIk3d7z2ZbFXD768rRlzXR8rEgKWWEzAM=;
-        b=djMpkKE3ECpmcHylaA0pEi8oGAMbDK1C5OOHJxNgb327H1wN4u1FBZSS8d05ba8kFx
-         Z82c6txivbbMgpySygIpUICfuK3RKNZy/KgU6LlzDaE2m6WcjbTvn9pee5BlyEKjS3RN
-         mTEwsesQo21YHHkFf3WmeblY2kW4N/s1hpaU0G+L5eYjWlFCf4rgQr/IyJpDwg8m+P/4
-         UQHPbFiBhyLEU42U/EN6jnbJDMn+gEtEdPu3RtzvkCw7J/VL1PXcbu4U14d8lRMREwcW
-         euyEIfppMretd+EmQmSF0EdWlobgnK7ZrefOdUm2InXPdtEtQ2KbxAQfX/VwHP/EWhKf
-         ZZ/g==
-X-Gm-Message-State: AOAM533oVdBKmGkJK/coP5ZVPDdkw3tkP7D2/ZbrxPn4BJTb3aogcwrM
-        e1mZ9bkGfCsO3VxuQ1UzTwkyddrU/fwrTg==
-X-Google-Smtp-Source: ABdhPJx5ibsOiUjGZPXzeFyMzRej9b6rEyBXJUQniwBAJx+cQ7FXwIrWUESvNnJk+x553otxQIFJ+g==
-X-Received: by 2002:a17:90a:8904:: with SMTP id u4mr1110067pjn.87.1598657534970;
-        Fri, 28 Aug 2020 16:32:14 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:7220:84ff:fe09:94fe])
-        by smtp.gmail.com with ESMTPSA id y13sm491326pfn.214.2020.08.28.16.32.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Aug 2020 16:32:14 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, lars@metafoo.de, peress@chromium.org,
-        enric.balletbo@collabora.com
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH 2/2] docs: abi: iio: Add event when offset changes
-Date:   Fri, 28 Aug 2020 16:31:56 -0700
-Message-Id: <20200828233156.2264689-3-gwendal@chromium.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WP5DuUAAG+qcaTHe2FLLmzgJobs8Ub99cEAnEEBXuUY=;
+        b=jN1dfoeKx3RXRnbiOvjU9ncs+9xE7ba/GtCsBE8ZdO+kmHQHqrfv2wFS+/xFB/hP1e
+         ADXZ/X/1pvaxMxKDNBeZSVQaG74l4kRdTKBT+MdUX51buKiC7G9WC2h+WmdyUZ9JdxvV
+         gNMe14xYZM6gbYHcd1YqACU01k/C7HQCrpte1Dzl/AG6EDotSkQUPmJEOrEGhSpcHS7m
+         EAtnleJhQcD2VKNKsn74YNYMCFkUQSsndcvhe9+3VedhE2NAPRJsqnHJ4Vcqc/hhrFeG
+         voeDSymBLPA0fbCT9JoNTlXNuNn8ienG9VosMZ5CjYwZcSnvTPZJBCqlCrHG8fZD8WEe
+         CnRA==
+X-Gm-Message-State: AOAM533G7qMLgS4cNNYvclaHqcRZPoDUCMO32rS739GyxwvDd3VTgr2Z
+        9ABtYjvl+JeUXsUdQgEv8E2edg==
+X-Google-Smtp-Source: ABdhPJw3m732pYyvoiDOQensvtwKdLaavSAtqO5S1Z1mo48Jk4EyhYZsvMNb5Ibun68EKUGZX/Hsyw==
+X-Received: by 2002:a17:90b:40cb:: with SMTP id hj11mr1196294pjb.67.1598659283950;
+        Fri, 28 Aug 2020 17:01:23 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
+        by smtp.gmail.com with ESMTPSA id h5sm611367pfk.0.2020.08.28.17.01.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2020 17:01:23 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     swboyd@chromium.org, Douglas Anderson <dianders@chromium.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Daniel Campello <campello@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: sx9310: Prefer async probe
+Date:   Fri, 28 Aug 2020 17:01:18 -0700
+Message-Id: <20200828170052.1.Id02b2f451b3eed71ddd580f4b8b44b3e33e84970@changeid>
 X-Mailer: git-send-email 2.28.0.402.g5ffc5be6b7-goog
-In-Reply-To: <20200828233156.2264689-1-gwendal@chromium.org>
-References: <20200828233156.2264689-1-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -61,58 +65,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some sensors/sensorhubs can calculate drift or hard iron offsets to
-apply to raw data to get the true measure data.
-These offsets are applied by the user space application.
-When these offsets change, events are raised to tell the application
-to update the cached offset values.
+On one board I found that:
+  probe of 5-0028 returned 1 after 259547 usecs
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+There's no reason to block probe of all other devices on our probe.
+Turn on async probe.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
- Documentation/ABI/testing/sysfs-bus-iio | 33 +++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+NOTE: I haven't done any analysis of the driver to see _why_ it's so
+slow, only that I have measured it to be slow.  Someone could
+certainly take the time to profile / optimize it, but in any case it
+still won't hurt to be async.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 47df16c87862d..40da602e7a555 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1716,3 +1716,36 @@ Description:
- 		Mass concentration reading of particulate matter in ug / m3.
- 		pmX consists of particles with aerodynamic diameter less or
- 		equal to X micrometers.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_x_offset
-+What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_y_offset
-+What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_z_offset
-+KernelVersion:	x.y
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Gyroscope drift calculated by the sensor. In addition to factory
-+		calibration, sensor or sensorhub can
-+		detect gyroscope drift and report it to userspace.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_magn_x_offset
-+What:		/sys/bus/iio/devices/iio:deviceX/in_magn_y_offset
-+What:		/sys/bus/iio/devices/iio:deviceX/in_magn_z_offset
-+KernelVersion:	x.y
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Hard Iron bias calculated by the sensor or sensorhub. To be applied by
-+		user space application to the raw data to obtain the geomagnetic field.
-+
-+What:		/sys/.../iio:deviceX/events/in_accel_offset_change_en
-+What:		/sys/.../iio:deviceX/events/in_magn_offset_change_en
-+What:		/sys/.../iio:deviceX/events/in_magn_scale_change_en
-+What:		/sys/.../iio:deviceX/events/in_anglvel_offset_change_en
-+KernelVersion:	x.y
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some sensors internally calculate offset to apply to remove bias (for
-+		instance, hard/soft-iron bias for magnetometer, online calibration bias for
-+		gyroscope or accelerometer).
-+		When the sensor computes a new set of offset values, it generates an
-+		event for the userspace application to refresh the offsets to apply to raw
-+		data.
+This is a very safe flag to turn on since:
+
+1. It's not like our probe order was defined by anything anyway.  When
+we probe is at the whim of when our i2c controller probes and that can
+be any time.
+
+2. If some other driver needs us then they have to handle the fact
+that we might not have probed yet anyway.
+
+3. There may be other drivers probing at the same time as us anyway
+because _they_ used async probe.
+
+While I won't say that it's impossible to tickle a bug by turning on
+async probe, I would assert that in almost all cases the bug was
+already there and needed to be fixed anyway.
+
+ALSO NOTE: measurement / testing was done on the downstream Chrome OS
+5.4 tree.  I confirmed compiling on mainline.
+
+ drivers/iio/proximity/sx9310.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index dc2e11b43431..444cafc53408 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -1054,6 +1054,7 @@ static struct i2c_driver sx9310_driver = {
+ 		.acpi_match_table = ACPI_PTR(sx9310_acpi_match),
+ 		.of_match_table = of_match_ptr(sx9310_of_match),
+ 		.pm = &sx9310_pm_ops,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe		= sx9310_probe,
+ 	.id_table	= sx9310_id,
 -- 
 2.28.0.402.g5ffc5be6b7-goog
 

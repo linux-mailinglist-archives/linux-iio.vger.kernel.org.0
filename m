@@ -2,101 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EEB125699B
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 20:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE7F2569BE
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 20:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728284AbgH2SEC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 14:04:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57382 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728265AbgH2SEB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 14:04:01 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 51C86206B5;
-        Sat, 29 Aug 2020 18:03:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598724240;
-        bh=UvKZOM3C+T67dDEEmRBTjLYqlXBDkmFfMlbePdpjd0o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TyUs8HJwsmg08VDwvHaYdWCjMvKTZpSlZm5oAuavnVsmOpOLSi5pBu2m39ujW3fYX
-         EaPxG7O/SnTrEPVIdvsfboPGw1A10phXBJBJOjBGX6XxxN+JqE5IQV6l6KHvYmnx0x
-         xnSEV3eLTwlmTrJF5OoldLwFF5zpCXlpFvSqs9g4=
-Date:   Sat, 29 Aug 2020 19:03:56 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anson Huang <Anson.Huang@nxp.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        alexandru.ardelean@analog.com, hslester96@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux-imx@nxp.com
-Subject: Re: [PATCH 1/3] iio: accel: mma8452: Use dev_err_probe() to
- simplify error handling
-Message-ID: <20200829190356.4ed2a666@archlinux>
-In-Reply-To: <1597117396-2894-1-git-send-email-Anson.Huang@nxp.com>
-References: <1597117396-2894-1-git-send-email-Anson.Huang@nxp.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728333AbgH2SaM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 14:30:12 -0400
+Received: from www381.your-server.de ([78.46.137.84]:52636 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728265AbgH2SaL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Aug 2020 14:30:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=ERbgAE3pZSuPPJ0AciVRDP2ivLaLFeMXcTLXqWG2SVE=; b=HcLkvCJsyeO91oXJbXf0t/bhGZ
+        P/fXd19U0dEgh3KzE0VBhVBHjLI2iz5CvV3qItM73EioluC/CxO5k3+7RJ7kjjI1jPRwqU1fF6V8j
+        lc9wMV/1zMNH0/EOe2xwl+GJgWXSOWmOSWRmoN1b8luMDNfGgc88R94bQwmNbTQh1mswB9Fn+aNxR
+        vdGeaAc+4jf/BZRKufhReSkI3kYMVv0A/TWRCg7IeDmsh1/z4BQZauvoOfQq24fTOH+yohvFiLmuS
+        WkOJd5HV7pFmYOxeWWzcMlQvZ9Doj1IX9IPLWDPxz1Ae+Ftn9XudlQ07Z++siXRU6VrMVXBxiw3w0
+        3x41cQjw==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1kC5c4-0002cI-S7; Sat, 29 Aug 2020 20:30:04 +0200
+Received: from [2001:a61:25dc:8101:9e5c:8eff:fe01:8578]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1kC5c4-000WKk-Nq; Sat, 29 Aug 2020 20:30:04 +0200
+Subject: Re: [PATCH] iio: buffer-dmaengine: adjust `bytes_used` with residue
+ info
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <20200826052011.13348-1-lars@metafoo.de>
+ <CA+U=Dsp8KXNzmVGf9N=A+h7DyC2L7Hk2A7N4ERPL4jc+-M_mFg@mail.gmail.com>
+ <20200829165134.3361315a@archlinux>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <f336acac-ed70-ad88-57ca-8d06ec54182e@metafoo.de>
+Date:   Sat, 29 Aug 2020 20:30:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200829165134.3361315a@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/25914/Sat Aug 29 15:19:48 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Aug 2020 11:43:14 +0800
-Anson Huang <Anson.Huang@nxp.com> wrote:
+On 8/29/20 5:51 PM, Jonathan Cameron wrote:
+> On Wed, 26 Aug 2020 09:36:39 +0300
+> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+>
+>> On Wed, Aug 26, 2020 at 8:22 AM Lars-Peter Clausen <lars@metafoo.de> wrote:
+>>> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>>>
+>>> A transfer may fall shorter than the bytes in the block.
+>>> This information is available in the residue from the DMA engine, so we can
+>>> compute actual `bytes_used` with that by subtracting the residue.
+>>>   
+>> This was in my pipeline as well [obviously].
+>> Thanks :)
+>>
+>>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> "smells" like a fix.  Is it?  Or are we looking at something that
+> only matters for some future hardware, or an optmization?
+>
+> If it's a fix, where is the fixes tag?
 
-> dev_err_probe() can reduce code size, uniform error handling and record the
-> defer probe reason etc., use it to simplify the code.
-> 
-> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
-Sorry Anson.
+It's a feature :)
 
-You got in first, but I was working backwards through my email today and
-picked up Krzysztof Kozlowski's series doing the same thing across a whole
-set of drivers.
+When we first added the IIO DMA buffer support this API did not exist in 
+dmaengine. So for the longest time most DMA drivers did not have the 
+ability to report short transfers. Primarily because in many cases the 
+hardware doesn't even support it.
 
-Sorry about that.
+Now with this patch the IIO DMA buffer implementation supports systems 
+where the DMA can generate short transfers.
 
-Jonathan
-
-
-> ---
->  drivers/iio/accel/mma8452.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-> index ba27f86..9b5f23b 100644
-> --- a/drivers/iio/accel/mma8452.c
-> +++ b/drivers/iio/accel/mma8452.c
-> @@ -1538,22 +1538,14 @@ static int mma8452_probe(struct i2c_client *client,
->  	data->chip_info = match->data;
->  
->  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
-> -	if (IS_ERR(data->vdd_reg)) {
-> -		if (PTR_ERR(data->vdd_reg) == -EPROBE_DEFER)
-> -			return -EPROBE_DEFER;
-> -
-> -		dev_err(&client->dev, "failed to get VDD regulator!\n");
-> -		return PTR_ERR(data->vdd_reg);
-> -	}
-> +	if (IS_ERR(data->vdd_reg))
-> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_reg),
-> +				     "failed to get VDD regulator!\n");
->  
->  	data->vddio_reg = devm_regulator_get(&client->dev, "vddio");
-> -	if (IS_ERR(data->vddio_reg)) {
-> -		if (PTR_ERR(data->vddio_reg) == -EPROBE_DEFER)
-> -			return -EPROBE_DEFER;
-> -
-> -		dev_err(&client->dev, "failed to get VDDIO regulator!\n");
-> -		return PTR_ERR(data->vddio_reg);
-> -	}
-> +	if (IS_ERR(data->vddio_reg))
-> +		return dev_err_probe(&client->dev, PTR_ERR(data->vddio_reg),
-> +				     "failed to get VDDIO regulator!\n");
->  
->  	ret = regulator_enable(data->vdd_reg);
->  	if (ret) {
+- Lars
 

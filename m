@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01508256890
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A2125689A
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728237AbgH2PTF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:19:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34026 "EHLO mail.kernel.org"
+        id S1728241AbgH2PVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:21:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38502 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728146AbgH2PTF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:19:05 -0400
+        id S1728235AbgH2PVH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:21:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4C9420707;
-        Sat, 29 Aug 2020 15:19:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 506EB20707;
+        Sat, 29 Aug 2020 15:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598714344;
-        bh=W2rbE6VHPAeW5y9cyufi3o4ecuRWRqU4vfDN60Cd1Eo=;
+        s=default; t=1598714466;
+        bh=Z+6WVm3iWWKzzimzw8K/1fY+Z4iQualX393QfUsiaX0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MuV4H3U+lnd2WVXNlFvCKb8DKDawjKxe9L6RwkYvW1ZUtj17fBsN8ccbZi9ZVG7d+
-         TRqJwFs7rPJdH61gDZ24LsLqoYsRwByiwurE4K4FoDt72iRKyQE2zIjabwyJYuKxFS
-         N2NnYchYulNC6q6C8/MM0D6ygN9l+NcI9y204Xew=
-Date:   Sat, 29 Aug 2020 16:19:00 +0100
+        b=ucUiDJgGaWWuD5e1XLp8kulN6RRUEKTS0148111yjBDYjkvspscfnMYf0MN6AIzWt
+         zwqZZmLn+Onpg3bSSQMtaxu2R6SHfyfgtkvTH8sldOoWCMZiDFbd765ySRaguNmNh8
+         aLyshI/mdU53oWGD8h7mHKpffFDREtSwkltEMbOE=
+Date:   Sat, 29 Aug 2020 16:21:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        michal.simek@xilinx.com, git@xilinx.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        anandash@xilinx.com
-Subject: Re: [PATCH v2] iio: core: Fix IIO_VAL_FRACTIONAL calculation for
- negative values
-Message-ID: <20200829161900.713541cd@archlinux>
-In-Reply-To: <1598465676-28912-1-git-send-email-anand.ashok.dumbre@xilinx.com>
-References: <1598465676-28912-1-git-send-email-anand.ashok.dumbre@xilinx.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Peter Rosin <peda@axentia.se>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: magnetometer: mag3110: Simplify with
+ dev_err_probe()
+Message-ID: <20200829162102.602a3424@archlinux>
+In-Reply-To: <20200826161539.20788-1-krzk@kernel.org>
+References: <20200826161539.20788-1-krzk@kernel.org>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,62 +46,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Aug 2020 11:14:36 -0700
-Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
+On Wed, 26 Aug 2020 18:15:38 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> Fixes IIO_VAL_FRACTIONAL for case when the result is negative and
-> exponent is 0.
+> Common pattern of handling deferred probe can be simplified with
+> dev_err_probe().  Less code and also it prints the error value.
 > 
-> example: if the result is -0.75, tmp0 will be 0 and tmp1 = 75
-> This causes the output to lose sign because of %d in snprintf
-> which works for tmp0 <= -1.
-> 
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-
-Looks good.  Just one last thing.
-
-Is this actually hit in an existing driver?  I'm just wondering
-how far back we need to push it in stable etc.
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+I'm a lazy person, so if you have a series like this where you decide
+to post a new version without anyone having commented on it, please
+send a quick reply to say you have done that.  Avoids me
+applying wrong versions of things!
 
 Thanks,
 
 Jonathan
 
 > ---
-> changes since v1:
-> 	Changed -%d to -0 to make the fix clearer.
-> 	Removed the email footer.
-> 	Updated the commit description with an example
-> --
->  drivers/iio/industrialio-core.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  drivers/iio/magnetometer/mag3110.c | 20 ++++++--------------
+>  1 file changed, 6 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index cdcd16f1..a239fa2 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -592,6 +592,7 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
->  {
->  	unsigned long long tmp;
->  	int tmp0, tmp1;
-> +	s64 tmp2;
->  	bool scale_db = false;
+> diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
+> index 4d305a21c379..838b13c8bb3d 100644
+> --- a/drivers/iio/magnetometer/mag3110.c
+> +++ b/drivers/iio/magnetometer/mag3110.c
+> @@ -476,22 +476,14 @@ static int mag3110_probe(struct i2c_client *client,
+>  	data = iio_priv(indio_dev);
 >  
->  	switch (type) {
-> @@ -614,10 +615,13 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
->  		else
->  			return scnprintf(buf, len, "%d.%09u", vals[0], vals[1]);
->  	case IIO_VAL_FRACTIONAL:
-> -		tmp = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
-> +		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
->  		tmp1 = vals[1];
->  		tmp0 = (int)div_s64_rem(tmp, 1000000000, &tmp1);
-> -		return scnprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
-> +		if ((tmp2 < 0) && (tmp0 == 0))
-> +			return snprintf(buf, len, "-0.%09u", abs(tmp1));
-> +		else
-> +			return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
->  	case IIO_VAL_FRACTIONAL_LOG2:
->  		tmp = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
->  		tmp0 = (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
+>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+> -	if (IS_ERR(data->vdd_reg)) {
+> -		if (PTR_ERR(data->vdd_reg) == -EPROBE_DEFER)
+> -			return -EPROBE_DEFER;
+> -
+> -		dev_err(&client->dev, "failed to get VDD regulator!\n");
+> -		return PTR_ERR(data->vdd_reg);
+> -	}
+> +	if (IS_ERR(data->vdd_reg))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_reg),
+> +				     "failed to get VDD regulator!\n");
+>  
+>  	data->vddio_reg = devm_regulator_get(&client->dev, "vddio");
+> -	if (IS_ERR(data->vddio_reg)) {
+> -		if (PTR_ERR(data->vddio_reg) == -EPROBE_DEFER)
+> -			return -EPROBE_DEFER;
+> -
+> -		dev_err(&client->dev, "failed to get VDDIO regulator!\n");
+> -		return PTR_ERR(data->vddio_reg);
+> -	}
+> +	if (IS_ERR(data->vddio_reg))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vddio_reg),
+> +				     "failed to get VDDIO regulator!\n");
+>  
+>  	ret = regulator_enable(data->vdd_reg);
+>  	if (ret) {
 

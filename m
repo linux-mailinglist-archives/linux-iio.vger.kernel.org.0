@@ -2,41 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 114FE2568C4
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C0D2568C8
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728305AbgH2Pmp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:42:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50190 "EHLO mail.kernel.org"
+        id S1728307AbgH2PqU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:46:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728196AbgH2Pla (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:41:30 -0400
+        id S1728196AbgH2PqT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:46:19 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2B615206B5;
-        Sat, 29 Aug 2020 15:41:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A981A20707;
+        Sat, 29 Aug 2020 15:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598715689;
-        bh=k3qOKfMDelF5OX8qgtgOSW2vvEfhfxIHlvt4PAmmJRI=;
+        s=default; t=1598715978;
+        bh=AheSshfe92OtbNQk0Y5YnL36d07LMk/Bwp5WrwRwW/8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=m+sW1f+u7G+keDDQIsLFj7/mwDpCWOQMmESkmWU9Lh1rk3LYMJ1NaVQgRWsKlhjFF
-         lhI6ZrVD33Irj57BhLI5xj1NH2WsyW43PFhaN7VHeR+Of3nrOvjdmlU4n/V0YJcca4
-         A2XMh+TwJ2QidA6Segilp9/dzw50+qWO6NGTo8y0=
-Date:   Sat, 29 Aug 2020 16:41:25 +0100
+        b=xFkSuODyEMu7scime7X76raA4n6sWN3AdwLpRB0qK1Rdc0IWkRyClkmKnRUBUriNg
+         lwdIHHz47eCBAdC6YfYGpV5GhU/XPHYoq88pMjRcI5qz5WzE0g/JSwgOR5RBg8PHwK
+         8vbqk9SMaORV8BmDSp7vcYlm0NNZnh/msT7Cgkvk=
+Date:   Sat, 29 Aug 2020 16:46:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Christian Eggers <ceggers@arri.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: light: as73211: Fix AS73211_CREG1_GAIN_1
-Message-ID: <20200829164125.540f5667@archlinux>
-In-Reply-To: <CAHp75VfBMXPyH80d0hrUqohC4wvgBNSSNp4N86JcfiWSfWHs+w@mail.gmail.com>
-References: <20200826095247.16368-1-ceggers@arri.de>
-        <CAHp75VfBMXPyH80d0hrUqohC4wvgBNSSNp4N86JcfiWSfWHs+w@mail.gmail.com>
+        linux-stm32@st-md-mailman.stormreply.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org, alexandre.torgue@st.com,
+        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Subject: Re: [PATCH v2] iio: stm32-dac: Replace indio_dev->mlock with own
+ device lock
+Message-ID: <20200829164613.3be1b2b1@archlinux>
+In-Reply-To: <CA+U=DspjGUhXCY7c8P6zOYZsx17ybcU4Kdr52yujmdYOaa1JSQ@mail.gmail.com>
+References: <20200826063850.47625-1-alexandru.ardelean@analog.com>
+        <20200826120042.200364-1-alexandru.ardelean@analog.com>
+        <CA+U=DsrMDSTQKEc2_3+W8u4bLraAowVB3nB4huKY--v8gnds2Q@mail.gmail.com>
+        <c3a9411e-186d-a3ac-5ad0-bd70ad78f147@st.com>
+        <CA+U=DspjGUhXCY7c8P6zOYZsx17ybcU4Kdr52yujmdYOaa1JSQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,73 +51,90 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Aug 2020 19:11:37 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Thu, 27 Aug 2020 13:00:36 +0300
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On Wed, Aug 26, 2020 at 12:55 PM Christian Eggers <ceggers@arri.de> wrote:
+> On Thu, Aug 27, 2020 at 12:03 PM Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
 > >
-> > Wrong value was introduced during review process.  
+> > On 8/27/20 10:55 AM, Alexandru Ardelean wrote:  
+> > > On Wed, Aug 26, 2020 at 3:03 PM Alexandru Ardelean
+> > > <alexandru.ardelean@analog.com> wrote:  
+> > >> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > >>
+> > >> As part of the general cleanup of indio_dev->mlock, this change replaces
+> > >> it with a local lock. The lock protects against potential races when
+> > >> reading the CR reg and then updating, so that the state of pm_runtime
+> > >> is consistent between the two operations.
+> > >>
+> > >> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > >> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > >> ---  
+> > > Forgot the changelog here.
+> > > Apologies.
+> > >
+> > > Changelog v1 -> v2:
+> > > * removed whitespace change for 'common' field
+> > > * updated comment about the lock usage  
+> >
+> > Hi Alexandru,
+> >
+> > Sorry if I missed it... is there an update on the comment :-) ?  
 > 
-> Ooops, long reviews have their outcomes...
+> For a moment there, I thought I didn't.
+> GMail's threading is confusing.
 > 
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ----------------------------------------------------------------------------
+> As part of the general cleanup of indio_dev->mlock, this change replaces
+> it with a local lock. The lock protects against potential races when
+> reading the CR reg and then updating, so that the state of pm_runtime
+> is consistent between the two operations.
+> ----------------------------------------------------------------------------
+I think this got confused...
 
-Thanks.  Add I hadn't pushed this out yet in a non rebasing branch
-I have folded it into the original patch.
+see below.
 
-thanks,
-
-Jonathan
 
 > 
-> > Signed-off-by: Christian Eggers <ceggers@arri.de>
-> > ---
-> > Patch against jic23/iio.git, branch testing
 > >
-> >  drivers/iio/light/as73211.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> > index 3383aaacbf52..e76747b99b92 100644
-> > --- a/drivers/iio/light/as73211.c
-> > +++ b/drivers/iio/light/as73211.c
-> > @@ -56,7 +56,7 @@
-> >  #define AS73211_AGEN_MUT(x)       FIELD_PREP(AS73211_AGEN_MUT_MASK, (x))
-> >
-> >  #define AS73211_CREG1_GAIN_MASK   GENMASK(7, 4)
-> > -#define AS73211_CREG1_GAIN_1      13
-> > +#define AS73211_CREG1_GAIN_1      11
-> >  #define AS73211_CREG1_TIME_MASK   GENMASK(3, 0)
-> >
-> >  #define AS73211_CREG3_CCLK_MASK   GENMASK(1, 0)
-> > @@ -217,7 +217,7 @@ static void as73211_integration_time_calc_avail(struct as73211_data *data)
-> >
-> >  static unsigned int as73211_gain(struct as73211_data *data)
-> >  {
-> > -       /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
-> > +       /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
-> >         return BIT(AS73211_CREG1_GAIN_1 - FIELD_GET(AS73211_CREG1_GAIN_MASK, data->creg1));
-> >  }
-> >
-> > @@ -473,7 +473,7 @@ static int _as73211_write_raw(struct iio_dev *indio_dev,
-> >                 if (val < 0 || !is_power_of_2(val) || val2)
-> >                         return -EINVAL;
-> >
-> > -               /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
-> > +               /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
-> >                 reg_bits = AS73211_CREG1_GAIN_1 - ilog2(val);
-> >                 if (!FIELD_FIT(AS73211_CREG1_GAIN_MASK, reg_bits))
-> >                         return -EINVAL;
-> > --
-> > Christian Eggers
-> > Embedded software developer
-> >
-> > Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-> > Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-> > Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-> > Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-> > Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
-> >  
-> 
-> 
+> > Best Regards,
+> > Fabrice  
+> > >  
+> > >>  drivers/iio/dac/stm32-dac.c | 12 ++++++++----
+> > >>  1 file changed, 8 insertions(+), 4 deletions(-)
+> > >>
+> > >> diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
+> > >> index 092c796fa3d9..7a8aed476850 100644
+> > >> --- a/drivers/iio/dac/stm32-dac.c
+> > >> +++ b/drivers/iio/dac/stm32-dac.c
+> > >> @@ -26,9 +26,11 @@
+> > >>  /**
+> > >>   * struct stm32_dac - private data of DAC driver
+> > >>   * @common:            reference to DAC common data
+> > >> + * @lock:              lock to protect the data buffer during regmap ops
+
+The original comment was:
+
+
+In this particular case I'm not sure that's what mlock was being used for.
+I think it's about avoiding races around checking if powered down and
+actually doing it.
+
+And Fabrice's reply:
+
+Hi Sergiu,
+
+Indeed, purpose is to protect against a race here when reading CR, and
+updating it via regmap (this also makes the subsequent pm_runtime calls
+to be balanced based on this).
+(Side note: there is no data buffer involved for the DAC.)
+Could you please update the comment ?
+
+Thanks,
+Fabrice
+
+> > >>   */
+> > >>  struct stm32_dac {
+> > >>         struct stm32_dac_common *common;
+> > >> +       struct mutex            lock;
+> > >>  };  
 

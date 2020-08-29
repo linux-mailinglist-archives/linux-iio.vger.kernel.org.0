@@ -2,42 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BA525688A
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01508256890
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728191AbgH2PMh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:12:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57198 "EHLO mail.kernel.org"
+        id S1728237AbgH2PTF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:19:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34026 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727772AbgH2PMf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:12:35 -0400
+        id S1728146AbgH2PTF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:19:05 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B3533207DA;
-        Sat, 29 Aug 2020 15:12:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D4C9420707;
+        Sat, 29 Aug 2020 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598713955;
-        bh=Eo1SPeKsRz96wh4QVnp5DUv/YnwSpFSnWVxosehIdY0=;
+        s=default; t=1598714344;
+        bh=W2rbE6VHPAeW5y9cyufi3o4ecuRWRqU4vfDN60Cd1Eo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CKH6M2Nsn5O96NeAQmzTf/D7LHo8bUNvO5Wti/bGujxzgUNNQ+/C0Vt0EZaEsRtRt
-         uTHwbP/ZIskdkI2zx8eZEwGTl67ggc77S7fAVaJNYia+Xa7HgZEqSUXDs5CeIhw67v
-         zVZGII2z58uz4PFuTHExhrQD5S+lWtNB4JHMcKFY=
-Date:   Sat, 29 Aug 2020 16:12:30 +0100
+        b=MuV4H3U+lnd2WVXNlFvCKb8DKDawjKxe9L6RwkYvW1ZUtj17fBsN8ccbZi9ZVG7d+
+         TRqJwFs7rPJdH61gDZ24LsLqoYsRwByiwurE4K4FoDt72iRKyQE2zIjabwyJYuKxFS
+         N2NnYchYulNC6q6C8/MM0D6ygN9l+NcI9y204Xew=
+Date:   Sat, 29 Aug 2020 16:19:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     swboyd@chromium.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Daniel Campello <campello@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: sx9310: Prefer async probe
-Message-ID: <20200829161230.398e0051@archlinux>
-In-Reply-To: <20200828170052.1.Id02b2f451b3eed71ddd580f4b8b44b3e33e84970@changeid>
-References: <20200828170052.1.Id02b2f451b3eed71ddd580f4b8b44b3e33e84970@changeid>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        michal.simek@xilinx.com, git@xilinx.com, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        anandash@xilinx.com
+Subject: Re: [PATCH v2] iio: core: Fix IIO_VAL_FRACTIONAL calculation for
+ negative values
+Message-ID: <20200829161900.713541cd@archlinux>
+In-Reply-To: <1598465676-28912-1-git-send-email-anand.ashok.dumbre@xilinx.com>
+References: <1598465676-28912-1-git-send-email-anand.ashok.dumbre@xilinx.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,69 +44,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 28 Aug 2020 17:01:18 -0700
-Douglas Anderson <dianders@chromium.org> wrote:
+On Wed, 26 Aug 2020 11:14:36 -0700
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-> On one board I found that:
->   probe of 5-0028 returned 1 after 259547 usecs
+> Fixes IIO_VAL_FRACTIONAL for case when the result is negative and
+> exponent is 0.
 > 
-> There's no reason to block probe of all other devices on our probe.
-> Turn on async probe.
+> example: if the result is -0.75, tmp0 will be 0 and tmp1 = 75
+> This causes the output to lose sign because of %d in snprintf
+> which works for tmp0 <= -1.
 > 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> NOTE: I haven't done any analysis of the driver to see _why_ it's so
-> slow, only that I have measured it to be slow.  Someone could
-> certainly take the time to profile / optimize it, but in any case it
-> still won't hurt to be async.
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-Hmm. It is vanishingly rare to use that flag so I'm not particularly
-keen on starting to deploy it when we don't know why a particular
-driver is taking so long.  I agree it should be safe but I don't
-like oddities I don't understand!
+Looks good.  Just one last thing.
 
-There are some sleeps in there but they are all of the order of a few
-msecs.
+Is this actually hit in an existing driver?  I'm just wondering
+how far back we need to push it in stable etc.
 
-Could it be there is a regulator that is coming up very slowly?
-
-Any other ideas?
+Thanks,
 
 Jonathan
 
+> ---
+> changes since v1:
+> 	Changed -%d to -0 to make the fix clearer.
+> 	Removed the email footer.
+> 	Updated the commit description with an example
+> --
+>  drivers/iio/industrialio-core.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> This is a very safe flag to turn on since:
-> 
-> 1. It's not like our probe order was defined by anything anyway.  When
-> we probe is at the whim of when our i2c controller probes and that can
-> be any time.
-> 
-> 2. If some other driver needs us then they have to handle the fact
-> that we might not have probed yet anyway.
-> 
-> 3. There may be other drivers probing at the same time as us anyway
-> because _they_ used async probe.
-> 
-> While I won't say that it's impossible to tickle a bug by turning on
-> async probe, I would assert that in almost all cases the bug was
-> already there and needed to be fixed anyway.
-> 
-> ALSO NOTE: measurement / testing was done on the downstream Chrome OS
-> 5.4 tree.  I confirmed compiling on mainline.
-> 
->  drivers/iio/proximity/sx9310.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index dc2e11b43431..444cafc53408 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -1054,6 +1054,7 @@ static struct i2c_driver sx9310_driver = {
->  		.acpi_match_table = ACPI_PTR(sx9310_acpi_match),
->  		.of_match_table = of_match_ptr(sx9310_of_match),
->  		.pm = &sx9310_pm_ops,
-> +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
->  	},
->  	.probe		= sx9310_probe,
->  	.id_table	= sx9310_id,
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index cdcd16f1..a239fa2 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -592,6 +592,7 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
+>  {
+>  	unsigned long long tmp;
+>  	int tmp0, tmp1;
+> +	s64 tmp2;
+>  	bool scale_db = false;
+>  
+>  	switch (type) {
+> @@ -614,10 +615,13 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
+>  		else
+>  			return scnprintf(buf, len, "%d.%09u", vals[0], vals[1]);
+>  	case IIO_VAL_FRACTIONAL:
+> -		tmp = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
+> +		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
+>  		tmp1 = vals[1];
+>  		tmp0 = (int)div_s64_rem(tmp, 1000000000, &tmp1);
+> -		return scnprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
+> +		if ((tmp2 < 0) && (tmp0 == 0))
+> +			return snprintf(buf, len, "-0.%09u", abs(tmp1));
+> +		else
+> +			return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
+>  	case IIO_VAL_FRACTIONAL_LOG2:
+>  		tmp = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
+>  		tmp0 = (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
 

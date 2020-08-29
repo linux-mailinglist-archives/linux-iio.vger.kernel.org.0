@@ -2,38 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5979D2568B8
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 114FE2568C4
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728371AbgH2Pfi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:35:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48492 "EHLO mail.kernel.org"
+        id S1728305AbgH2Pmp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:42:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728196AbgH2Pfh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:35:37 -0400
+        id S1728196AbgH2Pla (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:41:30 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6E78A20791;
-        Sat, 29 Aug 2020 15:35:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B615206B5;
+        Sat, 29 Aug 2020 15:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598715336;
-        bh=j6jFQQI+S+Zc7jamxDk6P8xUa9APlinfotS8wBG/sfk=;
+        s=default; t=1598715689;
+        bh=k3qOKfMDelF5OX8qgtgOSW2vvEfhfxIHlvt4PAmmJRI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wpIg/pDqJxnbPmrrbN1zZncs991Ja7La9/uqYE+vERNp9t2NTt8pGZ1kOyR83X74u
-         78rmSPTS+Db4laeDkbSXUDcWd80n93w8Mb05gl4x62qhu9RxeGbK7T6mXJi6mV45mO
-         tJCv208M99yZI6Rb3BB2ec6O+l/LCRH+hzPGYLTk=
-Date:   Sat, 29 Aug 2020 16:35:32 +0100
+        b=m+sW1f+u7G+keDDQIsLFj7/mwDpCWOQMmESkmWU9Lh1rk3LYMJ1NaVQgRWsKlhjFF
+         lhI6ZrVD33Irj57BhLI5xj1NH2WsyW43PFhaN7VHeR+Of3nrOvjdmlU4n/V0YJcca4
+         A2XMh+TwJ2QidA6Segilp9/dzw50+qWO6NGTo8y0=
+Date:   Sat, 29 Aug 2020 16:41:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kgene@kernel.org>, <krzk@kernel.org>,
-        "Sergiu Cuciurean" <sergiu.cuciurean@analog.com>
-Subject: Re: [PATCH] iio: adc: exynos_adc: Replace indio_dev->mlock with own
- device lock
-Message-ID: <20200829163532.4d38d591@archlinux>
-In-Reply-To: <20200826132203.236748-1-alexandru.ardelean@analog.com>
-References: <20200826132203.236748-1-alexandru.ardelean@analog.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Christian Eggers <ceggers@arri.de>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: light: as73211: Fix AS73211_CREG1_GAIN_1
+Message-ID: <20200829164125.540f5667@archlinux>
+In-Reply-To: <CAHp75VfBMXPyH80d0hrUqohC4wvgBNSSNp4N86JcfiWSfWHs+w@mail.gmail.com>
+References: <20200826095247.16368-1-ceggers@arri.de>
+        <CAHp75VfBMXPyH80d0hrUqohC4wvgBNSSNp4N86JcfiWSfWHs+w@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,84 +46,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Aug 2020 16:22:03 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Wed, 26 Aug 2020 19:11:37 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> On Wed, Aug 26, 2020 at 12:55 PM Christian Eggers <ceggers@arri.de> wrote:
+> >
+> > Wrong value was introduced during review process.  
 > 
-> As part of the general cleanup of indio_dev->mlock, this change replaces
-> it with a local lock, to protect potential concurrent access to the
-> completion callback during a conversion.
+> Ooops, long reviews have their outcomes...
 > 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Same comment as the other one about needing lock scope to be documented.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Otherwise looks good.  I thought we only had complicated uses of this
-left, but clearly not :)
+Thanks.  Add I hadn't pushed this out yet in a non rebasing branch
+I have folded it into the original patch.
+
+thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/exynos_adc.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-> index 7d23b6c33284..6a49f8dfab22 100644
-> --- a/drivers/iio/adc/exynos_adc.c
-> +++ b/drivers/iio/adc/exynos_adc.c
-> @@ -132,6 +132,8 @@ struct exynos_adc {
->  
->  	struct completion	completion;
->  
-> +	struct mutex		lock;
-> +
->  	u32			value;
->  	unsigned int            version;
->  
-> @@ -542,7 +544,7 @@ static int exynos_read_raw(struct iio_dev *indio_dev,
->  		return -EINVAL;
->  	}
->  
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock(&info->lock);
->  	reinit_completion(&info->completion);
->  
->  	/* Select the channel to be used and Trigger conversion */
-> @@ -562,7 +564,7 @@ static int exynos_read_raw(struct iio_dev *indio_dev,
->  		ret = IIO_VAL_INT;
->  	}
->  
-> -	mutex_unlock(&indio_dev->mlock);
-> +	mutex_unlock(&info->lock);
->  
->  	return ret;
->  }
-> @@ -573,7 +575,7 @@ static int exynos_read_s3c64xx_ts(struct iio_dev *indio_dev, int *x, int *y)
->  	unsigned long timeout;
->  	int ret;
->  
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock(&info->lock);
->  	info->read_ts = true;
->  
->  	reinit_completion(&info->completion);
-> @@ -598,7 +600,7 @@ static int exynos_read_s3c64xx_ts(struct iio_dev *indio_dev, int *x, int *y)
->  	}
->  
->  	info->read_ts = false;
-> -	mutex_unlock(&indio_dev->mlock);
-> +	mutex_unlock(&info->lock);
->  
->  	return ret;
->  }
-> @@ -872,6 +874,8 @@ static int exynos_adc_probe(struct platform_device *pdev)
->  	indio_dev->channels = exynos_adc_iio_channels;
->  	indio_dev->num_channels = info->data->num_channels;
->  
-> +	mutex_init(&info->lock);
-> +
->  	ret = request_irq(info->irq, exynos_adc_isr,
->  					0, dev_name(&pdev->dev), info);
->  	if (ret < 0) {
+> > Signed-off-by: Christian Eggers <ceggers@arri.de>
+> > ---
+> > Patch against jic23/iio.git, branch testing
+> >
+> >  drivers/iio/light/as73211.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> > index 3383aaacbf52..e76747b99b92 100644
+> > --- a/drivers/iio/light/as73211.c
+> > +++ b/drivers/iio/light/as73211.c
+> > @@ -56,7 +56,7 @@
+> >  #define AS73211_AGEN_MUT(x)       FIELD_PREP(AS73211_AGEN_MUT_MASK, (x))
+> >
+> >  #define AS73211_CREG1_GAIN_MASK   GENMASK(7, 4)
+> > -#define AS73211_CREG1_GAIN_1      13
+> > +#define AS73211_CREG1_GAIN_1      11
+> >  #define AS73211_CREG1_TIME_MASK   GENMASK(3, 0)
+> >
+> >  #define AS73211_CREG3_CCLK_MASK   GENMASK(1, 0)
+> > @@ -217,7 +217,7 @@ static void as73211_integration_time_calc_avail(struct as73211_data *data)
+> >
+> >  static unsigned int as73211_gain(struct as73211_data *data)
+> >  {
+> > -       /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
+> > +       /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
+> >         return BIT(AS73211_CREG1_GAIN_1 - FIELD_GET(AS73211_CREG1_GAIN_MASK, data->creg1));
+> >  }
+> >
+> > @@ -473,7 +473,7 @@ static int _as73211_write_raw(struct iio_dev *indio_dev,
+> >                 if (val < 0 || !is_power_of_2(val) || val2)
+> >                         return -EINVAL;
+> >
+> > -               /* gain can be calculated from CREG1 as 2^(13 - CREG1_GAIN) */
+> > +               /* gain can be calculated from CREG1 as 2^(11 - CREG1_GAIN) */
+> >                 reg_bits = AS73211_CREG1_GAIN_1 - ilog2(val);
+> >                 if (!FIELD_FIT(AS73211_CREG1_GAIN_MASK, reg_bits))
+> >                         return -EINVAL;
+> > --
+> > Christian Eggers
+> > Embedded software developer
+> >
+> > Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+> > Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+> > Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+> > Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+> > Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+> >  
+> 
+> 
 

@@ -2,38 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E602568AA
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 575882568B2
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 17:33:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728239AbgH2P3Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 11:29:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45972 "EHLO mail.kernel.org"
+        id S1728303AbgH2Pdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 11:33:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47378 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728235AbgH2P3P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 11:29:15 -0400
+        id S1728196AbgH2Pdk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 11:33:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8E96220707;
-        Sat, 29 Aug 2020 15:29:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C0FC20791;
+        Sat, 29 Aug 2020 15:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598714954;
-        bh=RAU2WGOhvq2URERSZLQaFJ42fOzyVnlaF9adY9/UjmA=;
+        s=default; t=1598715219;
+        bh=eRIQ3RsS8QokfA8Kzvr1LjY4Cf5uyuC9QpA4TQetVy0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xN1U/q8QV8Y9/BF2SlB6nga5fAAJEPr4h+Aq+WCWm9H9z3/b8njZRvTlEppVHOxUm
-         Bz8YsBZGeJUDWCp0BPFMXbbhAaP8Ow3l8zNH7T2mYCQXIJUQZutFCYAuGDxZDUTKSS
-         DXKqxlmnIa1MyVZleWSejSCqPXtQBnI+ZDE6Eb3s=
-Date:   Sat, 29 Aug 2020 16:29:10 +0100
+        b=kA7bgoAX66sTvWabu8HGdci4RWthUM4T2ggmCMDHB/Y1LFAy44HMfRnxybnfp2sST
+         J8xxkos9h/aATTZ8bkeG9SFHwsg2LGoWhXNA/LOHem90uIzENe4IiWdkZYTtczIsov
+         BFwS4Ukr6GgC/DAE0SLebIHo+J4CB2SV//NGmNSg=
+Date:   Sat, 29 Aug 2020 16:33:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, kgene@kernel.org,
         Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: Replace indio_dev->mlock with
- own device lock
-Message-ID: <20200829162910.379c1a87@archlinux>
-In-Reply-To: <20200826120609.203724-1-alexandru.ardelean@analog.com>
-References: <20200826120609.203724-1-alexandru.ardelean@analog.com>
+Subject: Re: [PATCH] iio: adc: exynos_adc: Replace indio_dev->mlock with own
+ device lock
+Message-ID: <20200829163335.3a9c420c@archlinux>
+In-Reply-To: <CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com>
+References: <20200826132203.236748-1-alexandru.ardelean@analog.com>
+        <20200827065625.GB17964@kozik-lap>
+        <CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,65 +47,86 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Aug 2020 15:06:09 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Thu, 27 Aug 2020 11:53:44 +0300
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> On Thu, Aug 27, 2020 at 9:57 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > On Wed, Aug 26, 2020 at 04:22:03PM +0300, Alexandru Ardelean wrote:  
+> > > From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > >
+> > > As part of the general cleanup of indio_dev->mlock, this change replaces
+> > > it with a local lock, to protect potential concurrent access to the
+> > > completion callback during a conversion.  
+> >
+> > I don't know the bigger picture (and no links here for general cleanup)
+> > but I assume it is part of wider work and that mlock is unwanted. In
+> > such case:
+> >
+> > Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> >
+> > If it is part of some bigger work, please put a link to lore.kernel.org
+> > under separators ---, so everyone can get the context.  
 > 
-> As part of the general cleanup of indio_dev->mlock, this change replaces
-> it with a local lock, to protect against any other accesses during the
-> reading of sample. Reading a sample requires multiple consecutive regmap
-> operations and a completion callback, so this requires that no other
-> read occurs until it completes.
+> Will keep that in mind.
+> I am not sure if there is a lore.kernel.org link that's easy to find
+> for a discussion on this topic, maybe I can describe it here and use
+> the link [from this later].
 > 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
->  drivers/iio/adc/fsl-imx25-gcq.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-> index 8cb51cf7a816..2a56ed0fc793 100644
-> --- a/drivers/iio/adc/fsl-imx25-gcq.c
-> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
-> @@ -38,6 +38,7 @@ struct mx25_gcq_priv {
->  	struct completion completed;
->  	struct clk *clk;
->  	int irq;
-> +	struct mutex lock;
+> This was something that popped up during reviews we got from Jonathan
+> [or others], saying "please don't use indio_dev->mlock, that is an IIO
+> framework lock, and an IIO driver should not use it".
 
-Rule 1 of locks. Every single one need documentation so that the
-scope that the lock protects is clearly stated.
+Shortest one is the docs for that lock say don't use it directly in
+a driver :)
 
-Otherwise patch looks fine to me.
+https://elixir.bootlin.com/linux/latest/source/include/linux/iio/iio.h#L495
 
-thanks,
+> Reasons include [and some may be repeated a bit]:
+> - this could cause a deadlock if the IIO framework holds this lock and
+> an IIO driver also tries to get a hold of this lock
+> - similar to the previous point, this mlock is taken by
+> iio_device_claim_direct_mode() and released by
+> iio_device_release_direct_mode() ; which means that mlock aims to
+> become more of an IIO framework lock, than a general usage lock;
+> - this wasn't policed/reviewed intensely in the older driver [a few
+> years ago], but has become a point in recent reviews;
+> - if we want to develop/enhance the IIO framework, some elements like
+> this need to be taken care of, as more drivers get added and more
+> complexity gets added;
+
+One side note here is we want to make all this [INTERN] state in 
+struct iio_dev opaque to drivers.  It'll take a while as the boundary
+gets crossed in various drivers.
+
+> - there is an element of fairness [obviously], where someone writing a
+> new IIO driver, takes an older one as example, and gets hit on the
+> review; the person feels they did a good job in mimicking the old
+> driver; their feeling is correct; the IIO framework should provide
+> good references and/or cleanup existing drivers;
+> - same as the previous point, we don't want to keep telling people
+> writing new IIO drivers [and starting out with IIO] to "not use mlock
+> [because it was copied from an old driver]"; it's more/needless review
+> work
+
+Good explanation.
+
+Thanks,
 
 Jonathan
 
-
->  	struct regulator *vref[4];
->  	u32 channel_vref_mv[MX25_NUM_CFGS];
->  };
-> @@ -137,9 +138,9 @@ static int mx25_gcq_read_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> -		mutex_lock(&indio_dev->mlock);
-> +		mutex_lock(&priv->lock);
->  		ret = mx25_gcq_get_raw_value(&indio_dev->dev, chan, priv, val);
-> -		mutex_unlock(&indio_dev->mlock);
-> +		mutex_unlock(&priv->lock);
->  		return ret;
->  
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -314,6 +315,8 @@ static int mx25_gcq_probe(struct platform_device *pdev)
->  		return PTR_ERR(priv->regs);
->  	}
->  
-> +	mutex_init(&priv->lock);
-> +
->  	init_completion(&priv->completed);
->  
->  	ret = mx25_gcq_setup_cfgs(pdev, priv);
+> 
+> 
+> >
+> >
+> > Best regards,
+> > Krzysztof
+> >  
+> > >
+> > > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > ---
+> > >  drivers/iio/adc/exynos_adc.c | 12 ++++++++----
+> > >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > >  
 

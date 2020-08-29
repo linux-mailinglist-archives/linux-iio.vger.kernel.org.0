@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0441256532
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 08:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA8B825656F
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 08:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726537AbgH2GsP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 02:48:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40552 "EHLO mail.kernel.org"
+        id S1727963AbgH2Gt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 02:49:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40664 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725886AbgH2GsM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 02:48:12 -0400
+        id S1726876AbgH2GsQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 29 Aug 2020 02:48:16 -0400
 Received: from localhost.localdomain (unknown [194.230.155.216])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F36F21473;
-        Sat, 29 Aug 2020 06:48:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1023B2145D;
+        Sat, 29 Aug 2020 06:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598683692;
-        bh=33QUtFhKd3vgFdrs9V7vjN8bhfHfPOFBEs807yqJTy0=;
+        s=default; t=1598683696;
+        bh=6UjWOMAikeIKWUaBl4tPRLctxnQGbZpjLVEks3gNgKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t/KnJ9CCBKHeRoBU9R9NcQBXtGQUvnGSSp/nMljOr+8LyxPl6dyVxWp2EtdN1LJrP
-         jBY4dpR7F0VB6pwiBn5q5gTPnff4zZIx/5OHZcqdEJSIlAce1BOGkV3sPhacGPBEtv
-         y+8GauNsfHY8duxUSJ274xajuI6MYgGzCLwMIL20=
+        b=uSXg2zIxy8JCQQMU9GNo8vzeCcIH9Cl8GLGs31FuNsQFSjWQ/WODKkPey/7NiX7YT
+         FKYLIBOi8lPv8/6Cz5mu4QT5EikjWMxZRBTuJtOoWzwyrlzvpUVNn4TfUm7FQHDIeo
+         yZ+kVAsZJLS5U6RHnRv+oYSPioypghIe05aqCujI=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -38,9 +38,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         linux-stm32@st-md-mailman.stormreply.com
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v3 03/18] iio: adc: envelope-detector: Simplify with dev_err_probe()
-Date:   Sat, 29 Aug 2020 08:47:11 +0200
-Message-Id: <20200829064726.26268-3-krzk@kernel.org>
+Subject: [PATCH v3 04/18] iio: adc: exynos_adc: Simplify with dev_err_probe()
+Date:   Sat, 29 Aug 2020 08:47:12 +0200
+Message-Id: <20200829064726.26268-4-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200829064726.26268-1-krzk@kernel.org>
 References: <20200829064726.26268-1-krzk@kernel.org>
@@ -54,6 +54,7 @@ dev_err_probe().  Less code and also it prints the error value.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
 ---
 
 Changes since v2:
@@ -62,43 +63,30 @@ Changes since v2:
 Changes since v1:
 1. Wrap dev_err_probe() lines at 100 character
 ---
- drivers/iio/adc/envelope-detector.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/iio/adc/exynos_adc.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/envelope-detector.c b/drivers/iio/adc/envelope-detector.c
-index 2a4fd3bb64cf..d73eac36153f 100644
---- a/drivers/iio/adc/envelope-detector.c
-+++ b/drivers/iio/adc/envelope-detector.c
-@@ -348,11 +348,9 @@ static int envelope_detector_probe(struct platform_device *pdev)
- 	indio_dev->num_channels = 1;
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 7d23b6c33284..20477b249f2a 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -844,13 +844,9 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	}
  
- 	env->dac = devm_iio_channel_get(dev, "dac");
--	if (IS_ERR(env->dac)) {
--		if (PTR_ERR(env->dac) != -EPROBE_DEFER)
--			dev_err(dev, "failed to get dac input channel\n");
--		return PTR_ERR(env->dac);
+ 	info->vdd = devm_regulator_get(&pdev->dev, "vdd");
+-	if (IS_ERR(info->vdd)) {
+-		if (PTR_ERR(info->vdd) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev,
+-				"failed getting regulator, err = %ld\n",
+-				PTR_ERR(info->vdd));
+-		return PTR_ERR(info->vdd);
 -	}
-+	if (IS_ERR(env->dac))
-+		return dev_err_probe(dev, PTR_ERR(env->dac),
-+				     "failed to get dac input channel\n");
++	if (IS_ERR(info->vdd))
++		return dev_err_probe(&pdev->dev, PTR_ERR(info->vdd),
++				     "failed getting regulator");
  
- 	env->comp_irq = platform_get_irq_byname(pdev, "comp");
- 	if (env->comp_irq < 0)
-@@ -360,11 +358,9 @@ static int envelope_detector_probe(struct platform_device *pdev)
- 
- 	ret = devm_request_irq(dev, env->comp_irq, envelope_detector_comp_isr,
- 			       0, "envelope-detector", env);
--	if (ret) {
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to request interrupt\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to request interrupt\n");
-+
- 	env->comp_irq_trigger = irq_get_trigger_type(env->comp_irq);
- 	if (env->comp_irq_trigger & IRQF_TRIGGER_RISING)
- 		env->comp_irq_trigger_inv |= IRQF_TRIGGER_FALLING;
+ 	ret = regulator_enable(info->vdd);
+ 	if (ret)
 -- 
 2.17.1
 

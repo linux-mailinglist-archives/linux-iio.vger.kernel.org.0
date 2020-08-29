@@ -2,77 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF52A256995
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 19:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96391256999
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Aug 2020 20:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728254AbgH2R7r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Aug 2020 13:59:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55370 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728244AbgH2R7r (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Aug 2020 13:59:47 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 19B412071B;
-        Sat, 29 Aug 2020 17:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598723987;
-        bh=JqZ1JVWG2haY6cklZE91trDyQn6HRQiwNKCKAXA53Rw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ELt5mY8PRSa88TsIBfX0byJPUUjZ1d9jwi/KLaTsBacsBfxA96nGFSUwItOaQRA5d
-         9byjXYlh1rn5aBsTxnHPiqThcqK2jKRTeTNQqz8xJLos4/G12aevsX99fpo3M8sHi3
-         vMoYxI3G7lxh3c2n0sbV5LBCNgbs1pwbsMfGTRF0=
-Date:   Sat, 29 Aug 2020 18:59:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org, Phil Reid <preid@electromag.com.au>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 13/13] dt-bindings: iio: adc: ti,tlc4541 binding
- conversion
-Message-ID: <20200829185943.6f69f310@archlinux>
-In-Reply-To: <20200818023243.GA2176224@bogus>
-References: <20200809111753.156236-1-jic23@kernel.org>
-        <20200809111753.156236-14-jic23@kernel.org>
-        <20200818023243.GA2176224@bogus>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728244AbgH2SAy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Aug 2020 14:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728284AbgH2SAv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Aug 2020 14:00:51 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3BBC061239
+        for <linux-iio@vger.kernel.org>; Sat, 29 Aug 2020 11:00:51 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id a65so1921935wme.5
+        for <linux-iio@vger.kernel.org>; Sat, 29 Aug 2020 11:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=7sHcH5dHB5M/r8aJgv+GiRQ5s8sI9YcH2NRYOFmnXg4=;
+        b=EXkC4bZNwviy+uWuQvJAtnL2PzBed4gX1xUGxXfbHoGD06V9flRyZcfeDeUqMp6KFb
+         JJHgMaF3mpE+MMU+YxiX9xudwr/Mz6EcZ6RfOKw/unRECQ8W2WMZX3J+EJza9guCDq4z
+         khGFnnN7kSLorOZdr+zkPeHk4NFZaW6fXL3kjTcirM/Q7gTuvH61t4m9BXfKm1W3aX/4
+         aNc8BOgbMF2ZQoab2ufSzvERji4epdRd0S2Hez/J9S++1hnDoglzZwhPX60mCpMTUUug
+         wSzhOpojlJt3GxxdDccPYWrJedJDHicl3LbCPZZQE1SsFTAWHfPgXB+knYr5H5UtoCmr
+         YZpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=7sHcH5dHB5M/r8aJgv+GiRQ5s8sI9YcH2NRYOFmnXg4=;
+        b=ErWomUhaYlyMCiQGnHpEDcRIFHxBlEx42DFKEw2+78SR446g1tfP+lWzcDsvbFktvW
+         IcawtcBtK8dQa4sh+K4gRXa4jisTFl9p2AA2bN3QFe+guoGn47Itt67fsm1d1CfKZ6zJ
+         v1fK4tjrKA7CxQ8MndZ1whHpd7WDFhzd9J/G6hZYqPnEnC3EdvJjJRbsGjXx+LPKPICC
+         /E5mjbvNpeNYAxoQgqfcQeqaXMfuxCqcTjux5niZxzwgt3fKwY0gKz4ctAEQbR/0oaAg
+         glv/yC88X7XriYUFDjCBpLs+dxY0EBbPpajRMYw+ie4gxGXafAqqeMcUUOmXAce7usAe
+         KRRA==
+X-Gm-Message-State: AOAM532e3bChFGrqGBx7w0TrglUkJLyvBxdL0qNYApuc8dElnelPuKf/
+        xD0xj+5rnXCnycR811Bf1VvYB/+3Z6fN9YNsqcY=
+X-Google-Smtp-Source: ABdhPJy62+Ha1cURX0Qddw15QIEuyAKn3wfhPuT50DSsDGNHjvlX+6UokjFJhqH3tsVn9+/vMy7xgRp9vy3BVMKJsso=
+X-Received: by 2002:a1c:6445:: with SMTP id y66mr4251019wmb.12.1598724049642;
+ Sat, 29 Aug 2020 11:00:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a7b:c44f:0:0:0:0:0 with HTTP; Sat, 29 Aug 2020 11:00:49
+ -0700 (PDT)
+From:   Tricia Smith <triciatricia841@gmail.com>
+Date:   Sat, 29 Aug 2020 22:30:49 +0430
+X-Google-Sender-Auth: 4SiiXfP5cUW8aY4o_sgvmdeh1-g
+Message-ID: <CALY6aCSQMKf9zDOwShu+VUyCyYC6R9EEf0NHqpO0Vir70vB9RA@mail.gmail.com>
+Subject: Re: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Aug 2020 20:32:43 -0600
-Rob Herring <robh@kernel.org> wrote:
-
-> On Sun, 09 Aug 2020 12:17:53 +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Simple binding so easy to convert.
-> > Dropped the stated value of maximum spi bus frequency as it does
-> > not seem to correspond to the datasheet.  The value of 200kHz
-> > is the max sampling frequency of the ADC, not the clock frequency of
-> > the SPI bus.
-> > 
-> > Added #io-channel-cells to allow use as a provider of channels to
-> > other devices via the consumer binding.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Phil Reid <preid@electromag.com.au>
-> > ---
-> >  .../bindings/iio/adc/ti,tlc4541.yaml          | 52 +++++++++++++++++++
-> >  .../bindings/iio/adc/ti-tlc4541.txt           | 17 ------
-> >  2 files changed, 52 insertions(+), 17 deletions(-)
-> >   
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-
-Applied. Thanks.  I'll fix up the remaining patches that need it and send a v2.
-
-Thanks,
-
-Jonathan
+Hi Dear, I am Miss Tricia Smith the only Daughter/Child of late Mr and
+Mrs William Smith. Please i have something very important and
+confidential to discuss with you.

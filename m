@@ -2,69 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F37256D15
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Aug 2020 11:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E653256D65
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Aug 2020 13:10:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbgH3JZt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Aug 2020 05:25:49 -0400
-Received: from foss.arm.com ([217.140.110.172]:49362 "EHLO foss.arm.com"
+        id S1725941AbgH3LKg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Aug 2020 07:10:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55612 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725869AbgH3JZt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 30 Aug 2020 05:25:49 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A31DD31B;
-        Sun, 30 Aug 2020 02:25:48 -0700 (PDT)
-Received: from [10.37.8.19] (unknown [10.37.8.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82AE33F68F;
-        Sun, 30 Aug 2020 02:25:47 -0700 (PDT)
-Subject: Re: [PATCH] iio: adc: rockchip_saradc: Select IIO_TRIGGERED_BUFFER
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        xxm@rock-chips.com
-References: <20200828174242.338068-1-alexandru.elisei@arm.com>
- <20200829155703.19bf1c9f@archlinux>
-From:   Alexandru Elisei <alexandru.elisei@arm.com>
-Message-ID: <73cb7fcd-df73-e287-7733-4ce657e5a758@arm.com>
-Date:   Sun, 30 Aug 2020 10:26:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1725845AbgH3LKf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 30 Aug 2020 07:10:35 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0E2FD20757;
+        Sun, 30 Aug 2020 11:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598785835;
+        bh=mu9wJFt6mGD5wvJQYVN4F/aho0AV/Y6T7Cnvd31Std8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lwgFODbPwprBd1PN4CgTfaXa7fubifZKH7xXVNpY52jIpbhScSVeJdmde9LzpU87N
+         Klo/+s30c/94lYSR0ydNQRWTBKkiDmkG6BS02+id61j4Z8TK/0cmO6nA2mPoDzJXai
+         uIvntISqEcqAjCITLyh3w7qMMSFLGKdrL86n5OtQ=
+Date:   Sun, 30 Aug 2020 12:10:30 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: buffer-dmaengine: adjust `bytes_used` with residue
+ info
+Message-ID: <20200830121030.66420067@archlinux>
+In-Reply-To: <f336acac-ed70-ad88-57ca-8d06ec54182e@metafoo.de>
+References: <20200826052011.13348-1-lars@metafoo.de>
+        <CA+U=Dsp8KXNzmVGf9N=A+h7DyC2L7Hk2A7N4ERPL4jc+-M_mFg@mail.gmail.com>
+        <20200829165134.3361315a@archlinux>
+        <f336acac-ed70-ad88-57ca-8d06ec54182e@metafoo.de>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200829155703.19bf1c9f@archlinux>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Sat, 29 Aug 2020 20:30:04 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-On 8/29/20 3:57 PM, Jonathan Cameron wrote:
-> On Fri, 28 Aug 2020 18:42:42 +0100
-> Alexandru Elisei <alexandru.elisei@arm.com> wrote:
->
->> Building the Rockchip saradc driver can trigger the following error if the
->> driver is compiled into the kernel, but the IIO triggered buffer is not:
->>
->> aarch64-linux-gnu-ld: drivers/iio/adc/rockchip_saradc.o: in function `rockchip_saradc_probe':
->> /path/to/linux/drivers/iio/adc/rockchip_saradc.c:427: undefined reference to `devm_iio_triggered_buffer_setup'
->>
->> This is because commit 4e130dc7b413 ("iio: adc: rockchip_saradc: Add
->> support iio buffers") added support for industrial I/O triggered buffers,
->> but didn't update Kconfig to build the required file. Fix that.
->>
->> Fixes: 4e130dc7b413 ("iio: adc: rockchip_saradc: Add support iio buffers")
->> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> Sorry, I've had a patch queued to fix this for a while, but had a
-> vacation just after merge window occurred that delayed me sending it out.
->
-> Will send a pull sometime this weekend.
->
-> Jonathan
-
-That's great, thank you!
+> On 8/29/20 5:51 PM, Jonathan Cameron wrote:
+> > On Wed, 26 Aug 2020 09:36:39 +0300
+> > Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+> >  
+> >> On Wed, Aug 26, 2020 at 8:22 AM Lars-Peter Clausen <lars@metafoo.de> wrote:  
+> >>> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> >>>
+> >>> A transfer may fall shorter than the bytes in the block.
+> >>> This information is available in the residue from the DMA engine, so we can
+> >>> compute actual `bytes_used` with that by subtracting the residue.
+> >>>     
+> >> This was in my pipeline as well [obviously].
+> >> Thanks :)
+> >>  
+> >>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> >>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
+> > "smells" like a fix.  Is it?  Or are we looking at something that
+> > only matters for some future hardware, or an optmization?
+> >
+> > If it's a fix, where is the fixes tag?  
+> 
+> It's a feature :)
+> 
+> When we first added the IIO DMA buffer support this API did not exist in 
+> dmaengine. So for the longest time most DMA drivers did not have the 
+> ability to report short transfers. Primarily because in many cases the 
+> hardware doesn't even support it.
+> 
+> Now with this patch the IIO DMA buffer implementation supports systems 
+> where the DMA can generate short transfers.
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
-Alex
+
+Jonathan
+
+> 
+> - Lars
+> 
+

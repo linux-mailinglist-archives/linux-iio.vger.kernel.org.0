@@ -2,166 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBD2256F4B
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Aug 2020 18:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE18256F71
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Aug 2020 19:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725993AbgH3QOi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Aug 2020 12:14:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726143AbgH3QOg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 30 Aug 2020 12:14:36 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 214922076D;
-        Sun, 30 Aug 2020 16:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598804076;
-        bh=zHXD/PCu82qJRWgV9nLv9wM61eKP2NkJ37PcGcCZ6k4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kzww6d5tORvl8RvGOs4hLlmTZMR/D0I4aOWsRZBlprjm5ySwT0KA3r69kQxDgy1Z0
-         lQecCqzJP6dJS+81pyPPgDeLi8+GD9fKozCdO85WDLeQmSLV28WtL769RNOV6zwIMv
-         B91PICzWkT/tDdlkqplhY4n2ZOp3rX9qiYZaTYRU=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        David Lechner <david@lechnology.com>
-Subject: [PATCH v2 2/2] dt-bindings: iio: adc: ti,ads7950 binding conversion
-Date:   Sun, 30 Aug 2020 17:11:54 +0100
-Message-Id: <20200830161154.3201-3-jic23@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200830161154.3201-1-jic23@kernel.org>
-References: <20200830161154.3201-1-jic23@kernel.org>
+        id S1726068AbgH3RHc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Aug 2020 13:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbgH3RH3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Aug 2020 13:07:29 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796F2C061573;
+        Sun, 30 Aug 2020 10:07:27 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id d22so3249058pfn.5;
+        Sun, 30 Aug 2020 10:07:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gMjyFGBWWFv0LuuBdjLpLERWkVOrqJ19BFy0/U/TZ4k=;
+        b=ouJNefUDJiMdBSDEi5xOTaJJyioWu+vSjkCfg5bh70XhBqnuGzlDp4yA5MxbiWN4ub
+         VDWR6TAeHIlrxIW4VsYEOgcOl4RtjUYcvbvqlVidmYMjnX/FTYxBvOAO/6jBblvHL1SH
+         JTdEkalFmXccGDoeCkNjyHOneDOI0vnic0ENcWxGTg9ceuDHroYgZ+ndiPYB+DRBKZkS
+         xWfQXqmMeUA0vkFuFO1Pv0GaHPzzbYyq/In8VrAMsFloRkYaudTsj/5qL1/jbbCSqSwp
+         qQlyTOa6u/J4QCEyTDA/CKas2QpVni2ngYaevVEnAigjZUcWFGbiKSYIQpIJMSKl5qGU
+         4gCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gMjyFGBWWFv0LuuBdjLpLERWkVOrqJ19BFy0/U/TZ4k=;
+        b=FDeqO+6qQJez0NqYHEfeP9TgyO1fgdssX6rpuF93fLMaNGXwvcsoaP0oyAz3m6yW+8
+         /g/8Q0e22t8vRF0RjphGexQP2RkUoRXwtWhywLVWrTe5SAn8DEuGspuTNvZInCJ/0SE/
+         3nXCRw9xtTY1u4oW6BEa1PSFqZ+ftoZ8dH4nwO9PIdp1+NAchZ8UbyEHmnfl6iPZh97c
+         25is1+Tm2vlkZFgRiDTHy81gSxUtPU5togUNonC7VJgkqnnHT+6GS+InMaE3WrqAGoXD
+         nhCX2itqO9FefK3mj3ML+6X5p57I+9mFL4j+LtzF9CQvwYIFVJ27algwpCzwMs7Bxa8+
+         qsuA==
+X-Gm-Message-State: AOAM5309gxJFghFCSnxTOt/bsdSAgiG0+LTMc9PtFJywbn1zSipPeN6U
+        yovaS45V/6q9K1Vi4WQr33h5NFGUZghR0/gZfWbEQgM/imDETw==
+X-Google-Smtp-Source: ABdhPJz6MTJTNv/YcqhFKeWQsVO4HFCc408Ke9R/sb8IOV1QV6lPH51hKfb+XOvv9an8xE+tfmTe+sZvuzHyy0ZgWXc=
+X-Received: by 2002:a62:7c86:: with SMTP id x128mr1059391pfc.268.1598807246571;
+ Sun, 30 Aug 2020 10:07:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200824054347.3805-1-william.sung@advantech.com.tw>
+In-Reply-To: <20200824054347.3805-1-william.sung@advantech.com.tw>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 30 Aug 2020 20:07:09 +0300
+Message-ID: <CAHp75VeZLPR02xB2XRzec5mSBvq93XYZg56OOODxpFTPva6cXw@mail.gmail.com>
+Subject: Re: [PATCH] iio: dac: ad5593r: Dynamically set AD5593R channel modes
+To:     William Sung <william.sung@advantech.com.tw>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        AceLan Kao <acelan.kao@canonical.com>,
+        Campion Kang <Campion.Kang@advantech.com.tw>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, Aug 24, 2020 at 8:54 AM William Sung
+<william.sung@advantech.com.tw> wrote:
+>
+> To use ad5593r more flexibly, we use the module parameter to setting the
+> channel modes dynamically whenever the module probe up.
 
-Conversion from txt to yaml.  The binding documents that
-as not all boards will make use of the ADC channels via a consumer
-driver.  It does no harm however, so we will leave it as required.
+> Users can pass
+> the channel modes to the module parameter for allocating the
+> functionality of channels as desired.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Lechner <david@lechnology.com>
----
+NAK. We have a sysfs interface.
 
-Changes:
-* Fix patch description to make sense.
-* Fix a supplies instead of supply.
-* Add maximum value for spi-bus-frequency
+> For example:
+> * Use in the kernel command line:
+> Users can add the module parameter in the kernel command line such as
+>
+>     "ad5593r.ch_mode_cmdline=88001122"
+>
+> "88001122" means the channel mode setting for each channel. The most
+> left side indicates the mode of channel 7, and the most right side
+> indicates the mode of channel 0.
+>
+> * Use when manually probe the module:
+> Similar to the kernel command line usage, users can enter
+>
+>     "modprobe ad5593r ch_mode_probe=88001122"
+>
+> to start the ad5593r module with the desired channel mode setting.
 
- .../bindings/iio/adc/ti,ads7950.yaml          | 65 +++++++++++++++++++
- .../bindings/iio/adc/ti-ads7950.txt           | 23 -------
- 2 files changed, 65 insertions(+), 23 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/ti-ads7950.txt
+Again NAK, this basically should come from Device Tree or ACPI.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml
-new file mode 100644
-index 000000000000..5ab5027be97e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7950.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,ads7950.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments ADS7950 and similar ADCs
-+
-+maintainers:
-+  - David Lechner <david@lechnology.com>
-+
-+description: |
-+  Family of 4-16 channel, 8-12 bit ADCs with SPI interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,ads7950
-+      - ti,ads7951
-+      - ti,ads7952
-+      - ti,ads7953
-+      - ti,ads7954
-+      - ti,ads7955
-+      - ti,ads7956
-+      - ti,ads7957
-+      - ti,ads7958
-+      - ti,ads7959
-+      - ti,ads7960
-+      - ti,ads7961
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 20000000
-+
-+  vref-supply:
-+    description: Supplies the 2.5V or 5V reference voltage
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - vref-supply
-+  - "#io-channel-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "ti,ads7957";
-+            reg = <0>;
-+            vref-supply = <&refin_supply>;
-+            spi-max-frequency = <10000000>;
-+            #io-channel-cells = <1>;
-+        };
-+    };
-+...
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti-ads7950.txt b/Documentation/devicetree/bindings/iio/adc/ti-ads7950.txt
-deleted file mode 100644
-index e77a6f7e1001..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/ti-ads7950.txt
-+++ /dev/null
-@@ -1,23 +0,0 @@
--* Texas Instruments ADS7950 family of A/DC chips
--
--Required properties:
-- - compatible: Must be one of "ti,ads7950", "ti,ads7951", "ti,ads7952",
--   "ti,ads7953", "ti,ads7954", "ti,ads7955", "ti,ads7956", "ti,ads7957",
--   "ti,ads7958", "ti,ads7959", "ti,ads7960", or "ti,ads7961"
-- - reg: SPI chip select number for the device
-- - #io-channel-cells: Must be 1 as per ../iio-bindings.txt
-- - vref-supply: phandle to a regulator node that supplies the 2.5V or 5V
--   reference voltage
--
--Recommended properties:
-- - spi-max-frequency: Definition as per
--		Documentation/devicetree/bindings/spi/spi-bus.txt
--
--Example:
--adc@0 {
--	compatible = "ti,ads7957";
--	reg = <0>;
--	#io-channel-cells = <1>;
--	vref-supply = <&refin_supply>;
--	spi-max-frequency = <10000000>;
--};
 -- 
-2.28.0
-
+With Best Regards,
+Andy Shevchenko

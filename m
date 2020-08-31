@@ -2,113 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A822579A6
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Aug 2020 14:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB852579DF
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Aug 2020 15:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbgHaMsB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Aug 2020 08:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
+        id S1727846AbgHaNAA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Aug 2020 09:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726167AbgHaMsA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Aug 2020 08:48:00 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E40BC061573;
-        Mon, 31 Aug 2020 05:48:00 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id c142so511952pfb.7;
-        Mon, 31 Aug 2020 05:48:00 -0700 (PDT)
+        with ESMTP id S1726821AbgHaM74 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Aug 2020 08:59:56 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C57C061573
+        for <linux-iio@vger.kernel.org>; Mon, 31 Aug 2020 05:59:55 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id c10so5336304edk.6
+        for <linux-iio@vger.kernel.org>; Mon, 31 Aug 2020 05:59:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6lnF3FH7UL4wF4BRElMAjQs3z46mN3BrzdHf7XHwbb0=;
-        b=lxiiZNEZBN77i9jF612V/wsNkgtzXI8os/Z1/spgkCv9GhgyPOseJ0o2v5kCRovjcH
-         rhHjD839ICtZfkLe1vmV7E05EQFctJMrEaaM4cedBDoPzXyQuDUj9lb5Sj6cP+Km5wP7
-         CoTUha8o34TJ1nohOcf3JmBTC4QDKF3WXsZQwvceo6hUDEVgD48e494+AFLL5t9EwvjT
-         a4dTnljGfvVR1xsiMGKBOaAovhbSN64u3bitgSbbUZpSyvvPRBoHgnNAf+2kKGk43FoG
-         WIs0rbPK+vjgWYj1ZJlRoRmlFsjqJOS17dxXwR6mDqMcsoAEEGyA98P7EEHl9/TtnmcY
-         cz/w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pl1+yfv1y+NwjXUNFwiqFKnssjS9HTfrfVCZG150aus=;
+        b=laphm0kk0lm6t4DkAy7Bd12R/Ta7KHzV06F75B+Ej6wR9cRJQF209fwuyPwn0P+oQH
+         Uv0j4u8nqJd3DTpf9lCsM9tzgN1pCnVgt3pqvKvO9fY4cXt3Kq/35fHT1zamoBNkiEVl
+         nYkuVDwGHpHV31FwgesSW/MTDCM1vZXtMsIIoPuvS711Zef0xJHCgA1HbsoMieiagJM3
+         eZi4mFWKF3NGums43LZXhoT5yDTPd8t0NQ8d3Ge4UoTSM4Ax3vVaqfRfYUxUAXKixzbh
+         B5DuXppQ3S6pvsVD2mR7wgQbOKb2WTAkk8ltE0dzMdYhQ6en4/BS1a5NkelQNnAO2Cm1
+         VhQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6lnF3FH7UL4wF4BRElMAjQs3z46mN3BrzdHf7XHwbb0=;
-        b=FMZAo+u+ZPlb5+gfN+XtYP1Vtr+rbrqX3HKa1ft2ejBG2PK0SCtQY65yYrIVNfzHbx
-         3NZu8sUPs4+jLgUw+YR/mGjCOYpjyDiPtFSXQMSAE4vdWB0NBhk9HIPHEMsriA2kf1DG
-         9tHE9YK6iGiHOMoULgcXInYekmRnmr3q5r27drvfUyiBl/tvFEOETyZmRtZ+VMMjMgdv
-         U0pRtCHAM2ZwEkCXkWTMccR9PWXYCy04mIi8mgn1+edcLZ8+6v3J0UYnL/jbaVoCz6dK
-         z8KqvBugM0JqAuvBm//eSne6ob6a4yzZWdDhPSHGSC3laF3YbziTraq+1mJRsN599qb1
-         0CHA==
-X-Gm-Message-State: AOAM530dynHIfO8eRfzYJoNFr+APqAPeMz94LPdkltkrnEHL6rl8JCey
-        cgbBd520TM2clhIC+UOO71vr/2dkO141azofbAk=
-X-Google-Smtp-Source: ABdhPJwvVB5+jWXAed+BHoow7XAbXyW5d5F3Rdv0+tf7W8gSK4IjVHvuVk4tJsXWMOB1wLPVf0qjpnxyQv8QF6jydOk=
-X-Received: by 2002:a63:d648:: with SMTP id d8mr30153pgj.4.1598878079489; Mon,
- 31 Aug 2020 05:47:59 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pl1+yfv1y+NwjXUNFwiqFKnssjS9HTfrfVCZG150aus=;
+        b=uDCWRur2yi+1eEsaVLQgfMTC0HC9+exfg/mBUX/gFIjl6HBe1YhApTwgmSRCXWxHR4
+         KNY4uA/z5G3qNmQ/j0DcrLh5p9nx9HKYRkUwI97w2Cp1tvREkeh0FS17KOwPXaG2GsKj
+         oC4KQrMLCeVUC3IYlenVbIezFZ+96/l4VNM0bCxa2KpuCMrssiBgk76dhszVk4N4jSl5
+         +uKDm4G8xhTEWeMYHWaYKNPp9JQHnODJ/+cVKAhRTGHkvSkX7pTerpssMiC9Do+lGzmD
+         N/xtFHnC33drH6HqjEdo01rBPC/SUD2V4+ay1IHM61P1UhP2cb5mojsLm3VIPZXur01F
+         KuUQ==
+X-Gm-Message-State: AOAM533WBmvLh8BtLHFBooa4ASYhwpyRjmf18755oUdCSs41il626+mv
+        14pcX/czNGLdtbfFchZcz+GknZwYipfV6w==
+X-Google-Smtp-Source: ABdhPJx4cORlOAVThvkXcZ4uCEcy1Lmav0L8bedp/WV7O0NYvtiyoNEw4apsDuER1IOyXd9XCc2LUg==
+X-Received: by 2002:a05:6402:d07:: with SMTP id eb7mr1215207edb.160.1598878793594;
+        Mon, 31 Aug 2020 05:59:53 -0700 (PDT)
+Received: from localhost.localdomain (host085115198017.static.fidoka.tech. [85.115.198.17])
+        by smtp.gmail.com with ESMTPSA id w20sm8172878ejc.77.2020.08.31.05.59.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2020 05:59:52 -0700 (PDT)
+From:   Angelo Compagnucci <angelo.compagnucci@gmail.com>
+X-Google-Original-From: Angelo Compagnucci <angelo@amarulasolutions.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Angelo Compagnucci <angelo@amarulasolutions.com>
+Subject: [PATCH v3] iio: adc: mcp3422: fix locking scope
+Date:   Mon, 31 Aug 2020 14:59:47 +0200
+Message-Id: <20200831125947.74824-1-angelo@amarulasolutions.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200824054347.3805-1-william.sung@advantech.com.tw>
- <CAHp75VeZLPR02xB2XRzec5mSBvq93XYZg56OOODxpFTPva6cXw@mail.gmail.com>
- <CAFv23QmDwcrdxEndH=mKMAomzt9kxG_f1Z6=Fd8iuuvCoY92SA@mail.gmail.com> <CAHp75Vcup9LUk0fgjW9T2FK-K5GD3=3ycPHi74Oykc8rq_tJqA@mail.gmail.com>
-In-Reply-To: <CAHp75Vcup9LUk0fgjW9T2FK-K5GD3=3ycPHi74Oykc8rq_tJqA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 31 Aug 2020 15:47:42 +0300
-Message-ID: <CAHp75VeyFTSc3AY07rFnjvXOcHt79tpRHzs_GZGALQcdqoANjA@mail.gmail.com>
-Subject: Re: [PATCH] iio: dac: ad5593r: Dynamically set AD5593R channel modes
-To:     AceLan Kao <acelan.kao@canonical.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     William Sung <william.sung@advantech.com.tw>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Campion Kang <Campion.Kang@advantech.com.tw>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 31, 2020 at 3:45 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Mon, Aug 31, 2020 at 2:28 PM AceLan Kao <acelan.kao@canonical.com> wrote:
-> > This patch is mainly for Advantech's UNO-420[1] which is a x86-based platform.
-> > This platform is more like a development platform for customers to
-> > customize their products,
-> > so, specify the channel modes in ACPI table is not generic enough,
-> > that's why William submit this patch.
-> >
-> > Are there other ways to specify or pass values to the module without
-> > using module parameters?
-> > It's good if we can leverage sysfs, but I don't know if there is one
-> > for this scenario.
->
-> Can we provide DT bindings for that and use then in ACPI? ACPI has a
-> possibility to reuse DT properties and compatible strings [1]. As far
-> as I can see the driver uses fwnode API, so it supports ACPI case
-> already [2]. So, what prevents you to utilize 'adi,mode' property?
->
-> Also, we accept examples of ASL excerpt in meta-acpi project [3]. It
-> has already plenty of examples [4] how to use PRP0001 for DIY /
-> development boards.
->
-> So, take all together I think this patch is simple redundant.
+From: Angelo Compagnucci <angelo.compagnucci@gmail.com>
 
-One more useful link is SO answers on the topic:
-https://stackoverflow.com/search?tab=newest&q=prp0001
+Locking should be held for the entire reading sequence involving setting
+the channel, waiting for the channel switch and reading from the
+channel.
+If not, reading from a channel can result mixing with the reading from
+another channel.
 
-> [1]: https://www.kernel.org/doc/html/latest/firmware-guide/acpi/enumeration.html#device-tree-namespace-link-device-id
-> [2]: https://elixir.bootlin.com/linux/v5.9-rc3/source/Documentation/devicetree/bindings/iio/dac/ad5592r.txt
-> [3]: https://github.com/westeri/meta-acpi
-> [4]: https://github.com/westeri/meta-acpi/tree/master/recipes-bsp/acpi-tables/samples
->
-> P.S. Jonathan, it seems this driver has artificial ACPI HID. We
-> probably have to remove it. However, ADS is indeed reserved for Analog
-> Devices in PNP registry. Can we have AD's official answer on this?
-> Cc'ing additional AD people.
->
-> > 1. https://www.advantech.com/products/9a0cc561-8fc2-4e22-969c-9df90a3952b5/uno-420/mod_2d6a546b-39e3-4bc4-bbf4-ac89e6b7667c
+Fixes: 07914c84ba30 ("iio: adc: Add driver for Microchip MCP3422/3/4 high resolution ADC")
+Signed-off-by: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+---
+ drivers/iio/adc/mcp3422.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
+index d86c0b5d80a3..f96f0cecbcde 100644
+--- a/drivers/iio/adc/mcp3422.c
++++ b/drivers/iio/adc/mcp3422.c
+@@ -96,16 +96,12 @@ static int mcp3422_update_config(struct mcp3422 *adc, u8 newconfig)
+ {
+ 	int ret;
+ 
+-	mutex_lock(&adc->lock);
+-
+ 	ret = i2c_master_send(adc->i2c, &newconfig, 1);
+ 	if (ret > 0) {
+ 		adc->config = newconfig;
+ 		ret = 0;
+ 	}
+ 
+-	mutex_unlock(&adc->lock);
+-
+ 	return ret;
+ }
+ 
+@@ -138,6 +134,8 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
+ 	u8 config;
+ 	u8 req_channel = channel->channel;
+ 
++	mutex_lock(&adc->lock);
++
+ 	if (req_channel != MCP3422_CHANNEL(adc->config)) {
+ 		config = adc->config;
+ 		config &= ~MCP3422_CHANNEL_MASK;
+@@ -145,12 +143,18 @@ static int mcp3422_read_channel(struct mcp3422 *adc,
+ 		config &= ~MCP3422_PGA_MASK;
+ 		config |= MCP3422_PGA_VALUE(adc->pga[req_channel]);
+ 		ret = mcp3422_update_config(adc, config);
+-		if (ret < 0)
++		if (ret < 0) {
++			mutex_unlock(&adc->lock);
+ 			return ret;
++		}
+ 		msleep(mcp3422_read_times[MCP3422_SAMPLE_RATE(adc->config)]);
+ 	}
+ 
+-	return mcp3422_read(adc, value, &config);
++	ret = mcp3422_read(adc, value, &config);
++
++	mutex_unlock(&adc->lock);
++
++	return ret;
+ }
+ 
+ static int mcp3422_read_raw(struct iio_dev *iio,
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

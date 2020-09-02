@@ -2,115 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4D925AC32
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Sep 2020 15:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 789F325AC2F
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Sep 2020 15:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbgIBNon (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Sep 2020 09:44:43 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2740 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726654AbgIBNny (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Sep 2020 09:43:54 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id E581E7C70DF1A350A040;
-        Wed,  2 Sep 2020 14:43:52 +0100 (IST)
-Received: from localhost (10.52.121.91) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 2 Sep 2020
- 14:43:52 +0100
-Date:   Wed, 2 Sep 2020 14:42:20 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: Remove bouncing email of Beniamin Bia
-Message-ID: <20200902144220.000021f8@Huawei.com>
-In-Reply-To: <CAJKOXPcSctHLWGWwSPCyCR-U4QsB=WYBX3JMRqE7U9RHVKhNHA@mail.gmail.com>
-References: <20200827201707.27075-1-krzk@kernel.org>
-        <CAHp75VcnV8_SRQuiTnzzaWxfA1m37gVXfxgPkH51tbMT+-T2RA@mail.gmail.com>
-        <20200829155410.6d34a8b9@archlinux>
-        <CAJKOXPd78m-3jMsFRa7ySREDdx+GMZ_YHMG3AcqCHTABLBwqVA@mail.gmail.com>
-        <DM6PR03MB441122FDB3323690166C21A0F92F0@DM6PR03MB4411.namprd03.prod.outlook.com>
-        <CAHp75VeOQpR00AZhaw=Dy3sEArhSQAPHXb7mhJGB80uyrSZ3Qg@mail.gmail.com>
-        <20200902142656.00007ad1@Huawei.com>
-        <CAJKOXPcSctHLWGWwSPCyCR-U4QsB=WYBX3JMRqE7U9RHVKhNHA@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727845AbgIBNnw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Sep 2020 09:43:52 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:46468 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726984AbgIBNnV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Sep 2020 09:43:21 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 082DdL0r011878;
+        Wed, 2 Sep 2020 09:42:30 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 337gv6mg3u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Sep 2020 09:42:30 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 082DgTrT063816
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 2 Sep 2020 09:42:29 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 2 Sep 2020 09:42:28 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 2 Sep 2020 09:42:28 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 2 Sep 2020 09:42:27 -0400
+Received: from mircea-Precision-5530-2-in-1.ad.analog.com ([10.48.65.139])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 082DgPck014095;
+        Wed, 2 Sep 2020 09:42:25 -0400
+From:   Mircea Caprioru <mircea.caprioru@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: [PATCH] iio: adc: ad7124: Fix typo in device name
+Date:   Wed, 2 Sep 2020 16:42:22 +0300
+Message-ID: <20200902134222.28357-1-mircea.caprioru@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.91]
-X-ClientProxiedBy: lhreml732-chm.china.huawei.com (10.201.108.83) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-02_09:2020-09-02,2020-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 suspectscore=1 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 clxscore=1011 mlxlogscore=730 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009020130
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2 Sep 2020 15:35:45 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+This patch fixes the device name typo.
 
-> On Wed, 2 Sep 2020 at 15:28, Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Wed, 2 Sep 2020 10:49:04 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> >  
-> > > On Wed, Sep 2, 2020 at 8:56 AM Ardelean, Alexandru
-> > > <alexandru.Ardelean@analog.com> wrote:  
-> > > >
-> > > > [yes, I know, bad-email format, but I wanted this to come from my work email]
-> > > >
-> > > > Apologies also for the delay here. Things pile-up on my side and I defer things a bit.
-> > > >
-> > > > Talked to Michael Hennerich about this [since he's the more senior contact at Analog].
-> > > > We can replace the email from Beniamin Bia with Michael's.
-> > > > Or, we can remove the "Orphan" blocks and just have the catch-all "drivers/iio/*/ad*" cover this driver and others that were upstreamed by Beniamin.
-> > > >
-> > > > Either option is fine from us.  
-> > >
-> > > As a participant of activity to put MAINTAINERS in some order, I
-> > > prefer to have similar blocks be squashed.
-> > > If there will be a dedicated maintainer for a certain driver in the
-> > > future, we can always split into separate sections.
-> > >
-> > > So, something like
-> > > ANALOG DEVICES ADC (I guess it makes sense to have some grouping still)
-> > > ...
-> > > F: .../ad1234
-> > > F: .../ad2345
-> > >
-> > > In one section (no need to have wildcards right now).
-> > >  
-> >
-> > ANALOG DEVICES INC IIO DRIVERS
-> > M:      Lars-Peter Clausen <lars@metafoo.de>
-> > M:      Michael Hennerich <Michael.Hennerich@analog.com>
-> > S:      Supported
-> > W:      http://wiki.analog.com/
-> > W:      http://ez.analog.com/community/linux-device-drivers
-> > F:      Documentation/ABI/testing/sysfs-bus-iio-frequency-ad9523
-> > F:      Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4350
-> > F:      drivers/iio/*/ad*
-> > F:      drivers/iio/adc/ltc249*
-> > F:      drivers/staging/iio/*/ad*
-> > X:      drivers/iio/*/adjd*
-> >
-> > Already exists.  We could potentially clean that up.
-> >
-> > For the block that started this thread, we can just drop it.  
-> 
-> I can send a follow up to merge/remove the entries.
-> 
-> Best regards,
-> Krzysztof
+Fixes: 951ad4700313 ("iio: adc: ad7124: move chip ID & name on the chip_info table")
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+---
+ drivers/iio/adc/ad7124.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Great thanks
-
-Jonathan
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 8dce06e9e69c..766c73333604 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -177,12 +177,12 @@ static const struct iio_chan_spec ad7124_channel_template = {
+ 
+ static struct ad7124_chip_info ad7124_chip_info_tbl[] = {
+ 	[ID_AD7124_4] = {
+-		.name = "ad7127-4",
++		.name = "ad7124-4",
+ 		.chip_id = CHIPID_AD7124_4,
+ 		.num_inputs = 8,
+ 	},
+ 	[ID_AD7124_8] = {
+-		.name = "ad7127-8",
++		.name = "ad7124-8",
+ 		.chip_id = CHIPID_AD7124_8,
+ 		.num_inputs = 16,
+ 	},
+-- 
+2.25.1
 

@@ -2,110 +2,292 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F74625C99D
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 21:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9666825CD55
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Sep 2020 00:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbgICTmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Sep 2020 15:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56152 "EHLO
+        id S1729270AbgICWSc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Sep 2020 18:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbgICTmK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 15:42:10 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3908C061244;
-        Thu,  3 Sep 2020 12:42:08 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id e33so2958681pgm.0;
-        Thu, 03 Sep 2020 12:42:08 -0700 (PDT)
+        with ESMTP id S1728288AbgICWSb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 18:18:31 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13DEC061245
+        for <linux-iio@vger.kernel.org>; Thu,  3 Sep 2020 15:18:30 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id 5so3235100pgl.4
+        for <linux-iio@vger.kernel.org>; Thu, 03 Sep 2020 15:18:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=64wdOe+m4X3LlgmhQ/Anjpyk3DyuY0i8xhdssKAxr9o=;
-        b=ksSWkAtGUD9gN1y6I26GOinjjVHtHTzjudrp5b0/y3/MzYYTqSNhx5Q0lxITHCSsTw
-         Peed0e8+DjVU/M5rPRHXyqe+Wipy1nawo/ItJK1dMG+KBXm8fRRbgyKRvdTL0Rp0AB4g
-         0s/+Y34KIyzk4g0XppagwedewNf44kYN2DHRYqqg1uxI/8oK17NL4zOQmRrf8aNNT6hn
-         gxN8dkuiRFmbtOBwE0sMZPrtboHadYIs7UdTR61gQCxts0GMjOnlYqhE0C/IFxFWg8yy
-         mEvUfShepn0iYGzTxRVjkdyxyoJgZO6Y0H8Cp/Ez0hDylcxikHpkX3KKwm2zJnRGJuY3
-         Zn2g==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Roix3RhAEEOO2V01BUd1l2dtuHebq2+iPymfTqDrfKA=;
+        b=malaHd5r4alh1HJyeDyqDu7Mey/38FwBExzCtlODrP1yv0Kp55lsKlc4p00m1kU1wz
+         06MepI8ARBeA1bjq9yyLsh5N4fIP0/VCGvrCTx/erzWdPrF7UOKJOKJ6LzRstg0tmZjj
+         85RirG/8z6BAsuLa7c24lw9eWx66QUol7PTr4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=64wdOe+m4X3LlgmhQ/Anjpyk3DyuY0i8xhdssKAxr9o=;
-        b=stTQXVEgSbp3BndVZ+tUnlzESd8DFKTnrneDy/2e07Ba2NXdbXJ8JchfFeICWV+DWn
-         9NsPZwIMT/R1ifudMdKZFawgUv95FYKIrXhwGCwOu1FmEy97pRBQnWZH5Bn7tLmArDBz
-         TTZdRf1GW5qLXbwyHx940MeUMk0mPZB2xYBnpDk399cE0vPS+7rxKf4mPUS8F4pv56C9
-         mZoaxJkTCNT+QNDAANfeuUHeSaNQ97ZZmbElMhCOZ5U5aDIxqoiTW/kC8YU3eovlJGrG
-         hA/sixEgc+BqOsPPppJPTzlltWzcVBXSazHrnyLLGULp9jAVVQdJePq82yCaAEztvTRI
-         g4HA==
-X-Gm-Message-State: AOAM532/SHM9debiFUHEFKLYnrmGotH3tslYAA8LcJfZQaNqtwpUQbXz
-        HqjnAayvBcpY2dbtF8WgdwT/QNN2tegUUAyqIUc/i3+g5x7hBA==
-X-Google-Smtp-Source: ABdhPJwNokACHFpiiIHxqrP8z9dSRKkN3pBN5Alt7WQLCuezH78+g6OAHrqAaD2MTv2upvQoRQ7wt17tPMdaKLfz2mU=
-X-Received: by 2002:a62:6083:0:b029:13c:1611:66c4 with SMTP id
- u125-20020a6260830000b029013c161166c4mr3646465pfb.15.1599162128118; Thu, 03
- Sep 2020 12:42:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200903181926.5606-1-krzk@kernel.org>
-In-Reply-To: <20200903181926.5606-1-krzk@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 3 Sep 2020 22:41:51 +0300
-Message-ID: <CAHp75VeXTN5gTv2Pj33N9EB9i2U7R+uvgZ-Ad4_SMgKkrB0F3g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] MAINTAINERS: Consolidate Analog Devices IIO
- entries and remove Beniamin Bia
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Roix3RhAEEOO2V01BUd1l2dtuHebq2+iPymfTqDrfKA=;
+        b=Kcgnk8TXhogR5brmO3VaFNrIW2EuWb0lAurgBs6OLuAQJjiXX9E+Y4tqepnm6nIZLa
+         cBc3XlYWxx9sXotgAjhxgfxLS9vC6GYX1zfvBs0stVYc1b3j64tB0LeTHjgtUCnDO0u/
+         Jxq93A6KhM6tZIMzRytI6vXtyDvGuFos8DRD9xT+ss8lp1P1mFYRjfGq7WVNh/Tqvbfb
+         FEJX3zRTKjSX4nlEWG8V+9cGxnFLnMQumWuWoA+pDwRkucHFrZetxOVMMwUwJoiZDBZa
+         E/gomKDyjR7QUXVCdygEYhB7/UvQG2xddt8A9p4bliQ8e3TKVxY8vrP8tnC9R8t04XCO
+         PATw==
+X-Gm-Message-State: AOAM533FvSF3f48mRvsozNyORegyTLURdZA8tBHU7l8TcbydTSH1L4Iw
+        TZqdDtSdgg55gyWH+hnfgnyPkw==
+X-Google-Smtp-Source: ABdhPJyNpfEDlgl8BoZHuF2puXp9YWnttTtYfUOHnZq7eEOWT2W+CMSH3iaOHUCZ9AjszaCRgypIcg==
+X-Received: by 2002:a65:614a:: with SMTP id o10mr4697995pgv.411.1599171509795;
+        Thu, 03 Sep 2020 15:18:29 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
+        by smtp.gmail.com with ESMTPSA id p188sm4205391pfb.17.2020.09.03.15.18.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2020 15:18:29 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Daniel Campello <campello@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Evan Green <evgreen@chromium.org>
+Subject: [PATCH] dt-bindings: iio: sx9310: Add various settings as DT properties
+Date:   Thu,  3 Sep 2020 15:18:28 -0700
+Message-Id: <20200903221828.3657250-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.28.0.526.ge36021eeef-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 3, 2020 at 9:19 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> Emails to Beniamin Bia bounce with no such address so remove him from
-> maintainers.  After this removal, many entries for Analog Devices Inc
-> IIO drivers look exactly the same so consolidate them.
->
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: linux-iio <linux-iio@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+We need to set various bits in the hardware registers for this device to
+operate properly depending on how it is installed. Add a handful of DT
+properties to configure these things.
 
-...
+Cc: Daniel Campello <campello@chromium.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: <devicetree@vger.kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Gwendal Grignou <gwendal@chromium.org>
+Cc: Evan Green <evgreen@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
 
->  ANALOG DEVICES INC IIO DRIVERS
->  M:     Lars-Peter Clausen <lars@metafoo.de>
->  M:     Michael Hennerich <Michael.Hennerich@analog.com>
-> @@ -1152,8 +1101,11 @@ W:       http://wiki.analog.com/
->  W:     http://ez.analog.com/community/linux-device-drivers
->  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-ad9523
->  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4350
-> +F:     Documentation/devicetree/bindings/iio/*/adi,*
-> +F:     Documentation/devicetree/bindings/iio/dac/ad5758.txt
->  F:     drivers/iio/*/ad*
->  F:     drivers/iio/adc/ltc249*
-> +F:     drivers/iio/amplifiers/hmc425a.c
->  F:     drivers/staging/iio/*/ad*
->  X:     drivers/iio/*/adjd*
+I haven't written any code to handle these properties yet. I'd rather do
+that once the binding patch is reviewed. Patch based on iio.git testing
+branch.
 
->  STAGING - SEPS525 LCD CONTROLLER DRIVERS
->  M:     Michael Hennerich <michael.hennerich@analog.com>
-> -M:     Beniamin Bia <beniamin.bia@analog.com>
->  L:     linux-fbdev@vger.kernel.org
->  S:     Supported
->  F:     Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+ .../iio/proximity/semtech,sx9310.yaml         | 182 ++++++++++++++++++
+ 1 file changed, 182 insertions(+)
 
-It's not related to this series, but I'm wondering why the above
-binding is attached to a staging driver...
+diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+index 5739074d3592..e74b81483c14 100644
+--- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
++++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+@@ -40,6 +40,169 @@ properties:
+   "#io-channel-cells":
+     const: 1
+ 
++  semtech,cs0-ground:
++    description: Indicates the CS0 sensor is connected to ground.
++    type: boolean
++
++  semtech,combined-sensors:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 1, 2, 3]
++    default: 0
++    description:
++      Which sensors are combined. 0 for CS3, 1 for CS0+CS1, 2 for CS1+CS2,
++      and 3 for all sensors.
++
++  semtech,cs0-gain-factor:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [1, 2, 4, 8]
++    default: 1
++    description:
++      Gain factor for CS0 (and combined if any) sensor.
++
++  semtech,cs1-gain-factor:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [1, 2, 4, 8]
++    default: 1
++    description:
++      Gain factor for CS1 sensor.
++
++  semtech,cs2-gain-factor:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [1, 2, 4, 8]
++    default: 1
++    description:
++      Gain factor for CS2 sensor.
++
++  semtech,resolution:
++    description:
++      Capacitance measure resolution.
++    enum:
++      - coarsest
++      - very-coarse
++      - coarse
++      - medium-coarse
++      - medium
++      - fine
++      - very-fine
++      - finest
++
++  semtech,startup-sensor:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 1, 2, 3]
++    default: 0
++    description:
++      Sensor used for start-up proximity detection. The combined
++      sensor is represented by 3.
++
++  semtech,proxraw-strength:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 2, 4, 8]
++    default: 2
++    description:
++      PROXRAW filter strength. A value of 0 represents off, and other values
++      represent 1-1/N.
++
++  semtech,compensate-common:
++    description: Any sensor triggers compensation of all channels.
++    type: boolean
++
++  semtech,avg-pos-strength:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
++    default: 16
++    description:
++      Average positive filter strength. A value of 0 represents off and
++      UINT_MAX (4294967295) represents infinite. Other values
++      represent 1-1/N.
++
++  semtech,cs0-prox-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 40,
++               48, 56, 64, 72, 80, 88, 96, 112, 128, 144,
++               160, 192, 224, 256, 320, 384, 512, 640,
++               768, 1024, 1536]
++    default: 12
++    description:
++      Proximity detection threshold for CS0 (and combined if any) sensor.
++
++  semtech,cs1-prox-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 40,
++               48, 56, 64, 72, 80, 88, 96, 112, 128, 144,
++               160, 192, 224, 256, 320, 384, 512, 640,
++               768, 1024, 1536]
++    default: 12
++    description:
++      Proximity detection threshold for CS1 sensor.
++
++  semtech,cs2-prox-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 40,
++               48, 56, 64, 72, 80, 88, 96, 112, 128, 144,
++               160, 192, 224, 256, 320, 384, 512, 640,
++               768, 1024, 1536]
++    default: 12
++    description:
++      Proximity detection threshold for CS2 sensor.
++
++  semtech,cs0-body-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 300, 600, 900, 1200, 1500, 1800, 30000]
++    default: 1800
++    description:
++      Body detection threshold for CS0 (and combined if any) sensor.
++
++  semtech,cs1-body-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 300, 600, 900, 1200, 1500, 1800, 30000]
++    default: 12
++    description:
++      Body detection threshold for CS1 sensor.
++
++  semtech,cs2-body-threshold:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 300, 600, 900, 1200, 1500, 1800, 30000]
++    default: 12
++    description:
++      Body detection threshold for CS2 sensor.
++
++  semtech,hysteresis:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 6, 12, 25]
++    default: 0
++    description:
++      The percentage of hysteresis +/- applied to proximity/body samples.
++
++  semtech,close-debounce-samples:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 2, 4, 8]
++    default: 0
++    description:
++      The number of close samples debounced for proximity/body thresholds.
++
++  semtech,far-debounce-samples:
++    allOf:
++      - $ref: /schemas/types.yaml#definitions/uint32
++      - enum: [0, 2, 4, 8]
++    default: 0
++    description:
++      The number of far samples debounced for proximity/body thresholds.
++
+ required:
+   - compatible
+   - reg
+@@ -61,5 +224,24 @@ examples:
+         vdd-supply = <&pp3300_a>;
+         svdd-supply = <&pp1800_prox>;
+         #io-channel-cells = <1>;
++        semtech,cs0-ground;
++        semtech,combined-sensors = <0>;
++        semtech,cs0-gain-factor = <8>;
++        semtech,cs1-gain-factor = <8>;
++        semtech,cs2-gain-factor = <8>;
++        semtech,resolution = "fine";
++        semtech,startup-sensor = <1>;
++        semtech,proxraw-strength = <2>;
++        semtech,compensate-common;
++        semtech,avg-pos-strength = <64>;
++        semtech,cs0-prox-threshold = <96>;
++        semtech,cs1-prox-threshold = <112>;
++        semtech,cs2-prox-threshold = <96>;
++        semtech,cs0-body-threshold = <300>;
++        semtech,cs1-body-threshold = <300>;
++        semtech,cs2-body-threshold = <300>;
++        semtech,hysteresis = <0>;
++        semtech,close-debounce-samples = <2>;
++        semtech,far-debounce-samples = <2>;
+       };
+     };
 
+base-commit: 1bebdcb928eba880f3a119bacb8149216206958a
 -- 
-With Best Regards,
-Andy Shevchenko
+Sent by a computer, using git, on the internet
+

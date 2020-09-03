@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBE8C25C383
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 16:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ECF225C37B
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 16:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729283AbgICOwk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Sep 2020 10:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
+        id S1728731AbgICOwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Sep 2020 10:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729165AbgICOMm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 10:12:42 -0400
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A81C0610E5;
-        Thu,  3 Sep 2020 06:57:05 -0700 (PDT)
-Received: by mail-qv1-xf43.google.com with SMTP id o2so1338190qvk.6;
-        Thu, 03 Sep 2020 06:57:05 -0700 (PDT)
+        with ESMTP id S1729051AbgICONC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 10:13:02 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF02C061246;
+        Thu,  3 Sep 2020 06:59:30 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id l191so2213930pgd.5;
+        Thu, 03 Sep 2020 06:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=lx7VsLoD8VC63Gr8ZZSKJBlFfCXU3C8e2HzYdq7Pt7A=;
-        b=Qdr1dvq7HlK50SUTVEW4IeGNjBI0jJHlGaEv3Oy1gC7eoZBdvBHSz6nq+gOVS5P2dd
-         qry3D8+mN5r+UOenzMKY4A4A+ft4IY71PFUizEBGXB4SPYRb6WzLLY5ZWUorQuWnPusY
-         Hg+ewfvZpfD1PjvFVSfxbdyMbQZiCqjRw0yXWkdJkC3/MKxpXIZvVavXzLvvJ0IpItmf
-         GqtBhGruKreK3wKBY25sRDhDzLZ6qezR52AZ+8rAY1AsJFCrmc9Kp+aGH3VjmSxCSNKg
-         Rqvmd365Jb6usnU0jpZedzrMubIPR81jTT+Rq/wXDd+f1es41CEsuSpiegWVFStpO59t
-         emJg==
+        bh=opMlPiV+qCTrqLMIUDes4VFrVPPiEfzlnZNFmTYgBrE=;
+        b=RqnQpRCHxdVOqQO86jG/T5EgLn0Sqfo7uj2+YjDPaNtZLjTb5An74Jh5Zl2fPuHHEv
+         yGtyZ2DPzshB8kUjV9kM/QwyIOS63AeOSSAq5PK+lalg1Zz9qpKjyCR611kz7dgFD4tn
+         iWKbtTyRRdhFUvlHknvyev6zle2PeudCOgNUQnPOdFMZh+kJPBa71RkIcq6UUwoG+8EZ
+         4Z7hh2VnWiUhZxmdBd9U3fbJd5oIHZMbkAhj8PPZqL1BeOomg3csex4LS8mpdpxUCvlQ
+         7CBWfOTo7l/yMKb9CeZEquaLo8bBg8abCAuNsbQNhGN9slJmVMj1qhkgFBHk+HUyuvQO
+         /mrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lx7VsLoD8VC63Gr8ZZSKJBlFfCXU3C8e2HzYdq7Pt7A=;
-        b=rcONyDA2IRG5BfmsDFdgm2snzXwP7kZQ178dTXNVxGG0VtyMCLIMVfw0jumND0vUVW
-         yQbVTVGZXiJg5yRr8W8BHs8nt04jatZzMLxO67DeUfC9h9e2yKvJK2xvbjTAmxsuEJDW
-         2Bqb8hSbpcqP5FEx9ycKUEL4anNz/M4ipFSHvdT8Z5EfuoN+g4pDmI6YJ77kse0EdFxh
-         CFOGiLsZ9XxYs3Z1QAet015/S1pVnSu01185dFzGJwW9OgBk0oLodhgdjSkVL65pt1AM
-         Rkmkt8StzaH8jBDDn7/eJB3s2PWd+sCXIEWEhn4zgyBjpQBRZPBvgGbAk7hVUDAompXI
-         0AwA==
-X-Gm-Message-State: AOAM531k8/Ok1L+an+oh40cgebLuikO/afWF0wxP5zzNhM609q//QSq5
-        5oIqBNgYZ7eLwJsgNAoXeZQV8kYvXUevEJMglEm6PSKo
-X-Google-Smtp-Source: ABdhPJxfq4ecie6/ajqMa8tNecTHNjT1t6BdLTsjZAmur5vj3MHpkwsWLR404smqL5YCugvUq96sorgqVphGPVvDQj4=
-X-Received: by 2002:a05:6214:289:: with SMTP id l9mr3070302qvv.137.1599141424567;
- Thu, 03 Sep 2020 06:57:04 -0700 (PDT)
+        bh=opMlPiV+qCTrqLMIUDes4VFrVPPiEfzlnZNFmTYgBrE=;
+        b=Z1ltWpl1sFaKpLplKp1rCokeUEueauvFcy+0+k+OgMK8fvcr1vPiRwU/8G1QFAqHxz
+         nHEUK3r/xh7OkP6Soqpmy5DzXREAOgezt+M4tdebyKlPEPxRWYt5AM8kzIh11rQ/HOvd
+         lLqtXVLPLJBjo2aTd00t7IcpfiN5BtxNVCguzvqNOrg71HUpBgYHF8ju12ibvcT2ixzr
+         zQN+WRNXX2qWp9mZn5XmsOM7gh2EHVrekjWPjjogoOakoXOuRbDYob81+MVH/BM1netk
+         dge+OjjcQc07nOYt7sJPH4tZg3X141toJf/fB/HKIrkcgCREDYjV4L4JatPC+BhG/rOa
+         PTmQ==
+X-Gm-Message-State: AOAM531QIlIZBdlhTC00ZibhIPlsOeXmnqDZptW6AiC6yEpovvQoL/vN
+        k0nqo3jDMoJlmMwITPfY96EMcl0QkAwlhitz4/8=
+X-Google-Smtp-Source: ABdhPJxpf4/VgVQE4XDqwhc38ETZmIKw3GLkPuTdNcyypXPRXxpk7cDONZDlW3U24ckzCr7rNoXp/yktfBHEQfx/zTk=
+X-Received: by 2002:a63:c543:: with SMTP id g3mr3127878pgd.203.1599141569482;
+ Thu, 03 Sep 2020 06:59:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200903130950.6274-1-nish.malpani25@gmail.com>
  <20200903130950.6274-4-nish.malpani25@gmail.com> <CAHp75VfReT-EjCV=cW8mV1MmoMPPdY9q1scoPwbD_DEHpQHd3g@mail.gmail.com>
-In-Reply-To: <CAHp75VfReT-EjCV=cW8mV1MmoMPPdY9q1scoPwbD_DEHpQHd3g@mail.gmail.com>
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-Date:   Thu, 3 Sep 2020 19:26:53 +0530
-Message-ID: <CAEtfd9ZPkyk9_GV3h-CXFT_j=PYU66SHoYaaE7tytQxb+Q5rVA@mail.gmail.com>
+ <CAEtfd9ZPkyk9_GV3h-CXFT_j=PYU66SHoYaaE7tytQxb+Q5rVA@mail.gmail.com>
+In-Reply-To: <CAEtfd9ZPkyk9_GV3h-CXFT_j=PYU66SHoYaaE7tytQxb+Q5rVA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 3 Sep 2020 16:59:12 +0300
+Message-ID: <CAHp75Vc2UhW5yDhXs0RJZUmXABAqTX12N1NA3CWeSirHWfPCng@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] iio: gyro: adxrs290: Add debugfs register access support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Nishant Malpani <nish.malpani25@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         "Bogdan, Dragos" <dragos.bogdan@analog.com>,
@@ -65,60 +66,18 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+On Thu, Sep 3, 2020 at 4:57 PM Nishant Malpani <nish.malpani25@gmail.com> wrote:
+> On Thu, Sep 3, 2020 at 6:55 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 
-On Thu, Sep 3, 2020 at 6:55 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Thu, Sep 3, 2020 at 4:10 PM Nishant Malpani <nish.malpani25@gmail.com> wrote:
-> >
-> > Extend support to read/write byte data from/to the device using
-> > debugfs iio interface.
->
-> ...
->
-> > +static int adxrs290_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-> > +                              unsigned int writeval, unsigned int *readval)
-> > +{
-> > +       struct adxrs290_state *st = iio_priv(indio_dev);
-> > +       int ret;
-> > +
-> > +       if (!readval)
-> > +               return adxrs290_spi_write_reg(st->spi, reg, writeval);
-> > +
-> > +       ret = spi_w8r8(st->spi, ADXRS290_READ_REG(reg));
-> > +       if (ret < 0)
-> > +               return ret;
-> > +
-> > +       *readval = ret;
-> > +
-> > +       return 0;
-> > +}
->
-> Hmm... I would suggest to have it like
->
-> adxrs290_reg_access_rw()
-> {
->  ...
->  return 0;
-> }
->
-> adxrs290_reg_access()
-> {
->  if (readval)
->   return adxrs290_reg_access_rw();
->  else // it's redundant, but someone can use for better formatting
->   return adxrs290_spi_write_reg();
-> }
+...
 
-Umm, I'm sorry, I don't see why'd it be favourable for us to do it
-this way. Also, I *think* Jonathan is fine with how it's being done
-now.
+> Umm, I'm sorry, I don't see why'd it be favourable for us to do it
+> this way. Also, I *think* Jonathan is fine with how it's being done
+> now.
 
-With regards,
-Nishant Malpani
+I have no strong opinion, so whatever Jonathan thinks better.
 
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+-- 
+With Best Regards,
+Andy Shevchenko

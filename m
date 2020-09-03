@@ -2,127 +2,288 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB9225B454
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Sep 2020 21:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F9725BBCA
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 09:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbgIBTSg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Sep 2020 15:18:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60038 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726567AbgIBTSe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Sep 2020 15:18:34 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B9E1320E65;
-        Wed,  2 Sep 2020 19:18:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599074314;
-        bh=bj4ZIsKT/Jh/DzKW3wY2SgrI7QXyJCc+8lJsbBsAuy4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Gu6D2IzeCZ2HtwN4X2eeNuyWUuztpIcFBW/A8RboxT7WdBHw2KVjcYeOFrIAZo0MH
-         Xnpcgx2YO8M7mrxbOTFe5pRwLfIpPuHYegoZIava8l4i59MwMbyrtNtWcj5NhGj/v5
-         XucaAJ5Ck+t9uIHRyOgBMUZ/TQEVh56loyTsG4GU=
-Received: by mail-ej1-f44.google.com with SMTP id i26so217591ejb.12;
-        Wed, 02 Sep 2020 12:18:33 -0700 (PDT)
-X-Gm-Message-State: AOAM532rRpU+2Swp2DO60+5SiQgCn4WH4nvYZybMn/kcUtdZf5Bb+T5Q
-        WWWN0x5SwZgJez3x6NT0x4YMhtyEOygs2XPkOGY=
-X-Google-Smtp-Source: ABdhPJybyWYa5Mw6aDof5IdFGPJRJbQu/QpPibfDxauEMG/A/ccQ/Mhm86RvJbFQrFM1yJDbUl3wBa8m3mIM7e6eZ1k=
-X-Received: by 2002:a17:906:3b4b:: with SMTP id h11mr1491517ejf.381.1599074312251;
- Wed, 02 Sep 2020 12:18:32 -0700 (PDT)
+        id S1726109AbgICHhh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Sep 2020 03:37:37 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50139 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726025AbgICHhf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 03:37:35 -0400
+Received: from mail-wr1-f70.google.com ([209.85.221.70])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <chia-lin.kao@canonical.com>)
+        id 1kDjoK-0007ij-Vi
+        for linux-iio@vger.kernel.org; Thu, 03 Sep 2020 07:37:33 +0000
+Received: by mail-wr1-f70.google.com with SMTP id k11so735771wrw.16
+        for <linux-iio@vger.kernel.org>; Thu, 03 Sep 2020 00:37:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kRT0dtyryBE1QXXJeojjJFWZBaTTGS+0c45qeRF0jaw=;
+        b=dXsP8xaLcEaa0xfGPaZHvXsVTZV7pOCe8ah5XDM/UL5id61ZA7wMgQTBcCVvrMx/8a
+         GuKNPL3OKtQbFLNXJ33AnFD4Zre/J0Ref+/ARc/wzNFA7+1hJDmkWhpYj65n0AjhXFuQ
+         hsuwaaHbP2MScHQxLOaCGwjXZCwxUskkDu4fOdDuR5YUYKlL/gjERE2AM5MTVG6+rPkB
+         aZBaCoGRumjCm7zYGx4tuMqh3bTLCNIgE0aec7r5khIJuvxcLIfFuXFzyNrLZWjTZRZH
+         GAFMczxZvN7LmPZ5r3SOHKt0GpN6XEfZdbMN96Lz2YsZ07HGEr6n1+o05WzfFB8GtBYq
+         FyHA==
+X-Gm-Message-State: AOAM531ElaMwyPqSPEWHGK5avvRhH9OZGdk41xgmOWBl071OWywktDra
+        8qVvwPre2pQQRBDFT+AX84/chdmGS9LIRMoWK53yLSlzMy6jjxWWBbDJiiktQmdUHf1XkSJZtF5
+        wURxmU13qwbb8CJu0JOPNoyTlEn/xcl9hvdrp3z8ojYTY6+9GomVDTg==
+X-Received: by 2002:a5d:644b:: with SMTP id d11mr872668wrw.373.1599118652366;
+        Thu, 03 Sep 2020 00:37:32 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwaud13HsnRKqjCXr+L8e7lST34HEY4peMc6uzhZYqZrFOET3triLmPLm6FpC1jqXDwXBMg3dsRdioaTQv3f8I=
+X-Received: by 2002:a5d:644b:: with SMTP id d11mr872638wrw.373.1599118651996;
+ Thu, 03 Sep 2020 00:37:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200902145957.13861-1-krzk@kernel.org> <CAHp75Vd3sT6Vuovsy8YQg+pdqQd3s4vU8PQNNQvUruKZOiRSAw@mail.gmail.com>
- <c481fb32b071c02fe21fe669c0e67117b16386dd.camel@perches.com>
-In-Reply-To: <c481fb32b071c02fe21fe669c0e67117b16386dd.camel@perches.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Wed, 2 Sep 2020 21:18:19 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPfRp6e9barifViCA4mp2EFmR71Ld2Y3EA++-rhW49JnAA@mail.gmail.com>
-Message-ID: <CAJKOXPfRp6e9barifViCA4mp2EFmR71Ld2Y3EA++-rhW49JnAA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] MAINTAINERS: Consolidate Analog Devices IIO
- entries and remove Beniamin Bia
-To:     Joe Perches <joe@perches.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+References: <20200824054347.3805-1-william.sung@advantech.com.tw>
+ <CAHp75VeZLPR02xB2XRzec5mSBvq93XYZg56OOODxpFTPva6cXw@mail.gmail.com>
+ <CAFv23QmDwcrdxEndH=mKMAomzt9kxG_f1Z6=Fd8iuuvCoY92SA@mail.gmail.com>
+ <CAHp75Vcup9LUk0fgjW9T2FK-K5GD3=3ycPHi74Oykc8rq_tJqA@mail.gmail.com> <CAHp75VeyFTSc3AY07rFnjvXOcHt79tpRHzs_GZGALQcdqoANjA@mail.gmail.com>
+In-Reply-To: <CAHp75VeyFTSc3AY07rFnjvXOcHt79tpRHzs_GZGALQcdqoANjA@mail.gmail.com>
+From:   AceLan Kao <acelan.kao@canonical.com>
+Date:   Thu, 3 Sep 2020 15:37:20 +0800
+Message-ID: <CAFv23Qn4sqTZ1Rbr07sw76hk-769y6ra=mHi1x3L962GyorvXQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: dac: ad5593r: Dynamically set AD5593R channel modes
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        William Sung <william.sung@advantech.com.tw>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Campion Kang <Campion.Kang@advantech.com.tw>
+Content-Type: multipart/mixed; boundary="00000000000034fd5c05ae63d357"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2 Sep 2020 at 20:54, Joe Perches <joe@perches.com> wrote:
+--00000000000034fd5c05ae63d357
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andy,
+
+I spent some time studying/reading what you wrote, but I still don't
+understand how to leverage meta-acpi.
+
+From what I understand from the following discussion in the thread,
+ADS5593 could be used,
+so we can keep using it and don't have to introduce PRP0001 in the table, r=
+ight?
+
+Here is the ADS5593 asl code, but I have no idea how to re-use it
+after it's been modified,
+the only way I know is to override the ACPI tables via initrd[1].
+Could you share some examples in real cases that I can follow?
+Thanks.
+
+1. Documentation/admin-guide/acpi/initrd_table_override.rst
+
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2020=E5=B9=B48=E6=9C=
+=8831=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:48=E5=AF=AB=E9=81=93=
+=EF=BC=9A
 >
-> On Wed, 2020-09-02 at 21:11 +0300, Andy Shevchenko wrote:
-> > On Wed, Sep 2, 2020 at 6:04 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > Emails to Beniamin Bia bounce with no such address so remove him from
-> > > maintainers.  After this removal, many entries for Analog Devices Inc
-> > > IIO drivers look exactly the same so consolidate them.
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > But nit-pick below.
-> []
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> []
-> > > @@ -1152,8 +1101,12 @@ W:       http://wiki.analog.com/
-> > >  W:     http://ez.analog.com/community/linux-device-drivers
-> > >  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-ad9523
-> > >  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4350
-> > > +F:     Documentation/devicetree/bindings/iio/adc/adi*
-> > > +F:     Documentation/devicetree/bindings/iio/amplifiers/adi*
+> On Mon, Aug 31, 2020 at 3:45 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Mon, Aug 31, 2020 at 2:28 PM AceLan Kao <acelan.kao@canonical.com> w=
+rote:
+> > > This patch is mainly for Advantech's UNO-420[1] which is a x86-based =
+platform.
+> > > This platform is more like a development platform for customers to
+> > > customize their products,
+> > > so, specify the channel modes in ACPI table is not generic enough,
+> > > that's why William submit this patch.
+> > >
+> > > Are there other ways to specify or pass values to the module without
+> > > using module parameters?
+> > > It's good if we can leverage sysfs, but I don't know if there is one
+> > > for this scenario.
 > >
-> > I would rather see one line like
-> > F:     Documentation/devicetree/bindings/iio/*/adi,*
-
-Good point.
-
+> > Can we provide DT bindings for that and use then in ACPI? ACPI has a
+> > possibility to reuse DT properties and compatible strings [1]. As far
+> > as I can see the driver uses fwnode API, so it supports ACPI case
+> > already [2]. So, what prevents you to utilize 'adi,mode' property?
+> >
+> > Also, we accept examples of ASL excerpt in meta-acpi project [3]. It
+> > has already plenty of examples [4] how to use PRP0001 for DIY /
+> > development boards.
+> >
+> > So, take all together I think this patch is simple redundant.
 >
-> Maybe the ones outside of iio too?
+> One more useful link is SO answers on the topic:
+> https://stackoverflow.com/search?tab=3Dnewest&q=3Dprp0001
 >
-> $ find Documentation/ -wholename "*/adi,*"
-> Documentation/devicetree/bindings/net/adi,adin.yaml
-> Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.txt
-> Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,ad7091r5.yaml
-> Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-> Documentation/devicetree/bindings/iio/imu/adi,adis16480.txt
-> Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> Documentation/devicetree/bindings/display/bridge/adi,adv7511.txt
-> Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
-> Documentation/devicetree/bindings/sound/adi,adau7002.txt
-> Documentation/devicetree/bindings/sound/adi,adau1977.txt
-> Documentation/devicetree/bindings/sound/adi,adau7118.yaml
-> Documentation/devicetree/bindings/sound/adi,axi-i2s.txt
-> Documentation/devicetree/bindings/sound/adi,adau17x1.txt
-> Documentation/devicetree/bindings/sound/adi,ssm2305.txt
-> Documentation/devicetree/bindings/sound/adi,adau1701.txt
-> Documentation/devicetree/bindings/sound/adi,axi-spdif-tx.txt
-> Documentation/devicetree/bindings/sound/adi,ssm2602.txt
-> Documentation/devicetree/bindings/mux/adi,adgs1408.txt
-> Documentation/devicetree/bindings/mux/adi,adg792a.txt
-> Documentation/devicetree/bindings/dma/adi,axi-dmac.txt
-> Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-> Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml
-> Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
-> Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+> > [1]: https://www.kernel.org/doc/html/latest/firmware-guide/acpi/enumera=
+tion.html#device-tree-namespace-link-device-id
+> > [2]: https://elixir.bootlin.com/linux/v5.9-rc3/source/Documentation/dev=
+icetree/bindings/iio/dac/ad5592r.txt
+> > [3]: https://github.com/westeri/meta-acpi
+> > [4]: https://github.com/westeri/meta-acpi/tree/master/recipes-bsp/acpi-=
+tables/samples
+> >
+> > P.S. Jonathan, it seems this driver has artificial ACPI HID. We
+> > probably have to remove it. However, ADS is indeed reserved for Analog
+> > Devices in PNP registry. Can we have AD's official answer on this?
+> > Cc'ing additional AD people.
+> >
+> > > 1. https://www.advantech.com/products/9a0cc561-8fc2-4e22-969c-9df90a3=
+952b5/uno-420/mod_2d6a546b-39e3-4bc4-bbf4-ac89e6b7667c
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
-These might be different entries, different subsystems. Even if
-devices in hwmon could be similar to iio, but sound is something else.
+--00000000000034fd5c05ae63d357
+Content-Type: text/x-dsl; charset="US-ASCII"; name="ads5593.dsl"
+Content-Disposition: attachment; filename="ads5593.dsl"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kemhi4hk0>
+X-Attachment-Id: f_kemhi4hk0
 
-Best regards,
-Krzysztof
+ICAgIFNjb3BlIChfU0IuSTJDMSkKICAgIHsKICAgICAgICBEZXZpY2UgKEkyQ0cpCiAgICAgICAg
+ewogICAgICAgICAgICBOYW1lIChfSElELCAiQURTNTU5MyIpICAvLyBfSElEOiBIYXJkd2FyZSBJ
+RAogICAgICAgICAgICBEZXZpY2UgKElPUDApCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAg
+IE5hbWUgKF9BRFIsIFplcm8pICAvLyBfQURSOiBBZGRyZXNzCiAgICAgICAgICAgICAgICBOYW1l
+IChfRFNELCBQYWNrYWdlICgweDAyKSAgLy8gX0RTRDogRGV2aWNlLVNwZWNpZmljIERhdGEKICAg
+ICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBUb1VVSUQgKCJkYWZmZDgxNC02ZWJh
+LTRkOGMtOGE5MS1iYzliYmY0YWEzMDEiKSAvKiBEZXZpY2UgUHJvcGVydGllcyBmb3IgX0RTRCAq
+LywgCiAgICAgICAgICAgICAgICAgICAgUGFja2FnZSAoMHgwMykKICAgICAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDIpCiAgICAgICAgICAgICAg
+ICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJyZWciLCAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIFplcm8KICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAg
+ICAgICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiYWRpLG1vZGUiLCAKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIDB4MDgKICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAgICAg
+ICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiYWRpLG9mZi1zdGF0ZSIsIAogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgWmVybwogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAg
+ICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSkKICAgICAgICAgICAgfQoKICAgICAgICAg
+ICAgRGV2aWNlIChJT1AxKQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBOYW1lIChfQURS
+LCBaZXJvKSAgLy8gX0FEUjogQWRkcmVzcwogICAgICAgICAgICAgICAgTmFtZSAoX0RTRCwgUGFj
+a2FnZSAoMHgwMikgIC8vIF9EU0Q6IERldmljZS1TcGVjaWZpYyBEYXRhCiAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgVG9VVUlEICgiZGFmZmQ4MTQtNmViYS00ZDhjLThhOTEt
+YmM5YmJmNGFhMzAxIikgLyogRGV2aWNlIFByb3BlcnRpZXMgZm9yIF9EU0QgKi8sIAogICAgICAg
+ICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDMpCiAgICAgICAgICAgICAgICAgICAgewogICAgICAg
+ICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAicmVnIiwgCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBPbmUKICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAgICAgICAgICAgICAg
+ICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAiYWRpLG1vZGUiLCAKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIDB4MDMKICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAgICAgICAgICAgICAgICAg
+ICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAiYWRpLG9mZi1zdGF0ZSIsIAogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgWmVybwogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAg
+fQogICAgICAgICAgICAgICAgfSkKICAgICAgICAgICAgfQoKICAgICAgICAgICAgRGV2aWNlIChJ
+T1AyKQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBOYW1lIChfQURSLCAweDAyKSAgLy8g
+X0FEUjogQWRkcmVzcwogICAgICAgICAgICAgICAgTmFtZSAoX0RTRCwgUGFja2FnZSAoMHgwMikg
+IC8vIF9EU0Q6IERldmljZS1TcGVjaWZpYyBEYXRhCiAgICAgICAgICAgICAgICB7CiAgICAgICAg
+ICAgICAgICAgICAgVG9VVUlEICgiZGFmZmQ4MTQtNmViYS00ZDhjLThhOTEtYmM5YmJmNGFhMzAx
+IikgLyogRGV2aWNlIFByb3BlcnRpZXMgZm9yIF9EU0QgKi8sIAogICAgICAgICAgICAgICAgICAg
+IFBhY2thZ2UgKDB4MDMpCiAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAg
+ICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAicmVnIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAweDAy
+CiAgICAgICAgICAgICAgICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAgICAgICAgICAgUGFj
+a2FnZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgImFkaSxtb2RlIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAweDAyCiAg
+ICAgICAgICAgICAgICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAgICAgICAgICAgUGFja2Fn
+ZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgImFkaSxvZmYtc3RhdGUiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIFplcm8K
+ICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAg
+ICAgICAgIH0pCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIERldmljZSAoSU9QMykKICAgICAg
+ICAgICAgewogICAgICAgICAgICAgICAgTmFtZSAoX0FEUiwgMHgwMykgIC8vIF9BRFI6IEFkZHJl
+c3MKICAgICAgICAgICAgICAgIE5hbWUgKF9EU0QsIFBhY2thZ2UgKDB4MDIpICAvLyBfRFNEOiBE
+ZXZpY2UtU3BlY2lmaWMgRGF0YQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAg
+IFRvVVVJRCAoImRhZmZkODE0LTZlYmEtNGQ4Yy04YTkxLWJjOWJiZjRhYTMwMSIpIC8qIERldmlj
+ZSBQcm9wZXJ0aWVzIGZvciBfRFNEICovLCAKICAgICAgICAgICAgICAgICAgICBQYWNrYWdlICgw
+eDAzKQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgUGFja2Fn
+ZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgInJlZyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgMHgwMwogICAgICAgICAg
+ICAgICAgICAgICAgICB9LCAKCiAgICAgICAgICAgICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDIp
+CiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJh
+ZGksbW9kZSIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgT25lCiAgICAgICAgICAgICAg
+ICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAgICAgICAgICAgUGFja2FnZSAoMHgwMikKICAg
+ICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgImFkaSxv
+ZmYtc3RhdGUiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIFplcm8KICAgICAgICAgICAg
+ICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0pCiAg
+ICAgICAgICAgIH0KCiAgICAgICAgICAgIERldmljZSAoSU9QNCkKICAgICAgICAgICAgewogICAg
+ICAgICAgICAgICAgTmFtZSAoX0FEUiwgMHgwNCkgIC8vIF9BRFI6IEFkZHJlc3MKICAgICAgICAg
+ICAgICAgIE5hbWUgKF9EU0QsIFBhY2thZ2UgKDB4MDIpICAvLyBfRFNEOiBEZXZpY2UtU3BlY2lm
+aWMgRGF0YQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIFRvVVVJRCAoImRh
+ZmZkODE0LTZlYmEtNGQ4Yy04YTkxLWJjOWJiZjRhYTMwMSIpIC8qIERldmljZSBQcm9wZXJ0aWVz
+IGZvciBfRFNEICovLCAKICAgICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAzKQogICAgICAg
+ICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgUGFja2FnZSAoMHgwMikKICAg
+ICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgInJlZyIs
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgMHgwNAogICAgICAgICAgICAgICAgICAgICAg
+ICB9LCAKCiAgICAgICAgICAgICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDIpCiAgICAgICAgICAg
+ICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJhZGksbW9kZSIsIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgMHgwOAogICAgICAgICAgICAgICAgICAgICAgICB9
+LCAKCiAgICAgICAgICAgICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDIpCiAgICAgICAgICAgICAg
+ICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJhZGksb2ZmLXN0YXRlIiwg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBaZXJvCiAgICAgICAgICAgICAgICAgICAgICAg
+IH0KICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9KQogICAgICAgICAgICB9
+CgogICAgICAgICAgICBEZXZpY2UgKElPUDUpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAg
+IE5hbWUgKF9BRFIsIDB4MDUpICAvLyBfQURSOiBBZGRyZXNzCiAgICAgICAgICAgICAgICBOYW1l
+IChfRFNELCBQYWNrYWdlICgweDAyKSAgLy8gX0RTRDogRGV2aWNlLVNwZWNpZmljIERhdGEKICAg
+ICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBUb1VVSUQgKCJkYWZmZDgxNC02ZWJh
+LTRkOGMtOGE5MS1iYzliYmY0YWEzMDEiKSAvKiBEZXZpY2UgUHJvcGVydGllcyBmb3IgX0RTRCAq
+LywgCiAgICAgICAgICAgICAgICAgICAgUGFja2FnZSAoMHgwMykKICAgICAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDIpCiAgICAgICAgICAgICAg
+ICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJyZWciLCAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIDB4MDUKICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAg
+ICAgICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiYWRpLG1vZGUiLCAKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIDB4MDMKICAgICAgICAgICAgICAgICAgICAgICAgfSwgCgogICAgICAg
+ICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiYWRpLG9mZi1zdGF0ZSIsIAogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgWmVybwogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAg
+ICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSkKICAgICAgICAgICAgfQoKICAgICAgICAg
+ICAgRGV2aWNlIChJT1A2KQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBOYW1lIChfQURS
+LCAweDA2KSAgLy8gX0FEUjogQWRkcmVzcwogICAgICAgICAgICAgICAgTmFtZSAoX0RTRCwgUGFj
+a2FnZSAoMHgwMikgIC8vIF9EU0Q6IERldmljZS1TcGVjaWZpYyBEYXRhCiAgICAgICAgICAgICAg
+ICB7CiAgICAgICAgICAgICAgICAgICAgVG9VVUlEICgiZGFmZmQ4MTQtNmViYS00ZDhjLThhOTEt
+YmM5YmJmNGFhMzAxIikgLyogRGV2aWNlIFByb3BlcnRpZXMgZm9yIF9EU0QgKi8sIAogICAgICAg
+ICAgICAgICAgICAgIFBhY2thZ2UgKDB4MDMpCiAgICAgICAgICAgICAgICAgICAgewogICAgICAg
+ICAgICAgICAgICAgICAgICBQYWNrYWdlICgweDAyKQogICAgICAgICAgICAgICAgICAgICAgICB7
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAicmVnIiwgCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAweDA2CiAgICAgICAgICAgICAgICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAg
+ICAgICAgICAgUGFja2FnZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgImFkaSxtb2RlIiwgCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAweDAyCiAgICAgICAgICAgICAgICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAgICAg
+ICAgICAgUGFja2FnZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgImFkaSxvZmYtc3RhdGUiLCAKICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIFplcm8KICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAg
+IH0KICAgICAgICAgICAgICAgIH0pCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIERldmljZSAo
+SU9QNykKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgTmFtZSAoX0FEUiwgMHgwNykgIC8v
+IF9BRFI6IEFkZHJlc3MKICAgICAgICAgICAgICAgIE5hbWUgKF9EU0QsIFBhY2thZ2UgKDB4MDIp
+ICAvLyBfRFNEOiBEZXZpY2UtU3BlY2lmaWMgRGF0YQogICAgICAgICAgICAgICAgewogICAgICAg
+ICAgICAgICAgICAgIFRvVVVJRCAoImRhZmZkODE0LTZlYmEtNGQ4Yy04YTkxLWJjOWJiZjRhYTMw
+MSIpIC8qIERldmljZSBQcm9wZXJ0aWVzIGZvciBfRFNEICovLCAKICAgICAgICAgICAgICAgICAg
+ICBQYWNrYWdlICgweDAzKQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAg
+ICAgICAgUGFja2FnZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgInJlZyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgMHgw
+NwogICAgICAgICAgICAgICAgICAgICAgICB9LCAKCiAgICAgICAgICAgICAgICAgICAgICAgIFBh
+Y2thZ2UgKDB4MDIpCiAgICAgICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICJhZGksbW9kZSIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgT25lCiAg
+ICAgICAgICAgICAgICAgICAgICAgIH0sIAoKICAgICAgICAgICAgICAgICAgICAgICAgUGFja2Fn
+ZSAoMHgwMikKICAgICAgICAgICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgImFkaSxvZmYtc3RhdGUiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIFplcm8K
+ICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAg
+ICAgICAgIH0pCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIE1ldGhvZCAoX0NSUywgMCwgTm90
+U2VyaWFsaXplZCkgIC8vIF9DUlM6IEN1cnJlbnQgUmVzb3VyY2UgU2V0dGluZ3MKICAgICAgICAg
+ICAgewogICAgICAgICAgICAgICAgTmFtZSAoUkJVRiwgUmVzb3VyY2VUZW1wbGF0ZSAoKQogICAg
+ICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIEkyY1NlcmlhbEJ1c1YyICgweDAwMTAs
+IENvbnRyb2xsZXJJbml0aWF0ZWQsIDB4MDAwNjFBODAsCiAgICAgICAgICAgICAgICAgICAgICAg
+IEFkZHJlc3NpbmdNb2RlN0JpdCwgIlxcX1NCLlBDSTAuRDAyMiIsCiAgICAgICAgICAgICAgICAg
+ICAgICAgIDB4MDAsIFJlc291cmNlQ29uc3VtZXIsICwgRXhjbHVzaXZlLAogICAgICAgICAgICAg
+ICAgICAgICAgICApCiAgICAgICAgICAgICAgICB9KQogICAgICAgICAgICAgICAgUmV0dXJuIChS
+QlVGKSAvKiBcX1NCXy5JMkMxLkkyQ0cuX0NSUy5SQlVGICovCiAgICAgICAgICAgIH0KICAgICAg
+ICB9CiAgICB9Cg==
+--00000000000034fd5c05ae63d357--

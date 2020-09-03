@@ -2,100 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8D325C999
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 21:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F74625C99D
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Sep 2020 21:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728358AbgICTii (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Sep 2020 15:38:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55608 "EHLO
+        id S1728312AbgICTmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Sep 2020 15:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbgICTii (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 15:38:38 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7998C061244;
-        Thu,  3 Sep 2020 12:38:36 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id e33so2951888pgm.0;
-        Thu, 03 Sep 2020 12:38:36 -0700 (PDT)
+        with ESMTP id S1727065AbgICTmK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Sep 2020 15:42:10 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3908C061244;
+        Thu,  3 Sep 2020 12:42:08 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id e33so2958681pgm.0;
+        Thu, 03 Sep 2020 12:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1+PRg9GJGmbl7YnYKQJ3ieRwri+lWyr1AoHJtFqqzfU=;
-        b=XDTyrwxiwUj7AHZETwvXFoo35HWRbPoXlwP/FbsBaf6Al2eQNbsHAnW+0iPGFKbmaq
-         nejcoLn/Zvm4JkTzGT9ua9vZRd/ftmciHfydFU1GK9huJ3nv6DaGNijFsDrmexhGLvAu
-         emVMGNOzKzXTVtFthAPtR4nRpYMqXH/ST309n91/2L1MKENf019On8PhBFSOrtLf/gCX
-         ffLEEbt4SE1uIz0SujJGf0pY5KCDVnTil+FEmAIHFUteTw07DRYBOAAHkK3gm+Oj3woC
-         eoz0EEEWXe9xcZkHgoE3bt51DEt6DCzeQEKYCEUBqjuV8ShMdJqaJE+yEyooSLLBwnO3
-         e2dQ==
+        bh=64wdOe+m4X3LlgmhQ/Anjpyk3DyuY0i8xhdssKAxr9o=;
+        b=ksSWkAtGUD9gN1y6I26GOinjjVHtHTzjudrp5b0/y3/MzYYTqSNhx5Q0lxITHCSsTw
+         Peed0e8+DjVU/M5rPRHXyqe+Wipy1nawo/ItJK1dMG+KBXm8fRRbgyKRvdTL0Rp0AB4g
+         0s/+Y34KIyzk4g0XppagwedewNf44kYN2DHRYqqg1uxI/8oK17NL4zOQmRrf8aNNT6hn
+         gxN8dkuiRFmbtOBwE0sMZPrtboHadYIs7UdTR61gQCxts0GMjOnlYqhE0C/IFxFWg8yy
+         mEvUfShepn0iYGzTxRVjkdyxyoJgZO6Y0H8Cp/Ez0hDylcxikHpkX3KKwm2zJnRGJuY3
+         Zn2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1+PRg9GJGmbl7YnYKQJ3ieRwri+lWyr1AoHJtFqqzfU=;
-        b=cKygzNboLj+n/YHMY1sb/jMD+W8XQS1M5VjcUyAE7P69VUozCeYSZu2h+JegBeiI6E
-         Bjz7HJ4I6qlFB1GjyoPa56Wq0sqeSWWcQSRk0lHqwwu/yTr4Z7Zc7+uD5ZLNOLUGBLs2
-         42qWP2joF0CsQBwjC4TFUYOmGhp0STyOzrKNGgyDeu7SurXs4bqHmNzRdP151fP/bbQs
-         V4J1Mi0quNUUJjDHe9aY6CvopHFTzKJ/iCF2hpx8dKohOH/jtd+TVdTttJx3WeR2JyyR
-         4qXVyMvgeq68e8nar1mG15DwsugBcLXhv8IPu2087R8kfS0Y90l5e4qBsDJsN/zP27uf
-         6O7w==
-X-Gm-Message-State: AOAM531DTBfD1JkLWeYuWhY0AnVNqZKJ9Gm+dQ0O3G5XNYV/8P2VcGAE
-        fh5rtks4UYXc4SYg485eLmq58CS/Q7sOXM01NkM=
-X-Google-Smtp-Source: ABdhPJyVxxnHI3bjYTsaxgfjK/z4EYEYmnWMZOirCUvB2jFfpE6i5/Rp3uLLOtnEo459xCBB5O5oXfrTaEL7cNefMGY=
-X-Received: by 2002:a17:902:b289:: with SMTP id u9mr5445613plr.226.1599161915506;
- Thu, 03 Sep 2020 12:38:35 -0700 (PDT)
+        bh=64wdOe+m4X3LlgmhQ/Anjpyk3DyuY0i8xhdssKAxr9o=;
+        b=stTQXVEgSbp3BndVZ+tUnlzESd8DFKTnrneDy/2e07Ba2NXdbXJ8JchfFeICWV+DWn
+         9NsPZwIMT/R1ifudMdKZFawgUv95FYKIrXhwGCwOu1FmEy97pRBQnWZH5Bn7tLmArDBz
+         TTZdRf1GW5qLXbwyHx940MeUMk0mPZB2xYBnpDk399cE0vPS+7rxKf4mPUS8F4pv56C9
+         mZoaxJkTCNT+QNDAANfeuUHeSaNQ97ZZmbElMhCOZ5U5aDIxqoiTW/kC8YU3eovlJGrG
+         hA/sixEgc+BqOsPPppJPTzlltWzcVBXSazHrnyLLGULp9jAVVQdJePq82yCaAEztvTRI
+         g4HA==
+X-Gm-Message-State: AOAM532/SHM9debiFUHEFKLYnrmGotH3tslYAA8LcJfZQaNqtwpUQbXz
+        HqjnAayvBcpY2dbtF8WgdwT/QNN2tegUUAyqIUc/i3+g5x7hBA==
+X-Google-Smtp-Source: ABdhPJwNokACHFpiiIHxqrP8z9dSRKkN3pBN5Alt7WQLCuezH78+g6OAHrqAaD2MTv2upvQoRQ7wt17tPMdaKLfz2mU=
+X-Received: by 2002:a62:6083:0:b029:13c:1611:66c4 with SMTP id
+ u125-20020a6260830000b029013c161166c4mr3646465pfb.15.1599162128118; Thu, 03
+ Sep 2020 12:42:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200903132109.1914011-1-dmitry.baryshkov@linaro.org> <20200903132109.1914011-5-dmitry.baryshkov@linaro.org>
-In-Reply-To: <20200903132109.1914011-5-dmitry.baryshkov@linaro.org>
+References: <20200903181926.5606-1-krzk@kernel.org>
+In-Reply-To: <20200903181926.5606-1-krzk@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 3 Sep 2020 22:38:18 +0300
-Message-ID: <CAHp75Vf0yz1U3W03YEths5Eay7dOY10JGC6QqRkekZQx3MdRtg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] iio: adc: qcom-vadc-common: use fixp_linear_interpolate
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
+Date:   Thu, 3 Sep 2020 22:41:51 +0300
+Message-ID: <CAHp75VeXTN5gTv2Pj33N9EB9i2U7R+uvgZ-Ad4_SMgKkrB0F3g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] MAINTAINERS: Consolidate Analog Devices IIO
+ entries and remove Beniamin Bia
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 3, 2020 at 5:33 PM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
+On Thu, Sep 3, 2020 at 9:19 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> Use new function fixp_linear_interpolate() instead of hand-coding the
-> linar interpolation.
+> Emails to Beniamin Bia bounce with no such address so remove him from
+> maintainers.  After this removal, many entries for Analog Devices Inc
+> IIO drivers look exactly the same so consolidate them.
+>
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: linux-iio <linux-iio@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 ...
 
->                 /* result is between search_index and search_index-1 */
->                 /* interpolate linearly */
-> -               *output = (((s32)((pts[i].y - pts[i - 1].y) *
-> -                       (input - pts[i - 1].x)) /
-> -                       (pts[i].x - pts[i - 1].x)) +
-> -                       pts[i - 1].y);
-> +               *output = fixp_linear_interpolate(pts[i - 1].x, pts[i - 1].y,
-> +                                                 pts[i].x, pts[i].y,
-> +                                                 input);
+>  ANALOG DEVICES INC IIO DRIVERS
+>  M:     Lars-Peter Clausen <lars@metafoo.de>
+>  M:     Michael Hennerich <Michael.Hennerich@analog.com>
+> @@ -1152,8 +1101,11 @@ W:       http://wiki.analog.com/
+>  W:     http://ez.analog.com/community/linux-device-drivers
+>  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-ad9523
+>  F:     Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4350
+> +F:     Documentation/devicetree/bindings/iio/*/adi,*
+> +F:     Documentation/devicetree/bindings/iio/dac/ad5758.txt
+>  F:     drivers/iio/*/ad*
+>  F:     drivers/iio/adc/ltc249*
+> +F:     drivers/iio/amplifiers/hmc425a.c
+>  F:     drivers/staging/iio/*/ad*
+>  X:     drivers/iio/*/adjd*
 
-I'm wondering if it's related to linear_range.h API
-https://elixir.bootlin.com/linux/latest/source/include/linux/linear_range.h
+>  STAGING - SEPS525 LCD CONTROLLER DRIVERS
+>  M:     Michael Hennerich <michael.hennerich@analog.com>
+> -M:     Beniamin Bia <beniamin.bia@analog.com>
+>  L:     linux-fbdev@vger.kernel.org
+>  S:     Supported
+>  F:     Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
 
-
->         }
->
->         return 0;
-
+It's not related to this series, but I'm wondering why the above
+binding is attached to a staging driver...
 
 -- 
 With Best Regards,

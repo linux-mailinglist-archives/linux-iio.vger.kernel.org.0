@@ -2,140 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0998425D558
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Sep 2020 11:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F52625D71D
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Sep 2020 13:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729731AbgIDJoE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Sep 2020 05:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44386 "EHLO
+        id S1730043AbgIDLYE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Sep 2020 07:24:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728263AbgIDJoD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Sep 2020 05:44:03 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A23CC061244
-        for <linux-iio@vger.kernel.org>; Fri,  4 Sep 2020 02:44:00 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id l63so5469458edl.9
-        for <linux-iio@vger.kernel.org>; Fri, 04 Sep 2020 02:44:00 -0700 (PDT)
+        with ESMTP id S1730054AbgIDLXp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Sep 2020 07:23:45 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF90C061246
+        for <linux-iio@vger.kernel.org>; Fri,  4 Sep 2020 04:12:33 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id j11so991021plk.9
+        for <linux-iio@vger.kernel.org>; Fri, 04 Sep 2020 04:12:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=srTYjN/v0NsAtAehftCPIDDx+jGUu2qvxTBDneqVrP0=;
-        b=CjScPqz2SBolWAJAapTrECQm2fd8qhCZhSB8POHbr4xspsj1co45CPYyU799HsiOWr
-         k8OVbIrHFOkuFu68GJRBzOzUTErCwOHvNTmXBjcI3SeEtdGM9mTHzCC8Mx6jmbIf5wRs
-         kD9IxCNTkFcI8QUyTcjC3x6djOZuVcDhOMGiWwg4/JcEkrDOo9/uYX+fR2HN9SWe1v2K
-         b7ZptaiXzsbH/HOne5/eQA6Xoa3/7vlF8CYKF2uoTPxt6PgkAcnL5BUsplvey9hf6Wdx
-         eUwtz7QIGPezpMSfHGtxLflFigVe37SU3P6Erj30vc3A8/jTd+TISaDs27V8ZzF8JOl/
-         bpag==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=+wP+hTfHw3tFWF69FWuDIBtcVlOWelrnovHW8JL/Z34=;
+        b=EFpav4wUW88JS+tQ/U0d9ZsC0A4R0fvGWc05kBkPJdEehiMUnpD6XarbOJkUr6Mbhi
+         A8yngsVXQnUILWJX0qID9Ez4BEoyXPQX/5IxHzvhdbbbWe6/sg1+4jx6jkPW86zXhMuh
+         XcQc/JDhaDnMO8UftkA7ImE5+2Iud+Q5wPJog6XHSKxMglZvDjhoSElUpl+RLXkElY6W
+         abs/79kUVSlVY2YiYsa8qioTtpkulT0AHQcUbWd0O39mhAS+aclTbeATSBGiVenPDUNp
+         +IDKyS9HSMSPrcT7leE7NhJZE/QXL0xYZ3z+fNjHIRjocTlwoDs/XXxFVDPFUIUEOH2x
+         1GBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=srTYjN/v0NsAtAehftCPIDDx+jGUu2qvxTBDneqVrP0=;
-        b=U8SoyfLu4nAvZkw23Dl0NY+REZp06WTnAHdwUTcaRyTNlPIGcTWPv19UNCi6rRU4N7
-         lmJus7uMVRpBhlqw8DlaKjAHyb3oQU9w3SOvkk2JL/tB7qwa3+tcgyBevHTXElyVb5wh
-         PPsUnVvqMTL6JUOF1x1ZvcqPXsODUr8dsP3LJxaJq3+lKiAufJYPGqbFXR8C5VEtRDnR
-         bjoZs2MP6udwFJWoYB8E+ZYpVuvJZmuCro2+gWOHuT06ns80JrP06Wboj+kDqHQ60Egb
-         dYEt82TmhtqZqsG9oxkkLgSorSJ8UR4SCKa2htNnKrk5AN9dXaq9dFJ2qINGSIbNlkwj
-         NJuw==
-X-Gm-Message-State: AOAM532TuGtgWMC7fqeq2P2GpoXj0d0PrK207Y7y43NUGkxNxEdf73Jp
-        8gvskzaOQOeZn/cVL9G4XOja3skmozvmdyqr
-X-Google-Smtp-Source: ABdhPJwDRTL8x5tU1b5+XGDP+K0/abuFNXdupe+5YsGSU3BPTXpP0SeUR+cUT0clCxwdtF7iIdkzdA==
-X-Received: by 2002:a05:6402:b64:: with SMTP id cb4mr7550742edb.25.1599212639134;
-        Fri, 04 Sep 2020 02:43:59 -0700 (PDT)
-Received: from cmo-t495.tess.elex.be ([194.150.35.21])
-        by smtp.gmail.com with ESMTPSA id u26sm5664786ejj.11.2020.09.04.02.43.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2020 02:43:58 -0700 (PDT)
-From:   Crt Mori <cmo@melexis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Crt Mori <cmo@melexis.com>
-Subject: [PATCH] iio: temperature: mlx90632: Interface to change object  ambient temperature
-Date:   Fri,  4 Sep 2020 11:43:47 +0200
-Message-Id: <20200904094347.188834-1-cmo@melexis.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=+wP+hTfHw3tFWF69FWuDIBtcVlOWelrnovHW8JL/Z34=;
+        b=axKLgMWEREH20gx1KeBUHx60F0PB8q8hsJr27gv2VQlEzJP+t3CU2KV31P263hdOKL
+         UuxiNL+qDfHpb3hlMaE/JoH8orb/DO/zjY7rr6OYcPy0VrP5OMpzKZjTsf3wgLep3hP6
+         5YCK4Ib5vJChGCNque+wGIZ2ccr6L5eyjvgnU5+Qq0MEsLRq83DIuLsspGm5cmT+BH42
+         8BsAdBBZggwM00N1tKbqZ3N/mHmZXXHqAqF5OG5N4en8UtXyhLVKWqcvOvbB6zRfOro6
+         9eNb6zJ96dM1ozcbEkRmBckl0Nwy8Tp+aF5+zteGC0P8L/6V2zi6KsvFYNnqCHH1L+Cg
+         RAtQ==
+X-Gm-Message-State: AOAM533o+gvopzyPUSe05wdlanj+zMTD+jHOcz5QGs5S4v6FB8OQV5ck
+        etHeinDl56Yk/+wEartagfcO
+X-Google-Smtp-Source: ABdhPJxzQziJffgqrKM2Bdo+9xFsr0/Mrl5dmbLD/H9MMnY6rkl08uJ6vsvMXWeeQzFvVFEhyaeO1Q==
+X-Received: by 2002:a17:90b:693:: with SMTP id m19mr7452832pjz.111.1599217953011;
+        Fri, 04 Sep 2020 04:12:33 -0700 (PDT)
+Received: from mani ([103.59.133.81])
+        by smtp.gmail.com with ESMTPSA id r144sm6874730pfc.63.2020.09.04.04.12.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 04 Sep 2020 04:12:32 -0700 (PDT)
+Date:   Fri, 4 Sep 2020 16:42:23 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 6/9] iio: adc: qcom-spmi-adc5: use
+ of_device_get_match_data
+Message-ID: <20200904111223.GB4056@mani>
+References: <20200903132109.1914011-1-dmitry.baryshkov@linaro.org>
+ <20200903132109.1914011-7-dmitry.baryshkov@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200903132109.1914011-7-dmitry.baryshkov@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since object temperature might be different than the sensor temperature
-the infra red sensors should provide an interface to inject ambient
-temperature. This was in past done via write to ambient temperature
-interface (in_temp_ambient_raw), but I think most people did not know
-about it. This solution introduces a new iio type of the CALIBAMBIENT
-which is hopefully more descriptive and more explicit about the purpose
-and capabilities of the sensors.
+On 0903, Dmitry Baryshkov wrote:
+> Use of_device_get_match_data() instead of hand-coding it manually.
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 16 +++++-----------
+>  1 file changed, 5 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index c2da8f068b87..0ac0b81bab7d 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/math64.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> +#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/regmap.h>
+>  #include <linux/slab.h>
+> @@ -807,8 +808,6 @@ static int adc5_get_dt_data(struct adc5_chip *adc, struct device_node *node)
+>  	struct adc5_channel_prop prop, *chan_props;
+>  	struct device_node *child;
+>  	unsigned int index = 0;
+> -	const struct of_device_id *id;
+> -	const struct adc5_data *data;
+>  	int ret;
+>  
+>  	adc->nchannels = of_get_available_child_count(node);
+> @@ -827,24 +826,19 @@ static int adc5_get_dt_data(struct adc5_chip *adc, struct device_node *node)
+>  
+>  	chan_props = adc->chan_props;
+>  	iio_chan = adc->iio_chans;
+> -	id = of_match_node(adc5_match_table, node);
+> -	if (id)
+> -		data = id->data;
+> -	else
+> -		data = &adc5_data_pmic;
+> -	adc->data = data;
+> +	adc->data = of_device_get_match_data(adc->dev);
 
-Signed-off-by: Crt Mori <cmo@melexis.com>
----
- drivers/iio/industrialio-core.c    |  2 ++
- drivers/iio/temperature/mlx90632.c | 10 ++++++++--
- include/linux/iio/types.h          |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
+I think you're missing the else condition to fallback to default dev data incase
+the device is not part of of_device_id.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 606d5e61c575..754597f087d1 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -165,6 +165,8 @@ static const char * const iio_chan_info_postfix[] = {
- 	[IIO_CHAN_INFO_CALIBEMISSIVITY] = "calibemissivity",
- 	[IIO_CHAN_INFO_OVERSAMPLING_RATIO] = "oversampling_ratio",
- 	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
-+	[IIO_CHAN_INFO_CALIBAMBIENT] = "calibambient",
-+
- };
- 
- #if defined(CONFIG_DEBUG_FS)
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index 94bca2b2866a..67bf9f000122 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -761,7 +761,9 @@ static int mlx90632_read_raw(struct iio_dev *indio_dev,
- 			*val2 = data->emissivity * 1000;
- 		}
- 		return IIO_VAL_INT_PLUS_MICRO;
--
-+	case IIO_CHAN_INFO_CALIBAMBIENT:
-+		*val = data->object_ambient_temperature;
-+		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -781,6 +783,9 @@ static int mlx90632_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		data->emissivity = val * 1000 + val2 / 1000;
- 		return 0;
-+	case IIO_CHAN_INFO_CALIBAMBIENT:
-+		data->object_ambient_temperature = val;
-+		return 0;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -798,7 +803,8 @@ static const struct iio_chan_spec mlx90632_channels[] = {
- 		.modified = 1,
- 		.channel2 = IIO_MOD_TEMP_OBJECT,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
--			BIT(IIO_CHAN_INFO_CALIBEMISSIVITY),
-+			BIT(IIO_CHAN_INFO_CALIBEMISSIVITY) |
-+			BIT(IIO_CHAN_INFO_CALIBAMBIENT),
- 	},
- };
- 
-diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-index e6fd3645963c..1e3ed6f55bca 100644
---- a/include/linux/iio/types.h
-+++ b/include/linux/iio/types.h
-@@ -59,6 +59,7 @@ enum iio_chan_info_enum {
- 	IIO_CHAN_INFO_CALIBEMISSIVITY,
- 	IIO_CHAN_INFO_OVERSAMPLING_RATIO,
- 	IIO_CHAN_INFO_THERMOCOUPLE_TYPE,
-+	IIO_CHAN_INFO_CALIBAMBIENT,
- };
- 
- #endif /* _IIO_TYPES_H_ */
--- 
-2.25.1
+Thanks,
+Mani
 
+>  
+>  	for_each_available_child_of_node(node, child) {
+> -		ret = adc5_get_dt_channel_data(adc, &prop, child, data);
+> +		ret = adc5_get_dt_channel_data(adc, &prop, child, adc->data);
+>  		if (ret) {
+>  			of_node_put(child);
+>  			return ret;
+>  		}
+>  
+>  		prop.scale_fn_type =
+> -			data->adc_chans[prop.channel].scale_fn_type;
+> +			adc->data->adc_chans[prop.channel].scale_fn_type;
+>  		*chan_props = prop;
+> -		adc_chan = &data->adc_chans[prop.channel];
+> +		adc_chan = &adc->data->adc_chans[prop.channel];
+>  
+>  		iio_chan->channel = prop.channel;
+>  		iio_chan->datasheet_name = prop.datasheet_name;
+> -- 
+> 2.28.0
+> 

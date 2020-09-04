@@ -2,48 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DA7125D28A
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Sep 2020 09:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A14325D2A9
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Sep 2020 09:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726114AbgIDHkw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Sep 2020 03:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53492 "EHLO
+        id S1726597AbgIDHsk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Sep 2020 03:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbgIDHkv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Sep 2020 03:40:51 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D8BC061244;
-        Fri,  4 Sep 2020 00:40:49 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id c142so4145624pfb.7;
-        Fri, 04 Sep 2020 00:40:49 -0700 (PDT)
+        with ESMTP id S1726425AbgIDHsi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Sep 2020 03:48:38 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 435C2C061244;
+        Fri,  4 Sep 2020 00:48:38 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id s10so785315plp.1;
+        Fri, 04 Sep 2020 00:48:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=fuEcm2fNtFp25J4z2PSD0ryqyk/BTceR0Y1ATheU+O4=;
-        b=cb7cnJo7gCODLFZxZudO4Ir++bBzd2wWe/dGzDWc4qdOTUlT7RdV5WwHPdV9Z/oH3m
-         qmEuzyivdjlLGXQFqzRTGQ0MfYWOg5CmFV3sQAhmBvtN/99wy33STueAcXOpHsV+Fskw
-         c/ZNI7WN4DDt53qDvpKL/FDU1DsBp2B1nMDGnntxulzpjSJVy7XHvQVO/aosWWJtExsT
-         fB+x38Y4X+S3iiKYWLmTd5Fi7zgaaVH+lwnNH+Lgq5qPXR05bU/orbMW1UussOqn2KZ3
-         3TOKLjahIAKg8WuDAaiCCENXFxUId7YffE/4diA7fHrqprJm7qVBjtebMk+032+Rhm9X
-         ywpg==
+        bh=uPFv48QeEGFXDPsBocwFn7rcdjGA5yIBGtzHopz3DnM=;
+        b=l03o4IYtYJ29LkCNQJ3kQ1p3nm/xtKz4x1P+3ClwN9ZpRxCfsdKxpx12Bj5Yxs67jD
+         MEyw9sNHPXcXLU27xFlXcJo+v76XoJoDPu4XA0OtCmNJHmgxZ201lclTcv6uufxW+Mkl
+         sH6YD2DMPXGYqWcttrdvgWeUOa9y2rGZQuevAKVeIe6U2/d9f+o3IsLmIiZEHXjZTSr8
+         F3ROUeR1w0JeU1ukOH1okPEBTYegn7Eoz8CTtCu2unMyaHz1F16VbCyMN4igMKRI8Xtd
+         TIHjJ1xEt+D0UTLf5aatLxWVqX5YeTyN/Qr+9uH5GtoTzwkkssBZKEqzacsqAFEdn5kf
+         Ry0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fuEcm2fNtFp25J4z2PSD0ryqyk/BTceR0Y1ATheU+O4=;
-        b=PHEDDyI+5cp78KSFD5X/t6pXt4x7grlS4UpDsCPY/OAXdmHXCJJB/7CEHO1rQhWOVi
-         ppAsS6ZQVOnKoDdqUs26o/PjrVWMnSv5V5b+Nhdup7ZfXrRcNI2hK6rS/pWW+YCmK2JH
-         GXgbVTR6ytmjMLp2lpAZUZhCa0ySBcT2qGRI4JjbK1cSrVmltz6G0I9iA0WwF8STQRH9
-         CYMM/k78ZMTiKO8u064TV2ECD3AX6DKCNN+FTdtg+5gFwhbhD6hBF+eEskU5JHFWNakP
-         piOP/EEgO77Va/j6rr6/6ABPA4sgdvVYj2xyvcHUixwworux7pRm1u2L1SawijtKA4WX
-         4Khw==
-X-Gm-Message-State: AOAM533tuWPf2lqmnIsoqtYU06OvAk72Cg/KGCTE57n5O7s7a/SsDwQ2
-        1FqKd7VAu3+JTUCh3SWbSeImIQxB02uz4Sxkg6g=
-X-Google-Smtp-Source: ABdhPJwLnJ1coRMjvTotgtPiPjxvQe1lbrOc1fgsu4mKUB9JBbXLXDEQ8rBPgkwG49yHFofPyaB749IKRnqMZc2VWOk=
-X-Received: by 2002:a62:6083:0:b029:13c:1611:66c4 with SMTP id
- u125-20020a6260830000b029013c161166c4mr5785434pfb.15.1599205248985; Fri, 04
- Sep 2020 00:40:48 -0700 (PDT)
+        bh=uPFv48QeEGFXDPsBocwFn7rcdjGA5yIBGtzHopz3DnM=;
+        b=TgaOMVDGDUK25tx5EiFwDNk/z2+Fv9RchZC4sIQRBmnD64OGbAiGWEII6ewh7H5Ry8
+         giMtgSApL+hGufhGF6gYlBgOVS3A+BC4q/vzUhpa9AoTYMIm/uT8myo68bAdBB3W/ME+
+         3sF7NiFs7sk3jML5HTZQMwjtUfHaDLLLKFaW6V0tzwu2iZl2fTjzppuSXP1q2oZZOrzR
+         l0+R9WQsA4wfGfOprgDSOp6XTGkNK1vmWN8Z9Ig1dbTe2LR4/WNVH0ZClHjG2cpRjcLh
+         cQBii57wh3Hw+WEC+apXmCtqQZqEspqMtYexHkwFm9gcncpdiVaG/Cra56KbZZhmkbvW
+         7GfA==
+X-Gm-Message-State: AOAM532/uwMWAcWFWq5qOY00cnstN3WG4vciLlT7NI03QhC/j5FfTlE7
+        ilJhKWVKGLaygRCJnDeRd8X/7BH4+hZ9KmZ5d7gLnutHRn3xNg==
+X-Google-Smtp-Source: ABdhPJwEf7xbA4WdhfuxIlqbQ9P0D5Mk3fnFUrNy/wdfGdmYLzFbLh6ELk+vyuMBVN4a20XBxIoFHbmP2m5g40r9YzU=
+X-Received: by 2002:a17:90a:2ac6:: with SMTP id i6mr4218745pjg.181.1599205717733;
+ Fri, 04 Sep 2020 00:48:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200824054347.3805-1-william.sung@advantech.com.tw>
  <CAHp75VeZLPR02xB2XRzec5mSBvq93XYZg56OOODxpFTPva6cXw@mail.gmail.com>
@@ -51,16 +50,15 @@ References: <20200824054347.3805-1-william.sung@advantech.com.tw>
  <CAHp75Vcup9LUk0fgjW9T2FK-K5GD3=3ycPHi74Oykc8rq_tJqA@mail.gmail.com>
  <CAHp75VeyFTSc3AY07rFnjvXOcHt79tpRHzs_GZGALQcdqoANjA@mail.gmail.com>
  <CAFv23Qn4sqTZ1Rbr07sw76hk-769y6ra=mHi1x3L962GyorvXQ@mail.gmail.com>
- <CAHp75Vc6fgPmnPOYYvUi7EO7ovq2tLk_kBqqk-=wrr0V3nbcVw@mail.gmail.com>
- <CAHp75VcJp4zCxOUBgYTypv_R47vLAuAF2ZStLpA9mjFjbzWcxw@mail.gmail.com> <CAFv23Qnij-2ycXNqisQDbo9ix41ed1HPRJrOdRoMM2bjU407nw@mail.gmail.com>
-In-Reply-To: <CAFv23Qnij-2ycXNqisQDbo9ix41ed1HPRJrOdRoMM2bjU407nw@mail.gmail.com>
+ <CAHp75Vc6fgPmnPOYYvUi7EO7ovq2tLk_kBqqk-=wrr0V3nbcVw@mail.gmail.com> <b1581dc61d584cffa2588f72b888ffa0@taipei09.ADVANTECH.CORP>
+In-Reply-To: <b1581dc61d584cffa2588f72b888ffa0@taipei09.ADVANTECH.CORP>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 4 Sep 2020 10:40:31 +0300
-Message-ID: <CAHp75Vcp5ERvTMDob3gUPqi+WPUz_BKoytO5faSbtNeX3LWy_Q@mail.gmail.com>
+Date:   Fri, 4 Sep 2020 10:48:20 +0300
+Message-ID: <CAHp75Vfe525tpMuhH4Tr4U9gSMo3AzD=WWP30h-ZE6yEkdh4ZQ@mail.gmail.com>
 Subject: Re: [PATCH] iio: dac: ad5593r: Dynamically set AD5593R channel modes
-To:     AceLan Kao <acelan.kao@canonical.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        William Sung <william.sung@advantech.com.tw>,
+To:     "William.Sung" <William.Sung@advantech.com.tw>
+Cc:     AceLan Kao <acelan.kao@canonical.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -68,7 +66,7 @@ Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Campion Kang <Campion.Kang@advantech.com.tw>
+        "Campion.Kang" <Campion.Kang@advantech.com.tw>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
@@ -76,131 +74,155 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Sep 4, 2020 at 5:25 AM AceLan Kao <acelan.kao@canonical.com> wrote:
-> Here is the updated ads5593r.asl, but I still got some troubles when
-> using configfs.
-> The modification I made
-> 1. add DefinitionBlock() and External()
-> 2. align _SB.I2C1
-> 3. set _CRS serialized
+On Fri, Sep 4, 2020 at 5:34 AM William.Sung
+<William.Sung@advantech.com.tw> wrote:
+> > -----Original Message-----
+> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Sent: Thursday, September 3, 2020 6:42 PM
+> > On Thu, Sep 3, 2020 at 10:37 AM AceLan Kao <acelan.kao@canonical.com>
+> > wrote:
+
+...
+
+> > > Here is the ADS5593 asl code, but I have no idea how to re-use it
+> > > after it's been modified, the only way I know is to override the ACPI
+> > > tables via initrd[1].
+> >
+> > There is also Config FS approach (like overlays) to do it at runtime.
+> > That what we are using in Yocto build for Intel Edison.
+> >
+> > > Could you share some examples in real cases that I can follow?
+> >
+> > Yes, like I mentioned StackOverflow search results (maybe G will give b=
+etter).
+> > But let's see what you have in your ASL code first.
+> >
+> > On the first glance I didn't see any issues with it, but on second look=
+ here is one.
+> > Look into this [5] example.
+> > If you noticed it uses the same path in Scope and in the reference in
+> > I2cSerialBus() while in your ASL they are different.
+> >
+> > Do you have issues with loading it (as is and after above addressed)?
+> >
 >
-> The issues I got are,
-> 1. The ADS5593 is defined in DSDT table, but I can't compile the asl
-> code when define it as DSDT table
+> Maybe I can explain it.
+> In the beginning, I set I2C1 to both scope and reference in I2cSerialBus =
+but it
+> doesn't work. Then I check the probe progress of the i2c controller and f=
+ound that
+> the fwnode of i2c controller has replaced by \\_SB.PCI0.D022. After modif=
+ying the reference
+> path to it, the ad5593r driver works.
 
-Is it part of DSDT? I think you are trying to make it as separate
-table. According to ACPI specification you may have only one DSDT. It
-means that additional tables should have SSDT signature. This also
-explained in the documentation [7] regarding to ACPI SSDT overlays.
+Okay, so do I understand this right that you now have working case?
 
-[7]: https://www.kernel.org/doc/html/latest/admin-guide/acpi/ssdt-overlays.=
-html
+About the reference node. Can I see DSDT (you may send it privately if
+you consider it not for others)?
+And can you elaborate a bit about I=C2=B2C host controllers on your
+platform and how they got enumerated (ACPI / PCI)?
 
+As I explained AceLan in previous reply the ADS5593 should be a child
+node of the host controller node in DSDT.
 
-> $ iasl ads5593r.asl
+> I also did the different tests by switching the path of scope and referen=
+ce between
+> I2C1 and PCI0.D022, and the result seems like only the reference path of =
+I2cSerialBus
+> would impact to the ad5593r.
+
+Because we have a workaround in the kernel to find all I2cSerialBus()
+resources over the ACPI namespace. It *does not* mean you can leave it
+like this. You basically need to understand device hierarchy in your
+DSDT. It seems that actual controller is defined as D022 under PCI0 in
+SB (System Bus) scope.
+
+> I will fix it on the same path for consistency and also preventing to hav=
+e doubts about these.
 >
-> Intel ACPI Component Architecture
-> ASL+ Optimizing Compiler/Disassembler version 20190509
-> Copyright (c) 2000 - 2019 Intel Corporation
->
-> ads5593r.asl      5:     Scope (_SB.I2C1)
-> Error    6148 -                       ^ Illegal open scope on external
-> object from within DSDT
+> About the second _ADR value wrong, from now on the second channel can be =
+set to the proper
+> mode. But it still needs to be fixed since it was a typo wrong.
 
-Again, look at the examples in [4]. You need to attach your device to
-the controller and refer to it from I2cSerialBus() resource.
+Basically the ACPI way is to use _ADR, but DT uses 'reg' property for
+that. I hope at some point we will get some unification between those
+two in Linux kernel to have common API.
 
 
-> ASL Input:     ads5593r.asl -    7917 bytes     30 keywords    257 source=
- lines
->
-> Compilation failed. 1 Errors, 0 Warnings, 0 Remarks
-> No AML files were generated due to compiler error(s)
->
-> 2. I got below errors in dmesg if I set it as SSDT
-> [  410.220993] ACPI: Host-directed Dynamic ACPI Table Load:
-> [  410.221013] ACPI: SSDT 0xFFFF89A4ADDE7C00 00035D (v01
-> ADS5593R 00000001 INTL 20190509)
-> [  410.221106] ACPI BIOS Error (bug): Failure creating named object
-> [\_SB.I2C1.I2CG], AE_ALREADY_EXISTS (20190816/dswload2-326)
-> [  410.221324] ACPI Error: AE_ALREADY_EXISTS, During name
-> lookup/catalog (20190816/psobject-220)
-> [  410.221468] ACPI: Skipping parse of AML opcode: Device (0x5B82)
->
-> Do you have any suggestions?
-
-Yes, you need to find proper device node in the DSDT which represents
-the I=C2=B2C controller. The DAC device should be subnode of it.
-
-> We may have a chance to convince BIOS to move ADS5593 to the SSDT
-> table, do you think it's a good idea?
-
-I'm not sure I understand how BIOS is involved here. If the ADS5593 is
-a part of platform and you can change DSDT in the BIOS, just make it
-there. If it's an attachable component (like for your development
-cycle) SSDT is best approach. Note that amount of SSDT in the system
-is limited.
-
-> BTW, the driver set the channels mode while probing, I'm not sure if
-> configfs will make the driver probe again when new table is loaded
-> If we can't use configfs, is there any other way we could try?
-
-All possible ways are the following (depending on your needs):
- - BIOS provides DSDT with the component reference included
- - Bootloader provides, rewrites or updates tables
- - OS via: a) initramfs, b) ConfigFS
- - EFI keeps it in variable which OS or BIOS sets
-
-> > > > I spent some time studying/reading what you wrote, but I still don'=
-t
-> > > > understand how to leverage meta-acpi.
+> > [5]:
+> > https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acpi-table=
+s/sa
+> > mples/edison/ft6236.asli
+> >
+> > > Thanks.
 > > >
-> > > meta-acpi is a Yocto layer to support provided ACPI tables for the
-> > > build. My point here is to have it as a collection of ASL examples.
-> > > It's what you asked for below in this email.
-> >
-> > > Also we can collect your ASL example under board (presumably new) fol=
-der.
-> >
-> > Actually it seems Baytrail, so, minnowboard-max is good enough.
-> >
-> > ...
-> >
-> > > On the first glance I didn't see any issues with it, but on second
-> > > look here is one. Look into this [5] example.
-> > > If you noticed it uses the same path in Scope and in the reference in
-> > > I2cSerialBus() while in your ASL they are different.
-> >
-> > Also there is an _ADR value wrong for the second channel (I'm not sure
-> > if it affects anyhow the rest).
-> >
-> > > Do you have issues with loading it (as is and after above addressed)?
+> > > 1. Documentation/admin-guide/acpi/initrd_table_override.rst
 > > >
-> > > [5]: https://github.com/westeri/meta-acpi/blob/master/recipes-bsp/acp=
-i-tables/samples/edison/ft6236.asli
-> >
-> > Also a link [6] to our Buildroot repository which allows to create an
-> > initramfs with ASL compiled. Maybe used as a reference how we created
-> > initramfs and compile ASLs.
-> >
-> > [6]: https://github.com/andy-shev/buildroot/tree/intel/board/intel/comm=
-on
-> > ...
-> >
-> > > > > One more useful link is SO answers on the topic:
-> > > > > https://stackoverflow.com/search?tab=3Dnewest&q=3Dprp0001
+> > > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2020=E5=B9=B48=
+=E6=9C=8831=E6=97=A5 =E9=80=B1
+> > =E4=B8=80 =E4=B8=8B=E5=8D=888:48=E5=AF=AB=E9=81=93=EF=BC=9A
+> > > >
+> > > > On Mon, Aug 31, 2020 at 3:45 PM Andy Shevchenko
+> > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > On Mon, Aug 31, 2020 at 2:28 PM AceLan Kao
+> > <acelan.kao@canonical.com> wrote:
+> > > > > > This patch is mainly for Advantech's UNO-420[1] which is a x86-=
+based
+> > platform.
+> > > > > > This platform is more like a development platform for customers
+> > > > > > to customize their products, so, specify the channel modes in
+> > > > > > ACPI table is not generic enough, that's why William submit thi=
+s
+> > > > > > patch.
+> > > > > >
+> > > > > > Are there other ways to specify or pass values to the module
+> > > > > > without using module parameters?
+> > > > > > It's good if we can leverage sysfs, but I don't know if there i=
+s
+> > > > > > one for this scenario.
 > > > > >
-> > > > > > [1]: https://www.kernel.org/doc/html/latest/firmware-guide/acpi=
-/enumeration.html#device-tree-namespace-link-device-id
-> > > > > > [2]: https://elixir.bootlin.com/linux/v5.9-rc3/source/Documenta=
-tion/devicetree/bindings/iio/dac/ad5592r.txt
-> > > > > > [3]: https://github.com/westeri/meta-acpi
-> > > > > > [4]: https://github.com/westeri/meta-acpi/tree/master/recipes-b=
-sp/acpi-tables/samples
-> >
-> > > > > > > 1. https://www.advantech.com/products/9a0cc561-8fc2-4e22-969c=
--9df90a3952b5/uno-420/mod_2d6a546b-39e3-4bc4-bbf4-ac89e6b7667c
-
+> > > > > Can we provide DT bindings for that and use then in ACPI? ACPI ha=
+s
+> > > > > a possibility to reuse DT properties and compatible strings [1].
+> > > > > As far as I can see the driver uses fwnode API, so it supports
+> > > > > ACPI case already [2]. So, what prevents you to utilize 'adi,mode=
+'
+> > property?
+> > > > >
+> > > > > Also, we accept examples of ASL excerpt in meta-acpi project [3].
+> > > > > It has already plenty of examples [4] how to use PRP0001 for DIY =
+/
+> > > > > development boards.
+> > > > >
+> > > > > So, take all together I think this patch is simple redundant.
+> > > >
+> > > > One more useful link is SO answers on the topic:
+> > > > https://stackoverflow.com/search?tab=3Dnewest&q=3Dprp0001
+> > > >
+> > > > > [1]:
+> > > > > https://www.kernel.org/doc/html/latest/firmware-guide/acpi/enumer=
+a
+> > > > > tion.html#device-tree-namespace-link-device-id
+> > > > > [2]:
+> > > > > https://elixir.bootlin.com/linux/v5.9-rc3/source/Documentation/de=
+v
+> > > > > icetree/bindings/iio/dac/ad5592r.txt
+> > > > > [3]: https://github.com/westeri/meta-acpi
+> > > > > [4]:
+> > > > > https://github.com/westeri/meta-acpi/tree/master/recipes-bsp/acpi=
+-
+> > > > > tables/samples
+> > > > >
+> > > > > P.S. Jonathan, it seems this driver has artificial ACPI HID. We
+> > > > > probably have to remove it. However, ADS is indeed reserved for
+> > > > > Analog Devices in PNP registry. Can we have AD's official answer =
+on this?
+> > > > > Cc'ing additional AD people.
+> > > > >
+> > > > > > 1.
+> > > > > > https://www.advantech.com/products/9a0cc561-8fc2-4e22-969c-9df9=
+0
+> > > > > > a3952b5/uno-420/mod_2d6a546b-39e3-4bc4-bbf4-ac89e6b7667c
 
 --=20
 With Best Regards,

@@ -2,34 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB62B25E98E
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2429825E98F
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728103AbgIERti (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1727875AbgIERti (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 5 Sep 2020 13:49:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37566 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:37590 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727875AbgIERth (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Sep 2020 13:49:37 -0400
+        id S1728042AbgIERti (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Sep 2020 13:49:38 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7BB420760;
-        Sat,  5 Sep 2020 17:49:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE2AE2078E;
+        Sat,  5 Sep 2020 17:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599328176;
-        bh=l0mdy6clGOUXEGqWb1QsHWlR6a21Twx0qC9528juNX8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mpqy7pe7gYAayh93kcAFf8Z3I+EwIaUWRJTu8vzeC3G57IZX/zQarlgAjuZwznDU+
-         hKHK/ZPfEMvkF4jlNgd7wuWMI2aLRxCwB91V2ZdMZLmNBc5K1msI18ZF7X2ZiwFcVk
-         e53Eqn6/mWr2RPwASAKEWYYWAQxRgQKC0RfZ52Rg=
+        s=default; t=1599328177;
+        bh=bi5VoD2qDuHExwuDHiGTm/wiz6ixriE+AEBv8NHcS4A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dtD8yXUAvX230mDD1ZJOg9h4wsysTg+2YuSoAfMtQFEN6ndxYrTOtSB9hToV3o0FQ
+         jcaxzhVaawzLnAXw9A2AcuTsHxCXjwdGVU3S5y7G3qMK/NWEBM7iR0hbrcQ30pF23Y
+         uAjbhvCg20GEjqVPefzcV7dCoFN3ymVn1FSKJmgg=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 0/4] staging: iio: Cleanup some docs in staging
-Date:   Sat,  5 Sep 2020 18:47:17 +0100
-Message-Id: <20200905174721.216452-1-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Roland Stigge <stigge@antcom.de>
+Subject: [PATCH 1/4] staging:iio:dac:max517 remove documentation
+Date:   Sat,  5 Sep 2020 18:47:18 +0100
+Message-Id: <20200905174721.216452-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200905174721.216452-1-jic23@kernel.org>
+References: <20200905174721.216452-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -39,47 +42,66 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Some of these simply got left behind when drivers moved out of staging.
-Others were improved upon no end by more recent documentation under
-Documentation/ and are inaccurate or incomplete.
+Whilst there is some useful info in here, it can be easily
+obtained from datasheets. Some of the info should perhaps
+be incorporated into a device tree bindings doc.
+As this didn't move out of staging with the driver, I'm suggesting
+we just drop it.  We don't generally carry per driver documentation
+with the exception of non standard ABI which is not the case here.
 
-For now I've left a few files in the staging/iio/Documentation directory
-* inkernel.txt:  We need an equivalent in the main IIO docs but more than
-  a simple rst conversion and move is needed.
-* sysfs-bus-iio-dds: DDS drivers are still in staging so let us keep this
-  with them for now.
-* sysfs-bus-iio-adc-ad7280a: The driver is still in staging, so we need
-  to deal with that before moving or removing this one.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Roland Stigge <stigge@antcom.de>
+---
+ drivers/staging/iio/Documentation/dac/max517 | 41 --------------------
+ 1 file changed, 41 deletions(-)
 
-Comments on removing these of course welcome, but this is a rare occasion
-when I'll probably just apply these whether or not anyone reviews the series.
-
-Thanks,
-
-Jonathan
-
-Jonathan Cameron (4):
-  staging:iio:dac:max517 remove documentation
-  staging:iio:light: Move tsl2x7x ABI docs to correct location.
-  staging:iio:light: drop stale ABI docs
-  staging:iio:documentation: Drop most generic docs
-
- .../ABI/testing/sysfs-bus-iio-light-tsl2772   |  0
- drivers/staging/iio/Documentation/dac/max517  | 41 ----------
- drivers/staging/iio/Documentation/device.txt  | 74 -----------------
- .../staging/iio/Documentation/overview.txt    | 57 -------------
- drivers/staging/iio/Documentation/ring.txt    | 47 -----------
- .../iio/Documentation/sysfs-bus-iio-light     | 79 -------------------
- drivers/staging/iio/Documentation/trigger.txt | 31 --------
- 7 files changed, 329 deletions(-)
- rename drivers/staging/iio/Documentation/light/sysfs-bus-iio-light-tsl2x7x => Documentation/ABI/testing/sysfs-bus-iio-light-tsl2772 (100%)
- delete mode 100644 drivers/staging/iio/Documentation/dac/max517
- delete mode 100644 drivers/staging/iio/Documentation/device.txt
- delete mode 100644 drivers/staging/iio/Documentation/overview.txt
- delete mode 100644 drivers/staging/iio/Documentation/ring.txt
- delete mode 100644 drivers/staging/iio/Documentation/sysfs-bus-iio-light
- delete mode 100644 drivers/staging/iio/Documentation/trigger.txt
-
+diff --git a/drivers/staging/iio/Documentation/dac/max517 b/drivers/staging/iio/Documentation/dac/max517
+deleted file mode 100644
+index e60ec2f91a7a..000000000000
+--- a/drivers/staging/iio/Documentation/dac/max517
++++ /dev/null
+@@ -1,41 +0,0 @@
+-Kernel driver max517
+-====================
+-
+-Supported chips:
+-  * Maxim MAX517, MAX518, MAX519
+-    Prefix: 'max517'
+-    Datasheet: Publicly available at the Maxim website
+-               http://www.maxim-ic.com/
+-
+-Author:
+-        Roland Stigge <stigge@antcom.de>
+-
+-Description
+------------
+-
+-The Maxim MAX517/518/519 is an 8-bit DAC on the I2C bus. The following table
+-shows the different feature sets of the variants MAX517, MAX518 and MAX519:
+-
+-Feature                              MAX517 MAX518 MAX519
+---------------------------------------------------------------------------
+-One output channel                   X
+-Two output channels                         X      X
+-Simultaneous output updates                 X      X
+-Supply voltage as reference                 X
+-Separate reference input             X
+-Reference input for each DAC                       X
+-
+-Via the iio sysfs interface, there are three attributes available: out1_raw,
+-out2_raw and out12_raw. With out1_raw and out2_raw, the current output values
+-(0..255) of the DACs can be written to the device. out12_raw can be used to set
+-both output channel values simultaneously.
+-
+-With MAX517, only out1_raw is available.
+-
+-Via out1_scale (and where appropriate, out2_scale), the current scaling factor
+-in mV can be read.
+-
+-When the operating system goes to a power down state, the Power Down function
+-of the chip is activated, reducing the supply current to 4uA.
+-
+-On power-up, the device is in 0V-output state.
 -- 
 2.28.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1442225E96C
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 524CD25E95B
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727875AbgIERcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Sep 2020 13:32:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60342 "EHLO mail.kernel.org"
+        id S1728393AbgIERcp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Sep 2020 13:32:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60390 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728387AbgIERcl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Sep 2020 13:32:41 -0400
+        id S1728426AbgIERcn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Sep 2020 13:32:43 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2414208FE;
-        Sat,  5 Sep 2020 17:32:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 513512098B;
+        Sat,  5 Sep 2020 17:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599327160;
-        bh=E38bXaztWbprGXLGB3ZptLRYv4BC3A7eIgpDTMmcQ14=;
+        s=default; t=1599327162;
+        bh=XpngdjpF08FQex0xcA2ugQ5BaeqEMiH6ImmMdQcJOM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sgicZQzFKsBeyZiSxeRpzebkXK4FZo5JwMq5/hIgD8gYnYX8OPA/Z5/VTme3ZtHrv
-         j+GGu1QEIWjshH6yIvgWU1ha+QHgOOhgk+L7mH3RFkfRDpnt416aZLtWlNhPwsqSZk
-         U4YYb646wWoyMSn3tydO5HQnHwQ7B/rWMbZBFCUM=
+        b=O+z0XvlWfcptQ4ypMjyQ13xcsk+UvRXXZvMFoPgZiBtecrtRH9ql8NvcX0M593mvS
+         YzPPAGR3K3j/0G5KSMtbrzvuoWGNPASEXPY+zyKH90Xp4vRWDMy3MXIWmirAd12wzL
+         U7MrFh2xlHQ4226rGfeoLz/xag8ag0UEmUMy2xDM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gregory Clement <gregory.clement@bootlin.com>
-Subject: [PATCH 10/20] dt-bindings:iio:adc:lpc3220-adc yaml conversion
-Date:   Sat,  5 Sep 2020 18:29:54 +0100
-Message-Id: <20200905173004.216081-11-jic23@kernel.org>
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 11/20] dt-bindings:iio:adc:motorola,cpcap-adc yaml conversion
+Date:   Sat,  5 Sep 2020 18:29:55 +0100
+Message-Id: <20200905173004.216081-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200905173004.216081-1-jic23@kernel.org>
 References: <20200905173004.216081-1-jic23@kernel.org>
@@ -43,97 +43,94 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Renamed to remove the wild cards.  These go wrong far too often so
-in general preferred to use the name of a specific part.  As this
-binding only provides one compatible, I went with that.
+Conversion from txt to yaml.
+Slightly expanded example to give a bit more context.
+Description lifted from the original driver commit.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Tony Lindgren <tony@atomide.com>
 ---
- .../bindings/iio/adc/lpc32xx-adc.txt          | 21 --------
- .../bindings/iio/adc/nxp,lpc3220-adc.yaml     | 50 +++++++++++++++++++
- 2 files changed, 50 insertions(+), 21 deletions(-)
+ .../devicetree/bindings/iio/adc/cpcap-adc.txt | 17 -------
+ .../bindings/iio/adc/motorola,cpcap-adc.yaml  | 51 +++++++++++++++++++
+ 2 files changed, 51 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/lpc32xx-adc.txt b/Documentation/devicetree/bindings/iio/adc/lpc32xx-adc.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/cpcap-adc.txt b/Documentation/devicetree/bindings/iio/adc/cpcap-adc.txt
 deleted file mode 100644
-index 3a1bc669bd51..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/lpc32xx-adc.txt
+index ec04008e8f4f..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/cpcap-adc.txt
 +++ /dev/null
-@@ -1,21 +0,0 @@
--* NXP LPC32xx SoC ADC controller
+@@ -1,17 +0,0 @@
+-Motorola CPCAP PMIC ADC binding
 -
 -Required properties:
--- compatible: must be "nxp,lpc3220-adc"
--- reg: physical base address of the controller and length of memory mapped
--  region.
--- interrupts: The ADC interrupt
--
--Optional:
-- - vref-supply: The regulator supply ADC reference voltage, optional
--   for legacy reason, but highly encouraging to us in new device tree
+-- compatible: Should be "motorola,cpcap-adc" or "motorola,mapphone-cpcap-adc"
+-- interrupts: The interrupt number for the ADC device
+-- interrupt-names: Should be "adcdone"
+-- #io-channel-cells: Number of cells in an IIO specifier
 -
 -Example:
 -
--	adc@40048000 {
--		compatible = "nxp,lpc3220-adc";
--		reg = <0x40048000 0x1000>;
--		interrupt-parent = <&mic>;
--		interrupts = <39 0>;
--		vref-supply = <&vcc>;
--	};
-diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,lpc3220-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,lpc3220-adc.yaml
+-cpcap_adc: adc {
+-	compatible = "motorola,mapphone-cpcap-adc";
+-	interrupt-parent = <&cpcap>;
+-	interrupts = <8 IRQ_TYPE_NONE>;
+-	interrupt-names = "adcdone";
+-	#io-channel-cells = <1>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/adc/motorola,cpcap-adc.yaml b/Documentation/devicetree/bindings/iio/adc/motorola,cpcap-adc.yaml
 new file mode 100644
-index 000000000000..2c5032be83bd
+index 000000000000..7811c0abd5d0
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/nxp,lpc3220-adc.yaml
-@@ -0,0 +1,50 @@
++++ b/Documentation/devicetree/bindings/iio/adc/motorola,cpcap-adc.yaml
+@@ -0,0 +1,51 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/nxp,lpc3220-adc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/motorola,cpcap-adc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: NXP LPC3220 SoC ADC controller
++title: Motorola CPCAP PMIC ADC binding
 +
 +maintainers:
-+  - Gregory Clement <gregory.clement@bootlin.com>
++  - Tony Lindgren <tony@atomide.com>
 +
 +description:
-+  This hardware block has been used on several LPC32XX SoCs.
++  On Motorola phones like droid 4 there is a custom CPCAP PMIC. This PMIC
++  has ADCs that are used for battery charging and USB PHY VBUS and ID pin
++  detection.
 +
 +properties:
 +  compatible:
-+    const: nxp,lpc3220-adc
-+
-+  reg:
-+    maxItems: 1
++    enum:
++      - motorola,cpcap-adc
++      - motorola,mapphone-cpcap-adc
 +
 +  interrupts:
 +    maxItems: 1
 +
-+  vref-supply: true
++  interrupt-names:
++    const: adcdone
 +
 +  "#io-channel-cells":
 +    const: 1
 +
 +required:
 +  - compatible
-+  - reg
 +  - interrupts
-+
-+additionalProperties: false
++  - "#io-channel-cells"
 +
 +examples:
 +  - |
-+    soc {
++    #include <dt-bindings/interrupt-controller/irq.h>
++    pmic {
 +        #address-cells = <1>;
-+        #size-cells = <1>;
-+        adc@40048000 {
-+            compatible = "nxp,lpc3220-adc";
-+            reg = <0x40048000 0x1000>;
-+            interrupt-parent = <&mic>;
-+            interrupts = <39 0>;
-+            vref-supply = <&vcc>;
++        #size-cells = <0>;
++        adc {
++            compatible = "motorola,mapphone-cpcap-adc";
++            interrupt-parent = <&cpcap>;
++            interrupts = <8 IRQ_TYPE_NONE>;
++            interrupt-names = "adcdone";
++            #io-channel-cells = <1>;
 +        };
 +    };
 +...

@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BAC725E94D
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C6125E950
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Sep 2020 19:32:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728388AbgIERcg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Sep 2020 13:32:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60208 "EHLO mail.kernel.org"
+        id S1728042AbgIERci (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Sep 2020 13:32:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60218 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728103AbgIERcb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Sep 2020 13:32:31 -0400
+        id S1728257AbgIERcc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Sep 2020 13:32:32 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2C61F2098B;
-        Sat,  5 Sep 2020 17:32:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A05C220C09;
+        Sat,  5 Sep 2020 17:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599327150;
-        bh=FdK1l3fo6UgGdK6dGnHyf2ZFaNBIdLfR1npsQ9CW2AY=;
+        s=default; t=1599327152;
+        bh=KoEd7JhadoV/WuAlOl/OSAE8z4BEPt6pY8SVVSs0NxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mvE8bDGVDBmqFZXu3j7udNuvaOBbL7oKUFk6V5Ro+z3R5ASA8rg4P8nYox60vE3JH
-         9Kg6QxyHXjrX877Y9mz5xxfXHwBKEMwdSShrOg4FCXKOiNEelMWH1lM4F09GyphlQk
-         DpjV9Enq6sc9rG8CDyeSZmr+sABUQxUEMAFfjIwM=
+        b=XM6m8PtzYabdvgh2YrS0AApxsvkrh6BzaFoGU1cWWKBJWqf0wFL+DJ+aZcRbzUed7
+         uEiPooVPhnN5oSPmlT3UaosyjzchnQb4pUNvei8ekwC9VSy+3l+NgHU9tFd4CY9Fmh
+         Dt6QLTmKL0HmOnnCSlgYWfCdgXvl0MkEzPcPlk00=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Stefan Agner <stefan@agner.ch>
-Subject: [PATCH 03/20] dt-bindings:iio:adc:st,stmpe-adc yaml conversion
-Date:   Sat,  5 Sep 2020 18:29:47 +0100
-Message-Id: <20200905173004.216081-4-jic23@kernel.org>
+        Rick Altherr <raltherr@google.com>,
+        Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>
+Subject: [PATCH 04/20] dt-bindings:iio:adc: aspeed,ast2400 yaml conversion
+Date:   Sat,  5 Sep 2020 18:29:48 +0100
+Message-Id: <20200905173004.216081-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200905173004.216081-1-jic23@kernel.org>
 References: <20200905173004.216081-1-jic23@kernel.org>
@@ -43,95 +44,105 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Conversion from freeform text to yaml.
-One oddity in this binding is that, for historical reasons it requires
-the node name to be stmpe_adc.  I've put that in the decription field
-but I'm not sure if there is a better way to specify this?
+Simple txt to yaml conversion. Part of a general move to convert
+all the IIO bindings over to yaml.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Stefan Agner <stefan@agner.ch>
+Cc: Rick Altherr <raltherr@google.com>
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Andrew Jeffery <andrew@aj.id.au>
 ---
- .../bindings/iio/adc/st,stmpe-adc.yaml        | 45 +++++++++++++++++++
- .../devicetree/bindings/iio/adc/stmpe-adc.txt | 21 ---------
- 2 files changed, 45 insertions(+), 21 deletions(-)
+ .../bindings/iio/adc/aspeed,ast2400-adc.yaml  | 54 +++++++++++++++++++
+ .../bindings/iio/adc/aspeed_adc.txt           | 22 --------
+ 2 files changed, 54 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml
 new file mode 100644
-index 000000000000..9049c699152f
+index 000000000000..09018487d690
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
-@@ -0,0 +1,45 @@
++++ b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml
+@@ -0,0 +1,54 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/st,stmpe-adc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/aspeed,ast2400-adc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: ADC on an STMPE multifunction device.
++title: ADC that forms part of an ASPEED server management processor.
 +
 +maintainers:
-+  - Stefan Agner <stefan@agner.ch>
++  - Rick Altherr <raltherr@google.com>
 +
 +description:
-+  This ADC forms part of an ST microelectronics STMPE multifunction device .
-+  The ADC is shared with the STMPE touchscreen. As a result some ADC related
-+  settings are specified in the parent node.
-+  The node name myst be stmpe_adc and should be a child node of the stmpe node
-+  to which it belongs.
++  This device is a 10-bit converter for 16 voltage channels.  All inputs are
++  single ended.
 +
 +properties:
 +  compatible:
-+    const: st,stmpe-adc
++    enum:
++      - aspeed,ast2400-adc
++      - aspeed,ast2500-adc
 +
-+  st,norequest-mask:
-+    $ref: /schemas/types.yaml#/definitions/uint32
++  reg:
++    maxItems: 1
++
++  clocks:
 +    description:
-+      Bitmask specifying which ADC channels should _not_ be
-+      requestable due to different usage (e.g. touch).
++      Input clock used to derive the sample clock. Expected to be the
++      SoC's APB clock.
++
++  resets: true
 +
 +  "#io-channel-cells":
 +    const: 1
 +
 +required:
 +  - compatible
++  - reg
++  - clocks
++  - resets
++  - "#io-channel-cells"
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    stmpe {
-+        stmpe_adc {
-+            compatible = "st,stmpe-adc";
-+            st,norequest-mask = <0x0F>; /* dont use ADC CH3-0 */
-+        };
++    #include <dt-bindings/clock/aspeed-clock.h>
++    adc@1e6e9000 {
++        compatible = "aspeed,ast2400-adc";
++        reg = <0x1e6e9000 0xb0>;
++        clocks = <&syscon ASPEED_CLK_APB>;
++        resets = <&syscon ASPEED_RESET_ADC>;
++        #io-channel-cells = <1>;
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt b/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt b/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt
 deleted file mode 100644
-index 480e66422625..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt
+index 034fc2ba100e..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt
 +++ /dev/null
-@@ -1,21 +0,0 @@
--STMPE ADC driver
------------------
+@@ -1,22 +0,0 @@
+-Aspeed ADC
+-
+-This device is a 10-bit converter for 16 voltage channels.  All inputs are
+-single ended.
 -
 -Required properties:
-- - compatible: "st,stmpe-adc"
--
--Optional properties:
--Note that the ADC is shared with the STMPE touchscreen. ADC related settings
--have to be done in the mfd.
--- st,norequest-mask: bitmask specifying which ADC channels should _not_ be
--  requestable due to different usage (e.g. touch)
--
--Node name must be stmpe_adc and should be child node of stmpe node to
--which it belongs.
+-- compatible: Should be "aspeed,ast2400-adc" or "aspeed,ast2500-adc"
+-- reg: memory window mapping address and length
+-- clocks: Input clock used to derive the sample clock. Expected to be the
+-          SoC's APB clock.
+-- resets: Reset controller phandle
+-- #io-channel-cells: Must be set to <1> to indicate channels are selected
+-                     by index.
 -
 -Example:
--
--	stmpe_adc {
--		compatible = "st,stmpe-adc";
--		st,norequest-mask = <0x0F>; /* dont use ADC CH3-0 */
+-	adc@1e6e9000 {
+-		compatible = "aspeed,ast2400-adc";
+-		reg = <0x1e6e9000 0xb0>;
+-		clocks = <&syscon ASPEED_CLK_APB>;
+-		resets = <&syscon ASPEED_RESET_ADC>;
+-		#io-channel-cells = <1>;
 -	};
 -- 
 2.28.0

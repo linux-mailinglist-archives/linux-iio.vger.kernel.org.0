@@ -2,40 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAF9025EE71
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75E725EE72
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728905AbgIFPCQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Sep 2020 11:02:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39714 "EHLO mail.kernel.org"
+        id S1728865AbgIFPDa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Sep 2020 11:03:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39930 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728028AbgIFPB5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Sep 2020 11:01:57 -0400
+        id S1728880AbgIFPDX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Sep 2020 11:03:23 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 538E320714;
-        Sun,  6 Sep 2020 15:01:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CD4B920714;
+        Sun,  6 Sep 2020 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599404516;
-        bh=B4hJH2Exj10eov4vlPb/9VaNEbHGmeM6Q+hdPmf5u1g=;
+        s=default; t=1599404603;
+        bh=0a+El6Hu2G19QLat7l/IFDJ+dLadCsCadebv+Wnnbug=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tzP/88p3dT49e/Xz6wpcBVsfHumavYXE1fNkqD47ygYOemZmeELltPxPuKxL32xru
-         BN9i9EndetOxyBWZHLtBkLAhRRIjbXvZPrhGdRRU+FnTnowSQc6J7a87tiqQHZm7/v
-         Tzpxf5iRpvb30nH7gO+95/Ez9a4nRIPGdnkPNGEY=
-Date:   Sun, 6 Sep 2020 16:01:52 +0100
+        b=SxJv2acXn0LGN7AkCm/9QXZ3Ff7ISVlvngFTN2IN8yL1+LSUnd+Ia+fAObRp81ARV
+         jgOhvzwg29mGUDLn52tTx0RdRpnDcOLKmVM8ceVPfgTpLWYIGC0udKzugT5Fr+1Gqi
+         Ad/gzcEk8ezHwcBPxqvBHY4jdHtIsjZMoKSIDT20=
+Date:   Sun, 6 Sep 2020 16:03:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nishant Malpani <nish.malpani25@gmail.com>
-Cc:     robh+dt@kernel.org, dragos.bogdan@analog.com,
-        darius.berghe@analog.com, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: gyro: adxrs290: Add interrupts
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Nishant Malpani <nish.malpani25@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <dragos.bogdan@analog.com>,
+        Darius <darius.berghe@analog.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] iio: gyro: adxrs290: Add debugfs register access
  support
-Message-ID: <20200906160152.552d42bb@archlinux>
-In-Reply-To: <20200903130950.6274-3-nish.malpani25@gmail.com>
+Message-ID: <20200906160318.13b83634@archlinux>
+In-Reply-To: <CAHp75Vc2UhW5yDhXs0RJZUmXABAqTX12N1NA3CWeSirHWfPCng@mail.gmail.com>
 References: <20200903130950.6274-1-nish.malpani25@gmail.com>
-        <20200903130950.6274-3-nish.malpani25@gmail.com>
+        <20200903130950.6274-4-nish.malpani25@gmail.com>
+        <CAHp75VfReT-EjCV=cW8mV1MmoMPPdY9q1scoPwbD_DEHpQHd3g@mail.gmail.com>
+        <CAEtfd9ZPkyk9_GV3h-CXFT_j=PYU66SHoYaaE7tytQxb+Q5rVA@mail.gmail.com>
+        <CAHp75Vc2UhW5yDhXs0RJZUmXABAqTX12N1NA3CWeSirHWfPCng@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,64 +51,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Sep 2020 18:39:49 +0530
-Nishant Malpani <nish.malpani25@gmail.com> wrote:
+On Thu, 3 Sep 2020 16:59:12 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Include 'interrupts' property and provide a suitable example for using
-> a GPIO interrupt line.
+> On Thu, Sep 3, 2020 at 4:57 PM Nishant Malpani <nish.malpani25@gmail.com> wrote:
+> > On Thu, Sep 3, 2020 at 6:55 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:  
 > 
-> Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
+> ...
+> 
+> > Umm, I'm sorry, I don't see why'd it be favourable for us to do it
+> > this way. Also, I *think* Jonathan is fine with how it's being done
+> > now.  
+> 
+> I have no strong opinion, so whatever Jonathan thinks better.
+> 
 
-One little point inline.  Otherwise looks fine to me
-
-Thanks,
+Andy's suggestion is a little bit nicer, so as you are doing a v3,
+might as well roll that change in as well :)
 
 Jonathan
-
-> ---
-> 
-> Changes in v2:
-> 
->   - remove 'interrupts' property from the required properties list
->   - rewrite commit message
-> ---
->  .../devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml    | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml b/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
-> index 61adb2c2454b..a5f209e8bbef 100644
-> --- a/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
-> +++ b/Documentation/devicetree/bindings/iio/gyroscope/adi,adxrs290.yaml
-> @@ -28,6 +28,9 @@ properties:
->  
->    spi-cpha: true
->  
-> +  interrupts:
-> +    maxItems: 1
-> +
->  required:
->    - compatible
->    - reg
-> @@ -39,6 +42,8 @@ additionalProperties: false
->  
->  examples:
->    - |
-> +    #include <dt-bindings/gpio/gpio.h>
-
-Shouldn't need that header.  I don't see anything being used that
-is defined in gpio.h
-
-> +    #include <dt-bindings/interrupt-controller/irq.h>
->      spi {
->          #address-cells = <1>;
->          #size-cells = <0>;
-> @@ -48,6 +53,8 @@ examples:
->                     spi-max-frequency = <5000000>;
->                     spi-cpol;
->                     spi-cpha;
-> +                   interrupt-parent = <&gpio>;
-> +                   interrupts = <25 IRQ_TYPE_EDGE_RISING>;
->          };
->      };
->  ...
-

@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F4625EEED
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CEC25EEF0
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728779AbgIFPxg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Sep 2020 11:53:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54042 "EHLO mail.kernel.org"
+        id S1728828AbgIFP5I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Sep 2020 11:57:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54252 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726931AbgIFPxf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Sep 2020 11:53:35 -0400
+        id S1726931AbgIFP5E (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Sep 2020 11:57:04 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E1DCF20708;
-        Sun,  6 Sep 2020 15:53:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9138D20708;
+        Sun,  6 Sep 2020 15:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599407613;
-        bh=yOBRKzMg0VJttwyLuKHk+6BAt+E/89oYR/Q08GXaNSo=;
+        s=default; t=1599407823;
+        bh=Okunv6b+/606a+A8ZAmEGHtldZ+63z9BdQaUL7PtcVY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KScde9m8omA0bQe1jtjz9G5Nubv80MZrXM3LO8PRi8Id30GBn3nQpnZQ+n4nMKDyD
-         dMuvbjz301iJW4ItiK/44a92ZBfGfsgg6xaAe5/o80Yh7MlhgX7tlpZQST9P2/R+dE
-         olgqkG3XxxnOKVuHk9LDGtKw1wYPdBLo0ZIbivJg=
-Date:   Sun, 6 Sep 2020 16:53:29 +0100
+        b=Lq+a5aI/b5DAtuD2N6eFxkTJ1BL5ZxFOVctlajiKBIIKgerr+6fXpGikr1waUwkJu
+         08N7OryIt/WzK6HJtzvgQFvtfhe0h2PmnfJYUND9vJ5K4DWO6WaivUuhTaAEFWDP5L
+         E91QGAF1kjdFfAovZEAQhkiQEFVV0ULKWPH2ajRY=
+Date:   Sun, 6 Sep 2020 16:56:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Pop, Cristian" <Cristian.Pop@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2] iio: core: Add optional symbolic label to a
- device channel
-Message-ID: <20200906165329.150cc055@archlinux>
-In-Reply-To: <BN6PR03MB251405FC8654C3539D7BD9C1E72D0@BN6PR03MB2514.namprd03.prod.outlook.com>
-References: <20200824083646.84886-1-cristian.pop@analog.com>
-        <20200830122425.3e00332b@archlinux>
-        <BN6PR03MB2514AE2330F47235028B4455E72D0@BN6PR03MB2514.namprd03.prod.outlook.com>
-        <BN6PR03MB251405FC8654C3539D7BD9C1E72D0@BN6PR03MB2514.namprd03.prod.outlook.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Yuval Peress <peress@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 2/2] docs: abi: iio: Add event when offset changes
+Message-ID: <20200906165659.2e32d29f@archlinux>
+In-Reply-To: <CAPUE2uuhXFN2MbrxRP2ojMaqT8+kG+ODMegd2BV4zV0xGc5afA@mail.gmail.com>
+References: <20200828233156.2264689-1-gwendal@chromium.org>
+        <20200828233156.2264689-3-gwendal@chromium.org>
+        <20200830141140.3a360928@archlinux>
+        <CAPUE2uuhXFN2MbrxRP2ojMaqT8+kG+ODMegd2BV4zV0xGc5afA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,234 +46,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Sep 2020 13:35:12 +0000
-"Pop, Cristian" <Cristian.Pop@analog.com> wrote:
+On Mon, 31 Aug 2020 20:00:43 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> > -----Original Message-----
-> > From: Pop, Cristian
-> > Sent: Friday, September 4, 2020 2:14 PM
-> > To: Jonathan Cameron <jic23@kernel.org>
-> > Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: RE: [RFC PATCH v2] iio: core: Add optional symbolic label to a device
-> > channel
-
-Hi Cristian,
-
-If possible fix your word wrapping for future replies.
-I've tried to unwind it below but it makes it very hard
-to read and reply to.
-
-> > 
-> > Best ragards,
-> > Cristian Pop
-> >   
-> > > -----Original Message-----
-> > > From: Jonathan Cameron <jic23@kernel.org>
-> > > Sent: Sunday, August 30, 2020 2:24 PM
-> > > To: Pop, Cristian <Cristian.Pop@analog.com>
-> > > Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > > Subject: Re: [RFC PATCH v2] iio: core: Add optional symbolic label to
-> > > a device channel
+> On Sun, Aug 30, 2020 at 6:11 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Fri, 28 Aug 2020 16:31:56 -0700
+> > Gwendal Grignou <gwendal@chromium.org> wrote:
+> >  
+> > > Some sensors/sensorhubs can calculate drift or hard iron offsets to
+> > > apply to raw data to get the true measure data.
+> > > These offsets are applied by the user space application.
+> > > When these offsets change, events are raised to tell the application
+> > > to update the cached offset values.
 > > >
-> > > [External]
+> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
+> > Hi Gwendal
+> >
+> > This strikes me as rather prone to races.  I guess if the updates
+> > tend to be fairly minor we will just have slightly less accurate data
+> > until the update gets picked up by userspace.  
+> In case of hard iron for instance, the sensorhub needs several samples
+> to find out the current offset are now invalid. So it is likely the
+> measurement of the geomagnetic field was incorrect for a while.
+> For accelerometer online calibration, we don't expect vast changes
+> when new offsets are available.
+> >
+> > We have had some discussions about how to handle meta data updates
+> > in the past.  One option was to provide a metadata index channel
+> > that could be used to indicate there was an update to something
+> > sat in a separate fifo.  
+> An extra sounds like a waste of space, as it will mostly be 0 most of
+> the time, and edge to 1 once in a while. An event looks more
+> appropriate.
+
+Agreed for this case.
+It would be a much more general interface with a lot of other
+usecases. It is overkill here.  There isn't a huge burden in adding
+support for your case in the meantime, even if we eventually end up
+finding a better way of doing metadata in general.
+
+> >  
+> > > ---
+> > >  Documentation/ABI/testing/sysfs-bus-iio | 33 +++++++++++++++++++++++++
+> > >  1 file changed, 33 insertions(+)
 > > >
-> > > On Mon, 24 Aug 2020 11:36:46 +0300
-> > > Cristian Pop <cristian.pop@analog.com> wrote:
-> > >  
-> > > > If a label is defined in the device tree for this channel add that
-> > > > to the channel specific attributes. This is useful for userspace to
-> > > > be able to identify an individual channel.
-> > > >
-> > > > Signed-off-by: Cristian Pop <cristian.pop@analog.com>
-> > > > ---
-> > > >  Changes in v2:
-> > > > 	- Move label check before "read_raw" callback.
-> > > > 	- Move the responsability to of parsing channel labels, to the
-> > > > 	  driver.
-> > > >
-> > > >  drivers/iio/industrialio-core.c | 10 ++++++++--
-> > > >  include/linux/iio/iio.h         |  2 ++
-> > > >  include/linux/iio/types.h       |  1 +
-> > > >  3 files changed, 11 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/industrialio-core.c
-> > > > b/drivers/iio/industrialio-core.c index 1527f01a44f1..32277e94f02d
-> > > > 100644
-> > > > --- a/drivers/iio/industrialio-core.c
-> > > > +++ b/drivers/iio/industrialio-core.c
-> > > > @@ -135,6 +135,7 @@ static const char * const iio_modifier_names[] =
-> > > > {
-> > > >  /* relies on pairs of these shared then separate */  static const
-> > > > char * const iio_chan_info_postfix[] = {
-> > > >  	[IIO_CHAN_INFO_RAW] = "raw",
-> > > > +	[IIO_CHAN_INFO_LABEL] = "label",
-> > > >  	[IIO_CHAN_INFO_PROCESSED] = "input",
-> > > >  	[IIO_CHAN_INFO_SCALE] = "scale",
-> > > >  	[IIO_CHAN_INFO_OFFSET] = "offset", @@ -653,14 +654,18 @@ static
-> > > > ssize_t iio_read_channel_info(struct device  
-> > > *dev,  
-> > > >  	int ret;
-> > > >  	int val_len = 2;
-> > > >
-> > > > -	if (indio_dev->info->read_raw_multi)
-> > > > +	if (indio_dev->info->read_raw_multi) {
-> > > >  		ret = indio_dev->info->read_raw_multi(indio_dev, this_attr- c,
-> > > >  
-> > > 	INDIO_MAX_RAW_ELEMENTS,  
-> > > >  							vals, &val_len,
-> > > >  							this_attr->address);
-> > > > -	else
-> > > > +	} else {
-> > > >  		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
-> > > >  				    &vals[0], &vals[1], this_attr->address);
-> > > > +		if (ret < 0 && this_attr->address == IIO_CHAN_INFO_LABEL  
-> > > &&  
-> > > > +			this_attr->c->label_name)  
-> > >
-> > > I'm not keen on this. We shouldn't be calling read_raw at all in this path.
-> > > There is no way it can return a valid label.
-> > >  
-> > > > +			return sprintf(buf, "%s\n", this_attr->c->label_name);
-> > > > +	}
-> > > >
-> > > >  	if (ret < 0)
-> > > >  		return ret;
-> > > > @@ -1399,6 +1404,7 @@ static int iio_device_register_sysfs(struct
-> > > > iio_dev  
-> > > *indio_dev)  
-> > > >  			attrcount_orig++;
-> > > >  	}
-> > > >  	attrcount = attrcount_orig;
-> > > > +  
-> > >
-> > > Please avoid unrelated white space changes.
-> > >  
-> > > >  	/*
-> > > >  	 * New channel registration method - relies on the fact a group does
-> > > >  	 * not need to be initialized if its name is NULL.
-> > > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h index
-> > > > a1be82e74c93..39209f3b62be 100644
-> > > > --- a/include/linux/iio/iio.h
-> > > > +++ b/include/linux/iio/iio.h
-> > > > @@ -223,6 +223,7 @@ struct iio_event_spec {
-> > > >   *			correspond to the first name that the channel is  
-> > > referred  
-> > > >   *			to by in the datasheet (e.g. IND), or the nearest
-> > > >   *			possible compound name (e.g. IND-INC).
-> > > > + * @label_name:		Unique name to identify which channel this is.
-> > > >   * @modified:		Does a modifier apply to this channel. What  
-> > > these are  
-> > > >   *			depends on the channel type.  Modifier is set in
-> > > >   *			channel2. Examples are IIO_MOD_X for axial sensors  
-> > > about  
-> > > > @@ -260,6 +261,7 @@ struct iio_chan_spec {
-> > > >  	const struct iio_chan_spec_ext_info *ext_info;
-> > > >  	const char		*extend_name;
-> > > >  	const char		*datasheet_name;
-> > > > +	const char		*label_name;  
-> > >
-> > > This can't be part of chan_spec as that is constant in many drivers.
-> > > We need a separate way of doing this.    
-> What do you mean by "chan_spec is constant in many drivers"?
-> Instances of the "struct iio_chan_spec" are created in the driver. 
-
-No they aren't.  Grep for struct iio_chan_spec 
-Something like... 
-git grep iio_chan_spec -- drivers/iio/ | grep const | grep channels
-
-A very very large number of drivers keep this data constant.
-If the driver doesn't provide flexibility on enabled channels
-(for example such flexibility makes no sense on an accelerometer)
-then the instances of this structure are constant.
-
-There are lots of good reasons to do this if at all possible and
-I'm not happy changing it just to put in an optional string.
-
-> Also it makes sense for me to add "const char              *label_name;"
-> in this structure since it is an attribute of the channel, and it doesn't
-> change at runtime, only when parsing the device tree and assigning the value to it
-
-That is at runtime.  The structure is constant at build time in many/most drivers.
-There are 459 instances using the above grep for starters that would all
-need to change.
-
->, when an instance of "iio_chan_spec" is created.
-> >> Don't use info_mask, but
-> > > register it separately for each channel in a similar way to we do the
-> > > name and label attributes for the whole device.  
-> Don't understand this part. "name" and "label" of the device are elements of
-> "struct iio_dev", as "const char  *label_name;" is part of "struct iio_chan_spec", the equivalent structure for holding channel attributes.
-It is not the equivalent structure.  There is no equivalent per channel structure.
-iio_chan_spec is a specification for a channel, not a dynamic structure holding
-information about it, whereas iio_dev is such a dynamic structure holding
-dynamic information about the device (plus a few small bits of constant info).
-
-If we need a dynamic structure per channel then we need to create a new one,
-not take a massive amount of constant data and make it dynamic in order
-to add a single dynamic field.
-
-> Who will hold the label values otherwise, if not the " iio_chan_spec " structure?
-
-A new element.  For now we should keep this in the drivers because
-it is a driver decision to provide this information.  For a lot of
-drivers it makes no sense to have a label so we don't want to put the
-burden on the IIO core.
-
-For now, a driver should just copy the labels into driver local storage
-and return them from the new callback.
-
-Later, we can look at adding utility functions etc if it turns out to make
-sense.  However, I'm not interested in doing that until we have a
-reasonable number of drivers using the facility and hence
-a good understanding of the common elements of such functions.
-
-> > > I would add a new callback to iio_info that is passed the
-> > > iio_chan_spec and returns a const char * for the label name.  
-> I do agree with the callback, it can be a more generic callback,
-> to return strings, for other purposes also.
-> Something like this:
->     int (*read_string)(struct iio_dev *indio_dev,  struct iio_chan_spec const *chan,  char *string,  long mask);
-> or
->     int (*read_string)(struct iio_dev *indio_dev,  struct iio_chan_spec const *chan, const char **string, long mask);
-> The callback will be called in "iio_read_channel_info", so I think that a system file will be created for it.
-
-What else is it used for?  If you are refactoring some other code
-to use this new callback then it is worth considering.  Until then
-it's an unused generalization so a bad idea.
-
-Thanks,
-
-Jonathan
-
-> > >
-> > > The driver would be responsible for doing a lookup based on what it
-> > > has cached from the dt parse, probably indexed off address or
-> > > scan_index (that can be driver specific)
-> > >
-> > > To create the attribute you need to add this to
-> > > iio_device_register_sysfs and use the various core functions to build
-> > > the attribute name in a similar fashion to that done for info mask elements.
-> > >
-> > > It will be more complex than your approach, but make it more
-> > > 'separable' as a feature in drivers.
-> > >
-> > > Jonathan
-> > >
-> > >  
-> > > >  	unsigned		modified:1;
-> > > >  	unsigned		indexed:1;
-> > > >  	unsigned		output:1;
-> > > > diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-> > > > index e6fd3645963c..c8f65f476eb2 100644
-> > > > --- a/include/linux/iio/types.h
-> > > > +++ b/include/linux/iio/types.h
-> > > > @@ -34,6 +34,7 @@ enum iio_available_type {
-> > > >
-> > > >  enum iio_chan_info_enum {
-> > > >  	IIO_CHAN_INFO_RAW = 0,
-> > > > +	IIO_CHAN_INFO_LABEL,
-> > > >  	IIO_CHAN_INFO_PROCESSED,
-> > > >  	IIO_CHAN_INFO_SCALE,
-> > > >  	IIO_CHAN_INFO_OFFSET,  
-> 
+> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > > index 47df16c87862d..40da602e7a555 100644
+> > > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > > @@ -1716,3 +1716,36 @@ Description:
+> > >               Mass concentration reading of particulate matter in ug / m3.
+> > >               pmX consists of particles with aerodynamic diameter less or
+> > >               equal to X micrometers.
+> > > +
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_offset
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_offset
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_offset
+> > > +KernelVersion:       x.y
+> > > +Contact:     linux-iio@vger.kernel.org
+> > > +Description:
+> > > +             Gyroscope drift calculated by the sensor. In addition to factory
+> > > +             calibration, sensor or sensorhub can
+> > > +             detect gyroscope drift and report it to userspace.  
+> >
+> > This looks like standard ABI that should probably already be documented,
+> > unrelated to the controversial part of this patch. I would split it out into
+> > it's own patch a I can pick that up much faster.  
+> Done in v2.
+> >
+> >  
+> > > +
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_magn_x_offset
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_magn_y_offset
+> > > +What:                /sys/bus/iio/devices/iio:deviceX/in_magn_z_offset
+> > > +KernelVersion:       x.y
+> > > +Contact:     linux-iio@vger.kernel.org
+> > > +Description:
+> > > +             Hard Iron bias calculated by the sensor or sensorhub. To be applied by
+> > > +             user space application to the raw data to obtain the geomagnetic field.  
+> >
+> > Same as above.  
+> Done in v2.
+> >  
+> > > +
+> > > +What:                /sys/.../iio:deviceX/events/in_accel_offset_change_en
+> > > +What:                /sys/.../iio:deviceX/events/in_magn_offset_change_en
+> > > +What:                /sys/.../iio:deviceX/events/in_magn_scale_change_en
+> > > +What:                /sys/.../iio:deviceX/events/in_anglvel_offset_change_en
+> > > +KernelVersion:       x.y
+> > > +Contact:     linux-iio@vger.kernel.org
+> > > +Description:
+> > > +             Some sensors internally calculate offset to apply to remove bias (for
+> > > +             instance, hard/soft-iron bias for magnetometer, online calibration bias for
+> > > +             gyroscope or accelerometer).
+> > > +             When the sensor computes a new set of offset values, it generates an
+> > > +             event for the userspace application to refresh the offsets to apply to raw
+> > > +             data.  
+> >
+> > I'm not totally sold on this idea, though would like inputs from other people before
+> > ruling it out.
+> >
+> > One minor change I'd make would be to have a single event to indicate that something
+> > userspace might care about in the way of metadata for this channel has changed.
+> > I guess something like  
+> Make sense, scale and offset should be checked together if they both exists.
+> Using vents/in_<type>_metadata_en in v2.
+> >
+> > in_accel_metachange_en etc with a single new event code.  For events, it's the event
+> > code mapping that normally matters more than sysfs binding as that is much more
+> > tightly restricted.
+> >
+> > Jonathan
+> >  
 

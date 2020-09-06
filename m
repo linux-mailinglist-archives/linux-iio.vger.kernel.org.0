@@ -2,42 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FA8125EEF9
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 18:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B140925EF05
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 18:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728910AbgIFQEK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Sep 2020 12:04:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55322 "EHLO mail.kernel.org"
+        id S1728973AbgIFQK7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Sep 2020 12:10:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56604 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726931AbgIFQED (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Sep 2020 12:04:03 -0400
+        id S1729023AbgIFQKy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Sep 2020 12:10:54 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 53BCD20708;
-        Sun,  6 Sep 2020 16:04:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 44B1120709;
+        Sun,  6 Sep 2020 16:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599408242;
-        bh=gMp1PKMc9TtqfuFVnZiPX8l1hDORfTIrBnhLDlKITsI=;
+        s=default; t=1599408654;
+        bh=EKKo/Pr7cbvXEL/uhyjxvvcTU18RWBi/KO8A9ZBpESM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lZ5b6rea5rS+x8cbq1Z6Dn7c4WtJCXYnKsrXGfgpbkZqpltmMqb1O3vSiGWGeVhp+
-         9AjFm9vAUauYGaAF+NC/n9OLojMTXFoZFBXPCQfBIxBDXHppH1rDg1+G4DEoSbQi4G
-         i7zPYySd2Wg4RGd9Y2IcCyDSfgX7YpIWoEtTuvks=
-Date:   Sun, 6 Sep 2020 17:03:58 +0100
+        b=RRVLstSGSZAGrFXwmLxAMRpdW09YPwib93S8F0KNv+TVU2IrGUjKhkrkehP1XQmhv
+         At1b9wRn4fncsLuSOdS2lR8U2T3FIdL91IrFdjfuxH0LiNDeBFT+wldmDbWNzOwhq4
+         SNDU8xOVKJGLiO0rh06cKhy5kQO0O7bnBnRVZ43s=
+Date:   Sun, 6 Sep 2020 17:10:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 1/2] MAINTAINERS: Consolidate Analog Devices IIO
- entries and remove Beniamin Bia
-Message-ID: <20200906170358.4abf98de@archlinux>
-In-Reply-To: <8f7de1d6-0756-8b59-7041-c5ae4773e5f2@metafoo.de>
+Subject: Re: [PATCH v3 2/2] MAINTAINERS: Move Hartmut Knaack to Credits
+Message-ID: <20200906171049.5aa5b99b@archlinux>
+In-Reply-To: <20200903181926.5606-2-krzk@kernel.org>
 References: <20200903181926.5606-1-krzk@kernel.org>
-        <20200906150640.5ffe7e0f@archlinux>
-        <8f7de1d6-0756-8b59-7041-c5ae4773e5f2@metafoo.de>
+        <20200903181926.5606-2-krzk@kernel.org>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,43 +45,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 6 Sep 2020 17:57:54 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Thu,  3 Sep 2020 20:19:26 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> On 9/6/20 4:06 PM, Jonathan Cameron wrote:
-> > On Thu,  3 Sep 2020 20:19:25 +0200
-> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >  
-> >> Emails to Beniamin Bia bounce with no such address so remove him from
-> >> maintainers.  After this removal, many entries for Analog Devices Inc
-> >> IIO drivers look exactly the same so consolidate them.
-> >>
-> >> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> >> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> >> Cc: Jonathan Cameron <jic23@kernel.org>
-> >> Cc: linux-iio <linux-iio@vger.kernel.org>
-> >> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> >> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>  
-> > As I'd assume a more specific binding always overrides a catch all,
-> > this has the effect of giving Lars and Michael responsibility
-> > for a few things they didn't previously cover.  If the two
-> > of them are fine with it, than that's good, but I'd ideally
-> > like an Ack from Lars.  
+> Hartmut Knaack was an active reviewer and contributor to the IIO
+> subsystem and drivers.  However his last message on LKML is from
+> October 2015.
 > 
-> Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+> In thanks for Hartmut's effort, move him name to the Credits.
 > 
-> I think I left a ticket with ADI when I left to update the maintainers 
-> entries and replace me with somebody else, must have gotten lost :)
-> 
-*laughs*
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: linux-iio <linux-iio@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Applied.
 
-You are probably stuck with it forever if you don't remove yourself :)
+Thanks Hartmut.  With the other reviewers, you dug me out of
+several holes where I was completely swamped.
 
-Applied series to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to probably completely ignore.
+Hope to see you again one day, but fully understand if you've
+moved on to other things.
 
-thanks,
+I probably don't say this often enough, but those who review
+for IIO are the only reason I keep up with things when life gets
+busy.  It is very much appreciated.
+
+Thanks,
 
 Jonathan
+
+> 
+> ---
+> 
+> Changes since v1:
+> 1. Fix order in CREDITS
+> ---
+>  CREDITS     | 4 ++++
+>  MAINTAINERS | 1 -
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/CREDITS b/CREDITS
+> index 32ee70a7562e..c741455498a4 100644
+> --- a/CREDITS
+> +++ b/CREDITS
+> @@ -1942,6 +1942,10 @@ S: Post Office Box 611311
+>  S: San Jose, California 95161-1311
+>  S: USA
+>  
+> +N: Hartmut Knaack
+> +E: knaack.h@gmx.de
+> +D: IIO subsystem and drivers
+> +
+>  N: Thorsten Knabe
+>  E: Thorsten Knabe <tek@rbg.informatik.tu-darmstadt.de>
+>  E: Thorsten Knabe <tek01@hrzpub.tu-darmstadt.de>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4a120aec90a2..c585449b9084 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8488,7 +8488,6 @@ F:	drivers/iio/multiplexer/iio-mux.c
+>  
+>  IIO SUBSYSTEM AND DRIVERS
+>  M:	Jonathan Cameron <jic23@kernel.org>
+> -R:	Hartmut Knaack <knaack.h@gmx.de>
+>  R:	Lars-Peter Clausen <lars@metafoo.de>
+>  R:	Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+>  L:	linux-iio@vger.kernel.org
 

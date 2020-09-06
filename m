@@ -2,42 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 596DB25EE7A
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6B825EE81
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728846AbgIFPRr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Sep 2020 11:17:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42886 "EHLO mail.kernel.org"
+        id S1728979AbgIFPUi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Sep 2020 11:20:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43776 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728807AbgIFPRq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Sep 2020 11:17:46 -0400
+        id S1728964AbgIFPUO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Sep 2020 11:20:14 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B21D420714;
-        Sun,  6 Sep 2020 15:17:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 35E7920714;
+        Sun,  6 Sep 2020 15:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599405466;
-        bh=lbjXajpDwp46rCIbmdhYv2vqZL2+1OeF2q40klnYeLI=;
+        s=default; t=1599405614;
+        bh=lENSTT8zhvx+mn9kptc0V4UJ7LSxhvNqQW6A/G5G6xc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vp9++8NngrPkXT2V7R0jX5vrQ7yyyFx+ADzDOUTtYUgNyoi1HZMYtoqjSOqP0apkw
-         9UmjeTFocipI+zcNuOMgK3QxOEUwn4C/UkNb64LLgXE3scjUv14jDUYkY0E7XSNU5i
-         EtETG2ykzgOPoTDUqiV+vpQYg8043olr8dGYoSJc=
-Date:   Sun, 6 Sep 2020 16:17:41 +0100
+        b=hSEZ2PLOZEp+XnmHEDtxrqCjCPbvYSLy0e4dKzEHogM1ihso0Bl2oJy8fcSukd9Fx
+         LiAmbxD3VMuPgHAC8lQBCQDmZg5NEh2mQrA2OH/ybddgbNq09zNEJE/f2V0+FT8Tpo
+         yZmd7AFL8e7KIHxAbkh2p4VIDMgwlWn/ndmfQpx4=
+Date:   Sun, 6 Sep 2020 16:20:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Mircea Caprioru <mircea.caprioru@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+To:     Vicente Bergas <vicencb@gmail.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: ad7124: Fix typo in device name
-Message-ID: <20200906161741.383dfce0@archlinux>
-In-Reply-To: <CAHp75VcYVsFtiHYfy4pzsZdDWOEToU1mf2KmQ2BaEtrVbPy8kA@mail.gmail.com>
-References: <20200902134222.28357-1-mircea.caprioru@analog.com>
-        <CAHp75VcYVsFtiHYfy4pzsZdDWOEToU1mf2KmQ2BaEtrVbPy8kA@mail.gmail.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>,
+        linux-iio@vger.kernel.org, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH] IIO: rockchip: add missing dependencies for saradc
+Message-ID: <20200906162010.30094d61@archlinux>
+In-Reply-To: <20200901204054.5334-1-vicencb@gmail.com>
+References: <20200901204054.5334-1-vicencb@gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,54 +44,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2 Sep 2020 21:05:56 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue,  1 Sep 2020 22:40:54 +0200
+Vicente Bergas <vicencb@gmail.com> wrote:
 
-> On Wed, Sep 2, 2020 at 4:45 PM Mircea Caprioru
-> <mircea.caprioru@analog.com> wrote:
-> >
-> > This patch fixes the device name typo.
-> >  
+> This driver uses the triggered buffer functionality
+> but was not requiring it.
 > 
-> Luckily it's part of v5.9-rcX, so if Jonathan sends this within v5.9
-> time frame, we are good.
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Applied to the fixes-togreg branch of iio.git.
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 
-Should be plenty of time. :) (famous last words)
+Fix should now be in tree. I don't think the IIO_TRIGGER select
+is necessary (and isn't in current fixed version) but if I'm wrong
+on that please shout!  Logically it shouldn't be required as the
+driver doesn't provide a trigger, but we may have something missing
+a stub somewhere.
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/Kconfig | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> 
-> > Fixes: 951ad4700313 ("iio: adc: ad7124: move chip ID & name on the chip_info table")
-> > Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-> > ---
-> >  drivers/iio/adc/ad7124.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> > index 8dce06e9e69c..766c73333604 100644
-> > --- a/drivers/iio/adc/ad7124.c
-> > +++ b/drivers/iio/adc/ad7124.c
-> > @@ -177,12 +177,12 @@ static const struct iio_chan_spec ad7124_channel_template = {
-> >
-> >  static struct ad7124_chip_info ad7124_chip_info_tbl[] = {
-> >         [ID_AD7124_4] = {
-> > -               .name = "ad7127-4",
-> > +               .name = "ad7124-4",
-> >                 .chip_id = CHIPID_AD7124_4,
-> >                 .num_inputs = 8,
-> >         },
-> >         [ID_AD7124_8] = {
-> > -               .name = "ad7127-8",
-> > +               .name = "ad7124-8",
-> >                 .chip_id = CHIPID_AD7124_8,
-> >                 .num_inputs = 16,
-> >         },
-> > --
-> > 2.25.1
-> >  
-> 
-> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 66d9cc073157..cd90f60cdfd9 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -865,6 +865,9 @@ config ROCKCHIP_SARADC
+>  	tristate "Rockchip SARADC driver"
+>  	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+>  	depends on RESET_CONTROLLER
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say yes here to build support for the SARADC found in SoCs from
+>  	  Rockchip.
 

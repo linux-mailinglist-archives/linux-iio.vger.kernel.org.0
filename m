@@ -2,45 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E82A925EE89
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F1F625EE8C
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Sep 2020 17:24:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728993AbgIFPXP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Sep 2020 11:23:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44514 "EHLO mail.kernel.org"
+        id S1728910AbgIFPYh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Sep 2020 11:24:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728971AbgIFPWl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Sep 2020 11:22:41 -0400
+        id S1728959AbgIFPYM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Sep 2020 11:24:12 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C263320714;
-        Sun,  6 Sep 2020 15:22:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0B4CB20714;
+        Sun,  6 Sep 2020 15:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599405759;
-        bh=A79A9Iqg7IapUO3QuOtEmzHrXji7k3atFmJOwoO3ZbI=;
+        s=default; t=1599405851;
+        bh=bTdXw0tG/utEdt1OtJMdHMHIzVmsX7ZvrSFaULRmmXY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MsPAbUlthj2WrDZfz3AwTEVTgUeS5QLL4onmQlHQBvaierE/ZG7w69rPpApjAde11
-         kCVvkMdf1lYhguEoAv/mE56+dUFY6uiKMZuUdXp6isQkmK7GEge72WmSrD/YF7V+uZ
-         g6ft6VM6XhwWkhTZ+4WL7gTPOhy2CPBPxn408L94=
-Date:   Sun, 6 Sep 2020 16:22:34 +0100
+        b=p8PzqMuJggnHdx4w4af4fzwHMuLiEu8jK9B0JDVldRYqLN/eiQdZp39zy1pnJDCvc
+         XBnl1QYCUWkSb8ZL8GCsfri8l5ulRxkyx8XI0N6S5Sa1aFzbwUVNyW5K1XGYaFmseL
+         Ki3XvFm1LyBP+TvdiqbDSfWc5bWuCo6gDE7H97+0=
+Date:   Sun, 6 Sep 2020 16:24:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Daniel Campello <campello@chromium.org>
-Cc:     Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: sx9310: Prefer async probe
-Message-ID: <20200906162234.4a829a0a@archlinux>
-In-Reply-To: <CAHcu+VarBz3m_zKfDB0osQsjZ0dMpvUk+q2Qt-yC5DbPjr0bRA@mail.gmail.com>
-References: <20200901081920.v2.1.Id02b2f451b3eed71ddd580f4b8b44b3e33e84970@changeid>
-        <159897502625.334488.7103007623601336114@swboyd.mtv.corp.google.com>
-        <CAHcu+VarBz3m_zKfDB0osQsjZ0dMpvUk+q2Qt-yC5DbPjr0bRA@mail.gmail.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, peress@chromium.org, enric.balletbo@collabora.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] Documentation: ABI: iio: Use What: consistently
+Message-ID: <20200906162407.2173a5d6@archlinux>
+In-Reply-To: <20200901030017.3221295-2-gwendal@chromium.org>
+References: <20200901030017.3221295-1-gwendal@chromium.org>
+        <20200901030017.3221295-2-gwendal@chromium.org>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,34 +42,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 1 Sep 2020 11:01:29 -0600
-Daniel Campello <campello@chromium.org> wrote:
+On Mon, 31 Aug 2020 20:00:15 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On Tue, Sep 1, 2020 at 9:43 AM Stephen Boyd <swboyd@chromium.org> wrote:
-> >
-> > Quoting Douglas Anderson (2020-09-01 08:19:43)  
-> > > On one board I found that:
-> > >   probe of 5-0028 returned 1 after 259547 usecs
-> > >
-> > > While some of this time is attributable to the pile of i2c transfers
-> > > that we do at probe time, the lion's share (over 200 ms) is sitting
-> > > waiting in the polling loop in sx9310_init_compensation() waiting for
-> > > the hardware to indicate that it's done.
-> > >
-> > > There's no reason to block probe of all other devices on our probe.
-> > > Turn on async probe.
-> > >
-> > > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > > ---  
-> >
-> > Reviewed-by: Stephen Boyd <swboyd@chromium.org>  
+> Change "[w|W]hat[:| ]" to What: for consistency.
 > 
-> Reviewed-by: Daniel Campello <campello@chromium.org>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
-
-thanks,
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+> No changes since v1
+Already applied from v1
 
 Jonathan
 
+>  Documentation/ABI/testing/sysfs-bus-iio | 48 ++++++++++++-------------
+>  1 file changed, 24 insertions(+), 24 deletions(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index c3767d4d01a6f..47df16c87862d 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -401,21 +401,21 @@ Description:
+>  		Hardware applied calibration offset (assumed to fix production
+>  		inaccuracies).
+>  
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_voltage_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_accel_x_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_accel_y_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_accel_z_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibscale
+> -What		/sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibscale
+> -what		/sys/bus/iio/devices/iio:deviceX/in_illuminance0_calibscale
+> -what		/sys/bus/iio/devices/iio:deviceX/in_proximity0_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_z_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance0_calibscale
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_proximity0_calibscale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_pressureY_calibscale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_pressure_calibscale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_calibscale
+> @@ -483,7 +483,7 @@ Description:
+>  		If a discrete set of scale values is available, they
+>  		are listed in this attribute.
+>  
+> -What		/sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_red_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_green_hardwaregain
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_blue_hardwaregain
+> @@ -750,9 +750,9 @@ What:		/sys/.../events/in_voltageY_raw_thresh_falling_value
+>  What:		/sys/.../events/in_tempY_raw_thresh_rising_value
+>  What:		/sys/.../events/in_tempY_raw_thresh_falling_value
+>  What:		/sys/.../events/in_illuminance0_thresh_falling_value
+> -what:		/sys/.../events/in_illuminance0_thresh_rising_value
+> -what:		/sys/.../events/in_proximity0_thresh_falling_value
+> -what:		/sys/.../events/in_proximity0_thresh_rising_value
+> +What:		/sys/.../events/in_illuminance0_thresh_rising_value
+> +What:		/sys/.../events/in_proximity0_thresh_falling_value
+> +What:		/sys/.../events/in_proximity0_thresh_rising_value
+>  KernelVersion:	2.6.37
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> @@ -830,11 +830,11 @@ What:		/sys/.../events/in_tempY_thresh_rising_hysteresis
+>  What:		/sys/.../events/in_tempY_thresh_falling_hysteresis
+>  What:		/sys/.../events/in_tempY_thresh_either_hysteresis
+>  What:		/sys/.../events/in_illuminance0_thresh_falling_hysteresis
+> -what:		/sys/.../events/in_illuminance0_thresh_rising_hysteresis
+> -what:		/sys/.../events/in_illuminance0_thresh_either_hysteresis
+> -what:		/sys/.../events/in_proximity0_thresh_falling_hysteresis
+> -what:		/sys/.../events/in_proximity0_thresh_rising_hysteresis
+> -what:		/sys/.../events/in_proximity0_thresh_either_hysteresis
+> +What:		/sys/.../events/in_illuminance0_thresh_rising_hysteresis
+> +What:		/sys/.../events/in_illuminance0_thresh_either_hysteresis
+> +What:		/sys/.../events/in_proximity0_thresh_falling_hysteresis
+> +What:		/sys/.../events/in_proximity0_thresh_rising_hysteresis
+> +What:		/sys/.../events/in_proximity0_thresh_either_hysteresis
+>  KernelVersion:	3.13
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
 

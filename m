@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FD825FED8
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 18:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E5025FE52
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 18:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730560AbgIGQYV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Sep 2020 12:24:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33208 "EHLO mail.kernel.org"
+        id S1730390AbgIGQNS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Sep 2020 12:13:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33244 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729924AbgIGQNK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Sep 2020 12:13:10 -0400
+        id S1730386AbgIGQNO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Sep 2020 12:13:14 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE70221775;
-        Mon,  7 Sep 2020 16:13:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A703206E6;
+        Mon,  7 Sep 2020 16:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599495190;
-        bh=IvIoj2K7TIRgwMp4PonToROYopW9M5mo7TeBE51xjo0=;
+        s=default; t=1599495193;
+        bh=INsnJaELqRYsET4RRsxOzKJWpIsKuNPsUd4VuZL+kig=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=nAA805Fqp3EYfc9xrjR3f18Q6EcfDrLkpSJ0h2oGbmmVqtFRrdA4GXxl0ndhqjxDs
-         LiDEMZm+2eokreabKhc1ESbH/NZVLBv7Ih4ocMKXz2k3Gm06fRoHkuu2GU/R5+RDde
-         T9K4fsf4K9f3Po0qyFcoQj/+XglB1tXFqqpMDUH8=
+        b=Z/xvc2E0pU0W7wifdwH6nXDDK8ZLaQVF/rtfD7l3/YbRIIv4MmQjtHbOq1pzT0vxg
+         S3VFMWnUnNWGIJsMdsvlMyL81ZbDWE+ONNyxX1HXCnqttgNUzDX9gpj/uNgNXc3yOf
+         0I/Ce/wW1oqj/gjsaKhJcOpIpkjvCoHujfUXs1Xk=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
@@ -35,9 +35,9 @@ To:     Kukjin Kim <kgene@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH 10/25] ARM: dts: s5pv210: add RTC 32 KHz clock in Aquilla
-Date:   Mon,  7 Sep 2020 18:11:26 +0200
-Message-Id: <20200907161141.31034-11-krzk@kernel.org>
+Subject: [PATCH 11/25] ARM: dts: s5pv210: add RTC 32 KHz clock in Aries family
+Date:   Mon,  7 Sep 2020 18:11:27 +0200
+Message-Id: <20200907161141.31034-12-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200907161141.31034-1-krzk@kernel.org>
 References: <20200907161141.31034-1-krzk@kernel.org>
@@ -59,15 +59,15 @@ This fixes dtbs_check warnings:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm/boot/dts/s5pv210-aquila.dts | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm/boot/dts/s5pv210-aries.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm/boot/dts/s5pv210-aquila.dts b/arch/arm/boot/dts/s5pv210-aquila.dts
-index 14969b6529e8..eaeb0e921aaa 100644
---- a/arch/arm/boot/dts/s5pv210-aquila.dts
-+++ b/arch/arm/boot/dts/s5pv210-aquila.dts
-@@ -32,6 +32,13 @@
- 			0x40000000 0x18000000>;
+diff --git a/arch/arm/boot/dts/s5pv210-aries.dtsi b/arch/arm/boot/dts/s5pv210-aries.dtsi
+index 6ba23562da46..86c3b26fd21e 100644
+--- a/arch/arm/boot/dts/s5pv210-aries.dtsi
++++ b/arch/arm/boot/dts/s5pv210-aries.dtsi
+@@ -47,6 +47,13 @@
+ 		};
  	};
  
 +	pmic_ap_clk: clock-0 {
@@ -77,23 +77,11 @@ index 14969b6529e8..eaeb0e921aaa 100644
 +		clock-frequency = <32768>;
 +	};
 +
- 	regulators {
- 		compatible = "simple-bus";
- 		#address-cells = <1>;
-@@ -228,6 +235,11 @@
- 					regulator-always-on;
- 				};
- 
-+				ap32khz_reg: EN32KHz-AP {
-+					regulator-name = "32KHz AP";
-+					regulator-always-on;
-+				};
-+
- 				vichg_reg: ENVICHG {
- 					regulator-name = "VICHG";
- 				};
-@@ -326,6 +338,11 @@
- 	status = "okay";
+ 	bt_codec: bt_sco {
+ 		compatible = "linux,bt-sco";
+ 		#sound-dai-cells = <0>;
+@@ -825,6 +832,11 @@
+ 	samsung,pwm-outputs = <1>;
  };
  
 +&rtc {
@@ -101,9 +89,9 @@ index 14969b6529e8..eaeb0e921aaa 100644
 +	clock-names = "rtc", "rtc_src";
 +};
 +
- &sdhci0 {
- 	bus-width = <4>;
- 	non-removable;
+ &sdhci1 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
 -- 
 2.17.1
 

@@ -2,42 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A01260746
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 01:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D6D26074B
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 01:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727771AbgIGXzq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Sep 2020 19:55:46 -0400
-Received: from mail-bn7nam10olkn2011.outbound.protection.outlook.com ([40.92.40.11]:9344
+        id S1727984AbgIGX6F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Sep 2020 19:58:05 -0400
+Received: from mail-bn7nam10olkn2023.outbound.protection.outlook.com ([40.92.40.23]:2528
         "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727058AbgIGXzp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Sep 2020 19:55:45 -0400
+        id S1727058AbgIGX6A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Sep 2020 19:58:00 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G6RZ0iJvg6CRQ3je10GVhx0kQVwC9QnSVtOLDt46QvL2wf8yHDAz2+1N5/vaZiu7IqgFgfxM0xCX2byBW40H22pUr+64JDKkpVSvlr2KcdPM9/R4/AnegpNHbR4Nd2ccdQk+UmASsOTkln9NedWEtpvvNF3CzoEJno1UE5/WGlmizSkwh/hKUMkDxrZXcOgtNvsfexniHJYEGXZ5VftAV7VUX7Tya6AAsdd3btiLzmVembjtWyvgQAuhA4aDfSLBpq/GjjC2KbTzigpWZSNZvfn7WlpLguHK6yp3rPyzDGKvzJNA4w/YfvqeeD2K4hQYffpKwZIxnYHfJDU6jCa1Qg==
+ b=nmgeMEy12WdIKnwMDH+F+R+TuQhNhaaxHGjaW66tKbvICCofJAjJnu+Y7O9q8+vxYJobSUC3EvY4ZwRT4TIAlyuXmWTSB7Qlw/8ZYBO6cz638z2yPehUyuRvdfkacwoDlNCZx6hbwDrLWvPMl3rvYJ+bZi/aLBItLnIGZnsuycTZ3NsUTx6h9er5bR+CIXyHC3QU9AQq6OaqyT6MMDCOeJIwKTmSlEOoXdLr4EYwsYlel9vb2F/yZHTivoyIA4ur46laxhK33gbrKbVFK3kaaSK8n2c5NyVrc6DBrSQFINblHeGY7Mhtrvs3J2wJR8ZdB/HbblJaOK9ob5BGTN/RJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yhp5kpm+xJHMQu6zDkcK7rgQ/52TPIfbtiJo9pP4fuE=;
- b=PmJc6ZKrVlSwwwMB+Wp905I+/tM3QADKVFXtQhKw+bT5N5Q2y6QYJhTNSOFM+8DiQGmN7tvzoY/J8r2lVNkx800B7usSOzqw0gHZauDICNxsP+PUHR4xGdMkuXm6J0vrI2a88M1B1oGYIbHglFAqUZs8srfh4F7vCz6BTvdmzqslrL/8uqCxrnE76cYzBNNsD9xKJF1XqkjsuGUw/FY8gTe4mjfe5eYYFYanwxwrvttaUodeYLA+5h4Tae6R1F61/jRHnpF3fpLMgf25K7j8oQtlfaov54HNcsj7H/FeHBSaz+uUZW+LGcb8XfXILsqBT0LwKvtSRDXdc0K4UlR6DQ==
+ bh=HntvSMKcMp6nPWAeky7lX80zSyFz7+LuGIVDu9CmML0=;
+ b=db251tpKrkv5do8WMNP5JS2zg8otRMQxsFR1bIiZgcRADPYF8eJTfa7Q0IN1U4UVKtlXKuvuqr3y4E9jG4rWVobRjQ2/d7EGGw6h0Y/GUVJBXLPzONxG+YEZI9HG+PBPKX4mHesIPU6vlC/4/W9SM7ZmvtpI+KsKO8rKZkMvUVYdVra6wIy7fYwQsbyyojhGvh4NN3rPPzxa+hgnjoHCJd1tkDNZN4CP5vzoIRjyH+yLYKFTXrQ+IlgNu83rBrf+1YuAG/aYdbNlPeTNmZIFBSOgQjtrMO5oGBn7A+VsKQ1qWx9Ba/WEfPLNraa8QiderfR7DGf2aQtPnzttl2Shaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 Received: from BN7NAM10FT047.eop-nam10.prod.protection.outlook.com
- (2a01:111:e400:7e8f::40) by
- BN7NAM10HT080.eop-nam10.prod.protection.outlook.com (2a01:111:e400:7e8f::108)
+ (2a01:111:e400:7e8f::4f) by
+ BN7NAM10HT056.eop-nam10.prod.protection.outlook.com (2a01:111:e400:7e8f::64)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.16; Mon, 7 Sep
- 2020 23:55:42 +0000
+ 2020 23:57:58 +0000
 Received: from BN6PR04MB0660.namprd04.prod.outlook.com
  (2a01:111:e400:7e8f::50) by BN7NAM10FT047.mail.protection.outlook.com
  (2a01:111:e400:7e8f::126) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.24 via Frontend
- Transport; Mon, 7 Sep 2020 23:55:42 +0000
-X-IncomingTopHeaderMarker: OriginalChecksum:0614694EEEB9EEFAC7799501BF9DF3CEAC7E4D039BC2D5F554942613E41C340D;UpperCasedChecksum:8D13EE74243F57BEBE248144F76506505741DE9B57F485FDD1A5207AC64B4CEA;SizeAsReceived:9289;Count:48
+ Transport; Mon, 7 Sep 2020 23:57:58 +0000
+X-IncomingTopHeaderMarker: OriginalChecksum:8CF1001AE62D46DB815F46CE29B099155776B1E4525096109C9E4E312E0C574A;UpperCasedChecksum:DCF91870F4ED01B99357943FC49B92E139A22B7654A195535A21E478F9D2CA5A;SizeAsReceived:9289;Count:48
 Received: from BN6PR04MB0660.namprd04.prod.outlook.com
  ([fe80::303b:a75b:d03e:bd04]) by BN6PR04MB0660.namprd04.prod.outlook.com
  ([fe80::303b:a75b:d03e:bd04%3]) with mapi id 15.20.3348.019; Mon, 7 Sep 2020
- 23:55:31 +0000
-Subject: Re: [RFT 09/25] ARM: dts: s5pv210: fix number of I2S DAI cells
+ 23:57:58 +0000
+Subject: Re: [PATCH 11/25] ARM: dts: s5pv210: add RTC 32 KHz clock in Aries
+ family
 To:     Krzysztof Kozlowski <krzk@kernel.org>,
         Kukjin Kim <kgene@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -49,36 +50,35 @@ To:     Krzysztof Kozlowski <krzk@kernel.org>,
         linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
 References: <20200907161141.31034-1-krzk@kernel.org>
- <20200907161141.31034-10-krzk@kernel.org>
+ <20200907161141.31034-12-krzk@kernel.org>
 From:   Jonathan Bakker <xc-racer2@live.ca>
-Message-ID: <BN6PR04MB0660D9B0D0B5FB4F40CF2769CB280@BN6PR04MB0660.namprd04.prod.outlook.com>
-Date:   Mon, 7 Sep 2020 16:55:26 -0700
+Message-ID: <BN6PR04MB0660939E010C3175CD0DF9D6CB280@BN6PR04MB0660.namprd04.prod.outlook.com>
+Date:   Mon, 7 Sep 2020 16:57:53 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
-In-Reply-To: <20200907161141.31034-10-krzk@kernel.org>
+In-Reply-To: <20200907161141.31034-12-krzk@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CO1PR15CA0047.namprd15.prod.outlook.com
- (2603:10b6:101:1f::15) To BN6PR04MB0660.namprd04.prod.outlook.com
- (2603:10b6:404:d9::21)
-X-Microsoft-Original-Message-ID: <b3120e9e-c16a-7fc0-1a61-58463210ee8e@live.ca>
+X-ClientProxiedBy: MW2PR16CA0001.namprd16.prod.outlook.com (2603:10b6:907::14)
+ To BN6PR04MB0660.namprd04.prod.outlook.com (2603:10b6:404:d9::21)
+X-Microsoft-Original-Message-ID: <c46752bf-7a1a-2a42-9f15-a504e5f9b7a2@live.ca>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by CO1PR15CA0047.namprd15.prod.outlook.com (2603:10b6:101:1f::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15 via Frontend Transport; Mon, 7 Sep 2020 23:55:28 +0000
-X-Microsoft-Original-Message-ID: <b3120e9e-c16a-7fc0-1a61-58463210ee8e@live.ca>
-X-TMN:  [/GJJJ0TDLeNVslWPYdc+YyZHrn2aQ5+Q+VyUnIFd9X7i3j11xOYL9RYXJ7cvP1ZY]
+Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by MW2PR16CA0001.namprd16.prod.outlook.com (2603:10b6:907::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15 via Frontend Transport; Mon, 7 Sep 2020 23:57:55 +0000
+X-Microsoft-Original-Message-ID: <c46752bf-7a1a-2a42-9f15-a504e5f9b7a2@live.ca>
+X-TMN:  [k4tqjJgX5hGeluGZs9Q46AzGeJY0KK2EcLeTWBJjIjKPtuRSEtQPsVVoUj+QDr9L]
 X-MS-PublicTrafficType: Email
 X-IncomingHeaderCount: 48
 X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-Correlation-Id: bcfbf58f-a31c-4904-ddde-08d8538980bd
-X-MS-TrafficTypeDiagnostic: BN7NAM10HT080:
+X-MS-Office365-Filtering-Correlation-Id: 2c6f8427-16bd-4d0a-94f9-08d85389d84b
+X-MS-TrafficTypeDiagnostic: BN7NAM10HT056:
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ztdrQdlJQKL1UXQnGMLcFlcBApkGOhpeNml0PKBGzmnitpKG9zGN3F5UnoULtrYaV4ABNctjXHNS1SZsP+8Z2wegVjTr+56x/j2ppfufjrbL6KNNZvX4bbwjdzzHczZbmLdTDzbd+2lEOkyyV8w1nIZrnXxRNjcMnvQre8BraD/vBu0TVBBEON37QSvb3pzIo9kjvPXTAYpYj44xIAuXaA==
-X-MS-Exchange-AntiSpam-MessageData: 1a7k1vPztP0sjQ46N9+A2p+DXlz8r1tfjy9tWfutZCMqf8FfkwA7C+5sxgXWHXoi+G/wLViswcY4eePATQX95mXcrKtFNlYYxxKGRHsQJDvR7H7c8cCvLZJKrpOPpGFgT2leRFRbBJLhPrTLeyo1h9Wn2a4++Ua76e4mPVuAtt8+ihIepmxUVl/xYYsABN/5X+BnvNthGc28WEUN/kqXxg==
+X-Microsoft-Antispam-Message-Info: aOmx1GuBX1LZwHQvBC4zaq+3nyAjmyWo+Clo/SAOAUedOdOOrLkCDL0HpFzFdTD53u+ZggMwrgXd5rekTGpNzcePHGhqKtTf/2BGLH73Bvn3Q5Hh+Py2oDzXhkdYTUJ/tREYGmAYaqFHLAN1pBfULtR4MWyQyVDkGBxjz9PDUdwbcBKL1eZ0xoTHygedrxrtWKjIFYJhLrKQRZBPt1DH3A==
+X-MS-Exchange-AntiSpam-MessageData: bEqoz062S9Zc1hB3Nwy2d/bMOhJE0AbRQJRtKCeonzebnhH7v/9hXoNSdj7zQvmfR0swX24z7WJoGOLjzrEcGYK9LtqBhLYcPwU7u7LuiM57E4Gc+wId3w/N5ZeigP3g4N0Mwp/u4A3Oc/yqHrfRSkjizVKhQ1VObzVvIUqnrpJ1LAacQ9SNdtHscDolUIzxBKet96sMxuh3y5yAavF41w==
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcfbf58f-a31c-4904-ddde-08d8538980bd
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2020 23:55:31.1615
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c6f8427-16bd-4d0a-94f9-08d85389d84b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2020 23:57:58.0260
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -86,99 +86,70 @@ X-MS-Exchange-CrossTenant-AuthSource: BN7NAM10FT047.eop-nam10.prod.protection.ou
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7NAM10HT080
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7NAM10HT056
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sadly, this is causing issues for me.  The machine driver is no longer probing correctly
-on the Galaxy S.
-
-The failing call in sound/soc/samsung/aries_wm8994.c is
-
-	/* Set CPU of_node for BT DAI */
-	aries_dai[2].cpus->of_node = of_parse_phandle(cpu,
-			"sound-dai", 1);
-
-where cpus->of_node is not set properly.  Which is definitely weird because it doesn't
-look like this should affect that.
-
-Let me know if there's any specific test that you want me to do.
-
-Thanks,
-Jonathan
-
+Hi Krzysztof,
 
 On 2020-09-07 9:11 a.m., Krzysztof Kozlowski wrote:
-> The bindings describe I2S DAI has 1 cells.  This makes especially sense
-> for i2s0 which registers two DAIs.  Adjust the cells to fix dtbs_check
-> warnings like:
+> The S3C RTC requires 32768 Hz clock as input which is provided by PMIC.
+> However there is no such clock provider but rather a regulator driver
+> which registers the clock as a regulator.  This is an old driver which
+> will not be updated so add a workaround - a fixed-clock to fill missing
+> clock phandle reference in S3C RTC.
 > 
->   i2s@e2100000: #sound-dai-cells:0:0: 1 was expected
+> This fixes dtbs_check warnings:
+> 
+>   rtc@e2800000: clocks: [[2, 145]] is too short
+>   rtc@e2800000: clock-names: ['rtc'] is too short
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  arch/arm/boot/dts/s5pv210-fascinate4g.dts | 2 +-
->  arch/arm/boot/dts/s5pv210-galaxys.dts     | 2 +-
->  arch/arm/boot/dts/s5pv210.dtsi            | 6 +++---
->  3 files changed, 5 insertions(+), 5 deletions(-)
+>  arch/arm/boot/dts/s5pv210-aries.dtsi | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/arch/arm/boot/dts/s5pv210-fascinate4g.dts b/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-> index ca064359dd30..a6dc8a173af1 100644
-> --- a/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-> +++ b/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-> @@ -102,7 +102,7 @@
->  		pinctrl-0 = <&headset_det &earpath_sel>;
->  
->  		cpu {
-> -			sound-dai = <&i2s0>, <&bt_codec>;
-> +			sound-dai = <&i2s0 0>, <&bt_codec>;
+> diff --git a/arch/arm/boot/dts/s5pv210-aries.dtsi b/arch/arm/boot/dts/s5pv210-aries.dtsi
+> index 6ba23562da46..86c3b26fd21e 100644
+> --- a/arch/arm/boot/dts/s5pv210-aries.dtsi
+> +++ b/arch/arm/boot/dts/s5pv210-aries.dtsi
+> @@ -47,6 +47,13 @@
 >  		};
+>  	};
 >  
->  		codec {
-> diff --git a/arch/arm/boot/dts/s5pv210-galaxys.dts b/arch/arm/boot/dts/s5pv210-galaxys.dts
-> index 560f830b6f6b..0eba06f56ac7 100644
-> --- a/arch/arm/boot/dts/s5pv210-galaxys.dts
-> +++ b/arch/arm/boot/dts/s5pv210-galaxys.dts
-> @@ -132,7 +132,7 @@
->  		pinctrl-0 = <&headset_det &earpath_sel>;
+> +	pmic_ap_clk: clock-0 {
+> +		/* Workaround for missing clock on PMIC */
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <32768>;
+> +	};
+> +
+>  	bt_codec: bt_sco {
+>  		compatible = "linux,bt-sco";
+>  		#sound-dai-cells = <0>;
+> @@ -825,6 +832,11 @@
+>  	samsung,pwm-outputs = <1>;
+>  };
 >  
->  		cpu {
-> -			sound-dai = <&i2s0>, <&bt_codec>;
-> +			sound-dai = <&i2s0 0>, <&bt_codec>;
->  		};
->  
->  		codec {
-> diff --git a/arch/arm/boot/dts/s5pv210.dtsi b/arch/arm/boot/dts/s5pv210.dtsi
-> index 2871351ab907..96e667ba1c3f 100644
-> --- a/arch/arm/boot/dts/s5pv210.dtsi
-> +++ b/arch/arm/boot/dts/s5pv210.dtsi
-> @@ -251,7 +251,7 @@
->  			samsung,idma-addr = <0xc0010000>;
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&i2s0_bus>;
-> -			#sound-dai-cells = <0>;
-> +			#sound-dai-cells = <1>;
->  			status = "disabled";
->  		};
->  
-> @@ -266,7 +266,7 @@
->  			clocks = <&clocks CLK_I2S1>, <&clocks SCLK_AUDIO1>;
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&i2s1_bus>;
-> -			#sound-dai-cells = <0>;
-> +			#sound-dai-cells = <1>;
->  			status = "disabled";
->  		};
->  
-> @@ -281,7 +281,7 @@
->  			clocks = <&clocks CLK_I2S2>, <&clocks SCLK_AUDIO2>;
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&i2s2_bus>;
-> -			#sound-dai-cells = <0>;
-> +			#sound-dai-cells = <1>;
->  			status = "disabled";
->  		};
->  
+> +&rtc {
+> +	clocks = <&clocks CLK_RTC>, <&pmic_ap_clk>;
+> +	clock-names = "rtc", "rtc_src";
+
+Missing a
+
+status = "okay";
+
+here, but with that it works fine for me.  Looks like it's also
+missing in the patches for the other devices as well.
+
+Thanks for the series of cleanups,
+Jonathan
+
+> +};
+> +
+>  &sdhci1 {
+>  	#address-cells = <1>;
+>  	#size-cells = <0>;
 > 

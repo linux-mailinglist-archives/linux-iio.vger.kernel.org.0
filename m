@@ -2,220 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF0A260346
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 19:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D18D2606A9
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 23:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729331AbgIGRq5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Sep 2020 13:46:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45674 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729380AbgIGRqx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Sep 2020 13:46:53 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF419C061573;
-        Mon,  7 Sep 2020 10:46:52 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id o16so7018007pjr.2;
-        Mon, 07 Sep 2020 10:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RUwwJmW415jdniBRnhCr71QvDhindSCif4v2x7+xATw=;
-        b=rAchZ6oxFaZRTKYKHVAu1BJZNZ8CqgEdPpcTyyM+gTIhqZWyRTywYlYvhvwWkriCla
-         vK/PrJ3tt+OGuxhpXdu+oZ8fSwIbAfbBHkSKmqL4PPRwkqXOu+KSyz6kGRVRwXXmz5d2
-         XW7eL1V2CGLn4AEDouT0dZX3KP4UF+2hJiOQjqamGlvXYfmzUdNyeX+niKkya0i8eGvC
-         Zw/NkqlE/xG6CYy/naDuKHO5ScSMtJbuIFGqZjUdZh8OkG0jiN4uf3zbaKtnTI75FWvf
-         5fVYEza7xlcgEfAjdaHFC/IEtBMeXOnpDALDheR+BXgWl2Zprwo6d7Mm4uj7Udhwa3Qj
-         bOfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RUwwJmW415jdniBRnhCr71QvDhindSCif4v2x7+xATw=;
-        b=Kfn3vjEJeNSYGAMGMQHTQG5BWXuVJVIvgI1BxCkgWYNYISN3usoSQcms5ZG3CwobJi
-         u71JS1J39nBDHLOeU7YJPnXpWo/kwRViISwOOxzRVVTXSU/Tcbkpzb1er4IA6tUdi6H2
-         RpkA2NZxVZIOviXU5SE77CmmpBrFdXvVnAmHX35+vb/p2ryQxCSFBVfK8uMKEGxGeJE4
-         FmeWGZQ9U9s9JWDjmM2OgJMpmlPfrFvNGpPx+YjejM0Xf6E7ntfjl1ySYyIQ+nWqHHyO
-         xooH9Ica5dXp8QoCnHULlSOdOHSCr+Dcx/NR2yQyigiCmhMKsQ4ShL/8nmjnCK22++bC
-         MCYA==
-X-Gm-Message-State: AOAM530DKsOGSlkV/tOP4K22AxUXBY9VrFAsAo4Hca6Lpxj34onpgBi7
-        fVhmz0rY090XJAGy8HT3xkFju/72Iz7mlX15ZnY=
-X-Google-Smtp-Source: ABdhPJzVnZk2IuUK4LHweduLHf6VK/djDPaGh2EANPzLRqhLVy1fm8I6Oyl2Axhqvudkojmk9o9mLgkwfY4Cf0r36zg=
-X-Received: by 2002:a17:902:7d8e:: with SMTP id a14mr6381974plm.224.1599500812402;
- Mon, 07 Sep 2020 10:46:52 -0700 (PDT)
+        id S1726929AbgIGVt5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Sep 2020 17:49:57 -0400
+Received: from mail-mw2nam10olkn2041.outbound.protection.outlook.com ([40.92.42.41]:10622
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726446AbgIGVt4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Sep 2020 17:49:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ABrXVH5I9P62oHstqonXwX9oD6vqc9wBHMudxgb8C/nRQ66LHuz4rDG7dZ+9fChoECMlrDPQPdb6d2AMEp0REgix/AN8d7zzH52+5hiaRNLMHU4IPC+SdzlV2T02PNqo1RJevt1MQKL2pi87S+EKIiK57DQI/C0RMuDnnmGZzrWYmJTzUq/O9Hg1+6Oq7iKlsAi9XOU5ArDCq+ITuv5R2wjLctO2ITYxUYQaP9EcgpFKjZ4toQQH1LNJdyAJ9drCQR4bGg/AWz0zXG0mnjgLshbiFpewUVOUU7Nu/AzQLmWNQJI5UrD2TWJase4rYZybFfzEJlrRkcSWeJk/+Qow/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mZ/1QbGbVZigfYaiWJt2CRjoEpyBFGYrxNoTpUvzQ+k=;
+ b=TQ19nnDwmqvEjwniN9+yq2SX5os/pZho+chXZ/++QVn9eF3qk6ZXDm06R+Mf+kIujWr2CwNypLSpY0vdwFG7evlurAldytssktS56eIwpPkwSjS2pkRmRI5XYgCVBfse4MxVT65vhdeWLHDck/oRO5SRF08KF8RlAqYbfutSkJ6MjL5awzWE8nkzm6Rrsm2yd3Pb/cxdfQhoXIQdUuVjMmT3Mu76D0hYqOBR5nHBa2OMrGAFhSYgjdMEGR3Z/UN7K1kibcX9XkGuIrN38QoVmETVA8JXFO04WHUgLLidiO4MRAT7U7wvRIOrnGceDQhrAAZwPzlemhGNFuwsanZMSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from MWHPR01CA0030.prod.exchangelabs.com (2603:10b6:300:101::16) by
+ BY5PR21MB1425.namprd21.prod.outlook.com (2603:10b6:a03:237::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.0; Mon, 7 Sep
+ 2020 21:49:54 +0000
+Received: from MW2NAM10FT031.eop-nam10.prod.protection.outlook.com
+ (2603:10b6:300:101:cafe::11) by MWHPR01CA0030.outlook.office365.com
+ (2603:10b6:300:101::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15 via Frontend
+ Transport; Mon, 7 Sep 2020 21:49:53 +0000
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ (2a01:111:e400:7e87::50) by MW2NAM10FT031.mail.protection.outlook.com
+ (2a01:111:e400:7e87::488) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.16 via Frontend
+ Transport; Mon, 7 Sep 2020 21:49:53 +0000
+X-IncomingTopHeaderMarker: OriginalChecksum:F7C54E0B108E22D99F8E46A580DB0C50820B95670B5C450E06D8951D68A0F50C;UpperCasedChecksum:B253B91B88A502047AFC803EC6F3018FDB5134B72BA3DA1FF65DDE0FBA60562E;SizeAsReceived:9313;Count:48
+Received: from BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::303b:a75b:d03e:bd04]) by BN6PR04MB0660.namprd04.prod.outlook.com
+ ([fe80::303b:a75b:d03e:bd04%3]) with mapi id 15.20.3348.019; Mon, 7 Sep 2020
+ 21:49:53 +0000
+Subject: Re: [PATCH 03/25] dt-bindings: iio: adc: exynos-adc: do not require
+ syscon on S5Pv210
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20200907161141.31034-1-krzk@kernel.org>
+ <20200907161141.31034-4-krzk@kernel.org>
+From:   Jonathan Bakker <xc-racer2@live.ca>
+Message-ID: <BN6PR04MB06601B8D0B7F1E51953024E6CB280@BN6PR04MB0660.namprd04.prod.outlook.com>
+Date:   Mon, 7 Sep 2020 14:49:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20200907161141.31034-4-krzk@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MWHPR19CA0080.namprd19.prod.outlook.com
+ (2603:10b6:320:1f::18) To BN6PR04MB0660.namprd04.prod.outlook.com
+ (2603:10b6:404:d9::21)
+X-Microsoft-Original-Message-ID: <9b86ea56-6afe-cbcc-52a3-c75d23e1a62b@live.ca>
 MIME-Version: 1.0
-References: <20200905173004.216081-1-jic23@kernel.org> <20200905173004.216081-7-jic23@kernel.org>
-In-Reply-To: <20200905173004.216081-7-jic23@kernel.org>
-From:   Orson Zhai <orsonzhai@gmail.com>
-Date:   Tue, 8 Sep 2020 01:46:40 +0800
-Message-ID: <CA+H2tpE2-f7Sugi04hFwx4QrczufnE2gNHPzAoHWMwARgyOyLw@mail.gmail.com>
-Subject: Re: [PATCH 06/20] dt-bindings:iio:adc:sprd,sc2720-adc yaml conversion.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2001:569:fb68:9c00:8067:f823:1e15:7520] (2001:569:fb68:9c00:8067:f823:1e15:7520) by MWHPR19CA0080.namprd19.prod.outlook.com (2603:10b6:320:1f::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15 via Frontend Transport; Mon, 7 Sep 2020 21:49:51 +0000
+X-Microsoft-Original-Message-ID: <9b86ea56-6afe-cbcc-52a3-c75d23e1a62b@live.ca>
+X-TMN:  [JiSKL8DRPDgGXdBt/+WDUrQFhwTmujX7oj3voAQmvt6O/7c6QorpjXIzJy99aXK4]
+X-MS-PublicTrafficType: Email
+X-IncomingHeaderCount: 48
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-Correlation-Id: e9a8be77-b337-4d60-ff26-08d85377f3fe
+X-MS-TrafficTypeDiagnostic: BY5PR21MB1425:
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: RZBATa1ANBuEEWeAOgHwvgXo1rkandmR8L9qf2nVmlCDvlPqgBdjOH3mSwlkjyJlgo8QjMvd9EM4Z6J+wBmA6G8lW/24PDRdg1dTgduBpPrpbo4uOpDpxEFXHyAN/+SgQAseLtKFryq5qfO1WeV0I1OLfUzC4hPf8icxmekt4XZOiZyjbHkiG4i0komPs2l6RWYbocg0mC/POOxll1FBOsxBPAx1RugCZqeRtk8DVizJUhNXxXSmjQmbjYey+jQ8
+X-MS-Exchange-AntiSpam-MessageData: s4E5NVFRl+DuTndJRm2WiohbiCEGNorz0s6efxlXn9uKz4j51wgC92SqoyQ6lSTManYtXdAQdgjbUwv1IButgRAIyTOd/RdX2NSlj2XE7BMjGuQtnF9EQDOqRdvTYDybqeMWK1A3sUki8c9qBEJdpTpHOW8IrZuoqy8ZAsZbbrH9WN1Yyma0PwKMMHeyRZzCs+uJePKTV9pW+QzSuFzQ9w==
+X-OriginatorOrg: sct-15-20-3174-0-msonline-outlook-fb0b2.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9a8be77-b337-4d60-ff26-08d85377f3fe
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2020 21:49:53.7011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-AuthSource: MW2NAM10FT031.eop-nam10.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR21MB1425
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Looking at this again, it appears that there is actually control for
+it at offset 0x6818 of pmu_syscon (0xe0108000) [1].  However, it defaults to
+enabled so it's not required for proper use of the block.  Whether it should
+be present in the schema/DTS is up to you.
 
-On Sun, Sep 6, 2020 at 1:32 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> I changed the name to reflect a specific part in line with normal
-> naming conventions. If there is a particularly strong reason to
-> keep the wild cards let me know.
+Thanks,
+Jonathan
 
-Why do we have to change the file name of 27xx ?
+[1] https://android.googlesource.com/kernel/samsung/+/refs/heads/android-samsung-3.0-jb-mr0/arch/arm/mach-s5pv210/include/mach/regs-clock.h#325
 
->
-> Otherwise this was a fairly simple conversion as part of converting
-> all the IIO bindings to yaml.
-
-Thanks for doing this for us.
-
--Orson
-
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Baolin Wang <baolin.wang7@gmail.com>
-> Cc: Orson Zhai <orsonzhai@gmail.com>
-> Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+On 2020-09-07 9:11 a.m., Krzysztof Kozlowski wrote:
+> The ADC in S5Pv210 does not have ADC phy registers in separate block for
+> which syscon would be needed.  Remove this requirement to fix dtbs_check
+> warnings like:
+> 
+>   arch/arm/boot/dts/s5pv210-fascinate4g.dt.yaml: adc@e1700000: 'samsung,syscon-phandle' is a required property
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 72 +++++++++++++++++++
->  .../bindings/iio/adc/sprd,sc27xx-adc.txt      | 40 -----------
->  2 files changed, 72 insertions(+), 40 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> new file mode 100644
-> index 000000000000..57df6439dd9d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> @@ -0,0 +1,72 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/sprd,sc2720-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Spreadtrum SC27XX series PMICs ADC binding
-> +
-> +maintainers:
-> +  - Baolin Wang <baolin.wang7@gmail.com>
-> +
-> +description:
-> +  Supports the ADC found on these PMICs.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - sprd,sc2720-adc
-> +      - sprd,sc2721-adc
-> +      - sprd,sc2723-adc
-> +      - sprd,sc2730-adc
-> +      - sprd,sc2731-adc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  hwlocks:
-> +    maxItems: 1
-> +
-> +  nvmem-cells:
-> +    maxItems: 2
-> +
-> +  nvmem-cell-names:
-> +    items:
-> +      - const: big_scale_calib
-> +      - const: small_scale_calib
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - "#io-channel-cells"
-> +  - hwlocks
-> +  - nvmem-cells
-> +  - nvmem-cell-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    pmic {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        adc@480 {
-> +            compatible = "sprd,sc2731-adc";
-> +            reg = <0x480>;
-> +            interrupt-parent = <&sc2731_pmic>;
-> +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> +            #io-channel-cells = <1>;
-> +            hwlocks = <&hwlock 4>;
-> +            nvmem-cells = <&adc_big_scale>, <&adc_small_scale>;
-> +            nvmem-cell-names = "big_scale_calib", "small_scale_calib";
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt b/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt
-> deleted file mode 100644
-> index b4daa15dcf15..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt
-> +++ /dev/null
-> @@ -1,40 +0,0 @@
-> -Spreadtrum SC27XX series PMICs ADC binding
-> -
-> -Required properties:
-> -- compatible: Should be one of the following.
-> -       "sprd,sc2720-adc"
-> -       "sprd,sc2721-adc"
-> -       "sprd,sc2723-adc"
-> -       "sprd,sc2730-adc"
-> -       "sprd,sc2731-adc"
-> -- reg: The address offset of ADC controller.
-> -- interrupt-parent: The interrupt controller.
-> -- interrupts: The interrupt number for the ADC device.
-> -- #io-channel-cells: Number of cells in an IIO specifier.
-> -- hwlocks: Reference to a phandle of a hwlock provider node.
-> -- nvmem-cells: A phandle to the calibration cells provided by eFuse device.
-> -- nvmem-cell-names: Should be "big_scale_calib", "small_scale_calib".
-> -
-> -Example:
-> -
-> -       sc2731_pmic: pmic@0 {
-> -               compatible = "sprd,sc2731";
-> -               reg = <0>;
-> -               spi-max-frequency = <26000000>;
-> -               interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
-> -               interrupt-controller;
-> -               #interrupt-cells = <2>;
-> -               #address-cells = <1>;
-> -               #size-cells = <0>;
-> -
-> -               pmic_adc: adc@480 {
-> -                       compatible = "sprd,sc2731-adc";
-> -                       reg = <0x480>;
-> -                       interrupt-parent = <&sc2731_pmic>;
-> -                       interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> -                       #io-channel-cells = <1>;
-> -                       hwlocks = <&hwlock 4>;
-> -                       nvmem-cells = <&adc_big_scale>, <&adc_small_scale>;
-> -                       nvmem-cell-names = "big_scale_calib", "small_scale_calib";
-> -               };
-> -       };
-> --
-> 2.28.0
->
+>  .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml          | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> index 89b4f9c252a6..75174af72288 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+> @@ -81,7 +81,6 @@ allOf:
+>                - samsung,exynos-adc-v2
+>                - samsung,exynos3250-adc
+>                - samsung,exynos4212-adc
+> -              - samsung,s5pv210-adc
+>      then:
+>        required:
+>          - samsung,syscon-phandle
+> 

@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E1525FEE1
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 18:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FD825FED8
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Sep 2020 18:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730352AbgIGQYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Sep 2020 12:24:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33164 "EHLO mail.kernel.org"
+        id S1730560AbgIGQYV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Sep 2020 12:24:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33208 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730004AbgIGQNH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Sep 2020 12:13:07 -0400
+        id S1729924AbgIGQNK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Sep 2020 12:13:10 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 51A2321919;
-        Mon,  7 Sep 2020 16:13:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE70221775;
+        Mon,  7 Sep 2020 16:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599495187;
-        bh=wpdHkjWJjuNWTZckDc5yTTA+zkcQQYAV5zyE6Evwps8=;
+        s=default; t=1599495190;
+        bh=IvIoj2K7TIRgwMp4PonToROYopW9M5mo7TeBE51xjo0=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=TheR5lpMgTv+Xg8ocpJ4CTPM7Q79eP4d8ReEvNyh5YjFsqaQ9FWLyRzZGUXjZHyQJ
-         TVOIKnsNj2hHZN+7uFTJFWOwLKy70ecYn3neIezmhtMEVG4C+Zz3pt/dkVPXPh1UGl
-         rhQ/drqMntAmiPoBvCb9OOiYy5i83tBFMEK5uHdg=
+        b=nAA805Fqp3EYfc9xrjR3f18Q6EcfDrLkpSJ0h2oGbmmVqtFRrdA4GXxl0ndhqjxDs
+         LiDEMZm+2eokreabKhc1ESbH/NZVLBv7Ih4ocMKXz2k3Gm06fRoHkuu2GU/R5+RDde
+         T9K4fsf4K9f3Po0qyFcoQj/+XglB1tXFqqpMDUH8=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
@@ -35,9 +35,9 @@ To:     Kukjin Kim <kgene@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [RFT 09/25] ARM: dts: s5pv210: fix number of I2S DAI cells
-Date:   Mon,  7 Sep 2020 18:11:25 +0200
-Message-Id: <20200907161141.31034-10-krzk@kernel.org>
+Subject: [PATCH 10/25] ARM: dts: s5pv210: add RTC 32 KHz clock in Aquilla
+Date:   Mon,  7 Sep 2020 18:11:26 +0200
+Message-Id: <20200907161141.31034-11-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200907161141.31034-1-krzk@kernel.org>
 References: <20200907161141.31034-1-krzk@kernel.org>
@@ -46,76 +46,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The bindings describe I2S DAI has 1 cells.  This makes especially sense
-for i2s0 which registers two DAIs.  Adjust the cells to fix dtbs_check
-warnings like:
+The S3C RTC requires 32768 Hz clock as input which is provided by PMIC.
+However there is no such clock provider but rather a regulator driver
+which registers the clock as a regulator.  This is an old driver which
+will not be updated so add a workaround - a fixed-clock to fill missing
+clock phandle reference in S3C RTC.
 
-  i2s@e2100000: #sound-dai-cells:0:0: 1 was expected
+This fixes dtbs_check warnings:
+
+  rtc@e2800000: clocks: [[2, 145]] is too short
+  rtc@e2800000: clock-names: ['rtc'] is too short
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm/boot/dts/s5pv210-fascinate4g.dts | 2 +-
- arch/arm/boot/dts/s5pv210-galaxys.dts     | 2 +-
- arch/arm/boot/dts/s5pv210.dtsi            | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/s5pv210-aquila.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm/boot/dts/s5pv210-fascinate4g.dts b/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-index ca064359dd30..a6dc8a173af1 100644
---- a/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-+++ b/arch/arm/boot/dts/s5pv210-fascinate4g.dts
-@@ -102,7 +102,7 @@
- 		pinctrl-0 = <&headset_det &earpath_sel>;
+diff --git a/arch/arm/boot/dts/s5pv210-aquila.dts b/arch/arm/boot/dts/s5pv210-aquila.dts
+index 14969b6529e8..eaeb0e921aaa 100644
+--- a/arch/arm/boot/dts/s5pv210-aquila.dts
++++ b/arch/arm/boot/dts/s5pv210-aquila.dts
+@@ -32,6 +32,13 @@
+ 			0x40000000 0x18000000>;
+ 	};
  
- 		cpu {
--			sound-dai = <&i2s0>, <&bt_codec>;
-+			sound-dai = <&i2s0 0>, <&bt_codec>;
- 		};
++	pmic_ap_clk: clock-0 {
++		/* Workaround for missing clock on PMIC */
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
++
+ 	regulators {
+ 		compatible = "simple-bus";
+ 		#address-cells = <1>;
+@@ -228,6 +235,11 @@
+ 					regulator-always-on;
+ 				};
  
- 		codec {
-diff --git a/arch/arm/boot/dts/s5pv210-galaxys.dts b/arch/arm/boot/dts/s5pv210-galaxys.dts
-index 560f830b6f6b..0eba06f56ac7 100644
---- a/arch/arm/boot/dts/s5pv210-galaxys.dts
-+++ b/arch/arm/boot/dts/s5pv210-galaxys.dts
-@@ -132,7 +132,7 @@
- 		pinctrl-0 = <&headset_det &earpath_sel>;
++				ap32khz_reg: EN32KHz-AP {
++					regulator-name = "32KHz AP";
++					regulator-always-on;
++				};
++
+ 				vichg_reg: ENVICHG {
+ 					regulator-name = "VICHG";
+ 				};
+@@ -326,6 +338,11 @@
+ 	status = "okay";
+ };
  
- 		cpu {
--			sound-dai = <&i2s0>, <&bt_codec>;
-+			sound-dai = <&i2s0 0>, <&bt_codec>;
- 		};
- 
- 		codec {
-diff --git a/arch/arm/boot/dts/s5pv210.dtsi b/arch/arm/boot/dts/s5pv210.dtsi
-index 2871351ab907..96e667ba1c3f 100644
---- a/arch/arm/boot/dts/s5pv210.dtsi
-+++ b/arch/arm/boot/dts/s5pv210.dtsi
-@@ -251,7 +251,7 @@
- 			samsung,idma-addr = <0xc0010000>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&i2s0_bus>;
--			#sound-dai-cells = <0>;
-+			#sound-dai-cells = <1>;
- 			status = "disabled";
- 		};
- 
-@@ -266,7 +266,7 @@
- 			clocks = <&clocks CLK_I2S1>, <&clocks SCLK_AUDIO1>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&i2s1_bus>;
--			#sound-dai-cells = <0>;
-+			#sound-dai-cells = <1>;
- 			status = "disabled";
- 		};
- 
-@@ -281,7 +281,7 @@
- 			clocks = <&clocks CLK_I2S2>, <&clocks SCLK_AUDIO2>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&i2s2_bus>;
--			#sound-dai-cells = <0>;
-+			#sound-dai-cells = <1>;
- 			status = "disabled";
- 		};
- 
++&rtc {
++	clocks = <&clocks CLK_RTC>, <&pmic_ap_clk>;
++	clock-names = "rtc", "rtc_src";
++};
++
+ &sdhci0 {
+ 	bus-width = <4>;
+ 	non-removable;
 -- 
 2.17.1
 

@@ -2,99 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F39260C4B
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 09:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4953260DB9
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 10:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729252AbgIHHoG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Sep 2020 03:44:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728479AbgIHHoG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Sep 2020 03:44:06 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E340C061573;
-        Tue,  8 Sep 2020 00:44:05 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id d6so3209906pfn.9;
-        Tue, 08 Sep 2020 00:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=IVVptDGcawqgCuuuuSn+C2jXTROtX0l06oj8pxRbmDQ=;
-        b=oVZ2dDz61KRGBUGd9CGEgxF82wuH/rzVX+9OLfCTI861b+hiYaJpaQ/FpLrdz3i2Zz
-         BAen+xFFQex3W9/zOZLw3jIDHCgQPCsaMnYuM6wLgEgvEMKeCy3T2uszHuB8NzbQtuUH
-         I0lnBx6aplXO78W76+Jicp8hUG94cqe7qhSC86RwjrmTY9X8RoOOqf16/EkoQNI9meQW
-         DFsu95xxQ5WuHU4Th1hZA+JJXolMAX7NJI9d48U5X7TOqMlDYRH8Q+BDGeQrxaTujsLP
-         kQPPj67kOpJIytiLMg3d5twjYk1iugvpH4k5Pvh0xz61RjEuKqfhcMVyPzWnUJV7P4yy
-         KXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=IVVptDGcawqgCuuuuSn+C2jXTROtX0l06oj8pxRbmDQ=;
-        b=PLM9/DdBFtOXqSSCzKkg9PoDRcTCEXj3PAmfcesP0WPVyltDktHW9H8e0MYsUE6jXL
-         PfbIP4Lh6+8Q8SNe1lLySFzULGSUaksavigSBLCgpG1plSIn21U5VXXKD2I3kVoqpG+a
-         OBlmZ5F5rNSy5uJDw+mas4khnYSneoYZU4lBHze3Ud0njipQjsbT70ztNCG+CQMfE00X
-         lSH85g7OMK1X4oH0WcG8LB2d6b4pC0G5YbXrjfPnlkAQ8AO46a7Ol9WraHPZ6DpNx2QE
-         atBD+lSX4ZRqga0IyTi6rcBfgi9xajkFx2VEGavO3Yr+jWOt+Q559EbWEawMOuibkrBJ
-         Hgvw==
-X-Gm-Message-State: AOAM532wzY8eNNyWXr7sM04oWiLZlaXYsNHXpZAFd7a8/84uTv3PRPFJ
-        JRsT97CfuMiAPEzmUB9zsGwY0jQlmTha7oFK3gJ7PIqbyTLbHg==
-X-Google-Smtp-Source: ABdhPJxllos9y1Gn8EfWASnfyzEMYZqQ9haDoiwp/plzKOAUA/WuFCjJRj8iGwXbCw/UjhJ9hb3DRxl5t3F8B7XcfEI=
-X-Received: by 2002:a62:838a:: with SMTP id h132mr23492945pfe.72.1599551045021;
- Tue, 08 Sep 2020 00:44:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <1598259985-12517-1-git-send-email-gene.chen.richtek@gmail.com>
- <1598259985-12517-2-git-send-email-gene.chen.richtek@gmail.com>
- <20200829181157.1b653a88@archlinux> <CAE+NS36j4a6k-JSUbjxzpfbqtE-xMW7qxUUhHPAnc_9V-Lv7LQ@mail.gmail.com>
-In-Reply-To: <CAE+NS36j4a6k-JSUbjxzpfbqtE-xMW7qxUUhHPAnc_9V-Lv7LQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 8 Sep 2020 10:43:47 +0300
-Message-ID: <CAHp75VcX6P9LOw=1=UgX4tWaxa2_PYPvanpDLG0TE2XzPBatAg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] iio: adc: mt6360: Add ADC driver for MT6360
-To:     Gene Chen <gene.chen.richtek@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1729799AbgIHIiw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Sep 2020 04:38:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37072 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729564AbgIHIiv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 8 Sep 2020 04:38:51 -0400
+Received: from [192.168.0.50] (89-70-52-201.dynamic.chello.pl [89.70.52.201])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A582215A4;
+        Tue,  8 Sep 2020 08:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599554331;
+        bh=9MbsarOq+P/4I79z3A+fJ+J72iGu7faVW8HMRIAC4yg=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=ABlmjheudFWqMnnqN7fkj7Y8fpGWpqp+Q+5bztrxFGYwdt/wYgY/MV7PHBbVNqkon
+         YKpo8TUVTX6CKqR+9LMrE0vMFmrIIsUlMMIhexMaoFG+3MN9Tu7yuOd+G3uin4Mt/h
+         ku2dg3SQDqNkWUHQcVwN7jdxOTn9U8cssWk6hieU=
+Subject: Re: [RFT 09/25] ARM: dts: s5pv210: fix number of I2S DAI cells
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Jonathan Bakker <xc-racer2@live.ca>
+Cc:     Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Gene Chen <gene_chen@richtek.com>, Wilma.Wu@mediatek.com,
-        shufan_lee@richtek.com, cy_huang@richtek.com,
-        benjamin.chao@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20200907161141.31034-1-krzk@kernel.org>
+ <20200907161141.31034-10-krzk@kernel.org>
+ <BN6PR04MB0660D9B0D0B5FB4F40CF2769CB280@BN6PR04MB0660.namprd04.prod.outlook.com>
+ <20200908065321.GB24227@pi3>
+From:   Sylwester Nawrocki <snawrocki@kernel.org>
+Message-ID: <48aa966f-d3b8-7e4a-36aa-aed4630d331a@kernel.org>
+Date:   Tue, 8 Sep 2020 10:38:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20200908065321.GB24227@pi3>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 8, 2020 at 9:19 AM Gene Chen <gene.chen.richtek@gmail.com> wrot=
-e:
-> Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2020=E5=B9=B48=E6=9C=8830=
-=E6=97=A5 =E9=80=B1=E6=97=A5 =E4=B8=8A=E5=8D=881:12=E5=AF=AB=E9=81=93=EF=BC=
-=9A
-> > On Mon, 24 Aug 2020 17:06:24 +0800
-> > Gene Chen <gene.chen.richtek@gmail.com> wrote:
+On 9/8/20 08:53, Krzysztof Kozlowski wrote:
+> On Mon, Sep 07, 2020 at 04:55:26PM -0700, Jonathan Bakker wrote:
+>> Sadly, this is causing issues for me.  The machine driver is no longer probing correctly
+>> on the Galaxy S.
+>>
+>> The failing call in sound/soc/samsung/aries_wm8994.c is
+>>
+>> 	/* Set CPU of_node for BT DAI */
+>> 	aries_dai[2].cpus->of_node = of_parse_phandle(cpu,
+>> 			"sound-dai", 1);
+>>
+>> where cpus->of_node is not set properly.  Which is definitely weird because it doesn't
+>> look like this should affect that.
+>>
+>> Let me know if there's any specific test that you want me to do.
+> Thanks for the tests. I wonder now if this was working before because
+> really my change should not break it... I'll think more about it.
 
-> > A few comments inline.  The big one centres on why we can't
-> > expose the channels as _raw, _offset and _scale?
-> >
->
-> I think i have 3 reason for use real value,
-> ADC is used to get real value rather than raw data which is not meaningfu=
-l.
-> And I can decide which formula needs apply according to different conditi=
-on.
-> Also the junction temperature channel _scale is floating point 1.05
-> which is not easy to express.
-
-It's easy to express. Like other values in IIO subsystem which are float.
-
---=20
-With Best Regards,
-Andy Shevchenko
+I think of_parse_phandle_with_args() needs to be used instead of just
+of_parse_phandle() for that to work, as AFAICS the latter assumes the
+cells count == 0. We would need first to update the driver and then dts.

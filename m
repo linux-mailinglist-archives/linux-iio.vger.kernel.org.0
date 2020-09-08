@@ -2,354 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1435D261245
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 16:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74584261737
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 19:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729449AbgIHOB4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Sep 2020 10:01:56 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2787 "EHLO huawei.com"
+        id S1731741AbgIHR2Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Sep 2020 13:28:25 -0400
+Received: from mail-vi1eur05on2047.outbound.protection.outlook.com ([40.107.21.47]:52768
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729941AbgIHN7e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 8 Sep 2020 09:59:34 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 2D9084A06B02F02DB517;
-        Tue,  8 Sep 2020 14:00:06 +0100 (IST)
-Received: from localhost (10.52.124.38) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Tue, 8 Sep 2020
- 14:00:04 +0100
-Date:   Tue, 8 Sep 2020 13:58:30 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Gene Chen <gene.chen.richtek@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>, <knaack.h@gmx.de>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Gene Chen" <gene_chen@richtek.com>, <Wilma.Wu@mediatek.com>,
-        <shufan_lee@richtek.com>, <cy_huang@richtek.com>,
-        <benjamin.chao@mediatek.com>
-Subject: Re: [PATCH v3 1/2] iio: adc: mt6360: Add ADC driver for MT6360
-Message-ID: <20200908135830.00007b13@Huawei.com>
-In-Reply-To: <CAE+NS35aQ3k2auYA+bmf6kMhm192oyg8_j5j=zzK0sn_NS6HoA@mail.gmail.com>
-References: <1598259985-12517-1-git-send-email-gene.chen.richtek@gmail.com>
-        <1598259985-12517-2-git-send-email-gene.chen.richtek@gmail.com>
-        <20200829181157.1b653a88@archlinux>
-        <CAE+NS36j4a6k-JSUbjxzpfbqtE-xMW7qxUUhHPAnc_9V-Lv7LQ@mail.gmail.com>
-        <20200908100712.00007a7b@Huawei.com>
-        <CAE+NS35aQ3k2auYA+bmf6kMhm192oyg8_j5j=zzK0sn_NS6HoA@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1731707AbgIHQQD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 8 Sep 2020 12:16:03 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CwQ34DZn6Pqp2qwL0R4TtENa0zKg0oMbpxIQIeFJvNq6dgfpwa8Z8yQS37R4oSoxEB8PDl9sR9pZzUZTdFDGrrmDUlhysaRY0jqlD51XMx60ptvLspKxWHIQxRBjUoEhDMN1+DuciK60XekhHKqXqzzrjkPlNr5FsN1H0mV7Jpe4xP4q6MrMrZgj18JFc+53voxy3RZwgrPngzQMHZHKSzzotRo/Z4x7n13cQ+UCWhwtum4j5j7FW0owRNTvFkzGqGVkSEuEh+L6ZTNhNgerHWCw2p87RwRJxacwz8GN2dADsyQc0xJWpvRr7q1YJx4Rt5tIqWfguEoQwq7cpBkh1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q7veYResK+xShIKxiVLM9KqFFKbdh6r6JLbY4NRkdKA=;
+ b=NEbCJVcD7YDV/n3OPW5PBETQFtlG5TFrvekclkB+1H5vBNvstfJeu7EcHk61s5stJl9qiHDkU6KQ9GFqFMXeHnTQUCb0vJpyacIAniq70bqYfn0Vud6pxCzHN4Xqz3Eedh6ZSqp+m8jsS1HJibW0I0n8T38HjUrt3DRt8Rh92uZmRwgZJ/RTT1BROXs9nowfG+YfFzQncwGY8PyJXUc1T1FDD05HWQxwpTm9ndP1XS69Ff0wN4ObUpa+SnOUGx0xOrpGtYwpmVeJtLxDzwde+wxfSOR2y1ZDNIhAdK400H2P1VqZzduCIc/4MoCErNulscV+sunFJQdmwxgZX2LAUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=diasemi.com; dmarc=pass action=none header.from=diasemi.com;
+ dkim=pass header.d=diasemi.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dialogsemiconductor.onmicrosoft.com;
+ s=selector1-dialogsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q7veYResK+xShIKxiVLM9KqFFKbdh6r6JLbY4NRkdKA=;
+ b=vGEXREOiMJAsNI+tdeUpX+ZlVAXEWp45Mhh/SaAP8VRvtYBPWr3ivyMM5coXKzO0gASJIa/oT8hqKW7T/3nyBLkit88zrUa2qUn47se4XVR6k1kyexsBE6GMqkNsazzyW16fEz05ECC2KNC3CFwvCg0AP1MiuXnqhPeDfddPLJk=
+Received: from AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:135::13)
+ by AM7PR10MB3192.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:109::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15; Tue, 8 Sep
+ 2020 12:07:51 +0000
+Received: from AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b96f:25df:bfa7:a0f7]) by AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b96f:25df:bfa7:a0f7%6]) with mapi id 15.20.3348.019; Tue, 8 Sep 2020
+ 12:07:51 +0000
+From:   Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+Subject: RE: [PATCH 12/20] dt-bindings:iio:adc:dlg,da9150-gpadc yaml
+ conversion
+Thread-Topic: [PATCH 12/20] dt-bindings:iio:adc:dlg,da9150-gpadc yaml
+ conversion
+Thread-Index: AQHWg6qSjGzroNEmIEG+sjrNKzEHIaleqYFA
+Date:   Tue, 8 Sep 2020 12:07:51 +0000
+Message-ID: <AM7PR10MB3640E12A6CC1F226063F9C4680290@AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM>
+References: <20200905173004.216081-1-jic23@kernel.org>
+ <20200905173004.216081-13-jic23@kernel.org>
+In-Reply-To: <20200905173004.216081-13-jic23@kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=diasemi.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [165.225.80.85]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ae9fbfc9-0d43-425c-e7b4-08d853efcfa2
+x-ms-traffictypediagnostic: AM7PR10MB3192:
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM7PR10MB319226DC63EEF7688DA8F822A7290@AM7PR10MB3192.EURPRD10.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:1468;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 653qlxdlKdyzaKBh0b/5HtUWL1O6faVQJTFSbGcGTMK+v7Xu9fqfnAAzM+Li5SSuI/Z95CDUqMgko/qXiF9EGXQj31EJCYWLsS4VqfE7UHwpkSgKrZfKHNhVd/8Gy7saosdBAmrk9vuZ+Jk3laJ8Vko8r0X513V+Uc8f4Tb6n1sKYhOyl120d7/YCCoMhyXWzbSQjNFg5entEyg+5mDqoO/YLFQ+3LH8FQ2+Ulw3ETnbvAUvHp+5bXCIYGF1naBgzAMygBv7cEccGQcFw759i1zCt/fAVcx85ior0PfiMsfCF9xYl4yshDxwhZV2V4wcbtDVt39Ho8orHrfLG8cGM2o+wsWHMXDjprFfTNJQ87lHiu1co4YPiqGNsh8xRWIE
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(4636009)(366004)(64756008)(66946007)(66476007)(66446008)(5660300002)(66556008)(4326008)(76116006)(54906003)(186003)(110136005)(107886003)(55016002)(7696005)(52536014)(33656002)(9686003)(4744005)(71200400001)(55236004)(8936002)(6506007)(53546011)(2906002)(26005)(8676002)(86362001)(498600001)(142933001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: bNuzfo/p3mOf3SPVzEeyHlvVNAY5IcV8h7A07t5Z1tILmSHNHOswypi0DrZ794RrNUp0xkWQgHncxSgAuvAlIShbPZn7Rs86OxGF2dkdQU88ua0puqMVqvbWPB14rPck4Yewh8ATNZBI2tcVUJCFdiBGBXQVB+JZmTAngDhrJKXReBlb+BiU0v+LrhiChkleoXvSOgwAY/BYc9lvNhcnu7zYCZTJvatG3uW2AK1OqSAPTJQ0HP1CQkPN+Q1XuJ12j/yYgcsXXFtzLsQnBa328hgIYwHrYlY8Fwsm5iSSxJCi5z7z/OfOttcRZb7UHMeHncNfI6S3Hbfq6MJThsNyXJmB7c1fDMOH/RSzxgVF/9a4NzCSORnlzFbnBkdv16LRVaHucztBgJl/ywJjKH/X/QBCuv/AEqxgj6rh/811OBaJ8W1jmdoeDmmJ4z7yTD0vbxV110psvxY8+oYiA/8Pj9FoZev553ooivlSu0MhQXcyQoOJ0JGkqBgimYPgF/szDYv36IwOzpb3X5heIKy4zYzU9qr16hxSKNjoQm53CYwpLZdXr4ixIbQjWA3G22wjxseKE5FwYjE1ZP2hYNuCrAGb2MIchBSZrMSXhx9lJvIoy3YXj6szYNkPWNOid+bU4r2EtmEfU2S9iaB0Fk3nCA==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.124.38]
-X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: diasemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR10MB3640.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae9fbfc9-0d43-425c-e7b4-08d853efcfa2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2020 12:07:51.7330
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 511e3c0e-ee96-486e-a2ec-e272ffa37b7c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Q2hybho5MiYijkbBsGBLJWUa/URTokEpxsVCuItXZ4RrMgnYxmROp494SEnMNonQENLseVKGUtKpAd/ZVHi/d+IvhK9KMjS1jDkXozvywFY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3192
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-...
+On 05 September 2020 18:30, Jonathan Cameron wrote:
 
-> > > > > +#include <linux/completion.h>
-> > > > > +#include <linux/interrupt.h>
-> > > > > +#include <linux/iio/buffer.h>
-> > > > > +#include <linux/iio/iio.h>
-> > > > > +#include <linux/iio/trigger_consumer.h>
-> > > > > +#include <linux/iio/triggered_buffer.h>
-> > > > > +#include <linux/irq.h>
-> > > > > +#include <linux/kernel.h>
-> > > > > +#include <linux/ktime.h>
-> > > > > +#include <linux/module.h>
-> > > > > +#include <linux/mutex.h>
-> > > > > +#include <linux/platform_device.h>
-> > > > > +#include <linux/regmap.h>
-> > > > > +
-> > > > > +#define MT6360_REG_PMUCHGCTRL3       0x313
-> > > > > +#define MT6360_REG_PMUADCCFG 0x356
-> > > > > +#define MT6360_REG_PMUADCRPT1        0x35A
-> > > > > +
-> > > > > +/* PMUCHGCTRL3 0x313 */
-> > > > > +#define MT6360_AICR_MASK     0xFC
-> > > > > +#define MT6360_AICR_SHFT     2
-> > > > > +#define MT6360_AICR_400MA    0x6
-> > > > > +/* PMUADCCFG 0x356 */
-> > > > > +#define MT6360_ADCEN_MASK    0x8000
-> > > > > +/* PMUADCRPT1 0x35A */
-> > > > > +#define MT6360_PREFERCH_MASK 0xF0
-> > > > > +#define MT6360_PREFERCH_SHFT 4
-> > > > > +#define MT6360_RPTCH_MASK    0x0F
-> > > > > +
-> > > > > +enum {
-> > > > > +     MT6360_CHAN_USBID = 0,
-> > > > > +     MT6360_CHAN_VBUSDIV5,
-> > > > > +     MT6360_CHAN_VBUSDIV2,
-> > > > > +     MT6360_CHAN_VSYS,
-> > > > > +     MT6360_CHAN_VBAT,
-> > > > > +     MT6360_CHAN_IBUS,
-> > > > > +     MT6360_CHAN_IBAT,
-> > > > > +     MT6360_CHAN_CHG_VDDP,
-> > > > > +     MT6360_CHAN_TEMP_JC,
-> > > > > +     MT6360_CHAN_VREF_TS,
-> > > > > +     MT6360_CHAN_TS,
-> > > > > +     MT6360_CHAN_MAX,
-> > > > > +};
-> > > > > +
-> > > > > +struct mt6360_adc_data {
-> > > > > +     struct device *dev;
-> > > > > +     struct regmap *regmap;
-> > > > > +     struct completion adc_complete;
-> > > > > +     struct mutex adc_lock;
-> > > > > +     ktime_t last_off_timestamps[MT6360_CHAN_MAX];
-> > > > > +     int irq;
-> > > > > +};
-> > > > > +
-> > > > > +static inline int mt6360_adc_val_converter(int val, int multiplier, int offset, int divisor)
-> > > > > +{
-> > > > > +     return ((val * multiplier) + offset) / divisor;  
-> > > >
-> > > > Why could we not report these values to userspace or consumer drivers and let
-> > > > them deal with the conversion if they actually needed it?
-> > > > Mapping this to
-> > > >
-> > > > (val + new_offset) * multiplier would be a little messy, but not too bad.
-> > > >
-> > > > The advantage would be that we would then be providing the data needed
-> > > > to get real units for values read from the buffers without having to
-> > > > do all the maths in kernel (without access to floating point).
-> > > >
-> > > >  
-> > >
-> > > As above, if I use formula "(val + new_offset) * multiplier",
-> > > the junction temperature channel multiplier will be floating point
-> > > 1.05, i don't know how to express.  
-> >
-> > As Andy mentioned, we do this all over the place.
-> > IIO_VAL_INT_PLUS_MICRO
-> >
-> > The key is that we want to push the burden of doing this maths to the user
-> > not the source.  
-> 
-> ACK.
-> Can I keep IIO_CHAN_INFO_PROCESSED function be reserved for user in
-> kernel space?
-> 
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> This is a small part of an MFD so perhaps ultimately it makes more
+> sense to document it with that MFD binding rather than separately.
+>=20
+> In the meantime it's a straightforward conversion from txt to yaml.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
 
-No. We have utility functions that will apply the multiplier as needed so
-there is no significant advantage in doing this and it won't be consistent
-with the majority of other drivers. 
-
-> >
-> > Often what is actually of interest is whether a temperature passed a threshold.
-> > In that case, you can transform the threshold into the units of the ADC (so the
-> > reverse directly to you would do with processed data) and only have to do the
-> > maths once per change of the threshold instead of for every sample.
-> >
-> > There are helper functions to do the maths for you, should you actually
-> > need SI units.
-> >  
-> 
-> ACK
-> 
-> > >  
-> > > > > +}
-> > > > > +
-> > > > > +static int mt6360_adc_convert_processed_val(struct mt6360_adc_data *info, int chan_idx, int *val)
-> > > > > +{
-> > > > > +     unsigned int regval = 0;
-> > > > > +     const struct converter {
-> > > > > +             int multiplier;
-> > > > > +             int offset;
-> > > > > +             int divisor;
-> > > > > +     } adc_converter[MT6360_CHAN_MAX] = {
-> > > > > +             { 1250, 0, 1}, /* USBID */
-> > > > > +             { 6250, 0, 1}, /* VBUSDIV5 */
-> > > > > +             { 2500, 0, 1}, /* VBUSDIV2 */
-> > > > > +             { 1250, 0, 1}, /* VSYS */
-> > > > > +             { 1250, 0, 1}, /* VBAT */
-> > > > > +             { 2500, 0, 1}, /* IBUS */
-> > > > > +             { 2500, 0, 1}, /* IBAT */
-> > > > > +             { 1250, 0, 1}, /* CHG_VDDP */
-> > > > > +             { 105, -8000, 100}, /* TEMP_JC */
-> > > > > +             { 1250, 0, 1}, /* VREF_TS */
-> > > > > +             { 1250, 0, 1}, /* TS */
-> > > > > +     }, sp_ibus_adc_converter = { 1900, 0, 1 }, *sel_converter;
-> > > > > +     int ret;
-> > > > > +
-> > > > > +     sel_converter = adc_converter + chan_idx;
-> > > > > +     if (chan_idx == MT6360_CHAN_IBUS) {
-> > > > > +             /* ibus chan will be affected by aicr config */
-> > > > > +             /* if aicr < 400, apply the special ibus converter */
-> > > > > +             ret = regmap_read(info->regmap, MT6360_REG_PMUCHGCTRL3, &regval);
-> > > > > +             if (ret)
-> > > > > +                     return ret;
-> > > > > +
-> > > > > +             regval = (regval & MT6360_AICR_MASK) >> MT6360_AICR_SHFT;
-> > > > > +             if (regval < MT6360_AICR_400MA)
-> > > > > +                     sel_converter = &sp_ibus_adc_converter;
-> > > > > +     }
-> > > > > +
-> > > > > +     *val = mt6360_adc_val_converter(*val, sel_converter->multiplier, sel_converter->offset,
-> > > > > +                                     sel_converter->divisor);
-> > > > > +
-> > > > > +     return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int mt6360_adc_read_processed(struct mt6360_adc_data *mad, int channel, int *val)
-> > > > > +{
-> > > > > +     u16 adc_enable;
-> > > > > +     u8 rpt[3];
-> > > > > +     ktime_t start_t, predict_end_t;
-> > > > > +     long timeout;
-> > > > > +     int value, ret;
-> > > > > +
-> > > > > +     mutex_lock(&mad->adc_lock);
-> > > > > +
-> > > > > +     /* select preferred channel that we want */
-> > > > > +     ret = regmap_update_bits(mad->regmap, MT6360_REG_PMUADCRPT1, MT6360_PREFERCH_MASK,
-> > > > > +                              channel << MT6360_PREFERCH_SHFT);
-> > > > > +     if (ret)
-> > > > > +             goto out_adc;
-> > > > > +
-> > > > > +     /* enable adc channel we want and adc_en */
-> > > > > +     adc_enable = MT6360_ADCEN_MASK | BIT(channel);
-> > > > > +     adc_enable = cpu_to_be16(adc_enable);  
-> > > >
-> > > > Use a local be16 to store that. It will make it a little clearer
-> > > > that we are doing something 'unusual' here.  Perhaps a comment on
-> > > > why this odd code exists would also help?
-> > > >  
-> > >
-> > > ACK
-> > >  
-> > > > > +     ret = regmap_raw_write(mad->regmap, MT6360_REG_PMUADCCFG, (void *)&adc_enable, sizeof(u16));
-> > > > > +     if (ret)
-> > > > > +             goto out_adc;
-> > > > > +
-> > > > > +     start_t = ktime_get();
-> > > > > +     predict_end_t = ktime_add_ms(mad->last_off_timestamps[channel], 50);
-> > > > > +
-> > > > > +     if (ktime_after(start_t, predict_end_t))
-> > > > > +             predict_end_t = ktime_add_ms(start_t, 25);
-> > > > > +     else
-> > > > > +             predict_end_t = ktime_add_ms(start_t, 75);
-> > > > > +
-> > > > > +     enable_irq(mad->irq);
-> > > > > +adc_retry:
-> > > > > +     reinit_completion(&mad->adc_complete);
-> > > > > +
-> > > > > +     /* wait for conversion to complete */
-> > > > > +     timeout = wait_for_completion_timeout(&mad->adc_complete, msecs_to_jiffies(200));
-> > > > > +     if (timeout == 0) {
-> > > > > +             ret = -ETIMEDOUT;
-> > > > > +             goto out_adc_conv;
-> > > > > +     } else if (timeout < 0) {
-> > > > > +             ret = -EINTR;
-> > > > > +             goto out_adc_conv;
-> > > > > +     }
-> > > > > +
-> > > > > +     ret = regmap_raw_read(mad->regmap, MT6360_REG_PMUADCRPT1, rpt, sizeof(rpt));
-> > > > > +     if (ret)
-> > > > > +             goto out_adc_conv;
-> > > > > +
-> > > > > +     /* check the current reported channel */
-> > > > > +     if ((rpt[0] & MT6360_RPTCH_MASK) != channel) {
-> > > > > +             dev_dbg(mad->dev, "not wanted channel report [%02x]\n", rpt[0]);  
-> > > >
-> > > > This and the one below feel like error messages rather than debug ones.
-> > > >  
-> > >
-> > > We have two function "battery zero current voltage(ZCV)" and "TypeC
-> > > OTP" will auto run ADC at background.
-> > > ZCV_EN will run VBAT_ADC when TA plug in, TypeC OTP will run TS_ADC
-> > > when TypeC attach.
-> > > We need to check report channel for ADC report data match is our desire channel.  
-> >
-> > So there is firmware messing with it underneath?  Oh goody.
-> > Add a comment explaining this.
-> >  
-> 
-> ACK, I try to write a comment as below
-> 
->         /*
->          * There are two functions, ZCV and TypeC OTP, running ADC
-> VBAT and TS in background,
->          * and ADC samples are taken on a fixed frequency no matter
-> read the previous one or not.
->          * To avoid conflict need set minimum time threshold after
-> enable ADC and check report
->          * channel is the same.
->          * The worst case is run the same ADC twice and background
-> function is also running,
->          * ADC conversion sequence is desire channel before start ADC,
-> background ADC, desire
->          * channel after start ADC. So the minimum correct data is
-> three times of typical
->          * conversion time.
->          */
-
-Looks good.
-
-> 
-> > >  
-> > > > > +             goto adc_retry;
-> > > > > +     }
-> > > > > +
-> > > > > +     if (!ktime_after(ktime_get(), predict_end_t)) {
-> > > > > +             dev_dbg(mad->dev, "time is not after one adc_conv_t\n");  
-> > > >
-> > > > Does this actually happen? If feels like we are being a bit over protective
-> > > > here.  I'd definitely like to see a comment saying why this protection
-> > > > might be needed.
-> > > >  
-> > >
-> > > When ADC_EN and MT6360_CHANx_EN is enable, the channel x will keep
-> > > running again and again
-> > > I supposed to get immediate data which is generated after I start it.  
-> >
-> > Just to check my understanding.
-> >
-> > This is an edge triggered interrupt and it triggers every time a new sample
-> > is taken.  Those samples are taken on a fixed frequency irrespective of whether
-> > we have read the previous one?
-> >  
-> 
-> Yes.
-> I use LEVEL_LOW trigger in latest review MFD patch.
-
-I'm not sure I follow that comment.  How can you do that if it's a repeating
-edge trigger? 
-
-> 
-> > >
-> > > When I disable ADC_CHANx_EN, the H/W logical ADC is still running.
-> > > If I run the same ADC immediately, I may get the old result about this channel.
-> > > MT6360 ADC typical conversation time is about 25ms.
-> > > So We need ignore which irq trigger below 25ms.  
-> >
-> > Normal trick for this sort of case is to just not use the interrupt.
-> > Just read after 25+delta msecs and you are guaranteed to get the right answer.
-> >
-> >  
-> 
-> ACK, I will try to use polling
-> Is the pseudocode correct?
-> 
-> mdelay(predict_end_t);
-> while (true) {
->     read adc event is occured
->     check report channel is the same
->     if the same, read report ADC data and break while loop
->     else msleep(per ADC conversion time)
-> }
-
-Looks correct to me.  We should 'know' the event has happened but
-still need to check the channel is the expected one.
-
-...
-
+Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>

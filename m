@@ -2,82 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C371A260B5B
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 08:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F39260C4B
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Sep 2020 09:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729053AbgIHG5a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Sep 2020 02:57:30 -0400
-Received: from mail-ed1-f47.google.com ([209.85.208.47]:43807 "EHLO
-        mail-ed1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728501AbgIHG52 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Sep 2020 02:57:28 -0400
-Received: by mail-ed1-f47.google.com with SMTP id n13so14848751edo.10;
-        Mon, 07 Sep 2020 23:57:26 -0700 (PDT)
+        id S1729252AbgIHHoG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Sep 2020 03:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728479AbgIHHoG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Sep 2020 03:44:06 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E340C061573;
+        Tue,  8 Sep 2020 00:44:05 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id d6so3209906pfn.9;
+        Tue, 08 Sep 2020 00:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=IVVptDGcawqgCuuuuSn+C2jXTROtX0l06oj8pxRbmDQ=;
+        b=oVZ2dDz61KRGBUGd9CGEgxF82wuH/rzVX+9OLfCTI861b+hiYaJpaQ/FpLrdz3i2Zz
+         BAen+xFFQex3W9/zOZLw3jIDHCgQPCsaMnYuM6wLgEgvEMKeCy3T2uszHuB8NzbQtuUH
+         I0lnBx6aplXO78W76+Jicp8hUG94cqe7qhSC86RwjrmTY9X8RoOOqf16/EkoQNI9meQW
+         DFsu95xxQ5WuHU4Th1hZA+JJXolMAX7NJI9d48U5X7TOqMlDYRH8Q+BDGeQrxaTujsLP
+         kQPPj67kOpJIytiLMg3d5twjYk1iugvpH4k5Pvh0xz61RjEuKqfhcMVyPzWnUJV7P4yy
+         KXzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=umGp2mRac5tjGgvL1953FmzEeKMsaUQqM0ZLASNYOdw=;
-        b=N5fqJEZG7B7/XsNoynwNGrDwdYwKYI0k2+m058IJt7fmvML1HP74NBozLoAOSuJK1a
-         QPFpJVVmpyIlvq5Y0cI2TTLsDuegaDqEDlZwjQMCeEgs+4tQnMrxhQL8BKvRCMYTyszE
-         lFBbhusQq3/GjDc+QrmRifs8YIDN1mOAjgyQkPkNt8gkWt9+9O3I7yuzW1g29FiW33nK
-         9REI+OURjC44wtMREFGCFzB62qT90llzw7ot+twtQfDpBaBip1oDxdp2pSf4GI5LxiH2
-         MOKW/v7Y5/MRIqXnnGiWqXbbhOvkzZtJZN+G+YZro5cQXTsWexgcSPxyNP47RFaW1px/
-         xFHg==
-X-Gm-Message-State: AOAM533WY4OCuvvxLNCeQi+p5tOkd5iX618ycdMOipkav38oIAchdgBC
-        /5hum4UfFtx126vxWkw9SP0=
-X-Google-Smtp-Source: ABdhPJwQKk7dDYAUqS1F8cS+l02dQ8Fkn0v4UEjEo7y2l4To8N85pyzNNjSurB/LEnao9OgD3/0vtw==
-X-Received: by 2002:a05:6402:1859:: with SMTP id v25mr16745883edy.118.1599548245356;
-        Mon, 07 Sep 2020 23:57:25 -0700 (PDT)
-Received: from pi3 ([194.230.155.174])
-        by smtp.googlemail.com with ESMTPSA id r16sm8407822edc.57.2020.09.07.23.57.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2020 23:57:24 -0700 (PDT)
-Date:   Tue, 8 Sep 2020 08:57:22 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Jonathan Bakker <xc-racer2@live.ca>
-Cc:     Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [RFT 25/25] ARM: dts: s5pv210: align DMA channels with dtschema
-Message-ID: <20200908065722.GD24227@pi3>
-References: <20200907161141.31034-1-krzk@kernel.org>
- <20200907161141.31034-26-krzk@kernel.org>
- <25178674-e4af-ba35-b7f0-42091208e0e8@live.ca>
- <BN6PR04MB06601A7FC9D1A697481EA37FCB290@BN6PR04MB0660.namprd04.prod.outlook.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=IVVptDGcawqgCuuuuSn+C2jXTROtX0l06oj8pxRbmDQ=;
+        b=PLM9/DdBFtOXqSSCzKkg9PoDRcTCEXj3PAmfcesP0WPVyltDktHW9H8e0MYsUE6jXL
+         PfbIP4Lh6+8Q8SNe1lLySFzULGSUaksavigSBLCgpG1plSIn21U5VXXKD2I3kVoqpG+a
+         OBlmZ5F5rNSy5uJDw+mas4khnYSneoYZU4lBHze3Ud0njipQjsbT70ztNCG+CQMfE00X
+         lSH85g7OMK1X4oH0WcG8LB2d6b4pC0G5YbXrjfPnlkAQ8AO46a7Ol9WraHPZ6DpNx2QE
+         atBD+lSX4ZRqga0IyTi6rcBfgi9xajkFx2VEGavO3Yr+jWOt+Q559EbWEawMOuibkrBJ
+         Hgvw==
+X-Gm-Message-State: AOAM532wzY8eNNyWXr7sM04oWiLZlaXYsNHXpZAFd7a8/84uTv3PRPFJ
+        JRsT97CfuMiAPEzmUB9zsGwY0jQlmTha7oFK3gJ7PIqbyTLbHg==
+X-Google-Smtp-Source: ABdhPJxllos9y1Gn8EfWASnfyzEMYZqQ9haDoiwp/plzKOAUA/WuFCjJRj8iGwXbCw/UjhJ9hb3DRxl5t3F8B7XcfEI=
+X-Received: by 2002:a62:838a:: with SMTP id h132mr23492945pfe.72.1599551045021;
+ Tue, 08 Sep 2020 00:44:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <BN6PR04MB06601A7FC9D1A697481EA37FCB290@BN6PR04MB0660.namprd04.prod.outlook.com>
+References: <1598259985-12517-1-git-send-email-gene.chen.richtek@gmail.com>
+ <1598259985-12517-2-git-send-email-gene.chen.richtek@gmail.com>
+ <20200829181157.1b653a88@archlinux> <CAE+NS36j4a6k-JSUbjxzpfbqtE-xMW7qxUUhHPAnc_9V-Lv7LQ@mail.gmail.com>
+In-Reply-To: <CAE+NS36j4a6k-JSUbjxzpfbqtE-xMW7qxUUhHPAnc_9V-Lv7LQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 8 Sep 2020 10:43:47 +0300
+Message-ID: <CAHp75VcX6P9LOw=1=UgX4tWaxa2_PYPvanpDLG0TE2XzPBatAg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] iio: adc: mt6360: Add ADC driver for MT6360
+To:     Gene Chen <gene.chen.richtek@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Gene Chen <gene_chen@richtek.com>, Wilma.Wu@mediatek.com,
+        shufan_lee@richtek.com, cy_huang@richtek.com,
+        benjamin.chao@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 07, 2020 at 05:28:54PM -0700, Jonathan Bakker wrote:
-> Ah, I figured out why the dma stopped working.  In s5pv210-aries.dtsi the dma's for i2s0
-> are overriden to use pdma0 instead of pdma1.  That also needs changing for this to
-> work properly.
+On Tue, Sep 8, 2020 at 9:19 AM Gene Chen <gene.chen.richtek@gmail.com> wrot=
+e:
+> Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2020=E5=B9=B48=E6=9C=8830=
+=E6=97=A5 =E9=80=B1=E6=97=A5 =E4=B8=8A=E5=8D=881:12=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+> > On Mon, 24 Aug 2020 17:06:24 +0800
+> > Gene Chen <gene.chen.richtek@gmail.com> wrote:
 
-Indeed I missed this, thanks for review and tests.
+> > A few comments inline.  The big one centres on why we can't
+> > expose the channels as _raw, _offset and _scale?
+> >
+>
+> I think i have 3 reason for use real value,
+> ADC is used to get real value rather than raw data which is not meaningfu=
+l.
+> And I can decide which formula needs apply according to different conditi=
+on.
+> Also the junction temperature channel _scale is floating point 1.05
+> which is not easy to express.
 
-Best regards,
-Krzysztof
+It's easy to express. Like other values in IIO subsystem which are float.
 
-> 
-> Thanks,
-> Jonathan
-> 
-> On 2020-09-07 5:17 p.m., Jonathan Bakker wrote:
-> > Initial testing on both an i9000 and an SGH-T959P are showing that the audio has
-> > stopped working with this.  I'm not 100% convinced as I've had DMA issues in the
-> > past.  However trying to play something just results in a hang after 1.5s while
-> > it works just fine without this patch.
-> > 
-> > Thanks,
-> > Jonathan
+--=20
+With Best Regards,
+Andy Shevchenko

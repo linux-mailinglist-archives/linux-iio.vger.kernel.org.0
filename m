@@ -2,317 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32ABE263073
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 17:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C68942630D6
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 17:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728663AbgIIPYM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 11:24:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730022AbgIIPXP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Sep 2020 11:23:15 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824A2C06121B
-        for <linux-iio@vger.kernel.org>; Wed,  9 Sep 2020 07:43:38 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id b19so3857384lji.11
-        for <linux-iio@vger.kernel.org>; Wed, 09 Sep 2020 07:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kn0LCZSIusAON6ndXDb22Ts6Aylc8FP8Xrvohop7/2A=;
-        b=hYvDAST0OITWdSVwspgsibWgh01WSec3TB+82e+16Dz5pwF1gTdMFE+O1Bhge2Vcxx
-         EKMlzWHwz3iqxCxhCLgQv+mzXebc72Sf+W7+8cYG5ExKo+FHsXZnFXQEm4sp/w3OpA/a
-         jfcWyCh0C9g7My4YYzl4YOMD5AJXq5pIrL0oMKuXqA70aVKjTaWSNsxSOQyD0RBosG1Y
-         NlmTaTD3fZPHqXBgo4jl5J7sXlD6b+i7uf13MI39tu0uFfuSg2kyQrmcF8jVwAL5+5co
-         uxIdXb/OGdzldVMq2wuKDHSpfD0Yh/7eICdniTDa8sh5t7SXEnui1w0XOfhztMkQKJ59
-         b2Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kn0LCZSIusAON6ndXDb22Ts6Aylc8FP8Xrvohop7/2A=;
-        b=Ek5tdiTwNVUgAkf2Au9NAHLH+O6vVm1bshpPlCFaNbqnBbzUOIJw+jWa2wkQPwJF9y
-         f5vNnUKSpQFL24BbY6LGdqHE+4ODHKpKlKWynuKmU0aom9v6IjTnEJJmNGsdg8yLj4Ko
-         MhJlTUhIsdC268KFgDeFESkNaaXnvuIfxSVkuvxjvsYqo0k2BBfszQVwm1+jBRFcCevp
-         tFuDCaTm4SZwfXZWK418Lo8JNEq8+l0va7jrSBSue6kqe7rOjdDve43S6CX/HIS9QDba
-         MqAu6lMDb2WdA4D19wBj38goy8fNdkL+CEQ3L7x8z2zMvYX56zLc9clZHsRLsPwo3dfa
-         1sPA==
-X-Gm-Message-State: AOAM531Yhwwa+/AT4DZWkyRdL+wEfgN9tpH6f73II5ApFnWuubLCKMHh
-        pX35tX9YhCZnECEeFOkG8oigKw==
-X-Google-Smtp-Source: ABdhPJzgjoCuAKX/vNuNuPhqIqvjMkf993MVlcQJFie8CnUgqj4TFZgVFoYqBvYy1MDYEULdB9VjZg==
-X-Received: by 2002:a2e:99cb:: with SMTP id l11mr2047575ljj.123.1599662613340;
-        Wed, 09 Sep 2020 07:43:33 -0700 (PDT)
-Received: from eriador.lan ([188.162.64.155])
-        by smtp.gmail.com with ESMTPSA id t12sm621665lfk.26.2020.09.09.07.43.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 07:43:32 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1730200AbgIIPqJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 11:46:09 -0400
+Received: from mailout08.rmx.de ([94.199.90.85]:43570 "EHLO mailout08.rmx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730460AbgIIPpg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:45:36 -0400
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mailout08.rmx.de (Postfix) with ESMTPS id 4BmmYw5Cf1zMnC1;
+        Wed,  9 Sep 2020 17:45:24 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin02.retarus.com (Postfix) with ESMTPS id 4BmmYT72k8z2TRlN;
+        Wed,  9 Sep 2020 17:45:01 +0200 (CEST)
+Received: from N95HX1G2.wgnetz.xx (192.168.54.93) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Wed, 9 Sep
+ 2020 17:45:01 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v3 10/10] arm64: dts: sm8250-mtp: add thermal zones using pmic's adc-tm5
-Date:   Wed,  9 Sep 2020 17:42:48 +0300
-Message-Id: <20200909144248.54327-11-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200909144248.54327-1-dmitry.baryshkov@linaro.org>
-References: <20200909144248.54327-1-dmitry.baryshkov@linaro.org>
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Christian Eggers <ceggers@arri.de>
+Subject: [PATCH] iio: light: as73211: Increase measurement timeout
+Date:   Wed, 9 Sep 2020 17:44:39 +0200
+Message-ID: <20200909154439.10308-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.54.93]
+X-RMX-ID: 20200909-174501-4BmmYT72k8z2TRlN-0@kdin02
+X-RMX-SOURCE: 217.111.95.66
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Port thermal zones definitions from msm-4.19 tree. Enable and add
-channel configuration to PMIC's ADC-TM definitions. Declare thermal
-zones and respective trip points.
+We found some sensors which are much slower (20% at room temperature)
+than nominal. According to the data sheet, up to 27% is possible. Now I
+add 33% to the nominal time out, hopefully this is enough.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- arch/arm64/boot/dts/qcom/sm8250-mtp.dts | 212 ++++++++++++++++++++++++
- 1 file changed, 212 insertions(+)
+ drivers/iio/light/as73211.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-index 6894f8490dae..d524cc5a0816 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-@@ -24,6 +24,104 @@ chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
+diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+index 25e5c386d678..457bf7f4b1f4 100644
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -259,10 +259,9 @@ static int as73211_req_data(struct as73211_data *data)
+ 	data->osr &= ~AS73211_OSR_SS;
  
-+	thermal-zones {
-+		xo-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 0>;
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		skin-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 1>;
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		mmw-pa1 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		conn-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150b_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		camera-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		skin-msm-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		mmw-pa2 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+	};
-+
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vph_pwr";
-@@ -358,6 +456,120 @@ &cdsp {
- 	firmware-name = "qcom/sm8250/cdsp.mbn";
- };
- 
-+&pm8150_adc {
-+	xo-therm@4c {
-+		reg = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm1@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150b_adc {
-+	conn-therm@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150l_adc {
-+	camera-flash-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-msm-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm2@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150_adc_tm {
-+	status = "okay";
-+
-+	xo-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,adc-channel = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm1@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150b_adc_tm {
-+	status = "okay";
-+
-+	conn-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150l_adc_tm {
-+	status = "okay";
-+
-+	camera-flash-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-msm-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm2@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
- &qupv3_id_1 {
- 	status = "okay";
- };
+ 	/*
+-	 * Add some extra margin for the timeout. sensor timing is not as precise
+-	 * as our one ...
++	 * Add 33% extra margin for the timeout. fclk,min = fclk,typ - 27%.
+ 	 */
+-	time_us += time_us / 8;
++	time_us += time_us / 3;
+ 	if (data->client->irq) {
+ 		ret = wait_for_completion_timeout(&data->completion, usecs_to_jiffies(time_us));
+ 		if (!ret) {
 -- 
-2.28.0
+Christian Eggers
+Embedded software developer
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 

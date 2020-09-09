@@ -2,137 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E08D2636F6
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 21:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F362637D8
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 22:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729507AbgIIT55 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 15:57:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39062 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726801AbgIIT55 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Sep 2020 15:57:57 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A2B2521D91;
-        Wed,  9 Sep 2020 19:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599681475;
-        bh=Fj/ZQbw6iThGFoHDEPgT4Mpjuadx6d6xm8WtTwb+cS8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gH+Ux2bfsGWe0ZZ8cr/KH4k1RUwrjBxh2rNdIt1VeCmIfHUDCq39wW48JqvtybXWy
-         Rw8pmYp1O3RalPallGy/5d3wY6dSMu5Y/7qWiIPM+cwz8vmVcrJWXqbauDdjEuVqkS
-         bjUUVwZCxI6cw+s+WEaEuQPutenO211vAHrqJv18=
-Received: by mail-ej1-f53.google.com with SMTP id z22so5325528ejl.7;
-        Wed, 09 Sep 2020 12:57:55 -0700 (PDT)
-X-Gm-Message-State: AOAM532xczjPP+a2j7QZz9Ei5PMAPunSRjdE6MeKUDi8151A2r3QS+iV
-        bck/u5pz+icuurvMgAUyRnivU4sM7ER9XFwzM2g=
-X-Google-Smtp-Source: ABdhPJwTMqh5k7vWahnMEeb3gRi7HnzNHjrkeMUXR1813rl6InlKMxnwCaXk5Vx2ppJEqh/OTvng43DjT6sRq5dxx5s=
-X-Received: by 2002:a17:906:8401:: with SMTP id n1mr5150651ejx.215.1599681474195;
- Wed, 09 Sep 2020 12:57:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200829064726.26268-1-krzk@kernel.org> <20200829064726.26268-8-krzk@kernel.org>
- <20200909193600.41970d8c@archlinux>
-In-Reply-To: <20200909193600.41970d8c@archlinux>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Wed, 9 Sep 2020 21:57:41 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPeo8SXWaRmiFG6z+t9jcnaSMRpvRPm2X22Rf6rtEeKVew@mail.gmail.com>
-Message-ID: <CAJKOXPeo8SXWaRmiFG6z+t9jcnaSMRpvRPm2X22Rf6rtEeKVew@mail.gmail.com>
-Subject: Re: [PATCH v3 08/18] iio: adc: stm32: Simplify with dev_err_probe()
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        id S1726535AbgIIUvw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 16:51:52 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:37722 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726414AbgIIUvt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Sep 2020 16:51:49 -0400
+Received: by mail-il1-f196.google.com with SMTP id b17so3680695ilh.4;
+        Wed, 09 Sep 2020 13:51:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rZ0V+EWC3K4UpIGuh9GM6nuw87M4KtvgCaC3pRhbpR0=;
+        b=dyubtRweugoWggSzFF/0W+Q/Hcb/svgFy976702uKsLPeIHvrPZX9cHkthKyPOQL08
+         qVl6fdUrvGx+vflFZpobWvfceR+mxDBFi7t+UWKlXQ5lmhdbAEVw7NuKySif56/WEUCY
+         uhIOhu6AZT6bQS1VG+kewzzgZy5glAQh7DmplHhcIMXw4p369UjkyWiek5k8MhcDiI5E
+         j5i5dl8W+9Q6/a1Pgw5wPEdeApUJ8rUUgnkmDMSihqCUF73ebigFp8ocPF9Swfpv21DR
+         FmYYQKOdj8/mgT/V2KVV1O7p0wR6oa7fgQXHT7BvZ5rrXke/t+m7Bup3GpcnwebS28Br
+         fW5A==
+X-Gm-Message-State: AOAM532c5MQRFGoek/r0R2AlWXI0D//7V1faGgG8Z+Nn5LgtOEm9ZKfy
+        c5kuNLe7ydh9re4c82hSEw==
+X-Google-Smtp-Source: ABdhPJy1kcV6wfAb/ftXSG3i4traa3heeoxdRC++rZSScBAr1I9oWCzsx/X6zf2UhCPVoCzBQJRl4w==
+X-Received: by 2002:a05:6e02:1031:: with SMTP id o17mr4440011ilj.47.1599684708340;
+        Wed, 09 Sep 2020 13:51:48 -0700 (PDT)
+Received: from xps15 ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id o15sm1912691ilc.41.2020.09.09.13.51.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 13:51:47 -0700 (PDT)
+Received: (nullmailer pid 3055582 invoked by uid 1000);
+        Wed, 09 Sep 2020 20:51:33 -0000
+Date:   Wed, 9 Sep 2020 14:51:33 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-pm@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Amit Kucheria <amitk@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [PATCH v3 02/10] dt-bindings: thermal: qcom: add adc-thermal
+ monitor bindings
+Message-ID: <20200909205133.GA3054559@bogus>
+References: <20200909144248.54327-1-dmitry.baryshkov@linaro.org>
+ <20200909144248.54327-3-dmitry.baryshkov@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200909144248.54327-3-dmitry.baryshkov@linaro.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 9 Sep 2020 at 20:36, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sat, 29 Aug 2020 08:47:16 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> > Common pattern of handling deferred probe can be simplified with
-> > dev_err_probe().  Less code and also it prints the error value.
-> >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> >
-> I don't have the thread to hand, but this tripped a warning next
-> and the patch was dropped as a result. See below.
+On Wed, 09 Sep 2020 17:42:40 +0300, Dmitry Baryshkov wrote:
+> Add bindings for thermal monitor, part of Qualcomm PMIC5 chips. It is a
+> close counterpart of VADC part of those PMICs.
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+>  .../bindings/thermal/qcom-spmi-adc-tm5.yaml   | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> 
 
-Thanks for letting me know. If you mean the warning caused by:
-https://lore.kernel.org/lkml/20200909073716.GA560912@kroah.com/
-then the driver-core patch was dropped, not the iio one:
-https://lore.kernel.org/linux-next/20200909074130.GB561485@kroah.com/T/#t
 
-So we are good here :)
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Best regards,
-Krzysztof
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:25.17-30: Warning (reg_format): /example-0/adc@3100/conn-therm@4f:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:33.13-28: Warning (reg_format): /example-0/adc-tm@3500:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:21.31-29.11: Warning (unit_address_vs_reg): /example-0/adc@3100: node has a unit name, but no reg or ranges property
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:24.27-28.15: Warning (avoid_default_addr_size): /example-0/adc@3100/conn-therm@4f: Relying on default #address-cells value
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:24.27-28.15: Warning (avoid_default_addr_size): /example-0/adc@3100/conn-therm@4f: Relying on default #size-cells value
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: Warning (unique_unit_address): Failed prerequisite 'avoid_default_addr_size'
+Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dts:39.26-45.15: Warning (io_channels_property): /example-0/adc-tm@3500/conn-therm@0: Missing property '#io-channel-cells' in node /example-0/adc@3100 or bad phandle (referred from io-channels[0])
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: example-0: adc-tm@3500:reg:0: [13568] is too short
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: adc@3100: 'reg' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: adc@3100: '#address-cells' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: adc@3100: '#size-cells' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dt.yaml: adc@3100: '#io-channel-cells' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
 
-> Jonathan
-> > ---
-> >
-> > Changes since v2:
-> > 1. Wrap dev_err_probe() lines at 80 character
-> >
-> > Changes since v1:
-> > 1. Convert to devm_clk_get_optional
-> > 2. Update also stm32-dfsdm-core and stm32-dac-core.
-> > 3. Wrap around 100 characters (accepted by checkpatch).
-> > ---
-> >  drivers/iio/adc/stm32-adc-core.c   | 75 ++++++++++--------------------
-> >  drivers/iio/adc/stm32-adc.c        | 10 ++--
-> >  drivers/iio/adc/stm32-dfsdm-adc.c  | 10 ++--
-> >  drivers/iio/adc/stm32-dfsdm-core.c |  9 ++--
-> >  drivers/iio/dac/stm32-dac-core.c   |  5 +-
-> >  5 files changed, 35 insertions(+), 74 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> > index 0e2068ec068b..3f27b4817a42 100644
-> > --- a/drivers/iio/adc/stm32-adc-core.c
-> > +++ b/drivers/iio/adc/stm32-adc-core.c
-> > @@ -582,11 +582,9 @@ static int stm32_adc_core_switches_probe(struct device *dev,
-> >       priv->syscfg = syscon_regmap_lookup_by_phandle(np, "st,syscfg");
-> >       if (IS_ERR(priv->syscfg)) {
-> >               ret = PTR_ERR(priv->syscfg);
-> > -             if (ret != -ENODEV) {
-> > -                     if (ret != -EPROBE_DEFER)
-> > -                             dev_err(dev, "Can't probe syscfg: %d\n", ret);
-> > -                     return ret;
-> > -             }
-> > +             if (ret != -ENODEV)
-> > +                     return dev_err_probe(dev, ret, "Can't probe syscfg\n");
-> > +
-> >               priv->syscfg = NULL;
-> >       }
-> >
-> > @@ -596,12 +594,9 @@ static int stm32_adc_core_switches_probe(struct device *dev,
-> >               priv->booster = devm_regulator_get_optional(dev, "booster");
-> >               if (IS_ERR(priv->booster)) {
-> >                       ret = PTR_ERR(priv->booster);
-> > -                     if (ret != -ENODEV) {
-> > -                             if (ret != -EPROBE_DEFER)
-> > -                                     dev_err(dev, "can't get booster %d\n",
-> > -                                             ret);
-> > -                             return ret;
-> > -                     }
-> > +                     if (ret != -ENODEV)
-> > +                             dev_err_probe(dev, ret, "can't get booster\n");
->
-> This tripped a warning and got the patch dropped because we no longer
-> return on error.
+
+See https://patchwork.ozlabs.org/patch/1360722
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.
+

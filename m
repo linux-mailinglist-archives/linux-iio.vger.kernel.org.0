@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9365B263571
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB2A263575
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728971AbgIISF3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 14:05:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59114 "EHLO mail.kernel.org"
+        id S1729251AbgIISFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 14:05:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59138 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726415AbgIISEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1728015AbgIISEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Wed, 9 Sep 2020 14:04:30 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7357B221E9;
-        Wed,  9 Sep 2020 18:02:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E730C221EB;
+        Wed,  9 Sep 2020 18:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599674559;
-        bh=oR2e7KTlOJXHjrle7xG5qsZ13sayZ38P4sCsd50ANTc=;
+        s=default; t=1599674561;
+        bh=pIGED+JyPxgowS0lFF9cJwDhp/9iv4X0tN+lMhcd7Mw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7D9KskoQ97wh+SxXNsEpmOIitbsjirR9HSJnD/9lt2cWTnQntbKyizwzT9k/Khxh
-         dVHJIqYDYcr6vy8DuLtZ9SgBOXAL/0j3IhjeB2EDreRDXRhTlS2eD24umCZr6GSslD
-         Nom6HoXUub8xe3Cp8Z3fwtRWlXhr2DoAfDfWA5LM=
+        b=R43MGhl91+eUaPZyD7+9F+Az4Z/tMZG1bA68KGhFD78EqUYeu9nksdvdUlxHsnk24
+         Ul3vM1VuAKaJIpxnwAd0Y5DwXYGKm/ozhtoX5/pwkqBakiHjRPhbSc4ddSornCFXib
+         oO0N64/ZbR5UeEclZcX7gt0enpQtDdiZ1lIcKdNM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Phani Movva <Phani.Movva@imgtec.com>
-Subject: [PATCH v2 13/20] dt-bindings:iio:adc:cosmic,10001-adc yaml conversion
-Date:   Wed,  9 Sep 2020 18:59:39 +0100
-Message-Id: <20200909175946.395313-14-jic23@kernel.org>
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>
+Subject: [PATCH v2 14/20] dt-bindings:iio:adc:adi,ad7949 yaml conversion
+Date:   Wed,  9 Sep 2020 18:59:40 +0100
+Message-Id: <20200909175946.395313-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200909175946.395313-1-jic23@kernel.org>
 References: <20200909175946.395313-1-jic23@kernel.org>
@@ -43,107 +43,100 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I don't really know much about this one, hence the binding is
-a simple conversion of what was in the txt file.
+Simple SPI driver. I've added the #io-channel-cells
+as an optional parameter to allow use of this device as a provider
+of ADC capabilities to other devices.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Phani Movva <Phani.Movva@imgtec.com>
+Cc: Charles-Antoine Couret <charles-antoine.couret@essensium.com>
 ---
- .../bindings/iio/adc/cc10001_adc.txt          | 22 -------
- .../bindings/iio/adc/cosmic,10001-adc.yaml    | 59 +++++++++++++++++++
- 2 files changed, 59 insertions(+), 22 deletions(-)
+ .../devicetree/bindings/iio/adc/ad7949.txt    | 16 ------
+ .../bindings/iio/adc/adi,ad7949.yaml          | 57 +++++++++++++++++++
+ 2 files changed, 57 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/cc10001_adc.txt b/Documentation/devicetree/bindings/iio/adc/cc10001_adc.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.txt b/Documentation/devicetree/bindings/iio/adc/ad7949.txt
 deleted file mode 100644
-index 904f76de9055..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/cc10001_adc.txt
+index c7f5057356b1..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/ad7949.txt
 +++ /dev/null
-@@ -1,22 +0,0 @@
--* Cosmic Circuits - Analog to Digital Converter (CC-10001-ADC)
+@@ -1,16 +0,0 @@
+-* Analog Devices AD7949/AD7682/AD7689
 -
 -Required properties:
--  - compatible: Should be "cosmic,10001-adc"
--  - reg: Should contain adc registers location and length.
--  - clock-names: Should contain "adc".
--  - clocks: Should contain a clock specifier for each entry in clock-names
--  - vref-supply: The regulator supply ADC reference voltage.
--
--Optional properties:
--  - adc-reserved-channels: Bitmask of reserved channels,
--    i.e. channels that cannot be used by the OS.
+- - compatible: Should be one of
+-	* "adi,ad7949"
+-	* "adi,ad7682"
+-	* "adi,ad7689"
+- - reg: spi chip select number for the device
+- - vref-supply: The regulator supply for ADC reference voltage
 -
 -Example:
--adc: adc@18101600 {
--	compatible = "cosmic,10001-adc";
--	reg = <0x18101600 0x24>;
--	adc-reserved-channels = <0x2>;
--	clocks = <&adc_clk>;
--	clock-names = "adc";
--	vref-supply = <&reg_1v8>;
+-adc@0 {
+-	compatible = "adi,ad7949";
+-	reg = <0>;
+-	vref-supply = <&vdd_supply>;
 -};
-diff --git a/Documentation/devicetree/bindings/iio/adc/cosmic,10001-adc.yaml b/Documentation/devicetree/bindings/iio/adc/cosmic,10001-adc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
 new file mode 100644
-index 000000000000..1c4838d4a547
+index 000000000000..9b56bd4d5510
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/cosmic,10001-adc.yaml
-@@ -0,0 +1,59 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml
+@@ -0,0 +1,57 @@
++# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/cosmic,10001-adc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7949.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Cosmic Circuits CC-10001 ADC
++title: Analog Devices AD7949/AD7682/AD7689 analog to digital converters
 +
 +maintainers:
-+  - Phani Movva <Phani.Movva@imgtec.com>
++  - Charles-Antoine Couret <charles-antoine.couret@essensium.com>
 +
-+description:
-+  Cosmic Circuits 10001 10-bit ADC device.
++description: |
++  Specifications on the converters can be found at:
++    AD7949:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7949.pdf
++    AD7682/AD7698:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7682_7689.pdf
 +
 +properties:
 +  compatible:
-+    const: cosmic,10001-adc
++    enum:
++      - adi,ad7682
++      - adi,ad7689
++      - adi,ad7949
 +
 +  reg:
 +    maxItems: 1
 +
-+  adc-reserved-channels:
-+    $ref: /schemas/types.yaml#/definitions/uint32
++  vref-supply:
 +    description:
-+       Bitmask of reserved channels, i.e. channels that cannot be
-+       used by the OS.
++      ADC reference voltage supply
 +
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: adc
-+
-+  vref-supply: true
++  spi-max-frequency: true
 +
 +  "#io-channel-cells":
 +    const: 1
 +
-+
 +required:
 +  - compatible
 +  - reg
-+  - clocks
-+  - clock-names
 +  - vref-supply
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    adc@18101600 {
-+        compatible = "cosmic,10001-adc";
-+        reg = <0x18101600 0x24>;
-+        adc-reserved-channels = <0x2>;
-+        clocks = <&adc_clk>;
-+        clock-names = "adc";
-+        vref-supply = <&reg_1v8>;
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,ad7949";
++            reg = <0>;
++            vref-supply = <&vdd_supply>;
++        };
 +    };
 +...
 -- 

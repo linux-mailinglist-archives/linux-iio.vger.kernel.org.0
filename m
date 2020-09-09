@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B94263583
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCB5263573
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729822AbgIISGA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 14:06:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60328 "EHLO mail.kernel.org"
+        id S1726415AbgIISFb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 14:05:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59278 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728970AbgIISEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1729251AbgIISEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Wed, 9 Sep 2020 14:04:30 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7762321D94;
-        Wed,  9 Sep 2020 18:02:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 02AC022206;
+        Wed,  9 Sep 2020 18:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599674562;
-        bh=jPSQ5f2VhFS8sUid0ibRHmjsn7fdN/hAJrcv0JAeDtA=;
+        s=default; t=1599674564;
+        bh=a8NvT8GrB3MC2P5uCmXgeNzeGo+67sqznTDHWFubi94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W24mOEv0gIZV09yyg3JBUWCIFwB4j0moz5WL1EjyQV7FqHeXrmgWmOKq8YNOl8uX3
-         /hlodM5VNuOukXlVsWIBIKWB1jJ+X4OufYEV1riNrt43mpG3DcBRK+BlYhYuLpuX1V
-         9H5VVp+gvQjWGCwLQdKO2+qRT/T0/0p7jyl7nK0Q=
+        b=HHHkKG4d6onNz4L+yBN8fDaH2QBpQ2H7wCEBFx2DQnaV6QzCmxHOgn1KR3571xf3J
+         F+y/QD8yrxccCUGUmk43mp8qFUWW512Xdr0OJjgWu0ax5pPV/RpAOym4Y5xf78v6CR
+         aGnJkMmBdlc399xF28iVK3nEBdTNXrlpgFEdZEU0=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH v2 15/20] dt-bindings:iio:adc:ad7768-1 yaml conversion
-Date:   Wed,  9 Sep 2020 18:59:41 +0100
-Message-Id: <20200909175946.395313-16-jic23@kernel.org>
+        Dirk Eibach <eibach@gdsys.de>,
+        Daniel Baluta <daniel.baluta@nxp.com>
+Subject: [PATCH v2 16/20] dt-bindings:iio:adc:ti,ads1015 yaml conversion
+Date:   Wed,  9 Sep 2020 18:59:42 +0100
+Message-Id: <20200909175946.395313-17-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200909175946.395313-1-jic23@kernel.org>
 References: <20200909175946.395313-1-jic23@kernel.org>
@@ -43,126 +44,134 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Fairly straight conversion.  The one oddity in the original binding
-is that spi-cpha and spi-cpol were not marked as required, but were
-in the example.  Looking at the datasheet, there isn't any documented
-flexibility in the possible SPI modes, so I have moved these to requires.
-For spi-max-frequency I have gone the other way.  I absolutely agree
-that it is good to specify this in the dt-binding, but it's not
-strictly required.
+This binding was moved over from hwmon some time ago so is a bit
+unusual in terms of IIO bindings.  However, conversion was fairly
+straight forwards.
 
-As Stefan's email is bouncing I have gone with Michael as maintainer
-of this one as it falls under the ADI catch all entry in MAINTAINERS.
+I've listed both Dirk (who think wrote original binding) and Daniel
+who added the IIO driver for this device.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: Dirk Eibach <eibach@gdsys.de>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>
 ---
- .../bindings/iio/adc/adi,ad7768-1.txt         | 41 ---------
- .../bindings/iio/adc/adi,ad7768-1.yaml        | 89 +++++++++++++++++++
- 2 files changed, 89 insertions(+), 41 deletions(-)
+ .../devicetree/bindings/iio/adc/ads1015.txt   |  73 -----------
+ .../bindings/iio/adc/ti,ads1015.yaml          | 113 ++++++++++++++++++
+ 2 files changed, 113 insertions(+), 73 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.txt b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/ads1015.txt b/Documentation/devicetree/bindings/iio/adc/ads1015.txt
 deleted file mode 100644
-index 9f5b88cf680d..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.txt
+index 918a507d1159..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/ads1015.txt
 +++ /dev/null
-@@ -1,41 +0,0 @@
--Analog Devices AD7768-1 ADC device driver
+@@ -1,73 +0,0 @@
+-ADS1015 (I2C)
 -
--Required properties for the AD7768-1:
+-This device is a 12-bit A-D converter with 4 inputs.
 -
--- compatible: Must be "adi,ad7768-1"
--- reg: SPI chip select number for the device
--- spi-max-frequency: Max SPI frequency to use
--	see: Documentation/devicetree/bindings/spi/spi-bus.txt
--- clocks: phandle to the master clock (mclk)
--	see: Documentation/devicetree/bindings/clock/clock-bindings.txt
--- clock-names: Must be "mclk".
--- interrupts: IRQ line for the ADC
--	see: Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
--- vref-supply: vref supply can be used as reference for conversion
--- adi,sync-in-gpios: must be the device tree identifier of the SYNC-IN pin. Enables
--	synchronization of multiple devices that require simultaneous sampling.
--	A pulse is always required if the configuration is changed in any way, for example
--	if the filter decimation rate changes. As the line is active low, it should
--	be marked GPIO_ACTIVE_LOW.
+-The inputs can be used single ended or in certain differential combinations.
 -
--Optional properties:
+-For configuration all possible combinations are mapped to 8 channels:
+-  0: Voltage over AIN0 and AIN1.
+-  1: Voltage over AIN0 and AIN3.
+-  2: Voltage over AIN1 and AIN3.
+-  3: Voltage over AIN2 and AIN3.
+-  4: Voltage over AIN0 and GND.
+-  5: Voltage over AIN1 and GND.
+-  6: Voltage over AIN2 and GND.
+-  7: Voltage over AIN3 and GND.
 -
-- - reset-gpios : GPIO spec for the RESET pin. If specified, it will be asserted during
--	driver probe. As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+-Each channel can be configured individually:
+- - pga is the programmable gain amplifier (values are full scale)
+-    0: +/- 6.144 V
+-    1: +/- 4.096 V
+-    2: +/- 2.048 V (default)
+-    3: +/- 1.024 V
+-    4: +/- 0.512 V
+-    5: +/- 0.256 V
+- - data_rate in samples per second
+-    0: 128
+-    1: 250
+-    2: 490
+-    3: 920
+-    4: 1600 (default)
+-    5: 2400
+-    6: 3300
 -
--Example:
+-1) The /ads1015 node
 -
--	adc@0 {
--		compatible = "adi,ad7768-1";
--		reg = <0>;
--		spi-max-frequency = <2000000>;
--		spi-cpol;
--		spi-cpha;
--		vref-supply = <&adc_vref>;
--		interrupts = <25 IRQ_TYPE_EDGE_RISING>;
--		interrupt-parent = <&gpio>;
--		adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
--		reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
--		clocks = <&ad7768_mclk>;
--		clock-names = "mclk";
--	};
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+-  Required properties:
+-
+-   - compatible : must be "ti,ads1015"
+-   - reg : I2C bus address of the device
+-   - #address-cells : must be <1>
+-   - #size-cells : must be <0>
+-
+-  The node contains child nodes for each channel that the platform uses.
+-
+-  Example ADS1015 node:
+-
+-    ads1015@49 {
+-	    compatible = "ti,ads1015";
+-	    reg = <0x49>;
+-	    #address-cells = <1>;
+-	    #size-cells = <0>;
+-
+-	    [ child node definitions... ]
+-    }
+-
+-2) channel nodes
+-
+-  Required properties:
+-
+-   - reg : the channel number
+-
+-  Optional properties:
+-
+-   - ti,gain : the programmable gain amplifier setting
+-   - ti,datarate : the converter data rate
+-
+-  Example ADS1015 channel node:
+-
+-    channel@4 {
+-	    reg = <4>;
+-	    ti,gain = <3>;
+-	    ti,datarate = <5>;
+-    };
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
 new file mode 100644
-index 000000000000..d3733ad8785a
+index 000000000000..c7c850b7ecc6
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-@@ -0,0 +1,89 @@
-+# SPDX-License-Identifier: GPL-2.0
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+@@ -0,0 +1,113 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7768-1.yaml#
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1015.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Analog Devices AD7768-1 ADC device driver
++title: TI ADS1015 4 channel I2C analog to digital converter
 +
 +maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
++  - Dirk Eibach <eibach@gdsys.de>
++  - Daniel Baluta <daniel.baluta@nxp.com>
 +
 +description: |
-+  Datasheet at:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
++  Datasheet at: https://www.ti.com/lit/gpn/ads1015
++  Supports both single ended and differential channels.
 +
 +properties:
 +  compatible:
-+    const: adi,ad7768-1
++    const: ti,ads1015
 +
 +  reg:
 +    maxItems: 1
 +
-+  clocks:
-+    maxItems: 1
++  "#address-cells":
++    const: 1
 +
-+  clock-names:
-+    const: mclk
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vref-supply:
-+    description:
-+      ADC reference voltage supply
-+
-+  adi,sync-in-gpios:
-+    description:
-+      Enables synchronization of multiple devices that require simultaneous
-+      sampling. A pulse is always required if the configuration is changed
-+      in any way, for example if the filter decimation rate changes.
-+      As the line is active low, it should be marked GPIO_ACTIVE_LOW.
-+
-+  reset-gpios:
-+    maxItems: 1
-+
-+  spi-max-frequency: true
-+
-+  spi-cpol: true
-+  spi-cpha : true
++  "#size-cells":
++    const: 0
 +
 +  "#io-channel-cells":
 +    const: 1
@@ -170,36 +179,81 @@ index 000000000000..d3733ad8785a
 +required:
 +  - compatible
 +  - reg
-+  - clocks
-+  - clock-names
-+  - vref-supply
-+  - spi-cpol
-+  - spi-cpha
-+  - adi,sync-in-gpios
++  - "#address-cells"
++  - "#size-cells"
 +
 +additionalProperties: false
 +
++patternProperties:
++  "^channel@[0-7]+$":
++    type: object
++    description:
++      Child nodes needed for each channel that the platform uses.
++
++    properties:
++      reg:
++        description: |
++          0: Voltage over AIN0 and AIN1.
++          1: Voltage over AIN0 and AIN3.
++          2: Voltage over AIN1 and AIN3.
++          3: Voltage over AIN2 and AIN3.
++          4: Voltage over AIN0 and GND.
++          5: Voltage over AIN1 and GND.
++          6: Voltage over AIN2 and GND.
++          7: Voltage over AIN3 and GND.
++        items:
++          - minimum: 0
++            maximum: 7
++
++      ti,gain:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        minimum: 0
++        maximum: 5
++        description: |
++          pga is the programmable gain amplifier (values are full scale)
++          0: +/- 6.144 V
++          1: +/- 4.096 V
++          2: +/- 2.048 V (default)
++          3: +/- 1.024 V
++          4: +/- 0.512 V
++          5: +/- 0.256 V
++
++      ti,datarate:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        minimum: 0
++        maximum: 6
++        description: |
++          Data acquisition rate in samples per second
++          0: 128
++          1: 250
++          2: 490
++          3: 920
++          4: 1600 (default)
++          5: 2400
++          6: 3300
++
++    required:
++      - reg
++
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
++    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        adc@0 {
-+            compatible = "adi,ad7768-1";
-+            reg = <0>;
-+            spi-max-frequency = <2000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            vref-supply = <&adc_vref>;
-+            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-+            interrupt-parent = <&gpio>;
-+            adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
-+            reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-+            clocks = <&ad7768_mclk>;
-+            clock-names = "mclk";
++        adc@49 {
++            compatible = "ti,ads1015";
++            reg = <0x49>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            channel@0 {
++              reg = <0>;
++            };
++            channel@4 {
++              reg = <4>;
++              ti,gain = <3>;
++              ti,datarate = <5>;
++            };
 +        };
 +    };
 +...

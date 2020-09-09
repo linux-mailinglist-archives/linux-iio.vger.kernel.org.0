@@ -2,152 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B056263689
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 21:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8132B2636AB
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 21:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726414AbgIITTb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 15:19:31 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:32779 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbgIITT2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Sep 2020 15:19:28 -0400
-X-Originating-IP: 90.65.88.165
-Received: from localhost (lfbn-lyo-1-1908-165.w90-65.abo.wanadoo.fr [90.65.88.165])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 01DE41C0004;
-        Wed,  9 Sep 2020 19:19:23 +0000 (UTC)
-Date:   Wed, 9 Sep 2020 21:19:23 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH v2 07/20] dt-bindings:iio:adc:nuvoton,nau7802 yaml
- conversion
-Message-ID: <20200909191923.GV230586@piout.net>
-References: <20200909175946.395313-1-jic23@kernel.org>
- <20200909175946.395313-8-jic23@kernel.org>
+        id S1726414AbgIITgh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 15:36:37 -0400
+Received: from mail-ej1-f67.google.com ([209.85.218.67]:40852 "EHLO
+        mail-ej1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726399AbgIITgg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Sep 2020 15:36:36 -0400
+Received: by mail-ej1-f67.google.com with SMTP id z22so5244274ejl.7;
+        Wed, 09 Sep 2020 12:36:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4A75QVlnD68LjJFc3DqV+1EDwANgMXhwA5DylAio9G0=;
+        b=SL6lqhV+NaVaIHU0SzXCNo050LsLGA1BtCSVa08dIpeFH86cx3SlFU2ET0vjLbHqCb
+         w9qKljWsWXlujEUMZ9zD0ZwV2zlWXmQdMXpa8Vm2teY20Q3bo93nu0VWc+AounRyRyBX
+         6C34vKkZLWXGahXHT/JI/0vwc2gYzvvakI9JZ4scpKcrkaLI7QU5ILvSD48sNEnEhK9D
+         MTSsWj9rEo1nyzHN+sCGCeRKS3OD8qd0j8cA/dh6BGtd9pR1TdFugU+XCtrmFkxkV5i+
+         cO/LLgSYdbymA/nCk/j+tNF1dH0GzjEzEAh/gKeDPZVYkAHVX2QdbBXcxYqqtBC20kLU
+         HVFQ==
+X-Gm-Message-State: AOAM530gYtlrWMPL0ND9VKpmLsKXiMQnbr8FCmYzv/fzeRB6AeNPOVZZ
+        aONuIbzvGIDcPyF3l9cg6Lk=
+X-Google-Smtp-Source: ABdhPJxtHXXY+Sw0pX0gWqzTqtzsLaF2WvOGhPTGnMlRck/uiNfIm6H0iXc0JdqziBC03Pkh8jTRHw==
+X-Received: by 2002:a17:906:328d:: with SMTP id 13mr5430326ejw.71.1599680193622;
+        Wed, 09 Sep 2020 12:36:33 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.174])
+        by smtp.googlemail.com with ESMTPSA id r8sm3517021edy.87.2020.09.09.12.36.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 09 Sep 2020 12:36:32 -0700 (PDT)
+Date:   Wed, 9 Sep 2020 21:36:30 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 01/25] dt-bindings: samsung: pmu: document S5Pv210
+Message-ID: <20200909193630.GA21431@kozik-lap>
+References: <20200907161141.31034-1-krzk@kernel.org>
+ <20200907161141.31034-2-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200909175946.395313-8-jic23@kernel.org>
+In-Reply-To: <20200907161141.31034-2-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-
-On 09/09/2020 18:59:33+0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, Sep 07, 2020 at 06:11:17PM +0200, Krzysztof Kozlowski wrote:
+> Add compatible for the Samsung S5Pv210 SoC PMU.
 > 
-> A simple conversion from txt file to yaml.  I added the #io-channel-cells
-> property as optional to allow the channels of this ADCs to be used
-> to provide services to other drivers, for example if an analog
-> accelerometer is connected.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-> Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  .../bindings/iio/adc/nuvoton,nau7802.yaml     | 50 +++++++++++++++++++
->  .../bindings/iio/adc/nuvoton-nau7802.txt      | 18 -------
->  2 files changed, 50 insertions(+), 18 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
-> new file mode 100644
-> index 000000000000..bcd041ea28a8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
-> @@ -0,0 +1,50 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nau7802.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nuvoton NAU7802 I2c Analog to Digital Converter (ADC)
-> +
-> +maintainers:
-> +  - Alexandre Belloni <alexandre.belloni@free-electrons.com>
-> +  - Maxime Ripard <maxime.ripard@free-electrons.com>
-> +
+>  Documentation/devicetree/bindings/arm/samsung/pmu.yaml | 2 ++
 
-Sorry, I meant to reply earlier. Can you make that:
+Applied.
 
- - Alexandre Belloni <alexandre.belloni@bootlin.com>
- - Maxime Ripard <mripard@kernel.org>
+Best regards,
+Krzysztof
 
-Else, this seems good to me!
-
-> +properties:
-> +  compatible:
-> +    const: nuvoton,nau7802
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  nuvoton,vldo:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Internal reference voltage in millivolts to be configured.
-> +    minimum: 2400
-> +    maximum: 4500
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        nau7802@2a {
-> +            compatible = "nuvoton,nau7802";
-> +            reg = <0x2a>;
-> +            nuvoton,vldo = <3000>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt b/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
-> deleted file mode 100644
-> index e9582e6fe350..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
-> +++ /dev/null
-> @@ -1,18 +0,0 @@
-> -* Nuvoton NAU7802 Analog to Digital Converter (ADC)
-> -
-> -Required properties:
-> -  - compatible: Should be "nuvoton,nau7802"
-> -  - reg: Should contain the ADC I2C address
-> -
-> -Optional properties:
-> -  - nuvoton,vldo: Internal reference voltage in millivolts to be
-> -    configured valid values are between 2400 mV and 4500 mV.
-> -  - interrupts: IRQ line for the ADC. If not used the driver will use
-> -    polling.
-> -
-> -Example:
-> -adc2: nau7802@2a {
-> -	compatible = "nuvoton,nau7802";
-> -	reg = <0x2a>;
-> -	nuvoton,vldo = <3000>;
-> -};
-> -- 
-> 2.28.0
-> 
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com

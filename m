@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F243E263565
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30BB8263562
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgIISEq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 14:04:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59294 "EHLO mail.kernel.org"
+        id S1729986AbgIISEw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 14:04:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59332 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726226AbgIISC3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Sep 2020 14:02:29 -0400
+        id S1730145AbgIISCc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Sep 2020 14:02:32 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 98DDE21D90;
-        Wed,  9 Sep 2020 18:02:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6251921D80;
+        Wed,  9 Sep 2020 18:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599674549;
-        bh=jJ6/vRVlaXclyjLorv6S5zdfZ+9h/7a1/g0DbYt3LXA=;
+        s=default; t=1599674550;
+        bh=4WGAK8AbbHJfYhD9ddvP6Zim7kuzGr7UghvSwQy6YRo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DzpEj0GFsDLV55JZAk/EkelrAsjlRRL+VpYgsN8dmZ8tHx5vbUvuLSXf1bIOujsfF
-         /8sAvUaPk5nh15Yo2EHV/tPecae2bmM74VwANegYcg6H7giDE4JiH5csdgR0qwhLg5
-         8d2GpkqaEUwhZXkMbraTNy8QEwds2xZlSbfw6i6Y=
+        b=Y/dxyfxU3gVeHvDXM4lSieav/NVBX32nX+UQeOXqzPcea3joc90NIbu6Zhjoq7J4n
+         7f7sPGrsAq6HZ6pLPBPazg01KcI60E5N92rq85SuhwPGCK0NfeGkcXMpM+uQOqC79C
+         VViCI4qM/+CNz16rxiM/SFqN3eCtBvXbhNipk6UA=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH v2 06/20] dt-bindings:iio:adc:sprd,sc2720-adc yaml conversion.
-Date:   Wed,  9 Sep 2020 18:59:32 +0100
-Message-Id: <20200909175946.395313-7-jic23@kernel.org>
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: [PATCH v2 07/20] dt-bindings:iio:adc:nuvoton,nau7802 yaml conversion
+Date:   Wed,  9 Sep 2020 18:59:33 +0100
+Message-Id: <20200909175946.395313-8-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200909175946.395313-1-jic23@kernel.org>
 References: <20200909175946.395313-1-jic23@kernel.org>
@@ -45,50 +44,40 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I changed the name to reflect a specific part in line with normal
-naming conventions. If there is a particularly strong reason to
-keep the wild cards let me know.
-
-Otherwise this was a fairly simple conversion as part of converting
-all the IIO bindings to yaml.
+A simple conversion from txt file to yaml.  I added the #io-channel-cells
+property as optional to allow the channels of this ADCs to be used
+to provide services to other drivers, for example if an analog
+accelerometer is connected.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Orson Zhai <orsonzhai@gmail.com>
-Cc: Baolin Wang <baolin.wang7@gmail.com>
-Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---
- .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 72 +++++++++++++++++++
- .../bindings/iio/adc/sprd,sc27xx-adc.txt      | 40 -----------
- 2 files changed, 72 insertions(+), 40 deletions(-)
+ .../bindings/iio/adc/nuvoton,nau7802.yaml     | 50 +++++++++++++++++++
+ .../bindings/iio/adc/nuvoton-nau7802.txt      | 18 -------
+ 2 files changed, 50 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
 new file mode 100644
-index 000000000000..caa3ee0b4b8c
+index 000000000000..bcd041ea28a8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-@@ -0,0 +1,72 @@
++++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
+@@ -0,0 +1,50 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/sprd,sc2720-adc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/nuvoton,nau7802.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Spreadtrum SC27XX series PMICs ADC binding
++title: Nuvoton NAU7802 I2c Analog to Digital Converter (ADC)
 +
 +maintainers:
-+  - Baolin Wang <baolin.wang7@gmail.com>
-+
-+description:
-+  Supports the ADC found on these PMICs.
++  - Alexandre Belloni <alexandre.belloni@free-electrons.com>
++  - Maxime Ripard <maxime.ripard@free-electrons.com>
 +
 +properties:
 +  compatible:
-+    enum:
-+      - sprd,sc2720-adc
-+      - sprd,sc2721-adc
-+      - sprd,sc2723-adc
-+      - sprd,sc2730-adc
-+      - sprd,sc2731-adc
++    const: nuvoton,nau7802
 +
 +  reg:
 +    maxItems: 1
@@ -96,95 +85,58 @@ index 000000000000..caa3ee0b4b8c
 +  interrupts:
 +    maxItems: 1
 +
++  nuvoton,vldo:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Internal reference voltage in millivolts to be configured.
++    minimum: 2400
++    maximum: 4500
++
 +  "#io-channel-cells":
 +    const: 1
-+
-+  hwlocks:
-+    maxItems: 1
-+
-+  nvmem-cells:
-+    maxItems: 2
-+
-+  nvmem-cell-names:
-+    items:
-+      - const: big_scale_calib
-+      - const: small_scale_calib
 +
 +required:
 +  - compatible
 +  - reg
-+  - interrupts
-+  - "#io-channel-cells"
-+  - hwlocks
-+  - nvmem-cells
-+  - nvmem-cell-names
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    pmic {
++    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
-+        adc@480 {
-+            compatible = "sprd,sc2731-adc";
-+            reg = <0x480>;
-+            interrupt-parent = <&sc2731_pmic>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            #io-channel-cells = <1>;
-+            hwlocks = <&hwlock 4>;
-+            nvmem-cells = <&adc_big_scale>, <&adc_small_scale>;
-+            nvmem-cell-names = "big_scale_calib", "small_scale_calib";
++        nau7802@2a {
++            compatible = "nuvoton,nau7802";
++            reg = <0x2a>;
++            nuvoton,vldo = <3000>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt b/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt b/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
 deleted file mode 100644
-index b4daa15dcf15..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/sprd,sc27xx-adc.txt
+index e9582e6fe350..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
 +++ /dev/null
-@@ -1,40 +0,0 @@
--Spreadtrum SC27XX series PMICs ADC binding
+@@ -1,18 +0,0 @@
+-* Nuvoton NAU7802 Analog to Digital Converter (ADC)
 -
 -Required properties:
--- compatible: Should be one of the following.
--	"sprd,sc2720-adc"
--	"sprd,sc2721-adc"
--	"sprd,sc2723-adc"
--	"sprd,sc2730-adc"
--	"sprd,sc2731-adc"
--- reg: The address offset of ADC controller.
--- interrupt-parent: The interrupt controller.
--- interrupts: The interrupt number for the ADC device.
--- #io-channel-cells: Number of cells in an IIO specifier.
--- hwlocks: Reference to a phandle of a hwlock provider node.
--- nvmem-cells: A phandle to the calibration cells provided by eFuse device.
--- nvmem-cell-names: Should be "big_scale_calib", "small_scale_calib".
+-  - compatible: Should be "nuvoton,nau7802"
+-  - reg: Should contain the ADC I2C address
+-
+-Optional properties:
+-  - nuvoton,vldo: Internal reference voltage in millivolts to be
+-    configured valid values are between 2400 mV and 4500 mV.
+-  - interrupts: IRQ line for the ADC. If not used the driver will use
+-    polling.
 -
 -Example:
--
--	sc2731_pmic: pmic@0 {
--		compatible = "sprd,sc2731";
--		reg = <0>;
--		spi-max-frequency = <26000000>;
--		interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
--		interrupt-controller;
--		#interrupt-cells = <2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		pmic_adc: adc@480 {
--			compatible = "sprd,sc2731-adc";
--			reg = <0x480>;
--			interrupt-parent = <&sc2731_pmic>;
--			interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
--			#io-channel-cells = <1>;
--			hwlocks = <&hwlock 4>;
--			nvmem-cells = <&adc_big_scale>, <&adc_small_scale>;
--			nvmem-cell-names = "big_scale_calib", "small_scale_calib";
--		};
--	};
+-adc2: nau7802@2a {
+-	compatible = "nuvoton,nau7802";
+-	reg = <0x2a>;
+-	nuvoton,vldo = <3000>;
+-};
 -- 
 2.28.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B89A26354A
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C917C26355C
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Sep 2020 20:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730083AbgIISC2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Sep 2020 14:02:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59154 "EHLO mail.kernel.org"
+        id S1729525AbgIISEd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Sep 2020 14:04:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59114 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730085AbgIISCX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 9 Sep 2020 14:02:23 -0400
+        id S1730099AbgIISCZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 9 Sep 2020 14:02:25 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E02F21D81;
-        Wed,  9 Sep 2020 18:02:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ACE2821D93;
+        Wed,  9 Sep 2020 18:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599674542;
-        bh=ZN6NGpvZGo3yujVKM7KhX/BMrihZUNzLTI7BVhYHBnk=;
+        s=default; t=1599674543;
+        bh=FdK1l3fo6UgGdK6dGnHyf2ZFaNBIdLfR1npsQ9CW2AY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZdhAi+G7apVMEHq/aHkQhY6WTNO38epa3PIh8dB2HtRYRDN85CBHKfn3bkjNJqxL7
-         DisqU4yVAx3qT34ymXfM5XpsDTlgiiFKLIEsT2R3rcdu02Ku/IHwXHQ4yjgXm6n/nh
-         VsDo9iysONmY9WKhXBscHYURZ6F62lQKqRSXN+Us=
+        b=IjsfJLnd5vFT8rkBErobJSoiZFLtX5E6bliKTDIylUABmueCPPRTawc5ZTpf7GQI2
+         C141Zd5ctxzVSx2EtzulcwLOGiJcmbcSXSXEEynGUbLgP9pWtHFZKm1wUbtDt8Zu3I
+         93gYV7xjfrPKHxfd5eg7CXelSVrY/4v7yFIfxZcU=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH v2 02/20] dt-bindings:iio:adc:ti,twl4030-madc yaml conversion
-Date:   Wed,  9 Sep 2020 18:59:28 +0100
-Message-Id: <20200909175946.395313-3-jic23@kernel.org>
+        Stefan Agner <stefan@agner.ch>
+Subject: [PATCH v2 03/20] dt-bindings:iio:adc:st,stmpe-adc yaml conversion
+Date:   Wed,  9 Sep 2020 18:59:29 +0100
+Message-Id: <20200909175946.395313-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200909175946.395313-1-jic23@kernel.org>
 References: <20200909175946.395313-1-jic23@kernel.org>
@@ -43,100 +43,96 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Conversion from txt to yaml as part of a general move of IIO bindings
-to the new format.
+Conversion from freeform text to yaml.
+One oddity in this binding is that, for historical reasons it requires
+the node name to be stmpe_adc.  I've put that in the decription field
+but I'm not sure if there is a better way to specify this?
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Sebastian Reichel <sre@kernel.org>
+Cc: Stefan Agner <stefan@agner.ch>
 ---
- .../bindings/iio/adc/ti,twl4030-madc.yaml     | 48 +++++++++++++++++++
- .../bindings/iio/adc/twl4030-madc.txt         | 24 ----------
- 2 files changed, 48 insertions(+), 24 deletions(-)
+ .../bindings/iio/adc/st,stmpe-adc.yaml        | 45 +++++++++++++++++++
+ .../devicetree/bindings/iio/adc/stmpe-adc.txt | 21 ---------
+ 2 files changed, 45 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl4030-madc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl4030-madc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
 new file mode 100644
-index 000000000000..6781ad2f0f51
+index 000000000000..9049c699152f
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,twl4030-madc.yaml
-@@ -0,0 +1,48 @@
++++ b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
+@@ -0,0 +1,45 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/ti,twl4030-madc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/st,stmpe-adc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: MADC subsystem in the TWL4030 power module
++title: ADC on an STMPE multifunction device.
 +
 +maintainers:
-+  - Sebastian Reichel <sre@kernel.org>
++  - Stefan Agner <stefan@agner.ch>
 +
 +description:
-+  The MADC subsystem in the TWL4030 consists of a 10-bit ADC
-+  combined with a 16-input analog multiplexer.
++  This ADC forms part of an ST microelectronics STMPE multifunction device .
++  The ADC is shared with the STMPE touchscreen. As a result some ADC related
++  settings are specified in the parent node.
++  The node name myst be stmpe_adc and should be a child node of the stmpe node
++  to which it belongs.
 +
 +properties:
 +  compatible:
-+    const: ti,twl4030-madc
++    const: st,stmpe-adc
 +
-+  interrupts:
-+    maxItems: 1
-+
-+  ti,system-uses-second-madc-irq:
-+    type: boolean
++  st,norequest-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
 +    description:
-+      Set if the second madc irq register should be used, which is intended
-+      to be used  by Co-Processors (e.g. a modem).
++      Bitmask specifying which ADC channels should _not_ be
++      requestable due to different usage (e.g. touch).
 +
 +  "#io-channel-cells":
 +    const: 1
 +
 +required:
 +  - compatible
-+  - interrupts
-+  - "#io-channel-cells"
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    twl {
-+        madc {
-+            compatible = "ti,twl4030-madc";
-+            interrupts = <3>;
-+            #io-channel-cells = <1>;
++    stmpe {
++        stmpe_adc {
++            compatible = "st,stmpe-adc";
++            st,norequest-mask = <0x0F>; /* dont use ADC CH3-0 */
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/adc/twl4030-madc.txt b/Documentation/devicetree/bindings/iio/adc/twl4030-madc.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt b/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt
 deleted file mode 100644
-index 6bdd21404b57..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/twl4030-madc.txt
+index 480e66422625..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/stmpe-adc.txt
 +++ /dev/null
-@@ -1,24 +0,0 @@
--* TWL4030 Monitoring Analog to Digital Converter (MADC)
--
--The MADC subsystem in the TWL4030 consists of a 10-bit ADC
--combined with a 16-input analog multiplexer.
+@@ -1,21 +0,0 @@
+-STMPE ADC driver
+-----------------
 -
 -Required properties:
--  - compatible: Should contain "ti,twl4030-madc".
--  - interrupts: IRQ line for the MADC submodule.
--  - #io-channel-cells: Should be set to <1>.
+- - compatible: "st,stmpe-adc"
 -
 -Optional properties:
--  - ti,system-uses-second-madc-irq: boolean, set if the second madc irq register
--				    should be used, which is intended to be used
--				    by Co-Processors (e.g. a modem).
+-Note that the ADC is shared with the STMPE touchscreen. ADC related settings
+-have to be done in the mfd.
+-- st,norequest-mask: bitmask specifying which ADC channels should _not_ be
+-  requestable due to different usage (e.g. touch)
+-
+-Node name must be stmpe_adc and should be child node of stmpe node to
+-which it belongs.
 -
 -Example:
 -
--&twl {
--	madc {
--		compatible = "ti,twl4030-madc";
--		interrupts = <3>;
--		#io-channel-cells = <1>;
+-	stmpe_adc {
+-		compatible = "st,stmpe-adc";
+-		st,norequest-mask = <0x0F>; /* dont use ADC CH3-0 */
 -	};
--};
 -- 
 2.28.0
 

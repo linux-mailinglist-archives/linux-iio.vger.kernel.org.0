@@ -2,35 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3946E264DFA
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 20:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66537265310
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 23:28:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbgIJS5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 14:57:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33464 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726512AbgIJS4k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Sep 2020 14:56:40 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0F17C21582;
-        Thu, 10 Sep 2020 18:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599764189;
-        bh=A8g/aGqwyv0RsVaiMq65Dp1PysUSdq1Ymqxl8zg45RM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=s5xyR5etRdZ7KiKwIeNIAf/lJ4skF+79ZniqOiT1ZJfI2uDMNOCvFJevNZa20sX9p
-         NfEoSoGLRCHeWNSIaZLb6ToXSmvCilttu1+PeK7oVMQgi44YSBErr8XZFutEFsIkhD
-         0bJMQtD7gGk2h9hAvRw/Zo70eRl2zUXiLynbGEpE=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-doc@vger.kernel.org, linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH] kernel-doc: add support for ____cacheline_aligned attribute
-Date:   Thu, 10 Sep 2020 19:54:15 +0100
-Message-Id: <20200910185415.653139-1-jic23@kernel.org>
+        id S1725828AbgIJV2S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 17:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52616 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731049AbgIJOJf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Sep 2020 10:09:35 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEDCC0617A1
+        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:11 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id s205so8313419lja.7
+        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y7MyZ2TAFWflP+dgDfOZRILQ5unvhNefHjzHbPK6lnw=;
+        b=uPNJQH4ZDH1SErn2VoMF7NeG9/CwPSkWhpQyPpAdVsFvRpia7azZAoR80hDV8JaHdH
+         SYM5q1GT1qs0Avr3xMeYVs1Qr82/B/v99vwbZQdvfNp9/J0ASt3lKnn7Yg98bXBviRr9
+         CqQ+jANQ0BhKDNN/Go86XnzMC1//J2G5omtfy8fgfFGhoZY8Qh630vFTH4lJZkdA0cCk
+         WBZP6h1ulHmLRycC+5ty+ASoGb1S4HHh73YdOIVAKa5yLoDoLGUrklbUoCcX9epI+znk
+         tSIvdfddzmP9RRDNrWsZ6C0AnvxW3lYSJQJ5AHuE0PXvLqSeNo2ZvEFltCmFDmZpSZPq
+         wcUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y7MyZ2TAFWflP+dgDfOZRILQ5unvhNefHjzHbPK6lnw=;
+        b=I9A9bB3PSVT6qZm1A/Hx0Xh2m7qfJXSKJxFEewhawO4B1kpPJEH5rx4hX/CpLHFZ9I
+         uH8McXayDQ30I9jg600aHW6xPvh/7NHkSCkpRI1d3nqIZjGAd5Z5JtW4S1jzz778nxGv
+         gryZLY3j9ZkcKffFhs1uxPZmaKCpjKdTS+ArMoe4p8NvZJBcPDK3sHsrhMBLKlNI+ayZ
+         VH+Kgyw/xfS3uLhH0J9JeQtud6VJc2Wo5QjF3bzaq+cQdZSdGOJ1nPCoc/s96MQ4EoLg
+         VR1pvoyVnKaBklJ8aK2lEp9ZhnVBUEaVw/Ov8u+l/YRsn7mbKhqplKnxfbgckjd87tgz
+         puLg==
+X-Gm-Message-State: AOAM533AxMh8g9qxO+9goyWisBFl70HmWaUbFQiaAj7R3Ydkn70W/60W
+        F2XihvJb9wRwdhfqq/z1M/biYA==
+X-Google-Smtp-Source: ABdhPJwv788ve/n35Qorbazt2TmGE6tS6NCan+WQy3ViD2fXgJ+VCgP/heVrwfzvp1ajLMjpge9Emg==
+X-Received: by 2002:a2e:8541:: with SMTP id u1mr4920154ljj.101.1599746408815;
+        Thu, 10 Sep 2020 07:00:08 -0700 (PDT)
+Received: from eriador.lan ([188.162.64.156])
+        by smtp.gmail.com with ESMTPSA id t82sm1367646lff.43.2020.09.10.07.00.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2020 07:00:08 -0700 (PDT)
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH v3 00/10] qcom: pm8150: add support for thermal monitoring
+Date:   Thu, 10 Sep 2020 16:59:50 +0300
+Message-Id: <20200910140000.324091-1-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -39,53 +72,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This patch serie adds support for thermal monitoring block on Qualcomm's
+PMIC5 chips. PM8150{,b,l} and sm8250-mtp board device trees are extended
+to support thermal zones provided by this thermal monitoring block.
+Unlike the rest of PMIC thermal senses, these thermal zones describe
+particular thermistors, which differ between from board to board.
 
-Subroutine dump_struct uses type attributes to check if the struct
-syntax is valid. Then, it removes all attributes before using it for
-output. `____cacheline_aligned` is an attribute that is
-not included in both steps. Add it, since it is used by kernel structs.
+Changes since v3:
+ - Fix DT description to spell "thermal monitoring" instead of just TM
+ - Fix warnings in DT example
+ - Add EXPORT_SYMBOL_GPL(of_iio_channel_get_by_name)
+ - Fixed whitespace chanes in qcom-vadc-common.c
+ - Removed error message if IIO chanel get returns -EPROBE_DEFER
 
-Based on previous patch to add ____cacheline_aligned_in_smp.
-Motivated by patches to reorder this attribute to before the
-variable name.   Whilst we could do that in all cases, that would
-be a massive change and it is more common in the kernel to place
-this particular attribute after the variable name. A quick grep
-suggests approximately 400 instances of which 341 have this
-attribute just before a semicolon and hence after the variable name.
+Changes since v2:
+ - IIO: export of_iio_channel_get_by_name() function
+ - dt-bindings: move individual io-channels to each thermal monitoring
+   channel rather than listing them all in device node
+ - added fallback defaults to of_device_get_match_data calls in
+   qcom-spmi-adc5 and qcom-spmi-adc-tm5 drivers
+ - minor typo fixes
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lee Jones <lee.jones@linaro.org>
----
+Changes since v1:
+ - Introduce fixp_linear_interpolate() by Craig Tatlor
+ - Lots of syntax/whitespace changes
+ - Cleaned up register definitions per Jonathan's suggestion
+ - Implemented most of the suggestions from Bjorn's and Jonathan's
+   review
 
-Note I haven't figured out what this is actually doing and hence the
-patch is done by copying the changes made for ____cacheline_aligned_in_smp.
-It seems to work. :)
 
- scripts/kernel-doc | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/kernel-doc b/scripts/kernel-doc
-index d1b445665ad6..cc55e1c2a8a4 100755
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -1083,7 +1083,7 @@ sub dump_struct($$) {
-     my $x = shift;
-     my $file = shift;
- 
--    if ($x =~ /(struct|union)\s+(\w+)\s*\{(.*)\}(\s*(__packed|__aligned|____cacheline_aligned_in_smp|__attribute__\s*\(\([a-z0-9,_\s\(\)]*\)\)))*/) {
-+    if ($x =~ /(struct|union)\s+(\w+)\s*\{(.*)\}(\s*(__packed|__aligned|____cacheline_aligned_in_smp|____cacheline_aligned|__attribute__\s*\(\([a-z0-9,_\s\(\)]*\)\)))*/) {
- 	my $decl_type = $1;
- 	$declaration_name = $2;
- 	my $members = $3;
-@@ -1099,6 +1099,7 @@ sub dump_struct($$) {
- 	$members =~ s/\s*__packed\s*/ /gos;
- 	$members =~ s/\s*CRYPTO_MINALIGN_ATTR/ /gos;
- 	$members =~ s/\s*____cacheline_aligned_in_smp/ /gos;
-+	$members =~ s/\s*____cacheline_aligned/ /gos;
- 
- 	# replace DECLARE_BITMAP
- 	$members =~ s/__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)/DECLARE_BITMAP($1, __ETHTOOL_LINK_MODE_MASK_NBITS)/gos;
--- 
-2.28.0
 

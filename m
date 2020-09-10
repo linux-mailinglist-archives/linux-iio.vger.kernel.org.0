@@ -2,37 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5B2264B90
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8F8264B5F
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbgIJRkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 13:40:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47774 "EHLO mail.kernel.org"
+        id S1727825AbgIJRgX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 13:36:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47866 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726947AbgIJRfs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1727101AbgIJRfs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Thu, 10 Sep 2020 13:35:48 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1B81221D92;
-        Thu, 10 Sep 2020 17:35:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C21F8221E3;
+        Thu, 10 Sep 2020 17:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599759319;
-        bh=bNmhDRiZo3c3p++zFV+W+5Voj9Iev+vd6lt+Nd7U4hc=;
+        s=default; t=1599759320;
+        bh=y4RBhMExWqZsbDmxczqshbG9Lc9AJxW8KSELyxL6VRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bvu2moA8fF2HVqw4mz45yQmF0LgnddR7/DyCGqiLGiycrQrx194NnZUywaPqgYerk
-         W3A65sQEhD0pMXZZ2umgownvGalhzQxtfggySyO60f7JZXhXVb4SIiHSGQ/0P746bD
-         DCBjKBOFGqzaX6fTzbwrNoySGONdPEnTjZNFoZdI=
+        b=OHKWdpXcOjJyEatjyckdI8lDGFNPo19n4c/Y53y89YZJuQLi6N9f7FrygX32GD9oM
+         JtGguuq4Vn18IarrDK3vc6u/BXzNbVs6YOPIhzXILbnuCI2TKcnRnd4RJ08UZ+W+TK
+         o+7XkJR98wUCmTdmd2k0WU1TFevHJ3IzSrwJ4HGk=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Maury Anderson <maury.anderson@rockwellcollins.com>,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Slawomir Stepien <sst@poczta.fm>
-Subject: [PATCH 05/38] iio:potentiometer:max5481: Drop invalid ACPI binding.
-Date:   Thu, 10 Sep 2020 18:32:09 +0100
-Message-Id: <20200910173242.621168-6-jic23@kernel.org>
+        Peter Rosin <peda@axentia.se>
+Subject: [PATCH 06/38] iio:potentiometer:mcp4018: Drop of_match_ptr and CONFIG_OF protections.
+Date:   Thu, 10 Sep 2020 18:32:10 +0100
+Message-Id: <20200910173242.621168-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200910173242.621168-1-jic23@kernel.org>
 References: <20200910173242.621168-1-jic23@kernel.org>
@@ -45,54 +43,67 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Given that an ACPI binding must start with 3 or 4 capitals,
-this cannot represent a valid binding.
-
-It seems unlikely anything out there is using it.
+These prevent use of this driver with ACPI via PRP0001 and are
+an example of an anti pattern I'm trying to remove from IIO.
+Also use device_get_match_data() rather than devicetree only version.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Maury Anderson <maury.anderson@rockwellcollins.com>
-Cc: Matthew Weber <matthew.weber@rockwellcollins.com>
-Cc: Slawomir Stepien <sst@poczta.fm>
+Cc: Peter Rosin <peda@axentia.se>
 ---
- drivers/iio/potentiometer/max5481.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/iio/potentiometer/mcp4018.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/potentiometer/max5481.c b/drivers/iio/potentiometer/max5481.c
-index 6d1e1a57cba1..a88ed0eb3adc 100644
---- a/drivers/iio/potentiometer/max5481.c
-+++ b/drivers/iio/potentiometer/max5481.c
-@@ -7,7 +7,6 @@
-  * https://datasheets.maximintegrated.com/en/ds/MAX5481-MAX5484.pdf
-  */
- 
--#include <linux/acpi.h>
+diff --git a/drivers/iio/potentiometer/mcp4018.c b/drivers/iio/potentiometer/mcp4018.c
+index fd0579ad3c83..c0e171fec062 100644
+--- a/drivers/iio/potentiometer/mcp4018.c
++++ b/drivers/iio/potentiometer/mcp4018.c
+@@ -16,8 +16,8 @@
+ #include <linux/i2c.h>
  #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
  #include <linux/module.h>
-@@ -182,22 +181,10 @@ static const struct spi_device_id max5481_id_table[] = {
- };
- MODULE_DEVICE_TABLE(spi, max5481_id_table);
+-#include <linux/of.h>
+-#include <linux/of_device.h>
++#include <linux/mod_devicetable.h>
++#include <linux/property.h>
  
--#if defined(CONFIG_ACPI)
--static const struct acpi_device_id max5481_acpi_match[] = {
--	{ "max5481", max5481 },
--	{ "max5482", max5482 },
--	{ "max5483", max5483 },
--	{ "max5484", max5484 },
--	{ }
--};
--MODULE_DEVICE_TABLE(acpi, max5481_acpi_match);
+ #define MCP4018_WIPER_MAX 127
+ 
+@@ -116,8 +116,6 @@ static const struct i2c_device_id mcp4018_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, mcp4018_id);
+ 
+-#ifdef CONFIG_OF
+-
+ #define MCP4018_COMPATIBLE(of_compatible, cfg) {	\
+ 	.compatible = of_compatible,			\
+ 	.data = &mcp4018_cfg[cfg],			\
+@@ -140,8 +138,6 @@ static const struct of_device_id mcp4018_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mcp4018_of_match);
+ 
 -#endif
 -
- static struct spi_driver max5481_driver = {
+ static int mcp4018_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+@@ -161,7 +157,7 @@ static int mcp4018_probe(struct i2c_client *client)
+ 	i2c_set_clientdata(client, indio_dev);
+ 	data->client = client;
+ 
+-	data->cfg = of_device_get_match_data(dev);
++	data->cfg = device_get_match_data(dev);
+ 	if (!data->cfg)
+ 		data->cfg = &mcp4018_cfg[i2c_match_id(mcp4018_id, client)->driver_data];
+ 
+@@ -176,7 +172,7 @@ static int mcp4018_probe(struct i2c_client *client)
+ static struct i2c_driver mcp4018_driver = {
  	.driver = {
- 		.name  = "max5481",
- 		.of_match_table = max5481_match,
--		.acpi_match_table = ACPI_PTR(max5481_acpi_match),
+ 		.name	= "mcp4018",
+-		.of_match_table = of_match_ptr(mcp4018_of_match),
++		.of_match_table = mcp4018_of_match,
  	},
- 	.probe = max5481_probe,
- 	.remove = max5481_remove,
+ 	.probe_new	= mcp4018_probe,
+ 	.id_table	= mcp4018_id,
 -- 
 2.28.0
 

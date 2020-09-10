@@ -2,62 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9F0264C3D
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 20:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3946E264DFA
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 20:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbgIJSHM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 14:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbgIJSF7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Sep 2020 14:05:59 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E14DC0613ED;
-        Thu, 10 Sep 2020 11:05:59 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id w186so4643809pgb.8;
-        Thu, 10 Sep 2020 11:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zosGERDH1CFvyq304LgFyQ88QlOJKzUmNYvnZLuiMG8=;
-        b=CH6PGgp3FSZ4qxodNPZ+nSskkygJJKKwLoJvqVniOEdi19tjDcntzdPZrGsN55HZnh
-         nD5HK0osrtlErQmXrv8SJPuQ5qxhusfvT+Wxwi/vyIYnOkgj7lEzHhvFXVqslrVMn0Yc
-         jFxrG1jhPRmNvcHl83Pak8EAHXbSelAeXCw7keaRLR/6Ca9/K1bNRK3gj9bmmBCDEYXD
-         4Q/WeF5uRWQO4i/zArgDcqf9BGiDSB14YqjHWf9fjnahIxkoUVMvXlgGOjyXTjkYiIUW
-         YFFjegD82vq5KZvBGn7n/DUlL1UXxtV/MyJrwzCcAHsJbg7t0P6WJTfEfE4uKkqvrGxS
-         IWVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zosGERDH1CFvyq304LgFyQ88QlOJKzUmNYvnZLuiMG8=;
-        b=sxhqhlYy/IXYoo8PtS2RMBAa3crBvXeI3YD9PesOTLMp76hbf0kNWnmKBMHncAJ00W
-         5YvTospuDjnz26VTpVHjnVXM+qRE89/mjxVFX14mJo0T6jWV2zJWmGE5Bi4bab6U0Vk+
-         8Tz/4BWROZEjhkapGWUwKmuMaufx8ao83mY8Dvx7Q4aTKn9Ve87Bq5YVRgPz1VSlgQYB
-         sEvSWymlC/NRhYaJacRObU0XiPmFUaj9kcq9ig1CSoXgZJlJQdbFW0Lozzjj5Q55zv6E
-         ujuOWbSPyRrHaQGsOE9w40G2r5gctljuWwnlY7nWKT71mWSxowNIYjwoLx3secBytrtk
-         tcjg==
-X-Gm-Message-State: AOAM531ZBCLfbL4pq1VBEqH2qSDh31XuAo0v8+GYxRD8FM4hmekChHJT
-        sXjK79/vMdw4QTuu4IVS3p0=
-X-Google-Smtp-Source: ABdhPJxG9TWQJkNAZIED4Ou2mwJSB4vVmMpq06OclCcEhQb42xioXYD1oDdA06kF9HBMjA9cMMrCbQ==
-X-Received: by 2002:a63:c608:: with SMTP id w8mr3103345pgg.252.1599761158935;
-        Thu, 10 Sep 2020 11:05:58 -0700 (PDT)
-Received: from nish-HP-Pavilion ([2409:4072:6218:54d7:9928:e984:12bb:783d])
-        by smtp.gmail.com with ESMTPSA id 64sm6679090pfz.204.2020.09.10.11.05.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 11:05:58 -0700 (PDT)
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-To:     jic23@kernel.org, robh+dt@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, andy.shevchenko@gmail.com,
-        Nishant Malpani <nish.malpani25@gmail.com>
-Subject: [RESEND PATCH v3 3/3] iio: gyro: adxrs290: Add debugfs register access support
-Date:   Thu, 10 Sep 2020 23:34:50 +0530
-Message-Id: <20200910180450.29696-4-nish.malpani25@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200910180450.29696-1-nish.malpani25@gmail.com>
-References: <20200910180450.29696-1-nish.malpani25@gmail.com>
+        id S1727107AbgIJS5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 14:57:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33464 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726512AbgIJS4k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 10 Sep 2020 14:56:40 -0400
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F17C21582;
+        Thu, 10 Sep 2020 18:56:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599764189;
+        bh=A8g/aGqwyv0RsVaiMq65Dp1PysUSdq1Ymqxl8zg45RM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=s5xyR5etRdZ7KiKwIeNIAf/lJ4skF+79ZniqOiT1ZJfI2uDMNOCvFJevNZa20sX9p
+         NfEoSoGLRCHeWNSIaZLb6ToXSmvCilttu1+PeK7oVMQgi44YSBErr8XZFutEFsIkhD
+         0bJMQtD7gGk2h9hAvRw/Zo70eRl2zUXiLynbGEpE=
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-doc@vger.kernel.org, linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH] kernel-doc: add support for ____cacheline_aligned attribute
+Date:   Thu, 10 Sep 2020 19:54:15 +0100
+Message-Id: <20200910185415.653139-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -65,65 +39,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Extend support to read/write byte data from/to the device using
-debugfs iio interface.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
+Subroutine dump_struct uses type attributes to check if the struct
+syntax is valid. Then, it removes all attributes before using it for
+output. `____cacheline_aligned` is an attribute that is
+not included in both steps. Add it, since it is used by kernel structs.
+
+Based on previous patch to add ____cacheline_aligned_in_smp.
+Motivated by patches to reorder this attribute to before the
+variable name.   Whilst we could do that in all cases, that would
+be a massive change and it is more common in the kernel to place
+this particular attribute after the variable name. A quick grep
+suggests approximately 400 instances of which 341 have this
+attribute just before a semicolon and hence after the variable name.
+
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lee Jones <lee.jones@linaro.org>
 ---
 
-Changes in v3:
-  - refactor code based on Andy's suggestions
+Note I haven't figured out what this is actually doing and hence the
+patch is done by copying the changes made for ____cacheline_aligned_in_smp.
+It seems to work. :)
 
-No changes in v2
----
- drivers/iio/gyro/adxrs290.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ scripts/kernel-doc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
-index 41b1f995a143..ca6fc234076e 100644
---- a/drivers/iio/gyro/adxrs290.c
-+++ b/drivers/iio/gyro/adxrs290.c
-@@ -436,6 +436,31 @@ static int adxrs290_read_avail(struct iio_dev *indio_dev,
- 	}
- }
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index d1b445665ad6..cc55e1c2a8a4 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1083,7 +1083,7 @@ sub dump_struct($$) {
+     my $x = shift;
+     my $file = shift;
  
-+static int adxrs290_reg_access_rw(struct spi_device *spi, unsigned int reg,
-+				  unsigned int *readval)
-+{
-+	int ret;
-+
-+	ret = spi_w8r8(spi, ADXRS290_READ_REG(reg));
-+	if (ret < 0)
-+		return ret;
-+
-+	*readval = ret;
-+
-+	return 0;
-+}
-+
-+static int adxrs290_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-+			       unsigned int writeval, unsigned int *readval)
-+{
-+	struct adxrs290_state *st = iio_priv(indio_dev);
-+
-+	if (readval)
-+		return adxrs290_reg_access_rw(st->spi, reg, readval);
-+	else
-+		return adxrs290_spi_write_reg(st->spi, reg, writeval);
-+}
-+
- static int adxrs290_data_rdy_trigger_set_state(struct iio_trigger *trig,
- 					       bool state)
- {
-@@ -551,6 +576,7 @@ static const struct iio_info adxrs290_info = {
- 	.read_raw = &adxrs290_read_raw,
- 	.write_raw = &adxrs290_write_raw,
- 	.read_avail = &adxrs290_read_avail,
-+	.debugfs_reg_access = &adxrs290_reg_access,
- };
+-    if ($x =~ /(struct|union)\s+(\w+)\s*\{(.*)\}(\s*(__packed|__aligned|____cacheline_aligned_in_smp|__attribute__\s*\(\([a-z0-9,_\s\(\)]*\)\)))*/) {
++    if ($x =~ /(struct|union)\s+(\w+)\s*\{(.*)\}(\s*(__packed|__aligned|____cacheline_aligned_in_smp|____cacheline_aligned|__attribute__\s*\(\([a-z0-9,_\s\(\)]*\)\)))*/) {
+ 	my $decl_type = $1;
+ 	$declaration_name = $2;
+ 	my $members = $3;
+@@ -1099,6 +1099,7 @@ sub dump_struct($$) {
+ 	$members =~ s/\s*__packed\s*/ /gos;
+ 	$members =~ s/\s*CRYPTO_MINALIGN_ATTR/ /gos;
+ 	$members =~ s/\s*____cacheline_aligned_in_smp/ /gos;
++	$members =~ s/\s*____cacheline_aligned/ /gos;
  
- static int adxrs290_probe_trigger(struct iio_dev *indio_dev)
+ 	# replace DECLARE_BITMAP
+ 	$members =~ s/__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)/DECLARE_BITMAP($1, __ETHTOOL_LINK_MODE_MASK_NBITS)/gos;
 -- 
-2.20.1
+2.28.0
 

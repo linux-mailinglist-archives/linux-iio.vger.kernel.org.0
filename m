@@ -2,129 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8387263E3C
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 09:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E91263F36
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 09:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729005AbgIJHNB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 03:13:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35040 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730021AbgIJG7L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Sep 2020 02:59:11 -0400
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D585821D40;
-        Thu, 10 Sep 2020 06:59:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599721151;
-        bh=xOzDDEuhcg0+WXu//QXZGuTvH72fhH7NrPswesxiZA8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gXL+ijTBw11FfLjLqyYUZfKHTa4Zvs2N1LU7JLoiGcBQ7DNHaV/PzX6MCoDp00EAp
-         wlCG83HzbzCGx6nVtzWC2pIby9quHCEjEIqQec3QmfPoutTorFkcOj+v+bXRg2MhHa
-         jwCRShpKk3NeYVaSR0bdXRVGBByi3LEGRCE3M3wI=
-Received: by mail-ej1-f54.google.com with SMTP id r7so7071637ejs.11;
-        Wed, 09 Sep 2020 23:59:10 -0700 (PDT)
-X-Gm-Message-State: AOAM530WBIRzWslzlsBcuGP2kDBY0deZMa9dTEbWrs4Th51duXFWR8HV
-        UG88jKwJDE3Dr0BsAM36V7dWEf6+3rDs6rqwgNE=
-X-Google-Smtp-Source: ABdhPJyaVrBohjZL8QO712q55aVYmvP/Im4PscZba1DFwlJPfAPVYEdWgkk0QsgOlmQCRth1GWIRcKjY7V63cmwrs/Y=
-X-Received: by 2002:a17:907:724f:: with SMTP id ds15mr7191226ejc.119.1599721149291;
- Wed, 09 Sep 2020 23:59:09 -0700 (PDT)
+        id S1729986AbgIJH7V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 03:59:21 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2801 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727830AbgIJH7L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 10 Sep 2020 03:59:11 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 5FA05322755FC6988A57;
+        Thu, 10 Sep 2020 08:59:08 +0100 (IST)
+Received: from localhost (10.52.121.43) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Thu, 10 Sep
+ 2020 08:59:08 +0100
+Date:   Thu, 10 Sep 2020 08:57:33 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Rob Herring" <robh@kernel.org>, <devicetree@vger.kernel.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v2 07/20] dt-bindings:iio:adc:nuvoton,nau7802 yaml
+ conversion
+Message-ID: <20200910085733.00005b0a@Huawei.com>
+In-Reply-To: <20200909191923.GV230586@piout.net>
+References: <20200909175946.395313-1-jic23@kernel.org>
+        <20200909175946.395313-8-jic23@kernel.org>
+        <20200909191923.GV230586@piout.net>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20200829064726.26268-1-krzk@kernel.org> <20200829064726.26268-8-krzk@kernel.org>
- <20200909193600.41970d8c@archlinux> <CAJKOXPeo8SXWaRmiFG6z+t9jcnaSMRpvRPm2X22Rf6rtEeKVew@mail.gmail.com>
- <a37c69f2-1f16-2680-2716-0c1b77748d55@axentia.se> <CAHp75Vc4-zkkWtOz8w7pA0Vu1yMAVodhPSLQ1NJH4K+j9XD52g@mail.gmail.com>
-In-Reply-To: <CAHp75Vc4-zkkWtOz8w7pA0Vu1yMAVodhPSLQ1NJH4K+j9XD52g@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Thu, 10 Sep 2020 08:58:57 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPdNAw8scFKCGaC_hp4jMyLD_mFLKr=+fGKSm6nCkcRF9g@mail.gmail.com>
-Message-ID: <CAJKOXPdNAw8scFKCGaC_hp4jMyLD_mFLKr=+fGKSm6nCkcRF9g@mail.gmail.com>
-Subject: Re: [PATCH v3 08/18] iio: adc: stm32: Simplify with dev_err_probe()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.121.43]
+X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Sep 2020 at 08:52, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
->
->
-> On Thursday, September 10, 2020, Peter Rosin <peda@axentia.se> wrote:
->>
->> Hi!
->>
->> On 2020-09-09 21:57, Krzysztof Kozlowski wrote:
->> > On Wed, 9 Sep 2020 at 20:36, Jonathan Cameron <jic23@kernel.org> wrote:
->> >>
->> >> On Sat, 29 Aug 2020 08:47:16 +0200
->> >> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->> >>
->> >>> Common pattern of handling deferred probe can be simplified with
->> >>> dev_err_probe().  Less code and also it prints the error value.
->> >>>
->> >>> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
->> >>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->> >>>
->> >> I don't have the thread to hand, but this tripped a warning next
->> >> and the patch was dropped as a result. See below.
->> >
->> > Thanks for letting me know. If you mean the warning caused by:
->> > https://lore.kernel.org/lkml/20200909073716.GA560912@kroah.com/
->> > then the driver-core patch was dropped, not the iio one:
->> > https://lore.kernel.org/linux-next/20200909074130.GB561485@kroah.com/T/#t
->> >
->> > So we are good here :)
->>
->> No, we are definitely not good. See below. That means "See below", and
->> not "Please take a guess at what is being talking about".
->
->
->
->>
->> >>> @@ -596,12 +594,9 @@ static int stm32_adc_core_switches_probe(struct device *dev,
->> >>>               priv->booster = devm_regulator_get_optional(dev, "booster");
->> >>>               if (IS_ERR(priv->booster)) {
->> >>>                       ret = PTR_ERR(priv->booster);
->> >>> -                     if (ret != -ENODEV) {
->> >>> -                             if (ret != -EPROBE_DEFER)
->> >>> -                                     dev_err(dev, "can't get booster %d\n",
->> >>> -                                             ret);
->> >>> -                             return ret;
->> >>> -                     }
->> >>> +                     if (ret != -ENODEV)
->> >>> +                             dev_err_probe(dev, ret, "can't get booster\n");
->> >>
->> >> This tripped a warning and got the patch dropped because we no longer
->> >> return on error.
->>
->> As Jonathan already said, we no longer return in this hunk. I.e., you have
->> clobbered the error path.
->
->
-> Exactly my point why I proposed _must_check in the first place.
+On Wed, 9 Sep 2020 21:19:23 +0200
+Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
 
-That was not exactly that point as you did not mention possible errors
-but only "miss the opportunity to optimize". Optimization is different
-things than a mistake.
+> Hi,
+> 
+> On 09/09/2020 18:59:33+0100, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > A simple conversion from txt file to yaml.  I added the #io-channel-cells
+> > property as optional to allow the channels of this ADCs to be used
+> > to provide services to other drivers, for example if an analog
+> > accelerometer is connected.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> > Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+> > ---
+> >  .../bindings/iio/adc/nuvoton,nau7802.yaml     | 50 +++++++++++++++++++
+> >  .../bindings/iio/adc/nuvoton-nau7802.txt      | 18 -------
+> >  2 files changed, 50 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
+> > new file mode 100644
+> > index 000000000000..bcd041ea28a8
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nau7802.yaml
+> > @@ -0,0 +1,50 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nau7802.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Nuvoton NAU7802 I2c Analog to Digital Converter (ADC)
+> > +
+> > +maintainers:
+> > +  - Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> > +  - Maxime Ripard <maxime.ripard@free-electrons.com>
+> > +  
+> 
+> Sorry, I meant to reply earlier. Can you make that:
+> 
+>  - Alexandre Belloni <alexandre.belloni@bootlin.com>
+>  - Maxime Ripard <mripard@kernel.org>
+> 
+> Else, this seems good to me!
 
-Best regards,
-Krzysztof
+Will do. If I don't do a v3 for other reasons I'll change that
+whilst applying.
+
+Thanks,
+
+Jonathan
+
+> 
+> > +properties:
+> > +  compatible:
+> > +    const: nuvoton,nau7802
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  nuvoton,vldo:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description:
+> > +      Internal reference voltage in millivolts to be configured.
+> > +    minimum: 2400
+> > +    maximum: 4500
+> > +
+> > +  "#io-channel-cells":
+> > +    const: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +        nau7802@2a {
+> > +            compatible = "nuvoton,nau7802";
+> > +            reg = <0x2a>;
+> > +            nuvoton,vldo = <3000>;
+> > +        };
+> > +    };
+> > +...
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt b/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
+> > deleted file mode 100644
+> > index e9582e6fe350..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/adc/nuvoton-nau7802.txt
+> > +++ /dev/null
+> > @@ -1,18 +0,0 @@
+> > -* Nuvoton NAU7802 Analog to Digital Converter (ADC)
+> > -
+> > -Required properties:
+> > -  - compatible: Should be "nuvoton,nau7802"
+> > -  - reg: Should contain the ADC I2C address
+> > -
+> > -Optional properties:
+> > -  - nuvoton,vldo: Internal reference voltage in millivolts to be
+> > -    configured valid values are between 2400 mV and 4500 mV.
+> > -  - interrupts: IRQ line for the ADC. If not used the driver will use
+> > -    polling.
+> > -
+> > -Example:
+> > -adc2: nau7802@2a {
+> > -	compatible = "nuvoton,nau7802";
+> > -	reg = <0x2a>;
+> > -	nuvoton,vldo = <3000>;
+> > -};
+> > -- 
+> > 2.28.0
+> >   
+> 
+
+

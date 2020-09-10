@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 195EC264B83
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED8D264B84
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgIJRjz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 13:39:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47972 "EHLO mail.kernel.org"
+        id S1726926AbgIJRj6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 13:39:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727835AbgIJRgu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1727837AbgIJRgu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Thu, 10 Sep 2020 13:36:50 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 128182220F;
-        Thu, 10 Sep 2020 17:35:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6D95520C09;
+        Thu, 10 Sep 2020 17:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599759348;
-        bh=ANDr36kbhRkXPrMr7XRTbOM5qPlEbp4wf/K4dJHBd9U=;
+        s=default; t=1599759349;
+        bh=lacLNbGl4/2YzTZ+mj4TMgbfYzm7gBmGfKlrbUCBWks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rD0pwttYjRHgL/DdaNWVUHNpPkjRuN0OiE6Eto6kiCVVw9VQkUF+uM+PrfWU388II
-         P/HFNR4gDQkdv0bmq3XG7WS92m6eCOLAWwUb66p4jn7uwyhL+qkY4xF9GGsOIF/dbH
-         kZsr4y3Xvw44BImSPheGm2TFBwKFzWXuJbyESRNw=
+        b=e8RLYS0KWwhXnv3Qb8S9SDMqMJMsNTvOXbi1vFlt96g3FWPzoJGU07lb8NvgvJLGG
+         u+Qutk3UMGffofZ5BiR0OeeWpZPa+8zNlfby0mq31HshKUrfzQ9Kr+SPN3TdGS/VUZ
+         D+QrnsoCQT8Z8PVJOA5WJzVxAe0z1R16mWkXma+s=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Andreas Brauchli <andreas.brauchli@sensirion.com>
-Subject: [PATCH 26/38] iio:chemical:sgp30: Use local variable dev to simplify code
-Date:   Thu, 10 Sep 2020 18:32:30 +0100
-Message-Id: <20200910173242.621168-27-jic23@kernel.org>
+Subject: [PATCH 27/38] iio:chemical:sgp30: Drop of_match_ptr and use generic fw accessors
+Date:   Thu, 10 Sep 2020 18:32:31 +0100
+Message-Id: <20200910173242.621168-28-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200910173242.621168-1-jic23@kernel.org>
 References: <20200910173242.621168-1-jic23@kernel.org>
@@ -43,96 +43,63 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This cleans up the code at bit, but is primarily here as a precusor
-to the next patch. I've only done this for the two functions
-which use the dev pointer repeatedly.
+This change allow the driver to be used with ACPI PRP0001 and removes
+an antipattern that I want to avoid being copied into new IIO drivers.
+
+The handling of match_data uses a different approach as
+device_get_match_data doesn't distinguish between no match, and
+a match but with NULL data.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Andreas Brauchli <andreas.brauchli@sensirion.com>
 ---
- drivers/iio/chemical/sgp30.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/iio/chemical/sgp30.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iio/chemical/sgp30.c b/drivers/iio/chemical/sgp30.c
-index 2c4086c48136..410565aa20b6 100644
+index 410565aa20b6..c2d93b9796ce 100644
 --- a/drivers/iio/chemical/sgp30.c
 +++ b/drivers/iio/chemical/sgp30.c
-@@ -409,6 +409,7 @@ static int sgp_read_raw(struct iio_dev *indio_dev,
- static int sgp_check_compat(struct sgp_data *data,
- 			    unsigned int product_id)
- {
-+	struct device *dev = &data->client->dev;
- 	const struct sgp_version *supported_versions;
- 	u16 ix, num_fs;
- 	u16 product, generation, major, minor;
-@@ -416,21 +417,20 @@ static int sgp_check_compat(struct sgp_data *data,
- 	/* driver does not match product */
- 	generation = SGP_VERS_GEN(data);
- 	if (generation != 0) {
--		dev_err(&data->client->dev,
-+		dev_err(dev,
- 			"incompatible product generation %d != 0", generation);
- 		return -ENODEV;
- 	}
+@@ -20,9 +20,9 @@
+ #include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/module.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/mutex.h>
+ #include <linux/i2c.h>
+-#include <linux/of_device.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
  
- 	product = SGP_VERS_PRODUCT(data);
- 	if (product != product_id) {
--		dev_err(&data->client->dev,
--			"sensor reports a different product: 0x%04hx\n",
-+		dev_err(dev, "sensor reports a different product: 0x%04hx\n",
- 			product);
- 		return -ENODEV;
- 	}
- 
- 	if (SGP_VERS_RESERVED(data))
--		dev_warn(&data->client->dev, "reserved bit is set\n");
-+		dev_warn(dev, "reserved bit is set\n");
- 
- 	/* engineering samples are not supported: no interface guarantees */
- 	if (SGP_VERS_ENG_BIT(data))
-@@ -456,8 +456,7 @@ static int sgp_check_compat(struct sgp_data *data,
- 		    minor >= supported_versions[ix].minor)
- 			return 0;
- 	}
--	dev_err(&data->client->dev, "unsupported sgp version: %d.%d\n",
--		major, minor);
-+	dev_err(dev, "unsupported sgp version: %d.%d\n", major, minor);
- 
- 	return -ENODEV;
- }
-@@ -499,17 +498,18 @@ static const struct of_device_id sgp_dt_ids[] = {
- static int sgp_probe(struct i2c_client *client,
- 		     const struct i2c_device_id *id)
- {
-+	struct device *dev = &client->dev;
+@@ -501,7 +501,6 @@ static int sgp_probe(struct i2c_client *client,
+ 	struct device *dev = &client->dev;
  	struct iio_dev *indio_dev;
  	struct sgp_data *data;
- 	const struct of_device_id *of_id;
+-	const struct of_device_id *of_id;
  	unsigned long product_id;
  	int ret;
  
--	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+@@ -509,9 +508,8 @@ static int sgp_probe(struct i2c_client *client,
  	if (!indio_dev)
  		return -ENOMEM;
  
--	of_id = of_match_device(sgp_dt_ids, &client->dev);
-+	of_id = of_match_device(sgp_dt_ids, dev);
- 	if (of_id)
- 		product_id = (unsigned long)of_id->data;
+-	of_id = of_match_device(sgp_dt_ids, dev);
+-	if (of_id)
+-		product_id = (unsigned long)of_id->data;
++	if (dev_fwnode(dev))
++		product_id = (unsigned long)device_get_match_data(dev);
  	else
-@@ -541,9 +541,9 @@ static int sgp_probe(struct i2c_client *client,
+ 		product_id = id->driver_data;
  
- 	sgp_init(data);
- 
--	ret = devm_iio_device_register(&client->dev, indio_dev);
-+	ret = devm_iio_device_register(dev, indio_dev);
- 	if (ret) {
--		dev_err(&client->dev, "failed to register iio device\n");
-+		dev_err(dev, "failed to register iio device\n");
- 		return ret;
- 	}
- 
+@@ -576,7 +574,7 @@ MODULE_DEVICE_TABLE(of, sgp_dt_ids);
+ static struct i2c_driver sgp_driver = {
+ 	.driver = {
+ 		.name = "sgp30",
+-		.of_match_table = of_match_ptr(sgp_dt_ids),
++		.of_match_table = sgp_dt_ids,
+ 	},
+ 	.probe = sgp_probe,
+ 	.remove = sgp_remove,
 -- 
 2.28.0
 

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A39C52651E6
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 23:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF812265308
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 23:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727052AbgIJVEf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 17:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57184 "EHLO
+        id S1728193AbgIJV1w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 17:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730690AbgIJOhg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Sep 2020 10:37:36 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6EBDC0617BB
-        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:16 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id a15so8360151ljk.2
-        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:16 -0700 (PDT)
+        with ESMTP id S1731062AbgIJOJf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Sep 2020 10:09:35 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03FEC061387
+        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:20 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id s205so8314335lja.7
+        for <linux-iio@vger.kernel.org>; Thu, 10 Sep 2020 07:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wcVYXgQ5pttw1IKCDgQFlSKYdGXdwjbBjMlIEbUjqiQ=;
-        b=WcGgdaRRvCVMPOMrzk8F0zJKKmXYDnx/T+2PstZPMVXOPjqh8utA+6+vILfHsug244
-         UlvTF+Cv7GA993X7lv/AnHiWokjLhHCdY/o/MAk/lHwbyu0dMRyCZIjZlZo1x5Mj3v3e
-         j5B78FNoLh0JLl6S4aIr4wYfyAwpqAqX1E9RVHyrZlTjH/NSufy6X1HFlExrh+i7NTMI
-         4u16BTA6G+MhSDCVH/h07hI04tVXg4+T8S5BPo5F/PfZ8kYtuz3S5wWEK2/OFJWxvMHJ
-         jjfiehwrYb1S+Pv9uTyiFpLE+BssJdGiBHGnGElC4KiOFrNr6tp6EXQIFi5enObhytNB
-         lSGQ==
+        bh=SyrNRlrzgocwFtm4m1D+vgyjZWlJZcz7p/Dz+/oWD3I=;
+        b=WF0RXK6c8RUr2Gomx+JVCl+LBDxVEGYpbxBgRK8Gx0gn8zhmt3BN9srE7t8MhbR36t
+         H7R4z8lqw02iAe7fQQl7pweGAvYqC3fPDjYtGI8e2ECcgpCdaB/1AKXbQKiMLsUopkTr
+         7olOfskIpfCiUTYTTPob51oBFFRpjtg7JncF5hGhOSp9s2XtVjIFh8bwhevkxBps24P4
+         tv0msa7ig32jl0QSDxoWT5ZNrZulNIKpnmO/IvQeXz1vRGqkLtKe5LddEJor6fQ9Bone
+         5TpcKBzHslKPHz2C4xhDjmx+5SWWmvqLHZuIv3NN24XoWDFGfttsWxBYXtv4N6AhRV4D
+         yVHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wcVYXgQ5pttw1IKCDgQFlSKYdGXdwjbBjMlIEbUjqiQ=;
-        b=cmHx9TYy0kZW9PbpGVkgVeQnehCh3Pb1RP+Q2iWO93YQjUyQc46M/HHV5z7kBtLhgu
-         l0wUXQEAGkwgJGblyqNHuEVzpHhjcu811tuq6GeYa3POgNJsvxler5r5DPPIN/6SnW5S
-         eT4M3nXlIbh8HZcLVeMKb61EBOOz+9anauB9CEXgwlbGtVj4y6iLrdjF3z7TqZxP1oTT
-         QsodrQWu/5fi9iutxao+9vpZoUq4ObKnnoaWi3xf8RkfBoxFmwOv5wBCjoZ5KQrgP+0e
-         v/wV54Wpdcp1babJSMtBifo4fbIzG6d826SYKA/DI2nsQ1fbovOstXy54t9SAayeyqSX
-         67Aw==
-X-Gm-Message-State: AOAM531UTno8Bz4B4Z6/BqdoUb6n9zTNrfEVVnPZj8M1ro5BA3eeBzGp
-        M+6hPYlRWSMFpND6gFv2pLl62A==
-X-Google-Smtp-Source: ABdhPJxBUWMazHhh0NVRcv5in/kVk015eZcEEP/gzP/tFVbk7+tflyjNHMBiyncgOgFctGYV3Bn5zg==
-X-Received: by 2002:a2e:8506:: with SMTP id j6mr4109652lji.176.1599746415305;
-        Thu, 10 Sep 2020 07:00:15 -0700 (PDT)
+        bh=SyrNRlrzgocwFtm4m1D+vgyjZWlJZcz7p/Dz+/oWD3I=;
+        b=QHN0ElDp2LaNoHl27Wym+M5UB90fSvFgQG74+Sry4HtNmP1ve/aEuSu1qsbYbnkd2Q
+         VfWxJby7VE39vN1nkB0I3yL4b17+tugVdorkZ2PPxP11JxgFazTHlquTD9zB9FRJQKqs
+         28uEJrjBPQqX8bAZ+bGck4rH4WKVm6DHZ+ZFey74NnyIJAaiw7bDQ39d/O2LupTrRvw3
+         y39wbXGx6pSi35I2rZkSqGqQ5cowOwt+WBKnDswDzjH3vcEgA0fCTXfi6zRTzq/Qr9F5
+         ZEpZScnkslvIeyfkBSwjiojz18QoF7ckaYIlX2DovgQVyeVyYT6f/QXJAl9dZNMLdio6
+         N2xQ==
+X-Gm-Message-State: AOAM530fu8FvIQJwZIm2XKcO6K0SNDi2b9W3XyMndWzHN7594GeZRTj8
+        /MpRS2Xzug79IQY4eedH9gN1Dw==
+X-Google-Smtp-Source: ABdhPJxgGEjVc/OkQUNiQgHV7aJ4mQW61K48I8OB1nai+9z6Hn0jDTNFqKlWVWIg9zxx3w/A1KjPyw==
+X-Received: by 2002:a2e:b4ba:: with SMTP id q26mr4146902ljm.79.1599746418934;
+        Thu, 10 Sep 2020 07:00:18 -0700 (PDT)
 Received: from eriador.lan ([188.162.64.156])
-        by smtp.gmail.com with ESMTPSA id t82sm1367646lff.43.2020.09.10.07.00.13
+        by smtp.gmail.com with ESMTPSA id t82sm1367646lff.43.2020.09.10.07.00.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 07:00:14 -0700 (PDT)
+        Thu, 10 Sep 2020 07:00:18 -0700 (PDT)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -61,10 +61,10 @@ To:     Andy Gross <agross@kernel.org>,
 Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Craig Tatlor <ctatlor97@gmail.com>
-Subject: [PATCH v4 03/10] fixp-arith: add a linear interpolation function
-Date:   Thu, 10 Sep 2020 16:59:53 +0300
-Message-Id: <20200910140000.324091-4-dmitry.baryshkov@linaro.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v4 05/10] iio: adc: qcom-vadc-common: use fixp_linear_interpolate
+Date:   Thu, 10 Sep 2020 16:59:55 +0300
+Message-Id: <20200910140000.324091-6-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200910140000.324091-1-dmitry.baryshkov@linaro.org>
 References: <20200910140000.324091-1-dmitry.baryshkov@linaro.org>
@@ -75,45 +75,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Craig Tatlor <ctatlor97@gmail.com>
+Use new function fixp_linear_interpolate() instead of hand-coding the
+linear interpolation.
 
-Adds a function to interpolate against two points,
-this is carried arount as a helper function by tons of drivers.
-
-Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/fixp-arith.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/iio/adc/qcom-vadc-common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/fixp-arith.h b/include/linux/fixp-arith.h
-index 8396013785ef..281cb4f83dbe 100644
---- a/include/linux/fixp-arith.h
-+++ b/include/linux/fixp-arith.h
-@@ -141,4 +141,23 @@ static inline s32 fixp_sin32_rad(u32 radians, u32 twopi)
- #define fixp_cos32_rad(rad, twopi)	\
- 	fixp_sin32_rad(rad + twopi / 4, twopi)
+diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
+index d11f3343ad52..40d77b3af1bb 100644
+--- a/drivers/iio/adc/qcom-vadc-common.c
++++ b/drivers/iio/adc/qcom-vadc-common.c
+@@ -2,6 +2,7 @@
+ #include <linux/bug.h>
+ #include <linux/kernel.h>
+ #include <linux/bitops.h>
++#include <linux/fixp-arith.h>
+ #include <linux/math64.h>
+ #include <linux/log2.h>
+ #include <linux/err.h>
+@@ -368,10 +369,9 @@ static int qcom_vadc_map_voltage_temp(const struct vadc_map_pt *pts,
+ 	} else {
+ 		/* result is between search_index and search_index-1 */
+ 		/* interpolate linearly */
+-		*output = (((s32)((pts[i].y - pts[i - 1].y) *
+-			(input - pts[i - 1].x)) /
+-			(pts[i].x - pts[i - 1].x)) +
+-			pts[i - 1].y);
++		*output = fixp_linear_interpolate(pts[i - 1].x, pts[i - 1].y,
++						  pts[i].x, pts[i].y,
++						  input);
+ 	}
  
-+/**
-+ * fixp_linear_interpolate() - interpolates a value from two known points
-+ *
-+ * @x0: x value of point 0
-+ * @y0: y value of point 0
-+ * @x1: x value of point 1
-+ * @y1: y value of point 1
-+ * @x: the linear interpolant
-+ */
-+static inline int fixp_linear_interpolate(int x0, int y0, int x1, int y1, int x)
-+{
-+	if (y0 == y1 || x == x0)
-+		return y0;
-+	if (x1 == x0 || x == x1)
-+		return y1;
-+
-+	return y0 + ((y1 - y0) * (x - x0) / (x1 - x0));
-+}
-+
- #endif
+ 	return 0;
 -- 
 2.28.0
 

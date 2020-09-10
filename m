@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 968C7264B7B
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90474264B79
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Sep 2020 19:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727796AbgIJRjN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Sep 2020 13:39:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47974 "EHLO mail.kernel.org"
+        id S1726005AbgIJRjT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Sep 2020 13:39:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47772 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725965AbgIJRhX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Sep 2020 13:37:23 -0400
+        id S1727838AbgIJRh3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 10 Sep 2020 13:37:29 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CBD1E22227;
-        Thu, 10 Sep 2020 17:36:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A5EA2222A;
+        Thu, 10 Sep 2020 17:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599759361;
-        bh=FqgkTVreN1ipDWL7ab+JQMxKaDz/ngXvroDhh/hGK2g=;
+        s=default; t=1599759363;
+        bh=NjmG4Fc74UkPx3ip1qe+lntc+QQRDs/tlprA2yXq8bo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bMWAMhujIIDX04tW3FBSbnlIq643tuafP+L5zA0Iwn7HOFG9KsChEFo6cs90NRt3A
-         TT+0AEpvpPUwazncKUAifpDSNz2w3W2uUNqvfjjuwjOQ3LE9s1mir9oTgu+/+7OXBE
-         8zizrKZcXSEfOsqbFd09usljMb7tWMXNVGTLdEoE=
+        b=P7YJ+HBpaM+3ovPl5EK0JP+dZd6yMoG9JfuAvrSJs5/ZGc0FbMeZJ4/uA1bDl3a6g
+         z0dQ8giUHUDDBBpgxZ0lJX7jPOm2aNs7+6rjLKzZD+o1xyqUP2mlNMCpMBes4wei4k
+         06Y70WEJwaQar38yU6v58P3q+SuAL0ER8RkDrZ/8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>
-Subject: [PATCH 36/38] iio:humidity:htu21: Drop of_match_ptr protection
-Date:   Thu, 10 Sep 2020 18:32:40 +0100
-Message-Id: <20200910173242.621168-37-jic23@kernel.org>
+        David Barksdale <dbarksdale@uplogix.com>
+Subject: [PATCH 37/38] iio:humidity:si7020: Drop of_match_ptr protection
+Date:   Thu, 10 Sep 2020 18:32:41 +0100
+Message-Id: <20200910173242.621168-38-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200910173242.621168-1-jic23@kernel.org>
 References: <20200910173242.621168-1-jic23@kernel.org>
@@ -48,32 +48,32 @@ an example of an anti pattern I'm trying to remove from IIO.
 Hence drop from this driver.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ludovic Tancerel <ludovic.tancerel@maplehightech.com>
+Cc: David Barksdale <dbarksdale@uplogix.com>
 ---
- drivers/iio/humidity/htu21.c | 3 ++-
+ drivers/iio/humidity/si7020.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/humidity/htu21.c b/drivers/iio/humidity/htu21.c
-index 4f5d9d1c05ab..36df2a102ca4 100644
---- a/drivers/iio/humidity/htu21.c
-+++ b/drivers/iio/humidity/htu21.c
-@@ -19,6 +19,7 @@
- #include <linux/kernel.h>
- #include <linux/stat.h>
+diff --git a/drivers/iio/humidity/si7020.c b/drivers/iio/humidity/si7020.c
+index a09b5773d377..ab6537f136ba 100644
+--- a/drivers/iio/humidity/si7020.c
++++ b/drivers/iio/humidity/si7020.c
+@@ -20,6 +20,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
  #include <linux/module.h>
 +#include <linux/mod_devicetable.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
  
-@@ -247,7 +248,7 @@ static struct i2c_driver htu21_driver = {
- 	.id_table = htu21_id,
+@@ -153,7 +154,7 @@ MODULE_DEVICE_TABLE(of, si7020_dt_ids);
+ static struct i2c_driver si7020_driver = {
  	.driver = {
- 		   .name = "htu21",
--		   .of_match_table = of_match_ptr(htu21_of_match),
-+		   .of_match_table = htu21_of_match,
- 		   },
- };
- 
+ 		.name = "si7020",
+-		.of_match_table = of_match_ptr(si7020_dt_ids),
++		.of_match_table = si7020_dt_ids,
+ 	},
+ 	.probe		= si7020_probe,
+ 	.id_table	= si7020_id,
 -- 
 2.28.0
 

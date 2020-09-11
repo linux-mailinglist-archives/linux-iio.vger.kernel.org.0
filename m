@@ -2,93 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 520592664FF
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Sep 2020 18:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A01266873
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Sep 2020 20:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726371AbgIKQuC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Sep 2020 12:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58742 "EHLO
+        id S1725783AbgIKS7s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Sep 2020 14:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726349AbgIKPGX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Sep 2020 11:06:23 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B61BC0617BB
-        for <linux-iio@vger.kernel.org>; Fri, 11 Sep 2020 06:54:02 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id k18so4875339wmj.5
-        for <linux-iio@vger.kernel.org>; Fri, 11 Sep 2020 06:54:02 -0700 (PDT)
+        with ESMTP id S1725802AbgIKS7n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Sep 2020 14:59:43 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD1CC061757
+        for <linux-iio@vger.kernel.org>; Fri, 11 Sep 2020 11:59:43 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id n18so8741339qtw.0
+        for <linux-iio@vger.kernel.org>; Fri, 11 Sep 2020 11:59:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=GubrMrhiQBFWJBN2XcahtUhKA2h3c2cQmbRbLm9sXaE=;
-        b=syfmm8TtUZqlmboBAojvYW8XNRNmc5Z4ltCt3W4iI5Q3lmia8FQ1VvpgXbLO8TXTwF
-         hHrgC570wfwaU6rpCr+tRG3T3M70e/lVwvb76Z8I9CDKz+T/eiLOjilJeMe6djk30BHq
-         S/cOodKysLiywC4n3kFXCkf29eQdGl0mQT6FGwsbAKoUbw+jDArAz3jHMCVSwM/Kv6mK
-         jvN7liNSw+2gnU+meZpkGwqpTGDO9HPYOu5ELx3oj2qrNtkqxUlW+FrOrCSskKydpxzP
-         HW+lElM/+wyq4t35+0BoqG8jDpsZOOJrueonltDd9ti79P7RC2z+p3CMQ11mT/fIKKWv
-         1oCw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=CtFkcRSfpEtZt+cz8ege3q6PVFBsfAVY0Avp5iD1800=;
+        b=Djxi747G1E2VEhJLqSrXZBRk9BWsnExpasX9n7PBBueSuqy2dzKrBMQbnmSkxazfwU
+         FM6kiZS43IOBcjuIUN3BXv7nXzm8M4Jma0QktASCL/0Y34iBvWoHbhKX43Lh+2G1KTSs
+         MK8FcyIa+mxOsffpJxGRQDIWeruhbNFzC7pQ08Iqwi0TbRvtkDEjBWTNkYrAuo92LBaU
+         1jGlUg7rkTEP25o1zmJvQRa3UpUPl/ryiOxvqvlh8g50QWTCaldwqq/0OXrjCTTVwYZy
+         rhOqaax57fn6X7FWK9/3bo2Bht1cYF0NwxzXHh1q2K3kE0IOy0Q9SYO/vlQGMs8NM4zS
+         qlSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=GubrMrhiQBFWJBN2XcahtUhKA2h3c2cQmbRbLm9sXaE=;
-        b=J4J9M2+0mRHLv0ex1115RIQFcaS/vDHAJoCwirqJVL7RfvxHl2oa97HyOIHbvD7gxf
-         9arWzyedvRdd/7EBnkZ/3CYFKiPNKg9aOBZINp/IoZ0DL7bidiogWFteU7CZoRmZ45by
-         rWMbO9pIuKkn+d5vSjt1+4aPmSOfFXYsgRF1SyPRejh3uBmh9tZnB56WvEXCo7cizku3
-         ZahZgS7TvMxSF32ABL7XFskuX67aGAyMuT84qbtTHf4PyxmHs1qJ2MKRECtolMuFd+Er
-         DDuSXsvllvbM0CbDTUqj9BGpoVds8QX38wGs4tsvaJc3oUVFmc9TMTPCVmSNMxlzw02M
-         OVoA==
-X-Gm-Message-State: AOAM533gO18W9WlrW2CXidcQ/kS50DXJnZUqopsi6rJ93uBuEDuqIxpB
-        C5gjjemGfxJM87gkrsk7ZoJsJ3V8OuWgrI7EF8w=
-X-Google-Smtp-Source: ABdhPJxH2vKZPDe0xHTSBor7p5NotplyAHIfRR09lDbB+5LMEMru04vssU+CQCeX5CdF55/B5Pu1hGFkaypNnOEVrBQ=
-X-Received: by 2002:a7b:cc88:: with SMTP id p8mr2387111wma.150.1599832441161;
- Fri, 11 Sep 2020 06:54:01 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CtFkcRSfpEtZt+cz8ege3q6PVFBsfAVY0Avp5iD1800=;
+        b=UZyPcbtJK2p+IzF9yB18icNhAQCE8VIZ38Ug/tZRTY4PSrW4qAlNyVSzOo9wdbMFbz
+         I2xxDU+bWFTv3Rk3swjs2K7Z633uPdUAv4PZ4e90WaqbWAVXRtVK3nizfQ7k3EbjSWqi
+         vMmrurCWJly7ioz6piwiPeyjtOY6Rhpl3bVmGmaCeKCdPpuEwdeX4qaG2TXTMOh0u+KG
+         5cdfxaRLGSlvSei2vtQB04Oacbj9dLeQfGUOt5rJobRLtJGMixedv4xWVF49Y1dC77Ci
+         pta5CCDOL5qGSsMVilJraKCQ+fAZNBz/hX5GyhOZnDv/v91AYUu/YKYqqai990Vqe70V
+         Pu5g==
+X-Gm-Message-State: AOAM530r4+6llj7Xc8OO6XRdyg87Z690R12HHSrFCTe82slTfAF4B/fJ
+        0Uw2B3FUlhiW+oU2njh1h8k0kdt4TaK3DQ==
+X-Google-Smtp-Source: ABdhPJxbfgCKyJac/wTqrG5RYjeGm+EKkoWsQA0YfxqSjAUdp91ix3L+iZpwJjg81N3z/kaaDKiwAA==
+X-Received: by 2002:ac8:3704:: with SMTP id o4mr3061362qtb.330.1599850782949;
+        Fri, 11 Sep 2020 11:59:42 -0700 (PDT)
+Received: from ict14-OptiPlex-980 ([178.23.248.46])
+        by smtp.gmail.com with ESMTPSA id k6sm3669119qti.23.2020.09.11.11.59.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 11 Sep 2020 11:59:42 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 20:59:31 +0200
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 34/38] iio:magn:ak8975: Drop of_match_ptr and ACPI_PTR
+ protections.
+Message-ID: <20200911185931.GA18362@ict14-OptiPlex-980>
+References: <20200910173242.621168-1-jic23@kernel.org>
+ <20200910173242.621168-35-jic23@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:adf:e641:0:0:0:0:0 with HTTP; Fri, 11 Sep 2020 06:54:00
- -0700 (PDT)
-Reply-To: mrs.esthernicolas@yahoo.com
-From:   "Mrs. Esther Nicolas " <nelinho440@gmail.com>
-Date:   Fri, 11 Sep 2020 06:54:00 -0700
-Message-ID: <CAL-ZZp=sEVRONP1i7WVy-t74VbdSkDb84pWV7emoe3G5=en39Q@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910173242.621168-35-jic23@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Liebste in Christus,
-Mit geb=C3=BChrendem Respekt und Menschlichkeit war ich gezwungen, Ihnen
-aus humanit=C3=A4ren Gr=C3=BCnden zu schreiben. Ich hei=C3=9Fe Frau Esther =
-Nicolas.
-Ich wurde in Arizona, Phoenix, geboren und bin mit Jacob Nicolas
-Direktor Jacon Industry Togo verheiratet. Wir waren sechsunddrei=C3=9Fig
-Jahre ohne Kind verheiratet. Er starb nach einer
-Herzarterienoperation. Und k=C3=BCrzlich sagte mir mein Arzt, dass ich
-aufgrund meines Krebsproblems (Leberkrebs und Schlaganfall) die
-n=C3=A4chsten sechs Monate nicht durchhalten w=C3=BCrde. Bevor mein Mann le=
-tztes
-Jahr starb, hat er diese Summe von zwei Millionen achthunderttausend
-Dollar bei einer Bank hier in Togo hinterlegt. Derzeit ist dieses Geld
-noch auf der Bank. Nachdem ich meinen Zustand gekannt hatte, beschloss
-ich, diesen Fonds an jeden guten gottesf=C3=BCrchtigen Bruder oder jede
-gute gottesf=C3=BCrchtige Schwester zu spenden, die diesen Fonds so
-verwenden wird, wie ich es hier anweisen werde. Ich m=C3=B6chte jemanden,
-der diesen Fonds gem=C3=A4=C3=9F dem Wunsch meines verstorbenen Mannes nutz=
-t, um
-weniger privilegierten Menschen, Waisenh=C3=A4usern, Witwen und der
-Verbreitung des Wortes Gottes zu helfen. Ich habe diese Entscheidung
-getroffen, weil ich kein Kind habe, das diesen Fonds erben wird, und
-ich m=C3=B6chte keinen Weg, wie dieses Geld auf gottlose Weise verwendet
-wird. Aus diesem Grund entscheide ich mich, Ihnen diesen Fonds zu
-=C3=BCbergeben. Ich habe keine Angst vor dem Tod, daher wei=C3=9F ich, wohi=
-n ich
-gehe. Ich m=C3=B6chte, dass Sie sich in meinen t=C3=A4glichen Gebeten wegen
-meiner bevorstehenden Krebsoperation immer an mich erinnern. Wenn Sie
-Ihre Antwort so schnell wie m=C3=B6glich zur=C3=BCckschreiben, kann ich ein=
-e
-andere Person f=C3=BCr denselben Zweck finden, in der Hoffnung, so schnell
-wie m=C3=B6glich von Ihnen zu lesen. Gott segne Sie, wenn Sie auf die
-Stimme der Argumentation h=C3=B6ren, Frau Esther Nicolas.
+On Thu, Sep 10, 2020 at 06:32:38PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Both would result in only a small size saving.  For simplicity it
+> is best to remove them.  I also wish to remove both these antipatterns
+> from IIO.
+>
+
+Hi Jonathan and thank you!
+
+I compiled and tested this patch on ak09911 so, for what is worth,
+
+Acked-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Tested-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+
+Best regards,
+Jonathan
+
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+> ---
+>  drivers/iio/magnetometer/ak8975.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+> index 03d71f796177..0141ef3b6476 100644
+> --- a/drivers/iio/magnetometer/ak8975.c
+> +++ b/drivers/iio/magnetometer/ak8975.c
+> @@ -8,6 +8,7 @@
+>   */
+>  
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/kernel.h>
+>  #include <linux/slab.h>
+>  #include <linux/i2c.h>
+> @@ -17,7 +18,6 @@
+>  #include <linux/delay.h>
+>  #include <linux/bitops.h>
+>  #include <linux/gpio/consumer.h>
+> -#include <linux/acpi.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/pm_runtime.h>
+>  
+> @@ -773,7 +773,6 @@ static const struct iio_info ak8975_info = {
+>  	.read_raw = &ak8975_read_raw,
+>  };
+>  
+> -#ifdef CONFIG_ACPI
+>  static const struct acpi_device_id ak_acpi_match[] = {
+>  	{"AK8975", AK8975},
+>  	{"AK8963", AK8963},
+> @@ -785,7 +784,6 @@ static const struct acpi_device_id ak_acpi_match[] = {
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
+> -#endif
+>  
+>  static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+>  {
+> @@ -1075,8 +1073,8 @@ static struct i2c_driver ak8975_driver = {
+>  	.driver = {
+>  		.name	= "ak8975",
+>  		.pm = &ak8975_dev_pm_ops,
+> -		.of_match_table = of_match_ptr(ak8975_of_match),
+> -		.acpi_match_table = ACPI_PTR(ak_acpi_match),
+> +		.of_match_table = ak8975_of_match,
+> +		.acpi_match_table = ak_acpi_match,
+>  	},
+>  	.probe		= ak8975_probe,
+>  	.remove		= ak8975_remove,
+> -- 
+> 2.28.0
+> 

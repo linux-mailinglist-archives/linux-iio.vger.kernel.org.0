@@ -2,79 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E25F265A6D
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Sep 2020 09:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9931D265B46
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Sep 2020 10:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725767AbgIKHVJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 11 Sep 2020 03:21:09 -0400
-Received: from mail.flex.co.jp ([211.8.82.123]:58766 "EHLO www.flex.co.jp"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725747AbgIKHVG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Sep 2020 03:21:06 -0400
-Received: from live.com.mx ([103.89.89.225])
-        (authenticated bits=0)
-        by www.flex.co.jp (MTA) with ESMTP id 0898ndvw009401
-        for <linux-iio@vger.kernel.org>; Wed, 9 Sep 2020 17:49:52 +0900
-Reply-To: powerinthewords@yahoo.co.jp
-From:   piyin.crhe@live.com.mx
-To:     linux-iio@vger.kernel.org
-Subject: =?utf-8?Q?=5BSpam=5D?=
- We are still waiting for your email...
-Date:   09 Sep 2020 01:49:50 -0700
-Message-ID: <20200909014950.32422B00B70ABA09@live.com.mx>
+        id S1725824AbgIKIPp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Sep 2020 04:15:45 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2807 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725554AbgIKIPp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 11 Sep 2020 04:15:45 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 318BCCFEBCCD1D074D5B;
+        Fri, 11 Sep 2020 09:15:43 +0100 (IST)
+Received: from localhost (10.52.125.200) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Fri, 11 Sep
+ 2020 09:15:42 +0100
+Date:   Fri, 11 Sep 2020 09:14:07 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Nishant Malpani <nish.malpani25@gmail.com>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <andy.shevchenko@gmail.com>
+Subject: Re: [RESEND PATCH v3 0/3] iio: gyro: adxrs290: Add triggered buffer
+ & debugfs support
+Message-ID: <20200911091407.000057e7@Huawei.com>
+In-Reply-To: <20200910180450.29696-1-nish.malpani25@gmail.com>
+References: <20200910180450.29696-1-nish.malpani25@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-SpamInfo: FortiGuard-AntiSpam ip, connection black ip 103.89.89.225
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.125.200]
+X-ClientProxiedBy: lhreml707-chm.china.huawei.com (10.201.108.56) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Beneficiary,
+On Thu, 10 Sep 2020 23:34:47 +0530
+Nishant Malpani <nish.malpani25@gmail.com> wrote:
 
-We wish to inform you that a power of attorney was forwarded to 
-our office  by two gentlemen regarding your unclaimed fund of $56 
-Million Dollar. One of them is an American citizen named Mr. 
-Robert Porter and the other is Mr. Wilhelm Berg a Swedish 
-citizen.We have be waiting for you to contact us since last year.
+> Introduce DATA_RDY trigger for triggered buffer setup; this enables continuous
+> data capture. Additionally, add support for direct register access using the debugfs 
+> iio interface. 
+> 
+> The device-tree bindings documentation illustrates an example of using a GPIO irq
+> line to trigger a data capture.
+> 
+> Nishant Malpani (3):
+>   iio: gyro: adxrs290: Add triggered buffer support
+>   dt-bindings: iio: gyro: adxrs290: Add interrupts support
+>   iio: gyro: adxrs290: Add debugfs register access support
+> 
+>  .../bindings/iio/gyroscope/adi,adxrs290.yaml  |   6 +
+>  drivers/iio/gyro/Kconfig                      |   2 +
+>  drivers/iio/gyro/adxrs290.c                   | 237 ++++++++++++++++--
+>  3 files changed, 231 insertions(+), 14 deletions(-)
+> 
 
-The document claims these gentlemen to be your authorized 
-representatives, and the power of attorney states that you are 
-already deceased.  It further states that your death was due to 
-lung cancer, with your date of death being January 27th, 2020.
+Odd. The original patch one eventually made it (I'd checked it hadn't
+gotten to me or to lore.kernel.org yesterday :(
 
-They have now submitted a new account to replace the receiving 
-account that was in the original claim of funds. These funds have 
-remained unclaimed for quite some time and the need for 
-resolution is pressing. Below is the new account they have 
-submitted.
+Ah well, one of those quirks of life and resend does no harm.
 
-Account Name's :  Robert Porter /Wilhelm Berg
-Account: 5007-29 438 66
-IBAN-nr: SE4150000000050072943866
-Bic-kod: ESSESESS
-Skandinaviska Enskilda Banken. (SEB :)
-SWEDEN .
+Will catch up with this tomorrow probably.
 
-In the event that you are in fact still alive, we ask that you 
-confirm your existence by responding to this email. You are to 
-view this as a matter requiring immediate attention and response. 
-We have 48 hr monitoring of all activities within Federal Reserve 
-Bank.On this regard,you will be directed to any of our office 
-center that you will go in person to sign the final papers,
-because we have our payment center in Europe,Asia,America and 
-Canada.You will go to any of the office that you will be directed 
-to with the copy of the documents of your fund.
+Jonathan
 
-We have contacted the bank in the Sweden asking them to wait for 
-further directives from Federal Reserve Bank, prior to 
-authorizing any withdrawals in any form.  Our request is based 
-entirely on our attempt to verify that you are in fact deceased, 
-before money is wrongly disbursed.
-
-Your in Service,
-
-Robert Steven Kaplan
-2200 N Pearl St, Dallas, TX 75201, United States

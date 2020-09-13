@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3EC7267F3E
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Sep 2020 12:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2AA3267F44
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Sep 2020 12:45:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbgIMKeF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Sep 2020 06:34:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33826 "EHLO mail.kernel.org"
+        id S1725927AbgIMKpi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Sep 2020 06:45:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725927AbgIMKeC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Sep 2020 06:34:02 -0400
+        id S1725980AbgIMKpg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Sep 2020 06:45:36 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2463D20732;
-        Sun, 13 Sep 2020 10:34:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B596720723;
+        Sun, 13 Sep 2020 10:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599993242;
-        bh=Y7qgnRrAIIMV4sXvwFbD9toBzdPDonepMn0U3tRLAZ4=;
+        s=default; t=1599993936;
+        bh=bAWR+HfTQ1N7d06HZzD0otQJGmhO6746RzB4Ehxc4Ps=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ptbgnuy+QDTOZPKvFkZyQvJJdQ2tE0idvh3Sv7NTR28VeRSh8nAgthMedMzJg1VW0
-         AWHQPef0j+KpBh7vuuh/0+x8owK4WqJzI03CecIBjY87Rti5hkJFdI0RuQi9/IOxB+
-         3Uid+8sc4Kys7V/Ac1udpxBflzAeFbwHaGNG2Hv0=
-Date:   Sun, 13 Sep 2020 11:33:57 +0100
+        b=WjDMJ6KC1IcRz4YKsyd6mVQ9KWzr3s9tZ1uyMpXZ3RAvDFBXtM5/BjouNj0omDfQU
+         BF93MVWB2DCMyHvwdBnfh6MOafvbiDzzBDqwbTwWs0kfjZQDxchq9c1rRO+ruUYw8d
+         L35kVc6df2Gk8etVTNFi8fz5L4eG9XGHLsqtGH4c=
+Date:   Sun, 13 Sep 2020 11:45:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
-Cc:     linux-iio@vger.kernel.org, songqiang1304521@gmail.com,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net
-Subject: Re: [PATCH 2/2] iio: proximity: vl53l0x: Add IRQ support
-Message-ID: <20200913113357.47e0c0a1@archlinux>
-In-Reply-To: <20200910084817.209131-2-drobyshevskyi@gmail.com>
-References: <20200910084817.209131-1-drobyshevskyi@gmail.com>
-        <20200910084817.209131-2-drobyshevskyi@gmail.com>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v3] iio: core: Add optional symbolic label to a
+ device channel
+Message-ID: <20200913114532.57a47bb6@archlinux>
+In-Reply-To: <20200911132522.22969-1-cristian.pop@analog.com>
+References: <20200911132522.22969-1-cristian.pop@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,229 +41,152 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Sep 2020 11:48:17 +0300
-Ivan Drobyshevskyi <drobyshevskyi@gmail.com> wrote:
+On Fri, 11 Sep 2020 16:25:22 +0300
+Cristian Pop <cristian.pop@analog.com> wrote:
 
-> VL53L0X can be configured to use interrupt pin (GPIO1)
-> to notify host about readiness of new measurement.
+> If a label is defined in the device tree for this channel add that
+> to the channel specific attributes. This is useful for userspace to
+> be able to identify an individual channel.
 > 
-> If interrupt pin is not specified in DT, driver still uses polling.
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 
-If interrupt pin is not specified, driver still uses polling.
-(see below for why I suggest that change!)
+Hi Christian,
 
-Otherwise, a few minor things inline to tidy up.
+You've accidentally picked up a lot of unrelated stuff in here.
+I've tried to strip that out for review.  It is very easy to do this
+so I suggest always taking a quick manual read of patches before
+sending them out for things that shouldn't be there.
+
+As to the actual patch, I'd make one small adjustment and I think
+it looks good.
+
+Note though, we need some ABI docs for it.
+Documentation/ABI/testing/sysfs-bus-iio is the place for it.
+It also needs to go in with changes in one more more drivers to use it.
+
+After that I'd like to let this sit a little longer than a normal
+patch to see if anyone else wants to comment.
 
 Thanks,
 
 Jonathan
 
 
-> 
-> Signed-off-by: Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
 > ---
->  drivers/iio/proximity/vl53l0x-i2c.c | 104 ++++++++++++++++++++++++----
->  1 file changed, 92 insertions(+), 12 deletions(-)
+>  Changes in V3:
+> 	- Add "read_label" callback function
 > 
-> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> index b48216cc1..b676e3702 100644
-> --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> @@ -4,19 +4,21 @@
->   *
->   * Copyright (C) 2016 STMicroelectronics Imaging Division.
->   * Copyright (C) 2018 Song Qiang <songqiang1304521@gmail.com>
-> + * Copyright (C) 2020 Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
->   *
->   * Datasheet available at
->   * <https://www.st.com/resource/en/datasheet/vl53l0x.pdf>
->   *
->   * Default 7-bit i2c slave address 0x29.
->   *
-> - * TODO: FIFO buffer, continuous mode, interrupts, range selection,
-> - * sensor ID check.
-> + * TODO: FIFO buffer, continuous mode, range selection, sensor ID check.
->   */
->  
->  #include <linux/delay.h>
->  #include <linux/i2c.h>
-> +#include <linux/interrupt.h>
->  #include <linux/module.h>
-> +#include <linux/of_irq.h>
-As below, you shouldn't need this.
->  
->  #include <linux/iio/iio.h>
->  
-> @@ -29,14 +31,67 @@
->  #define VL_REG_SYSRANGE_MODE_TIMED			BIT(2)
->  #define VL_REG_SYSRANGE_MODE_HISTOGRAM			BIT(3)
->  
-> +#define VL_REG_SYSTEM_INTERRUPT_CONFIG_GPIO		0x0A
-> +#define VL_REG_SYSTEM_INTERRUPT_GPIO_NEW_SAMPLE_READY	BIT(2)
-> +
-> +#define VL_REG_SYSTEM_INTERRUPT_CLEAR			0x0B
-> +
->  #define VL_REG_RESULT_INT_STATUS			0x13
->  #define VL_REG_RESULT_RANGE_STATUS			0x14
->  #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
->  
->  struct vl53l0x_data {
-> -	struct i2c_client *client;
+>  drivers/iio/industrialio-core.c | 159 +++++++++++++++++++++++++-------
+>  include/linux/iio/iio.h         |  40 +++++++-
+>  2 files changed, 160 insertions(+), 39 deletions(-)
+> 
 
-Given existing style is perfectly readable, I would follow it and not
-add the 'pretty alignment' change you have here to the existing element
-or the new ones.  It often goes wrong and generates very noisy patches
-anyway!
+...
 
-> +	struct i2c_client	*client;
-> +	struct completion	completion;
-> +	int			irq;
->  };
+>  EXPORT_SYMBOL_GPL(iio_enum_write);
+> @@ -643,6 +644,21 @@ ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals)
+>  }
+>  EXPORT_SYMBOL_GPL(iio_format_value);
 >  
-> +static irqreturn_t vl53l0x_handle_irq(int irq, void *dev_id)
-
-dev_id is an odd name for that parameter.  In what way is it
-an identification?  Stick to private or similar to avoid
-implications you don't intend.
-
+> +static ssize_t iio_read_channel_label(struct device *dev,
+> +				     struct device_attribute *attr,
+> +				     char *buf)
 > +{
-> +	struct iio_dev *indio_dev = dev_id;
-> +	struct vl53l0x_data *data = iio_priv(indio_dev);
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 > +
-> +	complete(&data->completion);
-> +
-> +	return IRQ_HANDLED;
+> +	if (indio_dev->info->read_label)
+> +		return indio_dev->info->read_label(indio_dev,
+> +							this_attr->c,
+> +							buf);
+> +	else
+> +		return -EINVAL;
+
+As mentioned below, I'd not register the attr if we don't have
+the callback.
+
 > +}
 > +
-> +static int vl53l0x_configure_irq(struct device *dev, struct iio_dev *indio_dev)
-> +{
-> +	struct vl53l0x_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = devm_request_irq(dev, data->irq, vl53l0x_handle_irq,
-> +			IRQF_TRIGGER_FALLING, indio_dev->name, indio_dev);
-> +	if (ret) {
-> +		dev_err(dev, "devm_request_irq error: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(data->client,
-> +			VL_REG_SYSTEM_INTERRUPT_CONFIG_GPIO,
-> +			VL_REG_SYSTEM_INTERRUPT_GPIO_NEW_SAMPLE_READY);
-> +	if (ret)
-> +		dev_err(dev, "failed to configure IRQ: %d\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static void vl53l0x_clear_irq(struct vl53l0x_data *data)
-> +{
-> +	u8 status;
-> +
-> +	i2c_smbus_write_byte_data(data->client,
-> +					VL_REG_SYSTEM_INTERRUPT_CLEAR, 1);
-
-Even though we can't report the error via return value, it is useful to
-check it and print an error if we get one.
-
-> +	i2c_smbus_write_byte_data(data->client,
-> +					VL_REG_SYSTEM_INTERRUPT_CLEAR, 0);
-> +
-> +	status = i2c_smbus_read_byte_data(data->client,
-> +						VL_REG_RESULT_INT_STATUS);
-> +	if (status & 0x07)
-
-If we get an error (which IIRC is signified by < 0) then this will be
-doing something very strange.  As such, we should check that first before
-using status.
-
-> +		dev_err(&data->client->dev, "failed to clear irq\n");
-> +}
-> +
->  static int vl53l0x_read_proximity(struct vl53l0x_data *data,
->  				  const struct iio_chan_spec *chan,
->  				  int *val)
-> @@ -50,19 +105,31 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
->  	if (ret < 0)
->  		return ret;
->  
-> -	do {
-> -		ret = i2c_smbus_read_byte_data(client,
-> -					       VL_REG_RESULT_RANGE_STATUS);
-> +	if (data->irq) {
-> +		reinit_completion(&data->completion);
-> +
-> +		ret = wait_for_completion_timeout(&data->completion, HZ/10);
->  		if (ret < 0)
->  			return ret;
-> +		else if (ret == 0)
-> +			return -ETIMEDOUT;
->  
-> -		if (ret & VL_REG_RESULT_RANGE_STATUS_COMPLETE)
-> -			break;
-> +		vl53l0x_clear_irq(data);
-> +	} else {
-> +		do {
-> +			ret = i2c_smbus_read_byte_data(client,
-> +					       VL_REG_RESULT_RANGE_STATUS);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			if (ret & VL_REG_RESULT_RANGE_STATUS_COMPLETE)
-> +				break;
->  
-> -		usleep_range(1000, 5000);
-> -	} while (--tries);
-> -	if (!tries)
-> -		return -ETIMEDOUT;
-> +			usleep_range(1000, 5000);
-> +		} while (--tries);
-> +		if (!tries)
-> +			return -ETIMEDOUT;
-> +	}
->  
->  	ret = i2c_smbus_read_i2c_block_data(client, VL_REG_RESULT_RANGE_STATUS,
->  					    12, buffer);
-> @@ -120,6 +187,7 @@ static int vl53l0x_probe(struct i2c_client *client)
->  {
->  	struct vl53l0x_data *data;
->  	struct iio_dev *indio_dev;
-> +	struct device *dev = &client->dev;
-
-That's a valid change to make, but if you want to do this it should be
-as a precursor patch tidying up all the places client->dev is used
-in the probe function.
-
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
-> @@ -141,6 +209,18 @@ static int vl53l0x_probe(struct i2c_client *client)
->  	indio_dev->num_channels = ARRAY_SIZE(vl53l0x_channels);
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  
-> +	data->irq = irq_of_parse_and_map(dev->of_node, 0);
-
-I would rather we didn't introduce any of specific code into this driver even
-if that is the mostly likely route by which it will be instantiated.
-
-Currently the driver can be instantiated from ACPI with PRP0001 based bindings
-adding this breaks that (I think).
-
-As it's an i2c device, the i2c core should already have set
-client->irq to the appropriate value so use that.
-
-> +	/* usage of interrupt is optional */
-> +	if (data->irq) {
-> +		int ret;
-> +
-> +		init_completion(&data->completion);
-> +
-> +		ret = vl53l0x_configure_irq(dev, indio_dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	return devm_iio_device_register(&client->dev, indio_dev);
+>  static ssize_t iio_read_channel_info(struct device *dev,
+>  				     struct device_attribute *attr,
+>  				     char *buf)
+> @@ -1111,6 +1127,25 @@ int __iio_add_chan_devattr(const char *postfix,
+>  	return ret;
 >  }
 >  
+> +static int iio_device_add_channel_label(struct iio_dev *indio_dev,
+> +					 struct iio_chan_spec const *chan)
+> +{
+> +	int ret;
+> +
+> +	ret = __iio_add_chan_devattr("label",
+> +					chan,
+> +					&iio_read_channel_label,
+> +					NULL,
+> +					0,
+> +					IIO_SEPARATE,
+> +					&indio_dev->dev,
+> +					&indio_dev->channel_attr_list);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 1;
+> +}
+> +
+>  static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
+>  					 struct iio_chan_spec const *chan,
+>  					 enum iio_shared_by shared_by,
+> @@ -1241,6 +1276,11 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+>  		return ret;
+>  	attrcount += ret;
+>  
+> +	ret = iio_device_add_channel_label(indio_dev, chan);
+> +	if (ret < 0)
+> +		return ret;
 
+I took a bit long to reply to previous thread, but we should definitely be
+checking if the driver provides the callback.  If it doesn't
+we shouldn't try to add this attr.
+
+We may want to provide finer grained control, or a flag to let drivers
+turn it on or off without needing to provide multiple iio_info structures.
+Lets not do that for now though.  A global, does the driver provide
+a callback is fine.  We can reassess once a we have seen how this gets used.
+
+> +	attrcount += ret;
+> +
+>  	if (chan->ext_info) {
+>  		unsigned int i = 0;
+>  		for (ext_info = chan->ext_info; ext_info->name; ext_info++) {
+
+.. 
+
+Lots of unrelated changes...
+
+>  /* Device operating modes */
+>  #define INDIO_DIRECT_MODE		0x01
+>  #define INDIO_BUFFER_TRIGGERED		0x02
+> @@ -362,6 +387,8 @@ struct iio_trigger; /* forward declaration */
+>   *			and max. For lists, all possible values are enumerated.
+>   * @write_raw:		function to write a value to the device.
+>   *			Parameters are the same as for read_raw.
+> + * @read_label:		function to request label name for a specified label,
+> + *			for better channel identification.
+>   * @write_raw_get_fmt:	callback function to query the expected
+>   *			format/precision. If not set by the driver, write_raw
+>   *			returns IIO_VAL_INT_PLUS_MICRO.
+> @@ -420,6 +447,10 @@ struct iio_info {
+>  			 int val2,
+>  			 long mask);
+>  
+> +	int (*read_label)(struct iio_dev *indio_dev,
+> +			 struct iio_chan_spec const *chan,
+> +			 char *label);
+> +
+>  	int (*write_raw_get_fmt)(struct iio_dev *indio_dev,
+>  			 struct iio_chan_spec const *chan,
+>  			 long mask);
+
+Other seemingly unrelated stuff.
+
+...

@@ -2,35 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAA3267FA6
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Sep 2020 15:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F1E8267FA8
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Sep 2020 15:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725933AbgIMNXU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Sep 2020 09:23:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53140 "EHLO mail.kernel.org"
+        id S1725935AbgIMNXZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Sep 2020 09:23:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53146 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725930AbgIMNXT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Sep 2020 09:23:19 -0400
+        id S1725931AbgIMNXU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Sep 2020 09:23:20 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A01502158C;
-        Sun, 13 Sep 2020 13:23:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B761A217BA;
+        Sun, 13 Sep 2020 13:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600003399;
-        bh=0MH5RLcV90CpGM/tGn4yY/SACOinQCFTbq2WtuYgwDU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=axy8m2tlQ/MA+rlCXQfzFOKCZ/qO6xqxEMm90QCL6ByawCQrUnzL3oSNCZ3rZBRgC
-         eJoCEkh76KgTeXPEHL+vkzMv7MDR7c6z+mOHA8U0vbKsxU9N2MXAgazJCFlW9eJP+b
-         Cx2rkF0XNeJndT5ByNmgR91rhjIKYGNXAwcGKxRg=
+        s=default; t=1600003400;
+        bh=R+VVRIk6l5/l6g7174w37YKlgtuyfIO0RSzMT5FXTIA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=RnG6BUFwF0yWoEWPGJT5TP7mgyWKobRwGJThw865NZA7nGdUvSRd0SUoKd8kkF+d9
+         WjjL8jlAQlmVZcuPUKb2AfLiDsTMMr/RjZDPtOXMvXzQuSkohVQHxnjenHVvaGM0Si
+         nUsrzrxoLitY1F3M2vGlQmlT8XF1nm2PiI95Npd4=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 0/3] IIO get to warning free for W=1 C=1
-Date:   Sun, 13 Sep 2020 14:21:12 +0100
-Message-Id: <20200913132115.800131-1-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3] iio:imu:adis16400: Sort out missing kernel doc.
+Date:   Sun, 13 Sep 2020 14:21:13 +0100
+Message-Id: <20200913132115.800131-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200913132115.800131-1-jic23@kernel.org>
+References: <20200913132115.800131-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -40,39 +43,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Hi All,
+I'd like to be enable W=1 for all IIO builds as it catches real issues as well
+as more minor documentation issues such as this (also good to fix though!)
 
-Lee did most of the leg work for this last cycle, but there were a few
-things left.  This set only gets us to warning free if we also have the
-half dozen more significant fixes on the mailing list, remains of Lee's
-early 2 patch sets and
-[PATCH] kernel-doc: add support for ____cacheline_aligned attribute
+drivers/iio/imu/adis16400.c:183: warning: Function parameter or member 'avail_scan_mask' not described in 'adis16400_state'
 
-I have a local version of the left over parts of Lee's series with the
-____cacheline_aligned bits dropped but see no reason to waste review
-bandwidth by posting that again.  Assuming the above patch is accepted
-I'll apply those directly to the togreg branch and reply to the original
-thread.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/imu/adis16400.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Note of course that this is warning free on my particular setup with
-gcc x86_64 10.2 on other peoples particular configurations there
-may still be warnings. If there are let me know or send a fix!
-
-I have also deliberately not cleaned up the warnings in the drivers still
-in staging as they make good tasks for people new to sending patches.
-
-Jonathan Cameron (3):
-  iio:imu:adis16400: Sort out missing kernel doc.
-  iio: Add __printf() attributes to various allocation functions
-  iio:core: Tidy up kernel-doc.
-
- drivers/iio/imu/adis16400.c          | 2 ++
- drivers/iio/industrialio-core.c      | 3 ++-
- drivers/iio/industrialio-trigger.c   | 2 +-
- include/linux/iio/iio.h              | 4 ++--
- include/linux/iio/trigger_consumer.h | 2 +-
- 5 files changed, 8 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+index 1ebe3e50d3e6..140cfc65ee8c 100644
+--- a/drivers/iio/imu/adis16400.c
++++ b/drivers/iio/imu/adis16400.c
+@@ -173,6 +173,8 @@ struct adis16400_chip_info {
+  * @variant:	chip variant info
+  * @filt_int:	integer part of requested filter frequency
+  * @adis:	adis device
++ * @avail_scan_mask:	NULL terminated array of bitmaps of channels
++ *			that must be enabled together
+  **/
+ struct adis16400_state {
+ 	struct adis16400_chip_info	*variant;
 -- 
 2.28.0
 

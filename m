@@ -2,317 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AE22690A3
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Sep 2020 17:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B652691A5
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Sep 2020 18:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgINPuz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Sep 2020 11:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50292 "EHLO
+        id S1726163AbgINQd0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Sep 2020 12:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726583AbgINPtQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Sep 2020 11:49:16 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DEC3C061A29
-        for <linux-iio@vger.kernel.org>; Mon, 14 Sep 2020 08:48:45 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id r24so112972ljm.3
-        for <linux-iio@vger.kernel.org>; Mon, 14 Sep 2020 08:48:44 -0700 (PDT)
+        with ESMTP id S1726426AbgINPpn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Sep 2020 11:45:43 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF4AC06178B
+        for <linux-iio@vger.kernel.org>; Mon, 14 Sep 2020 08:45:39 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id x69so13964075lff.3
+        for <linux-iio@vger.kernel.org>; Mon, 14 Sep 2020 08:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=CC03M+x7WzOjKcfpKM/7Z3TYFx8LGGbrK10cnVo1oKc=;
-        b=zhd3020dqPyJBjQg4xlw3WBmmfR26mvl74Eic04WkGjniO5M4kKO0oY23a030j+4K+
-         17N1jxXYlfhtBDzSML/181oAqats8sVbGvkVNKx+khr4j0YQ0PjicVtERIgxWA/NVEh9
-         3HayV7FbWkDOmDOcZE1Rr9RTZxzl2I/skjn1fzWDhD+GEXAQpmwCB2M3NplMpYkoUN61
-         A6BOUyMyrvfYINVSAbqiSNcRno7w0wmJJmyx5RvZ8cJojHmXSXLsZ371+MXN0hHdhqvO
-         eCwLX0CrOsSuXYjh1FlXLaK43iPkWXWMfRRTPSxkHXWdK4Vk3xjKDiROO1s//csEW28i
-         kyGQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=I1Diq3BVw3//vJqeDcLXAlMyOlmanauBDrj7DA7Bapg=;
+        b=aUDJEPCk0RcQKnW6Jt3+dgnCUbGNP8VTiZoqXo8QkUprwnChxH2RUbWoB/cLgQX2Rx
+         riIjyia/GLCJR9xVU04942RbOEFED35baENMdlCUNgF6PEUJsruLtw9P2wgxxvHcZdo1
+         8dnIN+mxtJeG9GZQl7WSoswNbvW7nvTXMlZk100dzBlnTyaoC33KqYHiLT/rDFEbelm0
+         qgYKQr7GNdiTmK3mIj6bqJhXoB4e081sdIcPTQHbneq/Cnn41Dxgybep14VDkzKaDVS5
+         37pnKSIy44Mxbs1HKblhUbJKz0QDHSYE+hvdUvhVfXHtH7oRP5H3jcG9PM67Vs2L9jYG
+         umbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=CC03M+x7WzOjKcfpKM/7Z3TYFx8LGGbrK10cnVo1oKc=;
-        b=lO1xPEuxnh8pa1DzZ8aKObt/Sicm89ZsKapMcM3VTNT1mgbwBlnBztu6fcfQ3AjcFU
-         r3rGhMQ3ivwyW4UoJ4MxdM/gLZwyiOVubyqHpxh2lT+/b/25YPWLm9awrT03tfkDfNUS
-         subi6zvbqS9ETFeYmK6Y1nbcHi8/D4GLVroHVGrz0h23tfAz8oSunTNDpV3Iu9KKOdTp
-         r22bqsrvORZ5qDCJTrZTbWGAUZH9dTbEldDWwE2CNIOT8Ww7aVBpDbMc3jZUmKla57Zt
-         Cb/YzKbRGieAN06IZfQEK9XJkWoykHtqrkieygAWbKzA1oJgiyZUXD3hx1n70m6T1Ui8
-         ihnA==
-X-Gm-Message-State: AOAM533JScShzorjTlWLSvbs/2as5gS+puUXECqJymxz19Z3amDPYaU8
-        4LHzIp5mB2GWHQKxTfMKrgffpw==
-X-Google-Smtp-Source: ABdhPJz2vASekaU7iCRw1BahWLVfkQgGw4nQO3kE9PxUDfOIAnyC/nVOgX6NEi2SMgljUuLvzQseuQ==
-X-Received: by 2002:a2e:330e:: with SMTP id d14mr5426194ljc.12.1600098523459;
-        Mon, 14 Sep 2020 08:48:43 -0700 (PDT)
-Received: from eriador.lan ([188.162.64.187])
-        by smtp.gmail.com with ESMTPSA id f19sm3834650lfs.85.2020.09.14.08.48.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 08:48:42 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=I1Diq3BVw3//vJqeDcLXAlMyOlmanauBDrj7DA7Bapg=;
+        b=XbHGxFxHpNAmfhCXvGImdGKEwYd24GA0EFn1QRdS3SPLJeZT/VrjWl8Zbp1qlmUwnN
+         2qPPAKsmNGrVaEmMeqGRkTxGd/siCmY3Ujmiml4uflsyCXUmHc+f3rymjlJUX80VA2Sg
+         j8RPcAZhnWB9uRbsNCnTNkcWB9CwQ+6v0l0Dzm2QPk9fgk8QV2uQgV/9A1IxmdpaZt05
+         xmz8wptRm+40YCAsfZakWhNjLpMWg6aQJeCl4m25Lnh9SpQzUKkoYwGQ6JOu5efLE72m
+         Y3sttJd2BPjerpth5fmuV5he2BcmhXKphtZ69soJO04IOxyvI7/hAgIDIsVvbm4u0o0v
+         Og3Q==
+X-Gm-Message-State: AOAM5329yqQqQoI1LfcICewd2BxSolyamsASOFYzFnvFm5HK6uO/Tj0e
+        QJpd5UTFu9uhsDQ+lIBYMYLsEA==
+X-Google-Smtp-Source: ABdhPJxtV7I4cIHpLZEVpRugay28tPPeWIt/1IZHQRAI99Q5d18DZ+ZTy9N5LpAUQnzFQm1TXpLMWA==
+X-Received: by 2002:ac2:48a2:: with SMTP id u2mr4534376lfg.359.1600098332759;
+        Mon, 14 Sep 2020 08:45:32 -0700 (PDT)
+Received: from [192.168.1.145] ([188.162.64.187])
+        by smtp.gmail.com with ESMTPSA id y17sm4115896ljm.55.2020.09.14.08.45.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2020 08:45:32 -0700 (PDT)
+Subject: Re: [PATCH v3 00/10] qcom: pm8150: add support for thermal monitoring
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Amit Kucheria <amitk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v5 9/9] arm64: dts: sm8250-mtp: add thermal zones using pmic's adc-tm5
-Date:   Mon, 14 Sep 2020 18:48:09 +0300
-Message-Id: <20200914154809.192174-10-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200914154809.192174-1-dmitry.baryshkov@linaro.org>
-References: <20200914154809.192174-1-dmitry.baryshkov@linaro.org>
+References: <20200910140000.324091-1-dmitry.baryshkov@linaro.org>
+ <20200913112122.0f4ee51b@archlinux>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <99063ca8-c795-416c-18cb-5c026879a13c@linaro.org>
+Date:   Mon, 14 Sep 2020 18:45:29 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200913112122.0f4ee51b@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Port thermal zones definitions from msm-4.19 tree. Enable and add
-channel configuration to PMIC's ADC-TM definitions. Declare thermal
-zones and respective trip points.
+On 13/09/2020 13:21, Jonathan Cameron wrote:
+> On Thu, 10 Sep 2020 16:59:50 +0300
+> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
+> 
+>> This patch serie adds support for thermal monitoring block on Qualcomm's
+>> PMIC5 chips. PM8150{,b,l} and sm8250-mtp board device trees are extended
+>> to support thermal zones provided by this thermal monitoring block.
+>> Unlike the rest of PMIC thermal senses, these thermal zones describe
+>> particular thermistors, which differ between from board to board.
+>>
+> 
+> As far as I am concerned this series is now ready to go up to one or two
+> things in patch 8.  So on to the normal question based on the assumption
+> it will pick up other necessary reviews shortly...
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/sm8250-mtp.dts | 212 ++++++++++++++++++++++++
- 1 file changed, 212 insertions(+)
+Sending v5 right now, fixing issues in patch 8.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-index 6e2f7ae1d621..d06207ac5593 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-mtp.dts
-@@ -24,6 +24,104 @@ chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-+	thermal-zones {
-+		xo-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 0>;
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		skin-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 1>;
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		mmw-pa1 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		conn-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150b_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		camera-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		skin-msm-therm {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+
-+		mmw-pa2 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8150l_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "passive";
-+				};
-+			};
-+		};
-+	};
-+
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vph_pwr";
-@@ -358,6 +456,120 @@ &cdsp {
- 	firmware-name = "qcom/sm8250/cdsp.mbn";
- };
- 
-+&pm8150_adc {
-+	xo-therm@4c {
-+		reg = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm1@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150b_adc {
-+	conn-therm@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150l_adc {
-+	camera-flash-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-msm-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm2@4f {
-+		reg = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150_adc_tm {
-+	status = "okay";
-+
-+	xo-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,adc-channel = <ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm1@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150b_adc_tm {
-+	status = "okay";
-+
-+	conn-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm8150l_adc_tm {
-+	status = "okay";
-+
-+	camera-flash-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	skin-msm-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,adc-channel = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	pa-therm2@2 {
-+		reg = <2>;
-+		io-channels = <&pm8150l_adc ADC5_AMUX_THM3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
- &qupv3_id_1 {
- 	status = "okay";
- };
+> 
+> What route do we want this to take?
+> I can do an immutable branch in IIO if that works for patches 1-8 and assume
+> the dt file changes will got via usual SoC path?  We are getting a fair way
+> into this cycle, so this may well end up happening next cycle depending
+> on how quick reviews come in.
+
+I think this makes sense. Thank you for your reviews.
+
+
 -- 
-2.28.0
-
+With best wishes
+Dmitry

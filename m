@@ -2,128 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 458F126ACD3
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 21:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1996E26ACD7
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 21:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727877AbgIOTAf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Sep 2020 15:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727591AbgIOTAO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 15:00:14 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191D0C06174A
-        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 12:00:08 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id z25so5288705iol.10
-        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 12:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HnNwu28AnEov8YAs3Y1NlvsH/fnXWGod8A99me5AeF4=;
-        b=frI6mi9waBS1TSa9so2b0OMdswChxYHdVhprG4c0VzmNyWTv/QC0nfbWL9OpMt2mER
-         Ya+sLeBdwVRD9czBqJ/7eVmj/HHV1Z/evtVDGAIOapUHkzprGizApHok8NJmgmJvkd+y
-         0+hZzHXinwwCfHeu4AQjEeI+1ovmOcZf6BimY=
+        id S1727753AbgIOTAd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Sep 2020 15:00:33 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:35153 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727689AbgIOTAW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 15:00:22 -0400
+Received: by mail-io1-f67.google.com with SMTP id r9so5344323ioa.2;
+        Tue, 15 Sep 2020 12:00:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HnNwu28AnEov8YAs3Y1NlvsH/fnXWGod8A99me5AeF4=;
-        b=Yk2ItYOClV0/ZEtjTNOaNeLSS8dYUDjqPwbubNQN6DiQ4palyqpFTjxm79U5LoYn/j
-         cw7XScMMtmr83s8GIiEjXEdpqkQT+RzfSYFhsEGbk+FR9YpIIUpA5VBxaLJZDpHiQVy4
-         RTlvmCgFDbuXfCeh9jnAW151g9imCL4rwnP+8Ee5KGzjffyxp3iWcjz2dusntJCYzMT9
-         /F+uYlvfBHK2EH02YmJ2tgOvR+ZGAJfkPF4+vm2P8ujzH00iEye0ntkB5Ngsp/MDZn03
-         AFl2ThV+3p5rbDcRRHNh/RBgxNEZ0txBDw0cCGSJKyNjhJPPraawMi+Rm/tDXZrxP74w
-         cjGg==
-X-Gm-Message-State: AOAM530D7wzHxEJUnNOreAuN4IRxTNoLlKz7c6YRENaYAfy/dqpruIVZ
-        bVvgh4DeP2RSTSlEJzjPnQvFWLnEONldXGIXVNUqjg==
-X-Google-Smtp-Source: ABdhPJyh0FD2dyYrofHaQ+vZ+pC4+2WGKPVrLEGkAtv9NZpKrSfmXbKcBPPohbSu2XnSdVhn1t1qkAOMAmC1nK9M1W4=
-X-Received: by 2002:a02:c914:: with SMTP id t20mr19095177jao.117.1600196407446;
- Tue, 15 Sep 2020 12:00:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200910173242.621168-1-jic23@kernel.org> <20200910173242.621168-26-jic23@kernel.org>
-In-Reply-To: <20200910173242.621168-26-jic23@kernel.org>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Tue, 15 Sep 2020 11:59:56 -0700
-Message-ID: <CAJCx=g=M9ERR7O=Rz==3MeunRPNZ4LBwsXWuSZHExg7H0idEBw@mail.gmail.com>
-Subject: Re: [PATCH 25/38] iio:chemical:atlas-sensor: Drop of_match_ptr and
- use generic fw accessors
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xwoaUlq5NpEGvhJdzwFyRJKq3+Cx8o1N40O4sESvSfs=;
+        b=VMkP7EUUuehoOngAxS3sK9HCrapgM5bvnF55MNBg8tLTgTCqdWDP1jwN1q5/gJCVcw
+         2QZ/kCtCqQXr0Jeaxr//Hc7PZl7hkD3JVdI4gBys/UvIFUkEQvrkDH+d30fvIb92w6Te
+         s014WVeg9qe111gZQz+vT6kbXVZO6p0+KkFSuNFZlIIs4Kp7zjD2S2rMZ7ycQ08ZFejT
+         ByPnPmXKR5ZY5fg3QgV2U2lenYSbg/fuLdZnpPAnYHQjkJcYrt5vyLl7ECyZWiTxprbC
+         ZcJwTc2nMjyvJxb0l2PPjWM0Qd6nwPJEiIBjV56F1G60ajwZqFayvfAzL0LRfcPhqYur
+         WRkg==
+X-Gm-Message-State: AOAM532fnRrMVmnbL48M2rHjYUUSZHUJREZMDcPmKoXB8PoLX8Fa3dRN
+        HOW/RATbAp3BDaRa7ic6pg==
+X-Google-Smtp-Source: ABdhPJx9hRnwyKNaVO8i3jU86RCRrRRV80SoSLjaI0RCLdJazgu5srQFmm2mu98FUim5XSBDArR8KQ==
+X-Received: by 2002:a6b:197:: with SMTP id 145mr16158129iob.100.1600196421633;
+        Tue, 15 Sep 2020 12:00:21 -0700 (PDT)
+Received: from xps15 ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id w22sm7986353iob.32.2020.09.15.12.00.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2020 12:00:21 -0700 (PDT)
+Received: (nullmailer pid 2311911 invoked by uid 1000);
+        Tue, 15 Sep 2020 19:00:18 -0000
+Date:   Tue, 15 Sep 2020 13:00:18 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Fugang Duan <B38611@freescale.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v2 01/20] dt-bindings:iio:adc:fsl,vf610-adc conversion to
+ yaml.
+Message-ID: <20200915190018.GA2311858@bogus>
+References: <20200909175946.395313-1-jic23@kernel.org>
+ <20200909175946.395313-2-jic23@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200909175946.395313-2-jic23@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 10:35 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
+On Wed, 09 Sep 2020 18:59:27 +0100, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> of_match_ptr() prevents use of this driver with ACPI via PRP0001 and is
-> an example of an anti pattern I'm trying to remove from IIO.
-> Hence drop from this driver and use generic fw accessors to check
-> if there is a fw_node and get the id.
->
-> It might be neater to use pointers rather than indexes for
-> the device_data but that is another issue and should be handled
-> separately.
->
+> 
+> A simple conversion of this freescale ADC binding from txt to yaml.
+> For maintainer I went with Fugang Duan as the original author of the
+> binding. Would be great to have confirmation of this.
+> 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
-
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
-
+> Cc: Fugang Duan <B38611@freescale.com>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  drivers/iio/chemical/atlas-sensor.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-> index 43069636fcd5..cdab9d04dedd 100644
-> --- a/drivers/iio/chemical/atlas-sensor.c
-> +++ b/drivers/iio/chemical/atlas-sensor.c
-> @@ -15,7 +15,7 @@
->  #include <linux/irq.h>
->  #include <linux/irq_work.h>
->  #include <linux/i2c.h>
-> -#include <linux/of_device.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/regmap.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/buffer.h>
-> @@ -620,7 +620,6 @@ static int atlas_probe(struct i2c_client *client,
->  {
->         struct atlas_data *data;
->         struct atlas_device *chip;
-> -       const struct of_device_id *of_id;
->         struct iio_trigger *trig;
->         struct iio_dev *indio_dev;
->         int ret;
-> @@ -629,11 +628,10 @@ static int atlas_probe(struct i2c_client *client,
->         if (!indio_dev)
->                 return -ENOMEM;
->
-> -       of_id = of_match_device(atlas_dt_ids, &client->dev);
-> -       if (!of_id)
-> +       if (!dev_fwnode(&client->dev))
->                 chip = &atlas_devices[id->driver_data];
->         else
-> -               chip = &atlas_devices[(unsigned long)of_id->data];
-> +               chip = &atlas_devices[(unsigned long)device_get_match_data(&client->dev)];
->
->         indio_dev->info = &atlas_info;
->         indio_dev->name = ATLAS_DRV_NAME;
-> @@ -775,7 +773,7 @@ static const struct dev_pm_ops atlas_pm_ops = {
->  static struct i2c_driver atlas_driver = {
->         .driver = {
->                 .name   = ATLAS_DRV_NAME,
-> -               .of_match_table = of_match_ptr(atlas_dt_ids),
-> +               .of_match_table = atlas_dt_ids,
->                 .pm     = &atlas_pm_ops,
->         },
->         .probe          = atlas_probe,
-> --
-> 2.28.0
->
+>  .../bindings/iio/adc/fsl,vf610-adc.yaml       | 81 +++++++++++++++++++
+>  .../devicetree/bindings/iio/adc/vf610-adc.txt | 36 ---------
+>  2 files changed, 81 insertions(+), 36 deletions(-)
+> 
+
+Reviewed-by: Rob Herring <robh@kernel.org>

@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC4F226ACAF
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 20:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CF126ACC8
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 20:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727822AbgIOS4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Sep 2020 14:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47776 "EHLO
+        id S1727949AbgIOS73 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Sep 2020 14:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727689AbgIOS4k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 14:56:40 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488EFC06174A
-        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 11:56:40 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id b6so5310574iof.6
-        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 11:56:40 -0700 (PDT)
+        with ESMTP id S1727945AbgIOS71 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 14:59:27 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD92BC06174A
+        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 11:59:26 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id q4so4062889ils.4
+        for <linux-iio@vger.kernel.org>; Tue, 15 Sep 2020 11:59:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=i6Dqm2D7aLy7U+UhsC2DIhJbKfy3QptxlvDV324h6Qw=;
-        b=Ku2t7PZpN9msY/kTF4VT13YmiZX2gXtbsghh3/regA9OzPyPWbYZMY+xZm6xDiIES7
-         pnKdviffYeLfrHLOhR3zZaP9s8C9EzbSqYpj4wssJ7MxKk34k6S/lbke11s7QZ4Wehzn
-         IG7vLqSWECGXDIuxPxoX9NpsiiRdxg+KILvlk=
+        bh=DXjhbaioJ1CwG0eMn7q6MIoPqBac8yyeOFEem806Acc=;
+        b=sZ2ZyJhEX6j4wzxNSJPInWSKJNrysXsWGJBiWSykfEZST2t6rClTC7ZfdWVnz0WaTa
+         NjVuK2LtxCKysXyhHKnDKH04sDGTGtI6uxkRgKr0NIzYkPEBNmIpHyt7shzVF9oAO6Ya
+         gi/JCbNkHSDNK3A/TcKCgpTilRbB2icVIchuA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=i6Dqm2D7aLy7U+UhsC2DIhJbKfy3QptxlvDV324h6Qw=;
-        b=bFSgkKK/jmUOig/tNaYbtupwFaZIhWXW2lAAFGT66p7LsgZNx/7THi7L3hbgRTpb5e
-         SlPIxsBixecf3t9ft21TdwdVsTgFcFR0QZCmwsGFXC4E06HHu5rFSFrU7SphehSJN542
-         5cUDkp+6pgoWqjyT+41RngMJ6v0pi9yUImoenjF4ZTSV9Lwj/WyMYULV++SswK/wvbci
-         5R/W953rvHw5MyuRI4l5hVEaHdXZWAGVDTjAnk0UAblcRrFdiG7P9kwWiU9+nzwGRKFX
-         MJaKsY2b9Wc+if7Qa9+RqEP3aUZW9J1rOCgsTZboLg4yMloTwcNq0xy9gYlZgWqoPJsV
-         i72w==
-X-Gm-Message-State: AOAM533OJJcr5ErxuA0aGhaoJbwSN03HrVwcJTZQthABXbhUus0ax997
-        dYUZHKJhizfCuCoa/bD2reNr5lXpjKbt/jBvkaX2GA==
-X-Google-Smtp-Source: ABdhPJwalQ+t33zBfz+PRppUi9MH0GNxR/tsi5FAxWgY6SZoqaEmxVaQxnxgQBZAeV30N6eQKAwzvAfTd19ZVhsH7C8=
-X-Received: by 2002:a5e:8a08:: with SMTP id d8mr15959506iok.95.1600196199631;
- Tue, 15 Sep 2020 11:56:39 -0700 (PDT)
+        bh=DXjhbaioJ1CwG0eMn7q6MIoPqBac8yyeOFEem806Acc=;
+        b=R6E6oWf8lb/xeClaDbHn+DGtivOXFCXuWJOLsey0OPie74MfRwNIaEHutQY3GdauBf
+         pbLm0F/SnpmbGgs7IaNkeUoK88FBwMQx96VQ/FjO8h9leNkzsWrZFjiv/ZcUJdZgW0yB
+         vAQHrnVtMOfDtqqaZACJ4A8A5iOZZW8Lu3TZP+3og0BEN07UODqZCveyIZ1DCBkAoA3Y
+         6DD7ZoFBh/3LWUT4q5cl5CAriYIEO5D45EAfOvlHOo+qFiIQ4szPX1or30MNoRH9LAVB
+         Uzv/PXZOJ5e+RAp5dETo8MbNZ9eBffjlDfFv2yI5rKnj6lCpmCep3SJLDp8BiYVY2djN
+         u/Wg==
+X-Gm-Message-State: AOAM531jh2Nf7zqXnu5dFTDJBZ+j2rPrBb6sk6AzkvObKqUmYD+P6YL1
+        Jnuyf/Gmm0LZ8KcgyqzLIeQLt3hQSx2yZMDVnVIvZA==
+X-Google-Smtp-Source: ABdhPJyNbeltHL7oudEtE/iOAYmr53vaFrBFHnIn8/u/B24xXDKUn/3sSzv4cO0BTapxmJUZq2JdrAugAdfnrxzJnGw=
+X-Received: by 2002:a92:8b52:: with SMTP id i79mr18234243ild.177.1600196366177;
+ Tue, 15 Sep 2020 11:59:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200910173242.621168-1-jic23@kernel.org> <20200910173242.621168-32-jic23@kernel.org>
-In-Reply-To: <20200910173242.621168-32-jic23@kernel.org>
+References: <20200910173242.621168-1-jic23@kernel.org> <20200910173242.621168-31-jic23@kernel.org>
+In-Reply-To: <20200910173242.621168-31-jic23@kernel.org>
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Tue, 15 Sep 2020 11:56:28 -0700
-Message-ID: <CAJCx=gnsSJRoiEoD8truDp9weBeyEyFSi1E3SF=nTOr9j6MKrA@mail.gmail.com>
-Subject: Re: [PATCH 31/38] iio:proximity:as3935: Use local struct device
- pointer to simplify code.
+Date:   Tue, 15 Sep 2020 11:59:15 -0700
+Message-ID: <CAJCx=gnwyNnTdAcuQ+SLcfRv9qnQTqza75vyAW6-g89=VmExCA@mail.gmail.com>
+Subject: Re: [PATCH 30/38] iio:humidity:hdc100x: Drop of_match_ptr protection.
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -62,8 +61,9 @@ On Thu, Sep 10, 2020 at 10:35 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> This makes the existing code easier to read and will make the following
-> patch a little simpler.
+> This prevents use of this driver with ACPI via PRP0001 and is
+> an example of an anti pattern I'm trying to remove from IIO.
+> Hence drop from this driver.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
@@ -71,126 +71,30 @@ On Thu, Sep 10, 2020 at 10:35 AM Jonathan Cameron <jic23@kernel.org> wrote:
 Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
 > ---
->  drivers/iio/proximity/as3935.c | 38 ++++++++++++++++------------------
->  1 file changed, 18 insertions(+), 20 deletions(-)
+>  drivers/iio/humidity/hdc100x.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-> index c339e7339ec8..4df8d53d65fb 100644
-> --- a/drivers/iio/proximity/as3935.c
-> +++ b/drivers/iio/proximity/as3935.c
-> @@ -352,19 +352,20 @@ static void as3935_stop_work(void *data)
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 071cb2b12bb6..2a957f19048e 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -15,6 +15,7 @@
 >
->  static int as3935_probe(struct spi_device *spi)
->  {
-> +       struct device *dev = &spi->dev;
->         struct iio_dev *indio_dev;
->         struct iio_trigger *trig;
->         struct as3935_state *st;
-> -       struct device_node *np = spi->dev.of_node;
-> +       struct device_node *np = dev->of_node;
->         int ret;
+>  #include <linux/delay.h>
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/init.h>
+>  #include <linux/i2c.h>
 >
->         /* Be sure lightning event interrupt is specified */
->         if (!spi->irq) {
-> -               dev_err(&spi->dev, "unable to get event interrupt\n");
-> +               dev_err(dev, "unable to get event interrupt\n");
->                 return -EINVAL;
->         }
->
-> -       indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
->         if (!indio_dev)
->                 return -ENOMEM;
->
-> @@ -378,14 +379,12 @@ static int as3935_probe(struct spi_device *spi)
->                         "ams,tuning-capacitor-pf", &st->tune_cap);
->         if (ret) {
->                 st->tune_cap = 0;
-> -               dev_warn(&spi->dev,
-> -                       "no tuning-capacitor-pf set, defaulting to %d",
-> +               dev_warn(dev, "no tuning-capacitor-pf set, defaulting to %d",
->                         st->tune_cap);
->         }
->
->         if (st->tune_cap > MAX_PF_CAP) {
-> -               dev_err(&spi->dev,
-> -                       "wrong tuning-capacitor-pf setting of %d\n",
-> +               dev_err(dev, "wrong tuning-capacitor-pf setting of %d\n",
->                         st->tune_cap);
->                 return -EINVAL;
->         }
-> @@ -393,8 +392,7 @@ static int as3935_probe(struct spi_device *spi)
->         ret = of_property_read_u32(np,
->                         "ams,nflwdth", &st->nflwdth_reg);
->         if (!ret && st->nflwdth_reg > AS3935_NFLWDTH_MASK) {
-> -               dev_err(&spi->dev,
-> -                       "invalid nflwdth setting of %d\n",
-> +               dev_err(dev, "invalid nflwdth setting of %d\n",
->                         st->nflwdth_reg);
->                 return -EINVAL;
->         }
-> @@ -405,7 +403,7 @@ static int as3935_probe(struct spi_device *spi)
->         indio_dev->modes = INDIO_DIRECT_MODE;
->         indio_dev->info = &as3935_info;
->
-> -       trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-> +       trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
->                                       indio_dev->name, indio_dev->id);
->
->         if (!trig)
-> @@ -417,42 +415,42 @@ static int as3935_probe(struct spi_device *spi)
->         iio_trigger_set_drvdata(trig, indio_dev);
->         trig->ops = &iio_interrupt_trigger_ops;
->
-> -       ret = devm_iio_trigger_register(&spi->dev, trig);
-> +       ret = devm_iio_trigger_register(dev, trig);
->         if (ret) {
-> -               dev_err(&spi->dev, "failed to register trigger\n");
-> +               dev_err(dev, "failed to register trigger\n");
->                 return ret;
->         }
->
-> -       ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +       ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
->                                               iio_pollfunc_store_time,
->                                               as3935_trigger_handler, NULL);
->
->         if (ret) {
-> -               dev_err(&spi->dev, "cannot setup iio trigger\n");
-> +               dev_err(dev, "cannot setup iio trigger\n");
->                 return ret;
->         }
->
->         calibrate_as3935(st);
->
->         INIT_DELAYED_WORK(&st->work, as3935_event_work);
-> -       ret = devm_add_action(&spi->dev, as3935_stop_work, indio_dev);
-> +       ret = devm_add_action(dev, as3935_stop_work, indio_dev);
->         if (ret)
->                 return ret;
->
-> -       ret = devm_request_irq(&spi->dev, spi->irq,
-> +       ret = devm_request_irq(dev, spi->irq,
->                                 &as3935_interrupt_handler,
->                                 IRQF_TRIGGER_RISING,
-> -                               dev_name(&spi->dev),
-> +                               dev_name(dev),
->                                 indio_dev);
->
->         if (ret) {
-> -               dev_err(&spi->dev, "unable to request irq\n");
-> +               dev_err(dev, "unable to request irq\n");
->                 return ret;
->         }
->
-> -       ret = devm_iio_device_register(&spi->dev, indio_dev);
-> +       ret = devm_iio_device_register(dev, indio_dev);
->         if (ret < 0) {
-> -               dev_err(&spi->dev, "unable to register device\n");
-> +               dev_err(dev, "unable to register device\n");
->                 return ret;
->         }
->         return 0;
+> @@ -417,7 +418,7 @@ MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+>  static struct i2c_driver hdc100x_driver = {
+>         .driver = {
+>                 .name   = "hdc100x",
+> -               .of_match_table = of_match_ptr(hdc100x_dt_ids),
+> +               .of_match_table = hdc100x_dt_ids,
+>         },
+>         .probe = hdc100x_probe,
+>         .id_table = hdc100x_id,
 > --
 > 2.28.0
 >

@@ -2,79 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CBC26ADCF
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 21:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0A7C26AD9E
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 21:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727697AbgIOTmF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Sep 2020 15:42:05 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:44038 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727889AbgIOTPN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 15:15:13 -0400
-Received: by mail-io1-f66.google.com with SMTP id g128so5328773iof.11;
-        Tue, 15 Sep 2020 12:15:08 -0700 (PDT)
+        id S1727579AbgIOTal (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Sep 2020 15:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52552 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727936AbgIOT1K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 15:27:10 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCACC061797;
+        Tue, 15 Sep 2020 12:26:52 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id l17so4149904edq.12;
+        Tue, 15 Sep 2020 12:26:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LNJ33X1X2x2pheRlwyrmnoylDAJlzuXstxu32SG7U2U=;
+        b=ZvYuw0j9+OxIp9RRQIeIkbL7ZwpGqcUGl8PqjkMNBe3A0c7KyELphhBEMdBFj3S4BT
+         r1Tx/r9dJxRZveLzxj5S7ejzscSYZPtmAJBcMCfxmRJFjt6QK0PxPjXFJMskYIV8280O
+         7Ye//unKIMgMRpRr9zbbDTA0FGPHuVT8ogFTgd/pvKnbv/TTmw3gn6WAD5+s/rtbGhhS
+         yMhur9waNMKMb+0NVeE2tZIL6BDyL6fEuh/Cd1AfVaUV5Q8kHhkCmgK0ouUcSl2i72Nl
+         VH9YOWzUZFlBO5Ai+gAveqKk9L2L8iHKBJPupObNGmqoXkhOz4t01NrRAxRd9kW+26JP
+         sQcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FM7LE2LHDCWNqLopHxLuvP6gQ42SfuuOFqZuFdFeXVs=;
-        b=ED+KbHWimWrxtpP1+AM8zIlR3kxUG70S61+6FYWKqlNJ64IjJfq2f2PAVsphvenXgD
-         Wd1/RJFyrPCYtiauqqqdb4ycPS64XyR5ulvvbUgPGFWJwTEEZJaFibkgRu1CueKkHti7
-         VoArknTEM5Gzv/PVqQQ8aM+9uMdf0ZMng6RWbd3PnsAySLg09tl13ZrO5nhWFqLk9Fm6
-         iMz9+niK2lT72dg8C7COmnlXWW4Vtzcv0x5eIo4vEG0i/2971PwRO0XSnHelMYmyfI49
-         ylHAsvjBVbveqe/pivPQMwpZ5gXsm6WKVZ176doxedzPKPyyWCdgZDvUm5fP/jaB6DRY
-         dFcQ==
-X-Gm-Message-State: AOAM533LoJyvUGmAuk15+rKOrTAlZpaHxiZGp2rYmSyXGKZOmffBgLzU
-        /Jhi5L9VnvgXoaaFx6p84w==
-X-Google-Smtp-Source: ABdhPJze/kcs/GY/BYUtiDkcANofAMuoSLAHTsVQH7CMGqpM6NHD3caIkMw+iZzx9pK0U9hRcPUJRQ==
-X-Received: by 2002:a5d:8e12:: with SMTP id e18mr15043269iod.99.1600197308482;
-        Tue, 15 Sep 2020 12:15:08 -0700 (PDT)
-Received: from xps15 ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id u18sm9454759iln.78.2020.09.15.12.15.07
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LNJ33X1X2x2pheRlwyrmnoylDAJlzuXstxu32SG7U2U=;
+        b=BD3MVK8ndotUhVNWeukZyoEuZnyh5hg0+eoMnARGPoKHq7wjZ63r16C7/Q7WGKf5/8
+         VJ5eNTYxJk5EbQjCe0BhydWBXuViAn6A/+KaJ23qCzRNRXDEnQQk9G2cP5WehzkSGzka
+         Le+TiGwfZ/2X75yLpjEkE2ZIx9jmFeTBs/cJtvz+RglU/4Kgnoly1sfmTv6t3l0skbdz
+         acvBmC2BCxjOjGjbratKdY98sYQYo3gWboThn0RX+3yRcBBMcBm/dcXHia5F48lADEDJ
+         NPp6EbnhlgOqcElte2nnAwnw0vk5rNbP1foWPsuWTKrtLZtYm/0mFj34WXNf7pFLsAv2
+         UHFA==
+X-Gm-Message-State: AOAM533ClxwJYDg8P/7+v4l8zm9z3EnEB9buSL9osKX71QzFyx3D6gZF
+        CUhn6RETdz39l4j1TZvBqX8=
+X-Google-Smtp-Source: ABdhPJyLyVl+bnfqF/iHpAZ2TTiUTK6ronbqqCJXBb5eGl6BjXnA0APDpW9Nf10CI8cwXaOvHV6xzA==
+X-Received: by 2002:a50:ec12:: with SMTP id g18mr14656537edr.309.1600198010859;
+        Tue, 15 Sep 2020 12:26:50 -0700 (PDT)
+Received: from localhost.localdomain (p200300f13701d4040000000000000fcc.dip0.t-ipconnect.de. [2003:f1:3701:d404::fcc])
+        by smtp.googlemail.com with ESMTPSA id re19sm10836312ejb.86.2020.09.15.12.26.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 12:15:07 -0700 (PDT)
-Received: (nullmailer pid 2336730 invoked by uid 1000);
-        Tue, 15 Sep 2020 19:15:05 -0000
-Date:   Tue, 15 Sep 2020 13:15:05 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 15/20] dt-bindings:iio:adc:ad7768-1 yaml conversion
-Message-ID: <20200915191505.GA2336645@bogus>
-References: <20200909175946.395313-1-jic23@kernel.org>
- <20200909175946.395313-16-jic23@kernel.org>
+        Tue, 15 Sep 2020 12:26:50 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     jic23@kernel.org, linux-amlogic@lists.infradead.org,
+        linux-iio@vger.kernel.org
+Cc:     lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH] iio: adc: meson-saradc: Make the of_device_id array style consistent
+Date:   Tue, 15 Sep 2020 21:26:21 +0200
+Message-Id: <20200915192621.13202-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200909175946.395313-16-jic23@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 09 Sep 2020 18:59:41 +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Fairly straight conversion.  The one oddity in the original binding
-> is that spi-cpha and spi-cpol were not marked as required, but were
-> in the example.  Looking at the datasheet, there isn't any documented
-> flexibility in the possible SPI modes, so I have moved these to requires.
-> For spi-max-frequency I have gone the other way.  I absolutely agree
-> that it is good to specify this in the dt-binding, but it's not
-> strictly required.
-> 
-> As Stefan's email is bouncing I have gone with Michael as maintainer
-> of this one as it falls under the ADI catch all entry in MAINTAINERS.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad7768-1.txt         | 41 ---------
->  .../bindings/iio/adc/adi,ad7768-1.yaml        | 89 +++++++++++++++++++
->  2 files changed, 89 insertions(+), 41 deletions(-)
-> 
+Use only one line for the closing bracket of the last entry and the
+opening bracket for the next one to keep the style across the whole
+array consistent. Also add a "sentinel" comment to the last entry and
+remove the comma to ensure that there won't be any entry after it.
+No functional changes.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ drivers/iio/adc/meson_saradc.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 95bd187de1cb..e03988698755 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -1150,16 +1150,13 @@ static const struct of_device_id meson_sar_adc_of_match[] = {
+ 	{
+ 		.compatible = "amlogic,meson8-saradc",
+ 		.data = &meson_sar_adc_meson8_data,
+-	},
+-	{
++	}, {
+ 		.compatible = "amlogic,meson8b-saradc",
+ 		.data = &meson_sar_adc_meson8b_data,
+-	},
+-	{
++	}, {
+ 		.compatible = "amlogic,meson8m2-saradc",
+ 		.data = &meson_sar_adc_meson8m2_data,
+-	},
+-	{
++	}, {
+ 		.compatible = "amlogic,meson-gxbb-saradc",
+ 		.data = &meson_sar_adc_gxbb_data,
+ 	}, {
+@@ -1175,7 +1172,7 @@ static const struct of_device_id meson_sar_adc_of_match[] = {
+ 		.compatible = "amlogic,meson-g12a-saradc",
+ 		.data = &meson_sar_adc_g12a_data,
+ 	},
+-	{},
++	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, meson_sar_adc_of_match);
+ 
+-- 
+2.28.0
+

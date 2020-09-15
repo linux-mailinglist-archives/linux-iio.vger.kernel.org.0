@@ -2,49 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BABEC26AAD5
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 19:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D0D26AC3F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 20:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727901AbgIORiP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Sep 2020 13:38:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35390 "EHLO
+        id S1727872AbgIOSkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Sep 2020 14:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727940AbgIORgx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 13:36:53 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84088C061351;
-        Tue, 15 Sep 2020 10:36:16 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id bh1so1713620plb.12;
-        Tue, 15 Sep 2020 10:36:16 -0700 (PDT)
+        with ESMTP id S1727943AbgIORhm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 13:37:42 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0B3C061352;
+        Tue, 15 Sep 2020 10:36:19 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id f2so2371761pgd.3;
+        Tue, 15 Sep 2020 10:36:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=VDlB/vF3yD1AI0j4KncO/S1Qql2ZvV+dkP24BievIWM=;
-        b=ZtY7n44QRcDMYA5b75t7nFBpPYDlz3xxgeZDAPc/e1/fbeQtk4DWVTdQM5JWSg/lOg
-         AydIOgF5q43uhDoqqrxBBuVB5Bdry9p9lzc9d5L+mKOsIj9RusKPdoOMO+5EbNKdXt38
-         DaDTg4+2C6vbP+Xm6Wx5nr+hFcrvvX2jkazjSEkrNFrvAPFrLC99thNmCKhNozJI9hV0
-         xoujK0B0ms9tVj4WbJNmI/NXVuWNRqauB20fMRcxVNFlPz5SeOcBfLVx+9MD3GAx3KjF
-         EHm57JLTMl//yIbsxq5aGbVk4LOZwqZ1j8XTH6nHOuF7sBFObQ4kh95Ss/mGtjw+N96I
-         9qag==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=9+aE1ELAzgYKqHHzeFiypxalT4hgfY/xIUQkiDN+va0=;
+        b=FaDdYcrR0aifpyTmq+TIfvqHdxcsTDpOBU2FMOsc7dG9l61ku8FivcMgAUhnQW2hA4
+         xmkubi7hfP5sUbH7Nu9St0cci4gzseHoNbijYT17Z4dr5E/6nQlUgouOFY4sx6RnvT7r
+         yHJCm3Ktc9iGTRKcxGV58f5zFF5JbGBzRzlBJw6SwF7DoebbS+7uUVPhQQmDKGIdZErY
+         +GflYC0nMP5p4Wvrp+n6kYVoFaBnA5ATDPSRKiuxHOm3eW4qWgbj/424Q8mab6T//7YD
+         ccxT3VztIFFl9+e94on1Rd/zS9DMp8WJSbVUStASPhbKsQu7+GPdIMLnoWJYfPPSp2Tq
+         QoKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VDlB/vF3yD1AI0j4KncO/S1Qql2ZvV+dkP24BievIWM=;
-        b=HrUACaX65z7pzHeLYVXi5LiLGhIrVV9uaNQoCrQGvbU8BcE6lCEB7rsmb4YRWiF/RR
-         62nuBhG+yoWYSpNHNnafx1752O/5+tfLY53UTbULoABJrOjOVjtcY22q+xrQQhRc/CN/
-         kpeXdkchsr9m9V1pQFZKH0BYDbFGa5S6q4xZlQjFAdvtcbi3+u1exJhMeaWNLM2ZaYIi
-         WC72ukLuypU5LZiXbq90FUehGnid3HZ7s2z18gc7zL/V6Ck9t3RaC+9H1GPQtwDjOTZm
-         FSggwhTSbr20aKDOTNYtZ5m9J74EjSTKQ5qKB0g0QmLntXDhOZxe205fqUMNieJYxhiH
-         xKfg==
-X-Gm-Message-State: AOAM530xD6SyL9kqhik9P8LfejSLIYZDAf3RczxgFSCwN8gv7j9RFNZN
-        b8/3CcXc+rXYZMllp5o4J7g=
-X-Google-Smtp-Source: ABdhPJyhEfvuycm6RqzCR6YKDoBZIiBXYbshieo0bnzp14v86+oY6Tdh6bDVNfQIkJpJLPb0b/+kdw==
-X-Received: by 2002:a17:90b:1487:: with SMTP id js7mr385729pjb.187.1600191376006;
-        Tue, 15 Sep 2020 10:36:16 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=9+aE1ELAzgYKqHHzeFiypxalT4hgfY/xIUQkiDN+va0=;
+        b=jhYjv/UO06vchCwaoHLkW/OiKIY2b2EUnzo7DSk4QscqXg5LYTSGb5QAsiKyyG6fFK
+         wkRji2kzifbZM2ap/QTmDtLcMsmCs2DHtnf5T69ZTcTLA0P7D3wfGhAFhbfcPsoT2PIo
+         X5bO9Lh5CyHK/fRfXTVqdl2moUNyBs6CSl9RWpstM6Z+2NwHjLPCrDWsebPvujQ7QbRQ
+         Ewb5Wg009V4QB0ylMSathcuC79G7BM29RBigf1dxz6lDrlAoA+rtsYXnKwtchpiNcnxn
+         UtzqwkfpPVwXQEeQxjuSEIf+2xd7a0MOPg4Mna4YEnH6dMQgEAcmjaCaTYMfthdAWnNZ
+         RoWA==
+X-Gm-Message-State: AOAM531mChVAq3GtYsM7VjQlUKKJPNHhs404y7/igtncRQga3wiHIeKV
+        qMeQ1P08G+NbroAugI4pnVg=
+X-Google-Smtp-Source: ABdhPJxVyXSCl2RPLvVB5n4rRYLsOtrFkc1vvGg0hXwSIaOeSQ0tF5wwWOR83BrjvzlI+LzXUrVe2w==
+X-Received: by 2002:a63:4559:: with SMTP id u25mr15052932pgk.162.1600191378923;
+        Tue, 15 Sep 2020 10:36:18 -0700 (PDT)
 Received: from localhost.localdomain ([123.110.251.138])
-        by smtp.gmail.com with ESMTPSA id x3sm14025926pfq.49.2020.09.15.10.36.12
+        by smtp.gmail.com with ESMTPSA id x3sm14025926pfq.49.2020.09.15.10.36.16
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2020 10:36:15 -0700 (PDT)
+        Tue, 15 Sep 2020 10:36:18 -0700 (PDT)
 From:   Gene Chen <gene.chen.richtek@gmail.com>
 To:     jic23@kernel.org, matthias.bgg@gmail.com
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
@@ -53,43 +54,65 @@ Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         gene_chen@richtek.com, Wilma.Wu@mediatek.com,
         shufan_lee@richtek.com, cy_huang@richtek.com,
         benjamin.chao@mediatek.com
-Subject: [PATCH v4 0/3] iio: adc: mt6360: Add ADC driver for MT6360
-Date:   Wed, 16 Sep 2020 01:36:06 +0800
-Message-Id: <1600191369-28040-1-git-send-email-gene.chen.richtek@gmail.com>
+Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add bindings doc for MT6360 ADC
+Date:   Wed, 16 Sep 2020 01:36:07 +0800
+Message-Id: <1600191369-28040-2-git-send-email-gene.chen.richtek@gmail.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1600191369-28040-1-git-send-email-gene.chen.richtek@gmail.com>
+References: <1600191369-28040-1-git-send-email-gene.chen.richtek@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch series add MT6360 ADC support contains driver, testing document
-and binding document
+From: Gene Chen <gene_chen@richtek.com>
 
-Gene Chen (2)
-  dt-bindings: iio: adc: add bindings doc for MT6360 ADC
-  Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
-  iio: adc: mt6360: Add ADC driver for MT6360
+This change adds the binding doc for the MT6360 ADC.
 
- Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360             |   83 ++
- Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml |   32 
- drivers/iio/adc/Kconfig                                        |   11 
- drivers/iio/adc/Makefile                                       |    1 
- drivers/iio/adc/mt6360-adc.c                                   |  357 ++++++++++
- 5 files changed, 484 insertions(+)
+Signed-off-by: Gene Chen <gene_chen@richtek.com>
+---
+ .../bindings/iio/adc/mediatek,mt6360.yaml          | 32 ++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
 
-changelogs between v1 & v2
- - adc: use IIO_CHAN_INFO_PROCESSED only
- - adc: use devm_iio_triggered_buffer_setup
- - adc: use use s64 to record timestamp
-
-changelogs between v2 & v3
- - Rearrange include file order by alphabet
- - Set line length constraint below 100
- - Add Document for testing adc sysfs node guideline
- - Set compiler 64 bit aligned when handle iio timestamp
-
-changelogs between v3 & v4
- - Fix sysfs guideline description
- - Replace iio channel processed by raw/scale/offset
- - Add comment of read adc flow for special HW design
+diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
+new file mode 100644
+index 0000000..2fa2fe7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
+@@ -0,0 +1,32 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/mediatek,mt6360.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Mediatek MT6360 and similar ADCs
++
++maintainers:
++  - Gene Chen <gene_chen@richtek.com>
++
++description: |
++  Family of simple ADCs with i2c interface and internal references.
++
++properties:
++  compatible:
++    const: mediatek,mt6360-adc
++
++  "#io-channel-cells":
++    const: 1
++
++required:
++  - compatible
++  - "#io-channel-cells"
++
++examples:
++  - |
++    adc {
++      compatible = "mediatek,mt6360-adc";
++      #io-channel-cells = <1>;
++    };
++...
+-- 
+2.7.4
 

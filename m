@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D0D26AC3F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 20:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9399D26AC44
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Sep 2020 20:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727872AbgIOSkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Sep 2020 14:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
+        id S1727411AbgIOSlc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Sep 2020 14:41:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727943AbgIORhm (ORCPT
+        with ESMTP id S1727944AbgIORhm (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Sep 2020 13:37:42 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0B3C061352;
-        Tue, 15 Sep 2020 10:36:19 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id f2so2371761pgd.3;
-        Tue, 15 Sep 2020 10:36:19 -0700 (PDT)
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4488CC061353;
+        Tue, 15 Sep 2020 10:36:22 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id s14so271214pju.1;
+        Tue, 15 Sep 2020 10:36:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=9+aE1ELAzgYKqHHzeFiypxalT4hgfY/xIUQkiDN+va0=;
-        b=FaDdYcrR0aifpyTmq+TIfvqHdxcsTDpOBU2FMOsc7dG9l61ku8FivcMgAUhnQW2hA4
-         xmkubi7hfP5sUbH7Nu9St0cci4gzseHoNbijYT17Z4dr5E/6nQlUgouOFY4sx6RnvT7r
-         yHJCm3Ktc9iGTRKcxGV58f5zFF5JbGBzRzlBJw6SwF7DoebbS+7uUVPhQQmDKGIdZErY
-         +GflYC0nMP5p4Wvrp+n6kYVoFaBnA5ATDPSRKiuxHOm3eW4qWgbj/424Q8mab6T//7YD
-         ccxT3VztIFFl9+e94on1Rd/zS9DMp8WJSbVUStASPhbKsQu7+GPdIMLnoWJYfPPSp2Tq
-         QoKA==
+        bh=2sltQ7OKUQCVV9G6bV9rSI99zwdlgVY44oFadVRn2CI=;
+        b=eW+2TlyI52Z2+6zFckoS9vSKzJQkTC8U3eGSz6j9TYGbXFJOkHEAuoCYJGN3+JxY0b
+         XoNwtfI6M8RaJU+B1imCAwaKqH11dmXfKa/Oqm1dQlrXOHdPzYDo6bo68WwB+k0FnHqa
+         R0oLQ6al9qZvD/Zje34CJUuoihUl0SWdn+W77zqydjpQZHVkeB06LBgashDJxz1dKSw2
+         lIsPy20LfMPxKqMoRp2Y8+EOgNbGd2mT6aDrtG/O7eOqHBs5wvejGjFetZ1YKpXoEmla
+         4EHPv1mFhUKNjzpYTe+9/C/uMb67VGZ8w4gviB26VVe+xtJTaPX9Fk+3lDV86911mtpP
+         Hijg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=9+aE1ELAzgYKqHHzeFiypxalT4hgfY/xIUQkiDN+va0=;
-        b=jhYjv/UO06vchCwaoHLkW/OiKIY2b2EUnzo7DSk4QscqXg5LYTSGb5QAsiKyyG6fFK
-         wkRji2kzifbZM2ap/QTmDtLcMsmCs2DHtnf5T69ZTcTLA0P7D3wfGhAFhbfcPsoT2PIo
-         X5bO9Lh5CyHK/fRfXTVqdl2moUNyBs6CSl9RWpstM6Z+2NwHjLPCrDWsebPvujQ7QbRQ
-         Ewb5Wg009V4QB0ylMSathcuC79G7BM29RBigf1dxz6lDrlAoA+rtsYXnKwtchpiNcnxn
-         UtzqwkfpPVwXQEeQxjuSEIf+2xd7a0MOPg4Mna4YEnH6dMQgEAcmjaCaTYMfthdAWnNZ
-         RoWA==
-X-Gm-Message-State: AOAM531mChVAq3GtYsM7VjQlUKKJPNHhs404y7/igtncRQga3wiHIeKV
-        qMeQ1P08G+NbroAugI4pnVg=
-X-Google-Smtp-Source: ABdhPJxVyXSCl2RPLvVB5n4rRYLsOtrFkc1vvGg0hXwSIaOeSQ0tF5wwWOR83BrjvzlI+LzXUrVe2w==
-X-Received: by 2002:a63:4559:: with SMTP id u25mr15052932pgk.162.1600191378923;
-        Tue, 15 Sep 2020 10:36:18 -0700 (PDT)
+        bh=2sltQ7OKUQCVV9G6bV9rSI99zwdlgVY44oFadVRn2CI=;
+        b=gYemTtjXbn74skc3JE9mn8+0aiYE0ibFsfuFbgvWbYOU5s4Res97Q0PSTAeHeSLM1a
+         GHxZ3flbrxvGY/3GhT3miRwGEkRqUWz9QIUiKz8zRlkBZp+L9HnqF6PJ7kcHHloucB8q
+         okb4ZOOX54I4TLEO4un4RzGy0frMSpCBEW65IhKojxSF79wxzc9vWc8DEOA2DVvg9jF8
+         mwNQal6IppTCXZyEhBqcQZpF/mX3sWeiPr2D+QYHgudotkax3EC4jsyI6HSRKg1/C8Ty
+         ulDxDx80m6pY9LD5YflQi5ue+d1dd+jD2twUGTzgqwcR8nG7etJ0Wngauq8lSN03lG9B
+         qXoA==
+X-Gm-Message-State: AOAM532CDB3nRQ/ShSNPsZGSq7xoWzZqnppn59svMJj3QWSa8gguVsP+
+        2tDNK3yJikQ5Hir2+tEU+CyhYkxZ5Ro=
+X-Google-Smtp-Source: ABdhPJxae65aUF7nfySsPxANLHHZDhUaN/afvD7KfK3E+LliiIToUIYO7E15PckHd4LN3F4q7vFYtg==
+X-Received: by 2002:a17:90b:198:: with SMTP id t24mr407317pjs.107.1600191381819;
+        Tue, 15 Sep 2020 10:36:21 -0700 (PDT)
 Received: from localhost.localdomain ([123.110.251.138])
-        by smtp.gmail.com with ESMTPSA id x3sm14025926pfq.49.2020.09.15.10.36.16
+        by smtp.gmail.com with ESMTPSA id x3sm14025926pfq.49.2020.09.15.10.36.19
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2020 10:36:18 -0700 (PDT)
+        Tue, 15 Sep 2020 10:36:21 -0700 (PDT)
 From:   Gene Chen <gene.chen.richtek@gmail.com>
 To:     jic23@kernel.org, matthias.bgg@gmail.com
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
@@ -54,9 +54,9 @@ Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         gene_chen@richtek.com, Wilma.Wu@mediatek.com,
         shufan_lee@richtek.com, cy_huang@richtek.com,
         benjamin.chao@mediatek.com
-Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add bindings doc for MT6360 ADC
-Date:   Wed, 16 Sep 2020 01:36:07 +0800
-Message-Id: <1600191369-28040-2-git-send-email-gene.chen.richtek@gmail.com>
+Subject: [PATCH v4 2/3] Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
+Date:   Wed, 16 Sep 2020 01:36:08 +0800
+Message-Id: <1600191369-28040-3-git-send-email-gene.chen.richtek@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1600191369-28040-1-git-send-email-gene.chen.richtek@gmail.com>
 References: <1600191369-28040-1-git-send-email-gene.chen.richtek@gmail.com>
@@ -67,52 +67,103 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Gene Chen <gene_chen@richtek.com>
 
-This change adds the binding doc for the MT6360 ADC.
+Add ABI documentation for mt6360 ADC sysfs interfaces.
 
 Signed-off-by: Gene Chen <gene_chen@richtek.com>
 ---
- .../bindings/iio/adc/mediatek,mt6360.yaml          | 32 ++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
+ Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360 | 83 ++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360 b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
 new file mode 100644
-index 0000000..2fa2fe7
+index 0000000..4b1c270
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6360.yaml
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/mediatek,mt6360.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360
+@@ -0,0 +1,83 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_USBID_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 USBID ADC which connected to connector ID pin.
++		Reading returns voltage in uV
 +
-+title: Mediatek MT6360 and similar ADCs
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_VBUSDIV5_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 VBUS ADC with high accuracy
++		Reading returns voltage in uV
 +
-+maintainers:
-+  - Gene Chen <gene_chen@richtek.com>
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_VBUSDIV2_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 VBUS ADC with low accuracy
++		Reading returns voltage in uV
 +
-+description: |
-+  Family of simple ADCs with i2c interface and internal references.
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_VSYS_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 VSYS ADC
++		Reading returns voltage in uV
 +
-+properties:
-+  compatible:
-+    const: mediatek,mt6360-adc
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_VBAT_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 VBAT ADC
++		Reading returns voltage in uV
 +
-+  "#io-channel-cells":
-+    const: 1
++What:		/sys/bus/iio/devices/iio:deviceX/in_current_IBUS_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 IBUS ADC
++		Reading returns current in uA
 +
-+required:
-+  - compatible
-+  - "#io-channel-cells"
++What:		/sys/bus/iio/devices/iio:deviceX/in_current_IBAT_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 IBAT ADC
++		Reading returns current in uA
 +
-+examples:
-+  - |
-+    adc {
-+      compatible = "mediatek,mt6360-adc";
-+      #io-channel-cells = <1>;
-+    };
-+...
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_CHG_VDDP_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 CHG_VDDP ADC
++		Reading returns voltage in uV
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_temp_TEMP_JC_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 IC junction temperature
++		Reading returns temperature in degree
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_VREF_TS_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 VREF_TS ADC
++		Reading returns voltage in uV
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_TS_input
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 TS ADC
++		Reading returns voltage in uV
++
++What:		/sys/bus/iio/devices/iio:deviceX/timestamp
++KernelVersion:	5.8.0
++Contact:	gene_chen@richtek.com
++Description:
++		Indicated MT6360 timestamp
++		Reading returns current timestamp in ms
 -- 
 2.7.4
 

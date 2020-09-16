@@ -2,127 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EDC26BDA9
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 09:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4297026BE6F
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 09:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726159AbgIPHIp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Sep 2020 03:08:45 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:35266 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726128AbgIPHIo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Sep 2020 03:08:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1600240123; x=1631776123;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kRZu+9DWwWzAavQX/XVNxGelxwlfukUlgQUjykqNXgE=;
-  b=qayZ3XUtssFFSofofV9lDD9LARyKq+DrCf0ir+sruFo8BEZTlQ9OTpWu
-   gHL5mMhaFvLeUPXERjq9nLh7GXJiOZaG8/Gy2htd50LbWn1TINfAuLeEP
-   JhYv4aLlaSLzsJptYc17TCUxbWGVLNgctOIwijnjGxY2PcRhNAl4CcToE
-   aWOIrwt01ga0WPeBfESQhb+jN/Z7rBGCSo802NY22uMQJRQqhTeYTmffE
-   Lq2oZdT/AYdxCVLWGsC8Vkiy+zpo5kAtXSLMXzzZVk439erj69VIgia8b
-   DkPeX5+i58codOnG/2UMeiRSvD5SCvAqWEstuvPByAWQbdzmqmp1R0FwH
-   g==;
-IronPort-SDR: bBHBK/VezAlFji1zCJrRtPFxLjwXVigFQKQlyGvAIn6RS6fh9U3ofpmFJEG+57br9oPDxPI3qL
- ODMEn98DgMCAc5aHXy2cRa2YQs/AlGHowLxOnIwYsNWOO6KoNZNnURbHwoTmG6+v67FJinZOHG
- 2f5rLekrUieffD9dhrzmQUob/WFesDNjonG7ETXeLN39os0S/XI3Ht5kTzvo40IXMLuk/8AQI1
- rH6TObkb28putEQ+xFQK51msWCzLSnzsVk+vcfZYVN9AxxbPNC9x5Ry8VqvdR8yHmoMVxCjLJs
- zC4=
-X-IronPort-AV: E=Sophos;i="5.76,431,1592895600"; 
-   d="scan'208";a="91976494"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 16 Sep 2020 00:08:43 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Wed, 16 Sep 2020 00:08:26 -0700
-Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.1979.3 via Frontend Transport; Wed, 16 Sep 2020 00:08:32 -0700
-From:   Eugen Hristev <eugen.hristev@microchip.com>
-To:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>
-Subject: [PATCH] iio: adc: at91-sama5d2_adc: fix DMA conversion crash
-Date:   Wed, 16 Sep 2020 10:08:21 +0300
-Message-ID: <20200916070821.118374-1-eugen.hristev@microchip.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726369AbgIPHpf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Sep 2020 03:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbgIPHpd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Sep 2020 03:45:33 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A482C06174A
+        for <linux-iio@vger.kernel.org>; Wed, 16 Sep 2020 00:45:32 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id b22so5851514lfs.13
+        for <linux-iio@vger.kernel.org>; Wed, 16 Sep 2020 00:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=vOVo1u3ISodBoRQj0xeoYhbegmTCRvXHeSQSNZhMTiE=;
+        b=QNqrft4Ee36StNvgvhWe3cXRap/zmqfHBndqkGJaGqHegY96FQ9goA7TGkR81+7QOs
+         nIAbFXbce906Pti2cqcOeCmhwhyk/1yuH0Zn7AP1G0lA5yBgaPEZYgVpY4fN6kZNFqj1
+         T69SuJhPJpV7xiPiVe4G1wHSTiB9MlXEAG6/tqL0SfpXU5fv3V06Z/uGMycDpYul0jXQ
+         qTZA33omdvIm4q5lQGtXFakCAVX6GpENdvQdARuFXLF3n9MhXCdEb4CgeBFobCQoW31i
+         8Oa9m5M2dpxMmZIhgG+900U5yB6cLVR5oEa96dGRvsHlbhO2n0BQw67KZ6qP3FkXxiCy
+         rLCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=vOVo1u3ISodBoRQj0xeoYhbegmTCRvXHeSQSNZhMTiE=;
+        b=g/IX92gL3MW8jukM60BptPPOf/uNTTcdycgEhaJSlRPUznbSzxTAl/OkblERb2lu11
+         5OEZgRLzP760PFapYE+2lhhcj7x6z6NQgY6MwiNkcN3Q5XT9IK2qI9phiJOL0SakEXap
+         9FsS/OZ2ASY9CbY3KOJz9sAvL5Sb2azyi6CIyNAm+44W/4RoS8xW4glld8xXiva793w3
+         ELn7jvuJKtrKgpx849UAklLB1PLiKZXQSYa78NjSxU6pOD1r1HNiykq0dCsdvRE/2BRl
+         oSVZIHR5kpEo3nj+UBbQXTaecA8Y2jVhRk2UNNcjX/Dua8UQqoeHJYpvxtJ7MBzRjaW4
+         G4EQ==
+X-Gm-Message-State: AOAM530WNbdWHeaa7Y4e23UbdoJrkgtNVdLYIWrjetTk5BB8AWah2q3k
+        V6CQ4v6sqiSINhwhyX/fpoOpLp7slpcdokaV
+X-Google-Smtp-Source: ABdhPJyqEuFgsUmKXu7SN5bpPFsahMoQ+IKpWv8R1qvkfrQj2ijyDV5fCybj2R23chOqwj72Fc5Hew==
+X-Received: by 2002:a19:4085:: with SMTP id n127mr6936054lfa.425.1600242330877;
+        Wed, 16 Sep 2020 00:45:30 -0700 (PDT)
+Received: from localhost.localdomain ([193.201.216.203])
+        by smtp.gmail.com with ESMTPSA id t2sm4442845lff.157.2020.09.16.00.45.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2020 00:45:30 -0700 (PDT)
+From:   Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org
+Cc:     songqiang1304521@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: iio: proximity: vl53l0x: Add IRQ support
+Date:   Wed, 16 Sep 2020 10:44:57 +0300
+Message-Id: <20200916074458.873359-1-drobyshevskyi@gmail.com>
+X-Mailer: git-send-email 2.26.0
+In-Reply-To: <20200913113357.47e0c0a1@archlinux>
+References: <20200913113357.47e0c0a1@archlinux>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-After the move of the postenable code to preenable, the DMA start was
-done before the DMA init, which is not correct.
-The DMA is initialized in set_watermark. Because of this, we need to call
-the DMA start functions in set_watermark, after the DMA init, instead of
-preenable hook, when the DMA is not properly setup yet.
+Since IRQ support was added to the driver, update bindings accordingly.
 
-Fixes: f3c034f61775 ("iio: at91-sama5d2_adc: adjust iio_triggered_buffer_{predisable,postenable} positions")
-Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+Signed-off-by: Ivan Drobyshevskyi <drobyshevskyi@gmail.com>
 ---
+(no changes since v1)
 
-Hi,
+ Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-This crash is in the kernel since 5.8-rc1
-
-Please have a look at discussion here:
-https://lore.kernel.org/linux-iio/CA+U=DsqRUtjjoe5nevP_wNxTgr27+O2V1h9w7d3QijBQ+5f3XA@mail.gmail.com/T/#t
-
-Thanks !
-
- drivers/iio/adc/at91-sama5d2_adc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index de9583d6cddd..b5196797dcb8 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -884,7 +884,7 @@ static bool at91_adc_current_chan_is_touch(struct iio_dev *indio_dev)
- 			       AT91_SAMA5D2_MAX_CHAN_IDX + 1);
- }
+diff --git a/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt b/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt
+index aac5f621f..dfe00eb96 100644
+--- a/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt
++++ b/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt
+@@ -4,9 +4,15 @@ Required properties:
+ 	- compatible: must be "st,vl53l0x"
+ 	- reg: i2c address where to find the device
  
--static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
-+static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
- {
- 	int ret;
- 	u8 bit;
-@@ -901,7 +901,7 @@ static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
- 	/* we continue with the triggered buffer */
- 	ret = at91_adc_dma_start(indio_dev);
- 	if (ret) {
--		dev_err(&indio_dev->dev, "buffer postenable failed\n");
-+		dev_err(&indio_dev->dev, "buffer prepare failed\n");
- 		return ret;
- 	}
++Optional properties:
++	- interrupts:	Interrupt for notifying that new measurement is ready.
++			If no interrupt is specified, polling is used.
++
+ Example:
  
-@@ -989,7 +989,6 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- }
- 
- static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
--	.preenable = &at91_adc_buffer_preenable,
- 	.postdisable = &at91_adc_buffer_postdisable,
+ vl53l0x@29 {
+ 	compatible = "st,vl53l0x";
+ 	reg = <0x29>;
++	interrupt-parent = <&gpio>;
++	interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
  };
- 
-@@ -1586,7 +1585,11 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
- 	else if (val > 1)
- 		at91_adc_dma_init(to_platform_device(&indio_dev->dev));
- 
--	return 0;
-+	/*
-+	 * We can start the DMA only after setting the watermark and
-+	 * having the DMA initialization completed
-+	 */
-+	return at91_adc_buffer_prepare(indio_dev);
- }
- 
- static int at91_adc_update_scan_mode(struct iio_dev *indio_dev,
 -- 
-2.25.1
+2.26.0
 

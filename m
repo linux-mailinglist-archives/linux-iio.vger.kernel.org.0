@@ -2,38 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D58526C6E2
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDBAA26C6CA
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbgIPSIe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Sep 2020 14:08:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46868 "EHLO mail.kernel.org"
+        id S1727102AbgIPSEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Sep 2020 14:04:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727694AbgIPR6T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Sep 2020 13:58:19 -0400
+        id S1727614AbgIPSDa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Sep 2020 14:03:30 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CBFFB2076B;
-        Wed, 16 Sep 2020 17:58:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CDC32137B;
+        Wed, 16 Sep 2020 18:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600279098;
-        bh=+43Ykv5x1hiK5lShKkt7YXFXa30fYFn37g4imfPEGAw=;
+        s=default; t=1600279409;
+        bh=wekwBAIKPu1Rz5oUbsaznCNgfQb4fGuy2YA7PTMymvk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aC4gj2s/TStjch59l/IETDWoNMUVrg7j9dOaL9oIebdieLYD4PwANdubD+Wgf6iU+
-         bE4Eq+8EsY6YOyTYHkfmhNHQbqxuH7kMVzecCyitE7T93PRdknjG6rbrX8erbK3JUV
-         hUtwXrpdzH+wNxt/SuxkOboTXXZ3iAW9V9aKopVk=
-Date:   Wed, 16 Sep 2020 18:58:16 +0100
+        b=SVFaNdjRvlX2xA5CJGz4fdD1CDDM/wAVxm3wfv9vsDjqVmFBZqoj/HoT/8KZEifIP
+         V0C+2baqHooYe68TrshZU7HmpYZ745fbWOYXd66Lcj3vt1sMRGimbCHk2Uwu9xFxzt
+         gn7DIsychTc3yYLT6scbS7MrQ0q0Y11qrN0qwTMo=
+Date:   Wed, 16 Sep 2020 19:03:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Subject: Re: [PATCH v2] iio: frequency: adf4350: Replace indio_dev->mlock
- with own device lock
-Message-ID: <20200916185816.7d1075f3@archlinux>
-In-Reply-To: <20200916092731.77220-1-alexandru.ardelean@analog.com>
-References: <20200826064257.53475-1-alexandru.ardelean@analog.com>
-        <20200916092731.77220-1-alexandru.ardelean@analog.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Rob Herring <robh@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kukjin Kim <kgene@kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: exynos-adc: require
+ second interrupt with touch screen
+Message-ID: <20200916190326.3095e945@archlinux>
+In-Reply-To: <20200916061747.GB5719@kozik-lap>
+References: <20200910161933.9156-1-krzk@kernel.org>
+        <20200915194444.GA2384148@bogus>
+        <20200916061747.GB5719@kozik-lap>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,109 +51,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Sep 2020 12:27:31 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Wed, 16 Sep 2020 08:17:47 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> On Tue, Sep 15, 2020 at 01:44:44PM -0600, Rob Herring wrote:
+> > On Thu, 10 Sep 2020 18:19:32 +0200, Krzysztof Kozlowski wrote:  
+> > > The ADC in S3C/S5P/Exynos SoCs can be used also for handling touch
+> > > screen.  In such case the second interrupt is required.  This second
+> > > interrupt can be anyway provided, even without touch screens.  This
+> > > fixes dtbs_check warnings like:
+> > > 
+> > >   arch/arm/boot/dts/s5pv210-aquila.dt.yaml: adc@e1700000: interrupts: [[23], [24]] is too long
+> > > 
+> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huwei.com>
+> > > 
+> > > ---
+> > > 
+> > > Changes since v1:
+> > > 1. Fix if:has-touchscreen, as pointed by Rob.
+> > > 2. Add Ack.
+> > > ---
+> > >  .../bindings/iio/adc/samsung,exynos-adc.yaml       | 14 +++++++++++++-
+> > >  1 file changed, 13 insertions(+), 1 deletion(-)
+> > >   
+> > 
+> > Reviewed-by: Rob Herring <robh@kernel.org>  
 > 
-> As part of the general cleanup of indio_dev->mlock, this change replaces
-> it with a local lock.
-> The lock protect the state of the device from potential concurrent writes.
-> The device is configured via a sequence of SPI writes, and this lock is
-> meant to prevent the start of another sequence before another one has
-> finished.
+> Jonathan,
 > 
-> This is part of a bigger cleanup.
-> Link: https://lore.kernel.org/linux-iio/CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com/
-> 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Could you pick up these two?
+Done.  Applied to the togreg branch of iio.git and pushed out
+as testing for the autobuilders to possibly poke them.
 
-Applied
+Thanks,
 
-> ---
->  drivers/iio/frequency/adf4350.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
+Jonathan
+
 > 
-> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-> index 409c9c47161e..82c050a3899d 100644
-> --- a/drivers/iio/frequency/adf4350.c
-> +++ b/drivers/iio/frequency/adf4350.c
-> @@ -47,6 +47,13 @@ struct adf4350_state {
->  	unsigned long			regs[6];
->  	unsigned long			regs_hw[6];
->  	unsigned long long		freq_req;
-> +	/*
-> +	 * Lock to protect the state of the device from potential concurrent
-> +	 * writes. The device is configured via a sequence of SPI writes,
-> +	 * and this lock is meant to prevent the start of another sequence
-> +	 * before another one has finished.
-> +	 */
-> +	struct mutex			lock;
->  	/*
->  	 * DMA (thus cache coherency maintenance) requires the
->  	 * transfer buffers to live in their own cache lines.
-> @@ -99,7 +106,7 @@ static int adf4350_reg_access(struct iio_dev *indio_dev,
->  	if (reg > ADF4350_REG5)
->  		return -EINVAL;
->  
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock(&st->lock);
->  	if (readval == NULL) {
->  		st->regs[reg] = writeval & ~(BIT(0) | BIT(1) | BIT(2));
->  		ret = adf4350_sync_config(st);
-> @@ -107,7 +114,7 @@ static int adf4350_reg_access(struct iio_dev *indio_dev,
->  		*readval =  st->regs_hw[reg];
->  		ret = 0;
->  	}
-> -	mutex_unlock(&indio_dev->mlock);
-> +	mutex_unlock(&st->lock);
->  
->  	return ret;
->  }
-> @@ -254,7 +261,7 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
->  	if (ret)
->  		return ret;
->  
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock(&st->lock);
->  	switch ((u32)private) {
->  	case ADF4350_FREQ:
->  		ret = adf4350_set_freq(st, readin);
-> @@ -295,7 +302,7 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
->  	default:
->  		ret = -EINVAL;
->  	}
-> -	mutex_unlock(&indio_dev->mlock);
-> +	mutex_unlock(&st->lock);
->  
->  	return ret ? ret : len;
->  }
-> @@ -309,7 +316,7 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
->  	unsigned long long val;
->  	int ret = 0;
->  
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock(&st->lock);
->  	switch ((u32)private) {
->  	case ADF4350_FREQ:
->  		val = (u64)((st->r0_int * st->r1_mod) + st->r0_fract) *
-> @@ -338,7 +345,7 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
->  		ret = -EINVAL;
->  		val = 0;
->  	}
-> -	mutex_unlock(&indio_dev->mlock);
-> +	mutex_unlock(&st->lock);
->  
->  	return ret < 0 ? ret : sprintf(buf, "%llu\n", val);
->  }
-> @@ -539,6 +546,8 @@ static int adf4350_probe(struct spi_device *spi)
->  	indio_dev->channels = &adf4350_chan;
->  	indio_dev->num_channels = 1;
->  
-> +	mutex_init(&st->lock);
-> +
->  	st->chspc = pdata->channel_spacing;
->  	if (clk) {
->  		st->clk = clk;
+> Best regards,
+> Krzysztof
+> 
 

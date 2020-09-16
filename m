@@ -2,46 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDBAA26C6CA
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B599326C738
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727102AbgIPSEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Sep 2020 14:04:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49232 "EHLO mail.kernel.org"
+        id S1727830AbgIPSV2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Sep 2020 14:21:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52636 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727614AbgIPSDa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Sep 2020 14:03:30 -0400
+        id S1727816AbgIPSKo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Sep 2020 14:10:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6CDC32137B;
-        Wed, 16 Sep 2020 18:03:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D47AB2083B;
+        Wed, 16 Sep 2020 18:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600279409;
-        bh=wekwBAIKPu1Rz5oUbsaznCNgfQb4fGuy2YA7PTMymvk=;
+        s=default; t=1600279827;
+        bh=Ju+mDAYgGgYm5szp6plQMoO737lg/ofifEnvRT90SNI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SVFaNdjRvlX2xA5CJGz4fdD1CDDM/wAVxm3wfv9vsDjqVmFBZqoj/HoT/8KZEifIP
-         V0C+2baqHooYe68TrshZU7HmpYZ745fbWOYXd66Lcj3vt1sMRGimbCHk2Uwu9xFxzt
-         gn7DIsychTc3yYLT6scbS7MrQ0q0Y11qrN0qwTMo=
-Date:   Wed, 16 Sep 2020 19:03:26 +0100
+        b=uigVu9nT/DR8STMbyQA9tMT/XkN6el3Pw15dPTt8xh/BbT/YlbLT2pDFr6UdeUYo0
+         HbpOF80HJsVzvdniwdV2k9f1EtOg/eNVhYp8gLWbIR5hvLedQgUjzrboKXUgQNs/Is
+         55NRPAOwYxB4o39VSGRCT1FcBTK+778DMRhEPGqA=
+Date:   Wed, 16 Sep 2020 19:10:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Kukjin Kim <kgene@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: exynos-adc: require
- second interrupt with touch screen
-Message-ID: <20200916190326.3095e945@archlinux>
-In-Reply-To: <20200916061747.GB5719@kozik-lap>
-References: <20200910161933.9156-1-krzk@kernel.org>
-        <20200915194444.GA2384148@bogus>
-        <20200916061747.GB5719@kozik-lap>
+To:     Liu Shixin <liushixin2@huawei.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] iio: adc: palmas_gpadc: use
+ module_platform_driver to simplify the code
+Message-ID: <20200916191026.56932e1c@archlinux>
+In-Reply-To: <20200914065401.3726354-1-liushixin2@huawei.com>
+References: <20200914065401.3726354-1-liushixin2@huawei.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,45 +42,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Sep 2020 08:17:47 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Mon, 14 Sep 2020 14:54:01 +0800
+Liu Shixin <liushixin2@huawei.com> wrote:
 
-> On Tue, Sep 15, 2020 at 01:44:44PM -0600, Rob Herring wrote:
-> > On Thu, 10 Sep 2020 18:19:32 +0200, Krzysztof Kozlowski wrote:  
-> > > The ADC in S3C/S5P/Exynos SoCs can be used also for handling touch
-> > > screen.  In such case the second interrupt is required.  This second
-> > > interrupt can be anyway provided, even without touch screens.  This
-> > > fixes dtbs_check warnings like:
-> > > 
-> > >   arch/arm/boot/dts/s5pv210-aquila.dt.yaml: adc@e1700000: interrupts: [[23], [24]] is too long
-> > > 
-> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huwei.com>
-> > > 
-> > > ---
-> > > 
-> > > Changes since v1:
-> > > 1. Fix if:has-touchscreen, as pointed by Rob.
-> > > 2. Add Ack.
-> > > ---
-> > >  .../bindings/iio/adc/samsung,exynos-adc.yaml       | 14 +++++++++++++-
-> > >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > >   
-> > 
-> > Reviewed-by: Rob Herring <robh@kernel.org>  
+> module_platform_driver() makes the code simpler by eliminating
+> boilerplate code.
 > 
-> Jonathan,
-> 
-> Could you pick up these two?
-Done.  Applied to the togreg branch of iio.git and pushed out
-as testing for the autobuilders to possibly poke them.
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/palmas_gpadc.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
 > 
-> Best regards,
-> Krzysztof
-> 
+> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+> index 1ca6570be66a..889b88768b63 100644
+> --- a/drivers/iio/adc/palmas_gpadc.c
+> +++ b/drivers/iio/adc/palmas_gpadc.c
+> @@ -834,18 +834,7 @@ static struct platform_driver palmas_gpadc_driver = {
+>  		.of_match_table = of_palmas_gpadc_match_tbl,
+>  	},
+>  };
+> -
+> -static int __init palmas_gpadc_init(void)
+> -{
+> -	return platform_driver_register(&palmas_gpadc_driver);
+> -}
+> -module_init(palmas_gpadc_init);
+> -
+> -static void __exit palmas_gpadc_exit(void)
+> -{
+> -	platform_driver_unregister(&palmas_gpadc_driver);
+> -}
+> -module_exit(palmas_gpadc_exit);
+> +module_platform_driver(palmas_gpadc_driver);
+>  
+>  MODULE_DESCRIPTION("palmas GPADC driver");
+>  MODULE_AUTHOR("Pradeep Goudagunta<pgoudagunta@nvidia.com>");
 

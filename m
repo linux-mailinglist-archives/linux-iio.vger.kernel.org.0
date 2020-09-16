@@ -2,299 +2,204 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A98EA26C863
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54FFA26C8C8
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 20:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728078AbgIPSr7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Sep 2020 14:47:59 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2874 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728066AbgIPSqN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 16 Sep 2020 14:46:13 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 1E920C274F978936F36A;
-        Wed, 16 Sep 2020 11:40:00 +0100 (IST)
-Received: from localhost (10.52.126.84) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Wed, 16 Sep
- 2020 11:39:59 +0100
-Date:   Wed, 16 Sep 2020 11:38:22 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, Rob Herring <robh@kernel.org>,
-        <devicetree@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v2 20/20] dt-bindings:iio:adc:fsl,imx25-gcq yaml
- conversion
-Message-ID: <20200916113822.00004abf@Huawei.com>
-In-Reply-To: <20200916113331.00000e2f@Huawei.com>
-References: <20200909175946.395313-1-jic23@kernel.org>
-        <20200909175946.395313-21-jic23@kernel.org>
-        <20200916113331.00000e2f@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727678AbgIPS4c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Sep 2020 14:56:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727659AbgIPRyS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Sep 2020 13:54:18 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5994DC0A8885;
+        Wed, 16 Sep 2020 05:39:50 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id lo4so10107624ejb.8;
+        Wed, 16 Sep 2020 05:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=I1cFEJyq7aWtTpGijIftYdHoOlrdR3OREnEePj95ylM=;
+        b=APvHQtV42oDcvvxsC50ckX33r8XotGFDE9NjqI1448hod2JhlaAF/GMJVFpkCDoVb2
+         kVBhUfrVrc5WemMXInUtCZlgBoYobDUOAidkcxPS1crEHg4XpuSDlPdUaB1oE6sdYE8d
+         IT7hUouxai0VXiuESQXq840dfgoW6cFfCDQ3o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=I1cFEJyq7aWtTpGijIftYdHoOlrdR3OREnEePj95ylM=;
+        b=TDMMZU1R+IQm2DzRbBSBrj3KA2HsDYCJzkzWgBqRuzhirCkyC3OHQ+9SNggiNhEAw8
+         eC0aZnfRt4QUlUX6NUDtCEXLszojb8DVlb0IkhdfRYQNZQBf1Tu9Rr0joDX2JDcxJuAF
+         D4MReyFI2movFIVL9Q6jFNWmT9J0GifZLXyqVsaZuTsyeDFwSewUJDG/vHiI/fsr/dND
+         Jm3n8RpIdPLVqJGKvdm1lJaQTFCohgxWCVjokSz6/SueYcovf/03KATcpxIv6vAq6yhf
+         mNUxl05qB60wPZwrt6g4PL64G/RNpKdLnT5y07wvM71h6L+6tNb7P9RIqv+6hCVzcGdV
+         6uvA==
+X-Gm-Message-State: AOAM532SlY7No2O5yfCRom/0VUWB4VZrtf6VYkX9dw/Oz5rhmLlAN++v
+        tV8giqtEcxTmLALjoav/Mklnc8RrX0qBBQIiMYM=
+X-Google-Smtp-Source: ABdhPJyJUdR1phUt4Z2aWUTlQ/9LFQhNTVdlh+azbLJjNikSb18UjVpmtluJLDsc3NTZBbHlpPnUIwhbkhOl5eJjepI=
+X-Received: by 2002:a17:906:8401:: with SMTP id n1mr24459464ejx.215.1600259988623;
+ Wed, 16 Sep 2020 05:39:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.126.84]
-X-ClientProxiedBy: lhreml707-chm.china.huawei.com (10.201.108.56) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20200909175946.395313-1-jic23@kernel.org> <20200909175946.395313-5-jic23@kernel.org>
+ <CACPK8Xc+GpVVLvBdz5zHTndBeP0bd7SKLDZq7H6rDUDsd0kMdA@mail.gmail.com> <20200916113625.0000641e@Huawei.com>
+In-Reply-To: <20200916113625.0000641e@Huawei.com>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Wed, 16 Sep 2020 12:39:36 +0000
+Message-ID: <CACPK8Xdb2um+DN9q9P7o2AppYHenYoZ607r-s36BvZET=QCwiw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/20] dt-bindings:iio:adc: aspeed,ast2400 yaml conversion
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rick Altherr <raltherr@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Sep 2020 11:33:31 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Wed, 16 Sep 2020 at 10:38, Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Thu, 10 Sep 2020 02:32:19 +0000
+> Joel Stanley <joel@jms.id.au> wrote:
+>
+> > On Wed, 9 Sep 2020 at 18:02, Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Simple txt to yaml conversion. Part of a general move to convert
+> > > all the IIO bindings over to yaml.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Rick Altherr <raltherr@google.com>
+> > > Cc: Joel Stanley <joel@jms.id.au>
+> > > Cc: Andrew Jeffery <andrew@aj.id.au>
+> >
+> > Acked-by: Joel Stanley <joel@jms.id.au>
+> >
+> >
+> > > ---
+> > >  .../bindings/iio/adc/aspeed,ast2400-adc.yaml  | 54 +++++++++++++++++++
+> > >  .../bindings/iio/adc/aspeed_adc.txt           | 22 --------
+> > >  2 files changed, 54 insertions(+), 22 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml
+> > > new file mode 100644
+> > > index 000000000000..09018487d690
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2400-adc.yaml
+> >
+> > This naming doesn't make sense, as the bindings are for the ast2500
+> > too (and they also apply for the ast2600).
+>
+> Convention is to name after a supported device and not use
+> wild cards or generic names because the chances of it going
+> wrong in future is far too high. Will every aspeed adc look the same?
+> Seems impossible to predict so best we can do safely is to pick a
+> part number.
 
-> On Wed, 9 Sep 2020 18:59:46 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > This binding has a few corners that would have been done different today
-> > but hopefully the yaml schema captures the constraints correctly.
-> > 
-> > The child node names are not constrained hence the fairly open regexp.
-> > I've also documented the defaults for the two references that the
-> > driver seems to use and copied the value descriptions from the header
-> > because I think they should be in the dt-binding itself.
-> > 
-> > This is part of a general effort to convert all the IIO bindings
-> > over to yaml
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Markus Pargmann <mpa@pengutronix.de>
-> > Cc: Shawn Guo <shawnguo@kernel.org>
-> > Cc: Sascha Hauer <s.hauer@pengutronix.de>  
-> 
-> Update Markus' email address.  If Markus is fine with it, I'll update in
-> the maintainers line in the binding as well.
-> Hope this is the same Markus Pargmann!
-> 
-> This address is from a 2016 thread, so may well bounce as well :(
+It already supports three different generations of SoC, which I was
+bringing to your attention. Therefore having the name '2400' is
+already incorrect.
 
-Bounced as well.
-
-Shawn / Sascha any suggestions for a suitable maintainer on this, or
-a more recent address for Markus?
-
-If not I'll pick it up I'll put myself in there and we can update it
-when someone steps up in then future.
-
-Jonathan
-
-> 
-> 
+>
+> There are enormous numbers of examples of this in dt bindings and
+> for that matter driver naming.
+>
 > Thanks,
-> 
+>
 > Jonathan
-> 
-> 
-> > ---
-> >  .../bindings/iio/adc/fsl,imx25-gcq.txt        |  57 --------
-> >  .../bindings/iio/adc/fsl,imx25-gcq.yaml       | 129 ++++++++++++++++++
-> >  2 files changed, 129 insertions(+), 57 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.txt b/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.txt
-> > deleted file mode 100644
-> > index eebdcec3dab5..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.txt
-> > +++ /dev/null
-> > @@ -1,57 +0,0 @@
-> > -Freescale i.MX25 ADC GCQ device
-> > -
-> > -This is a generic conversion queue device that can convert any of the
-> > -analog inputs using the ADC unit of the i.MX25.
-> > -
-> > -Required properties:
-> > - - compatible: Should be "fsl,imx25-gcq".
-> > - - reg: Should be the register range of the module.
-> > - - interrupts: Should be the interrupt number of the module.
-> > -   Typically this is <1>.
-> > - - #address-cells: Should be <1> (setting for the subnodes)
-> > - - #size-cells: Should be <0> (setting for the subnodes)
-> > -
-> > -Optional properties:
-> > - - vref-ext-supply: The regulator supplying the ADC reference voltage.
-> > -   Required when at least one subnode uses the this reference.
-> > - - vref-xp-supply: The regulator supplying the ADC reference voltage on pin XP.
-> > -   Required when at least one subnode uses this reference.
-> > - - vref-yp-supply: The regulator supplying the ADC reference voltage on pin YP.
-> > -   Required when at least one subnode uses this reference.
-> > -
-> > -Sub-nodes:
-> > -Optionally you can define subnodes which define the reference voltage
-> > -for the analog inputs.
-> > -
-> > -Required properties for subnodes:
-> > - - reg: Should be the number of the analog input.
-> > -     0: xp
-> > -     1: yp
-> > -     2: xn
-> > -     3: yn
-> > -     4: wiper
-> > -     5: inaux0
-> > -     6: inaux1
-> > -     7: inaux2
-> > -Optional properties for subnodes:
-> > - - fsl,adc-refp: specifies the positive reference input as defined in
-> > -     <dt-bindings/iio/adc/fsl-imx25-gcq.h>
-> > - - fsl,adc-refn: specifies the negative reference input as defined in
-> > -     <dt-bindings/iio/adc/fsl-imx25-gcq.h>
-> > -
-> > -Example:
-> > -
-> > -	adc: adc@50030800 {
-> > -		compatible = "fsl,imx25-gcq";
-> > -		reg = <0x50030800 0x60>;
-> > -		interrupt-parent = <&tscadc>;
-> > -		interrupts = <1>;
-> > -		#address-cells = <1>;
-> > -		#size-cells = <0>;
-> > -
-> > -		inaux@5 {
-> > -			reg = <5>;
-> > -			fsl,adc-refp = <MX25_ADC_REFP_INT>;
-> > -			fsl,adc-refn = <MX25_ADC_REFN_NGND>;
-> > -		};
-> > -	};
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.yaml b/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.yaml
-> > new file mode 100644
-> > index 000000000000..6c4e3ef0862c
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/fsl,imx25-gcq.yaml
-> > @@ -0,0 +1,129 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/fsl,imx25-gcq.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Freescale ADC GCQ device
-> > +
-> > +description:
-> > +  This is a generic conversion queue device that can convert any of the
-> > +  analog inputs using the ADC unit of the i.MX25.
-> > +
-> > +maintainers:
-> > +  - Markus Pargmann <mpa@pengutronix.de>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: fsl,imx25-gcq
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  vref-ext-supply:
-> > +    description:
-> > +      The regulator supplying the ADC reference voltage.
-> > +      Required when at least one subnode uses the this reference.
-> > +
-> > +  vref-xp-supply:
-> > +    description:
-> > +      The regulator supplying the ADC reference voltage on pin XP.
-> > +      Required when at least one subnode uses this reference.
-> > +
-> > +  vref-yp-supply:
-> > +    description:
-> > +      The regulator supplying the ADC reference voltage on pin YP.
-> > +      Required when at least one subnode uses this reference.
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  "#address-cells":
-> > +    const: 1
-> > +
-> > +  "#size-cells":
-> > +    const: 0
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +
-> > +patternProperties:
-> > +  "[a-z][a-z0-9]+@[0-9a-f]+$":
-> > +    type: object
-> > +    description:
-> > +      Child nodes used to define the reference voltages used for each channel
-> > +
-> > +    properties:
-> > +      reg:
-> > +        description: |
-> > +          Number of the analog input.
-> > +          0: xp
-> > +          1: yp
-> > +          2: xn
-> > +          3: yn
-> > +          4: wiper
-> > +          5: inaux0
-> > +          6: inaux1
-> > +          7: inaux2
-> > +        items:
-> > +          - minimum: 0
-> > +            maximum: 7
-> > +
-> > +      fsl,adc-refp:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: |
-> > +          Specifies the positive reference input as defined in
-> > +          <dt-bindings/iio/adc/fsl-imx25-gcq.h>
-> > +          0: YP voltage reference
-> > +          1: XP voltage reference
-> > +          2: External voltage reference
-> > +          3: Internal voltage reference (default)
-> > +        minimum: 0
-> > +        maximum: 3
-> > +
-> > +      fsl,adc-refn:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: |
-> > +          Specifies the negative reference input as defined in
-> > +          <dt-bindings/iio/adc/fsl-imx25-gcq.h>
-> > +          0: XN ground reference
-> > +          1: YN ground reference
-> > +          2: Internal ground reference
-> > +          3: External ground reference (default)
-> > +        minimum: 0
-> > +        maximum: 3
-> > +
-> > +    required:
-> > +      - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/iio/adc/fsl-imx25-gcq.h>
-> > +    soc {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <1>;
-> > +        adc@50030800 {
-> > +            compatible = "fsl,imx25-gcq";
-> > +            reg = <0x50030800 0x60>;
-> > +            interrupt-parent = <&tscadc>;
-> > +            interrupts = <1>;
-> > +            #address-cells = <1>;
-> > +            #size-cells = <0>;
-> > +
-> > +            inaux@5 {
-> > +                reg = <5>;
-> > +                fsl,adc-refp = <MX25_ADC_REFP_INT>;
-> > +                fsl,adc-refn = <MX25_ADC_REFN_NGND>;
-> > +            };
-> > +        };
-> > +    };
-> > +...  
-> 
-
-
+>
+>
+> >
+> > > @@ -0,0 +1,54 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/adc/aspeed,ast2400-adc.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: ADC that forms part of an ASPEED server management processor.
+> > > +
+> > > +maintainers:
+> > > +  - Rick Altherr <raltherr@google.com>
+> > > +
+> > > +description:
+> > > +  This device is a 10-bit converter for 16 voltage channels.  All inputs are
+> > > +  single ended.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - aspeed,ast2400-adc
+> > > +      - aspeed,ast2500-adc
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  clocks:
+> > > +    description:
+> > > +      Input clock used to derive the sample clock. Expected to be the
+> > > +      SoC's APB clock.
+> > > +
+> > > +  resets: true
+> > > +
+> > > +  "#io-channel-cells":
+> > > +    const: 1
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - clocks
+> > > +  - resets
+> > > +  - "#io-channel-cells"
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/clock/aspeed-clock.h>
+> > > +    adc@1e6e9000 {
+> > > +        compatible = "aspeed,ast2400-adc";
+> > > +        reg = <0x1e6e9000 0xb0>;
+> > > +        clocks = <&syscon ASPEED_CLK_APB>;
+> > > +        resets = <&syscon ASPEED_RESET_ADC>;
+> > > +        #io-channel-cells = <1>;
+> > > +    };
+> > > +...
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt b/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt
+> > > deleted file mode 100644
+> > > index 034fc2ba100e..000000000000
+> > > --- a/Documentation/devicetree/bindings/iio/adc/aspeed_adc.txt
+> > > +++ /dev/null
+> > > @@ -1,22 +0,0 @@
+> > > -Aspeed ADC
+> > > -
+> > > -This device is a 10-bit converter for 16 voltage channels.  All inputs are
+> > > -single ended.
+> > > -
+> > > -Required properties:
+> > > -- compatible: Should be "aspeed,ast2400-adc" or "aspeed,ast2500-adc"
+> > > -- reg: memory window mapping address and length
+> > > -- clocks: Input clock used to derive the sample clock. Expected to be the
+> > > -          SoC's APB clock.
+> > > -- resets: Reset controller phandle
+> > > -- #io-channel-cells: Must be set to <1> to indicate channels are selected
+> > > -                     by index.
+> > > -
+> > > -Example:
+> > > -       adc@1e6e9000 {
+> > > -               compatible = "aspeed,ast2400-adc";
+> > > -               reg = <0x1e6e9000 0xb0>;
+> > > -               clocks = <&syscon ASPEED_CLK_APB>;
+> > > -               resets = <&syscon ASPEED_RESET_ADC>;
+> > > -               #io-channel-cells = <1>;
+> > > -       };
+> > > --
+> > > 2.28.0
+> > >
+>
+>

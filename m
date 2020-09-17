@@ -2,179 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ECD626E305
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 19:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA43326E352
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgIQR4o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 13:56:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46998 "EHLO mail.kernel.org"
+        id S1726239AbgIQSNU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 14:13:20 -0400
+Received: from mailout01.rmx.de ([94.199.90.91]:48043 "EHLO mailout01.rmx.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726582AbgIQR4F (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 13:56:05 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726440AbgIQSNJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 14:13:09 -0400
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8F8A20707;
-        Thu, 17 Sep 2020 17:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600365364;
-        bh=JPsTCcKQSJWwioUgZClYmjeaDcco+sofmS5Hjg0G3ek=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=k5ag4xwb9mY1gMrrsG6c8EQLFPZ/cX/gXYPDYWqZbG8xFOrK7iAWLAbu7jffpeIj7
-         qFl6zqMq8hBlU355hSDh67wO+0ZmiTpgXYQvvrtjMc5wom6ya0PpeGFlxoSOLV68vk
-         +BhWrpgM3aCOuxrq1diqfXfgQrn+DpkSwKIEG0ig=
-Date:   Thu, 17 Sep 2020 18:55:59 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: buffer: split buffer sysfs creation to take buffer
- as primary arg
-Message-ID: <20200917185559.7d6971e3@archlinux>
-In-Reply-To: <CA+U=DspN3WYX5_1MZpRPzUcC5NV4=iSekQ9jNSehad1jfi2bQw@mail.gmail.com>
-References: <20200917125951.861-1-alexandru.ardelean@analog.com>
-        <20200917181626.59eb84c8@archlinux>
-        <CA+U=DspN3WYX5_1MZpRPzUcC5NV4=iSekQ9jNSehad1jfi2bQw@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        by mailout01.rmx.de (Postfix) with ESMTPS id 4Bskg41Lcwz2SWb9;
+        Thu, 17 Sep 2020 19:37:04 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin01.retarus.com (Postfix) with ESMTPS id 4Bskfl3XCHz2xFb;
+        Thu, 17 Sep 2020 19:36:47 +0200 (CEST)
+Received: from n95hx1g2.localnet (192.168.54.16) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Thu, 17 Sep
+ 2020 19:36:34 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: trigger: Don't use RT priority
+Date:   Thu, 17 Sep 2020 19:36:33 +0200
+Message-ID: <1956630.afHySLI0iv@n95hx1g2>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+In-Reply-To: <20200917181942.0d5db535@archlinux>
+References: <20200917120333.2337-1-ceggers@arri.de> <20200917181942.0d5db535@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [192.168.54.16]
+X-RMX-ID: 20200917-193653-4Bskfl3XCHz2xFb-0@kdin01
+X-RMX-SOURCE: 217.111.95.66
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 17 Sep 2020 20:41:08 +0300
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+Hi Jonathan,
 
-> On Thu, Sep 17, 2020 at 8:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Thu, 17 Sep 2020 15:59:51 +0300
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >  
-> > > Currently the iio_buffer_{alloc,free}_sysfs_and_mask() take 'indio_dev' as
-> > > primary argument. This change splits the main logic into a private function
-> > > that takes an IIO buffer as primary argument.
-> > >
-> > > That way, the functions can be extended to configure the sysfs for multiple
-> > > buffers.
-> > >
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> >
-> > One comment inline.  Whilst I think it is safe as you have it, I'd
-> > rather avoid the minor change in logic if we don't need to make it.
-> >
-> > Thanks,
-> >
-> > Jonathan
-Applied to the togreg branch of iio.git.
-
-See below for my pathetic Diff confused me excuse :)
-
-Jonathan
-
-> >
-> >  
-> > > ---
-> > >  drivers/iio/industrialio-buffer.c | 46 ++++++++++++++++++++-----------
-> > >  1 file changed, 30 insertions(+), 16 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > > index a7d7e5143ed2..a4f6bb96d4f4 100644
-> > > --- a/drivers/iio/industrialio-buffer.c
-> > > +++ b/drivers/iio/industrialio-buffer.c
-> > > @@ -1264,26 +1264,14 @@ static struct attribute *iio_buffer_attrs[] = {
-> > >       &dev_attr_data_available.attr,
-> > >  };
-> > >
-> > > -int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> > > +static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> > > +                                          struct iio_dev *indio_dev)
-> > >  {
-> > >       struct iio_dev_attr *p;
-> > >       struct attribute **attr;
-> > > -     struct iio_buffer *buffer = indio_dev->buffer;
-> > >       int ret, i, attrn, attrcount;
-> > >       const struct iio_chan_spec *channels;
-> > >
-> > > -     channels = indio_dev->channels;
-> > > -     if (channels) {
-> > > -             int ml = indio_dev->masklength;
-> > > -
-> > > -             for (i = 0; i < indio_dev->num_channels; i++)
-> > > -                     ml = max(ml, channels[i].scan_index + 1);
-> > > -             indio_dev->masklength = ml;
-> > > -     }
-> > > -
-> > > -     if (!buffer)
-> > > -             return 0;
-> > > -
-> > >       attrcount = 0;
-> > >       if (buffer->attrs) {
-> > >               while (buffer->attrs[attrcount] != NULL)
-> > > @@ -1367,19 +1355,45 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> > >       return ret;
-> > >  }
-> > >
-> > > -void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> > > +int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> > >  {
-> > >       struct iio_buffer *buffer = indio_dev->buffer;
-> > > +     const struct iio_chan_spec *channels;
-> > > +     int i;
-> > > +
-> > > +     channels = indio_dev->channels;
-> > > +     if (channels) {
-> > > +             int ml = indio_dev->masklength;
-> > > +
-> > > +             for (i = 0; i < indio_dev->num_channels; i++)
-> > > +                     ml = max(ml, channels[i].scan_index + 1);
-> > > +             indio_dev->masklength = ml;
-> > > +     }  
-> >
-> > I've not really figured out if it matters, but this is a logic change.
-> > Previously we didn't compute masklength if there was no buffer provided.
-> > Now we do.  It's probably better to move the if (!buffer) check above
-> > this block or at least mention this change in the patch description.
-> >  
+On Thursday, 17 September 2020, 19:19:42 CEST, Jonathan Cameron wrote:
+> On Thu, 17 Sep 2020 14:03:33 +0200 Christian Eggers <ceggers@arri.de> wrote:
+> > Triggers may raise transactions on slow busses like I2C.  Using the
+> > original RT priority of a threaded IRQ may prevent other important IRQ
+> > handlers from being run.
+> > 
+> > Signed-off-by: Christian Eggers <ceggers@arri.de>
+> > Cc: stable@vger.kernel.org
+> > ---
+> > In my particular case (on a RT kernel), the RT priority of the sysfstrig
+> > threaded IRQ handler caused (temporarily) raising the prio of a user
+> > space process which was holding the I2C bus mutex.
+> > 
+> > Due to a bug in the i2c-imx driver, this process spent 500 ms in a
+> > busy-wait loop and prevented all threaded IRQ handlers from being run
+> > during this time.
 > 
-> Umm, are you referring that this patch is a logic change or you are
-> suggesting a logic change?
-> The "if (!buffer)" check was positioned after the masklength
-> computation even in the old code.
+> I'm not sure I fully understand the impacts of this yet.
 > 
-Got you.  Diff confused me :)
+> What is the impact on cases where we don't have any nasty side affects
+> due to users of the trigger?
+The problem was not the user of the trigger. The problem was the (shared)
+resource (I2C bus) which the triggered iio driver uses. I would say
+that the i2c-imx driver is not "RT safe" [1]. This means that the driver performs
+busy-waiting, which is less a problem for normal priorities than for RT. If the
+busy-wait loop is run with RT prio, it will block everything else, even
+(threaded) interrupt handlers.
+
+> I presume reducing the priority will cause some reduction in
+> performance?  If so is there any chance that would count as a regression?
+I expect that other user will complain if we do this, yes. But I would like to
+open the discussion, which priority is the "correct" one, or how this could be
+set up from user space. According to [2], there is not much value choosing the
+priority inside the kernel. Simply changing the priority of the trigger task
+using "chrt" seems difficult, as this can (currently) not be done of using
+libiio.
+
+> 
+> Jonathan
+> 
+> > v2:
+> > - Use sched_set_normal() instead of sched_setscheduler_nocheck()
+> > 
+> >  drivers/iio/industrialio-trigger.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+
+[1] https://lore.kernel.org/patchwork/cover/1307330/
+[2] https://lwn.net/Articles/818388/
 
 
-> >  
-> > >
-> > >       if (!buffer)
-> > > -             return;
-> > > +             return 0;
-> > > +
-> > > +     return __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev);
-> > > +}
-> > >
-> > > +static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
-> > > +{
-> > >       bitmap_free(buffer->scan_mask);
-> > >       kfree(buffer->buffer_group.attrs);
-> > >       kfree(buffer->scan_el_group.attrs);
-> > >       iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
-> > >  }
-> > >
-> > > +void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> > > +{
-> > > +     struct iio_buffer *buffer = indio_dev->buffer;
-> > > +
-> > > +     if (!buffer)
-> > > +             return;
-> > > +
-> > > +     __iio_buffer_free_sysfs_and_mask(buffer);
-> > > +}
-> > > +
-> > >  /**
-> > >   * iio_validate_scan_mask_onehot() - Validates that exactly one channel is selected
-> > >   * @indio_dev: the iio device  
-> >  
 

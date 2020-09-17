@@ -2,147 +2,197 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 717D026CDFD
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Sep 2020 23:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3154A26D115
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 04:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgIPVH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Sep 2020 17:07:28 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:20452 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726360AbgIPQDk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Sep 2020 12:03:40 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08GAvX4k010624;
-        Wed, 16 Sep 2020 13:03:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=HNBudS2dbgbIeBYY8ROk2CZK0Qs8u5XisjljitaW750=;
- b=czB7QETTybsqNQT8vRc3WJlJz9uwS1NsPfLhneVlioHCZaRTg+nh64gudZRbf1KrAN1C
- 379MJyk6AV46Pzv5ybTTM3hZoKzgoMWjNQz8cvt4iLRV0U+UNha/GW6IP7daO8PSNLkW
- faUbA8bRyBcDjBWboGHOMZ8/7GvVzB2Q+4Ex1Oihxt7byyXETGt6nelsxjgxLJGV3gDL
- Wu9eQRSjvPMPMLSipZxLP3nq4Trp6dmyruM3U2SRFgLW88LH36kcHMnl0iDyIlVh+AFN
- +o2FIp83dKTEgz0aUhsBxBHo2Fez6+skDQREczVB0mlMU1yTafxNveBTqkuUbQjJbBpb Uw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 33k691bg39-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Sep 2020 13:03:08 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 999FE1000AF;
-        Wed, 16 Sep 2020 12:28:01 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7DE8821CA87;
-        Wed, 16 Sep 2020 12:28:01 +0200 (CEST)
-Received: from [10.48.1.149] (10.75.127.47) by SFHDAG5NODE3.st.com
- (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 16 Sep
- 2020 12:28:00 +0200
-Subject: Re: [RESEND PATCH v2] iio: adc: stm32-adc: fix runtime autosuspend
- delay when slow polling
-To:     <jic23@kernel.org>, <rafael.j.wysocki@intel.com>
-CC:     <rjw@rjwysocki.net>, <ulf.hansson@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <olivier.moysan@st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <1593615328-5180-1-git-send-email-fabrice.gasnier@st.com>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <045e9e34-f1e0-087b-bc5b-44440db6be27@st.com>
-Date:   Wed, 16 Sep 2020 12:28:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <1593615328-5180-1-git-send-email-fabrice.gasnier@st.com>
-Content-Type: text/plain; charset="utf-8"
+        id S1726093AbgIQCYl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Sep 2020 22:24:41 -0400
+Received: from mail-eopbgr70081.outbound.protection.outlook.com ([40.107.7.81]:5574
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725858AbgIQCYl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 16 Sep 2020 22:24:41 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Y96hdvbBNPQrkM/hugcF0SyUBiLP+6QPB5ya1fawL0f6K/APhh9PLh5PEvbeI9T6Am9QGRw5/90Qf+XnWdZLMC62IsMQWTgM5NGXMpsYUoGCmQlZYl8SSMFEGjqr6oLYkKYWa/SjZ6loda1H5mo5TQrLIVi88EORUF8kuvfCPQdQhHI0mEaXYhVCqC8Kh590SHi7AlbPBLTm/g64Lg0DGLo3bsEGiPRrK3jVxV/0rInXuRAH6NnXGv/9w0UBijqvYTdvbM9S6AYYGS3UgUMeyjo39huO0Vs2xUBrKnBs8NUJES0HggHtkmPbgL54uUNN3fCSjADpZpEVCSz7WQUQKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JF0H+TQjARfEfK57TCOimyfXVGSPEn0Bl9bS/CTxB8g=;
+ b=lmOClnh8I3HQK2pXKvdyvokJZ+WJa2pVrYlVDgz1uhWq4ltb5McDDbKEFLx4uYqlAMZh74FPFzWZFrBjfunc14sT7buqUSfDz+G6lKRVtgaNg1NV54bM2wUDQT3nYdfJTzVuQytG9znvkxc81x/FvuV1bNXMAq7D9OOsdMDyCyHq13rfd9UV8mPFyCg9a7r02DpEymTV+c3M3PvR+/ffSsv3zdFKHOzFhrm1Hr1qK5qWXHRRhrtfXeKW29ZSt8vzjYotTJyV5OkcNRnQOx+Jr6FS6Ov3+qvUohJfuXpNbjc5Q1QrucWA4Z169BBWuje+S3Vlnuv9qU4TxPL6UTLlPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JF0H+TQjARfEfK57TCOimyfXVGSPEn0Bl9bS/CTxB8g=;
+ b=sa+XgjAS8TeHCtxF3v4eyFEDMPxUIpxok1Yi6255cCNE1W1V44OrDr/EsZZUgUc3F+CyLVJSl7Vo3pH0DWjJwezgIj0MRWxvMOIFVRWos00cUdO7RwfxvWUPbk4ZRWkFHxc54z0F+x6hShJgJhltBA2arHmFkcfUg4YnQ1evIg8=
+Received: from AM8PR04MB7315.eurprd04.prod.outlook.com (2603:10a6:20b:1d4::7)
+ by AM0PR0402MB3636.eurprd04.prod.outlook.com (2603:10a6:208:6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3348.15; Thu, 17 Sep
+ 2020 02:24:36 +0000
+Received: from AM8PR04MB7315.eurprd04.prod.outlook.com
+ ([fe80::11e6:d413:2d3d:d271]) by AM8PR04MB7315.eurprd04.prod.outlook.com
+ ([fe80::11e6:d413:2d3d:d271%6]) with mapi id 15.20.3391.014; Thu, 17 Sep 2020
+ 02:24:36 +0000
+From:   Andy Duan <fugang.duan@nxp.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Rob Herring <robh@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: RE: [PATCH v2 01/20] dt-bindings:iio:adc:fsl,vf610-adc conversion to
+ yaml.
+Thread-Topic: [PATCH v2 01/20] dt-bindings:iio:adc:fsl,vf610-adc conversion to
+ yaml.
+Thread-Index: AQHWjBUiWEi78ms8FEON5M75n4QP9KlsGqYA
+Date:   Thu, 17 Sep 2020 02:24:36 +0000
+Message-ID: <AM8PR04MB73155DCE23BC613898AD43FDFF3E0@AM8PR04MB7315.eurprd04.prod.outlook.com>
+References: <20200909175946.395313-1-jic23@kernel.org>
+        <20200909175946.395313-2-jic23@kernel.org>
+        <CAL_JsqJhBFqi8=gku8sv5=8MTB1uCTq=DkuoVzEaUMxO1QhBAg@mail.gmail.com>
+ <20200916113401.00006d86@Huawei.com>
+In-Reply-To: <20200916113401.00006d86@Huawei.com>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-16_06:2020-09-16,2020-09-16 signatures=0
-Sender: linux-iio-owner@vger.kernel.org
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: Huawei.com; dkim=none (message not signed)
+ header.d=none;Huawei.com; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [119.31.174.67]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: b06238ca-5651-40fe-0dee-08d85ab0d2ac
+x-ms-traffictypediagnostic: AM0PR0402MB3636:
+x-microsoft-antispam-prvs: <AM0PR0402MB36364C058E78B24185954CDEFF3E0@AM0PR0402MB3636.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wpQwWuuKYLtJ05A6vl1n1RT17zYVHm/54b4snalxs4tU/rCAS+xvkf5onZ++UZSxowfjvvp8LKL+dgBgQk61cD8W49mquIhKezmrx/W8+iPN2UJCLDAp54IVHAf/XPiVp0vNfuyqmECWgtZUJv0zlNdFUrZGmCWHSkXH3uVyMq1j96aAdwn7Kryx7zuBED76dfwQOM3vhV572r0bzg8hbWFMQsPNJ5lLbCfo6YSNY2eANRO4wgNOHBL3PmPhBokq8i55QY/3w55TqZBQVTmS9Aljkk0cTbdpIelBLz2Nxus5CgRxapbGcxPf5yhtBRM13Z3/6mqhDRsBTooffHKcdCIsDEj1wyKBQyRmkEKzVAEj4u0Wbw46uZZMKNwlDj3sCLqAMs0qeMS7em6z//ji/pcmIiOVYP78qi8ZFp4aSKPrppZgN32KHBzFj9VPJU6uE0klr5A7YVAVO1rJJNp9sw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7315.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(376002)(366004)(136003)(39860400002)(8676002)(186003)(33656002)(83380400001)(26005)(7696005)(2906002)(86362001)(8936002)(6506007)(478600001)(45080400002)(53546011)(5660300002)(55016002)(83080400001)(52536014)(4326008)(54906003)(316002)(66446008)(76116006)(64756008)(66556008)(66476007)(110136005)(71200400001)(66946007)(9686003)(142933001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: CBWRBLATp+Jpx3eEUEjm+DVr3OuuafD+yUUWdO5n1dfHfNcRIw87Gyk//0Ld/eYKFjFUgLrOzAC5SG5aQjQr1nPfDklG85U9e8oVKabcNnobWrtc/t+KNr2lwdZgqWu8IYKlAPu0qqi+Qx5DJwvwSHFX1kC1SpdCOBXAOk+A0wa0xLiZJshBGj44gXjo+xQDehbD35HMw8I4Itfxos5Ktbcqw8giU53U/OQ1vkXfY1J03u6+wkOW3+sKTz/NjdZJlb61uzc9tx04vTaWqULQfhZyo3MhWahuH2KDpLpSuEuQkzkeWdWyQDmebB6KPtU44ObCg5LoVJJYFnWNm5fPpNfVO8rkHcIeDcgttqj+HN1bfdytpJOoVanftR8ekS02xjJD3+M+lGgtXIamnH74dQlbUyeZmDv6QONEFr18CyAA5a9pIY3ViE1GNP9MCQDTy6KKCILEh2e/3xEn2nhHVlr2a2wYeh99UBAwSAuud6ob7yzHDLNeAcagTCMtFkrOLLbbHwoFgQyhiLP06VLM0i5oqNl5BDnPeDi+8uv03hq2Nzu7HUCoPxBxWi+IZgjb+fa2MwPT3D8gRXKiejJCyjXOPr0AGwQuqVRzHcSJWauUrSRxWY6qFulnzXYK/QRE0qUSLLQ43Gl5S0nyPmKwKQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7315.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b06238ca-5651-40fe-0dee-08d85ab0d2ac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2020 02:24:36.7443
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uA8EfZrUz1zh2YHke9TueD6HzPUrhFZnOjjbcaumTJp9M/J7bfAx0Oi5K8JKxSYgXeLGZHOpYUYMFMcRXZFWXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3636
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/1/20 4:55 PM, Fabrice Gasnier wrote:
-> When the ADC is runtime suspended and starting a conversion, the stm32-adc
-> driver calls pm_runtime_get_sync() that gets cascaded to the parent
-> (e.g. runtime resume of stm32-adc-core driver). This also kicks the
-> autosuspend delay (e.g. 2s) of the parent.
-> Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
-> capture) won't kick the autosuspend delay for the parent (stm32-adc-core
-> driver) as already active.
-> 
-> Currently, this makes the stm32-adc-core driver go in suspend state
-> every 2s when doing slow polling. As an example, doing a capture, e.g.
-> cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
-> isn't refreshed. Once it expires, the parent immediately falls into
-> runtime suspended state, in between two captures, as soon as the child
-> driver falls into runtime suspend state:
-> - e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
->   autosuspend delay of the child.
-> - stm32-adc-core switches off regulators, clocks and so on.
-> - They get switched on back again 100ms later in this example (at 2.2s).
-> 
-> So, use runtime_idle() callback in stm32-adc-core driver to call
-> pm_runtime_mark_last_busy() for the parent driver (stm32-adc-core),
-> to avoid this.
-> 
-> Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
-> 
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> ---
-> Changes in v2:
-> - Use runtime_idle callback in stm32-adc-core driver, instead of refreshing
->   last_busy from the child (for the parent) at many place. Initial patch v1
->   looked like "somewhat adhoc solution" as commented by Jonathan.
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com> Sent: Wednesday, Septe=
+mber 16, 2020 6:34 PM
+> On Tue, 15 Sep 2020 14:45:58 -0600
+> Rob Herring <robh@kernel.org> wrote:
+>=20
+> > On Wed, Sep 9, 2020 at 12:02 PM Jonathan Cameron <jic23@kernel.org>
+> wrote:
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > A simple conversion of this freescale ADC binding from txt to yaml.
+> > > For maintainer I went with Fugang Duan as the original author of the
+> > > binding. Would be great to have confirmation of this.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Fugang Duan <B38611@freescale.com>
+> > > Cc: Shawn Guo <shawnguo@kernel.org>
+> > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  .../bindings/iio/adc/fsl,vf610-adc.yaml       | 81
+> +++++++++++++++++++
+> > >  .../devicetree/bindings/iio/adc/vf610-adc.txt | 36 ---------
+> > >  2 files changed, 81 insertions(+), 36 deletions(-)
+> > >
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
+> > > b/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
+> > > new file mode 100644
+> > > index 000000000000..99b6b55fd0a3
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
+> > > @@ -0,0 +1,81 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) %YAML 1.2
+> > > +---
+> > > +$id:
+> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
+e
+> > >
+> +vicetree.org%2Fschemas%2Fiio%2Fadc%2Ffsl%2Cvf610-adc.yaml%23&amp;da
+> > >
+> +ta=3D02%7C01%7Cfugang.duan%40nxp.com%7C750fcd8ebdf34af6655308d85a2
+> c41
+> > >
+> +8d%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63735849344455
+> 0580&
+> > >
+> +amp;sdata=3DSwRIWqN5caXEUZBTmnjKKHJKAZ1FQ03s1Gdpf%2FTyXzE%3D&am
+> p;rese
+> > > +rved=3D0
+> > > +$schema:
+> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
+e
+> > >
+> +vicetree.org%2Fmeta-schemas%2Fcore.yaml%23&amp;data=3D02%7C01%7Cfug
+> an
+> > >
+> +g.duan%40nxp.com%7C750fcd8ebdf34af6655308d85a2c418d%7C686ea1d3bc
+> 2b4
+> > >
+> +c6fa92cd99c5c301635%7C0%7C0%7C637358493444550580&amp;sdata=3Dc4To
+> ZCOG
+> > > +iPM0XbxCnLGJEEXvnMvFKqSgg3gtLeDYACI%3D&amp;reserved=3D0
+> > > +
+> > > +title: ADC found on Freescale vf610 and similar SoCs
+> > > +
+> > > +maintainers:
+> > > +  - Fugang Duan <B38611@freescale.com>
+> >
+> > I assume you got a bunch of bounces on this series, too? Looks like 1,
+> > 4, 7, 9, 13, 16, 19, and 20 bounced. Please fix those addresses before
+> > applying.
+>=20
+> Yup. I missed them on v1, but have saved the set for v2 to be able to fix=
+ those I
+> can.
+>=20
+> for some I can make a reasonable stab at a suitable maintainer as covered=
+ by a
+> catch all.  For the others if I can't find a newer address I'll cover the=
+m myself
+> until someone else steps up.
+> I think that's just 9 and 13.  For 4 I didn't get a bounce but can add th=
+at to my
+> list!
+>=20
+> For this particular one looks like fugang duan is still active but now wi=
+th an NXP
+> address so I'll update that. I've changed the cc on this mail.
+>=20
+> Thanks,
+>=20
+> Jonathan
 
-Hi all,
+Thanks, Jonathan.
 
-Gentle reminder for this patch. Earlier discussions on it were as per
-[1] and [2].
+For the patch, it looks good.
 
-Ideally, Jonathan was looking for an ack from Rafael on this patch.
-This is a long pending issue. I'd like to progress on this.
+Reviewed-by: Fugang Duan <fugang.duan@nxp.com>
+>=20
+>=20
+> >
+> > Rob
+>=20
 
-[1] https://patchwork.kernel.org/patch/11349841/
-[2] https://lkml.org/lkml/2020/6/11/279
-
-Please advise,
-Thanks in advance,
-Fabrice
-
-> ---
->  drivers/iio/adc/stm32-adc-core.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> index 0e2068e..3586369 100644
-> --- a/drivers/iio/adc/stm32-adc-core.c
-> +++ b/drivers/iio/adc/stm32-adc-core.c
-> @@ -794,6 +794,13 @@ static int stm32_adc_core_runtime_resume(struct device *dev)
->  {
->  	return stm32_adc_core_hw_start(dev);
->  }
-> +
-> +static int stm32_adc_core_runtime_idle(struct device *dev)
-> +{
-> +	pm_runtime_mark_last_busy(dev);
-> +
-> +	return 0;
-> +}
->  #endif
->  
->  static const struct dev_pm_ops stm32_adc_core_pm_ops = {
-> @@ -801,7 +808,7 @@ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
->  				pm_runtime_force_resume)
->  	SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
->  			   stm32_adc_core_runtime_resume,
-> -			   NULL)
-> +			   stm32_adc_core_runtime_idle)
->  };
->  
->  static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
-> 

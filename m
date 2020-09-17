@@ -2,102 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA43326E352
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8B126E326
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726239AbgIQSNU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 14:13:20 -0400
-Received: from mailout01.rmx.de ([94.199.90.91]:48043 "EHLO mailout01.rmx.de"
+        id S1726395AbgIQSES (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 14:04:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726440AbgIQSNJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 14:13:09 -0400
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726342AbgIQSCu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 14:02:50 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mailout01.rmx.de (Postfix) with ESMTPS id 4Bskg41Lcwz2SWb9;
-        Thu, 17 Sep 2020 19:37:04 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by kdin01.retarus.com (Postfix) with ESMTPS id 4Bskfl3XCHz2xFb;
-        Thu, 17 Sep 2020 19:36:47 +0200 (CEST)
-Received: from n95hx1g2.localnet (192.168.54.16) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Thu, 17 Sep
- 2020 19:36:34 +0200
-From:   Christian Eggers <ceggers@arri.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: trigger: Don't use RT priority
-Date:   Thu, 17 Sep 2020 19:36:33 +0200
-Message-ID: <1956630.afHySLI0iv@n95hx1g2>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <20200917181942.0d5db535@archlinux>
-References: <20200917120333.2337-1-ceggers@arri.de> <20200917181942.0d5db535@archlinux>
+        by mail.kernel.org (Postfix) with ESMTPSA id F392A20707;
+        Thu, 17 Sep 2020 18:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600365768;
+        bh=IlmibjKQkOmSNFpp1XnRSGcMC89RPmFcnnpLMx/wp0E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=C746T6UP/gIDzLvo4LwVDxv7RS8k9I6Wbxmi6UZ58u7sO1QQy100V9cSNumlRE8BL
+         vLNGDUC8Pslt0kl2Dn6C6Wboy32penimsopDGpD5UpmQb4jrg6aNSBcqRkAt4wifpP
+         YPYJ5OisuklT9XIBt+rQ7090ct2MDQgJdCDjOqP8=
+Date:   Thu, 17 Sep 2020 19:02:43 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH 1/3] iio:imu:adis16400: Sort out missing kernel doc.
+Message-ID: <20200917190243.0d7e7feb@archlinux>
+In-Reply-To: <CA+U=DsougYec6z-4qmbuKE8XkFzB2PUwwmxPGoUtcN+5cDep4Q@mail.gmail.com>
+References: <20200913132115.800131-1-jic23@kernel.org>
+        <20200913132115.800131-2-jic23@kernel.org>
+        <CA+U=DsougYec6z-4qmbuKE8XkFzB2PUwwmxPGoUtcN+5cDep4Q@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Originating-IP: [192.168.54.16]
-X-RMX-ID: 20200917-193653-4Bskfl3XCHz2xFb-0@kdin01
-X-RMX-SOURCE: 217.111.95.66
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Mon, 14 Sep 2020 08:52:34 +0300
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-On Thursday, 17 September 2020, 19:19:42 CEST, Jonathan Cameron wrote:
-> On Thu, 17 Sep 2020 14:03:33 +0200 Christian Eggers <ceggers@arri.de> wrote:
-> > Triggers may raise transactions on slow busses like I2C.  Using the
-> > original RT priority of a threaded IRQ may prevent other important IRQ
-> > handlers from being run.
-> > 
-> > Signed-off-by: Christian Eggers <ceggers@arri.de>
-> > Cc: stable@vger.kernel.org
+> On Sun, Sep 13, 2020 at 4:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > I'd like to be enable W=1 for all IIO builds as it catches real issues as well
+> > as more minor documentation issues such as this (also good to fix though!)
+> >
+> > drivers/iio/imu/adis16400.c:183: warning: Function parameter or member 'avail_scan_mask' not described in 'adis16400_state'
+> >  
+> 
+> Acked-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git
+Thanks,
+
+Jonathan
+
 > > ---
-> > In my particular case (on a RT kernel), the RT priority of the sysfstrig
-> > threaded IRQ handler caused (temporarily) raising the prio of a user
-> > space process which was holding the I2C bus mutex.
-> > 
-> > Due to a bug in the i2c-imx driver, this process spent 500 ms in a
-> > busy-wait loop and prevented all threaded IRQ handlers from being run
-> > during this time.
-> 
-> I'm not sure I fully understand the impacts of this yet.
-> 
-> What is the impact on cases where we don't have any nasty side affects
-> due to users of the trigger?
-The problem was not the user of the trigger. The problem was the (shared)
-resource (I2C bus) which the triggered iio driver uses. I would say
-that the i2c-imx driver is not "RT safe" [1]. This means that the driver performs
-busy-waiting, which is less a problem for normal priorities than for RT. If the
-busy-wait loop is run with RT prio, it will block everything else, even
-(threaded) interrupt handlers.
-
-> I presume reducing the priority will cause some reduction in
-> performance?  If so is there any chance that would count as a regression?
-I expect that other user will complain if we do this, yes. But I would like to
-open the discussion, which priority is the "correct" one, or how this could be
-set up from user space. According to [2], there is not much value choosing the
-priority inside the kernel. Simply changing the priority of the trigger task
-using "chrt" seems difficult, as this can (currently) not be done of using
-libiio.
-
-> 
-> Jonathan
-> 
-> > v2:
-> > - Use sched_set_normal() instead of sched_setscheduler_nocheck()
-> > 
-> >  drivers/iio/industrialio-trigger.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-
-[1] https://lore.kernel.org/patchwork/cover/1307330/
-[2] https://lwn.net/Articles/818388/
-
-
+> >  drivers/iio/imu/adis16400.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+> > index 1ebe3e50d3e6..140cfc65ee8c 100644
+> > --- a/drivers/iio/imu/adis16400.c
+> > +++ b/drivers/iio/imu/adis16400.c
+> > @@ -173,6 +173,8 @@ struct adis16400_chip_info {
+> >   * @variant:   chip variant info
+> >   * @filt_int:  integer part of requested filter frequency
+> >   * @adis:      adis device
+> > + * @avail_scan_mask:   NULL terminated array of bitmaps of channels
+> > + *                     that must be enabled together
+> >   **/
+> >  struct adis16400_state {
+> >         struct adis16400_chip_info      *variant;
+> > --
+> > 2.28.0
+> >  
 

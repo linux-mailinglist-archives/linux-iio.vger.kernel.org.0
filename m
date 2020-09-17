@@ -2,114 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 389C426DC59
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 15:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1E4626E02B
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 18:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727099AbgIQMwE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 08:52:04 -0400
-Received: from mailout06.rmx.de ([94.199.90.92]:53012 "EHLO mailout06.rmx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726993AbgIQMid (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 08:38:33 -0400
-X-Greylist: delayed 1962 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 08:37:38 EDT
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mailout06.rmx.de (Postfix) with ESMTPS id 4BsbGy2wP2z9x2S;
-        Thu, 17 Sep 2020 14:04:10 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by kdin02.retarus.com (Postfix) with ESMTPS id 4BsbGR4pKsz2TTN4;
-        Thu, 17 Sep 2020 14:03:43 +0200 (CEST)
-Received: from N95HX1G2.wgnetz.xx (192.168.54.80) by mta.arri.de
- (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Thu, 17 Sep
- 2020 14:03:43 +0200
-From:   Christian Eggers <ceggers@arri.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Christian Eggers <ceggers@arri.de>, <stable@vger.kernel.org>
-Subject: [PATCH v2] iio: trigger: Don't use RT priority
-Date:   Thu, 17 Sep 2020 14:03:33 +0200
-Message-ID: <20200917120333.2337-1-ceggers@arri.de>
-X-Mailer: git-send-email 2.26.2
+        id S1728097AbgIQP7x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 11:59:53 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30404 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728088AbgIQP7q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Sep 2020 11:59:46 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08HClZei001796;
+        Thu, 17 Sep 2020 09:00:01 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33k5q56qjm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Sep 2020 09:00:01 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 08HCxxnv024628
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 17 Sep 2020 09:00:00 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 17 Sep 2020 06:00:05 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 17 Sep 2020 06:00:05 -0700
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 17 Sep 2020 06:00:05 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08HCxsR3022978;
+        Thu, 17 Sep 2020 08:59:54 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: buffer: split buffer sysfs creation to take buffer as primary arg
+Date:   Thu, 17 Sep 2020 15:59:51 +0300
+Message-ID: <20200917125951.861-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.54.80]
-X-RMX-ID: 20200917-140343-4BsbGR4pKsz2TTN4-0@kdin02
-X-RMX-SOURCE: 217.111.95.66
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-17_09:2020-09-16,2020-09-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=2 priorityscore=1501 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009170099
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Triggers may raise transactions on slow busses like I2C.  Using the
-original RT priority of a threaded IRQ may prevent other important IRQ
-handlers from being run.
+Currently the iio_buffer_{alloc,free}_sysfs_and_mask() take 'indio_dev' as
+primary argument. This change splits the main logic into a private function
+that takes an IIO buffer as primary argument.
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Cc: stable@vger.kernel.org
+That way, the functions can be extended to configure the sysfs for multiple
+buffers.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
-In my particular case (on a RT kernel), the RT priority of the sysfstrig
-threaded IRQ handler caused (temporarily) raising the prio of a user
-space process which was holding the I2C bus mutex.
+ drivers/iio/industrialio-buffer.c | 46 ++++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-Due to a bug in the i2c-imx driver, this process spent 500 ms in a busy-wait
-loop and prevented all threaded IRQ handlers from being run during this
-time.
-
-v2:
-- Use sched_set_normal() instead of sched_setscheduler_nocheck()
-
- drivers/iio/industrialio-trigger.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 6f16357fd732..7ed00ad695c7 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -9,7 +9,10 @@
- #include <linux/err.h>
- #include <linux/device.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/list.h>
-+#include <linux/sched.h>
- #include <linux/slab.h>
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index a7d7e5143ed2..a4f6bb96d4f4 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1264,26 +1264,14 @@ static struct attribute *iio_buffer_attrs[] = {
+ 	&dev_attr_data_available.attr,
+ };
  
- #include <linux/iio/iio.h>
-@@ -245,6 +248,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- 	int ret = 0;
- 	bool notinuse
- 		= bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-+	struct irq_desc *irq_desc;
+-int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
++static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
++					     struct iio_dev *indio_dev)
+ {
+ 	struct iio_dev_attr *p;
+ 	struct attribute **attr;
+-	struct iio_buffer *buffer = indio_dev->buffer;
+ 	int ret, i, attrn, attrcount;
+ 	const struct iio_chan_spec *channels;
  
- 	/* Prevent the module from being removed whilst attached to a trigger */
- 	__module_get(pf->indio_dev->driver_module);
-@@ -264,6 +268,12 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- 	if (ret < 0)
- 		goto out_put_irq;
+-	channels = indio_dev->channels;
+-	if (channels) {
+-		int ml = indio_dev->masklength;
+-
+-		for (i = 0; i < indio_dev->num_channels; i++)
+-			ml = max(ml, channels[i].scan_index + 1);
+-		indio_dev->masklength = ml;
+-	}
+-
+-	if (!buffer)
+-		return 0;
+-
+ 	attrcount = 0;
+ 	if (buffer->attrs) {
+ 		while (buffer->attrs[attrcount] != NULL)
+@@ -1367,19 +1355,45 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 	return ret;
+ }
  
-+	/* Triggers may raise transactions on slow busses like I2C.  Using the original RT priority
-+	 * of a threaded IRQ may prevent other threaded IRQ handlers from being run.
-+	 */
-+	irq_desc = irq_to_desc(pf->irq);
-+	sched_set_normal(irq_desc->action->thread, 0);
+-void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
++int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ {
+ 	struct iio_buffer *buffer = indio_dev->buffer;
++	const struct iio_chan_spec *channels;
++	int i;
 +
- 	/* Enable trigger in driver */
- 	if (trig->ops && trig->ops->set_trigger_state && notinuse) {
- 		ret = trig->ops->set_trigger_state(trig, true);
++	channels = indio_dev->channels;
++	if (channels) {
++		int ml = indio_dev->masklength;
++
++		for (i = 0; i < indio_dev->num_channels; i++)
++			ml = max(ml, channels[i].scan_index + 1);
++		indio_dev->masklength = ml;
++	}
+ 
+ 	if (!buffer)
+-		return;
++		return 0;
++
++	return __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev);
++}
+ 
++static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
++{
+ 	bitmap_free(buffer->scan_mask);
+ 	kfree(buffer->buffer_group.attrs);
+ 	kfree(buffer->scan_el_group.attrs);
+ 	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
+ }
+ 
++void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
++{
++	struct iio_buffer *buffer = indio_dev->buffer;
++
++	if (!buffer)
++		return;
++
++	__iio_buffer_free_sysfs_and_mask(buffer);
++}
++
+ /**
+  * iio_validate_scan_mask_onehot() - Validates that exactly one channel is selected
+  * @indio_dev: the iio device
 -- 
-Christian Eggers
-Embedded software developer
-
-Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+2.17.1
 

@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA83F26E385
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E70126E38E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbgIQS2F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 14:28:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33988 "EHLO mail.kernel.org"
+        id S1726495AbgIQS3Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 14:29:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34944 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726540AbgIQS1p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 14:27:45 -0400
+        id S1726200AbgIQS3R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 14:29:17 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBD52221EE;
-        Thu, 17 Sep 2020 18:27:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 08F01221EE;
+        Thu, 17 Sep 2020 18:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600367264;
-        bh=x0yrJojLX0QmfsidGFj/TCRgWQNWYafkq8OmMlqEjGo=;
+        s=default; t=1600367356;
+        bh=JUONM1Y/eeGpl51Vy7G7yZa26OYQAx5a1o9bq3CQMpw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=btOwzNo+fZeau3dTn6RXwQa+SS26dR/NKoQ00xDO6Z6SDvWshmUBL24SqVqrjP0YV
-         ch20VqkkdQX8ZaEtm+t48MKWGTkGUXtsr+Q61GED7+ASnuJNQkWeXtAuibtlgW6uYR
-         rfDrWi9v43RZgAWuORQ28FD9xnfvAtBLeTAKaxCw=
-Date:   Thu, 17 Sep 2020 19:27:39 +0100
+        b=xUKqpXTP9ybK4uH3Em2gjvhEntBMNyGg3lATYH0gO7ZGFVe0lda6RRJBgqPSDsMvL
+         VYPDSOIpaYdOCXWBw41IDpEoDvKdMlXY0nML5TCKYBVEn7lzi9DffaPeXiL/2VqioC
+         Cxpvnp/VOFg2AHtFxrn2iotfWztsmxmqROnT2DX4=
+Date:   Thu, 17 Sep 2020 19:29:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-imx@nxp.com>,
-        <festevam@gmail.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Subject: Re: [PATCH v2] iio: adc: fsl-imx25-gcq: Replace indio_dev->mlock
- with own device lock
-Message-ID: <20200917192739.38a13ae0@archlinux>
-In-Reply-To: <20200916092928.78026-1-alexandru.ardelean@analog.com>
-References: <20200826120609.203724-1-alexandru.ardelean@analog.com>
-        <20200916092928.78026-1-alexandru.ardelean@analog.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 30/30] iio: dac: ad7303: Complete 'struct ad7303_state'
+ doc and reorder compiler attribute
+Message-ID: <20200917192911.786011e5@archlinux>
+In-Reply-To: <20200716135928.1456727-31-lee.jones@linaro.org>
+References: <20200716135928.1456727-1-lee.jones@linaro.org>
+        <20200716135928.1456727-31-lee.jones@linaro.org>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,71 +46,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Sep 2020 12:29:28 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Thu, 16 Jul 2020 14:59:28 +0100
+Lee Jones <lee.jones@linaro.org> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Kerneldoc gets confused if the variable does not follow the
+> type/attribute definitions.
 > 
-> As part of the general cleanup of indio_dev->mlock, this change replaces
-> it with a local lock, to protect against any other accesses during the
-> reading of sample. Reading a sample requires multiple consecutive regmap
-> operations and a completion callback, so this requires that no other
-> read occurs until it completes.
+> Fixes the following W=1 kernel build warning(s):
 > 
-> This is part of a bigger cleanup.
-> Link: https://lore.kernel.org/linux-iio/CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com/
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'vdd_reg' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'vref_reg' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member 'lock' not described in 'ad7303_state'
+>  drivers/iio/dac/ad7303.c:49: warning: Function parameter or member '____cacheline_aligned' not described in 'ad7303_state'
 > 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-This seems simple enough so I've applied it to the togreg branch of iio.git
+> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Applied but with the ____cacheline_aligned bit dropped as we've fixed the
+kernel-doc script up to ignore that one.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/fsl-imx25-gcq.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
+>  drivers/iio/dac/ad7303.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-> index 8cb51cf7a816..ab5139e911c3 100644
-> --- a/drivers/iio/adc/fsl-imx25-gcq.c
-> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
-> @@ -40,6 +40,15 @@ struct mx25_gcq_priv {
->  	int irq;
->  	struct regulator *vref[4];
->  	u32 channel_vref_mv[MX25_NUM_CFGS];
-> +	/*
-> +	 * Lock to protect the device state during a potential concurrent
-> +	 * read access from userspace. Reading a raw value requires a sequence
-> +	 * of register writes, then a wait for a completion callback,
-> +	 * and finally a register read, during which userspace could issue
-> +	 * another read request. This lock protects a read access from
-> +	 * ocurring before another one has finished.
-> +	 */
-> +	struct mutex lock;
+> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
+> index 15af8a1cce3eb..05d8dc88d4fad 100644
+> --- a/drivers/iio/dac/ad7303.c
+> +++ b/drivers/iio/dac/ad7303.c
+> @@ -29,6 +29,9 @@
+>   * @spi:		the device for this driver instance
+>   * @config:		cached config register value
+>   * @dac_cache:		current DAC raw value (chip does not support readback)
+> + * @vdd_reg:		reference to VDD regulator
+> + * @vref_reg:		reference to VREF regulator
+> + * @lock:		protect writes and cache updates
+>   * @data:		spi transfer buffer
+>   */
+>  
+> @@ -45,7 +48,7 @@ struct ad7303_state {
+>  	 * DMA (thus cache coherency maintenance) requires the
+>  	 * transfer buffers to live in their own cache lines.
+>  	 */
+> -	__be16 data ____cacheline_aligned;
+> +	__be16 ____cacheline_aligned data;
 >  };
 >  
->  #define MX25_CQG_CHAN(chan, id) {\
-> @@ -137,9 +146,9 @@ static int mx25_gcq_read_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> -		mutex_lock(&indio_dev->mlock);
-> +		mutex_lock(&priv->lock);
->  		ret = mx25_gcq_get_raw_value(&indio_dev->dev, chan, priv, val);
-> -		mutex_unlock(&indio_dev->mlock);
-> +		mutex_unlock(&priv->lock);
->  		return ret;
->  
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -314,6 +323,8 @@ static int mx25_gcq_probe(struct platform_device *pdev)
->  		return PTR_ERR(priv->regs);
->  	}
->  
-> +	mutex_init(&priv->lock);
-> +
->  	init_completion(&priv->completed);
->  
->  	ret = mx25_gcq_setup_cfgs(pdev, priv);
+>  static int ad7303_write(struct ad7303_state *st, unsigned int chan,
 

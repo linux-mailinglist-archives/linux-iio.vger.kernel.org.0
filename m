@@ -2,104 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B681426E476
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD6C26E408
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726435AbgIQStw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 14:49:52 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:24644 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728519AbgIQQ17 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Sep 2020 12:27:59 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08HFTck1001177;
-        Thu, 17 Sep 2020 11:50:50 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33k5p677t8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Sep 2020 11:50:50 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08HFonnN011784
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 17 Sep 2020 11:50:49 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 17 Sep
- 2020 11:50:55 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 17 Sep 2020 11:50:55 -0400
-Received: from nsa.sphairon.box ([10.44.3.98])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08HFojFI030124;
-        Thu, 17 Sep 2020 11:50:45 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        id S1726557AbgIQSiT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 14:38:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726250AbgIQRTs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 13:19:48 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 145A8221E3;
+        Thu, 17 Sep 2020 17:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600363187;
+        bh=21Q34AOs8zDD3/feAv29bl5fXW+Jkv/vzpLdXHQugjU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pWc2jfeNPJrr5Y0o2P93Y7tbpoCAOwUOSngPay4RQ1bh4VbLgLYwTxs2VTes6qsse
+         0kC0jMMhFaZJaDcxS8xWsfOt/w/Bg+bTLPxehAh8ZqjIxxkEACqV/m6/nRBpRhgdsU
+         Xoq8pBaePp6h9+Jo4nd9vif/0G6P+qCZEzmyt0eQ=
+Date:   Thu, 17 Sep 2020 18:19:42 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Christian Eggers <ceggers@arri.de>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 0/4] Refactor ADIS Burst Mode
-Date:   Thu, 17 Sep 2020 17:52:19 +0200
-Message-ID: <20200917155223.218500-1-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.28.0
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: trigger: Don't use RT priority
+Message-ID: <20200917181942.0d5db535@archlinux>
+In-Reply-To: <20200917120333.2337-1-ceggers@arri.de>
+References: <20200917120333.2337-1-ceggers@arri.de>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-17_10:2020-09-16,2020-09-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=773
- lowpriorityscore=0 impostorscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015 suspectscore=1
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009170119
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This series refactors the ADIS burst mode. The 2 main ideas of the
-refactor are:
+On Thu, 17 Sep 2020 14:03:33 +0200
+Christian Eggers <ceggers@arri.de> wrote:
 
-1. As discussed in previous patches, there's no point in
-enabling/disabling burst mode at runtime. Hence, we can drop the `en`
-variable.
-2. Replace the `extra_len` by `burst_len` where users have now to
-explicitly define the size of the burst buffer. The point is to remove
-the following line from the lib:
+> Triggers may raise transactions on slow busses like I2C.  Using the
+> original RT priority of a threaded IRQ may prevent other important IRQ
+> handlers from being run.
+> 
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> Cc: stable@vger.kernel.org
+> ---
+> In my particular case (on a RT kernel), the RT priority of the sysfstrig
+> threaded IRQ handler caused (temporarily) raising the prio of a user
+> space process which was holding the I2C bus mutex.
+> 
+> Due to a bug in the i2c-imx driver, this process spent 500 ms in a busy-wait
+> loop and prevented all threaded IRQ handlers from being run during this
+> time.
+I'm not sure I fully understand the impacts of this yet.
 
-```
-/* All but the timestamp channel */
-burst_length = (indio_dev->num_channels - 1) * sizeof(u16);
-```
+What is the impact on cases where we don't have any nasty side affects
+due to users of the trigger?
 
-The library should not assume that a timestamp channel is defined.
-Moreover, most parts also include some diagnostic data, crc, etc.. in
-the burst buffer that needed to be included in an `extra_len` variable
-which is not that nice. On top of this, some devices already start to
-have some 32bit size channels ...
+I presume reducing the priority will cause some reduction in
+performance?  If so is there any chance that would count as a regression?
 
-While doing this (and mainly when looking at the adis16400) drivers it
-felt that the burst variables belong to the per chip `adis_data`
-structure. As seen in the adis16400 driver, some drivers might support
-multiple devices with different burst sizes.
+Jonathan
 
-For now, it does not feel necessary to wrap these variables in a
-`adis_burst` structure but I don't see any problem in doing so if
-required...
-
-Nuno Sá (4):
-  iio: adis: Move burst mode into adis_data
-  iio: adis16400: Drop adis_burst usage
-  iio: adis16475: Drop adis_burst usage
-  iio: adis. Drop adis_burst struct
-
- drivers/iio/imu/adis16400.c   | 32 +++++++++++++-------------------
- drivers/iio/imu/adis16475.c   | 18 +++---------------
- drivers/iio/imu/adis_buffer.c | 12 +++++-------
- include/linux/iio/imu/adis.h  | 26 +++++++++-----------------
- 4 files changed, 30 insertions(+), 58 deletions(-)
-
--- 
-2.28.0
+> 
+> v2:
+> - Use sched_set_normal() instead of sched_setscheduler_nocheck()
+> 
+>  drivers/iio/industrialio-trigger.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> index 6f16357fd732..7ed00ad695c7 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -9,7 +9,10 @@
+>  #include <linux/err.h>
+>  #include <linux/device.h>
+>  #include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/irqdesc.h>
+>  #include <linux/list.h>
+> +#include <linux/sched.h>
+>  #include <linux/slab.h>
+>  
+>  #include <linux/iio/iio.h>
+> @@ -245,6 +248,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+>  	int ret = 0;
+>  	bool notinuse
+>  		= bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+> +	struct irq_desc *irq_desc;
+>  
+>  	/* Prevent the module from being removed whilst attached to a trigger */
+>  	__module_get(pf->indio_dev->driver_module);
+> @@ -264,6 +268,12 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+>  	if (ret < 0)
+>  		goto out_put_irq;
+>  
+> +	/* Triggers may raise transactions on slow busses like I2C.  Using the original RT priority
+> +	 * of a threaded IRQ may prevent other threaded IRQ handlers from being run.
+> +	 */
+> +	irq_desc = irq_to_desc(pf->irq);
+> +	sched_set_normal(irq_desc->action->thread, 0);
+> +
+>  	/* Enable trigger in driver */
+>  	if (trig->ops && trig->ops->set_trigger_state && notinuse) {
+>  		ret = trig->ops->set_trigger_state(trig, true);
 

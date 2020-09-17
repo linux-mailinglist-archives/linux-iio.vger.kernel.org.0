@@ -2,156 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0604726D5B1
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 10:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 389C426DC59
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 15:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbgIQIHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 04:07:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48986 "EHLO mail.kernel.org"
+        id S1727099AbgIQMwE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 08:52:04 -0400
+Received: from mailout06.rmx.de ([94.199.90.92]:53012 "EHLO mailout06.rmx.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726460AbgIQIHB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 04:07:01 -0400
-Received: from localhost (unknown [151.66.80.226])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726993AbgIQMid (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 08:38:33 -0400
+X-Greylist: delayed 1962 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 08:37:38 EDT
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CB2021D7F;
-        Thu, 17 Sep 2020 08:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600330021;
-        bh=PYy18IYLPyly6lpSvONF4fmQOHk7Au32VIWvOL+8b8w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Tc7PsFLcqRhs565sfekGU8p420yu3Xn+raDRVhtpuC755sX5IOUIVMm3fMVnfQtf0
-         9U74O20nM03yTS4a2oIMm4P0o+xgVi5bw/4hSqXx2PInCNaG0y114SUolO91wy6K76
-         A8Mv+ABQPj9zy9krNynPkdb8/yf+KNoAqUQLqqkA=
-Date:   Thu, 17 Sep 2020 10:06:56 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Mario Tesi <martepisa@gmail.com>
-Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mario.tesi@st.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Scaling factor type set to
- IIO_VAL_INT_PLUS_NANO
-Message-ID: <20200917080656.GA22982@lore-desk>
-References: <1600274660-29143-1-git-send-email-martepisa@gmail.com>
+        by mailout06.rmx.de (Postfix) with ESMTPS id 4BsbGy2wP2z9x2S;
+        Thu, 17 Sep 2020 14:04:10 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by kdin02.retarus.com (Postfix) with ESMTPS id 4BsbGR4pKsz2TTN4;
+        Thu, 17 Sep 2020 14:03:43 +0200 (CEST)
+Received: from N95HX1G2.wgnetz.xx (192.168.54.80) by mta.arri.de
+ (192.168.100.104) with Microsoft SMTP Server (TLS) id 14.3.408.0; Thu, 17 Sep
+ 2020 14:03:43 +0200
+From:   Christian Eggers <ceggers@arri.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Christian Eggers <ceggers@arri.de>, <stable@vger.kernel.org>
+Subject: [PATCH v2] iio: trigger: Don't use RT priority
+Date:   Thu, 17 Sep 2020 14:03:33 +0200
+Message-ID: <20200917120333.2337-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KsGdsel6WgEHnImy"
-Content-Disposition: inline
-In-Reply-To: <1600274660-29143-1-git-send-email-martepisa@gmail.com>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.54.80]
+X-RMX-ID: 20200917-140343-4BsbGR4pKsz2TTN4-0@kdin02
+X-RMX-SOURCE: 217.111.95.66
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Triggers may raise transactions on slow busses like I2C.  Using the
+original RT priority of a threaded IRQ may prevent other important IRQ
+handlers from being run.
 
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Cc: stable@vger.kernel.org
+---
+In my particular case (on a RT kernel), the RT priority of the sysfstrig
+threaded IRQ handler caused (temporarily) raising the prio of a user
+space process which was holding the I2C bus mutex.
 
-> From: Mario Tesi <mario.tesi@st.com>
->=20
-> Scaling factor values for Acc lead to an unacceptable rounding of the
-> full scale (FS) calculated by some SensorHAL on Android devices. For exam=
-ples
-> setting FS to 4g the in_accel_x_scale, in_accel_y_scale and in_accel_z_sc=
-ale
-> are 0.001196 on 6 decimal digits and the FS is
-> 0.001196 =C3=97 ((2^15) =E2=88=92 1) ~=3D 39.1893 m/s^2.
->=20
-> Android CTS R10 SensorParameterRangeTest test expects a value greater than
-> 39.20 m/s^2 so this test fails (ACCELEROMETER_MAX_RANGE =3D 4 * 9.80).
->=20
-> Using 9 decimal digits the new scale factor is 0.001196411 and the FS now
-> is 0.001196411 =C3=97 ((2^15)=E2=88=921) ~=3D 39.2028 m/s^2.
->=20
-> This patch extends to IIO_VAL_INT_PLUS_NANO type the scaling factor to all
-> IMU devices where SensorParameterRangeTest CTS test fails.
->=20
-> Signed-off-by: Mario Tesi <mario.tesi@st.com>
+Due to a bug in the i2c-imx driver, this process spent 500 ms in a busy-wait
+loop and prevented all threaded IRQ handlers from being run during this
+time.
 
-Hi Mario,
+v2:
+- Use sched_set_normal() instead of sched_setscheduler_nocheck()
 
-just a minor comment inline. Fixing it:
+ drivers/iio/industrialio-trigger.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index 6f16357fd732..7ed00ad695c7 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -9,7 +9,10 @@
+ #include <linux/err.h>
+ #include <linux/device.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/list.h>
++#include <linux/sched.h>
+ #include <linux/slab.h>
+ 
+ #include <linux/iio/iio.h>
+@@ -245,6 +248,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+ 	int ret = 0;
+ 	bool notinuse
+ 		= bitmap_empty(trig->pool, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
++	struct irq_desc *irq_desc;
+ 
+ 	/* Prevent the module from being removed whilst attached to a trigger */
+ 	__module_get(pf->indio_dev->driver_module);
+@@ -264,6 +268,12 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
+ 	if (ret < 0)
+ 		goto out_put_irq;
+ 
++	/* Triggers may raise transactions on slow busses like I2C.  Using the original RT priority
++	 * of a threaded IRQ may prevent other threaded IRQ handlers from being run.
++	 */
++	irq_desc = irq_to_desc(pf->irq);
++	sched_set_normal(irq_desc->action->thread, 0);
++
+ 	/* Enable trigger in driver */
+ 	if (trig->ops && trig->ops->set_trigger_state && notinuse) {
+ 		ret = trig->ops->set_trigger_state(trig, true);
+-- 
+Christian Eggers
+Embedded software developer
 
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 136 ++++++++++++++++-----=
-------
->  1 file changed, 79 insertions(+), 57 deletions(-)
->=20
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 
-[...]
-
->  	fs_table =3D &hw->settings->fs_table[sensor->id];
->  	for (i =3D 0; i < fs_table->fs_len; i++)
-> -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "0.%06u ",
-> +		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ",
->  				 fs_table->fs_avl[i].gain);
->  	buf[len - 1] =3D '\n';
-> =20
->  	return len;
->  }
-> =20
-> +static int st_lsm6dsx_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +					struct iio_chan_spec const *chan,
-> +					long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_ANGL_VEL:
-> +		case IIO_ACCEL:
-> +			return IIO_VAL_INT_PLUS_NANO;
-> +		default:
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		}
-> +	default:
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	}
-> +
-> +	return -EINVAL;
-
-you can remove this
-
-> +}
-> +
->  static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(st_lsm6dsx_sysfs_sampling_frequency_=
-avail);
->  static IIO_DEVICE_ATTR(in_accel_scale_available, 0444,
->  		       st_lsm6dsx_sysfs_scale_avail, NULL, 0);
-> @@ -1868,6 +1888,7 @@ static const struct iio_info st_lsm6dsx_acc_info =
-=3D {
->  	.read_event_config =3D st_lsm6dsx_read_event_config,
->  	.write_event_config =3D st_lsm6dsx_write_event_config,
->  	.hwfifo_set_watermark =3D st_lsm6dsx_set_watermark,
-> +	.write_raw_get_fmt =3D st_lsm6dsx_write_raw_get_fmt,
->  };
-> =20
->  static struct attribute *st_lsm6dsx_gyro_attributes[] =3D {
-> @@ -1885,6 +1906,7 @@ static const struct iio_info st_lsm6dsx_gyro_info =
-=3D {
->  	.read_raw =3D st_lsm6dsx_read_raw,
->  	.write_raw =3D st_lsm6dsx_write_raw,
->  	.hwfifo_set_watermark =3D st_lsm6dsx_set_watermark,
-> +	.write_raw_get_fmt =3D st_lsm6dsx_write_raw_get_fmt,
->  };
-> =20
->  static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_p=
-in)
-> --=20
-> 2.7.4
->=20
-
---KsGdsel6WgEHnImy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX2MZHQAKCRA6cBh0uS2t
-rHL/AP96R7XytMxa6K9VjyJF4K2K8BSdYyIad7PfYCNCKsj+dAEA2GQN9/EDTUz+
-Aoo53Jh582buw4rBvjezJiIXzFoZ9g4=
-=L8iq
------END PGP SIGNATURE-----
-
---KsGdsel6WgEHnImy--

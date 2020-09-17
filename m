@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E70126E38E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40DF526E395
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 20:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbgIQS3Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 14:29:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34944 "EHLO mail.kernel.org"
+        id S1726185AbgIQSae (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 14:30:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35794 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726200AbgIQS3R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Sep 2020 14:29:17 -0400
+        id S1726200AbgIQSae (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Sep 2020 14:30:34 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08F01221EE;
-        Thu, 17 Sep 2020 18:29:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EA474221EE;
+        Thu, 17 Sep 2020 18:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600367356;
-        bh=JUONM1Y/eeGpl51Vy7G7yZa26OYQAx5a1o9bq3CQMpw=;
+        s=default; t=1600367429;
+        bh=JZVoYCj9TVsqgcGVk0M6zcrr/208nx/00klNnUVjI/s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xUKqpXTP9ybK4uH3Em2gjvhEntBMNyGg3lATYH0gO7ZGFVe0lda6RRJBgqPSDsMvL
-         VYPDSOIpaYdOCXWBw41IDpEoDvKdMlXY0nML5TCKYBVEn7lzi9DffaPeXiL/2VqioC
-         Cxpvnp/VOFg2AHtFxrn2iotfWztsmxmqROnT2DX4=
-Date:   Thu, 17 Sep 2020 19:29:11 +0100
+        b=yrXu9K0a3PXwKp73G1fLdEMQbfky9bykOb0c6vVUaeUAa7BMjDNwKnS8dlU6C+9mr
+         DN38vPLQvlt0CuFpOfy6tDLxCiMm3X1iwnNmfnSO64O7XMVJOkenPk/0KjPduRU8wo
+         ilu+S02Y9sAvSduAcPKQCH9BSTTfYpGanucvU8jA=
+Date:   Thu, 17 Sep 2020 19:30:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
@@ -34,7 +34,7 @@ Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 30/30] iio: dac: ad7303: Complete 'struct ad7303_state'
  doc and reorder compiler attribute
-Message-ID: <20200917192911.786011e5@archlinux>
+Message-ID: <20200917193024.73fa1108@archlinux>
 In-Reply-To: <20200716135928.1456727-31-lee.jones@linaro.org>
 References: <20200716135928.1456727-1-lee.jones@linaro.org>
         <20200716135928.1456727-31-lee.jones@linaro.org>
@@ -63,8 +63,8 @@ Lee Jones <lee.jones@linaro.org> wrote:
 > Cc: Liam Girdwood <lgirdwood@gmail.com>
 > Cc: Mark Brown <broonie@kernel.org>
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Applied but with the ____cacheline_aligned bit dropped as we've fixed the
-kernel-doc script up to ignore that one.
+Applied with ___cacheline_aligned bit dropped as now kernel-doc will ignore
+that.
 
 Thanks,
 

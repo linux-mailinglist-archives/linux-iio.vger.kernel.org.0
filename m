@@ -2,155 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E4626E02B
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 18:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4AD26E0AD
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Sep 2020 18:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728097AbgIQP7x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Sep 2020 11:59:53 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30404 "EHLO
+        id S1728083AbgIQQ1K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Sep 2020 12:27:10 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:45024 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728088AbgIQP7q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Sep 2020 11:59:46 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08HClZei001796;
-        Thu, 17 Sep 2020 09:00:01 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33k5q56qjm-1
+        by vger.kernel.org with ESMTP id S1728462AbgIQQ1F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Sep 2020 12:27:05 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08HFTarl001165;
+        Thu, 17 Sep 2020 11:50:53 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33k5p677tc-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Sep 2020 09:00:01 -0400
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 08HCxxnv024628
+        Thu, 17 Sep 2020 11:50:52 -0400
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08HFopVi011800
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 17 Sep 2020 09:00:00 -0400
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+        Thu, 17 Sep 2020 11:50:51 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 17 Sep 2020 06:00:05 -0700
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ 15.1.1779.2; Thu, 17 Sep 2020 11:50:58 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 17 Sep 2020 06:00:05 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 17 Sep 2020 06:00:05 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08HCxsR3022978;
-        Thu, 17 Sep 2020 08:59:54 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: buffer: split buffer sysfs creation to take buffer as primary arg
-Date:   Thu, 17 Sep 2020 15:59:51 +0300
-Message-ID: <20200917125951.861-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
+ 15.1.1779.2; Thu, 17 Sep 2020 11:50:57 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 17 Sep 2020 11:50:57 -0400
+Received: from nsa.sphairon.box ([10.44.3.98])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08HFojFK030124;
+        Thu, 17 Sep 2020 11:50:48 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 2/4] iio: adis16400: Drop adis_burst usage
+Date:   Thu, 17 Sep 2020 17:52:21 +0200
+Message-ID: <20200917155223.218500-3-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200917155223.218500-1-nuno.sa@analog.com>
+References: <20200917155223.218500-1-nuno.sa@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-17_09:2020-09-16,2020-09-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=2 priorityscore=1501 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009170099
+ definitions=2020-09-17_10:2020-09-16,2020-09-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015 suspectscore=1
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009170119
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently the iio_buffer_{alloc,free}_sysfs_and_mask() take 'indio_dev' as
-primary argument. This change splits the main logic into a private function
-that takes an IIO buffer as primary argument.
+Burst mode variables are now part of the `adis_data` struct. The driver
+also has now to explicitly define the length of the burst buffer.
 
-That way, the functions can be extended to configure the sysfs for multiple
-buffers.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/industrialio-buffer.c | 46 ++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+ drivers/iio/imu/adis16400.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index a7d7e5143ed2..a4f6bb96d4f4 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1264,26 +1264,14 @@ static struct attribute *iio_buffer_attrs[] = {
- 	&dev_attr_data_available.attr,
+diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+index 889c8c2a19f4..421b1988c1d4 100644
+--- a/drivers/iio/imu/adis16400.c
++++ b/drivers/iio/imu/adis16400.c
+@@ -317,11 +317,6 @@ enum adis16400_chip_variant {
+ 	ADIS16448,
  };
  
--int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-+static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-+					     struct iio_dev *indio_dev)
+-static struct adis_burst adis16400_burst = {
+-	.en = true,
+-	.reg_cmd = ADIS16400_GLOB_CMD,
+-};
+-
+ static int adis16334_get_freq(struct adis16400_state *st)
  {
- 	struct iio_dev_attr *p;
- 	struct attribute **attr;
--	struct iio_buffer *buffer = indio_dev->buffer;
- 	int ret, i, attrn, attrcount;
- 	const struct iio_chan_spec *channels;
+ 	int ret;
+@@ -947,7 +942,7 @@ static const char * const adis16400_status_error_msgs[] = {
+ 	[ADIS16400_DIAG_STAT_POWER_LOW] = "Power supply below 4.75V",
+ };
  
--	channels = indio_dev->channels;
--	if (channels) {
--		int ml = indio_dev->masklength;
--
--		for (i = 0; i < indio_dev->num_channels; i++)
--			ml = max(ml, channels[i].scan_index + 1);
--		indio_dev->masklength = ml;
--	}
--
--	if (!buffer)
--		return 0;
--
- 	attrcount = 0;
- 	if (buffer->attrs) {
- 		while (buffer->attrs[attrcount] != NULL)
-@@ -1367,19 +1355,45 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
- 	return ret;
+-#define ADIS16400_DATA(_timeouts)					\
++#define ADIS16400_DATA(_timeouts, _burst_len)				\
+ {									\
+ 	.msc_ctrl_reg = ADIS16400_MSC_CTRL,				\
+ 	.glob_cmd_reg = ADIS16400_GLOB_CMD,				\
+@@ -973,6 +968,8 @@ static const char * const adis16400_status_error_msgs[] = {
+ 		BIT(ADIS16400_DIAG_STAT_POWER_HIGH) |			\
+ 		BIT(ADIS16400_DIAG_STAT_POWER_LOW),			\
+ 	.timeouts = (_timeouts),					\
++	.burst_reg_cmd = ADIS16400_GLOB_CMD,				\
++	.burst_len = (_burst_len)					\
  }
  
--void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-+int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
- {
- 	struct iio_buffer *buffer = indio_dev->buffer;
-+	const struct iio_chan_spec *channels;
-+	int i;
-+
-+	channels = indio_dev->channels;
-+	if (channels) {
-+		int ml = indio_dev->masklength;
-+
-+		for (i = 0; i < indio_dev->num_channels; i++)
-+			ml = max(ml, channels[i].scan_index + 1);
-+		indio_dev->masklength = ml;
-+	}
+ static const struct adis_timeout adis16300_timeouts = {
+@@ -1023,7 +1020,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 140000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16300_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16300_timeouts, 18),
+ 	},
+ 	[ADIS16334] = {
+ 		.channels = adis16334_channels,
+@@ -1036,7 +1033,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 67850, /* 25 C = 0x00 */
+ 		.set_freq = adis16334_set_freq,
+ 		.get_freq = adis16334_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16334_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16334_timeouts, 0),
+ 	},
+ 	[ADIS16350] = {
+ 		.channels = adis16350_channels,
+@@ -1048,7 +1045,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.flags = ADIS16400_NO_BURST | ADIS16400_HAS_SLOW_MODE,
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16300_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16300_timeouts, 0),
+ 	},
+ 	[ADIS16360] = {
+ 		.channels = adis16350_channels,
+@@ -1061,7 +1058,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 136000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16300_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16300_timeouts, 28),
+ 	},
+ 	[ADIS16362] = {
+ 		.channels = adis16350_channels,
+@@ -1074,7 +1071,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 136000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16362_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16362_timeouts, 28),
+ 	},
+ 	[ADIS16364] = {
+ 		.channels = adis16350_channels,
+@@ -1087,7 +1084,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 136000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16362_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16362_timeouts, 28),
+ 	},
+ 	[ADIS16367] = {
+ 		.channels = adis16350_channels,
+@@ -1100,7 +1097,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 136000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16300_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16300_timeouts, 28),
+ 	},
+ 	[ADIS16400] = {
+ 		.channels = adis16400_channels,
+@@ -1112,7 +1109,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 25000000 / 140000, /* 25 C = 0x00 */
+ 		.set_freq = adis16400_set_freq,
+ 		.get_freq = adis16400_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16400_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16400_timeouts, 24),
+ 	},
+ 	[ADIS16445] = {
+ 		.channels = adis16445_channels,
+@@ -1126,7 +1123,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 31000000 / 73860, /* 31 C = 0x00 */
+ 		.set_freq = adis16334_set_freq,
+ 		.get_freq = adis16334_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16445_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16445_timeouts, 16),
+ 	},
+ 	[ADIS16448] = {
+ 		.channels = adis16448_channels,
+@@ -1140,7 +1137,7 @@ static struct adis16400_chip_info adis16400_chips[] = {
+ 		.temp_offset = 31000000 / 73860, /* 31 C = 0x00 */
+ 		.set_freq = adis16334_set_freq,
+ 		.get_freq = adis16334_get_freq,
+-		.adis_data = ADIS16400_DATA(&adis16448_timeouts),
++		.adis_data = ADIS16400_DATA(&adis16448_timeouts, 24),
+ 	}
+ };
  
- 	if (!buffer)
--		return;
-+		return 0;
-+
-+	return __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev);
-+}
+@@ -1196,9 +1193,6 @@ static int adis16400_probe(struct spi_device *spi)
+ 	if (!(st->variant->flags & ADIS16400_NO_BURST)) {
+ 		adis16400_setup_chan_mask(st);
+ 		indio_dev->available_scan_masks = st->avail_scan_mask;
+-		st->adis.burst = &adis16400_burst;
+-		if (st->variant->flags & ADIS16400_BURST_DIAG_STAT)
+-			st->adis.burst_extra_len = sizeof(u16);
+ 	}
  
-+static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
-+{
- 	bitmap_free(buffer->scan_mask);
- 	kfree(buffer->buffer_group.attrs);
- 	kfree(buffer->scan_el_group.attrs);
- 	iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
- }
- 
-+void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-+{
-+	struct iio_buffer *buffer = indio_dev->buffer;
-+
-+	if (!buffer)
-+		return;
-+
-+	__iio_buffer_free_sysfs_and_mask(buffer);
-+}
-+
- /**
-  * iio_validate_scan_mask_onehot() - Validates that exactly one channel is selected
-  * @indio_dev: the iio device
+ 	adis16400_data = &st->variant->adis_data;
 -- 
-2.17.1
+2.28.0
 

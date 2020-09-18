@@ -2,154 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D5026FB13
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Sep 2020 13:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB81226FBA9
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Sep 2020 13:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbgIRLCD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Sep 2020 07:02:03 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:19080 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725941AbgIRLCD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Sep 2020 07:02:03 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08I9TbKn029171;
-        Fri, 18 Sep 2020 05:34:06 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33k5p69ws1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Sep 2020 05:34:05 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08I9Y4Dt051002
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 18 Sep 2020 05:34:04 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 18 Sep
- 2020 05:34:09 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 18 Sep 2020 05:34:09 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08I9Y18P024038;
-        Fri, 18 Sep 2020 05:34:02 -0400
-From:   Cristian Pop <cristian.pop@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, Cristian Pop <cristian.pop@analog.com>
-Subject: [PATCH v5] iio: adc: ad7768-1: Add channel label example
-Date:   Fri, 18 Sep 2020 12:33:56 +0300
-Message-ID: <20200918093356.93670-1-cristian.pop@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726064AbgIRLjb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Sep 2020 07:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57794 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgIRLjb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Sep 2020 07:39:31 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3064C06174A;
+        Fri, 18 Sep 2020 04:39:30 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id m7so6654248oie.0;
+        Fri, 18 Sep 2020 04:39:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Hv+H6dY6nRfqSFBOoFPMbAJc7waktRobbMQ296CJc44=;
+        b=VNPYvm2KioNyGT532r6jWxdYOsBWKKG9wrye0nG3XwS+dSLtTcVEy2jd9XIYDojmiU
+         10kKcqbZ4RmknzE5GfHV9ek+PzSmk+caTONhXsBYfKu3s7CDKm/UtmCKrL3rcXcDuycZ
+         z6XrAX8Iv3PkfRR9bMEXBen1gl7eAFRc6M4XYUmfE/U3rFH05GO7dbkM/StQ9OlEUpsy
+         NYHA/YvLhEe2OyYxSAzLFy+MPuNyXc5aHgranS9AmgfESsGj+5ENUimgzHigeMXDsvzL
+         kAVFnMZ24kRLp+CJ0zTvuZWApc6qnYCe2f/XUnBg56IBgjN2ttP890w34kM5EcVcpjNi
+         hYcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Hv+H6dY6nRfqSFBOoFPMbAJc7waktRobbMQ296CJc44=;
+        b=Ow9Oo0O3SrkUurXZeaSb32BYXxCPHOPVHLaYMe3VZzL6svZZNw/hz54AX52baaYQF+
+         yrijmTncy+cZ9+TyYTQLosxXu+rzq2TJBTyHIU/YmnsrrCawlEh1r51LTM4IZYlNtNyH
+         UDbL4hv0wKrfFQG+gUx0pjwow04GDDIbK4XjVH5uXV49q3YAYjeWYwNnOnmegptUuAkt
+         Ij9nfnhRcmjWyrl0nf0LTFHvoY7/nF+JSBDTYj2ocDBZ0W79qciA3ZI1wNB74ngmU4SK
+         oIxpW/7pIhpdy59ha40Ss1UA2NI/Y6ka2GoyLnew6uiw+JSZB70rc9vsAFvUL71axjet
+         tjQQ==
+X-Gm-Message-State: AOAM533TlvR74GSQAU4n+ZUGHSJY6/hpLsj4UUoJmv6EkJQRLL3Xh2ND
+        dSEVXJna9Y7Qjs2TtlgJa2OktC1uzZNJAZ/cs3PQjRZDBpI=
+X-Google-Smtp-Source: ABdhPJzHXSUmI2FjzpOSvUFXSwe1uczz1hrAT4joMRm8e5xrWbCJSCrjxqZheGCbOrYVdCvJFIvYdlbu8i9Nzt1LFBk=
+X-Received: by 2002:aca:72ca:: with SMTP id p193mr8819128oic.124.1600429170085;
+ Fri, 18 Sep 2020 04:39:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-18_11:2020-09-16,2020-09-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015 suspectscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009180079
+References: <20200918103247.1484-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20200918103247.1484-1-alexandru.ardelean@analog.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Fri, 18 Sep 2020 14:39:19 +0300
+Message-ID: <CA+U=DsoaOJHyoK30CDFie7XWknoeG6ASXLhzS0+zKJxWWJivnQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: event: use short-hand variable in
+ iio_device_{un}register_eventset functions
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a demo usage of new "label" attribute for channel.
+On Fri, Sep 18, 2020 at 1:34 PM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
+>
+> With the recent 'iio_dev_opaque' variable name, these two functions are
+> looking a bit ugly.
+>
+> This change uses an 'ev_int' variable for the
+> iio_device_{un}register_eventset functions to make the code a little easier
+> to read.
+>
 
-Signed-off-by: Cristian Pop <cristian.pop@analog.com>
----
-Changes in V5:
-Create a separate patch file for this commit
- drivers/iio/adc/ad7768-1.c | 49 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+Please disregard this series.
+I found a bug with this.
+Seems I didn't test it properly the first time.
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 0d132708c429..5ca9f9febb5a 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -161,6 +161,7 @@ struct ad7768_state {
- 	struct completion completion;
- 	struct iio_trigger *trig;
- 	struct gpio_desc *gpio_sync_in;
-+	const char **labels;
- 	/*
- 	 * DMA (thus cache coherency maintenance) requires the
- 	 * transfer buffers to live in their own cache lines.
-@@ -407,6 +408,14 @@ static int ad7768_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int ad7768_read_label(struct iio_dev *indio_dev,
-+	const struct iio_chan_spec *chan, char *label)
-+{
-+	struct ad7768_state *st = iio_priv(indio_dev);
-+
-+	return sprintf(label, "%s\n", st->labels[chan->channel]);
-+}
-+
- static struct attribute *ad7768_attributes[] = {
- 	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
- 	NULL
-@@ -420,6 +429,7 @@ static const struct iio_info ad7768_info = {
- 	.attrs = &ad7768_group,
- 	.read_raw = &ad7768_read_raw,
- 	.write_raw = &ad7768_write_raw,
-+	.read_label = ad7768_read_label,
- 	.debugfs_reg_access = &ad7768_reg_access,
- };
- 
-@@ -538,6 +548,41 @@ static void ad7768_clk_disable(void *data)
- 	clk_disable_unprepare(st->mclk);
- }
- 
-+static int ad7768_set_channel_label(struct iio_dev *indio_dev,
-+						int num_channels)
-+{
-+	struct ad7768_state *st = iio_priv(indio_dev);
-+	struct device *device = indio_dev->dev.parent;
-+	struct fwnode_handle *fwnode;
-+	struct fwnode_handle *child;
-+	const char *label;
-+	int crt_ch = 0;
-+
-+	st->labels = devm_kcalloc(indio_dev->dev.parent,
-+					num_channels,
-+					sizeof(**st->labels),
-+					GFP_KERNEL);
-+
-+	if (!st->labels)
-+		return -ENOMEM;
-+
-+	fwnode = dev_fwnode(device);
-+	fwnode_for_each_child_node(fwnode, child) {
-+		if (fwnode_property_read_u32(child, "reg", &crt_ch))
-+			continue;
-+
-+		if (crt_ch >= num_channels)
-+			continue;
-+
-+		if (fwnode_property_read_string(child, "label", &label))
-+			continue;
-+
-+		st->labels[crt_ch] = label;
-+	}
-+
-+	return 0;
-+}
-+
- static int ad7768_probe(struct spi_device *spi)
- {
- 	struct ad7768_state *st;
-@@ -611,6 +656,10 @@ static int ad7768_probe(struct spi_device *spi)
- 
- 	init_completion(&st->completion);
- 
-+	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
-+	if (ret)
-+		return ret;
-+
- 	ret = devm_request_irq(&spi->dev, spi->irq,
- 			       &ad7768_interrupt,
- 			       IRQF_TRIGGER_RISING | IRQF_ONESHOT,
--- 
-2.17.1
-
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  drivers/iio/industrialio-event.c | 50 +++++++++++++++-----------------
+>  1 file changed, 24 insertions(+), 26 deletions(-)
+>
+> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+> index 2ab4d4c44427..96b7fa63f96c 100644
+> --- a/drivers/iio/industrialio-event.c
+> +++ b/drivers/iio/industrialio-event.c
+> @@ -477,6 +477,7 @@ static const char *iio_event_group_name = "events";
+>  int iio_device_register_eventset(struct iio_dev *indio_dev)
+>  {
+>         struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +       struct iio_event_interface *ev_int;
+>         struct iio_dev_attr *p;
+>         int ret = 0, attrcount_orig = 0, attrcount, attrn;
+>         struct attribute **attr;
+> @@ -485,14 +486,13 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+>               iio_check_for_dynamic_events(indio_dev)))
+>                 return 0;
+>
+> -       iio_dev_opaque->event_interface =
+> -               kzalloc(sizeof(struct iio_event_interface), GFP_KERNEL);
+> -       if (iio_dev_opaque->event_interface == NULL)
+> +       ev_int = kzalloc(sizeof(struct iio_event_interface), GFP_KERNEL);
+> +       if (ev_int == NULL)
+>                 return -ENOMEM;
+>
+> -       INIT_LIST_HEAD(&iio_dev_opaque->event_interface->dev_attr_list);
+> +       INIT_LIST_HEAD(&ev_int->dev_attr_list);
+>
+> -       iio_setup_ev_int(iio_dev_opaque->event_interface);
+> +       iio_setup_ev_int(ev_int);
+>         if (indio_dev->info->event_attrs != NULL) {
+>                 attr = indio_dev->info->event_attrs->attrs;
+>                 while (*attr++ != NULL)
+> @@ -506,34 +506,31 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+>                 attrcount += ret;
+>         }
+>
+> -       iio_dev_opaque->event_interface->group.name = iio_event_group_name;
+> -       iio_dev_opaque->event_interface->group.attrs = kcalloc(attrcount + 1,
+> -                                                         sizeof(iio_dev_opaque->event_interface->group.attrs[0]),
+> -                                                         GFP_KERNEL);
+> -       if (iio_dev_opaque->event_interface->group.attrs == NULL) {
+> +       ev_int->group.name = iio_event_group_name;
+> +       ev_int->group.attrs = kcalloc(attrcount + 1,
+> +                                     sizeof(ev_int->group.attrs[0]),
+> +                                     GFP_KERNEL);
+> +       if (ev_int->group.attrs == NULL) {
+>                 ret = -ENOMEM;
+>                 goto error_free_setup_event_lines;
+>         }
+>         if (indio_dev->info->event_attrs)
+> -               memcpy(iio_dev_opaque->event_interface->group.attrs,
+> +               memcpy(ev_int->group.attrs,
+>                        indio_dev->info->event_attrs->attrs,
+> -                      sizeof(iio_dev_opaque->event_interface->group.attrs[0])
+> -                      *attrcount_orig);
+> +                      sizeof(ev_int->group.attrs[0]) * attrcount_orig);
+>         attrn = attrcount_orig;
+>         /* Add all elements from the list. */
+> -       list_for_each_entry(p,
+> -                           &iio_dev_opaque->event_interface->dev_attr_list,
+> -                           l)
+> -               iio_dev_opaque->event_interface->group.attrs[attrn++] =
+> -                       &p->dev_attr.attr;
+> -       indio_dev->groups[indio_dev->groupcounter++] =
+> -               &iio_dev_opaque->event_interface->group;
+> +       list_for_each_entry(p, &ev_int->dev_attr_list, l)
+> +               ev_int->group.attrs[attrn++] = &p->dev_attr.attr;
+> +       indio_dev->groups[indio_dev->groupcounter++] = &ev_int->group;
+> +
+> +       iio_dev_opaque->event_interface = ev_int;
+>
+>         return 0;
+>
+>  error_free_setup_event_lines:
+> -       iio_free_chan_devattr_list(&iio_dev_opaque->event_interface->dev_attr_list);
+> -       kfree(iio_dev_opaque->event_interface);
+> +       iio_free_chan_devattr_list(&ev_int->dev_attr_list);
+> +       kfree(ev_int);
+>         iio_dev_opaque->event_interface = NULL;
+>         return ret;
+>  }
+> @@ -557,10 +554,11 @@ void iio_device_wakeup_eventset(struct iio_dev *indio_dev)
+>  void iio_device_unregister_eventset(struct iio_dev *indio_dev)
+>  {
+>         struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +       struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+>
+> -       if (iio_dev_opaque->event_interface == NULL)
+> +       if (ev_int == NULL)
+>                 return;
+> -       iio_free_chan_devattr_list(&iio_dev_opaque->event_interface->dev_attr_list);
+> -       kfree(iio_dev_opaque->event_interface->group.attrs);
+> -       kfree(iio_dev_opaque->event_interface);
+> +       iio_free_chan_devattr_list(&ev_int->dev_attr_list);
+> +       kfree(ev_int->group.attrs);
+> +       kfree(ev_int);
+>  }
+> --
+> 2.17.1
+>

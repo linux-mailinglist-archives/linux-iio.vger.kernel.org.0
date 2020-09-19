@@ -2,41 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 661BC270DD8
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 14:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6384270DDA
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 14:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbgISMNI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Sep 2020 08:13:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46342 "EHLO mail.kernel.org"
+        id S1726170AbgISMRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Sep 2020 08:17:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47720 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726097AbgISMNI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 19 Sep 2020 08:13:08 -0400
+        id S1726097AbgISMRH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 19 Sep 2020 08:17:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E994B2100A;
-        Sat, 19 Sep 2020 12:13:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4A5CA20878;
+        Sat, 19 Sep 2020 12:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600517588;
-        bh=FdjoHzBqdxfA3CxLo3N6Wg3cZlWs5fLQmVZq3zJiU80=;
+        s=default; t=1600517826;
+        bh=qQED3ZsvFj3ueUzjOOHhk72bFOy/HYXmOyirQHvq8Rg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EWh1ldn+WsoBN+8yRMJN0egouYZ6EISrWnuLpQLBglW77GaoNRgHa/KBpJJBw3m0W
-         0WIbG9CXuILWYyzPXyTDap+Rdw1muUXquPWLxhIHcSedbc7yja6Ej1PQM2HAHiPUfo
-         Ps/9BzLGWQg9rDp1pM4r/LdTcUaStBQpc/wuNw9o=
-Date:   Sat, 19 Sep 2020 13:13:03 +0100
+        b=QiGqcKAV6fSc4QEF9VPHJD33c5Llbi8r78oHJwyCZcGSWCEAaly3fGr4zFUS1ChDM
+         acwSKT2GD+sk/Kp7/X5/htLcPIW0UgR+6fDoQGpG8lNgwh/+S312YHw8b4COpLXK1a
+         RBJ8lK6YnPvWNTz1OF+rnuiFsQ3WtOlV3RgQs8YM=
+Date:   Sat, 19 Sep 2020 13:17:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Jonathan Bakker <xc-racer2@live.ca>
-Subject: Re: [PATCH] iio:accel:bma180: Fix use of true when should be
- iio_shared_by enum
-Message-ID: <20200919131303.3475c7db@archlinux>
-In-Reply-To: <9a5b9bf3-28e9-9643-0924-a7b33e339032@metafoo.de>
-References: <20200913121227.764626-1-jic23@kernel.org>
-        <9a5b9bf3-28e9-9643-0924-a7b33e339032@metafoo.de>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Cristian Pop <cristian.pop@analog.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kbuild-all@lists.01.org
+Subject: Re: [PATCH v5] iio: adc: ad7768-1: Add channel label example
+Message-ID: <20200919131701.619bded2@archlinux>
+In-Reply-To: <202009182056.LiUdHLln%lkp@intel.com>
+References: <20200918093356.93670-1-cristian.pop@analog.com>
+        <202009182056.LiUdHLln%lkp@intel.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,48 +41,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Sep 2020 15:36:58 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Fri, 18 Sep 2020 20:55:10 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> On 9/13/20 2:12 PM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Given a value of 1 corresponds to IIO_SHARE_BY_TYPE I have replaced
-> > it with that.  Should cause no functional change.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>
-> > Cc: Peter Meerwald <pmeerw@pmeerw.net>
-> > Cc: Jonathan Bakker <xc-racer2@live.ca>  
+> Hi Cristian,
 > 
-> Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
-Thanks. Applied to the togreg branch of iio.git.
-I haven't marked it for stable because it has not material affect.
-Not a problem if it gets picked up anyway of course!
+> Thank you for the patch! Yet something to improve:
+For anyone tracking this.  The error is down to Cristian working around
+an email issue by sending the series as individual patches.
+Not ideal and confuses autobuilding but something odd was going on
+and this got it out.
 
 Thanks,
 
 Jonathan
 
 > 
+> [auto build test ERROR on iio/togreg]
+> [also build test ERROR on linux/master linus/master v5.9-rc5 next-20200918]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
 > 
-> > ---
-> >   drivers/iio/accel/bma180.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-> > index 448faed001fd..6b74c2b04c15 100644
-> > --- a/drivers/iio/accel/bma180.c
-> > +++ b/drivers/iio/accel/bma180.c
-> > @@ -673,7 +673,7 @@ static const struct iio_chan_spec_ext_info bma023_ext_info[] = {
-> >   };
-> >   
-> >   static const struct iio_chan_spec_ext_info bma180_ext_info[] = {
-> > -	IIO_ENUM("power_mode", true, &bma180_power_mode_enum),
-> > +	IIO_ENUM("power_mode", IIO_SHARED_BY_TYPE, &bma180_power_mode_enum),
-> >   	IIO_ENUM_AVAILABLE("power_mode", &bma180_power_mode_enum),
-> >   	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, bma180_accel_get_mount_matrix),
-> >   	{ }  
+> url:    https://github.com/0day-ci/linux/commits/Cristian-Pop/iio-adc-ad7768-1-Add-channel-label-example/20200918-190340
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> config: x86_64-allyesconfig (attached as .config)
+> compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
+> reproduce (this is a W=1 build):
+>         # save the attached .config to linux build tree
+>         make W=1 ARCH=x86_64 
 > 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
 > 
+> All errors (new ones prefixed by >>):
+> 
+> >> drivers/iio/adc/ad7768-1.c:432:3: error: 'const struct iio_info' has no member named 'read_label'; did you mean 'read_raw'?  
+>      432 |  .read_label = ad7768_read_label,
+>          |   ^~~~~~~~~~
+>          |   read_raw
+> >> drivers/iio/adc/ad7768-1.c:432:16: error: initialization of 'int (*)(struct iio_dev *, const struct iio_chan_spec *, long int)' from incompatible pointer type 'int (*)(struct iio_dev *, const struct iio_chan_spec *, char *)' [-Werror=incompatible-pointer-types]  
+>      432 |  .read_label = ad7768_read_label,
+>          |                ^~~~~~~~~~~~~~~~~
+>    drivers/iio/adc/ad7768-1.c:432:16: note: (near initialization for 'ad7768_info.write_raw_get_fmt')
+>    cc1: some warnings being treated as errors
+> 
+> # https://github.com/0day-ci/linux/commit/6144f5a8d7fa8961b6d39e36092c14301ad823c1
+> git remote add linux-review https://github.com/0day-ci/linux
+> git fetch --no-tags linux-review Cristian-Pop/iio-adc-ad7768-1-Add-channel-label-example/20200918-190340
+> git checkout 6144f5a8d7fa8961b6d39e36092c14301ad823c1
+> vim +432 drivers/iio/adc/ad7768-1.c
+> 
+>    427	
+>    428	static const struct iio_info ad7768_info = {
+>    429		.attrs = &ad7768_group,
+>    430		.read_raw = &ad7768_read_raw,
+>    431		.write_raw = &ad7768_write_raw,
+>  > 432		.read_label = ad7768_read_label,  
+>    433		.debugfs_reg_access = &ad7768_reg_access,
+>    434	};
+>    435	
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 

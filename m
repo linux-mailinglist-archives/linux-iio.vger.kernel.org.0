@@ -2,36 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27BA7270ECD
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 17:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAEA3270EE1
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 17:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726438AbgISPQn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Sep 2020 11:16:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59390 "EHLO mail.kernel.org"
+        id S1726438AbgISPTp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Sep 2020 11:19:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34692 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726400AbgISPQm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 19 Sep 2020 11:16:42 -0400
+        id S1726408AbgISPTp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 19 Sep 2020 11:19:45 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8A3AA2098B;
-        Sat, 19 Sep 2020 15:16:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D51C92098B;
+        Sat, 19 Sep 2020 15:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600528602;
-        bh=+y+bw6n8SN9jBc2YfWVyglQV2EMkOcqIEAz8BTxArUM=;
+        s=default; t=1600528784;
+        bh=2jK1ssTfxonKsXGsA+rUttXem8uaqAD3aZO3hv6lPoU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vQ6YJwb0MAvZmQTt8VWRi/4UHGWj/sAU0vkflZggHdQKGUDh90EPecpI8sM1jkYqB
-         0nhluLmhujFq5UyPHVC+HstjGe4Kxpc4lJJHqZfYt9WwbLjKIRSfUD/R9XL+uP5EeL
-         PrA1zHzd0Akl7+4KfAU/1KsNut24RzDFs+Xt84pQ=
-Date:   Sat, 19 Sep 2020 16:16:38 +0100
+        b=HzWh81QkND0fpvLhLaPhfuWwiRnWb1REwy+KTyzP4BIq3JX2EcBo1vTRcTvcybibD
+         est5eE1jQrc62/r1CW0zeLNywMOYLaYjohOFZjJf6lTCyigck0MqcS233xf0Z2wNHH
+         SqWry9cB+Ecx5n3nZ22muk9rYkfCpBKhV87WOnV4=
+Date:   Sat, 19 Sep 2020 16:19:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cristian Pop <cristian.pop@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5] iio: adc: ad7768-1: Add channel label example
-Message-ID: <20200919161638.3357f266@archlinux>
-In-Reply-To: <20200919161440.2cb17583@archlinux>
-References: <20200918093356.93670-1-cristian.pop@analog.com>
-        <20200919161440.2cb17583@archlinux>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kgene@kernel.org>,
+        <krzk@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Subject: Re: [PATCH v2] iio: adc: exynos_adc: Replace indio_dev->mlock with
+ own device lock
+Message-ID: <20200919161939.374bac95@archlinux>
+In-Reply-To: <20200916093123.78954-1-alexandru.ardelean@analog.com>
+References: <20200826132203.236748-1-alexandru.ardelean@analog.com>
+        <20200916093123.78954-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,133 +45,96 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 19 Sep 2020 16:14:40 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 16 Sep 2020 12:31:23 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> On Fri, 18 Sep 2020 12:33:56 +0300
-> Cristian Pop <cristian.pop@analog.com> wrote:
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> > This is a demo usage of new "label" attribute for channel.  
-> While I can see this is a demo in someways, I assume we also have
-> a valid usecase for doing this beyond as a demo!
+> As part of the general cleanup of indio_dev->mlock, this change replaces
+> it with a local lock, to protect potential concurrent access to the
+> completion callback during a conversion.
 > 
-> So perhaps rephrase that intro.
+> This is part of a bigger cleanup.
+> Link: https://lore.kernel.org/linux-iio/CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com/
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to play with it.
 
-I also forgot to say that you also need to update the dt-bindings
-for this driver.  I've just committed a patch converting them to yaml
-so work on top of that.
-
-Thanks
+Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/exynos_adc.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 > 
-> > 
-> > Signed-off-by: Cristian Pop <cristian.pop@analog.com>
-> > ---
-> > Changes in V5:
-> > Create a separate patch file for this commit
-> >  drivers/iio/adc/ad7768-1.c | 49 ++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 49 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index 0d132708c429..5ca9f9febb5a 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> > @@ -161,6 +161,7 @@ struct ad7768_state {
-> >  	struct completion completion;
-> >  	struct iio_trigger *trig;
-> >  	struct gpio_desc *gpio_sync_in;
-> > +	const char **labels;
-> >  	/*
-> >  	 * DMA (thus cache coherency maintenance) requires the
-> >  	 * transfer buffers to live in their own cache lines.
-> > @@ -407,6 +408,14 @@ static int ad7768_write_raw(struct iio_dev *indio_dev,
-> >  	}
-> >  }
-> >  
-> > +static int ad7768_read_label(struct iio_dev *indio_dev,
-> > +	const struct iio_chan_spec *chan, char *label)
-> > +{
-> > +	struct ad7768_state *st = iio_priv(indio_dev);
-> > +
-> > +	return sprintf(label, "%s\n", st->labels[chan->channel]);
-> > +}
-> > +
-> >  static struct attribute *ad7768_attributes[] = {
-> >  	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-> >  	NULL
-> > @@ -420,6 +429,7 @@ static const struct iio_info ad7768_info = {
-> >  	.attrs = &ad7768_group,
-> >  	.read_raw = &ad7768_read_raw,
-> >  	.write_raw = &ad7768_write_raw,
-> > +	.read_label = ad7768_read_label,
-> >  	.debugfs_reg_access = &ad7768_reg_access,
-> >  };
-> >  
-> > @@ -538,6 +548,41 @@ static void ad7768_clk_disable(void *data)
-> >  	clk_disable_unprepare(st->mclk);
-> >  }
-> >  
-> > +static int ad7768_set_channel_label(struct iio_dev *indio_dev,
-> > +						int num_channels)
-> > +{
-> > +	struct ad7768_state *st = iio_priv(indio_dev);
-> > +	struct device *device = indio_dev->dev.parent;
-> > +	struct fwnode_handle *fwnode;
-> > +	struct fwnode_handle *child;
-> > +	const char *label;
-> > +	int crt_ch = 0;
-> > +
-> > +	st->labels = devm_kcalloc(indio_dev->dev.parent,
-> > +					num_channels,
-> > +					sizeof(**st->labels),  
-> 
-> I think that ends up being the size of a single character which isn't
-> the intent.  I assume aim is a suitable sized array of pointers to
-> strings which we will fill in later?
-> 
-> If so we can probably just use a static sized array as the maximum
-> number of channels is well constrained.  In this particular driver
-> that is 1 I think!
-
-
-> 
-> > +					GFP_KERNEL);
-> > +
-> > +	if (!st->labels)
-> > +		return -ENOMEM;
-> > +
-> > +	fwnode = dev_fwnode(device);
-> > +	fwnode_for_each_child_node(fwnode, child) {
-> > +		if (fwnode_property_read_u32(child, "reg", &crt_ch))
-> > +			continue;
-> > +
-> > +		if (crt_ch >= num_channels)
-> > +			continue;
-> > +
-> > +		if (fwnode_property_read_string(child, "label", &label))
-> > +			continue;
-> > +
-> > +		st->labels[crt_ch] = label;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int ad7768_probe(struct spi_device *spi)
-> >  {
-> >  	struct ad7768_state *st;
-> > @@ -611,6 +656,10 @@ static int ad7768_probe(struct spi_device *spi)
-> >  
-> >  	init_completion(&st->completion);
-> >  
-> > +	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  	ret = devm_request_irq(&spi->dev, spi->irq,
-> >  			       &ad7768_interrupt,
-> >  			       IRQF_TRIGGER_RISING | IRQF_ONESHOT,  
-> 
+> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+> index 20477b249f2a..99f4404e9fd1 100644
+> --- a/drivers/iio/adc/exynos_adc.c
+> +++ b/drivers/iio/adc/exynos_adc.c
+> @@ -138,6 +138,16 @@ struct exynos_adc {
+>  	bool			read_ts;
+>  	u32			ts_x;
+>  	u32			ts_y;
+> +
+> +	/*
+> +	 * Lock to protect from potential concurrent access to the
+> +	 * completion callback during a manual conversion. For this driver
+> +	 * a wait-callback is used to wait for the conversion result,
+> +	 * so in the meantime no other read request (or conversion start)
+> +	 * must be performed, otherwise it would interfere with the
+> +	 * current conversion result.
+> +	 */
+> +	struct mutex		lock;
+>  };
+>  
+>  struct exynos_adc_data {
+> @@ -542,7 +552,7 @@ static int exynos_read_raw(struct iio_dev *indio_dev,
+>  		return -EINVAL;
+>  	}
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&info->lock);
+>  	reinit_completion(&info->completion);
+>  
+>  	/* Select the channel to be used and Trigger conversion */
+> @@ -562,7 +572,7 @@ static int exynos_read_raw(struct iio_dev *indio_dev,
+>  		ret = IIO_VAL_INT;
+>  	}
+>  
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&info->lock);
+>  
+>  	return ret;
+>  }
+> @@ -573,7 +583,7 @@ static int exynos_read_s3c64xx_ts(struct iio_dev *indio_dev, int *x, int *y)
+>  	unsigned long timeout;
+>  	int ret;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&info->lock);
+>  	info->read_ts = true;
+>  
+>  	reinit_completion(&info->completion);
+> @@ -598,7 +608,7 @@ static int exynos_read_s3c64xx_ts(struct iio_dev *indio_dev, int *x, int *y)
+>  	}
+>  
+>  	info->read_ts = false;
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&info->lock);
+>  
+>  	return ret;
+>  }
+> @@ -868,6 +878,8 @@ static int exynos_adc_probe(struct platform_device *pdev)
+>  	indio_dev->channels = exynos_adc_iio_channels;
+>  	indio_dev->num_channels = info->data->num_channels;
+>  
+> +	mutex_init(&info->lock);
+> +
+>  	ret = request_irq(info->irq, exynos_adc_isr,
+>  					0, dev_name(&pdev->dev), info);
+>  	if (ret < 0) {
 

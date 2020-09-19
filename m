@@ -2,127 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6FCC270FAA
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 18:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED137270FB0
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 19:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbgISQzz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Sep 2020 12:55:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49622 "EHLO mail.kernel.org"
+        id S1726528AbgISRDD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Sep 2020 13:03:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53550 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726408AbgISQzz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 19 Sep 2020 12:55:55 -0400
+        id S1726434AbgISRDD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 19 Sep 2020 13:03:03 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 25ED320771;
-        Sat, 19 Sep 2020 16:55:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16CF720771;
+        Sat, 19 Sep 2020 17:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600534554;
-        bh=hPD5nmTleUNdciCgatfyNbWWU75jVeYYqg29NwTcazw=;
+        s=default; t=1600534983;
+        bh=TpHptMcTIyIAkkgIHsyfefI8THRPanNuzVREKFgkclU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HMkaXbfrupGFKZIzqmFHzRJCFK1ZjXyPVCYskb46NfG5Xit0JpiThN2YgVohUN9EC
-         XJQjmMofa9pQ2qaJovyemBjVC6OnMzACKiMmhWMkjN071fcAp/theqOSyK0D5Kk9en
-         FkFIn91G7U4FthUxJjP5oVg10ojZmm1HVm2sI3xw=
-Date:   Sat, 19 Sep 2020 17:55:49 +0100
+        b=gAko3lF2QRNuoG1AIY0/bsD4RYFAFL9Cittq2SSpKiOKZKzR10QaKEQFB7ZlR3e4G
+         oiTqxcbKMejYI1VSonomXZmg7U3VoqIyL+ehN61PXM0m9akWi3e3CPPMNJrLJfBjao
+         3CnK8hLK/nvK3YrReyiXFKPfiSYaKZTYuLWeJwzc=
+Date:   Sat, 19 Sep 2020 18:02:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 18/27] iio:imu:inv_mpu6050: Use regmap_noinc_read for
- fifo reads.
-Message-ID: <20200919175549.79923ac9@archlinux>
-In-Reply-To: <MN2PR12MB43905A2256F98BB5EFCE7DD3C4770@MN2PR12MB4390.namprd12.prod.outlook.com>
+        "Peter Meerwald" <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v3 19/27] iio:pressure:mpl3115 Force alignment of buffer
+Message-ID: <20200919180258.1cfdaadc@archlinux>
+In-Reply-To: <20200723133142.00001b88@Huawei.com>
 References: <20200722155103.979802-1-jic23@kernel.org>
-        <20200722155103.979802-19-jic23@kernel.org>
-        <MN2PR12MB43905A2256F98BB5EFCE7DD3C4770@MN2PR12MB4390.namprd12.prod.outlook.com>
+        <20200722155103.979802-20-jic23@kernel.org>
+        <CAHp75Ve6UAs+iryEgbcxW6FtbnmUAsV_MPJ7SiiCpkT5_O0xng@mail.gmail.com>
+        <20200723133142.00001b88@Huawei.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Jul 2020 08:29:56 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On Thu, 23 Jul 2020 13:31:42 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> Hi Jonathan,
->=20
-> perfect.
->=20
-> Thanks for the fix,
-> JB
->=20
-> Reviewed-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
->=20
->=20
-> From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> o=
-n behalf of Jonathan Cameron <jic23@kernel.org>
-> Sent: Wednesday, July 22, 2020 17:50
-> To: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>; Lars-Peter Clausen <lars=
-@metafoo.de>; Peter Meerwald <pmeerw@pmeerw.net>; Jonathan Cameron <Jonatha=
-n.Cameron@huawei.com>; Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-> Subject: [PATCH v3 18/27] iio:imu:inv_mpu6050: Use regmap_noinc_read for =
-fifo reads.=20
-> =C2=A0
-> =C2=A0CAUTION: This email originated from outside of the organization. Pl=
-ease make sure the sender is who they say they are and do not click links o=
-r open attachments unless you recognize the sender and know the content is =
-safe.
->=20
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> We should not be assuming that we are reading a sequence of
-> registers as here we are doing a read of a lot of data from
-> a single register address.
->=20
-> Suggested-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Applied to the togreg branch of iio.git.  I've explicitly added that
-this one isn't marked for stable as it doesn't actually have
-any affect beyond being semantically correct.
-
-thanks,
-
-Jonathan
-
-> ---
-> =C2=A0drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_ring.c
-> index d8e6b88ddffc..45c37525c2f1 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> @@ -179,8 +179,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nb =3D fifo_count / byte=
-s_per_datum;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inv_mpu6050_update_perio=
-d(st, pf->timestamp, nb);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < nb; ++=
-i) {
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 result =3D regmap_bulk_read(st->map, st->reg->fifo_r_w,
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 st->data, bytes_per_datum);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 result =3D regmap_noinc_read(st->map, st->reg->fifo_r_w,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 st->data, bytes_per_datum);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 if (result)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 go=
-to flush_fifo;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 /* skip first samples if needed */
+> On Thu, 23 Jul 2020 15:17:16 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> 
+> > On Wed, Jul 22, 2020 at 6:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >   
+> > > This one is unusual.  We have to do an explicit memset each time
+> > > as we are reading 3 bytes into a potential 4 byte channel which
+> > > may sometimes be a 2 byte channel depending on what is enabled.
+> > > As such, moving the buffer to the heap in the iio_priv structure
+> > > doesn't save us much.  We can't use a nice explicit structure
+> > > on the stack either as the data channels have different storage
+> > > sizes and are all separately controlled.    
+> > 
+> > I guess all non-standard cases (where no struct is applicable) deserve
+> > for better comment in the code.
+> >   
+> 
+> Sure can do that. I guess that will mean people actually think about
+> it whilst copying examples form old into new drivers.
+> 
+> In many ways the no struct applicable is the 'standard' case. It's
+> mere coincidence that in some drivers there are sufficiently few
+> channels that the struct 'trick' works.  All the other channels
+> are moving around even in those cases, it's just the timestamp
+> that happens to only have one valid location.
+> 
+> I'll probably do a v4 at the weekend.
+Well a weekend anyway :)
+This one is sufficiently unusual I will bring it back for a v4 with
+additional information in the comment.
+> 
+> Jonathan
+> 
+> 
+> 
 

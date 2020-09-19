@@ -2,105 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CCAC2704DE
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Sep 2020 21:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FA46270DCC
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Sep 2020 13:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbgIRTPe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Sep 2020 15:15:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726299AbgIRTPc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Sep 2020 15:15:32 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C87C0613CE
-        for <linux-iio@vger.kernel.org>; Fri, 18 Sep 2020 12:15:32 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id y8so7020182ilm.11
-        for <linux-iio@vger.kernel.org>; Fri, 18 Sep 2020 12:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RVcMjIHy9E4IFHuIDNl53VHuarQUS4EdYjgqbtjGiM0=;
-        b=Z18cQBDjCc4gCAcrTrv4fZ1O2xcFYZoOdzr3iudmka41cJYnhjfqjTre9rQllYNwV/
-         IXMptpF7ElpxHDurroeh2boPUuUatjRuCoVVWLkZ/1vUchqaGT+v8bIRa9JBZP3w8Nv7
-         xOtAc61ZrVtyMYjrnnlCZSNYN9o0wR6MLNvS4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RVcMjIHy9E4IFHuIDNl53VHuarQUS4EdYjgqbtjGiM0=;
-        b=KJa5+nckAiDI9PVIhZnMMUfgP8FILZRmljFDT6rGSywDLqWXpntuq0iWqbUBFRg590
-         XMgoCfw0psGua1oZUM4aBQVbTIVZIOaoqz92833l6I32pA8KjlZd6R0i4sNkE6pef1Cc
-         J+gMvgSmhEBSdDMqahUIFpJZViBPVZy7MccOm5wRrWWeIaKbT7DAG/3Z3vcg87phRZMT
-         H1kvx8+7zUl16BB1H3O2wzaDLLc+3zK6QYCbxS30xuvrLfQE+EubmHKQz25qsO7FILmx
-         6KPGvzIaHlkS9Chd8B/SzZH82JNPAC7MhEHJ/5oEpOUGKC1t8MS2VItuok9XQTcTdmLG
-         YzRQ==
-X-Gm-Message-State: AOAM530Yr2xKHePgJt0WP6J6H4X96gdoNF6GolxwKyweFFv5fY27+UVD
-        epRLsOwSV+fgGM3rcZzLEfd+w1NzUwj6bdconx4Q7g==
-X-Google-Smtp-Source: ABdhPJylCQ+I81rMxBwRAhgBmMidV+kkc8Cp9hGWJeKABdHPRj/bOl29JnmFnb5iioaQQ0FOotCR3CcQCFqVm7dZ51Q=
-X-Received: by 2002:a92:8955:: with SMTP id n82mr23868820ild.25.1600456531428;
- Fri, 18 Sep 2020 12:15:31 -0700 (PDT)
+        id S1726097AbgISLvO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Sep 2020 07:51:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36112 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726111AbgISLvO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 19 Sep 2020 07:51:14 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F4162100A;
+        Sat, 19 Sep 2020 11:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600516274;
+        bh=iYJvHqYl6JBo8pnhB5+j6v5A0yBVOh2+73FFjTmI4WU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GS4pux4kmkX5OFQHES3jECVwWe58mx3Nc1NtmpgMG6Ql8Wmp/ka14m7+zrjDSjXLX
+         +siCobE9brCtp6B4BrA/5YMP/HV1SWMyuWmLpSj64jJt4rqwe2omyW4z0HlIqIM0YG
+         8BYttD3e2LdyvWdu/324MXP8xNrxmS0wtLYn3ELw=
+Date:   Sat, 19 Sep 2020 12:51:09 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 3/3] iio:core: Tidy up kernel-doc.
+Message-ID: <20200919125109.7524f734@archlinux>
+In-Reply-To: <CA+U=Dsq1p00bS=dr2jjPTQZ-sbubp79oeGoB8FgzYx_Ccnc2yQ@mail.gmail.com>
+References: <20200913132115.800131-1-jic23@kernel.org>
+        <20200913132115.800131-4-jic23@kernel.org>
+        <CA+U=Dsq1p00bS=dr2jjPTQZ-sbubp79oeGoB8FgzYx_Ccnc2yQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20200913112546.715624-1-jic23@kernel.org>
-In-Reply-To: <20200913112546.715624-1-jic23@kernel.org>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Fri, 18 Sep 2020 12:15:20 -0700
-Message-ID: <CAJCx=g=wrvEaE-Pwuy0KmtSux8Sgeiu9p3EfHdfwCV4xQGGUKw@mail.gmail.com>
-Subject: Re: [PATCH] iio:magn:hmc5843: Fix passing true where iio_shared_by
- enum required.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Sep 13, 2020 at 4:27 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> So it's obvious that the code is wrong in passing true, but I'm assuming
-> that will actually evaluate to 1 and hence IIO_SHARED_BY_TYPE.
-> The documentation however has this attribute as IIO_SHARED_BY_ALL.
-> My current assumption is the documentation is wrong.
-> If anyone knows otherwise please shout out!
->
+On Fri, 18 Sep 2020 15:48:02 +0300
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-Yeah this is much easier to understand than the odd boolean value.
+> On Sun, Sep 13, 2020 at 4:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > One comment isn't kernel-doc at all, but starts with /** and another
+> > is simply missing a parameter that was introduced recently.
+> >  
+> 
+> Apologies for missing this earlier.
+No problem.  This one is you being nice rather than an ADI driver :)
+> 
+> Acked-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Thanks.  Applied with yours and Andy's tag (from the request
+for review email).
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Fixes: 7247645f6865 ("iio: hmc5843: Move hmc5843 out of staging")
-> Cc: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  drivers/iio/magnetometer/hmc5843_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-> index 1474ba63babe..780faea61d82 100644
-> --- a/drivers/iio/magnetometer/hmc5843_core.c
-> +++ b/drivers/iio/magnetometer/hmc5843_core.c
-> @@ -245,7 +245,7 @@ static const struct iio_enum hmc5843_meas_conf_enum = {
->  };
->
->  static const struct iio_chan_spec_ext_info hmc5843_ext_info[] = {
-> -       IIO_ENUM("meas_conf", true, &hmc5843_meas_conf_enum),
-> +       IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5843_meas_conf_enum),
->         IIO_ENUM_AVAILABLE("meas_conf", &hmc5843_meas_conf_enum),
->         IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
->         { }
-> @@ -259,7 +259,7 @@ static const struct iio_enum hmc5983_meas_conf_enum = {
->  };
->
->  static const struct iio_chan_spec_ext_info hmc5983_ext_info[] = {
-> -       IIO_ENUM("meas_conf", true, &hmc5983_meas_conf_enum),
-> +       IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5983_meas_conf_enum),
->         IIO_ENUM_AVAILABLE("meas_conf", &hmc5983_meas_conf_enum),
->         IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
->         { }
-> --
-> 2.28.0
->
+Jonathan
+
+> 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  drivers/iio/industrialio-core.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index 8ddc6dfc8ed4..6e388293c828 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -170,7 +170,7 @@ static const char * const iio_chan_info_postfix[] = {
+> >  };
+> >
+> >  #if defined(CONFIG_DEBUG_FS)
+> > -/**
+> > +/*
+> >   * There's also a CONFIG_DEBUG_FS guard in include/linux/iio/iio.h for
+> >   * iio_get_debugfs_dentry() to make it inline if CONFIG_DEBUG_FS is undefined
+> >   */
+> > @@ -1525,6 +1525,7 @@ struct device_type iio_device_type = {
+> >
+> >  /**
+> >   * iio_device_alloc() - allocate an iio_dev from a driver
+> > + * @parent:            Parent device.
+> >   * @sizeof_priv:       Space to allocate for private structure.
+> >   **/
+> >  struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+> > --
+> > 2.28.0
+> >  
+

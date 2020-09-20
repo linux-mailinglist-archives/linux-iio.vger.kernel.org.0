@@ -2,39 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE048271396
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Sep 2020 13:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030B0271489
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Sep 2020 15:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbgITL2g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Sep 2020 07:28:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39530 "EHLO mail.kernel.org"
+        id S1726427AbgITN14 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Sep 2020 09:27:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43488 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726315AbgITL2f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 20 Sep 2020 07:28:35 -0400
+        id S1726333AbgITN1y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 20 Sep 2020 09:27:54 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78D3321BE5;
-        Sun, 20 Sep 2020 11:28:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B524620EDD;
+        Sun, 20 Sep 2020 13:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600601314;
-        bh=1PzJMw9WIg1pCpshAZf3NIZK0fxLMlKYksdnKuROyjM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uoaQpjF4N7v2pS0P0any61MMFL6xBID8zfY+5iTcbSw7g2aGCWrk2IaBVJLPx0tKa
-         uaQiQB9AnsSQvQEOXRdJyZRg1L/VCzpJqmxUnWUGac8GNds/nkaS9sILM24RZTNT5s
-         bAC9I7mgoeN6lx9UMs12SHUdb9tWycLEo2XiAFcc=
+        s=default; t=1600608473;
+        bh=W2Ys2+yKOHYpX/ox4uRQogxuqiNiZBaToqJJsbdBmNI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b/G3Btc0n7Vhq/+xl03o/21aBujUhbiIpSMlAZQo/L7oVUUYQFBpF+ztoMFivgMG/
+         xXojkTpEIGwBwIpS09LAYBDKa7/8ssrHw3ovtW/wNnLvajYYMVu1tqao2HaF9qUidV
+         2n7GCQe8XalLqCiLO1G3MhFYjKJd4shnoH0UQoRo=
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Dan Murphy <dmurphy@ti.com>
-Subject: [PATCH v4 8/8] iio:adc:ti-ads124s08: Fix alignment and data leak issues.
-Date:   Sun, 20 Sep 2020 12:27:42 +0100
-Message-Id: <20200920112742.170751-9-jic23@kernel.org>
+To:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Christian Eggers <ceggers@arri.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/2]  iio:trigger: Remove re-poll logic.
+Date:   Sun, 20 Sep 2020 14:25:46 +0100
+Message-Id: <20200920132548.196452-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200920112742.170751-1-jic23@kernel.org>
-References: <20200920112742.170751-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -43,76 +40,35 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-One of a class of bugs pointed out by Lars in a recent review.
-iio_push_to_buffers_with_timestamp() assumes the buffer used is aligned
-to the size of the timestamp (8 bytes).  This is not guaranteed in
-this driver which uses an array of smaller elements on the stack.
-As Lars also noted this anti pattern can involve a leak of data to
-userspace and that indeed can happen here.  We close both issues by
-moving to a suitable structure in the iio_priv() data with alignment
-explicitly requested.  This data is allocated with kzalloc() so no
-data can leak apart from previous readings.
+This code isn't used by any current mainline drivers (except
+via error handling routes that shouldn't exist).  The original
+user is long gone.  It is causing issues, so let's drop it.
 
-In this driver the timestamp can end up in various different locations
-depending on what other channels are enabled.  As a result, we don't
-use a structure to specify it's position as that would be misleading.
+The main bulk of this mini-series is renaming the function to account
+for the change in what it does.
 
-Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
-Reported-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Dan Murphy <dmurphy@ti.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- v4: Expand comment to express the buffer length not all needed if
-  not all channels are enabled.
-  
- drivers/iio/adc/ti-ads124s08.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Lars, what impact does doing this have on your patches to mark hrtimer
+and irq_work as expiring in hardirq context? I got a bit lost in the
+discussion of that series, beyond figuring out his corner needed cleaning up.
 
-diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
-index eff4f9a9898e..b4a128b19188 100644
---- a/drivers/iio/adc/ti-ads124s08.c
-+++ b/drivers/iio/adc/ti-ads124s08.c
-@@ -99,6 +99,14 @@ struct ads124s_private {
- 	struct gpio_desc *reset_gpio;
- 	struct spi_device *spi;
- 	struct mutex lock;
-+	/*
-+	 * Used to correctly align data.
-+	 * Ensure timestamp is naturally aligned.
-+	 * Note that the full buffer length may not be needed if not
-+	 * all channels are enabled, as long as the alignment of the
-+	 * timestamp is maintained.
-+	 */
-+	u32 buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u32)] __aligned(8);
- 	u8 data[5] ____cacheline_aligned;
- };
- 
-@@ -269,7 +277,6 @@ static irqreturn_t ads124s_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct ads124s_private *priv = iio_priv(indio_dev);
--	u32 buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u32)];
- 	int scan_index, j = 0;
- 	int ret;
- 
-@@ -284,7 +291,7 @@ static irqreturn_t ads124s_trigger_handler(int irq, void *p)
- 		if (ret)
- 			dev_err(&priv->spi->dev, "Start ADC conversions failed\n");
- 
--		buffer[j] = ads124s_read(indio_dev, scan_index);
-+		priv->buffer[j] = ads124s_read(indio_dev, scan_index);
- 		ret = ads124s_write_cmd(indio_dev, ADS124S08_STOP_CONV);
- 		if (ret)
- 			dev_err(&priv->spi->dev, "Stop ADC conversions failed\n");
-@@ -292,7 +299,7 @@ static irqreturn_t ads124s_trigger_handler(int irq, void *p)
- 		j++;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
-+	iio_push_to_buffers_with_timestamp(indio_dev, priv->buffer,
- 			pf->timestamp);
- 
- 	iio_trigger_notify_done(indio_dev->trig);
+Jonathan Cameron (2):
+  iio: Fix: Do not poll the driver again if try_reenable() callback
+    returns non 0.
+  iio:trigger: rename try_reenable() to reenable() plus return void
+
+ drivers/iio/accel/bma180.c             |  9 ++++++---
+ drivers/iio/accel/bmc150-accel-core.c  | 12 ++++--------
+ drivers/iio/accel/kxcjk-1013.c         | 10 +++-------
+ drivers/iio/accel/mxc4005.c            | 16 ++++++----------
+ drivers/iio/adc/at91-sama5d2_adc.c     |  8 +++-----
+ drivers/iio/gyro/adxrs290.c            |  6 ++----
+ drivers/iio/gyro/bmg160_core.c         | 12 ++++--------
+ drivers/iio/imu/kmx61.c                | 10 +++-------
+ drivers/iio/industrialio-trigger.c     |  6 ++----
+ drivers/iio/magnetometer/bmc150_magn.c | 10 +++++-----
+ include/linux/iio/trigger.h            |  4 ++--
+ 11 files changed, 40 insertions(+), 63 deletions(-)
+
 -- 
 2.28.0
 

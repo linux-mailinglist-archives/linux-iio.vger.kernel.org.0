@@ -2,102 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E0A271F7C
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 11:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88BC2720E0
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 12:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726384AbgIUJ6o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Sep 2020 05:58:44 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2897 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726326AbgIUJ6n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 21 Sep 2020 05:58:43 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 7B239BE51E25D89791C6;
-        Mon, 21 Sep 2020 10:58:42 +0100 (IST)
-Received: from localhost (10.52.121.13) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 21 Sep
- 2020 10:58:42 +0100
-Date:   Mon, 21 Sep 2020 10:57:03 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Christian Eggers <ceggers@arri.de>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in
- hard interrupt context
-Message-ID: <20200921105703.000048b3@Huawei.com>
-In-Reply-To: <5007153.c9bsiqU2ZW@n95hx1g2>
-References: <20200813075358.13310-1-lars@metafoo.de>
-        <20200814113008.00002733@Huawei.com>
-        <20200920191545.4ed79276@archlinux>
-        <5007153.c9bsiqU2ZW@n95hx1g2>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726448AbgIUK0e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Sep 2020 06:26:34 -0400
+Received: from www381.your-server.de ([78.46.137.84]:47932 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726358AbgIUK0d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Sep 2020 06:26:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:Subject:From:To:Sender:Reply-To:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References; bh=eY5LxhM6IJXQOEyzRVkGoUrgdQjhHHpcbF1poDzsPBM=; b=RA
+        WEgFaiQszqIaRDOHbVrTmToqeRnfTk7KGnA+91nLzMZ7+YFtiH/+iqGDtW6pFVy0kC5bg5RfapKLw
+        xnQEMh1iqOxbbzJD6ILo11/nyBnNWmucCgbvqkWseWesFvG/x04INBMOave5HvTKA5UN0A/8KNmOo
+        8/RmU/vmZe6yreq+qJJ2zw0HC5aiZt/rWOv02AEc60E6N2FhiGm0TszktsgJ/6z30CnLmn/YcjdA4
+        SB1BE+EW3FQFbHQzsLCGt7BPwzjLcsGKW7QVxTH5zvrI/Q40iWiGTeM32JVHntt8AFPWVzOB17W+n
+        M3JqmR8nkxldPF4ck64gfjnr28TT74FQ==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1kKJ1j-00018S-Nx; Mon, 21 Sep 2020 12:26:32 +0200
+Received: from [2001:a61:259b:1201:9e5c:8eff:fe01:8578]
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1kKJ1j-0005fe-GC; Mon, 21 Sep 2020 12:26:31 +0200
+To:     Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Subject: yaml schema and sub-nodes with vendor prefixes
+Message-ID: <b665f17d-0029-b51b-ac09-597f7b26d77b@metafoo.de>
+Date:   Mon, 21 Sep 2020 12:26:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.13]
-X-ClientProxiedBy: lhreml744-chm.china.huawei.com (10.201.108.194) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/25933/Sun Sep 20 15:50:34 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Sep 2020 09:17:26 +0200
-Christian Eggers <ceggers@arri.de> wrote:
+Hi,
 
-> Tested together with
-> 
-> - iio: Fix: Do not poll the driver again if try_reenable() callback returns non 0.
-> and 
-> - iio:trigger: rename try_reenable() to reenable() plus return void
-> 
-> on latest mainline (without PREEMPT_RT). The original WARN_ONCE() in
-> kernel/irq/handle.c:159 was not raised anymore. But even without the current
-> patches, this warning is not shown (as this problem only applies to -RT).
-> 
-> Currently I haven't ported a RT kernel > 5.4 for my board, so I cannot check
-> with current RT. On 5.4. there the patches seem not to work fully as 
-> kernel/timer/hrtimer.c is not up to date enough.
-> 
-> Sorry for being not very helpful...
-Thanks for at least trying!
+I'm trying to convert Xilinx XADC devicetree bindings[1] description to 
+yaml format. And I'm running into issue with describing a sub-node with 
+a vendor prefix.
 
-So looking at this the other way, are there any significant risks associated
-with this change?  If not I'm tempted to queue them up and we have the rcX
-time to fix anything we've missed (just like every other patch!)
+A typical devicetree entry for the XADC looks like
 
-Jonathan
+     xadc@43200000 {
+         compatible = "xlnx,axi-xadc-1.00.a";
 
-> 
-> Best regards
-> Christian
-> 
-> On Sunday, 20 September 2020, 20:15:45 CEST, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > As we no longer support a try again if we cannot reenable the trigger
-> > rename the function to reflect this.   Also we don't do anything with
-> > the value returned so stop it returning anything.  For the few drivers
-> > that didn't already print an error message in this patch, add such
-> > a print.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > Cc: Christian Oder <me@myself5.de>
-> > Cc: Eugen Hristev <eugen.hristev@microchip.com>
-> > Cc: Nishant Malpani <nish.malpani25@gmail.com>
-> > Cc: Daniel Baluta <daniel.baluta@oss.nxp.com>
-> > ---  
-> 
-> 
-> 
+         xlnx,channels {
+             #address-cells = <1>;
+             #size-cells = <0>;
+             channel@0 {
+                 reg = <0>;
+                 xlnx,bipolar;
+             };
+         };
+     };
 
+So there is the 'xlnx,channels' sub-node which contains a set of other 
+nodes which represent the individual channels.
+
+The way I'm trying to describe it in the yaml file is like
+
+  xlnx,channels:
+     description: Node containing all the channel nodes
+     type: object
+     properties:
+       '#address-cells':
+          const: 1
+       '#size-cells':
+          const: 0
+
+     patternProperties:
+       "^channel@([0-9]|1[0-6])$":
+         type: object
+         properties:
+           reg:
+             description: ...
+           xlnx,bipolar:
+             description: If set the channel is used in bipolar mode.
+             type: boolean
+         required:
+           - reg
+         additionalProperties: false
+
+     required:
+       - '#address-cells'
+       - '#size-cells'
+     additionalProperties: false
+
+This now fails validation, presumably because there is no match in 
+meta-schemas/vendor-props.yaml. If I drop the vendor prefix from the 
+property name validation passes. I can also make validation pass by 
+adding an arbitrary $ref property, but there is no 'node' type in 
+types.yaml.
+
+What's the best way to describe a node with a vendor prefix?
+
+Thanks,
+
+- Lars
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/adc/xilinx-xadc.txt
 

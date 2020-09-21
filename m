@@ -2,135 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA7A27259F
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 15:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F18CA2727EA
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 16:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726592AbgIUNdr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Sep 2020 09:33:47 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2905 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726496AbgIUNdr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 21 Sep 2020 09:33:47 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id A78BCC3299A23FE33679;
-        Mon, 21 Sep 2020 14:33:45 +0100 (IST)
-Received: from localhost (10.52.121.13) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 21 Sep
- 2020 14:33:45 +0100
-Date:   Mon, 21 Sep 2020 14:32:06 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC:     Christian Eggers <ceggers@arri.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, Andy Duan <fugang.duan@nxp.com>
-Subject: Re: [PATCH 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in
- hard interrupt context
-Message-ID: <20200921143206.00006b43@Huawei.com>
-In-Reply-To: <20200921122728.xaamqfkt5wrbppuy@linutronix.de>
-References: <20200813075358.13310-1-lars@metafoo.de>
-        <20200814113008.00002733@Huawei.com>
-        <20200920191545.4ed79276@archlinux>
-        <5007153.c9bsiqU2ZW@n95hx1g2>
-        <20200921105703.000048b3@Huawei.com>
-        <20200921122728.xaamqfkt5wrbppuy@linutronix.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727338AbgIUOkS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Sep 2020 10:40:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43124 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727365AbgIUOkP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Sep 2020 10:40:15 -0400
+X-Greylist: delayed 923 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Sep 2020 07:40:15 PDT
+Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAFCC061755
+        for <linux-iio@vger.kernel.org>; Mon, 21 Sep 2020 07:40:15 -0700 (PDT)
+Received: from martin by viti.kaiser.cx with local (Exim 4.89)
+        (envelope-from <martin@viti.kaiser.cx>)
+        id 1kKMkI-0001QY-7F; Mon, 21 Sep 2020 16:24:46 +0200
+Date:   Mon, 21 Sep 2020 16:24:46 +0200
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 03/38] iio:potentiometer:max5432: Drop of_match_ptr and
+ use generic fw accessors
+Message-ID: <20200921142446.qejv2uroxwcjfmxe@viti.kaiser.cx>
+References: <20200910173242.621168-1-jic23@kernel.org>
+ <20200910173242.621168-4-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.13]
-X-ClientProxiedBy: lhreml744-chm.china.huawei.com (10.201.108.194) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910173242.621168-4-jic23@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Sender: Martin Kaiser <martin@viti.kaiser.cx>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Sep 2020 14:27:28 +0200
-Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
+Thus wrote Jonathan Cameron (jic23@kernel.org):
 
-> On 2020-09-21 10:57:03 [+0100], Jonathan Cameron wrote:
-> > So looking at this the other way, are there any significant risks associated
-> > with this change?  If not I'm tempted to queue them up and we have the rcX
-> > time to fix anything we've missed (just like every other patch!)  
-> 
-> I've been told that it only performs IRQ-thread wake-ups in hard-IRQ
-> context. This is fine then.
-> 
-> Looking at the other series where ->try_renable() got renamed. It still
-> looks like bmc150_accel_trig_try_reen() may acquire a mutex. Is it still
-> the case or do I miss something essential?
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-True.  We could safely drop the mutex there as it's not doing anything useful,
-but it can sleep anyway as it's doing a bus write.
+> These prevent use of this driver with ACPI via PRP0001 and are
+> an example of an anti pattern I'm trying to remove from IIO.
+> Drop them to remove this restriction.
 
-So question is whether we can actually hit that path.  I think the reality is
-no (almost - see below), even though it looks like it from a high level.
+> Also switch headers to reflect this change.
 
-The path would be that we enter iio_trigger_poll() in interrupt context.
-That will call generic_handle_irq() to trigger individual devices that are
-using this trigger.
-It will also call iio_trigger_notify_done() to decrement the counter for
-spare outputs of the irq_chip().
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Martin Kaiser <martin@kaiser.cx>
+> ---
+>  drivers/iio/potentiometer/max5432.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-It doesn't actually matter if the problem iio_trigger_notify_done()
-(the one that results in a count of 0 and hence reenable()) occurs
-as a result of generic_handle_irq() or the direct call of iio_trigger_notify_done()
-either way it can only happen if we have any drivers calling iio_trigger_notify_done()
-in interrupt context
+> diff --git a/drivers/iio/potentiometer/max5432.c b/drivers/iio/potentiometer/max5432.c
+> index 280de9c54471..aed3b6ab82a2 100644
+> --- a/drivers/iio/potentiometer/max5432.c
+> +++ b/drivers/iio/potentiometer/max5432.c
+> @@ -11,8 +11,8 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/limits.h>
+>  #include <linux/module.h>
+> -#include <linux/of.h>
+> -#include <linux/of_device.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/property.h>
 
-Someone who is better at coccinelle than me could probably automate checking this.
+>  /* All chip variants have 32 wiper positions. */
+>  #define MAX5432_MAX_POS 31
+> @@ -100,7 +100,7 @@ static int max5432_probe(struct i2c_client *client,
 
-Given this is always called after reading the data we should be safe for
-any device that requires sleeping.  So that just leaves a few SoC ADCs to audit.
-Thankfully most of them don't implement triggered buffers. Of the ones that do only
-one doesn't call it from a threaded interrupt handler.
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
+> -	data->ohm = (unsigned long)of_device_get_match_data(dev);
+> +	data->ohm = (unsigned long)device_get_match_data(dev);
 
-drivers/iio/adc/vf610-adc.c
+>  	indio_dev->info = &max5432_info;
+>  	indio_dev->channels = max5432_channels;
+> @@ -122,7 +122,7 @@ MODULE_DEVICE_TABLE(of, max5432_dt_ids);
+>  static struct i2c_driver max5432_driver = {
+>  	.driver = {
+>  		.name = "max5432",
+> -		.of_match_table = of_match_ptr(max5432_dt_ids),
+> +		.of_match_table = max5432_dt_ids,
+>  	},
+>  	.probe = max5432_probe,
+>  };
+> -- 
+> 2.28.0
 
-However, there looks to be a lot more wrong in there than just this.
-So normally for a device with a data ready signal like this we would hook
-up as follows.
+Looks good to me.
 
-Data ready #1 -> IRQ chip (trigger) ->  Read sensor #1 + iio_trigger_notify_done()
-                                    ->  Read sensor #2 + iio_trigger_notify_done()
-
-(note that the read etc is normally in a thread - all we do in interrupt context is usually to
- grab a timestamp if that makes sense for a given sensor).
-
-This driver does both of.
-Data ready -> Read data from itself and call iio_trigger_notify_done()
-IRQ chip for a different trigger -> Take a timestamp and never call iio_trigger_notify_done()
-  or read any data for that matter.
-
-Which won't do what we want at all.
-
-Andy, if I have a go at fixing this are you able to test the result?
-I think the simplest is probably to introduce a trigger to tie the two halves together.
-We can set it as the default trigger so things should keep on working for existing users.
-
-For more general case, we should probably have two functions.
-
-iio_trigger_notify_done() which is only called from places we can sleep.
-iio_trigger_notify_done_no_action() which only decrements the counter
-(or given this is only called inside industrialio-trigger.c could just replace
- with atomic_dec(&trig->use_count)).
-
-That change is about avoiding confusion rather than fixing a bug and I think
-tangential to both of the currently changes.
-
-Thanks Sebastian. You are certainly finding some rats holes in my code :)
-
-Jonathan
-
-> 
-> > Jonathan  
-> 
-> Sebastian
-
-
+Reviewed-by: Martin Kaiser <martin@kaiser.cx>

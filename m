@@ -2,95 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F18CA2727EA
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 16:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E21273173
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 20:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727338AbgIUOkS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Sep 2020 10:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43124 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727365AbgIUOkP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Sep 2020 10:40:15 -0400
-X-Greylist: delayed 923 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Sep 2020 07:40:15 PDT
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAFCC061755
-        for <linux-iio@vger.kernel.org>; Mon, 21 Sep 2020 07:40:15 -0700 (PDT)
-Received: from martin by viti.kaiser.cx with local (Exim 4.89)
-        (envelope-from <martin@viti.kaiser.cx>)
-        id 1kKMkI-0001QY-7F; Mon, 21 Sep 2020 16:24:46 +0200
-Date:   Mon, 21 Sep 2020 16:24:46 +0200
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 03/38] iio:potentiometer:max5432: Drop of_match_ptr and
- use generic fw accessors
-Message-ID: <20200921142446.qejv2uroxwcjfmxe@viti.kaiser.cx>
-References: <20200910173242.621168-1-jic23@kernel.org>
- <20200910173242.621168-4-jic23@kernel.org>
+        id S1726749AbgIUSGO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Sep 2020 14:06:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55974 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726436AbgIUSGO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 21 Sep 2020 14:06:14 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 491E5206FB;
+        Mon, 21 Sep 2020 18:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600711573;
+        bh=rHoWzRKW+POsO0WNbLWHZo+8S+cikA0E8G/DaBPUXc4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=geVr7+dx+athusSJXMiQoBGWaqZm+AGDKlkjtcQcKS2uRwaV4mNmy1aNWY+Jx4OeG
+         H/UbPFozNOxLFEqF/zNVKQjFZLvg/mT3tfrWui9QDa1dSCloc7Ni1LRlKa4xcaOkJu
+         2XCucuBntp1kgT5V7Vu9vCMHgO1yfW6CbYhTAugU=
+Date:   Mon, 21 Sep 2020 19:06:07 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: vishay,vcnl4000: add interrupts
+ property
+Message-ID: <20200921190607.5f98f133@archlinux>
+In-Reply-To: <20200920203845.17758-1-krzk@kernel.org>
+References: <20200920203845.17758-1-krzk@kernel.org>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910173242.621168-4-jic23@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Sender: Martin Kaiser <martin@viti.kaiser.cx>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thus wrote Jonathan Cameron (jic23@kernel.org):
+On Sun, 20 Sep 2020 22:38:45 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> The dtschema should list all properties, including the common ones like
+> interrupts.  This fixes dtbs_check warnings like:
+> 
+>   arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dt.yaml:
+>     prox@60: 'interrupt-parent', 'interrupts' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Trivial enough that I'll just sneak this one in before I do a pull request.
 
-> These prevent use of this driver with ACPI via PRP0001 and are
-> an example of an anti pattern I'm trying to remove from IIO.
-> Drop them to remove this restriction.
+thanks,
 
-> Also switch headers to reflect this change.
+Jonathan
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Martin Kaiser <martin@kaiser.cx>
 > ---
->  drivers/iio/potentiometer/max5432.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml        | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> index 58887a4f9c15..4d1a225e8868 100644
+> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> @@ -24,6 +24,10 @@ properties:
+>        - vishay,vcnl4020
+>        - vishay,vcnl4040
+>        - vishay,vcnl4200
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+>    reg:
+>      maxItems: 1
+>  
 
-> diff --git a/drivers/iio/potentiometer/max5432.c b/drivers/iio/potentiometer/max5432.c
-> index 280de9c54471..aed3b6ab82a2 100644
-> --- a/drivers/iio/potentiometer/max5432.c
-> +++ b/drivers/iio/potentiometer/max5432.c
-> @@ -11,8 +11,8 @@
->  #include <linux/iio/iio.h>
->  #include <linux/limits.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/property.h>
-
->  /* All chip variants have 32 wiper positions. */
->  #define MAX5432_MAX_POS 31
-> @@ -100,7 +100,7 @@ static int max5432_probe(struct i2c_client *client,
-
->  	data = iio_priv(indio_dev);
->  	data->client = client;
-> -	data->ohm = (unsigned long)of_device_get_match_data(dev);
-> +	data->ohm = (unsigned long)device_get_match_data(dev);
-
->  	indio_dev->info = &max5432_info;
->  	indio_dev->channels = max5432_channels;
-> @@ -122,7 +122,7 @@ MODULE_DEVICE_TABLE(of, max5432_dt_ids);
->  static struct i2c_driver max5432_driver = {
->  	.driver = {
->  		.name = "max5432",
-> -		.of_match_table = of_match_ptr(max5432_dt_ids),
-> +		.of_match_table = max5432_dt_ids,
->  	},
->  	.probe = max5432_probe,
->  };
-> -- 
-> 2.28.0
-
-Looks good to me.
-
-Reviewed-by: Martin Kaiser <martin@kaiser.cx>

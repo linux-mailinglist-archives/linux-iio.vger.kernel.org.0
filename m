@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08E21273173
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 20:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE47273177
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Sep 2020 20:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgIUSGO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Sep 2020 14:06:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55974 "EHLO mail.kernel.org"
+        id S1727196AbgIUSGb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Sep 2020 14:06:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56326 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726436AbgIUSGO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 21 Sep 2020 14:06:14 -0400
+        id S1726915AbgIUSGb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 21 Sep 2020 14:06:31 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 491E5206FB;
-        Mon, 21 Sep 2020 18:06:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 37186206FB;
+        Mon, 21 Sep 2020 18:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600711573;
-        bh=rHoWzRKW+POsO0WNbLWHZo+8S+cikA0E8G/DaBPUXc4=;
+        s=default; t=1600711590;
+        bh=beRQspo4pEm2yDYU/CJTnj6WANeVzFLoFcVOy7uOyIA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=geVr7+dx+athusSJXMiQoBGWaqZm+AGDKlkjtcQcKS2uRwaV4mNmy1aNWY+Jx4OeG
-         H/UbPFozNOxLFEqF/zNVKQjFZLvg/mT3tfrWui9QDa1dSCloc7Ni1LRlKa4xcaOkJu
-         2XCucuBntp1kgT5V7Vu9vCMHgO1yfW6CbYhTAugU=
-Date:   Mon, 21 Sep 2020 19:06:07 +0100
+        b=htqhNwYbfBJSG6nzayGs4O2BNvCjuim8K+QSep+HUS5AFfXQfmU4i1LpUimI+TKu+
+         njtqTPjaW8bp3qFKYbo00J+ckraSPwPA649XjA9svD5A0rKpazLl0nfrOt+ZxCqMqm
+         OEqFOn+flk3DstojMEq++4u3/WGea8oK0I0zzlp8=
+Date:   Mon, 21 Sep 2020 19:06:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: vishay,vcnl4000: add interrupts
- property
-Message-ID: <20200921190607.5f98f133@archlinux>
-In-Reply-To: <20200920203845.17758-1-krzk@kernel.org>
-References: <20200920203845.17758-1-krzk@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio:magn:hmc5843: Fix passing true where iio_shared_by
+ enum required.
+Message-ID: <20200921190627.68b83b6e@archlinux>
+In-Reply-To: <D0CE59F2-8E2A-494C-B6A1-C8B4AA011AC0@goldelico.com>
+References: <20200913112546.715624-1-jic23@kernel.org>
+        <D0CE59F2-8E2A-494C-B6A1-C8B4AA011AC0@goldelico.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,39 +42,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 20 Sep 2020 22:38:45 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Sun, 20 Sep 2020 19:12:47 +0200
+"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
 
-> The dtschema should list all properties, including the common ones like
-> interrupts.  This fixes dtbs_check warnings like:
+> > Am 13.09.2020 um 13:25 schrieb Jonathan Cameron <jic23@kernel.org>:
+> > 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > So it's obvious that the code is wrong in passing true, but I'm assuming
+> > that will actually evaluate to 1 and hence IIO_SHARED_BY_TYPE.
+> > The documentation however has this attribute as IIO_SHARED_BY_ALL.
+> > My current assumption is the documentation is wrong.
+> > If anyone knows otherwise please shout out!
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Fixes: 7247645f6865 ("iio: hmc5843: Move hmc5843 out of staging")
+> > Cc: H. Nikolaus Schaller <hns@goldelico.com>  
 > 
->   arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dt.yaml:
->     prox@60: 'interrupt-parent', 'interrupts' do not match any of the regexes: 'pinctrl-[0-9]+'
+> Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Trivial enough that I'll just sneak this one in before I do a pull request.
+> on GTA04 (omap3-gta04.dtsi).
+Thanks, that's great.  Added the tag and re-pushed as testing for the
+autobuilders to work their magic.
 
-thanks,
+Thanks,
 
 Jonathan
 
-> ---
->  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml        | 4 ++++
->  1 file changed, 4 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> index 58887a4f9c15..4d1a225e8868 100644
-> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> @@ -24,6 +24,10 @@ properties:
->        - vishay,vcnl4020
->        - vishay,vcnl4040
->        - vishay,vcnl4200
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
->    reg:
->      maxItems: 1
->  
+> > ---
+> > drivers/iio/magnetometer/hmc5843_core.c | 4 ++--
+> > 1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
+> > index 1474ba63babe..780faea61d82 100644
+> > --- a/drivers/iio/magnetometer/hmc5843_core.c
+> > +++ b/drivers/iio/magnetometer/hmc5843_core.c
+> > @@ -245,7 +245,7 @@ static const struct iio_enum hmc5843_meas_conf_enum = {
+> > };
+> > 
+> > static const struct iio_chan_spec_ext_info hmc5843_ext_info[] = {
+> > -	IIO_ENUM("meas_conf", true, &hmc5843_meas_conf_enum),
+> > +	IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5843_meas_conf_enum),
+> > 	IIO_ENUM_AVAILABLE("meas_conf", &hmc5843_meas_conf_enum),
+> > 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
+> > 	{ }
+> > @@ -259,7 +259,7 @@ static const struct iio_enum hmc5983_meas_conf_enum = {
+> > };
+> > 
+> > static const struct iio_chan_spec_ext_info hmc5983_ext_info[] = {
+> > -	IIO_ENUM("meas_conf", true, &hmc5983_meas_conf_enum),
+> > +	IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5983_meas_conf_enum),
+> > 	IIO_ENUM_AVAILABLE("meas_conf", &hmc5983_meas_conf_enum),
+> > 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
+> > 	{ }
+> > -- 
+> > 2.28.0
+> >   
+> 
 

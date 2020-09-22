@@ -2,78 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89699274217
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Sep 2020 14:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EE7274236
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Sep 2020 14:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726566AbgIVMbc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Sep 2020 08:31:32 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2911 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726531AbgIVMbb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Sep 2020 08:31:31 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 9DF169E53D806C3CC4B8;
-        Tue, 22 Sep 2020 13:31:30 +0100 (IST)
-Received: from localhost (10.52.121.155) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Tue, 22 Sep
- 2020 13:31:30 +0100
-Date:   Tue, 22 Sep 2020 13:29:51 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PULL] 2nd set of IIO fixes for 5.9
-Message-ID: <20200922132951.000035e1@Huawei.com>
-In-Reply-To: <20200922075717.GA1797611@kroah.com>
-References: <20200920190349.2732d4e8@archlinux>
-        <20200922075717.GA1797611@kroah.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726541AbgIVMkY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Sep 2020 08:40:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39320 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726586AbgIVMkY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Sep 2020 08:40:24 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1D232395C;
+        Tue, 22 Sep 2020 12:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600778422;
+        bh=glyr4Ts0WAIQZH0vh63AEyg/MGLZ9VRPEa0rfeU2Mh8=;
+        h=Date:From:To:Subject:From;
+        b=wrsnb0CeclTbzt7IsH5xhWVBpnDlR7UsXgveGJO2E8FG505+Ye1FdP4myAkHNpwgX
+         bSZlXNHMSv8tSXqRJqn5/W5HEROlkY2wz9mfAGSHd1zc6UyLnc57REWNOuUn5LC75O
+         93lufphFD2nfbopTJZWKQ+701Wu4TERp0Zc8XhFQ=
+Date:   Tue, 22 Sep 2020 13:40:18 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL V2] 2nd set of IIO fixes for 5.9
+Message-ID: <20200922134018.064157eb@archlinux>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.155]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Sep 2020 09:57:17 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+The following changes since commit 856deb866d16e29bd65952e0289066f6078af773:
 
-> On Sun, Sep 20, 2020 at 07:03:49PM +0100, Jonathan Cameron wrote:
-> > The following changes since commit 856deb866d16e29bd65952e0289066f6078af773:
-> > 
-> >   Linux 5.9-rc5 (2020-09-13 16:06:00 -0700)
-> > 
-> > are available in the Git repository at:
-> > 
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.9b
-> > 
-> > for you to fetch changes up to 888f7cdc893a67d556187b12f40c9e9710ec1c99:
-> > 
-> >   iio: adc: qcom-spmi-adc5: fix driver name (2020-09-20 18:26:44 +0100)  
-> 
-> {sigh}
-> 
-> Commit: 888f7cdc893a ("iio: adc: qcom-spmi-adc5: fix driver name")
-> 	Fixes tag: Fixes: e13d757279 ("iio: adc: Add QCOM SPMI PMIC5 ADC driver")
-> 	Has these problem(s):
-> 	        - SHA1 should be at least 12 digits long
-> 	          Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
-> 	          or later) just making sure it is not set (or set to "auto").
-> 
-> I recommend going and installing the scripts...
+  Linux 5.9-rc5 (2020-09-13 16:06:00 -0700)
 
-Have done, though "naturally" didn't run them on this existing pull. Sigh.  Will resend shortly.
+are available in the Git repository at:
 
-Jonathan
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.9b-take2
 
-> 
-> thanks,
-> 
-> greg k-h
+for you to fetch changes up to fdb29f4de1374483291232ae7515e5e7bb464762:
 
+  iio: adc: qcom-spmi-adc5: fix driver name (2020-09-22 13:33:19 +0100)
 
+----------------------------------------------------------------
+2nd set of IIO fixes for the 5.9 cycle.
+
+One of these fixes a regresison introduced this cycle, but if I am too late
+sending this request, it can be queued up for the merge window.
+
+ad7124: fix typo in device name exposed through sysfs.
+qcom-spmi-adc: fix stray .c in driver name field.
+
+----------------------------------------------------------------
+Dmitry Baryshkov (1):
+      iio: adc: qcom-spmi-adc5: fix driver name
+
+Mircea Caprioru (1):
+      iio: adc: ad7124: Fix typo in device name
+
+ drivers/iio/adc/ad7124.c         | 4 ++--
+ drivers/iio/adc/qcom-spmi-adc5.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)

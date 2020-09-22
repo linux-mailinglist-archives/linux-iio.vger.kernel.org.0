@@ -2,88 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C49274133
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Sep 2020 13:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89699274217
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Sep 2020 14:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgIVLr2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Sep 2020 07:47:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48822 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726685AbgIVLp6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Sep 2020 07:45:58 -0400
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A3AF23600;
-        Tue, 22 Sep 2020 11:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600775158;
-        bh=KhrRBx22Zo8YLhOA9Kmsv44o/2fP94Lgd5T40CutoBs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FWJTE6FZ+J4+3x+ntnTY7/64zukYESEjiMiU5E6qFeJU30GV4POgqVGBpGRhXp9ty
-         TBH5y1L1hwg/AbJJ7mXIDGkORCpNYdNx2sdKkqqG4/N6LPUxaE3yQH/9J4EegfRmCt
-         c7XDKbCqIA88Y7+X3/RJcyxxbfxZj5EHA4Yn7Iu8=
-Received: by mail-ed1-f50.google.com with SMTP id l17so15804688edq.12;
-        Tue, 22 Sep 2020 04:45:58 -0700 (PDT)
-X-Gm-Message-State: AOAM530NOEgLALt5SEtgvbv6ByNOnnC35algt/HTHB3Jy+KF3vlI6m9k
-        Z0xCweVUkygJsSSGWBSfqfUNW41FnzR5Js8SCr8=
-X-Google-Smtp-Source: ABdhPJxPZwz2sZgxkwXAxO6r3UJuoTaSBzjBPnrsefm9nDa0zYZ4j5Qq7O92PIlts1wDcqr2WEJd93Xn/6QwzI6Xz3s=
-X-Received: by 2002:a50:e78f:: with SMTP id b15mr3529383edn.104.1600775156644;
- Tue, 22 Sep 2020 04:45:56 -0700 (PDT)
+        id S1726566AbgIVMbc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Sep 2020 08:31:32 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2911 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726531AbgIVMbb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Sep 2020 08:31:31 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 9DF169E53D806C3CC4B8;
+        Tue, 22 Sep 2020 13:31:30 +0100 (IST)
+Received: from localhost (10.52.121.155) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1913.5; Tue, 22 Sep
+ 2020 13:31:30 +0100
+Date:   Tue, 22 Sep 2020 13:29:51 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PULL] 2nd set of IIO fixes for 5.9
+Message-ID: <20200922132951.000035e1@Huawei.com>
+In-Reply-To: <20200922075717.GA1797611@kroah.com>
+References: <20200920190349.2732d4e8@archlinux>
+        <20200922075717.GA1797611@kroah.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20200921210233.21449-1-krzk@kernel.org> <20200921210610.GA5338@amd>
- <CAJKOXPdwQc86H-S=C4v_1VCbd7RhC2Soepj_2LqG1e_E_bgAug@mail.gmail.com>
- <20200922093637.GK4792@sirena.org.uk> <346f2ecd-a015-7f26-b68d-10cf6b5343b6@ti.com>
-In-Reply-To: <346f2ecd-a015-7f26-b68d-10cf6b5343b6@ti.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Tue, 22 Sep 2020 13:45:44 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPfUsCMR4gbOvsasfgzhOe-7b3iHOboQeVhvKF7RvgQGsw@mail.gmail.com>
-Message-ID: <CAJKOXPfUsCMR4gbOvsasfgzhOe-7b3iHOboQeVhvKF7RvgQGsw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: move Milo Kim to credits
-To:     Dan Murphy <dmurphy@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.121.155]
+X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Sep 2020 at 13:36, Dan Murphy <dmurphy@ti.com> wrote:
->
-> All
->
-> On 9/22/20 4:36 AM, Mark Brown wrote:
-> > On Tue, Sep 22, 2020 at 09:08:37AM +0200, Krzysztof Kozlowski wrote:
-> >> On Mon, 21 Sep 2020 at 23:06, Pavel Machek <pavel@ucw.cz> wrote:
-> >>> I believe normal way would be to mark the entries "orphaned", not to
-> >>> drop them altogether. Plus, I believe someone from TI is likely to
-> >>> step up.
-> >> These are entries for specific drivers so they are covered by the
-> >> subsystem maintainers. You believe someone will step up, I believe if
-> >> these were important for TI, they would find the person some time ago,
-> >> so the emails won't bounce... This was similar with BQ chargers where
-> > It's fairly common for mobile parts to get dropped relatively quickly as
-> > the technology moves fairly quickly in that market, I think a lot of teh
-> > parts that Milo was working on were mobile ones.
->
-> These specific drivers don't see many patches applied to them. These
-> drivers did have a few patches this year to fix random bugs.
->
-> Since I have worked in these other subsystems if replacing the
-> Maintainer is desired over removal then my name and email can be added
-> like I did with Andrews.
->
-> Dan Murphy <dmurphy@ti.com>
+On Tue, 22 Sep 2020 09:57:17 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-I will add then yours name in v2 of this patch. Thanks for taking care of these.
+> On Sun, Sep 20, 2020 at 07:03:49PM +0100, Jonathan Cameron wrote:
+> > The following changes since commit 856deb866d16e29bd65952e0289066f6078af773:
+> > 
+> >   Linux 5.9-rc5 (2020-09-13 16:06:00 -0700)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.9b
+> > 
+> > for you to fetch changes up to 888f7cdc893a67d556187b12f40c9e9710ec1c99:
+> > 
+> >   iio: adc: qcom-spmi-adc5: fix driver name (2020-09-20 18:26:44 +0100)  
+> 
+> {sigh}
+> 
+> Commit: 888f7cdc893a ("iio: adc: qcom-spmi-adc5: fix driver name")
+> 	Fixes tag: Fixes: e13d757279 ("iio: adc: Add QCOM SPMI PMIC5 ADC driver")
+> 	Has these problem(s):
+> 	        - SHA1 should be at least 12 digits long
+> 	          Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+> 	          or later) just making sure it is not set (or set to "auto").
+> 
+> I recommend going and installing the scripts...
 
-Best regards,
-Krzysztof
+Have done, though "naturally" didn't run them on this existing pull. Sigh.  Will resend shortly.
+
+Jonathan
+
+> 
+> thanks,
+> 
+> greg k-h
+
+

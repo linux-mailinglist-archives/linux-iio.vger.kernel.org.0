@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 589052761E1
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 22:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D7727621C
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 22:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726627AbgIWUTE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Sep 2020 16:19:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55936 "EHLO mail.kernel.org"
+        id S1726557AbgIWUaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Sep 2020 16:30:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33406 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726600AbgIWUTE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 23 Sep 2020 16:19:04 -0400
+        id S1726199AbgIWUaL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 23 Sep 2020 16:30:11 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 087B1206D9;
-        Wed, 23 Sep 2020 20:19:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A8BA20725;
+        Wed, 23 Sep 2020 20:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600892343;
-        bh=67irmCRtbP7AGPKEMBlUnsizeDR/qE2sRnJe8qhBebA=;
+        s=default; t=1600893010;
+        bh=VFt0QGlLC4JdNe56HCe3yLNw1WFqyjSGboXsrkjTu2A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0qsWFe1dFX26VU+6k7RW/FpnuiX8UNvcxbXy6LpI+JzArGXsMDhsC9zP7+W8ynjni
-         qZtuCV8JcEGbpj50xOzHV9m9Tqi5v+RnUsjAr2X6v7wyFi2JwovRY6ZKuE1p78ZzT+
-         J4oj60zqTNRYulml2wQXmbHpipjRSEf75ofA6Y3c=
-Date:   Wed, 23 Sep 2020 21:18:58 +0100
+        b=g2E326OL36gqvuk70ilnK5/sia8uzoNgXBR3rxA8oU2nUw9Xa3ZlBAZpc1nrxyuA0
+         ciXE0dRugCVi6GTUFPuvzWrPRB7dpJZGgcn74GB2V7MI6R6L9sQe3H8lkb7OG/Bc9T
+         J9nFLKpuKorqSC8SyiV05ZhSZceA8N6OMt89FgCo=
+Date:   Wed, 23 Sep 2020 21:30:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Michael Auchter <michael.auchter@ni.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+Cc:     j.lamorie@rocketlab.co.nz, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: dac: ad5686: add support for AD5338R
-Message-ID: <20200923211858.4709ec53@archlinux>
-In-Reply-To: <20200922184012.557622-1-michael.auchter@ni.com>
-References: <20200922184012.557622-1-michael.auchter@ni.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] dt-bindings: iio: adc: ad7291: add binding
+Message-ID: <20200923213005.1e52efc9@archlinux>
+In-Reply-To: <20200922144422.542669-2-michael.auchter@ni.com>
+References: <20200922144422.542669-1-michael.auchter@ni.com>
+        <20200922144422.542669-2-michael.auchter@ni.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,113 +45,93 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Sep 2020 13:40:10 -0500
+On Tue, 22 Sep 2020 09:44:21 -0500
 Michael Auchter <michael.auchter@ni.com> wrote:
 
-> The AD5338R is a 10-bit DAC with 2 outputs and an internal 2.5V
-> reference (enabled by default). The register configuration is nearly
-> identical to the AD5696R DAC that's already supported by this driver,
-> with the channel selection bits being the only thing different.
+> Add device-tree binding for ADI AD7291 ADC.
 > 
 > Signed-off-by: Michael Auchter <michael.auchter@ni.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Looks good to me - just the DT binding to tweak for v3 unless
-anyone else comments.
+Hi Michael,
+
+I tweaked this a bit whilst applying as below.
+
+Hope that's fine with you. Let me know if not.
+
+Applied series to the togreg branch of iio.git and pushed out as testing.
+I'm not sure if this will make 5.10 or not as we are rather tight
+for a final IIO pull request.
 
 Thanks,
 
 Jonathan
 
-
 > ---
-> Changes since v1:
-> - Keep things sorted by product name
-> - Update Kconfig description to list supported converters
+>  .../bindings/iio/adc/adi,ad7291.yaml          | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7291.yaml
 > 
->  drivers/iio/dac/Kconfig      |  7 ++++---
->  drivers/iio/dac/ad5686.c     | 13 +++++++++++++
->  drivers/iio/dac/ad5686.h     |  1 +
->  drivers/iio/dac/ad5696-i2c.c |  1 +
->  4 files changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index dae8d27e772d..6f6074a5d3db 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -141,9 +141,10 @@ config AD5696_I2C
->  	depends on I2C
->  	select AD5686
->  	help
-> -	  Say yes here to build support for Analog Devices AD5671R, AD5675R,
-> -	  AD5694, AD5694R, AD5695R, AD5696, AD5696R Voltage Output Digital to
-> -	  Analog Converter.
-> +	  Say yes here to build support for Analog Devices AD5311R, AD5338R,
-> +	  AD5671R, AD5675R, AD5691R, AD5692R, AD5693, AD5693R, AD5694, AD5694R,
-> +	  AD5695R, AD5696, and AD5696R Digital to Analog converters.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7291.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7291.yaml
+> new file mode 100644
+> index 000000000000..93aa29413049
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7291.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7291.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called ad5696.
->  
-> diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-> index 56cf9344d187..382b3eb7ec06 100644
-> --- a/drivers/iio/dac/ad5686.c
-> +++ b/drivers/iio/dac/ad5686.c
-> @@ -210,6 +210,12 @@ static struct iio_chan_spec name[] = {				\
->  		AD5868_CHANNEL(0, 0, bits, _shift),		\
->  }
->  
-> +#define DECLARE_AD5338_CHANNELS(name, bits, _shift)		\
-> +static struct iio_chan_spec name[] = {				\
-> +		AD5868_CHANNEL(0, 1, bits, _shift),		\
-> +		AD5868_CHANNEL(1, 8, bits, _shift),		\
-> +}
+> +title: AD7291 8-Channel, I2C, 12-Bit SAR ADC with Temperature Sensor
 > +
->  #define DECLARE_AD5686_CHANNELS(name, bits, _shift)		\
->  static struct iio_chan_spec name[] = {				\
->  		AD5868_CHANNEL(0, 1, bits, _shift),		\
-> @@ -252,6 +258,7 @@ static struct iio_chan_spec name[] = {				\
->  
->  DECLARE_AD5693_CHANNELS(ad5310r_channels, 10, 2);
->  DECLARE_AD5693_CHANNELS(ad5311r_channels, 10, 6);
-> +DECLARE_AD5338_CHANNELS(ad5338r_channels, 10, 6);
->  DECLARE_AD5676_CHANNELS(ad5672_channels, 12, 4);
->  DECLARE_AD5679_CHANNELS(ad5674r_channels, 12, 4);
->  DECLARE_AD5676_CHANNELS(ad5676_channels, 16, 0);
-> @@ -276,6 +283,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->  		.num_channels = 1,
->  		.regmap_type = AD5693_REGMAP,
->  	},
-> +	[ID_AD5338R] = {
-> +		.channels = ad5338r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 2,
-> +		.regmap_type = AD5686_REGMAP,
-> +	},
->  	[ID_AD5671R] = {
->  		.channels = ad5672_channels,
->  		.int_vref_mv = 2500,
-> diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-> index 52009b5eef88..c714afa40adf 100644
-> --- a/drivers/iio/dac/ad5686.h
-> +++ b/drivers/iio/dac/ad5686.h
-> @@ -52,6 +52,7 @@
->  enum ad5686_supported_device_ids {
->  	ID_AD5310R,
->  	ID_AD5311R,
-> +	ID_AD5338R,
->  	ID_AD5671R,
->  	ID_AD5672R,
->  	ID_AD5674R,
-> diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-> index ccf794caef43..89e7b063b7bb 100644
-> --- a/drivers/iio/dac/ad5696-i2c.c
-> +++ b/drivers/iio/dac/ad5696-i2c.c
-> @@ -72,6 +72,7 @@ static int ad5686_i2c_remove(struct i2c_client *i2c)
->  
->  static const struct i2c_device_id ad5686_i2c_id[] = {
->  	{"ad5311r", ID_AD5311R},
-> +	{"ad5338r", ID_AD5338R},
->  	{"ad5671r", ID_AD5671R},
->  	{"ad5675r", ID_AD5675R},
->  	{"ad5691r", ID_AD5691R},
+> +maintainers:
+> +  - Michael Auchter <michael.auchter@ni.com>
+> +
+> +description: |
+> +  Analog Devices AD7291 8-Channel I2C 12-Bit SAR ADC with Temperature Sensor
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7291.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7291
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vref-supply:
+> +    description: |
+> +      The regulator supply for ADC reference voltage.
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+
+These two don't need to be here.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+
+additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      ad7291: adc@0 {
+> +        compatible = "adi,ad7291";
+> +        reg = <0>;
+> +        vref-supply = <&adc_vref>;
+> +      };
+> +    };
+> +
+... added and empty blank line removed.
 

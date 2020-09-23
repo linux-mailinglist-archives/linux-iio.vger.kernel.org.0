@@ -2,293 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9959F275404
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 11:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B682757D3
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 14:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgIWJH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Sep 2020 05:07:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40376 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726424AbgIWJH1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Sep 2020 05:07:27 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81ACEC0613D1
-        for <linux-iio@vger.kernel.org>; Wed, 23 Sep 2020 02:07:27 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id c2so16559098ljj.12
-        for <linux-iio@vger.kernel.org>; Wed, 23 Sep 2020 02:07:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=oxfqN+/oFq6f8zrQC/M5ig8ijRiZLXyefj4fwEV8+DY=;
-        b=kAJE3GOD2vJpQ7aXFpD7xZpacWnJ+tWlt4k6eb4f5ao88/RQvx9wqvk/ebR6ZqhTTn
-         5Py6T+kevtOj+S8vA4PTA5eygM0sOHC1/FP9KdZVwlu0Oq3/44qodvghr+43QoHnh8x8
-         5CeWVD2IjSUHbIHbrAQ7kGd2QIrb8U079ygRjFkfN/Ywk/8Jrge8p9BXYzrluAY8UJ2n
-         nvM7Hpy0u4TFvdCA452stR9Ka/o059qUfVnVUvuyJ/7rNkwXW6Yvm09W9hWHlSib5sse
-         6fm/Y3mqsAQ/qtmkhTdlqildrALk8/aejkg8NeldoKzmgWO0UY41ZxhVXRjCrwHJdb12
-         YIRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=oxfqN+/oFq6f8zrQC/M5ig8ijRiZLXyefj4fwEV8+DY=;
-        b=q4iRYEayZmJtJCINn+NCWeNjCI81QtLnZdfebVPFwwMn1A0cqzhu+f4+f1BmmW88hE
-         Pz+BLRSBPbzOvLhdTWGYnKK6SeKS3Ov5pkGl5S5NqfE8s+jBoHzpp3f/JHHcCYn/RqBG
-         omvDw2fFw0wOX0WXYBcggJhoRMcjbCfJXLOygM0iXR7I4Eae/QsTO7iA3+tl+XUf+SOi
-         619d1NFGJJ53ABh1erUzMiS0E1ZQNCc+m6eJhwlNQdDt/f4u2a/0pg6RbO7LDPF8FWOQ
-         L3Q70v1OpLT2tKHsWMryHPtQ/GacOfgoeTuM8fA0pID9IRjlRfw5UeiOp3/CzItRWK1G
-         JCyg==
-X-Gm-Message-State: AOAM53019SGHIXolOl0Z1bKUots7CmW/XX5HLKA3fVTrlH7D9Zj6p6li
-        Gx9gLJj+hkqeoOAymnmRmOq95g==
-X-Google-Smtp-Source: ABdhPJyoCA3uPuZCxSHL6yFBRN8e+6DemT9CbJsGA4nrCdkQQLUMdOxpTNjah6CWsGURB+sl+Zwn0g==
-X-Received: by 2002:a2e:8850:: with SMTP id z16mr2761724ljj.184.1600852045836;
-        Wed, 23 Sep 2020 02:07:25 -0700 (PDT)
-Received: from [192.168.1.211] ([188.162.64.186])
-        by smtp.gmail.com with ESMTPSA id o8sm4572927lfa.44.2020.09.23.02.07.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2020 02:07:25 -0700 (PDT)
-Subject: Re: [PATCH v5 1/9] dt-bindings: thermal: qcom: add adc-thermal
- monitor bindings
-To:     Rob Herring <robh@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20200914154809.192174-1-dmitry.baryshkov@linaro.org>
- <20200914154809.192174-2-dmitry.baryshkov@linaro.org>
- <20200922234025.GA3476652@bogus>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <55d3f181-b9e6-4963-9d0c-cefee875058c@linaro.org>
-Date:   Wed, 23 Sep 2020 12:07:22 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+        id S1726514AbgIWMZD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Sep 2020 08:25:03 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:53718 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbgIWMZD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Sep 2020 08:25:03 -0400
+X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 08:25:03 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1600863904; x=1632399904;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QmuxF1k6JrlZgiNhVt0KMHpx0TS8HpqXkv0zvHy4YP4=;
+  b=fuqfqEXO/8WMwMglwLLb0zvbageEvXZGg8wvfp/BuQKQ0SaebW3un+M2
+   VbitoNdJSmqwuRD4Yow4QxQQFV5aNpLjkzmk8n6ZWZNHNapGY/gCRVE6V
+   CAiYRyeuHR0Ox0d44Z8LNHcbuswxUQzwBkHpLj2yXxRL3g59ZPOHzzRDK
+   nLKQc72o0/x3WdcYTW0RV8NaLpfrTZx9/bCRyHExww8+2Jn+lTrFGI1Y8
+   da7XGT46crSh04Tl6t7Q5SVinY/8YPuOp/UI33Vzyp8zbZF5vU/97kfBY
+   PqvVffhwBiSI+74KVZw6gJ9Zu3TXqsL0xevEed+GhbUyuYbyXnDJ+oUWl
+   g==;
+IronPort-SDR: fjcb6KWeS9NeUAPNPl/nN/NLjSpbTnZei5ymP1HDxx6lRKrG50OQTwp2KgNaRbf8CSfPsgkybx
+ Eam5i78MzduCr8RtPKel9XAkI+uO1vBdNaBLG8JfDI6wfOMEV5E4EwyC6qTzcJ2yQv/XCx1PqK
+ h6/Guf524PLoA83Fnl62A3Nl9NjBVNmetZObd69J8Op8Pg+a2ROBOLHu+Vdoiu0Yf6IV3fKYMk
+ oKl87jXDwYFaV3I33jQGs//NJ0DcgqE/oKxOa7fZmvjr1wapdwkjbIeRtsTvcI/cvJHVatYFw2
+ sPg=
+X-IronPort-AV: E=Sophos;i="5.77,293,1596524400"; 
+   d="scan'208";a="92080952"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Sep 2020 05:17:57 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Wed, 23 Sep 2020 05:17:37 -0700
+Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.1979.3 via Frontend Transport; Wed, 23 Sep 2020 05:17:52 -0700
+From:   Eugen Hristev <eugen.hristev@microchip.com>
+To:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>
+Subject: [PATCH v2] iio: adc: at91-sama5d2_adc: fix DMA conversion crash
+Date:   Wed, 23 Sep 2020 15:17:48 +0300
+Message-ID: <20200923121748.49384-1-eugen.hristev@microchip.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200922234025.GA3476652@bogus>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23/09/2020 02:40, Rob Herring wrote:
-> On Mon, Sep 14, 2020 at 06:48:01PM +0300, Dmitry Baryshkov wrote:
->> Add bindings for thermal monitor, part of Qualcomm PMIC5 chips. It is a
->> close counterpart of VADC part of those PMICs.
->>
->> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> ---
->>   .../bindings/thermal/qcom-spmi-adc-tm5.yaml   | 151 ++++++++++++++++++
->>   1 file changed, 151 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
->> new file mode 100644
->> index 000000000000..432a65839b89
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
->> @@ -0,0 +1,151 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/thermal/qcom-spmi-adc-tm5.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Qualcomm's SPMI PMIC ADC Thermal Monitoring
->> +maintainers:
->> +  - Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> +
->> +properties:
->> +  compatible:
->> +    const: qcom,spmi-adc-tm5
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  "#thermal-sensor-cells":
->> +    const: 1
->> +    description:
->> +      Number of cells required to uniquely identify the thermal sensors. Since
->> +      we have multiple sensors this is set to 1
->> +
->> +  "#address-cells":
->> +    const: 1
->> +
->> +  "#size-cells":
->> +    const: 0
->> +
->> +  qcom,avg-samples:
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    description: Number of samples to be used for measurement.
->> +    enum:
->> +      - 1
->> +      - 2
->> +      - 4
->> +      - 8
->> +      - 16
->> +    default: 1
->> +
->> +  qcom,decimation:
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    description: This parameter is used to decrease ADC sampling rate.
->> +            Quicker measurements can be made by reducing decimation ratio.
->> +    enum:
->> +      - 250
->> +      - 420
->> +      - 840
->> +    default: 840
->> +
->> +patternProperties:
->> +  "^([-a-z0-9]*)@[0-9]+$":
-> 
-> Less than 10 as unit-addresses are hex?
+After the move of the postenable code to preenable, the DMA start was
+done before the DMA init, which is not correct.
+The DMA is initialized in set_watermark. Because of this, we need to call
+the DMA start functions in set_watermark, after the DMA init, instead of
+preenable hook, when the DMA is not properly setup yet.
 
-8 channels at max currently. I'll fix to use hex though.
+Fixes: f3c034f61775 ("iio: at91-sama5d2_adc: adjust iio_triggered_buffer_{predisable,postenable} positions")
+Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+---
+Changes in v2:
+- check return value of buffer prepare, and in case of error, unwind DMA
+- validated by trying to force an error :
 
-> 
->> +    type: object
->> +    description:
->> +      Represent one thermal sensor.
->> +
->> +    properties:
->> +      reg:
->> +        description: Specify the sensor channel.
->> +        maxItems: 1
-> 
-> You need a range of values here.
+# echo 100 > /sys/bus/iio/devices/iio\:device0/buffer/length
+# echo 100 > /sys/bus/iio/devices/iio\:device0/buffer/watermark
+# iio_generic_buffer -n fc030000.adc -t fc030000.adc-dev0-external_rising -c 5
+iio device number being used is 0
+iio trigger number being used is 0
+/sys/bus/iio/deviciio io:device0 fc030000.adc-dev0-external_risingiio:device0: using dma0chan10 for rx DMA transfers
 
-ok.
-
-> 
->> +
->> +      io-channels:
->> +        description:
->> +          From common IIO binding. Used to pipe PMIC ADC channel to thermal monitor
->> +
->> +      qcom,adc-channel:
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        description: Corresponding ADC channel ID.
-> 
-> Why is this not a cell in io-channels?
+iio iio:device0: continuing without DMA support
+505.151367
+983.715820
+1352.709961
+1485.644531
 
 
-Do you mean parsing a cell from io-channels rather than specifying it 
-again? Sounds like a good idea.
+Original patch message:
 
-> 
->> +
->> +      qcom,ratiometric:
->> +        $ref: /schemas/types.yaml#/definitions/flag
->> +        description:
->> +          Channel calibration type.
->> +          If this property is specified VADC will use the VDD reference
->> +          (1.875V) and GND for channel calibration. If property is not found,
->> +          channel will be calibrated with 0V and 1.25V reference channels,
->> +          also known as absolute calibration.
->> +
->> +      qcom,hw-settle-time:
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        description: Time between AMUX getting configured and the ADC starting conversion.
-> 
-> Time values should have a unit suffix. Seems like a commmon ADC
-> property...
+Hi,
 
-Could you please be more specific here? Would you like for me to just 
-specify the unit in the description?
+This crash is in the kernel since 5.8-rc1
 
-> 
->> +
->> +      qcom,pre-scaling:
->> +        $ref: /schemas/types.yaml#/definitions/uint32-array
->> +        description: Used for scaling the channel input signal before the
->> +          signal is fed to VADC. See qcom,spi-vadc specification for the list
->> +          of possible values.
-> 
-> I'd rather not. Need the values here to validate a DT.
+Please have a look at discussion here:
+https://lore.kernel.org/linux-iio/CA+U=DsqRUtjjoe5nevP_wNxTgr27+O2V1h9w7d3QijBQ+5f3XA@mail.gmail.com/T/#t
 
-OK
+Thanks !
 
-> 
->> +        minItems: 2
->> +        maxItems: 2
->> +
->> +    required:
->> +      - reg
->> +      - qcom,adc-channel
->> +
->> +    additionalProperties:
->> +      false
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +  - "#address-cells"
->> +  - "#size-cells"
->> +  - "#thermal-sensor-cells"
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/iio/qcom,spmi-vadc.h>
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +    spmi_bus {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +        pm8150b_adc: adc@3100 {
->> +            reg = <0x3100>;
->> +            compatible = "qcom,spmi-adc5";
->> +            #address-cells = <1>;
->> +            #size-cells = <0>;
->> +            #io-channel-cells = <1>;
->> +            io-channel-ranges;
->> +
->> +            /* Other propreties are omitted */
->> +            conn-therm@4f {
->> +                reg = <ADC5_AMUX_THM3_100K_PU>;
->> +                qcom,ratiometric;
->> +                qcom,hw-settle-time = <200>;
->> +            };
->> +        };
->> +
->> +        pm8150b_adc_tm: adc-tm@3500 {
->> +            compatible = "qcom,spmi-adc-tm5";
->> +            reg = <0x3500>;
->> +            interrupts = <0x2 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
->> +            #thermal-sensor-cells = <1>;
->> +            #address-cells = <1>;
->> +            #size-cells = <0>;
->> +
->> +            conn-therm@0 {
->> +                reg = <0>;
->> +                io-channels = <&pm8150b_adc ADC5_AMUX_THM3_100K_PU>;
->> +                qcom,adc-channel = <ADC5_AMUX_THM3_100K_PU>;
->> +                qcom,ratiometric;
->> +                qcom,hw-settle-time = <200>;
->> +            };
->> +        };
->> +    };
->> +...
->> -- 
->> 2.28.0
->>
+ drivers/iio/adc/at91-sama5d2_adc.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index de9583d6cddd..f94641193b98 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -884,7 +884,7 @@ static bool at91_adc_current_chan_is_touch(struct iio_dev *indio_dev)
+ 			       AT91_SAMA5D2_MAX_CHAN_IDX + 1);
+ }
+ 
+-static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
++static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
+ {
+ 	int ret;
+ 	u8 bit;
+@@ -901,7 +901,7 @@ static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
+ 	/* we continue with the triggered buffer */
+ 	ret = at91_adc_dma_start(indio_dev);
+ 	if (ret) {
+-		dev_err(&indio_dev->dev, "buffer postenable failed\n");
++		dev_err(&indio_dev->dev, "buffer prepare failed\n");
+ 		return ret;
+ 	}
+ 
+@@ -989,7 +989,6 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
+ }
+ 
+ static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
+-	.preenable = &at91_adc_buffer_preenable,
+ 	.postdisable = &at91_adc_buffer_postdisable,
+ };
+ 
+@@ -1563,6 +1562,7 @@ static void at91_adc_dma_disable(struct platform_device *pdev)
+ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ {
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
++	int ret;
+ 
+ 	if (val > AT91_HWFIFO_MAX_SIZE)
+ 		return -EINVAL;
+@@ -1586,7 +1586,15 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ 	else if (val > 1)
+ 		at91_adc_dma_init(to_platform_device(&indio_dev->dev));
+ 
+-	return 0;
++	/*
++	 * We can start the DMA only after setting the watermark and
++	 * having the DMA initialization completed
++	 */
++	ret = at91_adc_buffer_prepare(indio_dev);
++	if (ret)
++		at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
++
++	return ret;
+ }
+ 
+ static int at91_adc_update_scan_mode(struct iio_dev *indio_dev,
 -- 
-With best wishes
-Dmitry
+2.25.1
+

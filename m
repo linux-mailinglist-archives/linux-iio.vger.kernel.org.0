@@ -2,158 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59B682757D3
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 14:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7A32757CA
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Sep 2020 14:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgIWMZD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Sep 2020 08:25:03 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:53718 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbgIWMZD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Sep 2020 08:25:03 -0400
-X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 08:25:03 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1600863904; x=1632399904;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QmuxF1k6JrlZgiNhVt0KMHpx0TS8HpqXkv0zvHy4YP4=;
-  b=fuqfqEXO/8WMwMglwLLb0zvbageEvXZGg8wvfp/BuQKQ0SaebW3un+M2
-   VbitoNdJSmqwuRD4Yow4QxQQFV5aNpLjkzmk8n6ZWZNHNapGY/gCRVE6V
-   CAiYRyeuHR0Ox0d44Z8LNHcbuswxUQzwBkHpLj2yXxRL3g59ZPOHzzRDK
-   nLKQc72o0/x3WdcYTW0RV8NaLpfrTZx9/bCRyHExww8+2Jn+lTrFGI1Y8
-   da7XGT46crSh04Tl6t7Q5SVinY/8YPuOp/UI33Vzyp8zbZF5vU/97kfBY
-   PqvVffhwBiSI+74KVZw6gJ9Zu3TXqsL0xevEed+GhbUyuYbyXnDJ+oUWl
-   g==;
-IronPort-SDR: fjcb6KWeS9NeUAPNPl/nN/NLjSpbTnZei5ymP1HDxx6lRKrG50OQTwp2KgNaRbf8CSfPsgkybx
- Eam5i78MzduCr8RtPKel9XAkI+uO1vBdNaBLG8JfDI6wfOMEV5E4EwyC6qTzcJ2yQv/XCx1PqK
- h6/Guf524PLoA83Fnl62A3Nl9NjBVNmetZObd69J8Op8Pg+a2ROBOLHu+Vdoiu0Yf6IV3fKYMk
- oKl87jXDwYFaV3I33jQGs//NJ0DcgqE/oKxOa7fZmvjr1wapdwkjbIeRtsTvcI/cvJHVatYFw2
- sPg=
-X-IronPort-AV: E=Sophos;i="5.77,293,1596524400"; 
-   d="scan'208";a="92080952"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Sep 2020 05:17:57 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Wed, 23 Sep 2020 05:17:37 -0700
-Received: from ROB-ULT-M18282.microchip.com (10.10.115.15) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.1979.3 via Frontend Transport; Wed, 23 Sep 2020 05:17:52 -0700
-From:   Eugen Hristev <eugen.hristev@microchip.com>
-To:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>
-Subject: [PATCH v2] iio: adc: at91-sama5d2_adc: fix DMA conversion crash
-Date:   Wed, 23 Sep 2020 15:17:48 +0300
-Message-ID: <20200923121748.49384-1-eugen.hristev@microchip.com>
+        id S1726332AbgIWMSe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Sep 2020 08:18:34 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:13348 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726130AbgIWMSd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Sep 2020 08:18:33 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08NCALBb024115;
+        Wed, 23 Sep 2020 08:18:20 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33r5u982va-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Sep 2020 08:18:20 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 08NCIJOH006721
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 23 Sep 2020 08:18:19 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Wed, 23 Sep
+ 2020 08:18:18 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 23 Sep 2020 08:18:18 -0400
+Received: from saturn.ad.analog.com ([10.48.65.107])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08NCIGSI009889;
+        Wed, 23 Sep 2020 08:18:16 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: buffer-dmaengine: remove non managed alloc/free
+Date:   Wed, 23 Sep 2020 15:18:10 +0300
+Message-ID: <20200923121810.944075-1-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-23_07:2020-09-23,2020-09-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ impostorscore=0 mlxlogscore=999 suspectscore=2 clxscore=1015
+ malwarescore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009230099
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-After the move of the postenable code to preenable, the DMA start was
-done before the DMA init, which is not correct.
-The DMA is initialized in set_watermark. Because of this, we need to call
-the DMA start functions in set_watermark, after the DMA init, instead of
-preenable hook, when the DMA is not properly setup yet.
+This is to encourage the use of devm_iio_dmaengine_buffer_alloc().
+Currently the managed version of the DMAEngine buffer alloc is the only
+function used from this part of the framework.
 
-Fixes: f3c034f61775 ("iio: at91-sama5d2_adc: adjust iio_triggered_buffer_{predisable,postenable} positions")
-Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
-Changes in v2:
-- check return value of buffer prepare, and in case of error, unwind DMA
-- validated by trying to force an error :
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 6 ++----
+ include/linux/iio/buffer-dmaengine.h               | 4 ----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-# echo 100 > /sys/bus/iio/devices/iio\:device0/buffer/length
-# echo 100 > /sys/bus/iio/devices/iio\:device0/buffer/watermark
-# iio_generic_buffer -n fc030000.adc -t fc030000.adc-dev0-external_rising -c 5
-iio device number being used is 0
-iio trigger number being used is 0
-/sys/bus/iio/deviciio io:device0 fc030000.adc-dev0-external_risingiio:device0: using dma0chan10 for rx DMA transfers
-
-iio iio:device0: continuing without DMA support
-505.151367
-983.715820
-1352.709961
-1485.644531
-
-
-Original patch message:
-
-Hi,
-
-This crash is in the kernel since 5.8-rc1
-
-Please have a look at discussion here:
-https://lore.kernel.org/linux-iio/CA+U=DsqRUtjjoe5nevP_wNxTgr27+O2V1h9w7d3QijBQ+5f3XA@mail.gmail.com/T/#t
-
-Thanks !
-
- drivers/iio/adc/at91-sama5d2_adc.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index de9583d6cddd..f94641193b98 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -884,7 +884,7 @@ static bool at91_adc_current_chan_is_touch(struct iio_dev *indio_dev)
- 			       AT91_SAMA5D2_MAX_CHAN_IDX + 1);
- }
- 
--static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
-+static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index 5789bda0745b..93b4e9e6bb55 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -159,7 +159,7 @@ static const struct attribute *iio_dmaengine_buffer_attrs[] = {
+  * Once done using the buffer iio_dmaengine_buffer_free() should be used to
+  * release it.
+  */
+-struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
++static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	const char *channel)
  {
- 	int ret;
- 	u8 bit;
-@@ -901,7 +901,7 @@ static int at91_adc_buffer_preenable(struct iio_dev *indio_dev)
- 	/* we continue with the triggered buffer */
- 	ret = at91_adc_dma_start(indio_dev);
- 	if (ret) {
--		dev_err(&indio_dev->dev, "buffer postenable failed\n");
-+		dev_err(&indio_dev->dev, "buffer prepare failed\n");
- 		return ret;
- 	}
- 
-@@ -989,7 +989,6 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
+ 	struct dmaengine_buffer *dmaengine_buffer;
+@@ -211,7 +211,6 @@ struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
  }
+-EXPORT_SYMBOL(iio_dmaengine_buffer_alloc);
  
- static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
--	.preenable = &at91_adc_buffer_preenable,
- 	.postdisable = &at91_adc_buffer_postdisable,
- };
- 
-@@ -1563,6 +1562,7 @@ static void at91_adc_dma_disable(struct platform_device *pdev)
- static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ /**
+  * iio_dmaengine_buffer_free() - Free dmaengine buffer
+@@ -219,7 +218,7 @@ EXPORT_SYMBOL(iio_dmaengine_buffer_alloc);
+  *
+  * Frees a buffer previously allocated with iio_dmaengine_buffer_alloc().
+  */
+-void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
++static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
  {
- 	struct at91_adc_state *st = iio_priv(indio_dev);
-+	int ret;
+ 	struct dmaengine_buffer *dmaengine_buffer =
+ 		iio_buffer_to_dmaengine_buffer(buffer);
+@@ -229,7 +228,6 @@ void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
  
- 	if (val > AT91_HWFIFO_MAX_SIZE)
- 		return -EINVAL;
-@@ -1586,7 +1586,15 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
- 	else if (val > 1)
- 		at91_adc_dma_init(to_platform_device(&indio_dev->dev));
- 
--	return 0;
-+	/*
-+	 * We can start the DMA only after setting the watermark and
-+	 * having the DMA initialization completed
-+	 */
-+	ret = at91_adc_buffer_prepare(indio_dev);
-+	if (ret)
-+		at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
-+
-+	return ret;
+ 	iio_buffer_put(buffer);
  }
+-EXPORT_SYMBOL_GPL(iio_dmaengine_buffer_free);
  
- static int at91_adc_update_scan_mode(struct iio_dev *indio_dev,
+ static void __devm_iio_dmaengine_buffer_free(struct device *dev, void *res)
+ {
+diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
+index 0e503db71289..5b502291d6a4 100644
+--- a/include/linux/iio/buffer-dmaengine.h
++++ b/include/linux/iio/buffer-dmaengine.h
+@@ -10,10 +10,6 @@
+ struct iio_buffer;
+ struct device;
+ 
+-struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+-	const char *channel);
+-void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
+-
+ struct iio_buffer *devm_iio_dmaengine_buffer_alloc(struct device *dev,
+ 						   const char *channel);
+ 
 -- 
 2.25.1
 

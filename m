@@ -2,133 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 477D5276CAC
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Sep 2020 11:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45215276EBC
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Sep 2020 12:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727300AbgIXJBj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Sep 2020 05:01:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35300 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727371AbgIXJBU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Sep 2020 05:01:20 -0400
-X-Greylist: delayed 396 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Sep 2020 02:01:19 PDT
-Received: from mail.kmu-office.ch (mail.kmu-office.ch [IPv6:2a02:418:6a02::a2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0090C0613CE
-        for <linux-iio@vger.kernel.org>; Thu, 24 Sep 2020 02:01:19 -0700 (PDT)
-Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
-        by mail.kmu-office.ch (Postfix) with ESMTPSA id 2D95A5C0CB2;
-        Thu, 24 Sep 2020 10:54:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
-        t=1600937680;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=j3wWTJTfRYELC5LTzFivh5+jp3zsfFlyHLlDX3q01bY=;
-        b=BAYrLs0DUwaX1n3d+fWZbxvpSp9Shk6BV76S3xhlKzUSvzs+Z/GM2HUV65IZYFEuyODKfH
-        X9HWbEHIj95VqiQHNKB/3U1xOlUax0uelCl1//V3ug94VSKCVeC3Dsx55zYvbZ1g+vz8ja
-        mAJWyRsm6U3iuBU8o/LO9v8/6kRd3yc=
+        id S1727383AbgIXK3W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Sep 2020 06:29:22 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:9872 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727349AbgIXK3W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Sep 2020 06:29:22 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08OAQtVv011761;
+        Thu, 24 Sep 2020 06:29:14 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33r5p6bjus-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 24 Sep 2020 06:29:14 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 08OATDh5049816
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 24 Sep 2020 06:29:13 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 24 Sep 2020 06:29:11 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 24 Sep 2020 06:29:11 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 24 Sep 2020 06:29:11 -0400
+Received: from saturn.ad.analog.com ([10.48.65.107])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08OAT7YT005895;
+        Thu, 24 Sep 2020 06:29:07 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <eugen.hristev@microchip.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <ludovic.desroches@microchip.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: adc: at91-sama5d2_adc: merge buffer & trigger init into a function
+Date:   Thu, 24 Sep 2020 13:29:02 +0300
+Message-ID: <20200924102902.136169-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 24 Sep 2020 10:54:39 +0200
-From:   Stefan Agner <stefan@agner.ch>
-To:     Sanchayan Maity <maitysanchayan@gmail.com>
-Cc:     Andy Duan <fugang.duan@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Christian Eggers <ceggers@arri.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in hard
- interrupt context
-In-Reply-To: <20200924064132.GA22507@core-precision>
-References: <20200813075358.13310-1-lars@metafoo.de>
- <20200814113008.00002733@Huawei.com> <20200920191545.4ed79276@archlinux>
- <5007153.c9bsiqU2ZW@n95hx1g2> <20200921105703.000048b3@Huawei.com>
- <20200921122728.xaamqfkt5wrbppuy@linutronix.de>
- <20200921143206.00006b43@Huawei.com>
- <AM8PR04MB731594F51648126A764EA066FF3B0@AM8PR04MB7315.eurprd04.prod.outlook.com>
- <20200924064132.GA22507@core-precision>
-User-Agent: Roundcube Webmail/1.4.1
-Message-ID: <0861e8406165c4faf6ab0443cc05ffc0@agner.ch>
-X-Sender: stefan@agner.ch
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-24_08:2020-09-24,2020-09-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 clxscore=1011
+ suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009240079
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2020-09-24 08:41, Sanchayan Maity wrote:
-> On 20-09-22 02:51:11, Andy Duan wrote:
->> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
->> > On Mon, 21 Sep 2020 14:27:28 +0200
->> > Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
->> >
->> > > On 2020-09-21 10:57:03 [+0100], Jonathan Cameron wrote:
->> > > > So looking at this the other way, are there any significant risks
->> > > > associated with this change?  If not I'm tempted to queue them up
->> > > > and we have the rcX time to fix anything we've missed (just like
->> > > > every other patch!)
->> > >
->> > > I've been told that it only performs IRQ-thread wake-ups in hard-IRQ
->> > > context. This is fine then.
->> > >
->> > drivers/iio/adc/vf610-adc.c
->> >
->> > However, there looks to be a lot more wrong in there than just this.
->> > So normally for a device with a data ready signal like this we would hook up as
->> > follows.
->> >
->> > Data ready #1 -> IRQ chip (trigger) ->  Read sensor #1 +
->> > iio_trigger_notify_done()
->> >                                     ->  Read sensor #2 +
->> > iio_trigger_notify_done()
->> >
->> > (note that the read etc is normally in a thread - all we do in interrupt context is
->> > usually to  grab a timestamp if that makes sense for a given sensor).
->> >
->> > This driver does both of.
->> > Data ready -> Read data from itself and call iio_trigger_notify_done() IRQ chip
->> > for a different trigger -> Take a timestamp and never call
->> > iio_trigger_notify_done()
->> >   or read any data for that matter.
->> >
->> > Which won't do what we want at all.
->> >
->> > Andy, if I have a go at fixing this are you able to test the result?
->> > I think the simplest is probably to introduce a trigger to tie the two halves
->> > together.
->> > We can set it as the default trigger so things should keep on working for existing
->> > users.
->> >
->> > For more general case, we should probably have two functions.
->> >
->> > iio_trigger_notify_done() which is only called from places we can sleep.
->> > iio_trigger_notify_done_no_action() which only decrements the counter (or
->> > given this is only called inside industrialio-trigger.c could just replace  with
->> > atomic_dec(&trig->use_count)).
->> >
->>
->> Sanchayan, can you help to verify the fixes that Jonathan will send out ?
->>
-> 
-> Sorry for the delay in reply. Unfortunately can't as I do not access to the
-> hardware having left Toradex.
-> 
-> CCed Stefan Agner who might be able to help.
-> 
-> @Stefan
-> 
-> Hello Stefan :), may be you can help here?
+This change is mostly cosmetic, but it's also a pre-cursor to the
+the change for 'iio_buffer_set_attrs()', where the helper gets updated to
+better support multiple IIO buffers for 1 IIO device.
 
-Hi all,
+The only functional change is that the error message for the trigger alloc
+failure is bound to the parent device vs the IIO device object.
 
-I do have access to the hardware and can run a test if required. I guess
-I would just need to test if ADC sampling still work with something like
-tools/iio/iio_generic_buffer.c?
+Also, the new at91_adc_buffer_and_trigger_init() function was moved after
+the definition of the 'at91_adc_fifo_attributes'.
 
---
-Stefan
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/adc/at91-sama5d2_adc.c | 78 ++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 42 deletions(-)
+
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index ad7d9819f83c..b9c3cc6d5913 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -1014,21 +1014,6 @@ static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *indio,
+ 
+ 	return trig;
+ }
+-
+-static int at91_adc_trigger_init(struct iio_dev *indio)
+-{
+-	struct at91_adc_state *st = iio_priv(indio);
+-
+-	st->trig = at91_adc_allocate_trigger(indio, st->selected_trig->name);
+-	if (IS_ERR(st->trig)) {
+-		dev_err(&indio->dev,
+-			"could not allocate trigger\n");
+-		return PTR_ERR(st->trig);
+-	}
+-
+-	return 0;
+-}
+-
+ static void at91_adc_trigger_handler_nodma(struct iio_dev *indio_dev,
+ 					   struct iio_poll_func *pf)
+ {
+@@ -1156,13 +1141,6 @@ static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int at91_adc_buffer_init(struct iio_dev *indio)
+-{
+-	return devm_iio_triggered_buffer_setup(&indio->dev, indio,
+-		&iio_pollfunc_store_time,
+-		&at91_adc_trigger_handler, &at91_buffer_setup_ops);
+-}
+-
+ static unsigned at91_adc_startup_time(unsigned startup_time_min,
+ 				      unsigned adc_clk_khz)
+ {
+@@ -1683,6 +1661,40 @@ static const struct iio_info at91_adc_info = {
+ 	.hwfifo_set_watermark = &at91_adc_set_watermark,
+ };
+ 
++static int at91_adc_buffer_and_trigger_init(struct device *dev,
++					    struct iio_dev *indio)
++{
++	struct at91_adc_state *st = iio_priv(indio);
++	int ret;
++
++	ret = devm_iio_triggered_buffer_setup(&indio->dev, indio,
++		&iio_pollfunc_store_time,
++		&at91_adc_trigger_handler, &at91_buffer_setup_ops);
++	if (ret < 0) {
++		dev_err(dev, "couldn't initialize the buffer.\n");
++		return ret;
++	}
++
++	if (!st->selected_trig->hw_trig)
++		return 0;
++
++	iio_buffer_set_attrs(indio->buffer, at91_adc_fifo_attributes);
++
++	st->trig = at91_adc_allocate_trigger(indio, st->selected_trig->name);
++	if (IS_ERR(st->trig)) {
++		dev_err(dev, "could not allocate trigger\n");
++		return PTR_ERR(st->trig);
++	}
++
++	/*
++	 * Initially the iio buffer has a length of 2 and
++	 * a watermark of 1
++	 */
++	st->dma_st.watermark = 1;
++
++	return 0;
++}
++
+ static int at91_adc_probe(struct platform_device *pdev)
+ {
+ 	struct iio_dev *indio_dev;
+@@ -1818,27 +1830,9 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
+-	ret = at91_adc_buffer_init(indio_dev);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "couldn't initialize the buffer.\n");
++	ret = at91_adc_buffer_and_trigger_init(&pdev->dev, indio_dev);
++	if (ret < 0)
+ 		goto per_clk_disable_unprepare;
+-	}
+-
+-	if (st->selected_trig->hw_trig) {
+-		ret = at91_adc_trigger_init(indio_dev);
+-		if (ret < 0) {
+-			dev_err(&pdev->dev, "couldn't setup the triggers.\n");
+-			goto per_clk_disable_unprepare;
+-		}
+-		/*
+-		 * Initially the iio buffer has a length of 2 and
+-		 * a watermark of 1
+-		 */
+-		st->dma_st.watermark = 1;
+-
+-		iio_buffer_set_attrs(indio_dev->buffer,
+-				     at91_adc_fifo_attributes);
+-	}
+ 
+ 	if (dma_coerce_mask_and_coherent(&indio_dev->dev, DMA_BIT_MASK(32)))
+ 		dev_info(&pdev->dev, "cannot set DMA mask to 32-bit\n");
+-- 
+2.25.1
+

@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09885276B67
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Sep 2020 10:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78F5276B6D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Sep 2020 10:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727266AbgIXIFq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Sep 2020 04:05:46 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:17950 "EHLO
+        id S1727255AbgIXIFw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Sep 2020 04:05:52 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:22218 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727255AbgIXIFp (ORCPT
+        by vger.kernel.org with ESMTP id S1727260AbgIXIFp (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Sep 2020 04:05:45 -0400
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08O82fbE015755;
-        Thu, 24 Sep 2020 04:05:42 -0400
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08O82fcs015752;
+        Thu, 24 Sep 2020 04:05:44 -0400
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33r5p6b79u-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 33r5p6b79w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Sep 2020 04:05:41 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08O85eMM049955
+        Thu, 24 Sep 2020 04:05:44 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08O85hsN049967
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 24 Sep 2020 04:05:40 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 24 Sep 2020 04:05:43 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 24 Sep
- 2020 04:05:39 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 24 Sep 2020 04:05:39 -0400
+ 2020 04:05:41 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 24 Sep 2020 04:05:41 -0400
 Received: from saturn.ad.analog.com ([10.48.65.107])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08O85Srs000911;
-        Thu, 24 Sep 2020 04:05:32 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08O85Srt000911;
+        Thu, 24 Sep 2020 04:05:33 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
@@ -39,9 +39,9 @@ CC:     <robh+dt@kernel.org>, <jic23@kernel.org>,
         <Michael.Hennerich@analog.com>,
         Michael Hennerich <michael.hennerich@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v3 2/4] iio: adc: ad9467: add support for AD9434 high-speed ADC
-Date:   Thu, 24 Sep 2020 11:05:16 +0300
-Message-ID: <20200924080518.96410-3-alexandru.ardelean@analog.com>
+Subject: [PATCH v3 3/4] iio: adc: ad9467: add support for AD9265 high-speed ADC
+Date:   Thu, 24 Sep 2020 11:05:17 +0300
+Message-ID: <20200924080518.96410-4-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200924080518.96410-1-alexandru.ardelean@analog.com>
 References: <20200924080518.96410-1-alexandru.ardelean@analog.com>
@@ -62,21 +62,23 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Michael Hennerich <michael.hennerich@analog.com>
 
-The AD9434 is a 12-bit monolithic sampling analog-to-digital converter
-(ADC) optimized for high performance, low power, and ease of use. The part
-operates at up to a 500 MSPS conversion rate and is optimized for
-outstanding dynamic performance in wideband carrier and broadband systems.
+The AD9265 is a 16-bit, 125 MSPS analog-to-digital converter (ADC). The
+AD9265 is designed to support communications applications where high
+performance combined with low cost, small size, and versatility is
+desired.
 
-All necessary functions, including a sample-and-hold and voltage reference,
-are included on the chip to provide a complete signal conversion solution.
-The VREF pin can be used to monitor the internal reference or provide an
-external voltage reference (external reference mode must be enabled through
-the SPI port).
+The ADC core features a multistage, differential pipelined architecture
+with integrated output error correction logic to provide 16-bit accuracy at
+125 MSPS data rates and guarantees no missing codes over the full operating
+temperature range.
 
-The ADC requires a 1.8 V analog voltage supply and a differential clock
-for full performance operation. The digital outputs are LVDS (ANSI-644)
-compatible and support twos complement, offset binary format, or Gray code.
-A data clock output is available for proper output data timing.
+The ADC features a wide bandwidth differential sample-and-hold analog input
+amplifier supporting a variety of user-selectable input ranges. It is
+suitable for multiplexed systems that switch full-scale voltage levels in
+successive channels and for sampling single-channel inputs at frequencies
+well beyond the Nyquist rate. Combined with power and cost savings over
+previously available ADCs, the AD9265 is suitable for applications in
+communications, instrumentation and medical imaging.
 
 Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD9434.pdf
 
@@ -86,11 +88,11 @@ this chip is added to the 'ad9467' driver.
 Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/adc/ad9467.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/iio/adc/ad9467.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 85f5a014bd2d..54a5864bc698 100644
+index 54a5864bc698..19a45dd43796 100644
 --- a/drivers/iio/adc/ad9467.c
 +++ b/drivers/iio/adc/ad9467.c
 @@ -76,6 +76,14 @@
@@ -98,74 +100,62 @@ index 85f5a014bd2d..54a5864bc698 100644
  #define AN877_ADC_DCO_DELAY_ENABLE		0x80
  
 +/*
-+ * Analog Devices AD9434 12-Bit, 370/500 MSPS ADC
++ * Analog Devices AD9265 16-Bit, 125/105/80 MSPS ADC
 + */
 +
-+#define CHIPID_AD9434			0x6A
-+#define AD9434_DEF_OUTPUT_MODE		0x00
-+#define AD9434_REG_VREF_MASK		0xC0
++#define CHIPID_AD9265			0x64
++#define AD9265_DEF_OUTPUT_MODE		0x40
++#define AD9265_REG_VREF_MASK		0xC0
 +
  /*
-  * Analog Devices AD9467 16-Bit, 200/250 MSPS ADC
+  * Analog Devices AD9434 12-Bit, 370/500 MSPS ADC
   */
-@@ -85,6 +93,7 @@
+@@ -93,6 +101,7 @@
  #define AD9467_REG_VREF_MASK		0x0F
  
  enum {
-+	ID_AD9434,
++	ID_AD9265,
+ 	ID_AD9434,
  	ID_AD9467,
  };
- 
-@@ -158,6 +167,13 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+@@ -167,6 +176,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
  	return 0;
  }
  
-+static const unsigned int ad9434_scale_table[][2] = {
-+	{1600, 0x1C}, {1580, 0x1D}, {1550, 0x1E}, {1520, 0x1F}, {1500, 0x00},
-+	{1470, 0x01}, {1440, 0x02}, {1420, 0x03}, {1390, 0x04}, {1360, 0x05},
-+	{1340, 0x06}, {1310, 0x07}, {1280, 0x08}, {1260, 0x09}, {1230, 0x0A},
-+	{1200, 0x0B}, {1180, 0x0C},
++static const unsigned int ad9265_scale_table[][2] = {
++	{1250, 0x00}, {1500, 0x40}, {1750, 0x80}, {2000, 0xC0},
 +};
 +
- static const unsigned int ad9467_scale_table[][2] = {
- 	{2000, 0}, {2100, 6}, {2200, 7},
- 	{2300, 8}, {2400, 9}, {2500, 10},
-@@ -191,11 +207,27 @@ static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
- 	},								\
- }
- 
-+static const struct iio_chan_spec ad9434_channels[] = {
-+	AD9467_CHAN(0, 0, 12, 'S'),
-+};
-+
- static const struct iio_chan_spec ad9467_channels[] = {
- 	AD9467_CHAN(0, 0, 16, 'S'),
+ static const unsigned int ad9434_scale_table[][2] = {
+ 	{1600, 0x1C}, {1580, 0x1D}, {1550, 0x1E}, {1520, 0x1F}, {1500, 0x00},
+ 	{1470, 0x01}, {1440, 0x02}, {1420, 0x03}, {1390, 0x04}, {1360, 0x05},
+@@ -216,6 +229,18 @@ static const struct iio_chan_spec ad9467_channels[] = {
  };
  
  static const struct ad9467_chip_info ad9467_chip_tbl[] = {
-+	[ID_AD9434] = {
++	[ID_AD9265] = {
 +		.axi_adc_info = {
-+			.id = CHIPID_AD9434,
-+			.max_rate = 500000000UL,
-+			.scale_table = ad9434_scale_table,
-+			.num_scales = ARRAY_SIZE(ad9434_scale_table),
-+			.channels = ad9434_channels,
-+			.num_channels = ARRAY_SIZE(ad9434_channels),
++			.id = CHIPID_AD9265,
++			.max_rate = 125000000UL,
++			.scale_table = ad9265_scale_table,
++			.num_scales = ARRAY_SIZE(ad9265_scale_table),
++			.channels = ad9467_channels,
++			.num_channels = ARRAY_SIZE(ad9467_channels),
 +		},
-+		.default_output_mode = AD9434_DEF_OUTPUT_MODE,
-+		.vref_mask = AD9434_REG_VREF_MASK,
++		.default_output_mode = AD9265_DEF_OUTPUT_MODE,
++		.vref_mask = AD9265_REG_VREF_MASK,
 +	},
- 	[ID_AD9467] = {
+ 	[ID_AD9434] = {
  		.axi_adc_info = {
- 			.id = CHIPID_AD9467,
-@@ -400,6 +432,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 			.id = CHIPID_AD9434,
+@@ -432,6 +457,7 @@ static int ad9467_probe(struct spi_device *spi)
  }
  
  static const struct of_device_id ad9467_of_match[] = {
-+	{ .compatible = "adi,ad9434", .data = &ad9467_chip_tbl[ID_AD9434], },
++	{ .compatible = "adi,ad9265", .data = &ad9467_chip_tbl[ID_AD9265], },
+ 	{ .compatible = "adi,ad9434", .data = &ad9467_chip_tbl[ID_AD9434], },
  	{ .compatible = "adi,ad9467", .data = &ad9467_chip_tbl[ID_AD9467], },
  	{}
- };
 -- 
 2.25.1
 

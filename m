@@ -2,36 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 294FF278744
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B09F278747
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727132AbgIYMbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Sep 2020 08:31:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43744 "EHLO mail.kernel.org"
+        id S1726990AbgIYMdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Sep 2020 08:33:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44184 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727044AbgIYMbg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 25 Sep 2020 08:31:36 -0400
+        id S1726368AbgIYMdH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 25 Sep 2020 08:33:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AECE121D7A;
-        Fri, 25 Sep 2020 12:31:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7534421D7A;
+        Fri, 25 Sep 2020 12:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601037095;
-        bh=gA/llG8ZDnCPysu9y18Wmt5ZUsCKpX4v4Y6BgcdLJhU=;
+        s=default; t=1601037185;
+        bh=tyBhPgHm5xghUuwyy75HoSCnIqQbObqgg/o7g7xDaxY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qq+nWOcsLIInFcWFnxfLZFBCbvt3PRcGFPC6a29e+yQr5Aiel65XsnSuSJUADWE2O
-         9gDBInnKyYLuAFPWbgea33cm05RDxpetFcvwTBtwia96p83/ctWXicTIYs+IVB+6+1
-         fWJFXnU+Ol8skKkyJ9dC0851XiVzvE7xxHKwrfrI=
-Date:   Fri, 25 Sep 2020 13:31:30 +0100
+        b=dHR+lK9vSUXvPF5IuTTkDgfTPGjZlSByNcbannH2fH04SzKDlgC8BgWsp5vL5IqKP
+         XTxmw0ev1c19kbtKPqNeZbfDFjt58m3ixL3O2pfkZyplS3BcUXmPOOFENZjvliUyyd
+         z13gDeDvsg7PCNIIAdpBCYyPfLYmzpGBgboGxpQE=
+Date:   Fri, 25 Sep 2020 13:33:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH] iio: buffer-dmaengine: remove non managed alloc/free
-Message-ID: <20200925133130.46f795ab@archlinux>
-In-Reply-To: <20200923121810.944075-1-alexandru.ardelean@analog.com>
-References: <20200923121810.944075-1-alexandru.ardelean@analog.com>
+        <bleung@chromium.org>, <gwendal@chromium.org>,
+        <enric.balletbo@collabora.com>, <groeck@chromium.org>
+Subject: Re: [PATCH] iio: cros_ec: unify hw fifo attributes into the core
+ file
+Message-ID: <20200925133301.4789c47a@archlinux>
+In-Reply-To: <20200923130339.997902-1-alexandru.ardelean@analog.com>
+References: <20200923130339.997902-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,81 +42,190 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Sep 2020 15:18:10 +0300
+On Wed, 23 Sep 2020 16:03:39 +0300
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> This is to encourage the use of devm_iio_dmaengine_buffer_alloc().
-> Currently the managed version of the DMAEngine buffer alloc is the only
-> function used from this part of the framework.
+> The intent here is to minimize the use of iio_buffer_set_attrs(). Since we
+> are planning to add support for multiple IIO buffers per IIO device, the
+> issue has to do with:
+> 1. Accessing 'indio_dev->buffer' directly (as is done with
+>    'iio_buffer_set_attrs(indio_dev->buffer, <attrs>)').
+> 2. The way that the buffer attributes would get handled or expanded when
+>    there are more buffers per IIO device. Current a sysfs kobj_type expands
+>    into a 'device' object that expands into an 'iio_dev' object.
+>    We will need to change this, so that the sysfs attributes for IIO
+>    buffers expand into IIO buffers at some point.
+> 
+> Right now, the current IIO framework works fine for the
+> '1 IIO device == 1 IIO buffer' case (that is now).
 > 
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Looks good to me, but I'll need a cros_ec ack for this one.
 
-Make sense. We can bring it back again if a strong usecase
-shows up.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-as normal.
-
-Thanks,
+thanks
 
 Jonathan
 
 > ---
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 6 ++----
->  include/linux/iio/buffer-dmaengine.h               | 4 ----
->  2 files changed, 2 insertions(+), 8 deletions(-)
+>  drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
+>  .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 ++-
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++---
+>  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 ++++++++---
+>  drivers/iio/light/cros_ec_light_prox.c                |  5 ++---
+>  drivers/iio/pressure/cros_ec_baro.c                   |  5 ++---
+>  include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
+>  7 files changed, 19 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> index 5789bda0745b..93b4e9e6bb55 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -159,7 +159,7 @@ static const struct attribute *iio_dmaengine_buffer_attrs[] = {
->   * Once done using the buffer iio_dmaengine_buffer_free() should be used to
->   * release it.
->   */
-> -struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
-> +static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
->  	const char *channel)
->  {
->  	struct dmaengine_buffer *dmaengine_buffer;
-> @@ -211,7 +211,6 @@ struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
->  	kfree(dmaengine_buffer);
->  	return ERR_PTR(ret);
->  }
-> -EXPORT_SYMBOL(iio_dmaengine_buffer_alloc);
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index b6f3471b62dc..8f1232c38e0d 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
 >  
->  /**
->   * iio_dmaengine_buffer_free() - Free dmaengine buffer
-> @@ -219,7 +218,7 @@ EXPORT_SYMBOL(iio_dmaengine_buffer_alloc);
->   *
->   * Frees a buffer previously allocated with iio_dmaengine_buffer_alloc().
->   */
-> -void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
-> +static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
->  {
->  	struct dmaengine_buffer *dmaengine_buffer =
->  		iio_buffer_to_dmaengine_buffer(buffer);
-> @@ -229,7 +228,6 @@ void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
+>  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> -					cros_ec_sensors_capture, NULL);
+> +					cros_ec_sensors_capture, NULL, false);
+>  	if (ret)
+>  		return ret;
 >  
->  	iio_buffer_put(buffer);
->  }
-> -EXPORT_SYMBOL_GPL(iio_dmaengine_buffer_free);
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> index af801e203623..752f59037715 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> @@ -97,7 +97,8 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+>  	if (!indio_dev)
+>  		return -ENOMEM;
 >  
->  static void __devm_iio_dmaengine_buffer_free(struct device *dev, void *res)
->  {
-> diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-> index 0e503db71289..5b502291d6a4 100644
-> --- a/include/linux/iio/buffer-dmaengine.h
-> +++ b/include/linux/iio/buffer-dmaengine.h
-> @@ -10,10 +10,6 @@
->  struct iio_buffer;
->  struct device;
+> -	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
+> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
+> +					NULL, false);
+>  	if (ret)
+>  		return ret;
 >  
-> -struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
-> -	const char *channel);
-> -void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 130ab8ce0269..57038ca48d93 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -236,12 +236,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+>  
+>  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+>  					cros_ec_sensors_capture,
+> -					cros_ec_sensors_push_data);
+> +					cros_ec_sensors_push_data,
+> +					true);
+>  	if (ret)
+>  		return ret;
+>  
+> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
 > -
->  struct iio_buffer *devm_iio_dmaengine_buffer_alloc(struct device *dev,
->  						   const char *channel);
+>  	indio_dev->info = &ec_sensors_info;
+>  	state = iio_priv(indio_dev);
+>  	for (channel = state->channels, i = CROS_EC_SENSOR_X;
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index ea480c1d4349..0de800d41978 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -174,12 +174,11 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
 >  
+>  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
+>  
+> -const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+> +static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+>  	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
+>  	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
+>  	NULL,
+>  };
+> -EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
+>  
+>  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+>  			      s16 *data,
+> @@ -238,6 +237,7 @@ static void cros_ec_sensors_core_clean(void *arg)
+>   *    for backward compatibility.
+>   * @push_data:          function to call when cros_ec_sensorhub receives
+>   *    a sample for that sensor.
+> + * @has_hw_fifo:	Set true if this device has/uses a HW FIFO
+>   *
+>   * Return: 0 on success, -errno on failure.
+>   */
+> @@ -245,7 +245,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      struct iio_dev *indio_dev,
+>  			      bool physical_device,
+>  			      cros_ec_sensors_capture_t trigger_capture,
+> -			      cros_ec_sensorhub_push_data_cb_t push_data)
+> +			      cros_ec_sensorhub_push_data_cb_t push_data,
+> +			      bool has_hw_fifo)
+>  {
+>  	struct device *dev = &pdev->dev;
+>  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+> @@ -358,6 +359,10 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  					NULL);
+>  			if (ret)
+>  				return ret;
+> +
+> +			if (has_hw_fifo)
+> +				iio_buffer_set_attrs(indio_dev->buffer,
+> +						     cros_ec_sensor_fifo_attributes);
+>  		}
+>  	}
+>  
+> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> index fed79ba27fda..75d6b5fcf2cc 100644
+> --- a/drivers/iio/light/cros_ec_light_prox.c
+> +++ b/drivers/iio/light/cros_ec_light_prox.c
+> @@ -182,12 +182,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+>  
+>  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+>  					cros_ec_sensors_capture,
+> -					cros_ec_sensors_push_data);
+> +					cros_ec_sensors_push_data,
+> +					true);
+>  	if (ret)
+>  		return ret;
+>  
+> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> -
+>  	indio_dev->info = &cros_ec_light_prox_info;
+>  	state = iio_priv(indio_dev);
+>  	state->core.type = state->core.resp->info.type;
+> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> index f0938b6fbba0..aa043cb9ac42 100644
+> --- a/drivers/iio/pressure/cros_ec_baro.c
+> +++ b/drivers/iio/pressure/cros_ec_baro.c
+> @@ -139,12 +139,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+>  
+>  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+>  					cros_ec_sensors_capture,
+> -					cros_ec_sensors_push_data);
+> +					cros_ec_sensors_push_data,
+> +					true);
+>  	if (ret)
+>  		return ret;
+>  
+> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> -
+>  	indio_dev->info = &cros_ec_baro_info;
+>  	state = iio_priv(indio_dev);
+>  	state->core.type = state->core.resp->info.type;
+> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> index caa8bb279a34..c9b80be82440 100644
+> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> @@ -96,7 +96,8 @@ struct platform_device;
+>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      struct iio_dev *indio_dev, bool physical_device,
+>  			      cros_ec_sensors_capture_t trigger_capture,
+> -			      cros_ec_sensorhub_push_data_cb_t push_data);
+> +			      cros_ec_sensorhub_push_data_cb_t push_data,
+> +			      bool has_hw_fifo);
+>  
+>  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
+>  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+> @@ -125,6 +126,5 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
+>  
+>  /* List of extended channel specification for all sensors. */
+>  extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
+> -extern const struct attribute *cros_ec_sensor_fifo_attributes[];
+>  
+>  #endif  /* __CROS_EC_SENSORS_CORE_H */
 

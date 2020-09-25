@@ -2,38 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B09F278747
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E4027875B
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726990AbgIYMdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Sep 2020 08:33:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44184 "EHLO mail.kernel.org"
+        id S1727044AbgIYMiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Sep 2020 08:38:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45966 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726368AbgIYMdH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 25 Sep 2020 08:33:07 -0400
+        id S1726368AbgIYMiL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 25 Sep 2020 08:38:11 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7534421D7A;
-        Fri, 25 Sep 2020 12:33:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 52FF321D7A;
+        Fri, 25 Sep 2020 12:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601037185;
-        bh=tyBhPgHm5xghUuwyy75HoSCnIqQbObqgg/o7g7xDaxY=;
+        s=default; t=1601037489;
+        bh=eDZq8Tp5oJb7Jdsq1+1JQqrtcfDdTIreOoe/tCPcZ0s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dHR+lK9vSUXvPF5IuTTkDgfTPGjZlSByNcbannH2fH04SzKDlgC8BgWsp5vL5IqKP
-         XTxmw0ev1c19kbtKPqNeZbfDFjt58m3ixL3O2pfkZyplS3BcUXmPOOFENZjvliUyyd
-         z13gDeDvsg7PCNIIAdpBCYyPfLYmzpGBgboGxpQE=
-Date:   Fri, 25 Sep 2020 13:33:01 +0100
+        b=UdlvYcJO/6M56OgJsOJrObFLWw9H+o4bynusv9gAo3DqGJFBhjVNOXswFFKfP1L3i
+         GT6PkstlcSsPpIl2aOIkIS26FP4dFLdjNDFuDura9C+92SQnxhDSGbInDAbIRDyqHf
+         ydZLh40YVboGqstO5ySrVC1Adz3oMbQjJas7KgI0=
+Date:   Fri, 25 Sep 2020 13:38:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <bleung@chromium.org>, <gwendal@chromium.org>,
-        <enric.balletbo@collabora.com>, <groeck@chromium.org>
-Subject: Re: [PATCH] iio: cros_ec: unify hw fifo attributes into the core
- file
-Message-ID: <20200925133301.4789c47a@archlinux>
-In-Reply-To: <20200923130339.997902-1-alexandru.ardelean@analog.com>
-References: <20200923130339.997902-1-alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: core: centralize ioctl() calls to the main chardev
+Message-ID: <20200925133805.062c0b1c@archlinux>
+In-Reply-To: <20200924084155.99406-1-alexandru.ardelean@analog.com>
+References: <20200924084155.99406-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,190 +39,273 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Sep 2020 16:03:39 +0300
+On Thu, 24 Sep 2020 11:41:55 +0300
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> The intent here is to minimize the use of iio_buffer_set_attrs(). Since we
-> are planning to add support for multiple IIO buffers per IIO device, the
-> issue has to do with:
-> 1. Accessing 'indio_dev->buffer' directly (as is done with
->    'iio_buffer_set_attrs(indio_dev->buffer, <attrs>)').
-> 2. The way that the buffer attributes would get handled or expanded when
->    there are more buffers per IIO device. Current a sysfs kobj_type expands
->    into a 'device' object that expands into an 'iio_dev' object.
->    We will need to change this, so that the sysfs attributes for IIO
->    buffers expand into IIO buffers at some point.
+> The aim of this is to improve a bit the organization of ioctl() calls in
+> IIO core. Currently the chardev is split across IIO core sub-modules/files.
+> The main chardev has to be able to handle ioctl() calls, and if we need to
+> add buffer ioctl() calls, this would complicate things.
 > 
-> Right now, the current IIO framework works fine for the
-> '1 IIO device == 1 IIO buffer' case (that is now).
+> The 'industrialio-core.c' file will provide a 'iio_device_ioctl()' which
+> will iterate over a list of ioctls registered with the IIO device. These
+> can be event ioctl() or buffer ioctl() calls, or something else.
+> 
+> Each ioctl() handler will have to return a IIO_IOCTL_UNHANDLED code (which
+> is positive 1), if the ioctl() did not handle the call in any. This
+> eliminates any potential ambiguities about negative error codes, which
+> should fail the call altogether.
+> 
+> If any ioctl() returns 0, it was considered that it was serviced
+> successfully and the loop will exit.
+> 
+> This change also moves the handling of the IIO_GET_EVENT_FD_IOCTL command
+> inside 'industrialio-event.c', where this is better suited.
+> 
+> This patch is a combination of 2 other patches from an older series:
+> Patch 1: iio: core: add simple centralized mechanism for ioctl() handlers
+>   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-6-alexandru.ardelean@analog.com/
+> Patch 2: iio: core: use new common ioctl() mechanism
+>   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-7-alexandru.ardelean@analog.com/
 > 
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Looks good to me, but I'll need a cros_ec ack for this one.
+> ---
+> 
+> Note: since this is a change to the IIO core, we don't need to put this in
+> right now; especially if there is a tight schedule, or we are too close to
+> a merge window.
 
-thanks
+Looks good to me.  As you suggest, lets let this one sit on the list for a
+while though!
 
 Jonathan
 
-> ---
->  drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
->  .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 ++-
->  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++---
->  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 ++++++++---
->  drivers/iio/light/cros_ec_light_prox.c                |  5 ++---
->  drivers/iio/pressure/cros_ec_baro.c                   |  5 ++---
->  include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
->  7 files changed, 19 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-> index b6f3471b62dc..8f1232c38e0d 100644
-> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
-> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-> @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
->  		return -ENOMEM;
+>  drivers/iio/iio_core.h           | 15 ++++++++-
+>  drivers/iio/industrialio-core.c  | 56 ++++++++++++++++++++++++--------
+>  drivers/iio/industrialio-event.c | 28 +++++++++++++++-
+>  include/linux/iio/iio-opaque.h   |  2 ++
+>  4 files changed, 85 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+> index fd9a5f1d5e51..fced02cadcc3 100644
+> --- a/drivers/iio/iio_core.h
+> +++ b/drivers/iio/iio_core.h
+> @@ -17,6 +17,20 @@ struct iio_dev;
 >  
->  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> -					cros_ec_sensors_capture, NULL);
-> +					cros_ec_sensors_capture, NULL, false);
->  	if (ret)
->  		return ret;
+>  extern struct device_type iio_device_type;
 >  
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> index af801e203623..752f59037715 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> @@ -97,7 +97,8 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
-> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
-> +					NULL, false);
->  	if (ret)
->  		return ret;
->  
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> index 130ab8ce0269..57038ca48d93 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> @@ -236,12 +236,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
->  
->  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->  					cros_ec_sensors_capture,
-> -					cros_ec_sensors_push_data);
-> +					cros_ec_sensors_push_data,
-> +					true);
->  	if (ret)
->  		return ret;
->  
-> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-> -
->  	indio_dev->info = &ec_sensors_info;
->  	state = iio_priv(indio_dev);
->  	for (channel = state->channels, i = CROS_EC_SENSOR_X;
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index ea480c1d4349..0de800d41978 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -174,12 +174,11 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
->  
->  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
->  
-> -const struct attribute *cros_ec_sensor_fifo_attributes[] = {
-> +static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
->  	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
->  	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
->  	NULL,
->  };
-> -EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
->  
->  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
->  			      s16 *data,
-> @@ -238,6 +237,7 @@ static void cros_ec_sensors_core_clean(void *arg)
->   *    for backward compatibility.
->   * @push_data:          function to call when cros_ec_sensorhub receives
->   *    a sample for that sensor.
-> + * @has_hw_fifo:	Set true if this device has/uses a HW FIFO
->   *
->   * Return: 0 on success, -errno on failure.
->   */
-> @@ -245,7 +245,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  			      struct iio_dev *indio_dev,
->  			      bool physical_device,
->  			      cros_ec_sensors_capture_t trigger_capture,
-> -			      cros_ec_sensorhub_push_data_cb_t push_data)
-> +			      cros_ec_sensorhub_push_data_cb_t push_data,
-> +			      bool has_hw_fifo)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-> @@ -358,6 +359,10 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  					NULL);
->  			if (ret)
->  				return ret;
+> +#define IIO_IOCTL_UNHANDLED	1
+> +struct iio_ioctl_handler {
+> +	struct list_head entry;
+> +	long (*ioctl)(struct iio_dev *indio_dev, struct file *filp,
+> +		      unsigned int cmd, unsigned long arg);
+> +};
 > +
-> +			if (has_hw_fifo)
-> +				iio_buffer_set_attrs(indio_dev->buffer,
-> +						     cros_ec_sensor_fifo_attributes);
->  		}
+> +long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
+> +		      unsigned int cmd, unsigned long arg);
+> +
+> +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+> +				       struct iio_ioctl_handler *h);
+> +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
+> +
+>  int __iio_add_chan_devattr(const char *postfix,
+>  			   struct iio_chan_spec const *chan,
+>  			   ssize_t (*func)(struct device *dev,
+> @@ -74,7 +88,6 @@ static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
+>  int iio_device_register_eventset(struct iio_dev *indio_dev);
+>  void iio_device_unregister_eventset(struct iio_dev *indio_dev);
+>  void iio_device_wakeup_eventset(struct iio_dev *indio_dev);
+> -int iio_event_getfd(struct iio_dev *indio_dev);
+>  
+>  struct iio_event_interface;
+>  bool iio_event_enabled(const struct iio_event_interface *ev_int);
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 261d3b17edc9..964a0a2d6f8b 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1567,6 +1567,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
 >  	}
+>  	dev_set_name(&dev->dev, "iio:device%d", dev->id);
+>  	INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+> +	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
 >  
-> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-> index fed79ba27fda..75d6b5fcf2cc 100644
-> --- a/drivers/iio/light/cros_ec_light_prox.c
-> +++ b/drivers/iio/light/cros_ec_light_prox.c
-> @@ -182,12 +182,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+>  	return dev;
+>  }
+> @@ -1660,26 +1661,47 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
+>  	return 0;
+>  }
 >  
->  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->  					cros_ec_sensors_capture,
-> -					cros_ec_sensors_push_data);
-> +					cros_ec_sensors_push_data,
-> +					true);
->  	if (ret)
->  		return ret;
+> -/* Somewhat of a cross file organization violation - ioctls here are actually
+> - * event related */
+> +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+> +				       struct iio_ioctl_handler *h)
+> +{
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +
+> +	list_add_tail(&h->entry, &iio_dev_opaque->ioctl_handlers);
+> +}
+> +
+> +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h)
+> +{
+> +	list_del(&h->entry);
+> +}
+> +
+>  static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+>  {
+>  	struct iio_dev *indio_dev = filp->private_data;
+> -	int __user *ip = (int __user *)arg;
+> -	int fd;
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +	struct iio_ioctl_handler *h;
+> +	int ret = -ENODEV;
+> +
+> +	mutex_lock(&indio_dev->info_exist_lock);
 >  
-> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> +	/**
+> +	 * The NULL check here is required to prevent crashing when a device
+> +	 * is being removed while userspace would still have open file handles
+> +	 * to try to access this device.
+> +	 */
+>  	if (!indio_dev->info)
+> -		return -ENODEV;
 > -
->  	indio_dev->info = &cros_ec_light_prox_info;
->  	state = iio_priv(indio_dev);
->  	state->core.type = state->core.resp->info.type;
-> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-> index f0938b6fbba0..aa043cb9ac42 100644
-> --- a/drivers/iio/pressure/cros_ec_baro.c
-> +++ b/drivers/iio/pressure/cros_ec_baro.c
-> @@ -139,12 +139,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+> -	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
+> -		fd = iio_event_getfd(indio_dev);
+> -		if (fd < 0)
+> -			return fd;
+> -		if (copy_to_user(ip, &fd, sizeof(fd)))
+> -			return -EFAULT;
+> -		return 0;
+> +		goto out_unlock;
+> +
+> +	ret = -EINVAL;
+> +	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
+> +		ret = h->ioctl(indio_dev, filp, cmd, arg);
+> +		if (ret != IIO_IOCTL_UNHANDLED)
+> +			break;
+>  	}
+> -	return -EINVAL;
+> +
+> +out_unlock:
+> +	mutex_unlock(&indio_dev->info_exist_lock);
+> +
+> +	return ret;
+>  }
 >  
->  	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
->  					cros_ec_sensors_capture,
-> -					cros_ec_sensors_push_data);
-> +					cros_ec_sensors_push_data,
-> +					true);
->  	if (ret)
->  		return ret;
+>  static const struct file_operations iio_buffer_fileops = {
+> @@ -1796,6 +1818,9 @@ EXPORT_SYMBOL(__iio_device_register);
+>   **/
+>  void iio_device_unregister(struct iio_dev *indio_dev)
+>  {
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +	struct iio_ioctl_handler *h, *t;
+> +
+>  	cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
 >  
-> -	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-> -
->  	indio_dev->info = &cros_ec_baro_info;
->  	state = iio_priv(indio_dev);
->  	state->core.type = state->core.resp->info.type;
-> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-> index caa8bb279a34..c9b80be82440 100644
-> --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> @@ -96,7 +96,8 @@ struct platform_device;
->  int cros_ec_sensors_core_init(struct platform_device *pdev,
->  			      struct iio_dev *indio_dev, bool physical_device,
->  			      cros_ec_sensors_capture_t trigger_capture,
-> -			      cros_ec_sensorhub_push_data_cb_t push_data);
-> +			      cros_ec_sensorhub_push_data_cb_t push_data,
-> +			      bool has_hw_fifo);
+>  	mutex_lock(&indio_dev->info_exist_lock);
+> @@ -1806,6 +1831,9 @@ void iio_device_unregister(struct iio_dev *indio_dev)
 >  
->  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
->  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
-> @@ -125,6 +126,5 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
+>  	indio_dev->info = NULL;
 >  
->  /* List of extended channel specification for all sensors. */
->  extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
-> -extern const struct attribute *cros_ec_sensor_fifo_attributes[];
+> +	list_for_each_entry_safe(h, t, &iio_dev_opaque->ioctl_handlers, entry)
+> +		list_del(&h->entry);
+> +
+>  	iio_device_wakeup_eventset(indio_dev);
+>  	iio_buffer_wakeup_poll(indio_dev);
 >  
->  #endif  /* __CROS_EC_SENSORS_CORE_H */
+> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+> index 99ba657b8568..a2de2fd89067 100644
+> --- a/drivers/iio/industrialio-event.c
+> +++ b/drivers/iio/industrialio-event.c
+> @@ -31,6 +31,7 @@
+>   * @flags:		file operations related flags including busy flag.
+>   * @group:		event interface sysfs attribute group
+>   * @read_lock:		lock to protect kfifo read operations
+> + * @@ioctl_handler:	handler for event ioctl() calls
+>   */
+>  struct iio_event_interface {
+>  	wait_queue_head_t	wait;
+> @@ -40,6 +41,7 @@ struct iio_event_interface {
+>  	unsigned long		flags;
+>  	struct attribute_group	group;
+>  	struct mutex		read_lock;
+> +	struct iio_ioctl_handler	ioctl_handler;
+>  };
+>  
+>  bool iio_event_enabled(const struct iio_event_interface *ev_int)
+> @@ -187,7 +189,7 @@ static const struct file_operations iio_event_chrdev_fileops = {
+>  	.llseek = noop_llseek,
+>  };
+>  
+> -int iio_event_getfd(struct iio_dev *indio_dev)
+> +static int iio_event_getfd(struct iio_dev *indio_dev)
+>  {
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+>  	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+> @@ -473,6 +475,24 @@ static void iio_setup_ev_int(struct iio_event_interface *ev_int)
+>  	mutex_init(&ev_int->read_lock);
+>  }
+>  
+> +static long iio_event_ioctl(struct iio_dev *indio_dev, struct file *filp,
+> +			    unsigned int cmd, unsigned long arg)
+> +{
+> +	int __user *ip = (int __user *)arg;
+> +	int fd;
+> +
+> +	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
+> +		fd = iio_event_getfd(indio_dev);
+> +		if (fd < 0)
+> +			return fd;
+> +		if (copy_to_user(ip, &fd, sizeof(fd)))
+> +			return -EFAULT;
+> +		return 0;
+> +	}
+> +
+> +	return IIO_IOCTL_UNHANDLED;
+> +}
+> +
+>  static const char *iio_event_group_name = "events";
+>  int iio_device_register_eventset(struct iio_dev *indio_dev)
+>  {
+> @@ -526,6 +546,10 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+>  		ev_int->group.attrs[attrn++] = &p->dev_attr.attr;
+>  	indio_dev->groups[indio_dev->groupcounter++] = &ev_int->group;
+>  
+> +	ev_int->ioctl_handler.ioctl = iio_event_ioctl;
+> +	iio_device_ioctl_handler_register(&iio_dev_opaque->indio_dev,
+> +					  &ev_int->ioctl_handler);
+> +
+>  	return 0;
+>  
+>  error_free_setup_event_lines:
+> @@ -558,6 +582,8 @@ void iio_device_unregister_eventset(struct iio_dev *indio_dev)
+>  
+>  	if (ev_int == NULL)
+>  		return;
+> +
+> +	iio_device_ioctl_handler_unregister(&ev_int->ioctl_handler);
+>  	iio_free_chan_devattr_list(&ev_int->dev_attr_list);
+>  	kfree(ev_int->group.attrs);
+>  	kfree(ev_int);
+> diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+> index f2e94196d31f..07c5a8e52ca8 100644
+> --- a/include/linux/iio/iio-opaque.h
+> +++ b/include/linux/iio/iio-opaque.h
+> @@ -11,6 +11,7 @@
+>   * @channel_attr_list:		keep track of automatically created channel
+>   *				attributes
+>   * @chan_attr_group:		group for all attrs in base directory
+> + * @ioctl_handlers:		ioctl handlers registered with the core handler
+>   * @debugfs_dentry:		device specific debugfs dentry
+>   * @cached_reg_addr:		cached register address for debugfs reads
+>   * @read_buf:			read buffer to be used for the initial reg read
+> @@ -22,6 +23,7 @@ struct iio_dev_opaque {
+>  	struct list_head		buffer_list;
+>  	struct list_head		channel_attr_list;
+>  	struct attribute_group		chan_attr_group;
+> +	struct list_head		ioctl_handlers;
+>  #if defined(CONFIG_DEBUG_FS)
+>  	struct dentry			*debugfs_dentry;
+>  	unsigned			cached_reg_addr;
 

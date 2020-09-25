@@ -2,35 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E4027875B
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B9E278767
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 14:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbgIYMiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Sep 2020 08:38:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45966 "EHLO mail.kernel.org"
+        id S1727749AbgIYMkK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Sep 2020 08:40:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47564 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726368AbgIYMiL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 25 Sep 2020 08:38:11 -0400
+        id S1726368AbgIYMkK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 25 Sep 2020 08:40:10 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52FF321D7A;
-        Fri, 25 Sep 2020 12:38:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 07DBA20BED;
+        Fri, 25 Sep 2020 12:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601037489;
-        bh=eDZq8Tp5oJb7Jdsq1+1JQqrtcfDdTIreOoe/tCPcZ0s=;
+        s=default; t=1601037610;
+        bh=DTK6nSsH3y7Fe2xkbY4deWEsnqY2Ru+AcN7lWq/R388=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UdlvYcJO/6M56OgJsOJrObFLWw9H+o4bynusv9gAo3DqGJFBhjVNOXswFFKfP1L3i
-         GT6PkstlcSsPpIl2aOIkIS26FP4dFLdjNDFuDura9C+92SQnxhDSGbInDAbIRDyqHf
-         ydZLh40YVboGqstO5ySrVC1Adz3oMbQjJas7KgI0=
-Date:   Fri, 25 Sep 2020 13:38:05 +0100
+        b=GykenvZtLLZjgYflxIezKKhQvSAZS0QUDdcxrH0zdmmykNCSL5G3SpDtnpwz1h1KU
+         kXHfVTeQH9ODCfJToCDVqRYvvV0BOt52nZ7qwtbbqkvRvrvakW5Zw1WwviE38stoFy
+         1EoTvYBt+rRIl4zrLMxbALFR7NhIourou2yYEQ6g=
+Date:   Fri, 25 Sep 2020 13:40:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: core: centralize ioctl() calls to the main chardev
-Message-ID: <20200925133805.062c0b1c@archlinux>
-In-Reply-To: <20200924084155.99406-1-alexandru.ardelean@analog.com>
-References: <20200924084155.99406-1-alexandru.ardelean@analog.com>
+To:     Michael Auchter <michael.auchter@ni.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] dt-bindings: iio: dac: ad5686: add binding
+Message-ID: <20200925134005.288b1b1d@archlinux>
+In-Reply-To: <20200924195215.49443-3-michael.auchter@ni.com>
+References: <20200924195215.49443-1-michael.auchter@ni.com>
+        <20200924195215.49443-3-michael.auchter@ni.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,273 +44,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Sep 2020 11:41:55 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Thu, 24 Sep 2020 14:52:14 -0500
+Michael Auchter <michael.auchter@ni.com> wrote:
 
-> The aim of this is to improve a bit the organization of ioctl() calls in
-> IIO core. Currently the chardev is split across IIO core sub-modules/files.
-> The main chardev has to be able to handle ioctl() calls, and if we need to
-> add buffer ioctl() calls, this would complicate things.
+> Add a binding for AD5686
 > 
-> The 'industrialio-core.c' file will provide a 'iio_device_ioctl()' which
-> will iterate over a list of ioctls registered with the IIO device. These
-> can be event ioctl() or buffer ioctl() calls, or something else.
-> 
-> Each ioctl() handler will have to return a IIO_IOCTL_UNHANDLED code (which
-> is positive 1), if the ioctl() did not handle the call in any. This
-> eliminates any potential ambiguities about negative error codes, which
-> should fail the call altogether.
-> 
-> If any ioctl() returns 0, it was considered that it was serviced
-> successfully and the loop will exit.
-> 
-> This change also moves the handling of the IIO_GET_EVENT_FD_IOCTL command
-> inside 'industrialio-event.c', where this is better suited.
-> 
-> This patch is a combination of 2 other patches from an older series:
-> Patch 1: iio: core: add simple centralized mechanism for ioctl() handlers
->   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-6-alexandru.ardelean@analog.com/
-> Patch 2: iio: core: use new common ioctl() mechanism
->   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-7-alexandru.ardelean@analog.com/
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
-> 
-> Note: since this is a change to the IIO core, we don't need to put this in
-> right now; especially if there is a tight schedule, or we are too close to
-> a merge window.
+> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
+Hi Michael,
 
-Looks good to me.  As you suggest, lets let this one sit on the list for a
-while though!
+Looks good to me, but I've made many a mistake on reviewing these in the past
+so good to get Rob's input if he has time.
+
+Thanks,
 
 Jonathan
-
+ 
+> ---
+> Changes since v1:
+> - Keep supported device sorted
+> - fix adc -> dac typo in schema path
+> since v2:
+> - drop address-cells and size-cells from binding doc
+> - add "additionalProperties: false"
+> - end with ...
 > 
->  drivers/iio/iio_core.h           | 15 ++++++++-
->  drivers/iio/industrialio-core.c  | 56 ++++++++++++++++++++++++--------
->  drivers/iio/industrialio-event.c | 28 +++++++++++++++-
->  include/linux/iio/iio-opaque.h   |  2 ++
->  4 files changed, 85 insertions(+), 16 deletions(-)
+>  .../bindings/iio/dac/adi,ad5686.yaml          | 57 +++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
 > 
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index fd9a5f1d5e51..fced02cadcc3 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -17,6 +17,20 @@ struct iio_dev;
->  
->  extern struct device_type iio_device_type;
->  
-> +#define IIO_IOCTL_UNHANDLED	1
-> +struct iio_ioctl_handler {
-> +	struct list_head entry;
-> +	long (*ioctl)(struct iio_dev *indio_dev, struct file *filp,
-> +		      unsigned int cmd, unsigned long arg);
-> +};
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> new file mode 100644
+> index 000000000000..8065228e5df8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> @@ -0,0 +1,57 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/adi,ad5686.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
-> +		      unsigned int cmd, unsigned long arg);
+> +title: Analog Devices AD5686 and similar multi-channel DACs
 > +
-> +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
-> +				       struct iio_ioctl_handler *h);
-> +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
+> +maintainers:
+> +  - Michael Auchter <michael.auchter@ni.com>
 > +
->  int __iio_add_chan_devattr(const char *postfix,
->  			   struct iio_chan_spec const *chan,
->  			   ssize_t (*func)(struct device *dev,
-> @@ -74,7 +88,6 @@ static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
->  int iio_device_register_eventset(struct iio_dev *indio_dev);
->  void iio_device_unregister_eventset(struct iio_dev *indio_dev);
->  void iio_device_wakeup_eventset(struct iio_dev *indio_dev);
-> -int iio_event_getfd(struct iio_dev *indio_dev);
->  
->  struct iio_event_interface;
->  bool iio_event_enabled(const struct iio_event_interface *ev_int);
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 261d3b17edc9..964a0a2d6f8b 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1567,6 +1567,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
->  	}
->  	dev_set_name(&dev->dev, "iio:device%d", dev->id);
->  	INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
-> +	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
->  
->  	return dev;
->  }
-> @@ -1660,26 +1661,47 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
->  	return 0;
->  }
->  
-> -/* Somewhat of a cross file organization violation - ioctls here are actually
-> - * event related */
-> +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
-> +				       struct iio_ioctl_handler *h)
-> +{
-> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +description: |
+> +  Binding for Analog Devices AD5686 and similar multi-channel DACs
 > +
-> +	list_add_tail(&h->entry, &iio_dev_opaque->ioctl_handlers);
-> +}
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad5311r
+> +      - adi,ad5338r
+> +      - adi,ad5671r
+> +      - adi,ad5675r
+> +      - adi,ad5691r
+> +      - adi,ad5692r
+> +      - adi,ad5693
+> +      - adi,ad5693r
+> +      - adi,ad5694
+> +      - adi,ad5694r
+> +      - adi,ad5695r
+> +      - adi,ad5696
+> +      - adi,ad5696r
 > +
-> +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h)
-> +{
-> +	list_del(&h->entry);
-> +}
+> +  reg:
+> +    maxItems: 1
 > +
->  static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
->  {
->  	struct iio_dev *indio_dev = filp->private_data;
-> -	int __user *ip = (int __user *)arg;
-> -	int fd;
-> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> +	struct iio_ioctl_handler *h;
-> +	int ret = -ENODEV;
+> +  vcc-supply:
+> +    description: |
+> +      The regulator supply for DAC reference voltage.
 > +
-> +	mutex_lock(&indio_dev->info_exist_lock);
->  
-> +	/**
-> +	 * The NULL check here is required to prevent crashing when a device
-> +	 * is being removed while userspace would still have open file handles
-> +	 * to try to access this device.
-> +	 */
->  	if (!indio_dev->info)
-> -		return -ENODEV;
-> -
-> -	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
-> -		fd = iio_event_getfd(indio_dev);
-> -		if (fd < 0)
-> -			return fd;
-> -		if (copy_to_user(ip, &fd, sizeof(fd)))
-> -			return -EFAULT;
-> -		return 0;
-> +		goto out_unlock;
+> +required:
+> +  - compatible
+> +  - reg
 > +
-> +	ret = -EINVAL;
-> +	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
-> +		ret = h->ioctl(indio_dev, filp, cmd, arg);
-> +		if (ret != IIO_IOCTL_UNHANDLED)
-> +			break;
->  	}
-> -	return -EINVAL;
+> +additionalProperties: false
 > +
-> +out_unlock:
-> +	mutex_unlock(&indio_dev->info_exist_lock);
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
 > +
-> +	return ret;
->  }
->  
->  static const struct file_operations iio_buffer_fileops = {
-> @@ -1796,6 +1818,9 @@ EXPORT_SYMBOL(__iio_device_register);
->   **/
->  void iio_device_unregister(struct iio_dev *indio_dev)
->  {
-> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> +	struct iio_ioctl_handler *h, *t;
-> +
->  	cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
->  
->  	mutex_lock(&indio_dev->info_exist_lock);
-> @@ -1806,6 +1831,9 @@ void iio_device_unregister(struct iio_dev *indio_dev)
->  
->  	indio_dev->info = NULL;
->  
-> +	list_for_each_entry_safe(h, t, &iio_dev_opaque->ioctl_handlers, entry)
-> +		list_del(&h->entry);
-> +
->  	iio_device_wakeup_eventset(indio_dev);
->  	iio_buffer_wakeup_poll(indio_dev);
->  
-> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-> index 99ba657b8568..a2de2fd89067 100644
-> --- a/drivers/iio/industrialio-event.c
-> +++ b/drivers/iio/industrialio-event.c
-> @@ -31,6 +31,7 @@
->   * @flags:		file operations related flags including busy flag.
->   * @group:		event interface sysfs attribute group
->   * @read_lock:		lock to protect kfifo read operations
-> + * @@ioctl_handler:	handler for event ioctl() calls
->   */
->  struct iio_event_interface {
->  	wait_queue_head_t	wait;
-> @@ -40,6 +41,7 @@ struct iio_event_interface {
->  	unsigned long		flags;
->  	struct attribute_group	group;
->  	struct mutex		read_lock;
-> +	struct iio_ioctl_handler	ioctl_handler;
->  };
->  
->  bool iio_event_enabled(const struct iio_event_interface *ev_int)
-> @@ -187,7 +189,7 @@ static const struct file_operations iio_event_chrdev_fileops = {
->  	.llseek = noop_llseek,
->  };
->  
-> -int iio_event_getfd(struct iio_dev *indio_dev)
-> +static int iio_event_getfd(struct iio_dev *indio_dev)
->  {
->  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
->  	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
-> @@ -473,6 +475,24 @@ static void iio_setup_ev_int(struct iio_event_interface *ev_int)
->  	mutex_init(&ev_int->read_lock);
->  }
->  
-> +static long iio_event_ioctl(struct iio_dev *indio_dev, struct file *filp,
-> +			    unsigned int cmd, unsigned long arg)
-> +{
-> +	int __user *ip = (int __user *)arg;
-> +	int fd;
-> +
-> +	if (cmd == IIO_GET_EVENT_FD_IOCTL) {
-> +		fd = iio_event_getfd(indio_dev);
-> +		if (fd < 0)
-> +			return fd;
-> +		if (copy_to_user(ip, &fd, sizeof(fd)))
-> +			return -EFAULT;
-> +		return 0;
-> +	}
-> +
-> +	return IIO_IOCTL_UNHANDLED;
-> +}
-> +
->  static const char *iio_event_group_name = "events";
->  int iio_device_register_eventset(struct iio_dev *indio_dev)
->  {
-> @@ -526,6 +546,10 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
->  		ev_int->group.attrs[attrn++] = &p->dev_attr.attr;
->  	indio_dev->groups[indio_dev->groupcounter++] = &ev_int->group;
->  
-> +	ev_int->ioctl_handler.ioctl = iio_event_ioctl;
-> +	iio_device_ioctl_handler_register(&iio_dev_opaque->indio_dev,
-> +					  &ev_int->ioctl_handler);
-> +
->  	return 0;
->  
->  error_free_setup_event_lines:
-> @@ -558,6 +582,8 @@ void iio_device_unregister_eventset(struct iio_dev *indio_dev)
->  
->  	if (ev_int == NULL)
->  		return;
-> +
-> +	iio_device_ioctl_handler_unregister(&ev_int->ioctl_handler);
->  	iio_free_chan_devattr_list(&ev_int->dev_attr_list);
->  	kfree(ev_int->group.attrs);
->  	kfree(ev_int);
-> diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> index f2e94196d31f..07c5a8e52ca8 100644
-> --- a/include/linux/iio/iio-opaque.h
-> +++ b/include/linux/iio/iio-opaque.h
-> @@ -11,6 +11,7 @@
->   * @channel_attr_list:		keep track of automatically created channel
->   *				attributes
->   * @chan_attr_group:		group for all attrs in base directory
-> + * @ioctl_handlers:		ioctl handlers registered with the core handler
->   * @debugfs_dentry:		device specific debugfs dentry
->   * @cached_reg_addr:		cached register address for debugfs reads
->   * @read_buf:			read buffer to be used for the initial reg read
-> @@ -22,6 +23,7 @@ struct iio_dev_opaque {
->  	struct list_head		buffer_list;
->  	struct list_head		channel_attr_list;
->  	struct attribute_group		chan_attr_group;
-> +	struct list_head		ioctl_handlers;
->  #if defined(CONFIG_DEBUG_FS)
->  	struct dentry			*debugfs_dentry;
->  	unsigned			cached_reg_addr;
+> +      ad5686: dac@0 {
+> +        compatible = "adi,ad5686";
+> +        reg = <0>;
+> +        vcc-supply = <&dac_vref>;
+> +      };
+> +    };
+> +...
 

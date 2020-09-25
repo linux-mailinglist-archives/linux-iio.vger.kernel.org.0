@@ -2,228 +2,241 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31BA82782D9
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 10:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D09092782D7
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 10:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727450AbgIYIiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Sep 2020 04:38:24 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:59978 "EHLO
+        id S1727063AbgIYIiX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Sep 2020 04:38:23 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:59954 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727044AbgIYIiY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Sep 2020 04:38:24 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08P8atCI006850;
-        Fri, 25 Sep 2020 04:38:10 -0400
+        by vger.kernel.org with ESMTP id S1726990AbgIYIiX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Sep 2020 04:38:23 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08P8Ye1i009084;
+        Fri, 25 Sep 2020 04:38:11 -0400
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33r5p6f7u1-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 33r5u9f978-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Sep 2020 04:38:09 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08P8c8UP054311
+        Fri, 25 Sep 2020 04:38:11 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08P8cA2x054320
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 25 Sep 2020 04:38:08 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 25 Sep
- 2020 04:38:05 -0400
+        Fri, 25 Sep 2020 04:38:10 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 25 Sep 2020 04:38:07 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 25 Sep 2020 04:38:07 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 25 Sep 2020 04:38:05 -0400
+ Transport; Fri, 25 Sep 2020 04:38:07 -0400
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08P8c5uD006205;
-        Fri, 25 Sep 2020 04:38:05 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08P8c5uE006205;
+        Fri, 25 Sep 2020 04:38:07 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>, <lars@metafoo.de>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [RFC PATCH 0/5] iio: remove iio_buffer_set_attrs() and assign buffer attrs during alloc
-Date:   Fri, 25 Sep 2020 11:37:38 +0300
-Message-ID: <20200925083743.46469-1-alexandru.ardelean@analog.com>
+Subject: [RFC PATCH 1/5] iio: cros_ec: unify hw fifo attributes into the core file
+Date:   Fri, 25 Sep 2020 11:37:39 +0300
+Message-ID: <20200925083743.46469-2-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200925083743.46469-1-alexandru.ardelean@analog.com>
+References: <20200925083743.46469-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
  definitions=2020-09-25_02:2020-09-24,2020-09-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015
- suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ impostorscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
+ malwarescore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2009250059
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I've been mulling this over for a while, and I am still not 100% convinced
-that this is the best approach, but this feels closer to something
-correct.
+The intent here is to minimize the use of iio_buffer_set_attrs(). Since we
+are planning to add support for multiple IIO buffers per IIO device, the
+issue has to do with:
+1. Accessing 'indio_dev->buffer' directly (as is done with
+   'iio_buffer_set_attrs(indio_dev->buffer, <attrs>)').
+2. The way that the buffer attributes would get handled or expanded when
+   there are more buffers per IIO device. Current a sysfs kobj_type expands
+   into a 'device' object that expands into an 'iio_dev' object.
+   We will need to change this, so that the sysfs attributes for IIO
+   buffers expand into IIO buffers at some point.
 
-A few things about this patchset:
-1. it hasn't been tested; it just compiles
-2. there are some patches that have went out [from my side] in the last
-   few days that deal with trying to organize iio_buffer_set_attrs()
-   in order to get to this point [as-in: this patch-set]
-2a. the only reason patch [1] is in this set, is so that [5] applies
-2b. the main reason patch [2] is in this set, is so that [5] compiles
-3. This patch is only meant as RFC, as I'd like that some cleanup
-   patches go in before this set; this RFC is meant to provide an idea
-   of where I want to get at.
+Right now, the current IIO framework works fine for the
+'1 IIO device == 1 IIO buffer' case (that is now).
 
-This tries to address the issue with iio_buffer_set_attrs(), where a
-driver needs to provide a reference to a buffer to assign extra sysfs
-attributes.
-Something like 'iio_buffer_set_attrs(indio_dev->buffer, <buffer_attrs>)'
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
+ .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 ++-
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++---
+ .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 ++++++++---
+ drivers/iio/light/cros_ec_light_prox.c                |  5 ++---
+ drivers/iio/pressure/cros_ec_baro.c                   |  5 ++---
+ include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
+ 7 files changed, 19 insertions(+), 16 deletions(-)
 
-This works well for the 1 IIO buffer == 1 IIO device case.
-The driver access the 'buffer' reference attached to the IIO device.
-
-But for a multiple IIO buffers per 1 IIO device, this is cumbersome, as
-a driver would need to:
-1. allocate a set of buffers
-2. dig out of IIO the buffers to which it wants to assign extra sysfs
-   attributes
-
-The main change here is to move the attributes [usually HW FIFO
-attributes] to become arguments of the devm_}iio_triggered_buffer_setup()
-functions.
-Other buffer allocation functions would need to do the same, but right
-now, it's only these functions that assign extra buffer attributes.
-
-Some alternative ideas to doing this change [as-is]:
-* move the attributes to 'struct iio_buffer_setup_ops' ; this has a
-  minimal patch/change-impact, but it doesn't feel correct
-* introduce a new type called 'struct iio_trigerred_buffer_args' that
-  wrap all the triggered-buffer arguments into a single object; this is
-  still a big patch [like this], but future-wise, we would just be
-  extending that object [if more args are needed]; the main point
-  here is that right now 'devm_iio_triggered_buffer_setup()' has 6
-  arguments, which feels a bit much
-
-
-Alexandru Ardelean (5):
-  [1] iio: cros_ec: unify hw fifo attributes into the core file
-  [2] iio: buffer: dmaengine: unwrap the use of iio_buffer_set_attrs()
-  [3] iio: triggered-buffer: add sysfs buffer attributes as args for setup
-  [4] iio: buffer: extend arg list for {devm_}iio_triggered_buffer_setup()
-  [5] iio: remove iio_buffer_set_attrs() and assign buffer attrs during
-    alloc
-
- drivers/iio/accel/adxl372.c                   |  5 ++--
- drivers/iio/accel/bma180.c                    |  2 +-
- drivers/iio/accel/bma220_spi.c                |  2 +-
- drivers/iio/accel/bmc150-accel-core.c         | 19 ++++++++------
- drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
- drivers/iio/accel/kxcjk-1013.c                |  2 +-
- drivers/iio/accel/kxsd9.c                     |  2 +-
- drivers/iio/accel/mma7455_core.c              |  2 +-
- drivers/iio/accel/mma8452.c                   |  2 +-
- drivers/iio/accel/mxc4005.c                   |  2 +-
- drivers/iio/accel/st_accel_buffer.c           |  2 +-
- drivers/iio/accel/stk8312.c                   |  2 +-
- drivers/iio/accel/stk8ba50.c                  |  2 +-
- drivers/iio/adc/ad7266.c                      |  3 ++-
- drivers/iio/adc/ad7298.c                      |  2 +-
- drivers/iio/adc/ad7476.c                      |  2 +-
- drivers/iio/adc/ad7606.c                      |  2 +-
- drivers/iio/adc/ad7766.c                      |  2 +-
- drivers/iio/adc/ad7768-1.c                    |  2 +-
- drivers/iio/adc/ad7887.c                      |  2 +-
- drivers/iio/adc/ad7923.c                      |  2 +-
- drivers/iio/adc/ad799x.c                      |  2 +-
- drivers/iio/adc/ad_sigma_delta.c              |  2 +-
- drivers/iio/adc/at91-sama5d2_adc.c            | 25 +++++++++++--------
- drivers/iio/adc/at91_adc.c                    |  2 +-
- drivers/iio/adc/cc10001_adc.c                 |  2 +-
- drivers/iio/adc/dln2-adc.c                    |  3 ++-
- drivers/iio/adc/hx711.c                       |  3 ++-
- drivers/iio/adc/max1027.c                     |  2 +-
- drivers/iio/adc/max1118.c                     |  2 +-
- drivers/iio/adc/max1363.c                     |  2 +-
- drivers/iio/adc/mxs-lradc-adc.c               |  2 +-
- drivers/iio/adc/rockchip_saradc.c             |  2 +-
- drivers/iio/adc/stm32-adc.c                   |  2 +-
- drivers/iio/adc/stm32-dfsdm-adc.c             |  2 +-
- drivers/iio/adc/ti-adc081c.c                  |  3 ++-
- drivers/iio/adc/ti-adc0832.c                  |  2 +-
- drivers/iio/adc/ti-adc084s021.c               |  3 ++-
- drivers/iio/adc/ti-adc108s102.c               |  3 ++-
- drivers/iio/adc/ti-adc12138.c                 |  2 +-
- drivers/iio/adc/ti-adc161s626.c               |  2 +-
- drivers/iio/adc/ti-ads1015.c                  |  2 +-
- drivers/iio/adc/ti-ads124s08.c                |  3 ++-
- drivers/iio/adc/ti-ads7950.c                  |  3 ++-
- drivers/iio/adc/ti-ads8688.c                  |  3 ++-
- drivers/iio/adc/ti-tlc4541.c                  |  2 +-
- drivers/iio/adc/vf610_adc.c                   |  3 ++-
- drivers/iio/adc/xilinx-xadc-core.c            |  2 +-
- .../buffer/industrialio-buffer-dmaengine.c    |  3 +--
- .../buffer/industrialio-triggered-buffer.c    | 13 +++++++---
- drivers/iio/chemical/atlas-sensor.c           |  2 +-
- drivers/iio/chemical/ccs811.c                 |  2 +-
- drivers/iio/chemical/pms7003.c                |  3 ++-
- drivers/iio/chemical/scd30_core.c             |  3 ++-
- drivers/iio/chemical/sps30.c                  |  3 ++-
- .../cros_ec_sensors/cros_ec_lid_angle.c       |  5 ++--
- .../common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++--
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 16 +++++++++---
- .../common/hid-sensors/hid-sensor-trigger.c   | 19 ++++++--------
- drivers/iio/gyro/adxrs290.c                   |  3 ++-
- drivers/iio/gyro/bmg160_core.c                |  2 +-
- drivers/iio/gyro/fxas21002c_core.c            |  3 ++-
- drivers/iio/gyro/itg3200_buffer.c             |  2 +-
- drivers/iio/gyro/mpu3050-core.c               |  2 +-
- drivers/iio/gyro/st_gyro_buffer.c             |  2 +-
- drivers/iio/health/afe4403.c                  |  2 +-
- drivers/iio/health/afe4404.c                  |  2 +-
- drivers/iio/humidity/am2315.c                 |  2 +-
- drivers/iio/humidity/hdc100x.c                |  2 +-
- drivers/iio/humidity/hts221_buffer.c          |  2 +-
- drivers/iio/imu/adis_buffer.c                 |  2 +-
- drivers/iio/imu/bmi160/bmi160_core.c          |  3 ++-
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  2 +-
- drivers/iio/imu/kmx61.c                       |  4 +--
- drivers/iio/industrialio-buffer.c             | 12 ---------
- drivers/iio/light/adjd_s311.c                 |  2 +-
- drivers/iio/light/as73211.c                   |  3 ++-
- drivers/iio/light/cros_ec_light_prox.c        |  5 ++--
- drivers/iio/light/gp2ap020a00f.c              |  3 ++-
- drivers/iio/light/isl29125.c                  |  2 +-
- drivers/iio/light/ltr501.c                    |  2 +-
- drivers/iio/light/max44000.c                  |  3 ++-
- drivers/iio/light/rpr0521.c                   |  2 +-
- drivers/iio/light/si1145.c                    |  2 +-
- drivers/iio/light/st_uvis25_core.c            |  2 +-
- drivers/iio/light/tcs3414.c                   |  2 +-
- drivers/iio/light/tcs3472.c                   |  2 +-
- drivers/iio/light/vcnl4000.c                  |  3 ++-
- drivers/iio/light/vcnl4035.c                  |  2 +-
- drivers/iio/magnetometer/ak8974.c             |  2 +-
- drivers/iio/magnetometer/ak8975.c             |  2 +-
- drivers/iio/magnetometer/bmc150_magn.c        |  2 +-
- drivers/iio/magnetometer/hmc5843_core.c       |  2 +-
- drivers/iio/magnetometer/mag3110.c            |  2 +-
- drivers/iio/magnetometer/rm3100-core.c        |  2 +-
- drivers/iio/magnetometer/st_magn_buffer.c     |  2 +-
- drivers/iio/potentiostat/lmp91000.c           |  2 +-
- drivers/iio/pressure/cros_ec_baro.c           |  5 ++--
- drivers/iio/pressure/dlhl60d.c                |  2 +-
- drivers/iio/pressure/mpl3115.c                |  2 +-
- drivers/iio/pressure/ms5611_core.c            |  2 +-
- drivers/iio/pressure/st_pressure_buffer.c     |  2 +-
- drivers/iio/pressure/zpa2326.c                |  2 +-
- drivers/iio/proximity/as3935.c                |  3 ++-
- drivers/iio/proximity/isl29501.c              |  2 +-
- drivers/iio/proximity/mb1232.c                |  3 ++-
- .../iio/proximity/pulsedlight-lidar-lite-v2.c |  2 +-
- drivers/iio/proximity/srf08.c                 |  3 ++-
- drivers/iio/proximity/sx9310.c                |  2 +-
- drivers/iio/proximity/sx9500.c                |  2 +-
- drivers/iio/temperature/maxim_thermocouple.c  |  3 ++-
- include/linux/iio/buffer.h                    |  3 ---
- .../linux/iio/common/cros_ec_sensors_core.h   |  4 +--
- include/linux/iio/triggered_buffer.h          |  7 ++++--
- 114 files changed, 198 insertions(+), 172 deletions(-)
-
+diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+index b6f3471b62dc..8f1232c38e0d 100644
+--- a/drivers/iio/accel/cros_ec_accel_legacy.c
++++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+@@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+-					cros_ec_sensors_capture, NULL);
++					cros_ec_sensors_capture, NULL, false);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+index af801e203623..752f59037715 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+@@ -97,7 +97,8 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
++	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
++					NULL, false);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+index 130ab8ce0269..57038ca48d93 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+@@ -236,12 +236,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+ 
+ 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+ 					cros_ec_sensors_capture,
+-					cros_ec_sensors_push_data);
++					cros_ec_sensors_push_data,
++					true);
+ 	if (ret)
+ 		return ret;
+ 
+-	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+-
+ 	indio_dev->info = &ec_sensors_info;
+ 	state = iio_priv(indio_dev);
+ 	for (channel = state->channels, i = CROS_EC_SENSOR_X;
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index 1bc6efa47316..c62cacc04672 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -177,12 +177,11 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
+ 
+ static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
+ 
+-const struct attribute *cros_ec_sensor_fifo_attributes[] = {
++static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+ 	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
+ 	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
+ 	NULL,
+ };
+-EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
+ 
+ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 			      s16 *data,
+@@ -241,6 +240,7 @@ static void cros_ec_sensors_core_clean(void *arg)
+  *    for backward compatibility.
+  * @push_data:          function to call when cros_ec_sensorhub receives
+  *    a sample for that sensor.
++ * @has_hw_fifo:	Set true if this device has/uses a HW FIFO
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+@@ -248,7 +248,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 			      struct iio_dev *indio_dev,
+ 			      bool physical_device,
+ 			      cros_ec_sensors_capture_t trigger_capture,
+-			      cros_ec_sensorhub_push_data_cb_t push_data)
++			      cros_ec_sensorhub_push_data_cb_t push_data,
++			      bool has_hw_fifo)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+@@ -361,6 +362,10 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 					NULL);
+ 			if (ret)
+ 				return ret;
++
++			if (has_hw_fifo)
++				iio_buffer_set_attrs(indio_dev->buffer,
++						     cros_ec_sensor_fifo_attributes);
+ 		}
+ 	}
+ 
+diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+index fed79ba27fda..75d6b5fcf2cc 100644
+--- a/drivers/iio/light/cros_ec_light_prox.c
++++ b/drivers/iio/light/cros_ec_light_prox.c
+@@ -182,12 +182,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+ 
+ 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+ 					cros_ec_sensors_capture,
+-					cros_ec_sensors_push_data);
++					cros_ec_sensors_push_data,
++					true);
+ 	if (ret)
+ 		return ret;
+ 
+-	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+-
+ 	indio_dev->info = &cros_ec_light_prox_info;
+ 	state = iio_priv(indio_dev);
+ 	state->core.type = state->core.resp->info.type;
+diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+index f0938b6fbba0..aa043cb9ac42 100644
+--- a/drivers/iio/pressure/cros_ec_baro.c
++++ b/drivers/iio/pressure/cros_ec_baro.c
+@@ -139,12 +139,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+ 
+ 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+ 					cros_ec_sensors_capture,
+-					cros_ec_sensors_push_data);
++					cros_ec_sensors_push_data,
++					true);
+ 	if (ret)
+ 		return ret;
+ 
+-	iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+-
+ 	indio_dev->info = &cros_ec_baro_info;
+ 	state = iio_priv(indio_dev);
+ 	state->core.type = state->core.resp->info.type;
+diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+index caa8bb279a34..c9b80be82440 100644
+--- a/include/linux/iio/common/cros_ec_sensors_core.h
++++ b/include/linux/iio/common/cros_ec_sensors_core.h
+@@ -96,7 +96,8 @@ struct platform_device;
+ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 			      struct iio_dev *indio_dev, bool physical_device,
+ 			      cros_ec_sensors_capture_t trigger_capture,
+-			      cros_ec_sensorhub_push_data_cb_t push_data);
++			      cros_ec_sensorhub_push_data_cb_t push_data,
++			      bool has_hw_fifo);
+ 
+ irqreturn_t cros_ec_sensors_capture(int irq, void *p);
+ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+@@ -125,6 +126,5 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
+ 
+ /* List of extended channel specification for all sensors. */
+ extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
+-extern const struct attribute *cros_ec_sensor_fifo_attributes[];
+ 
+ #endif  /* __CROS_EC_SENSORS_CORE_H */
 -- 
 2.17.1
 

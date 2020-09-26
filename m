@@ -2,260 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F99278C98
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Sep 2020 17:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 572932795ED
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 03:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729265AbgIYP0h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Sep 2020 11:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S1729821AbgIZBR2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Sep 2020 21:17:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729041AbgIYP0h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Sep 2020 11:26:37 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6F3C0613D4
-        for <linux-iio@vger.kernel.org>; Fri, 25 Sep 2020 08:26:36 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id i26so4132279ejb.12
-        for <linux-iio@vger.kernel.org>; Fri, 25 Sep 2020 08:26:36 -0700 (PDT)
+        with ESMTP id S1729605AbgIZBR2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Sep 2020 21:17:28 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C78BC0613CE
+        for <linux-iio@vger.kernel.org>; Fri, 25 Sep 2020 18:17:28 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id jw11so353229pjb.0
+        for <linux-iio@vger.kernel.org>; Fri, 25 Sep 2020 18:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MzAtS5pp4wKZdqYxm3un6roUYuqJtBuwsuQz9RJF5Yc=;
-        b=DzeQK3aABgVqnhtf+JB9A0bO29QBHxl/mqzmoOtm+NL9CIIGpXMGoBqC1stGMySpRB
-         EwbqglUvAoaeO0gRjZy7CodfHU5mTCWx/Xrj6qhU+0OPAQRyzGw3/Qd8uc2iF7gR4M42
-         6ek29i+J1uZdWDK2HQd3M8r5yucLm6bZXQG2uH4gEoXMMEQefyEGtPv4SDpTjI9pPA0y
-         IMHymF/TA6gnJP5BNt314PwYAxuBGm0lJUwMAuq6RcNUcmw6gWW5oXbVO0kQfJp2EAde
-         iidJA8z43PZINmj0czjZG1nlfk7d1r9NQpyhvpPrwa6kbTr5cjDS7Ra/vbkmwmq9VZIz
-         sCPg==
+        d=chromium.org; s=google;
+        h=mime-version:content-transfer-encoding:in-reply-to:references
+         :subject:from:cc:to:date:message-id:user-agent;
+        bh=I6Dtk9mZR92rDJG/J+v/I4660jgxmxD7sJpleXc0eWY=;
+        b=j1Nmujra8/KxKXaFKBbJbWHuM1VtCSxXvYsAytzlTCWtgQWHWPtUL0elO8d68ZKLvx
+         7fmWCqRq+ZyKTla5tZXPv9kCL7fcX6sKLCVS+ApxDLjb+VAgoab3GeRBS+G/b29Wz7nU
+         fEg7CA/lbiQlQBbdOjeC1m+F97upaBIxcRxgQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MzAtS5pp4wKZdqYxm3un6roUYuqJtBuwsuQz9RJF5Yc=;
-        b=jVEFsA29xkE+0FMUMYPcF+9757LY5Rt+B3+TYv0LNLgqZr/22680QsT2NqBKEdeKPz
-         8AbGiSpLK4MXo4tBpeQkguOO4K9AVMM+qtfZFpYPf+CFcHFDyEqBYXAfOTmG+ZMN37/s
-         91sE7DskHv+x/adrmqaDTJgBlg1mtpUYrYxE48MdSdhx2MOCiRsxKa8/EnFWIOUssk4W
-         rARNGDUCQiBklsiNgJRAZ3zFmVNZ8O0Bm4dV9hZ2MCFznAwHxGhAZJBqaNjWRw/CCbdH
-         Cw93izD2WRxJfXGx08yacBOm0fflodIK2SMH9PI9yrmwppTg1AANQ0BEiamyeAQesGGd
-         3E1w==
-X-Gm-Message-State: AOAM530g91ES7k7OiAbRnIqPv+TDczAYBY5fO/19GWrhQSot8ehKTwUm
-        oQL8k3gqGoHUQZ2ryp5stjz0kGO7WFvGIPEfh8SIsA==
-X-Google-Smtp-Source: ABdhPJwAxm0uho96sgjawV6ygVNsek+KPJIlPtlIS8KiCCz4rT7hlrStPnUrm7e7riFl2ig9jvhhA7Sn7QwfoxTybP8=
-X-Received: by 2002:a17:906:1a4b:: with SMTP id j11mr3148301ejf.97.1601047594921;
- Fri, 25 Sep 2020 08:26:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:content-transfer-encoding
+         :in-reply-to:references:subject:from:cc:to:date:message-id
+         :user-agent;
+        bh=I6Dtk9mZR92rDJG/J+v/I4660jgxmxD7sJpleXc0eWY=;
+        b=rRPgKsAAf4Kw5HBkU8yV5aR88vBabKscM8YRkBZQ3OhCikcuUjBBE3RG7eR57IXuqD
+         yKuWdIS2RunFOS9D9I7Qf4nUULQ6BOR6ILxFGNUFEBCgV55t+oWsrdMZnXlSV8yhD4rx
+         v/vLvhCOcVeos9wwJ9bQ85d76Q8w9sxEBn1QuuYN8fqCgNGLHHEViw78F5/LtEfa53eJ
+         dOEjXRrFZyhSCTjiT50mYGuyPwPMaOhdiuKyTAdMS5HEsXYphvRs2+I/GkJYiFjQTepv
+         NX3kIibr/kAJlwUwTUfVpOf90gqj/Q/iPXhso0GhG/HcUwPz1X36ttIWB11Fm2UXwQPN
+         PZAg==
+X-Gm-Message-State: AOAM533mIq/rzZaG66WoqWBzjauM4xTZ1VZkFVfvglcXtFln4zZ2jnQ3
+        3ijVpHaQW4ScK4sikkC2PfErVA==
+X-Google-Smtp-Source: ABdhPJx0KGLfWSXqPs2UJAf2busJUPY3sqXAwe8q/nn2WAwxIum0KF5s9NtUCdsY3Ks8hlezaF5yAw==
+X-Received: by 2002:a17:90b:693:: with SMTP id m19mr226302pjz.111.1601083047527;
+        Fri, 25 Sep 2020 18:17:27 -0700 (PDT)
+Received: from chromium.org ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
+        by smtp.gmail.com with ESMTPSA id c12sm2988144pgd.57.2020.09.25.18.17.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2020 18:17:26 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200923130339.997902-1-alexandru.ardelean@analog.com> <20200925133301.4789c47a@archlinux>
-In-Reply-To: <20200925133301.4789c47a@archlinux>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Fri, 25 Sep 2020 08:26:23 -0700
-Message-ID: <CABXOdTdr52ikhoSEMqqFakO42hZzpvtH=rxkAYWQsExrnWodFA@mail.gmail.com>
-Subject: Re: [PATCH] iio: cros_ec: unify hw fifo attributes into the core file
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Benson Leung <bleung@chromium.org>,
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200909121550.00005ede@Huawei.com>
+References: <20200903221828.3657250-1-swboyd@chromium.org> <20200906150247.3aaef3a3@archlinux> <159963232334.454335.9794130058200265122@swboyd.mtv.corp.google.com> <20200909121550.00005ede@Huawei.com>
+Subject: Re: [PATCH] dt-bindings: iio: sx9310: Add various settings as DT properties
+From:   Stephen Boyd <swboyd@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, Daniel Campello <campello@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
         Gwendal Grignou <gwendal@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Evan Green <evgreen@chromium.org>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Date:   Fri, 25 Sep 2020 18:17:25 -0700
+Message-ID: <160108304513.310579.9483266115343530431@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 5:33 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Wed, 23 Sep 2020 16:03:39 +0300
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->
-> > The intent here is to minimize the use of iio_buffer_set_attrs(). Since we
-> > are planning to add support for multiple IIO buffers per IIO device, the
-> > issue has to do with:
-> > 1. Accessing 'indio_dev->buffer' directly (as is done with
-> >    'iio_buffer_set_attrs(indio_dev->buffer, <attrs>)').
-> > 2. The way that the buffer attributes would get handled or expanded when
-> >    there are more buffers per IIO device. Current a sysfs kobj_type expands
-> >    into a 'device' object that expands into an 'iio_dev' object.
-> >    We will need to change this, so that the sysfs attributes for IIO
-> >    buffers expand into IIO buffers at some point.
-> >
-> > Right now, the current IIO framework works fine for the
-> > '1 IIO device == 1 IIO buffer' case (that is now).
-> >
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> Looks good to me, but I'll need a cros_ec ack for this one.
->
+Sorry this thread is deep! Good news is I have moved the proximity
+thresholds, hysteresis, hardware gain, and debounce to userspace. Now
+just to figure out this filter strength.
 
-I like it.
+Quoting Jonathan Cameron (2020-09-09 04:15:50)
+> On Tue, 8 Sep 2020 23:18:43 -0700
+> Stephen Boyd <swboyd@chromium.org> wrote:
+>=20
+> > Quoting Jonathan Cameron (2020-09-06 07:02:47)
+>=20
+> >=20
+> > >  =20
+> > > > +
+> > > > +  semtech,proxraw-strength:
+> > > > +    allOf:
+> > > > +      - $ref: /schemas/types.yaml#definitions/uint32
+> > > > +      - enum: [0, 2, 4, 8]
+> > > > +    default: 2
+> > > > +    description:
+> > > > +      PROXRAW filter strength. A value of 0 represents off, and ot=
+her values
+> > > > +      represent 1-1/N. =20
+> > >=20
+> > > Having looked at the datasheet I have little or now idea of what this=
+ filter
+> > > actually is.  However, what is the argument for it being in DT rather=
+ than
+> > > exposing a userspace control of some type. =20
+> >=20
+> > I only see this equation in the datasheet
+> >=20
+> > F(PROXRAW ; PROXUSEFUL[n-1] ; RAWFILT) =3D (1 - RAWFILT).PROXRAW + RAWF=
+ILT.PROXUSEFUL[n-1]=20
+> >=20
+> > and it's talking about updating PROXUSEFUL. "PROXUSEFUL update consists
+> > of filtering PROXRAW upfront to remove its high frequencies components".
+> > So presumably this filter is used to make proxraw into proxuseful so
+> > that it is a meaningful number. Is this a new knob in userspace?
+>=20
+> It might fit with the various filter definitions, but there is so little =
+info
+> it is hard to map it across.   Perhaps DT is the best we can do here even
+> though it would ideally be controlled from userspace.
+>=20
 
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Ok I read the datasheet a couple more times :)
 
-Guenter
+This sensor seems to have multiple levels of processing on the signal.
+First the raw signal is there as PROXRAW. That gets turned into
+PROXUSEFUL with this calculation:
 
-> thanks
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
-> >  .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 ++-
-> >  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++---
-> >  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 ++++++++---
-> >  drivers/iio/light/cros_ec_light_prox.c                |  5 ++---
-> >  drivers/iio/pressure/cros_ec_baro.c                   |  5 ++---
-> >  include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
-> >  7 files changed, 19 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-> > index b6f3471b62dc..8f1232c38e0d 100644
-> > --- a/drivers/iio/accel/cros_ec_accel_legacy.c
-> > +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-> > @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
-> >               return -ENOMEM;
-> >
-> >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> > -                                     cros_ec_sensors_capture, NULL);
-> > +                                     cros_ec_sensors_capture, NULL, false);
-> >       if (ret)
-> >               return ret;
-> >
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> > index af801e203623..752f59037715 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> > @@ -97,7 +97,8 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
-> >       if (!indio_dev)
-> >               return -ENOMEM;
-> >
-> > -     ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
-> > +     ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
-> > +                                     NULL, false);
-> >       if (ret)
-> >               return ret;
-> >
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > index 130ab8ce0269..57038ca48d93 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > @@ -236,12 +236,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
-> >
-> >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> >                                       cros_ec_sensors_capture,
-> > -                                     cros_ec_sensors_push_data);
-> > +                                     cros_ec_sensors_push_data,
-> > +                                     true);
-> >       if (ret)
-> >               return ret;
-> >
-> > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-> > -
-> >       indio_dev->info = &ec_sensors_info;
-> >       state = iio_priv(indio_dev);
-> >       for (channel = state->channels, i = CROS_EC_SENSOR_X;
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index ea480c1d4349..0de800d41978 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -174,12 +174,11 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
-> >
-> >  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
-> >
-> > -const struct attribute *cros_ec_sensor_fifo_attributes[] = {
-> > +static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
-> >       &iio_dev_attr_hwfifo_timeout.dev_attr.attr,
-> >       &iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-> >       NULL,
-> >  };
-> > -EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
-> >
-> >  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
-> >                             s16 *data,
-> > @@ -238,6 +237,7 @@ static void cros_ec_sensors_core_clean(void *arg)
-> >   *    for backward compatibility.
-> >   * @push_data:          function to call when cros_ec_sensorhub receives
-> >   *    a sample for that sensor.
-> > + * @has_hw_fifo:     Set true if this device has/uses a HW FIFO
-> >   *
-> >   * Return: 0 on success, -errno on failure.
-> >   */
-> > @@ -245,7 +245,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                             struct iio_dev *indio_dev,
-> >                             bool physical_device,
-> >                             cros_ec_sensors_capture_t trigger_capture,
-> > -                           cros_ec_sensorhub_push_data_cb_t push_data)
-> > +                           cros_ec_sensorhub_push_data_cb_t push_data,
-> > +                           bool has_hw_fifo)
-> >  {
-> >       struct device *dev = &pdev->dev;
-> >       struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-> > @@ -358,6 +359,10 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                                       NULL);
-> >                       if (ret)
-> >                               return ret;
-> > +
-> > +                     if (has_hw_fifo)
-> > +                             iio_buffer_set_attrs(indio_dev->buffer,
-> > +                                                  cros_ec_sensor_fifo_attributes);
-> >               }
-> >       }
-> >
-> > diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-> > index fed79ba27fda..75d6b5fcf2cc 100644
-> > --- a/drivers/iio/light/cros_ec_light_prox.c
-> > +++ b/drivers/iio/light/cros_ec_light_prox.c
-> > @@ -182,12 +182,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
-> >
-> >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> >                                       cros_ec_sensors_capture,
-> > -                                     cros_ec_sensors_push_data);
-> > +                                     cros_ec_sensors_push_data,
-> > +                                     true);
-> >       if (ret)
-> >               return ret;
-> >
-> > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-> > -
-> >       indio_dev->info = &cros_ec_light_prox_info;
-> >       state = iio_priv(indio_dev);
-> >       state->core.type = state->core.resp->info.type;
-> > diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-> > index f0938b6fbba0..aa043cb9ac42 100644
-> > --- a/drivers/iio/pressure/cros_ec_baro.c
-> > +++ b/drivers/iio/pressure/cros_ec_baro.c
-> > @@ -139,12 +139,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
-> >
-> >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-> >                                       cros_ec_sensors_capture,
-> > -                                     cros_ec_sensors_push_data);
-> > +                                     cros_ec_sensors_push_data,
-> > +                                     true);
-> >       if (ret)
-> >               return ret;
-> >
-> > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
-> > -
-> >       indio_dev->info = &cros_ec_baro_info;
-> >       state = iio_priv(indio_dev);
-> >       state->core.type = state->core.resp->info.type;
-> > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-> > index caa8bb279a34..c9b80be82440 100644
-> > --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> > @@ -96,7 +96,8 @@ struct platform_device;
-> >  int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                             struct iio_dev *indio_dev, bool physical_device,
-> >                             cros_ec_sensors_capture_t trigger_capture,
-> > -                           cros_ec_sensorhub_push_data_cb_t push_data);
-> > +                           cros_ec_sensorhub_push_data_cb_t push_data,
-> > +                           bool has_hw_fifo);
-> >
-> >  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
-> >  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
-> > @@ -125,6 +126,5 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
-> >
-> >  /* List of extended channel specification for all sensors. */
-> >  extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
-> > -extern const struct attribute *cros_ec_sensor_fifo_attributes[];
-> >
-> >  #endif  /* __CROS_EC_SENSORS_CORE_H */
->
+ F(PROXRAW ; PROXUSEFUL[n-1] ; RAWFILT) =3D (1 - RAWFILT) * PROXRAW + RAWFI=
+LT * PROXUSEFUL[n-1]
+
+This semtech,proxraw-strength property is trying to set that RAWFILT
+variable to something like 2, 4, or 8. Or 0 for "off". Is that in terms
+of 3db? A bigger question, does the useful value need to be a different
+channel so it can be configured from userspace? We don't get an
+interrupt when this changes but at least the value can be read out of
+the hardware from what I can tell.
+
+The PROXUSEFUL value is turned into PROXAVG. There is a positive filter
+strength and a negative filter strength that is used to filter the
+PROXAVG value. I need to set the positive filter strength to be
+different than the default. That's what I'm trying to do with
+semtech,avg-pos-strength. It factors into this equation for PROXUSEFUL:
+
+if (PROXUSEFUL - PROXAVG[n-1] >=3D 0)
+  F(PROXUSEFUL ; PROXAVG[n-1] ; AVGPOSFILT) =3D (1 - AVGPOSFILT) * PROXUSEF=
+UL + AVGPOSFILT * PROXAVG[n-1]=20
+else
+  F(PROXUSEFUL ; PROXAVG[n-1] ; AVGNEGFILT) =3D (1 - AVGNEGFILT) * PROXUSEF=
+UL + AVGNEGFILT * PROXAVG[n-1]=20
+
+so depending on how the historical average value is going we filter
+differently. Again, is this in 3db? This register has a setting of
+"infinite" which I guess is used to make the above equation come out to
+be just PROXAVG[n - 1]? Otherwise 0 is "off" which seems to make the
+above equation boil down to:
+
+  PROXAVG =3D PROXUSEFUL
+
+when you do substitution.
+
+I agree it looks like some sort of filter, so maybe I need to introduce
+some proximity.*filter ABI? I don't know the units though.
+
+To complete the story, the PROXAVG value gets compared to a threshold
+AVGTHRESH (settable in a register) and that can be debounced with
+another register setting (AVGDEB). That results in PROXUSEFUL which goes
+into this PROXDIFF equation:
+
+ PROXDIFF =3D (PROXUSEFUL - PROXAVG) >> 4
+
+The PROXDIFF value is compared to the proximity threshold register
+setting (PROXTHRESH, i.e. bits 3:7 in register RegProxCtrl8/9) plus or
+minus the hysteresis (RegProxCtrl10 bits 5:4) and then debounced
+(RegProxCtrl10 bits 3:2 (for close) and 1:0 (for far)).
+
+if (PROXDIFF > PROXTHRESH + HYST)
+  // close event, i.e. DIR_FALLING
+  PROXSTAT =3D debounce() ? 1 : 0;
+else if (PROXDIFF < PROXTHRESH - HYST)
+  // far event, i.e. DIR_RISING
+  PROXSTAT =3D debounce() ? 0 : 1;
+
+If that all passes then PROXSTAT is set to 1 for the close condition and
+0 for the far condition. An irq is raised and eventually this driver
+will signal a new event indicating rising or falling.
+
+I see that the driver implements sx9310_read_prox_data() as a read on
+the PROXDIFF value. That looks good for reading the processed signal for
+a channel after all that raw/avg/useful debouncing and filtering.

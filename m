@@ -2,39 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C72279A41
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 17:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D5C279A42
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 17:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729371AbgIZPDQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Sep 2020 11:03:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45422 "EHLO mail.kernel.org"
+        id S1726239AbgIZPE0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Sep 2020 11:04:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45622 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726239AbgIZPDQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 26 Sep 2020 11:03:16 -0400
+        id S1725208AbgIZPE0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 26 Sep 2020 11:04:26 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE1A3208FE;
-        Sat, 26 Sep 2020 15:03:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 10620208FE;
+        Sat, 26 Sep 2020 15:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601132595;
-        bh=1rNkL38ShwqE3McrNo7YbU6G6prrSO22LA5HWhi+zYc=;
+        s=default; t=1601132665;
+        bh=kce5K4ZWcgdmek/Y8oFvxLnbNhqE322bhKzxhmZEkMg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IEcDV7gAONwvjUJ4WuEF7ztlvcuyrCHrODvdOrA9J7XC3YeS4KI4ubafFXM3xFfN7
-         LIg3VEYxNqeje/JbfrGsrq5MetEJWIiHQo9e/fkkydAaM4ACvbrtOYpY6jwGTHtWfo
-         NTwySVoJXmvjorhH4P8S261niLTi2tEo8tdT64Og=
-Date:   Sat, 26 Sep 2020 16:03:11 +0100
+        b=N+6BC34lZPxeWfOPZyDbx6GOrfy3zRZwNe75zJNaLoMCJ9474Dq7jhcZm7qNfBf+x
+         aPfdLvMmOBcZ/5KgVCi3JzZ9XbtokXfZuZ9htslHDWvHlT1bAiQoQ6N+65rva6mILJ
+         pVa+NF1n6kL5IJVqiZ3xclkthUWRQOfg3rnv7e94=
+Date:   Sat, 26 Sep 2020 16:04:20 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
-        <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v3 4/4] dt-bindings: iio: ad9467: add entries for for
- AD9434 & AD9265 ADCs
-Message-ID: <20200926160311.1c9a0444@archlinux>
-In-Reply-To: <20200924080518.96410-5-alexandru.ardelean@analog.com>
-References: <20200924080518.96410-1-alexandru.ardelean@analog.com>
-        <20200924080518.96410-5-alexandru.ardelean@analog.com>
+To:     Guenter Roeck <groeck@google.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>
+Subject: Re: [PATCH] iio: cros_ec: unify hw fifo attributes into the core
+ file
+Message-ID: <20200926160420.5c836c7e@archlinux>
+In-Reply-To: <CABXOdTdr52ikhoSEMqqFakO42hZzpvtH=rxkAYWQsExrnWodFA@mail.gmail.com>
+References: <20200923130339.997902-1-alexandru.ardelean@analog.com>
+        <20200925133301.4789c47a@archlinux>
+        <CABXOdTdr52ikhoSEMqqFakO42hZzpvtH=rxkAYWQsExrnWodFA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,72 +48,213 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Sep 2020 11:05:18 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Fri, 25 Sep 2020 08:26:23 -0700
+Guenter Roeck <groeck@google.com> wrote:
 
-> Add entries for the AD9434 & AD9265 high-speed ADCs which are supported by
-> the 'ad9467' driver.
-> Better describe the family of ADCs similar to AD9467 in the description.
+> On Fri, Sep 25, 2020 at 5:33 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Wed, 23 Sep 2020 16:03:39 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> >  
+> > > The intent here is to minimize the use of iio_buffer_set_attrs(). Since we
+> > > are planning to add support for multiple IIO buffers per IIO device, the
+> > > issue has to do with:
+> > > 1. Accessing 'indio_dev->buffer' directly (as is done with
+> > >    'iio_buffer_set_attrs(indio_dev->buffer, <attrs>)').
+> > > 2. The way that the buffer attributes would get handled or expanded when
+> > >    there are more buffers per IIO device. Current a sysfs kobj_type expands
+> > >    into a 'device' object that expands into an 'iio_dev' object.
+> > >    We will need to change this, so that the sysfs attributes for IIO
+> > >    buffers expand into IIO buffers at some point.
+> > >
+> > > Right now, the current IIO framework works fine for the
+> > > '1 IIO device == 1 IIO buffer' case (that is now).
+> > >
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> > Looks good to me, but I'll need a cros_ec ack for this one.
+> >  
 > 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-As this is just an ID and a bit of descriptive text, I'm not going to
-waste Rob's time by expecting him to take a look!
-@Rob: Of course you are welcome to take a look if you like.
+> I like it.
+> 
+> Reviewed-by: Guenter Roeck <groeck@chromium.org>
 
-I've tweaked the description a tiny bit as below.
+Thanks,
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons (autobuilders etc).
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad9467.yaml   | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-> index c4f57fa6aad1..579dbc63e3fe 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-> @@ -4,21 +4,30 @@
->  $id: http://devicetree.org/schemas/iio/adc/adi,ad9467.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Analog Devices AD9467 High-Speed ADC
-> +title: Analog Devices AD9467 and similar High-Speed ADCs
->  
->  maintainers:
->    - Michael Hennerich <michael.hennerich@analog.com>
->    - Alexandru Ardelean <alexandru.ardelean@analog.com>
->  
->  description: |
-> -  The AD9467 is a 16-bit, monolithic, IF sampling analog-to-digital
-> -  converter (ADC).
-> +  The AD9467 and the parts similar with it, are high-speed analog-to-digital
-> +  converters (ADCs), operating in the range of 100 to 500 mega samples
-> +  per second (MSPS). Depending on the part, some support higher MSPS and some
-> +  lower MSPS, depending on the application each part is intended for.
-The Depending.... depending is a bit awkward so I'll rephrase that as
-
-Some parts support higher MSPS and some lower MSPS, suitable for the
-intended application of each part.
-
->  
-> +  All the parts support the register map described by Application Note AN-877
-> +   https://www.analog.com/media/en/technical-documentation/application-notes/AN-877.pdf
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9265.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9434.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.pdf
->  
->  properties:
->    compatible:
->      enum:
-> +      - adi,ad9265
-> +      - adi,ad9434
->        - adi,ad9467
->  
->    reg:
+> Guenter
+> 
+> > thanks
+> >
+> > Jonathan
+> >  
+> > > ---
+> > >  drivers/iio/accel/cros_ec_accel_legacy.c              |  2 +-
+> > >  .../iio/common/cros_ec_sensors/cros_ec_lid_angle.c    |  3 ++-
+> > >  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c  |  5 ++---
+> > >  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 11 ++++++++---
+> > >  drivers/iio/light/cros_ec_light_prox.c                |  5 ++---
+> > >  drivers/iio/pressure/cros_ec_baro.c                   |  5 ++---
+> > >  include/linux/iio/common/cros_ec_sensors_core.h       |  4 ++--
+> > >  7 files changed, 19 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > index b6f3471b62dc..8f1232c38e0d 100644
+> > > --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+> > >               return -ENOMEM;
+> > >
+> > >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > -                                     cros_ec_sensors_capture, NULL);
+> > > +                                     cros_ec_sensors_capture, NULL, false);
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > index af801e203623..752f59037715 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > @@ -97,7 +97,8 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+> > >       if (!indio_dev)
+> > >               return -ENOMEM;
+> > >
+> > > -     ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
+> > > +     ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL,
+> > > +                                     NULL, false);
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > index 130ab8ce0269..57038ca48d93 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > @@ -236,12 +236,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+> > >
+> > >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > >                                       cros_ec_sensors_capture,
+> > > -                                     cros_ec_sensors_push_data);
+> > > +                                     cros_ec_sensors_push_data,
+> > > +                                     true);
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> > > -
+> > >       indio_dev->info = &ec_sensors_info;
+> > >       state = iio_priv(indio_dev);
+> > >       for (channel = state->channels, i = CROS_EC_SENSOR_X;
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > index ea480c1d4349..0de800d41978 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > > @@ -174,12 +174,11 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
+> > >
+> > >  static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
+> > >
+> > > -const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+> > > +static const struct attribute *cros_ec_sensor_fifo_attributes[] = {
+> > >       &iio_dev_attr_hwfifo_timeout.dev_attr.attr,
+> > >       &iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
+> > >       NULL,
+> > >  };
+> > > -EXPORT_SYMBOL_GPL(cros_ec_sensor_fifo_attributes);
+> > >
+> > >  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+> > >                             s16 *data,
+> > > @@ -238,6 +237,7 @@ static void cros_ec_sensors_core_clean(void *arg)
+> > >   *    for backward compatibility.
+> > >   * @push_data:          function to call when cros_ec_sensorhub receives
+> > >   *    a sample for that sensor.
+> > > + * @has_hw_fifo:     Set true if this device has/uses a HW FIFO
+> > >   *
+> > >   * Return: 0 on success, -errno on failure.
+> > >   */
+> > > @@ -245,7 +245,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > >                             struct iio_dev *indio_dev,
+> > >                             bool physical_device,
+> > >                             cros_ec_sensors_capture_t trigger_capture,
+> > > -                           cros_ec_sensorhub_push_data_cb_t push_data)
+> > > +                           cros_ec_sensorhub_push_data_cb_t push_data,
+> > > +                           bool has_hw_fifo)
+> > >  {
+> > >       struct device *dev = &pdev->dev;
+> > >       struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+> > > @@ -358,6 +359,10 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > >                                       NULL);
+> > >                       if (ret)
+> > >                               return ret;
+> > > +
+> > > +                     if (has_hw_fifo)
+> > > +                             iio_buffer_set_attrs(indio_dev->buffer,
+> > > +                                                  cros_ec_sensor_fifo_attributes);
+> > >               }
+> > >       }
+> > >
+> > > diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> > > index fed79ba27fda..75d6b5fcf2cc 100644
+> > > --- a/drivers/iio/light/cros_ec_light_prox.c
+> > > +++ b/drivers/iio/light/cros_ec_light_prox.c
+> > > @@ -182,12 +182,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+> > >
+> > >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > >                                       cros_ec_sensors_capture,
+> > > -                                     cros_ec_sensors_push_data);
+> > > +                                     cros_ec_sensors_push_data,
+> > > +                                     true);
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> > > -
+> > >       indio_dev->info = &cros_ec_light_prox_info;
+> > >       state = iio_priv(indio_dev);
+> > >       state->core.type = state->core.resp->info.type;
+> > > diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> > > index f0938b6fbba0..aa043cb9ac42 100644
+> > > --- a/drivers/iio/pressure/cros_ec_baro.c
+> > > +++ b/drivers/iio/pressure/cros_ec_baro.c
+> > > @@ -139,12 +139,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+> > >
+> > >       ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > >                                       cros_ec_sensors_capture,
+> > > -                                     cros_ec_sensors_push_data);
+> > > +                                     cros_ec_sensors_push_data,
+> > > +                                     true);
+> > >       if (ret)
+> > >               return ret;
+> > >
+> > > -     iio_buffer_set_attrs(indio_dev->buffer, cros_ec_sensor_fifo_attributes);
+> > > -
+> > >       indio_dev->info = &cros_ec_baro_info;
+> > >       state = iio_priv(indio_dev);
+> > >       state->core.type = state->core.resp->info.type;
+> > > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> > > index caa8bb279a34..c9b80be82440 100644
+> > > --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> > > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> > > @@ -96,7 +96,8 @@ struct platform_device;
+> > >  int cros_ec_sensors_core_init(struct platform_device *pdev,
+> > >                             struct iio_dev *indio_dev, bool physical_device,
+> > >                             cros_ec_sensors_capture_t trigger_capture,
+> > > -                           cros_ec_sensorhub_push_data_cb_t push_data);
+> > > +                           cros_ec_sensorhub_push_data_cb_t push_data,
+> > > +                           bool has_hw_fifo);
+> > >
+> > >  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
+> > >  int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+> > > @@ -125,6 +126,5 @@ extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
+> > >
+> > >  /* List of extended channel specification for all sensors. */
+> > >  extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
+> > > -extern const struct attribute *cros_ec_sensor_fifo_attributes[];
+> > >
+> > >  #endif  /* __CROS_EC_SENSORS_CORE_H */  
+> >  
 

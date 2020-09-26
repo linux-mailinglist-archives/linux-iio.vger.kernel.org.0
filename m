@@ -2,83 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C7E279A38
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 16:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C72279A41
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 17:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729217AbgIZOz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Sep 2020 10:55:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44216 "EHLO mail.kernel.org"
+        id S1729371AbgIZPDQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Sep 2020 11:03:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45422 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729186AbgIZOz0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 26 Sep 2020 10:55:26 -0400
+        id S1726239AbgIZPDQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 26 Sep 2020 11:03:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B26B320882;
-        Sat, 26 Sep 2020 14:55:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BE1A3208FE;
+        Sat, 26 Sep 2020 15:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601132126;
-        bh=5tMbBNIJtzVNaEG/loFu6mje1p8enh0WBS5iNeCs55k=;
+        s=default; t=1601132595;
+        bh=1rNkL38ShwqE3McrNo7YbU6G6prrSO22LA5HWhi+zYc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qr4QpinhYLaSk7qWaLIGr9oO9V86HUNQag9yGWGGgY/WNln1XzTST+bRp1bEp90W5
-         mEAZJk7HCwxTjk2KfaNzgDIawYUwqfndhcdwFL3nEEL5lwnhc/VFHNTdnB/LlDwQZ1
-         LLah1bytFo+78NGbYdXzQXEJA05+jpl/5qyG6jB4=
-Date:   Sat, 26 Sep 2020 15:55:21 +0100
+        b=IEcDV7gAONwvjUJ4WuEF7ztlvcuyrCHrODvdOrA9J7XC3YeS4KI4ubafFXM3xFfN7
+         LIg3VEYxNqeje/JbfrGsrq5MetEJWIiHQo9e/fkkydAaM4ACvbrtOYpY6jwGTHtWfo
+         NTwySVoJXmvjorhH4P8S261niLTi2tEo8tdT64Og=
+Date:   Sat, 26 Sep 2020 16:03:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Tobias Jordan <kernel@cdqe.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: temperature: ltc2983: fix leak of device node
- iterator
-Message-ID: <20200926155521.3b75342f@archlinux>
-In-Reply-To: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
-References: <b5eca237-b7ea-e4ca-3936-8c32892e49b5@web.de>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <robh+dt@kernel.org>,
+        <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v3 4/4] dt-bindings: iio: ad9467: add entries for for
+ AD9434 & AD9265 ADCs
+Message-ID: <20200926160311.1c9a0444@archlinux>
+In-Reply-To: <20200924080518.96410-5-alexandru.ardelean@analog.com>
+References: <20200924080518.96410-1-alexandru.ardelean@analog.com>
+        <20200924080518.96410-5-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 26 Sep 2020 16:45:56 +0200
-Markus Elfring <Markus.Elfring@web.de> wrote:
+On Thu, 24 Sep 2020 11:05:18 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> > Thought about adding an "goto err_of_node_put" instead, but as the error
-> > paths are quite divergent, I'm not sure if that wouldn't complicate
-> > things. =20
->=20
-> Please add jump targets like =E2=80=9Ce_inval=E2=80=9D and =E2=80=9Cput_n=
-ode=E2=80=9D so that a bit of
-> common exception handling code can be better reused for this function imp=
-lementation.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/coding-style.rst?id=3D7c7ec3226f5f33f9c050d85ec20f1841=
-9c622ad6#n475
+> Add entries for the AD9434 & AD9265 high-speed ADCs which are supported by
+> the 'ad9467' driver.
+> Better describe the family of ADCs similar to AD9467 in the description.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+As this is just an ID and a bit of descriptive text, I'm not going to
+waste Rob's time by expecting him to take a look!
+@Rob: Of course you are welcome to take a look if you like.
 
-On this one I think readability would perhaps be hurt a little by
-doing so, particular as we need to do the of_put_node in some but
-not all non error paths. =20
+I've tweaked the description a tiny bit as below.
 
-It is a close run thing between the two options however.
-
-I considered another option of suggesting factoring out this whole
-per node block, but to do that we would have to do something a bit
-odd with the return value as we have 3 options.
-* error
-* do not parse any more children.
-* continue to parse children.
-
-So I think in this case Tobias' solution is the best one available.
+Series applied to the togreg branch of iio.git and pushed out as testing
+for all the normal reasons (autobuilders etc).
 
 Thanks,
 
 Jonathan
 
->=20
-> Regards,
-> Markus
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad9467.yaml   | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> index c4f57fa6aad1..579dbc63e3fe 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> @@ -4,21 +4,30 @@
+>  $id: http://devicetree.org/schemas/iio/adc/adi,ad9467.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Analog Devices AD9467 High-Speed ADC
+> +title: Analog Devices AD9467 and similar High-Speed ADCs
+>  
+>  maintainers:
+>    - Michael Hennerich <michael.hennerich@analog.com>
+>    - Alexandru Ardelean <alexandru.ardelean@analog.com>
+>  
+>  description: |
+> -  The AD9467 is a 16-bit, monolithic, IF sampling analog-to-digital
+> -  converter (ADC).
+> +  The AD9467 and the parts similar with it, are high-speed analog-to-digital
+> +  converters (ADCs), operating in the range of 100 to 500 mega samples
+> +  per second (MSPS). Depending on the part, some support higher MSPS and some
+> +  lower MSPS, depending on the application each part is intended for.
+The Depending.... depending is a bit awkward so I'll rephrase that as
+
+Some parts support higher MSPS and some lower MSPS, suitable for the
+intended application of each part.
+
+>  
+> +  All the parts support the register map described by Application Note AN-877
+> +   https://www.analog.com/media/en/technical-documentation/application-notes/AN-877.pdf
+> +
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9265.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9434.pdf
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.pdf
+>  
+>  properties:
+>    compatible:
+>      enum:
+> +      - adi,ad9265
+> +      - adi,ad9434
+>        - adi,ad9467
+>  
+>    reg:
 

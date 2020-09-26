@@ -2,140 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B488279ABB
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 18:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7433A279B46
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 19:18:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729870AbgIZQYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Sep 2020 12:24:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59844 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729747AbgIZQYD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 26 Sep 2020 12:24:03 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 56C2821527;
-        Sat, 26 Sep 2020 16:24:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601137442;
-        bh=x7CD/Cc+BQV5JRqqGgs8yNrYfENI2MsaAgzRJ2ZK81Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=I3810f6bKtXPFDDKBFSw2tCLCKjFzaXwardV7+8vmRHEcqEkl9EDK3SVycAR/YI9f
-         4PPypdjZsjlg9TzwihylfqlVv5h9+9ALfV/631B8i1HIJA/qvfqLRry81MQK+HRsjh
-         SLunJUikCwdBi8kiLoosp9AtTT+xl5M8Wl2iP2a4=
-Date:   Sat, 26 Sep 2020 17:23:58 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tobias Jordan <kernel@cdqe.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v2] iio: adc: gyroadc: fix leak of device node iterator
-Message-ID: <20200926172358.7467e0f3@archlinux>
-In-Reply-To: <20200926161946.GA10240@agrajag.zerfleddert.de>
-References: <20200926161946.GA10240@agrajag.zerfleddert.de>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729963AbgIZRSn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Sep 2020 13:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726309AbgIZRSn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Sep 2020 13:18:43 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA13AC0613CE;
+        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id s12so7260434wrw.11;
+        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bl53+IHBE7yXiOLq6WRfnfhUTBMnGEZtbf1LqSaqfOk=;
+        b=MaueTk1yEtJ7GzSgrXw9tmwckv/94rigKyb+hYnwA4mrGQVzJNB5sjMe6y2xd4IBeT
+         3zkQ9HbFbDy2HsnjEzWPRD0Y0WO7UoGKjIxD+WFa4PQoTYvzULDT06j5a3uoJ3DXDEuB
+         kwBeb9FSSZOMVJb9QpJOm1IZ76qUyTUG04nCCPF74hjYkr7zD2KCdCnP9ID5ZmR8Nzmg
+         C7MsQtBPYqbYzatYImp4itw+59MOMc+2ezR9fnuhOMJ3/LKjf0riQt/EiAWmQToz5Wcb
+         rhdKstdxImdK1Ec5krm8r230l7kWzYOa0U20CsBBZOhjsabFERo9xzDUDPJXk0vj+k8p
+         muuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bl53+IHBE7yXiOLq6WRfnfhUTBMnGEZtbf1LqSaqfOk=;
+        b=GdxjOrt3qfc2NDShUkPm+FhikafObXAx2zB0+2hrT4kBCuBTuTvLLBHAbFkAKdB/Ku
+         IZGOitadgmm6+WNFAVaT+RKwzM/lx0X4l4wegbDB4gyY/e7/KxRFXjLc1pvSR5JArkMb
+         awTf/31Kr/WwJPfdxNzSryi/IjO+oxV1hLcmgAu6Ac/HkGCs0aJbbiqIO3jVcCCX1Dk0
+         S+4MnZn7fBM+V3YfbuZ3jFboztl6A2uv9QQDh4v5JDiragvx51WLWHRU9Kno2ol7L4WK
+         KA9rTIo0IITNo4X6n+AE1+RPMnYmgfXEDreQ5gczkca3K28s/USwexOzCIZicBMpAg6U
+         66lg==
+X-Gm-Message-State: AOAM531pXjsQZY//J/ZpDbxh4kk4Bpy7g/eE/zgeUanDyNxfN+ZI6jYN
+        6O9r2WZZrPBI/C45AtSFAyA=
+X-Google-Smtp-Source: ABdhPJyzlxbTOBiEV6UjiHZ8TzGIgyhnXIRMmB49mXLck6hVgqRUzmKf7TuHcYyH3cOFuQuh7oKS5Q==
+X-Received: by 2002:adf:f903:: with SMTP id b3mr10611592wrr.142.1601140721323;
+        Sat, 26 Sep 2020 10:18:41 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id l4sm7427125wrc.14.2020.09.26.10.18.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2020 10:18:40 -0700 (PDT)
+From:   kholk11@gmail.com
+To:     agross@kernel.org
+Cc:     bjorn.andersson@linaro.org, jic23@kernel.org, robh+dt@kernel.org,
+        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [RESEND] [PATCH 1/2] iio: adc: qcom-spmi-vadc: Use right ratiometric range for 8998,660,845
+Date:   Sat, 26 Sep 2020 19:18:34 +0200
+Message-Id: <20200926171835.27154-1-kholk11@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 26 Sep 2020 18:19:46 +0200
-Tobias Jordan <kernel@cdqe.de> wrote:
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-> Add missing of_node_put calls when exiting the for_each_child_of_node
-> loop in rcar_gyroadc_parse_subdevs early.
-> 
-> Also add goto-exception handling for the error paths in that loop.
-> 
-> Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
-> Signed-off-by: Tobias Jordan <kernel@cdqe.de>
-> ---
-> v2:
-> - added an of_node_put to the non-error "break" at the end
-> - used gotos for the error cases, doesn't look as bad as I thought
-Was marginal, so I'll go with it.
+The ratiometric range for MSM8998, SDM630/636/660 and SDM845 is 1875mV
+instead of the standard 1800mV: address this by adding a new compatible
+"qcom,spmi-vadc-8998" and assigning the different range to the machines
+declaring this one.
 
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-> 
->  drivers/iio/adc/rcar-gyroadc.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-> index dcaefc108ff6..9f38cf3c7dc2 100644
-> --- a/drivers/iio/adc/rcar-gyroadc.c
-> +++ b/drivers/iio/adc/rcar-gyroadc.c
-> @@ -357,7 +357,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  			num_channels = ARRAY_SIZE(rcar_gyroadc_iio_channels_3);
->  			break;
->  		default:
-> -			return -EINVAL;
-> +			goto err_e_inval;
->  		}
->  
->  		/*
-> @@ -374,7 +374,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  				dev_err(dev,
->  					"Failed to get child reg property of ADC \"%pOFn\".\n",
->  					child);
-> -				return ret;
-> +				goto err_of_node_put;
->  			}
->  
->  			/* Channel number is too high. */
-> @@ -382,7 +382,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  				dev_err(dev,
->  					"Only %i channels supported with %pOFn, but reg = <%i>.\n",
->  					num_channels, child, reg);
-> -				return -EINVAL;
-> +				goto err_e_inval;
->  			}
->  		}
->  
-> @@ -391,7 +391,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  			dev_err(dev,
->  				"Channel %i uses different ADC mode than the rest.\n",
->  				reg);
-> -			return -EINVAL;
-> +			goto err_e_inval;
->  		}
->  
->  		/* Channel is valid, grab the regulator. */
-> @@ -401,7 +401,8 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  		if (IS_ERR(vref)) {
->  			dev_dbg(dev, "Channel %i 'vref' supply not connected.\n",
->  				reg);
-> -			return PTR_ERR(vref);
-> +			ret = PTR_ERR(vref);
-> +			goto err_of_node_put;
->  		}
->  
->  		priv->vref[reg] = vref;
-> @@ -425,8 +426,10 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  		 * attached to the GyroADC at a time, so if we found it,
->  		 * we can stop parsing here.
->  		 */
-> -		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A)
-> +		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A) {
-> +			of_node_put(child);
->  			break;
-> +		}
->  	}
->  
->  	if (first) {
-> @@ -435,6 +438,12 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
->  	}
->  
->  	return 0;
-> +
-> +err_e_inval:
-> +	ret = -EINVAL;
-> +err_of_node_put:
-> +	of_node_put(child);
-> +	return ret;
->  }
->  
->  static void rcar_gyroadc_deinit_supplies(struct iio_dev *indio_dev)
+Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+---
+ drivers/iio/adc/qcom-spmi-vadc.c   | 10 +++++++++-
+ drivers/iio/adc/qcom-vadc-common.h |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+index b0388f8a69f4..59a94ea7bf78 100644
+--- a/drivers/iio/adc/qcom-spmi-vadc.c
++++ b/drivers/iio/adc/qcom-spmi-vadc.c
+@@ -101,6 +101,7 @@ struct vadc_channel_prop {
+  * @dev: pointer to struct device.
+  * @base: base address for the ADC peripheral.
+  * @nchannels: number of VADC channels.
++ * @ratio_range: ratiometric range for ref points.
+  * @chan_props: array of VADC channel properties.
+  * @iio_chans: array of IIO channels specification.
+  * @are_ref_measured: are reference points measured.
+@@ -114,6 +115,7 @@ struct vadc_priv {
+ 	struct device		 *dev;
+ 	u16			 base;
+ 	unsigned int		 nchannels;
++	unsigned int		 ratio_range;
+ 	struct vadc_channel_prop *chan_props;
+ 	struct iio_chan_spec	 *iio_chans;
+ 	bool			 are_ref_measured;
+@@ -355,7 +357,7 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+ 	u16 read_1, read_2;
+ 	int ret;
+ 
+-	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = VADC_RATIOMETRIC_RANGE;
++	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = vadc->ratio_range;
+ 	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+ 
+ 	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
+@@ -885,6 +887,11 @@ static int vadc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (of_device_is_compatible(node, "qcom,spmi-vadc-8998"))
++		vadc->ratio_range = VADC_RATIOMETRIC_RANGE_8998;
++	else
++		vadc->ratio_range = VADC_RATIOMETRIC_RANGE;
++
+ 	irq_eoc = platform_get_irq(pdev, 0);
+ 	if (irq_eoc < 0) {
+ 		if (irq_eoc == -EPROBE_DEFER || irq_eoc == -EINVAL)
+@@ -918,6 +925,7 @@ static int vadc_probe(struct platform_device *pdev)
+ 
+ static const struct of_device_id vadc_match_table[] = {
+ 	{ .compatible = "qcom,spmi-vadc" },
++	{ .compatible = "qcom-spmi-vadc-8998" },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, vadc_match_table);
+diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+index 17b2fc4d8bf2..b10d5fd59034 100644
+--- a/drivers/iio/adc/qcom-vadc-common.h
++++ b/drivers/iio/adc/qcom-vadc-common.h
+@@ -16,6 +16,7 @@
+ 
+ #define VADC_ABSOLUTE_RANGE_UV			625000
+ #define VADC_RATIOMETRIC_RANGE			1800
++#define VADC_RATIOMETRIC_RANGE_8998		1875
+ 
+ #define VADC_DEF_PRESCALING			0 /* 1:1 */
+ #define VADC_DEF_DECIMATION			0 /* 512 */
+-- 
+2.28.0
 

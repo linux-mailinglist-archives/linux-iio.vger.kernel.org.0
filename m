@@ -2,81 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52154279A8E
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 17:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A00D1279AA6
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Sep 2020 18:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729356AbgIZP7b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Sep 2020 11:59:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54292 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728017AbgIZP7b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 26 Sep 2020 11:59:31 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC42221527;
-        Sat, 26 Sep 2020 15:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601135970;
-        bh=KywDDmAD+/EjY9HWMhKoYxralCAzhcbvsQ46EOOQ/Kk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AegnDm8GIRw+voOq9E82VuPxLMZSl7RXimytHMmLh4MNZo4alRvLOgMlxDSKuOt5p
-         uLectIv5uBidG7Aus35fHugtnZlMyHjTKuU9LRL5eftyHZnCGD0qnI6XNrd6TznjKh
-         DM7B8j74V4FRYfejNJu5/64sHD70V0k8r8Ggw9lE=
-Date:   Sat, 26 Sep 2020 16:59:25 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH 0/3] iio: add titles to some Kconfig symbols
-Message-ID: <20200926165925.1e91afe7@archlinux>
-In-Reply-To: <20200924111758.196367-1-alexandru.ardelean@analog.com>
-References: <20200924111758.196367-1-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729448AbgIZQTs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Sep 2020 12:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728017AbgIZQTs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Sep 2020 12:19:48 -0400
+Received: from agrajag.zerfleddert.de (agrajag.zerfleddert.de [IPv6:2a01:4f8:bc:1de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56D16C0613CE;
+        Sat, 26 Sep 2020 09:19:48 -0700 (PDT)
+Received: by agrajag.zerfleddert.de (Postfix, from userid 1000)
+        id AFB4C5B2057C; Sat, 26 Sep 2020 18:19:46 +0200 (CEST)
+Date:   Sat, 26 Sep 2020 18:19:46 +0200
+From:   Tobias Jordan <kernel@cdqe.de>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Marek Vasut <marek.vasut@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH v2] iio: adc: gyroadc: fix leak of device node iterator
+Message-ID: <20200926161946.GA10240@agrajag.zerfleddert.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Sep 2020 14:17:55 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+Add missing of_node_put calls when exiting the for_each_child_of_node
+loop in rcar_gyroadc_parse_subdevs early.
 
-> For some embedded systems, a workflow involving external kernel modules
-> that implement IIO devices is more practical than working with in-tree
-> sources. However, there are number of features in the IIO KConfig that can
-> only be switched on by enabling a particular sensor.
-> 
-> This came as a request a few years back:
->    https://github.com/analogdevicesinc/linux/issues/140
-> 
-> This patch implements that request.
-> 
-> After a quick run-through the iio Kconfig files, 4 seem to be useful to add
-> titles to.
-> i.e. IIO_TRIGGERED_EVENT, IIO_TRIGGERED_BUFFER, IIO_BUFFER_DMAENGINE &
-> IIO_BUFFER_DMA.
-> 
-> It's possible that for some out-of-tree drivers this could be useful.
-I'm not particular keen on changes to support out of tree stuff, but
-these are so trivial there is effectively 0 cost to doing it
+Also add goto-exception handling for the error paths in that loop.
 
-Hence, series applied to the togreg branch of iio.git and pushed out
-as testing for the autobuilders to find out if I'm wrong :)
+Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
+Signed-off-by: Tobias Jordan <kernel@cdqe.de>
+---
+v2:
+- added an of_node_put to the non-error "break" at the end
+- used gotos for the error cases, doesn't look as bad as I thought
 
-Thanks,
+ drivers/iio/adc/rcar-gyroadc.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-Jonathan
-
-> 
-> Alexandru Ardelean (3):
->   iio: dma-buffer: Kconfig: Provide titles for IIO DMA Kconfig symbols
->   iio: Kconfig: Provide title for IIO_TRIGGERED_EVENT symbol
->   iio: buffer: Kconfig: add title for IIO_TRIGGERED_BUFFER symbol
-> 
->  drivers/iio/Kconfig        |  2 +-
->  drivers/iio/buffer/Kconfig | 10 +++++-----
->  2 files changed, 6 insertions(+), 6 deletions(-)
-> 
+diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+index dcaefc108ff6..9f38cf3c7dc2 100644
+--- a/drivers/iio/adc/rcar-gyroadc.c
++++ b/drivers/iio/adc/rcar-gyroadc.c
+@@ -357,7 +357,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 			num_channels = ARRAY_SIZE(rcar_gyroadc_iio_channels_3);
+ 			break;
+ 		default:
+-			return -EINVAL;
++			goto err_e_inval;
+ 		}
+ 
+ 		/*
+@@ -374,7 +374,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 				dev_err(dev,
+ 					"Failed to get child reg property of ADC \"%pOFn\".\n",
+ 					child);
+-				return ret;
++				goto err_of_node_put;
+ 			}
+ 
+ 			/* Channel number is too high. */
+@@ -382,7 +382,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 				dev_err(dev,
+ 					"Only %i channels supported with %pOFn, but reg = <%i>.\n",
+ 					num_channels, child, reg);
+-				return -EINVAL;
++				goto err_e_inval;
+ 			}
+ 		}
+ 
+@@ -391,7 +391,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 			dev_err(dev,
+ 				"Channel %i uses different ADC mode than the rest.\n",
+ 				reg);
+-			return -EINVAL;
++			goto err_e_inval;
+ 		}
+ 
+ 		/* Channel is valid, grab the regulator. */
+@@ -401,7 +401,8 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 		if (IS_ERR(vref)) {
+ 			dev_dbg(dev, "Channel %i 'vref' supply not connected.\n",
+ 				reg);
+-			return PTR_ERR(vref);
++			ret = PTR_ERR(vref);
++			goto err_of_node_put;
+ 		}
+ 
+ 		priv->vref[reg] = vref;
+@@ -425,8 +426,10 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 		 * attached to the GyroADC at a time, so if we found it,
+ 		 * we can stop parsing here.
+ 		 */
+-		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A)
++		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A) {
++			of_node_put(child);
+ 			break;
++		}
+ 	}
+ 
+ 	if (first) {
+@@ -435,6 +438,12 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	return 0;
++
++err_e_inval:
++	ret = -EINVAL;
++err_of_node_put:
++	of_node_put(child);
++	return ret;
+ }
+ 
+ static void rcar_gyroadc_deinit_supplies(struct iio_dev *indio_dev)
+-- 
+2.20.1
 

@@ -2,83 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81DAD27B141
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Sep 2020 17:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3731C27B471
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Sep 2020 20:27:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgI1Pyp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Sep 2020 11:54:45 -0400
-Received: from vern.gendns.com ([98.142.107.122]:35482 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726485AbgI1Pyo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 28 Sep 2020 11:54:44 -0400
-X-Greylist: delayed 1032 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Sep 2020 11:54:44 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qF6W4iDAfeSLlwl5RE77Hf5mYM9UhPw4NQBVnD2n3wQ=; b=DIiL4DBM3baH/FPhozvgjBu/OV
-        SA0s+KPTgIrNXrjA/J12AVD9U/3XEQT42RbXe71Zor5E/CVsyQhqoLb420rYDmRpA46XmYRGT9Viz
-        AkkGL+pmMydqNk3ngo5z/v/OP/7BUU6PO4zvGx7yiAab2e9xfNmibnsNqnWa0roPxhXXg0CdJzawI
-        0RMS4sqkFpd7kW7x+cSeVuVUFsAUc2gd5WCyn4M/MRy6uG3VGG9cjlO1RzHmNPg3psG3zZlOklRnU
-        DGbjh4AomJehHhUs24z/rW6FOy77Xek3SVT8A/oBslRDRZOLJRz/SB213B8it9T2YLzWJZmUtx2t/
-        f3494d5g==;
-Received: from [2600:1700:4830:165f::19e] (port=38396)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kMvDV-0003I5-2h; Mon, 28 Sep 2020 11:37:29 -0400
-Subject: Re: [PATCH 15/18] counter: use semicolons rather than commas to
- separate statements
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Joe Perches <joe@perches.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
-Date:   Mon, 28 Sep 2020 10:37:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726548AbgI1S1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Sep 2020 14:27:32 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:37780 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726500AbgI1S1c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Sep 2020 14:27:32 -0400
+Received: by mail-ot1-f66.google.com with SMTP id o8so1921994otl.4;
+        Mon, 28 Sep 2020 11:27:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gntewucXGAZEXsmTkYpsZuCb5osJ4WHC8uBmXkRio9g=;
+        b=Cld0gdLCMDWN94yD+ledWRmIyQwuH9cOHLh/p9lxPJIJjjEW2T7JmKzg82olG6H8cX
+         xyHjvzfKpApiaVHO0pb6B2dVoHyEGZWhlXljHZp3/owR41G85ZIqlwKJVfCSh6owgXWi
+         nI4GdOE22r0qV4mJKOuglIif8OLB7xmOUxNejhbUjEJa4F6Q4KKpDbqM2PzrjapJW88q
+         6rREIttNK3Rxm51STLMLfRyYpq4YV1SMbS9TrPoLKL5LMB71a0L8eJ82Q3jp3pDKCLJt
+         i5QkD+vuaQsQjbFeOs9jxzQ2TJiinawAKQsljDdPJh4pRpAZelW2CdBDXY6CRpnvu8Rb
+         fSUA==
+X-Gm-Message-State: AOAM532K+hoBpPboyHOnnCIQMHlnnrWMII6+k3DPT1jQ3P7C6F02slId
+        Ik5riV9DRoawVO8sFHG+0Q==
+X-Google-Smtp-Source: ABdhPJynurwsMeyeH9KSDU10nJtgTWqyaJKqKSZEA8jpQUXzumTWDGrLO2HajskY1S2NhK4hbo3OTQ==
+X-Received: by 2002:a05:6830:10d9:: with SMTP id z25mr205514oto.136.1601317650306;
+        Mon, 28 Sep 2020 11:27:30 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id 17sm402857oth.70.2020.09.28.11.27.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2020 11:27:29 -0700 (PDT)
+Received: (nullmailer pid 3036808 invoked by uid 1000);
+        Mon, 28 Sep 2020 18:27:28 -0000
+Date:   Mon, 28 Sep 2020 13:27:28 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Gene Chen <gene.chen.richtek@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, matthias.bgg@gmail.com,
+        cy_huang@richtek.com, pmeerw@pmeerw.net,
+        benjamin.chao@mediatek.com, linux-mediatek@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        shufan_lee@richtek.com, gene_chen@richtek.com, knaack.h@gmx.de,
+        lars@metafoo.de, linux-iio@vger.kernel.org, jic23@kernel.org,
+        Wilma.Wu@mediatek.com, robh+dt@kernel.org
+Subject: Re: [PATCH v5 1/3] dt-bindings: iio: adc: add bindings doc for
+ MT6360 ADC
+Message-ID: <20200928182728.GA3036774@bogus>
+References: <1600687442-23658-1-git-send-email-gene.chen.richtek@gmail.com>
+ <1600687442-23658-2-git-send-email-gene.chen.richtek@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1600687442-23658-2-git-send-email-gene.chen.richtek@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/27/20 2:12 PM, Julia Lawall wrote:
-> Replace commas with semicolons.  What is done is essentially described by
-> the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+On Mon, 21 Sep 2020 19:24:00 +0800, Gene Chen wrote:
+> From: Gene Chen <gene_chen@richtek.com>
 > 
-> // <smpl>
-> @@ expression e1,e2; @@
-> e1
-> -,
-> +;
-> e2
-> ... when any
-> // </smpl>
+> This change adds the binding doc for the MT6360 ADC.
 > 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
+> Signed-off-by: Gene Chen <gene_chen@richtek.com>
 > ---
-Reviewed-by: David Lechner <david@lechnology.com>
+>  .../bindings/iio/adc/mediatek,mt6360-adc.yaml      | 34 ++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6360-adc.yaml
+> 
 
+Reviewed-by: Rob Herring <robh@kernel.org>

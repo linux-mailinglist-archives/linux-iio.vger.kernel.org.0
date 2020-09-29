@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E53627CE39
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 14:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F0B27CE3C
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 14:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729704AbgI2M4G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1729697AbgI2M4G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 29 Sep 2020 08:56:06 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:6894 "EHLO
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:11692 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729307AbgI2Mz5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 08:55:57 -0400
+        by vger.kernel.org with ESMTP id S1728570AbgI2M4A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 08:56:00 -0400
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08TClNnS004027;
-        Tue, 29 Sep 2020 08:55:52 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 33t2j4jyaw-1
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08TClcBi004357;
+        Tue, 29 Sep 2020 08:55:55 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33t2j4jyb1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Sep 2020 08:55:52 -0400
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08TCtoib003404
+        Tue, 29 Sep 2020 08:55:55 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 08TCtsjS009406
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 29 Sep 2020 08:55:51 -0400
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 29 Sep
- 2020 05:55:43 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 29 Sep 2020 05:55:43 -0700
+        Tue, 29 Sep 2020 08:55:54 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 29 Sep 2020 08:55:47 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 29 Sep 2020 08:55:46 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 29 Sep 2020 08:55:45 -0400
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08TCtIuV024384;
-        Tue, 29 Sep 2020 08:55:44 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08TCtIuW024384;
+        Tue, 29 Sep 2020 08:55:47 -0400
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>, <eugen.hristev@microchip.com>,
@@ -40,9 +44,9 @@ CC:     <jic23@kernel.org>, <eugen.hristev@microchip.com>,
         <groeck@chromium.org>, <srinivas.pandruvada@linux.intel.com>,
         <andy.shevchenko@gmail.com>, <gwendal@chromium.org>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v3 8/9] iio: hid-sensors: use iio_triggered_buffer_setup_ext()
-Date:   Tue, 29 Sep 2020 15:59:48 +0300
-Message-ID: <20200929125949.69934-9-alexandru.ardelean@analog.com>
+Subject: [PATCH v3 9/9] iio: buffer: remove iio_buffer_set_attrs() helper
+Date:   Tue, 29 Sep 2020 15:59:49 +0300
+Message-ID: <20200929125949.69934-10-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200929125949.69934-1-alexandru.ardelean@analog.com>
 References: <20200929125949.69934-1-alexandru.ardelean@analog.com>
@@ -60,65 +64,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change switches to the new iio_triggered_buffer_setup_ext()
-function and removes the iio_buffer_set_attrs() call, for assigning the
-HW FIFO attributes to the buffer.
+The iio_buffer_set_attrs() is no longer used in the drivers, so it can be
+removed now.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- .../common/hid-sensors/hid-sensor-trigger.c   | 22 ++++++++-----------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ drivers/iio/industrialio-buffer.c | 12 ------------
+ include/linux/iio/buffer.h        |  3 ---
+ 2 files changed, 15 deletions(-)
 
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-index ff375790b7e8..064c32bec9c7 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -84,15 +84,6 @@ static const struct attribute *hid_sensor_fifo_attributes[] = {
- 	NULL,
- };
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index a4f6bb96d4f4..9663dec3dcf3 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -210,18 +210,6 @@ void iio_buffer_init(struct iio_buffer *buffer)
+ }
+ EXPORT_SYMBOL(iio_buffer_init);
  
--static void hid_sensor_setup_batch_mode(struct iio_dev *indio_dev,
--					struct hid_sensor_common *st)
+-/**
+- * iio_buffer_set_attrs - Set buffer specific attributes
+- * @buffer: The buffer for which we are setting attributes
+- * @attrs: Pointer to a null terminated list of pointers to attributes
+- */
+-void iio_buffer_set_attrs(struct iio_buffer *buffer,
+-			 const struct attribute **attrs)
 -{
--	if (!hid_sensor_batch_mode_supported(st))
--		return;
--
--	iio_buffer_set_attrs(indio_dev->buffer, hid_sensor_fifo_attributes);
+-	buffer->attrs = attrs;
 -}
+-EXPORT_SYMBOL_GPL(iio_buffer_set_attrs);
 -
- static int _hid_sensor_power_state(struct hid_sensor_common *st, bool state)
- {
- 	int state_val;
-@@ -247,11 +238,18 @@ static const struct iio_trigger_ops hid_sensor_trigger_ops = {
- int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
- 				struct hid_sensor_common *attrb)
- {
-+	const struct attribute **fifo_attrs;
- 	int ret;
- 	struct iio_trigger *trig;
+ static ssize_t iio_show_scan_index(struct device *dev,
+ 				   struct device_attribute *attr,
+ 				   char *buf)
+diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
+index fbba4093f06c..8febc23f5f26 100644
+--- a/include/linux/iio/buffer.h
++++ b/include/linux/iio/buffer.h
+@@ -11,9 +11,6 @@
  
--	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
--					 NULL, NULL);
-+	if (hid_sensor_batch_mode_supported(attrb))
-+		fifo_attrs = hid_sensor_fifo_attributes;
-+	else
-+		fifo_attrs = NULL;
-+
-+	ret = iio_triggered_buffer_setup_ext(indio_dev,
-+					     &iio_pollfunc_store_time,
-+					     NULL, NULL, fifo_attrs);
- 	if (ret) {
- 		dev_err(&indio_dev->dev, "Triggered Buffer Setup Failed\n");
- 		return ret;
-@@ -276,8 +274,6 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
- 	attrb->trigger = trig;
- 	indio_dev->trig = iio_trigger_get(trig);
+ struct iio_buffer;
  
--	hid_sensor_setup_batch_mode(indio_dev, attrb);
+-void iio_buffer_set_attrs(struct iio_buffer *buffer,
+-			 const struct attribute **attrs);
 -
- 	ret = pm_runtime_set_active(&indio_dev->dev);
- 	if (ret)
- 		goto error_unreg_trigger;
+ int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data);
+ 
+ /**
 -- 
 2.17.1
 

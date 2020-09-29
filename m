@@ -2,89 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DC327B8FF
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 02:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 052B527BD8E
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 09:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727161AbgI2Apa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Sep 2020 20:45:30 -0400
-Received: from smtprelay0076.hostedemail.com ([216.40.44.76]:56402 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726698AbgI2Apa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Sep 2020 20:45:30 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 780A9100E7B40;
-        Tue, 29 Sep 2020 00:45:28 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:4605:5007:6248:6742:7903:9025:9040:10004:10400:10848:10967:11232:11658:11914:12043:12266:12295:12297:12438:12740:12760:12895:13069:13071:13161:13229:13311:13357:13439:14180:14181:14659:14721:14777:21060:21080:21365:21433:21451:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: self77_011759527186
-X-Filterd-Recvd-Size: 2723
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 29 Sep 2020 00:45:25 +0000 (UTC)
-Message-ID: <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-From:   Joe Perches <joe@perches.com>
-To:     Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Date:   Mon, 28 Sep 2020 17:45:24 -0700
-In-Reply-To: <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S1725536AbgI2HKA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 03:10:00 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54976 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725535AbgI2HKA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 03:10:00 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08T77V25006662;
+        Tue, 29 Sep 2020 03:09:51 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 33t2j4hyuy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Sep 2020 03:09:51 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 08T79noB049572
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 29 Sep 2020 03:09:50 -0400
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 29 Sep
+ 2020 00:09:42 -0700
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 29 Sep 2020 00:09:42 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 08T79hUj013506;
+        Tue, 29 Sep 2020 03:09:44 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <eugen.hristev@microchip.com>,
+        <nicolas.ferre@microchip.com>, <ludovic.desroches@microchip.com>,
+        <bleung@chromium.org>, <enric.balletbo@collabora.com>,
+        <groeck@chromium.org>, <srinivas.pandruvada@linux.intel.com>,
+        <andy.shevchenko@gmail.com>, <gwendal@chromium.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v2 0/9] iio: remove iio_buffer_set_attrs() and assign buffer attrs during alloc
+Date:   Tue, 29 Sep 2020 10:08:59 +0300
+Message-ID: <20200929070908.10456-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-29_01:2020-09-29,2020-09-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 clxscore=1011 mlxlogscore=943 mlxscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009290065
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
-> On Sun, 27 Sep 2020 21:12:10 +0200, Julia Lawall wrote:
-> > These patches replace commas by semicolons.  This was done using the
-> > Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
-> > 
-> > This semantic patch ensures that commas inside for loop headers will not be
-> > transformed.  It also doesn't touch macro definitions.
-> > 
-> > Coccinelle ensures that braces are added as needed when a single-statement
-> > branch turns into a multi-statement one.
-> > 
-> > [...]
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
-> 
-> Thanks!
-> 
-> [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
->       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+This is a v2 for [1]:
+  https://lore.kernel.org/linux-iio/20200925083743.46469-1-alexandru.ardelean@analog.com/
 
-Hi Mark.
+It also includes a at91-sama5d2_adc cleanup patch in this series:
+  https://lore.kernel.org/linux-iio/20200924102902.136169-1-alexandru.ardelean@analog.com/
+This patch is required, in order to make the removal of
+iio_buffer_set_attrs() a bit cleaner in the at91-sama5d2_adc driver.
 
-Rather than replying to the 0/n cover letter to a patch
-series, can you reply to each of the specific patches in
-the patch series you are applying?
+Following the discussion from [1], this patchset implements the
+following:
 
-Otherwise, it's a bit difficult to figure out which patches
-you are applying.
+Changelog v1 -> v2:
+* rename '{devm_}iio_triggered_buffer_setup()' -> 
+         '{devm_}iio_triggered_buffer_setup_ext()'
+  - wrap with macros the new ext functions to preserve backwards
+    compatibility
+  - add a new parameter to the ext functions, which are the
+    buffer->attrs
+* split into separate patches the removal [from each driver] of
+  iio_buffer_set_attrs() and the switch to a
+  {devm_}iio_triggered_buffer_setup_ext variant
+* add patch to remove iio_buffer_set_attrs() from DMAEngine IIO buffer
+* remove the iio_buffer_set_attrs() helper in a final/separate patch
+* add 'at91-sama5d2_adc: merge buffer & trigger' patch in this series,
+  so that the removal of iio_buffer_set_attrs() is easier to view
 
-thanks
+Alexandru Ardelean (9):
+  iio: buffer: dmaengine: unwrap the use of iio_buffer_set_attrs()
+  iio: adc: at91-sama5d2_adc: merge buffer & trigger init into a
+    function
+  iio: triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext
+    variants
+  iio: accel: adxl372: use devm_iio_triggered_buffer_setup_ext()
+  iio: accel: bmc150: use iio_triggered_buffer_setup_ext()
+  iio: adc: at91-sama5d2_adc: use devm_iio_triggered_buffer_setup_ext()
+  iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()
+  iio: hid-sensors: use iio_triggered_buffer_setup_ext()
+  iio: buffer: remove iio_buffer_set_attrs() helper
+
+ drivers/iio/accel/adxl372.c                   | 11 ++-
+ drivers/iio/accel/bmc150-accel-core.c         | 25 +++---
+ drivers/iio/adc/at91-sama5d2_adc.c            | 82 +++++++++----------
+ .../buffer/industrialio-buffer-dmaengine.c    |  3 +-
+ .../buffer/industrialio-triggered-buffer.c    | 31 ++++---
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 15 ++--
+ .../common/hid-sensors/hid-sensor-trigger.c   | 22 ++---
+ drivers/iio/industrialio-buffer.c             | 12 ---
+ include/linux/iio/buffer.h                    |  3 -
+ include/linux/iio/triggered_buffer.h          | 23 ++++--
+ 10 files changed, 113 insertions(+), 114 deletions(-)
+
+-- 
+2.17.1
 

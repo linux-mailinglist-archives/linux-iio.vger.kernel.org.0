@@ -2,66 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 326CC27C2F6
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 12:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A773427C77D
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 13:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727403AbgI2K6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 06:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbgI2K6L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 06:58:11 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E898BC061755
-        for <linux-iio@vger.kernel.org>; Tue, 29 Sep 2020 03:58:10 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id o21so3148605qtp.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Sep 2020 03:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7mJoIvh1WI9LBA+qxIDwQe21a7OH41KKnvpQo+9I2mg=;
-        b=W+R1JdV8fMMRG4ZPlHf2jAFQM2r6M69MQPBmwzBu0lLcW3UJuwbeUDUdFCqnyAYD4K
-         CnD2h6JcSS2FP92JTFA7MheeHYWLTaBw54NQEkphZqLm95Cjne70iJUv18CwAsd5aahG
-         F9wRR68AaVoFZ3r+HbLqP5GGnEnULtuGF8nuTtIHJM83M/5U67C9VQyuoZCxdr2lX6uL
-         3OsIToXu8WNgN8U5VJ5Z7tjXw7muGLplB7Hjh/DwmyYRRYQj0O7DrTN1iusDxxaGfd4O
-         nPkCF4CmtKWp2K65uw56+DJ1i7940Xjv6oLohhKZKKkvT/PNKfli2WWieHgF58SLco/N
-         9L/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7mJoIvh1WI9LBA+qxIDwQe21a7OH41KKnvpQo+9I2mg=;
-        b=KbJZm7NEoy9WyLAgkHHrrIdpPC53xd0z6eawSqDzPDksxKgRf0BKg/uTQj03fPkbRQ
-         n7mUIwZ9kEQCsYtgsGibDDIExdjj3j8O0UnZVacyxsri7wouupE84xBadTy/89A8DUrD
-         KVM9HtREzdyqT/9nj8eorspiyTP3xJ0L/KGBpI28sA7Iw/AlDMwHd/U18Tzrdaz/SNJZ
-         zdAC7/psLjwxcB3OxkxyE+2EMi5NvGP7NJP91gRGaAuv+0BOe760qyGBAWoWu5SWI/mD
-         LXscWW8NExAUquTUrRqPMbVzSFVLaAx75+viYaxJWf2TAPHelCmi6gNWPJ/OVtW/xzF8
-         894g==
-X-Gm-Message-State: AOAM530j3rdUTQYYCbDb5m6R0s3ky1rD1er06g/hXWciV3958QgZhxRV
-        s5gXOY8xs/ktdTraVAe8YqVQM3Ny48ETwZN26SY=
-X-Google-Smtp-Source: ABdhPJyaIh8PGsehaT3z2/CyrOV1LAn2aE3obwUf7Oyp7pShxkdeDoHu4niHHJivLbC5/qmcCn8MfPS1H6XIdRjUFd0=
-X-Received: by 2002:ac8:f57:: with SMTP id l23mr2662309qtk.166.1601377088841;
- Tue, 29 Sep 2020 03:58:08 -0700 (PDT)
+        id S1731367AbgI2LyR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 07:54:17 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:32180 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730629AbgI2Lq2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 07:46:28 -0400
+X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
+   d="scan'208";a="470044784"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 13:46:20 +0200
+Date:   Tue, 29 Sep 2020 13:46:19 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Mark Brown <broonie@kernel.org>
+cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
+Message-ID: <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <160132172369.55460.9237357219623604216.b4-ty@kernel.org> <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com> <20200929113745.GB4799@sirena.org.uk>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Received: by 2002:a0c:e64b:0:0:0:0:0 with HTTP; Tue, 29 Sep 2020 03:58:08
- -0700 (PDT)
-Reply-To: mrkasimmohamed15@gmail.com
-From:   MR KASIM MOHAMED <samiramohamed018@gmail.com>
-Date:   Tue, 29 Sep 2020 12:58:08 +0200
-Message-ID: <CAEqKzcNDBEX6S8WMg+r5FNX75X3+_uD_X1zKc+6YwbCG6cHJ2Q@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-Dearest One,
 
-I am Mr Kasim mohamed
-Hi Friend I am a bank director of the UBA Bank Plc bf .I want to
-transfer an abandoned sum of  27.5 millions USD  to you through ATM
-VISA CARD .50% will be for you. No risk involved. Contact me for more
-details. Kindly reply me back to my alternative email
-address(mrkasimmohamed15@gmail.com) Mr kasim Mohamed
+
+On Tue, 29 Sep 2020, Mark Brown wrote:
+
+> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
+> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
+>
+> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+>
+> > Rather than replying to the 0/n cover letter to a patch
+> > series, can you reply to each of the specific patches in
+> > the patch series you are applying?
+>
+> > Otherwise, it's a bit difficult to figure out which patches
+> > you are applying.
+>
+> Feel free to submit patches to b4.  Ideally things like this wouldn't be
+> being sent as serieses in the first place, there's no dependencies or
+> interactions between the patches.
+
+It was suggested (a long time ago, not with respect to this patch in
+particular) that sending such patches in a series is useful because it
+allows people who are not interested in the 18 patches to skip over them
+more easily.  So there are two conflicting needs...
+
+julia

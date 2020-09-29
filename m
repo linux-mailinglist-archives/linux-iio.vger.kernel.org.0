@@ -2,146 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 256C427D128
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 16:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB7627D295
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 17:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgI2OcH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 10:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725554AbgI2OcH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 10:32:07 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF7DC061755;
-        Tue, 29 Sep 2020 07:32:06 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id x69so5661514oia.8;
-        Tue, 29 Sep 2020 07:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LAmz0O8V9vfqJ0LDWpSIs9Cx80ruJ/1ftMGPdSc3hh0=;
-        b=MGyy9+FWipuOI8XAyEkbbhJlUPT5fHdjwnVoRNRlonlvcqxmCS7Nxx1GAjrVCN0Kyl
-         2LetpBcxmabr6SKEa+4S2IQ5BAGPTuz+WH0Byw/g/prsv7LOL+E4mdavUSSTSKfv/Dh3
-         QmRcs2gEfTHqbS/qV9Yzs9qQrpEMLo+MPxEu59v3Mv3JnXpxedKUKixBe278TcHdlayz
-         X6l3P/huYZ6yfSI7NmUNu/6tnaMDoEJdGlmHdY5PRnx4ahgXKrYUb1xDfWfGS6hj4kS0
-         MXQ1RoWvPj28JOuBUyVOyq2CI8O5O3YE9rh9tE28i1frbCvQwIIFDflWMFyuMPoSM+ZW
-         JHxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LAmz0O8V9vfqJ0LDWpSIs9Cx80ruJ/1ftMGPdSc3hh0=;
-        b=XwSg9B6r4aCBkvTYRCNiPU+PFeauExZNI79WzYoleGtpSsFtyZ0jB44h6S+1Kti0Ah
-         j8H+w82zXY7D0kgpB3yfodf9zIC44N8EzQUZWTUO0LyabXbyev/+5atWt/TeWpnkRQ1i
-         DA9NhqApCL/0MrTTE9VVYz3XzICcwE9So45GpYsnrePsqxQ2UvGZDEQ2ME5CG3KQguse
-         P8MHSVq76vvZvS1PdRSrgceWchWjqrDIMJ8rU+P8rc+TtBfTQixMmz43rICVzGxmd3Uz
-         RtYASJJYuld0u71vr3ScMzNczp+714wYHKYelV6e7xImvVGe4d7JnaRZCroGYnXgN9pN
-         cx5A==
-X-Gm-Message-State: AOAM532ES1QB/ULGQYYIZbMKeodPAhIxwOJxZOvjCYS5/MCTczRYOkdk
-        FUiOvHXUUDi0SmILnPEvJMEBD8eqd7TWZMBlXA0=
-X-Google-Smtp-Source: ABdhPJxQzX8QW8Pkfd+eKYVvvrcNkYYuqFEupPBiFsvkpEc9j8ISAG9ebnlBMio3g2zVKD8MMoIXQQ6TiQeuvQUlVpw=
-X-Received: by 2002:aca:ea44:: with SMTP id i65mr2646582oih.117.1601389926080;
- Tue, 29 Sep 2020 07:32:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200929125949.69934-1-alexandru.ardelean@analog.com>
- <20200929125949.69934-8-alexandru.ardelean@analog.com> <CAHp75VerL3x7L=AeLfnT6D01a=FyY3JE4vbwNFMaJz-v=f2k9w@mail.gmail.com>
-In-Reply-To: <CAHp75VerL3x7L=AeLfnT6D01a=FyY3JE4vbwNFMaJz-v=f2k9w@mail.gmail.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 29 Sep 2020 17:31:55 +0300
-Message-ID: <CA+U=DsoKM6S+1vrhE6txB-zQLhpJE1St19D_tmHa0=bbqj-g8w@mail.gmail.com>
-Subject: Re: [PATCH v3 7/9] iio: cros_ec: use devm_iio_triggered_buffer_setup_ext()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        id S1728363AbgI2PRb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 11:17:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59810 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725710AbgI2PRb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 29 Sep 2020 11:17:31 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8F72C20773;
+        Tue, 29 Sep 2020 15:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601392650;
+        bh=Tg4e0HkMtzHqfzx+B1Jd5XPOo5wQ0MptzkCySYDjXnI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=eV+kK2nbloNFXchh95Pr8vkanZ+1W8f1vO/xaD/arhLCBm9SrAHwlRjFRNSdlMeNR
+         kYkA0B4Q9o4E6kuYLYm5aGxGY7zR8l7MzfBgIS0EAVMVLm5rXqAJ02DdrxxRyNgBkW
+         Rmh2raGt6kXHnIhu98S2zKLOsF1ab00IUy7ymcWE=
+Date:   Tue, 29 Sep 2020 16:17:25 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        groeck@chromium.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        olivier.moysan@st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [RESEND PATCH v2] iio: adc: stm32-adc: fix runtime autosuspend
+ delay when slow polling
+Message-ID: <20200929161725.7c8e20a8@archlinux>
+In-Reply-To: <CAPDyKFp=KTf8=zGBSzPYqhjnZpY8xwvjCeM1e-WTKT1QLSxaDA@mail.gmail.com>
+References: <1593615328-5180-1-git-send-email-fabrice.gasnier@st.com>
+        <045e9e34-f1e0-087b-bc5b-44440db6be27@st.com>
+        <20200926161732.72af96e3@archlinux>
+        <CAPDyKFp=KTf8=zGBSzPYqhjnZpY8xwvjCeM1e-WTKT1QLSxaDA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 4:09 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Tue, Sep 29, 2020 at 3:55 PM Alexandru Ardelean
-> <alexandru.ardelean@analog.com> wrote:
->
-> > This change switches to the new devm_iio_triggered_buffer_setup_ext()
-> > function and removes the iio_buffer_set_attrs() call, for assigning the
-> > HW FIFO attributes to the buffer.
->
-> Sorry, you were too fast with the version, below one nit.
->
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  .../common/cros_ec_sensors/cros_ec_sensors_core.c | 15 +++++++++------
-> >  1 file changed, 9 insertions(+), 6 deletions(-)
+On Mon, 28 Sep 2020 13:23:11 +0200
+Ulf Hansson <ulf.hansson@linaro.org> wrote:
+
+> Jonathan, Fabrice,
+> 
+> On Sat, 26 Sep 2020 at 17:17, Jonathan Cameron <jic23@kernel.org> wrote:
 > >
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index c62cacc04672..1eafcf04ad69 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -353,19 +353,22 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                         if (ret)
-> >                                 return ret;
-> >                 } else {
-> > +                       const struct attribute **fifo_attrs;
-> > +
-> > +                       if (has_hw_fifo)
-> > +                               fifo_attrs = cros_ec_sensor_fifo_attributes;
-> > +                       else
-> > +                               fifo_attrs = NULL;
-> > +
-> >                         /*
-> >                          * The only way to get samples in buffer is to set a
-> >                          * software trigger (systrig, hrtimer).
-> >                          */
-> > -                       ret = devm_iio_triggered_buffer_setup(
->
-> > +                       ret = devm_iio_triggered_buffer_setup_ext(
-> >                                         dev, indio_dev, NULL, trigger_capture,
-> > -                                       NULL);
-> > +                                       NULL, fifo_attrs);
->
-> Perhaps it's time to reformat a bit, i.e. move dev to the first line
-> and do the rest accordingly?
-
-this feels like a mix of preferences here;
-for once, the patch here [as-is], is the minimal form for this change
-[in terms of patch-noise];
-so, some people would choose the least noisiest patch;
-
-also, this indentation was chosen [as-is here] from the start [for
-this code block];
-not sure if it was preferred; i'd suspect it was due to the old 80-col limit;
-
-i'd leave it as-is [for now], or defer the decision to a maintainer to
-decide [either IIO or chromium];
-
->
-> >                         if (ret)
-> >                                 return ret;
-> > -
-> > -                       if (has_hw_fifo)
-> > -                               iio_buffer_set_attrs(indio_dev->buffer,
-> > -                                                    cros_ec_sensor_fifo_attributes);
-> >                 }
-> >         }
+> > On Wed, 16 Sep 2020 12:28:00 +0200
+> > Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+> >  
+> > > On 7/1/20 4:55 PM, Fabrice Gasnier wrote:  
+> > > > When the ADC is runtime suspended and starting a conversion, the stm32-adc
+> > > > driver calls pm_runtime_get_sync() that gets cascaded to the parent
+> > > > (e.g. runtime resume of stm32-adc-core driver). This also kicks the
+> > > > autosuspend delay (e.g. 2s) of the parent.
+> > > > Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
+> > > > capture) won't kick the autosuspend delay for the parent (stm32-adc-core
+> > > > driver) as already active.
+> > > >
+> > > > Currently, this makes the stm32-adc-core driver go in suspend state
+> > > > every 2s when doing slow polling. As an example, doing a capture, e.g.
+> > > > cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
+> > > > isn't refreshed. Once it expires, the parent immediately falls into
+> > > > runtime suspended state, in between two captures, as soon as the child
+> > > > driver falls into runtime suspend state:
+> > > > - e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
+> > > >   autosuspend delay of the child.
+> > > > - stm32-adc-core switches off regulators, clocks and so on.
+> > > > - They get switched on back again 100ms later in this example (at 2.2s).
+> > > >
+> > > > So, use runtime_idle() callback in stm32-adc-core driver to call
+> > > > pm_runtime_mark_last_busy() for the parent driver (stm32-adc-core),
+> > > > to avoid this.
+> > > >
+> > > > Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
+> > > >
+> > > > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> > > > ---
+> > > > Changes in v2:
+> > > > - Use runtime_idle callback in stm32-adc-core driver, instead of refreshing
+> > > >   last_busy from the child (for the parent) at many place. Initial patch v1
+> > > >   looked like "somewhat adhoc solution" as commented by Jonathan.  
+> > >
+> > > Hi all,
+> > >
+> > > Gentle reminder for this patch. Earlier discussions on it were as per
+> > > [1] and [2].
+> > >
+> > > Ideally, Jonathan was looking for an ack from Rafael on this patch.
+> > > This is a long pending issue. I'd like to progress on this.
+> > >
+> > > [1] https://patchwork.kernel.org/patch/11349841/
+> > > [2] https://lkml.org/lkml/2020/6/11/279  
 > >
-> > --
-> > 2.17.1
+> > Fabrice, I think this one has sat waiting for inputs for
+> > too long. Hence I'm going to take a slight gamble that you are correct
+> > on doing the fix this way (I'm reasonably convinced)  
+> 
+> My apologies for the huge and unacceptable delay. I have re-started
+> looking at this several times, but just never got the point of writing
+> a proper reply. Let me do this now, better late than never I guess.
+> 
+> In general, I think this problem (nicely described by Fabrice), should
+> be solved in the runtime PM core, without having to involve drivers
+> for parents/childs. I have looked into that, but I don't have a patch
+> to propose, at least not yet.
+> 
+> FYI, I have also stumbled over the same problem, for a card controller
+> (parent), serving both sd and memstick cards. For that case, we simply
+> decided to skip using autosuspend for the child devices (represented
+> by an sd host and a memstick host), not optimal, but there were other
+> reasons why we decided for this approach as well.
+> 
+> That said, I also think the solution proposed in $subject patch, which
+> uses the ->runtime_idle() callback for the parent is perfectly fine,
+> at least until we have figured out something that can replace it.
+> 
 > >
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+> > Applied to the fixes-togreg branch of iio.git.
+> > It won't go in for 5.9 now, so we have a bit of time for any last
+> > minute comments.  
+> 
+> Feel free to add:
+> 
+> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Thanks and added.
+
+Jonathan
+
+> 
+> Kind regards
+> Uffe
+> 
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> > >
+> > > Please advise,
+> > > Thanks in advance,
+> > > Fabrice
+> > >  
+> > > > ---
+> > > >  drivers/iio/adc/stm32-adc-core.c | 9 ++++++++-
+> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+> > > > index 0e2068e..3586369 100644
+> > > > --- a/drivers/iio/adc/stm32-adc-core.c
+> > > > +++ b/drivers/iio/adc/stm32-adc-core.c
+> > > > @@ -794,6 +794,13 @@ static int stm32_adc_core_runtime_resume(struct device *dev)
+> > > >  {
+> > > >     return stm32_adc_core_hw_start(dev);
+> > > >  }
+> > > > +
+> > > > +static int stm32_adc_core_runtime_idle(struct device *dev)
+> > > > +{
+> > > > +   pm_runtime_mark_last_busy(dev);
+> > > > +
+> > > > +   return 0;
+> > > > +}
+> > > >  #endif
+> > > >
+> > > >  static const struct dev_pm_ops stm32_adc_core_pm_ops = {
+> > > > @@ -801,7 +808,7 @@ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
+> > > >                             pm_runtime_force_resume)
+> > > >     SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
+> > > >                        stm32_adc_core_runtime_resume,
+> > > > -                      NULL)
+> > > > +                      stm32_adc_core_runtime_idle)
+> > > >  };
+> > > >
+> > > >  static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
+> > > >  
+> >  
+

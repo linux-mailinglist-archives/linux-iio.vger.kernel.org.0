@@ -2,52 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC91A27D432
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 19:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A4727D630
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 20:53:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727650AbgI2RMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 13:12:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50628 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgI2RMm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 29 Sep 2020 13:12:42 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32A3E20936;
-        Tue, 29 Sep 2020 17:12:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601399561;
-        bh=rjy8YY8VOtMjsc70u0qMlTp3QIa6Q+2arkg1RoUMNaQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JSxyO5Uvj+ktClbcj7fLv9o49O27NujwrCcquLS0LRLh7SIVEsEG/okHHNKuWbJRK
-         lEYA3IXuSFJiDooZtKmSbdt8sx1wAHjZjW68qONknI2kgB2eUq9Ck9bGhybMd+3Fr6
-         vW7VH/0F9su4xlOi0sT/wA4BjNF/+pI6X7AAzHMU=
-Date:   Tue, 29 Sep 2020 19:12:08 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] Third set of new device support, cleanups etc for IIO in
- the 5.10 cycle.
-Message-ID: <20200929171208.GC1351851@kroah.com>
-References: <20200929180239.42ccd9bb@archlinux>
+        id S1728166AbgI2SxE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 14:53:04 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:37480 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727740AbgI2SxE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 14:53:04 -0400
+Received: by mail-ot1-f67.google.com with SMTP id o8so5520202otl.4;
+        Tue, 29 Sep 2020 11:53:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4vsmavC+t3jWUrFxvQlPGqyQgVM8r2sGoRhi8Fg4sBM=;
+        b=SuXWq1TydqPIFCe3BogaRh18auBBwFROTdlceF66BzpNDNeUbZ6cpwabBp1h8hkFgL
+         uVKP1nHBvtTQf+rqbGicW8LhZGChDJJiMueiWc0nbs4u0z5Kt61++JY3iMmQcn57099M
+         JAdNEw4DhPAc4vn0UXArql2En3BqA8evxMvjcGAs1ZJC7IeXVzhsdcsjH1nimInA58LE
+         5fyAeMdtuLY/tC1TuFyE9T8O4mTpVLMfPyvvD8Y+uLyoVJ66a1xchALue7KILHkQPge7
+         qzHtsVMMDDds3yHL7gWVjfw0VsFFRXsNqnvgI+qEnb8FFiwrJHCA/ONngyPryF9VG2ik
+         A6WA==
+X-Gm-Message-State: AOAM530dbhgW1sVkz0MV+CliHVydeLQCoT1ZdanmpSONWYVRytI8DuX6
+        8sj3npXsZIZ9NSEaf2Iszg==
+X-Google-Smtp-Source: ABdhPJzz5OdfUnY1Kgb1WnljeQVvq4G0+uP+WdbRgqCe9+rnn7s/KTStarZQi4uDjVCSOgzc5VHIrg==
+X-Received: by 2002:a9d:6f98:: with SMTP id h24mr3664200otq.101.1601405582108;
+        Tue, 29 Sep 2020 11:53:02 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id q81sm1176914oia.46.2020.09.29.11.53.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2020 11:53:01 -0700 (PDT)
+Received: (nullmailer pid 955668 invoked by uid 1000);
+        Tue, 29 Sep 2020 18:53:00 -0000
+Date:   Tue, 29 Sep 2020 13:53:00 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Michael Auchter <michael.auchter@ni.com>
+Cc:     linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] dt-bindings: iio: dac: ad5686: add binding
+Message-ID: <20200929185300.GA955613@bogus>
+References: <20200924195215.49443-1-michael.auchter@ni.com>
+ <20200924195215.49443-3-michael.auchter@ni.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200929180239.42ccd9bb@archlinux>
+In-Reply-To: <20200924195215.49443-3-michael.auchter@ni.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 06:02:39PM +0100, Jonathan Cameron wrote:
-> The following changes since commit 69fea2b4e59c52844cf5196c9c81157792d194fb:
+On Thu, 24 Sep 2020 14:52:14 -0500, Michael Auchter wrote:
+> Add a binding for AD5686
 > 
->   staging: r8188eu: replace WIFI_REASON_CODE enum with native ieee80211_reasoncode (2020-09-22 09:51:28 +0200)
+> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
+> ---
+> Changes since v1:
+> - Keep supported device sorted
+> - fix adc -> dac typo in schema path
+> since v2:
+> - drop address-cells and size-cells from binding doc
+> - add "additionalProperties: false"
+> - end with ...
 > 
-> are available in the Git repository at:
+>  .../bindings/iio/dac/adi,ad5686.yaml          | 57 +++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
 > 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.10c
 
-Pulled and pushed out,t hanks,.
-
-greg k-h
+Reviewed-by: Rob Herring <robh@kernel.org>

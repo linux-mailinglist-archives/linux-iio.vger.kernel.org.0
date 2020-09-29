@@ -2,74 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A005027CCEB
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 14:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E8427CD51
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 14:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732333AbgI2Mk2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 08:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729106AbgI2Mk1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 08:40:27 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C86C061755
-        for <linux-iio@vger.kernel.org>; Tue, 29 Sep 2020 05:40:27 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id w11so5348600lfn.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Sep 2020 05:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9bUHhnubUfQotEQH3D11QFoTpQexEbcVvHbq6bkeH+k=;
-        b=da+sNvxIpNIjpSl4OCxDqicbNhPUJ53bM5x8dHgoIKh4MX7GFDjZM2lA3mIDr9TPU9
-         kt4eiOoE1VxDvMCnMFa7iRNqUiJODTbszbq08mEAN8dGOK6OJvsJDsyv9FWpovz4GaFQ
-         kFgmHZdf8Davm/k05Mqoja9uh4tNTwKUMVRtdXeo5vhPupL0YSjc0YgZF9I2lqS71SYI
-         XyFcG1oGsvu0EHICnkss87OltsPEC5t8mbxcQef87za49RR9qK+JWaicp2p1BVYggy4h
-         UX6syRQ6BCijnCzfVy3VAFSNdmVE3hCa68zLRmWm6mlhxQiKVpu77Z2pHHb89kvuPNQP
-         h48w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9bUHhnubUfQotEQH3D11QFoTpQexEbcVvHbq6bkeH+k=;
-        b=DH9AF7av43pTt26aTxALRJqLnY8j3aF60Bhi4F6MoWaeEH2kO+Bx5HMxbrg2SR4izW
-         4xZG+njvV54W9Yargpppx/wPvnzMU9qoQ1mvouKGNv7cNqr+u4nGtpNGfd7OSeAQ960r
-         8556hcEaaL+WcCIF5zdqaTnOLuQ8TLo29vm7+6tugxlsoOk5sJBnhkTu+dLTcfzU1lMW
-         dLwAOh7elWquLKeU3lVyjlHtUzvTSsRpd3FW48tsBBK2gK4tTA1+ObAnxka+Jpp3IACL
-         DVoNOMzNGqN95zAig703BQJWpL7jd0y50jCf0aAs23AYS2rthoI5k9ihh31yMsDxWWBY
-         ZSEw==
-X-Gm-Message-State: AOAM533DmxePw9Kv540z/5zM0S8L+YH89z7Gp8ld3tvsuP+yMiYperyV
-        QkPz8rp12tpyTtNJOaKyyqivZEZPvXzeI8OwpLNj9A==
-X-Google-Smtp-Source: ABdhPJznTp/rM3xakD/x4BDcWOb3Aa3l79WDH4TagLMQHGkeIErLTgzjIN/519Hrze2tb2/GgKjvlfSXIbppWVCXvjE=
-X-Received: by 2002:a19:6c2:: with SMTP id 185mr1061759lfg.441.1601383225861;
- Tue, 29 Sep 2020 05:40:25 -0700 (PDT)
+        id S1733246AbgI2MnL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 08:43:11 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:35702 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387467AbgI2Mmv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Sep 2020 08:42:51 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08TCTVhK162323;
+        Tue, 29 Sep 2020 12:41:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=ooQL/jdNK5E0bwGTZMVh9gDWLUQ2nvmJK92rRekHYUQ=;
+ b=fbDsT6lWzQ+ORM5K3s5HbTh37q+P1z9c+/B6RQ4VQx7oLjM2gwzIeE8N0TK9/h4MlugJ
+ VmZKpujw7s9mQJMKXROtdkaJX+/M40fG89wb5M/Eb5lfOuzm6ifBoSQMNa1ZDYLDy96Q
+ N5FurL2lN7UYjwYGf1sjjyvRX87rPwj+KMvYkCQLizmlU/Ua4y+pfB0M4iK5IHDAfOby
+ Hommc306kBsy4enPQXLV0Mli3U5nB0z5aegJtQ2KWz1ehAOh7di/nh/mvWIUPuCzfgWZ
+ mEbkR9polc8Mr77IP2HqyemXrTNGhtvRUKntBy9kx5+xTdBCZUmB2KCW9Fcu9Ddd4fTT HQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 33swkktdv9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 29 Sep 2020 12:41:28 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08TCTjQh051184;
+        Tue, 29 Sep 2020 12:41:27 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 33tfjwmsb8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 29 Sep 2020 12:41:27 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08TCfLK3017010;
+        Tue, 29 Sep 2020 12:41:21 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 29 Sep 2020 05:41:20 -0700
+Date:   Tue, 29 Sep 2020 15:41:08 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>, linux-iio@vger.kernel.org,
+        drbd-dev@tron.linbit.com,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Joe Perches <joe@perches.com>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+Message-ID: <20200929124108.GY4282@kadam>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+ <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200910173242.621168-1-jic23@kernel.org> <20200910173242.621168-36-jic23@kernel.org>
-In-Reply-To: <20200910173242.621168-36-jic23@kernel.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 29 Sep 2020 14:40:15 +0200
-Message-ID: <CACRpkdZP9pMdcAEciuo32ZtnmD40b7djfE8fJJT54nWmLHvt+Q@mail.gmail.com>
-Subject: Re: [PATCH 35/38] iio:magn:ak8974: Drop of_match_ptr protection
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=942 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009290111
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9758 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ suspectscore=0 mlxlogscore=966 clxscore=1011 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009290111
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 7:36 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This prevents use of this driver with ACPI via PRP0001 and is
-> an example of an anti pattern I'm trying to remove from IIO.
-> Hence drop from this driver.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
+On Tue, Sep 29, 2020 at 02:20:00PM +0200, Ard Biesheuvel wrote:
+> On Sun, 27 Sep 2020 at 21:56, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+> >
+> > These patches replace commas by semicolons.
+> 
+> 
+> Why?
+> 
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+In the best case, these commas are just uninitentional mess, like typing
+an extra space character or something.  I've looked at them before and
+one case I see where they are introduced is when people convert a
+struct initializer to code.
 
-Yours,
-Linus Walleij
+-	struct foo {
+-		.a = 1,
+-		.b = 2,
+ 		...
++	foo.a = 1,
++	foo.b = 2,
+
+The times where commas are used deliberately to replace curly braces are
+just evil.  Either way the code is cleaner with semi-colons.
+
+regards,
+dan carpenter
+

@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D6127D332
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 17:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7487227D36E
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 18:14:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728364AbgI2PzP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 11:55:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45886 "EHLO mail.kernel.org"
+        id S1729600AbgI2QOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 12:14:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57732 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725497AbgI2PzP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 29 Sep 2020 11:55:15 -0400
+        id S1728672AbgI2QOr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 29 Sep 2020 12:14:47 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4615C20739;
-        Tue, 29 Sep 2020 15:55:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 13F522075E;
+        Tue, 29 Sep 2020 16:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601394914;
-        bh=4c2Mck50Zj5krpxUPD1w5OVZoalSARiXRgZ617swfN4=;
+        s=default; t=1601396086;
+        bh=DB3SrWQpST+TPzcN24MAbbQXiKaUKnra5iYvA7PGPYI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ixMC0WYZ+l7Y9GX6J+s6soNUSKyUWbmrnTn8QrbzgM3voyyfMkihAalHIGLMtc4Hk
-         5PHgIB0kbxo6Ivf7CDzxC9qF8KAjhLTzoKQj6cMLhsfsBSlylNc/We3mFoLfy0LQkn
-         0r6a2yh5gK11aMm6kL4iPR3tiUEKvjKhes9je+go=
-Date:   Tue, 29 Sep 2020 16:55:10 +0100
+        b=PTPYidm3vqUEgaAIu0kCJqrAOGIWZymyrwDyraC21xxJc7QRmgs07Pr4AA1A993io
+         tNRYjc2jFlhU+kguDRBWj0q+aLwGmw8Ly+GL/mTtpo6qi+i54CFs+HFtGmOUtkB3em
+         WzZKIhtf+yVccggNp9fzXFThhs/Bgto6jKA43YZU=
+Date:   Tue, 29 Sep 2020 17:14:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH 2/2] iio: adc: at91_adc: const-ify some driver data
-Message-ID: <20200929165510.1e609883@archlinux>
-In-Reply-To: <20200928125424.35921-2-alexandru.ardelean@analog.com>
-References: <20200928125424.35921-1-alexandru.ardelean@analog.com>
-        <20200928125424.35921-2-alexandru.ardelean@analog.com>
+To:     Mircea Caprioru <mircea.caprioru@analog.com>
+Cc:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Subject: Re: [PATCH 4/5] iio: adc: vf610_adc: Replace indio_dev->mlock with
+ own device lock
+Message-ID: <20200929171441.5b4ff8c8@archlinux>
+In-Reply-To: <20200928131333.36646-4-mircea.caprioru@analog.com>
+References: <20200928131333.36646-1-mircea.caprioru@analog.com>
+        <20200928131333.36646-4-mircea.caprioru@analog.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,70 +44,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Sep 2020 15:54:24 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Mon, 28 Sep 2020 16:13:32 +0300
+Mircea Caprioru <mircea.caprioru@analog.com> wrote:
 
-> The main intent is to get rid of the cast for the void-pointer returned by
-> of_device_get_match_data().
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> This requires const-ifying the 'caps' and 'registers' references on the
-> at91_adc_state struct.
+> As part of the general cleanup of indio_dev->mlock, this change replaces
+> it with a local lock on the device's state structure.
 > 
-> The caps can be obtained also from the old platform_data (in the
-> at91_adc_probe_pdata() function), but that cast is not touched in this
-> patch, since the old platform_data should be removed/cleaned-away.
-> Also, that cast deals with converting a kernel_ulong_t type to a pointer.
-> So, updating that cast doesn't yield any benefit.
+> This is part of a bigger cleanup.
+> Link: https://lore.kernel.org/linux-iio/CA+U=Dsoo6YABe5ODLp+eFNPGFDjk5ZeQEceGkqjxXcVEhLWubw@mail.gmail.com/
 > 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Good change. I'll pick this up when patch 1 is ready.
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+
+There are more problems in the locking in here than just this one.
+See below.  The taking of mlock like this was what originally motivated
+the efforts to hide it away from drivers.
+
+In this particular case I don't think a local lock is the correct solution.
 
 Thanks,
 
 Jonathan
 
+
 > ---
->  drivers/iio/adc/at91_adc.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/iio/adc/vf610_adc.c | 28 ++++++++++++++++++++--------
+>  1 file changed, 20 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-> index c9ec0a4a357e..7d846a2852a5 100644
-> --- a/drivers/iio/adc/at91_adc.c
-> +++ b/drivers/iio/adc/at91_adc.c
-> @@ -202,7 +202,7 @@ struct at91_adc_state {
->  	struct mutex		lock;
->  	u8			num_channels;
->  	void __iomem		*reg_base;
-> -	struct at91_adc_reg_desc *registers;
-> +	const struct at91_adc_reg_desc *registers;
->  	u32			startup_time;
->  	u8			sample_hold_time;
->  	bool			sleep_mode;
-> @@ -214,7 +214,7 @@ struct at91_adc_state {
->  	u32			res;		/* resolution used for convertions */
->  	bool			low_res;	/* the resolution corresponds to the lowest one */
->  	wait_queue_head_t	wq_data_avail;
-> -	struct at91_adc_caps	*caps;
-> +	const struct at91_adc_caps	*caps;
+> diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+> index 1d794cf3e3f1..b7d583993f0b 100644
+> --- a/drivers/iio/adc/vf610_adc.c
+> +++ b/drivers/iio/adc/vf610_adc.c
+> @@ -168,6 +168,15 @@ struct vf610_adc {
 >  
->  	/*
->  	 * Following ADC channels are shared by touchscreen:
-> @@ -550,7 +550,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
+>  	struct completion completion;
+>  	u16 buffer[8];
+
+Side note.  That buffer isn't correctly aligned.  I'll add this one to
+my next series fixing those.
+
+> +	/*
+> +	 * Lock to protect the device state during a potential concurrent
+> +	 * read access from userspace. Reading a raw value requires a sequence
+> +	 * of register writes, then a wait for a completion callback,
+> +	 * and finally a register read, during which userspace could issue
+> +	 * another read request. This lock protects a read access from
+> +	 * ocurring before another one has finished.
+> +	 */
+> +	struct mutex lock;
+>  };
+>  
+>  static const u32 vf610_hw_avgs[] = { 1, 4, 8, 16, 32 };
+> @@ -464,11 +473,11 @@ static int vf610_set_conversion_mode(struct iio_dev *indio_dev,
 >  {
->  	struct iio_dev *idev = iio_trigger_get_drvdata(trig);
->  	struct at91_adc_state *st = iio_priv(idev);
-> -	struct at91_adc_reg_desc *reg = st->registers;
-> +	const struct at91_adc_reg_desc *reg = st->registers;
->  	u32 status = at91_adc_readl(st, reg->trigger_register);
->  	int value;
->  	u8 bit;
-> @@ -876,7 +876,7 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
->  	if (!node)
->  		return -EINVAL;
+>  	struct vf610_adc *info = iio_priv(indio_dev);
 >  
-> -	st->caps = (struct at91_adc_caps *)of_device_get_match_data(&pdev->dev);
-> +	st->caps = of_device_get_match_data(&pdev->dev);
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&info->lock);
+Hmm. So there is a bit of a question on what the locking here is doing.
+(see below for a different use of mlock).
+
+What it will do currently is to prevent the conversion mode changing whilst
+we are in buffered mode.  It will also protect against concurrent
+calls of this function.
+
+I would replace this with iio_device_claim_direct_mode() rather than a
+local lock.
+
+>  	info->adc_feature.conv_mode = mode;
+>  	vf610_adc_calculate_rates(info);
+>  	vf610_adc_hw_init(info);
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&info->lock);
 >  
->  	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
+>  	return 0;
+>  }
+> @@ -632,9 +641,9 @@ static int vf610_read_raw(struct iio_dev *indio_dev,
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+>  	case IIO_CHAN_INFO_PROCESSED:
+> -		mutex_lock(&indio_dev->mlock);
+> +		mutex_lock(&info->lock);
+>  		if (iio_buffer_enabled(indio_dev)) {
+> -			mutex_unlock(&indio_dev->mlock);
+> +			mutex_unlock(&info->lock);
+
+Should be use iio_device_claim_direct_mode()
+
+mlock is being taken here to stop us entering buffered mode.
+
+Whilst I'd rather a driver didn't rely on internal details of
+IIO, it is rather fiddly to get the locking right when there is a completion
+going on, so I think here you are safe to do so.
+
+>  			return -EBUSY;
+>  		}
 >  
+> @@ -645,11 +654,11 @@ static int vf610_read_raw(struct iio_dev *indio_dev,
+>  		ret = wait_for_completion_interruptible_timeout
+>  				(&info->completion, VF610_ADC_TIMEOUT);
+>  		if (ret == 0) {
+> -			mutex_unlock(&indio_dev->mlock);
+> +			mutex_unlock(&info->lock);
+>  			return -ETIMEDOUT;
+>  		}
+>  		if (ret < 0) {
+> -			mutex_unlock(&indio_dev->mlock);
+> +			mutex_unlock(&info->lock);
+>  			return ret;
+>  		}
+>  
+> @@ -668,11 +677,11 @@ static int vf610_read_raw(struct iio_dev *indio_dev,
+>  
+>  			break;
+>  		default:
+> -			mutex_unlock(&indio_dev->mlock);
+> +			mutex_unlock(&info->lock);
+>  			return -EINVAL;
+>  		}
+>  
+> -		mutex_unlock(&indio_dev->mlock);
+> +		mutex_unlock(&info->lock);
+>  		return IIO_VAL_INT;
+>  
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -807,6 +816,9 @@ static int vf610_adc_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	info = iio_priv(indio_dev);
+> +
+> +	mutex_init(&info->lock);
+> +
+>  	info->dev = &pdev->dev;
+>  
+>  	info->regs = devm_platform_ioremap_resource(pdev, 0);
 

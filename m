@@ -2,47 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB7627D295
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 17:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA89C27D2AD
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Sep 2020 17:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728363AbgI2PRb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Sep 2020 11:17:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59810 "EHLO mail.kernel.org"
+        id S1728423AbgI2P1q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Sep 2020 11:27:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33862 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725710AbgI2PRb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 29 Sep 2020 11:17:31 -0400
+        id S1725497AbgI2P1p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 29 Sep 2020 11:27:45 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F72C20773;
-        Tue, 29 Sep 2020 15:17:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 49F7220773;
+        Tue, 29 Sep 2020 15:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601392650;
-        bh=Tg4e0HkMtzHqfzx+B1Jd5XPOo5wQ0MptzkCySYDjXnI=;
+        s=default; t=1601393265;
+        bh=28J5Xqnu8HqFsJcPfiPiJszNONTsRfXlkXep+D/a558=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eV+kK2nbloNFXchh95Pr8vkanZ+1W8f1vO/xaD/arhLCBm9SrAHwlRjFRNSdlMeNR
-         kYkA0B4Q9o4E6kuYLYm5aGxGY7zR8l7MzfBgIS0EAVMVLm5rXqAJ02DdrxxRyNgBkW
-         Rmh2raGt6kXHnIhu98S2zKLOsF1ab00IUy7ymcWE=
-Date:   Tue, 29 Sep 2020 16:17:25 +0100
+        b=d6eQ1opvgx7r1DZYDCYw1sZacOG4Op6OPkt5+GqnHTNy5fJZ7uJiJP2CustpQ3m9i
+         BpyhJuVfKEXR0baNVGfemQUuehjFzMz+KZMdEWLVZ9g23ShiNXNsu2xrDncJuC8/GG
+         a9AqoFp8hi01e3Ma3UKJl+69LMzi7bJAwqLH1/wg=
+Date:   Tue, 29 Sep 2020 16:27:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        olivier.moysan@st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [RESEND PATCH v2] iio: adc: stm32-adc: fix runtime autosuspend
- delay when slow polling
-Message-ID: <20200929161725.7c8e20a8@archlinux>
-In-Reply-To: <CAPDyKFp=KTf8=zGBSzPYqhjnZpY8xwvjCeM1e-WTKT1QLSxaDA@mail.gmail.com>
-References: <1593615328-5180-1-git-send-email-fabrice.gasnier@st.com>
-        <045e9e34-f1e0-087b-bc5b-44440db6be27@st.com>
-        <20200926161732.72af96e3@archlinux>
-        <CAPDyKFp=KTf8=zGBSzPYqhjnZpY8xwvjCeM1e-WTKT1QLSxaDA@mail.gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Valdis =?UTF-8?B?S2zEk3RuaWVr?= =?UTF-8?B?cw==?= 
+        <valdis.kletnieks@vt.edu>, Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 15/18] counter: use semicolons rather than commas to
+ separate statements
+Message-ID: <20200929162739.40c8257e@archlinux>
+In-Reply-To: <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+        <1601233948-11629-16-git-send-email-Julia.Lawall@inria.fr>
+        <be1d59c5-fd0c-821e-0357-441c26c3d16c@lechnology.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,140 +48,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Sep 2020 13:23:11 +0200
-Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Mon, 28 Sep 2020 10:37:28 -0500
+David Lechner <david@lechnology.com> wrote:
 
-> Jonathan, Fabrice,
-> 
-> On Sat, 26 Sep 2020 at 17:17, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Wed, 16 Sep 2020 12:28:00 +0200
-> > Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
-> >  
-> > > On 7/1/20 4:55 PM, Fabrice Gasnier wrote:  
-> > > > When the ADC is runtime suspended and starting a conversion, the stm32-adc
-> > > > driver calls pm_runtime_get_sync() that gets cascaded to the parent
-> > > > (e.g. runtime resume of stm32-adc-core driver). This also kicks the
-> > > > autosuspend delay (e.g. 2s) of the parent.
-> > > > Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
-> > > > capture) won't kick the autosuspend delay for the parent (stm32-adc-core
-> > > > driver) as already active.
-> > > >
-> > > > Currently, this makes the stm32-adc-core driver go in suspend state
-> > > > every 2s when doing slow polling. As an example, doing a capture, e.g.
-> > > > cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
-> > > > isn't refreshed. Once it expires, the parent immediately falls into
-> > > > runtime suspended state, in between two captures, as soon as the child
-> > > > driver falls into runtime suspend state:
-> > > > - e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
-> > > >   autosuspend delay of the child.
-> > > > - stm32-adc-core switches off regulators, clocks and so on.
-> > > > - They get switched on back again 100ms later in this example (at 2.2s).
-> > > >
-> > > > So, use runtime_idle() callback in stm32-adc-core driver to call
-> > > > pm_runtime_mark_last_busy() for the parent driver (stm32-adc-core),
-> > > > to avoid this.
-> > > >
-> > > > Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
-> > > >
-> > > > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> > > > ---
-> > > > Changes in v2:
-> > > > - Use runtime_idle callback in stm32-adc-core driver, instead of refreshing
-> > > >   last_busy from the child (for the parent) at many place. Initial patch v1
-> > > >   looked like "somewhat adhoc solution" as commented by Jonathan.  
-> > >
-> > > Hi all,
-> > >
-> > > Gentle reminder for this patch. Earlier discussions on it were as per
-> > > [1] and [2].
-> > >
-> > > Ideally, Jonathan was looking for an ack from Rafael on this patch.
-> > > This is a long pending issue. I'd like to progress on this.
-> > >
-> > > [1] https://patchwork.kernel.org/patch/11349841/
-> > > [2] https://lkml.org/lkml/2020/6/11/279  
-> >
-> > Fabrice, I think this one has sat waiting for inputs for
-> > too long. Hence I'm going to take a slight gamble that you are correct
-> > on doing the fix this way (I'm reasonably convinced)  
-> 
-> My apologies for the huge and unacceptable delay. I have re-started
-> looking at this several times, but just never got the point of writing
-> a proper reply. Let me do this now, better late than never I guess.
-> 
-> In general, I think this problem (nicely described by Fabrice), should
-> be solved in the runtime PM core, without having to involve drivers
-> for parents/childs. I have looked into that, but I don't have a patch
-> to propose, at least not yet.
-> 
-> FYI, I have also stumbled over the same problem, for a card controller
-> (parent), serving both sd and memstick cards. For that case, we simply
-> decided to skip using autosuspend for the child devices (represented
-> by an sd host and a memstick host), not optimal, but there were other
-> reasons why we decided for this approach as well.
-> 
-> That said, I also think the solution proposed in $subject patch, which
-> uses the ->runtime_idle() callback for the parent is perfectly fine,
-> at least until we have figured out something that can replace it.
-> 
-> >
-> > Applied to the fixes-togreg branch of iio.git.
-> > It won't go in for 5.9 now, so we have a bit of time for any last
-> > minute comments.  
-> 
-> Feel free to add:
-> 
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Thanks and added.
+> On 9/27/20 2:12 PM, Julia Lawall wrote:
+> > Replace commas with semicolons.  What is done is essentially described by
+> > the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+> > 
+> > // <smpl>
+> > @@ expression e1,e2; @@
+> > e1
+> > -,
+> > +;
+> > e2
+> > ... when any
+> > // </smpl>
+> > 
+> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> > 
+> > ---  
+> Reviewed-by: David Lechner <david@lechnology.com>
+I've picked this one up.  Applied to the togreg branch of iio.git and
+pushed out as testing for all the normal reasons.
+
+Thanks,
 
 Jonathan
 
 > 
-> Kind regards
-> Uffe
-> 
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >  
-> > >
-> > > Please advise,
-> > > Thanks in advance,
-> > > Fabrice
-> > >  
-> > > > ---
-> > > >  drivers/iio/adc/stm32-adc-core.c | 9 ++++++++-
-> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> > > > index 0e2068e..3586369 100644
-> > > > --- a/drivers/iio/adc/stm32-adc-core.c
-> > > > +++ b/drivers/iio/adc/stm32-adc-core.c
-> > > > @@ -794,6 +794,13 @@ static int stm32_adc_core_runtime_resume(struct device *dev)
-> > > >  {
-> > > >     return stm32_adc_core_hw_start(dev);
-> > > >  }
-> > > > +
-> > > > +static int stm32_adc_core_runtime_idle(struct device *dev)
-> > > > +{
-> > > > +   pm_runtime_mark_last_busy(dev);
-> > > > +
-> > > > +   return 0;
-> > > > +}
-> > > >  #endif
-> > > >
-> > > >  static const struct dev_pm_ops stm32_adc_core_pm_ops = {
-> > > > @@ -801,7 +808,7 @@ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
-> > > >                             pm_runtime_force_resume)
-> > > >     SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
-> > > >                        stm32_adc_core_runtime_resume,
-> > > > -                      NULL)
-> > > > +                      stm32_adc_core_runtime_idle)
-> > > >  };
-> > > >
-> > > >  static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
-> > > >  
-> >  
 

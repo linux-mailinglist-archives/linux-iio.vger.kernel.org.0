@@ -2,101 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8F627E2C4
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 09:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A808527E2BB
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 09:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725779AbgI3Hk3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Sep 2020 03:40:29 -0400
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:60158 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725440AbgI3Hk3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 03:40:29 -0400
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id 2BB773B2E30
-        for <linux-iio@vger.kernel.org>; Wed, 30 Sep 2020 07:32:36 +0000 (UTC)
-X-Originating-IP: 90.65.88.165
+        id S1728126AbgI3Hha (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Sep 2020 03:37:30 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:34595 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725440AbgI3Hha (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 03:37:30 -0400
+X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Sep 2020 03:37:29 EDT
 Received: from localhost (lfbn-lyo-1-1908-165.w90-65.abo.wanadoo.fr [90.65.88.165])
         (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 00FA1FF81A;
-        Wed, 30 Sep 2020 07:32:12 +0000 (UTC)
-Date:   Wed, 30 Sep 2020 09:32:12 +0200
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id BA61B200013;
+        Wed, 30 Sep 2020 07:37:27 +0000 (UTC)
+Date:   Wed, 30 Sep 2020 09:37:27 +0200
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, jic23@kernel.org,
         nicolas.ferre@microchip.com, ludovic.desroches@microchip.com
-Subject: Re: [PATCH v2 2/4] iio: adc: at91_adc: const-ify some driver data
-Message-ID: <20200930073212.GB2804081@piout.net>
+Subject: Re: [PATCH v2 3/4] iio: adc: at91_adc: add Kconfig dependency on the
+ OF symbol
+Message-ID: <20200930073727.GC2804081@piout.net>
 References: <20200930060008.42134-1-alexandru.ardelean@analog.com>
- <20200930060008.42134-3-alexandru.ardelean@analog.com>
+ <20200930060008.42134-4-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200930060008.42134-3-alexandru.ardelean@analog.com>
+In-Reply-To: <20200930060008.42134-4-alexandru.ardelean@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 30/09/2020 09:00:06+0300, Alexandru Ardelean wrote:
-> The main intent is to get rid of the cast for the void-pointer returned by
-> of_device_get_match_data().
-> 
-> This requires const-ifying the 'caps' and 'registers' references on the
-> at91_adc_state struct.
-> 
-> The caps can be obtained also from the old platform_data (in the
-> at91_adc_probe_pdata() function), but that cast is not touched in this
-> patch, since the old platform_data should be removed/cleaned-away.
-> Also, that cast deals with converting a kernel_ulong_t type to a pointer.
-> So, updating that cast doesn't yield any benefit.
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Hi,
 
-> ---
->  drivers/iio/adc/at91_adc.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On 30/09/2020 09:00:07+0300, Alexandru Ardelean wrote:
+> This tries to solve a warning reported by the lkp bot:
 > 
-> diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-> index c9ec0a4a357e..7d846a2852a5 100644
-> --- a/drivers/iio/adc/at91_adc.c
-> +++ b/drivers/iio/adc/at91_adc.c
-> @@ -202,7 +202,7 @@ struct at91_adc_state {
->  	struct mutex		lock;
->  	u8			num_channels;
->  	void __iomem		*reg_base;
-> -	struct at91_adc_reg_desc *registers;
-> +	const struct at91_adc_reg_desc *registers;
->  	u32			startup_time;
->  	u8			sample_hold_time;
->  	bool			sleep_mode;
-> @@ -214,7 +214,7 @@ struct at91_adc_state {
->  	u32			res;		/* resolution used for convertions */
->  	bool			low_res;	/* the resolution corresponds to the lowest one */
->  	wait_queue_head_t	wq_data_avail;
-> -	struct at91_adc_caps	*caps;
-> +	const struct at91_adc_caps	*caps;
->  
->  	/*
->  	 * Following ADC channels are shared by touchscreen:
-> @@ -550,7 +550,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
->  {
->  	struct iio_dev *idev = iio_trigger_get_drvdata(trig);
->  	struct at91_adc_state *st = iio_priv(idev);
-> -	struct at91_adc_reg_desc *reg = st->registers;
-> +	const struct at91_adc_reg_desc *reg = st->registers;
->  	u32 status = at91_adc_readl(st, reg->trigger_register);
->  	int value;
->  	u8 bit;
-> @@ -876,7 +876,7 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
->  	if (!node)
->  		return -EINVAL;
->  
-> -	st->caps = (struct at91_adc_caps *)of_device_get_match_data(&pdev->dev);
-> +	st->caps = of_device_get_match_data(&pdev->dev);
->  
->  	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
->  
+> >> drivers/iio/adc/at91_adc.c:1439:34: warning: unused variable
+> >> 'at91_adc_dt_ids' [-Wunused-const-variable]
+>    static const struct of_device_id at91_adc_dt_ids[] = {
+>                                     ^
+>    1 warning generated.
+> 
+> This shows up with 'compiler: clang version 12.0.0' and W=1 (as the bot
+> mentions).
+> 
+> Forward declarations for global variables can be a bit weird; forward
+> function declarations are more common.
+> 
+> Maybe another fix for this would have been to prefix with 'extern' the
+> 'at91_adc_dt_ids' variable, thus making it more friendly as a forward
+> declaration. It would look weird, but it would work.
+> 
+> But, we can avoid that forward declaration altogether simply by obtaining
+> the private data with of_device_get_match_data().
+> 
+> This appeared after commit 4027860dcc4c ("iio: Kconfig: at91_adc: add
+> COMPILE_TEST dependency to driver"), which put this driver on the lkp's bot
+> radar.
+> 
+
+Shouldn't all of that be part of the commit message for 1/4? This
+doesn't explicitly explain why you add a dependency on OF.
+
+> Fixes: 4027860dcc4c ("iio: Kconfig: at91_adc: add COMPILE_TEST dependency to driver")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  drivers/iio/adc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 91ae90514aff..17e9ceb9c6c4 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -295,7 +295,7 @@ config ASPEED_ADC
+>  config AT91_ADC
+>  	tristate "Atmel AT91 ADC"
+>  	depends on ARCH_AT91 || COMPILE_TEST
+> -	depends on INPUT && SYSFS
+> +	depends on INPUT && SYSFS && OF
+>  	select IIO_BUFFER
+>  	select IIO_TRIGGERED_BUFFER
+>  	help
 > -- 
 > 2.17.1
 > 

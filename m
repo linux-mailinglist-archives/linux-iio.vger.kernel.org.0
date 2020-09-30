@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C79F827E055
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 07:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E8127E05C
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 07:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725804AbgI3F3I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Sep 2020 01:29:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
+        id S1725554AbgI3FaS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Sep 2020 01:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgI3F3H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 01:29:07 -0400
-Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9D7C061755;
-        Tue, 29 Sep 2020 22:29:07 -0700 (PDT)
-Received: by mail-oo1-xc42.google.com with SMTP id r4so145435ooq.7;
-        Tue, 29 Sep 2020 22:29:07 -0700 (PDT)
+        with ESMTP id S1725306AbgI3FaR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 01:30:17 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC92C061755;
+        Tue, 29 Sep 2020 22:30:17 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id m13so632579otl.9;
+        Tue, 29 Sep 2020 22:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NIzuXn0cJGfjjlZNYmXAMtjJ7AdNZYIRMcgSkGHY+rw=;
-        b=DaXb/c/uDbu9CSoAs8w/y0E58HXd+mO8R1fcGDpAUuYnxqPec/lom+7KrQ9tw1q6JC
-         /FxiGbaTRTAUaVrU44GGj3E8nWDb6D0iWlKEji3XxnZaUKl33itQ3XSfVyg1jAxeAqda
-         fK62GtBotmLHs57UI5vi4XOuwuKI+5eHXe1L18hiFwaEFdQkkvLsLxbzrpnRm6VKBltm
-         a8qxbN4b9yTU4/9gwEzY8ygCCZba1ZfdwPa8PaHXR+tfbjXbXtobcIL0Vo0y8IqmPfSW
-         3hqTpX/X0F2UQ0lvEOaF7wTCTPIW0aBMhdGNQyVEq4Xfe7z9/tXcRbMiUAfUPjEq8FEo
-         bMJg==
+        bh=lu7XV755I5hRstMhFmm189SPTTuDmTjtnvxHW/n5cqM=;
+        b=nLg+HuHF8v5IpVD6GX/sUt8IbL83AGZA5Vptt2IcZdymdTMlBtLEIPHXU+bz11e/56
+         /GDeebPPsEGgZ1lFWxtIJx+wHcYrBQ1nwNUqdZaruS9LaDZuNH9VLCZvmjO239OKdLyc
+         qeOmALsQGeTMjj2Zjp8piJdhEVrcnFke4jo1TGMhsn8DLGiYyda1U1XZTudQdOlsxB9E
+         XXAMGps2AIlBJH27IzV0TDgudFA2YOqrcOf6FA2VWYZk1vTqYC7GT+i4mEkTg1Ex3zHQ
+         DBJJfhHs+A6H711yR1R2+GECd6TW25dAu3b6aKJINvDyT0naxRIYi4sma6rGsHLhHhpO
+         EUzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NIzuXn0cJGfjjlZNYmXAMtjJ7AdNZYIRMcgSkGHY+rw=;
-        b=YOLRV/GrFwnnbDGp3LO84aVNqswsqULlPLW/7U6DAZbooa79a2swKOpX+RG37Bz9pc
-         U2vRnpcMJv74mObspCX0CYo7W4/zskRscSpHuwukVZZkqvYyOBgypj4/pCgUqwYyoM1a
-         7JqU5+TDNXO4sS4YmuuN9ItimumTTcxBVd44gkpy2njAKmwcjUbct2IjUQ3v8rES5oqv
-         RWGF9bPhDXekT3CvyeefQLl0wV8sAWKHvnQwtvgd6s1CXKxRjQ1VqkhCZxmkF3Zekr3J
-         OZHJE4D8djZvcSqK826dpV5hTul5Ekbe6NDcyVRXBjovTiX3dMkaajQwZiuUugdq0sbH
-         fW2w==
-X-Gm-Message-State: AOAM532ArTAYIjA7kwwfj+v/kUrpMFV0AtOL5NyLQH2XSO+s2LMOJPQu
-        A/jhfCYj7MpqAbxFvFcevCOeILalVf3nZkjksCU=
-X-Google-Smtp-Source: ABdhPJy9PS3Ws5Xyf5PrWCdK9NkNskxD+dVxzzrp5tTDmreXIRxin2vboMBh5hN1bzPZvgZ8i+Ahcc6oztR+49JbqUk=
-X-Received: by 2002:a4a:b982:: with SMTP id e2mr778351oop.0.1601443747011;
- Tue, 29 Sep 2020 22:29:07 -0700 (PDT)
+        bh=lu7XV755I5hRstMhFmm189SPTTuDmTjtnvxHW/n5cqM=;
+        b=Nzx38giv85hYceXmJr9/pn2nsvT4A2BubNmQRb/agpJi6WkbxkJ30iTEWDb3s3nB5e
+         jNlPPEAWH5KKBL5lAjbQWGsPxcYFjV9lQepSCaSg5oH01a7M15dKNmHRnirzMbNhmyoB
+         2v6t55nOAWtdpOebQ9meh1x+xqJJiH4KoxhGviMvWprhQk+X/qJb4Z5rxQNL+Mn1gjHD
+         mXxRhljaVg3QEHhefAffI90dPbqmcwMN6ACwvumMXIDo+4gpW0uF4DCQ5QhwkuNJWpn6
+         JG5LWOTYiHKnTgQ53hddj7wnhXO99pIgFiYzauDF4uJKl06oc92cCYpXs+8FcoPlV9kJ
+         9RaQ==
+X-Gm-Message-State: AOAM532gSwNPxg15f8kDIcSwQ/ETHd1PHhkSKZRmTppMVSWoLCm8rqaT
+        hpO+Opj9aBYggysOlQtXytunslAu4qIWoNTGUv8=
+X-Google-Smtp-Source: ABdhPJzphhYh6zkmYIsXBH5FvEdz6jeZ+lTC4wCELtyH2X1rODe/XdR6hN1qf45yBJG2rMuNT6LNqQ3aRLEOJtatmBw=
+X-Received: by 2002:a9d:50a:: with SMTP id 10mr476146otw.207.1601443817093;
+ Tue, 29 Sep 2020 22:30:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200928125424.35921-1-alexandru.ardelean@analog.com> <20200929165428.15ac9e4c@archlinux>
 In-Reply-To: <20200929165428.15ac9e4c@archlinux>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Wed, 30 Sep 2020 08:28:56 +0300
-Message-ID: <CA+U=DsrKGTE3nC09NEHfksF=1WQaUrM1jV5zpw3u272+zEt1cQ@mail.gmail.com>
+Date:   Wed, 30 Sep 2020 08:30:06 +0300
+Message-ID: <CA+U=Dspd11N-pXXnnY_5CSzNp50iRr7h16zXTCxo8Fk+v48F7g@mail.gmail.com>
 Subject: Re: [PATCH 1/2] iio: adc: at91_adc: use of_device_get_match_data() helper
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
@@ -84,6 +84,11 @@ On Tue, Sep 29, 2020 at 6:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > Hi,
 >
 > That's not the forward declaration that it is complaining about...
+
+Also, silly me here.
+I was just annoyed with the email from the bot, so I didn't dig too
+deep to understand.
+
 >
 > It's a reasonable patch anyway, but doesn't fix that warning which is
 > about of_match_ptr and the lack of #ifdef CONFIG_OF around the
@@ -95,11 +100,6 @@ On Tue, Sep 29, 2020 at 6:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > So resend this as a simple tidy up patch and another one adding
 > that build dependency.
 >
-
-At this point it might make sense to also remove the of_match_ptr() helper.
-If adding the OF build dependency, the of_match_ptr() would always
-return non-NULL.
-
 > Thanks,
 >
 > Jonathan

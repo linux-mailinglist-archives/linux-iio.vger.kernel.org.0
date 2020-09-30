@@ -2,273 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1DEF27E31D
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 09:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF7FE27E40C
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Sep 2020 10:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728169AbgI3H5p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Sep 2020 03:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
+        id S1725836AbgI3IqS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Sep 2020 04:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728411AbgI3H5p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 03:57:45 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAFFAC0613D9
-        for <linux-iio@vger.kernel.org>; Wed, 30 Sep 2020 00:57:36 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id d23so532175pll.7
-        for <linux-iio@vger.kernel.org>; Wed, 30 Sep 2020 00:57:36 -0700 (PDT)
+        with ESMTP id S1725779AbgI3IqS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Sep 2020 04:46:18 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65C2C061755;
+        Wed, 30 Sep 2020 01:46:17 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id g96so1034160otb.12;
+        Wed, 30 Sep 2020 01:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=aT8prnv5d5Tz6tkq47WAtD2njLvNDdu7SxPY6pWts4A=;
-        b=mL3JweQhGGoca5BQBegEv/hTE/61wlUb+4eXMjERTDye/9Yd4VCIl/nZBJnQMKO+dy
-         9dc0Tg1Arf/1yBJ4gErzRQEm7AsxaxIGJXvQJpwZgQNbzyRJb0VTnLwod0u8uYpUDXVM
-         fVOMLA4c4gXRmnWDnaRQRExzeiCkYcriOpqz8=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zqXchtfWNkiYpJs8vUF2dtBGW/lOhwrejOiydaNrVFE=;
+        b=FKiCRVdIcpXL9azY9wEZAWOW0toKeazPmrrTymCng34T6SAKyjgQqAHQOJdi6IgGVL
+         MZsjca+pN5PzvRcLmifU/FNOkqdwOI97cqcm13ec2kP9KvqIbMePE3illhofntmnCYqs
+         3HMm+iwo8zIuRy1a6dk707a4V3TLTRNlu5FeodhKS2M+hIGbr6Ks2Xc2+zK1M/KsE+CX
+         WpAv0C4dwrQLQ/S2+t14rZI993dPzfTfJ2U1YTW0NJjIaeRtVkA31Djt1vOts2Q43R5b
+         fu51k+LP1MRmK1YcUmX/IuhpPQtUmpg9Ik6QAbe2KhAQD6Z1bjU/9yagk1xLGMUDzzD3
+         4YAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=aT8prnv5d5Tz6tkq47WAtD2njLvNDdu7SxPY6pWts4A=;
-        b=pqaTQxKLW+6gGiI8+NdF4oJSIm5yQ1uLmn/YsQmPoljNmGS36pLPDZa/WQ7prGnhDB
-         rCNpQNj7TjwRCN31MgfheJyTPZxuitaKh2nih6dQHVZlGbEUcRETlRO9w/lJ4dKsfJv1
-         T3jlj3SiuS0BvIy7OjQVSVzCyb7WYA9LWWcvEIs58357iLptAcFVJT2EbSjfErXqHN4h
-         EbD1KYgbA8Dc0CM1NIzxPRX3w4IINRUl3HFBdpc7E1g1OL+0Iju9i/DrxPumT7gogWzk
-         WHz616IzEqTr+megWI5vI88jabpHYLcxReCqpDzspNBrCA4DSi73J+bOmHca40bHh37T
-         udNw==
-X-Gm-Message-State: AOAM532SMzYFG/nFC7UZ83gt9+fOST9Ufea92TfgO4FCm+pHExxvpiyE
-        PiSrBLoiBqcIUeksAvqt6QzEhw==
-X-Google-Smtp-Source: ABdhPJz9DnGqc5lHroc1ERxfOKlJNZ06rBkBKiWUfVpl9bTaG+MMf4V2wiyhS3Qa9589NqbVO2apEA==
-X-Received: by 2002:a17:90a:f686:: with SMTP id cl6mr1406719pjb.43.1601452656319;
-        Wed, 30 Sep 2020 00:57:36 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id l21sm1272131pjq.54.2020.09.30.00.57.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2020 00:57:35 -0700 (PDT)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Daniel Campello <campello@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Evan Green <evgreen@chromium.org>
-Subject: [PATCH v2 6/6] iio: sx9310: Set various settings from DT
-Date:   Wed, 30 Sep 2020 00:57:28 -0700
-Message-Id: <20200930075728.2410327-7-swboyd@chromium.org>
-X-Mailer: git-send-email 2.28.0.709.gb0816b6eb0-goog
-In-Reply-To: <20200930075728.2410327-1-swboyd@chromium.org>
-References: <20200930075728.2410327-1-swboyd@chromium.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zqXchtfWNkiYpJs8vUF2dtBGW/lOhwrejOiydaNrVFE=;
+        b=HruKfGe6wHNMUB0XPiY0dBKvkNzj0WGkTZ6p3t5endpTkMLtIlBfiKOvbHMHKUe47Y
+         D0aFm5gdsYwAPWWBCRJwO6b71ysEr7livV3dLQKUE/bxPRBm5x8k+u8us9TrBmheIvXa
+         6tr4oC3+VvSbmFIeyS+m6eyHT280oX36ZSHQYchwYWdp6dUD+uoX3HUCivgwW8k3ZeYL
+         cf76HRKKJO9Fjr2GeK8CofR4g5qfZULcywFiP+wEz5Y7iZhu0qiy0BP+6vBEqhT5bfqL
+         5leQRmi6qPwhv69PVFcYbOk5OjQMAhKz+9zZsDjSU2TVH368tSZUVf/o+eYZvLRcmia7
+         lsRg==
+X-Gm-Message-State: AOAM5337RMsJc7vQ7zMxp95UE9EpL2GXS56fSDpkuL7gg4WHZUyxs7lD
+        IqMBxOiQ0ePGCWUYQIMDOx2yAz/opnVDo/81e90=
+X-Google-Smtp-Source: ABdhPJxqFNXzGcoM0pdE8WNU4dhLQrgBJOKfV/J27tuS364G5dgjNpWhwjsL4jwg6+Vli87ol4dUqB815ThyB7BqiAE=
+X-Received: by 2002:a9d:7095:: with SMTP id l21mr924001otj.224.1601455577149;
+ Wed, 30 Sep 2020 01:46:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200930060008.42134-1-alexandru.ardelean@analog.com>
+ <20200930060008.42134-5-alexandru.ardelean@analog.com> <20200930074728.GD2804081@piout.net>
+In-Reply-To: <20200930074728.GD2804081@piout.net>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Wed, 30 Sep 2020 11:46:06 +0300
+Message-ID: <CA+U=DsofSvQKwSQEye9ONYMJkKiL9er6sH2FTLH-5SgmmnPqOA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] iio: adc: at91_adc: remove of_match_ptr() usage
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These properties need to be set during driver probe. Parse any DT
-properties and replace the default register settings with the ones
-parsed from DT.
+On Wed, Sep 30, 2020 at 10:48 AM Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+>
+> Hi,
+>
+> On 30/09/2020 09:00:08+0300, Alexandru Ardelean wrote:
+> > Since the driver should be allowed to build without OF support, the
+> > of_match_ptr() is redundant.
+> >
+>
+> This can probably be squashed with the previous commit.
+>
+> Also, I think that you should really make the driver DT only else, the
+> driver will carry dead code and there will be no reminder that a cleanup
+> is needed.
+>
+> I can take care of that if you feel that this is more work than what you
+> wanted to spend on this driver.
 
-Cc: Daniel Campello <campello@chromium.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: <devicetree@vger.kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Gwendal Grignou <gwendal@chromium.org>
-Cc: Evan Green <evgreen@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/iio/proximity/sx9310.c | 141 ++++++++++++++++++++++++++++++++-
- 1 file changed, 140 insertions(+), 1 deletion(-)
+Ah, you're saying remove the old pdata?
+I can do that while waiting for other of my patches to go in.
 
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index 3f909177eca9..1e9a4a8bc717 100644
---- a/drivers/iio/proximity/sx9310.c
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -49,23 +49,42 @@
- #define   SX9310_REG_PROX_CTRL0_SCANPERIOD_15MS		0x01
- #define SX9310_REG_PROX_CTRL1				0x11
- #define SX9310_REG_PROX_CTRL2				0x12
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_MASK		GENMASK(7, 6)
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1_CS2_CS3 (0x03 << 6)
- #define   SX9310_REG_PROX_CTRL2_COMBMODE_CS1_CS2	(0x02 << 6)
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1	(0x01 << 6)
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_CS3		(0x00 << 6)
-+#define   SX9310_REG_PROX_CTRL2_SHIELDEN_MASK		GENMASK(3, 2)
- #define   SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC	(0x01 << 2)
-+#define   SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND		(0x02 << 2)
- #define SX9310_REG_PROX_CTRL3				0x13
- #define   SX9310_REG_PROX_CTRL3_GAIN0_MASK		GENMASK(3, 2)
- #define   SX9310_REG_PROX_CTRL3_GAIN0_X8		(0x03 << 2)
- #define   SX9310_REG_PROX_CTRL3_GAIN12_MASK		GENMASK(1, 0)
- #define   SX9310_REG_PROX_CTRL3_GAIN12_X4		0x02
- #define SX9310_REG_PROX_CTRL4				0x14
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_MASK		GENMASK(2, 0)
- #define   SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST	0x07
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_VERY_FINE	0x06
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_FINE		0x05
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_MEDIUM	0x04
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_MEDIUM_COARSE 0x03
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_COARSE	0x02
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_VERY_COARSE	0x01
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_COARSEST	0x00
- #define SX9310_REG_PROX_CTRL5				0x15
- #define   SX9310_REG_PROX_CTRL5_RANGE_SMALL		(0x03 << 6)
-+#define   SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK	GENMASK(3, 2)
- #define   SX9310_REG_PROX_CTRL5_STARTUPSENS_CS1		(0x01 << 2)
-+#define   SX9310_REG_PROX_CTRL5_RAWFILT_MASK		GENMASK(1, 0)
-+#define   SX9310_REG_PROX_CTRL5_RAWFILT_SHIFT		0
- #define   SX9310_REG_PROX_CTRL5_RAWFILT_1P25		0x02
- #define SX9310_REG_PROX_CTRL6				0x16
- #define   SX9310_REG_PROX_CTRL6_AVGTHRESH_DEFAULT	0x20
- #define SX9310_REG_PROX_CTRL7				0x17
- #define   SX9310_REG_PROX_CTRL7_AVGNEGFILT_2		(0x01 << 3)
-+#define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_MASK		GENMASK(2, 0)
-+#define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_SHIFT	0
- #define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_512		0x05
- #define SX9310_REG_PROX_CTRL8				0x18
- #define   SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK		GENMASK(7, 3)
-@@ -1193,9 +1212,129 @@ static int sx9310_init_compensation(struct iio_dev *indio_dev)
- 	return ret;
- }
- 
-+static const struct sx9310_reg_default *
-+sx9310_get_default_reg(struct sx9310_data *data, int i,
-+		       struct sx9310_reg_default *reg_def)
-+{
-+	int ret;
-+	const struct device_node *np = data->client->dev.of_node;
-+	u32 combined[SX9310_NUM_CHANNELS] = { 4, 4, 4, 4 };
-+	unsigned long comb_mask = 0;
-+	const char *res;
-+	u32 start = 0, raw = 0, pos = 0;
-+
-+	memcpy(reg_def, &sx9310_default_regs[i], sizeof(*reg_def));
-+	if (!np)
-+		return reg_def;
-+
-+	switch (reg_def->reg) {
-+	case SX9310_REG_PROX_CTRL2:
-+		if (of_property_read_bool(np, "semtech,cs0-ground")) {
-+			reg_def->def &= ~SX9310_REG_PROX_CTRL2_SHIELDEN_MASK;
-+			reg_def->def |= SX9310_REG_PROX_CTRL2_SHIELDEN_GROUND;
-+		}
-+
-+		reg_def->def &= ~SX9310_REG_PROX_CTRL2_COMBMODE_MASK;
-+		of_property_read_u32_array(np, "semtech,combined-sensors",
-+					   combined, ARRAY_SIZE(combined));
-+		for (i = 0; i < ARRAY_SIZE(combined); i++) {
-+			if (combined[i] <= SX9310_NUM_CHANNELS)
-+				comb_mask |= BIT(combined[i]);
-+		}
-+
-+		comb_mask &= 0xf;
-+		if (comb_mask == (BIT(3) | BIT(2) | BIT(1) | BIT(0)))
-+			reg_def->def |= SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1_CS2_CS3;
-+		else if (comb_mask == (BIT(1) | BIT(2)))
-+			reg_def->def |= SX9310_REG_PROX_CTRL2_COMBMODE_CS1_CS2;
-+		else if (comb_mask == (BIT(0) | BIT(1)))
-+			reg_def->def |= SX9310_REG_PROX_CTRL2_COMBMODE_CS0_CS1;
-+		else if (comb_mask == BIT(3))
-+			reg_def->def |= SX9310_REG_PROX_CTRL2_COMBMODE_CS3;
-+
-+		break;
-+	case SX9310_REG_PROX_CTRL4:
-+		ret = of_property_read_string(np, "semtech,resolution", &res);
-+		if (ret)
-+			break;
-+
-+		reg_def->def &= ~SX9310_REG_PROX_CTRL4_RESOLUTION_MASK;
-+		if (!strcmp(res, "coarsest"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_COARSEST;
-+		else if (!strcmp(res, "very-coarse"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_VERY_COARSE;
-+		else if (!strcmp(res, "coarse"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_COARSE;
-+		else if (!strcmp(res, "medium-coarse"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_MEDIUM_COARSE;
-+		else if (!strcmp(res, "medium"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_MEDIUM;
-+		else if (!strcmp(res, "fine"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_FINE;
-+		else if (!strcmp(res, "very-fine"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_VERY_FINE;
-+		else if (!strcmp(res, "finest"))
-+			reg_def->def |= SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST;
-+
-+		break;
-+	case SX9310_REG_PROX_CTRL5:
-+		ret = of_property_read_u32(np, "semtech,startup-sensor", &start);
-+		if (ret) {
-+			start = FIELD_GET(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
-+					  reg_def->def);
-+		}
-+
-+		reg_def->def &= ~SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK;
-+		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_STARTUPSENS_MASK,
-+					   start);
-+
-+		ret = of_property_read_u32(np, "semtech,proxraw-strength", &raw);
-+		if (ret) {
-+			raw = FIELD_GET(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
-+					reg_def->def);
-+		} else {
-+			raw = ilog2(raw);
-+		}
-+
-+		reg_def->def &= ~SX9310_REG_PROX_CTRL5_RAWFILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL5_RAWFILT_MASK,
-+					   raw);
-+		break;
-+	case SX9310_REG_PROX_CTRL7:
-+		ret = of_property_read_u32(np, "semtech,avg-pos-strength", &pos);
-+		if (ret)
-+			break;
-+
-+		if (pos > 1024)
-+			pos = 0x7;
-+		else if (pos == 1024)
-+			pos = 0x6;
-+		else if (pos == 512)
-+			pos = 0x5;
-+		else if (pos == 256)
-+			pos = 0x4;
-+		else if (pos == 128)
-+			pos = 0x3;
-+		else if (pos == 64)
-+			pos = 0x2;
-+		else if (pos == 16)
-+			pos = 0x1;
-+		else
-+			pos = 0x0;
-+
-+		reg_def->def &= ~SX9310_REG_PROX_CTRL7_AVGPOSFILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL7_AVGPOSFILT_MASK,
-+					   pos);
-+		break;
-+	}
-+
-+	return reg_def;
-+}
-+
- static int sx9310_init_device(struct iio_dev *indio_dev)
- {
- 	struct sx9310_data *data = iio_priv(indio_dev);
-+	struct sx9310_reg_default tmp;
- 	const struct sx9310_reg_default *initval;
- 	int ret;
- 	unsigned int i, val;
-@@ -1213,7 +1352,7 @@ static int sx9310_init_device(struct iio_dev *indio_dev)
- 
- 	/* Program some sane defaults. */
- 	for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
--		initval = &sx9310_default_regs[i];
-+		initval = sx9310_get_default_reg(data, i, &tmp);
- 		ret = regmap_write(data->regmap, initval->reg, initval->def);
- 		if (ret)
- 			return ret;
--- 
-Sent by a computer, using git, on the internet
-
+>
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > ---
+> >  drivers/iio/adc/at91_adc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+> > index 7d846a2852a5..473bffe84fbd 100644
+> > --- a/drivers/iio/adc/at91_adc.c
+> > +++ b/drivers/iio/adc/at91_adc.c
+> > @@ -1466,7 +1466,7 @@ static struct platform_driver at91_adc_driver = {
+> >       .id_table = at91_adc_ids,
+> >       .driver = {
+> >                  .name = DRIVER_NAME,
+> > -                .of_match_table = of_match_ptr(at91_adc_dt_ids),
+> > +                .of_match_table = at91_adc_dt_ids,
+> >                  .pm = &at91_adc_pm_ops,
+> >       },
+> >  };
+> > --
+> > 2.17.1
+> >
+>
+> --
+> Alexandre Belloni, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com

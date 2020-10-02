@@ -2,144 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BFAD281837
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Oct 2020 18:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3CF281B96
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Oct 2020 21:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388173AbgJBQrR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Oct 2020 12:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47610 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726386AbgJBQrR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Oct 2020 12:47:17 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74AFC0613D0
-        for <linux-iio@vger.kernel.org>; Fri,  2 Oct 2020 09:47:16 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id d197so2246876iof.0
-        for <linux-iio@vger.kernel.org>; Fri, 02 Oct 2020 09:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
-        b=a1gXL5toNpXLmacnL7yhtJtYu+HmO+zq2HSfVRcyZ9z5aGYPOUMcOsxSjRxLjTiwhj
-         zJBgESeE1qI3ToOAsK8MZWwKmHt51a3nMoD6FLDGupRKEjHEktpPC4yX8sNz7w/nKYtr
-         hL0t3LhSNNDXOlNOrlInWA796iaMFGVw4FjQQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Li4M3GK5y6x0SzTfqjxLLA9AT+ROiUGVRcFqRzm5Djg=;
-        b=BMWeKTm7QCz6woatoKQA/h7JWU9NlC6eeO8aNmXjQ+TrOzWXrMEHGXDx6wEEVRmO62
-         Fct6Kw1Zs2XtbTlCRpMstLZ2twdSEyF+U11nQ726j2eyGJIMRmPy+bkohl9Gql2lxEfp
-         UtXISfOW3iiyAHnpVJKL/DJq6yrIFXc+GzEpkDGVsJlXdA2DvFqK4iHNGkGvfNU2gFT+
-         lhUYt/DPcGr6lFGxNAxYztduPRPh6CX9Gl7hH+H1FrGwcnYsK7rOtThkt+o/QLVaKnP7
-         6t63aI8Ir9UJCFuUpK5HQZ6BTcGJbC2GSWb9R7S/9g4wRBgoRX7Lug+fPcTYAHHeFhVY
-         fn5A==
-X-Gm-Message-State: AOAM530gNQ+quDwBhoubZR66PZvguaBbseWCXpsPdkDQIEV1Rl7qIY0T
-        zBxUN1mvjD+SMZRNpNw1vsSy1Q==
-X-Google-Smtp-Source: ABdhPJzrfRpNIYzV2uFrhJdCHt/QTSYBKDnpK2pS6zKI5Da6BP91uaqOQt3S2LEYZ+yKmaDKjo66AQ==
-X-Received: by 2002:a05:6638:10e9:: with SMTP id g9mr2960820jae.139.1601657236070;
-        Fri, 02 Oct 2020 09:47:16 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id h2sm932771ioj.5.2020.10.02.09.47.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2020 09:47:15 -0700 (PDT)
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-To:     Joe Perches <joe@perches.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Shuah Khan <shuah@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
-        drbd-dev@tron.linbit.com,
-        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        David Lechner <david@lechnology.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-clk@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Jerome Brunet <jbrunet@baylibre.com>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
- <20200929124108.GY4282@kadam>
- <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
- <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
- <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <81b94c3a-43d6-c9f5-0bc0-43bf65b3d5fc@linuxfoundation.org>
-Date:   Fri, 2 Oct 2020 10:47:13 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S2388421AbgJBTWK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 2 Oct 2020 15:22:10 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:65054 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388417AbgJBTWJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:22:09 -0400
+X-Greylist: delayed 467 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:22:09 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 1C92062A47
+        for <linux-iio@vger.kernel.org>; Fri,  2 Oct 2020 22:14:17 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id F3F1262A3E
+        for <linux-iio@vger.kernel.org>; Fri,  2 Oct 2020 22:14:16 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id E629962A97; Fri,  2 Oct 2020 22:14:14 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id AFB5461E8C;
+        Fri,  2 Oct 2020 22:14:08 +0300 (EEST)
 MIME-Version: 1.0
-In-Reply-To: <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:14:02 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191414.E629962A97@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/29/20 7:42 AM, Shuah Khan wrote:
-> On 9/29/20 7:34 AM, Joe Perches wrote:
->> On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
->>> On Tue, 29 Sep 2020, Dan Carpenter wrote:
->>>> The times where commas are used deliberately to replace curly braces 
->>>> are
->>>> just evil.  Either way the code is cleaner with semi-colons.
->>>
->>> I also found exaamples like the following to be particularly unforunate:
->>>
->>>                                  fprintf(stderr,
->>>                                          "page_nr %lu wrong count %Lu 
->>> %Lu\n",
->>>                                         page_nr, count,
->>>                                         count_verify[page_nr]), exit(1);
->>>
->>> The exit is very hard to see, unless you know to look for it.
->>
->> I sent that patch last month.
->> https://patchwork.kernel.org/patch/11734877/
->>
-> 
-> I see what happened. This patch touches lib, cpupower, and selftests.
-> Guess lost in the limbo of who takes it.
-> 
->   tools/lib/subcmd/help.c                    |  10 +-
->   tools/power/cpupower/utils/cpufreq-set.c   |  14 +-
->   tools/testing/selftests/vm/gup_benchmark.c |  18 +-
->   tools/testing/selftests/vm/userfaultfd.c   | 296 +++++++++++++--------
->   4 files changed, 210 insertions(+), 128 deletions(-)
-> 
-> I can take it through one of my trees.
-> 
+Hello Dear,
 
-Rafael, Andrew,
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-This patch is now applied to
-https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git 
-fixes branch.
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
 
-This spans pm, kselftest-mm tests and tools/lib and has been
-in limbo for a few weeks for that reason.
+Please get back to me if you are interested for more
+details.
 
-I decided to take this through kselftest tree to avoid having
-Joe split the patches.
-
-thanks,
--- Shuah
-
-
-
-
+Yours faithfully,
+Hashim Bin 

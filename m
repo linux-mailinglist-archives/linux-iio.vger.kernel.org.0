@@ -2,156 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F60228246A
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Oct 2020 16:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E922825E3
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Oct 2020 20:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725791AbgJCOCo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Oct 2020 10:02:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:29368 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725781AbgJCOCo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Oct 2020 10:02:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601733763;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=1smS26iDEmjvEZDCadYVdJBNsLVw0wkaqHbqDYTnwZU=;
-        b=LqyGM0LQgyvTK5OEoPu5Qe8aCYD51LEu4auGJxsdp8xhO+FMfTF/GCNnlla2o5IWm5xKVx
-        imK6F2DclQGNqtN2mdTj8QSC/iTsYBxB3lCmDjte/UoMkPOOpkVMZNMHN/7mhjbikU/uXA
-        NSmt3X6fBCi8LbNzDuMcLMsPDzfqipA=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-248-aw-sZJqcPUGmzhMcceblNQ-1; Sat, 03 Oct 2020 10:02:40 -0400
-X-MC-Unique: aw-sZJqcPUGmzhMcceblNQ-1
-Received: by mail-ed1-f69.google.com with SMTP id x23so2303719eds.5
-        for <linux-iio@vger.kernel.org>; Sat, 03 Oct 2020 07:02:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=1smS26iDEmjvEZDCadYVdJBNsLVw0wkaqHbqDYTnwZU=;
-        b=P6vYCnA+Evk1gd7Viue60kTXvMC+Of4wvPiruiEFdSiw3S7WfbTYi7oBJjIQGuGS1b
-         iO7AAM1R4xGhPw9dxV9FtcdmPBozoDZ3MoGXLsHL54MeXbdUoDFK7RtWqt/TVhcXKX28
-         bKVI6lYgfMLd1wwGaZeT+Zkhsg3cYlj8cvDJTQ5bBpQJJCIDvMpN6FIFUIRl3txpX+Kt
-         VxqFFoiL8JQHJgqzyZPNpVShbrQJArxr9Ik5tfErubGDlniGssJJE2qJMzUyoe4ErYs1
-         EMH81Js9bwWehlV/XXqSC45xmHaQlWeJBa3XKaWRGHQUgXnoYmY/MwjqbfI4sfQuj64e
-         ZthA==
-X-Gm-Message-State: AOAM531ky23vTw7zevcUxSG7UJ7AWJJkrKK/2gbQpngbZ+A3a+UBH/Ud
-        leZmVVE2njX2hd57siZJjQQxY84eXxehSc0LsXHkItO39sm69JYVnionP4l2ghhChvui4ofphej
-        FApN4H6uIqrW3gNrFQNUu
-X-Received: by 2002:a17:906:2655:: with SMTP id i21mr6429585ejc.511.1601733759474;
-        Sat, 03 Oct 2020 07:02:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyavrP03mMDs0YFxS8nXY5NAZHfRsa8Zjd0jhowEUts1Nvf6oWbCHSCmDNQAzQVK88xxQdt1w==
-X-Received: by 2002:a17:906:2655:: with SMTP id i21mr6429565ejc.511.1601733759229;
-        Sat, 03 Oct 2020 07:02:39 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id q14sm2646223ejo.53.2020.10.03.07.02.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2020 07:02:38 -0700 (PDT)
-To:     linux-iio@vger.kernel.org
-Cc:     Mark Pearson <markpearson@lenovo.com>,
-        Bastien Nocera <hadess@hadess.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: Using IIO to export laptop palm-sensor and lap-mode info to
- userspace?
-Message-ID: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
-Date:   Sat, 3 Oct 2020 16:02:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1725832AbgJCSk4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Oct 2020 14:40:56 -0400
+Received: from smtprelay0046.hostedemail.com ([216.40.44.46]:41004 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725816AbgJCSkz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Oct 2020 14:40:55 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 9054F18029210;
+        Sat,  3 Oct 2020 18:40:53 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:966:967:968:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1544:1593:1594:1711:1712:1730:1747:1777:1792:1801:2196:2199:2393:2525:2553:2567:2682:2685:2828:2859:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3770:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4117:4250:4321:4385:4605:5007:6742:6743:7903:8829:9025:9121:9388:9391:10004:10848:11026:11232:11233:11473:11658:11914:12043:12262:12295:12297:12438:12555:12663:12679:12740:12760:12895:12986:13161:13229:13439:13845:14093:14096:14097:14181:14659:14721:21063:21080:21365:21433:21451:21611:21627:21740:21749:21811:21819:21939:30054:30070:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: stop55_5311f74271af
+X-Filterd-Recvd-Size: 6242
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Sat,  3 Oct 2020 18:40:49 +0000 (UTC)
+Message-ID: <f44d19ad596f261c0287c9ab18c45161003efb43.camel@perches.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+From:   Joe Perches <joe@perches.com>
+To:     Mark Brown <broonie@kernel.org>, tools@linux.kernel.org,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Date:   Sat, 03 Oct 2020 11:40:48 -0700
+In-Reply-To: <20201001110150.GA6715@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+         <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+         <20200929113745.GB4799@sirena.org.uk>
+         <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
+         <20201001110150.GA6715@sirena.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi All,
+(Adding tools and Konstantin Ryabitsev)
 
-Modern laptops can have various sensors which are kinda
-like proximity sensors, but not really (they are more
-specific in which part of the laptop the user is
-proximate to).
+There seems to be some mismatch between b4's use of the
+cover letter to a patch series and what maintainers that
+apply a subset of the patches in the patch series.
 
-Specifically modern Thinkpad's have 2 readings which we
-want to export to userspace, and I'm wondering if we
-could use the IIO framework for this since these readings
-are in essence sensor readings:
+The merge description shows the entire patch series as
+applied, but the actual merge is only a subset of the
+series.
 
-1. These laptops have a sensor in the palm-rests to
-check if a user is physically proximate to the device's
-palm-rests. This info will be used by userspace for WWAN
-functionality to control the transmission level safely.
+Can this be improved in b4?
 
-A patch adding a thinkpad_acpi specific sysfs API for this
-is currently pending:
-https://patchwork.kernel.org/patch/11722127/
+For example, regarding:
 
-But I'm wondering if it would not be better to use
-IIO to export this info.
+https://lore.kernel.org/linux-amlogic/160132172369.55460.9237357219623604216.b4-ty@kernel.org/
+https://lore.kernel.org/lkml/b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com/#t
 
-2. These laptops have something called lap-mode, which
-determines if the laptop's firmware thinks that it is on
-a users lap, or sitting on a table. This influences the
-max. allowed skin-temperature of the bottom of the laptop
-and thus influences thermal management.  Like the palm-rest
-snesors, this reading will likely also be used for
-controlling wireless transmission levels in the future.
+On Thu, 2020-10-01 at 12:01 +0100, Mark Brown wrote:
+> On Wed, Sep 30, 2020 at 12:33:39PM -0700, Joe Perches wrote:
+> > On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
+> > > Feel free to submit patches to b4.
+> > Have you tried the existing option to send
+> > thank you's on a specific ranges of patches?
+> 
+> I am relying on b4 to identify which patches that I've downloaded are in
+> the pushed branches.  Given that it explicitly lists the patches that
+> are applied it appears to be doing an OK job here.
 
-Note that AFAIK the lap_mode reading is not a single sensor
-reading, it is a value derived from a bunch of sensor readings,
-the raw values of which may or may not be available
-separately.
+I'm not so sure about that.
 
-So looking at existing IIO userspace API docs, focussing on
-proximity sensors I see:
+The commit merge description in -next shows 23 files
+modified but the commit range shown in the merge shows
+only a single patch applied:
 
-Documentation/ABI/testing/sysfs-bus-iio
-Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935
+From next-20201002:
 
-Where the latter seems to not really be relevant.
+(I've removed some of the commit description below)
 
- From the generic IO API doc, this bit is the most
-interesting:
+$ git log --stat -1 2defc3fa18a68963a330187f5386968e50832d06
+commit 2defc3fa18a68963a330187f5386968e50832d06
+Merge: eb45df24fe82 7f4a122d0b50
+Author: Mark Brown <broonie@kernel.org>
+Date:   Mon Sep 28 18:28:48 2020 +0100
 
-What:           /sys/.../iio:deviceX/in_proximity_raw
-What:           /sys/.../iio:deviceX/in_proximity_input
-What:           /sys/.../iio:deviceX/in_proximityY_raw
-KernelVersion:  3.4
-Contact:        linux-iio@vger.kernel.org
-Description:
-                 Proximity measurement indicating that some
-                 object is near the sensor, usually by observing
-                 reflectivity of infrared or ultrasound emitted.
-                 Often these sensors are unit less and as such conversion
-                 to SI units is not possible. Higher proximity measurements
-                 indicate closer objects, and vice versa. Units after
-                 application of scale and offset are meters.
+    Merge series "use semicolons rather than commas to separate statements" from Julia Lawall <Julia.Lawall@inria.fr>:
+    
+    These patches replace commas by semicolons.  This was done using the
+    Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
 
-This seems to be a reasonable match for the Thinkpad sensors
-we are discussing here, although those report a simple
-0/1 value.
+[some of the long description elided]
 
-What is missing for the ThinkPad case is something like this:
+        ---
+    
+     drivers/acpi/processor_idle.c               |    4 +++-
+     drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+     drivers/base/regmap/regmap-debugfs.c        |    2 +-
+     drivers/bcma/driver_pci_host.c              |    4 ++--
+     drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+     drivers/char/agp/amd-k7-agp.c               |    2 +-
+     drivers/char/agp/nvidia-agp.c               |    2 +-
+     drivers/char/agp/sworks-agp.c               |    2 +-
+     drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+     drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+     drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+     drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+     drivers/clk/meson/meson-aoclk.c             |    2 +-
+     drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+     drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+     drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+     drivers/clocksource/mps2-timer.c            |    6 +++---
+     drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+     drivers/counter/ti-eqep.c                   |    2 +-
+     drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+     drivers/crypto/atmel-tdes.c                 |    2 +-
+     drivers/crypto/hifn_795x.c                  |    4 ++--
+     drivers/crypto/talitos.c                    |    8 ++++----
+     23 files changed, 60 insertions(+), 51 deletions(-)
 
-What:		/sys/.../iio:deviceX/proximity_sensor_location
-KernelVersion:  5.11
-Contact:        linux-iio@vger.kernel.org
-Description:
-		Specifies the location of the proximity sensor /
-		specifies proximity to what the sensor is measuring.
-		Reading this file returns a string describing this, valid values
-		for this string are: "screen", "lap", "palmrest"
-		Note the list of valid values may be extended in the
-		future.
+But the commit range of the merge shows only the single commit:
 
-So what do you (IIO devs) think about this?
+$ git log --stat eb45df24fe82..7f4a122d0b50
+commit 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+Author: Julia Lawall <Julia.Lawall@inria.fr>
+Date:   Sun Sep 27 21:12:24 2020 +0200
 
-Would adding a proximity_sensor_location attribute be a reasonable
-thing to do for this; and do you think that this would be a good idea ?
+    regmap: debugfs: use semicolons rather than commas to separate statements
+    
+    Replace commas with semicolons.  What is done is essentially described by
+    the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+    
+    // <smpl>
+    @@ expression e1,e2; @@
+    e1
+    -,
+    +;
+    e2
+    ... when any
+    // </smpl>
+    
+    Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+    Link: https://lore.kernel.org/r/1601233948-11629-15-git-send-email-Julia.La>
+    Signed-off-by: Mark Brown <broonie@kernel.org>
 
-Regards,
+ drivers/base/regmap/regmap-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hans
 

@@ -2,127 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA40283CD6
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 18:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2ACA283D61
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 19:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727087AbgJEQxL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Oct 2020 12:53:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60268 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725940AbgJEQxK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Oct 2020 12:53:10 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7BDA1207BC;
-        Mon,  5 Oct 2020 16:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601916790;
-        bh=p/E99tTjql4QstxaT4SSl5drfyNj4h+kQn/1L+FU6Hg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gBC/IzIeywxmI9gsb/JTsx+zOOUJIooFw3wfYC06TBiHzICVtnlgNaAv/yO1EfA51
-         zVseZLj5T0M70hmLa6qq17YAe111X+Q9rT1NlLPW8KVTi2SkXaQsGts5rIE+F43U3z
-         nybuOkwnpLc2tf4yEu29xxvUOBIsDUDyDKfTSVTQ=
-Date:   Mon, 5 Oct 2020 17:52:06 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-        Julia Lawall <julia.lawall@inria.fr>, tools@linux.kernel.org,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-Message-ID: <20201005165206.GA2440@sirena.org.uk>
-References: <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
- <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
- <20200929113745.GB4799@sirena.org.uk>
- <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
- <20201001110150.GA6715@sirena.org.uk>
- <f44d19ad596f261c0287c9ab18c45161003efb43.camel@perches.com>
- <20201003191501.o56tqq63d2buq5ox@chatter.i7.local>
- <alpine.DEB.2.22.394.2010032118420.2741@hadrien>
- <20201003193137.z2bpwzlz5a66kkex@chatter.i7.local>
- <9ab43333596f08abbbbbf1fa8cdf1ded4b65af2a.camel@perches.com>
+        id S1728205AbgJERgm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Oct 2020 13:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727344AbgJERgk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Oct 2020 13:36:40 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D99BC0613CE;
+        Mon,  5 Oct 2020 10:36:40 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id a1so214385pjd.1;
+        Mon, 05 Oct 2020 10:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=B12lNYkc01u2Acv3Am3wZ/68gfdostrz6Gt7LZK1x7k=;
+        b=MKR/BTv4LNrhfqNo4XlpjFnb0c2x51PifsjbEO214HVcZGvzE8qLV2HVIB03QyM9bM
+         wGhv67RSC8rlinm79Kn+LFvlJ0076i/B/7kSsNtLvElaZZx3yqXoQ7Ldv2WwRlGwgLhV
+         Bc5LLf4AT6wr8oOv+w5Y66k11jb1n0liBQD9IXPNEG3OMVEri2msg9gx6/9csPwtohoZ
+         YC6txZ/D21a/zRWysqQ/O+2Zenq4Ed5jnrzQ2PTj3e22zGIyIuHXtZR2jYs33S8kXrDV
+         4lCkeikuW/shAvAbzOi9v0DOul+ZuhtLGMmy22r7df6FmMvetng7sT0xfAAO1B9dMGOW
+         w5jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=B12lNYkc01u2Acv3Am3wZ/68gfdostrz6Gt7LZK1x7k=;
+        b=AqNuHQXPskNPJuHpSCyudBgK8lrOC6kBzq+MdbhIWmKkitHrwZOH6srpk3LAPsY+GF
+         uJtjhYb7ggYSzWJwoJYHeBgHEoI5C+KENVrD63+b7wHOTtzUOLjLdOSZPP6AMAGLs39H
+         1Km33NbRyg6bmSa1ZPjNwSoJ0PV8+uks2FOMDktr1xw5gR0MkA7BXWT0k59FWClLKpwH
+         f9muRAdQ6jpkotoip8viRDbToQkKfbkESYh4oiCGSlTI27Th7QVqqJkj12ier3I2kZzy
+         QsU+x3Dv5X9rH+UNvJ7eTzzYcw6efqvIPrmSD8ub7vCRFaU6cUHeaMVNIqEqFh2u/dbr
+         Jcjw==
+X-Gm-Message-State: AOAM531UdXHZ7gJWSvToT2PMtKO9iexVZC5E0d/kSp1+1jJIKWuyyr/R
+        Z8DyfVbyRNdAR6I3IJXjp07MfjHZwTA=
+X-Google-Smtp-Source: ABdhPJwr2w1fviKBXfG28+ZbJQGJp9t+0uOX4T5p5ap8qKHKxnRh7JamghPS+8V22u5orpZUml+m6w==
+X-Received: by 2002:a17:90a:e00e:: with SMTP id u14mr483317pjy.153.1601919399587;
+        Mon, 05 Oct 2020 10:36:39 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id y4sm157457pjc.53.2020.10.05.10.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2020 10:36:39 -0700 (PDT)
+Date:   Mon, 5 Oct 2020 10:36:36 -0700
+From:   dmitry.torokhov@gmail.com
+To:     =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: exynos: do not rely on 'users' counter in ISR
+Message-ID: <20201005173636.GK1009802@dtor-ws>
+References: <20201005052420.GA3262631@dtor-ws>
+ <20201005110908.GA3243@qmqm.qmqm.pl>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9ab43333596f08abbbbbf1fa8cdf1ded4b65af2a.camel@perches.com>
-X-Cookie: God is real, unless declared integer.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201005110908.GA3243@qmqm.qmqm.pl>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Michał,
 
---sdtB3X0nJg68CQEu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Oct 05, 2020 at 01:09:08PM +0200, Michał Mirosław wrote:
+> On Sun, Oct 04, 2020 at 10:24:20PM -0700, dmitry.torokhov@gmail.com wrote:
+> > The order in which 'users' counter is decremented vs calling drivers'
+> > close() method is implementation specific, and we should not rely on
+> > it. Let's introduce driver private flag and use it to signal ISR
+> > to exit when device is being closed.
+> > 
+> > This has a side-effect of fixing issue of accessing inut->users
+> > outside of input->mutex protection.
+> > 
+> > Reported-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > ---
+> >  drivers/iio/adc/exynos_adc.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+> > index 22131a677445..7eb2a5df6e98 100644
+> > --- a/drivers/iio/adc/exynos_adc.c
+> > +++ b/drivers/iio/adc/exynos_adc.c
+> > @@ -135,6 +135,8 @@ struct exynos_adc {
+> >  	u32			value;
+> >  	unsigned int            version;
+> >  
+> > +	bool			ts_enabled;
+> > +
+> >  	bool			read_ts;
+> >  	u32			ts_x;
+> >  	u32			ts_y;
+> > @@ -633,7 +635,7 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+> >  	bool pressed;
+> >  	int ret;
+> >  
+> > -	while (info->input->users) {
+> > +	while (info->ts_enabled) {
+> >  		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+> >  		if (ret == -ETIMEDOUT)
+> >  			break;
+> > @@ -712,6 +714,8 @@ static int exynos_adc_ts_open(struct input_dev *dev)
+> >  {
+> >  	struct exynos_adc *info = input_get_drvdata(dev);
+> >  
+> > +	info->ts_enabled = true;
+> > +	mb();
+> >  	enable_irq(info->tsirq);
+> >  
+> >  	return 0;
+> > @@ -721,6 +725,8 @@ static void exynos_adc_ts_close(struct input_dev *dev)
+> >  {
+> >  	struct exynos_adc *info = input_get_drvdata(dev);
+> >  
+> > +	info->ts_enabled = false;
+> > +	mb();
+> >  	disable_irq(info->tsirq);
+> 
+> This should be WRITE_ONCE paired with READ_ONCE in the ISR.
 
-On Sat, Oct 03, 2020 at 12:43:13PM -0700, Joe Perches wrote:
-> On Sat, 2020-10-03 at 15:31 -0400, Konstantin Ryabitsev wrote:
+Why? I can see that maybe full memory barrier is too heavy when we set
+the flag to true, but the only requirement is for the flag to be set
+before we disable IRQ, so any additional guarantees provided by
+WRITE_ONCE are not needed. On the read side we want the flag to be
+noticed eventually, and there is no additional dependencies on the data,
+so it is unclear what READ_ONCE() will give us here.
 
-> > I'm worried that this can get unwieldy for series of 50 patches where 4=
-9=20
-> > got applied. Would the following be better:
+> 
+> But is the check really needed? I see that this is to break waiting for
+> a touch release event, so I would assume this shouldn't wait forever
+> (unless the hardware is buggy)
 
-=2E..
+It is not hardware, it is user. Do you want to delay indefinitely
+close() just because user has a finger on the touchscreen?
 
-> > A subset of these patches was applied to
-> >=20
-> >   https://...
-> >=20
-> > Thanks!
-> >=20
-> > [5/18] regmap: debugfs:
-> >        commit:
+> and breaking the loop will desync touch
+> state (I would guess this would be noticable by next user).
 
-It's definitely an improvement but TBH I'm not sure how much it's going
-to help those struggling to parse the current messages.
+Upon next open driver will service the interrupt and provide new set of
+touch coordinates. Userspace is supposed to query current state of
+device when opening it before starting processing events. Or you are
+concerned about some other state?
 
-> > I think this is a better solution than potentially flooding everyone=20
-> > with 49 emails.
+In any case, this is current driver behavior and if it needs to be
+changed it is a topic for a separate patch.
 
-I would tend to prefer cutting down on mail volume but I don't think
-there's any way to keep everyone happy with this stuff.
+Thanks.
 
-> I think it would be better to reply individually as
-> the likelihood that the maintainer skips just a few
-> patches of a large series is relatively low.
-
-It's not at all unusual for driver updates to both add new DT bindings
-(either for entirely new drivers or new properties/compatibles for
-existing drivers) and also have DTS file updates using those bindings,
-these go via separate trees.
-
---sdtB3X0nJg68CQEu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl97TzUACgkQJNaLcl1U
-h9DI9Qf/dhOghwYGEqexRQ644ACI4w9j7rH7Z4qsTYl+rdj06q5wrcOFnyypjB/j
-N/Qx3llsTbG0UagMLyGeuFi5bzhxALnrvmrbv8cBPI0/3jS2D7u22cD5m6toS+Tp
-f08tgo7VkjfkB3QCZn9A7XGAPq3bEvoaCvFalxqGt0FPUw5kVGrboVa1dgJCzRL/
-CtWXDQfG9vy5ZVs0cY+s+O9yvAbrZJyMPaKkeoa7dwnqzOQz1Ga4ADtUZsUWyieK
-wuCO/HNGdf77CmSbOuG6BMrWi5SGoEtRmVO+w5NmYO1yOfnooSih3uWDR4H01xVg
-3zFgbOHRZMIwAEzTfTqRA4vzPMXRQQ==
-=wwYC
------END PGP SIGNATURE-----
-
---sdtB3X0nJg68CQEu--
+-- 
+Dmitry

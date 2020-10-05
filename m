@@ -2,115 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06FD52834BA
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 13:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D822837F8
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 16:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725917AbgJELO5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Oct 2020 07:14:57 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:42939 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725843AbgJELO4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Oct 2020 07:14:56 -0400
-X-Greylist: delayed 342 seconds by postgrey-1.27 at vger.kernel.org; Mon, 05 Oct 2020 07:14:55 EDT
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4C4dCB6nDXz6D;
-        Mon,  5 Oct 2020 13:09:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1601896151; bh=29wYbsPytcZ/IhNwUazul/bDu8+y5OSG3sJTGkf3ZyQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NiiFVbnNDhA2ihwlqCEJGp++fMbrcDcboJtUDl2cwQoFIYlpm9rwd9MCNzthDOECP
-         5GoVOGOsUxT0L2YHwf1ZbtuFPIKRc367UTSIZVMISHEME+/iDpaCTlxLwYxyRFyV80
-         /VY1SBsJOUIb3B0OHN95SST5/+TZvi3adakzDB38q6VSAQvwBMMx+zzgwsvEGNFO/W
-         2X7Ny2gcIRdYr5ektFZm968NEkCBpeFi/z2jkRq1dUFQTS7H2DSPdBrFS/3IWmcUdg
-         pb2EAJ3PUiJ1vYav7dvB7HG8BssFhzZbS3933jGhDBjV7hFki9Anu6GzCKj9G8uDqs
-         KLOl3Pj7WlC5A==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.4 at mail
-Date:   Mon, 5 Oct 2020 13:09:08 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     dmitry.torokhov@gmail.com
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: exynos: do not rely on 'users' counter in ISR
-Message-ID: <20201005110908.GA3243@qmqm.qmqm.pl>
-References: <20201005052420.GA3262631@dtor-ws>
+        id S1726551AbgJEOi7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Oct 2020 10:38:59 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36362 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725936AbgJEOi7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Oct 2020 10:38:59 -0400
+Received: by mail-oi1-f196.google.com with SMTP id u17so2727985oie.3;
+        Mon, 05 Oct 2020 07:38:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=naQi8NEjlXf44kRLn+g1FTyii1oFTs4V5HICiDUnCFM=;
+        b=Mvyya8gaai0gmXmhXDVSW4ogakkTSVbpcBE2R57cV+Gz/hMl2t5iC9GMbxtLCnGufR
+         Yr6EAj5BylUvRDeRD3NLmbsOFuk14CWqxNZ25ttVf+Quu58bamkjKX53C+8c1YTOSrFK
+         yjURLTHZpbdbytgpzTyeRT/8pyPgFHBqPjfHz2JqBOwuZxf+vWS7gyJLJ33WaUVnvfSA
+         qo0lNJf8Xq5s4B/ONqmSDqnlfh2Mpzq9kz+NLzrLxo694qzjR51ZwHRINUadEK1UxERz
+         DIjH/1SqJpRFqxz9a6tmmbeCrDSoTD5TLzekMYzRpnRtEt1LIydrD3BeJhmKFc7RLB8h
+         uBRw==
+X-Gm-Message-State: AOAM532RFPDo4fmted2jp6aUwXtHG54JSPK8l5a7tCgEYg6I3eadiPek
+        lJvHTN/CWZxBvS9uTYPpmA==
+X-Google-Smtp-Source: ABdhPJyBNSFKOcjOpYW30Jw30TpzykIS03eABHXPs2eAFFuiWGe8CeVT1pVZB+S/XP4nZBn1bxFiKQ==
+X-Received: by 2002:aca:55c2:: with SMTP id j185mr5332858oib.13.1601908738430;
+        Mon, 05 Oct 2020 07:38:58 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id u68sm3104760otb.9.2020.10.05.07.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2020 07:38:57 -0700 (PDT)
+Received: (nullmailer pid 149913 invoked by uid 1000);
+        Mon, 05 Oct 2020 14:38:56 -0000
+Date:   Mon, 5 Oct 2020 09:38:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Gene Chen <gene.chen.richtek@gmail.com>
+Cc:     shufan_lee@richtek.com, lars@metafoo.de, matthias.bgg@gmail.com,
+        pmeerw@pmeerw.net, Wilma.Wu@mediatek.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.chao@mediatek.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, jic23@kernel.org, devicetree@vger.kernel.org,
+        cy_huang@richtek.com, gene_chen@richtek.com,
+        linux-mediatek@lists.infradead.org, knaack.h@gmx.de
+Subject: Re: [PATCH v6 1/3] dt-bindings: iio: adc: add bindings doc for
+ MT6360 ADC
+Message-ID: <20201005143856.GA149682@bogus>
+References: <1601542448-7433-1-git-send-email-gene.chen.richtek@gmail.com>
+ <1601542448-7433-2-git-send-email-gene.chen.richtek@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201005052420.GA3262631@dtor-ws>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1601542448-7433-2-git-send-email-gene.chen.richtek@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 04, 2020 at 10:24:20PM -0700, dmitry.torokhov@gmail.com wrote:
-> The order in which 'users' counter is decremented vs calling drivers'
-> close() method is implementation specific, and we should not rely on
-> it. Let's introduce driver private flag and use it to signal ISR
-> to exit when device is being closed.
+On Thu, 01 Oct 2020 16:54:06 +0800, Gene Chen wrote:
+> From: Gene Chen <gene_chen@richtek.com>
 > 
-> This has a side-effect of fixing issue of accessing inut->users
-> outside of input->mutex protection.
+> This change adds the binding doc for the MT6360 ADC.
 > 
-> Reported-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Signed-off-by: Gene Chen <gene_chen@richtek.com>
 > ---
->  drivers/iio/adc/exynos_adc.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  .../bindings/iio/adc/mediatek,mt6360-adc.yaml      | 34 ++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6360-adc.yaml
 > 
-> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-> index 22131a677445..7eb2a5df6e98 100644
-> --- a/drivers/iio/adc/exynos_adc.c
-> +++ b/drivers/iio/adc/exynos_adc.c
-> @@ -135,6 +135,8 @@ struct exynos_adc {
->  	u32			value;
->  	unsigned int            version;
->  
-> +	bool			ts_enabled;
-> +
->  	bool			read_ts;
->  	u32			ts_x;
->  	u32			ts_y;
-> @@ -633,7 +635,7 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
->  	bool pressed;
->  	int ret;
->  
-> -	while (info->input->users) {
-> +	while (info->ts_enabled) {
->  		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
->  		if (ret == -ETIMEDOUT)
->  			break;
-> @@ -712,6 +714,8 @@ static int exynos_adc_ts_open(struct input_dev *dev)
->  {
->  	struct exynos_adc *info = input_get_drvdata(dev);
->  
-> +	info->ts_enabled = true;
-> +	mb();
->  	enable_irq(info->tsirq);
->  
->  	return 0;
-> @@ -721,6 +725,8 @@ static void exynos_adc_ts_close(struct input_dev *dev)
->  {
->  	struct exynos_adc *info = input_get_drvdata(dev);
->  
-> +	info->ts_enabled = false;
-> +	mb();
->  	disable_irq(info->tsirq);
 
-This should be WRITE_ONCE paired with READ_ONCE in the ISR.
 
-But is the check really needed? I see that this is to break waiting for
-a touch release event, so I would assume this shouldn't wait forever
-(unless the hardware is buggy) and breaking the loop will desync touch
-state (I would guess this would be noticable by next user).
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-Best Regards,
-Micha³ Miros³aw
+If a tag was not added on purpose, please state why and what changed.
+

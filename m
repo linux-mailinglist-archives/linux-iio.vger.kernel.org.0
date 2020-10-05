@@ -2,144 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1708D283006
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 07:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E728728300E
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 07:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725907AbgJEFIM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Oct 2020 01:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
+        id S1725853AbgJEFYX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Oct 2020 01:24:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbgJEFIL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Oct 2020 01:08:11 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54227C061787;
-        Sun,  4 Oct 2020 22:08:11 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id m34so5234820pgl.9;
-        Sun, 04 Oct 2020 22:08:11 -0700 (PDT)
+        with ESMTP id S1725267AbgJEFYX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Oct 2020 01:24:23 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C32CC0613CE;
+        Sun,  4 Oct 2020 22:24:23 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id kk9so4824388pjb.2;
+        Sun, 04 Oct 2020 22:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4tJLfv4r1zoGxZLPIaDyCtUW4+LVxjwAdNen8IGn/go=;
-        b=se1XSVGwrhHdOgI356g94SUutkWKQpBzxrpqpgfPMBUHMoA90lXzkjgZ0/3Tw8I6QB
-         Q5UOA4g26ikmyxmGNiEUC3x3ScQap1qGzK2DTuVfPYXwczdynjqThsGFkHlrBI9rFqlc
-         eJtIn1vZAKuoQt8JnVE2YXPu5kCEmlLVNfu9mL6gdd81xTRSbC3SFDGt+HTaXqom0oRD
-         VF56TE9qgti4LqfLMq65X7Nk26Zkv8FYAddFi5YtGDkyM9W6WRu+Irfo/xmTGqGQxqAP
-         yGgN41FtnwCEBSNAjHdSvGZE6TQpIRcr7WiyNXJZ8/cEOc21PP4Qj90lxbFEu1hau11H
-         hUKg==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=BNYjHkQnOMekLYDlnrC4+qnb1F1o0CegnvK1HRf+M3E=;
+        b=bVhw6HJaIcRnGYg13Gwvf/nRUPEDAzphy5SgMUlQn0owx2LFY/gCCAH8tInL5h6Bm8
+         9tPOvz/tin7psVeAEAqG1LZlZ7qaWKqRQsG0e5ySKJIyhJ8nwPcRy4VwtN9PAeVI1Owm
+         BPlCOjl8TqDwEFd6fzfq6aVntVri/YLG4Q43yWXYImE/pWNUNVpLhls2O2qjscsa3Rs+
+         hLa6BhVhheFTuL26yibuUqP6dCR3mWEPq5bc3nRwltRI2aIPHWhSXC97782P/ZKigFsg
+         yCuyi/qW9cH/0FrZK5ySm5BUtnrobkrGpNlkD8RUpBytQnvYHFfPPDN3mgQsj0D1HO31
+         BAqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4tJLfv4r1zoGxZLPIaDyCtUW4+LVxjwAdNen8IGn/go=;
-        b=dnQYs3vi7sOlYG43HWYrxZAPYyVLkrF5Uw0PEp8px2L2pk/TokLR/yQwFDEHOCQMyl
-         rEeghcmYnCx5dKbiEPzZ+8A3UxTjpUQu/VRWk5EbHBG1/VEpq4xhpMOapq3pTF4psDc3
-         dZYbPsMr7yfNsl7X2Ca/17UJp6d1ZiuMwkNBI4oRpqSGmJzCNj3GlXuxg/r/eIs+LPeJ
-         +cnh8frWt2bS+euGycdwJQV9waDUEzvQB2dHm0QfTEuw6F/LyKKE8yoEPkkTkL0w6qE+
-         rqEBMvPdCD/vL+MkeYK3qNmCvg30WUAmxrr4prfsayGLSMq2lCPub8Xs1YxAf6PJa0OY
-         5CwA==
-X-Gm-Message-State: AOAM533eIPJ9TTvyDDztj+3gCdLPuj9bsUIM3aSZ6YVW4eS6cxJcN0FV
-        ovmL8w65+fq9vYXwp9NjEek=
-X-Google-Smtp-Source: ABdhPJzbc7KATEHw3tURSc0pA0PlebTOm5ozKxIivLTRAmqi1P5kxW+VgeENvYQMNfQrrxbYDAqGGA==
-X-Received: by 2002:a63:ec4c:: with SMTP id r12mr12411601pgj.74.1601874490742;
-        Sun, 04 Oct 2020 22:08:10 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=BNYjHkQnOMekLYDlnrC4+qnb1F1o0CegnvK1HRf+M3E=;
+        b=Uj/2BRDdOsg2xsWDLup+CdO+AsKc1001LhYeCTImB/C/InNtBS19pzoCP4YbqjGnn+
+         XnG5x3IomDf4KU+xXFUS/g8cNuaYuS8MBn8dOQZMw0LprQRTxtBL/2Zqvc8AObfyOQpd
+         Le2ukZ6MrstxriVI+/GBUQZXzcm7yW/LGCdhSyoHnoKjoF61+kfpFXO8RyPPZ78JZVu/
+         W33josjzQUXvuXhj6kPFx/Kpg3m8G349wJAUFBpNOxURTopVvmGrzVKMTVEXj7rNUp+X
+         gl1oOs35mEfkr2WvrW/NeCMgwlxcOGxbYmrq7xY+DsCqSftByElFkbhaiIdY11WCIL20
+         DVOQ==
+X-Gm-Message-State: AOAM531Clxaff/073D8C7KIeCnp050DQoUwe0Oy6pMYzQ5eX0+OcfKi9
+        C6PTS9XNZNK3+/74xmRDbzY=
+X-Google-Smtp-Source: ABdhPJya5lgMUpviFhKpyV4jVKOyVJKf+Zu6q1nCYOlSz1S7dX9sswceSqRH3HhXDhrwTa6/Os/LKg==
+X-Received: by 2002:a17:90b:797:: with SMTP id l23mr14809114pjz.176.1601875463037;
+        Sun, 04 Oct 2020 22:24:23 -0700 (PDT)
 Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id d128sm10874958pfc.8.2020.10.04.22.08.09
+        by smtp.gmail.com with ESMTPSA id t12sm9228351pgk.32.2020.10.04.22.24.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2020 22:08:10 -0700 (PDT)
-Date:   Sun, 4 Oct 2020 22:08:07 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
-        linux-input@vger.kernel.org,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        Sun, 04 Oct 2020 22:24:22 -0700 (PDT)
+Date:   Sun, 4 Oct 2020 22:24:20 -0700
+From:   dmitry.torokhov@gmail.com
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        Collabora Kernel ML <kernel@collabora.com>
-Subject: Re: [PATCH v4 3/7] ACPI: button: Access input device's users under
- appropriate mutex
-Message-ID: <20201005050807.GI1009802@dtor-ws>
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
- <20200608112211.12125-1-andrzej.p@collabora.com>
- <20200608112211.12125-4-andrzej.p@collabora.com>
- <CAJZ5v0j7e9TzDtEiDXmj3fLAQ7CvFHoe7Q3aYKKas3PEXrsUuw@mail.gmail.com>
- <20200625052318.GE248110@dtor-ws>
- <CAJZ5v0hgQt-amMn8xiF_0kyVZ-9pQxgm5H-VcFpinVQGKnYhwQ@mail.gmail.com>
+        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: exynos: do not rely on 'users' counter in ISR
+Message-ID: <20201005052420.GA3262631@dtor-ws>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hgQt-amMn8xiF_0kyVZ-9pQxgm5H-VcFpinVQGKnYhwQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 25, 2020 at 12:55:29PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Jun 25, 2020 at 7:23 AM Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
-> >
-> > On Wed, Jun 24, 2020 at 05:00:09PM +0200, Rafael J. Wysocki wrote:
-> > > On Mon, Jun 8, 2020 at 1:22 PM Andrzej Pietrasiewicz
-> > > <andrzej.p@collabora.com> wrote:
-> > > >
-> > > > Inspecting input device's 'users' member should be done under device's
-> > > > mutex, so add appropriate invocations.
-> > > >
-> > > > Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> > >
-> > > This looks like a fix that might be applied independently of the other
-> > > patches in the series.
-> > >
-> > > Do you want me to pick it up?
-> >
-> > If you pick it we'll have to have a dance with this series. Can I apply
-> > instead?
-> 
-> Yes, please.
-> 
-> Also feel free to add
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> to it.
+The order in which 'users' counter is decremented vs calling drivers'
+close() method is implementation specific, and we should not rely on
+it. Let's introduce driver private flag and use it to signal ISR
+to exit when device is being closed.
 
-Looking at the driver I think the patch and the original use of
-input->users is not proper. I'll post another patch addressing this
-shortly.
+This has a side-effect of fixing issue of accessing inut->users
+outside of input->mutex protection.
 
-Thanks.
+Reported-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/iio/adc/exynos_adc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 22131a677445..7eb2a5df6e98 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -135,6 +135,8 @@ struct exynos_adc {
+ 	u32			value;
+ 	unsigned int            version;
+ 
++	bool			ts_enabled;
++
+ 	bool			read_ts;
+ 	u32			ts_x;
+ 	u32			ts_y;
+@@ -633,7 +635,7 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_id)
+ 	bool pressed;
+ 	int ret;
+ 
+-	while (info->input->users) {
++	while (info->ts_enabled) {
+ 		ret = exynos_read_s3c64xx_ts(dev, &x, &y);
+ 		if (ret == -ETIMEDOUT)
+ 			break;
+@@ -712,6 +714,8 @@ static int exynos_adc_ts_open(struct input_dev *dev)
+ {
+ 	struct exynos_adc *info = input_get_drvdata(dev);
+ 
++	info->ts_enabled = true;
++	mb();
+ 	enable_irq(info->tsirq);
+ 
+ 	return 0;
+@@ -721,6 +725,8 @@ static void exynos_adc_ts_close(struct input_dev *dev)
+ {
+ 	struct exynos_adc *info = input_get_drvdata(dev);
+ 
++	info->ts_enabled = false;
++	mb();
+ 	disable_irq(info->tsirq);
+ }
+ 
+-- 
+2.28.0.806.g8561365e88-goog
+
 
 -- 
 Dmitry

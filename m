@@ -2,147 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 251E32841BE
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Oct 2020 22:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9445F284362
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Oct 2020 02:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgJEUzy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Oct 2020 16:55:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46660 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725997AbgJEUzt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Oct 2020 16:55:49 -0400
-Received: from earth.universe (dyndsl-095-033-158-146.ewe-ip-backbone.de [95.33.158.146])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8DB5207EA;
-        Mon,  5 Oct 2020 20:55:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601931347;
-        bh=RauhoP+lY6PB4M6PjyFmPFjt0my1MIgv0r1A7kpjI2k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HkOPmEqswDfagOwa/8h6eYeJ28nUpx4kzUzMEiO5C2WpZ/JyxwPsMpOCvfalXuv/N
-         SHdwGJl0wavO+zZoAFWHwvQtMiirhu1+TeuQnuYzBjE+S+5qOuOKtkPXd2EjrwLySS
-         ddJlXztUaG/j988mXtEhLvSqV8GY7zi9RJGnOy4s=
-Received: by earth.universe (Postfix, from userid 1000)
-        id B9D193C0C87; Mon,  5 Oct 2020 22:55:45 +0200 (CEST)
-Date:   Mon, 5 Oct 2020 22:55:45 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>, dmaengine@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jens Axboe <axboe@kernel.dk>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        id S1725872AbgJFAeE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Oct 2020 20:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725865AbgJFAeE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Oct 2020 20:34:04 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 412DDC0613CE;
+        Mon,  5 Oct 2020 17:34:04 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id nl2so695950pjb.1;
+        Mon, 05 Oct 2020 17:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=IXQFOUHrH8bt86SLgjOWRJ9SpW6/8NcDU5WZWejyEGs=;
+        b=hKjsXNmSEgGgBUoiWA5tATc5pz3P+Ovdzi9HDFr3sc0TA8enS3QcMiPxn/v+TUayf0
+         OmpzJm6VdjN5mlJ1gU9VGj/WqZGlYW9ebrm/GsP4Ck3vQJOhZLBpSF2FZIQ5BC9QRrSz
+         FKcZ+spZs4tA6iPPafzLANU2JvQweRRfFMDLcVN/VuucH3T4J24EzRubHw39CbRLe6Ce
+         cazuuPmfbIB/IkPTqkNjTeVe753efXzo+njkx7o0uHSvOmLPqbamsAGHBz4JVHGemTTe
+         w+4zx7sgTaHNQuYMofsjiN2ftVAI38PxYHVmVDTWZ3l47HjffULLlFNB57QfGI7tGEBp
+         FY3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=IXQFOUHrH8bt86SLgjOWRJ9SpW6/8NcDU5WZWejyEGs=;
+        b=huMqdWxRoUG+mVhLJUfRh7ygtXT/Wkon3NFZUT3ayBrB/sYbzEWGMdy/iHlr1Z1DoH
+         JrOMQyX8oAFCGPbixmBstev0cFZzoS36buu5PIHBY1KloVoeV/fE4IQvfW11cuBVZWcG
+         OFz19E4EH1VLCcUZ5yh5UbR4lNKRDBW2j5+kCJKhX0aej2EjDRV8R/HxoRZ58tk9A66H
+         a1DIhyD1slvSl48gVecGchJcDTlIc8/mbaBEu9nDXevdutqwmWMIdi5VAWz4VFFx4DM0
+         Jhd5kYuOJBAa+5YuwIg9As4oBr3lsLTMPtdOzXoHr2tNN6WK6NQnxDQYz8DAp46UvDiM
+         nCiw==
+X-Gm-Message-State: AOAM533Biw9Lxu9L+qotWmynA9z2dxZEV7q7ymUUWObqXkyVU7iDTKxb
+        MZniKK2kQuqEbpnF20qRSlubdHMXJmQ=
+X-Google-Smtp-Source: ABdhPJx60QfTP8SkwhetSwFfjmOhuCp2Wgxwfoy0efqga5UqMXt7YfzCnEtpb1OAS6o5ZjHkUBbCuA==
+X-Received: by 2002:a17:90a:bf03:: with SMTP id c3mr1950157pjs.65.1601944443594;
+        Mon, 05 Oct 2020 17:34:03 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id v9sm763862pjh.2.2020.10.05.17.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2020 17:34:02 -0700 (PDT)
+Date:   Mon, 5 Oct 2020 17:34:00 -0700
+From:   dmitry.torokhov@gmail.com
+To:     =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Pavel Machek <pavel@ucw.cz>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Richard Weinberger <richard@nod.at>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 4/4] dt-bindings: Explicitly allow additional properties
- in common schemas
-Message-ID: <20201005205545.sqvohrh7jpt7w63w@earth.universe>
-References: <20201005183830.486085-1-robh@kernel.org>
- <20201005183830.486085-5-robh@kernel.org>
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: exynos: do not rely on 'users' counter in ISR
+Message-ID: <20201006003400.GN1009802@dtor-ws>
+References: <20201005052420.GA3262631@dtor-ws>
+ <20201005110908.GA3243@qmqm.qmqm.pl>
+ <20201005173636.GK1009802@dtor-ws>
+ <20201005190010.GA29936@qmqm.qmqm.pl>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7db5qni5yh4rtlce"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201005183830.486085-5-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201005190010.GA29936@qmqm.qmqm.pl>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Oct 05, 2020 at 09:00:10PM +0200, Michał Mirosław wrote:
+> On Mon, Oct 05, 2020 at 10:36:36AM -0700, dmitry.torokhov@gmail.com wrote:
+> > Hi Michał,
+> > 
+> > On Mon, Oct 05, 2020 at 01:09:08PM +0200, Michał Mirosław wrote:
+> > > and breaking the loop will desync touch
+> > > state (I would guess this would be noticable by next user).
+> > Upon next open driver will service the interrupt and provide new set of
+> > touch coordinates. Userspace is supposed to query current state of
+> > device when opening it before starting processing events. Or you are
+> > concerned about some other state?
+> 
+> From the code I would expect that there is a slight window, wher when the
+> user releases the touch between close() and open(), the client that open()s
+> will see a 'pressed' state until the ISR runs again (probably immediately
+> because of pending interrupt). OTOH, maybe the app should be prepared
+> for that anyway?
 
---7db5qni5yh4rtlce
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I think users should be prepared for it. There could be many users, so
+anyone opening interface device (evdev or similar) can not expect that
+the hardware device is in a quiesce state; it could just happen that
+finger was on the surface and will be released as someone is opening the
+device anyway.
 
-Hi,
+Thanks.
 
-On Mon, Oct 05, 2020 at 01:38:30PM -0500, Rob Herring wrote:
-> In order to add meta-schema checks for additional/unevaluatedProperties
-> being present, all schema need to make this explicit. As common/shared
-> schema are included by other schemas, they should always allow for
-> additionalProperties.
->=20
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  [...]
->  .../devicetree/bindings/power/supply/power-supply.yaml       | 2 ++
->  [...]
-
-Acked-by: Sebastian Reichel <sre@kernel.org>
-
--- Sebastian
-
---7db5qni5yh4rtlce
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl97iEsACgkQ2O7X88g7
-+pr9vg//fpVYpKsaZc4pw203Kmzwve+W4z3OPaQS7g1Y93QHWykKxFYpCgOrbmA7
-Ikwy3xwBLfMhPIUs8KZDsiaLVkKTi9XJifhEKiG4Uz772vFOZqAPgskcT6Sx4+iN
-4lqd7WmgV3hGelDss8qw6dQ1FY0/MHuMXvoDeNHTvqi0ZhttRrQmOEO6spkWL1io
-39Au/Pxbh2dK06Y7Y0qoKlqCKxnL4fWlUjFqJkJI+d4LjK/XYvukOTPmAhEYfP2H
-tZ38WZd/3SxwQD+Nh6ZJCfKC54D00G54g+fkxhaiypSSgI1IPWfIsrqPfPnVMowq
-wI2fo/C10LMZ1kqUi/LCW+OET8aePRkYjUMWZ2GBNRY9MJCJH/WkOPy7PaKHrOfU
-EdJx9OH7guvFWaEJGhClazwYS6QkM8CEKy7Nd5nJTeQOBEg/p2Lb2etNPNq34nju
-o9euArIjrnqbHK5X9Ijyvhaqw3bxsVPmPkOGUayDMB44UtwHNFqIosmboJnkJ6bt
-BGS1zVnJs2sdLMqMZcCwfHGoX00rThZgvCACDas7fVEdsZgtaEnCW8aySbWCKPdY
-1gtR+xdosJheKba+kMxfhmR0nm62rAmJvS9XOZaBY+cveye5NtC3kvk+Al5ixucd
-jYmH3Iudn+0hC44ZPGUl49YUa5cwsX8NZlyh8ItyWm/x+WiVyb8=
-=9y9P
------END PGP SIGNATURE-----
-
---7db5qni5yh4rtlce--
+-- 
+Dmitry

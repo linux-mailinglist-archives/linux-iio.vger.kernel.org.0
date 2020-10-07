@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CEAF285623
+	by mail.lfdr.de (Postfix) with ESMTP id BE878285624
 	for <lists+linux-iio@lfdr.de>; Wed,  7 Oct 2020 03:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727099AbgJGBRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1727110AbgJGBRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 6 Oct 2020 21:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50866 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727097AbgJGBRm (ORCPT
+        with ESMTP id S1727087AbgJGBRm (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Oct 2020 21:17:42 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931C7C0613D4
-        for <linux-iio@vger.kernel.org>; Tue,  6 Oct 2020 18:17:40 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id 34so314898pgo.13
-        for <linux-iio@vger.kernel.org>; Tue, 06 Oct 2020 18:17:40 -0700 (PDT)
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B73C0613D7
+        for <linux-iio@vger.kernel.org>; Tue,  6 Oct 2020 18:17:41 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id 144so380804pfb.4
+        for <linux-iio@vger.kernel.org>; Tue, 06 Oct 2020 18:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wwcKo51Wb1Z8EGzntv8DWG85B5SZsF7AJ7GbGFyxohQ=;
-        b=Jyb3RvSAMZGM7KSDjSeqpe4m8AAoVyAvRkrSXmCC7gzSrTUIPymZDjTzh4QFM+K6aw
-         JIcSgkao5+8OuKHZBfTCbZpCmBA8qIR9Hp0/hI7XhsS6w9KdNwnUIkeKnvWMKioOtx1I
-         6tJp1qJj28VVg7wtXBWzwLhadspF58dsZeuYM=
+        bh=6s2rUyIhHoR4qKNTzxmszZi7AfKkr8P4gJKIqWc5ulE=;
+        b=eGZDJQUMleSYIV0HKTKITDCfW5XpRAzbMYj9Ok/kvM1c6JEJxgLkw0zm5YUjGeHZDM
+         l5XccqQ0OXV/iwISTm2V6M6g1Fk1/jjAPBZey0b8O6Nlc+YC6oNptaJoHtZ7Qse03hqm
+         CMq+vkacQ2JRd6hE65LnDWSpnMs1c0SZS8lEo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wwcKo51Wb1Z8EGzntv8DWG85B5SZsF7AJ7GbGFyxohQ=;
-        b=P0MiJvWVQeEN6TkBfiMt2SVsjXbeD7cC2NR2Fl+q4b70ZRE+EpaMlX1JMonqnZDkbL
-         Ed/gNw8UaNNblgUxdZwKxD9UdqXGZsorNzSW+uHwN3llLdwRskEZZ0mtLSWTgNHJsWPb
-         qW0AnjrvwKAmYR0Lh0X9KlevuqSgmjVL4wX8nWHjR0nuGbMGjKeb+e06OC+IL6s/J1Dz
-         LH74JUuYrDfgk5C60HpfJn/ozKnwgfPO3ABDXphEpUcITd1BCO+e93UX2+8mVfkVnUcD
-         +xRd+IfIhGtfyjgn1bLNdoZcaZwpZP2sk10GAqbJWQ94HXH/5+ExStXmQWPAGLdF9+BN
-         YyTw==
-X-Gm-Message-State: AOAM533H3dC8MBvEfKwwxXAP7qZqygqCbkwCC+UvpJ+z4QtJf3m2FZOY
-        eOGszQm4MvBYAtFkj2oEAm30fg==
-X-Google-Smtp-Source: ABdhPJz9psZfDbPlXxoosYLG7JwYe/vPGGUY191I0C4oWFpK03/Eccr1qI/p+bvmUFLN8iVqKLeTzg==
-X-Received: by 2002:a63:f807:: with SMTP id n7mr810721pgh.311.1602033460124;
-        Tue, 06 Oct 2020 18:17:40 -0700 (PDT)
+        bh=6s2rUyIhHoR4qKNTzxmszZi7AfKkr8P4gJKIqWc5ulE=;
+        b=Jw7ZOq5UszwoEgd3OUQuAwaOcqEDp2gl2pMgrnwD0BORfIt/3yI8GqVkyBMkTf7h+h
+         lBoCASkTGWOFYeGy8cqHfSW3PEGH8dAD2Ly/wkwoRrNSA1ksM15r5yFxK+/zOLqugdrO
+         Oiy2qglHJU/Gi1nUfXNYLpsNllWW5pCgTxuXQ2ZeyGT5E3Cp6hlNR7D+PqUgJVqn+VZA
+         Ysi3aotQ8h5zvX6Np1sVOT27h05qH/a+48SWKBZtEgsjrfuCam1oM+1KDHIKmnCkS8eh
+         zqWW4cg96hphqAC84IkGl/aFQCivxi9cE+6TKk+a1SeI/B1QDevyR04T3JZ51pNKQElW
+         6ySA==
+X-Gm-Message-State: AOAM532rFxI2tG7nTgAqHF+kd3dXJvnrkPsao33pYYFfEivnWR96NIcf
+        l/rEMdrcJxD10MTsXNysEQtyfg==
+X-Google-Smtp-Source: ABdhPJyD0hcqeYSUzaEuncbK1UaOIRChc1U2PEqWaYKhOeFKbSymCgxSlotTuEe8SSPhriwuUMTPKw==
+X-Received: by 2002:a63:2406:: with SMTP id k6mr823418pgk.366.1602033461399;
+        Tue, 06 Oct 2020 18:17:41 -0700 (PDT)
 Received: from smtp.gmail.com ([2620:15c:202:201:3e52:82ff:fe6c:83ab])
-        by smtp.gmail.com with ESMTPSA id z190sm482654pfc.89.2020.10.06.18.17.38
+        by smtp.gmail.com with ESMTPSA id z190sm482654pfc.89.2020.10.06.18.17.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2020 18:17:39 -0700 (PDT)
+        Tue, 06 Oct 2020 18:17:40 -0700 (PDT)
 From:   Stephen Boyd <swboyd@chromium.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Douglas Anderson <dianders@chromium.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Evan Green <evgreen@chromium.org>
-Subject: [PATCH v3 2/6] iio: sx9310: Support setting proximity thresholds
-Date:   Tue,  6 Oct 2020 18:17:31 -0700
-Message-Id: <20201007011735.1346994-3-swboyd@chromium.org>
+Subject: [PATCH v3 3/6] iio: sx9310: Support setting hysteresis values
+Date:   Tue,  6 Oct 2020 18:17:32 -0700
+Message-Id: <20201007011735.1346994-4-swboyd@chromium.org>
 X-Mailer: git-send-email 2.28.0.806.g8561365e88-goog
 In-Reply-To: <20201007011735.1346994-1-swboyd@chromium.org>
 References: <20201007011735.1346994-1-swboyd@chromium.org>
@@ -65,7 +65,12 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support to set the proximity thresholds for each channel.
+Add support for setting the hysteresis as a shifted value of a channel's
+proximity threshold. Each channel can have a different threshold, but
+the hysteresis applies to all channels as a right shift factor.
+Therefore, duplicate the hysteresis value across all channels and make
+it depend on the channel's proximity threshold. This is sort of odd but
+seems to work in practice as most of the time only one channel is used.
 
 Cc: Daniel Campello <campello@chromium.org>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -75,148 +80,117 @@ Cc: Gwendal Grignou <gwendal@chromium.org>
 Cc: Evan Green <evgreen@chromium.org>
 Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 ---
- drivers/iio/proximity/sx9310.c | 114 +++++++++++++++++++++++++++++++++
- 1 file changed, 114 insertions(+)
+ drivers/iio/proximity/sx9310.c | 62 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 61 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-index 030397a85845..35e927dc4f66 100644
+index 35e927dc4f66..9eb10e8263e7 100644
 --- a/drivers/iio/proximity/sx9310.c
 +++ b/drivers/iio/proximity/sx9310.c
-@@ -68,6 +68,7 @@
- #define   SX9310_REG_PROX_CTRL7_AVGNEGFILT_2		(0x01 << 3)
- #define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_512		0x05
- #define SX9310_REG_PROX_CTRL8				0x18
-+#define   SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK		GENMASK(7, 3)
- #define SX9310_REG_PROX_CTRL9				0x19
- #define   SX9310_REG_PROX_CTRL8_9_PTHRESH_28		(0x08 << 3)
- #define   SX9310_REG_PROX_CTRL8_9_PTHRESH_96		(0x11 << 3)
-@@ -531,6 +532,117 @@ static int sx9310_read_avail(struct iio_dev *indio_dev,
- 	return -EINVAL;
+@@ -75,6 +75,7 @@
+ #define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_900	0x03
+ #define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_1500	0x05
+ #define SX9310_REG_PROX_CTRL10				0x1a
++#define   SX9310_REG_PROX_CTRL10_HYST_MASK		GENMASK(5, 4)
+ #define   SX9310_REG_PROX_CTRL10_HYST_6PCT		(0x01 << 4)
+ #define   SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_2		0x01
+ #define SX9310_REG_PROX_CTRL11				0x1b
+@@ -149,7 +150,9 @@ static const struct iio_event_spec sx9310_events[] = {
+ 	{
+ 		.type = IIO_EV_TYPE_THRESH,
+ 		.dir = IIO_EV_DIR_EITHER,
+-		.mask_separate = BIT(IIO_EV_INFO_ENABLE) | BIT(IIO_EV_INFO_VALUE),
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE) |
++				 BIT(IIO_EV_INFO_HYSTERESIS) |
++				 BIT(IIO_EV_INFO_VALUE),
+ 	},
+ };
+ 
+@@ -574,6 +577,30 @@ static int sx9310_read_thresh(struct sx9310_data *data,
+ 	return IIO_VAL_INT;
  }
  
-+static const unsigned int sx9310_pthresh_codes[] = {
-+	2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 72, 80, 88, 96, 112,
-+	128, 144, 160, 192, 224, 256, 320, 384, 512, 640, 768, 1024, 1536
-+};
-+
-+static int sx9310_get_thresh_reg(unsigned int channel)
++static int sx9310_read_hysteresis(struct sx9310_data *data,
++				  const struct iio_chan_spec *chan, int *val)
 +{
-+	switch (channel) {
-+	case 0:
-+	case 3:
-+		return SX9310_REG_PROX_CTRL8;
-+	case 1:
-+	case 2:
-+		return SX9310_REG_PROX_CTRL9;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int sx9310_read_thresh(struct sx9310_data *data,
-+			      const struct iio_chan_spec *chan, int *val)
-+{
-+	unsigned int reg;
-+	unsigned int regval;
++	unsigned int regval, pthresh;
 +	int ret;
 +
-+	reg = ret = sx9310_get_thresh_reg(chan->channel);
++	ret = sx9310_read_thresh(data, chan, &pthresh);
 +	if (ret < 0)
 +		return ret;
 +
-+	ret = regmap_read(data->regmap, reg, &regval);
++	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL10, &regval);
 +	if (ret)
 +		return ret;
 +
-+	regval = FIELD_GET(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
-+	if (regval > ARRAY_SIZE(sx9310_pthresh_codes))
-+		return -EINVAL;
++	regval = FIELD_GET(SX9310_REG_PROX_CTRL10_HYST_MASK, regval);
++	if (!regval)
++		regval = 5;
 +
-+	*val = sx9310_pthresh_codes[regval];
++	/* regval is at most 5 */
++	*val = pthresh >> (5 - regval);
++
 +	return IIO_VAL_INT;
 +}
 +
-+static int sx9310_read_event_val(struct iio_dev *indio_dev,
-+				 const struct iio_chan_spec *chan,
-+				 enum iio_event_type type,
-+				 enum iio_event_direction dir,
-+				 enum iio_event_info info, int *val, int *val2)
+ static int sx9310_read_event_val(struct iio_dev *indio_dev,
+ 				 const struct iio_chan_spec *chan,
+ 				 enum iio_event_type type,
+@@ -588,6 +615,8 @@ static int sx9310_read_event_val(struct iio_dev *indio_dev,
+ 	switch (info) {
+ 	case IIO_EV_INFO_VALUE:
+ 		return sx9310_read_thresh(data, chan, val);
++	case IIO_EV_INFO_HYSTERESIS:
++		return sx9310_read_hysteresis(data, chan, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -623,6 +652,35 @@ static int sx9310_write_thresh(struct sx9310_data *data,
+ 	return ret;
+ }
+ 
++static int sx9310_write_hysteresis(struct sx9310_data *data,
++				   const struct iio_chan_spec *chan, int _val)
 +{
-+	struct sx9310_data *data = iio_priv(indio_dev);
++	unsigned int hyst, val = _val;
++	int ret, pthresh;
 +
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		return sx9310_read_thresh(data, chan, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int sx9310_write_thresh(struct sx9310_data *data,
-+			       const struct iio_chan_spec *chan, int val)
-+{
-+	unsigned int reg;
-+	unsigned int regval;
-+	int ret, i;
-+
-+	reg = ret = sx9310_get_thresh_reg(chan->channel);
++	ret = sx9310_read_thresh(data, chan, &pthresh);
 +	if (ret < 0)
 +		return ret;
 +
-+	for (i = 0; i < ARRAY_SIZE(sx9310_pthresh_codes); i++) {
-+		if (sx9310_pthresh_codes[i] == val) {
-+			regval = i;
-+			break;
-+		}
-+	}
-+
-+	if (i == ARRAY_SIZE(sx9310_pthresh_codes))
++	if (val == 0)
++		hyst = 0;
++	else if (val == pthresh >> 2)
++		hyst = 3;
++	else if (val == pthresh >> 3)
++		hyst = 2;
++	else if (val == pthresh >> 4)
++		hyst = 1;
++	else
 +		return -EINVAL;
 +
-+	regval = FIELD_PREP(SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
++	hyst = FIELD_PREP(SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
 +	mutex_lock(&data->mutex);
-+	ret = regmap_update_bits(data->regmap, reg,
-+				 SX9310_REG_PROX_CTRL8_9_PTHRESH_MASK, regval);
++	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL10,
++				 SX9310_REG_PROX_CTRL10_HYST_MASK, hyst);
 +	mutex_unlock(&data->mutex);
 +
 +	return ret;
 +}
-+
-+
-+static int sx9310_write_event_val(struct iio_dev *indio_dev,
-+				  const struct iio_chan_spec *chan,
-+				  enum iio_event_type type,
-+				  enum iio_event_direction dir,
-+				  enum iio_event_info info, int val, int val2)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		return sx9310_write_thresh(data, chan, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int sx9310_set_samp_freq(struct sx9310_data *data, int val, int val2)
- {
- 	int i, ret;
-@@ -744,6 +856,8 @@ static const struct iio_info sx9310_info = {
- 	.attrs = &sx9310_attribute_group,
- 	.read_raw = sx9310_read_raw,
- 	.read_avail = sx9310_read_avail,
-+	.read_event_value = sx9310_read_event_val,
-+	.write_event_value = sx9310_write_event_val,
- 	.write_raw = sx9310_write_raw,
- 	.read_event_config = sx9310_read_event_config,
- 	.write_event_config = sx9310_write_event_config,
+ 
+ static int sx9310_write_event_val(struct iio_dev *indio_dev,
+ 				  const struct iio_chan_spec *chan,
+@@ -638,6 +696,8 @@ static int sx9310_write_event_val(struct iio_dev *indio_dev,
+ 	switch (info) {
+ 	case IIO_EV_INFO_VALUE:
+ 		return sx9310_write_thresh(data, chan, val);
++	case IIO_EV_INFO_HYSTERESIS:
++		return sx9310_write_hysteresis(data, chan, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
 Sent by a computer, using git, on the internet
 

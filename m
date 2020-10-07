@@ -2,237 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68AF3285C1A
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Oct 2020 11:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4300F285C95
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Oct 2020 12:11:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbgJGJvN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Oct 2020 05:51:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28174 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727103AbgJGJvN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Oct 2020 05:51:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602064270;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=m958hudxx49m0O7P9c8/mOazvI4QqEIilIX/pUlyaVg=;
-        b=FKreiwKCzrmFn763RL9UR9ejq+MhqJymPXzzQv10tct3ZXK6frCJJ14yfi04IP6fVadm3j
-        b9ejzWAvwRXLlL43sSpNrKoDlqipbxJXBQmQvHKXnhi8B5BBT4TxfOzcWrhsEhf5NTp45X
-        YpReJl47trY6F2CHXPjWgR5KcBQH1JU=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-331-MveTAstLOYycztEbTXcdRA-1; Wed, 07 Oct 2020 05:51:09 -0400
-X-MC-Unique: MveTAstLOYycztEbTXcdRA-1
-Received: by mail-ed1-f72.google.com with SMTP id o24so668345edz.11
-        for <linux-iio@vger.kernel.org>; Wed, 07 Oct 2020 02:51:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=m958hudxx49m0O7P9c8/mOazvI4QqEIilIX/pUlyaVg=;
-        b=RM3DQatxZb/ZeWGdwF7vRbfk5nn+297ZiCqgEwmhnU7vb6KgXGPHvlaYioGsorisgx
-         8guRXoHvYAqbOUhX/qUf1oDrBE1nzdMCfUy0EpA7RNQ8FnF5Z701d5rb2WxFDwRoCIC9
-         cvTujrFTAeS1iyp6SK69aN3zWoFCSNclKXEkC3gUpIPCWTcC5ZBz8umEaeTg5xQ546/C
-         a0zX2bR1grnoJGLn8mxRz9byJAQltJL+YSGOHtBWk0iPzOPBeETcCDK5Are8/8eUdLF8
-         tcvioc6IDC2CgPXzDePupu1JyNQ9r3eaiHORplR4orkgkK8uT2rKnUiJJkOgeMw5H4Ip
-         //kg==
-X-Gm-Message-State: AOAM530899CRH/F7wTAijZiVF7iEO+iO7z4zJ3huquIgVGaIYwx/Mh3N
-        5FTR8R9Y9a1le3CJSI1CqyFAOyHOyOomDDk2STgiMhqNbvpcOBf7XHgrBW/lY/98eze2SraWw2M
-        RMSdZOFYdO/ee1YwWl1Ut
-X-Received: by 2002:a05:6402:5:: with SMTP id d5mr2582007edu.376.1602064267523;
-        Wed, 07 Oct 2020 02:51:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJy9NJlEjarv3RRToDiEiyDmwC3/G6oLV+2ggZZc1Xjx2AMv4YfFGhdXAM+MslCGsi6SS3OVGg==
-X-Received: by 2002:a05:6402:5:: with SMTP id d5mr2581988edu.376.1602064267235;
-        Wed, 07 Oct 2020 02:51:07 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
-        by smtp.gmail.com with ESMTPSA id m19sm1122931ejj.91.2020.10.07.02.51.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Oct 2020 02:51:06 -0700 (PDT)
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     linux-iio@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
-        Nitin Joshi1 <njoshi1@lenovo.com>, linux-input@vger.kernel.org,
-        dmitry.torokhov@gmail.com
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
-Date:   Wed, 7 Oct 2020 11:51:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727861AbgJGKLv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Oct 2020 06:11:51 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:54708 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727014AbgJGKLv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:11:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602065510; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=ioiudp9XALfKdIVzKVk4P9/mHsW/D6jALV6wDdyxdnQ=; b=IfQMh/rLsKtmbJPtirFvDxFg/2xq+UeE/itk8in9cql3MMoS/NPCvrqz4H85cU0RElVjZrMp
+ 38cy7IqKUgrNEhOWPFm+nC8HHNmiE9pIpSgk+Bp9STGQdNnjlyBV2SxPAObVLtqLx6ybmUpB
+ S7J52SXUesOs/Iib+6e+/qX/qcE=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5f7d9466319d4e9cb51b6a1f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Oct 2020 10:11:50
+ GMT
+Sender: jprakash=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0E2F8C433FF; Wed,  7 Oct 2020 10:11:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from [192.168.1.100] (unknown [157.46.213.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jprakash)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B4A43C433CB;
+        Wed,  7 Oct 2020 10:11:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B4A43C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jprakash@codeaurora.org
+Subject: Re: [PATCH v6 07/10] thermal: qcom: add support for adc-tm5 PMIC
+ thermal monitor
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jishnu Prakash <jprakash@qti.qualcomm.com>
+References: <20200930100203.1988374-1-dmitry.baryshkov@linaro.org>
+ <20200930100203.1988374-8-dmitry.baryshkov@linaro.org>
+From:   Jishnu Prakash <jprakash@codeaurora.org>
+Message-ID: <073bec11-cd9e-7c3b-ae89-50486d36337a@codeaurora.org>
+Date:   Wed, 7 Oct 2020 15:41:40 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20201007083602.00006b7e@Huawei.com>
+In-Reply-To: <20200930100203.1988374-8-dmitry.baryshkov@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Hi Dmitry,
 
-On 10/7/20 10:36 AM, Jonathan Cameron wrote:
-> On Mon, 5 Oct 2020 22:04:27 -0400
-> Mark Pearson <markpearson@lenovo.com> wrote:
-> 
->> Adding Nitin, lead for this feature, to the thread
-> 
-> +CC linux-input and Dmitry for reasons that will become clear below.
->>
->> On 2020-10-03 10:02 a.m., Hans de Goede wrote:
->>> Hi All,
->>>
->>> Modern laptops can have various sensors which are kinda
->>> like proximity sensors, but not really (they are more
->>> specific in which part of the laptop the user is
->>> proximate to).
->>>
->>> Specifically modern Thinkpad's have 2 readings which we
->>> want to export to userspace, and I'm wondering if we
->>> could use the IIO framework for this since these readings
->>> are in essence sensor readings:
->>>
->>> 1. These laptops have a sensor in the palm-rests to
->>> check if a user is physically proximate to the device's
->>> palm-rests. This info will be used by userspace for WWAN
->>> functionality to control the transmission level safely.
->>>
->>> A patch adding a thinkpad_acpi specific sysfs API for this
->>> is currently pending:
->>> https://patchwork.kernel.org/patch/11722127/
->>>
->>> But I'm wondering if it would not be better to use
->>> IIO to export this info.
-> 
-> My first thought on this is it sounds more like a key than a sensor
-> (simple proximity sensors fall into this category as well.)
+diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c 
+b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+> new file mode 100644
+> index 000000000000..22d5414a3c5e
+> --- /dev/null
+> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+> @@ -0,0 +1,621 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+> + * Copyright (c) 2020 Linaro Limited
+> + */
+> +
+> +#include <linux/iio/consumer.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <linux/thermal.h>
+> +
+> +#include "../../iio/adc/qcom-vadc-common.h"
+> +
 
-That is an interesting suggestion. Using the input/evdev API
-would have some advantages such as being able to have a single
-event node for all the proximity switches and then being able
-to pass a fd to that from a privileged process to a non
-privileged one, something which userspace already has
-various infrastructure for.
+When I was testing the patches on SC7180, I found that I had to add this 
+line for fixing a compilation error for the FIELD_PREP macro:
 
-So yes this might indeed be better. Dmitry any thoughts on
-this / objections against using the input/evdev API for this?
+#include <linux/bitfield.h>
 
-Note: s/key/switch/ in "sounds more like a key" above I guess.
+Can you please check and confirm if its needed for compilation here?
 
-> Dmitry, any existing stuff like this in input?
+Thanks,
 
-There already is a SW_FRONT_PROXIMITY defined in
-input-event-codes.h, which I guess means detection if
-someone is sitting in front of the screen. So we could add:
-
-SW_LAP_PROXIMITY
-SW_PALMREST_PROXIMITY,
-
-And then we have a pretty decent API for this I think.
-
-> If it does make sense to put it in IIO then rest of the questions
-> obviously relevant.
-
-Ack, thank you for your input.
-
-Regards,
-
-Hans
-
-
-
-
-
->>> 2. These laptops have something called lap-mode, which
->>> determines if the laptop's firmware thinks that it is on
->>> a users lap, or sitting on a table. This influences the
->>> max. allowed skin-temperature of the bottom of the laptop
->>> and thus influences thermal management.  Like the palm-rest
->>> snesors, this reading will likely also be used for
->>> controlling wireless transmission levels in the future.
->>>
->>> Note that AFAIK the lap_mode reading is not a single sensor
->>> reading, it is a value derived from a bunch of sensor readings,
->>> the raw values of which may or may not be available
->>> separately.
->>>
->>> So looking at existing IIO userspace API docs, focussing on
->>> proximity sensors I see:
->>>
->>> Documentation/ABI/testing/sysfs-bus-iio
->>> Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935
->>>
->>> Where the latter seems to not really be relevant.
-> 
-> Indeed, that one is a very odd beast :) (lightning sensor)
-> 
->>>
->>>   From the generic IO API doc, this bit is the most
->>> interesting:
->>>
->>> What:           /sys/.../iio:deviceX/in_proximity_raw
->>> What:           /sys/.../iio:deviceX/in_proximity_input
->>> What:           /sys/.../iio:deviceX/in_proximityY_raw
->>> KernelVersion:  3.4
->>> Contact:        linux-iio@vger.kernel.org
->>> Description:
->>>                   Proximity measurement indicating that some
->>>                   object is near the sensor, usually by observing
->>>                   reflectivity of infrared or ultrasound emitted.
->>>                   Often these sensors are unit less and as such conversion
->>>                   to SI units is not possible. Higher proximity measurements
->>>                   indicate closer objects, and vice versa. Units after
->>>                   application of scale and offset are meters.
->>>
->>> This seems to be a reasonable match for the Thinkpad sensors
->>> we are discussing here, although those report a simple
->>> 0/1 value.
-> 
-> Given this is a bit of computed estimate rather than a true reading, I wonder
-> a bit if we should treat it as closer to an 'activity classification sensor'.
-> 
-> For those we use a percentage value to represent the output of some probabilistic
-> classifier.  In reality all the versions we've had so far aren't that clever though
-> so they only output 0 or 100%.  See in_activity_walking_input in the docs for
-> example.
-> 
->>>
->>> What is missing for the ThinkPad case is something like this:
->>>
->>> What:        /sys/.../iio:deviceX/proximity_sensor_location
->>> KernelVersion:  5.11
->>> Contact:        linux-iio@vger.kernel.org
->>> Description:
->>>           Specifies the location of the proximity sensor /
->>>           specifies proximity to what the sensor is measuring.
->>>           Reading this file returns a string describing this, valid values
->>>           for this string are: "screen", "lap", "palmrest"
->>>           Note the list of valid values may be extended in the
->>>           future.
->>>
->>> So what do you (IIO devs) think about this?
->>>
->>> Would adding a proximity_sensor_location attribute be a reasonable
->>> thing to do for this; and do you think that this would be a good idea ?
-> 
-> Absolutely fine.  There is precedence in cros_ec which has a generic
-> location sysfs attribute (not associated with a particular channel though
-> it is fine to do that as well). See Documentation/ABI/testing/sysfs-bus-iio-cros_ec
-> We haven't moved it to the general docs because there is only one device
-> providing it so far.  Hence we would move it with the introduction of
-> this second device.
-> 
->>>
->>> Regards,
->>>
->>> Hans
->>>    
-> 
-> 
+Jishnu
 

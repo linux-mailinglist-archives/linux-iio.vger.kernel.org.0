@@ -2,137 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 512FB2855CA
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Oct 2020 03:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17BB4285604
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Oct 2020 03:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727133AbgJGBE7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Oct 2020 21:04:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48864 "EHLO
+        id S1726652AbgJGBLI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Oct 2020 21:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbgJGBE5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Oct 2020 21:04:57 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05310C061755;
-        Tue,  6 Oct 2020 18:04:57 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id f19so347028pfj.11;
-        Tue, 06 Oct 2020 18:04:57 -0700 (PDT)
+        with ESMTP id S1726197AbgJGBLI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Oct 2020 21:11:08 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 182D3C061755;
+        Tue,  6 Oct 2020 18:11:08 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id 34so306625pgo.13;
+        Tue, 06 Oct 2020 18:11:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0/bWrGoCkUT1XKG15S3LcPCeuj/9H6SulVmeatRXh2o=;
-        b=o3Pwy5wYAD2KjHFxqx8zJn29Vs5mbvXSBjNxI6P7OabTpsU/U0SGpYd4FsvkK/Ndjy
-         o6haFaQLhrlga1BZAonVWdmnYb32RwDlKDv1iNZSfD0mkYhL6AlLSFycnS+oYFh7ZUp1
-         TkX5mqfIN4mnxWvwmM0DfqKMDy+og8IZ+jNqBte63Si7LyqSrYcSS5VQLfQgB80bmtjl
-         SLVjNURG8b+QRtDeh3cy+5wKhP+/ucXDk7OVxpSlq1MvLPkb9wEBt0slTTHRiZnkT43r
-         0Da6jEuUUaW5qy0DOhRMGh0Fme25JQoAZtM8rFDZY+jZY5w1aTzbtncjcS61sVCE0zAC
-         N0gQ==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=6fZCLYVp6vJOGJ9UOukLRU5lx5R2NISCZkWVL54zOGg=;
+        b=S5qiUfGndIGUy172Th8X9wui1g/KqnJ8Yz9sLsLNl6YQAUDRK5o7EcFi+xf0zez4lU
+         NIXSdgW3vrt0s+GUQUGbX7OxXqwbkWXD8m+33T0GyZeAvoW74hyWXw6rRstZY5gebvPs
+         ToVQFWRd27he3+qYh1jDNPmGoO4cRbwezUjcdzkhN2PE9k4bNM8+siHYH9dVL+LVs/rA
+         WtSwbSGfCrU+7r3dpVt4XalVIcZDhg5JLS/EJsSHAJVlSgJMg9IZUNRkbGA0Zqb9Gmgi
+         gr9smdR0mAVR4vuPF1ehlmGsMQ1hU3sk75bTMYGwRjIzT4yKn9xchLknf4gNlQxMAG8X
+         CDWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0/bWrGoCkUT1XKG15S3LcPCeuj/9H6SulVmeatRXh2o=;
-        b=a1G6fi1EodDtoVqkE/ZT2MnTfw0f2v/KMbVKBUpDm+H0nyJo6IMNpfa4xf0hApNsX1
-         aGWNwS08gSEgXttXhYrR42K4tTGJd/VuXoRBbLtVhrewU6jloBUPZJZ+1uwelYC2ethb
-         zzK2ZRdBzJKbY3EdHRSJlRr3P7YO16rQEJi1QXF0L3RuLxdbXJAmBSKrTnEX+kF1R3zq
-         z2RCdow+vBfYQYCIbnH4sHRbJNIYS3yhQbJroWbyCubaxyea5SeuQ+ov/JzW7JQSzNz/
-         7atR/dTqzRirDFdE2VQDvJLmRow1iJXBHRBTBahZA2V0WcFIBd807CpanfCMKmXgO8Zx
-         sWbg==
-X-Gm-Message-State: AOAM530ox5GdVqIrBjAmv6bpsb1PtVtM9IjCvT623EvKyVDR+nZwbeoN
-        +xQBnXXcJSkVO2ckoaxGuTz9orqvXvpUGg==
-X-Google-Smtp-Source: ABdhPJwHBE/6svDofq3JI1Nvl9AaFlg1oX0F7Zhinc7Yx4XbSqxrhmfr8wUc0v2ZFV5xqE5jZ9MdIA==
-X-Received: by 2002:aa7:9e4a:0:b029:152:54d1:bffa with SMTP id z10-20020aa79e4a0000b029015254d1bffamr663621pfq.6.1602032696538;
-        Tue, 06 Oct 2020 18:04:56 -0700 (PDT)
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=6fZCLYVp6vJOGJ9UOukLRU5lx5R2NISCZkWVL54zOGg=;
+        b=NRJBBL84dy/vFskQh6N+FmrHJTRmS6dXqTjv0xXUHsthQc00BMd3rR3WrpDkWQgEjd
+         1Ufq/zoDW8uirqOIU0696t2XEH1FtSiP0qhIwKz9pxGjnqJ3oqej/Z0dqp4MelLxplIG
+         ivUWyuPUZeyPxCcFsrQVi1JaPDmEbLkpN/Y7lU2xJD09bc7mD8a+pqFeRu7scbalTNwH
+         nnLnseei7epQNamy2ZTMs1Eb24epgGOQ/yvaRPMXRox+B9QZe8CSG7B1+3qJEWbroznI
+         D4hHWT8CpoNUzwgGnxmEJljVKlrtcDKXcWnu5vb2RR0Dv9Bq87pGPVN4ps9s0oi+zXWT
+         +t6Q==
+X-Gm-Message-State: AOAM530iixnC8ILBFNpWlamdGr104qGcGy1QJN1XHB4LmlqdID4uI00m
+        6PrqSbl2ZxhS+mPZQHMM8F4=
+X-Google-Smtp-Source: ABdhPJyFRAe5gj4f3wME1Oj9xM2fApavjlXPSPwqMqBxecHV3dRBe4ft3JSqvU8nMvLBeX2kdb6ivA==
+X-Received: by 2002:aa7:94a4:0:b029:151:d786:d5c2 with SMTP id a4-20020aa794a40000b0290151d786d5c2mr737596pfl.50.1602033067539;
+        Tue, 06 Oct 2020 18:11:07 -0700 (PDT)
 Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id o62sm458923pfb.172.2020.10.06.18.04.51
+        by smtp.gmail.com with ESMTPSA id w187sm453006pfb.93.2020.10.06.18.11.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2020 18:04:55 -0700 (PDT)
-Date:   Tue, 6 Oct 2020 18:04:49 -0700
+        Tue, 06 Oct 2020 18:11:06 -0700 (PDT)
+Date:   Tue, 6 Oct 2020 18:11:02 -0700
 From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>, dmaengine@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jens Axboe <axboe@kernel.dk>,
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Pavel Machek <pavel@ucw.cz>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Richard Weinberger <richard@nod.at>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
         Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 4/4] dt-bindings: Explicitly allow additional properties
- in common schemas
-Message-ID: <20201007010449.GQ1009802@dtor-ws>
-References: <20201005183830.486085-1-robh@kernel.org>
- <20201005183830.486085-5-robh@kernel.org>
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Barry Song <baohua@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Nick Dyer <nick@shmanahar.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ferruh Yigit <fery@cypress.com>,
+        Sangwon Jee <jeesw@melfas.com>,
+        Peter Hutterer <peter.hutterer@redhat.com>,
+        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
+        kernel@collabora.com, Patrik Fimml <patrikf@chromium.org>
+Subject: Re: [PATCH v4 7/7] Input: Add "inhibited" property
+Message-ID: <20201007011102.GR1009802@dtor-ws>
+References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
+ <20200608112211.12125-1-andrzej.p@collabora.com>
+ <20200608112211.12125-8-andrzej.p@collabora.com>
+ <20201005181014.GL1009802@dtor-ws>
+ <ac4eeab7-8333-b96b-707b-eb2d6d0d8139@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20201005183830.486085-5-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ac4eeab7-8333-b96b-707b-eb2d6d0d8139@collabora.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 05, 2020 at 01:38:30PM -0500, Rob Herring wrote:
-> In order to add meta-schema checks for additional/unevaluatedProperties
-> being present, all schema need to make this explicit. As common/shared
-> schema are included by other schemas, they should always allow for
-> additionalProperties.
+On Tue, Oct 06, 2020 at 03:04:28PM +0200, Andrzej Pietrasiewicz wrote:
+> Hi Dmitry,
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> W dniu 05.10.2020 o 20:10, Dmitry Torokhov pisze:
+> > Hi Andrzej,
+> > 
+> > On Mon, Jun 08, 2020 at 01:22:11PM +0200, Andrzej Pietrasiewicz wrote:
+> > > @@ -284,8 +284,11 @@ static int input_get_disposition(struct input_dev *dev,
+> > >   	case EV_KEY:
+> > >   		if (is_event_supported(code, dev->keybit, KEY_MAX)) {
+> > > -			/* auto-repeat bypasses state updates */
+> > > -			if (value == 2) {
+> > > +			/*
+> > > +			 * auto-repeat bypasses state updates but repeat
+> > > +			 * events are ignored if the key is not pressed
+> > > +			 */
+> > > +			if (value == 2 && test_bit(code, dev->key)) {
+> > >   				disposition = INPUT_PASS_TO_HANDLERS;
+> > >   				break;
+> > >   			}
+> > 
+> > Is this chunk really part of inhibit support? I'd think we cancel
+> > autorepeat timer when we are releasing a key, no?
+> > 
+> 
+> When I look at it now it seems to me the chunk might be redundant.
+> But let me explain what I had in mind when adding it.
+> 
+> It is a matter of what we do with input events generated while a
+> device is inhibited. If ->open()/->close() are not provided by the
+> driver then inhibiting amounts to merely ignoring input events from
+> a device while it remains active. What else can you do if the driver
+> does not provide a method to prepare the device for generating events/
+> to stop generating events?
+> 
+> In this special case a user might trigger a repeated event while the
+> device is inhibited, then the user keeps holding the key down and the
+> device is uninhibited. Do we pass anything to handlers then?
+> 
+> In my opinion we should not. Such an event is "illegal" in a sense that it
+> was generated at a time when nobody wanted any events from the device.
+> Hence the test to let only those auto-repeat events through for which
+> a key is actually pressed.
+> 
+> However, what I see now is that if a device is inhibited, no key
+> will ever reach neither the "1" nor "2" state because of the "if"
+> in the very beginning of input_handle_event().
 
-For input:
+OK, then let's drop it for now. We can revisit if we see that a problem.
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Thanks.
 
 -- 
 Dmitry

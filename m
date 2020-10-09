@@ -2,192 +2,293 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB37728804E
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Oct 2020 04:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9F7288C5A
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Oct 2020 17:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731031AbgJICUD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Oct 2020 22:20:03 -0400
-Received: from mail-bn7nam10on2040.outbound.protection.outlook.com ([40.107.92.40]:32353
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729724AbgJICUD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 8 Oct 2020 22:20:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I3+aDCSIGNCmZrBcacVF2ZySAhChZoMrK1E7dULH3Ah/AcdaEfYUy5dYaUN2J49PTc42TrJGi/+iCqU1cHZbpK7eXjGfsvBH0jcLmE8TkTN02WaPyLv4dPn/0FtMZR8zdlWI1z0zPC7aFOL9nNLF91jb1EjyaP17jrSP36dBXAixBVRFxReLYw3oBAkMejmbCXSepYDlN2Vm7phVLuEFlHd2LUvjfWdQZJ00GJ7SRh34ysHwagh2jKkc8MSobBxB35+FofB5tEK1zZAEARcqAgcJToxJftrFkhg8W6ns15N5xhZN+c3y2sxpqDDKzSmZQs2vVV5XyVPYGF/+2RciRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OGe+8mHcdliqYDwZgNmE6dpk7Zyk46XmpWzWoorGPak=;
- b=AsePBgDH/ZVFUfgVPrgyKTpW8VFTeVDvytKAB7DzgE01TQ5mIpKmhiSLnv2LZ7n+fcwF+UAUdrrRzeuKG2kDjJPEnZLUNde+T0SRYS/1hm+R5PQGPHNKwMy0fJ9mEM6gD77u1AhasO/Mkfg5ItIWoG/Ta5YotcrIYPcFbXo5HGYG5XuRJT9viTelHpR9w7jX7i87YjDZJsWWEiS/oTTKeTM/XBOdO7XPhq2OACXAVNY/YfCZY2tOQwpr9a5o1OBD87bwd1Z05gae/Nd4QOGzT1zXJ7QKf4XPD3cAq23OPeJR1iNY6AuyMDpvSEN2M0dQdqwSF9XDjHXJQb1S70ORMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
- dkim=pass header.d=labundy.com; arc=none
+        id S2389157AbgJIPPR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Oct 2020 11:15:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60492 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388745AbgJIPPQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Oct 2020 11:15:16 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F10C0613D2
+        for <linux-iio@vger.kernel.org>; Fri,  9 Oct 2020 08:15:16 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id y16so8813441ljk.1
+        for <linux-iio@vger.kernel.org>; Fri, 09 Oct 2020 08:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OGe+8mHcdliqYDwZgNmE6dpk7Zyk46XmpWzWoorGPak=;
- b=NrsTz6nWPVk7nlA9sJMQM8h4N8vbgjzDGjJg4LCwVoPXK/f8Qq2vKhH/lTGLZpIJu2hruZsl9oGCea4xgBoXmMysoCUKh5S9hgBAQq0fvSqNrdxQ/otIWiPtnS5pUzxvvOX+6dGgAXE+l06CPkuxQeCB34hTD/tnorJ3hUFer94=
-Authentication-Results: redhat.com; dkim=none (message not signed)
- header.d=none;redhat.com; dmarc=none action=none header.from=labundy.com;
-Received: from SN6PR08MB5517.namprd08.prod.outlook.com (2603:10b6:805:fb::32)
- by SN6PR08MB4031.namprd08.prod.outlook.com (2603:10b6:805:20::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.24; Fri, 9 Oct
- 2020 02:19:59 +0000
-Received: from SN6PR08MB5517.namprd08.prod.outlook.com
- ([fe80::c989:9cea:baa6:8254]) by SN6PR08MB5517.namprd08.prod.outlook.com
- ([fe80::c989:9cea:baa6:8254%7]) with mapi id 15.20.3433.046; Fri, 9 Oct 2020
- 02:19:58 +0000
-Date:   Thu, 8 Oct 2020 21:19:49 -0500
-From:   Jeff LaBundy <jeff@labundy.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Bastien Nocera <hadess@hadess.net>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-iio@vger.kernel.org, Nitin Joshi1 <njoshi1@lenovo.com>,
-        linux-input@vger.kernel.org, dmitry.torokhov@gmail.com
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-Message-ID: <20201009021949.GA3629@labundy.com>
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
- <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
- <b400b6956270a2433373dd6cbdae3332aa683f4f.camel@hadess.net>
- <cadabe4d-7cce-281e-75fe-fcc2099848da@redhat.com>
- <5273a1de9db682cd41e58553fe57707c492a53b7.camel@hadess.net>
- <272074b5-b28e-1b74-8574-3dc2d614269a@redhat.com>
- <20201008001424.GA3713@labundy.com>
- <9893a32c-02c8-f00c-7f00-6287d55043ab@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9893a32c-02c8-f00c-7f00-6287d55043ab@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [136.49.227.119]
-X-ClientProxiedBy: DM5PR17CA0062.namprd17.prod.outlook.com
- (2603:10b6:3:13f::24) To SN6PR08MB5517.namprd08.prod.outlook.com
- (2603:10b6:805:fb::32)
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=E6Nd8bFLpZfzhnJqMtPJPONxQyfB4cH/rdHKzqew4oo=;
+        b=Qc/JMWf/ffAVqqTQcI9JG4TLUusWr4+kaYKzlWwyTDeUgS1j7voTIwEya6AAJzKkol
+         faszaKpvwTwYMpoWr7PvAuqEVkrcOaLdwCa5Tio52Iv+xaVEkA13ERUSzISHWEgYMoRV
+         +U1Lbz3GTYcKT2y466elZ15AG/H25fvV0Txp5RYLd3XvpwCxfUq9n/1y6uwF9Is2lEmE
+         VqmRzDBVzXqskzg90Rt8TxLq9oiAWhQvvDZlkOMYX3wkoXcB6MRzFN2xKR9r2QPYuNdO
+         d6WJ0xXYuicfxNruqVEMs37/qJRqVoy1OTUGKJSAjgNb1aYV1yhj7wex1NgN+Xk7JxlM
+         dNgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=E6Nd8bFLpZfzhnJqMtPJPONxQyfB4cH/rdHKzqew4oo=;
+        b=M32NuqYnoBVbOCUmsbB1ctOLhFyY+ykU+eLIgAEyPFIKdVoVis7Ev9e94hJHuhTVUl
+         7EZZgqjR3oW+VtRDjrSH7+zN8tX7tcmNq0Nm8UjuN+nesIvBhJCcktMf7a/7dMOtJ9iC
+         vLA7y28jmrsP+qPNE6diKeegITKOHwXU994J2r+QkmE3/DjMzrO0KQpppqyIF68bhoLA
+         znCuoetgxWaie5b4W4h47wQDCIFvvaJ0dxZZ+ddYrnqt2Nn4k9CYJgyaphyMksU/FoD8
+         8eBhkP3FEMnceixTD8kwUciGD5rImohaqk3iI/YUlOhfvl9IGDuo5QOTpq1usTBl8k3v
+         p43A==
+X-Gm-Message-State: AOAM532msUnaa+zo909O1eYAXel0EtHig+tOH1abMFRVs0C72EtcD2+0
+        PdoCx1Jk0k2KipfxnKRj/NiXjg==
+X-Google-Smtp-Source: ABdhPJyMApbqWWYKrRxdaZeohuRpwHPicgxI00Hs2697xZEQeG8le9Oh2C+OAPB+UP3mMy0RKFGWhg==
+X-Received: by 2002:a2e:9d94:: with SMTP id c20mr5363714ljj.445.1602256513326;
+        Fri, 09 Oct 2020 08:15:13 -0700 (PDT)
+Received: from [192.168.1.211] ([188.162.65.231])
+        by smtp.gmail.com with ESMTPSA id t17sm743958lff.147.2020.10.09.08.15.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Oct 2020 08:15:12 -0700 (PDT)
+Subject: Re: [PATCH v7 07/10] thermal: qcom: add support for adc-tm5 PMIC
+ thermal monitor
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jishnu Prakash <jprakash@qti.qualcomm.com>
+References: <20201007135433.1041979-1-dmitry.baryshkov@linaro.org>
+ <20201007135433.1041979-8-dmitry.baryshkov@linaro.org>
+ <3d6bd019-1516-5307-ef49-b6279fbfbe82@linaro.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <642645af-19f1-7ac1-a10a-7f943c757c7f@linaro.org>
+Date:   Fri, 9 Oct 2020 18:15:11 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from labundy.com (136.49.227.119) by DM5PR17CA0062.namprd17.prod.outlook.com (2603:10b6:3:13f::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23 via Frontend Transport; Fri, 9 Oct 2020 02:19:57 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4e95a79f-56a3-42a2-ff1a-08d86bf9d1bf
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4031:
-X-Microsoft-Antispam-PRVS: <SN6PR08MB40312D281C69051978EF22C5D3080@SN6PR08MB4031.namprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: u53eoY4+Tsi0oesCCdzD8ndUwIL5IK+LTBnMVlni2XeKKYx1x77RZ42AmruBG7TBxKbad3gkBLV8gbNxahL643R+f6NT3To1dqcla0Qkmknlj4J7zLcxPqDLQf0XD/SNXvf37KXdwuhIveHuPeruDDdTgfpymvhuOafQNyzF00n8E8YE7I2XZnFCmNwkicR9pqmSrpj8KdzLPHy75KpNFGrLElekmxfRzcJEU3F9kZToG1KaLqL/YnKRo9s+hNCKQt4pcZOZoI9zgL3hE5u9mPLf3srPRNLL5ieUJYirsBQ3ZWSWbxI8zzh1PnYUwDwznpJrZyCfzdjTu1mUi0839w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR08MB5517.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(39830400003)(136003)(376002)(346002)(2906002)(54906003)(33656002)(1076003)(316002)(5660300002)(478600001)(55016002)(66556008)(66476007)(52116002)(6916009)(53546011)(8936002)(2616005)(83380400001)(7696005)(6666004)(8886007)(36756003)(8676002)(86362001)(26005)(66946007)(186003)(16526019)(4326008)(956004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: wV3iG8MVhcb6jxs67pPLfOOx+Bek7OKQBVSKZXjk/UT6eZiGdIpCurJgsDmPR9CpbZEQg9tlndUsnHP05p8nDdGhigQ7cpEhb0F0qPEqkru0rijBBGhGA2pvMr0+DpYqS7ACR2R22w6L/k+3gQDAenVm8cpt6t540HWx5l+zY4ahoK6ZV4mW3hmDHrE0vjaYb35PKJpt0srb5V/UGI8AjuPdlazSnMMFiqv8tcKrFtZTZ3s7sl5pZSI5CTYY3AMfSFiLC6cXxX3m83acsX3Ptm05L2VLaupoPxRsy+H+861psBN9rKGpbSpPFOC0CX4mTp6xfeN0ZmtdDLPpV7yrieLSoNM4XDH+p2XAWjrf3Q2yZIL1ecKgB7Afm57ZvzI0XeI+l4XMJJ20rZTOorrRGat6AEg+bu/pPk6daLm09OeYDoVoNc4EMzrOFPLBfYgPiRN2g4x+AU5DLLtFC6RK8a7YRSbUKaPu+hK/u0iMUMOxOl/dbcuNA8UIYfCExwoSNSRNC3eyhtVjhY49/5PYLFxwXUOrnz+KVdQWJIvPPGcSzuzdtkOLmLhKuf7/psMWSVp0w97f5qExj+z0P1zDNsFXpuU9eX7sVbOl5IjPdVkbXBcD4QO/QM3+im4uBGx9rDGplW1i3vDjmVLnAJ3doQ==
-X-OriginatorOrg: labundy.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e95a79f-56a3-42a2-ff1a-08d86bf9d1bf
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR08MB5517.namprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2020 02:19:58.6532
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: URZaKcnXwWHzUJsNZ0j9X2ujiA4R1gs8Gvq7NdDh5/thIUU0ZI6pgf0AWddfCO1liJVklSFCHCca/0pT5Uv2bA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4031
+In-Reply-To: <3d6bd019-1516-5307-ef49-b6279fbfbe82@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Hans,
+On 08/10/2020 19:22, Daniel Lezcano wrote:
+> On 07/10/2020 15:54, Dmitry Baryshkov wrote:
+>> Add support for Thermal Monitoring part of PMIC5. This part is closely
+>> coupled with ADC, using it's channels directly. ADC-TM support
+>> generating interrupts on ADC value crossing low or high voltage bounds,
+>> which is used to support thermal trip points.
+>>
+>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>> ---
+>>   drivers/iio/adc/qcom-vadc-common.c       |  62 +++
+>>   drivers/iio/adc/qcom-vadc-common.h       |   3 +
+>>   drivers/thermal/qcom/Kconfig             |  11 +
+>>   drivers/thermal/qcom/Makefile            |   1 +
+>>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 622 +++++++++++++++++++++++
+>>   5 files changed, 699 insertions(+)
+>>   create mode 100644 drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>>
+>> diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
+>> index 40d77b3af1bb..e58e393b8713 100644
+>> --- a/drivers/iio/adc/qcom-vadc-common.c
+>> +++ b/drivers/iio/adc/qcom-vadc-common.c
+>> @@ -377,6 +377,42 @@ static int qcom_vadc_map_voltage_temp(const struct vadc_map_pt *pts,
+>>   	return 0;
+>>   }
+>>   
+>> +static s32 qcom_vadc_map_temp_voltage(const struct vadc_map_pt *pts,
+>> +				      u32 tablesize, int input)
+>> +{
+>> +	bool descending = 1;
+>> +	u32 i = 0;
+>> +
+> 
+> The code seems like a bit
 
-On Thu, Oct 08, 2020 at 09:10:19AM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 10/8/20 2:14 AM, Jeff LaBundy wrote:
-> >Hi all,
-> >
-> >On Wed, Oct 07, 2020 at 03:32:07PM +0200, Hans de Goede wrote:
-> >>Hi,
-> >>
-> >>On 10/7/20 3:29 PM, Bastien Nocera wrote:
-> >>>On Wed, 2020-10-07 at 15:08 +0200, Hans de Goede wrote:
-> >>>>Hi,
-> >>>>
-> >>>>On 10/7/20 1:35 PM, Bastien Nocera wrote:
-> >>>>>On Wed, 2020-10-07 at 11:51 +0200, Hans de Goede wrote:
-> >>>>>><snip>
-> >>>>>>>Dmitry, any existing stuff like this in input?
-> >
-> >It seems we are talking about "specific absorption rate" (SAR) type
-> >devices that signal the WLAN controller to reduce transmitted power
-> >while a user is nearby.
-> 
-> Yes and no. At least the lap-mode detection (laptop on someones
-> lap rather then sitting on a table) is currently used by the
-> embedded-controller for thermal management decisions, basically
-> when on someones lap the configurable TPD of the CPU is set lower
-> to keep the laptop's bottom skin temperate < 45 degrees Celsius
-> (I think it is 45 but the exact number does not matter).
-
-This is a much-appreciated feature. :)
-
-> 
-> The lap-mode info is currently exported with a thinkpad_acpi specific
-> sysfs attribute with the idea that userspace could potentially use
-> this to indicate to the user that turbo clocks will be lower
-> because of this.
-> 
-> With upcoming WLAN cards with configurable transmit power,
-> this will also be used as what you call a SAR device.
-> 
-> AFAIK the palmrest case is mostly a SAR device.
-> 
-> Note I'm explaining the alternative lap-mode use-case to make
-> sure everyone is on the same page. I completely agree with the
-> gist of your email :)
-
-Acknowledged on all counts; thank you for this additional background
-information.
+Could you please clarify, what do you mean?
 
 > 
-> >I just wanted to chime in and confirm that we do have at least one
-> >precedent for these being in input (keyboard/iqs62x-keys) and not
-> >iio so I agree with Jonathan here. My argument is that we want to
-> >signal binary events (user grabbed onto or let go of the handset)
-> >rather than deliver continuous data.
-> 
-> I was curious what keycode you are using for this, but I see
-> that the keycodes come from devicetree, so I guess I should
-> just ask: what keycode are you using for this ?
+>> +	/* Check if table is descending or ascending */
+>> +	if (tablesize > 1) {
+>> +		if (pts[0].y < pts[1].y)
+>> +			descending = 0;
+>> +	}
+>> +
+>> +	while (i < tablesize) {
+>> +		if (descending && pts[i].y < input) {
+>> +			/* table entry is less than measured*/
+>> +			 /* value and table is descending, stop */
+>> +			break;
+>> +		} else if ((!descending) && pts[i].y > input) {
+>> +			/* table entry is greater than measured*/
+>> +			/*value and table is ascending, stop */
+>> +			break;
+>> +		}
+>> +		i++;
+>> +	}
+>> +
+>> +	if (i == 0)
+>> +		return pts[0].x;
+>> +	if (i == tablesize)
+>> +		return pts[tablesize - 1].x;
+>> +
+>> +	/* result is between search_index and search_index-1 */
+>> +	/* interpolate linearly */
+>> +	return fixp_linear_interpolate(pts[i - 1].y, pts[i - 1].x,
+>> +			pts[i].y, pts[i].x, input);
+>> +}
+>> +
+>>   static void qcom_vadc_scale_calib(const struct vadc_linear_graph *calib_graph,
+>>   				  u16 adc_code,
+>>   				  bool absolute,
 
-The idea here was that a vendor might implement their own daemon
-that interprets any keycode of their choice, hence leaving the
-keycodes assignable via devicetree.
+[....]
 
-This particular device also acts as a capacitive/inductive button
-sensor, and these applications were the primary motivation for it
-landing in input with its status bits mapped to keycodes.
+>> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>> new file mode 100644
+>> index 000000000000..c09a50f59053
+>> --- /dev/null
+>> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>> @@ -0,0 +1,622 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+>> + * Copyright (c) 2020 Linaro Limited
+>> + */
+> 
+> If it is possible, please give a description of this sensor, the
+> different register mapping, etc ... So it will be easier to review and
+> debug in the future.
 
-I don't think there are any keycodes that exist today that would
-universally work for this application. The couple that seem most
-closely related (e.g. KEY_WLAN or KEY_RFKILL) are typically used
-for disabling the adapter entirely or for airplane mode (please
-correct me if I'm wrong).
-
-To that end, I'm keen to see how this interface unfolds because
-SAR detection tends to be an available mode of operation for
-several of the capacitive touch devices I've been working with.
+In which form? I don't often see such descriptions in the code.
 
 > 
-> >The example I've shown reports events as keycodes since some of the
-> >events it can express represent momentary conditions. In hindsight,
-> >however, an argument can be made to express some of this information
-> >as a switch (user is or is not near the device) and the new event
-> >codes proposed here seem like a step in the right direction.
 > 
-> I'm glad that you like the new proposed switch event-codes.
+>> +#include <linux/bitfield.h>
+>> +#include <linux/iio/consumer.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_device.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/thermal.h>
+>> +
+>> +#include "../../iio/adc/qcom-vadc-common.h"
 > 
-> Regards,
-> 
-> Hans
-> 
+> Do not use this form of inclusion.
 
-Kind regards,
-Jeff LaBundy
+Fixed.
+
+
+[...]
+
+> 
+>> +	if (ret) {
+>> +		dev_err(chip->dev, "read status low failed with %d\n", ret);
+>> +		return IRQ_HANDLED;
+>> +	}
+> 
+> Can you identify the reasons those reads can fail? If it is not supposed
+> to happen it is fine but otherwise we don't want to be flooded with
+> error messages on the console.
+
+Changed to use unlikely(ret) as way to show that this is not supposed to 
+happen.
+
+
+>> +		lower_set = (status_low & BIT(ch)) &&
+>> +			(ctl & ADC_TM5_M_MEAS_EN) &&
+>> +			(ctl & ADC_TM5_M_LOW_THR_INT_EN);
+>> +
+>> +		upper_set = (status_high & BIT(ch)) &&
+>> +			(ctl & ADC_TM5_M_MEAS_EN) &&
+>> +			(ctl & ADC_TM5_M_HIGH_THR_INT_EN);
+> 
+> Is the check (ctl & ADC_TM5_M_[HIGH|LOW]_THR_INT_EN) necessary if
+> status_high or status_low is true ?
+> 
+> Isn't possible to simplify that with:
+> 
+> eg.
+> 
+> 		if (!(ctl & ADC_TM5_M_MEAS_EN)
+> 			continue;
+> 
+> 		if (!(status_high & BIT(ch)) && !(status_low & BIT(ch))
+> 			continue;
+> 
+> 		thermal_zone_device_update(chip->channels[i].tzd,
+> 					THERMAL_EVENT_UNSPECIFIED);
+> 
+> ??
+
+I'd prefer to leave the check as is, having no information if status bit 
+can be updated without actually triggering IRQ.
+
+I've moved ADC_TM5_MEAS_EN check upwards to simplify this.
+
+>> +static int adc_tm5_configure(struct adc_tm5_channel *channel, int low_temp, int high_temp)
+>> +{
+>> +	struct adc_tm5_chip *chip = channel->chip;
+>> +	u8 buf[8];
+>> +	u16 reg = ADC_TM5_M_ADC_CH_SEL_CTL(channel->channel);
+>> +	int ret = 0;
+>> +
+>> +	ret = adc_tm5_read(chip, reg, buf, sizeof(buf));
+>> +	if (ret) {
+>> +		dev_err(chip->dev, "block read failed with %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* Update ADC channel select */
+>> +	buf[0] = channel->adc_channel;
+>> +
+>> +	/* Warm temperature corresponds to low voltage threshold */
+>> +	if (high_temp != INT_MAX) {
+>> +		u16 adc_code = qcom_adc_tm5_temp_volt_scale(channel->prescale,
+>> +				chip->data->full_scale_code_volt, high_temp);
+>> +
+>> +		buf[1] = adc_code & 0xff;
+>> +		buf[2] = adc_code >> 8;
+>> +		buf[7] |= ADC_TM5_M_LOW_THR_INT_EN;
+>> +	} else {
+>> +		buf[7] &= ~ADC_TM5_M_LOW_THR_INT_EN;
+>> +	}
+>> +
+>> +	/* Cool temperature corresponds to high voltage threshold */
+>> +	if (low_temp != -INT_MAX) {
+> 
+> Is it really -INT_MAX ? or INT_MIN
+> 
+> -2147483647 vs -2147483648 ?
+
+It is really -INT_MAX, see thermal_zone_set_trips().
+
+[...]
+
+>> +
+>> +	for (i = 0; i < chip->nchannels; i++) {
+>> +		if (chip->channels[i].channel >= channels_available) {
+>> +			dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel);
+>> +			return -EINVAL;
+>> +		}
+> 
+> Is it a sanity check to make sure the hardware and the DT are compatible ?
+
+Yes.
+
+
+-- 
+With best wishes
+Dmitry

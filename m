@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE262897D0
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Oct 2020 22:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABE9289725
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Oct 2020 22:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733270AbgJIUFT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Oct 2020 16:05:19 -0400
-Received: from mail-mw2nam12on2050.outbound.protection.outlook.com ([40.107.244.50]:43745
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        id S1732646AbgJIUCi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Oct 2020 16:02:38 -0400
+Received: from mail-eopbgr690078.outbound.protection.outlook.com ([40.107.69.78]:9094
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731587AbgJIUCk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 9 Oct 2020 16:02:40 -0400
+        id S1731118AbgJIUCa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 9 Oct 2020 16:02:30 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oAJQdFtzoww3Ssm0jfHrYfib1YBI5Ayyj2ckjHuee0vZfG0/j8loAaJhUFD6fYQqhVRONzDAYLQWMuZYl6cyWCWAiUT3zYHztjkn6j6zRgX7NQoVpit5YEuV4B9oWGfxvrfF0yIGd1e0KgiQ/UkfkFgHBlKk7muvFV8E9U/EFYIQgGGkyEHNSZaOwPjO4dtAIG14v5DQMfR1q16Ys01zD14wUj4fOXnlpl+Hq1P/+cwm0z2Tuuz0L1ePpmQrTpJw1itfIBp7PV//MOa6yb+6CHT3t/mDPa4UtNeskk3BMh72GXcU1UDqs/NVEtfEW5E/L27UJHyalOvawAO9kGvWIg==
+ b=iVCDL+0gxdji+OZHxwB6b20xFjS1QW6sipW8Btoc3Vs0B6MnnyJli+MkIumttd5F0NS4UDnn+GqAvvtDLz/GYn+iYzgJzoI0cUfyBXmknhNBwk4Ax4jJkId1MPXaIYNqkiHVDEMDL6JCmuV33qgEhEh3qhWupEWg/d8ri/+X0c3I1n1Ji5Q4KZtI5lae+Efi1etCPErEm7jNdNTKZlYHEUUzI5L0b2g4frRioSuqus64fdcii+3CkDEvoGktEzksRBuwkbV+HdMTZslpq/bL+Ea29bZONefZ0V3dRrxN6PKSdV0Qr4hDp0gEEqXBpogNTdVk/uaeFj/gkisguZgNWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V1Egr01VUP6mPHyXh+kOLgBHWSab0MaBDOuz8jzllRo=;
- b=WQd8dg2lWjJmELeKDgeZIzq5kE7yrnDHBbPEHhSfqz3XhLwLBoRk/uG2ned5sK5JiT7ifcoa+3O+xJaExmP+cdf/oPokhw2DZsdTa4tB0f4WDI1OwCT94Cx6nAUhVXgRU8MwtVXm2FTL5I2C0ROX0ozAzY4VJas+U3e6bdP4G578iU+ceJBbROSvQ1dCnO0znOQf32UCdsg/rQD/ogUODz5IjMtOkSakkrNmyzhlIpSQChZODJoPS9iOzkW7Vy5FUFa1Ajhwd+whOggksPRPmJfDmy/2s16OODrWEjBeNdXsVH3EBM4dYgLwZmxjXmr8DT8LidOk7jykvQNmNSzx8g==
+ bh=SWssjQdwGUMoKjHQNOPbhMKoFvNDn0SP9GgVS3iQoQ8=;
+ b=mS/CxOWjlYboY4gECEcWZaKVKeJKojks55fQOgygjJAccCz5DPXG6pf2pmmsrde4Yua2Rjvk54JvN31KMVhyJ50cfQco5fI6leD81QON9+lOVGuA3nF5J6qxuYCLdZjH8LSA+Qu4nJYH3/bV0zPKpvyShF89IVnPJBPA52Aheo1yObWhCz3ioZVKDY7TiehEHbdMP9hpColZ5Bg9O2tdWNEB1xDEFNDrwDbe8I9dWHbPi4hnwFWYKf80F/Kag3ANEs+Mb106bV30D/fgQXLmnXx6dEiSHfh6QgLFhXx1NXDmSoho+fNy3pm0+fhRI9+5AVhVqKAXfcV6t0CSlN95rA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V1Egr01VUP6mPHyXh+kOLgBHWSab0MaBDOuz8jzllRo=;
- b=2CqmTyhSepN9UxJrFx+r/G1ik+kMjICrQwxJCPWxJfWP7IWBkOe2dDS0RK5dPFDOq0/mVqFzokKfjrKZHrfhEGOsPESYLAPmEWoIae6WGMNSk1bSSQfwqGv/9C5XarJACC2nXNSmee1slIAZCejkRCygPfAFBrMRvCuKNqKEVkY=
+ bh=SWssjQdwGUMoKjHQNOPbhMKoFvNDn0SP9GgVS3iQoQ8=;
+ b=s0dXYj0vy4EezpRSJBKecZnZx8HOYn6GFyRL4FggOdFob9igQgtp3MvfuYjazNNGfgOCyS8OyPdg9WaTUeCIQEv4iJbN04GqLNMIxVsJfZ6QHalbPwXCKl8fdGk0pR1uyB/e/mUe8UmAwu98Ux3qnluRXIy6zqy8W9Hzg1y3R5k=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from CH2PR12MB4101.namprd12.prod.outlook.com (2603:10b6:610:a8::22)
- by CH2PR12MB4859.namprd12.prod.outlook.com (2603:10b6:610:62::14) with
+ by CH2PR12MB4040.namprd12.prod.outlook.com (2603:10b6:610:ac::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.24; Fri, 9 Oct
- 2020 20:02:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.22; Fri, 9 Oct
+ 2020 20:02:25 +0000
 Received: from CH2PR12MB4101.namprd12.prod.outlook.com
  ([fe80::a110:b7c8:73bd:d60]) by CH2PR12MB4101.namprd12.prod.outlook.com
  ([fe80::a110:b7c8:73bd:d60%8]) with mapi id 15.20.3455.027; Fri, 9 Oct 2020
- 20:02:21 +0000
+ 20:02:25 +0000
 From:   Sandeep Singh <Sandeep.Singh@amd.com>
 To:     jikos@kernel.org, benjamin.tissoires@redhat.com,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
@@ -47,9 +47,9 @@ To:     jikos@kernel.org, benjamin.tissoires@redhat.com,
         mail@richard-neumann.de, m.felsch@pengutronix.de,
         rdunlap@infradead.org
 Cc:     Shyam-sundar.S-k@amd.com, Sandeep Singh <sandeep.singh@amd.com>
-Subject: [PATCH v8 1/4] SFH: Add maintainers and documentation for AMD SFH based on HID framework
-Date:   Sat, 10 Oct 2020 01:31:35 +0530
-Message-Id: <20201009200138.1847317-2-Sandeep.Singh@amd.com>
+Subject: [PATCH v8 2/4] SFH: PCIe driver to add support of AMD sensor fusion hub
+Date:   Sat, 10 Oct 2020 01:31:36 +0530
+Message-Id: <20201009200138.1847317-3-Sandeep.Singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201009200138.1847317-1-Sandeep.Singh@amd.com>
 References: <20201009200138.1847317-1-Sandeep.Singh@amd.com>
@@ -61,228 +61,366 @@ X-ClientProxiedBy: MAXPR0101CA0038.INDPRD01.PROD.OUTLOOK.COM
  (2603:10b6:610:a8::22)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from jatayu.amd.com (165.204.156.251) by MAXPR0101CA0038.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:d::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23 via Frontend Transport; Fri, 9 Oct 2020 20:02:16 +0000
+Received: from jatayu.amd.com (165.204.156.251) by MAXPR0101CA0038.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:d::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23 via Frontend Transport; Fri, 9 Oct 2020 20:02:21 +0000
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f193f1f0-bef8-4c24-5bfc-08d86c8e3b32
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4859:
+X-MS-Office365-Filtering-Correlation-Id: 600b66f3-be08-4d82-33d1-08d86c8e3e11
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4040:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH2PR12MB48591F84F4C39D54C3E3D42BE0080@CH2PR12MB4859.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
+X-Microsoft-Antispam-PRVS: <CH2PR12MB40404D8A3900555F30C87409E0080@CH2PR12MB4040.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:409;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CK8BMp8+fTCfHI3gxpUOfzqeN/q1wSJMDqiANRVoqtBOeVK9Vu2+tNxPdGPLEh+VWSmJl0JMMaANVc95NQmxPUu3T70gSK/9AplJDr/Gz96Zm2XAner8HeHYqtknUyoNxjP8LP3SgxS97GofTOW5auaZU8aOD9+6iWUaqYPgLsStNZzFWQC6JkNDPAzWv8j3JV5EYLp4IGUZSvNmbyJRTWPlZ2mA+kw2Cg/Ps1mXNIi7UHT6rbj90QcnEfPHLDdA7HUu7X1FmKffMhsHoxHPE4JSt04u6C5a/+DC0rFDutPDzaUdCVKiYM9GbEtWcJeWEuppctsIkP2a+YVGW1TKbONWbXgDrxRTq5tTMp2ObEixDdlLwykLTm9i3KH09Sun
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(376002)(346002)(366004)(16526019)(86362001)(956004)(7696005)(52116002)(6486002)(26005)(186003)(2616005)(4326008)(83380400001)(66476007)(6666004)(36756003)(5660300002)(66946007)(316002)(8936002)(478600001)(66556008)(8676002)(1076003)(7416002)(2906002)(921003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: j10C3EPCBe2Sr9/q0e5mbt75olApcydFeGZ4FvunI7V9bwq4HIUztv5a0ZOr+A4KCpBOvqft3Bc1A/3C7QhF3ndDsX0AjwFOgWmibKhz2spSk7UKLFKsP+anwgoKffExFFayNGrk7WQpMZ0WUaxQRh6nc60iuFVl/rHnc0XGVzRUOKOOEB9/u3Eex+T2cDMDvfJybSx/EYBOYoX6Qn8sY0aPg9APYVaSCyl9iEgzY+t/ugWPATIvaLhvStCytInwbvfXz6Cxi0gT0odimxw3Sgg9rtd2wptB8tyDdL5nzRbgdwLVwaUCq/gfLCXdTOLDpVpomNZ7a8QHlfDZyoAwBbxKpUaZ2+FZhPEuiQXGAMH351pmOqIHcwWVaavi1TwaGTau1tIJgFzKLJU3GJKgnwC6h0AnxG27Tgi2FxXs2DWrePKuy4dlHnmhgGLHC59Npa0cMTOWhU75wHH7ouCvPlGfJtB1efYXCvmPP9XzrptoRaKs44v7dTgd4I9xWv0IUh27JJHAP/FZkyWo4ITf5cTKtLDTVEgBWovy8ZfJ5OqRJR/ERO43lqb3D2r7ZPnYH/yJytKKEErkpl1QZfxaFXS0751zg1RCa7zVLi5cup1p8GqbnaDstWRSs+Q8zMqKiLVd9ezomDmSTs9J6St25Q==
+X-Microsoft-Antispam-Message-Info: H9QDSpazW2YmSbS3p2d+qVTgemFb9xguI2rw9CGbZPJXBWllZdLTMNaV87CT6vbL4tS4i8L5p/2VJq7CqAvxAdN4pGB282RKYxqWjaU5BiNdmsIyFczwE1ch5M8G/zDUtTByv1RhOWlEQzZoVDe9adyPPxtKPJ2Lns/ReWCqQO7DDASWreBeVtEp3LvPG0LITzGwPJup0kEyLP9p/WqA62NSy60uw8c8u4nu6j1RvalD52hhG8hr+0ydiyfkij9a8ghdH5P967DZGc7YGrXg2sVK4mg/qOIZE4Yl+grurZD2LZ28mU0h2TCFXBS+P4vYKijXNH101O3NUXagnslRtiF/Yj2GUmLqJIKusom8DWVN2lKz9bb8iUjWQ+ZBy1C7
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(396003)(136003)(366004)(39860400002)(86362001)(83380400001)(316002)(4326008)(2906002)(36756003)(26005)(478600001)(8676002)(52116002)(7696005)(16526019)(186003)(6666004)(956004)(2616005)(7416002)(1076003)(8936002)(5660300002)(66946007)(66476007)(66556008)(6486002)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: +RzNzw/szUDApfN2riIaie9J51TPzgOnC4GxPI4V405H2V2A3ddHJQ0zb34jdlUufmfyjnwAquCtRBjf7iaNdK70H4uyc6PlPQfoSAreTNKVTdjJLXjN67xQ4jRGQUkpK2gDyTcwPPrOItDbLVR/PCWEyOCyEgDxFnpfMff3PYW0mcTJiFq0AnQnzo0IOEwtMafyIlk/GWFJy6y/SQzJ99uEkJ9HOtkONMafQM7npV7lWIilyqg2JpQV8N1r7KzRD6MH+GDpwJx4WIaEnMY58gaKo2oPF33qJStV6SqiVMsg9jA7jdYavGnX/wLoAV9e836iibf1nTUZmzX8Kz/19kGlU8ZXe6NdiyvJfUH3jyjYyZzxLkme2QtvNeYZJBYriEq1NWP/bwKz9kmjICeA6M5olyUZiHaiImKnM6GJavbTQFeuLugYEm4YbiPJeqExLwAXsvgACG5zhGADlM+mUm4gUtU3MpbGM3PQfuRYX6nCeNslIRRaujF1ikesUB6qOLHX5kHC5LtVDUdkpy5FTuODGS0zL7WVtD4Ou8JbLbfvvoqcGQD/hvP7A2OvlgaBpGR4tG49Oke2cnx0QycvjfCfS+ayiU03/5SaAqgYzM94OVIEwniMrtVx0/t8hrpetREPx1CDKvs2deyNZ7yBGg==
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f193f1f0-bef8-4c24-5bfc-08d86c8e3b32
+X-MS-Exchange-CrossTenant-Network-Message-Id: 600b66f3-be08-4d82-33d1-08d86c8e3e11
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2020 20:02:20.8511
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2020 20:02:25.6630
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SciGPg4tyE2owgMrsD2OIcIDYeEO3NeqEB+1dLx6q6pBm0tITkBRRd9f/LVTdiO7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4859
+X-MS-Exchange-CrossTenant-UserPrincipalName: lBuJkKIpJSUd+B3+ksh5xu+MjDmCiQVWw7I3xW0bJ3wYg6+V3K8P/amMaRkZ6x+r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4040
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Sandeep Singh <sandeep.singh@amd.com>
 
-Add Maintainers for AMD SFH(SENSOR FUSION HUB) Solution and work flow
-document.
+AMD SFH (Sensor Fusion Hub) is a solution running on MP2
+(which is ARM core connected to x86 for processing sensor data).
+AMD SFH uses HID over PCI bus to form the HID descriptors and
+talks to HID clients like the monitor-sensor/iio-proxy. MP2 which
+is exposed as a PCI device to the x86, uses mailboxes to talk to
+MP2 firmware to send/receive commands.
 
 Co-developed-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
 Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
 Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
 ---
- Documentation/hid/amd-sfh-hid.rst | 145 ++++++++++++++++++++++++++++++
- Documentation/hid/index.rst       |   1 +
- MAINTAINERS                       |   8 ++
- 3 files changed, 154 insertions(+)
- create mode 100644 Documentation/hid/amd-sfh-hid.rst
+ drivers/hid/Kconfig                    |   2 +
+ drivers/hid/Makefile                   |   2 +
+ drivers/hid/amd-sfh-hid/Kconfig        |  18 +++
+ drivers/hid/amd-sfh-hid/Makefile       |  13 +++
+ drivers/hid/amd-sfh-hid/amd_sfh_pcie.c | 152 +++++++++++++++++++++++++
+ drivers/hid/amd-sfh-hid/amd_sfh_pcie.h |  79 +++++++++++++
+ 6 files changed, 266 insertions(+)
+ create mode 100644 drivers/hid/amd-sfh-hid/Kconfig
+ create mode 100644 drivers/hid/amd-sfh-hid/Makefile
+ create mode 100644 drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+ create mode 100644 drivers/hid/amd-sfh-hid/amd_sfh_pcie.h
 
-diff --git a/Documentation/hid/amd-sfh-hid.rst b/Documentation/hid/amd-sfh-hid.rst
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index 05315b434276..1b5f5e9b8d0d 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -1174,4 +1174,6 @@ source "drivers/hid/i2c-hid/Kconfig"
+ 
+ source "drivers/hid/intel-ish-hid/Kconfig"
+ 
++source "drivers/hid/amd-sfh-hid/Kconfig"
++
+ endmenu
+diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
+index d8ea4b8c95af..7d8ca4e34572 100644
+--- a/drivers/hid/Makefile
++++ b/drivers/hid/Makefile
+@@ -141,3 +141,5 @@ obj-$(CONFIG_I2C_HID)		+= i2c-hid/
+ 
+ obj-$(CONFIG_INTEL_ISH_HID)	+= intel-ish-hid/
+ obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)	+= intel-ish-hid/
++
++obj-$(CONFIG_AMD_SFH_HID)       += amd-sfh-hid/
+diff --git a/drivers/hid/amd-sfh-hid/Kconfig b/drivers/hid/amd-sfh-hid/Kconfig
 new file mode 100644
-index 000000000000..1f2fe29ccd4f
+index 000000000000..db069a83e9a2
 --- /dev/null
-+++ b/Documentation/hid/amd-sfh-hid.rst
-@@ -0,0 +1,145 @@
-+.. SPDX-License-Identifier: GPL-2.0
++++ b/drivers/hid/amd-sfh-hid/Kconfig
+@@ -0,0 +1,18 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++menu "AMD SFH HID Support"
++	depends on X86_64 || COMPILE_TEST
++	depends on PCI
++	depends on HID
 +
++config AMD_SFH_HID
++	tristate "AMD Sensor Fusion Hub"
++	help
++	  If you say yes to this option, support will be included for the
++	  AMD Sensor Fusion Hub.
++	  This driver will enable sensors functionality on AMD platforms
++	  starting from 17h family of RYZEN parts.
 +
-+AMD Sensor Fusion Hub
-+=====================
-+AMD Sensor Fusion Hub (SFH) is part of an SOC starting from Ryzen based platforms.
-+The solution is working well on several OEM products. AMD SFH uses HID over PCIe bus.
-+In terms of architecture it resembles ISH, however the major difference is all
-+the HID reports are generated as part of the kernel driver.
++	  This driver can also be built as a module. If so, the module will
++	  be called amd-sfh.
++	  Say Y or M here if you want to support AMD SFH. If unsure, say N.
++endmenu
+diff --git a/drivers/hid/amd-sfh-hid/Makefile b/drivers/hid/amd-sfh-hid/Makefile
+new file mode 100644
+index 000000000000..35e704da5612
+--- /dev/null
++++ b/drivers/hid/amd-sfh-hid/Makefile
+@@ -0,0 +1,13 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Makefile - AMD SFH HID drivers
++# Copyright (c) 2019-2020, Advanced Micro Devices, Inc.
++#
++#
++obj-$(CONFIG_AMD_SFH_HID) += amd_sfh.o
++amd_sfh-objs := amd_sfh_hid.o
++amd_sfh-objs += amd_sfh_client.o
++amd_sfh-objs += amd_sfh_pcie.o
++amd_sfh-objs += hid_descriptor/amd_sfh_hid_desc.o
 +
-+1. Block Diagram
-+================
++ccflags-y += -I $(srctree)/$(src)/
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+new file mode 100644
+index 000000000000..9c5eb442e1a6
+--- /dev/null
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * AMD MP2 PCIe communication driver
++ * Copyright 2020 Advanced Micro Devices, Inc.
++ *
++ * Authors: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
++ *	    Sandeep Singh <Sandeep.singh@amd.com>
++ */
 +
-+::
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <linux/dma-mapping.h>
++#include <linux/interrupt.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/module.h>
++#include <linux/slab.h>
 +
-+	---------------------------------
-+	|  HID User Space Applications  |
-+	- -------------------------------
++#include "amd_sfh_pcie.h"
 +
-+    ---------------------------------------------
-+	 ---------------------------------
-+	|		HID Core          |
-+	 ---------------------------------
++#define DRIVER_NAME	"pcie_mp2_amd"
++#define DRIVER_DESC	"AMD(R) PCIe MP2 Communication Driver"
 +
-+	 ---------------------------------
-+	|     AMD HID Transport           |
-+	 ---------------------------------
++#define ACEL_EN		BIT(1)
++#define GYRO_EN		BIT(2)
++#define MAGNO_EN	BIT(3)
++#define ALS_EN		BIT(19)
 +
-+	 --------------------------------
-+	|             AMD HID Client     |
-+	|	with HID Report Generator|
-+	 --------------------------------
++void amd_start_sensor(struct amd_mp2_dev *privdata, struct amd_mp2_sensor_info info)
++{
++	union sfh_cmd_param cmd_param;
++	union sfh_cmd_base cmd_base;
 +
-+	 --------------------------------
-+	|     AMD MP2 PCIe Driver        |
-+	 --------------------------------
-+    OS
-+    ---------------------------------------------
-+    Hardware + Firmware
-+         --------------------------------
-+         |     SFH MP2 Processor         |
-+         --------------------------------
++	/* fill up command register */
++	memset(&cmd_base, 0, sizeof(cmd_base));
++	cmd_base.s.cmd_id = ENABLE_SENSOR;
++	cmd_base.s.period = info.period;
++	cmd_base.s.sensor_id = info.sensor_idx;
 +
++	/* fill up command param register */
++	memset(&cmd_param, 0, sizeof(cmd_param));
++	cmd_param.s.buf_layout = 1;
++	cmd_param.s.buf_length = 16;
 +
-+AMD HID Transport Layer
-+-----------------------
-+AMD SFH transport is also implemented as a bus. Each client application executing in the AMD MP2 is
-+registered as a device on this bus. Here: MP2 which is an ARM core connected to x86 for processing
-+sensor data. The layer, which binds each device (AMD SFH HID driver) identifies the device type and
-+registers with the hid core. Transport layer attach a constant "struct hid_ll_driver" object with
-+each device. Once a device is registered with HID core, the callbacks provided via this struct are
-+used by HID core to communicate with the device. AMD HID Transport layer implements the synchronous calls.
++	writeq(info.phys_address, privdata->mmio + AMD_C2P_MSG2);
++	writel(cmd_param.ul, privdata->mmio + AMD_C2P_MSG1);
++	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG0);
++}
 +
-+AMD HID Client Layer
-+--------------------
-+This layer is responsible to implement HID request and descriptors. As firmware is OS agnostic, HID
-+client layer fills the HID request structure and descriptors. HID client layer is complex as it is
-+interface between MP2 PCIe layer and HID. HID client layer initialized the MP2 PCIe layer and holds
-+the instance of MP2 layer. It identifies the number of sensors connected using MP2-PCIe layer. Base
-+on that allocates the DRAM address for each and every sensor and pass it to MP2-PCIe driver.On
-+enumeration of each the sensor, client layer fills the HID Descriptor structure and HID input repor
-+structure. HID Feature report structure is optional. The report descriptor structure varies from
-+sensor to sensor.
++void amd_stop_sensor(struct amd_mp2_dev *privdata, u16 sensor_idx)
++{
++	union sfh_cmd_base cmd_base;
 +
-+AMD MP2 PCIe layer
-+------------------
-+MP2 PCIe Layer is responsible for making all transactions with the firmware over PCIe.
-+The connection establishment between firmware and PCIe happens here.
++	/* fill up command register */
++	memset(&cmd_base, 0, sizeof(cmd_base));
++	cmd_base.s.cmd_id = DISABLE_SENSOR;
++	cmd_base.s.period = 0;
++	cmd_base.s.sensor_id = sensor_idx;
 +
-+The communication between X86 and MP2 is split into three parts.
-+1. Command transfer via the C2P mailbox registers.
-+2. Data transfer via DRAM.
-+3. Supported sensor info via P2C registers.
++	writeq(0x0, privdata->mmio + AMD_C2P_MSG2);
++	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG0);
++}
 +
-+Commands are sent to MP2 using C2P Mailbox registers. Writing into C2P Message registers generate
-+interrupt to MP2. The client layer allocates the physical memory and the same is sent to MP2 via
-+the PCI layer. MP2 firmware writes the command output to the access DRAM memory which the client
-+layer has allocated. Firmware always writes minimum of 32 bytes into DRAM. So as a protocol driver
-+shall allocate minimum of 32 bytes DRAM space.
++void amd_stop_all_sensors(struct amd_mp2_dev *privdata)
++{
++	union sfh_cmd_base cmd_base;
 +
-+Enumeration and Probing flow
-+----------------------------
-+::
++	/* fill up command register */
++	memset(&cmd_base, 0, sizeof(cmd_base));
++	cmd_base.s.cmd_id = STOP_ALL_SENSORS;
++	cmd_base.s.period = 0;
++	cmd_base.s.sensor_id = 0;
 +
-+       HID             AMD            AMD                       AMD -PCIe             MP2
-+       Core         Transport      Client layer                   layer                FW
-+        |		|	       |                           |                 |
-+        |		|              |                 on Boot Driver Loaded       |
-+        |		|	       |                           |                 |
-+        |		|	       |                        MP2-PCIe Int         |
-+        |		|              |			   |                 |
-+        |		|	       |---Get Number of sensors-> |                 |
-+        |		|              |                       Read P2C              |
-+        |		|	       |			Register             |
-+        |		|              |                           |                 |
-+        |               |              | Loop(for No of Sensors)   |                 |
-+        |		|	       |----------------------|    |                 |
-+        |		|              | Create HID Descriptor|    |                 |
-+        |		|	       | Create Input  report |    |                 |
-+        |		|              |  Descriptor Map      |    |                 |
-+        |		|	       |  the MP2 FW Index to |    |                 |
-+        |		|              |   HID Index          |    |                 |
-+        |		|	       | Allocate the DRAM    |  Enable              |
-+        |		|	       |	address       |  Sensors             |
-+        |		|              |----------------------|    |                 |
-+        |		| HID transport|                           |    Enable       |
-+        |	        |<--Probe------|                           |---Sensor CMD--> |
-+        |		| Create the   |			   |                 |
-+        |		| HID device   |                           |                 |
-+        |               |    (MFD)     |                           |                 |
-+        |		| by Populating|			   |                 |
-+        |               |  the HID     |                           |                 |
-+        |               |  ll_driver   |                           |                 |
-+        | HID           |	       |			   |                 |
-+        |  add          |              |                           |                 |
-+        |Device         |              |                           |                 |
-+        |<------------- |	       |			   |                 |
++	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG0);
++}
 +
++int amd_mp2_get_sensor_num(struct amd_mp2_dev *privdata, u8 *sensor_id)
++{
++	int activestatus, num_of_sensors = 0;
 +
-+Data Flow from Application to the AMD SFH Driver
-+------------------------------------------------
++	privdata->activecontrolstatus = readl(privdata->mmio + AMD_P2C_MSG3);
++	activestatus = privdata->activecontrolstatus >> 4;
++	if (ACEL_EN  & activestatus)
++		sensor_id[num_of_sensors++] = accel_idx;
 +
-+::
++	if (GYRO_EN & activestatus)
++		sensor_id[num_of_sensors++] = gyro_idx;
 +
-+	        |	       |              |	  	 	          |		    |
-+                |	       |	      |			          |                 |
-+                |	       |	      |			          |                 |
-+                |              |              |                           |                 |
-+                |              |              |                           |                 |
-+                |HID_req       |              |                           |                 |
-+                |get_report    |              |                           |                 |
-+                |------------->|              |                           |                 |
-+	        |              | HID_get_input|                           |                 |
-+	        |              |  report      |                           |                 |
-+	        |              |------------->|------------------------|  |                 |
-+	        |              |              |  Read the DRAM data for|  |                 |
-+	        |              |              |  requested sensor and  |  |                 |
-+	        |              |              |  create the HID input  |  |                 |
-+	        |              |              |  report                |  |                 |
-+	        |              |              |------------------------|  |                 |
-+	        |              |Data received |                           |                 |
-+	        |              | in HID report|                           |                 |
-+    To	        |<-------------|<-------------|                           |                 |
-+    Applications|              |              |                           |                 |
-+        <-------|              |              |                           |                 |
-diff --git a/Documentation/hid/index.rst b/Documentation/hid/index.rst
-index 737d66dc16a1..e50f513c579c 100644
---- a/Documentation/hid/index.rst
-+++ b/Documentation/hid/index.rst
-@@ -16,3 +16,4 @@ Human Interface Devices (HID)
- 
-    hid-alps
-    intel-ish-hid
-+   amd-sfh-hid
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0d0862b19ce5..a3d3115939b4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -943,6 +943,14 @@ S:	Supported
- F:	arch/arm64/boot/dts/amd/amd-seattle-xgbe*.dtsi
- F:	drivers/net/ethernet/amd/xgbe/
- 
-+AMD SENSOR FUSION HUB DRIVER
-+M:	Nehal Shah <nehal-bakulchandra.shah@amd.com>
-+M:	Sandeep Singh <sandeep.singh@amd.com>
-+L:	linux-input@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hid/amd-sfh*
-+F:	drivers/hid/amd-sfh-hid/
++	if (MAGNO_EN & activestatus)
++		sensor_id[num_of_sensors++] = mag_idx;
 +
- ANALOG DEVICES INC AD5686 DRIVER
- M:	Michael Hennerich <Michael.Hennerich@analog.com>
- L:	linux-pm@vger.kernel.org
++	if (ALS_EN & activestatus)
++		sensor_id[num_of_sensors++] = als_idx;
++
++	return num_of_sensors;
++}
++
++static void amd_mp2_pci_remove(void *privdata)
++{
++	amd_sfh_hid_client_deinit(privdata);
++	amd_stop_all_sensors(privdata);
++}
++
++static int amd_mp2_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct amd_mp2_dev *privdata;
++	int rc;
++
++	privdata = devm_kzalloc(&pdev->dev, sizeof(*privdata), GFP_KERNEL);
++	if (!privdata)
++		return -ENOMEM;
++
++	privdata->pdev = pdev;
++	pci_set_drvdata(pdev, privdata);
++	rc = pcim_enable_device(pdev);
++	if (rc)
++		return rc;
++
++	rc = pcim_iomap_regions(pdev, BIT(2), DRIVER_NAME);
++	if (rc)
++		return rc;
++
++	privdata->mmio = pcim_iomap_table(pdev)[2];
++	pci_set_master(pdev);
++	rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
++	if (rc) {
++		rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++		return rc;
++	}
++	rc = devm_add_action_or_reset(&pdev->dev, amd_mp2_pci_remove, privdata);
++	if (rc)
++		return rc;
++
++	return amd_sfh_hid_client_init(privdata);
++}
++
++static const struct pci_device_id amd_mp2_pci_tbl[] = {
++	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_MP2) },
++	{ }
++};
++MODULE_DEVICE_TABLE(pci, amd_mp2_pci_tbl);
++
++static struct pci_driver amd_mp2_pci_driver = {
++	.name		= DRIVER_NAME,
++	.id_table	= amd_mp2_pci_tbl,
++	.probe		= amd_mp2_pci_probe,
++};
++module_pci_driver(amd_mp2_pci_driver);
++
++MODULE_DESCRIPTION(DRIVER_DESC);
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_AUTHOR("Shyam Sundar S K <Shyam-sundar.S-k@amd.com>");
++MODULE_AUTHOR("Sandeep Singh <Sandeep.singh@amd.com>");
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.h b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.h
+new file mode 100644
+index 000000000000..e8be94f935b7
+--- /dev/null
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.h
+@@ -0,0 +1,79 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * AMD MP2 PCIe communication driver
++ * Copyright 2020 Advanced Micro Devices, Inc.
++ * Authors: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
++ *	    Sandeep Singh <Sandeep.singh@amd.com>
++ */
++
++#ifndef PCIE_MP2_AMD_H
++#define PCIE_MP2_AMD_H
++
++#include <linux/pci.h>
++
++#define PCI_DEVICE_ID_AMD_MP2	0x15E4
++
++#define ENABLE_SENSOR		1
++#define DISABLE_SENSOR		2
++#define STOP_ALL_SENSORS	8
++
++/* MP2 C2P Message Registers */
++#define AMD_C2P_MSG0	0x10500
++#define AMD_C2P_MSG1	0x10504
++#define AMD_C2P_MSG2	0x10508
++
++/* MP2 P2C Message Registers */
++#define AMD_P2C_MSG3	0x1068C /* Supported Sensors info */
++
++/* SFH Command register */
++union sfh_cmd_base {
++	u32 ul;
++	struct {
++		u32 cmd_id : 8;
++		u32 sensor_id : 8;
++		u32 period : 16;
++	} s;
++};
++
++union sfh_cmd_param {
++	u32 ul;
++	struct {
++		u32 buf_layout : 2;
++		u32 buf_length : 6;
++		u32 rsvd : 24;
++	} s;
++};
++
++struct sfh_cmd_reg {
++	union sfh_cmd_base cmd_base;
++	union sfh_cmd_param cmd_param;
++	phys_addr_t phys_addr;
++};
++
++enum sensor_idx {
++	accel_idx = 0,
++	gyro_idx = 1,
++	mag_idx = 2,
++	als_idx = 19
++};
++
++struct amd_mp2_dev {
++	struct pci_dev *pdev;
++	struct amdtp_cl_data *cl_data;
++	void __iomem *mmio;
++	u32 activecontrolstatus;
++};
++
++struct amd_mp2_sensor_info {
++	u8 sensor_idx;
++	u32 period;
++	phys_addr_t phys_address;
++};
++
++void amd_start_sensor(struct amd_mp2_dev *privdata, struct amd_mp2_sensor_info info);
++void amd_stop_sensor(struct amd_mp2_dev *privdata, u16 sensor_idx);
++void amd_stop_all_sensors(struct amd_mp2_dev *privdata);
++int amd_mp2_get_sensor_num(struct amd_mp2_dev *privdata, u8 *sensor_id);
++int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata);
++int amd_sfh_hid_client_deinit(struct amd_mp2_dev *privdata);
++#endif
 -- 
 2.25.1
 

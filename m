@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDD828A25E
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 00:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C3C28A37B
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 01:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388035AbgJJW5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Oct 2020 18:57:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50688 "EHLO mail.kernel.org"
+        id S1730439AbgJJW5B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Oct 2020 18:57:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731361AbgJJTMW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 10 Oct 2020 15:12:22 -0400
+        id S1731123AbgJJTCW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 10 Oct 2020 15:02:22 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B695422400;
-        Sat, 10 Oct 2020 16:54:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 112712242B;
+        Sat, 10 Oct 2020 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602348861;
-        bh=Yd+Ts5zV4Imhr2dlD4CN2STzRAnre/8W1ZiC+y6m/NU=;
+        s=default; t=1602349041;
+        bh=tvRSA9R+WFrxxVwgdjd4mNTVYdF+H8JAqH74nfC64co=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kNWySn40Fc1xgX/LG2i+iwLibfi85Qh8i5IV/OCvtrv/F/ydOQitt1DlIBy4zHPVZ
-         iNLKuXTBkFLTB6E2vpilcsc5UZj6jGXofy0/Cmw1S0yDCmt+7rJpMKTQ2j1CnixEA7
-         67m5Z0bhjNvdDa78h/RXjXj4uJCNsnc3SzG/jcME=
-Date:   Sat, 10 Oct 2020 17:54:15 +0100
+        b=ZgbF8bwi2UcwgQkisyGyNYTjjBlwqldV4vgAnD3Jv5bGIF2p9LtXEWQc1F+78JT0D
+         xY4+fZfeFRbH0/40ELyQHlLcLjTNDdVRKOYQhEiTuNQ+liidwbYO0y4f7u9DpGQ5lN
+         EVgZQalZesICskJ4Xb2cFQ0mX0R9DnjdXxYF+l3c=
+Date:   Sat, 10 Oct 2020 17:57:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        michal.simek@xilinx.com, git@xilinx.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        anandash@xilinx.com
-Subject: Re: [LINUX PATCH v3] iio: core: Fix IIO_VAL_FRACTIONAL calculation
- for negative values
-Message-ID: <20201010175415.6e51d873@archlinux>
-In-Reply-To: <1601910316-24111-1-git-send-email-anand.ashok.dumbre@xilinx.com>
-References: <1601910316-24111-1-git-send-email-anand.ashok.dumbre@xilinx.com>
+To:     Gene Chen <gene.chen.richtek@gmail.com>
+Cc:     robh+dt@kernel.org, matthias.bgg@gmail.com, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        gene_chen@richtek.com, Wilma.Wu@mediatek.com,
+        shufan_lee@richtek.com, cy_huang@richtek.com,
+        benjamin.chao@mediatek.com
+Subject: Re: [PATCH v6 0/3] iio: adc: mt6360: Add ADC driver for MT6360
+Message-ID: <20201010175714.0fb968ab@archlinux>
+In-Reply-To: <1601542448-7433-1-git-send-email-gene.chen.richtek@gmail.com>
+References: <1601542448-7433-1-git-send-email-gene.chen.richtek@gmail.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,66 +45,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  5 Oct 2020 08:05:16 -0700
-Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
+On Thu,  1 Oct 2020 16:54:05 +0800
+Gene Chen <gene.chen.richtek@gmail.com> wrote:
 
-> Fixes IIO_VAL_FRACTIONAL for case when the result is negative and
-> exponent is 0.
+> This patch series add MT6360 ADC support contains driver, testing document
+> and binding document
 > 
-> example: if the result is -0.75, tmp0 will be 0 and tmp1 = 75
-> This causes the output to lose sign because of %d in snprintf
-> which works for tmp0 <= -1.
-> 
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> Reported-by: kernel test robot <lkp@intel.com> #error: uninitialized symbol tmp
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-As this doesn't have a fixes tag etc and from v2 discussion was only hit
-with a new driver, I'm not currently taking this a a fix.
-If people want me to rush it in / backport to stable then let me know
+> Gene Chen (2)
+>   dt-bindings: iio: adc: add bindings doc for MT6360 ADC
+>   Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
+>   iio: adc: mt6360: Add ADC driver for MT6360
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+Hi Gene
+
+This looks good to me.  I'm just waiting now on some final
+reviews for the patch that adds the label attribute support.
+Once those are in I'll pick your driver up as well.
+
+If I seem to have lost it, feel free to poke me!
 
 Thanks,
 
 Jonathan
 
-> ---
 > 
-> Changes in v3:
-> 	Fixed a bug caught by kernel test robot and used correct variable
+>  Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360                 |   78 ++
+>  Documentation/devicetree/bindings/iio/adc/mediatek,mt6360-adc.yaml |   34 
+>  drivers/iio/adc/Kconfig                                            |   11 
+>  drivers/iio/adc/Makefile                                           |    1 
+>  drivers/iio/adc/mt6360-adc.c                                       |  362 ++++++++++
+>  5 files changed, 486 insertions(+)
 > 
-> ---
->  drivers/iio/industrialio-core.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> changelogs between v1 & v2
+>  - adc: use IIO_CHAN_INFO_PROCESSED only
+>  - adc: use devm_iio_triggered_buffer_setup
+>  - adc: use use s64 to record timestamp
 > 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index cdcd16f1..ffd5176 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -592,6 +592,7 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
->  {
->  	unsigned long long tmp;
->  	int tmp0, tmp1;
-> +	s64 tmp2;
->  	bool scale_db = false;
->  
->  	switch (type) {
-> @@ -614,10 +615,13 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
->  		else
->  			return scnprintf(buf, len, "%d.%09u", vals[0], vals[1]);
->  	case IIO_VAL_FRACTIONAL:
-> -		tmp = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
-> +		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
->  		tmp1 = vals[1];
-> -		tmp0 = (int)div_s64_rem(tmp, 1000000000, &tmp1);
-> -		return scnprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
-> +		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
-> +		if ((tmp2 < 0) && (tmp0 == 0))
-> +			return snprintf(buf, len, "-0.%09u", abs(tmp1));
-> +		else
-> +			return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
->  	case IIO_VAL_FRACTIONAL_LOG2:
->  		tmp = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
->  		tmp0 = (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
+> changelogs between v2 & v3
+>  - Rearrange include file order by alphabet
+>  - Set line length constraint below 100
+>  - Add Document for testing adc sysfs node guideline
+>  - Set compiler 64 bit aligned when handle iio timestamp
+> 
+> changelogs between v3 & v4
+>  - Fix sysfs guideline description
+>  - Replace iio channel processed by raw/scale/offset
+>  - Add comment of read adc flow for special HW design
+> 
+> changelogs between v4 & v5
+>  - Rename dt-bindings aligned to file name
+>  - Aligned sysfs node name with driver and add VBUSDIVX description
+>  - Add ADC channel sysfs node "*_labels"
+> 
+> changelogs between v5 & v6
+>  - Memset aligned adc data
+>  - Remove strong casting void pointer
+> 
 

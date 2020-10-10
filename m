@@ -2,131 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 325CB28A372
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 01:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EDD828A25E
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 00:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390349AbgJJW5E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Oct 2020 18:57:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52034 "EHLO mail.kernel.org"
+        id S2388035AbgJJW5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Oct 2020 18:57:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50688 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731436AbgJJTW0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 10 Oct 2020 15:22:26 -0400
+        id S1731361AbgJJTMW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 10 Oct 2020 15:12:22 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2FCF922404;
-        Sat, 10 Oct 2020 16:51:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B695422400;
+        Sat, 10 Oct 2020 16:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602348663;
-        bh=QORHMnmWSEjYd8YMjB0g1v/EbTLN970fmst2j2tRPfM=;
+        s=default; t=1602348861;
+        bh=Yd+Ts5zV4Imhr2dlD4CN2STzRAnre/8W1ZiC+y6m/NU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BdKZKSbB1/KZzKiQy9HRaLRagU6gYw2wZ5P6B9weBcPigsRhwQOIICIdR+6NY93de
-         XdM5Kv70uWNgDWyVqa+haOBaVGxc+W6lZw+MhTYHD7WvAH7c58WFcO6yBjiB3V21Sj
-         hNj6td5defmDaHkzhGk173Vrz4v1ZmJ8miquhqM0=
-Date:   Sat, 10 Oct 2020 17:50:57 +0100
+        b=kNWySn40Fc1xgX/LG2i+iwLibfi85Qh8i5IV/OCvtrv/F/ydOQitt1DlIBy4zHPVZ
+         iNLKuXTBkFLTB6E2vpilcsc5UZj6jGXofy0/Cmw1S0yDCmt+7rJpMKTQ2j1CnixEA7
+         67m5Z0bhjNvdDa78h/RXjXj4uJCNsnc3SzG/jcME=
+Date:   Sat, 10 Oct 2020 17:54:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     dmitry.torokhov@gmail.com
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: adc: exynos: do not rely on 'users' counter in
- ISR
-Message-ID: <20201010175057.768fe3b3@archlinux>
-In-Reply-To: <20201006215509.GA2556081@dtor-ws>
-References: <20201006215509.GA2556081@dtor-ws>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        michal.simek@xilinx.com, git@xilinx.com, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        anandash@xilinx.com
+Subject: Re: [LINUX PATCH v3] iio: core: Fix IIO_VAL_FRACTIONAL calculation
+ for negative values
+Message-ID: <20201010175415.6e51d873@archlinux>
+In-Reply-To: <1601910316-24111-1-git-send-email-anand.ashok.dumbre@xilinx.com>
+References: <1601910316-24111-1-git-send-email-anand.ashok.dumbre@xilinx.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 6 Oct 2020 14:55:09 -0700
-dmitry.torokhov@gmail.com wrote:
+On Mon,  5 Oct 2020 08:05:16 -0700
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-> The order in which 'users' counter is decremented vs calling drivers'
-> close() method is implementation specific, and we should not rely on
-> it. Let's introduce driver private flag and use it to signal ISR
-> to exit when device is being closed.
->=20
-> This has a side-effect of fixing issue of accessing inut->users
-> outside of input->mutex protection.
->=20
-> Reported-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to work their magic.
+> Fixes IIO_VAL_FRACTIONAL for case when the result is negative and
+> exponent is 0.
+> 
+> example: if the result is -0.75, tmp0 will be 0 and tmp1 = 75
+> This causes the output to lose sign because of %d in snprintf
+> which works for tmp0 <= -1.
+> 
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> Reported-by: kernel test robot <lkp@intel.com> #error: uninitialized symbol tmp
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+As this doesn't have a fixes tag etc and from v2 discussion was only hit
+with a new driver, I'm not currently taking this a a fix.
+If people want me to rush it in / backport to stable then let me know
 
-Given this doesn't have a fixes tag etc I'm assuming it isn't
-high priority etc.  Let me know if it is!
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
+
 > ---
->=20
-> v3: fixed typo in exynos_adc_ts_close() per Micha=C5=82 Miros=C5=82aw
-> v2: switched from ordinary read/write to READ_ONCE/WRITE_ONCE per Micha=
-=C5=82
-> Miros=C5=82aw
->=20
->  drivers/iio/adc/exynos_adc.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-> index 22131a677445..908df4b9b93c 100644
-> --- a/drivers/iio/adc/exynos_adc.c
-> +++ b/drivers/iio/adc/exynos_adc.c
-> @@ -7,6 +7,7 @@
->   *  Copyright (C) 2013 Naveen Krishna Chatradhi <ch.naveen@samsung.com>
->   */
-> =20
-> +#include <linux/compiler.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/interrupt.h>
-> @@ -135,6 +136,8 @@ struct exynos_adc {
->  	u32			value;
->  	unsigned int            version;
-> =20
-> +	bool			ts_enabled;
-> +
->  	bool			read_ts;
->  	u32			ts_x;
->  	u32			ts_y;
-> @@ -633,7 +636,7 @@ static irqreturn_t exynos_ts_isr(int irq, void *dev_i=
-d)
->  	bool pressed;
->  	int ret;
-> =20
-> -	while (info->input->users) {
-> +	while (READ_ONCE(info->ts_enabled)) {
->  		ret =3D exynos_read_s3c64xx_ts(dev, &x, &y);
->  		if (ret =3D=3D -ETIMEDOUT)
->  			break;
-> @@ -712,6 +715,7 @@ static int exynos_adc_ts_open(struct input_dev *dev)
+> 
+> Changes in v3:
+> 	Fixed a bug caught by kernel test robot and used correct variable
+> 
+> ---
+>  drivers/iio/industrialio-core.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index cdcd16f1..ffd5176 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -592,6 +592,7 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
 >  {
->  	struct exynos_adc *info =3D input_get_drvdata(dev);
-> =20
-> +	WRITE_ONCE(info->ts_enabled, true);
->  	enable_irq(info->tsirq);
-> =20
->  	return 0;
-> @@ -721,6 +725,7 @@ static void exynos_adc_ts_close(struct input_dev *dev)
->  {
->  	struct exynos_adc *info =3D input_get_drvdata(dev);
-> =20
-> +	WRITE_ONCE(info->ts_enabled, false);
->  	disable_irq(info->tsirq);
->  }
-> =20
+>  	unsigned long long tmp;
+>  	int tmp0, tmp1;
+> +	s64 tmp2;
+>  	bool scale_db = false;
+>  
+>  	switch (type) {
+> @@ -614,10 +615,13 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
+>  		else
+>  			return scnprintf(buf, len, "%d.%09u", vals[0], vals[1]);
+>  	case IIO_VAL_FRACTIONAL:
+> -		tmp = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
+> +		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
+>  		tmp1 = vals[1];
+> -		tmp0 = (int)div_s64_rem(tmp, 1000000000, &tmp1);
+> -		return scnprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
+> +		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
+> +		if ((tmp2 < 0) && (tmp0 == 0))
+> +			return snprintf(buf, len, "-0.%09u", abs(tmp1));
+> +		else
+> +			return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
+>  	case IIO_VAL_FRACTIONAL_LOG2:
+>  		tmp = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
+>  		tmp0 = (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
 

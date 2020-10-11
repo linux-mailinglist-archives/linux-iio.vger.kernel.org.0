@@ -2,171 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0746D28A8EE
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 20:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAB6A28A925
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 20:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730501AbgJKR7w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Oct 2020 13:59:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47058 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730535AbgJKR7f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Oct 2020 13:59:35 -0400
-X-Greylist: delayed 402 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 11 Oct 2020 10:59:34 PDT
-Received: from mail.cosmopool.net (mail.cosmopool.net [IPv6:2a01:4f8:160:20c1::10:107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E8E3FC0613CE
-        for <linux-iio@vger.kernel.org>; Sun, 11 Oct 2020 10:59:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.cosmopool.net (Postfix) with ESMTP id 27E3C9016EA;
-        Sun, 11 Oct 2020 19:52:50 +0200 (CEST)
-Received: from mail.cosmopool.net ([127.0.0.1])
-        by localhost (mail.b.radempa.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 8CPmQe0rhlN1; Sun, 11 Oct 2020 19:52:49 +0200 (CEST)
-Received: from webmail.cosmopool.net (localhost [127.0.0.1])
-        by mail.cosmopool.net (Postfix) with ESMTPSA id 5133F9010FE;
-        Sun, 11 Oct 2020 19:52:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ccbib.org; s=201902;
-        t=1602438768; bh=FWKz+mE9rrMDvHOxI6eky87hSZMwTo9XVbTTvMuRbXs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FUbVN9vFb9Lrd6eAC75wQnw4vRR+3t+trz0HR1dUBgGCXfnZL3uUvgHUAN7Xo/UXj
-         M0BXUNItSEtvEWDNg2C1ESYpYFEizxtqa1CL7wzr/aVWNSOzZqJWbRT5h2piiZi2uz
-         QViCHlSzeWHc4ubzghJbS5KGAr3stw4P1AziKkOQ=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Sun, 11 Oct 2020 18:52:48 +0100
-From:   Harald Geyer <harald@ccbib.org>
+        id S1726543AbgJKSGT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Oct 2020 14:06:19 -0400
+Received: from mout.gmx.net ([212.227.15.18]:59555 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726544AbgJKSGS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Oct 2020 14:06:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1602439559;
+        bh=YC5jGh574QwPJER9OdCZ7nO/arw8Rn+20nQE4hLYKfk=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=lipZtGOxj4DdfQAfUDlu/uqJ4sd6z+WA40lUoVDlht+wCcsQcbM6tAGboFJzn947M
+         mUgOdCRbV42/etjwAnGPkcPPceyo0Y8V3ttXcg0vgik0VfHjzBlgH9SY9xUZqGG5S6
+         Y4B0pj/HHCoMiVHo4ILIWlGnLaqOC+Slh46U/xHc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.178.51] ([78.42.220.31]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N6bk4-1kQ8l646jW-0185DN; Sun, 11
+ Oct 2020 20:05:59 +0200
+Subject: Re: [PATCH] iio:core: In map_array_register() cleanup in case of
+ error
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     <linux-iio@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH 04/29] dt-bindings:iio:humidity:dht11 yaml conversion
-In-Reply-To: <20201011170749.243680-5-jic23@kernel.org>
-References: <20201011170749.243680-1-jic23@kernel.org>
- <20201011170749.243680-5-jic23@kernel.org>
-Message-ID: <20e7bc0e3f7e55587e431ad97dcca4b5@ccbib.org>
-X-Sender: harald@ccbib.org
-User-Agent: RoundCube Webmail/0.7.2
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1602420080-15905-1-git-send-email-LinoSanfilippo@gmx.de>
+ <20201011160748.4a47b889@archlinux>
+From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Message-ID: <6659ed59-306d-755d-6481-a4029eac5329@gmx.de>
+Date:   Sun, 11 Oct 2020 20:05:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20201011160748.4a47b889@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/XZy3/luRrNsjGOhlINHhT3mQd7/PKF5YBnNJqbTuFpMYq5z4K8
+ UbKzUqBCrO7/AciYtR0/uJEDB66yxHAqDA/NP9BeWdxctYyjYrrUv8a0j0ejMZsxuCm3nvx
+ 4haW0EFNrEsC0+GncIFmzFdiHAtEwxyxIJA2XQgemmF3ll1XWk/Ycf0mguRIXRqX/kRe6qf
+ 4TjahdrVyYAmb1bgdI3fQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CUlMnqXdupY=:JGvYw1RmnQ8CZEUT/TLF5T
+ VgkKcqaJmYvzvIrjbX+N4blkZrwBXurwUf3ZuiOF38mOendoH+ki2k7hD4GoCQ3SY1p0+tWs4
+ 6sGhxp43DT1YTWDHJoY03ec0j6fMecVLmwMeSdOJqe+vyyc0MFp88avXkLoAfdRJ6MPUhmVpw
+ pxFqtDlxexnPLDAQ9ZryZNRVy98ByfPY8UqOhR9n6bjChFzq/dZSYLsVKw97W2NIkRtp91Y0r
+ c3bolBl+6Y05Ph+Bf4sY+xl9Wm49VW+4L6ZtRSivwbypXJM1k2HO/iN04LNQiGEyLEaYeNJwy
+ 56ZGvtxYwEnv7sreOtNg15d6jhRzKIRFLoqQlnpfZVa7MWYNnxi0XjLcS/nJWAf9rmk3RBhZ1
+ mXDknYTDsYs5eXiB70upB8dI6QfQ3N/jLbnWzXwL618C5VIia8+gXw3MHgQy1RKsS4Jo5oD/V
+ UG4IjxFhi6IQsD9cUCaZKcOvx3g4aZCsoa+Gu1J94EpF55i3/NQQCthl9Fz3xX7zYtoypBSg7
+ 3exQh+Xz/QdsSHAUq7r7DU0+FZ44BRog0dEvNvCwCyndM4Y5EO/d5Mw3D1zoexASGYhdT70Fw
+ vE6w0aDym7q5Q+Gd3wXMHJ3KcfQBRGriPB9+q6jNxFGuFi6QHJcPZQ+tf4k1FhF0I83RPaaKe
+ L9R3a+iCr88kvY2vsCLSvF2uV0073pPWw5DfhQAkaHrpoCdvo9706OQndApSPeJDlxeBDjbO9
+ LGjq4mKbGPJEIK8dqYySA5mIhGxkJfT1BlPzF/9o8fkOTXhcZ/vmRCjdVrNakdg2bXj3V6D5K
+ Vf1IqcQDd0o0WlyIyTCaPZgXtVYshlYqYhhMTrK0GMd1zl3oKDgGs7PLbHvtUGWrm4N4l0liC
+ RRFtsmGhOajKNJ6mJOlRRi14GEv1MMoUqeNxIrJnKoMOQgn/lr0oOYIF5Mk1FqD0NiaD3gFNT
+ OxF0mF7B4Ep0cocEsS8rGuRXBtKC1/gD7k6mojbB+4+TiCRaDMFYm3hgWb0bbE0fgR50j75+I
+ CHf0uhpJVMiw100tfbJeZKQJUxQRtayFo/bbG/nIZastsDBpTa0ukU8GeW5hg2/QQ0wpovMST
+ PIRHGnT3onVPOGFSjfW1azSvGjS/dJS3UfO31FOW289mCtDnrrBwKhePlVbkpdgQt6/CCuhMg
+ 16+4XBFNSUmJiHNQCYfNfMONq2i5FqFRE1nGhQtBLiFCJNk+oFDu8vT9ERStIcC6q0eentoa0
+ YVLzlAxGhrJosiLwZa7jqc/eeiFtyHXNSNwZh1Q==
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11.10.2020 18:07, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Hi,
+
+Am 11.10.20 um 17:07 schrieb Jonathan Cameron:
 >
-> The conversion is straight forward, but leaves an open question.
-> The compatible for this device has never had a vendor. I suspect
-> this because it is non-obvious who actually makes the module. It is
-> resold by numerous vendors and it may be that there is no single 
-> vendor
-> of the parts they are using.  If anyone has any more info on the
-> vendor, please let me know and we can add a more informative
-> compatible.
-
-I think these parts come from Aosong: http://www.aosong.com/en/
-
-The DHT11 uses a custom protocol, so I don't think other vendors
-would be using this. Even Aosong started using i2c by now.
-
-On the other hand DHT11 seems to be more of a trade name then a
-part identifier. The latter probably would be something like
-aosong,am2302 (trade name DHT22).
-
-However the matching between identifiers and trade names is
-confusing for the older products. I'm not sure if it is worth
-digging into this. Probably only the people at aosong could
-clear this up.
-
-Anyway, you have my:
-Acked-By: Harald Geyer <harald@ccbib.org>
-
-Thanks,
-Harald
-
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Harald Geyer <harald@ccbib.org>
-> ---
->  .../bindings/iio/humidity/dht11.txt           | 14 -------
->  .../bindings/iio/humidity/dht11.yaml          | 41 
-> +++++++++++++++++++
->  2 files changed, 41 insertions(+), 14 deletions(-)
+> Good spot. I'd rather we went with a different code flow though.
+> See below.
 >
-> diff --git a/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> b/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> deleted file mode 100644
-> index ecc24c199fd6..000000000000
-> --- a/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> +++ /dev/null
-> @@ -1,14 +0,0 @@
-> -* DHT11 humidity/temperature sensor (and compatibles like DHT22)
-> -
-> -Required properties:
-> -  - compatible: Should be "dht11"
-> -  - gpios: Should specify the GPIO connected to the sensor's data
-> -    line, see "gpios property" in
-> -    Documentation/devicetree/bindings/gpio/gpio.txt.
-> -
-> -Example:
-> -
-> -humidity_sensor {
-> -	compatible = "dht11";
-> -	gpios = <&gpio0 6 0>;
-> -}
-> diff --git
-> a/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
-> b/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
-> new file mode 100644
-> index 000000000000..38ec4c302760
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
-> @@ -0,0 +1,41 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/humidity/dht11.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: DHT11 humidity + temperature sensor
-> +
-> +maintainers:
-> +  - Harald Geyer <harald@ccbib.org>
-> +
-> +description: |
-> +   A simple and low cost module providing a non standard single GPIO 
-> based
-> +   interface.  Whilst commonly available it is not easy to establish
-> if there
-> +   is a single manufacturer for this part.
-> +
-> +properties:
-> +  compatible:
-> +    const: dht11
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  gpios:
-> +    maxItems: 1
-> +    description:
-> +      Single, interrupt capable, GPIO used to communicate with the 
-> device.
-> +
-> +required:
-> +  - compatible
-> +  - gpios
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    humidity_sensor {
-> +        compatible = "dht11";
-> +        gpios = <&gpio0 6 0>;
-> +    };
-> +...
 
--- 
-Es gibt viele Maßnahmen gegen die Klimakrise, die leicht und ohne
-Verlierer umsetzbar sind. Das Problem ist immer noch das Desinteresse
-der etablierten Parteien.
-https://haraldgeyer.at/Klimaschutz.html
+Ok, will adjust the code and send a V2 shortly.
 
+Regards,
+Lino

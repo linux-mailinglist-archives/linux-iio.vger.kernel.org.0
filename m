@@ -2,35 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4170B28A865
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3006D28A866
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388233AbgJKRKZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Oct 2020 13:10:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51938 "EHLO mail.kernel.org"
+        id S2388234AbgJKRK1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Oct 2020 13:10:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51954 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387984AbgJKRKZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Oct 2020 13:10:25 -0400
+        id S2387984AbgJKRK1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Oct 2020 13:10:27 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B43122222A;
-        Sun, 11 Oct 2020 17:10:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 713D32222C;
+        Sun, 11 Oct 2020 17:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602436225;
-        bh=ob9pi5WJZCE4xCuL8Z8A7qnI9d86EjfPSiRpQOwLnVo=;
+        s=default; t=1602436226;
+        bh=qxz1nFYffvdJkqktFxYS4QndAo/Hvp2pWUygCya5Z4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Byt3fxGsROs0M50kqTP+q5eAsEmO651DbYGCMiMRDlGQJcOZEgDPpriEPDcjpt80/
-         WGBjYXluG5Vr80X8OAKYiY/iMukJ63hg0t0rk90gKfmTSdncbKtfJfuZ3zbZ3RHluO
-         7/lZE2819wPnEHzwDTeTVOHv858XXBlHAzdufUVQ=
+        b=LKc9CTZONyPgk9m4pURD40QZ1u6px9oFQNaWEiZIby6jhMylkSeKH7nLuAPq1xIDL
+         wBhn2ifaGw2EKO5IsaW+Nr0iV2N+YF1h7DSHxtGD1TFpWD/Mu7CbsIGZ4Lkblz3vhH
+         m5BOIZpr/+CLh9GNbocGP5SQeqW6x3clWSeeYEq8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "Ismail H . Kose" <Ismail.Kose@maximintegrated.com>,
-        "Ismail H . Kose" <ihkose@gmail.com>
-Subject: [PATCH 18/29] dt-bindings:iio:dac:maxim,ds4424 yaml conversion
-Date:   Sun, 11 Oct 2020 18:07:38 +0100
-Message-Id: <20201011170749.243680-19-jic23@kernel.org>
+        Sanchayan Maity <maitysanchayan@gmail.com>
+Subject: [PATCH 19/29] dt-bindings:iio:dac:fsl,vf610-dac yaml conversion
+Date:   Sun, 11 Oct 2020 18:07:39 +0100
+Message-Id: <20201011170749.243680-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201011170749.243680-1-jic23@kernel.org>
 References: <20201011170749.243680-1-jic23@kernel.org>
@@ -42,93 +41,103 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Simple conversion of this straight forward binding.
+Simple binding to convert.  Example expanded a little to include
+an example bus.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ismail H. Kose <Ismail.Kose@maximintegrated.com>
-Cc: Ismail H. Kose <ihkose@gmail.com>
+Cc: Sanchayan Maity <maitysanchayan@gmail.com>
 ---
- .../devicetree/bindings/iio/dac/ds4424.txt    | 20 ---------
- .../bindings/iio/dac/maxim,ds4424.yaml        | 45 +++++++++++++++++++
- 2 files changed, 45 insertions(+), 20 deletions(-)
+ .../bindings/iio/dac/fsl,vf610-dac.yaml       | 55 +++++++++++++++++++
+ .../devicetree/bindings/iio/dac/vf610-dac.txt | 20 -------
+ 2 files changed, 55 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/ds4424.txt b/Documentation/devicetree/bindings/iio/dac/ds4424.txt
-deleted file mode 100644
-index eaebbf8dab40..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/ds4424.txt
-+++ /dev/null
-@@ -1,20 +0,0 @@
--Maxim Integrated DS4422/DS4424 7-bit Sink/Source Current DAC Device Driver
--
--Datasheet publicly available at:
--https://datasheets.maximintegrated.com/en/ds/DS4422-DS4424.pdf
--
--Required properties:
--	- compatible: Should be one of
--		maxim,ds4422
--		maxim,ds4424
--	- reg: Should contain the DAC I2C address
--
--Optional properties:
--	- vcc-supply: Power supply is optional. If not defined, driver will ignore it.
--
--Example:
--	ds4224@10 {
--		compatible = "maxim,ds4424";
--		reg = <0x10>; /* When A0, A1 pins are ground */
--		vcc-supply = <&vcc_3v3>;
--	};
-diff --git a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/fsl,vf610-dac.yaml b/Documentation/devicetree/bindings/iio/dac/fsl,vf610-dac.yaml
 new file mode 100644
-index 000000000000..91661079d7ea
+index 000000000000..999c715c6179
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-@@ -0,0 +1,45 @@
++++ b/Documentation/devicetree/bindings/iio/dac/fsl,vf610-dac.yaml
+@@ -0,0 +1,55 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/maxim,ds4424.yaml#
++$id: http://devicetree.org/schemas/iio/dac/fsl,vf610-dac.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Maxim Integrated DS4422/DS4424 7-bit Sink/Source Current DAC
++title: Freescale vf610 Digital to Analog Converter
 +
 +maintainers:
-+  - Ismail H. Kose <Ismail.Kose@maximintegrated.com>
-+
-+description: |
-+  Datasheet publicly available at:
-+  https://datasheets.maximintegrated.com/en/ds/DS4422-DS4424.pdf
++  - Sanchayan Maity <maitysanchayan@gmail.com>
 +
 +properties:
 +  compatible:
-+    enum:
-+      - maxim,ds4422
-+      - maxim,ds4424
++    const: fsl,vf610-dac
 +
 +  reg:
 +    maxItems: 1
 +
-+  vcc-supply: true
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    const: dac
 +
 +required:
 +  - compatible
 +  - reg
++  - interrupts
++  - clocks
++  - clock-names
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    i2c {
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/clock/vf610-clock.h>
++    bus@40000000 {
++        compatible = "fsl,aips-bus", "simple-bus";
++        reg = <0x40000000 0x00070000>;
++        ranges;
 +        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        dac@10 {
-+            compatible = "maxim,ds4424";
-+            reg = <0x10>; /* When A0, A1 pins are ground */
-+            vcc-supply = <&vcc_3v3>;
++        #size-cells = <1>;
++        dac@400cc000 {
++            compatible = "fsl,vf610-dac";
++            reg = <0x400cc000 0x1000>;
++            interrupts = <55 IRQ_TYPE_LEVEL_HIGH>;
++            clock-names = "dac";
++            clocks = <&clks VF610_CLK_DAC0>;
 +        };
 +    };
 +...
+diff --git a/Documentation/devicetree/bindings/iio/dac/vf610-dac.txt b/Documentation/devicetree/bindings/iio/dac/vf610-dac.txt
+deleted file mode 100644
+index 20c6c7ae9687..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/vf610-dac.txt
++++ /dev/null
+@@ -1,20 +0,0 @@
+-Freescale vf610 Digital to Analog Converter bindings
+-
+-The devicetree bindings are for the new DAC driver written for
+-vf610 SoCs from Freescale.
+-
+-Required properties:
+-- compatible: Should contain "fsl,vf610-dac"
+-- reg: Offset and length of the register set for the device
+-- interrupts: Should contain the interrupt for the device
+-- clocks: The clock is needed by the DAC controller
+-- clock-names: Must contain "dac" matching entry in the clocks property.
+-
+-Example:
+-dac0: dac@400cc000 {
+-	compatible = "fsl,vf610-dac";
+-	reg = <0x400cc000 0x1000>;
+-	interrupts = <55 IRQ_TYPE_LEVEL_HIGH>;
+-	clock-names = "dac";
+-	clocks = <&clks VF610_CLK_DAC0>;
+-};
 -- 
 2.28.0
 

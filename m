@@ -2,33 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CCF628A861
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391F628A862
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388163AbgJKRKT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Oct 2020 13:10:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51878 "EHLO mail.kernel.org"
+        id S2388209AbgJKRKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Oct 2020 13:10:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51888 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387984AbgJKRKT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Oct 2020 13:10:19 -0400
+        id S2387984AbgJKRKU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Oct 2020 13:10:20 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D13542222C;
-        Sun, 11 Oct 2020 17:10:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E06E2222E;
+        Sun, 11 Oct 2020 17:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602436218;
-        bh=YBu/KHG023jDo7dYvIZA9imsnQRnzD01yzKpg4FMg9s=;
+        s=default; t=1602436220;
+        bh=WEyE3MlPVkZ98GXLFIcGvZ2EZV5Ha5abE5vLNeIwp2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G79cAuuVXspt6mwtPil73Lx0lth/dv2Z+9QrDdsZ0r+MfLPqPunLUjTS9Yk9bj9sE
-         mrXElOI3sKvvoJdW/JccBldwnnmHXqnCxJOXIu3DUmwpsHeoSXluSWS4A62Td862IH
-         ui3AxSXAlMOCPaQrG0x24J/3wDVeXk2hgmHLo3JU=
+        b=zAFFIZ6EWQkzb1hCKhmE2ici/Xz1tdvIHLHTbGHTFEUxjip6L++xYZYNMmQLPzJcG
+         h+OMV8QJrsfP0BnOsL0NqXoVJQDZ5IGWtO3T9Vc9yEs8ir4gAeyniXWgrOYTEGPSY5
+         iJqqokFaYSxczLDDKo6vGDjx3DxqsGCVxbeBze9M=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 14/29] dt-bindings:iio:dac:ti,dac7512 yaml conversion
-Date:   Sun, 11 Oct 2020 18:07:34 +0100
-Message-Id: <20201011170749.243680-15-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Ricardo Ribalda Delgado <ricardo@ribalda.com>
+Subject: [PATCH 15/29] dt-bindings:iio:dac:ti,dac7612 yaml conversion
+Date:   Sun, 11 Oct 2020 18:07:35 +0100
+Message-Id: <20201011170749.243680-16-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201011170749.243680-1-jic23@kernel.org>
 References: <20201011170749.243680-1-jic23@kernel.org>
@@ -40,78 +41,87 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This one is a bit interesting because the binding was moved from
-misc a while back, but the linux support for this device is
-provided via the ad5446 DAC driver which doesn't currently
-have a binding.
-
-For now, lets just convert this file over, but we may want to
-think about consolidating this with proper documentation of
-the bindings for the other parts supported by the ad5446 driver.
-
-As Daniel Mack does not seem to have been active since 2015,
-I've put myself as maintainer of this binding for now.
+Simple conversion from txt to yaml.  No significant adjustments.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Ricardo Ribalda Delgado <ricardo@ribalda.com>
 ---
- .../bindings/iio/dac/ti,dac7512.txt           | 20 ---------
- .../bindings/iio/dac/ti,dac7512.yaml          | 42 +++++++++++++++++++
- 2 files changed, 42 insertions(+), 20 deletions(-)
+ .../bindings/iio/dac/ti,dac7612.txt           | 28 ----------
+ .../bindings/iio/dac/ti,dac7612.yaml          | 53 +++++++++++++++++++
+ 2 files changed, 53 insertions(+), 28 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7512.txt b/Documentation/devicetree/bindings/iio/dac/ti,dac7512.txt
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
 deleted file mode 100644
-index 1db45939dac9..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/ti,dac7512.txt
+index 17af395b99d9..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
 +++ /dev/null
-@@ -1,20 +0,0 @@
--TI DAC7512 DEVICETREE BINDINGS
+@@ -1,28 +0,0 @@
+-* Texas Instruments Dual, 12-Bit Serial Input Digital-to-Analog Converter
 -
--Required properties:
+-The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with guaranteed
+-12-bit monotonicity performance over the industrial temperature range.
+-Is is programmable through an SPI interface.
 -
--	- "compatible"		Must be set to "ti,dac7512"
+-The internal DACs are loaded when the LOADDACS pin is pulled down.
 -
--Property rules described in Documentation/devicetree/bindings/spi/spi-bus.txt
--apply. In particular, "reg" and "spi-max-frequency" properties must be given.
+-https://www.ti.com/lit/ds/sbas106/sbas106.pdf
 -
+-Required Properties:
+-- compatible: Should be one of:
+-		"ti,dac7612"
+-		"ti,dac7612u"
+-		"ti,dac7612ub"
+-- reg: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
+-
+-Optional Properties:
+-- ti,loaddacs-gpios: GPIO descriptor for the LOADDACS pin.
+-- spi-*: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
 -
 -Example:
 -
--	spi_master {
--		dac7512: dac7512@0 {
--			compatible = "ti,dac7512";
--			reg = <0>; /* CS0 */
--			spi-max-frequency = <1000000>;
--		};
+-	dac@1 {
+-		compatible = "ti,dac7612";
+-		reg = <0x1>;
+-		ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
 -	};
--
-diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7512.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7512.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
 new file mode 100644
-index 000000000000..4277cf8a4a2e
+index 000000000000..d172b142f6ed
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7512.yaml
-@@ -0,0 +1,42 @@
++++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+@@ -0,0 +1,53 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/ti,dac7512.yaml#
++$id: http://devicetree.org/schemas/iio/dac/ti,dac7612.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Texas Instruments DAC7512 DAC
++title: Texas Instruments DAC7612 family of DACs
++
++description:
++  The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
++  guaranteed 12-bit monotonicity performance over the industrial temperature
++  range. Is is programmable through an SPI interface.
 +
 +maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
++  - Ricardo Ribalda Delgado <ricardo@ribalda.com>
 +
 +properties:
 +  compatible:
-+    const: ti,dac7512
++    enum:
++      - ti,dac7612
++      - ti,dac7612u
++      - ti,dac7612ub
 +
 +  reg:
 +    maxItems: 1
 +
-+  spi-max-frequency:
++  ti,loaddacs-gpios:
 +    description:
-+      Maximum frequency is reduced for supply voltage of less than 3.6V
-+    maximum: 30000000
++      DACs are loaded when the pin connected to this GPIO is pulled low.
++    maxItems: 1
++
++  spi-max-frequency: true
 +
 +required:
 +  - compatible
@@ -121,14 +131,15 @@ index 000000000000..4277cf8a4a2e
 +
 +examples:
 +  - |
++    #include <dt-bindings/gpio/gpio.h>
 +    spi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        dac@0 {
-+            compatible = "ti,dac7512";
-+            reg = <0>; /* CS0 */
-+            spi-max-frequency = <1000000>;
++        dac@1 {
++            compatible = "ti,dac7612";
++            reg = <0x1>;
++            ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
 +        };
 +    };
 +...

@@ -2,33 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C45E28A85C
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4B628A85D
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Oct 2020 19:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730283AbgJKRKM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Oct 2020 13:10:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51812 "EHLO mail.kernel.org"
+        id S1730284AbgJKRKN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Oct 2020 13:10:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51824 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730277AbgJKRKL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 11 Oct 2020 13:10:11 -0400
+        id S1730277AbgJKRKN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Oct 2020 13:10:13 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D40F20782;
-        Sun, 11 Oct 2020 17:10:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C83802222C;
+        Sun, 11 Oct 2020 17:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602436211;
-        bh=f41kxlfX6t6maX2c5W0j1rdEc6Nr0T03u7hJS8cHtMU=;
+        s=default; t=1602436212;
+        bh=HGOCALvmV6kwRRyc/HcmOZgT215SjxIj/QLK65WfRz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hh7Iq65a2sAeJr/TEXS3Kz6U2cNj8YqiZfdqVRZo+sqrFGoMPHNJdNufCiJei+crZ
-         1I7grMkVHygOjUECl6Dr1UhNkkEq6S4yUTyv6MrZYkngPxkKGV0f616meItmFcAhXO
-         GWkX8XSC7ksyMKCnkGZyRxXdRP9q8pSpwyaqjrnk=
+        b=b2UYhHArDsauYGSeAPELCco2WR5hkcOOkY+Ml2GBW8LAgh+DWvVZjXdLm2Gkvf+iQ
+         pjCYfSfO1UFHwCe7KH1ORsk61q7qZHGovKkt61b5JBT7CagDrvaVfzQtWGT93JKAWx
+         TUhiY+O86N0bU0z6kUDyiltwBxJhYYX89EJVzna8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 09/29] dt-bindings:iio:proximity:semtech,sx9500 yaml conversion.
-Date:   Sun, 11 Oct 2020 18:07:29 +0100
-Message-Id: <20201011170749.243680-10-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Song Qiang <songqiang1304521@gmail.com>
+Subject: [PATCH 10/29] dt-bindings:iio:proximity:st,vl53l0x yaml conversion
+Date:   Sun, 11 Oct 2020 18:07:30 +0100
+Message-Id: <20201011170749.243680-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201011170749.243680-1-jic23@kernel.org>
 References: <20201011170749.243680-1-jic23@kernel.org>
@@ -40,37 +41,35 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Simple conversion.  There hasn't been much activity around this driver
-for a long time and I don't think I have any up to date contact details
-for the original authors.  As such, I've listed myself as the binding
-maintainer.  More than happy to hand it off to someone more relevant though!
+Straight forward conversion from txt to yaml.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Song Qiang <songqiang1304521@gmail.com>
 ---
- .../iio/proximity/semtech,sx9500.yaml         | 50 +++++++++++++++++++
- .../bindings/iio/proximity/sx9500.txt         | 23 ---------
- 2 files changed, 50 insertions(+), 23 deletions(-)
+ .../bindings/iio/proximity/st,vl53l0x.yaml    | 42 +++++++++++++++++++
+ .../bindings/iio/proximity/vl53l0x.txt        | 18 --------
+ 2 files changed, 42 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9500.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9500.yaml
+diff --git a/Documentation/devicetree/bindings/iio/proximity/st,vl53l0x.yaml b/Documentation/devicetree/bindings/iio/proximity/st,vl53l0x.yaml
 new file mode 100644
-index 000000000000..66dd01506859
+index 000000000000..656460d9d8c8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9500.yaml
-@@ -0,0 +1,50 @@
++++ b/Documentation/devicetree/bindings/iio/proximity/st,vl53l0x.yaml
+@@ -0,0 +1,42 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9500.yaml#
++$id: http://devicetree.org/schemas/iio/proximity/st,vl53l0x.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Semtech's SX9500 capacitive proximity button device
++title: ST VL53L0X ToF ranging sensor
 +
 +maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
++  - Song Qiang <songqiang1304521@gmail.com>
 +
 +properties:
 +  compatible:
-+    const: semtech,sx9500
++    const: st,vl53l0x
 +
 +  reg:
 +    maxItems: 1
@@ -78,63 +77,50 @@ index 000000000000..66dd01506859
 +  interrupts:
 +    maxItems: 1
 +
-+  reset-gpios:
-+    description:
-+      GPIO connected to the active low reset pin.
-+    maxItems: 1
-+
 +required:
 +  - compatible
 +  - reg
-+  - interrupts
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
 +    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
 +    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        proximity@28 {
-+            compatible = "semtech,sx9500";
-+            reg = <0x28>;
-+            interrupt-parent = <&gpio2>;
-+            interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-+            reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
++        proximity@29 {
++            compatible = "st,vl53l0x";
++            reg = <0x29>;
++            interrupt-parent = <&gpio>;
++            interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/proximity/sx9500.txt b/Documentation/devicetree/bindings/iio/proximity/sx9500.txt
+diff --git a/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt b/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt
 deleted file mode 100644
-index c54455db3bec..000000000000
---- a/Documentation/devicetree/bindings/iio/proximity/sx9500.txt
+index dfe00eb961cd..000000000000
+--- a/Documentation/devicetree/bindings/iio/proximity/vl53l0x.txt
 +++ /dev/null
-@@ -1,23 +0,0 @@
--Semtech's SX9500 capacitive proximity button device driver
+@@ -1,18 +0,0 @@
+-ST VL53L0X ToF ranging sensor
 -
 -Required properties:
--	- compatible: must be "semtech,sx9500"
+-	- compatible: must be "st,vl53l0x"
 -	- reg: i2c address where to find the device
--	- interrupts : the sole interrupt generated by the device
--
--	Refer to interrupt-controller/interrupts.txt for generic
--	interrupt client node bindings.
 -
 -Optional properties:
--	- reset-gpios: Reference to the GPIO connected to the device's active
--	  low reset pin.
+-	- interrupts:	Interrupt for notifying that new measurement is ready.
+-			If no interrupt is specified, polling is used.
 -
 -Example:
 -
--sx9500@28 {
--	compatible = "semtech,sx9500";
--	reg = <0x28>;
--	interrupt-parent = <&gpio2>;
--	interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
--	reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
+-vl53l0x@29 {
+-	compatible = "st,vl53l0x";
+-	reg = <0x29>;
+-	interrupt-parent = <&gpio>;
+-	interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
 -};
 -- 
 2.28.0

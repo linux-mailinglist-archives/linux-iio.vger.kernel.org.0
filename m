@@ -2,199 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9932028B62F
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 15:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5378028BA71
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 16:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729878AbgJLNaT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 09:30:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33252 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726742AbgJLNaT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 12 Oct 2020 09:30:19 -0400
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 47F71204EA
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 13:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602509418;
-        bh=RvHUvHNwgMthJEq0N1S0PifX1Z79FwWwKXDsKJtGLnc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mb4sfr1WeWhsxWNQxlL5GbRPmzGBOiVyESpxFR0BuxZ27Lht7dKcG3kkIJiEbcAI1
-         5op5SgIhSJIG9C0BDReUmETvp9kTx3eT3YeMYm5Ua6tMcaoQGGKf/Iwc4vAZf50DcL
-         9ELGER0ISPfSVs0X4QTpd2o1dS+97AcGytjQAY6g=
-Received: by mail-oi1-f180.google.com with SMTP id j7so1148399oie.12
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 06:30:18 -0700 (PDT)
-X-Gm-Message-State: AOAM533v7ERlieUJohD86NA6RbBY+OWrshJezJSrAA8WoA4v3UgCeygw
-        IE+rO8dShNF2l0mofQIoo1rhr9KafThSRLMFwg==
-X-Google-Smtp-Source: ABdhPJxRqK97ww9uS7++bc1iJF7LO43xzAxeOKiuP/iJsOGaXZhSPO7hW7vQFV1MC+ol59Yb93fPMqnfb1TdMeoHoYw=
-X-Received: by 2002:a05:6808:10e:: with SMTP id b14mr11160977oie.152.1602509417503;
- Mon, 12 Oct 2020 06:30:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201011163031.240708-1-jic23@kernel.org> <20201011163031.240708-2-jic23@kernel.org>
-In-Reply-To: <20201011163031.240708-2-jic23@kernel.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 12 Oct 2020 08:30:06 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+X=K2b62+_SR-x-3ZEmcEnCpVRD22S3eLH_UXZb_dGhw@mail.gmail.com>
-Message-ID: <CAL_Jsq+X=K2b62+_SR-x-3ZEmcEnCpVRD22S3eLH_UXZb_dGhw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings:iio:iio-consumer add yaml binding for IIO consumers
+        id S1729253AbgJLOJz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 10:09:55 -0400
+Received: from hosting.pavoucek.net ([46.28.107.168]:51312 "EHLO
+        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731930AbgJLOJz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 10:09:55 -0400
+X-Greylist: delayed 441 seconds by postgrey-1.27 at vger.kernel.org; Mon, 12 Oct 2020 10:09:53 EDT
+Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
+        (Authenticated sender: tomas@novotny.cz)
+        by hosting.pavoucek.net (Postfix) with ESMTPSA id DB34D104029;
+        Mon, 12 Oct 2020 16:02:30 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net DB34D104029
+Date:   Mon, 12 Oct 2020 16:02:30 +0200
+From:   Tomas Novotny <tomas@novotny.cz>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 20/29] dt-bindings:iio:dac:microchip,mcp4725 yaml
+ conversion
+Message-ID: <20201012160230.7a0c5eb8@tomas.local.tbs-biometrics.cz>
+In-Reply-To: <20201011170749.243680-21-jic23@kernel.org>
+References: <20201011170749.243680-1-jic23@kernel.org>
+        <20201011170749.243680-21-jic23@kernel.org>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 11, 2020 at 11:33 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
+Hi Jonathan,
+
+On Sun, 11 Oct 2020 18:07:40 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This can be used via $ref by bindings that are consumers of the
-> channels provided by IIO devices.
+> 
+> I'm not sure vdd-supply absolutely has to be provided if vref-supply
+> is, but as the previous binding docs stated it was required it seems
+> reasonable to leave it as such.
 
-For consumers like this, I'd suggest instead doing 'select: true' and
-no $ref. The reason being is we always need additional constraints in
-the user bindings, and the 'select' means the properties are always at
-least type checked.
+Good catch. Vdd is useless on MCP4726 if Vref is specified. The driver
+requires Vdd...
 
-I'd also prefer if we move this to the dtschema repo.
+How to proceed there?
 
-Otherwise, looks fine.
+Thanks,
+
+Tomas
 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc:  Tomas Novotny <tomas@novotny.cz>
 > ---
->  .../devicetree/bindings/iio/iio-bindings.txt  | 53 -----------------
->  .../devicetree/bindings/iio/iio-consumer.yaml | 59 +++++++++++++++++++
->  2 files changed, 59 insertions(+), 53 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/iio/iio-bindings.txt b/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> index aa63cac7323e..cfaed2b54fa9 100644
-> --- a/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> +++ b/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> @@ -47,56 +47,3 @@ Example for a configuration with trigger:
->                 };
->         };
->
-> -==IIO consumers==
+>  .../devicetree/bindings/iio/dac/mcp4725.txt   | 35 ---------
+>  .../bindings/iio/dac/microchip,mcp4725.yaml   | 71 +++++++++++++++++++
+>  2 files changed, 71 insertions(+), 35 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt b/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
+> deleted file mode 100644
+> index 1bc6c093fbfe..000000000000
+> --- a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
+> +++ /dev/null
+> @@ -1,35 +0,0 @@
+> -Microchip mcp4725 and mcp4726 DAC device driver
 > -
 > -Required properties:
-> -io-channels:   List of phandle and IIO specifier pairs, one pair
-> -               for each IIO input to the device. Note: if the
-> -               IIO provider specifies '0' for #io-channel-cells,
-> -               then only the phandle portion of the pair will appear.
+> -	- compatible: Must be "microchip,mcp4725" or "microchip,mcp4726"
+> -	- reg: Should contain the DAC I2C address
+> -	- vdd-supply: Phandle to the Vdd power supply. This supply is used as a
+> -	  voltage reference on mcp4725. It is used as a voltage reference on
+> -	  mcp4726 if there is no vref-supply specified.
 > -
-> -Optional properties:
-> -io-channel-names:
-> -               List of IIO input name strings sorted in the same
-> -               order as the io-channels property. Consumers drivers
-> -               will use io-channel-names to match IIO input names
-> -               with IIO specifiers.
-> -io-channel-ranges:
-> -               Empty property indicating that child nodes can inherit named
-> -               IIO channels from this node. Useful for bus nodes to provide
-> -               and IIO channel to their children.
+> -Optional properties (valid only for mcp4726):
+> -	- vref-supply: Optional phandle to the Vref power supply. Vref pin is
+> -	  used as a voltage reference when this supply is specified.
+> -	- microchip,vref-buffered: Boolean to enable buffering of the external
+> -	  Vref pin. This boolean is not valid without the vref-supply. Quoting
+> -	  the datasheet: This is offered in cases where the reference voltage
+> -	  does not have the current capability not to drop its voltage when
+> -	  connected to the internal resistor ladder circuit.
 > -
-> -For example:
+> -Examples:
 > -
-> -       device {
-> -               io-channels = <&adc 1>, <&ref 0>;
-> -               io-channel-names = "vcc", "vdd";
-> -       };
+> -	/* simple mcp4725 */
+> -	mcp4725@60 {
+> -		compatible = "microchip,mcp4725";
+> -		reg = <0x60>;
+> -		vdd-supply = <&vdac_vdd>;
+> -	};
 > -
-> -This represents a device with two IIO inputs, named "vcc" and "vdd".
-> -The vcc channel is connected to output 1 of the &adc device, and the
-> -vdd channel is connected to output 0 of the &ref device.
-> -
-> -==Example==
-> -
-> -       adc: max1139@35 {
-> -               compatible = "maxim,max1139";
-> -               reg = <0x35>;
-> -               #io-channel-cells = <1>;
-> -       };
-> -
-> -       ...
-> -
-> -       iio-hwmon {
-> -               compatible = "iio-hwmon";
-> -               io-channels = <&adc 0>, <&adc 1>, <&adc 2>,
-> -                       <&adc 3>, <&adc 4>, <&adc 5>,
-> -                       <&adc 6>, <&adc 7>, <&adc 8>,
-> -                       <&adc 9>;
-> -       };
-> -
-> -       some_consumer {
-> -               compatible = "some-consumer";
-> -               io-channels = <&adc 10>, <&adc 11>;
-> -               io-channel-names = "adc1", "adc2";
-> -       };
-> diff --git a/Documentation/devicetree/bindings/iio/iio-consumer.yaml b/Documentation/devicetree/bindings/iio/iio-consumer.yaml
+> -	/* mcp4726 with the buffered external reference voltage */
+> -	mcp4726@60 {
+> -		compatible = "microchip,mcp4726";
+> -		reg = <0x60>;
+> -		vdd-supply = <&vdac_vdd>;
+> -		vref-supply = <&vdac_vref>;
+> -		microchip,vref-buffered;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
 > new file mode 100644
-> index 000000000000..5f28cc29edce
+> index 000000000000..271998610ceb
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/iio-consumer.yaml
-> @@ -0,0 +1,59 @@
+> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
+> @@ -0,0 +1,71 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/iio-consumer.yaml#
+> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4725.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Generic IIO consumer-bindings
+> +title: Microchip mcp4725 and mcp4726 DAC
 > +
 > +maintainers:
-> +  - Jonathan Cameron <jic23@kernel.org>
-> +
-> +description:
-> +  This binding describes generic properties a consumer of the channels
-> +  provided by an IIO device may use.
-> +
-> +  As well, direct readings of channels on an IIO Device, an IIO device
-> +  can provide services to consumer devices. Thes are in the form of
-> +  channel readings and properties.  For example, an ADC might provide
-> +  3 channels to an analog accelerometer so that an accelerometer
-> +  driver can use them to read the voltages that correspond to the
-> +  accelerations on the 3 axis and apply appropriate calibration to
-> +  provide useful outputs.
+> +  - Tomas Novotny <tomas@novotny.cz>
 > +
 > +properties:
-> +  io-channels:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: >
-> +      List of phandle and IIO specifier pairs, one pair
-> +      for each IIO input to the device. Note: if the
-> +      IIO provider specifies '0' for #io-channel-cells,
-> +      then only the phandle portion of the pair will appear.
+> +  compatible:
+> +    enum:
+> +      - microchip,mcp4725
+> +      - microchip,mcp4726
 > +
-> +  io-channel-names:
-> +    $ref: /schemas/types.yaml#/definitions/string-array
-> +    description: >
-> +      List of names associated with a given IIO channel by the consumer
-> +      device.  An example for an analog accelerometer would be "accel_x".
-> +      Consumers drivers will use io-channel-names to locate the correct
-> +      phandle based reference in io-channels.
+> +  reg:
+> +    maxItems: 1
 > +
-> +  io-channel-ranges:
+> +  vdd-supply:
+> +    description: |
+> +      Provides both power and acts as the reference supply on the mcp4725.
+> +      For the mcp4726 it will be used as the reference voltage if vref-supply
+> +      is not provided.
+> +
+> +  vref-supply:
+> +    description:
+> +      Vref pin is used as a voltage reference when this supply is specified.
+> +
+> +  microchip,vref-buffered:
 > +    type: boolean
-> +    description: >
-> +      Empty property indicating that child nodes can inherit named
-> +      IIO channels from this node. Useful for bus nodes to provide
-> +      and IIO channel to their children.
+> +    description: |
+> +      Enable buffering of the external Vref pin. This boolean is not valid
+> +      without the vref-supply. Quoting the datasheet: This is offered in
+> +      cases where the reference voltage does not have the current
+> +      capability not to drop its voltage when connected to the internal
+> +      resistor ladder circuit.
 > +
-> +additionalProperties: true
+> +allOf:
+> +  - if:
+> +      not:
+> +        properties:
+> +          compatible:
+> +            contains:
+> +              const: microchip,mcp4726
+> +    then:
+> +      properties:
+> +        vref-supply: false
+> +        microchip,vref-buffered: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
 > +
 > +examples:
-> + - |
-> +   iio-hwmon {
-> +       compatible = "iio-hwmon";
-> +       io-channels = <&adc 0>, <&adc 1>, <&adc 2>,
-> +                     <&adc 3>, <&adc 4>, <&adc 5>,
-> +                     <&adc 6>, <&adc 7>, <&adc 8>,
-> +                     <&adc 9>;
-> +   };
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mcp4725@60 {
+> +            compatible = "microchip,mcp4725";
+> +            reg = <0x60>;
+> +            vdd-supply = <&vdac_vdd>;
+> +        };
+> +    };
 > +...
-> \ No newline at end of file
-> --
-> 2.28.0
->

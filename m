@@ -2,182 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5378028BA71
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 16:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D1C28BAD0
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 16:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729253AbgJLOJz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 10:09:55 -0400
-Received: from hosting.pavoucek.net ([46.28.107.168]:51312 "EHLO
-        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731930AbgJLOJz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 10:09:55 -0400
-X-Greylist: delayed 441 seconds by postgrey-1.27 at vger.kernel.org; Mon, 12 Oct 2020 10:09:53 EDT
-Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
-        (Authenticated sender: tomas@novotny.cz)
-        by hosting.pavoucek.net (Postfix) with ESMTPSA id DB34D104029;
-        Mon, 12 Oct 2020 16:02:30 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net DB34D104029
-Date:   Mon, 12 Oct 2020 16:02:30 +0200
-From:   Tomas Novotny <tomas@novotny.cz>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 20/29] dt-bindings:iio:dac:microchip,mcp4725 yaml
+        id S2388880AbgJLO13 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Oct 2020 10:27:29 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2970 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388792AbgJLO13 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 12 Oct 2020 10:27:29 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 8042F859A63360F285BE;
+        Mon, 12 Oct 2020 15:27:27 +0100 (IST)
+Received: from localhost (10.52.126.145) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 12 Oct
+ 2020 15:27:27 +0100
+Date:   Mon, 12 Oct 2020 15:25:40 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Crt Mori <cmo@melexis.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Linux Iio <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Peter Meerwald" <pmeerw@pmeerw.net>
+Subject: Re: [PATCH 24/29] dt-bindings:iio:temperature:melexis,mlx90614 yaml
  conversion
-Message-ID: <20201012160230.7a0c5eb8@tomas.local.tbs-biometrics.cz>
-In-Reply-To: <20201011170749.243680-21-jic23@kernel.org>
+Message-ID: <20201012142540.0000317d@Huawei.com>
+In-Reply-To: <CAKv63us7JjEqNdK7Q6uOvRsTxYrS0Ovo-Zcx0pQQOwHmS4Eucg@mail.gmail.com>
 References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-21-jic23@kernel.org>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        <20201011170749.243680-25-jic23@kernel.org>
+        <CAKv63utWrhUTb+QUgy_nHniYEMuvK5UuZzD6-iRLGZaAtVHNHA@mail.gmail.com>
+        <CAKv63us7JjEqNdK7Q6uOvRsTxYrS0Ovo-Zcx0pQQOwHmS4Eucg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.52.126.145]
+X-ClientProxiedBy: lhreml750-chm.china.huawei.com (10.201.108.200) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Mon, 12 Oct 2020 10:00:15 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-On Sun, 11 Oct 2020 18:07:40 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+> Hi Jonathan,
+> I got mail bounce (account doesn't exist) from Vianney le Clément de
+> Saint-Marcq <vianney.leclement@essensium.com>, so I would assume he is
+> not working there anymore. I think we can remove him from the
+> maintainers list?
+yup.
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> I'm not sure vdd-supply absolutely has to be provided if vref-supply
-> is, but as the previous binding docs stated it was required it seems
-> reasonable to leave it as such.
-
-Good catch. Vdd is useless on MCP4726 if Vref is specified. The driver
-requires Vdd...
-
-How to proceed there?
+I put it in the cover letter, but one of the side effects of sending
+this series out is to identify who we no longer have contact details
+for and switch / drop them as necessary.  Will drop Vianney unless
+anyone has a working email address.
 
 Thanks,
 
-Tomas
+Jonathan
 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc:  Tomas Novotny <tomas@novotny.cz>
-> ---
->  .../devicetree/bindings/iio/dac/mcp4725.txt   | 35 ---------
->  .../bindings/iio/dac/microchip,mcp4725.yaml   | 71 +++++++++++++++++++
->  2 files changed, 71 insertions(+), 35 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt b/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
-> deleted file mode 100644
-> index 1bc6c093fbfe..000000000000
-> --- a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
-> +++ /dev/null
-> @@ -1,35 +0,0 @@
-> -Microchip mcp4725 and mcp4726 DAC device driver
-> -
-> -Required properties:
-> -	- compatible: Must be "microchip,mcp4725" or "microchip,mcp4726"
-> -	- reg: Should contain the DAC I2C address
-> -	- vdd-supply: Phandle to the Vdd power supply. This supply is used as a
-> -	  voltage reference on mcp4725. It is used as a voltage reference on
-> -	  mcp4726 if there is no vref-supply specified.
-> -
-> -Optional properties (valid only for mcp4726):
-> -	- vref-supply: Optional phandle to the Vref power supply. Vref pin is
-> -	  used as a voltage reference when this supply is specified.
-> -	- microchip,vref-buffered: Boolean to enable buffering of the external
-> -	  Vref pin. This boolean is not valid without the vref-supply. Quoting
-> -	  the datasheet: This is offered in cases where the reference voltage
-> -	  does not have the current capability not to drop its voltage when
-> -	  connected to the internal resistor ladder circuit.
-> -
-> -Examples:
-> -
-> -	/* simple mcp4725 */
-> -	mcp4725@60 {
-> -		compatible = "microchip,mcp4725";
-> -		reg = <0x60>;
-> -		vdd-supply = <&vdac_vdd>;
-> -	};
-> -
-> -	/* mcp4726 with the buffered external reference voltage */
-> -	mcp4726@60 {
-> -		compatible = "microchip,mcp4726";
-> -		reg = <0x60>;
-> -		vdd-supply = <&vdac_vdd>;
-> -		vref-supply = <&vdac_vref>;
-> -		microchip,vref-buffered;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
-> new file mode 100644
-> index 000000000000..271998610ceb
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
-> @@ -0,0 +1,71 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4725.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip mcp4725 and mcp4726 DAC
-> +
-> +maintainers:
-> +  - Tomas Novotny <tomas@novotny.cz>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,mcp4725
-> +      - microchip,mcp4726
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: |
-> +      Provides both power and acts as the reference supply on the mcp4725.
-> +      For the mcp4726 it will be used as the reference voltage if vref-supply
-> +      is not provided.
-> +
-> +  vref-supply:
-> +    description:
-> +      Vref pin is used as a voltage reference when this supply is specified.
-> +
-> +  microchip,vref-buffered:
-> +    type: boolean
-> +    description: |
-> +      Enable buffering of the external Vref pin. This boolean is not valid
-> +      without the vref-supply. Quoting the datasheet: This is offered in
-> +      cases where the reference voltage does not have the current
-> +      capability not to drop its voltage when connected to the internal
-> +      resistor ladder circuit.
-> +
-> +allOf:
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              const: microchip,mcp4726
-> +    then:
-> +      properties:
-> +        vref-supply: false
-> +        microchip,vref-buffered: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        mcp4725@60 {
-> +            compatible = "microchip,mcp4725";
-> +            reg = <0x60>;
-> +            vdd-supply = <&vdac_vdd>;
-> +        };
-> +    };
-> +...
+> Best regards,
+> Crt
+> 
+> On Sun, 11 Oct 2020 at 23:00, Crt Mori <cmo@melexis.com> wrote:
+> >
+> > Thanks for the conversion. No idea which tag to put, so:
+> > Acked-by: Crt Mori <cmo@melexis.com>
+> >
+> > On Sun, 11 Oct 2020 at 19:10, Jonathan Cameron <jic23@kernel.org> wrote:  
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Simple conversion from txt to yaml.
+> > > I've listed all 3 authors of the driver as maintainers.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Peter Meerwald <pmeerw@pmeerw.net>
+> > > Cc: Vianney le Clément de Saint-Marcq <vianney.leclement@essensium.com>
+> > > Cc: Crt Mori <cmo@melexis.com>
+> > > ---
+> > >  .../iio/temperature/melexis,mlx90614.yaml     | 51 +++++++++++++++++++
+> > >  .../bindings/iio/temperature/mlx90614.txt     | 24 ---------
+> > >  2 files changed, 51 insertions(+), 24 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> > > new file mode 100644
+> > > index 000000000000..dcda203b2ba5
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> > > @@ -0,0 +1,51 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Melexis MLX90614 contactless IR temperature sensor
+> > > +
+> > > +maintainers:
+> > > +  - Peter Meerwald <pmeerw@pmeerw.net>
+> > > +  - Vianney le Clément de Saint-Marcq <vianney.leclement@essensium.com>
+> > > +  - Crt Mori <cmo@melexis.com>
+> > > +
+> > > +description: |
+> > > +  http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer-Sensors/MLX90614-615.aspx
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: melexis,mlx90614
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  wakeup-gpios:
+> > > +    description:
+> > > +      GPIO connected to the SDA line to hold low in order to wake up the
+> > > +      device.  In normal operation, the GPIO is set as input and will
+> > > +      not interfere in I2C communication.  There is no need for a GPIO
+> > > +      driving the SCL line.  If no GPIO is given, power management is disabled.
+> > > +    maxItems: 1
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/gpio/gpio.h>
+> > > +    i2c {
+> > > +        #address-cells = <1>;
+> > > +        #size-cells = <0>;
+> > > +
+> > > +        temp-sensor@5a {
+> > > +            compatible = "melexis,mlx90614";
+> > > +            reg = <0x5a>;
+> > > +            wakeup-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> > > +        };
+> > > +    };
+> > > +...
+> > > diff --git a/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt b/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
+> > > deleted file mode 100644
+> > > index 9be57b036092..000000000000
+> > > --- a/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
+> > > +++ /dev/null
+> > > @@ -1,24 +0,0 @@
+> > > -* Melexis MLX90614 contactless IR temperature sensor
+> > > -
+> > > -http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer-Sensors/MLX90614-615.aspx
+> > > -
+> > > -Required properties:
+> > > -
+> > > -  - compatible: should be "melexis,mlx90614"
+> > > -  - reg: the I2C address of the sensor
+> > > -
+> > > -Optional properties:
+> > > -
+> > > -  - wakeup-gpios: device tree identifier of the GPIO connected to the SDA line
+> > > -      to hold low in order to wake up the device.  In normal operation, the
+> > > -      GPIO is set as input and will not interfere in I2C communication.  There
+> > > -      is no need for a GPIO driving the SCL line.  If no GPIO is given, power
+> > > -      management is disabled.
+> > > -
+> > > -Example:
+> > > -
+> > > -mlx90614@5a {
+> > > -       compatible = "melexis,mlx90614";
+> > > -       reg = <0x5a>;
+> > > -       wakeup-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> > > -};
+> > > --
+> > > 2.28.0
+> > >  
+
+

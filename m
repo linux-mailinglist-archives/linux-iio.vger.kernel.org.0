@@ -2,51 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1D828BE23
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 18:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF0F28BE27
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 18:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403874AbgJLQiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 12:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58662 "EHLO
+        id S2403873AbgJLQkX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 12:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403815AbgJLQiE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 12:38:04 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A31C0613D0
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:38:04 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id l16so1849906ilj.9
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:38:04 -0700 (PDT)
+        with ESMTP id S2403785AbgJLQkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 12:40:23 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341D4C0613D0
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:40:22 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id q202so9000960iod.9
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:40:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/Gx50nGZcX4AGWkDVX6hjpDj37zozEIQUpXyjJnxQqk=;
-        b=BeAIAKtsWa3kqXltsA/Uz51smjmGEtQd2B5JdGPQOmptv8NpfrmObm7M55uuUaz7xf
-         zOLuTApYb8+oVM81a5AgFww2ytnrT7jZ9T5RrszSGRyJVzzZEotYASXe76Lv6QBzVMde
-         5DxrIVv5TqmaOjV+Mqrbc9q1f6sZmRj0isDE0=
+        bh=nQXthKWOCuvWYAd3n++v/Kp8SGBPwTxzwdSkA7wW/pI=;
+        b=k8i4FcSXIOwp52Ro99GDRJOX0BAyo0bjrEFwFg1T0vovDD8i2YO00YH0Y9f1ZsZa1x
+         MhZtuWsV9qtI/pipUQM9Noc+ETU3Fi7+s2QIewkCuMldWwARXpAigBEIWlDbJnLu596U
+         GaNDdLRShkO+/r9Vdr863SYVMOFVgEquC5wLc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/Gx50nGZcX4AGWkDVX6hjpDj37zozEIQUpXyjJnxQqk=;
-        b=MGG0xcD79ecL2YI/8z6O47ZtTAst6VMDJDGhghRk53UM0ygxV10Curyf09HkBpPT7b
-         KiPUeZkUdiK8VMq61r/ehjYG5B7UD7qfT0wbH5iSR3E17uZNTuJdTjruAiKWzcgh9X2d
-         fmBplN2T+hVdNvBgLm9tdXDJanEJelMgShQIiNicsYyoBQ5+PniVA5I6e1st+rlnHyXW
-         +2sHlg8gmNIc2kRdANkMLxFGYJ4BtWmfKFBeKy04BF3j6wjL/+tulwPTlQZ1jmLvc+Yr
-         VpjFYv4SDf0GGc3qoq8Bhr+9q71sQin07d0/34ybXaMe2Wu2w/a5spP5A+sQL5u+/slG
-         tkqA==
-X-Gm-Message-State: AOAM532ecTf7ysDEy4pklFBnAW6qIaN59XcfBXAquuHda1hIQSern9jE
-        kC3KDK2qg2l6bNFjv12Zjfdr/e5/dryIHsx0sUoDlQ==
-X-Google-Smtp-Source: ABdhPJzOdmVdk2tdkS3uP/T+i9kqfyzqedDZNJPnYi2wvWSD7gLtFBDzmsgQv+OQXT8u4Wrki+HBG25nF88zvbrmPDA=
-X-Received: by 2002:a92:5f03:: with SMTP id t3mr20516987ilb.25.1602520683833;
- Mon, 12 Oct 2020 09:38:03 -0700 (PDT)
+        bh=nQXthKWOCuvWYAd3n++v/Kp8SGBPwTxzwdSkA7wW/pI=;
+        b=cZ3RfaBJunO/ab7bYXe/qkqHy+oTviEfWRPyWggb+Z5oYm1k8HlqfTwTu0utz0EuCh
+         0VRWNjpkGGCsEw9MFHTahPW44dqJsyE/vA8cPTTDCIXVg+Vdl2pqA6txDlpbyae/OfyA
+         6L3X8iRt3s0G2+84XnMSJ8pUMeT+W8nXMRkfgwx02x++vfzUWGCvferEgDOGdPwXNayG
+         AcZEkKvJwHoEX4HXV7I44CSsD7mBHJ05zv7BAdXB5sflhF5bHU20rOiqCIUeIALj3PIB
+         5j+ukHCrP3aBChxk2OH1gfBdkj0Y7DUuU0owXEdxz8ghBIEe135dgDxye/r5fLT+48a4
+         9x0g==
+X-Gm-Message-State: AOAM530Ib9AajOASiTQqgi60LDp1xPLrr7ni6TEGHS9rT81GszmgjPEI
+        dPjNI1yXZfiEnnXn+ES5yrDQm/DRlsJlc3mhQjg4iA==
+X-Google-Smtp-Source: ABdhPJzpL24L11UweDxYKo6pl17VSD+CO5DL2s+w2JX+0P8xf3qzzJ05YBfl0hidBgHLNRSZ5HKRhiBS5qmBUrD7AWc=
+X-Received: by 2002:a5e:9913:: with SMTP id t19mr7473519ioj.95.1602520821409;
+ Mon, 12 Oct 2020 09:40:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201011170749.243680-1-jic23@kernel.org> <20201011170749.243680-12-jic23@kernel.org>
-In-Reply-To: <20201011170749.243680-12-jic23@kernel.org>
+References: <20201011170749.243680-1-jic23@kernel.org> <20201011170749.243680-29-jic23@kernel.org>
+In-Reply-To: <20201011170749.243680-29-jic23@kernel.org>
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Mon, 12 Oct 2020 09:37:52 -0700
-Message-ID: <CAJCx=g=Vaf9yCE29F9NtO0HHP2az4Ee8vSzWthR_aUT8p+TUcw@mail.gmail.com>
-Subject: Re: [PATCH 11/29] dt-bindings:iio:proximity:ams,as3935 yaml conversion
+Date:   Mon, 12 Oct 2020 09:40:10 -0700
+Message-ID: <CAJCx=gkEiuj5aGo5VXLQdk98q=giVCruwCSQF5dPjD-_dxm7fw@mail.gmail.com>
+Subject: Re: [PATCH 28/29] dt-bindings:iio:temperature:maxim_thermocouple.txt
+ to maxim,max31855k.yaml
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -60,75 +61,87 @@ On Sun, Oct 11, 2020 at 10:10 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> A straight forward conversion of this binding. I have added
-> a maximum SPI frequency from the datasheet.
+> Given we already have another maxim thermocouple driver that isn't
+> covered by this binding it seems a better idea to chose to name it
+> after a specific part.
+>
+> I added an additional example for the maxim,max6755 to illustrate
+> the need for spi-cpha for that part.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
-
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
-
 > ---
->  .../bindings/iio/proximity/ams,as3935.yaml    | 71 +++++++++++++++++++
->  .../bindings/iio/proximity/as3935.txt         | 34 ---------
->  2 files changed, 71 insertions(+), 34 deletions(-)
+>  .../iio/temperature/maxim,max31855k.yaml      | 76 +++++++++++++++++++
+>  .../iio/temperature/maxim_thermocouple.txt    | 24 ------
+>  2 files changed, 76 insertions(+), 24 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml
 > new file mode 100644
-> index 000000000000..7fcba5d6d508
+> index 000000000000..835e2d06b523
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
-> @@ -0,0 +1,71 @@
+> +++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml
+> @@ -0,0 +1,76 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/proximity/ams,as3935.yaml#
+> +$id: http://devicetree.org/schemas/iio/temperature/maxim,max31855k.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Austrian Microsystems AS3935 Franklin lightning sensor
+> +title: Maxim MAX31855 and similar thermocouples
 > +
 > +maintainers:
 > +  - Matt Ranostay <matt.ranostay@konsulko.com>
 > +
-> +description:
-> +  This lightening distance sensor uses an I2C or SPI interface. The
-> +  binding currently only covers the SPI option.
+> +description: |
+> +  https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf
+> +  https://datasheets.maximintegrated.com/en/ds/MAX31855.pdf
 > +
 > +properties:
 > +  compatible:
-> +    const: ams,as3935
+> +    description:
+> +      The generic maxim,max31855 compatible is deprecated in favour of
+> +      the thermocouple type specific varients.
+
+Typo of "variants"
+
+Otherwise looks good to me.
+
+Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+
+> +    enum:
+> +      - maxim,max6675
+> +      - maxim,max31855
+> +      - maxim,max31855k
+> +      - maxim,max31855j
+> +      - maxim,max31855n
+> +      - maxim,max31855s
+> +      - maxim,max31855t
+> +      - maxim,max31855e
+> +      - maxim,max31855r
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
+> +  spi-max-frequency: true
 > +  spi-cpha: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  ams,tuning-capacitor-pf:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Calibration tuning capacitor stepping value. This will require using
-> +      the calibration data from the manufacturer.
-> +    minimum: 0
-> +    maximum: 120
-> +
-> +  ams,nflwdth:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Set the noise and watchdog threshold register on startup. This will
-> +      need to set according to the noise from the MCU board, and possibly
-> +      the local environment. Refer to the datasheet for the threshold settings.
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - spi-cpha
-> +  - interrupts
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - maxim,max6675
+> +    then:
+> +      required:
+> +        - spi-cpha
+> +    else:
+> +      properties:
+> +        spi-cpha: false
 > +
 > +additionalProperties: false
 > +
@@ -138,58 +151,49 @@ Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 > +        #address-cells = <1>;
 > +        #size-cells = <0>;
 > +
-> +    lightning@0 {
-> +            compatible = "ams,as3935";
+> +        temp-sensor@0 {
+> +            compatible = "maxim,max31855k";
 > +            reg = <0>;
-> +            spi-max-frequency = <400000>;
+> +            spi-max-frequency = <4300000>;
+> +        };
+> +        temp-sensor@1 {
+> +            compatible = "maxim,max6675";
+> +            reg = <1>;
+> +            spi-max-frequency = <4300000>;
 > +            spi-cpha;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <16 1>;
-> +            ams,tuning-capacitor-pf = <80>;
-> +            ams,nflwdth = <0x44>;
 > +        };
 > +    };
 > +...
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/as3935.txt b/Documentation/devicetree/bindings/iio/proximity/as3935.txt
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim_thermocouple.txt b/Documentation/devicetree/bindings/iio/temperature/maxim_thermocouple.txt
 > deleted file mode 100644
-> index 849115585d55..000000000000
-> --- a/Documentation/devicetree/bindings/iio/proximity/as3935.txt
+> index bb85cd0e039c..000000000000
+> --- a/Documentation/devicetree/bindings/iio/temperature/maxim_thermocouple.txt
 > +++ /dev/null
-> @@ -1,34 +0,0 @@
-> -Austrian Microsystems AS3935 Franklin lightning sensor device driver
+> @@ -1,24 +0,0 @@
+> -Maxim thermocouple support
+> -
+> -* https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf
+> -* https://datasheets.maximintegrated.com/en/ds/MAX31855.pdf
 > -
 > -Required properties:
-> -       - compatible: must be "ams,as3935"
+> -
+> -       - compatible: must be "maxim,max6675" or one of the following:
+> -          "maxim,max31855k", "maxim,max31855j", "maxim,max31855n",
+> -          "maxim,max31855s", "maxim,max31855t", "maxim,max31855e",
+> -          "maxim,max31855r"; the generic "max,max31855" is deprecated.
 > -       - reg: SPI chip select number for the device
-> -       - spi-max-frequency: specifies maximum SPI clock frequency
-> -       - spi-cpha: SPI Mode 1. Refer to spi/spi-bus.txt for generic SPI
-> -       slave node bindings.
-> -       - interrupts : the sole interrupt generated by the device
+> -       - spi-max-frequency: must be 4300000
+> -       - spi-cpha: must be defined for max6675 to enable SPI mode 1
 > -
-> -       Refer to interrupt-controller/interrupts.txt for generic
-> -       interrupt client node bindings.
-> -
-> -Optional properties:
-> -       - ams,tuning-capacitor-pf: Calibration tuning capacitor stepping
-> -         value 0 - 120pF. This will require using the calibration data from
-> -         the manufacturer.
-> -       - ams,nflwdth: Set the noise and watchdog threshold register on
-> -         startup. This will need to set according to the noise from the
-> -         MCU board, and possibly the local environment. Refer to the
-> -         datasheet for the threshold settings.
+> -       Refer to spi/spi-bus.txt for generic SPI slave bindings.
 > -
 > -Example:
 > -
-> -as3935@0 {
-> -       compatible = "ams,as3935";
-> -       reg = <0>;
-> -       spi-max-frequency = <400000>;
-> -       spi-cpha;
-> -       interrupt-parent = <&gpio1>;
-> -       interrupts = <16 1>;
-> -       ams,tuning-capacitor-pf = <80>;
-> -       ams,nflwdth = <0x44>;
-> -};
+> -       max31855@0 {
+> -               compatible = "maxim,max31855k";
+> -               reg = <0>;
+> -               spi-max-frequency = <4300000>;
+> -       };
 > --
 > 2.28.0
 >

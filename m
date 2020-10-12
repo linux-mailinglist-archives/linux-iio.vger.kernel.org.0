@@ -2,33 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DDC228BADE
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 16:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1355628BAE5
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 16:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728945AbgJLObJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 10:31:09 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2971 "EHLO huawei.com"
+        id S1727482AbgJLOdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 10:33:07 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2972 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726963AbgJLObJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 12 Oct 2020 10:31:09 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 177F58375D39B8E17966;
-        Mon, 12 Oct 2020 15:31:08 +0100 (IST)
+        id S1726963AbgJLOdG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 12 Oct 2020 10:33:06 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id D5FB646C1FD25211B814;
+        Mon, 12 Oct 2020 15:33:05 +0100 (IST)
 Received: from localhost (10.52.126.145) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 12 Oct
- 2020 15:31:07 +0100
-Date:   Mon, 12 Oct 2020 15:29:21 +0100
+ 2020 15:33:05 +0100
+Date:   Mon, 12 Oct 2020 15:31:18 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Harald Geyer <harald@ccbib.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>
-Subject: Re: [PATCH 04/29] dt-bindings:iio:humidity:dht11 yaml conversion
-Message-ID: <20201012142921.00007a4d@Huawei.com>
-In-Reply-To: <20e7bc0e3f7e55587e431ad97dcca4b5@ccbib.org>
+To:     Rob Herring <robh+dt@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH 08/29] dt-bindings:iio:pressure:hoperf,hp03 yaml
+ conversion
+Message-ID: <20201012143118.000040f5@Huawei.com>
+In-Reply-To: <CAL_JsqKT7G-E7Ao7AbRwm_J_MRRRqcChpn5xkJZrftTjJLUZtQ@mail.gmail.com>
 References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-5-jic23@kernel.org>
-        <20e7bc0e3f7e55587e431ad97dcca4b5@ccbib.org>
+        <20201011170749.243680-9-jic23@kernel.org>
+        <CAL_JsqKT7G-E7Ao7AbRwm_J_MRRRqcChpn5xkJZrftTjJLUZtQ@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -42,126 +44,110 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 11 Oct 2020 18:52:48 +0100
-Harald Geyer <harald@ccbib.org> wrote:
+On Mon, 12 Oct 2020 08:06:46 -0500
+Rob Herring <robh+dt@kernel.org> wrote:
 
-> On 11.10.2020 18:07, Jonathan Cameron wrote:
+> On Sun, Oct 11, 2020 at 12:10 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > >
-> > The conversion is straight forward, but leaves an open question.
-> > The compatible for this device has never had a vendor. I suspect
-> > this because it is non-obvious who actually makes the module. It is
-> > resold by numerous vendors and it may be that there is no single 
-> > vendor
-> > of the parts they are using.  If anyone has any more info on the
-> > vendor, please let me know and we can add a more informative
-> > compatible.  
+> > One quirk in the txt file was that the xclr gpio was specified as
+> > gpio-xclr rather than gpios-xclr. I've fixed that in the  
 > 
-> I think these parts come from Aosong: http://www.aosong.com/en/
-> 
-> The DHT11 uses a custom protocol, so I don't think other vendors
-> would be using this. Even Aosong started using i2c by now.
-> 
-> On the other hand DHT11 seems to be more of a trade name then a
-> part identifier. The latter probably would be something like
-> aosong,am2302 (trade name DHT22).
-> 
-> However the matching between identifiers and trade names is
-> confusing for the older products. I'm not sure if it is worth
-> digging into this. Probably only the people at aosong could
-> clear this up.
+> xclr-gpios?, not gpios?-xclr
 
-Probably worth adding a note to the binding doc so I'll do that
-whilst applying or for a v2 if needed.  Thanks for the info!
+I clearly have a very short memory when writing patch descriptions.
+Indeed, xclr-gpios is what this should say. 
+
 
 > 
-> Anyway, you have my:
-> Acked-By: Harald Geyer <harald@ccbib.org>
-> 
-> Thanks,
-> Harald
-> 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Harald Geyer <harald@ccbib.org>
-> > ---
-> >  .../bindings/iio/humidity/dht11.txt           | 14 -------
-> >  .../bindings/iio/humidity/dht11.yaml          | 41 
-> > +++++++++++++++++++
-> >  2 files changed, 41 insertions(+), 14 deletions(-)
+> > yaml version.
 > >
-> > diff --git a/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> > b/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> > deleted file mode 100644
-> > index ecc24c199fd6..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/humidity/dht11.txt
-> > +++ /dev/null
-> > @@ -1,14 +0,0 @@
-> > -* DHT11 humidity/temperature sensor (and compatibles like DHT22)
-> > -
-> > -Required properties:
-> > -  - compatible: Should be "dht11"
-> > -  - gpios: Should specify the GPIO connected to the sensor's data
-> > -    line, see "gpios property" in
-> > -    Documentation/devicetree/bindings/gpio/gpio.txt.
-> > -
-> > -Example:
-> > -
-> > -humidity_sensor {
-> > -	compatible = "dht11";
-> > -	gpios = <&gpio0 6 0>;
-> > -}
-> > diff --git
-> > a/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
-> > b/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Marek Vasut <marex@denx.de>
+> > ---
+> >  .../bindings/iio/pressure/hoperf,hp03.yaml    | 47 +++++++++++++++++++
+> >  .../devicetree/bindings/iio/pressure/hp03.txt | 17 -------
+> >  2 files changed, 47 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/pressure/hoperf,hp03.yaml b/Documentation/devicetree/bindings/iio/pressure/hoperf,hp03.yaml
 > > new file mode 100644
-> > index 000000000000..38ec4c302760
+> > index 000000000000..69a3759e23db
 > > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/humidity/dht11.yaml
-> > @@ -0,0 +1,41 @@
+> > +++ b/Documentation/devicetree/bindings/iio/pressure/hoperf,hp03.yaml
+> > @@ -0,0 +1,47 @@
 > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > > +%YAML 1.2
 > > +---
-> > +$id: http://devicetree.org/schemas/iio/humidity/dht11.yaml#
+> > +$id: http://devicetree.org/schemas/iio/pressure/hoperf,hp03.yaml#
 > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > > +
-> > +title: DHT11 humidity + temperature sensor
+> > +title: HopeRF HP03 digital pressure/temperature sensors
 > > +
 > > +maintainers:
-> > +  - Harald Geyer <harald@ccbib.org>
+> > +  - Marek Vasut <marex@denx.de>
 > > +
 > > +description: |
-> > +   A simple and low cost module providing a non standard single GPIO 
-> > based
-> > +   interface.  Whilst commonly available it is not easy to establish
-> > if there
-> > +   is a single manufacturer for this part.
+> > +  Digital pressure and temperature sensor with an I2C interface.
 > > +
 > > +properties:
 > > +  compatible:
-> > +    const: dht11
+> > +    const: hoperf,hp03
 > > +
 > > +  reg:
 > > +    maxItems: 1
 > > +
-> > +  gpios:
-> > +    maxItems: 1
+> > +  xclr-gpios:
 > > +    description:
-> > +      Single, interrupt capable, GPIO used to communicate with the 
-> > device.
+> > +      The XCLR pin is a reset of the ADC in the chip, it must be pulled
+> > +      HI before the conversion and readout of the value from the ADC
+> > +      registers and pulled LO afterward.
+> > +    maxItems: 1
 > > +
 > > +required:
 > > +  - compatible
-> > +  - gpios
+> > +  - reg
 > > +
 > > +additionalProperties: false
 > > +
 > > +examples:
 > > +  - |
-> > +    humidity_sensor {
-> > +        compatible = "dht11";
-> > +        gpios = <&gpio0 6 0>;
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        pressure@77 {
+> > +            compatible = "hoperf,hp03";
+> > +            reg = <0x77>;
+> > +            xclr-gpios = <&portc 0 0x0>;
+> > +        };
 > > +    };
-> > +...  
-> 
+> > +...
+> > diff --git a/Documentation/devicetree/bindings/iio/pressure/hp03.txt b/Documentation/devicetree/bindings/iio/pressure/hp03.txt
+> > deleted file mode 100644
+> > index 831dbee7a5c3..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/pressure/hp03.txt
+> > +++ /dev/null
+> > @@ -1,17 +0,0 @@
+> > -HopeRF HP03 digital pressure/temperature sensors
+> > -
+> > -Required properties:
+> > -- compatible: must be "hoperf,hp03"
+> > -- xclr-gpio: must be device tree identifier of the XCLR pin.
+> > -             The XCLR pin is a reset of the ADC in the chip,
+> > -             it must be pulled HI before the conversion and
+> > -             readout of the value from the ADC registers and
+> > -             pulled LO afterward.
+> > -
+> > -Example:
+> > -
+> > -hp03@77 {
+> > -       compatible = "hoperf,hp03";
+> > -       reg = <0x77>;
+> > -       xclr-gpio = <&portc 0 0x0>;
+> > -};
+> > --
+> > 2.28.0
+> >  
 
 

@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BAC628BDFF
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 18:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1D828BE23
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 18:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388766AbgJLQaK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 12:30:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
+        id S2403874AbgJLQiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 12:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403832AbgJLQaA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 12:30:00 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C851BC0613D2
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:30:00 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id o9so12009520ilo.0
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:30:00 -0700 (PDT)
+        with ESMTP id S2403815AbgJLQiE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 12:38:04 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A31C0613D0
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:38:04 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id l16so1849906ilj.9
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 09:38:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HwXz0lIm3u1bgx4NJ2iqS1dY/U9dQBE6p7ql4v1EMnc=;
-        b=WvRRTC2FY86H+vZSq6zL5S7owb4Lioj8J+fpwVYPHaO77mVtgZHpHBY1N7pK7V1rrd
-         8tyV0bks1Is+hm+8a6ekqgFqO4pXdkiudWQjTjVXlcjfTtWg7Jvja1SBLMxep0oBjQwI
-         VGUQ1ZKbreJnEdZBXpQvuP39nK+yeIMumo7q4=
+        bh=/Gx50nGZcX4AGWkDVX6hjpDj37zozEIQUpXyjJnxQqk=;
+        b=BeAIAKtsWa3kqXltsA/Uz51smjmGEtQd2B5JdGPQOmptv8NpfrmObm7M55uuUaz7xf
+         zOLuTApYb8+oVM81a5AgFww2ytnrT7jZ9T5RrszSGRyJVzzZEotYASXe76Lv6QBzVMde
+         5DxrIVv5TqmaOjV+Mqrbc9q1f6sZmRj0isDE0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HwXz0lIm3u1bgx4NJ2iqS1dY/U9dQBE6p7ql4v1EMnc=;
-        b=t3SG5/MbuKNpP62uYLdDSSD13I6MAOJNn5xDDo+XCmOmWOhwft7+IcCiG6dI19xxUz
-         OFPiKSBvZkPDYIbtYurAQb5wGUs5S6sOsSI2JgvG9LgHuKrOawrNp4GspTAFZWbRNZ6r
-         8bKMVhMDtZOsP8Zs+HVzyOIf0f56oBSwhA2hHLy+vcX1xLiGFt+25Y+NwX5ulb5Emt9m
-         8YMFJz+btcv6Y2hZRbZ4GUaIi+8oQCRtPqu4F6SFUDaTtXqlZ1qiUM1ui+x7cOLRv8/G
-         nUdcjhEFK0o/bKhq8X1fsayIFaw/dAz3nGY3doVSD0OqrrRaiUcvmZnmKTOvK+4gr1X6
-         BWZA==
-X-Gm-Message-State: AOAM530bcCh3UJMHDLlLrRZcf0WyjyZoLaU1LZIotZTkw3fztJHBfslL
-        37y9zWlnmJ74UaiIT/Z8BzHNuXVHurzwpW+Q6SaIWQ==
-X-Google-Smtp-Source: ABdhPJxBh6HvvOLZAbR6K59Zj8bX8eUob9gLrihj7TV0LUKDwxqSPNkfr06YGIMALj3YSWDpcdRd3BDrNpSlJRn+zVk=
-X-Received: by 2002:a05:6e02:e4f:: with SMTP id l15mr11184274ilk.142.1602520198670;
- Mon, 12 Oct 2020 09:29:58 -0700 (PDT)
+        bh=/Gx50nGZcX4AGWkDVX6hjpDj37zozEIQUpXyjJnxQqk=;
+        b=MGG0xcD79ecL2YI/8z6O47ZtTAst6VMDJDGhghRk53UM0ygxV10Curyf09HkBpPT7b
+         KiPUeZkUdiK8VMq61r/ehjYG5B7UD7qfT0wbH5iSR3E17uZNTuJdTjruAiKWzcgh9X2d
+         fmBplN2T+hVdNvBgLm9tdXDJanEJelMgShQIiNicsYyoBQ5+PniVA5I6e1st+rlnHyXW
+         +2sHlg8gmNIc2kRdANkMLxFGYJ4BtWmfKFBeKy04BF3j6wjL/+tulwPTlQZ1jmLvc+Yr
+         VpjFYv4SDf0GGc3qoq8Bhr+9q71sQin07d0/34ybXaMe2Wu2w/a5spP5A+sQL5u+/slG
+         tkqA==
+X-Gm-Message-State: AOAM532ecTf7ysDEy4pklFBnAW6qIaN59XcfBXAquuHda1hIQSern9jE
+        kC3KDK2qg2l6bNFjv12Zjfdr/e5/dryIHsx0sUoDlQ==
+X-Google-Smtp-Source: ABdhPJzOdmVdk2tdkS3uP/T+i9kqfyzqedDZNJPnYi2wvWSD7gLtFBDzmsgQv+OQXT8u4Wrki+HBG25nF88zvbrmPDA=
+X-Received: by 2002:a92:5f03:: with SMTP id t3mr20516987ilb.25.1602520683833;
+ Mon, 12 Oct 2020 09:38:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201011170749.243680-1-jic23@kernel.org> <20201011170749.243680-2-jic23@kernel.org>
-In-Reply-To: <20201011170749.243680-2-jic23@kernel.org>
+References: <20201011170749.243680-1-jic23@kernel.org> <20201011170749.243680-12-jic23@kernel.org>
+In-Reply-To: <20201011170749.243680-12-jic23@kernel.org>
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Mon, 12 Oct 2020 09:29:47 -0700
-Message-ID: <CAJCx=gn8QEgrt-YEo_H3CQK1-zht_pDbYTQngqGES+UbFsvzKw@mail.gmail.com>
-Subject: Re: [PATCH 01/29] dt-bindings:iio:humidity:hdc100x Drop separate doc
- + add to trivial-devices
+Date:   Mon, 12 Oct 2020 09:37:52 -0700
+Message-ID: <CAJCx=g=Vaf9yCE29F9NtO0HHP2az4Ee8vSzWthR_aUT8p+TUcw@mail.gmail.com>
+Subject: Re: [PATCH 11/29] dt-bindings:iio:proximity:ams,as3935 yaml conversion
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,8 +60,8 @@ On Sun, Oct 11, 2020 at 10:10 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Very simple binding for this i2c device with no properties beyond
-> reg and compatible.  Hence doesn't need it's own document.
+> A straight forward conversion of this binding. I have added
+> a maximum SPI frequency from the datasheet.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Matt Ranostay <matt.ranostay@konsulko.com>
@@ -70,54 +69,127 @@ On Sun, Oct 11, 2020 at 10:10 AM Jonathan Cameron <jic23@kernel.org> wrote:
 Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
 > ---
->  .../bindings/iio/humidity/hdc100x.txt           | 17 -----------------
->  .../devicetree/bindings/trivial-devices.yaml    | 10 ++++++++++
->  2 files changed, 10 insertions(+), 17 deletions(-)
+>  .../bindings/iio/proximity/ams,as3935.yaml    | 71 +++++++++++++++++++
+>  .../bindings/iio/proximity/as3935.txt         | 34 ---------
+>  2 files changed, 71 insertions(+), 34 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt b/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
+> new file mode 100644
+> index 000000000000..7fcba5d6d508
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
+> @@ -0,0 +1,71 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/ams,as3935.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Austrian Microsystems AS3935 Franklin lightning sensor
+> +
+> +maintainers:
+> +  - Matt Ranostay <matt.ranostay@konsulko.com>
+> +
+> +description:
+> +  This lightening distance sensor uses an I2C or SPI interface. The
+> +  binding currently only covers the SPI option.
+> +
+> +properties:
+> +  compatible:
+> +    const: ams,as3935
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 2000000
+> +
+> +  spi-cpha: true
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  ams,tuning-capacitor-pf:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Calibration tuning capacitor stepping value. This will require using
+> +      the calibration data from the manufacturer.
+> +    minimum: 0
+> +    maximum: 120
+> +
+> +  ams,nflwdth:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Set the noise and watchdog threshold register on startup. This will
+> +      need to set according to the noise from the MCU board, and possibly
+> +      the local environment. Refer to the datasheet for the threshold settings.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - spi-cpha
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +    lightning@0 {
+> +            compatible = "ams,as3935";
+> +            reg = <0>;
+> +            spi-max-frequency = <400000>;
+> +            spi-cpha;
+> +            interrupt-parent = <&gpio1>;
+> +            interrupts = <16 1>;
+> +            ams,tuning-capacitor-pf = <80>;
+> +            ams,nflwdth = <0x44>;
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/as3935.txt b/Documentation/devicetree/bindings/iio/proximity/as3935.txt
 > deleted file mode 100644
-> index c52333bdfd19..000000000000
-> --- a/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt
+> index 849115585d55..000000000000
+> --- a/Documentation/devicetree/bindings/iio/proximity/as3935.txt
 > +++ /dev/null
-> @@ -1,17 +0,0 @@
-> -* HDC100x temperature + humidity sensors
+> @@ -1,34 +0,0 @@
+> -Austrian Microsystems AS3935 Franklin lightning sensor device driver
 > -
 > -Required properties:
-> -  - compatible: Should contain one of the following:
-> -       ti,hdc1000
-> -       ti,hdc1008
-> -       ti,hdc1010
-> -       ti,hdc1050
-> -       ti,hdc1080
-> -  - reg: i2c address of the sensor
+> -       - compatible: must be "ams,as3935"
+> -       - reg: SPI chip select number for the device
+> -       - spi-max-frequency: specifies maximum SPI clock frequency
+> -       - spi-cpha: SPI Mode 1. Refer to spi/spi-bus.txt for generic SPI
+> -       slave node bindings.
+> -       - interrupts : the sole interrupt generated by the device
+> -
+> -       Refer to interrupt-controller/interrupts.txt for generic
+> -       interrupt client node bindings.
+> -
+> -Optional properties:
+> -       - ams,tuning-capacitor-pf: Calibration tuning capacitor stepping
+> -         value 0 - 120pF. This will require using the calibration data from
+> -         the manufacturer.
+> -       - ams,nflwdth: Set the noise and watchdog threshold register on
+> -         startup. This will need to set according to the noise from the
+> -         MCU board, and possibly the local environment. Refer to the
+> -         datasheet for the threshold settings.
 > -
 > -Example:
 > -
-> -hdc100x@40 {
-> -       compatible = "ti,hdc1000";
-> -       reg = <0x40>;
+> -as3935@0 {
+> -       compatible = "ams,as3935";
+> -       reg = <0>;
+> -       spi-max-frequency = <400000>;
+> -       spi-cpha;
+> -       interrupt-parent = <&gpio1>;
+> -       interrupts = <16 1>;
+> -       ams,tuning-capacitor-pf = <80>;
+> -       ams,nflwdth = <0x44>;
 > -};
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index 25cfcc904240..9f8531d4d33e 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -352,6 +352,16 @@ properties:
->            - ti,ads7830
->              # Temperature Monitoring and Fan Control
->            - ti,amc6821
-> +            # Temperature and humidity sensor with i2c interface
-> +          - ti,hdc1000
-> +            # Temperature and humidity sensor with i2c interface
-> +          - ti,hdc1008
-> +            # Temperature and humidity sensor with i2c interface
-> +          - ti,hdc1010
-> +            # Temperature and humidity sensor with i2c interface
-> +          - ti,hdc1050
-> +            # Temperature and humidity sensor with i2c interface
-> +          - ti,hdc1080
->              # Temperature sensor with 2-wire interface
->            - ti,lm73
->              # Temperature sensor with integrated fan control
 > --
 > 2.28.0
 >

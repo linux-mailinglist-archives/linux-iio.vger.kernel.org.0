@@ -2,114 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A187E28BE9A
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 19:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CAC428C197
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 21:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403883AbgJLRER (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 13:04:17 -0400
-Received: from vern.gendns.com ([98.142.107.122]:56706 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390355AbgJLRER (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 12 Oct 2020 13:04:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zJY3Dr6AnVYzWq6bCyK4S4rlKOnb0m8nFs+n4rj0aqA=; b=k/NrFvl5XJsTY+RGXOx8Q7rgV5
-        6WNNASc5T2nH77d9p4WJ5StsyyoafuyjaX7OIUA/cx9AzZCWgCRdBuECQRkacLzZujA1K1NtbFU9c
-        KT8ra/6X+hfinxyRa8siQlResVDcawWPR3ET4bVDjn+XY2LOmvomALeWmTn4JL19k/gC+3IkGygGh
-        WGAyhJUf0R5CDBejIe3Sr7wUWTQl8qhMG11CkFDMgw3zPBV8NQ1L+CdhHkXbHHuBBNBLcUxWHtbMt
-        Q02yv7CcfFESjhKZTjKfgLviYlVIbGFNkkQZefNDtOBRrc2s4OMTLDJxaB1PKao2OkQWTGL3nL+ME
-        t4YRc7kQ==;
-Received: from [2600:1700:4830:165f::19e] (port=46758)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kS1F6-00009H-9o; Mon, 12 Oct 2020 13:04:12 -0400
-Subject: Re: [PATCH v5 4/5] docs: counter: Document character device interface
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-References: <cover.1601170670.git.vilhelm.gray@gmail.com>
- <54190f9875b81b6aa5483a7710b084053a44abb8.1601170670.git.vilhelm.gray@gmail.com>
- <20201008080909.GA31561@amd> <20201008122845.GA3314@shinobu>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <d06d5e47-5776-85ee-0dc5-8b624e36d83d@lechnology.com>
-Date:   Mon, 12 Oct 2020 12:04:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1730999AbgJLTq0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 15:46:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59704 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727320AbgJLTqZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 15:46:25 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB49C0613D0
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 12:46:23 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id 13so18240734wmf.0
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 12:46:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lJUgYY1wIsYehEysHd2Kh8lV4o685yjBc0pclwWahLQ=;
+        b=xQrjEJD7DwGgvhsePMttKT1lbjtB/P+TL5KwJS6udeu8lwG2/PiJwn0HQIIk4EVLPw
+         3Aj2fF36QqZwby7SLpRW3F1hTOLziJPhbnv/qnWYYWWpy4e5RFkRdola0lwLjODrTxHi
+         W/U3wFnc5gz/qqlA93pG1CIw0XxnJjjvhQfas5lMnWUh7HgNoZfok7DW+c+4IuQg5Q4N
+         sRXW96q5CyL1vReb3Q9Db0lwCZigR2AeoOT6YDzCB6atz5quv7BCwvUqU0uCraF1hKhZ
+         O6yHHgx/nol8/hUBpVhIeihEXKfu5LkfVHVZ9W98lAQ/vUiEtCu+AraE+VGhcAmkkzAB
+         xY4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lJUgYY1wIsYehEysHd2Kh8lV4o685yjBc0pclwWahLQ=;
+        b=BSXvGIazFVDwA2IRxpTh3kgtXp38Uvvf+YHMeGDE2V1uofuYYqR10nACiHj7XP8Nfh
+         WQO0wyKxzMKuHjO1Kd+vO8TFJII2UPfplRYmFRad8hH5TtkukSsryBuVtjc9MFetW4tB
+         5696X0kXtUySw2avoAREkeUwyIAZbmTZ7ahNfibiENSfEJHA8b8e01WYKg98OlPhRqTq
+         BLez0ZELsA4TR/Ge7AIh0p4dHv4GSe67AT2xCF4r5cGB3DqCh2l+lWpm7Sc+cTuAsRvy
+         YFIW+ZMKTg5juRtsQEKUprpc5IzcUJwWyVM4h1q+YCskskIyJX89hpC4vBVfHogOITzB
+         r41w==
+X-Gm-Message-State: AOAM5319koTjgJdty9BFhCdYYz53uM01c+xqHF+q8+l77xcNBp3mLxcC
+        K3ArmkdZvVIc7o+dgPDlid0Dxw==
+X-Google-Smtp-Source: ABdhPJxE4rAMqZqFJQmBSrB789tdjZKukj9/n7g9ecDb/QcaExAQWtKUFEeX0l7QGMLG2PJ1ll5eMA==
+X-Received: by 2002:a1c:3d46:: with SMTP id k67mr293583wma.150.1602531982526;
+        Mon, 12 Oct 2020 12:46:22 -0700 (PDT)
+Received: from localhost.localdomain (170.175.185.81.rev.sfr.net. [81.185.175.170])
+        by smtp.gmail.com with ESMTPSA id p13sm24590363wmb.5.2020.10.12.12.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2020 12:46:21 -0700 (PDT)
+From:   Fabien Parent <fparent@baylibre.com>
+To:     linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
+Cc:     chun-hung.wu@mediatek.com, alexandru.ardelean@analog.com,
+        matthias.bgg@gmail.com, pmeerw@pmeerw.net, lars@metafoo.de,
+        knaack.h@gmx.de, jic23@kernel.org,
+        Fabien Parent <fparent@baylibre.com>
+Subject: [PATCH] iio: adc: mediatek: fix unset field
+Date:   Mon, 12 Oct 2020 21:46:18 +0200
+Message-Id: <20201012194618.2170970-1-fparent@baylibre.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20201008122845.GA3314@shinobu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/8/20 7:28 AM, William Breathitt Gray wrote:
-> On Thu, Oct 08, 2020 at 10:09:09AM +0200, Pavel Machek wrote:
->> Hi!
->>
->>> +        int main(void)
->>> +        {
->>> +                struct pollfd pfd = { .events = POLLIN };
->>> +                struct counter_event event_data[2];
->>> +
->>> +                pfd.fd = open("/dev/counter0", O_RDWR);
->>> +
->>> +                ioctl(pfd.fd, COUNTER_SET_WATCH_IOCTL, watches);
->>> +                ioctl(pfd.fd, COUNTER_SET_WATCH_IOCTL, watches + 1);
->>> +                ioctl(pfd.fd, COUNTER_LOAD_WATCHES_IOCTL);
->>> +
->>> +                for (;;) {
->>> +                        poll(&pfd, 1, -1);
->>
->> Why do poll, when you are doing blocking read?
->>
->>> +                        read(pfd.fd, event_data,  sizeof(event_data));
->>
->> Does your new chrdev always guarantee returning complete buffer?
->>
->> If so, should it behave like that?
->>
->> Best regards,
->> 									Pavel
->> -- 
->> (english) http://www.livejournal.com/~pavelmachek
->> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
-> 
-> I suppose you're right: a poll() should be redundant now with this
-> version of the character device implementation because buffers will
-> always return complete; so a blocking read() should achieve the same
-> behavior that a poll() with read() would.
-> 
-> I'll give some more time for additional feedback to come in for this
-> version of the patchset, and then likely remove support for poll() in
-> the v6 submission.
-> 
-> William Breathitt Gray
-> 
+dev_comp field is used in a couple of places but it is never set. This
+results in kernel oops when dereferencing a NULL pointer. Set the
+`dev_comp` field correctly in the probe function.
 
-I hope that you mean that you will just remove it from the example
-and not from the chardev. Otherwise it won't be possible to
-integrate this with an event loop.
+Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
+
+Signed-off-by: Fabien Parent <fparent@baylibre.com>
+---
+ drivers/iio/adc/mt6577_auxadc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
+index ac415cb089cd..7bd48377cd79 100644
+--- a/drivers/iio/adc/mt6577_auxadc.c
++++ b/drivers/iio/adc/mt6577_auxadc.c
+@@ -276,6 +276,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
+ 		goto err_disable_clk;
+ 	}
+ 
++	adc_dev->dev_comp = of_device_get_match_data(&pdev->dev);
++
+ 	mutex_init(&adc_dev->lock);
+ 
+ 	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
+-- 
+2.28.0
 

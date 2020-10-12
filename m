@@ -2,198 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC6428AF89
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 10:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4006F28B46A
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 14:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgJLIAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 04:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726334AbgJLIAw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 04:00:52 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E7EC0613CE
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 01:00:52 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id q202so7423364iod.9
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 01:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ikx3FlZPTI9hp2Yy9U2oEySVP8usR03HIZi8HfRNmxE=;
-        b=OpoAxPyy1FjR9Q0UCn3poAUWhT1pM534iPNVpGItS2YOuVauGlVNd8HgEhgQfVu+Pp
-         UaD+K6AUDOvPClKbJgtr8bNicSZ0VHU9D6OM64dcpTtaKlS65JJvdzroGZIXs+Y6yfMD
-         U+xTfOI3oW43Y+dgw1xn4QHVrQH5ycT9rkMWWStHUWELbqteTkznlaNxS02Om9BoCXTm
-         EoKTdVVb08mrBiEe8yvbxFdGOyJchwnf0e/GDVeJ8/6fNdkejliTdfKRHdW/+RNXEK0x
-         QlN9PUyV+V5Rs11e4qx2T3iDGob29wZSVEzU7CL6ucx7FIUDvMv7NECQkDPyy0PD6koc
-         ahsg==
+        id S2388361AbgJLMNm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 08:13:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25563 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388209AbgJLMNm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 08:13:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1602504820;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5HU91LHnQTKR2yQDGosbdEj8ORh/GmI6UcUCZ5/zDmA=;
+        b=Oknbtz+T6nmGDWrXPlibiBMKT1H6U0oFspEkAsQ3qb9vjdtxgXaRt1kzlIOyC+5WZOAtyh
+        hW1+hxDbTq79dQM/nv7xXzSFyh1O7fkMs0p2raAGpanQMXxw/EMNhJvPf5RVBMDnabVI7w
+        HQPNYVR59+tudWyS3nnFwmwefSLBivA=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-294-gKRDJqLOPgyGWVJjxaUFQQ-1; Mon, 12 Oct 2020 08:13:38 -0400
+X-MC-Unique: gKRDJqLOPgyGWVJjxaUFQQ-1
+Received: by mail-ej1-f72.google.com with SMTP id i21so6296524ejb.5
+        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 05:13:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ikx3FlZPTI9hp2Yy9U2oEySVP8usR03HIZi8HfRNmxE=;
-        b=lSjZOQreGjhki27/K4qyU+Qhn2Pt3ynJ61hwosBAbV4pRxSxwZTzyMC2mW+o8T5ZIb
-         PyAjoAh1xNE2GLlMm4JPQxqRd+3PUoZk8OTsf7K70gkdcKV33RUMH1z/HGQluKFd5yuU
-         tnaS83Djyo6HH7CkVzZLWha6jH67iloSKH7z64V2arQ0qB7E5mxqm0PLL6JTOsapmpSy
-         h3QQWMg/eFGYVjWDWjkEo5UMcYp73bYqOHi2qLEkVwo2CXAYfIBpzgvI09GP9NmJFzPj
-         0h4bCobrX3u4vE4hxPfNgke/zl+fXrod0aSJ1HTHFI7+ELG/Fn1pgOfmWBBLjfl2oye/
-         j39w==
-X-Gm-Message-State: AOAM531+HnKXAwdAqvDNTInXlwy5TvtgQZWJ10s1Hu6Jl5yhazuA83hH
-        47UR13ZNDPzMXBuml/QBMWqVE0EqHUgGXOgBK0sFdQ==
-X-Google-Smtp-Source: ABdhPJwqBgiF2HoWsgH/sZKAAs2ggSvsFCVu5EIO1tyJeU+HwiTBtfJ4hEAti2Dbxt6cZ9kWqGJxcLTvO0ucIRwZ9wM=
-X-Received: by 2002:a05:6638:622:: with SMTP id h2mr18915614jar.86.1602489651352;
- Mon, 12 Oct 2020 01:00:51 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5HU91LHnQTKR2yQDGosbdEj8ORh/GmI6UcUCZ5/zDmA=;
+        b=qTADxMLiBGV4k3ZhCJO31WyBNlbpzyrPIiERL+40UTiGuLqSLzKNYIkvGVSvXtqEmE
+         rDtONNnCDYDb7apGghcM9UgkeudHezoZ6dZE8ssb9Ab0I2XVR4uu078Tw3020KLy303x
+         sSlFjyBwXCjV/G8B8/e0/xoin2f/QgSIyGowyDSHItQp81BTAhVIyHxl4meSnOsQxSo9
+         i2EasuM8WGwkGRgq6OCa+vXvpLTg4GYRE8XLLX79LmZ3gOgQhKqx56hVd6tapOOnorwP
+         Lu4q9jHn08x8POBhGfZaJOJEfyDP3vcouKp7J5RBnlfgviGy9pKMd7rleC+rkcnoUNja
+         HijA==
+X-Gm-Message-State: AOAM531kMI8uLpyoDd3GyU19aNjId0sRq2yrBIqWi1A+wEC/ltX3R/ZE
+        ET5ADwS0dZ6otCsT6bdo0QGde5Q+oNoJFj1zXigAJstIGjNq0lNHF6Ohqra3qcH08Yk+L08m5yq
+        9j3b+Q7aOF4ZgIqT8OMcD
+X-Received: by 2002:aa7:de06:: with SMTP id h6mr13743874edv.31.1602504816762;
+        Mon, 12 Oct 2020 05:13:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw1pGP3YmjRYLrr2z+ODGXwKFMGo9xoGCpv3tIVimfcq47P6z2EG4I+0wu9XIX+ZAwzLDd9mg==
+X-Received: by 2002:aa7:de06:: with SMTP id h6mr13743846edv.31.1602504816454;
+        Mon, 12 Oct 2020 05:13:36 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id a10sm10516044ejs.11.2020.10.12.05.13.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Oct 2020 05:13:35 -0700 (PDT)
+Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
+ info to userspace?
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-iio@vger.kernel.org, Nitin Joshi1 <njoshi1@lenovo.com>,
+        linux-input@vger.kernel.org, dmitry.torokhov@gmail.com
+References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
+ <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
+ <20201007083602.00006b7e@Huawei.com>
+ <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
+ <b400b6956270a2433373dd6cbdae3332aa683f4f.camel@hadess.net>
+ <cadabe4d-7cce-281e-75fe-fcc2099848da@redhat.com>
+ <5273a1de9db682cd41e58553fe57707c492a53b7.camel@hadess.net>
+ <272074b5-b28e-1b74-8574-3dc2d614269a@redhat.com>
+ <20201008001424.GA3713@labundy.com>
+ <9893a32c-02c8-f00c-7f00-6287d55043ab@redhat.com>
+ <20201009021949.GA3629@labundy.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <961aeee6-22e9-75dc-9fcf-45cee00ab62c@redhat.com>
+Date:   Mon, 12 Oct 2020 14:13:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20201011170749.243680-1-jic23@kernel.org> <20201011170749.243680-25-jic23@kernel.org>
- <CAKv63utWrhUTb+QUgy_nHniYEMuvK5UuZzD6-iRLGZaAtVHNHA@mail.gmail.com>
-In-Reply-To: <CAKv63utWrhUTb+QUgy_nHniYEMuvK5UuZzD6-iRLGZaAtVHNHA@mail.gmail.com>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Mon, 12 Oct 2020 10:00:15 +0200
-Message-ID: <CAKv63us7JjEqNdK7Q6uOvRsTxYrS0Ovo-Zcx0pQQOwHmS4Eucg@mail.gmail.com>
-Subject: Re: [PATCH 24/29] dt-bindings:iio:temperature:melexis,mlx90614 yaml conversion
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Linux Iio <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201009021949.GA3629@labundy.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-I got mail bounce (account doesn't exist) from Vianney le Cl=C3=A9ment de
-Saint-Marcq <vianney.leclement@essensium.com>, so I would assume he is
-not working there anymore. I think we can remove him from the
-maintainers list?
+Hi,
 
-Best regards,
-Crt
+On 10/9/20 4:19 AM, Jeff LaBundy wrote:
+> Hi Hans,
+> 
+> On Thu, Oct 08, 2020 at 09:10:19AM +0200, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 10/8/20 2:14 AM, Jeff LaBundy wrote:
+>>> Hi all,
+>>>
+>>> On Wed, Oct 07, 2020 at 03:32:07PM +0200, Hans de Goede wrote:
+>>>> Hi,
+>>>>
+>>>> On 10/7/20 3:29 PM, Bastien Nocera wrote:
+>>>>> On Wed, 2020-10-07 at 15:08 +0200, Hans de Goede wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> On 10/7/20 1:35 PM, Bastien Nocera wrote:
+>>>>>>> On Wed, 2020-10-07 at 11:51 +0200, Hans de Goede wrote:
+>>>>>>>> <snip>
+>>>>>>>>> Dmitry, any existing stuff like this in input?
+>>>
+>>> It seems we are talking about "specific absorption rate" (SAR) type
+>>> devices that signal the WLAN controller to reduce transmitted power
+>>> while a user is nearby.
+>>
+>> Yes and no. At least the lap-mode detection (laptop on someones
+>> lap rather then sitting on a table) is currently used by the
+>> embedded-controller for thermal management decisions, basically
+>> when on someones lap the configurable TPD of the CPU is set lower
+>> to keep the laptop's bottom skin temperate < 45 degrees Celsius
+>> (I think it is 45 but the exact number does not matter).
+> 
+> This is a much-appreciated feature. :)
+> 
+>>
+>> The lap-mode info is currently exported with a thinkpad_acpi specific
+>> sysfs attribute with the idea that userspace could potentially use
+>> this to indicate to the user that turbo clocks will be lower
+>> because of this.
+>>
+>> With upcoming WLAN cards with configurable transmit power,
+>> this will also be used as what you call a SAR device.
+>>
+>> AFAIK the palmrest case is mostly a SAR device.
+>>
+>> Note I'm explaining the alternative lap-mode use-case to make
+>> sure everyone is on the same page. I completely agree with the
+>> gist of your email :)
+> 
+> Acknowledged on all counts; thank you for this additional background
+> information.
+> 
+>>
+>>> I just wanted to chime in and confirm that we do have at least one
+>>> precedent for these being in input (keyboard/iqs62x-keys) and not
+>>> iio so I agree with Jonathan here. My argument is that we want to
+>>> signal binary events (user grabbed onto or let go of the handset)
+>>> rather than deliver continuous data.
+>>
+>> I was curious what keycode you are using for this, but I see
+>> that the keycodes come from devicetree, so I guess I should
+>> just ask: what keycode are you using for this ?
+> 
+> The idea here was that a vendor might implement their own daemon
+> that interprets any keycode of their choice, hence leaving the
+> keycodes assignable via devicetree.
+> 
+> This particular device also acts as a capacitive/inductive button
+> sensor, and these applications were the primary motivation for it
+> landing in input with its status bits mapped to keycodes.
+> 
+> I don't think there are any keycodes that exist today that would
+> universally work for this application. The couple that seem most
+> closely related (e.g. KEY_WLAN or KEY_RFKILL) are typically used
+> for disabling the adapter entirely or for airplane mode (please
+> correct me if I'm wrong).
 
-On Sun, 11 Oct 2020 at 23:00, Crt Mori <cmo@melexis.com> wrote:
->
-> Thanks for the conversion. No idea which tag to put, so:
-> Acked-by: Crt Mori <cmo@melexis.com>
->
-> On Sun, 11 Oct 2020 at 19:10, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Simple conversion from txt to yaml.
-> > I've listed all 3 authors of the driver as maintainers.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Peter Meerwald <pmeerw@pmeerw.net>
-> > Cc: Vianney le Cl=C3=A9ment de Saint-Marcq <vianney.leclement@essensium=
-.com>
-> > Cc: Crt Mori <cmo@melexis.com>
-> > ---
-> >  .../iio/temperature/melexis,mlx90614.yaml     | 51 +++++++++++++++++++
-> >  .../bindings/iio/temperature/mlx90614.txt     | 24 ---------
-> >  2 files changed, 51 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,=
-mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,m=
-lx90614.yaml
-> > new file mode 100644
-> > index 000000000000..dcda203b2ba5
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx9061=
-4.yaml
-> > @@ -0,0 +1,51 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.ya=
-ml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Melexis MLX90614 contactless IR temperature sensor
-> > +
-> > +maintainers:
-> > +  - Peter Meerwald <pmeerw@pmeerw.net>
-> > +  - Vianney le Cl=C3=A9ment de Saint-Marcq <vianney.leclement@essensiu=
-m.com>
-> > +  - Crt Mori <cmo@melexis.com>
-> > +
-> > +description: |
-> > +  http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer=
--Sensors/MLX90614-615.aspx
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: melexis,mlx90614
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  wakeup-gpios:
-> > +    description:
-> > +      GPIO connected to the SDA line to hold low in order to wake up t=
-he
-> > +      device.  In normal operation, the GPIO is set as input and will
-> > +      not interfere in I2C communication.  There is no need for a GPIO
-> > +      driving the SCL line.  If no GPIO is given, power management is =
-disabled.
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        temp-sensor@5a {
-> > +            compatible =3D "melexis,mlx90614";
-> > +            reg =3D <0x5a>;
-> > +            wakeup-gpios =3D <&gpio0 2 GPIO_ACTIVE_HIGH>;
-> > +        };
-> > +    };
-> > +...
-> > diff --git a/Documentation/devicetree/bindings/iio/temperature/mlx90614=
-.txt b/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
-> > deleted file mode 100644
-> > index 9be57b036092..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
-> > +++ /dev/null
-> > @@ -1,24 +0,0 @@
-> > -* Melexis MLX90614 contactless IR temperature sensor
-> > -
-> > -http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer-S=
-ensors/MLX90614-615.aspx
-> > -
-> > -Required properties:
-> > -
-> > -  - compatible: should be "melexis,mlx90614"
-> > -  - reg: the I2C address of the sensor
-> > -
-> > -Optional properties:
-> > -
-> > -  - wakeup-gpios: device tree identifier of the GPIO connected to the =
-SDA line
-> > -      to hold low in order to wake up the device.  In normal operation=
-, the
-> > -      GPIO is set as input and will not interfere in I2C communication=
-.  There
-> > -      is no need for a GPIO driving the SCL line.  If no GPIO is given=
-, power
-> > -      management is disabled.
-> > -
-> > -Example:
-> > -
-> > -mlx90614@5a {
-> > -       compatible =3D "melexis,mlx90614";
-> > -       reg =3D <0x5a>;
-> > -       wakeup-gpios =3D <&gpio0 2 GPIO_ACTIVE_HIGH>;
-> > -};
-> > --
-> > 2.28.0
-> >
+You're right (aka not wrong), KEY_WLAN and KEY_RFKILL are used to
+toggle wireless radios on/off and re-using them for some SAR
+purpose would lead to nothing but confusion. We really need to
+define some standard *new* event-codes for this, such as e.g.
+the proposed SW_LAP_PROXIMITY and SW_PALMREST_PROXIMITY.
+
+> To that end, I'm keen to see how this interface unfolds because
+> SAR detection tends to be an available mode of operation for
+> several of the capacitive touch devices I've been working with.
+
+I guess that for touchscreens at least (which are on the front),
+using the existing SW_FRONT_PROXIMITY would make the most sense.
+
+Regards,
+
+Hans
+

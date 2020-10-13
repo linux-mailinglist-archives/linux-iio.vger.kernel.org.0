@@ -2,251 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB3D28C70C
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 04:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9949628C86F
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 08:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728585AbgJMCPI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 22:15:08 -0400
-Received: from vern.gendns.com ([98.142.107.122]:42282 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728583AbgJMCPI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 12 Oct 2020 22:15:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=tcBt+ZIFfdDG4AQrVc2/3STIm09DLsIpLLHUc03KQmk=; b=uZ8bO3MitNYLQDhEGVXRN1alnp
-        cfxhK2rk+QF79YZoRRN+QcFmlxTXGp+H/gBHkzVlFMeRqhKln5gNLewKVfUxZ59tKHvh3J6Jzj0LY
-        tlTdYrMsy7KJ32EXIELCCruQORaOvw5gLucJyBxdguc546Z2w245jwUvgjwrgG3rYdYYbT1hxceJz
-        KGkhjLgQSRUEd55TYsZBpz8Y9dGkfEFoqBhXx7QO40AEwmU8d3pKonatBi0V0O07SeZ9Zzq/SGkbr
-        30/3vk41qZBtA5Jpwcm86hbsWpoQSPB0U44RcL1P20sFZftxctg0NuCzpSHoo6mc7wPrHXAmLDZzn
-        +eF9Cdjw==;
-Received: from [2600:1700:4830:165f::19e] (port=58328)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kS9qA-0007FQ-KP; Mon, 12 Oct 2020 22:15:02 -0400
-Subject: Re: [PATCH v5 1/5] counter: Internalize sysfs interface code
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
-Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-References: <cover.1601170670.git.vilhelm.gray@gmail.com>
- <e38f6dc3a08bf2510034334262776a6ed1df8b89.1601170670.git.vilhelm.gray@gmail.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <157d1edf-feec-33b5-7ad5-94f99316ca6e@lechnology.com>
-Date:   Mon, 12 Oct 2020 21:15:00 -0500
+        id S2388888AbgJMGAa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Oct 2020 02:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41766 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388880AbgJMGAa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 02:00:30 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DF6C0613D0;
+        Mon, 12 Oct 2020 23:00:28 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id d3so20444935wma.4;
+        Mon, 12 Oct 2020 23:00:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=jnS/x8SlmHpjDOqz9A1uOS6RzTrMehpndh0O6FN/G6U=;
+        b=afO4cpR+LHdQnJ28NOXE/mkii7qViCz8wl0LWS29yyhmyfzSYeWlV5OrtqJNRvLqvh
+         N5pE8eULXJVrqWaSoNcf4dPPx9VihMP44Ff5NW5KCmaFH6Qznlvr7c7UR5RGcKPVgbHG
+         WWJSVCJ/n2aWcIgf5QTFrrYAA1/6UO3YLFbVjU4IHnSM1M6mWdMXpA0lJ6Hq8+x+TPe3
+         JgpHVTrNcbRbH8UcCxML/8g6tFgPkKJn6WkQRYxt2RFlzxaGANYQHP86Ohl9u82sYGCp
+         Hx7JrEinVP3XbzKd9i4F3gEl5LCii7VuV75Bq8aBLL/YIQQETQF4HJ8hrywejIFH+5oy
+         EzzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=jnS/x8SlmHpjDOqz9A1uOS6RzTrMehpndh0O6FN/G6U=;
+        b=cvweZK1vneDfXa+nkpjGCHv0LndSQ0u70P2YYbkkvniwrxvE4556CDn9rlCdVTPMSW
+         z3pJceh2PM5Ge0eaOyU/oIcn4dwvUbdF4lLQYPJNBFrUuIiha9NRo9NQYhjxeHPRQWcA
+         cUxuIRiPuxKJkcx/G5Oe70PhKjIqAQRPWbruC6TZWLyKqlsBI46g870O9JJdKGfW3cG6
+         D45qMrP/AmosQ9In/S+qRq9oOijaW3eYkwHeJry04/G++dn8ZrhrWoL1Kw1oQxVEm1Vs
+         hPwLWZLVI4+vRM/BF3X+G18OLmj9fGxcRJlhgdwYEnXJ1j95CsfroFc5m8mktsYugVPm
+         crgg==
+X-Gm-Message-State: AOAM531l4JtpiX8zVgiTqV2X450Qqmi94XA6lfeUZ0nj1OV2z8s2Yjz9
+        oC8y2gnoVwl6G9ITfBqrzAE=
+X-Google-Smtp-Source: ABdhPJwV3SrDoUWfGVUiifjwE7icpnVDk1AWT+ES8MylI3PskKn0pFqjnIKUIusVGkaOQkyFSOovvg==
+X-Received: by 2002:a7b:c401:: with SMTP id k1mr13535636wmi.120.1602568827375;
+        Mon, 12 Oct 2020 23:00:27 -0700 (PDT)
+Received: from ziggy.stardust ([213.195.119.110])
+        by smtp.gmail.com with ESMTPSA id l8sm18052242wrn.28.2020.10.12.23.00.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Oct 2020 23:00:26 -0700 (PDT)
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: auxadc: add doc for MT8516 SoC
+To:     Fabien Parent <fparent@baylibre.com>, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Cc:     robh+dt@kernel.org, pmeerw@pmeerw.net, lars@metafoo.de,
+        knaack.h@gmx.de, jic23@kernel.org
+References: <20201012205218.3010868-1-fparent@baylibre.com>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <5ac4afb0-3950-3b11-1f5c-01bbf74e64a4@gmail.com>
+Date:   Tue, 13 Oct 2020 08:00:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <e38f6dc3a08bf2510034334262776a6ed1df8b89.1601170670.git.vilhelm.gray@gmail.com>
+In-Reply-To: <20201012205218.3010868-1-fparent@baylibre.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/26/20 9:18 PM, William Breathitt Gray wrote:
-> This is a reimplementation of the Generic Counter driver interface.
-
-I'll follow up if I find any problems while testing but here are some
-comments I had from looking over the patch.
-
-> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
-> new file mode 100644
-> index 000000000000..987c6e8277eb
-> --- /dev/null
-> +++ b/drivers/counter/counter-core.c
 
 
-> +/**
-> + * counter_register - register Counter to the system
-> + * @counter:	pointer to Counter to register
-> + *
-> + * This function registers a Counter to the system. A sysfs "counter" directory
-> + * will be created and populated with sysfs attributes correlating with the
-> + * Counter Signals, Synapses, and Counts respectively.
-> + */
-> +int counter_register(struct counter_device *const counter)
-> +{
-> +	struct device *const dev = &counter->dev;
-> +	int err;
-> +
-> +	/* Acquire unique ID */
-> +	counter->id = ida_simple_get(&counter_ida, 0, 0, GFP_KERNEL);
-> +	if (counter->id < 0)
-> +		return counter->id;
-> +
-> +	/* Configure device structure for Counter */
-> +	dev->type = &counter_device_type;
-> +	dev->bus = &counter_bus_type;
-> +	if (counter->parent) {
-> +		dev->parent = counter->parent;
-> +		dev->of_node = counter->parent->of_node;
-> +	}
-> +	dev_set_name(dev, "counter%d", counter->id);
-> +	device_initialize(dev);> +	dev_set_drvdata(dev, counter);
-> +
-> +	/* Add Counter sysfs attributes */
-> +	err = counter_sysfs_add(counter);
-> +	if (err)
-> +		goto err_free_id;
-> +
-> +	/* Add device to system */
-> +	err = device_add(dev);
-> +	if (err) {
-> +		put_device(dev);
-> +		goto err_free_id;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_free_id:
-> +	/* get_device/put_device combo used to free managed resources */
-> +	get_device(dev);
-> +	put_device(dev);
+On 12/10/2020 22:52, Fabien Parent wrote:
+> Add documentation for the auxadc binding for MT8516 SoC.
+> 
+> Signed-off-by: Fabien Parent <fparent@baylibre.com>
 
-I've never seen this in a driver before, so it makes me think this is
-not the "right way" to do this. After device_initialize() is called, we
-already should have a reference to dev, so only device_put() is needed.
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
 
-
-> +	ida_simple_remove(&counter_ida, counter->id);
-
-In the case of error after device_initialize() is called, won't this
-result in ida_simple_remove() being called twice, once here and once in
-the release callback?
-
-> +	return err;
-> +}
-> +EXPORT_SYMBOL_GPL(counter_register);
-> +
-> +/**
-> + * counter_unregister - unregister Counter from the system
-> + * @counter:	pointer to Counter to unregister
-> + *
-> + * The Counter is unregistered from the system; all allocated memory is freed.
-> + */
-> +void counter_unregister(struct counter_device *const counter)
-> +{
-> +	if (!counter)
-> +		return;
-> +
-> +	device_unregister(&counter->dev);
-> +}
-> +EXPORT_SYMBOL_GPL(counter_unregister);
-> +
-> +static void devm_counter_unreg(struct device *dev, void *res)
-
-To be consistent, it would be nice to spell out unregister.
-
-> +{
-> +	counter_unregister(*(struct counter_device **)res);
-> +}
-> +
-
-> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-> new file mode 100644
-> index 000000000000..e66ed99dd5ea
-> --- /dev/null
-> +++ b/drivers/counter/counter-sysfs.c
-
-> +/**
-> + * counter_sysfs_add - Adds Counter sysfs attributes to the device structure
-> + * @counter:	Pointer to the Counter device structure
-> + *
-> + * Counter sysfs attributes are created and added to the respective device
-> + * structure for later registration to the system. Resource-managed memory
-> + * allocation is performed by this function, and this memory should be freed
-> + * when no longer needed (automatically by a device_unregister call, or
-> + * manually by a devres_release_all call).
-> + */
-> +int counter_sysfs_add(struct counter_device *const counter)
-> +{
-> +	struct device *const dev = &counter->dev;
-> +	const size_t num_groups = counter->num_signals + counter->num_counts +
-> +				  1;
-
-It is OK to go past 80 columns, especially for just for a few characters.
-
-> +	struct counter_attribute_group *groups;
-> +	size_t i, j;
-> +	int err;
-> +	struct attribute_group *group;
-> +	struct counter_attribute *p;
-> +
-> +	/* Allocate space for attribute groups (signals, counts, and ext) */
-> +	groups = devm_kcalloc(dev, num_groups, sizeof(*groups), GFP_KERNEL);
-> +	if (!groups)
-> +		return -ENOMEM;
-> +
-> +	/* Initialize attribute lists */
-> +	for (i = 0; i < num_groups; i++)
-> +		INIT_LIST_HEAD(&groups[i].attr_list);
-> +
-> +	/* Register Counter device attributes */
-> +	err = counter_device_register(counter, groups);
-
-This function name is a bit misleading. At first I though we were registering
-a new counter device (struct device). Maybe counter_sysfs_create_attrs()
-would be a better name? (I wouldn't mind having all functions in this
-file having a "counter_sysfs_" prefix for that matter.)
-
-
-> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-> index 1ff07faef27f..938085dead80 100644
-> --- a/drivers/counter/ti-eqep.c
-> +++ b/drivers/counter/ti-eqep.c
-
-
-> @@ -406,7 +414,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
->   
->   	priv->counter.name = dev_name(dev);
->   	priv->counter.parent = dev;
-> -	priv->counter.ops = &ti_eqep_counter_ops;
-> +	priv->counter.parent = &ti_eqep_counter_ops;
->   	priv->counter.counts = ti_eqep_counts;
->   	priv->counter.num_counts = ARRAY_SIZE(ti_eqep_counts);
->   	priv->counter.signals = ti_eqep_signals;
-
-This looks like an unintentional change and causes a compile error.
-
-> diff --git a/include/linux/counter.h b/include/linux/counter.h
-> index 9dbd5df4cd34..132bfecca5c3 100644
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -6,417 +6,195 @@
->   #ifndef _COUNTER_H_
->   #define _COUNTER_H_
->   
-> -#include <linux/counter_enum.h>
->   #include <linux/device.h>
-> +#include <linux/kernel.h>
-> +#include <linux/list.h>
-
-struct list_head is defined in linux/types.h. Is there something else
-we are using from linux/list.h in this file?
-
->   #include <linux/types.h>
->   
-
-
-It would be helpful to have kernel doc comments on everything in this file.
-
+> ---
+>   Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt b/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt
+> index 78c06e05c8e5..1b7ff9e5615a 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt
+> +++ b/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt
+> @@ -17,6 +17,7 @@ Required properties:
+>       - "mediatek,mt7622-auxadc": For MT7622 family of SoCs
+>       - "mediatek,mt8173-auxadc": For MT8173 family of SoCs
+>       - "mediatek,mt8183-auxadc", "mediatek,mt8173-auxadc": For MT8183 family of SoCs
+> +    - "mediatek,mt8516-auxadc", "mediatek,mt8173-auxadc": For MT8516 family of SoCs
+>     - reg: Address range of the AUXADC unit.
+>     - clocks: Should contain a clock specifier for each entry in clock-names
+>     - clock-names: Should contain "main".
+> 

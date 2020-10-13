@@ -2,104 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 141FC28D15E
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 17:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513BD28D310
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 19:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731025AbgJMPhQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Oct 2020 11:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730958AbgJMPhP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 11:37:15 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1129DC0613D0;
-        Tue, 13 Oct 2020 08:37:15 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id e17so24570676wru.12;
-        Tue, 13 Oct 2020 08:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NqpGyIxGkzBe54LbECwQ4ti1dUnwF1pNvzMYS8Ni1qk=;
-        b=XVf5bQXdPjnn21q9qd8ieph25Fus4NCdbVyi2mOTg7yq1Zny8DykvIgzN+HC1fete7
-         f9vZj3i2oo5QzSR9cR7TBYe9zVSq5eUSqBVw9N3UhCNqAeMRVEsaDBlE1J9bS/HZSOEA
-         X5luf2yF6oEX+l4w4nlBDb0xq+INIf0oxr9Ujt2AKtK5CxDXedRK3/rjow/B6dg1DJJA
-         UxKmuMAMkkENLUPzht83TDPSTxMHEhPkGjDaipUMLRsiaiS86n0nOL/RdKPryYntQW+0
-         ns9bVSv3UwLJKM4j46A2GLAOa0db3yF1roJEqon0ENoym1IRmkGqx2Icqc1J3ZSi1gA2
-         JXcw==
+        id S1729217AbgJMRWc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Oct 2020 13:22:32 -0400
+Received: from mail-oo1-f66.google.com ([209.85.161.66]:40051 "EHLO
+        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725970AbgJMRWc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 13:22:32 -0400
+Received: by mail-oo1-f66.google.com with SMTP id w7so67117oow.7;
+        Tue, 13 Oct 2020 10:22:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NqpGyIxGkzBe54LbECwQ4ti1dUnwF1pNvzMYS8Ni1qk=;
-        b=Qd0YH2MrpRJx+a+ytLfI/U5fJ5WaxpbzefATeez5PBceBSXF+n+3kXm/jSoWpWj+cP
-         9CFKtyTTxwEkow1frl1C8eY0ZJB13qjgzt/DimotLA6u0d3gk7udF/J4fzHLnbBjEdV2
-         wBVC0o7i01a/p9spDVjexw7rtsdm16hpnYQDiim/GBVkyaUntap7QMFEYz2oICN4sWQE
-         KaDKSGZTSUvzTus6AJ80WfhC2EX+jMJebIAfiNm1ZeM/bnh5eJtoxW5gMF+Q6Nwcadzm
-         Dk5X8wmR48vZn1YzrYmjyzPubifGAxQ9yfF4jDvxhMkxmzSKGO4A0mYZUSYJLHpAOqou
-         Akpw==
-X-Gm-Message-State: AOAM531IcjoMqhVXSFMqo8EedlRTezNvL/u67GLQBfmY9Kqc06tqUMV3
-        jw1mEhwy6wp0QOL0pxvFziy2ib7v03f9bA==
-X-Google-Smtp-Source: ABdhPJyMK9WV8/XRKrMpteIuKNBL7WJ6l3g7AMZE/IEw4NZFMHr+Ee9oXn0dFKc1icYcWo3QSjPXbw==
-X-Received: by 2002:adf:ba85:: with SMTP id p5mr316139wrg.64.1602603433846;
-        Tue, 13 Oct 2020 08:37:13 -0700 (PDT)
-Received: from ziggy.stardust ([213.195.119.110])
-        by smtp.gmail.com with ESMTPSA id f14sm30459748wrt.53.2020.10.13.08.37.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2020 08:37:13 -0700 (PDT)
-Subject: Re: [PATCH] iio: adc: mediatek: fix unset field
-To:     Fabien Parent <fparent@baylibre.com>, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Cc:     chun-hung.wu@mediatek.com, alexandru.ardelean@analog.com,
-        pmeerw@pmeerw.net, lars@metafoo.de, knaack.h@gmx.de,
-        jic23@kernel.org
-References: <20201012194618.2170970-1-fparent@baylibre.com>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Message-ID: <61fe6278-a628-820c-6bbd-eeac51b1e7c3@gmail.com>
-Date:   Tue, 13 Oct 2020 17:37:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=VFYdK5eEI2q6HITSkcwdVxz4dDBhdqzWyeihWrwEJQY=;
+        b=gbk/pyxWUw8Aq9L7Zc8gGCzlbgwhpdUc96GKl9xr4BVFPXX6M3uY/ktF0nuuD/wBL/
+         mvLvudRUbDFQmgdVNCw5yo7qTtg9UFYlJxUSy1vjONY9osXUfFpmdLWaVUj2PaIDNlNi
+         iqOGlJLYNgb9MoKzTLvR4Q1j0nC/vm+EuRDy8GTahKgobAwB89557T/jRWR9CVQqexoZ
+         hJxfMl/8D2bGdEWndfVzF0oxMgatwr+ximaMJqbZP03waQOPEAUf5fFOMwjBjK17twOc
+         MlEXsTHlE+cSQgcgJB9skt1IOUW3DUe9P4XsbuW4S9seOzvoNSbhg4DydnL0c9Q6G6ji
+         IqyA==
+X-Gm-Message-State: AOAM533Hu/wOVROYt7O67eDlcK6rK7NCmwKkQjrCKP2jtYATct6Oe+wP
+        1PAGrNF/NA6cMoBC6W45XAr3NIbLoaTd
+X-Google-Smtp-Source: ABdhPJzsC/0Ak+zrtd70+RUds9C+1E9Lw/c+pMqT2nbpeqfiPZ/7HAznFBx2dTS3zyPXvelxW8tNZA==
+X-Received: by 2002:a05:6820:30e:: with SMTP id l14mr297849ooe.57.1602609751366;
+        Tue, 13 Oct 2020 10:22:31 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id y51sm131571otb.47.2020.10.13.10.22.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2020 10:22:30 -0700 (PDT)
+Received: (nullmailer pid 3726622 invoked by uid 1000);
+        Tue, 13 Oct 2020 17:22:30 -0000
+Date:   Tue, 13 Oct 2020 12:22:30 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Fabien Parent <fparent@baylibre.com>
+Cc:     pmeerw@pmeerw.net, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        lars@metafoo.de, knaack.h@gmx.de, matthias.bgg@gmail.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, jic23@kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: auxadc: add doc for MT8516 SoC
+Message-ID: <20201013172230.GA3726592@bogus>
+References: <20201012205218.3010868-1-fparent@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <20201012194618.2170970-1-fparent@baylibre.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201012205218.3010868-1-fparent@baylibre.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 12/10/2020 21:46, Fabien Parent wrote:
-> dev_comp field is used in a couple of places but it is never set. This
-> results in kernel oops when dereferencing a NULL pointer. Set the
-> `dev_comp` field correctly in the probe function.
-> 
-> Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
+On Mon, 12 Oct 2020 22:52:17 +0200, Fabien Parent wrote:
+> Add documentation for the auxadc binding for MT8516 SoC.
 > 
 > Signed-off-by: Fabien Parent <fparent@baylibre.com>
-
-Ouch.
-
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-
 > ---
->   drivers/iio/adc/mt6577_auxadc.c | 2 ++
->   1 file changed, 2 insertions(+)
+>  Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> index ac415cb089cd..7bd48377cd79 100644
-> --- a/drivers/iio/adc/mt6577_auxadc.c
-> +++ b/drivers/iio/adc/mt6577_auxadc.c
-> @@ -276,6 +276,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
->   		goto err_disable_clk;
->   	}
->   
-> +	adc_dev->dev_comp = of_device_get_match_data(&pdev->dev);
-> +
->   	mutex_init(&adc_dev->lock);
->   
->   	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
-> 
+
+Acked-by: Rob Herring <robh@kernel.org>

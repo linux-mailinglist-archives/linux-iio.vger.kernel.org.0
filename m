@@ -2,98 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1525C28C356
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Oct 2020 22:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B1C28C66A
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 02:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731394AbgJLUwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 16:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726510AbgJLUwe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 16:52:34 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21965C0613D1
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 13:52:34 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id i1so14752125wro.1
-        for <linux-iio@vger.kernel.org>; Mon, 12 Oct 2020 13:52:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=e+bkzKiAfFdHWo2iBUMur2DQuOMcGF3zo5qvmeIt97g=;
-        b=17HX+CBl3cCBM8alB53y26WgGSoL4yOdOTcjv5H317ipfio7nzX8ecLju5ILpEI5EN
-         VsxVuJSujCOxvw7fq0mDp/2Dgv52ZJTIIQb19saH7DtAo5qpg3tChqg9LVDrjN2Weyvy
-         lAd50rifN+a/W7r/4Or3BhSU4izPchvEdBWItIk5lzLatuRPePwdT1UpdXlSlFQAMnsN
-         YXoq5oXhCvHs4VFJocaCRnFiy6SGJzbou78OKfH604JXyekoYmWvAHnuO9yvrdBNKFN9
-         rNusTFsKDIRfhZ7KO6P3kiaxVrY5Bo9uaHmuqGTFujq0MzdKrlnAGDU4fENxWa6QHSi1
-         ZD4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=e+bkzKiAfFdHWo2iBUMur2DQuOMcGF3zo5qvmeIt97g=;
-        b=fkYI4ZoOAPZfsFV7fKpB2dH6GOn0pmX2nHC307wMKlXg2Jc8BfxXC/5jssA6p45TGo
-         QPM4wYyAareIr3RcYIPu1/CAqZvf06D5fA8rME93nj+QkF0pk1mSvcfZ2j9vjAJeQHgH
-         K8FislFGJ651MejHo3GMbJH0qxGnH+IaOgfjr5KASUIQDDAgq3Ov/0S2gDAFkmZvOo7X
-         UdtPvNhwLWIVoakwFXbMhzW2SFElcQjTlLyLQQB17plmTuz88sze0bYeJBbK3utXrc7n
-         r4AT8zZnZZnFAl0varXj26C/3rSnSJyaxM2jSpTWP7qPh0FtZGxlnV4AexyveFzhX4kt
-         /IjQ==
-X-Gm-Message-State: AOAM532XKTkQ8UhCFh71KtTOGjNlQW1xhZc9IUxc96S3/Y6sz2VV7jwJ
-        nqoiOlzIsvR0LUfr9i6NnbP9Bw==
-X-Google-Smtp-Source: ABdhPJxM+7DnCHKyvrcJBWveKSAlmwc8SbAavQH79tcH238Z72uusz7nKP34YEXTbOsLpmRNUG4YmQ==
-X-Received: by 2002:adf:df07:: with SMTP id y7mr34659457wrl.347.1602535952752;
-        Mon, 12 Oct 2020 13:52:32 -0700 (PDT)
-Received: from localhost.localdomain (170.175.185.81.rev.sfr.net. [81.185.175.170])
-        by smtp.gmail.com with ESMTPSA id o184sm3623936wmo.37.2020.10.12.13.52.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2020 13:52:31 -0700 (PDT)
-From:   Fabien Parent <fparent@baylibre.com>
-To:     linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     matthias.bgg@gmail.com, robh+dt@kernel.org, pmeerw@pmeerw.net,
-        lars@metafoo.de, knaack.h@gmx.de, jic23@kernel.org,
-        Fabien Parent <fparent@baylibre.com>
-Subject: [PATCH 2/2] arm64: dts: mediatek: mt8516: add auxadc node
-Date:   Mon, 12 Oct 2020 22:52:18 +0200
-Message-Id: <20201012205218.3010868-2-fparent@baylibre.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201012205218.3010868-1-fparent@baylibre.com>
-References: <20201012205218.3010868-1-fparent@baylibre.com>
+        id S1727978AbgJMAf7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 20:35:59 -0400
+Received: from vern.gendns.com ([98.142.107.122]:36066 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727562AbgJMAfS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 12 Oct 2020 20:35:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=i3DN6BtJb3Jcv8rh81sTBY6UT+tAKn+rVAVT3o7iIs0=; b=LCWAFnRQ9KOZLwI3SDaZMqncKF
+        f/DMPsIh8viZE5VxEU395L0jKfZ8dHRv62q3AUsfR32nPKPduHKBTAcODM2InG2K5L9el+tpax9lu
+        RvXe2CekmCNzDQHRTFFJMNKSPaf4ROoDVJWaiGbGvnPxPnmCMpRLLGogchn7I6YAMjMssrq+eRPnh
+        pUetcBTuhuR+6qCd1PI3sePSJ2uQYE8990YSxuSwWmq6uhcJriMzwMTZVCj3ybIcvJGvsjwZ3nE+j
+        ENd2JhPRPtymm+u+khNB97+5AQe1/KRpoi59MZmIZJ9ksLZz80kd8T/J1WfaRNPWz3zqoX6/eTzow
+        ebDqpVoQ==;
+Received: from [2600:1700:4830:165f::19e] (port=56668)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1kS8HZ-0000vN-Pn; Mon, 12 Oct 2020 20:35:13 -0400
+Subject: Re: [PATCH v5 0/5] Introduce the Counter character device interface
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+References: <cover.1601170670.git.vilhelm.gray@gmail.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <caeeb0b2-6b66-b623-98e3-acdc261ec20e@lechnology.com>
+Date:   Mon, 12 Oct 2020 19:35:11 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1601170670.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add node for the auxadc IP. The IP is compatible with the one found
-in MT8173 SoC.
+On 9/26/20 9:18 PM, William Breathitt Gray wrote:
+> The following are some questions I have about this patchset:
+> 
+> 1. Should standard Counter component data types be defined as u8 or u32?
+> 
+>     Many standard Counter component types such COUNTER_COMP_SIGNAL_LEVEL
+>     have standard values defined (e.g. COUNTER_SIGNAL_LEVEL_LOW and
+>     COUNTER_SIGNAL_LEVEL_HIGH). These values are currently handled by the
+>     Counter subsystem code as u8 data types.
+> 
+>     If u32 is used for these values instead, C enum structures could be
+>     used by driver authors to implicit cast these values via the driver
+>     callback parameters; userspace would still use u32 with no issue.
+> 
+>     In theory this can work because GCC will treat enums are having a
+>     32-bit size; but I worry about the possibility of build targets that
+>     have -fshort-enums enabled, resulting in enums having a size less
+>     than 32 bits. Would this be a problem?
 
-Signed-off-by: Fabien Parent <fparent@baylibre.com>
----
- arch/arm64/boot/dts/mediatek/mt8516.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+We shouldn't have to worry about userspace programs using -fshort-enums
+since that would break all kernel interfaces that use enums, not just
+these - so no one should be using that compiler flag.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index 89af661e7f63..943c426e9aaf 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -470,5 +470,15 @@ usb0_port: usb-phy@11110800 {
- 				#phy-cells = <1>;
- 			};
- 		};
-+
-+		auxadc: adc@11003000 {
-+			compatible = "mediatek,mt8516-auxadc",
-+				     "mediatek,mt8173-auxadc";
-+			reg = <0 0x11003000 0 0x1000>;
-+			clocks = <&topckgen CLK_TOP_AUX_ADC>;
-+			clock-names = "main";
-+			#io-channel-cells = <1>;
-+			status = "disabled";
-+		};
- 	};
- };
--- 
-2.28.0
+So I am in favor of using strongly typed enums with u32 as the
+"generic" enum member type.
 
+> 
+> 2. Should I have reserved members in the userspace structures?
+> 
+>     The structures in include/uapi/linux/counter.h are available to
+>     userspace applications. Should I reserve space in these structures
+>     for future additions and usage? Will endianess and packing be a
+>     concern here?
+> 
+Since there doesn't seem to be a large number of counter devices
+this probably isn't critical. Are there any aspects of counter
+devices in general that couldn't be described with the proposed
+structures? For example, could there be components more than two
+levels deep (i.e. it would need id, parent id and grandparent id
+to describe fully)?

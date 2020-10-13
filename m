@@ -2,191 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22EEA28CA2B
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 10:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E2128CA5D
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 10:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391414AbgJMIWc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Oct 2020 04:22:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391409AbgJMIWb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 04:22:31 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACAD1C0613D0
-        for <linux-iio@vger.kernel.org>; Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id a200so16246772pfa.10
-        for <linux-iio@vger.kernel.org>; Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kGbrU6mHLZ6OXB9EsoVPLPTA7DB5gEcDbBfK2zWDWrw=;
-        b=YdSLdZK3dEfpnmrah3yIa3nc2lGMoekMUNSdj1JeeY6YqYJCuFFtdgkpkyObxv+UhP
-         eaQg45rtrKmT2zvSW2d53sdoBp5zAYcYg6ld/UBJU5de25uGQ/4HBN5g/vZ57UuSnJeN
-         zj8hRwjaXgirTOtv20dMKmDRlEaw0UawduKr8kDVGDhrsJCRbT44/pIw0fYbCc9F+7LR
-         WuZ8/GyTQXxrqdV2hMyBjIWiRjQCPZAGBpjevJkTCfcyHEodvKkpfUaHEPPmzPSrZLsr
-         4Ceo5sycPTAWVjwsNyKW6W5L6uSebDYsY74mSLx8JcMyHUGs3gcTvktyrFiRw8gWTurb
-         n+WA==
+        id S2403907AbgJMIiV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Oct 2020 04:38:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:25814 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2403914AbgJMIiU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 04:38:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1602578299;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nqAaKKGiC+o6rq21xrjB30mtbgNYtiQcq9guMv2UpHU=;
+        b=XI3sAucJ/9yJDSBzC6D3gqYzHZ8JLZJCPrNLi0g6cULKldw3DK16g0vJ+/6XrsIUQ+JFDi
+        4pa4aWv6WuC1UldDyNtmUAJDxFoW1cHugweSSy0CcXUE44xpSZ6znCgjlXc2AozD7mAYCR
+        brmIgNjLynmXdrAq76dVjABtOaldRhY=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-87-mszaix9oNoaOFhFlnQETXg-1; Tue, 13 Oct 2020 04:38:17 -0400
+X-MC-Unique: mszaix9oNoaOFhFlnQETXg-1
+Received: by mail-ed1-f71.google.com with SMTP id 28so2060073edv.9
+        for <linux-iio@vger.kernel.org>; Tue, 13 Oct 2020 01:38:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kGbrU6mHLZ6OXB9EsoVPLPTA7DB5gEcDbBfK2zWDWrw=;
-        b=Yl1pqH4/Sr7VDLQrwvIueehDbQBZ1hlTJxFgWNzJPBtETSM0BjNdDLr7WXsHq2SHvh
-         My/9d0qLILPL09LetyRUYjdaAdfUzkCGC+xARzIATRPn5D9+1K7H1m5etE56Ao8sr9Jn
-         hRoCJxT3ftCn9QYHqgWaj8KbrD1NQPREOOfjU7iKVvzH/8k8fyQg6g3prK/9ozVrD/VQ
-         sUTsVyz6w8ib1e8/F/PiVkZv0I9gUQpvN/uCgqpqKkyoKpgTpuhZOWQTzxgdyQN7XtrV
-         fmTiQh9aoPkwoHqIm5hznpIZ3cgTtAw3BxnllztQrjsiJ/52/qu8IctN3kiInk0UCpiI
-         MoWg==
-X-Gm-Message-State: AOAM530aIkqNOz4hA+2Qj+2+n0UaHwvy3qGRoOuITOhDYjfdW9ctDGBv
-        FocK9Ac7L7dIcXdk6QvUCZc2
-X-Google-Smtp-Source: ABdhPJxISy31+7PvIjATMety61KYvRr1jfU45E0fZF0KdHojJsGTi5oqbjfIoS4azfNcAbKj6QaFCw==
-X-Received: by 2002:a63:3f8d:: with SMTP id m135mr9893179pga.234.1602577351127;
-        Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
-Received: from linux ([103.59.133.81])
-        by smtp.gmail.com with ESMTPSA id u18sm22833866pgk.18.2020.10.13.01.22.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 13 Oct 2020 01:22:30 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-X-Google-Original-From: Manivannan Sadhasivam <manivannanece23@gmail.com>
-Date:   Tue, 13 Oct 2020 13:52:25 +0530
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 29/29] dt-bindings:iio:temperature:ti,tmp07 yaml
- conversion
-Message-ID: <20201013082225.GD5065@linux>
-References: <20201011170749.243680-1-jic23@kernel.org>
- <20201011170749.243680-30-jic23@kernel.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nqAaKKGiC+o6rq21xrjB30mtbgNYtiQcq9guMv2UpHU=;
+        b=NY4nb3LL4J7FIca0y6mz7UE9upD895lUEzRRN+wi1rfAS00dc13wvtlaJEWxgrVn/7
+         be04G1AJV8O9ByJjHMY+spHtsrDM5q/1+b+ecv6wD3ajMVKpTcXCF+P+cPcLOsw0ZQHP
+         +l/hBk8TYMXwls6XAgwfJmIzyUlPnTcmhsa65Ukvvr9GRwaArJdtd04MsrCccCp4V16b
+         unt/bYjruVFnhdgyok3hEDTstp8ZDxe2OuhT26ndSCuDimakPlESv+L0TFK7+roO9xhQ
+         cM+KCWxCGzbUl/2zULmvDSU7cZcHLunuzQAyrddkMB28Cebff2qF2QM7BDLLk+z1WyT3
+         FrDw==
+X-Gm-Message-State: AOAM5332/MhVdcnc8elXmw+u1unc1kt5Cy2DCFyCLTf4z/ZvlU9rgEUA
+        yyiQ72uGc8ipdRTObUABEzJRcJPMkio8uQPyLpabXqirKaSQLCtwmSBglYsU5QRRd9vYayDXk1t
+        qru9MApObGBdpaLaAxiza
+X-Received: by 2002:a17:906:6409:: with SMTP id d9mr31687025ejm.344.1602578296125;
+        Tue, 13 Oct 2020 01:38:16 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx5rd7Cxt0KjcRzHrFTspsRkBCqtz/CBjP7ck+Xb0Tvdpsaad4TRszj626QDPLcawyRUJVk/w==
+X-Received: by 2002:a17:906:6409:: with SMTP id d9mr31687012ejm.344.1602578295899;
+        Tue, 13 Oct 2020 01:38:15 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id e4sm12171515edk.38.2020.10.13.01.38.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2020 01:38:15 -0700 (PDT)
+Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
+ info to userspace?
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
+        Jeff LaBundy <jeff@labundy.com>
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-iio@vger.kernel.org, Nitin Joshi1 <njoshi1@lenovo.com>,
+        linux-input@vger.kernel.org, dmitry.torokhov@gmail.com
+References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
+ <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
+ <20201007083602.00006b7e@Huawei.com>
+ <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
+ <b400b6956270a2433373dd6cbdae3332aa683f4f.camel@hadess.net>
+ <cadabe4d-7cce-281e-75fe-fcc2099848da@redhat.com>
+ <5273a1de9db682cd41e58553fe57707c492a53b7.camel@hadess.net>
+ <272074b5-b28e-1b74-8574-3dc2d614269a@redhat.com>
+ <20201008001424.GA3713@labundy.com>
+ <9893a32c-02c8-f00c-7f00-6287d55043ab@redhat.com>
+ <f4f00263-3beb-d941-eb3a-2be95684db66@metux.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <152411c5-da14-c685-5252-5a4fa6fdbcb4@redhat.com>
+Date:   Tue, 13 Oct 2020 10:38:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201011170749.243680-30-jic23@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <f4f00263-3beb-d941-eb3a-2be95684db66@metux.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 11, 2020 at 06:07:49PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Simple conversion from txt to yaml.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Manivannan Sadhasivam <manivannanece23@gmail.com>
+Hi,
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Enrico, thank you for your input.
 
-Thanks,
-Mani
+See Mark's excellent email for answers to most of your questions,
+I just have one little thing to add.
 
-> ---
->  .../bindings/iio/temperature/ti,tmp007.yaml   | 57 +++++++++++++++++++
->  .../bindings/iio/temperature/tmp007.txt       | 33 -----------
->  2 files changed, 57 insertions(+), 33 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml
-> new file mode 100644
-> index 000000000000..3c2b7189fa2e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/ti,tmp007.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: IR thermopile sensor with integrated math engine
-> +
-> +maintainers:
-> +  - Manivannan Sadhasivam <manivannanece23@gmail.com>
-> +
-> +description: |
-> +  http://www.ti.com/lit/ds/symlink/tmp007.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,tmp007
-> +
-> +  reg:
-> +    description: |
-> +      The I2C address of the sensor (changeable via ADR pins)
-> +      ------------------------------
-> +      |ADR1 | ADR0 | Device Address|
-> +      ------------------------------
-> +         0      0        0x40
-> +         0      1        0x41
-> +         0     SDA       0x42
-> +         0     SCL       0x43
-> +         1      0        0x44
-> +         1      1        0x45
-> +         1     SDA       0x46
-> +         1     SCL       0x47
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        temp-sensor@40 {
-> +            compatible = "ti,tmp007";
-> +            reg = <0x40>;
-> +            interrupt-parent = <&gpio0>;
-> +            interrupts = <5 0x08>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/tmp007.txt b/Documentation/devicetree/bindings/iio/temperature/tmp007.txt
-> deleted file mode 100644
-> index da0af234a357..000000000000
-> --- a/Documentation/devicetree/bindings/iio/temperature/tmp007.txt
-> +++ /dev/null
-> @@ -1,33 +0,0 @@
-> -* TI TMP007 - IR thermopile sensor with integrated math engine
-> -
-> -Link to datasheet: http://www.ti.com/lit/ds/symlink/tmp007.pdf
-> -
-> -Required properties:
-> -
-> -  - compatible: should be "ti,tmp007"
-> -  - reg: the I2C address of the sensor (changeable via ADR pins)
-> -		------------------------------
-> -		|ADR1 | ADR0 | Device Address|
-> -		------------------------------
-> -		   0      0        0x40
-> -		   0	  1	   0x41
-> -		   0	 SDA       0x42
-> -		   0     SCL       0x43
-> -		   1      0        0x44
-> -		   1      1        0x45
-> -		   1	 SDA	   0x46
-> -		   1     SCL       0x47
-> -
-> -Optional properties:
-> -
-> -  - interrupts: interrupt mapping for GPIO IRQ (level active low)
-> -
-> -Example:
-> -
-> -tmp007@40 {
-> -        compatible = "ti,tmp007";
-> -        reg = <0x40>;
-> -	interrupt-parent = <&gpio0>;
-> -	interrupts = <5 0x08>;
-> -};
-> -
-> -- 
-> 2.28.0
-> 
+On 10/12/20 2:36 PM, Enrico Weigelt, metux IT consult wrote:
+> On 08.10.20 09:10, Hans de Goede wrote:
+
+<snip>
+
+> Back to the technical side: IMHO we should first work out what the
+> actual purpose of these sensors could be - are they useful for
+> anything else than just these specific cases ? If not, I'm not
+> sure whether it makes sense to put them into IIO at all, but using
+> a specific board driver instead.
+
+Right, also note that although there are doubtlessly sensors involved
+we don't actually get any meaningful / direct access to these sensors.
+
+We only get to talk to firmware which basically gives us:
+
+Laptop is on someone's lap: yes/no
+Someone is resting on the palmrest: yes/no
+
+The lack of direct sensor access also makes this a less then
+ideal case for using iio. So I believe that the suggestion
+to extend the existing evdev/input SW_FRONT_PROXIMITY support
+with 2 new SW_LAP_PROXIMITY and SW_PALMREST_PROXIMITY suggestion
+makes a ton of sense. Switches are binary and given that this
+really is a derived value and not raw sensor access using the
+input system seems a better match.
+
+Regards,
+
+Hans
+

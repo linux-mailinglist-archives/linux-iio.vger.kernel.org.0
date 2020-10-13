@@ -2,109 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FAB28C873
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 08:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22EEA28CA2B
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 10:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732405AbgJMGBD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Oct 2020 02:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41858 "EHLO
+        id S2391414AbgJMIWc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Oct 2020 04:22:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732382AbgJMGBD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 02:01:03 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3F2C0613D0;
-        Mon, 12 Oct 2020 23:01:02 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id d3so20446587wma.4;
-        Mon, 12 Oct 2020 23:01:02 -0700 (PDT)
+        with ESMTP id S2391409AbgJMIWb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Oct 2020 04:22:31 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACAD1C0613D0
+        for <linux-iio@vger.kernel.org>; Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id a200so16246772pfa.10
+        for <linux-iio@vger.kernel.org>; Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UXm+TOWOBr2aV3MJtQ1i94fOaFTW9PgytBEAE9CI8Xg=;
-        b=vRItQlazGVVLD1IMqbPCE/lmjR+TjxXbb3QKrDO932MdzkyEi2deyMHQlXoxJoAYGM
-         wiFbQ+YX9nIu4glSWCf2QkaoSRiwI5kj8drodgoVzspgSi4o1aiPTUEqolZKcTP2+NXd
-         uxTVD3ModhFjbNQXYUxRaBCwiNZXL+gsFQYXtdQrQwhG2Wh1n3x8UOzYKjeH3/HqB1QF
-         KnJoF05++3m19ngOYa9c1YAYkDJI9lzLcLSI9ahR9cpZJ0s2b0XqgKFysB7xZOlNiymF
-         NeOZKv8oBN4sakC/A3hmkiZE/cPTXSXtd9r8og1mVkw9is6bY/0GOZrIFUFVHJsmKSd0
-         K5ZQ==
+        d=linaro.org; s=google;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=kGbrU6mHLZ6OXB9EsoVPLPTA7DB5gEcDbBfK2zWDWrw=;
+        b=YdSLdZK3dEfpnmrah3yIa3nc2lGMoekMUNSdj1JeeY6YqYJCuFFtdgkpkyObxv+UhP
+         eaQg45rtrKmT2zvSW2d53sdoBp5zAYcYg6ld/UBJU5de25uGQ/4HBN5g/vZ57UuSnJeN
+         zj8hRwjaXgirTOtv20dMKmDRlEaw0UawduKr8kDVGDhrsJCRbT44/pIw0fYbCc9F+7LR
+         WuZ8/GyTQXxrqdV2hMyBjIWiRjQCPZAGBpjevJkTCfcyHEodvKkpfUaHEPPmzPSrZLsr
+         4Ceo5sycPTAWVjwsNyKW6W5L6uSebDYsY74mSLx8JcMyHUGs3gcTvktyrFiRw8gWTurb
+         n+WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UXm+TOWOBr2aV3MJtQ1i94fOaFTW9PgytBEAE9CI8Xg=;
-        b=pe4HmzQun5ATD+omohNnMG3+2V0aR/K5r9fjWLSW1+U04LBqWLvePjO7Hhxvv/6FOF
-         uiZlth12kY/mYhgwcrpdLgPhwvhbyzY3P/7g29bPPZwSTmW8cXn0iTXvmpJfG47iowuN
-         STQE8U5GSU8XcWfv3XA+vGXQ5SgDuN9e7jN+ccRgunCkaNwQ+CUghMlLM2jjwHBLkMkt
-         INdTgqCxc+sn+j2e2ovId3dFy+plMgcqfra1Eyfi84ho/KztDHjZtcOcf5vQdiwoXAVW
-         oWTE7lAqb4EYErS7hkgoceDlKeyW3jK8QiJmhZTKnWaa2YxTYFx/bIJ8Dq5/UhGpST/B
-         jJOw==
-X-Gm-Message-State: AOAM531ayEzscXjLj3YJMn7lWbegswIBS6az7Mh+BKx6QxR+ghLBJtqf
-        Kl+YxpyTZAw6l4nbpsh4K8I=
-X-Google-Smtp-Source: ABdhPJyRDCZng1TxC0GnuZJK3LAgJuoYiA0N8RXGvN3MjAenWERbNXs+RAhwOTfMc7sFZkEZp4WVeg==
-X-Received: by 2002:a1c:f70b:: with SMTP id v11mr13802429wmh.21.1602568861653;
-        Mon, 12 Oct 2020 23:01:01 -0700 (PDT)
-Received: from ziggy.stardust ([213.195.119.110])
-        by smtp.gmail.com with ESMTPSA id f7sm3525515wrx.64.2020.10.12.23.01.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2020 23:01:01 -0700 (PDT)
-Subject: Re: [PATCH 2/2] arm64: dts: mediatek: mt8516: add auxadc node
-To:     Fabien Parent <fparent@baylibre.com>, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     robh+dt@kernel.org, pmeerw@pmeerw.net, lars@metafoo.de,
-        knaack.h@gmx.de, jic23@kernel.org
-References: <20201012205218.3010868-1-fparent@baylibre.com>
- <20201012205218.3010868-2-fparent@baylibre.com>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Message-ID: <81a12664-639e-20cc-8b49-6bcb53822a3f@gmail.com>
-Date:   Tue, 13 Oct 2020 08:01:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=kGbrU6mHLZ6OXB9EsoVPLPTA7DB5gEcDbBfK2zWDWrw=;
+        b=Yl1pqH4/Sr7VDLQrwvIueehDbQBZ1hlTJxFgWNzJPBtETSM0BjNdDLr7WXsHq2SHvh
+         My/9d0qLILPL09LetyRUYjdaAdfUzkCGC+xARzIATRPn5D9+1K7H1m5etE56Ao8sr9Jn
+         hRoCJxT3ftCn9QYHqgWaj8KbrD1NQPREOOfjU7iKVvzH/8k8fyQg6g3prK/9ozVrD/VQ
+         sUTsVyz6w8ib1e8/F/PiVkZv0I9gUQpvN/uCgqpqKkyoKpgTpuhZOWQTzxgdyQN7XtrV
+         fmTiQh9aoPkwoHqIm5hznpIZ3cgTtAw3BxnllztQrjsiJ/52/qu8IctN3kiInk0UCpiI
+         MoWg==
+X-Gm-Message-State: AOAM530aIkqNOz4hA+2Qj+2+n0UaHwvy3qGRoOuITOhDYjfdW9ctDGBv
+        FocK9Ac7L7dIcXdk6QvUCZc2
+X-Google-Smtp-Source: ABdhPJxISy31+7PvIjATMety61KYvRr1jfU45E0fZF0KdHojJsGTi5oqbjfIoS4azfNcAbKj6QaFCw==
+X-Received: by 2002:a63:3f8d:: with SMTP id m135mr9893179pga.234.1602577351127;
+        Tue, 13 Oct 2020 01:22:31 -0700 (PDT)
+Received: from linux ([103.59.133.81])
+        by smtp.gmail.com with ESMTPSA id u18sm22833866pgk.18.2020.10.13.01.22.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 13 Oct 2020 01:22:30 -0700 (PDT)
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+X-Google-Original-From: Manivannan Sadhasivam <manivannanece23@gmail.com>
+Date:   Tue, 13 Oct 2020 13:52:25 +0530
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 29/29] dt-bindings:iio:temperature:ti,tmp07 yaml
+ conversion
+Message-ID: <20201013082225.GD5065@linux>
+References: <20201011170749.243680-1-jic23@kernel.org>
+ <20201011170749.243680-30-jic23@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20201012205218.3010868-2-fparent@baylibre.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201011170749.243680-30-jic23@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 12/10/2020 22:52, Fabien Parent wrote:
-> Add node for the auxadc IP. The IP is compatible with the one found
-> in MT8173 SoC.
+On Sun, Oct 11, 2020 at 06:07:49PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> Simple conversion from txt to yaml.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Manivannan Sadhasivam <manivannanece23@gmail.com>
+
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+
+Thanks,
+Mani
+
 > ---
->   arch/arm64/boot/dts/mediatek/mt8516.dtsi | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>  .../bindings/iio/temperature/ti,tmp007.yaml   | 57 +++++++++++++++++++
+>  .../bindings/iio/temperature/tmp007.txt       | 33 -----------
+>  2 files changed, 57 insertions(+), 33 deletions(-)
 > 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> index 89af661e7f63..943c426e9aaf 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> @@ -470,5 +470,15 @@ usb0_port: usb-phy@11110800 {
->   				#phy-cells = <1>;
->   			};
->   		};
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml
+> new file mode 100644
+> index 000000000000..3c2b7189fa2e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp007.yaml
+> @@ -0,0 +1,57 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/temperature/ti,tmp007.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +		auxadc: adc@11003000 {
-> +			compatible = "mediatek,mt8516-auxadc",
-> +				     "mediatek,mt8173-auxadc";
-> +			reg = <0 0x11003000 0 0x1000>;
-> +			clocks = <&topckgen CLK_TOP_AUX_ADC>;
-> +			clock-names = "main";
-> +			#io-channel-cells = <1>;
-> +			status = "disabled";
-> +		};
->   	};
->   };
+> +title: IR thermopile sensor with integrated math engine
+> +
+> +maintainers:
+> +  - Manivannan Sadhasivam <manivannanece23@gmail.com>
+> +
+> +description: |
+> +  http://www.ti.com/lit/ds/symlink/tmp007.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,tmp007
+> +
+> +  reg:
+> +    description: |
+> +      The I2C address of the sensor (changeable via ADR pins)
+> +      ------------------------------
+> +      |ADR1 | ADR0 | Device Address|
+> +      ------------------------------
+> +         0      0        0x40
+> +         0      1        0x41
+> +         0     SDA       0x42
+> +         0     SCL       0x43
+> +         1      0        0x44
+> +         1      1        0x45
+> +         1     SDA       0x46
+> +         1     SCL       0x47
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        temp-sensor@40 {
+> +            compatible = "ti,tmp007";
+> +            reg = <0x40>;
+> +            interrupt-parent = <&gpio0>;
+> +            interrupts = <5 0x08>;
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/tmp007.txt b/Documentation/devicetree/bindings/iio/temperature/tmp007.txt
+> deleted file mode 100644
+> index da0af234a357..000000000000
+> --- a/Documentation/devicetree/bindings/iio/temperature/tmp007.txt
+> +++ /dev/null
+> @@ -1,33 +0,0 @@
+> -* TI TMP007 - IR thermopile sensor with integrated math engine
+> -
+> -Link to datasheet: http://www.ti.com/lit/ds/symlink/tmp007.pdf
+> -
+> -Required properties:
+> -
+> -  - compatible: should be "ti,tmp007"
+> -  - reg: the I2C address of the sensor (changeable via ADR pins)
+> -		------------------------------
+> -		|ADR1 | ADR0 | Device Address|
+> -		------------------------------
+> -		   0      0        0x40
+> -		   0	  1	   0x41
+> -		   0	 SDA       0x42
+> -		   0     SCL       0x43
+> -		   1      0        0x44
+> -		   1      1        0x45
+> -		   1	 SDA	   0x46
+> -		   1     SCL       0x47
+> -
+> -Optional properties:
+> -
+> -  - interrupts: interrupt mapping for GPIO IRQ (level active low)
+> -
+> -Example:
+> -
+> -tmp007@40 {
+> -        compatible = "ti,tmp007";
+> -        reg = <0x40>;
+> -	interrupt-parent = <&gpio0>;
+> -	interrupts = <5 0x08>;
+> -};
+> -
+> -- 
+> 2.28.0
 > 
-
-Any reason you don't enable the status in the pumpkin dts?
-
-Regards,
-Matthias

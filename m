@@ -2,181 +2,251 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D167F28C6A7
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 03:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB3D28C70C
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Oct 2020 04:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728041AbgJMBNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Oct 2020 21:13:15 -0400
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.2]:16434 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727950AbgJMBNP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Oct 2020 21:13:15 -0400
-Received: from [100.112.1.102] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-b.us-east-1.aws.symcld.net id 9E/D7-19530-82FF48F5; Tue, 13 Oct 2020 01:13:12 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRWlGSWpSXmKPExsWSLveKTVfjf0u
-  8wfLVyhaHF71gtPj67Ta7xZvj05ksztxeyGSxauE1Not5R96xWNz89I3VYu/i7ewOHB47Z91l
-  9/i1bQ2LR8uRt6weyw9OY/KY8OEtm8f7fVfZPD5vkgtgj2LNzEvKr0hgzZj1cwtrwS35iu57v
-  WwNjDsluxi5OIQE/jNKfDy2mLGLkRPIec4osWCqVBcjB4ewQLzEkidaIGERgTqJrsU3WUDqmQ
-  WuMkp8ufKODaJ5M4vEnanP2ECq2AS0JbZs+QVm8wrYSqx4foIJxGYRUJXYfridBcQWFQiX6Li
-  xgwmiRlDi5MwnYHFOkPoLx8B6mQUsJGbOP88IYYtL3HoynwnClpfY/nYOM4gtAWSfW3CQEcJO
-  kFj28g7zBEbBWUjGzkIyahaSUbOQjFrAyLKK0TSpKDM9oyQ3MTNH19DAQNfQ0EjXWNfURC+xS
-  jdJr7RYNzWxuETXUC+xvFivuDI3OSdFLy+1ZBMjMNZSCpjNdjD+fP1B7xCjJAeTkihv/p+WeC
-  G+pPyUyozE4oz4otKc1OJDjDIcHEoSvC5/gXKCRanpqRVpmTnAuIdJS3DwKInwOvwDSvMWFyT
-  mFmemQ6ROMSpKifNqgiQEQBIZpXlwbbBUc4lRVkqYl5GBgUGIpyC1KDezBFX+FaM4B6OSMK8n
-  yHaezLwSuOmvgBYzAS22XwK2uCQRISXVwLTBgqM+Y1pki9sJRfFJ75Yqak905lvxpFNP+rCqf
-  8PqW3vXvVS8nCnzQvecl8gyk+mRO6o6f3mXr158iePI5BMnu5/r+Zc7+PQusjo+Z8ZNo1aviM
-  UiyaF9Hjry3DUTd5zSOMRySiB622L7Dxs9Y1+YWvqXXZtveHMbX9vVlWa5ioZuN48eMErZvke
-  v8TCv4Ys9mVJxKkl5iSxpSpqCnJ+uVBmu6469PevB+TdLS3+abOcVlw0+4LDrELej8qFaOdP0
-  pn0K7HOPrlc5cnXi5yf+/nmCp+KWz9i/7nBJ6vWtz65FXK5yEr8SlO8y6byMbu5HVs3Nk84nn
-  AnOvbL7+I1tq9cFSM2tUy57dXeT0XElluKMREMt5qLiRABwNFBVsAMAAA==
-X-Env-Sender: markpearson@lenovo.com
-X-Msg-Ref: server-16.tower-386.messagelabs.com!1602551590!1614275!1
-X-Originating-IP: [103.30.234.6]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.60.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 16806 invoked from network); 13 Oct 2020 01:13:12 -0000
-Received: from unknown (HELO lenovo.com) (103.30.234.6)
-  by server-16.tower-386.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 13 Oct 2020 01:13:12 -0000
-Received: from reswpmail04.lenovo.com (unknown [10.62.32.23])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by Forcepoint Email with ESMTPS id 7F0379B7ADDE8C829FCA;
-        Tue, 13 Oct 2020 09:13:08 +0800 (CST)
-Received: from localhost.localdomain (10.46.56.85) by reswpmail04.lenovo.com
- (10.62.32.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Mon, 12 Oct
- 2020 18:13:05 -0700
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jeff LaBundy <jeff@labundy.com>
-CC:     Bastien Nocera <hadess@hadess.net>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        <linux-iio@vger.kernel.org>, Nitin Joshi1 <njoshi1@lenovo.com>,
-        <linux-input@vger.kernel.org>, <dmitry.torokhov@gmail.com>
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
- <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
- <b400b6956270a2433373dd6cbdae3332aa683f4f.camel@hadess.net>
- <cadabe4d-7cce-281e-75fe-fcc2099848da@redhat.com>
- <5273a1de9db682cd41e58553fe57707c492a53b7.camel@hadess.net>
- <272074b5-b28e-1b74-8574-3dc2d614269a@redhat.com>
- <20201008001424.GA3713@labundy.com>
- <9893a32c-02c8-f00c-7f00-6287d55043ab@redhat.com>
- <f4f00263-3beb-d941-eb3a-2be95684db66@metux.net>
-From:   Mark Pearson <markpearson@lenovo.com>
-Message-ID: <f296f7e3-4571-f18a-51c5-4006196d2fa3@lenovo.com>
-Date:   Mon, 12 Oct 2020 21:12:58 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S1728585AbgJMCPI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Oct 2020 22:15:08 -0400
+Received: from vern.gendns.com ([98.142.107.122]:42282 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728583AbgJMCPI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 12 Oct 2020 22:15:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=tcBt+ZIFfdDG4AQrVc2/3STIm09DLsIpLLHUc03KQmk=; b=uZ8bO3MitNYLQDhEGVXRN1alnp
+        cfxhK2rk+QF79YZoRRN+QcFmlxTXGp+H/gBHkzVlFMeRqhKln5gNLewKVfUxZ59tKHvh3J6Jzj0LY
+        tlTdYrMsy7KJ32EXIELCCruQORaOvw5gLucJyBxdguc546Z2w245jwUvgjwrgG3rYdYYbT1hxceJz
+        KGkhjLgQSRUEd55TYsZBpz8Y9dGkfEFoqBhXx7QO40AEwmU8d3pKonatBi0V0O07SeZ9Zzq/SGkbr
+        30/3vk41qZBtA5Jpwcm86hbsWpoQSPB0U44RcL1P20sFZftxctg0NuCzpSHoo6mc7wPrHXAmLDZzn
+        +eF9Cdjw==;
+Received: from [2600:1700:4830:165f::19e] (port=58328)
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1kS9qA-0007FQ-KP; Mon, 12 Oct 2020 22:15:02 -0400
+Subject: Re: [PATCH v5 1/5] counter: Internalize sysfs interface code
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+Cc:     kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+References: <cover.1601170670.git.vilhelm.gray@gmail.com>
+ <e38f6dc3a08bf2510034334262776a6ed1df8b89.1601170670.git.vilhelm.gray@gmail.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <157d1edf-feec-33b5-7ad5-94f99316ca6e@lechnology.com>
+Date:   Mon, 12 Oct 2020 21:15:00 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <f4f00263-3beb-d941-eb3a-2be95684db66@metux.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <e38f6dc3a08bf2510034334262776a6ed1df8b89.1601170670.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.46.56.85]
-X-ClientProxiedBy: reswpmail04.lenovo.com (10.62.32.23) To
- reswpmail04.lenovo.com (10.62.32.23)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On 9/26/20 9:18 PM, William Breathitt Gray wrote:
+> This is a reimplementation of the Generic Counter driver interface.
 
-On 2020-10-12 8:36 a.m., Enrico Weigelt, metux IT consult wrote:
-> On 08.10.20 09:10, Hans de Goede wrote:
-> 
-> Hi folks,
-> 
->> Yes and no. At least the lap-mode detection (laptop on someones
->> lap rather then sitting on a table) is currently used by the
->> embedded-controller for thermal management decisions, basically
->> when on someones lap the configurable TPD of the CPU is set lower
->> to keep the laptop's bottom skin temperate < 45 degrees Celsius
->> (I think it is 45 but the exact number does not matter).
-> 
-> Am I the only one who thinks the whole concept is a pretty weird
-> idea ?
-> 
-> IIRC the machine becomes slower when it *thinks* its on my lap,
-> but runs faster - and becomes hotter - when it's laying around
-> somewhere, eg. ontop of some papers ?
-> 
-> Where can I get the drugs that these guys took ? :o
-This made me smile :) But I think it's safe to so no dubious substances 
-were involved and it's really not that weird. We try very hard to not 
-burn our customers, many of them appreciate that. We haven't yet 
-implemented a paper sensor so that feature isn't available yet.
+I'll follow up if I find any problems while testing but here are some
+comments I had from looking over the patch.
 
-A lot of Linux users, quite reasonably, want to be able to access the 
-maximum power available from their unit and so the logical conclusion is 
-you can have max power (and therefore temperatures) when it's not on 
-your lap, but in the interest of making the device safe and comfortable 
-when it's on your lap the power rating drops.
-I think this implementation is pretty common across all vendors these 
-days - we're just exposing the lapmode sensor to user space to make it 
-more obvious to users *why* the power dropped. We will also use both the 
-lapmode and palm sensor for WWAN.
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+> new file mode 100644
+> index 000000000000..987c6e8277eb
+> --- /dev/null
+> +++ b/drivers/counter/counter-core.c
 
-> 
->> With upcoming WLAN cards with configurable transmit power,
->> this will also be used as what you call a SAR device.
-Minor correction - we're using this for WWAN
 
-> 
-> Same fun. Once a person comes near, the signal gets weaker and
-> potentially connection breaks. Great fun for debugging.
+> +/**
+> + * counter_register - register Counter to the system
+> + * @counter:	pointer to Counter to register
+> + *
+> + * This function registers a Counter to the system. A sysfs "counter" directory
+> + * will be created and populated with sysfs attributes correlating with the
+> + * Counter Signals, Synapses, and Counts respectively.
+> + */
+> +int counter_register(struct counter_device *const counter)
+> +{
+> +	struct device *const dev = &counter->dev;
+> +	int err;
+> +
+> +	/* Acquire unique ID */
+> +	counter->id = ida_simple_get(&counter_ida, 0, 0, GFP_KERNEL);
+> +	if (counter->id < 0)
+> +		return counter->id;
+> +
+> +	/* Configure device structure for Counter */
+> +	dev->type = &counter_device_type;
+> +	dev->bus = &counter_bus_type;
+> +	if (counter->parent) {
+> +		dev->parent = counter->parent;
+> +		dev->of_node = counter->parent->of_node;
+> +	}
+> +	dev_set_name(dev, "counter%d", counter->id);
+> +	device_initialize(dev);> +	dev_set_drvdata(dev, counter);
+> +
+> +	/* Add Counter sysfs attributes */
+> +	err = counter_sysfs_add(counter);
+> +	if (err)
+> +		goto err_free_id;
+> +
+> +	/* Add device to system */
+> +	err = device_add(dev);
+> +	if (err) {
+> +		put_device(dev);
+> +		goto err_free_id;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_free_id:
+> +	/* get_device/put_device combo used to free managed resources */
+> +	get_device(dev);
+> +	put_device(dev);
 
-My understanding is it's the way it's done on Windows and it is a FCC 
-legal requirement so we can't get away from it. We could do what I think 
-most vendors do and only provide the low power mode, but we're trying to 
-give full and equivalent support to Linux users, so they can have full 
-power when possible, and that means these proximity sensors being 
-available to user space.
+I've never seen this in a driver before, so it makes me think this is
+not the "right way" to do this. After device_initialize() is called, we
+already should have a reference to dev, so only device_put() is needed.
 
-I hear you on the debugging but Windows seems to have managed OK.
 
-> 
-> Back to the technical side: IMHO we should first work out what the
-> actual purpose of these sensors could be - are they useful for
-> anything else than just these specific cases ? If not, I'm not
-> sure whether it makes sense to put them into IIO at all, but using
-> a specific board driver instead.
+> +	ida_simple_remove(&counter_ida, counter->id);
 
-Hopefully the above helps explain the purpose of them a bit.
+In the case of error after device_initialize() is called, won't this
+result in ida_simple_remove() being called twice, once here and once in
+the release callback?
 
- From my point of view, I'm pretty new to the kernel contribution side 
-of things so want to do whatever is recommended from the kernel 
-community but gets these sensor states to user space so we can give 
-Linux users a better experience on Lenovo platforms.
+> +	return err;
+> +}
+> +EXPORT_SYMBOL_GPL(counter_register);
+> +
+> +/**
+> + * counter_unregister - unregister Counter from the system
+> + * @counter:	pointer to Counter to unregister
+> + *
+> + * The Counter is unregistered from the system; all allocated memory is freed.
+> + */
+> +void counter_unregister(struct counter_device *const counter)
+> +{
+> +	if (!counter)
+> +		return;
+> +
+> +	device_unregister(&counter->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(counter_unregister);
+> +
+> +static void devm_counter_unreg(struct device *dev, void *res)
 
-I think we've settled on using the input system instead of iio so maybe 
-this thread is moot - but I wanted to respond in case details were 
-useful or interesting.
+To be consistent, it would be nice to spell out unregister.
 
-> 
-> Okay, maybe we find these sensors somewhere else (maybe some embedded
-> stuff), for completely different purpose - in that case having one
-> standard driver (for the sensor itself) could make sense.
+> +{
+> +	counter_unregister(*(struct counter_device **)res);
+> +}
+> +
 
-It's hard to comment here as I only know about Lenovo implementations, 
-but I wouldn't be hugely surprised if other vendors wanted to do 
-similar. For now, to my knowledge, it is just a Lenovo implementation 
-and the user-space consumer is a Lenovo application.
+> diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+> new file mode 100644
+> index 000000000000..e66ed99dd5ea
+> --- /dev/null
+> +++ b/drivers/counter/counter-sysfs.c
 
-> 
-> But that leads me to bigger topic: we've got several cases of some
-> sensors/chips used in different subsystems, eg. simple one-shot
-> ADCs, eeprom's, etc. ... maybe we should move them to separate
-> subsystems, which then can be wired to other (more specific) ones
-> in a very generic way ? ... just some quick+dirty thoughs,
-> 
-> 
-> --mtx
-> 
+> +/**
+> + * counter_sysfs_add - Adds Counter sysfs attributes to the device structure
+> + * @counter:	Pointer to the Counter device structure
+> + *
+> + * Counter sysfs attributes are created and added to the respective device
+> + * structure for later registration to the system. Resource-managed memory
+> + * allocation is performed by this function, and this memory should be freed
+> + * when no longer needed (automatically by a device_unregister call, or
+> + * manually by a devres_release_all call).
+> + */
+> +int counter_sysfs_add(struct counter_device *const counter)
+> +{
+> +	struct device *const dev = &counter->dev;
+> +	const size_t num_groups = counter->num_signals + counter->num_counts +
+> +				  1;
 
-Mark
+It is OK to go past 80 columns, especially for just for a few characters.
+
+> +	struct counter_attribute_group *groups;
+> +	size_t i, j;
+> +	int err;
+> +	struct attribute_group *group;
+> +	struct counter_attribute *p;
+> +
+> +	/* Allocate space for attribute groups (signals, counts, and ext) */
+> +	groups = devm_kcalloc(dev, num_groups, sizeof(*groups), GFP_KERNEL);
+> +	if (!groups)
+> +		return -ENOMEM;
+> +
+> +	/* Initialize attribute lists */
+> +	for (i = 0; i < num_groups; i++)
+> +		INIT_LIST_HEAD(&groups[i].attr_list);
+> +
+> +	/* Register Counter device attributes */
+> +	err = counter_device_register(counter, groups);
+
+This function name is a bit misleading. At first I though we were registering
+a new counter device (struct device). Maybe counter_sysfs_create_attrs()
+would be a better name? (I wouldn't mind having all functions in this
+file having a "counter_sysfs_" prefix for that matter.)
+
+
+> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+> index 1ff07faef27f..938085dead80 100644
+> --- a/drivers/counter/ti-eqep.c
+> +++ b/drivers/counter/ti-eqep.c
+
+
+> @@ -406,7 +414,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
+>   
+>   	priv->counter.name = dev_name(dev);
+>   	priv->counter.parent = dev;
+> -	priv->counter.ops = &ti_eqep_counter_ops;
+> +	priv->counter.parent = &ti_eqep_counter_ops;
+>   	priv->counter.counts = ti_eqep_counts;
+>   	priv->counter.num_counts = ARRAY_SIZE(ti_eqep_counts);
+>   	priv->counter.signals = ti_eqep_signals;
+
+This looks like an unintentional change and causes a compile error.
+
+> diff --git a/include/linux/counter.h b/include/linux/counter.h
+> index 9dbd5df4cd34..132bfecca5c3 100644
+> --- a/include/linux/counter.h
+> +++ b/include/linux/counter.h
+> @@ -6,417 +6,195 @@
+>   #ifndef _COUNTER_H_
+>   #define _COUNTER_H_
+>   
+> -#include <linux/counter_enum.h>
+>   #include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/list.h>
+
+struct list_head is defined in linux/types.h. Is there something else
+we are using from linux/list.h in this file?
+
+>   #include <linux/types.h>
+>   
+
+
+It would be helpful to have kernel doc comments on everything in this file.
+

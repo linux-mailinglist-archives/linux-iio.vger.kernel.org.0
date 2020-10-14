@@ -2,207 +2,240 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C44128DC29
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Oct 2020 10:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3960328DF61
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Oct 2020 12:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727151AbgJNI57 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Oct 2020 04:57:59 -0400
-Received: from hosting.pavoucek.net ([46.28.107.168]:43665 "EHLO
-        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725970AbgJNI57 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Oct 2020 04:57:59 -0400
-Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
-        (Authenticated sender: tomas@novotny.cz)
-        by hosting.pavoucek.net (Postfix) with ESMTPSA id E1A2B103CB9;
-        Wed, 14 Oct 2020 10:57:56 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net E1A2B103CB9
-Date:   Wed, 14 Oct 2020 10:57:56 +0200
-From:   Tomas Novotny <tomas@novotny.cz>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>
-Subject: Re: [PATCH 20/29] dt-bindings:iio:dac:microchip,mcp4725 yaml
- conversion
-Message-ID: <20201014105756.04cc4ae1@tomas.local.tbs-biometrics.cz>
-In-Reply-To: <20201012143923.000023d8@Huawei.com>
-References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-21-jic23@kernel.org>
-        <20201012160230.7a0c5eb8@tomas.local.tbs-biometrics.cz>
-        <20201012143923.000023d8@Huawei.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S1729169AbgJNKvM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Oct 2020 06:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbgJNKvL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Oct 2020 06:51:11 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C41C061755
+        for <linux-iio@vger.kernel.org>; Wed, 14 Oct 2020 03:51:10 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id h7so3256445wre.4
+        for <linux-iio@vger.kernel.org>; Wed, 14 Oct 2020 03:51:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XWslSzgwelv3+t+krm1VmPXi1dB3IfoNZQoNEIRR3UI=;
+        b=l422eKGq6wTqJuKldBvLXfh3ZD0AkCcFtDAx6mODJzIe6MEGj38yUcTkiXKkRbFn4L
+         /8hzwCo+dNZQMNnT7LtnjvVPtchNaxNMhpERGIeCeBJDJL0i7oeG+KydaA7GhnYLSsGl
+         ry/gxMcI6h62SffUTbmIj4TOUOfoQpZnVx5U44McEGWHubKhKK2YBvx+bv0I7J0KwQUr
+         zKwFwPqwzFAdYpHwePK9DdKHzlu7sUu3Vv1gFCODIxsBcdqgiFQTcUM6XNsBWIp8i30y
+         OuWxug/q56opCAm49bhEY/u5tQ41Gj7UDMNwLA4tFR36FsWBdtWhaZvUpbGrQ5D4c2No
+         A6Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XWslSzgwelv3+t+krm1VmPXi1dB3IfoNZQoNEIRR3UI=;
+        b=HmRBzc5icrV7Q4pFtmcvMjWW/6+wZ4pM/cN2RFdugFCIUVhQv4FOyEK7Vt3pfVBb8A
+         uxjRf30lPK1c7i+fqmRuJjWOBGubkmAyBsl3zB1BVUQrAPD7TdWHos0y3bVyvQhz5jrY
+         xYTmhdmzodLkkjR0omOnoSOODNWs0CxC2gGJnG0bvV5+Cp7C9vp0Jr0gGbo+pcLSvzNL
+         x6EwTxLfQ0iI7O3ccDKiL1sosEN3NEkA3BsF302t1T+8W6DAlx8uFQZdSz82HrMqzx/m
+         rleI1sCi00TPCdEbTkBO/OUn6rC6HTVsA/2cxqwrgx1Qd7DimMJm4haJcqZZ3hdf3+gt
+         A4Sw==
+X-Gm-Message-State: AOAM533wYvXX63tNqec4u9GS97zxaSCZUL/OJnwtxJXYl+nqyTmthY1H
+        rB840WVUfqnPrPEJac05OWlYTA==
+X-Google-Smtp-Source: ABdhPJxwKx/HGtjgU9lsjFsHqEFOnDLNTLTvYwMdj29v6uzzin07cTpEr0O0/9kTmHBusRd7UGwdOw==
+X-Received: by 2002:adf:ce01:: with SMTP id p1mr4519754wrn.33.1602672668770;
+        Wed, 14 Oct 2020 03:51:08 -0700 (PDT)
+Received: from arch-thunder.local (a109-49-46-234.cpe.netcabo.pt. [109.49.46.234])
+        by smtp.gmail.com with ESMTPSA id c1sm4416464wru.49.2020.10.14.03.51.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2020 03:51:08 -0700 (PDT)
+From:   Rui Miguel Silva <rui.silva@linaro.org>
+X-Google-Original-From: Rui Miguel Silva <rmfrfs@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Fabio Estevam <fabio.estevam@nxp.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Rui Miguel Silva <rmfrfs@gmail.com>
+Subject: [PATCH v2] dt-bindings: fxas21002c: convert bindings to yaml
+Date:   Wed, 14 Oct 2020 11:49:26 +0100
+Message-Id: <20201014104926.688666-1-rmfrfs@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Convert fxas21002c gyroscope sensor bindings documentation to
+yaml schema, remove the textual bindings document and update MAINTAINERS entry.
 
-On Mon, 12 Oct 2020 15:39:23 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+Signed-off-by: Rui Miguel Silva <rmfrfs@gmail.com>
+---
+v1 -> v2:
+   Jonathan Cameron:
+       https://lore.kernel.org/linux-iio/20201013153431.000052c9@huawei.com/
+       - remove Unit from tittle
+       - reword interrupts description
+       - drop interrupt-name description
+       - add spi example and bindings
+       - remove vddxx from required list
 
-> On Mon, 12 Oct 2020 16:02:30 +0200
-> Tomas Novotny <tomas@novotny.cz> wrote:
-> 
-> > Hi Jonathan,
-> > 
-> > On Sun, 11 Oct 2020 18:07:40 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >   
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > 
-> > > I'm not sure vdd-supply absolutely has to be provided if vref-supply
-> > > is, but as the previous binding docs stated it was required it seems
-> > > reasonable to leave it as such.    
-> > 
-> > Good catch. Vdd is useless on MCP4726 if Vref is specified. The driver
-> > requires Vdd...  
-> 
-> The driver will get the regulator but as it's not via an optional
-> call it the regulator core will provide a stub regulator.
-> If the ref regulator is present, all that will happen with vdd is
-> a regulator_enable() call which is fine with a stub regulator (it's
-> a noop).   So we should be good to update the binding to specify
-> the requirement.   Perhaps it's one to do as a follow up patch?
-> Given any existing DT must be providing that regulator, there is
-> no rush for us to fix it :)
+ .../bindings/iio/gyroscope/nxp,fxas21002c.txt | 31 ------
+ .../iio/gyroscope/nxp,fxas21002c.yaml         | 95 +++++++++++++++++++
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 96 insertions(+), 32 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
 
-ok, I see, I will handle with a follow up patch when this will be merged.
-Thanks,
+diff --git a/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt b/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
+deleted file mode 100644
+index 465e104bbf14..000000000000
+--- a/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
++++ /dev/null
+@@ -1,31 +0,0 @@
+-* NXP FXAS21002C Gyroscope device tree bindings
+-
+-http://www.nxp.com/products/sensors/gyroscopes/3-axis-digital-gyroscope:FXAS21002C
+-
+-Required properties:
+-  - compatible : should be "nxp,fxas21002c"
+-  - reg : the I2C address of the sensor or SPI chip select number for the
+-          device.
+-  - vdd-supply: phandle to the regulator that provides power to the sensor.
+-  - vddio-supply: phandle to the regulator that provides power to the bus.
+-
+-Optional properties:
+-  - reset-gpios : gpio used to reset the device, see gpio/gpio.txt
+-  - interrupts : device support 2 interrupts, INT1 and INT2,
+-                 the interrupts can be triggered on rising or falling edges.
+-                 See interrupt-controller/interrupts.txt
+-  - interrupt-names: should contain "INT1" or "INT2", the gyroscope interrupt
+-                     line in use.
+-  - drive-open-drain: the interrupt/data ready line will be configured
+-                      as open drain, which is useful if several sensors share
+-                      the same interrupt line. This is a boolean property.
+-                      (This binding is taken from pinctrl/pinctrl-bindings.txt)
+-
+-Example:
+-
+-gyroscope@20 {
+-	compatible = "nxp,fxas21002c";
+-	reg = <0x20>;
+-	vdd-supply = <&reg_peri_3p15v>;
+-	vddio-supply = <&reg_peri_3p15v>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml b/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
+new file mode 100644
+index 000000000000..2560458dc50b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
+@@ -0,0 +1,95 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/gyroscope/nxp,fxas21002c.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP FXAS21002C Gyroscope
++
++maintainers:
++  - Rui Miguel Silva <rmfrfs@gmail.com>
++
++description: |
++  3 axis digital gyroscope device with an I2C and SPI interface.
++  http://www.nxp.com/products/sensors/gyroscopes/3-axis-digital-gyroscope:FXAS21002C
++
++properties:
++  compatible:
++    const: nxp,fxas21002c
++
++  reg:
++    maxItems: 1
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor
++
++  vddio-supply:
++    description: Regulator that provides power to the bus
++
++  reset-gpios:
++    maxItems: 1
++    description: GPIO connected to reset
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++    description: Either interrupt may be triggered on rising or falling edges.
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 2
++    items:
++      enum:
++        - INT1
++        - INT2
++
++  drive-open-drain:
++    type: boolean
++    description: the interrupt/data ready line will be configured as open drain,
++                 which is useful if several sensors share the same interrupt
++                 line.
++
++  spi-max-frequency:
++    maximum: 2000000
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c0 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        gyroscope@20 {
++          compatible = "nxp,fxas21002c";
++          reg = <0x20>;
++
++          vdd-supply = <&reg_peri_3p15v>;
++          vddio-supply = <&reg_peri_3p15v>;
++
++          interrupt-parent = <&gpio1>;
++          interrupts = <7 IRQ_TYPE_EDGE_RISING>;
++          interrupt-names = "INT1";
++        };
++    };
++    spi0 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        gyroscope@0 {
++          compatible = "nxp,fxas2102c";
++          reg = <0x0>;
++
++          spi-max-frequency = <2000000>;
++
++          interrupt-parent = <&gpio2>;
++          interrupts = <7 IRQ_TYPE_EDGE_RISING>;
++          interrupt-names = "INT2";
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6594f0966716..2e85e114c9c3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12469,7 +12469,7 @@ NXP FXAS21002C DRIVER
+ M:	Rui Miguel Silva <rmfrfs@gmail.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
++F:	Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
+ F:	drivers/iio/gyro/fxas21002c.h
+ F:	drivers/iio/gyro/fxas21002c_core.c
+ F:	drivers/iio/gyro/fxas21002c_i2c.c
+-- 
+2.28.0
 
-Tomas
-
-> > How to proceed there?
-> > 
-> > Thanks,
-> > 
-> > Tomas
-> >   
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc:  Tomas Novotny <tomas@novotny.cz>
-> > > ---
-> > >  .../devicetree/bindings/iio/dac/mcp4725.txt   | 35 ---------
-> > >  .../bindings/iio/dac/microchip,mcp4725.yaml   | 71 +++++++++++++++++++
-> > >  2 files changed, 71 insertions(+), 35 deletions(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt b/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
-> > > deleted file mode 100644
-> > > index 1bc6c093fbfe..000000000000
-> > > --- a/Documentation/devicetree/bindings/iio/dac/mcp4725.txt
-> > > +++ /dev/null
-> > > @@ -1,35 +0,0 @@
-> > > -Microchip mcp4725 and mcp4726 DAC device driver
-> > > -
-> > > -Required properties:
-> > > -	- compatible: Must be "microchip,mcp4725" or "microchip,mcp4726"
-> > > -	- reg: Should contain the DAC I2C address
-> > > -	- vdd-supply: Phandle to the Vdd power supply. This supply is used as a
-> > > -	  voltage reference on mcp4725. It is used as a voltage reference on
-> > > -	  mcp4726 if there is no vref-supply specified.
-> > > -
-> > > -Optional properties (valid only for mcp4726):
-> > > -	- vref-supply: Optional phandle to the Vref power supply. Vref pin is
-> > > -	  used as a voltage reference when this supply is specified.
-> > > -	- microchip,vref-buffered: Boolean to enable buffering of the external
-> > > -	  Vref pin. This boolean is not valid without the vref-supply. Quoting
-> > > -	  the datasheet: This is offered in cases where the reference voltage
-> > > -	  does not have the current capability not to drop its voltage when
-> > > -	  connected to the internal resistor ladder circuit.
-> > > -
-> > > -Examples:
-> > > -
-> > > -	/* simple mcp4725 */
-> > > -	mcp4725@60 {
-> > > -		compatible = "microchip,mcp4725";
-> > > -		reg = <0x60>;
-> > > -		vdd-supply = <&vdac_vdd>;
-> > > -	};
-> > > -
-> > > -	/* mcp4726 with the buffered external reference voltage */
-> > > -	mcp4726@60 {
-> > > -		compatible = "microchip,mcp4726";
-> > > -		reg = <0x60>;
-> > > -		vdd-supply = <&vdac_vdd>;
-> > > -		vref-supply = <&vdac_vref>;
-> > > -		microchip,vref-buffered;
-> > > -	};
-> > > diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
-> > > new file mode 100644
-> > > index 000000000000..271998610ceb
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4725.yaml
-> > > @@ -0,0 +1,71 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4725.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Microchip mcp4725 and mcp4726 DAC
-> > > +
-> > > +maintainers:
-> > > +  - Tomas Novotny <tomas@novotny.cz>
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - microchip,mcp4725
-> > > +      - microchip,mcp4726
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  vdd-supply:
-> > > +    description: |
-> > > +      Provides both power and acts as the reference supply on the mcp4725.
-> > > +      For the mcp4726 it will be used as the reference voltage if vref-supply
-> > > +      is not provided.
-> > > +
-> > > +  vref-supply:
-> > > +    description:
-> > > +      Vref pin is used as a voltage reference when this supply is specified.
-> > > +
-> > > +  microchip,vref-buffered:
-> > > +    type: boolean
-> > > +    description: |
-> > > +      Enable buffering of the external Vref pin. This boolean is not valid
-> > > +      without the vref-supply. Quoting the datasheet: This is offered in
-> > > +      cases where the reference voltage does not have the current
-> > > +      capability not to drop its voltage when connected to the internal
-> > > +      resistor ladder circuit.
-> > > +
-> > > +allOf:
-> > > +  - if:
-> > > +      not:
-> > > +        properties:
-> > > +          compatible:
-> > > +            contains:
-> > > +              const: microchip,mcp4726
-> > > +    then:
-> > > +      properties:
-> > > +        vref-supply: false
-> > > +        microchip,vref-buffered: false
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +  - vdd-supply
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    i2c {
-> > > +        #address-cells = <1>;
-> > > +        #size-cells = <0>;
-> > > +
-> > > +        mcp4725@60 {
-> > > +            compatible = "microchip,mcp4725";
-> > > +            reg = <0x60>;
-> > > +            vdd-supply = <&vdac_vdd>;
-> > > +        };
-> > > +    };
-> > > +...    
-> 
-> 

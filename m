@@ -2,64 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 806D1290527
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Oct 2020 14:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AFFC2907F7
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Oct 2020 17:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407602AbgJPMh1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Oct 2020 08:37:27 -0400
-Received: from cpanel.giganet.cl ([190.96.78.139]:39766 "EHLO
-        cpanel.giganet.cl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407562AbgJPMhY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Oct 2020 08:37:24 -0400
-X-Greylist: delayed 20782 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Oct 2020 08:37:10 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dplgrout.cl
-        ; s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:Reply-To:
-        Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=TrgUs68YRs3neP+PfrvGhLoeMXh3YzKv5z9oCWPJ0m4=; b=m/ABHCVvyLYD2QkkwOjuWUgGFG
-        i9BJXsIic9wHOFEzjhXFPbcsR2XTWptcrmKLSqDrJOV7hGJM6za5nSEFhd4CC/+eaHHsgS48/E2jM
-        qvMpEeazlOlIrwSs4xM+Zdf/REorOK5GVU6ZAJUjCzQuCMv9dTVBPKuexZxj1Qoi2hPLiQ576Ik0L
-        XzwzerIXphINfmlVQ0r0UMIuChB1Vcn201QVmD2skB/Nh9D/yp0E95Av9ZMQq7ln6H0uEUnu/2/5Y
-        /CHuMEs39xrrgaYDtG7jTh3PfukIIcCJEs3b52/mZokA1w+tDL1dp0MaV2Z+qYj+Bzs13o0ru0vv/
-        Mq733mMw==;
-Received: from [::1] (port=55048 helo=cpanel.giganet.cl)
-        by cpanel.giganet.cl with esmtpa (Exim 4.93)
-        (envelope-from <info@controlypotencia.com>)
-        id 1kTJ7f-0009vt-N3; Fri, 16 Oct 2020 03:21:51 -0300
+        id S2407458AbgJPPJA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Oct 2020 11:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407453AbgJPPI7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Oct 2020 11:08:59 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4C67C061755;
+        Fri, 16 Oct 2020 08:08:59 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id h6so1629083pgk.4;
+        Fri, 16 Oct 2020 08:08:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a+hPhVaR5GY+I1MleoS6eNBmSlE2W0O1gZm+rdUy6VU=;
+        b=c+4sNBaGoiaDiRNFEdp0bwVWGYXXUMH965l+YcIpbMy8wy+slJJuqh516o/Uvq/vpS
+         zTxHVTvOpefYrwUk2jR1ObuypvVckXAM/zAJA3SmDBFWFBd8Wp7xOMvTRcglC4tPGSEm
+         ZYI2ZRKHcE4l17rSmwzZSxx9Ops4tqJB/Z+62R1BnslNTuCkoQyG2GumWstmFnJgY1/w
+         SQkYI76RiMmm0rCq//R8nerKrurXDTfke4SobxpzJ8kdm4UhSUKpwo6ghkU3+bWMnxYh
+         i/RGhDwRbbOL8YyjUZDEvLKZJtkjg1TBZGjRSJjMXrjGrL0FZBJ48DeHKtdxDGTI4vTT
+         uYXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a+hPhVaR5GY+I1MleoS6eNBmSlE2W0O1gZm+rdUy6VU=;
+        b=AqoJ8pVNhBJrkWmhSpAKj8EXoMq9IyEVErQ4HnE6/yzcHdPrEC+HelsnQZVw20bwdT
+         2tx/pgpFfmIdWEwK+PNbhX15rY65DOrx1MBa8n9fJ04Ag718HQ65WJgZWVtkQiDGhBKb
+         Xbe0tmBmo+JE+tjMp39O3uQ4zwDVjmwjjizhuqNc9vaRVk8w84kt3KK80+7LhPw78Jkf
+         2ZKue4qRMqHYIXwH9dVHxzYGFlxKctmTE/w2+OUaV2nAwiXqYEXGnxZ2d8p7yZvx+Ib7
+         +dc71JVk5+pI4tw+8ChSm1Z+eBZygmrVfkAUsOwKmr9JJdaUn+kwWniOHEe3xHvKC1l/
+         5kMQ==
+X-Gm-Message-State: AOAM531sgPNklNIZnX7YX7FFxJyHYM9Q/zSnXwJrmsn31uGJPyywtDe8
+        sYPkRLs99Bc31GJMotDv0Lj4XRaAU0oyNWQ81Q4=
+X-Google-Smtp-Source: ABdhPJxH69gtM7S4sKUktYCoPE8j5Os4acTrvawLtfWPvOYEo0j/tKYuikKH0LqtRFJP/tnn1Jn7/hC17nXTyFrjiW8=
+X-Received: by 2002:a05:6a00:22c2:b029:156:543:7c1d with SMTP id
+ f2-20020a056a0022c2b029015605437c1dmr4012698pfj.40.1602860939282; Fri, 16 Oct
+ 2020 08:08:59 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 16 Oct 2020 03:21:50 -0300
-From:   Ying Chongan <info@controlypotencia.com>
-To:     undisclosed-recipients:;
-Subject: Investment opportunity
-Reply-To: yingchongan@zohomail.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <e70e5a6e462f92c7f06eea146a612430@controlypotencia.com>
-X-Sender: info@controlypotencia.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.giganet.cl
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - controlypotencia.com
-X-Get-Message-Sender-Via: cpanel.giganet.cl: authenticated_id: mariapaz.lopez@dplgrout.cl
-X-Authenticated-Sender: cpanel.giganet.cl: mariapaz.lopez@dplgrout.cl
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20201011160748.4a47b889@archlinux> <1602440546-2376-1-git-send-email-LinoSanfilippo@gmx.de>
+In-Reply-To: <1602440546-2376-1-git-send-email-LinoSanfilippo@gmx.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 16 Oct 2020 18:09:48 +0300
+Message-ID: <CAHp75VfQ=fFn_r43VPV0uPCkozS2K=VQsuSEyj0mF+7QVsFQuA@mail.gmail.com>
+Subject: Re: [PATCH v2] iio:core: In map_array_register() cleanup in case of error
+To:     Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Greetings,
+On Sun, Oct 11, 2020 at 9:24 PM Lino Sanfilippo <LinoSanfilippo@gmx.de> wrote:
+>
+> In function map_array_register() properly rewind in case of error.
+> Furthermore remove the now superfluous initialization of "ret" with 0.
 
-This email is for an opportunity to invest in any lucrative business in 
-your country.
+>  int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
+>  {
+> -       int i = 0, ret = 0;
+> +       int i = 0, ret;
+>         struct iio_map_internal *mapi;
+>
+>         if (maps == NULL)
+> @@ -44,7 +44,18 @@ int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
+>                 list_add_tail(&mapi->l, &iio_map_list);
+>                 i++;
+>         }
+> +       mutex_unlock(&iio_map_list_lock);
+> +
+> +       return 0;
+> +
+>  error_ret:
 
-We offer a quick loan at low interest rate, if you are interested, 
-please reply to yingchongan@gmail.com for more details.
+Wait a bit.
+First of all we linked all successfully added items to the list.
+From this we have two ways to go:
+ - leave with as many maps as we registered
+ - clean up and bail out
 
-Sincerely: Ying Chongan
+I dunno which one would play better in IIO, but you seem to go with
+the latter one.
+
+> +       /* undo */
+> +       while (i--) {
+> +               mapi = list_last_entry(&iio_map_list, struct iio_map_internal,
+> +                                      l);
+> +               list_del(&mapi->l);
+> +               kfree(mapi);
+> +       }
+
+We have iio_map_array_unregister(). Why not use it?
+
+>         mutex_unlock(&iio_map_list_lock);
+
+I would rather drop a label with replacement goto -> break inside the
+loop and call the following
+
+
+        mutex_unlock(&iio_map_list_lock);
+if (ret)
+  iio_map_array_unregister();
+return ret;
+
+Sounds like only a few LOCs are needed.
+
+-- 
+With Best Regards,
+Andy Shevchenko

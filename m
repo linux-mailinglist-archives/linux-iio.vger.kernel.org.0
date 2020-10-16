@@ -2,113 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5571F290BC7
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Oct 2020 20:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CBDC290BFB
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Oct 2020 21:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403977AbgJPSwJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Oct 2020 14:52:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38626 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403976AbgJPSwJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Oct 2020 14:52:09 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7BEC061755
-        for <linux-iio@vger.kernel.org>; Fri, 16 Oct 2020 11:52:09 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id h6so1976425pgk.4
-        for <linux-iio@vger.kernel.org>; Fri, 16 Oct 2020 11:52:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=bZS0PkIumMewJqO0zzmmpVDk7qnPinNXzuHyH6TMs80=;
-        b=JHuDxzjbKaRY0U52JMzbJvyxhCDlFz5UIpmzyrSse45hHa4tKEisXs3IpiQXj4OQ2i
-         RtHNq+nSKkn+rsVGB0qisd7gn9g1VW6djG0ygkCCGSAgwHrqipxphy8Cv8a5DvKxSuj3
-         YGr3bWm4pNZI67YehANTagkyiOhISZP4EKVA/c0FGiuGA/eAYLY/bX/BkiX4AiXqzIWs
-         JQLX/FCsGEhez209yGORXFG6aHpKYONCiYhRWmOE5OLMk/q3tRTTEA0gkgawsYsQrnL4
-         EMpoMMcrG/fcCBARW0Ahw28ljfwp9ptXvEOViQSVVGGVI6UWzp6ROlWHuMeuN45QX9zA
-         qyuA==
+        id S2403931AbgJPTAL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Oct 2020 15:00:11 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:32869 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403821AbgJPTAK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Oct 2020 15:00:10 -0400
+Received: by mail-ot1-f66.google.com with SMTP id t15so3419878otk.0;
+        Fri, 16 Oct 2020 12:00:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=bZS0PkIumMewJqO0zzmmpVDk7qnPinNXzuHyH6TMs80=;
-        b=Uwyavust3aDELiXTyiyKots4Vc8E1aapiJkTNW9K+xnR89jro4iz2rOSeD4ISYmbhY
-         VPrpJnAsA8d60vPGvzfg5HOmbaffffrxfRXXAHf20thlJDFPCQ0ijgM4u3epcHjkU3Z2
-         uuaDwFL0Bb7pmOxtnleWJgRdplg8jPAB4Rgn4KZCGWtju61LD3rQTL9nHTBUKeHotLYR
-         EtThRg84MMRGwmC8N/s/YDtQbqTEwz0zC0M1QqW9fxIYIu6vXR38kuvGl4sS1NzWHFtk
-         Peubk+27mPA2N0tk42LqUOcS5GKcOkzI4TnvMzIVGacrQHPTKenNRic2hZepjsc5TpA2
-         B3LQ==
-X-Gm-Message-State: AOAM532lZIVjQ95Gy2G9IBffieBTiG1eCiRwt7DFKmv9nJZ7WAnOgBM+
-        gYV0JMC0UWckWzRbFELQGz10
-X-Google-Smtp-Source: ABdhPJx1vg0jakP/HgcVd2AUX5oE49QIzSMsLLNaJtLktA9SIx3N/u+9NULPdSzr8fuc/uFrkZP/lA==
-X-Received: by 2002:a63:1f0f:: with SMTP id f15mr4182497pgf.312.1602874329165;
-        Fri, 16 Oct 2020 11:52:09 -0700 (PDT)
-Received: from ubuntu ([116.68.78.80])
-        by smtp.gmail.com with ESMTPSA id 92sm3865188pjv.32.2020.10.16.11.52.05
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=hDEoP7FMq0WgomEPshsxE41alACngxyEdgyV/rIqrc0=;
+        b=IUY3r2ZnYROVNb01ZB2mHJ1TzrtpSX85J6jBvFL0Zii+pzaHH6903tGSGjiF3TQPrd
+         GDTwVQ9q6ZeM5c4uajxG2dru2JfE4mzrDWfCc6H7labwgOCHKuEnvP1cW4FMPbIUsQTf
+         xasZNK6SCtnlfm4BcgDX4T8QiiqKhF2QAhyc9e5J7Yb+SWC7zC3Gudma9w7okq9oI4G1
+         /p5Rrt0tyU1150CULN2u6bovU1qY1+iuZnAkbZukAOzG6Jbvnf8zcW0SZvLmx8mLbbU+
+         HTunc0fQCHT1XQkxGkvKEDV1oRoARTjGJ57nPbIagGRsCwSHhor3E9Ty8gGWiYcp4SJs
+         w63w==
+X-Gm-Message-State: AOAM530uOHa1mLYwQGn38U1XSqKR5fKKN/Vf8/8s5ShW2bhYa91WEwOn
+        RMZA8CKDldRViZvuIR73sQ==
+X-Google-Smtp-Source: ABdhPJzBGIzrSRGe2l6O+wuW+VliwMyNB+8qIapEk34TQEBDDez2EU0Dd43Mgz9opDA2tUw97Hb8eQ==
+X-Received: by 2002:a05:6830:1bd2:: with SMTP id v18mr3464627ota.42.1602874809870;
+        Fri, 16 Oct 2020 12:00:09 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id l13sm1207737otj.54.2020.10.16.12.00.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2020 11:52:08 -0700 (PDT)
-Date:   Sat, 17 Oct 2020 00:21:25 +0530
-From:   Vaishnav M A <vaishnav@beagleboard.org>
-To:     songqiang1304521@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
-        robertcnelson@beagleboard.org, rajkovic@mikroe.com
-Subject: [PATCH] iio: proximity: vl53l0x-i2c add i2c_device_id
-Message-ID: <20201016185046.GA16022@ubuntu>
+        Fri, 16 Oct 2020 12:00:08 -0700 (PDT)
+Received: (nullmailer pid 1743765 invoked by uid 1000);
+        Fri, 16 Oct 2020 18:57:07 -0000
+Date:   Fri, 16 Oct 2020 13:57:07 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Rui Miguel Silva <rui.silva@linaro.org>
+Cc:     Fabio Estevam <fabio.estevam@nxp.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-iio@vger.kernel.org, Rui Miguel Silva <rmfrfs@gmail.com>
+Subject: Re: [PATCH v2] dt-bindings: fxas21002c: convert bindings to yaml
+Message-ID: <20201016185707.GA1743713@bogus>
+References: <20201014104926.688666-1-rmfrfs@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20201014104926.688666-1-rmfrfs@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Wed, 14 Oct 2020 11:49:26 +0100, Rui Miguel Silva wrote:
+> Convert fxas21002c gyroscope sensor bindings documentation to
+> yaml schema, remove the textual bindings document and update MAINTAINERS entry.
+> 
+> Signed-off-by: Rui Miguel Silva <rmfrfs@gmail.com>
+> ---
+> v1 -> v2:
+>    Jonathan Cameron:
+>        https://lore.kernel.org/linux-iio/20201013153431.000052c9@huawei.com/
+>        - remove Unit from tittle
+>        - reword interrupts description
+>        - drop interrupt-name description
+>        - add spi example and bindings
+>        - remove vddxx from required list
+> 
+>  .../bindings/iio/gyroscope/nxp,fxas21002c.txt | 31 ------
+>  .../iio/gyroscope/nxp,fxas21002c.yaml         | 95 +++++++++++++++++++
+>  MAINTAINERS                                   |  2 +-
+>  3 files changed, 96 insertions(+), 32 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
+> 
 
-This patch aims to add i2c_device_id for the vl53l0x-i2c driver.
-will it be possible to consider this patch add the i2c_device_id,
-so that the device can be instantiated using i2c_new_client_device
-or say from the userspace?.This will be really helpful in cases
-where the device tree based description is not possible now(Eg. 
-a device on a gbphy i2c adapter created by greybus).
-
-The particular usecase here is described over this RFC Patch
-for the mikroBUS driver:
-https://lore.kernel.org/patchwork/patch/1290148/
-
-Thanks and Regards,
-
-Vaishnav M A
-
-Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
----
- drivers/iio/proximity/vl53l0x-i2c.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 5fbda9475ba9..7c29d4cae24a 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -143,6 +143,12 @@ static int vl53l0x_probe(struct i2c_client *client)
- 	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
-+static const struct i2c_device_id vl53l0x_id[] = {
-+	{ "vl53l0x", 0},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, vl53l0x_id);
-+
- static const struct of_device_id st_vl53l0x_dt_match[] = {
- 	{ .compatible = "st,vl53l0x", },
- 	{ }
-@@ -155,6 +161,7 @@ static struct i2c_driver vl53l0x_driver = {
- 		.of_match_table = st_vl53l0x_dt_match,
- 	},
- 	.probe_new = vl53l0x_probe,
-+	.id_table = vl53l0x_id,
- };
- module_i2c_driver(vl53l0x_driver);
- 
--- 
-2.25.1
-
+Reviewed-by: Rob Herring <robh@kernel.org>

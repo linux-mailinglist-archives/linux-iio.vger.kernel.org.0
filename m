@@ -2,123 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F847291891
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 19:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 333602918AB
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 19:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbgJRRRB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 13:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725904AbgJRRRA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 13:17:00 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66744C061755
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 10:17:00 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id n6so10164174ioc.12
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 10:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XWtLc/tNEdINtzZjjThWS6Vpo7qgkp7EiP1jjZAyPlM=;
-        b=WvemCXb+CWug9wB16mmYK5NYVzodouwwv6s6swcEKrBZ7Ve5tL2yeO74JIep4OqVFo
-         g93heqyMzpjhBxjrwF5anOltXs8XKNky4QZXjls8v5/I8g81B+SFdEwlcmhOqFjp1S4h
-         d2Ivvf8Vc31y6sLyJcRV6pLHQpIjZQfkJlN/W3S7k8/arbYqGau1rApB5UjgCybQb9O8
-         vsKO/LlmpirEuaU8ep7BaySvAvlbKpI36Buur3UjR3crHkow6bZEHKVPr9qbvkajWCuF
-         eCd1ko3rX0dES8eTPmxe3bHXCDwekM/yK1zefpDoPexSNdigdHpd0ff5Y/s0cOd/E9sb
-         wwJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XWtLc/tNEdINtzZjjThWS6Vpo7qgkp7EiP1jjZAyPlM=;
-        b=lJ1jwXIpUInq4q2QlIieQbI6BDF6yqLCCL8sWZSNrsQcBOFUj1yQBrDak1R41+KY7J
-         24UOnBafdUDuECrESXaDUBk4YITHGfVHzABHgC6UNoaiHq7ekaC+k2ad7X8npF/sb9pA
-         ms+8eWGH/KKsw6B9UiTPcVx5nsQkq5RnmbmmA8ayOSUx5Fbgg4ngiQ1wboFrj4qrslbK
-         1QDn+7KkBd3J6N5cH+f/mSCNTA+TZhe9i5xWSA/c7617uhkSbah+yGD+dMDk1tHSmhEq
-         H6AFml9Vjvo4X2E9MH07gbPGfiaKwmPhoqWqaW62R+AfYbKzgdvscoPzoYPBJba4gZE1
-         Mupg==
-X-Gm-Message-State: AOAM532abJu3CvJ/AlWNZ4N6lZzv/YaGy7uPovjMq53FllTf3R+SMHHi
-        9Frl3cPxEThCP0k/Vn6oYdK1ch2kgbeKG6m8DEPuMQ==
-X-Google-Smtp-Source: ABdhPJySpPX6QHf8ywX5RJ59cJxtxN4flpJfHh60Dbv2+K/D4L/YTKvNUh1kczQNHlWM2AMorORa3eoSTXALlwNfhsY=
-X-Received: by 2002:a5e:c112:: with SMTP id v18mr8532136iol.195.1603041419699;
- Sun, 18 Oct 2020 10:16:59 -0700 (PDT)
+        id S1727184AbgJRRl1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 13:41:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725776AbgJRRl0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 13:41:26 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 015392223F;
+        Sun, 18 Oct 2020 17:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603042885;
+        bh=ZBDz+sHnuk9fUV4D3FPBKKX5hJL+qUQjP3B3BgGrO8I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=f6G7YXTZlf3xdWjK2L8UjMIJj5AV+32rVI4oomlSbE/1DJSBta79diqjvkmnx/edt
+         urV0/EuJKqD/5LqQ+w5yLHmjqzxdoIvpd7gkBpMLg8k6xF6Ryttb7b+FivwGP/pYcF
+         ScSPKEa9EkgWNhTxbkqpjU9dL/mc8rYLrw2WEu0U=
+Date:   Sun, 18 Oct 2020 18:41:21 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Ricardo Ribalda Delgado <ricardo@ribalda.com>
+Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 15/29] dt-bindings:iio:dac:ti,dac7612 yaml conversion
+Message-ID: <20201018184121.5d023857@archlinux>
+In-Reply-To: <CAPybu_2H--T+54B70mBDu45VxK11Qyp7UnAAHTKtv6MoMemaLw@mail.gmail.com>
+References: <20201011170749.243680-1-jic23@kernel.org>
+        <20201011170749.243680-16-jic23@kernel.org>
+        <CAPybu_2H--T+54B70mBDu45VxK11Qyp7UnAAHTKtv6MoMemaLw@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20201012194618.2170970-1-fparent@baylibre.com>
- <61fe6278-a628-820c-6bbd-eeac51b1e7c3@gmail.com> <20201018110738.36e3de38@archlinux>
-In-Reply-To: <20201018110738.36e3de38@archlinux>
-From:   Fabien Parent <fparent@baylibre.com>
-Date:   Sun, 18 Oct 2020 19:16:49 +0200
-Message-ID: <CAOwMV_xxfJqUieArCE-dDS-fy65vGQhcbMwsGqrTFs4-XA0p2Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: mediatek: fix unset field
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-iio@vger.kernel.org, chun-hung.wu@mediatek.com,
-        alexandru.ardelean@analog.com, pmeerw@pmeerw.net, lars@metafoo.de,
-        knaack.h@gmx.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Thu, 15 Oct 2020 10:49:08 +0200
+Ricardo Ribalda Delgado <ricardo@ribalda.com> wrote:
 
-On Sun, Oct 18, 2020 at 12:07 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 13 Oct 2020 17:37:12 +0200
-> Matthias Brugger <matthias.bgg@gmail.com> wrote:
->
-> > On 12/10/2020 21:46, Fabien Parent wrote:
-> > > dev_comp field is used in a couple of places but it is never set. This
-> > > results in kernel oops when dereferencing a NULL pointer. Set the
-> > > `dev_comp` field correctly in the probe function.
-> > >
-> > > Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
-> > >
-> > > Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> >
-> > Ouch.
-> >
-> > Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-> >
-> > > ---
-> > >   drivers/iio/adc/mt6577_auxadc.c | 2 ++
-> > >   1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> > > index ac415cb089cd..7bd48377cd79 100644
-> > > --- a/drivers/iio/adc/mt6577_auxadc.c
-> > > +++ b/drivers/iio/adc/mt6577_auxadc.c
-> > > @@ -276,6 +276,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
-> > >             goto err_disable_clk;
-> > >     }
-> > >
-> > > +   adc_dev->dev_comp = of_device_get_match_data(&pdev->dev);
-> > > +
->
-> Could we switch this to device_get_match_data(&pdev->dev)?
->
-> Whilst is unlikely this driver will used in a platform using ACPI, there
-> is nothing inside the driver itself preventing this (which is good as no
-> reason to do so!)   My main motivation for this is to reduce the chances
-> of cut and paste of the of_* functions in future driver.
->
-> Also switch the headers to linux/property.h and linux/mod_devicetable.h
-> to more tightly reflect what we are using in the driver.
+> Signed-off-by: Ricardo Ribalda <ribalda@kernel.org>
 
-I applied these changes in v2.
+Hi Ricardo,
 
->
-> Thanks,
->
-> Jonathan
->
-> > >     mutex_init(&adc_dev->lock);
-> > >
-> > >     mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
-> > >
->
+I've converted that to an Acked-by.  This one doesn't convey
+any DCO related info, so Signed-off-by isn't appropriate.
+
+Thanks,
+
+Jonathan
+
+> 
+> On Sun, Oct 11, 2020 at 7:10 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Simple conversion from txt to yaml.  No significant adjustments.
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Ricardo Ribalda Delgado <ricardo@ribalda.com>
+> > ---
+> >  .../bindings/iio/dac/ti,dac7612.txt           | 28 ----------
+> >  .../bindings/iio/dac/ti,dac7612.yaml          | 53 +++++++++++++++++++
+> >  2 files changed, 53 insertions(+), 28 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
+> > deleted file mode 100644
+> > index 17af395b99d9..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
+> > +++ /dev/null
+> > @@ -1,28 +0,0 @@
+> > -* Texas Instruments Dual, 12-Bit Serial Input Digital-to-Analog Converter
+> > -
+> > -The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with guaranteed
+> > -12-bit monotonicity performance over the industrial temperature range.
+> > -Is is programmable through an SPI interface.
+> > -
+> > -The internal DACs are loaded when the LOADDACS pin is pulled down.
+> > -
+> > -https://www.ti.com/lit/ds/sbas106/sbas106.pdf
+> > -
+> > -Required Properties:
+> > -- compatible: Should be one of:
+> > -               "ti,dac7612"
+> > -               "ti,dac7612u"
+> > -               "ti,dac7612ub"
+> > -- reg: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
+> > -
+> > -Optional Properties:
+> > -- ti,loaddacs-gpios: GPIO descriptor for the LOADDACS pin.
+> > -- spi-*: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
+> > -
+> > -Example:
+> > -
+> > -       dac@1 {
+> > -               compatible = "ti,dac7612";
+> > -               reg = <0x1>;
+> > -               ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
+> > -       };
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+> > new file mode 100644
+> > index 000000000000..d172b142f6ed
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+> > @@ -0,0 +1,53 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/dac/ti,dac7612.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Texas Instruments DAC7612 family of DACs
+> > +
+> > +description:
+> > +  The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
+> > +  guaranteed 12-bit monotonicity performance over the industrial temperature
+> > +  range. Is is programmable through an SPI interface.
+> > +
+> > +maintainers:
+> > +  - Ricardo Ribalda Delgado <ricardo@ribalda.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - ti,dac7612
+> > +      - ti,dac7612u
+> > +      - ti,dac7612ub
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  ti,loaddacs-gpios:
+> > +    description:
+> > +      DACs are loaded when the pin connected to this GPIO is pulled low.
+> > +    maxItems: 1
+> > +
+> > +  spi-max-frequency: true
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        dac@1 {
+> > +            compatible = "ti,dac7612";
+> > +            reg = <0x1>;
+> > +            ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
+> > +        };
+> > +    };
+> > +...
+> > --
+> > 2.28.0
+> >  
+> 
+> 
+

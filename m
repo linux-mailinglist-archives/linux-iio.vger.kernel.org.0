@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5BEB2918DF
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C762918E2
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbgJRScQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 14:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53500 "EHLO
+        id S1727380AbgJRSdZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 14:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbgJRScQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 14:32:16 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3F8C061755;
-        Sun, 18 Oct 2020 11:32:16 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id b26so4660716pff.3;
-        Sun, 18 Oct 2020 11:32:16 -0700 (PDT)
+        with ESMTP id S1726689AbgJRSdY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 14:33:24 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F69C061755;
+        Sun, 18 Oct 2020 11:33:24 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id t4so1225053plq.13;
+        Sun, 18 Oct 2020 11:33:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=K40T/k83wtyWOrI2mPQwTzmm6Q0OfkO1kKDuP9It5QU=;
-        b=QxbKiA16yJPrNiOwUwwa1gFCJoPHFm7k2WYEA7SPcJaj9fW7e+AjbnQu7ZYrsDPTLk
-         CgBPi0idOZf1OOhXdh+oe0dY5HDioNTKyo8/YTJzdpI6AelccLcGostsEer8eMTaiMXJ
-         0ME0DacPTxtgdeoMxAm7syKXwpINXf7ZP+RalmZsE32v7ddFJxql8ftSez0LFBP/G8Vz
-         Jftl+b4qUGyYoTThNlxLZhuK/GdI5xIE3VDJpD/rhMmv2DQWJVmQe3mc9JR3vREWV5qC
-         Y3IV0C02npU2nuqzn9tK04LWJT1+/mv7tMvGmYWgeWBh83ZC53wMO66ooawxmfyebJl+
-         ZzbQ==
+        bh=0SrAGDyFK2BtNvaUQ65CcmVzLfIt/f5Hvduu3nRwUdw=;
+        b=VB2Ag15GmAzpJXuXh/iym02MciTot9l2fl+pc6XM5bOK7OPRdiykb7AKYo9fIUnRP7
+         hOWMciGEd1qdenktWa0UyCr0Kv/wSy6LjWPGLt+a+F5xN9pI8MXwvUhXasGbLmmJzExL
+         cMFPu0rd/1lehBji8g7bez6LDDQ8lNS4Dlumq7aUwdkhpsIB137fEoTbYR0uThA/IclT
+         EvWIMYTXSyoVVR8zDfrj0C2g3SsWj0imX5MF0nbeXA/z2XsEcg8PF2Zofp2kK332ljDp
+         5K3w/TntEfYGYI0PfLG4/HPNCSE7wDQSdeLNzOVfTmBs1FyL7nj8QcdHRYCWprALypao
+         Vpyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=K40T/k83wtyWOrI2mPQwTzmm6Q0OfkO1kKDuP9It5QU=;
-        b=YsL6OJy1h+IDiWHE1iKYQ4YLHZpR2NEkaXtwsaM+s5aHgKpMpeLEnWNy4Aj4ze0MkL
-         qYP904pOWBqvFPahslvlhtDbIMjNeC5++XmtsRuBMu9T6+r6JWi8jPbN6rEI2sbrLC/X
-         eoww5hvMaD8yVncXF65ZGJ2mo553jprdggfvIlxiTAolp9RiJ6yuwUfr1lbxgbRfZIG3
-         d0XRt7O8+VcTpIIgBZgln7o+taJ74b5WHPNTeL6CfrJZ8IllRHnF7wk4BLfdRgFcFef2
-         M5f0XIKgSyXdNjbZVXmWuxW5DLfc72UajENdnyIBTyxfiSBcZiVSdopwJQ8Kn4uzlaGM
-         JwxQ==
-X-Gm-Message-State: AOAM530ie8UlKoT24kNGudw+a5MGJgvDJOwcmi2bowXawy+Stw5Cf999
-        VlLxq9/2VnPlcLBx4Bmzubu8H23SmPPOJUcUhRU=
-X-Google-Smtp-Source: ABdhPJy0T474mJLE0+aZoaHtqo4YHqfTdvAt7GpQnZQEKFltdgzGUdJMMj/pHuUAu+b3Ybm3jfoAJPBMnvBTXNjkWXo=
-X-Received: by 2002:a63:f908:: with SMTP id h8mr4294553pgi.203.1603045935923;
- Sun, 18 Oct 2020 11:32:15 -0700 (PDT)
+        bh=0SrAGDyFK2BtNvaUQ65CcmVzLfIt/f5Hvduu3nRwUdw=;
+        b=SLWxDGy6O+8e6oqkYeDboT/YfEiIvVqbmUf3l1xYp6RUA6LuNjpMpoGK6+RGYMQI3j
+         lOU0WfQ4AvcdwIoktDo+zYIWQyxFJAAHMjKWRCL4+YBbCzX494nyWpdIwXxDS/c0KvBS
+         vfSs1Jdk7/AVSg2CIxgD2bqQIyk3DXJiIf55xxFQZqdMo22GgbyDTo6ATFvIDvoPYED7
+         Pm89BAklBYFaMR2iqhuewmLxuXI+rgy6oU20oTutJY5G2DTwHux4udGX7069UXarH/im
+         iICPzo8o4vbxeKxhsW3g87wAN1UKHlHxsMz7yfXLjSA0mErKqdP/n+YJHYQKqlbZbVuY
+         8icg==
+X-Gm-Message-State: AOAM5338GLrxk/ljCr4ytMSHDsbnRkWzqQPZTT6YRZp+e9cZVHU8Axzj
+        4Bvh9gf747fqkogPh9MIjgoCZhif2bSuTJMd5kw=
+X-Google-Smtp-Source: ABdhPJypeDUZ9reAGTE+LRn4S1EdN7M3XMYdbpqrqhgMlq3vVZ/xmPqYOcYlt663OzGWlvWpihVjCdE36fP7laIhiLA=
+X-Received: by 2002:a17:90a:be11:: with SMTP id a17mr13500911pjs.181.1603046003874;
+ Sun, 18 Oct 2020 11:33:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201018171545.3190476-1-fparent@baylibre.com>
-In-Reply-To: <20201018171545.3190476-1-fparent@baylibre.com>
+References: <20201018171545.3190476-1-fparent@baylibre.com> <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com>
+In-Reply-To: <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 18 Oct 2020 21:31:59 +0300
-Message-ID: <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com>
+Date:   Sun, 18 Oct 2020 21:33:08 +0300
+Message-ID: <CAHp75VdFw5jy10QSOFbJVyObqEmiaavFM=BFd92kw1AH4rMxqw@mail.gmail.com>
 Subject: Re: [PATCH v2] iio: adc: mediatek: fix unset field
 To:     Fabien Parent <fparent@baylibre.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -66,19 +66,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 18, 2020 at 8:16 PM Fabien Parent <fparent@baylibre.com> wrote:
+On Sun, Oct 18, 2020 at 9:31 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> dev_comp field is used in a couple of places but it is never set. This
-> results in kernel oops when dereferencing a NULL pointer. Set the
-> `dev_comp` field correctly in the probe function.
+> On Sun, Oct 18, 2020 at 8:16 PM Fabien Parent <fparent@baylibre.com> wrote:
+> >
+> > dev_comp field is used in a couple of places but it is never set. This
+> > results in kernel oops when dereferencing a NULL pointer. Set the
+> > `dev_comp` field correctly in the probe function.
+> >
+> > Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
+> >
+> > Signed-off-by: Fabien Parent <fparent@baylibre.com>
 >
-> Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
+> Shouldn't be a blank line in the tag block.
 >
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> I think Jonathan can fix it, but be more careful in the future.
 
-Shouldn't be a blank line in the tag block.
-
-I think Jonathan can fix it, but be more careful in the future.
+One more serious issue, you forgot to add tags you have gotten in the
+previous round.
 
 -- 
 With Best Regards,

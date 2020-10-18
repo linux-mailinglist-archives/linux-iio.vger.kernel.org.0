@@ -2,99 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE16291D43
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 21:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 928B4291DA7
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 21:47:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730866AbgJRToN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 15:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36304 "EHLO
+        id S1733306AbgJRTqw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 15:46:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733194AbgJRTnz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 15:43:55 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B4AC0613CE
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 12:43:55 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id j8so8390347ilk.0
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 12:43:55 -0700 (PDT)
+        with ESMTP id S1732770AbgJRTqu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 15:46:50 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B425C061755
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 12:46:50 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id cq12so8113048edb.2
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 12:46:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pWenhFesr1w3jNOrHoKxpIn7aIFwj8qNewUZEqgfPdM=;
-        b=VMvrkPOjHLlUI4sI2rGOGrISxzwGTODFlquH0zCr68cYhcIzYg/MHdPtegAja3vzVw
-         Lu+TAn7km0+xlnYQyM1xJS8hq3q73WvmTpICDR4AwTamcnLbCwvquMZ3KbGvgusTKw2Q
-         2qpBvGIjMWb6GtF5HJUNqK1yUBBNMA+GcEjKn7WNoFbNz0405900KcycpwxBG10xc/gH
-         lMd/6ncCX7lUP61gfFhdD+FeqB7kKrIbRx2WjIOjl0K13gCaOn9cXTW+xhlzRLXS/4Uo
-         BYns0JcvGifKCUYamerAe//rCV6IKDoi8F0IgF1UALU+6FIQpd5d2TarzYtWPAi/CIf5
-         ve6Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ldXak5SnxnljogjS5BR4bzLQ/cs7o2P5Z7xi0J4e2zs=;
+        b=B4ezs0jnZXe0OoPEHTaO2JK643odWH4jcP7VGXoLrgJtEmJqs5BvZhLnBxMIWt+CT5
+         1EWAqMem9TADkZ65DuSA50Wy/qjZA3RLPgSKDHv3+nOg9DVXsUnQ1DdgKr31mrz9Gxga
+         xVrX6vtzxaOj/9PT6tYsrqUIwHom3lkoIel0j236GdPrfCjfwpPzIoFokkZgit0joRIj
+         DnWuK4Arv4Jqv+aQ6olPyI7cLEKVnNDjdvcnTNjlj3K2ovuLtZdOewVvl/2i1+0J5Edm
+         hqOXWZeM1BBlxpcUl2RpKARhqurr7BBshgHZjGNJ6TkyRK5C8R6HYgmJJJKV8XL23rdC
+         R4GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pWenhFesr1w3jNOrHoKxpIn7aIFwj8qNewUZEqgfPdM=;
-        b=PNrz0iO7KqvD6sNLDXsS9ERHASMXx9BURXnsAUMJqZDSZKyNF4hdTobZMX0CjPOs4G
-         1StmKRvbcZuBv3kv2oBSlhmnvxzC4mjXrrk7GNOpllCtD1DgxNmGYkysH5HftUTn4HcF
-         u/XnGRbBA+DDfcUQlVGMb7u57GqO671N1ZNFyTb8+yxMR8T6QSdTgeRikzTEB2CrvYco
-         PxaGctIyBJWxXB1eAZN7oRUqqAhj4GTw3C1m5n5EUlNwcI6yS6tQFwr6m5i5IFtEV+O7
-         v7VM6WqrbxW07h+yBCIXBVCM2jgalqRWHYaGSosaybzPYNrrONik4LOkkOSboZPn7zFw
-         CrFQ==
-X-Gm-Message-State: AOAM530cHsreirq2t6uGqMQY4buxDCt4SkH5nzyi9Iouof8vr8/4Afeb
-        URQPaW55m+FBW+/NZaG8ONJEUC/KO4muQ1yIfkYHdg==
-X-Google-Smtp-Source: ABdhPJzVCY4CXlJo5Yk7DLu6Jm6h8fkfHziS90cktjXSQwP51sBX0o/6i7dgEM8BHuTRh478qb6FII0oYpE820vpB5c=
-X-Received: by 2002:a92:c5af:: with SMTP id r15mr8834836ilt.88.1603050234668;
- Sun, 18 Oct 2020 12:43:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201018171545.3190476-1-fparent@baylibre.com>
- <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com> <CAHp75VdFw5jy10QSOFbJVyObqEmiaavFM=BFd92kw1AH4rMxqw@mail.gmail.com>
-In-Reply-To: <CAHp75VdFw5jy10QSOFbJVyObqEmiaavFM=BFd92kw1AH4rMxqw@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ldXak5SnxnljogjS5BR4bzLQ/cs7o2P5Z7xi0J4e2zs=;
+        b=GRfSlztDwzlec8tQX9ijbCAj1FBaMGQkd6UVOjuVLsHXcn7apOX9b10n67tcArEUZs
+         D6dxsEcFsAg1/I8EEvqLZcSPTonhg+aaTD2lJJAKsry6ze4yPS6zHCE2g+StwYY1+ud6
+         UNY7h/bOZkcPFhE9BWJWJmL3weFcPoeFjbpLN+X2dLxAk0/EKV2Phz6vB4Do29gmzRN4
+         2O7tkPr6dExQdERGzvORwZwoMjSW2C9Y4ZSaCvdCfSVUfOJYnJh4VbNuUSW/zX+1m0R0
+         I6q5SoQcVNJF0RIxPGc7T8cHgv3MnRmoUT+M40coaNpFRYke7vl7FOK/4Wwj2WnSMEwe
+         RE8A==
+X-Gm-Message-State: AOAM5336GH1j+sIWixf1VgfuC7ckcczc+TwtHXVvKO1LCu5ydkL0edTO
+        21k7aPSOgRIvyyBEoXDkxWJyKA==
+X-Google-Smtp-Source: ABdhPJwY6G8XBmaYMPV8hFHddmJ/OHEgz7gA3xdGXbTrVFj3gqbUp+8slxRYnn6QASjh7AGhTznBEQ==
+X-Received: by 2002:aa7:c659:: with SMTP id z25mr14681221edr.219.1603050408832;
+        Sun, 18 Oct 2020 12:46:48 -0700 (PDT)
+Received: from localhost.localdomain (124.171.185.81.rev.sfr.net. [81.185.171.124])
+        by smtp.gmail.com with ESMTPSA id c5sm8009574edx.58.2020.10.18.12.46.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2020 12:46:48 -0700 (PDT)
 From:   Fabien Parent <fparent@baylibre.com>
-Date:   Sun, 18 Oct 2020 21:43:43 +0200
-Message-ID: <CAOwMV_z9B4suGd33H_D6ep-UpXn2W2QyTd8az2C_NERMFALWVA@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: mediatek: fix unset field
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, chun-hung.wu@mediatek.com,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        matthias.bgg@gmail.com, jic23@kernel.org
+Cc:     chun-hung.wu@mediatek.com, alexandru.ardelean@analog.com,
+        pmeerw@pmeerw.net, lars@metafoo.de,
+        Fabien Parent <fparent@baylibre.com>
+Subject: [PATCH v3] iio: adc: mediatek: fix unset field
+Date:   Sun, 18 Oct 2020 21:46:44 +0200
+Message-Id: <20201018194644.3366846-1-fparent@baylibre.com>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy
+dev_comp field is used in a couple of places but it is never set. This
+results in kernel oops when dereferencing a NULL pointer. Set the
+`dev_comp` field correctly in the probe function.
 
-On Sun, Oct 18, 2020 at 8:33 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sun, Oct 18, 2020 at 9:31 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Sun, Oct 18, 2020 at 8:16 PM Fabien Parent <fparent@baylibre.com> wrote:
-> > >
-> > > dev_comp field is used in a couple of places but it is never set. This
-> > > results in kernel oops when dereferencing a NULL pointer. Set the
-> > > `dev_comp` field correctly in the probe function.
-> > >
-> > > Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
-> > >
-> > > Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> >
-> > Shouldn't be a blank line in the tag block.
-> >
-> > I think Jonathan can fix it, but be more careful in the future.
->
-> One more serious issue, you forgot to add tags you have gotten in the
-> previous round.
+Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
+Signed-off-by: Fabien Parent <fparent@baylibre.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+---
 
-Thanks for the review. I will make it easy for the maintainer and send
-right away a v3 that fixes both issues you pointed out.
+Changelog:
+V2:
+	* s/of_device_get_match_data/device_get_match_data
+	* include mod_devicetable.h and property.h instead of of_*.h headers
+V3:
+	* Remove extra space between Fixes tag and Signed-off-by tag
+	* Add missing Reviewed-by tag from Matthias Brugger
 
-> --
-> With Best Regards,
-> Andy Shevchenko
+ drivers/iio/adc/mt6577_auxadc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
+index ac415cb089cd..79c1dd68b909 100644
+--- a/drivers/iio/adc/mt6577_auxadc.c
++++ b/drivers/iio/adc/mt6577_auxadc.c
+@@ -9,9 +9,9 @@
+ #include <linux/err.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/iopoll.h>
+ #include <linux/io.h>
+ #include <linux/iio/iio.h>
+@@ -276,6 +276,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
+ 		goto err_disable_clk;
+ 	}
+ 
++	adc_dev->dev_comp = device_get_match_data(&pdev->dev);
++
+ 	mutex_init(&adc_dev->lock);
+ 
+ 	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
+-- 
+2.28.0
+

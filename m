@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2652918AE
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 19:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09DCB2918B1
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 19:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbgJRRoA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 13:44:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33184 "EHLO mail.kernel.org"
+        id S1727223AbgJRRru (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 13:47:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33960 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725776AbgJRRn7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 13:43:59 -0400
+        id S1725776AbgJRRrt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 13:47:49 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6CF492080D;
-        Sun, 18 Oct 2020 17:43:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4A331207BB;
+        Sun, 18 Oct 2020 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603043039;
-        bh=oxlJDyFOgmEee1yZzOJe7KdnKZ7+LB7NYjpTWhxehE8=;
+        s=default; t=1603043269;
+        bh=408HoBPOaafIJF53bdqtdqvD7XMAA29NhowBqYpKaew=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mwKQbhM8QWlkbl2gwmpubIXF4MK2KvsKbQsMzBFCBr2sRA/3m4CEPA2hibYeovKUj
-         W8sE4pToSyEuZhF90SZcfIl6N5rYUgqBquDLIg9P6Yq41pmkSNmSTrgJuT+HhFKVzO
-         2AAU6nrA26qIvntRvwA/aywYmwSkXBvsoG7Gldhc=
-Date:   Sun, 18 Oct 2020 18:43:55 +0100
+        b=rw1sSUjK16aC5eo1mWWC8Wb8KhGIdEnEBb75XkFrP3DhZclf1aV9HutPNz0lOUxul
+         wiTfNRw3Z8ZA/rlK49pymX9N3k43Sy9mYqtfUyboEApTB1zU6p32ZAcDGDmg/T0Y7z
+         3HGDBAUo+JH0p25D+4OWSA3C/1cxe2+t1101Xzic=
+Date:   Sun, 18 Oct 2020 18:47:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 17/29] dt-bindings:iio:dac:adi,ad7303 yaml conversion
-Message-ID: <20201018184355.29f710b6@archlinux>
-In-Reply-To: <04fb4d49-1a7f-e8d7-09a8-bb57630b6a16@metafoo.de>
+To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "Ismail H . Kose" <Ismail.Kose@maximintegrated.com>,
+        "Ismail H . Kose" <ihkose@gmail.com>
+Subject: Re: [PATCH 18/29] dt-bindings:iio:dac:maxim,ds4424 yaml conversion
+Message-ID: <20201018184744.16a20230@archlinux>
+In-Reply-To: <20201011170749.243680-19-jic23@kernel.org>
 References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-18-jic23@kernel.org>
-        <04fb4d49-1a7f-e8d7-09a8-bb57630b6a16@metafoo.de>
+        <20201011170749.243680-19-jic23@kernel.org>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,123 +42,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 11 Oct 2020 19:13:32 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sun, 11 Oct 2020 18:07:38 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On 10/11/20 7:07 PM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Converted to maintain the requirement for Vdd-supply as per original file.
-> > It is possible we could relax this requirement to make it at least one
-> > of Vdd-supply and REF-supply.  We need to establish the scaling of the
-> > output channel and if REF-supply is provided that is used instead of
-> > Vdd-supply, hence I cannot see why a dummy regulator cannot be used for
-> > Vdd-supply if this happens.
-> >
-> > For now, let us keep it simple.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > ---
-> >   .../devicetree/bindings/iio/dac/ad7303.txt    | 23 ---------
-> >   .../bindings/iio/dac/adi,ad7303.yaml          | 51 +++++++++++++++++++
-> >   2 files changed, 51 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/ad7303.txt b/Documentation/devicetree/bindings/iio/dac/ad7303.txt
-> > deleted file mode 100644
-> > index 914610f0556e..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/dac/ad7303.txt
-> > +++ /dev/null
-> > @@ -1,23 +0,0 @@
-> > -Analog Devices AD7303 DAC device driver
-> > -
-> > -Required properties:
-> > -	- compatible: Must be "adi,ad7303"
-> > -	- reg: SPI chip select number for the device
-> > -	- spi-max-frequency: Max SPI frequency to use (< 30000000)
-> > -	- Vdd-supply: Phandle to the Vdd power supply
-> > -
-> > -Optional properties:
-> > -	- REF-supply: Phandle to the external reference voltage supply. This should
-> > -	  only be set if there is an external reference voltage connected to the REF
-> > -	  pin. If the property is not set Vdd/2 is used as the reference voltage.
-> > -
-> > -Example:
-> > -
-> > -		ad7303@4 {
-> > -			compatible = "adi,ad7303";
-> > -			reg = <4>;
-> > -			spi-max-frequency = <10000000>;
-> > -			Vdd-supply = <&vdd_supply>;
-> > -			adi,use-external-reference;
-> > -			REF-supply = <&vref_supply>;
-> > -		};
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad7303.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad7303.yaml
-> > new file mode 100644
-> > index 000000000000..f76c31bf6ee3
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad7303.yaml
-> > @@ -0,0 +1,51 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/dac/adi,ad7303.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD7303 DAC
-> > +
-> > +maintainers:
-> > +  - Lars-Peter Clausen <lars@metafoo.de>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: adi,ad7303
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  Vdd-supply:
-> > +    description:
-> > +      Used to calculate output channel scalling if REF-supply not specified.
-> > +  REF-supply:
-> > +    description:
-> > +      If not provided, Vdd/2 is used as the reference voltage.
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 30000000
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - Vdd-supply
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        dac@4 {
-> > +            compatible = "adi,ad7303";
-> > +            reg = <4>;
-> > +            spi-max-frequency = <10000000>;
-> > +            Vdd-supply = <&vdd_supply>;
-> > +            adi,use-external-reference;  
-> This is a bug in the original example. But might as well take this as 
-> chance to remove the 'adi,use-external-reference' here, since that 
-> property does not exist.
-Good point. Will fix in v2.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Simple conversion of this straight forward binding.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Ismail H. Kose <Ismail.Kose@maximintegrated.com>
+> Cc: Ismail H. Kose <ihkose@gmail.com>
+Ismail's Maxim address bounces, so I've switched to the gmail one
+for v2.  @Ismail: If you'd rather not be listed as maintaining this
+binding then let me know.
 
 Thanks,
 
 Jonathan
 
-> > +            REF-supply = <&vref_supply>;
-> > +        };
-> > +    };
-> > +...  
+> ---
+>  .../devicetree/bindings/iio/dac/ds4424.txt    | 20 ---------
+>  .../bindings/iio/dac/maxim,ds4424.yaml        | 45 +++++++++++++++++++
+>  2 files changed, 45 insertions(+), 20 deletions(-)
 > 
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/ds4424.txt b/Documentation/devicetree/bindings/iio/dac/ds4424.txt
+> deleted file mode 100644
+> index eaebbf8dab40..000000000000
+> --- a/Documentation/devicetree/bindings/iio/dac/ds4424.txt
+> +++ /dev/null
+> @@ -1,20 +0,0 @@
+> -Maxim Integrated DS4422/DS4424 7-bit Sink/Source Current DAC Device Driver
+> -
+> -Datasheet publicly available at:
+> -https://datasheets.maximintegrated.com/en/ds/DS4422-DS4424.pdf
+> -
+> -Required properties:
+> -	- compatible: Should be one of
+> -		maxim,ds4422
+> -		maxim,ds4424
+> -	- reg: Should contain the DAC I2C address
+> -
+> -Optional properties:
+> -	- vcc-supply: Power supply is optional. If not defined, driver will ignore it.
+> -
+> -Example:
+> -	ds4224@10 {
+> -		compatible = "maxim,ds4424";
+> -		reg = <0x10>; /* When A0, A1 pins are ground */
+> -		vcc-supply = <&vcc_3v3>;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
+> new file mode 100644
+> index 000000000000..91661079d7ea
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
+> @@ -0,0 +1,45 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/maxim,ds4424.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Maxim Integrated DS4422/DS4424 7-bit Sink/Source Current DAC
+> +
+> +maintainers:
+> +  - Ismail H. Kose <Ismail.Kose@maximintegrated.com>
+> +
+> +description: |
+> +  Datasheet publicly available at:
+> +  https://datasheets.maximintegrated.com/en/ds/DS4422-DS4424.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - maxim,ds4422
+> +      - maxim,ds4424
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vcc-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dac@10 {
+> +            compatible = "maxim,ds4424";
+> +            reg = <0x10>; /* When A0, A1 pins are ground */
+> +            vcc-supply = <&vcc_3v3>;
+> +        };
+> +    };
+> +...
 

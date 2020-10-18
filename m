@@ -2,77 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3902917FC
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 17:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E94352917FD
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 17:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726633AbgJRPGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 11:06:11 -0400
-Received: from first.geanix.com ([116.203.34.67]:55400 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725776AbgJRPGK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 11:06:10 -0400
-Received: from [192.168.100.10] (xb90f4a16.cust.hiper.dk [185.15.74.22])
-        by first.geanix.com (Postfix) with ESMTPSA id D34E7F41ECC;
-        Sun, 18 Oct 2020 15:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1603033563; bh=PPgyaGfIcTVU2khuBuMuuMVpu9BWmP6CSexm4zkpF84=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Hpvd00Fnre9r0kps0xMvpWrxw0+tNwaLw3FHssUxP4cOkrh2Osdo+XWCkp9lXf9xR
-         u6Ec4MXJLv7guSCXu/ZjpSVMusXrw7jY3fOajCztLcODQHaN5aRjLZ766VpOjo2q/4
-         t/dhRNyvpv1h4SLo1AW8Nkif5GNtDaDXnfYizFMIgfZsXZWg8oMkyVopxFx5hTTFry
-         jCoXJySKP2i5Bo7sjIaSshTPY/L0Vza7SLNaHkijLRT+0OWSkVyQkixetOOefATPkq
-         I3ON5rOGT6TfMENjHJFT4gcKiSjIG72yrVIURM4FfClonoZXsPpxQ/dzwI6HDOqjK7
-         BqbUfPjtLnuhQ==
-Subject: Re: [PATCH 12/29] dt-bindings:iio:dac:ti,dac5571 yaml conversion.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20201011170749.243680-1-jic23@kernel.org>
- <20201011170749.243680-13-jic23@kernel.org>
- <3812d0a0-7a70-d30c-7fd5-705e2fdef89c@geanix.com>
- <20201018105839.442666ee@archlinux>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <706ef6f1-d01c-3059-a6cf-be60f0e74130@geanix.com>
-Date:   Sun, 18 Oct 2020 17:06:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1726772AbgJRPGm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 11:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbgJRPGm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 11:06:42 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFEABC061755
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id 67so9965566iob.8
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=czqkN2JOMIdx3mElJVahK+RV1sW2EcADLO8fEOnd2gY=;
+        b=mOxpLHHYKQ/9MAts3WpueP7YGC5Tun1HFH3VKXZgKDwJK1H36gxsO4ubHorxcqk1oc
+         pbE0aAnvFYngbcN/jByjxx71P5QnOjcvW22dCVU6o6w29DPkIDCqXu9LnrnfVI0CfHzo
+         ThxPLd4aZ1zjFG/yqPXPDnWfAaG/Ulrt1Gy6syHznLnTjHI/13M+JDsaKOvSD8bg5qXL
+         /OhfNQjW1bDxLB5n4MS74dYPqSeKtcRTqoMi2WF2wTTv63C2mMk4OwZP9h1G96rfxq77
+         lxQCWZLyPrUzkz11xv1d5gQNJTW/CFhZr8IDTxmVyC15fdjWpAx2qHmouOgHLoyDY18L
+         Qm7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=czqkN2JOMIdx3mElJVahK+RV1sW2EcADLO8fEOnd2gY=;
+        b=JMa2KC30KnPO4mNAyFNbQ/kKxpOd7tNyppa6rGxhknKb4lF+qVae08Y5882MkWNbrJ
+         pYaSV8K1lFczB2EQSiTUfqBG9TtYkEM3IFBwfHFQSsiXpfKwRDM8r2Baq9Ol2BNZ/Mwn
+         U4eRUas0kJHai3vQjl6/3Ce/vYNzLJkqGjN3CHXjXGhqLehzmmfAqFcKbK/U5KbvGYqM
+         /XeXrfSmWvTAC+JTERD+v2Hec22dWdKLx/oJQrtPvUUjUJMuybl5FKuEXE3MinGzCNxM
+         491PuWPPG9f8Bvu9z7jtn+R46CTr53PZVbaWi+M6FB9WIJu7BY/WMC5sT+hGQ1q4VuB4
+         Rg+Q==
+X-Gm-Message-State: AOAM532k2Wb2CV+nAf7ISCZNYUpMVBe1XmJNQzK2vsExWDTS+09cllLB
+        KRwbIUfTlVVSOwqkS5AWX9oLo7AP2CCVheaHQ+ru
+X-Google-Smtp-Source: ABdhPJxTmtCnVTbI2p+LMLIuIbMjWoDpTYT8mP5zpcvmq/R2e4Cp3/i29Cz0eVW2BcFfRfCP2mOKgFfx3h9Yw2dcZO4=
+X-Received: by 2002:a6b:b208:: with SMTP id b8mr8121415iof.36.1603033601269;
+ Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20201018105839.442666ee@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.3 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        URIBL_BLOCKED autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on ff3d05386fc5
+References: <20201018033602.GA27912@ubuntu> <20201018123651.635e2ec3@archlinux>
+In-Reply-To: <20201018123651.635e2ec3@archlinux>
+From:   Vaishnav M A <vaishnav@beagleboard.org>
+Date:   Sun, 18 Oct 2020 20:36:30 +0530
+Message-ID: <CALudOK425LJXphTA1RH7A45=5=m5S-7r-5xpeanjpwzFBUMXTg@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: light: vcnl4035 add i2c_device_id
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Robert Nelson <robertcnelson@beagleboard.org>,
+        =?UTF-8?Q?Ivan_Rajkovi=C4=87?= <rajkovic@mikroe.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 18/10/2020 11.58, Jonathan Cameron wrote:
-> On Sun, 11 Oct 2020 19:47:19 +0200
-> Sean Nyekjaer <sean@geanix.com> wrote:
+On Sun, Oct 18, 2020 at 5:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
->> On 11/10/2020 19.07, Jonathan Cameron wrote:
->>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>
->>> A few tweaks in this conversion.
->>> * The example didn't have the I2C address of 4C in the node name so
->>>     fixed that.
->>> * The reference voltage in the txt file is an optional binding, but
->>>     the driver is making use of it to provide the scaling of the output
->>>     channels.  As such I have made it required going forwards.
->>>
->>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Cc: Sean Nyekjaer <sean@geanix.com>
->>>   
->> Looks good :)
-> Hi Sean,  Good to know, but if you are happy to give a formal
-> Acked-by, or Reviewed-by always appreciated!
-Acked-by: Sean Nyekjaer <sean@geanix.com>
-Sure :)
-I just thought it would be weird then I already had the Cc...
+> On Sun, 18 Oct 2020 09:06:02 +0530
+> Vaishnav M A <vaishnav@beagleboard.org> wrote:
+>
+> > add i2c_device_id for the vcnl4035 driver so that
+> > the device can be instantiated using i2c_new_client_device
+> > or from userspace, useful in cases where device tree based
+> > description is not possible now(Eg. a device on a gbphy i2c
+> > adapter created by greybus)
+> >
+> > Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+> Rewrite the description and this should be fine.
+>
+> Thanks,
+>
+> Jonathan
+>
+Thank you Jonathan for the Review, I have submitted v3 patch
+with the modified description: https://lore.kernel.org/patchwork/patch/1322195/
 
-/Sean
+Thanks,
+Vaishnav
+> > ---
+> >  v2:
+> >       - fix commit message
+> >  drivers/iio/light/vcnl4035.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+> > index 765c44adac57..73a28e30dddc 100644
+> > --- a/drivers/iio/light/vcnl4035.c
+> > +++ b/drivers/iio/light/vcnl4035.c
+> > @@ -652,6 +652,12 @@ static const struct dev_pm_ops vcnl4035_pm_ops = {
+> >                          vcnl4035_runtime_resume, NULL)
+> >  };
+> >
+> > +static const struct i2c_device_id vcnl4035_id[] = {
+> > +     { "vcnl4035", 0},
+> > +     { }
+> > +};
+> > +MODULE_DEVICE_TABLE(i2c, vcnl4035_id);
+> > +
+> >  static const struct of_device_id vcnl4035_of_match[] = {
+> >       { .compatible = "vishay,vcnl4035", },
+> >       { }
+> > @@ -666,6 +672,7 @@ static struct i2c_driver vcnl4035_driver = {
+> >       },
+> >       .probe  = vcnl4035_probe,
+> >       .remove = vcnl4035_remove,
+> > +     .id_table = vcnl4035_id,
+> >  };
+> >
+> >  module_i2c_driver(vcnl4035_driver);
+>

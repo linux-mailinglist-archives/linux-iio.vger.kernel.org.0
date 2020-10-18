@@ -2,161 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E5282917EF
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 16:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E60A12917FB
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 17:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726943AbgJROuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 10:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47748 "EHLO
+        id S1727030AbgJRPEt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 11:04:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgJROuc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 10:50:32 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45D3C061755;
-        Sun, 18 Oct 2020 07:50:31 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id f21so5972024qko.5;
-        Sun, 18 Oct 2020 07:50:31 -0700 (PDT)
+        with ESMTP id S1727021AbgJRPEt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 11:04:49 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B19C0613CE
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:04:49 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id w21so4462602pfc.7
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:04:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SAR/XwyrV6/GhmfSQONbkaQBYVb9H0s6Kue9beJBth4=;
-        b=JTI2e5NAUd29QUk7IAO/UujFkW7VqQUT/vAvWxpuKmwxz9QQWfeEreCx6Zh4dz6Tr8
-         IO91zoDvhoUooCbNxqcSEEoLCMPKQUKOM0bON1SBHoK7TQvzniBjAPYq3/kSAg/Ccy59
-         7xtet0KPqZPk6qmuItKvRKc+qdkvQnZlWA9HwsOraTd1f9AJRJ6qoAqHMrU0Tz7GOkyp
-         qkxYz4E9FXFeoME1aY1wglsMSh6Pp3BhH8KKUX+BIRcSxTvYz6R5W5QWh+RDon+1r7oM
-         XaR1PZMATSGO7mWRGmoVcT1ROk9Rl1qAdwjxBL6eO1escGCdaaT+t/S/TDFGqq79OJNL
-         +leQ==
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=Mlwqwgy4S8TKVUm+/mFsmd3kgYowZeJtENAHzl7eX9A=;
+        b=gv4TflUJUJF5TxCgq3GO9ASf7Bs+rAVbEIxTXsEwb711f9EOLKhdcO8VwMn5LXuVrP
+         +8sIORGdO7LehFAFAmmC0eeG+9dTugxzzAF2MZf+i2UfMIMV4AF7Hk6gOjyiAEnL/kkx
+         RimCklXTVtvjds1FQN8DWuRxJPfO5CScAECA/GQqnP5hhrR3rwThjIv8DPYOQOOSoq6T
+         obK1ZGTKu7ur/zX+fH+Pz/UaAGJiczMqcxNeIQVcYwhWTalsXv+pgJKzR4U9jE4ty+fx
+         rf2CMTRT+llMj9GhgA5zwJzvSncp9Xr2Psd+0L+qlnriR7NIt4DrT3NFJtEkV8hqx/KV
+         Nu8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SAR/XwyrV6/GhmfSQONbkaQBYVb9H0s6Kue9beJBth4=;
-        b=NGSUDgoI5Vvh/xOLN2JqpobjdxaLKbQ9kmnYJXV6Geg73FplQCB1GG4BgxP53tdPSA
-         lnYqrLRYyyV7JROdNB+g0G3mlL1QC1pvNreRFoMZ9sXZsUGg67ancaOzQsfH+wu0tOHF
-         2BDpVeRADqejipRPOBMCa09t/engMjpQoa64X2U1H8zkBzvbvdF57h7uKdbnZf6kmmQ/
-         P4U0KCyD3a1y5anY8eYzqcCsOJ3WsxsAbjItykAm0vD+2bj0KNlxS5BIwJg28GlYVWw0
-         CjfNQWKd0RCmH/AdLesyLh5Halw+xqAOFOxrkSW6gwtkS/DGYOUCkH9d8hKbAhFRdt8n
-         P5aA==
-X-Gm-Message-State: AOAM533RV6pxJcCCZkEhQQdYjSptrhAJgQCY5mVJLh+mSHmM0gWbxO45
-        30nk3RwhtIlvJTEWtIKBaCE=
-X-Google-Smtp-Source: ABdhPJzrSY4sikkyntHRR72cF6xgM2PD32fOeKkMij2G1c4qQN3ccKlatHl+iLzl5vh5vkcodawv6g==
-X-Received: by 2002:a37:2c03:: with SMTP id s3mr10548074qkh.91.1603032630993;
-        Sun, 18 Oct 2020 07:50:30 -0700 (PDT)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id w6sm3230710qkb.6.2020.10.18.07.50.28
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=Mlwqwgy4S8TKVUm+/mFsmd3kgYowZeJtENAHzl7eX9A=;
+        b=HTUQoQNw7BGhh5LMt+qkJnMWH1Ip9yRTPBQXuZ2uUdHwhZzDqGcnTsocPMb2uxm5q9
+         X7nO2vZ3iXxXatYdKnm0ExwEnd4eisw5Y56a4N5zvpJcQH1dxLVdDaNvGywEukb/0CH8
+         4IYulqvrDEAAaAH4N47eXR3xyJO+VWN7dRI3M+BBS8scuoumrau6nlflnZ19oSkcDaCY
+         bt5eKaSVZbPPW1rS6De///MbphxtAnr12p8U6eXFmHk3BqwT0rn5otzbJ/ckDfBph4Tt
+         dx77eCNgKWQeI9Z4HZGFtqnhLjLJBqwKc9OC2DDXrTT7/Z7KJTdn0OU05PXAs4Z/WgS4
+         pQ0w==
+X-Gm-Message-State: AOAM533u1yr9Ba25VPZjDEyiXpYIy/B/RvdgD1jlnK1AGYrMFW7oQFUJ
+        ZhxYIQ2PtjklUB5lDVw5zYbD
+X-Google-Smtp-Source: ABdhPJzYB4/SNeSSYPSuR3TkP8K8Lz6rZV/PUkGslXlRbMwTDJVjxQI7JjV8vhOTN2Lu454SUkYCJg==
+X-Received: by 2002:a63:541:: with SMTP id 62mr10546036pgf.53.1603033488426;
+        Sun, 18 Oct 2020 08:04:48 -0700 (PDT)
+Received: from ubuntu ([116.68.78.80])
+        by smtp.gmail.com with ESMTPSA id z12sm9174082pfr.197.2020.10.18.08.04.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2020 07:50:30 -0700 (PDT)
-Date:   Sun, 18 Oct 2020 10:50:25 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-Subject: Re: [PATCH v5 5/5] counter: 104-quad-8: Add IRQ support for the
- ACCES 104-QUAD-8
-Message-ID: <20201018145025.GC231549@shinobu>
-References: <cover.1601170670.git.vilhelm.gray@gmail.com>
- <7a829fe8cba3ae222796328f832bd2546769e6ac.1601170670.git.vilhelm.gray@gmail.com>
- <a0e54a35-eed6-a938-dd4e-4f602d3b50c0@lechnology.com>
+        Sun, 18 Oct 2020 08:04:47 -0700 (PDT)
+Date:   Sun, 18 Oct 2020 20:34:42 +0530
+From:   Vaishnav M A <vaishnav@beagleboard.org>
+To:     jic23@kernel.org, wsa@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        alexandru.ardelean@analog.com, matt.ranostay@konsulko.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com,
+        vaishnav@beagleboard.org
+Subject: [PATCH v3] iio: light: vcnl4035 add i2c_device_id
+Message-ID: <20201018150442.GA219064@ubuntu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UPT3ojh+0CqEDtpF"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a0e54a35-eed6-a938-dd4e-4f602d3b50c0@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Add i2c_device_id table for the vl53l0x-i2c driver,
+helps in device instantiation using i2c_new_client_device
+or from userspace in cases where device-tree based description
+is not possible now (Example: device on a gbphy i2c adapter
+created by greybus)
 
---UPT3ojh+0CqEDtpF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+---
+ v3:
+	-modify commit message for readability
+	 as suggested by Jonathan Cameron
+ v2:
+	-fix commit message
+ drivers/iio/light/vcnl4035.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-On Tue, Oct 13, 2020 at 07:13:32PM -0500, David Lechner wrote:
-> On 9/26/20 9:18 PM, William Breathitt Gray wrote:
-> > +static irqreturn_t quad8_irq_handler(int irq, void *quad8iio)
-> > +{
-> > +	struct quad8_iio *const priv =3D quad8iio;
-> > +	const unsigned long base =3D priv->base;
-> > +	unsigned long irq_status;
-> > +	unsigned long channel;
-> > +	u8 event;
-> > +	int err;
-> > +
-> > +	irq_status =3D inb(base + QUAD8_REG_INTERRUPT_STATUS);
-> > +	if (!irq_status)
-> > +		return IRQ_NONE;
-> > +
-> > +	for_each_set_bit(channel, &irq_status, QUAD8_NUM_COUNTERS) {
-> > +		switch (priv->irq_trigger[channel]) {
-> > +		case 0:
-> > +			event =3D COUNTER_EVENT_OVERFLOW;
-> > +				break;
-> > +		case 1:
-> > +			event =3D COUNTER_EVENT_THRESHOLD;
-> > +				break;
-> > +		case 2:
-> > +			event =3D COUNTER_EVENT_OVERFLOW_UNDERFLOW;
-> > +				break;
-> > +		case 3:
-> > +			event =3D COUNTER_EVENT_INDEX;
-> > +				break;
-> > +		default:
-> > +			/* We should never reach here */
-> > +			return -EINVAL;
->=20
-> This is not a valid return value for an IRQ handler. Maybe WARN_ONCE inst=
-ead?
+diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+index 765c44adac57..73a28e30dddc 100644
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -652,6 +652,12 @@ static const struct dev_pm_ops vcnl4035_pm_ops = {
+ 			   vcnl4035_runtime_resume, NULL)
+ };
+ 
++static const struct i2c_device_id vcnl4035_id[] = {
++	{ "vcnl4035", 0},
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, vcnl4035_id);
++
+ static const struct of_device_id vcnl4035_of_match[] = {
+ 	{ .compatible = "vishay,vcnl4035", },
+ 	{ }
+@@ -666,6 +672,7 @@ static struct i2c_driver vcnl4035_driver = {
+ 	},
+ 	.probe  = vcnl4035_probe,
+ 	.remove	= vcnl4035_remove,
++	.id_table = vcnl4035_id,
+ };
+ 
+ module_i2c_driver(vcnl4035_driver);
+-- 
+2.25.1
 
-Ack.
-
-> > +		}
-> > +		err =3D counter_push_event(&priv->counter, event, channel);
-> > +		if (err)
-> > +			return err;
->=20
-> Same here. Otherwise, I think we could end up with interrupts in an endle=
-ss
-> loop since the interrupt would never be cleared.
-
-Good point, I'll change this and the one above.
-
-William Breathitt Gray
-
-> > +	}
-> > +
-> > +	/* Clear pending interrupts on device */
-> > +	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base + QUAD8_REG_CHAN_OP);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
->=20
-
---UPT3ojh+0CqEDtpF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl+MVjEACgkQhvpINdm7
-VJJ/2g/9H84UNACWIgJbKmcgPdOuv42qHwZ0jla3LA3Sa/Le+jjyRPXhlC0po31D
-Q02H/GXunXfanDa3dRcI+4wKobRonBxnD4qvQcv9PMY4KWIxiqRUzIToz6PG4Frl
-U1lod6lMw7tmTBAov69D+faZv7q46UiuJ4fNpZjzhgy+Ut78SsR5x/FSM8W+y2Xe
-VeWYX3MPk7xrVMDdwFZN8x8lCKUgwlDBIPgLW9SoGaoqJfXSa4EZejluUo8jztlz
-yehC6XuGu0gkIvfWq2PTqAX8wciFoxv1xHZ0+4Rgyw+7qW3sXFT+rWGygxiyxAe6
-qr1DJ9r9JkSLTNYuMkdn2g6jhoH98mrkSbhi5uwf34H5At874zqFI3tcgG8s05fO
-drKQeA1WjVDp7TaEF1OfXfqKkuiKL0+YUB6fxQpZ53KvT2tRSSl/9A7z/JCkGyKX
-8pSntpr1rI9ZR9dxzk6nblOoZX7KYO1K4hZ0Eby1E3YI/y7IrzAADYuB2t0MzVfn
-qQMXT8LzKtaE/pIQk9IfnOevFFKhfchknxxtXW4I0ak6RlKuo7Ai7IPUeuQvukEK
-pM63pZ41G5Y6uzefTecb+kg33cVMC2shKU2hRJYzL0o5z2CcQUAyCKuFuBM1k4LX
-sxYRf3wetepvzBMF6YUzCpcR8fBQP/kuVR3PYd5sche8IpphpK0=
-=xuQj
------END PGP SIGNATURE-----
-
---UPT3ojh+0CqEDtpF--

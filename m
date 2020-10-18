@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAA829170F
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1F929171E
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgJRLAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 07:00:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36048 "EHLO mail.kernel.org"
+        id S1726526AbgJRLJW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 07:09:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726486AbgJRLAw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 07:00:52 -0400
+        id S1726513AbgJRLJW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 07:09:22 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3388F20897;
-        Sun, 18 Oct 2020 11:00:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C694120897;
+        Sun, 18 Oct 2020 11:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603018851;
-        bh=3vvzUsZpHL+oefHlU7WKYPhRI0zVkgLGxOZEq7wNmSc=;
+        s=default; t=1603019361;
+        bh=2efbi6jPngvBZEM/jssvFYg3y1VW8zbKPIPxMZ6Fhto=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CZDi2Z/2zFGYO7fQZV0L+hjJSX+tQQvGoaFH09zR2rLyUT/Ixh/9LI8/ZxPMRKNIz
-         AGrszrUAH8sg8oZx2kMwTWiJaC+1Baz1xYQpBAvZxu1QCBMZEq9XVLOL+pBt5B6ppN
-         pWCyv1McqzAlzBaO35NMVn2HYexawE+z/64BqXnU=
-Date:   Sun, 18 Oct 2020 12:00:46 +0100
+        b=AYNrOki5MxY9y4AB04vzYvGf4JlvOYUIY6eC2F+y5sJMIQqKKna+xFIEcogJZuxFj
+         z0uhBPAfoajXaU32l33ZsV3c2hGu2T2lHs94xm/P4JMvupnA3kecAHcBSKagdd8U/5
+         sSS78Rci3Elt65v1il1XvPaC5AuRJQXyaVQVF4VQ=
+Date:   Sun, 18 Oct 2020 12:09:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Rui Miguel Silva <rui.silva@linaro.org>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-iio@vger.kernel.org, Rui Miguel Silva <rmfrfs@gmail.com>
-Subject: Re: [PATCH v2] dt-bindings: fxas21002c: convert bindings to yaml
-Message-ID: <20201018120046.42689d19@archlinux>
-In-Reply-To: <20201016185707.GA1743713@bogus>
-References: <20201014104926.688666-1-rmfrfs@gmail.com>
-        <20201016185707.GA1743713@bogus>
+To:     Vaishnav M A <vaishnav@beagleboard.org>
+Cc:     knaack.h@gmx.de, ars@metafoo.de, alexandru.ardelean@analog.com,
+        nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jkridner@beagleboard.org,
+        drew@beagleboard.org, robertcnelson@beagleboard.org,
+        rajkovic@mikroe.com
+Subject: Re: [PATCH] iio: light: tsl2563 change of_property_read to
+ device_property_read
+Message-ID: <20201018120916.3819c172@archlinux>
+In-Reply-To: <20201016183219.GA15288@ubuntu>
+References: <20201016183219.GA15288@ubuntu>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,43 +44,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Oct 2020 13:57:07 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Sat, 17 Oct 2020 00:04:27 +0530
+Vaishnav M A <vaishnav@beagleboard.org> wrote:
 
-> On Wed, 14 Oct 2020 11:49:26 +0100, Rui Miguel Silva wrote:
-> > Convert fxas21002c gyroscope sensor bindings documentation to
-> > yaml schema, remove the textual bindings document and update MAINTAINERS entry.
-> > 
-> > Signed-off-by: Rui Miguel Silva <rmfrfs@gmail.com>
-> > ---
-> > v1 -> v2:
-> >    Jonathan Cameron:
-> >        https://lore.kernel.org/linux-iio/20201013153431.000052c9@huawei.com/
-> >        - remove Unit from tittle
-> >        - reword interrupts description
-> >        - drop interrupt-name description
-> >        - add spi example and bindings
-> >        - remove vddxx from required list
-> > 
-> >  .../bindings/iio/gyroscope/nxp,fxas21002c.txt | 31 ------
-> >  .../iio/gyroscope/nxp,fxas21002c.yaml         | 95 +++++++++++++++++++
-> >  MAINTAINERS                                   |  2 +-
-> >  3 files changed, 96 insertions(+), 32 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.txt
-> >  create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/nxp,fxas21002c.yaml
-> >   
+> This patch aims to replace the of_property_read_u32 for reading
+> the amstaos,cover-comp-gain property with device_property_read_u32
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Thanks and Regards,
+> Vaishnav M A
 
-Nice patch.
+Should keep this stuff about the --- to just the patch description as that
+will end up in the git log when I pick up the patch.  You can add
+any extra stuff as notes as long as it is after the --- below.
 
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to maybe poke at.
+> 
+> Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
 
-I'm still not 100% sure if unevaluatedProperties or additionalProperties makes
-sense here, but as Rob's happy, I'm happy :)
+A really minor comment below, but I'd like a couple of header tweaks
+to be part of this patch as well to reflect that we are removing the
+explicit use of of_* in this driver (which is great btw!)
+
+At the moment we are getting the following headers only via indirect
+includes.  As we are using things directly defined in them please add
+
+#include <linux/property.h> (for the device_property_read*)
+#include <linux/mod_devicetable.h> (for the of_device_id table)
 
 Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/light/tsl2563.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> index abc8d7db8dc1..1f1b8b7cefa4 100644
+> --- a/drivers/iio/light/tsl2563.c
+> +++ b/drivers/iio/light/tsl2563.c
+> @@ -703,7 +703,6 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	struct iio_dev *indio_dev;
+>  	struct tsl2563_chip *chip;
+>  	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+> -	struct device_node *np = client->dev.of_node;
+>  	int err = 0;
+>  	u8 id = 0;
+>  
+> @@ -738,13 +737,14 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  
+> -	if (pdata)
+> +	if (pdata) {
+>  		chip->cover_comp_gain = pdata->cover_comp_gain;
+> -	else if (np)
+> -		of_property_read_u32(np, "amstaos,cover-comp-gain",
+> -				     &chip->cover_comp_gain);
+> -	else
+> -		chip->cover_comp_gain = 1;
+> +	} else {
+> +		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
+> +					       &chip->cover_comp_gain);
+> +		if (err)
+> +			chip->cover_comp_gain = 1;
+
+Hmm. This is a small change in logic.  I'm not sure it really matters,
+but should have been called out explicitly in the patch description.
+
+> +	}
+>  
+>  	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
+>  	indio_dev->name = client->name;
 

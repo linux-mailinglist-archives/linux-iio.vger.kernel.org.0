@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03283291724
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66038291726
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbgJRLVo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 07:21:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39342 "EHLO mail.kernel.org"
+        id S1725904AbgJRLZD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 07:25:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726000AbgJRLVo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 07:21:44 -0400
+        id S1725468AbgJRLZD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 07:25:03 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AF8E21582;
-        Sun, 18 Oct 2020 11:21:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8B15F21582;
+        Sun, 18 Oct 2020 11:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603020103;
-        bh=+2+FsSKnH6CMQcWGkMhnPM4N/U6XMQGUBu37VRkxilI=;
+        s=default; t=1603020302;
+        bh=oZu6VT80HxFHWwu2oHGxe7AGUfw2k64LzDtO3GC/w4s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=T5KySgIMGI6NLgJLM+ynb+fcdtwkO5kKJ6rrhcHS3PxadKHkWYIatKIhlERLw8H6e
-         ytm17PgFDyNJdsO3rGxxUzFvTcIjQZz7sLC0n8PZ6mEhxQlPkSx3vVzVGHiRZ/0buS
-         m26cXU4aolVUOjnmOZHrJ4kjaImQWyw3VjDTo6Pw=
-Date:   Sun, 18 Oct 2020 12:21:37 +0100
+        b=DoN/Vebp7h9RETA61lQjdhaDWaCAn6mqRapRrj8YcsY0wdO4qo2ZmjFxbQiaHSv1z
+         6vdNQLofCQd+oX33yqIWFwVuspzAGeYdBRm1FsCFhAT6kiBTZpGBHXKVGQOTXpxQAb
+         ySI0ly19oyf1iPkg7s0JFYriYwN5o6Dz4GZYxfIg=
+Date:   Sun, 18 Oct 2020 12:24:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Vaishnav M A <vaishnav@beagleboard.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        alexandru.ardelean@analog.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jkridner@beagleboard.org,
-        drew@beagleboard.org, robertcnelson@beagleboard.org,
-        rajkovic@mikroe.com
-Subject: Re: [PATCH] iio: light: vcnl4035 add i2c_device_id
-Message-ID: <20201018122137.6f2d0f6c@archlinux>
-In-Reply-To: <20201016184422.GA15952@ubuntu>
-References: <20201016184422.GA15952@ubuntu>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, alexandru.ardelean@analog.com,
+        nish.malpani25@gmail.com, matt.ranostay@konsulko.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com
+Subject: Re: [PATCH v2] iio: light: tsl2563 change of_property_read to
+ device_property_read
+Message-ID: <20201018122457.51a54ffd@archlinux>
+In-Reply-To: <20201018032543.GA27580@ubuntu>
+References: <20201018032543.GA27580@ubuntu>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,66 +44,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 17 Oct 2020 00:14:59 +0530
+On Sun, 18 Oct 2020 08:55:43 +0530
 Vaishnav M A <vaishnav@beagleboard.org> wrote:
 
-> This patch aims to add i2c_device_id for the
-> vcnl4035 driver, while going through the initial driver
-> submission patches, noticed that the i2c_device_id was removed
-> on suggestion (https://lore.kernel.org/patchwork/patch/970970/),
-> will it be possible to consider this patch add the i2c_device_id,
-> so that the device can be instantiated using i2c_new_client_device
-> or say from the userspace?.This will be really helpful in cases
-> where the device tree based description is not possible now(Eg. 
-> a device on a gbphy i2c adapter created by greybus).
+> replace the of_property_read_u32 for reading the amstaos,cover-comp-gain
+> property with device_property_read_u32,allows the driver to
+> get the properties information using the more generic device_property_*
+> helpers and opens the possibility of passing the properties during
+> platform instantiation of the device by a suitably populated
+> struct property_entry.
 > 
-> The particular usecase here is described over this RFC Patch
-> for the mikroBUS driver:
-> https://lore.kernel.org/patchwork/patch/1290148/
-> 
-> Thanks and Regards,
-> 
-> Vaishnav M A
-If you send out a v2 of a patch without there having been any replies
-please reply your self to say you have done so.
+> Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+See review for v1. Most of it still applies, I just hadn't realised
+you'd sent a v2.  As I mentioned on one of your other patches, if
+you send a v2 without any comments on v1, please reply yourself to say
+you have done so.  Otherwise, people may well review the wrong version.
 
-That avoids reviewers looking at the wrong version!
-
-Thanks
+Thanks,
 
 Jonathan
 
-
-
-> 
-> Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
 > ---
->  drivers/iio/light/vcnl4035.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  v2:
+> 	- fix commit message
+>  drivers/iio/light/tsl2563.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-> index 765c44adac57..73a28e30dddc 100644
-> --- a/drivers/iio/light/vcnl4035.c
-> +++ b/drivers/iio/light/vcnl4035.c
-> @@ -652,6 +652,12 @@ static const struct dev_pm_ops vcnl4035_pm_ops = {
->  			   vcnl4035_runtime_resume, NULL)
->  };
+> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> index abc8d7db8dc1..1f1b8b7cefa4 100644
+> --- a/drivers/iio/light/tsl2563.c
+> +++ b/drivers/iio/light/tsl2563.c
+> @@ -703,7 +703,6 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	struct iio_dev *indio_dev;
+>  	struct tsl2563_chip *chip;
+>  	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+> -	struct device_node *np = client->dev.of_node;
+>  	int err = 0;
+>  	u8 id = 0;
 >  
-> +static const struct i2c_device_id vcnl4035_id[] = {
-> +	{ "vcnl4035", 0},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, vcnl4035_id);
-> +
->  static const struct of_device_id vcnl4035_of_match[] = {
->  	{ .compatible = "vishay,vcnl4035", },
->  	{ }
-> @@ -666,6 +672,7 @@ static struct i2c_driver vcnl4035_driver = {
->  	},
->  	.probe  = vcnl4035_probe,
->  	.remove	= vcnl4035_remove,
-> +	.id_table = vcnl4035_id,
->  };
+> @@ -738,13 +737,14 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
 >  
->  module_i2c_driver(vcnl4035_driver);
+> -	if (pdata)
+> +	if (pdata) {
+>  		chip->cover_comp_gain = pdata->cover_comp_gain;
+> -	else if (np)
+> -		of_property_read_u32(np, "amstaos,cover-comp-gain",
+> -				     &chip->cover_comp_gain);
+> -	else
+> -		chip->cover_comp_gain = 1;
+> +	} else {
+> +		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
+> +					       &chip->cover_comp_gain);
+> +		if (err)
+> +			chip->cover_comp_gain = 1;
+> +	}
+>  
+>  	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
+>  	indio_dev->name = client->name;
 

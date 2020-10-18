@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EB0291FA7
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 22:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71DDC291FAE
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 22:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727333AbgJRUBv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 16:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39156 "EHLO
+        id S1728645AbgJRUGw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 16:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727313AbgJRUBv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 16:01:51 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF8DC061755
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:01:51 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id r4so10649098ioh.0
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:01:51 -0700 (PDT)
+        with ESMTP id S1728488AbgJRUGw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 16:06:52 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393DFC0613CE
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:06:52 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id j8so8426820ilk.0
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=nRw0/o5oGZTZDjjB3gqNIBPtxjJHtDVQ+1IUMXih6zw=;
-        b=gvDwqRVNDojHEaRSR9D1CBu8YuHYcAxmjdzaT9DBoFJeXkdNv/dKZqnBe8DOjNgnlL
-         nr/JbAzCYLqeXD3NgU3Ranu+PyyI0jhgr1L1b1NoVja30nViV7obzDbT5Ob7+F15u0gt
-         h00ddz2XJMsMueX17SmCXYR1PvIkF9U6edigDrX0fdupBWOjIUZLVN8+vvrmvuKkOJ6e
-         FUywBdobrBeEXdUlVfVn/PPuwW0wIYir7mEfCTwlxn5/83kQDg39PJWUVgRuTTmnwBeF
-         tdqsfGjU6xR4svByJOpkuWvG1QKrqtlP4M6Jmsjpi8StAPhwYNjDfyAOnUZC8Le+Gw2Y
-         JLcQ==
+        bh=6Q+QZmJpwsedrOmuOwexAkyOHh5e+Tpl5OUShy/OlPs=;
+        b=xySt+MvjPglENyFuBRQOnmr66cLHBJ5yfRSQr6vuGJpUvrkhwagNaKMZSGEaWgpwCR
+         TlIDLVuq4NeZri0lInLdrSe8sUAbMSOwwXMdIUTfmI8INr/IyJxXLNDMgNhw2wo4c0kF
+         YdKhs19l/95pP0J1kzkDdnHdh5aJ5nri8gaxhdIbQ/7xGltX3jK4gbiI9XoE0GPYgLrX
+         65Aji9GQyWyOpJoyVqzRRcJoCgv8ImBdIX1zlZvT8fiQ97XuAzsx9tQEZmqk+/YhCwvL
+         YalbdVBMG/b9oKiyPrzhs2jaQ4D35C1w1VZgOguLoa8vSfoRe/DNJ5/J1gLSeINnAS+f
+         QftQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nRw0/o5oGZTZDjjB3gqNIBPtxjJHtDVQ+1IUMXih6zw=;
-        b=Fw5vQFXyGRiaaErqONL6nuQRy58CDxfpbRDxb4gaZtFrLT3wJdmRst8dgtD/7aKpxS
-         zP4AOcpq6FMOc+WfnhK+u9t9oyYS6wylhvzQ3Ogv/pC2/HfD5SUbBjujmNVeBLPDejBY
-         6mMhymO4dDRsuNM7bSBX/Q7gs3yrdr6rvjyTifBvsI2HRcwn86BJOZcFi2hfnOUjHPo7
-         tSr+ftXzIZFZhyAzBYvVDHnzjSlhIe2ePsbXJ86cNuU+qe09PAY6BQT4gxd3Zp98iAtj
-         gEfTJFMyTuAsfFlL1TZ9HBoxe+iZoIq3nWEz0XuxoUnim0U2FjA8EJC691vvafQBSgLr
-         TXbg==
-X-Gm-Message-State: AOAM5319IyaXo/EnG5JE+ucumCDx5HP0CXvNGTX1mLf2uqOk3Zqkpk4h
-        AsIhH+Ja+iffp5xMddMcjQz3QFc40vINJ9Lwkrxk
-X-Google-Smtp-Source: ABdhPJwSkNVofX2Rs4udoFZfsL1pIQx70wVs4ruhTz3vz35pvUxHZs8N+2Bm/9qad7XzQYL36FuETG0/KDTY+IzxMKU=
-X-Received: by 2002:a02:6cd0:: with SMTP id w199mr9067803jab.121.1603051310571;
- Sun, 18 Oct 2020 13:01:50 -0700 (PDT)
+        bh=6Q+QZmJpwsedrOmuOwexAkyOHh5e+Tpl5OUShy/OlPs=;
+        b=W7lI0Cwo2HIq9fFCpCys3+6oBDuspt4nv8eH9vbh0trX+DU2Vbn2WAutLjOp4CtgqH
+         QOZVjBA/LZHGvhUthmrdW9cU9D2w7Ntt5UMgi3n5Ocwix54FvyozQBoDPAXLYyaq4XKr
+         rmap5hjDjoF2vwxEYZLuhIthoaeUx0fUtt7KVwRYrKXHUDEe4aeDsbx10AYM6r7/kZIw
+         W3/8xkHwnrJIO8CO4QgWppGYEWtCqj1fmSFPcBCRuTtvpkjDk8w5+tBXPv9oNWDKgxqt
+         MUsOZcmVBhzej6oB5c01SeVpfXjQxcwy3scQH88mkLWCl3+UySod4rdE4XuuSR87nSXR
+         +gmw==
+X-Gm-Message-State: AOAM531q4Unnjy2PUcYg5yXRVC9L19elTVOcuAEJepG4iJPhrhfJRo0j
+        o8VMyioq0tZrtX7WkNJVwKFIKGqNvasMjc9U7fbY
+X-Google-Smtp-Source: ABdhPJxCFuvH10WfEmecxe7UGnx4FnMZQgVztmoxowtLqJh6PgpDRXAhi6Pco+Y6CSNr0Ukm72MpdMb5vWfahn2TaX8=
+X-Received: by 2002:a92:9a8c:: with SMTP id c12mr8811075ill.186.1603051611520;
+ Sun, 18 Oct 2020 13:06:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201018150442.GA219064@ubuntu> <CAHp75Vch2jPwZm8gVC6zRs6k=BR23Mb15Q4R4VbpMZ5FwshNLQ@mail.gmail.com>
-In-Reply-To: <CAHp75Vch2jPwZm8gVC6zRs6k=BR23Mb15Q4R4VbpMZ5FwshNLQ@mail.gmail.com>
+References: <20201018151726.GA219649@ubuntu> <CAHp75Vdk4J5t3A6b+w2-7M1zfeA2wkaf_QH_HYWZ2TY4xaKmrw@mail.gmail.com>
+In-Reply-To: <CAHp75Vdk4J5t3A6b+w2-7M1zfeA2wkaf_QH_HYWZ2TY4xaKmrw@mail.gmail.com>
 From:   Vaishnav M A <vaishnav@beagleboard.org>
-Date:   Mon, 19 Oct 2020 01:31:39 +0530
-Message-ID: <CALudOK5Hy3cU6W+yWAgpqxP-27K2MXiwSwR1x3z=mJjq3y3K8w@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: light: vcnl4035 add i2c_device_id
+Date:   Mon, 19 Oct 2020 01:36:40 +0530
+Message-ID: <CALudOK7hTQ3BZEm7mXWMrP1N_VHQoJh3+LucHfrNYB-0BGO_Ag@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: proximity: vl53l0x-i2c add i2c_device_id
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>,
@@ -67,32 +68,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 18, 2020 at 11:59 PM Andy Shevchenko
+On Mon, Oct 19, 2020 at 12:00 AM Andy Shevchenko
 <andy.shevchenko@gmail.com> wrote:
 >
-> On Sun, Oct 18, 2020 at 6:47 PM Vaishnav M A <vaishnav@beagleboard.org> wrote:
+> On Sun, Oct 18, 2020 at 6:53 PM Vaishnav M A <vaishnav@beagleboard.org> wrote:
 > >
 > > Add i2c_device_id table for the vl53l0x-i2c driver,
 > > helps in device instantiation using i2c_new_client_device
->
-> In all your patches please refer to the functions like function().
-> For example, here is i2c_new_client_device().
->
 > > or from userspace in cases where device-tree based description
 > > is not possible now (Example: device on a gbphy i2c adapter
 > > created by greybus)
 >
-> Don't forget proper English punctuation, like periods at the end of sentences.
+> Same comments as per v1.
 >
 > --
 > With Best Regards,
 > Andy Shevchenko
 
-Thank you Andy for your review, I have updated v4 patch with your suggestions,
-https://lore.kernel.org/patchwork/patch/1322219/ (sorry about the
-incorrect driver
-name in the first-line of the commit message in the v3 version). This is
-also fixed in the v4 submission.
+Thank you Andy for your review, I have updated v4 patch with your
+suggestions : https://lore.kernel.org/patchwork/patch/1322218/
 
 Thanks,
 Vaishnav

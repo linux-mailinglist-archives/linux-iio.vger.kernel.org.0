@@ -2,153 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 639222918B4
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 19:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67BF32918CE
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727047AbgJRRxA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 13:53:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36166 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725776AbgJRRxA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 13:53:00 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA3A422255;
-        Sun, 18 Oct 2020 17:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603043579;
-        bh=iQJlPjG3NBfM3PpFtjHDMaFpdxDT0niI2IBbsXp4df4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wu/ddRUXiOt8SEa6Hd3CY/6sRq0dVbeey3QP4XjhVEhs+BX4XNuEot1FmaQPvPa/5
-         sjeLrItjqWnUBmSNNG+Z53mzZe+B/oHRHcpbIEiGPJN5uwAxWodmCKBwSLJCNRWtqV
-         sSUv2EsOHfOyjWyyYVSCqJaDyMdKaN69tpRL9od0=
-Date:   Sun, 18 Oct 2020 18:52:54 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Vladimir Zapolskiy <vz@mleia.com>
-Subject: Re: [PATCH 22/29] dt-bindings:iio:dac:nxp,lpc1850-dac yaml
- conversion.
-Message-ID: <20201018185254.5b7f3e0f@archlinux>
-In-Reply-To: <20201011170749.243680-23-jic23@kernel.org>
-References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-23-jic23@kernel.org>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727105AbgJRSWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 14:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51972 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727094AbgJRSWM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 14:22:12 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B223CC061755;
+        Sun, 18 Oct 2020 11:22:12 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id u3so4303283pjr.3;
+        Sun, 18 Oct 2020 11:22:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UY5ozoK35dRnsBBWPfOvH0U314VRK+4OEsZHw3VNig4=;
+        b=cQr9ttHhvapYCUz+VPP9SA8DkrjAg3KcoyOdt8AGWI2S5vlVuZqUHYvA4y1s8TFd1n
+         kKXJ3Uz8d6h0HR2EbS78JBu2J89I7WgyTYq1jp9jSWmw9JXr8zxjPBW8nEVz6UP+r5Ox
+         fIWE69FB1PnOCqKGZXMNb2DF5j1T0kKrVAnrKWK/GVDwfuyA6yAKwD/kdGD6vxItqBnk
+         9yuXTsvBA5AONiYOZMnRAHxO5riIG5WRu3aaZ1recO2ky98psDl2zKg5iAJttoUXqzPY
+         kFROsIKia9Ao6yQP+AEz/67MkZn7KCtXiFUXcbYtpXHgCtwPCFEguv/HUn6FDnas1qsg
+         9o4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UY5ozoK35dRnsBBWPfOvH0U314VRK+4OEsZHw3VNig4=;
+        b=Ioo9dQ+ohnavZEYSSvWCCaO1XHnsn56OET0R38dKwKbinAM/VixyVJNk3gR8RBPZe2
+         99BAn6vKrE+kvBZEOeUst1/fwjX/AmhnaXbihzeQJFHcgS9UF98EO05na6e5Ki+B0GNk
+         lVcemVkwla15ZGTQHhpZHDx8zP3AtS+dB/hca+9mK00wzblyCPN0+hv2BI5wa+oYwgrQ
+         VBr7F53hRqOmB+7r+UONudEJk5A2zAYiABzv0t3w1P0MNt1MtB9EJ4pxg4boSQFeNHAJ
+         LyOt0XF7u3r8pSrnMAd4p8XgxGwham1YQltixDYSjdDaJWghHRfy3D7yM8RI2MkHbQnG
+         5xwQ==
+X-Gm-Message-State: AOAM532y28JsFbc5MdV0wcXWPomOMBYMAAvD1rSMrEFztI7xaxPHXTif
+        QjLsy8jMVbQZ+IA5OaeM6dsbLq9MNfBn+qDp5/U=
+X-Google-Smtp-Source: ABdhPJzziWgcBdW4Gqfv/w3u1LFvfuJxbfkeyl1rvFENQL/8QBWnJtxQH+3Rih3k2WOZNL+/XdNjn/hPOaD6F+GiVf0=
+X-Received: by 2002:a17:90a:be11:: with SMTP id a17mr13468957pjs.181.1603045332185;
+ Sun, 18 Oct 2020 11:22:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CAHp75VfQ=fFn_r43VPV0uPCkozS2K=VQsuSEyj0mF+7QVsFQuA@mail.gmail.com>
+ <1602983516-22913-1-git-send-email-LinoSanfilippo@gmx.de> <1602983516-22913-2-git-send-email-LinoSanfilippo@gmx.de>
+In-Reply-To: <1602983516-22913-2-git-send-email-LinoSanfilippo@gmx.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 18 Oct 2020 21:21:56 +0300
+Message-ID: <CAHp75VcJGMNnU4j8S=J5wk1yTMgDLJcg-SD9Nh415L_TJju9zA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio:core: Introduce unlocked version of iio_map_array_unregister()
+To:     Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 11 Oct 2020 18:07:42 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, Oct 18, 2020 at 4:13 AM Lino Sanfilippo <LinoSanfilippo@gmx.de> wrote:
+>
+> Introduce an unlocked version of iio_map_array_unregister(). This function
+> can help to unwind in case of error while the iio_map_list_lock mutex is
+> held.
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Very similar binding to that for the ADC on the same device.
-> Conversion from txt to yaml format.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Joachim Eastwood <manabian@gmail.com>
-Joachim's email is bouncing, so I'll list myself as maintainer for this
-one.  @Vladimir, you are listed as maintainer of the lpc18xx parts in
-general.  Any views on maintaining this binding?
+Both looks good to me, FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-+CC 	Vladimir Zapolskiy 
+if Jonathan is okay with them.
+
+> Signed-off-by: Lino Sanfilippo <LinoSanfilippo@gmx.de>
 > ---
->  .../bindings/iio/dac/lpc1850-dac.txt          | 19 ------
->  .../bindings/iio/dac/nxp,lpc1850-dac.yaml     | 58 +++++++++++++++++++
->  2 files changed, 58 insertions(+), 19 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt b/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt
-> deleted file mode 100644
-> index 42db783c4e75..000000000000
-> --- a/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -NXP LPC1850 DAC bindings
-> -
-> -Required properties:
-> -- compatible: Should be "nxp,lpc1850-dac"
-> -- reg: Offset and length of the register set for the ADC device
-> -- interrupts: The interrupt number for the ADC device
-> -- clocks: The root clock of the ADC controller
-> -- vref-supply: The regulator supply ADC reference voltage
-> -- resets: phandle to reset controller and line specifier
-> -
-> -Example:
-> -dac: dac@400e1000 {
-> -	compatible = "nxp,lpc1850-dac";
-> -	reg = <0x400e1000 0x1000>;
-> -	interrupts = <0>;
-> -	clocks = <&ccu1 CLK_APB3_DAC>;
-> -	vref-supply = <&reg_vdda>;
-> -	resets = <&rgu 42>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml b/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml
-> new file mode 100644
-> index 000000000000..2728ec3433e0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml
-> @@ -0,0 +1,58 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/nxp,lpc1850-dac.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>  drivers/iio/inkern.c | 27 ++++++++++++++++++---------
+>  1 file changed, 18 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index ede99e0..39c1d63 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -24,6 +24,21 @@ struct iio_map_internal {
+>  static LIST_HEAD(iio_map_list);
+>  static DEFINE_MUTEX(iio_map_list_lock);
+>
+> +static int iio_map_array_unregister_locked(struct iio_dev *indio_dev)
+> +{
+> +       int ret = -ENODEV;
+> +       struct iio_map_internal *mapi, *next;
 > +
-> +title: NXP LPC1850 DAC bindings
+> +       list_for_each_entry_safe(mapi, next, &iio_map_list, l) {
+> +               if (indio_dev == mapi->indio_dev) {
+> +                       list_del(&mapi->l);
+> +                       kfree(mapi);
+> +                       ret = 0;
+> +               }
+> +       }
+> +       return ret;
+> +}
 > +
-> +maintainers:
-> +  - Joachim Eastwood <manabian@gmail.com>
+>  int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
+>  {
+>         int i = 0, ret = 0;
+> @@ -57,18 +72,12 @@ EXPORT_SYMBOL_GPL(iio_map_array_register);
+>   */
+>  int iio_map_array_unregister(struct iio_dev *indio_dev)
+>  {
+> -       int ret = -ENODEV;
+> -       struct iio_map_internal *mapi, *next;
+> +       int ret;
+>
+>         mutex_lock(&iio_map_list_lock);
+> -       list_for_each_entry_safe(mapi, next, &iio_map_list, l) {
+> -               if (indio_dev == mapi->indio_dev) {
+> -                       list_del(&mapi->l);
+> -                       kfree(mapi);
+> -                       ret = 0;
+> -               }
+> -       }
+> +       ret = iio_map_array_unregister_locked(indio_dev);
+>         mutex_unlock(&iio_map_list_lock);
 > +
-> +description:
-> +  Supports the DAC found on the LPC1850 SoC.
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,lpc1850-dac
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  vref-supply: true
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - vref-supply
-> +  - resets
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/lpc18xx-ccu.h>
-> +    soc {
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +        dac: dac@400e1000 {
-> +            compatible = "nxp,lpc1850-dac";
-> +            reg = <0x400e1000 0x1000>;
-> +            interrupts = <0>;
-> +            clocks = <&ccu1 CLK_APB3_DAC>;
-> +            vref-supply = <&reg_vdda>;
-> +            resets = <&rgu 42>;
-> +        };
-> +    };
-> +...
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(iio_map_array_unregister);
+> --
+> 2.7.4
+>
 
+
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -2,91 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DDC291FAE
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 22:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 739B7291FD9
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 22:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728645AbgJRUGw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 16:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
+        id S1726803AbgJRUgB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 16:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728488AbgJRUGw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 16:06:52 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393DFC0613CE
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:06:52 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id j8so8426820ilk.0
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:06:52 -0700 (PDT)
+        with ESMTP id S1725904AbgJRUgB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 16:36:01 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF28DC0613CE
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:35:59 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id e10so4775424pfj.1
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 13:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6Q+QZmJpwsedrOmuOwexAkyOHh5e+Tpl5OUShy/OlPs=;
-        b=xySt+MvjPglENyFuBRQOnmr66cLHBJ5yfRSQr6vuGJpUvrkhwagNaKMZSGEaWgpwCR
-         TlIDLVuq4NeZri0lInLdrSe8sUAbMSOwwXMdIUTfmI8INr/IyJxXLNDMgNhw2wo4c0kF
-         YdKhs19l/95pP0J1kzkDdnHdh5aJ5nri8gaxhdIbQ/7xGltX3jK4gbiI9XoE0GPYgLrX
-         65Aji9GQyWyOpJoyVqzRRcJoCgv8ImBdIX1zlZvT8fiQ97XuAzsx9tQEZmqk+/YhCwvL
-         YalbdVBMG/b9oKiyPrzhs2jaQ4D35C1w1VZgOguLoa8vSfoRe/DNJ5/J1gLSeINnAS+f
-         QftQ==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=rqhubITZucLjIPmaYRNb6YYx2VTwfGAAxlULYuBZwr4=;
+        b=QfdY8x17n/94SlduisjHjd5UHou8ch9k1JiCT9D/RwXyXGAyy2sWeGDF5sN+yfNeNH
+         89vw/c33WQOiqqbMas45A609nadok8b8IuIFYCKYRTl3ueXllzEt/S5vyYlrcSHlWi2z
+         +KMTYh1t81VFDLh9OsPW7VkoP4sD1cb+p+FubTq76KT3CqVuvEQkOlOepvgLDEU7wX2H
+         d8+4B8MzyfFIcseWeJ33wW0R43PdoFV8s/RXGC65SiKWdwMXTqzzccneLkKqIsFnyhgH
+         77MkKbl3deSl2pdnFCWYtU6ancCUk76E/j4EGjoPaq/jvZ/bbMyzoyihZM4DB3z5q1iU
+         xjYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6Q+QZmJpwsedrOmuOwexAkyOHh5e+Tpl5OUShy/OlPs=;
-        b=W7lI0Cwo2HIq9fFCpCys3+6oBDuspt4nv8eH9vbh0trX+DU2Vbn2WAutLjOp4CtgqH
-         QOZVjBA/LZHGvhUthmrdW9cU9D2w7Ntt5UMgi3n5Ocwix54FvyozQBoDPAXLYyaq4XKr
-         rmap5hjDjoF2vwxEYZLuhIthoaeUx0fUtt7KVwRYrKXHUDEe4aeDsbx10AYM6r7/kZIw
-         W3/8xkHwnrJIO8CO4QgWppGYEWtCqj1fmSFPcBCRuTtvpkjDk8w5+tBXPv9oNWDKgxqt
-         MUsOZcmVBhzej6oB5c01SeVpfXjQxcwy3scQH88mkLWCl3+UySod4rdE4XuuSR87nSXR
-         +gmw==
-X-Gm-Message-State: AOAM531q4Unnjy2PUcYg5yXRVC9L19elTVOcuAEJepG4iJPhrhfJRo0j
-        o8VMyioq0tZrtX7WkNJVwKFIKGqNvasMjc9U7fbY
-X-Google-Smtp-Source: ABdhPJxCFuvH10WfEmecxe7UGnx4FnMZQgVztmoxowtLqJh6PgpDRXAhi6Pco+Y6CSNr0Ukm72MpdMb5vWfahn2TaX8=
-X-Received: by 2002:a92:9a8c:: with SMTP id c12mr8811075ill.186.1603051611520;
- Sun, 18 Oct 2020 13:06:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201018151726.GA219649@ubuntu> <CAHp75Vdk4J5t3A6b+w2-7M1zfeA2wkaf_QH_HYWZ2TY4xaKmrw@mail.gmail.com>
-In-Reply-To: <CAHp75Vdk4J5t3A6b+w2-7M1zfeA2wkaf_QH_HYWZ2TY4xaKmrw@mail.gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=rqhubITZucLjIPmaYRNb6YYx2VTwfGAAxlULYuBZwr4=;
+        b=Xgtk9dbRWY/YNyW1GKpgR9x7O1Rep5mZbHxgHzUtJtj1ypPaJlJaMvminGN+5AH7am
+         kT85P+Ot1rIS5Ks1o6QtECFu7EV/HoAKZ+1ldvgOflCDNsnMM7MDV2wXWXmISiDeriKY
+         eoY60DH3hfGcMnCMUpkwbwIv0DMMPK/DmbBD5C7Q0atCPM9mGd0TZRAg2YpRXn6JUlTa
+         5HNQh6VMW9hv9KCf6zFXpiTx5MN4QyQKhayb5Z0c+uDkU1QPBGZApD+P9EfcTsHC2BXE
+         5O0Y1v7yjLOoInIKK/MA0Lvvo5aR0bpGYV4HfbwNP/LUXS7xFE76NcOB2KCTnaYM+9yU
+         kJag==
+X-Gm-Message-State: AOAM5307m3+OFvc07FhTHOgcLm/CrMKSvQHPNjE5dhWlv8UALvVtYzG3
+        4afoeQTGjiZktSUoradmTGMh
+X-Google-Smtp-Source: ABdhPJzNCQrhHHahLFjNTXfy3QIMvULkSoY+gQdYzYFLr/RkPnnzftp97vs9Kz8+vTuSq6a2diY81A==
+X-Received: by 2002:a63:715:: with SMTP id 21mr11488068pgh.13.1603053359289;
+        Sun, 18 Oct 2020 13:35:59 -0700 (PDT)
+Received: from ubuntu ([116.68.78.80])
+        by smtp.gmail.com with ESMTPSA id l13sm2292891pgp.25.2020.10.18.13.35.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2020 13:35:58 -0700 (PDT)
+Date:   Mon, 19 Oct 2020 02:05:52 +0530
 From:   Vaishnav M A <vaishnav@beagleboard.org>
-Date:   Mon, 19 Oct 2020 01:36:40 +0530
-Message-ID: <CALudOK7hTQ3BZEm7mXWMrP1N_VHQoJh3+LucHfrNYB-0BGO_Ag@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: proximity: vl53l0x-i2c add i2c_device_id
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        =?UTF-8?Q?Ivan_Rajkovi=C4=87?= <rajkovic@mikroe.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     jic23@kernel.org, andy.shevchenko@gmail.com, wsa@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, alexandru.ardelean@analog.com,
+        matt.ranostay@konsulko.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com,
+        vaishnav@beagleboard.org
+Subject: [PATCH v4] iio:light:tsl2563 use generic fw accessors
+Message-ID: <20201018203552.GA816421@ubuntu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 19, 2020 at 12:00 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sun, Oct 18, 2020 at 6:53 PM Vaishnav M A <vaishnav@beagleboard.org> wrote:
-> >
-> > Add i2c_device_id table for the vl53l0x-i2c driver,
-> > helps in device instantiation using i2c_new_client_device
-> > or from userspace in cases where device-tree based description
-> > is not possible now (Example: device on a gbphy i2c adapter
-> > created by greybus)
->
-> Same comments as per v1.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Replace of_property_read_u32() with device_property_read_u32(),
+when reading the amstaos,cover-comp-gain.This opens up the
+possibility of passing the properties during platform instantiation
+of the device by a suitable populated struct property_entry.
+Additionally, a minor change in logic is added to remove the
+of_node present check.
 
-Thank you Andy for your review, I have updated v4 patch with your
-suggestions : https://lore.kernel.org/patchwork/patch/1322218/
+Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+---
+ v4:
+	-update commit message, fix punctuation.
+	-update to a shorter commit title, used for similar changes
+	 within the subsystem, like in 00fa493b9989
+	 ("iio:proximity:as3935: Drop of_match_ptr and use generic fw accessors")
+ v3:
+        -modify commit message for readability, mention minor logic change
+        -include  mod_devicetable.h and property.h headers
+ v2:
+        -fix commit message
+ drivers/iio/light/tsl2563.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-Thanks,
-Vaishnav
+diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+index abc8d7db8dc1..5bf2bfbc5379 100644
+--- a/drivers/iio/light/tsl2563.c
++++ b/drivers/iio/light/tsl2563.c
+@@ -12,6 +12,8 @@
+  */
+ 
+ #include <linux/module.h>
++#include <linux/mod_devicetable.h>
++#include <linux/property.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+@@ -703,7 +705,6 @@ static int tsl2563_probe(struct i2c_client *client,
+ 	struct iio_dev *indio_dev;
+ 	struct tsl2563_chip *chip;
+ 	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+-	struct device_node *np = client->dev.of_node;
+ 	int err = 0;
+ 	u8 id = 0;
+ 
+@@ -738,13 +739,14 @@ static int tsl2563_probe(struct i2c_client *client,
+ 	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+ 	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+ 
+-	if (pdata)
++	if (pdata) {
+ 		chip->cover_comp_gain = pdata->cover_comp_gain;
+-	else if (np)
+-		of_property_read_u32(np, "amstaos,cover-comp-gain",
+-				     &chip->cover_comp_gain);
+-	else
+-		chip->cover_comp_gain = 1;
++	} else {
++		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
++					       &chip->cover_comp_gain);
++		if (err)
++			chip->cover_comp_gain = 1;
++	}
+ 
+ 	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
+ 	indio_dev->name = client->name;
+-- 
+2.25.1
+

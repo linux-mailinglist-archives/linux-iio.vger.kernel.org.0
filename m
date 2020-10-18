@@ -2,85 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA25C291537
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 03:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB06029155D
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 05:17:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440095AbgJRBOe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Oct 2020 21:14:34 -0400
-Received: from mout.gmx.net ([212.227.15.18]:46069 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440084AbgJRBOe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 17 Oct 2020 21:14:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1602983624;
-        bh=LJP+KriKdGjpMcY1CtvW6omWMCmOlJNTjPQaEG7uDPE=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=YSkGdx+ie1qdxT/9uFS7Srwj+B0qXhAsV1tftl1kJfYMsAnKV5X6T6GbSQzDMDB0O
-         2iU++AOA/ALKT451hJo3vESTni6nxkN4NcaFsr7ubrQDMRVvN6CzVCj3tzAcpM1h8q
-         A6as1ZY+mJghHY4z5PaV0y5gq18x8ER5YtEKBotw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from Venus.fritz.box ([78.42.220.31]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mz9Un-1kFqKh1c5D-00wDl2; Sun, 18
- Oct 2020 03:13:44 +0200
-From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
-To:     andy.shevchenko@gmail.com
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Subject: [PATCH 2/2] iio:core: In iio_map_array_register() cleanup in case of error.
-Date:   Sun, 18 Oct 2020 03:11:56 +0200
-Message-Id: <1602983516-22913-3-git-send-email-LinoSanfilippo@gmx.de>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1602983516-22913-1-git-send-email-LinoSanfilippo@gmx.de>
-References: <CAHp75VfQ=fFn_r43VPV0uPCkozS2K=VQsuSEyj0mF+7QVsFQuA@mail.gmail.com>
- <1602983516-22913-1-git-send-email-LinoSanfilippo@gmx.de>
+        id S1725904AbgJRDRl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Oct 2020 23:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725272AbgJRDRk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Oct 2020 23:17:40 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708C0C061755
+        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:17:40 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id bf6so1250990plb.4
+        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=Ap55+k0X65QDFkUFbJaD0x0HZL0267/P8A6Qo+hg04E=;
+        b=UvR0Keh20DwvExsmI1kJn1PE+XrVUrZ7nFBQkw2z5Xe3xMNlsgKPi+n/djf69X8XD8
+         lNF/baQC3KxlkW7lPLR9z8/NSz0uOpLcNKthGGV4lYX7dTprm4Q/UC6/DSoXiebgW0xJ
+         1rKbhcJ6kwWKrdzUk4yIU9TcfI0qIVGCGbUZ8ILQOLJ/UJ0byxhdiD8l3TUD6ytLAcv3
+         ne98xzCc8lt93vwNr6jkVbBQ1diWe941x5mnG87sfL9w+fNTDq6p1pNnBqYPfFOdEMmm
+         BTYx/cX1lRqt8Xd3BLL+uCnt/AeQDmeQwFNZM+TAHvBsjooH5dAgdDFzhko1J/6zkjNR
+         FRoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=Ap55+k0X65QDFkUFbJaD0x0HZL0267/P8A6Qo+hg04E=;
+        b=sJYRYDqC/e93Y0ufi7v6KfkBpgkqUnu1MsLJETghHlvp2pCTnZOe/r4vKnYmEJP8aI
+         nys/DYwchT6+q5wdP9+Ln4ZbzKZQxz5p3eXYUShK9X80y8Lb+i2X7r134Heqp3j3hiDo
+         28DjT+/hilJH+xgRp+LwSDfPqvGTiNYRgJ2xZF6DKoZv+WF0k6SJqmXMfEKPMWXxf5fe
+         PHMZGjHDNzPQst0k7v1Osjk3ssqjXk0dF0gs+7osSSNKp9yvW0+Je+oEgCJmogFqWute
+         sHJyCzEWRCsPd8782UqUJhBnnOWypoHdG3JLhMTWtMuAbVIqr68FQ/vmF17QTJwolj/g
+         s0Hw==
+X-Gm-Message-State: AOAM533WL2s/g3d7/Oze51BHHhsIyXWPlAL/wU1TCo/u0fIOaTgXIzEZ
+        HgwNOxQ7HBN7Sxj+KhzRG4jj
+X-Google-Smtp-Source: ABdhPJyt6tarnmNiBF6KZgtHhZZo8v6bzh9VCB5fQfTD38VIABcCDRAVXJgkiioTHQC28xZ4mgbjNg==
+X-Received: by 2002:a17:902:b68d:b029:d3:e6e4:3d99 with SMTP id c13-20020a170902b68db02900d3e6e43d99mr11577728pls.62.1602991058793;
+        Sat, 17 Oct 2020 20:17:38 -0700 (PDT)
+Received: from ubuntu ([116.68.78.80])
+        by smtp.gmail.com with ESMTPSA id g1sm7396375pfm.124.2020.10.17.20.17.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2020 20:17:38 -0700 (PDT)
+Date:   Sun, 18 Oct 2020 08:47:32 +0530
+From:   Vaishnav M A <vaishnav@beagleboard.org>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, alexandru.ardelean@analog.com,
+        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com
+Subject: [PATCH v2] iio: proximity: as3935 change of_property_read to
+ device_property_read
+Message-ID: <20201018031732.GA27204@ubuntu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/G0i5tr9fAo76BkwxEOgAf5BtvgmaSTud7gTCL5d5JZvpeNnkQj
- 5fYQS7JXj4Inygb2B60ThlJq4ER43D3Ky9bfkPQNu54S0H5EsnLgoekzdwtfVl/9XfJvf4B
- W2f0sRKsj1TSSbN28MHoKIv8jJ8ncL+xUbSbS41sErvj2PXIBAXzV5KMaCm13tju25/hfxc
- bm4TQ6lzYZ1Z8GC2aW97w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DboLyUSQS+Q=:LnWLtiC+oQ5Nwl0WPbpwqU
- WNLy1ztDvFoTdpXl+PPBvzx+B8OsFN4odB1aXf9h38XSI+ddsnAiw2TVnfN/Ft1NriskZ3gNm
- zRpLrm4ds9uSCrgeN0PihpXZ2TR3bd+vXIHhU86wJ5m19sFZHVK+deOO6NG/eVQfiqnW8EeHZ
- F4nTtsBwE+gPfUbHIOtJ0eDIACUYo6gH6MK5bYw4rDYu63EvhkwhYHtg62iY9kEZIr0TkZkXD
- UVU6zuuiyoLFtV57xUKnlkbv4JniALpZDomXD4DqkF+mR1uovTB0dOfqM3H7/HPM35DWIMRpv
- I7lpm3rC5jTh5A+lph/1Q7+uVH9FOPjZPLdsno6Z1kd8kKJcFmGSEvZgh9CnLzQRMwHWOmApo
- Klmuzpq5dUfH9IjnuZ05UOwWh2O/7kB/mNMKviivhkBrEC0GU3BXcozPIwGJ5x/CYzPOT9AYQ
- DI91ei30k8y87CTMcleWnYivtn+kl1karu6GSsZvFXnyyXUEQ1v1c0d2ivMpmMosQO0/EYgWM
- NRdazR9ygCTFsRc6MgVl4GyfclY76BmcSXhdheidepN5oWf/pfeSE8X2vgrPfywZVC6T7SCQr
- fYzd9VViSIjwPIrHNlQ/3TjfBfR4MJFhQmPTCeTe443e4/9KLILFh0uCKdjdLAyJHXulZ8KfV
- QYg9jwfuTgkwu1Ws8lhDo/Zy26q14HcJTUlj1VmDfc/O0N20wULYwJgifoFR/kVcqHDZsCJli
- JVVWut2/DxtbnlyE0EhRQiDdl1vZyhduCXNJEXi7Zb+RRdIS3HVtqpd0Ko+U2EPvj+X1OF198
- /2+Um96FTLdBPy7kyx3EbzjVJ5z67tz3haGMAGOddTokVkMMac6X3lmndNdb9sObm+CPHVnoB
- ee0LZVA8ooB4/IlY0MuQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In function iio_map_array_register() properly rewind in case of error.
+replace the of_property_read_u32 for reading
+the ams,tuning-capacitor-pf, ams,nflwdth properties with
+device_property_read_u32, allows the driver to get the properties
+information using the more generic device_property_* helpers and opens
+the possibility of passing the properties during platform instantiation
+of the device by a suitably populated struct property_entry
 
-Signed-off-by: Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
 ---
- drivers/iio/inkern.c | 2 ++
- 1 file changed, 2 insertions(+)
+ v2:
+	- fix commit message
+ drivers/iio/proximity/as3935.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 39c1d63..fe30bcb 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -60,6 +60,8 @@ int iio_map_array_register(struct iio_dev *indio_dev, str=
-uct iio_map *maps)
- 		i++;
+diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
+index c339e7339ec8..7e47ddf89a56 100644
+--- a/drivers/iio/proximity/as3935.c
++++ b/drivers/iio/proximity/as3935.c
+@@ -355,7 +355,6 @@ static int as3935_probe(struct spi_device *spi)
+ 	struct iio_dev *indio_dev;
+ 	struct iio_trigger *trig;
+ 	struct as3935_state *st;
+-	struct device_node *np = spi->dev.of_node;
+ 	int ret;
+ 
+ 	/* Be sure lightning event interrupt is specified */
+@@ -374,7 +373,7 @@ static int as3935_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, indio_dev);
+ 	mutex_init(&st->lock);
+ 
+-	ret = of_property_read_u32(np,
++	ret = device_property_read_u32(&spi->dev,
+ 			"ams,tuning-capacitor-pf", &st->tune_cap);
+ 	if (ret) {
+ 		st->tune_cap = 0;
+@@ -390,7 +389,7 @@ static int as3935_probe(struct spi_device *spi)
+ 		return -EINVAL;
  	}
- error_ret:
-+	if (ret)
-+		iio_map_array_unregister_locked(indio_dev);
- 	mutex_unlock(&iio_map_list_lock);
-=20
- 	return ret;
---=20
-2.7.4
+ 
+-	ret = of_property_read_u32(np,
++	ret = device_property_read_u32(&spi->dev,
+ 			"ams,nflwdth", &st->nflwdth_reg);
+ 	if (!ret && st->nflwdth_reg > AS3935_NFLWDTH_MASK) {
+ 		dev_err(&spi->dev,
+-- 
+2.25.1
 

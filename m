@@ -2,122 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E94352917FD
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 17:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF06291803
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 17:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726772AbgJRPGm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 11:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50232 "EHLO
+        id S1726939AbgJRPRd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 11:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgJRPGm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 11:06:42 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFEABC061755
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id 67so9965566iob.8
-        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
+        with ESMTP id S1725776AbgJRPRd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 11:17:33 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ECA1C061755
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:17:33 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id y14so4462745pfp.13
+        for <linux-iio@vger.kernel.org>; Sun, 18 Oct 2020 08:17:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=czqkN2JOMIdx3mElJVahK+RV1sW2EcADLO8fEOnd2gY=;
-        b=mOxpLHHYKQ/9MAts3WpueP7YGC5Tun1HFH3VKXZgKDwJK1H36gxsO4ubHorxcqk1oc
-         pbE0aAnvFYngbcN/jByjxx71P5QnOjcvW22dCVU6o6w29DPkIDCqXu9LnrnfVI0CfHzo
-         ThxPLd4aZ1zjFG/yqPXPDnWfAaG/Ulrt1Gy6syHznLnTjHI/13M+JDsaKOvSD8bg5qXL
-         /OhfNQjW1bDxLB5n4MS74dYPqSeKtcRTqoMi2WF2wTTv63C2mMk4OwZP9h1G96rfxq77
-         lxQCWZLyPrUzkz11xv1d5gQNJTW/CFhZr8IDTxmVyC15fdjWpAx2qHmouOgHLoyDY18L
-         Qm7Q==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=TKhi0Y+b/JoDtYReYISOZrk9LHF70X4eVbWQlM2Wsc4=;
+        b=wo4bvHi7mYRfXrilILRU5/DvNHpwqxLxTNLBfWZs81sd+9NokCkEZMm9ODyc5z5TL3
+         msJOVlAPLik7BBRydvHK0rI7iuBqt5g15/40R3ozDHLyW7LcTCsn2scv9IApGfSO7wgl
+         CusCz1EdyxraQxdAep+mRZJwXTaxzc+TxMakBHjevAKo0CHe054Y8KWkr+DPe9xa6JC+
+         OsXtfy7kqaK9XDFzIsV1Cd/ypGP2InQgFzdSyXlsXh+TF5YJ2ro1Si4SPD77X//fMSXZ
+         ib4iFfy/G5FW5LxeVlx6XAHK7ecGJuHvS6rWok88PvLr+9KfX0xccT8S5c9bteHGox0d
+         99Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=czqkN2JOMIdx3mElJVahK+RV1sW2EcADLO8fEOnd2gY=;
-        b=JMa2KC30KnPO4mNAyFNbQ/kKxpOd7tNyppa6rGxhknKb4lF+qVae08Y5882MkWNbrJ
-         pYaSV8K1lFczB2EQSiTUfqBG9TtYkEM3IFBwfHFQSsiXpfKwRDM8r2Baq9Ol2BNZ/Mwn
-         U4eRUas0kJHai3vQjl6/3Ce/vYNzLJkqGjN3CHXjXGhqLehzmmfAqFcKbK/U5KbvGYqM
-         /XeXrfSmWvTAC+JTERD+v2Hec22dWdKLx/oJQrtPvUUjUJMuybl5FKuEXE3MinGzCNxM
-         491PuWPPG9f8Bvu9z7jtn+R46CTr53PZVbaWi+M6FB9WIJu7BY/WMC5sT+hGQ1q4VuB4
-         Rg+Q==
-X-Gm-Message-State: AOAM532k2Wb2CV+nAf7ISCZNYUpMVBe1XmJNQzK2vsExWDTS+09cllLB
-        KRwbIUfTlVVSOwqkS5AWX9oLo7AP2CCVheaHQ+ru
-X-Google-Smtp-Source: ABdhPJxTmtCnVTbI2p+LMLIuIbMjWoDpTYT8mP5zpcvmq/R2e4Cp3/i29Cz0eVW2BcFfRfCP2mOKgFfx3h9Yw2dcZO4=
-X-Received: by 2002:a6b:b208:: with SMTP id b8mr8121415iof.36.1603033601269;
- Sun, 18 Oct 2020 08:06:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201018033602.GA27912@ubuntu> <20201018123651.635e2ec3@archlinux>
-In-Reply-To: <20201018123651.635e2ec3@archlinux>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=TKhi0Y+b/JoDtYReYISOZrk9LHF70X4eVbWQlM2Wsc4=;
+        b=rL+pGjIIkwBxSemDpvtkM3yuJbx/R3mDKgfmBf4hQiVvkJVVQalDUndGL8P31dnVUX
+         Oevqh2Pqhc+vz0vTN7/QPNGb2vq68TQ444to4CApyFxO/5mQZmaMaywukDa/DsHQ9VYk
+         3qMsyUThu7ECyr/o5C7rHWt6UZwCYLjWQCyJLG++Hdauilgmte+8u7WiNU+X3L/4Obhh
+         eiBJrADVrrYIpZuNTFaUm/JhCR8iMNl1/MO56M36yOPiIvHd7ytbFhaDVB70Me8YaekS
+         G7qKV6Pi1NjBy4HJOU5JGYSi/NsTbTAkd/Hgi2MG05fdw7GzDRU1d1jhkbvQvK0ze4/m
+         Sd9A==
+X-Gm-Message-State: AOAM531EAAfM7BEvKwLVFZEUST1yjx03kqQ7EBOh203dBYygVV3r0Q5u
+        Ea9Ouxqi0wi9FsiNtwGOmnnN
+X-Google-Smtp-Source: ABdhPJyMEHz0Jy+GD7TT844zzyZxt9mKuV13O3F52FgvEQlK5/WiLPGhmyA4ym6B5OVGSNFaICJFhg==
+X-Received: by 2002:a65:4787:: with SMTP id e7mr10821635pgs.169.1603034252506;
+        Sun, 18 Oct 2020 08:17:32 -0700 (PDT)
+Received: from ubuntu ([116.68.78.80])
+        by smtp.gmail.com with ESMTPSA id y22sm9366733pfr.62.2020.10.18.08.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2020 08:17:31 -0700 (PDT)
+Date:   Sun, 18 Oct 2020 20:47:26 +0530
 From:   Vaishnav M A <vaishnav@beagleboard.org>
-Date:   Sun, 18 Oct 2020 20:36:30 +0530
-Message-ID: <CALudOK425LJXphTA1RH7A45=5=m5S-7r-5xpeanjpwzFBUMXTg@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: light: vcnl4035 add i2c_device_id
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        =?UTF-8?Q?Ivan_Rajkovi=C4=87?= <rajkovic@mikroe.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     jic23@kernel.org, wsa@kernel.org, songqiang1304521@gmail.com,
+        knaack.h@gmx.de, lars@metafoo.de, alexandru.ardelean@analog.com,
+        matt.ranostay@konsulko.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com,
+        vaishnav@beagleboard.org
+Subject: [PATCH v3] iio: proximity: vl53l0x-i2c add i2c_device_id
+Message-ID: <20201018151726.GA219649@ubuntu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 18, 2020 at 5:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun, 18 Oct 2020 09:06:02 +0530
-> Vaishnav M A <vaishnav@beagleboard.org> wrote:
->
-> > add i2c_device_id for the vcnl4035 driver so that
-> > the device can be instantiated using i2c_new_client_device
-> > or from userspace, useful in cases where device tree based
-> > description is not possible now(Eg. a device on a gbphy i2c
-> > adapter created by greybus)
-> >
-> > Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
-> Rewrite the description and this should be fine.
->
-> Thanks,
->
-> Jonathan
->
-Thank you Jonathan for the Review, I have submitted v3 patch
-with the modified description: https://lore.kernel.org/patchwork/patch/1322195/
+Add i2c_device_id table for the vl53l0x-i2c driver,
+helps in device instantiation using i2c_new_client_device
+or from userspace in cases where device-tree based description
+is not possible now (Example: device on a gbphy i2c adapter
+created by greybus)
 
-Thanks,
-Vaishnav
-> > ---
-> >  v2:
-> >       - fix commit message
-> >  drivers/iio/light/vcnl4035.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-> > index 765c44adac57..73a28e30dddc 100644
-> > --- a/drivers/iio/light/vcnl4035.c
-> > +++ b/drivers/iio/light/vcnl4035.c
-> > @@ -652,6 +652,12 @@ static const struct dev_pm_ops vcnl4035_pm_ops = {
-> >                          vcnl4035_runtime_resume, NULL)
-> >  };
-> >
-> > +static const struct i2c_device_id vcnl4035_id[] = {
-> > +     { "vcnl4035", 0},
-> > +     { }
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, vcnl4035_id);
-> > +
-> >  static const struct of_device_id vcnl4035_of_match[] = {
-> >       { .compatible = "vishay,vcnl4035", },
-> >       { }
-> > @@ -666,6 +672,7 @@ static struct i2c_driver vcnl4035_driver = {
-> >       },
-> >       .probe  = vcnl4035_probe,
-> >       .remove = vcnl4035_remove,
-> > +     .id_table = vcnl4035_id,
-> >  };
-> >
-> >  module_i2c_driver(vcnl4035_driver);
->
+Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+---
+ v3:
+	-modify commit message for readability
+	 as suggested by Jonathan Cameron
+ v2:
+	-fix commit message
+ drivers/iio/proximity/vl53l0x-i2c.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+index 5fbda9475ba9..7c29d4cae24a 100644
+--- a/drivers/iio/proximity/vl53l0x-i2c.c
++++ b/drivers/iio/proximity/vl53l0x-i2c.c
+@@ -143,6 +143,12 @@ static int vl53l0x_probe(struct i2c_client *client)
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
++static const struct i2c_device_id vl53l0x_id[] = {
++	{ "vl53l0x", 0},
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, vl53l0x_id);
++
+ static const struct of_device_id st_vl53l0x_dt_match[] = {
+ 	{ .compatible = "st,vl53l0x", },
+ 	{ }
+@@ -155,6 +161,7 @@ static struct i2c_driver vl53l0x_driver = {
+ 		.of_match_table = st_vl53l0x_dt_match,
+ 	},
+ 	.probe_new = vl53l0x_probe,
++	.id_table = vl53l0x_id,
+ };
+ module_i2c_driver(vl53l0x_driver);
+ 
+-- 
+2.25.1
+

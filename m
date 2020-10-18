@@ -2,61 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB06029155D
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 05:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CAF0291560
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 05:25:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725904AbgJRDRl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Oct 2020 23:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
+        id S1726112AbgJRDZv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Oct 2020 23:25:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725272AbgJRDRk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Oct 2020 23:17:40 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708C0C061755
-        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:17:40 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id bf6so1250990plb.4
-        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:17:40 -0700 (PDT)
+        with ESMTP id S1726000AbgJRDZv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Oct 2020 23:25:51 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD74CC061755
+        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:25:50 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id w11so3265650pll.8
+        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:25:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=Ap55+k0X65QDFkUFbJaD0x0HZL0267/P8A6Qo+hg04E=;
-        b=UvR0Keh20DwvExsmI1kJn1PE+XrVUrZ7nFBQkw2z5Xe3xMNlsgKPi+n/djf69X8XD8
-         lNF/baQC3KxlkW7lPLR9z8/NSz0uOpLcNKthGGV4lYX7dTprm4Q/UC6/DSoXiebgW0xJ
-         1rKbhcJ6kwWKrdzUk4yIU9TcfI0qIVGCGbUZ8ILQOLJ/UJ0byxhdiD8l3TUD6ytLAcv3
-         ne98xzCc8lt93vwNr6jkVbBQ1diWe941x5mnG87sfL9w+fNTDq6p1pNnBqYPfFOdEMmm
-         BTYx/cX1lRqt8Xd3BLL+uCnt/AeQDmeQwFNZM+TAHvBsjooH5dAgdDFzhko1J/6zkjNR
-         FRoQ==
+        bh=kmtW1KHQUcgwd9+ADcDQxKs+FBGL12TyOP2a0AHn8c4=;
+        b=Ze5Kr6j2vM6n25tsfW616nYmhWHQrVmSGCpAIW62xtRFJYbEIapeaEiotMh40IZiee
+         cZyFMcvjIqOCMYUoaZ10EJ/dwcnbcMt81QqPyGtnzM9eOBfZ32YOkXu5V23m6JkOinHA
+         zWPcLRXhRKgYoo/CaAS4FswwPl/sx8HEjBwnrS1eyeMk4CjCOAB3D8CWpnGmvIxan5RR
+         NBoWPM7lwQzFiB5pdctD4om8jfqTii1z+oKA2SULRcSIhuUA7dKaYy4mgmPfAwOM5zSv
+         hMYlXpLOH+HQX0O3EMS7OsNrNYzBGnAEYtqDPYhmgSCr1LQP7kvVLJ7OjOL0JrtBin0O
+         iw1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition;
-        bh=Ap55+k0X65QDFkUFbJaD0x0HZL0267/P8A6Qo+hg04E=;
-        b=sJYRYDqC/e93Y0ufi7v6KfkBpgkqUnu1MsLJETghHlvp2pCTnZOe/r4vKnYmEJP8aI
-         nys/DYwchT6+q5wdP9+Ln4ZbzKZQxz5p3eXYUShK9X80y8Lb+i2X7r134Heqp3j3hiDo
-         28DjT+/hilJH+xgRp+LwSDfPqvGTiNYRgJ2xZF6DKoZv+WF0k6SJqmXMfEKPMWXxf5fe
-         PHMZGjHDNzPQst0k7v1Osjk3ssqjXk0dF0gs+7osSSNKp9yvW0+Je+oEgCJmogFqWute
-         sHJyCzEWRCsPd8782UqUJhBnnOWypoHdG3JLhMTWtMuAbVIqr68FQ/vmF17QTJwolj/g
-         s0Hw==
-X-Gm-Message-State: AOAM533WL2s/g3d7/Oze51BHHhsIyXWPlAL/wU1TCo/u0fIOaTgXIzEZ
-        HgwNOxQ7HBN7Sxj+KhzRG4jj
-X-Google-Smtp-Source: ABdhPJyt6tarnmNiBF6KZgtHhZZo8v6bzh9VCB5fQfTD38VIABcCDRAVXJgkiioTHQC28xZ4mgbjNg==
-X-Received: by 2002:a17:902:b68d:b029:d3:e6e4:3d99 with SMTP id c13-20020a170902b68db02900d3e6e43d99mr11577728pls.62.1602991058793;
-        Sat, 17 Oct 2020 20:17:38 -0700 (PDT)
+        bh=kmtW1KHQUcgwd9+ADcDQxKs+FBGL12TyOP2a0AHn8c4=;
+        b=LWPZr6AFxKAYgpOGOrTMnlG2VBUN8+SSjEPZrWcGL9MS0l9yKAdpNGP6YKUCGZaa1D
+         xKCwYPEgpbYcIcXigbqb8K6w89/fj6Kcewu3b1Dk5XDV6uQkVIqO14sCQDuk1RxVDQmq
+         Vl7SU2vg7ZCXouvJBMahzr40Yy1yL1rnU79y9gnaF3KMZW4NK2+akPR6RSa9V2AYB5gI
+         Ziibcxc15KGz7y62trGrUX3Xef3iG9y4KZOzR8so/YEsDlyCiP0pEVUe2Y8WHKxwiypq
+         T0KqHnII3gJWPXz+IOG+OPlpxN+zZ1sGE+lr1lMrwUI/DU7CSyTOmaV1BkbMdINGkHa+
+         O9Yg==
+X-Gm-Message-State: AOAM533Lt8r2u5W91INeX8zHhvtS/DBrlM1PGzMwUlC854D3nyhrXhJo
+        IZ3NWq4P6OJDKusjGuXJHxOj
+X-Google-Smtp-Source: ABdhPJxopzSCnUzIfpdbFWqTe+6dDeWBbgiVV9/GoPjb4IYtcZWdST8vQilaXnMiIcS4ZzVGByTPGw==
+X-Received: by 2002:a17:90a:cb05:: with SMTP id z5mr11544583pjt.92.1602991550387;
+        Sat, 17 Oct 2020 20:25:50 -0700 (PDT)
 Received: from ubuntu ([116.68.78.80])
-        by smtp.gmail.com with ESMTPSA id g1sm7396375pfm.124.2020.10.17.20.17.34
+        by smtp.gmail.com with ESMTPSA id z10sm2783144pjz.49.2020.10.17.20.25.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2020 20:17:38 -0700 (PDT)
-Date:   Sun, 18 Oct 2020 08:47:32 +0530
+        Sat, 17 Oct 2020 20:25:49 -0700 (PDT)
+Date:   Sun, 18 Oct 2020 08:55:43 +0530
 From:   Vaishnav M A <vaishnav@beagleboard.org>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, alexandru.ardelean@analog.com,
-        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
+        alexandru.ardelean@analog.com, nish.malpani25@gmail.com,
+        matt.ranostay@konsulko.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     jkridner@beagleboard.org, drew@beagleboard.org,
-        robertcnelson@beagleboard.org, rajkovic@mikroe.com
-Subject: [PATCH v2] iio: proximity: as3935 change of_property_read to
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com,
+        vaishnav@beagleboard.org
+Subject: [PATCH v2] iio: light: tsl2563 change of_property_read to
  device_property_read
-Message-ID: <20201018031732.GA27204@ubuntu>
+Message-ID: <20201018032543.GA27580@ubuntu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -64,50 +65,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-replace the of_property_read_u32 for reading
-the ams,tuning-capacitor-pf, ams,nflwdth properties with
-device_property_read_u32, allows the driver to get the properties
-information using the more generic device_property_* helpers and opens
-the possibility of passing the properties during platform instantiation
-of the device by a suitably populated struct property_entry
+replace the of_property_read_u32 for reading the amstaos,cover-comp-gain
+property with device_property_read_u32,allows the driver to
+get the properties information using the more generic device_property_*
+helpers and opens the possibility of passing the properties during
+platform instantiation of the device by a suitably populated
+struct property_entry.
 
 Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
 ---
  v2:
 	- fix commit message
- drivers/iio/proximity/as3935.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/light/tsl2563.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-index c339e7339ec8..7e47ddf89a56 100644
---- a/drivers/iio/proximity/as3935.c
-+++ b/drivers/iio/proximity/as3935.c
-@@ -355,7 +355,6 @@ static int as3935_probe(struct spi_device *spi)
+diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+index abc8d7db8dc1..1f1b8b7cefa4 100644
+--- a/drivers/iio/light/tsl2563.c
++++ b/drivers/iio/light/tsl2563.c
+@@ -703,7 +703,6 @@ static int tsl2563_probe(struct i2c_client *client,
  	struct iio_dev *indio_dev;
- 	struct iio_trigger *trig;
- 	struct as3935_state *st;
--	struct device_node *np = spi->dev.of_node;
- 	int ret;
+ 	struct tsl2563_chip *chip;
+ 	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+-	struct device_node *np = client->dev.of_node;
+ 	int err = 0;
+ 	u8 id = 0;
  
- 	/* Be sure lightning event interrupt is specified */
-@@ -374,7 +373,7 @@ static int as3935_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, indio_dev);
- 	mutex_init(&st->lock);
+@@ -738,13 +737,14 @@ static int tsl2563_probe(struct i2c_client *client,
+ 	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+ 	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
  
--	ret = of_property_read_u32(np,
-+	ret = device_property_read_u32(&spi->dev,
- 			"ams,tuning-capacitor-pf", &st->tune_cap);
- 	if (ret) {
- 		st->tune_cap = 0;
-@@ -390,7 +389,7 @@ static int as3935_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	}
+-	if (pdata)
++	if (pdata) {
+ 		chip->cover_comp_gain = pdata->cover_comp_gain;
+-	else if (np)
+-		of_property_read_u32(np, "amstaos,cover-comp-gain",
+-				     &chip->cover_comp_gain);
+-	else
+-		chip->cover_comp_gain = 1;
++	} else {
++		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
++					       &chip->cover_comp_gain);
++		if (err)
++			chip->cover_comp_gain = 1;
++	}
  
--	ret = of_property_read_u32(np,
-+	ret = device_property_read_u32(&spi->dev,
- 			"ams,nflwdth", &st->nflwdth_reg);
- 	if (!ret && st->nflwdth_reg > AS3935_NFLWDTH_MASK) {
- 		dev_err(&spi->dev,
+ 	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
+ 	indio_dev->name = client->name;
 -- 
 2.25.1
 

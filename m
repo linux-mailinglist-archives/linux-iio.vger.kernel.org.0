@@ -2,90 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C762918E2
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C98B2918EE
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727380AbgJRSdZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 14:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53674 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726689AbgJRSdY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 14:33:24 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F69C061755;
-        Sun, 18 Oct 2020 11:33:24 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id t4so1225053plq.13;
-        Sun, 18 Oct 2020 11:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0SrAGDyFK2BtNvaUQ65CcmVzLfIt/f5Hvduu3nRwUdw=;
-        b=VB2Ag15GmAzpJXuXh/iym02MciTot9l2fl+pc6XM5bOK7OPRdiykb7AKYo9fIUnRP7
-         hOWMciGEd1qdenktWa0UyCr0Kv/wSy6LjWPGLt+a+F5xN9pI8MXwvUhXasGbLmmJzExL
-         cMFPu0rd/1lehBji8g7bez6LDDQ8lNS4Dlumq7aUwdkhpsIB137fEoTbYR0uThA/IclT
-         EvWIMYTXSyoVVR8zDfrj0C2g3SsWj0imX5MF0nbeXA/z2XsEcg8PF2Zofp2kK332ljDp
-         5K3w/TntEfYGYI0PfLG4/HPNCSE7wDQSdeLNzOVfTmBs1FyL7nj8QcdHRYCWprALypao
-         Vpyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0SrAGDyFK2BtNvaUQ65CcmVzLfIt/f5Hvduu3nRwUdw=;
-        b=SLWxDGy6O+8e6oqkYeDboT/YfEiIvVqbmUf3l1xYp6RUA6LuNjpMpoGK6+RGYMQI3j
-         lOU0WfQ4AvcdwIoktDo+zYIWQyxFJAAHMjKWRCL4+YBbCzX494nyWpdIwXxDS/c0KvBS
-         vfSs1Jdk7/AVSg2CIxgD2bqQIyk3DXJiIf55xxFQZqdMo22GgbyDTo6ATFvIDvoPYED7
-         Pm89BAklBYFaMR2iqhuewmLxuXI+rgy6oU20oTutJY5G2DTwHux4udGX7069UXarH/im
-         iICPzo8o4vbxeKxhsW3g87wAN1UKHlHxsMz7yfXLjSA0mErKqdP/n+YJHYQKqlbZbVuY
-         8icg==
-X-Gm-Message-State: AOAM5338GLrxk/ljCr4ytMSHDsbnRkWzqQPZTT6YRZp+e9cZVHU8Axzj
-        4Bvh9gf747fqkogPh9MIjgoCZhif2bSuTJMd5kw=
-X-Google-Smtp-Source: ABdhPJypeDUZ9reAGTE+LRn4S1EdN7M3XMYdbpqrqhgMlq3vVZ/xmPqYOcYlt663OzGWlvWpihVjCdE36fP7laIhiLA=
-X-Received: by 2002:a17:90a:be11:: with SMTP id a17mr13500911pjs.181.1603046003874;
- Sun, 18 Oct 2020 11:33:23 -0700 (PDT)
+        id S1727487AbgJRSy2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 14:54:28 -0400
+Received: from mleia.com ([178.79.152.223]:50262 "EHLO mail.mleia.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727486AbgJRSy1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 14:54:27 -0400
+X-Greylist: delayed 591 seconds by postgrey-1.27 at vger.kernel.org; Sun, 18 Oct 2020 14:54:27 EDT
+Received: from mail.mleia.com (localhost [127.0.0.1])
+        by mail.mleia.com (Postfix) with ESMTP id 04EF1411E0F;
+        Sun, 18 Oct 2020 18:44:36 +0000 (UTC)
+Received: from [192.168.43.55] (83-245-236-133-nat-p.elisa-mobile.fi [83.245.236.133])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by mail.mleia.com (Postfix) with ESMTPSA id 61A92411E0D;
+        Sun, 18 Oct 2020 18:44:34 +0000 (UTC)
+Subject: Re: [PATCH 22/29] dt-bindings:iio:dac:nxp,lpc1850-dac yaml
+ conversion.
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Joachim Eastwood <manabian@gmail.com>
+References: <20201011170749.243680-1-jic23@kernel.org>
+ <20201011170749.243680-23-jic23@kernel.org>
+From:   Vladimir Zapolskiy <vz@mleia.com>
+Message-ID: <fba099e8-869d-71c9-886f-1b565c855115@mleia.com>
+Date:   Sun, 18 Oct 2020 21:44:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-References: <20201018171545.3190476-1-fparent@baylibre.com> <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com>
-In-Reply-To: <CAHp75VfJUhA3WmmirctmrieQfZKSNerFa=nwPmBYvffXUTRp9A@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 18 Oct 2020 21:33:08 +0300
-Message-ID: <CAHp75VdFw5jy10QSOFbJVyObqEmiaavFM=BFd92kw1AH4rMxqw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: mediatek: fix unset field
-To:     Fabien Parent <fparent@baylibre.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, chun-hung.wu@mediatek.com,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201011170749.243680-23-jic23@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20201018_184436_040563_459E3C54 
+X-CRM114-Status: UNSURE (   9.19  )
+X-CRM114-Notice: Please train this message. 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 18, 2020 at 9:31 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sun, Oct 18, 2020 at 8:16 PM Fabien Parent <fparent@baylibre.com> wrote:
-> >
-> > dev_comp field is used in a couple of places but it is never set. This
-> > results in kernel oops when dereferencing a NULL pointer. Set the
-> > `dev_comp` field correctly in the probe function.
-> >
-> > Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
-> >
-> > Signed-off-by: Fabien Parent <fparent@baylibre.com>
->
-> Shouldn't be a blank line in the tag block.
->
-> I think Jonathan can fix it, but be more careful in the future.
+Hi Jonathan,
 
-One more serious issue, you forgot to add tags you have gotten in the
-previous round.
+On 10/11/20 8:07 PM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Very similar binding to that for the ADC on the same device.
+> Conversion from txt to yaml format.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Joachim Eastwood <manabian@gmail.com>
+> ---
+>   .../bindings/iio/dac/lpc1850-dac.txt          | 19 ------
+>   .../bindings/iio/dac/nxp,lpc1850-dac.yaml     | 58 +++++++++++++++++++
+>   2 files changed, 58 insertions(+), 19 deletions(-)
+> 
 
--- 
-With Best Regards,
-Andy Shevchenko
+the conversion looks totally correct, thank you.
+
+Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+
+--
+Best wishes,
+Vladimir

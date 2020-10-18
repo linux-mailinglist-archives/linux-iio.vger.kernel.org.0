@@ -2,71 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C98B2918EE
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 20:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EACC291907
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 21:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727487AbgJRSy2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 14:54:28 -0400
-Received: from mleia.com ([178.79.152.223]:50262 "EHLO mail.mleia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727486AbgJRSy1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 14:54:27 -0400
-X-Greylist: delayed 591 seconds by postgrey-1.27 at vger.kernel.org; Sun, 18 Oct 2020 14:54:27 EDT
-Received: from mail.mleia.com (localhost [127.0.0.1])
-        by mail.mleia.com (Postfix) with ESMTP id 04EF1411E0F;
-        Sun, 18 Oct 2020 18:44:36 +0000 (UTC)
-Received: from [192.168.43.55] (83-245-236-133-nat-p.elisa-mobile.fi [83.245.236.133])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by mail.mleia.com (Postfix) with ESMTPSA id 61A92411E0D;
-        Sun, 18 Oct 2020 18:44:34 +0000 (UTC)
-Subject: Re: [PATCH 22/29] dt-bindings:iio:dac:nxp,lpc1850-dac yaml
- conversion.
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Joachim Eastwood <manabian@gmail.com>
-References: <20201011170749.243680-1-jic23@kernel.org>
- <20201011170749.243680-23-jic23@kernel.org>
-From:   Vladimir Zapolskiy <vz@mleia.com>
-Message-ID: <fba099e8-869d-71c9-886f-1b565c855115@mleia.com>
-Date:   Sun, 18 Oct 2020 21:44:32 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S1727533AbgJRS7x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 14:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727427AbgJRS7w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Oct 2020 14:59:52 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790A6C061755;
+        Sun, 18 Oct 2020 11:59:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=q0BhqrN3gbd6Z80uxUuHxnuOGNa3MQpvn/ujKpbjoKc=; b=qhWiWAYm9fZ2KNDR/Yk3WeXFl4
+        HF2RciAjYHBQMCf3sjKhvFkXSfibnOaNYa7rSxO4GAjMdOb5lKFie8w5W48ySlrw8CCYSSnOZO0Xg
+        5v+vzHZ7K/VxCxY2aBAso6UvZLXpaapi00aBgR18RXogoXyWfK3p9m9265NrgW55bmABmFf/ljB+D
+        9Af5uL1UZOzL5n8T3eza+cGiO5HDs2I27gnorvuwnA1XSsP05jdLks+n6C8PrE6p/2IOOkRu9s0Qf
+        2gQIITEDGF8BYWCD3hQsOGqb9beW/Q62vFU/IQef0kDvAQTCEweywjgtWsVjiKxR3wbF0iuVRtPwK
+        m1h79KbA==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kUDuB-0007Wk-NT; Sun, 18 Oct 2020 18:59:43 +0000
+Date:   Sun, 18 Oct 2020 19:59:43 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     trix@redhat.com
+Cc:     linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        clang-built-linux@googlegroups.com, linux-iio@vger.kernel.org,
+        nouveau@lists.freedesktop.org, storagedev@microchip.com,
+        dri-devel@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
+        ath10k@lists.infradead.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        usb-storage@lists.one-eyed-alien.net,
+        linux-watchdog@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-nvdimm@lists.01.org, amd-gfx@lists.freedesktop.org,
+        linux-acpi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-pci@vger.kernel.org, spice-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-nfc@lists.01.org, linux-pm@vger.kernel.org,
+        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-gpio@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-amlogic@lists.infradead.org,
+        openipmi-developer@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-crypto@vger.kernel.org, patches@opensource.cirrus.com,
+        bpf@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        linux-power@fi.rohmeurope.com
+Subject: Re: [Ocfs2-devel] [RFC] treewide: cleanup unreachable breaks
+Message-ID: <20201018185943.GM20115@casper.infradead.org>
+References: <20201017160928.12698-1-trix@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20201011170749.243680-23-jic23@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20201018_184436_040563_459E3C54 
-X-CRM114-Status: UNSURE (   9.19  )
-X-CRM114-Notice: Please train this message. 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201017160928.12698-1-trix@redhat.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
+> clang has a number of useful, new warnings see
+> https://urldefense.com/v3/__https://clang.llvm.org/docs/DiagnosticsReference.html__;!!GqivPVa7Brio!Krxz78O3RKcB9JBMVo_F98FupVhj_jxX60ddN6tKGEbv_cnooXc1nnBmchm-e_O9ieGnyQ$ 
 
-On 10/11/20 8:07 PM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Please get your IT department to remove that stupidity.  If you can't,
+please send email from a non-Red Hat email address.
+
+I don't understand why this is a useful warning to fix.  What actual
+problem is caused by the code below?
+
+> return and break
 > 
-> Very similar binding to that for the ADC on the same device.
-> Conversion from txt to yaml format.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Joachim Eastwood <manabian@gmail.com>
-> ---
->   .../bindings/iio/dac/lpc1850-dac.txt          | 19 ------
->   .../bindings/iio/dac/nxp,lpc1850-dac.yaml     | 58 +++++++++++++++++++
->   2 files changed, 58 insertions(+), 19 deletions(-)
-> 
+>  	switch (c->x86_vendor) {
+>  	case X86_VENDOR_INTEL:
+>  		intel_p5_mcheck_init(c);
+>  		return 1;
+> -		break;
 
-the conversion looks totally correct, thank you.
+Sure, it's unnecessary, but it's not masking a bug.  It's not unclear.
+Why do we want to enable this warning?
 
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
-
---
-Best wishes,
-Vladimir

@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1F929171E
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFF7291721
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 13:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbgJRLJW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Oct 2020 07:09:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37294 "EHLO mail.kernel.org"
+        id S1726563AbgJRLRT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 07:17:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726513AbgJRLJW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Oct 2020 07:09:22 -0400
+        id S1726513AbgJRLRS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 07:17:18 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C694120897;
-        Sun, 18 Oct 2020 11:09:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C1EF20897;
+        Sun, 18 Oct 2020 11:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603019361;
-        bh=2efbi6jPngvBZEM/jssvFYg3y1VW8zbKPIPxMZ6Fhto=;
+        s=default; t=1603019838;
+        bh=2x9QQQ+p1QGXLCTHordyTRu3qNwmtssCrze1nGajCK8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AYNrOki5MxY9y4AB04vzYvGf4JlvOYUIY6eC2F+y5sJMIQqKKna+xFIEcogJZuxFj
-         z0uhBPAfoajXaU32l33ZsV3c2hGu2T2lHs94xm/P4JMvupnA3kecAHcBSKagdd8U/5
-         sSS78Rci3Elt65v1il1XvPaC5AuRJQXyaVQVF4VQ=
-Date:   Sun, 18 Oct 2020 12:09:16 +0100
+        b=XSjUDOXVDx+BO8bAYfQCPknrDT1V5XQRE03XKcdroFVKpJ4LyesI2alzYGutbivAb
+         g3iNGxegVuNJi6xy+oVsReHXngOnFGJJHl+99a1FosgZuEwjbfWq7ObpqURQIhyInM
+         fR0LwOPf/mXEVEvJOHN5svg4P4UIKNPI1NYR5FB0=
+Date:   Sun, 18 Oct 2020 12:17:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Vaishnav M A <vaishnav@beagleboard.org>
-Cc:     knaack.h@gmx.de, ars@metafoo.de, alexandru.ardelean@analog.com,
-        nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jkridner@beagleboard.org,
-        drew@beagleboard.org, robertcnelson@beagleboard.org,
-        rajkovic@mikroe.com
-Subject: Re: [PATCH] iio: light: tsl2563 change of_property_read to
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        alexandru.ardelean@analog.com, linus.walleij@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com
+Subject: Re: [PATCH v2] iio: proximity: as3935 change of_property_read to
  device_property_read
-Message-ID: <20201018120916.3819c172@archlinux>
-In-Reply-To: <20201016183219.GA15288@ubuntu>
-References: <20201016183219.GA15288@ubuntu>
+Message-ID: <20201018121712.0393cab9@archlinux>
+In-Reply-To: <20201018031732.GA27204@ubuntu>
+References: <20201018031732.GA27204@ubuntu>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,75 +44,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 17 Oct 2020 00:04:27 +0530
+On Sun, 18 Oct 2020 08:47:32 +0530
 Vaishnav M A <vaishnav@beagleboard.org> wrote:
 
-> This patch aims to replace the of_property_read_u32 for reading
-> the amstaos,cover-comp-gain property with device_property_read_u32
-> 
-> Thanks and Regards,
-> Vaishnav M A
+A very similar change was made recently in
+00fa493b9989 ("iio:proximity:as3935: Drop of_match_ptr and use generic fw accessors")
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=00fa493b99894b930e431c05a9dba294c5189120
 
-Should keep this stuff about the --- to just the patch description as that
-will end up in the git log when I pick up the patch.  You can add
-any extra stuff as notes as long as it is after the --- below.
+Review follows for reference as I wrote it before remembering the above!
+
+> replace the of_property_read_u32 for reading
+> the ams,tuning-capacitor-pf, ams,nflwdth properties with
+> device_property_read_u32, allows the driver to get the properties
+> information using the more generic device_property_* helpers and opens
+> the possibility of passing the properties during platform instantiation
+> of the device by a suitably populated struct property_entry
+
+Please format this to aid readability.
+
+Replace of_property_read_u32() with device_property_read_u32,
+when reading the ams,tuning-capacitor-pf and ams,nflwdth properties.
+This opens up the possibility of passing the properties during platform
+instantiation of the device by a suitable populated struct property_entry.
+
+
+As in your other patch, please add the header property.h.
 
 > 
 > Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
-
-A really minor comment below, but I'd like a couple of header tweaks
-to be part of this patch as well to reflect that we are removing the
-explicit use of of_* in this driver (which is great btw!)
-
-At the moment we are getting the following headers only via indirect
-includes.  As we are using things directly defined in them please add
-
-#include <linux/property.h> (for the device_property_read*)
-#include <linux/mod_devicetable.h> (for the of_device_id table)
-
-Thanks,
-
-Jonathan
-
 > ---
->  drivers/iio/light/tsl2563.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  v2:
+> 	- fix commit message
+>  drivers/iio/proximity/as3935.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
-> index abc8d7db8dc1..1f1b8b7cefa4 100644
-> --- a/drivers/iio/light/tsl2563.c
-> +++ b/drivers/iio/light/tsl2563.c
-> @@ -703,7 +703,6 @@ static int tsl2563_probe(struct i2c_client *client,
+> diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
+> index c339e7339ec8..7e47ddf89a56 100644
+> --- a/drivers/iio/proximity/as3935.c
+> +++ b/drivers/iio/proximity/as3935.c
+> @@ -355,7 +355,6 @@ static int as3935_probe(struct spi_device *spi)
 >  	struct iio_dev *indio_dev;
->  	struct tsl2563_chip *chip;
->  	struct tsl2563_platform_data *pdata = client->dev.platform_data;
-> -	struct device_node *np = client->dev.of_node;
->  	int err = 0;
->  	u8 id = 0;
+>  	struct iio_trigger *trig;
+>  	struct as3935_state *st;
+> -	struct device_node *np = spi->dev.of_node;
+>  	int ret;
 >  
-> @@ -738,13 +737,14 @@ static int tsl2563_probe(struct i2c_client *client,
->  	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
->  	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  	/* Be sure lightning event interrupt is specified */
+> @@ -374,7 +373,7 @@ static int as3935_probe(struct spi_device *spi)
+>  	spi_set_drvdata(spi, indio_dev);
+>  	mutex_init(&st->lock);
 >  
-> -	if (pdata)
-> +	if (pdata) {
->  		chip->cover_comp_gain = pdata->cover_comp_gain;
-> -	else if (np)
-> -		of_property_read_u32(np, "amstaos,cover-comp-gain",
-> -				     &chip->cover_comp_gain);
-> -	else
-> -		chip->cover_comp_gain = 1;
-> +	} else {
-> +		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
-> +					       &chip->cover_comp_gain);
-> +		if (err)
-> +			chip->cover_comp_gain = 1;
-
-Hmm. This is a small change in logic.  I'm not sure it really matters,
-but should have been called out explicitly in the patch description.
-
-> +	}
+> -	ret = of_property_read_u32(np,
+> +	ret = device_property_read_u32(&spi->dev,
+>  			"ams,tuning-capacitor-pf", &st->tune_cap);
+>  	if (ret) {
+>  		st->tune_cap = 0;
+> @@ -390,7 +389,7 @@ static int as3935_probe(struct spi_device *spi)
+>  		return -EINVAL;
+>  	}
 >  
->  	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
->  	indio_dev->name = client->name;
+> -	ret = of_property_read_u32(np,
+> +	ret = device_property_read_u32(&spi->dev,
+>  			"ams,nflwdth", &st->nflwdth_reg);
+>  	if (!ret && st->nflwdth_reg > AS3935_NFLWDTH_MASK) {
+>  		dev_err(&spi->dev,
 

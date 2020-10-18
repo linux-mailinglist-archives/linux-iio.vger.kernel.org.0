@@ -2,129 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0640C291570
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 05:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA7C291621
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Oct 2020 07:43:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725294AbgJRDmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Oct 2020 23:42:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725275AbgJRDmu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Oct 2020 23:42:50 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE40C061755
-        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:42:48 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id r4so9112498ioh.0
-        for <linux-iio@vger.kernel.org>; Sat, 17 Oct 2020 20:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XkSGQdL943VDrsmdb10J5hX95hPmKoJSkrx0ICPNPW0=;
-        b=TCnFUUJA6ByeCjESWJiknlx0A9asFOS/Rh1WDSbB+B2yBoASTB37VGBFuUo+K1ecz1
-         qKYaHeW/Hjqf30ZBArkJaoXz9hpEe71q+nupYlxzj0hbl/sJoRs3eyk3cKPEHMdF7kyU
-         vmC4KS1HSEPQdkUu9UOksa5ESXscA18ugjLvwgeKPlSMIrS3rigzBGTzaTrUsyiVZslF
-         hmD+S2lKxHngwyTEloVWPojBvTyZdD99WTJIQcr3UfUtz8PSwkGlOdJagNRTtD37mUrx
-         zP53q1nyPthMXKPwb/Cz7ruklAYlHZyb7vI3PwnMVRU5JhIVVVu7IFVwVBiqpIi0+zz4
-         MaNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XkSGQdL943VDrsmdb10J5hX95hPmKoJSkrx0ICPNPW0=;
-        b=Fro+gCObOSjg/ARXmRWc/b6T4vhHhWKQhN7A24/XNV+qlAxTY3lQwtzbxdPlznyfv1
-         qdUnx8mZIma//9DwkSRZp5pw1QRrDbtJ2JGcBI9F7eZoqbLDXlw2mZgrmcmixP5MlTTV
-         8js5HujJdJ0obUSNx6zAzlOXYZHEzXOBfdWgBBHL+YwSnskbBS3hUFVNUO4nPq9MFaQF
-         3Ucq047IauHRINWoDNehPpBHDXgJaCZbUk5mP2obH4V2+DrkzWJTE7G5nF0/3DLp27B7
-         jTbeVARJ5lraBJV3x6utln2xH4jOBzUaFJFRvRdVeOevt0rFdkAE3jo4zRmNSAgE9o0n
-         tcuA==
-X-Gm-Message-State: AOAM530ebB7+VmSabPd3OyRc2WgNBYJ5AbGphbteOZm5lXrkaqUdH5Kj
-        O5Uqqa1VlQJE+HYsORPTw38mKy/OKcTelInD7whD
-X-Google-Smtp-Source: ABdhPJyKt2vu+UQe7mohE7fpE2xNkZWK/MOsP5aidY1Da89fHr8wu1ssg4rqURcYAKDAs7OIgsG6cerK0+m+hq6WPrw=
-X-Received: by 2002:a6b:bfc7:: with SMTP id p190mr7044490iof.121.1602992568129;
- Sat, 17 Oct 2020 20:42:48 -0700 (PDT)
+        id S1726137AbgJRFnh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Oct 2020 01:43:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45394 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725275AbgJRFng (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Oct 2020 01:43:36 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 781412080D;
+        Sun, 18 Oct 2020 05:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602999815;
+        bh=xQx4tam510oViG0aS6IAIECEgE6lGctfYht63oAFTjQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=w5E1+nGVmBfju9sqafA7RNAyWyGXNV3glWIi0a1uVAyl5PpHYhnZwSlrCnlNiRfzs
+         cfV4uO4ZitYRPtno4rRqk/s62SY+Vkk0iEk8aerfp+YXmT6bAocVlLg03Vxy6aXm6p
+         C7/g4QRFCPJ09/zXowenG6SzN/MQpYZKW+T/2i1s=
+Date:   Sun, 18 Oct 2020 07:43:32 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     trix@redhat.com
+Cc:     linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        nouveau@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
+        linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        storagedev@microchip.com, devel@driverdev.osuosl.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net,
+        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        bpf@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        alsa-devel@alsa-project.org, clang-built-linux@googlegroups.com
+Subject: Re: [RFC] treewide: cleanup unreachable breaks
+Message-ID: <20201018054332.GB593954@kroah.com>
+References: <20201017160928.12698-1-trix@redhat.com>
 MIME-Version: 1.0
-References: <20201016184002.GA15797@ubuntu> <CAJCx=g=3YczXwHzw4+pvDwiBdx8mo8qf=ss0_KC1W3uOANr0Vw@mail.gmail.com>
-In-Reply-To: <CAJCx=g=3YczXwHzw4+pvDwiBdx8mo8qf=ss0_KC1W3uOANr0Vw@mail.gmail.com>
-From:   Vaishnav M A <vaishnav@beagleboard.org>
-Date:   Sun, 18 Oct 2020 09:12:37 +0530
-Message-ID: <CALudOK6y9Svb=Mo1gnVyp1eFdPFqy1B0PknigozrAmTWdpjAAw@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: as3935 change of_property_read to device_property_read
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        =?UTF-8?Q?Ivan_Rajkovi=C4=87?= <rajkovic@mikroe.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201017160928.12698-1-trix@redhat.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 18, 2020 at 3:57 AM Matt Ranostay
-<matt.ranostay@konsulko.com> wrote:
->
-> On Fri, Oct 16, 2020 at 11:41 AM Vaishnav M A <vaishnav@beagleboard.org> wrote:
-> >
-> >
-> > This patch aims to replace the of_property_read_u32 for reading
-> > the ams,tuning-capacitor-pf, ams,nflwdth properties with
-> > device_property_read_u32.
-> >
-> > Thanks and Regards,
-> > Vaishnav M A
->
-> Could you explain a bit more in the commit message why this is needed?
->
-> Also you pop comments that shouldn't be in the commit message below
-> the "---" line :)
->
-Thanks for pointing this out, sorry for the mistake, I have updated the commit
-message in the new v2 patch:
- https://lore.kernel.org/patchwork/patch/1322170/
-> >
-> > Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
-> > ---
-> >  drivers/iio/proximity/as3935.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-> > index c339e7339ec8..7e47ddf89a56 100644
-> > --- a/drivers/iio/proximity/as3935.c
-> > +++ b/drivers/iio/proximity/as3935.c
-> > @@ -355,7 +355,6 @@ static int as3935_probe(struct spi_device *spi)
-> >         struct iio_dev *indio_dev;
-> >         struct iio_trigger *trig;
-> >         struct as3935_state *st;
-> > -       struct device_node *np = spi->dev.of_node;
-> >         int ret;
-> >
-> >         /* Be sure lightning event interrupt is specified */
-> > @@ -374,7 +373,7 @@ static int as3935_probe(struct spi_device *spi)
-> >         spi_set_drvdata(spi, indio_dev);
-> >         mutex_init(&st->lock);
-> >
-> > -       ret = of_property_read_u32(np,
-> > +       ret = device_property_read_u32(&spi->dev,
-> >                         "ams,tuning-capacitor-pf", &st->tune_cap);
-> >         if (ret) {
-> >                 st->tune_cap = 0;
-> > @@ -390,7 +389,7 @@ static int as3935_probe(struct spi_device *spi)
-> >                 return -EINVAL;
-> >         }
-> >
-> > -       ret = of_property_read_u32(np,
-> > +       ret = device_property_read_u32(&spi->dev,
-> >                         "ams,nflwdth", &st->nflwdth_reg);
-> >         if (!ret && st->nflwdth_reg > AS3935_NFLWDTH_MASK) {
-> >                 dev_err(&spi->dev,
-> > --
-> > 2.25.1
-> >
+On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
+> 
+> This is a upcoming change to clean up a new warning treewide.
+> I am wondering if the change could be one mega patch (see below) or
+> normal patch per file about 100 patches or somewhere half way by collecting
+> early acks.
+
+Please break it up into one-patch-per-subsystem, like normal, and get it
+merged that way.
+
+Sending us a patch, without even a diffstat to review, isn't going to
+get you very far...
+
+thanks,
+
+greg k-h

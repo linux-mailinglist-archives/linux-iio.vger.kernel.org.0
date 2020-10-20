@@ -2,136 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D22A2931B2
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Oct 2020 01:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF28E293669
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Oct 2020 10:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727227AbgJSXFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Oct 2020 19:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37902 "EHLO
+        id S1733262AbgJTIIf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Oct 2020 04:08:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388812AbgJSXFu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Oct 2020 19:05:50 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9648FC0613DA
-        for <linux-iio@vger.kernel.org>; Mon, 19 Oct 2020 16:05:49 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id h21so31376iob.10
-        for <linux-iio@vger.kernel.org>; Mon, 19 Oct 2020 16:05:49 -0700 (PDT)
+        with ESMTP id S1729484AbgJTIIf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Oct 2020 04:08:35 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9628C061755;
+        Tue, 20 Oct 2020 01:08:33 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id b19so626499pld.0;
+        Tue, 20 Oct 2020 01:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=KZcwJitFojA7RhzeD/UU8gbzehCBdvf6g5ia0ZYCrq4=;
-        b=R0THCPfeT+NjRv5n7wRuWr3+iQQVH5mYQugrcFEorv7jMlZOJpq4gWO8x2sltRZ1S3
-         8+uXkfK+0xraFRPc7RLEyC+L1Eqn+lwfgcQ60rCu3Ir6T0iqCUlHxkXPI8IxQxljNihW
-         MxA7dERE+Fo0B6yhfEPLGm6gbjuMrGvt0ee7i4ozPAa6C0OwTV1SJBaz+sj8rzyyiIix
-         DQ1LhxNguLsVQ2r9xWcmCur9QDHoeimXQtC/UVpN+4Yl8O9ZbpYKUwlrKFZtzYHwjpgZ
-         iC+kREvCZvwgmOBCIm7DmgxG6/6ncKrp6QDCnbxkp/qIzrhuMyauJsg53LWTp//HSslk
-         z+3Q==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=rzBULe/uYcMd2biNuOUoirZAkyxIgwm/ep0g4irabeM=;
+        b=j/qOX1CRjCJljSPZcb4bbGCVW1mLmUhTrHVtbJJD/ootbD5oyfz7Fz7cYl+sKaEV/J
+         zwn5rw4FwvyqtCGrgfHPwUlBHVCPFzmYriPiwLP0alcRJr225m7heK1Q7oDdkb6mEFZD
+         P8nSv2V9SBMxwbJZhYT+7//xInnXXSyxnQLfkGaYxSluWV/DVxxZkt+YL/iI3d1NWdvD
+         //IZ++RIcxlotD776gTmQHqiwv7/2lObpeTlwOAUtRPgUUAAfmq+KZzQslEIGojJ8MDZ
+         A/LtdXToA44/J6eNbLs7PDuWWs8RUbrcz/zhT2Ko/e7v5pjn+HTyFOPjvTNB1Kc7QYM+
+         V0Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=KZcwJitFojA7RhzeD/UU8gbzehCBdvf6g5ia0ZYCrq4=;
-        b=JZutEykZmOYPJQJjFb2d6/y+kP5T8MVRdmt7N7r11VCIbPWxa3b7xHJSorNhyuVvy7
-         II2SXmwGsguepkuCPM2pCICacKgl2oNpwyW5k7QYQZ3+gVSU7mN2rC8C6r0qYAUMZqQp
-         Z8h8vfAWbZyt3KntajHYtvN8OAp70s2nPfvxyi2H+9veMVJnioNADNuH0wG3tSOx2r+0
-         9+75z7wzRpi+kwdmRwbAycYdpXxRtN8pm5i9OFdc1DBG31Ge5G3lIe2sOaxznSe2PAl2
-         n2aey0Q1E92UtUyIZuA0bo7u2hMlhzbH1mbDC+qfh8qjBr1LFniZ68jyNIS/u1H8+Wia
-         CvpQ==
-X-Gm-Message-State: AOAM53339R+Oaf828quh5YEG5LzaapIXTTmZUPPkl605GryJ7pXHIXKT
-        IHc6w7UZkVY9owJfYHIihums9A==
-X-Google-Smtp-Source: ABdhPJwE/qhLAedndnNRaUrUDMs331Onaq8Iz+VDEVRJN+4h4B5ckC67pNXDnvS9MRF/DxLJjNlnIQ==
-X-Received: by 2002:a6b:5019:: with SMTP id e25mr44377iob.123.1603148748578;
-        Mon, 19 Oct 2020 16:05:48 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id u8sm7938ilm.36.2020.10.19.16.05.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2020 16:05:47 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1kUeDq-002hRf-LL; Mon, 19 Oct 2020 20:05:46 -0300
-Date:   Mon, 19 Oct 2020 20:05:46 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Tom Rix <trix@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-        linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-block@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-can@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        linux-pci@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
-        storagedev@microchip.com, devel@driverdev.osuosl.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net,
-        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        bpf <bpf@vger.kernel.org>, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        George Burgess <gbiv@google.com>
-Subject: Re: [RFC] treewide: cleanup unreachable breaks
-Message-ID: <20201019230546.GH36674@ziepe.ca>
-References: <20201017160928.12698-1-trix@redhat.com>
- <20201018054332.GB593954@kroah.com>
- <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rzBULe/uYcMd2biNuOUoirZAkyxIgwm/ep0g4irabeM=;
+        b=KcjQ55OB4TctQpK/+ye9TCWr/A7Q4hTl/tUDhwm5Fa97i2tSqcBLKQ7E9yWd4+tgRR
+         NxwsQP30ZUIDhlYl5I4gLForKUXOID554vCgJkbovysuAvphBJJtxb3C7oP8cSvALUjx
+         a51rDDOzFelQl8Ncl/Mpu84kklQugLEWWCUxOpyZHU8kCxY7eJy70fhHTUkCVpVB3X6j
+         fZhdPlZE9I4eVxOqXcODgEObmkR0rbNRSCE57C6jlGXnqJFBOZoQWRj1LuqShAR5nEFh
+         wjDYdCX/0UTpdg3T/4IHpndbsAysDS7iQ6GIhAv2ZlDUKLS7RKewe88zYuEh7L3BKVpr
+         G0Dg==
+X-Gm-Message-State: AOAM5324w1kq/r/u0f/cfLTlk4Y4rQsspUirubNiRnXGuYRugugLlxkv
+        DxrV+VTEOpEMIOIG7x9DvhQ=
+X-Google-Smtp-Source: ABdhPJxp3MGSbm/SruzI53jPOkaZngQ8AJL0GjxKIqfl83yNMouMYtjKJnWWKQDl5lHM1Ow2n1VjfQ==
+X-Received: by 2002:a17:90a:2c0c:: with SMTP id m12mr995977pjd.44.1603181313257;
+        Tue, 20 Oct 2020 01:08:33 -0700 (PDT)
+Received: from localhost.localdomain ([2402:7500:477:195c:4b74:c749:e0fe:9e69])
+        by smtp.gmail.com with ESMTPSA id 17sm1347270pfi.55.2020.10.20.01.08.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Oct 2020 01:08:32 -0700 (PDT)
+From:   Gene Chen <gene.chen.richtek@gmail.com>
+To:     jic23@kernel.org, robh+dt@kernel.org, matthias.bgg@gmail.com
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        gene_chen@richtek.com, Wilma.Wu@mediatek.com,
+        shufan_lee@richtek.com, cy_huang@richtek.com,
+        benjamin.chao@mediatek.com
+Subject: [PATCH v7 0/3] iio: adc: mt6360: Add ADC driver for MT6360
+Date:   Tue, 20 Oct 2020 16:07:44 +0800
+Message-Id: <1603181267-15610-1-git-send-email-gene.chen.richtek@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 19, 2020 at 12:42:15PM -0700, Nick Desaulniers wrote:
-> On Sat, Oct 17, 2020 at 10:43 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
-> > > From: Tom Rix <trix@redhat.com>
-> > >
-> > > This is a upcoming change to clean up a new warning treewide.
-> > > I am wondering if the change could be one mega patch (see below) or
-> > > normal patch per file about 100 patches or somewhere half way by collecting
-> > > early acks.
-> >
-> > Please break it up into one-patch-per-subsystem, like normal, and get it
-> > merged that way.
-> >
-> > Sending us a patch, without even a diffstat to review, isn't going to
-> > get you very far...
-> 
-> Tom,
-> If you're able to automate this cleanup, I suggest checking in a
-> script that can be run on a directory.  Then for each subsystem you
-> can say in your commit "I ran scripts/fix_whatever.py on this subdir."
->  Then others can help you drive the tree wide cleanup.  Then we can
-> enable -Wunreachable-code-break either by default, or W=2 right now
-> might be a good idea.
+In-Reply-To: 
 
-I remember using clang-modernize in the past to fix issues very
-similar to this, if clang machinery can generate the warning, can't
-something like clang-tidy directly generate the patch?
+This patch series add MT6360 ADC support contains driver, testing document
+and binding document
 
-You can send me a patch for drivers/infiniband/* as well
+Gene Chen (2)
+  dt-bindings: iio: adc: add bindings doc for MT6360 ADC
+  Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
+  iio: adc: mt6360: Add ADC driver for MT6360
 
-Thanks,
-Jason
+ Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360                 |   78 ++
+ Documentation/devicetree/bindings/iio/adc/mediatek,mt6360-adc.yaml |   34 
+ drivers/iio/adc/Kconfig                                            |   11 
+ drivers/iio/adc/Makefile                                           |    1 
+ drivers/iio/adc/mt6360-adc.c                                       |  372 ++++++++++
+ 5 files changed, 496 insertions(+)
+
+changelogs between v1 & v2
+ - adc: use IIO_CHAN_INFO_PROCESSED only
+ - adc: use devm_iio_triggered_buffer_setup
+ - adc: use use s64 to record timestamp
+
+changelogs between v2 & v3
+ - Rearrange include file order by alphabet
+ - Set line length constraint below 100
+ - Add Document for testing adc sysfs node guideline
+ - Set compiler 64 bit aligned when handle iio timestamp
+
+changelogs between v3 & v4
+ - Fix sysfs guideline description
+ - Replace iio channel processed by raw/scale/offset
+ - Add comment of read adc flow for special HW design
+
+changelogs between v4 & v5
+ - Rename dt-bindings aligned to file name
+ - Aligned sysfs node name with driver and add VBUSDIVX description
+ - Add ADC channel sysfs node "*_labels"
+
+changelogs between v5 & v6
+ - Memset aligned adc data
+ - Remove strong casting void pointer
+
+changelogs between v6 & v7
+ - Avoid adc polling infinite loop
+

@@ -2,95 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B8529829C
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Oct 2020 17:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8682982F4
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Oct 2020 18:53:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1417282AbgJYQvr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Oct 2020 12:51:47 -0400
-Received: from vern.gendns.com ([98.142.107.122]:35828 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1417281AbgJYQvq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Oct 2020 12:51:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=pGW5JlQHLHC7jZlWVW5W5JO4NogTaQL5cry9rwJRFUY=; b=YxbsvWBikpHpQBfh3CMfVmv9TL
-        g0m+3mLF6VQ+ZMVHhb25fzHPzm7SNI43GriVV/1rWm/LJlhZTZmTBtccR97bbL/CX2V4tK+MPNuZx
-        uxX3E4aeFblOgF9P5pNmGi5Dj1XCQz3CwVVqSe9C5GZkcTwYvfJkWFEoYVBoVqdlznRFDcXBQEAUA
-        e+zmSkhN29NyuYk/uhDKFhbbu/Xv7EZey+xr6c9juczTwfqGQV+srb0QRKg241rZ/Pqw15Dkf2wml
-        U1+vvtr1oX+BctogiJNckOZZEyK3azrp8riZRx6l/4HMznA/Eoie8HFjJINYgFFcIR9+e4RABY1Z+
-        UCzuq/Rw==;
-Received: from [2600:1700:4830:165f::19e] (port=38296 helo=freyr.lechnology.com)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kWjFB-0008JL-3s; Sun, 25 Oct 2020 12:51:45 -0400
-From:   David Lechner <david@lechnology.com>
-To:     linux-iio@vger.kernel.org
-Cc:     David Lechner <david@lechnology.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] counter/ti-eqep: Fix regmap max_register
-Date:   Sun, 25 Oct 2020 11:51:22 -0500
-Message-Id: <20201025165122.607866-1-david@lechnology.com>
-X-Mailer: git-send-email 2.25.1
+        id S1416394AbgJYRxj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Oct 2020 13:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1415571AbgJYRxj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 25 Oct 2020 13:53:39 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1157C061755;
+        Sun, 25 Oct 2020 10:53:38 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id j62so5147317qtd.0;
+        Sun, 25 Oct 2020 10:53:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=WnvTU6VDuLEf+Rt2Zn1Gdt5ZWfNTNLLVWS72IF0h6Yk=;
+        b=PqE+NIkCpidtvg9ccnzTZ8R6ZKaslUFa6jUfX78jzuqP4FeCXm1ehopZIeOpEIGvfV
+         zUwuE0941wfby2vncTggj2xmv+C0VoORDdNOy4uXuo6t84MB+9Jla4/6B2D3nBcAmUlC
+         aGa8wseNCWKTJIvsysxLs50d+eJ1g55WHEfTD7j9cwtlAf88IIkv6OPx1cr9xuFcHk+b
+         5mSZhYaceFpLEH7rkUNZgE5+zS/aHWq0j4XV3a8tEOAtltuqSLK1g4N62B+dBd1H+EAK
+         Mi0g35eg6z2LdugxurSJut//sA73JpywiRfozrHFzOXvzEr3jekwqHflohiZowC6/zua
+         ofvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WnvTU6VDuLEf+Rt2Zn1Gdt5ZWfNTNLLVWS72IF0h6Yk=;
+        b=W9etE+1hoTC9JgGR4mTquglR4B+6K4IApFE4tG+jW4DbKrI2uijDxkAXwDlQmaT6a1
+         3mupNEe1F75umrs87VOvOI2nSsAJXn5oD33rfBpKtwLRugDJte3USTBQWKzVIjzVx2Us
+         Obm1l6cl25Mnx4nGWzrm4etOfA+gsUSNNLuxItKYhoFmXdjgJP+8vnTyGvbZOYgnLrAP
+         ik5sC+BmjOzZMGZPwqEHaUh29GDi8If0DilvJ/KuLbCIA31Ely+OsVi0oLBKn9Kvp5Yj
+         6CYAF0L5xOTUW7+44R+ZrE6N4t8CuyLiYduV7Easx1HrqxZVTS2ts0bu0Fqui6O57H27
+         vwlA==
+X-Gm-Message-State: AOAM531x6nVg2YUadVnzvBDQOEDEmU6uKxnK5VygJwSj+E5dTZrpYM5V
+        zb2Qcl4CDnBWkrzfv2Vnx28=
+X-Google-Smtp-Source: ABdhPJzNvr9/llgZ98dNMu3rcpa5WW5aUblpGe3+LAoh76G4bw+2TtSIZwfILvnr82QMbJLFomHv6A==
+X-Received: by 2002:ac8:7c97:: with SMTP id y23mr13455309qtv.48.1603648418004;
+        Sun, 25 Oct 2020 10:53:38 -0700 (PDT)
+Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id k64sm4949218qkc.97.2020.10.25.10.53.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2020 10:53:36 -0700 (PDT)
+Date:   Sun, 25 Oct 2020 13:53:22 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     jic23@kernel.org, kamel.bouhara@bootlin.com, gwendal@chromium.org,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
+Subject: Re: [PATCH v5 3/5] counter: Add character device interface
+Message-ID: <20201025175322.GA14219@shinobu>
+References: <cover.1601170670.git.vilhelm.gray@gmail.com>
+ <00be1fccc672c5207f3b04fe4cc09c29e22641f4.1601170670.git.vilhelm.gray@gmail.com>
+ <cc1f7e4d-18d1-bc28-8ce3-e3edcd91bcab@lechnology.com>
+ <20201018165822.GE231549@shinobu>
+ <f2bac8b2-108d-fa4c-cb63-8ff85ce04d1f@lechnology.com>
+ <20201025131809.GB3458@shinobu>
+ <e0b7989f-6a99-0fae-471c-8d06c8e951b0@lechnology.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="NzB8fVQJ5HfG6fxh"
+Content-Disposition: inline
+In-Reply-To: <e0b7989f-6a99-0fae-471c-8d06c8e951b0@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The values given were the offset of the register after the last
-register instead of the actual last register in each range. Fix
-by using the correct last register of each range.
 
-Fixes: f213729f6796 ("counter: new TI eQEP driver")
-Signed-off-by: David Lechner <david@lechnology.com>
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
+--NzB8fVQJ5HfG6fxh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-v2 changes:
-* add Fixes: tag
-* picked up Acked-by:
+On Sun, Oct 25, 2020 at 11:34:43AM -0500, David Lechner wrote:
+> On 10/25/20 8:18 AM, William Breathitt Gray wrote:
+> > On Tue, Oct 20, 2020 at 11:06:42AM -0500, David Lechner wrote:
+> >> On 10/18/20 11:58 AM, William Breathitt Gray wrote:
+> >>> On Wed, Oct 14, 2020 at 05:40:44PM -0500, David Lechner wrote:
+> >>>> On 9/26/20 9:18 PM, William Breathitt Gray wrote:
+> >>>>> +static ssize_t counter_chrdev_read(struct file *filp, char __user =
+*buf,
+> >>>>> +				   size_t len, loff_t *f_ps)
+> >>>>> +{
+> >>>>> +	struct counter_device *const counter =3D filp->private_data;
+> >>>>> +	int err;
+> >>>>> +	unsigned long flags;
+> >>>>> +	unsigned int copied;
+> >>>>> +
+> >>>>> +	if (len < sizeof(struct counter_event))
+> >>>>> +		return -EINVAL;
+> >>>>> +
+> >>>>> +	do {
+> >>>>> +		if (kfifo_is_empty(&counter->events)) {
+> >>>>> +			if (filp->f_flags & O_NONBLOCK)
+> >>>>> +				return -EAGAIN;
+> >>>>> +
+> >>>>> +			err =3D wait_event_interruptible(counter->events_wait,
+> >>>>> +					!kfifo_is_empty(&counter->events));
+> >>>>> +			if (err)
+> >>>>> +				return err;
+> >>>>> +		}
+> >>>>> +
+> >>>>> +		raw_spin_lock_irqsave(&counter->events_lock, flags);
+> >>>>> +		err =3D kfifo_to_user(&counter->events, buf, len, &copied);
+> >>>>> +		raw_spin_unlock_irqrestore(&counter->events_lock, flags);
+> >>>>> +		if (err)
+> >>>>> +			return err;
+> >>>>> +	} while (!copied);
+> >>>>> +
+> >>>>> +	return copied;
+> >>>>> +}
+> >>>>
+> >>>> All other uses of kfifo_to_user() I saw use a mutex instead of spin
+> >>>> lock. I don't see a reason for disabling interrupts here.
+> >>>
+> >>> The Counter character device interface is special in this case because
+> >>> counter->events could be accessed from an interrupt context. This is
+> >>> possible if counter_push_event() is called for an interrupt (as is the
+> >>> case for the 104_quad_8 driver). In this case, we can't use mutex
+> >>> because we can't sleep in an interrupt context, so our only option is=
+ to
+> >>> use spin lock.
+> >>>
+> >>
+> >>
+> >> The way I understand it, locking is only needed for concurrent readers
+> >> and locking between reader and writer is not needed.
+> >=20
+> > You're right, it does say in the kfifo.h comments that with only one
+> > concurrent reader and one current write, we don't need extra locking to
+> > use these macros. Because we only have one kfifo_to_user() operating on
+> > counter->events, does that mean we don't need locking at all here for
+> > the counter_chrdev_read() function?
+> >=20
+> > William Breathitt Gray
+> >=20
+>=20
+> Even if we have the policy that only one file handle to the chrdev
+> can be open at a time, it is still possible that the it could be
+> read from multiple threads. So it I think it makes sense to keep
+> it just to be safe.
 
- drivers/counter/ti-eqep.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+All right, I'll keep the locks in the code for now to keep it safe in
+case we have multiple threads reading.
 
-diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index 1ff07faef27f..5d6470968d2c 100644
---- a/drivers/counter/ti-eqep.c
-+++ b/drivers/counter/ti-eqep.c
-@@ -368,7 +368,7 @@ static const struct regmap_config ti_eqep_regmap32_config = {
- 	.reg_bits = 32,
- 	.val_bits = 32,
- 	.reg_stride = 4,
--	.max_register = 0x24,
-+	.max_register = QUPRD,
- };
- 
- static const struct regmap_config ti_eqep_regmap16_config = {
-@@ -376,7 +376,7 @@ static const struct regmap_config ti_eqep_regmap16_config = {
- 	.reg_bits = 16,
- 	.val_bits = 16,
- 	.reg_stride = 2,
--	.max_register = 0x1e,
-+	.max_register = QCPRDLAT,
- };
- 
- static int ti_eqep_probe(struct platform_device *pdev)
--- 
-2.25.1
+William Breathitt Gray
 
+--NzB8fVQJ5HfG6fxh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl+Vu3IACgkQhvpINdm7
+VJL6Gg/+Mlx2N3lg0kRzevbHYdReGI0UFjEyLqM3u6BmeS5zhbkHY+/QYF9Ak2Th
+AEe1tI0KJ3KrTiPRH8oEkbZ5f1eY58AovHPYByxzOBMDHx9Z2PUtRmdDF9jqU1mA
+kw0x/SMHc/Rznkzu44VHl1vLTRxpPDJ3a91PmuKEe5prF0BufeCh+4WdMpwQq1yH
+RmeaXWg5aKjQtIpjVFivkLjp5sBlP2dh51r34bEd1LA9wQ1FcSdoDe3Jxwwt8Wnx
+wySRy7nh/RIDp0CkgxdtJfNgSskJ+m/5/bVWCIqKcRkVJCApndX5N02c7C0573so
+biLq7YKWbF27KjMIyl22XwPxdhBW0CfN+nXGDM0rv8WtzE2qqtEbRe1t3oYGfMZK
+6CtXjDL03JyGVIaZCT8XyeAkHhUJM5gxGKygfCRq+O1ftVdzsnDtlhxnmm4Wtn44
+YKJvjN2Na66BN1jObZZvfaCSU+iaBqNapkcImB1BHGo6uiAjo/u63ZZNYDABvbbK
+corwSbj3kgu3kHXgnX9u6sR2pSMZeqcGT+uBNXt3F8tPkDd7UwSNjKswADQrY5GN
+bNIeee2fI5kmxdqitRPqCYSM4OgB4P/WsI7KgLcLsbH3uFRpb2rIIHGRgdfnWCc5
+t/T9hQH0gczN1Beuyj+8MPM657zoQojz9l39rY1XA9dJ5iXhZuM=
+=gnpW
+-----END PGP SIGNATURE-----
+
+--NzB8fVQJ5HfG6fxh--

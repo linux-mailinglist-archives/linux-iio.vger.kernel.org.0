@@ -2,92 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE3BD29D9AA
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Oct 2020 00:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1B8029DF69
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Oct 2020 02:02:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389859AbgJ1XAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Oct 2020 19:00:02 -0400
-Received: from bmailout2.hostsharing.net ([83.223.78.240]:36241 "EHLO
-        bmailout2.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387651AbgJ1W6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Oct 2020 18:58:52 -0400
-X-Greylist: delayed 4197 seconds by postgrey-1.27 at vger.kernel.org; Wed, 28 Oct 2020 18:58:52 EDT
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 50A65280074C8;
-        Wed, 28 Oct 2020 21:31:40 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 2536036696; Wed, 28 Oct 2020 21:31:40 +0100 (CET)
-Date:   Wed, 28 Oct 2020 21:31:40 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 16/29] dt-bindings:iio:dac:ti,dac082s085 yaml conversion
-Message-ID: <20201028203140.GA24407@wunner.de>
-References: <20201011170749.243680-1-jic23@kernel.org>
- <20201011170749.243680-17-jic23@kernel.org>
+        id S1730758AbgJ1WM7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Oct 2020 18:12:59 -0400
+Received: from mail.fullbizgoal.com ([80.211.27.207]:52378 "EHLO
+        server1.mail.fullbizgoal.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730826AbgJ1WM5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Oct 2020 18:12:57 -0400
+Received: by server1.mail.fullbizgoal.com (Postfix, from userid 1001)
+        id BBC77A5B10; Wed, 28 Oct 2020 08:57:10 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fullbizgoal.com;
+        s=mail; t=1603875528;
+        bh=1A+RQztZunBjkjQlXgr2uQY18vlGaIq8j7jGOmWqiI0=;
+        h=Date:From:To:Subject:From;
+        b=EKe1Nfg0x4JpfGkJwb17oZXK/CS8/l4Fz3rLPoBdNC+G0wZYfAmUQDYhzl+xGFnpe
+         Wn04p4l60qofn6aLlJbTASwZf/tnkP1Z/W3wsLfnHlHsIAuoG6mjEHaLSI8iXpf2Lb
+         8UcSd7J20K0wsALeGi5dZBV5dBFX9Y+3My21EQ5NLQQxfL7n4BVU8lYJBYh9nF46lZ
+         h+kng7t7FDLuTzC7i338mfAdUodmkm2hpxJRxBlmH4pQJcboiSi5Sm/cfd/gJ8g6Qz
+         WNwlp6UxKz5Z+LQUhRFpB05/nvXV/bgPQRTsm1RG5fAc+806012TE760xZlLgfL1KK
+         3n9G497e8XEFQ==
+Received: by mail.fullbizgoal.com for <linux-iio@vger.kernel.org>; Wed, 28 Oct 2020 08:56:38 GMT
+Message-ID: <20201028074502-0.1.26.b95c.0.9r21g6d4ej@fullbizgoal.com>
+Date:   Wed, 28 Oct 2020 08:56:38 GMT
+From:   "Ethan Smith" <ethan.smith@fullbizgoal.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: Disinfectant
+X-Mailer: mail.fullbizgoal.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201011170749.243680-17-jic23@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 11, 2020 at 06:07:36PM +0100, Jonathan Cameron wrote:
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml
-> @@ -0,0 +1,58 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/ti,dac082s085.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments DAC082s085 and similar DACs
-> +
-> +description:
-> +  A familly of Texas Instruments 8/10/12-bit 2/4-channel DACs
-           ^^
-s/familly/family
+Good morning,
 
+looking for companies interested in raising additional capital by diversi=
+fying their offer in soaps, liquids and gels for hand disinfection and co=
+smetics for body and hair care.
 
-> +  spi-cpha: true
-> +  spi-cpol:
-> +    description:
-> +      Should be either spi-cpha, or spi-cpol but not both.
-> +
-> +  vref-supply: true
-[...]
-> +required:
-> +  - compatible
-> +  - reg
+The distribution of innovative products corresponding to the current pref=
+erences of customers in the field of hygiene and preventive healthcare al=
+lows our partners to gain new markets and achieve better economic results=
+=2E
 
-"vref-supply" and ("spi-cpha" xor "spi-cpol") are also requird
-per the existing txt file.
+In addition to products with bactericidal action, our range includes show=
+er gels, shampoos and hair conditioners, as well as efficient, concentrat=
+ed detergents.
 
+The versatility (suitable for all skin types) combined with an affordable=
+ price means that customers make an informed choice of a product among ot=
+hers available on the market.
 
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        dac@0 {
-> +            compatible = "ti,dac082s085";
-> +            reg = <0>;
-> +            spi-max-frequency = <40000000>;
-> +            spi-cpol;
-> +            spi-cpha;
-> +            vref-supply = <&vref_2v5_reg>;
-> +        };
-> +    };
+Are you interested in cooperation?
 
-Hm, why wasn't the "vref_2v5_reg" node carried over from the txt file?
-
-Thanks,
-
-Lukas
+Ethan Smith

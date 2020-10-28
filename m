@@ -2,76 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F0B329D678
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Oct 2020 23:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB6AA29D731
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Oct 2020 23:22:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731307AbgJ1WPS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Oct 2020 18:15:18 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51986 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731268AbgJ1WPG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Oct 2020 18:15:06 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id A654929A58;
-        Tue, 27 Oct 2020 23:26:19 -0400 (EDT)
-Date:   Wed, 28 Oct 2020 14:26:12 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Tom Rix <trix@redhat.com>
-cc:     linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        qat-linux@intel.com, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-nfs@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org,
-        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org
-Subject: Re: [RFC] clang tooling cleanups
-In-Reply-To: <20201027164255.1573301-1-trix@redhat.com>
-Message-ID: <alpine.LNX.2.23.453.2010281344120.31@nippy.intranet>
-References: <20201027164255.1573301-1-trix@redhat.com>
+        id S1732618AbgJ1WWH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Oct 2020 18:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732611AbgJ1WWF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Oct 2020 18:22:05 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9B8C0613CF
+        for <linux-iio@vger.kernel.org>; Wed, 28 Oct 2020 15:22:04 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id j30so815450lfp.4
+        for <linux-iio@vger.kernel.org>; Wed, 28 Oct 2020 15:22:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DasQpb8CfW8HKEVpu/KOavkRhA8AAHEMsw+zOKV6OFk=;
+        b=QPXZdkbF+FeS5uc/aNDlU9mVXmuJa/YXl2FdWJFfcvFa0tYE+7T8fGfRo7S/kDvKZ3
+         92sqwNTPczgV1a6N+a6TD0f8nv4eyk+KKv3AlAYOR38gb8W+JzhFri5QEWt6vjpHF+w1
+         HnGm4EbsQPu1sZzypyxyeG4GEVAtVj22etFoT5dwRjjCchqmtQ8J/cgoJT0Bep1l+DTg
+         pDXr3krTBs4njOGdIhTfrObVSfrR55xFMsY6W7vNm6bnGCVQ+GYnZFUANpzs/k+0hJ9J
+         MRm6W6ZI+M60eGS8xAlAr8xWW6gwrGR8GrJqjQlGaE5ogd8FwKzZG5Bas5V56PK264dN
+         9aBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DasQpb8CfW8HKEVpu/KOavkRhA8AAHEMsw+zOKV6OFk=;
+        b=NWPEsybyILAZn/IjpJkOh/Fy24Gn9Z5sMeOWfu1mVF8btCA/ErDHbwF6+nOvzYy9N7
+         UiAi+5lWJBBdFzz75XURSCPRofqhDSxn/jUjqXIvtlpzwEQhOcKKGGIQfFghIH1QUckd
+         OKHWRaagzJAN+r9psqE3BAfmvk55l2+dC2qWImk7IiQ+6BHblSFvryH+zSIChzTR5M1/
+         ruOKcDLF5BmZ8+g/whqfjjTnc6jvHrLWAEbAdwWONgH7ny2fjBh8nRbnk3bUEQpP+1V+
+         uqFPV1yX6/DQa9QpTKlrDW1HaEm9jzpMLgQqSEKg0PNCAXX9vmDcrZw1CnSiJA6qJ8AR
+         TAZQ==
+X-Gm-Message-State: AOAM531nFh1zobiF/BF6GoSvvc5/2wJkPadS0rO/CxRtT2M9L9ytMwQN
+        p9MRl3o82TLzdDzg9upUWPoAyvSmWoUTzM6ST/MCWrjIf2Eang==
+X-Google-Smtp-Source: ABdhPJwKMS7NldNI96lpXl48mO0zKQe7LV7FsHiX9udTi/7Fta5ycI9PbLPivsn4y0NgGWNiD/oagwYN9l997N20gng=
+X-Received: by 2002:a05:6402:6ca:: with SMTP id n10mr7840705edy.273.1603891510778;
+ Wed, 28 Oct 2020 06:25:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20201026175340.19570-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20201026175340.19570-1-andriy.shevchenko@linux.intel.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 28 Oct 2020 14:24:59 +0100
+Message-ID: <CACRpkdZPJKof4uVk-dHjEwaR2GE9ujjLAO8jZPiKycbQTuBbCA@mail.gmail.com>
+Subject: Re: [PATCH v1] iio: gyro: mpu3050: Use get_unaligned_leXX()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Oct 26, 2020 at 6:53 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-On Tue, 27 Oct 2020, trix@redhat.com wrote:
+> This makes the driver code slightly easier to read.
+>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> This rfc will describe
-> An upcoming treewide cleanup.
-> How clang tooling was used to programatically do the clean up.
-> Solicit opinions on how to generally use clang tooling.
-> 
+Oh, neat bitting!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-This tooling is very impressive. It makes possible an idea that I had a 
-while ago, to help make code review more efficient. It works like this. 
-
-Suppose a patch, p, is the difference between the new tree, n, and the old 
-tree, o. That is, p = n - o.
-
-Now let clang-tidy be the transformation 't'. This gets you a much more 
-readable patch submission, P = t(n) - t(o).
-
-The only difficulty is that, if I submit P intead of p then 'git am' will 
-probably reject it. This is solved by a little tooling around git, such 
-that, should a patch P fail to apply, the relevant files are automatically 
-reformatted with the officially endorsed transformation t, to generate a 
-minimal cleanup patch, such that P can be automatically applied on top.
-
-If the patch submission process required* that every patch submission was 
-generated like P and not like p, it would immediately eliminate all 
-clean-up patches from the workload of all reviewers, and also make the 
-reviewers' job easier because all submissions are now formatted correctly, 
-and also avoid time lost to round-trips, such as, "you can have a 
-reviewed-by if you respin to fix some minor style issues".
-
-* Enforcing this, e.g. with checkpatch, is slightly more complicated, but 
-it works the same way: generate a minimal cleanup patch for the relevant 
-files, apply the patch-to-be-submitted, and finally confirm that the 
-modified files are unchanged under t.
+Yours,
+Linus Walleij

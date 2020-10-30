@@ -2,179 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 675F42A0B76
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Oct 2020 17:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7668E2A0C70
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Oct 2020 18:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726072AbgJ3QnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Oct 2020 12:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbgJ3QnE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Oct 2020 12:43:04 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60A8C0613D2
-        for <linux-iio@vger.kernel.org>; Fri, 30 Oct 2020 09:43:04 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id x7so7047724ili.5
-        for <linux-iio@vger.kernel.org>; Fri, 30 Oct 2020 09:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NZmqGfCg08N6iXx9q7TVWlSnhQqIDOwOjzOwbvXDxjI=;
-        b=INVfZz/fkvsZivy8jdRFY4jjuumPUnT03fIMmAZxhr2j3OQtTxmqWeMui9FFLMvZFz
-         QB2ePhBsJkuNysGjMHbU9DiLLxlLmss4JFzjBmUNAkJoiiGzYBFH/upOKm0AUQMizu+W
-         okAB9PgkVOM5lyq7RfM3eZWziu4Lw6xFmIPsA3WEdWrepzCLkMsPGFysW4PIdG4Ix46W
-         ABDHiqA089OjzR7YGXqWWnY73UPmGi5ssu5dObic6I8EipSHtDNSFTIEabkYZFtOUw53
-         gKZFvyCe8mIA4cQPQ5Ji/NguzzOPrnGBpJ5jXdtWnz2BLO+k8PETRjkg1JznRZelvTOY
-         uyUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NZmqGfCg08N6iXx9q7TVWlSnhQqIDOwOjzOwbvXDxjI=;
-        b=qxrbI0nFMeGqftl9BN6Cd0P2QOzV6lcAxT/RW1oed19euKhPxsPs/raRHmqVQjt3Ac
-         sJyMPvnt+mgqSJY1tlj0Pv/0eTN9TAjvcvuIeDiGITiqF52+/oJQSeDK0/HhhJSKEd5j
-         Zbmftu8dUw8ajDE4NH3m0udHfJ8bVUEnrbB9MWsBg3nKpPFcky9j+uX7kmIaGSSxxwZE
-         dkUcetcSWYRgesSSE3aW+dyp+4JMM7P1CkLSxm7mv+7DWddCc1vJN6/af1qxEXtn9Mai
-         gidi89NAHvpdqBpaVHvS9guxP/Db4qdCI3xqKCJTg9pJ1DaR7UB6SjCLRSnRmsuBBNKA
-         m2fg==
-X-Gm-Message-State: AOAM532TiVq5EIZ1SMzaopt43Zea9k6uUuDNru98SLuaSjW46iT3Qvoi
-        NZfHXvpOCg6QmLfRuecYEMPY+AIVbEbC/irhaJeYZQ==
-X-Google-Smtp-Source: ABdhPJwYf7SWuKIRh8xsBOBodbVLmuU+KCM1QaVpZsez95JZOYKTbDYung3PLxm+lfmttII+vBXdnzsUUs8NHjrseg0=
-X-Received: by 2002:a92:6403:: with SMTP id y3mr2528711ilb.72.1604076184121;
- Fri, 30 Oct 2020 09:43:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1604042072.git.mchehab+huawei@kernel.org> <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-In-Reply-To: <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-Date:   Fri, 30 Oct 2020 10:42:53 -0600
-Message-ID: <CANLsYkxc2uzA57Hg5OX31JOx08JCZfynzebjABv=6H01796xGA@mail.gmail.com>
-Subject: Re: [PATCH v2 31/39] docs: ABI: cleanup several ABI documents
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        id S1727177AbgJ3R1t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Oct 2020 13:27:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:11348 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727139AbgJ3R1s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Oct 2020 13:27:48 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09UH4JbG086980;
+        Fri, 30 Oct 2020 13:26:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=kRv/mdN0gxrWM4bjmBGarbvn1q9ZLkvFoS6y5DzvQks=;
+ b=UWWtqWmXJl3nSrq5VxzL3fA7gftqPT2l/7zujH5kX5UvHZQ2eMEv18xIFli+pDzv7TND
+ NhYhOuFvYct9W6WTKfBbUytZ8/Cf+k1x8aeC7Oe5QD8YYyP+4VpoSpOUMvDWDIAhxnB6
+ c5FhsgKRalTM6aUBHcNHDfpT9wtGJzgUJ5nY4j/m0uXK5U6stXBYO3eHSNoVzcotT/Xy
+ 9WS3NIpRpBYAz5DKkKDBBTsOJC2EE7S2Jsz0m9qB01bvBxEWMhFx70vhSmjAfeVZzs6/
+ v05iYc3aUMt+dm/aSv5oejFCOaASxJm22fB+sZfWIK+97WfQXSV6rjYLkmgp0HqWCmHh bQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 34gm93xm0w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Oct 2020 13:26:38 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09UH5286089727;
+        Fri, 30 Oct 2020 13:26:37 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 34gm93xm01-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Oct 2020 13:26:37 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09UHH2Ts031290;
+        Fri, 30 Oct 2020 17:26:35 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma01fra.de.ibm.com with ESMTP id 34dwh0jff3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Oct 2020 17:26:35 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 09UHQWf831130076
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Oct 2020 17:26:32 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 81EE111C05C;
+        Fri, 30 Oct 2020 17:26:32 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 60F4211C050;
+        Fri, 30 Oct 2020 17:26:30 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.85.67])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 30 Oct 2020 17:26:30 +0000 (GMT)
+Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
+ with ReST output
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?Q?Javier_Gonz=c3=a1lez?= <javier@javigon.com>,
         Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?B?TWFyZWsgQmVow7pu?= <marek.behun@nic.cz>,
-        =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
-        Alexander Antonov <alexander.antonov@linux.intel.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
-        Andreas Klinger <ak@it-klinger.de>,
         Andrew Donnellan <ajd@linux.ibm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Asutosh Das <asutoshd@codeaurora.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Chao Yu <chao@kernel.org>,
-        Christian Gromm <christian.gromm@microchip.com>,
-        Colin Cross <ccross@android.com>, Dan Murphy <dmurphy@ti.com>,
+        Bruno Meneguele <bmeneg@redhat.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
         Dan Williams <dan.j.williams@intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        David Sterba <dsterba@suse.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Felipe Balbi <balbi@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
+        Guenter Roeck <groeck@chromium.org>,
         Hanjun Guo <guohanjun@huawei.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        Jack Wang <jinpu.wang@cloud.ionos.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Johan Hovold <johan@kernel.org>,
-        Jonas Meurer <jonas@freesources.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
+        Juergen Gross <jgross@suse.com>,
         Konstantin Khlebnikov <koct9i@gmail.com>,
         Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Len Brown <lenb@kernel.org>,
+        Leonid Maksymchuk <leonmaxx@gmail.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         Mario Limonciello <mario.limonciello@dell.com>,
         Mark Gross <mgross@linux.intel.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Leach <mike.leach@linaro.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
         Oded Gabbay <oded.gabbay@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>, Pavel Machek <pavel@ucw.cz>,
+        Oleh Kravchenko <oleg@kaa.org.ua>,
+        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
         Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Chen <peter.chen@nxp.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Roman Sudarikov <roman.sudarikov@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Saravana Kannan <saravanak@google.com>,
+        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
+        Philippe Bergheaud <felix@linux.ibm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
         Sebastian Reichel <sre@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>, Tony Luck <tony.luck@intel.com>,
+        Tom Rix <trix@redhat.com>,
         Vaibhav Jain <vaibhav@linux.ibm.com>,
         Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Wu Hao <hao.wu@intel.com>, ceph-devel@vger.kernel.org,
-        Coresight ML <coresight@lists.linaro.org>,
-        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-f2fs-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-remoteproc <linux-remoteproc@vger.kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+From:   Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <94520e35-6b73-c951-206e-0031d41ebf83@linux.ibm.com>
+Date:   Fri, 30 Oct 2020 18:26:30 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
+MIME-Version: 1.0
+In-Reply-To: <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-10-30_07:2020-10-30,2020-10-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010300122
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 30 Oct 2020 at 01:41, Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> There are some ABI documents that, while they don't generate
-> any warnings, they have issues when parsed by get_abi.pl script
-> on its output result.
->
-> Address them, in order to provide a clean output.
->
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
-> Reviewed-by: Tom Rix <trix@redhat.com> # for fpga-manager
-> Reviewed-By: Kajol Jain<kjain@linux.ibm.com> # for sysfs-bus-event_source-devices-hv_gpci and sysfs-bus-event_source-devices-hv_24x7
-> Acked-by: Oded Gabbay <oded.gabbay@gmail.com> # for Habanalabs
-> Acked-by: Vaibhav Jain <vaibhav@linux.ibm.com> # for sysfs-bus-papr-pmem
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+
+Le 30/10/2020 à 08:40, Mauro Carvalho Chehab a écrit :
+> Some files over there won't parse well by Sphinx.
+> 
+> Fix them.
+> 
+> Acked-by: Jonathan Cameron<Jonathan.Cameron@huawei.com>  # for IIO
+> Signed-off-by: Mauro Carvalho Chehab<mchehab+huawei@kernel.org>
 > ---
+...
+>   Documentation/ABI/testing/sysfs-class-cxl     |  15 +-
+...
+>   Documentation/ABI/testing/sysfs-class-ocxl    |   3 +
 
->  .../testing/sysfs-bus-coresight-devices-etb10 |   5 +-
 
-For the CoreSight part:
+Patches 20, 28 and 31 look good for cxl and ocxl.
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+   Fred

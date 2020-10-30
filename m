@@ -2,99 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ECBD2A07F6
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Oct 2020 15:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E74EE2A08EF
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Oct 2020 16:01:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726348AbgJ3OfH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Oct 2020 10:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
+        id S1726829AbgJ3PBP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Oct 2020 11:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726239AbgJ3OfH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Oct 2020 10:35:07 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D42E2C0613D4;
-        Fri, 30 Oct 2020 07:35:05 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id x13so5450109pfa.9;
-        Fri, 30 Oct 2020 07:35:05 -0700 (PDT)
+        with ESMTP id S1726854AbgJ3PAa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Oct 2020 11:00:30 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B83C0613E9
+        for <linux-iio@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id w1so5842963edv.11
+        for <linux-iio@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=yn61Plqu8DosKmtbURIY5n3p9zI2gsP6LnQwK6jcMQE=;
-        b=fdRqvJlsl8H82CBFcJB3jGpvah4+qaIsmEaDpV+N96MQFt4gkuKDPiTP8hBfPa5xW+
-         KNTOedU3MIrs/Y18XSOJdHd/nYrEy1nJQnf5xsb6bu+RewfweNAITp3vrIJc3Bh0lbv/
-         RfYiuZfKhfnBSc0JpAbdheW/7kBvAfZAuyTL3ixz3P48HNOzCMa8jEeHrUL+oyqPCWOs
-         zmePLR8idSmmVAJNoe0UP+E+H4wwoVnk8Ivh7mfxQ7+/nh+pVa/xWjiYaThxttsqDKZr
-         BUEMpexZb34JY4P2zsPAHfO7oTSKKEBrY7q6MUS+DtfW3aP0w9ROzMICLJpmsYS2ySTX
-         1L2g==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=TjZDjTDUyG5IOPAjtKhDz6bJNm6DqwPh3GYjQnJOtk58Qe+VS+LrjG9D+UJTL89L5a
+         hPszd6YttBU2gVDN4Hgd0nVvKmUsgBGa0RfR9y4dU1VG6wqrOSeXXlqa/jT4b2a91QjD
+         sT+ma7QKBtdbME0ZKxl0kc6DEI2BSZsRxuMkNkQsvOWxO6URWAKkh65L3Tk879AJ4LqG
+         Bj9eXYFDUcjXqha9S32esb82rsLCjf9rEdFYrDoZfWxC18Um3HNxqbzetSufrWkdrmWB
+         Hgfuw2XlX0g8ZkLr3paRT5DvZbKL3ccSJq24BaLzNsiQWn1tArC4uUyPSHMQ3hVqPZo6
+         Sb9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=yn61Plqu8DosKmtbURIY5n3p9zI2gsP6LnQwK6jcMQE=;
-        b=ZpGlAmB5OkBHWD9LPScj0ClBN7/ryokzPy31WWSNglblk7UymMa1yw3Iy59EtHwVpl
-         /pi82pY2SAGtR3zfoKV1ctrz+B8pRXXOW5HM0mifGuSqHoII8x9qtu+lOXhyxWg+tDrM
-         E454PbtmDL66FWAy4ObqpEdkp6bvjR+YLSq90D2Aiz5nuAMUcYinXGd1rZCkNXcXCNoL
-         b2o1PqBo9/YYfNnLW3ItY3QByBRp0uNBvrsmWviFvPdNUQ0gT5VjRpQn0LFFDcoUKvzy
-         xtTw1FHJlQEh2PZ7KLJp38fXEd4YpVmc+JFJag1ukBcRwTP6BhRPQWVO46gQnZOXekl4
-         rEnQ==
-X-Gm-Message-State: AOAM532AqlRx0qXWd0WNi5yhsSoyqA534WuIw+krPc76ZssQrx30Ei39
-        4GsIGkJPgCz0JCMNzj01pnY=
-X-Google-Smtp-Source: ABdhPJzfoWF5oEXYlfzln2y3269yOhZ+7XnbgadWlCsWbkkM2OhZkKZTS9+3lYjLVfPAmSDDq6+7MQ==
-X-Received: by 2002:a63:c042:: with SMTP id z2mr2534669pgi.32.1604068505364;
-        Fri, 30 Oct 2020 07:35:05 -0700 (PDT)
-Received: from localhost ([240e:472:3d00:779:b01a:f9a7:6a68:30ac])
-        by smtp.gmail.com with ESMTPSA id t17sm5816834pfg.169.2020.10.30.07.35.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2020 07:35:04 -0700 (PDT)
-From:   Coiby Xu <coiby.xu@gmail.com>
-X-Google-Original-From: Coiby Xu <Coiby.Xu@gmail.com>
-Date:   Fri, 30 Oct 2020 22:34:10 +0800
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 01/15] iio: accel: remove unnecessary CONFIG_PM_SLEEP
-Message-ID: <20201030143410.pbixjo2cllhd27zp@Rk>
-References: <20201029074910.227859-1-coiby.xu@gmail.com>
- <20201029144007.77d967b0@archlinux>
- <CAHp75Vc829u6XPPA+eE=_AFZSPF+yVqT7nUXxtzkwx7-xLLrCg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=KtRX/BsWsXgrkIvpBUl5BdelzJlbYI9FcSZyKh0UmGlw1HskdFbentxHaPXQJoobMm
+         nh07gGdkzTtrOTMqJSDPQpaDEANQ90385U2SgW+j53tOj7zaO+ApbU4em09BkYeTpKoB
+         M2DnrR6ye/8nKnE2yaQjhBxBc7P1tF/cCq1Lgh2Zv/Sh44ndJXWKF26FDVgd/LUXYcP6
+         ISnGdN1KfFRzhB6oSPZcEJHzpE2NB3mvsL9GGE9l6r81neZMjeME2J4oyWv1igvRbAyZ
+         94qdG8G51FE2WJCbGv50ZpaU8z0JJKcZeUyalFy3AhIHvA6/W1HiZnJw+iUIcj6Zlk71
+         wrzA==
+X-Gm-Message-State: AOAM530a9w3Vl8cq04YzOI569RyNz5vVFg8vGv9s9Lk3fjfGh7DuSv3z
+        Jrelo5mn90ZZjXYu0MYnQVU61rIWxw7bqkZJdg==
+X-Google-Smtp-Source: ABdhPJz0XXuJnPS5g3+lbBiW+XXmkDUqYoNBDu76t3os6QvlPQSI6Onyl30CWs+Md1o+E0r28qs03HXLpOQosKz8YWo=
+X-Received: by 2002:a50:f307:: with SMTP id p7mr2761574edm.235.1604069974505;
+ Fri, 30 Oct 2020 07:59:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vc829u6XPPA+eE=_AFZSPF+yVqT7nUXxtzkwx7-xLLrCg@mail.gmail.com>
+Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:59:34
+ -0700 (PDT)
+Reply-To: li.anable85@gmail.com
+From:   Liliane Abel <k.griest04@gmail.com>
+Date:   Fri, 30 Oct 2020 15:59:34 +0100
+Message-ID: <CABAZL7=b-NWks3DKb=fdDjnu_xt_-CcJCqf-F5s0yQCFVH73-A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 07:06:40PM +0200, Andy Shevchenko wrote:
->On Thu, Oct 29, 2020 at 4:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
->> On Thu, 29 Oct 2020 15:48:56 +0800
->> Coiby Xu <coiby.xu@gmail.com> wrote:
->
->> Please put a cover letter on your next series explaining the context.
->> In this particular case some of the replies you have gotten are
->> general at it is a lot easier to find these sorts of things via
->> replying to the cover letter.
->
->Looking at the number of duplicate messages I would suggest that one
->needs to go through documentation on how to use git format-patch and
->git send-email.
->
+Dearest
 
-Thank you for the suggestion! Actually it's a tree-wide change and it
-seems the kernel community prefer individual patches or series for
-subsystems having the same maintainer over a huge patch set so I wrote
-some scripts to automate the process. That's why you see ~50 emails
-with almost the same commit message. The only difference of these
-commit messages is the name of PM macro.
+Greeting my dear, I am Liliane Abel by name, The only daughter of late
+Mr.Benson Abel. My father is one of the top Politician in our country
+and my mother is a farmers and cocoa merchant when they were both
+alive. After the death of my mother, long ago, my father was
+controlling their business until he was poisoned by his business
+associates which he suffered and died.
 
->--
->With Best Regards,
->Andy Shevchenko
-
---
-Best regards,
-Coiby
+Before the death of my father, He told me about (two million five
+hundred thousand united states dollars) which he deposited in the bank
+in Lome-Togo, It was the money he intended to transfer overseas for
+investment before he was poisoned. He also instructed me that I should
+seek for foreign partners in any country of my choice who will assist
+me transfer this money in overseas account where the money will be
+wisely invested.
+I am seeking for your kind assistance in the following ways:  (1) to
+provide a safe bank account into where the money will be transferred
+for investment. (2) To serve as a guardian of this fund since I am a
+girl of 19 years old. (3) To make arrangement for me to come over to
+your country to further my education. This is my reason for writing to
+you. Please if you are willing to assist me I will offer you 25% of
+the total money. Reply if  you are interested
+Best regards.
+Liliane Abel.

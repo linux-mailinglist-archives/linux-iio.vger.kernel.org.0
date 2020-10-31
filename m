@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A10062A17D3
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA482A17D6
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727702AbgJaNoF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 09:44:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43158 "EHLO mail.kernel.org"
+        id S1727708AbgJaNoG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 09:44:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727692AbgJaNoE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 09:44:04 -0400
+        id S1727692AbgJaNoG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 09:44:06 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B365820791;
-        Sat, 31 Oct 2020 13:44:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 52E2920731;
+        Sat, 31 Oct 2020 13:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604151843;
-        bh=ise7qoDYets/OyDtAWyWcXuIS/5Vl3f6IE759KxT3K8=;
+        s=default; t=1604151845;
+        bh=FzA+NFB7LCeyQ6pLZ6Aze0ObLTyfT6wWBWH0kqJicrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dk16aIsFZ956DbKzTTYPSlmsjsmG1ReS7xdTT5cTLQluIjNR9te0OuhgAq8VWMO0c
-         YJBrV5ZNiNupfNJ9fm8sXuFDn5MHfvq/Tlwi1GfFnkecbC+NIbp9FkLGXWTYncCfi7
-         KfaJkfjGMUOPKy5ueaNAvWSr4D7jUkH1Ugjb3JLQ=
+        b=2HD55PN3aFJbN96Pq5rBDzHH545vfhktH4GXoX6K4RAEenC1uwzUspfnGr/754ptO
+         38ACI2BMTYB9xKnDBKlRuWSEnLszem6EIgAs8fNigqncMQ2i1jaozbhY9udWquHLKC
+         TwETohH5ArPDA+OVOPKRU3t7AtQ7wK6ueI1bC8sU=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Ricardo Ribalda Delgado <ricardo@ribalda.com>
-Subject: [PATCH v2 15/29] dt-bindings:iio:dac:ti,dac7612 yaml conversion
-Date:   Sat, 31 Oct 2020 13:40:56 +0000
-Message-Id: <20201031134110.724233-16-jic23@kernel.org>
+        Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH v2 16/29] dt-bindings:iio:dac:ti,dac082s085 yaml conversion
+Date:   Sat, 31 Oct 2020 13:40:57 +0000
+Message-Id: <20201031134110.724233-17-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031134110.724233-1-jic23@kernel.org>
 References: <20201031134110.724233-1-jic23@kernel.org>
@@ -43,109 +42,149 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Simple conversion from txt to yaml.  No significant adjustments.
+Fairly simple conversion with the exception of the XOR between
+spi-cpha and spi-cpol.
+
+Is there a better way to specify that?
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Ricardo Ribalda Delgado <ricardo@ribalda.com>
+Cc: Lukas Wunner <lukas@wunner.de>
 ---
- .../bindings/iio/dac/ti,dac7612.txt           | 28 ----------
- .../bindings/iio/dac/ti,dac7612.yaml          | 53 +++++++++++++++++++
- 2 files changed, 53 insertions(+), 28 deletions(-)
+v2:
+* Family typo
+* Put back the reference regulator in example.
+* Added checking of XOR of spi-cpha and spi-cpol
+  (dropped Rob Herrings Reviewed-by due to this change)
+  
+ .../bindings/iio/dac/ti,dac082s085.yaml       | 79 +++++++++++++++++++
+ .../bindings/iio/dac/ti-dac082s085.txt        | 34 --------
+ 2 files changed, 79 insertions(+), 34 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
-deleted file mode 100644
-index 17af395b99d9..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.txt
-+++ /dev/null
-@@ -1,28 +0,0 @@
--* Texas Instruments Dual, 12-Bit Serial Input Digital-to-Analog Converter
--
--The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with guaranteed
--12-bit monotonicity performance over the industrial temperature range.
--Is is programmable through an SPI interface.
--
--The internal DACs are loaded when the LOADDACS pin is pulled down.
--
--https://www.ti.com/lit/ds/sbas106/sbas106.pdf
--
--Required Properties:
--- compatible: Should be one of:
--		"ti,dac7612"
--		"ti,dac7612u"
--		"ti,dac7612ub"
--- reg: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
--
--Optional Properties:
--- ti,loaddacs-gpios: GPIO descriptor for the LOADDACS pin.
--- spi-*: Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt
--
--Example:
--
--	dac@1 {
--		compatible = "ti,dac7612";
--		reg = <0x1>;
--		ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
--	};
-diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml
 new file mode 100644
-index 000000000000..d172b142f6ed
+index 000000000000..192b314c99d1
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-@@ -0,0 +1,53 @@
++++ b/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml
+@@ -0,0 +1,79 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/ti,dac7612.yaml#
++$id: http://devicetree.org/schemas/iio/dac/ti,dac082s085.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Texas Instruments DAC7612 family of DACs
++title: Texas Instruments DAC082s085 and similar DACs
 +
 +description:
-+  The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
-+  guaranteed 12-bit monotonicity performance over the industrial temperature
-+  range. Is is programmable through an SPI interface.
++  A family of Texas Instruments 8/10/12-bit 2/4-channel DACs
 +
 +maintainers:
-+  - Ricardo Ribalda Delgado <ricardo@ribalda.com>
++  - Lukas Wunner <lukas@wunner.de>
 +
 +properties:
 +  compatible:
 +    enum:
-+      - ti,dac7612
-+      - ti,dac7612u
-+      - ti,dac7612ub
++      - ti,dac082s085
++      - ti,dac102s085
++      - ti,dac122s085
++      - ti,dac084s085
++      - ti,dac104s085
++      - ti,dac124s085
 +
 +  reg:
 +    maxItems: 1
 +
-+  ti,loaddacs-gpios:
++  spi-cpha: true
++  spi-cpol:
 +    description:
-+      DACs are loaded when the pin connected to this GPIO is pulled low.
-+    maxItems: 1
++      Should be either spi-cpha, or spi-cpol but not both.
++
++  vref-supply:
++    description: Needed to provide output scaling.
 +
 +  spi-max-frequency: true
 +
 +required:
 +  - compatible
 +  - reg
++  - vref-supply
 +
 +additionalProperties: false
 +
++allOf:
++  - $ref: '#/definitions/cpolXORcpha'
++
++definitions:
++  cpolXORcpha:
++    not:
++      required: [spi-cpha, spi-cpol]
++    oneOf:
++      - required:
++          - spi-cpha
++      - required:
++          - spi-cpol
++
 +examples:
 +  - |
-+    #include <dt-bindings/gpio/gpio.h>
++    vref_2v5_reg: regulator-vref {
++        compatible = "regulator-fixed";
++        regulator-name = "2v5";
++        regulator-min-microvolt = <2500000>;
++        regulator-max-microvolt = <2500000>;
++        regulator-always-on;
++    };
 +    spi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        dac@1 {
-+            compatible = "ti,dac7612";
-+            reg = <0x1>;
-+            ti,loaddacs-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
++        dac@0 {
++            compatible = "ti,dac082s085";
++            reg = <0>;
++            spi-max-frequency = <40000000>;
++            spi-cpol;
++            vref-supply = <&vref_2v5_reg>;
 +        };
 +    };
 +...
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt b/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt
+deleted file mode 100644
+index 9cb0e10df704..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt
++++ /dev/null
+@@ -1,34 +0,0 @@
+-Texas Instruments 8/10/12-bit 2/4-channel DAC driver
+-
+-Required properties:
+- - compatible:		Must be one of:
+-			"ti,dac082s085"
+-			"ti,dac102s085"
+-			"ti,dac122s085"
+-			"ti,dac084s085"
+-			"ti,dac104s085"
+-			"ti,dac124s085"
+- - reg: 		Chip select number.
+- - spi-cpha, spi-cpol:	SPI mode (0,1) or (1,0) must be used, so specify
+-			either spi-cpha or spi-cpol (but not both).
+- - vref-supply: 	Phandle to the external reference voltage supply.
+-
+-For other required and optional properties of SPI slave nodes please refer to
+-../../spi/spi-bus.txt.
+-
+-Example:
+-	vref_2v5_reg: regulator-vref {
+-		compatible = "regulator-fixed";
+-		regulator-name = "2v5";
+-		regulator-min-microvolt = <2500000>;
+-		regulator-max-microvolt = <2500000>;
+-		regulator-always-on;
+-	};
+-
+-	dac@0 {
+-		compatible = "ti,dac082s085";
+-		reg = <0>;
+-		spi-max-frequency = <40000000>;
+-		spi-cpol;
+-		vref-supply = <&vref_2v5_reg>;
+-	};
 -- 
 2.28.0
 

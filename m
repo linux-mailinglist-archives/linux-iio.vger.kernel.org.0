@@ -2,34 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A202A19D2
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 218962A19D5
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728412AbgJaSvl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:51:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34820 "EHLO mail.kernel.org"
+        id S1728415AbgJaSvm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:51:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34848 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728399AbgJaSvl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:51:41 -0400
+        id S1728399AbgJaSvm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:51:42 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8ABC82072C;
-        Sat, 31 Oct 2020 18:51:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA60F20739;
+        Sat, 31 Oct 2020 18:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170300;
-        bh=/J/l2AeYF3yjpmCWShBDSDO5jTSeg87IzhAe74Zry/k=;
+        s=default; t=1604170301;
+        bh=rZZAFoFY4fH119A17bhKvecRhAVptqTzLDX3wh/v2so=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g0NhWWG83362h1NELyxDN9oTMv+3WTI+z5ID8WvS/yGorBkMbEydAUrpINNFOQpSh
-         heI86BZp13epzxiJB3ieX9lZzNCWBndiIpEZM06v/Svfm+nvPtuAKn6J9Dm0mEWgeg
-         dn9iFRyBGvJ4VhoSNmfVNU+PpPb/grH/OUB9u5BE=
+        b=LiTsmGbQ31yFLrlHFUrUfUJUioOLxwB2G+7iHre475fwOpUKbfE1kNgXCSwkqkuB4
+         rNsRCQEmcVKzO5JRg95OzvsJC+Z5pm2kaBtedHi0/SZiT97eChabNSyaJbtimCptMX
+         VTVY+9I9JS9HZEy156so1v3B46TDGfwyiUIWsLw4=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 09/46] dt-bindings:iio:health:maxim,max30100: txt to yaml conversion
-Date:   Sat, 31 Oct 2020 18:48:17 +0000
-Message-Id: <20201031184854.745828-10-jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Matt Ranostay <mranostay@gmail.com>
+Subject: [PATCH 10/46] dt-bindings:iio:health:maxim,max30102: txt to yaml conversion
+Date:   Sat, 31 Oct 2020 18:48:18 +0000
+Message-Id: <20201031184854.745828-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -41,28 +42,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Straight forward conversion. As with other bindings I've dropped
-any standrd description, but kept the unusual bits, in thisscase
-the maxim,led-current-microamp and it's description.
+Straight forward binding.  Title was a bit of a challenge to keep short
+as this binding covers sensors for two entirely different purposes.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Matt Ranostay <mranostay@gmail.com>
 ---
- .../bindings/iio/health/max30100.txt          | 28 ----------
- .../bindings/iio/health/maxim,max30100.yaml   | 52 +++++++++++++++++++
- 2 files changed, 52 insertions(+), 28 deletions(-)
+ .../bindings/iio/health/max30102.txt          | 33 --------
+ .../bindings/iio/health/maxim,max30102.yaml   | 75 +++++++++++++++++++
+ 2 files changed, 75 insertions(+), 33 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/health/max30100.txt b/Documentation/devicetree/bindings/iio/health/max30100.txt
+diff --git a/Documentation/devicetree/bindings/iio/health/max30102.txt b/Documentation/devicetree/bindings/iio/health/max30102.txt
 deleted file mode 100644
-index 0054908a6e74..000000000000
---- a/Documentation/devicetree/bindings/iio/health/max30100.txt
+index 7ef7ae40ae4f..000000000000
+--- a/Documentation/devicetree/bindings/iio/health/max30102.txt
 +++ /dev/null
-@@ -1,28 +0,0 @@
--Maxim MAX30100 heart rate and pulse oximeter sensor
+@@ -1,33 +0,0 @@
+-Maxim MAX30102 heart rate and pulse oximeter sensor
+-Maxim MAX30105 optical particle-sensing module
 -
--* https://datasheets.maximintegrated.com/en/ds/MAX30100.pdf
+-* https://datasheets.maximintegrated.com/en/ds/MAX30102.pdf
+-* https://datasheets.maximintegrated.com/en/ds/MAX30105.pdf
 -
 -Required properties:
--  - compatible: must be "maxim,max30100"
+-  - compatible: must be "maxim,max30102" or "maxim,max30105"
 -  - reg: the I2C address of the sensor
 -  - interrupts: the sole interrupt generated by the device
 -
@@ -70,41 +73,46 @@ index 0054908a6e74..000000000000
 -  interrupt client node bindings.
 -
 -Optional properties:
--  - maxim,led-current-microamp: configuration for LED current in microamperes
--    while the engine is running. First indexed value is the configuration for
--    the RED LED, and second value is for the IR LED.
+-  - maxim,red-led-current-microamp: configuration for red LED current
+-  - maxim,ir-led-current-microamp: configuration for IR LED current
+-  - maxim,green-led-current-microamp: configuration for green LED current
+-    (max30105 only)
 -
--    Refer to the datasheet for the allowed current values.
+-    Note that each step is approximately 200 microamps, ranging from 0 uA to
+-    50800 uA.
 -
 -Example:
 -
--max30100@57 {
--	compatible = "maxim,max30100";
+-max30102@57 {
+-	compatible = "maxim,max30102";
 -	reg = <0x57>;
--	maxim,led-current-microamp = <24000 50000>;
+-	maxim,red-led-current-microamp = <7000>;
+-	maxim,ir-led-current-microamp = <7000>;
 -	interrupt-parent = <&gpio1>;
 -	interrupts = <16 2>;
 -};
-diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
 new file mode 100644
-index 000000000000..5684f2f61bcc
+index 000000000000..67d40f4a91a7
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-@@ -0,0 +1,52 @@
++++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+@@ -0,0 +1,75 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/health/maxim,max30100.yaml#
++$id: http://devicetree.org/schemas/iio/health/maxim,max30102.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Maxim MAX30100 heart rate and pulse oximeter sensor
++title: Maxim MAX30102 heart rate and pulse oximeter and MAX30105 particle-sensor
 +
 +maintainers:
 +  - Matt Ranostay <mranostay@gmail.com>
 +
 +properties:
 +  compatible:
-+    const: maxim,max30100
++    enum:
++      - maxim,max30102
++      - maxim,max30105
 +
 +  reg:
 +    maxItems: 1
@@ -113,13 +121,33 @@ index 000000000000..5684f2f61bcc
 +    maxItems: 1
 +    description: Connected to ADC_RDY pin.
 +
-+  maxim,led-current-microamp:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 2
-+    maxItems: 2
-+    description: |
-+      LED current whilst the engine is running. First indexed value is
-+      the configuration for the RED LED, and second value is for the IR LED.
++  maxim,red-led-current-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: RED LED current. Each step is approximately 200 microamps.
++    minimum: 0
++    maximum: 50800
++
++  maxim,ir-led-current-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: IR LED current. Each step is approximately 200 microamps.
++    minimum: 0
++    maximum: 50800
++
++  maxim,green-led-current-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Green LED current. Each step is approximately 200 microamps.
++    minimum: 0
++    maximum: 50800
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: maxim,max30100
++    then:
++      properties:
++        maxim,green-led-current-microamp: false
 +
 +additionalProperties: false
 +
@@ -135,9 +163,10 @@ index 000000000000..5684f2f61bcc
 +        #size-cells = <0>;
 +
 +        heart-rate@57 {
-+            compatible = "maxim,max30100";
++            compatible = "maxim,max30102";
 +            reg = <0x57>;
-+            maxim,led-current-microamp = <24000 50000>;
++            maxim,red-led-current-microamp = <7000>;
++            maxim,ir-led-current-microamp = <7000>;
 +            interrupt-parent = <&gpio1>;
 +            interrupts = <16 2>;
 +        };

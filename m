@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A7D2A19ED
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B102D2A19EF
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728443AbgJaSwC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:52:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35292 "EHLO mail.kernel.org"
+        id S1728446AbgJaSwD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:52:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728399AbgJaSwB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:52:01 -0400
+        id S1728399AbgJaSwD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:52:03 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F8D92071A;
-        Sat, 31 Oct 2020 18:52:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1DE920720;
+        Sat, 31 Oct 2020 18:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170321;
-        bh=Nu2J9vKa1fygViBKeycZdTwrrBZvrFRMzcwEz4+VvgU=;
+        s=default; t=1604170322;
+        bh=wnXWTxJo+4XkKc+gpzNSmMjl4Sp4fe6181L7kywo6ZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DJ5CcmD+xZGItti+vzbWQD9zWPB1sWl9cqFHqlCRZSrFIPsoYavXd57ye6PNiUP1z
-         4hMYltUgD6L8xPm9pB9C7p65shdyNZ2OQJTQl629pgzax9ymZSBYZc0d/CH+DaSAkA
-         jBafqGlSo2zeXs5SmPQCE8bWrxajqDpzBInLrx4A=
+        b=sfwk2KOdtHjK4IBBbw911ciLf0qCBJLM4zybtFM6pVrSXxsrjjMr/9JTSUGkMLYBh
+         48iuJY6u9EgdXgtkptIWOL3CfI2HF+PQ+kQVeKEpPXKhFUV6QrxqxhHqBwn07xO3mQ
+         65SXxmP+1Q2U47Y0nrH5DsELub+msKLOEF68bhAY=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Anson Huang <Anson.Huang@nxp.com>
-Subject: [PATCH 23/46] dt-bindings:iio:magnetometer:fsl,mag3110: txt to yaml conversion
-Date:   Sat, 31 Oct 2020 18:48:31 +0000
-Message-Id: <20201031184854.745828-24-jic23@kernel.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 24/46] dt-bindings:iio:magnetometer:asahi-kasei,ak8974: txt to yaml format conversion
+Date:   Sat, 31 Oct 2020 18:48:32 +0000
+Message-Id: <20201031184854.745828-25-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -42,46 +42,93 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Dropped a few bits of help text in here that didn't seem to add anything
-that wasn't fairly obvious.  Otherwise simple format conversion
+Simple conversion.  I have pruned descriptions that did not add much useful
+detail.  Note that the mount-matrix description will form part of a generic
+IIO binding.  No need to repeat that in every driver that uses it.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Anson Huang <Anson.Huang@nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
- .../iio/magnetometer/fsl,mag3110.yaml         | 48 +++++++++++++++++++
- .../bindings/iio/magnetometer/mag3110.txt     | 27 -----------
- 2 files changed, 48 insertions(+), 27 deletions(-)
+ .../bindings/iio/magnetometer/ak8974.txt      | 31 ----------
+ .../iio/magnetometer/asahi-kasei,ak8974.yaml  | 57 +++++++++++++++++++
+ 2 files changed, 57 insertions(+), 31 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ak8974.txt b/Documentation/devicetree/bindings/iio/magnetometer/ak8974.txt
+deleted file mode 100644
+index 7f06eff3b504..000000000000
+--- a/Documentation/devicetree/bindings/iio/magnetometer/ak8974.txt
++++ /dev/null
+@@ -1,31 +0,0 @@
+-* Asahi Kasei AK8974 magnetometer sensor
+-
+-Required properties:
+-
+-- compatible:
+-    * "asahi-kasei,ak8974"
+-    * "alps,hscdtd008a"
+-- reg : the I2C address of the magnetometer
+-
+-Optional properties:
+-
+-- avdd-supply: regulator supply for the analog voltage
+-  (see regulator/regulator.txt)
+-- dvdd-supply: regulator supply for the digital voltage
+-  (see regulator/regulator.txt)
+-- interrupts: data ready (DRDY) and interrupt (INT1) lines
+-  from the chip, the DRDY interrupt must be placed first.
+-  The interrupts can be triggered on rising or falling
+-  edges alike.
+-- mount-matrix: an optional 3x3 mounting rotation matrix
+-
+-Example:
+-
+-ak8974@f {
+-	compatible = "asahi-kasei,ak8974";
+-	reg = <0x0f>;
+-	avdd-supply = <&foo_reg>;
+-	dvdd-supply = <&bar_reg>;
+-	interrupts = <0 IRQ_TYPE_EDGE_RISING>,
+-		     <1 IRQ_TYPE_EDGE_RISING>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8974.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8974.yaml
 new file mode 100644
-index 000000000000..6b54d32323fc
+index 000000000000..cefb70def188
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
-@@ -0,0 +1,48 @@
++++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8974.yaml
+@@ -0,0 +1,57 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/magnetometer/fsl,mag3110.yaml#
++$id: http://devicetree.org/schemas/iio/magnetometer/asahi-kasei,ak8974.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale MAG3110 magnetometer sensor
++title: Asahi Kasei AK8974 magnetometer sensor
 +
 +maintainers:
-+  - Anson Huang <Anson.Huang@nxp.com>
++  - Linus Walleij <linus.walleij@linaro.org>
 +
 +properties:
 +  compatible:
-+    const: fsl,mag3110
++    enum:
++      - alps,hscdtd008a
++      - asahi-kasei,ak8974
 +
 +  reg:
 +    maxItems: 1
 +
 +  interrupts:
-+    maxItems: 1
++    minItems: 1
++    maxItems: 2
++    description: |
++      Data ready (DRDY) and interrupt (INT1) lines from the chip. The DRDY
++      interrupt must be placed first. The interrupts can be triggered on
++      rising or falling edges.
 +
-+  vdd-supply: true
++  avdd-supply: true
 +
-+  vddio-supply: true
++  dvdd-supply: true
++
++  mount-matrix: true
 +
 +additionalProperties: false
 +
@@ -96,49 +143,16 @@ index 000000000000..6b54d32323fc
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        magnetometer@e {
-+            compatible = "fsl,mag3110";
-+            reg = <0x0e>;
-+            pinctrl-names = "default";
-+            pinctrl-0 = <&pinctrl_i2c3_mag3110_int>;
-+            interrupt-parent = <&gpio3>;
-+            interrupts = <16 IRQ_TYPE_EDGE_RISING>;
++        magnetometer@f {
++            compatible = "asahi-kasei,ak8974";
++            reg = <0x0f>;
++            avdd-supply = <&foo_reg>;
++            dvdd-supply = <&bar_reg>;
++            interrupts = <0 IRQ_TYPE_EDGE_RISING>,
++                         <1 IRQ_TYPE_EDGE_RISING>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt b/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt
-deleted file mode 100644
-index bdd40bcaaa1f..000000000000
---- a/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt
-+++ /dev/null
-@@ -1,27 +0,0 @@
--* FREESCALE MAG3110 magnetometer sensor
--
--Required properties:
--
--  - compatible : should be "fsl,mag3110"
--  - reg : the I2C address of the magnetometer
--
--Optional properties:
--
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--  - vdd-supply: phandle to the regulator that provides power to the sensor.
--  - vddio-supply: phandle to the regulator that provides power to the sensor's IO.
--
--Example:
--
--magnetometer@e {
--	compatible = "fsl,mag3110";
--	reg = <0x0e>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c3_mag3110_int>;
--	interrupt-parent = <&gpio3>;
--	interrupts = <16 IRQ_TYPE_EDGE_RISING>;
--};
 -- 
 2.28.0
 

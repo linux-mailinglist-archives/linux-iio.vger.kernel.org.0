@@ -2,40 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEF22A155F
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 12:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E3A2A1561
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 12:05:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgJaLCj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 07:02:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46352 "EHLO mail.kernel.org"
+        id S1726815AbgJaLFQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 07:05:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47766 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726697AbgJaLCj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 07:02:39 -0400
+        id S1726697AbgJaLFQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 07:05:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2922B20739;
-        Sat, 31 Oct 2020 11:02:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D5EAD208B6;
+        Sat, 31 Oct 2020 11:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604142159;
-        bh=BdH6g1yPDhdM1c+vzvvm9E9sC8aMjf8oqx96jEly48w=;
+        s=default; t=1604142316;
+        bh=bC++FNQDGlVtlhYG/eM4NOko/C7l8F8wsOrtywcEjGw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mCVBQ2j/1UX3etNKWHOynLp3Jeod/O4sp0MpWUgrOh8EB+i68e6oZgzPCrr7wcv6I
-         vHe7ZygRBeR6JGcgMGeU7sC1FNAV2QhwZ8jYTEqgigq8QlTG6dbA3MEgJnD++QG66b
-         NeyLYADLqTbUuy7Q/7Cf9KrNscd1lUNqjiQKy8fc=
-Date:   Sat, 31 Oct 2020 11:02:34 +0000
+        b=sj5mqSitEubbsf9QLznu4zo52+Yox8mjmmhQx5YYvsw80y+m6hqjr8CBWkhyJBMCb
+         zxZw/5HvojnpM3I9cTDuDJY1G4g/wk+4fUcbcCjiz30vkg9n/grsBwhDPX02WsdxfH
+         OIJLh7YV6T6iwwWta0jIeoPr1+fbub+laZkKmhC4=
+Date:   Sat, 31 Oct 2020 11:05:11 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 16/29] dt-bindings:iio:dac:ti,dac082s085 yaml conversion
-Message-ID: <20201031110234.4d70fca3@archlinux>
-In-Reply-To: <20201029191014.GA18228@wunner.de>
-References: <20201011170749.243680-1-jic23@kernel.org>
-        <20201011170749.243680-17-jic23@kernel.org>
-        <20201028203140.GA24407@wunner.de>
-        <20201029155025.0f3ce545@archlinux>
-        <20201029191014.GA18228@wunner.de>
+To:     Coiby Xu <coiby.xu@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 01/15] iio: accel: remove unnecessary CONFIG_PM_SLEEP
+Message-ID: <20201031110511.515a2f0f@archlinux>
+In-Reply-To: <20201030143410.pbixjo2cllhd27zp@Rk>
+References: <20201029074910.227859-1-coiby.xu@gmail.com>
+        <20201029144007.77d967b0@archlinux>
+        <CAHp75Vc829u6XPPA+eE=_AFZSPF+yVqT7nUXxtzkwx7-xLLrCg@mail.gmail.com>
+        <20201030143410.pbixjo2cllhd27zp@Rk>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,49 +46,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 29 Oct 2020 20:10:14 +0100
-Lukas Wunner <lukas@wunner.de> wrote:
+On Fri, 30 Oct 2020 22:34:10 +0800
+Coiby Xu <coiby.xu@gmail.com> wrote:
 
-> On Thu, Oct 29, 2020 at 03:50:25PM +0000, Jonathan Cameron wrote:
-> > On Wed, 28 Oct 2020 21:31:40 +0100 Lukas Wunner <lukas@wunner.de> wrote:  
-> > > On Sun, Oct 11, 2020 at 06:07:36PM +0100, Jonathan Cameron wrote:  
-> > > > +examples:
-> > > > +  - |
-> > > > +    spi {
-> > > > +        #address-cells = <1>;
-> > > > +        #size-cells = <0>;
-> > > > +
-> > > > +        dac@0 {
-> > > > +            compatible = "ti,dac082s085";
-> > > > +            reg = <0>;
-> > > > +            spi-max-frequency = <40000000>;
-> > > > +            spi-cpol;
-> > > > +            spi-cpha;
-> > > > +            vref-supply = <&vref_2v5_reg>;
-> > > > +        };
-> > > > +    };    
-> > > 
-> > > Hm, why wasn't the "vref_2v5_reg" node carried over from the txt file?  
-> > 
-> > Showing how to supply a regulator isn't generally necessary in an example.
-> > I don't mind having it there though so can keep it
-> > (as the fixed regulator binding has been converted to yaml)  
+> On Thu, Oct 29, 2020 at 07:06:40PM +0200, Andy Shevchenko wrote:
+> >On Thu, Oct 29, 2020 at 4:42 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+> >> On Thu, 29 Oct 2020 15:48:56 +0800
+> >> Coiby Xu <coiby.xu@gmail.com> wrote:  
+> >  
+> >> Please put a cover letter on your next series explaining the context.
+> >> In this particular case some of the replies you have gotten are
+> >> general at it is a lot easier to find these sorts of things via
+> >> replying to the cover letter.  
+> >
+> >Looking at the number of duplicate messages I would suggest that one
+> >needs to go through documentation on how to use git format-patch and
+> >git send-email.
+> >  
 > 
-> The "vref_2v5_reg" node is referenced by the "dac@0" node, so  I included
-> it in the example for completeness.  I'd appreciate if it could be carried
-> over to the YAML file, unless its inclusion is a bad practice.
+> Thank you for the suggestion! Actually it's a tree-wide change and it
+> seems the kernel community prefer individual patches or series for
+> subsystems having the same maintainer over a huge patch set so I wrote
+> some scripts to automate the process. That's why you see ~50 emails
+> with almost the same commit message. The only difference of these
+> commit messages is the name of PM macro.
 
-Sure. Will do so.  Many bindings don't do it, but nor problem with being
-more specific.
+When doing a bit set like this, it's worth sending out a small subset
+first to shake out issue like those seen here.
 
-If we followed the logic of including referenced nodes, some bindings
-would end up including nearly a whole board dts.  That's not the case
-here though so no problem.
+Once those get merged then send out out the reset.
+
+Thanks,
 
 Jonathan
 
 > 
-> Thanks,
+> >--
+> >With Best Regards,
+> >Andy Shevchenko  
 > 
-> Lukas
+> --
+> Best regards,
+> Coiby
 

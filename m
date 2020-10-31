@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 751A42A17B7
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C82A2A17B9
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727460AbgJaNnn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 09:43:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42568 "EHLO mail.kernel.org"
+        id S1727599AbgJaNnr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 09:43:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42588 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727543AbgJaNnn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 09:43:43 -0400
+        id S1727543AbgJaNno (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 09:43:44 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 22F202074F;
-        Sat, 31 Oct 2020 13:43:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4D9720756;
+        Sat, 31 Oct 2020 13:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604151822;
-        bh=XhYT2AOhH58Can+mXfLz18ftGCjw/6Y9cju2fRNLQMU=;
+        s=default; t=1604151823;
+        bh=zLBM80q81oAj3l/N7gt12bUAvzlrHfrBh4PcWowdvCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l2pZOTO+BrAn21gToa1EQQfWIEaqRaqIzLgRRRtxkVdy0L2YDFSy28RgElqEIg0vb
-         Kc97yRA5HtFZRYEDpJu2OnjJ6458vYE71VqXUi1fcSIfv+K7VbIbey4kBD5jSPgGfq
-         e50v0hYzS9xKB0f6fNlqeNg0qYSlvyIfR1dUKNVc=
+        b=2TWsF9B1zP0BiqW721sHmfytT+5t4WD0mk/o9inaYs+9RCtLB4St40Cm3v5aQbRxh
+         a7XNEBzvb8xE22q2kE2N1z+VKefOuXDMGhz4elSnHgMu05bJnXFL12grm5oBT0+8lm
+         QA93xEv2vMgGlZCx1clYCnoxe67/eQYZTqEfpIZM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH v2 01/29] dt-bindings:iio:humidity:hdc100x Drop separate doc + add to trivial-devices
-Date:   Sat, 31 Oct 2020 13:40:42 +0000
-Message-Id: <20201031134110.724233-2-jic23@kernel.org>
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v2 02/29] dt-bindings:iio:humidity:htu21 Drop separate doc + add to trivial-devices
+Date:   Sat, 31 Oct 2020 13:40:43 +0000
+Message-Id: <20201031134110.724233-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031134110.724233-1-jic23@kernel.org>
 References: <20201031134110.724233-1-jic23@kernel.org>
@@ -48,56 +47,45 @@ reg and compatible.  Hence doesn't need it's own document.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 ---
- .../bindings/iio/humidity/hdc100x.txt           | 17 -----------------
- .../devicetree/bindings/trivial-devices.yaml    | 10 ++++++++++
- 2 files changed, 10 insertions(+), 17 deletions(-)
+ .../devicetree/bindings/iio/humidity/htu21.txt      | 13 -------------
+ .../devicetree/bindings/trivial-devices.yaml        |  4 ++++
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt b/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt
+diff --git a/Documentation/devicetree/bindings/iio/humidity/htu21.txt b/Documentation/devicetree/bindings/iio/humidity/htu21.txt
 deleted file mode 100644
-index c52333bdfd19..000000000000
---- a/Documentation/devicetree/bindings/iio/humidity/hdc100x.txt
+index 97d79636f7ae..000000000000
+--- a/Documentation/devicetree/bindings/iio/humidity/htu21.txt
 +++ /dev/null
-@@ -1,17 +0,0 @@
--* HDC100x temperature + humidity sensors
+@@ -1,13 +0,0 @@
+-*HTU21 - Measurement-Specialties htu21 temperature & humidity sensor and humidity part of MS8607 sensor
 -
 -Required properties:
--  - compatible: Should contain one of the following:
--	ti,hdc1000
--	ti,hdc1008
--	ti,hdc1010
--	ti,hdc1050
--	ti,hdc1080
--  - reg: i2c address of the sensor
+-
+-	- compatible: should be "meas,htu21" or "meas,ms8607-humidity"
+-	- reg: I2C address of the sensor
 -
 -Example:
 -
--hdc100x@40 {
--	compatible = "ti,hdc1000";
+-htu21@40 {
+-	compatible = "meas,htu21";
 -	reg = <0x40>;
 -};
 diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index ab623ba930d5..d37f757e6bd1 100644
+index d37f757e6bd1..43febb3057b6 100644
 --- a/Documentation/devicetree/bindings/trivial-devices.yaml
 +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -356,6 +356,16 @@ properties:
-           - ti,ads7830
-             # Temperature Monitoring and Fan Control
-           - ti,amc6821
-+            # Temperature and humidity sensor with i2c interface
-+          - ti,hdc1000
-+            # Temperature and humidity sensor with i2c interface
-+          - ti,hdc1008
-+            # Temperature and humidity sensor with i2c interface
-+          - ti,hdc1010
-+            # Temperature and humidity sensor with i2c interface
-+          - ti,hdc1050
-+            # Temperature and humidity sensor with i2c interface
-+          - ti,hdc1080
-             # Temperature sensor with 2-wire interface
-           - ti,lm73
-             # Temperature sensor with integrated fan control
+@@ -132,6 +132,10 @@ properties:
+           - mcube,mc3230
+             # MEMSIC 2-axis 8-bit digital accelerometer
+           - memsic,mxc6225
++            # Measurement Specialities I2C temperature and humidity sensor
++          - meas,htu21
++            # Measurement Specialities temp and humidity part of ms8607 device
++          - meas,ms8607-humidity
+             # Microchip differential I2C ADC, 1 Channel, 18 bit
+           - microchip,mcp3421
+             # Microchip differential I2C ADC, 2 Channel, 18 bit
 -- 
 2.28.0
 

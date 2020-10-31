@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 349F82A19E0
+	by mail.lfdr.de (Postfix) with ESMTP id BEFB82A19E2
 	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:51:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728429AbgJaSvw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:51:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35070 "EHLO mail.kernel.org"
+        id S1728430AbgJaSvx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:51:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728399AbgJaSvv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:51:51 -0400
+        id S1728399AbgJaSvx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:51:53 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C016320720;
-        Sat, 31 Oct 2020 18:51:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 629AE2071A;
+        Sat, 31 Oct 2020 18:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170311;
-        bh=O5f3jidJR7i/UOt0KKH563VuD2QIarTgrn6pmkRfU2I=;
+        s=default; t=1604170312;
+        bh=dyozSHBidbCpE68HDPMTN5188ZmV/mBciN/Dv709ZRU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u53l/HiY6JgFd7EOBq28TBH2nany3TyjulFBXFEDFptpLHGdiWHE4UxQxkeyFVnmA
-         rYfzKGBNIB63gMIX1SmrtKyMS7ZUsFZKsS3Y4qg2mtrKVvRIvDTcNdZ5D6Wj7yr8bl
-         wuTsPiJrkpCtIC2/YYiE6qbSqA0Wgfqlz/hVRi9w=
+        b=GdENXmvMx/J/PeKGH2T0a8lsao9nVsDjKQPyen76ssNu9NrxMlAsU1FANd4E80d4g
+         rDoZgVhQPJsOF/smBi2FDBAgJKhs1S4yWnhvQVm5LBNuEcCFH8wb18T/v/IW2mHU0O
+         /r2fJzRCd5lN4PgXeHP9vns7lQ3SnG0JRmEO1Jds=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jacek Anaszewski <j.anaszewski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>
-Subject: [PATCH 16/46] dt-bindings:iio:light:sharp,gp2ap020a00f: txt to yaml conversion.
-Date:   Sat, 31 Oct 2020 18:48:24 +0000
-Message-Id: <20201031184854.745828-17-jic23@kernel.org>
+        Robert Eshleman <bobbyeshleman@gmail.com>
+Subject: [PATCH 17/46] dt-bindings:iio:light:maxim,max44009: txt to yaml conversion.
+Date:   Sat, 31 Oct 2020 18:48:25 +0000
+Message-Id: <20201031184854.745828-18-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -43,97 +42,93 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Simple conversion.  Maintainers as per original binding file authors,
-but that was a long time back so as with others, if email addresses bounce
-I'll switch this to me.
+Straight forward format conversion.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jacek Anaszewski <j.anaszewski@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Robert Eshleman <bobbyeshleman@gmail.com>
 ---
- .../bindings/iio/light/gp2ap020a00f.txt       | 21 --------
- .../iio/light/sharp,gp2ap020a00f.yaml         | 49 +++++++++++++++++++
- 2 files changed, 49 insertions(+), 21 deletions(-)
+ .../bindings/iio/light/max44009.txt           | 24 ----------
+ .../bindings/iio/light/maxim,max44009.yaml    | 45 +++++++++++++++++++
+ 2 files changed, 45 insertions(+), 24 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/gp2ap020a00f.txt b/Documentation/devicetree/bindings/iio/light/gp2ap020a00f.txt
+diff --git a/Documentation/devicetree/bindings/iio/light/max44009.txt b/Documentation/devicetree/bindings/iio/light/max44009.txt
 deleted file mode 100644
-index 9231c82317ad..000000000000
---- a/Documentation/devicetree/bindings/iio/light/gp2ap020a00f.txt
+index 4a98848e35c0..000000000000
+--- a/Documentation/devicetree/bindings/iio/light/max44009.txt
 +++ /dev/null
-@@ -1,21 +0,0 @@
--* Sharp GP2AP020A00F I2C Proximity/ALS sensor
--
--The proximity detector sensor requires power supply
--for its built-in led. It is also defined by this binding.
+@@ -1,24 +0,0 @@
+-* MAX44009 Ambient Light Sensor
 -
 -Required properties:
 -
--  - compatible : should be "sharp,gp2ap020a00f"
--  - reg : the I2C slave address of the light sensor
--  - interrupts : interrupt specifier for the sole interrupt generated
--		 by the device
--  - vled-supply : VLED power supply, as covered in ../regulator/regulator.txt
+-- compatible: should be "maxim,max44009"
+-- reg: the I2C address of the device (default is <0x4a>)
+-
+-Optional properties:
+-
+-- interrupts: interrupt mapping for GPIO IRQ. Should be configured with
+-  IRQ_TYPE_EDGE_FALLING.
+-
+-Refer to interrupt-controller/interrupts.txt for generic interrupt client
+-node bindings.
 -
 -Example:
 -
--gp2ap020a00f@39 {
--	compatible = "sharp,gp2ap020a00f";
--	reg = <0x39>;
--	interrupts = <2 0>;
--	vled-supply = <...>;
+-light-sensor@4a {
+-	compatible = "maxim,max44009";
+-	reg = <0x4a>;
+-
+-	interrupt-parent = <&gpio1>;
+-	interrupts = <17 IRQ_TYPE_EDGE_FALLING>;
 -};
-diff --git a/Documentation/devicetree/bindings/iio/light/sharp,gp2ap020a00f.yaml b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap020a00f.yaml
+diff --git a/Documentation/devicetree/bindings/iio/light/maxim,max44009.yaml b/Documentation/devicetree/bindings/iio/light/maxim,max44009.yaml
 new file mode 100644
-index 000000000000..d6a4b47467f2
+index 000000000000..5911bd93bcb1
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap020a00f.yaml
-@@ -0,0 +1,49 @@
++++ b/Documentation/devicetree/bindings/iio/light/maxim,max44009.yaml
+@@ -0,0 +1,45 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/light/sharp,gp2ap020a00f.yaml#
++$id: http://devicetree.org/schemas/iio/light/maxim,max44009.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Sharp GP2AP020A00F I2C Proximity/ALS sensor
++title: MAX44009 Ambient Light Sensor
 +
 +maintainers:
-+  - Jacek Anaszewski <j.anaszewski@samsung.com>
-+  - Kyungmin Park <kyungmin.park@samsung.com>
-+
-+description: |
-+  The proximity detector sensor requires power supply for its built-in led.
++  - Robert Eshleman <bobbyeshleman@gmail.com>
 +
 +properties:
 +  compatible:
-+    const: sharp,gp2ap020a00f
++    const: maxim,max44009
 +
 +  reg:
 +    maxItems: 1
++    description: Default address is 0x4a
 +
 +  interrupts:
 +    maxItems: 1
-+
-+  vled-supply: true
++    description: Should be configured with type IRQ_TYPE_EDGE_FALLING
 +
 +additionalProperties: false
 +
 +required:
 +  - compatible
 +  - reg
-+  - interrupts
-+  - vled-supply
 +
 +examples:
 +  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
 +    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        light-sensor@39 {
-+            compatible = "sharp,gp2ap020a00f";
-+            reg = <0x39>;
-+            interrupts = <2 0>;
-+            vled-supply = <&als_reg>;
++        light-sensor@4a {
++            compatible = "maxim,max44009";
++            reg = <0x4a>;
++
++            interrupt-parent = <&gpio1>;
++            interrupts = <17 IRQ_TYPE_EDGE_FALLING>;
 +        };
 +    };
 +...

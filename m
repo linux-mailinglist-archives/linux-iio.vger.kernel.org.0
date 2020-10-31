@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E17BC2A1960
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3053A2A195A
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728332AbgJaSPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1728355AbgJaSPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 31 Oct 2020 14:15:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46274 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:46308 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728344AbgJaSPE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:15:04 -0400
+        id S1728332AbgJaSPG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:15:06 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE5AF206E3;
-        Sat, 31 Oct 2020 18:15:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6564E206DD;
+        Sat, 31 Oct 2020 18:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604168104;
-        bh=Za5exTD0a3RmhL7Ob2UhOE7IOWXzYlzSvz5GMsTToo8=;
+        s=default; t=1604168105;
+        bh=Dajqw5nvr2DvYCFQUKa+XCYy8A7wnG/zDAlkydD1B0s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ePGlAk5Va5+w4pv82PhGHDy2perbG3HYCP1mzkSpZbHcSdP2cjA8LvcuhE54JxOVE
-         kogoU58gdzdLy8Sb6aH0Xt05PNBAqdgCv7S0rnCuFqOWwmHXbifw1JJPbtzKz4wfhS
-         7XPnL7skU3t152cbcnfHDzDp2XUgYeAKX+ouGd6s=
+        b=jklqEaapj5i8oOedy9tPBdkExPWW1Lnvtegbj997i+2TXkrPEekBG0PkeHiCH+Ziq
+         9iulStcClJzllY4vB3MCMWqueq4+b/pPp/gFROfT7PwPI9do75LzMKgueUMH24/t5D
+         MTzFb/BBvxptx8cr1vX/Dv/hI4w4l9qh0vVLaQw8=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Peter Rosin <peda@axentia.se>
-Subject: [PATCH 08/10] dt-bindings:iio:afe:voltage-divider: txt to yaml conversion
-Date:   Sat, 31 Oct 2020 18:12:40 +0000
-Message-Id: <20201031181242.742301-9-jic23@kernel.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 09/10] dt-bindings:iio:light:capella,cm3605: txt to yaml conversion.
+Date:   Sat, 31 Oct 2020 18:12:41 +0000
+Message-Id: <20201031181242.742301-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031181242.742301-1-jic23@kernel.org>
 References: <20201031181242.742301-1-jic23@kernel.org>
@@ -42,170 +42,147 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Simple binding so straight forward conversion, though did require
-adding a separate binding document for the max1027 to reflect
-its abilities to provide channels to consumers.
+Simple conversion using the new iio-consumers.yaml binding in the
+dt-schema.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Peter Rosin <peda@axentia.se>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
- .../bindings/iio/afe/voltage-divider.txt      | 53 -----------
- .../bindings/iio/afe/voltage-divider.yaml     | 88 +++++++++++++++++++
- 2 files changed, 88 insertions(+), 53 deletions(-)
+ .../bindings/iio/light/capella,cm3605.yaml    | 78 +++++++++++++++++++
+ .../devicetree/bindings/iio/light/cm3605.txt  | 41 ----------
+ 2 files changed, 78 insertions(+), 41 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.txt b/Documentation/devicetree/bindings/iio/afe/voltage-divider.txt
-deleted file mode 100644
-index b452a8406107..000000000000
---- a/Documentation/devicetree/bindings/iio/afe/voltage-divider.txt
-+++ /dev/null
-@@ -1,53 +0,0 @@
--Voltage divider
--===============
--
--When an io-channel measures the midpoint of a voltage divider, the
--interesting voltage is often the voltage over the full resistance
--of the divider. This binding describes the voltage divider in such
--a curcuit.
--
--    Vin ----.
--            |
--         .-----.
--         |  R  |
--         '-----'
--            |
--            +---- Vout
--            |
--         .-----.
--         | Rout|
--         '-----'
--            |
--           GND
--
--Required properties:
--- compatible : "voltage-divider"
--- io-channels : Channel node of a voltage io-channel measuring Vout.
--- output-ohms : Resistance Rout over which the output voltage is measured.
--	        See full-ohms.
--- full-ohms : Resistance R + Rout for the full divider. The io-channel
--	      is scaled by the Rout / (R + Rout) quotient.
--
--Example:
--The system voltage is circa 12V, but divided down with a 22/222
--voltage divider (R = 200 Ohms, Rout = 22 Ohms) and fed to an ADC.
--
--sysv {
--	compatible = "voltage-divider";
--	io-channels = <&maxadc 1>;
--
--	/* Scale the system voltage by 22/222 to fit the ADC range. */
--	output-ohms = <22>;
--	full-ohms = <222>; /* 200 + 22 */
--};
--
--&spi {
--	maxadc: adc@0 {
--		compatible = "maxim,max1027";
--		reg = <0>;
--		#io-channel-cells = <1>;
--		interrupt-parent = <&gpio5>;
--		interrupts = <15 IRQ_TYPE_EDGE_RISING>;
--		spi-max-frequency = <1000000>;
--	};
--};
-diff --git a/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
+diff --git a/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml b/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
 new file mode 100644
-index 000000000000..fefce8c9f6dc
+index 000000000000..001c99dbd14e
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
-@@ -0,0 +1,88 @@
++++ b/Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
+@@ -0,0 +1,78 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/afe/voltage-divider.yaml#
++$id: http://devicetree.org/schemas/iio/light/capella,cm3605.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Voltage divider
++title:
++  Capella Microsystems CM3605 Ambient Light and Short Distance Proximity Sensor
 +
 +maintainers:
-+  - Peter Rosin <peda@axentia.se>
++  - Linus Walleij <linus.walleij@linaro.org>
 +
 +description: |
-+  When an io-channel measures the midpoint of a voltage divider, the
-+  interesting voltage is often the voltage over the full resistance
-+  of the divider. This binding describes the voltage divider in such
-+  a curcuit.
++  The CM3605 is an entirely analog part. However, it requires quite a bit of
++  software logic to interface a host operating system.
 +
-+    Vin ----.
-+            |
-+         .-----.
-+         |  R  |
-+         '-----'
-+            |
-+            +---- Vout
-+            |
-+         .-----.
-+         | Rout|
-+         '-----'
-+            |
-+           GND
-+
++  This ALS and proximity sensor was one of the very first deployed in mobile
++  handsets, notably it is used in the very first Nexus One Android phone from
++  2010.
 +
 +properties:
 +  compatible:
-+    const: voltage-divider
++    const: capella,cm3605
++
++  aset-gpios:
++    maxItems: 1
++    description:
++      ASET line (drive low to activate the ALS, should be flagged
++      GPIO_ACTIVE_LOW)
++
++  interrupts:
++    maxItems: 1
++    description:
++      Connected to the POUT (proximity sensor out) line. The edge
++      detection must be set to IRQ_TYPE_EDGE_BOTH so as to detect
++      movements toward and away from the proximity sensor.
 +
 +  io-channels:
 +    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  output-ohms:
-+    $ref: /schemas/types.yaml#/definitions/uint32
 +    description:
-+      Resistance Rout over which the output voltage is measured. See full-ohms.
++      ADC channel used for converting the voltage from AOUT to a digital
++      representation.
 +
-+  full-ohms:
++  io-channel-names:
++    const: aout
++
++  vdd-supply: true
++
++  capella,aset-resistance-ohms:
 +    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Resistance R + Rout for the full divider. The io-channel is scaled by
-+      the Rout / (R + Rout) quotient.
++    enum: [50000, 100000, 300000, 600000]
++    description: >
++      Sensitivity calibration resistance. Note that calibration curves
++      are only provided for specific allowed values. Default: 100 kOhms.
 +
 +required:
 +  - compatible
++  - aset-gpios
++  - interrupts
 +  - io-channels
-+  - output-ohms
-+  - full-ohms
++  - io-channel-names
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
++    #include <dt-bindings/gpio/gpio.h>
 +    #include <dt-bindings/interrupt-controller/irq.h>
-+    /*
-+     * The system voltage is circa 12V, but divided down with a 22/222
-+     * voltage divider (R = 200 Ohms, Rout = 22 Ohms) and fed to an ADC.
-+     */
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        maxadc: adc@0 {
-+            compatible = "maxim,max1027";
-+            reg = <0>;
-+            #io-channel-cells = <1>;
-+            interrupt-parent = <&gpio5>;
-+            interrupts = <15 IRQ_TYPE_EDGE_RISING>;
-+            spi-max-frequency = <1000000>;
-+        };
-+    };
-+    sysv {
-+        compatible = "voltage-divider";
-+        io-channels = <&maxadc 1>;
-+
-+        /* Scale the system voltage by 22/222 to fit the ADC range. */
-+        output-ohms = <22>;
-+        full-ohms = <222>; /* 200 + 22 */
++    light-sensor {
++        compatible = "capella,cm3605";
++        vdd-supply = <&foo_reg>;
++        aset-gpios = <&foo_gpio 1 GPIO_ACTIVE_LOW>;
++        capella,aset-resistance-ohms = <100000>;
++        interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
++        io-channels = <&adc 0x01>;
++        io-channel-names = "aout";
 +    };
 +...
+diff --git a/Documentation/devicetree/bindings/iio/light/cm3605.txt b/Documentation/devicetree/bindings/iio/light/cm3605.txt
+deleted file mode 100644
+index 56331a79f9ab..000000000000
+--- a/Documentation/devicetree/bindings/iio/light/cm3605.txt
++++ /dev/null
+@@ -1,41 +0,0 @@
+-Capella Microsystems CM3605
+-Ambient Light and Short Distance Proximity Sensor
+-
+-The CM3605 is an entirely analog part which however require quite a bit of
+-software logic to interface a host operating system.
+-
+-This ALS and proximity sensor was one of the very first deployed in mobile
+-handsets, notably it is used in the very first Nexus One Android phone from
+-2010.
+-
+-Required properties:
+-- compatible: must be: "capella,cm3605"
+-- aset-gpios: GPIO line controlling the ASET line (drive low
+-  to activate the ALS, should be flagged GPIO_ACTIVE_LOW)
+-- interrupts: the IRQ line (such as a GPIO) that is connected to
+-  the POUT (proximity sensor out) line. The edge detection must
+-  be set to IRQ_TYPE_EDGE_BOTH so as to detect movements toward
+-  and away from the proximity sensor.
+-- io-channels: the ADC channel used for converting the voltage from
+-  AOUT to a digital representation.
+-- io-channel-names: must be "aout"
+-
+-Optional properties:
+-- vdd-supply: regulator supplying VDD power to the component.
+-- capella,aset-resistance-ohms: the sensitivity calibration resistance,
+-  in Ohms. Valid values are: 50000, 100000, 300000 and 600000,
+-  as these are the resistance values that we are supplied with
+-  calibration curves for. If not supplied, 100 kOhm will be assumed
+-  but it is strongly recommended to supply this.
+-
+-Example:
+-
+-cm3605 {
+-	compatible = "capella,cm3605";
+-	vdd-supply = <&foo_reg>;
+-	aset-gpios = <&foo_gpio 1 GPIO_ACTIVE_LOW>;
+-	capella,aset-resistance-ohms = <100000>;
+-	interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
+-	io-channels = <&adc 0x01>;
+-	io-channel-names = "aout";
+-};
 -- 
 2.28.0
 

@@ -2,35 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8013D2A19C8
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A772A19CA
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:51:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728396AbgJaSve (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:51:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34656 "EHLO mail.kernel.org"
+        id S1728397AbgJaSvg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:51:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34686 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728395AbgJaSvd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:51:33 -0400
+        id S1728395AbgJaSvf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:51:35 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1B0BA20723;
-        Sat, 31 Oct 2020 18:51:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82D3420720;
+        Sat, 31 Oct 2020 18:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170293;
-        bh=WKV36q4UiFqh94PWNWGqvJw5ltboEidH/EpBsVhJWR8=;
+        s=default; t=1604170294;
+        bh=GL5NLMdYAIJDAG2pgmplmCsOw7mxQvaz0GX+UG2FpR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GHmJqDlBy5PGrG+f9fSic28HL/SouLq/Yuyc+WpqVF1lMKU9wzFVG2gaWMnbkC4Db
-         3zcJKcULon8iorftd8Z7VIIu1kqKbrcYc26r2idfRBHhWaah+JtYPqHVwngFmbf8XC
-         fTqgvOBXoSsNZHweqqR7uKGebCQa3XI7yGY1P43g=
+        b=oj1g4dvoursWtKCmfQ6m0XnBGkbFRD0K8Vx5+6fAX1yvQTqW3hKa0pU2rq/Osm5so
+         aEB/BHSCKPfVjBlVD2x1VvATqQPXwz6poq4t5o/uWNKJrOXvCf+Nl24YGayg9HRROM
+         V8teHVEhVTosFqzKgWpRLs1l8SOaqAmbUiR7oKfo=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Chris Coffey <cmc@babblebit.net>
-Subject: [PATCH 04/46] dt-bindings:iio:potentiometer:microchip,mcp41010 txt to yaml conversion
-Date:   Sat, 31 Oct 2020 18:48:12 +0000
-Message-Id: <20201031184854.745828-5-jic23@kernel.org>
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Gabriel Capella <gabriel@capella.pro>,
+        Alexandru Ardelean <Alexandru.Ardelean@analog.com>
+Subject: [PATCH 05/46] dt-bindings:iio:impedance-analyzer:adi,ad5933 yaml conversion.
+Date:   Sat, 31 Oct 2020 18:48:13 +0000
+Message-Id: <20201031184854.745828-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -42,103 +44,117 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A simple binding that I almost just move to trivial devices.
-The small amount of additional documentation and relatively large number
-of compatible entries convinced me to suggest we keep this one separately
-documented.
+The example in this one had a completely wrong compatible so I've
+fixed that. Otherwise, a fairly simple conversion.
+
+Note the driver itself is still in staging.  Looking back at the
+last discussion around this, I think we were just waiting for some
+test results on some refactors.  As such the binding should be stable
+even if the driver might need a little more love and attention.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Chris Coffey <cmc@babblebit.net>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Gabriel Capella <gabriel@capella.pro>
+Cc: Alexandru Ardelean <Alexandru.Ardelean@analog.com>
 ---
- .../bindings/iio/potentiometer/mcp41010.txt   | 28 -----------
- .../iio/potentiometer/microchip,mcp41010.yaml | 48 +++++++++++++++++++
- 2 files changed, 48 insertions(+), 28 deletions(-)
+ .../iio/impedance-analyzer/ad5933.txt         | 26 --------
+ .../iio/impedance-analyzer/adi,ad5933.yaml    | 59 +++++++++++++++++++
+ 2 files changed, 59 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/potentiometer/mcp41010.txt b/Documentation/devicetree/bindings/iio/potentiometer/mcp41010.txt
+diff --git a/Documentation/devicetree/bindings/iio/impedance-analyzer/ad5933.txt b/Documentation/devicetree/bindings/iio/impedance-analyzer/ad5933.txt
 deleted file mode 100644
-index 4f245e8469fd..000000000000
---- a/Documentation/devicetree/bindings/iio/potentiometer/mcp41010.txt
+index 5ff38728ff91..000000000000
+--- a/Documentation/devicetree/bindings/iio/impedance-analyzer/ad5933.txt
 +++ /dev/null
-@@ -1,28 +0,0 @@
--* Microchip MCP41010/41050/41100/42010/42050/42100 Digital Potentiometer
+@@ -1,26 +0,0 @@
+-Analog Devices AD5933/AD5934 Impedance Converter, Network Analyzer
 -
--Datasheet publicly available at:
--https://ww1.microchip.com/downloads/en/devicedoc/11195c.pdf
--
--The node for this driver must be a child node of a SPI controller, hence
--all mandatory properties described in
--
--        Documentation/devicetree/bindings/spi/spi-bus.txt
--
--must be specified.
+-https://www.analog.com/media/en/technical-documentation/data-sheets/AD5933.pdf
+-https://www.analog.com/media/en/technical-documentation/data-sheets/AD5934.pdf
 -
 -Required properties:
--	- compatible:  	Must be one of the following, depending on the
--			model:
--			"microchip,mcp41010"
--			"microchip,mcp41050"
--			"microchip,mcp41100"
--			"microchip,mcp42010"
--			"microchip,mcp42050"
--			"microchip,mcp42100"
+- - compatible : should be one of
+-		"adi,ad5933"
+-		"adi,ad5934"
+- - reg : the I2C address.
+- - vdd-supply : The regulator supply for DVDD, AVDD1 and AVDD2 when they
+-   are connected together.
 -
--Example:
--potentiometer@0 {
--	compatible = "microchip,mcp41010";
--	reg = <0>;
--	spi-max-frequency = <500000>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp41010.yaml b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp41010.yaml
+-Optional properties:
+-- clocks : external clock reference.
+-- clock-names : must be "mclk" if clocks is set.
+-
+-Example for a I2C device node:
+-
+-	impedance-analyzer@0d {
+-		compatible = "adi,adxl345";
+-		reg = <0x0d>;
+-		vdd-supply = <&vdd_supply>;
+-		clocks = <&ref_clk>;
+-		clock-names = "mclk";
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/impedance-analyzer/adi,ad5933.yaml b/Documentation/devicetree/bindings/iio/impedance-analyzer/adi,ad5933.yaml
 new file mode 100644
-index 000000000000..567697d996ec
+index 000000000000..2ad043554b9c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp41010.yaml
-@@ -0,0 +1,48 @@
++++ b/Documentation/devicetree/bindings/iio/impedance-analyzer/adi,ad5933.yaml
+@@ -0,0 +1,59 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/potentiometer/microchip,mcp41010.yaml#
++$id: http://devicetree.org/schemas/iio/impedance-analyzer/adi,ad5933.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Microchip MCP41010/41050/41100/42010/42050/42100 Digital Potentiometer
++title: Analog Devices AD5933/AD5934 Impedance Converter, Network Analyzer
 +
 +maintainers:
-+  - Chris Coffey <cmc@babblebit.net>
++  - Marcelo Schmitt <marcelo.schmitt1@gmail.com>
++  - Gabriel Capella <gabriel@capella.pro>
 +
 +description: |
-+  Datasheet: https://ww1.microchip.com/downloads/en/devicedoc/11195c.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5933.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5934.pdf
 +
 +properties:
 +  compatible:
 +    enum:
-+      - microchip,mcp41010
-+      - microchip,mcp41050
-+      - microchip,mcp41100
-+      - microchip,mcp42010
-+      - microchip,mcp42050
-+      - microchip,mcp42100
++      - adi,ad5933
++      - adi,ad5934
 +
 +  reg:
 +    maxItems: 1
 +
-+  spi-max-frequency: true
++  vdd-supply:
++    description: |
++      The regulator supply for DVDD, AVDD1 and AVDD2 when they
++      are connected together.  Used to calculate voltage scaling of measurement
++      channels.
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    const: mclk
 +
 +additionalProperties: false
 +
 +required:
 +  - compatible
 +  - reg
++  - vdd-supply
 +
 +examples:
 +  - |
-+    spi {
++    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        potentiometer@0 {
-+            compatible = "microchip,mcp41010";
-+            reg = <0>;
-+            spi-max-frequency = <500000>;
++        impedance-analyzer@d {
++            compatible = "adi,ad5933";
++            reg = <0x0d>;
++            vdd-supply = <&vdd_supply>;
++            clocks = <&ref_clk>;
++            clock-names = "mclk";
 +        };
 +    };
 +...

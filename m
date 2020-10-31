@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A5162A1A1F
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A922A1A25
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728508AbgJaSwd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:52:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36186 "EHLO mail.kernel.org"
+        id S1728506AbgJaSwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:52:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36248 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728506AbgJaSwc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:52:32 -0400
+        id S1728509AbgJaSwe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:52:34 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D9AD52076D;
-        Sat, 31 Oct 2020 18:52:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D7F520659;
+        Sat, 31 Oct 2020 18:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170351;
-        bh=q+9qFioQStB85n5E27SelRkE1z+NinrYgWML/HvCCJs=;
+        s=default; t=1604170353;
+        bh=XwPqLcNJtMME21zPbSKPcpiAuMe1PlO5Q8RRyezbGlM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cToFJa6by7oqPN8jKK2ihTuKLDzx7PVtM3uzgcF+dnJyspjDFpH7c1H+lge6CKwU3
-         nMFMKlmXW/KajfonmC6cxcWVuJMv0JoGkmqJ4MfJei2XYcpLGo21BtzIi274m9mRgn
-         8LBnE0veLugBTlOO7I6YpEEPHuN23AMw6J7HrNAY=
+        b=hR6lZo54IjW9aM5+Ew7FZBgkTYeTt35o5QPtcE5nnDIRmXLD1smGq5K3Ftj3vI7vb
+         rdhV3qAy7E+xQwPUo+coz+H5/48kKn92oGMjWQ3z4rN5pJk2Sc15wyzHw4aMNfkNYH
+         va3C8iMfERUDq81dmFUU5Mc7nHS/oU3ZigyJ8kEA=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH 44/46] dt-bindings:iio:st,st-sensors: txt to yaml conversion.
-Date:   Sat, 31 Oct 2020 18:48:52 +0000
-Message-Id: <20201031184854.745828-45-jic23@kernel.org>
+        Michael Hennerich <michael.hennerich@analog.com>
+Subject: [PATCH 45/46] dt-bindings:iio:frequency:adi,adf4350: txt to yaml format conversion.
+Date:   Sat, 31 Oct 2020 18:48:53 +0000
+Message-Id: <20201031184854.745828-46-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -42,238 +42,307 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This binding document covers a very large number of different sensors.
-As such the existing documentation is less specific than it could
-be (such as which devices have 2 interrupt pin options).
-That can be improved later.
-
-Denis, are you happy to be listed as maintainer for this one?
-If not feel free to suggestion someone else.
+This is a large but fairly simple binding.
+It may well be possible to constrain some of the properties more than
+currently done, but that would involve diving into datasheets for the
+supported parts.  Hence for this initial conversion just use the
+information that was in the txt file.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Denis Ciocca <denis.ciocca@st.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>
 ---
- .../bindings/iio/st,st-sensors.yaml           | 123 ++++++++++++++++++
- .../devicetree/bindings/iio/st-sensors.txt    |  82 ------------
- 2 files changed, 123 insertions(+), 82 deletions(-)
+ .../bindings/iio/frequency/adf4350.txt        |  86 --------
+ .../bindings/iio/frequency/adi,adf4350.yaml   | 190 ++++++++++++++++++
+ 2 files changed, 190 insertions(+), 86 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4350.txt b/Documentation/devicetree/bindings/iio/frequency/adf4350.txt
+deleted file mode 100644
+index f8c181d81d2d..000000000000
+--- a/Documentation/devicetree/bindings/iio/frequency/adf4350.txt
++++ /dev/null
+@@ -1,86 +0,0 @@
+-Analog Devices ADF4350/ADF4351 device driver
+-
+-Required properties:
+-	- compatible: Should be one of
+-		* "adi,adf4350": When using the ADF4350 device
+-		* "adi,adf4351": When using the ADF4351 device
+-	- reg: SPI chip select numbert for the device
+-	- spi-max-frequency: Max SPI frequency to use (< 20000000)
+-	- clocks: From common clock binding. Clock is phandle to clock for
+-		ADF435x Reference Clock (CLKIN).
+-
+-Optional properties:
+-	- gpios:	 GPIO Lock detect - If set with a valid phandle and GPIO number,
+-			pll lock state is tested upon read.
+-	- adi,channel-spacing: Channel spacing in Hz (influences MODULUS).
+-	- adi,power-up-frequency:	If set in Hz the PLL tunes to
+-			the desired frequency on probe.
+-	- adi,reference-div-factor: If set the driver skips dynamic calculation
+-			and uses this default value instead.
+-	- adi,reference-doubler-enable: Enables reference doubler.
+-	- adi,reference-div2-enable: Enables reference divider.
+-	- adi,phase-detector-polarity-positive-enable: Enables positive phase
+-			detector polarity. Default = negative.
+-	- adi,lock-detect-precision-6ns-enable: Enables 6ns lock detect precision.
+-			Default = 10ns.
+-	- adi,lock-detect-function-integer-n-enable: Enables lock detect
+-			for integer-N mode. Default = factional-N mode.
+-	- adi,charge-pump-current: Charge pump current in mA.
+-			Default = 2500mA.
+-	- adi,muxout-select: On chip multiplexer output selection.
+-			Valid values for the multiplexer output are:
+-			0: Three-State Output (default)
+-			1: DVDD
+-			2: DGND
+-			3: R-Counter output
+-			4: N-Divider output
+-			5: Analog lock detect
+-			6: Digital lock detect
+-	- adi,low-spur-mode-enable: Enables low spur mode.
+-			Default = Low noise mode.
+-	- adi,cycle-slip-reduction-enable: Enables cycle slip reduction.
+-	- adi,charge-cancellation-enable: Enabled charge pump
+-			charge cancellation for integer-N modes.
+-	- adi,anti-backlash-3ns-enable: Enables 3ns antibacklash pulse width
+-			 for integer-N modes.
+-	- adi,band-select-clock-mode-high-enable: Enables faster band
+-			selection logic.
+-	- adi,12bit-clk-divider: Clock divider value used when
+-			adi,12bit-clkdiv-mode != 0
+-	- adi,clk-divider-mode:
+-			Valid values for the clkdiv mode are:
+-			0: Clock divider off (default)
+-			1: Fast lock enable
+-			2: Phase resync enable
+-	- adi,aux-output-enable: Enables auxiliary RF output.
+-	- adi,aux-output-fundamental-enable: Selects fundamental VCO output on
+-			the auxiliary RF output. Default = Output of RF dividers.
+-	- adi,mute-till-lock-enable: Enables Mute-Till-Lock-Detect function.
+-	- adi,output-power: Output power selection.
+-			Valid values for the power mode are:
+-			0: -4dBm (default)
+-			1: -1dBm
+-			2: +2dBm
+-			3: +5dBm
+-	- adi,aux-output-power: Auxiliary output power selection.
+-			Valid values for the power mode are:
+-			0: -4dBm (default)
+-			1: -1dBm
+-			2: +2dBm
+-			3: +5dBm
+-
+-
+-Example:
+-		lo_pll0_rx_adf4351: adf4351-rx-lpc@4 {
+-			compatible = "adi,adf4351";
+-			reg = <4>;
+-			spi-max-frequency = <10000000>;
+-			clocks = <&clk0_ad9523 9>;
+-			clock-names = "clkin";
+-			adi,channel-spacing = <10000>;
+-			adi,power-up-frequency = <2400000000>;
+-			adi,phase-detector-polarity-positive-enable;
+-			adi,charge-pump-current = <2500>;
+-			adi,output-power = <3>;
+-			adi,mute-till-lock-enable;
+-		};
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
 new file mode 100644
-index 000000000000..db291a9390b7
+index 000000000000..d7f20b8518e0
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-@@ -0,0 +1,123 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
+@@ -0,0 +1,190 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/st,st-sensors.yaml#
++$id: http://devicetree.org/schemas/iio/frequency/adi,adf4350.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: STMicroelectronics MEMS sensors
-+
-+description: |
-+  Note that whilst this covers many STMicro MEMs sensors, some more complex
-+  IMUs need their own bindings.
-+  The STMicroelectronics sensor devices are pretty straight-forward I2C or
-+  SPI devices, all sharing the same device tree descriptions no matter what
-+  type of sensor it is.
++title: Analog Devices ADF4350/ADF4351 wideband synthesizer
 +
 +maintainers:
-+  - Denis Ciocca <denis.ciocca@st.com>
++  - Michael Hennerich <michael.hennerich@analog.com>
 +
 +properties:
 +  compatible:
-+    description: |
-+      Some values are deprecated.
-+      st,lis3lv02d (deprecated, use st,lis3lv02dl-accel)
-+      st,lis302dl-spi (deprecated, use st,lis3lv02dl-accel)
 +    enum:
-+        # Accelerometers
-+      - st,lis3lv02d
-+      - st,lis302dl-spi
-+      - st,lis3lv02dl-accel
-+      - st,lsm303dlh-accel
-+      - st,lsm303dlhc-accel
-+      - st,lis3dh-accel
-+      - st,lsm330d-accel
-+      - st,lsm330dl-accel
-+      - st,lsm330dlc-accel
-+      - st,lis331dl-accel
-+      - st,lis331dlh-accel
-+      - st,lsm303dl-accel
-+      - st,lsm303dlm-accel
-+      - st,lsm330-accel
-+      - st,lsm303agr-accel
-+      - st,lis2dh12-accel
-+      - st,h3lis331dl-accel
-+      - st,lng2dm-accel
-+      - st,lis3l02dq
-+      - st,lis2dw12
-+      - st,lis3dhh
-+      - st,lis3de
-+      - st,lis2de12
-+      - st,lis2hh12
-+        # Gyroscopes
-+      - st,l3g4200d-gyro
-+      - st,lsm330d-gyro
-+      - st,lsm330dl-gyro
-+      - st,lsm330dlc-gyro
-+      - st,l3gd20-gyro
-+      - st,l3gd20h-gyro
-+      - st,l3g4is-gyro
-+      - st,lsm330-gyro
-+      - st,lsm9ds0-gyro
-+        # Magnetometers
-+      - st,lsm303agr-magn
-+      - st,lsm303dlh-magn
-+      - st,lsm303dlhc-magn
-+      - st,lsm303dlm-magn
-+      - st,lis3mdl-magn
-+      - st,lis2mdl
-+      - st,lsm9ds1-magn
-+        # Pressure sensors
-+      - st,lps001wp-press
-+      - st,lps25h-press
-+      - st,lps331ap-press
-+      - st,lps22hb-press
-+      - st,lps33hw
-+      - st,lps35hw
-+      - st,lps22hh
++      - adi,adf4350
++      - adi,adf4351
 +
 +  reg:
 +    maxItems: 1
 +
-+  interrupts:
-+    minItems: 1
++  spi-max-frequency:
++    maximum: 20000000
 +
-+  vdd-supply: true
-+  vddio-supply: true
++  clocks:
++    maxItems: 1
++    description: Clock to provide CLKIN reference clock signal.
 +
-+  st,drdy-int-pin:
++  clock-names:
++    const: clkin
++
++  gpios:
++    maxItems: 1
++    description: Lock detect GPIO.
++
++  adi,channel-spacing:
 +    $ref: /schemas/types.yaml#/definitions/uint32
 +    description:
-+      Some sensors have multiple possible pins via which they can provide
-+      a data ready interrupt.  This selects which one.
-+    enum:
-+      - 1
-+      - 2
++      Channel spacing in Hz (influences MODULUS).
 +
-+  drive-open-drain:
++  adi,power-up-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      If set the PLL tunes to this frequency (in Hz) on driver probe.
++
++  adi,reference-div-factor:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      If set the driver skips dynamic calculation and uses this default
++      value instead.
++
++  adi,reference-doubler-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables reference doubler.
++
++  adi,reference-div2-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables reference divider.
++
++  adi,phase-detector-polarity-positive-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables positive phase detector polarity. Default negative.
++
++  adi,lock-detect-precision-6ns-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables 6ns lock detect precision. Default = 10ns.
++
++  adi,lock-detect-function-integer-n-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Enables lock detect for integer-N mode. Default = factional-N mode.
++
++  adi,charge-pump-current:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Charge pump current in mA. Default = 2500mA.
++
++  adi,muxout-select:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 0
++    maximum: 6
++    description: |
++      On chip multiplexer output selection.
++      Valid values for the multiplexer output are:
++      0: Three-State Output (default)
++      1: DVDD
++      2: DGND
++      3: R-Counter output
++      4: N-Divider output
++      5: Analog lock detect
++      6: Digital lock detect
++
++  adi,low-spur-mode-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables low spur mode. Default = Low noise mode.
++
++  adi,cycle-slip-reduction-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables cycle slip reduction.
++
++  adi,charge-cancellation-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Enabled charge pump charge cancellation for integer-N modes.
++
++  adi,anti-backlash-3ns-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Enables 3ns antibacklash pulse width for integer-N modes.
++
++  adi,band-select-clock-mode-high-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables faster band selection logic.
++
++  adi,12bit-clk-divider:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Clock divider value used when adi,12bit-clkdiv-mode != 0
++
++  adi,clk-divider-mode:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1, 2]
++    description: |
++      Valid values for the clkdiv mode are:
++      0: Clock divider off (default)
++      1: Fast lock enable
++      2: Phase resync enable
++
++  adi,aux-output-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables auxiliary RF output.
++
++  adi,aux-output-fundamental-enable:
 +    $ref: /schemas/types.yaml#/definitions/flag
 +    description: |
-+      The interrupt/data ready line will be configured as open drain, which
-+      is useful if several sensors share the same interrupt line.
++      Selects fundamental VCO output on the auxiliary RF output.
++      Default = Output of RF dividers.
++
++  adi,mute-till-lock-enable:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enables Mute-Till-Lock-Detect function.
++
++  adi,output-power:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1, 2, 3]
++    description: |
++      Output power selection.
++      Valid values for the power mode are:
++      0: -4dBm (default)
++      1: -1dBm
++      2: +2dBm
++      3: +5dBm
++
++  adi,aux-output-power:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1, 2, 3]
++    description: |
++      Auxiliary output power selection.
++      Valid values for the power mode are:
++      0: -4dBm (default)
++      1: -1dBm
++      2: +2dBm
++      3: +5dBm
++
++additionalProperties: false
 +
 +required:
 +  - compatible
 +  - reg
-+
-+additionalProperties: false
++  - clocks
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
++    spi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
-+        accelerometer@1d {
-+            compatible = "st,lis3lv02dl-accel";
-+            reg = <0x1d>;
-+            interrupt-parent = <&gpio2>;
-+            interrupts = <18 IRQ_TYPE_EDGE_RISING>;
-+            pinctrl-0 = <&lis3lv02dl_nhk_mode>;
-+            pinctrl-names = "default";
++
++        pll@4 {
++            compatible = "adi,adf4351";
++            reg = <4>;
++            spi-max-frequency = <10000000>;
++            clocks = <&clk0_ad9523 9>;
++            clock-names = "clkin";
++            adi,channel-spacing = <10000>;
++            adi,power-up-frequency = <2400000000>;
++            adi,phase-detector-polarity-positive-enable;
++            adi,charge-pump-current = <2500>;
++            adi,output-power = <3>;
++            adi,mute-till-lock-enable;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/st-sensors.txt b/Documentation/devicetree/bindings/iio/st-sensors.txt
-deleted file mode 100644
-index 3213599c5071..000000000000
---- a/Documentation/devicetree/bindings/iio/st-sensors.txt
-+++ /dev/null
-@@ -1,82 +0,0 @@
--STMicroelectronics MEMS sensors
--
--The STMicroelectronics sensor devices are pretty straight-forward I2C or
--SPI devices, all sharing the same device tree descriptions no matter what
--type of sensor it is.
--
--Required properties:
--- compatible: see the list of valid compatible strings below
--- reg: the I2C or SPI address the device will respond to
--
--Optional properties:
--- vdd-supply: an optional regulator that needs to be on to provide VDD
--  power to the sensor.
--- vddio-supply: an optional regulator that needs to be on to provide the
--  VDD IO power to the sensor.
--- st,drdy-int-pin: the pin on the package that will be used to signal
--  "data ready" (valid values: 1 or 2). This property is not configurable
--  on all sensors.
--- drive-open-drain: the interrupt/data ready line will be configured
--  as open drain, which is useful if several sensors share the same
--  interrupt line. (This binding is taken from pinctrl/pinctrl-bindings.txt)
--  This is a boolean property.
--
--Sensors may also have applicable pin control settings, those use the
--standard bindings from pinctrl/pinctrl-bindings.txt.
--
--Valid compatible strings:
--
--Accelerometers:
--- st,lis3lv02d (deprecated, use st,lis3lv02dl-accel)
--- st,lis302dl-spi (deprecated, use st,lis3lv02dl-accel)
--- st,lis3lv02dl-accel
--- st,lsm303dlh-accel
--- st,lsm303dlhc-accel
--- st,lis3dh-accel
--- st,lsm330d-accel
--- st,lsm330dl-accel
--- st,lsm330dlc-accel
--- st,lis331dl-accel
--- st,lis331dlh-accel
--- st,lsm303dl-accel
--- st,lsm303dlm-accel
--- st,lsm330-accel
--- st,lsm303agr-accel
--- st,lis2dh12-accel
--- st,h3lis331dl-accel
--- st,lng2dm-accel
--- st,lis3l02dq
--- st,lis2dw12
--- st,lis3dhh
--- st,lis3de
--- st,lis2de12
--- st,lis2hh12
--
--Gyroscopes:
--- st,l3g4200d-gyro
--- st,lsm330d-gyro
--- st,lsm330dl-gyro
--- st,lsm330dlc-gyro
--- st,l3gd20-gyro
--- st,l3gd20h-gyro
--- st,l3g4is-gyro
--- st,lsm330-gyro
--- st,lsm9ds0-gyro
--
--Magnetometers:
--- st,lsm303agr-magn
--- st,lsm303dlh-magn
--- st,lsm303dlhc-magn
--- st,lsm303dlm-magn
--- st,lis3mdl-magn
--- st,lis2mdl
--- st,lsm9ds1-magn
--
--Pressure sensors:
--- st,lps001wp-press
--- st,lps25h-press
--- st,lps331ap-press
--- st,lps22hb-press
--- st,lps33hw
--- st,lps35hw
--- st,lps22hh
 -- 
 2.28.0
 

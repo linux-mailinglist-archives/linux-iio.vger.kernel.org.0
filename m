@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F722A17E1
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9B5C2A17E3
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727747AbgJaNoQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 09:44:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43414 "EHLO mail.kernel.org"
+        id S1727757AbgJaNoR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 09:44:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43440 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727692AbgJaNoP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 09:44:15 -0400
+        id S1727692AbgJaNoR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 09:44:17 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF04820731;
-        Sat, 31 Oct 2020 13:44:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C4F02071A;
+        Sat, 31 Oct 2020 13:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604151854;
-        bh=imnr0hPuKLRC23kdsQVHykB3NCohVjYBaGP4M2689ww=;
+        s=default; t=1604151856;
+        bh=SEUHOsxVZOMVHOeJgm/BY/feRuvbZcRQ5lJ2RpmeHbE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=akvhbeZO2o6/YEN1M67IV4VPNjA9Lf6ZzLQPT58jWO3ndUMU3cac9sXIwGkRwEi09
-         i3O1Siyk9j3ZXRvfW6DaVIZ4YygreU2wWs+4nv9ldpnUVce9SalSMHhRvHtRk+H3VK
-         WgnDI3DUc9s8EqmiqAvmnshtsILE+KaxCMRixfaw=
+        b=igKnHPeLJvgDtXZkKu7IOGthqeE91K71uaJ2KpeWgSrSL57UZ++NDils3aEk1XaIu
+         k2OR/jy1xhhIz9Ya4hszja4JPgh2R3j6ow/0Aip/KYfHqYq9SXF9fu9Y4FnRerAU94
+         rWOb63EK2cZX3MEg5M1+VeCukkUX5929Wtj6WPrE=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Rob Herring <robh@kernel.org>,
-        Vladimir Zapolskiy <vz@mleia.com>
-Subject: [PATCH v2 22/29] dt-bindings:iio:dac:nxp,lpc1850-dac yaml conversion.
-Date:   Sat, 31 Oct 2020 13:41:03 +0000
-Message-Id: <20201031134110.724233-23-jic23@kernel.org>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH v2 23/29] dt-bindings:iio:dac:adi,ad5758 yaml conversion
+Date:   Sat, 31 Oct 2020 13:41:04 +0000
+Message-Id: <20201031134110.724233-24-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031134110.724233-1-jic23@kernel.org>
 References: <20201031134110.724233-1-jic23@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -43,103 +44,244 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Very similar binding to that for the ADC on the same device.
-Conversion from txt to yaml format.
+I have put Michael as maintainer on this one. Happy to change it to
+someone else though.
+
+One issue in here, is I cannot have an example with a negative
+limit on the range.  There are very few such yaml bindings in existence
+but the thermal-zones.yaml has the same problem.  If there is
+any means of fixing this let me know.  For now I'm sticking to
+positive range values in the example.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
 ---
- .../bindings/iio/dac/lpc1850-dac.txt          | 19 ------
- .../bindings/iio/dac/nxp,lpc1850-dac.yaml     | 58 +++++++++++++++++++
- 2 files changed, 58 insertions(+), 19 deletions(-)
+ .../devicetree/bindings/iio/dac/ad5758.txt    |  83 -----------
+ .../bindings/iio/dac/adi,ad5758.yaml          | 129 ++++++++++++++++++
+ 2 files changed, 129 insertions(+), 83 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt b/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt
+diff --git a/Documentation/devicetree/bindings/iio/dac/ad5758.txt b/Documentation/devicetree/bindings/iio/dac/ad5758.txt
 deleted file mode 100644
-index 42db783c4e75..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/lpc1850-dac.txt
+index 2f607f41f9d3..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/ad5758.txt
 +++ /dev/null
-@@ -1,19 +0,0 @@
--NXP LPC1850 DAC bindings
+@@ -1,83 +0,0 @@
+-Analog Devices AD5758 DAC device driver
+-
+-Required properties for the AD5758:
+-	- compatible: Must be "adi,ad5758"
+-	- reg: SPI chip select number for the device
+-	- spi-max-frequency: Max SPI frequency to use (< 50000000)
+-	- spi-cpha: is the only mode that is supported
 -
 -Required properties:
--- compatible: Should be "nxp,lpc1850-dac"
--- reg: Offset and length of the register set for the ADC device
--- interrupts: The interrupt number for the ADC device
--- clocks: The root clock of the ADC controller
--- vref-supply: The regulator supply ADC reference voltage
--- resets: phandle to reset controller and line specifier
 -
--Example:
--dac: dac@400e1000 {
--	compatible = "nxp,lpc1850-dac";
--	reg = <0x400e1000 0x1000>;
--	interrupts = <0>;
--	clocks = <&ccu1 CLK_APB3_DAC>;
--	vref-supply = <&reg_vdda>;
--	resets = <&rgu 42>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml b/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml
+- - adi,dc-dc-mode: Mode of operation of the dc-to-dc converter
+-		   Dynamic Power Control (DPC)
+-		   In this mode, the AD5758 circuitry senses the output
+-		   voltage and dynamically regulates the supply voltage,
+-		   VDPC+, to meet compliance requirements plus an optimized
+-		   headroom voltage for the output buffer.
+-
+-		   Programmable Power Control (PPC)
+-		   In this mode, the VDPC+ voltage is user-programmable to
+-		   a fixed level that needs to accommodate the maximum output
+-		   load required.
+-
+-		   The output of the DAC core is either converted to a
+-		   current or voltage output at the VIOUT pin. Only one mode
+-		   can be enabled at any one time.
+-
+-		   The following values are currently supported:
+-			* 1: DPC current mode
+-			* 2: DPC voltage mode
+-			* 3: PPC current mode
+-
+- Depending on the selected output mode (voltage or current) one of the
+- two properties must
+- be present:
+-
+- - adi,range-microvolt: Voltage output range
+-		The array of voltage output ranges must contain two fields:
+-		* <0 5000000>: 0 V to 5 V voltage range
+-		* <0 10000000>: 0 V to 10 V voltage range
+-		* <(-5000000) 5000000>: ±5 V voltage range
+-		* <(-10000000) 10000000>: ±10 V voltage range
+- - adi,range-microamp: Current output range
+-		The array of current output ranges must contain two fields:
+-		* <0 20000>: 0 mA to 20 mA current range
+-		* <0 24000>: 0 mA to 24 mA current range
+-		* <4 24000>: 4 mA to 20 mA current range
+-		* <(-20000) 20000>: ±20 mA current range
+-		* <(-24000) 24000>: ±24 mA current range
+-		* <(-1000) 22000>: −1 mA to +22 mA current range
+-
+-Optional properties:
+-
+- - reset-gpios : GPIO spec for the RESET pin. If specified, it will be
+-		 asserted during driver probe.
+-
+- - adi,dc-dc-ilim-microamp: The dc-to-dc converter current limit
+-		   The following values are currently supported [uA]:
+-			* 150000
+-			* 200000
+-			* 250000
+-			* 300000
+-			* 350000
+-			* 400000
+-
+- - adi,slew-time-us: The time it takes for the output to reach the
+- full scale [uS]
+-		     The supported range is between 133us up to 1023984375us
+-
+-AD5758 Example:
+-
+-	dac@0 {
+-		compatible = "adi,ad5758";
+-		reg = <0>;
+-		spi-max-frequency = <1000000>;
+-		spi-cpha;
+-
+-		reset-gpios = <&gpio 22 0>;
+-
+-		adi,dc-dc-mode = <2>;
+-		adi,range-microvolt = <0 10000000>;
+-		adi,dc-dc-ilim-microamp = <200000>;
+-		adi,slew-time-us = <125000>;
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
 new file mode 100644
-index 000000000000..595f481c548e
+index 000000000000..626ccb6fe21e
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/nxp,lpc1850-dac.yaml
-@@ -0,0 +1,58 @@
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+@@ -0,0 +1,129 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/nxp,lpc1850-dac.yaml#
++$id: http://devicetree.org/schemas/iio/dac/adi,ad5758.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: NXP LPC1850 DAC bindings
++title: Analog Devices AD5758 DAC
 +
 +maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description:
-+  Supports the DAC found on the LPC1850 SoC.
++  - Michael Hennerich <Michael.Hennerich@analog.com>
 +
 +properties:
 +  compatible:
-+    const: nxp,lpc1850-dac
++    const: adi,ad5758
 +
 +  reg:
 +    maxItems: 1
 +
-+  interrupts:
-+    maxItems: 1
++  spi-max-frequency: true
++  spi-cpha: true
 +
-+  clocks:
-+    maxItems: 1
++  adi,dc-dc-mode:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [1, 2, 3]
++    description: |
++      Mode of operation of the dc-to-dc converter
++      Dynamic Power Control (DPC)
++      In this mode, the AD5758 circuitry senses the output voltage and
++      dynamically regulates the supply voltage, VDPC+, to meet compliance
++      requirements plus an optimized headroom voltage for the output buffer.
 +
-+  vref-supply: true
++      Programmable Power Control (PPC)
++      In this mode, the VDPC+ voltage is user-programmable to a fixed level
++      that needs to accommodate the maximum output load required.
 +
-+  resets:
-+    maxItems: 1
++      The output of the DAC core is either converted to a current or
++      voltage output at the VIOUT pin. Only one mode can be enabled at
++      any one time.
++
++      The following values are currently supported:
++      * 1: DPC current mode
++      * 2: DPC voltage mode
++      * 3: PPC current mode
++
++      Depending on the selected output mode (voltage or current) one of the
++      two properties must be present:
++
++  adi,range-microvolt:
++    $ref: /schemas/types.yaml#/definitions/int32-array
++    description: |
++      Voltage output range specified as <minimum, maximum>
++    enum:
++      - [[0, 5000000]]
++      - [[0, 10000000]]
++      - [[-5000000, 5000000]]
++      - [[-10000000, 10000000]]
++
++  adi,range-microamp:
++    $ref: /schemas/types.yaml#/definitions/int32-array
++    description: |
++      Current output range specified as <minimum, maximum>
++    enum:
++      - [[0, 20000]]
++      - [[0, 24000]]
++      - [[4, 24000]]
++      - [[-20000, 20000]]
++      - [[-24000, 24000]]
++      - [[-1000, 22000]]
++
++  reset-gpios: true
++
++  adi,dc-dc-ilim-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [150000, 200000, 250000, 300000, 350000, 400000]
++    description: |
++      The dc-to-dc converter current limit.
++
++  adi,slew-time-us:
++    description: |
++      The time it takes for the output to reach the full scale [uS]
++    minimum: 133
++    maximum: 1023984375
 +
 +required:
 +  - compatible
 +  - reg
-+  - interrupts
-+  - clocks
-+  - vref-supply
-+  - resets
++  - spi-cpha
++  - adi,dc-dc-mode
++
++allOf:
++  - if:
++      properties:
++        adi,dc-dc-mode:
++          contains:
++            enum: [1, 3]
++    then:
++      properties:
++        adi,range-microvolt: false
++      required:
++        - adi,range-microamp
++    else:
++      properties:
++        adi,range-microamp: false
++      required:
++        - adi,range-microvolt
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/clock/lpc18xx-ccu.h>
-+    soc {
++    spi {
 +        #address-cells = <1>;
-+        #size-cells = <1>;
-+        dac: dac@400e1000 {
-+            compatible = "nxp,lpc1850-dac";
-+            reg = <0x400e1000 0x1000>;
-+            interrupts = <0>;
-+            clocks = <&ccu1 CLK_APB3_DAC>;
-+            vref-supply = <&reg_vdda>;
-+            resets = <&rgu 42>;
++        #size-cells = <0>;
++
++        dac@0 {
++            compatible = "adi,ad5758";
++            reg = <0>;
++            spi-max-frequency = <1000000>;
++            spi-cpha;
++
++            reset-gpios = <&gpio 22 0>;
++
++            adi,dc-dc-mode = <2>;
++            adi,range-microvolt = <0 10000000>;
++            adi,dc-dc-ilim-microamp = <200000>;
++            adi,slew-time-us = <125000>;
 +        };
 +    };
 +...

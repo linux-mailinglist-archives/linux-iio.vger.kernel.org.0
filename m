@@ -2,35 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0D12A1946
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA4712A194C
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728279AbgJaSOx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:14:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46092 "EHLO mail.kernel.org"
+        id S1728316AbgJaSOy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:14:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46106 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728263AbgJaSOx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:14:53 -0400
+        id S1728263AbgJaSOy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:14:54 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 76C86206A5;
-        Sat, 31 Oct 2020 18:14:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BD764206F9;
+        Sat, 31 Oct 2020 18:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604168092;
-        bh=eN52Y9Agylx5825ENqdDMCX69uxi7BUitn2btS/In8A=;
-        h=From:To:Cc:Subject:Date:From;
-        b=edZUmKHUKKiNTehXThwZ8pbcfDOxPqE2to3vVKw2oThgQtf3PMh5aNPYU7Ofw+JiO
-         cLzibg6Yd67XKTkwKEzVIMpGtSVs/zeZjg72uMaW4xwujQtbATpzMd8V1dHxpHbtBe
-         WeDPUX/fWlm5SHHFhMkdnibsQnrjAusX74QEBk2Y=
+        s=default; t=1604168093;
+        bh=NMc1PNAZQxUSeAZbY3Gczu/MXpIt6te8IgTivcFzDlc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Fkz5vcgT87Abb7uu9li5CAvBaM6/gaRoIhxKika5fpxmeKgt1Mm9Zine6ygjqNa/Y
+         sQTKUuMv1zh0XjDEluSTGcNCYKS5jrYzUUXk4Zwn9c+/wsiO7risJsJBLqvfP/hnL9
+         7voKoy/FK1ZeOV1ySNIUdSaf4C6cguibIVj38MxM=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 00/10] dt-bindings: iio: conversion of consumer drivers
-Date:   Sat, 31 Oct 2020 18:12:32 +0000
-Message-Id: <20201031181242.742301-1-jic23@kernel.org>
+Subject: [PATCH 01/10] dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema
+Date:   Sat, 31 Oct 2020 18:12:33 +0000
+Message-Id: <20201031181242.742301-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201031181242.742301-1-jic23@kernel.org>
+References: <20201031181242.742301-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -39,75 +41,122 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Firstly drop the old text file as the consumer binding (and the other
-parts of that file) are under review for inclusion in the dt-schema external
-repo.
+File contained generic IIO wide bindings.
+Now part of the external dt-schema repository.
 
-This only converts consumers that happen to also be IIO drivers.
-Others may get done as part of SoC binding conversions or I may do a lot
-of them at somepoint.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ .../devicetree/bindings/iio/iio-bindings.txt  | 102 ------------------
+ 1 file changed, 102 deletions(-)
 
-A few of the examples in existing text files used providers that were
-documented in trivial-bindings.yaml which does not allow for
-#io-channel-cells. I have pulled those out to their own files as part
-of this patch set.
-
-The iio-mux binding is not done as that has some dependencies and will
-form part of some future patch set.
-
-There is no explicit dependency in here on any other sets, but some
-noise will occur in trivial-bindings.yaml if applied in a different
-order to I happen to have them sets locally.
-
-Jonathan Cameron (10):
-  dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema
-  dt-bindings:iio:dac:dpot-dac: yaml conversion.
-  dt-bindings:iio:potentiometer: give microchip,mcp4531 its own binding
-  dt-bindings:iio:adc:envelope-detector: txt to yaml conversion.
-  dt-bindings:iio:afe:current-sense-amplifier: txt to yaml conversion.
-  dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion. 
-  dt-bindings:iio:adc:maxim,max1027: Pull out to separate binding doc.
-  dt-bindings:iio:afe:voltage-divider: txt to yaml conversion
-  dt-bindings:iio:light:capella,cm3605: txt to yaml conversion.
-  dt-bindings:iio:potentiostat:ti,lmp91000: txt to yaml conversion.
-
- .../bindings/iio/adc/envelope-detector.txt    |  54 -------
- .../bindings/iio/adc/envelope-detector.yaml   |  87 +++++++++++
- .../bindings/iio/adc/maxim,max1027.yaml       |  64 ++++++++
- .../iio/afe/current-sense-amplifier.txt       |  26 ----
- .../iio/afe/current-sense-amplifier.yaml      |  55 +++++++
- .../bindings/iio/afe/current-sense-shunt.txt  |  41 -----
- .../bindings/iio/afe/current-sense-shunt.yaml |  65 ++++++++
- .../bindings/iio/afe/voltage-divider.txt      |  53 -------
- .../bindings/iio/afe/voltage-divider.yaml     |  88 +++++++++++
- .../devicetree/bindings/iio/dac/dpot-dac.txt  |  41 -----
- .../devicetree/bindings/iio/dac/dpot-dac.yaml |  64 ++++++++
- .../devicetree/bindings/iio/iio-bindings.txt  | 102 -------------
- .../bindings/iio/light/capella,cm3605.yaml    |  78 ++++++++++
- .../devicetree/bindings/iio/light/cm3605.txt  |  41 -----
- .../iio/potentiometer/microchip,mcp4531.yaml  | 116 +++++++++++++++
- .../bindings/iio/potentiostat/lmp91000.txt    |  33 -----
- .../iio/potentiostat/ti,lmp91000.yaml         |  68 +++++++++
- .../devicetree/bindings/trivial-devices.yaml  | 140 ------------------
- 18 files changed, 685 insertions(+), 531 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/envelope-detector.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/envelope-detector.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max1027.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.txt
- create mode 100644 Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/afe/current-sense-shunt.txt
- create mode 100644 Documentation/devicetree/bindings/iio/afe/current-sense-shunt.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/afe/voltage-divider.txt
- create mode 100644 Documentation/devicetree/bindings/iio/afe/voltage-divider.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/dac/dpot-dac.txt
- create mode 100644 Documentation/devicetree/bindings/iio/dac/dpot-dac.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/iio-bindings.txt
- create mode 100644 Documentation/devicetree/bindings/iio/light/capella,cm3605.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/light/cm3605.txt
- create mode 100644 Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4531.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/potentiostat/lmp91000.txt
- create mode 100644 Documentation/devicetree/bindings/iio/potentiostat/ti,lmp91000.yaml
-
+diff --git a/Documentation/devicetree/bindings/iio/iio-bindings.txt b/Documentation/devicetree/bindings/iio/iio-bindings.txt
+deleted file mode 100644
+index aa63cac7323e..000000000000
+--- a/Documentation/devicetree/bindings/iio/iio-bindings.txt
++++ /dev/null
+@@ -1,102 +0,0 @@
+-This binding is derived from clock bindings, and based on suggestions
+-from Lars-Peter Clausen [1].
+-
+-Sources of IIO channels can be represented by any node in the device
+-tree. Those nodes are designated as IIO providers. IIO consumer
+-nodes use a phandle and IIO specifier pair to connect IIO provider
+-outputs to IIO inputs. Similar to the gpio specifiers, an IIO
+-specifier is an array of one or more cells identifying the IIO
+-output on a device. The length of an IIO specifier is defined by the
+-value of a #io-channel-cells property in the IIO provider node.
+-
+-[1] https://marc.info/?l=linux-iio&m=135902119507483&w=2
+-
+-==IIO providers==
+-
+-Required properties:
+-#io-channel-cells: Number of cells in an IIO specifier; Typically 0 for nodes
+-		   with a single IIO output and 1 for nodes with multiple
+-		   IIO outputs.
+-
+-Optional properties:
+-label:		   A symbolic name for the device.
+-
+-
+-Example for a simple configuration with no trigger:
+-
+-	adc: voltage-sensor@35 {
+-		compatible = "maxim,max1139";
+-		reg = <0x35>;
+-		#io-channel-cells = <1>;
+-		label = "voltage_feedback_group1";
+-	};
+-
+-Example for a configuration with trigger:
+-
+-	adc@35 {
+-		compatible = "some-vendor,some-adc";
+-		reg = <0x35>;
+-
+-		adc1: iio-device@0 {
+-			#io-channel-cells = <1>;
+-			/* other properties */
+-		};
+-		adc2: iio-device@1 {
+-			#io-channel-cells = <1>;
+-			/* other properties */
+-		};
+-	};
+-
+-==IIO consumers==
+-
+-Required properties:
+-io-channels:	List of phandle and IIO specifier pairs, one pair
+-		for each IIO input to the device. Note: if the
+-		IIO provider specifies '0' for #io-channel-cells,
+-		then only the phandle portion of the pair will appear.
+-
+-Optional properties:
+-io-channel-names:
+-		List of IIO input name strings sorted in the same
+-		order as the io-channels property. Consumers drivers
+-		will use io-channel-names to match IIO input names
+-		with IIO specifiers.
+-io-channel-ranges:
+-		Empty property indicating that child nodes can inherit named
+-		IIO channels from this node. Useful for bus nodes to provide
+-		and IIO channel to their children.
+-
+-For example:
+-
+-	device {
+-		io-channels = <&adc 1>, <&ref 0>;
+-		io-channel-names = "vcc", "vdd";
+-	};
+-
+-This represents a device with two IIO inputs, named "vcc" and "vdd".
+-The vcc channel is connected to output 1 of the &adc device, and the
+-vdd channel is connected to output 0 of the &ref device.
+-
+-==Example==
+-
+-	adc: max1139@35 {
+-		compatible = "maxim,max1139";
+-		reg = <0x35>;
+-		#io-channel-cells = <1>;
+-	};
+-
+-	...
+-
+-	iio-hwmon {
+-		compatible = "iio-hwmon";
+-		io-channels = <&adc 0>, <&adc 1>, <&adc 2>,
+-			<&adc 3>, <&adc 4>, <&adc 5>,
+-			<&adc 6>, <&adc 7>, <&adc 8>,
+-			<&adc 9>;
+-	};
+-
+-	some_consumer {
+-		compatible = "some-consumer";
+-		io-channels = <&adc 10>, <&adc 11>;
+-		io-channel-names = "adc1", "adc2";
+-	};
 -- 
 2.28.0
 

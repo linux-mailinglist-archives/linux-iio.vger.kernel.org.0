@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 276432A17CC
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAA22A17CE
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 14:44:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727682AbgJaNn6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 09:43:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43018 "EHLO mail.kernel.org"
+        id S1727688AbgJaNoA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 09:44:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43058 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727669AbgJaNn6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 09:43:58 -0400
+        id S1727669AbgJaNoA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 09:44:00 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 77C1520756;
-        Sat, 31 Oct 2020 13:43:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 18B5620825;
+        Sat, 31 Oct 2020 13:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604151837;
-        bh=LaNsdVY7oM8IrNuKfaJT0mYv4lTGv2mLADklUxX2Ag8=;
+        s=default; t=1604151839;
+        bh=lPG/Bw+GgrpAAqesEvCxvokLf1ENkNXz+lkIoA7KaFA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YrM/kzfnnAh+9trWSyAve2359rHErYzjgyu6C+Il7o6ry0Fm089RwsmpS8CwIr8eN
-         FK4miqSC8fYi+d1mikf/GOgDOugNTgQMR4IM7a2cUjdOHf2yZW5TqY8gZV8ge4qChQ
-         wWcIqG+B89vNVSAy8lMQ/fN3/v6kpbJko9DcK7QI=
+        b=Bqnuo6M36bUTYDW02BUOpwduzHbQ9kZQCm+ToAh5F7LQpEq/CRUTzZsYAGW2Gjo26
+         XRqWri2CCD8EEa5pr26BJcmard69UmDkl1k8fbb7d6ttDJ/oeJPyij6VrnZugdN6lM
+         xIH8doUZ8SwnkqVfB2a6kMZ2fJADKkBWaYzQ34JY=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH v2 11/29] dt-bindings:iio:proximity:ams,as3935 yaml conversion
-Date:   Sat, 31 Oct 2020 13:40:52 +0000
-Message-Id: <20201031134110.724233-12-jic23@kernel.org>
+        Rob Herring <robh@kernel.org>, Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH v2 12/29] dt-bindings:iio:dac:ti,dac5571 yaml conversion.
+Date:   Sat, 31 Oct 2020 13:40:53 +0000
+Message-Id: <20201031134110.724233-13-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031134110.724233-1-jic23@kernel.org>
 References: <20201031134110.724233-1-jic23@kernel.org>
@@ -43,135 +42,110 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A straight forward conversion of this binding. I have added
-a maximum SPI frequency from the datasheet.
+A few tweaks in this conversion.
+* The example didn't have the I2C address of 4C in the node name so
+  fixed that.
+* The reference voltage in the txt file is an optional binding, but
+  the driver is making use of it to provide the scaling of the output
+  channels.  As such I have made it required going forwards.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
+Acked-by: Sean Nyekjaer <sean@geanix.com>
+Cc: Sean Nyekjaer <sean@geanix.com>
 ---
- .../bindings/iio/proximity/ams,as3935.yaml    | 71 +++++++++++++++++++
- .../bindings/iio/proximity/as3935.txt         | 34 ---------
- 2 files changed, 71 insertions(+), 34 deletions(-)
+ .../bindings/iio/dac/ti,dac5571.txt           | 24 ---------
+ .../bindings/iio/dac/ti,dac5571.yaml          | 52 +++++++++++++++++++
+ 2 files changed, 52 insertions(+), 24 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.txt b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.txt
+deleted file mode 100644
+index 03af6b9a4d07..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.txt
++++ /dev/null
+@@ -1,24 +0,0 @@
+-* Texas Instruments DAC5571 Family
+-
+-Required properties:
+- - compatible: Should contain
+-    "ti,dac5571"
+-    "ti,dac6571"
+-    "ti,dac7571"
+-    "ti,dac5574"
+-    "ti,dac6574"
+-    "ti,dac7574"
+-    "ti,dac5573"
+-    "ti,dac6573"
+-    "ti,dac7573"
+- - reg: Should contain the DAC I2C address
+-
+-Optional properties:
+- - vref-supply: The regulator supply for DAC reference voltage
+-
+-Example:
+-dac@0 {
+-	compatible = "ti,dac5571";
+-	reg = <0x4C>;
+-	vref-supply = <&vdd_supply>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
 new file mode 100644
-index 000000000000..7fcba5d6d508
+index 000000000000..714191724f7c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
-@@ -0,0 +1,71 @@
++++ b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
+@@ -0,0 +1,52 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/proximity/ams,as3935.yaml#
++$id: http://devicetree.org/schemas/iio/dac/ti,dac5571.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Austrian Microsystems AS3935 Franklin lightning sensor
++title: Texas Instruments DAC5571 Family
 +
 +maintainers:
-+  - Matt Ranostay <matt.ranostay@konsulko.com>
-+
-+description:
-+  This lightening distance sensor uses an I2C or SPI interface. The
-+  binding currently only covers the SPI option.
++  - Sean Nyekjaer <sean@geanix.com>
 +
 +properties:
 +  compatible:
-+    const: ams,as3935
++    enum:
++      - ti,dac5571
++      - ti,dac6571
++      - ti,dac7571
++      - ti,dac5574
++      - ti,dac6574
++      - ti,dac7574
++      - ti,dac5573
++      - ti,dac6573
++      - ti,dac7573
 +
 +  reg:
 +    maxItems: 1
 +
-+  spi-max-frequency:
-+    maximum: 2000000
-+
-+  spi-cpha: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  ams,tuning-capacitor-pf:
-+    $ref: /schemas/types.yaml#/definitions/uint32
++  vref-supply:
 +    description:
-+      Calibration tuning capacitor stepping value. This will require using
-+      the calibration data from the manufacturer.
-+    minimum: 0
-+    maximum: 120
-+
-+  ams,nflwdth:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Set the noise and watchdog threshold register on startup. This will
-+      need to set according to the noise from the MCU board, and possibly
-+      the local environment. Refer to the datasheet for the threshold settings.
++      Reference voltage must be supplied to establish the scaling of the
++      output voltage.
 +
 +required:
 +  - compatible
 +  - reg
-+  - spi-cpha
-+  - interrupts
++  - vref-supply
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    spi {
++    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+    lightning@0 {
-+            compatible = "ams,as3935";
-+            reg = <0>;
-+            spi-max-frequency = <400000>;
-+            spi-cpha;
-+            interrupt-parent = <&gpio1>;
-+            interrupts = <16 1>;
-+            ams,tuning-capacitor-pf = <80>;
-+            ams,nflwdth = <0x44>;
++        dac@4c {
++            compatible = "ti,dac5571";
++            reg = <0x4C>;
++            vref-supply = <&vdd_supply>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/proximity/as3935.txt b/Documentation/devicetree/bindings/iio/proximity/as3935.txt
-deleted file mode 100644
-index 849115585d55..000000000000
---- a/Documentation/devicetree/bindings/iio/proximity/as3935.txt
-+++ /dev/null
-@@ -1,34 +0,0 @@
--Austrian Microsystems AS3935 Franklin lightning sensor device driver
--
--Required properties:
--	- compatible: must be "ams,as3935"
--	- reg: SPI chip select number for the device
--	- spi-max-frequency: specifies maximum SPI clock frequency
--	- spi-cpha: SPI Mode 1. Refer to spi/spi-bus.txt for generic SPI
--	slave node bindings.
--	- interrupts : the sole interrupt generated by the device
--
--	Refer to interrupt-controller/interrupts.txt for generic
--	interrupt client node bindings.
--
--Optional properties:
--	- ams,tuning-capacitor-pf: Calibration tuning capacitor stepping
--	  value 0 - 120pF. This will require using the calibration data from
--	  the manufacturer.
--	- ams,nflwdth: Set the noise and watchdog threshold register on
--	  startup. This will need to set according to the noise from the
--	  MCU board, and possibly the local environment. Refer to the
--	  datasheet for the threshold settings.
--
--Example:
--
--as3935@0 {
--	compatible = "ams,as3935";
--	reg = <0>;
--	spi-max-frequency = <400000>;
--	spi-cpha;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 1>;
--	ams,tuning-capacitor-pf = <80>;
--	ams,nflwdth = <0x44>;
--};
 -- 
 2.28.0
 

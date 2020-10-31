@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C052A195F
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B49892A1959
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgJaSPI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:15:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46174 "EHLO mail.kernel.org"
+        id S1728345AbgJaSPF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:15:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46206 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728247AbgJaSO6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:14:58 -0400
+        id S1728322AbgJaSPA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:15:00 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E336F20709;
-        Sat, 31 Oct 2020 18:14:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 581352071A;
+        Sat, 31 Oct 2020 18:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604168098;
-        bh=uqY3t5DS/fLrjmuPBA7eur8K8fB96S7fLULj9OOiZw4=;
+        s=default; t=1604168099;
+        bh=b6xwsrTqrL01OYwuXwqonMBb71GmaCiq8RUPWDCO/o8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0u5DT0qQ62kOs9tCaPSdEGLe20bgpq5FOJJAoFmQ0QOu3Iby7uEzwXSKqHr8RaVPk
-         DDZKSS6+715OBw++hVenWzw2O8u/YmMKsOOTv4V7cQSqyu98eQd7VH27B3hp/Zr1P4
-         aWvjTSl87/oddhAa5INe8hoy9Q/xTUEuROmWGX7o=
+        b=Li8Jm7v8bURv5b+Dyp28swb0/hNKZM3EzhHsFfIjh416nLhmoiriL4nLpDzKFGuXW
+         h0RSTiNIsN6OkevcDn1QCa0velT23VCw9HXvXLGGVB0O20KoNX98Nw6ZdtPExjEMMd
+         iHeftnTlBpamqopkYxKRONxI1KixscUIL3HRkdyQ=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Peter Rosin <peda@axentia.se>
-Subject: [PATCH 04/10] dt-bindings:iio:adc:envelope-detector: txt to yaml conversion.
-Date:   Sat, 31 Oct 2020 18:12:36 +0000
-Message-Id: <20201031181242.742301-5-jic23@kernel.org>
+Subject: [PATCH 05/10] dt-bindings:iio:afe:current-sense-amplifier: txt to yaml conversion.
+Date:   Sat, 31 Oct 2020 18:12:37 +0000
+Message-Id: <20201031181242.742301-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031181242.742301-1-jic23@kernel.org>
 References: <20201031181242.742301-1-jic23@kernel.org>
@@ -42,169 +42,109 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Straight forward format conversion.  The example in here is fun in
-that it has 2 separate provider / consumer pairs.
+Note this includes a fix in the example where we had *-mul instead of
+*-mult.  The binding doc and driver agree that it should be *-mult
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Peter Rosin <peda@axentia.se>
 ---
- .../bindings/iio/adc/envelope-detector.txt    | 54 ------------
- .../bindings/iio/adc/envelope-detector.yaml   | 87 +++++++++++++++++++
- 2 files changed, 87 insertions(+), 54 deletions(-)
+ .../iio/afe/current-sense-amplifier.txt       | 26 ---------
+ .../iio/afe/current-sense-amplifier.yaml      | 55 +++++++++++++++++++
+ 2 files changed, 55 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/envelope-detector.txt b/Documentation/devicetree/bindings/iio/adc/envelope-detector.txt
+diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.txt b/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.txt
 deleted file mode 100644
-index 27544bdd4478..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/envelope-detector.txt
+index 821b61b8c542..000000000000
+--- a/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.txt
 +++ /dev/null
-@@ -1,54 +0,0 @@
--Bindings for ADC envelope detector using a DAC and a comparator
+@@ -1,26 +0,0 @@
+-Current Sense Amplifier
+-=======================
 -
--The DAC is used to find the peak level of an alternating voltage input
--signal by a binary search using the output of a comparator wired to
--an interrupt pin. Like so:
--                          _
--                         | \
--    input +------>-------|+ \
--                         |   \
--           .-------.     |    }---.
--           |       |     |   /    |
--           |    dac|-->--|- /     |
--           |       |     |_/      |
--           |       |              |
--           |       |              |
--           |    irq|------<-------'
--           |       |
--           '-------'
+-When an io-channel measures the output voltage from a current sense
+-amplifier, the interesting measurement is almost always the current
+-through the sense resistor, not the voltage output. This binding
+-describes such a current sense circuit.
 -
 -Required properties:
--- compatible: Should be "axentia,tse850-envelope-detector"
--- io-channels: Channel node of the dac to be used for comparator input.
--- io-channel-names: Should be "dac".
--- interrupt specification for one client interrupt,
--  see ../../interrupt-controller/interrupts.txt for details.
--- interrupt-names: Should be "comp".
+-- compatible : "current-sense-amplifier"
+-- io-channels : Channel node of a voltage io-channel.
+-- sense-resistor-micro-ohms : The sense resistance in microohms.
+-
+-Optional properties:
+-- sense-gain-mult: Amplifier gain multiplier. The default is <1>.
+-- sense-gain-div: Amplifier gain divider. The default is <1>.
 -
 -Example:
 -
--	&i2c {
--		dpot: mcp4651-104@28 {
--			compatible = "microchip,mcp4651-104";
--			reg = <0x28>;
--			#io-channel-cells = <1>;
--		};
--	};
+-sysi {
+-	compatible = "current-sense-amplifier";
+-	io-channels = <&tiadc 0>;
 -
--	dac: dac {
--		compatible = "dpot-dac";
--		vref-supply = <&reg_3v3>;
--		io-channels = <&dpot 0>;
--		io-channel-names = "dpot";
--		#io-channel-cells = <1>;
--	};
--
--	envelope-detector {
--		compatible = "axentia,tse850-envelope-detector";
--		io-channels = <&dac 0>;
--		io-channel-names = "dac";
--
--		interrupt-parent = <&gpio>;
--		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
--		interrupt-names = "comp";
--	};
-diff --git a/Documentation/devicetree/bindings/iio/adc/envelope-detector.yaml b/Documentation/devicetree/bindings/iio/adc/envelope-detector.yaml
+-	sense-resistor-micro-ohms = <20000>;
+-	sense-gain-mul = <50>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml b/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
 new file mode 100644
-index 000000000000..6048be936aba
+index 000000000000..920bdd8d12d6
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/envelope-detector.yaml
-@@ -0,0 +1,87 @@
++++ b/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
+@@ -0,0 +1,55 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/envelope-detector.yaml#
++$id: http://devicetree.org/schemas/iio/afe/current-sense-amplifier.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: ADC envelope detector using a DAC and a comparator
++title: Current Sense Amplifier
 +
 +maintainers:
 +  - Peter Rosin <peda@axentia.se>
 +
 +description: |
-+  The DAC is used to find the peak level of an alternating voltage input
-+  signal by a binary search using the output of a comparator wired to
-+  an interrupt pin. Like so:
-+                          _
-+                         | \
-+    input +------>-------|+ \
-+                         |   \
-+           .-------.     |    }---.
-+           |       |     |   /    |
-+           |    dac|-->--|- /     |
-+           |       |     |_/      |
-+           |       |              |
-+           |       |              |
-+           |    irq|------<-------'
-+           |       |
-+           '-------'
++  When an io-channel measures the output voltage from a current sense
++  amplifier, the interesting measurement is almost always the current
++  through the sense resistor, not the voltage output. This binding
++  describes such a current sense circuit.
 +
 +properties:
 +  compatible:
-+    const: axentia,tse850-envelope-detector
++    const: current-sense-amplifier
 +
 +  io-channels:
 +    maxItems: 1
-+    description: Channel node of the dac to be used for comparator input.
++    description: |
++      Channel node of a voltage io-channel.
 +
-+  io-channel-names:
-+    const: dac
++  sense-resistor-micro-ohms:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: The sense resistance.
 +
-+  interrupts:
-+    maxItems: 1
++  sense-gain-mult:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Amplifier gain multiplier. The default is <1>.
 +
-+  interrupt-names:
-+    const: comp
++  sense-gain-div:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Amplifier gain divider. The default is <1>.
 +
 +required:
 +  - compatible
 +  - io-channels
-+  - io-channel-names
-+  - interrupts
-+  - interrupt-names
++  - sense-resistor-micro-ohms
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dpot: dpot@28 {
-+            compatible = "microchip,mcp4651-104";
-+            reg = <0x28>;
-+            #io-channel-cells = <1>;
-+        };
-+    };
++    sysi {
++        compatible = "current-sense-amplifier";
++        io-channels = <&tiadc 0>;
 +
-+    dac: dac {
-+        compatible = "dpot-dac";
-+        vref-supply = <&reg_3v3>;
-+        io-channels = <&dpot 0>;
-+        io-channel-names = "dpot";
-+        #io-channel-cells = <1>;
-+    };
-+
-+    envelope-detector {
-+        compatible = "axentia,tse850-envelope-detector";
-+        io-channels = <&dac 0>;
-+        io-channel-names = "dac";
-+
-+        interrupt-parent = <&gpio>;
-+        interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
-+        interrupt-names = "comp";
++        sense-resistor-micro-ohms = <20000>;
++        sense-gain-mult = <50>;
 +    };
 +...
-+
 -- 
 2.28.0
 

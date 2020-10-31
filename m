@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF492A19EC
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04A7D2A19ED
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728442AbgJaSwA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:52:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35262 "EHLO mail.kernel.org"
+        id S1728443AbgJaSwC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:52:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35292 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728399AbgJaSwA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:52:00 -0400
+        id S1728399AbgJaSwB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:52:01 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8002920702;
-        Sat, 31 Oct 2020 18:51:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F8D92071A;
+        Sat, 31 Oct 2020 18:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170319;
-        bh=dkhq8aeKyBrwS8VEAzZqhk9tRqNu7aZfA0D9vLmY4JE=;
+        s=default; t=1604170321;
+        bh=Nu2J9vKa1fygViBKeycZdTwrrBZvrFRMzcwEz4+VvgU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=azppVyUOdHvR2GFBehbtQylQxl7id0OrrhSDozR4LePqJ3PeXAbXTAHGUne8tx8Hu
-         Lqsh9OBNNJGOt1TFwj4jsUl+IDfN0v6HX5rIz4n68o21eGvDno54HtiaQF7jRelqAJ
-         mT/6PBrnytkj1gni0gD44GfkLrZFbdJwC1UEqwiw=
+        b=DJ5CcmD+xZGItti+vzbWQD9zWPB1sWl9cqFHqlCRZSrFIPsoYavXd57ye6PNiUP1z
+         4hMYltUgD6L8xPm9pB9C7p65shdyNZ2OQJTQl629pgzax9ymZSBYZc0d/CH+DaSAkA
+         jBafqGlSo2zeXs5SmPQCE8bWrxajqDpzBInLrx4A=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Manivannan Sadhasivam <manivannanece23@gmail.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH 22/46] dt-bindings:iio:light:st,vl6180: txt to yaml format conversion.
-Date:   Sat, 31 Oct 2020 18:48:30 +0000
-Message-Id: <20201031184854.745828-23-jic23@kernel.org>
+        Anson Huang <Anson.Huang@nxp.com>
+Subject: [PATCH 23/46] dt-bindings:iio:magnetometer:fsl,mag3110: txt to yaml conversion
+Date:   Sat, 31 Oct 2020 18:48:31 +0000
+Message-Id: <20201031184854.745828-24-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -43,52 +42,46 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I'm not sure anyone would use this part primarily as an ALS,
-given the time of flight laser also present, but I'll stick with the
-original decision on where to put the binding.
-
-Added interrupts property as the device has a GPIO interrupt even
-if the driver is not currently using it.
+Dropped a few bits of help text in here that didn't seem to add anything
+that wasn't fairly obvious.  Otherwise simple format conversion
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Manivannan Sadhasivam <manivannanece23@gmail.com>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Anson Huang <Anson.Huang@nxp.com>
 ---
- .../bindings/iio/light/st,vl6180.yaml         | 45 +++++++++++++++++++
- .../devicetree/bindings/iio/light/vl6180.txt  | 15 -------
- 2 files changed, 45 insertions(+), 15 deletions(-)
+ .../iio/magnetometer/fsl,mag3110.yaml         | 48 +++++++++++++++++++
+ .../bindings/iio/magnetometer/mag3110.txt     | 27 -----------
+ 2 files changed, 48 insertions(+), 27 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml b/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
 new file mode 100644
-index 000000000000..27c36ab7990d
+index 000000000000..6b54d32323fc
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml
-@@ -0,0 +1,45 @@
++++ b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+@@ -0,0 +1,48 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/light/st,vl6180.yaml#
++$id: http://devicetree.org/schemas/iio/magnetometer/fsl,mag3110.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: STMicro VL6180 ALS, range and proximity sensor
++title: Freescale MAG3110 magnetometer sensor
 +
 +maintainers:
-+  - Manivannan Sadhasivam <manivannanece23@gmail.com>
-+  - Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-+
-+description: |
-+  Proximity sensing module incorporating time of flight sensor
-+  Datasheet at https://www.st.com/resource/en/datasheet/vl6180x.pdf
++  - Anson Huang <Anson.Huang@nxp.com>
 +
 +properties:
 +  compatible:
-+    const: st,vl6180
++    const: fsl,mag3110
 +
 +  reg:
 +    maxItems: 1
 +
 +  interrupts:
 +    maxItems: 1
++
++  vdd-supply: true
++
++  vddio-supply: true
 +
 +additionalProperties: false
 +
@@ -103,32 +96,48 @@ index 000000000000..27c36ab7990d
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        proximity@29 {
-+            compatible = "st,vl6180";
-+            reg = <0x29>;
++        magnetometer@e {
++            compatible = "fsl,mag3110";
++            reg = <0x0e>;
++            pinctrl-names = "default";
++            pinctrl-0 = <&pinctrl_i2c3_mag3110_int>;
++            interrupt-parent = <&gpio3>;
++            interrupts = <16 IRQ_TYPE_EDGE_RISING>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/light/vl6180.txt b/Documentation/devicetree/bindings/iio/light/vl6180.txt
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt b/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt
 deleted file mode 100644
-index fb9137d85df9..000000000000
---- a/Documentation/devicetree/bindings/iio/light/vl6180.txt
+index bdd40bcaaa1f..000000000000
+--- a/Documentation/devicetree/bindings/iio/magnetometer/mag3110.txt
 +++ /dev/null
-@@ -1,15 +0,0 @@
--STMicro VL6180 -  ALS, range and proximity sensor
--
--Link to datasheet: https://www.st.com/resource/en/datasheet/vl6180x.pdf
+@@ -1,27 +0,0 @@
+-* FREESCALE MAG3110 magnetometer sensor
 -
 -Required properties:
 -
--	-compatible: should be "st,vl6180"
--	-reg: the I2C address of the sensor
+-  - compatible : should be "fsl,mag3110"
+-  - reg : the I2C address of the magnetometer
+-
+-Optional properties:
+-
+-  - interrupts: the sole interrupt generated by the device
+-
+-  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+-  node bindings.
+-
+-  - vdd-supply: phandle to the regulator that provides power to the sensor.
+-  - vddio-supply: phandle to the regulator that provides power to the sensor's IO.
 -
 -Example:
 -
--vl6180@29 {
--	compatible = "st,vl6180";
--	reg = <0x29>;
+-magnetometer@e {
+-	compatible = "fsl,mag3110";
+-	reg = <0x0e>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c3_mag3110_int>;
+-	interrupt-parent = <&gpio3>;
+-	interrupts = <16 IRQ_TYPE_EDGE_RISING>;
 -};
 -- 
 2.28.0

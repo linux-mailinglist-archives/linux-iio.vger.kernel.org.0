@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1836A2A1A02
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D15A02A1A06
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:52:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgJaSwR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:52:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35668 "EHLO mail.kernel.org"
+        id S1728477AbgJaSwT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:52:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35724 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728458AbgJaSwR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:52:17 -0400
+        id S1728475AbgJaSwS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:52:18 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB8AC20720;
-        Sat, 31 Oct 2020 18:52:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7EBD7205ED;
+        Sat, 31 Oct 2020 18:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604170336;
-        bh=iFGwE/9PSfd7hpDY+R4VCPz8RfOLa8Ub95oGrw/tXgA=;
+        s=default; t=1604170337;
+        bh=VQJKRRT65H62Y++NqT8W0EZxvj3p7YWlonqQD0nA/9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pD2edyoutsZ01IHWc6s/zNkLbvDIBzOjfQFXsJjUkeXTrfMwd3nts/p9pUyUEc7TK
-         +M6CaqLSVHSrINIXsnfiZHWHTGu500peFXSUvYNaeKk5ZB12CywpZiPxIIGiQFc3xm
-         NjN6dZ+M4tiefMg/YxgnhTa0yz+oL6AtnH+F3Ub8=
+        b=zkbopPTB0lLMwVaFvL5s1bpA+FLiALky6tjGbRaap2pDe1WXxg+zCzRS+tc7OFnMa
+         qp4bxVKuLsY2fgIq+eWUs0X2eTVjrb15KAkt0b6daD9eBN6XtRXT8lCI+mfNqayIgU
+         psRR4ZfOw6TzK5udnxNbH/qHQM68rnyosNPS8Was=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH 33/46] dt-bindings:iio:adc:mediatek,mt2701-auxadc: rename and yaml conversion.
-Date:   Sat, 31 Oct 2020 18:48:41 +0000
-Message-Id: <20201031184854.745828-34-jic23@kernel.org>
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 34/46] dt-bindings:iio:adc:ti,palmas-gpadc: txt to yaml format conversion.
+Date:   Sat, 31 Oct 2020 18:48:42 +0000
+Message-Id: <20201031184854.745828-35-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201031184854.745828-1-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
@@ -43,150 +42,166 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The current driver and indeed binding are named after a part that they
-do not list in the compatible.  Hence renamed the binding to reflect
-one that does.
-
-From the driver it looks like there is a lot more backwards compatibility
-than the binding currently reflects. We could consider expressing that
-more explicitly in the yaml for the compatible property. I have
-added one explicit pair that was present in the upstream dtsi files.
-
-I added Matthias alongside Zhiyong Tao because I don't think
-Zhiyong Tao has reviewed recent patches.  Please let me know if this
-isn't the right thing to do.
+Simple conversion of the binding doc for this subnode of the palmas
+PMIC.
+Given age of driver and lack interaction with original authors,
+I've guessed at Tony for a maintainer on this one.  Tony, if you
+are happy with that great, otherwise I can default back to myself.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Zhiyong Tao <zhiyong.tao@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
 ---
- .../iio/adc/mediatek,mt2701-auxadc.yaml       | 77 +++++++++++++++++++
- .../bindings/iio/adc/mt6577_auxadc.txt        | 34 --------
- 2 files changed, 77 insertions(+), 34 deletions(-)
+ .../bindings/iio/adc/palmas-gpadc.txt         | 48 ----------
+ .../bindings/iio/adc/ti,palmas-gpadc.yaml     | 87 +++++++++++++++++++
+ 2 files changed, 87 insertions(+), 48 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt b/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
+deleted file mode 100644
+index 4bb9a86065d1..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
++++ /dev/null
+@@ -1,48 +0,0 @@
+-* Palmas general purpose ADC IP block devicetree bindings
+-
+-Channels list:
+-	0 battery type
+-	1 battery temp NTC (optional current source)
+-	2 GP
+-	3 temp (with ext. diode, optional current source)
+-	4 GP
+-	5 GP
+-	6 VBAT_SENSE
+-	7 VCC_SENSE
+-	8 Backup Battery voltage
+-	9 external charger (VCHG)
+-	10 VBUS
+-	11 DC-DC current probe (how does this work?)
+-	12 internal die temp
+-	13 internal die temp
+-	14 USB ID pin voltage
+-	15 test network
+-
+-Required properties:
+-- compatible : Must be "ti,palmas-gpadc".
+-- #io-channel-cells: Should be set to <1>.
+-
+-Optional sub-nodes:
+-ti,channel0-current-microamp: Channel 0 current in uA.
+-	Values are rounded to derive 0uA, 5uA, 15uA, 20uA.
+-ti,channel3-current-microamp: Channel 3 current in uA.
+-	Values are rounded to derive 0uA, 10uA, 400uA, 800uA.
+-ti,enable-extended-delay: Enable extended delay.
+-
+-Example:
+-
+-pmic {
+-	compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
+-	...
+-	gpadc {
+-		compatible = "ti,palmas-gpadc";
+-		interrupts = <18 0
+-			      16 0
+-			      17 0>;
+-		#io-channel-cells = <1>;
+-		ti,channel0-current-microamp = <5>;
+-		ti,channel3-current-microamp = <10>;
+-		};
+-	};
+-	...
+-};
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
 new file mode 100644
-index 000000000000..5b21a9fba5dd
+index 000000000000..692dacd0fee5
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-@@ -0,0 +1,77 @@
++++ b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
+@@ -0,0 +1,87 @@
 +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/mediatek,mt2701-auxadc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/ti,palmas-gpadc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Mediatek AUXADC - ADC on Mediatek mobile SoC (mt65xx/mt81xx/mt27xx)
++title: Palmas general purpose ADC IP block devicetree bindings
 +
 +maintainers:
-+  - Zhiyong Tao <zhiyong.tao@mediatek.com>
-+  - Matthias Brugger <matthias.bgg@gmail.com>
++  - Tony Lindgren <tony@atomide.com>
 +
 +description: |
-+  The Auxiliary Analog/Digital Converter (AUXADC) is an ADC found
-+  in some Mediatek SoCs which among other things measures the temperatures
-+  in the SoC. It can be used directly with register accesses, but it is also
-+  used by thermal controller which reads the temperatures from the AUXADC
-+  directly via its own bus interface. See mediatek-thermal bindings
-+  for the Thermal Controller which holds a phandle to the AUXADC.
++  This ADC is often used to provide channels via the io-channels
++  consumer framework.
++  Channels list:
++    0 battery type
++    1 battery temp NTC (optional current source)
++    2 GP
++    3 temp (with ext. diode, optional current source)
++    4 GP
++    5 GP
++    6 VBAT_SENSE
++    7 VCC_SENSE
++    8 Backup Battery voltage
++    9 external charger (VCHG)
++    10 VBUS
++    11 DC-DC current probe (how does this work?)
++    12 internal die temp
++    13 internal die temp
++    14 USB ID pin voltage
++    15 test network
 +
 +properties:
 +  compatible:
-+    oneOf:
-+      - enum:
-+          - mediatek,mt2701-auxadc
-+          - mediatek,mt2712-auxadc
-+          - mediatek,mt6765-auxadc
-+          - mediatek,mt7622-auxadc
-+          - mediatek,mt8173-auxadc
-+      - items:
-+          - enum:
-+              - mediatek,mt7623-auxadc
-+          - const: mediatek,mt2701-auxadc
-+      - items:
-+          - enum:
-+              - mediatek,mt8183-auxadc
-+              - mediatek,mt8516-auxadc
-+          - const: mediatek,mt8173-auxadc
++    const: ti,palmas-gpadc
 +
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: main
++  interrupts:
++    minItems: 1
++    maxItems: 3
 +
 +  "#io-channel-cells":
 +    const: 1
++
++  ti,channel0-current-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Channel 0 current in uA.
++    enum:
++      - 0
++      - 5
++      - 15
++      - 20
++
++  ti,channel3-current-microamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Channel 3 current in uA.
++    enum:
++      - 0
++      - 10
++      - 400
++      - 800
++
++  ti,enable-extended-delay:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Enable extended delay.
 +
 +additionalProperties: false
 +
 +required:
 +  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
 +  - "#io-channel-cells"
 +
 +examples:
 +  - |
 +    #include <dt-bindings/clock/mt8183-clk.h>
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        adc@11001000 {
-+            compatible = "mediatek,mt8183-auxadc",
-+                         "mediatek,mt8173-auxadc";
-+            reg = <0 0x11001000 0 0x1000>;
-+            clocks = <&infracfg CLK_INFRA_AUXADC>;
-+            clock-names = "main";
++    pmic {
++        compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
++        adc {
++            compatible = "ti,palmas-gpadc";
++            interrupts = <18 0
++                          16 0
++                          17 0>;
 +            #io-channel-cells = <1>;
++            ti,channel0-current-microamp = <5>;
++            ti,channel3-current-microamp = <10>;
 +        };
 +    };
 +...
-diff --git a/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt b/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt
-deleted file mode 100644
-index 1b7ff9e5615a..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/mt6577_auxadc.txt
-+++ /dev/null
-@@ -1,34 +0,0 @@
--* Mediatek AUXADC - Analog to Digital Converter on Mediatek mobile soc (mt65xx/mt81xx/mt27xx)
--===============
--
--The Auxiliary Analog/Digital Converter (AUXADC) is an ADC found
--in some Mediatek SoCs which among other things measures the temperatures
--in the SoC. It can be used directly with register accesses, but it is also
--used by thermal controller which reads the temperatures from the AUXADC
--directly via its own bus interface. See
--Documentation/devicetree/bindings/thermal/mediatek-thermal.txt
--for the Thermal Controller which holds a phandle to the AUXADC.
--
--Required properties:
--  - compatible: Should be one of:
--    - "mediatek,mt2701-auxadc": For MT2701 family of SoCs
--    - "mediatek,mt2712-auxadc": For MT2712 family of SoCs
--    - "mediatek,mt6765-auxadc": For MT6765 family of SoCs
--    - "mediatek,mt7622-auxadc": For MT7622 family of SoCs
--    - "mediatek,mt8173-auxadc": For MT8173 family of SoCs
--    - "mediatek,mt8183-auxadc", "mediatek,mt8173-auxadc": For MT8183 family of SoCs
--    - "mediatek,mt8516-auxadc", "mediatek,mt8173-auxadc": For MT8516 family of SoCs
--  - reg: Address range of the AUXADC unit.
--  - clocks: Should contain a clock specifier for each entry in clock-names
--  - clock-names: Should contain "main".
--  - #io-channel-cells: Should be 1, see ../iio-bindings.txt
--
--Example:
--
--auxadc: adc@11001000 {
--	compatible = "mediatek,mt2701-auxadc";
--	reg = <0 0x11001000 0 0x1000>;
--	clocks = <&pericfg CLK_PERI_AUXADC>;
--	clock-names = "main";
--	#io-channel-cells = <1>;
--};
 -- 
 2.28.0
 

@@ -2,38 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E100E2A1962
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:15:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1F92A1967
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 19:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727967AbgJaSPK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 14:15:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46332 "EHLO mail.kernel.org"
+        id S1726736AbgJaSUM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 14:20:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47284 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728352AbgJaSPH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 31 Oct 2020 14:15:07 -0400
+        id S1727967AbgJaSUM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:20:12 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E0593206A5;
-        Sat, 31 Oct 2020 18:15:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 20204206D5;
+        Sat, 31 Oct 2020 18:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604168107;
-        bh=oAO6hYALRFY8QJ0jyjR+2tZNlN8Y0J3uYxsPvH4gG/8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QpArb/nu/ZfUHGMsuaINJ3i1lGH5ktCZWvhxyv+OnwB1fbOW2ZLBqB6wQ4SAjtQ5m
-         YdyHK8szW3uQrIqGGRa8soNNrUSaj8dwo2u07vV4kDWL8tFMMcnWPdUYOGKYL/yp0O
-         TfGn4M2cwmi4iYQE1YZKKI/i2zl+phzvZd73nFz8=
+        s=default; t=1604168412;
+        bh=WeJM9sqefLyTbec/MpOe67C4HqcW9wc+PbJIX8GXQqo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tFb3o3AbvzA/GKzWSwaSam11G2jgvfJ9gPZsU7Y89kQsIop++ogPSUAM/Nnvy6Pld
+         opbjTy6WXTGOyBh+o3SgQkbeg9bNbDzWv9MZrAUL5FF3fYdSTfb7KEYILlC2MZBZhr
+         U1gX6KBXBRbt/u1QB1s7E8NH2XvieHh+yQ0qykjs=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH 10/10] dt-bindings:iio:potentiostat:ti,lmp91000: txt to yaml conversion.
-Date:   Sat, 31 Oct 2020 18:12:42 +0000
-Message-Id: <20201031181242.742301-11-jic23@kernel.org>
+        devicetree@vger.kernel.org, linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/3] dt-bindings: yaml conversion of i2c-gate and IIO users
+Date:   Sat, 31 Oct 2020 18:17:58 +0000
+Message-Id: <20201031181801.742585-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201031181242.742301-1-jic23@kernel.org>
-References: <20201031181242.742301-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -42,130 +40,31 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-There were a few parts of the example that did not conform to the
-binding description and would not have worked with the Linux driver
-as a result.  Fixed them whilst doing this conversion.
+As part of a general effort to convert all IIO bindings over to yaml,
+we need to handle those that specify an i2c-gate.
+As such this also includes conversion of the base i2c-gate binding
+which is then referenced by the i2c binding files.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
----
- .../bindings/iio/potentiostat/lmp91000.txt    | 33 ---------
- .../iio/potentiostat/ti,lmp91000.yaml         | 68 +++++++++++++++++++
- 2 files changed, 68 insertions(+), 33 deletions(-)
+Jonathan Cameron (3):
+  dt-bindings:i2c:i2c-gate: txt to yaml conversion
+  dt-bindings:iio:imu:invensense,mpu6050: txt to yaml conversion
+  dt-bindings:iio:gyro:invensense,mpu3050: txt to yaml format
+    conversion.
 
-diff --git a/Documentation/devicetree/bindings/iio/potentiostat/lmp91000.txt b/Documentation/devicetree/bindings/iio/potentiostat/lmp91000.txt
-deleted file mode 100644
-index f3ab02b0dd41..000000000000
---- a/Documentation/devicetree/bindings/iio/potentiostat/lmp91000.txt
-+++ /dev/null
-@@ -1,33 +0,0 @@
--* Texas Instruments LMP91000 series of potentiostats
--
--LMP91000: https://www.ti.com/lit/ds/symlink/lmp91000.pdf
--LMP91002: https://www.ti.com/lit/ds/symlink/lmp91002.pdf
--
--Required properties:
--
--  - compatible: should be one of the following:
--                 "ti,lmp91000"
--                 "ti,lmp91002"
--  - reg: the I2C address of the device
--  - io-channels: the phandle of the iio provider
--
--  - ti,external-tia-resistor: if the property ti,tia-gain-ohm is not defined this
--    needs to be set to signal that an external resistor value is being used.
--
--Optional properties:
--
--  - ti,tia-gain-ohm: ohm value of the internal resistor for the transimpedance
--    amplifier. Must be 2750, 3500, 7000, 14000, 35000, 120000, or 350000 ohms.
--
--  - ti,rload-ohm: ohm value of the internal resistor load applied to the gas
--    sensor. Must be 10, 33, 50, or 100 (default) ohms.
--
--Example:
--
--lmp91000@48 {
--	compatible = "ti,lmp91000";
--	reg = <0x48>;
--	ti,tia-gain-ohm = <7500>;
--	ti,rload = <100>;
--	io-channels = <&adc>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/potentiostat/ti,lmp91000.yaml b/Documentation/devicetree/bindings/iio/potentiostat/ti,lmp91000.yaml
-new file mode 100644
-index 000000000000..e4b5d890e8d5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/potentiostat/ti,lmp91000.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/potentiostat/ti,lmp91000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments LMP91000 series of potentiostats with I2C control
-+
-+maintainers:
-+  - Matt Ranostay <matt.ranostay@konsulko.com>
-+
-+description: |
-+  Typically used as a signal conditioner for chemical sensors.
-+  LMP91000: https://www.ti.com/lit/ds/symlink/lmp91000.pdf
-+  LMP91002: https://www.ti.com/lit/ds/symlink/lmp91002.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,lmp91000
-+      - ti,lmp91002
-+
-+  reg:
-+    maxItems: 1
-+
-+  io-channels:
-+    maxItems: 1
-+
-+  ti,external-tia-resistor:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      If the property ti,tia-gain-ohm is not defined this needs to be set to
-+      signal that an external resistor value is being used.
-+
-+  ti,tia-gain-ohm:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [2750, 3500, 7000, 14000, 35000, 120000, 350000]
-+    description:
-+      Internal resistor for the transimpedance amplifier.
-+
-+  ti,rload-ohm:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [10, 33, 50, 100]
-+    description:
-+      Internal resistor load applied to the gas sensor.
-+      Default 100 Ohms.
-+
-+required:
-+  - compatible
-+  - reg
-+  - io-channels
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        lmp91000@48 {
-+            compatible = "ti,lmp91000";
-+            reg = <0x48>;
-+            ti,tia-gain-ohm = <7000>;
-+            ti,rload-ohm = <100>;
-+            io-channels = <&adc>;
-+        };
-+    };
-+...
+ .../devicetree/bindings/i2c/i2c-gate.txt      |  41 -------
+ .../devicetree/bindings/i2c/i2c-gate.yaml     |  52 +++++++++
+ .../iio/gyroscope/invensense,mpu3050.txt      |  45 --------
+ .../iio/gyroscope/invensense,mpu3050.yaml     |  70 ++++++++++++
+ .../bindings/iio/imu/inv_mpu6050.txt          |  67 -----------
+ .../bindings/iio/imu/invensense,mpu6050.yaml  | 105 ++++++++++++++++++
+ 6 files changed, 227 insertions(+), 153 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-gate.txt
+ create mode 100644 Documentation/devicetree/bindings/i2c/i2c-gate.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+
 -- 
 2.28.0
 

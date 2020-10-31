@@ -2,86 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA6C2A12F8
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 03:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDEF22A155F
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 12:02:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726229AbgJaCjL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:11 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        id S1726781AbgJaLCj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Oct 2020 07:02:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46352 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726697AbgJaLCj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 31 Oct 2020 07:02:39 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2922B20739;
+        Sat, 31 Oct 2020 11:02:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604142159;
+        bh=BdH6g1yPDhdM1c+vzvvm9E9sC8aMjf8oqx96jEly48w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mCVBQ2j/1UX3etNKWHOynLp3Jeod/O4sp0MpWUgrOh8EB+i68e6oZgzPCrr7wcv6I
+         vHe7ZygRBeR6JGcgMGeU7sC1FNAV2QhwZ8jYTEqgigq8QlTG6dbA3MEgJnD++QG66b
+         NeyLYADLqTbUuy7Q/7Cf9KrNscd1lUNqjiQKy8fc=
+Date:   Sat, 31 Oct 2020 11:02:34 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 16/29] dt-bindings:iio:dac:ti,dac082s085 yaml conversion
+Message-ID: <20201031110234.4d70fca3@archlinux>
+In-Reply-To: <20201029191014.GA18228@wunner.de>
+References: <20201011170749.243680-1-jic23@kernel.org>
+        <20201011170749.243680-17-jic23@kernel.org>
+        <20201028203140.GA24407@wunner.de>
+        <20201029155025.0f3ce545@archlinux>
+        <20201029191014.GA18228@wunner.de>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, 29 Oct 2020 20:10:14 +0100
+Lukas Wunner <lukas@wunner.de> wrote:
 
+> On Thu, Oct 29, 2020 at 03:50:25PM +0000, Jonathan Cameron wrote:
+> > On Wed, 28 Oct 2020 21:31:40 +0100 Lukas Wunner <lukas@wunner.de> wrote:  
+> > > On Sun, Oct 11, 2020 at 06:07:36PM +0100, Jonathan Cameron wrote:  
+> > > > +examples:
+> > > > +  - |
+> > > > +    spi {
+> > > > +        #address-cells = <1>;
+> > > > +        #size-cells = <0>;
+> > > > +
+> > > > +        dac@0 {
+> > > > +            compatible = "ti,dac082s085";
+> > > > +            reg = <0>;
+> > > > +            spi-max-frequency = <40000000>;
+> > > > +            spi-cpol;
+> > > > +            spi-cpha;
+> > > > +            vref-supply = <&vref_2v5_reg>;
+> > > > +        };
+> > > > +    };    
+> > > 
+> > > Hm, why wasn't the "vref_2v5_reg" node carried over from the txt file?  
+> > 
+> > Showing how to supply a regulator isn't generally necessary in an example.
+> > I don't mind having it there though so can keep it
+> > (as the fixed regulator binding has been converted to yaml)  
+> 
+> The "vref_2v5_reg" node is referenced by the "dac@0" node, so  I included
+> it in the example for completeness.  I'd appreciate if it could be carried
+> over to the YAML file, unless its inclusion is a bad practice.
 
--- 
-Sir/Madam,
+Sure. Will do so.  Many bindings don't do it, but nor problem with being
+more specific.
 
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
+If we followed the logic of including referenced nodes, some bindings
+would end up including nearly a whole board dts.  That's not the case
+here though so no problem.
 
-Regards,
-John Galvan
+Jonathan
 
----------------------------------------------------------------
+> 
+> Thanks,
+> 
+> Lukas
 
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan

@@ -2,163 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 818C92A1E4F
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 14:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B33B72A1ED1
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 15:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgKAN0Z convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 1 Nov 2020 08:26:25 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:51336 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbgKAN0Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Nov 2020 08:26:24 -0500
-Received: from relay12.mail.gandi.net (unknown [217.70.178.232])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id 2A2343A85BE
-        for <linux-iio@vger.kernel.org>; Sun,  1 Nov 2020 13:26:22 +0000 (UTC)
-Received: from xps13 (unknown [91.224.148.103])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 9D372200006;
-        Sun,  1 Nov 2020 13:25:58 +0000 (UTC)
-Date:   Sun, 1 Nov 2020 14:25:57 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
+        id S1726480AbgKAO51 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 09:57:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41080 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726458AbgKAO51 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Nov 2020 09:57:27 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ADDBB206DC;
+        Sun,  1 Nov 2020 14:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604242646;
+        bh=h/d7cMHwelo6QGJjC2f9S+/eMhKZR4ElV0jqb3x2hU0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VJx2+f0os0slLh0O5y1jNqsq7w/zxrEsRMOXhDZjG68Z/3wsKTOkBG8WV4cxHlxvj
+         LySyuis5GGHhcQzSKRlKNSQQMlXXpnd6OYzoJrHb7AIVErt89PDodKhaqX3uwOdD72
+         Jh1rJwxdwXyNHnssOnl5tQsZ2PldNGuxjoja5DuE=
+Date:   Sun, 1 Nov 2020 14:57:17 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>
-Subject: Re: [PATCH 07/10] dt-bindings:iio:adc:maxim,max1027: Pull out to
- separate binding doc.
-Message-ID: <20201101142557.153c7b97@xps13>
-In-Reply-To: <20201031181242.742301-8-jic23@kernel.org>
-References: <20201031181242.742301-1-jic23@kernel.org>
-        <20201031181242.742301-8-jic23@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Matt Ranostay <mranostay@gmail.com>
+Subject: Re: [PATCH 14/46] dt-bindings:iio:light:avago,apds9960: txt to yaml
+ conversion
+Message-ID: <20201101145717.4da9b448@archlinux>
+In-Reply-To: <CAJCx=gmf_PTTGMwY174CZj56JnFmYhBW0CmfXSMp_paR06fhXg@mail.gmail.com>
+References: <20201031184854.745828-1-jic23@kernel.org>
+        <20201031184854.745828-15-jic23@kernel.org>
+        <CAJCx=gmwc=a8F5ytYajKbA_QjkVHwJxn4xpeNb==v7AuDGZb-A@mail.gmail.com>
+        <CAJCx=gmf_PTTGMwY174CZj56JnFmYhBW0CmfXSMp_paR06fhXg@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Sat, 31 Oct 2020 14:35:56 -0700
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-Jonathan Cameron <jic23@kernel.org> wrote on Sat, 31 Oct 2020 18:12:39
-+0000:
-
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> On Sat, Oct 31, 2020 at 2:33 PM Matt Ranostay
+> <matt.ranostay@konsulko.com> wrote:
+> >
+> > On Sat, Oct 31, 2020 at 11:51 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Very simple binding that we could move into trivial-devices.yaml
+> > > with a small loss of documentation.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Matt Ranostay <mranostay@gmail.com>  
+> >
+> > Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>  
 > 
-> The afe/voltage-divider.yaml example uses this device with 2 properties
-> not provided by trivial-devices.yaml (spi-max-frequency and #io-channel-cells)
-> 
-> Solve that by creating a more specific binding doc.
-
-I don't know #io-channel-cells but spi-max-frequency is very common and
-is related to the fact that this device is a SPI device (hence, a SPI
-subnode), IMHO it has nothing to do with trivial-devices.yaml
-description.
+> Actually still Acked-by but could you change my email below to my Konsulko one?
+Will do.
 
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Philippe Reynes <tremyfr@yahoo.fr>
-> ---
->  .../bindings/iio/adc/maxim,max1027.yaml       | 64 +++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml  | 12 ----
->  2 files changed, 64 insertions(+), 12 deletions(-)
+> Thanks,
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1027.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1027.yaml
-> new file mode 100644
-> index 000000000000..09e853c50c76
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1027.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/maxim,max1027.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim MAX1027 and similar ADCs
-> +
-> +maintainers:
-> +  - Miquel Raynal <miquel.raynal@bootlin.com>
-> +  - Philippe Reynes <tremyfr@yahoo.fr>
-> +
-> +description: |
-> +  300ks/s SPI ADCs with temperature sensors.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +        # 10-bit 8 channels
-> +      - maxim,max1027
-> +        # 10-bit 12 channels
-> +      - maxim,max1029
-> +        # 10-bit 16 channels
-> +      - maxim,max1031
-> +         # 12-bit 8 channels
-> +      - maxim,max1227
-> +         # 12-bit 12 channels
-> +      - maxim,max1229
-> +         # 12-bit 16 channels
-> +      - maxim,max1231
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency: true
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +       #address-cells = <1>;
-> +       #size-cells = <0>;
-> +        maxadc: adc@0 {
-> +            compatible = "maxim,max1027";
-> +            reg = <0>;
-> +            #io-channel-cells = <1>;
-> +            interrupt-parent = <&gpio5>;
-> +            interrupts = <15 IRQ_TYPE_EDGE_RISING>;
-> +            spi-max-frequency = <1000000>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index d154ea97e30d..185e09e61e16 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -108,18 +108,6 @@ properties:
->            - isil,isl68137
->              # 5 Bit Programmable, Pulse-Width Modulator
->            - maxim,ds1050
-> -            # 10-bit 8 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1027
-> -            # 10-bit 12 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1029
-> -            # 10-bit 16 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1031
-> -            # 12-bit 8 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1227
-> -            # 12-bit 12 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1229
-> -            # 12-bit 16 channels 300ks/s SPI ADC with temperature sensor
-> -          - maxim,max1231
->              # Low-Power, 4-/12-Channel, 2-Wire Serial, 12-Bit ADCs
->            - maxim,max1237
->              # PECI-to-I2C translator for PECI-to-SMBus/I2C protocol conversion
+> Matt
+> 
+> > > ---
+> > >  .../bindings/iio/light/apds9960.txt           | 21 ---------
+> > >  .../bindings/iio/light/avago,apds9960.yaml    | 44 +++++++++++++++++++
+> > >  2 files changed, 44 insertions(+), 21 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/light/apds9960.txt b/Documentation/devicetree/bindings/iio/light/apds9960.txt
+> > > deleted file mode 100644
+> > > index c53ddb81c4aa..000000000000
+> > > --- a/Documentation/devicetree/bindings/iio/light/apds9960.txt
+> > > +++ /dev/null
+> > > @@ -1,21 +0,0 @@
+> > > -* Avago APDS9960 gesture/RGB/ALS/proximity sensor
+> > > -
+> > > -https://www.avagotech.com/docs/AV02-4191EN
+> > > -
+> > > -Required properties:
+> > > -
+> > > -  - compatible: must be "avago,apds9960"
+> > > -  - reg: the I2c address of the sensor
+> > > -  - interrupts : the sole interrupt generated by the device
+> > > -
+> > > -  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> > > -  node bindings.
+> > > -
+> > > -Example:
+> > > -
+> > > -apds9960@39 {
+> > > -       compatible = "avago,apds9960";
+> > > -       reg = <0x39>;
+> > > -       interrupt-parent = <&gpio1>;
+> > > -       interrupts = <16 1>;
+> > > -};
+> > > diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+> > > new file mode 100644
+> > > index 000000000000..eae8c7327c0f
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+> > > @@ -0,0 +1,44 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/light/avago,apds9960.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Avago APDS9960 gesture/RGB/ALS/proximity sensor
+> > > +
+> > > +maintainers:
+> > > +  - Matt Ranostay <mranostay@gmail.com>
+> > > +
+> > > +description: |
+> > > +  Datasheet at https://www.avagotech.com/docs/AV02-4191EN
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: avago,apds9960
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    i2c {
+> > > +        #address-cells = <1>;
+> > > +        #size-cells = <0>;
+> > > +
+> > > +        light-sensor@39 {
+> > > +            compatible = "avago,apds9960";
+> > > +            reg = <0x39>;
+> > > +            interrupt-parent = <&gpio1>;
+> > > +            interrupts = <16 1>;
+> > > +        };
+> > > +    };
+> > > +...
+> > > --
+> > > 2.28.0
+> > >  
 
-Thanks,
-Miquèl

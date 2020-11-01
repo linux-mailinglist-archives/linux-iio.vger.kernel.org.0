@@ -2,169 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D71922A1F08
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 16:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DB92A1F10
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 16:29:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbgKAP0a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Nov 2020 10:26:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbgKAP0a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Nov 2020 10:26:30 -0500
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE422C0617A6
-        for <linux-iio@vger.kernel.org>; Sun,  1 Nov 2020 07:26:28 -0800 (PST)
-Received: by mail-pl1-x643.google.com with SMTP id t22so5512665plr.9
-        for <linux-iio@vger.kernel.org>; Sun, 01 Nov 2020 07:26:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vKigyyy69RrMO2wivE7nOb9ykQ6TIQpd+G42MBJUIn8=;
-        b=bmy5XVeGN9uxrIuvcEDzy4ODGtU/npvWAz3Di8wXje7L8s+RkPgEt7FLctGjHyJ/ca
-         /f57AnwK47m24PE3lLnBR0qzdRkEBhMssb4YgAPByPKreiBMrTwuyGbGvNEqjMdsvdIc
-         oEMxycFPRvzR8ADLHm3NOTQWbGZNW6BvzFVR4CLhcuRoMSFkoe7GugD+1bK9CmDrBSkg
-         hNjtMr7GEjXEjK1ueNq2QfU4qoQwsnZP4qDfrNf0SRty2CEQACoAon5eLgMNCQa0+U6R
-         VOJA/KsanPbt9iQP+2qf33WnNBKw46Pj8SESJd8C4j4nA4S+ZNlsEqPlxOKSy3pqZzMI
-         d2nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vKigyyy69RrMO2wivE7nOb9ykQ6TIQpd+G42MBJUIn8=;
-        b=j1Qo6OhXDp4y4qMFu9VpcKBIpGWuAwYPAP69tA9hDEoQsJte9BqBLiE9Hy6+N537Qd
-         4B1+y6q384Z41wwhaLHf9i+yVFeonwKmS0VzUojKC92mzG/IeRaqWUmAQVnzuT5ZvUUC
-         WC4R7fDZ0WkUWtSwT4x4vRPH6LKlaLU/XxPLOn1XuQVKLkajYjB+Elg+RYPkRPbSTr1D
-         GOcEmrZ7eydbyTQhhNSLcilPPgdU37/pRWTVzSNvVluJDFSm7UIBaY14n9Ord0WL79dJ
-         sLyc+tZMRSezOvZjL3S1tgDxt5dYeW5TRzw2rt0B31/ws4QXzpYzCnVWw4WvmO/8I6MY
-         hO8g==
-X-Gm-Message-State: AOAM532ECiWbs6VKD8+UUs/Wou5VDNhW/VhQ6Kh8xI/++9CDwPXuyzJ+
-        B6iqdwjRD89VeBQjurHteMIr
-X-Google-Smtp-Source: ABdhPJwGNneB5X/GX07OnmKf6zv3cmd3EbewFrLINom47KVIkTLnce6GvYo5gLMlnHhJ/BJ4vEekfg==
-X-Received: by 2002:a17:90a:65cc:: with SMTP id i12mr13031446pjs.193.1604244388341;
-        Sun, 01 Nov 2020 07:26:28 -0800 (PST)
-Received: from Mani-XPS-13-9360 ([2409:4072:6d8d:be1b:b0c0:14ff:1364:f14c])
-        by smtp.gmail.com with ESMTPSA id q8sm10867819pfg.118.2020.11.01.07.26.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 01 Nov 2020 07:26:27 -0800 (PST)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-X-Google-Original-From: Manivannan Sadhasivam <manivannanece23@gmail.com>
-Date:   Sun, 1 Nov 2020 20:56:21 +0530
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH 22/46] dt-bindings:iio:light:st,vl6180: txt to yaml
- format conversion.
-Message-ID: <20201101152621.GB5384@Mani-XPS-13-9360>
-References: <20201031184854.745828-1-jic23@kernel.org>
- <20201031184854.745828-23-jic23@kernel.org>
+        id S1726549AbgKAP35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 10:29:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49606 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726499AbgKAP35 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Nov 2020 10:29:57 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8607522242;
+        Sun,  1 Nov 2020 15:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604244596;
+        bh=sqk3AYKXuD6V4KehsqM0aeMZM/GIyg9DymWyj21oGmA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=a/KR+2XkACpAh9XCP5XQZpw6uPjSmlg+iLrW+UBpW1MZ5pTW+fs3RPs9udCG0BK6I
+         gb0NcnycoW15BTB4MPoqrY3edbk81lpoMm2Bop8a4QDfOAwPsDiZ+dJE2jSlVVWWFD
+         5gawMOfCUbdJi0NdntAqPeVxBjki3U32JDMuOtDM=
+Date:   Sun, 1 Nov 2020 15:29:50 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Vaishnav M A <vaishnav@beagleboard.org>
+Cc:     andy.shevchenko@gmail.com, wsa@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, alexandru.ardelean@analog.com,
+        matt.ranostay@konsulko.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jkridner@beagleboard.org,
+        drew@beagleboard.org, robertcnelson@beagleboard.org,
+        rajkovic@mikroe.com
+Subject: Re: [PATCH v4] iio:light:tsl2563 use generic fw accessors
+Message-ID: <20201101152950.26474192@archlinux>
+In-Reply-To: <20201018203552.GA816421@ubuntu>
+References: <20201018203552.GA816421@ubuntu>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201031184854.745828-23-jic23@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 06:48:30PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> I'm not sure anyone would use this part primarily as an ALS,
-> given the time of flight laser also present, but I'll stick with the
-> original decision on where to put the binding.
-> 
-> Added interrupts property as the device has a GPIO interrupt even
-> if the driver is not currently using it.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 19 Oct 2020 02:05:52 +0530
+Vaishnav M A <vaishnav@beagleboard.org> wrote:
 
-Acked-by: Manivannan Sadhasivam <manivannanece23@gmail.com>
+> Replace of_property_read_u32() with device_property_read_u32(),
+> when reading the amstaos,cover-comp-gain.This opens up the
+> possibility of passing the properties during platform instantiation
+> of the device by a suitable populated struct property_entry.
+> Additionally, a minor change in logic is added to remove the
+> of_node present check.
+> 
+> Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+Dropped v3 and applied this.
+
+If no one has replied to a previous version and you decide to respin
+for whatever reason, please reply yourself to that earlier version
+to say you have done so.
 
 Thanks,
-Mani
 
-> Cc: Manivannan Sadhasivam <manivannanece23@gmail.com>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Jonathan
+
 > ---
->  .../bindings/iio/light/st,vl6180.yaml         | 45 +++++++++++++++++++
->  .../devicetree/bindings/iio/light/vl6180.txt  | 15 -------
->  2 files changed, 45 insertions(+), 15 deletions(-)
+>  v4:
+> 	-update commit message, fix punctuation.
+> 	-update to a shorter commit title, used for similar changes
+> 	 within the subsystem, like in 00fa493b9989
+> 	 ("iio:proximity:as3935: Drop of_match_ptr and use generic fw accessors")
+>  v3:
+>         -modify commit message for readability, mention minor logic change
+>         -include  mod_devicetable.h and property.h headers
+>  v2:
+>         -fix commit message
+>  drivers/iio/light/tsl2563.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml b/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml
-> new file mode 100644
-> index 000000000000..27c36ab7990d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/st,vl6180.yaml
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/st,vl6180.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: STMicro VL6180 ALS, range and proximity sensor
-> +
-> +maintainers:
-> +  - Manivannan Sadhasivam <manivannanece23@gmail.com>
-> +  - Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> +
-> +description: |
-> +  Proximity sensing module incorporating time of flight sensor
-> +  Datasheet at https://www.st.com/resource/en/datasheet/vl6180x.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: st,vl6180
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        proximity@29 {
-> +            compatible = "st,vl6180";
-> +            reg = <0x29>;
-> +        };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/light/vl6180.txt b/Documentation/devicetree/bindings/iio/light/vl6180.txt
-> deleted file mode 100644
-> index fb9137d85df9..000000000000
-> --- a/Documentation/devicetree/bindings/iio/light/vl6180.txt
-> +++ /dev/null
-> @@ -1,15 +0,0 @@
-> -STMicro VL6180 -  ALS, range and proximity sensor
-> -
-> -Link to datasheet: https://www.st.com/resource/en/datasheet/vl6180x.pdf
-> -
-> -Required properties:
-> -
-> -	-compatible: should be "st,vl6180"
-> -	-reg: the I2C address of the sensor
-> -
-> -Example:
-> -
-> -vl6180@29 {
-> -	compatible = "st,vl6180";
-> -	reg = <0x29>;
-> -};
-> -- 
-> 2.28.0
-> 
+> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> index abc8d7db8dc1..5bf2bfbc5379 100644
+> --- a/drivers/iio/light/tsl2563.c
+> +++ b/drivers/iio/light/tsl2563.c
+> @@ -12,6 +12,8 @@
+>   */
+>  
+>  #include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/property.h>
+>  #include <linux/i2c.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+> @@ -703,7 +705,6 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	struct iio_dev *indio_dev;
+>  	struct tsl2563_chip *chip;
+>  	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+> -	struct device_node *np = client->dev.of_node;
+>  	int err = 0;
+>  	u8 id = 0;
+>  
+> @@ -738,13 +739,14 @@ static int tsl2563_probe(struct i2c_client *client,
+>  	chip->calib0 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  	chip->calib1 = tsl2563_calib_from_sysfs(CALIB_BASE_SYSFS);
+>  
+> -	if (pdata)
+> +	if (pdata) {
+>  		chip->cover_comp_gain = pdata->cover_comp_gain;
+> -	else if (np)
+> -		of_property_read_u32(np, "amstaos,cover-comp-gain",
+> -				     &chip->cover_comp_gain);
+> -	else
+> -		chip->cover_comp_gain = 1;
+> +	} else {
+> +		err = device_property_read_u32(&client->dev, "amstaos,cover-comp-gain",
+> +					       &chip->cover_comp_gain);
+> +		if (err)
+> +			chip->cover_comp_gain = 1;
+> +	}
+>  
+>  	dev_info(&client->dev, "model %d, rev. %d\n", id >> 4, id & 0x0f);
+>  	indio_dev->name = client->name;
+

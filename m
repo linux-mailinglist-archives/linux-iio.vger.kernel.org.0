@@ -2,40 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E092A219F
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 21:52:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 163C72A21A3
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 21:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgKAUwY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Nov 2020 15:52:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37052 "EHLO mail.kernel.org"
+        id S1726873AbgKAU4p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 15:56:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38544 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726873AbgKAUwY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Nov 2020 15:52:24 -0500
+        id S1726848AbgKAU4o (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Nov 2020 15:56:44 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DB878221FC;
-        Sun,  1 Nov 2020 20:52:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B09A21556;
+        Sun,  1 Nov 2020 20:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604263943;
-        bh=Hm/e0lu/lYOoNysyeNbD7A4QIQFj7Vs44g0ZeBDAeyY=;
+        s=default; t=1604264204;
+        bh=dsMa3TCXszWbvbRQc/KWBwFjksO2n2oX+X3UrQ9io1U=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LXU+JdfkFmt7cV8sVOsnC3F8mT/Bdk6TSLIqsy0uM5xjP5qiwDIPhiMapCVTAWE0j
-         WP6BMThety/jJytECLvRLMTAQTj/KW19TZUZcEVuD++51fzp1EnA4bQDFFznYrksP2
-         /zAbzKL8lZUhkD0O0KLP52v2rAvoh0uRtyyzeRwM=
-Date:   Sun, 1 Nov 2020 20:52:19 +0000
+        b=KJsZBsocwXu53N4e5mNzaArw8JTfUvh7dgrhY4Q+U5K4grQ/wAQ2W3cflw9SLhjtx
+         oMynnfwTUmWkUfjcQ8r/kir7DCYFC6hjDT1jrOuXeAJGQ3UNoi93+PCGc+n7RFuePi
+         tGprF6eSVR+VOO0mUZnLnKDyH+ljFw4EopjKIksY=
+Date:   Sun, 1 Nov 2020 20:56:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: accel: bmc150-accel: Add rudimentary regulator
- support
-Message-ID: <20201101205219.63ca6485@archlinux>
-In-Reply-To: <20201101122833.1111424-3-linus.walleij@linaro.org>
-References: <20201101122833.1111424-1-linus.walleij@linaro.org>
-        <20201101122833.1111424-3-linus.walleij@linaro.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: set 10ms as min shub slave
+ timeout
+Message-ID: <20201101205640.1fbbceaa@archlinux>
+In-Reply-To: <a69c8236bf16a1569966815ed71710af2722ed7d.1604247274.git.lorenzo@kernel.org>
+References: <a69c8236bf16a1569966815ed71710af2722ed7d.1604247274.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,114 +40,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  1 Nov 2020 13:28:33 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Sun,  1 Nov 2020 17:21:18 +0100
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> These Bosch accelerometers have two supplies, VDD and VDDIO.
-> Add some rudimentary support to obtain and enable these
-> regulators during probe() and disable them during remove()
-> or on the errorpath.
+> Set 10ms as minimum i2c slave configuration timeout since st_lsm6dsx
+> relies on accel ODR for i2c master clock and at high sample rates
+> (e.g. 833Hz or 416Hz) the slave sensor occasionally may need more cycles
+> than i2c master timeout (2s/833Hz + 1 ~ 3ms) to apply the configuration
+> resulting in an uncomplete slave configuration and a constant reading
+> from the i2c slave connected to st_lsm6dsx i2c master.
 > 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Minor suggestion inline using new dev_err_probe()
+> Fixes: 8f9a5249e3d9 ("iio: imu: st_lsm6dsx: enable 833Hz sample frequency for tagged sensors")
+> Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Applied and marked for stable.
 
-thanks,
+Thanks,
 
 Jonathan
+
 > ---
->  drivers/iio/accel/bmc150-accel-core.c | 37 +++++++++++++++++++++++++--
->  1 file changed, 35 insertions(+), 2 deletions(-)
+> Changes since v1:
+> - improve commit log
+> - add missing Fixes tags
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index 0dafe4052856..a69a4f54d69a 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -28,6 +28,7 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index 8c8d8870ca07..99562ba85ee4 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -156,11 +156,13 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
+>  static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
+>  {
+>  	struct st_lsm6dsx_sensor *sensor;
+> -	u32 odr;
+> +	u32 odr, timeout;
 >  
->  #include "bmc150-accel.h"
->  
-> @@ -184,6 +185,7 @@ enum bmc150_accel_trigger_id {
->  
->  struct bmc150_accel_data {
->  	struct regmap *regmap;
-> +	struct regulator_bulk_data regulators[2];
->  	int irq;
->  	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
->  	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
-> @@ -1593,10 +1595,35 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  				     &data->orientation);
->  	if (ret)
->  		return ret;
-> +	/*
-> +	 * VDD   is the analog and digital domain voltage supply
-> +	 * VDDIO is the digital I/O voltage supply
-> +	 */
-> +	data->regulators[0].supply = "vdd";
-> +	data->regulators[1].supply = "vddio";
-> +	ret = devm_regulator_bulk_get(dev,
-> +				      ARRAY_SIZE(data->regulators),
-> +				      data->regulators);
-> +	if (ret) {
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(dev, "Failed to get regulators %d\n", ret);
-We have a magic print function for this now
-
-return dev_err_probe(ret, "Failed to get regulators\n");
-
-should do the job I think...
-
-> +		return ret;
-> +	}
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-> +				    data->regulators);
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable regulators: %d\n", ret);
-> +		return ret;
-> +	}
-> +	/*
-> +	 * 2ms or 3ms power-on time according to datasheets, let's better
-> +	 * be safe than sorry and set this delay to 5ms.
-> +	 */
-> +	msleep(5);
->  
->  	ret = bmc150_accel_chip_init(data);
->  	if (ret < 0)
-> -		return ret;
-> +		goto err_disable_regulators;
->  
->  	mutex_init(&data->mutex);
->  
-> @@ -1613,7 +1640,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  					 &bmc150_accel_buffer_ops);
->  	if (ret < 0) {
->  		dev_err(dev, "Failed: iio triggered buffer setup\n");
-> -		return ret;
-> +		goto err_disable_regulators;
->  	}
->  
->  	if (data->irq > 0) {
-> @@ -1674,6 +1701,9 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
->  err_buffer_cleanup:
->  	iio_triggered_buffer_cleanup(indio_dev);
-> +err_disable_regulators:
-> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-> +			       data->regulators);
->  
->  	return ret;
+>  	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+>  	odr = (hw->enable_mask & BIT(ST_LSM6DSX_ID_ACC)) ? sensor->odr : 12500;
+> -	msleep((2000000U / odr) + 1);
+> +	/* set 10ms as minimum timeout for i2c slave configuration */
+> +	timeout = max_t(u32, 2000000U / odr + 1, 10);
+> +	msleep(timeout);
 >  }
-> @@ -1698,6 +1728,9 @@ int bmc150_accel_core_remove(struct device *dev)
->  	bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_DEEP_SUSPEND, 0);
->  	mutex_unlock(&data->mutex);
 >  
-> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-> +			       data->regulators);
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
+>  /*
 

@@ -2,125 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E30A12A1B13
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Oct 2020 23:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2FB2A1CDE
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 10:29:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgJaWsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Oct 2020 18:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
+        id S1726117AbgKAJ3G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 04:29:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbgJaWsE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 31 Oct 2020 18:48:04 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 779B2C0617A6;
-        Sat, 31 Oct 2020 15:48:04 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id i7so5858014pgh.6;
-        Sat, 31 Oct 2020 15:48:04 -0700 (PDT)
+        with ESMTP id S1725951AbgKAJ3F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Nov 2020 04:29:05 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5043FC0617A6
+        for <linux-iio@vger.kernel.org>; Sun,  1 Nov 2020 01:29:05 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id 9so11511866oir.5
+        for <linux-iio@vger.kernel.org>; Sun, 01 Nov 2020 01:29:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=xQ4xsGDDibbe+i+6RvFTkO2wJW2NaeHMDLuyBg8zZeQ=;
-        b=j4HW+c7sdTjHhTVlMcrDVKsQ8Sj375kqTb9T+0kjlPkLpsJjV6fkbSiUk0X10DpCeB
-         cNAfVH4QahdUMHaWyq5UhZH0zWswIKdobI9Hohg66KYBJXCuD1e8ua6GZDUJTIip3vLH
-         Qiur+TrCmhrmc//EumTSGTidluHj74u5J+80LbFqD19O3UmBqlgZh0K4XD36/sFjOEs+
-         dxZWne53TN87B3BmZus+6b2s00CWViylp5DyWxO6EmC2ufZVCA8t7TxWeiBbgjRxn3Wn
-         NFSiaSsCA4wOBLEyntUccwm3oXmQdMcoon369cHXxX/Lev88h0dC+EBjv2dvU6s763de
-         DV0g==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xvTxI3DEF+IccH5dQ4JC+3lD6ghN30bDdG0cAFSVGSc=;
+        b=lLbk2dSnOlH3uXXSJ/RKEntQqY8d9ejaRkZevZyakhVPx3Mupbyer395QUPUX1bh7q
+         hvOGZX09DENVbNnthx7xGVJcpo2LveGQG/yoZH/aKrMbcROAA6SF+WnJdTxTt7houqKv
+         DVOGKCRE+OQzC0JwDkOn/zfwLvqxg9RQx01m8voSMvym/RnaIWI+LtyDLtVARZGsUWhA
+         Kq0/o6OEFlvs2/jnndTbEgJ44zxiZVJGbIefxfpDRtQPwerjEFbKq0MH7hCRFyP4pcDb
+         oS8zuFIoFnXxLadlOK2+8Dj98BFcT6fiOuQp6KgdfMwydCRhgGEN3Vkq26nmGJ8I9t1X
+         vXOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=xQ4xsGDDibbe+i+6RvFTkO2wJW2NaeHMDLuyBg8zZeQ=;
-        b=hgZhcS6B/2uUwMQV7WYBhP9rrSEul+YnpZl7gsCDKcY4RliZ5rXfhFyj2L6d6Nos0r
-         SzrP3uaNivjdfgiQxE3F9MeXaEcVxRYRRjdWP5ufQTN4NQVdn4P9GCGdV6Y1oGgNDOV1
-         f0EJ4N8WZqj7v4Se/1Pw3zI+HVYQuFPJaUOHPjjo/5dScHrL0SmLJMok8sfrmHLCHs5Z
-         76Osn7P93wknbw1EWf7f8fgOY5RJ3awRBlX+3dxez6OMtRARaZDzJmkn0u4oRleIc1Ap
-         VBuG/RWLLIlzf/uwDIZXYnNU7LD3yyFz1Z+oVyt68U0CbBVSTEkrlUu86vXxWoAjUywE
-         JvIw==
-X-Gm-Message-State: AOAM530wH4AtZsUMmRSLITh2youBCNN2NhKNfsFbF9mbD1Uw1JO9tiZ4
-        HDeN/PmIOoIxxy+efMzJ+tTW1RyxtsjNuw==
-X-Google-Smtp-Source: ABdhPJx8zvT5t5qTPzHlzXXdCLmjsAmk0vS8llPQZplrNHKHNt/3cGRSut2Bmi/H+thxJ7QgwL44Xw==
-X-Received: by 2002:a65:44cd:: with SMTP id g13mr7532180pgs.259.1604184483898;
-        Sat, 31 Oct 2020 15:48:03 -0700 (PDT)
-Received: from localhost ([2001:e42:102:1532:160:16:113:140])
-        by smtp.gmail.com with ESMTPSA id gq24sm6107420pjb.30.2020.10.31.15.48.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2020 15:48:03 -0700 (PDT)
-From:   Coiby Xu <coiby.xu@gmail.com>
-X-Google-Original-From: Coiby Xu <Coiby.Xu@gmail.com>
-Date:   Sun, 1 Nov 2020 06:47:35 +0800
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 01/15] iio: accel: remove unnecessary CONFIG_PM_SLEEP
-Message-ID: <20201031224735.atjih4opb6w57r6y@Rk>
-References: <20201029074910.227859-1-coiby.xu@gmail.com>
- <20201029144007.77d967b0@archlinux>
- <CAHp75Vc829u6XPPA+eE=_AFZSPF+yVqT7nUXxtzkwx7-xLLrCg@mail.gmail.com>
- <20201030143410.pbixjo2cllhd27zp@Rk>
- <20201031110511.515a2f0f@archlinux>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xvTxI3DEF+IccH5dQ4JC+3lD6ghN30bDdG0cAFSVGSc=;
+        b=c3ePn+4Dm7X2u2kbGDo8q2+EWCdsOUWKzi/mPGkAQrKjHoWn3z4NOzHH7f4oC/1g6U
+         cUA/WkDR+IoENA3jq+9jidn6RvWJeST9uUnJsKTZgAQOSH46IQfuw6hHKCPcRkveS0jA
+         sw8YijvpNLAo3H5RmCfuOkLxo9+4vro1re8l0NGBb1AEGA509tdTmhU+jaUb/MMLcain
+         Y2FNS3HF59kNkx72ZBS7zQs12haNxOudivXs/jIgoisjHZiEKsolANWBlw+3KUl/i+b4
+         RPF4+80/EKVVLytyPxDWI5KVMWMhniiQo/4zL+2aha/lo5eBtkFoB08Qe5vF127wTAC+
+         Bx8Q==
+X-Gm-Message-State: AOAM532yjqEDGf1vqH6PHG78SBP6W75uzhb3kNcmZgdWMekAkI59SyHX
+        Ept70JCaC1SCVsst+hTfrSw+seXmyyWvHws/PBI=
+X-Google-Smtp-Source: ABdhPJxPmbUkcCYTR+2jk++xpA983EbsH4HFbb4MqO/j0QnBZttfuov7d7dJVjwrG4xUNiz+zNnjr8S0mYx/m1vcpzM=
+X-Received: by 2002:a05:6808:915:: with SMTP id w21mr6139087oih.124.1604222944221;
+ Sun, 01 Nov 2020 01:29:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20201031110511.515a2f0f@archlinux>
+References: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
+In-Reply-To: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Sun, 1 Nov 2020 11:28:53 +0200
+Message-ID: <CA+U=DsoMWH281+1vv8h8aZKumkM+oocrWP6XVKVQ5AoFoXpk3w@mail.gmail.com>
+Subject: Re: Requirement for at91-sama5d2_adc timestamp buffer
+To:     Eugen Hristev <Eugen.Hristev@microchip.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 11:05:11AM +0000, Jonathan Cameron wrote:
->On Fri, 30 Oct 2020 22:34:10 +0800
->Coiby Xu <coiby.xu@gmail.com> wrote:
+On Fri, Oct 30, 2020 at 2:29 PM <Eugen.Hristev@microchip.com> wrote:
 >
->> On Thu, Oct 29, 2020 at 07:06:40PM +0200, Andy Shevchenko wrote:
->> >On Thu, Oct 29, 2020 at 4:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
->> >> On Thu, 29 Oct 2020 15:48:56 +0800
->> >> Coiby Xu <coiby.xu@gmail.com> wrote:
->> >
->> >> Please put a cover letter on your next series explaining the context.
->> >> In this particular case some of the replies you have gotten are
->> >> general at it is a lot easier to find these sorts of things via
->> >> replying to the cover letter.
->> >
->> >Looking at the number of duplicate messages I would suggest that one
->> >needs to go through documentation on how to use git format-patch and
->> >git send-email.
->> >
->>
->> Thank you for the suggestion! Actually it's a tree-wide change and it
->> seems the kernel community prefer individual patches or series for
->> subsystems having the same maintainer over a huge patch set so I wrote
->> some scripts to automate the process. That's why you see ~50 emails
->> with almost the same commit message. The only difference of these
->> commit messages is the name of PM macro.
+> Hello Jonathan,
 >
->When doing a bit set like this, it's worth sending out a small subset
->first to shake out issue like those seen here.
+> I found an issue with at91-sama5d2_adc driver, namely, when using DMA
+> and timestamp in the same time, the hardware provides the sample in the
+> fashion (2 bytes per channel) * (number of channels) - as copied by the
+> DMA master to memory.
+> I compute a software timestamp , and then push to buffers with timestamp.
+> However your push code will try to write this timestamp inside my buffer
+> ! and overwrite my samples... I have multiple samples in the buffer
+> (watermark number) and there is no space between them because the
+> hardware copies the conversion data directly in this buffer.
 >
->Once those get merged then send out out the reset.
->
-Thank you for the suggestion! Actually I've held off another ~150
-emails and these ~200 emails were only part of work. I thought it's
-better to reach 4 or 5 subsystem to collect sufficient feedbacks
-considering some subsystems may respond slow. But I didn't realize a
-better way is to cut down the size of patch set sent to a subsystem.
->Thanks,
->
->Jonathan
->
->>
->> >--
->> >With Best Regards,
->> >Andy Shevchenko
->>
->> --
->> Best regards,
->> Coiby
->
+> Do you have any suggestion on how to solve this, except 1) giving up the
+> timestamp in this mode or 2) copy to another buffer with more space for
+> timestamp storage ?
 
---
-Best regards,
-Coiby
+I'm assuming the issue is here:
+                iio_push_to_buffers_with_timestamp(indio_dev,
+                                (st->dma_st.rx_buf + st->dma_st.buf_idx),
+                                (st->dma_st.dma_ts + interval * sample_index));
+
+Can the DMA be configured to add some padding in-between the samples?
+It looks like the way this is currently working, timestamps cannot
+work with the DMA buffers and multiple consecutive samples.
+But, it may be that this case is a bit unrealistic; or shouldn't be supported.
+DMA is used to provide really-fast transfers; computing timestamps in
+SW for each sample would slow things down to the point where the
+transfers aren't fast anymore.
+
+What would [possibly] be an alternative, is to do a
+"iio_push_multiple_samples_to_buffers_with_timestamp(indio_dev, buffer
+for 1 sample-set, n_samples, )".
+That would basically mean, the DMA gets 10, 100, 1000 samples, and
+adds a timestamp at the end.
+Now, the only thing that I don't know here: is how userspace would be
+able to determine the number of samples until the next timestamp.
+I guess some mechanism could be extended inside IIO to accommodate for
+this; N_samples_till_timestamp counter, with a default value of 1.
+Not sure if it makes sense though.
+
+>
+> Thanks,
+> Eugen

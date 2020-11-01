@@ -2,105 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2FB2A1CDE
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 10:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F22752A1DD9
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 13:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726117AbgKAJ3G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Nov 2020 04:29:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
+        id S1726541AbgKAM2n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 07:28:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725951AbgKAJ3F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Nov 2020 04:29:05 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5043FC0617A6
-        for <linux-iio@vger.kernel.org>; Sun,  1 Nov 2020 01:29:05 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id 9so11511866oir.5
-        for <linux-iio@vger.kernel.org>; Sun, 01 Nov 2020 01:29:05 -0800 (PST)
+        with ESMTP id S1726497AbgKAM2l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Nov 2020 07:28:41 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4386BC061A47
+        for <linux-iio@vger.kernel.org>; Sun,  1 Nov 2020 04:28:39 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id y184so11828943lfa.12
+        for <linux-iio@vger.kernel.org>; Sun, 01 Nov 2020 04:28:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xvTxI3DEF+IccH5dQ4JC+3lD6ghN30bDdG0cAFSVGSc=;
-        b=lLbk2dSnOlH3uXXSJ/RKEntQqY8d9ejaRkZevZyakhVPx3Mupbyer395QUPUX1bh7q
-         hvOGZX09DENVbNnthx7xGVJcpo2LveGQG/yoZH/aKrMbcROAA6SF+WnJdTxTt7houqKv
-         DVOGKCRE+OQzC0JwDkOn/zfwLvqxg9RQx01m8voSMvym/RnaIWI+LtyDLtVARZGsUWhA
-         Kq0/o6OEFlvs2/jnndTbEgJ44zxiZVJGbIefxfpDRtQPwerjEFbKq0MH7hCRFyP4pcDb
-         oS8zuFIoFnXxLadlOK2+8Dj98BFcT6fiOuQp6KgdfMwydCRhgGEN3Vkq26nmGJ8I9t1X
-         vXOA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QOXieuuEEbc116u9FS/tLUaOZv79e9gqeLS9/EKUpZ8=;
+        b=g30qIXbRJL5C/nXIrSgCkN0N2zOTkxTPyQtoJgI/5Bs7rNmuiZHb3TRDXdbcU36lLt
+         9RwLjV102npps2h+YPgU367k/Rn0pSGN7FMiiuHEf4cSBw81k9fLFCqeqxVz8nKCzz3r
+         C+ykdFMM6CxcUhrSaD5g3DpUtdxESdL6I70DFTNScAk0sKExnQnd4Cu+ZqvpD3JW3S6W
+         +NxYG9YqjtGggmB/EXO9wF9XkXyxxdpzz4WD2AEaZ1P51qXQ8iJ2U5b/pLiOBYZRVYkG
+         AYC6uGz228NN8qb85OdO4jqZSgJrQqWMtQIjhZCARRJ/l9Nroc0+qXa60WxuRw97FjEX
+         7EcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xvTxI3DEF+IccH5dQ4JC+3lD6ghN30bDdG0cAFSVGSc=;
-        b=c3ePn+4Dm7X2u2kbGDo8q2+EWCdsOUWKzi/mPGkAQrKjHoWn3z4NOzHH7f4oC/1g6U
-         cUA/WkDR+IoENA3jq+9jidn6RvWJeST9uUnJsKTZgAQOSH46IQfuw6hHKCPcRkveS0jA
-         sw8YijvpNLAo3H5RmCfuOkLxo9+4vro1re8l0NGBb1AEGA509tdTmhU+jaUb/MMLcain
-         Y2FNS3HF59kNkx72ZBS7zQs12haNxOudivXs/jIgoisjHZiEKsolANWBlw+3KUl/i+b4
-         RPF4+80/EKVVLytyPxDWI5KVMWMhniiQo/4zL+2aha/lo5eBtkFoB08Qe5vF127wTAC+
-         Bx8Q==
-X-Gm-Message-State: AOAM532yjqEDGf1vqH6PHG78SBP6W75uzhb3kNcmZgdWMekAkI59SyHX
-        Ept70JCaC1SCVsst+hTfrSw+seXmyyWvHws/PBI=
-X-Google-Smtp-Source: ABdhPJxPmbUkcCYTR+2jk++xpA983EbsH4HFbb4MqO/j0QnBZttfuov7d7dJVjwrG4xUNiz+zNnjr8S0mYx/m1vcpzM=
-X-Received: by 2002:a05:6808:915:: with SMTP id w21mr6139087oih.124.1604222944221;
- Sun, 01 Nov 2020 01:29:04 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QOXieuuEEbc116u9FS/tLUaOZv79e9gqeLS9/EKUpZ8=;
+        b=RuTmBbzbijnYj/YIAz/qxzKVGHvE16rbJyvm2bgzAMhsw1pRjgcQx6I2mB/7Tiv03I
+         Uwdl+96Ez2ppqV8g/rNjWD67hliwBSO9WmXCcMVnmOtoVkZpVUkA8ONDXaoRuLz5G+wr
+         3REmJrLAdTUD2+Uz5RtvSm2+sxUC1ZF/7J7i+wUnyCAx9Gu0La5obiuXU/sDzpjSBbmK
+         +2/xoSle9euZEInDuL7qzIQibcc4+8XNHDE51OJCrLEOq6AqDYJ317VHe9B4cayZYnjm
+         rlpZhFCiLkeBaexdYfTtUiocHQ2OG6Jw/acJCZB23y1NVjDcw5tok2jdJfNfN2FpdfKn
+         b3dg==
+X-Gm-Message-State: AOAM531Lb+B3dOAdp1CqXn1KBpNgJ27Y725XrZBHH/ddR1mYSLdqv9lB
+        KTWAmvP2dWmvCo4miaPLSfg1Ew==
+X-Google-Smtp-Source: ABdhPJzyqdJNEAfRNvG2NWx0qtUEFOzaGXj1bTk+b/YuMCYpAyGYIrwcsmKj5sur8hrKyvNbOzljWg==
+X-Received: by 2002:ac2:4422:: with SMTP id w2mr3804297lfl.219.1604233717531;
+        Sun, 01 Nov 2020 04:28:37 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id 190sm1480655lfk.238.2020.11.01.04.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2020 04:28:36 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-input@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: [PATCH 1/3] iio: accel: bmc150-accel: Add DT bindings
+Date:   Sun,  1 Nov 2020 13:28:31 +0100
+Message-Id: <20201101122833.1111424-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
-In-Reply-To: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sun, 1 Nov 2020 11:28:53 +0200
-Message-ID: <CA+U=DsoMWH281+1vv8h8aZKumkM+oocrWP6XVKVQ5AoFoXpk3w@mail.gmail.com>
-Subject: Re: Requirement for at91-sama5d2_adc timestamp buffer
-To:     Eugen Hristev <Eugen.Hristev@microchip.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 30, 2020 at 2:29 PM <Eugen.Hristev@microchip.com> wrote:
->
-> Hello Jonathan,
->
-> I found an issue with at91-sama5d2_adc driver, namely, when using DMA
-> and timestamp in the same time, the hardware provides the sample in the
-> fashion (2 bytes per channel) * (number of channels) - as copied by the
-> DMA master to memory.
-> I compute a software timestamp , and then push to buffers with timestamp.
-> However your push code will try to write this timestamp inside my buffer
-> ! and overwrite my samples... I have multiple samples in the buffer
-> (watermark number) and there is no space between them because the
-> hardware copies the conversion data directly in this buffer.
->
-> Do you have any suggestion on how to solve this, except 1) giving up the
-> timestamp in this mode or 2) copy to another buffer with more space for
-> timestamp storage ?
+These accelerometers have bindings used in the kernel and
+several device trees but no proper bindings documentation.
+Add it.
 
-I'm assuming the issue is here:
-                iio_push_to_buffers_with_timestamp(indio_dev,
-                                (st->dma_st.rx_buf + st->dma_st.buf_idx),
-                                (st->dma_st.dma_ts + interval * sample_index));
+Also add a compatible for the BMA222 that I am right now
+adding support for in the driver.
 
-Can the DMA be configured to add some padding in-between the samples?
-It looks like the way this is currently working, timestamps cannot
-work with the DMA buffers and multiple consecutive samples.
-But, it may be that this case is a bit unrealistic; or shouldn't be supported.
-DMA is used to provide really-fast transfers; computing timestamps in
-SW for each sample would slow things down to the point where the
-transfers aren't fast anymore.
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ .../bindings/iio/accel/bosch,bmc-bmi-bma.yaml | 72 +++++++++++++++++++
+ 1 file changed, 72 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmc-bmi-bma.yaml
 
-What would [possibly] be an alternative, is to do a
-"iio_push_multiple_samples_to_buffers_with_timestamp(indio_dev, buffer
-for 1 sample-set, n_samples, )".
-That would basically mean, the DMA gets 10, 100, 1000 samples, and
-adds a timestamp at the end.
-Now, the only thing that I don't know here: is how userspace would be
-able to determine the number of samples until the next timestamp.
-I guess some mechanism could be extended inside IIO to accommodate for
-this; N_samples_till_timestamp counter, with a default value of 1.
-Not sure if it makes sense though.
+diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmc-bmi-bma.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bmc-bmi-bma.yaml
+new file mode 100644
+index 000000000000..11b8b68aaf3e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmc-bmi-bma.yaml
+@@ -0,0 +1,72 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/bosch,bmc-bmi-bma.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch BMCxxx, BMIxxx and BMAxxx Accelerometers
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description:
++  3 axis accelerometers with varying range and I2C or SPI
++  3-wire interface.
++
++properties:
++  compatible:
++    enum:
++      - bosch,bmc150
++      - bosch,bmi055
++      - bosch,bma255
++      - bosch,bma250e
++      - bosch,bma222
++      - bosch,bma222e
++      - bosch,bma280
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++  vddio-supply: true
++
++  interrupts:
++    maxItems: 1
++
++  mount-matrix:
++    description: an optional 3x3 mounting rotation matrix.
++
++  spi-max-frequency: true
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #include <dt-bindings/interrupt-controller/irq.h>
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accelerometer@8 {
++            compatible = "bosch,bma222";
++            reg = <0x08>;
++            vddio-supply = <&vddio>;
++            vdd-supply = <&vdd>;
++            interrupts = <57 IRQ_TYPE_EDGE_FALLING>;
++        };
++    };
++  - |
++    # include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accel@0 {
++            compatible = "bosch,bma222";
++            reg = <0>;
++            spi-max-frequency = <10000000>;
++        };
++    };
++...
+-- 
+2.26.2
 
->
-> Thanks,
-> Eugen

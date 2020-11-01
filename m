@@ -2,44 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2927C2A2045
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 18:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B54A2A2183
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 21:21:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgKARU4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Nov 2020 12:20:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46864 "EHLO mail.kernel.org"
+        id S1726873AbgKAUV5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 15:21:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59496 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726790AbgKARUz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Nov 2020 12:20:55 -0500
+        id S1726848AbgKAUV5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Nov 2020 15:21:57 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D4EF2231B;
-        Sun,  1 Nov 2020 17:20:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2915B20723;
+        Sun,  1 Nov 2020 20:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604251254;
-        bh=I93y1z49Kk0Fd9T4szvukYN9LyWR1JVfBJJppslZeSI=;
+        s=default; t=1604262116;
+        bh=bwksYXSW6+bhZqa4Te2qMa4lJareuMGqGfpibo9BYLU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=veFbtSCJWH/yhIgPP3Mh+p6x/fX+IO09v0DA14w+51aQqv3oCEwNrbG7lSXRqh/zr
-         n5JygDA71iEK8PmJqQdRNjI0OE/FjpIC1o8oBkeXzWp2B0w8r9Y9L+OEABGhaZd0Ko
-         uOPGrYCrtPyKK54qDPvJDcEhCVG6DJYNERnE0a8E=
-Date:   Sun, 1 Nov 2020 17:20:49 +0000
+        b=jUCknUB0Ic2AQy/dTMJxbnWE7D+F+pxI7olux0KcSd8EJcVTEh748abHgd72G322x
+         3x1PViD+mZeQT5sLlF7eknex4AyT+0I2bVPL3efykyKgJ0C2SJv44ePUcUgKRiZcdn
+         CrXrUU/2epUPQ9oBFCkHz2lY32IlW1NZVaxndqhI=
+Date:   Sun, 1 Nov 2020 20:21:52 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Coiby Xu <coiby.xu@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 01/15] iio: accel: remove unnecessary CONFIG_PM_SLEEP
-Message-ID: <20201101172049.04bea85b@archlinux>
-In-Reply-To: <20201031224735.atjih4opb6w57r6y@Rk>
-References: <20201029074910.227859-1-coiby.xu@gmail.com>
-        <20201029144007.77d967b0@archlinux>
-        <CAHp75Vc829u6XPPA+eE=_AFZSPF+yVqT7nUXxtzkwx7-xLLrCg@mail.gmail.com>
-        <20201030143410.pbixjo2cllhd27zp@Rk>
-        <20201031110511.515a2f0f@archlinux>
-        <20201031224735.atjih4opb6w57r6y@Rk>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Eugen Hristev <Eugen.Hristev@microchip.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: Requirement for at91-sama5d2_adc timestamp buffer
+Message-ID: <20201101202152.72c0f384@archlinux>
+In-Reply-To: <CA+U=DsoMWH281+1vv8h8aZKumkM+oocrWP6XVKVQ5AoFoXpk3w@mail.gmail.com>
+References: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
+        <CA+U=DsoMWH281+1vv8h8aZKumkM+oocrWP6XVKVQ5AoFoXpk3w@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,69 +42,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 1 Nov 2020 06:47:35 +0800
-Coiby Xu <coiby.xu@gmail.com> wrote:
+On Sun, 1 Nov 2020 11:28:53 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> On Sat, Oct 31, 2020 at 11:05:11AM +0000, Jonathan Cameron wrote:
-> >On Fri, 30 Oct 2020 22:34:10 +0800
-> >Coiby Xu <coiby.xu@gmail.com> wrote:
-> >  
-> >> On Thu, Oct 29, 2020 at 07:06:40PM +0200, Andy Shevchenko wrote:  
-> >> >On Thu, Oct 29, 2020 at 4:42 PM Jonathan Cameron <jic23@kernel.org> wrote:  
-> >> >> On Thu, 29 Oct 2020 15:48:56 +0800
-> >> >> Coiby Xu <coiby.xu@gmail.com> wrote:  
-> >> >  
-> >> >> Please put a cover letter on your next series explaining the context.
-> >> >> In this particular case some of the replies you have gotten are
-> >> >> general at it is a lot easier to find these sorts of things via
-> >> >> replying to the cover letter.  
-> >> >
-> >> >Looking at the number of duplicate messages I would suggest that one
-> >> >needs to go through documentation on how to use git format-patch and
-> >> >git send-email.
-> >> >  
-> >>
-> >> Thank you for the suggestion! Actually it's a tree-wide change and it
-> >> seems the kernel community prefer individual patches or series for
-> >> subsystems having the same maintainer over a huge patch set so I wrote
-> >> some scripts to automate the process. That's why you see ~50 emails
-> >> with almost the same commit message. The only difference of these
-> >> commit messages is the name of PM macro.  
+> On Fri, Oct 30, 2020 at 2:29 PM <Eugen.Hristev@microchip.com> wrote:
 > >
-> >When doing a bit set like this, it's worth sending out a small subset
-> >first to shake out issue like those seen here.
+> > Hello Jonathan,
 > >
-> >Once those get merged then send out out the reset.
-> >  
-> Thank you for the suggestion! Actually I've held off another ~150
-> emails and these ~200 emails were only part of work. I thought it's
-> better to reach 4 or 5 subsystem to collect sufficient feedbacks
-> considering some subsystems may respond slow. But I didn't realize a
-> better way is to cut down the size of patch set sent to a subsystem.
-
-Keep it sub 20 per subsystem and it shouldn't matter too much, but perhaps
-always send to just one subsystem first as you may get very fast responses!
-
-Then if it looks good after a few days, your approach of targeting a few
-more subsystems would make sense.
-
-Jonathan
-
-> >Thanks,
+> > I found an issue with at91-sama5d2_adc driver, namely, when using DMA
+> > and timestamp in the same time, the hardware provides the sample in the
+> > fashion (2 bytes per channel) * (number of channels) - as copied by the
+> > DMA master to memory.
+> > I compute a software timestamp , and then push to buffers with timestamp.
+> > However your push code will try to write this timestamp inside my buffer
+> > ! and overwrite my samples... I have multiple samples in the buffer
+> > (watermark number) and there is no space between them because the
+> > hardware copies the conversion data directly in this buffer.
 > >
-> >Jonathan
-> >  
-> >>  
-> >> >--
-> >> >With Best Regards,
-> >> >Andy Shevchenko  
-> >>
-> >> --
-> >> Best regards,
-> >> Coiby  
-> >  
+> > Do you have any suggestion on how to solve this, except 1) giving up the
+> > timestamp in this mode or 2) copy to another buffer with more space for
+> > timestamp storage ?  
 > 
-> --
-> Best regards,
-> Coiby
+> I'm assuming the issue is here:
+>                 iio_push_to_buffers_with_timestamp(indio_dev,
+>                                 (st->dma_st.rx_buf + st->dma_st.buf_idx),
+>                                 (st->dma_st.dma_ts + interval * sample_index));
+> 
+> Can the DMA be configured to add some padding in-between the samples?
+> It looks like the way this is currently working, timestamps cannot
+> work with the DMA buffers and multiple consecutive samples.
+> But, it may be that this case is a bit unrealistic; or shouldn't be supported.
+> DMA is used to provide really-fast transfers; computing timestamps in
+> SW for each sample would slow things down to the point where the
+> transfers aren't fast anymore.
+> 
+> What would [possibly] be an alternative, is to do a
+> "iio_push_multiple_samples_to_buffers_with_timestamp(indio_dev, buffer
+> for 1 sample-set, n_samples, )".
+> That would basically mean, the DMA gets 10, 100, 1000 samples, and
+> adds a timestamp at the end.
+> Now, the only thing that I don't know here: is how userspace would be
+> able to determine the number of samples until the next timestamp.
+> I guess some mechanism could be extended inside IIO to accommodate for
+> this; N_samples_till_timestamp counter, with a default value of 1.
+> Not sure if it makes sense though.
+
+There is a very obscure and little used facility to repeats of a single
+channel, but that's as close as we get.  Describing arbitrary patterns
+of data is hard to do without adding the overhead of a header and not
+doing tagged data has been one of the fundamental design decisions in 
+IIO.
+
+We've discussed adding a separate meta data buffer, but that would
+need extra storage anyway to flag when there was meta data so wouldn't
+help you here.
+
+As Alexandru asked, can you persuade the dma engine to leave a gap?
+If not, you are going to have to keep copying the data.
+I theory you might be able to persuade the kfifo to take that
+data in different form and then introduce a different path for
+buffer management (not iio_push_to_buffers_*), but you'd need to
+figure out how to do that.
+> 
+> >
+> > Thanks,
+> > Eugen  
 

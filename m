@@ -2,38 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 815BE2A1EEA
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 16:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9F592A1EED
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Nov 2020 16:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726824AbgKAPNZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Nov 2020 10:13:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45168 "EHLO mail.kernel.org"
+        id S1726480AbgKAPQT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Nov 2020 10:16:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45660 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbgKAPNZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Nov 2020 10:13:25 -0500
+        id S1726458AbgKAPQT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Nov 2020 10:16:19 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A1EBE2223F;
-        Sun,  1 Nov 2020 15:13:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EFFF62224E;
+        Sun,  1 Nov 2020 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604243604;
-        bh=1WOrV1jjtHcG7addgh8YJpo8rrwOUU24MJKpjdERXRE=;
+        s=default; t=1604243778;
+        bh=LixH8u9qVBLnTBl3AYfgoqK3zif6KQ2jZa5vZYWYUfY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ec+X8YBt7oP1F3vLOxylHK9Ei/R7rhJqbRKWffexjKA4K0qzs03KxfUKe4UVaRlef
-         mSgIzJDEYz/zpcLh7fDzUl21l8n2OlHH00lNG1VGW/ynJeXu6hIdF18OHEA3AISzv4
-         1fcdhrX8RXoLyROvANs1aksll0pv4qc89vhlFImY=
-Date:   Sun, 1 Nov 2020 15:13:18 +0000
+        b=V9nFKi801Yb9bzuwiVz6/lzhoZYyGKFEeLjCd8OCk9yhd6UlMbOw9OrCCqIO8UJlM
+         RYPRlIuptMOmz3h7NOdE2Igu15mp9CHJ+K2wdOxiw9dLR8eQGplJUrrbCsjDn0tKk7
+         UQOE4ZelwJ49tA4wDzfk45rVBK6frdouuKOQzVGA=
+Date:   Sun, 1 Nov 2020 15:16:12 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabien Parent <fparent@baylibre.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        matthias.bgg@gmail.com, chun-hung.wu@mediatek.com,
-        alexandru.ardelean@analog.com, pmeerw@pmeerw.net, lars@metafoo.de
-Subject: Re: [PATCH v3] iio: adc: mediatek: fix unset field
-Message-ID: <20201101151318.052a9d19@archlinux>
-In-Reply-To: <20201018194644.3366846-1-fparent@baylibre.com>
-References: <20201018194644.3366846-1-fparent@baylibre.com>
+To:     Vaishnav M A <vaishnav@beagleboard.org>
+Cc:     andy.shevchenko@gmail.com, wsa@kernel.org,
+        songqiang1304521@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        alexandru.ardelean@analog.com, matt.ranostay@konsulko.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jkridner@beagleboard.org, drew@beagleboard.org,
+        robertcnelson@beagleboard.org, rajkovic@mikroe.com
+Subject: Re: [PATCH v4] iio: proximity: vl53l0x-i2c add i2c_device_id
+Message-ID: <20201101151612.71c3fa1b@archlinux>
+In-Reply-To: <20201018195102.GA814713@ubuntu>
+References: <20201018195102.GA814713@ubuntu>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,57 +44,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 18 Oct 2020 21:46:44 +0200
-Fabien Parent <fparent@baylibre.com> wrote:
+On Mon, 19 Oct 2020 01:21:02 +0530
+Vaishnav M A <vaishnav@beagleboard.org> wrote:
 
-> dev_comp field is used in a couple of places but it is never set. This
-> results in kernel oops when dereferencing a NULL pointer. Set the
-> `dev_comp` field correctly in the probe function.
+> Add i2c_device_id table for the vl53l0x-i2c driver,
+> helps in device instantiation using i2c_new_client_device()
+> or from userspace in cases where device-tree based description
+> is not possible now, like device(s) on a gbphy i2c adapter
+> created by greybus.
 > 
-> Fixes: 6d97024dce23 ("iio: adc: mediatek: mt6577-auxadc, add mt6765 support")
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> Signed-off-by: Vaishnav M A <vaishnav@beagleboard.org>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if they can find any issues.
 
 Thanks,
 
 Jonathan
+
+> 
 > ---
+>  v4:
+> 	-update commit message, add punctuation
+>  v3:
+> 	-modify commit message for readability
+> 	 as suggested by Jonathan Cameron
+>  v2:
+> 	-fix commit message
+>  drivers/iio/proximity/vl53l0x-i2c.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> Changelog:
-> V2:
-> 	* s/of_device_get_match_data/device_get_match_data
-> 	* include mod_devicetable.h and property.h instead of of_*.h headers
-> V3:
-> 	* Remove extra space between Fixes tag and Signed-off-by tag
-> 	* Add missing Reviewed-by tag from Matthias Brugger
-> 
->  drivers/iio/adc/mt6577_auxadc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> index ac415cb089cd..79c1dd68b909 100644
-> --- a/drivers/iio/adc/mt6577_auxadc.c
-> +++ b/drivers/iio/adc/mt6577_auxadc.c
-> @@ -9,9 +9,9 @@
->  #include <linux/err.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
->  #include <linux/iopoll.h>
->  #include <linux/io.h>
->  #include <linux/iio/iio.h>
-> @@ -276,6 +276,8 @@ static int mt6577_auxadc_probe(struct platform_device *pdev)
->  		goto err_disable_clk;
->  	}
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> index 5fbda9475ba9..7c29d4cae24a 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -143,6 +143,12 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  	return devm_iio_device_register(&client->dev, indio_dev);
+>  }
 >  
-> +	adc_dev->dev_comp = device_get_match_data(&pdev->dev);
+> +static const struct i2c_device_id vl53l0x_id[] = {
+> +	{ "vl53l0x", 0},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, vl53l0x_id);
 > +
->  	mutex_init(&adc_dev->lock);
+>  static const struct of_device_id st_vl53l0x_dt_match[] = {
+>  	{ .compatible = "st,vl53l0x", },
+>  	{ }
+> @@ -155,6 +161,7 @@ static struct i2c_driver vl53l0x_driver = {
+>  		.of_match_table = st_vl53l0x_dt_match,
+>  	},
+>  	.probe_new = vl53l0x_probe,
+> +	.id_table = vl53l0x_id,
+>  };
+>  module_i2c_driver(vl53l0x_driver);
 >  
->  	mt6577_auxadc_mod_reg(adc_dev->reg_base + MT6577_AUXADC_MISC,
 

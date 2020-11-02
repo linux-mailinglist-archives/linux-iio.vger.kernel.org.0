@@ -2,97 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D57482A337B
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 19:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A79E02A363E
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 23:06:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725805AbgKBS7y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 13:59:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39594 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725833AbgKBS7x (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 2 Nov 2020 13:59:53 -0500
-Received: from lore-desk.redhat.com (unknown [151.66.29.159])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C51822225E;
-        Mon,  2 Nov 2020 18:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604343593;
-        bh=JZRkhw9p+IFGxfm1PxBAqHFTkUmn43GF9Ysfc5agSMY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=aJ5CjffEA9ztzxyHkiQCwEOBdu6fgdkChsxlvPUFzSBKPrBZah+SC5NRVhMICvfWG
-         4G8YFxb3oIBAsrrGwHNS+gNfYUXJfncIZzAK3uUCeqQ8yj0Yz9VYfhIcR8DDfLNgh5
-         QJfjGa1zNS2N8+txRqJI66vSEnRiriI1jDPtN0G0=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        mario.tesi@st.com, denis.ciocca@st.com, armando.visconti@st.com
-Subject: [PATCH v2] iio: imu: st_lsm6dsx: fix edge-trigger interrupts
-Date:   Mon,  2 Nov 2020 19:59:46 +0100
-Message-Id: <797560f9719ee87115b51968c79e9913586d786f.1604343119.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1725906AbgKBWGX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 17:06:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35924 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725807AbgKBWGX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 17:06:23 -0500
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08D4C061A47
+        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 14:06:22 -0800 (PST)
+Received: by mail-lf1-x142.google.com with SMTP id 141so19477156lfn.5
+        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 14:06:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=yOeaU6BmujlW8/sz9myL4hUTr7Ca+5czBJG1/GXMdqg=;
+        b=R5b+UOQt647sZqbfK8AZh3/+ep35X/nEvq39ddAM9Dy+PvwgQF5JCp8y8imS6pnXPz
+         CQZV+od4CKx91mNztW6JMmNJdJ/B0YCg9C1X4ZK82XMPPM8ma8ZYj6TpMDHYajuaFPwc
+         0ksYDCIhh4u0C1bMMxtZPb3f+TjNhtj5IwZBo3hPzuIWJ01uJV7xqSboqx6AyzZPMGLI
+         LKuqFxMEar+oaGEMus6xawACmR00Xkox7eCssA+7mXPi0IzDp9oonJOoeNEtKRv6TT9O
+         2vGkfMgBRqz+KR/xzIj/3zRsfv4oxtkiQXVJ08shDtNgs0QbBfccUwAFZck/ycFllYIx
+         Qzcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=yOeaU6BmujlW8/sz9myL4hUTr7Ca+5czBJG1/GXMdqg=;
+        b=Y2KKskTsdYInxP7GzVxO91wBUAsv1WoCgf24hhxph9MgAqIFpOhC9XjZDsUW9d4pdI
+         dURn3ZQga7QqhJkFFIVCmkjq8Rxu7cpG/c+gLRFWj1HQB58KDbwSWeRNMo61jhtCkmps
+         x/YdJ0svwusajCSmsRybwlXxnGh/C0r0ycNOBGN6CF313RUAJyd57g09Cx7Jwp3QH7aH
+         PenuM+hvcU8GYlm1Ap+WxpqFMnYd8ZM0mrrCK0utyX4cyyMrQXqbUNlzfwyFrrSyJJSQ
+         lEkamJA/TECrNVyawr2G76W0+qMMQ2WMoBqo2zWSx6g1T4Vse9H0Q4GlXEdEGKPAIFqw
+         0orw==
+X-Gm-Message-State: AOAM5337e65LF0OJdB4J3qULMhCykqxWUpzGQcrifT4jTilKp0jYFNjN
+        oSEW/Ef5w8ddgOiwMlXcy45oMufTx/nlvVZL8d0=
+X-Google-Smtp-Source: ABdhPJxNteMVcPt/U6WP0WBEquDMppXzy5BNFMqTi3Rr4ULIAQDL6aexNs64i15fDO/2B0k0iFwfxNdeAijM0sqwhE8=
+X-Received: by 2002:a19:87:: with SMTP id 129mr6047263lfa.164.1604354780928;
+ Mon, 02 Nov 2020 14:06:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab3:6fd8:0:0:0:0:0 with HTTP; Mon, 2 Nov 2020 14:06:20 -0800 (PST)
+Reply-To: UBAGroupb@groupmail.com
+From:   "Mrs. Agba Ezu" <jamesberryfcu9@gmail.com>
+Date:   Mon, 2 Nov 2020 23:06:20 +0100
+Message-ID: <CAFct6hn5sa+KJ9n5svuh1U=mWNESKb9Z691Pw4PX7uR6CL3aMA@mail.gmail.com>
+Subject: Contact for your ATM CARD {$2.700,000.00}
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-If the device is configured to trigger edge interrupts it is possible to
-miss samples since the sensor can generate an interrupt while the driver
-is still processing the previous one but it has already read the fifo
-status register. Poll FIFO status register to check if there is any pending
-interrupt to process.
+Attention for you outstanding payment
 
-Fixes: 89ca88a7cdf2 ("iio: imu: st_lsm6dsx: support active-low interrupts")
-Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v1:
-- add missing fixes tags
-- keep IRQF_ONESHOT even for edge-interrupts
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+How are you doing hoping all is well with you and your family?
+We know you might have forgotten about this outstanding
+compensation payment due to delay on the delivery up till now. We are
+here by writing to inform you that your payment file was found in our
+Office and we discovered that your Compensation payment worth sum of
+two million seven hundred thousand United State Dollars
+{$2.700,000.00} have not been sent to you as it was instructed by The
+Economic Community of West African States(ECO-WAS) We are here to
+inform you that your payment has been converted into ATM Visa/Master
+Card to free it from Confiscating, and all necessary arrangement your
+ATM VISA/MASTER CARD Payment worth of {$2.700,000.00} has been granted
+for your payment through Our ATM Card Department Center.
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 5e584c6026f1..86c50136219b 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2460,19 +2460,29 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
- {
- 	struct st_lsm6dsx_hw *hw = private;
-+	int fifo_len = 0, len;
- 	bool event;
--	int count;
- 
- 	event = st_lsm6dsx_report_motion_event(hw);
- 
- 	if (!hw->settings->fifo_ops.read_fifo)
- 		return event ? IRQ_HANDLED : IRQ_NONE;
- 
--	mutex_lock(&hw->fifo_lock);
--	count = hw->settings->fifo_ops.read_fifo(hw);
--	mutex_unlock(&hw->fifo_lock);
-+	/*
-+	 * If we are using edge IRQs, new samples can arrive while
-+	 * processing current IRQ and those may be missed unless we
-+	 * pick them here, so let's try read FIFO status again
-+	 */
-+	do {
-+		mutex_lock(&hw->fifo_lock);
-+		len = hw->settings->fifo_ops.read_fifo(hw);
-+		mutex_unlock(&hw->fifo_lock);
-+
-+		if (len > 0)
-+			fifo_len += len;
-+	} while (len > 0);
- 
--	return count || event ? IRQ_HANDLED : IRQ_NONE;
-+	return fifo_len || event ? IRQ_HANDLED : IRQ_NONE;
- }
- 
- static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
--- 
-2.26.2
+Now Your ATM Visa/Master Card is well packaged with every legal
+document to convey it not having any problem with anybody therefore we
+are here by inviting you to our Head office here in Abuja, Office
+Address, Commented Bank, Abuja Paul street 1NG 325,Federal Republic of
+Nigeria, to enable us complete the normal formalities and activation
+process of your ATM Visa Card and issue the Secret PIN CODE/NUMBER to
+enable you start using it at any ATM MACHINE worldwide of your choice
+nearest to you, as soon as it is activated, But if you are unable to
+come down here in our office in person you will be required to update
+our ATM Department Center with your contact delivery details as stated
+below so that they will precede with the necessary arrangement for the
+delivery of your ATM VISA/MASTER CARD.
 
+1. Your Full name, ________________
+2. Your home Address, _____________
+3. Your telephone number, _________
+4. A copy of your ID, _____________
+
+Meanwhile you should contact OUR ATM CARD PAYMENT DEPARTMENT CENTER
+immediately on their below;
+
+E-mail: { officebankatmuba@gmail.com }
+
+E-mail: { ubaatmofficepayment@gmail.com }
+
+Contact Person; Dr. Bright Kalu
+Director Of United Bank For Africa (UBA)
+Telephone Number; +234-8124700865
+
+Try to call him immediately to know when your ATM VISA/MASTER CARD
+will be delivered to you.
+
+I am waiting for your update as soon as you have received your
+Visa/Master ATM Card.
+
+Thanks and God Bless You.
+
+Yours sincerely
+Mrs. Agba Ezu

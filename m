@@ -2,99 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B31402A2641
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 09:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB79B2A26BE
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 10:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728087AbgKBIj4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 03:39:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50742 "EHLO
+        id S1728254AbgKBJNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 04:13:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727972AbgKBIj4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 03:39:56 -0500
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED9BC0617A6
-        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 00:39:56 -0800 (PST)
-Received: by mail-ed1-x541.google.com with SMTP id l24so13487076edj.8
-        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 00:39:56 -0800 (PST)
+        with ESMTP id S1728132AbgKBJNf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 04:13:35 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4663C0617A6
+        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 01:13:33 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id p10so12293380ile.3
+        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 01:13:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        d=melexis.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=smS1Q7PTGYl/it8iArEBOUfy3XGW9AyAE4tKm3iDIRQ=;
-        b=gMUAyGpxpb58h+N2xXKp5HXZPxTSgcJrqV00YYu3uvO0SiETm7PSD7KYl+WHu3lBvb
-         LLUX5POR650c5Nz7pd0idmKGW70EYG4ryEhNOuHisZQohHSbF0zJIBfC3WDrXRY9o0oo
-         DYIwdg2BExHy2/uLyT69Sk4fEOIYjJZt/JlEqPaCzY7FXvgqb5UVKYiYX3oDybNoHBwk
-         +7ZlYJ0esc5PZhCtwTOj+EaAl9ll6hQONmSYm2OvB2xyX4TseSHUot+CGkoi7+6bIv9t
-         /JF7Upfko9SMVseKqEXWevscRknvVrGLGrh37ahFzO620YNi36dmzGNsFC1hk7KHhkEW
-         Vn+w==
+        bh=G6vN48ROEcfnp1L/ujKy6U1at09yxtKW3Qm3NsnZ98E=;
+        b=FZC9tAc0qn+/I6cywuN/wfPdSOA2gpB9+291+zVidcME1uuLaSObrGDWZmcJ0nm0Cu
+         WHIN1OiJRoH/hvmPb4vbAiqzGGcpQjJ2JM7vEpBzxqUVodliJmfBQxdhxUku95371rwk
+         sDPI3u3BBa1AcZYG78XL6BBY2STtRkqa2s6xMLqG8v/n8cGMKNB4xIhsPJvLCFGp+/iq
+         SOl1mvgTbDJ0lHwCEa51bVFdIObwQZu0ZVSbZQR7RN1wV0+40iKTdG25Aey78tKQN0Z9
+         t3uiZIfUY6046/+e6Y/A0bBpQMcbIP+33vIlrwpOup8nYw9ROsQeAjlcBQZfwFvl4ZGm
+         W2LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=smS1Q7PTGYl/it8iArEBOUfy3XGW9AyAE4tKm3iDIRQ=;
-        b=erTA0ygaJ1Tqalo8a+zXBFMrxyVLbw7/DLbYdOGWLU8dFX/kNxVFnt8MI/dbWF+sNU
-         SFgFk9ev/7ET1QUji2G2iEbDYBto2NfYG4o/Q5efkKlmRcxvUJDFrM42mma6U3p4Xtr+
-         7/UHqsUEgPkFuD6ZXChYN3MO3fRxN8E8kAKpHnm8dZeQT9u5ALg3CH8Gswhrn2aK1CVj
-         2kteAPXnXbfxRGZhrjmmHVy5SfjBWP6Ardwt5DJjYEvIoEpX8NRM2SyEKXg/YKoh34IR
-         ZxAN9hcrq48kBeyZDXF76mkXwxAUdiSRpQitUqr8N1q5OlGcAPmYk1LKnfxmdmQ0s7q1
-         vp5g==
-X-Gm-Message-State: AOAM532w+YsaTe+ZHXo85W1bqTfhMun4ZgpY/vvEAXhvLyAJLfIGTsa6
-        OrbW87qY1VgLOR5Yy2nJj99Cmt/se75/52P0ABbFWQ==
-X-Google-Smtp-Source: ABdhPJxTFP9Vbppje5a53EWx8P7IDRRaTAc2fzTg2IqzLS2XtdKl3Yqbneo+Mlfa/K+FLdCkXC9z1sAnJ9eMIhy4Bfo=
-X-Received: by 2002:a05:6402:495:: with SMTP id k21mr15615893edv.232.1604306395005;
- Mon, 02 Nov 2020 00:39:55 -0800 (PST)
+        bh=G6vN48ROEcfnp1L/ujKy6U1at09yxtKW3Qm3NsnZ98E=;
+        b=L5KXD/ftCSA07FyWjcVBxFzTapYf+ZmXSdcYjnAbMwSnZ8pZb8rd0G6qo3Yi5GkxEt
+         +I6ZXdK7zF0p4aLuZNc4+gTS2sS4keBXd0d0xuUwL5V3hpdpi/AhCk+TYyhybfubsVgU
+         U3wauo1jWvKuo62PZDqBiDKK2CSXq4fFKS9q07PMyG9nGXYD5VzF81OfdwHBxx9oUktA
+         s7n4jIZBcyIqKB7fjo8wHOmU8ERMfU2HGoToQt+i853oM/EyqL5CEWaAgNXSzXiIFeAW
+         2PFkAAXPzW6XuFL3sytU5e/X6OIxppO+0RwVs+0K5INZVmQ1yJ0HrHc5LAqhboeDYHXP
+         bs5A==
+X-Gm-Message-State: AOAM5326zCKILwqfP685Co8hn7jHdsefZzOQYXeM8onpml6eaY250O/d
+        Ijww7o2S0f3uA+rxc1LbyZ1NoMw0zeOo6NHryswJYw==
+X-Google-Smtp-Source: ABdhPJygXl8emxs8ScpieTpvJ0do2ErPZJih2gsaxBbyeOf4AowamyXOeNGjxaYOG2a/JA/RU1ntjAZasMVEquN85h4=
+X-Received: by 2002:a92:d6cd:: with SMTP id z13mr10228162ilp.38.1604308412990;
+ Mon, 02 Nov 2020 01:13:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20201026133609.24262-1-brgl@bgdev.pl> <20201026133609.24262-5-brgl@bgdev.pl>
- <20201029154118.12fd6c23@archlinux> <CAMRc=Mfun85W+ZfJqaXohCQ8tNGDxjxmvdFuwsQ07jMhG+vU7w@mail.gmail.com>
- <20201031111003.75a4f6d0@archlinux>
-In-Reply-To: <20201031111003.75a4f6d0@archlinux>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 2 Nov 2020 09:39:44 +0100
-Message-ID: <CAMpxmJWoEGFaX5czVSFd4D2Mhkp_jF7ZQg9TtDGs_tRiYWmupA@mail.gmail.com>
-Subject: Re: [PATCH 4/5] iio: adc: xilinx: use devres for irq handling
+References: <20201031134110.724233-1-jic23@kernel.org> <20201031134110.724233-25-jic23@kernel.org>
+In-Reply-To: <20201031134110.724233-25-jic23@kernel.org>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Mon, 2 Nov 2020 10:12:57 +0100
+Message-ID: <CAKv63uvm4WMk6U=CthTcVTD+cM-kb9FLBxn2Os8Yy2mHJYoJ5Q@mail.gmail.com>
+Subject: Re: [PATCH v2 24/29] dt-bindings:iio:temperature:melexis,mlx90614
+ yaml conversion
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux Iio <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rob Herring <robh@kernel.org>,
+        Peter Meerwald <pmeerw@pmeerw.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 12:10 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
+Hi Jonathan,
+The commit message should change here as now you did not list all 3
+authors as maintainers, because one has a bouncy email address.
 
-[snip]
+Best regards,
+Crt
 
-> >
-> > Hi Jonathan,
-> >
-> > My two priorities for the ordering of this series were: correct
-> > end-result and not breaking anything on the way. The latter
-> > unfortunately gets in the way of cleaner looking intermediate patches.
-> >
-> > I tried to not alter the ordering in which the resources are freed at
-> > any step. As devres release callbacks are called *after* remove() and
-> > in a reverse order to how they were registered, I needed to start from
-> > the bottom of the remove() callback and convert the last operation,
-> > then go upwards from there.
-> >
-> > If I tried to do it from the top - I probably could remove labels
-> > earlier and in a cleaner manner but it wouldn't guarantee
-> > bisectability.
-> >
+On Sat, 31 Oct 2020 at 14:44, Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Maybe best plan is to squash last 3 patches into one?
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> I suspect that's going to be easier to review.
+> Simple conversion from txt to yaml.
+> I've listed all 3 authors of the driver as maintainers.
 >
-> Jonathan
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Acked-by: Crt Mori <cmo@melexis.com>
+> Cc: Peter Meerwald <pmeerw@pmeerw.net>
+> ---
+>  .../iio/temperature/melexis,mlx90614.yaml     | 50 +++++++++++++++++++
+>  .../bindings/iio/temperature/mlx90614.txt     | 24 ---------
+>  2 files changed, 50 insertions(+), 24 deletions(-)
 >
-
-Sure I can do this.
-
-Bartosz
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> new file mode 100644
+> index 000000000000..d6965a0c1cf3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Melexis MLX90614 contactless IR temperature sensor
+> +
+> +maintainers:
+> +  - Peter Meerwald <pmeerw@pmeerw.net>
+> +  - Crt Mori <cmo@melexis.com>
+> +
+> +description: |
+> +  http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer-Sensors/MLX90614-615.aspx
+> +
+> +properties:
+> +  compatible:
+> +    const: melexis,mlx90614
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  wakeup-gpios:
+> +    description:
+> +      GPIO connected to the SDA line to hold low in order to wake up the
+> +      device.  In normal operation, the GPIO is set as input and will
+> +      not interfere in I2C communication.  There is no need for a GPIO
+> +      driving the SCL line.  If no GPIO is given, power management is disabled.
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        temp-sensor@5a {
+> +            compatible = "melexis,mlx90614";
+> +            reg = <0x5a>;
+> +            wakeup-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt b/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
+> deleted file mode 100644
+> index 9be57b036092..000000000000
+> --- a/Documentation/devicetree/bindings/iio/temperature/mlx90614.txt
+> +++ /dev/null
+> @@ -1,24 +0,0 @@
+> -* Melexis MLX90614 contactless IR temperature sensor
+> -
+> -http://melexis.com/Infrared-Thermometer-Sensors/Infrared-Thermometer-Sensors/MLX90614-615.aspx
+> -
+> -Required properties:
+> -
+> -  - compatible: should be "melexis,mlx90614"
+> -  - reg: the I2C address of the sensor
+> -
+> -Optional properties:
+> -
+> -  - wakeup-gpios: device tree identifier of the GPIO connected to the SDA line
+> -      to hold low in order to wake up the device.  In normal operation, the
+> -      GPIO is set as input and will not interfere in I2C communication.  There
+> -      is no need for a GPIO driving the SCL line.  If no GPIO is given, power
+> -      management is disabled.
+> -
+> -Example:
+> -
+> -mlx90614@5a {
+> -       compatible = "melexis,mlx90614";
+> -       reg = <0x5a>;
+> -       wakeup-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+> -};
+> --
+> 2.28.0
+>

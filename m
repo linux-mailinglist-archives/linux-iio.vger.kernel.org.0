@@ -2,322 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29AB22A2CD8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 15:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ACA22A2D31
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 15:43:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725982AbgKBO0B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 09:26:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726090AbgKBOWk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 09:22:40 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4662FC061A04
-        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 06:22:38 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id k10so13478793wrw.13
-        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 06:22:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=vLbBt6T4zV/xw9PURuQlOM8wVnilFKG9GdBusjjh0Mo=;
-        b=SFVRkrzIcWH8EfsDxR6Pfi92y1MXVYva5l0WcguIBbfiE6IhQzVSHxF9UsbfKH4vFQ
-         /61PTFnjWKt2Ktu6jXxhzFS3RDl7WTTD9S3vsW+B4e7Sg6e/XsaQ2vDhYcUZgEzWkrnR
-         AHPJOKqdTpNTijRvRzHgu4GmCzVhCVMucqJ2YYGxvb+fZLBWTVeTxe49bniLiXylqHLl
-         IBftQ1vXwTIf/WVsV43Cl2yXb506SQEBnc91/oWiwSps/zB8FBL2gSYJ8mO3LGbm2/OJ
-         sm3hZ7NMOKpMqAFEXP6N3uptECOZQEhE4YxhwTsGRe0a1doWV3b/H1Hv/j1+7CIuRcPb
-         BiLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=vLbBt6T4zV/xw9PURuQlOM8wVnilFKG9GdBusjjh0Mo=;
-        b=biZjlC192itI8/nmIFXAkOPmyytwhj+JU2ySeaA7VfHfSCvUdmzTG8OM+YTNonE3pd
-         v3TR2QsQUALerS6EtiGnbm+bre1IZ5pxLWIiMAHpMmo4LV/zVC4003CRferZQjf3P00N
-         wM5genoHJMoZkHdekJRUKST/p9rwCgAVMuFkqmdVuzye59p4EzXbPQVk8bZ3hwdRP9pX
-         Y4GJ8URBxZxk4NtR7BpXKlhSqnmOl1br8vqrTPx4S14pp5KkhdsPywZr7eGq1sV6Comz
-         JVQlLZpb2W7q/lMyIN44pyzwa5mbcMKiYLJ0/dDWrAsR1h4LP/aHHN+1UZ0FFL5EcSWz
-         WHaQ==
-X-Gm-Message-State: AOAM5318zTcmivrbfM4EwX09jk3HwmclNBHZMoF8LBnOsbFXMNBD+Go+
-        xEX3IYsYZPASbDz58jIchQ7Hrg==
-X-Google-Smtp-Source: ABdhPJw416wPtB82zogsu5olmJkH1UCsYtbiT23TJOgqrvgg/jImFRTpDsKYOmvyA335IzD2wpSLyg==
-X-Received: by 2002:a5d:4612:: with SMTP id t18mr20763254wrq.307.1604326957059;
-        Mon, 02 Nov 2020 06:22:37 -0800 (PST)
-Received: from debian-brgl.home (amarseille-656-1-4-167.w90-8.abo.wanadoo.fr. [90.8.158.167])
-        by smtp.gmail.com with ESMTPSA id 3sm16182987wmd.19.2020.11.02.06.22.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2020 06:22:36 -0800 (PST)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        id S1726137AbgKBOnS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 09:43:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46960 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725788AbgKBOnQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 2 Nov 2020 09:43:16 -0500
+Received: from coco.lan (ip5f5ad5bd.dynamic.kabel-deutschland.de [95.90.213.189])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 63B96223FB;
+        Mon,  2 Nov 2020 14:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604328194;
+        bh=3oIo7M+kbfes9glXaYwVawYl0ThrpApAaoS3m8AadNs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=o7vSyqavrA+tPEp8JUSX2Gre2OPdTrpaBl//HWqb1ndQojQ2+WQ+GCP6o1zviBXm5
+         BkixBkiludftpOuYl5RGYgd4ap8zUj38MqoeY5NGyExHQDLlRrYM+dKrsl0Sr0HfH8
+         qhyJWoyOHNQJOxgn2sog8B5I0MfzAibMKr1lQUA4=
+Date:   Mon, 2 Nov 2020 15:42:50 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Bruno Meneguele <bmeneg@redhat.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Len Brown <lenb@kernel.org>,
+        Leonid Maksymchuk <leonmaxx@gmail.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        Oleh Kravchenko <oleg@kaa.org.ua>,
+        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michal.simek@xilinx.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v2 4/4] iio: adc: xilinx: use more devres helpers and remove remove()
-Date:   Mon,  2 Nov 2020 15:22:28 +0100
-Message-Id: <20201102142228.14949-5-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201102142228.14949-1-brgl@bgdev.pl>
-References: <20201102142228.14949-1-brgl@bgdev.pl>
+        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
+        Philippe Bergheaud <felix@linux.ibm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
+ with ReST output
+Message-ID: <20201102154250.45bee17f@coco.lan>
+In-Reply-To: <20201102124641.GA881895@kroah.com>
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+        <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+        <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
+        <20201030110925.3e09d59e@coco.lan>
+        <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
+        <20201102124641.GA881895@kroah.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Em Mon, 2 Nov 2020 13:46:41 +0100
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> escreveu:
 
-In order to simplify resource management and error paths in probe() and
-entirely drop the remove() callback - use devres helpers wherever
-possible. Define devm actions for cancelling the delayed work and
-disabling the clock.
+> On Mon, Nov 02, 2020 at 12:04:36PM +0100, Fabrice Gasnier wrote:
+> > On 10/30/20 11:09 AM, Mauro Carvalho Chehab wrote:  
+> > > Em Fri, 30 Oct 2020 10:19:12 +0100
+> > > Fabrice Gasnier <fabrice.gasnier@st.com> escreveu:
+> > >   
+> > >> Hi Mauro,
+> > >>
+> > >> [...]
+> > >>  
+> > >>>  
+> > >>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> > >>> +KernelVersion:	4.12
+> > >>> +Contact:	benjamin.gaignard@st.com
+> > >>> +Description:
+> > >>> +		Reading returns the list possible quadrature modes.
+> > >>> +
+> > >>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
+> > >>> +KernelVersion:	4.12
+> > >>> +Contact:	benjamin.gaignard@st.com
+> > >>> +Description:
+> > >>> +		Configure the device counter quadrature modes:
+> > >>> +
+> > >>> +		channel_A:
+> > >>> +			Encoder A input servers as the count input and B as
+> > >>> +			the UP/DOWN direction control input.
+> > >>> +
+> > >>> +		channel_B:
+> > >>> +			Encoder B input serves as the count input and A as
+> > >>> +			the UP/DOWN direction control input.
+> > >>> +
+> > >>> +		quadrature:
+> > >>> +			Encoder A and B inputs are mixed to get direction
+> > >>> +			and count with a scale of 0.25.
+> > >>> +    
+> > >>  
+> > > 
+> > > Hi Fabrice,
+> > >   
+> > >> I just noticed that since Jonathan question in v1.
+> > >>
+> > >> Above ABI has been moved in the past as discussed in [1]. You can take a
+> > >> look at:
+> > >> b299d00 IIO: stm32: Remove quadrature related functions from trigger driver
+> > >>
+> > >> Could you please remove the above chunk ?
+> > >>
+> > >> With that, for the stm32 part:
+> > >> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>  
+> > > 
+> > > 
+> > > Hmm... probably those were re-introduced due to a rebase. This
+> > > series were originally written about 1,5 years ago.
+> > > 
+> > > I'll drop those hunks.  
+> > 
+> > Hi Mauro, Greg,
+> > 
+> > I just figured out this patch has been applied with above hunk.
+> > 
+> > This should be dropped: is there a fix on its way already ?
+> > (I may have missed it)  
+> 
+> Can you send a fix for just this hunk?
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
----
- drivers/iio/adc/xilinx-xadc-core.c | 129 +++++++++++++----------------
- 1 file changed, 56 insertions(+), 73 deletions(-)
+Hmm...
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 7792aa4cf9cb..6ce1745b4995 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -709,11 +709,12 @@ static const struct iio_trigger_ops xadc_trigger_ops = {
- static struct iio_trigger *xadc_alloc_trigger(struct iio_dev *indio_dev,
- 	const char *name)
- {
-+	struct device *dev = indio_dev->dev.parent;
- 	struct iio_trigger *trig;
- 	int ret;
- 
--	trig = iio_trigger_alloc("%s%d-%s", indio_dev->name,
--				indio_dev->id, name);
-+	trig = devm_iio_trigger_alloc(dev, "%s%d-%s", indio_dev->name,
-+				      indio_dev->id, name);
- 	if (trig == NULL)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -721,15 +722,11 @@ static struct iio_trigger *xadc_alloc_trigger(struct iio_dev *indio_dev,
- 	trig->ops = &xadc_trigger_ops;
- 	iio_trigger_set_drvdata(trig, iio_priv(indio_dev));
- 
--	ret = iio_trigger_register(trig);
-+	ret = devm_iio_trigger_register(dev, trig);
- 	if (ret)
--		goto error_free_trig;
-+		return ERR_PTR(ret);
- 
- 	return trig;
--
--error_free_trig:
--	iio_trigger_free(trig);
--	return ERR_PTR(ret);
- }
- 
- static int xadc_power_adc_b(struct xadc *xadc, unsigned int seq_mode)
-@@ -1188,6 +1185,20 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 	return 0;
- }
- 
-+static void xadc_clk_disable_unprepare(void *data)
-+{
-+	struct clk *clk = data;
-+
-+	clk_disable_unprepare(clk);
-+}
-+
-+static void xadc_cancel_delayed_work(void *data)
-+{
-+	struct delayed_work *work = data;
-+
-+	cancel_delayed_work_sync(work);
-+}
-+
- static int xadc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1236,34 +1247,35 @@ static int xadc_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
--		ret = iio_triggered_buffer_setup(indio_dev,
--			&iio_pollfunc_store_time, &xadc_trigger_handler,
--			&xadc_buffer_ops);
-+		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+						      &iio_pollfunc_store_time,
-+						      &xadc_trigger_handler,
-+						      &xadc_buffer_ops);
- 		if (ret)
- 			return ret;
- 
- 		xadc->convst_trigger = xadc_alloc_trigger(indio_dev, "convst");
--		if (IS_ERR(xadc->convst_trigger)) {
--			ret = PTR_ERR(xadc->convst_trigger);
--			goto err_triggered_buffer_cleanup;
--		}
-+		if (IS_ERR(xadc->convst_trigger))
-+			return PTR_ERR(xadc->convst_trigger);
-+
- 		xadc->samplerate_trigger = xadc_alloc_trigger(indio_dev,
- 			"samplerate");
--		if (IS_ERR(xadc->samplerate_trigger)) {
--			ret = PTR_ERR(xadc->samplerate_trigger);
--			goto err_free_convst_trigger;
--		}
-+		if (IS_ERR(xadc->samplerate_trigger))
-+			return PTR_ERR(xadc->samplerate_trigger);
- 	}
- 
- 	xadc->clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(xadc->clk)) {
--		ret = PTR_ERR(xadc->clk);
--		goto err_free_samplerate_trigger;
--	}
-+	if (IS_ERR(xadc->clk))
-+		return PTR_ERR(xadc->clk);
- 
- 	ret = clk_prepare_enable(xadc->clk);
- 	if (ret)
--		goto err_free_samplerate_trigger;
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev,
-+				       xadc_clk_disable_unprepare, xadc->clk);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * Make sure not to exceed the maximum samplerate since otherwise the
-@@ -1272,22 +1284,28 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
- 		ret = xadc_read_samplerate(xadc);
- 		if (ret < 0)
--			goto err_free_samplerate_trigger;
-+			return ret;
-+
- 		if (ret > XADC_MAX_SAMPLERATE) {
- 			ret = xadc_write_samplerate(xadc, XADC_MAX_SAMPLERATE);
- 			if (ret < 0)
--				goto err_free_samplerate_trigger;
-+				return ret;
- 		}
- 	}
- 
--	ret = request_irq(xadc->irq, xadc->ops->interrupt_handler, 0,
--			  dev_name(dev), indio_dev);
-+	ret = devm_request_irq(dev, xadc->irq, xadc->ops->interrupt_handler, 0,
-+			       dev_name(dev), indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, xadc_cancel_delayed_work,
-+				       &xadc->zynq_unmask_work);
- 	if (ret)
--		goto err_clk_disable_unprepare;
-+		return ret;
- 
- 	ret = xadc->ops->setup(pdev, indio_dev, xadc->irq);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	for (i = 0; i < 16; i++)
- 		xadc_read_adc_reg(xadc, XADC_REG_THRESHOLD(i),
-@@ -1295,7 +1313,7 @@ static int xadc_probe(struct platform_device *pdev)
- 
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_CONF0, conf0);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	bipolar_mask = 0;
- 	for (i = 0; i < indio_dev->num_channels; i++) {
-@@ -1305,17 +1323,18 @@ static int xadc_probe(struct platform_device *pdev)
- 
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_INPUT_MODE(0), bipolar_mask);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
-+
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_INPUT_MODE(1),
- 		bipolar_mask >> 16);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	/* Disable all alarms */
- 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_ALARM_MASK,
- 				  XADC_CONF1_ALARM_MASK);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	/* Set thresholds to min/max */
- 	for (i = 0; i < 16; i++) {
-@@ -1330,59 +1349,23 @@ static int xadc_probe(struct platform_device *pdev)
- 		ret = xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(i),
- 			xadc->threshold[i]);
- 		if (ret)
--			goto err_free_irq;
-+			return ret;
- 	}
- 
- 	/* Go to non-buffered mode */
- 	xadc_postdisable(indio_dev);
- 
--	ret = iio_device_register(indio_dev);
-+	ret = devm_iio_device_register(dev, indio_dev);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	platform_set_drvdata(pdev, indio_dev);
- 
--	return 0;
--
--err_free_irq:
--	free_irq(xadc->irq, indio_dev);
--	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
--err_clk_disable_unprepare:
--	clk_disable_unprepare(xadc->clk);
--err_free_samplerate_trigger:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_trigger_free(xadc->samplerate_trigger);
--err_free_convst_trigger:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_trigger_free(xadc->convst_trigger);
--err_triggered_buffer_cleanup:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_triggered_buffer_cleanup(indio_dev);
--
--	return ret;
--}
--
--static int xadc_remove(struct platform_device *pdev)
--{
--	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
--	struct xadc *xadc = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
--		iio_trigger_free(xadc->samplerate_trigger);
--		iio_trigger_free(xadc->convst_trigger);
--		iio_triggered_buffer_cleanup(indio_dev);
--	}
--	free_irq(xadc->irq, indio_dev);
--	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
--	clk_disable_unprepare(xadc->clk);
--
- 	return 0;
- }
- 
- static struct platform_driver xadc_driver = {
- 	.probe = xadc_probe,
--	.remove = xadc_remove,
- 	.driver = {
- 		.name = "xadc",
- 		.of_match_table = xadc_of_match_table,
--- 
-2.29.1
+	$ git grep /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:What:                /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+	Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:What:             /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+	Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:What:               /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
 
+Even re-doing the changes from 
+changeset b299d00420e2 ("IIO: stm32: Remove quadrature related functions from trigger driver")
+at Documentation/ABI/testing/sysfs-bus-iio-timer-stm32, there's still
+a third duplicate of some of those, as reported by the script:
+
+	$ ./scripts/get_abi.pl validate 2>&1|grep quadra
+	Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
+	Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
+
+As in_count_quadrature_mode_available is also defined at:
+	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2
+
+The best here seems to have a patch that will also drop the other
+duplication of this, probably moving in_count_quadrature_mode_available
+to a generic node probably placing it inside 
+Documentation/ABI/testing/sysfs-bus-iio.
+
+Comments?
+
+Thanks,
+Mauro
+
+PS.: the IIO subsystem is the one that currently has more duplicated
+ABI entries:
+
+$ ./scripts/get_abi.pl validate 2>&1|grep iio
+Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  Documentation/ABI/testing/sysfs-bus-iio:394
+Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  Documentation/ABI/testing/sysfs-bus-iio:395
+Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  Documentation/ABI/testing/sysfs-bus-iio:396
+Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  Documentation/ABI/testing/sysfs-bus-iio:397
+Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  Documentation/ABI/testing/sysfs-bus-iio:398
+Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  Documentation/ABI/testing/sysfs-bus-iio:399
+Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
+Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
+Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
+Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:0  Documentation/ABI/testing/sysfs-bus-iio:599
+Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:36  Documentation/ABI/testing/sysfs-bus-iio:588
+Warning: /sys/bus/iio/devices/iio:deviceX/out_currentY_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als:43  Documentation/ABI/testing/sysfs-bus-iio-health-afe440x:38
+Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
+Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
+Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
+Warning: /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  Documentation/ABI/testing/sysfs-bus-iio:45

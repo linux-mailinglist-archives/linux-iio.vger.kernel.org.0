@@ -2,272 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D9F2A2F8D
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 17:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 137942A318E
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 18:31:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgKBQTV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 11:19:21 -0500
-Received: from smtpo.poczta.interia.pl ([217.74.65.158]:41415 "EHLO
-        smtpo.poczta.interia.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbgKBQTV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 11:19:21 -0500
-X-Greylist: delayed 345 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Nov 2020 11:19:18 EST
-X-Interia-R: Interia
-X-Interia-R-IP: 188.121.22.175
-X-Interia-R-Helo: <t480s.localdomain>
-Received: from t480s.localdomain (ipv4-188-121-22-175.net.internetunion.pl [188.121.22.175])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-        Mon,  2 Nov 2020 17:19:16 +0100 (CET)
-Date:   Mon, 2 Nov 2020 17:19:15 +0100
-From:   Slawomir Stepien <sst@poczta.fm>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 03/46] dt-bindings:iio:potentiometer:microchip,mcp4131
- txt to yaml conversion
-Message-ID: <20201102161915.GC524499@t480s.localdomain>
-References: <20201031184854.745828-1-jic23@kernel.org>
- <20201031184854.745828-4-jic23@kernel.org>
+        id S1727695AbgKBRbB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 12:31:01 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:3017 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726587AbgKBRbB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 2 Nov 2020 12:31:01 -0500
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id CBF9F90C3AAD4860B20D;
+        Mon,  2 Nov 2020 17:30:59 +0000 (GMT)
+Received: from localhost (10.52.120.98) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 2 Nov 2020
+ 17:30:59 +0000
+Date:   Mon, 2 Nov 2020 17:28:56 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <Eugen.Hristev@microchip.com>
+CC:     <jic23@kernel.org>, <ardeleanalex@gmail.com>,
+        <linux-iio@vger.kernel.org>, <alexandru.ardelean@analog.com>
+Subject: Re: Requirement for at91-sama5d2_adc timestamp buffer
+Message-ID: <20201102172856.00007ee5@Huawei.com>
+In-Reply-To: <767f3b0f-7874-a359-63db-db01fe87fdf1@microchip.com>
+References: <8825686e-1fc4-65fd-e482-f25d46288ff7@microchip.com>
+        <CA+U=DsoMWH281+1vv8h8aZKumkM+oocrWP6XVKVQ5AoFoXpk3w@mail.gmail.com>
+        <20201101202152.72c0f384@archlinux>
+        <767f3b0f-7874-a359-63db-db01fe87fdf1@microchip.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201031184854.745828-4-jic23@kernel.org>
-X-Interia-Antivirus: OK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=interia.pl;
-        s=biztos; t=1604333957;
-        bh=QtgMMjsBeeeEB2pC5wdXmn0gMM6xdE45y8yTRHdhJao=;
-        h=X-Interia-R:X-Interia-R-IP:X-Interia-R-Helo:Date:From:To:Cc:
-         Subject:Message-ID:References:MIME-Version:Content-Type:
-         Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
-         X-Interia-Antivirus;
-        b=gzIBJIvudrnUAQslfshbBAVDim2uiQxGTeAcRWpBhX7VklFvqAphzttRkLvOI86ch
-         kocQAljvz12xyMyziRJTPOrW1i7SfXwVWEInGKrwHiiOORORkC/QpHsOaXuzUAqrS7
-         vMklUvhC0SN0WhZYJrC2dgu75sEYgajPp+/ahdEw=
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.120.98]
+X-ClientProxiedBy: lhreml734-chm.china.huawei.com (10.201.108.85) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On paź 31, 2020 18:48, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> This binding is very simple, but I think the very large number of
-> compatible values make it unsuitable for moving to trivial-devices.yaml.
-> Main change in the conversion was reordering the compatible list to
-> numerical order.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Slawomir Stepien <sst@poczta.fm>
+On Mon, 2 Nov 2020 13:29:27 +0000
+<Eugen.Hristev@microchip.com> wrote:
 
-Reviewed-by: Slawomir Stepien <sst@poczta.fm>
-
-> ---
->  .../bindings/iio/potentiometer/mcp4131.txt    |  84 ---------------
->  .../iio/potentiometer/microchip,mcp4131.yaml  | 102 ++++++++++++++++++
->  2 files changed, 102 insertions(+), 84 deletions(-)
+> On 01.11.2020 22:21, Jonathan Cameron wrote:
+> > On Sun, 1 Nov 2020 11:28:53 +0200
+> > Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+> >   
+> >> On Fri, Oct 30, 2020 at 2:29 PM <Eugen.Hristev@microchip.com> wrote:  
+> >>>
+> >>> Hello Jonathan,
+> >>>
+> >>> I found an issue with at91-sama5d2_adc driver, namely, when using DMA
+> >>> and timestamp in the same time, the hardware provides the sample in the
+> >>> fashion (2 bytes per channel) * (number of channels) - as copied by the
+> >>> DMA master to memory.
+> >>> I compute a software timestamp , and then push to buffers with timestamp.
+> >>> However your push code will try to write this timestamp inside my buffer
+> >>> ! and overwrite my samples... I have multiple samples in the buffer
+> >>> (watermark number) and there is no space between them because the
+> >>> hardware copies the conversion data directly in this buffer.
+> >>>
+> >>> Do you have any suggestion on how to solve this, except 1) giving up the
+> >>> timestamp in this mode or 2) copy to another buffer with more space for
+> >>> timestamp storage ?  
+> >>
+> >> I'm assuming the issue is here:
+> >>                  iio_push_to_buffers_with_timestamp(indio_dev,
+> >>                                  (st->dma_st.rx_buf + st->dma_st.buf_idx),
+> >>                                  (st->dma_st.dma_ts + interval * sample_index));
+> >>
+> >> Can the DMA be configured to add some padding in-between the samples?
+> >> It looks like the way this is currently working, timestamps cannot
+> >> work with the DMA buffers and multiple consecutive samples.
+> >> But, it may be that this case is a bit unrealistic; or shouldn't be supported.
+> >> DMA is used to provide really-fast transfers; computing timestamps in
+> >> SW for each sample would slow things down to the point where the
+> >> transfers aren't fast anymore.
+> >>
+> >> What would [possibly] be an alternative, is to do a
+> >> "iio_push_multiple_samples_to_buffers_with_timestamp(indio_dev, buffer
+> >> for 1 sample-set, n_samples, )".
+> >> That would basically mean, the DMA gets 10, 100, 1000 samples, and
+> >> adds a timestamp at the end.
+> >> Now, the only thing that I don't know here: is how userspace would be
+> >> able to determine the number of samples until the next timestamp.
+> >> I guess some mechanism could be extended inside IIO to accommodate for
+> >> this; N_samples_till_timestamp counter, with a default value of 1.
+> >> Not sure if it makes sense though.  
+> > 
+> > There is a very obscure and little used facility to repeats of a single
+> > channel, but that's as close as we get.  Describing arbitrary patterns
+> > of data is hard to do without adding the overhead of a header and not
+> > doing tagged data has been one of the fundamental design decisions in
+> > IIO.
+> > 
+> > We've discussed adding a separate meta data buffer, but that would
+> > need extra storage anyway to flag when there was meta data so wouldn't
+> > help you here.
+> > 
+> > As Alexandru asked, can you persuade the dma engine to leave a gap?  
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt b/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt
-> deleted file mode 100644
-> index 3ccba16f7035..000000000000
-> --- a/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt
-> +++ /dev/null
-> @@ -1,84 +0,0 @@
-> -* Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X Digital Potentiometer
-> -  driver
-> -
-> -The node for this driver must be a child node of a SPI controller, hence
-> -all mandatory properties described in
-> -
-> -        Documentation/devicetree/bindings/spi/spi-bus.txt
-> -
-> -must be specified.
-> -
-> -Required properties:
-> -	- compatible:  	Must be one of the following, depending on the
-> -			model:
-> -			"microchip,mcp4131-502"
-> -			"microchip,mcp4131-103"
-> -			"microchip,mcp4131-503"
-> -			"microchip,mcp4131-104"
-> -			"microchip,mcp4132-502"
-> -			"microchip,mcp4132-103"
-> -			"microchip,mcp4132-503"
-> -			"microchip,mcp4132-104"
-> -			"microchip,mcp4141-502"
-> -			"microchip,mcp4141-103"
-> -			"microchip,mcp4141-503"
-> -			"microchip,mcp4141-104"
-> -			"microchip,mcp4142-502"
-> -			"microchip,mcp4142-103"
-> -			"microchip,mcp4142-503"
-> -			"microchip,mcp4142-104"
-> -			"microchip,mcp4151-502"
-> -			"microchip,mcp4151-103"
-> -			"microchip,mcp4151-503"
-> -			"microchip,mcp4151-104"
-> -			"microchip,mcp4152-502"
-> -			"microchip,mcp4152-103"
-> -			"microchip,mcp4152-503"
-> -			"microchip,mcp4152-104"
-> -			"microchip,mcp4161-502"
-> -			"microchip,mcp4161-103"
-> -			"microchip,mcp4161-503"
-> -			"microchip,mcp4161-104"
-> -			"microchip,mcp4162-502"
-> -			"microchip,mcp4162-103"
-> -			"microchip,mcp4162-503"
-> -			"microchip,mcp4162-104"
-> -			"microchip,mcp4231-502"
-> -			"microchip,mcp4231-103"
-> -			"microchip,mcp4231-503"
-> -			"microchip,mcp4231-104"
-> -			"microchip,mcp4232-502"
-> -			"microchip,mcp4232-103"
-> -			"microchip,mcp4232-503"
-> -			"microchip,mcp4232-104"
-> -			"microchip,mcp4241-502"
-> -			"microchip,mcp4241-103"
-> -			"microchip,mcp4241-503"
-> -			"microchip,mcp4241-104"
-> -			"microchip,mcp4242-502"
-> -			"microchip,mcp4242-103"
-> -			"microchip,mcp4242-503"
-> -			"microchip,mcp4242-104"
-> -			"microchip,mcp4251-502"
-> -			"microchip,mcp4251-103"
-> -			"microchip,mcp4251-503"
-> -			"microchip,mcp4251-104"
-> -			"microchip,mcp4252-502"
-> -			"microchip,mcp4252-103"
-> -			"microchip,mcp4252-503"
-> -			"microchip,mcp4252-104"
-> -			"microchip,mcp4261-502"
-> -			"microchip,mcp4261-103"
-> -			"microchip,mcp4261-503"
-> -			"microchip,mcp4261-104"
-> -			"microchip,mcp4262-502"
-> -			"microchip,mcp4262-103"
-> -			"microchip,mcp4262-503"
-> -			"microchip,mcp4262-104"
-> -
-> -Example:
-> -mcp4131: mcp4131@0 {
-> -	compatible = "mcp4131-502";
-> -	reg = <0>;
-> -	spi-max-frequency = <500000>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
-> new file mode 100644
-> index 000000000000..834d17ae3730
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
-> @@ -0,0 +1,102 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/potentiometer/microchip,mcp4131.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X Digital Potentiometer
-> +maintainers:
-> +  - Slawomir Stepien <sst@poczta.fm>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,mcp4131-103
-> +      - microchip,mcp4131-104
-> +      - microchip,mcp4131-502
-> +      - microchip,mcp4131-503
-> +      - microchip,mcp4132-103
-> +      - microchip,mcp4132-104
-> +      - microchip,mcp4132-502
-> +      - microchip,mcp4132-503
-> +      - microchip,mcp4141-103
-> +      - microchip,mcp4141-104
-> +      - microchip,mcp4141-502
-> +      - microchip,mcp4141-503
-> +      - microchip,mcp4142-103
-> +      - microchip,mcp4142-104
-> +      - microchip,mcp4142-502
-> +      - microchip,mcp4142-503
-> +      - microchip,mcp4151-103
-> +      - microchip,mcp4151-104
-> +      - microchip,mcp4151-502
-> +      - microchip,mcp4151-503
-> +      - microchip,mcp4152-103
-> +      - microchip,mcp4152-104
-> +      - microchip,mcp4152-502
-> +      - microchip,mcp4152-503
-> +      - microchip,mcp4161-103
-> +      - microchip,mcp4161-104
-> +      - microchip,mcp4161-502
-> +      - microchip,mcp4161-503
-> +      - microchip,mcp4162-103
-> +      - microchip,mcp4162-104
-> +      - microchip,mcp4162-502
-> +      - microchip,mcp4162-503
-> +      - microchip,mcp4231-103
-> +      - microchip,mcp4231-104
-> +      - microchip,mcp4231-502
-> +      - microchip,mcp4231-503
-> +      - microchip,mcp4232-103
-> +      - microchip,mcp4232-104
-> +      - microchip,mcp4232-502
-> +      - microchip,mcp4232-503
-> +      - microchip,mcp4241-103
-> +      - microchip,mcp4241-104
-> +      - microchip,mcp4241-502
-> +      - microchip,mcp4241-503
-> +      - microchip,mcp4242-103
-> +      - microchip,mcp4242-104
-> +      - microchip,mcp4242-502
-> +      - microchip,mcp4242-503
-> +      - microchip,mcp4251-103
-> +      - microchip,mcp4251-104
-> +      - microchip,mcp4251-502
-> +      - microchip,mcp4251-503
-> +      - microchip,mcp4252-103
-> +      - microchip,mcp4252-104
-> +      - microchip,mcp4252-502
-> +      - microchip,mcp4252-503
-> +      - microchip,mcp4261-103
-> +      - microchip,mcp4261-104
-> +      - microchip,mcp4261-502
-> +      - microchip,mcp4261-503
-> +      - microchip,mcp4262-103
-> +      - microchip,mcp4262-104
-> +      - microchip,mcp4262-502
-> +      - microchip,mcp4262-503
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency: true
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        potentiometer@0 {
-> +            compatible = "mcp4131-502";
-> +            reg = <0>;
-> +            spi-max-frequency = <500000>;
-> +        };
-> +    };
-> +...
+> This might work for a single channel. But if we use arbitrary number of 
+> channels, only the iio driver knows how many channels are enabled and 
+> how to separate the data into samples, by dividing total dma received 
+> data by the size of one sample
+> So the DMA channel is just copying data from the ADC as soon as it's 
+> ready, and then in the iio driver I am just passing the buffer to the 
+> subsystem. Thus it's pretty unaware to leave a gap when the channels are 
+> done for one sample.
 
--- 
-Slawomir Stepien
+You would have to have a DMA engine that was clever to do this.
+Not hard to implement, but only if the hardware designer appreciated it
+might be useful.
+
+> 
+> > If not, you are going to have to keep copying the data.
+> > I theory you might be able to persuade the kfifo to take that
+> > data in different form and then introduce a different path for
+> > buffer management (not iio_push_to_buffers_*), but you'd need to
+> > figure out how to do that.  
+> 
+> Currently, I hold two timestamps (one at DMA start and one at DMA 
+> finish), and then spread the time between them by the number of samples 
+> (Jonathan's idea when I initially added the DMA support). I could make 
+> another primitive that would receive a timestamp for DMA start , and one 
+> for DMA end, but this would mean that the memcopy would be done inside 
+> the iio subsystem (which is again a performance blocker)
+> Is there a way to have a channel enabled, but this channel would provide 
+> data not every time so to say, for example, once every X samples ?
+
+Not currently.   We can specify patterns like
+XXXXYYYYT but not XYXYXYXYXYT (using the repeat element in the
+scan element description).
+
+The description format for a scan doesn't allow for the concept of not
+every time.
+
+> I could alter the scan_mask to remove the timestamp channel and then 
+> reenable the timestamp and provide timestamp information at the end of 
+> one DMA chunk ?
+
+Given that would require reinitializing the kfifo etc it won't work.
+Via a bit of black magic that I can't really remember we use a fixed
+record size kfifo to avoid having to store the record size in each entry.
+As such, to change that record size requires recreating the kfifo. 
+
+It might be possible to define a kfifo_in that takes 2 parameters and
+fills the kfifo element with both of them via 2 copies.
+
+I think I looked at this a long time back but can't really recall why
+I decided against it other than general feeling that there isn't anything
+special about timestamps in IIO so we shouldn't treat them differently
+if we can avoid it.
+
+> Does this sound as a good solution ?
+
+No unfortunately.  The description to userspace has to be clean
+and unambiguous.  I'm not yet seeing how we do that.
+
+Jonathan
+
+> 
+> Thanks,
+> Eugen
+> >>  
+> >>>
+> >>> Thanks,
+> >>> Eugen  
+> >   
+> 
+

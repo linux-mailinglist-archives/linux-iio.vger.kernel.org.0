@@ -2,110 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A79E02A363E
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 23:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D812A3694
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 23:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725906AbgKBWGX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 17:06:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35924 "EHLO
+        id S1725933AbgKBWfh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 17:35:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725807AbgKBWGX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 17:06:23 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08D4C061A47
-        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 14:06:22 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id 141so19477156lfn.5
-        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 14:06:22 -0800 (PST)
+        with ESMTP id S1725829AbgKBWfh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 17:35:37 -0500
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01125C0617A6;
+        Mon,  2 Nov 2020 14:35:37 -0800 (PST)
+Received: by mail-ej1-x642.google.com with SMTP id w13so7618026eju.13;
+        Mon, 02 Nov 2020 14:35:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=yOeaU6BmujlW8/sz9myL4hUTr7Ca+5czBJG1/GXMdqg=;
-        b=R5b+UOQt647sZqbfK8AZh3/+ep35X/nEvq39ddAM9Dy+PvwgQF5JCp8y8imS6pnXPz
-         CQZV+od4CKx91mNztW6JMmNJdJ/B0YCg9C1X4ZK82XMPPM8ma8ZYj6TpMDHYajuaFPwc
-         0ksYDCIhh4u0C1bMMxtZPb3f+TjNhtj5IwZBo3hPzuIWJ01uJV7xqSboqx6AyzZPMGLI
-         LKuqFxMEar+oaGEMus6xawACmR00Xkox7eCssA+7mXPi0IzDp9oonJOoeNEtKRv6TT9O
-         2vGkfMgBRqz+KR/xzIj/3zRsfv4oxtkiQXVJ08shDtNgs0QbBfccUwAFZck/ycFllYIx
-         Qzcg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J7nOY/CMBrCc1yEj5RA267szHi6fVAQcuYVsfxRG2l4=;
+        b=MyC2MLo3fY+8+mqhUMbKTmdekGYgyuUib/UPpK5ahWOjDMEMJZTv6Jf8qy2hweyWym
+         ZNGogdWY9PHc64A6YjzmB/p9Lgcg2x/Hp8zYISyAFDnuWG2oERhnL5b43raKXso3PzKA
+         QyJ+uELWNrK8RGqOXNbhWsHO+SYXDiPdDdfz0CLXqwXFtnT2MzuMxnocY8MPRsJVmM9/
+         qQus2vl1ujBWbFirBzOOkUg/JkLRN4f6enrOhU3L3pYzdtzjbqtbM62WpJAblPUVM/zR
+         59SYp0LJf9PCpgwfeoE4+o060lCjPUPvXCjjdFfKwA9C8CMoqaNNR/8Xg5vtatDzpdjy
+         EYcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=yOeaU6BmujlW8/sz9myL4hUTr7Ca+5czBJG1/GXMdqg=;
-        b=Y2KKskTsdYInxP7GzVxO91wBUAsv1WoCgf24hhxph9MgAqIFpOhC9XjZDsUW9d4pdI
-         dURn3ZQga7QqhJkFFIVCmkjq8Rxu7cpG/c+gLRFWj1HQB58KDbwSWeRNMo61jhtCkmps
-         x/YdJ0svwusajCSmsRybwlXxnGh/C0r0ycNOBGN6CF313RUAJyd57g09Cx7Jwp3QH7aH
-         PenuM+hvcU8GYlm1Ap+WxpqFMnYd8ZM0mrrCK0utyX4cyyMrQXqbUNlzfwyFrrSyJJSQ
-         lEkamJA/TECrNVyawr2G76W0+qMMQ2WMoBqo2zWSx6g1T4Vse9H0Q4GlXEdEGKPAIFqw
-         0orw==
-X-Gm-Message-State: AOAM5337e65LF0OJdB4J3qULMhCykqxWUpzGQcrifT4jTilKp0jYFNjN
-        oSEW/Ef5w8ddgOiwMlXcy45oMufTx/nlvVZL8d0=
-X-Google-Smtp-Source: ABdhPJxNteMVcPt/U6WP0WBEquDMppXzy5BNFMqTi3Rr4ULIAQDL6aexNs64i15fDO/2B0k0iFwfxNdeAijM0sqwhE8=
-X-Received: by 2002:a19:87:: with SMTP id 129mr6047263lfa.164.1604354780928;
- Mon, 02 Nov 2020 14:06:20 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J7nOY/CMBrCc1yEj5RA267szHi6fVAQcuYVsfxRG2l4=;
+        b=bSekBdOio6IR+gufp8XllM5i4qLtHqDUAdE6/G59XEzafRWx3jNlVz40Z39fIpJOZ2
+         yNn6n3WNeV/474MUs/+9Z796yZ3zModhBfrk8H7lWNe/FP/5QAqMBubMxcrU5u6wd+4C
+         jVX1tIASmA18e89oX5ltKVEsWJK4qNkUcgaMDEOP7aSRZ0GoenSFQTJIzkRnz941TQNe
+         aKiICLE8JOHadgggl2gB2EFXG1jJziXm5CjnCynr/dvc5eNWiV1Ws3eYkZb2vuVoV6wz
+         2LB6QdSgItr6LWv7Nwyu+b25gjPbptmVZvFEt3CgD1Q1CFPwx0AJNMhx9WSebJk3zqnN
+         wmdQ==
+X-Gm-Message-State: AOAM530alJTAy555PJpQZT0MTJS43EO4RnCeantOuCBmsFALCOET54a+
+        zZ4hATxykoiSCw8RgGM4RXVRZuEIEnV5jw==
+X-Google-Smtp-Source: ABdhPJzf4mBvdfYdod1Rw2hhb5Xvo8/yAKwUJZbnBZdgLyZvf1m34Ub7JEwQD9YeiTwePAGsMc2CuQ==
+X-Received: by 2002:a17:906:840e:: with SMTP id n14mr5266686ejx.147.1604356535728;
+        Mon, 02 Nov 2020 14:35:35 -0800 (PST)
+Received: from necip-pc.vpn.ucf.edu ([85.153.224.24])
+        by smtp.gmail.com with ESMTPSA id la9sm1550707ejb.121.2020.11.02.14.35.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2020 14:35:35 -0800 (PST)
+From:   Necip Fazil Yildiran <fazilyildiran@gmail.com>
+To:     jic23@kernel.org
+Cc:     pn@denx.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, paul@pgazz.com, jeho@cs.utexas.edu,
+        Necip Fazil Yildiran <fazilyildiran@gmail.com>
+Subject: [PATCH] iio: light: fix kconfig dependency bug for VCNL4035
+Date:   Tue,  3 Nov 2020 01:35:24 +0300
+Message-Id: <20201102223523.572461-1-fazilyildiran@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:ab3:6fd8:0:0:0:0:0 with HTTP; Mon, 2 Nov 2020 14:06:20 -0800 (PST)
-Reply-To: UBAGroupb@groupmail.com
-From:   "Mrs. Agba Ezu" <jamesberryfcu9@gmail.com>
-Date:   Mon, 2 Nov 2020 23:06:20 +0100
-Message-ID: <CAFct6hn5sa+KJ9n5svuh1U=mWNESKb9Z691Pw4PX7uR6CL3aMA@mail.gmail.com>
-Subject: Contact for your ATM CARD {$2.700,000.00}
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Attention for you outstanding payment
+When VCNL4035 is enabled and IIO_BUFFER is disabled, it results in the
+following Kbuild warning:
 
-How are you doing hoping all is well with you and your family?
-We know you might have forgotten about this outstanding
-compensation payment due to delay on the delivery up till now. We are
-here by writing to inform you that your payment file was found in our
-Office and we discovered that your Compensation payment worth sum of
-two million seven hundred thousand United State Dollars
-{$2.700,000.00} have not been sent to you as it was instructed by The
-Economic Community of West African States(ECO-WAS) We are here to
-inform you that your payment has been converted into ATM Visa/Master
-Card to free it from Confiscating, and all necessary arrangement your
-ATM VISA/MASTER CARD Payment worth of {$2.700,000.00} has been granted
-for your payment through Our ATM Card Department Center.
+WARNING: unmet direct dependencies detected for IIO_TRIGGERED_BUFFER
+  Depends on [n]: IIO [=y] && IIO_BUFFER [=n]
+  Selected by [y]:
+  - VCNL4035 [=y] && IIO [=y] && I2C [=y]
 
-Now Your ATM Visa/Master Card is well packaged with every legal
-document to convey it not having any problem with anybody therefore we
-are here by inviting you to our Head office here in Abuja, Office
-Address, Commented Bank, Abuja Paul street 1NG 325,Federal Republic of
-Nigeria, to enable us complete the normal formalities and activation
-process of your ATM Visa Card and issue the Secret PIN CODE/NUMBER to
-enable you start using it at any ATM MACHINE worldwide of your choice
-nearest to you, as soon as it is activated, But if you are unable to
-come down here in our office in person you will be required to update
-our ATM Department Center with your contact delivery details as stated
-below so that they will precede with the necessary arrangement for the
-delivery of your ATM VISA/MASTER CARD.
+The reason is that VCNL4035 selects IIO_TRIGGERED_BUFFER without depending
+on or selecting IIO_BUFFER while IIO_TRIGGERED_BUFFER depends on
+IIO_BUFFER. This can also fail building the kernel.
 
-1. Your Full name, ________________
-2. Your home Address, _____________
-3. Your telephone number, _________
-4. A copy of your ID, _____________
+Honor the kconfig dependency to remove unmet direct dependency warnings
+and avoid any potential build failures.
 
-Meanwhile you should contact OUR ATM CARD PAYMENT DEPARTMENT CENTER
-immediately on their below;
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209883
+Signed-off-by: Necip Fazil Yildiran <fazilyildiran@gmail.com>
+---
+ drivers/iio/light/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-E-mail: { officebankatmuba@gmail.com }
+diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+index cade6dc0305b..33ad4dd0b5c7 100644
+--- a/drivers/iio/light/Kconfig
++++ b/drivers/iio/light/Kconfig
+@@ -544,6 +544,7 @@ config VCNL4000
+ 
+ config VCNL4035
+ 	tristate "VCNL4035 combined ALS and proximity sensor"
++	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
+ 	select REGMAP_I2C
+ 	depends on I2C
+-- 
+2.25.1
 
-E-mail: { ubaatmofficepayment@gmail.com }
-
-Contact Person; Dr. Bright Kalu
-Director Of United Bank For Africa (UBA)
-Telephone Number; +234-8124700865
-
-Try to call him immediately to know when your ATM VISA/MASTER CARD
-will be delivered to you.
-
-I am waiting for your update as soon as you have received your
-Visa/Master ATM Card.
-
-Thanks and God Bless You.
-
-Yours sincerely
-Mrs. Agba Ezu

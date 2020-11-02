@@ -2,202 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E80B2A28B4
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 12:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 520BF2A28E0
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 12:17:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728421AbgKBLFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 06:05:33 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:2656 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728253AbgKBLFc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 06:05:32 -0500
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A2B2ptP020099;
-        Mon, 2 Nov 2020 12:04:45 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=c46BUwKMyDOK+b3xICLc4SPGOwqFHPWlLu+N0eBiDsc=;
- b=qlgXi6rP2TqaGZFGGpTYwMqvPmL90+2jNgkIDUekhb1daD59BN2gIpspD9UJNonwWatj
- OHUgUW/gkuHA03EmB0FarCr3OF9wq9SA2yCiOWRX+Ek9VIR1j/QRToM/UC2lNjWAf3Kq
- Gq1pybeCkQlXMIpdTOQ7P/iFELEu7O6whhQllNenKEe5/XK6+0VIIemg87dHr4bkgTaI
- jiPcxx/TlvDgIqRR4jdhdt3eOubNpSinANuzNPCvX7gJnJy8bY2eDVhF2FtvabV8/mVh
- TOcw0QoQ4k7AwJJMs4NADeWVkO0Uncs5SNpNP0tOBNteIl80ydQPyt/xaWqAI4BRaYqI hQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 34h031a3kw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 02 Nov 2020 12:04:45 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 614FF100034;
-        Mon,  2 Nov 2020 12:04:43 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag1node3.st.com [10.75.127.3])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 96E252AD9F8;
-        Mon,  2 Nov 2020 12:04:42 +0100 (CET)
-Received: from [10.211.2.101] (10.75.127.45) by SFHDAG1NODE3.st.com
- (10.75.127.3) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 2 Nov
- 2020 12:04:37 +0100
-Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
- with ReST output
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        =?UTF-8?Q?Javier_Gonz=c3=a1lez?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-usb@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <netdev@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
- <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
- <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
- <20201030110925.3e09d59e@coco.lan>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
-Date:   Mon, 2 Nov 2020 12:04:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728511AbgKBLRp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 06:17:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728479AbgKBLRl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 06:17:41 -0500
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F80C0617A6
+        for <linux-iio@vger.kernel.org>; Mon,  2 Nov 2020 03:17:39 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id c16so9110928wmd.2
+        for <linux-iio@vger.kernel.org>; Mon, 02 Nov 2020 03:17:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/9TDBFkwsPImsBjfpGpaexi0rG7a4RAKhnLgFdi9lBU=;
+        b=p9qFu0BpUJTlOVgEror2jkOfsxfrEAR1GhEgdZVoCEa/xyFB5doa11SpWC5MjIUy5X
+         7hAL+0xX0QaOmktAUlVWjAVk59qSK8xzuC2lGkvaY1liDarKXC30cWslXAvX2QmENOck
+         OTZmDBtfJOLwNSm/JUICZuTvv/JXM4OI8N/b+Yuwn1g/VoDTPmKLbDfWs3WvgFwOwVPk
+         rjhLTVc6ewSDsfX1mo5jwp2BbKmM2ibAxRsYFVrXgfyOVdEwbKzvYp1tIkSfi2/jutAH
+         4KYYJRN0ogK2Zj3NPYh9lYcJob8CAFCvUTB0uo0pQaTpC0zHSqfBZDtwU4qBg5chMTPX
+         6ORw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/9TDBFkwsPImsBjfpGpaexi0rG7a4RAKhnLgFdi9lBU=;
+        b=DTe2uOODMWOrtWm40z5jazUv06Fk3/WTWHrEI9yUaUmJsnt10/Da9FSLEAW1hh/K36
+         D1RI95Q/OyPUfVdzKEwRYEYTKMQTx9X4tzDjZbha13gv+fvU1J62oat/o52nhTfOihIH
+         SSSIgKqLKV6xVuxssWcXLjXrm+6wEQCXQ+t4aDqCSovLulglWusK5vbJExd0bbs2yRN/
+         JmS+b0X2L1nFwP0WVhOz1PZ82mft+0Mj+dZ1InzZuxZIQuTMh/U//Fsu8AwmurDAw3J9
+         +RMVA2mOZ3mQh7ZnkSGMGwk/ZATouIqu7LdtCYmQ33roCu0GUMkpFnY9o8GkgSqhPasT
+         CqFQ==
+X-Gm-Message-State: AOAM530UgPYSrqb7NgfNZ/diAP49UXl1qLDUrGlYAwBa7jrtHlCYkHYn
+        rCSBb2aG+N49RDGABGLMTrrU2w==
+X-Google-Smtp-Source: ABdhPJyT3GgYbCvTSQ33OIzdhQZTy3ZEKP0o6pmSgFuOwTCK8uxYIKEZAZWSYHK3OWq3k+CiuhsgsQ==
+X-Received: by 2002:a7b:cf25:: with SMTP id m5mr16978857wmg.124.1604315853651;
+        Mon, 02 Nov 2020 03:17:33 -0800 (PST)
+Received: from dell.default ([91.110.221.242])
+        by smtp.gmail.com with ESMTPSA id t11sm11188509wmf.35.2020.11.02.03.17.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2020 03:17:33 -0800 (PST)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     jic23@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH 1/1] iio: industrialio-trigger: Use 'gnu_printf' format notation
+Date:   Mon,  2 Nov 2020 11:17:25 +0000
+Message-Id: <20201102111725.1048562-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20201030110925.3e09d59e@coco.lan>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG1NODE3.st.com
- (10.75.127.3)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-02_03:2020-11-02,2020-11-02 signatures=0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/30/20 11:09 AM, Mauro Carvalho Chehab wrote:
-> Em Fri, 30 Oct 2020 10:19:12 +0100
-> Fabrice Gasnier <fabrice.gasnier@st.com> escreveu:
-> 
->> Hi Mauro,
->>
->> [...]
->>
->>>  
->>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
->>> +KernelVersion:	4.12
->>> +Contact:	benjamin.gaignard@st.com
->>> +Description:
->>> +		Reading returns the list possible quadrature modes.
->>> +
->>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
->>> +KernelVersion:	4.12
->>> +Contact:	benjamin.gaignard@st.com
->>> +Description:
->>> +		Configure the device counter quadrature modes:
->>> +
->>> +		channel_A:
->>> +			Encoder A input servers as the count input and B as
->>> +			the UP/DOWN direction control input.
->>> +
->>> +		channel_B:
->>> +			Encoder B input serves as the count input and A as
->>> +			the UP/DOWN direction control input.
->>> +
->>> +		quadrature:
->>> +			Encoder A and B inputs are mixed to get direction
->>> +			and count with a scale of 0.25.
->>> +  
->>
-> 
-> Hi Fabrice,
-> 
->> I just noticed that since Jonathan question in v1.
->>
->> Above ABI has been moved in the past as discussed in [1]. You can take a
->> look at:
->> b299d00 IIO: stm32: Remove quadrature related functions from trigger driver
->>
->> Could you please remove the above chunk ?
->>
->> With that, for the stm32 part:
->> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> 
-> 
-> Hmm... probably those were re-introduced due to a rebase. This
-> series were originally written about 1,5 years ago.
-> 
-> I'll drop those hunks.
+Fixes the following W=1 kernel build warning(s):
 
-Hi Mauro, Greg,
+ drivers/iio/industrialio-trigger.c: In function ‘iio_alloc_pollfunc’:
+ drivers/iio/industrialio-trigger.c:338:2: warning: function ‘iio_alloc_pollfunc’ might be a candidate for ‘gnu_printf’ format attribute [-Wsuggest-attribute=format]
 
-I just figured out this patch has been applied with above hunk.
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/iio/industrialio-trigger.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This should be dropped: is there a fix on its way already ?
-(I may have missed it)
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index 583bb51f65a75..1d65c83439d84 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -320,6 +320,7 @@ irqreturn_t iio_pollfunc_store_time(int irq, void *p)
+ }
+ EXPORT_SYMBOL(iio_pollfunc_store_time);
+ 
++__printf(5, 6)
+ struct iio_poll_func
+ *iio_alloc_pollfunc(irqreturn_t (*h)(int irq, void *p),
+ 		    irqreturn_t (*thread)(int irq, void *p),
+-- 
+2.25.1
 
-Please advise,
-Fabrice
-> 
-> Thanks!
-> Mauro
-> 

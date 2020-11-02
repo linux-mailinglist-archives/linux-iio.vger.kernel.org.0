@@ -2,254 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E9002A27FF
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 11:15:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E80B2A28B4
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Nov 2020 12:05:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728339AbgKBKP2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Nov 2020 05:15:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49966 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728156AbgKBKP2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 2 Nov 2020 05:15:28 -0500
-Received: from localhost (unknown [151.66.29.159])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12FFC2225E;
-        Mon,  2 Nov 2020 10:15:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604312126;
-        bh=k3B6axk3dItjKnk7B/9Xy/dmuvnOKqOaXu1O4aMsLAc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JsubJCrW0QaeV4blrb6oSSSpmZkSY5qHCMgqFKvbETem/xQM2OGsPybGtxWiXfxnm
-         T66tC1+a0g3cWd5AG2zcwGcrma15TzSywe1AP7Vz4ISn9kFkHi8cKMV612OK2HDqkk
-         WX+AtBMvtM15vTjx07CCqgECRSI11Y+Paaj8WZTo=
-Date:   Mon, 2 Nov 2020 11:15:21 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        mario.tesi@st.com, denis.ciocca@st.com, armando.visconti@st.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: fix edge-trigger interrupts
-Message-ID: <20201102101521.GA229825@lore-desk>
-References: <f48bee8fadf3383b2569c5d3e909b494976f979c.1603358530.git.lorenzo@kernel.org>
- <20201101163354.61ac7576@archlinux>
+        id S1728421AbgKBLFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Nov 2020 06:05:33 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:2656 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728253AbgKBLFc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Nov 2020 06:05:32 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A2B2ptP020099;
+        Mon, 2 Nov 2020 12:04:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=c46BUwKMyDOK+b3xICLc4SPGOwqFHPWlLu+N0eBiDsc=;
+ b=qlgXi6rP2TqaGZFGGpTYwMqvPmL90+2jNgkIDUekhb1daD59BN2gIpspD9UJNonwWatj
+ OHUgUW/gkuHA03EmB0FarCr3OF9wq9SA2yCiOWRX+Ek9VIR1j/QRToM/UC2lNjWAf3Kq
+ Gq1pybeCkQlXMIpdTOQ7P/iFELEu7O6whhQllNenKEe5/XK6+0VIIemg87dHr4bkgTaI
+ jiPcxx/TlvDgIqRR4jdhdt3eOubNpSinANuzNPCvX7gJnJy8bY2eDVhF2FtvabV8/mVh
+ TOcw0QoQ4k7AwJJMs4NADeWVkO0Uncs5SNpNP0tOBNteIl80ydQPyt/xaWqAI4BRaYqI hQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 34h031a3kw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Nov 2020 12:04:45 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 614FF100034;
+        Mon,  2 Nov 2020 12:04:43 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag1node3.st.com [10.75.127.3])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 96E252AD9F8;
+        Mon,  2 Nov 2020 12:04:42 +0100 (CET)
+Received: from [10.211.2.101] (10.75.127.45) by SFHDAG1NODE3.st.com
+ (10.75.127.3) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 2 Nov
+ 2020 12:04:37 +0100
+Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
+ with ReST output
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?Q?Javier_Gonz=c3=a1lez?= <javier@javigon.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Benson Leung <bleung@chromium.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Bruno Meneguele <bmeneg@redhat.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        Kranthi Kuntala <kranthi.kuntala@intel.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Len Brown <lenb@kernel.org>,
+        Leonid Maksymchuk <leonmaxx@gmail.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        Oleh Kravchenko <oleg@kaa.org.ua>,
+        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
+        Philippe Bergheaud <felix@linux.ibm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-usb@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <netdev@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+ <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
+ <20201030110925.3e09d59e@coco.lan>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
+Date:   Mon, 2 Nov 2020 12:04:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="r5Pyd7+fXNt84Ff3"
-Content-Disposition: inline
-In-Reply-To: <20201101163354.61ac7576@archlinux>
+In-Reply-To: <20201030110925.3e09d59e@coco.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG1NODE3.st.com
+ (10.75.127.3)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-02_03:2020-11-02,2020-11-02 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 10/30/20 11:09 AM, Mauro Carvalho Chehab wrote:
+> Em Fri, 30 Oct 2020 10:19:12 +0100
+> Fabrice Gasnier <fabrice.gasnier@st.com> escreveu:
+> 
+>> Hi Mauro,
+>>
+>> [...]
+>>
+>>>  
+>>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+>>> +KernelVersion:	4.12
+>>> +Contact:	benjamin.gaignard@st.com
+>>> +Description:
+>>> +		Reading returns the list possible quadrature modes.
+>>> +
+>>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
+>>> +KernelVersion:	4.12
+>>> +Contact:	benjamin.gaignard@st.com
+>>> +Description:
+>>> +		Configure the device counter quadrature modes:
+>>> +
+>>> +		channel_A:
+>>> +			Encoder A input servers as the count input and B as
+>>> +			the UP/DOWN direction control input.
+>>> +
+>>> +		channel_B:
+>>> +			Encoder B input serves as the count input and A as
+>>> +			the UP/DOWN direction control input.
+>>> +
+>>> +		quadrature:
+>>> +			Encoder A and B inputs are mixed to get direction
+>>> +			and count with a scale of 0.25.
+>>> +  
+>>
+> 
+> Hi Fabrice,
+> 
+>> I just noticed that since Jonathan question in v1.
+>>
+>> Above ABI has been moved in the past as discussed in [1]. You can take a
+>> look at:
+>> b299d00 IIO: stm32: Remove quadrature related functions from trigger driver
+>>
+>> Could you please remove the above chunk ?
+>>
+>> With that, for the stm32 part:
+>> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> 
+> 
+> Hmm... probably those were re-introduced due to a rebase. This
+> series were originally written about 1,5 years ago.
+> 
+> I'll drop those hunks.
 
---r5Pyd7+fXNt84Ff3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Mauro, Greg,
 
-> On Thu, 22 Oct 2020 11:26:53 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> > If the device is configured to trigger edge interrupts it is possible to
-> > miss samples since the sensor can generate an interrupt while the driver
-> > is still processing the previous one.
-> > Poll FIFO status register to process all pending interrupts.
-> > Configure IRQF_ONESHOT only for level interrupts.
->=20
+I just figured out this patch has been applied with above hunk.
 
-Hi Jonathan,
+This should be dropped: is there a fix on its way already ?
+(I may have missed it)
 
-thx for the review :)
-
-> Hmm. This sort of case is often extremely prone to race conditions.
-> I'd like to see more explanation of why we don't have one after this
-> fix.  Edge interrupts for FIFOs are horrible!
->=20
-> Dropping IRQF_ONESHOT should mean we enter the threaded handler with
-> interrupts enabled, but if another one happens we still have to wait
-> for the thread to finish before we schedule it again.
-> We should only do that if we disabled the interrupt in the top half,
-> which we haven't done here (you are working around the warnings
-> that would be printed with the otherwise pointless top half).
-
-looking at handle_edge_irq (please correct me if I am wrong) IRQF_ONESHOT
-takes effect only for level interrupts while for edge-sensitive interrupts
-the irq handler runs with the line unmasked. In fact the IRQF_ONESHOT part =
-of
-the patch seems not relevant for fixing the issue, I just aligned the code =
-to
-st_sensor general handling in st_sensors_allocate_trigger()
-(https://elixir.bootlin.com/linux/v5.9.3/source/drivers/iio/common/st_senso=
-rs/st_sensors_trigger.c#L182).
-I think the issue is a new interrupt can fire while we are still processing
-the previous one if watermark is low (e.g. 1) and the sensor is running at =
-high
-ODR (e.g. 833Hz). Reading again the status register in st_lsm6dsx_handler_t=
-hread()
-fixes the issue in my tests.
-I guess we can just drop the IRQF_ONESHOT chunk and keep the while loop in
-st_lsm6dsx_handler_thread(). What do you think?
-
->=20
-> I 'assume' that the interrupts are latched.  So we won't get a new
-> interrupt until we have taken some action to clear it?  In this
-> case that action is removing items from the fifo?
-
-I do not know :). Adding stm folks.
-@mario, denis, armando: any pointer for this?
-
->=20
-> IIRC, if we get an interrupt whilst it is masked due to IRQF_ONESHOT
-> then it is left pending until we exit the thread.  So that should
-> be sufficient to close a potential edge condition where we clear
-> the fifo, and it immediately fires again.  This pending behaviour
-> is necessary to avoid the race that would happen in any normal handler.
-
-I did not get you on this point.
-
->=20
->=20
-> Hmm. Having had a look at one of the datasheets, I'm far from convinced t=
-hese
-> parts truely support edge interrupts.  I can't see anything about minimum
-> off periods etc that you need for true edge interrupts. Otherwise they are
-> going to be prone to races.
-
-@mario, denis, armando: any pointer for this?
-
->=20
-> So I think the following can happen.
->=20
-> A) We drain the fifo and it stays under the limit. Hence once that
->    is crossed in future we will interrupt as normal.
->=20
-> B) We drain the fifo but it either has a very low watermark, or is
->    filling very fast.   We manage to drain enough to get the interrupt
->    to fire again, so all is fine if less than ideal.  With you loop we
->    may up entering the interrupt handler when we don't actually need to.
->    If you want to avoid that you would need to disable the interrupt,
->    then drain the fifo and finally do a dance to successfully reenable
->    the interrupt, whilst ensuring no chance of missing by checking it
->    should not have fired (still below the threshold)
->=20
-> C) We try to drain the fifo, but it is actually filling fast enough that
->    we never get it under the limit, so no interrupt ever fires.
->    With new code, we'll keep spinning to 0 so might eventually drain it.
->    That needs a timeout so we just give up eventually.
->=20
-> D) watershed is one sample, we drain low enough to successfully get down
->    to zero at the moment of the read, but very very soon after that we get
->    one sample again. There is a window in which the interrupt line dropped
->    but analogue electronics etc being what they are, it may not have been
->    detectable.  Hence we miss an interrupt...  What you are doing is redu=
-cing
->    the chance of hitting this.  It is nasty, but you might be able to ens=
-ure
->    a reasonable period by widening this window.  Limit the watermark to 2
->    samples? =20
->=20
-> Also needs a fixes tag :)
-
-ack, I will add them in v2
-
-Regards,
-Lorenzo
->=20
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 33 +++++++++++++++-----
-> >  1 file changed, 25 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > index 5e584c6026f1..d43b08ceec01 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -2457,22 +2457,36 @@ st_lsm6dsx_report_motion_event(struct st_lsm6ds=
-x_hw *hw)
-> >  	return data & event_settings->wakeup_src_status_mask;
-> >  }
-> > =20
-> > +static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
-> > +{
-> > +	return IRQ_WAKE_THREAD;
-> > +}
-> > +
-> >  static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
-> >  {
-> >  	struct st_lsm6dsx_hw *hw =3D private;
-> > +	int fifo_len =3D 0, len =3D 0;
-> >  	bool event;
-> > -	int count;
-> > =20
-> >  	event =3D st_lsm6dsx_report_motion_event(hw);
-> > =20
-> >  	if (!hw->settings->fifo_ops.read_fifo)
-> >  		return event ? IRQ_HANDLED : IRQ_NONE;
-> > =20
-> > -	mutex_lock(&hw->fifo_lock);
-> > -	count =3D hw->settings->fifo_ops.read_fifo(hw);
-> > -	mutex_unlock(&hw->fifo_lock);
-> > +	/*
-> > +	 * If we are using edge IRQs, new samples can arrive while
-> > +	 * processing current IRQ and those may be missed unless we
-> > +	 * pick them here, so let's try read FIFO status again
-> > +	 */
-> > +	do {
-> > +		mutex_lock(&hw->fifo_lock);
-> > +		len =3D hw->settings->fifo_ops.read_fifo(hw);
-> > +		mutex_unlock(&hw->fifo_lock);
-> > +
-> > +		fifo_len +=3D len;
-> > +	} while (len > 0);
-> > =20
-> > -	return count || event ? IRQ_HANDLED : IRQ_NONE;
-> > +	return fifo_len || event ? IRQ_HANDLED : IRQ_NONE;
-> >  }
-> > =20
-> >  static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
-> > @@ -2488,10 +2502,14 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6d=
-sx_hw *hw)
-> > =20
-> >  	switch (irq_type) {
-> >  	case IRQF_TRIGGER_HIGH:
-> > +		irq_type |=3D IRQF_ONESHOT;
-> > +		fallthrough;
-> >  	case IRQF_TRIGGER_RISING:
-> >  		irq_active_low =3D false;
-> >  		break;
-> >  	case IRQF_TRIGGER_LOW:
-> > +		irq_type |=3D IRQF_ONESHOT;
-> > +		fallthrough;
-> >  	case IRQF_TRIGGER_FALLING:
-> >  		irq_active_low =3D true;
-> >  		break;
-> > @@ -2520,10 +2538,9 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6ds=
-x_hw *hw)
-> >  	}
-> > =20
-> >  	err =3D devm_request_threaded_irq(hw->dev, hw->irq,
-> > -					NULL,
-> > +					st_lsm6dsx_handler_irq,
-> >  					st_lsm6dsx_handler_thread,
-> > -					irq_type | IRQF_ONESHOT,
-> > -					"lsm6dsx", hw);
-> > +					irq_type, "lsm6dsx", hw);
-> >  	if (err) {
-> >  		dev_err(hw->dev, "failed to request trigger irq %d\n",
-> >  			hw->irq);
->=20
-
---r5Pyd7+fXNt84Ff3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX5/cNgAKCRA6cBh0uS2t
-rCZaAQCfjjsg0bgWZ2l8M6Qpz5C6MJQ+DwsEDHghMWgLRnGRCQEAlKyaf0TovZNP
-/Qgqe6ALL4eP+8cPXV/5Fo93hWul8gI=
-=d1uQ
------END PGP SIGNATURE-----
-
---r5Pyd7+fXNt84Ff3--
+Please advise,
+Fabrice
+> 
+> Thanks!
+> Mauro
+> 

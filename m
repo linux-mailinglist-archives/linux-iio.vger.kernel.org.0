@@ -2,118 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BF2C2A4E20
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 19:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 736D42A50CE
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 21:20:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729002AbgKCSQp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 13:16:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725385AbgKCSQp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 13:16:45 -0500
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D0CC0613D1;
-        Tue,  3 Nov 2020 10:16:45 -0800 (PST)
-Received: by mail-pl1-x641.google.com with SMTP id t22so8937366plr.9;
-        Tue, 03 Nov 2020 10:16:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
-         :references:in-reply-to:accept-language:content-language
-         :content-transfer-encoding:mime-version;
-        bh=k0DG4sb8XOtJOwN6TLhr+5qsFzs3ayb+63KIAEg2F6g=;
-        b=pZIDUWHuqmi0r+lNSw5OaFLd0XW/nVZVW2NTNpJSY9bPoYhh3CTe2BTZn3Exc/WI99
-         pfcwlwj5DnNgYX+EZRc8qS3UMjZVYzwQv0YCi5Q3JacETXmQaFnh7Bgab54NUYuRKN4s
-         IopkMD1pT+jRpbo+pVQmPJlQ9PyOnIgqNMCkAtmdDTWgQxX1wTtcZ6wiclbmB4464JKd
-         0nQW2djN9+lh3fevKAZtAhNp7OY1psFGkbF/eknVX6krJWiOhlhC78dr2FysjP/n9TyT
-         5bQ5r8r/78dra0KqKv46K4lgofN3lpwhCcYIRCSpA+fZMDG2s4yPGyBj+p2qZbW08eeC
-         u98g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
-         :date:message-id:references:in-reply-to:accept-language
-         :content-language:content-transfer-encoding:mime-version;
-        bh=k0DG4sb8XOtJOwN6TLhr+5qsFzs3ayb+63KIAEg2F6g=;
-        b=sZ4KkxDejlk81/Kv8AV3eGGdP9DpEnSy0v1G+wwY2TxFkOuJspzaat5TjXRmjX0i+T
-         JxqaJk7WkujhSFqMPaQvxebFr1sc+5ocPaaWswWtXdsfieYLRVlYl0AQ0sBr6y4o5UAt
-         8Pxp8n7Nx+unrP41uz+rYWiifB16fXAmQMfCCOwnUgcoFtXZg7dVy9JGCmxMvli6ugzw
-         xc0XRet+exjpgI6KVKBGtr9AtOehbKoQGMgM/GRub8zv8QWKHRVJ3QIervK2h28ggfvH
-         1jnAWUVDwZqM9yK5/85YtzsabFMdCKd9NQhVm2otfLlFUJUoNPFwV/ga86JJC1M+yQSK
-         xV8g==
-X-Gm-Message-State: AOAM53266XfalNwIc6xOqiix4jCCFE8Dwa4FJhlBMRCFjbZmAd4RvDS2
-        mzCkY74f0BXl0BYUWbfi2iOOQLTQzmRejQ==
-X-Google-Smtp-Source: ABdhPJy/3gdywHqjCB7waXp0Y7ytzLjBbiYVOp4zjKQvoTUg3oKoSphU2GPctv3qAoe+Et3YumYEAA==
-X-Received: by 2002:a17:902:be10:b029:d5:ced2:cc20 with SMTP id r16-20020a170902be10b02900d5ced2cc20mr18834350pls.25.1604427404853;
-        Tue, 03 Nov 2020 10:16:44 -0800 (PST)
-Received: from SLXP216MB0477.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:9::5])
-        by smtp.gmail.com with ESMTPSA id c2sm9075705pfb.196.2020.11.03.10.16.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2020 10:16:43 -0800 (PST)
-From:   Jingoo Han <jingoohan1@gmail.com>
-To:     Krzysztof Kozlowski <krzk@kernel.org>, Dan Murphy <dmurphy@ti.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1728157AbgKCUUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 15:20:22 -0500
+Received: from aposti.net ([89.234.176.197]:51606 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727688AbgKCUUV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Nov 2020 15:20:21 -0500
+X-Greylist: delayed 450 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Nov 2020 15:20:21 EST
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Han Jingoo <jingoohan1@gmail.com>
-Subject: Re: [PATCH v3] MAINTAINERS: add Dan Murphy as TI LP8xxx drivers
- maintainer
-Thread-Topic: [PATCH v3] MAINTAINERS: add Dan Murphy as TI LP8xxx drivers
- maintainer
-Thread-Index: AWsxNDgwBJ/rfWbefi0QBZZ1bPG9z9cBsnfo
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date:   Tue, 3 Nov 2020 18:16:35 +0000
-Message-ID: <SLXP216MB047756F8B2B3BB88227BCD62AA110@SLXP216MB0477.KORP216.PROD.OUTLOOK.COM>
-References: <20201103162832.14085-1-krzk@kernel.org>
-In-Reply-To: <20201103162832.14085-1-krzk@kernel.org>
-Accept-Language: ko-KR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        Artur Rojek <contact@artur-rojek.eu>
+Cc:     od@zcrc.me, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        stable@vger.kernel.org
+Subject: [PATCH] iio/adc: ingenic: Fix AUX/VBAT readings when touchscreen is used
+Date:   Tue,  3 Nov 2020 20:12:38 +0000
+Message-Id: <20201103201238.161083-1-paul@crapouillou.net>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/3/20, 11:28 AM, Krzysztof Kozlowski wrote:
->=20
-> Milo Kim's email in TI bounces with permanent error (550: Invalid
-> recipient).  Last email from him on LKML was in 2017.  Move Milo Kim to
-> credits and add Dan Murphy from TI to look after:
->  - TI LP855x backlight driver,
->  - TI LP8727 charger driver,
->  - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Dan Murphy <dmurphy@ti.com>
-> Acked-by: Dan Murphy <dmurphy@ti.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Sebastian Reichel <sre@kernel.org>
+When the command feature of the ADC is used, it is possible to program
+the ADC, and specify at each step what input should be processed, and in
+comparison to what reference.
 
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
+This broke the AUX and battery readings when the touchscreen was
+enabled, most likely because the CMD feature would change the VREF all
+the time.
 
-Best regards,
-Jingoo Han
+Now, when AUX or battery are read, we temporarily disable the CMD
+feature, which means that we won't get touchscreen readings in that time
+frame. But it now gives correct values for AUX / battery, and the
+touchscreen isn't disabled for long enough to be an actual issue.
 
-[...]
+Fixes: b96952f498db ("IIO: Ingenic JZ47xx: Add touchscreen mode.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/iio/adc/ingenic-adc.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+index 92b25083e23f..ecaff6a9b716 100644
+--- a/drivers/iio/adc/ingenic-adc.c
++++ b/drivers/iio/adc/ingenic-adc.c
+@@ -177,13 +177,12 @@ static void ingenic_adc_set_config(struct ingenic_adc *adc,
+ 	mutex_unlock(&adc->lock);
+ }
+ 
+-static void ingenic_adc_enable(struct ingenic_adc *adc,
+-			       int engine,
+-			       bool enabled)
++static void ingenic_adc_enable_unlocked(struct ingenic_adc *adc,
++					int engine,
++					bool enabled)
+ {
+ 	u8 val;
+ 
+-	mutex_lock(&adc->lock);
+ 	val = readb(adc->base + JZ_ADC_REG_ENABLE);
+ 
+ 	if (enabled)
+@@ -192,20 +191,42 @@ static void ingenic_adc_enable(struct ingenic_adc *adc,
+ 		val &= ~BIT(engine);
+ 
+ 	writeb(val, adc->base + JZ_ADC_REG_ENABLE);
++}
++
++static void ingenic_adc_enable(struct ingenic_adc *adc,
++			       int engine,
++			       bool enabled)
++{
++	mutex_lock(&adc->lock);
++	ingenic_adc_enable_unlocked(adc, engine, enabled);
+ 	mutex_unlock(&adc->lock);
+ }
+ 
+ static int ingenic_adc_capture(struct ingenic_adc *adc,
+ 			       int engine)
+ {
++	u32 cfg;
+ 	u8 val;
+ 	int ret;
+ 
+-	ingenic_adc_enable(adc, engine, true);
++	/*
++	 * Disable CMD_SEL temporarily, because it causes wrong VBAT readings,
++	 * probably due to the switch of VREF. We must keep the lock here to
++	 * avoid races with the buffer enable/disable functions.
++	 */
++	mutex_lock(&adc->lock);
++	cfg = readl(adc->base + JZ_ADC_REG_CFG);
++	writel(cfg & ~JZ_ADC_REG_CFG_CMD_SEL, adc->base + JZ_ADC_REG_CFG);
++
++
++	ingenic_adc_enable_unlocked(adc, engine, true);
+ 	ret = readb_poll_timeout(adc->base + JZ_ADC_REG_ENABLE, val,
+ 				 !(val & BIT(engine)), 250, 1000);
+ 	if (ret)
+-		ingenic_adc_enable(adc, engine, false);
++		ingenic_adc_enable_unlocked(adc, engine, false);
++
++	writel(cfg, adc->base + JZ_ADC_REG_CFG);
++	mutex_unlock(&adc->lock);
+ 
+ 	return ret;
+ }
+-- 
+2.28.0
+

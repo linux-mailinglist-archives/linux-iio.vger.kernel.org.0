@@ -2,81 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E1C2A40D7
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 10:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDB92A431B
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 11:43:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728050AbgKCJz2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 04:55:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728042AbgKCJz1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 04:55:27 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6501C0617A6
-        for <linux-iio@vger.kernel.org>; Tue,  3 Nov 2020 01:55:26 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id m8so12288458ljj.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Nov 2020 01:55:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fq4LHl5XG3kdk6dhCjgR8hNmKo1bg3Z0xwsvFLhHhcQ=;
-        b=yt8AMikKSv7izXfLEON0zW5bDlX90AU3hCz+osA7iv5STprotNoYQImrr34uaO4jA5
-         Yz5RCuzWH5sEIjY2rWxkaAVYRXQzEugJBhzoIYotW8evGile5TJ8vREnCCpPygnFH8yX
-         D9AQdr+XTjo/8jwmvjLRO3byl21ONDHBelaSewmVKvOaQ+UnyYEyrgT4Ob0r0MfZDll7
-         NrirokyNLiXt4b5ANn7sQaX8v6BkYjDFgsL/G41FFYqgB8THD5Ty02c0NjkiLaGDLD6d
-         RF3jWvRKc3bDO5e1gEp4Rl4BkA6UZuvlf+NZILc4TPcuTq9h2am7qlS7HXPED43e/x3R
-         uCew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fq4LHl5XG3kdk6dhCjgR8hNmKo1bg3Z0xwsvFLhHhcQ=;
-        b=jiWwKHVM5olQPUH6Rbw4QM1zPO2AuzRFz4q0/3OrheesSuHXm4geP9Vi6THJJ+mzfg
-         5GZ+E27L9ukWOKgjJtPl4ClHYvD3vaw9J86Rm0Ur4tLe5hSCNRZQT68iNYXxeAw9Oezg
-         dwoapSFG5kxg2klHiiaUaFdafeUkxMaRcDsHcea0TcgiZgrid+RXF/9qQG5MAXKvFrnu
-         e3mqcFjc1gmhMorsVFPfIeO0YbFtOQtXb8DByKLeYpB4MztAepCJ7OxRiAFMt/AyM4dj
-         SjvkhRympNRXGh1r7rCv9uya2PZWCZ/mAoxRRcmvEneFgPz5i4VlqVBHHbLMkhwULfoj
-         PZKg==
-X-Gm-Message-State: AOAM530t3AT6HRx2X1Z24vEICkiYWRBNrmsgRSsv9bSkHhiSDSpn6mjQ
-        /YupjBXgLlkRCcoYpPmFjiJ1O4BX8P10hMgHHjeQPg==
-X-Google-Smtp-Source: ABdhPJyD7BuxsFo88BjUVf4mMu3Zx2TAGm/nXsbevnm+YG/eagy5MPRrS/P+PI+uclv/SBErdlJoTld2ixsXUu88Lck=
-X-Received: by 2002:a2e:86d4:: with SMTP id n20mr8764121ljj.293.1604397325248;
- Tue, 03 Nov 2020 01:55:25 -0800 (PST)
+        id S1728124AbgKCKgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 05:36:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53836 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728410AbgKCKdp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Nov 2020 05:33:45 -0500
+Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D2547206F1;
+        Tue,  3 Nov 2020 10:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604399624;
+        bh=Eg2L7GMc+D/grmQRd+uDIOy1N1FwECV5+z+rWhgWBGQ=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=lpRPtrFVwYxL28XMFETMMxsPcUfVkgyNCQIQ8OpGteT5bulqB2GAnBJe7sO4JaVpX
+         0JskbgnRi3JlwQPsrtXdRdaGSk8QE/dRmM6zZuwJkopHgHaFgOMy1Qxf2XX2EnpRGB
+         OvlcPvCdlX4NoR2TrUxlUXgB3ngwvrirPz+DjiXg=
+Date:   Tue, 3 Nov 2020 11:33:39 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+cc:     Sandeep Singh <Sandeep.Singh@amd.com>,
+        benjamin.tissoires@redhat.com, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, srinivas.pandruvada@linux.intel.com,
+        jic23@kernel.org, linux-iio@vger.kernel.org, hdegoede@redhat.com,
+        Nehal-bakulchandra.Shah@amd.com, andy.shevchenko@gmail.com,
+        mail@richard-neumann.de, m.felsch@pengutronix.de,
+        rdunlap@infradead.org, Shyam-sundar.S-k@amd.com
+Subject: Re: [PATCH v8 1/4] SFH: Add maintainers and documentation for AMD
+ SFH based on HID framework
+In-Reply-To: <alpine.DEB.2.21.2010300902220.16621@felia>
+Message-ID: <nycvar.YFH.7.76.2011031133080.18859@cbobk.fhfr.pm>
+References: <20201009200138.1847317-1-Sandeep.Singh@amd.com> <20201009200138.1847317-2-Sandeep.Singh@amd.com> <alpine.DEB.2.21.2010300902220.16621@felia>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-References: <20201031181801.742585-1-jic23@kernel.org> <20201031181801.742585-4-jic23@kernel.org>
-In-Reply-To: <20201031181801.742585-4-jic23@kernel.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 3 Nov 2020 10:55:14 +0100
-Message-ID: <CACRpkdZaoeKR6bzQd2jWFiXdpqJRH-Rb-_miWb8Gz5Hqj=B3HA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] dt-bindings:iio:gyro:invensense,mpu3050: txt to yaml
- format conversion.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 7:20 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, 30 Oct 2020, Lukas Bulwahn wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Very similar to the mpu6050 binding.
-> Only unusual element is the i2c-gate section.
-> Example tweaked a little to include a real device behind the gate.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
+> > From: Sandeep Singh <sandeep.singh@amd.com>
+> > 
+> > Add Maintainers for AMD SFH(SENSOR FUSION HUB) Solution and work flow
+> > document.
+> > 
+> > Co-developed-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
+> > Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
+> > Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
+> > ---
+> >  Documentation/hid/amd-sfh-hid.rst | 145 ++++++++++++++++++++++++++++++
+> >  Documentation/hid/index.rst       |   1 +
+> >  MAINTAINERS                       |   8 ++
+> >  3 files changed, 154 insertions(+)
+> >  create mode 100644 Documentation/hid/amd-sfh-hid.rst
+> >
+> 
+> I do not know where something went wrong here, but it seems that
+> the git commit 302f0dad8c97 ("SFH: Add maintainers and 
+> documentation for AMD SFH based on HID framework") on next-20201030 
+> dropped the addition of the rst file compared to this patch v8 here.
 
-Sweet! Thanks for the help.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks for spotting this, that was me fat-fingering conflict resolution. 
+I've now pushed out a fix.
 
-Yours,
-Linus Walleij
+-- 
+Jiri Kosina
+SUSE Labs
+

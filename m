@@ -2,90 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A63FB2A4AC4
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 17:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E50562A4AD3
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 17:10:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727385AbgKCQIC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 11:08:02 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:41129 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgKCQIC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 11:08:02 -0500
-Received: by mail-oi1-f195.google.com with SMTP id m13so9798157oih.8;
-        Tue, 03 Nov 2020 08:08:00 -0800 (PST)
+        id S1727754AbgKCQKm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 11:10:42 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33164 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726018AbgKCQKl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 11:10:41 -0500
+Received: by mail-ot1-f67.google.com with SMTP id i18so11718679ots.0;
+        Tue, 03 Nov 2020 08:10:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=LppOrRjoS2ltemazd7R9I3bmJ/2o8r3uS4AEkLPs4Jw=;
-        b=TnUu0OnEtR/V7F5rGA8p5rVeq808fox3vqcUgu1e6+E5FdfZlDdRPosUokuoRNKrY8
-         U2PWk3+iTjhuOJ8GsVMY4eNnemVdVKowMua/bMhC2lsjmGpm26UWMBZaT3GRWjt756ei
-         1epXhq2yxX1OPiOUB1F8a46tQ6uU7PND/64JlQl1ilowxUjorosLs4vh1ueU0R4YrAkL
-         cckiAnQRqAj49VNwlf4QNkVSzovI7s21Dova8qKFBpEoSWP7Gi7Rj5tFL6QE+kUYpf63
-         yq6XPzY5zilF/R9kYxY+QhSJKlMe+pIYahvr+T8ufHdnsHRUiPVp6EPaw1nnRJYJR7OT
-         Owig==
-X-Gm-Message-State: AOAM5324Wb4segHD5dOoULBQDksJzbV3GKPiShvS+X5NuMezQXXX7N0H
-        ruIXmeO1Frn/lOtTRUvLRg==
-X-Google-Smtp-Source: ABdhPJxJEBnN98SZvRMckcmmoNzrl9tAOxO+q7ulEbu52U5AXSAtCqqgXDvRNFUqVvLAnn1fHYkLCw==
-X-Received: by 2002:aca:aac8:: with SMTP id t191mr234134oie.119.1604419680082;
-        Tue, 03 Nov 2020 08:08:00 -0800 (PST)
+        bh=yRn78cnLsToSH1wV9/DYOCyeH7pBej1x5JZS5/pv6vA=;
+        b=I/eKBKe395FQw9TactnXdOls2J6NnZ2zZgEPT39/C4slV48RvM348lGI7Bf5dTOlLB
+         qbfPFXdhT976NBhQpxuqKhq2jwQlE0nOr8npZ5ggY+ujt4BvbcJstKOAhC7gNCALk3w4
+         JtLbD8cMdgk1HrnjfWsG/atiIvQuaScy4a00OzQfcyvBCw+h+9qI03llzgubfu+B/4jH
+         5BRDFuVvTu/tK3uINtth4QFXnBOmC9CqwgOGz5SfO85AExFDCfeBUdcNdobGbcGwsBfL
+         kLWf/Nwoa10u1OwMUD3tfqSCdfbxSKUjmDMnBXMJHyb/ULgBfAP5/nYZbplHGRz7Dei5
+         wnew==
+X-Gm-Message-State: AOAM532a1MEGqqNwef8i68gkCg/uk0ZqbnjshoZ4gJmYTn48USs5UVCs
+        i3YgOse859XvRCdzKS2NCA==
+X-Google-Smtp-Source: ABdhPJxI8HSaxtuIFrN1LTaDt5SxzSywmyOvYmKQrmnV1yhgm9RBLm/S+wxTvgpORP+10oeyxbk5bg==
+X-Received: by 2002:a05:6830:113:: with SMTP id i19mr1286216otp.372.1604419840708;
+        Tue, 03 Nov 2020 08:10:40 -0800 (PST)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id n18sm4495788otk.33.2020.11.03.08.07.57
+        by smtp.gmail.com with ESMTPSA id w23sm1658044otp.38.2020.11.03.08.10.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 08:07:58 -0800 (PST)
-Received: (nullmailer pid 1754319 invoked by uid 1000);
-        Tue, 03 Nov 2020 16:07:56 -0000
-Date:   Tue, 3 Nov 2020 10:07:56 -0600
+        Tue, 03 Nov 2020 08:10:39 -0800 (PST)
+Received: (nullmailer pid 1757934 invoked by uid 1000);
+        Tue, 03 Nov 2020 16:10:39 -0000
+Date:   Tue, 3 Nov 2020 10:10:39 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 00/10] dt-bindings: iio: conversion of consumer drivers
-Message-ID: <20201103160756.GB1732900@bogus>
-References: <20201031181242.742301-1-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Phil Reid <preid@electromag.com.au>
+Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
+ conversion
+Message-ID: <20201103161039.GA1754553@bogus>
+References: <20201031184854.745828-1-jic23@kernel.org>
+ <20201031184854.745828-3-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201031181242.742301-1-jic23@kernel.org>
+In-Reply-To: <20201031184854.745828-3-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 06:12:32PM +0000, Jonathan Cameron wrote:
+On Sat, Oct 31, 2020 at 06:48:10PM +0000, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Firstly drop the old text file as the consumer binding (and the other
-> parts of that file) are under review for inclusion in the dt-schema external
-> repo.
+> Simple direct conversion from txt to yaml as part of a general aim of
+> converting all IIO bindings to this machine readable format.
 > 
-> This only converts consumers that happen to also be IIO drivers.
-> Others may get done as part of SoC binding conversions or I may do a lot
-> of them at somepoint.
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Phil Reid <preid@electromag.com.au>
+> ---
+>  .../bindings/iio/potentiometer/ad5272.txt     | 27 ----------
+>  .../iio/potentiometer/adi,ad5272.yaml         | 50 +++++++++++++++++++
+>  2 files changed, 50 insertions(+), 27 deletions(-)
 > 
-> A few of the examples in existing text files used providers that were
-> documented in trivial-bindings.yaml which does not allow for
-> #io-channel-cells. I have pulled those out to their own files as part
-> of this patch set.
-> 
-> The iio-mux binding is not done as that has some dependencies and will
-> form part of some future patch set.
-> 
-> There is no explicit dependency in here on any other sets, but some
-> noise will occur in trivial-bindings.yaml if applied in a different
-> order to I happen to have them sets locally.
-> 
-> Jonathan Cameron (10):
->   dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema
->   dt-bindings:iio:dac:dpot-dac: yaml conversion.
->   dt-bindings:iio:potentiometer: give microchip,mcp4531 its own binding
->   dt-bindings:iio:adc:envelope-detector: txt to yaml conversion.
->   dt-bindings:iio:afe:current-sense-amplifier: txt to yaml conversion.
->   dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion. 
->   dt-bindings:iio:adc:maxim,max1027: Pull out to separate binding doc.
->   dt-bindings:iio:afe:voltage-divider: txt to yaml conversion
->   dt-bindings:iio:light:capella,cm3605: txt to yaml conversion.
->   dt-bindings:iio:potentiostat:ti,lmp91000: txt to yaml conversion.
+> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt b/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+> deleted file mode 100644
+> index f9b2eef946aa..000000000000
+> --- a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+> +++ /dev/null
+> @@ -1,27 +0,0 @@
+> -* Analog Devices AD5272 digital potentiometer
+> -
+> -The node for this device must be a child node of a I2C controller, hence
+> -all mandatory properties for your controller must be specified. See directory:
+> -
+> -        Documentation/devicetree/bindings/i2c
+> -
+> -for more details.
+> -
+> -Required properties:
+> -	- compatible:  	Must be one of the following, depending on the model:
+> -			adi,ad5272-020
+> -			adi,ad5272-050
+> -			adi,ad5272-100
+> -			adi,ad5274-020
+> -			adi,ad5274-100
+> -
+> -Optional properties:
+> - - reset-gpios: GPIO specification for the RESET input. This is an
+> -		active low signal to the AD5272.
+> -
+> -Example:
+> -ad5272: potentiometer@2f {
+> -	reg = <0x2F>;
+> -	compatible = "adi,ad5272-020";
+> -	reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
+> new file mode 100644
+> index 000000000000..b9b7d383bff1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/potentiometer/adi,ad5272.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD5272 digital potentiometer
+> +
+> +maintainers:
+> +  - Phil Reid <preid@electromag.com.au>
+> +
+> +description: |
+> +  Datasheet: https://www.analog.com/en/products/ad5272.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad5272-020
+> +      - adi,ad5272-050
+> +      - adi,ad5272-100
+> +      - adi,ad5274-020
+> +      - adi,ad5274-100
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Active low signal to the AD5272 RESET input.
 
-With the type references for properties with standard units dropped,
+Not a new problem, but active low or...
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        potentiometer@2f {
+> +            compatible = "adi,ad5272-020";
+> +            reg = <0x2F>;
+> +            reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+
+active high?
+
+> +        };
+> +    };
+> +...
+> -- 
+> 2.28.0
+> 

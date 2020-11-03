@@ -2,165 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0472A4CD1
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 18:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC22F2A4D16
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 18:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728570AbgKCR2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 12:28:37 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:3036 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728206AbgKCR2h (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Nov 2020 12:28:37 -0500
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id D855261926E448CC03FC;
-        Tue,  3 Nov 2020 17:28:35 +0000 (GMT)
-Received: from localhost (10.52.125.233) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Tue, 3 Nov 2020
- 17:28:35 +0000
-Date:   Tue, 3 Nov 2020 17:28:34 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Phil Reid <preid@electromag.com.au>
-Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
- conversion
-Message-ID: <20201103172834.00007040@Huawei.com>
-In-Reply-To: <20201103161039.GA1754553@bogus>
-References: <20201031184854.745828-1-jic23@kernel.org>
-        <20201031184854.745828-3-jic23@kernel.org>
-        <20201103161039.GA1754553@bogus>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1728206AbgKCRfT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 12:35:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53600 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727530AbgKCRfS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Nov 2020 12:35:18 -0500
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3496621D91;
+        Tue,  3 Nov 2020 17:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604424917;
+        bh=d7GVDYNRB1nkxf2PedrfHEfVA3XJxfH6uOxe6MdezuI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DsK91wUdoGUZK4AOAEjAfqPztcJvbwC8CyX0S+vLU47sPGM5gelbPSEU3bUmDvfbu
+         Z1Fq3KEu7l+Fp0lM3rQJaPZW07CbsytQcFapNYcotHlya3IusuyrV4D5W8SdJOrluK
+         aeDX6YUY3YvZlmni1IvawcsMbL/osVIJe5RKz2WQ=
+Date:   Tue, 3 Nov 2020 17:35:08 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Dan Murphy <dmurphy@ti.com>, Pavel Machek <pavel@ucw.cz>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-pwm@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3] MAINTAINERS: add Dan Murphy as TI LP8xxx drivers
+ maintainer
+Message-ID: <20201103173508.GE5545@sirena.org.uk>
+References: <20201103162832.14085-1-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.125.233]
-X-ClientProxiedBy: lhreml716-chm.china.huawei.com (10.201.108.67) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wchHw8dVAp53YPj8"
+Content-Disposition: inline
+In-Reply-To: <20201103162832.14085-1-krzk@kernel.org>
+X-Cookie: I don't get no respect.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Nov 2020 10:10:39 -0600
-Rob Herring <robh@kernel.org> wrote:
 
-> On Sat, Oct 31, 2020 at 06:48:10PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Simple direct conversion from txt to yaml as part of a general aim of
-> > converting all IIO bindings to this machine readable format.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Phil Reid <preid@electromag.com.au>
-> > ---
-> >  .../bindings/iio/potentiometer/ad5272.txt     | 27 ----------
-> >  .../iio/potentiometer/adi,ad5272.yaml         | 50 +++++++++++++++++++
-> >  2 files changed, 50 insertions(+), 27 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt b/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
-> > deleted file mode 100644
-> > index f9b2eef946aa..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
-> > +++ /dev/null
-> > @@ -1,27 +0,0 @@
-> > -* Analog Devices AD5272 digital potentiometer
-> > -
-> > -The node for this device must be a child node of a I2C controller, hence
-> > -all mandatory properties for your controller must be specified. See directory:
-> > -
-> > -        Documentation/devicetree/bindings/i2c
-> > -
-> > -for more details.
-> > -
-> > -Required properties:
-> > -	- compatible:  	Must be one of the following, depending on the model:
-> > -			adi,ad5272-020
-> > -			adi,ad5272-050
-> > -			adi,ad5272-100
-> > -			adi,ad5274-020
-> > -			adi,ad5274-100
-> > -
-> > -Optional properties:
-> > - - reset-gpios: GPIO specification for the RESET input. This is an
-> > -		active low signal to the AD5272.
-> > -
-> > -Example:
-> > -ad5272: potentiometer@2f {
-> > -	reg = <0x2F>;
-> > -	compatible = "adi,ad5272-020";
-> > -	reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
-> > new file mode 100644
-> > index 000000000000..b9b7d383bff1
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
-> > @@ -0,0 +1,50 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/potentiometer/adi,ad5272.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD5272 digital potentiometer
-> > +
-> > +maintainers:
-> > +  - Phil Reid <preid@electromag.com.au>
-> > +
-> > +description: |
-> > +  Datasheet: https://www.analog.com/en/products/ad5272.html
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad5272-020
-> > +      - adi,ad5272-050
-> > +      - adi,ad5272-100
-> > +      - adi,ad5274-020
-> > +      - adi,ad5274-100
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  reset-gpios:
-> > +    description:
-> > +      Active low signal to the AD5272 RESET input.  
-> 
-> Not a new problem, but active low or...
-> 
-> > +
-> > +additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    i2c {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        potentiometer@2f {
-> > +            compatible = "adi,ad5272-020";
-> > +            reg = <0x2F>;
-> > +            reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;  
-> 
-> active high?
+--wchHw8dVAp53YPj8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Good spot!  @Phil.  Looks like the driver is setting the reset line to
-0 and then to 1 to come out of reset.   So effectively inverting the logic.
-I'm tempted to be cynical and suggest we just drop the comment above and leave
-it vague but is there a better way we can clarify this?
+On Tue, Nov 03, 2020 at 05:28:32PM +0100, Krzysztof Kozlowski wrote:
+> Milo Kim's email in TI bounces with permanent error (550: Invalid
+> recipient).  Last email from him on LKML was in 2017.  Move Milo Kim to
+> credits and add Dan Murphy from TI to look after:
+>  - TI LP855x backlight driver,
+>  - TI LP8727 charger driver,
+>  - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
 
-> 
-> > +        };
-> > +    };
-> > +...
-> > -- 
-> > 2.28.0
-> >   
+Acked-by: Mark Brown <broonie@kernel.org>
 
+--wchHw8dVAp53YPj8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+hlMsACgkQJNaLcl1U
+h9DMeQf/S8R2hQl3+LVLzMNkd1Q6yWjRyQrQjxMjOqrmU4Cu/kQMMM5rQtHOGVQP
+uJmOlkrRnY6uOizYGLkrzxmhWHN8as6hkWahJvRB45G7UEco3DuZaRvUZpY9vK6+
+1NKh1ISoMhfCL9bq5EZgOacORZVXZF9kGV10il0adlO6EEIcYekefZMks2ESlvp+
+jmeq8iNlqj7u/BVm7X1SWFsHlUfB+Y/7ekebQxFYq+4DUfkc0r+Q+cREBgDYbX2B
+iUNK8o8/itBiJ2Wl84FaPjOMfyWRIUrwgo8UUhzsrtCFejjk8zFWiebFeFHeyFnV
+gSMg/Ymsj/xcLfaDYPbktl5KWprRdg==
+=Dr7Z
+-----END PGP SIGNATURE-----
+
+--wchHw8dVAp53YPj8--

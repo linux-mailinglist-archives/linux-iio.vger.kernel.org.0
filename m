@@ -2,142 +2,254 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E50562A4AD3
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 17:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1B92A4ADE
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 17:11:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbgKCQKm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 11:10:42 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:33164 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726018AbgKCQKl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 11:10:41 -0500
-Received: by mail-ot1-f67.google.com with SMTP id i18so11718679ots.0;
-        Tue, 03 Nov 2020 08:10:41 -0800 (PST)
+        id S1727901AbgKCQL0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 11:11:26 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:38956 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbgKCQL0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 11:11:26 -0500
+Received: by mail-oi1-f194.google.com with SMTP id u127so18870456oib.6;
+        Tue, 03 Nov 2020 08:11:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yRn78cnLsToSH1wV9/DYOCyeH7pBej1x5JZS5/pv6vA=;
-        b=I/eKBKe395FQw9TactnXdOls2J6NnZ2zZgEPT39/C4slV48RvM348lGI7Bf5dTOlLB
-         qbfPFXdhT976NBhQpxuqKhq2jwQlE0nOr8npZ5ggY+ujt4BvbcJstKOAhC7gNCALk3w4
-         JtLbD8cMdgk1HrnjfWsG/atiIvQuaScy4a00OzQfcyvBCw+h+9qI03llzgubfu+B/4jH
-         5BRDFuVvTu/tK3uINtth4QFXnBOmC9CqwgOGz5SfO85AExFDCfeBUdcNdobGbcGwsBfL
-         kLWf/Nwoa10u1OwMUD3tfqSCdfbxSKUjmDMnBXMJHyb/ULgBfAP5/nYZbplHGRz7Dei5
-         wnew==
-X-Gm-Message-State: AOAM532a1MEGqqNwef8i68gkCg/uk0ZqbnjshoZ4gJmYTn48USs5UVCs
-        i3YgOse859XvRCdzKS2NCA==
-X-Google-Smtp-Source: ABdhPJxI8HSaxtuIFrN1LTaDt5SxzSywmyOvYmKQrmnV1yhgm9RBLm/S+wxTvgpORP+10oeyxbk5bg==
-X-Received: by 2002:a05:6830:113:: with SMTP id i19mr1286216otp.372.1604419840708;
-        Tue, 03 Nov 2020 08:10:40 -0800 (PST)
+        bh=izA+DsFWYrWR2JdLI3pux6z34mNI3rFF6y95SulNLCQ=;
+        b=WyuTTy6iWu6U+Qj5Xm1q/3SlcS5XwBHZVGhbSqvp3obOUnuZsyYa1VfcQahCog/vnN
+         zthBk22m2Pjpu49r3D67svYzR9xX/e4fX5lgvbFpJjMWkLazaygKPHNOYcB+Jl0oFud5
+         NbfjCFZqD+FkXEwoBPql7OpDY5KLcRd0hLRHvYkF3YVHckU2dSFLvRJm709XhDoypZhV
+         bEHxQho18M3aTVTOEjPRieZ4DRA6EILMFgaJlWtG17nJ7LjPPmzU0CnXqCDRd5PWtvIE
+         mFvgIhuV5qm5dHNCAzLbL3kCat5CaCAkCEKYfutXhrFKWAsJIG/wYUHhMDBIsXhHpvzV
+         CPXg==
+X-Gm-Message-State: AOAM530ZU8l0NrGiqZ7bgwnpJgaLYIw8ayy2DAZyKaMi+Ka6WiUVr1QT
+        oxQPmuCw+8MGoSVS8AmiFuIyVqCFjw==
+X-Google-Smtp-Source: ABdhPJxe2/uKBTQXgkyLGuoIdrSyU5x7yb6M9oyC2y1F7y1tB6iFmC4QgFevS/SxuZ5ShSVC6jFzgA==
+X-Received: by 2002:aca:5dc5:: with SMTP id r188mr293516oib.120.1604419884945;
+        Tue, 03 Nov 2020 08:11:24 -0800 (PST)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id w23sm1658044otp.38.2020.11.03.08.10.39
+        by smtp.gmail.com with ESMTPSA id w79sm3045087oia.28.2020.11.03.08.11.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 08:10:39 -0800 (PST)
-Received: (nullmailer pid 1757934 invoked by uid 1000);
-        Tue, 03 Nov 2020 16:10:39 -0000
-Date:   Tue, 3 Nov 2020 10:10:39 -0600
+        Tue, 03 Nov 2020 08:11:24 -0800 (PST)
+Received: (nullmailer pid 1758930 invoked by uid 1000);
+        Tue, 03 Nov 2020 16:11:23 -0000
+Date:   Tue, 3 Nov 2020 10:11:23 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Phil Reid <preid@electromag.com.au>
-Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
- conversion
-Message-ID: <20201103161039.GA1754553@bogus>
+        Slawomir Stepien <sst@poczta.fm>
+Subject: Re: [PATCH 03/46] dt-bindings:iio:potentiometer:microchip,mcp4131
+ txt to yaml conversion
+Message-ID: <20201103161123.GB1754553@bogus>
 References: <20201031184854.745828-1-jic23@kernel.org>
- <20201031184854.745828-3-jic23@kernel.org>
+ <20201031184854.745828-4-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201031184854.745828-3-jic23@kernel.org>
+In-Reply-To: <20201031184854.745828-4-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 06:48:10PM +0000, Jonathan Cameron wrote:
+On Sat, Oct 31, 2020 at 06:48:11PM +0000, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Simple direct conversion from txt to yaml as part of a general aim of
-> converting all IIO bindings to this machine readable format.
+> This binding is very simple, but I think the very large number of
+> compatible values make it unsuitable for moving to trivial-devices.yaml.
+> Main change in the conversion was reordering the compatible list to
+> numerical order.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Phil Reid <preid@electromag.com.au>
+> Cc: Slawomir Stepien <sst@poczta.fm>
 > ---
->  .../bindings/iio/potentiometer/ad5272.txt     | 27 ----------
->  .../iio/potentiometer/adi,ad5272.yaml         | 50 +++++++++++++++++++
->  2 files changed, 50 insertions(+), 27 deletions(-)
+>  .../bindings/iio/potentiometer/mcp4131.txt    |  84 ---------------
+>  .../iio/potentiometer/microchip,mcp4131.yaml  | 102 ++++++++++++++++++
+>  2 files changed, 102 insertions(+), 84 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt b/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt b/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt
 > deleted file mode 100644
-> index f9b2eef946aa..000000000000
-> --- a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+> index 3ccba16f7035..000000000000
+> --- a/Documentation/devicetree/bindings/iio/potentiometer/mcp4131.txt
 > +++ /dev/null
-> @@ -1,27 +0,0 @@
-> -* Analog Devices AD5272 digital potentiometer
+> @@ -1,84 +0,0 @@
+> -* Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X Digital Potentiometer
+> -  driver
 > -
-> -The node for this device must be a child node of a I2C controller, hence
-> -all mandatory properties for your controller must be specified. See directory:
+> -The node for this driver must be a child node of a SPI controller, hence
+> -all mandatory properties described in
 > -
-> -        Documentation/devicetree/bindings/i2c
+> -        Documentation/devicetree/bindings/spi/spi-bus.txt
 > -
-> -for more details.
+> -must be specified.
 > -
 > -Required properties:
-> -	- compatible:  	Must be one of the following, depending on the model:
-> -			adi,ad5272-020
-> -			adi,ad5272-050
-> -			adi,ad5272-100
-> -			adi,ad5274-020
-> -			adi,ad5274-100
-> -
-> -Optional properties:
-> - - reset-gpios: GPIO specification for the RESET input. This is an
-> -		active low signal to the AD5272.
+> -	- compatible:  	Must be one of the following, depending on the
+> -			model:
+> -			"microchip,mcp4131-502"
+> -			"microchip,mcp4131-103"
+> -			"microchip,mcp4131-503"
+> -			"microchip,mcp4131-104"
+> -			"microchip,mcp4132-502"
+> -			"microchip,mcp4132-103"
+> -			"microchip,mcp4132-503"
+> -			"microchip,mcp4132-104"
+> -			"microchip,mcp4141-502"
+> -			"microchip,mcp4141-103"
+> -			"microchip,mcp4141-503"
+> -			"microchip,mcp4141-104"
+> -			"microchip,mcp4142-502"
+> -			"microchip,mcp4142-103"
+> -			"microchip,mcp4142-503"
+> -			"microchip,mcp4142-104"
+> -			"microchip,mcp4151-502"
+> -			"microchip,mcp4151-103"
+> -			"microchip,mcp4151-503"
+> -			"microchip,mcp4151-104"
+> -			"microchip,mcp4152-502"
+> -			"microchip,mcp4152-103"
+> -			"microchip,mcp4152-503"
+> -			"microchip,mcp4152-104"
+> -			"microchip,mcp4161-502"
+> -			"microchip,mcp4161-103"
+> -			"microchip,mcp4161-503"
+> -			"microchip,mcp4161-104"
+> -			"microchip,mcp4162-502"
+> -			"microchip,mcp4162-103"
+> -			"microchip,mcp4162-503"
+> -			"microchip,mcp4162-104"
+> -			"microchip,mcp4231-502"
+> -			"microchip,mcp4231-103"
+> -			"microchip,mcp4231-503"
+> -			"microchip,mcp4231-104"
+> -			"microchip,mcp4232-502"
+> -			"microchip,mcp4232-103"
+> -			"microchip,mcp4232-503"
+> -			"microchip,mcp4232-104"
+> -			"microchip,mcp4241-502"
+> -			"microchip,mcp4241-103"
+> -			"microchip,mcp4241-503"
+> -			"microchip,mcp4241-104"
+> -			"microchip,mcp4242-502"
+> -			"microchip,mcp4242-103"
+> -			"microchip,mcp4242-503"
+> -			"microchip,mcp4242-104"
+> -			"microchip,mcp4251-502"
+> -			"microchip,mcp4251-103"
+> -			"microchip,mcp4251-503"
+> -			"microchip,mcp4251-104"
+> -			"microchip,mcp4252-502"
+> -			"microchip,mcp4252-103"
+> -			"microchip,mcp4252-503"
+> -			"microchip,mcp4252-104"
+> -			"microchip,mcp4261-502"
+> -			"microchip,mcp4261-103"
+> -			"microchip,mcp4261-503"
+> -			"microchip,mcp4261-104"
+> -			"microchip,mcp4262-502"
+> -			"microchip,mcp4262-103"
+> -			"microchip,mcp4262-503"
+> -			"microchip,mcp4262-104"
 > -
 > -Example:
-> -ad5272: potentiometer@2f {
-> -	reg = <0x2F>;
-> -	compatible = "adi,ad5272-020";
-> -	reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+> -mcp4131: mcp4131@0 {
+> -	compatible = "mcp4131-502";
+> -	reg = <0>;
+> -	spi-max-frequency = <500000>;
 > -};
-> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
 > new file mode 100644
-> index 000000000000..b9b7d383bff1
+> index 000000000000..834d17ae3730
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
-> @@ -0,0 +1,50 @@
+> +++ b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
+> @@ -0,0 +1,102 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/potentiometer/adi,ad5272.yaml#
+> +$id: http://devicetree.org/schemas/iio/potentiometer/microchip,mcp4131.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Analog Devices AD5272 digital potentiometer
-> +
+> +title: Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X Digital Potentiometer
+
+Blank line here.
+
 > +maintainers:
-> +  - Phil Reid <preid@electromag.com.au>
-> +
-> +description: |
-> +  Datasheet: https://www.analog.com/en/products/ad5272.html
+> +  - Slawomir Stepien <sst@poczta.fm>
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - adi,ad5272-020
-> +      - adi,ad5272-050
-> +      - adi,ad5272-100
-> +      - adi,ad5274-020
-> +      - adi,ad5274-100
+> +      - microchip,mcp4131-103
+> +      - microchip,mcp4131-104
+> +      - microchip,mcp4131-502
+> +      - microchip,mcp4131-503
+> +      - microchip,mcp4132-103
+> +      - microchip,mcp4132-104
+> +      - microchip,mcp4132-502
+> +      - microchip,mcp4132-503
+> +      - microchip,mcp4141-103
+> +      - microchip,mcp4141-104
+> +      - microchip,mcp4141-502
+> +      - microchip,mcp4141-503
+> +      - microchip,mcp4142-103
+> +      - microchip,mcp4142-104
+> +      - microchip,mcp4142-502
+> +      - microchip,mcp4142-503
+> +      - microchip,mcp4151-103
+> +      - microchip,mcp4151-104
+> +      - microchip,mcp4151-502
+> +      - microchip,mcp4151-503
+> +      - microchip,mcp4152-103
+> +      - microchip,mcp4152-104
+> +      - microchip,mcp4152-502
+> +      - microchip,mcp4152-503
+> +      - microchip,mcp4161-103
+> +      - microchip,mcp4161-104
+> +      - microchip,mcp4161-502
+> +      - microchip,mcp4161-503
+> +      - microchip,mcp4162-103
+> +      - microchip,mcp4162-104
+> +      - microchip,mcp4162-502
+> +      - microchip,mcp4162-503
+> +      - microchip,mcp4231-103
+> +      - microchip,mcp4231-104
+> +      - microchip,mcp4231-502
+> +      - microchip,mcp4231-503
+> +      - microchip,mcp4232-103
+> +      - microchip,mcp4232-104
+> +      - microchip,mcp4232-502
+> +      - microchip,mcp4232-503
+> +      - microchip,mcp4241-103
+> +      - microchip,mcp4241-104
+> +      - microchip,mcp4241-502
+> +      - microchip,mcp4241-503
+> +      - microchip,mcp4242-103
+> +      - microchip,mcp4242-104
+> +      - microchip,mcp4242-502
+> +      - microchip,mcp4242-503
+> +      - microchip,mcp4251-103
+> +      - microchip,mcp4251-104
+> +      - microchip,mcp4251-502
+> +      - microchip,mcp4251-503
+> +      - microchip,mcp4252-103
+> +      - microchip,mcp4252-104
+> +      - microchip,mcp4252-502
+> +      - microchip,mcp4252-503
+> +      - microchip,mcp4261-103
+> +      - microchip,mcp4261-104
+> +      - microchip,mcp4261-502
+> +      - microchip,mcp4261-503
+> +      - microchip,mcp4262-103
+> +      - microchip,mcp4262-104
+> +      - microchip,mcp4262-502
+> +      - microchip,mcp4262-503
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  reset-gpios:
-> +    description:
-> +      Active low signal to the AD5272 RESET input.
-
-Not a new problem, but active low or...
-
+> +  spi-max-frequency: true
 > +
 > +additionalProperties: false
 > +
@@ -147,18 +259,14 @@ Not a new problem, but active low or...
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    i2c {
+> +    spi {
 > +        #address-cells = <1>;
 > +        #size-cells = <0>;
 > +
-> +        potentiometer@2f {
-> +            compatible = "adi,ad5272-020";
-> +            reg = <0x2F>;
-> +            reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
-
-active high?
-
+> +        potentiometer@0 {
+> +            compatible = "mcp4131-502";
+> +            reg = <0>;
+> +            spi-max-frequency = <500000>;
 > +        };
 > +    };
 > +...

@@ -2,76 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDB92A431B
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 11:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E49462A43C5
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 12:11:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728124AbgKCKgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 05:36:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53836 "EHLO mail.kernel.org"
+        id S1728153AbgKCLLi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 06:11:38 -0500
+Received: from foss.arm.com ([217.140.110.172]:46794 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728410AbgKCKdp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Nov 2020 05:33:45 -0500
-Received: from pobox.suse.cz (nat1.prg.suse.com [195.250.132.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2547206F1;
-        Tue,  3 Nov 2020 10:33:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604399624;
-        bh=Eg2L7GMc+D/grmQRd+uDIOy1N1FwECV5+z+rWhgWBGQ=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=lpRPtrFVwYxL28XMFETMMxsPcUfVkgyNCQIQ8OpGteT5bulqB2GAnBJe7sO4JaVpX
-         0JskbgnRi3JlwQPsrtXdRdaGSk8QE/dRmM6zZuwJkopHgHaFgOMy1Qxf2XX2EnpRGB
-         OvlcPvCdlX4NoR2TrUxlUXgB3ngwvrirPz+DjiXg=
-Date:   Tue, 3 Nov 2020 11:33:39 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-cc:     Sandeep Singh <Sandeep.Singh@amd.com>,
-        benjamin.tissoires@redhat.com, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, srinivas.pandruvada@linux.intel.com,
-        jic23@kernel.org, linux-iio@vger.kernel.org, hdegoede@redhat.com,
-        Nehal-bakulchandra.Shah@amd.com, andy.shevchenko@gmail.com,
-        mail@richard-neumann.de, m.felsch@pengutronix.de,
-        rdunlap@infradead.org, Shyam-sundar.S-k@amd.com
-Subject: Re: [PATCH v8 1/4] SFH: Add maintainers and documentation for AMD
- SFH based on HID framework
-In-Reply-To: <alpine.DEB.2.21.2010300902220.16621@felia>
-Message-ID: <nycvar.YFH.7.76.2011031133080.18859@cbobk.fhfr.pm>
-References: <20201009200138.1847317-1-Sandeep.Singh@amd.com> <20201009200138.1847317-2-Sandeep.Singh@amd.com> <alpine.DEB.2.21.2010300902220.16621@felia>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1725988AbgKCLLh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Nov 2020 06:11:37 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0BA75101E;
+        Tue,  3 Nov 2020 03:11:37 -0800 (PST)
+Received: from [10.57.54.223] (unknown [10.57.54.223])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B3AE3F66E;
+        Tue,  3 Nov 2020 03:11:35 -0800 (PST)
+Subject: Re: [PATCH v2] iio: adc: rockchip_saradc: fix missing
+ clk_disable_unprepare() on error in rockchip_saradc_resume
+To:     Qinglang Miao <miaoqinglang@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Heiko Stuebner <heiko@sntech.de>
+Cc:     linux-iio@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20201103074909.195465-1-miaoqinglang@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <50da9bf1-7317-b24b-9a87-e9dfb4e4a694@arm.com>
+Date:   Tue, 3 Nov 2020 11:11:34 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20201103074909.195465-1-miaoqinglang@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 30 Oct 2020, Lukas Bulwahn wrote:
-
-> > From: Sandeep Singh <sandeep.singh@amd.com>
-> > 
-> > Add Maintainers for AMD SFH(SENSOR FUSION HUB) Solution and work flow
-> > document.
-> > 
-> > Co-developed-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
-> > Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
-> > Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
-> > ---
-> >  Documentation/hid/amd-sfh-hid.rst | 145 ++++++++++++++++++++++++++++++
-> >  Documentation/hid/index.rst       |   1 +
-> >  MAINTAINERS                       |   8 ++
-> >  3 files changed, 154 insertions(+)
-> >  create mode 100644 Documentation/hid/amd-sfh-hid.rst
-> >
+On 2020-11-03 07:49, Qinglang Miao wrote:
+> Fix the missing clk_disable_unprepare() of info->pclk
+> before return from rockchip_saradc_resume in the error
+> handling case when fails to prepare and enable info->clk.
 > 
-> I do not know where something went wrong here, but it seems that
-> the git commit 302f0dad8c97 ("SFH: Add maintainers and 
-> documentation for AMD SFH based on HID framework") on next-20201030 
-> dropped the addition of the rst file compared to this patch v8 here.
+> Fixes: 44d6f2ef94f9 ("iio: adc: add driver for Rockchip saradc")
+> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+> ---
+>   drivers/iio/adc/rockchip_saradc.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+> index 1f3d7d639..5eb566274 100644
+> --- a/drivers/iio/adc/rockchip_saradc.c
+> +++ b/drivers/iio/adc/rockchip_saradc.c
+> @@ -461,9 +461,10 @@ static int rockchip_saradc_resume(struct device *dev)
+>   		return ret;
+>   
+>   	ret = clk_prepare_enable(info->clk);
+> -	if (ret)
+> +	if (ret) {
+> +		clk_disable_unprepare(info->pclk);
+>   		return ret;
 
-Thanks for spotting this, that was me fat-fingering conflict resolution. 
-I've now pushed out a fix.
+No need to add braces, just replace this utterly pointless "early" return ;)
 
--- 
-Jiri Kosina
-SUSE Labs
+Robin.
 
+> -
+> +	}
+>   	return ret;
+>   }
+>   #endif
+> 

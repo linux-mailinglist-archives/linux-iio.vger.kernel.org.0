@@ -2,106 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E574C2A4C1C
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 17:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2463E2A4CA7
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Nov 2020 18:24:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbgKCQ66 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Nov 2020 11:58:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727706AbgKCQ66 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Nov 2020 11:58:58 -0500
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B015AC0613D1
-        for <linux-iio@vger.kernel.org>; Tue,  3 Nov 2020 08:58:55 -0800 (PST)
-Received: by mail-wm1-x341.google.com with SMTP id p19so303291wmg.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Nov 2020 08:58:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HqZuOp1IITKuiPPZaNsPGJeGO0RvbPcrP3kFi4nxuE8=;
-        b=YyYsWNkrDNuDCpBgKSwGff4dnxBPuEnHIujXjJob4UwYR9oZMzoahOm0S6UDEuelBp
-         0JiaTPUTaGdcEPBqTBiLK9gZ4wGWog+PhgUGKPaMeD1SiQ2wOFNxmx0YcsNVl6p7Ts70
-         551GO9y9V1INFtKFyblT/ajtDwMRnyAH0sn2Fho/SZHEx/7sOvp7W0PLVuSpozEVODbX
-         hzVklKagnDgIDsk7B0+YcYDLkWtyuGeMdIU0FNNIegNuaGtGTMYaezd7GKzoEcvn8Cmj
-         SbhGqB/vLR3JSCyd8MgiN8b6EHd80yEgW1FgS8tQS2Sn/MpCEsXGba6CRvT1hFrUzWDr
-         xwOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HqZuOp1IITKuiPPZaNsPGJeGO0RvbPcrP3kFi4nxuE8=;
-        b=bgZz6NOhYFmRqP8CqwoWh8nX7tUJUSi3U+pizxmNHc/4L2Qqc2FKmp/8gJB4LZqC5A
-         UuXO6i6SkLcCc71VQulzesLlppfG//excuxuwyOLFRuP588FJ5BsjniVRyBgsFkP4jML
-         o9lSlpOzhrQfbP60d1es8mO2yOi5C+OEB5va07iSPOAhd/1JJUw64YBy/qMeuFyrmL+L
-         rvCh1O98PVtOWdfpJ9QC9GB02ZiIx/ZnuRHWZAxUmq72J1W8IbXR+8HjoDF1ijioWro4
-         0CwKTrWO4lJqmFFU6Ssix7zFEOYpOhvO5gJS/txcy1aev24MHreN+ShpJeTuqG0hdWOH
-         Z83Q==
-X-Gm-Message-State: AOAM532DNBJm/R+sMV8Xriz14PlWZQM2TfcT/7ObzsKvR8SbHs1dpZ00
-        GSfP4GhcwRaiq3Ao0OboV8UINw==
-X-Google-Smtp-Source: ABdhPJyKFVzDM1bYQ7reHvRRi8XCIV24MNoWqNViuGekTs+HNbjzL62ZGEz0MRy0rZGLpTKBpe5IdQ==
-X-Received: by 2002:a7b:c201:: with SMTP id x1mr100113wmi.42.1604422734274;
-        Tue, 03 Nov 2020 08:58:54 -0800 (PST)
-Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id g14sm26953238wrx.22.2020.11.03.08.58.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 08:58:53 -0800 (PST)
-Date:   Tue, 3 Nov 2020 16:58:51 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Dan Murphy <dmurphy@ti.com>, Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3] MAINTAINERS: add Dan Murphy as TI LP8xxx drivers
- maintainer
-Message-ID: <20201103165851.uabbg4zazofyis62@holly.lan>
-References: <20201103162832.14085-1-krzk@kernel.org>
+        id S1728706AbgKCRYL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Nov 2020 12:24:11 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:3035 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728700AbgKCRYL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Nov 2020 12:24:11 -0500
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id CAFFBF4C6387FBBC7DE2;
+        Tue,  3 Nov 2020 17:24:09 +0000 (GMT)
+Received: from localhost (10.52.125.233) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Tue, 3 Nov 2020
+ 17:24:09 +0000
+Date:   Tue, 3 Nov 2020 17:24:08 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 00/46] dt-bindings:iio: yet more txt to yam conversions
+Message-ID: <20201103172408.0000600c@Huawei.com>
+In-Reply-To: <20201103163800.GA1791071@bogus>
+References: <20201031184854.745828-1-jic23@kernel.org>
+        <20201103163800.GA1791071@bogus>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201103162832.14085-1-krzk@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.125.233]
+X-ClientProxiedBy: lhreml716-chm.china.huawei.com (10.201.108.67) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 03, 2020 at 05:28:32PM +0100, Krzysztof Kozlowski wrote:
-> Milo Kim's email in TI bounces with permanent error (550: Invalid
-> recipient).  Last email from him on LKML was in 2017.  Move Milo Kim to
-> credits and add Dan Murphy from TI to look after:
->  - TI LP855x backlight driver,
->  - TI LP8727 charger driver,
->  - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Dan Murphy <dmurphy@ti.com>
-> Acked-by: Dan Murphy <dmurphy@ti.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Sebastian Reichel <sre@kernel.org>
+On Tue, 3 Nov 2020 10:38:00 -0600
+Rob Herring <robh@kernel.org> wrote:
 
+> On Sat, Oct 31, 2020 at 06:48:08PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > This set is basically all the stuff bindings where I couldn't come up
+> > with a unifying theme to split them out into smaller more palatble sets.
+> > 
+> > So there is all sorts in here :)  Enjoy.  
 > 
-> ---
-> 
-> Dear Lee,
-> 
-> Could you take care about this patch?
+> Thanks for filling my inbox... :)
+Always happy to do that :)
 
-Just in case Lee wants it:
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+I definitely recall you saying you liked to review them lots at a time.
+*evil laugh*
+
+Thanks for ploughing through them so quickly.
+
+Jonathan
 
 
-Daniel.
+> 
+> > There are a few more binding files left after these are done.
+> > * io-channel-mux:  Needs conversion of the mux subsystem bindings
+> > * xilinx-xadc: I think Lars is working on this one already.
+> > * lis302: This one got moved to IIO directory, but reflects a bunch of stuff
+> >   that would not have made it into an IIO binding.  The driver is still in
+> >   misc and in theory has been replaced by the st-sensors driver.
+> >   Need to think what to do about this one.
+> > * mount-matrix.txt:  The binding part is under review for inclusion in
+> >   dt-schema rather than kernel tree, but this document has a wealth of
+> >   information we don't want hidden away there.  As such I'm probably
+> >   going to convert it to general kernel documentation.
+> > 
+> > Final patch in here drops the generic temperatures sensor binding.
+> > Whilst I'm keen on that we only currently have one user.  So I'd
+> > rather we had a second before we went to the effort of defining a
+> > proper yaml binding for that.
+> > 
+> > Jonathan Cameron (46):
+> >   dt-bindings:iio:resolver:adi,ad2s90: Conversion of binding to yaml.
+> >   dt-bindings:iio:potentiometer:adi,ad5272 yaml conversion
+> >   dt-bindings:iio:potentiometer:microchip,mcp4131 txt to yaml conversion
+> >   dt-bindings:iio:potentiometer:microchip,mcp41010 txt to yaml
+> >     conversion
+> >   dt-bindings:iio:impedance-analyzer:adi,ad5933 yaml conversion.
+> >   dt-bindings:iio:samsung,sensorhub-rinato: yaml conversion
+> >   dt-bindings:iio:health:ti,afe4403: txt to yaml binding
+> >   dt-bindings:iio:health:ti,afe4404: txt to yaml conversion
+> >   dt-bindings:iio:health:maxim,max30100: txt to yaml conversion
+> >   dt-bindings:iio:health:maxim,max30102: txt to yaml conversion
+> >   dt-bindings:iio:imu:adi,adis16480: txt to yaml conversion
+> >   dt-bindings:iio:imu:st,lsm6dsx: txt to yaml conversion
+> >   dt-bindings:iio:light:avago,apds9300: txt to yaml conversion.
+> >   dt-bindings:iio:light:avago,apds9960: txt to yaml conversion
+> >   dt-bindings:iio:light:capella,cm36651: txt to yaml conversion.
+> >   dt-bindings:iio:light:sharp,gp2ap020a00f: txt to yaml conversion.
+> >   dt-bindings:iio:light:maxim,max44009: txt to yaml conversion.
+> >   dt-bindings:iio:light:ti,opt3001: txt to yaml conversion
+> >   dt-bindings:iio:light:upisemi,us51882: txt to yaml conversion.
+> >   dt-bindings:iio:light:st,uvis25: txt to yaml conversion for this UV
+> >     sensor
+> >   dt-bindings:iio:light:vishay,vcnl4035: txt to yaml conversion
+> >   dt-bindings:iio:light:st,vl6180: txt to yaml format conversion.
+> >   dt-bindings:iio:magnetometer:fsl,mag3110: txt to yaml conversion
+> >   dt-bindings:iio:magnetometer:asahi-kasei,ak8974: txt to yaml format
+> >     conversion
+> >   dt-bindings:iio:magnetometer:bosch,bmc150_magn: txt to yaml
+> >     conversion.
+> >   dt-bindings:iio:magnetometer:honeywell,hmc5843: txt to yaml format
+> >     conversion
+> >   dt-bindings:iio:magnetometer:pni,rm3100: txt to yaml conversion.
+> >   dt-bindings:iio:adc:atmel,sama5d2-adc: txt to yaml conversion
+> >   dt-bindings:iio:adc:atmel,sama9260-adc: conversion to yaml from
+> >     at91_adc.txt
+> >   dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.
+> >   dt-bindings:iio:adc:x-powers,axp209-adc: txt to yaml conversion
+> >   dt-bindings:iio:adc:brcm,iproc-static-adc: txt to yaml conversion
+> >   dt-bindings:iio:adc:mediatek,mt2701-auxadc: rename and yaml
+> >     conversion.
+> >   dt-bindings:iio:adc:ti,palmas-gpadc: txt to yaml format conversion.
+> >   dt-bindings:iio:adc:qcom,pm8018-adc: yaml conversion and rename.
+> >   dt-bindings:iio:adc:qcom,spmi-iadc: txt to yaml format conversion.
+> >   dt-binding:iio:adc:ti,ads124s08: txt to yaml format conversion.
+> >   dt-bindings:iio:dac:ad5592r: txt to yaml format conversion.
+> >   dt-bindings:iio:dac:ad5755: txt to yaml format conversion.
+> >   dt-bindings:iio:accel:bosch,bma180: txt to yaml format conversion.
+> >   dt-bindings:iio:accel:kionix,kxcjk1013: txt to yaml format conversion.
+> >   dt-bindings:iio:accel:fsl,mma8452: txt to yaml conversion.
+> >   dt-bindings:iio:gyro:bosch,bmg180: txt to yaml format conversion.
+> >   dt-bindings:iio:st,st-sensors: txt to yaml conversion.
+> >   dt-bindings:iio:frequency:adi,adf4350: txt to yaml format conversion.
+> >   dt-bindings:iio:temperature: Drop generic binding file.  
+> 
+> There's more standard unit properties you can drop the type $ref on and 
+> a the couple of nits I raised. With those fixed,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
+
+Great.  Thanks again,
+
+Jonathan
+

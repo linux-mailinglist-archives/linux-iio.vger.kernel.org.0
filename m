@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC502A66B4
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Nov 2020 15:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A4292A66BD
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Nov 2020 15:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730146AbgKDOsL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Nov 2020 09:48:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48436 "EHLO
+        id S1729768AbgKDOvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Nov 2020 09:51:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728522AbgKDOsK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Nov 2020 09:48:10 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C298C061A4A
-        for <linux-iio@vger.kernel.org>; Wed,  4 Nov 2020 06:48:09 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id 184so27456795lfd.6
-        for <linux-iio@vger.kernel.org>; Wed, 04 Nov 2020 06:48:09 -0800 (PST)
+        with ESMTP id S1725946AbgKDOvW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Nov 2020 09:51:22 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37F6C061A4A
+        for <linux-iio@vger.kernel.org>; Wed,  4 Nov 2020 06:51:18 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id 2so23221934ljj.13
+        for <linux-iio@vger.kernel.org>; Wed, 04 Nov 2020 06:51:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=VRl1lNTwVEiKC7qk9DRqYh4fSXthHyMqZGuppjy3Avc=;
-        b=K/G/3SgOk/0jUCz8Irz8OsNUeEnQfLZbl060roWI8pRlF07gJ5Ra+NAzCQWHrqGGOR
-         Lq34q/mGAZ4yvhGp/vr+icjLB84fJONgFiy+ECXgStGkzZQ2feRj+gjx8CYdh+KI9VQo
-         5RPEtnHaEyKINikhWVbpCtvIkf86j7Q6olL1XUtk1wEiY0wVp0HWxNo1R4hQuo0Ti4Oe
-         aifmq2aBId6eiVGkojaQ/oa30jCmpzCQxTeGrfmgT1T43nBIpiJK+vEersG9RPInTcOG
-         jzei3p9ppwF0InmQLFDlezSEuP8112M6ENgI2YEjH+gCnTh8s646jnxfKBD05lFYKVwO
-         6yWw==
+        bh=Z17mmwOTy1eEBA4B+RCirdyBT8gSpjRUP+rqJWi1tIs=;
+        b=JLAjDB5yvfKX3xUTe+cQS+tl/XRnTF1T/KSzJk4EYe7509WienesG0E6O7TkPcyuZN
+         A9XCFGsrryeM3NAKAmCoGLFskmUhKzZUn2Hf0YfdvSWijLYLjImjB3Xonil4JXVnMv+A
+         o1Zf8Tr12ijlHA2MO8LlIUY80ivxzZYr8/Tfap1osbP12elScExYDmokpRRD7AxQGegq
+         sK5kXR7IfNM5bhvzv3DoyKxrmbHTU3PCHoq0W0cRpxVujLXBNhxSDBUMQOtF2lkFPYlx
+         55ft2BnF9JXGqERZO5+qR5ELaHHN0q+mUzYoQSdxvW6wMG0lXmHjrDh6GemluVQo6y5l
+         mJyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VRl1lNTwVEiKC7qk9DRqYh4fSXthHyMqZGuppjy3Avc=;
-        b=OT0p4QKIZIseg1J/8fwuZxpihCVH5FCnlwsL+OIUzNz5DcmB5D8tOEdyBrHcdovNGy
-         B5mONll2YJ8Yt3ZnLKcnPdbyuXg3rvYReVJnnj7RVwwWxvwGDccKRdsrCM8GpJykOino
-         GZxEpFviESe931ARiTlTsROyEcmNXrWgXg/tSnyzK6wRe6IAeSapi0nSY35Nw8YiZd6f
-         WsQWf0OAOyv5T8ksSAIxvvwEbNwpy1/Pj1JncLKA7wuKro+YcY2zAgd8MqjbuuZ2XZnc
-         LdEIi/Ywb3BTtqmD0KTMT3IrQY8qtQPXUrMIjz+Oo0n+Bhw6cp3GFKEGvVN0UBIoyqvN
-         BVUA==
-X-Gm-Message-State: AOAM530fCvFURWO90uqdSwg5CO343k//obOhYL0pwxfUQT76nBO5iFPP
-        1wzfner4TzO8nZjmyMybSXyfOKvx96BKitXIXaANGA==
-X-Google-Smtp-Source: ABdhPJxKVOIoUCBhlizjZdSjuzNjA1oW/xNxnmLmWCCcXKhOCS7Mmfal7CCoRv8zaG2hApsTWH76hPAH2B6oI5HQFpM=
-X-Received: by 2002:a19:c8c6:: with SMTP id y189mr3178864lff.502.1604501287766;
- Wed, 04 Nov 2020 06:48:07 -0800 (PST)
+        bh=Z17mmwOTy1eEBA4B+RCirdyBT8gSpjRUP+rqJWi1tIs=;
+        b=R+JpjgRRhesSWwenmF03N6AnmC/e/Al6AEQu5zEoQobByX1NFIG917lVioi3GXXdRh
+         8SuMrtHg5YXpeOMPE8WKQAoFNYh1HWO1TpgzkXBj7OsE0zjBJaKZ9j2WZtqgNGPl4htc
+         0UwP4GeT5pIVmWdldd2xcF5uI3Gq5FZB6FAIxhPl875H4/t6g8NwEqHmpPAc7vcZ99OO
+         c2jluDtfMPmolxRu2HE3lmijInVm391wHoahk7hGCbWc06uv64OIZoiSgm1cVKhGc5TH
+         5lASdgPiOBB3nlL6tWYWsF2WqF5mKCdGMPWFPue/pMqxZyTFgHMl2dpfcU85JC66YxNM
+         LU2w==
+X-Gm-Message-State: AOAM530FvPyab9YCxCQP4mZuuQxW2MlUGuB3hxYXfiHmY0Cfsv6/RfPI
+        YAwviVyDlChoFQVUgIjvou5rwkOKl9u2EKeoser8fQ==
+X-Google-Smtp-Source: ABdhPJy2KPBJbx6MQ1DjWjYa6MbyS2OJtTAI3nc9M5LV/GQ6JMYBTsfBFC0p4qXoHMbTPJZVzfO02xlBntVolwIZ4eA=
+X-Received: by 2002:a2e:8905:: with SMTP id d5mr10448468lji.144.1604501477314;
+ Wed, 04 Nov 2020 06:51:17 -0800 (PST)
 MIME-Version: 1.0
-References: <20201031184854.745828-1-jic23@kernel.org> <20201031184854.745828-25-jic23@kernel.org>
-In-Reply-To: <20201031184854.745828-25-jic23@kernel.org>
+References: <20201031184854.745828-1-jic23@kernel.org> <20201031184854.745828-36-jic23@kernel.org>
+In-Reply-To: <20201031184854.745828-36-jic23@kernel.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 4 Nov 2020 15:47:56 +0100
-Message-ID: <CACRpkdYTn59+NJm1f6cYfAZU9+9UaPE5PFbCMMDCcTVO3jbMdA@mail.gmail.com>
-Subject: Re: [PATCH 24/46] dt-bindings:iio:magnetometer:asahi-kasei,ak8974:
- txt to yaml format conversion
+Date:   Wed, 4 Nov 2020 15:51:06 +0100
+Message-ID: <CACRpkdYTvKCQNyn=CtVZ8KRhGFXM0Bi-416ThMdBCAU=93WHZQ@mail.gmail.com>
+Subject: Re: [PATCH 35/46] dt-bindings:iio:adc:qcom,pm8018-adc: yaml
+ conversion and rename.
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -66,15 +66,16 @@ On Sat, Oct 31, 2020 at 7:52 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Simple conversion.  I have pruned descriptions that did not add much useful
-> detail.  Note that the mount-matrix description will form part of a generic
-> IIO binding.  No need to repeat that in every driver that uses it.
-
-Writing the mount-matrix YAML binding is going to be interesting!
-
+> Renamed to match a listed compatible rather than relying on wildcards
+> with all their usual problems.
+>
+> Dropped the reference supply as a requirement as at least one dtsi doesn't
+> include it and the example never did.
+>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Linus Walleij <linus.walleij@linaro.org>
 
+Looks good:
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,

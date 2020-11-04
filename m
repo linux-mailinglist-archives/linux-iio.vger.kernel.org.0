@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 650802A66A9
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Nov 2020 15:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AC502A66B4
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Nov 2020 15:48:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730308AbgKDOqc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Nov 2020 09:46:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S1730146AbgKDOsL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Nov 2020 09:48:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730243AbgKDOqc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Nov 2020 09:46:32 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEA6C061A4A
-        for <linux-iio@vger.kernel.org>; Wed,  4 Nov 2020 06:46:31 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id t13so23172475ljk.12
-        for <linux-iio@vger.kernel.org>; Wed, 04 Nov 2020 06:46:30 -0800 (PST)
+        with ESMTP id S1728522AbgKDOsK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Nov 2020 09:48:10 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C298C061A4A
+        for <linux-iio@vger.kernel.org>; Wed,  4 Nov 2020 06:48:09 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id 184so27456795lfd.6
+        for <linux-iio@vger.kernel.org>; Wed, 04 Nov 2020 06:48:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MaiOCdl+gFV/W3GxQBKOzgnoA8DGUtjj+AflxrXx1VE=;
-        b=QNApSReGppzoDLJ1EOPy3ksAEqpTVn9sY9zPO2GjSAfz0VQeBRUw7QwxMR8IRUxRMj
-         uAirIHE2Wcug+fgxUTz6VshERw5LFl7kShV/rWLrGSJ5nI6kVc9+E4EcLO7vdaJKkcwl
-         1PEqMnQzqY1c8ra2PCBHji1zaFFmo248zpwRgWVQZrM9QLhUosImyiY2CpzueyIXnzFw
-         nxDtYM7QCBPAYhiSaY154in3xIx/NYuBTLgdIDntmIfNOb9ixGPpnSuvZOPYg9sL0CVY
-         gLe6CKZgK9mNlyAgOhGyn4wD2zz1Cxt8w84BGSbgPcEkaEB0i8pQ29Fa1XIM34SX19g0
-         etMw==
+        bh=VRl1lNTwVEiKC7qk9DRqYh4fSXthHyMqZGuppjy3Avc=;
+        b=K/G/3SgOk/0jUCz8Irz8OsNUeEnQfLZbl060roWI8pRlF07gJ5Ra+NAzCQWHrqGGOR
+         Lq34q/mGAZ4yvhGp/vr+icjLB84fJONgFiy+ECXgStGkzZQ2feRj+gjx8CYdh+KI9VQo
+         5RPEtnHaEyKINikhWVbpCtvIkf86j7Q6olL1XUtk1wEiY0wVp0HWxNo1R4hQuo0Ti4Oe
+         aifmq2aBId6eiVGkojaQ/oa30jCmpzCQxTeGrfmgT1T43nBIpiJK+vEersG9RPInTcOG
+         jzei3p9ppwF0InmQLFDlezSEuP8112M6ENgI2YEjH+gCnTh8s646jnxfKBD05lFYKVwO
+         6yWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MaiOCdl+gFV/W3GxQBKOzgnoA8DGUtjj+AflxrXx1VE=;
-        b=qlynffGbwNv7xoIdrNog61dkxIuUymEmvzPgdrdawkSeOzcH7y6JxuRuWa6+fiTMFu
-         i17MqayyG389Nf841/pOt0dZBUmfREIBlBX1X+2anrEF2GglD4EDSy1V3M0H2uTho2z+
-         VBlDfXqFkjHQJTSDHenLyR/5yxLLV0Eb0O2R+spgZ+xAP/+UxY1SuycEdM2U0XYR6aGG
-         9eC4JpDrLm0wL3bbgWwFNplD005OD8fflUtpRefMpkD9PBWQjqBpxlaOh5xklUytXj/W
-         gFPVhzhzYklzqioED94gERFmw7x9N9PBhDeoS1eqaacQmKt4tkKt71ihrYo3oFnbfx7C
-         +mmQ==
-X-Gm-Message-State: AOAM5313bBVOwgMtf4HysxGUV/PDA6fL7fE8zVsF6TDqE8I+1W6FYrZw
-        9RlQ82IG0SrNVo1lMGfXSY8fTLJ8ddkxM+AXExRrfQ==
-X-Google-Smtp-Source: ABdhPJyBI14KChgSLBwhEMe8iVmpquoINeKVFw0+u3m71Mf9awhJXdl0JA6nhPdMeH73CcASuZMLW5J5+PhrWbVs4zU=
-X-Received: by 2002:a2e:9a0c:: with SMTP id o12mr10425849lji.104.1604501189577;
- Wed, 04 Nov 2020 06:46:29 -0800 (PST)
+        bh=VRl1lNTwVEiKC7qk9DRqYh4fSXthHyMqZGuppjy3Avc=;
+        b=OT0p4QKIZIseg1J/8fwuZxpihCVH5FCnlwsL+OIUzNz5DcmB5D8tOEdyBrHcdovNGy
+         B5mONll2YJ8Yt3ZnLKcnPdbyuXg3rvYReVJnnj7RVwwWxvwGDccKRdsrCM8GpJykOino
+         GZxEpFviESe931ARiTlTsROyEcmNXrWgXg/tSnyzK6wRe6IAeSapi0nSY35Nw8YiZd6f
+         WsQWf0OAOyv5T8ksSAIxvvwEbNwpy1/Pj1JncLKA7wuKro+YcY2zAgd8MqjbuuZ2XZnc
+         LdEIi/Ywb3BTtqmD0KTMT3IrQY8qtQPXUrMIjz+Oo0n+Bhw6cp3GFKEGvVN0UBIoyqvN
+         BVUA==
+X-Gm-Message-State: AOAM530fCvFURWO90uqdSwg5CO343k//obOhYL0pwxfUQT76nBO5iFPP
+        1wzfner4TzO8nZjmyMybSXyfOKvx96BKitXIXaANGA==
+X-Google-Smtp-Source: ABdhPJxKVOIoUCBhlizjZdSjuzNjA1oW/xNxnmLmWCCcXKhOCS7Mmfal7CCoRv8zaG2hApsTWH76hPAH2B6oI5HQFpM=
+X-Received: by 2002:a19:c8c6:: with SMTP id y189mr3178864lff.502.1604501287766;
+ Wed, 04 Nov 2020 06:48:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20201031181242.742301-1-jic23@kernel.org> <20201031181242.742301-10-jic23@kernel.org>
-In-Reply-To: <20201031181242.742301-10-jic23@kernel.org>
+References: <20201031184854.745828-1-jic23@kernel.org> <20201031184854.745828-25-jic23@kernel.org>
+In-Reply-To: <20201031184854.745828-25-jic23@kernel.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 4 Nov 2020 15:46:14 +0100
-Message-ID: <CACRpkdbuuiwxmr4BdOHn2LRckhc7+cRb7JCaoVpsL8aR9s65tA@mail.gmail.com>
-Subject: Re: [PATCH 09/10] dt-bindings:iio:light:capella,cm3605: txt to yaml conversion.
+Date:   Wed, 4 Nov 2020 15:47:56 +0100
+Message-ID: <CACRpkdYTn59+NJm1f6cYfAZU9+9UaPE5PFbCMMDCcTVO3jbMdA@mail.gmail.com>
+Subject: Re: [PATCH 24/46] dt-bindings:iio:magnetometer:asahi-kasei,ak8974:
+ txt to yaml format conversion
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,26 +62,19 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 7:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Oct 31, 2020 at 7:52 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Simple conversion using the new iio-consumers.yaml binding in the
-> dt-schema.
->
+> Simple conversion.  I have pruned descriptions that did not add much useful
+> detail.  Note that the mount-matrix description will form part of a generic
+> IIO binding.  No need to repeat that in every driver that uses it.
+
+Writing the mount-matrix YAML binding is going to be interesting!
+
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Linus Walleij <linus.walleij@linaro.org>
 
-FWIW Kevin Tsai has listed himself to maintain all Capella
-drivers, also this one, so maybe he should be added as
-binding maintainer as well?
-
-CAPELLA MICROSYSTEMS LIGHT SENSOR DRIVER
-M:      Kevin Tsai <ktsai@capellamicro.com>
-S:      Maintained
-F:      drivers/iio/light/cm*
-
-Either way:
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,

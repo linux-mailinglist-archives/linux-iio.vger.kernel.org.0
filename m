@@ -2,92 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A6E2A81D6
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Nov 2020 16:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E270C2A84B9
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Nov 2020 18:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730822AbgKEPGI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Nov 2020 10:06:08 -0500
-Received: from mga03.intel.com ([134.134.136.65]:53579 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730501AbgKEPGH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 5 Nov 2020 10:06:07 -0500
-IronPort-SDR: pnXp52/wALCp1rz0f1t91QuvuQYFil+VY4RFWhfCs+Ds/SfgjxgW3q82qW9Y7s6j4RX/lG8mpP
- Y87VLW04Hubg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9795"; a="169505029"
-X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; 
-   d="scan'208";a="169505029"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 07:06:06 -0800
-IronPort-SDR: iAgcZfHuOCTIT26pyIor40uA+gSy9PsKDBlTIwRxyO6MdG590hAg2FmisUF4pH/jcq+AXjHnO9
- L/hnYpz8jtIw==
-X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; 
-   d="scan'208";a="364367834"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2020 07:06:04 -0800
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1kagqw-00459k-Sm; Thu, 05 Nov 2020 17:07:06 +0200
-Date:   Thu, 5 Nov 2020 17:07:06 +0200
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v1] iio: gyro: mpu3050: Use get_unaligned_leXX()
-Message-ID: <20201105150706.GT4077@smile.fi.intel.com>
-References: <20201026175340.19570-1-andriy.shevchenko@linux.intel.com>
- <20201029150444.28f4e18d@archlinux>
- <CAHp75VfzV=VY5R1oVx+2mtbdNj97rJCh6tqeUnzYt=MDGpCsfQ@mail.gmail.com>
- <CACRpkdYG4Z6vaKp9woULPz0CKyTCr6ZocfvRm4gxw2JktStggg@mail.gmail.com>
+        id S1726777AbgKERTn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Nov 2020 12:19:43 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:34314 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726729AbgKERTn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Nov 2020 12:19:43 -0500
+Received: by mail-oi1-f193.google.com with SMTP id z26so2462508oid.1;
+        Thu, 05 Nov 2020 09:19:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=05L3sB3OfgwjfPRDm4XzH9qNouMEyPQgKMGeJaoAAxE=;
+        b=YEzPiM90Zr32L1wcbVHRX+1sub0DQCVb15fgRjAluaci5vFCYQfEyQDQsY6H2XuHBI
+         iRFAuBV+b+p3rYQilL5B5yS+rnxT1K9gjNSfZ1UZ2KPw1aXo6Zj2vumXB5E4zJ1tWjgy
+         EE8pw55rJoTKSqcNZhA+kK3baEdB4JuWIy0r0ALdLEZn0w52hNUQWE2mg+pEc1cYdgMz
+         HQBNw5kLwMYFDYUEh7pHlIwzj4k1cP7GH+O1HHh5GnhHkbvnN4PkNUDJz4f3QjcNiLb4
+         xTMQ1OWwgQkMvrLYdXM0gh/r0OT4xlkbt0/uKxpzpiyEGbade6c5gWhS9dvIUNacr7fC
+         lRqg==
+X-Gm-Message-State: AOAM531/33f4mPoZQmiclvw9SiPU/M+RKq1esg5ksp2tY3E+x5Zb3Buy
+        OcD0DbsJkh2czfH5oCD0Aw==
+X-Google-Smtp-Source: ABdhPJz1LxIaYbQB7Z1S1g0MOIWHhGFF4OqmQxG+cWMMxAi7p7yzmfHtMXOns1fo/fb1L8At9GuAxA==
+X-Received: by 2002:aca:5515:: with SMTP id j21mr281269oib.150.1604596782389;
+        Thu, 05 Nov 2020 09:19:42 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id d26sm199446ooh.19.2020.11.05.09.19.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2020 09:19:41 -0800 (PST)
+Received: (nullmailer pid 1503059 invoked by uid 1000);
+        Thu, 05 Nov 2020 17:19:40 -0000
+Date:   Thu, 5 Nov 2020 11:19:40 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 4/5] dt-bindings:iio:adc:adi,ad7768-1: Add
+ documentation for channel label
+Message-ID: <20201105171940.GA1499984@bogus>
+References: <20201102142000.68916-1-cristian.pop@analog.com>
+ <20201102142000.68916-4-cristian.pop@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkdYG4Z6vaKp9woULPz0CKyTCr6ZocfvRm4gxw2JktStggg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20201102142000.68916-4-cristian.pop@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 05, 2020 at 03:23:07PM +0100, Linus Walleij wrote:
-> On Thu, Oct 29, 2020 at 6:10 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Thu, Oct 29, 2020 at 5:05 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > On Mon, 26 Oct 2020 19:53:40 +0200
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > > This makes the driver code slightly easier to read.
-> > > >
-> > > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > >
-> > > What you have is good, but could we do better?
-> > >
-> > > Why not use an __le64 to grab the whole thing, convert it to a local
-> > > cpu endian u64 then use FIELD_GET or similar to pull out the right bits.
-> > > Would be fairly self documenting as well which is always nice.
-> > >
-> > > Or am I missing something?
-> >
-> > My laziness. I shared this as a leftover from a big series of
-> > converting a lot of drivers to get_unligned_.eXX(). If you consider
-> > this is not good enough, just don't apply (no hard feelings :-) I will
-> > drop it from my local branches.
+On Mon, Nov 02, 2020 at 04:19:59PM +0200, Cristian Pop wrote:
+> Optional attribute for better identification of the channels.
 > 
-> I would suggest to apply it anyways because the kernel will look
-> better after than before this patch.
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> ---
+> Changes in v7:
+>  - Add "additionalProperties: false" for channel child nodes.
+>  - Fix "reg" spelling.
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 32 +++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+
+Jonathan's common ADC schema should remove the need for some of this, 
+but given it's v7:
+
+Reviewed-by: Rob Herring <robh@kernel.org>
+
 > 
-> Possibly Jonathan could just slip in a TODO comment for this?
-
-Sorry, I have already dropped, but if you convince Jonathan to apply, I agree
-on whatever you propose (TODO comment as I see). I think patchwork or lore
-still keeps a track of this.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> index d3733ad8785a..6be43bf5c1e0 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> @@ -29,6 +29,12 @@ properties:
+>    interrupts:
+>      maxItems: 1
+>  
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+>    vref-supply:
+>      description:
+>        ADC reference voltage supply
+> @@ -61,6 +67,24 @@ required:
+>    - spi-cpha
+>    - adi,sync-in-gpios
+>  
+> +patternProperties:
+> +  "^channel@([0-9]|1[0-5])$":
+> +    type: object
+> +    description: |
+> +      Represents the external channels which are connected to the device.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number.
+> +
+> +      label:
+> +        description: |
+> +          Unique name to identify which channel this is.
+> +    required:
+> +      - reg
+> +    additionalProperties: false
+> +
+>  additionalProperties: false
+>  
+>  examples:
+> @@ -84,6 +108,14 @@ examples:
+>              reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
+>              clocks = <&ad7768_mclk>;
+>              clock-names = "mclk";
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            channel@0 {
+> +                reg = <0>;
+> +                label = "channel_0";
+> +            };
+>          };
+>      };
+>  ...
+> -- 
+> 2.17.1
+> 

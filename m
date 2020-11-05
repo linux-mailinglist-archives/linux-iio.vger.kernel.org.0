@@ -2,95 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1932A80C4
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Nov 2020 15:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B31142A80E3
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Nov 2020 15:30:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730660AbgKEOXV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Nov 2020 09:23:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728371AbgKEOXU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Nov 2020 09:23:20 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B931C0613CF
-        for <linux-iio@vger.kernel.org>; Thu,  5 Nov 2020 06:23:20 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id d24so1745211ljg.10
-        for <linux-iio@vger.kernel.org>; Thu, 05 Nov 2020 06:23:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nZtCz5kIlO/Y2YjkYz/rLI2FJkl9sXpZBq7XPHG3z5Q=;
-        b=a/Dja0Gu1k/wMFbBQi7iA5qVdofmT9o9hL8Mj6GNDlklEsZ0SSwL8C+86N/VGHsjdL
-         qFNqlokGznvLeCZkbdDdDT5lQ3m+A9GInhvqOw5Ol2GDKNYAgr1C/q+ChTFww77VSZq0
-         WulGl4O261TIa2YG2YVpqSTNjWYmtF0SlcHd4zjUMxQ2CShlIIwoKlaS/DDm1Mv2SKPO
-         Lo38Bd10C6lBbpMEYXTKUvuEkmVG3lFp4E3b3Q2lBrKATb4QV5oAg5vUFuwbth27meCw
-         AwbAfO0X8jNCw1wGBvujYAw4atad/NW6wRmLPMbiVqZg+oyqbvJxZfNtu8IKxt7AqwLX
-         BTAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nZtCz5kIlO/Y2YjkYz/rLI2FJkl9sXpZBq7XPHG3z5Q=;
-        b=QCFekw8X3SZ1t23GJuDKEn5NYKLaxq+np6OS0SW5hlQIdE57G4I6KLnYI96jlQ9SUz
-         xcn/F04/X9mYhxvgdShR4q2OSofnh+lSJO2UPfhsz62h5vU4NVuEiNE6gcplX2UZUKDF
-         Pa50+o7jcs3lI2Jzx6dUI9M0VF4GgS2qYrqJD2HsHt6y6MWiL8OCZwd+UlsT5T49bSwK
-         RIoBZ1S1H8FP3NIOHi8ax5rDX6FHvq7hcT6ViysPEshT48hizskkLL7hP3LPrHFpNCYo
-         0KjuP525mAR9gnM7unqzoXt3GL42X3+fJ6W/pI8uUqhGRldgsHK4TxBbBMFOIQXIDqtS
-         jgSg==
-X-Gm-Message-State: AOAM533jsW+YA8dNRzApF/HStTJgE0hRiqzE34KN3hStgIBnxyS0+s/s
-        CfspN0dLkxE45KU0jS/VpoacVJQy79GCcZhkqGMRMS7UNF4Iyw==
-X-Google-Smtp-Source: ABdhPJzexGnima3brfKnT7oZjInkDYNnSyaPt6iAxo9bDn9aqWPpWdGTkRqzK7AH33LMVebB17PQnBuOANtY4GWxLAE=
-X-Received: by 2002:a05:651c:1205:: with SMTP id i5mr1065190lja.283.1604586198587;
- Thu, 05 Nov 2020 06:23:18 -0800 (PST)
+        id S1731008AbgKEOaN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Nov 2020 09:30:13 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:3798 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726874AbgKEOaN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Nov 2020 09:30:13 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A5ENFYl017987;
+        Thu, 5 Nov 2020 15:29:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=dyr85PgFl8sA9doMkGgOgiUNMN6lTP8JG0WtqSphbx4=;
+ b=zFxqWEENfSHmbpanJVS5772LhH4wFSvPdg02ozNDbwrg1lBIcEujAVvl8PGcRELM1qpa
+ 95gyu6ZNtzTWP6Iv0r0YGOcQozJ4qkga3b6zrEhp/+xiivO+0t4hXKTvbbOXg9AVv2r8
+ JPySjkc8hIHf3blHUxO7QgFq0yx7M1j0PJfPkycfgSpg3u4EwXlxLL7cCRLcULBGMxyC
+ QHhDG+ediz0YaH4+0Z7NY2Qff6swhKb/cKsUPXkkV8BjUzPYUbCb8Dy+uJ2FenNZQCOK
+ HVgMs+14Ch82KvlRFrVkrj2+3k5swGvE35ZxXulaZtyofqjQTxpCsLI6ns3bEk6yv+/J kw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 34h0321by7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 05 Nov 2020 15:29:49 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A8F5710002A;
+        Thu,  5 Nov 2020 15:29:48 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9100B2BA2DA;
+        Thu,  5 Nov 2020 15:29:48 +0100 (CET)
+Received: from localhost (10.75.127.47) by SFHDAG2NODE2.st.com (10.75.127.5)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 5 Nov 2020 15:29:47
+ +0100
+From:   Olivier Moysan <olivier.moysan@st.com>
+To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <alexandre.torgue@st.com>,
+        <fabrice.gasnier@st.com>, <olivier.moysan@st.com>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: adc: stm32-adc: dma transfers cleanup
+Date:   Thu, 5 Nov 2020 15:29:41 +0100
+Message-ID: <20201105142941.27301-1-olivier.moysan@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20201026175340.19570-1-andriy.shevchenko@linux.intel.com>
- <20201029150444.28f4e18d@archlinux> <CAHp75VfzV=VY5R1oVx+2mtbdNj97rJCh6tqeUnzYt=MDGpCsfQ@mail.gmail.com>
-In-Reply-To: <CAHp75VfzV=VY5R1oVx+2mtbdNj97rJCh6tqeUnzYt=MDGpCsfQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 5 Nov 2020 15:23:07 +0100
-Message-ID: <CACRpkdYG4Z6vaKp9woULPz0CKyTCr6ZocfvRm4gxw2JktStggg@mail.gmail.com>
-Subject: Re: [PATCH v1] iio: gyro: mpu3050: Use get_unaligned_leXX()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG3NODE3.st.com (10.75.127.9) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-05_07:2020-11-05,2020-11-05 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 6:10 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Thu, Oct 29, 2020 at 5:05 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Mon, 26 Oct 2020 19:53:40 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > > This makes the driver code slightly easier to read.
-> > >
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > What you have is good, but could we do better?
-> >
-> > Why not use an __le64 to grab the whole thing, convert it to a local
-> > cpu endian u64 then use FIELD_GET or similar to pull out the right bits.
-> > Would be fairly self documenting as well which is always nice.
-> >
-> > Or am I missing something?
->
-> My laziness. I shared this as a leftover from a big series of
-> converting a lot of drivers to get_unligned_.eXX(). If you consider
-> this is not good enough, just don't apply (no hard feelings :-) I will
-> drop it from my local branches.
+- Remove processing related to DMA in irq handler as this
+data transfer is managed directly in DMA callback.
+- Update comment in stm32_adc_set_watermark() function.
 
-I would suggest to apply it anyways because the kernel will look
-better after than before this patch.
+Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+---
+ drivers/iio/adc/stm32-adc.c | 29 ++++++-----------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
 
-Possibly Jonathan could just slip in a TODO comment for this?
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index b3f31f147347..08be826f1462 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -1310,7 +1310,7 @@ static int stm32_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+ 	 * dma cyclic transfers are used, buffer is split into two periods.
+ 	 * There should be :
+ 	 * - always one buffer (period) dma is working on
+-	 * - one buffer (period) driver can push with iio_trigger_poll().
++	 * - one buffer (period) driver can push data.
+ 	 */
+ 	watermark = min(watermark, val * (unsigned)(sizeof(u16)));
+ 	adc->rx_buf_sz = min(rx_buf_sz, watermark * 2 * adc->num_conv);
+@@ -1573,31 +1573,14 @@ static irqreturn_t stm32_adc_trigger_handler(int irq, void *p)
+ 
+ 	dev_dbg(&indio_dev->dev, "%s bufi=%d\n", __func__, adc->bufi);
+ 
+-	if (!adc->dma_chan) {
+-		/* reset buffer index */
+-		adc->bufi = 0;
+-		iio_push_to_buffers_with_timestamp(indio_dev, adc->buffer,
+-						   pf->timestamp);
+-	} else {
+-		int residue = stm32_adc_dma_residue(adc);
+-
+-		while (residue >= indio_dev->scan_bytes) {
+-			u16 *buffer = (u16 *)&adc->rx_buf[adc->bufi];
+-
+-			iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-							   pf->timestamp);
+-			residue -= indio_dev->scan_bytes;
+-			adc->bufi += indio_dev->scan_bytes;
+-			if (adc->bufi >= adc->rx_buf_sz)
+-				adc->bufi = 0;
+-		}
+-	}
+-
++	/* reset buffer index */
++	adc->bufi = 0;
++	iio_push_to_buffers_with_timestamp(indio_dev, adc->buffer,
++					   pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	/* re-enable eoc irq */
+-	if (!adc->dma_chan)
+-		stm32_adc_conv_irq_enable(adc);
++	stm32_adc_conv_irq_enable(adc);
+ 
+ 	return IRQ_HANDLED;
+ }
+-- 
+2.17.1
 
-Yours,
-Linus Walleij

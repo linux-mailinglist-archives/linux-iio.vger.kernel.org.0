@@ -2,68 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 376832A9A9C
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Nov 2020 18:16:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD762A9B2F
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Nov 2020 18:50:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbgKFRQy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Nov 2020 12:16:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42192 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726034AbgKFRQy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Nov 2020 12:16:54 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393A1C0613CF
-        for <linux-iio@vger.kernel.org>; Fri,  6 Nov 2020 09:16:54 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <h.assmann@pengutronix.de>)
-        id 1kb5M4-0004FQ-MM; Fri, 06 Nov 2020 18:16:52 +0100
-Subject: Re: Counter device Interface for reading out input capture
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-iio@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-References: <e8c99989-f018-dd90-2144-e09c05a3731b@pengutronix.de>
- <f9f26c15-f214-0fa5-3d12-10a5ec3b6202@st.com>
-From:   Holger Assmann <h.assmann@pengutronix.de>
-Message-ID: <f076d2e7-f4fc-ec66-b4a9-56ce3d4606be@pengutronix.de>
-Date:   Fri, 6 Nov 2020 18:16:51 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726999AbgKFRus (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Nov 2020 12:50:48 -0500
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:62702 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726408AbgKFRus (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Nov 2020 12:50:48 -0500
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A6HmTgh004037;
+        Fri, 6 Nov 2020 18:50:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=eMPMn91cCHyM/mIF1zD+SFO1I52TNwQPU0lvOZDdToE=;
+ b=0O4Jge/UIjwArzKM0JVlUhlUH2fxXAeEsWZ/yltz9MTsSYTFpAAsLtrDg5WdoAaQMkru
+ OkOK7UK0R3L+9OB6aiNpgOJos37Wn0LlneVS3Acz3XA1pRVfLxnzPOHsSZCK1in3fkcw
+ qaBmoSUorZLH8wyf974OfunbogdJ/BzF5uq45ziSn9U/0blx1S3KGzCrE8K+xkqcMMlj
+ 6YKylkhBXg9ycxHSdsWiWvQBtPN4c8aK69cxW+7mTPr5MSqBF7ehIk59p+Xc5IdqO29p
+ 0yTiYR3SFpJhRFkqcuv2eQtEUxcCcAGb1JrKjGihNHLsHOADmwMANFBpe7bs/w2ZaoeI eA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 34h00ewstr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 06 Nov 2020 18:50:35 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7865D100034;
+        Fri,  6 Nov 2020 18:50:34 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag1node3.st.com [10.75.127.3])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 67B612150EE;
+        Fri,  6 Nov 2020 18:50:34 +0100 (CET)
+Received: from localhost (10.75.127.44) by SFHDAG1NODE3.st.com (10.75.127.3)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 6 Nov 2020 18:50:33
+ +0100
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <jic23@kernel.org>
+CC:     <mchehab+huawei@kernel.org>, <gregkh@linuxfoundation.org>,
+        <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <alexandre.torgue@st.com>,
+        <fabrice.gasnier@st.com>, <olivier.moysan@st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH] docs: ABI: testing: iio: stm32: remove re-introduced unsupported ABI
+Date:   Fri, 6 Nov 2020 18:50:16 +0100
+Message-ID: <1604685016-2434-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <f9f26c15-f214-0fa5-3d12-10a5ec3b6202@st.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: h.assmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG6NODE2.st.com (10.75.127.17) To SFHDAG1NODE3.st.com
+ (10.75.127.3)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-06_06:2020-11-05,2020-11-06 signatures=0
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Fabrice,
+Remove unsupported ABI that has been re-introduced due to a rebase hunk.
+This ABI has been moved in the past in commit b299d00420e2
+("IIO: stm32: Remove quadrature related functions from trigger driver")
 
-On Fri, Nov 06, 2020 at 10:11:07 +0100, Fabrice Gasnier wrote:
-> May I ask a bit more information regarding your needs here?
+This also fixes a couple of warnings seen with:
+./scripts/get_abi.pl validate 2>&1|grep iio
 
-We basically want to latch the current counter value into the
-respective Capture/Compare Register when a pulse occurs at the
-corresponding ICx input.
-Our goal is to measure the jitter (and timing offset) between two or
-more data lines which are supposed to carry the same signal at the
-same time. Every line is thus connected to one of the four channels.
+Fixes: 34433332841d ("docs: ABI: testing: make the files compatible with ReST output")
 
- From my understanding the PWM capture interface already goes into the
-right direction, although we obviously require to utilize more than
-one channel of the timer (and in return only need one C/C Register
-per channel). I will therefore take your hint and have a closer look
-at the pwm-stm32.c - thanks!
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+---
+ .../ABI/testing/sysfs-bus-iio-timer-stm32          | 24 ----------------------
+ 1 file changed, 24 deletions(-)
 
-Regards,
-Holger
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+index a10a4de..c4a4497 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
++++ b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+@@ -109,30 +109,6 @@ Description:
+ 		When counting down the counter start from preset value
+ 		and fire event when reach 0.
+ 
+-What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+-KernelVersion:	4.12
+-Contact:	benjamin.gaignard@st.com
+-Description:
+-		Reading returns the list possible quadrature modes.
+-
+-What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
+-KernelVersion:	4.12
+-Contact:	benjamin.gaignard@st.com
+-Description:
+-		Configure the device counter quadrature modes:
+-
+-		channel_A:
+-			Encoder A input servers as the count input and B as
+-			the UP/DOWN direction control input.
+-
+-		channel_B:
+-			Encoder B input serves as the count input and A as
+-			the UP/DOWN direction control input.
+-
+-		quadrature:
+-			Encoder A and B inputs are mixed to get direction
+-			and count with a scale of 0.25.
+-
+ What:		/sys/bus/iio/devices/iio:deviceX/in_count_enable_mode_available
+ KernelVersion:	4.12
+ Contact:	benjamin.gaignard@st.com
+-- 
+2.7.4
+

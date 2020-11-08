@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20E8D2AABF3
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Nov 2020 16:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9832AABF7
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Nov 2020 16:41:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgKHPhV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Nov 2020 10:37:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51930 "EHLO mail.kernel.org"
+        id S1727844AbgKHPle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Nov 2020 10:41:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52582 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727844AbgKHPhU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Nov 2020 10:37:20 -0500
+        id S1726814AbgKHPle (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Nov 2020 10:41:34 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6252208B6;
-        Sun,  8 Nov 2020 15:37:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1EBEC206ED;
+        Sun,  8 Nov 2020 15:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604849840;
-        bh=4xK2+N7SORguqSalVsYutFIB/McfZ2ALvWZwLhmL5Lo=;
+        s=default; t=1604850093;
+        bh=Ro0XFlRfJTxsmdUsm+VsUuYHfoz4ChDTnZqn6A2mBCw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yqsR+OQmU5w5ZsE1S2JW82JTxIqhNJsAVmtfeTVFFIOX0AB8bNDMFdS290r2vIQvH
-         1FjyfcAIwUFxw7igvqF05xft7p2IFMyp7chkifaEUk2BjGEgOizEOnVz218sQPbCKo
-         W6b6zxSCjMpC+b4BUgSfHxuzV41trhCg2Vl3YNDg=
-Date:   Sun, 8 Nov 2020 15:37:15 +0000
+        b=a1b7mIEmiDKom1i3FfZH1EVwV11OCSXeE0soCh2G3P8PGWCvIHVZMi0yfXvajA/Mg
+         kuCeEFjysVB/RasYm7Lw6qC+ERq59s2Nfl1fZM6Hi+hsk1NlSM/uNXt4QChYPn6b4D
+         IRjdwhtdGkADNnqSjA6f2Rt8wdsCERmh9riR07rY=
+Date:   Sun, 8 Nov 2020 15:41:28 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
+To:     Qinglang Miao <miaoqinglang@huawei.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>, od@zcrc.me,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio/adc: ingenic: Fix AUX/VBAT readings when
- touchscreen is used
-Message-ID: <20201108153715.334bd5e1@archlinux>
-In-Reply-To: <bbd87ebab678e3033545fef749c3b22a@artur-rojek.eu>
-References: <20201103201238.161083-1-paul@crapouillou.net>
-        <bbd87ebab678e3033545fef749c3b22a@artur-rojek.eu>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Heiko Stuebner <heiko@sntech.de>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: adc: rockchip_saradc: fix missing
+ clk_disable_unprepare() on error in rockchip_saradc_resume
+Message-ID: <20201108154128.57f4162f@archlinux>
+In-Reply-To: <20201103120743.110662-1-miaoqinglang@huawei.com>
+References: <20201103120743.110662-1-miaoqinglang@huawei.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,114 +46,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 04 Nov 2020 23:25:12 +0100
-Artur Rojek <contact@artur-rojek.eu> wrote:
+On Tue, 3 Nov 2020 20:07:43 +0800
+Qinglang Miao <miaoqinglang@huawei.com> wrote:
 
-> Hi Paul,
+> Fix the missing clk_disable_unprepare() of info->pclk
+> before return from rockchip_saradc_resume in the error
+> handling case when fails to prepare and enable info->clk.
 > 
-> On 2020-11-03 21:12, Paul Cercueil wrote:
-> > When the command feature of the ADC is used, it is possible to program
-> > the ADC, and specify at each step what input should be processed, and 
-> > in
-> > comparison to what reference.
-> > 
-> > This broke the AUX and battery readings when the touchscreen was
-> > enabled, most likely because the CMD feature would change the VREF all
-> > the time.
-> > 
-> > Now, when AUX or battery are read, we temporarily disable the CMD
-> > feature, which means that we won't get touchscreen readings in that 
-> > time
-> > frame. But it now gives correct values for AUX / battery, and the
-> > touchscreen isn't disabled for long enough to be an actual issue.
-> > 
-> > Fixes: b96952f498db ("IIO: Ingenic JZ47xx: Add touchscreen mode.")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > ---
-> >  drivers/iio/adc/ingenic-adc.c | 33 +++++++++++++++++++++++++++------
-> >  1 file changed, 27 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ingenic-adc.c 
-> > b/drivers/iio/adc/ingenic-adc.c
-> > index 92b25083e23f..ecaff6a9b716 100644
-> > --- a/drivers/iio/adc/ingenic-adc.c
-> > +++ b/drivers/iio/adc/ingenic-adc.c
-> > @@ -177,13 +177,12 @@ static void ingenic_adc_set_config(struct
-> > ingenic_adc *adc,
-> >  	mutex_unlock(&adc->lock);
-> >  }
-> > 
-> > -static void ingenic_adc_enable(struct ingenic_adc *adc,
-> > -			       int engine,
-> > -			       bool enabled)
-> > +static void ingenic_adc_enable_unlocked(struct ingenic_adc *adc,
-> > +					int engine,
-> > +					bool enabled)
-> >  {
-> >  	u8 val;
-> > 
-> > -	mutex_lock(&adc->lock);
-> >  	val = readb(adc->base + JZ_ADC_REG_ENABLE);
-> > 
-> >  	if (enabled)
-> > @@ -192,20 +191,42 @@ static void ingenic_adc_enable(struct ingenic_adc 
-> > *adc,
-> >  		val &= ~BIT(engine);
-> > 
-> >  	writeb(val, adc->base + JZ_ADC_REG_ENABLE);
-> > +}
-> > +
-> > +static void ingenic_adc_enable(struct ingenic_adc *adc,
-> > +			       int engine,
-> > +			       bool enabled)
-> > +{
-> > +	mutex_lock(&adc->lock);
-> > +	ingenic_adc_enable_unlocked(adc, engine, enabled);
-> >  	mutex_unlock(&adc->lock);
-> >  }
-> > 
-> >  static int ingenic_adc_capture(struct ingenic_adc *adc,
-> >  			       int engine)
-> >  {
-> > +	u32 cfg;
-> >  	u8 val;
-> >  	int ret;
-> > 
-> > -	ingenic_adc_enable(adc, engine, true);
-> > +	/*
-> > +	 * Disable CMD_SEL temporarily, because it causes wrong VBAT 
-> > readings,
-> > +	 * probably due to the switch of VREF. We must keep the lock here to
-> > +	 * avoid races with the buffer enable/disable functions.
-> > +	 */
-> > +	mutex_lock(&adc->lock);
-> > +	cfg = readl(adc->base + JZ_ADC_REG_CFG);
-> > +	writel(cfg & ~JZ_ADC_REG_CFG_CMD_SEL, adc->base + JZ_ADC_REG_CFG);
-> > +
-> > +  
-> Redundant empty line.
-> > +	ingenic_adc_enable_unlocked(adc, engine, true);
-> >  	ret = readb_poll_timeout(adc->base + JZ_ADC_REG_ENABLE, val,
-> >  				 !(val & BIT(engine)), 250, 1000);
-> >  	if (ret)
-> > -		ingenic_adc_enable(adc, engine, false);
-> > +		ingenic_adc_enable_unlocked(adc, engine, false);
-> > +
-> > +	writel(cfg, adc->base + JZ_ADC_REG_CFG);
-> > +	mutex_unlock(&adc->lock);
-> > 
-> >  	return ret;
-> >  }  
-> 
-> With the above nitpick corrected:
-> Acked-by: Artur Rojek <contact@artur-rojek.eu>
-> 
-fixed up whilst applying.
+> Fixes: 44d6f2ef94f9 ("iio: adc: add driver for Rockchip saradc")
+> Suggested-by:Robin Murphy <robin.murphy@arm.com>
+> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
 
-Applied to the fixes-togreg branch of iio.git.  Thanks,
+Looks good to me.  I'll just give it a little longer on the list so Heiko
+and others have a chance to sanity check it.
+
+Thanks,
 
 Jonathan
 
+> ---
+> v2: remove useless braces because early return is pointless.
 > 
+>  drivers/iio/adc/rockchip_saradc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+> index 1f3d7d639..12584f163 100644
+> --- a/drivers/iio/adc/rockchip_saradc.c
+> +++ b/drivers/iio/adc/rockchip_saradc.c
+> @@ -462,7 +462,7 @@ static int rockchip_saradc_resume(struct device *dev)
+>  
+>  	ret = clk_prepare_enable(info->clk);
+>  	if (ret)
+> -		return ret;
+> +		clk_disable_unprepare(info->pclk);
+>  
+>  	return ret;
+>  }
 

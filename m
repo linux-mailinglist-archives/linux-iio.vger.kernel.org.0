@@ -2,42 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5499E2AAC2D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Nov 2020 17:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 853452AAC3E
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Nov 2020 17:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727910AbgKHQX4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Nov 2020 11:23:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59708 "EHLO mail.kernel.org"
+        id S1728038AbgKHQe4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Nov 2020 11:34:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60760 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726388AbgKHQXz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Nov 2020 11:23:55 -0500
+        id S1727958AbgKHQe4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Nov 2020 11:34:56 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED226208B6;
-        Sun,  8 Nov 2020 16:23:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ADE7E206ED;
+        Sun,  8 Nov 2020 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604852635;
-        bh=avBVJRnkd7Xw7yPfPzdT/w2Ilk+ZbHTnHDLOiYSuk1M=;
+        s=default; t=1604853295;
+        bh=fgwfsiFENOgIQeuGUpxQJqdzLYSCjbAvdrmOqR1DqfI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xZeW3GZjrpTZY/b5Slt348II/ReXiYPkl27WWHfiYzP093VzGFnkMwRCzwW2E3Xl7
-         2aP/y3w+02WcSNvd4to5ETYmZKZfHPrqVUPFboJRCgswI8ysk5rVbO+RdgmY/sgIM6
-         eO5MrjojHnkgKsrk7GHVOX+BOdrKMJvUsF6rIvzg=
-Date:   Sun, 8 Nov 2020 16:23:49 +0000
+        b=z0xOs/XDJ+uJVdZ6xt82+nqa9UQ6ZBmB3v/PYl++bHON3rqxaxDYVfGEc7m0fPboy
+         MRXZF8WQRDOJh8zmXHAbHonVVPhfNJy8+dhCbxyJV+ntc9jXhZHNJojtJwEPwzDa4f
+         pMmjsuygcG5cakXf7HRRiIDO9DeyLMakUhJ6vAI0=
+Date:   Sun, 8 Nov 2020 16:34:51 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gene Chen <gene.chen.richtek@gmail.com>
-Cc:     robh+dt@kernel.org, matthias.bgg@gmail.com, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        gene_chen@richtek.com, Wilma.Wu@mediatek.com,
-        shufan_lee@richtek.com, cy_huang@richtek.com,
-        benjamin.chao@mediatek.com
-Subject: Re: [PATCH v7 0/3] iio: adc: mt6360: Add ADC driver for MT6360
-Message-ID: <20201108162317.598ae8cc@archlinux>
-In-Reply-To: <20201101154019.39932a2e@archlinux>
-References: <1603181267-15610-1-git-send-email-gene.chen.richtek@gmail.com>
-        <20201101154019.39932a2e@archlinux>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2 16/29] dt-bindings:iio:dac:ti,dac082s085 yaml
+ conversion
+Message-ID: <20201108163451.7946b776@archlinux>
+In-Reply-To: <20201103022108.GA674527@bogus>
+References: <20201031134110.724233-1-jic23@kernel.org>
+        <20201031134110.724233-17-jic23@kernel.org>
+        <20201103022108.GA674527@bogus>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,79 +44,175 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 1 Nov 2020 15:40:19 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 2 Nov 2020 20:21:08 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On Tue, 20 Oct 2020 16:07:44 +0800
-> Gene Chen <gene.chen.richtek@gmail.com> wrote:
-> 
-> > In-Reply-To: 
+> On Sat, Oct 31, 2020 at 01:40:57PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > This patch series add MT6360 ADC support contains driver, testing document
-> > and binding document
+> > Fairly simple conversion with the exception of the XOR between
+> > spi-cpha and spi-cpol.
+> > 
+> > Is there a better way to specify that?
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > ---
+> > v2:
+> > * Family typo
+> > * Put back the reference regulator in example.
+> > * Added checking of XOR of spi-cpha and spi-cpol
+> >   (dropped Rob Herrings Reviewed-by due to this change)
 > >   
-> Hi Gene,
+> >  .../bindings/iio/dac/ti,dac082s085.yaml       | 79 +++++++++++++++++++
+> >  .../bindings/iio/dac/ti-dac082s085.txt        | 34 --------
+> >  2 files changed, 79 insertions(+), 34 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml
+> > new file mode 100644
+> > index 000000000000..192b314c99d1
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac082s085.yaml
+> > @@ -0,0 +1,79 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/dac/ti,dac082s085.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Texas Instruments DAC082s085 and similar DACs
+> > +
+> > +description:
+> > +  A family of Texas Instruments 8/10/12-bit 2/4-channel DACs
+> > +
+> > +maintainers:
+> > +  - Lukas Wunner <lukas@wunner.de>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - ti,dac082s085
+> > +      - ti,dac102s085
+> > +      - ti,dac122s085
+> > +      - ti,dac084s085
+> > +      - ti,dac104s085
+> > +      - ti,dac124s085
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  spi-cpha: true
+> > +  spi-cpol:
+> > +    description:
+> > +      Should be either spi-cpha, or spi-cpol but not both.
+> > +
+> > +  vref-supply:
+> > +    description: Needed to provide output scaling.
+> > +
+> > +  spi-max-frequency: true
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - vref-supply
+> > +
+> > +additionalProperties: false
+> > +
+> > +allOf:
+> > +  - $ref: '#/definitions/cpolXORcpha'
+> > +
+> > +definitions:
+> > +  cpolXORcpha:  
 > 
-> Other than that small edit needed in the dt binding this is stalled on
-> the label code getting upstreamed into the core.
-> 
-> I've asked Cristian to repost that so hopefully we can resolve that dependency
-> and get this merged fairly soon.
-> 
-> For the dt thing I can just drop the description entirely, but would prefer
-> if you sent a v8 fixing the tags issue Rob pointed out and also fixing that
-> description.
-I've tweaked as described and applied to the togreg branch of iio.git and
-pushed out as testing for the autobuilders to poke at it more than I do.
+> No need for a definition. Just put the below in the allOf entry.
+
+I can't figure out the syntax to do that.
+If I put it directly there I get, 
+
+... iio/dac/ti,dac082s085.yaml: allOf:0: 'not' is not one of ['$ref', 'if', 'then', 'else']
+
+The use of $ref was the only way I could find to get around this.
+What other option is there?  My Yaml is still largely cut and paste
+based so not sure I fully understand the restrictions that are applied.
 
 Thanks,
 
 Jonathan
 
+
+
 > 
-> Thanks,
-> 
-> Jonathan
-> 
-> > Gene Chen (2)
-> >   dt-bindings: iio: adc: add bindings doc for MT6360 ADC
-> >   Documentation: ABI: testing: mt6360: Add ADC sysfs guideline
-> >   iio: adc: mt6360: Add ADC driver for MT6360
-> > 
-> >  Documentation/ABI/testing/sysfs-bus-iio-adc-mt6360                 |   78 ++
-> >  Documentation/devicetree/bindings/iio/adc/mediatek,mt6360-adc.yaml |   34 
-> >  drivers/iio/adc/Kconfig                                            |   11 
-> >  drivers/iio/adc/Makefile                                           |    1 
-> >  drivers/iio/adc/mt6360-adc.c                                       |  372 ++++++++++
-> >  5 files changed, 496 insertions(+)
-> > 
-> > changelogs between v1 & v2
-> >  - adc: use IIO_CHAN_INFO_PROCESSED only
-> >  - adc: use devm_iio_triggered_buffer_setup
-> >  - adc: use use s64 to record timestamp
-> > 
-> > changelogs between v2 & v3
-> >  - Rearrange include file order by alphabet
-> >  - Set line length constraint below 100
-> >  - Add Document for testing adc sysfs node guideline
-> >  - Set compiler 64 bit aligned when handle iio timestamp
-> > 
-> > changelogs between v3 & v4
-> >  - Fix sysfs guideline description
-> >  - Replace iio channel processed by raw/scale/offset
-> >  - Add comment of read adc flow for special HW design
-> > 
-> > changelogs between v4 & v5
-> >  - Rename dt-bindings aligned to file name
-> >  - Aligned sysfs node name with driver and add VBUSDIVX description
-> >  - Add ADC channel sysfs node "*_labels"
-> > 
-> > changelogs between v5 & v6
-> >  - Memset aligned adc data
-> >  - Remove strong casting void pointer
-> > 
-> > changelogs between v6 & v7
-> >  - Avoid adc polling infinite loop
+> > +    not:
+> > +      required: [spi-cpha, spi-cpol]
+> > +    oneOf:
+> > +      - required:
+> > +          - spi-cpha
+> > +      - required:
+> > +          - spi-cpol
+> > +
+> > +examples:
+> > +  - |
+> > +    vref_2v5_reg: regulator-vref {
+> > +        compatible = "regulator-fixed";
+> > +        regulator-name = "2v5";
+> > +        regulator-min-microvolt = <2500000>;
+> > +        regulator-max-microvolt = <2500000>;
+> > +        regulator-always-on;
+> > +    };
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        dac@0 {
+> > +            compatible = "ti,dac082s085";
+> > +            reg = <0>;
+> > +            spi-max-frequency = <40000000>;
+> > +            spi-cpol;
+> > +            vref-supply = <&vref_2v5_reg>;
+> > +        };
+> > +    };
+> > +...
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt b/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt
+> > deleted file mode 100644
+> > index 9cb0e10df704..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/dac/ti-dac082s085.txt
+> > +++ /dev/null
+> > @@ -1,34 +0,0 @@
+> > -Texas Instruments 8/10/12-bit 2/4-channel DAC driver
+> > -
+> > -Required properties:
+> > - - compatible:		Must be one of:
+> > -			"ti,dac082s085"
+> > -			"ti,dac102s085"
+> > -			"ti,dac122s085"
+> > -			"ti,dac084s085"
+> > -			"ti,dac104s085"
+> > -			"ti,dac124s085"
+> > - - reg: 		Chip select number.
+> > - - spi-cpha, spi-cpol:	SPI mode (0,1) or (1,0) must be used, so specify
+> > -			either spi-cpha or spi-cpol (but not both).
+> > - - vref-supply: 	Phandle to the external reference voltage supply.
+> > -
+> > -For other required and optional properties of SPI slave nodes please refer to
+> > -../../spi/spi-bus.txt.
+> > -
+> > -Example:
+> > -	vref_2v5_reg: regulator-vref {
+> > -		compatible = "regulator-fixed";
+> > -		regulator-name = "2v5";
+> > -		regulator-min-microvolt = <2500000>;
+> > -		regulator-max-microvolt = <2500000>;
+> > -		regulator-always-on;
+> > -	};
+> > -
+> > -	dac@0 {
+> > -		compatible = "ti,dac082s085";
+> > -		reg = <0>;
+> > -		spi-max-frequency = <40000000>;
+> > -		spi-cpol;
+> > -		vref-supply = <&vref_2v5_reg>;
+> > -	};
+> > -- 
+> > 2.28.0
 > >   
-> 
 

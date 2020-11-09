@@ -2,287 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14A1C2AACC6
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Nov 2020 19:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E76EC2AAFA2
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Nov 2020 03:56:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbgKHS1f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Nov 2020 13:27:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57444 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727929AbgKHS1e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Nov 2020 13:27:34 -0500
-Received: from localhost (unknown [151.66.8.153])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 100CA206D8;
-        Sun,  8 Nov 2020 18:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604860053;
-        bh=YMdERtrSjiLIClAz2zYgPW6ukLrnM4K8hPgYuKlmOJs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=m8DjOiUP5QZBxQOez27zHCujbmGNzxJPaFG09Nx0Job4GxJcTPr4bXumHvCDJl285
-         nth/NPrbX4IAaILx+llaWAy3UPGXlmgrUTGL+4zBcCzWxxaBrKcpF58wqZMyJr7y2B
-         pGwz5ZJGjaumf19jNKzoRl7PKokKM4p91eJiwNhY=
-Date:   Sun, 8 Nov 2020 19:27:28 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, mario.tesi@st.com, denis.ciocca@st.com,
-        armando.visconti@st.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: fix edge-trigger interrupts
-Message-ID: <20201108182728.GA17810@lore-desk>
-References: <f48bee8fadf3383b2569c5d3e909b494976f979c.1603358530.git.lorenzo@kernel.org>
- <20201101163354.61ac7576@archlinux>
- <20201102101521.GA229825@lore-desk>
- <20201102174450.0000077e@Huawei.com>
- <20201102181842.GC229825@lore-desk>
- <20201108164942.094e1112@archlinux>
+        id S1728068AbgKIC4w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Nov 2020 21:56:52 -0500
+Received: from anchovy3.45ru.net.au ([203.30.46.155]:42822 "EHLO
+        anchovy3.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728038AbgKIC4w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Nov 2020 21:56:52 -0500
+Received: (qmail 4210 invoked by uid 5089); 9 Nov 2020 02:56:48 -0000
+Received: by simscan 1.2.0 ppid: 4128, pid: 4129, t: 0.0741s
+         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
+Received: from unknown (HELO ?192.168.0.22?) (preid@electromag.com.au@203.59.235.95)
+  by anchovy2.45ru.net.au with ESMTPA; 9 Nov 2020 02:56:48 -0000
+Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
+ conversion
+From:   Phil Reid <preid@electromag.com.au>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+References: <20201031184854.745828-1-jic23@kernel.org>
+ <20201031184854.745828-3-jic23@kernel.org> <20201103161039.GA1754553@bogus>
+ <20201103172834.00007040@Huawei.com>
+ <bc4219af-d77b-0f39-025d-d8905f35b574@electromag.com.au>
+ <CAL_JsqLAtMQhsUDG=amAG7i9mMzYq9UTDLMFRrGKOHr5rb3L+A@mail.gmail.com>
+ <a6685d81-d09a-1372-cc17-96f66c87ffbe@electromag.com.au>
+Message-ID: <66e8db5d-cc37-dde9-7d55-770d54506e3d@electromag.com.au>
+Date:   Mon, 9 Nov 2020 10:56:47 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0F1p//8PRICkK4MW"
-Content-Disposition: inline
-In-Reply-To: <20201108164942.094e1112@archlinux>
+In-Reply-To: <a6685d81-d09a-1372-cc17-96f66c87ffbe@electromag.com.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 4/11/2020 12:53, Phil Reid wrote:
+> On 4/11/2020 11:12, Rob Herring wrote:
+>> On Tue, Nov 3, 2020 at 6:39 PM Phil Reid <preid@electromag.com.au> wrote:
+>>>
+>>> On 4/11/2020 01:28, Jonathan Cameron wrote:
+>>>> On Tue, 3 Nov 2020 10:10:39 -0600
+>>>> Rob Herring <robh@kernel.org> wrote:
+>>>>
+>>>>> On Sat, Oct 31, 2020 at 06:48:10PM +0000, Jonathan Cameron wrote:
+>>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>>>
+>>>>>> Simple direct conversion from txt to yaml as part of a general aim of
+>>>>>> converting all IIO bindings to this machine readable format.
+>>>>>>
+>>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>>> Cc: Phil Reid <preid@electromag.com.au>
+>>>>>> ---
+>>>>>>    .../bindings/iio/potentiometer/ad5272.txt     | 27 ----------
+>>>>>>    .../iio/potentiometer/adi,ad5272.yaml         | 50 +++++++++++++++++++
+>>>>>>    2 files changed, 50 insertions(+), 27 deletions(-)
+>>>>>>
+>>>>>> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt b/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+>>>>>> deleted file mode 100644
+>>>>>> index f9b2eef946aa..000000000000
+>>>>>> --- a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
+>>>>>> +++ /dev/null
+>>>>>> @@ -1,27 +0,0 @@
+>>>>>> -* Analog Devices AD5272 digital potentiometer
+>>>>>> -
+>>>>>> -The node for this device must be a child node of a I2C controller, hence
+>>>>>> -all mandatory properties for your controller must be specified. See directory:
+>>>>>> -
+>>>>>> -        Documentation/devicetree/bindings/i2c
+>>>>>> -
+>>>>>> -for more details.
+>>>>>> -
+>>>>>> -Required properties:
+>>>>>> -   - compatible:   Must be one of the following, depending on the model:
+>>>>>> -                   adi,ad5272-020
+>>>>>> -                   adi,ad5272-050
+>>>>>> -                   adi,ad5272-100
+>>>>>> -                   adi,ad5274-020
+>>>>>> -                   adi,ad5274-100
+>>>>>> -
+>>>>>> -Optional properties:
+>>>>>> - - reset-gpios: GPIO specification for the RESET input. This is an
+>>>>>> -           active low signal to the AD5272.
+>>>>>> -
+>>>>>> -Example:
+>>>>>> -ad5272: potentiometer@2f {
+>>>>>> -   reg = <0x2F>;
+>>>>>> -   compatible = "adi,ad5272-020";
+>>>>>> -   reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+>>>>>> -};
+>>>>>> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
+>>>>>> new file mode 100644
+>>>>>> index 000000000000..b9b7d383bff1
+>>>>>> --- /dev/null
+>>>>>> +++ b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
+>>>>>> @@ -0,0 +1,50 @@
+>>>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>>>>> +%YAML 1.2
+>>>>>> +---
+>>>>>> +$id: http://devicetree.org/schemas/iio/potentiometer/adi,ad5272.yaml#
+>>>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>>>> +
+>>>>>> +title: Analog Devices AD5272 digital potentiometer
+>>>>>> +
+>>>>>> +maintainers:
+>>>>>> +  - Phil Reid <preid@electromag.com.au>
+>>>>>> +
+>>>>>> +description: |
+>>>>>> +  Datasheet: https://www.analog.com/en/products/ad5272.html
+>>>>>> +
+>>>>>> +properties:
+>>>>>> +  compatible:
+>>>>>> +    enum:
+>>>>>> +      - adi,ad5272-020
+>>>>>> +      - adi,ad5272-050
+>>>>>> +      - adi,ad5272-100
+>>>>>> +      - adi,ad5274-020
+>>>>>> +      - adi,ad5274-100
+>>>>>> +
+>>>>>> +  reg:
+>>>>>> +    maxItems: 1
+>>>>>> +
+>>>>>> +  reset-gpios:
+>>>>>> +    description:
+>>>>>> +      Active low signal to the AD5272 RESET input.
+>>>>>
+>>>>> Not a new problem, but active low or...
+>>>>>
+>>>>>> +
+>>>>>> +additionalProperties: false
+>>>>>> +
+>>>>>> +required:
+>>>>>> +  - compatible
+>>>>>> +  - reg
+>>>>>> +
+>>>>>> +examples:
+>>>>>> +  - |
+>>>>>> +    #include <dt-bindings/gpio/gpio.h>
+>>>>>> +    i2c {
+>>>>>> +        #address-cells = <1>;
+>>>>>> +        #size-cells = <0>;
+>>>>>> +
+>>>>>> +        potentiometer@2f {
+>>>>>> +            compatible = "adi,ad5272-020";
+>>>>>> +            reg = <0x2F>;
+>>>>>> +            reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+>>>>>
+>>>>> active high?
+>>>>
+>>>> Good spot!  @Phil.  Looks like the driver is setting the reset line to
+>>>> 0 and then to 1 to come out of reset.   So effectively inverting the logic.
+>>>> I'm tempted to be cynical and suggest we just drop the comment above and leave
+>>>> it vague but is there a better way we can clarify this?
+>>>
+>>> Had a look at a few other iio drivers in regards how they handle the same thing.
+>>> A few do the same thing, ie: the drivers are written to set gpio low to assert reset.
+>>> So they need the device tree gpio config to be active high to work correctly.
+>>> Not sure if this prevents users setting things up as open collector.
+>>
+>> The driver is wrong. 'gpiod_set_value(reset_gpio, 1);' should assert
+>> reset as '1' here is set to (reset) active state as defined in the DT.
+>>
+>> Given no upstream users, maybe it can be fixed...
+>>
+>> We need to make 'reset-gpios' implemented by a reset controller and
+>> stop letting drivers get it wrong.
+>>
+> 
+> Yes I agree, the driver is wrong, think I just copied one of the other drivers for the pattern.
+> I'd be happy to change it, there's probably few (if any) users.
+> 
+> Having a software interface to assert the reset would be nice.
+> 
+> 
 
---0F1p//8PRICkK4MW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If there's no comments against the change, I'll submit a patch in the next day or so.
 
-[...]
-> >=20
-> > I guess since edge interrupts run with the line unmasked a new interrup=
-t can fire
-> > while the irq thread is still running (so wake_up_process() will just r=
-eturn) but
-> > the driver has already read fifo_status register and so it will not rea=
-d new
-> > sample. This case should be fixed reading again the fifo_status registe=
-r.
->=20
-> It doesn't actually help because there is always a window after the fifo_=
-status register
-> is read before we exit the thread.
->=20
-> I 'think' what happens (it's been a while since I dug through this stuff)=
- is
-> that you end up with the task being added to the runqueue, even though it=
-'s
-> already running. Upshot the thread gets scheduled gain.=20
->=20
-> If this were not the case there would be a race with any edge based inter=
-rupt
-> as the thread has to reenable the interrupt and it will always be able to=
- fire
-> whilst the thread is still running.
 
-I guess this is the case (race between irq-thread and edge interrupt) since=
- afaik
-handle_edge_irq() runs with the irq-line unmasked.
-I agree with you this approach does not fix completely the issue but it red=
-uces
-the race-surface since now the interrupt can fire while processing the prev=
-ious one
-(the issue occurs if the interrupt fires between the end of hw->settings->f=
-ifo_ops.read_fifo()
-and the end of the irq-thread) while before the interrupt must always fire =
-before
-reading the fifo status register (in fact with the patch applied I am not a=
-ble
-to trigger the issue anymore).
+-- 
+Regards
+Phil Reid
 
-@denis, mario, armando: can you please confirm the hw does not support puls=
-ed
-interrupts for fifo-watermark?
 
-If not one possible approach would be to disable the interrupt generation on
-the sensor at the beginning of st_lsm6dsx_handler_thread() and schedule a
-workqueue at the end of st_lsm6dsx_handler_thread() to re-enable the sensor
-interrupt generation. What do you think?
-
-Regards,
-Lorenzo
-
->=20
-> Jonathan
->=20
->=20
->=20
->=20
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
-> > >  =20
-> > > >  =20
-> > > > >=20
-> > > > >=20
-> > > > > Hmm. Having had a look at one of the datasheets, I'm far from con=
-vinced these
-> > > > > parts truely support edge interrupts.  I can't see anything about=
- minimum
-> > > > > off periods etc that you need for true edge interrupts. Otherwise=
- they are
-> > > > > going to be prone to races.   =20
-> > > >=20
-> > > > @mario, denis, armando: any pointer for this?
-> > > >  =20
-> > > > >=20
-> > > > > So I think the following can happen.
-> > > > >=20
-> > > > > A) We drain the fifo and it stays under the limit. Hence once that
-> > > > >    is crossed in future we will interrupt as normal.
-> > > > >=20
-> > > > > B) We drain the fifo but it either has a very low watermark, or is
-> > > > >    filling very fast.   We manage to drain enough to get the inte=
-rrupt
-> > > > >    to fire again, so all is fine if less than ideal.  With you lo=
-op we
-> > > > >    may up entering the interrupt handler when we don't actually n=
-eed to.
-> > > > >    If you want to avoid that you would need to disable the interr=
-upt,
-> > > > >    then drain the fifo and finally do a dance to successfully ree=
-nable
-> > > > >    the interrupt, whilst ensuring no chance of missing by checkin=
-g it
-> > > > >    should not have fired (still below the threshold)
-> > > > >=20
-> > > > > C) We try to drain the fifo, but it is actually filling fast enou=
-gh that
-> > > > >    we never get it under the limit, so no interrupt ever fires.
-> > > > >    With new code, we'll keep spinning to 0 so might eventually dr=
-ain it.
-> > > > >    That needs a timeout so we just give up eventually.
-> > > > >=20
-> > > > > D) watershed is one sample, we drain low enough to successfully g=
-et down
-> > > > >    to zero at the moment of the read, but very very soon after th=
-at we get
-> > > > >    one sample again. There is a window in which the interrupt lin=
-e dropped
-> > > > >    but analogue electronics etc being what they are, it may not h=
-ave been
-> > > > >    detectable.  Hence we miss an interrupt...  What you are doing=
- is reducing
-> > > > >    the chance of hitting this.  It is nasty, but you might be abl=
-e to ensure
-> > > > >    a reasonable period by widening this window.  Limit the waterm=
-ark to 2
-> > > > >    samples? =20
-> > > > >=20
-> > > > > Also needs a fixes tag :)   =20
-> > > >=20
-> > > > ack, I will add them in v2
-> > > >=20
-> > > > Regards,
-> > > > Lorenzo =20
-> > > > >    =20
-> > > > > >=20
-> > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > > ---
-> > > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 33 ++++++++++++=
-+++-----
-> > > > > >  1 file changed, 25 insertions(+), 8 deletions(-)
-> > > > > >=20
-> > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/dri=
-vers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > index 5e584c6026f1..d43b08ceec01 100644
-> > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > @@ -2457,22 +2457,36 @@ st_lsm6dsx_report_motion_event(struct s=
-t_lsm6dsx_hw *hw)
-> > > > > >  	return data & event_settings->wakeup_src_status_mask;
-> > > > > >  }
-> > > > > > =20
-> > > > > > +static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *priva=
-te)
-> > > > > > +{
-> > > > > > +	return IRQ_WAKE_THREAD;
-> > > > > > +}
-> > > > > > +
-> > > > > >  static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *pr=
-ivate)
-> > > > > >  {
-> > > > > >  	struct st_lsm6dsx_hw *hw =3D private;
-> > > > > > +	int fifo_len =3D 0, len =3D 0;
-> > > > > >  	bool event;
-> > > > > > -	int count;
-> > > > > > =20
-> > > > > >  	event =3D st_lsm6dsx_report_motion_event(hw);
-> > > > > > =20
-> > > > > >  	if (!hw->settings->fifo_ops.read_fifo)
-> > > > > >  		return event ? IRQ_HANDLED : IRQ_NONE;
-> > > > > > =20
-> > > > > > -	mutex_lock(&hw->fifo_lock);
-> > > > > > -	count =3D hw->settings->fifo_ops.read_fifo(hw);
-> > > > > > -	mutex_unlock(&hw->fifo_lock);
-> > > > > > +	/*
-> > > > > > +	 * If we are using edge IRQs, new samples can arrive while
-> > > > > > +	 * processing current IRQ and those may be missed unless we
-> > > > > > +	 * pick them here, so let's try read FIFO status again
-> > > > > > +	 */
-> > > > > > +	do {
-> > > > > > +		mutex_lock(&hw->fifo_lock);
-> > > > > > +		len =3D hw->settings->fifo_ops.read_fifo(hw);
-> > > > > > +		mutex_unlock(&hw->fifo_lock);
-> > > > > > +
-> > > > > > +		fifo_len +=3D len;
-> > > > > > +	} while (len > 0);
-> > > > > > =20
-> > > > > > -	return count || event ? IRQ_HANDLED : IRQ_NONE;
-> > > > > > +	return fifo_len || event ? IRQ_HANDLED : IRQ_NONE;
-> > > > > >  }
-> > > > > > =20
-> > > > > >  static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
-> > > > > > @@ -2488,10 +2502,14 @@ static int st_lsm6dsx_irq_setup(struct =
-st_lsm6dsx_hw *hw)
-> > > > > > =20
-> > > > > >  	switch (irq_type) {
-> > > > > >  	case IRQF_TRIGGER_HIGH:
-> > > > > > +		irq_type |=3D IRQF_ONESHOT;
-> > > > > > +		fallthrough;
-> > > > > >  	case IRQF_TRIGGER_RISING:
-> > > > > >  		irq_active_low =3D false;
-> > > > > >  		break;
-> > > > > >  	case IRQF_TRIGGER_LOW:
-> > > > > > +		irq_type |=3D IRQF_ONESHOT;
-> > > > > > +		fallthrough;
-> > > > > >  	case IRQF_TRIGGER_FALLING:
-> > > > > >  		irq_active_low =3D true;
-> > > > > >  		break;
-> > > > > > @@ -2520,10 +2538,9 @@ static int st_lsm6dsx_irq_setup(struct s=
-t_lsm6dsx_hw *hw)
-> > > > > >  	}
-> > > > > > =20
-> > > > > >  	err =3D devm_request_threaded_irq(hw->dev, hw->irq,
-> > > > > > -					NULL,
-> > > > > > +					st_lsm6dsx_handler_irq,
-> > > > > >  					st_lsm6dsx_handler_thread,
-> > > > > > -					irq_type | IRQF_ONESHOT,
-> > > > > > -					"lsm6dsx", hw);
-> > > > > > +					irq_type, "lsm6dsx", hw);
-> > > > > >  	if (err) {
-> > > > > >  		dev_err(hw->dev, "failed to request trigger irq %d\n",
-> > > > > >  			hw->irq);   =20
-> > > > >    =20
-> > > >  =20
-> > >  =20
->=20
-
---0F1p//8PRICkK4MW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX6g4jQAKCRA6cBh0uS2t
-rJ5zAP9+KC98WpSex3TzLPyjk8kOPGtWcoIVNjalwhV8B2szhgEA8j3fL71/ZTLt
-GilTr2viD1c6osfEr+uu2/M8FdQcTQg=
-=DgYF
------END PGP SIGNATURE-----
-
---0F1p//8PRICkK4MW--

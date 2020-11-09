@@ -2,191 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E76EC2AAFA2
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Nov 2020 03:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D2342AB570
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Nov 2020 11:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbgKIC4w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Nov 2020 21:56:52 -0500
-Received: from anchovy3.45ru.net.au ([203.30.46.155]:42822 "EHLO
-        anchovy3.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728038AbgKIC4w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Nov 2020 21:56:52 -0500
-Received: (qmail 4210 invoked by uid 5089); 9 Nov 2020 02:56:48 -0000
-Received: by simscan 1.2.0 ppid: 4128, pid: 4129, t: 0.0741s
-         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
-Received: from unknown (HELO ?192.168.0.22?) (preid@electromag.com.au@203.59.235.95)
-  by anchovy2.45ru.net.au with ESMTPA; 9 Nov 2020 02:56:48 -0000
-Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
- conversion
-From:   Phil Reid <preid@electromag.com.au>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org
-References: <20201031184854.745828-1-jic23@kernel.org>
- <20201031184854.745828-3-jic23@kernel.org> <20201103161039.GA1754553@bogus>
- <20201103172834.00007040@Huawei.com>
- <bc4219af-d77b-0f39-025d-d8905f35b574@electromag.com.au>
- <CAL_JsqLAtMQhsUDG=amAG7i9mMzYq9UTDLMFRrGKOHr5rb3L+A@mail.gmail.com>
- <a6685d81-d09a-1372-cc17-96f66c87ffbe@electromag.com.au>
-Message-ID: <66e8db5d-cc37-dde9-7d55-770d54506e3d@electromag.com.au>
-Date:   Mon, 9 Nov 2020 10:56:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1729236AbgKIKwg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Nov 2020 05:52:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727311AbgKIKwg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Nov 2020 05:52:36 -0500
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C4AC0613D3
+        for <linux-iio@vger.kernel.org>; Mon,  9 Nov 2020 02:52:34 -0800 (PST)
+Received: by mail-il1-x143.google.com with SMTP id k1so7835118ilc.10
+        for <linux-iio@vger.kernel.org>; Mon, 09 Nov 2020 02:52:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wwWZURMOGPzlalkhwCJ/f3k1WENAaO9Y9Meee7VB2IA=;
+        b=wO/OzuTRPTWurO76xGlv8nc1TqwnqHDwlTi4ZWbo372fTDrk4WhsA/86p6Kgn9IaMz
+         x4YcMHVdBMXsuqaomm1x0u4Meou5jgV6M+e0lNQMrwSSPgeBKN8Q8UmFP71vy0rxvHco
+         YiogY0HoB/z6VckeGu6aXQmEarqYWn9H9noIC6JyOZv4Uo9Kybwi1nN6LV6P89VLJj16
+         sY5l+xyRHWLEWSVxpusZ1mOt5UvjqyCs0/D4idupyPFD/nLQn1Zxy/MEKT6ksGcM6t1w
+         qK/dccaE23/eJdhLxvrLURx1dUYWMLbwxOqjCE6pQm6WeF1/ud2MPUEERQtwtLMUSi//
+         DDGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wwWZURMOGPzlalkhwCJ/f3k1WENAaO9Y9Meee7VB2IA=;
+        b=DzB+vGY7YX6p9T7ABlO4Xg9F8aNQEvfdc2Hfl9o44LLWNNEDTuQNF+5PKzjp3lHr94
+         tlAYp1mbQCmcj2ZspVQW1vU6pV3L2VmDDapYQnrMXg9LAGsnFOXHjl72y3fvnxZpR4Ek
+         E/7AlGTYUZcpeMtJqtqiWMcK2nEhI2VZr+2fEhQf5qm8/9QZT5lu0ods4vijHhSR5Juv
+         PQTK+M5hv8jEC6SldX7HlfY/Ydaw+/g6SgyGgzmq0g0Kp84FJ1h7Kcxuhz85ta2pBV6r
+         U9lInUJxpTsFwtX99buMy+j8wAzpYfQud6K2STNNkPGYMIX83hSws0/AST5w2KGOxmP4
+         lBfA==
+X-Gm-Message-State: AOAM530k1b0eDLOiTwswUlRB/IGXa506J7tGjTMTpAJM/07tHdVTJNJZ
+        DCennfInGbUF6FgON7qe1JmAH0tw6F0c0r5Rvw+GzQ==
+X-Google-Smtp-Source: ABdhPJyS/89M7Xy9MbFvdXk3zEeNLiWgzsNdo2bTjLNeFc4/AQN4cILMilqgs8vdZ3MBG3hfjNPFuE0v/8aGzMC5wII=
+X-Received: by 2002:a92:d4cc:: with SMTP id o12mr6514962ilm.6.1604919154385;
+ Mon, 09 Nov 2020 02:52:34 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <a6685d81-d09a-1372-cc17-96f66c87ffbe@electromag.com.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 8bit
+References: <20201102142228.14949-1-brgl@bgdev.pl> <20201102142228.14949-5-brgl@bgdev.pl>
+ <20201108170813.3efab72a@archlinux>
+In-Reply-To: <20201108170813.3efab72a@archlinux>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 9 Nov 2020 11:52:23 +0100
+Message-ID: <CAMRc=Mfx1dpOc+jAV=-aeuP_EB5ZiSH9UzWW+qhJPcuZ+LCfrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] iio: adc: xilinx: use more devres helpers and
+ remove remove()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/11/2020 12:53, Phil Reid wrote:
-> On 4/11/2020 11:12, Rob Herring wrote:
->> On Tue, Nov 3, 2020 at 6:39 PM Phil Reid <preid@electromag.com.au> wrote:
->>>
->>> On 4/11/2020 01:28, Jonathan Cameron wrote:
->>>> On Tue, 3 Nov 2020 10:10:39 -0600
->>>> Rob Herring <robh@kernel.org> wrote:
->>>>
->>>>> On Sat, Oct 31, 2020 at 06:48:10PM +0000, Jonathan Cameron wrote:
->>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>>>
->>>>>> Simple direct conversion from txt to yaml as part of a general aim of
->>>>>> converting all IIO bindings to this machine readable format.
->>>>>>
->>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>>> Cc: Phil Reid <preid@electromag.com.au>
->>>>>> ---
->>>>>>    .../bindings/iio/potentiometer/ad5272.txt     | 27 ----------
->>>>>>    .../iio/potentiometer/adi,ad5272.yaml         | 50 +++++++++++++++++++
->>>>>>    2 files changed, 50 insertions(+), 27 deletions(-)
->>>>>>
->>>>>> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt b/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
->>>>>> deleted file mode 100644
->>>>>> index f9b2eef946aa..000000000000
->>>>>> --- a/Documentation/devicetree/bindings/iio/potentiometer/ad5272.txt
->>>>>> +++ /dev/null
->>>>>> @@ -1,27 +0,0 @@
->>>>>> -* Analog Devices AD5272 digital potentiometer
->>>>>> -
->>>>>> -The node for this device must be a child node of a I2C controller, hence
->>>>>> -all mandatory properties for your controller must be specified. See directory:
->>>>>> -
->>>>>> -        Documentation/devicetree/bindings/i2c
->>>>>> -
->>>>>> -for more details.
->>>>>> -
->>>>>> -Required properties:
->>>>>> -   - compatible:   Must be one of the following, depending on the model:
->>>>>> -                   adi,ad5272-020
->>>>>> -                   adi,ad5272-050
->>>>>> -                   adi,ad5272-100
->>>>>> -                   adi,ad5274-020
->>>>>> -                   adi,ad5274-100
->>>>>> -
->>>>>> -Optional properties:
->>>>>> - - reset-gpios: GPIO specification for the RESET input. This is an
->>>>>> -           active low signal to the AD5272.
->>>>>> -
->>>>>> -Example:
->>>>>> -ad5272: potentiometer@2f {
->>>>>> -   reg = <0x2F>;
->>>>>> -   compatible = "adi,ad5272-020";
->>>>>> -   reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
->>>>>> -};
->>>>>> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
->>>>>> new file mode 100644
->>>>>> index 000000000000..b9b7d383bff1
->>>>>> --- /dev/null
->>>>>> +++ b/Documentation/devicetree/bindings/iio/potentiometer/adi,ad5272.yaml
->>>>>> @@ -0,0 +1,50 @@
->>>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>>>>> +%YAML 1.2
->>>>>> +---
->>>>>> +$id: http://devicetree.org/schemas/iio/potentiometer/adi,ad5272.yaml#
->>>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>>>> +
->>>>>> +title: Analog Devices AD5272 digital potentiometer
->>>>>> +
->>>>>> +maintainers:
->>>>>> +  - Phil Reid <preid@electromag.com.au>
->>>>>> +
->>>>>> +description: |
->>>>>> +  Datasheet: https://www.analog.com/en/products/ad5272.html
->>>>>> +
->>>>>> +properties:
->>>>>> +  compatible:
->>>>>> +    enum:
->>>>>> +      - adi,ad5272-020
->>>>>> +      - adi,ad5272-050
->>>>>> +      - adi,ad5272-100
->>>>>> +      - adi,ad5274-020
->>>>>> +      - adi,ad5274-100
->>>>>> +
->>>>>> +  reg:
->>>>>> +    maxItems: 1
->>>>>> +
->>>>>> +  reset-gpios:
->>>>>> +    description:
->>>>>> +      Active low signal to the AD5272 RESET input.
->>>>>
->>>>> Not a new problem, but active low or...
->>>>>
->>>>>> +
->>>>>> +additionalProperties: false
->>>>>> +
->>>>>> +required:
->>>>>> +  - compatible
->>>>>> +  - reg
->>>>>> +
->>>>>> +examples:
->>>>>> +  - |
->>>>>> +    #include <dt-bindings/gpio/gpio.h>
->>>>>> +    i2c {
->>>>>> +        #address-cells = <1>;
->>>>>> +        #size-cells = <0>;
->>>>>> +
->>>>>> +        potentiometer@2f {
->>>>>> +            compatible = "adi,ad5272-020";
->>>>>> +            reg = <0x2F>;
->>>>>> +            reset-gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
->>>>>
->>>>> active high?
->>>>
->>>> Good spot!  @Phil.  Looks like the driver is setting the reset line to
->>>> 0 and then to 1 to come out of reset.   So effectively inverting the logic.
->>>> I'm tempted to be cynical and suggest we just drop the comment above and leave
->>>> it vague but is there a better way we can clarify this?
->>>
->>> Had a look at a few other iio drivers in regards how they handle the same thing.
->>> A few do the same thing, ie: the drivers are written to set gpio low to assert reset.
->>> So they need the device tree gpio config to be active high to work correctly.
->>> Not sure if this prevents users setting things up as open collector.
->>
->> The driver is wrong. 'gpiod_set_value(reset_gpio, 1);' should assert
->> reset as '1' here is set to (reset) active state as defined in the DT.
->>
->> Given no upstream users, maybe it can be fixed...
->>
->> We need to make 'reset-gpios' implemented by a reset controller and
->> stop letting drivers get it wrong.
->>
-> 
-> Yes I agree, the driver is wrong, think I just copied one of the other drivers for the pattern.
-> I'd be happy to change it, there's probably few (if any) users.
-> 
-> Having a software interface to assert the reset would be nice.
-> 
-> 
+On Sun, Nov 8, 2020 at 6:08 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
 
-If there's no comments against the change, I'll submit a patch in the next day or so.
+[snip]
 
+>
+> I haven't checked carefully, but it looks like you don't need
+> this any more as there are no remaining calls to
+> platform_get_drvdata().
+>
 
--- 
-Regards
-Phil Reid
+This looks to be correct.
 
+There's a call to iio_trigger_get_drvdata() and it accesses the same
+drvdata but it's called on the trigger device and there's a
+corresponding call to iio_trigger_set_drvdata() for it.
 
+>
+> I can clean that up whilst applying as long as you confirm
+> I'm right!
+>
+
+Yes please do, thanks!
+
+Bartosz
+
+> Thanks,
+>
+> Jonathan
+>

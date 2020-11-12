@@ -2,138 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1442AFF92
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Nov 2020 07:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C65252B0183
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Nov 2020 10:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725959AbgKLGXy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Nov 2020 01:23:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725941AbgKLGXx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Nov 2020 01:23:53 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C8EC0613D1;
-        Wed, 11 Nov 2020 22:23:52 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id 34so38021pgp.10;
-        Wed, 11 Nov 2020 22:23:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OIhd3mPHGXUKi53MawqoYGKb0TVJcQxotMsgj9HyU3M=;
-        b=rmaJp67NJIvoDowN01zns2CXI4p1V5e3Y/ZhTDgsE+mr7du3aeLnh/lYwFgssYkcJN
-         LCCZjyY/h6HZ6l1kLWeCxLUHK76wf7tPH7BA3PLXChvPpXlwn9NEbm04BOPQMJqAYp7W
-         2bUAUZu7xfvxFhA8BuEBwbgB5tFGppcHh1tkb5KUHWy6tfEKx2dE89Vq6pNVNUfrccO5
-         +m/38Ix4uUAQGlSQAyCXm9f73Hn0NTkNKt0rNm9MDLY8Brxd7zrFdFQBolKxkoSNbAym
-         RGTBl36T8nkWBI15GPvmEjTDqK5EdMqoKkA/6A3h+Sd/s3CMzO4lZqBRngF3dIa7YA1t
-         kFcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OIhd3mPHGXUKi53MawqoYGKb0TVJcQxotMsgj9HyU3M=;
-        b=S479k2XwkQUwIt9EYd+ZxIoVi+7JQD65r+BN/s1jDWXdMqSHTx0fadphmY9TSmjWgU
-         VgZBM1xeO+FndXkJXqHjaQHrsjQ/Ih9w7gB9PrXyvu8NT75AfV4CIWL3R1yLYizWzGuN
-         PJ6iHCdYumo//b9+gEvYWlv7fZczudVoZ7+eeVOJ1drYjVIazNXVcpMSwPArMWliI+y8
-         hIXbEnO00WFXp5kHGwFbgbNef6HYYMR+Sf18S/d5TEPaFyCxdgsE0FNBILzg5adBVWef
-         R4ppP1B9J0JibEF9yaZWSgnRukDo3UZbKD2NTbRv6qd9XSB1aGXWcXBDg0+oqb0XIlHS
-         Dt5w==
-X-Gm-Message-State: AOAM533zBoA75ieXnUQz8ANIvlbsy1MBJUEfe/EItj5+245Yg/yzJ4aX
-        Wuip/dkq2Zi42mCRleqqZ5w=
-X-Google-Smtp-Source: ABdhPJzv1ETbt4VnaBCJ1YTAAiAmkqrE5DAiBoPrj2v8rlyV9lIT6qAZ1KqHlrgQsM8mY7PctQ2sHw==
-X-Received: by 2002:a63:d542:: with SMTP id v2mr4322235pgi.250.1605162231399;
-        Wed, 11 Nov 2020 22:23:51 -0800 (PST)
-Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id ce19sm5443034pjb.53.2020.11.11.22.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2020 22:23:50 -0800 (PST)
-Date:   Wed, 11 Nov 2020 22:23:48 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-iio@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
-        Nitin Joshi1 <njoshi1@lenovo.com>, linux-input@vger.kernel.org
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-Message-ID: <20201112062348.GF1003057@dtor-ws>
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
- <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
+        id S1725995AbgKLJGL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Nov 2020 04:06:11 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:36842 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725902AbgKLJGI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Nov 2020 04:06:08 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AC8wePM017718;
+        Thu, 12 Nov 2020 04:05:54 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 34nsc98gym-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 12 Nov 2020 04:05:54 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0AC95q9K024241
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 12 Nov 2020 04:05:53 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 12 Nov
+ 2020 01:05:51 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 12 Nov 2020 01:05:51 -0800
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0AC95mLl004225;
+        Thu, 12 Nov 2020 04:05:49 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <alexandru.ardelean@analog.com>, <lars@metafoo.de>,
+        <jic23@kernel.org>
+Subject: [PATCH] iio: ad_sigma_delta: Don't put SPI transfer buffer on the stack
+Date:   Thu, 12 Nov 2020 11:10:50 +0200
+Message-ID: <20201112091050.84991-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-12_02:2020-11-10,2020-11-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011120055
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 11:51:05AM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 10/7/20 10:36 AM, Jonathan Cameron wrote:
-> > On Mon, 5 Oct 2020 22:04:27 -0400
-> > Mark Pearson <markpearson@lenovo.com> wrote:
-> > 
-> > > Adding Nitin, lead for this feature, to the thread
-> > 
-> > +CC linux-input and Dmitry for reasons that will become clear below.
-> > > 
-> > > On 2020-10-03 10:02 a.m., Hans de Goede wrote:
-> > > > Hi All,
-> > > > 
-> > > > Modern laptops can have various sensors which are kinda
-> > > > like proximity sensors, but not really (they are more
-> > > > specific in which part of the laptop the user is
-> > > > proximate to).
-> > > > 
-> > > > Specifically modern Thinkpad's have 2 readings which we
-> > > > want to export to userspace, and I'm wondering if we
-> > > > could use the IIO framework for this since these readings
-> > > > are in essence sensor readings:
-> > > > 
-> > > > 1. These laptops have a sensor in the palm-rests to
-> > > > check if a user is physically proximate to the device's
-> > > > palm-rests. This info will be used by userspace for WWAN
-> > > > functionality to control the transmission level safely.
-> > > > 
-> > > > A patch adding a thinkpad_acpi specific sysfs API for this
-> > > > is currently pending:
-> > > > https://patchwork.kernel.org/patch/11722127/
-> > > > 
-> > > > But I'm wondering if it would not be better to use
-> > > > IIO to export this info.
-> > 
-> > My first thought on this is it sounds more like a key than a sensor
-> > (simple proximity sensors fall into this category as well.)
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-[ sorry for sitting on this thread for so long ]
+Use a heap allocated memory for the SPI transfer buffer. Using stack memory
+can corrupt stack memory when using DMA on some systems.
 
-So I think the important question here is if we only ever want yes/no
-answer, or if we can consider adjusting behavior of the system based on
-the "closeness" of an object to the device, in which case I think IIO is
-more flexible.
+This change adds 4 bytes at the end of the current DMA buffer, which will
+be used by the trigger handler.
+This is required because the first 4 bytes are reserved for register data.
 
-FWIW in Chrome OS land we name IIO proximity sensors using a scheme
-"proximity-lte", "proximity-wifi", "proximity-wifi-left",
-"proximity-wifi-right", etc, and then userspace implements various
-policies (SAR, etc) based off it.
+Fixes: af3008485ea03 ("iio:adc: Add common code for ADI Sigma Delta devices")
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/adc/ad_sigma_delta.c       | 4 ++--
+ include/linux/iio/adc/ad_sigma_delta.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-> 
-> That is an interesting suggestion. Using the input/evdev API
-> would have some advantages such as being able to have a single
-> event node for all the proximity switches and then being able
-> to pass a fd to that from a privileged process to a non
-> privileged one, something which userspace already has
-> various infrastructure for.
-
-I am not sure if multiplexing all proximity switches into one evdev node
-is that great option, as I am sure we'll soon have devices with 2x
-palmrest switches and being capable finely adjusting transmit power,
-etc.
-
-Thanks.
-
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 86039e9ecaca..33297f26508a 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -395,11 +395,11 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
++	uint8_t *data = &sigma_delta->data[4];
+ 	unsigned int reg_size;
+ 	unsigned int data_reg;
+-	uint8_t data[16];
+ 
+-	memset(data, 0x00, 16);
++	memset(data, 0x00, 4);
+ 
+ 	reg_size = indio_dev->channels[0].scan_type.realbits +
+ 			indio_dev->channels[0].scan_type.shift;
+diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+index a3a838dcf8e4..ac4ac4752c62 100644
+--- a/include/linux/iio/adc/ad_sigma_delta.h
++++ b/include/linux/iio/adc/ad_sigma_delta.h
+@@ -80,7 +80,7 @@ struct ad_sigma_delta {
+ 	 * DMA (thus cache coherency maintenance) requires the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	uint8_t				data[4] ____cacheline_aligned;
++	uint8_t				data[8] ____cacheline_aligned;
+ };
+ 
+ static inline int ad_sigma_delta_set_channel(struct ad_sigma_delta *sd,
 -- 
-Dmitry
+2.17.1
+

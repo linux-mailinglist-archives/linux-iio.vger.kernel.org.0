@@ -2,186 +2,209 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1452B1616
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Nov 2020 07:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA03B2B16C3
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Nov 2020 08:55:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726310AbgKMG6i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Nov 2020 01:58:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43972 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbgKMG6h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Nov 2020 01:58:37 -0500
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF857C0613D1;
-        Thu, 12 Nov 2020 22:58:37 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id 62so6327260pgg.12;
-        Thu, 12 Nov 2020 22:58:37 -0800 (PST)
+        id S1726136AbgKMHzq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Nov 2020 02:55:46 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:13094 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725866AbgKMHzp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Nov 2020 02:55:45 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AD7nnjV031819;
+        Fri, 13 Nov 2020 02:55:26 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 34npab4rfc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 13 Nov 2020 02:55:25 -0500
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AD7sPWK006832;
+        Fri, 13 Nov 2020 02:55:25 -0500
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2173.outbound.protection.outlook.com [104.47.58.173])
+        by mx0a-00128a01.pphosted.com with ESMTP id 34npab4rf9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 13 Nov 2020 02:55:25 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=V6F4UrLx2D5RjM9vbXebeYNEYh1w3+4pza18nFwEvEgBk/jKOut63mlUXF6oQzBlueA0ppPgrLdQZn94P/kjI/buoU9lPXIYbvmzI6jEbZyz3jSAPw9DwQErVsXp31l5BRBk31Spf8debwieQSECb1ZaVcyblvSP+vmttLbQA5Z8DFZiOX19/U7aCFPXbq6Y8z8XNT9j+VVQdXzGfozzTQxpUXa4Z536nIExivUSVwS7jyRBxuR49d8nhi0q0PUh1FjsfCBKWstXkVeVj1u7HOJpsycXv/QCHDkXnXcqeBQsa3m40ZOonFdnRi3OaUFzKIwu9uyhXvnbrs1Mgazl0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E5iQILqTrK8bECNPqeYIIPqlrCLETdcNizv98fnRth8=;
+ b=kNORiwikDgb8MVql2Ux0M+RaqYooTDZp9eijarl1uc22jCvRbpsBhyZdzlJJ08YuAN/3oLFdiCNKuDxZyTPAzEhHfSi4Fqqh+XoHhJTzmiggqOLQ5QcyrgWdK12kTKLpuXMbfub0qgIvjzbLPx3DIuSm+Uq1lLhdh58nKqNKdjCcpi28ae+9TlTGQWQINB7gdRUuyHtR+Du0jLKZuJKx7l6L6EdyRcEzgw5+qstt40C23vt/9Di+53BJioA2xTX9g7NlmN6vEfEo9lfS6SjksIGIdGmsGwD/4ZCJvoYB8epzipsi+Y0QEHnygKEZsPCXuswk3hAfZmaDBnzKaDn1mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OebbN6nzg+GWM/erGm0lG5ieqspWbMcIg1x8k8UCh/0=;
-        b=OLdX2k6XfYZD4DkvtNGDOJhPjqyB4UblDyauonw9HzJAuQlD771oRGGjCrTfry2DgP
-         E+yMcVf1Pa2f98taezQoKyqA4uSnQe3PM/4/VY9PenrxlmS33Bg3BZokeJ1ACNkwcHIc
-         cwx8hk+Fxoe75JkmyGDHcZkL/WuvuieOagm04jHVMOP0joPHhcy9WFOGOIpBxSZ7P3b0
-         vqMY82cpsRG7idPwLD+WFQTK67VgDNKDx1MkTuR22nAf3nHTFHe5SKMAoaDnYlE8XmL/
-         D1oJsEKk2c129CuFvRjaRm2AiQagAN5/VjtES1xjIvWUq/U2Y/CdF1R84mjSaSv8OHTY
-         jqfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OebbN6nzg+GWM/erGm0lG5ieqspWbMcIg1x8k8UCh/0=;
-        b=lVkP4e+RvCOVPvZJtux5bg9UvYvV4Y5F85pUhLihbpdqxlOLytXGjbWztBSWAgIv+G
-         vnw49kyPF+xiyl6PsY/12K6uCXY8QwthUSxHa5BMOLGDOklNbnpMBY3GPzsxitUj8FLN
-         103mYczcL93VkwAp3O3kMAx7vK2QnNXxy+HRgQiblP9xWa4cznYP9TX23q8DamXrmaHF
-         tyNDGIwxmL0+8cLkQnlOhGa8Zs60ls8bumOK5ZX+E7671zbb5dlgLx5JgI6kxs3DoDov
-         xkXZn+RBjcQbDz9DLNGSxEkVepJTq4XjeAkEqJNNK0xMzCjgx8cO0wNUEvUXYgT2aU4F
-         xz+w==
-X-Gm-Message-State: AOAM531h50JtNeONjB7kqnwDNW7eLE59bdClYZ5iVx86ifuGhfRDpDqg
-        G1zYVL7mumZ/iudcdNmxziE=
-X-Google-Smtp-Source: ABdhPJwYjHRpyaIZDE4C6vn8XCX4Aig9/wfieMdDLF+QuqXMiDpK41waqeBN3t8prQ/Wg6gz0zUImA==
-X-Received: by 2002:a17:90a:8805:: with SMTP id s5mr1252667pjn.116.1605250717166;
-        Thu, 12 Nov 2020 22:58:37 -0800 (PST)
-Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id g15sm7838329pgi.89.2020.11.12.22.58.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2020 22:58:34 -0800 (PST)
-Date:   Thu, 12 Nov 2020 22:58:32 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-iio@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
-        Nitin Joshi1 <njoshi1@lenovo.com>, linux-input@vger.kernel.org
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-Message-ID: <20201113065832.GD356503@dtor-ws>
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
- <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
- <20201112062348.GF1003057@dtor-ws>
- <3568c492-d9bd-c02d-4cbc-7f3eef605ef5@redhat.com>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E5iQILqTrK8bECNPqeYIIPqlrCLETdcNizv98fnRth8=;
+ b=SoEqdjADw8YRglxGNb7CLtb0Jk0+qEY5LJ8LlaFExq5ZahFSG3jFPu27tlf1uzwOnwE6G03Hf2GwFdH26/LhKx2M/mRsm3e0ePu0qkIh7SJMVdfIbCtKfYxRquoJTebwpnJX8K6zzs90duW0543i+tzX8+f21ZSWtt9bWdxjM5g=
+Received: from CY4PR03MB2631.namprd03.prod.outlook.com (2603:10b6:903:74::18)
+ by CY4PR03MB2455.namprd03.prod.outlook.com (2603:10b6:903:38::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Fri, 13 Nov
+ 2020 07:55:22 +0000
+Received: from CY4PR03MB2631.namprd03.prod.outlook.com
+ ([fe80::355a:8cf8:4345:1ce8]) by CY4PR03MB2631.namprd03.prod.outlook.com
+ ([fe80::355a:8cf8:4345:1ce8%10]) with mapi id 15.20.3541.025; Fri, 13 Nov
+ 2020 07:55:22 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: RE: [PATCH] iio: buffer: Fix demux update
+Thread-Topic: [PATCH] iio: buffer: Fix demux update
+Thread-Index: AQHWuQH4Y31Qb/eZaEC2EE4Td3QVe6nEwGuAgADq9gA=
+Date:   Fri, 13 Nov 2020 07:55:21 +0000
+Message-ID: <CY4PR03MB263146ADC49222DE28BB028999E60@CY4PR03MB2631.namprd03.prod.outlook.com>
+References: <20201112144323.28887-1-nuno.sa@analog.com>
+ <20201112172821.0000088b@Huawei.com>
+In-Reply-To: <20201112172821.0000088b@Huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctOTIzMWRlZTItMjU4NS0xMWViLThhZDItZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDkyMzFkZWUzLTI1ODUtMTFlYi04YWQyLWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMTcxMiIgdD0iMTMyNDk3Mjc3MT?=
+ =?iso-8859-1?Q?kxMDg2NTgxIiBoPSIxT00zT0s5RE1acnVvWXYyUWI3cy9SWE9JUWM9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FFb0NBQUQxWWE1VWtybldBY3UwR294ZkhpZ2x5N1FhakY4ZUtDVURBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQWRFS2R6d0FBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-rorf: true
+authentication-results: Huawei.com; dkim=none (message not signed)
+ header.d=none;Huawei.com; dmarc=none action=none header.from=analog.com;
+x-originating-ip: [2001:a61:24fd:9701:4c7b:9126:961d:513c]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: db0aaeba-c2f8-42f0-4373-08d887a978ea
+x-ms-traffictypediagnostic: CY4PR03MB2455:
+x-microsoft-antispam-prvs: <CY4PR03MB24555205591A77891CABDC2D99E60@CY4PR03MB2455.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lhlLHLi4sBloBquAHIZOh5fUi1pqmEQu2vt537ICvS54e1rwc0vf4u8+u/hglJnHgUZYJetoWH6ROj87AyiL3ZcTJ3AbKmfZ9S4iCb2+CiFbRHespxNQkp5AZz/FmULSHRAbS2c53d6lLFu+yS7ZWu9LYEPhNYCrhEg+KRrgHNCpUqJk925KDih+hxVT0yvIyyevfcmQCDTs9al58JR8BEV7iYYvalJUGgvECbl0vbT+AxaN1/r17M8DyAhfmAk21Uoz+yXmizcZpj8kr9nhS3l0g3MZaORyIUd36mfnJjCOq9zsM0Cz/ydWr5LUNMGjPCn1J3UvjkM8TcZmFGFtow==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB2631.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(376002)(366004)(346002)(396003)(15650500001)(52536014)(71200400001)(6916009)(478600001)(66556008)(5660300002)(33656002)(76116006)(8676002)(186003)(83380400001)(4326008)(6506007)(66476007)(86362001)(66946007)(53546011)(2906002)(9686003)(316002)(54906003)(55016002)(8936002)(7696005)(64756008)(66446008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?iso-8859-1?Q?ByqWY5lRKkm2Cc/c58SugMOqwYaah0MLTs5mwT5bjt4kc/PKkrCB6Bhdf2?=
+ =?iso-8859-1?Q?08NM5mu3fCCZZ9Wf+lSdGQZXeCaw+uIJ+omdascQ/KSmo4XzJWB5J55SHD?=
+ =?iso-8859-1?Q?5BJ9kgjfmYRbGz7VYCrkmPtAOZetQZk2Fc7sSRsBFeY6v6spXnyxINalzM?=
+ =?iso-8859-1?Q?/WLTo9eRECdwmS3f0+Xb44kyKgV5CqdTna+W9FWev8tC1ywafX1X5lCeHw?=
+ =?iso-8859-1?Q?OL86HDTg5XBxVYbJuF/UqVYnUDmSyevmd/pp02gpnqLL8cP9d+WlpMtzhN?=
+ =?iso-8859-1?Q?8wMj1OLICQsc44YawDMX+OPYfUcCXQuXgG7B0EbkMjPV5mRn2DH5ySpgde?=
+ =?iso-8859-1?Q?gyNh9EgoOIqFCqggUxZ+pAHt2UXrCuXh/4134wPsK67cfgZeyTHzTWqiqI?=
+ =?iso-8859-1?Q?CBlQNq4JYKUU5r3Ri2q7skzlNq4YP1vCmnBT2I/QJusYcyelrV1NdOMx+C?=
+ =?iso-8859-1?Q?EkNfABiMPgI+aZZSUS1M1m0n+0HOlCXGYdMiw1ktSfazPNQR72MhWA2jfT?=
+ =?iso-8859-1?Q?6Y/CCCLu1Ke39X0up0ZBh1Ha1sLUT64jRRsOgQ0kbEQ3GSKi1CKG2yuw66?=
+ =?iso-8859-1?Q?u/UbNdtKyKwYuHfrYGK1aTzlmC/rY8j6EwZ7KVgLwKBpKGaOp4PjCbm9iY?=
+ =?iso-8859-1?Q?B4WORD+949Lnd0OOPxNByFeAN2IIROwMCBm+c3HO+InoTASAC6GvMBZ6eH?=
+ =?iso-8859-1?Q?YjjAC2uCPDNj+wb8r3OaX2FfX5JFrV4W+GaE2xFEhByuNRWY/463pvIdpO?=
+ =?iso-8859-1?Q?cZL+TtO3V903TGqFoP5px9hydnmKb1O13UFH4a0mnlUeDN20dXk512fZPQ?=
+ =?iso-8859-1?Q?6IyojVJraD5+3okrNdflcZvzX4TJtP5G6E497WSUFWqYuDxzWmMxcdQUJo?=
+ =?iso-8859-1?Q?ugLcTszdACHtQGq8BlYyg6FKE9x1F7tCuzoziAWZRzMCMcATr1T6tMET/N?=
+ =?iso-8859-1?Q?KD5Uy+KCTBVyc0gy8RUkbybcX3NoaD9CIwMW1yxaeJGPfJXcZ2yAPw=3D?=
+ =?iso-8859-1?Q?=3D?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3568c492-d9bd-c02d-4cbc-7f3eef605ef5@redhat.com>
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB2631.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db0aaeba-c2f8-42f0-4373-08d887a978ea
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2020 07:55:21.9547
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1o14fyGpe6TpGYgBRiJvWkGb/DrkbKlNL3j7p8J3c9JT2PSWOMRC+po+e/teImQDEkHWvbxGEPsGQsLxcZ/d5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR03MB2455
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-13_05:2020-11-12,2020-11-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 spamscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011130046
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 10:50:12AM +0100, Hans de Goede wrote:
-> Hi,
-> 
-> On 11/12/20 7:23 AM, Dmitry Torokhov wrote:
-> > On Wed, Oct 07, 2020 at 11:51:05AM +0200, Hans de Goede wrote:
-> >> Hi,
-> >>
-> >> On 10/7/20 10:36 AM, Jonathan Cameron wrote:
-> >>> On Mon, 5 Oct 2020 22:04:27 -0400
-> >>> Mark Pearson <markpearson@lenovo.com> wrote:
-> >>>
-> >>>> Adding Nitin, lead for this feature, to the thread
-> >>>
-> >>> +CC linux-input and Dmitry for reasons that will become clear below.
-> >>>>
-> >>>> On 2020-10-03 10:02 a.m., Hans de Goede wrote:
-> >>>>> Hi All,
-> >>>>>
-> >>>>> Modern laptops can have various sensors which are kinda
-> >>>>> like proximity sensors, but not really (they are more
-> >>>>> specific in which part of the laptop the user is
-> >>>>> proximate to).
-> >>>>>
-> >>>>> Specifically modern Thinkpad's have 2 readings which we
-> >>>>> want to export to userspace, and I'm wondering if we
-> >>>>> could use the IIO framework for this since these readings
-> >>>>> are in essence sensor readings:
-> >>>>>
-> >>>>> 1. These laptops have a sensor in the palm-rests to
-> >>>>> check if a user is physically proximate to the device's
-> >>>>> palm-rests. This info will be used by userspace for WWAN
-> >>>>> functionality to control the transmission level safely.
-> >>>>>
-> >>>>> A patch adding a thinkpad_acpi specific sysfs API for this
-> >>>>> is currently pending:
-> >>>>> https://patchwork.kernel.org/patch/11722127/
-> >>>>>
-> >>>>> But I'm wondering if it would not be better to use
-> >>>>> IIO to export this info.
-> >>>
-> >>> My first thought on this is it sounds more like a key than a sensor
-> >>> (simple proximity sensors fall into this category as well.)
-> > 
-> > [ sorry for sitting on this thread for so long ]
-> > 
-> > So I think the important question here is if we only ever want yes/no
-> > answer, or if we can consider adjusting behavior of the system based on
-> > the "closeness" of an object to the device, in which case I think IIO is
-> > more flexible.
-> > 
-> > FWIW in Chrome OS land we name IIO proximity sensors using a scheme
-> > "proximity-lte", "proximity-wifi", "proximity-wifi-left",
-> > "proximity-wifi-right", etc, and then userspace implements various
-> > policies (SAR, etc) based off it.
-> 
-> Interesting, so 2 questions:
-> 
-> 1. So your encoding the location in the sensor's parent-device name
-> instead of using a new sysfs attribute for this ?
 
-I think it depends on the kernel we use and architecture. On x86 I think
-we rely on udev, like this:
+> -----Original Message-----
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Sent: Thursday, November 12, 2020 6:28 PM
+> To: Sa, Nuno <Nuno.Sa@analog.com>
+> Cc: linux-iio@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>;
+> Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
+> <pmeerw@pmeerw.net>
+> Subject: Re: [PATCH] iio: buffer: Fix demux update
+>=20
+>=20
+> On Thu, 12 Nov 2020 15:43:22 +0100
+> Nuno S=E1 <nuno.sa@analog.com> wrote:
+>=20
+> > When updating the buffer demux, we will skip a scan element from
+> the
+> > device in the case `in_ind !=3D out_ind` and we enter the while loop.
+> > in_ind should only be refreshed with `find_next_bit()` in the end of
+> the
+> > loop.
+> >
+> > Fixes: 5ada4ea9be16 ("staging:iio: add demux optionally to path from
+> device to buffer")
+> > Signed-off-by: Nuno S=E1 <nuno.sa@analog.com>
+>=20
+> Yikes that's been there a long time.
+>=20
+> Could you provide an example of a particular layout and the result of
+> this being wrong?
+>=20
 
-https://chromium.googlesource.com/chromiumos/overlays/board-overlays/+/master/overlay-nocturne/chromeos-base/chromeos-bsp-nocturne/files/udev/99-cros-sx-proximity.rules
+Hi Jonathan,
 
-DEVPATH=="*/pci0000:00/0000:00:15.1/*", SYMLINK+="proximity-wifi-right"
-DEVPATH=="*/pci0000:00/0000:00:19.1/*", SYMLINK+="proximity-wifi-left"
-ATTR{events/in_proximity1_USE_CS1_thresh_either_en}="1"
+Let's say:
 
-On newer ARM we use "label" attribute in DTS:
+iio_dev_mask: 0x0111
+buffer_mask: 0x0100
 
-arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
+We would get out_ind =3D 2 and in_ind =3D 0 and  enter the loop. In the fir=
+st
+iteration we call find_next_bit() before doing the in_ind=3D0 computation w=
+hich means we=20
+will skip it and go directly to bit 1... And if we continue the path flow, =
+we see that bit 2 will
+be computed two times, so if we are lucky and scan_index0_len =3D=3D scan_i=
+ndex2_len this
+will go unnoticed...
 
-        ap_sar_sensor: proximity@28 {
-                compatible = "semtech,sx9310";
-                reg = <0x28>;
-                #io-channel-cells = <1>;
-                pinctrl-names = "default";
-                pinctrl-0 = <&p_sensor_int_l>;
+Honestly, I didn't test this but it looks one of those things more or less =
+clear by reading
+the code or am I missing something here?
 
-                interrupt-parent = <&tlmm>;
-                interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
+- Nuno S=E1
 
-                vdd-supply = <&pp3300_a>;
-                svdd-supply = <&pp1800_prox>;
-
-                status = "disabled";
-                label = "proximity-wifi";
-        };
-
-> 
-> 2. Do these sensors just give a boolean value atm, or do they already
-> report a range ?  IIRC one of the objections from the iio folks in
-> the Lenovo case was that booleans are not really a good fit for iio
-> (IIRC they also said we could still use iio for this).
-
-One of the sensors we use is sx9310 that I believe can report range, but
-I think we configure them to trigger when a threshold is crossed.
-
-Events are handled by our powerd:
-
-https://chromium.googlesource.com/chromiumos/platform2/+/master/power_manager/powerd/system/sar_watcher.cc
-
-> 
-> Perhaps you can provide an URL to the kernel code implementing these ?
-
-drivers/iio/proximity/sx9310.c
-
-Also sx932x - https://lore.kernel.org/patchwork/patch/1005708/
-
-Thanks.
-
--- 
-Dmitry
+> Thanks,
+>=20
+> Jonathan
+>=20

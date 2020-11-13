@@ -2,117 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2682B1875
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Nov 2020 10:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A07D92B217E
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Nov 2020 18:06:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726200AbgKMJlX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Nov 2020 04:41:23 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:10438 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726176AbgKMJlW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Nov 2020 04:41:22 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AD9TaUQ021663;
-        Fri, 13 Nov 2020 04:41:09 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 34npab51gq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Nov 2020 04:41:08 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0AD9f7nJ026638
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 13 Nov 2020 04:41:07 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 13 Nov 2020 04:41:06 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 13 Nov 2020 04:41:06 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 13 Nov 2020 04:41:06 -0500
-Received: from saturn.ad.analog.com ([10.48.65.107])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0AD9f4R7026237;
-        Fri, 13 Nov 2020 04:41:05 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <alexandru.tachici@analog.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2] iio: ad_sigma_delta: Don't put SPI transfer buffer on the stack
-Date:   Fri, 13 Nov 2020 11:40:59 +0200
-Message-ID: <20201113094059.152651-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201112091050.84991-1-alexandru.ardelean@analog.com>
-References: <20201112091050.84991-1-alexandru.ardelean@analog.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-13_07:2020-11-12,2020-11-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
- suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 spamscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011130057
+        id S1726057AbgKMRGT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Nov 2020 12:06:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726003AbgKMRGR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Nov 2020 12:06:17 -0500
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC64FC0617A6
+        for <linux-iio@vger.kernel.org>; Fri, 13 Nov 2020 09:06:15 -0800 (PST)
+Received: by mail-pl1-x64a.google.com with SMTP id 97so6443846plb.4
+        for <linux-iio@vger.kernel.org>; Fri, 13 Nov 2020 09:06:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:message-id:mime-version:subject:from:to:cc;
+        bh=dj0jv6XXUDKICvtLjODWA/Yz9MrznwTlv4Lm1G6nAlI=;
+        b=JHKXAEK1eudje5I7yL3R44oqiAFIfxWMjFzNJyAVSLvG7nPAxdQXAM9/nvBFe6VgSp
+         6TrEcLpfE3oFnvYxgV6jAqCJQwyKxfDoLYzZiYAGxaQKMRfQpiZJ1qW62udOxkcodIWL
+         mkvKd3HJ/UlfcdLMo6CoYtOATPQnT9h2xPb9x5zf5VR0ninRwUk4LG2tcV3H+KMfufzo
+         ku2fx8H4hgx0o324OARg6i3otBJmfg9Zcdbe7Gl4FrhZom3XpTjOmDzz1L7PNyGi/2Hr
+         43NdPWFDOBCqmY+jWxCBtlFzeUL32V2dDDVIM97W4j4Rq3KjasZndZxnb8eMbrffiMuO
+         IEFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
+         :to:cc;
+        bh=dj0jv6XXUDKICvtLjODWA/Yz9MrznwTlv4Lm1G6nAlI=;
+        b=I+gxdoymyiNEGBEoupoucnzQnDIo80hbFXYNAt7DoQM7J1OVm3tZkFzGSgfU31jqRm
+         /IXcgRR7xo0piX28xjFGYP9YWeolGkAHWUdaFO3n5ZSsRf6gMq3f1XJd0JQ/iCHYJMwY
+         fJnrhNKy+M3E02eg8mDctgb3tFV9CDySAl9CxAzKB5QEr4yERC7/s1VpZsKVTHChHRBp
+         iC/3v5mjbuAd765angeo5t1T+xU9cuXH7u/ShKu/e9nxQBOvTq+23Wir7rcMnbHbRvIX
+         zmAAseB5WnLkhUkVMUoUl+BJwbl+eteKDz1cv9WU3IPAeaWaG28RdfURwdyYz+B8oRHp
+         4kYw==
+X-Gm-Message-State: AOAM5302MjB4jT/QK/EoZTnlXnV6epfPbwyqU9hI9hJdORn+D3s74iFt
+        DOOhedbMnYVI6NGrrsBZwNioYTw/v36PCw==
+X-Google-Smtp-Source: ABdhPJzF7xYbHCu+ksjPx54Cod29NEjLlNMO11OIFrFrkXXVrv4alG0tupojocqKb7LnnfcIxmggd4L0on9StA==
+Sender: "jbhayana via sendgmr" <jbhayana@jbhayana.c.googlers.com>
+X-Received: from jbhayana.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:42b2])
+ (user=jbhayana job=sendgmr) by 2002:a17:90a:fe0a:: with SMTP id
+ ck10mr1861259pjb.233.1605287175249; Fri, 13 Nov 2020 09:06:15 -0800 (PST)
+Date:   Fri, 13 Nov 2020 17:06:10 +0000
+Message-Id: <20201113170611.378887-1-jbhayana@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.29.2.299.gdc1121823c-goog
+Subject: [RFC PATCH 0/1] Adding support for IIO SCMI based sensors
+From:   Jyoti Bhayana <jbhayana@google.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        cristian.marussi@arm.com, sudeep.holla@arm.com,
+        egranata@google.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
+        ankitarora@google.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+Hi,
 
-Use a heap allocated memory for the SPI transfer buffer. Using stack memory
-can corrupt stack memory when using DMA on some systems.
+This series adds support for ARM SCMI Protocol based IIO Device.
+This driver provides support for Accelerometer and Gyroscope sensor
+using new SCMI Sensor Protocol defined by the upcoming SCMIv3.0 ARM
+specification, which is available at 
 
-This change moves the buffer from the stack of the trigger handler call to
-the heap of the buffer of the state struct. The size increases takes into
-account the alignment for the timestamp, which is 8 bytes.
-So the buffer is put at an offset of 8 bytes.
+https://developer.arm.com/documentation/den0056/c/
 
-Fixes: af3008485ea03 ("iio:adc: Add common code for ADI Sigma Delta devices")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
+The series is currently based on top of:
 
-Changelog v1 -> v2:
-* bumped the buffer on state struct to 24 bytes
-* increased the offset to 8 bytes to account for the timestamp alignment
+commit b9ceca6be432 ("firmware: arm_scmi: Fix duplicate workqueue name")
 
- drivers/iio/adc/ad_sigma_delta.c       | 2 +-
- include/linux/iio/adc/ad_sigma_delta.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+in Sudeep for-next/scmi branch:
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 86039e9ecaca..9f730c9d6aaa 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -395,9 +395,9 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
-+	uint8_t *data = &sigma_delta->data[8];
- 	unsigned int reg_size;
- 	unsigned int data_reg;
--	uint8_t data[16];
- 
- 	memset(data, 0x00, 16);
- 
-diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
-index a3a838dcf8e4..8fb74755f873 100644
---- a/include/linux/iio/adc/ad_sigma_delta.h
-+++ b/include/linux/iio/adc/ad_sigma_delta.h
-@@ -80,7 +80,7 @@ struct ad_sigma_delta {
- 	 * DMA (thus cache coherency maintenance) requires the
- 	 * transfer buffers to live in their own cache lines.
- 	 */
--	uint8_t				data[4] ____cacheline_aligned;
-+	uint8_t				data[24] ____cacheline_aligned;
- };
- 
- static inline int ad_sigma_delta_set_channel(struct ad_sigma_delta *sd,
+https://git.kernel.org/pub/scm/linux/kernel/git/sudeep.holla/\
+linux.git/log/?h=for-next/scmi
+
+Also, apply latest patches on the SCMI V3.0 Sensors extensions series
+found at:
+
+https://lore.kernel.org/linux-arm-kernel/\
+20201026201007.23591-1-cristian.marussi@arm.com/
+
+The purpose of this RFC patch series is to get the initial level of
+feedback. This version of the patch series is not fully tested.
+Only the older verion of this patch series based on linux kernel 
+version 5.4.21 has been tested using branch of Android common kernel.
+
+Any feedback welcome,
+
+Thanks,
+
+Jyoti Bhayana
+
+Jyoti Bhayana (1):
+  iio/scmi: Adding support for IIO SCMI Based Sensors
+
+ MAINTAINERS                 |   6 +
+ drivers/iio/Kconfig         |   1 +
+ drivers/iio/Makefile        |   1 +
+ drivers/iio/scmi/Kconfig    |  16 +
+ drivers/iio/scmi/Makefile   |   5 +
+ drivers/iio/scmi/scmi_iio.c | 780 ++++++++++++++++++++++++++++++++++++
+ 6 files changed, 809 insertions(+)
+ create mode 100644 drivers/iio/scmi/Kconfig
+ create mode 100644 drivers/iio/scmi/Makefile
+ create mode 100644 drivers/iio/scmi/scmi_iio.c
+
 -- 
-2.27.0
+2.29.2.222.g5d2a92d10f8-goog
 

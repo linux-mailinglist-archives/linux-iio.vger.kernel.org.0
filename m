@@ -2,337 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3F32B2EB8
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 18:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0447F2B2EBE
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 18:08:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgKNRCg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Nov 2020 12:02:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35938 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726094AbgKNRCg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Nov 2020 12:02:36 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 53B99223FD;
-        Sat, 14 Nov 2020 17:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605373354;
-        bh=8K9eiBkBhWgu9zq4pg/YQIZJRxzqfZM0qcK2DMzr+HI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qQssqNBGVESuxGQoAUNZCmKWwLdxYDWKrtOSyH1oeU9xsUy0xAOC9Wd2zaZbArCSM
-         Napmepdxhp/0PJUFBQb008UWde712/IKEHfCiCN6YF5ZPwi2/3zNJH77E4e4u0HsoI
-         R3dqjBBcku4kSceE5jquRFo3AE72RIMSTtwTWYI4=
-Date:   Sat, 14 Nov 2020 17:02:30 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+        id S1726092AbgKNRHq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Nov 2020 12:07:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30043 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726088AbgKNRHq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Nov 2020 12:07:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605373664;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=U7eOf6M4BZi7FI2MSpBtRxoJdPZ5Cq2ZPdN22WIQ0vY=;
+        b=d1zJwjwI2oW3rMbBotMVqWeSLmkA8VV0GLVkwohNm93+wPLOzwcU8xb6qHFhriu8MZG60F
+        kBoNHnkn/m9+hHSo5q82zr37DBX45jXB1Hf6tO+vcyVEJ6D0SDI9bffygaEPNnLifoeD17
+        Lnmxqil9+3JTar76JbqEWGr8fa0nFPs=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-327-zETcrxJpNeaJ4uka6Bq2pQ-1; Sat, 14 Nov 2020 12:07:42 -0500
+X-MC-Unique: zETcrxJpNeaJ4uka6Bq2pQ-1
+Received: by mail-ed1-f71.google.com with SMTP id s7so6277017eds.17
+        for <linux-iio@vger.kernel.org>; Sat, 14 Nov 2020 09:07:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=U7eOf6M4BZi7FI2MSpBtRxoJdPZ5Cq2ZPdN22WIQ0vY=;
+        b=oEHCqhJGFU3Xk+TLPgGwSK4oXMRdoMBlA7Vo0qawQwYAJY7aR6rTJ2xLjEpLCH5a/b
+         bh4Zlrc3Z6K5xybg1+k/i4HfLs5jBO8jfw60LXOdTBmwvQkBNV2R6CdKA6wB36acWIb1
+         ddjqZc59ZlXHGkU9/umsTsGD+qSX6wer50e8jszO+YjEa57kefneTvqdZElq2o41gcMO
+         34clelskn/Ux2GpJ3a6eI+IltTbL7mSxb1qRLu9a7hNsgvLBdEhzEv54H6OeOod08jk+
+         ZMBhYRI004nzB8ZNCqgfga+Vl8TRFHtMQfhcWnlterxK7oVNvHDY2ojtndFKzzRBKruq
+         0VMg==
+X-Gm-Message-State: AOAM5311gFWTISjHondrYPo8WV8WNhBvrblb4TZ/Zpu5N3kf41RwqHWO
+        Y9yBMxDj+o0GcT1Mc8cFcx34OM4P3ZgiWNEFaERxsSCdLEkU79GmiZdM0Rfj3PYjS8eUq+E3rHm
+        bJ4vAxhwhUSQlhsiL1W0QmRl0YYnkT+OCCHEhT3fSWo8updcshlfHIzvnDk1AxYcw8odWLT8D
+X-Received: by 2002:aa7:d407:: with SMTP id z7mr8365910edq.234.1605373660583;
+        Sat, 14 Nov 2020 09:07:40 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwJ7GAfEWSWjAtsh4hETHXTbhwEL3QPXyn5nwrC3W/btAGvDmEEEzcb2T9/+qafrTokRkOkzA==
+X-Received: by 2002:aa7:d407:: with SMTP id z7mr8365881edq.234.1605373660346;
+        Sat, 14 Nov 2020 09:07:40 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id h2sm7020151ejx.55.2020.11.14.09.07.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Nov 2020 09:07:39 -0800 (PST)
+Subject: Re: [PATCH bugfix for 5.10 2/2] iio: accel: kxcjk1013: Add support
+ for KIOX010A ACPI DSM for setting tablet-mode
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/9] iio: adc: at91_adc: rework trigger definition
-Message-ID: <20201114170230.5a94a192@archlinux>
-In-Reply-To: <20201113212650.507680-5-alexandre.belloni@bootlin.com>
-References: <20201113212650.507680-1-alexandre.belloni@bootlin.com>
-        <20201113212650.507680-5-alexandre.belloni@bootlin.com>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        "russianneuromancer @ ya . ru" <russianneuromancer@ya.ru>,
+        linux-iio@vger.kernel.org
+References: <20201110133835.129080-1-hdegoede@redhat.com>
+ <20201110133835.129080-3-hdegoede@redhat.com>
+ <20201114160118.0a373496@archlinux>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <196bd93a-b005-e7fd-4db1-138934080ec8@redhat.com>
+Date:   Sat, 14 Nov 2020 18:07:38 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20201114160118.0a373496@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 Nov 2020 22:26:45 +0100
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+Hi,
 
-> Move the available trigger definition back in the driver to stop cluttering
-> the device tree. There is no functional change except that it actually
-> fixes the available triggers for at91sam9rl as it inherited the list from
-> at91sam9260 but actually has the triggers from at91sam9x5.
-
-Is that a fix we might want to backport?  If not we should probably put a clear
-statement in here to avoid it getting picked up by the bot.
-
-I'd argue it's to invasive a change to backport.
-
-Otherwise, sensible looking change.
-
+On 11/14/20 5:01 PM, Jonathan Cameron wrote:
+> On Tue, 10 Nov 2020 14:38:35 +0100
+> Hans de Goede <hdegoede@redhat.com> wrote:
 > 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  .../bindings/iio/adc/atmel,sama9260-adc.yaml  | 46 -----------
->  drivers/iio/adc/at91_adc.c                    | 80 +++++++++----------
->  2 files changed, 36 insertions(+), 90 deletions(-)
+>> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 KXCJ91008-s
+>> to allow the OS to determine the angle between the display and the base
+>> of the device, so that the OS can determine if the 2-in-1 is in laptop
+>> or in tablet-mode.
+>>
+>> On Windows both accelerometers are read by a special HingeAngleService
+>> process; and this process calls a DSM (Device Specific Method) on the
+>> ACPI KIOX010A device node for the sensor in the display, to let the
+>> embedded-controller (EC) know about the mode so that it can disable the
+>> kbd and touchpad to avoid spurious input while folded into tablet-mode.
+>>
+>> This notifying of the EC is problematic because sometimes the EC comes up
+>> thinking that device is in tablet-mode and the kbd and touchpad do not
+>> work. This happens for example on Irbis NB111 devices after a suspend /
+>> resume cycle (after a complete battery drain / hard reset without having
+>> booted Windows at least once). Other 2-in-1s which are likely affected
+>> too are e.g. the Teclast F5 and F6 series.
+>>
+>> The kxcjk-1013 driver may seem like a strange place to deal with this,
+>> but since it is *the* driver for the ACPI KIOX010A device, it is also
+>> the driver which has access to the ACPI handle needed by the DSM.
+>>
+>> Add support for calling the DSM and on probe unconditionally tell the
+>> EC that the device is laptop mode, fixing the kbd and touchpad sometimes
+>> not working.
+>>
+>> Reported-and-tested-by: russianneuromancer <russianneuromancer@ya.ru>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Hi Hans,
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-> index 9b0ff59e75de..e6a1f915b542 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-> @@ -97,29 +97,6 @@ required:
->    - atmel,adc-startup-time
->    - atmel,adc-vref
->  
-> -patternProperties:
-> -  "^(trigger)[0-9]$":
-> -    type: object
-> -    description: Child node to describe a trigger exposed to the user.
-> -    properties:
-> -      trigger-name:
-> -        $ref: /schemas/types.yaml#/definitions/string
-> -        description: Identifying name.
-> -
-> -      trigger-value:
-> -        $ref: /schemas/types.yaml#/definitions/uint32
-> -        description:
-> -          Value to put in the Trigger register to activate this trigger
-> -
-> -      trigger-external:
-> -        $ref: /schemas/types.yaml#/definitions/flag
-> -        description: This trigger is provided from an external pin.
-> -
-> -    additionalProperties: false
-> -    required:
-> -      - trigger-name
-> -      - trigger-value
-> -
->  examples:
->    - |
->      #include <dt-bindings/dma/at91.h>
-> @@ -139,29 +116,6 @@ examples:
->              atmel,adc-use-external-triggers;
->              atmel,adc-vref = <3300>;
->              atmel,adc-use-res = "lowres";
-> -
-> -            trigger0 {
-> -                trigger-name = "external-rising";
-> -                trigger-value = <0x1>;
-> -                trigger-external;
-> -            };
-> -
-> -            trigger1 {
-> -                trigger-name = "external-falling";
-> -                trigger-value = <0x2>;
-> -                trigger-external;
-> -            };
-> -
-> -            trigger2 {
-> -                trigger-name = "external-any";
-> -                trigger-value = <0x3>;
-> -                trigger-external;
-> -            };
-> -
-> -            trigger3 {
-> -                trigger-name = "continuous";
-> -                trigger-value = <0x6>;
-> -            };
->          };
->      };
->  ...
-> diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-> index 0d67c812ef3d..83539422b704 100644
-> --- a/drivers/iio/adc/at91_adc.c
-> +++ b/drivers/iio/adc/at91_adc.c
-> @@ -207,6 +207,8 @@ struct at91_adc_caps {
->  
->  	u8	low_res_bits;
->  	u8	high_res_bits;
-> +	u32	trigger_number;
-> +	const struct at91_adc_trigger *triggers;
->  	struct at91_adc_reg_desc registers;
->  };
->  
-> @@ -227,8 +229,6 @@ struct at91_adc_state {
->  	u8			sample_hold_time;
->  	bool			sleep_mode;
->  	struct iio_trigger	**trig;
-> -	struct at91_adc_trigger	*trigger_list;
-> -	u32			trigger_number;
->  	bool			use_external;
->  	u32			vref_mv;
->  	u32			res;		/* resolution used for convertions */
-> @@ -537,13 +537,13 @@ static int at91_adc_channel_init(struct iio_dev *idev)
->  }
->  
->  static int at91_adc_get_trigger_value_by_name(struct iio_dev *idev,
-> -					     struct at91_adc_trigger *triggers,
-> +					     const struct at91_adc_trigger *triggers,
->  					     const char *trigger_name)
->  {
->  	struct at91_adc_state *st = iio_priv(idev);
->  	int i;
->  
-> -	for (i = 0; i < st->trigger_number; i++) {
-> +	for (i = 0; i < st->caps->trigger_number; i++) {
->  		char *name = kasprintf(GFP_KERNEL,
->  				"%s-dev%d-%s",
->  				idev->name,
-> @@ -575,7 +575,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
->  	u8 bit;
->  
->  	value = at91_adc_get_trigger_value_by_name(idev,
-> -						   st->trigger_list,
-> +						   st->caps->triggers,
->  						   idev->trig->name);
->  	if (value < 0)
->  		return value;
-> @@ -620,7 +620,7 @@ static const struct iio_trigger_ops at91_adc_trigger_ops = {
->  };
->  
->  static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *idev,
-> -						     struct at91_adc_trigger *trigger)
-> +						     const struct at91_adc_trigger *trigger)
->  {
->  	struct iio_trigger *trig;
->  	int ret;
-> @@ -647,7 +647,7 @@ static int at91_adc_trigger_init(struct iio_dev *idev)
->  	int i, ret;
->  
->  	st->trig = devm_kcalloc(&idev->dev,
-> -				st->trigger_number, sizeof(*st->trig),
-> +				st->caps->trigger_number, sizeof(*st->trig),
->  				GFP_KERNEL);
->  
->  	if (st->trig == NULL) {
-> @@ -655,12 +655,12 @@ static int at91_adc_trigger_init(struct iio_dev *idev)
->  		goto error_ret;
->  	}
->  
-> -	for (i = 0; i < st->trigger_number; i++) {
-> -		if (st->trigger_list[i].is_external && !(st->use_external))
-> +	for (i = 0; i < st->caps->trigger_number; i++) {
-> +		if (st->caps->triggers[i].is_external && !(st->use_external))
->  			continue;
->  
->  		st->trig[i] = at91_adc_allocate_trigger(idev,
-> -							st->trigger_list + i);
-> +							st->caps->triggers + i);
->  		if (st->trig[i] == NULL) {
->  			dev_err(&idev->dev,
->  				"Could not allocate trigger %d\n", i);
-> @@ -685,7 +685,7 @@ static void at91_adc_trigger_remove(struct iio_dev *idev)
->  	struct at91_adc_state *st = iio_priv(idev);
->  	int i;
->  
-> -	for (i = 0; i < st->trigger_number; i++) {
-> +	for (i = 0; i < st->caps->trigger_number; i++) {
->  		iio_trigger_unregister(st->trig[i]);
->  		iio_trigger_free(st->trig[i]);
->  	}
-> @@ -838,8 +838,7 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
->  {
->  	struct at91_adc_state *st = iio_priv(idev);
->  	struct device_node *node = pdev->dev.of_node;
-> -	struct device_node *trig_node;
-> -	int i = 0, ret;
-> +	int ret;
->  	u32 prop;
->  	char *s;
->  
-> @@ -885,37 +884,6 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
->  
->  	st->registers = &st->caps->registers;
->  	st->num_channels = st->caps->num_channels;
-> -	st->trigger_number = of_get_child_count(node);
-> -	st->trigger_list = devm_kcalloc(&idev->dev,
-> -					st->trigger_number,
-> -					sizeof(struct at91_adc_trigger),
-> -					GFP_KERNEL);
-> -	if (!st->trigger_list) {
-> -		dev_err(&idev->dev, "Could not allocate trigger list memory.\n");
-> -		ret = -ENOMEM;
-> -		goto error_ret;
-> -	}
-> -
-> -	for_each_child_of_node(node, trig_node) {
-> -		struct at91_adc_trigger *trig = st->trigger_list + i;
-> -		const char *name;
-> -
-> -		if (of_property_read_string(trig_node, "trigger-name", &name)) {
-> -			dev_err(&idev->dev, "Missing trigger-name property in the DT.\n");
-> -			ret = -EINVAL;
-> -			goto error_ret;
-> -		}
-> -		trig->name = name;
-> -
-> -		if (of_property_read_u32(trig_node, "trigger-value", &prop)) {
-> -			dev_err(&idev->dev, "Missing trigger-value property in the DT.\n");
-> -			ret = -EINVAL;
-> -			goto error_ret;
-> -		}
-> -		trig->value = prop;
-> -		trig->is_external = of_property_read_bool(trig_node, "trigger-external");
-> -		i++;
-> -	}
->  
->  	/* Check if touchscreen is supported. */
->  	if (st->caps->has_ts)
-> @@ -1315,6 +1283,13 @@ static int at91_adc_resume(struct device *dev)
->  
->  static SIMPLE_DEV_PM_OPS(at91_adc_pm_ops, at91_adc_suspend, at91_adc_resume);
->  
-> +static const struct at91_adc_trigger at91sam9260_triggers[] = {
-> +	{ .name = "timer-counter-0", .value = 0x1 },
-> +	{ .name = "timer-counter-1", .value = 0x3 },
-> +	{ .name = "timer-counter-2", .value = 0x5 },
-> +	{ .name = "external", .value = 0xd, .is_external = true },
-> +};
-> +
->  static struct at91_adc_caps at91sam9260_caps = {
->  	.calc_startup_ticks = calc_startup_ticks_9260,
->  	.num_channels = 4,
-> @@ -1328,6 +1303,15 @@ static struct at91_adc_caps at91sam9260_caps = {
->  		.mr_prescal_mask = AT91_ADC_PRESCAL_9260,
->  		.mr_startup_mask = AT91_ADC_STARTUP_9260,
->  	},
-> +	.triggers = at91sam9260_triggers,
-> +	.trigger_number = ARRAY_SIZE(at91sam9260_triggers),
-> +};
-> +
-> +static const struct at91_adc_trigger at91sam9x5_triggers[] = {
-> +	{ .name = "external-rising", .value = 0x1, .is_external = true },
-> +	{ .name = "external-falling", .value = 0x2, .is_external = true },
-> +	{ .name = "external-any", .value = 0x3, .is_external = true },
-> +	{ .name = "continuous", .value = 0x6 },
->  };
->  
->  static struct at91_adc_caps at91sam9rl_caps = {
-> @@ -1344,6 +1328,8 @@ static struct at91_adc_caps at91sam9rl_caps = {
->  		.mr_prescal_mask = AT91_ADC_PRESCAL_9260,
->  		.mr_startup_mask = AT91_ADC_STARTUP_9G45,
->  	},
-> +	.triggers = at91sam9x5_triggers,
-> +	.trigger_number = ARRAY_SIZE(at91sam9x5_triggers),
->  };
->  
->  static struct at91_adc_caps at91sam9g45_caps = {
-> @@ -1360,6 +1346,8 @@ static struct at91_adc_caps at91sam9g45_caps = {
->  		.mr_prescal_mask = AT91_ADC_PRESCAL_9G45,
->  		.mr_startup_mask = AT91_ADC_STARTUP_9G45,
->  	},
-> +	.triggers = at91sam9x5_triggers,
-> +	.trigger_number = ARRAY_SIZE(at91sam9x5_triggers),
->  };
->  
->  static struct at91_adc_caps at91sam9x5_caps = {
-> @@ -1380,6 +1368,8 @@ static struct at91_adc_caps at91sam9x5_caps = {
->  		.mr_prescal_mask = AT91_ADC_PRESCAL_9G45,
->  		.mr_startup_mask = AT91_ADC_STARTUP_9X5,
->  	},
-> +	.triggers = at91sam9x5_triggers,
-> +	.trigger_number = ARRAY_SIZE(at91sam9x5_triggers),
->  };
->  
->  static struct at91_adc_caps sama5d3_caps = {
-> @@ -1399,6 +1389,8 @@ static struct at91_adc_caps sama5d3_caps = {
->  		.mr_prescal_mask = AT91_ADC_PRESCAL_9G45,
->  		.mr_startup_mask = AT91_ADC_STARTUP_9X5,
->  	},
-> +	.triggers = at91sam9x5_triggers,
-> +	.trigger_number = ARRAY_SIZE(at91sam9x5_triggers),
->  };
->  
->  static const struct of_device_id at91_adc_dt_ids[] = {
+> *Mutters darkly about crazy firmware hacks*
+> 
+> I'm fine taking this but I assume we want to backport and for that I'm
+> after a fixes tag.
+
+Good point, I guess taking the commit which originally added the
+KIOX010A ACPI Hardware-ID makes the most sense:
+
+Fixes: 7f6232e69539 ("iio: accel: kxcjk1013: Add KIOX010A ACPI Hardware-ID")
+
+Regards,
+
+Hans
+
+
+
+>> ---
+>>  drivers/iio/accel/kxcjk-1013.c | 36 ++++++++++++++++++++++++++++++++++
+>>  1 file changed, 36 insertions(+)
+>>
+>> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+>> index abeb0d254046..560a3373ff20 100644
+>> --- a/drivers/iio/accel/kxcjk-1013.c
+>> +++ b/drivers/iio/accel/kxcjk-1013.c
+>> @@ -129,6 +129,7 @@ enum kx_chipset {
+>>  enum kx_acpi_type {
+>>  	ACPI_GENERIC,
+>>  	ACPI_SMO8500,
+>> +	ACPI_KIOX010A,
+>>  };
+>>  
+>>  struct kxcjk1013_data {
+>> @@ -275,6 +276,32 @@ static const struct {
+>>  			      {19163, 1, 0},
+>>  			      {38326, 0, 1} };
+>>  
+>> +#ifdef CONFIG_ACPI
+>> +enum kiox010a_fn_index {
+>> +	KIOX010A_SET_LAPTOP_MODE = 1,
+>> +	KIOX010A_SET_TABLET_MODE = 2,
+>> +};
+>> +
+>> +static int kiox010a_dsm(struct device *dev, int fn_index)
+>> +{
+>> +	acpi_handle handle = ACPI_HANDLE(dev);
+>> +	guid_t kiox010a_dsm_guid;
+>> +	union acpi_object *obj;
+>> +
+>> +	if (!handle)
+>> +		return -ENODEV;
+>> +
+>> +	guid_parse("1f339696-d475-4e26-8cad-2e9f8e6d7a91", &kiox010a_dsm_guid);
+>> +
+>> +	obj = acpi_evaluate_dsm(handle, &kiox010a_dsm_guid, 1, fn_index, NULL);
+>> +	if (!obj)
+>> +		return -EIO;
+>> +
+>> +	ACPI_FREE(obj);
+>> +	return 0;
+>> +}
+>> +#endif
+>> +
+>>  static int kxcjk1013_set_mode(struct kxcjk1013_data *data,
+>>  			      enum kxcjk1013_mode mode)
+>>  {
+>> @@ -352,6 +379,13 @@ static int kxcjk1013_chip_init(struct kxcjk1013_data *data)
+>>  {
+>>  	int ret;
+>>  
+>> +#ifdef CONFIG_ACPI
+>> +	if (data->acpi_type == ACPI_KIOX010A) {
+>> +		/* Make sure the kbd and touchpad on 2-in-1s using 2 KXCJ91008-s work */
+>> +		kiox010a_dsm(&data->client->dev, KIOX010A_SET_LAPTOP_MODE);
+>> +	}
+>> +#endif
+>> +
+>>  	ret = i2c_smbus_read_byte_data(data->client, KXCJK1013_REG_WHO_AM_I);
+>>  	if (ret < 0) {
+>>  		dev_err(&data->client->dev, "Error reading who_am_i\n");
+>> @@ -1262,6 +1296,8 @@ static const char *kxcjk1013_match_acpi_device(struct device *dev,
+>>  
+>>  	if (strcmp(id->id, "SMO8500") == 0)
+>>  		*acpi_type = ACPI_SMO8500;
+>> +	else if (strcmp(id->id, "KIOX010A") == 0)
+>> +		*acpi_type = ACPI_KIOX010A;
+>>  
+>>  	*chipset = (enum kx_chipset)id->driver_data;
+>>  
+> 
 

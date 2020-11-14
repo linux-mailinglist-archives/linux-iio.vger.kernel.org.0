@@ -2,114 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9221C2B2DF6
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 16:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75EEC2B2E01
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 16:30:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbgKNP2P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Nov 2020 10:28:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47012 "EHLO mail.kernel.org"
+        id S1726998AbgKNPa3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Nov 2020 10:30:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47770 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbgKNP2P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Nov 2020 10:28:15 -0500
+        id S1726891AbgKNPa3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 14 Nov 2020 10:30:29 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E56322265;
-        Sat, 14 Nov 2020 15:28:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CDA6722267;
+        Sat, 14 Nov 2020 15:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605367694;
-        bh=w6GRHv1XESMtvaagowpL5feljKeJs2fwDrGdLJ9/tG8=;
+        s=default; t=1605367827;
+        bh=DarwLUrm7GIvwfS3FbUQhb9yeIY4B0RAo75vIwkFK4A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vQCvFBuAiwuauA3XjLeP+mCvOpc17dcwecF56gxntp9RKPC8CFObV6cOL7g1sMVGV
-         WUs9y45I0DfoBWSVYS/kE6LiWfrPHsf01BnwcP7bRzi13PODYfJfI6KsRUci1zunac
-         cmQCjGJd52D71VNOyOTEClERKlOIYrQhYJXA8hj8=
-Date:   Sat, 14 Nov 2020 15:27:57 +0000
+        b=NjDNM3NWzqhqno6rBmVPIHYymX3TSgnwQgdLq/SQQxVtX8BZxzZAwGVd9AEx0Nnyh
+         WssTNXCxx/4WqNBiOODa1SbpDfDcQAVo5WIdX9S6GyF6QJZk0O+oWLn548xuWxBwlm
+         /qB474gmg02WLdj9MKi063H+FOKx+YY3lHrlHk60=
+Date:   Sat, 14 Nov 2020 15:30:23 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Benson Leung <bleung@chromium.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bruno Meneguele <bmeneg@redhat.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Juergen Gross <jgross@suse.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        Kranthi Kuntala <kranthi.kuntala@intel.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Len Brown <lenb@kernel.org>,
-        Leonid Maksymchuk <leonmaxx@gmail.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mario Limonciello <mario.limonciello@dell.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        Oleh Kravchenko <oleg@kaa.org.ua>,
-        Orson Zhai <orsonzhai@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>, Petr Mladek <pmladek@suse.com>,
-        Philippe Bergheaud <felix@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: Duplicated ABI entries - Was: Re: [PATCH v2 20/39] docs: ABI:
- testing: make the files compatible with ReST output
-Message-ID: <20201114152757.6d8b3b7d@archlinux>
-In-Reply-To: <20201110082658.2edc1ab5@coco.lan>
-References: <cover.1604042072.git.mchehab+huawei@kernel.org>
-        <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
-        <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
-        <20201030110925.3e09d59e@coco.lan>
-        <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
-        <20201102124641.GA881895@kroah.com>
-        <20201102154250.45bee17f@coco.lan>
-        <20201108165621.4d0da3f4@archlinux>
-        <20201110082658.2edc1ab5@coco.lan>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: core: centralize ioctl() calls to the main chardev
+Message-ID: <20201114153023.415bea0e@archlinux>
+In-Reply-To: <CA+U=DsqVomxim2SVqkC8LVYguUaSv-w0kw-B-shz7S0Yeka6Gg@mail.gmail.com>
+References: <20200924084155.99406-1-alexandru.ardelean@analog.com>
+        <20200925133805.062c0b1c@archlinux>
+        <CA+U=DsqVomxim2SVqkC8LVYguUaSv-w0kw-B-shz7S0Yeka6Gg@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -118,178 +43,296 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Nov 2020 08:26:58 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Mon, 2 Nov 2020 08:59:57 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-> Hi Jonathan,
+> On Fri, Sep 25, 2020 at 3:38 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Thu, 24 Sep 2020 11:41:55 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> >  
+> > > The aim of this is to improve a bit the organization of ioctl() calls in
+> > > IIO core. Currently the chardev is split across IIO core sub-modules/files.
+> > > The main chardev has to be able to handle ioctl() calls, and if we need to
+> > > add buffer ioctl() calls, this would complicate things.
+> > >
+> > > The 'industrialio-core.c' file will provide a 'iio_device_ioctl()' which
+> > > will iterate over a list of ioctls registered with the IIO device. These
+> > > can be event ioctl() or buffer ioctl() calls, or something else.
+> > >
+> > > Each ioctl() handler will have to return a IIO_IOCTL_UNHANDLED code (which
+> > > is positive 1), if the ioctl() did not handle the call in any. This
+> > > eliminates any potential ambiguities about negative error codes, which
+> > > should fail the call altogether.
+> > >
+> > > If any ioctl() returns 0, it was considered that it was serviced
+> > > successfully and the loop will exit.
+> > >
+> > > This change also moves the handling of the IIO_GET_EVENT_FD_IOCTL command
+> > > inside 'industrialio-event.c', where this is better suited.
+> > >
+> > > This patch is a combination of 2 other patches from an older series:
+> > > Patch 1: iio: core: add simple centralized mechanism for ioctl() handlers
+> > >   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-6-alexandru.ardelean@analog.com/
+> > > Patch 2: iio: core: use new common ioctl() mechanism
+> > >   Link: https://lore.kernel.org/linux-iio/20200427131100.50845-7-alexandru.ardelean@analog.com/
+> > >
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > ---
+> > >
+> > > Note: since this is a change to the IIO core, we don't need to put this in
+> > > right now; especially if there is a tight schedule, or we are too close to
+> > > a merge window.  
+> >
+> > Looks good to me.  As you suggest, lets let this one sit on the list for a
+> > while though!  
 > 
-> Em Sun, 8 Nov 2020 16:56:21 +0000
-> Jonathan Cameron <jic23@kernel.org> escreveu:
-> 
-> > > PS.: the IIO subsystem is the one that currently has more duplicated
-> > > ABI entries:  
-> > > $ ./scripts/get_abi.pl validate 2>&1|grep iio
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  Documentation/ABI/testing/sysfs-bus-iio:394
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  Documentation/ABI/testing/sysfs-bus-iio:395
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  Documentation/ABI/testing/sysfs-bus-iio:396
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  Documentation/ABI/testing/sysfs-bus-iio:397
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  Documentation/ABI/testing/sysfs-bus-iio:398
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  Documentation/ABI/testing/sysfs-bus-iio:399
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:0  Documentation/ABI/testing/sysfs-bus-iio:599
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:36  Documentation/ABI/testing/sysfs-bus-iio:588
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_currentY_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als:43  Documentation/ABI/testing/sysfs-bus-iio-health-afe440x:38
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
-> > > Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
-> > > Warning: /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  Documentation/ABI/testing/sysfs-bus-iio:45    
-> 
-> > 
-> > That was intentional.  Often these provide more information on the
-> > ABI for a particular device than is present in the base ABI doc.  
-> 
-> FYI, right now, there are 20 duplicated entries, being 16 of them
-> from IIO, on those files:
-> 
-> 	$ ./scripts/get_abi.pl validate 2>&1|perl -ne 'if (m,(Documentation/\S+)\:,g) { print "$1\n" }'|sort|uniq
-> 	Documentation/ABI/stable/sysfs-driver-w1_ds28e04
-> 	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8
-> 	Documentation/ABI/testing/sysfs-bus-iio-distance-srf08
-> 	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
-> 	Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-> 	Documentation/ABI/testing/sysfs-bus-iio-icm42600
-> 	Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als
-> 	Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-> 	Documentation/ABI/testing/sysfs-class-backlight-adp8860
-> 	Documentation/ABI/testing/sysfs-class-led-trigger-pattern
-> 	Documentation/ABI/testing/sysfs-kernel-iommu_groups
-> 
-> > 
-> > A bit like when we have additional description for dt binding properties
-> > for a particular device, even though they are standard properties.
-> > 
-> > Often a standard property allows for more values than the specific
-> > one for a particular device.  There can also be obscuring coupling
-> > between sysfs attributes due to hardware restrictions that we would
-> > like to provide some explanatory info on.
-> > 
-> > I suppose we could add all this information to the parent doc but
-> > that is pretty ugly and will make that doc very nasty to read.  
-> 
-> I understand what you meant to do, but right now, it is is actually
-> a lot uglier than merging into a single entry ;-)
-> 
-> Let's view ABI from the PoV of a system admin that doesn't know
-> yet about a certain ABI symbol.
+> ping on this
 
-I'd be surprised if a sys admin is looking at these at all. They
-tend to be used only by userspace software writers.  But I guess the
-point stands.
+Thanks.  Was still on my list, but I've been lazy and not been clearing that
+out for a while - too many scary things there :)
 
-> 
-> He'll try to seek for the symbol, more likely using the HTML 
-> documentation. Only very senior system admins might try to take
-> a look at the Kernel.
+Anyhow, applied to the togreg branch of iio.git and pushed out as testing for
+all the normal reasons.
 
-Sad truth here is that before these were in the html docs, they'd
-have grepped and the right option would fairly obvious as it
-would be the more specific file.  Ah well, sometimes progress bites :)
-
-> 
-> This is what happens when one would seek for a duplicated symbol
-> via command line:
-> 
-> 	$ ./scripts/get_abi.pl search /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency$
-> 	
-> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency
-> 	----------------------------------------------------------
-> 	
-> 	Kernel version:		3.4.0
-> 	Contact:		linux-iio@vger.kernel.org
-> 	Defined on file(s):	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371 Documentation/ABI/testing/sysfs-bus-iio
-> 	
-> 	Description:
-> 	
-> 	Stores the PLL frequency in Hz for channel Y.
-> 	Reading returns the actual frequency in Hz.
-> 	The ADF4371 has an integrated VCO with fundamendal output
-> 	frequency ranging from 4000000000 Hz 8000000000 Hz.
-> 	
-> 	out_altvoltage0_frequency:
-> 	        A divide by 1, 2, 4, 8, 16, 32 or circuit generates
-> 	        frequencies from 62500000 Hz to 8000000000 Hz.
-> 	out_altvoltage1_frequency:
-> 	        This channel duplicates the channel 0 frequency
-> 	out_altvoltage2_frequency:
-> 	        A frequency doubler generates frequencies from
-> 	        8000000000 Hz to 16000000000 Hz.
-> 	out_altvoltage3_frequency:
-> 	        A frequency quadrupler generates frequencies from
-> 	        16000000000 Hz to 32000000000 Hz.
-> 	
-> 	Note: writes to one of the channels will affect the frequency of
-> 	all the other channels, since it involves changing the VCO
-> 	fundamental output frequency.
-> 	
-> 	Output frequency for channel Y in Hz. The number must always be
-> 	specified and unique if the output corresponds to a single
-> 	channel.
-> 
-> As the "What:" field is identical on both sysfs-bus-iio-frequency-adf4371
-> and sysfs-bus-iio, those entries are merged, which produces an ABI
-> documentation mixing both the generic one and the board specific one
-> into a single output.
-> 
-> Worse than that, the "generic" content is at the end.
-> 
-> The same happens when generating the HTML output.
-> 
-> See, entries at the HTML output are ordered by the What: field,
-> which is considered within the script as an unique key, as it is
-> unique (except for IIO and a couple of other cases).
-> 
-> -
-> 
-> As I commented on an e-mail I sent to Greg, I see a few ways
-> to solve it.
-> 
-> The most trivial one (which I used to solve a few conflicts on
-> other places), is to place driver-specific details on a separate
-> file under Documentation/driver-api, and mention it at the
-> generic entries. The docs building system will generate cross
-> references for Documentation/.../foo.rst files, so, everything
-> should be OK.
-
-Hmm. That might work out OK.  These devices tend to be weird enough
-that they probably could do with some additional explanation anyway. 
-
-> 
-> The second alternative that I also used on a couple of places
-> is to modify the generic entry for it to contain the generic
-> definition first, followed by per-device details.
-
-I'll do an audit of what we actually have here. Perhaps we end
-up with a mixture of these two options.
-
-Might take a little while though.
-
-> 
-> There is a third possible alternative: add a new optional field
-> (something like Scope:) which would be part of the unique key,
-> if present. Implementing support for it could be tricky, as the
-> produced output would likely need to create cross-references
-> between the generic field (if present) and the per-device details.
-That would be lovely but probably not worth the effort for something
-that occurs so rarely currently.
+Thanks,
 
 Jonathan
 
 > 
-> Thanks,
-> Mauro
+> thanks
+> Alex
 > 
-> PS.: I'm taking a few days of PTO during this week. So, it
-> could take a while for me to reply again to this thread.
+> >
+> > Jonathan
+> >  
+> > >
+> > >  drivers/iio/iio_core.h           | 15 ++++++++-
+> > >  drivers/iio/industrialio-core.c  | 56 ++++++++++++++++++++++++--------
+> > >  drivers/iio/industrialio-event.c | 28 +++++++++++++++-
+> > >  include/linux/iio/iio-opaque.h   |  2 ++
+> > >  4 files changed, 85 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+> > > index fd9a5f1d5e51..fced02cadcc3 100644
+> > > --- a/drivers/iio/iio_core.h
+> > > +++ b/drivers/iio/iio_core.h
+> > > @@ -17,6 +17,20 @@ struct iio_dev;
+> > >
+> > >  extern struct device_type iio_device_type;
+> > >
+> > > +#define IIO_IOCTL_UNHANDLED  1
+> > > +struct iio_ioctl_handler {
+> > > +     struct list_head entry;
+> > > +     long (*ioctl)(struct iio_dev *indio_dev, struct file *filp,
+> > > +                   unsigned int cmd, unsigned long arg);
+> > > +};
+> > > +
+> > > +long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
+> > > +                   unsigned int cmd, unsigned long arg);
+> > > +
+> > > +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+> > > +                                    struct iio_ioctl_handler *h);
+> > > +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
+> > > +
+> > >  int __iio_add_chan_devattr(const char *postfix,
+> > >                          struct iio_chan_spec const *chan,
+> > >                          ssize_t (*func)(struct device *dev,
+> > > @@ -74,7 +88,6 @@ static inline void iio_buffer_wakeup_poll(struct iio_dev *indio_dev) {}
+> > >  int iio_device_register_eventset(struct iio_dev *indio_dev);
+> > >  void iio_device_unregister_eventset(struct iio_dev *indio_dev);
+> > >  void iio_device_wakeup_eventset(struct iio_dev *indio_dev);
+> > > -int iio_event_getfd(struct iio_dev *indio_dev);
+> > >
+> > >  struct iio_event_interface;
+> > >  bool iio_event_enabled(const struct iio_event_interface *ev_int);
+> > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > > index 261d3b17edc9..964a0a2d6f8b 100644
+> > > --- a/drivers/iio/industrialio-core.c
+> > > +++ b/drivers/iio/industrialio-core.c
+> > > @@ -1567,6 +1567,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+> > >       }
+> > >       dev_set_name(&dev->dev, "iio:device%d", dev->id);
+> > >       INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+> > > +     INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+> > >
+> > >       return dev;
+> > >  }
+> > > @@ -1660,26 +1661,47 @@ static int iio_chrdev_release(struct inode *inode, struct file *filp)
+> > >       return 0;
+> > >  }
+> > >
+> > > -/* Somewhat of a cross file organization violation - ioctls here are actually
+> > > - * event related */
+> > > +void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+> > > +                                    struct iio_ioctl_handler *h)
+> > > +{
+> > > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > > +
+> > > +     list_add_tail(&h->entry, &iio_dev_opaque->ioctl_handlers);
+> > > +}
+> > > +
+> > > +void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h)
+> > > +{
+> > > +     list_del(&h->entry);
+> > > +}
+> > > +
+> > >  static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+> > >  {
+> > >       struct iio_dev *indio_dev = filp->private_data;
+> > > -     int __user *ip = (int __user *)arg;
+> > > -     int fd;
+> > > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > > +     struct iio_ioctl_handler *h;
+> > > +     int ret = -ENODEV;
+> > > +
+> > > +     mutex_lock(&indio_dev->info_exist_lock);
+> > >
+> > > +     /**
+> > > +      * The NULL check here is required to prevent crashing when a device
+> > > +      * is being removed while userspace would still have open file handles
+> > > +      * to try to access this device.
+> > > +      */
+> > >       if (!indio_dev->info)
+> > > -             return -ENODEV;
+> > > -
+> > > -     if (cmd == IIO_GET_EVENT_FD_IOCTL) {
+> > > -             fd = iio_event_getfd(indio_dev);
+> > > -             if (fd < 0)
+> > > -                     return fd;
+> > > -             if (copy_to_user(ip, &fd, sizeof(fd)))
+> > > -                     return -EFAULT;
+> > > -             return 0;
+> > > +             goto out_unlock;
+> > > +
+> > > +     ret = -EINVAL;
+> > > +     list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
+> > > +             ret = h->ioctl(indio_dev, filp, cmd, arg);
+> > > +             if (ret != IIO_IOCTL_UNHANDLED)
+> > > +                     break;
+> > >       }
+> > > -     return -EINVAL;
+> > > +
+> > > +out_unlock:
+> > > +     mutex_unlock(&indio_dev->info_exist_lock);
+> > > +
+> > > +     return ret;
+> > >  }
+> > >
+> > >  static const struct file_operations iio_buffer_fileops = {
+> > > @@ -1796,6 +1818,9 @@ EXPORT_SYMBOL(__iio_device_register);
+> > >   **/
+> > >  void iio_device_unregister(struct iio_dev *indio_dev)
+> > >  {
+> > > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > > +     struct iio_ioctl_handler *h, *t;
+> > > +
+> > >       cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+> > >
+> > >       mutex_lock(&indio_dev->info_exist_lock);
+> > > @@ -1806,6 +1831,9 @@ void iio_device_unregister(struct iio_dev *indio_dev)
+> > >
+> > >       indio_dev->info = NULL;
+> > >
+> > > +     list_for_each_entry_safe(h, t, &iio_dev_opaque->ioctl_handlers, entry)
+> > > +             list_del(&h->entry);
+> > > +
+> > >       iio_device_wakeup_eventset(indio_dev);
+> > >       iio_buffer_wakeup_poll(indio_dev);
+> > >
+> > > diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+> > > index 99ba657b8568..a2de2fd89067 100644
+> > > --- a/drivers/iio/industrialio-event.c
+> > > +++ b/drivers/iio/industrialio-event.c
+> > > @@ -31,6 +31,7 @@
+> > >   * @flags:           file operations related flags including busy flag.
+> > >   * @group:           event interface sysfs attribute group
+> > >   * @read_lock:               lock to protect kfifo read operations
+> > > + * @@ioctl_handler:  handler for event ioctl() calls
+> > >   */
+> > >  struct iio_event_interface {
+> > >       wait_queue_head_t       wait;
+> > > @@ -40,6 +41,7 @@ struct iio_event_interface {
+> > >       unsigned long           flags;
+> > >       struct attribute_group  group;
+> > >       struct mutex            read_lock;
+> > > +     struct iio_ioctl_handler        ioctl_handler;
+> > >  };
+> > >
+> > >  bool iio_event_enabled(const struct iio_event_interface *ev_int)
+> > > @@ -187,7 +189,7 @@ static const struct file_operations iio_event_chrdev_fileops = {
+> > >       .llseek = noop_llseek,
+> > >  };
+> > >
+> > > -int iio_event_getfd(struct iio_dev *indio_dev)
+> > > +static int iio_event_getfd(struct iio_dev *indio_dev)
+> > >  {
+> > >       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> > >       struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+> > > @@ -473,6 +475,24 @@ static void iio_setup_ev_int(struct iio_event_interface *ev_int)
+> > >       mutex_init(&ev_int->read_lock);
+> > >  }
+> > >
+> > > +static long iio_event_ioctl(struct iio_dev *indio_dev, struct file *filp,
+> > > +                         unsigned int cmd, unsigned long arg)
+> > > +{
+> > > +     int __user *ip = (int __user *)arg;
+> > > +     int fd;
+> > > +
+> > > +     if (cmd == IIO_GET_EVENT_FD_IOCTL) {
+> > > +             fd = iio_event_getfd(indio_dev);
+> > > +             if (fd < 0)
+> > > +                     return fd;
+> > > +             if (copy_to_user(ip, &fd, sizeof(fd)))
+> > > +                     return -EFAULT;
+> > > +             return 0;
+> > > +     }
+> > > +
+> > > +     return IIO_IOCTL_UNHANDLED;
+> > > +}
+> > > +
+> > >  static const char *iio_event_group_name = "events";
+> > >  int iio_device_register_eventset(struct iio_dev *indio_dev)
+> > >  {
+> > > @@ -526,6 +546,10 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+> > >               ev_int->group.attrs[attrn++] = &p->dev_attr.attr;
+> > >       indio_dev->groups[indio_dev->groupcounter++] = &ev_int->group;
+> > >
+> > > +     ev_int->ioctl_handler.ioctl = iio_event_ioctl;
+> > > +     iio_device_ioctl_handler_register(&iio_dev_opaque->indio_dev,
+> > > +                                       &ev_int->ioctl_handler);
+> > > +
+> > >       return 0;
+> > >
+> > >  error_free_setup_event_lines:
+> > > @@ -558,6 +582,8 @@ void iio_device_unregister_eventset(struct iio_dev *indio_dev)
+> > >
+> > >       if (ev_int == NULL)
+> > >               return;
+> > > +
+> > > +     iio_device_ioctl_handler_unregister(&ev_int->ioctl_handler);
+> > >       iio_free_chan_devattr_list(&ev_int->dev_attr_list);
+> > >       kfree(ev_int->group.attrs);
+> > >       kfree(ev_int);
+> > > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+> > > index f2e94196d31f..07c5a8e52ca8 100644
+> > > --- a/include/linux/iio/iio-opaque.h
+> > > +++ b/include/linux/iio/iio-opaque.h
+> > > @@ -11,6 +11,7 @@
+> > >   * @channel_attr_list:               keep track of automatically created channel
+> > >   *                           attributes
+> > >   * @chan_attr_group:         group for all attrs in base directory
+> > > + * @ioctl_handlers:          ioctl handlers registered with the core handler
+> > >   * @debugfs_dentry:          device specific debugfs dentry
+> > >   * @cached_reg_addr:         cached register address for debugfs reads
+> > >   * @read_buf:                        read buffer to be used for the initial reg read
+> > > @@ -22,6 +23,7 @@ struct iio_dev_opaque {
+> > >       struct list_head                buffer_list;
+> > >       struct list_head                channel_attr_list;
+> > >       struct attribute_group          chan_attr_group;
+> > > +     struct list_head                ioctl_handlers;
+> > >  #if defined(CONFIG_DEBUG_FS)
+> > >       struct dentry                   *debugfs_dentry;
+> > >       unsigned                        cached_reg_addr;  
+> >  
 

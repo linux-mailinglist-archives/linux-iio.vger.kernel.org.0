@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBB42B2E70
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3582D2B2E75
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:33:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbgKNQ0n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Nov 2020 11:26:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56236 "EHLO mail.kernel.org"
+        id S1726495AbgKNQd0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Nov 2020 11:33:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726265AbgKNQ0n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Nov 2020 11:26:43 -0500
+        id S1726356AbgKNQd0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 14 Nov 2020 11:33:26 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 887CD2067D;
-        Sat, 14 Nov 2020 16:26:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A92C206E3;
+        Sat, 14 Nov 2020 16:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605371202;
-        bh=Um8aplap0SMlqpTrc6I4UxgV+Hi9nm8vXAN0ml1kEmU=;
+        s=default; t=1605371605;
+        bh=8XZ+gwz4DDUX/ar17KfoV72sTkYPWkC2L5cvmGMMZys=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NUrJMHqynHI3skhew4VzMIMrIhNGkcxmI59gU0eLnVmaH+WG/DTC09bkzncOOTPzc
-         cGMFU9C3BwIZb/+nNySQjFzKjGcddVs0B2kGvv0gQCTYitOZuOADQqc3FM0vfzDWp7
-         b1xk5rhuVhGbdAdIz9K1d9HU2JLnOiVrGok0M6DU=
-Date:   Sat, 14 Nov 2020 16:26:38 +0000
+        b=BjsNGJrrXnLMYPhDcFCgTJi1xwxRWtN6Sg8EMkQj7IUKrEd2KdvZqu6qayoYtob7B
+         smpxfdY9LNsxUJib6X9uu7jsdeymCkXT7lBKni7N/v/0HIcFLniKvvHBk3BqPM/yyX
+         fY9uoJqNWgxmnm/ydpOoKk1W+PhRO4G5iiyKYUXU=
+Date:   Sat, 14 Nov 2020 16:33:21 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: buffer: Fix demux update
-Message-ID: <20201114162638.6fbf55a8@archlinux>
-In-Reply-To: <CY4PR03MB263146ADC49222DE28BB028999E60@CY4PR03MB2631.namprd03.prod.outlook.com>
-References: <20201112144323.28887-1-nuno.sa@analog.com>
-        <20201112172821.0000088b@Huawei.com>
-        <CY4PR03MB263146ADC49222DE28BB028999E60@CY4PR03MB2631.namprd03.prod.outlook.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Olivier Moysan <olivier.moysan@st.com>
+Subject: Re: [RFC PATCH 0/1] Sanity check buffer callback
+Message-ID: <20201114163321.53881139@archlinux>
+In-Reply-To: <20201112151334.32167-1-nuno.sa@analog.com>
+References: <20201112151334.32167-1-nuno.sa@analog.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -44,93 +42,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 Nov 2020 07:55:21 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Thu, 12 Nov 2020 16:13:33 +0100
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > Sent: Thursday, November 12, 2020 6:28 PM
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: linux-iio@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>;
-> > Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
-> > <pmeerw@pmeerw.net>
-> > Subject: Re: [PATCH] iio: buffer: Fix demux update
-> >=20
-> >=20
-> > On Thu, 12 Nov 2020 15:43:22 +0100
-> > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> >  =20
-> > > When updating the buffer demux, we will skip a scan element from =20
-> > the =20
-> > > device in the case `in_ind !=3D out_ind` and we enter the while loop.
-> > > in_ind should only be refreshed with `find_next_bit()` in the end of =
-=20
-> > the =20
-> > > loop.
-> > >
-> > > Fixes: 5ada4ea9be16 ("staging:iio: add demux optionally to path from =
-=20
-> > device to buffer") =20
-> > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
-> >=20
-> > Yikes that's been there a long time.
-> >=20
-> > Could you provide an example of a particular layout and the result of
-> > this being wrong?
-> >  =20
+> When going through the code of the buffer-cb interface and all it's
+> users, I realized that the stm32_adfsdm driver is calling
+> `iio_channel_get_all_cb()` with NULL for the cb. After going a bit
+> trough the stm drivers, it looks like this is actually intentional.
+> However, it is clear that we have a clear/direct route here for a NULL
+> pointer dereference. I'm being lazy in this RFC and just doing a
+> sanity check in the `iio_buffer_cb_store_to()` so that we don't have to
+> change the stm driver... The point is just to bring this up and see if
+> we want to do something about this.
 >=20
-> Hi Jonathan,
+> To be clear, the way I think this should go is just to return -EINVAL in
+> `iio_channel_get_all_cb()` if a NULL ptr is passed. Whats the point of a
+> buffer-cb if cb is NULL, right? This would naturally break the stm
+> driver, but I guess we could just define a dummy handler there that
+> would not be used (or could the HW consumer be an option here?)...
 >=20
-> Let's say:
->=20
-> iio_dev_mask: 0x0111
-> buffer_mask: 0x0100
->=20
-> We would get out_ind =3D 2 and in_ind =3D 0 and  enter the loop. In the f=
-irst
-> iteration we call find_next_bit() before doing the in_ind=3D0 computation=
- which means we=20
-> will skip it and go directly to bit 1... And if we continue the path flow=
-, we see that bit 2 will
-> be computed two times, so if we are lucky and scan_index0_len =3D=3D scan=
-_index2_len this
-> will go unnoticed...
->=20
-> Honestly, I didn't test this but it looks one of those things more or les=
-s clear by reading
-> the code or am I missing something here?
+> Thoughts?
 
-Mostly I was wondering why it hadn't bitten us before.  I think you've iden=
-tified
-why with your "if we are lucky and scan_index0_len =3D=3D scan_index2_len" =
-then this will
-go unnoticed.  =20
-
-It's very rare (though not unheard of) for a device to have it's main chann=
-els
-of different widths (timestamp doesn't matter for this as it is always at t=
+Good description thanks.  I think you are right and better option is
+to return -EINVAL in iio_channel_get_all_cb() and add a dummy  handler to t=
 he
-end).  The demux also only kicks in if we have a restricted channel
-mask (or are using a kfifo and a buffer_cb which is rather rare).  I suspect
-we have few if any devices that actually run into this problem.
+stm driver.
 
-I guess I originally tested this code with devices I had at the time and no=
-ne of
-them would have tripped this.
-
-Anyhow, whilst I agree with your analysis I'd like to leave this on list for
-perhaps another week before applying it on the basis I'm paranoid and would
-ideally like a few more eyes on this.
-
-Good spot!
+cc Arnaud and Olivier to see if they are fine with the dummy handler.
+(with appropriate comment on why it is there).
 
 Jonathan
 
+
 >=20
-> - Nuno S=C3=A1
+> Nuno S=C3=A1 (1):
+>   iio: buffer: Sanity check buffer callback
 >=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >  =20
+>  drivers/iio/buffer/industrialio-buffer-cb.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
 

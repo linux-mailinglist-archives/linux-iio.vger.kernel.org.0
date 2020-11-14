@@ -2,96 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D396E2B2E4D
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B3E2B2E5F
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:16:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbgKNQDn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Nov 2020 11:03:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52570 "EHLO mail.kernel.org"
+        id S1726495AbgKNQQb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Nov 2020 11:16:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53714 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbgKNQDn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Nov 2020 11:03:43 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        id S1726356AbgKNQQb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 14 Nov 2020 11:16:31 -0500
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B3EF20665;
-        Sat, 14 Nov 2020 16:03:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7472B206D9;
+        Sat, 14 Nov 2020 16:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605369823;
-        bh=UITx00zAcB1ZwANInVsxHvLlr4TN0cqsz0W9nq0Fyfo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fUvVti4IZGwyHeRf61jppFlImIY5Ro7vn13y/OLV9gX6sgcZhMuFM4SgBSWj2W9q9
-         8IOXY9jLerAw1cURZCTJF2XO+ghUU3Y0ysEh+cauKrjiE41uLWkdex/ggEBE3f3DQk
-         AOzGO4hG8XSn2r+YI1jtf17QDp3b3mYvuKDDkcqA=
-Date:   Sat, 14 Nov 2020 16:03:38 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     robh+dt@kernel.org, alexandre.belloni@bootlin.com,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        s=default; t=1605370590;
+        bh=wA5JJM2Bglgv3WNaexhFOxOw949Mt4FgBWDr20dnDG4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KcePe2Z3jSFIayjYrptBzcTyAxS7H7XkDm+fV+qUyDAqEnNKAy383n4RPbrvBUHe/
+         1h1oHjj6Ue+iDdGi7mc8gvAwct9MVWdpYVGWZg2SZJ0FosB+TAY8w2/rE6VdPfDgOb
+         2sYpcTxJPyQpOr5y6o3deR8ztoV+2f0DV1np9XXY=
+Date:   Sat, 14 Nov 2020 17:17:24 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>
-Subject: Re: [PATCH] counter: microchip-tcb-capture: Fix CMR value check
-Message-ID: <20201114160338.29a178f6@archlinux>
-In-Reply-To: <20201111163807.10201-1-vilhelm.gray@gmail.com>
-References: <20201111163807.10201-1-vilhelm.gray@gmail.com>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v2 1/4] device: provide devm_krealloc_array()
+Message-ID: <X7ADFLwEpUHkTiT+@kroah.com>
+References: <20201102142228.14949-1-brgl@bgdev.pl>
+ <20201102142228.14949-2-brgl@bgdev.pl>
+ <20201114154641.0258f4ee@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201114154641.0258f4ee@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 11 Nov 2020 11:38:07 -0500
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-
-> The ATMEL_TC_ETRGEDG_* defines are not masks but rather possible values
-> for CMR. This patch fixes the action_get() callback to properly check
-> for these values rather than mask them.
+On Sat, Nov 14, 2020 at 03:46:41PM +0000, Jonathan Cameron wrote:
+> On Mon,  2 Nov 2020 15:22:25 +0100
+> Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 > 
-> Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-
-Looks fine to me, but ideally after an ack from Kamel
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/counter/microchip-tcb-capture.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > 
+> > When allocating an array of elements, users should check for
+> > multiplication overflow or preferably use one of the provided helpers
+> > like: devm_kmalloc_array().
+> > 
+> > This provides devm_krealloc_array() for users who want to reallocate
+> > managed arrays.
+> > 
+> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-> index 039c54a78aa5..142b389fc9db 100644
-> --- a/drivers/counter/microchip-tcb-capture.c
-> +++ b/drivers/counter/microchip-tcb-capture.c
-> @@ -183,16 +183,20 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
->  
->  	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
->  
-> -	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-> -
-> -	if (cmr & ATMEL_TC_ETRGEDG_NONE)
-> +	switch (cmr & ATMEL_TC_ETRGEDG_BOTH) {
-> +	default:
->  		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
-> -	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
-> +		break;
-> +	case ATMEL_TC_ETRGEDG_RISING:
->  		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
-> -	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
-> +		break;
-> +	case ATMEL_TC_ETRGEDG_FALLING:
->  		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
-> -	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
-> +		break;
-> +	case ATMEL_TC_ETRGEDG_BOTH:
->  		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
-> +		break;
-> +	}
->  
->  	return 0;
->  }
+> +CC Greg KH. 
+> 
+> As this is going into a very generic place I'd like a relevant ack.
+> That file is a bit of a wild west for acks, but Greg seems most
+> appropriate person.
+> 
+> So Greg, any comments on this one?
 
+As there is only 1 user of this function in the patch series, you don't
+save any extra code space here, I don't think this is worth it.
+
+We are seeing less and less gains from these new devm_* additions, and
+only more confusion and problems with them.  So perhaps don't add this?
+I don't think it is needed.
+
+thanks,
+
+greg k-h

@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D2F2B2E4B
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:01:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D396E2B2E4D
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Nov 2020 17:04:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727104AbgKNQBY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Nov 2020 11:01:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52394 "EHLO mail.kernel.org"
+        id S1726891AbgKNQDn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Nov 2020 11:03:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52570 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbgKNQBY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 14 Nov 2020 11:01:24 -0500
+        id S1726356AbgKNQDn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 14 Nov 2020 11:03:43 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7340720665;
-        Sat, 14 Nov 2020 16:01:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B3EF20665;
+        Sat, 14 Nov 2020 16:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605369683;
-        bh=687uoE8JYHYC2mlf+EgWVlqqQOSoFL8t1b0u2JKOZuY=;
+        s=default; t=1605369823;
+        bh=UITx00zAcB1ZwANInVsxHvLlr4TN0cqsz0W9nq0Fyfo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Y8Bq+vhrzJHtC/UfTdthlPKaUPIfMPR1+Qbz016qVaZUQhquuWeVIpcAUXK9Sj/r/
-         lbftdkp2vXEsNrfyZsGeRoJCPhbQlMga3BucmxI/GVLcuBpTMguU5YwZIymNZ+tKZE
-         cksUkvcmPxfTFaY0izq8zGshSOAxATozpS3Dwyog=
-Date:   Sat, 14 Nov 2020 16:01:18 +0000
+        b=fUvVti4IZGwyHeRf61jppFlImIY5Ro7vn13y/OLV9gX6sgcZhMuFM4SgBSWj2W9q9
+         8IOXY9jLerAw1cURZCTJF2XO+ghUU3Y0ysEh+cauKrjiE41uLWkdex/ggEBE3f3DQk
+         AOzGO4hG8XSn2r+YI1jtf17QDp3b3mYvuKDDkcqA=
+Date:   Sat, 14 Nov 2020 16:03:38 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "russianneuromancer @ ya . ru" <russianneuromancer@ya.ru>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH bugfix for 5.10 2/2] iio: accel: kxcjk1013: Add support
- for KIOX010A ACPI DSM for setting tablet-mode
-Message-ID: <20201114160118.0a373496@archlinux>
-In-Reply-To: <20201110133835.129080-3-hdegoede@redhat.com>
-References: <20201110133835.129080-1-hdegoede@redhat.com>
-        <20201110133835.129080-3-hdegoede@redhat.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     robh+dt@kernel.org, alexandre.belloni@bootlin.com,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: Re: [PATCH] counter: microchip-tcb-capture: Fix CMR value check
+Message-ID: <20201114160338.29a178f6@archlinux>
+In-Reply-To: <20201111163807.10201-1-vilhelm.gray@gmail.com>
+References: <20201111163807.10201-1-vilhelm.gray@gmail.com>
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,118 +42,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Nov 2020 14:38:35 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, 11 Nov 2020 11:38:07 -0500
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 KXCJ91008-s
-> to allow the OS to determine the angle between the display and the base
-> of the device, so that the OS can determine if the 2-in-1 is in laptop
-> or in tablet-mode.
+> The ATMEL_TC_ETRGEDG_* defines are not masks but rather possible values
+> for CMR. This patch fixes the action_get() callback to properly check
+> for these values rather than mask them.
 > 
-> On Windows both accelerometers are read by a special HingeAngleService
-> process; and this process calls a DSM (Device Specific Method) on the
-> ACPI KIOX010A device node for the sensor in the display, to let the
-> embedded-controller (EC) know about the mode so that it can disable the
-> kbd and touchpad to avoid spurious input while folded into tablet-mode.
-> 
-> This notifying of the EC is problematic because sometimes the EC comes up
-> thinking that device is in tablet-mode and the kbd and touchpad do not
-> work. This happens for example on Irbis NB111 devices after a suspend /
-> resume cycle (after a complete battery drain / hard reset without having
-> booted Windows at least once). Other 2-in-1s which are likely affected
-> too are e.g. the Teclast F5 and F6 series.
-> 
-> The kxcjk-1013 driver may seem like a strange place to deal with this,
-> but since it is *the* driver for the ACPI KIOX010A device, it is also
-> the driver which has access to the ACPI handle needed by the DSM.
-> 
-> Add support for calling the DSM and on probe unconditionally tell the
-> EC that the device is laptop mode, fixing the kbd and touchpad sometimes
-> not working.
-> 
-> Reported-and-tested-by: russianneuromancer <russianneuromancer@ya.ru>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Hi Hans,
+> Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-*Mutters darkly about crazy firmware hacks*
-
-I'm fine taking this but I assume we want to backport and for that I'm
-after a fixes tag.
+Looks fine to me, but ideally after an ack from Kamel
 
 Thanks,
 
 Jonathan
- 
+
 > ---
->  drivers/iio/accel/kxcjk-1013.c | 36 ++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
+>  drivers/counter/microchip-tcb-capture.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-> index abeb0d254046..560a3373ff20 100644
-> --- a/drivers/iio/accel/kxcjk-1013.c
-> +++ b/drivers/iio/accel/kxcjk-1013.c
-> @@ -129,6 +129,7 @@ enum kx_chipset {
->  enum kx_acpi_type {
->  	ACPI_GENERIC,
->  	ACPI_SMO8500,
-> +	ACPI_KIOX010A,
->  };
+> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+> index 039c54a78aa5..142b389fc9db 100644
+> --- a/drivers/counter/microchip-tcb-capture.c
+> +++ b/drivers/counter/microchip-tcb-capture.c
+> @@ -183,16 +183,20 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
 >  
->  struct kxcjk1013_data {
-> @@ -275,6 +276,32 @@ static const struct {
->  			      {19163, 1, 0},
->  			      {38326, 0, 1} };
+>  	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
 >  
-> +#ifdef CONFIG_ACPI
-> +enum kiox010a_fn_index {
-> +	KIOX010A_SET_LAPTOP_MODE = 1,
-> +	KIOX010A_SET_TABLET_MODE = 2,
-> +};
-> +
-> +static int kiox010a_dsm(struct device *dev, int fn_index)
-> +{
-> +	acpi_handle handle = ACPI_HANDLE(dev);
-> +	guid_t kiox010a_dsm_guid;
-> +	union acpi_object *obj;
-> +
-> +	if (!handle)
-> +		return -ENODEV;
-> +
-> +	guid_parse("1f339696-d475-4e26-8cad-2e9f8e6d7a91", &kiox010a_dsm_guid);
-> +
-> +	obj = acpi_evaluate_dsm(handle, &kiox010a_dsm_guid, 1, fn_index, NULL);
-> +	if (!obj)
-> +		return -EIO;
-> +
-> +	ACPI_FREE(obj);
-> +	return 0;
-> +}
-> +#endif
-> +
->  static int kxcjk1013_set_mode(struct kxcjk1013_data *data,
->  			      enum kxcjk1013_mode mode)
->  {
-> @@ -352,6 +379,13 @@ static int kxcjk1013_chip_init(struct kxcjk1013_data *data)
->  {
->  	int ret;
->  
-> +#ifdef CONFIG_ACPI
-> +	if (data->acpi_type == ACPI_KIOX010A) {
-> +		/* Make sure the kbd and touchpad on 2-in-1s using 2 KXCJ91008-s work */
-> +		kiox010a_dsm(&data->client->dev, KIOX010A_SET_LAPTOP_MODE);
+> -	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> -
+> -	if (cmr & ATMEL_TC_ETRGEDG_NONE)
+> +	switch (cmr & ATMEL_TC_ETRGEDG_BOTH) {
+> +	default:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_RISING:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_FALLING:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_BOTH:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
+> +		break;
 > +	}
-> +#endif
-> +
->  	ret = i2c_smbus_read_byte_data(data->client, KXCJK1013_REG_WHO_AM_I);
->  	if (ret < 0) {
->  		dev_err(&data->client->dev, "Error reading who_am_i\n");
-> @@ -1262,6 +1296,8 @@ static const char *kxcjk1013_match_acpi_device(struct device *dev,
 >  
->  	if (strcmp(id->id, "SMO8500") == 0)
->  		*acpi_type = ACPI_SMO8500;
-> +	else if (strcmp(id->id, "KIOX010A") == 0)
-> +		*acpi_type = ACPI_KIOX010A;
->  
->  	*chipset = (enum kx_chipset)id->driver_data;
->  
+>  	return 0;
+>  }
 

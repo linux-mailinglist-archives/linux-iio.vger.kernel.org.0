@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0EF2B3946
+	by mail.lfdr.de (Postfix) with ESMTP id 97A412B3947
 	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 21:58:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727832AbgKOU5w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 15:57:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52592 "EHLO
+        id S1727845AbgKOU5y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 15:57:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727442AbgKOU5w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 15:57:52 -0500
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64F8C0613CF
-        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:51 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id r9so22251915lfn.11
-        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:51 -0800 (PST)
+        with ESMTP id S1727442AbgKOU5x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 15:57:53 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC0AC0613D1
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:53 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id x9so17756558ljc.7
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AkV9z77tBV7FXEVNnX5OQoFm0Lfuvye+PLzLR2BAncQ=;
-        b=FtVJkUqAwMhTkWja1OE1h1uQcUF0bbNSmr7uM3lQmvX96hnRgCVRMuBLnfYlfvk8Z1
-         OLpAYzGgqLmzb0J2UbTGR8Bm6ejjcFLSdVNUNORMVtaYkqwsmBp+GpYUZTlzpBPGwmVO
-         Ds9oHpcdkRKzvTaYJdZADhY7oY1T9yZ3h8qMrQGhnt2fvhnQzoCCjqvowbHgjPUmLmyQ
-         a4i8NG6Wlp3fc6Af5QODZxEmlB+aRFUWtbFotts5MaLz9lnhfHjgQxJYvNCPwBMRJKQX
-         6ECH93gQd1+PlNqzqvzRFCmLfGD3GQ1l/cY31w2pb2DCBIzDC10WRCioenzrSMk24v6g
-         1fpQ==
+        bh=oSRenFjywTpXu8NL+XTe4zUWms6GZJwpv2y6EHWkomU=;
+        b=DAKgK7yso+4JIjoHCBpb+6tgWl2Eo+LvPfpPYbiVbFJMLP4keoa9OJPWdngLX/gZ63
+         Tk9vP5Zj3nZMRkJcV2tgzQASh5uf38k3hhQWhfvdK2m8HHWHt2DtBGmqyM5xEdUT43g7
+         LaR8UAbYWHp/9mTZbsVUNYX6jbmpExsWaZ2DpbLrfa9GRyl5eaIqTXXxbecfmyLJnzCd
+         5BlNE3EF5OjBejkNMdrfIajh6cIzxHJyOxanjlpsOJw71GJ0cWX9ltLUbDIdGqSfHUa0
+         SchnmBJplnS1NmZ0qWVyZHwy4P1KIhvEsA8+GEhXBULFCCsFs2WlXtvreJeMXrJGJeQA
+         HOqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AkV9z77tBV7FXEVNnX5OQoFm0Lfuvye+PLzLR2BAncQ=;
-        b=l2NufwrmYQSLIEeqaYUCFTqn1gAR0ZO16z+0pmGANtceCfmZALbhfN18V4+WHRHxUB
-         7lQvqRZCfmxiPtzlZ5Ad7nGoroEuucO2XrwC6LrwEkK+cte0UuubAxH2CqTMmL0wr+Hz
-         6rgngfYf9cijGY+79xFp/stD5SRymDVqTtEhHTRrDV6gBRTtmv9dP2mvQt45AKAbKeGK
-         uLIe1lpDJOuuyJ3bhTaI68KUzzE+eIwBaJwGmZyfte/dKmq0wZNq//NDnJ8nY1djJ7RJ
-         z80fPaY3JGtNmm2QWgMzV5SEKOsGGpQUE5U0VnxA4OuDRx390jPuo+dwcUf5xChi4geU
-         V0fA==
-X-Gm-Message-State: AOAM532dibA35iCPt2NrFif9gAMa93YS2iSwg3YHbMsbZoQx+SmAXcmk
-        zb+73wkd6ZJVyJj+V2Bp22gz9/NEtAyBCA==
-X-Google-Smtp-Source: ABdhPJwbgCAYz02xEiLJhnbS+Ia7Cz3iAKjL+ZgfRnC2c+abP5JrMLH3RkbLa8ky+Lie5XHSdMaGLA==
-X-Received: by 2002:a05:6512:24a:: with SMTP id b10mr4164453lfo.434.1605473870338;
-        Sun, 15 Nov 2020 12:57:50 -0800 (PST)
+        bh=oSRenFjywTpXu8NL+XTe4zUWms6GZJwpv2y6EHWkomU=;
+        b=g0cCUfLWgGfcJOxJf119ZcZLHVYIHRPG3WpySDByDIsa6g8eJ/TMfY8tm3yzQRygek
+         uTeSJZ9VnYBeOHCR1dXdSCSwplRfHYAaRmyp3vp7XkCVDEyMztJt+5+lx9WUhkswla2o
+         Y4FkPVMCwiM61ZbdrKi81JKVTrTnehS+QWyiICdapI7QguXVdi/VXOU90qxiYNOIvy5T
+         t13U37onsKjg2v3FOFd6DtMIqsL9AtIy1d0lLWHSs0xwCrzqUYLeOWh6T3q7gr/qFioW
+         rGPI1xNcJed/UDmlIXvljgh9YUb1J8VblGcgM2l4gvmaRMZ0T7t7qzPRN6fU9YXYdHan
+         UQeA==
+X-Gm-Message-State: AOAM530umT4YFoMNnRRoTVkGUrNjuAyvgMtDJX87hvWXYZxbbMq6mDCa
+        wPBI5XLq3y7RoO4PNMl6fedW6A==
+X-Google-Smtp-Source: ABdhPJyhpzGJJBvkOc/BjhiPAmICTUnvR21ABBN+HkUlT4BnGzH0G42Obz4MiQZ+kdrufD3wAr+Qng==
+X-Received: by 2002:a2e:8891:: with SMTP id k17mr4905593lji.326.1605473871823;
+        Sun, 15 Nov 2020 12:57:51 -0800 (PST)
 Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id j4sm2458779lfk.275.2020.11.15.12.57.49
+        by smtp.gmail.com with ESMTPSA id j4sm2458779lfk.275.2020.11.15.12.57.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2020 12:57:49 -0800 (PST)
+        Sun, 15 Nov 2020 12:57:51 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 2/3 v3] iio: accel: bmc150-accel: Add support for BMA222
-Date:   Sun, 15 Nov 2020 21:57:44 +0100
-Message-Id: <20201115205745.618455-2-linus.walleij@linaro.org>
+Subject: [PATCH 3/3 v3] iio: accel: bmc150-accel: Add rudimentary regulator support
+Date:   Sun, 15 Nov 2020 21:57:45 +0100
+Message-Id: <20201115205745.618455-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201115205745.618455-1-linus.walleij@linaro.org>
 References: <20201115205745.618455-1-linus.walleij@linaro.org>
@@ -65,124 +65,105 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds support for the BMA222 version of this sensor,
-found in for example the Samsung GT-I9070 mobile phone.
+These Bosch accelerometers have two supplies, VDD and VDDIO.
+Add some rudimentary support to obtain and enable these
+regulators during probe() and disable them during remove()
+or on the errorpath.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v2->v3:
-- Re-use the BMA222e channels for the BMA222 since they
-  are anyway identical.
+- Resend with the rest.
 ChangeLog v1->v2:
-- None, resend with the other patches.
+- Use dev_err_probe() to simplify the errorpath.
 ---
- drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++++++
- drivers/iio/accel/bmc150-accel-i2c.c  |  4 ++++
- drivers/iio/accel/bmc150-accel-spi.c  |  2 ++
- drivers/iio/accel/bmc150-accel.h      |  1 +
- 4 files changed, 22 insertions(+)
+ drivers/iio/accel/bmc150-accel-core.c | 35 +++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 48435865fdaf..01dbc01e328f 100644
+index 01dbc01e328f..caa984612e88 100644
 --- a/drivers/iio/accel/bmc150-accel-core.c
 +++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -5,6 +5,7 @@
-  *  - BMI055
-  *  - BMA255
-  *  - BMA250E
-+ *  - BMA222
-  *  - BMA222E
-  *  - BMA280
-  *
-@@ -1063,6 +1064,20 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
- 				 {153277, BMC150_ACCEL_DEF_RANGE_8G},
- 				 {306457, BMC150_ACCEL_DEF_RANGE_16G} },
- 	},
-+	[bma222] = {
-+		.name = "BMA222",
-+		.chip_id = 0x03,
-+		.channels = bma222e_accel_channels,
-+		.num_channels = ARRAY_SIZE(bma222e_accel_channels),
-+		/*
-+		 * The datasheet page 17 says:
-+		 * 15.6, 31.3, 62.5 and 125 mg per LSB.
-+		 */
-+		.scale_table = { {156000, BMC150_ACCEL_DEF_RANGE_2G},
-+				 {313000, BMC150_ACCEL_DEF_RANGE_4G},
-+				 {625000, BMC150_ACCEL_DEF_RANGE_8G},
-+				 {1250000, BMC150_ACCEL_DEF_RANGE_16G} },
-+	},
- 	[bma222e] = {
- 		.name = "BMA222E",
- 		.chip_id = 0xF8,
-diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
-index 06021c8685a7..bba92dd33179 100644
---- a/drivers/iio/accel/bmc150-accel-i2c.c
-+++ b/drivers/iio/accel/bmc150-accel-i2c.c
-@@ -5,6 +5,7 @@
-  *  - BMI055
-  *  - BMA255
-  *  - BMA250E
-+ *  - BMA222
-  *  - BMA222E
-  *  - BMA280
-  *
-@@ -54,6 +55,7 @@ static const struct acpi_device_id bmc150_accel_acpi_match[] = {
- 	{"BMI055A",	bmi055},
- 	{"BMA0255",	bma255},
- 	{"BMA250E",	bma250e},
-+	{"BMA222",	bma222},
- 	{"BMA222E",	bma222e},
- 	{"BMA0280",	bma280},
- 	{"BOSC0200"},
-@@ -66,6 +68,7 @@ static const struct i2c_device_id bmc150_accel_id[] = {
- 	{"bmi055_accel",	bmi055},
- 	{"bma255",		bma255},
- 	{"bma250e",		bma250e},
-+	{"bma222",		bma222},
- 	{"bma222e",		bma222e},
- 	{"bma280",		bma280},
- 	{}
-@@ -78,6 +81,7 @@ static const struct of_device_id bmc150_accel_of_match[] = {
- 	{ .compatible = "bosch,bmi055_accel" },
- 	{ .compatible = "bosch,bma255" },
- 	{ .compatible = "bosch,bma250e" },
-+	{ .compatible = "bosch,bma222" },
- 	{ .compatible = "bosch,bma222e" },
- 	{ .compatible = "bosch,bma280" },
- 	{ },
-diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
-index 2a8c311d6f5a..74a8aee4f612 100644
---- a/drivers/iio/accel/bmc150-accel-spi.c
-+++ b/drivers/iio/accel/bmc150-accel-spi.c
-@@ -39,6 +39,7 @@ static const struct acpi_device_id bmc150_accel_acpi_match[] = {
- 	{"BMI055A",	bmi055},
- 	{"BMA0255",	bma255},
- 	{"BMA250E",	bma250e},
-+	{"BMA222",	bma222},
- 	{"BMA222E",	bma222e},
- 	{"BMA0280",	bma280},
- 	{ },
-@@ -50,6 +51,7 @@ static const struct spi_device_id bmc150_accel_id[] = {
- 	{"bmi055_accel",	bmi055},
- 	{"bma255",		bma255},
- 	{"bma250e",		bma250e},
-+	{"bma222",		bma222},
- 	{"bma222e",		bma222e},
- 	{"bma280",		bma280},
- 	{}
-diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-index ae6118ae11b1..f5427103574d 100644
---- a/drivers/iio/accel/bmc150-accel.h
-+++ b/drivers/iio/accel/bmc150-accel.h
-@@ -9,6 +9,7 @@ enum {
- 	bmi055,
- 	bma255,
- 	bma250e,
-+	bma222,
- 	bma222e,
- 	bma280,
- };
+@@ -28,6 +28,7 @@
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ 
+ #include "bmc150-accel.h"
+ 
+@@ -184,6 +185,7 @@ enum bmc150_accel_trigger_id {
+ 
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	struct regulator_bulk_data regulators[2];
+ 	int irq;
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+@@ -1591,10 +1593,33 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 				     &data->orientation);
+ 	if (ret)
+ 		return ret;
++	/*
++	 * VDD   is the analog and digital domain voltage supply
++	 * VDDIO is the digital I/O voltage supply
++	 */
++	data->regulators[0].supply = "vdd";
++	data->regulators[1].supply = "vddio";
++	ret = devm_regulator_bulk_get(dev,
++				      ARRAY_SIZE(data->regulators),
++				      data->regulators);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to get regulators\n");
++
++	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
++				    data->regulators);
++	if (ret) {
++		dev_err(dev, "failed to enable regulators: %d\n", ret);
++		return ret;
++	}
++	/*
++	 * 2ms or 3ms power-on time according to datasheets, let's better
++	 * be safe than sorry and set this delay to 5ms.
++	 */
++	msleep(5);
+ 
+ 	ret = bmc150_accel_chip_init(data);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
+ 
+ 	mutex_init(&data->mutex);
+ 
+@@ -1611,7 +1636,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 					 &bmc150_accel_buffer_ops);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed: iio triggered buffer setup\n");
+-		return ret;
++		goto err_disable_regulators;
+ 	}
+ 
+ 	if (data->irq > 0) {
+@@ -1672,6 +1697,9 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
+ err_buffer_cleanup:
+ 	iio_triggered_buffer_cleanup(indio_dev);
++err_disable_regulators:
++	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
++			       data->regulators);
+ 
+ 	return ret;
+ }
+@@ -1696,6 +1724,9 @@ int bmc150_accel_core_remove(struct device *dev)
+ 	bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_DEEP_SUSPEND, 0);
+ 	mutex_unlock(&data->mutex);
+ 
++	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
++			       data->regulators);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
 -- 
 2.26.2
 

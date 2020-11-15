@@ -2,133 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FD572B3761
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 18:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5424B2B38B7
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 20:33:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbgKORoy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 12:44:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54360 "EHLO mail.kernel.org"
+        id S1727804AbgKOTcC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 14:32:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33912 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726876AbgKORox (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Nov 2020 12:44:53 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726923AbgKOTcB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Nov 2020 14:32:01 -0500
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 33CD720639;
-        Sun, 15 Nov 2020 17:44:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 471A122314;
+        Sun, 15 Nov 2020 19:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605462293;
-        bh=2+Ad52muurxk3565GkjLmAqXpv3hcuB8izzIORdCWtY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=U8JMiDz4gN+o2NEufEq9Y99MRYWbcza4TNzqFThLHaQsgLDsS7jqaWr7EQhluJfrH
-         EtsCjp/RMJtVGidKK8rZzZkxC+JJkbbN0oEcq0jKyer3UosRC0wBCSr/DCk/N3MzmT
-         zUf/qjP+s/4qSJun0cANjw3kfpvjZ7OUncRozJWg=
-Date:   Sun, 15 Nov 2020 17:44:45 +0000
+        s=default; t=1605468720;
+        bh=yvl2FChY/nKwVcFuQidhF3bYrP5jyxXEU9FBzixiq5g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YLV37UwBsgG4JqTGnh/7lqaVb2EdSj/fCr/p8y+wCSP0evjrcUqX2k3eCcrs7EfD+
+         YupEKDsFAd5RLw2TicUmV59NPkw50e/9zSZ9/P7Zeu0Sqf3+jnpHTzw5DxSv1/ZAP/
+         L3uu/lB1sWW0jOKCfUamX9SfYh2bjeVInvSmpyXs=
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH]  iio: afe: iio-rescale: Support processed channels
-Message-ID: <20201115174408.000b05d4@archlinux>
-In-Reply-To: <20201101232211.1194304-1-linus.walleij@linaro.org>
-References: <20201101232211.1194304-1-linus.walleij@linaro.org>
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     robh+dt@kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/9] dt-bindings: IIO: Drop wrong use of io-channel-ranges then drop it as well.
+Date:   Sun, 15 Nov 2020 19:29:42 +0000
+Message-Id: <20201115192951.1073632-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  2 Nov 2020 00:22:11 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> It happens that an ADC will only provide raw or processed
-> voltage conversion channels. (adc/ab8500-gpadc.c).
-> On the Samsung GT-I9070 this is used for a light sensor
-> and current sense amplifier so we need to think of something.
-> 
-> The idea is to allow processed channels and scale them
-> with 1/1 and then the rescaler can modify the result
-> on top.
-> 
-> Cc: Peter Rosin <peda@axentia.se>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Rob Herring pointed out that the recent addition of io-channel provider
+consumer interfaces to the dt_schema repo [1] has highlighted some misuse of
+this property.   It is also clear that we don't have any places where
+it is actually needed.
 
-Sorry, I kept leaving this to last as it was in the 'needed thought'
-pile - then running out of time and not getting to it.
+There is at least 1 remaining instance of this in a txt file but that
+gets cleaned up in patches already under review to convert that binding
+to yaml.
 
-Anyhow, I think this is the best we can do for the situation
-you describe so I'm happy with this.
+1-2 fix up examples in dts schema where this is missued.
+3-6,8 fix up places where the property was given for providers of io-channels
+rather than consumers.
+7 drops a consumer case where it doesn't seem to be needed
+9 is an RFC to drop the support entirely if we don't have any known correct
+users of this property outside mainline.  I'm willing to leave the code
+in place is we can identify it being used, but still wish to deprecate
+it and remote the property from examples and dt_schema.
 
-@Peter, I definitely want your input on this one as well though
-before I apply it!
+All of these can go through relevant trees as there should be no
+cross dependencies.
 
-Jonathan
+[1] https://github.com/devicetree-org/dt-schema/commit/170a908a2204838652407662d326f30cbeb87142
 
+Jonathan Cameron (9):
+  dt-bindings:iio:qcom-spmi-vadc drop incorrect io-channel-ranges from
+    example
+  dt-bindings:iio:samsung,exynos-adc: drop missuse of io-channel-ranges
+  ARM: dts: Cygnus: Drop incorrect io-channel-ranges property.
+  ARM: dts: exynos: Drop incorrect use of io-channel-ranges
+  ARM: dts: s5pv210: Drop incorrect use of io-channel-ranges property.
+  ARM: dts: qcom-pma8084: Drop incorrect use of io-channel-ranges
+  ARM: dts: s5pv210-aries: Drop unneeded io-channel-ranges property.
+  arm64: dts: exynos: Drop incorrect use of io-channel-ranges property.
+  iio: inkern: Drop io-channel-ranges dt property support
 
-> ---
->  drivers/iio/afe/iio-rescale.c | 31 +++++++++++++++++++++++++++----
->  1 file changed, 27 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index e42ea2b1707d..ea90034cb257 100644
-> --- a/drivers/iio/afe/iio-rescale.c
-> +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -29,6 +29,7 @@ struct rescale {
->  	struct iio_channel *source;
->  	struct iio_chan_spec chan;
->  	struct iio_chan_spec_ext_info *ext_info;
-> +	bool chan_processed;
->  	s32 numerator;
->  	s32 denominator;
->  };
-> @@ -43,10 +44,27 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> -		return iio_read_channel_raw(rescale->source, val);
-> +		if (rescale->chan_processed)
-> +			/*
-> +			 * When only processed channels are supported, we
-> +			 * read the processed data and scale it by 1/1
-> +			 * augmented with whatever the rescaler has calculated.
-> +			 */
-> +			return iio_read_channel_processed(rescale->source, val);
-> +		else
-> +			return iio_read_channel_raw(rescale->source, val);
->  
->  	case IIO_CHAN_INFO_SCALE:
-> -		ret = iio_read_channel_scale(rescale->source, val, val2);
-> +		if (rescale->chan_processed) {
-> +			/*
-> +			 * Processed channels are scaled 1-to-1
-> +			 */
-> +			ret = IIO_VAL_FRACTIONAL;
-> +			*val = 1;
-> +			*val2 = 1;
-> +		} else {
-> +			ret = iio_read_channel_scale(rescale->source, val, val2);
-> +		}
->  		switch (ret) {
->  		case IIO_VAL_FRACTIONAL:
->  			*val *= rescale->numerator;
-> @@ -132,8 +150,13 @@ static int rescale_configure_channel(struct device *dev,
->  
->  	if (!iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
->  	    !iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
-> -		dev_err(dev, "source channel does not support raw/scale\n");
-> -		return -EINVAL;
-> +		if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
-> +			dev_info(dev, "using processed channel\n");
-> +			rescale->chan_processed = true;
-> +		} else {
-> +			dev_err(dev, "source channel does not support raw+scale or processed data\n");
-> +			return -EINVAL;
-> +		}
->  	}
->  
->  	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      |  3 --
+ .../bindings/iio/adc/samsung,exynos-adc.yaml  |  4 --
+ arch/arm/boot/dts/bcm-cygnus.dtsi             |  1 -
+ arch/arm/boot/dts/exynos3250.dtsi             |  1 -
+ arch/arm/boot/dts/exynos4412.dtsi             |  1 -
+ arch/arm/boot/dts/exynos5250.dtsi             |  1 -
+ arch/arm/boot/dts/exynos54xx.dtsi             |  1 -
+ arch/arm/boot/dts/qcom-pma8084.dtsi           |  1 -
+ arch/arm/boot/dts/s5pv210-aries.dtsi          |  1 -
+ arch/arm/boot/dts/s5pv210.dtsi                |  1 -
+ arch/arm64/boot/dts/exynos/exynos5433.dtsi    |  1 -
+ arch/arm64/boot/dts/exynos/exynos7.dtsi       |  1 -
+ drivers/iio/inkern.c                          | 49 +++++++------------
+ 13 files changed, 17 insertions(+), 49 deletions(-)
+
+-- 
+2.28.0
 

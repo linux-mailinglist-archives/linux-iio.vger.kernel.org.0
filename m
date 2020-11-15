@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8CA2B38BB
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 20:33:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B7F2B38BD
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 20:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727813AbgKOTcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 14:32:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33958 "EHLO mail.kernel.org"
+        id S1727817AbgKOTcG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 14:32:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726923AbgKOTcE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Nov 2020 14:32:04 -0500
+        id S1726923AbgKOTcG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Nov 2020 14:32:06 -0500
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B729B2417E;
-        Sun, 15 Nov 2020 19:32:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7A5582417F;
+        Sun, 15 Nov 2020 19:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605468724;
-        bh=5fY4eeo9CrRYbF8Nlf9tRn8nQcFcZJBg4wDkbHq0/ig=;
+        s=default; t=1605468725;
+        bh=bvLxYjGb0ESyOfmh5/AmeZXqHUg0YeOtUAUB/hHekQ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gE3DpyVoqa1TyoXadHx70cfvLVhq109IFbxAcAxYgocrsVt0isbTS8lyeTIOMOh09
-         n1mH79mdqMMdCLvvYtWGvL4OKRgn4dzyqf8LB7nqACZTgbAnjKzz0i/qMkbcfD/O43
-         Z/QuVCAGZL+lfMYiTaOWTZl46CsiQuzTzW5l7LoA=
+        b=lHt65GJEJZ76VpgxM2WSZkuV8He4tsPcC6NvQytNxJ3xUjDu6LrikywZhQ8fv4z9D
+         9+UyE8xOAKX0dd4c8l60bzQjgB8wYgpJp7fp18P9JFdGHNDamwxarzOfy4Qf+MCCxo
+         HOQttwboxz3blH2VYC+UiUuiVQq6+8iRdNoeLT1w=
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
 Cc:     robh+dt@kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 2/9] dt-bindings:iio:samsung,exynos-adc: drop missuse of io-channel-ranges
-Date:   Sun, 15 Nov 2020 19:29:44 +0000
-Message-Id: <20201115192951.1073632-3-jic23@kernel.org>
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 3/9] ARM: dts: Cygnus: Drop incorrect io-channel-ranges property.
+Date:   Sun, 15 Nov 2020 19:29:45 +0000
+Message-Id: <20201115192951.1073632-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201115192951.1073632-1-jic23@kernel.org>
 References: <20201115192951.1073632-1-jic23@kernel.org>
@@ -43,49 +42,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-io-channel-ranges is a property for consumers of io-channels, not
-providers.  Hence it is not relevant in this binding or the examples
-given.
+This property applies to consumers of io-channels.  In this case we
+have a provider so the property is not used.
 
-Recent changes to dt-schema result int his being reported as an error
-as a dependency is enforced between this property and io-channels.
+Not dt_schema will now detect this as an error due to a dependency
+between this property and the io-channels property.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reported-by: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
 ---
- .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml       | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm/boot/dts/bcm-cygnus.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index 5ebb0ab250bd..c65921e66dc1 100644
---- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -49,8 +49,6 @@ properties:
-   "#io-channel-cells":
-     const: 1
- 
--  io-channel-ranges: true
--
-   vdd-supply: true
- 
-   samsung,syscon-phandle:
-@@ -130,7 +128,6 @@ examples:
-         reg = <0x12d10000 0x100>;
-         interrupts = <0 106 0>;
-         #io-channel-cells = <1>;
--        io-channel-ranges;
- 
-         clocks = <&clock 303>;
-         clock-names = "adc";
-@@ -156,7 +153,6 @@ examples:
-         reg = <0x126C0000 0x100>;
-         interrupts = <0 137 0>;
-         #io-channel-cells = <1>;
--        io-channel-ranges;
- 
-         clocks = <&cmu CLK_TSADC>,
-                  <&cmu CLK_SCLK_TSADC>;
+diff --git a/arch/arm/boot/dts/bcm-cygnus.dtsi b/arch/arm/boot/dts/bcm-cygnus.dtsi
+index dacaef2c14ca..0025c88f660c 100644
+--- a/arch/arm/boot/dts/bcm-cygnus.dtsi
++++ b/arch/arm/boot/dts/bcm-cygnus.dtsi
+@@ -591,7 +591,6 @@ touchscreen: touchscreen@180a6000 {
+ 		adc: adc@180a6000 {
+ 			compatible = "brcm,iproc-static-adc";
+ 			#io-channel-cells = <1>;
+-			io-channel-ranges;
+ 			adc-syscon = <&ts_adc_syscon>;
+ 			clocks = <&asiu_clks BCM_CYGNUS_ASIU_ADC_CLK>;
+ 			clock-names = "tsc_clk";
 -- 
 2.28.0
 

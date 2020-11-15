@@ -2,168 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97A412B3947
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 21:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F0F72B397A
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 22:27:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbgKOU5y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 15:57:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52598 "EHLO
+        id S1727398AbgKOV0i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 16:26:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727442AbgKOU5x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 15:57:53 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC0AC0613D1
-        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:53 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id x9so17756558ljc.7
-        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:53 -0800 (PST)
+        with ESMTP id S1727471AbgKOV0h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 16:26:37 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A095C0613D2
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 13:26:37 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id r9so22345391lfn.11
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 13:26:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oSRenFjywTpXu8NL+XTe4zUWms6GZJwpv2y6EHWkomU=;
-        b=DAKgK7yso+4JIjoHCBpb+6tgWl2Eo+LvPfpPYbiVbFJMLP4keoa9OJPWdngLX/gZ63
-         Tk9vP5Zj3nZMRkJcV2tgzQASh5uf38k3hhQWhfvdK2m8HHWHt2DtBGmqyM5xEdUT43g7
-         LaR8UAbYWHp/9mTZbsVUNYX6jbmpExsWaZ2DpbLrfa9GRyl5eaIqTXXxbecfmyLJnzCd
-         5BlNE3EF5OjBejkNMdrfIajh6cIzxHJyOxanjlpsOJw71GJ0cWX9ltLUbDIdGqSfHUa0
-         SchnmBJplnS1NmZ0qWVyZHwy4P1KIhvEsA8+GEhXBULFCCsFs2WlXtvreJeMXrJGJeQA
-         HOqw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kNRQyWFC1luLFZtivM+492qWfKb/Alm/CyFKDv0IwIk=;
+        b=qptWnQmU4BdfqZIMN1EBPAGW03FyLftg+ifITV0ESGN4n7AhriRM1w1TVgtPR0lR05
+         afpqmLFLJ8G14NcBgWEm5oe7vTPpMyB3UVMZOlet2IFOPOtdsak5Kn7gOlvSgPw1UNyo
+         dUhjlc4R80cfYiZYP1RgLWHQHmRgtwdrh+hqIEBESkC9BEv4jxVbPKtukwDXJo6SOCEH
+         UUTULfWZPglNqugPlDN7Cq5ctClZsQylncu+FwMHCTSIgam27SgxSD3TETzNFko3x2o/
+         b9D3R/NMrnJnzpwc5juP5wNv0lZXRWw2BHdpfRdOB8UvU0RIaT4H06H3uiUOWEnb/9LT
+         0hqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oSRenFjywTpXu8NL+XTe4zUWms6GZJwpv2y6EHWkomU=;
-        b=g0cCUfLWgGfcJOxJf119ZcZLHVYIHRPG3WpySDByDIsa6g8eJ/TMfY8tm3yzQRygek
-         uTeSJZ9VnYBeOHCR1dXdSCSwplRfHYAaRmyp3vp7XkCVDEyMztJt+5+lx9WUhkswla2o
-         Y4FkPVMCwiM61ZbdrKi81JKVTrTnehS+QWyiICdapI7QguXVdi/VXOU90qxiYNOIvy5T
-         t13U37onsKjg2v3FOFd6DtMIqsL9AtIy1d0lLWHSs0xwCrzqUYLeOWh6T3q7gr/qFioW
-         rGPI1xNcJed/UDmlIXvljgh9YUb1J8VblGcgM2l4gvmaRMZ0T7t7qzPRN6fU9YXYdHan
-         UQeA==
-X-Gm-Message-State: AOAM530umT4YFoMNnRRoTVkGUrNjuAyvgMtDJX87hvWXYZxbbMq6mDCa
-        wPBI5XLq3y7RoO4PNMl6fedW6A==
-X-Google-Smtp-Source: ABdhPJyhpzGJJBvkOc/BjhiPAmICTUnvR21ABBN+HkUlT4BnGzH0G42Obz4MiQZ+kdrufD3wAr+Qng==
-X-Received: by 2002:a2e:8891:: with SMTP id k17mr4905593lji.326.1605473871823;
-        Sun, 15 Nov 2020 12:57:51 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kNRQyWFC1luLFZtivM+492qWfKb/Alm/CyFKDv0IwIk=;
+        b=H70Yj4eB/bFc5KR17I/OVjJW3ett68TmxPqTqKBLIBEGdxTfnrh9gZLeW9+j3zo8NJ
+         jbaRJ38CJobneEXOKrhHkTLEdkaN6JI3BC9vVoVSpjGee/8BVxVb/mWdwdpfb2Hpyx0o
+         BqmcRhCQnyPDnlzbNuFj17QIle4tVvyDH5MqrVsxht0o7FavJ39UCHIjIfN53dzKvRpM
+         pjLXrCK9i82q+su79qn/Vz7IjH9mXH3KD2gUKsk26Ocnn7rhBgY2frbiKWrGqgZpI/6b
+         dC8MO6+FpSYbjvf4qb4TqMHJ3leGFAzJLv9vcQlvYqK23gyzKYoETrkq9KiLwrak5ND7
+         aF4Q==
+X-Gm-Message-State: AOAM533Y57rbChrCvfQkJIrBfUhnhnS0m2V+ywZorkO3vOwjkuf8rNty
+        EsPlVb/pfVIZSQmBs9JXW00Tjw==
+X-Google-Smtp-Source: ABdhPJxY8kd4liFU4EScdfDKyBLDV2sRnpoZjaBf0jexPmSErEm+e5arQidaIcDvvL94LcnItvQgXA==
+X-Received: by 2002:ac2:490f:: with SMTP id n15mr4654541lfi.158.1605475595659;
+        Sun, 15 Nov 2020 13:26:35 -0800 (PST)
 Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id j4sm2458779lfk.275.2020.11.15.12.57.51
+        by smtp.gmail.com with ESMTPSA id p204sm2482178lfa.168.2020.11.15.13.26.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2020 12:57:51 -0800 (PST)
+        Sun, 15 Nov 2020 13:26:34 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 3/3 v3] iio: accel: bmc150-accel: Add rudimentary regulator support
-Date:   Sun, 15 Nov 2020 21:57:45 +0100
-Message-Id: <20201115205745.618455-3-linus.walleij@linaro.org>
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: [PATCH] iio: accel: yamaha-yas: Add DT bindings
+Date:   Sun, 15 Nov 2020 22:26:33 +0100
+Message-Id: <20201115212633.626241-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201115205745.618455-1-linus.walleij@linaro.org>
-References: <20201115205745.618455-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These Bosch accelerometers have two supplies, VDD and VDDIO.
-Add some rudimentary support to obtain and enable these
-regulators during probe() and disable them during remove()
-or on the errorpath.
+This adds device tree bindings for the Yamaha YAS5xx
+magnetometers/compass sensors.
 
+Cc: devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-ChangeLog v2->v3:
-- Resend with the rest.
-ChangeLog v1->v2:
-- Use dev_err_probe() to simplify the errorpath.
+I am still working on the actual driver for the magnetometer
+but why not send out the DT bindings for review, the
+hardware variants are easy to describe.
 ---
- drivers/iio/accel/bmc150-accel-core.c | 35 +++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ .../bindings/iio/magnetometer/yamaha,yas.yaml | 80 +++++++++++++++++++
+ 1 file changed, 80 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 01dbc01e328f..caa984612e88 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -28,6 +28,7 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- 
- #include "bmc150-accel.h"
- 
-@@ -184,6 +185,7 @@ enum bmc150_accel_trigger_id {
- 
- struct bmc150_accel_data {
- 	struct regmap *regmap;
-+	struct regulator_bulk_data regulators[2];
- 	int irq;
- 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
- 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
-@@ -1591,10 +1593,33 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 				     &data->orientation);
- 	if (ret)
- 		return ret;
-+	/*
-+	 * VDD   is the analog and digital domain voltage supply
-+	 * VDDIO is the digital I/O voltage supply
-+	 */
-+	data->regulators[0].supply = "vdd";
-+	data->regulators[1].supply = "vddio";
-+	ret = devm_regulator_bulk_get(dev,
-+				      ARRAY_SIZE(data->regulators),
-+				      data->regulators);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to get regulators\n");
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+new file mode 100644
+index 000000000000..6fc4cfe4a417
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+@@ -0,0 +1,80 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-+				    data->regulators);
-+	if (ret) {
-+		dev_err(dev, "failed to enable regulators: %d\n", ret);
-+		return ret;
-+	}
-+	/*
-+	 * 2ms or 3ms power-on time according to datasheets, let's better
-+	 * be safe than sorry and set this delay to 5ms.
-+	 */
-+	msleep(5);
- 
- 	ret = bmc150_accel_chip_init(data);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulators;
- 
- 	mutex_init(&data->mutex);
- 
-@@ -1611,7 +1636,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 					 &bmc150_accel_buffer_ops);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed: iio triggered buffer setup\n");
--		return ret;
-+		goto err_disable_regulators;
- 	}
- 
- 	if (data->irq > 0) {
-@@ -1672,6 +1697,9 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
- err_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
-+err_disable_regulators:
-+	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-+			       data->regulators);
- 
- 	return ret;
- }
-@@ -1696,6 +1724,9 @@ int bmc150_accel_core_remove(struct device *dev)
- 	bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_DEEP_SUSPEND, 0);
- 	mutex_unlock(&data->mutex);
- 
-+	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-+			       data->regulators);
++title: Yamaha YAS5xx magnetometer sensors
 +
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description:
++  The Yamaha YAS5xx magnetometers is a line of 3-axis magnetometers
++  first introduced by Yamaha in 2006 with the YAS529. Over the years
++  this magnetometer has been minatyrized and appeared in a number of
++  different variants.
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - yamaha,yas529
++          - yamaha,yas530
++          - yamaha,yas532
++          - yamaha,yas533
++          - yamaha,yas535
++          - yamaha,yas536
++          - yamaha,yas537
++          - yamaha,yas539
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++    description: The YAS5xx sensors has a RSTN pin used to reset
++      the logic inside the sensor. This GPIO line should connect
++      to that pin and be marked as GPIO_ACTIVE_LOW.
++
++  interrupts:
++    maxItems: 1
++    description: Interrupt for INT pin for variants that support
++      interrupt generation. This polarity, whether the interrupt
++      is active on the rising or the falling edge, is configurable
++      in the hardware.
++
++  vdd-supply:
++    description: An optional regulator providing core power supply
++      on the VDD pin, typically 1.8 V or 3.0 V.
++
++  iovdd-supply:
++    description: An optional regulator providing I/O power supply
++      for the I2C interface on the IOVDD pin, typically 1.8 V.
++      This is not present on all variants of the component, some
++      have only the VDD voltage.
++
++  mount-matrix:
++    description: An optional 3x3 mounting rotation matrix.
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        magnetometer@2e {
++          compatible = "yamaha,yas530";
++          reg = <0x2e>;
++          vdd-supply = <&ldo1_reg>;
++          iovdd-supply = <&ldo2_reg>;
++          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
++        };
++    };
 -- 
 2.26.2
 

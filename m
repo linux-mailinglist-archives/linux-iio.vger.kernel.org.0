@@ -2,130 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A22F2B38C9
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 20:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B09D22B3945
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 21:58:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727852AbgKOTcQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 14:32:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34076 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726923AbgKOTcQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Nov 2020 14:32:16 -0500
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 093B0238E6;
-        Sun, 15 Nov 2020 19:32:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605468735;
-        bh=ErJov3gozQbcXRWPQ/ExCFfzkMh9py6GNRxpW3I4Dyw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IMQZo7iiN9bX+UpHwQTM+8TlQe73QrxY7IAvT0Lo1E9nFVBKV4oMRXQL5+0D1ty3g
-         gyE/niTL0fVhcY8PXeaVsjYaZ864QtSJzwG2oqqKF7OROum5JSmZrgeGie8yMKy3+/
-         Ko3rrnEiXb7Xih6VUPFSBZG1ihMonan1agWgKkuU=
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     robh+dt@kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [RFC PATCH 9/9] iio: inkern: Drop io-channel-ranges dt property support
-Date:   Sun, 15 Nov 2020 19:29:51 +0000
-Message-Id: <20201115192951.1073632-10-jic23@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201115192951.1073632-1-jic23@kernel.org>
-References: <20201115192951.1073632-1-jic23@kernel.org>
+        id S1727434AbgKOU5v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 15:57:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727442AbgKOU5u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 15:57:50 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ECC9C0613D1
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:50 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id j205so22268947lfj.6
+        for <linux-iio@vger.kernel.org>; Sun, 15 Nov 2020 12:57:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rnKSl2qWRJgBLP6TH3NnZE7MB45PnhqQS5bgJdVEwCM=;
+        b=XmuYY5Cce3uA3+VhP/7nIKX1vqsNH5OspAPfISjwov42gA8Fxo9SWOEtvc3v7GGfml
+         UNio5RHf7w54jU/Htuh/j2Y4OqQyfzrUJBRgSE3ecEDVPHf26OFd3sMC1jGSQbWN9lXr
+         g3Wb5U865C1Y75f0FS7zmLh+xYm29k0aBvnHKm18QwaAz2wZ6AJqdLuLOiA+lqPzpAup
+         5JXv5JD0TNIR8cP5vLuZNKuClA5yfYSytlhXvkNk9wGCqnjXrThuEFs6CaIsPoiDI+ZT
+         IUEMAlLaTGiySkNYnAl12mDJtjmdZHjcNYeahUYcAPJONtQUQhKp9rC2XA1xbaWuf021
+         i6Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rnKSl2qWRJgBLP6TH3NnZE7MB45PnhqQS5bgJdVEwCM=;
+        b=W42nadL42nmJziKjqiw5mYxtehBQMSfClxCif9MRnTVj3NyHLbf1eE5aycFRe8qVyU
+         wJtmti9fznan7xxQ8cwVJreEjhCKPAVDiRdwk65hcF4TtijZfe06gvqw3ZI7XEUnMhli
+         +hHyKvD/odjjmBIjezFpX/DKX7KNky0qvc+Y416gheC6p3hlghnX4vxSG83IACOFFXEf
+         DGqCuT+vVJn/ZzGEVFBJZ84xcTYLxzL+bPsxx/P5Q66JjMcTvaqOUGi946gApP3EBCsB
+         9g8PW6t14CqmJfw3Jl5o1ADqGvCnEU+YkGEB6A1ijH51ZDGwG9l1ZfJqL061lQqg36yS
+         zoDQ==
+X-Gm-Message-State: AOAM530YgMddvYJAkD5rsXfTNXcX4YXWb01KyRea5Qu2J5xi98uu4Upp
+        dhiGKPcyMhi4qmftA1Wx97rSVQ==
+X-Google-Smtp-Source: ABdhPJzWyKwRViQzrAR3T3FBG60ThpuwSDbwrc+oohthCx5+lVFooJiiIV3EntQBkqDY19UR0mdQTg==
+X-Received: by 2002:ac2:52b2:: with SMTP id r18mr4090972lfm.50.1605473868740;
+        Sun, 15 Nov 2020 12:57:48 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id j4sm2458779lfk.275.2020.11.15.12.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2020 12:57:48 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: [PATCH 1/3 v3] iio: accel: bmc150-accel: Add DT bindings
+Date:   Sun, 15 Nov 2020 21:57:43 +0100
+Message-Id: <20201115205745.618455-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+These accelerometers have bindings used in the kernel and
+several device trees but no proper bindings documentation.
+Add it.
 
-This property has been almost exclusively missused in mainline and
-we don't actually have any instances of it being necessary.
+Also add a compatible for the BMA222 that I am right now
+adding support for in the driver.
 
-As such Rob Herring suggested we just drop it and I can't immediately
-see any reason to disagree.
-
-If anyone has an out of tree dts file that makes use of this then let
-me know.  I'm not against keeping the code, but documenting it as a
-deprecated property not to be used in new dts files.
-
-Note build tested only. If someone could give it a sanity check
-on a platform that uses this interface that would be great.
-If not I'll mock something up before applying this.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/inkern.c | 49 +++++++++++++++-----------------------------
- 1 file changed, 17 insertions(+), 32 deletions(-)
+ChangeLog v2->v3:
+- Fix up an include directive in the example to be
+  outside of the I2C node.
+ChangeLog v1->v2:
+- Rename to simply bosch,bma255.yaml after one of the
+  common accelerometers.
+- Specify that the SPI uses a 4-wire interface.
+- Specify maximum SPI clock frequency to 10MHz. (Checked
+  all the datasheets.)
+---
+ .../bindings/iio/accel/bosch,bma255.yaml      | 73 +++++++++++++++++++
+ 1 file changed, 73 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index ede99e0d5371..85a6f6103ee9 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -184,40 +184,25 @@ static struct iio_channel *of_iio_channel_get_by_name(struct device_node *np,
- 						      const char *name)
- {
- 	struct iio_channel *chan = NULL;
--
--	/* Walk up the tree of devices looking for a matching iio channel */
--	while (np) {
--		int index = 0;
--
--		/*
--		 * For named iio channels, first look up the name in the
--		 * "io-channel-names" property.  If it cannot be found, the
--		 * index will be an error code, and of_iio_channel_get()
--		 * will fail.
--		 */
--		if (name)
--			index = of_property_match_string(np, "io-channel-names",
-+	int index = 0;
+diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+new file mode 100644
+index 000000000000..6eef3480ea8f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+@@ -0,0 +1,73 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/bosch,bma255.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	/*
-+	 * For named iio channels, first look up the name in the
-+	 * "io-channel-names" property.  If it cannot be found, the
-+	 * index will be an error code, and of_iio_channel_get()
-+	 * will fail.
-+	 */
-+	if (name)
-+		index = of_property_match_string(np, "io-channel-names",
- 							 name);
--		chan = of_iio_channel_get(np, index);
--		if (!IS_ERR(chan) || PTR_ERR(chan) == -EPROBE_DEFER)
--			break;
--		else if (name && index >= 0) {
--			pr_err("ERROR: could not get IIO channel %pOF:%s(%i)\n",
--				np, name ? name : "", index);
--			return NULL;
--		}
-+	chan = of_iio_channel_get(np, index);
-+	if (!IS_ERR(chan) || PTR_ERR(chan) == -EPROBE_DEFER)
-+		return chan;
-+	else if (name && index >= 0)
-+		pr_err("ERROR: could not get IIO channel %pOF:%s(%i)\n",
-+		       np, name ? name : "", index);
- 
--		/*
--		 * No matching IIO channel found on this node.
--		 * If the parent node has a "io-channel-ranges" property,
--		 * then we can try one of its channels.
--		 */
--		np = np->parent;
--		if (np && !of_get_property(np, "io-channel-ranges", NULL))
--			return NULL;
--	}
--
--	return chan;
-+	return NULL;
- }
- 
- static struct iio_channel *of_iio_channel_get_all(struct device *dev)
++title: Bosch BMA255 and Similar Accelerometers
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description:
++  3 axis accelerometers with varying range and I2C or SPI
++  4-wire interface.
++
++properties:
++  compatible:
++    enum:
++      - bosch,bmc150
++      - bosch,bmi055
++      - bosch,bma255
++      - bosch,bma250e
++      - bosch,bma222
++      - bosch,bma222e
++      - bosch,bma280
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++  vddio-supply: true
++
++  interrupts:
++    maxItems: 1
++
++  mount-matrix:
++    description: an optional 3x3 mounting rotation matrix.
++
++  spi-max-frequency:
++    maximum: 10000000
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accelerometer@8 {
++            compatible = "bosch,bma222";
++            reg = <0x08>;
++            vddio-supply = <&vddio>;
++            vdd-supply = <&vdd>;
++            interrupts = <57 IRQ_TYPE_EDGE_FALLING>;
++        };
++    };
++  - |
++    # include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        accel@0 {
++            compatible = "bosch,bma222";
++            reg = <0>;
++            spi-max-frequency = <10000000>;
++        };
++    };
++...
 -- 
-2.28.0
+2.26.2
 

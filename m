@@ -2,102 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F9D72B3559
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 15:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 694222B35BB
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Nov 2020 16:26:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbgKOOih (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Nov 2020 09:38:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33840 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726438AbgKOOih (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Nov 2020 09:38:37 -0500
-Received: from localhost.localdomain (unknown [151.66.8.153])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C4E5622447;
-        Sun, 15 Nov 2020 14:38:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605451117;
-        bh=SuNFnYXYFoRueuAazRS5XheRQPvEkT4UExH52I47TKA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=kXRXxpTYtyxeVzD+GFYYdkPNDQSV9S+T8oDMUHQFW+K72P/3Ak7an+FmdMaTlqtt3
-         qkptP4J4XhjEi1Gy+zOw/Ulf7IgUh+1O6EGz2LUKvTFeDlVaybWdxCNdshaPVPGdr/
-         TRS+CTxBBaGr0cFcRH9Lnd7FZMbGSO2mD40TUPT4=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        linus.walleij@linaro.org, denis.ciocca@st.com
-Subject: [PATCH] iio: common: st_sensors: fix possible infinite loop in st_sensors_irq_thread
-Date:   Sun, 15 Nov 2020 15:38:24 +0100
-Message-Id: <3b8dc467b30dd6869ea60ed583cad750c74eb44e.1605450804.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1727019AbgKOP0W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Nov 2020 10:26:22 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:49499 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726749AbgKOP0W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Nov 2020 10:26:22 -0500
+Received: from kb-xps (unknown [78.193.40.249])
+        (Authenticated sender: kamel.bouhara@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 38229200002;
+        Sun, 15 Nov 2020 15:26:19 +0000 (UTC)
+Date:   Sun, 15 Nov 2020 16:26:17 +0100
+From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     jic23@kernel.org, robh+dt@kernel.org,
+        alexandre.belloni@bootlin.com,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] counter: microchip-tcb-capture: Fix CMR value check
+Message-ID: <20201115152617.GB2233@kb-xps>
+References: <20201114232805.253108-1-vilhelm.gray@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201114232805.253108-1-vilhelm.gray@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Return a boolean value in st_sensors_new_samples_available routine in
-order to avoid an infinite loop in st_sensors_irq_thread if
-stat_drdy.addr is not defined or stat_drdy read fails
+On Sat, Nov 14, 2020 at 06:28:05PM -0500, William Breathitt Gray wrote:
+> The ATMEL_TC_ETRGEDG_* defines are not masks but rather possible values
+> for CMR. This patch fixes the action_get() callback to properly check
+> for these values rather than mask them.
+>
+> Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> ---
 
-Fixes: 90efe05562921 ("iio: st_sensors: harden interrupt handling")
-Reported-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-This patch is just compile tested, I have not carried out any run test
----
- .../common/st_sensors/st_sensors_trigger.c    | 20 ++++++++-----------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+Acked-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 0507283bd4c1..3bee5c9255d4 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -23,35 +23,31 @@
-  * @sdata: Sensor data.
-  *
-  * returns:
-- * 0 - no new samples available
-- * 1 - new samples available
-- * negative - error or unknown
-+ * false - no new samples available or read error
-+ * true - new samples available
-  */
--static int st_sensors_new_samples_available(struct iio_dev *indio_dev,
--					    struct st_sensor_data *sdata)
-+static bool st_sensors_new_samples_available(struct iio_dev *indio_dev,
-+					     struct st_sensor_data *sdata)
- {
- 	int ret, status;
- 
- 	/* How would I know if I can't check it? */
- 	if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
--		return -EINVAL;
-+		return false;
- 
- 	/* No scan mask, no interrupt */
- 	if (!indio_dev->active_scan_mask)
--		return 0;
-+		return false;
- 
- 	ret = regmap_read(sdata->regmap,
- 			  sdata->sensor_settings->drdy_irq.stat_drdy.addr,
- 			  &status);
- 	if (ret < 0) {
- 		dev_err(sdata->dev, "error checking samples available\n");
--		return ret;
-+		return false;
- 	}
- 
--	if (status & sdata->sensor_settings->drdy_irq.stat_drdy.mask)
--		return 1;
--
--	return 0;
-+	return !!(status & sdata->sensor_settings->drdy_irq.stat_drdy.mask);
- }
- 
- /**
--- 
-2.26.2
+>  drivers/counter/microchip-tcb-capture.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+> index 039c54a78aa5..710acc0a3704 100644
+> --- a/drivers/counter/microchip-tcb-capture.c
+> +++ b/drivers/counter/microchip-tcb-capture.c
+> @@ -183,16 +183,20 @@ static int mchp_tc_count_action_get(struct counter_device *counter,
+>
+>  	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
+>
+> -	*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> -
+> -	if (cmr & ATMEL_TC_ETRGEDG_NONE)
+> +	switch (cmr & ATMEL_TC_ETRGEDG) {
+> +	default:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_NONE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_RISING)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_RISING:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_RISING_EDGE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_FALLING)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_FALLING:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_FALLING_EDGE;
+> -	else if (cmr & ATMEL_TC_ETRGEDG_BOTH)
+> +		break;
+> +	case ATMEL_TC_ETRGEDG_BOTH:
+>  		*action = MCHP_TC_SYNAPSE_ACTION_BOTH_EDGE;
+> +		break;
+> +	}
+>
+>  	return 0;
+>  }
+> --
+> 2.29.2
+>
 
+--
+Kamel Bouhara, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com

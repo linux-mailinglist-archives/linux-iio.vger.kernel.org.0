@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E01042B66F2
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 15:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E77302B66FB
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 15:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387935AbgKQOHr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Nov 2020 09:07:47 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:34239 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729788AbgKQOHq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 09:07:46 -0500
+        id S2387963AbgKQOH5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Nov 2020 09:07:57 -0500
+Received: from relay11.mail.gandi.net ([217.70.178.231]:33721 "EHLO
+        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729503AbgKQOH4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 09:07:56 -0500
 Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
         (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id DB298200016;
-        Tue, 17 Nov 2020 14:07:21 +0000 (UTC)
+        by relay11.mail.gandi.net (Postfix) with ESMTPSA id 2E96B100010;
+        Tue, 17 Nov 2020 14:07:44 +0000 (UTC)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -24,9 +24,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v2 01/11] iio: adc: at91_adc: remove platform data
-Date:   Tue, 17 Nov 2020 15:06:46 +0100
-Message-Id: <20201117140656.1235055-2-alexandre.belloni@bootlin.com>
+Subject: [PATCH v2 02/11] iio: adc: at91_adc: rework resolution selection
+Date:   Tue, 17 Nov 2020 15:06:47 +0100
+Message-Id: <20201117140656.1235055-3-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
 References: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
@@ -36,200 +36,205 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The at91 platforms have been DT only for a while, remove platform data.
+Move the possible resolution values back to the driver. This removes the
+atmel,adc-res and atmel,adc-res-names properties, leaving only
+atmel,adc-use-res. As atmel,adc-res-names had to contain "lowres" and
+"highres", those where already the only allowed values for
+atmel,adc-use-res.
+
+Also introduce a new compatible string for the sama5d3 as this is the only
+one with a different resolution. Also it doesn't even have the LOWRES
+bit.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Reviewed-by: Ludovic Desroches <ludovic.desroches@microchip.com>
 ---
- drivers/iio/adc/at91_adc.c             | 80 +++++++-------------------
- include/linux/platform_data/at91_adc.h | 49 ----------------
- 2 files changed, 22 insertions(+), 107 deletions(-)
- delete mode 100644 include/linux/platform_data/at91_adc.h
+ drivers/iio/adc/at91_adc.c | 97 ++++++++++++++++----------------------
+ 1 file changed, 40 insertions(+), 57 deletions(-)
 
 diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-index 9b2c548fae95..62bd35af8b13 100644
+index 62bd35af8b13..0d67c812ef3d 100644
 --- a/drivers/iio/adc/at91_adc.c
 +++ b/drivers/iio/adc/at91_adc.c
-@@ -22,8 +22,6 @@
- #include <linux/slab.h>
- #include <linux/wait.h>
+@@ -204,6 +204,9 @@ struct at91_adc_caps {
+ 	u32 (*calc_startup_ticks)(u32 startup_time, u32 adc_clk_khz);
  
--#include <linux/platform_data/at91_adc.h>
--
- #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/trigger.h>
-@@ -153,6 +151,25 @@
- #define TOUCH_SHTIM                    0xa
- #define TOUCH_SCTIM_US		10		/* 10us for the Touchscreen Switches Closure Time */
- 
-+enum atmel_adc_ts_type {
-+	ATMEL_ADC_TOUCHSCREEN_NONE = 0,
-+	ATMEL_ADC_TOUCHSCREEN_4WIRE = 4,
-+	ATMEL_ADC_TOUCHSCREEN_5WIRE = 5,
-+};
+ 	u8	num_channels;
 +
-+/**
-+ * struct at91_adc_trigger - description of triggers
-+ * @name:		name of the trigger advertised to the user
-+ * @value:		value to set in the ADC's trigger setup register
-+ *			to enable the trigger
-+ * @is_external:	Does the trigger rely on an external pin?
-+ */
-+struct at91_adc_trigger {
-+	const char	*name;
-+	u8		value;
-+	bool		is_external;
-+};
-+
- /**
-  * struct at91_adc_reg_desc - Various informations relative to registers
-  * @channel_base:	Base offset for the channel data registers
-@@ -875,9 +892,6 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
- 	int i = 0, ret;
- 	u32 prop;
++	u8	low_res_bits;
++	u8	high_res_bits;
+ 	struct at91_adc_reg_desc registers;
+ };
  
--	if (!node)
--		return -EINVAL;
--
- 	st->caps = (struct at91_adc_caps *)
- 		of_match_device(at91_adc_dt_ids, &pdev->dev)->data;
+@@ -229,7 +232,6 @@ struct at91_adc_state {
+ 	bool			use_external;
+ 	u32			vref_mv;
+ 	u32			res;		/* resolution used for convertions */
+-	bool			low_res;	/* the resolution corresponds to the lowest one */
+ 	wait_queue_head_t	wq_data_avail;
+ 	struct at91_adc_caps	*caps;
  
-@@ -960,30 +974,6 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
- 	return ret;
+@@ -754,58 +756,6 @@ static int at91_adc_read_raw(struct iio_dev *idev,
+ 	return -EINVAL;
  }
  
--static int at91_adc_probe_pdata(struct at91_adc_state *st,
--				struct platform_device *pdev)
+-static int at91_adc_of_get_resolution(struct iio_dev *idev,
+-				      struct platform_device *pdev)
 -{
--	struct at91_adc_data *pdata = pdev->dev.platform_data;
+-	struct at91_adc_state *st = iio_priv(idev);
+-	struct device_node *np = pdev->dev.of_node;
+-	int count, i, ret = 0;
+-	char *res_name, *s;
+-	u32 *resolutions;
 -
--	if (!pdata)
--		return -EINVAL;
--
--	st->caps = (struct at91_adc_caps *)
--			platform_get_device_id(pdev)->driver_data;
--
--	st->use_external = pdata->use_external_triggers;
--	st->vref_mv = pdata->vref;
--	st->channels_mask = pdata->channels_used;
--	st->num_channels = st->caps->num_channels;
--	st->startup_time = pdata->startup_time;
--	st->trigger_number = pdata->trigger_number;
--	st->trigger_list = pdata->trigger_list;
--	st->registers = &st->caps->registers;
--	st->touchscreen_type = pdata->touchscreen_type;
--
--	return 0;
--}
--
- static const struct iio_info at91_adc_info = {
- 	.read_raw = &at91_adc_read_raw,
- };
-@@ -1160,15 +1150,9 @@ static int at91_adc_probe(struct platform_device *pdev)
- 
- 	st = iio_priv(idev);
- 
--	if (pdev->dev.of_node)
--		ret = at91_adc_probe_dt(idev, pdev);
--	else
--		ret = at91_adc_probe_pdata(st, pdev);
--
--	if (ret) {
--		dev_err(&pdev->dev, "No platform data available.\n");
--		return -EINVAL;
+-	count = of_property_count_strings(np, "atmel,adc-res-names");
+-	if (count < 2) {
+-		dev_err(&idev->dev, "You must specified at least two resolution names for "
+-				    "adc-res-names property in the DT\n");
+-		return count;
 -	}
-+	ret = at91_adc_probe_dt(idev, pdev);
-+	if (ret)
-+		return ret;
+-
+-	resolutions = kmalloc_array(count, sizeof(*resolutions), GFP_KERNEL);
+-	if (!resolutions)
+-		return -ENOMEM;
+-
+-	if (of_property_read_u32_array(np, "atmel,adc-res", resolutions, count)) {
+-		dev_err(&idev->dev, "Missing adc-res property in the DT.\n");
+-		ret = -ENODEV;
+-		goto ret;
+-	}
+-
+-	if (of_property_read_string(np, "atmel,adc-use-res", (const char **)&res_name))
+-		res_name = "highres";
+-
+-	for (i = 0; i < count; i++) {
+-		if (of_property_read_string_index(np, "atmel,adc-res-names", i, (const char **)&s))
+-			continue;
+-
+-		if (strcmp(res_name, s))
+-			continue;
+-
+-		st->res = resolutions[i];
+-		if (!strcmp(res_name, "lowres"))
+-			st->low_res = true;
+-		else
+-			st->low_res = false;
+-
+-		dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
+-		goto ret;
+-	}
+-
+-	dev_err(&idev->dev, "There is no resolution for %s\n", res_name);
+-
+-ret:
+-	kfree(resolutions);
+-	return ret;
+-}
  
- 	platform_set_drvdata(pdev, idev);
+ static u32 calc_startup_ticks_9260(u32 startup_time, u32 adc_clk_khz)
+ {
+@@ -891,6 +841,7 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
+ 	struct device_node *trig_node;
+ 	int i = 0, ret;
+ 	u32 prop;
++	char *s;
  
-@@ -1444,29 +1428,9 @@ static const struct of_device_id at91_adc_dt_ids[] = {
+ 	st->caps = (struct at91_adc_caps *)
+ 		of_match_device(at91_adc_dt_ids, &pdev->dev)->data;
+@@ -924,9 +875,13 @@ static int at91_adc_probe_dt(struct iio_dev *idev,
+ 	}
+ 	st->vref_mv = prop;
+ 
+-	ret = at91_adc_of_get_resolution(idev, pdev);
+-	if (ret)
+-		goto error_ret;
++	st->res = st->caps->high_res_bits;
++	if (st->caps->low_res_bits &&
++	    !of_property_read_string(node, "atmel,adc-use-res", (const char **)&s)
++	    && !strcmp(s, "lowres"))
++		st->res = st->caps->low_res_bits;
++
++	dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
+ 
+ 	st->registers = &st->caps->registers;
+ 	st->num_channels = st->caps->num_channels;
+@@ -1248,7 +1203,7 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 
+ 	reg = AT91_ADC_PRESCAL_(prsc) & st->registers->mr_prescal_mask;
+ 	reg |= AT91_ADC_STARTUP_(ticks) & st->registers->mr_startup_mask;
+-	if (st->low_res)
++	if (st->res == st->caps->low_res_bits)
+ 		reg |= AT91_ADC_LOWRES;
+ 	if (st->sleep_mode)
+ 		reg |= AT91_ADC_SLEEP;
+@@ -1363,6 +1318,8 @@ static SIMPLE_DEV_PM_OPS(at91_adc_pm_ops, at91_adc_suspend, at91_adc_resume);
+ static struct at91_adc_caps at91sam9260_caps = {
+ 	.calc_startup_ticks = calc_startup_ticks_9260,
+ 	.num_channels = 4,
++	.low_res_bits = 8,
++	.high_res_bits = 10,
+ 	.registers = {
+ 		.channel_base = AT91_ADC_CHR(0),
+ 		.drdy_mask = AT91_ADC_DRDY,
+@@ -1377,6 +1334,8 @@ static struct at91_adc_caps at91sam9rl_caps = {
+ 	.has_ts = true,
+ 	.calc_startup_ticks = calc_startup_ticks_9260,	/* same as 9260 */
+ 	.num_channels = 6,
++	.low_res_bits = 8,
++	.high_res_bits = 10,
+ 	.registers = {
+ 		.channel_base = AT91_ADC_CHR(0),
+ 		.drdy_mask = AT91_ADC_DRDY,
+@@ -1391,6 +1350,8 @@ static struct at91_adc_caps at91sam9g45_caps = {
+ 	.has_ts = true,
+ 	.calc_startup_ticks = calc_startup_ticks_9260,	/* same as 9260 */
+ 	.num_channels = 8,
++	.low_res_bits = 8,
++	.high_res_bits = 10,
+ 	.registers = {
+ 		.channel_base = AT91_ADC_CHR(0),
+ 		.drdy_mask = AT91_ADC_DRDY,
+@@ -1408,6 +1369,8 @@ static struct at91_adc_caps at91sam9x5_caps = {
+ 	.ts_pen_detect_sensitivity = 2,
+ 	.calc_startup_ticks = calc_startup_ticks_9x5,
+ 	.num_channels = 12,
++	.low_res_bits = 8,
++	.high_res_bits = 10,
+ 	.registers = {
+ 		.channel_base = AT91_ADC_CDR0_9X5,
+ 		.drdy_mask = AT91_ADC_SR_DRDY_9X5,
+@@ -1419,11 +1382,31 @@ static struct at91_adc_caps at91sam9x5_caps = {
+ 	},
+ };
+ 
++static struct at91_adc_caps sama5d3_caps = {
++	.has_ts = true,
++	.has_tsmr = true,
++	.ts_filter_average = 3,
++	.ts_pen_detect_sensitivity = 2,
++	.calc_startup_ticks = calc_startup_ticks_9x5,
++	.num_channels = 12,
++	.low_res_bits = 0,
++	.high_res_bits = 12,
++	.registers = {
++		.channel_base = AT91_ADC_CDR0_9X5,
++		.drdy_mask = AT91_ADC_SR_DRDY_9X5,
++		.status_register = AT91_ADC_SR_9X5,
++		.trigger_register = AT91_ADC_TRGR_9X5,
++		.mr_prescal_mask = AT91_ADC_PRESCAL_9G45,
++		.mr_startup_mask = AT91_ADC_STARTUP_9X5,
++	},
++};
++
+ static const struct of_device_id at91_adc_dt_ids[] = {
+ 	{ .compatible = "atmel,at91sam9260-adc", .data = &at91sam9260_caps },
+ 	{ .compatible = "atmel,at91sam9rl-adc", .data = &at91sam9rl_caps },
+ 	{ .compatible = "atmel,at91sam9g45-adc", .data = &at91sam9g45_caps },
+ 	{ .compatible = "atmel,at91sam9x5-adc", .data = &at91sam9x5_caps },
++	{ .compatible = "atmel,sama5d3-adc", .data = &sama5d3_caps },
+ 	{},
  };
  MODULE_DEVICE_TABLE(of, at91_adc_dt_ids);
- 
--static const struct platform_device_id at91_adc_ids[] = {
--	{
--		.name = "at91sam9260-adc",
--		.driver_data = (unsigned long)&at91sam9260_caps,
--	}, {
--		.name = "at91sam9rl-adc",
--		.driver_data = (unsigned long)&at91sam9rl_caps,
--	}, {
--		.name = "at91sam9g45-adc",
--		.driver_data = (unsigned long)&at91sam9g45_caps,
--	}, {
--		.name = "at91sam9x5-adc",
--		.driver_data = (unsigned long)&at91sam9x5_caps,
--	}, {
--		/* terminator */
--	}
--};
--MODULE_DEVICE_TABLE(platform, at91_adc_ids);
--
- static struct platform_driver at91_adc_driver = {
- 	.probe = at91_adc_probe,
- 	.remove = at91_adc_remove,
--	.id_table = at91_adc_ids,
- 	.driver = {
- 		   .name = DRIVER_NAME,
- 		   .of_match_table = of_match_ptr(at91_adc_dt_ids),
-diff --git a/include/linux/platform_data/at91_adc.h b/include/linux/platform_data/at91_adc.h
-deleted file mode 100644
-index f20eaeb827ce..000000000000
---- a/include/linux/platform_data/at91_adc.h
-+++ /dev/null
-@@ -1,49 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * Copyright (C) 2011 Free Electrons
-- */
--
--#ifndef _AT91_ADC_H_
--#define _AT91_ADC_H_
--
--enum atmel_adc_ts_type {
--	ATMEL_ADC_TOUCHSCREEN_NONE = 0,
--	ATMEL_ADC_TOUCHSCREEN_4WIRE = 4,
--	ATMEL_ADC_TOUCHSCREEN_5WIRE = 5,
--};
--
--/**
-- * struct at91_adc_trigger - description of triggers
-- * @name:		name of the trigger advertised to the user
-- * @value:		value to set in the ADC's trigger setup register
--			to enable the trigger
-- * @is_external:	Does the trigger rely on an external pin?
-- */
--struct at91_adc_trigger {
--	const char	*name;
--	u8		value;
--	bool		is_external;
--};
--
--/**
-- * struct at91_adc_data - platform data for ADC driver
-- * @channels_used:		channels in use on the board as a bitmask
-- * @startup_time:		startup time of the ADC in microseconds
-- * @trigger_list:		Triggers available in the ADC
-- * @trigger_number:		Number of triggers available in the ADC
-- * @use_external_triggers:	does the board has external triggers availables
-- * @vref:			Reference voltage for the ADC in millivolts
-- * @touchscreen_type:		If a touchscreen is connected, its type (4 or 5 wires)
-- */
--struct at91_adc_data {
--	unsigned long			channels_used;
--	u8				startup_time;
--	struct at91_adc_trigger		*trigger_list;
--	u8				trigger_number;
--	bool				use_external_triggers;
--	u16				vref;
--	enum atmel_adc_ts_type		touchscreen_type;
--};
--
--extern void __init at91_add_device_adc(struct at91_adc_data *data);
--#endif
 -- 
 2.28.0
 

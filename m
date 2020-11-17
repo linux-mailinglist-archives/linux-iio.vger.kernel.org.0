@@ -2,77 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92E802B6000
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 14:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D85E2B66F9
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 15:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727676AbgKQNDF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Nov 2020 08:03:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56602 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727202AbgKQNDF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 08:03:05 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30885C0613CF
-        for <linux-iio@vger.kernel.org>; Tue, 17 Nov 2020 05:03:05 -0800 (PST)
-Date:   Tue, 17 Nov 2020 14:03:01 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605618183;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zgcmkizIMeLfyDaY1D8XSGkBxQGtyBw+c/q0Z92cTEc=;
-        b=cE13TM9BT3docm1OxpKwaAqqBT6G9j3/4qznTCEd7Wlw6Gy9vTzxsgi+9nTs/xCU8vXPrY
-        SxStrGfH0u4HBtQYlsyjPVJx3Fvz/EZgDJ36Kw3qb3boFE6Y5FYQPYAgGTfVRYpDxp/4S1
-        oskeUi339ac4WaSk0pOUFoyV9DAu+k/byItF5nyyLi1Lf01PF3XpqwQmCd5GQfvmfcXc/K
-        sKOIt1xMFptZlIDOTRCsDB0wR4p5Jjif4jeOZ2M9I4rEmuAECQQiHNu2RhCShJ158tFp9I
-        xO1rnbMFcLHfGdybfnRZdulmkNKnQ2wFOb4BvWrPPoHm0aS4ipbLNLujLuIziA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605618183;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zgcmkizIMeLfyDaY1D8XSGkBxQGtyBw+c/q0Z92cTEc=;
-        b=TqIiT2D+gaezfrEHYLfLClCHAPDtjhy06++ioUiR7sWzUmZPjV2AyaIwOr1m9MepyAt4XJ
-        flsHrS6rNapWrNAA==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1729808AbgKQOH4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Nov 2020 09:07:56 -0500
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:43209 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729564AbgKQOHY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 09:07:24 -0500
+X-Originating-IP: 86.194.74.19
+Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 4FBFAFF819;
+        Tue, 17 Nov 2020 14:07:20 +0000 (UTC)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Christian Eggers <ceggers@arri.de>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: hrtimer-trigger: Mark hrtimer to expire in
- hard interrupt context
-Message-ID: <20201117130301.724ybjgrqdlgfpxq@linutronix.de>
-References: <20201117103751.16131-1-lars@metafoo.de>
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v2 00/11] iio: adc: at91_adc: cleanup DT bindings
+Date:   Tue, 17 Nov 2020 15:06:45 +0100
+Message-Id: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201117103751.16131-1-lars@metafoo.de>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2020-11-17 11:37:50 [+0100], Lars-Peter Clausen wrote:
-> On PREEMPT_RT enabled kernels unmarked hrtimers are moved into soft
-> interrupt expiry mode by default.
-> 
-> The IIO hrtimer-trigger needs to run in hard interrupt context since it
-> will end up calling generic_handle_irq() which has the requirement to run
-> in hard interrupt context.
-> 
-> Explicitly specify that the timer needs to run in hard interrupt context by
-> using the HRTIMER_MODE_REL_HARD flag.
-> 
-> Fixes: f5c2f0215e36 ("hrtimer: Move unmarked hrtimers to soft interrupt expiry on RT")
-> Reported-by: Christian Eggers <ceggers@arri.de>
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Hello,
 
-If I remember correctly, this routine should only be used to poll the
-primary handler. There were patches for the "other" possible things that
-might happen so
+This series cleans up the at91_adc devicetree bindings. This mainly
+moves back the resolution options and names and the triggers description
+back in the driver.
 
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+There are also other cleanups, like removing platform data support, this
+was pending for a while.
 
-for both.
+Changes in v2:
+ - separated out the dt-binding change to give a chance to Rob to actually
+   review them.
+ - Dropped "iio: adc: at91_adc: use devm_input_allocate_device"
+ - Collected tags
+ - use of_device_get_match_data instead of device_get_match_data
+ - include backportable sam9rl trigger fix
 
-Sebastian
+Alexandre Belloni (10):
+  iio: adc: at91_adc: remove platform data
+  iio: adc: at91_adc: rework resolution selection
+  dt-bindings:iio:adc:remove atmel,adc-res and atmel,adc-res-names
+  iio: adc: at91_adc: rework trigger definition
+  dt-bindings:iio:adc:remove triggers
+  iio: adc: at91_adc: merge at91_adc_probe_dt back in at91_adc_probe
+  iio: adc: at91_adc: remove forward declaration
+  ARM: dts: at91: sama5d3: use proper ADC compatible
+  ARM: dts: at91: at91sam9rl: fix ADC triggers
+  ARM: dts: at91: remove deprecated ADC properties
+
+Jonathan Cameron (1):
+  dt-bindings:iio:adc:atmel,sama9260-adc: conversion to yaml from
+    at91_adc.txt
+
+ .../devicetree/bindings/iio/adc/at91_adc.txt  |  83 -----
+ .../bindings/iio/adc/atmel,sama9260-adc.yaml  | 121 ++++++
+ arch/arm/boot/dts/at91sam9260.dtsi            |  25 --
+ arch/arm/boot/dts/at91sam9g45.dtsi            |  27 --
+ arch/arm/boot/dts/at91sam9rl.dtsi             |  25 --
+ arch/arm/boot/dts/at91sam9x5.dtsi             |  28 --
+ arch/arm/boot/dts/sama5d3.dtsi                |  26 +-
+ arch/arm/boot/dts/sama5d4.dtsi                |  22 --
+ drivers/iio/adc/at91_adc.c                    | 351 +++++++-----------
+ include/linux/platform_data/at91_adc.h        |  49 ---
+ 10 files changed, 256 insertions(+), 501 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/at91_adc.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
+ delete mode 100644 include/linux/platform_data/at91_adc.h
+
+-- 
+2.28.0
+

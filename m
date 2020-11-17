@@ -2,98 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5BC2B52B5
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Nov 2020 21:36:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A05E92B5A7E
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 08:48:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733086AbgKPUfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Nov 2020 15:35:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56814 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733083AbgKPUfV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Nov 2020 15:35:21 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1264A208C3;
-        Mon, 16 Nov 2020 20:35:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605558920;
-        bh=jhUOvvAHDTaESBzHYQFhKVnmB4C5xBaHNH3HdupyLKA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iFB+6AmGkcDLfuuxTF5O5X1FZ3Hghye7yUyyxbxyMJQ36utPvwRqHcnWt/yzWY3wI
-         j3DydNo4K1TmD2RF99sNYXhxc1jogU1OZcwKq2hcx+c1/fTR89uAhHkgiOvrGVGP9g
-         0ez0KUV7T2emAymGyXuDf8BLEUD90CmIoeqZOaCA=
-Date:   Mon, 16 Nov 2020 20:35:17 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/7] dt-bindings:iio: Move to trivial-devices.yaml from
- txt files.
-Message-ID: <20201116203517.70e43273@archlinux>
-In-Reply-To: <20201103023501.GA693302@bogus>
-References: <20201031182922.743153-1-jic23@kernel.org>
-        <20201103023501.GA693302@bogus>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726732AbgKQHrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Nov 2020 02:47:45 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:41340 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725792AbgKQHrp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 02:47:45 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AH7e4GW003060;
+        Tue, 17 Nov 2020 02:47:43 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 34t9ybgt13-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Nov 2020 02:47:43 -0500
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0AH7lgfe033644
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 17 Nov 2020 02:47:42 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 17 Nov 2020 02:47:41 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 17 Nov 2020 02:47:40 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 17 Nov 2020 02:47:40 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0AH7lbGJ002920;
+        Tue, 17 Nov 2020 02:47:38 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3] iio: adc: ad7887: convert dual-channel mode to DT/ACPI
+Date:   Tue, 17 Nov 2020 09:52:52 +0200
+Message-ID: <20201117075254.4861-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-17_02:2020-11-13,2020-11-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 adultscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170055
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Nov 2020 20:35:01 -0600
-Rob Herring <robh@kernel.org> wrote:
+This change converts the configuration of the dual-channel mode from the
+old platform-data, to the device_property_present() function, which
+supports both device-tree and ACPI configuration setups.
 
-> On Sat, Oct 31, 2020 at 06:29:15PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Rather than convert this group of bindings to yaml, let us just add
-> > them to trivial-devices.yaml.
-> > 
-> > It is more than possible that we may need to give some of these their own
-> > files at somepoint in the future (for example due to additional of
-> > channel provider bindings for the potentiometers) but for now there seems
-> > to be little advantage to keeping them separate.
-> > 
-> > Jonathan Cameron (7):
-> >   dt-bindings:iio:chemical:sensirion,sgp30: Move to
-> >     trivial-bindings.yaml
-> >   dt-bindings:iio:chemical:bosch,bme180: Move to trivial devices
-> >   dt-bindings:iio:potentiometer:maxim,ds1803 move to trivial devices.
-> >   dt-bindings:iio:potentiometer:maxim,max5481 move to trivial devices
-> >   dt-bindings:iio:light:renesas,isl29501: Move to trivial devices.
-> >   dt-bindings:iio:magnetometer:memsic,mmc35240: move to
-> >     trivial-devices.yaml
-> >   dt-bindings:iio:accel:domintech,dmard06: Move to trivial-devices.yaml  
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-Series applied.
+With this change the old platform_data include of the driver can be
+removed.
 
-thanks,
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/adc/ad7887.c             | 10 +++++-----
+ include/linux/platform_data/ad7887.h | 21 ---------------------
+ 2 files changed, 5 insertions(+), 26 deletions(-)
+ delete mode 100644 include/linux/platform_data/ad7887.h
 
-Jonathan
-
-> 
-> > 
-> >  .../devicetree/bindings/iio/accel/dmard06.txt | 19 ------------
-> >  .../bindings/iio/chemical/bme680.txt          | 11 -------
-> >  .../bindings/iio/chemical/sensirion,sgp30.txt | 15 ----------
-> >  .../bindings/iio/light/renesas,isl29501.txt   | 13 --------
-> >  .../bindings/iio/magnetometer/mmc35240.txt    | 13 --------
-> >  .../bindings/iio/potentiometer/ds1803.txt     | 21 -------------
-> >  .../bindings/iio/potentiometer/max5481.txt    | 23 --------------
-> >  .../devicetree/bindings/trivial-devices.yaml  | 30 +++++++++++++++++++
-> >  8 files changed, 30 insertions(+), 115 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/accel/dmard06.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/bme680.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/sensirion,sgp30.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/light/renesas,isl29501.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/magnetometer/mmc35240.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/potentiometer/ds1803.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/potentiometer/max5481.txt
-> > 
-> > -- 
-> > 2.28.0
-> >   
+diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
+index 4f6f0e0e03ee..06f684c053a0 100644
+--- a/drivers/iio/adc/ad7887.c
++++ b/drivers/iio/adc/ad7887.c
+@@ -23,8 +23,6 @@
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
+ 
+-#include <linux/platform_data/ad7887.h>
+-
+ #define AD7887_REF_DIS		BIT(5)	/* on-chip reference disable */
+ #define AD7887_DUAL		BIT(4)	/* dual-channel mode */
+ #define AD7887_CH_AIN1		BIT(3)	/* convert on channel 1, DUAL=1 */
+@@ -241,9 +239,9 @@ static void ad7887_reg_disable(void *data)
+ 
+ static int ad7887_probe(struct spi_device *spi)
+ {
+-	struct ad7887_platform_data *pdata = spi->dev.platform_data;
+ 	struct ad7887_state *st;
+ 	struct iio_dev *indio_dev;
++	bool dual_mode;
+ 	uint8_t mode;
+ 	int ret;
+ 
+@@ -286,7 +284,9 @@ static int ad7887_probe(struct spi_device *spi)
+ 	mode = AD7887_PM_MODE4;
+ 	if (!st->reg)
+ 		mode |= AD7887_REF_DIS;
+-	if (pdata && pdata->en_dual)
++
++	dual_mode = device_property_present(&spi->dev, "adi,dual-channel-mode");
++	if (dual_mode)
+ 		mode |= AD7887_DUAL;
+ 
+ 	st->tx_cmd_buf[0] = AD7887_CH_AIN0 | mode;
+@@ -298,7 +298,7 @@ static int ad7887_probe(struct spi_device *spi)
+ 	spi_message_init(&st->msg[AD7887_CH0]);
+ 	spi_message_add_tail(&st->xfer[0], &st->msg[AD7887_CH0]);
+ 
+-	if (pdata && pdata->en_dual) {
++	if (dual_mode) {
+ 		st->tx_cmd_buf[2] = AD7887_CH_AIN1 | mode;
+ 
+ 		st->xfer[1].rx_buf = &st->data[0];
+diff --git a/include/linux/platform_data/ad7887.h b/include/linux/platform_data/ad7887.h
+deleted file mode 100644
+index 9b4dca6ae70b..000000000000
+--- a/include/linux/platform_data/ad7887.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * AD7887 SPI ADC driver
+- *
+- * Copyright 2010 Analog Devices Inc.
+- */
+-#ifndef IIO_ADC_AD7887_H_
+-#define IIO_ADC_AD7887_H_
+-
+-/**
+- * struct ad7887_platform_data - AD7887 ADC driver platform data
+- * @en_dual: Whether to use dual channel mode. If set to true AIN1 becomes the
+- *	second input channel, and Vref is internally connected to Vdd. If set to
+- *	false the device is used in single channel mode and AIN1/Vref is used as
+- *	VREF input.
+- */
+-struct ad7887_platform_data {
+-	bool en_dual;
+-};
+-
+-#endif /* IIO_ADC_AD7887_H_ */
+-- 
+2.17.1
 

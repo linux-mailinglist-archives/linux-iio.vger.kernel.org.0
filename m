@@ -2,20 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 923942B671A
+	by mail.lfdr.de (Postfix) with ESMTP id 247992B6719
 	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 15:11:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387986AbgKQOIk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Nov 2020 09:08:40 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:7327 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387974AbgKQOIG (ORCPT
+        id S1729766AbgKQOIj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Nov 2020 09:08:39 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:41479 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387984AbgKQOIG (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 09:08:06 -0500
-X-Originating-IP: 86.194.74.19
 Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
         (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id C64EF24001C;
-        Tue, 17 Nov 2020 14:08:02 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id A9750200018;
+        Tue, 17 Nov 2020 14:08:03 +0000 (UTC)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -25,9 +24,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v2 07/11] iio: adc: at91_adc: merge at91_adc_probe_dt back in at91_adc_probe
-Date:   Tue, 17 Nov 2020 15:06:52 +0100
-Message-Id: <20201117140656.1235055-8-alexandre.belloni@bootlin.com>
+Subject: [PATCH v2 08/11] iio: adc: at91_adc: remove forward declaration
+Date:   Tue, 17 Nov 2020 15:06:53 +0100
+Message-Id: <20201117140656.1235055-9-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
 References: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
@@ -37,158 +36,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-at91_adc_probe_dt is now small enough to be merged back in at91_adc_probe.
+Remove the forward declaration of at91_adc_dt_ids by using
+of_device_get_match_data. Also add const were possible since it is not
+discarded by the cast anymore.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Reviewed-by: Ludovic Desroches <ludovic.desroches@microchip.com>
 ---
- drivers/iio/adc/at91_adc.c | 117 ++++++++++++++++---------------------
- 1 file changed, 49 insertions(+), 68 deletions(-)
+Changes in v2:
+ - use of_device_get_match_data instead of device_get_match_data
+
+ drivers/iio/adc/at91_adc.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-index 83539422b704..347464844263 100644
+index 347464844263..4c1b3b67445d 100644
 --- a/drivers/iio/adc/at91_adc.c
 +++ b/drivers/iio/adc/at91_adc.c
-@@ -833,70 +833,6 @@ static int at91_adc_probe_dt_ts(struct device_node *node,
- 	}
+@@ -224,7 +224,6 @@ struct at91_adc_state {
+ 	struct mutex		lock;
+ 	u8			num_channels;
+ 	void __iomem		*reg_base;
+-	struct at91_adc_reg_desc *registers;
+ 	u32			startup_time;
+ 	u8			sample_hold_time;
+ 	bool			sleep_mode;
+@@ -233,7 +232,8 @@ struct at91_adc_state {
+ 	u32			vref_mv;
+ 	u32			res;		/* resolution used for convertions */
+ 	wait_queue_head_t	wq_data_avail;
+-	struct at91_adc_caps	*caps;
++	const struct at91_adc_caps *caps;
++	const struct at91_adc_reg_desc *registers;
+ 
+ 	/*
+ 	 * Following ADC channels are shared by touchscreen:
+@@ -569,7 +569,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
+ {
+ 	struct iio_dev *idev = iio_trigger_get_drvdata(trig);
+ 	struct at91_adc_state *st = iio_priv(idev);
+-	struct at91_adc_reg_desc *reg = st->registers;
++	const struct at91_adc_reg_desc *reg = st->registers;
+ 	u32 status = at91_adc_readl(st, reg->trigger_register);
+ 	int value;
+ 	u8 bit;
+@@ -796,8 +796,6 @@ static u32 calc_startup_ticks_9x5(u32 startup_time, u32 adc_clk_khz)
+ 	return ticks;
  }
  
--static int at91_adc_probe_dt(struct iio_dev *idev,
--			     struct platform_device *pdev)
--{
--	struct at91_adc_state *st = iio_priv(idev);
--	struct device_node *node = pdev->dev.of_node;
--	int ret;
--	u32 prop;
--	char *s;
+-static const struct of_device_id at91_adc_dt_ids[];
 -
--	st->caps = (struct at91_adc_caps *)
--		of_match_device(at91_adc_dt_ids, &pdev->dev)->data;
--
--	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
--
--	if (of_property_read_u32(node, "atmel,adc-channels-used", &prop)) {
--		dev_err(&idev->dev, "Missing adc-channels-used property in the DT.\n");
--		ret = -EINVAL;
--		goto error_ret;
--	}
--	st->channels_mask = prop;
--
--	st->sleep_mode = of_property_read_bool(node, "atmel,adc-sleep-mode");
--
--	if (of_property_read_u32(node, "atmel,adc-startup-time", &prop)) {
--		dev_err(&idev->dev, "Missing adc-startup-time property in the DT.\n");
--		ret = -EINVAL;
--		goto error_ret;
--	}
--	st->startup_time = prop;
--
--	prop = 0;
--	of_property_read_u32(node, "atmel,adc-sample-hold-time", &prop);
--	st->sample_hold_time = prop;
--
--	if (of_property_read_u32(node, "atmel,adc-vref", &prop)) {
--		dev_err(&idev->dev, "Missing adc-vref property in the DT.\n");
--		ret = -EINVAL;
--		goto error_ret;
--	}
--	st->vref_mv = prop;
--
--	st->res = st->caps->high_res_bits;
--	if (st->caps->low_res_bits &&
--	    !of_property_read_string(node, "atmel,adc-use-res", (const char **)&s)
--	    && !strcmp(s, "lowres"))
--		st->res = st->caps->low_res_bits;
--
--	dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
--
--	st->registers = &st->caps->registers;
--	st->num_channels = st->caps->num_channels;
--
--	/* Check if touchscreen is supported. */
--	if (st->caps->has_ts)
--		return at91_adc_probe_dt_ts(node, st, &idev->dev);
--	else
--		dev_info(&idev->dev, "not support touchscreen in the adc compatible string.\n");
--
--	return 0;
--
--error_ret:
--	return ret;
--}
--
- static const struct iio_info at91_adc_info = {
- 	.read_raw = &at91_adc_read_raw,
- };
-@@ -1062,10 +998,12 @@ static void at91_ts_unregister(struct at91_adc_state *st)
- static int at91_adc_probe(struct platform_device *pdev)
+ static int at91_adc_probe_dt_ts(struct device_node *node,
+ 	struct at91_adc_state *st, struct device *dev)
  {
- 	unsigned int prsc, mstrclk, ticks, adc_clk, adc_clk_khz, shtim;
-+	struct device_node *node = pdev->dev.of_node;
- 	int ret;
- 	struct iio_dev *idev;
- 	struct at91_adc_state *st;
--	u32 reg;
-+	u32 reg, prop;
-+	char *s;
- 
- 	idev = devm_iio_device_alloc(&pdev->dev, sizeof(struct at91_adc_state));
- 	if (!idev)
-@@ -1073,9 +1011,52 @@ static int at91_adc_probe(struct platform_device *pdev)
+@@ -1011,8 +1009,7 @@ static int at91_adc_probe(struct platform_device *pdev)
  
  	st = iio_priv(idev);
  
--	ret = at91_adc_probe_dt(idev, pdev);
--	if (ret)
--		return ret;
-+	st->caps = (struct at91_adc_caps *)
-+		of_match_device(at91_adc_dt_ids, &pdev->dev)->data;
-+
-+	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
-+
-+	if (of_property_read_u32(node, "atmel,adc-channels-used", &prop)) {
-+		dev_err(&idev->dev, "Missing adc-channels-used property in the DT.\n");
-+		return -EINVAL;
-+	}
-+	st->channels_mask = prop;
-+
-+	st->sleep_mode = of_property_read_bool(node, "atmel,adc-sleep-mode");
-+
-+	if (of_property_read_u32(node, "atmel,adc-startup-time", &prop)) {
-+		dev_err(&idev->dev, "Missing adc-startup-time property in the DT.\n");
-+		return -EINVAL;
-+	}
-+	st->startup_time = prop;
-+
-+	prop = 0;
-+	of_property_read_u32(node, "atmel,adc-sample-hold-time", &prop);
-+	st->sample_hold_time = prop;
-+
-+	if (of_property_read_u32(node, "atmel,adc-vref", &prop)) {
-+		dev_err(&idev->dev, "Missing adc-vref property in the DT.\n");
-+		return -EINVAL;
-+	}
-+	st->vref_mv = prop;
-+
-+	st->res = st->caps->high_res_bits;
-+	if (st->caps->low_res_bits &&
-+	    !of_property_read_string(node, "atmel,adc-use-res", (const char **)&s)
-+	    && !strcmp(s, "lowres"))
-+		st->res = st->caps->low_res_bits;
-+
-+	dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
-+
-+	st->registers = &st->caps->registers;
-+	st->num_channels = st->caps->num_channels;
-+
-+	/* Check if touchscreen is supported. */
-+	if (st->caps->has_ts) {
-+		ret = at91_adc_probe_dt_ts(node, st, &idev->dev);
-+		if (ret)
-+			return ret;
-+	}
+-	st->caps = (struct at91_adc_caps *)
+-		of_match_device(at91_adc_dt_ids, &pdev->dev)->data;
++	st->caps = of_device_get_match_data(&pdev->dev);
  
- 	platform_set_drvdata(pdev, idev);
+ 	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
  
 -- 
 2.28.0

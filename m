@@ -2,189 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF72F2B5EF7
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 13:18:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCA492B5F0D
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Nov 2020 13:25:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgKQMSQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Nov 2020 07:18:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
+        id S1727350AbgKQMZu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Nov 2020 07:25:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgKQMSQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 07:18:16 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D375C0613CF
-        for <linux-iio@vger.kernel.org>; Tue, 17 Nov 2020 04:18:14 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id i17so22904075ljd.3
-        for <linux-iio@vger.kernel.org>; Tue, 17 Nov 2020 04:18:14 -0800 (PST)
+        with ESMTP id S1727307AbgKQMZu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Nov 2020 07:25:50 -0500
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDF1C0613CF
+        for <linux-iio@vger.kernel.org>; Tue, 17 Nov 2020 04:25:50 -0800 (PST)
+Received: by mail-qv1-xf30.google.com with SMTP id v20so7159493qvx.4
+        for <linux-iio@vger.kernel.org>; Tue, 17 Nov 2020 04:25:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DAZbZSxcI71M0LVfy83Qq3cXSi4UOJMbtQEtUu1ICRM=;
-        b=a/OvA6+hoEi29hwk3HyX2fSLzesinExvg2iQ/BKLYFn4Cu9I6THdyqY0Ctr9qRvf/y
-         2zEgpAhH53lMWZj5qslla8oHnNtbyAo2PLjBUqD/i2FaYOuVKbxinK0QLZYcDE61B/We
-         1ek/ZP4VdUeCGS8CurzeWoL/v537JFTM4psogQPCy2VqvwPs7fpyXvL2IEv8y/NHUB9J
-         t9+j0T3DtBxAyMO6b6appok9bYGDKBvY2QDelSJZLljnoDbHXQMccheQ2/FtruogT61l
-         U66XS/NgyfcnxJ4jFPqi/3vYDzqVJFdnFU8WOLxxYm5/CF+m4WjGr3gIcut+YfD3qId8
-         7dtw==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=gADBUQ9Hae6TrHG2WXhgqR0ilSCLKu5qzspZRGuFCcQ=;
+        b=HHVpgSwES/RzV9qCoD3T83yzWbkiPtbDhJRgKOEfJ1Naefp+wXOgfWt3XJpD4cxIpk
+         IZHMpD6GIYaSSU1BSWdqJapoZ0P9cDGQti8jTPZuR3oIQgBssK3U710v8byPOEvxqZjZ
+         elouPSvf3pIcX7Rc24n+vVIXHgEhKLey9DCDZTneSDaXzriFnucGq3RkbbfUie4rppDB
+         XGZYRKK1RymTzcwjGATzo5rYJfIgKKJlPG2veMWcDxZ0y3yvEywQRp8UrABZHjuyJI/3
+         c5XSpdC1NEDezXjfMW+5b2FN4GCDIDXD3atxefmpIf0GgyjvUxe1RNnacjzbeYsl/eaq
+         QNFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DAZbZSxcI71M0LVfy83Qq3cXSi4UOJMbtQEtUu1ICRM=;
-        b=D8bn37RO8zyQWg8GT/5gXeGEmc1noG7+J+dZr1cryUG8pi8NNPgKQwB+8B8IVGp6pm
-         fYARUJE7amNOvoUnghX8a2xDjpEGCIXY7LxpnvTn7rOdehDD0JwvEOaJUi2ra4Rxccnv
-         AOiIFqFK3MjuTuwPhCDC8UWRgbsE9GsV5E7MRy+6ygbGeDUi1I0MVWnyOUDO5JRNMBZ2
-         caceXg1F8UGQ23qttYKFB0ixyzlNyvYATz4/YgKDNGR6bnG65ZN0BL/fT2I3kO0+v3K7
-         OEhhSprCmNlNDTrUjJs8QRCXzDki0c10spIxoeron/zEgK33McdLGqpbQOcuiaXAj5r/
-         hzLg==
-X-Gm-Message-State: AOAM531e3xerLPICA/pa6hhWTMuc0LhSk/MGOTBAN4voEyUOomuBlXA5
-        i57x76reHXvl/q/eESZ2VbCg2A==
-X-Google-Smtp-Source: ABdhPJxRxEsHezDfXhkW96+Ceg8hXglyWHbt6vtZbE7gWeXB7oGP5dKwUhJEvWJIykb5KDEv1iOPDQ==
-X-Received: by 2002:a2e:a312:: with SMTP id l18mr1787582lje.231.1605615492979;
-        Tue, 17 Nov 2020 04:18:12 -0800 (PST)
-Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id f25sm3116380lfc.234.2020.11.17.04.18.12
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gADBUQ9Hae6TrHG2WXhgqR0ilSCLKu5qzspZRGuFCcQ=;
+        b=bnedAjM/51xSB7m5uGjdvSy89WvQQtsUEejVH5YBr+AavxfPBSoR4NpOg4I8P8IxEN
+         cMWyyu7VSQ1jmRhbmEzs/+B7HA4OnxaOhyXrEe5159Ih/fbDrRr/28xMeUwIXEks4yud
+         5hjmpzMSrZLxEEW3kug4URSp1feGggbQSf7LyoTEYrJTg/ariAe5T6vgmLNCxVGg+xQB
+         9H06k/Dr/aYzH8vw7MFYi+EDuEA/UUKAkm0r4rsqtblQA0mgrrGiApv8eGFeiA2ZH506
+         1zUm6KRBBhFj/0+eRrmSeTW0/IUBc+bPnwbILgEB+niMj8jIC49UEq15MSV4WVxcsfte
+         q9tQ==
+X-Gm-Message-State: AOAM530aoB6/qSksxZcyWLRoJo6+zYoXOsa3U1QCVPMopyxDqDPGY1wL
+        jNIZsTtzvEETysZ6eLym6zs=
+X-Google-Smtp-Source: ABdhPJzYEZOOf689Mkp2upgEYPTg01QHMBm5QpPlHo+8aWErAi8apOAd/F7uFNJ+JxnjH6eMtJy38A==
+X-Received: by 2002:a0c:ab1e:: with SMTP id h30mr20453703qvb.55.1605615949545;
+        Tue, 17 Nov 2020 04:25:49 -0800 (PST)
+Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id f202sm13683253qke.112.2020.11.17.04.25.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 04:18:12 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: [PATCH v2] iio: accel: yamaha-yas: Add DT bindings
-Date:   Tue, 17 Nov 2020 13:18:10 +0100
-Message-Id: <20201117121810.830743-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.26.2
+        Tue, 17 Nov 2020 04:25:48 -0800 (PST)
+Date:   Tue, 17 Nov 2020 07:25:41 -0500
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Benjamin Gaignard <benjamin.gaignard@st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Holger Assmann <h.assmann@pengutronix.de>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: Counter device Interface for reading out input capture
+Message-ID: <X7PBRc1e/TbOPYmT@shinobu>
+References: <e8c99989-f018-dd90-2144-e09c05a3731b@pengutronix.de>
+ <20201106124217.GA4015@shinobu>
+ <0fa25b7a-92f9-8eb7-088e-2ef3a2edf2a0@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nSRaz29Y8MvsNho9"
+Content-Disposition: inline
+In-Reply-To: <0fa25b7a-92f9-8eb7-088e-2ef3a2edf2a0@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This adds device tree bindings for the Yamaha YAS5xx
-magnetometers/compass sensors.
 
-Cc: devicetree@vger.kernel.org
-Cc: phone-devel@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v1->v2:
-- Add Yamaha to the vendor list, I was surprised to find
-  they were not yet listed.
+--nSRaz29Y8MvsNho9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I am still working on the actual driver for the magnetometer
-but why not send out the DT bindings for review, the
-hardware variants are easy to describe. This makes it possibe
-for people to include these magnetometers in device
-trees.
----
- .../bindings/iio/magnetometer/yamaha,yas.yaml | 80 +++++++++++++++++++
- .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
- 2 files changed, 82 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+On Tue, Nov 17, 2020 at 11:54:17AM +0100, Ahmad Fatoum wrote:
+> Hello William,
+>=20
+> On 06.11.20 13:42, William Breathitt Gray wrote:
+> > On Thu, Nov 05, 2020 at 07:46:14PM +0100, Ahmad Fatoum wrote:
+> >> It doesn't look like the counter device API is yet made to support such
+> >> an input capture mode (latching a counter value on an external event, =
+e.g.
+> >> to timestamp incoming rising edges to measure jitter between pulses).
+> >
+> > Regarding the Counter subsystem, I'm developing a Counter character
+> > device API that supports timestamps for counter devices:
+> > https://lore.kernel.org/linux-arm-kernel/157d1edf-feec-33b5-7ad5-94f993=
+16ca6e@lechnology.com/T/
+>=20
+> Any chance we could have a "raw" timestamp as well like the network
+> stack offers (cf. SOF_TIMESTAMPING_{RAW,SYS}_HARDWARE)?
+>=20
+> The API currently only exposes a ktime (i.e. CLOCK_MONOTONIC), which the
+> raw timer count can't be readily converted to. For our use case of
+> measuring jitter, the raw value is sufficient.
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-new file mode 100644
-index 000000000000..6fc4cfe4a417
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-@@ -0,0 +1,80 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Yamaha YAS5xx magnetometer sensors
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
-+
-+description:
-+  The Yamaha YAS5xx magnetometers is a line of 3-axis magnetometers
-+  first introduced by Yamaha in 2006 with the YAS529. Over the years
-+  this magnetometer has been minatyrized and appeared in a number of
-+  different variants.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - enum:
-+          - yamaha,yas529
-+          - yamaha,yas530
-+          - yamaha,yas532
-+          - yamaha,yas533
-+          - yamaha,yas535
-+          - yamaha,yas536
-+          - yamaha,yas537
-+          - yamaha,yas539
-+
-+  reg:
-+    maxItems: 1
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: The YAS5xx sensors has a RSTN pin used to reset
-+      the logic inside the sensor. This GPIO line should connect
-+      to that pin and be marked as GPIO_ACTIVE_LOW.
-+
-+  interrupts:
-+    maxItems: 1
-+    description: Interrupt for INT pin for variants that support
-+      interrupt generation. This polarity, whether the interrupt
-+      is active on the rising or the falling edge, is configurable
-+      in the hardware.
-+
-+  vdd-supply:
-+    description: An optional regulator providing core power supply
-+      on the VDD pin, typically 1.8 V or 3.0 V.
-+
-+  iovdd-supply:
-+    description: An optional regulator providing I/O power supply
-+      for the I2C interface on the IOVDD pin, typically 1.8 V.
-+      This is not present on all variants of the component, some
-+      have only the VDD voltage.
-+
-+  mount-matrix:
-+    description: An optional 3x3 mounting rotation matrix.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        magnetometer@2e {
-+          compatible = "yamaha,yas530";
-+          reg = <0x2e>;
-+          vdd-supply = <&ldo1_reg>;
-+          iovdd-supply = <&ldo2_reg>;
-+          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 2735be1a8470..0340674c72bd 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -1210,6 +1210,8 @@ patternProperties:
-     description: Shenzhen Xunlong Software CO.,Limited
-   "^xylon,.*":
-     description: Xylon
-+  "^yamaha,.*":
-+    description: Yamaha Corporation
-   "^ylm,.*":
-     description: Shenzhen Yangliming Electronic Technology Co., Ltd.
-   "^yna,.*":
--- 
-2.26.2
+Sure, we can add support for a "raw" timestamp. I can see how this could
+be more useful in certain circumstances rather than the ktime value.
+I'll open a discussion about it when I submit the next revision of the
+Counter character device patchset. :-)
 
+William Breathitt Gray
+
+--nSRaz29Y8MvsNho9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl+zwTAACgkQhvpINdm7
+VJJYTQ/+PfehxFKZUm1Zo/rIlQG7MY2iPsOOAwVrwt/jAl0dIRd68h/68ZFoT0/p
++hVVClbTv/TwNIAyJLgFHS6UNAJlYx9pU1sbVtyzzGDD4H83u1lfdUeO+9t3DvBy
+qRmlVZrv2Shl9eIJvChVPupOv8E+DYyG8uIIXKzAakF8bQeFGiI611mV3s4rDDEW
+1MiygpAN81LZmTP3h3wVV4uClvI+MliGBCGPv5BjYjSl3tnqAvSjFjsOiNovD9ue
+OFQUkZQbpEBaQWuIpGL5i6YZEfpYp084AWoXhOiIhQjAQTY+V2RQ4ADp4wsLNodf
+kEBdZ0FLJx1rrhm4iDAaWMxs7vCo/pVH0bB2ZNv2vqbAUjIM5+g0rRgGdvd53DMI
+1Y8+l+DFPraDB7mbM6Gp36pQIABzQc/0K9oq++g4h12q8H/gmsEb004C0GMP1fsF
+zosN+xYqGvBjiwq7Doq4n8mU3Batwz5+WxtoKBM7m3TX/OykSbB3ne0yGPjGGM1u
+SepLf4E+GLNqHHdmbXj6/Vsq4qaeEk7vDUs12BPNvrX/AnfLzLcdCBI21Ln0sv8B
+UbKYOghdfjA31mRltI4tDtpujgm1euhDDGE+ebZK/JcYzoBfl9tpPtd1dDrp3Qx5
+IOc7cqPKybWsTDiwuWw/l31953+aX9hYZsHs6b0PpdKhBN7bN7w=
+=lBqg
+-----END PGP SIGNATURE-----
+
+--nSRaz29Y8MvsNho9--

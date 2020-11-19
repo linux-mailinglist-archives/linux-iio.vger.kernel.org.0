@@ -2,86 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2CB2B9482
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Nov 2020 15:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CC72B9541
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Nov 2020 15:52:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727593AbgKSOWL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Nov 2020 09:22:11 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:45448 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727311AbgKSOWL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Nov 2020 09:22:11 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AJEEP5M029003;
-        Thu, 19 Nov 2020 09:22:09 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 34t9ybt8r3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Nov 2020 09:22:09 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0AJEM72U029589
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 19 Nov 2020 09:22:07 -0500
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 19 Nov 2020 06:22:06 -0800
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 19 Nov 2020 06:22:05 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 19 Nov 2020 06:22:05 -0800
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0AJEM2kQ028442;
-        Thu, 19 Nov 2020 09:22:02 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <marcelo.schmitt1@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: adc: ad7292: remove unneeded spi_set_drvdata()
-Date:   Thu, 19 Nov 2020 16:27:20 +0200
-Message-ID: <20201119142720.86326-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728365AbgKSOmn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Nov 2020 09:42:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728367AbgKSOmi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Nov 2020 09:42:38 -0500
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4E2C0613CF
+        for <linux-iio@vger.kernel.org>; Thu, 19 Nov 2020 06:42:38 -0800 (PST)
+Received: by mail-lf1-x142.google.com with SMTP id z21so8539692lfe.12
+        for <linux-iio@vger.kernel.org>; Thu, 19 Nov 2020 06:42:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=pTN/HQEDO++RUgsAeCSdpIeR1pydXC9wuZi7PloDRbw=;
+        b=AENo3M1+izNVxpNeDxMVAbzyhkeACQhpUKgIqkmyjm73/Ase0gGZqD69HLnMJeVvkt
+         Vn4hpUB9wm9zd0+G8wwl+ieZ1YA40Qbnpd0VuE2gRz5z7lDcFfJalNfA/Br0cpTuk5vO
+         98bj6M9i782F+4Xai3TuVskc/IdQ12g8UzUv/Y4wHpUN/HJgeI5RA+/5ZIQF+W9iKvh6
+         N6Jrlk0EJUTCTUXwjdkrPnmv5IS3KyRV58AOBJPYhWzoQcVVF3Fvbi1iOA7GejJLahJW
+         fSt4gS4SKurn8kqAcatLIcqg/flrK3QAtjatjXrvDdwhRowILFRwjqib9+3ycV6umOxJ
+         A4Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pTN/HQEDO++RUgsAeCSdpIeR1pydXC9wuZi7PloDRbw=;
+        b=lCbw02ARXjNUixhLpQmFs6h7LfQxRAwNqs8tkGuHloZQ2g1aZPZEYrmJK36DnWIU7f
+         mf6GSSDN0/RFwzxUDUyIU21XIz6/HpUwgh+y56wTHseN5qx9A+ALtxjSgf/znIsE/ycC
+         MAuxntTo6TaoyXdXuUAthNK3NGswlrwyCGDIPhgBeZR5TkWdGtRudjwzdXstu3GtQXXN
+         sVW28reqhclODx9nl9uEostZ4p5drdzwxFUWHXT/8n8sDckeVvydIPOGX4gdHDBxTU/c
+         3/pzLHcha9CptFl/gmSprdhZ5eo5U9KbNXRLo8DO3lzBdzcnenGKqS+p6fo4Sx29D9RI
+         k0Og==
+X-Gm-Message-State: AOAM533rWptdbwvOTBI4Cnh1HGeRcA5XQkx5FkivGs748DuM/ERybyPv
+        i8qxIPJyHdl/4d52YZUgKqPrSA==
+X-Google-Smtp-Source: ABdhPJy+piHovamyM8c9I7UPJdWWCrqCjWV+SbmOQ2WjgJh5YZdBRZn+b9lvKYXwyazvYnuiBCJamA==
+X-Received: by 2002:a19:504d:: with SMTP id z13mr5523457lfj.42.1605796956944;
+        Thu, 19 Nov 2020 06:42:36 -0800 (PST)
+Received: from [192.168.0.150] ([188.162.64.108])
+        by smtp.gmail.com with ESMTPSA id j19sm3724875lja.100.2020.11.19.06.42.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2020 06:42:36 -0800 (PST)
+Subject: Re: [PATCH v9 00/15] qcom: pm8150: add support for thermal monitoring
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <linux-arm-msm@vger.kernel.org>, linux-pm@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jishnu Prakash <jprakash@qti.qualcomm.com>
+References: <20201102174950.1148498-1-dmitry.baryshkov@linaro.org>
+ <c943f56c-f72c-0f14-b6ed-b67e91573b1e@linaro.org>
+ <CAA8EJpp+=sQAre+kCiDLEFT+gDB0wO7KypGTXeCDncO8wWzQ-Q@mail.gmail.com>
+ <a66e75c1-ce30-df75-c77e-e58e660f0105@linaro.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <c14f84ca-cc66-4deb-0583-e2e495ff2233@linaro.org>
+Date:   Thu, 19 Nov 2020 17:42:19 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-19_09:2020-11-19,2020-11-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
- bulkscore=0 clxscore=1011 spamscore=0 adultscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011190107
+In-Reply-To: <a66e75c1-ce30-df75-c77e-e58e660f0105@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This seems to have been copied from a driver that calls spi_set_drvdata()
-but doesn't call spi_get_drvdata().
-Setting a private object on the SPI device's object isn't necessary if it
-won't be accessed.
-This change removes the spi_set_drvdata() call.
+On 12/11/2020 16:13, Daniel Lezcano wrote:
+> On 12/11/2020 13:41, Dmitry Baryshkov wrote:
+>> On Thu, 12 Nov 2020 at 14:39, Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>>>
+>>>
+>>> Shall I take patch 1/15 and 12/15 ?
+>>
+>> 12/15 will not compile without several previous patches, so it might
+>> be better to take all of them through the single tree.
+> 
+> Ok, I will take some time to review the driver and ack it, so it can be
+> merged through the iio tree.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/adc/ad7292.c | 2 --
- 1 file changed, 2 deletions(-)
+Daniel, I'm sorry. Is there any update on this patchset review?
 
-diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
-index ab204e9199e9..70e33dd1c9f7 100644
---- a/drivers/iio/adc/ad7292.c
-+++ b/drivers/iio/adc/ad7292.c
-@@ -276,8 +276,6 @@ static int ad7292_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	spi_set_drvdata(spi, indio_dev);
--
- 	st->reg = devm_regulator_get_optional(&spi->dev, "vref");
- 	if (!IS_ERR(st->reg)) {
- 		ret = regulator_enable(st->reg);
+
 -- 
-2.17.1
-
+With best wishes
+Dmitry

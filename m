@@ -2,103 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CC72B9541
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Nov 2020 15:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 742522B95D1
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Nov 2020 16:08:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbgKSOmn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Nov 2020 09:42:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
+        id S1728392AbgKSPII (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Nov 2020 10:08:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728367AbgKSOmi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Nov 2020 09:42:38 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4E2C0613CF
-        for <linux-iio@vger.kernel.org>; Thu, 19 Nov 2020 06:42:38 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id z21so8539692lfe.12
-        for <linux-iio@vger.kernel.org>; Thu, 19 Nov 2020 06:42:38 -0800 (PST)
+        with ESMTP id S1726641AbgKSPII (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Nov 2020 10:08:08 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46329C0613CF;
+        Thu, 19 Nov 2020 07:08:08 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id g7so4771990pfc.2;
+        Thu, 19 Nov 2020 07:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=pTN/HQEDO++RUgsAeCSdpIeR1pydXC9wuZi7PloDRbw=;
-        b=AENo3M1+izNVxpNeDxMVAbzyhkeACQhpUKgIqkmyjm73/Ase0gGZqD69HLnMJeVvkt
-         Vn4hpUB9wm9zd0+G8wwl+ieZ1YA40Qbnpd0VuE2gRz5z7lDcFfJalNfA/Br0cpTuk5vO
-         98bj6M9i782F+4Xai3TuVskc/IdQ12g8UzUv/Y4wHpUN/HJgeI5RA+/5ZIQF+W9iKvh6
-         N6Jrlk0EJUTCTUXwjdkrPnmv5IS3KyRV58AOBJPYhWzoQcVVF3Fvbi1iOA7GejJLahJW
-         fSt4gS4SKurn8kqAcatLIcqg/flrK3QAtjatjXrvDdwhRowILFRwjqib9+3ycV6umOxJ
-         A4Dw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vJr2irAyZ1BAOhSvjpC4BuYUmx85w5ph5rzehiUieBM=;
+        b=sQJQx92VUzfOpGZ0j2il2CFX9419U0APdsJScK/rEDTbB52uoXxerZ5OL4JaOirwBI
+         fGSAEpuySffSyUXtK3LShgGS/aOLu8710guEz1cOHAvIJxcjvnhze6PZeKFRF5Bp591W
+         Q8seiDsg1cs+qSJ5sQaM1nlsGeALbYn7O8N5iobKNn6zZ43kC0eZc/GFyZ/dXDakT6tU
+         nWk1/SziD9+z8nkjmQqdT82r7UBmBYu14MwDibf6meck+SGgrLbmuJOP8TuerL0tWvTQ
+         dKyva6r7iFVpnazWC5+XjTPy5Fmk/SNET4mp2RAkfo9lcu65T9pMJNGB3CWek7UFbiBk
+         K0VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pTN/HQEDO++RUgsAeCSdpIeR1pydXC9wuZi7PloDRbw=;
-        b=lCbw02ARXjNUixhLpQmFs6h7LfQxRAwNqs8tkGuHloZQ2g1aZPZEYrmJK36DnWIU7f
-         mf6GSSDN0/RFwzxUDUyIU21XIz6/HpUwgh+y56wTHseN5qx9A+ALtxjSgf/znIsE/ycC
-         MAuxntTo6TaoyXdXuUAthNK3NGswlrwyCGDIPhgBeZR5TkWdGtRudjwzdXstu3GtQXXN
-         sVW28reqhclODx9nl9uEostZ4p5drdzwxFUWHXT/8n8sDckeVvydIPOGX4gdHDBxTU/c
-         3/pzLHcha9CptFl/gmSprdhZ5eo5U9KbNXRLo8DO3lzBdzcnenGKqS+p6fo4Sx29D9RI
-         k0Og==
-X-Gm-Message-State: AOAM533rWptdbwvOTBI4Cnh1HGeRcA5XQkx5FkivGs748DuM/ERybyPv
-        i8qxIPJyHdl/4d52YZUgKqPrSA==
-X-Google-Smtp-Source: ABdhPJy+piHovamyM8c9I7UPJdWWCrqCjWV+SbmOQ2WjgJh5YZdBRZn+b9lvKYXwyazvYnuiBCJamA==
-X-Received: by 2002:a19:504d:: with SMTP id z13mr5523457lfj.42.1605796956944;
-        Thu, 19 Nov 2020 06:42:36 -0800 (PST)
-Received: from [192.168.0.150] ([188.162.64.108])
-        by smtp.gmail.com with ESMTPSA id j19sm3724875lja.100.2020.11.19.06.42.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2020 06:42:36 -0800 (PST)
-Subject: Re: [PATCH v9 00/15] qcom: pm8150: add support for thermal monitoring
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
-        <linux-arm-msm@vger.kernel.org>, linux-pm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jishnu Prakash <jprakash@qti.qualcomm.com>
-References: <20201102174950.1148498-1-dmitry.baryshkov@linaro.org>
- <c943f56c-f72c-0f14-b6ed-b67e91573b1e@linaro.org>
- <CAA8EJpp+=sQAre+kCiDLEFT+gDB0wO7KypGTXeCDncO8wWzQ-Q@mail.gmail.com>
- <a66e75c1-ce30-df75-c77e-e58e660f0105@linaro.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <c14f84ca-cc66-4deb-0583-e2e495ff2233@linaro.org>
-Date:   Thu, 19 Nov 2020 17:42:19 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vJr2irAyZ1BAOhSvjpC4BuYUmx85w5ph5rzehiUieBM=;
+        b=GcVKkXjikdMPxZmOh+hcshDMnoiD+Hxt24D2wgD6IxJ03fe0sljv712zFxb0ZOn+FF
+         wifD1k1UfqjX+fx/mi5X3UaUXpnahVy31Hyqtd2cXceRHkIqX7Kln5nByn3OuNwMFr0O
+         C/Xfpy+xJfyjuHHtcDcstcOpxs9+ZAJwAHyK/wFxeY/SLltuY1QO18avPd+/gE521N4p
+         +eET9sQ1V+lx04tnV323Ymo2pPLN5pVRCWp1K9/GE0v8r3QVZMzWu27zPga4/r42aP5t
+         lIQY4tZMPIIeUGIypcpB6Cu5/KoAEstWIJ4+odyKY2tp9zQ1Y/xi9RXeWYFRJqO46Egc
+         pmeA==
+X-Gm-Message-State: AOAM533fdOsuFbDWCRBS7M3QqUO4Ab2kZ1E6gGwdo6K3AuZ+TF/LavmT
+        dvRw+liyiU7U3XrbOmPpOECIoMvs0S5SlMB2QpOkMBStGVM=
+X-Google-Smtp-Source: ABdhPJxuSFR4cYa7NCo4ZvgyfmmS6rNJrSbJ7ucYHnAWBFsGMz8fK6alqBLRObqpJA9IdqKKkdMlya7P5WKkD84Q0ZM=
+X-Received: by 2002:a62:7e4f:0:b029:18c:9322:739b with SMTP id
+ z76-20020a627e4f0000b029018c9322739bmr9418242pfc.7.1605798487722; Thu, 19 Nov
+ 2020 07:08:07 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <a66e75c1-ce30-df75-c77e-e58e660f0105@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <20201119100748.57689-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20201119100748.57689-1-alexandru.ardelean@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 19 Nov 2020 17:08:56 +0200
+Message-ID: <CAHp75Vex498GcOpFxfze5VdK4Rhb6pvBvgf1OXLY=L5vj4Uodg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] iio: adc: ad7887: convert dual-channel mode to DT/ACPI
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/11/2020 16:13, Daniel Lezcano wrote:
-> On 12/11/2020 13:41, Dmitry Baryshkov wrote:
->> On Thu, 12 Nov 2020 at 14:39, Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>>
->>>
->>> Shall I take patch 1/15 and 12/15 ?
->>
->> 12/15 will not compile without several previous patches, so it might
->> be better to take all of them through the single tree.
-> 
-> Ok, I will take some time to review the driver and ack it, so it can be
-> merged through the iio tree.
+On Thu, Nov 19, 2020 at 12:02 PM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
+>
+> This change converts the configuration of the dual-channel mode from the
+> old platform-data, to the device_property_present() function, which
+> supports both device-tree and ACPI configuration setups.
+>
+> With this change the old platform_data include of the driver can be
+> removed.
 
-Daniel, I'm sorry. Is there any update on this patchset review?
+I mostly like the part of getting rid of legacy platform data.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+(for patches 1-3 only)
+
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>
+> I'm wondering if this changeset is what was in mind here:
+>  https://lore.kernel.org/linux-iio/CA+U=DsqF5tu8Be9KXeyCWD2uHvV688Nc3n=z_Xi2J6H6DFJPRQ@mail.gmail.com/T/#mbe72e4da3acea3899d0d35402ea81e52a9bc34e6
+> This driver could have been simplified/reduced a whole lot more, but I'm
+> not sure about it. It's a bit of patch-noise, and later
+>
+> Changelog v1 -> v2:
+> * dropped patch 'iio: adc: ad7887: convert driver to full DT probing'
+>   not adding the device_get_match_data() logic anymore
+> * added patch 'iio: adc: ad7887: remove matching code from driver'
+>   hooking the chip info directly to AD7887
+> * added patch 'iio: adc: ad7887: add OF match table'
+>   this just adds an OF table for DT and ACPI
+>
+>  drivers/iio/adc/ad7887.c             | 10 +++++-----
+>  include/linux/platform_data/ad7887.h | 21 ---------------------
+>  2 files changed, 5 insertions(+), 26 deletions(-)
+>  delete mode 100644 include/linux/platform_data/ad7887.h
+>
+> diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
+> index 4f6f0e0e03ee..06f684c053a0 100644
+> --- a/drivers/iio/adc/ad7887.c
+> +++ b/drivers/iio/adc/ad7887.c
+> @@ -23,8 +23,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>
+> -#include <linux/platform_data/ad7887.h>
+> -
+>  #define AD7887_REF_DIS         BIT(5)  /* on-chip reference disable */
+>  #define AD7887_DUAL            BIT(4)  /* dual-channel mode */
+>  #define AD7887_CH_AIN1         BIT(3)  /* convert on channel 1, DUAL=1 */
+> @@ -241,9 +239,9 @@ static void ad7887_reg_disable(void *data)
+>
+>  static int ad7887_probe(struct spi_device *spi)
+>  {
+> -       struct ad7887_platform_data *pdata = spi->dev.platform_data;
+>         struct ad7887_state *st;
+>         struct iio_dev *indio_dev;
+> +       bool dual_mode;
+>         uint8_t mode;
+>         int ret;
+>
+> @@ -286,7 +284,9 @@ static int ad7887_probe(struct spi_device *spi)
+>         mode = AD7887_PM_MODE4;
+>         if (!st->reg)
+>                 mode |= AD7887_REF_DIS;
+> -       if (pdata && pdata->en_dual)
+> +
+> +       dual_mode = device_property_present(&spi->dev, "adi,dual-channel-mode");
+> +       if (dual_mode)
+>                 mode |= AD7887_DUAL;
+>
+>         st->tx_cmd_buf[0] = AD7887_CH_AIN0 | mode;
+> @@ -298,7 +298,7 @@ static int ad7887_probe(struct spi_device *spi)
+>         spi_message_init(&st->msg[AD7887_CH0]);
+>         spi_message_add_tail(&st->xfer[0], &st->msg[AD7887_CH0]);
+>
+> -       if (pdata && pdata->en_dual) {
+> +       if (dual_mode) {
+>                 st->tx_cmd_buf[2] = AD7887_CH_AIN1 | mode;
+>
+>                 st->xfer[1].rx_buf = &st->data[0];
+> diff --git a/include/linux/platform_data/ad7887.h b/include/linux/platform_data/ad7887.h
+> deleted file mode 100644
+> index 9b4dca6ae70b..000000000000
+> --- a/include/linux/platform_data/ad7887.h
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-or-later */
+> -/*
+> - * AD7887 SPI ADC driver
+> - *
+> - * Copyright 2010 Analog Devices Inc.
+> - */
+> -#ifndef IIO_ADC_AD7887_H_
+> -#define IIO_ADC_AD7887_H_
+> -
+> -/**
+> - * struct ad7887_platform_data - AD7887 ADC driver platform data
+> - * @en_dual: Whether to use dual channel mode. If set to true AIN1 becomes the
+> - *     second input channel, and Vref is internally connected to Vdd. If set to
+> - *     false the device is used in single channel mode and AIN1/Vref is used as
+> - *     VREF input.
+> - */
+> -struct ad7887_platform_data {
+> -       bool en_dual;
+> -};
+> -
+> -#endif /* IIO_ADC_AD7887_H_ */
+> --
+> 2.17.1
+>
 
 
 -- 
-With best wishes
-Dmitry
+With Best Regards,
+Andy Shevchenko

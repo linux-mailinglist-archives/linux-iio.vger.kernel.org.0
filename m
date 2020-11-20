@@ -2,122 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64D132BB60C
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 20:53:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F3B2BB62B
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 21:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729994AbgKTTvw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Nov 2020 14:51:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48630 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729559AbgKTTvu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 20 Nov 2020 14:51:50 -0500
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ADA4D206B6;
-        Fri, 20 Nov 2020 19:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605901908;
-        bh=RBzOhaxiAPO90htsWQNreeN48VhmFALIIs8F+S8F2tg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0HJ898xky9A4AiX47c8E/kv2vloKTCLDsa1B08r0Ns0UI6ViLC8sEEmzvLmSWmHDR
-         rh+QM7asV5JMfRqDaW/zMVHUMAG8pWVLOHT3LXTHM6aAp9QNwMcpVcVlrfF8wRUqJ9
-         pWgdeTKSVxQ+8c5KHivLBQCp2OjpIRpNZteZuQdk=
-Date:   Fri, 20 Nov 2020 11:51:42 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <202011201129.B13FDB3C@keescook>
-References: <cover.1605896059.git.gustavoars@kernel.org>
-        <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <202011201129.B13FDB3C@keescook>
+        id S1730386AbgKTTyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Nov 2020 14:54:32 -0500
+Received: from www381.your-server.de ([78.46.137.84]:40910 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730344AbgKTTyb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 14:54:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=mre8Vjs7PQttVlm9kUOKMsl/ogZ2cyWRc5/cDHZJvY8=; b=NnLs649sHcIbs82Chkmlhn+d+3
+        xb8JetvjR5Jj3osXpQvy6vPLs0HoJbIlDTCXCbywppaBD0PfoQvSJS6jejaAQSKKDE0bOv89gTMLU
+        FAL5ZcbHzAPA6FIvndHCa/kJzS9ql4iWPZJRztevpbtnMVzDW9kSkovKcCVf1DIZqcjeoCvy3Clut
+        1vhwcQbHMmVXZxTIiMrSUX3xmliy+4QgxOgJbr9Cz2+nq0XEOwVxD0XmhLIaYz1JiSEwpCG4aRWus
+        eHsQku5U/x2QBSIF2yeqjqKRsicDH/7V/r3MW4J+493UMwnJiWQS3v7fThnCOQ9KTrcWG7Qr7EvvE
+        vdDnX3yw==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1kgCUH-0008Jz-FF; Fri, 20 Nov 2020 20:54:29 +0100
+Received: from [62.216.202.98] (helo=[192.168.178.20])
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1kgCUH-0006jX-9u; Fri, 20 Nov 2020 20:54:29 +0100
+Subject: Re: [PATCH] HID: mcp2221: add ADC support
+To:     Matt Ranostay <matt.ranostay@konsulko.com>,
+        rishi gupta <gupt21@gmail.com>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>
+References: <20201120030103.36138-1-matt.ranostay@konsulko.com>
+ <CALUj-guTNWK9m-bwmkRC3st9VExhFkXPiUevXw_EA9xamR6BYA@mail.gmail.com>
+ <CAJCx=gn=jAeYkVtLQ8Ou7P9xRpvSaXpuUk5XWDxMD_HPMTzH+Q@mail.gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <8151a886-b2db-8d44-eee6-46e8eb300ffb@metafoo.de>
+Date:   Fri, 20 Nov 2020 20:54:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <CAJCx=gn=jAeYkVtLQ8Ou7P9xRpvSaXpuUk5XWDxMD_HPMTzH+Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/25994/Fri Nov 20 14:09:26 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
-> On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
-> > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
-> > > This series aims to fix almost all remaining fall-through warnings in
-> > > order to enable -Wimplicit-fallthrough for Clang.
-> > > 
-> > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> > > add multiple break/goto/return/fallthrough statements instead of just
-> > > letting the code fall through to the next case.
-> > > 
-> > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> > > change[1] is meant to be reverted at some point. So, this patch helps
-> > > to move in that direction.
-> > > 
-> > > Something important to mention is that there is currently a discrepancy
-> > > between GCC and Clang when dealing with switch fall-through to empty case
-> > > statements or to cases that only contain a break/continue/return
-> > > statement[2][3][4].  
-> > 
-> > Are we sure we want to make this change? Was it discussed before?
-> > 
-> > Are there any bugs Clangs puritanical definition of fallthrough helped
-> > find?
-> > 
-> > IMVHO compiler warnings are supposed to warn about issues that could
-> > be bugs. Falling through to default: break; can hardly be a bug?!  
-> 
-> It's certainly a place where the intent is not always clear. I think
-> this makes all the cases unambiguous, and doesn't impact the machine
-> code, since the compiler will happily optimize away any behavioral
-> redundancy.
+On 11/20/20 8:17 PM, Matt Ranostay wrote:
+> On Fri, Nov 20, 2020 at 5:15 AM rishi gupta <gupt21@gmail.com> wrote:
+>> On Fri, Nov 20, 2020 at 8:31 AM Matt Ranostay
+>> <matt.ranostay@konsulko.com> wrote:
+>>> Add support for the three 10-bit ADC channels registered via
+>>> the IIO subsystem.
+>>>
+>>> Cc: linux-input@vger.kernel.org
+>>> Cc: linux-iio@vger.kernel.org
+>>> CC: Rishi Gupta <gupt21@gmail.com>
+>>> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+>>> ---
+>>>   drivers/hid/Kconfig       |  1 +
+>>>   drivers/hid/hid-mcp2221.c | 65 ++++++++++++++++++++++++++++++++++++++-
+>>>   2 files changed, 65 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+>>> index 05315b434276..4795744d9979 100644
+>>> --- a/drivers/hid/Kconfig
+>>> +++ b/drivers/hid/Kconfig
+>>> @@ -1157,6 +1157,7 @@ config HID_MCP2221
+>>>          tristate "Microchip MCP2221 HID USB-to-I2C/SMbus host support"
+>>>          depends on USB_HID && I2C
+>>>          depends on GPIOLIB
+>>> +       depends on IIO
+>> I am wondering what will happen on systems which do not enable IIO.
+>> This driver can not be used there.
+>> Is my understanding correct?
+> Actually yeah this should be "select IIO" to avoid that issue.
 
-If none of the 140 patches here fix a real bug, and there is no change
-to machine code then it sounds to me like a W=2 kind of a warning.
+No, we should not have a individual driver select a framework. This will 
+cause all kinds of issues with reverse dependencies.
 
-I think clang is just being annoying here, but if I'm the only one who
-feels this way chances are I'm wrong :)
+It might be worth splitting this driver into a MFD driver, then the MFD 
+cells could have their own module that depend on the subsystem and if 
+not enabled the functionality will not be provided.
+
+- Lars
+

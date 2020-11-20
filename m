@@ -2,101 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 056932BABC7
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 15:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F38322BB23E
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 19:17:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727262AbgKTOWE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Nov 2020 09:22:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59220 "EHLO
+        id S1727560AbgKTSQo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Nov 2020 13:16:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726529AbgKTOWE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 09:22:04 -0500
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EEBC0613CF;
-        Fri, 20 Nov 2020 06:22:04 -0800 (PST)
-Received: by mail-qk1-x744.google.com with SMTP id q5so8926406qkc.12;
-        Fri, 20 Nov 2020 06:22:04 -0800 (PST)
+        with ESMTP id S1728292AbgKTSQn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 13:16:43 -0500
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60639C0617A7
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 10:16:43 -0800 (PST)
+Received: by mail-vs1-xe44.google.com with SMTP id h185so5506387vsc.3
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 10:16:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=EmX/ngNfP74DHbaPRJurA58fwjUYLM23ga/X5HNDtRI=;
-        b=BAGMkHJDOW0Dgh1KeR514uFZghcbAcEyrshZBs7gost67aMx1cuXgsMAzOTzZghaab
-         ZkB5XdC6+rml+GFvARip3COIXAkRFOgT9M8ZZ3/40xKJoHcspGCtJBwJxWcoiaTCscpu
-         yfAdtsl68n5jffq1pG83IedcM0xp4J2FgFhx13PWhB/VHEaPF+N4hrP3XujOm/NgHDNw
-         SInh62R6ExXKyc0lbpPr72UKCO40px1hxs/rCls4j89923Zvu2vzMuuV16S4OU+oS4UP
-         aosJbNgEY2dVe9Ezr1b3R/MUmOMWb1l6oXO0lPbS0enfYWyDfwAeH78IChMGKWW9KPYI
-         BHCA==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7i3IDjQZXUbrZIsC0hxmEc0DVFntA7n45yVpEf8muDM=;
+        b=LnupxrZtYoidppN3e502cNrtySa1sP+YUJ2Qq//NRyV2IEpCKnqt4DKnow8Jiovym9
+         dUzhoesDtc9JQZCbtRB0nCO5ORWy47eFOsfxfIZyysvds7zQ0VXNWcnRzYg0bKSXimPb
+         wqMsyE3pWtZraS9yPvuM4X24YZtc+JFF9PpDE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=EmX/ngNfP74DHbaPRJurA58fwjUYLM23ga/X5HNDtRI=;
-        b=a2U61VudAKgVplDoDYTBTWZCyULII4NWO96tn3rJAb3HrdDlLH3nsv5IUAsNRqm89e
-         m77mN0efa6OnryimbrJ2Vo1hiRUIueq5xbU3gAyQY19Xalftz2vBBjuLidRbLVYg/dNh
-         b3Yxng1Wc+zK09O+sdoKvxUMhjXlHzmSLRoOdEBYZQsPSWdqiL9UK+qRm4Pk+FBsKMQY
-         rGJ0g7W+hOp9b6gpeEh9My2ujI+aCx50aN/FPawondzCtCj+UhbPkVbkEXJOKm2QtDZ7
-         BaTr13OTi+Fi/fx5QYOjtLhmhqyUNHJTH3g1WtNRFRuRg0Zzvt5cbjJgb1RKZnjmTRQO
-         MjGg==
-X-Gm-Message-State: AOAM533PD6nLhLb7hTUcVIJ84rcDB5U+MAFofuHB/qC+hy/oWiJhftTN
-        DpcSfyMq1RtlI2y4JsarRqhyWLzfz/Q=
-X-Google-Smtp-Source: ABdhPJzNpWtTBtnYe+daeWNpk43qANKonaNPrt13DpGL/7oXJGXWtMkWIbPHru0c1eLpYZ0ofFtHMA==
-X-Received: by 2002:a37:9ac4:: with SMTP id c187mr12080708qke.159.1605882123440;
-        Fri, 20 Nov 2020 06:22:03 -0800 (PST)
-Received: from smtp.gmail.com ([2804:d57:1704:a400:2a23:f22c:fae0:6ec8])
-        by smtp.gmail.com with ESMTPSA id 21sm2145797qkv.78.2020.11.20.06.22.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 06:22:02 -0800 (PST)
-Date:   Fri, 20 Nov 2020 11:21:58 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jic23@kernel.org
-Subject: Re: [PATCH] iio: adc: ad7292: remove unneeded spi_set_drvdata()
-Message-ID: <20201120142158.GA2179@smtp.gmail.com>
-References: <20201119142720.86326-1-alexandru.ardelean@analog.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7i3IDjQZXUbrZIsC0hxmEc0DVFntA7n45yVpEf8muDM=;
+        b=ZzQgL9L9S5PUea/PzNWDugjkY93xiMZs/G5WjHSSGmu+ODRgqg17T6ut/0IseIH9OL
+         mnYyZt5q7R4RMkaTRFLCYdwvjpPDbgCvHtqHhaGmDWr6u/GmLtsA3uKE+4knBr3zI5cv
+         bNIQ6T1zPIYGP4t1YDeSrIk2A+hfLqL3X+aWt+SFgDRSNtImlvCURmwxHEhN16QHFd/v
+         zFNBRK0jOr80erOjnhcRUAxxKxa9xXsTRa0oyhTT7I+FewYQJREPoq/P+Egz/5vEkJR9
+         9M4IbaMQ/fgq5N6l2cAg2rtYegwSMzcOw9H2qOCHJfSQY38hlJQe8qATQW8M2lWLAK4z
+         +uWw==
+X-Gm-Message-State: AOAM533RaCqdcIf3Kmx8IuPgHUJHdZS1BVDmRRwYBNb050Zc2iNaylUe
+        0ksyYCUeJ+W69JrZa+xwQPBmhOkDPU0x1A==
+X-Google-Smtp-Source: ABdhPJzp6hweJ8cFnad1/24WlR+0HgaELp+V0m75RUossTju98sWBt+VeO2sUDPxI/TYr7w96PxClA==
+X-Received: by 2002:a67:ead2:: with SMTP id s18mr12888665vso.43.1605896202097;
+        Fri, 20 Nov 2020 10:16:42 -0800 (PST)
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
+        by smtp.gmail.com with ESMTPSA id r186sm455971vkf.33.2020.11.20.10.16.40
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Nov 2020 10:16:41 -0800 (PST)
+Received: by mail-ua1-f47.google.com with SMTP id p12so3422638uam.1
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 10:16:40 -0800 (PST)
+X-Received: by 2002:a9f:24eb:: with SMTP id 98mr12605782uar.90.1605896200430;
+ Fri, 20 Nov 2020 10:16:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201119142720.86326-1-alexandru.ardelean@analog.com>
+References: <20201120073842.3232458-1-swboyd@chromium.org>
+In-Reply-To: <20201120073842.3232458-1-swboyd@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Fri, 20 Nov 2020 10:16:28 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Ue_fjEPv_S=21=Mq8cCzo2FOVJB+Y0vzT1jyehsQzDZA@mail.gmail.com>
+Message-ID: <CAD=FV=Ue_fjEPv_S=21=Mq8cCzo2FOVJB+Y0vzT1jyehsQzDZA@mail.gmail.com>
+Subject: Re: [PATCH] iio: sx9310: Fix semtech,avg-pos-strength setting when > 16
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Evan Green <evgreen@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-LGTM.
-Tested on raspberry pi kernel - rpi-5.9.y.
+Hi,
 
-ad7292 was heavily based on ad7768-1. 
-Maybe this might apply to ad7768-1 as well.
-
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Tested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-
-On 11/19, Alexandru Ardelean wrote:
-> This seems to have been copied from a driver that calls spi_set_drvdata()
-> but doesn't call spi_get_drvdata().
-> Setting a private object on the SPI device's object isn't necessary if it
-> won't be accessed.
-> This change removes the spi_set_drvdata() call.
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+On Thu, Nov 19, 2020 at 11:38 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> This DT property can be 0, 16, and then 64, but not 32. The math here
+> doesn't recognize this slight bump in the power of 2 numbers and
+> translates a DT property of 64 into the register value '3' when it
+> really should be '2'. Fix it by subtracting one more if the number being
+> translated is larger than 16.
+>
+> Cc: Daniel Campello <campello@chromium.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Evan Green <evgreen@chromium.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 > ---
->  drivers/iio/adc/ad7292.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
-> index ab204e9199e9..70e33dd1c9f7 100644
-> --- a/drivers/iio/adc/ad7292.c
-> +++ b/drivers/iio/adc/ad7292.c
-> @@ -276,8 +276,6 @@ static int ad7292_probe(struct spi_device *spi)
->  		return -EINVAL;
->  	}
->  
-> -	spi_set_drvdata(spi, indio_dev);
-> -
->  	st->reg = devm_regulator_get_optional(&spi->dev, "vref");
->  	if (!IS_ERR(st->reg)) {
->  		ret = regulator_enable(st->reg);
-> -- 
-> 2.17.1
-> 
+>
+> This fixes commit 5b19ca2c78a0 ("iio: sx9310: Set various settings from
+> DT") in the togreg branch.
+>
+>  drivers/iio/proximity/sx9310.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index a2f820997afc..5d8387ed9301 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -1305,7 +1305,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+>                 if (ret)
+>                         break;
+>
+> -               pos = min(max(ilog2(pos), 3), 10) - 3;
+> +               pos = min(max(ilog2(pos), 3), 11) - (pos > 16 ? 4 : 3);
+
+Checking the math for the documented possible values of pos.  What we want:
+
+0 => 0
+16 => 1
+64 => 2
+128 => 3
+256 => 4
+512 => 5
+1024 => 6
+4294967295 => 7
+
+So looks OK.  Do we care about anything other than the documented
+numbers?  If my understanding of ilog2 is correct, then you'll get the
+wrong answer for 17.  I think you could fix it with:
+
+pos = min(max(ilog2(pos), 3), 11) - (pos >= 32 ? 4 : 3);
+
+-Doug

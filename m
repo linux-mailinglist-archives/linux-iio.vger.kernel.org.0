@@ -2,110 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC34D2BB6FA
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 21:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D7322BB7D2
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 21:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731196AbgKTUbf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Nov 2020 15:31:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
+        id S1729399AbgKTUsG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Nov 2020 15:48:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730904AbgKTUbf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 15:31:35 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58082C061A47
-        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 12:31:35 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id d17so11276424ion.4
-        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 12:31:35 -0800 (PST)
+        with ESMTP id S1729562AbgKTUsF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 15:48:05 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4990C061A4F
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 12:48:03 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id j19so8315174pgg.5
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 12:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=giOhm8nD8EJFip5suslW+X4IjIvxocmJFXiSwyea9Jg=;
-        b=DKg3ULHriMBLRT1ulekHSqd4wKLfSLIQGx6ilPxcAIh6hnrRVR5p1QHKhuouYwpUlF
-         ocT6hHRziXQ3Wq0uQgslSvyHHApldTKBlxXVZL31lqnZr9H2wKvlo09s82NQdzRC0i5k
-         4jCRPefLEbIDUSItBE63gXU2K3s4T5814CUtQ=
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=v0uQ3+ZvQ790GJbfbb1ESqfRrqQ38XoL7hho1t1Gb0k=;
+        b=avd4TaFUM+Ab56B8iWTc3giej2JyPXQeNqj8Vqwh4pMfYMm6E7ROZ43KbUMGq3c2kN
+         Y7wgImiWtwhH33QCuhXwX5xfYnbd8ZoAoymaiVLMsflRM4OrtMTi7raBVieCeB5e9/kv
+         qCr4nXKui27aGXF6t1ziK2ispJ9UlbNRnpYGc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=giOhm8nD8EJFip5suslW+X4IjIvxocmJFXiSwyea9Jg=;
-        b=BowU45IHeJKUAGUZOqkTgQB0zhW0yp94yfMTS7IUh8TnTFyo1mNdo0i6VWB+QmHcej
-         3oA7dpCBULJVftISfooqV7MMyIcbq4ImnO6e1YDGpPsCxwF/djRbxjHqFORqBgV2Vqht
-         FpYI458pye8WgvNlLvYz0PVDyZ6wdqgM/CIFc0ikOMK5KxK5ZTbD+Qb+qrqi1+Dl4zaK
-         kQlqxcr2jP0jKGe+ZA/wgwR08vBADE7KS75rltBArSeNkLJ/o0AaW3vJBxvh8ufY+se/
-         AjjOoCW16TMM5RbkmKHVP+Am35280G25hkZ3tVb7cvbffHrar4dMAAN8ei4Akq0twuWX
-         e+Ag==
-X-Gm-Message-State: AOAM532Wf88ueKBTmw5BUL9C45DoguoGe7Pryux2qhN3qLPf/+plYlI2
-        oWc6ikYnmuw5rD1zgx70E/SpbO6NuBtDkpAb0FGYDA==
-X-Google-Smtp-Source: ABdhPJxwubpbbx83wN7c0Gnzzg2tSw/iCmvmegNwZyzGyhmGJ3EsBrpwWFwj4id0Lh55mCk51iIJlXt6H1f/7tbsN3s=
-X-Received: by 2002:a6b:1446:: with SMTP id 67mr23348951iou.87.1605904294510;
- Fri, 20 Nov 2020 12:31:34 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=v0uQ3+ZvQ790GJbfbb1ESqfRrqQ38XoL7hho1t1Gb0k=;
+        b=Xx0Gb2HfU3y9TDEuiJsS7wKyEru0R1Ma8IFqdTU/B7mmmyRF2fwjBPAkkQf6MIwys6
+         3Z2oFF2akgnUQUx9EpZhdJK+4RsBs5hKx7LZHs/gEzqOFOgVIecbVWjXBdtUY6cG9l4H
+         LkfohRrEw133zP8fKulwHcr6ucgIUvW9kdwOc2iG9QHfo1CM9HgD0zXugX/rTyMAJjMl
+         5R1DXvK0ImjQrSZ0r5HZz47s/ZD4kfe3InY14R9f10ozZHjhfOPmU09DxFOu8TMYnp6y
+         lRIZMsNLKAudgPXqdxmb/d8K0t2YQW5Fr9U3yhRFJGUr5cUK2e5j2d6BZkgwBL5ptn9T
+         NeUQ==
+X-Gm-Message-State: AOAM532IK3Zh7TX3qB+81L8ghJtUdYisixV7pb5jwR9BoDnAEOxP+khl
+        dohPfti/FcJaM9o62Inr+h4wKw==
+X-Google-Smtp-Source: ABdhPJzEbaB+IYipfwOUXoCmdplAutZXXBsmC8OBp1xOfb5CPZl7t2eHSBKNbswFZQhoeAMsBYl7Qg==
+X-Received: by 2002:a62:d108:0:b029:163:d3cf:f00e with SMTP id z8-20020a62d1080000b0290163d3cff00emr15313890pfg.43.1605905283088;
+        Fri, 20 Nov 2020 12:48:03 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id a67sm3215381pfa.77.2020.11.20.12.48.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2020 12:48:02 -0800 (PST)
+Date:   Fri, 20 Nov 2020 12:48:01 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
+        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
+        coreteam@netfilter.org, devel@driverdev.osuosl.org,
+        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
+        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        linux-afs@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+Message-ID: <202011201244.78E002D5@keescook>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+ <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook>
+ <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-References: <20201120030103.36138-1-matt.ranostay@konsulko.com>
- <CALUj-guTNWK9m-bwmkRC3st9VExhFkXPiUevXw_EA9xamR6BYA@mail.gmail.com>
- <CAJCx=gn=jAeYkVtLQ8Ou7P9xRpvSaXpuUk5XWDxMD_HPMTzH+Q@mail.gmail.com> <8151a886-b2db-8d44-eee6-46e8eb300ffb@metafoo.de>
-In-Reply-To: <8151a886-b2db-8d44-eee6-46e8eb300ffb@metafoo.de>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Fri, 20 Nov 2020 12:31:23 -0800
-Message-ID: <CAJCx=gkHYsu6=ne2BPCajVP+N9natV3stieP0cKd5nTSC8ARRA@mail.gmail.com>
-Subject: Re: [PATCH] HID: mcp2221: add ADC support
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     rishi gupta <gupt21@gmail.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 11:54 AM Lars-Peter Clausen <lars@metafoo.de> wrote:
->
-> On 11/20/20 8:17 PM, Matt Ranostay wrote:
-> > On Fri, Nov 20, 2020 at 5:15 AM rishi gupta <gupt21@gmail.com> wrote:
-> >> On Fri, Nov 20, 2020 at 8:31 AM Matt Ranostay
-> >> <matt.ranostay@konsulko.com> wrote:
-> >>> Add support for the three 10-bit ADC channels registered via
-> >>> the IIO subsystem.
-> >>>
-> >>> Cc: linux-input@vger.kernel.org
-> >>> Cc: linux-iio@vger.kernel.org
-> >>> CC: Rishi Gupta <gupt21@gmail.com>
-> >>> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> >>> ---
-> >>>   drivers/hid/Kconfig       |  1 +
-> >>>   drivers/hid/hid-mcp2221.c | 65 ++++++++++++++++++++++++++++++++++++++-
-> >>>   2 files changed, 65 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-> >>> index 05315b434276..4795744d9979 100644
-> >>> --- a/drivers/hid/Kconfig
-> >>> +++ b/drivers/hid/Kconfig
-> >>> @@ -1157,6 +1157,7 @@ config HID_MCP2221
-> >>>          tristate "Microchip MCP2221 HID USB-to-I2C/SMbus host support"
-> >>>          depends on USB_HID && I2C
-> >>>          depends on GPIOLIB
-> >>> +       depends on IIO
-> >> I am wondering what will happen on systems which do not enable IIO.
-> >> This driver can not be used there.
-> >> Is my understanding correct?
-> > Actually yeah this should be "select IIO" to avoid that issue.
->
-> No, we should not have a individual driver select a framework. This will
-> cause all kinds of issues with reverse dependencies.
->
-> It might be worth splitting this driver into a MFD driver, then the MFD
-> cells could have their own module that depend on the subsystem and if
-> not enabled the functionality will not be provided.
+On Fri, Nov 20, 2020 at 11:51:42AM -0800, Jakub Kicinski wrote:
+> On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
+> > On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
+> > > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
+> > > > This series aims to fix almost all remaining fall-through warnings in
+> > > > order to enable -Wimplicit-fallthrough for Clang.
+> > > > 
+> > > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
+> > > > add multiple break/goto/return/fallthrough statements instead of just
+> > > > letting the code fall through to the next case.
+> > > > 
+> > > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
+> > > > change[1] is meant to be reverted at some point. So, this patch helps
+> > > > to move in that direction.
+> > > > 
+> > > > Something important to mention is that there is currently a discrepancy
+> > > > between GCC and Clang when dealing with switch fall-through to empty case
+> > > > statements or to cases that only contain a break/continue/return
+> > > > statement[2][3][4].  
+> > > 
+> > > Are we sure we want to make this change? Was it discussed before?
+> > > 
+> > > Are there any bugs Clangs puritanical definition of fallthrough helped
+> > > find?
+> > > 
+> > > IMVHO compiler warnings are supposed to warn about issues that could
+> > > be bugs. Falling through to default: break; can hardly be a bug?!  
+> > 
+> > It's certainly a place where the intent is not always clear. I think
+> > this makes all the cases unambiguous, and doesn't impact the machine
+> > code, since the compiler will happily optimize away any behavioral
+> > redundancy.
+> 
+> If none of the 140 patches here fix a real bug, and there is no change
+> to machine code then it sounds to me like a W=2 kind of a warning.
 
-Would it make sense to use IS_REACHABLE(CONFIG_IIO) for the iio blocks?
+I'd like to avoid splitting common -W options between default and W=2
+just based on the compiler. Getting -Wimplicit-fallthrough enabled found
+plenty of bugs, so making sure it works correctly for both compilers
+feels justified to me. (This is just a subset of the same C language
+short-coming.)
 
-Guessing the weak reference "imply IIO" would still be bad for the
-driver selecting a framework?
+> I think clang is just being annoying here, but if I'm the only one who
+> feels this way chances are I'm wrong :)
 
-Thanks,
+It's being pretty pedantic, but I don't think it's unreasonable to
+explicitly state how every case ends. GCC's silence for the case of
+"fall through to a break" doesn't really seem justified.
 
-Matt
-
->
-> - Lars
->
+-- 
+Kees Cook

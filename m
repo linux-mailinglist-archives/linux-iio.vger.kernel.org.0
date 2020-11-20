@@ -2,104 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD522BB30D
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 19:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FC672BB321
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Nov 2020 19:37:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730439AbgKTS3K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Nov 2020 13:29:10 -0500
-Received: from smtprelay0187.hostedemail.com ([216.40.44.187]:46450 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729771AbgKTS3I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 13:29:08 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 2DC80180A7FF1;
-        Fri, 20 Nov 2020 18:29:00 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2731:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3871:3874:4321:4362:5007:6742:6743:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14180:14659:14721:21060:21067:21080:21627:21990:30012:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: woman67_620d0012734d
-X-Filterd-Recvd-Size: 3843
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 20 Nov 2020 18:28:49 +0000 (UTC)
-Message-ID: <3e0bbb1644fe53d79322c2feb28ccaf3e20c0e94.camel@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-From:   Joe Perches <joe@perches.com>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org
-Cc:     alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Kees Cook <keescook@chromium.org>
-Date:   Fri, 20 Nov 2020 10:28:48 -0800
-In-Reply-To: <cover.1605896059.git.gustavoars@kernel.org>
-References: <cover.1605896059.git.gustavoars@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S1729734AbgKTS3r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Nov 2020 13:29:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728771AbgKTS3r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Nov 2020 13:29:47 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13A6C0617A7
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 10:29:46 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id 10so8684411pfp.5
+        for <linux-iio@vger.kernel.org>; Fri, 20 Nov 2020 10:29:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3N15Wx4yPAF1ZjMoXxRjftfe4swNFWdxESC1Deg9Y2g=;
+        b=dOCe3Ipl/wx+Z3/+BY9rlRgUiTu5p2kfssR1hzyO8Eg5zF/5fkEvMF4KxSv+wpZl0i
+         mG11B6mtrtXMHdELaCxdTmEB2ZjKL5HZWMsGbPBOgN7J8TEf48GZ4VUD+62LPZ+Pq98Q
+         NDwx7CcEDt1vtCLIFe2THhT4bo4rWIOR1yk5E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3N15Wx4yPAF1ZjMoXxRjftfe4swNFWdxESC1Deg9Y2g=;
+        b=L99lSTvZUhTYIpS5Mu3ik/aKzWW5bqyaytEVo7u5AqMWz1YWLO6xQvzCjlOUr89Mp7
+         SbWXXaz5Nratt8B9+ofS14J1Rtbie1lzfo8LLYm0Yfu0si/a411zE8hmz9lNSLaqczpl
+         tWwAn463lr1AGv4MSafovNjI0p+cIdrG5Su54Ps0AbFU5dVKwCrMx7NKf0GEcVkg/Rj+
+         pxSraBnzZKdN9QW/xPFiduhOXdO0IdAabH5oHq5bcM8A4dDa8z9K96wLmIqTxZ8J84R4
+         6n5pJm65h1w4oGi9qCyqLSw2cTwYy2WTi12lVopeDslupnGdl2iI6AxAlwcmJbdcG+rN
+         YWiw==
+X-Gm-Message-State: AOAM532gM0jJnK9Zm35glUYd0dcRK5RA7bbxruKxYYPcxXU2NaOcwOuo
+        w30UXTePytcHztuIVK5jp+pQgA==
+X-Google-Smtp-Source: ABdhPJzL6FUeUZfitrligElk2wS/ih4PFzTQOaPxcI+reGkSKaDgzUKQHt+QROgjwXYB4dS0ltqoMQ==
+X-Received: by 2002:a65:6857:: with SMTP id q23mr14847335pgt.77.1605896986498;
+        Fri, 20 Nov 2020 10:29:46 -0800 (PST)
+Received: from smtp.gmail.com ([100.99.132.239])
+        by smtp.gmail.com with ESMTPSA id y188sm4515155pfy.98.2020.11.20.10.29.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2020 10:29:45 -0800 (PST)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Daniel Campello <campello@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Evan Green <evgreen@chromium.org>
+Subject: [PATCH v2] iio: sx9310: Fix semtech,avg-pos-strength setting when > 16
+Date:   Fri, 20 Nov 2020 10:29:44 -0800
+Message-Id: <20201120182944.543428-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2020-11-20 at 12:21 -0600, Gustavo A. R. Silva wrote:
-> Hi all,
-> 
-> This series aims to fix almost all remaining fall-through warnings in
-> order to enable -Wimplicit-fallthrough for Clang.
-> 
-> In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> add multiple break/goto/return/fallthrough statements instead of just
-> letting the code fall through to the next case.
-> 
-> Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> change[1] is meant to be reverted at some point. So, this patch helps
-> to move in that direction.
+This DT property can be 0, 16, and then 64, but not 32. The math here
+doesn't recognize this slight bump in the power of 2 numbers and
+translates a DT property of 64 into the register value '3' when it
+really should be '2'. Fix it by subtracting one more if the number being
+translated is larger than 16.
 
-This was a bit hard to parse for a second or three.
+Cc: Daniel Campello <campello@chromium.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Gwendal Grignou <gwendal@chromium.org>
+Cc: Evan Green <evgreen@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
 
-Thanks Gustavo.
+Changes from v1 (https://lore.kernel.org/r/20201120073842.3232458-1-swboyd@chromium.org):
+ * Changed ternary to consider 17 to 31 as the same as 16
 
-How was this change done?
+ drivers/iio/proximity/sx9310.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index a2f820997afc..ee1b4ff05a37 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -1305,7 +1305,7 @@ sx9310_get_default_reg(struct sx9310_data *data, int i,
+ 		if (ret)
+ 			break;
+ 
+-		pos = min(max(ilog2(pos), 3), 10) - 3;
++		pos = min(max(ilog2(pos), 3), 11) - (pos >= 32 ? 4 : 3);
+ 		reg_def->def &= ~SX9310_REG_PROX_CTRL7_AVGPOSFILT_MASK;
+ 		reg_def->def |= FIELD_PREP(SX9310_REG_PROX_CTRL7_AVGPOSFILT_MASK,
+ 					   pos);
+
+base-commit: 5b19ca2c78a0838976064c0347e46a2c859b541d
+-- 
+https://chromeos.dev
 

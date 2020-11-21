@@ -2,92 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1ADC2BC074
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Nov 2020 17:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2502BC07D
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Nov 2020 17:19:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgKUQPv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Nov 2020 11:15:51 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:26502 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725953AbgKUQPu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Nov 2020 11:15:50 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0ALGASue018115;
-        Sat, 21 Nov 2020 11:15:14 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 34y0p80hd2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 21 Nov 2020 11:15:13 -0500
-Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0ALGFCLm012654
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Sat, 21 Nov 2020 11:15:12 -0500
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Sat, 21 Nov
- 2020 08:15:11 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Sat, 21 Nov 2020 08:15:10 -0800
-Received: from NSA-L01.ad.analog.com ([10.32.226.88])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0ALGF2x5028455;
-        Sat, 21 Nov 2020 11:15:08 -0500
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Subject: [PATCH 2/2] iio: buffer: Return error if no callback is given
-Date:   Sat, 21 Nov 2020 17:14:57 +0100
-Message-ID: <20201121161457.957-3-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201121161457.957-1-nuno.sa@analog.com>
-References: <20201121161457.957-1-nuno.sa@analog.com>
+        id S1726806AbgKUQTI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Nov 2020 11:19:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56828 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726013AbgKUQTI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Nov 2020 11:19:08 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 23AE02145D;
+        Sat, 21 Nov 2020 16:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605975548;
+        bh=pkyHmU/dtheiAf5v1Lcf6M71Sc0moWCEOIv7SEI8pcI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ydKxR4827Z20adUZd4NTfplVhTb2dPG43tP/wrkzP/jihcP83Qao2UdUuj+WvDKGE
+         XYkYbnjFfoYEmGjqnlpA8v+++gHOoYo7KyvppikGELjMnz62Rt8UVIS/Qtu5DSXsd7
+         ymyiRNn8oV0mYjHAHYEeXJ30RIf1+XWlXzGne1ag=
+Date:   Sat, 21 Nov 2020 16:19:02 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     alexandre.belloni@bootlin.com,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: Re: [PATCH] MAINTAINERS: Add Kamel Bouhara as TCB counter driver
+ maintainer
+Message-ID: <20201121161902.5ede1a23@archlinux>
+In-Reply-To: <20201116131141.3985-1-vilhelm.gray@gmail.com>
+References: <20201116131141.3985-1-vilhelm.gray@gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-21_04:2020-11-20,2020-11-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=0 spamscore=0
- mlxlogscore=851 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011210111
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Return error in case no callback is provided to
-`iio_channel_get_all_cb()`. There's no point in setting up a buffer-cb
-if no callback is provided.
+On Mon, 16 Nov 2020 08:11:41 -0500
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/buffer/industrialio-buffer-cb.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Purely for the record, Kamel, would you mind giving an
+Acked-by for this?
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-cb.c b/drivers/iio/buffer/industrialio-buffer-cb.c
-index 47c96f7f4976..4c12b7a94af5 100644
---- a/drivers/iio/buffer/industrialio-buffer-cb.c
-+++ b/drivers/iio/buffer/industrialio-buffer-cb.c
-@@ -54,6 +54,11 @@ struct iio_cb_buffer *iio_channel_get_all_cb(struct device *dev,
- 	struct iio_cb_buffer *cb_buff;
- 	struct iio_channel *chan;
- 
-+	if (!cb) {
-+		dev_err(dev, "Invalid arguments: A callback must be provided!\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	cb_buff = kzalloc(sizeof(*cb_buff), GFP_KERNEL);
- 	if (cb_buff == NULL)
- 		return ERR_PTR(-ENOMEM);
--- 
-2.17.1
+Thanks,
+
+Jonathan
+
+> ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 913b5eb64e44..18d34536c4bd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2095,6 +2095,12 @@ X:	drivers/net/wireless/atmel/
+>  N:	at91
+>  N:	atmel
+>  
+> +Microchip Timer Counter Block (TCB) Capture Driver
+> +M:	Kamel Bouhara <kamel.bouhara@bootlin.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/counter/microchip-tcb-capture.c
+> +
+>  ARM/Microchip Sparx5 SoC support
+>  M:	Lars Povlsen <lars.povlsen@microchip.com>
+>  M:	Steen Hegelund <Steen.Hegelund@microchip.com>
 

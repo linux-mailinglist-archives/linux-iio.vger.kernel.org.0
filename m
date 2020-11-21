@@ -2,76 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6262BC09A
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Nov 2020 17:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DF012BC09D
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Nov 2020 17:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgKUQoH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Nov 2020 11:44:07 -0500
-Received: from smtprelay0138.hostedemail.com ([216.40.44.138]:35834 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726398AbgKUQoH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Nov 2020 11:44:07 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 4189A1867;
-        Sat, 21 Nov 2020 16:44:06 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2198:2199:2200:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3503:3504:3622:3865:3866:3867:3868:3873:4321:5007:6120:7514:7901:10004:10400:10848:10967:11232:11658:11914:12043:12297:12740:12895:13069:13311:13357:13439:13894:14181:14659:14721:21080:21451:21627:30030:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: mom16_400890627355
-X-Filterd-Recvd-Size: 1958
-Received: from XPS-9350.home (unknown [47.151.128.180])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 21 Nov 2020 16:44:04 +0000 (UTC)
-Message-ID: <cbc88878ecfc8e8994bb61e03b55f0384609e6eb.camel@perches.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Kamel Bouhara as TCB counter driver
- maintainer
-From:   Joe Perches <joe@perches.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     alexandre.belloni@bootlin.com,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>
-Date:   Sat, 21 Nov 2020 08:44:03 -0800
-In-Reply-To: <20201121161902.5ede1a23@archlinux>
-References: <20201116131141.3985-1-vilhelm.gray@gmail.com>
-         <20201121161902.5ede1a23@archlinux>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S1726677AbgKUQpM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Nov 2020 11:45:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59852 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726580AbgKUQpM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Nov 2020 11:45:12 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B6DE222206;
+        Sat, 21 Nov 2020 16:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605977111;
+        bh=vRkBpia8JLsIKlMg9vKYHzNNReo6cDTdQUGHnEM+HqU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BzS3boMvLWnxo3wsp2WDJNsnDga/6UqXZ/GEpTRX/8ypFji7t2vWE8gWa85F+uhff
+         M1F5by4dcwiD6CbAAckovKNTKjuNER1nEhJG8MFmKHaeUX9x+hvWkEDprXMdk5+2OF
+         BUFassEav9sBMZXowmbnXfinzbmtJBXzvLrxcyik=
+Date:   Sat, 21 Nov 2020 16:45:05 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH 3/3 v3] iio: accel: bmc150-accel: Add rudimentary
+ regulator support
+Message-ID: <20201121164505.30767f9f@archlinux>
+In-Reply-To: <20201115205745.618455-3-linus.walleij@linaro.org>
+References: <20201115205745.618455-1-linus.walleij@linaro.org>
+        <20201115205745.618455-3-linus.walleij@linaro.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2020-11-21 at 16:19 +0000, Jonathan Cameron wrote:
-> On Mon, 16 Nov 2020 08:11:41 -0500
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+On Sun, 15 Nov 2020 21:57:45 +0100
+Linus Walleij <linus.walleij@linaro.org> wrote:
+
+> These Bosch accelerometers have two supplies, VDD and VDDIO.
+> Add some rudimentary support to obtain and enable these
+> regulators during probe() and disable them during remove()
+> or on the errorpath.
 > 
-> > Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Purely for the record, Kamel, would you mind giving an
-> Acked-by for this?
-[]
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-[]
-> > @@ -2095,6 +2095,12 @@ X:	drivers/net/wireless/atmel/
-> >  N:	at91
-> >  N:	atmel
-> > 
-> > +Microchip Timer Counter Block (TCB) Capture Driver
-> > +M:	Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > +L:	linux-iio@vger.kernel.org
-> > +S:	Maintained
-> > +F:	drivers/counter/microchip-tcb-capture.c
-> > +
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+All looks good to me.  Will leave it for a bit longer though to let
+Rob have a chance to look at the dt binding doc.
 
-Alphabetic ordering of section names please
-And perhaps rename this to ARM/Microchip etc...
+As ever, if it seems to have gotten lost it is probably worth
+poking me.
 
-> >  ARM/Microchip Sparx5 SoC support
-> >  M:	Lars Povlsen <lars.povlsen@microchip.com>
-> >  M:	Steen Hegelund <Steen.Hegelund@microchip.com>
+Thanks,
+
+Jonathan
+> ---
+> ChangeLog v2->v3:
+> - Resend with the rest.
+> ChangeLog v1->v2:
+> - Use dev_err_probe() to simplify the errorpath.
+> ---
+>  drivers/iio/accel/bmc150-accel-core.c | 35 +++++++++++++++++++++++++--
+>  1 file changed, 33 insertions(+), 2 deletions(-)
 > 
-
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> index 01dbc01e328f..caa984612e88 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+>  
+>  #include "bmc150-accel.h"
+>  
+> @@ -184,6 +185,7 @@ enum bmc150_accel_trigger_id {
+>  
+>  struct bmc150_accel_data {
+>  	struct regmap *regmap;
+> +	struct regulator_bulk_data regulators[2];
+>  	int irq;
+>  	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+>  	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+> @@ -1591,10 +1593,33 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>  				     &data->orientation);
+>  	if (ret)
+>  		return ret;
+> +	/*
+> +	 * VDD   is the analog and digital domain voltage supply
+> +	 * VDDIO is the digital I/O voltage supply
+> +	 */
+> +	data->regulators[0].supply = "vdd";
+> +	data->regulators[1].supply = "vddio";
+> +	ret = devm_regulator_bulk_get(dev,
+> +				      ARRAY_SIZE(data->regulators),
+> +				      data->regulators);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to get regulators\n");
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
+> +				    data->regulators);
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable regulators: %d\n", ret);
+> +		return ret;
+> +	}
+> +	/*
+> +	 * 2ms or 3ms power-on time according to datasheets, let's better
+> +	 * be safe than sorry and set this delay to 5ms.
+> +	 */
+> +	msleep(5);
+>  
+>  	ret = bmc150_accel_chip_init(data);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto err_disable_regulators;
+>  
+>  	mutex_init(&data->mutex);
+>  
+> @@ -1611,7 +1636,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>  					 &bmc150_accel_buffer_ops);
+>  	if (ret < 0) {
+>  		dev_err(dev, "Failed: iio triggered buffer setup\n");
+> -		return ret;
+> +		goto err_disable_regulators;
+>  	}
+>  
+>  	if (data->irq > 0) {
+> @@ -1672,6 +1697,9 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>  	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
+>  err_buffer_cleanup:
+>  	iio_triggered_buffer_cleanup(indio_dev);
+> +err_disable_regulators:
+> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
+> +			       data->regulators);
+>  
+>  	return ret;
+>  }
+> @@ -1696,6 +1724,9 @@ int bmc150_accel_core_remove(struct device *dev)
+>  	bmc150_accel_set_mode(data, BMC150_ACCEL_SLEEP_MODE_DEEP_SUSPEND, 0);
+>  	mutex_unlock(&data->mutex);
+>  
+> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
+> +			       data->regulators);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
 

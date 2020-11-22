@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A9E32BC756
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 17:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABD622BC77A
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 18:25:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727994AbgKVQ7B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Nov 2020 11:59:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56600 "EHLO mail.kernel.org"
+        id S1727956AbgKVRYr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Nov 2020 12:24:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59460 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727969AbgKVQ7B (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Nov 2020 11:59:01 -0500
+        id S1727317AbgKVRYr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Nov 2020 12:24:47 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD9AF20781;
-        Sun, 22 Nov 2020 16:58:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 696142075A;
+        Sun, 22 Nov 2020 17:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606064340;
-        bh=B889S553gd5zgqPN+YPleK+3bmcP0GwlN3iQqif4ZxA=;
+        s=default; t=1606065886;
+        bh=1mo1xPJbNLlISsBxqWQsL1I7sfT5Y/FHELSuWrVSzrQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IA2hXFvaLck2r5F18MKPPZH5CEkBJBrJGjkFXkPzbOiv5814y/+V/FF+SUoIRWOhG
-         oCWuYWPhdl+or1DWC0N8koow0xHzZSeSX84vu7RQV6ZvkYE+h5Iy0fPGTYbCSK3oIW
-         ilT5Tb8ryZsHV/2P7G9mYQNfd+HntU5lv7hNV6cA=
-Date:   Sun, 22 Nov 2020 16:58:56 +0000
+        b=Q0GfQSLbupuwoJmA7u81e/7gOawd77qx3nbLDuRHdiLZoI195qNav6N5AKtcHa1Fy
+         R4knTr+SACApPzF86iRA2Wr9rUXwOJ9u1pwhvwvMn4sW205YerQUn3sLE9zclPQZo1
+         HdrBHxp8WX6g5JcOFhbr4BqGhwHdCyfc+ECDurBY=
+Date:   Sun, 22 Nov 2020 17:24:42 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matt Ranostay <matt.ranostay@konsulko.com>
 Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
@@ -31,11 +31,12 @@ Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Subject: Re: [PATCH 09/46] dt-bindings:iio:health:maxim,max30100: txt to
  yaml conversion
-Message-ID: <20201122165856.265d4cb6@archlinux>
-In-Reply-To: <CAJCx=gnbzfJ9z7gtOjJ0qQTd8woVdCDvcpbDPH=bQ-jyTacjjw@mail.gmail.com>
+Message-ID: <20201122172442.3b944129@archlinux>
+In-Reply-To: <20201122165856.265d4cb6@archlinux>
 References: <20201031184854.745828-1-jic23@kernel.org>
         <20201031184854.745828-10-jic23@kernel.org>
         <CAJCx=gnbzfJ9z7gtOjJ0qQTd8woVdCDvcpbDPH=bQ-jyTacjjw@mail.gmail.com>
+        <20201122165856.265d4cb6@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,132 +45,156 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Oct 2020 14:41:56 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Sun, 22 Nov 2020 16:58:56 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Sat, Oct 31, 2020 at 11:51 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Straight forward conversion. As with other bindings I've dropped
-> > any standrd description, but kept the unusual bits, in thisscase
-> > the maxim,led-current-microamp and it's description.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  .../bindings/iio/health/max30100.txt          | 28 ----------
-> >  .../bindings/iio/health/maxim,max30100.yaml   | 52 +++++++++++++++++++
-> >  2 files changed, 52 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/health/max30100.txt b/Documentation/devicetree/bindings/iio/health/max30100.txt
-> > deleted file mode 100644
-> > index 0054908a6e74..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/health/max30100.txt
-> > +++ /dev/null
-> > @@ -1,28 +0,0 @@
-> > -Maxim MAX30100 heart rate and pulse oximeter sensor
-> > -
-> > -* https://datasheets.maximintegrated.com/en/ds/MAX30100.pdf
-> > -
-> > -Required properties:
-> > -  - compatible: must be "maxim,max30100"
-> > -  - reg: the I2C address of the sensor
-> > -  - interrupts: the sole interrupt generated by the device
-> > -
-> > -  Refer to interrupt-controller/interrupts.txt for generic
-> > -  interrupt client node bindings.
-> > -
-> > -Optional properties:
-> > -  - maxim,led-current-microamp: configuration for LED current in microamperes
-> > -    while the engine is running. First indexed value is the configuration for
-> > -    the RED LED, and second value is for the IR LED.
-> > -
-> > -    Refer to the datasheet for the allowed current values.
-> > -
-> > -Example:
-> > -
-> > -max30100@57 {
-> > -       compatible = "maxim,max30100";
-> > -       reg = <0x57>;
-> > -       maxim,led-current-microamp = <24000 50000>;
-> > -       interrupt-parent = <&gpio1>;
-> > -       interrupts = <16 2>;
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-> > new file mode 100644
-> > index 000000000000..5684f2f61bcc
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-> > @@ -0,0 +1,52 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/health/maxim,max30100.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Maxim MAX30100 heart rate and pulse oximeter sensor
-> > +
-> > +maintainers:
-> > +  - Matt Ranostay <mranostay@gmail.com>  
+> On Sat, 31 Oct 2020 14:41:56 -0700
+> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 > 
-> Please change to my Konsulko email, but otherwise LGTM
-> 
-> Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
-Fixed and also dropped the $ref for the *microamp item below
-as that's already covered by dt-schema as Rob pointed out for another
-occurrence.
+> > On Sat, Oct 31, 2020 at 11:51 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > >
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Straight forward conversion. As with other bindings I've dropped
+> > > any standrd description, but kept the unusual bits, in thisscase
+> > > the maxim,led-current-microamp and it's description.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  .../bindings/iio/health/max30100.txt          | 28 ----------
+> > >  .../bindings/iio/health/maxim,max30100.yaml   | 52 +++++++++++++++++++
+> > >  2 files changed, 52 insertions(+), 28 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/health/max30100.txt b/Documentation/devicetree/bindings/iio/health/max30100.txt
+> > > deleted file mode 100644
+> > > index 0054908a6e74..000000000000
+> > > --- a/Documentation/devicetree/bindings/iio/health/max30100.txt
+> > > +++ /dev/null
+> > > @@ -1,28 +0,0 @@
+> > > -Maxim MAX30100 heart rate and pulse oximeter sensor
+> > > -
+> > > -* https://datasheets.maximintegrated.com/en/ds/MAX30100.pdf
+> > > -
+> > > -Required properties:
+> > > -  - compatible: must be "maxim,max30100"
+> > > -  - reg: the I2C address of the sensor
+> > > -  - interrupts: the sole interrupt generated by the device
+> > > -
+> > > -  Refer to interrupt-controller/interrupts.txt for generic
+> > > -  interrupt client node bindings.
+> > > -
+> > > -Optional properties:
+> > > -  - maxim,led-current-microamp: configuration for LED current in microamperes
+> > > -    while the engine is running. First indexed value is the configuration for
+> > > -    the RED LED, and second value is for the IR LED.
+> > > -
+> > > -    Refer to the datasheet for the allowed current values.
+> > > -
+> > > -Example:
+> > > -
+> > > -max30100@57 {
+> > > -       compatible = "maxim,max30100";
+> > > -       reg = <0x57>;
+> > > -       maxim,led-current-microamp = <24000 50000>;
+> > > -       interrupt-parent = <&gpio1>;
+> > > -       interrupts = <16 2>;
+> > > -};
+> > > diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+> > > new file mode 100644
+> > > index 000000000000..5684f2f61bcc
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+> > > @@ -0,0 +1,52 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/health/maxim,max30100.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Maxim MAX30100 heart rate and pulse oximeter sensor
+> > > +
+> > > +maintainers:
+> > > +  - Matt Ranostay <mranostay@gmail.com>    
+> > 
+> > Please change to my Konsulko email, but otherwise LGTM
+> > 
+> > Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>  
+> Fixed and also dropped the $ref for the *microamp item below
+> as that's already covered by dt-schema as Rob pointed out for another
+> occurrence.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-all the normal reasons.
+I should really not send my replies at the same time as build tests are
+running.   I've put the ref back in because without it I'm getting a build
+warning.
+
+maxim,max30100.example.dt.yaml: heart-rate@57: maxim,led-current-microamp: [[24000, 50000]] is too short
+
+I assume that is because we have <24000, 50000> whereas it could have been
+<24000>, <50000> but I don't get why having the ref to the same type
+as implied by microamp doesn't work.
+
+I've backed it out for now.   @Rob, what am I missing here?
+
+I've applied it for now on basis that it can't do any harm, but would like to
+understand what is going on here.
 
 Thanks,
 
 Jonathan
-
+	
 > 
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: maxim,max30100
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +    description: Connected to ADC_RDY pin.
-> > +
-> > +  maxim,led-current-microamp:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    minItems: 2
-> > +    maxItems: 2
-> > +    description: |
-> > +      LED current whilst the engine is running. First indexed value is
-> > +      the configuration for the RED LED, and second value is for the IR LED.
-> > +
-> > +additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        heart-rate@57 {
-> > +            compatible = "maxim,max30100";
-> > +            reg = <0x57>;
-> > +            maxim,led-current-microamp = <24000 50000>;
-> > +            interrupt-parent = <&gpio1>;
-> > +            interrupts = <16 2>;
-> > +        };
-> > +    };
-> > +...
-> > --
-> > 2.28.0
-> >  
+> Applied to the togreg branch of iio.git and pushed out as testing for
+> all the normal reasons.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> >   
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: maxim,max30100
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +    description: Connected to ADC_RDY pin.
+> > > +
+> > > +  maxim,led-current-microamp:
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> > > +    minItems: 2
+> > > +    maxItems: 2
+> > > +    description: |
+> > > +      LED current whilst the engine is running. First indexed value is
+> > > +      the configuration for the RED LED, and second value is for the IR LED.
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - interrupts
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    i2c {
+> > > +        #address-cells = <1>;
+> > > +        #size-cells = <0>;
+> > > +
+> > > +        heart-rate@57 {
+> > > +            compatible = "maxim,max30100";
+> > > +            reg = <0x57>;
+> > > +            maxim,led-current-microamp = <24000 50000>;
+> > > +            interrupt-parent = <&gpio1>;
+> > > +            interrupts = <16 2>;
+> > > +        };
+> > > +    };
+> > > +...
+> > > --
+> > > 2.28.0
+> > >    
+> 
 

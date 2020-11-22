@@ -2,134 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 730D62BC94B
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 21:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3754F2BFB19
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 22:53:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727897AbgKVUgO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Nov 2020 15:36:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50714 "EHLO
+        id S1725952AbgKVVxb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Nov 2020 16:53:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727637AbgKVUgM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 15:36:12 -0500
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A97FC0613D3;
-        Sun, 22 Nov 2020 12:36:10 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id 10so14048150ybx.9;
-        Sun, 22 Nov 2020 12:36:10 -0800 (PST)
+        with ESMTP id S1726198AbgKVVxb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 16:53:31 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8CEC0613CF;
+        Sun, 22 Nov 2020 13:53:30 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id o9so20657705ejg.1;
+        Sun, 22 Nov 2020 13:53:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GG13N+h9bYKW0tA8PzZdEh0PqD5/qSPuWfMm4/MLZZE=;
-        b=tX7AFJY3IoP+sTWjLWjwUeA0EiMqyjgmEMGUK52Uheybmur4GieXYHjq/4452d4+Q2
-         I9IJc2W+KgP7eM5cLMrffBSaL1fq5VPLYq7a7Nqy7aqiJs+SWc7hYJy9lsWlIs20dLH2
-         W28Iwaw2K1E1/9bR59jMmk/7Gq8vv14a82SqbrX8Cr26/AWqo5ergIUL6PfX6EI1DxrF
-         H3tDAymEGdy6lnWgT39rAP3JOfP6UnfKa9FSSCeE7ggKiNT9+2hZ/9zdGiTOU+6HH+d5
-         TmFQQAuEaRP9Z2Bh9bU0txdUhaZCbT+Ezs+qExtvq1zOJlrZzRYF6kJpZnKXIPWyTN/2
-         bJqw==
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=W0zYNssiS3nQSx2xgcVmFzbWgRYntXiAS74r6T1UvaOuIbGZoYpW6HSmyeyz1Re+S4
+         UDKXeFBPVyan4F/9p2wIQSeTyS4l0wRIgfK2VASjfwS26Q/1WU0JTCDqsAoJIiFAatPJ
+         DoAcGBdCye+b9JGKgCb7IuIcYqldOiKY0t21XfLcyQ9fPJ2SD7347LzrY7AM2rXG9gah
+         JP5OvACIWsLFPHF0F0jQYIXcv3IuFWhKBgZ5kk6+KlU/JPkOyHkFiPGWQygSd8oX6aw/
+         5TBQfc7Et2eVSimWHENqbLraMRONkjx20xMpDH7KFVCFhPxtmJHK/0VLqre1lOQIytYP
+         z3Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GG13N+h9bYKW0tA8PzZdEh0PqD5/qSPuWfMm4/MLZZE=;
-        b=cJfjc+j5slxPJthWAzX8B2rKYrwB5xpjQ+veY6dlcvnvHvWXN4pGZ5nOhwkwrbgOpe
-         wswNL7rRwNIhUcponoGCjSbguzv+CwxcD01lrqGgYDBrXDflfjyNiv6hZunD3GhpPl3D
-         1lxEqgUzrMN1gWnS/Us5xnk5Nkit3Ouo29JBvj+poY3mAEe4rsIpu95pcVmU2//LGeGz
-         YvMXoL4AEKkN8UYks8ZHGK35KzC1nOCkCltug4kSBr5jauBhFHAKbd9844otAsupDU1R
-         2VXLIpg4k4B3GNggLw2OGG7McXjUJ4NsG6g/mEqlKuFq0yNig3IEUFI/+wUcwhlk+dCx
-         8EMQ==
-X-Gm-Message-State: AOAM532pxbXaeBX/VOkcgBR/mHHA2Ye/5KC0aTKAoxoVPE6mZi/LceAi
-        nUuMkdbFliZ69jO1+Z3ynceay3eoOITWkRPMaBg=
-X-Google-Smtp-Source: ABdhPJzCLkP7XKvI+ogPcqXNjFlbBz0ulixnxLa8L+LTJiC1sb757UHHSouM0vJ9LX/4+Ocy8hzM6Anb9s4lPpy7cZY=
-X-Received: by 2002:a25:6986:: with SMTP id e128mr4956056ybc.93.1606077369721;
- Sun, 22 Nov 2020 12:36:09 -0800 (PST)
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=cy2qu3IDFoGyWvYqoMZ1Pw7u4KXBoFYnJ+bvauU5fokxh8ioTfzrxvY9O7Gr5YRTEK
+         37XnzFs4UwN3x6X8CMKtL7ZXLjJ0Y7KkkZHU1AP8XBi/jvCz85+Pmp5PSBSsT7HuRdKX
+         bNmi2iUR+5o0D2BE6m1474kKBNe05+iLFWGMV19FwKQj3bZM5Ey8r6LdVxJiUAL6MNPb
+         LqLJ1YxIBzG49d66c2BbeDPDAQOyIyuEYEQEKRRLokLFucUgNS76vgb8BJOxBmPpv1d7
+         vT/k1nb/6B/l3rPW6EGCNwixZ7Hja9l4J00DGLTgsaJxEGtUxTuU/74qJCQeoyrbJOsd
+         8ZNw==
+X-Gm-Message-State: AOAM532w9QoOFe4p7YM60WaNsocY2wAAxxqHIbEZn65JWMUizb6AbFPR
+        kDGgqFe4mswQqBzu+DjlHrOY5XDPxCE=
+X-Google-Smtp-Source: ABdhPJyce1ws5+K+eWrdJ10xC92htHoknxZ+CT6KwsOfPsUPefz9Z+u2wbOUEDUoKfYGIeW6spXVow==
+X-Received: by 2002:a17:906:d20e:: with SMTP id w14mr42124580ejz.479.1606082009265;
+        Sun, 22 Nov 2020 13:53:29 -0800 (PST)
+Received: from [192.168.43.48] ([197.210.35.67])
+        by smtp.gmail.com with ESMTPSA id i19sm3978482ejz.71.2020.11.22.13.53.23
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sun, 22 Nov 2020 13:53:28 -0800 (PST)
+Message-ID: <5fbaddd8.1c69fb81.9b3f2.1046@mx.google.com>
+Sender: Lena Torres <ad482289@gmail.com>
+From:   Adelina Zeuki <anglicaramose@gmail.com>
+X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
-In-Reply-To: <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 22 Nov 2020 21:35:58 +0100
-Message-ID: <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello !!
+To:     Recipients <adelinazeuki@gmail.comm>
+Date:   Sun, 22 Nov 2020 21:53:17 +0000
+Reply-To: adelinazeuki@gmail.com
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 22, 2020 at 7:22 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> Well, it's a problem in an error leg, sure, but it's not a really
-> compelling reason for a 141 patch series, is it?  All that fixing this
-> error will do is get the driver to print "oh dear there's a problem"
-> under four more conditions than it previously did.
->
-> We've been at this for three years now with nearly a thousand patches,
-> firstly marking all the fall throughs with /* fall through */ and later
-> changing it to fallthrough.  At some point we do have to ask if the
-> effort is commensurate with the protection afforded.  Please tell me
-> our reward for all this effort isn't a single missing error print.
+Hi dear,
 
-It isn't that much effort, isn't it? Plus we need to take into account
-the future mistakes that it might prevent, too. So even if there were
-zero problems found so far, it is still a positive change.
-
-I would agree if these changes were high risk, though; but they are
-almost trivial.
-
-Cheers,
-Miguel
+Can i talk with you ?

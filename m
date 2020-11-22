@@ -2,213 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8B02BC7B3
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 19:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 996222BC7BC
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 19:22:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgKVSUj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Nov 2020 13:20:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727795AbgKVSUj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 13:20:39 -0500
-X-Greylist: delayed 777 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Nov 2020 10:20:38 PST
-Received: from saturn.retrosnub.co.uk (saturn.retrosnub.co.uk [IPv6:2a00:1098:86::1:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3893C0613CF;
-        Sun, 22 Nov 2020 10:20:38 -0800 (PST)
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id BB28B9E0039;
-        Sun, 22 Nov 2020 18:20:36 +0000 (GMT)
-Date:   Sun, 22 Nov 2020 18:20:34 +0000
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 34/46] dt-bindings:iio:adc:ti,palmas-gpadc: txt to yaml
- format conversion.
-Message-ID: <20201122182034.77043bd7@archlinux>
-In-Reply-To: <20201031184854.745828-35-jic23@kernel.org>
-References: <20201031184854.745828-1-jic23@kernel.org>
-        <20201031184854.745828-35-jic23@kernel.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728020AbgKVSWG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Nov 2020 13:22:06 -0500
+Received: from bedivere.hansenpartnership.com ([96.44.175.130]:38562 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727795AbgKVSWF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 13:22:05 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 5724C128028B;
+        Sun, 22 Nov 2020 10:22:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1606069324;
+        bh=h3sTlT+FA6NHXH38/foFLBJi59858PUlbpLzv2N/tQY=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=rW4pDHaLDXSFZXr6Cvxz8pUU95XYbgWiZrc9VupyznX2uzr45WZkkmPcoVv7UQLC7
+         fsMPdBOfQk9ceeuIggpWHLoyVFttsPe9E/go/w8zBhamKaY37ALEH+1JPMFR7KYHwj
+         pjW3T1Eqz9YAkW2FP12UvIfqAj7a03n4eq2U3CyI=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id tKkBL_hAklxm; Sun, 22 Nov 2020 10:22:04 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id DB46B1280287;
+        Sun, 22 Nov 2020 10:22:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1606069324;
+        bh=h3sTlT+FA6NHXH38/foFLBJi59858PUlbpLzv2N/tQY=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=rW4pDHaLDXSFZXr6Cvxz8pUU95XYbgWiZrc9VupyznX2uzr45WZkkmPcoVv7UQLC7
+         fsMPdBOfQk9ceeuIggpWHLoyVFttsPe9E/go/w8zBhamKaY37ALEH+1JPMFR7KYHwj
+         pjW3T1Eqz9YAkW2FP12UvIfqAj7a03n4eq2U3CyI=
+Message-ID: <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Kees Cook <keescook@chromium.org>, Jakub Kicinski <kuba@kernel.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
+        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
+        coreteam@netfilter.org, devel@driverdev.osuosl.org,
+        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
+        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        linux-afs@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Date:   Sun, 22 Nov 2020 10:21:59 -0800
+In-Reply-To: <202011220816.8B6591A@keescook>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+         <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <202011201129.B13FDB3C@keescook>
+         <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <202011220816.8B6591A@keescook>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Oct 2020 18:48:42 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
-
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, 2020-11-22 at 08:17 -0800, Kees Cook wrote:
+> On Fri, Nov 20, 2020 at 11:51:42AM -0800, Jakub Kicinski wrote:
+> > On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
+> > > On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
+> > > > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
+> > > > > This series aims to fix almost all remaining fall-through
+> > > > > warnings in order to enable -Wimplicit-fallthrough for Clang.
+> > > > > 
+> > > > > In preparation to enable -Wimplicit-fallthrough for Clang,
+> > > > > explicitly add multiple break/goto/return/fallthrough
+> > > > > statements instead of just letting the code fall through to
+> > > > > the next case.
+> > > > > 
+> > > > > Notice that in order to enable -Wimplicit-fallthrough for
+> > > > > Clang, this change[1] is meant to be reverted at some point.
+> > > > > So, this patch helps to move in that direction.
+> > > > > 
+> > > > > Something important to mention is that there is currently a
+> > > > > discrepancy between GCC and Clang when dealing with switch
+> > > > > fall-through to empty case statements or to cases that only
+> > > > > contain a break/continue/return statement[2][3][4].  
+> > > > 
+> > > > Are we sure we want to make this change? Was it discussed
+> > > > before?
+> > > > 
+> > > > Are there any bugs Clangs puritanical definition of fallthrough
+> > > > helped find?
+> > > > 
+> > > > IMVHO compiler warnings are supposed to warn about issues that
+> > > > could be bugs. Falling through to default: break; can hardly be
+> > > > a bug?!  
+> > > 
+> > > It's certainly a place where the intent is not always clear. I
+> > > think this makes all the cases unambiguous, and doesn't impact
+> > > the machine code, since the compiler will happily optimize away
+> > > any behavioral redundancy.
+> > 
+> > If none of the 140 patches here fix a real bug, and there is no
+> > change to machine code then it sounds to me like a W=2 kind of a
+> > warning.
 > 
-> Simple conversion of the binding doc for this subnode of the palmas
-> PMIC.
-> Given age of driver and lack interaction with original authors,
-> I've guessed at Tony for a maintainer on this one.  Tony, if you
-> are happy with that great, otherwise I can default back to myself.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-Applied.  @Tony, if you aren't happy being listed as maintainer for this
-binding we can either fix that up before I send a pull request of if
-necessary send a follow up patch.
+> FWIW, this series has found at least one bug so far:
+> https://lore.kernel.org/lkml/CAFCwf11izHF=g1mGry1fE5kvFFFrxzhPSM6qKAO8gxSp=Kr_CQ@mail.gmail.com/
 
-Thanks,
 
-Jonathan
+Well, it's a problem in an error leg, sure, but it's not a really
+compelling reason for a 141 patch series, is it?  All that fixing this
+error will do is get the driver to print "oh dear there's a problem"
+under four more conditions than it previously did.
 
-> ---
->  .../bindings/iio/adc/palmas-gpadc.txt         | 48 ----------
->  .../bindings/iio/adc/ti,palmas-gpadc.yaml     | 87 +++++++++++++++++++
->  2 files changed, 87 insertions(+), 48 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt b/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
-> deleted file mode 100644
-> index 4bb9a86065d1..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
-> +++ /dev/null
-> @@ -1,48 +0,0 @@
-> -* Palmas general purpose ADC IP block devicetree bindings
-> -
-> -Channels list:
-> -	0 battery type
-> -	1 battery temp NTC (optional current source)
-> -	2 GP
-> -	3 temp (with ext. diode, optional current source)
-> -	4 GP
-> -	5 GP
-> -	6 VBAT_SENSE
-> -	7 VCC_SENSE
-> -	8 Backup Battery voltage
-> -	9 external charger (VCHG)
-> -	10 VBUS
-> -	11 DC-DC current probe (how does this work?)
-> -	12 internal die temp
-> -	13 internal die temp
-> -	14 USB ID pin voltage
-> -	15 test network
-> -
-> -Required properties:
-> -- compatible : Must be "ti,palmas-gpadc".
-> -- #io-channel-cells: Should be set to <1>.
-> -
-> -Optional sub-nodes:
-> -ti,channel0-current-microamp: Channel 0 current in uA.
-> -	Values are rounded to derive 0uA, 5uA, 15uA, 20uA.
-> -ti,channel3-current-microamp: Channel 3 current in uA.
-> -	Values are rounded to derive 0uA, 10uA, 400uA, 800uA.
-> -ti,enable-extended-delay: Enable extended delay.
-> -
-> -Example:
-> -
-> -pmic {
-> -	compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
-> -	...
-> -	gpadc {
-> -		compatible = "ti,palmas-gpadc";
-> -		interrupts = <18 0
-> -			      16 0
-> -			      17 0>;
-> -		#io-channel-cells = <1>;
-> -		ti,channel0-current-microamp = <5>;
-> -		ti,channel3-current-microamp = <10>;
-> -		};
-> -	};
-> -	...
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
-> new file mode 100644
-> index 000000000000..692dacd0fee5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
-> @@ -0,0 +1,87 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,palmas-gpadc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Palmas general purpose ADC IP block devicetree bindings
-> +
-> +maintainers:
-> +  - Tony Lindgren <tony@atomide.com>
-> +
-> +description: |
-> +  This ADC is often used to provide channels via the io-channels
-> +  consumer framework.
-> +  Channels list:
-> +    0 battery type
-> +    1 battery temp NTC (optional current source)
-> +    2 GP
-> +    3 temp (with ext. diode, optional current source)
-> +    4 GP
-> +    5 GP
-> +    6 VBAT_SENSE
-> +    7 VCC_SENSE
-> +    8 Backup Battery voltage
-> +    9 external charger (VCHG)
-> +    10 VBUS
-> +    11 DC-DC current probe (how does this work?)
-> +    12 internal die temp
-> +    13 internal die temp
-> +    14 USB ID pin voltage
-> +    15 test network
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,palmas-gpadc
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  ti,channel0-current-microamp:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Channel 0 current in uA.
-> +    enum:
-> +      - 0
-> +      - 5
-> +      - 15
-> +      - 20
-> +
-> +  ti,channel3-current-microamp:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Channel 3 current in uA.
-> +    enum:
-> +      - 0
-> +      - 10
-> +      - 400
-> +      - 800
-> +
-> +  ti,enable-extended-delay:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description: Enable extended delay.
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - "#io-channel-cells"
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/mt8183-clk.h>
-> +    pmic {
-> +        compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
-> +        adc {
-> +            compatible = "ti,palmas-gpadc";
-> +            interrupts = <18 0
-> +                          16 0
-> +                          17 0>;
-> +            #io-channel-cells = <1>;
-> +            ti,channel0-current-microamp = <5>;
-> +            ti,channel3-current-microamp = <10>;
-> +        };
-> +    };
-> +...
+We've been at this for three years now with nearly a thousand patches,
+firstly marking all the fall throughs with /* fall through */ and later
+changing it to fallthrough.  At some point we do have to ask if the
+effort is commensurate with the protection afforded.  Please tell me
+our reward for all this effort isn't a single missing error print.
+
+James
+
 

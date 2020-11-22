@@ -2,31 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C10B82BC7B0
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 19:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E8B02BC7B3
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 19:21:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727897AbgKVSPb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Nov 2020 13:15:31 -0500
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:39942 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727795AbgKVSPa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 13:15:30 -0500
+        id S1727916AbgKVSUj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Nov 2020 13:20:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58246 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727795AbgKVSUj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 13:20:39 -0500
+X-Greylist: delayed 777 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Nov 2020 10:20:38 PST
+Received: from saturn.retrosnub.co.uk (saturn.retrosnub.co.uk [IPv6:2a00:1098:86::1:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3893C0613CF;
+        Sun, 22 Nov 2020 10:20:38 -0800 (PST)
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 43EDE9E0046;
-        Sun, 22 Nov 2020 18:15:27 +0000 (GMT)
-Date:   Sun, 22 Nov 2020 18:15:25 +0000
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id BB28B9E0039;
+        Sun, 22 Nov 2020 18:20:36 +0000 (GMT)
+Date:   Sun, 22 Nov 2020 18:20:34 +0000
 From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
 To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Quentin Schulz <quentin.schulz@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>
-Subject: Re: [PATCH 31/46] dt-bindings:iio:adc:x-powers,axp209-adc: txt to
- yaml conversion
-Message-ID: <20201122181525.52410a84@archlinux>
-In-Reply-To: <20201031184854.745828-32-jic23@kernel.org>
+        Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 34/46] dt-bindings:iio:adc:ti,palmas-gpadc: txt to yaml
+ format conversion.
+Message-ID: <20201122182034.77043bd7@archlinux>
+In-Reply-To: <20201031184854.745828-35-jic23@kernel.org>
 References: <20201031184854.745828-1-jic23@kernel.org>
-        <20201031184854.745828-32-jic23@kernel.org>
+        <20201031184854.745828-35-jic23@kernel.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,160 +38,176 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 31 Oct 2020 18:48:39 +0000
+On Sat, 31 Oct 2020 18:48:42 +0000
 Jonathan Cameron <jic23@kernel.org> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> This is a very small binding.  It might make sense at some stage
-> to just roll it into the parent mfd.  For now, converted as is.
-> The main advantage of this document is the identification of the
-> channel index values when this is used as a provider of ADC channels
-> to consumers.
+> Simple conversion of the binding doc for this subnode of the palmas
+> PMIC.
+> Given age of driver and lack interaction with original authors,
+> I've guessed at Tony for a maintainer on this one.  Tony, if you
+> are happy with that great, otherwise I can default back to myself.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Quentin Schulz <quentin.schulz@bootlin.com>
-Quentin's email address is boucing so for now I've put myself as maintainer
-of this binding.
-
-+CC Chen-Yu Tsai who 'might' be the a better choice.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+> Cc: Tony Lindgren <tony@atomide.com>
+Applied.  @Tony, if you aren't happy being listed as maintainer for this
+binding we can either fix that up before I send a pull request of if
+necessary send a follow up patch.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../bindings/iio/adc/axp20x_adc.txt           | 48 -------------
->  .../bindings/iio/adc/x-powers,axp209-adc.yaml | 67 +++++++++++++++++++
->  2 files changed, 67 insertions(+), 48 deletions(-)
+>  .../bindings/iio/adc/palmas-gpadc.txt         | 48 ----------
+>  .../bindings/iio/adc/ti,palmas-gpadc.yaml     | 87 +++++++++++++++++++
+>  2 files changed, 87 insertions(+), 48 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/axp20x_adc.txt b/Documentation/devicetree/bindings/iio/adc/axp20x_adc.txt
+> diff --git a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt b/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
 > deleted file mode 100644
-> index 7a6313913923..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/axp20x_adc.txt
+> index 4bb9a86065d1..000000000000
+> --- a/Documentation/devicetree/bindings/iio/adc/palmas-gpadc.txt
 > +++ /dev/null
 > @@ -1,48 +0,0 @@
-> -* X-Powers AXP ADC bindings
+> -* Palmas general purpose ADC IP block devicetree bindings
+> -
+> -Channels list:
+> -	0 battery type
+> -	1 battery temp NTC (optional current source)
+> -	2 GP
+> -	3 temp (with ext. diode, optional current source)
+> -	4 GP
+> -	5 GP
+> -	6 VBAT_SENSE
+> -	7 VCC_SENSE
+> -	8 Backup Battery voltage
+> -	9 external charger (VCHG)
+> -	10 VBUS
+> -	11 DC-DC current probe (how does this work?)
+> -	12 internal die temp
+> -	13 internal die temp
+> -	14 USB ID pin voltage
+> -	15 test network
 > -
 > -Required properties:
-> -  - compatible: should be one of:
-> -    - "x-powers,axp209-adc",
-> -    - "x-powers,axp221-adc",
-> -    - "x-powers,axp813-adc",
-> -  - #io-channel-cells: should be 1,
+> -- compatible : Must be "ti,palmas-gpadc".
+> -- #io-channel-cells: Should be set to <1>.
+> -
+> -Optional sub-nodes:
+> -ti,channel0-current-microamp: Channel 0 current in uA.
+> -	Values are rounded to derive 0uA, 5uA, 15uA, 20uA.
+> -ti,channel3-current-microamp: Channel 3 current in uA.
+> -	Values are rounded to derive 0uA, 10uA, 400uA, 800uA.
+> -ti,enable-extended-delay: Enable extended delay.
 > -
 > -Example:
 > -
-> -&axp22x {
-> -	adc {
-> -		compatible = "x-powers,axp221-adc";
+> -pmic {
+> -	compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
+> -	...
+> -	gpadc {
+> -		compatible = "ti,palmas-gpadc";
+> -		interrupts = <18 0
+> -			      16 0
+> -			      17 0>;
 > -		#io-channel-cells = <1>;
+> -		ti,channel0-current-microamp = <5>;
+> -		ti,channel3-current-microamp = <10>;
+> -		};
 > -	};
+> -	...
 > -};
-> -
-> -ADC channels and their indexes per variant:
-> -
-> -AXP209
-> -------
-> - 0 | acin_v
-> - 1 | acin_i
-> - 2 | vbus_v
-> - 3 | vbus_i
-> - 4 | pmic_temp
-> - 5 | gpio0_v
-> - 6 | gpio1_v
-> - 7 | ipsout_v
-> - 8 | batt_v
-> - 9 | batt_chrg_i
-> -10 | batt_dischrg_i
-> -
-> -AXP22x
-> -------
-> - 0 | pmic_temp
-> - 1 | batt_v
-> - 2 | batt_chrg_i
-> - 3 | batt_dischrg_i
-> -
-> -AXP813
-> -------
-> - 0 | pmic_temp
-> - 1 | gpio0_v
-> - 2 | batt_v
-> - 3 | batt_chrg_i
-> - 4 | batt_dischrg_i
-> diff --git a/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
 > new file mode 100644
-> index 000000000000..288a5ac31a16
+> index 000000000000..692dacd0fee5
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
-> @@ -0,0 +1,67 @@
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
+> @@ -0,0 +1,87 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/adc/x-powers,axp209-adc.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/ti,palmas-gpadc.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: X-Powers AXP ADC bindings
+> +title: Palmas general purpose ADC IP block devicetree bindings
 > +
 > +maintainers:
-> +  - Quentin Schulz <quentin.schulz@bootlin.com>
+> +  - Tony Lindgren <tony@atomide.com>
 > +
 > +description: |
-> +  ADC is frequently used as a provider to consumers of the ADC channels.
-> +  Device is a child of an axp209 multifunction device
-> +  ADC channels and their indexes per variant:
-> +
-> +  AXP209
-> +  ------
-> +   0 | acin_v
-> +   1 | acin_i
-> +   2 | vbus_v
-> +   3 | vbus_i
-> +   4 | pmic_temp
-> +   5 | gpio0_v
-> +   6 | gpio1_v
-> +   7 | ipsout_v
-> +   8 | batt_v
-> +   9 | batt_chrg_i
-> +  10 | batt_dischrg_i
-> +
-> +  AXP22x
-> +  ------
-> +   0 | pmic_temp
-> +   1 | batt_v
-> +   2 | batt_chrg_i
-> +   3 | batt_dischrg_i
-> +
-> +  AXP813
-> +  ------
-> +   0 | pmic_temp
-> +   1 | gpio0_v
-> +   2 | batt_v
-> +   3 | batt_chrg_i
-> +   4 | batt_dischrg_i
-> +
+> +  This ADC is often used to provide channels via the io-channels
+> +  consumer framework.
+> +  Channels list:
+> +    0 battery type
+> +    1 battery temp NTC (optional current source)
+> +    2 GP
+> +    3 temp (with ext. diode, optional current source)
+> +    4 GP
+> +    5 GP
+> +    6 VBAT_SENSE
+> +    7 VCC_SENSE
+> +    8 Backup Battery voltage
+> +    9 external charger (VCHG)
+> +    10 VBUS
+> +    11 DC-DC current probe (how does this work?)
+> +    12 internal die temp
+> +    13 internal die temp
+> +    14 USB ID pin voltage
+> +    15 test network
 > +
 > +properties:
 > +  compatible:
-> +    enum:
-> +      - x-powers,axp209-adc
-> +      - x-powers,axp221-adc
-> +      - x-powers,axp813-adc
+> +    const: ti,palmas-gpadc
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 3
 > +
 > +  "#io-channel-cells":
 > +    const: 1
 > +
+> +  ti,channel0-current-microamp:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Channel 0 current in uA.
+> +    enum:
+> +      - 0
+> +      - 5
+> +      - 15
+> +      - 20
+> +
+> +  ti,channel3-current-microamp:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Channel 3 current in uA.
+> +    enum:
+> +      - 0
+> +      - 10
+> +      - 400
+> +      - 800
+> +
+> +  ti,enable-extended-delay:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: Enable extended delay.
+> +
 > +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - "#io-channel-cells"
 > +
 > +examples:
 > +  - |
-> +    axp221 {
+> +    #include <dt-bindings/clock/mt8183-clk.h>
+> +    pmic {
+> +        compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
 > +        adc {
-> +            compatible = "x-powers,axp221-adc";
+> +            compatible = "ti,palmas-gpadc";
+> +            interrupts = <18 0
+> +                          16 0
+> +                          17 0>;
 > +            #io-channel-cells = <1>;
+> +            ti,channel0-current-microamp = <5>;
+> +            ti,channel3-current-microamp = <10>;
 > +        };
 > +    };
 > +...

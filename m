@@ -2,148 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 098A72BC6EB
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 17:18:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC0B02BC6EF
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Nov 2020 17:24:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728067AbgKVQRY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Nov 2020 11:17:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727974AbgKVQRG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Nov 2020 11:17:06 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27689C061A53
-        for <linux-iio@vger.kernel.org>; Sun, 22 Nov 2020 08:17:06 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id v5so8530278pff.10
-        for <linux-iio@vger.kernel.org>; Sun, 22 Nov 2020 08:17:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9LoGd3XD212DnUOzzxWdBwAHKcFiABUM1eku/Z5s9PQ=;
-        b=ECdUiFozoGotedNMltHxGvt7ELeQp/og9KGaJat0+erwcdPPWVCrU8KkW+JV4RYPeo
-         GTWUobzmr0s313q/lzhn4jF5RxJP4nhZO/aj20hZaH8d/g/a456RbO+LKniOS4LntN7M
-         GHx9cYZv8xWYKIg8n9C3ZJn+Q+L/6/s35hbx0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9LoGd3XD212DnUOzzxWdBwAHKcFiABUM1eku/Z5s9PQ=;
-        b=RPjz1FJArA3Wrw3ohIde49XPg8P6beNYSoWgRk/Mv+g5iHHPMIt2AkRyPUNrIx7mxA
-         2qKpebUcpaNhRdwS2t92QF0bGmShAuKgVFsmT+cMTDO/xRCY/NfNaraiWV2Jtt43cTKY
-         GcEyMt5i9cZHTtCTqXag+HRZf90boVpKTB/bRVK++crAMuSu+Da573O/39kOvXq1czXI
-         a6fslvtxKZvTOBsbgJX7qzV5L4oslr7C6XUgaJLdZNJgMjTINQdAMefGbDUPCgpm+/Aq
-         h2z/h/G94NU69sMOjBA+LxmbT3SEb8l+bWk9HV8uGoK0QVpotW10cVaVMonhHSQN9P2I
-         oRyg==
-X-Gm-Message-State: AOAM5309V6FTjL8/iJW7EMmxP9RuITIrIBN6WzGDrEf2UvKwSEuEGJyt
-        3yZlvA+vgsBZI+LfBnzctu7Pqg==
-X-Google-Smtp-Source: ABdhPJwZLmFbbTaRxBkTtuJWbjEgTUtKMFpd77L8KmHflX2OUVWZyNqpGNaeYR87Y149sjgotBbRUA==
-X-Received: by 2002:a62:790f:0:b029:18a:ae57:353f with SMTP id u15-20020a62790f0000b029018aae57353fmr22300068pfc.78.1606061825417;
-        Sun, 22 Nov 2020 08:17:05 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t5sm10642660pjj.31.2020.11.22.08.17.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2020 08:17:04 -0800 (PST)
-Date:   Sun, 22 Nov 2020 08:17:03 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <202011220816.8B6591A@keescook>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook>
- <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        id S1727938AbgKVQTq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Nov 2020 11:19:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50958 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727936AbgKVQTp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Nov 2020 11:19:45 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A624420781;
+        Sun, 22 Nov 2020 16:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606061985;
+        bh=I7DAoSVxbe5d/oBZUnILWIvrXbLNJ7O1BlXExpKNEP8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=UolgD4MtdDiXWjuh/o6cL+6lVT0C4go1dSislsKtoqDkW5Vn9p00Xlm6yCTHdoNMb
+         h3asqYyriQDWGv24zdkVMPVMWqCK4pVCX3313cswxKTuoQ778tZkrlGHZFBmrlNqM0
+         gC2KEKBWdkvQzDFGJnBVNdz1Hd+sbYsxOMcmxMpM=
+Date:   Sun, 22 Nov 2020 16:19:41 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Subject: Re: [PATCH 0/2] Make cb a required parameter of buffer-cb
+Message-ID: <20201122161941.4e7b8418@archlinux>
+In-Reply-To: <20201121161457.957-1-nuno.sa@analog.com>
+References: <20201121161457.957-1-nuno.sa@analog.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 11:51:42AM -0800, Jakub Kicinski wrote:
-> On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
-> > On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
-> > > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
-> > > > This series aims to fix almost all remaining fall-through warnings in
-> > > > order to enable -Wimplicit-fallthrough for Clang.
-> > > > 
-> > > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> > > > add multiple break/goto/return/fallthrough statements instead of just
-> > > > letting the code fall through to the next case.
-> > > > 
-> > > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> > > > change[1] is meant to be reverted at some point. So, this patch helps
-> > > > to move in that direction.
-> > > > 
-> > > > Something important to mention is that there is currently a discrepancy
-> > > > between GCC and Clang when dealing with switch fall-through to empty case
-> > > > statements or to cases that only contain a break/continue/return
-> > > > statement[2][3][4].  
-> > > 
-> > > Are we sure we want to make this change? Was it discussed before?
-> > > 
-> > > Are there any bugs Clangs puritanical definition of fallthrough helped
-> > > find?
-> > > 
-> > > IMVHO compiler warnings are supposed to warn about issues that could
-> > > be bugs. Falling through to default: break; can hardly be a bug?!  
-> > 
-> > It's certainly a place where the intent is not always clear. I think
-> > this makes all the cases unambiguous, and doesn't impact the machine
-> > code, since the compiler will happily optimize away any behavioral
-> > redundancy.
-> 
-> If none of the 140 patches here fix a real bug, and there is no change
-> to machine code then it sounds to me like a W=2 kind of a warning.
+On Sat, 21 Nov 2020 17:14:55 +0100
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-FWIW, this series has found at least one bug so far:
-https://lore.kernel.org/lkml/CAFCwf11izHF=g1mGry1fE5kvFFFrxzhPSM6qKAO8gxSp=Kr_CQ@mail.gmail.com/
+> When going through the code of the buffer-cb interface and all it's
+> users, I realized that the stm32_adfsdm driver is calling
+> `iio_channel_get_all_cb()` with NULL for the cb. After going a bit
+> trough the stm drivers, it looks like this is actually intentional.
+> However, it is clear that we have a clear/direct route here for a NULL
+> pointer dereference. This change makes cb a required parameter of the
+> API.
+>=20
+> The first patch makes the necessary changes to the stm32_adfsdm driver
+> so that it does not break.
 
--- 
-Kees Cook
+Looks good to me.  Will leave it a bit longer to let ASOC people
+take a quick look at it. Give me a poke in a few weeks if it seems
+like I might have lost it!
+
+Thanks,
+
+Jonathan
+
+>=20
+> Nuno S=C3=A1 (1):
+>   iio: buffer: Return error if no callback is given
+>=20
+> Olivier Moysan (1):
+>   ASoC: stm32: dfsdm: add stm32_adfsdm_dummy_cb() callback
+>=20
+>  drivers/iio/buffer/industrialio-buffer-cb.c |  5 +++++
+>  sound/soc/stm/stm32_adfsdm.c                | 12 +++++++++++-
+>  2 files changed, 16 insertions(+), 1 deletion(-)
+>=20
+

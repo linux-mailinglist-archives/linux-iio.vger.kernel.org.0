@@ -2,71 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 202B12C190F
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 23:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B98032C1979
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Nov 2020 00:35:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733271AbgKWW6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 17:58:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53514 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733069AbgKWW6v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Nov 2020 17:58:51 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85B0D206D8;
-        Mon, 23 Nov 2020 22:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606172331;
-        bh=pnYKO68kaCVbgpg0cwV0aYbxE0t2QhMlaGVH3avU1Yg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Fy6a/XnkN5dp3cb2JzMHsKp9dsh55lhjVhIUE57HSkKZ3JWjyURIuDm0Te9j/iPI6
-         LyhAtfmadExxg1crFmCRdPBf/j1yQIzKSFwzS5qDdyIQ/QigY9GGUEXiQ1QD8C6PTP
-         /oNHaAuCp4cKlnygX/ijvGtcE5xZN2SnG+pE6Y7Y=
-Date:   Mon, 23 Nov 2020 16:59:05 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+        id S1726734AbgKWXd5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 18:33:57 -0500
+Received: from anchovy2.45ru.net.au ([203.30.46.146]:56322 "EHLO
+        anchovy2.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726716AbgKWXd4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 18:33:56 -0500
+Received: (qmail 15171 invoked by uid 5089); 23 Nov 2020 23:33:54 -0000
+Received: by simscan 1.2.0 ppid: 15053, pid: 15054, t: 0.0725s
+         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
+Received: from unknown (HELO ?192.168.0.22?) (preid@electromag.com.au@203.59.235.95)
+  by anchovy3.45ru.net.au with ESMTPA; 23 Nov 2020 23:33:53 -0000
+Subject: Re: [PATCH 02/46] dt-bindings:iio:potentiometer:adi,ad5272 yaml
+ conversion
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 090/141] iio: adc: cpcap: Fix fall-through warnings for
- Clang
-Message-ID: <20201123225905.GV21644@embeddedor>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <b3c1c3f9c76f2f0e832f956587f227e44af57d3d.1605896060.git.gustavoars@kernel.org>
- <20201121150504.32385ffd@archlinux>
+Cc:     Rob Herring <robh@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+References: <20201031184854.745828-1-jic23@kernel.org>
+ <20201031184854.745828-3-jic23@kernel.org> <20201103161039.GA1754553@bogus>
+ <20201103172834.00007040@Huawei.com>
+ <bc4219af-d77b-0f39-025d-d8905f35b574@electromag.com.au>
+ <CAL_JsqLAtMQhsUDG=amAG7i9mMzYq9UTDLMFRrGKOHr5rb3L+A@mail.gmail.com>
+ <a6685d81-d09a-1372-cc17-96f66c87ffbe@electromag.com.au>
+ <66e8db5d-cc37-dde9-7d55-770d54506e3d@electromag.com.au>
+ <20201122163500.4c699fcc@archlinux>
+From:   Phil Reid <preid@electromag.com.au>
+Message-ID: <7c002207-918b-e300-6113-fcf392ce7a8d@electromag.com.au>
+Date:   Tue, 24 Nov 2020 07:33:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201121150504.32385ffd@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201122163500.4c699fcc@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 03:05:04PM +0000, Jonathan Cameron wrote:
-> On Fri, 20 Nov 2020 12:36:26 -0600
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+On 23/11/2020 00:35, Jonathan Cameron wrote:
+>>> Having a software interface to assert the reset would be nice.
+>>>
+>>>    
+>> If there's no comments against the change, I'll submit a patch in the next day or so.
+> Hi Phil,
 > 
-> > In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
-> > by explicitly adding a break statement instead of letting the code fall
-> > through to the next case.
-> > 
-> > Link: https://github.com/KSPP/linux/issues/115
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Hi Gustavo,
+> So I've fixed the binding example up to have the sense as ACTIVE_LOW as discussed.
+> If you have time to flip the sense round in the driver to match that it
+> would be great and I'd propose we then mark that as suitable for stable
+> so that we get it backported into existing trees.  We could also spin
+> a patch to the txt binding but perhaps that is more effort than is needed
+> here.  If I get time before you do I might send a proposed fix patch.
+> 
+> Hopefully anyone then using it will get the sense right and we won't
+> accidentally break anyone.
+> 
+> At some point soon I'll also try and audit similar cases and hopefully we
+> will get those fixed up as well.  Obviously if anyone else wants to take
+> a look at that it would be much appreciated!
+> 
 
-Hi Jonathan,
+G'day Jonathan,
 
-> I'm assuming there is no 'huge' rush for these an intent is that they will
-> filter through the various subsystems.  Hence I've queued it up for the
-> next merge window.
+Sorry this had slipped a bit on my list.
+I'll send a patch in next day or so.
 
-Yep; no rush for this.
 
-> Applied to the togreg branch of iio.git
 
-Thank you!
---
-Gustavo
+-- 
+Regards
+Phil Reid
+

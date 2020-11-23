@@ -2,172 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD592C0FCF
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 17:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 946862C103A
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 17:28:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388240AbgKWQHr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 11:07:47 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2140 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731765AbgKWQHr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 11:07:47 -0500
-Received: from fraeml705-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CfsSB6WqPz67G7h;
-        Tue, 24 Nov 2020 00:05:14 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml705-chm.china.huawei.com (10.206.15.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Mon, 23 Nov 2020 17:07:45 +0100
-Received: from localhost (10.47.69.69) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Mon, 23 Nov
- 2020 16:07:44 +0000
-Date:   Mon, 23 Nov 2020 16:07:29 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        <linux-iio@vger.kernel.org>, Bastien Nocera <hadess@hadess.net>,
-        Nitin Joshi1 <njoshi1@lenovo.com>,
-        <linux-input@vger.kernel.org>
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-Message-ID: <20201123160729.000038dd@Huawei.com>
-In-Reply-To: <aeb7bc51-0b27-198b-d3b5-50b18ad114e7@redhat.com>
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
-        <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
-        <20201007083602.00006b7e@Huawei.com>
-        <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
-        <20201112062348.GF1003057@dtor-ws>
-        <3568c492-d9bd-c02d-4cbc-7f3eef605ef5@redhat.com>
-        <20201113065832.GD356503@dtor-ws>
-        <6df00683-9508-3dd9-831e-9b343658287b@redhat.com>
-        <20201120095943.000001a6@Huawei.com>
-        <aeb7bc51-0b27-198b-d3b5-50b18ad114e7@redhat.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S2389921AbgKWQZL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 11:25:11 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:46696 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730953AbgKWQZG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 11:25:06 -0500
+Received: by mail-ot1-f66.google.com with SMTP id g19so16405027otp.13;
+        Mon, 23 Nov 2020 08:25:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SWzdE85KMSmQ5K6aYMgWVQjn8/tst2VI3dLUnv/55SM=;
+        b=tt87NnnAO5VGtl3XI4J4ai62RjtWg2YZ7uCoDHeJuRIVwzPzXDnEZRCOqttT2DdQ4t
+         egb3NYfE/CJdb59O38AVWWufklBxs9mdhTQAJQlXY3UDIzdp9Z4Dud/At/9hDKnvLIVc
+         ESs5CmJr2JscwRtUymU4vNeYYKwuvo+9wiq7nnIUnWUds+gB+FKLigO6FH/qkW1dlKBT
+         lAxZMSl+gk0L5eb9wfCTMvLHjcNioUhoGntJjTOGk/F2iZjlHy/jDUqF0wiJg1+Vi4Ma
+         53gNnAYdtU+gEJdw7C0x5o3zl+CpmYJ+EiWLxBvL+58CzGP/7SAAgpN+vn8HCjRubbjT
+         my3Q==
+X-Gm-Message-State: AOAM531fkC8Xvk2qw3PULaWa9M0XKIlDezforErFLqtVJUBmOJiA+1Sn
+        rVaEZPsNS/s7cmPiuzbl3rq70WUkqrCPpad71gQ=
+X-Google-Smtp-Source: ABdhPJxW9u67TbnPp8ObIChv5a6F+ncd8SoV+BFvs894Bl4MJzyAX0TVAjkpawJr+z1OvIzzPyEcIsCefAg0WelXSFg=
+X-Received: by 2002:a9d:16f:: with SMTP id 102mr68959otu.206.1606148702991;
+ Mon, 23 Nov 2020 08:25:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.69.69]
-X-ClientProxiedBy: lhreml713-chm.china.huawei.com (10.201.108.64) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
+ <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
+ <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com> <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
+In-Reply-To: <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 23 Nov 2020 17:24:51 +0100
+Message-ID: <CAJZ5v0jJ6GFm4LFCR2V3qvD9rZrVw=pXyXSjSWPYtQudg-F3xg@mail.gmail.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>, linux-mtd@lists.infradead.org,
+        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
+        linux-sctp@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org,
+        nouveau <nouveau@lists.freedesktop.org>,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Nov 2020 13:16:20 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Mon, Nov 23, 2020 at 4:58 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> On Mon, 2020-11-23 at 15:19 +0100, Miguel Ojeda wrote:
+> > On Sun, Nov 22, 2020 at 11:36 PM James Bottomley
+> > <James.Bottomley@hansenpartnership.com> wrote:
 
-> Hi,
-> 
-> On 11/20/20 10:59 AM, Jonathan Cameron wrote:
-> > On Thu, 19 Nov 2020 16:39:07 +0100
-> > Hans de Goede <hdegoede@redhat.com> wrote:  
-> 
-> >>>>>>>> On 2020-10-03 10:02 a.m., Hans de Goede wrote:    
-> >>>>>>>>> Hi All,
-> >>>>>>>>>
-> >>>>>>>>> Modern laptops can have various sensors which are kinda
-> >>>>>>>>> like proximity sensors, but not really (they are more
-> >>>>>>>>> specific in which part of the laptop the user is
-> >>>>>>>>> proximate to).
-> >>>>>>>>>
-> >>>>>>>>> Specifically modern Thinkpad's have 2 readings which we
-> >>>>>>>>> want to export to userspace, and I'm wondering if we
-> >>>>>>>>> could use the IIO framework for this since these readings
-> >>>>>>>>> are in essence sensor readings:
-> >>>>>>>>>
-> >>>>>>>>> 1. These laptops have a sensor in the palm-rests to
-> >>>>>>>>> check if a user is physically proximate to the device's
-> >>>>>>>>> palm-rests. This info will be used by userspace for WWAN
-> >>>>>>>>> functionality to control the transmission level safely.
-> >>>>>>>>>
-> >>>>>>>>> A patch adding a thinkpad_acpi specific sysfs API for this
-> >>>>>>>>> is currently pending:
-> >>>>>>>>> https://patchwork.kernel.org/patch/11722127/
-> >>>>>>>>>
-> >>>>>>>>> But I'm wondering if it would not be better to use
-> >>>>>>>>> IIO to export this info.    
-> 
-> <snip>
-> 
-> >>> On newer ARM we use "label" attribute in DTS:
-> >>>
-> >>> arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-> >>>
-> >>>         ap_sar_sensor: proximity@28 {
-> >>>                 compatible = "semtech,sx9310";
-> >>>                 reg = <0x28>;
-> >>>                 #io-channel-cells = <1>;
-> >>>                 pinctrl-names = "default";
-> >>>                 pinctrl-0 = <&p_sensor_int_l>;
-> >>>
-> >>>                 interrupt-parent = <&tlmm>;
-> >>>                 interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
-> >>>
-> >>>                 vdd-supply = <&pp3300_a>;
-> >>>                 svdd-supply = <&pp1800_prox>;
-> >>>
-> >>>                 status = "disabled";
-> >>>                 label = "proximity-wifi";
-> >>>         };    
-> >>
-> >> Hmm, interesting. I did not know iio-devices could
-> >> have a label sysfs attribute (nor that that could be
-> >> set through device-tree). I was thinking about adding
-> >> an in_proximity_location sysfs attribute. But using
-> >> labels (and standardizing a set of label names) will
-> >> work nicely too.  
-> > 
-> > It's fairly new.   Note we also have per channel labels
-> > though they are 'very new'.  Might be handy if the sensors
-> > appear as a single device despite being spread over the
-> > laptop.  
-> 
-> Interesting, the thinkpad_acpi stuff currently has 2
-> proximity(ish) sensors:
-> 
-> 1. Laptop is close to (on) someones lap
-> 2. Someone's arms are resting on or close to the palmrest
-> 
-> Ideally we would indeed register 1 iio-dev with separate
-> channels for this, rather then having to register 2
-> (and the future maybe even more) iio-devs for this.
-> 
-> Can you give a pointer to docs / examples of using a
-> label per channel ?
+[cut]
 
-Docs if done with DT binding are at:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=7f79711533a96b02e1e24e2e36a29b08734e36e2
-ABI Docs
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=3079188f821cfbdbb0b12f668335931a87eb14c6
-An example using it directly rather than via DT (it's not really
-DT related though in some cases the label may come from there)
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=1f4877218f7e2c2b914aeb69a8a0f47d59c74717
+> >
+> > Maintainers routinely review 1-line trivial patches, not to mention
+> > internal API changes, etc.
+>
+> We're also complaining about the inability to recruit maintainers:
+>
+> https://www.theregister.com/2020/06/30/hard_to_find_linux_maintainers_says_torvalds/
+>
+> And burn out:
+>
+> http://antirez.com/news/129
 
-Those will probably be in Linux-next later this week.
+Right.
 
-Jonathan
+> The whole crux of your argument seems to be maintainers' time isn't
+> important so we should accept all trivial patches ... I'm pushing back
+> on that assumption in two places, firstly the valulessness of the time
+> and secondly that all trivial patches are valuable.
+>
+> > If some company does not want to pay for that, that's fine, but they
+> > don't get to be maintainers and claim `Supported`.
+>
+> What I'm actually trying to articulate is a way of measuring value of
+> the patch vs cost ... it has nothing really to do with who foots the
+> actual bill.
+>
+> One thesis I'm actually starting to formulate is that this continual
+> devaluing of maintainers is why we have so much difficulty keeping and
+> recruiting them.
 
-> 
-> >> Is there a know set of labels which ChromeOS is currently
-> >> using? If we are going to use labels for this it would
-> >> be good IMHO to define a set of standard labels for
-> >> this in say Documentation/ABI/testing/sysfs-bus-iio-labels.  
-> > 
-> > If you do want to do this, please just put it under sysfs-bus-iio
-> > doc.  I want this to be in the top level doc.  
-> 
-> Ok, ack.
-> 
-> Dmitry, can you perhaps dig up a full-list of labels
-> which ChromeOS is currently using to identify
-> proximity sensors for e.g. SAR related use?
-> 
-> Regards,
-> 
-> Hans
-> 
+Absolutely.
 
+This is just one of the factors involved, but a significant one IMV.

@@ -2,85 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAC6F2C0C48
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 14:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F3D2C0CD7
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 15:14:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730842AbgKWNwV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 08:52:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38100 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730801AbgKWNwV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Nov 2020 08:52:21 -0500
-Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37DCF206F1;
-        Mon, 23 Nov 2020 13:52:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606139540;
-        bh=boR4AkcrEEwH8YMVfzi8MbbJuQfQ+H1mW665VtBRB8M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kd3Wj26oXt4JkqWcLdAI/UrZXil01vAUiLm/nvJCnf8AVE7PYeYDduM+1uDwVfIpJ
-         XMpuhEG6GQIXDG/ob3aJ3qfwUCCfdfURursriDpm1NXI6ZiG2GOvsKA/1Bq91lbH5p
-         3f/h/EfCIfR5S4zs1qxj9Me8X10eUbu88dyBiqx0=
-Date:   Mon, 23 Nov 2020 13:51:57 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>
-Subject: Re: [PATCH 1/2] ASoC: stm32: dfsdm: add stm32_adfsdm_dummy_cb()
- callback
-Message-ID: <20201123135157.GF6322@sirena.org.uk>
-References: <20201121161457.957-1-nuno.sa@analog.com>
- <20201121161457.957-2-nuno.sa@analog.com>
+        id S1730602AbgKWOFt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 09:05:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730352AbgKWOFq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 09:05:46 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15474C0613CF;
+        Mon, 23 Nov 2020 06:05:44 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id 10so16032864ybx.9;
+        Mon, 23 Nov 2020 06:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RhHqKgQbKUW77nc47JuvCnp+w8QNxENxQLSt6AHkTqQ=;
+        b=uc3VE1PZNnY/Z1NgZXLeWe/Nj5hsoBfQkeeHXaE+d0SDr9xNRMPYxU1o6fpuaiqkgi
+         yuFjhawxyOxFbziEfkWs4inb92LCIVTnNTVXAL7657JtY5jUPnHae9XC4JONvfltcDzK
+         9TpDS0ylXwfesoyru6or5tLuj2Wgq4fxc0XGG5evkxw7F5K63x1NbbMukm854FcfQLy0
+         gnTDe+NWIPcxyPxl6ZwlkcZY1OnasK1C98JFaIzSzrlrdcg6icgY2nCNokwGspTvBpMG
+         u0c2fJxhgJsKPBZAzgP85ZG8VhKJUulmNcJ8sZ+phgCZ9U4trQ3IF/NnqsJiuQ1qY+5Q
+         UH8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RhHqKgQbKUW77nc47JuvCnp+w8QNxENxQLSt6AHkTqQ=;
+        b=WedzhOTXaYjPvNaPhmohdRJ+58gonX0b+ZI3sjwFseX7aF5YDJk0KL0cBl/X1uVgsC
+         We1dczeA+a4BK//RvFHkRTxDc8BbTalyjcQ4gnkIU9cfPcqJg+tZC+68mMrkubh7AGNF
+         fvO9dxWcqQW+4jlWSA7EhFOjC+n4jFiOB8jUMl7Ex3eiIqW1poARTffV5jYeQBAu2OMK
+         sBygNg3BHt5eyDS5b2o48qFp8QnKJ2TYxM0fi6Wij1HP/cKim9lhpUlhBdCEtnnK+OjH
+         QzeyboGg6JxYcFDMMePMGw5mChseG7FQWM1KsCbS1BMq1YrycaQ3I+n+89mM8kqD+8Qa
+         Tamg==
+X-Gm-Message-State: AOAM5326FS91Tk/kyeYNAWweyK5tdCS3nYjJ+iR0xlt/wSuuwpjMlR9n
+        Xjc1+NNgNNNn3BpMzB57GgYvVZWxZhDGGINKkQk=
+X-Google-Smtp-Source: ABdhPJz9DsZ58e7OIIOr/VE9Xtax3PWaLuFuRyVLpjTsCzIYcuPGWJiVUhGusztX9v02ET+47HU3GtURC6oS5LfC9Lw=
+X-Received: by 2002:a5b:40e:: with SMTP id m14mr35121900ybp.33.1606140343388;
+ Mon, 23 Nov 2020 06:05:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Il7n/DHsA0sMLmDu"
-Content-Disposition: inline
-In-Reply-To: <20201121161457.957-2-nuno.sa@analog.com>
-X-Cookie: Dry clean only.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+In-Reply-To: <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 23 Nov 2020 15:05:31 +0100
+Message-ID: <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+To:     Finn Thain <fthain@telegraphics.com.au>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Nov 22, 2020 at 11:54 PM Finn Thain <fthain@telegraphics.com.au> wrote:
+>
+> We should also take into account optimisim about future improvements in
+> tooling.
 
---Il7n/DHsA0sMLmDu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Not sure what you mean here. There is no reliable way to guess what
+the intention was with a missing fallthrough, even if you parsed
+whitespace and indentation.
 
-On Sat, Nov 21, 2020 at 05:14:56PM +0100, Nuno S=E1 wrote:
-> From: Olivier Moysan <olivier.moysan@st.com>
->=20
-> Adapt STM32 DFSDM driver to a change in iio_channel_get_all_cb() API.
-> The callback pointer becomes a requested parameter of this API,
-> so add a dummy callback to be given as parameter of this function.
-> However, the stm32_dfsdm_get_buff_cb() API is still used instead,
-> to optimize DMA transfers.
+> It is if you want to spin it that way.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+How is that a "spin"? It is a fact that we won't get *implicit*
+fallthrough mistakes anymore (in particular if we make it a hard
+error).
 
---Il7n/DHsA0sMLmDu
-Content-Type: application/pgp-signature; name="signature.asc"
+> But what we inevitably get is changes like this:
+>
+>  case 3:
+>         this();
+> +       break;
+>  case 4:
+>         hmmm();
+>
+> Why? Mainly to silence the compiler. Also because the patch author argued
+> successfully that they had found a theoretical bug, often in mature code.
 
------BEGIN PGP SIGNATURE-----
+If someone changes control flow, that is on them. Every kernel
+developer knows what `break` does.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+7vnwACgkQJNaLcl1U
-h9AvSAf/WFgrIuqIQDUIs360km6F5GwWucfjOP8gILvJEZDQP4/3Xv4CapLrxp8q
-hAQg8uPm5B03L0l7jdvlQXgbHfNn2QT//ZoPQAq4JLFk4nKy1KreuVrCWlTIvk1i
-JViW06D8pOIW9hB8SQ6IGCaOO/rU+jUTjVtXEi6gWaCCcBLvBdt+YHX6WZdb7mef
-vNIvjCUNfH8NOd2GFqktNJ2aQ7AVIYK31vry9J/lUdl/+m1g/8oirvKKgwyauu3m
-8Q/qXGi7NWciyLvoDyWmOfnxuOIPED4Xt7THFt/Q8Stj/JXGbklrY5IdJxV4pINT
-DwLj/DSU8UP7+SPTZ5VXzamcUgFtUg==
-=qkiq
------END PGP SIGNATURE-----
+> But is anyone keeping score of the regressions? If unreported bugs count,
+> what about unreported regressions?
 
---Il7n/DHsA0sMLmDu--
+Introducing `fallthrough` does not change semantics. If you are really
+keen, you can always compare the objects because the generated code
+shouldn't change.
+
+Cheers,
+Miguel

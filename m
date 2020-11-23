@@ -2,120 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E3A2C04B9
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 12:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F17C2C053E
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 13:12:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729111AbgKWLij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 06:38:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
+        id S1728957AbgKWMLL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 07:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728808AbgKWLii (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 06:38:38 -0500
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC20EC0613CF
-        for <linux-iio@vger.kernel.org>; Mon, 23 Nov 2020 03:38:38 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id o8so9316031ioh.0
-        for <linux-iio@vger.kernel.org>; Mon, 23 Nov 2020 03:38:38 -0800 (PST)
+        with ESMTP id S1728701AbgKWMLL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:11:11 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25EF1C0613CF;
+        Mon, 23 Nov 2020 04:11:11 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id z14so13904442ilm.10;
+        Mon, 23 Nov 2020 04:11:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GscDJuhiDYI0PonAMJ4n7EEJ+sUn5W7V85jdZ6urdyk=;
-        b=1dh8p7k1lp5Ds+jtM8I2xKmjzfCV2nUm9U7Q2iHBD+hmnc9+Pfeh8G1ZLeiWBfLH9n
-         LeuZkM63PluEhWUJndYfAhGLehyiMD3N5N9t8dQfPa/AcRgZLxte0xKKQJk1fUaDJcsU
-         9XJLiPbEJPLg2JAQs1Y5ORIBzBYNBC6L6uBgIk6FhEFNEs0y6HM6ezYGBQyjktXPSHfP
-         OvBql+tOL4ZaY6Q/HvbXw8jPZlBlUlSw/LJl27oe13JpZqPvbUcMOt9MEAeikEz/ZqRJ
-         XaaBLISvJ6oOAPHdv/0mZWZyKP5EM3iTI4FQY9yLTeYxJ7mZwoxEWu6jUHYjffvMdjKG
-         pjLA==
+        bh=GkwXoscxfVMgFXW8sU2dhVSQq0DaKU8Mtd8+I+xSo1Y=;
+        b=B5TCWop1RL+yamQ8mVo9tic4SCD4duvpxcX2JYlFI0uj2nMthitwsACCXsXI3E5MEz
+         CF/IJum1gQP4eZ9x3GlyX6PCi1/N2o7zs1KpjHCQIk2YoWMkTO0Lj+TMqnH60YCNmn8r
+         x/og0ESbgvTXf/aTVTKlhLqO7h7+CSS0Z0jkJzqCZ0DFcKDDI4KOGLlDmPVeez7bIeh5
+         N4/CQTdJ38Cwa8uTtvAITeUMYRCshCD5Z+0MfIdmYaRMMZ1O3B7UOuSWr2vS9BFAdaJr
+         zAkkgwqwwgsNT/lv0kf9CvOPOPKMIJU0ewRkgAfgLnbuq8T5YSc3K1QUJrPWqGm6uGFK
+         +snA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GscDJuhiDYI0PonAMJ4n7EEJ+sUn5W7V85jdZ6urdyk=;
-        b=Wuzj1IR0Ay+uO0hi+JY1O+5WT6E5qLqlYYZh52bVx/xA9e7X21jYGxyrF4XNODIsN3
-         zCZM6YzCceNG3jr685Cfv2IWygUJLWNQBuGPhyRjiVKvjBSpI8b6Hb1XezRa2kfYPnGw
-         UjdTUd2J0ggcoi4Bt4in44Qveecr4BJmrukYmGmQpQrwgIANAYsjXv1DAJjw6k5UIqMk
-         rhKldT5mydKY2osP0QM0P8TIToXE7LxZJp3BzEKRywA6YUzb8iB3iyzIxdXvIj0W2xFt
-         eKaxzASd8T/yWjmsN/6SJOKW/2Mavw5H9XhYLuOdSpFBbtJFl64HBPvq6EAvD0bjgINl
-         X9LA==
-X-Gm-Message-State: AOAM532Tkq03/BjfMC1lvJYDvz8j5XWEE2NsNGgELjoXGGqKzugYLKJ2
-        aGi6hyeYyWEUGA/VvRV5MLckkOFUgGHFeTnzz24Egw==
-X-Google-Smtp-Source: ABdhPJxYKrJ4ncImo3X/nb2XBn1D0r+PZcMWSmOulu8MZ7PU7Ly4pPaaJJMb86y4tbDTR9F/OzpLPXTCvE369c77RHc=
-X-Received: by 2002:a05:6638:ca2:: with SMTP id x2mr5490033jad.136.1606131517077;
- Mon, 23 Nov 2020 03:38:37 -0800 (PST)
+        bh=GkwXoscxfVMgFXW8sU2dhVSQq0DaKU8Mtd8+I+xSo1Y=;
+        b=VKLRzKwU2iG91jYVzIsk96dzD2E0o56cbobNBAPJjPCh/TtKPSpNTCe8Y6FNQpPdHG
+         oomgJkCF1jLz1lMf9kR0bOUqUs0q17Bt1Sp4HELgQVUAMCG4e/PrN4ERs91fkkYJhbv7
+         lEu74GIirRjrDI14YrdyfAKTdNAUAGrP/BEh10je/ddsmDdklIvdOI8qSIlsWngXMbbt
+         0m7RSxiTP83H8gnEatbzhT3efwc9qKA/oaw7hTRGW5fMRrSwVajm0MgoKuSzSF/tVCC+
+         TL3WWVD+B0vg+8/6UpC55GTiz9hmJgZ6qgFNkozMkNMyOqblry7kQmUTreaaFFQjmL7M
+         ZSzw==
+X-Gm-Message-State: AOAM531v06iTcnBJFXppTxXKWvnTaZOxaD5SyEaQhMCaoACL8oNBkkf3
+        zHhVEvhsd9oNtYj19sqsYkYYu4WqKJGImtDxABg=
+X-Google-Smtp-Source: ABdhPJzx7jUWDZF5m5Jg6CRSYyy7tMHfMeDsrT0H23MmIS0MTkI5xTkALmFsArN8RNH8jlGSkiKMNZRMwSlbAo4KPZs=
+X-Received: by 2002:a92:8707:: with SMTP id m7mr34089725ild.217.1606133470524;
+ Mon, 23 Nov 2020 04:11:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20201102142228.14949-1-brgl@bgdev.pl> <20201102142228.14949-2-brgl@bgdev.pl>
- <20201114154641.0258f4ee@archlinux> <X7ADFLwEpUHkTiT+@kroah.com> <CAMpxmJUHiNqKNVDxaWLeDja6huR78u1Hp7JHF_aP5L_UgjYzbg@mail.gmail.com>
-In-Reply-To: <CAMpxmJUHiNqKNVDxaWLeDja6huR78u1Hp7JHF_aP5L_UgjYzbg@mail.gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 23 Nov 2020 12:38:26 +0100
-Message-ID: <CAMRc=Mfa2Y65CW8YO_poRgrN9aPjLz=MXYrn7OPUEfwB3mnZvA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] device: provide devm_krealloc_array()
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michal.simek@xilinx.com>,
+References: <20201117162340.43924-1-alexandru.ardelean@analog.com>
+ <20201117162340.43924-2-alexandru.ardelean@analog.com> <20201121180246.772ad299@archlinux>
+In-Reply-To: <20201121180246.772ad299@archlinux>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 23 Nov 2020 14:10:59 +0200
+Message-ID: <CA+U=DsqPARWnGo4cvfN+dLTmcoP0eNtRxvF41bysuPgWAMd=sA@mail.gmail.com>
+Subject: Re: [RFC PATCH 01/12] iio: core: register chardev only if needed
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        LKML <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 11:18 AM Bartosz Golaszewski
-<bgolaszewski@baylibre.com> wrote:
+On Sat, Nov 21, 2020 at 8:05 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Sat, Nov 14, 2020 at 5:16 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Tue, 17 Nov 2020 18:23:29 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+>
+> > We only need a chardev if we need to support buffers and/or events.
 > >
-> > On Sat, Nov 14, 2020 at 03:46:41PM +0000, Jonathan Cameron wrote:
-> > > On Mon,  2 Nov 2020 15:22:25 +0100
-> > > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > >
-> > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > >
-> > > > When allocating an array of elements, users should check for
-> > > > multiplication overflow or preferably use one of the provided helpers
-> > > > like: devm_kmalloc_array().
-> > > >
-> > > > This provides devm_krealloc_array() for users who want to reallocate
-> > > > managed arrays.
-> > > >
-> > > > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > >
-> > > +CC Greg KH.
-> > >
-> > > As this is going into a very generic place I'd like a relevant ack.
-> > > That file is a bit of a wild west for acks, but Greg seems most
-> > > appropriate person.
-> > >
-> > > So Greg, any comments on this one?
+> > With this change, a chardev will be created only if an IIO buffer is
+> > attached OR an event_interface is configured.
 > >
-> > As there is only 1 user of this function in the patch series, you don't
-> > save any extra code space here, I don't think this is worth it.
+> > Otherwise, no chardev will be created, and the IIO device will get
+> > registered with the 'device_add()' call.
 > >
->
-> It's worth it in that the overflow check before allocation doesn't
-> seem to belong in a driver IMO but is a general check that should live
-> in common code.
->
-> > We are seeing less and less gains from these new devm_* additions, and
-> > only more confusion and problems with them.  So perhaps don't add this?
-> > I don't think it is needed.
+> > Quite a lot of IIO devices don't really need a chardev, so this is a minor
+> > improvement to the IIO core, as the IIO device will take up (slightly)
+> > fewer resources.
 > >
+> > In order to not create a chardev, we mostly just need to not initialize the
+> > indio_dev->dev.devt field. If that is un-initialized, cdev_device_add()
+> > behaves like device_add().
+> >
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> I'll be honest. I have no idea why I didn't do this in first place!
 >
-> I think you're referring to the discussion on
-> devm_platform_ioremap_resource()? I would argue that consolidation of
-> common operations in helpers is rarely a bad thing but it's a
-> discussion for another thread.
->
-> I'm not too attached to this patch - if you think this should be
-> dropped then fine, but I don't see how the name devm_krealloc_array()
-> can confuse anyone.
->
+> I 'think' we are safe dropping this but I suppose it's possible some
+> odd code checks for the chrdev presence?
 
-Greg: what's the final call on this?
+So, libiio at least doesn't rely on this being there for any odd things.
+But yeah, who knows what else is out there that might.
+I was also thinking of sending this separately to have this earlier
+out there in case it bothers other people.
+I guess I got a little mixed by other patches and re-ordered things a
+few times and this remained in this series.
 
-Bartosz
+>
+> Hopefully not though.
+>
+> Jonathan
+>
+> > ---
+> >  drivers/iio/industrialio-core.c | 23 ++++++++++++++++++-----
+> >  1 file changed, 18 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index 419d6f8acc13..ca8b11541477 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1763,6 +1763,15 @@ static const struct file_operations iio_buffer_fileops = {
+> >       .compat_ioctl = compat_ptr_ioctl,
+> >  };
+> >
+> > +static const struct file_operations iio_event_fileops = {
+> > +     .owner = THIS_MODULE,
+> > +     .llseek = noop_llseek,
+> > +     .unlocked_ioctl = iio_ioctl,
+> > +     .compat_ioctl = compat_ptr_ioctl,
+> > +     .open = iio_chrdev_open,
+> > +     .release = iio_chrdev_release,
+> > +};
+> > +
+> >  static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
+> >  {
+> >       int i, j;
+> > @@ -1790,6 +1799,7 @@ static const struct iio_buffer_setup_ops noop_ring_setup_ops;
+> >
+> >  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+> >  {
+> > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> >       int ret;
+> >
+> >       if (!indio_dev->info)
+> > @@ -1807,9 +1817,6 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+> >       if (ret < 0)
+> >               return ret;
+> >
+> > -     /* configure elements for the chrdev */
+> > -     indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
+> > -
+> >       iio_device_register_debugfs(indio_dev);
+> >
+> >       ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
+> > @@ -1838,9 +1845,15 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+> >               indio_dev->setup_ops == NULL)
+> >               indio_dev->setup_ops = &noop_ring_setup_ops;
+> >
+> > -     cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> > +     if (indio_dev->buffer)
+> > +             cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
+> > +     else if (iio_dev_opaque->event_interface)
+> > +             cdev_init(&indio_dev->chrdev, &iio_event_fileops);
+> >
+> > -     indio_dev->chrdev.owner = this_mod;
+> > +     if (indio_dev->buffer || iio_dev_opaque->event_interface) {
+> > +             indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
+> > +             indio_dev->chrdev.owner = this_mod;
+> > +     }
+> >
+> >       ret = cdev_device_add(&indio_dev->chrdev, &indio_dev->dev);
+> >       if (ret < 0)
+>

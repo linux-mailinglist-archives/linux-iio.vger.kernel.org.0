@@ -2,179 +2,454 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E462C0559
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 13:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD302C056F
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 13:24:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727941AbgKWMQ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 07:16:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54147 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729372AbgKWMQ1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:16:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606133785;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lXe5+vC9XhuqiWvB8SprIOltRTdJYIxBBDQ4j3P4YgE=;
-        b=UQLDdW/FJXoFgrLwOnC06/TIiwbBSzZf8lhs6M0Tb4I2NYijq9kFF8z3X0VBhAmBmM0BIa
-        U6KZmRtb0N1j/hKJlbK57MxAYqQmu3PIi3frDJ4DyHqbkBsA8krh5Nmbu/3Ple8awjwvd4
-        rVkXBqKIc7agZkdv39FrndKlBbe/O+w=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-173-bi6Ag2HcOCWgf6dXtmQ6Qg-1; Mon, 23 Nov 2020 07:16:23 -0500
-X-MC-Unique: bi6Ag2HcOCWgf6dXtmQ6Qg-1
-Received: by mail-ej1-f69.google.com with SMTP id y10so958999ejg.3
-        for <linux-iio@vger.kernel.org>; Mon, 23 Nov 2020 04:16:23 -0800 (PST)
+        id S1729427AbgKWMV4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 07:21:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729339AbgKWMV4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:21:56 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51FFC0613CF;
+        Mon, 23 Nov 2020 04:21:54 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id t13so15711255ilp.2;
+        Mon, 23 Nov 2020 04:21:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bt7RW8tesctK1xmjAkgVszIlLX3IXHJkMOc4XyKly3c=;
+        b=Mej9gtAHmigb/muFkZljF620dpm1VAIpj3v/yxbPL04Wb/K73bzItpgk2l0gbx4fBD
+         ptYFUdvY4uW1GFh1d99I885sJb14RVMvMSbXz3eAzMVkOP1Qss6VHZN9xjMTT+bTm1qo
+         muMhKmh70nOgzEyMQenRIBcFT2ETkq2EZ68imEwZtYVxiwUtGGAg7qDrXDIYzzbzKeeo
+         eOXmgN9KkufeEyhJNwG9gm2slzoq8pH0clW6S6lYQI81nHEHz0Rgr7W//v8YkmO8Zrwu
+         bSElgdhv0uGtL00/Vu96cvl3Qq1b4hpqvuTFYDs+MS+7nFKDpVwFCRgZt2xZZn0z/AqY
+         NZWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lXe5+vC9XhuqiWvB8SprIOltRTdJYIxBBDQ4j3P4YgE=;
-        b=L4GOa51oNPJIossQ3X1Xsl2PyrHBzSiDronKdWBl0nPrTEi3+RlvxpWZ/1GUp4GPWz
-         w3iSMCwswHTLVGD0gqCgSQi6bzg5gCzw+WdV6fNVIUEv5cX3t0sqIfJwf4VH8REQXdeW
-         XG7HaC6prNuP9Z271kcOje6vGPDq9lqYJntTM/lH/+Aq0d5bPyKsMo8DNKd821hLaqx7
-         V/xeFarv7YUXJqrSGHO7Nf4zumwm3SERxm1CfBeqRMsmATkb3cr7LOU6Gfe/rHmw7cAe
-         OMjYehImGFZ5g5kLzdu+Ld2PhHAZz8R74adsQFWKbLca6L8bMZBkLJz9yTHyoyr5Vm/B
-         PcKQ==
-X-Gm-Message-State: AOAM532pDHTTrhQ2vTFjP/JFqAnidWscgrhqbWF48FgUn8XG3gnHu/fP
-        fZHeje+xL5yA/1eg0OdF/PLrTLbnVE5nF56XNoDcIx0YIwoDKgQPOcamMXHLGXdhEKSQPIFS5r/
-        7FZoC/ErPhrVtZp26X84A
-X-Received: by 2002:a05:6402:c83:: with SMTP id cm3mr46538999edb.189.1606133782032;
-        Mon, 23 Nov 2020 04:16:22 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzlu7xwnh8BWC6vLqyoykLxoAYe2O5lhMVohFmamMLlf7fBHlEwPAtV6V2wyonz2GDFsiEWFQ==
-X-Received: by 2002:a05:6402:c83:: with SMTP id cm3mr46538974edb.189.1606133781764;
-        Mon, 23 Nov 2020 04:16:21 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id p14sm2383987edq.6.2020.11.23.04.16.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2020 04:16:21 -0800 (PST)
-Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
- info to userspace?
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-iio@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
-        Nitin Joshi1 <njoshi1@lenovo.com>, linux-input@vger.kernel.org
-References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
- <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
- <20201007083602.00006b7e@Huawei.com>
- <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
- <20201112062348.GF1003057@dtor-ws>
- <3568c492-d9bd-c02d-4cbc-7f3eef605ef5@redhat.com>
- <20201113065832.GD356503@dtor-ws>
- <6df00683-9508-3dd9-831e-9b343658287b@redhat.com>
- <20201120095943.000001a6@Huawei.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <aeb7bc51-0b27-198b-d3b5-50b18ad114e7@redhat.com>
-Date:   Mon, 23 Nov 2020 13:16:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bt7RW8tesctK1xmjAkgVszIlLX3IXHJkMOc4XyKly3c=;
+        b=ZFpXc0tQwzEajH5xPqgjni4+YzSST8wlJFw1JXQxK9fz7kCGotja7rJKfemnJX8lLy
+         dXnsk9Anmz29o6zEPeR3r3V3H10szHQ7NcSvcGea29Q3lH+axMVeXyThm88u5LkcWP8E
+         2hA85eIKmUBiWh5odSq94v884wNc+nuXriEvcF7geX/vYkwK7+B3LTPgd/IDOHiIf7HV
+         NFAEWEGxW4iFQ5gaHlJeqVElfu0hEAKEmwaG1QgvLg1RYOuF9rJX4/VR+WazGVvW8kMj
+         swhSgZCFLUmrF18s8vnpxB8cy9iBxbm5N/4i4En2AvyFu+ZvDo6IfX9s6C5gPv0HBJSl
+         lWFQ==
+X-Gm-Message-State: AOAM531lrumkFsm44tWlnQ45bHMjMu5H/9QhBPAZJi1U8j2WtxdvvEh/
+        kFg6ESPRuKuPdYd/bY7bxUcso9JR4xZHLJ9Ms60=
+X-Google-Smtp-Source: ABdhPJw31r1DU+cSRep2WbAidzAuU4MLjrHDjqbtUMQQwExYlyVQknqhG0eSV54HT0hBsveuTlurWLe6VJpf/q20Dx0=
+X-Received: by 2002:a92:d90c:: with SMTP id s12mr37040949iln.100.1606134113956;
+ Mon, 23 Nov 2020 04:21:53 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201120095943.000001a6@Huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201117162340.43924-1-alexandru.ardelean@analog.com>
+ <20201117162340.43924-4-alexandru.ardelean@analog.com> <20201121182435.54c61758@archlinux>
+In-Reply-To: <20201121182435.54c61758@archlinux>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Mon, 23 Nov 2020 14:21:42 +0200
+Message-ID: <CA+U=Dsq0e4ytf81QeX0iQOeyxV6TSFFx9VZW5TQXH6OC7e9wng@mail.gmail.com>
+Subject: Re: [RFC PATCH 03/12] iio: buffer: rework buffer & scan_elements dir creation
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Sat, Nov 21, 2020 at 8:25 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Tue, 17 Nov 2020 18:23:31 +0200
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+>
+> > When adding more than one IIO buffer per IIO device, we will need to create
+> > a buffer & scan_elements directory for each buffer.
+> > We also want to move the 'scan_elements' to be a sub-directory of the
+> > 'buffer' folder.
+> >
+> > The format we want to reach is, for a iio:device0 folder, for 2 buffers
+> > [for example], we have a 'buffer0' and a 'buffer1' subfolder, and each with
+> > it's own 'scan_elements' subfolder.
+> >
+> > So, for example:
+> >    iio:device0/buffer0
+> >       scan_elements/
+> >
+> >    iio:device0/buffer1
+> >       scan_elements/
+> >
+> > The other attributes under 'bufferX' would remain unchanged.
+> >
+> > However, we would also need to symlink back to the old 'buffer' &
+> > 'scan_elements' folders, to keep backwards compatibility.
+> >
+> > Doing all these, require that we maintain the kobjects for each 'bufferX'
+> > and 'scan_elements' so that we can symlink them back. We also need to
+> > implement the sysfs_ops for these folders.
+> >
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>
+> Hmm. This ended up a bit nasty.  It could do with a few more comments
+> in the code to make it clear what is going on.
 
-On 11/20/20 10:59 AM, Jonathan Cameron wrote:
-> On Thu, 19 Nov 2020 16:39:07 +0100
-> Hans de Goede <hdegoede@redhat.com> wrote:
+I'll take a look at these comments.
 
->>>>>>>> On 2020-10-03 10:02 a.m., Hans de Goede wrote:  
->>>>>>>>> Hi All,
->>>>>>>>>
->>>>>>>>> Modern laptops can have various sensors which are kinda
->>>>>>>>> like proximity sensors, but not really (they are more
->>>>>>>>> specific in which part of the laptop the user is
->>>>>>>>> proximate to).
->>>>>>>>>
->>>>>>>>> Specifically modern Thinkpad's have 2 readings which we
->>>>>>>>> want to export to userspace, and I'm wondering if we
->>>>>>>>> could use the IIO framework for this since these readings
->>>>>>>>> are in essence sensor readings:
->>>>>>>>>
->>>>>>>>> 1. These laptops have a sensor in the palm-rests to
->>>>>>>>> check if a user is physically proximate to the device's
->>>>>>>>> palm-rests. This info will be used by userspace for WWAN
->>>>>>>>> functionality to control the transmission level safely.
->>>>>>>>>
->>>>>>>>> A patch adding a thinkpad_acpi specific sysfs API for this
->>>>>>>>> is currently pending:
->>>>>>>>> https://patchwork.kernel.org/patch/11722127/
->>>>>>>>>
->>>>>>>>> But I'm wondering if it would not be better to use
->>>>>>>>> IIO to export this info.  
+>
+> > ---
+> >  drivers/iio/industrialio-buffer.c | 151 ++++++++++++++++++++++++++----
+> >  drivers/iio/industrialio-core.c   |  24 ++---
+> >  include/linux/iio/buffer_impl.h   |  14 ++-
+> >  include/linux/iio/iio.h           |   2 +-
+> >  4 files changed, 156 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > index 08aa8e0782ce..8b31faf049a5 100644
+> > --- a/drivers/iio/industrialio-buffer.c
+> > +++ b/drivers/iio/industrialio-buffer.c
+> > @@ -1175,8 +1175,6 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
+> >       return (ret < 0) ? ret : len;
+> >  }
+> >
+> > -static const char * const iio_scan_elements_group_name = "scan_elements";
+> > -
+> >  static ssize_t iio_buffer_show_watermark(struct device *dev,
+> >                                        struct device_attribute *attr,
+> >                                        char *buf)
+> > @@ -1252,6 +1250,101 @@ static struct attribute *iio_buffer_attrs[] = {
+> >       &dev_attr_data_available.attr,
+> >  };
+> >
+> > +#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
+> > +
+> > +static ssize_t iio_buffer_dir_attr_show(struct kobject *kobj,
+> > +                                     struct attribute *attr,
+> > +                                     char *buf)
+> > +{
+> > +     struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, buffer_dir);
+> > +     struct device_attribute *dattr;
+> > +
+> > +     dattr = to_dev_attr(attr);
+> > +
+> > +     return dattr->show(&buffer->indio_dev->dev, dattr, buf);
+> > +}
+> > +
+> > +static ssize_t iio_buffer_dir_attr_store(struct kobject *kobj,
+> > +                                      struct attribute *attr,
+> > +                                      const char *buf,
+> > +                                      size_t len)
+> > +{
+> > +     struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, buffer_dir);
+> > +     struct device_attribute *dattr;
+> > +
+> > +     dattr = to_dev_attr(attr);
+> > +
+> > +     return dattr->store(&buffer->indio_dev->dev, dattr, buf, len);
+> > +}
+> > +
+> > +static const struct sysfs_ops iio_buffer_dir_sysfs_ops = {
+> > +     .show = iio_buffer_dir_attr_show,
+> > +     .store = iio_buffer_dir_attr_store,
+> > +};
+> > +
+> > +static struct kobj_type iio_buffer_dir_ktype = {
+> > +     .sysfs_ops = &iio_buffer_dir_sysfs_ops,
+> > +};
+> > +
+> > +static ssize_t iio_scan_el_dir_attr_show(struct kobject *kobj,
+> > +                                      struct attribute *attr,
+> > +                                      char *buf)
+> > +{
+> > +     struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, scan_el_dir);
+> > +     struct device_attribute *dattr = to_dev_attr(attr);
+> > +
+> > +     return dattr->show(&buffer->indio_dev->dev, dattr, buf);
+> > +}
+> > +
+> > +static ssize_t iio_scan_el_dir_attr_store(struct kobject *kobj,
+> > +                                       struct attribute *attr,
+> > +                                       const char *buf,
+> > +                                       size_t len)
+> > +{
+> > +     struct iio_buffer *buffer = container_of(kobj, struct iio_buffer, scan_el_dir);
+> > +     struct device_attribute *dattr = to_dev_attr(attr);
+> > +
+> > +     return dattr->store(&buffer->indio_dev->dev, dattr, buf, len);
+> > +}
+> > +
+> > +static const struct sysfs_ops iio_scan_el_dir_sysfs_ops = {
+> > +     .show = iio_scan_el_dir_attr_show,
+> > +     .store = iio_scan_el_dir_attr_store,
+> > +};
+> > +
+> > +static struct kobj_type iio_scan_el_dir_ktype = {
+> > +     .sysfs_ops = &iio_scan_el_dir_sysfs_ops,
+> > +};
+> > +
+> > +/*
+> > + * This iio_sysfs_{add,del}_attrs() are essentially re-implementations of
+> > + * sysfs_create_files() & sysfs_remove_files(), but they are meant to get
+> > + * around the const-pointer mismatch situation with using them.
+> > + *
+> > + * sysfs_{create,remove}_files() uses 'const struct attribute * const *ptr',
+> > + * while these are happy with just 'struct attribute **ptr'
+>
+> Ouch.  This definitely doesn't feel like a great thing to do.
 
-<snip>
+Yep.
+I'm still not 100% sure that this is needed.
+But it may be that this is the best option.
 
->>> On newer ARM we use "label" attribute in DTS:
->>>
->>> arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
->>>
->>>         ap_sar_sensor: proximity@28 {
->>>                 compatible = "semtech,sx9310";
->>>                 reg = <0x28>;
->>>                 #io-channel-cells = <1>;
->>>                 pinctrl-names = "default";
->>>                 pinctrl-0 = <&p_sensor_int_l>;
->>>
->>>                 interrupt-parent = <&tlmm>;
->>>                 interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
->>>
->>>                 vdd-supply = <&pp3300_a>;
->>>                 svdd-supply = <&pp1800_prox>;
->>>
->>>                 status = "disabled";
->>>                 label = "proximity-wifi";
->>>         };  
->>
->> Hmm, interesting. I did not know iio-devices could
->> have a label sysfs attribute (nor that that could be
->> set through device-tree). I was thinking about adding
->> an in_proximity_location sysfs attribute. But using
->> labels (and standardizing a set of label names) will
->> work nicely too.
-> 
-> It's fairly new.   Note we also have per channel labels
-> though they are 'very new'.  Might be handy if the sensors
-> appear as a single device despite being spread over the
-> laptop.
+>
+> > + */
+> > +static int iio_sysfs_add_attrs(struct kobject *kobj, struct attribute **ptr)
+> > +{
+> > +     int err = 0;
+> > +     int i;
+> > +
+> > +     for (i = 0; ptr[i] && !err; i++)
+> > +             err = sysfs_create_file(kobj, ptr[i]);
+> > +     if (err)
+> > +             while (--i >= 0)
+> > +                     sysfs_remove_file(kobj, ptr[i]);
+> > +     return err;
+> > +}
+> > +
+> > +static void iio_sysfs_del_attrs(struct kobject *kobj, struct attribute **ptr)
+> > +{
+> > +     int i;
+> > +
+> > +     for (i = 0; ptr[i]; i++)
+> > +             sysfs_remove_file(kobj, ptr[i]);
+> > +}
+> > +
+> >  static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+>
+> Definitely add some docs to this to say why we have this complexity..
 
-Interesting, the thinkpad_acpi stuff currently has 2
-proximity(ish) sensors:
+Ack.
 
-1. Laptop is close to (on) someones lap
-2. Someone's arms are resting on or close to the palmrest
+>
+> >                                            struct iio_dev *indio_dev)
+> >  {
+> > @@ -1282,12 +1375,16 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> >               memcpy(&attr[ARRAY_SIZE(iio_buffer_attrs)], buffer->attrs,
+> >                      sizeof(struct attribute *) * attrcount);
+> >
+> > -     attr[attrcount + ARRAY_SIZE(iio_buffer_attrs)] = NULL;
+> > +     buffer->buffer_attrs = attr;
+> >
+> > -     buffer->buffer_group.name = "buffer";
+> > -     buffer->buffer_group.attrs = attr;
+> > +     ret = kobject_init_and_add(&buffer->buffer_dir, &iio_buffer_dir_ktype,
+> > +                                &indio_dev->dev.kobj, "buffer");
+> > +     if (ret)
+> > +             goto error_buffer_free_attrs;
+> >
+> > -     indio_dev->groups[indio_dev->groupcounter++] = &buffer->buffer_group;
+> > +     ret = iio_sysfs_add_attrs(&buffer->buffer_dir, buffer->buffer_attrs);
+> > +     if (ret)
+> > +             goto error_buffer_kobject_put;
+> >
+> >       attrcount = 0;
+> >       INIT_LIST_HEAD(&buffer->scan_el_dev_attr_list);
+> > @@ -1317,28 +1414,42 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> >               }
+> >       }
+> >
+> > -     buffer->scan_el_group.name = iio_scan_elements_group_name;
+> > -
+> > -     buffer->scan_el_group.attrs = kcalloc(attrcount + 1,
+> > -                                           sizeof(buffer->scan_el_group.attrs[0]),
+> > -                                           GFP_KERNEL);
+> > -     if (buffer->scan_el_group.attrs == NULL) {
+> > +     buffer->scan_el_attrs = kcalloc(attrcount + 1,
+> > +                                     sizeof(buffer->scan_el_attrs[0]),
+> > +                                     GFP_KERNEL);
+> > +     if (buffer->scan_el_attrs == NULL) {
+> >               ret = -ENOMEM;
+> >               goto error_free_scan_mask;
+> >       }
+> > -     attrn = 0;
+> >
+> > +     ret = kobject_init_and_add(&buffer->scan_el_dir, &iio_scan_el_dir_ktype,
+> > +                                &indio_dev->dev.kobj, "scan_elements");
+> > +     if (ret)
+> > +             goto error_free_scan_attrs;
+> > +
+> > +     attrn = 0;
+> >       list_for_each_entry(p, &buffer->scan_el_dev_attr_list, l)
+> > -             buffer->scan_el_group.attrs[attrn++] = &p->dev_attr.attr;
+> > -     indio_dev->groups[indio_dev->groupcounter++] = &buffer->scan_el_group;
+> > +             buffer->scan_el_attrs[attrn++] = &p->dev_attr.attr;
+> > +
+> > +     ret = iio_sysfs_add_attrs(&buffer->scan_el_dir, buffer->scan_el_attrs);
+> > +     if (ret)
+> > +             goto error_scan_kobject_put;
+> >
+> >       return 0;
+> >
+> > +error_scan_kobject_put:
+> > +     kobject_put(&buffer->scan_el_dir);
+> > +error_free_scan_attrs:
+> > +     kfree(buffer->scan_el_attrs);
+> >  error_free_scan_mask:
+> >       bitmap_free(buffer->scan_mask);
+> >  error_cleanup_dynamic:
+> > +     iio_sysfs_del_attrs(&buffer->buffer_dir, buffer->buffer_attrs);
+> >       iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
+> > -     kfree(buffer->buffer_group.attrs);
+> > +error_buffer_kobject_put:
+> > +     kobject_put(&buffer->buffer_dir);
+> > +error_buffer_free_attrs:
+> > +     kfree(buffer->buffer_attrs);
+> >
+> >       return ret;
+> >  }
+> > @@ -1366,10 +1477,14 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+> >
+> >  static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
+> >  {
+> > +     iio_sysfs_del_attrs(&buffer->scan_el_dir, buffer->scan_el_attrs);
+> > +     kobject_put(&buffer->scan_el_dir);
+> > +     kfree(buffer->scan_el_attrs);
+> >       bitmap_free(buffer->scan_mask);
+> > -     kfree(buffer->buffer_group.attrs);
+> > -     kfree(buffer->scan_el_group.attrs);
+> > +     iio_sysfs_del_attrs(&buffer->buffer_dir, buffer->buffer_attrs);
+> >       iio_free_chan_devattr_list(&buffer->scan_el_dev_attr_list);
+> > +     kobject_put(&buffer->buffer_dir);
+> > +     kfree(buffer->buffer_attrs);
+> >  }
+> >
+> >  void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index ca8b11541477..f389d8feacb0 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1819,18 +1819,11 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+> >
+> >       iio_device_register_debugfs(indio_dev);
+> >
+> > -     ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
+> > -     if (ret) {
+> > -             dev_err(indio_dev->dev.parent,
+> > -                     "Failed to create buffer sysfs interfaces\n");
+> > -             goto error_unreg_debugfs;
+> > -     }
+> > -
+> >       ret = iio_device_register_sysfs(indio_dev);
+> >       if (ret) {
+> >               dev_err(indio_dev->dev.parent,
+> >                       "Failed to register sysfs interfaces\n");
+> > -             goto error_buffer_free_sysfs;
+> > +             goto error_unreg_debugfs;
+> >       }
+> >       ret = iio_device_register_eventset(indio_dev);
+> >       if (ret) {
+> > @@ -1859,14 +1852,21 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
+> >       if (ret < 0)
+> >               goto error_unreg_eventset;
+> >
+> > +     ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
+>
+> There are some races around late creation of sysfs files (IIRC) but
+> I'm not sure what else could be done here.
 
-Ideally we would indeed register 1 iio-dev with separate
-channels for this, rather then having to register 2
-(and the future maybe even more) iio-devs for this.
+Yep, I was also thinking about these potential races a bit.
+I'll need to think a bit more about handling them somehow.
 
-Can you give a pointer to docs / examples of using a
-label per channel ?
+Maybe there's a split I can try to do somewhere. Maybe the device
+doesn't need to be added, but rather initialized somehow before it can
+be referenced to add these directories dynamically.
 
->> Is there a know set of labels which ChromeOS is currently
->> using? If we are going to use labels for this it would
->> be good IMHO to define a set of standard labels for
->> this in say Documentation/ABI/testing/sysfs-bus-iio-labels.
-> 
-> If you do want to do this, please just put it under sysfs-bus-iio
-> doc.  I want this to be in the top level doc.
+Otherwise, we may try to temporarily set the 'indio_dev->info' to
+NULL, and re-initialize it after the sysfs is completely initialized.
+Under lock of course.
 
-Ok, ack.
-
-Dmitry, can you perhaps dig up a full-list of labels
-which ChromeOS is currently using to identify
-proximity sensors for e.g. SAR related use?
-
-Regards,
-
-Hans
-
+> Looking at device_add it is probably to do with the various notifiers being
+> called before we have put everything in place.
+>
+> > +     if (ret) {
+> > +             dev_err(indio_dev->dev.parent,
+> > +                     "Failed to create buffer sysfs interfaces\n");
+> > +             goto error_device_del;
+> > +     }
+> > +
+> >       return 0;
+> >
+> > +error_device_del:
+> > +     cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+> >  error_unreg_eventset:
+> >       iio_device_unregister_eventset(indio_dev);
+> >  error_free_sysfs:
+> >       iio_device_unregister_sysfs(indio_dev);
+> > -error_buffer_free_sysfs:
+> > -     iio_buffer_free_sysfs_and_mask(indio_dev);
+> >  error_unreg_debugfs:
+> >       iio_device_unregister_debugfs(indio_dev);
+> >       return ret;
+> > @@ -1882,6 +1882,8 @@ void iio_device_unregister(struct iio_dev *indio_dev)
+> >       struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> >       struct iio_ioctl_handler *h, *t;
+> >
+> > +     iio_buffer_free_sysfs_and_mask(indio_dev);
+> > +
+> >       cdev_device_del(&indio_dev->chrdev, &indio_dev->dev);
+> >
+> >       mutex_lock(&indio_dev->info_exist_lock);
+> > @@ -1899,8 +1901,6 @@ void iio_device_unregister(struct iio_dev *indio_dev)
+> >       iio_buffer_wakeup_poll(indio_dev);
+> >
+> >       mutex_unlock(&indio_dev->info_exist_lock);
+> > -
+> > -     iio_buffer_free_sysfs_and_mask(indio_dev);
+> >  }
+> >  EXPORT_SYMBOL(iio_device_unregister);
+> >
+> > diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
+> > index 67d73d465e02..77e169e51434 100644
+> > --- a/include/linux/iio/buffer_impl.h
+> > +++ b/include/linux/iio/buffer_impl.h
+> > @@ -103,14 +103,20 @@ struct iio_buffer {
+> >       /* @scan_el_dev_attr_list: List of scan element related attributes. */
+> >       struct list_head scan_el_dev_attr_list;
+> >
+> > -     /* @buffer_group: Attributes of the buffer group. */
+> > -     struct attribute_group buffer_group;
+> > +     /* @buffer_dir: kobject for the 'buffer' directory of this buffer */
+> > +     struct kobject buffer_dir;
+> > +
+> > +     /* @buffer_attrs: Attributes of the buffer group. */
+> > +     struct attribute **buffer_attrs;
+> > +
+> > +     /* @scan_el_dir: kobject for the 'scan_elements' directory of this buffer */
+> > +     struct kobject scan_el_dir;
+> >
+> >       /*
+> > -      * @scan_el_group: Attribute group for those attributes not
+> > +      * @scan_el_attrs: Array of attributes for those attributes not
+> >        * created from the iio_chan_info array.
+> >        */
+> > -     struct attribute_group scan_el_group;
+> > +     struct attribute **scan_el_attrs;
+> >
+> >       /* @attrs: Standard attributes of the buffer. */
+> >       const struct attribute **attrs;
+> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > index 9a3cf4815148..2ea185340a3a 100644
+> > --- a/include/linux/iio/iio.h
+> > +++ b/include/linux/iio/iio.h
+> > @@ -556,7 +556,7 @@ struct iio_dev {
+> >       struct mutex                    info_exist_lock;
+> >       const struct iio_buffer_setup_ops       *setup_ops;
+> >       struct cdev                     chrdev;
+> > -#define IIO_MAX_GROUPS 6
+> > +#define IIO_MAX_GROUPS 4
+> >       const struct attribute_group    *groups[IIO_MAX_GROUPS + 1];
+> >       int                             groupcounter;
+> >
+>

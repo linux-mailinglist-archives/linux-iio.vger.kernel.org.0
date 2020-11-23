@@ -2,158 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 698A82C0BA5
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 14:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAC6F2C0C48
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 14:58:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730444AbgKWN2g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 08:28:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726846AbgKWMai (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:30:38 -0500
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDF6C0613CF;
-        Mon, 23 Nov 2020 04:30:38 -0800 (PST)
-Received: by mail-qv1-xf44.google.com with SMTP id k3so1813463qvz.4;
-        Mon, 23 Nov 2020 04:30:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OHoUqTFWWE+Wvyk/7Fm8SlSjmG5RijlPgr0GGsxt+Sg=;
-        b=sytGcyw1eZnl0TbXkzQuBT5tqfRXi2j1Zogk0VHDe6xvZ3P0+mal89v+FjPjC1i2LQ
-         eykf2AOKhm5qUbHr8xh/oG3XhhAm9XQj7hiUvkmHj7w2FfFKkEHie2CZpWhtXH7Olxd8
-         3geSXljAn9pzKiKWvsH8lBraoLpz1VN//ZTl0DmAmzpYckIFAd5j1BWLEXGelIMSadcy
-         EfrhBLCY19YMRpjzYnhfziop/gaCwmxoEgb61h0oTS9z8LgYUO6+XRHuMAvOkE2lqLn8
-         U6U4rcUO+Ry7W+BscgHLa26jhZUllxvIUEbsEPOnLWJv6fX0igETyuhkyA2xrOEwNAMm
-         c5qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OHoUqTFWWE+Wvyk/7Fm8SlSjmG5RijlPgr0GGsxt+Sg=;
-        b=dYUNAFVNrO+L1mSo/UviE42DBfe4inQCzVKgbT2Psn045ilMyLuvSsxSDrDjFHoTZw
-         FSP1gvmILoaUJwmI5ZxhVQyTb5HDjoy7HUz7Yj41Cm1+P33LkmQM0D0qGzQtq8nA1gBe
-         +3EsHXYtxPq5vcrIcPCX0zzw5z5vF+NnC9/HbmbKGKQWjwNO20BR1KW94jtSQd8Nqczz
-         Q0BzbpfT5P2e6tjnuDRlJneaNFKeaB9NdG1i/JYXpDCgaLAlYV4oDWKcnCfRZPGK7MSf
-         mk98NqDRqFC0aGCtz6wq2TluFxKupuiB5mQmFOOcimnp3loHV/tWMpfHiCNcGrG9JTqs
-         TQcQ==
-X-Gm-Message-State: AOAM530UcoF75+4s1ZdcxcDgI/QxXgdemTUwN8SwRTdzjKQYqg4H/XHh
-        z2FGBwQxhOW3dmWi2tGcFgU=
-X-Google-Smtp-Source: ABdhPJxImrSVZi/1EIy3edDOInFPq3eMKoEzlTqNhC6F3EZnAcIw057TQTcWqIal0rgxcMvSSuKm0Q==
-X-Received: by 2002:a05:6214:20e4:: with SMTP id 4mr29601182qvk.37.1606134637593;
-        Mon, 23 Nov 2020 04:30:37 -0800 (PST)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id h142sm9320133qke.104.2020.11.23.04.30.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 04:30:36 -0800 (PST)
-Date:   Mon, 23 Nov 2020 07:30:34 -0500
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     Nicolas.Ferre@microchip.com, kamel.bouhara@bootlin.com,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joe@perches.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3] MAINTAINERS: Add Kamel Bouhara as TCB counter driver
- maintainer
-Message-ID: <X7uragBU7qwcs62L@shinobu>
-References: <20201121185824.451477-1-vilhelm.gray@gmail.com>
- <df14f643-e80e-6ae6-dcef-90adefe6d733@microchip.com>
+        id S1730842AbgKWNwV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 08:52:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38100 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730801AbgKWNwV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Nov 2020 08:52:21 -0500
+Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 37DCF206F1;
+        Mon, 23 Nov 2020 13:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606139540;
+        bh=boR4AkcrEEwH8YMVfzi8MbbJuQfQ+H1mW665VtBRB8M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Kd3Wj26oXt4JkqWcLdAI/UrZXil01vAUiLm/nvJCnf8AVE7PYeYDduM+1uDwVfIpJ
+         XMpuhEG6GQIXDG/ob3aJ3qfwUCCfdfURursriDpm1NXI6ZiG2GOvsKA/1Bq91lbH5p
+         3f/h/EfCIfR5S4zs1qxj9Me8X10eUbu88dyBiqx0=
+Date:   Mon, 23 Nov 2020 13:51:57 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Liam Girdwood <lgirdwood@gmail.com>
+Subject: Re: [PATCH 1/2] ASoC: stm32: dfsdm: add stm32_adfsdm_dummy_cb()
+ callback
+Message-ID: <20201123135157.GF6322@sirena.org.uk>
+References: <20201121161457.957-1-nuno.sa@analog.com>
+ <20201121161457.957-2-nuno.sa@analog.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bKBXnqDtWJCMEsOZ"
+        protocol="application/pgp-signature"; boundary="Il7n/DHsA0sMLmDu"
 Content-Disposition: inline
-In-Reply-To: <df14f643-e80e-6ae6-dcef-90adefe6d733@microchip.com>
+In-Reply-To: <20201121161457.957-2-nuno.sa@analog.com>
+X-Cookie: Dry clean only.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---bKBXnqDtWJCMEsOZ
-Content-Type: text/plain; charset=utf-8
+--Il7n/DHsA0sMLmDu
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 23, 2020 at 09:50:34AM +0000, Nicolas.Ferre@microchip.com wrote:
-> On 21/11/2020 at 19:58, William Breathitt Gray wrote:
-> > Acked-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >   Changes in v3:
-> >    - Reorder entries to match preferred MAINTAINERS ordering
-> >=20
-> >   MAINTAINERS | 7 +++++++
-> >   1 file changed, 7 insertions(+)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 913b5eb64e44..1ee380dfe189 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -2104,6 +2104,13 @@ S:       Supported
-> >   F:     arch/arm64/boot/dts/microchip/
-> >   N:     sparx5
-> >=20
-> > +ARM/Microchip Timer Counter Block (TCB) Capture Driver
+On Sat, Nov 21, 2020 at 05:14:56PM +0100, Nuno S=E1 wrote:
+> From: Olivier Moysan <olivier.moysan@st.com>
 >=20
-> Nit: we don't use the ARM/Microchip string for drivers which could be=20
-> multi-architecture. Only AT91 and Sparx5 families have these entries.
->=20
-> I'm not holding the patch for this:
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Adapt STM32 DFSDM driver to a change in iio_channel_get_all_cb() API.
+> The callback pointer becomes a requested parameter of this API,
+> so add a dummy callback to be given as parameter of this function.
+> However, the stm32_dfsdm_get_buff_cb() API is still used instead,
+> to optimize DMA transfers.
 
-Jonathan,
+Acked-by: Mark Brown <broonie@kernel.org>
 
-If you would like me to submit a v4 with the "ARM/" string removed, just
-let me know. Otherwise, feel free to make an adjustment if you want when
-you merge this.
-
-Thanks,
-
-William Breathitt Gray
-
-> > +M:     Kamel Bouhara <kamel.bouhara@bootlin.com>
-> > +L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscri=
-bers)
-> > +L:     linux-iio@vger.kernel.org
-> > +S:     Maintained
-> > +F:     drivers/counter/microchip-tcb-capture.c
-> > +
-> >   ARM/MIOA701 MACHINE SUPPORT
-> >   M:     Robert Jarzmik <robert.jarzmik@free.fr>
-> >   L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscr=
-ibers)
-> > --
-> > 2.29.2
-> >=20
-> >=20
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> >=20
->=20
->=20
-> --=20
-> Nicolas Ferre
-
---bKBXnqDtWJCMEsOZ
+--Il7n/DHsA0sMLmDu
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl+7q18ACgkQhvpINdm7
-VJJbYhAAjacdtakChubYIw7KbWdBNeTSz8pllrkDAeJ669W2z02064sQR7TSa8Ne
-ToxOztGYN8puIvwzss3NDhUCuFHGa+dhzbPZ5w6g8Sr4yv+REJvAAEfJlPKREJIN
-XZOAGmPbHJUMo+lrf7sTx0XXS2Lsc08PB/a4FAhb90ET2mphBZHfT+piE7sz6KAu
-iP+gjz9Iow/4jciRIIcx2t7KCyk96dZ8aWe1WdhoSmD8lP7L04+BB6//DaMXBd4c
-m706d0lEEJRxa1KhrgmwnsChksCJXVxGb067iE7rN8eE5nxiFxSuD7OB/s5OM/y8
-bdr25gXhfbwT9dRE5rq6sNbM595l3MznqIDPADIxpCgyqYJ8nb0vKmWlaoZ2wxYN
-2ExKXkJRjX88WozPh/MGe7SdaRDUYYeg9T4otjytTS8Fqs5VOwNda/o3dZqsF5YL
-jq3pQaCRgnAJ0wTs5QbPZugtzwK8+nUzIq4WPKWewAmHvBi18l4UWnEalPrKKydQ
-Kn5vdKhhqhGadex6RlGUEq9upth+mSCPBNjVql8rYGQzwA0QTRjCHZojd/pF4SWf
-/Ezp21s+Bc53DmZnWPzKlDl+DCLD1Prr/GxMznUL2pbpItW0Ew3A6f5bbexijsb/
-Dz+cRYFMjOQr/1lTE0WHioOSfKPW2tDW6AzROIIGjB5+s5ZveMU=
-=w8oh
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+7vnwACgkQJNaLcl1U
+h9AvSAf/WFgrIuqIQDUIs360km6F5GwWucfjOP8gILvJEZDQP4/3Xv4CapLrxp8q
+hAQg8uPm5B03L0l7jdvlQXgbHfNn2QT//ZoPQAq4JLFk4nKy1KreuVrCWlTIvk1i
+JViW06D8pOIW9hB8SQ6IGCaOO/rU+jUTjVtXEi6gWaCCcBLvBdt+YHX6WZdb7mef
+vNIvjCUNfH8NOd2GFqktNJ2aQ7AVIYK31vry9J/lUdl/+m1g/8oirvKKgwyauu3m
+8Q/qXGi7NWciyLvoDyWmOfnxuOIPED4Xt7THFt/Q8Stj/JXGbklrY5IdJxV4pINT
+DwLj/DSU8UP7+SPTZ5VXzamcUgFtUg==
+=qkiq
 -----END PGP SIGNATURE-----
 
---bKBXnqDtWJCMEsOZ--
+--Il7n/DHsA0sMLmDu--

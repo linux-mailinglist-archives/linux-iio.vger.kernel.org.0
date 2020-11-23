@@ -2,147 +2,246 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8C12C0D47
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 15:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 983A92C0DC7
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 15:41:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388941AbgKWOUI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 09:20:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730804AbgKWOUH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 09:20:07 -0500
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97705C061A4D;
-        Mon, 23 Nov 2020 06:20:06 -0800 (PST)
-Received: by mail-yb1-xb41.google.com with SMTP id r127so12314537yba.10;
-        Mon, 23 Nov 2020 06:20:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WUYMqcUnfpAQa1YuH9tQ3ze5bp2bxaoGLXc9Sg/470Y=;
-        b=b0LkeT2q71Z3peIccxL7MkU5QadaCN3igdEC89IE4ykmdOxIlhuoo/0+H7pQCoNmlh
-         0UX19Z7soasUpz2fDZHX56luUWrH4GLKAJ9K28HwPu9km7qlcvasqfBffaQW+LtXvh6a
-         fVP4J8wQFxbi1QWFB10Wsq9dLONxRShLcqQtcaktrZCy3tSRV5R4FOw2MSdgwNuCxNwd
-         cKQMyE/jYgmlc9Qm972BZKz9xJaasT5iW6gpZgai8YpCh1sxJNgZFzlfCpv21Fvd7rwb
-         akOsznbnFT4mJT95mXFDUPnplTdAJirWAcm8YfzHFRAfOGn9Vk91PuRcq7JipLelDPMB
-         VWgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WUYMqcUnfpAQa1YuH9tQ3ze5bp2bxaoGLXc9Sg/470Y=;
-        b=lKwdUTbbfqoTkTAIgp9mZrmqU0ijWcHp+iS8IAhntH72d3s9iYJuX87xfDva9I4lf3
-         v8fZFrd6A/ZoNnnKI9Ufo/CQd84EPCVmP699vgDnaebb1AOTGh35TDQox+Tjt+Mkl+PO
-         9xhrICCS8DPqhs5qDLfgPBudTzTlVuoCX1zMCGn265RUXoKazk8TNw8gVmCeIWmxjXu0
-         9atl13SD50eRTituupdU7yHj0eeNc1FZy80Dql4f4jClf3PJKAd0dw0fF0iq70BlyjBm
-         D/8h5bsNDzQDKcXJmk5WKbzZmOyiV9nWldAukc3pft/P820sC0PeoGme7yQLVJZl6dNN
-         68lQ==
-X-Gm-Message-State: AOAM533cX8axbPLyO/5uGloelj8h1rp7LshnxgMBjIAQvMSvBl7c7+7W
-        X/53WSk6j6xjolzoHOFypqUhx/48H/iN54UXOIs=
-X-Google-Smtp-Source: ABdhPJyiJqjBIpEzWlk5pyqpoGG3+KpoWdKnlyza2YA6ODhXnRhATytwh5Bq+iGOzNqc5gs+zuqHC8iB1cjfDTXU/ik=
-X-Received: by 2002:a25:bcc7:: with SMTP id l7mr32380985ybm.115.1606141205830;
- Mon, 23 Nov 2020 06:20:05 -0800 (PST)
+        id S1733086AbgKWOfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 09:35:21 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:15280 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729366AbgKWOfU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 09:35:20 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0ANEZ63u006719;
+        Mon, 23 Nov 2020 09:35:16 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 34y08uw1pg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 23 Nov 2020 09:35:16 -0500
+Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0ANEZEGR049464
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 23 Nov 2020 09:35:15 -0500
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 23 Nov 2020 06:35:13 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 23 Nov 2020 06:35:13 -0800
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0ANEZAqN024147;
+        Mon, 23 Nov 2020 09:35:10 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <jic23@kernel.org>, <bleung@chromium.org>,
+        <enric.balletbo@collabora.com>, <groeck@chromium.org>,
+        <gwendal@chromium.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/2] iio: cros_ec: do an early exit if not physical_device case
+Date:   Mon, 23 Nov 2020 16:40:16 +0200
+Message-ID: <20201123144017.18311-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
-In-Reply-To: <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 23 Nov 2020 15:19:55 +0100
-Message-ID: <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-23_11:2020-11-23,2020-11-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ clxscore=1011 priorityscore=1501 impostorscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011230100
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 22, 2020 at 11:36 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> Well, it seems to be three years of someone's time plus the maintainer
-> review time and series disruption of nearly a thousand patches.  Let's
-> be conservative and assume the producer worked about 30% on the series
-> and it takes about 5-10 minutes per patch to review, merge and for
-> others to rework existing series.  So let's say it's cost a person year
-> of a relatively junior engineer producing the patches and say 100h of
-> review and application time.  The latter is likely the big ticket item
-> because it's what we have in least supply in the kernel (even though
-> it's 20x vs the producer time).
+This whole code-block was put under one big if() condition/block.
+This change does an early return if the 'physical_device' boolean is false,
+thus unindenting the block by one level.
 
-How are you arriving at such numbers? It is a total of ~200 trivial lines.
+No other functional change has been done.
 
-> It's not about the risk of the changes it's about the cost of
-> implementing them.  Even if you discount the producer time (which
-> someone gets to pay for, and if I were the engineering manager, I'd be
-> unhappy about), the review/merge/rework time is pretty significant in
-> exchange for six minor bug fixes.  Fine, when a new compiler warning
-> comes along it's certainly reasonable to see if we can benefit from it
-> and the fact that the compiler people think it's worthwhile is enough
-> evidence to assume this initially.  But at some point you have to ask
-> whether that assumption is supported by the evidence we've accumulated
-> over the time we've been using it.  And if the evidence doesn't support
-> it perhaps it is time to stop the experiment.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 161 +++++++++---------
+ 1 file changed, 81 insertions(+), 80 deletions(-)
 
-Maintainers routinely review 1-line trivial patches, not to mention
-internal API changes, etc.
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index 5c6c4e6fec9b..9470014936f2 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -287,89 +287,90 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 
+ 	indio_dev->name = pdev->name;
+ 
+-	if (physical_device) {
+-		state->param.cmd = MOTIONSENSE_CMD_INFO;
+-		state->param.info.sensor_num = sensor_platform->sensor_num;
+-		ret = cros_ec_motion_send_host_cmd(state, 0);
+-		if (ret) {
+-			dev_warn(dev, "Can not access sensor info\n");
++	if (!physical_device)
++		return 0;
++
++	state->param.cmd = MOTIONSENSE_CMD_INFO;
++	state->param.info.sensor_num = sensor_platform->sensor_num;
++	ret = cros_ec_motion_send_host_cmd(state, 0);
++	if (ret) {
++		dev_warn(dev, "Can not access sensor info\n");
++		return ret;
++	}
++	state->type = state->resp->info.type;
++	state->loc = state->resp->info.location;
++
++	/* Set sign vector, only used for backward compatibility. */
++	memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
++
++	for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
++		state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
++
++	/* 0 is a correct value used to stop the device */
++	if (state->msg->version < 3) {
++		get_default_min_max_freq(state->resp->info.type,
++					 &frequencies[1],
++					 &frequencies[2],
++					 &state->fifo_max_event_count);
++	} else {
++		frequencies[1] = state->resp->info_3.min_frequency;
++		frequencies[2] = state->resp->info_3.max_frequency;
++		state->fifo_max_event_count =
++		    state->resp->info_3.fifo_max_event_count;
++	}
++	for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
++		state->frequencies[2 * i] = frequencies[i] / 1000;
++		state->frequencies[2 * i + 1] =
++			(frequencies[i] % 1000) * 1000;
++	}
++
++	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
++		/*
++		 * Create a software buffer, feed by the EC FIFO.
++		 * We can not use trigger here, as events are generated
++		 * as soon as sample_frequency is set.
++		 */
++		struct iio_buffer *buffer;
++
++		buffer = devm_iio_kfifo_allocate(dev);
++		if (!buffer)
++			return -ENOMEM;
++
++		iio_device_attach_buffer(indio_dev, buffer);
++		indio_dev->modes = INDIO_BUFFER_SOFTWARE;
++
++		ret = cros_ec_sensorhub_register_push_data(
++				sensor_hub, sensor_platform->sensor_num,
++				indio_dev, push_data);
++		if (ret)
+ 			return ret;
+-		}
+-		state->type = state->resp->info.type;
+-		state->loc = state->resp->info.location;
+ 
+-		/* Set sign vector, only used for backward compatibility. */
+-		memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
++		ret = devm_add_action_or_reset(
++				dev, cros_ec_sensors_core_clean, pdev);
++		if (ret)
++			return ret;
+ 
+-		for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
+-			state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
+-
+-		/* 0 is a correct value used to stop the device */
+-		if (state->msg->version < 3) {
+-			get_default_min_max_freq(state->resp->info.type,
+-						 &frequencies[1],
+-						 &frequencies[2],
+-						 &state->fifo_max_event_count);
+-		} else {
+-			frequencies[1] = state->resp->info_3.min_frequency;
+-			frequencies[2] = state->resp->info_3.max_frequency;
+-			state->fifo_max_event_count =
+-			    state->resp->info_3.fifo_max_event_count;
+-		}
+-		for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
+-			state->frequencies[2 * i] = frequencies[i] / 1000;
+-			state->frequencies[2 * i + 1] =
+-				(frequencies[i] % 1000) * 1000;
+-		}
+-
+-		if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
+-			/*
+-			 * Create a software buffer, feed by the EC FIFO.
+-			 * We can not use trigger here, as events are generated
+-			 * as soon as sample_frequency is set.
+-			 */
+-			struct iio_buffer *buffer;
+-
+-			buffer = devm_iio_kfifo_allocate(dev);
+-			if (!buffer)
+-				return -ENOMEM;
+-
+-			iio_device_attach_buffer(indio_dev, buffer);
+-			indio_dev->modes = INDIO_BUFFER_SOFTWARE;
+-
+-			ret = cros_ec_sensorhub_register_push_data(
+-					sensor_hub, sensor_platform->sensor_num,
+-					indio_dev, push_data);
+-			if (ret)
+-				return ret;
+-
+-			ret = devm_add_action_or_reset(
+-					dev, cros_ec_sensors_core_clean, pdev);
+-			if (ret)
+-				return ret;
+-
+-			/* Timestamp coming from FIFO are in ns since boot. */
+-			ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
+-			if (ret)
+-				return ret;
+-		} else {
+-			const struct attribute **fifo_attrs;
+-
+-			if (has_hw_fifo)
+-				fifo_attrs = cros_ec_sensor_fifo_attributes;
+-			else
+-				fifo_attrs = NULL;
+-
+-			/*
+-			 * The only way to get samples in buffer is to set a
+-			 * software trigger (systrig, hrtimer).
+-			 */
+-			ret = devm_iio_triggered_buffer_setup_ext(
+-					dev, indio_dev, NULL, trigger_capture,
+-					NULL, fifo_attrs);
+-			if (ret)
+-				return ret;
+-		}
++		/* Timestamp coming from FIFO are in ns since boot. */
++		ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
++		if (ret)
++			return ret;
++	} else {
++		const struct attribute **fifo_attrs;
++
++		if (has_hw_fifo)
++			fifo_attrs = cros_ec_sensor_fifo_attributes;
++		else
++			fifo_attrs = NULL;
++
++		/*
++		 * The only way to get samples in buffer is to set a
++		 * software trigger (systrig, hrtimer).
++		 */
++		ret = devm_iio_triggered_buffer_setup_ext(
++				dev, indio_dev, NULL, trigger_capture,
++				NULL, fifo_attrs);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	return 0;
+-- 
+2.17.1
 
-If some company does not want to pay for that, that's fine, but they
-don't get to be maintainers and claim `Supported`.
-
-Cheers,
-Miguel

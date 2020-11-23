@@ -2,255 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C072C0BCE
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 14:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 698A82C0BA5
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 14:56:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730345AbgKWNbM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 08:31:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55364 "EHLO
+        id S1730444AbgKWN2g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 08:28:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729604AbgKWM1d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:27:33 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D059C0613CF;
-        Mon, 23 Nov 2020 04:27:33 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id m9so17894688iox.10;
-        Mon, 23 Nov 2020 04:27:33 -0800 (PST)
+        with ESMTP id S1726846AbgKWMai (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:30:38 -0500
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDF6C0613CF;
+        Mon, 23 Nov 2020 04:30:38 -0800 (PST)
+Received: by mail-qv1-xf44.google.com with SMTP id k3so1813463qvz.4;
+        Mon, 23 Nov 2020 04:30:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2DaTE6ucAwKHboKQ477UK1JxZudD+u75fJNWS41TfPw=;
-        b=F8vooV+64b1R6XdaPNScWiXqMPAgTfFvuB+eXgf85IVPVeBa5IIJAqPN1i5L2rigGg
-         rgFAIssk2nqKCZTWm6jXWklhaEaoxWw0GjxrZ/5XH5C1K2f6HLoLwCDf9jAzrIw4rCXH
-         X/JsovH5CyfEgYFwUj2Tv5Hy0pYuzAFljAgcFSM2jEeoFFmRvCoxMHKlpdCYR4AytYvM
-         YU+PcojjSFzFXMNM6FeiBjuQoRrc7E8s6ImBOWXJOY1F/QGbCYOevlqv7APh/XZHsKk1
-         O729sXHwTBrxh+0sp6QW0XG1Kj+wz0ZCa0v/lAlzh1WlXyCLBdZbZaCwuf8OKHPaRlPT
-         HE4A==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=OHoUqTFWWE+Wvyk/7Fm8SlSjmG5RijlPgr0GGsxt+Sg=;
+        b=sytGcyw1eZnl0TbXkzQuBT5tqfRXi2j1Zogk0VHDe6xvZ3P0+mal89v+FjPjC1i2LQ
+         eykf2AOKhm5qUbHr8xh/oG3XhhAm9XQj7hiUvkmHj7w2FfFKkEHie2CZpWhtXH7Olxd8
+         3geSXljAn9pzKiKWvsH8lBraoLpz1VN//ZTl0DmAmzpYckIFAd5j1BWLEXGelIMSadcy
+         EfrhBLCY19YMRpjzYnhfziop/gaCwmxoEgb61h0oTS9z8LgYUO6+XRHuMAvOkE2lqLn8
+         U6U4rcUO+Ry7W+BscgHLa26jhZUllxvIUEbsEPOnLWJv6fX0igETyuhkyA2xrOEwNAMm
+         c5qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2DaTE6ucAwKHboKQ477UK1JxZudD+u75fJNWS41TfPw=;
-        b=NKSoBW+2qZMFvzQFg44fgXU19uTMUTCusmHmX+HqC6Z+R9gPRwpMq5tCMHzRYUnai/
-         QZRSOzVgqrtEGX8Jl7n8bZU9ee66S5r00/x89PvRgKcWnX9VDxOUJgr3BG2IoyLvWaaP
-         MAuP2MBiIV2uT/+gdZJkwjQBtmAzNb2G9TKN1zU1dcfMtOuN7XLYlsnVBJSjPofYBBRh
-         ROVsRU0Qp6nwhVOBQ2s1F8nv+2tj89dE4rQS9CLggLqgcxUQ57vkP3Eg98OX3I2pAhDM
-         H3jvBUERH0imN5kzrJIav9DBajumDIcEkamHEfXd00n27/gLrM69WinrfNlx2rQNwpva
-         ESFA==
-X-Gm-Message-State: AOAM53141HopHmCPgaGV2+kkqz7AFK4ADxdhrWQXa1yS+9Y/NRM++2V3
-        T2QLH4H+rilCvrvF1cAdBMvz5RpkfEDXN2aowDl35tBa
-X-Google-Smtp-Source: ABdhPJynvcUZ7VF87TSywMORtIsedhvH9bTiHIn3h9krTL3CaRMAamRLFQAHW9xFK4ALmizxDsGPCOFuvu4Cz4Gzl88=
-X-Received: by 2002:a6b:fa1a:: with SMTP id p26mr33849205ioh.70.1606134452097;
- Mon, 23 Nov 2020 04:27:32 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=OHoUqTFWWE+Wvyk/7Fm8SlSjmG5RijlPgr0GGsxt+Sg=;
+        b=dYUNAFVNrO+L1mSo/UviE42DBfe4inQCzVKgbT2Psn045ilMyLuvSsxSDrDjFHoTZw
+         FSP1gvmILoaUJwmI5ZxhVQyTb5HDjoy7HUz7Yj41Cm1+P33LkmQM0D0qGzQtq8nA1gBe
+         +3EsHXYtxPq5vcrIcPCX0zzw5z5vF+NnC9/HbmbKGKQWjwNO20BR1KW94jtSQd8Nqczz
+         Q0BzbpfT5P2e6tjnuDRlJneaNFKeaB9NdG1i/JYXpDCgaLAlYV4oDWKcnCfRZPGK7MSf
+         mk98NqDRqFC0aGCtz6wq2TluFxKupuiB5mQmFOOcimnp3loHV/tWMpfHiCNcGrG9JTqs
+         TQcQ==
+X-Gm-Message-State: AOAM530UcoF75+4s1ZdcxcDgI/QxXgdemTUwN8SwRTdzjKQYqg4H/XHh
+        z2FGBwQxhOW3dmWi2tGcFgU=
+X-Google-Smtp-Source: ABdhPJxImrSVZi/1EIy3edDOInFPq3eMKoEzlTqNhC6F3EZnAcIw057TQTcWqIal0rgxcMvSSuKm0Q==
+X-Received: by 2002:a05:6214:20e4:: with SMTP id 4mr29601182qvk.37.1606134637593;
+        Mon, 23 Nov 2020 04:30:37 -0800 (PST)
+Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id h142sm9320133qke.104.2020.11.23.04.30.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2020 04:30:36 -0800 (PST)
+Date:   Mon, 23 Nov 2020 07:30:34 -0500
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@kernel.org
+Cc:     Nicolas.Ferre@microchip.com, kamel.bouhara@bootlin.com,
+        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joe@perches.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3] MAINTAINERS: Add Kamel Bouhara as TCB counter driver
+ maintainer
+Message-ID: <X7uragBU7qwcs62L@shinobu>
+References: <20201121185824.451477-1-vilhelm.gray@gmail.com>
+ <df14f643-e80e-6ae6-dcef-90adefe6d733@microchip.com>
 MIME-Version: 1.0
-References: <20201117162340.43924-1-alexandru.ardelean@analog.com>
- <20201117162340.43924-12-alexandru.ardelean@analog.com> <20201121184445.12ec2d92@archlinux>
-In-Reply-To: <20201121184445.12ec2d92@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 23 Nov 2020 14:27:20 +0200
-Message-ID: <CA+U=DspJg4039Jf60DO00gr0Eegp8j5dUx=R4hinL5B+Vix-Fw@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/12] iio: buffer: introduce support for attaching
- more IIO buffers
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bKBXnqDtWJCMEsOZ"
+Content-Disposition: inline
+In-Reply-To: <df14f643-e80e-6ae6-dcef-90adefe6d733@microchip.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 8:46 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 17 Nov 2020 18:23:39 +0200
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->
-> > With this change, calling iio_device_attach_buffer() will actually attach
-> > more buffers.
-> > Right now this doesn't do any validation of whether a buffer is attached
-> > twice; maybe that can be added later (if needed). Attaching a buffer more
-> > than once should yield noticeably bad results.
-> >
-> > The first buffer is the legacy buffer, so a reference is kept to it.
-> >
-> > At this point, accessing the data for the extra buffers (that are added
-> > after the first one) isn't possible yet.
-> >
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> A couple of minor things in here..
->
-> Jonathan
->
+
+--bKBXnqDtWJCMEsOZ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Nov 23, 2020 at 09:50:34AM +0000, Nicolas.Ferre@microchip.com wrote:
+> On 21/11/2020 at 19:58, William Breathitt Gray wrote:
+> > Acked-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > > ---
-> >  drivers/iio/industrialio-buffer.c | 58 +++++++++++++++++++++++++------
-> >  include/linux/iio/buffer_impl.h   |  3 ++
-> >  include/linux/iio/iio-opaque.h    |  4 +++
-> >  3 files changed, 54 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> > index c83cec89eddf..daa68822cea7 100644
-> > --- a/drivers/iio/industrialio-buffer.c
-> > +++ b/drivers/iio/industrialio-buffer.c
-> > @@ -1513,6 +1513,7 @@ static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer);
-> >
-> >  int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> >  {
-> > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> >       struct iio_buffer *buffer = indio_dev->buffer;
-> >       const struct iio_chan_spec *channels;
-> >       int i, ret;
-> > @@ -1529,15 +1530,18 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> >       if (!buffer)
-> >               return 0;
-> >
-> > -     ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, 0);
-> > -     if (ret)
-> > -             return ret;
-> > +     for (i = 0; i < iio_dev_opaque->attached_buffers_cnt; i++) {
-> > +             buffer = iio_dev_opaque->attached_buffers[i];
-> > +             ret = __iio_buffer_alloc_sysfs_and_mask(buffer, indio_dev, i);
-> > +             if (ret)
-> > +                     goto error_unwind_sysfs_and_mask;
-> > +     }
-> >
-> >       ret = sysfs_create_link(&indio_dev->dev.kobj,
-> >                               &indio_dev->buffer->buffer_dir,
-> >                               "buffer");
-> >       if (ret)
-> > -             goto error_free_sysfs_and_mask;
-> > +             goto error_unwind_sysfs_and_mask;
-> >
-> >       ret = sysfs_create_link(&indio_dev->dev.kobj,
-> >                               &indio_dev->buffer->scan_el_dir,
-> > @@ -1549,8 +1553,14 @@ int iio_buffer_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
-> >
-> >  error_remove_buffer_dir_link:
-> >       sysfs_remove_link(&indio_dev->dev.kobj, "buffer");
-> > -error_free_sysfs_and_mask:
-> > -     __iio_buffer_free_sysfs_and_mask(buffer);
-> > +     i = iio_dev_opaque->attached_buffers_cnt - 1;
->
-> Perhaps just use a counter variable that is only for this then you won't need
-> to set it again in this error path.
+> >   Changes in v3:
+> >    - Reorder entries to match preferred MAINTAINERS ordering
+> >=20
+> >   MAINTAINERS | 7 +++++++
+> >   1 file changed, 7 insertions(+)
+> >=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 913b5eb64e44..1ee380dfe189 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2104,6 +2104,13 @@ S:       Supported
+> >   F:     arch/arm64/boot/dts/microchip/
+> >   N:     sparx5
+> >=20
+> > +ARM/Microchip Timer Counter Block (TCB) Capture Driver
+>=20
+> Nit: we don't use the ARM/Microchip string for drivers which could be=20
+> multi-architecture. Only AT91 and Sparx5 families have these entries.
+>=20
+> I'm not holding the patch for this:
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-Ack.
+Jonathan,
 
->
-> > +error_unwind_sysfs_and_mask:
-> > +     for (; i >= 0; i--) {
-> > +             buffer = iio_dev_opaque->attached_buffers[i];
-> > +             __iio_buffer_free_sysfs_and_mask(buffer);
-> > +     }
-> > +     kfree(iio_dev_opaque->attached_buffers);
-> > +     iio_dev_opaque->attached_buffers = NULL;
-> >       return ret;
-> >  }
-> >
-> > @@ -1568,7 +1578,9 @@ static void __iio_buffer_free_sysfs_and_mask(struct iio_buffer *buffer)
-> >
-> >  void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> >  {
-> > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> >       struct iio_buffer *buffer = indio_dev->buffer;
-> > +     int i;
-> >
-> >       if (!buffer)
-> >               return;
-> > @@ -1576,7 +1588,13 @@ void iio_buffer_free_sysfs_and_mask(struct iio_dev *indio_dev)
-> >       sysfs_remove_link(&indio_dev->dev.kobj, "scan_elements");
-> >       sysfs_remove_link(&indio_dev->dev.kobj, "buffer");
-> >
-> > -     __iio_buffer_free_sysfs_and_mask(buffer);
-> > +     for (i = iio_dev_opaque->attached_buffers_cnt - 1; i >= 0; i--) {
-> > +             buffer = iio_dev_opaque->attached_buffers[i];
-> > +             __iio_buffer_free_sysfs_and_mask(buffer);
-> > +     }
-> > +
-> > +     kfree(iio_dev_opaque->attached_buffers);
-> > +     iio_dev_opaque->attached_buffers = NULL;
-> >  }
-> >
-> >  /**
-> > @@ -1709,14 +1727,32 @@ EXPORT_SYMBOL_GPL(iio_buffer_get_iio_dev);
-> >   * @buffer: The buffer to attach to the device
-> >   *
-> >   * This function attaches a buffer to a IIO device. The buffer stays attached to
-> > - * the device until the device is freed. The function should only be called at
-> > - * most once per device.
-> > + * the device until the device is freed. For legacy reasons, the first attached
-> > + * buffer will also be assigned to 'indio_dev->buffer'.
-> >   */
-> >  void iio_device_attach_buffer(struct iio_dev *indio_dev,
-> >                             struct iio_buffer *buffer)
-> >  {
-> > -     indio_dev->buffer = iio_buffer_get(buffer);
-> > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> > +     struct iio_buffer **new, **old = iio_dev_opaque->attached_buffers;
-> > +     unsigned int cnt = iio_dev_opaque->attached_buffers_cnt;
-> > +
-> > +     cnt++;
-> > +
-> > +     new = krealloc(old, sizeof(*new) * cnt, GFP_KERNEL);
-> > +     if (!new) {
-> > +             kfree(old);
->
-> Need a comment on why freeing old makes sense.
+If you would like me to submit a v4 with the "ARM/" string removed, just
+let me know. Otherwise, feel free to make an adjustment if you want when
+you merge this.
 
-Hmm, maybe here I'd need to change this a bit.
-I'm seeing a few potential issues.
+Thanks,
 
->
-> > +             return;
-> > +     }
-> > +     iio_dev_opaque->attached_buffers = new;
+William Breathitt Gray
+
+> > +M:     Kamel Bouhara <kamel.bouhara@bootlin.com>
+> > +L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscri=
+bers)
+> > +L:     linux-iio@vger.kernel.org
+> > +S:     Maintained
+> > +F:     drivers/counter/microchip-tcb-capture.c
 > > +
-> > +     /* first buffer is legacy; attach it to the IIO device directly */
-> > +     if (!indio_dev->buffer)
-> > +             indio_dev->buffer = iio_buffer_get(buffer);
-> > +
-> > +     buffer->indio_dev = indio_dev;
-> >
-> > -     indio_dev->buffer->indio_dev = indio_dev;
-> > +     iio_dev_opaque->attached_buffers[cnt - 1] = buffer;
-> > +     iio_dev_opaque->attached_buffers_cnt = cnt;
-> >  }
-> >  EXPORT_SYMBOL_GPL(iio_device_attach_buffer);
-> > diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> > index 77e169e51434..e25d26a7f601 100644
-> > --- a/include/linux/iio/buffer_impl.h
-> > +++ b/include/linux/iio/buffer_impl.h
-> > @@ -124,6 +124,9 @@ struct iio_buffer {
-> >       /* @demux_bounce: Buffer for doing gather from incoming scan. */
-> >       void *demux_bounce;
-> >
-> > +     /* @attached_entry: Entry in the devices list of buffers attached by the driver. */
-> > +     struct list_head attached_entry;
-> > +
-> >       /* @buffer_list: Entry in the devices list of current buffers. */
-> >       struct list_head buffer_list;
-> >
-> > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> > index 07c5a8e52ca8..1db0ea09520e 100644
-> > --- a/include/linux/iio/iio-opaque.h
-> > +++ b/include/linux/iio/iio-opaque.h
-> > @@ -7,6 +7,8 @@
-> >   * struct iio_dev_opaque - industrial I/O device opaque information
-> >   * @indio_dev:                       public industrial I/O device information
-> >   * @event_interface:         event chrdevs associated with interrupt lines
-> > + * @attached_buffers:                array of buffers statically attached by the driver
-> > + * @attached_buffers_cnt:    number of buffers in the array of statically attached buffers
-> >   * @buffer_list:             list of all buffers currently attached
-> >   * @channel_attr_list:               keep track of automatically created channel
-> >   *                           attributes
-> > @@ -20,6 +22,8 @@
-> >  struct iio_dev_opaque {
-> >       struct iio_dev                  indio_dev;
-> >       struct iio_event_interface      *event_interface;
-> > +     struct iio_buffer               **attached_buffers;
-> > +     unsigned int                    attached_buffers_cnt;
-> >       struct list_head                buffer_list;
-> >       struct list_head                channel_attr_list;
-> >       struct attribute_group          chan_attr_group;
->
+> >   ARM/MIOA701 MACHINE SUPPORT
+> >   M:     Robert Jarzmik <robert.jarzmik@free.fr>
+> >   L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscr=
+ibers)
+> > --
+> > 2.29.2
+> >=20
+> >=20
+> > _______________________________________________
+> > linux-arm-kernel mailing list
+> > linux-arm-kernel@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> >=20
+>=20
+>=20
+> --=20
+> Nicolas Ferre
+
+--bKBXnqDtWJCMEsOZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl+7q18ACgkQhvpINdm7
+VJJbYhAAjacdtakChubYIw7KbWdBNeTSz8pllrkDAeJ669W2z02064sQR7TSa8Ne
+ToxOztGYN8puIvwzss3NDhUCuFHGa+dhzbPZ5w6g8Sr4yv+REJvAAEfJlPKREJIN
+XZOAGmPbHJUMo+lrf7sTx0XXS2Lsc08PB/a4FAhb90ET2mphBZHfT+piE7sz6KAu
+iP+gjz9Iow/4jciRIIcx2t7KCyk96dZ8aWe1WdhoSmD8lP7L04+BB6//DaMXBd4c
+m706d0lEEJRxa1KhrgmwnsChksCJXVxGb067iE7rN8eE5nxiFxSuD7OB/s5OM/y8
+bdr25gXhfbwT9dRE5rq6sNbM595l3MznqIDPADIxpCgyqYJ8nb0vKmWlaoZ2wxYN
+2ExKXkJRjX88WozPh/MGe7SdaRDUYYeg9T4otjytTS8Fqs5VOwNda/o3dZqsF5YL
+jq3pQaCRgnAJ0wTs5QbPZugtzwK8+nUzIq4WPKWewAmHvBi18l4UWnEalPrKKydQ
+Kn5vdKhhqhGadex6RlGUEq9upth+mSCPBNjVql8rYGQzwA0QTRjCHZojd/pF4SWf
+/Ezp21s+Bc53DmZnWPzKlDl+DCLD1Prr/GxMznUL2pbpItW0Ew3A6f5bbexijsb/
+Dz+cRYFMjOQr/1lTE0WHioOSfKPW2tDW6AzROIIGjB5+s5ZveMU=
+=w8oh
+-----END PGP SIGNATURE-----
+
+--bKBXnqDtWJCMEsOZ--

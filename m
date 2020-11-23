@@ -2,162 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F17C2C053E
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 13:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E462C0559
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Nov 2020 13:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728957AbgKWMLL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Nov 2020 07:11:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52842 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728701AbgKWMLL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:11:11 -0500
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25EF1C0613CF;
-        Mon, 23 Nov 2020 04:11:11 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id z14so13904442ilm.10;
-        Mon, 23 Nov 2020 04:11:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GkwXoscxfVMgFXW8sU2dhVSQq0DaKU8Mtd8+I+xSo1Y=;
-        b=B5TCWop1RL+yamQ8mVo9tic4SCD4duvpxcX2JYlFI0uj2nMthitwsACCXsXI3E5MEz
-         CF/IJum1gQP4eZ9x3GlyX6PCi1/N2o7zs1KpjHCQIk2YoWMkTO0Lj+TMqnH60YCNmn8r
-         x/og0ESbgvTXf/aTVTKlhLqO7h7+CSS0Z0jkJzqCZ0DFcKDDI4KOGLlDmPVeez7bIeh5
-         N4/CQTdJ38Cwa8uTtvAITeUMYRCshCD5Z+0MfIdmYaRMMZ1O3B7UOuSWr2vS9BFAdaJr
-         zAkkgwqwwgsNT/lv0kf9CvOPOPKMIJU0ewRkgAfgLnbuq8T5YSc3K1QUJrPWqGm6uGFK
-         +snA==
+        id S1727941AbgKWMQ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Nov 2020 07:16:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54147 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729372AbgKWMQ1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Nov 2020 07:16:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606133785;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lXe5+vC9XhuqiWvB8SprIOltRTdJYIxBBDQ4j3P4YgE=;
+        b=UQLDdW/FJXoFgrLwOnC06/TIiwbBSzZf8lhs6M0Tb4I2NYijq9kFF8z3X0VBhAmBmM0BIa
+        U6KZmRtb0N1j/hKJlbK57MxAYqQmu3PIi3frDJ4DyHqbkBsA8krh5Nmbu/3Ple8awjwvd4
+        rVkXBqKIc7agZkdv39FrndKlBbe/O+w=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-173-bi6Ag2HcOCWgf6dXtmQ6Qg-1; Mon, 23 Nov 2020 07:16:23 -0500
+X-MC-Unique: bi6Ag2HcOCWgf6dXtmQ6Qg-1
+Received: by mail-ej1-f69.google.com with SMTP id y10so958999ejg.3
+        for <linux-iio@vger.kernel.org>; Mon, 23 Nov 2020 04:16:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GkwXoscxfVMgFXW8sU2dhVSQq0DaKU8Mtd8+I+xSo1Y=;
-        b=VKLRzKwU2iG91jYVzIsk96dzD2E0o56cbobNBAPJjPCh/TtKPSpNTCe8Y6FNQpPdHG
-         oomgJkCF1jLz1lMf9kR0bOUqUs0q17Bt1Sp4HELgQVUAMCG4e/PrN4ERs91fkkYJhbv7
-         lEu74GIirRjrDI14YrdyfAKTdNAUAGrP/BEh10je/ddsmDdklIvdOI8qSIlsWngXMbbt
-         0m7RSxiTP83H8gnEatbzhT3efwc9qKA/oaw7hTRGW5fMRrSwVajm0MgoKuSzSF/tVCC+
-         TL3WWVD+B0vg+8/6UpC55GTiz9hmJgZ6qgFNkozMkNMyOqblry7kQmUTreaaFFQjmL7M
-         ZSzw==
-X-Gm-Message-State: AOAM531v06iTcnBJFXppTxXKWvnTaZOxaD5SyEaQhMCaoACL8oNBkkf3
-        zHhVEvhsd9oNtYj19sqsYkYYu4WqKJGImtDxABg=
-X-Google-Smtp-Source: ABdhPJzx7jUWDZF5m5Jg6CRSYyy7tMHfMeDsrT0H23MmIS0MTkI5xTkALmFsArN8RNH8jlGSkiKMNZRMwSlbAo4KPZs=
-X-Received: by 2002:a92:8707:: with SMTP id m7mr34089725ild.217.1606133470524;
- Mon, 23 Nov 2020 04:11:10 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lXe5+vC9XhuqiWvB8SprIOltRTdJYIxBBDQ4j3P4YgE=;
+        b=L4GOa51oNPJIossQ3X1Xsl2PyrHBzSiDronKdWBl0nPrTEi3+RlvxpWZ/1GUp4GPWz
+         w3iSMCwswHTLVGD0gqCgSQi6bzg5gCzw+WdV6fNVIUEv5cX3t0sqIfJwf4VH8REQXdeW
+         XG7HaC6prNuP9Z271kcOje6vGPDq9lqYJntTM/lH/+Aq0d5bPyKsMo8DNKd821hLaqx7
+         V/xeFarv7YUXJqrSGHO7Nf4zumwm3SERxm1CfBeqRMsmATkb3cr7LOU6Gfe/rHmw7cAe
+         OMjYehImGFZ5g5kLzdu+Ld2PhHAZz8R74adsQFWKbLca6L8bMZBkLJz9yTHyoyr5Vm/B
+         PcKQ==
+X-Gm-Message-State: AOAM532pDHTTrhQ2vTFjP/JFqAnidWscgrhqbWF48FgUn8XG3gnHu/fP
+        fZHeje+xL5yA/1eg0OdF/PLrTLbnVE5nF56XNoDcIx0YIwoDKgQPOcamMXHLGXdhEKSQPIFS5r/
+        7FZoC/ErPhrVtZp26X84A
+X-Received: by 2002:a05:6402:c83:: with SMTP id cm3mr46538999edb.189.1606133782032;
+        Mon, 23 Nov 2020 04:16:22 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzlu7xwnh8BWC6vLqyoykLxoAYe2O5lhMVohFmamMLlf7fBHlEwPAtV6V2wyonz2GDFsiEWFQ==
+X-Received: by 2002:a05:6402:c83:: with SMTP id cm3mr46538974edb.189.1606133781764;
+        Mon, 23 Nov 2020 04:16:21 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id p14sm2383987edq.6.2020.11.23.04.16.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2020 04:16:21 -0800 (PST)
+Subject: Re: [External] Using IIO to export laptop palm-sensor and lap-mode
+ info to userspace?
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-iio@vger.kernel.org, Bastien Nocera <hadess@hadess.net>,
+        Nitin Joshi1 <njoshi1@lenovo.com>, linux-input@vger.kernel.org
+References: <9f9b0ff6-3bf1-63c4-eb36-901cecd7c4d9@redhat.com>
+ <5a646527-7a1f-2fb9-7c09-8becdbff417b@lenovo.com>
+ <20201007083602.00006b7e@Huawei.com>
+ <218be284-4a37-e9f9-749d-c126ef1d098b@redhat.com>
+ <20201112062348.GF1003057@dtor-ws>
+ <3568c492-d9bd-c02d-4cbc-7f3eef605ef5@redhat.com>
+ <20201113065832.GD356503@dtor-ws>
+ <6df00683-9508-3dd9-831e-9b343658287b@redhat.com>
+ <20201120095943.000001a6@Huawei.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <aeb7bc51-0b27-198b-d3b5-50b18ad114e7@redhat.com>
+Date:   Mon, 23 Nov 2020 13:16:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-References: <20201117162340.43924-1-alexandru.ardelean@analog.com>
- <20201117162340.43924-2-alexandru.ardelean@analog.com> <20201121180246.772ad299@archlinux>
-In-Reply-To: <20201121180246.772ad299@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 23 Nov 2020 14:10:59 +0200
-Message-ID: <CA+U=DsqPARWnGo4cvfN+dLTmcoP0eNtRxvF41bysuPgWAMd=sA@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/12] iio: core: register chardev only if needed
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201120095943.000001a6@Huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 8:05 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 17 Nov 2020 18:23:29 +0200
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->
-> > We only need a chardev if we need to support buffers and/or events.
-> >
-> > With this change, a chardev will be created only if an IIO buffer is
-> > attached OR an event_interface is configured.
-> >
-> > Otherwise, no chardev will be created, and the IIO device will get
-> > registered with the 'device_add()' call.
-> >
-> > Quite a lot of IIO devices don't really need a chardev, so this is a minor
-> > improvement to the IIO core, as the IIO device will take up (slightly)
-> > fewer resources.
-> >
-> > In order to not create a chardev, we mostly just need to not initialize the
-> > indio_dev->dev.devt field. If that is un-initialized, cdev_device_add()
-> > behaves like device_add().
-> >
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> I'll be honest. I have no idea why I didn't do this in first place!
->
-> I 'think' we are safe dropping this but I suppose it's possible some
-> odd code checks for the chrdev presence?
+Hi,
 
-So, libiio at least doesn't rely on this being there for any odd things.
-But yeah, who knows what else is out there that might.
-I was also thinking of sending this separately to have this earlier
-out there in case it bothers other people.
-I guess I got a little mixed by other patches and re-ordered things a
-few times and this remained in this series.
+On 11/20/20 10:59 AM, Jonathan Cameron wrote:
+> On Thu, 19 Nov 2020 16:39:07 +0100
+> Hans de Goede <hdegoede@redhat.com> wrote:
 
->
-> Hopefully not though.
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/industrialio-core.c | 23 ++++++++++++++++++-----
-> >  1 file changed, 18 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 419d6f8acc13..ca8b11541477 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1763,6 +1763,15 @@ static const struct file_operations iio_buffer_fileops = {
-> >       .compat_ioctl = compat_ptr_ioctl,
-> >  };
-> >
-> > +static const struct file_operations iio_event_fileops = {
-> > +     .owner = THIS_MODULE,
-> > +     .llseek = noop_llseek,
-> > +     .unlocked_ioctl = iio_ioctl,
-> > +     .compat_ioctl = compat_ptr_ioctl,
-> > +     .open = iio_chrdev_open,
-> > +     .release = iio_chrdev_release,
-> > +};
-> > +
-> >  static int iio_check_unique_scan_index(struct iio_dev *indio_dev)
-> >  {
-> >       int i, j;
-> > @@ -1790,6 +1799,7 @@ static const struct iio_buffer_setup_ops noop_ring_setup_ops;
-> >
-> >  int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
-> >  {
-> > +     struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
-> >       int ret;
-> >
-> >       if (!indio_dev->info)
-> > @@ -1807,9 +1817,6 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
-> >       if (ret < 0)
-> >               return ret;
-> >
-> > -     /* configure elements for the chrdev */
-> > -     indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
-> > -
-> >       iio_device_register_debugfs(indio_dev);
-> >
-> >       ret = iio_buffer_alloc_sysfs_and_mask(indio_dev);
-> > @@ -1838,9 +1845,15 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
-> >               indio_dev->setup_ops == NULL)
-> >               indio_dev->setup_ops = &noop_ring_setup_ops;
-> >
-> > -     cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
-> > +     if (indio_dev->buffer)
-> > +             cdev_init(&indio_dev->chrdev, &iio_buffer_fileops);
-> > +     else if (iio_dev_opaque->event_interface)
-> > +             cdev_init(&indio_dev->chrdev, &iio_event_fileops);
-> >
-> > -     indio_dev->chrdev.owner = this_mod;
-> > +     if (indio_dev->buffer || iio_dev_opaque->event_interface) {
-> > +             indio_dev->dev.devt = MKDEV(MAJOR(iio_devt), indio_dev->id);
-> > +             indio_dev->chrdev.owner = this_mod;
-> > +     }
-> >
-> >       ret = cdev_device_add(&indio_dev->chrdev, &indio_dev->dev);
-> >       if (ret < 0)
->
+>>>>>>>> On 2020-10-03 10:02 a.m., Hans de Goede wrote:  
+>>>>>>>>> Hi All,
+>>>>>>>>>
+>>>>>>>>> Modern laptops can have various sensors which are kinda
+>>>>>>>>> like proximity sensors, but not really (they are more
+>>>>>>>>> specific in which part of the laptop the user is
+>>>>>>>>> proximate to).
+>>>>>>>>>
+>>>>>>>>> Specifically modern Thinkpad's have 2 readings which we
+>>>>>>>>> want to export to userspace, and I'm wondering if we
+>>>>>>>>> could use the IIO framework for this since these readings
+>>>>>>>>> are in essence sensor readings:
+>>>>>>>>>
+>>>>>>>>> 1. These laptops have a sensor in the palm-rests to
+>>>>>>>>> check if a user is physically proximate to the device's
+>>>>>>>>> palm-rests. This info will be used by userspace for WWAN
+>>>>>>>>> functionality to control the transmission level safely.
+>>>>>>>>>
+>>>>>>>>> A patch adding a thinkpad_acpi specific sysfs API for this
+>>>>>>>>> is currently pending:
+>>>>>>>>> https://patchwork.kernel.org/patch/11722127/
+>>>>>>>>>
+>>>>>>>>> But I'm wondering if it would not be better to use
+>>>>>>>>> IIO to export this info.  
+
+<snip>
+
+>>> On newer ARM we use "label" attribute in DTS:
+>>>
+>>> arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
+>>>
+>>>         ap_sar_sensor: proximity@28 {
+>>>                 compatible = "semtech,sx9310";
+>>>                 reg = <0x28>;
+>>>                 #io-channel-cells = <1>;
+>>>                 pinctrl-names = "default";
+>>>                 pinctrl-0 = <&p_sensor_int_l>;
+>>>
+>>>                 interrupt-parent = <&tlmm>;
+>>>                 interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
+>>>
+>>>                 vdd-supply = <&pp3300_a>;
+>>>                 svdd-supply = <&pp1800_prox>;
+>>>
+>>>                 status = "disabled";
+>>>                 label = "proximity-wifi";
+>>>         };  
+>>
+>> Hmm, interesting. I did not know iio-devices could
+>> have a label sysfs attribute (nor that that could be
+>> set through device-tree). I was thinking about adding
+>> an in_proximity_location sysfs attribute. But using
+>> labels (and standardizing a set of label names) will
+>> work nicely too.
+> 
+> It's fairly new.   Note we also have per channel labels
+> though they are 'very new'.  Might be handy if the sensors
+> appear as a single device despite being spread over the
+> laptop.
+
+Interesting, the thinkpad_acpi stuff currently has 2
+proximity(ish) sensors:
+
+1. Laptop is close to (on) someones lap
+2. Someone's arms are resting on or close to the palmrest
+
+Ideally we would indeed register 1 iio-dev with separate
+channels for this, rather then having to register 2
+(and the future maybe even more) iio-devs for this.
+
+Can you give a pointer to docs / examples of using a
+label per channel ?
+
+>> Is there a know set of labels which ChromeOS is currently
+>> using? If we are going to use labels for this it would
+>> be good IMHO to define a set of standard labels for
+>> this in say Documentation/ABI/testing/sysfs-bus-iio-labels.
+> 
+> If you do want to do this, please just put it under sysfs-bus-iio
+> doc.  I want this to be in the top level doc.
+
+Ok, ack.
+
+Dmitry, can you perhaps dig up a full-list of labels
+which ChromeOS is currently using to identify
+proximity sensors for e.g. SAR related use?
+
+Regards,
+
+Hans
+

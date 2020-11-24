@@ -2,52 +2,23 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6989B2C32FF
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Nov 2020 22:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8C502C33EB
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Nov 2020 23:25:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732524AbgKXVct (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Nov 2020 16:32:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732522AbgKXVcr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Nov 2020 16:32:47 -0500
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD18C061A54
-        for <linux-iio@vger.kernel.org>; Tue, 24 Nov 2020 13:32:47 -0800 (PST)
-Received: by mail-pg1-x542.google.com with SMTP id m9so376678pgb.4
-        for <linux-iio@vger.kernel.org>; Tue, 24 Nov 2020 13:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nUebvx46WK355IC8BSYKhA86maU/C5TyOra9y/oS07E=;
-        b=lzAwh4po+9zegkg/2K9x7CHiUUthvj2PFJyxHwt1QdcZQIdrGCSiE3JgzWuDiv+VMN
-         KwBJ/6n/jsAIvSMb6eOJqvl2BVv6D2OMXP8giSKXaaH9JwLNdR2oULKAXe3g8bDVfAub
-         65Ll+320/JpDsvMBOWCFVSOrRLSDK1WOgK6ns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nUebvx46WK355IC8BSYKhA86maU/C5TyOra9y/oS07E=;
-        b=NatY2MqbjzLPNvaz21L4QxhLVQJV/h+N/fadzH+3edl0hEgZQdCOo+yfb/bg7dBG03
-         6CNbDX7GkBvhQ42iEAx4uaCTnpLMk6gyTAL9T6yHXoLBCTQMxSddNZJapZlcLfLMPNCh
-         OsT81ulQMdYtfbYodkAoYz5+2fLl3zi2p10pqjpx3anGVZh1020c4fbwyasFXtLLM/hS
-         CBvBmg5FCNBEu8NkuxHqXsnDL2qZccdOy2UsLigGvF+Ol77BUb1KJVFS8ub2kW9AmI+/
-         hkyHuhV3QjaNED7LWTTE8ig+/ofuNwYzglcAjp2bdEVGi82Apu8WzqH09FE5inGLToG/
-         SNlA==
-X-Gm-Message-State: AOAM532Z3IbOyuSExuCbcz+r2iZsuIQVoaGQh9DkiEP5jKedKoDkycK9
-        7aYS5G3/S/GVP6+IS318wS9Dtg==
-X-Google-Smtp-Source: ABdhPJyp86bHnh+pX/bbtyJvtymIhKFSWtRW4h5d/m2XI4eSElpEXSRnILd/bhh2ok8eYrLt5J5YAQ==
-X-Received: by 2002:a17:90a:e2d4:: with SMTP id fr20mr212344pjb.202.1606253566770;
-        Tue, 24 Nov 2020 13:32:46 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k6sm5489pfd.169.2020.11.24.13.32.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2020 13:32:45 -0800 (PST)
-Date:   Tue, 24 Nov 2020 13:32:44 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        id S2389530AbgKXWYS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Nov 2020 17:24:18 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:42066 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728076AbgKXWYQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Nov 2020 17:24:16 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 8A96E22AD6;
+        Tue, 24 Nov 2020 17:24:09 -0500 (EST)
+Date:   Wed, 25 Nov 2020 09:24:08 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Kees Cook <keescook@chromium.org>
+cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Joe Perches <joe@perches.com>,
         Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
         linux-atm-general@lists.sourceforge.net,
@@ -96,50 +67,47 @@ Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Greg KH <gregkh@linuxfoundation.org>
 Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
  Clang
-Message-ID: <202011241327.BB28F12F6@keescook>
-References: <202011201129.B13FDB3C@keescook>
- <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook>
- <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
- <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
- <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
- <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
- <20201123130348.GA3119@embeddedor>
- <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
+In-Reply-To: <202011241327.BB28F12F6@keescook>
+Message-ID: <alpine.LNX.2.23.453.2011250859290.15@nippy.intranet>
+References: <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com> <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
+ <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com> <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com> <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com> <20201123130348.GA3119@embeddedor>
+ <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com> <202011241327.BB28F12F6@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 23, 2020 at 08:31:30AM -0800, James Bottomley wrote:
-> Really, no ... something which produces no improvement has no value at
-> all ... we really shouldn't be wasting maintainer time with it because
-> it has a cost to merge.  I'm not sure we understand where the balance
-> lies in value vs cost to merge but I am confident in the zero value
-> case.
+On Tue, 24 Nov 2020, Kees Cook wrote:
 
-What? We can't measure how many future bugs aren't introduced because the
-kernel requires explicit case flow-control statements for all new code.
+> On Mon, Nov 23, 2020 at 08:31:30AM -0800, James Bottomley wrote:
+> > Really, no ... something which produces no improvement has no value at 
+> > all ... we really shouldn't be wasting maintainer time with it because 
+> > it has a cost to merge.  I'm not sure we understand where the balance 
+> > lies in value vs cost to merge but I am confident in the zero value 
+> > case.
+> 
+> What? We can't measure how many future bugs aren't introduced because 
+> the kernel requires explicit case flow-control statements for all new 
+> code.
+> 
 
-We already enable -Wimplicit-fallthrough globally, so that's not the
-discussion. The issue is that Clang is (correctly) even more strict
-than GCC for this, so these are the remaining ones to fix for full Clang
-coverage too.
+These statements are not "missing" unless you presume that code written 
+before the latest de facto language spec was written should somehow be 
+held to that spec.
 
-People have spent more time debating this already than it would have
-taken to apply the patches. :)
+If the 'fallthrough' statement is not part of the latest draft spec then 
+we should ask why not before we embrace it. Being that the kernel still 
+prefers -std=gnu89 you might want to consider what has prevented 
+-std=gnu99 or -std=gnu2x etc.
 
-This is about robustness and language wrangling. It's a big code-base,
-and this is the price of our managing technical debt for permanent
-robustness improvements. (The numbers I ran from Gustavo's earlier
-patches were that about 10% of the places adjusted were identified as
-legitimate bugs being fixed. This final series may be lower, but there
-are still bugs being found from it -- we need to finish this and shut
-the door on it for good.)
+> We already enable -Wimplicit-fallthrough globally, so that's not the 
+> discussion. The issue is that Clang is (correctly) even more strict than 
+> GCC for this, so these are the remaining ones to fix for full Clang 
+> coverage too.
+> 
 
--- 
-Kees Cook
+Seems to me you should be patching the compiler.
+
+When you have consensus among the language lawyers you'll have more 
+credibility with those being subjected to enforcement.

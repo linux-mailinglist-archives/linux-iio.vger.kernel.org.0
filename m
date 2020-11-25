@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42E942C444E
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 16:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02CDB2C4431
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 16:44:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731789AbgKYPnD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 10:43:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53424 "EHLO mail.kernel.org"
+        id S1730755AbgKYPlk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 10:41:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54694 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725792AbgKYPgA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 25 Nov 2020 10:36:00 -0500
+        id S1730773AbgKYPgs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 25 Nov 2020 10:36:48 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DF02206CA;
-        Wed, 25 Nov 2020 15:35:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 886EC21D81;
+        Wed, 25 Nov 2020 15:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606318559;
+        s=default; t=1606318607;
         bh=uOekAwoa5nNQ8ROk2QR8D+nSv/F4MyHfZEL3hys9E8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HN2iY3Cv6FDs00mQTF/aBNUUJtvL6M7OD6fXAwZMMGTt6kzH/+dluZQPqqrAgMv/w
-         is7SlEPohZ4mLHsseCmxpPhL0x4+9UVYA9ByTn+xKXAJYmP9h1C7CIIU5whVJ9ypRa
-         8jKks5n+HLMBX9Brp7GHIkak7d1nDIjx8kuamm2w=
+        b=ueFSlCq988sD1WQH29qcwGtxZp/+7PYoitWS9dxcvOFhlA2wWY/3s3zCkof9Zhp+F
+         WsOesdHxWCL5+yes+Uq+HXY+HzTc+9etr97SE5Wf4A79je3n9qrCCtO8+/CRyza4D5
+         YT4hLEe36L1FwpvfXAlYUa+c36s9cNKew4jF7+xo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Pablo Ceballos <pceballos@google.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>,
         linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.9 06/33] HID: hid-sensor-hub: Fix issue with devices with no report ID
-Date:   Wed, 25 Nov 2020 10:35:23 -0500
-Message-Id: <20201125153550.810101-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 06/23] HID: hid-sensor-hub: Fix issue with devices with no report ID
+Date:   Wed, 25 Nov 2020 10:36:21 -0500
+Message-Id: <20201125153638.810419-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201125153550.810101-1-sashal@kernel.org>
-References: <20201125153550.810101-1-sashal@kernel.org>
+In-Reply-To: <20201125153638.810419-1-sashal@kernel.org>
+References: <20201125153638.810419-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

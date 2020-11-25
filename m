@@ -2,129 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558072C3ED5
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D81762C3EDB
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:14:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbgKYLMy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 06:12:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53533 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725792AbgKYLMy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:12:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606302773;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=w7O3iYZA149yx/s8eZSGVGWYblyGhXKYVUTJl12uIso=;
-        b=QbkDERiK0uZXHv7Rn/5U8zPHelsZ6yD4kyLkOKQIvPafmhtxtqWlCIelG/R8ZmgywgLHrb
-        v+6jKpb3RjnqibFwIbhS4L8z3cBORM2K9cIq8Ku2j3nomXz5crEoYwj4FIdwgJexcUF5o0
-        qq3oTU1EpmrSPaajvAZmLEYeOpsTn2A=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-129-GDfWltWbM-yUN2Twoj9Kag-1; Wed, 25 Nov 2020 06:12:50 -0500
-X-MC-Unique: GDfWltWbM-yUN2Twoj9Kag-1
-Received: by mail-ej1-f71.google.com with SMTP id pv11so699681ejb.5
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:12:50 -0800 (PST)
+        id S1728472AbgKYLOH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 06:14:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726411AbgKYLOH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:14:07 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FCA1C0613D4
+        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:14:07 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id w6so2018098pfu.1
+        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:14:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=XiPqGph6Bh+YxiJiwEZreboroC5yxHM7BxNSZTaDSsk=;
+        b=msGGxnOlPCZtUAVSm8Lb4A8cXEi+tTdJ7YCy3QfRTOS0g+GjTbp+ZUtICQTAnaj8DC
+         b4EaxMJiaMQsoU/ZzLBsU+mPYz9WUo1BMP00QKEwDbeDLyxGHaHuzJh34X88Ul6wtHfN
+         by2smCFNEe8RFBvP8tkePSs8MFdIuEMIgLDqOw22xqEH9VS+5mAgERngDj1eqfur1dvR
+         xfTvTaP4V3opUDNo9HE5Zt8xiELMfZ9gf2e7TwTIlfjFlvP7dMOT7RYLutxsTNCl7YDs
+         uE9CtKzfmg1En6fgZadBMpIX0qJsf5bh3h92luFiPhMVcAInlfKPrCEVE42plzRfC9dw
+         gYKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=w7O3iYZA149yx/s8eZSGVGWYblyGhXKYVUTJl12uIso=;
-        b=k+pedq0U2Dg9sQM6i4/QHQB/Cui3UtcScF55RlV36cxUludZjSE0ZPLGRAA2eVBdQ8
-         dCxbz2oDDkYJmiQqygfyMWWUUYPt9nyBR4B3OurBDAGbh11ToYzYlRbtTaXtetTIjtlX
-         IaCDQAS0I16JBrCyHrM7WYcvJYURAJxrnGfT0lemVfoh3qrAE0QofPX9gAHaYH3GT+BQ
-         KMfGHETgDHu0eE3uWa9C5/bdP41dXynVPpfgjTBmovjeFdca+28eRU3Qc4d/TmKFIFge
-         WvcfL/Jo6cGWxzJlLMw+CCNDreBJpSEH0Iaegc2lKYCpIGQMjA8DHv53cNdtC1kvs1pN
-         LSVA==
-X-Gm-Message-State: AOAM5330p/D9+yadyxj6RfbVRXjHGdAieTdlrGQpTqbuVtaMXOeMUX4C
-        qBmqAH5NcwmYGax87H1DSC16SmL0ZxlFyGP83Ttdpqg2z88I13/qmezZRcNDX+nTIWYauIgSM5Z
-        OodlQ3c23bwgbpKpeKKvQMNhSR0g2Co3o42+QgBnMWr+mDCydq+3hknv4ECfM+Kdf7YbbTLKf
-X-Received: by 2002:a17:906:1458:: with SMTP id q24mr2734157ejc.541.1606302769385;
-        Wed, 25 Nov 2020 03:12:49 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwSLazYW4R1OqTSB9HLt0XnyORLgHzWIYYJfZfPvQ0c1T5xC8uNHWB+d2Cy4NHYZ448BPaBNg==
-X-Received: by 2002:a17:906:1458:: with SMTP id q24mr2734146ejc.541.1606302769184;
-        Wed, 25 Nov 2020 03:12:49 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id v8sm1033433edt.3.2020.11.25.03.12.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2020 03:12:48 -0800 (PST)
-Subject: Re: [PATCH 3/3] iio: accel: bmc150: Get mount-matrix from ACPI
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jeremy Cline <jeremy@jcline.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-References: <20201125083618.10989-1-hdegoede@redhat.com>
- <20201125083618.10989-4-hdegoede@redhat.com>
- <CAHp75Vd5i7aErbRN9RVeH9H+OdKSqc_OKPnUtWR+cs7iP-Us2g@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <db0b5e1e-d643-9af8-a9e5-ad4aec089b0c@redhat.com>
-Date:   Wed, 25 Nov 2020 12:12:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=XiPqGph6Bh+YxiJiwEZreboroC5yxHM7BxNSZTaDSsk=;
+        b=TM8+lCGXTZXz0E25orHdiKLXBhCiYwrcgMLEeYgf9pYDgmRvkLAk0Xf4Q5lf+ydjq0
+         C34K8WhhQdhEiMQr/Isr6wrDyABRRFj4sCtbAAtb1mqoQW32kDOzogvm/87QZCfQmYAU
+         J8Rgn8xfVnoJEbTJBUwYUdq1WmK5hlP1vAN8dG0dYGaECPfklPNuvMRHNeXm8gMncZL3
+         rX3phcX964PcBuOC/18nWvr34zOEaZ/rZJ6a9qehsfkYxI1hfFEYHg3XvgyY4xYLYzBO
+         mbVh/jlQ5UkR3wjoY3tUnJJFXhQkzMYXgJDGAEQ+IDgEtV2UlbludW/bvz8IlyFg+oOk
+         sRZg==
+X-Gm-Message-State: AOAM533M/ksT2TfceB8vqSoV+CZNfETJwWhEhroyOvwSZdoKmm8wXpEB
+        vcsELgt9LVgY4fQaR9DRElvZb1266TuePQdb4+gX891ytAtkXudk
+X-Google-Smtp-Source: ABdhPJzwkIvXa9QiZgeUXjddAOi4Z3eYFpFc0BzlHIaqhPKUZ1wd1oQ3ZAurjyrvvif48AjoWf5D1Bj8fiovhK51wNA=
+X-Received: by 2002:a17:90a:34cb:: with SMTP id m11mr3523011pjf.181.1606302846772;
+ Wed, 25 Nov 2020 03:14:06 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAHp75Vd5i7aErbRN9RVeH9H+OdKSqc_OKPnUtWR+cs7iP-Us2g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 25 Nov 2020 13:14:55 +0200
+Message-ID: <CAHp75Vfz2P=U6CFY4824hPLSSDQNh4wATE_=JjA63fXyYCpsrQ@mail.gmail.com>
+Subject: fake ACPI IDs in the drivers
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Hi!
 
-On 11/25/20 12:07 PM, Andy Shevchenko wrote:
-> On Wed, Nov 25, 2020 at 10:37 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> bmc150 accelerometers with an ACPI hardware-id of BOSC0200 have an ACPI
->> method providing their mount-matrix, add support for retrieving this.
-> 
-> ...
-> 
->> +       if (strcmp(dev_name(dev), "i2c-BOSC0200:base") == 0)
->> +               alt_name = "ROMK";
->> +       else
->> +               alt_name = "ROMS";
->> +
->> +       if (acpi_has_method(adev->handle, "ROTM"))
->> +               name = "ROTM";
-> 
-> My gosh, it's a third method of this...
-> 
-> ...
-> 
->> +       elements = obj->package.elements;
->> +       for (i = 0; i < 3; i++) {
->> +               if (elements[i].type != ACPI_TYPE_STRING)
->> +                       goto unknown_format;
->> +
->> +               str = elements[i].string.pointer;
->> +               if (sscanf(str, "%d %d %d", &val[0], &val[1], &val[2]) != 3)
->> +                       goto unknown_format;
->> +
->> +               for (j = 0; j < 3; j++) {
->> +                       switch (val[j]) {
->> +                       case -1: str = "-1"; break;
->> +                       case 0:  str = "0";  break;
->> +                       case 1:  str = "1";  break;
->> +                       default: goto unknown_format;
->> +                       }
->> +                       orientation->rotation[i * 3 + j] = str;
->> +               }
->> +       }
-> 
-> I'm wondering if we can come up with some common code out of this and
-> existing apply_acpi_orientation().
+Recent discussion [1] [2] around faking ACPI ID in RTC subsystem and a
+sudden check [3] (due to last Hans' patches related to ACPI based
+systems) of IIO makes me wonder if we may start cleaning drivers from
+faked ACPI IDs and establish a stricter rules for the ID table
+entries.
 
-Honestly they are all different enough that I don't think it is worth
-the trouble (I did take a look at this, but it did not seem feasible
-without creating horrible code).
+Thoughts?
 
-Regards,
+[1]: https://lore.kernel.org/linux-rtc/20201112130734.331094-3-ch@denx.de/
+[2]: https://review.coreboot.org/c/coreboot/+/47235
+[3]: git grep -n -A10 -w acpi_device_id -- drivers/iio/
 
-Hans
-
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -2,109 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 588802C47E7
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 19:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD5E2C485B
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 20:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730293AbgKYSsb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 13:48:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57910 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729679AbgKYSsb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 25 Nov 2020 13:48:31 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 33EED20679;
-        Wed, 25 Nov 2020 18:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606330110;
-        bh=IHHrIRxTnPy8mqSxLM9QUGCWhPn9taIjfzjITFbS3os=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=1O5ki6oqAV7FGs8ppIACAUW2rpFTYX2BGpwHIIX7gvB1xpRR2B9IoNflD1lrZ1l0L
-         9BqU7k8wEYTIJoDoor09COeBcjKTQkXbPHQ4D+sYe6PnAy+yT5b0sNErHn2oC1Xsxw
-         QYRTHs+TafRH67iU83pTuIJB1BGE1zfnHSdSIYuU=
-Date:   Wed, 25 Nov 2020 18:48:24 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jeremy Cline <jeremy@jcline.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        russianneuromancer <russianneuromancer@ya.ru>
-Subject: Re: [PATCH] iio: accel: kxcjk1013: Add tablet_mode sysfs file for
- exercising the KIOX010A ACPI DSM
-Message-ID: <20201125184824.2052d6aa@archlinux>
-In-Reply-To: <94522440-5842-4527-f14e-e02462272611@redhat.com>
-References: <20201125085444.11593-1-hdegoede@redhat.com>
-        <20201125085444.11593-2-hdegoede@redhat.com>
-        <CAHp75VfMxzO2Qx_t7mSv+Y_DEN8Y2KYw02No=y=VuBNACtj4zg@mail.gmail.com>
-        <94522440-5842-4527-f14e-e02462272611@redhat.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726721AbgKYT3t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 14:29:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726060AbgKYT3t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 14:29:49 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65E8AC0617A7
+        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 11:29:36 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id w24so3213136wmi.0
+        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 11:29:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=NFSGmCEuCm6niKKYqn7R9lQfnac1L/vU/lnL85BJdw6+Yll7nnrYLDwjInN7RUSV6a
+         zHNIDIEkH6O9IKLDXMgwFatys6JdBiYxWxqfSIAjz6RHCca8L8fTNR1yI9JBAkHbFSAK
+         +1ATEDmh9qw6r46sNLaLGQd6/t0EDMaXcMCyxEWzRTMx6llLqxeDBkBzMBw2qRO8KzQo
+         zYey0/+t0C86Fz+PByaHfpTcVbrdHYU5pJDCYoVqyKahTovgUtsZpYtcq3LyicLGMhB+
+         oBqXftJF80uIUSLVvakAiqjhfwOoTA8YQ+t2vzKNUXLxswNEsdjCLUIPFt+ncp1+d9ic
+         RcSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=E6hEV+Tb3KZ1h3AN+anRfdeTFpf8RKSWx0/ElJXF8uuS9Ihrs8HVJ4DEm4doGO1vZl
+         G35unYR0xcNKFlmzV7Xp4wHav1CvKW9SYO9Majh97OUrlfqmzVznS7CawtLv7chWkhG0
+         /Oounw5rbOQkfUZ9IoXYltqtM4NSxfs8/tC6zsJdbJs1oxF9AnqtXm+DMlPIvCmP14Pp
+         LZCdD62k4ambyyKkYzAMiFjYlzwcxV8zPE4zVY+38angtDNMC5lssMtWya786z3wHH9J
+         wwdDLYbzvBBbsvtk8fDGTYMZJ95Bsr59GLCjnAO36YKwTBn13+Q/vlNeywIDzu+GF5pH
+         1v2g==
+X-Gm-Message-State: AOAM5300mUpt9vQmt1LoHAUqT+frcsbMywWg+gTO1/aEQfCQmREwYDC6
+        vmtlkKYeshEV5FyD7jB4nLY=
+X-Google-Smtp-Source: ABdhPJyU4xq8x5wAql5hwm9URJ9FwjlRKM083VpMsqG1K2ia4ZyDWjFGliRoWW/GoXUiWu3wGmMTGQ==
+X-Received: by 2002:a7b:cf32:: with SMTP id m18mr5689421wmg.58.1606332575227;
+        Wed, 25 Nov 2020 11:29:35 -0800 (PST)
+Received: from [192.168.1.152] ([102.64.149.89])
+        by smtp.gmail.com with ESMTPSA id l16sm6067999wrx.5.2020.11.25.11.29.28
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 25 Nov 2020 11:29:34 -0800 (PST)
+Message-ID: <5fbeb09e.1c69fb81.80257.d80f@mx.google.com>
+From:   "Dailborh R." <ritundailb111@gmail.com>
+X-Google-Original-From: Dailborh R.
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Please reply to me
+To:     Recipients <Dailborh@vger.kernel.org>
+Date:   Wed, 25 Nov 2020 19:29:17 +0000
+Reply-To: dailrrob.83@gmail.com
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 Nov 2020 11:55:45 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
-
-> Hi,
-> 
-> On 11/25/20 11:34 AM, Andy Shevchenko wrote:
-> > On Wed, Nov 25, 2020 at 10:56 AM Hans de Goede <hdegoede@redhat.com> wrote:  
-> >>
-> >> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 KXCJ91008-s
-> >> to allow the OS to determine the angle between the display and the base
-> >> of the device, so that the OS can determine if the 2-in-1 is in laptop
-> >> or in tablet-mode.
-> >>
-> >> On Windows both accelerometers are read by a special HingeAngleService
-> >> process; and this process calls a DSM (Device Specific Method) on the
-> >> ACPI KIOX010A device node for the sensor in the display, to let the
-> >> embedded-controller (EC) know about the mode so that it can disable the
-> >> kbd and touchpad to avoid spurious input while folded into tablet-mode.
-> >>
-> >> Currently the kxcjk1013 driver calls the DSM for this once at probe time
-> >> to ensure that the builtin kbd and touchpad work.
-> >>
-> >> But some users have expressed interest in using this functionality to
-> >> disable the kbd and touchpad when folded into tablet-mode as done under
-> >> Windows.
-> >>
-> >> Add a tablet_mode sysfs file so that users can control the kbd/touchpad
-> >> enable/disable functionality from user-space.  
-
-Biggest thing missing here is documentation.
-
-Documentation/ABI/testing/sysfs-bus-iio-kxcjk1013
-
-Unless this is documented somewhere else?  I've no idea if there is any
-precedence for this/
-
-> > 
-> > ...
-> >   
-> >> +       err = kiox010a_dsm(&data->client->dev,
-> >> +                          tablet_mode ? KIOX010A_SET_TABLET_MODE :
-> >> +                                        KIOX010A_SET_LAPTOP_MODE);  
-> > 
-> > A nit. With temporary variable it may be slightly better to read, like:
-> > 
-> >   int value;
-> >   ...
-> >   value = tablet_mode ? KIOX010A_SET_TABLET_MODE : KIOX010A_SET_LAPTOP_MODE);
-> >   err = kiox010a_dsm(&data->client->dev, value);  
-> 
-> I'm fine with either solution, Jonathan let me know if you want a v2 with
-> Andy's suggestion implemented (assuming you are willing to take this at all).
-
-Prefer Andy's suggestion slightly seeing as you are going around again to
-include some docs :)
-
-Thanks,
-
-Jonathan
+I'm Dailborh R. from US. I picked interest in you and I would like to know
+more about you and establish relationship with you. i will wait for
+your response. thank you.
 

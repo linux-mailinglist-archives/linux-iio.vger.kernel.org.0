@@ -2,57 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2804C2C3ED3
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 558072C3ED5
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:13:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728792AbgKYLLk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 06:11:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22784 "EHLO
+        id S1725989AbgKYLMy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 06:12:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53533 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728006AbgKYLLk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:11:40 -0500
+        by vger.kernel.org with ESMTP id S1725792AbgKYLMy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:12:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606302698;
+        s=mimecast20190719; t=1606302773;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FGlbGxHBtLRbYZvkSG0Ax7EZzRySn0MsRFteM7Gx2Wg=;
-        b=WsMegJ8+C931qlLE8l+SxJZJru5ozWJ1ae/VOBOIaoj95pWY0ZkUslED7ZQZsYDMB+152J
-        OywBaj1dbbKbJjyx2A0H0gm3EdrCB2D/otElrOMPmg7QcsyHIPI1z5WdEAQseJt6mAwMXu
-        upYn4YQ9+GM12hSzHpEpTe4uRzU3nvI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-589-RhQ9qD39MeyZN0rCqmEXOg-1; Wed, 25 Nov 2020 06:11:37 -0500
-X-MC-Unique: RhQ9qD39MeyZN0rCqmEXOg-1
-Received: by mail-ed1-f70.google.com with SMTP id c23so516179edr.4
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:11:36 -0800 (PST)
+        bh=w7O3iYZA149yx/s8eZSGVGWYblyGhXKYVUTJl12uIso=;
+        b=QbkDERiK0uZXHv7Rn/5U8zPHelsZ6yD4kyLkOKQIvPafmhtxtqWlCIelG/R8ZmgywgLHrb
+        v+6jKpb3RjnqibFwIbhS4L8z3cBORM2K9cIq8Ku2j3nomXz5crEoYwj4FIdwgJexcUF5o0
+        qq3oTU1EpmrSPaajvAZmLEYeOpsTn2A=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-129-GDfWltWbM-yUN2Twoj9Kag-1; Wed, 25 Nov 2020 06:12:50 -0500
+X-MC-Unique: GDfWltWbM-yUN2Twoj9Kag-1
+Received: by mail-ej1-f71.google.com with SMTP id pv11so699681ejb.5
+        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:12:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=FGlbGxHBtLRbYZvkSG0Ax7EZzRySn0MsRFteM7Gx2Wg=;
-        b=tCZVIq6gNoxYhoB5VCUPa+Meep2rhW82MDKaDaJ+g8mDvhWGF5UjK+KwhlTFQ8vW+D
-         zw2OEliXyHKgrep2dviFYWTSWsnLNPMnC9wXA9Lp2uIcTZhpXWFV8m+J9kR52O5G0E0G
-         WRl+RzfUyYt5EQJj1emHOWqe/wjBttu4/G62I3nit2x12zz4cYoQPRPYXA1VBmqadoUg
-         W9KeoT+Tgl7WDjow+sFB+UV4MXsj5kO3nQhGnru0hqvDu9A9Q4nJbasBfpQBtHDlcK89
-         GNdSFEb84l7Zu5gR7KpRcILGFjhwNnEarY8Eu8cySF35+O7O/mu6zpW1v2KoF8SARNo+
-         ZVyQ==
-X-Gm-Message-State: AOAM531/Fl43eMTjNNPMRJV9kjQ2cBmE8ELcarPXwmO/RfYKFhF9eTBG
-        vApkV0wsipTTZ7Cv58OqjTcj08HTiLv4eYj3N3D89AEg+a2WdIgBRdfzHZH5VvfSGAo4qVQjgJn
-        EXh1VHzh/TupKTIMcNy0eKx+g6yw3CfkzKCu4Chs2oEMeohk28BqWeMC8zGKqpNV6IMLGRtmp
-X-Received: by 2002:a17:906:ad85:: with SMTP id la5mr2687478ejb.423.1606302695438;
-        Wed, 25 Nov 2020 03:11:35 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzLESD/hc0TdN56KT2ZOsOXUCyIaMPyqp0nL8QUe3KTnaZeRRwysmWPTFkYs0uHnQfXt0epDw==
-X-Received: by 2002:a17:906:ad85:: with SMTP id la5mr2687446ejb.423.1606302695108;
-        Wed, 25 Nov 2020 03:11:35 -0800 (PST)
+        bh=w7O3iYZA149yx/s8eZSGVGWYblyGhXKYVUTJl12uIso=;
+        b=k+pedq0U2Dg9sQM6i4/QHQB/Cui3UtcScF55RlV36cxUludZjSE0ZPLGRAA2eVBdQ8
+         dCxbz2oDDkYJmiQqygfyMWWUUYPt9nyBR4B3OurBDAGbh11ToYzYlRbtTaXtetTIjtlX
+         IaCDQAS0I16JBrCyHrM7WYcvJYURAJxrnGfT0lemVfoh3qrAE0QofPX9gAHaYH3GT+BQ
+         KMfGHETgDHu0eE3uWa9C5/bdP41dXynVPpfgjTBmovjeFdca+28eRU3Qc4d/TmKFIFge
+         WvcfL/Jo6cGWxzJlLMw+CCNDreBJpSEH0Iaegc2lKYCpIGQMjA8DHv53cNdtC1kvs1pN
+         LSVA==
+X-Gm-Message-State: AOAM5330p/D9+yadyxj6RfbVRXjHGdAieTdlrGQpTqbuVtaMXOeMUX4C
+        qBmqAH5NcwmYGax87H1DSC16SmL0ZxlFyGP83Ttdpqg2z88I13/qmezZRcNDX+nTIWYauIgSM5Z
+        OodlQ3c23bwgbpKpeKKvQMNhSR0g2Co3o42+QgBnMWr+mDCydq+3hknv4ECfM+Kdf7YbbTLKf
+X-Received: by 2002:a17:906:1458:: with SMTP id q24mr2734157ejc.541.1606302769385;
+        Wed, 25 Nov 2020 03:12:49 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwSLazYW4R1OqTSB9HLt0XnyORLgHzWIYYJfZfPvQ0c1T5xC8uNHWB+d2Cy4NHYZ448BPaBNg==
+X-Received: by 2002:a17:906:1458:: with SMTP id q24mr2734146ejc.541.1606302769184;
+        Wed, 25 Nov 2020 03:12:49 -0800 (PST)
 Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id g20sm1085726ejk.3.2020.11.25.03.11.34
+        by smtp.gmail.com with ESMTPSA id v8sm1033433edt.3.2020.11.25.03.12.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2020 03:11:34 -0800 (PST)
-Subject: Re: [PATCH 2/3] iio: accel: bmc150: Check for a second ACPI device
- for BOSC0200
+        Wed, 25 Nov 2020 03:12:48 -0800 (PST)
+Subject: Re: [PATCH 3/3] iio: accel: bmc150: Get mount-matrix from ACPI
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -60,15 +59,15 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Jeremy Cline <jeremy@jcline.org>,
         linux-iio <linux-iio@vger.kernel.org>
 References: <20201125083618.10989-1-hdegoede@redhat.com>
- <20201125083618.10989-3-hdegoede@redhat.com>
- <CAHp75VcZQ1duxHnUTD9ewRhWxoHay8S6AQaEK3v3jJr+oQcbDw@mail.gmail.com>
+ <20201125083618.10989-4-hdegoede@redhat.com>
+ <CAHp75Vd5i7aErbRN9RVeH9H+OdKSqc_OKPnUtWR+cs7iP-Us2g@mail.gmail.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ee0d26b1-ee54-0c2c-cd9f-40366e3b10d4@redhat.com>
-Date:   Wed, 25 Nov 2020 12:11:33 +0100
+Message-ID: <db0b5e1e-d643-9af8-a9e5-ad4aec089b0c@redhat.com>
+Date:   Wed, 25 Nov 2020 12:12:47 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcZQ1duxHnUTD9ewRhWxoHay8S6AQaEK3v3jJr+oQcbDw@mail.gmail.com>
+In-Reply-To: <CAHp75Vd5i7aErbRN9RVeH9H+OdKSqc_OKPnUtWR+cs7iP-Us2g@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -78,141 +77,54 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi,
 
-On 11/25/20 11:55 AM, Andy Shevchenko wrote:
+On 11/25/20 12:07 PM, Andy Shevchenko wrote:
 > On Wed, Nov 25, 2020 at 10:37 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >>
->> From: Jeremy Cline <jeremy@jcline.org>
->>
->> Some BOSC0200 acpi_device-s describe two accelerometers in a single ACPI
->> device. Normally we would handle this by letting the special
->> drivers/platform/x86/i2c-multi-instantiate.c driver handle the BOSC0200
->> ACPI id and let it instantiate 2 bmc150_accel type i2c_client-s for us.
->>
->> But doing so changes the modalias for the first accelerometer
->> (which is already supported and used on many devices) from
->> acpi:BOSC0200 to i2c:bmc150_accel. The modalias is not only used
->> to load the driver, but is also used by hwdb matches in
->> /lib/udev/hwdb.d/60-sensor.hwdb which provide a mountmatrix to
->> userspace by setting the ACCEL_MOUNT_MATRIX udev property.
->>
->> Switching the handling of the BOSC0200 over to i2c-multi-instantiate.c
->> will break the hwdb matches causing the ACCEL_MOUNT_MATRIX udev prop
->> to no longer be set. So switching over to i2c-multi-instantiate.c is
->> not an option.
-> 
-> I'm wondering if we can meanwhile update hwdb to support
-> i2c-multi-instantiate cases in the future and in a few years switch to
-> it.
-
-Even if we fix current hwdb entries to match on both, then there
-is no guarantee newly added entries will also contain the new match.
-
-Now with the code to get the matrix from the ACPI tables new entries
-should happen less often, but I saw at least one model where the ACPI
-provided matrix appears to be wrong (if the ACPI matrix was always
-correct then breaking hwdb would not really be an issue).
-
-So I don't think this is going to work and all in all it feels like
-a lot of work for little gain.
-
-
->> Changes by Hans de Goede:
->> -Add explanation to the commit message why i2c-multi-instantiate.c
->>  cannot be used
->> -Also set the dev_name, fwnode and irq i2c_board_info struct members
->>  for the 2nd client
+>> bmc150 accelerometers with an ACPI hardware-id of BOSC0200 have an ACPI
+>> method providing their mount-matrix, add support for retrieving this.
 > 
 > ...
 > 
->> +       ret = bmc150_accel_core_probe(&client->dev, regmap, client->irq, name, block_supported);
->> +       if (ret)
->> +               return ret;
+>> +       if (strcmp(dev_name(dev), "i2c-BOSC0200:base") == 0)
+>> +               alt_name = "ROMK";
+>> +       else
+>> +               alt_name = "ROMS";
 >> +
->> +       /*
->> +        * Some BOSC0200 acpi_devices describe 2 accelerometers in a single ACPI
->> +        * device, try instantiating a second i2c_client for an I2cSerialBusV2
->> +        * ACPI resource with index 1. The !id check avoids recursion when
->> +        * bmc150_accel_probe() gets called for the second client.
->> +        */
+>> +       if (acpi_has_method(adev->handle, "ROTM"))
+>> +               name = "ROTM";
 > 
->> +       if (!id && adev && strcmp(acpi_device_hid(adev), "BOSC0200") == 0) {
+> My gosh, it's a third method of this...
 > 
->> +               struct i2c_board_info board_info = {
->> +                       .type = "bmc150_accel",
->> +                       /* The 2nd accel sits in the base of 2-in-1s */
+> ...
 > 
->> +                       .dev_name = "BOSC0200:base",
-> 
-> Hmm... Can we use '.' (dot) rather than ':' (colon) to avoid confusion
-> with ACPI device naming schema? (Or was it on purpose?)
-
-So with the ':' the end result is:
-
-[root@localhost ~]# cd /sys/bus/i2c/devices/
-[root@localhost devices]# ls | cat
-6-0050
-i2c-0
-i2c-1
-i2c-2
-i2c-3
-i2c-4
-i2c-5
-i2c-6
-i2c-BOSC0200:00
-i2c-BOSC0200:base
-i2c-WCOM50BD:00
-
-Which looks nice and consistent, which is why I went with the ':'
-and since base is not a number, there is no chance on conflicting with
-ACPI device names (it does look somewhat like an ACPI device name, but
-it is an ACPI enumerated device, so ...).
-
-Anyways if there is a strong preference for changing this to a '.'
-I would be happy to make this change.
-
-> And this seems to be the only device in the system, second as this is
-> not allowed as far as I understand. Right?
-
-I don't understand what you are trying to say here, sorry.
-
-> But theoretically I can
-> create an ACPI SSDT with quite similar excerpt and sensor and
-> enumerate it via ConfigFS (I understand that is quite unlikely).
-
-
-> 
->> +                       .fwnode = client->dev.fwnode,
->> +                       .irq = -ENOENT,
->> +               };
->> +               struct i2c_client *second_dev;
+>> +       elements = obj->package.elements;
+>> +       for (i = 0; i < 3; i++) {
+>> +               if (elements[i].type != ACPI_TYPE_STRING)
+>> +                       goto unknown_format;
 >> +
->> +               second_dev = i2c_acpi_new_device(&client->dev, 1, &board_info);
->> +               if (!IS_ERR(second_dev))
->> +                       bmc150_set_second_device(second_dev);
+>> +               str = elements[i].string.pointer;
+>> +               if (sscanf(str, "%d %d %d", &val[0], &val[1], &val[2]) != 3)
+>> +                       goto unknown_format;
+>> +
+>> +               for (j = 0; j < 3; j++) {
+>> +                       switch (val[j]) {
+>> +                       case -1: str = "-1"; break;
+>> +                       case 0:  str = "0";  break;
+>> +                       case 1:  str = "1";  break;
+>> +                       default: goto unknown_format;
+>> +                       }
+>> +                       orientation->rotation[i * 3 + j] = str;
+>> +               }
 >> +       }
 > 
-> ...
-> 
->>  static int bmc150_accel_remove(struct i2c_client *client)
->>  {
->> +       struct i2c_client *second_dev = bmc150_get_second_device(client);
-> 
->> +       if (second_dev)
-> 
-> Redundant.
+> I'm wondering if we can come up with some common code out of this and
+> existing apply_acpi_orientation().
 
-True, I will fix this for v2, once the ':' vs '.' thing is settled.
+Honestly they are all different enough that I don't think it is worth
+the trouble (I did take a look at this, but it did not seem feasible
+without creating horrible code).
 
 Regards,
 
 Hans
-
-
-
-> 
->> +               i2c_unregister_device(second_dev);
->> +
->>         return bmc150_accel_core_remove(&client->dev);
->>  }
-> 
 

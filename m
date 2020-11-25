@@ -2,81 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB4B2C3EFB
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F8C2C3F46
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 12:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728161AbgKYLVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 06:21:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726139AbgKYLVJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:21:09 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297CFC0613D4
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:21:02 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id w187so2016214pfd.5
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 03:21:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=F5N3Za7cQkKeRuE+wCiMZI+hnOzeFuaTCXukSdiACsA=;
-        b=WcWcNB2PHczUTALzgCszqD/xWM55NYYz321mddcL1YwM5/3Nly7kB2N6NEvoCmX03w
-         zJHp9sHwzqH64yj/Niev0qfEHR/MUDxoyAMts+HQbDBM6JvBormyJVzSrA1He0qWspeZ
-         IieIL59pIGK5SIXFO/elnbLdv7aoxVgvwjMDkXbMGG0AMno5oFIuyk9v4JBJGgnXMtPI
-         NCYqYqx4mQxb3Gu+xIQZworiE+hC0wpaSyDdkEGQI92GVsHIN7tBdp7fJP/0OCd2LrBg
-         pEXo9ru1ljCfSMZhwqLgDqNOjh14Tl2A2FCiUB9GPikRw2I/GR7sWvc3x/KJKEEVoCxp
-         1jmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=F5N3Za7cQkKeRuE+wCiMZI+hnOzeFuaTCXukSdiACsA=;
-        b=EJGDUaX4yNBXmACKG6mydGwAMWLuAJQvIq/UpWd2vVtO3VzxNa4R3oCimvs1JEYd5r
-         tKJ5K7AgVpchVwkv9Ls4nb7SkChauLuNrQx8NnmhW6tCm5CuCk7iH6pmiY0y93TdHttW
-         aCjrTmQeH2p88IuzjOji8hhEwKUasuTPk7Kiq8cGY9mr8N9b2v4nx9piROQzlUJtBYIl
-         HW9AQQmPSUtXp/0quIslSWN/s5xSTYrMMs05bMD3Blb+w5c2/muVyD+xHjtKo24QeL1V
-         VfElPs1M1kQYwJyEEPz8BTW40exkG4jdo1E3HbNVhMAYeSs+ahoZiM3q7Gb8NNzQkVuL
-         GYvA==
-X-Gm-Message-State: AOAM531YBh78AlunozE4X/SRXV11IUSvrVGE01iJlFkjjOwm7vvw/KJ5
-        nUAbzaz66eO3AfVef6cgKqvNnHkITZBAC72AkI0=
-X-Google-Smtp-Source: ABdhPJz0ZwW1/GutL6WWrimFtlUqVLdS/UwCjKUyIadL6bBYJ3OiF5+6YdZk4Sern9I7CjjsHyD3sK8eHG1n8sGP/p0=
-X-Received: by 2002:a17:90a:4816:: with SMTP id a22mr3699233pjh.228.1606303261748;
- Wed, 25 Nov 2020 03:21:01 -0800 (PST)
-MIME-Version: 1.0
-References: <20201125083618.10989-1-hdegoede@redhat.com> <20201125083618.10989-4-hdegoede@redhat.com>
- <CAHp75Vd5i7aErbRN9RVeH9H+OdKSqc_OKPnUtWR+cs7iP-Us2g@mail.gmail.com> <db0b5e1e-d643-9af8-a9e5-ad4aec089b0c@redhat.com>
-In-Reply-To: <db0b5e1e-d643-9af8-a9e5-ad4aec089b0c@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 25 Nov 2020 13:21:50 +0200
-Message-ID: <CAHp75VebUNfQK1j465HN3VYY5LAg-R5qtxHcAfP_cukqVzOokA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: accel: bmc150: Get mount-matrix from ACPI
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jeremy Cline <jeremy@jcline.org>,
+        id S1726442AbgKYLr7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 06:47:59 -0500
+Received: from www381.your-server.de ([78.46.137.84]:51156 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbgKYLr7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 06:47:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=fQ8oH3igow59Isznkzi+zu+eOoBqSzH/uw2cJZLeRmg=; b=JeY+ElxBNGhjzmA/oA1ePzhkRg
+        /BUDzw83dJWrfRH8+NYccvqzS6H6LJwkJzIfpIdWhH7sleoXM/HShM2onUIxRcj0sdHJs45ISLq3X
+        O+vtilvBoBSyx9sFATPW3YexL5xhNQg3iswHF2C01BgdH7WrUuvyu+VwwKLb9k+eSeka9BQoVF25E
+        KZ8G3jZ+9wSnurW6D1Rskfrj0rWctFK6mNi+E67Kpo4Efw5sI13pBl2+FSYxNJzl1gaZgtTL7hx0+
+        VAhoKpY6fAfZGzGi4ClzuymFqXsr9lKe+8ZMAyawjhtWPFMF3p4rGA36WuhbJ5vSnXbfsgy24Qo7K
+        gAiz6rzA==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1khtH8-0007vl-MV; Wed, 25 Nov 2020 12:47:54 +0100
+Received: from [62.216.202.98] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1khtH8-000XQ1-IJ; Wed, 25 Nov 2020 12:47:54 +0100
+Subject: Re: fake ACPI IDs in the drivers
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Hans de Goede <hdegoede@redhat.com>
+References: <CAHp75Vfz2P=U6CFY4824hPLSSDQNh4wATE_=JjA63fXyYCpsrQ@mail.gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <857bbb6c-1025-df6d-871d-f0fbcafb6ad8@metafoo.de>
+Date:   Wed, 25 Nov 2020 12:47:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <CAHp75Vfz2P=U6CFY4824hPLSSDQNh4wATE_=JjA63fXyYCpsrQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/25998/Tue Nov 24 14:16:50 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 1:12 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> On 11/25/20 12:07 PM, Andy Shevchenko wrote:
-> > On Wed, Nov 25, 2020 at 10:37 AM Hans de Goede <hdegoede@redhat.com> wrote:
-
-...
-
-> > I'm wondering if we can come up with some common code out of this and
-> > existing apply_acpi_orientation().
+On 11/25/20 12:14 PM, Andy Shevchenko wrote:
+> Hi!
 >
-> Honestly they are all different enough that I don't think it is worth
-> the trouble (I did take a look at this, but it did not seem feasible
-> without creating horrible code).
+> Recent discussion [1] [2] around faking ACPI ID in RTC subsystem and a
+> sudden check [3] (due to last Hans' patches related to ACPI based
+> systems) of IIO makes me wonder if we may start cleaning drivers from
+> faked ACPI IDs and establish a stricter rules for the ID table
+> entries.
+>
+> Thoughts?
 
-Okay!
+The cat is probably out of the bag.
 
--- 
-With Best Regards,
-Andy Shevchenko
+If there are systems shipping with those unregistered ACPI IDs we still 
+have to support them.
+
+I'd assume that most drivers that have a acpi_device_id table do have 
+hardware that uses that ID and were not just cargo culted.
+
+For new drivers we should push back on unregistered IDs, but if there is 
+hardware that uses them we have to take the patches.
+
+- Lars
+
+

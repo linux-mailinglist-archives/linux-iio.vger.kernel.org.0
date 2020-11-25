@@ -2,107 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 429672C4550
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 17:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 006B22C4657
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 18:05:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730719AbgKYQeF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 11:34:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59406 "EHLO
+        id S1732271AbgKYREc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 12:04:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730393AbgKYQeF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 11:34:05 -0500
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C7E1C0613D4
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 08:34:05 -0800 (PST)
-Received: by mail-pf1-x441.google.com with SMTP id n137so2841867pfd.3
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 08:34:05 -0800 (PST)
+        with ESMTP id S1731273AbgKYRE1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 12:04:27 -0500
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 425FFC061A4F;
+        Wed, 25 Nov 2020 09:04:27 -0800 (PST)
+Received: by mail-yb1-xb41.google.com with SMTP id t33so377302ybd.0;
+        Wed, 25 Nov 2020 09:04:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ojUEknFMAD/QVX9KT2+JouZO/4ae2a+qG3HbqFpF9Gs=;
-        b=CoG30PZvBlfnJfOGFDDzMULd9N7wwAxuhLsiQORrs6OYQ9jxrpgjzOcFt1q0/ql3nP
-         eL1HfcQ1arhltEqZNK3t5aDuajp5jb+JxrdgyXTpYeYM2XkPj3qZug8Bk0wdIDmHEToO
-         TsX+yaft2nIx03gV0qxnX0Qc18CSLRjCnhfXnfELe+S8mUC3xWqMcK1JxcvQW3LS98PC
-         osqmVH3wvlewa2CFIBHcf9aIpaeugnFgihk88vIiQE4YYJWExRWU1kP6Z/pwqHLnKlfO
-         kDLKq5S70UTsc2V/RpttAvZfYynBYQq3b1rBvRL4g5DfveqJkMxw1XId8py5gtNJ055r
-         hbTw==
+        bh=U7yONu+GErpj3wVA3mUEvd1gZrZu1iMtuB4J5cc4iYs=;
+        b=bn+pL/HmrYW2tlvsO08UsmlB+e0sDsIo/gBe6lZBPy5Ml0r7IepVRmwL3Z1msCDTmB
+         4Fj8yYJnSSwKpycrMD6jc9mJYcLEOxyjBt+mj/swgeJwfcTqBWFSYbINT99XJh8MBLLG
+         BhdJX4URpdAlU1PS41QCV8cX0uycEbKi5uankHMmLYXfRheyb1dBSnJ2lYbkM9jPzYRg
+         +YL1Fiv4xli6A/G5oR00+c/fqffNKJdLOgNLmafCTxGe8sUqpvTjraMjrzXLQkd2Vyg7
+         6NJIAQ3gm8Ro9XvzXTxxo6aHXEqSB5bdv5UB5bHkEX37ZUG4NR8CwSl4aaovOFcf7q/J
+         MTKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ojUEknFMAD/QVX9KT2+JouZO/4ae2a+qG3HbqFpF9Gs=;
-        b=ng0aPkKTnsYi8jVfJhWvzGGuktBV1IRdQORa5HpMiB+1EFKROcv2z6Z4KC5V9Ia6w0
-         T2wGISWcYSmqaOEw/0b4MmxAdJcsjGGfHVr9Bp8+3keNeT0gCUK2ZLFc8PG4fhr4Jfod
-         K0ZGLa44O9nk4L2MCf/eYyvy1/hPZEiyNyPXmvDs58YJ+Fh6rx5rntDQZgjJehcgGzPY
-         RoaWA1h1SnvNRsWKPu6xtL4gNuIAE8Axr7uDnYvhRVgeeHeR9UPS75bMIMA2/MAemM+W
-         MywFwQTXBdXqZyeQaxtYuD7tpnksYhOCM+6sE6RXP/73Wc1uIYMPm4C19HSfZQxYXYw2
-         WNaw==
-X-Gm-Message-State: AOAM53369n7AYroZ1T+3uQoHm79roaujQyTYZOAOL67b6Ak14a63BhkN
-        /Ze+kgJ3hqlAxeNeD+JzXxOTAZ2LRm/wHAS5dRA=
-X-Google-Smtp-Source: ABdhPJzlj6O6KtCnWYwAHa/myx2NZgDiJHslzC7I2RIjq1qFz8y9yTmbVdtCzSkfg9DnO7mACuJwQbpW8lLuo33uUTE=
-X-Received: by 2002:a62:7e4f:0:b029:18c:9322:739b with SMTP id
- z76-20020a627e4f0000b029018c9322739bmr3796646pfc.7.1606322044515; Wed, 25 Nov
- 2020 08:34:04 -0800 (PST)
+        bh=U7yONu+GErpj3wVA3mUEvd1gZrZu1iMtuB4J5cc4iYs=;
+        b=Qpmh2GhI2WFs2qzp7Yn0fsgZaW8qKZK7HSbi+NCT0Jsrn+O5TTnjfpO9+adg1ygVEg
+         He2LQK3eRrPr4xLBwGPGrkPHhKCZ6HNIFcBvOjEKxDQ993YxbqYTay1DZxWZjjkBSFtp
+         M0hx760u7VARoHEO5ak8GSqWZwst+zM/sXvn6sP7otDrBGFamZd7Uz7ks+exNWem11Bz
+         TJSh2xoh5NFtzMA6eC7gJcnDdrPFmcPP0fZxsrUGVnTidS1mOEmaHSUvIO3cuqBKc9Xy
+         7ZuVaVdr95Q26yooscZkYKo0LK7NYIKVwJvh5HlNeqPgtTp5RkDNNpfGJhliNkKNrQ8k
+         0r7Q==
+X-Gm-Message-State: AOAM533+U9pipnNe4G+sfWPHuOqXn+o+A4RGhehQmfihcqsqUhS5WoXN
+        z5/CDlpRDEKMyKWOtPsW01afemh/jiL5NVUaOAk=
+X-Google-Smtp-Source: ABdhPJwRDTWwRnnt/vVfXeVU3lUNCXdaAf9CCrzUJdkBRbFdtXrCpJBbeymEiGhAam+E5oqqQjDTbAdkVQMGwErIDPw=
+X-Received: by 2002:a25:aac5:: with SMTP id t63mr6307293ybi.22.1606323866493;
+ Wed, 25 Nov 2020 09:04:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20201125083618.10989-1-hdegoede@redhat.com> <20201125083618.10989-3-hdegoede@redhat.com>
- <CAHp75VcZQ1duxHnUTD9ewRhWxoHay8S6AQaEK3v3jJr+oQcbDw@mail.gmail.com>
- <ee0d26b1-ee54-0c2c-cd9f-40366e3b10d4@redhat.com> <CAHp75Vc7v4z=VkaopsfXoJfFMxt9GxS6iofjNvOcUQrauKhDXA@mail.gmail.com>
- <9f0f2060-24cf-cc7b-9089-9f5c8e024e39@redhat.com>
-In-Reply-To: <9f0f2060-24cf-cc7b-9089-9f5c8e024e39@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 25 Nov 2020 18:34:52 +0200
-Message-ID: <CAHp75VdKjxsY2ZCixfG5rdJNmcfGN6nLiLVCtqyh83LYUqFMXA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: accel: bmc150: Check for a second ACPI device
- for BOSC0200
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jeremy Cline <jeremy@jcline.org>,
-        linux-iio <linux-iio@vger.kernel.org>
+References: <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
+ <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
+ <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
+ <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
+ <20201123130348.GA3119@embeddedor> <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
+ <202011241327.BB28F12F6@keescook> <a841536fe65bb33f1c72ce2455a6eb47a0107565.camel@HansenPartnership.com>
+ <CAKwvOdkGBn7nuWTAqrORMeN1G+w3YwBfCqqaRD2nwvoAXKi=Aw@mail.gmail.com> <20201125082405.1d8c23dc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201125082405.1d8c23dc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 25 Nov 2020 18:04:15 +0100
+Message-ID: <CANiq72=RuekXf1O6Fxrz2Eend0GtS6=E72P4T2=48SDqVcTChA@mail.gmail.com>
+Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for Clang
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Joe Perches <joe@perches.com>, alsa-devel@alsa-project.org,
+        linux-atm-general@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-ide@vger.kernel.org, dm-devel@redhat.com,
+        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
+        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
+        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net,
+        linux-afs@lists.infradead.org,
+        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
+        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-scsi@vger.kernel.org,
+        linux-rdma@vger.kernel.org, oss-drivers@netronome.com,
+        bridge@lists.linux-foundation.org,
+        linux-security-module@vger.kernel.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
+        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org,
+        linux-input <linux-input@vger.kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        tipc-discussion@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, selinux@vger.kernel.org,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
+        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-hwmon@vger.kernel.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        linux-nfs@vger.kernel.org, GR-Linux-NIC-Dev@marvell.com,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net, linux-mmc@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
+        netfilter-devel@vger.kernel.org,
+        =?UTF-8?Q?open_list=3AHARDWARE_RANDOM_NUMBER_GENERATOR_CORE_=3Clinux=2Dcrypt?=
+         =?UTF-8?Q?o=40vger=2Ekernel=2Eorg=3E=2C_patches=40opensource=2Ecirrus=2Ecom=2C_linux=2Dint?=
+         =?UTF-8?Q?egrity=40vger=2Ekernel=2Eorg=2C_target=2Ddevel=40vger=2Ekernel=2Eorg=2C_linux=2D?=
+         =?UTF-8?Q?hardening=40vger=2Ekernel=2Eorg=2C_Jonathan_Cameron_=3CJonathan=2ECamero?=
+         =?UTF-8?Q?n=40huawei=2Ecom=3E=2C_Greg_KH?= 
+        <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 6:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> On 11/25/20 12:20 PM, Andy Shevchenko wrote:
-> > On Wed, Nov 25, 2020 at 1:11 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >> On 11/25/20 11:55 AM, Andy Shevchenko wrote:
-
-...
-
-> >> i2c-BOSC0200:base
-
-> > What if you have two devices with the same ID and both have two
-> > I2cSerialBusV2() resources? Second one can't be instantiated because
-> > 'base' is already here.
-> > Making it like i2c-BOSC0200:00.base would be much better in my opinion.
+On Wed, Nov 25, 2020 at 5:24 PM Jakub Kicinski <kuba@kernel.org> wrote:
 >
-> Ah I see, that is a somewhat valid point. But I really never expect
-> there to be 2 ACPI devices with a BOSC0200 hw-id, while also specifying
-> more then 1 i2c-client per node. That would just be all kinds of messed-up.
-
-I also don't expect such, but probability is still greater than zero
-(somebody may copy'n'paste the ASL excerpt from this device and apply
-as SSDT in one of DIYs kinda projects).
-
-> Thinking about this I think that getting a WARN_ON (and thus a bug report)
-> about a duplicate kobject-name when this happens would actually be good,
-> because then we need to figure out what the beep is going on on that
-> system. Note that other then triggering a WARN_ON the second
-> i2c_acpi_new_device will simply fail in this very unlikely scenario
-> (I know because I triggered this by accident while working on the patch).
+> And just to spell it out,
 >
-> Since in a way getting this WARN_ON is actually good (lets us know about
-> completely unexpected circumstances) and that making the name dynamic
-> as you suggest requires a bit of extra code I would actually prefer to
-> keep this as. Please let me know if that is ok with you.
+> case ENUM_VALUE1:
+>         bla();
+>         break;
+> case ENUM_VALUE2:
+>         bla();
+> default:
+>         break;
+>
+> is a fairly idiomatic way of indicating that not all values of the enum
+> are expected to be handled by the switch statement.
 
-Can you put a comment in the code that this name is considered global
-for now as we do not expect such circumstances. Then I'll be fine.
+It looks like a benign typo to me -- `ENUM_VALUE2` does not follow the
+same pattern like `ENUM_VALUE1`. To me, the presence of the `default`
+is what indicates (explicitly) that not everything is handled.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> Applying a real patch set and then getting a few follow ups the next day
+> for trivial coding things like fallthrough missing or static missing,
+> just because I didn't have the full range of compilers to check with
+> before applying makes me feel pretty shitty, like I'm not doing a good
+> job. YMMV.
+
+The number of compilers, checkers, static analyzers, tests, etc. we
+use keeps going up. That, indeed, means maintainers will miss more
+things (unless maintainers do more work than before). But catching
+bugs before they happen is *not* a bad thing.
+
+Perhaps we could encourage more rebasing in -next (while still giving
+credit to bots and testers) to avoid having many fixing commits
+afterwards, but that is orthogonal.
+
+I really don't think we should encourage the feeling that a maintainer
+is doing a bad job if they don't catch everything on their reviews.
+Any review is worth it. Maintainers, in the end, are just the
+"guaranteed" reviewers that decide when the code looks reasonable
+enough. They should definitely not feel pressured to be perfect.
+
+Cheers,
+Miguel

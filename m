@@ -2,116 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EEE22C3DBC
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 11:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE2C2C3DEB
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Nov 2020 11:40:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728192AbgKYKeA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 05:34:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59652 "EHLO
+        id S1729098AbgKYKhd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Nov 2020 05:37:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbgKYKd7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 05:33:59 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58A6C0613D4
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 02:33:59 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id s63so2072574pgc.8
-        for <linux-iio@vger.kernel.org>; Wed, 25 Nov 2020 02:33:59 -0800 (PST)
+        with ESMTP id S1725876AbgKYKh3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 05:37:29 -0500
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 572EAC0613D6;
+        Wed, 25 Nov 2020 02:37:29 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id b23so898046pls.11;
+        Wed, 25 Nov 2020 02:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FlHepVVPOgyhiyzCc+1qhF+4ii1VgfcKlQ98NFeOyZ4=;
-        b=rzpKHr6vzTWKnQxuKVYWOnT+b6q+i86sChjfSnvGVfxFCVhrz8FjM5/RLL4lXJ+QZj
-         WZQjAAtRUIJ3VJFnqh33kP8JGSWISrxonZi23LqphMIHMELO/1HnsZd4tMuDKp1cxj3f
-         Mc3YBOG3IrX+MSPC2aoPipBecPlZ0X7ryawA9IwcEA3SLolcwoO8i1dof0872S/A92QB
-         KwuPLlEnRdbWqzd/8Cl7ZKNEqPhgx0Pq13+UpjO3eCD0FR2tNoCmoyvMwX2JoJv19yjM
-         CpUp/RCKst81tE4j+QCTL1LH7P+9ASRA3Mar2gFJrCTE2kqdL6jfolSMkBf7YACioc0k
-         7+8A==
+        bh=lG3+Uwz8lZti6FSb8xjGyaQfdt5OwV03xvf6+L3ZqWc=;
+        b=YCtEdyPA4vCzWZsMjIt3djSgR9gg7vMRhn3I5LT7lEmWHdT3b/jEkR0QdduouORJ7k
+         kiuUl5RijkS3EJmc3PIdIbhuWrYEtLAccN+wdoprBDsU56ruoUGszfH1Sxvuy4WXIhMK
+         0dDt7R//JtRYOU1+gQ96Rpa2FinP3O1pFccTMutbPTGjvqTac0chojMQO8cZdySzLIim
+         HHsTKo91pUaUTwyxPnWizwDASocTC+n+eyDdN/HKPn9pe4V2vLDA/DOFrCcWbsrVXkvE
+         5CsjPeXzCB0gF8EvrEVdW+qQjVnUcViOyjSAD57xy0gbwLs+FCHLejwxIxOdH/xJHiTG
+         +NRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FlHepVVPOgyhiyzCc+1qhF+4ii1VgfcKlQ98NFeOyZ4=;
-        b=jIdpFowtaC5KTqQpqOi6Nk0R/6K2ePfJ2EonPkfoJgrs/hBWqYXbrw3vvJJ4RWoQcy
-         oJSo5Dp+AIRYcMwgrkjwPFrhDlxZ9yysY4DMT4bRsOq5Yp7rsysNJavtr8LljrsQbQk+
-         KhBIXRc8B6LPfKESDeCUJbCtaPL+csjv+JIijePRlcFCPiGb54Q81x6JtJeetQ4zcj6p
-         9P5ycNKQbRy6WL/4Q8B3Bvg4lsfyT805oJpBD1EOtjOQqS4Ae3FJ+0QR7hXvzZ05PqIO
-         pMh0di2zQXBbm3MOs2O8FmAKA0FkYw+L9V3EPHMu+Cde/sE0lZ7/Tgul74M0ZWXU49Yd
-         8pKA==
-X-Gm-Message-State: AOAM530cFAyd14U942H7wc3A38qzeVDdSA+tQ9sqZGmlv+oVLo6FhzT7
-        +Tjzj9L6buwraASMeh+WmYotFun9iBTiBTgqaO67ewDJuNGMkw==
-X-Google-Smtp-Source: ABdhPJzTGq7Rwzti/BKqIO5sWpQSkZYTcQUq36jjYQDqXwNHo0AbTs6KMpDdX2uza2RrQ1GxR2kA2xNK7sYu75zy4C0=
-X-Received: by 2002:a62:7e4f:0:b029:18c:9322:739b with SMTP id
- z76-20020a627e4f0000b029018c9322739bmr2526772pfc.7.1606300439183; Wed, 25 Nov
- 2020 02:33:59 -0800 (PST)
+        bh=lG3+Uwz8lZti6FSb8xjGyaQfdt5OwV03xvf6+L3ZqWc=;
+        b=HqxCMBnUjIt02wGgCngQgoatqmWXXlAtuei00ZaLA+J48O+B1j6bCYFuvdzJZHAMy9
+         SQZI3ZiFCUDUFHusJmIWT0MC92rOtiWOq6sEYoy8q25N3mDQAz1InmwPUJ2Roy/M3iPa
+         vltnthynrm17qL0rghDuth0vDo20iDxAaR+anXajOpA/0VENftxw7HJGmAtN+2MyxP0c
+         cw4tjtyc+WlxAzt4+qTpy9KvfvIVCmRuF5v3nK5U6GDt/TDSh1+4tewI/akYbvoF8/uY
+         f1WblEOyb3N1rkqS7L34BJzRlxD6yYBVFdYI5Vs/ET0tu9tthm6XyZscWs0u3X//933D
+         hunw==
+X-Gm-Message-State: AOAM5304mZtoVvAcNBp/cPMGh/vdShE0t5qCmjw2XeMKosWoDEmFIXv8
+        IAHmTwESxPjqzwmi9sJ7XwoV7crHuuNgZomTcvU=
+X-Google-Smtp-Source: ABdhPJzEY8ebPN4xZ4jf0ZFVw9i65L6qlCom+E751HZA34/qY3SkadUuuLf2HukIG4qONDPWI5feIsM1VQGLuSbFYSc=
+X-Received: by 2002:a17:902:ead2:b029:da:2596:198e with SMTP id
+ p18-20020a170902ead2b02900da2596198emr1937529pld.21.1606300648824; Wed, 25
+ Nov 2020 02:37:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20201125085444.11593-1-hdegoede@redhat.com> <20201125085444.11593-2-hdegoede@redhat.com>
-In-Reply-To: <20201125085444.11593-2-hdegoede@redhat.com>
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
+ <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
+ <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
+ <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
+ <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
+ <CANiq72k5tpDoDPmJ0ZWc1DGqm+81Gi-uEENAtvEs9v3SZcx6_Q@mail.gmail.com> <4993259d01a0064f8bb22770503490f9252f3659.camel@HansenPartnership.com>
+In-Reply-To: <4993259d01a0064f8bb22770503490f9252f3659.camel@HansenPartnership.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 25 Nov 2020 12:34:47 +0200
-Message-ID: <CAHp75VfMxzO2Qx_t7mSv+Y_DEN8Y2KYw02No=y=VuBNACtj4zg@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: kxcjk1013: Add tablet_mode sysfs file for
- exercising the KIOX010A ACPI DSM
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Jeremy Cline <jeremy@jcline.org>,
+Date:   Wed, 25 Nov 2020 12:38:17 +0200
+Message-ID: <CAHp75VfaewwkLsrht95Q7DaxFk7JpQjwx0KQ7Jvh5f7DUbZkRA@mail.gmail.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
+        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
+        coreteam@netfilter.org,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        device-mapper development <dm-devel@redhat.com>,
+        drbd-dev@lists.linbit.com,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        linux-geode@lists.infradead.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
         linux-iio <linux-iio@vger.kernel.org>,
-        russianneuromancer <russianneuromancer@ya.ru>
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
+        linux-nfs@vger.kernel.org,
+        "open list:HFI1 DRIVER" <linux-rdma@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-sctp@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        USB <linux-usb@vger.kernel.org>, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org,
+        target-devel <target-devel@vger.kernel.org>,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 10:56 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 KXCJ91008-s
-> to allow the OS to determine the angle between the display and the base
-> of the device, so that the OS can determine if the 2-in-1 is in laptop
-> or in tablet-mode.
->
-> On Windows both accelerometers are read by a special HingeAngleService
-> process; and this process calls a DSM (Device Specific Method) on the
-> ACPI KIOX010A device node for the sensor in the display, to let the
-> embedded-controller (EC) know about the mode so that it can disable the
-> kbd and touchpad to avoid spurious input while folded into tablet-mode.
->
-> Currently the kxcjk1013 driver calls the DSM for this once at probe time
-> to ensure that the builtin kbd and touchpad work.
->
-> But some users have expressed interest in using this functionality to
-> disable the kbd and touchpad when folded into tablet-mode as done under
-> Windows.
->
-> Add a tablet_mode sysfs file so that users can control the kbd/touchpad
-> enable/disable functionality from user-space.
+On Mon, Nov 23, 2020 at 10:39 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+> On Mon, 2020-11-23 at 19:56 +0100, Miguel Ojeda wrote:
+> > On Mon, Nov 23, 2020 at 4:58 PM James Bottomley
+> > <James.Bottomley@hansenpartnership.com> wrote:
 
 ...
 
-> +       err = kiox010a_dsm(&data->client->dev,
-> +                          tablet_mode ? KIOX010A_SET_TABLET_MODE :
-> +                                        KIOX010A_SET_LAPTOP_MODE);
+> > But if we do the math, for an author, at even 1 minute per line
+> > change and assuming nothing can be automated at all, it would take 1
+> > month of work. For maintainers, a couple of trivial lines is noise
+> > compared to many other patches.
+>
+> So you think a one line patch should take one minute to produce ... I
+> really don't think that's grounded in reality.  I suppose a one line
+> patch only takes a minute to merge with b4 if no-one reviews or tests
+> it, but that's not really desirable.
 
-A nit. With temporary variable it may be slightly better to read, like:
-
-  int value;
-  ...
-  value = tablet_mode ? KIOX010A_SET_TABLET_MODE : KIOX010A_SET_LAPTOP_MODE);
-  err = kiox010a_dsm(&data->client->dev, value);
-
-> +       if (err)
-> +               return err;
-
-...
-
-> +               ret = devm_device_add_group(&data->client->dev, &tablet_mode_attrs_group);
-> +               if (ret < 0)
-> +                       dev_warn(&data->client->dev, "Error creating tablet_mode sysfs attribute\n");
-
-devm is a beast (sometimes). Just to make sure that on removal you
-won't have situation when attribute is still there while data it's
-accessing to are already gone or garbage.
+In my practice most of the one line patches were either to fix or to
+introduce quite interesting issues.
+1 minute is 2-3 orders less than usually needed for such patches.
+That's why I don't like churn produced by people who often even didn't
+compile their useful contributions.
 
 -- 
 With Best Regards,

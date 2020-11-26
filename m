@@ -2,136 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1E92C4C18
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Nov 2020 01:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1502A2C520B
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Nov 2020 11:33:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729055AbgKZAap (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Nov 2020 19:30:45 -0500
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:42610 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgKZAao (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Nov 2020 19:30:44 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 742A42A495;
-        Wed, 25 Nov 2020 19:30:37 -0500 (EST)
-Date:   Thu, 26 Nov 2020 11:30:36 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
-        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-scsi@vger.kernel.org,
-        linux-rdma@vger.kernel.org, oss-drivers@netronome.com,
-        bridge@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        selinux@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-nfs@vger.kernel.org, GR-Linux-NIC-Dev@marvell.com,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net, linux-mmc@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
-        netfilter-devel@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, patches@opensource.cirrus.com,
-        linux-integrity@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
- Clang
-In-Reply-To: <CAKwvOdna5Zj_O=sB7Q0jHZX0BJSaakX=ZyftwQ_3=L3-ZB54XQ@mail.gmail.com>
-Message-ID: <alpine.LNX.2.23.453.2011261031290.6@nippy.intranet>
-References: <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com> <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
- <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com> <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com> <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com> <20201123130348.GA3119@embeddedor>
- <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com> <202011241327.BB28F12F6@keescook> <a841536fe65bb33f1c72ce2455a6eb47a0107565.camel@HansenPartnership.com> <CAKwvOdkGBn7nuWTAqrORMeN1G+w3YwBfCqqaRD2nwvoAXKi=Aw@mail.gmail.com>
- <alpine.LNX.2.23.453.2011260750300.6@nippy.intranet> <CAKwvOdna5Zj_O=sB7Q0jHZX0BJSaakX=ZyftwQ_3=L3-ZB54XQ@mail.gmail.com>
+        id S2387669AbgKZKae (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Nov 2020 05:30:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59600 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727427AbgKZKad (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Nov 2020 05:30:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606386631;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gmBEtLHpK3WFYus9ag1PvMif0JEi5rf9R4FrERMhRb8=;
+        b=Akm40MK0mDMORG4+Dy7oBfn/uT2kbwzumidkuZ9E+i69FK93F08B/hlT6CSOZQL0Uk9JNf
+        BqyH+S7HeX7vadAdw/5hdt6XevPf0clDhoXccmOJh6QPK+b16WXdmaAtm2t1aPN50HmZG+
+        KF8Mtq9UYVhWGLOTvhmMsgKyPmUnUHs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-507-mB_mFA0WPIK1R74wsRV7dA-1; Thu, 26 Nov 2020 05:30:26 -0500
+X-MC-Unique: mB_mFA0WPIK1R74wsRV7dA-1
+Received: by mail-ej1-f69.google.com with SMTP id yc22so641693ejb.20
+        for <linux-iio@vger.kernel.org>; Thu, 26 Nov 2020 02:30:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gmBEtLHpK3WFYus9ag1PvMif0JEi5rf9R4FrERMhRb8=;
+        b=MEV2BlgeYrJwxYWsmUxRLWV/msNfeP3MJ05ufI24vD36jvx04gWKccaaxgeCEwt6nT
+         ELcKBlUZTVHaqGe2EI22vX7zwRg2P9TVMfGJh93Kw5QUOCsmGz7JDyPOFD5zT3NS3CFZ
+         pEiyzB3N3CD6b6Tz4hAsTyCJ+Olg/Er7YZouulCRWB99aevcw7axCpCYk/LUtFbHztGq
+         oyn33LbHG6qWWQF+j6vsYg8oJGEctsYtjRSQ2L14Lk9XzQrliNKJhXy2Sgyd9TtnJuGB
+         m3QC9f066s3y/lIRpQMilJa0ZgxqmysZinh6iuJ5PwIY8QHhGABryvSUIclAPRFwNG14
+         IUwg==
+X-Gm-Message-State: AOAM532rgay2LqnCGOv1LnwdnqM/1cZoSveSz7Ly4X7CgUgpLiepOvQX
+        XSUVkdpBPUP4L+ORkxXe0vSz2A9qZVq5HckZmueRVnytQ/lDjErA0fWy865/oLXJCi5mWWnJSBi
+        6uhPh5W5AY0Tps1YnLxg5
+X-Received: by 2002:a05:6402:491:: with SMTP id k17mr1899175edv.370.1606386625019;
+        Thu, 26 Nov 2020 02:30:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx15BzesrKzYLqKbp7Db3yySqVJxfuwlZaDi+Ev1kHA9wWohm2SN+WVkZwIU8YgiRCslzVxFQ==
+X-Received: by 2002:a05:6402:491:: with SMTP id k17mr1899151edv.370.1606386624785;
+        Thu, 26 Nov 2020 02:30:24 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id pk19sm496616ejb.32.2020.11.26.02.30.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Nov 2020 02:30:23 -0800 (PST)
+Subject: Re: [PATCH] iio: accel: kxcjk1013: Add tablet_mode sysfs file for
+ exercising the KIOX010A ACPI DSM
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jeremy Cline <jeremy@jcline.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        russianneuromancer <russianneuromancer@ya.ru>
+References: <20201125085444.11593-1-hdegoede@redhat.com>
+ <20201125085444.11593-2-hdegoede@redhat.com>
+ <CAHp75VfMxzO2Qx_t7mSv+Y_DEN8Y2KYw02No=y=VuBNACtj4zg@mail.gmail.com>
+ <94522440-5842-4527-f14e-e02462272611@redhat.com>
+ <20201125184824.2052d6aa@archlinux>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <1cf7d44c-832c-a62b-da4e-1df3a95610da@redhat.com>
+Date:   Thu, 26 Nov 2020 11:30:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20201125184824.2052d6aa@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
-
-On Wed, 25 Nov 2020, Nick Desaulniers wrote:
-
-> On Wed, Nov 25, 2020 at 1:33 PM Finn Thain <fthain@telegraphics.com.au> wrote:
-> >
-> > Or do you think that a codebase can somehow satisfy multiple checkers 
-> > and their divergent interpretations of the language spec?
+On 11/25/20 7:48 PM, Jonathan Cameron wrote:
+> On Wed, 25 Nov 2020 11:55:45 +0100
+> Hans de Goede <hdegoede@redhat.com> wrote:
 > 
-> Have we found any cases yet that are divergent? I don't think so. 
+>> Hi,
+>>
+>> On 11/25/20 11:34 AM, Andy Shevchenko wrote:
+>>> On Wed, Nov 25, 2020 at 10:56 AM Hans de Goede <hdegoede@redhat.com> wrote:  
+>>>>
+>>>> Some 360 degree hinges (yoga) style 2-in-1 devices use 2 KXCJ91008-s
+>>>> to allow the OS to determine the angle between the display and the base
+>>>> of the device, so that the OS can determine if the 2-in-1 is in laptop
+>>>> or in tablet-mode.
+>>>>
+>>>> On Windows both accelerometers are read by a special HingeAngleService
+>>>> process; and this process calls a DSM (Device Specific Method) on the
+>>>> ACPI KIOX010A device node for the sensor in the display, to let the
+>>>> embedded-controller (EC) know about the mode so that it can disable the
+>>>> kbd and touchpad to avoid spurious input while folded into tablet-mode.
+>>>>
+>>>> Currently the kxcjk1013 driver calls the DSM for this once at probe time
+>>>> to ensure that the builtin kbd and touchpad work.
+>>>>
+>>>> But some users have expressed interest in using this functionality to
+>>>> disable the kbd and touchpad when folded into tablet-mode as done under
+>>>> Windows.
+>>>>
+>>>> Add a tablet_mode sysfs file so that users can control the kbd/touchpad
+>>>> enable/disable functionality from user-space.  
+> 
+> Biggest thing missing here is documentation.
+> 
+> Documentation/ABI/testing/sysfs-bus-iio-kxcjk1013
 
-You mean, aside from -Wimplicit-fallthrough? I'm glad you asked. How about 
--Wincompatible-pointer-types and -Wframe-larger-than?
+Erm, as I explained in the cover letter this new sysfs attribute sits below
 
-All of the following files have been affected by divergent diagnostics 
-produced by clang and gcc.
+/sys/bus/i2c/devices/KIOX010A:00/
 
-arch/arm64/include/asm/neon-intrinsics.h
-arch/powerpc/xmon/Makefile
-drivers/gpu/drm/i915/Makefile
-drivers/gpu/drm/i915/i915_utils.h
-drivers/staging/media/atomisp/pci/atomisp_subdev.c
-fs/ext4/super.c
-include/trace/events/qla.h
-net/mac80211/rate.c
-tools/lib/string.c
-tools/perf/util/setup.py
-tools/scripts/Makefile.include
+So thew new file is:
 
-And if I searched for 'smatch' or 'coverity' instead of 'clang' I'd 
-probably find more divergence.
+/sys/bus/i2c/devices/KIOX010A:00/tablet_mode
 
-Here are some of the relevant commits.
+IOW it does NOT sit below:
 
-0738c8b5915c7eaf1e6007b441008e8f3b460443
-9c87156cce5a63735d1218f0096a65c50a7a32aa
-babaab2f473817f173a2d08e410c25abf5ed0f6b
-065e5e559555e2f100bc95792a8ef1b609bbe130
-93f56de259376d7e4fff2b2d104082e1fa66e237
-6c4798d3f08b81c2c52936b10e0fa872590c96ae
-b7a313d84e853049062011d78cb04b6decd12f5c
-093b75ef5995ea35d7f6bdb6c7b32a42a1999813
+/sys/bus/iio/devices/iio-device1
 
-And before you object, "but -Wconstant-logical-operand is a clang-only 
-warning! it can't be divergent with gcc!", consider that the special cases 
-added to deal with clang-only warnings have to be removed when gcc catches 
-up, which is more churn. Now multiply that by the number of checkers you 
-care about.
+I did this deliberately so that it is in no way part of the IIO userspace-API
+(where it does not belong).
+
+I did have it as part of the IIO userspace API before, that is one of
+the reasons why I wrote the:
+"iio: core: Copy iio_info.attrs->is_visible into iio_dev_opaque.chan_attr_group.is_visible"
+
+Patch so that I could only make it show up in the KIOX010A case without needing
+to duplicate the structures describing the IIO channels. But just not putting
+it in the IIO "namespace" at all seemed cleaner, so I eventually went with
+that as solution.  And I still believe that having this under the i2c-device
+rather then under the iio-device is the right thing to do, but I'm open to
+changing that.
+
+I guess I could still try to document it somewhere, but with the scheme
+which I chose there really isn't a vert good place to document this...
+
+> Unless this is documented somewhere else?  I've no idea if there is any
+> precedence for this/
+
+There is plenty of precedence for adhoc driver specific sysfs attributes
+being added to the (parent) device, but these tend to not be documented
+(which I must admit is kinda bad).
+
+> 
+>>>
+>>> ...
+>>>   
+>>>> +       err = kiox010a_dsm(&data->client->dev,
+>>>> +                          tablet_mode ? KIOX010A_SET_TABLET_MODE :
+>>>> +                                        KIOX010A_SET_LAPTOP_MODE);  
+>>>
+>>> A nit. With temporary variable it may be slightly better to read, like:
+>>>
+>>>   int value;
+>>>   ...
+>>>   value = tablet_mode ? KIOX010A_SET_TABLET_MODE : KIOX010A_SET_LAPTOP_MODE);
+>>>   err = kiox010a_dsm(&data->client->dev, value);  
+>>
+>> I'm fine with either solution, Jonathan let me know if you want a v2 with
+>> Andy's suggestion implemented (assuming you are willing to take this at all).
+> 
+> Prefer Andy's suggestion slightly seeing as you are going around again to
+> include some docs :)
+
+Ok, I'll change this for v2 once we have the other bits figured out.
+
+Regards,
+
+Hans
+

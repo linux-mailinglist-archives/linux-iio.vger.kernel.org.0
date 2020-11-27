@@ -2,193 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE6B72C642D
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Nov 2020 13:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 261972C65A3
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Nov 2020 13:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbgK0MDB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Nov 2020 07:03:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727037AbgK0MDA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Nov 2020 07:03:00 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E5FC0613D1;
-        Fri, 27 Nov 2020 04:03:00 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id d18so5433343edt.7;
-        Fri, 27 Nov 2020 04:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ljs7bo8+Z6zm1yHWLhCx7KDEBcbP9Ge0LaZUKyJNGgs=;
-        b=DhRr2XcILC8y0VpenSUyKTup4ViFnqAM52jo3fZUJ5JsocstR4PnCcuvCX+0x5xkPE
-         RF08q+V5kKoL/+4uDQs9yeRHTeuK/0OhEzalUPetlsF4GotBAjaWT+CVOUC/OsaSGaJv
-         aXAg6W6BHeOfT1LMxa1R/qIRqUKcOaVBqFX/uy7/v9zeUy/OG0IGSvhYyq7tK2Keh+TD
-         fmWI8qJkAoVI0L5fkp0flwz22XL03J24Gb7MF6pfKLUSlp0WOW31zrFc2RRn6VTmP9Nf
-         AQTF04UI7bYUeOgmQZR1qp2UhpCtzetXwTQkTfxM5XN8Z33kKSdoUghn8taqifFvkeg4
-         pkug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ljs7bo8+Z6zm1yHWLhCx7KDEBcbP9Ge0LaZUKyJNGgs=;
-        b=mB0naX1Ps7C6PNRZoVsPIk9lxlSRs8MAFL2XPpyGOgsuy0ue8f0DNtaC0QKNpYYWWT
-         Ci8LlCY7KIYU4aooYH7B5YxlyN/RBKA92nv0J/NOLGsLd6HqzozluTRakS01W6aFtZTk
-         tWl6w8de9drq4KVpk7mbedTjNiklMudxkKo1t5BZvEU7CKrVkShu0zkpyi3ncZOV/s4w
-         L3yJnTb2xKZUI0FGERvxIJHxxMHpkbg47j36fpWAj8sP2Wl8PnyI5xM00fX64Za52sK7
-         jnCc3ICWwy4qXj6GfeUZu8pQf6UGjdvsl8aDWr1Cc99Ey3eSSQtnWiZMBtnbCqWuLFGP
-         rKug==
-X-Gm-Message-State: AOAM533CQFVTxuyQbi4z6FYsob+1Gc7ZqoAuw+N1h+mnQ3priYeHr8mS
-        k0zyYCQAVBLJuwO9GUHjCjJIWjQHrps47QYXgk8AASniQr8=
-X-Google-Smtp-Source: ABdhPJwrkjcVEMp4LMksn2e4QTL78DpR25/XfY75r4lYjbQP9VcAhouHNQLeFEWd0MnPBTB2UsEHzwp62291GCJskm4=
-X-Received: by 2002:aa7:c80b:: with SMTP id a11mr7282551edt.111.1606478578835;
- Fri, 27 Nov 2020 04:02:58 -0800 (PST)
+        id S1727906AbgK0MQH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Nov 2020 07:16:07 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2168 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727859AbgK0MQG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Nov 2020 07:16:06 -0500
+Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CjD7r6q6dz67JcP;
+        Fri, 27 Nov 2020 20:14:16 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 27 Nov 2020 13:16:04 +0100
+Received: from localhost (10.52.122.48) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 27 Nov
+ 2020 12:16:04 +0000
+Date:   Fri, 27 Nov 2020 12:15:46 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        <colin.king@canonical.com>, linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: iio: adc: ad7298: rework external ref setup & remove platform
+ data
+Message-ID: <20201127121546.00004604@Huawei.com>
+In-Reply-To: <CA+U=DsrMeqrH-vy4-S8+uKRb5XJB+uaDY4ejH6mDCPMdgTc7Zw@mail.gmail.com>
+References: <442ef85b-47a0-09a9-7f6a-882f1817e51a@canonical.com>
+        <DM6PR03MB4411E6C39D991B5C5AAC1F86F9F80@DM6PR03MB4411.namprd03.prod.outlook.com>
+        <CA+U=DsrMeqrH-vy4-S8+uKRb5XJB+uaDY4ejH6mDCPMdgTc7Zw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20201119100748.57689-1-alexandru.ardelean@analog.com> <20201121153653.568c7344@archlinux>
-In-Reply-To: <20201121153653.568c7344@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 27 Nov 2020 14:02:47 +0200
-Message-ID: <CA+U=DsprS5V5LXROP4m4iuWexH9aZir-+DJKWZ4kcgKLS86+Tg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] iio: adc: ad7887: convert dual-channel mode to DT/ACPI
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.122.48]
+X-ClientProxiedBy: lhreml729-chm.china.huawei.com (10.201.108.80) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 5:38 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Thu, 19 Nov 2020 12:07:45 +0200
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->
-> > This change converts the configuration of the dual-channel mode from the
-> > old platform-data, to the device_property_present() function, which
-> > supports both device-tree and ACPI configuration setups.
-> >
-> > With this change the old platform_data include of the driver can be
-> > removed.
-> >
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
->
-> Hi Alexandru,
->
-> The set looks good in general, but there is a an oddity in the driver.
-> If we don't provide the vref regulator, then the scale is set to reflect
-> the internal 2.5V reference.  Fiven the external reference only
-> works by overdriving the 2.5V (must be higher than that to have
-> an effect) I guess we could in theory clamp it to a minimum of
-> 2.5V but anyone wiring up less than that would have built a crazy board
-> so we can probably ignore it.
->
-> However, as I read the datasheet in dual channel mode it should be set
-> to VDD not 2.5V.  Right now you could make it work in a DT file
-> by setting VREF==VDD regulator but that's inelegant.
->
-> If you agree with my logic, perhaps a follow up patch?
+On Fri, 27 Nov 2020 11:24:16 +0200
+Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
 
-I haven't managed to get around to this one.
-Will try next week.
+> On Fri, Nov 27, 2020 at 8:24 AM Ardelean, Alexandru
+> <alexandru.Ardelean@analog.com> wrote:
+> >
+> >
+> >  
+> > > -----Original Message-----
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > > Sent: Wednesday, November 25, 2020 4:37 PM
+> > > To: Ardelean, Alexandru <alexandru.Ardelean@analog.com>; Jonathan
+> > > Cameron <Jonathan.Cameron@huawei.com>
+> > > Subject: re: iio: adc: ad7298: rework external ref setup & remove platform data
+> > >
+> > > [External]
+> > >
+> > > Hi there,
+> > >
+> > > Static analysis with Coverity on Linux-next today found a potential null pointer
+> > > dereference. I believe it was triggered by the following commit:
+> > >
+> > > commit 28963f2f6b46d75bda8fed15bd5ce9923427a40d
+> > > Author: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > > Date:   Thu Oct 1 17:10:48 2020 +0300
+> > >
+> > >     iio: adc: ad7298: rework external ref setup & remove platform data
+> > >
+> > > ..however the issue may have existed before now and this change triggered the
+> > > bug being found.
+> > >
+> > > The analysis is as follows:
+> > >
+> > >
+> > > 282 static int ad7298_probe(struct spi_device *spi)
+> > > 283 {
+> > > 284        struct ad7298_state *st;
+> > > 285        struct iio_dev *indio_dev;
+> > > 286        int ret;
+> > > 287
+> > > 288        indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> > >
+> > >    1. Condition indio_dev == NULL, taking false branch.
+> > >
+> > > 289        if (indio_dev == NULL)
+> > > 290                return -ENOMEM;
+> > > 291
+> > > 292        st = iio_priv(indio_dev);
+> > > 293
+> > > 294        st->reg = devm_regulator_get_optional(&spi->dev, "vref");
+> > >
+> > >    2. Condition !IS_ERR(st->reg), taking false branch.
+> > >
+> > > 295        if (!IS_ERR(st->reg)) {
+> > > 296                st->ext_ref = AD7298_EXTREF;
+> > > 297        } else {
+> > > 298                ret = PTR_ERR(st->reg);
+> > >
+> > >    3. Condition ret != -19, taking false branch.
+> > >
+> > > 299                if (ret != -ENODEV)
+> > > 300                        return ret;
+> > > 301
+> > > 302                st->reg = NULL;
+> > > 303        }
+> > > 304
+> > >
+> > >    4. Condition st->reg, taking false branch.
+> > >    5. var_compare_op: Comparing st->reg to null implies that st->reg might be
+> > > null.
+> > >
+> > > 305        if (st->reg) {
+> > > 306                ret = regulator_enable(st->reg);
+> > > 307                if (ret)
+> > > 308                        return ret;
+> > > 309        }
+> > > 310
+> > > 311        spi_set_drvdata(spi, indio_dev);
+> > > 312
+> > > 313        st->spi = spi;
+> > > 314
+> > > 315        indio_dev->name = spi_get_device_id(spi)->name;
+> > > 316        indio_dev->modes = INDIO_DIRECT_MODE;
+> > > 317        indio_dev->channels = ad7298_channels;
+> > > 318        indio_dev->num_channels = ARRAY_SIZE(ad7298_channels);
+> > > 319        indio_dev->info = &ad7298_info;
+> > > 320
+> > > 321        /* Setup default message */
+> > > 322
+> > > 323        st->scan_single_xfer[0].tx_buf = &st->tx_buf[0];
+> > > 324        st->scan_single_xfer[0].len = 2;
+> > > 325        st->scan_single_xfer[0].cs_change = 1;
+> > > 326        st->scan_single_xfer[1].tx_buf = &st->tx_buf[1];
+> > > 327        st->scan_single_xfer[1].len = 2;
+> > > 328        st->scan_single_xfer[1].cs_change = 1;
+> > > 329        st->scan_single_xfer[2].rx_buf = &st->rx_buf[0];
+> > > 330        st->scan_single_xfer[2].len = 2;
+> > > 331
+> > > 332        spi_message_init(&st->scan_single_msg);
+> > > 333        spi_message_add_tail(&st->scan_single_xfer[0],
+> > > &st->scan_single_msg);
+> > > 334        spi_message_add_tail(&st->scan_single_xfer[1],
+> > > &st->scan_single_msg);
+> > > 335        spi_message_add_tail(&st->scan_single_xfer[2],
+> > > &st->scan_single_msg);
+> > > 336
+> > > 337        ret = iio_triggered_buffer_setup(indio_dev, NULL,
+> > > 338                        &ad7298_trigger_handler, NULL);
+> > >
+> > >    6. Condition ret, taking true branch.
+> > >
+> > > 339        if (ret)
+> > >
+> > >    7. Jumping to label error_disable_reg.
+> > >
+> > > 340                goto error_disable_reg;
+> > > 341
+> > > 342        ret = iio_device_register(indio_dev);
+> > > 343        if (ret)
+> > > 344                goto error_cleanup_ring;
+> > > 345
+> > > 346        return 0;
+> > > 347
+> > > 348 error_cleanup_ring:
+> > > 349        iio_triggered_buffer_cleanup(indio_dev);
+> > > 350 error_disable_reg:
+> > >
+> > >    8. Condition st->ext_ref, taking true branch.
+> > >
+> > > 351        if (st->ext_ref)
+> > >
+> > > Dereference after null check (FORWARD_NULL)
+> > >    9. var_deref_model: Passing null pointer st->reg to regulator_disable, which
+> > > dereferences it.
+> > >
+> > > 352                regulator_disable(st->reg);
+> > > 353
+> > > 354        return ret;
+> > > 355 }
+> > >
+> > >
+> > > My initial thought was to just add:
+> > >
+> > >       if (st->ext_ref && st->reg)
+> > >               regulator_disable(st_reg);
+> > >
+> > > ..however it may be just that the code in line 302 should be aborting earlier
+> > > when the st->reg is set to NULL.  
+> 
+> I think a slightly better option would be to finalize the conversion
+> to devm_ functions here.
+> That way, we can cleanup/reduce some of the code.
+> I do remember seeing that 'st->ext_ref'  is being checked for some
+> regulator_xxx() function calls, and that isn't pretty.
+> But 'st->ext_ref' is zero when 'st->reg' is NULL.
+> So, this is a bit of a false-positive (I think).
 
+Agreed it's a false positive though would make sense to check st->reg rather than
+st->ext_ref here.
 
->
-> Jonathan
->
->
-> > ---
-> >
-> > I'm wondering if this changeset is what was in mind here:
-> >  https://lore.kernel.org/linux-iio/CA+U=DsqF5tu8Be9KXeyCWD2uHvV688Nc3n=z_Xi2J6H6DFJPRQ@mail.gmail.com/T/#mbe72e4da3acea3899d0d35402ea81e52a9bc34e6
-> > This driver could have been simplified/reduced a whole lot more, but I'm
-> > not sure about it. It's a bit of patch-noise, and later
-> >
-> > Changelog v1 -> v2:
-> > * dropped patch 'iio: adc: ad7887: convert driver to full DT probing'
-> >   not adding the device_get_match_data() logic anymore
-> > * added patch 'iio: adc: ad7887: remove matching code from driver'
-> >   hooking the chip info directly to AD7887
-> > * added patch 'iio: adc: ad7887: add OF match table'
-> >   this just adds an OF table for DT and ACPI
-> >
-> >  drivers/iio/adc/ad7887.c             | 10 +++++-----
-> >  include/linux/platform_data/ad7887.h | 21 ---------------------
-> >  2 files changed, 5 insertions(+), 26 deletions(-)
-> >  delete mode 100644 include/linux/platform_data/ad7887.h
-> >
-> > diff --git a/drivers/iio/adc/ad7887.c b/drivers/iio/adc/ad7887.c
-> > index 4f6f0e0e03ee..06f684c053a0 100644
-> > --- a/drivers/iio/adc/ad7887.c
-> > +++ b/drivers/iio/adc/ad7887.c
-> > @@ -23,8 +23,6 @@
-> >  #include <linux/iio/trigger_consumer.h>
-> >  #include <linux/iio/triggered_buffer.h>
-> >
-> > -#include <linux/platform_data/ad7887.h>
-> > -
-> >  #define AD7887_REF_DIS               BIT(5)  /* on-chip reference disable */
-> >  #define AD7887_DUAL          BIT(4)  /* dual-channel mode */
-> >  #define AD7887_CH_AIN1               BIT(3)  /* convert on channel 1, DUAL=1 */
-> > @@ -241,9 +239,9 @@ static void ad7887_reg_disable(void *data)
-> >
-> >  static int ad7887_probe(struct spi_device *spi)
-> >  {
-> > -     struct ad7887_platform_data *pdata = spi->dev.platform_data;
-> >       struct ad7887_state *st;
-> >       struct iio_dev *indio_dev;
-> > +     bool dual_mode;
-> >       uint8_t mode;
-> >       int ret;
-> >
-> > @@ -286,7 +284,9 @@ static int ad7887_probe(struct spi_device *spi)
-> >       mode = AD7887_PM_MODE4;
-> >       if (!st->reg)
-> >               mode |= AD7887_REF_DIS;
-> > -     if (pdata && pdata->en_dual)
-> > +
-> > +     dual_mode = device_property_present(&spi->dev, "adi,dual-channel-mode");
-> > +     if (dual_mode)
-> >               mode |= AD7887_DUAL;
-> >
-> >       st->tx_cmd_buf[0] = AD7887_CH_AIN0 | mode;
-> > @@ -298,7 +298,7 @@ static int ad7887_probe(struct spi_device *spi)
-> >       spi_message_init(&st->msg[AD7887_CH0]);
-> >       spi_message_add_tail(&st->xfer[0], &st->msg[AD7887_CH0]);
-> >
-> > -     if (pdata && pdata->en_dual) {
-> > +     if (dual_mode) {
-> >               st->tx_cmd_buf[2] = AD7887_CH_AIN1 | mode;
-> >
-> >               st->xfer[1].rx_buf = &st->data[0];
-> > diff --git a/include/linux/platform_data/ad7887.h b/include/linux/platform_data/ad7887.h
-> > deleted file mode 100644
-> > index 9b4dca6ae70b..000000000000
-> > --- a/include/linux/platform_data/ad7887.h
-> > +++ /dev/null
-> > @@ -1,21 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > -/*
-> > - * AD7887 SPI ADC driver
-> > - *
-> > - * Copyright 2010 Analog Devices Inc.
-> > - */
-> > -#ifndef IIO_ADC_AD7887_H_
-> > -#define IIO_ADC_AD7887_H_
-> > -
-> > -/**
-> > - * struct ad7887_platform_data - AD7887 ADC driver platform data
-> > - * @en_dual: Whether to use dual channel mode. If set to true AIN1 becomes the
-> > - *   second input channel, and Vref is internally connected to Vdd. If set to
-> > - *   false the device is used in single channel mode and AIN1/Vref is used as
-> > - *   VREF input.
-> > - */
-> > -struct ad7887_platform_data {
-> > -     bool en_dual;
-> > -};
-> > -
-> > -#endif /* IIO_ADC_AD7887_H_ */
->
+> 
+> I'll do the cleanup/conversion and then this should go away of coverity's radar.
+> 
+> Thanks
+> Alex
+> 
+> > >
+> > > Colin  
+

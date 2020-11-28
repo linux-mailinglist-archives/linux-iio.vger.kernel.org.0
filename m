@@ -2,126 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFBA32C748E
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D712C7488
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388203AbgK1Vtb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S2387398AbgK1Vtb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 28 Nov 2020 16:49:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50828 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:50826 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387398AbgK1TG4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:06:56 -0500
-Received: from localhost.localdomain (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2387405AbgK1THB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 14:07:01 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AECC620665;
-        Sat, 28 Nov 2020 18:54:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3890E206DF;
+        Sat, 28 Nov 2020 18:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606589650;
-        bh=TwtxZ+EMKJ2NgaTBHppbP68ah7yZb5vZnXaQJ6ybF7o=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ohcQzGGY6Y55B3Zn0agvcfVgDi1yE7zLuA0VkwWUsfAROEKubE+0P/IpcfmQ91lCQ
-         nQjOId3wqYNCXjmjWY4wZMsTFyU4+De2k0cqi66lKsmHOtgFW2PdONmkK21Vre3NKu
-         q6sUcP9SZ51UMzheFVOLGTtsKs6k4ZRcCi/g3NCg=
+        s=default; t=1606589985;
+        bh=+coEsG0GeAk2A2pOd+HdfZfhpjiLgHFoWZr3vNTLLJg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QF0ckU0vWiGT04fLPTOPTFUzJpiPVgOf6Sf9F6jQllamFuM7hYQ69VrORoVaHT+OB
+         qu6BuPfhYvkQwlHjmfP5gSfXYS4xbEIUSEaKN6/c2x6Qbzi2v/ZbSmE5BGcf5qSdLQ
+         GE9CPV6OAGfDNNx/jvzlgeosWNbrmSoDBJ+D7V7g=
+Date:   Sat, 28 Nov 2020 18:59:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] iio:gyro:mpu3050 Treat otp value as a __le64 and use FIELD_GET() to break up
-Date:   Sat, 28 Nov 2020 18:51:56 +0000
-Message-Id: <20201128185156.428327-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.29.2
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 6/9] ARM: dts: qcom-pma8084: Drop incorrect use of
+ io-channel-ranges
+Message-ID: <20201128185940.401c0465@archlinux>
+In-Reply-To: <X8KXMrFg1g8OsjZj@builder.lan>
+References: <20201115192951.1073632-1-jic23@kernel.org>
+        <20201115192951.1073632-7-jic23@kernel.org>
+        <20201128153702.7d144f68@archlinux>
+        <X8KXMrFg1g8OsjZj@builder.lan>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sat, 28 Nov 2020 12:30:10 -0600
+Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
 
-Inspired by Andy Shevchenko's proposal to use get_unaligned_leXX().
+> On Sat 28 Nov 09:37 CST 2020, Jonathan Cameron wrote:
+> 
+> > On Sun, 15 Nov 2020 19:29:48 +0000
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >   
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > 
+> > > This property is used by io-channel consumers, not providers so should
+> > > not present here.  Note dt_schema will now detect this error as there
+> > > is a dependency between this property and io-channels.
+> > > 
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Andy Gross <andy.gross@linaro.org>
+> > > Cc: Bjorn Andersson <bjorn.andersson@linaro.org>  
+> > +CC Andy on an up to date email. Also added linux-arm-msm
+> > which I should have cc'd in the first place.
+> > 
+> > I've taken the yaml fix related to this so just a question of
+> > cleaning up this loose end in the dtsi
+> >   
+> 
+> Thanks Jonathan, I missed your patches earlier. The yaml change looks
+> correct and I've merged this for 5.11.
 
-The whole one time programable memory is treated as a single 64bit
-little endian value.  Thus we can avoid a lot of messy handling
-of fields overlapping byte boundaries by just loading and manipulating
-it as an __le64 converted to a u64.  That lets us just use FIELD_GET()
-and GENMASK() to extract the values desired.
+No problem. I've added your tag to the yaml change.
 
-Note only build tested.
+Thanks,
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/iio/gyro/mpu3050-core.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+Jonathan
 
-diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index 00e58060968c..6380fc1bdee3 100644
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -13,6 +13,7 @@
-  * TODO: add support for setting up the low pass 3dB frequency.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-@@ -784,7 +785,8 @@ static int mpu3050_read_mem(struct mpu3050 *mpu3050,
- static int mpu3050_hw_init(struct mpu3050 *mpu3050)
- {
- 	int ret;
--	u8 otp[8];
-+	__le64 otp_le;
-+	u64 otp;
- 
- 	/* Reset */
- 	ret = regmap_update_bits(mpu3050->map,
-@@ -815,29 +817,31 @@ static int mpu3050_hw_init(struct mpu3050 *mpu3050)
- 				MPU3050_MEM_USER_BANK |
- 				MPU3050_MEM_OTP_BANK_0),
- 			       0,
--			       sizeof(otp),
--			       otp);
-+			       sizeof(otp_le),
-+			       (u8 *)&otp_le);
- 	if (ret)
- 		return ret;
- 
- 	/* This is device-unique data so it goes into the entropy pool */
--	add_device_randomness(otp, sizeof(otp));
-+	add_device_randomness(&otp_le, sizeof(otp_le));
-+
-+	otp = le64_to_cpu(otp_le);
- 
- 	dev_info(mpu3050->dev,
--		 "die ID: %04X, wafer ID: %02X, A lot ID: %04X, "
--		 "W lot ID: %03X, WP ID: %01X, rev ID: %02X\n",
-+		 "die ID: %04lX, wafer ID: %02lX, A lot ID: %04lX, "
-+		 "W lot ID: %03lX, WP ID: %01lX, rev ID: %02lX\n",
- 		 /* Die ID, bits 0-12 */
--		 (otp[1] << 8 | otp[0]) & 0x1fff,
-+		 FIELD_GET(GENMASK(12, 0), otp),
- 		 /* Wafer ID, bits 13-17 */
--		 ((otp[2] << 8 | otp[1]) & 0x03e0) >> 5,
-+		 FIELD_GET(GENMASK(17, 13), otp),
- 		 /* A lot ID, bits 18-33 */
--		 ((otp[4] << 16 | otp[3] << 8 | otp[2]) & 0x3fffc) >> 2,
-+		 FIELD_GET(GENMASK(33, 18), otp),
- 		 /* W lot ID, bits 34-45 */
--		 ((otp[5] << 8 | otp[4]) & 0x3ffc) >> 2,
-+		 FIELD_GET(GENMASK(45, 34), otp),
- 		 /* WP ID, bits 47-49 */
--		 ((otp[6] << 8 | otp[5]) & 0x0380) >> 7,
-+		 FIELD_GET(GENMASK(49, 47), otp),
- 		 /* rev ID, bits 50-55 */
--		 otp[6] >> 2);
-+		 FIELD_GET(GENMASK(55, 50), otp));
- 
- 	return 0;
- }
--- 
-2.29.2
+
+> 
+> Regards,
+> Bjorn
+> 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> > > ---
+> > >  arch/arm/boot/dts/qcom-pma8084.dtsi | 1 -
+> > >  1 file changed, 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm/boot/dts/qcom-pma8084.dtsi b/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > > index ea1ca166165c..e921c5e93a5d 100644
+> > > --- a/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > > +++ b/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > > @@ -68,7 +68,6 @@ pma8084_vadc: vadc@3100 {
+> > >  			#address-cells = <1>;
+> > >  			#size-cells = <0>;
+> > >  			#io-channel-cells = <1>;
+> > > -			io-channel-ranges;
+> > >  
+> > >  			die_temp {
+> > >  				reg = <VADC_DIE_TEMP>;  
+> >   
 

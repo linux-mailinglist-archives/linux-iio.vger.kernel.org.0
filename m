@@ -2,88 +2,1316 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF6552C752F
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AFAB2C747F
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729700AbgK1Vt0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42366 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731483AbgK1Sw6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 13:52:58 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D15C02A181
-        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 03:44:38 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id y10so8967837ljc.7
-        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 03:44:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JjI6jX2POrDX2Xe9vfJOZBcrPDMsHD4ZvzB5g8jo58c=;
-        b=Y8JG3qk1GMOjBQWuS/2x2Y6SgWUsuoaBXQbwkuOYw8X+41qAQFiTyTwjbbn8Uk5TSW
-         XQKOBAwsSCyyC+NxcSRbwmUdDdlwoQCYn6Y4VFCKHe4sXUtPBxfLXVbs6dXkX0WbfLp4
-         9BmFf9GV33IJGwyWv+tVHFGgS0tDSReumydu0KXGSLU1qzX4WiMzWNZid/Y+XYLUV9rt
-         OmrbNbbU/etMWzrud2j4IB+sT0gfk7ojz1YFE4bM/tHBCSFht61bdtK7pk4M37RqRTzx
-         4S3l0RVyqtAMZPQT9YTlYdXVYDoGlmm1Pu/pMuD/8im7cxF1J7Eaw690EzzmcjgM+VjJ
-         Fpjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JjI6jX2POrDX2Xe9vfJOZBcrPDMsHD4ZvzB5g8jo58c=;
-        b=Kn2Z8EtZpGFBEnix3zzzS4TTpaDz9SyZZ9zdIjt5l1kA2tUjBAwHMpuab4Z8jLw+Ug
-         gZqKBFF6xMaP+eBzGD7q4g/06rfOoACTMYEnCnEH3M1U3gBLmBr/nHESwraslo+gPQO9
-         eMZ2F3C6UOEhcJ0BdXMYQ0gresgzxvSfayQlwVDBMaCDFSsxim8Orr1exDZiYViJqfdX
-         FvREtpESMYTnOfMRVvwpXiQazyGD6PdJEZazqPBs1PdCaEIQ0/V0Cc5yEX534PoxqTQF
-         QZsiBzI10HGg7RW2Zk3oxqT0yaTQYJng5qEDAGgBh4J7z3IYpTRAT0yS2kVbnKqaczPW
-         pUVQ==
-X-Gm-Message-State: AOAM533cU38VG4Z4Nv3uQK1ZemsPtMhnme8NfGsmRC00d3jToMaac0Pt
-        rzPnjPwqWNc/xDzqiZJ70QITxwtUkIo6Bx/m9y16Pg==
-X-Google-Smtp-Source: ABdhPJw9wiMGdZC3WiQQA7TFZf40grr1B9eqDrzjTy7O/dpNvF4XTM+uulSzmravgG21gbMsU6yG51fMhnLvVeCdNxQ=
-X-Received: by 2002:a2e:998e:: with SMTP id w14mr5924842lji.100.1606563877267;
- Sat, 28 Nov 2020 03:44:37 -0800 (PST)
-MIME-Version: 1.0
-References: <20201115205745.618455-1-linus.walleij@linaro.org>
- <20201115205745.618455-3-linus.walleij@linaro.org> <20201121164505.30767f9f@archlinux>
-In-Reply-To: <20201121164505.30767f9f@archlinux>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 28 Nov 2020 12:44:26 +0100
-Message-ID: <CACRpkdbP3ccrEK47jaQ=r8sYkFuXBcH=+LTKC1xz+kgXmkwomg@mail.gmail.com>
-Subject: Re: [PATCH 3/3 v3] iio: accel: bmc150-accel: Add rudimentary
- regulator support
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S2388164AbgK1Vta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50320 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733172AbgK1TG0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 14:06:26 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4BCBD21D40;
+        Sat, 28 Nov 2020 12:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606566118;
+        bh=Uco9rwnvEmXbL6Mh/KuiM6eqWW6YJMHkYmTyhwrc4SM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=zXekz5BR6kB1Y4uFaZxcGFpuLnkEHCqiHlr+hsCOna5q25ShTeOK48Mrhpq0gKiL+
+         rC40k4OZzBusCstqgTugbaj7tDM4QXiJHSQAjTJxI1BX36C+NY+RostkZfcyguzVxk
+         P0+9Y+7sQhRsOB/cAoZh+swOVwLZhqGGTcWQDk4s=
+Date:   Sat, 28 Nov 2020 12:21:53 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2 v2] iio: magnetometer: Add driver for Yamaha YAS5xx
+Message-ID: <20201128122153.44c1052c@archlinux>
+In-Reply-To: <20201128004038.883289-2-linus.walleij@linaro.org>
+References: <20201128004038.883289-1-linus.walleij@linaro.org>
+        <20201128004038.883289-2-linus.walleij@linaro.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 5:45 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sun, 15 Nov 2020 21:57:45 +0100
-> Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> > These Bosch accelerometers have two supplies, VDD and VDDIO.
-> > Add some rudimentary support to obtain and enable these
-> > regulators during probe() and disable them during remove()
-> > or on the errorpath.
-> >
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+On Sat, 28 Nov 2020 01:40:38 +0100
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> All looks good to me.  Will leave it for a bit longer though to let
-> Rob have a chance to look at the dt binding doc.
->
-> As ever, if it seems to have gotten lost it is probably worth
-> poking me.
+> This adds an IIO magnetometer driver for the Yamaha
+> YAS53x magnetometer/compass chips YAS530 and YAS532.
+> A quick survey of the source code released by different
+> vendors reveal that we have these variants in the family
+> with some deployments listed:
+> 
+>  * YAS529 MS-3C (2005 Samsung Aries)
+>  * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
+>  * YAS532 MS-3R (2011 Samsung Galaxy S4)
+>  * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
+>  * (YAS534 is a magnetic switch)
+>  * YAS535 MS-6C
+>  * YAS536 MS-3W
+>  * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5)
+>  * YAS539 MS-3S (2018 Samsung Galaxy A7 SM-A750FN)
+> 
+> The YAS529 is so significantly different from the
+> YAS53x variants that it will require its own driver.
+> The YAS537 and YAS539 have slightly different register
+> sets but have strong similarities so a common driver
+> will probably be reasonable.
+> 
+> The source code for Samsung Galaxy A7's YAS539 is not
+> that significantly different from the YAS530 in the
+> Galaxy S Advance, so I believe we will only need this
+> one driver with quirks to handle all of them.
+> 
+> The YAS539 is actively announced on Yamaha's devices
+> site:
+> https://device.yamaha.com/en/lsi/products/e_compass/
+> 
+> This is a driver written from scratch using buffered
+> IIO and runtime PM handling regulators and reset.
+> 
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-It's been another week and the bindings are simple enough
-I think? There has been plenty of time to review these
-bindings as they are now in v3 even, but it's a soft measure,
-I know there is usually this YAML-bot that complains if
-something is way out of line at least.
+Hi Linus,
 
-Yours,
-Linus Walleij
+Various comments inline.
+The 'interesting' nature of the packing in those calibration registers
+is unfortunate.  I'm not really sure how we make that code more readable
+but using overlapping unaligned big endian reads definitely doesn't make
+it easier for me to follow!
+
+Jonathan
+
+> ---
+> ChangeLog v1->v3:
+> - This is posted along with the DT bindings which are
+>   in v3 so just number everything as v3.
+> ---
+>  drivers/iio/magnetometer/Kconfig         |   16 +
+>  drivers/iio/magnetometer/Makefile        |    2 +
+>  drivers/iio/magnetometer/yamaha-yas53x.c | 1062 ++++++++++++++++++++++
+>  3 files changed, 1080 insertions(+)
+>  create mode 100644 drivers/iio/magnetometer/yamaha-yas53x.c
+> 
+> diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
+> index 1697a8c03506..4e32f3c8cc93 100644
+> --- a/drivers/iio/magnetometer/Kconfig
+> +++ b/drivers/iio/magnetometer/Kconfig
+> @@ -205,4 +205,20 @@ config SENSORS_RM3100_SPI
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called rm3100-spi.
+>  
+> +config YAMAHA_YAS53X
+> +	tristate "Yamaha YAS53x 3-Axis Magnetometers (I2C)"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	help
+> +	  Say Y here to add support for the Yamaha YAS53x series of
+> +	  3-Axis Magnetometers. Right now YAS530, YAS532 and YAS533 are
+> +	  fully supported.
+> +
+> +	  This driver can also be compiled as a module.
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called yamaha-yas.
+> +
+One line only
+> +
+>  endmenu
+> diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
+> index ba1bc34b82fa..fa2656336319 100644
+> --- a/drivers/iio/magnetometer/Makefile
+> +++ b/drivers/iio/magnetometer/Makefile
+> @@ -28,3 +28,5 @@ obj-$(CONFIG_SENSORS_HMC5843_SPI)	+= hmc5843_spi.o
+>  obj-$(CONFIG_SENSORS_RM3100)		+= rm3100-core.o
+>  obj-$(CONFIG_SENSORS_RM3100_I2C)	+= rm3100-i2c.o
+>  obj-$(CONFIG_SENSORS_RM3100_SPI)	+= rm3100-spi.o
+> +
+> +obj-$(CONFIG_YAMAHA_YAS53X)		+= yamaha-yas53x.o
+> diff --git a/drivers/iio/magnetometer/yamaha-yas53x.c b/drivers/iio/magnetometer/yamaha-yas53x.c
+> new file mode 100644
+> index 000000000000..fa718d990636
+> --- /dev/null
+> +++ b/drivers/iio/magnetometer/yamaha-yas53x.c
+> @@ -0,0 +1,1062 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Driver for the Yamaha YAS magnetic sensors, often used in Samsung
+> + * mobile phones. While all are not yet handled because of lacking
+> + * hardware, expand this driver to handle the different variants:
+> + *
+> + * YAS529 MS-3C (2005 Samsung Aries)
+
+You state in the intro there is little chance of sharing a driver with that one.
+
+> + * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
+> + * YAS532 MS-3R (2011 Samsung Galaxy S4)
+> + * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
+> + * (YAS534 is a magnetic switch, not handled)
+
+And there is your reason not to use wild cards in the dt file name etc!
+
+> + * YAS535 MS-6C
+> + * YAS536 MS-3W
+> + * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5, Xiaomi)
+> + * YAS539 MS-3S (2018 Samsung Galaxy A7 SM-A750FN)
+> + *
+> + * Code functions found in the MPU3050 YAS530 and YAS532 drivers
+> + * named "inv_compass" in the Tegra Android kernel tree.
+> + * Copyright (C) 2012 InvenSense Corporation
+> + *
+> + * Author: Linus Walleij <linus.walleij@linaro.org>
+> + */
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/i2c.h>
+> +#include <linux/err.h>
+> +#include <linux/mutex.h>
+> +#include <linux/delay.h>
+> +#include <linux/bitops.h>
+> +#include <linux/random.h>
+> +#include <linux/regmap.h>
+> +#include <linux/unaligned/be_byteshift.h>
+> +#include <linux/unaligned/le_byteshift.h>
+?
+
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/pm_runtime.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
+Don't think you need anything from that file as not doing any custom
+attributes (one day I'll finally get rid of that file entirely!)
+
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/trigger.h>
+
+Don't think you should need that one yet as no trigger being provided by
+this driver.
+
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +
+> +/* This register map covers YAS530 and YAS532 but differs in YAS 537 and YAS539 */
+> +#define YAS5XX_DEVICE_ID		0x80
+> +#define YAS5XX_ACTUATE_INIT_COIL	0x81
+> +#define YAS5XX_MEASURE			0x82
+> +#define YAS5XX_CONFIG			0x83
+> +#define YAS5XX_MEASURE_INTERVAL		0x84
+> +#define YAS5XX_OFFSET_X			0x85 /* +/-31 */
+> +#define YAS5XX_OFFSET_Y1		0x86 /* +/-31 */
+> +#define YAS5XX_OFFSET_Y2		0x87 /* +/-31 */
+> +#define YAS5XX_TEST1			0x88
+> +#define YAS5XX_TEST2			0x89
+> +#define YAS5XX_CAL			0x90
+> +#define YAS5XX_MEASURE_DATA		0xB0
+> +
+> +/* Bits in the YAS5xx config register */
+> +#define YAS5XX_CONFIG_INTON		BIT(0) /* Interrupt on? */
+> +#define YAS5XX_CONFIG_INTHACT		BIT(1) /* Interrupt active high? */
+> +#define YAS5XX_CONFIG_CCK_MASK		GENMASK(4, 2)
+> +#define YAS5XX_CONFIG_CCK_SHIFT		2
+> +
+> +/* Bits in the measure command register */
+> +#define YAS5XX_MEASURE_START		BIT(0)
+> +#define YAS5XX_MEASURE_LDTC		BIT(1)
+> +#define YAS5XX_MEASURE_FORS		BIT(2)
+> +#define YAS5XX_MEASURE_DLYMES		BIT(4)
+> +
+> +/* Bits in the measure data register */
+> +#define YAS5XX_MEASURE_DATA_BUSY	BIT(7)
+> +
+> +#define YAS530_DEVICE_ID		0x01 /* YAS530 (MS-3E) */
+> +#define YAS530_VERSION_A		0 /* YAS530 (MS-3E A) */
+> +#define YAS530_VERSION_B		1 /* YAS530B (MS-3E B) */
+> +#define YAS530_VERSION_A_COEF		380
+> +#define YAS530_VERSION_B_COEF		550
+> +#define YAS530_DATA_CENTER		2048
+> +#define YAS530_DATA_OVERFLOW		4095
+> +
+> +#define YAS532_DEVICE_ID		0x02 /* YAS532/YAS533 (MS-3R/F) */
+> +#define YAS532_VERSION_AB		0 /* YAS532/533 AB (MS-3R/F AB) */
+> +#define YAS532_VERSION_AC		1 /* YAS532/533 AC (MS-3R/F AC) */
+> +#define YAS532_VERSION_AB_COEF		1800
+> +#define YAS532_VERSION_AC_COEF_X	850
+> +#define YAS532_VERSION_AC_COEF_Y1	750
+> +#define YAS532_VERSION_AC_COEF_Y2	750
+> +#define YAS532_DATA_CENTER		4096
+> +#define YAS532_DATA_OVERFLOW		8191
+> +#define YAS532_20DEGREES		390 /* Looks like Kelvin */
+> +
+> +/* These variant IDs are known from code dumps */
+> +#define YAS537_DEVICE_ID		0x07 /* YAS537 (MS-3T) */
+> +#define YAS539_DEVICE_ID		0x08 /* YAS539 (MS-3S) */
+> +
+> +/* Turn off device regulators etc after 5 seconds of inactivity */
+> +#define YAS5XX_AUTOSUSPEND_DELAY	5000
+> +
+> +struct yas5xx_calibration {
+> +	/* Linearization calibration x, y1, y2 */
+> +	s32 r[3];
+> +	u32 f[3];
+> +	/* Temperature compensation calibration */
+> +	s32 Cx, Cy1, Cy2;
+> +	/* Misc calibration coefficients */
+> +	s32 a2, a3, a4, a5, a6, a7, a8, a9, k;
+> +};
+> +
+> +
+> +/**
+> + * struct yas5xx - state container for the YAS5xx driver
+> + * @i2c: parent I2C client
+> + * @dev: parent device pointer
+> + * @devid: device ID number
+> + * @version: device version
+> + * @name: device name
+> + * @calibration: calibration settings from the OTP storage
+> + * @dck: divider clock, read from calibration
+> + * @hard_offsets: offsets for each axis measured with initcoil actuated
+> + * @orientation: mounting matrix, flipped axis etc
+> + * @map: regmap to access the YAX5xx registers over I2C
+> + * @regs: the vdd and vddio power regulators
+
+reset missing
+
+Make sure you run kernel-doc over this and fix anything we've missed.
+
+
+> + * @lock: locks the magnetometer for exclusive use during a measurement
+> + * so that measurements get serialized in a first-come-first serve manner
+> + * @scan: naturally aligned measurements
+> + */
+> +struct yas5xx {
+> +	struct i2c_client *i2c;
+> +	struct device *dev;
+> +	unsigned int devid;
+> +	unsigned int version;
+> +	char name[16];
+> +	struct yas5xx_calibration calibration;
+> +	u8 dck;
+> +	u8 hard_offsets[3];
+> +	struct iio_mount_matrix orientation;
+> +	struct regmap *map;
+> +	struct regulator_bulk_data regs[2];
+> +	struct gpio_desc *reset;
+> +	struct mutex lock;
+> +	/*
+> +	 * The scanout is 4 x 32 bits in CPU endianness.
+> +	 * Ensure timestamp is naturally aligned
+> +	 */
+> +	struct {
+> +		s32 channels[4];
+> +		s64 ts __aligned(8);
+> +	} scan;
+> +};
+> +
+> +/* On YAS530 the x, y1 and y2 values are 12 bits */
+> +static u16 yas530_extract_axis(u8 *data)
+> +{
+> +	u16 val;
+> +
+> +	/*
+> +	 * These are the bits used in a 16bit word:
+> +	 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> +	 *    x  x  x  x  x  x  x  x  x  x  x  x
+> +	 */
+> +	val = get_unaligned_be16(&data[0]);
+> +	val >>= 3;
+> +	val &= GENMASK(11, 0);
+> +	return val;
+> +}
+> +
+> +/* On YAS532 the x, y1 and y2 values are 13 bits */
+> +static u16 yas532_extract_axis(u8 *data)
+> +{
+> +	u16 val;
+> +
+> +	/*
+> +	 * These are the bits used in a 16bit word:
+> +	 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> +	 *    x  x  x  x  x  x  x  x  x  x  x  x  x
+> +	 */
+> +	val = get_unaligned_be16(&data[0]);
+> +	val >>= 2;
+> +	val &= GENMASK(12, 0);
+> +	return val;
+> +}
+> +
+> +static int yas5xx_busy_wait(struct yas5xx *yas5xx)
+> +{
+> +	int maxloops = 1000;
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	while (maxloops) {
+> +		ret = regmap_read(yas5xx->map, YAS5XX_MEASURE_DATA, &val);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (!(val & BIT(7)))
+
+Use a define for that magic bit.
+
+> +			return 0;
+> +
+> +		maxloops--;
+> +	}
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +/**
+> + * yas5xx_measure() - Make a measure from the hardware*
+stray *?
+> + * @yas5xx: The device state
+> + * @t: the raw temperature measurement
+> + * @x: the raw x axis measurement
+> + * @y1: the y1 axis measurement
+> + * @y2: the y2 axis measurement
+> + */
+> +static int yas5xx_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+> +{
+> +	u8 data[8];
+> +	int ret;
+> +	u16 val;
+> +
+> +	mutex_lock(&yas5xx->lock);
+> +	ret = regmap_write(yas5xx->map, YAS5XX_MEASURE,
+> +			   YAS5XX_MEASURE_START);
+> +	if (ret < 0)
+> +		goto out_unlock;
+> +
+> +	/* Typical time to measure 1500 us, max 2000 us */
+> +	ret = yas5xx_busy_wait(yas5xx);
+> +	if (ret) {
+> +		dev_err(yas5xx->dev, "timeout waiting for measurement\n");
+> +		goto out_unlock;
+> +	}
+> +
+> +	ret = regmap_bulk_read(yas5xx->map, YAS5XX_MEASURE_DATA,
+> +			       data, sizeof(data));
+> +	if (ret)
+> +		goto out_unlock;
+> +
+> +	mutex_unlock(&yas5xx->lock);
+> +
+> +	switch (yas5xx->devid) {
+> +	case YAS530_DEVICE_ID:
+> +		/*
+> +		 * The t value is 9 bits in big endian format
+> +		 * These are the bits used in a 16bit word:
+> +		 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> +		 *    x  x  x  x  x  x  x  x  x
+> +		 */
+> +		val = get_unaligned_be16(&data[0]);
+> +		val >>= 6;
+> +		val &= GENMASK(8, 0);
+> +		*t = val;
+> +		*x = yas530_extract_axis(&data[2]);
+> +		*y1 = yas530_extract_axis(&data[4]);
+> +		*y2 = yas530_extract_axis(&data[6]);
+> +		break;
+> +	case YAS532_DEVICE_ID:
+> +		/*
+> +		 * The t value is 10 bits in big endian format
+> +		 * These are the bits used in a 16bit word:
+> +		 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> +		 *    x  x  x  x  x  x  x  x  x  x
+> +		 */
+> +		val = get_unaligned_be16(&data[0]);
+> +		val >>= 5;
+> +		val &= GENMASK(9, 0);
+> +		*t = val;
+> +		*x = yas532_extract_axis(&data[2]);
+> +		*y1 = yas532_extract_axis(&data[4]);
+> +		*y2 = yas532_extract_axis(&data[6]);
+> +		break;
+> +	default:
+
+unlock?
+
+> +		dev_err(yas5xx->dev, "unknown data format\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = 0;
+
+I'm fairly sure it already is.
+
+> +
+> +out_unlock:
+> +	mutex_unlock(&yas5xx->lock);
+> +	return ret;
+> +}
+> +
+> +static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)
+> +{
+> +	struct yas5xx_calibration *c = &yas5xx->calibration;
+> +	static const s32 yas532ac_coef[] = {
+> +		YAS532_VERSION_AC_COEF_X,
+> +		YAS532_VERSION_AC_COEF_Y1,
+> +		YAS532_VERSION_AC_COEF_Y2,
+> +	};
+> +	s32 coef;
+> +
+> +	/* Select coefficients */
+> +	switch (yas5xx->devid) {
+> +	case YAS530_DEVICE_ID:
+> +		if (yas5xx->version == YAS530_VERSION_A)
+> +			coef = YAS530_VERSION_A_COEF;
+> +		else
+> +			coef = YAS530_VERSION_B_COEF;
+> +		break;
+> +	case YAS532_DEVICE_ID:
+> +		if (yas5xx->version == YAS532_VERSION_AB)
+> +			coef = YAS532_VERSION_AB_COEF;
+> +		else
+> +			/* Elaborate coefficients */
+> +			coef = yas532ac_coef[axis];
+> +		break;
+> +	default:
+> +		dev_err(yas5xx->dev, "unknown device type\n");
+> +		break;
+> +	}
+> +	/*
+> +	 * Linearization formula:
+> +	 *
+> +	 * x' = x - (3721 + 50 * f) + (xoffset - r) * c
+> +	 *
+> +	 * Where f and r are calibration values, c is a per-device
+> +	 * and sometimes per-axis coefficient.
+> +	 */
+> +	return val - (3721 + 50 * c->f[axis]) +
+> +		(yas5xx->hard_offsets[axis] - c->r[axis]) * coef;
+> +}
+> +
+> +/**
+/*
+> + * yas5xx_get_measure() - Measure a sample of all axis and process
+> + *
+> + * Returned valued are in nanotesla according to some code.
+> + */
+> +static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> +{
+> +	struct yas5xx_calibration *c = &yas5xx->calibration;
+> +	u16 t, x, y1, y2;
+> +	/* These are "signed x, signed y1 etc */
+> +	s32 sx, sy1, sy2, sy, sz;
+> +	int ret;
+> +
+> +	/* We first get raw data that needs to be translated to [x,y,z] */
+> +	ret = yas5xx_measure(yas5xx, &t, &x, &y1, &y2);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Do some linearization if available */
+> +	sx = yas5xx_linearize(yas5xx, x, 0);
+> +	sy1 = yas5xx_linearize(yas5xx, y1, 1);
+> +	sy2 = yas5xx_linearize(yas5xx, y2, 2);
+> +
+> +	/*
+> +	 * Temperature compensation for x, y1, y2 respectively:
+> +	 *
+> +	 *          Cx * t
+> +	 * x' = x - ------
+> +	 *           100
+> +	 */
+> +	sx = sx - (c->Cx * t) / 100;
+> +	sy1 = sy1 - (c->Cy1 * t) / 100;
+> +	sy2 = sy2 - (c->Cy2 * t) / 100;
+> +
+> +	/*
+> +	 * Break y1 and y2 into y and z, y1 and y2 are apparently encoding
+> +	 * y and z.
+> +	 */
+> +	sy = sy1 - sy2;
+> +	sz = -sy1 - sy2;
+> +
+> +	/*
+> +	 * FIXME: convert to Celsius? Just guessing this is given
+> +	 * as 1/10:s of degrees so multiply by 100 to get millicentigrades.
+> +	 */
+> +	*to = t * 100;
+> +	/*
+> +	 * Calibrate [x,y,z] with some formulas like this:
+> +	 *
+> +	 *            100 * x + a_2 * y + a_3 * z
+> +	 *  x' = k *  ---------------------------
+> +	 *                        10
+> +	 *
+> +	 *           a_4 * x + a_5 * y + a_6 * z
+> +	 *  y' = k * ---------------------------
+> +	 *                        10
+> +	 *
+> +	 *           a_7 * x + a_8 * y + a_9 * z
+> +	 *  z' = k * ---------------------------
+> +	 *                        10
+> +	 */
+> +	*xo = c->k * ((100 * sx + c->a2 * sy + c->a3 * sz) / 10);
+> +	*yo = c->k * ((c->a4 * sx + c->a5 * sy + c->a6 * sz) / 10);
+> +	*zo = c->k * ((c->a7 * sx + c->a8 * sy + c->a9 * sz) / 10);
+> +
+> +	return 0;
+> +}
+> +
+> +static int yas5xx_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2,
+> +			   long mask)
+> +{
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +	s32 t, x, y, z;
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		pm_runtime_get_sync(yas5xx->dev);
+> +		ret = yas5xx_get_measure(yas5xx, &t, &x, &y, &z);
+> +		pm_runtime_mark_last_busy(yas5xx->dev);
+> +		pm_runtime_put_autosuspend(yas5xx->dev);
+> +		if (ret)
+> +			return ret;
+> +		switch (chan->address) {
+> +		case 0:
+> +			*val = t;
+> +			break;
+> +		case 1:
+> +			*val = x;
+> +			break;
+> +		case 2:
+> +			*val = y;
+> +			break;
+> +		case 3:
+> +			*val = z;
+> +			break;
+> +		default:
+> +			dev_err(yas5xx->dev, "unknown channel\n");
+> +			return -EINVAL;
+> +		}
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		if (chan->address == 0) {
+> +			/* Temperature is unscaled */
+> +			*val = 1;
+> +			return IIO_VAL_INT;
+> +		}
+> +		/*
+> +		 * The axis values are in nanotesla according to the vendor
+> +		 * drivers, but is clearly in microtesla according to
+> +		 * experiments. Since 1 uT = 0.01 Gauss, we need to divide
+> +		 * by 100000000 (10^8) to get to Gauss from the raw value.
+> +		 */
+> +		*val = 1;
+> +		*val2 = 100000000;
+> +		return IIO_VAL_FRACTIONAL;
+> +	default:
+> +		/* Unknown request */
+> +		break;
+return -EINVAL would be shorter and just as clear
+
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
+> +{
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +	s32 t, x, y, z;
+> +	int ret;
+> +
+> +	pm_runtime_get_sync(yas5xx->dev);
+> +	ret = yas5xx_get_measure(yas5xx, &t, &x, &y, &z);
+> +	pm_runtime_mark_last_busy(yas5xx->dev);
+> +	pm_runtime_put_autosuspend(yas5xx->dev);
+> +	if (ret) {
+> +		dev_err(yas5xx->dev, "error refilling buffer\n");
+> +		return;
+> +	}
+> +	yas5xx->scan.channels[0] = t;
+> +	yas5xx->scan.channels[1] = x;
+> +	yas5xx->scan.channels[2] = y;
+> +	yas5xx->scan.channels[3] = z;
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &yas5xx->scan,
+> +					   iio_get_time_ns(indio_dev));
+> +}
+> +
+> +static irqreturn_t yas5xx_handle_trigger(int irq, void *p)
+> +{
+> +	const struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +
+> +	yas5xx_fill_buffer(indio_dev);
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +
+> +static const struct iio_mount_matrix *
+> +yas5xx_get_mount_matrix(const struct iio_dev *indio_dev,
+> +			const struct iio_chan_spec *chan)
+> +{
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +
+> +	return &yas5xx->orientation;
+> +}
+> +
+> +static const struct iio_chan_spec_ext_info yas5xx_ext_info[] = {
+> +	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, yas5xx_get_mount_matrix),
+> +	{ },
+> +};
+> +
+> +#define YAS5XX_AXIS_CHANNEL(axis, index)				\
+> +	{								\
+> +		.type = IIO_MAGN,					\
+> +		.modified = 1,						\
+> +		.channel2 = IIO_MOD_##axis,				\
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
+> +			BIT(IIO_CHAN_INFO_SCALE),			\
+> +		.ext_info = yas5xx_ext_info,				\
+> +		.address = index,					\
+> +		.scan_index = index,					\
+> +		.scan_type = {						\
+> +			.sign = 's',					\
+> +			.realbits = 32,					\
+> +			.storagebits = 32,				\
+> +			.endianness = IIO_CPU				\
+> +		},							\
+> +	}
+> +
+> +static const struct iio_chan_spec yas5xx_channels[] = {
+> +	{
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+> +		.address = 0,
+> +		.scan_index = 0,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 32,
+> +			.storagebits = 32,
+> +			.endianness = IIO_CPU
+> +		},
+> +	},
+> +	YAS5XX_AXIS_CHANNEL(X, 1),
+> +	YAS5XX_AXIS_CHANNEL(Y, 2),
+> +	YAS5XX_AXIS_CHANNEL(Z, 3),
+> +	IIO_CHAN_SOFT_TIMESTAMP(4),
+> +};
+> +
+> +static const unsigned long yas5xx_scan_masks[] = { 0xf, 0 };
+> +
+> +static const struct iio_info yas5xx_info = {
+> +	.read_raw = &yas5xx_read_raw,
+> +};
+> +
+> +static bool yas5xx_volatile_reg(struct device *dev, unsigned int reg)
+> +{
+> +	return reg == YAS5XX_ACTUATE_INIT_COIL ||
+> +		reg == YAS5XX_MEASURE ||
+> +		(reg >= YAS5XX_MEASURE_DATA &&
+> +		 reg <= YAS5XX_MEASURE_DATA + 8);
+> +}
+> +
+> +/* FIXME: enable regmap cache, using mark dirty and sync at runtime resume */
+> +static const struct regmap_config yas5xx_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = 0xff,
+> +	.volatile_reg = yas5xx_volatile_reg,
+> +};
+> +
+> +/**
+> + * yas5xx_extract_bits() - Extracts an u8 from an u16 pointer
+
+__be16 pointer
+
+> + *
+> + * @data: pointer to two consecutive BE u8 forming an u16
+> + * @start: first bit to extract
+> + * @end: last bit to extract
+> + *
+> + * For example extract bits 6 to 9:
+> + * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> + *                   x  x  x  x
+> + * u8 e = yas5xx_extract_bits(data, 6, 9);
+> + */
+> +static u8 yas5xx_extract_bits(u8 *data, int start, int end)
+> +{
+> +	u16 val;
+> +
+> +	val = get_unaligned_be16(data);
+> +	val &= GENMASK(end, start);
+> +	val >>= start;
+> +	return (u8)val;
+> +}
+> +
+> +/**
+> + * yas53x_extract_calibration() - extracts the a2-a9 and k calibration
+> + * @data: the bitfield to use
+> + * @c: the calibration to populate
+> + */
+> +static void yas53x_extract_calibration(u8 *data, struct yas5xx_calibration *c)
+> +{
+
+As below.  I'm not sure how you make this clearer, but right now it's
+really hard to follow.  Perhaps detailed comment on what the data packing
+in here is?
+
+> +	c->a2 = yas5xx_extract_bits(&data[3], 10, 15) - 32;
+> +	c->a3 = yas5xx_extract_bits(&data[3], 6, 9) - 8;
+> +	c->a4 = yas5xx_extract_bits(&data[4], 8, 13) - 32;
+> +	c->a5 = yas5xx_extract_bits(&data[5], 10, 15) + 38;
+> +	c->a6 = yas5xx_extract_bits(&data[5], 4, 9) - 32;
+> +	c->a7 = yas5xx_extract_bits(&data[6], 5, 11) - 64;
+> +	c->a8 = yas5xx_extract_bits(&data[7], 7, 12) - 32;
+> +	c->a9 = yas5xx_extract_bits(&data[8], 7, 14);
+> +	c->k = yas5xx_extract_bits(&data[9], 10, 14) + 10;
+> +}
+> +
+> +static int yas530_get_calibration_data(struct yas5xx *yas5xx)
+> +{
+> +	struct yas5xx_calibration *c = &yas5xx->calibration;
+> +	u8 data[16];
+> +	int ret;
+> +
+> +	/* Dummy read, first read is ALWAYS wrong */
+> +	ret = regmap_bulk_read(yas5xx->map, YAS5XX_CAL,
+> +			       data, sizeof(data));
+> +	if (ret)
+> +		return ret;
+> +	/* Actual calibration readout */
+> +	ret = regmap_bulk_read(yas5xx->map, YAS5XX_CAL,
+> +			       data, sizeof(data));
+> +	if (ret)
+> +		return ret;
+> +	dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
+> +
+> +	add_device_randomness(data, sizeof(data));
+> +	yas5xx->version = data[15] & 0x03;
+> +	yas5xx->dck = yas5xx_extract_bits(&data[9], 7, 9);
+> +
+> +	/* Extract the calibration from the bitfield */
+> +	c->Cx = data[0] * 6 - 768;
+> +	c->Cy1 = data[1] * 6 - 768;
+> +	c->Cy2 = data[2] * 6 - 768;
+> +	yas53x_extract_calibration(data, c);
+> +	/* Extract linearization */
+> +	c->f[0] = yas5xx_extract_bits(&data[11], 13, 14);
+> +	/* 6 bit value where bit 5 is the sign */
+
+As below, I wonder if you'd be better just constructing these directly from
+the 8 bit register pairs. The overlapping unaligned 16 bit reads are
+rather confusing.
+
+> +	c->r[0] = sign_extend32(yas5xx_extract_bits(&data[11], 7, 12), 5);
+> +	c->f[1] = yas5xx_extract_bits(&data[12], 13, 14);
+> +	c->r[1] = sign_extend32(yas5xx_extract_bits(&data[12], 7, 12), 5);
+> +	c->f[2] = yas5xx_extract_bits(&data[13], 13, 14);
+> +	c->r[2] = sign_extend32(yas5xx_extract_bits(&data[13], 7, 12), 5);
+> +
+> +	return 0;
+> +}
+> +
+> +static int yas532_get_calibration_data(struct yas5xx *yas5xx)
+> +{
+> +	struct yas5xx_calibration *c = &yas5xx->calibration;
+> +	u8 data[14];
+> +	int ret;
+> +	int i;
+> +
+> +	/* Dummy read, first read is ALWAYS wrong */
+> +	ret = regmap_bulk_read(yas5xx->map, YAS5XX_CAL,
+> +			       data, sizeof(data));
+
+My quick check suggests that is under 80 chars when on one line which
+would definitely be nicer.
+
+> +	if (ret)
+> +		return ret;
+
+blank line here
+
+> +	/* Actual calibration readout */
+> +	ret = regmap_bulk_read(yas5xx->map, YAS5XX_CAL,
+> +			       data, sizeof(data));
+> +	if (ret)
+> +		return ret;
+> +	dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
+> +
+> +	/* Sanity check */
+> +	for (i = 0; i < 13; i++) {
+> +		if (data[i] != 0)
+> +			break;
+> +	}
+> +	if (i == 13 && !(data[13] & BIT(7)))
+> +		dev_err(yas5xx->dev, "calibration is blank!\n");
+> +
+> +	add_device_randomness(data, sizeof(data));
+> +	/* Only versions 0 and 1 */
+
+Comment needs a bit more... Do other versions exist?
+
+> +	yas5xx->version = data[13] & 0x01;
+> +	yas5xx->dck = yas5xx_extract_bits(&data[9], 7, 9);
+> +
+> +	/* Extract calibration from the bitfield */
+> +	c->Cx = data[0] * 10 - 1280;
+> +	c->Cy1 = data[1] * 10 - 1280;
+> +	c->Cy2 = data[2] * 10 - 1280;
+> +	yas53x_extract_calibration(data, c);
+> +	/* Extract linearization */
+
+Could you add a comment on the data layout here. It seems rather
+non obvious given the overlapping 16 bit reads you are doing.
+Whilst the maths might correspond to extracting bits from be16 registers
+that looks more like coincidence than design and only makes any
+useful difference to the bit 7,8 pair.  The bit 9-14 could just have
+been gotten from the next 8 bit register directly.
+
+
+> +	c->f[0] = yas5xx_extract_bits(&data[10], 7, 8);
+> +	/* 6 bit value where bit 5 is the sign */
+> +	c->r[0] = (s8) sign_extend32(yas5xx_extract_bits(&data[10], 9, 14), 5);
+
+> +	c->f[1] = yas5xx_extract_bits(&data[11], 7, 8);
+> +	c->r[1] = (s8) sign_extend32(yas5xx_extract_bits(&data[11], 9, 14), 5);
+> +	c->f[2] = yas5xx_extract_bits(&data[12], 7, 8);
+> +	c->r[2] = (s8) sign_extend32(yas5xx_extract_bits(&data[12], 9, 14), 5);
+> +
+> +	return 0;
+> +}
+> +
+> +void yas5xx_dump_calibration(struct yas5xx *yas5xx)
+> +{
+> +	struct yas5xx_calibration *c = &yas5xx->calibration;
+> +
+> +	dev_dbg(yas5xx->dev, "f[] = [%d, %d, %d]\n",
+> +		c->f[0], c->f[1], c->f[2]);
+> +	dev_dbg(yas5xx->dev, "r[] = [%d, %d, %d]\n",
+> +		c->r[0], c->r[1], c->r[2]);
+> +	dev_dbg(yas5xx->dev, "Cx = %d\n", c->Cx);
+> +	dev_dbg(yas5xx->dev, "Cy1 = %d\n", c->Cy1);
+> +	dev_dbg(yas5xx->dev, "Cy2 = %d\n", c->Cy2);
+> +	dev_dbg(yas5xx->dev, "a2 = %d\n", c->a2);
+> +	dev_dbg(yas5xx->dev, "a3 = %d\n", c->a3);
+> +	dev_dbg(yas5xx->dev, "a4 = %d\n", c->a4);
+> +	dev_dbg(yas5xx->dev, "a5 = %d\n", c->a5);
+> +	dev_dbg(yas5xx->dev, "a6 = %d\n", c->a6);
+> +	dev_dbg(yas5xx->dev, "a7 = %d\n", c->a7);
+> +	dev_dbg(yas5xx->dev, "a8 = %d\n", c->a8);
+> +	dev_dbg(yas5xx->dev, "a9 = %d\n", c->a9);
+> +	dev_dbg(yas5xx->dev, "k = %d\n", c->k);
+> +}
+> +
+> +static int yas5xx_set_offsets(struct yas5xx *yas5xx, s8 ox, s8 oy1, s8 oy2)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_write(yas5xx->map, YAS5XX_OFFSET_X, ox);
+> +	if (ret)
+> +		return ret;
+> +	ret = regmap_write(yas5xx->map, YAS5XX_OFFSET_Y1, oy1);
+> +	if (ret)
+> +		return ret;
+> +	ret = regmap_write(yas5xx->map, YAS5XX_OFFSET_Y2, oy2);
+> +	if (ret)
+> +		return ret;
+
+return regmap_write() for last one.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static s8 yas5xx_adjust_offset(s8 old, int bit, u16 center, u16 measure)
+> +{
+> +	if (measure > center)
+> +		return old + BIT(bit);
+> +	if (measure < center)
+> +		return old - BIT(bit);
+> +	return old;
+> +}
+> +
+> +static int yas5xx_meaure_offsets(struct yas5xx *yas5xx)
+> +{
+> +	int ret;
+> +	u16 center;
+> +	u16 t, x, y1, y2;
+> +	s8 ox, oy1, oy2;
+> +	int i;
+> +
+> +	/* Actuate the init coil and measure offsets */
+> +	ret = regmap_write(yas5xx->map, YAS5XX_ACTUATE_INIT_COIL, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* When the initcoil is active this should be around the center */
+> +	switch (yas5xx->devid) {
+> +	case YAS530_DEVICE_ID:
+> +		center = YAS530_DATA_CENTER;
+> +		break;
+> +	case YAS532_DEVICE_ID:
+> +		center = YAS532_DATA_CENTER;
+> +		break;
+> +	default:
+> +		dev_err(yas5xx->dev, "unknown device type\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * We set offsets in the interval +-31 by iterating
+> +	 * +-16, +-8, +-4, +-2, +-1 adjusting the offsets each
+> +	 * time, then writing the final offsets into the
+> +	 * registers.
+> +	 *
+> +	 * NOTE: these offsets are NOT in the same unit or magnitude
+> +	 * as the values for [x, y1, y2]. The value is +/-31
+> +	 * but the effect on the raw values is much larger.
+> +	 * The effect of the offset is to bring the measure
+> +	 * rougly to the center.
+> +	 */
+> +	ox = 0;
+> +	oy1 = 0;
+> +	oy2 = 0;
+> +
+> +	for (i = 4; i >= 0; i--) {
+> +		ret = yas5xx_set_offsets(yas5xx, ox, oy1, oy2);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = yas5xx_measure(yas5xx, &t, &x, &y1, &y2);
+> +		if (ret)
+> +			return ret;
+> +		dev_dbg(yas5xx->dev, "measurement %d: x=%d, y1=%d, y2=%d\n",
+> +			5-i, x, y1, y2);
+> +
+> +		ox = yas5xx_adjust_offset(ox, i, center, x);
+> +		oy1 = yas5xx_adjust_offset(oy1, i, center, y1);
+> +		oy2 = yas5xx_adjust_offset(oy2, i, center, y2);
+> +	}
+> +
+> +	/* Needed for calibration algorithm */
+> +	yas5xx->hard_offsets[0] = ox;
+> +	yas5xx->hard_offsets[1] = oy1;
+> +	yas5xx->hard_offsets[2] = oy2;
+> +	ret = yas5xx_set_offsets(yas5xx, ox, oy1, oy2);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_info(yas5xx->dev, "discovered hard offsets: x=%d, y1=%d, y2=%d\n",
+> +		 ox, oy1, oy2);
+> +	return 0;
+> +}
+> +
+> +static int yas5xx_power_on(struct yas5xx *yas5xx)
+> +{
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	/* Zero the test registers */
+> +	ret = regmap_write(yas5xx->map, YAS5XX_TEST1, 0);
+> +	if (ret)
+> +		return ret;
+> +	ret = regmap_write(yas5xx->map, YAS5XX_TEST2, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set up for no interrupts, calibrated clock divider */
+> +	val = (yas5xx->dck << YAS5XX_CONFIG_CCK_SHIFT) & YAS5XX_CONFIG_CCK_MASK;
+
+FIELD_SET would make that a tiny bit easier to read.
+May not be worth bothering with the local variable either.
+
+> +	ret = regmap_write(yas5xx->map, YAS5XX_CONFIG, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Measure interval 0 (back-to-back?)  */
+> +	ret = regmap_write(yas5xx->map, YAS5XX_MEASURE_INTERVAL, 0);
+> +	if (ret)
+> +		return ret;
+return regmap_write()
+for last line.
+> +
+> +	return 0;
+> +}
+> +
+> +static int yas5xx_probe(struct i2c_client *i2c,
+> +			const struct i2c_device_id *id)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct device *dev = &i2c->dev;
+> +	struct yas5xx *yas5xx;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*yas5xx));
+> +	if (indio_dev == NULL)
+> +		return -ENOMEM;
+> +
+> +	yas5xx = iio_priv(indio_dev);
+> +	i2c_set_clientdata(i2c, indio_dev);
+> +	yas5xx->i2c = i2c;
+> +	yas5xx->dev = dev;
+
+Perhaps a bit excessive to have pointers to dev and i2c_client given
+i2c->dev is available.
+
+> +	mutex_init(&yas5xx->lock);
+> +
+> +	ret = iio_read_mount_matrix(dev, "mount-matrix", &yas5xx->orientation);
+> +	if (ret)
+> +		return ret;
+> +
+> +	yas5xx->regs[0].supply = "vdd";
+> +	yas5xx->regs[1].supply = "iovdd";
+> +	ret = devm_regulator_bulk_get(dev,
+> +				      ARRAY_SIZE(yas5xx->regs),
+> +				      yas5xx->regs);
+
+More line breaks than we need in that.
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "cannot get regulators\n");
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +	if (ret) {
+> +		dev_err(dev, "cannot enable regulators\n");
+> +		return ret;
+> +	}
+> +
+> +	/* See comment in runtime resume callback */
+> +	usleep_range(31000, 40000);
+> +
+> +	/* This will take the device out of reset if need be */
+> +	yas5xx->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(yas5xx->reset)) {
+> +		ret = dev_err_probe(dev, PTR_ERR(yas5xx->reset),
+> +				    "failed to get reset line\n");
+> +		goto reg_off;
+> +	}
+> +
+> +	yas5xx->map = devm_regmap_init_i2c(i2c, &yas5xx_regmap_config);
+> +	if (IS_ERR(yas5xx->map)) {
+> +		dev_err(dev, "failed to allocate register map\n");
+> +		ret = PTR_ERR(yas5xx->map);
+> +		goto reg_off;
+> +	}
+> +
+> +	ret = regmap_read(yas5xx->map, YAS5XX_DEVICE_ID, &yas5xx->devid);
+> +	if (ret)
+> +		goto reg_off;
+> +
+> +	switch (yas5xx->devid) {
+> +	case YAS530_DEVICE_ID:
+> +		ret = yas530_get_calibration_data(yas5xx);
+> +		if (ret)
+> +			goto reg_off;
+> +		snprintf(yas5xx->name, sizeof(yas5xx->name),
+> +			 "YAS530 MS-3E %s",
+
+Name tends to be lowercase. Also, not sure we've had one with spaces
+in it before.  I guess our userspace code is fine with it though
+as presumably you've tested that.
+
+> +			 yas5xx->version ? "B" : "A");
+> +		break;
+> +	case YAS532_DEVICE_ID:
+> +		ret = yas532_get_calibration_data(yas5xx);
+> +		if (ret)
+> +			goto reg_off;
+> +		snprintf(yas5xx->name, sizeof(yas5xx->name),
+> +			 "YAS532/YAS533 MS-3R/F %s",
+> +			 yas5xx->version ? "AC" : "AB");
+> +		break;
+> +	default:
+> +		dev_err(dev, "unhandled device ID %02x\n", yas5xx->devid);
+> +		goto reg_off;
+> +	}
+> +
+> +	yas5xx_dump_calibration(yas5xx);
+> +	ret = yas5xx_power_on(yas5xx);
+> +	if (ret)
+> +		goto reg_off;
+> +	ret = yas5xx_meaure_offsets(yas5xx);
+> +	if (ret)
+> +		goto reg_off;
+> +	dev_info(dev, "detected %s\n", yas5xx->name);
+> +
+> +	indio_dev->info = &yas5xx_info;
+> +	indio_dev->available_scan_masks = yas5xx_scan_masks;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->name = yas5xx->name;
+> +	indio_dev->channels = yas5xx_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(yas5xx_channels);
+> +
+> +	ret = iio_triggered_buffer_setup(indio_dev, NULL,
+> +					 yas5xx_handle_trigger,
+> +					 NULL);
+> +	if (ret) {
+> +		dev_err(dev, "triggered buffer setup failed\n");
+> +		goto reg_off;
+> +	}
+> +
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "device register failed\n");
+> +		goto cleanup_buffer;
+> +	}
+> +
+> +	/* Take runtime PM online */
+> +	pm_runtime_get_noresume(dev);
+> +	pm_runtime_set_active(dev);
+> +	pm_runtime_enable(dev);
+> +
+> +	pm_runtime_set_autosuspend_delay(dev, YAS5XX_AUTOSUSPEND_DELAY);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_put(dev);
+> +
+> +	return 0;
+> +
+> +cleanup_buffer:
+> +	iio_triggered_buffer_cleanup(indio_dev);
+> +reg_off:
+> +	regulator_bulk_disable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +
+> +	return ret;
+> +}
+> +
+> +static int yas5xx_remove(struct i2c_client *i2c)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(i2c);
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +	struct device *dev = &i2c->dev;
+> +
+> +	iio_device_unregister(indio_dev);
+> +	iio_triggered_buffer_cleanup(indio_dev);
+> +	pm_runtime_get_sync(dev);
+> +	pm_runtime_put_noidle(dev);
+> +	pm_runtime_disable(dev);
+> +	if (yas5xx->reset)
+> +		gpiod_set_value_cansleep(yas5xx->reset, 1);
+> +	regulator_bulk_disable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused yas5xx_runtime_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+
+There was a bit of a move to drop the circularity of what is going on here
+and replace them with dev_get_devdata(dev) rather than going out to the
+i2c_client devices and back to the dev again.
+
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +
+> +	if (yas5xx->reset)
+> +		gpiod_set_value_cansleep(yas5xx->reset, 1);
+> +	regulator_bulk_disable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused yas5xx_runtime_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +	if (ret) {
+> +		dev_err(dev, "cannot enable regulators\n");
+> +		return ret;
+> +	}
+
+blank line
+
+> +	/*
+> +	 * The YAS530 datasheet says TVSKW is up to 30 ms, after that 1 ms
+> +	 * for all voltages to settle. The YAS532 is 10ms then 4ms for the
+> +	 * I2C to come online. Let's keep it safe and put this at 31ms.
+> +	 */
+> +	usleep_range(31000, 40000);
+> +	if (yas5xx->reset)
+> +		gpiod_set_value_cansleep(yas5xx->reset, 0);
+> +
+> +	regmap_read(yas5xx->map, YAS5XX_DEVICE_ID, &yas5xx->devid);
+
+Why this read?  I'm guessing it might be a required part of the power up?
+If so add a comment.
+
+> +	ret = yas5xx_power_on(yas5xx);
+> +	if (ret) {
+> +		dev_err(dev, "cannot power on\n");
+> +		goto out_reset;
+> +	}
+> +
+> +	return 0;
+> +
+> +out_reset:
+> +	if (yas5xx->reset)
+> +		gpiod_set_value_cansleep(yas5xx->reset, 1);
+> +	regulator_bulk_disable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct dev_pm_ops yas5xx_dev_pm_ops = {
+> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> +				pm_runtime_force_resume)
+> +	SET_RUNTIME_PM_OPS(yas5xx_runtime_suspend,
+> +			   yas5xx_runtime_resume, NULL)
+> +};
+> +
+> +static const struct i2c_device_id yas5xx_id[] = {
+> +	{"yas530", 0 },
+
+No need to provide the 0s though I guess you can keep them if expectation
+is you'll add other parts shortly.  However, if you are doing that introduce
+an enum now.
+
+> +	{"yas532", 0 },
+> +	{"yas533", 0 },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, yas5xx_id);
+> +
+> +static const struct of_device_id yas5xx_of_match[] = {
+> +	{ .compatible = "yamaha,yas530", },
+> +	{ .compatible = "yamaha,yas532", },
+> +	{ .compatible = "yamaha,yas533", },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, yas5xx_of_match);
+> +
+> +static struct i2c_driver yas5xx_driver = {
+> +	.driver	 = {
+> +		.name	= "yas5xx",
+> +		.of_match_table = yas5xx_of_match,
+> +		.pm = &yas5xx_dev_pm_ops,
+> +	},
+> +	.probe	  = yas5xx_probe,
+> +	.remove	  = yas5xx_remove,
+> +	.id_table = yas5xx_id,
+> +};
+> +module_i2c_driver(yas5xx_driver);
+> +
+> +MODULE_DESCRIPTION("Yamaha YAS53x 3-axis magnetometer driver");
+> +MODULE_AUTHOR("Linus Walleij");
+> +MODULE_LICENSE("GPL v2");
+

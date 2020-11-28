@@ -2,87 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA0B2C749D
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0352C7565
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:24:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388224AbgK1Vtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51236 "EHLO mail.kernel.org"
+        id S1731233AbgK1VtW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45756 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387420AbgK1TH1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:07:27 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1733170AbgK1SLz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 13:11:55 -0500
+Received: from localhost.localdomain (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3B2A246CC;
-        Sat, 28 Nov 2020 16:39:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B1CE246CF;
+        Sat, 28 Nov 2020 17:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606581572;
-        bh=noFCBd4nTh2GdZ4T+8oNdS+9TrApdROYtx/lAjMcsAY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ySX/gR4gf4f/DaHfs91hZ1bb9j2YaSoTRfhHZ9itoWj+lMX5csFvT2EL4Tlx8WnZg
-         EDHK0N9w1n5my1Glwj/xPyeyj+1tT2zBg1rTJgTBF/Kl5dLI65RUMJEg0FFIisV9TA
-         Wpogfn58e1UFRQDB37BzoVkoCmbNXTHET/DfAeCs=
-Date:   Sat, 28 Nov 2020 16:39:28 +0000
+        s=default; t=1606584947;
+        bh=XUbGegC6h14gbbGkEv2Y2Cvz0Swvml2kOPxl4U52PvQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=1/9uGtrajDDQlpbfwwgZEYFJNDFkEibybUmLCk3tpzLkmgzZ+anVycab0/bCHCYL7
+         dGeO38T5/jpQCRS7J5HMOQFAFKzaBs3fygdmrxqUIIVz23z+YzFtig8ZK2YDGS8VCE
+         /IlMAzDcQdlXbVaP1mdcR+69OcLA3wvqs+SOk7VI=
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Peter Rosin <peda@axentia.se>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/3] dt-bindings:iio:adc: Convert generic ADC channel
- binding to yaml
-Message-ID: <20201128163928.4ef2a43a@archlinux>
-In-Reply-To: <20201103023146.GA692453@bogus>
-References: <20201031182423.742798-1-jic23@kernel.org>
-        <20201103023146.GA692453@bogus>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Subject: [PATCH v2 0/3] dt-bindings: yaml conversion of i2c-gate and IIO users
+Date:   Sat, 28 Nov 2020 17:33:40 +0000
+Message-Id: <20201128173343.390165-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Nov 2020 20:31:46 -0600
-Rob Herring <robh@kernel.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On Sat, Oct 31, 2020 at 06:24:20PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > This channel binding is not yet that heavily used, though that will slowly
-> > change now we have a standard binding.  There are more properties coming
-> > for this binding in the near future.
-> > 
-> > This series converts the channel binding itself then leverages it to
-> > reduce repitition and improve consistency in a couple of drivers.
-> > 
-> > One thing to note is that we have similar defintion for DACs but so
-> > far there are no generic properties.
-> > 
-> > Jonathan Cameron (3):
-> >   dt-bindings:iio:adc: convert adc.txt to yaml
-> >   dt-bindings:iio:adc:adi,ad7124: Use the new adc.yaml channel binding
-> >   dt-bindings:iio:adc:adi,ad7292: Use new adc.yaml binding for channels.  
-> 
-> For the series:
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-Series applied with just that small addition to patch 1.
+Part of general move of all IIO bindings over to yaml.
 
-Thanks,
+Chances since v1.
+As Rob suggested, I've move the 2 users over to directly referencing
+i2c-controller.yaml.
 
-Jonathan
+For the i2c-gate.yaml patch itself, I've kept it on the basis it provides
+some central docs of what an i2c-gate actually is.  Now it basically
+just provides the node name and reference to i2c-controller.yaml
 
-> 
-> > 
-> >  .../devicetree/bindings/iio/adc/adc.txt       | 23 -----------
-> >  .../devicetree/bindings/iio/adc/adc.yaml      | 38 +++++++++++++++++++
-> >  .../bindings/iio/adc/adi,ad7124.yaml          | 14 +++----
-> >  .../bindings/iio/adc/adi,ad7292.yaml          |  8 ++--
-> >  4 files changed, 47 insertions(+), 36 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adc.txt
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adc.yaml
-> > 
-> > -- 
-> > 2.28.0
-> >   
+I've retained Rob's Reviewed-by on basis changes were ones he suggested and
+fairly minor in scope.
+
+Now the two IIO patches are separate from the i2c-gate one we can
+take them via diferent trees without any problems so unless any issues
+come up I'll pick up the two IIO patches in a few days time.
+
+Jonathan Cameron (3):
+  dt-bindings:i2c:i2c-gate: txt to yaml conversion
+  dt-bindings:iio:imu:invensense,mpu6050: txt to yaml conversion
+  dt-bindings:iio:gyro:invensense,mpu3050: txt to yaml format
+    conversion.
+
+ .../devicetree/bindings/i2c/i2c-gate.txt      |  41 -------
+ .../devicetree/bindings/i2c/i2c-gate.yaml     |  39 +++++++
+ .../iio/gyroscope/invensense,mpu3050.txt      |  45 --------
+ .../iio/gyroscope/invensense,mpu3050.yaml     |  70 ++++++++++++
+ .../bindings/iio/imu/inv_mpu6050.txt          |  67 ------------
+ .../bindings/iio/imu/invensense,mpu6050.yaml  | 103 ++++++++++++++++++
+ 6 files changed, 212 insertions(+), 153 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-gate.txt
+ create mode 100644 Documentation/devicetree/bindings/i2c/i2c-gate.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+
+-- 
+2.29.2
 

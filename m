@@ -2,92 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F752C7576
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 061FE2C7556
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:24:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730578AbgK1VtU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43260 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgK1R6R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 12:58:17 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C908246E2;
-        Sat, 28 Nov 2020 17:57:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606586257;
-        bh=TysTcHn2fgrDv6ggQHwiNuDIFdGJtM1RGsXV7S/7owc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=awjqu6B87cLyKBBprTyTXkJIBAin8UTpcBvVrqfWIUtr8gzZjprqHCqaJRZCCv9Fy
-         mZtwy454PnWP1zmi0Y2CEmOQeR4S9JrsBp0HFDjw7u3L/fQlr0vSwJbnnE9Aqybix3
-         iHa8p8gF/08jj8bwnK722YgMzgWIT0DWmmeFt+ww=
-Date:   Sat, 28 Nov 2020 17:57:32 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
+        id S1732290AbgK1VtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729410AbgK1S0y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 13:26:54 -0500
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9784EC094263
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 10:26:14 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id l206so9526922oif.12
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 10:26:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=8RiqeUI7pxEdcbpvxfJ+9GMvAAwvki840nbCV6Q60IU=;
+        b=GvjnN70kbYequ6BfcsRpypGeWaz7M4mB5QZPIeglAYUDWgjYru8CEuIHzyZIMCjLTY
+         giLlIEbmGAiGvREIxH/T7ywVpFWuVDo+x011+rt59YPS3k1TmGRgE8UH2UJXgEa17r8K
+         1B9f4d1IaLl9dlOtiPpUOhXFo7949yfYwUJ/1l5A3rBruzpKq1ycZHCdfEw1rx5T5C2V
+         b6BsFjLMQ9/O+mhvdvxkYSkCU5lZyKJSJk2J4+ZQRpIChm1Z2FT2s2bhjFYmTwexWKlf
+         bDnUvNrdgFp+AvBRPn/xgSayNjlRcpKbZ9lpg3LwNhgqKHJhK2U00l1wCzYBAiBOD7y3
+         Xu9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=8RiqeUI7pxEdcbpvxfJ+9GMvAAwvki840nbCV6Q60IU=;
+        b=QYwgbF/7UlWDY+tl+spHcB5DBnME8poISYONyAG6ljL9e63Khz3M15PsJK3qFAKLya
+         rRTxJF+6xwtr6558FLd+f6ciwinFadF3scCPWFVWI5IMkOVffYCTPqmvy8jyMM6HjunQ
+         8x0VCWEIqThhE91XeAr1IAT4FBivWRjez4eoU2QrJs6FVBNFVfY/g7gvTlDz7sHf6BCd
+         /ZI84ABqMvsU74piJGmLkBGaEJgv84iBlNBqL5ihV15rWvasx73xuC7+FyU3rnJZPcRf
+         CsTHBimKqKlOW0Fm5vMEMt76lyy122dJg1dhoPonkQJN5CEFTOxx1FPLXNyYRSzmGFGm
+         LHWg==
+X-Gm-Message-State: AOAM531FgV5iv03/Rper+EqvliCRbJ7UdQgiVst1wV0g9CL1xEP5jHMS
+        0rRv3FYqEV8z/pn6H/SwQwyjrQ==
+X-Google-Smtp-Source: ABdhPJxA5zsDHDJY99I5CzvTe4pikaKPHc9b9aQ8/DcRdy5mdSZJb5QNXLp5Vm7qvIKoHo+4x7kS7g==
+X-Received: by 2002:aca:1916:: with SMTP id l22mr9717479oii.79.1606587973685;
+        Sat, 28 Nov 2020 10:26:13 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id m81sm7411469oib.37.2020.11.28.10.26.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Nov 2020 10:26:12 -0800 (PST)
+Date:   Sat, 28 Nov 2020 12:26:10 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 00/10] dt-bindings: iio: conversion of consumer drivers
-Message-ID: <20201128175732.5fdc7310@archlinux>
-In-Reply-To: <20201103160756.GB1732900@bogus>
-References: <20201031181242.742301-1-jic23@kernel.org>
-        <20201103160756.GB1732900@bogus>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
+        Jishnu Prakash <jprakash@codeaurora.org>
+Subject: Re: [PATCH 1/9] dt-bindings:iio:qcom-spmi-vadc drop incorrect
+ io-channel-ranges from example
+Message-ID: <X8KWQrfyRXENTxM7@builder.lan>
+References: <20201115192951.1073632-1-jic23@kernel.org>
+ <20201115192951.1073632-2-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201115192951.1073632-2-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Nov 2020 10:07:56 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Sun 15 Nov 13:29 CST 2020, Jonathan Cameron wrote:
 
-> On Sat, Oct 31, 2020 at 06:12:32PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Firstly drop the old text file as the consumer binding (and the other
-> > parts of that file) are under review for inclusion in the dt-schema external
-> > repo.
-> > 
-> > This only converts consumers that happen to also be IIO drivers.
-> > Others may get done as part of SoC binding conversions or I may do a lot
-> > of them at somepoint.
-> > 
-> > A few of the examples in existing text files used providers that were
-> > documented in trivial-bindings.yaml which does not allow for
-> > #io-channel-cells. I have pulled those out to their own files as part
-> > of this patch set.
-> > 
-> > The iio-mux binding is not done as that has some dependencies and will
-> > form part of some future patch set.
-> > 
-> > There is no explicit dependency in here on any other sets, but some
-> > noise will occur in trivial-bindings.yaml if applied in a different
-> > order to I happen to have them sets locally.
-> > 
-> > Jonathan Cameron (10):
-> >   dt-bindings:iio:iio-binding.txt Drop file as content now in dt-schema
-> >   dt-bindings:iio:dac:dpot-dac: yaml conversion.
-> >   dt-bindings:iio:potentiometer: give microchip,mcp4531 its own binding
-> >   dt-bindings:iio:adc:envelope-detector: txt to yaml conversion.
-> >   dt-bindings:iio:afe:current-sense-amplifier: txt to yaml conversion.
-> >   dt-bindings:iio:afe:current-sense-shunt: txt to yaml conversion. 
-> >   dt-bindings:iio:adc:maxim,max1027: Pull out to separate binding doc.
-> >   dt-bindings:iio:afe:voltage-divider: txt to yaml conversion
-> >   dt-bindings:iio:light:capella,cm3605: txt to yaml conversion.
-> >   dt-bindings:iio:potentiostat:ti,lmp91000: txt to yaml conversion.  
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> With the type references for properties with standard units dropped,
-
-Done.
-
+> io-channel-ranges is a property for io-channel consumers. Here
+> it is in an example of a provider of channels so doesn't do anything
+> useful.
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Recent additions to dt-schema check this property is only provided
+> alongside io-channels which is not true here and hence an error is
+> reported.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reported-by: Rob Herring <robh@kernel.org>
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Jishnu Prakash <jprakash@codeaurora.org>
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to do their magic.
-Thanks,
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Jonathan
+Regards,
+Bjorn
+
+> ---
+>  Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> index 7f4f827c57a7..95cc705b961b 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> @@ -48,8 +48,6 @@ properties:
+>      description:
+>        End of conversion interrupt.
+>  
+> -  io-channel-ranges: true
+> -
+>  required:
+>    - compatible
+>    - reg
+> @@ -249,7 +247,6 @@ examples:
+>          #address-cells = <1>;
+>          #size-cells = <0>;
+>          #io-channel-cells = <1>;
+> -        io-channel-ranges;
+>  
+>          /* Channel node */
+>          adc-chan@39 {
+> -- 
+> 2.28.0
+> 

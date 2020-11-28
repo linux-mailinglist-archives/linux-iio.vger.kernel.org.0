@@ -2,647 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D5FE2C750C
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FF8E2C751D
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388107AbgK1Vt3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50388 "EHLO mail.kernel.org"
+        id S1733212AbgK1Vt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49448 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732602AbgK1TCU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:02:20 -0500
-Received: from localhost.localdomain (unknown [151.66.8.153])
+        id S1732251AbgK1S7p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 13:59:45 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F854222B8;
-        Sat, 28 Nov 2020 10:08:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7453D22264;
+        Sat, 28 Nov 2020 11:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606558090;
-        bh=wCtgc2+rt3NEWfWOvaaCUzQOWiA5mjzsEXm/HqxyctM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=UCi6ZqEPllWDuLGqhqC20b+9gEItE94d1FfGxmgvCN/W9zF4EAdivI3sYXYi267hC
-         1fNCbooD6Am/7zkR6Jz0RYDlLeEw4d4voiCNXQyWzrhsw60cSNvgcc91hTdZpnBYK0
-         mGlUtAS0i0cefFxclAOL3M1WRmEpKe9WkBKxRykM=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
-Subject: [PATCH] iio: imu: st_lsmdsx: compact st_lsm6dsx_sensor_settings table
-Date:   Sat, 28 Nov 2020 11:08:01 +0100
-Message-Id: <c43286938b2fe03ab3abdb5fc095ea6b950abcb1.1606557946.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.28.0
+        s=default; t=1606562858;
+        bh=q9t0E9p3Z3A34FvR6fiBWYyqo2/S0QdL1HmGZf6MD8w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Pjz3QClZgphL8SV16IByCnWTJw3+3yDWQDAESEGwb9ngZV8huuGAzwR4BIN8EBdS0
+         xmtACEdE/jioO82ti+0t9/cj/DI1ytrOqX4xq5yXxp/u0ZBNdMqzq4R64kn4Pngx5v
+         zXP4xz0T28CLwjRbXxnb29oR5JNrCmGs5kBqrPnc=
+Date:   Sat, 28 Nov 2020 11:27:35 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2 v2] iio: magnetometer: Add driver for Yamaha YAS5xx
+Message-ID: <20201128112735.57398b74@archlinux>
+In-Reply-To: <X8HNcg4fQKbo8yd5@builder.lan>
+References: <20201128004038.883289-1-linus.walleij@linaro.org>
+        <20201128004038.883289-2-linus.walleij@linaro.org>
+        <X8HNcg4fQKbo8yd5@builder.lan>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Shrink st_lsm6dsx_sensor_settings table size moving wai address info in
-id array and remove duplicated code
+On Fri, 27 Nov 2020 22:09:22 -0600
+Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |   3 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 451 ++-----------------
- 2 files changed, 29 insertions(+), 425 deletions(-)
+> On Fri 27 Nov 18:40 CST 2020, Linus Walleij wrote:
+> 
+> > This adds an IIO magnetometer driver for the Yamaha
+> > YAS53x magnetometer/compass chips YAS530 and YAS532.
+> > A quick survey of the source code released by different
+> > vendors reveal that we have these variants in the family
+> > with some deployments listed:
+> > 
+> >  * YAS529 MS-3C (2005 Samsung Aries)
+> >  * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
+> >  * YAS532 MS-3R (2011 Samsung Galaxy S4)
+> >  * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
+> >  * (YAS534 is a magnetic switch)
+> >  * YAS535 MS-6C
+> >  * YAS536 MS-3W
+> >  * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5)
+> >  * YAS539 MS-3S (2018 Samsung Galaxy A7 SM-A750FN)
+> > 
+> > The YAS529 is so significantly different from the
+> > YAS53x variants that it will require its own driver.
+> > The YAS537 and YAS539 have slightly different register
+> > sets but have strong similarities so a common driver
+> > will probably be reasonable.
+> > 
+> > The source code for Samsung Galaxy A7's YAS539 is not
+> > that significantly different from the YAS530 in the
+> > Galaxy S Advance, so I believe we will only need this
+> > one driver with quirks to handle all of them.
+> > 
+> > The YAS539 is actively announced on Yamaha's devices
+> > site:
+> > https://device.yamaha.com/en/lsi/products/e_compass/
+> > 
+> > This is a driver written from scratch using buffered
+> > IIO and runtime PM handling regulators and reset.
+> >   
+> 
+> Looks quite nice, just spotted some small things as I was skimming
+> through the patch.
+> 
+> > Cc: phone-devel@vger.kernel.org
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> > ---
+> > ChangeLog v1->v3:
+> > - This is posted along with the DT bindings which are
+> >   in v3 so just number everything as v3.  
+> 
+> $subject still says v2...
+> 
+> [..]
+> > diff --git a/drivers/iio/magnetometer/yamaha-yas53x.c b/drivers/iio/magnetometer/yamaha-yas53x.c  
+> [..]
+> > +/* On YAS532 the x, y1 and y2 values are 13 bits */
+> > +static u16 yas532_extract_axis(u8 *data)
+> > +{
+> > +	u16 val;
+> > +
+> > +	/*
+> > +	 * These are the bits used in a 16bit word:
+> > +	 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> > +	 *    x  x  x  x  x  x  x  x  x  x  x  x  x
+> > +	 */
+> > +	val = get_unaligned_be16(&data[0]);
+> > +	val >>= 2;
+> > +	val &= GENMASK(12, 0);  
+> 
+> Wouldn't it be easier to follow if you GENMASK out the bits you document
+> above, then shift them right?
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 4b4ec39d4400..b81da6053b3c 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -266,7 +266,6 @@ struct st_lsm6dsx_ext_dev_settings {
- 
- /**
-  * struct st_lsm6dsx_settings - ST IMU sensor settings
-- * @wai: Sensor WhoAmI default value.
-  * @reset: register address for reset.
-  * @boot: register address for boot.
-  * @bdu: register address for Block Data Update.
-@@ -284,7 +283,6 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @shub_settings: i2c controller related settings.
-  */
- struct st_lsm6dsx_settings {
--	u8 wai;
- 	struct st_lsm6dsx_reg reset;
- 	struct st_lsm6dsx_reg boot;
- 	struct st_lsm6dsx_reg bdu;
-@@ -292,6 +290,7 @@ struct st_lsm6dsx_settings {
- 	struct {
- 		enum st_lsm6dsx_hw_id hw_id;
- 		const char *name;
-+		u8 wai;
- 	} id[ST_LSM6DSX_MAX_ID];
- 	struct {
- 		const struct iio_chan_spec *chan;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index a73c41dea5fc..c05910fa0de6 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -90,7 +90,6 @@ static const struct iio_chan_spec st_lsm6ds0_gyro_channels[] = {
- 
- static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	{
--		.wai = 0x68,
- 		.reset = {
- 			.addr = 0x22,
- 			.mask = BIT(0),
-@@ -108,9 +107,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			{
- 				.hw_id = ST_LSM9DS1_ID,
- 				.name = ST_LSM9DS1_DEV_NAME,
-+				.wai = 0x68,
- 			}, {
- 				.hw_id = ST_LSM6DS0_ID,
- 				.name = ST_LSM6DS0_DEV_NAME,
-+				.wai = 0x68,
- 			},
- 		},
- 		.channels = {
-@@ -195,7 +196,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 	},
- 	{
--		.wai = 0x69,
- 		.reset = {
- 			.addr = 0x12,
- 			.mask = BIT(0),
-@@ -213,6 +213,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			{
- 				.hw_id = ST_LSM6DS3_ID,
- 				.name = ST_LSM6DS3_DEV_NAME,
-+				.wai = 0x69,
- 			},
- 		},
- 		.channels = {
-@@ -361,7 +362,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 	},
- 	{
--		.wai = 0x69,
- 		.reset = {
- 			.addr = 0x12,
- 			.mask = BIT(0),
-@@ -379,6 +379,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			{
- 				.hw_id = ST_LSM6DS3H_ID,
- 				.name = ST_LSM6DS3H_DEV_NAME,
-+				.wai = 0x69,
- 			},
- 		},
- 		.channels = {
-@@ -527,7 +528,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 	},
- 	{
--		.wai = 0x6a,
- 		.reset = {
- 			.addr = 0x12,
- 			.mask = BIT(0),
-@@ -545,15 +545,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			{
- 				.hw_id = ST_LSM6DSL_ID,
- 				.name = ST_LSM6DSL_DEV_NAME,
-+				.wai = 0x6a,
- 			}, {
- 				.hw_id = ST_LSM6DSM_ID,
- 				.name = ST_LSM6DSM_DEV_NAME,
-+				.wai = 0x6a,
- 			}, {
- 				.hw_id = ST_ISM330DLC_ID,
- 				.name = ST_ISM330DLC_DEV_NAME,
-+				.wai = 0x6a,
- 			}, {
- 				.hw_id = ST_LSM6DS3TRC_ID,
- 				.name = ST_LSM6DS3TRC_DEV_NAME,
-+				.wai = 0x6a,
- 			},
- 		},
- 		.channels = {
-@@ -743,7 +747,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 	},
- 	{
--		.wai = 0x6c,
- 		.reset = {
- 			.addr = 0x12,
- 			.mask = BIT(0),
-@@ -759,11 +762,29 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		.max_fifo_size = 512,
- 		.id = {
- 			{
-+				.hw_id = ST_LSM6DSR_ID,
-+				.name = ST_LSM6DSR_DEV_NAME,
-+				.wai = 0x6b,
-+			}, {
-+				.hw_id = ST_ISM330DHCX_ID,
-+				.name = ST_ISM330DHCX_DEV_NAME,
-+				.wai = 0x6b,
-+			}, {
-+				.hw_id = ST_LSM6DSRX_ID,
-+				.name = ST_LSM6DSRX_DEV_NAME,
-+				.wai = 0x6b,
-+			}, {
- 				.hw_id = ST_LSM6DSO_ID,
- 				.name = ST_LSM6DSO_DEV_NAME,
-+				.wai = 0x6c,
- 			}, {
- 				.hw_id = ST_LSM6DSOX_ID,
- 				.name = ST_LSM6DSOX_DEV_NAME,
-+				.wai = 0x6c,
-+			}, {
-+				.hw_id = ST_LSM6DST_ID,
-+				.name = ST_LSM6DST_DEV_NAME,
-+				.wai = 0x6d,
- 			},
- 		},
- 		.channels = {
-@@ -951,7 +972,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 	},
- 	{
--		.wai = 0x6b,
- 		.reset = {
- 			.addr = 0x12,
- 			.mask = BIT(0),
-@@ -969,6 +989,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			{
- 				.hw_id = ST_ASM330LHH_ID,
- 				.name = ST_ASM330LHH_DEV_NAME,
-+				.wai = 0x6b,
- 			},
- 		},
- 		.channels = {
-@@ -1123,422 +1144,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
--	{
--		.wai = 0x6b,
--		.reset = {
--			.addr = 0x12,
--			.mask = BIT(0),
--		},
--		.boot = {
--			.addr = 0x12,
--			.mask = BIT(7),
--		},
--		.bdu = {
--			.addr = 0x12,
--			.mask = BIT(6),
--		},
--		.max_fifo_size = 512,
--		.id = {
--			{
--				.hw_id = ST_LSM6DSR_ID,
--				.name = ST_LSM6DSR_DEV_NAME,
--			}, {
--				.hw_id = ST_ISM330DHCX_ID,
--				.name = ST_ISM330DHCX_DEV_NAME,
--			}, {
--				.hw_id = ST_LSM6DSRX_ID,
--				.name = ST_LSM6DSRX_DEV_NAME,
--			},
--		},
--		.channels = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.chan = st_lsm6dsx_gyro_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
--			},
--		},
--		.drdy_mask = {
--			.addr = 0x13,
--			.mask = BIT(3),
--		},
--		.odr_table = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.reg = {
--					.addr = 0x10,
--					.mask = GENMASK(7, 4),
--				},
--				.odr_avl[0] = {  12500, 0x01 },
--				.odr_avl[1] = {  26000, 0x02 },
--				.odr_avl[2] = {  52000, 0x03 },
--				.odr_avl[3] = { 104000, 0x04 },
--				.odr_avl[4] = { 208000, 0x05 },
--				.odr_avl[5] = { 416000, 0x06 },
--				.odr_avl[6] = { 833000, 0x07 },
--				.odr_len = 7,
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.reg = {
--					.addr = 0x11,
--					.mask = GENMASK(7, 4),
--				},
--				.odr_avl[0] = {  12500, 0x01 },
--				.odr_avl[1] = {  26000, 0x02 },
--				.odr_avl[2] = {  52000, 0x03 },
--				.odr_avl[3] = { 104000, 0x04 },
--				.odr_avl[4] = { 208000, 0x05 },
--				.odr_avl[5] = { 416000, 0x06 },
--				.odr_avl[6] = { 833000, 0x07 },
--				.odr_len = 7,
--			},
--		},
--		.fs_table = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.reg = {
--					.addr = 0x10,
--					.mask = GENMASK(3, 2),
--				},
--				.fs_avl[0] = {  IIO_G_TO_M_S_2(61000), 0x0 },
--				.fs_avl[1] = { IIO_G_TO_M_S_2(122000), 0x2 },
--				.fs_avl[2] = { IIO_G_TO_M_S_2(244000), 0x3 },
--				.fs_avl[3] = { IIO_G_TO_M_S_2(488000), 0x1 },
--				.fs_len = 4,
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.reg = {
--					.addr = 0x11,
--					.mask = GENMASK(3, 2),
--				},
--				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(8750000), 0x0 },
--				.fs_avl[1] = { IIO_DEGREE_TO_RAD(17500000), 0x1 },
--				.fs_avl[2] = { IIO_DEGREE_TO_RAD(35000000), 0x2 },
--				.fs_avl[3] = { IIO_DEGREE_TO_RAD(70000000), 0x3 },
--				.fs_len = 4,
--			},
--		},
--		.irq_config = {
--			.irq1 = {
--				.addr = 0x0d,
--				.mask = BIT(3),
--			},
--			.irq2 = {
--				.addr = 0x0e,
--				.mask = BIT(3),
--			},
--			.lir = {
--				.addr = 0x56,
--				.mask = BIT(0),
--			},
--			.clear_on_read = {
--				.addr = 0x56,
--				.mask = BIT(6),
--			},
--			.irq1_func = {
--				.addr = 0x5e,
--				.mask = BIT(5),
--			},
--			.irq2_func = {
--				.addr = 0x5f,
--				.mask = BIT(5),
--			},
--			.hla = {
--				.addr = 0x12,
--				.mask = BIT(5),
--			},
--			.od = {
--				.addr = 0x12,
--				.mask = BIT(4),
--			},
--		},
--		.batch = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.addr = 0x09,
--				.mask = GENMASK(3, 0),
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.addr = 0x09,
--				.mask = GENMASK(7, 4),
--			},
--		},
--		.fifo_ops = {
--			.update_fifo = st_lsm6dsx_update_fifo,
--			.read_fifo = st_lsm6dsx_read_tagged_fifo,
--			.fifo_th = {
--				.addr = 0x07,
--				.mask = GENMASK(8, 0),
--			},
--			.fifo_diff = {
--				.addr = 0x3a,
--				.mask = GENMASK(9, 0),
--			},
--			.th_wl = 1,
--		},
--		.ts_settings = {
--			.timer_en = {
--				.addr = 0x19,
--				.mask = BIT(5),
--			},
--			.decimator = {
--				.addr = 0x0a,
--				.mask = GENMASK(7, 6),
--			},
--			.freq_fine = 0x63,
--		},
--		.shub_settings = {
--			.page_mux = {
--				.addr = 0x01,
--				.mask = BIT(6),
--			},
--			.master_en = {
--				.sec_page = true,
--				.addr = 0x14,
--				.mask = BIT(2),
--			},
--			.pullup_en = {
--				.sec_page = true,
--				.addr = 0x14,
--				.mask = BIT(3),
--			},
--			.aux_sens = {
--				.addr = 0x14,
--				.mask = GENMASK(1, 0),
--			},
--			.wr_once = {
--				.addr = 0x14,
--				.mask = BIT(6),
--			},
--			.num_ext_dev = 3,
--			.shub_out = {
--				.sec_page = true,
--				.addr = 0x02,
--			},
--			.slv0_addr = 0x15,
--			.dw_slv0_addr = 0x21,
--			.batch_en = BIT(3),
--		},
--		.event_settings = {
--			.enable_reg = {
--				.addr = 0x58,
--				.mask = BIT(7),
--			},
--			.wakeup_reg = {
--				.addr = 0x5B,
--				.mask = GENMASK(5, 0),
--			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
--		}
--	},
--	{
--		.wai = 0x6d,
--		.reset = {
--			.addr = 0x12,
--			.mask = BIT(0),
--		},
--		.boot = {
--			.addr = 0x12,
--			.mask = BIT(7),
--		},
--		.bdu = {
--			.addr = 0x12,
--			.mask = BIT(6),
--		},
--		.max_fifo_size = 512,
--		.id = {
--			{
--				.hw_id = ST_LSM6DST_ID,
--				.name = ST_LSM6DST_DEV_NAME,
--			},
--		},
--		.channels = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.chan = st_lsm6dsx_gyro_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
--			},
--		},
--		.drdy_mask = {
--			.addr = 0x13,
--			.mask = BIT(3),
--		},
--		.odr_table = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.reg = {
--					.addr = 0x10,
--					.mask = GENMASK(7, 4),
--				},
--				.odr_avl[0] = {  12500, 0x01 },
--				.odr_avl[1] = {  26000, 0x02 },
--				.odr_avl[2] = {  52000, 0x03 },
--				.odr_avl[3] = { 104000, 0x04 },
--				.odr_avl[4] = { 208000, 0x05 },
--				.odr_avl[5] = { 416000, 0x06 },
--				.odr_avl[6] = { 833000, 0x07 },
--				.odr_len = 7,
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.reg = {
--					.addr = 0x11,
--					.mask = GENMASK(7, 4),
--				},
--				.odr_avl[0] = {  12500, 0x01 },
--				.odr_avl[1] = {  26000, 0x02 },
--				.odr_avl[2] = {  52000, 0x03 },
--				.odr_avl[3] = { 104000, 0x04 },
--				.odr_avl[4] = { 208000, 0x05 },
--				.odr_avl[5] = { 416000, 0x06 },
--				.odr_avl[6] = { 833000, 0x07 },
--				.odr_len = 7,
--			},
--		},
--		.fs_table = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.reg = {
--					.addr = 0x10,
--					.mask = GENMASK(3, 2),
--				},
--				.fs_avl[0] = {  IIO_G_TO_M_S_2(61000), 0x0 },
--				.fs_avl[1] = { IIO_G_TO_M_S_2(122000), 0x2 },
--				.fs_avl[2] = { IIO_G_TO_M_S_2(244000), 0x3 },
--				.fs_avl[3] = { IIO_G_TO_M_S_2(488000), 0x1 },
--				.fs_len = 4,
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.reg = {
--					.addr = 0x11,
--					.mask = GENMASK(3, 2),
--				},
--				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(8750000), 0x0 },
--				.fs_avl[1] = { IIO_DEGREE_TO_RAD(17500000), 0x1 },
--				.fs_avl[2] = { IIO_DEGREE_TO_RAD(35000000), 0x2 },
--				.fs_avl[3] = { IIO_DEGREE_TO_RAD(70000000), 0x3 },
--				.fs_len = 4,
--			},
--		},
--		.irq_config = {
--			.irq1 = {
--				.addr = 0x0d,
--				.mask = BIT(3),
--			},
--			.irq2 = {
--				.addr = 0x0e,
--				.mask = BIT(3),
--			},
--			.lir = {
--				.addr = 0x56,
--				.mask = BIT(0),
--			},
--			.clear_on_read = {
--				.addr = 0x56,
--				.mask = BIT(6),
--			},
--			.irq1_func = {
--				.addr = 0x5e,
--				.mask = BIT(5),
--			},
--			.irq2_func = {
--				.addr = 0x5f,
--				.mask = BIT(5),
--			},
--			.hla = {
--				.addr = 0x12,
--				.mask = BIT(5),
--			},
--			.od = {
--				.addr = 0x12,
--				.mask = BIT(4),
--			},
--		},
--		.batch = {
--			[ST_LSM6DSX_ID_ACC] = {
--				.addr = 0x09,
--				.mask = GENMASK(3, 0),
--			},
--			[ST_LSM6DSX_ID_GYRO] = {
--				.addr = 0x09,
--				.mask = GENMASK(7, 4),
--			},
--		},
--		.fifo_ops = {
--			.update_fifo = st_lsm6dsx_update_fifo,
--			.read_fifo = st_lsm6dsx_read_tagged_fifo,
--			.fifo_th = {
--				.addr = 0x07,
--				.mask = GENMASK(8, 0),
--			},
--			.fifo_diff = {
--				.addr = 0x3a,
--				.mask = GENMASK(9, 0),
--			},
--			.th_wl = 1,
--		},
--		.ts_settings = {
--			.timer_en = {
--				.addr = 0x19,
--				.mask = BIT(5),
--			},
--			.decimator = {
--				.addr = 0x0a,
--				.mask = GENMASK(7, 6),
--			},
--			.freq_fine = 0x63,
--		},
--		.shub_settings = {
--			.page_mux = {
--				.addr = 0x01,
--				.mask = BIT(6),
--			},
--			.master_en = {
--				.sec_page = true,
--				.addr = 0x14,
--				.mask = BIT(2),
--			},
--			.pullup_en = {
--				.sec_page = true,
--				.addr = 0x14,
--				.mask = BIT(3),
--			},
--			.aux_sens = {
--				.addr = 0x14,
--				.mask = GENMASK(1, 0),
--			},
--			.wr_once = {
--				.addr = 0x14,
--				.mask = BIT(6),
--			},
--			.num_ext_dev = 3,
--			.shub_out = {
--				.sec_page = true,
--				.addr = 0x02,
--			},
--			.slv0_addr = 0x15,
--			.dw_slv0_addr = 0x21,
--			.batch_en = BIT(3),
--		},
--		.event_settings = {
--			.enable_reg = {
--				.addr = 0x58,
--				.mask = BIT(7),
--			},
--			.wakeup_reg = {
--				.addr = 0x5b,
--				.mask = GENMASK(5, 0),
--			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
--		},
--	},
- };
- 
- int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
-@@ -1582,7 +1187,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
- 		return err;
- 	}
- 
--	if (data != st_lsm6dsx_sensor_settings[i].wai) {
-+	if (data != st_lsm6dsx_sensor_settings[i].id[j].wai) {
- 		dev_err(hw->dev, "unsupported whoami [%02x]\n", data);
- 		return -ENODEV;
- 	}
--- 
-2.28.0
+Even better to use FIELD_GET
+which does what Bjorn suggested under the hood.
+
+Thanks,
+
+Jonathan
+
+> 
+> > +	return val;
+> > +}  
+> [..]
+> > +/**
+> > + * yas5xx_measure() - Make a measure from the hardware*
+> > + * @yas5xx: The device state
+> > + * @t: the raw temperature measurement
+> > + * @x: the raw x axis measurement
+> > + * @y1: the y1 axis measurement
+> > + * @y2: the y2 axis measurement  
+> 
+> * Return: 
+> 
+> To complete the kerneldoc.
+> 
+> > + */
+> > +static int yas5xx_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+> > +{  
+> [..]
+> > +/**  
+> 
+> This will result in someone feeling inclined to send a patch to fix the
+> incomplete kerneldoc.
+> 
+> So please either fill it out, or drop the second '*'.
+> 
+> > + * yas5xx_get_measure() - Measure a sample of all axis and process
+> > + *
+> > + * Returned valued are in nanotesla according to some code.
+> > + */
+> > +static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> > +{  
+> [..]
+> > +static int __maybe_unused yas5xx_runtime_resume(struct device *dev)
+> > +{
+> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	ret = regulator_bulk_enable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> > +	if (ret) {
+> > +		dev_err(dev, "cannot enable regulators\n");  
+> 
+> regulator_bulk_enable() will log which of the regs it failed ot enable,
+> so you can omit this.
+> 
+> Regards,
+> Bjorn
 

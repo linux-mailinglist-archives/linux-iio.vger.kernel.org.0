@@ -2,47 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6600F2C7559
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 649A72C753A
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731324AbgK1VtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46046 "EHLO mail.kernel.org"
+        id S1732882AbgK1VtZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47532 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732723AbgK1SQ4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 13:16:56 -0500
+        id S1730567AbgK1Sl4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 13:41:56 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E766C246BC;
-        Sat, 28 Nov 2020 16:00:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 59D37246C1;
+        Sat, 28 Nov 2020 16:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606579205;
-        bh=tIKRhWls3YzYhbVGldXSkrWMmSCjQfXBQFEelNA1aWM=;
+        s=default; t=1606580147;
+        bh=DqS5YYy9W5SG1eb0ykyOMwA4cjtF5BIMVnfJ92mEadM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Rnm00mPizeX5NU8jciZzzV3em6AJ98QA8A5sG7mzGPah20ZRauHQ6W6P5B05yGeqh
-         C0EyTSQjMtntaUCjrRaWhI+gtvOU07+MWkkFUSZnfCKj8G7zBaBgJ5wzIMA09DGmwi
-         Cqi36nVkWJEB9aDGNWyJwHlTNVCU+5QquZH7qYBw=
-Date:   Sat, 28 Nov 2020 16:00:00 +0000
+        b=uGI2HUE7WASPx7pptdjVrB1P4ljFfuy3nQt0mLrMrCYziwPxVKPOPSlK6P9GhR3Zn
+         f5ix6hGKne8K3M6j5kskWzRDZmJu7DwUE+/ArD7MgSU/jrZ2b8zowOxhlwfzomFybk
+         mHluMu/pYLuMWrMf2K7PU7/GMTEHRtAtzn1pFdtg=
+Date:   Sat, 28 Nov 2020 16:15:42 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/4] device: provide devm_krealloc_array()
-Message-ID: <20201128160000.5ac0ddc6@archlinux>
-In-Reply-To: <CAMRc=Mfa2Y65CW8YO_poRgrN9aPjLz=MXYrn7OPUEfwB3mnZvA@mail.gmail.com>
-References: <20201102142228.14949-1-brgl@bgdev.pl>
-        <20201102142228.14949-2-brgl@bgdev.pl>
-        <20201114154641.0258f4ee@archlinux>
-        <X7ADFLwEpUHkTiT+@kroah.com>
-        <CAMpxmJUHiNqKNVDxaWLeDja6huR78u1Hp7JHF_aP5L_UgjYzbg@mail.gmail.com>
-        <CAMRc=Mfa2Y65CW8YO_poRgrN9aPjLz=MXYrn7OPUEfwB3mnZvA@mail.gmail.com>
+To:     linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 07/46] dt-bindings:iio:health:ti,afe4403: txt to yaml
+ binding
+Message-ID: <20201128161542.5481ab9f@archlinux>
+In-Reply-To: <20201122173211.26f4a912@archlinux>
+References: <20201031184854.745828-1-jic23@kernel.org>
+        <20201031184854.745828-8-jic23@kernel.org>
+        <20201122173211.26f4a912@archlinux>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,70 +43,146 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Nov 2020 12:38:26 +0100
-Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Sun, 22 Nov 2020 17:32:11 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Mon, Nov 16, 2020 at 11:18 AM Bartosz Golaszewski
-> <bgolaszewski@baylibre.com> wrote:
-> >
-> > On Sat, Nov 14, 2020 at 5:16 PM Greg KH <gregkh@linuxfoundation.org> wrote:  
-> > >
-> > > On Sat, Nov 14, 2020 at 03:46:41PM +0000, Jonathan Cameron wrote:  
-> > > > On Mon,  2 Nov 2020 15:22:25 +0100
-> > > > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > >  
-> > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > > >
-> > > > > When allocating an array of elements, users should check for
-> > > > > multiplication overflow or preferably use one of the provided helpers
-> > > > > like: devm_kmalloc_array().
-> > > > >
-> > > > > This provides devm_krealloc_array() for users who want to reallocate
-> > > > > managed arrays.
-> > > > >
-> > > > > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>  
-> > > >
-> > > > +CC Greg KH.
-> > > >
-> > > > As this is going into a very generic place I'd like a relevant ack.
-> > > > That file is a bit of a wild west for acks, but Greg seems most
-> > > > appropriate person.
-> > > >
-> > > > So Greg, any comments on this one?  
-> > >
-> > > As there is only 1 user of this function in the patch series, you don't
-> > > save any extra code space here, I don't think this is worth it.
-> > >  
-> >
-> > It's worth it in that the overflow check before allocation doesn't
-> > seem to belong in a driver IMO but is a general check that should live
-> > in common code.
-> >  
-> > > We are seeing less and less gains from these new devm_* additions, and
-> > > only more confusion and problems with them.  So perhaps don't add this?
-> > > I don't think it is needed.
-> > >  
-> >
-> > I think you're referring to the discussion on
-> > devm_platform_ioremap_resource()? I would argue that consolidation of
-> > common operations in helpers is rarely a bad thing but it's a
-> > discussion for another thread.
-> >
-> > I'm not too attached to this patch - if you think this should be
-> > dropped then fine, but I don't see how the name devm_krealloc_array()
-> > can confuse anyone.
-> >  
+> On Sat, 31 Oct 2020 18:48:15 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> Greg: what's the final call on this?
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > A few questions came up whilst converting this one.
+> > 1) What is actually required?
+> >   - Checking Linux driver, interrupt is not, and the tx-supply could
+> >     be supplied by a stub regulator as long as it's always on.
+> >     As such I have reduced the required list to just compatible and reg.
+> > 2) What is the regulator called?
+> >   - It's tx-supply in the binding doc, but the driver request tx_sup
+> >     I've left this alone for now.  Andrew could you confirm what is
+> >     intended for this?  
+> 
+> Andrew's email seems to be bouncing so I've reached out to him via another
+> means.  Will wait to see if that works before applying this or the next
+> patch given the questions.
 
-Reroll the series without this patch.  If it turns out to be a good idea
-in the long run we can always bring it back, but for now it's blocking
-the rest of the series.
+In order to move forwards with this I've put myself as maintainer and
+decided to send out a fix for the driver naming of that supply.
 
 Thanks,
 
 Jonathan
 
 > 
-> Bartosz
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Andrew F. Davis <afd@ti.com>
+> > ---
+> >  .../bindings/iio/health/afe4403.txt           | 33 ------------
+> >  .../bindings/iio/health/ti,afe4403.yaml       | 54 +++++++++++++++++++
+> >  2 files changed, 54 insertions(+), 33 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/health/afe4403.txt b/Documentation/devicetree/bindings/iio/health/afe4403.txt
+> > deleted file mode 100644
+> > index 8e412054d6d5..000000000000
+> > --- a/Documentation/devicetree/bindings/iio/health/afe4403.txt
+> > +++ /dev/null
+> > @@ -1,33 +0,0 @@
+> > -Texas Instruments AFE4403 Heart rate and Pulse Oximeter
+> > -
+> > -Required properties:
+> > - - compatible		: Should be "ti,afe4403".
+> > - - reg			: SPI chip select address of device.
+> > - - tx-supply		: Regulator supply to transmitting LEDs.
+> > - - interrupts		: The interrupt line the device ADC_RDY pin is
+> > -			  connected to. For details refer to,
+> > -			  ../../interrupt-controller/interrupts.txt.
+> > -
+> > -Optional properties:
+> > - - reset-gpios		: GPIO used to reset the device.
+> > -			  For details refer to, ../../gpio/gpio.txt.
+> > -
+> > -For other required and optional properties of SPI slave nodes
+> > -please refer to ../../spi/spi-bus.txt.
+> > -
+> > -Example:
+> > -
+> > -&spi0 {
+> > -	heart_mon@0 {
+> > -		compatible = "ti,afe4403";
+> > -		reg = <0>;
+> > -		spi-max-frequency = <10000000>;
+> > -
+> > -		tx-supply = <&vbat>;
+> > -
+> > -		interrupt-parent = <&gpio1>;
+> > -		interrupts = <28 IRQ_TYPE_EDGE_RISING>;
+> > -
+> > -		reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>;
+> > -	};
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> > new file mode 100644
+> > index 000000000000..5c86db65c033
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+> > @@ -0,0 +1,54 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/health/ti,afe4403.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Texas Instruments AFE4403 Heart rate and Pulse Oximeter
+> > +
+> > +maintainers:
+> > +  - Andrew F. Davis <afd@ti.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: ti,afe4403
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  tx-supply:
+> > +    description: Supply to transmitting LEDs.
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +    description: Connected to ADC_RDY pin.
+> > +
+> > +  reset-gpios: true
+> > +
+> > +  spi-max-frequency: true
+> > +
+> > +additionalProperties: false
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        heart_mon@0 {
+> > +            compatible = "ti,afe4403";
+> > +            reg = <0>;
+> > +            spi-max-frequency = <10000000>;
+> > +            tx-supply = <&vbat>;
+> > +            interrupt-parent = <&gpio1>;
+> > +            interrupts = <28 IRQ_TYPE_EDGE_RISING>;
+> > +            reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>;
+> > +        };
+> > +    };
+> > +...  
+> 
 

@@ -2,42 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F832C7493
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E33192C7505
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730439AbgK1Vtb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50388 "EHLO mail.kernel.org"
+        id S2388124AbgK1Vt3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50320 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387395AbgK1TGv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:06:51 -0500
+        id S1732799AbgK1TEJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 14:04:09 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EE26D24677;
-        Sat, 28 Nov 2020 13:40:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 823A424679;
+        Sat, 28 Nov 2020 13:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606570834;
-        bh=rbJeBPUYhl6GPSmdIP1yrJCzYX5bhCpiHnCO9FSCpO4=;
+        s=default; t=1606571036;
+        bh=y8xSzwhE92q2EySyYkUqGtr0mZ9hF3RD8J9JIx/Ufkc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CdRpV3F8GM4g7JT3uG7+z/efdsNNfdAOW6lk1RF/CFWqonhORWspIVpMGGOJq1zRw
-         PSKagrQSk9/vGw2ok0/oMSX9zTYHlZfj7PVBNRCtUaguDMhxHLDg2lyRXbqSOIB5tD
-         J3En5I4Kr8pbQ/n2TxdEVfSs28t8B5cRlvH2Q1YM=
-Date:   Sat, 28 Nov 2020 13:40:30 +0000
+        b=gk1oeaM6olIOr4VGM+2X3UhJgKOeVpKyvwA6jZ89a2/h9KYu0wzC6KgM2rmT/jfOe
+         4V4GhGwSW1ql6scMjeaZUdLc+DRtAyqoqiM6xjphCS55nKO8SH/osAShCslb5Niilb
+         5NAzJ4SeYKSufERqhSP84q6ZLvDhj0od9+KUblm0=
+Date:   Sat, 28 Nov 2020 13:43:52 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH 3/3 v3] iio: accel: bmc150-accel: Add rudimentary
- regulator support
-Message-ID: <20201128134030.1dc08d21@archlinux>
-In-Reply-To: <CACRpkdbP3ccrEK47jaQ=r8sYkFuXBcH=+LTKC1xz+kgXmkwomg@mail.gmail.com>
-References: <20201115205745.618455-1-linus.walleij@linaro.org>
-        <20201115205745.618455-3-linus.walleij@linaro.org>
-        <20201121164505.30767f9f@archlinux>
-        <CACRpkdbP3ccrEK47jaQ=r8sYkFuXBcH=+LTKC1xz+kgXmkwomg@mail.gmail.com>
+To:     Phil Reid <preid@electromag.com.au>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/1] iio: potentiometer: ad5272: Correct polarity of
+ reset
+Message-ID: <20201128134352.4b2529a6@archlinux>
+In-Reply-To: <20201124050014.4453-1-preid@electromag.com.au>
+References: <20201124050014.4453-1-preid@electromag.com.au>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,42 +41,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 28 Nov 2020 12:44:26 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, 24 Nov 2020 13:00:14 +0800
+Phil Reid <preid@electromag.com.au> wrote:
 
-> On Sat, Nov 21, 2020 at 5:45 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Sun, 15 Nov 2020 21:57:45 +0100
-> > Linus Walleij <linus.walleij@linaro.org> wrote:
-> >  
-> > > These Bosch accelerometers have two supplies, VDD and VDDIO.
-> > > Add some rudimentary support to obtain and enable these
-> > > regulators during probe() and disable them during remove()
-> > > or on the errorpath.
-> > >
-> > > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>  
+> The driver should assert reset by setting the gpio high, and
+> then release it by setting it the gpio low. This allows the
+> device tree (or other hardware definition) to specify how the
+> gpio is configured.
 > 
-> > All looks good to me.  Will leave it for a bit longer though to let
-> > Rob have a chance to look at the dt binding doc.
-> >
-> > As ever, if it seems to have gotten lost it is probably worth
-> > poking me.  
+> For example as open drain or push-pull depending on the
+> connected hardware.
 > 
-> It's been another week and the bindings are simple enough
-> I think? There has been plenty of time to review these
-> bindings as they are now in v3 even, but it's a soft measure,
-> I know there is usually this YAML-bot that complains if
-> something is way out of line at least.
-Agreed. No need to bother Rob with this one if he's busy.
-It's had 2 weeks in it's final patch version.
+> Signed-off-by: Phil Reid <preid@electromag.com.au>
 
-Applied to the togreg branch of iio.git and pushed out as
-testing for the autobuilders to poke at it.
+I'm in 2 minds on whether we want to push this back to stable or not.
+Phil, do you have any idea if we have dt in the wild for this on any
+boards where people are actually likely to update their kernel
+(to stable)?
+
+Applied to togreg branch of iio.git.  If we want a stable backport
+after this has gone out in a non-rebasing tree we can request it
+explicitly.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/potentiometer/ad5272.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Yours,
-> Linus Walleij
+> diff --git a/drivers/iio/potentiometer/ad5272.c b/drivers/iio/potentiometer/ad5272.c
+> index 70c45d346df0..d8cbd170262f 100644
+> --- a/drivers/iio/potentiometer/ad5272.c
+> +++ b/drivers/iio/potentiometer/ad5272.c
+> @@ -143,13 +143,13 @@ static int ad5272_reset(struct ad5272_data *data)
+>  	struct gpio_desc *reset_gpio;
+>  
+>  	reset_gpio = devm_gpiod_get_optional(&data->client->dev, "reset",
+> -		GPIOD_OUT_LOW);
+> +		GPIOD_OUT_HIGH);
+>  	if (IS_ERR(reset_gpio))
+>  		return PTR_ERR(reset_gpio);
+>  
+>  	if (reset_gpio) {
+>  		udelay(1);
+> -		gpiod_set_value(reset_gpio, 1);
+> +		gpiod_set_value(reset_gpio, 0);
+>  	} else {
+>  		ad5272_write(data, AD5272_RESET, 0);
+>  	}
 

@@ -2,85 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 429A72C762A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 783D52C7690
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Nov 2020 00:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388677AbgK1W3q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 17:29:46 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:42045 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388667AbgK1W3q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 17:29:46 -0500
-X-Originating-IP: 86.194.74.19
-Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id F4074240002;
-        Sat, 28 Nov 2020 22:28:59 +0000 (UTC)
-Date:   Sat, 28 Nov 2020 23:28:59 +0100
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/11] iio: adc: at91_adc: remove platform data
-Message-ID: <20201128222859.GL1296649@piout.net>
-References: <20201117140656.1235055-1-alexandre.belloni@bootlin.com>
- <20201117140656.1235055-2-alexandre.belloni@bootlin.com>
- <20201128140427.61dbaceb@archlinux>
- <20201128142342.GJ1296649@piout.net>
- <20201128152645.0e0a7e4a@archlinux>
+        id S1726442AbgK1XTC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 18:19:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725844AbgK1XTC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 18:19:02 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B578C0613D2
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 15:18:22 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id k11so7294481pgq.2
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 15:18:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=gOwlx47gYt1W3MHWgz8KjiuA/bNiWbFgmz/p6n60JAQ=;
+        b=Iz4dxEsexNDmWSnYCNL9jaoFPZVDnPYi6fH/J6KWRQnvKMsPh2eZryNFz8qCYDngJ1
+         ILcWj8lrsw8Eyh7oDe2wPV5yK7Kcnh0RY59sfVt0Qu3OSYpIo7q+ugO4tzncy3ptUzCd
+         8pnV9UqHYzCR1Pi8PlJ9QW6b0IpxKud84Df4N7K2YSglZqO33kXeOoX+TTNS1zODw5EH
+         kna7ZQQX/UWr5jtT4NgLFVXNeqfXEhN0FR3vBQYESo9REJ289ekdzdZVwpPVtO5mwb3m
+         1AItDag8nX7j9Afm489MFTKYnWR9KP8w4VoZOMYV84wx/vF8YiBfAoexbOZccRKOMFbM
+         zm/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=gOwlx47gYt1W3MHWgz8KjiuA/bNiWbFgmz/p6n60JAQ=;
+        b=ElLJmJ6cOJNZH7SEKF2B8PhHdkMofIIsPQwkR8+CY4u11qE6lScBkiB91+EM/TcS1e
+         S7ZHYTZao7b7kdP4wI0FIXw7WimpnrGBRog12Lgx5dWzfE+G/U0uJcSv1W0tneGIxK4H
+         xPH8fuFl/vWLTRGCBXKEFRi6SSjtmXXuGYQwSQxK20nhGeqaDa985cK5WvfmbUK1pBOz
+         xQddVaIj+fo9C8dDB7o0zQWZYy6xps1WgCcj/Zi7IrFJo4DCzyz4UKVcSz1Wv0LoOUpc
+         vJ0LLALqupyKbiXPl7ijkjlz0XnvCbAx5SmSI0eKcyJqadtg9UOH+5hYbW/a0nF8jpAX
+         9lnQ==
+X-Gm-Message-State: AOAM531CVGKZpbQmxAZtUm6z6A1rtX0GpAOoQT8+2dB1nuYQYgkU/eDh
+        tRsAyoLzbYUdn6kY5wL9xJSSQxnZO/D341551Xs=
+X-Google-Smtp-Source: ABdhPJxQEJNzSr9jRBCfyGBGirQRlMnEou7J1L25RO53CZhccoMEsqg3Bg7eBZCtxgjvJ+yfMp408xBg4Y0RncjT2Sc=
+X-Received: by 2002:aa7:9597:0:b029:198:50a8:a6cf with SMTP id
+ z23-20020aa795970000b029019850a8a6cfmr12820267pfj.40.1606605501879; Sat, 28
+ Nov 2020 15:18:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201128152645.0e0a7e4a@archlinux>
+References: <20201128185156.428327-1-jic23@kernel.org> <CACRpkdaA5yhgd4+BgFN6WeC7pmoKPj8kYabD7TtFyEieiNVZfw@mail.gmail.com>
+In-Reply-To: <CACRpkdaA5yhgd4+BgFN6WeC7pmoKPj8kYabD7TtFyEieiNVZfw@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 29 Nov 2020 01:18:05 +0200
+Message-ID: <CAHp75VcKOrjLBwRBZ0gi0S8tL2QK7+3i2dhABbaQaBW8O=_6iA@mail.gmail.com>
+Subject: Re: [PATCH] iio:gyro:mpu3050 Treat otp value as a __le64 and use
+ FIELD_GET() to break up
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 28/11/2020 15:26:45+0000, Jonathan Cameron wrote:
-> On Sat, 28 Nov 2020 15:23:42 +0100
-> Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
-> 
-> > Hi,
-> > 
-> > On 28/11/2020 14:04:27+0000, Jonathan Cameron wrote:
-> > > On Tue, 17 Nov 2020 15:06:46 +0100
-> > > Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
-> > >   
-> > > > The at91 platforms have been DT only for a while, remove platform data.
-> > > > 
-> > > > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > > > Reviewed-by: Ludovic Desroches <ludovic.desroches@microchip.com>  
-> > > 
-> > > Hi Alexandre,
-> > > 
-> > > I'd completely forgotten that we actually had a similar patch that
-> > > is already applied from Alexandru back in September.
-> > >   
-> > 
-> > I actually have seen that yesterday too. I even reviewed them...
-> > 
-> > > Given vast majority matched, I've just changed your patch into one
-> > > that drops the id_table (which Alexandru didn't do).
-> > > 
-> > > So with that tweak applied to the togreg branch of iio.git.
-> > >   
-> > 
-> > Ok, thanks, I guess you didn't push yet, I wanted to check and I didn't
-> > find the patches on kernel.org.
-> 
-> I've actually just backed my try at this out.  It gets a bit messy around
-> patch 6-7 so I'd rather you did a rebase.
-> 
-> Please rebase on current togreg branch.
+On Sun, Nov 29, 2020 at 12:22 AM Linus Walleij <linus.walleij@linaro.org> w=
+rote:
+> On Sat, Nov 28, 2020 at 7:54 PM Jonathan Cameron <jic23@kernel.org> wrote=
+:
+>
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Inspired by Andy Shevchenko's proposal to use get_unaligned_leXX().
+> >
+> > The whole one time programable memory is treated as a single 64bit
+> > little endian value.  Thus we can avoid a lot of messy handling
+> > of fields overlapping byte boundaries by just loading and manipulating
+> > it as an __le64 converted to a u64.  That lets us just use FIELD_GET()
+> > and GENMASK() to extract the values desired.
+> >
+> > Note only build tested.
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Cc: Linus Walleij <linus.walleij@linaro.org>
+>
+> Are there any specific prerequisites? linux-next?
+>
+> When I apply this and try to compile for an ARMv7 target I get
+> a lot of noise and an error:
+>
+> In file included from <command-line>:0:0:
+> ../drivers/iio/gyro/mpu3050-core.c: In function =E2=80=98mpu3050_hw_init=
+=E2=80=99:
+> ../include/linux/bits.h:36:11: warning: right shift count is negative
+> [-Wshift-count-negative]
+>    (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
 
-Done!
+I think GENMASK_ULL() has to be used.
 
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--=20
+With Best Regards,
+Andy Shevchenko

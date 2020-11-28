@@ -2,37 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A35932C7513
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B0B2C7520
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388093AbgK1Vt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1733191AbgK1Vt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 28 Nov 2020 16:49:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50322 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:48950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732538AbgK1TBy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:01:54 -0500
+        id S1732316AbgK1S7p (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 13:59:45 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EE9824654;
-        Sat, 28 Nov 2020 13:04:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E04B24658;
+        Sat, 28 Nov 2020 13:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606568677;
-        bh=AS491kcEn7jKh+dTN2DjipJSCONVK9RI7M4QUO1+bWA=;
+        s=default; t=1606569368;
+        bh=vDZDkPcxqucv9eMTo6wUdoeCVAnmA05zMl4WpXhXIcY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IiABbyqxpzx3IX+fmZnshBsjQyTtfEL2BZT8r5nxjhrwYN2CmVUrZzlXkCeAxFsdz
-         TeOviaUeTsmKofhuHdhRL9/WTruz3H8RKnC9hTVF/viFpir1/7xNx5sm93p2pYp1zb
-         8e3pcq3zoDwASCdjOGZFZ4Pyq6W3uf0yOhFclo9c=
-Date:   Sat, 28 Nov 2020 13:04:33 +0000
+        b=ix8tJXCLKLE//IDtIr/mV0zIsm6VGJuG9MGg0JaovQt07qBa/XX5fnjUduBOnCLdZ
+         x+mnH2JK/N52s4uXrebVQR3lirU5e0sxkGyepJAktxuNDXCkZTYqcoz2CnIKCCFP85
+         /kLy25brN6OiYhH4H99c02zsLSQRzT5O8WbK0EVc=
+Date:   Sat, 28 Nov 2020 13:16:04 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <colin.king@canonical.com>
-Subject: Re: [PATCH 1/2] iio: adc: ad7298: convert probe to device-managed
- functions
-Message-ID: <20201128130433.320de46e@archlinux>
-In-Reply-To: <20201127094038.91714-1-alexandru.ardelean@analog.com>
-References: <20201127094038.91714-1-alexandru.ardelean@analog.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jeremy Cline <jeremy@jcline.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/3] iio: accel: bmc150: Improve ACPI enumeration
+ support
+Message-ID: <20201128131604.1367126b@archlinux>
+In-Reply-To: <ec8c6e1e-f914-9ee7-133f-2f55d7cc8dfb@redhat.com>
+References: <20201125083618.10989-1-hdegoede@redhat.com>
+        <CAHp75Vfu+PC-QzzE0_guwLHTdBXes-7RxbaS85df_p4Z=qR2=w@mail.gmail.com>
+        <ec8c6e1e-f914-9ee7-133f-2f55d7cc8dfb@redhat.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,115 +46,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Nov 2020 11:40:37 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Wed, 25 Nov 2020 11:49:15 +0100
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> This change converts the probe of this driver to use device-managed
-> register functions, and a devm_add_action_or_reset() for the regulator
-> disable.
+> Hi,
 > 
-> With this, the exit & error paths can be removed.
-> Another side-effect is that this should avoid some static-analyzer's check
-> with respect to a potential null dereference of the regulator. The null
-> dereference isn't likely to happen (under normal operation), so there isn't
-> a requirement to have this fixed/backported in other releases.
+> On 11/25/20 11:41 AM, Andy Shevchenko wrote:
+> > On Wed, Nov 25, 2020 at 10:37 AM Hans de Goede <hdegoede@redhat.com> wrote:  
+> >>
+> >> Hi All,
+> >>
+> >> This series improves support for ACPI enumeration of bmc150 accels
+> >> described by an ACPI node with an ACPI hw-id of BOSC0200:
+> >>
+> >> 1. Add support for nodes which describe 2 acceleromers in a single node,  
+> > 
+> > accelerometers
+> >   
+> >> fixing: https://bugzilla.kernel.org/show_bug.cgi?id=198671
+> >>
+> >> 2. Add support for reading the mount-matrix from the ACPI node.
+> >>
+> >> This is done in patches 2 - 3, patch 1 is a trivial cleanup which I noticed
+> >> could be done while working on this.
+> >>
+> >> Patch 2 is based on an earlier patch for this from Jeremy Cline:
+> >> https://lore.kernel.org/r/010001602cf53153-39ad69f1-1b39-4e6d-a748-9455a16c2fbd-000000@email.amazonses.com
+> >>
+> >> That patch was put on hold because normally ACPI nodes which describe
+> >> multiple i2c-clients in a single node are handled by:
+> >> drivers/platform/x86/i2c-multi-instantiate.c
+> >>
+> >> Which I tried to do at first, but as explained in the commit msg
+> >> of the updated patch, that is not possible in this special case
+> >> (because it would cause userspace breakage due to the modalias changing).  
+> > 
+> > This is marked as patch 1?!  
 > 
-> As a note: this is removing spi_set_drvdata() since there is no other
-> spi_get_drvdata() (or dev_get_drvdata()) call that need it.
+> Yes my bad, sorry.
 > 
-> Cc: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Series applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to work their magic.
+> > Usually --cover-letter produces a correct template...  
+> 
+> I use --compose, time to switch to --cover-letter instead I guess.
+> 
+> Regards,
+> 
+> Hans
+> 
 
-Thanks,
+Other than the minor bits Andy mentioned I'm fine with this.
+
+It does sort of feel like we should be gathering documentation somewhere of
+where this crazy stuff has been seen in the wild.
+
+Oh for a standard... Whilst I've been known to push the odd thing through
+standards bodies, I'm not sure I can really claim this one is related to my
+day job (Huawei is a UEFI forum member).  If anyone is particularly
+enthusiastic and doesn't have direct access to the UEFI forum via their
+job, they could try using the code first route into ACPI via tianocore.
+
+Of course, nothing says anyone will actually use the standard anyway but
+at least it would give us the moral high ground ;)
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ad7298.c | 46 +++++++++++++---------------------------
->  1 file changed, 15 insertions(+), 31 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
-> index fa1047f74a1f..ecdb01bd5b2f 100644
-> --- a/drivers/iio/adc/ad7298.c
-> +++ b/drivers/iio/adc/ad7298.c
-> @@ -279,6 +279,13 @@ static const struct iio_info ad7298_info = {
->  	.update_scan_mode = ad7298_update_scan_mode,
->  };
->  
-> +static void ad7298_reg_disable(void *data)
-> +{
-> +	struct regulator *reg = data;
-> +
-> +	regulator_disable(reg);
-> +}
-> +
->  static int ad7298_probe(struct spi_device *spi)
->  {
->  	struct ad7298_state *st;
-> @@ -306,9 +313,12 @@ static int ad7298_probe(struct spi_device *spi)
->  		ret = regulator_enable(st->reg);
->  		if (ret)
->  			return ret;
-> -	}
->  
-> -	spi_set_drvdata(spi, indio_dev);
-> +		ret = devm_add_action_or_reset(&spi->dev, ad7298_reg_disable,
-> +					       st->reg);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	st->spi = spi;
->  
-> @@ -334,37 +344,12 @@ static int ad7298_probe(struct spi_device *spi)
->  	spi_message_add_tail(&st->scan_single_xfer[1], &st->scan_single_msg);
->  	spi_message_add_tail(&st->scan_single_xfer[2], &st->scan_single_msg);
->  
-> -	ret = iio_triggered_buffer_setup(indio_dev, NULL,
-> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
->  			&ad7298_trigger_handler, NULL);
->  	if (ret)
-> -		goto error_disable_reg;
-> -
-> -	ret = iio_device_register(indio_dev);
-> -	if (ret)
-> -		goto error_cleanup_ring;
-> -
-> -	return 0;
-> -
-> -error_cleanup_ring:
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -error_disable_reg:
-> -	if (st->ext_ref)
-> -		regulator_disable(st->reg);
-> -
-> -	return ret;
-> -}
-> -
-> -static int ad7298_remove(struct spi_device *spi)
-> -{
-> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
-> -	struct ad7298_state *st = iio_priv(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -	if (st->ext_ref)
-> -		regulator_disable(st->reg);
-> +		return ret;
->  
-> -	return 0;
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
->  }
->  
->  static const struct spi_device_id ad7298_id[] = {
-> @@ -378,7 +363,6 @@ static struct spi_driver ad7298_driver = {
->  		.name	= "ad7298",
->  	},
->  	.probe		= ad7298_probe,
-> -	.remove		= ad7298_remove,
->  	.id_table	= ad7298_id,
->  };
->  module_spi_driver(ad7298_driver);
 

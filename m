@@ -2,249 +2,647 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F03F62C7578
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5FE2C750C
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:23:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388056AbgK1VtU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 16:49:20 -0500
-Received: from mx07-002cda01.pphosted.com ([185.132.180.122]:43802 "EHLO
-        mx07-002cda01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730766AbgK0TyQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Nov 2020 14:54:16 -0500
-Received: from pps.filterd (m0135535.ppops.net [127.0.0.1])
-        by mx07-002cda01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0ARJaVpI013592;
-        Fri, 27 Nov 2020 19:42:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=avl.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type; s=28082020; bh=HrcK9cAlhl6KmtTaGNuiOIq/3IzBWDZpwwsU1qRUUeE=;
- b=F+XUEabEBAZsBb7tGvWaDcYcIF35bCvviHr6svTJsOA+NlYs8QfYdu4Nuz++4faJrUkZ
- iRx1LagyraEMgNz95mwOACR34grWCa3y3m4k+U/vZoK3rgkGp6/TTPsU5sP/5BS+fm6o
- QJGcFgu6KDaOm7kjowB5c4ot8t6nf9SYYPY1hOvPMNHNUvI7BxWrKO7/eXwaIWPYxZIn
- m9YPiHM5p0xw4GpKusWHm5W2a2T+KLtkjm0yMnejdcZTGa1CxOVBpJBglUB1uIwYIE1T
- toJYbooD00sCIH95jzluhoFDRO9huXfsqri+lvrnIB2o4+TjE4DA072/o187m0rky0UM 5Q== 
-Received: from atgrzso2833.avl01.avlcorp.lan ([192.102.17.76])
-        by mx07-002cda01.pphosted.com with ESMTP id 34xv3g47cj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Nov 2020 19:42:42 +0000
-Received: from pps.filterd (atgrzso2833.avl01.avlcorp.lan [127.0.0.1])
-        by atgrzso2833.avl01.avlcorp.lan (8.16.0.42/8.16.0.42) with SMTP id 0ARJg7hj002461;
-        Fri, 27 Nov 2020 20:42:41 +0100
-Received: from atgrzsw3765.avl01.avlcorp.lan ([10.13.100.86])
-        by atgrzso2833.avl01.avlcorp.lan with ESMTP id 34xufsavhv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Nov 2020 20:42:41 +0100
-Received: from atgrzsw3762.avl01.avlcorp.lan (10.37.149.15) by
- atgrzsw3765.avl01.avlcorp.lan (10.37.149.18) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2044.4; Fri, 27 Nov 2020 20:42:41 +0100
-Received: from ATGRZWN210214.avl01.avlcorp.lan (10.12.100.12) by
- atgrzsw3762.avl01.avlcorp.lan (10.37.149.15) with Microsoft SMTP Server id
- 15.1.2044.4 via Frontend Transport; Fri, 27 Nov 2020 20:42:41 +0100
-From:   <tomislav.denis@avl.com>
-To:     <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <tomislav.denis@avl.com>
-Subject: [PATCH 2/2] bindings: iio: adc: Add documentation for ADS131E0x ADC driver
-Date:   Fri, 27 Nov 2020 20:42:40 +0100
-Message-ID: <20201127194240.15060-3-tomislav.denis@avl.com>
-X-Mailer: git-send-email 2.10.1.windows.1
-In-Reply-To: <20201127194240.15060-1-tomislav.denis@avl.com>
-References: <20201127194240.15060-1-tomislav.denis@avl.com>
+        id S2388107AbgK1Vt3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50388 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732602AbgK1TCU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 28 Nov 2020 14:02:20 -0500
+Received: from localhost.localdomain (unknown [151.66.8.153])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F854222B8;
+        Sat, 28 Nov 2020 10:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606558090;
+        bh=wCtgc2+rt3NEWfWOvaaCUzQOWiA5mjzsEXm/HqxyctM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UCi6ZqEPllWDuLGqhqC20b+9gEItE94d1FfGxmgvCN/W9zF4EAdivI3sYXYi267hC
+         1fNCbooD6Am/7zkR6Jz0RYDlLeEw4d4voiCNXQyWzrhsw60cSNvgcc91hTdZpnBYK0
+         mGlUtAS0i0cefFxclAOL3M1WRmEpKe9WkBKxRykM=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
+Subject: [PATCH] iio: imu: st_lsmdsx: compact st_lsm6dsx_sensor_settings table
+Date:   Sat, 28 Nov 2020 11:08:01 +0100
+Message-Id: <c43286938b2fe03ab3abdb5fc095ea6b950abcb1.1606557946.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: f9e74532-fb7d-4806-8539-2b9574eafa9a
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-27_11:2020-11-26,2020-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=923 bulkscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011270116
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-27_11:2020-11-26,2020-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 adultscore=0 spamscore=0 suspectscore=0
- mlxlogscore=966 lowpriorityscore=0 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011270116
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Tomislav Denis <tomislav.denis@avl.com>
+Shrink st_lsm6dsx_sensor_settings table size moving wai address info in
+id array and remove duplicated code
 
-Add a device tree binding documentation for Texas Instruments
-ADS131E0x ADC family driver.
-
-Signed-off-by: Tomislav Denis <tomislav.denis@avl.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../devicetree/bindings/iio/adc/ti,ads131e08.yaml  | 145 +++++++++++++++++++++
- MAINTAINERS                                        |   1 +
- 2 files changed, 146 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |   3 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 451 ++-----------------
+ 2 files changed, 29 insertions(+), 425 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-new file mode 100644
-index 0000000..92da193
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-@@ -0,0 +1,145 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,ads131e08.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments ADS131E0x 4-, 6-, and 8-Channel ADCs
-+
-+maintainers:
-+  - Tomislav Denis <tomislav.denis@avl.com>
-+
-+description: |
-+  The ADS131E0x are a family of multichannel, simultaneous sampling,
-+  24-bit, delta-sigma, analog-to-digital converters (ADCs) with a
-+  built-in programmable gain amplifier (PGA), internal reference
-+  and an onboard oscillator.
-+  The communication with ADC chip is via the SPI bus (mode 1).
-+
-+  https://www.ti.com/lit/ds/symlink/ads131e08.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,ads131e04
-+      - ti,ads131e08
-+
-+  reg:
-+    description: |
-+      SPI chip select number
-+    maxItems: 1
-+
-+  spi-cpha: true
-+
-+  clocks:
-+    description: |
-+      Device tree identifier to the clock source (2.048 MHz)
-+      Note: clock source is selected using CLKSEL pin
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: adc-clk
-+
-+  interrupts:
-+    description: |
-+      IRQ line for the ADC data ready
-+    maxItems: 1
-+
-+  vref-supply:
-+    description: |
-+      Optional external voltage reference. Has to be supplied, if
-+      ti,vref-sel equals 2
-+
-+  ti,vref-sel:
-+    description: |
-+      Select the voltage reference source
-+      Valid values are:
-+      0: Internal reference 2.4V
-+      1: Internal reference 4V
-+      2: External reference source (vref-supply is required)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2]
-+    default: 0
-+
-+  ti,datarate:
-+    description: |
-+      ADC data rate in kSPS
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 4, 8, 16, 32, 64]
-+    default: 1
-+
-+  ti,gain:
-+    description: |
-+      The gain value for the PGA function
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 4, 8, 12]
-+    default: 1
-+
-+  ti,adc-channels:
-+    description: |
-+      List of single-ended channels muxed for this ADC
-+      - 4 channels, numbered from 0 to 3 for ti,ads131e04
-+      - 8 channels, numbered from 0 to 7 for ti,ads131e08
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-cpha
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - ti,adc-channels
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: ti,ads131e04
-+
-+  - then:
-+      properties:
-+        ti,adc-channels:
-+          minItems: 1
-+          maxItems: 4
-+          items:
-+            minimum: 0
-+            maximum: 3
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: ti,ads131e08
-+
-+  - then:
-+      properties:
-+        ti,adc-channels:
-+          minItems: 1
-+          maxItems: 8
-+          items:
-+            minimum: 0
-+            maximum: 7
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spidev@0 {
-+      compatible = "ti,ads131e08";
-+      reg = <0>;
-+      spi-max-frequency = <1000000>;
-+      spi-cpha;
-+      clocks = <&clk2048k>;
-+      clock-names = "adc-clk";
-+      interrupt-parent = <&gpio5>;
-+      interrupts = <28 IRQ_TYPE_EDGE_FALLING>;
-+      vref-supply = <&vref_reg>;
-+      ti,vref-sel = <2>;
-+      ti,datarate = <1>;
-+      ti,gain = <1>;
-+      ti,adc-channels = <0 1 2 3 4 5 6 7>;
-+    };
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 28bc5f9..0c351c7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17224,6 +17224,7 @@ TI ADS131E0X ADC SERIES DRIVER
- M:	Tomislav Denis <tomislav.denis@avl.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
- F:	drivers/iio/adc/ti-ads131e08.c
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 4b4ec39d4400..b81da6053b3c 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -266,7 +266,6 @@ struct st_lsm6dsx_ext_dev_settings {
  
- TI AM437X VPFE DRIVER
+ /**
+  * struct st_lsm6dsx_settings - ST IMU sensor settings
+- * @wai: Sensor WhoAmI default value.
+  * @reset: register address for reset.
+  * @boot: register address for boot.
+  * @bdu: register address for Block Data Update.
+@@ -284,7 +283,6 @@ struct st_lsm6dsx_ext_dev_settings {
+  * @shub_settings: i2c controller related settings.
+  */
+ struct st_lsm6dsx_settings {
+-	u8 wai;
+ 	struct st_lsm6dsx_reg reset;
+ 	struct st_lsm6dsx_reg boot;
+ 	struct st_lsm6dsx_reg bdu;
+@@ -292,6 +290,7 @@ struct st_lsm6dsx_settings {
+ 	struct {
+ 		enum st_lsm6dsx_hw_id hw_id;
+ 		const char *name;
++		u8 wai;
+ 	} id[ST_LSM6DSX_MAX_ID];
+ 	struct {
+ 		const struct iio_chan_spec *chan;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index a73c41dea5fc..c05910fa0de6 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -90,7 +90,6 @@ static const struct iio_chan_spec st_lsm6ds0_gyro_channels[] = {
+ 
+ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 	{
+-		.wai = 0x68,
+ 		.reset = {
+ 			.addr = 0x22,
+ 			.mask = BIT(0),
+@@ -108,9 +107,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			{
+ 				.hw_id = ST_LSM9DS1_ID,
+ 				.name = ST_LSM9DS1_DEV_NAME,
++				.wai = 0x68,
+ 			}, {
+ 				.hw_id = ST_LSM6DS0_ID,
+ 				.name = ST_LSM6DS0_DEV_NAME,
++				.wai = 0x68,
+ 			},
+ 		},
+ 		.channels = {
+@@ -195,7 +196,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 	},
+ 	{
+-		.wai = 0x69,
+ 		.reset = {
+ 			.addr = 0x12,
+ 			.mask = BIT(0),
+@@ -213,6 +213,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			{
+ 				.hw_id = ST_LSM6DS3_ID,
+ 				.name = ST_LSM6DS3_DEV_NAME,
++				.wai = 0x69,
+ 			},
+ 		},
+ 		.channels = {
+@@ -361,7 +362,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 	},
+ 	{
+-		.wai = 0x69,
+ 		.reset = {
+ 			.addr = 0x12,
+ 			.mask = BIT(0),
+@@ -379,6 +379,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			{
+ 				.hw_id = ST_LSM6DS3H_ID,
+ 				.name = ST_LSM6DS3H_DEV_NAME,
++				.wai = 0x69,
+ 			},
+ 		},
+ 		.channels = {
+@@ -527,7 +528,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 	},
+ 	{
+-		.wai = 0x6a,
+ 		.reset = {
+ 			.addr = 0x12,
+ 			.mask = BIT(0),
+@@ -545,15 +545,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			{
+ 				.hw_id = ST_LSM6DSL_ID,
+ 				.name = ST_LSM6DSL_DEV_NAME,
++				.wai = 0x6a,
+ 			}, {
+ 				.hw_id = ST_LSM6DSM_ID,
+ 				.name = ST_LSM6DSM_DEV_NAME,
++				.wai = 0x6a,
+ 			}, {
+ 				.hw_id = ST_ISM330DLC_ID,
+ 				.name = ST_ISM330DLC_DEV_NAME,
++				.wai = 0x6a,
+ 			}, {
+ 				.hw_id = ST_LSM6DS3TRC_ID,
+ 				.name = ST_LSM6DS3TRC_DEV_NAME,
++				.wai = 0x6a,
+ 			},
+ 		},
+ 		.channels = {
+@@ -743,7 +747,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 	},
+ 	{
+-		.wai = 0x6c,
+ 		.reset = {
+ 			.addr = 0x12,
+ 			.mask = BIT(0),
+@@ -759,11 +762,29 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.max_fifo_size = 512,
+ 		.id = {
+ 			{
++				.hw_id = ST_LSM6DSR_ID,
++				.name = ST_LSM6DSR_DEV_NAME,
++				.wai = 0x6b,
++			}, {
++				.hw_id = ST_ISM330DHCX_ID,
++				.name = ST_ISM330DHCX_DEV_NAME,
++				.wai = 0x6b,
++			}, {
++				.hw_id = ST_LSM6DSRX_ID,
++				.name = ST_LSM6DSRX_DEV_NAME,
++				.wai = 0x6b,
++			}, {
+ 				.hw_id = ST_LSM6DSO_ID,
+ 				.name = ST_LSM6DSO_DEV_NAME,
++				.wai = 0x6c,
+ 			}, {
+ 				.hw_id = ST_LSM6DSOX_ID,
+ 				.name = ST_LSM6DSOX_DEV_NAME,
++				.wai = 0x6c,
++			}, {
++				.hw_id = ST_LSM6DST_ID,
++				.name = ST_LSM6DST_DEV_NAME,
++				.wai = 0x6d,
+ 			},
+ 		},
+ 		.channels = {
+@@ -951,7 +972,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 	},
+ 	{
+-		.wai = 0x6b,
+ 		.reset = {
+ 			.addr = 0x12,
+ 			.mask = BIT(0),
+@@ -969,6 +989,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			{
+ 				.hw_id = ST_ASM330LHH_ID,
+ 				.name = ST_ASM330LHH_DEV_NAME,
++				.wai = 0x6b,
+ 			},
+ 		},
+ 		.channels = {
+@@ -1123,422 +1144,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+-	{
+-		.wai = 0x6b,
+-		.reset = {
+-			.addr = 0x12,
+-			.mask = BIT(0),
+-		},
+-		.boot = {
+-			.addr = 0x12,
+-			.mask = BIT(7),
+-		},
+-		.bdu = {
+-			.addr = 0x12,
+-			.mask = BIT(6),
+-		},
+-		.max_fifo_size = 512,
+-		.id = {
+-			{
+-				.hw_id = ST_LSM6DSR_ID,
+-				.name = ST_LSM6DSR_DEV_NAME,
+-			}, {
+-				.hw_id = ST_ISM330DHCX_ID,
+-				.name = ST_ISM330DHCX_DEV_NAME,
+-			}, {
+-				.hw_id = ST_LSM6DSRX_ID,
+-				.name = ST_LSM6DSRX_DEV_NAME,
+-			},
+-		},
+-		.channels = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.chan = st_lsm6dsx_gyro_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+-			},
+-		},
+-		.drdy_mask = {
+-			.addr = 0x13,
+-			.mask = BIT(3),
+-		},
+-		.odr_table = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.reg = {
+-					.addr = 0x10,
+-					.mask = GENMASK(7, 4),
+-				},
+-				.odr_avl[0] = {  12500, 0x01 },
+-				.odr_avl[1] = {  26000, 0x02 },
+-				.odr_avl[2] = {  52000, 0x03 },
+-				.odr_avl[3] = { 104000, 0x04 },
+-				.odr_avl[4] = { 208000, 0x05 },
+-				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_avl[6] = { 833000, 0x07 },
+-				.odr_len = 7,
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.reg = {
+-					.addr = 0x11,
+-					.mask = GENMASK(7, 4),
+-				},
+-				.odr_avl[0] = {  12500, 0x01 },
+-				.odr_avl[1] = {  26000, 0x02 },
+-				.odr_avl[2] = {  52000, 0x03 },
+-				.odr_avl[3] = { 104000, 0x04 },
+-				.odr_avl[4] = { 208000, 0x05 },
+-				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_avl[6] = { 833000, 0x07 },
+-				.odr_len = 7,
+-			},
+-		},
+-		.fs_table = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.reg = {
+-					.addr = 0x10,
+-					.mask = GENMASK(3, 2),
+-				},
+-				.fs_avl[0] = {  IIO_G_TO_M_S_2(61000), 0x0 },
+-				.fs_avl[1] = { IIO_G_TO_M_S_2(122000), 0x2 },
+-				.fs_avl[2] = { IIO_G_TO_M_S_2(244000), 0x3 },
+-				.fs_avl[3] = { IIO_G_TO_M_S_2(488000), 0x1 },
+-				.fs_len = 4,
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.reg = {
+-					.addr = 0x11,
+-					.mask = GENMASK(3, 2),
+-				},
+-				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(8750000), 0x0 },
+-				.fs_avl[1] = { IIO_DEGREE_TO_RAD(17500000), 0x1 },
+-				.fs_avl[2] = { IIO_DEGREE_TO_RAD(35000000), 0x2 },
+-				.fs_avl[3] = { IIO_DEGREE_TO_RAD(70000000), 0x3 },
+-				.fs_len = 4,
+-			},
+-		},
+-		.irq_config = {
+-			.irq1 = {
+-				.addr = 0x0d,
+-				.mask = BIT(3),
+-			},
+-			.irq2 = {
+-				.addr = 0x0e,
+-				.mask = BIT(3),
+-			},
+-			.lir = {
+-				.addr = 0x56,
+-				.mask = BIT(0),
+-			},
+-			.clear_on_read = {
+-				.addr = 0x56,
+-				.mask = BIT(6),
+-			},
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
+-			.hla = {
+-				.addr = 0x12,
+-				.mask = BIT(5),
+-			},
+-			.od = {
+-				.addr = 0x12,
+-				.mask = BIT(4),
+-			},
+-		},
+-		.batch = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.addr = 0x09,
+-				.mask = GENMASK(3, 0),
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.addr = 0x09,
+-				.mask = GENMASK(7, 4),
+-			},
+-		},
+-		.fifo_ops = {
+-			.update_fifo = st_lsm6dsx_update_fifo,
+-			.read_fifo = st_lsm6dsx_read_tagged_fifo,
+-			.fifo_th = {
+-				.addr = 0x07,
+-				.mask = GENMASK(8, 0),
+-			},
+-			.fifo_diff = {
+-				.addr = 0x3a,
+-				.mask = GENMASK(9, 0),
+-			},
+-			.th_wl = 1,
+-		},
+-		.ts_settings = {
+-			.timer_en = {
+-				.addr = 0x19,
+-				.mask = BIT(5),
+-			},
+-			.decimator = {
+-				.addr = 0x0a,
+-				.mask = GENMASK(7, 6),
+-			},
+-			.freq_fine = 0x63,
+-		},
+-		.shub_settings = {
+-			.page_mux = {
+-				.addr = 0x01,
+-				.mask = BIT(6),
+-			},
+-			.master_en = {
+-				.sec_page = true,
+-				.addr = 0x14,
+-				.mask = BIT(2),
+-			},
+-			.pullup_en = {
+-				.sec_page = true,
+-				.addr = 0x14,
+-				.mask = BIT(3),
+-			},
+-			.aux_sens = {
+-				.addr = 0x14,
+-				.mask = GENMASK(1, 0),
+-			},
+-			.wr_once = {
+-				.addr = 0x14,
+-				.mask = BIT(6),
+-			},
+-			.num_ext_dev = 3,
+-			.shub_out = {
+-				.sec_page = true,
+-				.addr = 0x02,
+-			},
+-			.slv0_addr = 0x15,
+-			.dw_slv0_addr = 0x21,
+-			.batch_en = BIT(3),
+-		},
+-		.event_settings = {
+-			.enable_reg = {
+-				.addr = 0x58,
+-				.mask = BIT(7),
+-			},
+-			.wakeup_reg = {
+-				.addr = 0x5B,
+-				.mask = GENMASK(5, 0),
+-			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+-		}
+-	},
+-	{
+-		.wai = 0x6d,
+-		.reset = {
+-			.addr = 0x12,
+-			.mask = BIT(0),
+-		},
+-		.boot = {
+-			.addr = 0x12,
+-			.mask = BIT(7),
+-		},
+-		.bdu = {
+-			.addr = 0x12,
+-			.mask = BIT(6),
+-		},
+-		.max_fifo_size = 512,
+-		.id = {
+-			{
+-				.hw_id = ST_LSM6DST_ID,
+-				.name = ST_LSM6DST_DEV_NAME,
+-			},
+-		},
+-		.channels = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.chan = st_lsm6dsx_gyro_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+-			},
+-		},
+-		.drdy_mask = {
+-			.addr = 0x13,
+-			.mask = BIT(3),
+-		},
+-		.odr_table = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.reg = {
+-					.addr = 0x10,
+-					.mask = GENMASK(7, 4),
+-				},
+-				.odr_avl[0] = {  12500, 0x01 },
+-				.odr_avl[1] = {  26000, 0x02 },
+-				.odr_avl[2] = {  52000, 0x03 },
+-				.odr_avl[3] = { 104000, 0x04 },
+-				.odr_avl[4] = { 208000, 0x05 },
+-				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_avl[6] = { 833000, 0x07 },
+-				.odr_len = 7,
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.reg = {
+-					.addr = 0x11,
+-					.mask = GENMASK(7, 4),
+-				},
+-				.odr_avl[0] = {  12500, 0x01 },
+-				.odr_avl[1] = {  26000, 0x02 },
+-				.odr_avl[2] = {  52000, 0x03 },
+-				.odr_avl[3] = { 104000, 0x04 },
+-				.odr_avl[4] = { 208000, 0x05 },
+-				.odr_avl[5] = { 416000, 0x06 },
+-				.odr_avl[6] = { 833000, 0x07 },
+-				.odr_len = 7,
+-			},
+-		},
+-		.fs_table = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.reg = {
+-					.addr = 0x10,
+-					.mask = GENMASK(3, 2),
+-				},
+-				.fs_avl[0] = {  IIO_G_TO_M_S_2(61000), 0x0 },
+-				.fs_avl[1] = { IIO_G_TO_M_S_2(122000), 0x2 },
+-				.fs_avl[2] = { IIO_G_TO_M_S_2(244000), 0x3 },
+-				.fs_avl[3] = { IIO_G_TO_M_S_2(488000), 0x1 },
+-				.fs_len = 4,
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.reg = {
+-					.addr = 0x11,
+-					.mask = GENMASK(3, 2),
+-				},
+-				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(8750000), 0x0 },
+-				.fs_avl[1] = { IIO_DEGREE_TO_RAD(17500000), 0x1 },
+-				.fs_avl[2] = { IIO_DEGREE_TO_RAD(35000000), 0x2 },
+-				.fs_avl[3] = { IIO_DEGREE_TO_RAD(70000000), 0x3 },
+-				.fs_len = 4,
+-			},
+-		},
+-		.irq_config = {
+-			.irq1 = {
+-				.addr = 0x0d,
+-				.mask = BIT(3),
+-			},
+-			.irq2 = {
+-				.addr = 0x0e,
+-				.mask = BIT(3),
+-			},
+-			.lir = {
+-				.addr = 0x56,
+-				.mask = BIT(0),
+-			},
+-			.clear_on_read = {
+-				.addr = 0x56,
+-				.mask = BIT(6),
+-			},
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
+-			.hla = {
+-				.addr = 0x12,
+-				.mask = BIT(5),
+-			},
+-			.od = {
+-				.addr = 0x12,
+-				.mask = BIT(4),
+-			},
+-		},
+-		.batch = {
+-			[ST_LSM6DSX_ID_ACC] = {
+-				.addr = 0x09,
+-				.mask = GENMASK(3, 0),
+-			},
+-			[ST_LSM6DSX_ID_GYRO] = {
+-				.addr = 0x09,
+-				.mask = GENMASK(7, 4),
+-			},
+-		},
+-		.fifo_ops = {
+-			.update_fifo = st_lsm6dsx_update_fifo,
+-			.read_fifo = st_lsm6dsx_read_tagged_fifo,
+-			.fifo_th = {
+-				.addr = 0x07,
+-				.mask = GENMASK(8, 0),
+-			},
+-			.fifo_diff = {
+-				.addr = 0x3a,
+-				.mask = GENMASK(9, 0),
+-			},
+-			.th_wl = 1,
+-		},
+-		.ts_settings = {
+-			.timer_en = {
+-				.addr = 0x19,
+-				.mask = BIT(5),
+-			},
+-			.decimator = {
+-				.addr = 0x0a,
+-				.mask = GENMASK(7, 6),
+-			},
+-			.freq_fine = 0x63,
+-		},
+-		.shub_settings = {
+-			.page_mux = {
+-				.addr = 0x01,
+-				.mask = BIT(6),
+-			},
+-			.master_en = {
+-				.sec_page = true,
+-				.addr = 0x14,
+-				.mask = BIT(2),
+-			},
+-			.pullup_en = {
+-				.sec_page = true,
+-				.addr = 0x14,
+-				.mask = BIT(3),
+-			},
+-			.aux_sens = {
+-				.addr = 0x14,
+-				.mask = GENMASK(1, 0),
+-			},
+-			.wr_once = {
+-				.addr = 0x14,
+-				.mask = BIT(6),
+-			},
+-			.num_ext_dev = 3,
+-			.shub_out = {
+-				.sec_page = true,
+-				.addr = 0x02,
+-			},
+-			.slv0_addr = 0x15,
+-			.dw_slv0_addr = 0x21,
+-			.batch_en = BIT(3),
+-		},
+-		.event_settings = {
+-			.enable_reg = {
+-				.addr = 0x58,
+-				.mask = BIT(7),
+-			},
+-			.wakeup_reg = {
+-				.addr = 0x5b,
+-				.mask = GENMASK(5, 0),
+-			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+-		},
+-	},
+ };
+ 
+ int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
+@@ -1582,7 +1187,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
+ 		return err;
+ 	}
+ 
+-	if (data != st_lsm6dsx_sensor_settings[i].wai) {
++	if (data != st_lsm6dsx_sensor_settings[i].id[j].wai) {
+ 		dev_err(hw->dev, "unsupported whoami [%02x]\n", data);
+ 		return -ENODEV;
+ 	}
 -- 
-2.7.4
+2.28.0
 

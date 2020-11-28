@@ -2,160 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E9802C749A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 371042C7497
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:22:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388237AbgK1Vtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S2388242AbgK1Vtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 28 Nov 2020 16:49:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387504AbgK1TVR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 14:21:17 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B27C0613D1
-        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 11:20:37 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id i17so10116912ljd.3
-        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 11:20:37 -0800 (PST)
+        with ESMTP id S2387762AbgK1VFu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 16:05:50 -0500
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6EBC0613D2
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 13:05:09 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id s9so10333395ljo.11
+        for <linux-iio@vger.kernel.org>; Sat, 28 Nov 2020 13:05:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=43RmXr+oUICRvqUaqiDOvs8i6VIL5ddg6rQZbxT/oko=;
-        b=cqFpk+T5R9rpm2aep4qzgZty6lmPpCouWcyp00uctKTtY5djLCGqGw/NZbegylgV4u
-         0KzKPQIqDnL5HsJAQWdrwk05D51H7uVZgjyi6lOAUinfLaPexqdO1luibzK17z57wCmN
-         J5raDzd1Zglysu7hTrJnoBQt4HFUxkoTVfLeWwLVv4MnuBnt8UUwMCNl1hxuqqcwFMux
-         vS3APzJWfqVHTvi/MnF4C1soayhk5G2lnfvFgU73rxNQKs2sXOX2QJEFl0ET3Idzyyp/
-         eQh3ExmVc0SCPQKa4sHWPfMfdqKH1ZRsNueU5Pt1y8z8Sk1rzCJIigFujcK7T5rMsxC9
-         l7IQ==
+         :cc;
+        bh=NXUgVDY/D8K1+7OpYT2Vp98ohpEzXQV3FJGu7OisKHw=;
+        b=B0RYQ/X8uMlxaHTlxLlkMxhZWIXS6S5D4Dc5hIrd7dNsbUYDzvwpk9TAV1/qlDrHMj
+         +qukWe72ObWsO9pQLV7/X+xTQdlRxwdTq7DVmjrwonNTanp25gLcSMZdAMuVhOcBSW69
+         QBwXgZntGwASuk0ZwBaeJgZ2EXu2DA71lFmCE+tcazt37PlGBZ3as6vFjufW1eMEAT4R
+         Frf/MZAEshhqNI1w8hFUvCFwESi8/mbGQGuaL11REKTMgF/pLo4/6sLhsKivrh6y/oRf
+         nY3R2fX4kVbwgnZ/AQurjpD6mIcv8Q2zdaYGtq51xvhUV2BsTlVHD0EI1h+yRA6uPSKn
+         GZQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=43RmXr+oUICRvqUaqiDOvs8i6VIL5ddg6rQZbxT/oko=;
-        b=SSTeUK+RamztX0myKjZBXuOfBrn/ledZWmqNHha6iXiDQ8UtxbvtTJHUELZYGN03gi
-         jf7s2hOxwYYz2Llmciu57tjDd/D+tRaZQG4+41vqHz+31Rmz9Gj1DIy/JXgUDyIb94Vc
-         XpbrbJmMNJ6HR43UvY04RNxCt5qE7EbqUXHkBqiC+ff+nkVHMbY04db7ztvkjV6l8Sm5
-         SyyNN8yzjIjF0wUnAuER4LkVWMc4RbqGNkmo8e2f36+XZy4aAgg+fU6yQAzrp9ZFSJK6
-         QmTDGiaMi4sDimD/eTE/h9nhbhSTr1mJTlwRJqy4G5NvhEpdt80z36a3m+RSvwvwmLYI
-         CtOQ==
-X-Gm-Message-State: AOAM533hxr1j+/z4KH4ix6tL15DZoFANKJXF0VYhNdn2Ch1E82cGpcot
-        umFHR5Vyc46U9x3sjLJ3s/rSQ49yk9FjMiLjUUS6uQ==
-X-Google-Smtp-Source: ABdhPJxiYJECrJ08DTMCUTtSfiM6wuKdTxPcEgXlDJPI7YnjClBbyHvObjtq5y2maW5olApd62qPQAj/XpFMrIdlmeo=
-X-Received: by 2002:a2e:97c8:: with SMTP id m8mr5649041ljj.338.1606591235814;
- Sat, 28 Nov 2020 11:20:35 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=NXUgVDY/D8K1+7OpYT2Vp98ohpEzXQV3FJGu7OisKHw=;
+        b=gIQZBnk+cnpabyEZePp7mZ0a/NtQU52sXb3njIbuF2dBHdoOSLnVHuNqzWdOFdkgCg
+         IrwfnsCzAYu7E6ylDLA9isMvS9L2+BG5UFKDYtT5yCm8epHiw+V/5JbsFEvmCQ1FdufD
+         nICgnU9AE4VaqpEb8/vhLuhsHZ+ng1Ch51yO9E6vgbUnk9iP2953mubF083K2yHaWwqE
+         dlhkOVpF+rZIQI5/RMK907y5TQo3i/M6M2yhieIhkqzXjFlvfidxcoV8BMMB8sXA70LE
+         l/QLm/12ul53U5BdUcPJ8/pmorTzJMudhSXpaZF6iwJknzQuOhBVt2rvj5DsxXGTkj0w
+         gczw==
+X-Gm-Message-State: AOAM53153sC5p/gTg3DVJim246LlZnBswIZE70emNiDEmPdWkgYRgK2N
+        Dzo/ylruRBJYQmkxWBqsZDjGbdckcgeTFgs3ZrVJaBj9SsAU9zLU
+X-Google-Smtp-Source: ABdhPJzk9XSRJelIhy3xHhNQlcQJUiu6s5RaAPCZgj/9kuTxLN6mx6IMZCcKMLlGNOsauoMEoiV1TrTlNl9Pbws4OIk=
+X-Received: by 2002:a05:651c:39d:: with SMTP id e29mr4810713ljp.144.1606597508162;
+ Sat, 28 Nov 2020 13:05:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20201128185156.428327-1-jic23@kernel.org>
-In-Reply-To: <20201128185156.428327-1-jic23@kernel.org>
+References: <20201128004038.883289-1-linus.walleij@linaro.org>
+ <20201128004038.883289-2-linus.walleij@linaro.org> <20201128122153.44c1052c@archlinux>
+In-Reply-To: <20201128122153.44c1052c@archlinux>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 28 Nov 2020 20:20:24 +0100
-Message-ID: <CACRpkdaA5yhgd4+BgFN6WeC7pmoKPj8kYabD7TtFyEieiNVZfw@mail.gmail.com>
-Subject: Re: [PATCH] iio:gyro:mpu3050 Treat otp value as a __le64 and use
- FIELD_GET() to break up
+Date:   Sat, 28 Nov 2020 22:04:56 +0100
+Message-ID: <CACRpkdYvkV0Xrw9fseQneHwhJ-EkcX+RQKVcCF8hhidE479AmQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2 v2] iio: magnetometer: Add driver for Yamaha YAS5xx
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        phone-devel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 28, 2020 at 7:54 PM Jonathan Cameron <jic23@kernel.org> wrote:
+Hi Jonathan!
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Inspired by Andy Shevchenko's proposal to use get_unaligned_leXX().
->
-> The whole one time programable memory is treated as a single 64bit
-> little endian value.  Thus we can avoid a lot of messy handling
-> of fields overlapping byte boundaries by just loading and manipulating
-> it as an __le64 converted to a u64.  That lets us just use FIELD_GET()
-> and GENMASK() to extract the values desired.
->
-> Note only build tested.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
+I fixed most things, some elaboration inline:
 
-Are there any specific prerequisites? linux-next?
+On Sat, Nov 28, 2020 at 1:21 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-When I apply this and try to compile for an ARMv7 target I get
-a lot of noise and an error:
+> The 'interesting' nature of the packing in those calibration registers
+> is unfortunate.  I'm not really sure how we make that code more readable
+> but using overlapping unaligned big endian reads definitely doesn't make
+> it easier for me to follow!
 
-In file included from <command-line>:0:0:
-../drivers/iio/gyro/mpu3050-core.c: In function =E2=80=98mpu3050_hw_init=E2=
-=80=99:
-../include/linux/bits.h:36:11: warning: right shift count is negative
-[-Wshift-count-negative]
-   (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-           ^
-./../include/linux/compiler_types.h:299:9: note: in definition of
-macro =E2=80=98__compiletime_assert=E2=80=99
-   if (!(condition))     \
-         ^~~~~~~~~
-./../include/linux/compiler_types.h:319:2: note: in expansion of macro
-=E2=80=98_compiletime_assert=E2=80=99
-  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-  ^~~~~~~~~~~~~~~~~~~
-../include/linux/build_bug.h:39:37: note: in expansion of macro
-=E2=80=98compiletime_assert=E2=80=99
- #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                     ^~~~~~~~~~~~~~~~~~
-../include/linux/bitfield.h:46:3: note: in expansion of macro =E2=80=98BUIL=
-D_BUG_ON_MSG=E2=80=99
-   BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask),  \
-   ^~~~~~~~~~~~~~~~
-../include/linux/bitfield.h:108:3: note: in expansion of macro
-=E2=80=98__BF_FIELD_CHECK=E2=80=99
-   __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: "); \
-   ^~~~~~~~~~~~~~~~
-../include/linux/dev_printk.h:118:33: note: in expansion of macro =E2=80=98=
-FIELD_GET=E2=80=99
-  _dev_info(dev, dev_fmt(fmt), ##__VA_ARGS__)
-                                 ^~~~~~~~~~~
-../include/linux/bits.h:38:31: note: in expansion of macro =E2=80=98__GENMA=
-SK=E2=80=99
-  (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                               ^~~~~~~~~
-../include/linux/dev_printk.h:118:33: note: in expansion of macro =E2=80=98=
-GENMASK=E2=80=99
-  _dev_info(dev, dev_fmt(fmt), ##__VA_ARGS__)
-                                 ^~~~~~~~~~~
-../drivers/iio/gyro/mpu3050-core.c:830:2: note: in expansion of macro =E2=
-=80=98dev_info=E2=80=99
-  dev_info(mpu3050->dev,
-  ^~~~~~~~
-../include/linux/bits.h:36:11: warning: right shift count is negative
-[-Wshift-count-negative]
-   (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-           ^
-./../include/linux/compiler_types.h:299:9: note: in definition of
-macro =E2=80=98__compiletime_assert=E2=80=99
-   if (!(condition))     \
-         ^~~~~~~~~
-./../include/linux/compiler_types.h:319:2: note: in expansion of macro
-=E2=80=98_compiletime_assert=E2=80=99
-  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-  ^~~~~~~~~~~~~~~~~~~
-../include/linux/build_bug.h:39:37: note: in expansion of macro
-=E2=80=98compiletime_assert=E2=80=99
- #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                     ^~~~~~~~~~~~~~~~~~
-../include/linux/bitfield.h:48:3: note: in expansion of macro =E2=80=98BUIL=
-D_BUG_ON_MSG=E2=80=99
-   BUILD_BUG_ON_MSG((_mask) =3D=3D 0, _pfx "mask is zero"); \
-   ^~~~~~~~~~~~~~~~
-../include/linux/bitfield.h:108:3: note: in expansion of macro
-=E2=80=98__BF_FIELD_CHECK=E2=80=99
-   __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: "); \
-   ^~~~~~~~~~~~~~~~
-../include/linux/dev_printk.h:118:33: note: in expansion of macro =E2=80=98=
-FIELD_GET=E2=80=99
-  _dev_info(dev, dev_fmt(fmt), ##__VA_ARGS__)
-                                 ^~~~~~~~~~~
-(...)
+Yeah I am experimenting to find a good way. Maybe I will try to extract
+u64 and chop out the bits from there to make it clearer.
+
+I think a lot of clock drivers have this problem already.
+
+> > +       This driver can also be compiled as a module.
+> > +       To compile this driver as a module, choose M here: the module
+> > +       will be called yamaha-yas.
+> > +
+
+> One line only
+
+Please clarify what you want the end result to look like, I don't
+quite get it... Looking a the latest committed drivers in linux-next
+didn't give a clue either.
+
+> > + * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
+> > + * YAS532 MS-3R (2011 Samsung Galaxy S4)
+> > + * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
+> > + * (YAS534 is a magnetic switch, not handled)
+>
+> And there is your reason not to use wild cards in the dt file name etc!
+
+It's pretty safe as we definately account for all magnetometers
+of the naming scheme YAS53x. The YAS534 would be in another
+subsystem (proximity, I guess) so the path to the file gives the
+right info: this covers all magnetometers named yas53x, goes
+for both the bindings and the driver I think?
+
+> > +static void yas53x_extract_calibration(u8 *data, struct yas5xx_calibration *c)
+> > +{
+>
+> As below.  I'm not sure how you make this clearer, but right now it's
+> really hard to follow.  Perhaps detailed comment on what the data packing
+> in here is?
+
+OK I try to detail a bit.
+
+> > +     c->a2 = yas5xx_extract_bits(&data[3], 10, 15) - 32;
+> > +     c->a3 = yas5xx_extract_bits(&data[3], 6, 9) - 8;
+> > +     c->a4 = yas5xx_extract_bits(&data[4], 8, 13) - 32;
+> > +     c->a5 = yas5xx_extract_bits(&data[5], 10, 15) + 38;
+> > +     c->a6 = yas5xx_extract_bits(&data[5], 4, 9) - 32;
+> > +     c->a7 = yas5xx_extract_bits(&data[6], 5, 11) - 64;
+> > +     c->a8 = yas5xx_extract_bits(&data[7], 7, 12) - 32;
+> > +     c->a9 = yas5xx_extract_bits(&data[8], 7, 14);
+> > +     c->k = yas5xx_extract_bits(&data[9], 10, 14) + 10;
+
+Since this segment easily fits in a u64 I thought about
+extracing a u64 and then use FIELD_GET on that.
+
+> As below, I wonder if you'd be better just constructing these directly from
+> the 8 bit register pairs. The overlapping unaligned 16 bit reads are
+> rather confusing.
+
+I already tried that but it looks even worse :/
+
+I will try to put them into a bigger word instead.
+
+> > +     /* Extract linearization */
+>
+> Could you add a comment on the data layout here. It seems rather
+> non obvious given the overlapping 16 bit reads you are doing.
+> Whilst the maths might correspond to extracting bits from be16 registers
+> that looks more like coincidence than design and only makes any
+> useful difference to the bit 7,8 pair.  The bit 9-14 could just have
+> been gotten from the next 8 bit register directly.
+
+It sadly doesn't look any better if I operate on u8 chars. :/
+I'll try to think of something.
+
+> > +             snprintf(yas5xx->name, sizeof(yas5xx->name),
+> > +                      "YAS530 MS-3E %s",
+>
+> Name tends to be lowercase. Also, not sure we've had one with spaces
+> in it before.  I guess our userspace code is fine with it though
+> as presumably you've tested that.
+
+Yeah oddly it turns it into just "YAS530":
+
+skomer:/home/linus# lsiio
+Device 003: bma222
+Device 001: current-sense-amplifier
+Device 004: gp2ap002
+Device 002: mpu3050
+Device 000: ab8500-gpadc
+Device 005: YAS530
+Trigger 000: mpu3050-dev2
+
+But it doesn't look nice, I will rename it lowercase.
 
 Yours,
 Linus Walleij

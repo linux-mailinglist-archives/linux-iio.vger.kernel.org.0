@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DE92C7625
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 849072C7617
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Nov 2020 23:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729330AbgK1W3h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Nov 2020 17:29:37 -0500
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:45135 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387626AbgK1W3S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 17:29:18 -0500
+        id S2387846AbgK1W3U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Nov 2020 17:29:20 -0500
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:43599 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387738AbgK1W3U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Nov 2020 17:29:20 -0500
 X-Originating-IP: 86.194.74.19
 Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
         (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 008521BF204;
-        Sat, 28 Nov 2020 22:28:35 +0000 (UTC)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id D6AA1C0004;
+        Sat, 28 Nov 2020 22:28:36 +0000 (UTC)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -24,11 +24,10 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v3 06/10] dt-bindings:iio:adc:remove triggers
-Date:   Sat, 28 Nov 2020 23:28:14 +0100
-Message-Id: <20201128222818.1910764-7-alexandre.belloni@bootlin.com>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v3 07/10] iio: adc: at91_adc: merge at91_adc_probe_dt back in at91_adc_probe
+Date:   Sat, 28 Nov 2020 23:28:15 +0100
+Message-Id: <20201128222818.1910764-8-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201128222818.1910764-1-alexandre.belloni@bootlin.com>
 References: <20201128222818.1910764-1-alexandre.belloni@bootlin.com>
@@ -38,79 +37,157 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The trigger child nodes are not necessary anymore as they are defined
-directly by the driver, depending on the compatible string.
+at91_adc_probe_dt is now small enough to be merged back in at91_adc_probe.
 
-Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Ludovic Desroches <ludovic.desroches@microchip.com>
 ---
- .../bindings/iio/adc/atmel,sama9260-adc.yaml  | 46 -------------------
- 1 file changed, 46 deletions(-)
+ drivers/iio/adc/at91_adc.c | 115 ++++++++++++++++---------------------
+ 1 file changed, 48 insertions(+), 67 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-index 9b0ff59e75de..e6a1f915b542 100644
---- a/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama9260-adc.yaml
-@@ -97,29 +97,6 @@ required:
-   - atmel,adc-startup-time
-   - atmel,adc-vref
+diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+index d746a18143cd..70750abb5dea 100644
+--- a/drivers/iio/adc/at91_adc.c
++++ b/drivers/iio/adc/at91_adc.c
+@@ -831,69 +831,6 @@ static int at91_adc_probe_dt_ts(struct device_node *node,
+ 	}
+ }
  
--patternProperties:
--  "^(trigger)[0-9]$":
--    type: object
--    description: Child node to describe a trigger exposed to the user.
--    properties:
--      trigger-name:
--        $ref: /schemas/types.yaml#/definitions/string
--        description: Identifying name.
+-static int at91_adc_probe_dt(struct iio_dev *idev,
+-			     struct platform_device *pdev)
+-{
+-	struct at91_adc_state *st = iio_priv(idev);
+-	struct device_node *node = pdev->dev.of_node;
+-	int ret;
+-	u32 prop;
+-	char *s;
 -
--      trigger-value:
--        $ref: /schemas/types.yaml#/definitions/uint32
--        description:
--          Value to put in the Trigger register to activate this trigger
+-	st->caps = of_device_get_match_data(&pdev->dev);
 -
--      trigger-external:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description: This trigger is provided from an external pin.
+-	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
 -
--    additionalProperties: false
--    required:
--      - trigger-name
--      - trigger-value
+-	if (of_property_read_u32(node, "atmel,adc-channels-used", &prop)) {
+-		dev_err(&idev->dev, "Missing adc-channels-used property in the DT.\n");
+-		ret = -EINVAL;
+-		goto error_ret;
+-	}
+-	st->channels_mask = prop;
 -
- examples:
-   - |
-     #include <dt-bindings/dma/at91.h>
-@@ -139,29 +116,6 @@ examples:
-             atmel,adc-use-external-triggers;
-             atmel,adc-vref = <3300>;
-             atmel,adc-use-res = "lowres";
+-	st->sleep_mode = of_property_read_bool(node, "atmel,adc-sleep-mode");
 -
--            trigger0 {
--                trigger-name = "external-rising";
--                trigger-value = <0x1>;
--                trigger-external;
--            };
+-	if (of_property_read_u32(node, "atmel,adc-startup-time", &prop)) {
+-		dev_err(&idev->dev, "Missing adc-startup-time property in the DT.\n");
+-		ret = -EINVAL;
+-		goto error_ret;
+-	}
+-	st->startup_time = prop;
 -
--            trigger1 {
--                trigger-name = "external-falling";
--                trigger-value = <0x2>;
--                trigger-external;
--            };
+-	prop = 0;
+-	of_property_read_u32(node, "atmel,adc-sample-hold-time", &prop);
+-	st->sample_hold_time = prop;
 -
--            trigger2 {
--                trigger-name = "external-any";
--                trigger-value = <0x3>;
--                trigger-external;
--            };
+-	if (of_property_read_u32(node, "atmel,adc-vref", &prop)) {
+-		dev_err(&idev->dev, "Missing adc-vref property in the DT.\n");
+-		ret = -EINVAL;
+-		goto error_ret;
+-	}
+-	st->vref_mv = prop;
 -
--            trigger3 {
--                trigger-name = "continuous";
--                trigger-value = <0x6>;
--            };
-         };
-     };
- ...
+-	st->res = st->caps->high_res_bits;
+-	if (st->caps->low_res_bits &&
+-	    !of_property_read_string(node, "atmel,adc-use-res", (const char **)&s)
+-	    && !strcmp(s, "lowres"))
+-		st->res = st->caps->low_res_bits;
+-
+-	dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
+-
+-	st->registers = &st->caps->registers;
+-	st->num_channels = st->caps->num_channels;
+-
+-	/* Check if touchscreen is supported. */
+-	if (st->caps->has_ts)
+-		return at91_adc_probe_dt_ts(node, st, &idev->dev);
+-	else
+-		dev_info(&idev->dev, "not support touchscreen in the adc compatible string.\n");
+-
+-	return 0;
+-
+-error_ret:
+-	return ret;
+-}
+-
+ static const struct iio_info at91_adc_info = {
+ 	.read_raw = &at91_adc_read_raw,
+ };
+@@ -1059,10 +996,12 @@ static void at91_ts_unregister(struct at91_adc_state *st)
+ static int at91_adc_probe(struct platform_device *pdev)
+ {
+ 	unsigned int prsc, mstrclk, ticks, adc_clk, adc_clk_khz, shtim;
++	struct device_node *node = pdev->dev.of_node;
+ 	int ret;
+ 	struct iio_dev *idev;
+ 	struct at91_adc_state *st;
+-	u32 reg;
++	u32 reg, prop;
++	char *s;
+ 
+ 	idev = devm_iio_device_alloc(&pdev->dev, sizeof(struct at91_adc_state));
+ 	if (!idev)
+@@ -1070,9 +1009,51 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 
+ 	st = iio_priv(idev);
+ 
+-	ret = at91_adc_probe_dt(idev, pdev);
+-	if (ret)
+-		return ret;
++	st->caps = of_device_get_match_data(&pdev->dev);
++
++	st->use_external = of_property_read_bool(node, "atmel,adc-use-external-triggers");
++
++	if (of_property_read_u32(node, "atmel,adc-channels-used", &prop)) {
++		dev_err(&idev->dev, "Missing adc-channels-used property in the DT.\n");
++		return -EINVAL;
++	}
++	st->channels_mask = prop;
++
++	st->sleep_mode = of_property_read_bool(node, "atmel,adc-sleep-mode");
++
++	if (of_property_read_u32(node, "atmel,adc-startup-time", &prop)) {
++		dev_err(&idev->dev, "Missing adc-startup-time property in the DT.\n");
++		return -EINVAL;
++	}
++	st->startup_time = prop;
++
++	prop = 0;
++	of_property_read_u32(node, "atmel,adc-sample-hold-time", &prop);
++	st->sample_hold_time = prop;
++
++	if (of_property_read_u32(node, "atmel,adc-vref", &prop)) {
++		dev_err(&idev->dev, "Missing adc-vref property in the DT.\n");
++		return -EINVAL;
++	}
++	st->vref_mv = prop;
++
++	st->res = st->caps->high_res_bits;
++	if (st->caps->low_res_bits &&
++	    !of_property_read_string(node, "atmel,adc-use-res", (const char **)&s)
++	    && !strcmp(s, "lowres"))
++		st->res = st->caps->low_res_bits;
++
++	dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
++
++	st->registers = &st->caps->registers;
++	st->num_channels = st->caps->num_channels;
++
++	/* Check if touchscreen is supported. */
++	if (st->caps->has_ts) {
++		ret = at91_adc_probe_dt_ts(node, st, &idev->dev);
++		if (ret)
++			return ret;
++	}
+ 
+ 	platform_set_drvdata(pdev, idev);
+ 
 -- 
 2.28.0
 

@@ -2,303 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C23FF2C7B26
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Nov 2020 21:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A2E2C7B2F
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Nov 2020 21:38:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725950AbgK2U1k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Nov 2020 15:27:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50890 "EHLO
+        id S1726293AbgK2UiC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Nov 2020 15:38:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgK2U1k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Nov 2020 15:27:40 -0500
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CC0C0613CF
-        for <linux-iio@vger.kernel.org>; Sun, 29 Nov 2020 12:27:00 -0800 (PST)
-Received: by mail-il1-x143.google.com with SMTP id g1so9375043ilk.7
-        for <linux-iio@vger.kernel.org>; Sun, 29 Nov 2020 12:27:00 -0800 (PST)
+        with ESMTP id S1725950AbgK2UiB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Nov 2020 15:38:01 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68CFC0613CF
+        for <linux-iio@vger.kernel.org>; Sun, 29 Nov 2020 12:37:15 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id a9so16701755lfh.2
+        for <linux-iio@vger.kernel.org>; Sun, 29 Nov 2020 12:37:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UY+lrIBS1wG3rh1wWWPiF0XNj1m8oD4RYP8NKyFZcU8=;
-        b=NyAjkvqbmIhDeAtnLu2qRveqf+ZzfYXjZ3X95wXngWVQk9phiT7RgrotNfTAqXKkyt
-         BczDcYty4PgZQ1Rg7xpkkDLHBgwyLdPd6NQEp2h98b7paOgOdhrhRZHMp4MP0pAvRaPt
-         Eri0VNO67kca/RjrIEtIhdz//bxac0KbB3DEJ2bsB6mLnUyfKgoFFFLxFUDviHLFjiUo
-         HvhrqogdIwvgWKcUuAs+yXIUc3lqrNLg4cp6niw65oivhN/TgbsioY1tdEOyK3hNROQY
-         DHD6OklfV+bY3u6WRCo36zBOsgc8x+wdNLzr2lFfVc++A2WZ9ffcPGWEoPmKCfJM9Ty/
-         LLBA==
+        bh=ID7X4LNmsCPnqrBygYdugLZ/+0Z/j24tNkqATwrEUGw=;
+        b=pjsG10PIjheruhJ7vfWEYPfAY5gKmxZFy0L0eOOXU4mlaPIuNkym4YWGjlFTzpUT0z
+         MCud+U8aiJAm3hPlXnFwmqYipYmvFJy8LWHYkLDEYb+Lf5RGa3CrTNfFC2IdciujifG0
+         Xt2tGgp5Sq3m5YdW1oRGrZ5eNKvreXAy8GkWF7dioo384/k0qJUbjBDYw/Y5Dy1d8Urp
+         yoIV6kXxAUgthAjICoyiWJIUBGtubfP9efHF7kVDrTTBzQqfTLHYa5J7FdMBSFOGUfBe
+         P0KHr91/LSgTPorQbIj+8OgbwKQZwstO8SCtU0o84UudrrS7jJS8OgBP5/NNDkPDZFqL
+         ZlcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UY+lrIBS1wG3rh1wWWPiF0XNj1m8oD4RYP8NKyFZcU8=;
-        b=i7XaF1wR6Y0OPRYIK0KnUV+ZJs7Y9KeXF+3HwVtTLtQjUMZQ4a9Z7dfLVNiiqGrvUe
-         t3LOLKJwhW2Nsy/Ys+YCj78lTf4MsejhHhGp6/KTbCbZljQlZca8omkJzTLnE3AZfUee
-         ZKsQgqE2jykD0fUnzWkNU/1ETUZ/u4X6gcy6SiT3ps48+tWtepoD08VvsfKLKVNBH8Yy
-         XIaYsXOVSkCMJe06yWqaVDb8lD7bdxJ3zxDybe0XvBp5UZTG811D+bC4vsBeCU/XTBuE
-         A+h5goRwQhgpgAxRiV6094E81MQno3Fa+qlVu4wiifeu/ZUIvoAK21z1hM6RlalqYtvl
-         73Gw==
-X-Gm-Message-State: AOAM53068vQbkvOQkYVpozGFs/132q57BPqhDr1X5pgFX1PeERKAx6er
-        FF0Z+kEMy0IhCgWCBVepT3EOzwPn4t08unehjtc=
-X-Google-Smtp-Source: ABdhPJzvRangyy6NyBoBQyKOJxgbOAfimwtJU0zDfD3x5GqsbyYhe4tvgFQbryigw+ChVfurqG4cyfrQCZ624A/JjGw=
-X-Received: by 2002:a92:155b:: with SMTP id v88mr6400021ilk.303.1606681618175;
- Sun, 29 Nov 2020 12:26:58 -0800 (PST)
+        bh=ID7X4LNmsCPnqrBygYdugLZ/+0Z/j24tNkqATwrEUGw=;
+        b=J3Ym23PnO7K6tu92Cumf9mSy4KLtGWJlHvZmh6ZN0DRhTi4NOzfXO1OJCUuukGMjCG
+         wOXYieaxxtC6ADdcy8Ygkh1W+z3rJHyZT8ZVm/BJCmD3gkb54rifOfC4SDLHdr0LSzyZ
+         jY8VN8hcaJ2h9EG2fDHOZKxIxxyviHrGmUtyJUvQNFxOWr7tNxrz1UTCd4PePf603LZB
+         TvD6BHrkQkf9jAQikqzUMQE1fv/4aNPkFkVEqF64CzJkjHeVHQdTyxMOMmugEUlATr3z
+         jfRYNGeb8B21bDso8ZvUTpUmbsDxypqwc/YxNskbPVuMBjrTlsARyEq66YmD6PZHARBY
+         fwHg==
+X-Gm-Message-State: AOAM531lStB/mfRdZFJ+CPmNPAkRNs1fN2dOHUc//U/t5nNhPaSjHJ/i
+        a8uFe/zsZoFjFSv0MDgBnKPw1mm82p7TQPQdvAQAPA==
+X-Google-Smtp-Source: ABdhPJxz9uA3oqcQLWSOajUcrJoaRBrlkWQn848CcV8l1oLvSC1jpfeIc0hUaaYK4pO0WZtEsrwI9pqNZKws0M23Wx0=
+X-Received: by 2002:a19:ca05:: with SMTP id a5mr8435129lfg.571.1606682234000;
+ Sun, 29 Nov 2020 12:37:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20200920112742.170751-1-jic23@kernel.org> <20201129132225.08a81004@archlinux>
- <CA+U=DsqUy8nvqmMYHBvU0CBOVAmEmcdqy-XYxpj7zTjqNQt4+Q@mail.gmail.com> <20201129183303.2ef9edb9@archlinux>
-In-Reply-To: <20201129183303.2ef9edb9@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sun, 29 Nov 2020 22:26:46 +0200
-Message-ID: <CA+U=Dsp7MkaqRSMi7u2+=0UeMNhBbp0R-zRMX1NwFNiJR9UK9Q@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] IIO: Fused set 1 and 2 of timestamp alignment fixes
+References: <20201129184459.647538-1-jic23@kernel.org>
+In-Reply-To: <20201129184459.647538-1-jic23@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 29 Nov 2020 21:37:02 +0100
+Message-ID: <CACRpkdatjOsCKmeGsfwMA17FZ7RMjmEBU8YFrbrZ_Nstzedd3w@mail.gmail.com>
+Subject: Re: [PATCH v2] iio:gyro:mpu3050 Treat otp value as a __le64 and use
+ FIELD_GET() to break up
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 29, 2020 at 8:33 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun, 29 Nov 2020 18:15:28 +0200
-> Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
->
-> > On Sun, Nov 29, 2020 at 3:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > Dear All,
-> > >
-> > > Whilst I'm reasonably confident this series is correct (famous last words)
-> > > I don't like applying anything non trivial without having had at least one
-> > > set of additional eyes on it.
-> > >
-> > > As such, if anyone has a chance to do a quick sanity check that would be
-> > > much appreciated!
-> >
-> > This looks good AFAICT.
->
-> Thanks. If you are comfortable giving a tag that would be great.
-> If not, no problem!
+On Sun, Nov 29, 2020 at 7:47 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-Sure. Apologies for not adding one sooner.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Inspired by Andy Shevchenko's proposal to use get_unaligned_leXX().
+>
+> The whole one time programable memory is treated as a single 64bit
+> little endian value.  Thus we can avoid a lot of messy handling
+> of fields overlapping byte boundaries by just loading and manipulating
+> it as an __le64 converted to a u64.  That lets us just use FIELD_GET()
+> and GENMASK() to extract the values desired.
+>
+> Note only build tested. We need to use GENMASK_ULL and %llX formatters
+> to account for the larger types used in computing the various fields.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Link: https://lore.kernel.org/r/20201128185156.428327-1-jic23@kernel.org
+> ---
+>
+> Changes since v1:
+> * Fix 32 bit builds by using GENMASK_ULL (thanks to Linus + Andy)
 
-Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Easy to test since I'm playing with one of these right now!
 
->
-> > But it also looks like it could do with some re-design/re-thinking.
-> > Maybe somehow moving more of this buffer + timestamp management
-> > somewhere in IIO core.
-> >
-> > It would change the paradigm a bit, in the sense that a driver would
-> > ask IIO core for a buffer/scratchpad area, where to put the data read
-> > from the device.
-> > This buffer pool management could be interesting [in the long run].
-> > Maybe with some zero-copy mechanism.
->
-> Whilst an interesting idea, it would run into various challenges.
-> 1) Need to be DMA safe for SPI drivers, or they would still need to have
->    bounce buffers.  Current cases where we have to copy twice are a bit
->    annoying of course.
-> 2) Need to show sufficient performance benefit to be worth the churn to
->    make the change + the potential complexity.
-> 3) That interface isn't necessarily just going to one place as there may
->    be multiple consumers.  There are probably still ways that could be
->    dealt with but it's another level of complexity.
->
-> So perhaps worth exploring but the performance vs complexity question is
-> where I suspect it would come unstuck.
+Before:
+[    2.677957] mpu3050-i2c 2-0068: found MPU-3050 part no: 6, version: 14
+[    2.695905] mpu3050-i2c 2-0068: die ID: 05A1, wafer ID: 12, A lot
+ID: 0000, W lot ID: 662, WP ID: 3, rev ID: 1A
+After:
+[    2.667944] mpu3050-i2c 2-0068: found MPU-3050 part no: 6, version: 14
+[    2.686969] mpu3050-i2c 2-0068: die ID: 05A1, wafer ID: 12, A lot
+ID: 0000, W lot ID: 662, WP ID: 3, rev ID: 1A
 
-I still feel there may be some reasonably simple mechanisms, that
-would benefit drivers that use iio_push_to_buffers_with_timestamp().
-I don't have anything clear in mind yet.
-I still need to dig through other backlog stuff.
-But, I'll try to make a note of this and see later if I can get to it.
+And works too.
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
->
-> Thanks,
->
-> Jonathan
->
-> >
-> > >
-> > > Thanks
-> > >
-> > > Jonathan
-> > >
-> > > +CC a few additional helpful souls :)
-> > >
-> > > On Sun, 20 Sep 2020 12:27:34 +0100
-> > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >
-> > > > Took me a while to get back to these.  We have 2 new patches in here to
-> > > > fix issues unrelated to the main topic, but which effect the buffer lengths.
-> > > > I've done those as precursors so it is clear what is going on.
-> > > >
-> > > > Note there are still a few outstanding drivers to be fixed before we can
-> > > > think about adding a warning if unaligned buffers are provided. Naturally
-> > > > they are the hardest ones, or the ones where I couldn't work out how
-> > > > the code is working today, so may take a little while.
-> > > >
-> > > > Changes since v3:
-> > > > * Applied all the ones where only minor comment changes were needed.
-> > > > * rpr0521: Fixed typo. Also added to patch description Mikko's information
-> > > >   on why it would be costly to split off the interrupt read.
-> > > > * st_uvis: Drop the pointless masking.
-> > > > * mag3110: Rename element to temperature
-> > > > * bmi160: Add fix to length of buffer.
-> > > > * bmi160: Improve comments and carry forwards shorter length.
-> > > > * mpl3115: Sufficiently unusual to need a 'special' comment and another review.
-> > > > * ti-ads124s08: Add fix to length of buffer.
-> > > > * ti-ads124s08: Expand comment to express the buffer length not all needed if
-> > > >   not all channels are enabled.
-> > > >
-> > > > Changes since v2:
-> > > > * bmc150-accel: Use sizeof() for channel size (Andy Shevchenko)
-> > > > * st_uvis25: Use local variable for regmap call (Andy Shevchenko)
-> > > > * st_lsm6dsx: Use array of scan[] rather than 3 structures (Lorenzo Bianconi)
-> > > > * inv_mpu6050: Add patch switching to a regmap_noinc_read (Jean-Baptiste Maneyrol)
-> > > > * ina2xx: Use a structure (previously failed to notice that works here)
-> > > > * I've added clarifying notes to patch descriptions based on questions asked.
-> > > >   These were mainly about why we didn't use the structure approach everywhere
-> > > >   and why I've forced alignment in places it wasn't strictly needed.
-> > > >
-> > > > Previous cover letter:
-> > > > A few notes based on questions on v1.
-> > > >
-> > > > 1. Why not use put_unaligned to avoid the whole thing?
-> > > >    This interface can pass directly to a variety of in kernel users
-> > > >    who would reasonably assume that we have true natural alignment.
-> > > >    When it gets passed directly is subtle as it depends on whether
-> > > >    the demux has to realign the data or not.  So enabling an extra
-> > > >    channel could result in a previously working alignment no longer
-> > > >    being true.
-> > > >
-> > > >    Even if this is fine for existing usecases we are likely to
-> > > >    store up subtle long term issues if we don't fix it explicitly.
-> > > >    It's also worth noting that the data channel sometimes suffered
-> > > >    the same problem as the timestamp.
-> > > >
-> > > > 2. Why not specify explicit padding?
-> > > >    In my view this is error prone in comparisom with relying on
-> > > >    c to do the hard work for us.
-> > > >
-> > > > 3. Why not move the timestamp to the start?
-> > > >    ABI breakage and as timestamp is optional (no obvious from the
-> > > >    iio_push_to_buffers_with_timestamp call) we can end up having
-> > > >    to shift the rest of the data within that call.
-> > > >
-> > > > Changes since v1.
-> > > >
-> > > > Andy Schevchenko pointed out that on x86_32 s64 elements are only
-> > > > aligned to 4 bytes.  Where I had tried to use a structure to avoid
-> > > > explicit need to list the padding, there were some cases where
-> > > > this results in insufficient padding being inserted.
-> > > >
-> > > > This doesn't affect the few patches that had already been applied and
-> > > > sent upstream. (which was lucky ;)
-> > > >
-> > > > The fix was to take advantage of __aligned(8) which (according to
-> > > > my reading of the c spec and the gcc docs) enforces the alignment of
-> > > > both the element within a structure and the structure itself.
-> > > > The kernel now requires a recent enough version of GCC to ensure this
-> > > > works both on the stack and heap.  This is done in lots of other
-> > > > userspace interfaces. In some cases iio_push_to_buffers_with_ts
-> > > > is aligning data for passing to userspace, be it via a kfifo
-> > > > so it is sensible we should use the same solution.
-> > > >
-> > > > Note that we could have used u64_aligned but there is no equivalent
-> > > > for s64 and explicit use of __aligned(8) is common in
-> > > > the kernel so we adopt this here.
-> > > >
-> > > > Note that there were about 8 drivers that would have been broken with
-> > > > v1 of the patch.  I have also forced alignment of timestamps in cases
-> > > > where (mostly by coincidence) we would have been fine (padding was
-> > > > less than 4 bytes anyway.  I did this partly to reduce fragility if
-> > > > other elements are added in future and also to avoid cut and paste
-> > > > errors in new drivers.
-> > > >
-> > > > There were a few other minor tidying up changes inline with reviews
-> > > > of v1.
-> > > >
-> > > > I've kept tags given for v1 on basis the changes are minor. Shout if
-> > > > you disagree.
-> > > >
-> > > > Version 1 part 1 cover letter.
-> > > >
-> > > > Lars noted in a recent review [1] of the adis16475 that we had an issue around
-> > > > the alignment requirements of iio_push_to_buffers_with_timestamp.
-> > > > Whilst it's not documented, that function assumes that the overall buffer
-> > > > is 8 byte aligned, to ensure the timestamp is itself naturally aligned.
-> > > > We have drivers that use arrays (typically on the stack) that do
-> > > > not guarantee this alignment.
-> > > >
-> > > > We could have fixed this by using a put_unaligned to write the timestamp
-> > > > but I think that just pushes the problem down the line.  If we were to
-> > > > have a consumer buffer wanting all the channels in the current
-> > > > active_scanmask then it will get the raw buffer from the driver passed
-> > > > straight through.  It seems odd to me if we allow passing a buffer
-> > > > that is not naturally aligned through to a consumer.
-> > > > Hence I'm proposing to fix up all existing drivers that might pass
-> > > > a buffer with insufficient alignment guarantees.
-> > > > Sometimes the timestamp is guaranteed to be in a particular location,
-> > > > in which case we can use C structure alignment guarantees to fix this
-> > > > in a nice readable fashion.  In other cases, the timestamp location
-> > > > depends on which channels are enabled, and in those case we can
-> > > > use explicit alignment __aligned(8) to ensure the whole array is
-> > > > appropriately aligned.
-> > > >
-> > > > Lars-Peter also noted that, in many of these cases, there are holes
-> > > > in the stack array that we never write.  Those provide a potential
-> > > > leak of kernel data to userspace.  For drivers where this applies
-> > > > we either need to zero those holes each time, or allocate the buffer
-> > > > on the heap (only once), ensuring it is zeroed at that time.
-> > > > We may leak previous values from the sensor but currently that seems
-> > > > unlikely to present any form of security risk.
-> > > >
-> > > > As such, this first set contains a mixture of fixes.  Where there
-> > > > are no possible holes, the buffer is kept on the stack but a
-> > > > c structure is used to guarantee appropriate alignment.  Where
-> > > > there are holes, the buffer is moved into the iio_priv() accessed
-> > > > data private structure. A c structure or __aligned(8) is used
-> > > > as appropriate.
-> > > >
-> > > > I've stopped at this point rather than doing all the drivers Lars
-> > > > found in order to both throttle the review burden and also to
-> > > > see find any general problems with the fixes before doign futher
-> > > > similar series.  A few of the remaining ones will be rather more
-> > > > complex to deal with.
-> > > >
-> > > > These have been there a long time, so whilst they are fixes we
-> > > > will want in stable I'm not that bothered if it takes us a little
-> > > > while to get them there!
-> > > >
-> > > > [1] https://www.spinics.net/lists/devicetree/msg350590.html
-> > > > [2] https://patchwork.kernel.org/cover/11554215/
-> > > >
-> > > > Jonathan Cameron (8):
-> > > >   iio:light:rpr0521: Fix timestamp alignment and prevent data leak.
-> > > >   iio:light:st_uvis25: Fix timestamp alignment and prevent data leak.
-> > > >   iio:magnetometer:mag3110: Fix alignment and data leak issues.
-> > > >   iio:imu:bmi160: Fix too large a buffer.
-> > > >   iio:imu:bmi160: Fix alignment and data leak issues
-> > > >   iio:pressure:mpl3115: Force alignment of buffer
-> > > >   iio:adc:ti-ads124s08: Fix buffer being too long.
-> > > >   iio:adc:ti-ads124s08: Fix alignment and data leak issues.
-> > > >
-> > > >  drivers/iio/adc/ti-ads124s08.c       | 13 ++++++++++---
-> > > >  drivers/iio/imu/bmi160/bmi160.h      |  7 +++++++
-> > > >  drivers/iio/imu/bmi160/bmi160_core.c |  6 ++----
-> > > >  drivers/iio/light/rpr0521.c          | 17 +++++++++++++----
-> > > >  drivers/iio/light/st_uvis25.h        |  5 +++++
-> > > >  drivers/iio/light/st_uvis25_core.c   |  8 +++++---
-> > > >  drivers/iio/magnetometer/mag3110.c   | 13 +++++++++----
-> > > >  drivers/iio/pressure/mpl3115.c       |  9 ++++++++-
-> > > >  8 files changed, 59 insertions(+), 19 deletions(-)
-> > > >
-> > >
->
+I used the same approach in the Yamaha driver and it looks good
+there too.
+
+Yours,
+Linus Walleij

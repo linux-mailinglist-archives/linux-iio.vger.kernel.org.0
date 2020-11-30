@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C60612C86B1
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Nov 2020 15:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48EE82C86B2
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Nov 2020 15:29:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727345AbgK3O26 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Nov 2020 09:28:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47258 "EHLO
+        id S1727521AbgK3O3A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Nov 2020 09:29:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727293AbgK3O26 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Nov 2020 09:28:58 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646BCC0613CF
-        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 06:28:12 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id h21so25395849wmb.2
-        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 06:28:12 -0800 (PST)
+        with ESMTP id S1727293AbgK3O3A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Nov 2020 09:29:00 -0500
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4423C0617A7
+        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 06:28:14 -0800 (PST)
+Received: by mail-wm1-x342.google.com with SMTP id x22so18643515wmc.5
+        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 06:28:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=oc+CRyq0MP1rGPx6qu4fJIiuXgNVzq5WpNvySKjLu6M=;
-        b=GxmJyFcfA3iyJchLIAdSSvI7E0OmfEYFUrK5pXEvNYV2KlltBpcpeUpM58TJ+pnt/Q
-         qgLqKKXNkt0UdGY2HBZi2V34IhcYRLIzupD+6vbWa0YWE4aSGD9lx1RGkPulnFfjfEVf
-         SGstAR+EY0GYQINJMGMwNIutwUL3HYTjiCZoLT7Y5PahWav4i3R1snqoi/FREkBfks7p
-         rzYVnSyvEEwORgskQM4nqn4SF+Nlkf1z+iprB3iDJz9um1+Ap9MK8C2yCdoQuET5J94X
-         ffsZQAL9/sIE//unQV6Sk5lkcRe2QvIhaBlI3PTtkX3isgFV9T3f3DPWb/9LSc7V+MIT
-         HB+Q==
+        bh=YC+CHaCok09rYh/O6VeZFt906CZ5WncrdXBXZsu9Deg=;
+        b=x0oInSN5K0DGybItSGSqgocXAKsO59Tv43WwTYl2mFz+HUgmEdGSZx8FctCdW+C92C
+         pJIp3ryu/Wyy5XmVBOFcLcHDfIdsGnINxK9zcwNSkDqqK15ggpG1N3ERtg7aymUFEmr6
+         HudBQPGsbVNYbktGhwOw7/KJVsD6drHpctT83bbLkycNjPyLykFfBdCeX6W1eNCa1tLL
+         ZQnwg3UucEj7vpp1Fi6bTcoMQWCVoASU7k37a1pfiUY9BMyHeQ6dfO5vY0Kg0sDENuu0
+         5EtRvVWmlufM6tOqzAwIRFVL092QR7sM3OGY6p/IMYh7t+INxdKE8UosxJw5SKvS0jIW
+         XYHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=oc+CRyq0MP1rGPx6qu4fJIiuXgNVzq5WpNvySKjLu6M=;
-        b=FMp+0NwU7ZVe10Gz1qR/4tVKs1sNDcun/pRldMa9Wl+1DW8hdPpRm3y75g15mwG3x6
-         JRytPzJbPTpTb4+bzwXUyCowwCW3PHGetfjxqQe3qIhGaY6whyCjetCrv79n3pWG0lep
-         5ML+F/aFqGBchXj/qpQfz0D1W4xwaNevvI+kIgT9YOABtw+ezDan26HxHcXCgj7Ah3sI
-         BJxScwFdwhFzfwMPn3MQgsoKwXSEr1TI7H9fgoQen/axVJSmEMGPhfDokWfCqDltzSxH
-         UIcevUnVR76WFkDgIOSePDWFiNdKKaDjEkXPzOYtqkm4+Dh9hf2jqUq5CHSPf+Ah8kH0
-         XPzQ==
-X-Gm-Message-State: AOAM530KjlAyFyi5LLmvP7Qz5pfpJ+tO5MHdObI2z8todHV47oel4Tu7
-        5dbv7pbdDPk4rdq3ZWDmtiNHyQ==
-X-Google-Smtp-Source: ABdhPJxD/5kmfsCYXfU9rpNA3rlWnUqI4oAwPgY2OTtUwo/7XPH2d5ATmi4f+MwHCpZoewNmRC/DsQ==
-X-Received: by 2002:a7b:c05a:: with SMTP id u26mr23718597wmc.159.1606746491168;
-        Mon, 30 Nov 2020 06:28:11 -0800 (PST)
+        bh=YC+CHaCok09rYh/O6VeZFt906CZ5WncrdXBXZsu9Deg=;
+        b=TNf6MBmhnWD3/03PUOcH9r+kzR9EylELsa9c48dFvh6IjvVox/5jDsk812QipZm9oj
+         YK/Dl/EXKk86r58odxIe+g5h8RIVqlD1rcsj2BaB+wWtDAJ2HvJFHNgt2YguIOLphgpX
+         NHISwPjTboSClYSODZ0cvH7GprPqj/y65ep+lULArHgRoYp9ZyolMclYplPW+S8DjMZD
+         HvrHGhU7aERlvKHTdoYHpocOrIzgAinB6BPaDJdu3ECLevX3QmXgIC/4MPa2GUsyD41D
+         lXIbH1mvDKzgpGycZ0iPOhbY9AMrJzLMJGAzZTK3J0stTiRNg/pfLa2sfnuUEiYgkOzk
+         Zigg==
+X-Gm-Message-State: AOAM530pCuUtAoeNuXgw8o34+n23vwLQQ7nkAcy0nYgiwFjKBWZr65U5
+        TUO1NGNbeF0yk5MJ308+Z2zA7A==
+X-Google-Smtp-Source: ABdhPJyQFIZ33gaXyeO/XB+ll3rZvsk+O2uAhu3h1EtSn3BIE/hzSR7hvSSXXS+PqnDmhPSd+Od8uw==
+X-Received: by 2002:a1c:b107:: with SMTP id a7mr23490658wmf.121.1606746492513;
+        Mon, 30 Nov 2020 06:28:12 -0800 (PST)
 Received: from debian-brgl.home (amarseille-656-1-4-167.w90-8.abo.wanadoo.fr. [90.8.158.167])
-        by smtp.gmail.com with ESMTPSA id p19sm29446044wrg.18.2020.11.30.06.28.10
+        by smtp.gmail.com with ESMTPSA id p19sm29446044wrg.18.2020.11.30.06.28.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 06:28:10 -0800 (PST)
+        Mon, 30 Nov 2020 06:28:11 -0800 (PST)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -55,9 +55,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
 Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATH v3 1/3] iio: adc: xilinx: use helper variable for &pdev->dev
-Date:   Mon, 30 Nov 2020 15:27:57 +0100
-Message-Id: <20201130142759.28216-2-brgl@bgdev.pl>
+Subject: [PATH v3 2/3] iio: adc: xilinx: use devm_krealloc() instead of kfree() + kcalloc()
+Date:   Mon, 30 Nov 2020 15:27:58 +0100
+Message-Id: <20201130142759.28216-3-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.29.1
 In-Reply-To: <20201130142759.28216-1-brgl@bgdev.pl>
 References: <20201130142759.28216-1-brgl@bgdev.pl>
@@ -69,75 +69,61 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-It's more elegant to use a helper local variable to store the address
-of the underlying struct device than to dereference pdev everywhere.
+We now have devm_krealloc() in the kernel Use it indstead of calling
+kfree() and kcalloc() separately.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/iio/adc/xilinx-xadc-core.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index f93c34fe5873..8494eb424b33 100644
+index 8494eb424b33..6f89a97bb127 100644
 --- a/drivers/iio/adc/xilinx-xadc-core.c
 +++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1186,6 +1186,7 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 
- static int xadc_probe(struct platform_device *pdev)
+@@ -19,6 +19,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/overflow.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
+@@ -585,15 +586,22 @@ static int xadc_update_scan_mode(struct iio_dev *indio_dev,
+ 	const unsigned long *mask)
  {
-+	struct device *dev = &pdev->dev;
- 	const struct of_device_id *id;
- 	struct iio_dev *indio_dev;
- 	unsigned int bipolar_mask;
-@@ -1195,10 +1196,10 @@ static int xadc_probe(struct platform_device *pdev)
- 	int irq;
- 	int i;
+ 	struct xadc *xadc = iio_priv(indio_dev);
+-	unsigned int n;
++	size_t new_size, n;
++	void *data;
  
--	if (!pdev->dev.of_node)
-+	if (!dev->of_node)
- 		return -ENODEV;
+ 	n = bitmap_weight(mask, indio_dev->masklength);
  
--	id = of_match_node(xadc_of_match_table, pdev->dev.of_node);
-+	id = of_match_node(xadc_of_match_table, dev->of_node);
- 	if (!id)
- 		return -EINVAL;
- 
-@@ -1206,7 +1207,7 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (irq <= 0)
- 		return -ENXIO;
- 
--	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*xadc));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*xadc));
- 	if (!indio_dev)
+-	kfree(xadc->data);
+-	xadc->data = kcalloc(n, sizeof(*xadc->data), GFP_KERNEL);
+-	if (!xadc->data)
++	if (check_mul_overflow(n, sizeof(*xadc->data), &new_size))
++		return -ENOMEM;
++
++	data = devm_krealloc(indio_dev->dev.parent, xadc->data,
++			     new_size, GFP_KERNEL);
++	if (!data)
  		return -ENOMEM;
  
-@@ -1226,7 +1227,7 @@ static int xadc_probe(struct platform_device *pdev)
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &xadc_info;
++	memset(data, 0, new_size);
++	xadc->data = data;
++
+ 	return 0;
+ }
  
--	ret = xadc_parse_dt(indio_dev, pdev->dev.of_node, &conf0);
-+	ret = xadc_parse_dt(indio_dev, dev->of_node, &conf0);
- 	if (ret)
- 		return ret;
+@@ -1372,7 +1380,6 @@ static int xadc_remove(struct platform_device *pdev)
+ 	free_irq(xadc->irq, indio_dev);
+ 	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
+ 	clk_disable_unprepare(xadc->clk);
+-	kfree(xadc->data);
  
-@@ -1250,7 +1251,7 @@ static int xadc_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	xadc->clk = devm_clk_get(&pdev->dev, NULL);
-+	xadc->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(xadc->clk)) {
- 		ret = PTR_ERR(xadc->clk);
- 		goto err_free_samplerate_trigger;
-@@ -1276,7 +1277,7 @@ static int xadc_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = request_irq(xadc->irq, xadc->ops->interrupt_handler, 0,
--			dev_name(&pdev->dev), indio_dev);
-+			  dev_name(dev), indio_dev);
- 	if (ret)
- 		goto err_clk_disable_unprepare;
- 
+ 	return 0;
+ }
 -- 
 2.29.1
 

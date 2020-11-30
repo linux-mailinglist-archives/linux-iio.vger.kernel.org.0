@@ -2,100 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5C342C8B51
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Nov 2020 18:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F3C92C8B70
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Nov 2020 18:40:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387606AbgK3RhU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Nov 2020 12:37:20 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:41774 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387521AbgK3RhT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Nov 2020 12:37:19 -0500
-Received: by mail-il1-f193.google.com with SMTP id p5so12089431iln.8;
-        Mon, 30 Nov 2020 09:37:04 -0800 (PST)
+        id S1729493AbgK3RkU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Nov 2020 12:40:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49076 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729491AbgK3RkU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Nov 2020 12:40:20 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DB9C0613D4
+        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 09:39:39 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id w16so10488243pga.9
+        for <linux-iio@vger.kernel.org>; Mon, 30 Nov 2020 09:39:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=/yv51F3vwzB9OEqoFeaGWnr5PcKyz2F1XhnDGz2Gpz4=;
+        b=ukM8uaktLRjNipZsZvu48BAFpTz5vBLklrNhhmqy2NuzyUIH5LzWGuolzM59Ym2VSN
+         DqwJSTUVzRu7bmyC5tCnnYBKpoJTTynaolKHOMrZIS1lLYI2gh4TgvaZMGdm/FSM716B
+         fJze/olwqD1IRwlx5ZeofBGVq0BXLR6TCdHdNjHBVdKyPmTPo8tD12D7awmNy4iN+JoJ
+         CYkshEw1x/rjz0L0yRW9Ec+jlPGTa/G4uT3p3hZgEEI9QKSFhhLegMFEz1ZjK1Bp+WkY
+         AmQiYQrQHwahnQJUBwYRpyI38w1mpoROopd4qsrA/ndA8pdP2mnzz4Aks9ueNwSszq5S
+         cZQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fsp1blWR1sEPQhmBclKQNeakz0wx8DgrPZF+YSlf8PE=;
-        b=P/DwguoO8p/OuWF4ZnDju9y8l+uwsiTS+9s6LCvDQYi9AC7+yodR0fevdse1KHIzag
-         ao61r+09bAOwJBZFFoBTgNj2F5AAWi5Wnm5LnTPbip3qrI3unFwRUICprdkFmTcngamC
-         WvsHMOcWphP74eNMbvupi/20PPmwuogmBdJZCf8Wz7AkbOkqvE2Boa0T+3uT3/cd8CT/
-         h9Y8WNYCT7JlDAM9+d4qtD6vJ7ifE9grwwEgDPys6+rJ2ZGGvDOdnOQHzTCKC5/xsNsa
-         aHazL03JfvH5ISIO9PO5thumzmwx58WvRMJPp1kxTqEeq4MScaBqXqpuPDh3s+Pl4blh
-         WTJw==
-X-Gm-Message-State: AOAM530loeN/xLdFzsckxDpevME8qR6USuK9UXDlvU00MFkIJPertL89
-        5jgwHZp5oZ4BvvsLnDnmWA==
-X-Google-Smtp-Source: ABdhPJyd53GgrWq2rCHuy4ycE05CbnIyKRy6oXyUGYnljoiHnpBLlcUSgkG9E9NzQtPg7PzsjLLLZw==
-X-Received: by 2002:a92:cc03:: with SMTP id s3mr19936624ilp.146.1606757798763;
-        Mon, 30 Nov 2020 09:36:38 -0800 (PST)
-Received: from xps15 ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id p89sm11835225ili.29.2020.11.30.09.36.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 09:36:37 -0800 (PST)
-Received: (nullmailer pid 2683783 invoked by uid 1000);
-        Mon, 30 Nov 2020 17:36:36 -0000
-Date:   Mon, 30 Nov 2020 10:36:36 -0700
-From:   Rob Herring <robh@kernel.org>
-To:     tomislav.denis@avl.com
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] bindings: iio: adc: Add documentation for ADS131E0x
- ADC driver
-Message-ID: <20201130173636.GA2683425@robh.at.kernel.org>
-References: <20201127194240.15060-1-tomislav.denis@avl.com>
- <20201127194240.15060-3-tomislav.denis@avl.com>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=/yv51F3vwzB9OEqoFeaGWnr5PcKyz2F1XhnDGz2Gpz4=;
+        b=pV8XkVga1+2uDvXCHSZJARko+E3v/haFCQ/4Q3/As0qeZgm1bz/Ur6wAN6TLqouKA2
+         YcqO1XRrh0jgl1ZWT2FX2l+cW44RH+rnavvCp9q4s6G20Xu2v/1DFwDVzRpWfEg3DRBH
+         2P7/8jCkKTwxjeO6CeVm0+463FPBUMsfqXllgMBPFlWOjDBaSEhejfxNoo7u2zm26tnG
+         3mYyPfgFJhm9ABlIV8/WhNGXb9ygeTbF9pzaav6DFgbabggqwCWeYwoA9j4ZPl6gxFEg
+         7K0KO+/ZVRYVhlm5S5uKRG9V7dDsxLrBEo+4J7LUxEUZ/z7W/5+Qcj6GGdNRxUs1pNSn
+         kIjw==
+X-Gm-Message-State: AOAM530ShLJJBEsZerPA06I76HT6o6ciDmlFEDU4rHbMG/Y18XWdiAOH
+        cLyhEnpl1SZBQY9OfOn91ao59rrXfEucX8ZIqik=
+X-Google-Smtp-Source: ABdhPJw4R+I9/22wT/3XcQBOhTgNoSJRsE7SL6jX0Uv25Y2N+GAGBTmO4HJKbleP09JCtc7q79oPEHnUQ3Zsf0202cU=
+X-Received: by 2002:a63:1a02:: with SMTP id a2mr18598413pga.359.1606757979386;
+ Mon, 30 Nov 2020 09:39:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201127194240.15060-3-tomislav.denis@avl.com>
+Sender: abdul.mariam69@gmail.com
+Received: by 2002:a17:90a:804c:0:0:0:0 with HTTP; Mon, 30 Nov 2020 09:39:38
+ -0800 (PST)
+From:   Adams Elena <elenaadams577@gmail.com>
+Date:   Mon, 30 Nov 2020 11:39:38 -0600
+X-Google-Sender-Auth: 4_yCKVWpLKj_ENjtui3TUPPa6Ps
+Message-ID: <CADH3zX8PP5FoPN80uXhuzRKAPpCGmdSTCwPe2NTPBfeG5UN6ng@mail.gmail.com>
+Subject: URGENT RESPONSE NEEDED...
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Nov 2020 20:42:40 +0100, tomislav.denis@avl.com wrote:
-> From: Tomislav Denis <tomislav.denis@avl.com>
-> 
-> Add a device tree binding documentation for Texas Instruments
-> ADS131E0x ADC family driver.
-> 
-> Signed-off-by: Tomislav Denis <tomislav.denis@avl.com>
-> ---
->  .../devicetree/bindings/iio/adc/ti,ads131e08.yaml  | 145 +++++++++++++++++++++
->  MAINTAINERS                                        |   1 +
->  2 files changed, 146 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-> 
+My Donation To You in good faith.
 
+May the peace of the Almighty God be with you and your Family,
 
-My bot found errors running 'make dt_binding_check' on your patch:
+With Due Respect and Humility, I was compelled to write you under
+humanitarian ground. My name is Mrs Elena Adams, the Wife of Engineer
+Ralph Alphonso Adams from United State Of America. I have took a
+personal decision to donate what I inherited from my late husband to
+the Charity, less privilege, I am 68 years old and I was diagnosed for
+Lung and bronchial cancer since the past 4 years, immediately after
+the death of my husband. We were both married for many years without a
+child, I took this decision because I don't have any child that will
+inherit this money  and rather to allow my husband relatives use my
+husband hard-earned funds  in ungodly ways  I have decided  to donate
+all I inherited from my late husband to you for good work of God.
 
-yamllint warnings/errors:
+I and My late husband based here in Burkina Faso West Africa since
+eighteen years ago dealing with gold exportation and Sales. I have
+decided to donate a fund through Credit Account =E2=82=AC4.700.000.00 Four
+Million Seven Hundred Thousand Euros to you for this assignment,
+Charity, less privilege, building of schools, hospitals and also for
+the assistance of the poor widows, Motherless babies, Charity
+organization, CHRISTIAN OR MUSLIM, and orphans. I don't know you in
+person but God knows you, so contacting you for this assignment is a
+direction from the holy spirit of God to donate this fund outside this
+country through you as my late husband has already donated a lot in
+this country,
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml: 'additionalProperties' is a required property
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml: ignoring, error in schema: 
-warning: no schema found in file: ./Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dts:23.11-21: Warning (reg_format): /example-0/spidev@0:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.example.dt.yaml: example-0: spidev@0:reg:0: [0] is too short
-	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
+so you have to make sure that you use this donation fund as I have
+directed so that the name of the Almighty God will be glorify forever.
+Your urgent response is required in this matter due to my present
+critical condition of my health, it was a Sister nurse working in this
+hospital that helped me to type this message, because I am loosing
+strength every minutes of the day. All I need from you is prayers that
+GOD will accept my soul in case I didn't survive this surgery. Also
+pray for the soul of my late Husband to rest in peace.
 
+Please always be prayerful all through your life, we are visitors on
+this earth and we must be very careful in whatever we do so that our
+soul will not be a waste. I wish you all the best and may God bless
+you abundantly.  I will give you more details about this orphanage
+home, as soon as i receive your reply in my private
+email(elenaadams577@gmail.com) to handle this project because I do not
+want to state all here until I see your reply, desire and commitment
+to handle this project. I AM WAITING FOR YOUR URGENT REPLY
 
-See https://patchwork.ozlabs.org/patch/1407724
+Remain blessed in God.
 
-The base for the patch is generally the last rc1. Any dependencies
-should be noted.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Yours Sister.
+Mrs Elena Adams.

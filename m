@@ -2,99 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3472C9927
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Dec 2020 09:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA622CA2A0
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Dec 2020 13:24:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728684AbgLAIWI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Dec 2020 03:22:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47644 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727192AbgLAIWH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 1 Dec 2020 03:22:07 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94ECB20659;
-        Tue,  1 Dec 2020 08:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606810884;
-        bh=xHTFstOj6O/KMLPWIJ9livXkeh5E3cNJZoMEX1ICbl0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0ugfFVtmDEFz3qweRxNJGIbdlhHbJEbe+SPrGbc9I44gM+O6I2rVgrcZagGiPQlJe
-         qDa/e9cJY/n7rREFFqWQI6CYR7sTmaWJfiub5J4ReXH3L76qQfPF0XWoTZ+/KCqBa1
-         43uSa/AsDxhQJOFTJrlenu8ULt+S2HlexiyIiZjk=
-Date:   Tue, 1 Dec 2020 02:20:47 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@tron.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <20201201082047.GA11832@embeddedor>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <yq1h7p6gjkk.fsf@ca-mkp.ca.oracle.com>
+        id S1729776AbgLAMY1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Dec 2020 07:24:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:36461 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728349AbgLAMY0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Dec 2020 07:24:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606825379;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nzMJ4YJJYVmEa05xZ9YTXS1BAzz1en7JR38KykIbv5c=;
+        b=e0Kw5Xeekj8l0c0sCnlmlHvipG6jHY1ctvhH+T158KUVO9aftonoO+h66yp5368X/Fl5mi
+        vrgPGSRUNV1hHJ1OTaxyqnv9DHdOw4FJQVvjtjYEgkuD2PXnje5phTstuBxASeVEU+D8v7
+        NC/Nw/OaeZI9chDD+HLkxyPz4/WIU/U=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-314-0eszcR4cORmIqictDZZN-Q-1; Tue, 01 Dec 2020 07:22:58 -0500
+X-MC-Unique: 0eszcR4cORmIqictDZZN-Q-1
+Received: by mail-ej1-f69.google.com with SMTP id lz20so1137483ejb.13
+        for <linux-iio@vger.kernel.org>; Tue, 01 Dec 2020 04:22:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nzMJ4YJJYVmEa05xZ9YTXS1BAzz1en7JR38KykIbv5c=;
+        b=qHjFY9l79cvzDLnQGqsc8APPatxkQknBmAu8gcJ8Cn0kUZTLnnC7lEaiBPZUuDhzTP
+         NneVuDGeon/0veR65hryUhsFZfSnhoPtu83haYBzlAuVfASe7Wl82AHofIqdhgtgt37h
+         eTGsFfqfmeFHraztYeHqkOrSSe2PtGGkCbg/U2W/9cBa11yVXxhCrRYSCXyf7o0OhvM+
+         8ikcbgNkyX7qZV0i59KBd2dGsuuZ0fwcw9D5slVfcyz3F1p7YxIk80AxQ5mW3yJeq7Ri
+         P4FyZ3ibowdmMg+Q6ERnzByVGVB9esJYuFcbqSDj3kOatGtU2GiiJX5gvx4E+OZm3+nF
+         l8kA==
+X-Gm-Message-State: AOAM5310U/gwq4h38MUYd9A4/vfZ+8n8fiqPSQ0u2RqM2Kjru7RT4JnV
+        A6zHESeej45ogOnbkpcgxGqnSlAoFJiaJp/CQN3bZHPTHLHS6EfXLohtRkX3Nh/duz/Suv0FS9T
+        5nU8/iGlgjZNq/FvkReDPSOOIQk7zZX/VmXKKwOX7Mh0xg1DaTPl/sfKSgcsL1n94eeObf/Hh
+X-Received: by 2002:a17:907:20a6:: with SMTP id pw6mr2790946ejb.73.1606825376941;
+        Tue, 01 Dec 2020 04:22:56 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxfgqiKDv/lnv1gfixXiQOXEZHoUOhpbkIilmrZ/cm3xuvivt1Zp93AxhQ03Xm/5qFpTt2Wdg==
+X-Received: by 2002:a17:907:20a6:: with SMTP id pw6mr2790891ejb.73.1606825376159;
+        Tue, 01 Dec 2020 04:22:56 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id e11sm755445ejz.94.2020.12.01.04.22.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Dec 2020 04:22:55 -0800 (PST)
+Subject: Re: [PATCH v2 1/3] iio: accel: bmc150: Removed unused
+ bmc150_accel_dat irq member
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andy@infradead.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jeremy Cline <jeremy@jcline.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <20201130141954.339805-1-hdegoede@redhat.com>
+ <CAHp75Vd2Jhep0z7i3_5jnvsnMN2zyudCRM6YNy_neCd6_ydSvw@mail.gmail.com>
+ <20201130204536.71d67c07@archlinux>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <0ed3fc11-2de7-716d-d2c2-d6ba00d3aa73@redhat.com>
+Date:   Tue, 1 Dec 2020 13:22:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq1h7p6gjkk.fsf@ca-mkp.ca.oracle.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201130204536.71d67c07@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 01, 2020 at 12:52:27AM -0500, Martin K. Petersen wrote:
-> 
-> Gustavo,
-> 
-> > This series aims to fix almost all remaining fall-through warnings in
-> > order to enable -Wimplicit-fallthrough for Clang.
-> 
-> Applied 20-22,54,120-124 to 5.11/scsi-staging, thanks.
+Hi,
 
-Awesome! :)
+On 11/30/20 9:46 PM, Jonathan Cameron wrote:
+> On Mon, 30 Nov 2020 16:32:21 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> 
+>> On Mon, Nov 30, 2020 at 4:20 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> The bmc150_accel_dat struct irq member is only ever used inside
+>>> bmc150_accel_core_probe, drop it and just use the function argument
+>>> directly.  
+>>
+>> FWIW, for all three
+>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> This crossed with a series adding regulator control to this driver, but I'm fairly
+> sure that won't cause any problems so I've dealt with the fuzz and applied it anyway.
+> 
+> However...
+> 
+> drivers/iio/accel/bmc150-accel-i2c.c: In function ‘bmc150_accel_probe’:
+> drivers/iio/accel/bmc150-accel-i2c.c:55:28: error: implicit declaration of function ‘acpi_device_hid’; did you mean ‘dmi_device_id’? [-Werror=implicit-function-declarati
+> on]                                                                                                                                                                      
+>    55 |  if (!id && adev && strcmp(acpi_device_hid(adev), "BOSC0200") == 0) {
+>       |                            ^~~~~~~~~~~~~~~            
+>       |                            dmi_device_id
+> drivers/iio/accel/bmc150-accel-i2c.c:55:28: warning: passing argument 1 of ‘strcmp’ makes pointer from integer without a cast [-Wint-conversion]
+>    55 |  if (!id && adev && strcmp(acpi_device_hid(adev), "BOSC0200") == 0) {
+>       |                            ^~~~~~~~~~~~~~~~~~~~~
+>       |                            |
+>       |                            int
+> 
+> 
+> I've added #ifdef CONFIG_ACPI around the relevant block and shuffled around assignment of
+> adev + added a __maybe_unused marking to it.  Perhaps I should have pulled that block
+> out into another function but it seemed more trouble than it was worth.
 
-Thanks, Martin.
---
-Gustavo
+Thanks, the fixed up version looks good.
+
+And sorry for not catching this myself, some of the ACPI functions are stubbed
+when CONFIG_ACPI is not set and I was relying on this here. But I missed acpi_device_hid()
+not being stubbed.
+
+I was aware I was using some unstubbed things in patch 3/3 so that already had the #if CONFIG_ACPI.
+
+> Please sanity check I didn't mess it up.
+
+Done, I'll also add the final version to my local tree so that its get tested
+when I spin that up on one of the affected devices.
+
+> Series applied to the togreg branch of iio.git and pushed out as testing for
+> the autobuilders to see what else we missed.
+
+Thanks & Regards,
+
+Hans
+
+
+
+>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>> ---
+>>>  drivers/iio/accel/bmc150-accel-core.c | 7 ++-----
+>>>  1 file changed, 2 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+>>> index 48435865fdaf..088716d55855 100644
+>>> --- a/drivers/iio/accel/bmc150-accel-core.c
+>>> +++ b/drivers/iio/accel/bmc150-accel-core.c
+>>> @@ -183,7 +183,6 @@ enum bmc150_accel_trigger_id {
+>>>
+>>>  struct bmc150_accel_data {
+>>>         struct regmap *regmap;
+>>> -       int irq;
+>>>         struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+>>>         struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+>>>         struct mutex mutex;
+>>> @@ -1568,7 +1567,6 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>>>
+>>>         data = iio_priv(indio_dev);
+>>>         dev_set_drvdata(dev, indio_dev);
+>>> -       data->irq = irq;
+>>>
+>>>         data->regmap = regmap;
+>>>
+>>> @@ -1599,9 +1597,8 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>>>                 return ret;
+>>>         }
+>>>
+>>> -       if (data->irq > 0) {
+>>> -               ret = devm_request_threaded_irq(
+>>> -                                               dev, data->irq,
+>>> +       if (irq > 0) {
+>>> +               ret = devm_request_threaded_irq(dev, irq,
+>>>                                                 bmc150_accel_irq_handler,
+>>>                                                 bmc150_accel_irq_thread_handler,
+>>>                                                 IRQF_TRIGGER_RISING,
+>>> --
+>>> 2.28.0
+>>>  
+>>
+>>
+> 
+

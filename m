@@ -2,64 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4C462CBAE1
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Dec 2020 11:46:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEAD72CBB07
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Dec 2020 11:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388691AbgLBKq3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Dec 2020 05:46:29 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:17658 "EHLO
+        id S1729539AbgLBKuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Dec 2020 05:50:35 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:15207 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729493AbgLBKq2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Dec 2020 05:46:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1606905816;
+        with ESMTP id S1729519AbgLBKuf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Dec 2020 05:50:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1606906062;
         s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=mi/tsaIREtbmjW+UpYfbK8JOpgZQV3mq5I5ijHISdak=;
-        b=pbXBLCR+RnEjuQGE64rPa08GcxDQtzzSFszgCka2jhDkeTiY1ycQbe7VtaDMH4Vb3t
-        PV2tQ7LbamcaMX3pIz0noRxnMvkhuHbJI9y8OZFjRpT71Ebl+Zagor2kzQ8ygSQDE//b
-        zpxIDIqf3FM5wWZE19XY4GItBzCOenB96XqWodVHy7Fr1UIy6hUmLPoOJL6bk9wzzgDi
-        S9WgSg+FbUGnq4g6BECk+0eKf1zoJbemRUB9U7K2nfZnNyoNr9KXB6Pozk6+BNzvqJgP
-        h4w/7xyIACLqV8kOGLw5h23qxUBJ3YWKuwA+RikfseKVHzVZeTQkhWPhfti4zA6pjI/v
-        9fTg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8jxIc/Daoo="
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=vhCQTafbho9Gs0iEF8wTXBixZdt6zD8+PyT8uCsdofc=;
+        b=ikasVcGNvOri4ZivhimJMfhY/c/zk2XcmJ2FqDlg9S+GJ0SJAfNknNmeDrUv/pcD5q
+        2q8mATU740HYkqK42uJabu3fzzsQfOvDCfCjvupFemEPLGBVK8co88Dz1T1qtOoMpZSr
+        osuGpv4xUgymgI7MxjdW0A0FHSakZWyXIQMyrNbRfu4AXZMZNdImf9ndR5nw61+p8cXW
+        RCN4VWeinLynmm5U0xpGuakw0NgL3WZRtNUoNrn3MlcobtmL9KzHT3w98TlwJKyCSeBy
+        ejGGxnQyjPiWrlzchuYPNKMvwGXHIVAGZcdSkPgFVZwR6vilTz3C6tM5mLhkkNYG62H8
+        WYEA==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB626NJkxR"
 X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
+Received: from localhost.localdomain
         by smtp.strato.de (RZmta 47.3.4 SBL|AUTH)
-        with ESMTPSA id Z061efwB2AhZWxM
+        with ESMTPSA id Z061efwB2AldX0r
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Wed, 2 Dec 2020 11:43:35 +0100 (CET)
-Date:   Wed, 2 Dec 2020 11:43:28 +0100
+        Wed, 2 Dec 2020 11:47:39 +0100 (CET)
 From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: imu: inv_mpu6050: Add support for MPU-6880
-Message-ID: <X8dv0Erz8bZOvlH2@gerhold.net>
-References: <20201202101355.87112-1-stephan@gerhold.net>
- <20201202101355.87112-2-stephan@gerhold.net>
- <BL0PR12MB5011BDAEB3374151F522B7F2C4F30@BL0PR12MB5011.namprd12.prod.outlook.com>
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Document invensense,mpu6880
+Date:   Wed,  2 Dec 2020 11:46:55 +0100
+Message-Id: <20201202104656.5119-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BL0PR12MB5011BDAEB3374151F522B7F2C4F30@BL0PR12MB5011.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 02, 2020 at 10:28:12AM +0000, Jean-Baptiste Maneyrol wrote:
-> Hello Stephan,
-> 
-> MPU-6880 is similar to MPU-6500. It should share the same registers map as far as I know.
-> 
-> Seems good to me. Please also update Kconfig to add MPU6880 in the list for I2C and for SPI.
-> 
+MPU-6880 seems to be very similar to MPU-6500 / MPU-6050 and it works
+fine with some minor additions for the mpu6050 driver.
+Add a compatible for it to the binding documentation.
 
-Great, thanks! Will send a v2 with the Kconfig change.
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+Note: This applies only on top of the patch for the YAML conversion:
+https://lore.kernel.org/linux-iio/20201128173343.390165-3-jic23@kernel.org/
+I guess that one will be applied very soon so I think this is easier :)
 
-Stephan
+Changes in v2: None :)
+---
+ .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml          | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+index 9268b6ca2afe..edbc2921aabd 100644
+--- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+@@ -25,6 +25,7 @@ properties:
+       - invensense,mpu6050
+       - invensense,mpu6500
+       - invensense,mpu6515
++      - invensense,mpu6880
+       - invensense,mpu9150
+       - invensense,mpu9250
+       - invensense,mpu9255
+-- 
+2.29.2
+

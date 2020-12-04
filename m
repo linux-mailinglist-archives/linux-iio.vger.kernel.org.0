@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 313572CE7FA
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Dec 2020 07:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C8472CE7FE
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Dec 2020 07:21:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726242AbgLDGVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Dec 2020 01:21:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46590 "EHLO
+        id S1728153AbgLDGVR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Dec 2020 01:21:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725819AbgLDGVM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Dec 2020 01:21:12 -0500
+        with ESMTP id S1725819AbgLDGVP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Dec 2020 01:21:15 -0500
 Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543F3C061A4F;
-        Thu,  3 Dec 2020 22:20:32 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D01C061A51;
+        Thu,  3 Dec 2020 22:20:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=fgXm/QAA7Eu/vUF3KYHNBDk79AWBS+9/y2XhJwrc8oI=; b=adqeUg3D1GdG42zq/UAYkgzhs4
-        UnCqGFnejT70aau0EBTdgsSd1ddEjRk67AAxhcs/b01fBSJcbpZ5Db4za4F8wSlugFicfVcF5N3Il
-        eWmZCOzmN6pC1E46W8aQ+go8JeZypUdb/6RhJOu6PJDbbH0YS8p925Gntv+U04hUWD1ocW+je2Cir
-        Kn9IUeK6vW1JRCB2SCqR5rVFMAvn3xVzWc5AS6BmXfs/ucwDLrtzeUwPnFl/1qM2hM1cKUlg/QnMH
-        qE6ZBo0gmGQR02PeN71y10m5eiCRmTTY/ok32vlCYkV+4BT/I95A07GITG20r+PU68N2B7CKsZPLM
-        o3UKTiJg==;
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=tifnINnQ0NLHptCKXQmX+jamUjQmXsFh4DRr8z/8b7o=; b=JJhppijuSc3zJdSxQOsDJhUI4f
+        QjfPHkaCManBxu7oI5OQtUSKwY0DI6CtR+FyTlBArgdQw2xHkSn0ZXu6Lea21Yw5qUgnGjucjlcO8
+        kMGFVFY5YsiUV5Qho6fuedw2zh9v38HNy8BwTtP87j0ag5fsDIjo9eVEHMU5b0IGGkE5V+bk4mGrw
+        o2hPXEUhbDFDtH7u6OgVD1pDKvlOoQdlQmfSBFg8DOott1Voxa7kP71FuYwFG4G5mKKHpeTsFt9di
+        3AFr7gQwQ4Ja/KVsbuUDtv3M82ENapXD2zs6CVN7ljwxMEmC2DIN6Mm9G/Zix8DMmTfSGOgSxeXjW
+        IGDQ1bXg==;
 Received: from [2601:1c0:6280:3f0::1494] (helo=smtpauth.infradead.org)
         by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kl4SD-0002HZ-Fv; Fri, 04 Dec 2020 06:20:30 +0000
+        id 1kl4SH-0002HZ-40; Fri, 04 Dec 2020 06:20:33 +0000
 From:   Randy Dunlap <rdunlap@infradead.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -36,42 +36,50 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
         linux-doc@vger.kernel.org
-Subject: [PATCH 0/8] Documentation: HID: edit/correct all files
-Date:   Thu,  3 Dec 2020 22:20:14 -0800
-Message-Id: <20201204062022.5095-1-rdunlap@infradead.org>
+Subject: [PATCH 1/8] Documentation: HID: hid-alps editing & corrections
+Date:   Thu,  3 Dec 2020 22:20:15 -0800
+Message-Id: <20201204062022.5095-2-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201204062022.5095-1-rdunlap@infradead.org>
+References: <20201204062022.5095-1-rdunlap@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make editing corrections to all files in Documentation/hid/.
+Do basic editing & correction to hid-alps.rst:
+- fix grammar
+- fix punctuation spacing
 
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jiri Kosina <jikos@kernel.org>
 Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Cc: linux-input@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: linux-iio@vger.kernel.org
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
+---
+ Documentation/hid/hid-alps.rst |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- [PATCH 1/8] Documentation: HID: hid-alps editing & corrections
- [PATCH 2/8] Documentation: HID: amd-sfh-hid editing & corrections
- [PATCH 3/8] Documentation: HID: hiddev editing & corrections
- [PATCH 4/8] Documentation: HID: intel-ish-hid editing & corrections
- [PATCH 5/8] Documentation: HID: hidraw editing & corrections
- [PATCH 6/8] Documentation: HID: hid-sensor editing & corrections
- [PATCH 7/8] Documentation: HID: hid-transport editing & corrections
- [PATCH 8/8] Documentation: HID: uhid editing & corrections
-
- Documentation/hid/amd-sfh-hid.rst   |   16 ++---
- Documentation/hid/hid-alps.rst      |    4 -
- Documentation/hid/hid-sensor.rst    |   18 +++---
- Documentation/hid/hid-transport.rst |   12 ++--
- Documentation/hid/hiddev.rst        |   12 ++--
- Documentation/hid/hidraw.rst        |    5 +
- Documentation/hid/intel-ish-hid.rst |   74 +++++++++++++-------------
- Documentation/hid/uhid.rst          |   34 +++++------
- 8 files changed, 89 insertions(+), 86 deletions(-)
+--- linux-next-20201201.orig/Documentation/hid/hid-alps.rst
++++ linux-next-20201201/Documentation/hid/hid-alps.rst
+@@ -64,7 +64,7 @@ Case2	ReportID_3	TP	Absolute
+ 
+ Command Read/Write
+ ------------------
+-To read/write to RAM, need to send a commands to the device.
++To read/write to RAM, need to send a command to the device.
+ 
+ The command format is as below.
+ 
+@@ -80,7 +80,7 @@ Byte6	Value Byte
+ Byte7	Checksum
+ =====	======================
+ 
+-Command Byte is read=0xD1/write=0xD2 .
++Command Byte is read=0xD1/write=0xD2.
+ 
+ Address is read/write RAM address.
+ 

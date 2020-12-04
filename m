@@ -2,76 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D81B2CF1A2
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Dec 2020 17:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 885C82CF3C6
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Dec 2020 19:17:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726125AbgLDQM4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Dec 2020 11:12:56 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2210 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726102AbgLDQM4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Dec 2020 11:12:56 -0500
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cnd2N2b1kz67LH4;
-        Sat,  5 Dec 2020 00:09:48 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 4 Dec 2020 17:12:14 +0100
-Received: from localhost (10.47.77.242) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Fri, 4 Dec 2020
- 16:12:13 +0000
-Date:   Fri, 4 Dec 2020 16:11:51 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PULL V2] 2nd set of IIO new device support, cleanups and yaml
- conversions for the 5.11 cycle
-Message-ID: <20201204161151.0000030d@Huawei.com>
-In-Reply-To: <CACRpkdbAy2ULtko65JsSbTMdgfL-i0GzCSaffSTPeF_YWr+HDw@mail.gmail.com>
-References: <20201203194612.3f35eda5@archlinux>
-        <CACRpkdbAy2ULtko65JsSbTMdgfL-i0GzCSaffSTPeF_YWr+HDw@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727748AbgLDSQq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Dec 2020 13:16:46 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:57190 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727178AbgLDSQp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Dec 2020 13:16:45 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0B4IG1hW017205;
+        Fri, 4 Dec 2020 13:16:04 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 355vjet2gd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Dec 2020 13:16:03 -0500
+Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0B4IG26X024913
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 4 Dec 2020 13:16:02 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Fri, 4 Dec 2020
+ 10:16:01 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Fri, 4 Dec 2020 10:16:00 -0800
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0B4IFwnG018014;
+        Fri, 4 Dec 2020 13:15:59 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v2 1/2] dt-bindings: iio: dac: AD5766 yaml documentation
+Date:   Fri, 4 Dec 2020 20:20:42 +0200
+Message-ID: <20201204182043.86899-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.77.242]
-X-ClientProxiedBy: lhreml741-chm.china.huawei.com (10.201.108.191) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-12-04_07:2020-12-04,2020-12-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012040105
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Dec 2020 13:54:00 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+This adds device tree bindings for the AD5766 DAC.
 
-> On Thu, Dec 3, 2020 at 8:47 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> >       dt-bindings:iio:st,st-sensors: txt to yaml conversion.  
-> 
-> Somehow I managed to totally miss that you made this conversion
-> and did my own conversion in parallel and sent out yesterday.
-> 
-> Oh well such things happen.
-> 
-> Shall I make an incremental patch or something? I think I could
-> just copy my binding on top, the diff may be a bit big.
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+---
+ Changes in v2:
+	- Add "additionalProperties: false" property
+	- Remove blank line
+ .../bindings/iio/dac/adi,ad5766.yaml          | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
 
-Hmm. You did a much more thorough job than me so definitely good to
-get the tighter constraints.  I guess it will be a question of hand
-tweaking your patch to keep the few blocks don't need updates the same.
-
-Bad luck on timing on that one!
-
-Jonathan
-
-
-> 
-> Yours,
-> Linus Walleij
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+new file mode 100644
+index 000000000000..e958fb232357
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+@@ -0,0 +1,53 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2020 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bindings/iio/dac/adi,ad5766.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD5766 DAC device driver
++
++maintainers:
++  - Cristian Pop <cristian.pop@analog.com>
++
++description: |
++  Bindings for the Analog Devices AD5766 current DAC device. Datasheet can be
++  found here:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/ad5766-5767.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad5766
++      - adi,ad5767
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  spi-cpol: true
++
++  reset-gpios:
++    description: GPIO spec for the RESET pin. If specified, it will be
++      asserted during driver probe.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - spi-max-frequency
++  - spi-cpol
++
++additionalProperties: false
++
++examples:
++  - |
++    ad5766@0{
++        compatible = "adi,ad5766";
++        reg = <0>;
++        spi-cpol;
++        spi-max-frequency = <1000000>;
++        reset-gpios = <&gpio 22 0>;
++      };
+-- 
+2.17.1
 

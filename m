@@ -2,280 +2,337 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FBFC2CFCA8
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 19:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 635B82CFCAE
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 19:51:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727060AbgLESTT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 5 Dec 2020 13:19:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39722 "EHLO mail.kernel.org"
+        id S1728024AbgLESTU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Dec 2020 13:19:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727073AbgLERjj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Dec 2020 12:39:39 -0500
+        id S1726591AbgLESCG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Dec 2020 13:02:06 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 47511222F9;
-        Sat,  5 Dec 2020 17:24:34 +0000 (UTC)
-Date:   Sat, 5 Dec 2020 17:24:30 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 2367B22D6D;
+        Sat,  5 Dec 2020 18:01:23 +0000 (UTC)
+Date:   Sat, 5 Dec 2020 18:01:20 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH 4/8] Documentation: HID: intel-ish-hid editing &
- corrections
-Message-ID: <20201205172430.509c915f@archlinux>
-In-Reply-To: <20201204062022.5095-5-rdunlap@infradead.org>
-References: <20201204062022.5095-1-rdunlap@infradead.org>
-        <20201204062022.5095-5-rdunlap@infradead.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: dac: ad5766: add driver support for AD5766
+Message-ID: <20201205180120.70125969@archlinux>
+In-Reply-To: <20201204182043.86899-2-cristian.pop@analog.com>
+References: <20201204182043.86899-1-cristian.pop@analog.com>
+        <20201204182043.86899-2-cristian.pop@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Dec 2020 22:20:18 -0800
-Randy Dunlap <rdunlap@infradead.org> wrote:
+On Fri, 4 Dec 2020 20:20:43 +0200
+Cristian Pop <cristian.pop@analog.com> wrote:
 
-> Do basic editing & correction to intel-ish-hid.rst:
-> - fix grammar, verb tense, punctutation, and word phrasing
-> - fix spellos
-> - hyphenate multi-word adjectives
-> - collapse 2 spaces to one space in the middle of sentences
-> - use "I2C" instead of lower-case letters (as Linux I2C does)
-> - change space indentation to tab
-> - use HID instead of hid consistently
-> - use a list so that some line items do not run together
-> - use "a UUID" instead of "an UUID"
+> The AD5766/AD5767 are 16-channel, 16-bit/12-bit, voltage output dense DACs
+> Digital-to-Analog converters.
 > 
+> This change adds support for these DACs.
 > 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jiri Kosina <jikos@kernel.org>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad5766-5767.pdf
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+
+Missing build files + docs for the new ABI.
+Note it doesn't build so a few things to fix on that front!
+
+Docs in appropriate file under Documentation/ABI/testing/sysfs-bus-iio-*
+
+I'm a bit curious about the range being entirely controllable from userspace
+as well. Seems like something that might be dangerous in some systems.
+Perhaps we need some sort of dt binding restriction mechanism?
+
+
 > ---
->  Documentation/hid/intel-ish-hid.rst |   74 +++++++++++++-------------
->  1 file changed, 38 insertions(+), 36 deletions(-)
+>  Changes in v2:
+> 	-Remove forward declarations, arrange code
+> 	-New ABI docs
+> 	-Move "max_val" scope in case
+> 	-Remove blank line
+> 	-Use bitfield operations, where posible
+> 	-Change declaration type to int of:
+> 		int		scale_avail[AD5766_VOLTAGE_RANGE_MAX][2];
+> 		int		offset_avail[AD5766_VOLTAGE_RANGE_MAX][2];
+> 	-Move initialization down to just above where it is used: 
+> 		"type = spi_get_device_id(spi)->driver_data;"
 > 
-> --- linux-next-20201201.orig/Documentation/hid/intel-ish-hid.rst
-> +++ linux-next-20201201/Documentation/hid/intel-ish-hid.rst
-> @@ -4,19 +4,19 @@ Intel Integrated Sensor Hub (ISH)
->  
->  A sensor hub enables the ability to offload sensor polling and algorithm
->  processing to a dedicated low power co-processor. This allows the core
-> -processor to go into low power modes more often, resulting in the increased
-> +processor to go into low power modes more often, resulting in increased
->  battery life.
->  
-> -There are many vendors providing external sensor hubs confirming to HID
-> -Sensor usage tables, and used in several tablets, 2 in 1 convertible laptops
-> +There are many vendors providing external sensor hubs conforming to HID
-> +Sensor usage tables, and used in several tablets, 2-in-1 convertible laptops
+>  drivers/iio/dac/ad5766.c | 758 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 758 insertions(+)
+>  create mode 100644 drivers/iio/dac/ad5766.c
+> 
+> diff --git a/drivers/iio/dac/ad5766.c b/drivers/iio/dac/ad5766.c
+> new file mode 100644
+> index 000000000000..e6d24a41bd4e
+> --- /dev/null
+> +++ b/drivers/iio/dac/ad5766.c
+> @@ -0,0 +1,758 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Analog Devices AD5766, AD5767
+> + * Digital to Analog Converters driver
+> + *
+> + * Copyright 2019-2020 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/module.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/bitfield.h>
+> +
+> +#define AD5766_UPPER_WORD_SPI_MASK		GENMASK(31, 16)
+> +#define AD5766_LOWER_WORD_SPI_MASK		GENMASK(15, 0)
+> +#define AD5766_DITHER_SOURCE_MASK(x)		GENMASK(((2 * x) + 1), (2 * x))
+> +#define AD5766_DITHER_SCALE_MASK(x)		AD5766_DITHER_SOURCE_MASK(x)
+> +
+> +#define AD5766_CMD_NOP_MUX_OUT			0x00
+> +#define AD5766_CMD_SDO_CNTRL			0x01
+> +#define AD5766_CMD_WR_IN_REG(x)			(0x10 | ((x) & 0xF))
+> +#define AD5766_CMD_WR_DAC_REG(x)		(0x20 | ((x) & 0xF))
+> +#define AD5766_CMD_SW_LDAC			0x30
+> +#define AD5766_CMD_SPAN_REG			0x40
+> +#define AD5766_CMD_WR_PWR_DITHER		0x51
+> +#define AD5766_CMD_WR_DAC_REG_ALL		0x60
+> +#define AD5766_CMD_SW_FULL_RESET		0x70
+> +#define AD5766_CMD_READBACK_REG(x)		(0x80 | ((x) & 0xF))
+> +#define AD5766_CMD_DITHER_SIG_1			0x90
+> +#define AD5766_CMD_DITHER_SIG_2			0xA0
+> +#define AD5766_CMD_INV_DITHER			0xB0
+> +#define AD5766_CMD_DITHER_SCALE_1		0xC0
+> +#define AD5766_CMD_DITHER_SCALE_2		0xD0
+> +
+> +#define AD5766_FULL_RESET_CODE			0x1234
+> +
+> +enum ad5766_type {
+> +	ID_AD5766,
+> +	ID_AD5767,
+> +};
+> +
+> +enum ad5766_voltage_range {
+> +	AD5766_VOLTAGE_RANGE_M20V_0V,
+> +	AD5766_VOLTAGE_RANGE_M16V_to_0V,
+> +	AD5766_VOLTAGE_RANGE_M10V_to_0V,
+> +	AD5766_VOLTAGE_RANGE_M12V_to_14V,
+> +	AD5766_VOLTAGE_RANGE_M16V_to_10V,
+> +	AD5766_VOLTAGE_RANGE_M10V_to_6V,
+> +	AD5766_VOLTAGE_RANGE_M5V_to_5V,
+> +	AD5766_VOLTAGE_RANGE_M10V_to_10V,
+> +	AD5766_VOLTAGE_RANGE_MAX,
+> +};
+> +
+> +/**
+> + * struct ad5766_chip_info - chip specific information
+> + * @num_channels:	number of channels
+> + * @channel:	        channel specification
+> + */
+> +struct ad5766_chip_info {
+> +	unsigned int			num_channels;
+> +	const struct iio_chan_spec	*channels;
+> +};
+> +
+> +enum {
+> +	AD5766_DITHER_PWR,
+> +	AD5766_DITHER_INVERT
+> +};
+> +
+> +/*
+> + * External dither signal can be composed with the DAC output, if activated.
+> + * The dither signals are applied to the N0 and N1 input pins.
+> + * Dither source for each of the channel can be selected by writing to
+> + * "dither_source",a 32 bit variable and two bits are used for each of the 16
+> + * channels: 0: NO_DITHER, 1: N0, 2: N1.
+> + * This variable holds available dither source strings.
+> + */
+> +static const char * const ad5766_dither_sources[] = {
+> +	"NO_DITHER",
+> +	"N0",
+> +	"N1",
+> +};
+> +
+> +/*
+> + * Dither signal can also be scaled.
+> + * Available dither scale strings coresponding to "dither_scale" field in
+> + * "struct ad5766_state".
+> + * "dither_scale" is a 32 bit variable and two bits are used for each of the 16
+> + * channels: 0: NO_SCALING, 1: 75%_SCALING, 2: 50%_SCALING, 3: 25%_SCALING.
 
-Does that sentence actually make sense?  Perhaps..
+Needs explicit ABI docs for a proper discussion.  My gut feeling is it should
+be two controls. On/off + a scaling control that takes integer values.
 
-There are many vendors providing external sensor hubs conforming to HID
-Sensor usage tables.  These may be found in tablets, 2-in-1 convertible laptops
+> + */
+> +static const char * const ad5766_dither_scales[] = {
+> +	"NO_SCALING",
+> +	"75%_SCALING",
+> +	"50%_SCALING",
+> +	"25%_SCALING",
+> +};
+> +
+> +/**
+> + * struct ad5766_state - driver instance specific data
+> + * @spi:		SPI device
+> + * @lock:		Mutex lock
+
+Say what exactly the scope of the lock is.  No interest at all to tell
+us what is clear from the type of the structure element.
+
+> + * @chip_info:		Chip model specific constants
+> + * @gpio_reset:		Reset GPIO, used to reset the device
+> + * @crt_range:		Current selected output range
+> + * @cached_offset:	Cached range coresponding to the selected offset
+> + * @dither_power_ctrl:	Power-down bit for each channel dither block (for
+> + *			example, D15 = DAC 15,D8 = DAC 8, and D0 = DAC 0)
+> + *			0 - Normal operation, 1 - Power down
+> + * @dither_invert:	Inverts the dither signal applied to the selected DAC
+> + *			outputs
+> + * @dither_source:	Selects between 3 possible sources:
+> + *			0: No dither, 1: N0, 2: N1
+> + *			Two bits are used for each channel
+> + * @dither_scale:	Selects between 4 possible scales:
+> + *			0: No scale, 1: 75%, 2: 50%, 3: 25%
+> + *			Two bits are used for each channel
+> + * @scale_avail:	Scale available table
+> + * @offset_avail:	Offest available table
+> + * @data:		SPI transfer buffers
+> + */
+> +struct ad5766_state {
+> +	struct spi_device		*spi;
+> +	struct mutex			lock;
+> +	const struct ad5766_chip_info	*chip_info;
+> +	struct gpio_desc		*gpio_reset;
+> +	enum ad5766_voltage_range	crt_range;
+> +	enum ad5766_voltage_range	cached_offset;
+> +	u16		dither_power_ctrl;
+> +	u16		dither_invert;
+> +	u32		dither_source;
+> +	u32		dither_scale;
+> +	int		scale_avail[AD5766_VOLTAGE_RANGE_MAX][2];
+> +	int		offset_avail[AD5766_VOLTAGE_RANGE_MAX][2];
+> +	union {
+> +		u32	d32;
+> +		u16	w16[2];
+> +		u8	b8[4];
+> +	} data[3] ____cacheline_aligned;
+> +};
+> +
+...
+> +
+> +static int _ad5766_spi_read(struct ad5766_state *st, u8 dac, int *val)
+> +{
+> +	int ret;
+> +	struct spi_transfer xfers[] = {
+> +		{
+> +			.tx_buf = &st->data[0].d32,
+> +			.bits_per_word = 8,
+> +			.len = 3,
+> +			.cs_change = 1,
+> +		}, {
+> +			.tx_buf = &st->data[1].d32,
+> +			.rx_buf = &st->data[2].d32,
+> +			.bits_per_word = 8,
+> +			.len = 3,
+> +		},
+> +	};
+> +
+> +	st->data[0].d32 = AD5766_CMD_READBACK_REG(dac);
+> +	st->data[1].d32 = AD5766_CMD_NOP_MUX_OUT;
+> +
+> +	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = st->data[2].w16[1];
+> +
+> +	return ret;
+> +}
+> +
+> +static int _ad5766_spi_write(struct ad5766_state *st, u8 command, u16 data)
+> +{
+> +	st->data[0].b8[0] = command;
+> +	st->data[0].b8[1] = (data & 0xFF00) >> 8;
+> +	st->data[0].b8[2] = (data & 0x00FF) >> 0;
+
+That's an unaligned put so ideally use put_unaligned_xx16 and friends
+to make that clear.
+
+> +
+> +	return spi_write(st->spi, &st->data[0].b8[0], 3);
+> +}
+> +
+> +static int ad5766_read(struct iio_dev *indio_dev, u8 dac, int *val)
+> +{
+> +	struct ad5766_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = _ad5766_spi_read(st, dac, val);
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad5766_write(struct iio_dev *indio_dev, u8 dac, u16 data)
+> +{
+> +	struct ad5766_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = _ad5766_spi_write(st, AD5766_CMD_WR_DAC_REG(dac), data);
+
+Normal convention for this sort of function would be __ rather than _
+Looks more deliberate.
+
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+
 ...
 
->  and embedded products. Linux had this support since Linux 3.9.
->  
->  Intel® introduced integrated sensor hubs as a part of the SoC starting from
->  Cherry Trail and now supported on multiple generations of CPU packages. There
->  are many commercial devices already shipped with Integrated Sensor Hubs (ISH).
-> -These ISH also comply to HID sensor specification, but the  difference is the
-> +These ISH also comply to HID sensor specification, but the difference is the
->  transport protocol used for communication. The current external sensor hubs
-> -mainly use HID over i2C or USB. But ISH doesn't use either i2c or USB.
-> +mainly use HID over I2C or USB. But ISH doesn't use either I2C or USB.
->  
->  1. Overview
->  ===========
-> @@ -35,7 +35,7 @@ for a very high speed communication::
->  	-----------------		----------------------
->  	      PCI				 PCI
->  	-----------------		----------------------
-> -        |Host controller|	-->	|    ISH processor   |
-> +	|Host controller|	-->	|    ISH processor   |
->  	-----------------		----------------------
->  	     USB Link
->  	-----------------		----------------------
-> @@ -50,13 +50,13 @@ applications implemented in the firmware
->  The ISH allows multiple sensor management applications executing in the
->  firmware. Like USB endpoints the messaging can be to/from a client. As part of
->  enumeration process, these clients are identified. These clients can be simple
-> -HID sensor applications, sensor calibration application or senor firmware
-> +HID sensor applications, sensor calibration application or sensor firmware
-
-Plural vs singular messy in here. Probably just make all the applications
-plural.
-
->  update application.
->  
->  The implementation model is similar, like USB bus, ISH transport is also
->  implemented as a bus. Each client application executing in the ISH processor
->  is registered as a device on this bus. The driver, which binds each device
-> -(ISH HID driver) identifies the device type and registers with the hid core.
-> +(ISH HID driver) identifies the device type and registers with the HID core.
->  
->  2. ISH Implementation: Block Diagram
->  ====================================
-> @@ -104,7 +104,7 @@ is registered as a device on this bus. T
->  
->  The ISH is exposed as "Non-VGA unclassified PCI device" to the host. The PCI
->  product and vendor IDs are changed from different generations of processors. So
-> -the source code which enumerate drivers needs to update from generation to
-> +the source code which enumerates drivers needs to update from generation to
->  generation.
->  
->  3.2 Inter Processor Communication (IPC) driver
-> @@ -112,41 +112,42 @@ generation.
->  
->  Location: drivers/hid/intel-ish-hid/ipc
->  
-> -The IPC message used memory mapped I/O. The registers are defined in
-> +The IPC message uses memory mapped I/O. The registers are defined in
->  hw-ish-regs.h.
->  
->  3.2.1 IPC/FW message types
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
-> -There are two types of messages, one for management of link and other messages
-> -are to and from transport layers.
-> +There are two types of messages, one for management of link and another for
-> +messages to and from transport layers.
->  
->  TX and RX of Transport messages
->  ...............................
->  
-> -A set of memory mapped register offers support of multi byte messages TX and
-> -RX (E.g.IPC_REG_ISH2HOST_MSG, IPC_REG_HOST2ISH_MSG). The IPC layer maintains
-> -internal queues to sequence messages and send them in order to the FW.
-> +A set of memory mapped register offers support of multi-byte messages TX and
-> +RX (e.g. IPC_REG_ISH2HOST_MSG, IPC_REG_HOST2ISH_MSG). The IPC layer maintains
-> +internal queues to sequence messages and send them in order to the firmware.
->  Optionally the caller can register handler to get notification of completion.
-> -A door bell mechanism is used in messaging to trigger processing in host and
-> +A doorbell mechanism is used in messaging to trigger processing in host and
->  client firmware side. When ISH interrupt handler is called, the ISH2HOST
->  doorbell register is used by host drivers to determine that the interrupt
->  is for ISH.
->  
->  Each side has 32 32-bit message registers and a 32-bit doorbell. Doorbell
-> -register has the following format:
-> -Bits 0..6: fragment length (7 bits are used)
-> -Bits 10..13: encapsulated protocol
-> -Bits 16..19: management command (for IPC management protocol)
-> -Bit 31: doorbell trigger (signal H/W interrupt to the other side)
-> -Other bits are reserved, should be 0.
-> +register has the following format::
 > +
-> +  Bits 0..6: fragment length (7 bits are used)
-> +  Bits 10..13: encapsulated protocol
-> +  Bits 16..19: management command (for IPC management protocol)
-> +  Bit 31: doorbell trigger (signal H/W interrupt to the other side)
-> +  Other bits are reserved, should be 0.
->  
->  3.2.2 Transport layer interface
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
-> -To abstract HW level IPC communication, a set of callbacks are registered.
-> +To abstract HW level IPC communication, a set of callbacks is registered.
->  The transport layer uses them to send and receive messages.
-> -Refer to  struct ishtp_hw_ops for callbacks.
-> +Refer to struct ishtp_hw_ops for callbacks.
->  
->  3.3 ISH Transport layer
->  -----------------------
-> @@ -158,7 +159,7 @@ Location: drivers/hid/intel-ish-hid/isht
->  
->  The transport layer is a bi-directional protocol, which defines:
->  - Set of commands to start, stop, connect, disconnect and flow control
-> -(ishtp/hbm.h) for details
-> +(see ishtp/hbm.h for details)
->  - A flow control mechanism to avoid buffer overflows
->  
->  This protocol resembles bus messages described in the following document:
-> @@ -168,14 +169,14 @@ specifications/dcmi-hi-1-0-spec.pdf "Cha
->  3.3.2 Connection and Flow Control Mechanism
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
-> -Each FW client and a protocol is identified by an UUID. In order to communicate
-> +Each FW client and a protocol is identified by a UUID. In order to communicate
->  to a FW client, a connection must be established using connect request and
->  response bus messages. If successful, a pair (host_client_id and fw_client_id)
->  will identify the connection.
->  
->  Once connection is established, peers send each other flow control bus messages
->  independently. Every peer may send a message only if it has received a
-> -flow-control credit before. Once it sent a message, it may not send another one
-> +flow-control credit before. Once it has sent a message, it may not send another one
->  before receiving the next flow control credit.
->  Either side can send disconnect request bus message to end communication. Also
->  the link will be dropped if major FW reset occurs.
-> @@ -209,7 +210,7 @@ and DMA_XFER_ACK act as ownership indica
->  At initial state all outgoing memory belongs to the sender (TX to host, RX to
->  FW), DMA_XFER transfers ownership on the region that contains ISHTP message to
->  the receiving side, DMA_XFER_ACK returns ownership to the sender. A sender
-> -needs not wait for previous DMA_XFER to be ack'ed, and may send another message
-> +need not wait for previous DMA_XFER to be ack'ed, and may send another message
->  as long as remaining continuous memory in its ownership is enough.
->  In principle, multiple DMA_XFER and DMA_XFER_ACK messages may be sent at once
->  (up to IPC MTU), thus allowing for interrupt throttling.
-> @@ -219,8 +220,8 @@ fragments and via IPC otherwise.
->  3.3.4 Ring Buffers
->  ^^^^^^^^^^^^^^^^^^
->  
-> -When a client initiate a connection, a ring or RX and TX buffers are allocated.
-> -The size of ring can be specified by the client. HID client set 16 and 32 for
-> +When a client initiates a connection, a ring of RX and TX buffers is allocated.
-> +The size of ring can be specified by the client. HID client sets 16 and 32 for
->  TX and RX buffers respectively. On send request from client, the data to be
->  sent is copied to one of the send ring buffer and scheduled to be sent using
->  bus message protocol. These buffers are required because the FW may have not
-> @@ -230,10 +231,10 @@ to send. Same thing holds true on receiv
->  3.3.5 Host Enumeration
->  ^^^^^^^^^^^^^^^^^^^^^^
->  
-> -The host enumeration bus command allow discovery of clients present in the FW.
-> +The host enumeration bus command allows discovery of clients present in the FW.
->  There can be multiple sensor clients and clients for calibration function.
->  
-> -To ease in implantation and allow independent driver handle each client
-> +To ease implementation and allow independent drivers to handle each client,
->  this transport layer takes advantage of Linux Bus driver model. Each
->  client is registered as device on the transport bus (ishtp bus).
->  
-> @@ -270,7 +271,7 @@ The ISHTP client driver is responsible f
->  The functionality in these drivers is the same as an external sensor hub.
->  Refer to
->  Documentation/hid/hid-sensor.rst for HID sensor
-> -Documentation/ABI/testing/sysfs-bus-iio for IIO ABIs to user space
-> +Documentation/ABI/testing/sysfs-bus-iio for IIO ABIs to user space.
->  
->  3.6 End to End HID transport Sequence Diagram
->  ---------------------------------------------
-> @@ -341,9 +342,10 @@ Documentation/ABI/testing/sysfs-bus-iio
->  3.7 ISH Debugging
->  -----------------
->  
-> -To debug ISH, event tracing mechanism is used. To enable debug logs
-> -echo 1 > /sys/kernel/debug/tracing/events/intel_ish/enable
-> -cat sys/kernel/debug/tracing/trace
-> +To debug ISH, event tracing mechanism is used. To enable debug logs::
+> +#define _AD5766_CHAN_EXT_INFO(_name, _what, _shared) { \
+> +	.name = _name, \
+> +	.read = ad5766_read_ext, \
+> +	.write = ad5766_write_ext, \
+> +	.private = _what, \
+> +	.shared = _shared, \
+> +}
 > +
-> +  echo 1 > /sys/kernel/debug/tracing/events/intel_ish/enable
-> +  cat sys/kernel/debug/tracing/trace
->  
->  3.8 ISH IIO sysfs Example on Lenovo thinkpad Yoga 260
->  -----------------------------------------------------
+> +static const struct iio_chan_spec_ext_info ad5766_ext_info[] = {
+> +
+> +	_AD5766_CHAN_EXT_INFO("dither_pwr", AD5766_DITHER_PWR, IIO_SEPARATE),
+> +	_AD5766_CHAN_EXT_INFO("dither_invert", AD5766_DITHER_INVERT,
+> +			      IIO_SEPARATE),
+> +	IIO_ENUM("dither_source", IIO_SEPARATE, &ad5766_dither_source_enum),
+> +	IIO_ENUM_AVAILABLE_SHARED("dither_source",
+> +				  IIO_SEPARATE,
+> +				  &ad5766_dither_source_enum),
+> +	IIO_ENUM("dither_scale", IIO_SEPARATE, &ad5766_dither_scale_enum),
+> +	IIO_ENUM_AVAILABLE_SHARED("dither_scale",
 
+That macro doesn't exist in mainline.
+
+> +				  IIO_SEPARATE,
+> +				  &ad5766_dither_scale_enum),
+> +	{}
+> +};
+
+All the above need ABI docs so we can talk about them without having
+to read data sheets.
+
+...

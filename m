@@ -2,54 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C762B2CF838
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 01:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04F242CFB60
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 13:57:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731042AbgLEArC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Dec 2020 19:47:02 -0500
-Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:49526 "EHLO
-        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgLEAq5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Dec 2020 19:46:57 -0500
-X-Greylist: delayed 14573 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 19:46:41 EST
-Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
-        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 274A31A5589;
-        Sat,  5 Dec 2020 04:44:55 +0900 (JST)
-Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id E5C39838858;
-        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
-Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
-        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id B84F6838260;
-        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
+        id S1725976AbgLEM4D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Dec 2020 07:56:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42620 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728896AbgLEKMH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Dec 2020 05:12:07 -0500
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     jic23@kernel.org
+Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
+        linus.walleij@linaro.org, denis.ciocca@st.com
+Subject: [PATCH v2] iio: common: st_sensors: fix possible infinite loop in st_sensors_irq_thread
+Date:   Sat,  5 Dec 2020 11:10:41 +0100
+Message-Id: <58d40383f6e1faa14850f3a9b694b8e4cb4fbbec.1607162799.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Message-ID: <20201204194454.00002B21.0147@hyogo-dai.ac.jp>
-Date:   Sat, 05 Dec 2020 04:44:54 +0900
-From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
-To:     <infocarferr1@aim.com>
-Reply-To: <infocarfer@aim.com>
-Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
-         Kuo Fung I have Important Matter to Discuss with you concerning
-         my late client. Died without a NEXT OF KIN. Send me your private
-         email for full details information. 
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MAILER: Active! mail
-X-TM-AS-MML: disable
-X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
-X-TM-AS-Result: No--4.326-5.0-31-10
-X-imss-scan-details: No--4.326-5.0-31-10
-X-TM-AS-User-Approved-Sender: No
-X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
-        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
-        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
-        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
-        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-infocarfer@aim.com
+Return a boolean value in st_sensors_new_samples_available routine in
+order to avoid an infinite loop in st_sensors_irq_thread if
+stat_drdy.addr is not defined or stat_drdy read fails
 
+Fixes: 90efe05562921 ("iio: st_sensors: harden interrupt handling")
+Reported-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- return true if the sensor does not have stat_drdy register
+---
+ .../common/st_sensors/st_sensors_trigger.c    | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+index 0507283bd4c1..d3f047e9d778 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
++++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+@@ -23,35 +23,31 @@
+  * @sdata: Sensor data.
+  *
+  * returns:
+- * 0 - no new samples available
+- * 1 - new samples available
+- * negative - error or unknown
++ * false - no new samples available or read error
++ * true - new samples available
+  */
+-static int st_sensors_new_samples_available(struct iio_dev *indio_dev,
+-					    struct st_sensor_data *sdata)
++static bool st_sensors_new_samples_available(struct iio_dev *indio_dev,
++					     struct st_sensor_data *sdata)
+ {
+ 	int ret, status;
+ 
+ 	/* How would I know if I can't check it? */
+ 	if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
+-		return -EINVAL;
++		return true;
+ 
+ 	/* No scan mask, no interrupt */
+ 	if (!indio_dev->active_scan_mask)
+-		return 0;
++		return false;
+ 
+ 	ret = regmap_read(sdata->regmap,
+ 			  sdata->sensor_settings->drdy_irq.stat_drdy.addr,
+ 			  &status);
+ 	if (ret < 0) {
+ 		dev_err(sdata->dev, "error checking samples available\n");
+-		return ret;
++		return false;
+ 	}
+ 
+-	if (status & sdata->sensor_settings->drdy_irq.stat_drdy.mask)
+-		return 1;
+-
+-	return 0;
++	return !!(status & sdata->sensor_settings->drdy_irq.stat_drdy.mask);
+ }
+ 
+ /**
+-- 
+2.28.0
 

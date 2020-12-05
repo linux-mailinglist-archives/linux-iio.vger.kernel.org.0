@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 113AF2CFCAB
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 19:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D4EF2CFCA5
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Dec 2020 19:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbgLESTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1727689AbgLESTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sat, 5 Dec 2020 13:19:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42898 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:43212 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727878AbgLERte (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Dec 2020 12:49:34 -0500
+        id S1727787AbgLERyc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Dec 2020 12:54:32 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6106230FF;
-        Sat,  5 Dec 2020 17:12:50 +0000 (UTC)
-Date:   Sat, 5 Dec 2020 17:12:47 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F6F92311C;
+        Sat,  5 Dec 2020 17:17:11 +0000 (UTC)
+Date:   Sat, 5 Dec 2020 17:17:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Randy Dunlap <rdunlap@infradead.org>
 Cc:     linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
@@ -25,12 +25,11 @@ Cc:     linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
         linux-doc@vger.kernel.org
-Subject: Re: [PATCH 2/8] Documentation: HID: amd-sfh-hid editing &
- corrections
-Message-ID: <20201205171247.5225d844@archlinux>
-In-Reply-To: <20201204062022.5095-3-rdunlap@infradead.org>
+Subject: Re: [PATCH 3/8] Documentation: HID: hiddev editing & corrections
+Message-ID: <20201205171708.55251bb7@archlinux>
+In-Reply-To: <20201204062022.5095-4-rdunlap@infradead.org>
 References: <20201204062022.5095-1-rdunlap@infradead.org>
-        <20201204062022.5095-3-rdunlap@infradead.org>
+        <20201204062022.5095-4-rdunlap@infradead.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,77 +38,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Dec 2020 22:20:16 -0800
+On Thu,  3 Dec 2020 22:20:17 -0800
 Randy Dunlap <rdunlap@infradead.org> wrote:
 
-> Do basic editing & correction to amd-sfh-hid.rst:
-> - fix punctuation
+> Do basic editing & correction to hiddev.rst:
 > - use HID instead of hid consistently
-> - fix grammar, verb tense
+
+One case inline, where I think the usage of hid-core
+might have been deliberate.
+
+> - add hyphenation of multi-word adjectives
+> - drop a duplicate word
+> - unhyphenate "a priori"
+> 
 > 
 > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > Cc: Jiri Kosina <jikos@kernel.org>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 > Cc: linux-input@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
 > Cc: Jonathan Corbet <corbet@lwn.net>
 > Cc: linux-doc@vger.kernel.org
-
-Trivial suggested addition inline.
-
 > ---
->  Documentation/hid/amd-sfh-hid.rst |   16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+>  Documentation/hid/hiddev.rst |   12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> --- linux-next-20201201.orig/Documentation/hid/amd-sfh-hid.rst
-> +++ linux-next-20201201/Documentation/hid/amd-sfh-hid.rst
-> @@ -3,7 +3,7 @@
+> --- linux-next-20201201.orig/Documentation/hid/hiddev.rst
+> +++ linux-next-20201201/Documentation/hid/hiddev.rst
+> @@ -27,7 +27,7 @@ the following::
+>                            --> hiddev.c ----> POWER / MONITOR CONTROL  
 >  
->  AMD Sensor Fusion Hub
->  =====================
-> -AMD Sensor Fusion Hub (SFH) is part of an SOC starting from Ryzen based platforms.
-> +AMD Sensor Fusion Hub (SFH) is part of an SOC starting from Ryzen-based platforms.
->  The solution is working well on several OEM products. AMD SFH uses HID over PCIe bus.
->  In terms of architecture it resembles ISH, however the major difference is all
->  the HID reports are generated as part of the kernel driver.
-> @@ -45,20 +45,20 @@ the HID reports are generated as part of
->  AMD HID Transport Layer
->  -----------------------
->  AMD SFH transport is also implemented as a bus. Each client application executing in the AMD MP2 is
-> -registered as a device on this bus. Here: MP2 which is an ARM core connected to x86 for processing
-> +registered as a device on this bus. Here, MP2 is an ARM core connected to x86 for processing
->  sensor data. The layer, which binds each device (AMD SFH HID driver) identifies the device type and
-> -registers with the hid core. Transport layer attach a constant "struct hid_ll_driver" object with
-> +registers with the HID core. Transport layer attaches a constant "struct hid_ll_driver" object with
->  each device. Once a device is registered with HID core, the callbacks provided via this struct are
->  used by HID core to communicate with the device. AMD HID Transport layer implements the synchronous calls.
+>  In addition, other subsystems (apart from USB) can potentially feed
+> -events into the input subsystem, but these have no effect on the hid
+> +events into the input subsystem, but these have no effect on the HID
+>  device interface.
 >  
->  AMD HID Client Layer
->  --------------------
-> -This layer is responsible to implement HID request and descriptors. As firmware is OS agnostic, HID
-> +This layer is responsible to implement HID requests and descriptors. As firmware is OS agnostic, HID
->  client layer fills the HID request structure and descriptors. HID client layer is complex as it is
-> -interface between MP2 PCIe layer and HID. HID client layer initialized the MP2 PCIe layer and holds
-> +interface between MP2 PCIe layer and HID. HID client layer initializes the MP2 PCIe layer and holds
->  the instance of MP2 layer. It identifies the number of sensors connected using MP2-PCIe layer. Base
+>  Using the HID Device Interface
+> @@ -72,8 +72,8 @@ The hiddev API uses a read() interface,
+>  
+>  HID devices exchange data with the host computer using data
+>  bundles called "reports".  Each report is divided into "fields",
+> -each of which can have one or more "usages".  In the hid-core,
+> -each one of these usages has a single signed 32 bit value.
+> +each of which can have one or more "usages".  In the HID core,
 
-Based ? (maybe)
+Hmm. hid-core is (I think) kind of referring to the code in hid-core.c
+Whereas a Human Interface Device core (HID core) sounds like
+something different.  Not my doc though!
 
-> -on that allocates the DRAM address for each and every sensor and pass it to MP2-PCIe driver.On
-> -enumeration of each the sensor, client layer fills the HID Descriptor structure and HID input repor
-> +on that allocates the DRAM address for each and every sensor and passes it to MP2-PCIe driver. On
-> +enumeration of each sensor, client layer fills the HID Descriptor structure and HID input report
->  structure. HID Feature report structure is optional. The report descriptor structure varies from
->  sensor to sensor.
+> +each one of these usages has a single signed 32-bit value.
 >  
-> @@ -72,7 +72,7 @@ The communication between X86 and MP2 is
->  2. Data transfer via DRAM.
->  3. Supported sensor info via P2C registers.
+>  read():
+>  -------
+> @@ -113,7 +113,7 @@ HIDIOCAPPLICATION
+>    - (none)
 >  
-> -Commands are sent to MP2 using C2P Mailbox registers. Writing into C2P Message registers generate
-> +Commands are sent to MP2 using C2P Mailbox registers. Writing into C2P Message registers generates
->  interrupt to MP2. The client layer allocates the physical memory and the same is sent to MP2 via
->  the PCI layer. MP2 firmware writes the command output to the access DRAM memory which the client
->  layer has allocated. Firmware always writes minimum of 32 bytes into DRAM. So as a protocol driver
+>  This ioctl call returns the HID application usage associated with the
+> -hid device. The third argument to ioctl() specifies which application
+> +HID device. The third argument to ioctl() specifies which application
+>  index to get. This is useful when the device has more than one
+>  application collection. If the index is invalid (greater or equal to
+>  the number of application collections this device has) the ioctl
+> @@ -181,7 +181,7 @@ looked up by type (input, output or feat
+>  must be filled in by the user. The ID can be absolute -- the actual
+>  report id as reported by the device -- or relative --
+>  HID_REPORT_ID_FIRST for the first report, and (HID_REPORT_ID_NEXT |
+> -report_id) for the next report after report_id. Without a-priori
+> +report_id) for the next report after report_id. Without a priori
+>  information about report ids, the right way to use this ioctl is to
+>  use the relative IDs above to enumerate the valid IDs. The ioctl
+>  returns non-zero when there is no more next ID. The real report ID is
+> @@ -200,7 +200,7 @@ HIDIOCGUCODE
+>    - struct hiddev_usage_ref (read/write)
+>  
+>  Returns the usage_code in a hiddev_usage_ref structure, given that
+> -given its report type, report id, field index, and index within the
+> +its report type, report id, field index, and index within the
+>  field have already been filled into the structure.
+>  
+>  HIDIOCGUSAGE
 

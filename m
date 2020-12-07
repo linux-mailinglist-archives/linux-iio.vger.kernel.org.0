@@ -2,113 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A672D1520
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Dec 2020 16:53:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E512D16BD
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Dec 2020 17:50:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725866AbgLGPuv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Dec 2020 10:50:51 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:51704 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725814AbgLGPuv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Dec 2020 10:50:51 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id 79D0D1F44D66
-Subject: Re: [PATCH v4 2/7] Input: use input_device_enabled()
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
- <20200608112211.12125-1-andrzej.p@collabora.com>
- <20200608112211.12125-3-andrzej.p@collabora.com>
- <CGME20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28@eucas1p2.samsung.com>
- <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
-Date:   Mon, 7 Dec 2020 16:50:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726534AbgLGQqh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Dec 2020 11:46:37 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35654 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726182AbgLGQqg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Dec 2020 11:46:36 -0500
+Received: by mail-ot1-f65.google.com with SMTP id i6so6961350otr.2;
+        Mon, 07 Dec 2020 08:46:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=VtZn9unR1Aesg9LN62b7/esOYjlkqxHM9rLlMSFk1PQ=;
+        b=k1twg7MEtna91G6QwLRtIGIkwBO++9q1ldZmcge6PXxPrJlHVoEr6jM+6ku2rlb5Yt
+         CAs3PTtpYz8MdZPsquwk0a+qMf/Vfr0Af6P/1RbKx1dFd32LGCkrIBH6uG9vKpRETRMb
+         rGUMN7UazS2RoHd3gS9T6XdGgEjF7GQJqmrgJxg431vEO9apyqal/veTPP/qpUhy9YLa
+         cvHFAme4Ddy6yY/ulCBWeedeZF/k/3+lDfiQ74zF4SI9NJSfRk9MlviCiL7jqSFk2r/T
+         eVhbE99evIbueFmkhg91aPifLqdje0Nwut8THMREafhVTnprf1Oc0utMurM9arHHZy5G
+         QALw==
+X-Gm-Message-State: AOAM532GTpFSdFuZJyL55SEHJf1s03/2Tdpv3++a0tVWp0jaDTMx+SBG
+        hAvoqZQPCBTR11xheu5iBQ==
+X-Google-Smtp-Source: ABdhPJxrwqdRTTy1CWV3yLzwBy1fqbC8Q75rgqlnKNrFMe8vqC3G6MLHj1RB5fV+LabtW1xQt1OOGw==
+X-Received: by 2002:a9d:3b06:: with SMTP id z6mr13397574otb.170.1607359555489;
+        Mon, 07 Dec 2020 08:45:55 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n3sm3005345oif.42.2020.12.07.08.45.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Dec 2020 08:45:54 -0800 (PST)
+Received: (nullmailer pid 415547 invoked by uid 1000);
+        Mon, 07 Dec 2020 16:45:53 -0000
+Date:   Mon, 7 Dec 2020 10:45:53 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     jic23@kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: dac: AD5766 yaml documentation
+Message-ID: <20201207164553.GA414767@robh.at.kernel.org>
+References: <20201204182043.86899-1-cristian.pop@analog.com>
 MIME-Version: 1.0
-In-Reply-To: <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201204182043.86899-1-cristian.pop@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Marek,
-
-W dniu 07.12.2020 o 14:32, Marek Szyprowski pisze:
-> Hi Andrzej,
+On Fri, 04 Dec 2020 20:20:42 +0200, Cristian Pop wrote:
+> This adds device tree bindings for the AD5766 DAC.
 > 
-> On 08.06.2020 13:22, Andrzej Pietrasiewicz wrote:
->> Use the newly added helper in relevant input drivers.
->>
->> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> ---
+>  Changes in v2:
+> 	- Add "additionalProperties: false" property
+> 	- Remove blank line
+>  .../bindings/iio/dac/adi,ad5766.yaml          | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
 > 
-> This patch landed recently in linux-next as commit d69f0a43c677 ("Input:
-> use input_device_enabled()"). Sadly it causes following warning during
-> system suspend/resume cycle on ARM 32bit Samsung Exynos5250-based Snow
-> Chromebook with kernel compiled from exynos_defconfig:
-> 
-> ------------[ cut here ]------------
-> WARNING: CPU: 0 PID: 1777 at drivers/input/input.c:2230
-> input_device_enabled+0x68/0x6c
-> Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic
-> libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc
-> exynos_gsc v4l2_mem2mem videob
-> CPU: 0 PID: 1777 Comm: rtcwake Not tainted
-> 5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
-> Hardware name: Samsung Exynos (Flattened Device Tree)
-> [<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
-> [<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
-> [<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
-> [<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
-> [<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>]
-> (input_device_enabled+0x68/0x6c)
-> [<c07fa2fc>] (input_device_enabled) from [<c080a0f8>]
 
-Apparently you are hitting this line of code in drivers/input/input.c:
 
-lockdep_assert_held(&dev->mutex);
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Inspecting input device's "users" member should happen under dev's lock.
+yamllint warnings/errors:
 
-Regards,
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/iio/dac/adi,ad5766.yaml#
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dts:21.13-23: Warning (reg_format): /example-0/ad5766@0:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/dac/adi,ad5766.example.dt.yaml: example-0: ad5766@0:reg:0: [0] is too short
+	From schema: /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
 
-Andrzej
+
+See https://patchwork.ozlabs.org/patch/1411214
+
+The base for the patch is generally the last rc1. Any dependencies
+should be noted.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

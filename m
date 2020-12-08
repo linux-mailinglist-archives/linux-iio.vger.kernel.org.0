@@ -2,201 +2,247 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5652D2868
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Dec 2020 11:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 717FF2D28F9
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Dec 2020 11:33:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728619AbgLHKGk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Dec 2020 05:06:40 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:41784 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgLHKGj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Dec 2020 05:06:39 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20201208100546euoutp02e0bc3fe49cc95efcce507d79fc493b31~Otb5fCmXP0214502145euoutp02g;
-        Tue,  8 Dec 2020 10:05:46 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20201208100546euoutp02e0bc3fe49cc95efcce507d79fc493b31~Otb5fCmXP0214502145euoutp02g
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1607421946;
-        bh=Bv2iUMf5t8sR+k2GUep7pVjimXHF1qPn96u6HZaIEr0=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=hMnSZd9FYOxedyWFXh8LpLwk/gDkZjHMeGMuONNZwPBxe6jnqvwWcKtMnWuodrnqY
-         PpjqZpOdUsjc5Hv6aFRI5cnWpHWEaSSx1mrz05aWPxStbFhl6LPVANENFlZHljnrUI
-         SO73IGO7eSMZhZntar85lDda9N8SEjHT96N1n6gA=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20201208100545eucas1p2619963b4961497d52d182d641849c3c8~Otb4-xDnF1791717917eucas1p2j;
-        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 24.9B.45488.9FF4FCF5; Tue,  8
-        Dec 2020 10:05:45 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20201208100545eucas1p2384c9e6421e68c5e4b7a1aacc8015f99~Otb4hk78D2012420124eucas1p2L;
-        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20201208100545eusmtrp1821931dd698ad93b62a75f6681b1cf83~Otb4gH_oj3074730747eusmtrp1h;
-        Tue,  8 Dec 2020 10:05:45 +0000 (GMT)
-X-AuditID: cbfec7f5-c77ff7000000b1b0-36-5fcf4ff964ec
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id DE.6C.21957.8FF4FCF5; Tue,  8
-        Dec 2020 10:05:44 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20201208100543eusmtip163dc4372fdcda95019639546a8e0affd~Otb2ggtFC0248002480eusmtip1B;
-        Tue,  8 Dec 2020 10:05:42 +0000 (GMT)
-Subject: Re: [PATCH v4 2/7] Input: use input_device_enabled()
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <ad093ba3-7b17-18f3-6bb5-d8133c3da89a@samsung.com>
-Date:   Tue, 8 Dec 2020 11:05:42 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
-        Gecko/20100101 Thunderbird/78.5.1
+        id S1727754AbgLHKcm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Dec 2020 05:32:42 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2219 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726138AbgLHKcm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Dec 2020 05:32:42 -0500
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4CqxHn58Hxz67N0l;
+        Tue,  8 Dec 2020 18:29:25 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 8 Dec 2020 11:31:59 +0100
+Received: from localhost (10.47.68.59) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Tue, 8 Dec 2020
+ 10:31:59 +0000
+Date:   Tue, 8 Dec 2020 10:31:35 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Denis CIOCCA <denis.ciocca@st.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: common: st_sensors: fix possible infinite loop in
+ st_sensors_irq_thread
+Message-ID: <20201208103135.00004496@Huawei.com>
+In-Reply-To: <20201207171111.GC292338@lore-desk>
+References: <3b8dc467b30dd6869ea60ed583cad750c74eb44e.1605450804.git.lorenzo@kernel.org>
+        <AM8PR10MB4209021B3239B1CE06D2824DEDF20@AM8PR10MB4209.EURPRD10.PROD.OUTLOOK.COM>
+        <20201205151121.70d31d71@archlinux>
+        <20201207171111.GC292338@lore-desk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Te0xTZxzNd+/tC1e8FBxfqkZSDRubFtw0fovIVuKWu8QFt+wFbsMyrkAG
-        hbQy3eI2XnFQQBiwUUqloChPeRQKpSrOltEpjzqMMJ4RaBhDoOtAHBBglosb/53vnN/5zu/8
-        8ePigidsITdKdpqWy6TRIrYL0dS+2L1vMcga6lf9gze6Oj5CoHpVLQvZTJk4Ml+aBKjNYSbQ
-        6IMgNG3Jx1Ch2R9pJq4B9P1YGgs9TKrEUIr6EoEaujNYqPLHFgJljT/CkXFtGkdWax0HleZq
-        WehKaxWBWkZn2KisNQsg3XgvCxW1zRJIuVSBo/6/F1jovlHDRnOZbQCprK0YSptXs1G2uYGD
-        egrScTRnv8VCzTdvYajqxiSOlo3tHNTZ0cNCK806Ak02eqIckxwtGosItLaUjL/hQ009kFCG
-        4VJAnU+KolrUwxzqL8dn1PLPgNJVprGphtLvqOvFcxj1RNUJqNJpE4taLckjqMzkWTZVP2vA
-        qHzNGqCyVvyOPx/i4h9OR0d9Sct9A066RI7cacTjbORZraoZJIB8VyXgcSF5AA5UrRJK4MIV
-        kOUA/rJiYTsFATkPYMpwHCPMAZhe2IU/c4zoBzmMUAbgI3s5YB4OAJXz5qcKl+tOHoGavDed
-        vAdZiMM/c/TrQziZwIP6wRTC+RWb3A+VM8r1PD4ZAK0XnWYelyD3QIvNtI63kWGwVvnPxowb
-        vFNgW/fySAnUL7SznBgnd8FkfSHOYE84YNNizjBIZmyBNZW9GLP3UajKTQUMdodTlkYOg3fA
-        jtwMgjEkAzjafY2z4QbwfpJqw3EYDnUvsZ3dcNIH1hp9GVoCh6p0LCcNSVf4+4wbs4QrzGnK
-        xxmaD1PPC5hpb6i21PwXe/teD54NROpN1dSb6qg31VH/n1sMiErgSccrYiJoxasy+oxYIY1R
-        xMsixJ/HxujA09voWLU8NoDyKYfYBDAuMAHIxUUefG9hV6iAHy796mtaHhsqj4+mFSawnUuI
-        PPlGfXWogIyQnqa/oOk4Wv5Mxbg8YQK2I3C3767t1yvexYx3p1ln7oqtp+DDFyV9dT4D3sLX
-        t2j3fKqQXCi8Yi0K1+50T5SJz8WyM7zejzkYzDf8tKhPDWm4sDNy4Fx94hgZ0D8nPBHbEkgX
-        H6xY1k7kCGsItXHquWBJuNnrlYa8rr2OgkNH/6AnktJPeI5lNa3mlLyAzg6NHFlMlF/Otn/b
-        d1z+Qf8nBSLbsX0fnSp5+9jeskMHXgtMC9FttdvveRX9+rJrWIgHDJaNzXThIVsvP04MG1Lz
-        3itx+WZQrNEE5YXe7LafdHB83Pr8+NXbin97y3H4Q/vFef9ZH4N9d3Jplcp1oTdx9MLHg3Sd
-        XxDvarSt03A74Ub6OyJCESnd/xIuV0j/BdJ214CKBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH97uPtpgwLwXlDhmYxpkhsbS0sNMJRF2W3C3ZGGYZkc3VCldK
-        pNS1ZcLcYhVzCXUENlCwlJdWDIhOqKw8BEyLNIism4pGFsh4RBnjMR6BIQKjwyX898k53883
-        OckR4EKOFyBISTOwujRVqoi3iehecfXvXox1KyXVQVA1PEBAXfFPJIw4cnFwXhpF0DHtJGCw
-        NxbGXUUYlDijwPLsOoLsoRwS/jhTg8FZ8yUCbL98T0LN+SYC8ob/wqF5dRwHt/smH6wF5SRc
-        abtGQNPgBA+utuUhqB9+TEJZxyQBphfVODydmSfhYbOFB7O5HQiK3W0Y5MyZeZDvtPHhwcVz
-        OMxOtZNgb23H4NrtURyWmjv5cL/7AQnL9noCRm/5w48OHSw2lxGw+iIL3xvCjPXuYxr7rYjh
-        zqQwTeZ+PvP39JfM0h3E1Nfk8Bib9RTTUjGLMQvF9xFjHXeQzEplIcHkZk3ymLrJRowpsqwi
-        Jm9Z8snWBHGUTptuYLertXpDtOhzKYSLpQoQh8sVYqnsnUPvhkeIwmKiktjUlK9ZXVjMYbF6
-        oOsWfnyEyigvtiMjKnrdhLwENCWnBxp+55vQJoGQuoLoR5YVcn0RSHddML5iX/rlYxNvPTSF
-        6HO15ZgJCQS+VDRtKXzfM/ejSnB69fRdwiPgFOdFT4yFelhIDWP0fF2wh3mUlDZNeIq8BN5U
-        DO0udfI9TFA7aNeIg+/p3EIdoXu6fdYjPnTXxZH/Kr2ofXTDfCe5Xh9Jl9kG8XUOprMaSl6x
-        P903Uo7lI6F5g27eoJg3KOYNSgUiapAfm67XJGv0UrFepdGnpyWLE7WaerT2kD93LtoaUdnY
-        tNiBMAFyIFqAi/y8dwb0KIXeSarMb1idVqlLT2X1DhSxds4PeMCWRO3aR6cZlNJISYRUHqmQ
-        RCgiZSJ/74bSWqWQSlYZ2GMse5zV/e9hAq8AIxZ/ICbd/unbSblko7qdfbI0ExfOnajydh3c
-        8178nm2QGD9ZIP+q+7Lb8tEXp3YfUrV+FrI3Y9dl/+e+lfcCW5K2KyqCQuzZb8Vljpoqb1Sd
-        bC078m3GjO8Hy6HJw7Khp6cvnCyNVXNP+pyBnIQvP++vyZQpZS9Xr97c/DBFc3Q6bHMDZZx6
-        wzoTdWxrQSE7UXqwlvunu6M9oaDuNc5QHxz9Z2bwwo7e61z2oiv/RMuvZ22KsKQeblvH6ILs
-        zepk+rcPj/ZpLXGhXcbneVSFqX/JyN1pyrw7Z9//nZw7XJUQlGVV3Zvr9RkX4jX9OrPkmUp9
-        wxU4vX/oY2fhwqPbJSz4igi9WiXdhev0qn8BB1s7KhkEAAA=
-X-CMS-MailID: 20201208100545eucas1p2384c9e6421e68c5e4b7a1aacc8015f99
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
-        <20200608112211.12125-1-andrzej.p@collabora.com>
-        <20200608112211.12125-3-andrzej.p@collabora.com>
-        <CGME20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28@eucas1p2.samsung.com>
-        <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
-        <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.68.59]
+X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrzej,
+On Mon, 7 Dec 2020 18:11:11 +0100
+"lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com> wrote:
 
-On 07.12.2020 16:50, Andrzej Pietrasiewicz wrote:
-> Hi Marek,
->
-> W dniu 07.12.2020 o 14:32, Marek Szyprowski pisze:
->> Hi Andrzej,
->>
->> On 08.06.2020 13:22, Andrzej Pietrasiewicz wrote:
->>> Use the newly added helper in relevant input drivers.
->>>
->>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
->>
->> This patch landed recently in linux-next as commit d69f0a43c677 ("Input:
->> use input_device_enabled()"). Sadly it causes following warning during
->> system suspend/resume cycle on ARM 32bit Samsung Exynos5250-based Snow
->> Chromebook with kernel compiled from exynos_defconfig:
->>
->> ------------[ cut here ]------------
->> WARNING: CPU: 0 PID: 1777 at drivers/input/input.c:2230
->> input_device_enabled+0x68/0x6c
->> Modules linked in: cmac bnep mwifiex_sdio mwifiex sha256_generic
->> libsha256 sha256_arm cfg80211 btmrvl_sdio btmrvl bluetooth s5p_mfc
->> exynos_gsc v4l2_mem2mem videob
->> CPU: 0 PID: 1777 Comm: rtcwake Not tainted
->> 5.10.0-rc6-next-20201207-00001-g49a0dc04c46d-dirty #9902
->> Hardware name: Samsung Exynos (Flattened Device Tree)
->> [<c0111718>] (unwind_backtrace) from [<c010d050>] (show_stack+0x10/0x14)
->> [<c010d050>] (show_stack) from [<c0b32810>] (dump_stack+0xb4/0xd4)
->> [<c0b32810>] (dump_stack) from [<c0126e24>] (__warn+0xd8/0x11c)
->> [<c0126e24>] (__warn) from [<c0126f18>] (warn_slowpath_fmt+0xb0/0xb8)
->> [<c0126f18>] (warn_slowpath_fmt) from [<c07fa2fc>]
->> (input_device_enabled+0x68/0x6c)
->> [<c07fa2fc>] (input_device_enabled) from [<c080a0f8>]
->
-> Apparently you are hitting this line of code in drivers/input/input.c:
->
-> lockdep_assert_held(&dev->mutex);
->
-> Inspecting input device's "users" member should happen under dev's lock.
->
-This check and warning has been introduced by this patch. I assume that 
-the suspend/resume paths are correct, but it looks that they were not 
-tested with this patch thus it has not been noticed that they are not 
-called under the input's lock. This needs a fix. Dmitry: how would you 
-like to handle this issue?
+> > On Thu, 3 Dec 2020 04:06:44 +0000
+> > Denis CIOCCA <denis.ciocca@st.com> wrote:
+> >   
+> > > Hi Jonathan, Lorenzo,
+> > > 
+> > > I am not able to test it right now, I can probably do this weekend.
+> > > My comments inline.
+> > > 
+> > >   
+> > > > -----Original Message-----
+> > > > From: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > Sent: Sunday, November 15, 2020 6:38 AM
+> > > > To: jic23@kernel.org
+> > > > Cc: lorenzo.bianconi@redhat.com; linux-iio@vger.kernel.org;
+> > > > linus.walleij@linaro.org; Denis CIOCCA <denis.ciocca@st.com>
+> > > > Subject: [PATCH] iio: common: st_sensors: fix possible infinite loop in
+> > > > st_sensors_irq_thread
+> > > > 
+> > > > Return a boolean value in st_sensors_new_samples_available routine in
+> > > > order to avoid an infinite loop in st_sensors_irq_thread if stat_drdy.addr is
+> > > > not defined or stat_drdy read fails
+> > > > 
+> > > > Fixes: 90efe05562921 ("iio: st_sensors: harden interrupt handling")
+> > > > Reported-by: Jonathan Cameron <jic23@kernel.org>
+> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > ---
+> > > > This patch is just compile tested, I have not carried out any run test
+> > > > ---
+> > > >  .../common/st_sensors/st_sensors_trigger.c    | 20 ++++++++-----------
+> > > >  1 file changed, 8 insertions(+), 12 deletions(-)
+> > > >   
+> 
+> [...]
+> 
+> > > 
+> > > To me this should return true. When a sensor does not specify the address (because there is no such register ie) the interrupt should be considered a valid interrupt.
+> > > In the original code from Linus indeed the if condition that is using this function is checking && -EINVAL that is considered true.  
+> > 
+> > Good point!
+> > 
+> > Ah, so we have an issue here because the function is called in two different
+> > circumstances.  For the initial test of whether there is a sample I absolutely
+> > agree with you, we need to say there is even if we can't check a status register.
+> > 
+> > In the second case however, we would end up in an infinite loop if there is no
+> > status register.
+> > 
+> > 
+> > So the function is..
+> > 
+> > static irqreturn_t st_sensors_irq_thread(int irq, void *p)
+> > {
+> > 	struct iio_trigger *trig = p;
+> > 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> > 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+> > 
+> > 	/*
+> > 	 * If this trigger is backed by a hardware interrupt and we have a
+> > 	 * status register, check if this IRQ came from us. Notice that
+> > 	 * we will process also if st_sensors_new_samples_available()
+> > 	 * returns negative: if we can't check status, then poll
+> > 	 * unconditionally.
+> > 	 */
+> > //CASE 1: Trigger if we don't have a status register.
+> > 	if (sdata->hw_irq_trigger &&
+> > 	    st_sensors_new_samples_available(indio_dev, sdata)) {
+> > 		iio_trigger_poll_chained(p);
+> > 	} else {
+> > 		dev_dbg(sdata->dev, "spurious IRQ\n");
+> > 		return IRQ_NONE;
+> > 	}
+> > 
+> > 	/*
+> > 	 * If we have proper level IRQs the handler will be re-entered if
+> > 	 * the line is still active, so return here and come back in through
+> > 	 * the top half if need be.
+> > 	 */
+> > 	if (!sdata->edge_irq)
+> > 		return IRQ_HANDLED;
+> > 
+> > 	/*
+> > 	 * If we are using edge IRQs, new samples arrived while processing
+> > 	 * the IRQ and those may be missed unless we pick them here, so poll
+> > 	 * again. If the sensor delivery frequency is very high, this thread
+> > 	 * turns into a polled loop handler.
+> > 	 */
+> > //Case 2, don't trigger.  
+> > 
+> > 	while (sdata->hw_irq_trigger &&
+> > 	       st_sensors_new_samples_available(indio_dev, sdata)) {
+> > 		dev_dbg(sdata->dev, "more samples came in during polling\n");
+> > 		sdata->hw_timestamp = iio_get_time_ns(indio_dev);
+> > 		iio_trigger_poll_chained(p);
+> > 	}
+> > 
+> > 	return IRQ_HANDLED;
+> > }
+> > 
+> > I think the reality is we can't safely support edge interrupts unless there is
+> > a status register as we will always be prone to the race conditions.
+> > 
+> > As to a solution, I would suggest we make the status register existence
+> > check separate from it's use.  That way we can always poll in case 1 and
+> > never poll in case 2 if we don't have a status register.
+> > 
+> > To prevent the edge based interrupt without a status register case could
+> > be done in various ways. Probably easiest is to check it at time of
+> > interrupt registration and refuse to probe if we can't handle it.  
+> 
+> ack, right. So what about applying patch v2 and add another patch to return an
+> error if edge interrupt is requested and we do not have status reg? Something
+> like:
+> 
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> index d3f047e9d778..2bff3350b498 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> @@ -176,9 +176,12 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>  
+>  	/* Tell the interrupt handler that we're dealing with edges */
+>  	if (irq_trig == IRQF_TRIGGER_FALLING ||
+> -	    irq_trig == IRQF_TRIGGER_RISING)
+> +	    irq_trig == IRQF_TRIGGER_RISING) {
+> +		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
+> +			return -ENOTSUPP;
+> +
+>  		sdata->edge_irq = true;
+> -	else
+> +	} else {
+>  		/*
+>  		 * If we're not using edges (i.e. level interrupts) we
+>  		 * just mask off the IRQ, handle one interrupt, then
+> @@ -186,6 +189,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>  		 * interrupt handler top half again and start over.
+>  		 */
+>  		irq_trig |= IRQF_ONESHOT;
+> +	}
+>  
+>  	/*
+>  	 * If the interrupt pin is Open Drain, by definition this
+> 
+> Do you prefer to add it in the same patch?
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+I don't really mind.  Either needs to be before the other patch or
+in the same one.  They are both part of the same fix, but kind of
+separate aspects of it.
+
+Jonathan
+
+
+> 
+> Regards,
+> Lorenzo
+> 
+> > 
+> > Jonathan
+> >   
+> > >   
+> > > > 
+> > > >  	/* No scan mask, no interrupt */
+> > > >  	if (!indio_dev->active_scan_mask)
+> > > > -		return 0;
+> > > > +		return false;
+> > > > 
+> > > >  	ret = regmap_read(sdata->regmap,
+> > > >  			  sdata->sensor_settings->drdy_irq.stat_drdy.addr,
+> > > >  			  &status);
+> > > >  	if (ret < 0) {
+> > > >  		dev_err(sdata->dev, "error checking samples available\n");
+> > > > -		return ret;
+> > > > +		return false;    
+> > > 
+> > > This part indeed is probably the one that before could cause problems because in case of failure -something returned it is considered true.
+> > > 
+> > >   
+> > > >  	}
+> > > > 
+> > > > -	if (status & sdata->sensor_settings->drdy_irq.stat_drdy.mask)
+> > > > -		return 1;
+> > > > -
+> > > > -	return 0;
+> > > > +	return !!(status & sdata->sensor_settings-    
+> > > > >drdy_irq.stat_drdy.mask);    
+> > > >  }
+> > > > 
+> > > >  /**
+> > > > --
+> > > > 2.26.2    
+> > >   
+> >   
+> 
 

@@ -2,71 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26EE32D355D
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Dec 2020 22:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B159B2D3638
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Dec 2020 23:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729925AbgLHVgX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Dec 2020 16:36:23 -0500
-Received: from mail-oo1-f68.google.com ([209.85.161.68]:44774 "EHLO
-        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728137AbgLHVgX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Dec 2020 16:36:23 -0500
-Received: by mail-oo1-f68.google.com with SMTP id n20so729270ooq.11;
-        Tue, 08 Dec 2020 13:36:07 -0800 (PST)
+        id S1731424AbgLHWZo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Dec 2020 17:25:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730781AbgLHWZo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Dec 2020 17:25:44 -0500
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D9AC061793
+        for <linux-iio@vger.kernel.org>; Tue,  8 Dec 2020 14:25:03 -0800 (PST)
+Received: by mail-ua1-x943.google.com with SMTP id f29so3874712uab.0
+        for <linux-iio@vger.kernel.org>; Tue, 08 Dec 2020 14:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AxYYdD625aASAaVaKZf+ek64hWUOmEA30M0W7p5diOs=;
+        b=PWCPTPXdf9qzkpa8lQrpH0dg+cA2CjB8tVpfj3R15FX88qylOFpgSJt6UiRye6R/Xi
+         aLLzYbaTq8/LqfFulq/ntwHbHeb7wmAAEBKarvhDc+O1d2rO6Ue+8tP6oQT+UyHlyE2i
+         UnZP7lb07czgcJmcm1C5mfNG8xfH9K7FwigtA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6Tx2n1+BiRWFNoCwoT4oiyZWIIS4oc7pPhFRuSqFDJQ=;
-        b=ujf/wvn9FCIjC27LuZHwjDIIBGQe07/G8o3NhNyyCamaZtKCyFDxA5XDzSBxnXMnfb
-         B6QyS8Ds2K2I+DpMg+dp2vy92AL0n0QJmxhDrzxDZ0KsgeMSIqGV3RlCKFdGseyKBLzl
-         3tDMelKaCwvfDqLwk8KyAYEslawC3zrEmRR+bbTWZpQnerVbrc0LMZzTJzYX+ifd7cBu
-         IsutQnKtON6S5Fao8e8/AiGxjm4RgXQci+jW8wZP8HLjgy/PA+Ys8UU8VKil6Hrba5UC
-         bIX4c4MXyV+VZ35QChexNBbwzxBu9lK1zx7U5G8dlbKSxYQK+lvUX9mthLfGBCU3fBB4
-         UvWw==
-X-Gm-Message-State: AOAM533I3u8BN87s9OfJN7gJsutS5GwLiZxwupEvHI87x+pzsJt3AUM9
-        GwC5CcJ5EVc/OCOiwgo7Ig==
-X-Google-Smtp-Source: ABdhPJwmcCWc5YrP3tKm8MswwqglBxCMPkIJznnvpI780s4aAFXt8epPr2NxLFvPINqpFZ+Sl5Bu0g==
-X-Received: by 2002:a4a:c293:: with SMTP id b19mr18206821ooq.74.1607463342205;
-        Tue, 08 Dec 2020 13:35:42 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id h62sm5151oia.9.2020.12.08.13.35.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Dec 2020 13:35:41 -0800 (PST)
-Received: (nullmailer pid 3137391 invoked by uid 1000);
-        Tue, 08 Dec 2020 21:35:39 -0000
-Date:   Tue, 8 Dec 2020 15:35:39 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        devicetree@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 03/10] dt-bindings:iio:adc:remove atmel, adc-res and
- atmel, adc-res-names
-Message-ID: <20201208213539.GA3137337@robh.at.kernel.org>
-References: <20201128222818.1910764-1-alexandre.belloni@bootlin.com>
- <20201128222818.1910764-4-alexandre.belloni@bootlin.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AxYYdD625aASAaVaKZf+ek64hWUOmEA30M0W7p5diOs=;
+        b=aLdcpL9f926FaAiv06qyy9CWB4Qc2/AcYIPxU+evj5uxtz0CFb54UdDNtX64DYkj+N
+         EcdjMr4ejMDfjwQfqcccK8qPqk4iQKIyb64B/qKWOuHrvQbT7dV1RhY3TRZwlbYnVbXy
+         0KRJjPu10Hn1r4e8Ih8183M/ZmQwhwVV+oBE5V8vtg9rAmxBBg0m5wJxrH45UgCiQwbv
+         UgStMnehG3ggGFbRQNo1mGn2NG4u0MRDF+0ytCI1fe4T7m7D5vb4qz3ik3evoMAwKrQj
+         AMYEglo2P38Uy2hHS7ntJF/3Asyt4bM1FtXTWEFdbJ60tKjSmbVEG+MiPoJo8p2Htgc6
+         GGLA==
+X-Gm-Message-State: AOAM532iw9SeyoZT+WDFjSiDpRghsEvU2y6Hc60t2DT/sqKE8kBUWLJn
+        ZetmTOHdPhA08XyBgA72+eVskntU7j5ADA==
+X-Google-Smtp-Source: ABdhPJzQS9YK5V4grNWuwR2o8CtC3PU5yRx2AuhiaTxzS8T+DL8vPdmR08pkQbQe3K1aLELRk0D5CQ==
+X-Received: by 2002:ab0:1d17:: with SMTP id j23mr18004705uak.88.1607466302811;
+        Tue, 08 Dec 2020 14:25:02 -0800 (PST)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com. [209.85.221.176])
+        by smtp.gmail.com with ESMTPSA id q23sm3322vsm.27.2020.12.08.14.25.01
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Dec 2020 14:25:01 -0800 (PST)
+Received: by mail-vk1-f176.google.com with SMTP id w190so62339vkg.13
+        for <linux-iio@vger.kernel.org>; Tue, 08 Dec 2020 14:25:01 -0800 (PST)
+X-Received: by 2002:a1f:3fc9:: with SMTP id m192mr214325vka.17.1607466301140;
+ Tue, 08 Dec 2020 14:25:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201128222818.1910764-4-alexandre.belloni@bootlin.com>
+References: <20201202200252.986230-1-swboyd@chromium.org>
+In-Reply-To: <20201202200252.986230-1-swboyd@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 8 Dec 2020 14:24:49 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=VQ5GxedWDm6cFfTirEFCS2Mmb--Ey8s_cnSyPSE3MPmA@mail.gmail.com>
+Message-ID: <CAD=FV=VQ5GxedWDm6cFfTirEFCS2Mmb--Ey8s_cnSyPSE3MPmA@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: sx9310: Fix semtech,avg-pos-strength setting when
+ > 16
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Evan Green <evgreen@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 28 Nov 2020 23:28:11 +0100, Alexandre Belloni wrote:
-> Remove atmel,adc-res and atmel,adc-res-names as they are not necessary and
-> are handled by the driver. Also add sama5d3 to the list of possible chips.
-> 
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  .../devicetree/bindings/iio/adc/at91_adc.txt        | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
+Hi,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+On Wed, Dec 2, 2020 at 12:02 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> This DT property can be 0, 16, and then 64, but not 32. The math here
+> doesn't recognize this slight bump in the power of 2 numbers and
+> translates a DT property of 64 into the register value '3' when it
+> really should be '2'. Fix it by subtracting one more if the number being
+> translated is larger than 31. Also use clamp() because we're here.
+>
+> Cc: Daniel Campello <campello@chromium.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Cc: Evan Green <evgreen@chromium.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>
+> Changes from v2 (https://lore.kernel.org/r/20201120182944.543428-1-swboyd@chromium.org):
+>  * Use clamp()
+>  * Add comment to clarify
+>
+> Changes from v1 (https://lore.kernel.org/r/20201120073842.3232458-1-swboyd@chromium.org):
+>  * Changed ternary to consider 17 to 31 as the same as 16
+>
+>  drivers/iio/proximity/sx9310.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

@@ -2,69 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3BB82D4631
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Dec 2020 16:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FA92D4654
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Dec 2020 17:08:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728826AbgLIP6j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Dec 2020 10:58:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727024AbgLIP6f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Dec 2020 10:58:35 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA720C0613CF
-        for <linux-iio@vger.kernel.org>; Wed,  9 Dec 2020 07:57:55 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id f14so1104979pju.4
-        for <linux-iio@vger.kernel.org>; Wed, 09 Dec 2020 07:57:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=dyDH22oy7qEE/ohdLpAAMYDPiGtQzkqXCEOQ8NF52bY=;
-        b=Hdz1weDND1XHyN3qsnjXGi/mY6HmHFvV89lBdsr7B9hio/GpowU3sceyeraLCPmd6t
-         0wjCa22xJpEma/JOh1si4BwpubRuf0LwvcgmAif7jPaMSlLQGUKeKRrGHtl4u4na/F2u
-         Zf4FBit+E54J6yU6gWEy7GMzWf71G+jdVK4VJrkE5GKAC4+5A4f/ymoIngYQCp0PfXwv
-         mOFgc1qld9MMo3dDGLPtT02HSa9Y3TTwe93B1izGSh97dSoS6UKEqGghwqaBP2Yyr0qu
-         GK22Mej4/1z3mQNV5y+JdBtK+TJ+gWCMdApt83QjVQHR6DRON1zbli9kf4S1ODufWN8d
-         iJzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=dyDH22oy7qEE/ohdLpAAMYDPiGtQzkqXCEOQ8NF52bY=;
-        b=BpNKI2Pny2wcyEJTDpFbbpnfZ6wRnX6xdRKQFZ3hNl4C4D7+T0C2W3ybqghoG3llHG
-         LWdE5+dGssofb/Hx0IyNPb1COgdOfKAcBfKneHUWHxFN77hz+sgfjTpUwh5OfrUn+Xas
-         /xKbS7ao6eyB6cjC1hAp1fVnbZlQS8+WRu1APJtUPdIzFG3ZLerYKgp1hC2QnYdHOFLr
-         cDLM19E9ZD1cSdOfIGZmhnUzj3LW/oLbZ8+DsPkP3hyal/v6WAZ13Gr1oyAUCIrplJBr
-         OAbU6wjrK/5AUDHm3SHiGqK6KC02cgnesd8ZvKCa/nuZBe5xOK19II54zv/xPZUI1VRX
-         MEqA==
-X-Gm-Message-State: AOAM530py/svwnrIjUB1NrUqF2U8b3UMUyV3PMJWPDHrHKPFid4ZjX2o
-        wfDBwyr7nsUGteYF7vde5DihnUnM7WSRhEs3dsjti3p2xQE=
-X-Google-Smtp-Source: ABdhPJwVZHh/xXcTuyHg5YtH2i5p153YNnRAcc6vaAqtNgxUs+KM8GhAOY8ISVeswm+nXiYntHyahEk1YYBSlcTY5fE=
-X-Received: by 2002:a17:90b:a17:: with SMTP id gg23mr2858744pjb.129.1607529475083;
- Wed, 09 Dec 2020 07:57:55 -0800 (PST)
-MIME-Version: 1.0
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 9 Dec 2020 17:58:43 +0200
-Message-ID: <CAHp75VcDJd_ROcPE6GJvz3J4fTp_a=PX2GpjRc3RV16edzYmrA@mail.gmail.com>
-Subject: kernel bug tracker
-To:     linux-iio <linux-iio@vger.kernel.org>
+        id S1726757AbgLIQHo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Dec 2020 11:07:44 -0500
+Received: from www381.your-server.de ([78.46.137.84]:38144 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbgLIQHo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Dec 2020 11:07:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=ax7NqoU73MA3se1WNsx10TwotLOnIUnjjM5XsgUZgU4=; b=kl7CXQLEaH10L53nz89GIgtKLH
+        tXWz6HyedlCVIFAVJEaDgzu/ms4AQTZt0lFA89JuqK7KOs+O5bwiAXoWh8ynizZPDrrdJPLO4bXQp
+        2BiwD5Xpx/of/w4LjH+cOVsJGk3xr8vdrzIu1csIz9h912DWoMCafsLZbvvRzxrL2J95lr34PXIYA
+        fsoNVV2t+++Lq0dbfiD29EJVcKfBm87/XtLqRGXowxPQf7zd8dx+lmkXTnxV0knn3in7udW/PlQD+
+        l+G3o/DyQIfqBbqka4DjjL+0CTALnftrI3a1fXUez+OUCe4wTtKx4brrQsIEouJ9ttoFmXD6r8wgc
+        D/e70JMg==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1kn1zY-0009Wu-Rg; Wed, 09 Dec 2020 17:07:00 +0100
+Received: from [62.216.202.54] (helo=[192.168.178.20])
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1kn1zY-000UUR-Nj; Wed, 09 Dec 2020 17:07:00 +0100
+Subject: Re: kernel bug tracker
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+References: <CAHp75VcDJd_ROcPE6GJvz3J4fTp_a=PX2GpjRc3RV16edzYmrA@mail.gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <688821bc-f93c-c98c-974c-ec46fa4111bd@metafoo.de>
+Date:   Wed, 9 Dec 2020 17:07:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
+MIME-Version: 1.0
+In-Reply-To: <CAHp75VcDJd_ROcPE6GJvz3J4fTp_a=PX2GpjRc3RV16edzYmrA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26013/Wed Dec  9 15:33:37 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi!
+On 12/9/20 4:58 PM, Andy Shevchenko wrote:
+> Hi!
+>
+> Does the I2O actually refer to IIO on kernel bugzilla?
+> In any case, default there is Alan Cox' email and I didn't find
+> Jonathan's there.
+> If the answer is "yes" for above, does make sense to:
+>   - change its name to IIO
+>   - put mailing list as default assignee?
+>
+>
+There used to be an I2O subsystem, but which has been removed[1].
 
-Does the I2O actually refer to IIO on kernel bugzilla?
-In any case, default there is Alan Cox' email and I didn't find
-Jonathan's there.
-If the answer is "yes" for above, does make sense to:
- - change its name to IIO
- - put mailing list as default assignee?
+I supposed if it is used for IIO drivers at the moment I supposed we can 
+take over the tag and rename it to IIO, given that there should be no 
+new I2O tickets.
 
+- Lars
 
--- 
-With Best Regards,
-Andy Shevchenko
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4a72a7af 
+<https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4a72a7af>
+

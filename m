@@ -2,18 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D24C12D4F08
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Dec 2020 00:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5402D4F02
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Dec 2020 00:50:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733171AbgLIXuJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1730495AbgLIXuJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 9 Dec 2020 18:50:09 -0500
-Received: from relay10.mail.gandi.net ([217.70.178.230]:34789 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732567AbgLIXt4 (ORCPT
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:39019 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732738AbgLIXt4 (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Dec 2020 18:49:56 -0500
+X-Originating-IP: 86.194.74.19
 Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
         (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 33C72240004;
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 122A2C0008;
         Wed,  9 Dec 2020 23:49:08 +0000 (UTC)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
@@ -21,10 +22,11 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5/6] iio:common:ms_sensors:ms_sensors_i2c: add support for alternative PROM layout
-Date:   Thu, 10 Dec 2020 00:48:56 +0100
-Message-Id: <20201209234857.1521453-6-alexandre.belloni@bootlin.com>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH 6/6] iio:pressure:ms5637: add ms5803 support
+Date:   Thu, 10 Dec 2020 00:48:57 +0100
+Message-Id: <20201209234857.1521453-7-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201209234857.1521453-1-alexandre.belloni@bootlin.com>
 References: <20201209234857.1521453-1-alexandre.belloni@bootlin.com>
@@ -34,130 +36,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently, only the 112bit PROM on 7 words is supported. However the ms58xx
-family also have devices with a 128bit PROM on 8 words. See AN520:
-C-CODE EXAMPLE FOR MS56XX, MS57XX (EXCEPT ANALOG SENSOR), AND MS58XX SERIES
-PRESSURE SENSORS and the various device datasheets.
+The ms5803 is very similar to the ms5805 but has less resolution options
+and has the 128bit PROM layout.
 
-The difference is that the CRC is the 4 LSBs of word7 instead of being the
-4 MSBs of word0.
-
+Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- .../iio/common/ms_sensors/ms_sensors_i2c.c    | 70 ++++++++++++++++---
- 1 file changed, 59 insertions(+), 11 deletions(-)
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ drivers/iio/pressure/ms5637.c                          | 8 ++++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-index 872f90459e2e..d97ca3e1b1d7 100644
---- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-+++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-@@ -488,21 +488,18 @@ int ms_sensors_ht_read_humidity(struct ms_ht_dev *dev_data,
- EXPORT_SYMBOL(ms_sensors_ht_read_humidity);
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index ab623ba930d5..84b0e44235c1 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -132,6 +132,8 @@ properties:
+           - mcube,mc3230
+             # MEMSIC 2-axis 8-bit digital accelerometer
+           - memsic,mxc6225
++            # Measurement Specialities I2C pressure and temperature sensor
++          - meas,ms5803
+             # Microchip differential I2C ADC, 1 Channel, 18 bit
+           - microchip,mcp3421
+             # Microchip differential I2C ADC, 2 Channel, 18 bit
+diff --git a/drivers/iio/pressure/ms5637.c b/drivers/iio/pressure/ms5637.c
+index 2943b88734b3..39830a51ca78 100644
+--- a/drivers/iio/pressure/ms5637.c
++++ b/drivers/iio/pressure/ms5637.c
+@@ -192,8 +192,15 @@ static const struct ms_tp_hw_data ms5637_hw_data  = {
+ 	.max_res_index = 5
+ };
  
- /**
-- * ms_sensors_tp_crc_valid() - CRC check function for
-+ * ms_sensors_tp_crc4() - Calculate PROM CRC for
-  *     Temperature and pressure devices.
-  *     This function is only used when reading PROM coefficients
-  *
-  * @prom:	pointer to PROM coefficients array
-  *
-- * Return: True if CRC is ok.
-+ * Return: CRC.
-  */
--static bool ms_sensors_tp_crc_valid(u16 *prom)
-+static u8 ms_sensors_tp_crc4(u16 *prom)
- {
- 	unsigned int cnt, n_bit;
--	u16 n_rem = 0x0000, crc_read = prom[0], crc = (*prom & 0xF000) >> 12;
--
--	prom[MS_SENSORS_TP_PROM_WORDS_NB - 1] = 0;
--	prom[0] &= 0x0FFF;      /* Clear the CRC computation part */
-+	u16 n_rem = 0x0000;
++static const struct ms_tp_hw_data ms5803_hw_data  = {
++	.prom_len = 8,
++	.max_res_index = 4
++};
++
+ static const struct ms_tp_data ms5637_data = { .name = "ms5637", .hw = &ms5637_hw_data };
  
- 	for (cnt = 0; cnt < MS_SENSORS_TP_PROM_WORDS_NB * 2; cnt++) {
- 		if (cnt % 2 == 1)
-@@ -517,10 +514,55 @@ static bool ms_sensors_tp_crc_valid(u16 *prom)
- 				n_rem <<= 1;
- 		}
- 	}
--	n_rem >>= 12;
--	prom[0] = crc_read;
++static const struct ms_tp_data ms5803_data = { .name = "ms5803", .hw = &ms5803_hw_data };
++
+ static const struct ms_tp_data ms5805_data = { .name = "ms5805", .hw = &ms5637_hw_data };
  
--	return n_rem == crc;
-+	return n_rem >> 12;
-+}
-+
-+/**
-+ * ms_sensors_tp_crc_valid_112() - CRC check function for
-+ *     Temperature and pressure devices for 112bit PROM.
-+ *     This function is only used when reading PROM coefficients
-+ *
-+ * @prom:	pointer to PROM coefficients array
-+ *
-+ * Return: CRC.
-+ */
-+static bool ms_sensors_tp_crc_valid_112(u16 *prom)
-+{
-+	u16 w0 = prom[0], crc_read = (w0 & 0xF000) >> 12;
-+	u8 crc;
-+
-+	prom[0] &= 0x0FFF;      /* Clear the CRC computation part */
-+	prom[MS_SENSORS_TP_PROM_WORDS_NB - 1] = 0;
-+
-+	crc = ms_sensors_tp_crc4(prom);
-+
-+	prom[0] = w0;
-+
-+	return crc == crc_read;
-+}
-+
-+/**
-+ * ms_sensors_tp_crc_valid_128() - CRC check function for
-+ *     Temperature and pressure devices for 128bit PROM.
-+ *     This function is only used when reading PROM coefficients
-+ *
-+ * @prom:	pointer to PROM coefficients array
-+ *
-+ * Return: CRC.
-+ */
-+static bool ms_sensors_tp_crc_valid_128(u16 *prom)
-+{
-+	u16 w7 = prom[7], crc_read = w7 & 0x000F;
-+	u8 crc;
-+
-+	prom[7] &= 0xFF00;      /* Clear the CRC and LSB part */
-+
-+	crc = ms_sensors_tp_crc4(prom);
-+
-+	prom[7] = w7;
-+
-+	return crc == crc_read;
- }
+ static const struct ms_tp_data ms5837_data = { .name = "ms5837", .hw = &ms5637_hw_data };
+@@ -205,6 +212,7 @@ static const struct ms_tp_data ms8607_data = {
  
- /**
-@@ -535,6 +577,7 @@ static bool ms_sensors_tp_crc_valid(u16 *prom)
- int ms_sensors_tp_read_prom(struct ms_tp_dev *dev_data)
- {
- 	int i, ret;
-+	bool valid;
- 
- 	for (i = 0; i < dev_data->hw->prom_len; i++) {
- 		ret = ms_sensors_read_prom_word(
-@@ -546,7 +589,12 @@ int ms_sensors_tp_read_prom(struct ms_tp_dev *dev_data)
- 			return ret;
- 	}
- 
--	if (!ms_sensors_tp_crc_valid(dev_data->prom)) {
-+	if (dev_data->hw->prom_len == 8)
-+		valid = ms_sensors_tp_crc_valid_128(dev_data->prom);
-+	else
-+		valid = ms_sensors_tp_crc_valid_112(dev_data->prom);
-+
-+	if (!valid) {
- 		dev_err(&dev_data->client->dev,
- 			"Calibration coefficients crc check error\n");
- 		return -ENODEV;
+ static const struct of_device_id ms5637_of_match[] = {
+ 	{ .compatible = "meas,ms5637", .data = &ms5637_data },
++	{ .compatible = "meas,ms5803", .data = &ms5803_data },
+ 	{ .compatible = "meas,ms5805", .data = &ms5805_data },
+ 	{ .compatible = "meas,ms5837", .data = &ms5837_data },
+ 	{ .compatible = "meas,ms8607-temppressure", .data = &ms8607_data },
 -- 
 2.28.0
 

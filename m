@@ -2,77 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F3F2D4499
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Dec 2020 15:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C4F2D4530
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Dec 2020 16:17:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733041AbgLIOmW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Dec 2020 09:42:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38390 "EHLO
+        id S1726613AbgLIPQq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Dec 2020 10:16:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733042AbgLIOmQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Dec 2020 09:42:16 -0500
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C85C0613D6
-        for <linux-iio@vger.kernel.org>; Wed,  9 Dec 2020 06:41:36 -0800 (PST)
-Received: by mail-pg1-x542.google.com with SMTP id f17so1313146pge.6
-        for <linux-iio@vger.kernel.org>; Wed, 09 Dec 2020 06:41:36 -0800 (PST)
+        with ESMTP id S1726278AbgLIPQq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Dec 2020 10:16:46 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E13C0613D6
+        for <linux-iio@vger.kernel.org>; Wed,  9 Dec 2020 07:16:05 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id 4so1087061plk.5
+        for <linux-iio@vger.kernel.org>; Wed, 09 Dec 2020 07:16:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Dv36TdENnVUgmyOMLy5Js/A2ShsqmYWWUPMt8lD+meg=;
-        b=qw6uz+BYksdvOM1TVrHYj0+d/bVN4UtpZ0eWX+JyLMu6czat0srVsnFPVfcuiCNKr/
-         gIS5hQ1Z9AiYaIA+nvDJ3KQwAEkBFS/JKGj4qHuDP2hkfAv4Q/Ze06voQZKKIwPFW2FV
-         /dgIxC7M9wAGCjsbZVZSqmJRO2vMLNDjThJKJV2wvuRCM8bedqZvnv0UK8ZJiBdJ9ZIP
-         ypUdIghm3zkefWSce+4eQgYhX1RgxaJEVofuyLvBgxhU3SNuqIdUV0seQzguR9AOQI8Q
-         xc8vXvLGduJfg2IvdqF1XMYb6yu8Jo1LEK/BPGUexjQSCTA8La4tTq48Vskt+RLvly8W
-         zg9Q==
+        bh=zvT2wIiuxsnLXhonSyiaHjeoM7uisT3Aa0IguNeIk1M=;
+        b=otI/b43dB7WQIoPJgjPN2CGniOHoicPyRO5P3N9DMkzwlewYjnl3hy/yxNhSQToAUh
+         0bRvWKaWsv6pBPqPbirVjBsTnSspv2sJBQF0OjNa6/VaKTfB2KFOys19LMbfbZov/cm0
+         hoNndu4dLLcqe05vuzmrv8u3wdR7kajitwN1djm/f6gsHXCuZ9IqvmR8wQsbpXJJNVMy
+         Hl7SQb0KYHtqMK6HqkP2J6wd8imVBCW3d3vcffMV6IJ3oD+Ko2gGHrIqM4k760pWkq48
+         7CD9Fn7vvgHvz96OnNHufH9bIKnYKu0Y2YxBpRdGQ4cGeOZ2nNvdIZlltenE+MBWWipt
+         0HAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Dv36TdENnVUgmyOMLy5Js/A2ShsqmYWWUPMt8lD+meg=;
-        b=H5zFOialcG/DIaWl7QNVEvKYTQUwy4IYewxQ7KP3FZjO1wT01HAUq1ynCgcAu7jYv/
-         IrfC8sYPQnkvoSLbv8afjax1pHaggTJbhDRmPCmPgN1sADuKHWecOy9aN7gtYpr+nkFs
-         OInlIkZE3xillQWqCKow/noSUZhut9PwcOZTLJu4nkcPFc4YTcPCbJqiS4C8b8lQIP1/
-         mc6KknhQHHfzEJJU4j+ETXBV0bn4lFmZrmieTFC1m9nTKkEFNzS0QNQt4PC2/G+Br3GH
-         GGzL+tgXzkyhd8ORdWeRpW3Jixos/WldJFLSuv58ETETSLWJE9TJYnay+YHPvWzd3YVz
-         pUEQ==
-X-Gm-Message-State: AOAM533vfYOIFp9NiBx6cNNvO5ERcVcM3OhCCFYWjOKmgeI+NSObj3Bl
-        VGi7U9KheFsqtk8/5zpsRDQB4qwtPsqvBaa8LZs=
-X-Google-Smtp-Source: ABdhPJyvVLR6Wfnm4G0HFKDJFqrTBXxQtGlVUiwmrMTMHyYJO43ZlPvh7PJQGpJneCkTDwilnwYZa6osn1uuORMl63I=
-X-Received: by 2002:a63:c04b:: with SMTP id z11mr1538530pgi.74.1607524895693;
- Wed, 09 Dec 2020 06:41:35 -0800 (PST)
+        bh=zvT2wIiuxsnLXhonSyiaHjeoM7uisT3Aa0IguNeIk1M=;
+        b=QMuBWXvAzIsjW5u8P76jPGZnc1ItPKOyLQ1eJxu5+ocvUEs6KxUdYKvDTaEGal/XwA
+         YuxrP7mlh0beIPvaokP6KDMnbr2GZ5GQDItbuG+FamxvJEI2nmr0Ze0TULlGaeMWh2Au
+         DBJmx19qe/CtWPCJUEL4TKIkZEvEVkcVevdimm0yuSJl1UMmxTkpTgRc9R9qLHh9IykO
+         fDT3sYrEfDX+GOK1v9Kb+T5Pr+cU/eDjTxj2VkvwNH6vpufmIwvOYkLl6pORkerxkufO
+         le/8+nHlVmjTngy0jEq7S8GzOCuukicb+TS5X3hawMS79U1MVv+LfWlJQOgkuz1TBG+m
+         xX0w==
+X-Gm-Message-State: AOAM530SMDlNLZGdduNNkk1bVvlyuLaGFCNe1A0qLyo7M8ChnmbUpi9d
+        3CMzXOUvMopfMb/kXIkDFm/WgGpgJOUmWtaW5Og=
+X-Google-Smtp-Source: ABdhPJywyP9hR0cWJs1SQ1S7LC7KV9kDklYCQd2JQ2zNpDh7wzKB4qrcFxs6FvGgi8qQJTWboIuMALQ4ye3a7y0CbPg=
+X-Received: by 2002:a17:90a:34cb:: with SMTP id m11mr2679455pjf.181.1607526965350;
+ Wed, 09 Dec 2020 07:16:05 -0800 (PST)
 MIME-Version: 1.0
-References: <c9ec69ed349e7200c779fd7a5bf04c1aaa2817aa.1607438132.git.lorenzo@kernel.org>
- <CAHp75VdqYxfdS5+zPsj071HSJ_CG3M8n=zfoTwg=jf-f6_naUw@mail.gmail.com>
-In-Reply-To: <CAHp75VdqYxfdS5+zPsj071HSJ_CG3M8n=zfoTwg=jf-f6_naUw@mail.gmail.com>
+References: <20201204203755.818932-1-gwendal@chromium.org>
+In-Reply-To: <20201204203755.818932-1-gwendal@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 9 Dec 2020 16:42:24 +0200
-Message-ID: <CAHp75Ve8ya2rKrKoRp9F2o+xvAJvVWCdtqo6gfjXgourLHXwBA@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: common: st_sensors: fix possible infinite loop in st_sensors_irq_thread
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, lorenzo.bianconi@redhat.com,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>
+Date:   Wed, 9 Dec 2020 17:16:52 +0200
+Message-ID: <CAHp75Ve+oXJoYqRFV_FeMrS_Kh9d_3VhVQSgqtn3BxNx9k0ZtQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: acpi_als: Add trigger support
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 4:41 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Tue, Dec 8, 2020 at 4:38 PM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-
-...
-
-> > +                       err = -EOPNOTSUPP;
+On Fri, Dec 4, 2020 at 10:40 PM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> Wrong error code. You must not return it to user space (or you should
-> fix all call sites to be sure this won't be returned).
+> Add timestamp channel: use standard procedure to collect timestamp.
+> As some firmware do not notify on illuminance changes, add a
 
-Oops, seems the other way around. Sorry for the noise.
+do -> does
+
+> trigger to periodically query light.
+
+Sounds like two things in one change, you have to split.
+
+> We can either use the device trigger, or a software trigger like sysfs
+> or hrtimer.
+>
+> This change is not backward compatible.
+
+You mean you are breaking ABI? It won't go like this.
+
+> To get samples from bios that
+
+bios -> BIOS
+
+> supports notification, we need to register the hardware trigger first:
 
 -- 
 With Best Regards,

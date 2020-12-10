@@ -2,103 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC2D2D530C
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Dec 2020 06:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 208D52D5CBD
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Dec 2020 15:05:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726232AbgLJFKG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Dec 2020 00:10:06 -0500
-Received: from smtp.rcn.com ([69.168.97.78]:7528 "EHLO smtp.rcn.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726020AbgLJFKF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Dec 2020 00:10:05 -0500
-DKIM-Signature: v=1; a=rsa-sha1; d=rcn.com; s=20180516; c=relaxed/simple;
-        q=dns/txt; i=@rcn.com; t=1607576948;
-        h=From:Subject:Date:To:MIME-Version:Content-Type;
-        bh=odeKY/tl3iMKFk/KlO+XzJYR/yI=;
-        b=ldL4wvHunN67gVBK0+PLvVFJV3csOqAJfeRREJlaxsBnES+Jp8IEYbmP3iDSj7P4
-        GrZEhHYbcqqmQpjT+/Hcrmv7O6jna9GMqXF3/D8joO524UrPLKcEDsDoYi0XdPxh
-        4ZLTkwRTexMeakHBA7O4RMjXBbrM6w2MCIHoEaie1soswkDns3Uwve7LDDQPZKs7
-        q6JY0Jc9GTUJjaqaAWEsUoeKHzSC88RakVMYmQuWA/mTlBMP3n7B3oMDWyFvW/I8
-        LvzW5YMtRvPh8//QA1vUGb/oKrlPmjiiGCKMLgB5ejbOukumTgPb4yVO/YXhvs6Q
-        n1H16ScFBo+N2X3hl7m9KQ==;
-X_CMAE_Category: , ,
-X-CNFS-Analysis: v=2.3 cv=aa4fYigt c=1 sm=1 tr=0 cx=a_idp_x a=azu/70XvI2yunv2iXFxgGQ==:117 a=KGjhK52YXX0A:10 a=FKkrIqjQGGEA:10 a=ECXDSLCRY80A:10 a=Y_bJZinwUj8A:10 a=IkcTkHD0fZMA:10 a=zTNgK-yGK50A:10 a=0xrwlLTa3iUA:10 a=r2-rni_QWC0A:10 a=x7bEGLp0ZPQA:10 a=OJMTuxAOzMXqgD5_NpgA:9 a=QEXdDO2ut3YA:10 a=XnaHCcwGIfFTUiYrL0LO:22
-X-CM-Score: 0
-X-Scanned-by: Cloudmark Authority Engine
-X-Authed-Username: bnV0aG91c2UxMDMwNUByY24uY29t
-Authentication-Results: smtp02.rcn.cmh.synacor.com header.from=nuthouse10305@rcn.com; sender-id=softfail
-Authentication-Results: smtp02.rcn.cmh.synacor.com smtp.mail=nuthouse10305@rcn.com; spf=softfail; sender-id=softfail
-Received: from [10.33.66.1] ([10.33.66.1:52524] helo=md10.rcn.cmh.synacor.com)
-        by smtp.rcn.com (envelope-from <nuthouse10305@rcn.com>)
-        (ecelerity 3.6.25.56547 r(Core:3.6.25.0)) with ESMTP
-        id C1/8D-20784-37DA1DF5; Thu, 10 Dec 2020 00:09:08 -0500
-Date:   Thu, 10 Dec 2020 00:09:07 -0500 (EST)
-From:   dr rani gupta spatu <nuthouse10305@rcn.com>
-Reply-To: dr rani gupta spatu <drgpsptu876@gmail.com>
-To:     dr rani gupta spatu <drgpsptu876@gmail.com>
-Message-ID: <642094963.16977984.1607576947441.JavaMail.root@rcn.com>
-In-Reply-To: <1390007391.16974413.1607576575493.JavaMail.root@rcn.com>
-Subject: Re: hi ??
+        id S1732424AbgLJOEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Dec 2020 09:04:12 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:37953 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389824AbgLJOEG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Dec 2020 09:04:06 -0500
+Received: by mail-oi1-f196.google.com with SMTP id o25so5811857oie.5;
+        Thu, 10 Dec 2020 06:03:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3MLLm+mEEjeqlhPqYeqwFttUlHw74kkq347oncGq1Gw=;
+        b=XOlKHm65DzjULTr5Z9/uMEPGvuhjLWdkGQqG6aGzELJwdPS8idPSYRSAcEztav6jXT
+         ivLQw+Ah4QG/e5TKNwZl4yMkKqy0BPSxWyP45lLPKUGzgEy3NM4e9MMo15QTadJISmCq
+         iBPt+AlSCasfcWroyinyKOsedhemYAwheXGDzzXXSVwbl1NLuZemXfGfDSyPnsQpkZfS
+         2Ojiwol7HbpxnFvCvf1Kh39Xb0Lz2hWuHPqUI84T073gtSWrrEpipXvitfir+EC88YsT
+         rRUQGSsTa4S6akUBTkhAj47Bh7K3olxy3ZJef++J/hRAmfBqP/eABIqcO3rPE93zHqWq
+         3nIg==
+X-Gm-Message-State: AOAM531EIQqzELhKw7qGGwZrXJqSE4qVI6TDk/eqWXB7V+0oyPQVklaI
+        sw5HUApiSSEGEQTYRnaK2elvXfocxg==
+X-Google-Smtp-Source: ABdhPJwG52D2wifZOqB6HTnMduClyCraQe186nghSc5IY6q8p1tskxYgGqkEMIu3RfTL+SAFDYXsYA==
+X-Received: by 2002:aca:5e57:: with SMTP id s84mr5396974oib.102.1607609005231;
+        Thu, 10 Dec 2020 06:03:25 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n16sm264268oov.23.2020.12.10.06.03.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Dec 2020 06:03:24 -0800 (PST)
+Received: (nullmailer pid 2425665 invoked by uid 1000);
+        Thu, 10 Dec 2020 14:03:23 -0000
+Date:   Thu, 10 Dec 2020 08:03:23 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, robh+dt@kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: dac: AD5766 yaml documentation
+Message-ID: <20201210140323.GA2425635@robh.at.kernel.org>
+References: <20201208131957.34381-1-cristian.pop@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.246.209.150]
-X-Mailer: Zimbra 7.2.7_GA_2942 (zclient/7.2.7_GA_2942)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201208131957.34381-1-cristian.pop@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 08 Dec 2020 15:19:55 +0200, Cristian Pop wrote:
+> This adds device tree bindings for the AD5766 DAC.
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> ---
+>  Changes in v3:
+> 	- Fix errors
+>  .../bindings/iio/dac/adi,ad5766.yaml          | 58 +++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+> 
 
-
-
-
-gmning...........
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Thanks
-dr rani gupta saptu
-23, 1, Arcot Rd, Ottagapalayam, 
-Kannika Puram, Vadapalani, 
-Chennai, Tamil Nadu 600026, 
-India
-
-
+Reviewed-by: Rob Herring <robh@kernel.org>

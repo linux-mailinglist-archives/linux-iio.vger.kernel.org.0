@@ -2,243 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA1C52D6AF9
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 00:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A461E2D6EB2
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 04:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388009AbgLJWbN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Dec 2020 17:31:13 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:36841 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405093AbgLJWV3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Dec 2020 17:21:29 -0500
-Received: by mail-pg1-f195.google.com with SMTP id w5so4807107pgj.3
-        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 14:21:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/hBjI6ZEs2CpOz6vwVEa3HT4banbkGMgvbas2fetO38=;
-        b=JOPpsi6rqjSOsB/+Df0X6V+rC0xxX0c5bLSRRHZ/cWOaESbl1dBSjUdOpRS0Pz56bE
-         1anE7SYaK3YPZemfaJ8U6BcamGHcTBVhBTppbjhUK8JfAUsS2Y9+kz8LBJon6JS62ecG
-         hT8ZxTfHR9uUhnVwiFGBam3tppOGdi9ws+Hzg=
+        id S2405255AbgLKDfE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Dec 2020 22:35:04 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:34239 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405250AbgLKDe4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Dec 2020 22:34:56 -0500
+Received: by mail-oi1-f193.google.com with SMTP id s75so8388209oih.1;
+        Thu, 10 Dec 2020 19:34:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/hBjI6ZEs2CpOz6vwVEa3HT4banbkGMgvbas2fetO38=;
-        b=Kc5LQVLgpbfesuOQG3R1iIZyuIiwWe9xTKYbnSryTYKuNgBEG8bhHw3rz8crGvaReH
-         asKSQzjXezBEwhsifFGqu6Ikn8GXyh5SlqgM+VfToV/NDL5q+fB3W9WKWTnGcX2qZ76M
-         MOQH+gO8fGgo34jRY4etbSgVNkt2/9iU31t9pXZ4vaz84fzzaeyPMnGCYe1UcvlQDkzv
-         p632v0jZeG9qsa7gxO1HzeqMh10au7ITxCDQg2kNv5CelfAMbVnKe+gv1dJ3lbNr6w0P
-         ixGudK1Z9TfTAaAWuEzaVVwnTyhE89Yo7CodjKa9CrUYuaiGOgq7k8TgAXjn0hwGA6/O
-         yElg==
-X-Gm-Message-State: AOAM531M3lh7my+G0bvmfoitKc/O1jTVk7bOatkVUr9ltcibSUCs0Z3v
-        0nl0/GYpV+ekOaUROH+GWjh2MQ==
-X-Google-Smtp-Source: ABdhPJyx4Zg38Msjm3AThW9wmU4Kveez+koyOm1UC/Vwz3JGSEjBsW81Au9SxmL/RgebvO8VWVRNlw==
-X-Received: by 2002:a17:90a:e60d:: with SMTP id j13mr9944336pjy.52.1607638548148;
-        Thu, 10 Dec 2020 14:15:48 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:7220:84ff:fe09:94fe])
-        by smtp.gmail.com with ESMTPSA id s13sm7813275pfd.99.2020.12.10.14.15.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Dec 2020 14:15:47 -0800 (PST)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     gabriele.mzt@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3 2/2] iio: acpi_als: Add trigger support
-Date:   Thu, 10 Dec 2020 14:15:41 -0800
-Message-Id: <20201210221541.1180448-3-gwendal@chromium.org>
-X-Mailer: git-send-email 2.29.2.576.ga3fc446d84-goog
-In-Reply-To: <20201210221541.1180448-1-gwendal@chromium.org>
-References: <20201210221541.1180448-1-gwendal@chromium.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5X4INTOHYkiv4qJceNlizwSZ2F4yaORFWqNAvCdXmig=;
+        b=X0WGyrPTDte7nV+MMAEUhedlrDFhd90oxs3xkAy4/Q0RhtwVF3aFec8d4iDGqPlma0
+         5a72IBHx7iN9MKsyxhCuV0Gm6AFCWxmEqo5RCIv6BsV0LJz510tIfSmzXCJdpW/WIrf0
+         +Uq6GcZ3Jhn6rqEUjd5nJpymGYfmzU6M66Sx81RpyXGVyjA+euOd1K+1H6e8/7JJYeVk
+         T4J7btwupHUV7opJvcv3v2f/I9euetEGBnmuUFENDn2SSfZWOOmsERJhxYEFOkOC/Zpl
+         eIh2MxWefs8oRCvT2WibYJ9D0p+lnNClCcd3kyZz7guvvk0DBwjgqqs9hA69NfzpWJsx
+         1fog==
+X-Gm-Message-State: AOAM533H/JjKkjjfvw5fLDkB9TUna40u2VJlIvwgPX24J/wUaWHMB/Wl
+        0S5WzwytR8vMBQanClIkSQ==
+X-Google-Smtp-Source: ABdhPJx3Vfhhuz3O0orNqKdlqcTcD08QNbyPLmKrJ/Gw+Puo6Ap+WJIrHuJ01GXCsDNGsXvhVmzL+g==
+X-Received: by 2002:aca:6087:: with SMTP id u129mr8031458oib.173.1607657655459;
+        Thu, 10 Dec 2020 19:34:15 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id s9sm1577098otb.6.2020.12.10.19.34.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Dec 2020 19:34:14 -0800 (PST)
+Received: (nullmailer pid 3585740 invoked by uid 1000);
+        Fri, 11 Dec 2020 03:34:13 -0000
+Date:   Thu, 10 Dec 2020 21:34:13 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] iio:pressure:ms5637: add ms5803 support
+Message-ID: <20201211033413.GA3584721@robh.at.kernel.org>
+References: <20201209234857.1521453-1-alexandre.belloni@bootlin.com>
+ <20201209234857.1521453-7-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201209234857.1521453-7-alexandre.belloni@bootlin.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As some firmware does not notify on illuminance changes, add a
-trigger to be able to query light via software (sysfs-trigger or
-hrtrigger).
+On Thu, Dec 10, 2020 at 12:48:57AM +0100, Alexandre Belloni wrote:
+> The ms5803 is very similar to the ms5805 but has less resolution options
+> and has the 128bit PROM layout.
+> 
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  drivers/iio/pressure/ms5637.c                          | 8 ++++++++
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index ab623ba930d5..84b0e44235c1 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -132,6 +132,8 @@ properties:
+>            - mcube,mc3230
+>              # MEMSIC 2-axis 8-bit digital accelerometer
+>            - memsic,mxc6225
+> +            # Measurement Specialities I2C pressure and temperature sensor
+> +          - meas,ms5803
 
-BUG=b:172408337
-TEST=Check iio_info reports the sensor as buffer capable:
-iio:device0: acpi-als (buffer capable)
-Check we can get data on demand on volteer:
-echo 1 > iio_sysfs_trigger/add_trigger
-cat trigger2/name > iio\:device0/trigger/current_trigger
-for i in iio\:device0/scan_elements/*_en iio\:device0/buffer/enable ; do
-  echo 1 > $i
-done
-od -x /dev/iio\:device0&
-echo 1 > trigger2/trigger_now
+Alphabetical order please.
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- Changes in v3:
- -- should not increase buffer pointer before call iio_push_buffer.
-
- drivers/iio/light/acpi-als.c | 92 ++++++++++++++++++++++++++----------
- 1 file changed, 67 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
-index ff0ecec65fae4..d506242eefabe 100644
---- a/drivers/iio/light/acpi-als.c
-+++ b/drivers/iio/light/acpi-als.c
-@@ -16,11 +16,15 @@
- #include <linux/module.h>
- #include <linux/acpi.h>
- #include <linux/err.h>
-+#include <linux/irq.h>
- #include <linux/mutex.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/kfifo_buf.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
- 
- #define ACPI_ALS_CLASS			"als"
- #define ACPI_ALS_DEVICE_NAME		"acpi-als"
-@@ -60,6 +64,7 @@ static const struct iio_chan_spec acpi_als_channels[] = {
- struct acpi_als {
- 	struct acpi_device	*device;
- 	struct mutex		lock;
-+	struct iio_trigger	*trig;
- 
- 	s32 evt_buffer[ACPI_ALS_EVT_BUFFER_SIZE / sizeof(s32)]  __aligned(8);
- };
-@@ -103,33 +108,20 @@ static void acpi_als_notify(struct acpi_device *device, u32 event)
- {
- 	struct iio_dev *indio_dev = acpi_driver_data(device);
- 	struct acpi_als *als = iio_priv(indio_dev);
--	s32 *buffer = als->evt_buffer;
--	s64 time_ns = iio_get_time_ns(indio_dev);
--	s32 val;
--	int ret;
--
--	mutex_lock(&als->lock);
- 
--	memset(buffer, 0, ACPI_ALS_EVT_BUFFER_SIZE);
-+	if (!iio_buffer_enabled(indio_dev) ||
-+	    !iio_trigger_using_own(indio_dev))
-+		return;
- 
- 	switch (event) {
- 	case ACPI_ALS_NOTIFY_ILLUMINANCE:
--		ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
--		if (ret < 0)
--			goto out;
--		*buffer++ = val;
-+		iio_trigger_poll_chained(als->trig);
- 		break;
- 	default:
- 		/* Unhandled event */
- 		dev_dbg(&device->dev, "Unhandled ACPI ALS event (%08x)!\n",
- 			event);
--		goto out;
- 	}
--
--	iio_push_to_buffers_with_timestamp(indio_dev, als->evt_buffer, time_ns);
--
--out:
--	mutex_unlock(&als->lock);
- }
- 
- static int acpi_als_read_raw(struct iio_dev *indio_dev,
-@@ -160,13 +152,46 @@ static const struct iio_info acpi_als_info = {
- 	.read_raw		= acpi_als_read_raw,
- };
- 
-+static irqreturn_t acpi_als_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct acpi_als *als = iio_priv(indio_dev);
-+	s32 *buffer = als->evt_buffer;
-+	s32 val;
-+	int ret;
-+
-+	mutex_lock(&als->lock);
-+
-+	ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
-+	if (ret < 0)
-+		goto out;
-+	*buffer = val;
-+
-+	/*
-+	 * when coming from own trigger via polls, set timestamp here.
-+	 * Given ACPI notifier is already in a thread and call function directly,
-+	 * there is no need to set the timestamp in the notify function.
-+	 */
-+	if (!pf->timestamp)
-+		pf->timestamp = iio_get_time_ns(indio_dev);
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-+out:
-+	mutex_unlock(&als->lock);
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int acpi_als_add(struct acpi_device *device)
- {
- 	struct acpi_als *als;
- 	struct iio_dev *indio_dev;
--	struct iio_buffer *buffer;
-+	struct device *dev = &device->dev;
-+	int ret;
- 
--	indio_dev = devm_iio_device_alloc(&device->dev, sizeof(*als));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*als));
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
-@@ -177,19 +202,36 @@ static int acpi_als_add(struct acpi_device *device)
- 	mutex_init(&als->lock);
- 
- 	indio_dev->name = ACPI_ALS_DEVICE_NAME;
--	indio_dev->dev.parent = &device->dev;
-+	indio_dev->dev.parent = dev;
- 	indio_dev->info = &acpi_als_info;
--	indio_dev->modes = INDIO_BUFFER_SOFTWARE;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = acpi_als_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(acpi_als_channels);
- 
--	buffer = devm_iio_kfifo_allocate(&device->dev);
--	if (!buffer)
-+	als->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
-+					   indio_dev->name,
-+					   indio_dev->id);
-+	if (!als->trig)
- 		return -ENOMEM;
- 
--	iio_device_attach_buffer(indio_dev, buffer);
-+	iio_trigger_set_drvdata(als->trig, indio_dev);
-+	ret = devm_iio_trigger_register(dev, als->trig);
-+	if (ret)
-+		return ret;
-+	/*
-+	 * Set hardware trigger by default to let events flow when
-+	 * BIOS support notification.
-+	 */
-+	indio_dev->trig = iio_trigger_get(als->trig);
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      acpi_als_trigger_handler,
-+					      NULL);
-+	if (ret)
-+		return ret;
- 
--	return devm_iio_device_register(&device->dev, indio_dev);
-+	return devm_iio_device_register(dev, indio_dev);
- }
- 
- static const struct acpi_device_id acpi_als_device_ids[] = {
--- 
-2.29.2.576.ga3fc446d84-goog
-
+>              # Microchip differential I2C ADC, 1 Channel, 18 bit
+>            - microchip,mcp3421
+>              # Microchip differential I2C ADC, 2 Channel, 18 bit
+> diff --git a/drivers/iio/pressure/ms5637.c b/drivers/iio/pressure/ms5637.c
+> index 2943b88734b3..39830a51ca78 100644
+> --- a/drivers/iio/pressure/ms5637.c
+> +++ b/drivers/iio/pressure/ms5637.c
+> @@ -192,8 +192,15 @@ static const struct ms_tp_hw_data ms5637_hw_data  = {
+>  	.max_res_index = 5
+>  };
+>  
+> +static const struct ms_tp_hw_data ms5803_hw_data  = {
+> +	.prom_len = 8,
+> +	.max_res_index = 4
+> +};
+> +
+>  static const struct ms_tp_data ms5637_data = { .name = "ms5637", .hw = &ms5637_hw_data };
+>  
+> +static const struct ms_tp_data ms5803_data = { .name = "ms5803", .hw = &ms5803_hw_data };
+> +
+>  static const struct ms_tp_data ms5805_data = { .name = "ms5805", .hw = &ms5637_hw_data };
+>  
+>  static const struct ms_tp_data ms5837_data = { .name = "ms5837", .hw = &ms5637_hw_data };
+> @@ -205,6 +212,7 @@ static const struct ms_tp_data ms8607_data = {
+>  
+>  static const struct of_device_id ms5637_of_match[] = {
+>  	{ .compatible = "meas,ms5637", .data = &ms5637_data },
+> +	{ .compatible = "meas,ms5803", .data = &ms5803_data },
+>  	{ .compatible = "meas,ms5805", .data = &ms5805_data },
+>  	{ .compatible = "meas,ms5837", .data = &ms5837_data },
+>  	{ .compatible = "meas,ms8607-temppressure", .data = &ms8607_data },
+> -- 
+> 2.28.0
+> 

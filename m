@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CECB42D7119
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 08:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F692D711A
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 08:52:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388543AbgLKHtS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Dec 2020 02:49:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39392 "EHLO
+        id S2391467AbgLKHuv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Dec 2020 02:50:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436827AbgLKHtL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Dec 2020 02:49:11 -0500
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3479C0613CF
-        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:48:30 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id d9so8553579iob.6
-        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:48:30 -0800 (PST)
+        with ESMTP id S2390532AbgLKHub (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Dec 2020 02:50:31 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18568C0613CF
+        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:49:51 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id p5so7914513ilm.12
+        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:49:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BLRqCbFeSjLxy1AivaHBHXaZ8NTeW/wO87Z1jDHRIEA=;
-        b=Ln6Ub0MfpQKZ+z93dX3/mFFaawYrBtkvjoq8LZLl5y1HPYTOWTU+w/HYOF3Gflzykx
-         AeBVDY4263+avWp/3JhjjD62qJnRYYEvKpYA95ui9ngdWApgrPUwMDf8LjGGAyx4A6m/
-         UOdJZmMQoYPfWH2hQHh35K17uUgApaWvKJfWT5PRrlbfzi2YBCsvDSMXDCzlZ58yG9Jm
-         QjXJDYtcb/+f52xn67jS9jdffOFUg8YOemqozi66LIVJJ8mgwanqE6sD0FIoyH+3/S/Z
-         zikOJXvMZ95VuC29aA7jUw4xJdjPzCB5biZFm1R6MImm6BsUe9D2H3Iwq9DtdMaLnonH
-         lnew==
+        bh=w5jPW5xrdnXrUmlqPwfg6aea4TyLHiSibriUPQtVJL0=;
+        b=UbZPpDkEFz1NsaD896NDjcCUrPz2Xqkb17fx5J4t/YJVEhGdMKXWcBM8NqGwR0ZmH0
+         zkkiwiM0r3KqqYDYGxeheGfp21px3GDSlBhx9d/fndSaLGfgjwyLotjteA/RooQZHeVW
+         3HOKEpzB96Ls9H1v17yvE8AraAymw/rndgoi2FEFIODvoeyIX230zhxfDPI7GQbtMo8V
+         2taWcBkj5rmW3bngEdplwDPbRsJ4M+4XQi+l23SydpQgA2Eb37q1ZbsVUt4frA1a9QfC
+         y85z4sk4kaPLl63zrBxmB4ZcrRBAd3B8Xw7ojkVHYYrahCzBe3D9q38tKL0ofKbY0Rv9
+         Q6Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BLRqCbFeSjLxy1AivaHBHXaZ8NTeW/wO87Z1jDHRIEA=;
-        b=qFF2Q0+gp5RSkSqGnJK6U0fq49WIClN/32zDqKfU/ycM0wCIpElnKRdx+9AWYA1AYF
-         grAHeYJOQWFh+Qv4uN60FY5AnQIp7q1QYQQ9/pJGtyUf3pN3cUEtkJ/h25gfia5EYX+e
-         76W4gyAhggj3aYb1x7hbwZtoN6+3Mhbmq2ebF8GT+PXMR7CEknr4z6PDtFdM1IbrvcxG
-         IqKJkyOBMVYNmdIFTjkXa++Eexv2PjsQltTvzqKiYRAsZPsoHul2HJSug5/qdY0rIQJx
-         6NI0v2SvOn/WQsvSbzYtosDkji0NnDxAVZMWMqec0tfl1duMLO21sE7NR7hehgfySfVz
-         xVKQ==
-X-Gm-Message-State: AOAM532DornRMn0od8PBzJmoLBP6uMUfy90Hp85wOBrnaWKF/0G/36q8
-        eLiyNefKAx69IYD+uKO8bnShtXZhQ6vN1mdvE3M=
-X-Google-Smtp-Source: ABdhPJw6b62qU1vpNimX5c4FUax1mVT+Rr1sxkJQs8ezHk2xyb0TZRH3EEBCNtH+reoK/ekVAzNGVaU2HkQjtadYqls=
-X-Received: by 2002:a5d:9507:: with SMTP id d7mr13398841iom.32.1607672910392;
- Thu, 10 Dec 2020 23:48:30 -0800 (PST)
+        bh=w5jPW5xrdnXrUmlqPwfg6aea4TyLHiSibriUPQtVJL0=;
+        b=pjmGx5bdyISGSXGrkuW3dZRnoi1m1XMMENRk+dQ8jmm9sKNJpufDU03GBgDX8kYosl
+         feM95r/pk/BMgYHlVXzYDjmpBZkh90cEv5r3Z6jV6OxzwEYqxNWiwCTN7AVxzL6snjeK
+         V8RAYnBC+5qwf4NBJ7AoRNUM4jbIwgM7ajTDdyZFtmaYfdz/7lyf0FNJZorBW11BK64W
+         Aj0JpOXiUUQJ0wAE/4NUFhdBeXrg1R6+mteFE0hshe8AlTBxj4b6KAHUmSstv+b9ZgFV
+         5yVtAbYy6Y+9X79LSegM/A6zZP9Fc/vHF+x14uROP/R7cpGw2GuQf7PN0TKuVu7XSu4j
+         0ZsA==
+X-Gm-Message-State: AOAM532FCgXidBlJv6gKHShHWApsoApLp9/mFrOVSHM7SJOh2cmZdRIL
+        43/LsECORWzImgJThUzZEPktm9IQcNTLrlEtqvg=
+X-Google-Smtp-Source: ABdhPJwP/R5BFuLq9DMU8ns5DCbqo8SXbbN6qX93VCDyX70MoNdYUhj1jnc/HxSwj4ZaOCPo9ZFoUNE2EG0gEKfgNC4=
+X-Received: by 2002:a05:6e02:12a2:: with SMTP id f2mr14433224ilr.292.1607672990583;
+ Thu, 10 Dec 2020 23:49:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20201210204211.967018-1-gwendal@chromium.org> <20201210204211.967018-4-gwendal@chromium.org>
-In-Reply-To: <20201210204211.967018-4-gwendal@chromium.org>
+References: <20201210204211.967018-1-gwendal@chromium.org> <20201210204211.967018-5-gwendal@chromium.org>
+In-Reply-To: <20201210204211.967018-5-gwendal@chromium.org>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Fri, 11 Dec 2020 09:48:19 +0200
-Message-ID: <CA+U=Dsp66nwx_ifP03yHm3Y1MicRHkXpiEFAH-Bx_HJ3Av6PnA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] iio: adis_trigger: Remove code to set trigger parent
+Date:   Fri, 11 Dec 2020 09:49:39 +0200
+Message-ID: <CA+U=DspyeOM1ctF18D1iQTkvg2MfOmOeTVoNNfKwn3wjW_HQAw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/7] iio: gp2ap020a00f: Remove code to set trigger parent
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,44 +62,28 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Dec 10, 2020 at 10:42 PM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> Already done in boiler plate code.
+> Already done in boiler plate code
 
 Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
 >
 > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---
->  drivers/iio/imu/adis_trigger.c | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
+>  drivers/iio/light/gp2ap020a00f.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
-> index 64e0ba51cb18..0f29e56200af 100644
-> --- a/drivers/iio/imu/adis_trigger.c
-> +++ b/drivers/iio/imu/adis_trigger.c
-> @@ -27,13 +27,6 @@ static const struct iio_trigger_ops adis_trigger_ops = {
->         .set_trigger_state = &adis_data_rdy_trigger_set_state,
->  };
+> diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+> index e2850c1a7353..d1d9f2d319e4 100644
+> --- a/drivers/iio/light/gp2ap020a00f.c
+> +++ b/drivers/iio/light/gp2ap020a00f.c
+> @@ -1551,7 +1551,6 @@ static int gp2ap020a00f_probe(struct i2c_client *client,
+>         }
 >
-> -static void adis_trigger_setup(struct adis *adis)
-> -{
-> -       adis->trig->dev.parent = &adis->spi->dev;
-> -       adis->trig->ops = &adis_trigger_ops;
-> -       iio_trigger_set_drvdata(adis->trig, adis);
-> -}
-> -
->  static int adis_validate_irq_flag(struct adis *adis)
->  {
->         /*
-> @@ -72,7 +65,8 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
->         if (!adis->trig)
->                 return -ENOMEM;
+>         data->trig->ops = &gp2ap020a00f_trigger_ops;
+> -       data->trig->dev.parent = &data->client->dev;
 >
-> -       adis_trigger_setup(adis);
-> +       adis->trig->ops = &adis_trigger_ops;
-> +       iio_trigger_set_drvdata(adis->trig, adis);
+>         init_irq_work(&data->work, gp2ap020a00f_iio_trigger_work);
 >
->         ret = adis_validate_irq_flag(adis);
->         if (ret)
 > --
 > 2.29.2.576.ga3fc446d84-goog
 >

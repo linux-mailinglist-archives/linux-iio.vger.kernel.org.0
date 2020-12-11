@@ -2,174 +2,397 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B602D709E
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 08:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F262D710D
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 08:48:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731962AbgLKHKm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Dec 2020 02:10:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33456 "EHLO
+        id S2436810AbgLKHrH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Dec 2020 02:47:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730799AbgLKHKY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Dec 2020 02:10:24 -0500
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548B7C0613CF;
-        Thu, 10 Dec 2020 23:09:44 -0800 (PST)
-Received: by mail-pg1-x541.google.com with SMTP id w16so6508660pga.9;
-        Thu, 10 Dec 2020 23:09:44 -0800 (PST)
+        with ESMTP id S2388543AbgLKHqu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Dec 2020 02:46:50 -0500
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F031C0613CF
+        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:46:10 -0800 (PST)
+Received: by mail-io1-xd42.google.com with SMTP id p187so8536560iod.4
+        for <linux-iio@vger.kernel.org>; Thu, 10 Dec 2020 23:46:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=agSZMQdvaCGV7hdnrq9aTuJTFu3GU2xvnWahrOKp2Jc=;
-        b=iaCwlxTDrUkLZaR2IE70DXZlzMvfp14eegDu7lsHhJVqA94v1rPO5Tw4Re0cXWzUs5
-         tTdmMAeE833iUuG2ImjX+nRar2krQmwfag0rFEsw5K4ZZDSsw9fPPIUx1J2XQU6rwbnH
-         Kz55ev9L7xh0UTnBPP41ch7Fo9bpfKhtijuuRjlbCoQIPm6fHPuAydEfkg/7WaDcnUw2
-         KrX/PojTaAYfFOJojhEJH0JOWh5+06NYveWE7iDEGwTmJRic5BIrac7SqUas4AAAIZYJ
-         M0gohUFiRGvu59MmoW09LRLN4qrmmTOMEwyEoyc9qQHocn+A30QS9pv/UEmoXPeSjRD6
-         JYkg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9bgD01erNRNB+B0A7nVitaW8BdnxBcSl+jpu4DqCqt8=;
+        b=qCugdDzftofEdLH64ggoHsznrnYELT+N7XsNPSR2IlOV+JjiVOUe5NvnuZdx0zHeuR
+         6Vo8FcgJMM9d9uQIWxw5xbIpcXBClJzuSgWt77ebtRIdJwUoDPejenSXPlqTNJSvVPIU
+         M/E/K7KP+6ZGitW9Ayz0z0m8K+nKkDqOrq+bRsdKwDIaAUN2YR6rEWTLZsFBCz9muN0C
+         MmbuB4kR7ClmTd97FECc2BLPXzCE3MzY05OL5T+0v+FhcKuw3AWqsTERbNh5p8w9iGew
+         7xRWMW028gew+ZIgOV5M1XqeGDHUJlzUxTIAuyhiLAKZolbuhdu+ZOq020Z4s9j2uj+A
+         xGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=agSZMQdvaCGV7hdnrq9aTuJTFu3GU2xvnWahrOKp2Jc=;
-        b=dqWcGVMx6IB8U9g6alO7K1sU0PMOKrfe81K+1noR5utrQcHIYWRGLVmEDYq704aFgV
-         OxIAvtHeAuYlI2OS/mEk/U47vrzcJVVmw7lBK978XBwOe6bqplXKbaNuCA2FEEqCBElA
-         ATFNTQHNyPJ7cupDjc48mqAVd/pvU0rZUX8QnyaLzz3AVG45GoJbC0WayihkDEI7oaSX
-         ik3LG6RpifogWt1Nngg03d2xFNU2FtXpWWVlV9Da1Kx3dogpjH1c1nU6207u9l3pL+fQ
-         zm3TsSck8qBkTCHlY9R9Hldy0cJ/NBphlABeGl0NkbMYq0xs9oW9auTgz2For8tFUBO9
-         vAgQ==
-X-Gm-Message-State: AOAM533KvSO0UuBaJXzT/q33ms2fGMpBm16Ovc4Djj6vefd4jgHC/8PQ
-        XgEZvGH1g+Kp4/Kov6OgHss=
-X-Google-Smtp-Source: ABdhPJxv8+WMAsqzX+/A7wLGk5FIrmzTZ6C65bUsZXxoEOBEVQ55NlCjhr48qYKwqGs7+RH4FmPorQ==
-X-Received: by 2002:a63:4d5c:: with SMTP id n28mr10516947pgl.88.1607670583820;
-        Thu, 10 Dec 2020 23:09:43 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id j3sm8846830pjs.50.2020.12.10.23.09.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Dec 2020 23:09:43 -0800 (PST)
-Date:   Thu, 10 Dec 2020 23:09:38 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, patches@opensource.cirrus.com,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Barry Song <baohua@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Nick Dyer <nick@shmanahar.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ferruh Yigit <fery@cypress.com>,
-        Sangwon Jee <jeesw@melfas.com>,
-        Peter Hutterer <peter.hutterer@redhat.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        kernel@collabora.com,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH] Input: cyapa - do not call input_device_enabled from power
- mode handler
-Message-ID: <X9MbMja+TEfbKkmJ@google.com>
-References: <2336e15d-ff4b-bbb6-c701-dbf3aa110fcd@redhat.com>
- <20200608112211.12125-1-andrzej.p@collabora.com>
- <20200608112211.12125-3-andrzej.p@collabora.com>
- <CGME20201207133237eucas1p26f8484944760a14e51dc7353ed33cd28@eucas1p2.samsung.com>
- <27ce1176-6318-45aa-4e22-3dec9f3df15d@samsung.com>
- <9c784a23-eade-eacd-3e67-d344a5758b83@collabora.com>
- <ad093ba3-7b17-18f3-6bb5-d8133c3da89a@samsung.com>
- <X9BwtHs9XriwR8gL@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9bgD01erNRNB+B0A7nVitaW8BdnxBcSl+jpu4DqCqt8=;
+        b=DWdAXvoED7Pv/wub1oCu/WMCGcJcX1M+kV9K1p/nEg02Liv6hLkPgeJ8AV71GvP9IG
+         BDJwEhxywZfBNvh3QmVC6JuJfI+LAg5nirRb2Ttb/ZSMOxMftZTBg8oJ0CDCYx4PVihl
+         XIxBecnnlwq2Jt1TK0IayuSAWPScnH+FsLEZ/RWAGByXjrBa3dKt7BK6DEOmobB6fWIZ
+         WaGj291qsc6UFHlRFs+VlrkAi6+uP71xWhVwb0RcHrZVbfpImzj9aAvIUsb43ryr6bDR
+         o8fBakzkZz3mdYHyvNH1t546pqS1W2RaKDJ7mS3NQVPdJdZA0C8BGmmKGcoaPuxu/cHA
+         9kig==
+X-Gm-Message-State: AOAM533B0tJElYdHtfMatDZkOuKGDidQ4vvsuiQqVHYTsHw8qIxtOIUi
+        I1rcK+o019Qyf9jghxce7cjTvMsbMouUS4Af0ng=
+X-Google-Smtp-Source: ABdhPJzIqRifuhAjl/aqrrrjGeMsPnlka6arW922JgrjvLXfNrRdEEyxn1JUNYizL/uEIlzUYI0IrPT3WsusJc2MXWM=
+X-Received: by 2002:a6b:f714:: with SMTP id k20mr13588195iog.70.1607672769481;
+ Thu, 10 Dec 2020 23:46:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <X9BwtHs9XriwR8gL@google.com>
+References: <20201210204211.967018-1-gwendal@chromium.org> <20201210204211.967018-2-gwendal@chromium.org>
+In-Reply-To: <20201210204211.967018-2-gwendal@chromium.org>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Fri, 11 Dec 2020 09:45:58 +0200
+Message-ID: <CA+U=DsrXhK_R-Xu-k-3V+-6CbiDuHX5kfGXLUiXLV2TLouxeUg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] iio: set default trig->dev.parent
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Input device's user counter is supposed to be accessed only while holding
-input->mutex.  Commit d69f0a43c677 ("Input: use input_device_enabled()")
-recently switched cyapa to using the dedicated API and it uncovered the
-fact that cyapa driver violated this constraint.
+On Thu, Dec 10, 2020 at 10:42 PM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> When allocated with [devm_]iio_trigger_alloc(), set trig device parent to
+> the device the trigger is allocated for by default.
+>
+> It can always be reassigned in the probe routine.
+>
+> Change iio_trigger_alloc() API to add the device pointer to be coherent
+> with devm_iio_trigger_alloc, using similar interface to
+> iio_device_alloc().
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  drivers/iio/accel/bma180.c                    |  3 +-
+>  drivers/iio/adc/ad_sigma_delta.c              |  4 +--
+>  drivers/iio/adc/at91_adc.c                    |  3 +-
+>  drivers/iio/adc/xilinx-xadc-core.c            |  4 +--
+>  .../common/hid-sensors/hid-sensor-trigger.c   |  4 +--
+>  .../common/st_sensors/st_sensors_trigger.c    |  4 +--
+>  drivers/iio/gyro/itg3200_buffer.c             |  3 +-
+>  drivers/iio/industrialio-trigger.c            | 31 ++++++++++++-------
+>  drivers/iio/trigger/iio-trig-hrtimer.c        |  2 +-
+>  drivers/iio/trigger/iio-trig-interrupt.c      |  2 +-
+>  drivers/iio/trigger/iio-trig-loop.c           |  2 +-
+>  drivers/iio/trigger/iio-trig-sysfs.c          |  3 +-
+>  include/linux/iio/trigger.h                   |  3 +-
+>  13 files changed, 36 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+> index 6b74c2b04c15..0526021a1aed 100644
+> --- a/drivers/iio/accel/bma180.c
+> +++ b/drivers/iio/accel/bma180.c
+> @@ -1041,7 +1041,7 @@ static int bma180_probe(struct i2c_client *client,
+>         indio_dev->info = &bma180_info;
+>
+>         if (client->irq > 0) {
+> -               data->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
+> +               data->trig = iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
+>                         indio_dev->id);
+>                 if (!data->trig) {
+>                         ret = -ENOMEM;
+> @@ -1056,7 +1056,6 @@ static int bma180_probe(struct i2c_client *client,
+>                         goto err_trigger_free;
+>                 }
+>
+> -               data->trig->dev.parent = dev;
+>                 data->trig->ops = &bma180_trigger_ops;
+>                 iio_trigger_set_drvdata(data->trig, indio_dev);
+>                 indio_dev->trig = iio_trigger_get(data->trig);
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+> index 86039e9ecaca..c0ec61592283 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -477,7 +477,8 @@ static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
+>         struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+>         int ret;
+>
+> -       sigma_delta->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
+> +       sigma_delta->trig = iio_trigger_alloc(&sigma_delta->spi->dev,
+> +                                               "%s-dev%d", indio_dev->name,
+>                                                 indio_dev->id);
+>         if (sigma_delta->trig == NULL) {
+>                 ret = -ENOMEM;
+> @@ -498,7 +499,6 @@ static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
+>                 sigma_delta->irq_dis = true;
+>                 disable_irq_nosync(sigma_delta->spi->irq);
+>         }
+> -       sigma_delta->trig->dev.parent = &sigma_delta->spi->dev;
+>         iio_trigger_set_drvdata(sigma_delta->trig, sigma_delta);
+>
+>         ret = iio_trigger_register(sigma_delta->trig);
+> diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+> index 9b2c548fae95..d4f5358bf22b 100644
+> --- a/drivers/iio/adc/at91_adc.c
+> +++ b/drivers/iio/adc/at91_adc.c
+> @@ -606,12 +606,11 @@ static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *idev,
+>         struct iio_trigger *trig;
+>         int ret;
+>
+> -       trig = iio_trigger_alloc("%s-dev%d-%s", idev->name,
+> +       trig = iio_trigger_alloc(idev->dev.parent, "%s-dev%d-%s", idev->name,
+>                                  idev->id, trigger->name);
+>         if (trig == NULL)
+>                 return NULL;
+>
+> -       trig->dev.parent = idev->dev.parent;
+>         iio_trigger_set_drvdata(trig, idev);
+>         trig->ops = &at91_adc_trigger_ops;
+>
+> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+> index f93c34fe5873..8d2f7dfbc069 100644
+> --- a/drivers/iio/adc/xilinx-xadc-core.c
+> +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> @@ -708,12 +708,12 @@ static struct iio_trigger *xadc_alloc_trigger(struct iio_dev *indio_dev,
+>         struct iio_trigger *trig;
+>         int ret;
+>
+> -       trig = iio_trigger_alloc("%s%d-%s", indio_dev->name,
+> +       trig = iio_trigger_alloc(indio_dev->dev.parent,
+> +                               "%s%d-%s", indio_dev->name,
+>                                 indio_dev->id, name);
+>         if (trig == NULL)
+>                 return ERR_PTR(-ENOMEM);
+>
+> -       trig->dev.parent = indio_dev->dev.parent;
+>         trig->ops = &xadc_trigger_ops;
+>         iio_trigger_set_drvdata(trig, iio_priv(indio_dev));
+>
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> index ff375790b7e8..7988e59b2f70 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> @@ -257,14 +257,14 @@ int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
+>                 return ret;
+>         }
+>
+> -       trig = iio_trigger_alloc("%s-dev%d", name, indio_dev->id);
+> +       trig = iio_trigger_alloc(indio_dev->dev.parent,
+> +                                       "%s-dev%d", name, indio_dev->id);
+>         if (trig == NULL) {
+>                 dev_err(&indio_dev->dev, "Trigger Allocate Failed\n");
+>                 ret = -ENOMEM;
+>                 goto error_triggered_buffer_cleanup;
+>         }
+>
+> -       trig->dev.parent = indio_dev->dev.parent;
+>         iio_trigger_set_drvdata(trig, attrb);
+>         trig->ops = &hid_sensor_trigger_ops;
+>         ret = iio_trigger_register(trig);
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> index 0507283bd4c1..23d8ec7160fc 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> @@ -127,7 +127,8 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>         unsigned long irq_trig;
+>         int err;
+>
+> -       sdata->trig = iio_trigger_alloc("%s-trigger", indio_dev->name);
+> +       sdata->trig = iio_trigger_alloc(sdata->dev, "%s-trigger",
+> +                                       indio_dev->name);
+>         if (sdata->trig == NULL) {
+>                 dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
+>                 return -ENOMEM;
+> @@ -135,7 +136,6 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>
+>         iio_trigger_set_drvdata(sdata->trig, indio_dev);
+>         sdata->trig->ops = trigger_ops;
+> -       sdata->trig->dev.parent = sdata->dev;
+>
+>         irq_trig = irqd_get_trigger_type(irq_get_irq_data(sdata->irq));
+>         /*
+> diff --git a/drivers/iio/gyro/itg3200_buffer.c b/drivers/iio/gyro/itg3200_buffer.c
+> index 1c3c1bd53374..af0aaa146f0c 100644
+> --- a/drivers/iio/gyro/itg3200_buffer.c
+> +++ b/drivers/iio/gyro/itg3200_buffer.c
+> @@ -113,7 +113,7 @@ int itg3200_probe_trigger(struct iio_dev *indio_dev)
+>         int ret;
+>         struct itg3200 *st = iio_priv(indio_dev);
+>
+> -       st->trig = iio_trigger_alloc("%s-dev%d", indio_dev->name,
+> +       st->trig = iio_trigger_alloc(&st->i2c->dev, "%s-dev%d", indio_dev->name,
+>                                      indio_dev->id);
+>         if (!st->trig)
+>                 return -ENOMEM;
+> @@ -127,7 +127,6 @@ int itg3200_probe_trigger(struct iio_dev *indio_dev)
+>                 goto error_free_trig;
+>
+>
+> -       st->trig->dev.parent = &st->i2c->dev;
+>         st->trig->ops = &itg3200_trigger_ops;
+>         iio_trigger_set_drvdata(st->trig, indio_dev);
+>         ret = iio_trigger_register(st->trig);
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> index 583bb51f65a7..83006d1f7eea 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -516,8 +516,10 @@ static void iio_trig_subirqunmask(struct irq_data *d)
+>         trig->subirqs[d->irq - trig->subirq_base].enabled = true;
+>  }
+>
+> -static __printf(1, 0)
+> -struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
+> +static __printf(2, 0)
+> +struct iio_trigger *viio_trigger_alloc(struct device *dev,
+> +                                      const char *fmt,
+> +                                      va_list vargs)
+>  {
+>         struct iio_trigger *trig;
+>         int i;
+> @@ -526,6 +528,7 @@ struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
+>         if (!trig)
+>                 return NULL;
+>
+> +       trig->dev.parent = dev;
+>         trig->dev.type = &iio_trig_type;
+>         trig->dev.bus = &iio_bus_type;
+>         device_initialize(&trig->dev);
+> @@ -561,13 +564,23 @@ struct iio_trigger *viio_trigger_alloc(const char *fmt, va_list vargs)
+>         return NULL;
+>  }
+>
+> -struct iio_trigger *iio_trigger_alloc(const char *fmt, ...)
+> +/**
+> + * iio_trigger_alloc - Allocate a trigger
+> + * @dev:               Device to allocate iio_trigger for
 
-This patch removes checks whether the input device is open when clearing
-device queues when changing device's power mode as there is no harm in
-sending input events through closed input device - the events will simply
-be dropped by the input core.
+I think 'parent'  would be a better variable name for this.
+And the description could be something like 'Parent device for this trigger'
+I'd also propagate the name change in the entire 'industrialio-trigger.c' file.
 
-Note that there are more places in cyapa driver that call
-input_device_enabled() without holding input->mutex, those are left
-unfixed for now.
-
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
-
-Marek, could you please try this one?
-
- drivers/input/mouse/cyapa_gen3.c |    5 +----
- drivers/input/mouse/cyapa_gen5.c |    3 +--
- 2 files changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/input/mouse/cyapa_gen3.c b/drivers/input/mouse/cyapa_gen3.c
-index a97f4acb6452..4a9022faf945 100644
---- a/drivers/input/mouse/cyapa_gen3.c
-+++ b/drivers/input/mouse/cyapa_gen3.c
-@@ -907,7 +907,6 @@ static u16 cyapa_get_wait_time_for_pwr_cmd(u8 pwr_mode)
- static int cyapa_gen3_set_power_mode(struct cyapa *cyapa, u8 power_mode,
- 		u16 always_unused, enum cyapa_pm_stage pm_stage)
- {
--	struct input_dev *input = cyapa->input;
- 	u8 power;
- 	int tries;
- 	int sleep_time;
-@@ -953,7 +952,6 @@ static int cyapa_gen3_set_power_mode(struct cyapa *cyapa, u8 power_mode,
- 	 * depending on the command's content.
- 	 */
- 	if (cyapa->operational &&
--	    input && input_device_enabled(input) &&
- 	    (pm_stage == CYAPA_PM_RUNTIME_SUSPEND ||
- 	     pm_stage == CYAPA_PM_RUNTIME_RESUME)) {
- 		/* Try to polling in 120Hz, read may fail, just ignore it. */
-@@ -1223,8 +1221,7 @@ static int cyapa_gen3_try_poll_handler(struct cyapa *cyapa)
- 	    (data.finger_btn & OP_DATA_VALID) != OP_DATA_VALID)
- 		return -EINVAL;
- 
--	return cyapa_gen3_event_process(cyapa, &data);
--
-+	return cyapa->input ? cyapa_gen3_event_process(cyapa, &data) : 0;
- }
- 
- static int cyapa_gen3_initialize(struct cyapa *cyapa) { return 0; }
-diff --git a/drivers/input/mouse/cyapa_gen5.c b/drivers/input/mouse/cyapa_gen5.c
-index abf42f77b4c5..afc5aa4dcf47 100644
---- a/drivers/input/mouse/cyapa_gen5.c
-+++ b/drivers/input/mouse/cyapa_gen5.c
-@@ -518,8 +518,7 @@ int cyapa_empty_pip_output_data(struct cyapa *cyapa,
- 			*len = length;
- 			/* Response found, success. */
- 			return 0;
--		} else if (cyapa->operational &&
--			   input && input_device_enabled(input) &&
-+		} else if (cyapa->operational && input &&
- 			   (pm_stage == CYAPA_PM_RUNTIME_RESUME ||
- 			    pm_stage == CYAPA_PM_RUNTIME_SUSPEND)) {
- 			/* Parse the data and report it if it's valid. */
+> + * @fmt:               trigger name format. If it includes format
+> + *                     specifiers, the additional arguments following
+> + *                     format are formatted and inserted in the resulting
+> + *                     string replacing their respective specifiers.
+> + * RETURNS:
+> + * Pointer to allocated iio_trigger on success, NULL on failure.
+> + */
+> +struct iio_trigger *iio_trigger_alloc(struct device *dev, const char *fmt, ...)
+>  {
+>         struct iio_trigger *trig;
+>         va_list vargs;
+>
+>         va_start(vargs, fmt);
+> -       trig = viio_trigger_alloc(fmt, vargs);
+> +       trig = viio_trigger_alloc(dev, fmt, vargs);
+>         va_end(vargs);
+>
+>         return trig;
+> @@ -588,12 +601,6 @@ static void devm_iio_trigger_release(struct device *dev, void *res)
+>
+>  /**
+>   * devm_iio_trigger_alloc - Resource-managed iio_trigger_alloc()
+> - * @dev:               Device to allocate iio_trigger for
+> - * @fmt:               trigger name format. If it includes format
+> - *                     specifiers, the additional arguments following
+> - *                     format are formatted and inserted in the resulting
+> - *                     string replacing their respective specifiers.
+> - *
+>   * Managed iio_trigger_alloc.  iio_trigger allocated with this function is
+>   * automatically freed on driver detach.
+>   *
+> @@ -601,7 +608,7 @@ static void devm_iio_trigger_release(struct device *dev, void *res)
+>   * Pointer to allocated iio_trigger on success, NULL on failure.
+>   */
+>  struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
+> -                                               const char *fmt, ...)
+> +                                          const char *fmt, ...)
+>  {
+>         struct iio_trigger **ptr, *trig;
+>         va_list vargs;
+> @@ -613,7 +620,7 @@ struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
+>
+>         /* use raw alloc_dr for kmalloc caller tracing */
+>         va_start(vargs, fmt);
+> -       trig = viio_trigger_alloc(fmt, vargs);
+> +       trig = viio_trigger_alloc(dev, fmt, vargs);
+>         va_end(vargs);
+>         if (trig) {
+>                 *ptr = trig;
+> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
+> index f59bf8d58586..3591bbbedf0c 100644
+> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
+> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
+> @@ -122,7 +122,7 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
+>         if (!trig_info)
+>                 return ERR_PTR(-ENOMEM);
+>
+> -       trig_info->swt.trigger = iio_trigger_alloc("%s", name);
+> +       trig_info->swt.trigger = iio_trigger_alloc(NULL, "%s", name);
+>         if (!trig_info->swt.trigger) {
+>                 ret = -ENOMEM;
+>                 goto err_free_trig_info;
+> diff --git a/drivers/iio/trigger/iio-trig-interrupt.c b/drivers/iio/trigger/iio-trig-interrupt.c
+> index 94a487caf421..f746c460bf2a 100644
+> --- a/drivers/iio/trigger/iio-trig-interrupt.c
+> +++ b/drivers/iio/trigger/iio-trig-interrupt.c
+> @@ -45,7 +45,7 @@ static int iio_interrupt_trigger_probe(struct platform_device *pdev)
+>
+>         irq = irq_res->start;
+>
+> -       trig = iio_trigger_alloc("irqtrig%d", irq);
+> +       trig = iio_trigger_alloc(NULL, "irqtrig%d", irq);
+>         if (!trig) {
+>                 ret = -ENOMEM;
+>                 goto error_ret;
+> diff --git a/drivers/iio/trigger/iio-trig-loop.c b/drivers/iio/trigger/iio-trig-loop.c
+> index 4a00668e3258..96ec06bbe546 100644
+> --- a/drivers/iio/trigger/iio-trig-loop.c
+> +++ b/drivers/iio/trigger/iio-trig-loop.c
+> @@ -84,7 +84,7 @@ static struct iio_sw_trigger *iio_trig_loop_probe(const char *name)
+>         if (!trig_info)
+>                 return ERR_PTR(-ENOMEM);
+>
+> -       trig_info->swt.trigger = iio_trigger_alloc("%s", name);
+> +       trig_info->swt.trigger = iio_trigger_alloc(NULL, "%s", name);
+>         if (!trig_info->swt.trigger) {
+>                 ret = -ENOMEM;
+>                 goto err_free_trig_info;
+> diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
+> index e09e58072872..b861ee1bc79a 100644
+> --- a/drivers/iio/trigger/iio-trig-sysfs.c
+> +++ b/drivers/iio/trigger/iio-trig-sysfs.c
+> @@ -149,7 +149,7 @@ static int iio_sysfs_trigger_probe(int id)
+>                 goto out1;
+>         }
+>         t->id = id;
+> -       t->trig = iio_trigger_alloc("sysfstrig%d", id);
+> +       t->trig = iio_trigger_alloc(&iio_sysfs_trig_dev, "sysfstrig%d", id);
+>         if (!t->trig) {
+>                 ret = -ENOMEM;
+>                 goto free_t;
+> @@ -157,7 +157,6 @@ static int iio_sysfs_trigger_probe(int id)
+>
+>         t->trig->dev.groups = iio_sysfs_trigger_attr_groups;
+>         t->trig->ops = &iio_sysfs_trigger_ops;
+> -       t->trig->dev.parent = &iio_sysfs_trig_dev;
+>         iio_trigger_set_drvdata(t->trig, t);
+>
+>         init_irq_work(&t->work, iio_sysfs_trigger_work);
+> diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
+> index cad8325903f9..089e1961810c 100644
+> --- a/include/linux/iio/trigger.h
+> +++ b/include/linux/iio/trigger.h
+> @@ -161,7 +161,8 @@ void iio_trigger_poll_chained(struct iio_trigger *trig);
+>
+>  irqreturn_t iio_trigger_generic_data_rdy_poll(int irq, void *private);
+>
+> -__printf(1, 2) struct iio_trigger *iio_trigger_alloc(const char *fmt, ...);
+> +__printf(2, 3) struct iio_trigger *iio_trigger_alloc(struct device *dev,
+> +                                                    const char *fmt, ...);
+>  void iio_trigger_free(struct iio_trigger *trig);
+>
+>  /**
+> --
+> 2.29.2.576.ga3fc446d84-goog
+>

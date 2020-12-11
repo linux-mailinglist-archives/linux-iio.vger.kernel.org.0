@@ -2,172 +2,215 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1272D756C
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 13:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C91F2D7E3C
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Dec 2020 19:41:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730561AbgLKMQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Dec 2020 07:16:36 -0500
-Received: from mail-bn8nam11on2077.outbound.protection.outlook.com ([40.107.236.77]:18562
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2390915AbgLKMQL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 11 Dec 2020 07:16:11 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bwcb/4tgrWR3c91j4qHVs3K7jU0+MJT5Zxpp7AY+u3swMXnEgBCGhg4ydbX4FTL5bmQGqKrxoMk505dtAdzoELTFCvQ8FTmhOjbcHJO4qyPURgTpykwXE2aE5m1J2CZe/ylUg9HF7EsDX2JWjoheE+njzQJXwuvLEegxbOcTuiU9WUwTy75N5nPWYESRTlG1dTShF8NtHj62P7qXWT9RKyev3QRAkas5GWB6L9nBBOSqdSV9SOkUayZtEKjZlK72x/sQ197h9i/2uxPLwGsELNM1AxCke7xyerJs/SzfltHpAMs7y9URf+Nu2huj9xHMvTAiq7Q4yPTOhktxPoSR1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xBUltC8qdaAMRFN8nAlrHme0pLoWsGDXkkWOIiOTNAE=;
- b=kbIH10HTRKMvdizaoVNHagpzWik0IPY9QHMrv9uFPCdhUn/4Ien74NkH/8C3yYYoFH/6fcFSYu5pkwX21FmO2rlRpzQJ1MaZnnDPvgm+XKouMaUPXVLjQ0KIU1WdOndujvqH1QCQNdaZ9LAis7LX8c9bgDV/aNA0GlJIs49FgwNqrhp2X/gZ2rhE2aHmH20ZSNHG3QkRT9v8SvVH4djZ9NOoZqCXzQbJVI3iK037jLlbBlQjS/wzgn1ASf8HYmeP7q7r8FKOeFs2LLSl4CJHIj6rcX3xc0SCgiH2dWpsp8MQnFmJZOXw6d8RZ4Szyazn3pH+AohN08KLe60vFEF43g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xBUltC8qdaAMRFN8nAlrHme0pLoWsGDXkkWOIiOTNAE=;
- b=FBi1eMblY1JxcFrDVt11pV3GtQ4SA9w4e86XFSFvFf+PFrNO2mqScY0ppRt4b/MM7exjRDkvi5RX6ctycXhXZwtMHRJMZpbVW7CEVOwe20obGtzbKxLi3ZlzGQbQo82exKFK8GVIxxsvMvWHcRqVk2IUHI2DFH0PyLbcG6p36js=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by SJ0PR02MB7247.namprd02.prod.outlook.com (2603:10b6:a03:29b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Fri, 11 Dec
- 2020 12:15:16 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::309b:7e5a:bf9b:1ef4]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::309b:7e5a:bf9b:1ef4%6]) with mapi id 15.20.3654.019; Fri, 11 Dec 2020
- 12:15:16 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        id S2406194AbgLKSkK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Dec 2020 13:40:10 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:18108 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391319AbgLKSjr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Dec 2020 13:39:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1607711814;
+        s=strato-dkim-0002; d=gerhold.net;
+        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Subject:Sender;
+        bh=n0ZAmmH9D9CDGDYMnyJLYA7Il7vUH7f1aPjp9QFWHPw=;
+        b=iM2DjNpjiPF/WABZUvpMocl1f9u1OYptsticEJ8v81+5nNy0M0seL8fzo3Oq/+E5bF
+        Ny5oVD5nwkK2a6G0o8NNUAL1tnDFNeyOuUKqvMyStOFz4A/5UIi+VxGYD+p4cyhxxgGW
+        3UC4uBkVt82ItQyNqfRobY9L6TmlFEv72mY+60bAlcILSSbsagvtw62PW198EfVK6y+z
+        TIAZjXY1c1Cae0bjhazQZv7eVFYtaI7or/3Wh7pdOv7eNN9KxxDQFy0Rv7lxNN8J6Aph
+        W0IHNFOfbha2unwEwVvdEdjwMxm5Q1Cg0S89JbMXIG+aKnpxOcwV0fXRLaQ2biu+7wOV
+        9Zqw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8jxIczFYoo="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+        by smtp.strato.de (RZmta 47.7.1 DYNA|AUTH)
+        with ESMTPSA id 409b08wBBIak4dD
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Fri, 11 Dec 2020 19:36:46 +0100 (CET)
+Date:   Fri, 11 Dec 2020 19:36:40 +0100
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michal Simek <michals@xilinx.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: RE: [PATH v3 0/3] iio: adc: xilinx: use even more devres
-Thread-Topic: [PATH v3 0/3] iio: adc: xilinx: use even more devres
-Thread-Index: AQHWx1Zf70/YCanXOUOBVqqdgaT4Wanx09Qg
-Date:   Fri, 11 Dec 2020 12:15:15 +0000
-Message-ID: <BY5PR02MB6916FD4844C5471C635DAD1AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20201130142759.28216-1-brgl@bgdev.pl>
- <20201130202110.62e7f989@archlinux>
-In-Reply-To: <20201130202110.62e7f989@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=xilinx.com;
-x-originating-ip: [149.199.80.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: d940e899-b65c-47a8-6f37-08d89dce6b3a
-x-ms-traffictypediagnostic: SJ0PR02MB7247:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SJ0PR02MB72471A01A9EC7179F8E805DCA9CA0@SJ0PR02MB7247.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: oKjTqTISBCkEKaZlxzYCdBh0iPiTnneUMGniEeI4DVojTNx/cRu7AgrUcBNRC/uP1BeTwxlaii2MFyC4Qfv9qiS1YSmut2H5f+ywxIGWwnQfpMBKbAsQES2/+hWaRkKKYp8bXMwRNggkJ0PtDYerHBoHG6PvNjL8MLyU5oRbRCoumCC7P7T9Mcq9OYYSstTyaVQTGUlgoWkcSQ/DtcL9R3+08sW3y14rbmhPM2EtVDAKdCCzuo676ubsAegdIvkTSsfnyxdCy0+YvtCxv9wxn8FUGAGUO37UQlHC6AAnLQlQMwxWi4axYfIvTo/6ovti
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(366004)(346002)(376002)(5660300002)(66556008)(66446008)(64756008)(8676002)(33656002)(76116006)(66476007)(8936002)(66946007)(52536014)(26005)(55016002)(71200400001)(110136005)(2906002)(83380400001)(186003)(54906003)(508600001)(4326008)(7696005)(9686003)(86362001)(6506007)(53546011);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?jdA3ZuRCJRk/ZsOFlbZX+pEuaR7WHs8I0QqyZTSUEPQI6zITjjK1UkUMZrdD?=
- =?us-ascii?Q?vquEMFeOcebxnXAyFYIx9taqij4k9Wyfq84+wcgwYfoa9FXP9gAJ18w0HY/V?=
- =?us-ascii?Q?xVwwK/zxPos4z+BcwWhO3JJHfxDLZKyrEPA3zccmL5gXQhjyVrAp0o5xr6pK?=
- =?us-ascii?Q?yFl1MiMRdqXwMcvV96APYCcK0f7aOJSA+/ia1Q35KN2g+aZ/Uf6KHMHfJxyc?=
- =?us-ascii?Q?QBV8MDI+apjsTzBDQ2fhGM9zJpHQAknlihqzUHjPZ7r2/JodfYgzakcNoKiA?=
- =?us-ascii?Q?4bn+4tSwLLt25G56AS2MUwpNbiLLg+O0ZfW10XWy3fapeqWAvjGKnPkIXpGs?=
- =?us-ascii?Q?9canBdk0qAsQ5J6Hbdi12ZvOrlYNhIjLetm/i22nSUTtQ7UDjYV+lpW/wcbH?=
- =?us-ascii?Q?2TUgKWIH4wg1p25p6kKlk6xc3mCTWN/ZswuU1+kqExPhNHNGybVqS4irBl1h?=
- =?us-ascii?Q?QptQaCrVPxavKLF1F5MGpnGDZe86UkLWLF0WY9Qjo99vmaUbc/LNPjjfz4HP?=
- =?us-ascii?Q?qO7sfT2fPmf19aozuSS9DThxCL/MIGvn/OiAlnu8wveDImTOHnrTa15VoJK/?=
- =?us-ascii?Q?OUnKObLdtpapJXcHScoVYqdiFp43JbPmLqGVf9sgQmF2Xws9QxP0ibgseHOM?=
- =?us-ascii?Q?tNWcyzdoFsbfd2+M7YEsUjUaETLObZu53i+v8zM4q0kNm04N7q172Ucl68Yx?=
- =?us-ascii?Q?YY+9jc5+LCZoROjTJN//aFYPiVNhJjR1P/ACEKawKqdDZfkwfK0LCkKW4iJ6?=
- =?us-ascii?Q?TJI0z6MUbOJf1P/jRSD2uGrYoDXdJoz4DCMf9EQRV5Z6sT/p8zo7gPA18YPN?=
- =?us-ascii?Q?Dj2aWL/rw9sOlJ9lAtc2MbOTP2LXCV9FvybUNUaOUcV7XU7S3eefVlbK0XXN?=
- =?us-ascii?Q?OfSgyqcUz8nI5NrAcfERN0dtEsVm+I24KvDeDIC63bR7z0sAVcqrH7CGvLI3?=
- =?us-ascii?Q?UZ6Y1CkK/NgmcJU7WYU59O/uGsOMj7+xNCmnBJg9yrI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 4/4] iio: gyro: bmg160: Add rudimentary regulator support
+Message-ID: <X9O8OEHSZ40OhrB/@gerhold.net>
+References: <20201202093322.77114-1-stephan@gerhold.net>
+ <20201202093322.77114-4-stephan@gerhold.net>
+ <20201205153848.697c77a5@archlinux>
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d940e899-b65c-47a8-6f37-08d89dce6b3a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Dec 2020 12:15:15.9137
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PmSVX7zEBhbcQT7FBOaSkGk/qqTMNjnV+vmLrw/zHkOyXCqgqK2rXJzouCp0L6aY3O+fMVNp7nfETzRpinSEUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7247
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201205153848.697c77a5@archlinux>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> -----Original Message-----
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Monday 30 November 2020 8:21 PM
-> To: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
-> <pmeerw@pmeerw.net>; Michal Simek <michals@xilinx.com>; linux-
-> iio@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> kernel@vger.kernel.org; Bartosz Golaszewski
-> <bgolaszewski@baylibre.com>; Anand Ashok Dumbre
-> <ANANDASH@xilinx.com>
-> Subject: Re: [PATH v3 0/3] iio: adc: xilinx: use even more devres
->=20
-> On Mon, 30 Nov 2020 15:27:56 +0100
-> Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->=20
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > This is a follow-up to commit 750628c79bb1 ("iio: adc: xilinx-xadc:
-> > use devm_krealloc()"). I noticed we can use even more devres helpers
-> > and entirely drop the remove() callback.
-> >
-> > v1 -> v2:
-> > - squash three patches adding more devres calls into one for easier
-> > review
-> > - don't insist on the 80 characters limit
-> > - add a new helper: devm_krealloc_array() and use it
-> >
-> > v2 -> v3:
-> > - drop the devm_krealloc_array() helper
-> >
-> > Bartosz Golaszewski (3):
-> >   iio: adc: xilinx: use helper variable for &pdev->dev
-> >   iio: adc: xilinx: use devm_krealloc() instead of kfree() + kcalloc()
-> >   iio: adc: xilinx: use more devres helpers and remove remove()
-> >
-> >  drivers/iio/adc/xilinx-xadc-core.c | 157
-> > ++++++++++++++---------------
-> >  1 file changed, 74 insertions(+), 83 deletions(-)
-> >
->=20
-> Series looks good to me but would like to leave it a little longer to let=
- others
-> take a look at it. That will probably mean it falls into next cycle now.
->=20
-> +CC Anand who is looking at another series touching this driver and
-> +might
-> give this one a spin as well.
->=20
-> Thanks,
->=20
-> Jonathan
+Hi Jonathan,
 
-Hi Jonathan, Bartosz,
+On Sat, Dec 05, 2020 at 03:38:48PM +0000, Jonathan Cameron wrote:
+> On Wed,  2 Dec 2020 10:33:22 +0100
+> Stephan Gerhold <stephan@gerhold.net> wrote:
+> 
+> > BMG160 needs VDD and VDDIO regulators that might need to be explicitly
+> > enabled. Add some rudimentary support to obtain and enable these
+> > regulators during probe() and disable them during remove()
+> > or on the error path.
+> > 
+> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> 
+> This one is a bit tricky due to the extensive use of devm_ managed
+> cleanup.  Normally I'd be very fussy about ensuring remove order
+> is precise reverse of probe, but in this driver it isn't quite
+> already, due to that chip_init being before the interrupt allocation.
+> 
+> Having said that I'd rather not make it worse.  Would you mind
+> using automated clean up of the regulator_enable as well via
+> devm_add_action_or_reset() call?
+> 
 
-I have tested and reviewed the patch and everything looks good.
-I have another patch series on the same files that might cause conflicts.
+Good point, devm_add_action_or_reset() definitely looks better for this
+driver. I will send a v2 with just the bmg160 part shortly.
 
-Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
-Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
+> As a side note, should we not have more cleanup of chip_init()
+> in error paths, specifically putting the device into it's suspended
+> mode?  Obviously nothing to do with your patch...
+> 
 
-Thanks,
-Anand
+I'm not sure. I guess when bmg160_chip_init() fails there is some kind
+of communication problem or a problem with the chip. Chances are that
+putting it back into suspend mode would also fail.
+
+But I don't really know enough about the hardware to say more. :)
+
+I have also fixed your other comments below in v2.
+
+Thanks!
+Stephan
+
+> 
+> > ---
+> >  drivers/iio/gyro/bmg160_core.c | 38 +++++++++++++++++++++++++++-------
+> >  1 file changed, 31 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+> > index 2d5015801a75..4baa4169c5a2 100644
+> > --- a/drivers/iio/gyro/bmg160_core.c
+> > +++ b/drivers/iio/gyro/bmg160_core.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/iio/trigger_consumer.h>
+> >  #include <linux/iio/triggered_buffer.h>
+> >  #include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> >  #include "bmg160.h"
+> >  
+> >  #define BMG160_IRQ_NAME		"bmg160_event"
+> > @@ -92,6 +93,7 @@
+> >  
+> >  struct bmg160_data {
+> >  	struct regmap *regmap;
+> > +	struct regulator_bulk_data regulators[2];
+> >  	struct iio_trigger *dready_trig;
+> >  	struct iio_trigger *motion_trig;
+> >  	struct iio_mount_matrix orientation;
+> > @@ -1077,14 +1079,28 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >  	data->irq = irq;
+> >  	data->regmap = regmap;
+> >  
+> > +	data->regulators[0].supply = "vdd";
+> > +	data->regulators[1].supply = "vddio";
+> > +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->regulators),
+> > +				      data->regulators);
+> > +	if (ret)
+> > +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+> > +
+> >  	ret = iio_read_mount_matrix(dev, "mount-matrix",
+> >  				&data->orientation);
+> >  	if (ret)
+> >  		return ret;
+> 
+> Why not put regulator get and enable together?  
+> 
+> >  
+> > +	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
+> > +				    data->regulators);
+> > +	if (ret < 0) {
+> > +		dev_err(dev, "Failed to enable regulators: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> 
+> If you were to use devm_add_action_or_reset() and a trivial wrapper
+> the disable would be automated, simplifying the error handling etc.
+> 
+> >  	ret = bmg160_chip_init(data);
+> >  	if (ret < 0)
+> > -		return ret;
+> > +		goto err_regulator_disable;
+> >  
+> >  	mutex_init(&data->mutex);
+> >  
+> > @@ -1107,28 +1123,32 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >  						BMG160_IRQ_NAME,
+> >  						indio_dev);
+> >  		if (ret)
+> > -			return ret;
+> > +			goto err_regulator_disable;
+> >  
+> >  		data->dready_trig = devm_iio_trigger_alloc(dev,
+> >  							   "%s-dev%d",
+> >  							   indio_dev->name,
+> >  							   indio_dev->id);
+> > -		if (!data->dready_trig)
+> > -			return -ENOMEM;
+> > +		if (!data->dready_trig) {
+> > +			ret = -ENOMEM;
+> > +			goto err_regulator_disable;
+> > +		}
+> >  
+> >  		data->motion_trig = devm_iio_trigger_alloc(dev,
+> >  							  "%s-any-motion-dev%d",
+> >  							  indio_dev->name,
+> >  							  indio_dev->id);
+> > -		if (!data->motion_trig)
+> > -			return -ENOMEM;
+> > +		if (!data->motion_trig) {
+> > +			ret = -ENOMEM;
+> > +			goto err_regulator_disable;
+> > +		}
+> >  
+> >  		data->dready_trig->dev.parent = dev;
+> >  		data->dready_trig->ops = &bmg160_trigger_ops;
+> >  		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
+> >  		ret = iio_trigger_register(data->dready_trig);
+> >  		if (ret)
+> > -			return ret;
+> > +			goto err_regulator_disable;
+> >  
+> >  		data->motion_trig->dev.parent = dev;
+> >  		data->motion_trig->ops = &bmg160_trigger_ops;
+> > @@ -1174,6 +1194,8 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >  		iio_trigger_unregister(data->dready_trig);
+> >  	if (data->motion_trig)
+> >  		iio_trigger_unregister(data->motion_trig);
+> > +err_regulator_disable:
+> > +	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+> >  
+> >  	return ret;
+> >  }
+> > @@ -1200,6 +1222,8 @@ void bmg160_core_remove(struct device *dev)
+> >  	mutex_lock(&data->mutex);
+> >  	bmg160_set_mode(data, BMG160_MODE_DEEP_SUSPEND);
+> >  	mutex_unlock(&data->mutex);
+> > +
+> > +	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+> >  }
+> >  EXPORT_SYMBOL_GPL(bmg160_core_remove);
+> >  
+> 

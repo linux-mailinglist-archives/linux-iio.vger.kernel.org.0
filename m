@@ -2,35 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 854D72D8EE1
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 17:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C54E12D8EE4
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 17:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389883AbgLMQut (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 11:50:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56228 "EHLO mail.kernel.org"
+        id S1726531AbgLMQ4P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 11:56:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58194 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726442AbgLMQut (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 11:50:49 -0500
+        id S1726442AbgLMQ4P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 11:56:15 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5ECD923121;
-        Sun, 13 Dec 2020 16:50:07 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 16:50:03 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id C04F323121;
+        Sun, 13 Dec 2020 16:55:33 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 16:55:30 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-hwmon@vger.kernel.org
-Subject: Re: IIO Driver for TMP117 Temperature sensor
-Message-ID: <20201213165003.5b7c1896@archlinux>
-In-Reply-To: <729575c9-317c-a2ae-9ded-8732f3cc481d@roeck-us.net>
-References: <CANk7y0gAChikUBf-ap328YNQd4nrw63BiFH9dRLLDuZ0SnneMA@mail.gmail.com>
-        <CA+U=Dsr=SCdSsbsbdY++NwD4xQjr6PZuoOqa_Ctq6ig+GuvO=w@mail.gmail.com>
-        <dd7f7015-aed4-8628-0f23-e144fdacc9e7@roeck-us.net>
-        <20201213151253.059e541c@archlinux>
-        <729575c9-317c-a2ae-9ded-8732f3cc481d@roeck-us.net>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: ad5504: Fix setting power-down state
+Message-ID: <20201213165530.18dce485@archlinux>
+In-Reply-To: <20201209104649.5794-1-lars@metafoo.de>
+References: <20201209104649.5794-1-lars@metafoo.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,97 +34,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 13 Dec 2020 08:08:26 -0800
-Guenter Roeck <linux@roeck-us.net> wrote:
+On Wed,  9 Dec 2020 11:46:49 +0100
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> On 12/13/20 7:12 AM, Jonathan Cameron wrote:
-> > On Wed, 9 Dec 2020 11:48:40 -0800
-> > Guenter Roeck <linux@roeck-us.net> wrote:
-> >   
-> >> On 12/9/20 12:11 AM, Alexandru Ardelean wrote:  
-> >>> On Tue, Dec 8, 2020 at 6:10 PM Puranjay Mohan <puranjay12@gmail.com> wrote:    
-> >>>>
-> >>>> I have this TI's TMP117 sensor with me and I was thinking about writing an
-> >>>> IIO driver for it as a hobby project. Is the IIO subsystem the correct
-> >>>> place for this driver? if yes, can someone help me get started with this,
-> >>>> I haven't written an IIO driver before. I have this sensor and also a
-> >>>> raspberry pi with me for testing.    
-> >>>
-> >>> This could also fit into drivers/hwmon.
-> >>> Looking at the HWMON subsystem there are more TMP drivers there
-> >>> (TMP102/103/108/401/513).
-> >>> The first 3 seem a bit more similar to TMP117 (in terms of register map).
-> >>>     
-> >>
-> >> It would probably be better suited for hwmon (it has limit registers,
-> >> suggesting a common use as hardware monitoring device).  
-> > It is a curious part.  I suspect TI based their design for a medical grade
-> > digital thermometer chip on an existing hwmon part.
-> > 
-> > The limit registers are very simple so could be supported by IIO.
-> > This sits somewhere in the middle of high end thermocouple chips which
-> > tend to be in IIO and typically lower accuracy / range hwmon parts.
-> > 
-> > It's in the fuzzy borderline region so I doubt anyone would raise strong
-> > objections to which subsystem it was in.  Guenter has fallen on the
-> > hwmon side of things and I'm fine with that.
-> >   
+> The power-down mask of the ad5504 is actually a power-up mask. Meaning if
+> a bit is set the corresponding channel is powered up and if it is not set
+> the channel is powered down.
 > 
-> On the other side, it turns out that there is already tmp107 support
-> in iio, and tmp107 is pretty much the spi equivalent of the same chip.
-> So it really depends on the use case. If the user wants to use the iio
-> subsystem, I am fine with it. We just need to remind people that this
-> implies no or only limited hwmon support.
+> The driver currently has this the wrong way around, resulting in the
+> channel being powered up when requested to be powered down and vice versa.
 > 
-> [ I really need to spend the time to write a hwmon->iio bridge.
->   The iio->hwmon bridge is a bit limited - I have not been able to
->   figure out how to support limit registers (or event values)
->   and events, and I don't think it is possible. ]
+> Fixes: 3bbbf150ffde ("staging:iio:dac:ad5504: Use strtobool for boolean values")
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> ---
+> Stumbled upon this while looking at something else. It is untested, but I
+> think it should be right. Alex can you double check?
 
-So far IIO doesn't have an in kernel consumer interface for
-events. It shouldn't be that hard to add one though and it 
-has been on the todo list for a very long time.  We've discussed
-it a few times and concluded that there are some short cuts such
-as sending all events to all consumers and relying on the receiver
-to do any necessary filtering. It's a bit messy but it makes for
-much simpler core code.
+I read the datasheet as saying this fix is right but will wait for
+a confirmation from Alex.
 
-Maybe I'll get bored enough over xmas to look at it...
+Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/dac/ad5504.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Guenter
-> 
-> > Jonathan
-> >   
-> >>  
-> >>> Let's see what others have to add.
-> >>> But, all-in-all whatever driver you end up writing, the easiest method
-> >>> is to copy an existing similar driver and extend it.
-> >>> Sometimes, a part can be added to an existing driver.
-> >>> At a quick scan through existing drivers, it doesn't look like TMP117
-> >>> is similar to existing drivers, so it may require a new driver
-> >>> altogether.    
-> >>
-> >> I don't see an immediate match either, but the tmp102 hwmon driver
-> >> might be a good start.
-> >>
-> >> Guenter
-> >>  
-> >>> I may have missed something though.
-> >>>
-> >>> Thanks
-> >>> Alex
-> >>>     
-> >>>>
-> >>>> --
-> >>>> Thanks and Regards
-> >>>>
-> >>>> Yours Truly,
-> >>>>
-> >>>> Puranjay Mohan    
-> >>  
-> >   
-> 
+> diff --git a/drivers/iio/dac/ad5504.c b/drivers/iio/dac/ad5504.c
+> index 28921b62e642..e9297c25d4ef 100644
+> --- a/drivers/iio/dac/ad5504.c
+> +++ b/drivers/iio/dac/ad5504.c
+> @@ -187,9 +187,9 @@ static ssize_t ad5504_write_dac_powerdown(struct iio_dev *indio_dev,
+>  		return ret;
+>  
+>  	if (pwr_down)
+> -		st->pwr_down_mask |= (1 << chan->channel);
+> -	else
+>  		st->pwr_down_mask &= ~(1 << chan->channel);
+> +	else
+> +		st->pwr_down_mask |= (1 << chan->channel);
+>  
+>  	ret = ad5504_spi_write(st, AD5504_ADDR_CTRL,
+>  				AD5504_DAC_PWRDWN_MODE(st->pwr_down_mode) |
 

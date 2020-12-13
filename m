@@ -2,33 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A09B62D8E00
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 15:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C27F72D8E05
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 15:48:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726813AbgLMOgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 09:36:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44596 "EHLO mail.kernel.org"
+        id S1729843AbgLMOsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 09:48:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726546AbgLMOgb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 09:36:31 -0500
+        id S1729513AbgLMOsE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 09:48:04 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 46725230FB;
-        Sun, 13 Dec 2020 14:35:49 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 14:35:46 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id F013523121;
+        Sun, 13 Dec 2020 14:47:22 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 14:47:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH] iio: acpi_als: Add trigger support
-Message-ID: <20201213143546.1c1d834f@archlinux>
-In-Reply-To: <CAPUE2utiv5-MPx9LHTn0SLTLGcFgVE2YzNS1U3HhZy0W3F+-jw@mail.gmail.com>
-References: <20201204203755.818932-1-gwendal@chromium.org>
-        <20201205182659.7cd23d5b@archlinux>
-        <CAPUE2utiv5-MPx9LHTn0SLTLGcFgVE2YzNS1U3HhZy0W3F+-jw@mail.gmail.com>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 2/3] Documentation/ABI/testing: Add documentation for
+ AD5766 new ABI
+Message-ID: <20201213144718.45de62b7@archlinux>
+In-Reply-To: <20201208131957.34381-2-cristian.pop@analog.com>
+References: <20201208131957.34381-1-cristian.pop@analog.com>
+        <20201208131957.34381-2-cristian.pop@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,136 +35,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-...
+On Tue, 8 Dec 2020 15:19:56 +0200
+Cristian Pop <cristian.pop@analog.com> wrote:
 
-> >  
-> > >  };
-> > > @@ -104,33 +108,20 @@ static void acpi_als_notify(struct acpi_device *device, u32 event)
-> > >  {
-> > >       struct iio_dev *indio_dev = acpi_driver_data(device);
-> > >       struct acpi_als *als = iio_priv(indio_dev);
-> > > -     s32 *buffer = als->evt_buffer;
-> > > -     s64 time_ns = iio_get_time_ns(indio_dev);
-> > > -     s32 val;
-> > > -     int ret;
-> > > -
-> > > -     mutex_lock(&als->lock);
-> > >
-> > > -     memset(buffer, 0, ACPI_ALS_EVT_BUFFER_SIZE);
-> > > +     if (!iio_buffer_enabled(indio_dev) ||
-> > > +         !iio_trigger_using_own(indio_dev))
-> > > +             return;
-> > >
-> > >       switch (event) {
-> > >       case ACPI_ALS_NOTIFY_ILLUMINANCE:
-> > > -             ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
-> > > -             if (ret < 0)
-> > > -                     goto out;
-> > > -             *buffer++ = val;
-> > > +             iio_trigger_poll_chained(als->trig);  
-> >
-> > One issue with this path is it won't have set the poll function timestamp.
-> > It's a long term problem that there is no way for a device to know with
-> > certainty if the top half of it's trigger handler was ever called.
-> >
-> > I have been thinking about adding accessors to pf->timestamp to set
-> > and clear it which could also set a flag to say it had been set.
-> > Hence the get would return an error if not and we could grab a local
-> > timestamp if that happens as it would be the best available.  
-> Looking at other devices that support sw/hw riggers (for instance
-> light/rpr0521.c), pf->timestamp == 0 indicates that the top half was
-> not called.
+> New interface is proposed for dither functionality. This future allows
+> composing  an external signals to the selected output channel.
+> The dither signal can be turned on/off, scaled, inverted, or it can be
+> selected from different sources.
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 
-While it should be vanishingly rare, in theory timestamp == 0 is
-a valid time.  I agree in practice we could use that but I would
-prefer clearer semantics / code readability as would occur with
-explicit accessors.
+Great - much easier to discuss with docs.
 
-> >
-> > Anyhow, I would assume you will get all 0 timestamps currently.
-> >  
-> > >               break;
-> > >       default:
-> > >               /* Unhandled event */
-> > >               dev_dbg(&device->dev, "Unhandled ACPI ALS event (%08x)!\n",
-> > >                       event);
-> > > -             goto out;
-> > >       }
-> > > -
-> > > -     iio_push_to_buffers_with_timestamp(indio_dev, als->evt_buffer, time_ns);
-> > > -
-> > > -out:
-> > > -     mutex_unlock(&als->lock);
-> > >  }
-> > >
-> > >  static int acpi_als_read_raw(struct iio_dev *indio_dev,
-> > > @@ -161,11 +152,37 @@ static const struct iio_info acpi_als_info = {
-> > >       .read_raw               = acpi_als_read_raw,
-> > >  };
-...
+Some comments inline.  Note we need to always construct ABI with the intent
+that it be easy to generalize to other devices. Sometimes that leads to
+slightly different decisions than we might make for a single driver.
 
-> > >  static int acpi_als_add(struct acpi_device *device)
-> > >  {
-> > >       struct acpi_als *als;
-> > >       struct iio_dev *indio_dev;
-> > > -     struct iio_buffer *buffer;
-> > > +     int ret;
-> > >
-> > >       indio_dev = devm_iio_device_alloc(&device->dev, sizeof(*als));
-> > >       if (!indio_dev)
-> > > @@ -180,15 +197,30 @@ static int acpi_als_add(struct acpi_device *device)
-> > >       indio_dev->name = ACPI_ALS_DEVICE_NAME;
-> > >       indio_dev->dev.parent = &device->dev;
-> > >       indio_dev->info = &acpi_als_info;
-> > > -     indio_dev->modes = INDIO_BUFFER_SOFTWARE;
-> > > +     indio_dev->modes = INDIO_DIRECT_MODE;
-> > >       indio_dev->channels = acpi_als_channels;
-> > >       indio_dev->num_channels = ARRAY_SIZE(acpi_als_channels);
-> > >
-> > > -     buffer = devm_iio_kfifo_allocate(&device->dev);
-> > > -     if (!buffer)
-> > > +     als->trig = devm_iio_trigger_alloc(&device->dev,
-> > > +                                        "%s-dev%d",
-> > > +                                        indio_dev->name,
-> > > +                                        indio_dev->id);
-> > > +     if (!als->trig)
-> > >               return -ENOMEM;
-> > >
-> > > -     iio_device_attach_buffer(indio_dev, buffer);
-> > > +     als->trig->dev.parent = &device->dev;  
-> >
-> > Hmm. we should probably push this boilerplate into
-> > devm_iio_trigger_alloc() like we have done for iio devices.  
-> Done in a separate patch. I only clean up obvious calls to set
-> trig->dev.parent.
-> Looking at the code, some triggers parents are set to the request
-> device in more convoluted ways or the grand parent.
+> ---
+>  .../ABI/testing/sysfs-bus-iio-dac-ad5766      | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766 b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+> new file mode 100644
+> index 000000000000..361bbd0862df
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+> @@ -0,0 +1,45 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_pwr
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Dither power on/off. Write 0 to power on dither or 1 to power it off.
 
-Yup. There are a few interesting devices out there, particularly
-when mfd's are involved.  Whilst I'm not sure it's actually
-necessary for them to set the parents as they do, it is now
-ABI so we are stuck with it.
+_enable is what we tend to have for similar cases of turning things on or off.
 
-Thanks for that series btw.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_invert
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Inverts the dither applied to the selected DAC channel. Dither signal is
+> +		not inverted (default) Dither signal is inverted.
 
-Jonathan
+This one is good.  Clear docs and good naming.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Returns possible scalings available for the current channel:
+> +		"NO_SCALING 75%_SCALING 50%_SCALING 25%_SCALING"
+
+Needs to be numbers.  75 50 25  + I'm going to guess that no scaling == 100%?
+If so then use 100 to represent that.
+
+ 
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Scales the dither before it is applied to the selected channel.
+> +		NO_SCALING - No scaling
+> +		75%_SCALING - 75% scaling
+> +		50%_SCALING - 50% scaling
+> +		25%_SCALING - 25% scaling
+
+As above and in previous review - needs to be just a number, not a string.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_source_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Returns possible dither sources available for the selected channel:
+> +		"NO_DITHER N0 N1"
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_source
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Selects dither source applied to the selected channel.
+> +		NO_DITHER - No dither applied
+> +		N0 - N0 dither signal applied
+> +		N1 - N1 dither signal applied
+So you already have an enable. If the enable isn't set I'd assume
+that is same as no dither applied?  If so just don't support NO_DITHER here
+it doesn't give us anything extra.
+
+I wondered about whether this should just be 0 or 1, but as these are
+effectively arbitrary labels (in general, with assumption this
+interface may get used for other devices!) N0, N1 is fine for this.
 
 
-> >  
-> > > +     iio_trigger_set_drvdata(als->trig, indio_dev);
-> > > +     ret = iio_trigger_register(als->trig);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     ret = devm_iio_triggered_buffer_setup(&device->dev,
-> > > +                                           indio_dev,
-> > > +                                           iio_pollfunc_store_time,
-> > > +                                           acpi_als_trigger_handler,
-> > > +                                           NULL);
-> > > +     if (ret)
-> > > +             return ret;
-> > >
-> > >       return devm_iio_device_register(&device->dev, indio_dev);
-> > >  }  
-> >  
+
 

@@ -2,173 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DDDA2D9055
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 21:15:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8327F2D9130
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 00:36:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbgLMUPU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 15:15:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726740AbgLMUPN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Dec 2020 15:15:13 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6232DC0613CF;
-        Sun, 13 Dec 2020 12:14:33 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id r24so24960915lfm.8;
-        Sun, 13 Dec 2020 12:14:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lZB9aE3TmuoFmja0UZgEe4Pd4lsy6UpnTCXsS1s9/eg=;
-        b=N8SoIQm5YgOPv6FVm30pkMvlq/Z5lN1qQEdujYjsPWGOrdRmWWFPyLLJAAVDey5bwF
-         dwj8EpI0vnm6bNVBaJlYpceWNLV8+RZShYl5jRkGPIpZ3wrXyC90e6q3cfBbApCLD8xR
-         dzQm5q9oryu+LxuHRdrpaIB39XMaiCFjwkpVcW281Uy/ThAROD13umvb1Jnm7l8YLSfN
-         rHgk8KYPvDa0qblWkMnve7nE3dT1Z/jnfc+wwRu9+NHZ3F9WOLcsvpaxAdM/zS5wZusx
-         LD3lXVdctAtNQSOZeft4XSH5UV20KhdAFonyaI5xrb4oZeT1ZEPAQNSMcICp23O6FGhO
-         X+ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lZB9aE3TmuoFmja0UZgEe4Pd4lsy6UpnTCXsS1s9/eg=;
-        b=pMc60lgP2mYt3vjx6UI76lJIQFU/2XfLuxR5CxEaYySwZ77lzoXkqxAqYSzL8Wxl3A
-         XQgqfjecNlvbmky8kCuQLc2QWKRCpWjxBOYRFhRxytPJyYo6qZ8VmGwwD4UTu20CsHd3
-         K8A4RGz4vBfmWESo6utQp91oi08eb+tjjzuDvGNbYK5H8aXnmvmbpOiwWgVHxvh3bWCz
-         Q26JEtoV0HaZRlZlgHPoKM/v8ESVNeOZYiOOyOuQzkv28jDw7xg9wQbPAFriQIBcFqUq
-         X7N/gh2VxEF09PsMpgPd+xVj6J8Wner255lxR5NT03fg/juFrp5giyJFXQnXalKoD5pv
-         1zvA==
-X-Gm-Message-State: AOAM530ljHyc6euXzDuD8VQfglvD8O1zD01mSgvNJF8r1xY4VwglSe2g
-        gE7p7tcI63UjQDYuCSyJQA3YVQCtCgrZO+Gj9gU=
-X-Google-Smtp-Source: ABdhPJzx0oQxJaerRcVE64TNeGX3jlCjm7sJysaNibZKyh54X30D2/OpThkoqLpXiWUyWz0NTcK11Bp0kRqp36tVPFc=
-X-Received: by 2002:ac2:4d91:: with SMTP id g17mr1461389lfe.254.1607890471584;
- Sun, 13 Dec 2020 12:14:31 -0800 (PST)
+        id S1730083AbgLMXgc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 18:36:32 -0500
+Received: from vern.gendns.com ([98.142.107.122]:53890 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725497AbgLMXgc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 18:36:32 -0500
+X-Greylist: delayed 1244 seconds by postgrey-1.27 at vger.kernel.org; Sun, 13 Dec 2020 18:36:30 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=R7V4MLduBEFhpLTGn2FAZimfL7QOVlaM/Xne+lB6Whs=; b=0j4WemgLDwYJTkB1oyf2JCWWOG
+        0w8ZArsWhMy9lF79Sg7Kg01VXuuDCwiP53zD8d6D2Gcyx/wHx3N6Y+Q4qTKx2uHiyLLNHU/d+Zz+n
+        +3o2UtF5qWqOQ4VKhAlQ+gt0lbngjOADQ3pH84x1nazw5l5AYhanbu9cn98/AEsf30XQzh/E2eqDZ
+        fLfwXaSx+CSTeNWKWjMXzHqsAV4WqdIDVwm/HY/64Gg1UBVIoXdF50vPY1wvVWmx5kxQwFOjmZ0k3
+        +6C5nopXZa5Z9dYHx5JhXsImeD9KzAvId/M38zQ52MGxEN7a2gLt3Xeg75Pj2qJ04OA6Mu3nKaFmw
+        YM2Munmw==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:38098 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1koaZx-0008MT-AK; Sun, 13 Dec 2020 18:15:01 -0500
+Subject: Re: [PATCH v6 1/5] counter: Internalize sysfs interface code
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
+Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
+        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
+        gwendal@chromium.org, alexandre.belloni@bootlin.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        Dan Carpenter <dan.carpenter@oracle.com>
+References: <cover.1606075915.git.vilhelm.gray@gmail.com>
+ <950660d49af7d12b09bc9d3b1db6f8ff74209c26.1606075915.git.vilhelm.gray@gmail.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <9fe4090e-2780-31b8-8ffa-2c665c6a2a4e@lechnology.com>
+Date:   Sun, 13 Dec 2020 17:15:00 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <CANk7y0gAChikUBf-ap328YNQd4nrw63BiFH9dRLLDuZ0SnneMA@mail.gmail.com>
- <CA+U=Dsr=SCdSsbsbdY++NwD4xQjr6PZuoOqa_Ctq6ig+GuvO=w@mail.gmail.com>
- <dd7f7015-aed4-8628-0f23-e144fdacc9e7@roeck-us.net> <20201213151253.059e541c@archlinux>
- <729575c9-317c-a2ae-9ded-8732f3cc481d@roeck-us.net> <20201213165003.5b7c1896@archlinux>
-In-Reply-To: <20201213165003.5b7c1896@archlinux>
-From:   Puranjay Mohan <puranjay12@gmail.com>
-Date:   Mon, 14 Dec 2020 01:44:20 +0530
-Message-ID: <CANk7y0j1ujTDrxTKurs7EtRCmuP8s1V4Ueg6sDWzRbeP0zjvKA@mail.gmail.com>
-Subject: Re: IIO Driver for TMP117 Temperature sensor
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <950660d49af7d12b09bc9d3b1db6f8ff74209c26.1606075915.git.vilhelm.gray@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Dec 13, 2020 at 10:20 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun, 13 Dec 2020 08:08:26 -0800
-> Guenter Roeck <linux@roeck-us.net> wrote:
->
-> > On 12/13/20 7:12 AM, Jonathan Cameron wrote:
-> > > On Wed, 9 Dec 2020 11:48:40 -0800
-> > > Guenter Roeck <linux@roeck-us.net> wrote:
-> > >
-> > >> On 12/9/20 12:11 AM, Alexandru Ardelean wrote:
-> > >>> On Tue, Dec 8, 2020 at 6:10 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
-> > >>>>
-> > >>>> I have this TI's TMP117 sensor with me and I was thinking about writing an
-> > >>>> IIO driver for it as a hobby project. Is the IIO subsystem the correct
-> > >>>> place for this driver? if yes, can someone help me get started with this,
-> > >>>> I haven't written an IIO driver before. I have this sensor and also a
-> > >>>> raspberry pi with me for testing.
-> > >>>
-> > >>> This could also fit into drivers/hwmon.
-> > >>> Looking at the HWMON subsystem there are more TMP drivers there
-> > >>> (TMP102/103/108/401/513).
-> > >>> The first 3 seem a bit more similar to TMP117 (in terms of register map).
-> > >>>
-> > >>
-> > >> It would probably be better suited for hwmon (it has limit registers,
-> > >> suggesting a common use as hardware monitoring device).
-> > > It is a curious part.  I suspect TI based their design for a medical grade
-> > > digital thermometer chip on an existing hwmon part.
-> > >
-> > > The limit registers are very simple so could be supported by IIO.
-> > > This sits somewhere in the middle of high end thermocouple chips which
-> > > tend to be in IIO and typically lower accuracy / range hwmon parts.
-> > >
-> > > It's in the fuzzy borderline region so I doubt anyone would raise strong
-> > > objections to which subsystem it was in.  Guenter has fallen on the
-> > > hwmon side of things and I'm fine with that.
-> > >
-> >
-> > On the other side, it turns out that there is already tmp107 support
-> > in iio, and tmp107 is pretty much the spi equivalent of the same chip.
-> > So it really depends on the use case. If the user wants to use the iio
-> > subsystem, I am fine with it. We just need to remind people that this
-> > implies no or only limited hwmon support.
-> >
-> > [ I really need to spend the time to write a hwmon->iio bridge.
-> >   The iio->hwmon bridge is a bit limited - I have not been able to
-> >   figure out how to support limit registers (or event values)
-> >   and events, and I don't think it is possible. ]
->
-> So far IIO doesn't have an in kernel consumer interface for
-> events. It shouldn't be that hard to add one though and it
-> has been on the todo list for a very long time.  We've discussed
-> it a few times and concluded that there are some short cuts such
-> as sending all events to all consumers and relying on the receiver
-> to do any necessary filtering. It's a bit messy but it makes for
-> much simpler core code.
->
-> Maybe I'll get bored enough over xmas to look at it...
->
+On 11/22/20 2:29 PM, William Breathitt Gray wrote:
 
-Hi Jonathan,
-Where can I access this TODO list, I would like to do some tasks on it.
-I am a novice but I might be able to solve the easier tasks.
+>   14 files changed, 1806 insertions(+), 2546 deletions(-)
 
-> Jonathan
->
-> >
-> > Guenter
-> >
-> > > Jonathan
-> > >
-> > >>
-> > >>> Let's see what others have to add.
-> > >>> But, all-in-all whatever driver you end up writing, the easiest method
-> > >>> is to copy an existing similar driver and extend it.
-> > >>> Sometimes, a part can be added to an existing driver.
-> > >>> At a quick scan through existing drivers, it doesn't look like TMP117
-> > >>> is similar to existing drivers, so it may require a new driver
-> > >>> altogether.
-> > >>
-> > >> I don't see an immediate match either, but the tmp102 hwmon driver
-> > >> might be a good start.
-> > >>
-> > >> Guenter
-> > >>
-> > >>> I may have missed something though.
-> > >>>
-> > >>> Thanks
-> > >>> Alex
-> > >>>
-> > >>>>
-> > >>>> --
-> > >>>> Thanks and Regards
-> > >>>>
-> > >>>> Yours Truly,
-> > >>>>
-> > >>>> Puranjay Mohan
-> > >>
-> > >
-> >
->
+It would be really nice if we could break this down into smaller
+pieces and start getting it merged. It is really tough to keep
+reviewing this much code in one patch over and over again.
+
+Here are some initial findings from testing:
 
 
--- 
-Thanks and Regards
+> +static void counter_device_release(struct device *dev)
+> +{
+> +	struct counter_device *const counter = dev_get_drvdata(dev);
+> +
+> +	counter_chrdev_remove(counter);
+> +	ida_simple_remove(&counter_ida, counter->id);
+> +}
 
-Yours Truly,
 
-Puranjay Mohan
+I got the following error after `modprobe -r ti-eqep`:
+
+[ 1186.045766] ------------[ cut here ]------------
+[ 1186.050647] WARNING: CPU: 0 PID: 2625 at lib/refcount.c:28 counter_device_release+0x10/0x24 [counter]
+[ 1186.059976] refcount_t: underflow; use-after-free.
+[ 1186.064790] Modules linked in: aes_arm_bs(+) crypto_simd cryptd ccm usb_f_mass_storage usb_f_acm u_serial usb_f_ecm rfcomm usb_f_rndis u_ether libcomposite aes_arm aes_generic cmac bnep wl18xx wlcore mac80211 libarc4 sha256_generic libsha256 sha256_arm cfg80211 ti_am335x_adc kfifo_buf omap_aes_driver omap_crypto omap_sham crypto_engine pm33xx ti_emif_sram hci_uart omap_rng btbcm rng_core ti_eqep(-) counter bluetooth c_can_platform c_can ecdh_generic bmp280_spi ecc can_dev libaes bmp280_i2c bmp280 industrialio omap_mailbox musb_dsps wlcore_sdio musb_hdrc udc_core usbcore wkup_m3_ipc at24 omap_wdt phy_am335x watchdog phy_am335x_control ti_am335x_tscadc phy_generic wkup_m3_rproc usb_common cppi41 rtc_omap leds_gpio led_class cpufreq_dt pwm_tiehrpwm autofs4
+[ 1186.132376] CPU: 0 PID: 2625 Comm: modprobe Not tainted 5.10.0-rc7bone-counter+ #23
+[ 1186.140070] Hardware name: Generic AM33XX (Flattened Device Tree)
+[ 1186.146225] [<c0110d70>] (unwind_backtrace) from [<c010b640>] (show_stack+0x10/0x14)
+[ 1186.154017] [<c010b640>] (show_stack) from [<c09a0c98>] (dump_stack+0xc4/0xe4)
+[ 1186.161285] [<c09a0c98>] (dump_stack) from [<c0137ba0>] (__warn+0xd8/0x100)
+[ 1186.168284] [<c0137ba0>] (__warn) from [<c099c8e4>] (warn_slowpath_fmt+0x94/0xbc)
+[ 1186.175814] [<c099c8e4>] (warn_slowpath_fmt) from [<bf10b0e8>] (counter_device_release+0x10/0x24 [counter])
+[ 1186.185632] [<bf10b0e8>] (counter_device_release [counter]) from [<c0667118>] (device_release+0x30/0xa4)
+[ 1186.195163] [<c0667118>] (device_release) from [<c057f73c>] (kobject_put+0x94/0x104)
+[ 1186.202944] [<c057f73c>] (kobject_put) from [<c057f73c>] (kobject_put+0x94/0x104)
+[ 1186.210472] [<c057f73c>] (kobject_put) from [<bf19004c>] (ti_eqep_remove+0x10/0x30 [ti_eqep])
+[ 1186.219047] [<bf19004c>] (ti_eqep_remove [ti_eqep]) from [<c066f390>] (platform_drv_remove+0x24/0x3c)
+[ 1186.228313] [<c066f390>] (platform_drv_remove) from [<c066d934>] (device_release_driver_internal+0xfc/0x1d0)
+[ 1186.238187] [<c066d934>] (device_release_driver_internal) from [<c066da78>] (driver_detach+0x58/0xa8)
+[ 1186.247456] [<c066da78>] (driver_detach) from [<c066c5ec>] (bus_remove_driver+0x4c/0xa0)
+[ 1186.255594] [<c066c5ec>] (bus_remove_driver) from [<c01dd150>] (sys_delete_module+0x180/0x264)
+[ 1186.264250] [<c01dd150>] (sys_delete_module) from [<c0100080>] (ret_fast_syscall+0x0/0x54)
+[ 1186.272551] Exception stack(0xd247ffa8 to 0xd247fff0)
+[ 1186.277629] ffa0:                   004fb478 004fb478 004fb4b4 00000800 b3bfcf00 00000000
+[ 1186.285847] ffc0: 004fb478 004fb478 004fb478 00000081 00000000 be974900 be974a55 004fb478
+[ 1186.294062] ffe0: 004f8f5c be97352c 004ddd97 b6d11d68
+[ 1186.299253] ---[ end trace e1c61dea091f1078 ]---
+
+> +static ssize_t counter_comp_u8_store(struct device *dev,
+> +				     struct device_attribute *attr,
+> +				     const char *buf, size_t len)
+> +{
+> +	const struct counter_attribute *const a = to_counter_attribute(attr);
+> +	struct counter_device *const counter = dev_get_drvdata(dev);
+> +	struct counter_count *const count = a->parent;
+> +	struct counter_synapse *const synapse = a->comp.priv;
+> +	const struct counter_available *const avail = a->comp.priv;
+> +	int err;
+> +	bool bool_data;
+> +	int idx;
+> +	u8 data;
+> +
+> +	switch (a->comp.type) {
+> +	case COUNTER_COMP_BOOL:
+> +		err = kstrtobool(buf, &bool_data);
+> +		data = bool_data;
+> +		break;
+> +	case COUNTER_COMP_FUNCTION:
+> +		err = find_in_string_array(&data, count->functions_list,
+> +					   count->num_functions, buf,
+> +					   counter_function_str);
+> +		break;
+> +	case COUNTER_COMP_SYNAPSE_ACTION:
+> +		err = find_in_string_array(&data, synapse->actions_list,
+> +					   synapse->num_actions, buf,
+> +					   counter_synapse_action_str);
+> +		break;
+> +	case COUNTER_COMP_ENUM:
+> +		idx = __sysfs_match_string(avail->strs, avail->num_items, buf);
+> +		if (idx < 0)
+> +			return idx;
+> +		data = idx;
+> +		break;
+> +	case COUNTER_COMP_COUNT_MODE:
+> +		err = find_in_string_array(&data, avail->enums,
+> +					   avail->num_items, buf,
+> +					   counter_count_mode_str);
+> +		break;
+> +	default:
+> +		err = kstrtou8(buf, 0, &data);
+> +		break;
+> +	}
+> +	if (err)
+
+This needs to be `if (err < 0)`. There are cases where the functions
+above return positive values. (And to be overly safe, it probably wouldn't
+hurt to use err < 0 everywhere - not just in this function.)
+
+> +		return err;
+> +
+> +	switch (a->scope) {
+> +	case COUNTER_SCOPE_DEVICE:
+> +		err = a->comp.device_u8_write(counter, data);
+> +		break;
+> +	case COUNTER_SCOPE_SIGNAL:
+> +		err = a->comp.signal_u8_write(counter, a->parent, data);
+> +		break;
+> +	case COUNTER_SCOPE_COUNT:
+> +		if (a->comp.type == COUNTER_COMP_SYNAPSE_ACTION)
+> +			err = a->comp.action_write(counter, count, synapse,
+> +						   data);
+> +		else
+> +			err = a->comp.count_u8_write(counter, count, data);
+> +		break;
+> +	}
+> +	if (err)
+> +		return err;
+> +
+> +	return len;
+> +}

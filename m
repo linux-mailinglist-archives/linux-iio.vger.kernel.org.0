@@ -2,96 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 915822D8C75
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 10:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E7122D8CEA
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 12:58:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405205AbgLMJIm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 04:08:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728170AbgLMJIl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Dec 2020 04:08:41 -0500
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5A2C0613D3
-        for <linux-iio@vger.kernel.org>; Sun, 13 Dec 2020 01:08:01 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id r9so13959448ioo.7
-        for <linux-iio@vger.kernel.org>; Sun, 13 Dec 2020 01:08:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=5uPM6D1T3KKs706E8+sERKFimLN/9nHp+H87Ue6e5VI=;
-        b=M5qV6ijW2X4aAZxF3GxD717jT5q/7uShkTmFj4UDNHM+vJNoLshxpEX+oS8D1R50Rr
-         3X0IJx3RTBic59ML/xckhLexSYhmfg62O1oNjSMkJLdBHzrsH6vAh2aIWz11GzL6RWHh
-         kzOW+Pree0Qm9N7IXh/YsTkLvDM9URNAl2CDM9cUs70Cy/4Za2X8nlxqXRvT5K9a1XV0
-         YrltTVp/IL4eLoRW+7hIelUFmOGR8N6hq2s/VFfeHc55Eer6iLpZBFDdagIsFt0Faeiu
-         z0pNLwBJ+TsBYlIDMAnFmooW7dHS4D12U0eQ4GGhZXXWo7NvA0LNmYePz84BTOlFlqra
-         2XTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=5uPM6D1T3KKs706E8+sERKFimLN/9nHp+H87Ue6e5VI=;
-        b=D0XC2Y0qaniXga61yAv1iC8FgX7HssVyUy3QPAFPPaviXeBQf3eqYqGuxykB8u5NmJ
-         4sFOJ5JtvG0ba4DNfgLOrnHAluIRnMArQ1CjpqBUhba5tLAN/4Az9ywKt2CDInz69daB
-         1ahBJkSr+m36j6FMq3Uzu8Ky6peAB+YsU69yXaZvTDbc44ZV8J3c6U6Hpr2z875uD0Oa
-         OQDbaLyaEhzQ71yaLlRTXFBk6PhYYGdiMmYI7NL5wlt1pDY7lGriWy8GA36Z5iMMTZmt
-         Kv1bDwtIXZtBUe6QHYLJttONzV/BItIFN5nX1aG1az4q3xyR+L10AJs3rEMFhKt6IKuj
-         +Dvw==
-X-Gm-Message-State: AOAM5314Nv/b3GawYJAZMvtXTJpb6cgJqsy1nDkyvG3OXTFfEBu5V29D
-        iAS5aj1vtqW7Isy045xrj1vHCMRljjWuYV2t+Gs=
-X-Google-Smtp-Source: ABdhPJzE5ILTQLh7bhnWwOIPyvQWqyWlJ4n1Mbc5M03XY0kZ2oKZobunQANGTK+vTrR6h9ueV0VKt7N2gw9bHsOG33I=
-X-Received: by 2002:a02:5e81:: with SMTP id h123mr26685012jab.36.1607850480243;
- Sun, 13 Dec 2020 01:08:00 -0800 (PST)
+        id S2406196AbgLML54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 06:57:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55352 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2406195AbgLML54 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 06:57:56 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DEC4023121;
+        Sun, 13 Dec 2020 11:57:14 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 11:57:11 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
+Cc:     Michal Simek <michals@xilinx.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
+ System Monitor
+Message-ID: <20201213115711.58733caa@archlinux>
+In-Reply-To: <BY5PR02MB6916F923D93341D41BA08E8AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20200922134624.13191-1-lars@metafoo.de>
+        <20200922134624.13191-2-lars@metafoo.de>
+        <20200923214728.6e0c07b0@archlinux>
+        <fb8db604-0ae3-1736-67bf-20a1dc8bc008@xilinx.com>
+        <20201129131441.3e9d83f8@archlinux>
+        <BY5PR02MB6916F923D93341D41BA08E8AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Sender: dhldeliveringcompany.bf@gmail.com
-Received: by 2002:a02:a38a:0:0:0:0:0 with HTTP; Sun, 13 Dec 2020 01:07:59
- -0800 (PST)
-From:   Donna Louise <donnamcinneslouise@gmail.com>
-Date:   Sat, 12 Dec 2020 21:07:59 -1200
-X-Google-Sender-Auth: o1aTCgmT583z0Ic88EPpxD1PQT8
-Message-ID: <CAGPv-0HY2WvWHsuBSuyWg6eOq12rvkj3FTbhOb0uXB92aPV_2A@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Friend,
+On Fri, 11 Dec 2020 09:57:30 +0000
+Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
 
-  I am glad to know you, but God knows you better and he knows why he
-has directed me to you at this point in time so do not be surprised at
-all. My name is Mrs. Donna Louise McInnes, a widow, i have been
-suffering from ovarian cancer disease. At this moment i am about to
-end the race like this because the illness has gotten to a very bad
-stage, without any family members and no child. I hope that you will
-not expose or betray this trust and confidence that I am about to
-entrust to you for the mutual benefit of the orphans and the less
-privileged ones. I have some funds I inherited from my late husband,
-the sum of ($11.000.000 Eleven million dollars.) deposited in the
-Bank.  Having known my present health status, I decided to entrust
-this fund to you believing that you will utilize it the way i am going
-to instruct herein.
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday 29 November 2020 1:15 PM
+> > To: Michal Simek <michals@xilinx.com>
+> > Cc: Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
+> > <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org; Anand Ashok Dumbre
+> > <ANANDASH@xilinx.com>
+> > Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
+> > System Monitor
+> > 
+> > On Thu, 24 Sep 2020 08:08:31 +0200
+> > Michal Simek <michal.simek@xilinx.com> wrote:
+> >   
+> > > Hi, +Anand,
+> > >
+> > > On 23. 09. 20 22:47, Jonathan Cameron wrote:  
+> > > > On Tue, 22 Sep 2020 15:46:24 +0200
+> > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
+> > > >  
+> > > >> The xilinx-xadc IIO driver currently has support for the XADC in
+> > > >> the Xilinx
+> > > >> 7 series FPGAs. The system-monitor is the equivalent to the XADC in
+> > > >> the Xilinx UltraScale and UltraScale+ FPGAs.
+> > > >>
+> > > >> The IP designers did a good job at maintaining backwards
+> > > >> compatibility and only minor changes are required to add basic
+> > > >> support for the system-monitor core.
+> > > >>
+> > > >> The non backwards compatible changes are:
+> > > >>   * Register map offset was moved from 0x200 to 0x400
+> > > >>   * Only one ADC compared to two in the XADC
+> > > >>   * 10 bit ADC instead of 12 bit ADC
+> > > >>   * Two of the channels monitor different supplies
+> > > >>
+> > > >> Add the necessary logic to accommodate these changes to support the
+> > > >> system-monitor in the XADC driver.
+> > > >>
+> > > >> Note that this patch does not include support for some new features
+> > > >> found in the system-monitor like additional alarms, user supply
+> > > >> monitoring and secondary system-monitor access. This might be added  
+> > at a later time.  
+> > > >>
+> > > >> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
+> > > >
+> > > > Very nice.  Will let this sit on the mailing list a bit longer but
+> > > > looks good to me.  
+> > >
+> > > FYI: I have asked Anand to take a look at it and retest.
+> > >
+> > > Thanks,
+> > > Michal
+> > >  
+> > Hi Michal / Anand,
+> > 
+> > Any feedback on this one?
+> > 
+> > Thanks
+> > 
+> > Jonathan
+> > 
+> > p.s. I'm just ploughing through my older emails and had this one marked as
+> > waiting for a reply.
+> >   
+> Hi Jonathan,
+> 
+> Thanks for waiting.
+> The patch looks good.
+> 
+> Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
+> Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
 
-Therefore I need you to assist me and reclaim this money and use it
-for Charity works, for orphanages and giving justice and help to the
-poor, needy and to promote the words of God and the effort that the
-house of God will be maintained says The Lord." Jeremiah 22:15-16.=E2=80=9C
+Thanks. I've applied this but there was a bit of complexity around
+devm changes that went in whilst this was under review.
 
-It will be my great pleasure to compensate you with 35 % percent of
-the total money for your personal use, 5 % percent for any expenses
-that may occur during the international transfer process while 60% of
-the money will go to the charity project.
+I think I fixed it up correctly, but great if you can take
+a quick look to make sure I didn't mess it up.
+I'll try and put the other outstanding series in as well which
+will probably result in more fiddly corners during the merge.
 
-All I require from you is sincerity and the ability to complete God's
-task without any failure. It will be my pleasure to see that the bank
-has finally released and transferred the fund into your bank account
-therein your country even before I die here in the hospital, because
-of my present health status everything needs to be processed rapidly
-as soon as possible. Please kindly respond quickly. Thanks and God
-bless you.
+Applied to the togreg branch of iio.git and pushed out as testing
+or the autobuilders to see what we missed.
 
-Best Regards your friend,
-Mrs.Donna Louise McInnes.
+Thanks,
+
+Jonathan
+
+> 
+

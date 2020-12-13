@@ -2,174 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E46A2D8F0C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 18:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB4932D8F12
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 18:27:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436639AbgLMRV2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 12:21:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39426 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2395405AbgLMRV2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 12:21:28 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11AED2313B;
-        Sun, 13 Dec 2020 17:20:45 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 17:20:42 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        id S2404225AbgLMRZc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 12:25:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48918 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391774AbgLMRZc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Dec 2020 12:25:32 -0500
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B351C0613CF;
+        Sun, 13 Dec 2020 09:24:52 -0800 (PST)
+Received: by mail-pj1-x1042.google.com with SMTP id iq13so4940967pjb.3;
+        Sun, 13 Dec 2020 09:24:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=ynUaEpsEiEz0ejoqZQtxyLmuvONt7mY31z9UMZmBqrg=;
+        b=lB5oJiSsStxJAd2Wxa48tsFNwCsy6Ra3YKgA/SioVMiudEc69fq9H0T4VgyuVhMwWl
+         PZg/1hh1y+KQ29qoYktIdVdeaK/JkLnU87tpyQu8sp+ot/dLdCx4RWxFgluTV1wwNM2n
+         xysv6Ly0zZV3FKU3YkSBa1Zvkrr0m/3zT7/BmQrbqMampKUbeGVcGQY7Ic0SxLBReJvb
+         hF15ZDf/OVckYE0dksbU8oXePatEZHtMR+vuGk+A4R+UhUoV7em+sQnTX2dsyoeFlEUk
+         aDjuTL3Zh4YxVv0tChLsHGQ/IMcKL5zKo5DthCiSm/MzJ8S+zx8kxAlFbn1UDitY//Ij
+         Id7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ynUaEpsEiEz0ejoqZQtxyLmuvONt7mY31z9UMZmBqrg=;
+        b=UqdobnS4O8j9XYfASZ7yrIAz+sjIVvH5h88V8cIRREft6Lp96mQHfgmqJslCHfyrzd
+         WDtjoy3HZm0AYg6eEwsUwsjrEOdBRZqnSP/O17seE3cA9ZsRF3W7QUM3O75hlUABnpiU
+         n4jFl8jaEmENGdPidrwk7F/iXEvcRgijz3DnzA+0LarlU5QfN5UX63Cm3SyWR+3dCruS
+         +t/gACX66tF+Lt9zjXeI4W9bvZdINTKCVC3bcHvpK+btKUY4F14mfdQzAQA0KOWGIcOu
+         iaT0LW+hiKqhwooLD5aVkO7v6F9sx7lIcyd3WFChqJetcfHFt2BuU0n+vbddQd43NXgb
+         PVFA==
+X-Gm-Message-State: AOAM531mlTBdcqEK+Pz3yQJcu1LNZOPrIoEFaFMNatVYoEim0D1l/jaf
+        iXSs8HHOYkefbAKU63VsX366l+Ejb5MUWZ/7
+X-Google-Smtp-Source: ABdhPJzmWfWZY0MmPn0XVmLoJ82aPcEp1BoUFiGGXzptPaDUS4fF9XLh7iZPP648u5PJq5+oub91lQ==
+X-Received: by 2002:a17:902:7606:b029:da:246c:5bd8 with SMTP id k6-20020a1709027606b02900da246c5bd8mr19330240pll.27.1607880291814;
+        Sun, 13 Dec 2020 09:24:51 -0800 (PST)
+Received: from localhost.localdomain ([2409:4073:4d9c:e725:65e2:47cd:81e3:bc30])
+        by smtp.gmail.com with ESMTPSA id y15sm15593863pju.13.2020.12.13.09.24.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Dec 2020 09:24:51 -0800 (PST)
+From:   devajithvs <devajithvs@gmail.com>
+Cc:     Devajith V S <devajithvs@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] iio:common:ms_sensors:ms_sensors_i2c: add support
- for alternative PROM layout
-Message-ID: <20201213172042.76b2e028@archlinux>
-In-Reply-To: <20201209234857.1521453-6-alexandre.belloni@bootlin.com>
-References: <20201209234857.1521453-1-alexandre.belloni@bootlin.com>
-        <20201209234857.1521453-6-alexandre.belloni@bootlin.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Robert Yang <decatf@gmail.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: accel: kxcjk1013: Document regulator supplies
+Date:   Sun, 13 Dec 2020 22:54:35 +0530
+Message-Id: <20201213172437.2779-1-devajithvs@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Dec 2020 00:48:56 +0100
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+From: Devajith V S <devajithvs@gmail.com>
 
-> Currently, only the 112bit PROM on 7 words is supported. However the ms58xx
+kxcjk1013 devices have VDD and VDDIO power lines. Need
+to make sure the regulators are enabled before any
+communication with kxcjk1013. Document support for
+vdd/vddio-supply to implement this.
 
-PROM _with_ 7 words (perhaps?)
+Signed-off-by: Devajith V S <devajithvs@gmail.com>
+---
+ .../devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml        | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> family also have devices with a 128bit PROM on 8 words. See AN520:
-> C-CODE EXAMPLE FOR MS56XX, MS57XX (EXCEPT ANALOG SENSOR), AND MS58XX SERIES
-> PRESSURE SENSORS and the various device datasheets.
-> 
-> The difference is that the CRC is the 4 LSBs of word7 instead of being the
-> 4 MSBs of word0.
-> 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  .../iio/common/ms_sensors/ms_sensors_i2c.c    | 70 ++++++++++++++++---
->  1 file changed, 59 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-> index 872f90459e2e..d97ca3e1b1d7 100644
-> --- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-> +++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-> @@ -488,21 +488,18 @@ int ms_sensors_ht_read_humidity(struct ms_ht_dev *dev_data,
->  EXPORT_SYMBOL(ms_sensors_ht_read_humidity);
->  
->  /**
-> - * ms_sensors_tp_crc_valid() - CRC check function for
-> + * ms_sensors_tp_crc4() - Calculate PROM CRC for
->   *     Temperature and pressure devices.
->   *     This function is only used when reading PROM coefficients
->   *
->   * @prom:	pointer to PROM coefficients array
->   *
-> - * Return: True if CRC is ok.
-> + * Return: CRC.
->   */
-> -static bool ms_sensors_tp_crc_valid(u16 *prom)
-> +static u8 ms_sensors_tp_crc4(u16 *prom)
->  {
->  	unsigned int cnt, n_bit;
-> -	u16 n_rem = 0x0000, crc_read = prom[0], crc = (*prom & 0xF000) >> 12;
-> -
-> -	prom[MS_SENSORS_TP_PROM_WORDS_NB - 1] = 0;
-> -	prom[0] &= 0x0FFF;      /* Clear the CRC computation part */
-> +	u16 n_rem = 0x0000;
->  
->  	for (cnt = 0; cnt < MS_SENSORS_TP_PROM_WORDS_NB * 2; cnt++) {
->  		if (cnt % 2 == 1)
-> @@ -517,10 +514,55 @@ static bool ms_sensors_tp_crc_valid(u16 *prom)
->  				n_rem <<= 1;
->  		}
->  	}
-> -	n_rem >>= 12;
-> -	prom[0] = crc_read;
->  
-> -	return n_rem == crc;
-> +	return n_rem >> 12;
-> +}
-> +
-> +/**
-> + * ms_sensors_tp_crc_valid_112() - CRC check function for
-> + *     Temperature and pressure devices for 112bit PROM.
-> + *     This function is only used when reading PROM coefficients
-> + *
-> + * @prom:	pointer to PROM coefficients array
-> + *
-> + * Return: CRC.
-
-That's a bit confusing.  Perhaps return if CRC correct
-Sometimes CRC is used to refer to particular bits and sometimes
-to the check (i.e. whether it is right).
-
-> + */
-> +static bool ms_sensors_tp_crc_valid_112(u16 *prom)
-> +{
-> +	u16 w0 = prom[0], crc_read = (w0 & 0xF000) >> 12;
-> +	u8 crc;
-> +
-> +	prom[0] &= 0x0FFF;      /* Clear the CRC computation part */
-> +	prom[MS_SENSORS_TP_PROM_WORDS_NB - 1] = 0;
-> +
-> +	crc = ms_sensors_tp_crc4(prom);
-> +
-> +	prom[0] = w0;
-> +
-> +	return crc == crc_read;
-> +}
-> +
-> +/**
-> + * ms_sensors_tp_crc_valid_128() - CRC check function for
-> + *     Temperature and pressure devices for 128bit PROM.
-> + *     This function is only used when reading PROM coefficients
-> + *
-> + * @prom:	pointer to PROM coefficients array
-> + *
-> + * Return: CRC.
-> + */
-> +static bool ms_sensors_tp_crc_valid_128(u16 *prom)
-> +{
-> +	u16 w7 = prom[7], crc_read = w7 & 0x000F;
-> +	u8 crc;
-> +
-> +	prom[7] &= 0xFF00;      /* Clear the CRC and LSB part */
-> +
-> +	crc = ms_sensors_tp_crc4(prom);
-> +
-> +	prom[7] = w7;
-> +
-> +	return crc == crc_read;
->  }
->  
->  /**
-> @@ -535,6 +577,7 @@ static bool ms_sensors_tp_crc_valid(u16 *prom)
->  int ms_sensors_tp_read_prom(struct ms_tp_dev *dev_data)
->  {
->  	int i, ret;
-> +	bool valid;
->  
->  	for (i = 0; i < dev_data->hw->prom_len; i++) {
->  		ret = ms_sensors_read_prom_word(
-> @@ -546,7 +589,12 @@ int ms_sensors_tp_read_prom(struct ms_tp_dev *dev_data)
->  			return ret;
->  	}
->  
-> -	if (!ms_sensors_tp_crc_valid(dev_data->prom)) {
-> +	if (dev_data->hw->prom_len == 8)
-> +		valid = ms_sensors_tp_crc_valid_128(dev_data->prom);
-> +	else
-> +		valid = ms_sensors_tp_crc_valid_112(dev_data->prom);
-> +
-> +	if (!valid) {
->  		dev_err(&dev_data->client->dev,
->  			"Calibration coefficients crc check error\n");
->  		return -ENODEV;
+diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml b/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml
+index 5667d09df..fbb714431 100644
+--- a/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml
+@@ -20,6 +20,9 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  vdd-supply: true
++  vddio-supply: true
++
+   mount-matrix:
+     description: an optional 3x3 mounting rotation matrix.
+ 
+-- 
+2.17.1
 

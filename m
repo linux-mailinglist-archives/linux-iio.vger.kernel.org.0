@@ -2,37 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7122D8CEA
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 12:58:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 085982D8CF8
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 13:04:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406196AbgLML54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 06:57:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55352 "EHLO mail.kernel.org"
+        id S2394236AbgLMMEf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 07:04:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406195AbgLML54 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 06:57:56 -0500
+        id S2391674AbgLMMEf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 07:04:35 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DEC4023121;
-        Sun, 13 Dec 2020 11:57:14 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 11:57:11 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id F011223121;
+        Sun, 13 Dec 2020 12:03:53 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 12:03:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
-Cc:     Michal Simek <michals@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
- System Monitor
-Message-ID: <20201213115711.58733caa@archlinux>
-In-Reply-To: <BY5PR02MB6916F923D93341D41BA08E8AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] devicetree: Add Xilinx System Management Wizard
+ binding documentation
+Message-ID: <20201213120350.3471676c@archlinux>
+In-Reply-To: <20200922134624.13191-1-lars@metafoo.de>
 References: <20200922134624.13191-1-lars@metafoo.de>
-        <20200922134624.13191-2-lars@metafoo.de>
-        <20200923214728.6e0c07b0@archlinux>
-        <fb8db604-0ae3-1736-67bf-20a1dc8bc008@xilinx.com>
-        <20201129131441.3e9d83f8@archlinux>
-        <BY5PR02MB6916F923D93341D41BA08E8AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,94 +36,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Dec 2020 09:57:30 +0000
-Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
+On Tue, 22 Sep 2020 15:46:23 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Sunday 29 November 2020 1:15 PM
-> > To: Michal Simek <michals@xilinx.com>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
-> > <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org; Anand Ashok Dumbre
-> > <ANANDASH@xilinx.com>
-> > Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
-> > System Monitor
-> > 
-> > On Thu, 24 Sep 2020 08:08:31 +0200
-> > Michal Simek <michal.simek@xilinx.com> wrote:
-> >   
-> > > Hi, +Anand,
-> > >
-> > > On 23. 09. 20 22:47, Jonathan Cameron wrote:  
-> > > > On Tue, 22 Sep 2020 15:46:24 +0200
-> > > > Lars-Peter Clausen <lars@metafoo.de> wrote:
-> > > >  
-> > > >> The xilinx-xadc IIO driver currently has support for the XADC in
-> > > >> the Xilinx
-> > > >> 7 series FPGAs. The system-monitor is the equivalent to the XADC in
-> > > >> the Xilinx UltraScale and UltraScale+ FPGAs.
-> > > >>
-> > > >> The IP designers did a good job at maintaining backwards
-> > > >> compatibility and only minor changes are required to add basic
-> > > >> support for the system-monitor core.
-> > > >>
-> > > >> The non backwards compatible changes are:
-> > > >>   * Register map offset was moved from 0x200 to 0x400
-> > > >>   * Only one ADC compared to two in the XADC
-> > > >>   * 10 bit ADC instead of 12 bit ADC
-> > > >>   * Two of the channels monitor different supplies
-> > > >>
-> > > >> Add the necessary logic to accommodate these changes to support the
-> > > >> system-monitor in the XADC driver.
-> > > >>
-> > > >> Note that this patch does not include support for some new features
-> > > >> found in the system-monitor like additional alarms, user supply
-> > > >> monitoring and secondary system-monitor access. This might be added  
-> > at a later time.  
-> > > >>
-> > > >> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
-> > > >
-> > > > Very nice.  Will let this sit on the mailing list a bit longer but
-> > > > looks good to me.  
-> > >
-> > > FYI: I have asked Anand to take a look at it and retest.
-> > >
-> > > Thanks,
-> > > Michal
-> > >  
-> > Hi Michal / Anand,
-> > 
-> > Any feedback on this one?
-> > 
-> > Thanks
-> > 
-> > Jonathan
-> > 
-> > p.s. I'm just ploughing through my older emails and had this one marked as
-> > waiting for a reply.
-> >   
-> Hi Jonathan,
+> Add binding documentation for the Xilinx System Management Wizard. The
+> Xilinx System Management Wizard is a AXI frontend for the Xilinx System
+> Monitor found in the UltraScale and UltraScale+ FPGAs.
 > 
-> Thanks for waiting.
-> The patch looks good.
+> The System Monitor is the equivalent to the Xilinx XADC found in their
+> previous generation of FPGAs and their external and internal interfaces are
+> very similar. For this reason the share the same binding documentation. But
+> since they are not 100% compatible and software will have to know about the
+> differences they use a different compatible string.
 > 
-> Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
-> Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
++CC relevant DT bindings people.
 
-Thanks. I've applied this but there was a bit of complexity around
-devm changes that went in whilst this was under review.
+As this is fairly trivial I've fixed up the patch title to the usual
+dt-bindings format and applied to the togreg branch of iio.git.
 
-I think I fixed it up correctly, but great if you can take
-a quick look to make sure I didn't mess it up.
-I'll try and put the other outstanding series in as well which
-will probably result in more fiddly corners during the merge.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-or the autobuilders to see what we missed.
+I don't want to delay this series even longer to go around again.
 
 Thanks,
-
-Jonathan
-
+> ---
+>  .../bindings/iio/adc/xilinx-xadc.txt          | 49 +++++++++++++++----
+>  1 file changed, 39 insertions(+), 10 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/xilinx-xadc.txt b/Documentation/devicetree/bindings/iio/adc/xilinx-xadc.txt
+> index e0e0755cabd8..f42e18078376 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/xilinx-xadc.txt
+> +++ b/Documentation/devicetree/bindings/iio/adc/xilinx-xadc.txt
+> @@ -1,13 +1,22 @@
+>  Xilinx XADC device driver
+>  
+> -This binding document describes the bindings for both of them since the
+> -bindings are very similar. The Xilinx XADC is a ADC that can be found in the
+> -series 7 FPGAs from Xilinx. The XADC has a DRP interface for communication.
+> -Currently two different frontends for the DRP interface exist. One that is only
+> -available on the ZYNQ family as a hardmacro in the SoC portion of the ZYNQ. The
+> -other one is available on all series 7 platforms and is a softmacro with a AXI
+> -interface. This binding document describes the bindings for both of them since
+> -the bindings are very similar.
+> +This binding document describes the bindings for the Xilinx 7 Series XADC as well
+> +as the UltraScale/UltraScale+ System Monitor.
+> +
+> +The Xilinx XADC is an ADC that can be found in the Series 7 FPGAs from Xilinx.
+> +The XADC has a DRP interface for communication. Currently two different
+> +frontends for the DRP interface exist. One that is only available on the ZYNQ
+> +family as a hardmacro in the SoC portion of the ZYNQ. The other one is available
+> +on all series 7 platforms and is a softmacro with a AXI interface. This binding
+> +document describes the bindings for both of them since the bindings are very
+> +similar.
+> +
+> +The Xilinx System Monitor is an ADC that is found in the UltraScale and
+> +UltraScale+ FPGAs from Xilinx. The System Monitor provides a DRP interface for
+> +communication. Xilinx provides a standard IP core that can be used to access the
+> +System Monitor through an AXI interface in the FPGA fabric. This IP core is
+> +called the Xilinx System Management Wizard. This document describes the bindings
+> +for this IP.
+>  
+>  Required properties:
+>  	- compatible: Should be one of
+> @@ -15,11 +24,14 @@ Required properties:
+>  		  configuration interface to interface to the XADC hardmacro.
+>  		* "xlnx,axi-xadc-1.00.a": When using the axi-xadc pcore to
+>  		  interface to the XADC hardmacro.
+> +		* "xlnx,system-management-wiz-1.3": When using the
+> +		  Xilinx System Management Wizard fabric IP core to access the
+> +		  UltraScale and UltraScale+ System Monitor.
+>  	- reg: Address and length of the register set for the device
+>  	- interrupts: Interrupt for the XADC control interface.
+>  	- clocks: When using the ZYNQ this must be the ZYNQ PCAP clock,
+> -	  when using the AXI-XADC pcore this must be the clock that provides the
+> -	  clock to the AXI bus interface of the core.
+> +	  when using the axi-xadc or the axi-system-management-wizard this must be
+> +	  the clock that provides the clock to the AXI bus interface of the core.
+>  
+>  Optional properties:
+>  	- xlnx,external-mux:
+> @@ -110,3 +122,20 @@ Examples:
+>  			};
+>  		};
+>  	};
+> +
+> +	adc@80000000 {
+> +		compatible = "xlnx,system-management-wiz-1.3";
+> +		reg = <0x80000000 0x1000>;
+> +		interrupts = <0 81 4>;
+> +		interrupt-parent = <&gic>;
+> +		clocks = <&fpga1_clk>;
+> +
+> +		xlnx,channels {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			channel@0 {
+> +				reg = <0>;
+> +				xlnx,bipolar;
+> +			};
+> +		};
+> +	};
 

@@ -2,33 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D98B2D8F2C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 18:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F70F2D8F2E
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 18:55:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725306AbgLMRxO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 12:53:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52008 "EHLO mail.kernel.org"
+        id S1725308AbgLMRzg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 12:55:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53622 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725287AbgLMRxO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 12:53:14 -0500
+        id S1725287AbgLMRzg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 12:55:36 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 917C92085B;
-        Sun, 13 Dec 2020 17:52:32 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 17:52:29 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id F1621208D5;
+        Sun, 13 Dec 2020 17:54:54 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 17:54:51 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 7/7] iio: as3935: Remove code to set trigger parent
-Message-ID: <20201213175229.7665c0c5@archlinux>
-In-Reply-To: <CA+U=Dsrds=qWRwbqHKyeWA7Wpd=Xm+YSA+KQZXfjiJJX=eTVNQ@mail.gmail.com>
-References: <20201210204211.967018-1-gwendal@chromium.org>
-        <20201210204211.967018-8-gwendal@chromium.org>
-        <CA+U=Dsrds=qWRwbqHKyeWA7Wpd=Xm+YSA+KQZXfjiJJX=eTVNQ@mail.gmail.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     gabriele.mzt@gmail.com, lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: acpi_als: Add timestamp channel
+Message-ID: <20201213175451.27dc9ea1@archlinux>
+In-Reply-To: <20201210221541.1180448-2-gwendal@chromium.org>
+References: <20201210221541.1180448-1-gwendal@chromium.org>
+        <20201210221541.1180448-2-gwendal@chromium.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,40 +34,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Dec 2020 10:07:32 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Thu, 10 Dec 2020 14:15:40 -0800
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On Thu, Dec 10, 2020 at 10:42 PM Gwendal Grignou <gwendal@chromium.org> wrote:
-> >
-> > Already done in boiler plate code  
-> 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-All the ones I haven't otherwise commented on look good to me.
+> Add timestamp channel in list of channel, to allow retrieving timestamps
+> when events are produced.
 
-Thanks for tidying this up.
+Giving IIO naming, events would be thresholds rather than buffered flow
+that you are talking about here.
 
-Jonathan
+Not hugely important though.
 
 > 
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> > ---
-> >  drivers/iio/proximity/as3935.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-> > index b79ada839e01..edc4a35ae66d 100644
-> > --- a/drivers/iio/proximity/as3935.c
-> > +++ b/drivers/iio/proximity/as3935.c
-> > @@ -411,7 +411,6 @@ static int as3935_probe(struct spi_device *spi)
-> >
-> >         st->trig = trig;
-> >         st->noise_tripped = jiffies - HZ;
-> > -       trig->dev.parent = indio_dev->dev.parent;
-> >         iio_trigger_set_drvdata(trig, indio_dev);
-> >         trig->ops = &iio_interrupt_trigger_ops;
-> >
-> > --
-> > 2.29.2.576.ga3fc446d84-goog
-> >  
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  Changes in v3: none.
+> 
+>  drivers/iio/light/acpi-als.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
+> index 1eafd0b24e182..ff0ecec65fae4 100644
+> --- a/drivers/iio/light/acpi-als.c
+> +++ b/drivers/iio/light/acpi-als.c
+> @@ -45,24 +45,23 @@ static const struct iio_chan_spec acpi_als_channels[] = {
+>  		.info_mask_separate	= BIT(IIO_CHAN_INFO_RAW) |
+>  					  BIT(IIO_CHAN_INFO_PROCESSED),
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(1),
+>  };
+>  
+>  /*
+>   * The event buffer contains timestamp and all the data from
+>   * the ACPI0008 block. There are multiple, but so far we only
+> - * support _ALI (illuminance). Once someone adds new channels
+> - * to acpi_als_channels[], the evt_buffer below will grow
+> - * automatically.
+> + * support _ALI (illuminance):
+> + * One channel, paddind and timestamp.
+
+padding
+
+>   */
+> -#define ACPI_ALS_EVT_NR_SOURCES		ARRAY_SIZE(acpi_als_channels)
+>  #define ACPI_ALS_EVT_BUFFER_SIZE		\
+> -	(sizeof(s64) + (ACPI_ALS_EVT_NR_SOURCES * sizeof(s32)))
+> +	(sizeof(s32) + sizeof(s32) + sizeof(s64))
+>  
+>  struct acpi_als {
+>  	struct acpi_device	*device;
+>  	struct mutex		lock;
+>  
+> -	s32			evt_buffer[ACPI_ALS_EVT_BUFFER_SIZE];
+> +	s32 evt_buffer[ACPI_ALS_EVT_BUFFER_SIZE / sizeof(s32)]  __aligned(8);
+>  };
+>  
+>  /*
 

@@ -2,38 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E152D8DFB
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 15:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A09B62D8E00
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Dec 2020 15:36:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389226AbgLMOcc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Dec 2020 09:32:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43048 "EHLO mail.kernel.org"
+        id S1726813AbgLMOgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Dec 2020 09:36:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44596 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730956AbgLMOcZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Dec 2020 09:32:25 -0500
+        id S1726546AbgLMOgb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Dec 2020 09:36:31 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B304922D2B;
-        Sun, 13 Dec 2020 14:31:43 +0000 (UTC)
-Date:   Sun, 13 Dec 2020 14:31:40 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 46725230FB;
+        Sun, 13 Dec 2020 14:35:49 +0000 (UTC)
+Date:   Sun, 13 Dec 2020 14:35:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH v2] iio: core: register chardev only if needed
-Message-ID: <20201213143140.58af94a0@archlinux>
-In-Reply-To: <CA+U=DspEg=XpOUKqtammKqOoLXoXEDKWQHqSauM1xna_Y+eqjA@mail.gmail.com>
-References: <20201203095342.73591-1-alexandru.ardelean@analog.com>
-        <CAHp75VffjpFyh0G3F6v0j5tXrURA2pCtWsSztC7KejhBFuLTvw@mail.gmail.com>
-        <CA+U=DsoNHebsuGDhGnJOwFbkYtGY+1Gs_mhCssH+FYk3Y05eZA@mail.gmail.com>
-        <CAHp75VcxZd1xW+ayi_km3zCYKV3aC1VRJ5bwyVpevZkvgg_ipw@mail.gmail.com>
-        <CA+U=DspEg=XpOUKqtammKqOoLXoXEDKWQHqSauM1xna_Y+eqjA@mail.gmail.com>
+        linux-iio <linux-iio@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] iio: acpi_als: Add trigger support
+Message-ID: <20201213143546.1c1d834f@archlinux>
+In-Reply-To: <CAPUE2utiv5-MPx9LHTn0SLTLGcFgVE2YzNS1U3HhZy0W3F+-jw@mail.gmail.com>
+References: <20201204203755.818932-1-gwendal@chromium.org>
+        <20201205182659.7cd23d5b@archlinux>
+        <CAPUE2utiv5-MPx9LHTn0SLTLGcFgVE2YzNS1U3HhZy0W3F+-jw@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,65 +37,136 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 9 Dec 2020 17:55:22 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+...
 
-> On Wed, Dec 9, 2020 at 5:53 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Wed, Dec 9, 2020 at 5:45 PM Alexandru Ardelean
-> > <ardeleanalex@gmail.com> wrote:  
-> > > On Wed, Dec 9, 2020 at 5:37 PM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:  
-> > > > On Thu, Dec 3, 2020 at 11:55 AM Alexandru Ardelean
-> > > > <alexandru.ardelean@analog.com> wrote:  
-> >
-> > ...
 > >  
-> > > > Are you sure there is no user space application that doesn't rely on
-> > > > character device to be always present?  
+> > >  };
+> > > @@ -104,33 +108,20 @@ static void acpi_als_notify(struct acpi_device *device, u32 event)
+> > >  {
+> > >       struct iio_dev *indio_dev = acpi_driver_data(device);
+> > >       struct acpi_als *als = iio_priv(indio_dev);
+> > > -     s32 *buffer = als->evt_buffer;
+> > > -     s64 time_ns = iio_get_time_ns(indio_dev);
+> > > -     s32 val;
+> > > -     int ret;
+> > > -
+> > > -     mutex_lock(&als->lock);
 > > >
-> > > Nope.
-> > > I'm not sure.
-> > > I'm also not completely sure how Jonathan feels about this patch being
-> > > added now [so late].
+> > > -     memset(buffer, 0, ACPI_ALS_EVT_BUFFER_SIZE);
+> > > +     if (!iio_buffer_enabled(indio_dev) ||
+> > > +         !iio_trigger_using_own(indio_dev))
+> > > +             return;
 > > >
-> > > Though, technically if the chardev was already there, without all the
-> > > control in place [to enable IIO buffers and other stuff through the
-> > > chardev] then it's technically just a "marker" file.
-> > > Which arguably is a lot to have (i.e. chardev that should be unusable).
-> > >
-> > > If it is usable with no control in place for buffers or other stuff
-> > > (i.e. I missed something), then I also don't know.
-> > >
-> > > So, this patch on it's own can still be interpreted as an RFC.
-> > > See:
-> > > https://lore.kernel.org/linux-iio/20201121180246.772ad299@archlinux/  
+> > >       switch (event) {
+> > >       case ACPI_ALS_NOTIFY_ILLUMINANCE:
+> > > -             ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
+> > > -             if (ret < 0)
+> > > -                     goto out;
+> > > -             *buffer++ = val;
+> > > +             iio_trigger_poll_chained(als->trig);  
 > >
-> > Don't take me wrong, I'm not against a good change (I doesn't like
-> > dangling files), but it might break some use cases.  
-> 
-> Yeah I know.
-> But how else do you know if a dangling file might break some use cases?
-> 
-> The worst that would happen is that we get a report and create a Fixes
-> tag and we know.
-> But if we don't try it, we're stuck with it, and will never know.
-> 
-It's definitely a high risk change.  I'd 'hope' it's not a problem
-but we should do a bit more due diligence. 
+> > One issue with this path is it won't have set the poll function timestamp.
+> > It's a long term problem that there is no way for a device to know with
+> > certainty if the top half of it's trigger handler was ever called.
+> >
+> > I have been thinking about adding accessors to pf->timestamp to set
+> > and clear it which could also set a flag to say it had been set.
+> > Hence the get would return an error if not and we could grab a local
+> > timestamp if that happens as it would be the best available.  
+> Looking at other devices that support sw/hw riggers (for instance
+> light/rpr0521.c), pf->timestamp == 0 indicates that the top half was
+> not called.
 
-I hope we can assume the ADI software is all fine with dropping this.
-Bastien can you see any issues with dropping chrdev for IIO devices
-that don't actually support using it for anything (sysfs interface only).
+While it should be vanishingly rare, in theory timestamp == 0 is
+a valid time.  I agree in practice we could use that but I would
+prefer clearer semantics / code readability as would occur with
+explicit accessors.
 
-What other stacks are people aware of that we should enquire about?
+> >
+> > Anyhow, I would assume you will get all 0 timestamps currently.
+> >  
+> > >               break;
+> > >       default:
+> > >               /* Unhandled event */
+> > >               dev_dbg(&device->dev, "Unhandled ACPI ALS event (%08x)!\n",
+> > >                       event);
+> > > -             goto out;
+> > >       }
+> > > -
+> > > -     iio_push_to_buffers_with_timestamp(indio_dev, als->evt_buffer, time_ns);
+> > > -
+> > > -out:
+> > > -     mutex_unlock(&als->lock);
+> > >  }
+> > >
+> > >  static int acpi_als_read_raw(struct iio_dev *indio_dev,
+> > > @@ -161,11 +152,37 @@ static const struct iio_info acpi_als_info = {
+> > >       .read_raw               = acpi_als_read_raw,
+> > >  };
+...
 
-Thanks,
+> > >  static int acpi_als_add(struct acpi_device *device)
+> > >  {
+> > >       struct acpi_als *als;
+> > >       struct iio_dev *indio_dev;
+> > > -     struct iio_buffer *buffer;
+> > > +     int ret;
+> > >
+> > >       indio_dev = devm_iio_device_alloc(&device->dev, sizeof(*als));
+> > >       if (!indio_dev)
+> > > @@ -180,15 +197,30 @@ static int acpi_als_add(struct acpi_device *device)
+> > >       indio_dev->name = ACPI_ALS_DEVICE_NAME;
+> > >       indio_dev->dev.parent = &device->dev;
+> > >       indio_dev->info = &acpi_als_info;
+> > > -     indio_dev->modes = INDIO_BUFFER_SOFTWARE;
+> > > +     indio_dev->modes = INDIO_DIRECT_MODE;
+> > >       indio_dev->channels = acpi_als_channels;
+> > >       indio_dev->num_channels = ARRAY_SIZE(acpi_als_channels);
+> > >
+> > > -     buffer = devm_iio_kfifo_allocate(&device->dev);
+> > > -     if (!buffer)
+> > > +     als->trig = devm_iio_trigger_alloc(&device->dev,
+> > > +                                        "%s-dev%d",
+> > > +                                        indio_dev->name,
+> > > +                                        indio_dev->id);
+> > > +     if (!als->trig)
+> > >               return -ENOMEM;
+> > >
+> > > -     iio_device_attach_buffer(indio_dev, buffer);
+> > > +     als->trig->dev.parent = &device->dev;  
+> >
+> > Hmm. we should probably push this boilerplate into
+> > devm_iio_trigger_alloc() like we have done for iio devices.  
+> Done in a separate patch. I only clean up obvious calls to set
+> trig->dev.parent.
+> Looking at the code, some triggers parents are set to the request
+> device in more convoluted ways or the grand parent.
+
+Yup. There are a few interesting devices out there, particularly
+when mfd's are involved.  Whilst I'm not sure it's actually
+necessary for them to set the parents as they do, it is now
+ABI so we are stuck with it.
+
+Thanks for that series btw.
 
 Jonathan
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko  
+
+
+> >  
+> > > +     iio_trigger_set_drvdata(als->trig, indio_dev);
+> > > +     ret = iio_trigger_register(als->trig);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     ret = devm_iio_triggered_buffer_setup(&device->dev,
+> > > +                                           indio_dev,
+> > > +                                           iio_pollfunc_store_time,
+> > > +                                           acpi_als_trigger_handler,
+> > > +                                           NULL);
+> > > +     if (ret)
+> > > +             return ret;
+> > >
+> > >       return devm_iio_device_register(&device->dev, indio_dev);
+> > >  }  
+> >  
 

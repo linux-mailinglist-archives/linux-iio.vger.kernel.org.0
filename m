@@ -2,174 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC122D9CC9
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 17:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44CFF2DA0AE
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 20:39:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728826AbgLNQfe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Dec 2020 11:35:34 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2258 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727956AbgLNQfd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Dec 2020 11:35:33 -0500
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cvn460FbYz67QJj;
-        Tue, 15 Dec 2020 00:32:38 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 14 Dec 2020 17:34:51 +0100
-Received: from localhost (10.47.77.193) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 14 Dec
- 2020 16:34:51 +0000
-Date:   Mon, 14 Dec 2020 16:34:23 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Peter Rosin <peda@axentia.se>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: afe: iio-rescale: Support processed channels
-Message-ID: <20201214163423.00005e6c@Huawei.com>
-In-Reply-To: <e755c671-a212-e93c-427c-66ab031289c3@axentia.se>
-References: <20201101232211.1194304-1-linus.walleij@linaro.org>
-        <CACRpkdZc=qGasbsL7DWbbRGyvxaX8hh2iU-QfLpkYGCD3UrqOw@mail.gmail.com>
-        <435ebb1b-431c-fdeb-023e-39c6f6102e22@axentia.se>
-        <20201213121615.55a86f77@archlinux>
-        <c34cc481-0244-a68e-8ae4-75e8e62b18bb@axentia.se>
-        <20201214150728.00001fa7@Huawei.com>
-        <e755c671-a212-e93c-427c-66ab031289c3@axentia.se>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.77.193]
-X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+        id S2502368AbgLNTh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Dec 2020 14:37:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731027AbgLNTh5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Dec 2020 14:37:57 -0500
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1ADAC061793
+        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 11:37:16 -0800 (PST)
+Received: by mail-wm1-x342.google.com with SMTP id 190so4600817wmz.0
+        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 11:37:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=yB+KLVdzyQMUcT+dHDlPRhwaV/ue6iqR4CWr5nJaiHc=;
+        b=lQ4HCiRq1ZfKlRsquFG27PHbYtjJcOsQ2teC08bxuUks2ZP6G9vQYVsIbcY8alO+sl
+         u5kZy9sx4Ayv2DMAd8gQ0V3TiggiIa52ZAOUv9AisWbNHHkCl7SSAvKZYLVLKuze/fj2
+         2VRoFUHwfdvrp6i5TNBy8JX7HpZOaMox6BxIZKn6JyrxCCV6UoiBtjsZQQWzhT2ZDMdu
+         yBN4NPWyeYEnPvGgiSaa+6WAKZmcGoIp6esMQv9xx9Jp6L6PeOxwixpA+HwK8K2AsVQO
+         jfIrDMKNKNpyxNrb9Af4Gxex0UbmxmsCsGop+lDyS4845rqCADQTbBuj5Y/buOaRlgTS
+         lHPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yB+KLVdzyQMUcT+dHDlPRhwaV/ue6iqR4CWr5nJaiHc=;
+        b=L365LGBpUUjrXm1mGlTPHqQ1MbOB7h+lsWcI5Yc70IrXb+MSZnKxX6mT0KhVe89AAK
+         c4eVK8YcHiXErSUXWbW9aj2lYVNQQ5AgNNe31ucO2QvMavPDTC9yqDkV+iY1LmKyCZX8
+         GHivOQbMkihSQuqSdPZBzoka0Lq1ZDd4z9zotpZSem3RqXhnYZqNv078GdBmts3zXwgt
+         FB/85xFAoQPGM3EXo+QYqjMUjvjbHRM8gUC7050Osum+6oq0mSSmfH4SoEEl0Edpljtg
+         yonNj9kKKcwgSZvKMm+GmggtT+P4ZJbN21oY4DFqJkldpBNycZYae2XKGYkWBIVqy+VO
+         pLBA==
+X-Gm-Message-State: AOAM5339zRdVbXUSjX+tdcgfIaXUcswJwi4fyCtPMA9zEzy27GUUeE3D
+        3j6x+rsZQ84cn076/fRhaDT7yA==
+X-Google-Smtp-Source: ABdhPJxVj60sXGuxHfLRqPtfcHarTRxG3IscgaT98mzkNhPr9exfufgUIg2kRU7OF/j7TrB7jdU5sA==
+X-Received: by 2002:a1c:2cc2:: with SMTP id s185mr28753318wms.111.1607974635709;
+        Mon, 14 Dec 2020 11:37:15 -0800 (PST)
+Received: from localhost (91-139-165-243.sf.ddns.bulsat.com. [91.139.165.243])
+        by smtp.gmail.com with ESMTPSA id v189sm33794031wmg.14.2020.12.14.11.37.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Dec 2020 11:37:14 -0800 (PST)
+From:   Slaveyko Slaveykov <sis@melexis.com>
+To:     Jonathan.Cameron@huawei.com, cmo@melexis.com
+Cc:     linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
+        Slaveyko Slaveykov <sis@melexis.com>
+Subject: [PATCH v2 0/1] Add delay after the addressed reset command in mlx90632.c
+Date:   Mon, 14 Dec 2020 21:37:10 +0200
+Message-Id: <20201214193711.12592-1-sis@melexis.com>
+X-Mailer: git-send-email 2.16.2.windows.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Dec 2020 16:30:22 +0100
-Peter Rosin <peda@axentia.se> wrote:
+The only change in version 2 of the patch is adding a comment
+in the code to explain why the delay is needed as advised 
+by Andy Shevchenko <andy.shevchenko@gmail.com>.
 
-> On 2020-12-14 16:07, Jonathan Cameron wrote:
-> > On Mon, 14 Dec 2020 09:34:40 +0100
-> > Peter Rosin <peda@axentia.se> wrote:
-> >   
-> >> On 2020-12-13 13:16, Jonathan Cameron wrote:  
-> >>> On Sun, 13 Dec 2020 00:22:17 +0100
-> >>> Peter Rosin <peda@axentia.se> wrote:
-> >>>     
-> >>>> On 2020-12-12 13:26, Linus Walleij wrote:    
-> >>>>> On Mon, Nov 2, 2020 at 12:22 AM Linus Walleij <linus.walleij@linaro.org> wrote:
-> >>>>>       
-> >>>>>> It happens that an ADC will only provide raw or processed
-> >>>>>> voltage conversion channels. (adc/ab8500-gpadc.c).
-> >>>>>> On the Samsung GT-I9070 this is used for a light sensor
-> >>>>>> and current sense amplifier so we need to think of something.
-> >>>>>>
-> >>>>>> The idea is to allow processed channels and scale them
-> >>>>>> with 1/1 and then the rescaler can modify the result
-> >>>>>> on top.
-> >>>>>>
-> >>>>>> Cc: Peter Rosin <peda@axentia.se>
-> >>>>>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>      
-> >>>>>
-> >>>>> Did we reach any conclusion on this? I really need to use
-> >>>>> the rescaler on an ADC that only handles processed channels...
-> >>>>>
-> >>>>> I'm sorry that I can't make this ADC disappear :D      
-> >>>>
-> >>>> Hi!
-> >>>>
-> >>>> My conclusion was that the patch is buggy since it presents inconsistent
-> >>>> information. That needs to be fixed one way or the other. If the offending
-> >>>> information cannot be filtered out for some reason, I don't know what to
-> >>>> do. Details in my previous comment [1]. BTW, I still do not know the answer
-> >>>> to the .read_avail question at the end of that message, and I don't have
-> >>>> time to dig into it. Sorry.    
-> >>>
-> >>> Unless I'm missing something, I think it presents no information unless
-> >>> we strangely have a driver providing read_avail for _RAW but only
-> >>> _PROCESSED channels which is a bug.  I'm not that bothered about
-> >>> missing information in this particular, somewhat obscure, corner case.
-> >>>
-> >>> So I think we should take the patch as it stands.  It's missed the
-> >>> merge window now anyway unfortunately.  So Peter, I would suggest we
-> >>> take this and perhaps revisit to tidy up loose corners when we all have
-> >>> more time.    
-> >>
-> >> My concern was a driver with a raw channel, including read_avail, providing
-> >> raw sample values but that no easy conversion existed to get from that to
-> >> the processed values. One option for the driver in that case would be to
-> >> provide these raw values, but then have no scaling info.  
-> > 
-> > Generally I resist this a lot. The reason is that it is impossible to write
-> > generic userspace software against it. The one time we did let this happen
-> > was with some of the heart rate sensors (pulse oximeters) where the algorithm
-> > to derive the eventual value is both complex - based on published literature,
-> > and proprietary (what was actually readily usable). What the measurement being
-> > provided to userspace was is well documented, but not how on earth you get from
-> > that to something useable for what the sensor is designed to measure.
-> >   
-> >> I.e. the way I see
-> >> it, it is perfectly reasonable for a driver to provide raw with read_avail,
-> >> no scaling but also processed values.  
-> > 
-> > Why?  What use would the raw values actually be?  There are a couple of historical
-> > drivers where they evolved to this state, but it is not one we would normally accept.
-> > We go to a lot of effort to try and avoid this.  
-> 
-> Drivers that have eveloved over time is exactly one such reason. E.g. a driver
-> starts out by not caring about wrong measurements at one end of the spectrum
-> because it is "linear enough" for the first use, someone comes along and fixes
-> that. But by that time it's impossible to completely remove the raw channel
-> because that would be a regression for some reason. And there you are. A
-> driver with raw plus read_avail, no scaling but a processed channel. Or
-> something like that...
+Slaveyko Slaveykov (1):
+  drivers: iio: temperature: Add delay after the addressed reset command
+    in mlx90632.c
 
-Yup, that's pretty much what tends to happen.  I've gotten a lot stricter
-on checking datasheets to try and stop this happening, but still possible more
-will slip through (particularly as can't always get the datasheet)
-> 
-> >> And that gets transformed by the
-> >> rescaler into the processed values being presented as raw, with rescaling
-> >> added on top, but with the read_avail info for this new raw channel being
-> >> completely wrong.
-> >>
-> >> For the intended driver (ab8500-gpadc) this is not the case (it has no
-> >> read_avail for its raw channel). But it does have a raw channel, so adding
-> >> read_avail seems easy and I can easily see other drivers already doing it.
-> >> Haven't checked that though...  
-> > 
-> > Drat. I'd failed to register this is one of those corner cases.  
-> 
-> I'm not sure, I just browsed the code. Maybe I misread it?
+ drivers/iio/temperature/mlx90632.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-It's doing both - you were right.  I think there are only a small number of
-drivers that have that history.
-
-Looks superficially like it's easy enough to catch this corner case and
-block it - so lets do that.
-
-Jonathan
-
-
-> 
-> Cheers,
-> Peter
-> 
-> >> But if you say that this never happens, fine. Otherwise, since it's too
-> >> late for the merge window anyway, the patch might as well be updated such
-> >> that the rescaler blocks the read_avail channel in this situation, if it
-> >> exists.  
-> > 
-> > That's fair enough.  A sanity check and then suitable warning message to explain
-> > why it is blocked makes sense.  
-> 
+-- 
+2.16.2.windows.1
 

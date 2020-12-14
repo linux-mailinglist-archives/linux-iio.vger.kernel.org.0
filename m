@@ -2,71 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A5B72D9994
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 15:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED362D9A97
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 16:10:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439164AbgLNOP6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Dec 2020 09:15:58 -0500
-Received: from mga11.intel.com ([192.55.52.93]:30482 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439175AbgLNOPw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 14 Dec 2020 09:15:52 -0500
-IronPort-SDR: hs+yAuibbMTvGhsn0fvWkEPZyXFmtYFV47qnWpRs0hTw2vt9DGvF0jATa0K2ZrQEmSCrekjMwM
- iSNmcnXUszDA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9834"; a="171201205"
-X-IronPort-AV: E=Sophos;i="5.78,419,1599548400"; 
-   d="scan'208";a="171201205"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 06:14:05 -0800
-IronPort-SDR: lalFpitClpvtGHnMUEgh1yUxTzy7ckyQw+MstcUsm/7HPgfOLdtd3WXoBDpwSsFsrMRoflobkV
- X2HPXSDzYhXw==
-X-IronPort-AV: E=Sophos;i="5.78,419,1599548400"; 
-   d="scan'208";a="448633520"
-Received: from kairampx-mobl.gar.corp.intel.com ([10.215.194.216])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 06:14:02 -0800
-Message-ID: <df1481e15c591106ba75ed85289b12507cbc8c49.camel@linux.intel.com>
-Subject: Re: [PATCH -next] hid/hid-sensor-custom: convert comma to semicolon
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>, jikos@kernel.org,
-        jic23@kernel.org, benjamin.tissoires@redhat.com
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 14 Dec 2020 06:13:58 -0800
-In-Reply-To: <20201214133212.3569-1-zhengyongjun3@huawei.com>
-References: <20201214133212.3569-1-zhengyongjun3@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.2 (3.38.2-1.fc33) 
+        id S1730138AbgLNPIp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Dec 2020 10:08:45 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2255 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729007AbgLNPIi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Dec 2020 10:08:38 -0500
+Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Cvl783gv6z67Pyf;
+        Mon, 14 Dec 2020 23:05:08 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 14 Dec 2020 16:07:56 +0100
+Received: from localhost (10.47.77.193) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 14 Dec
+ 2020 15:07:55 +0000
+Date:   Mon, 14 Dec 2020 15:07:28 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Peter Rosin <peda@axentia.se>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Hartmut Knaack" <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: afe: iio-rescale: Support processed channels
+Message-ID: <20201214150728.00001fa7@Huawei.com>
+In-Reply-To: <c34cc481-0244-a68e-8ae4-75e8e62b18bb@axentia.se>
+References: <20201101232211.1194304-1-linus.walleij@linaro.org>
+        <CACRpkdZc=qGasbsL7DWbbRGyvxaX8hh2iU-QfLpkYGCD3UrqOw@mail.gmail.com>
+        <435ebb1b-431c-fdeb-023e-39c6f6102e22@axentia.se>
+        <20201213121615.55a86f77@archlinux>
+        <c34cc481-0244-a68e-8ae4-75e8e62b18bb@axentia.se>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.77.193]
+X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2020-12-14 at 21:32 +0800, Zheng Yongjun wrote:
-> Replace a comma between expression statements by a semicolon.
-> 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+On Mon, 14 Dec 2020 09:34:40 +0100
+Peter Rosin <peda@axentia.se> wrote:
 
-> ---
->  drivers/hid/hid-sensor-custom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On 2020-12-13 13:16, Jonathan Cameron wrote:
+> > On Sun, 13 Dec 2020 00:22:17 +0100
+> > Peter Rosin <peda@axentia.se> wrote:
+> >   
+> >> On 2020-12-12 13:26, Linus Walleij wrote:  
+> >>> On Mon, Nov 2, 2020 at 12:22 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+> >>>     
+> >>>> It happens that an ADC will only provide raw or processed
+> >>>> voltage conversion channels. (adc/ab8500-gpadc.c).
+> >>>> On the Samsung GT-I9070 this is used for a light sensor
+> >>>> and current sense amplifier so we need to think of something.
+> >>>>
+> >>>> The idea is to allow processed channels and scale them
+> >>>> with 1/1 and then the rescaler can modify the result
+> >>>> on top.
+> >>>>
+> >>>> Cc: Peter Rosin <peda@axentia.se>
+> >>>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>    
+> >>>
+> >>> Did we reach any conclusion on this? I really need to use
+> >>> the rescaler on an ADC that only handles processed channels...
+> >>>
+> >>> I'm sorry that I can't make this ADC disappear :D    
+> >>
+> >> Hi!
+> >>
+> >> My conclusion was that the patch is buggy since it presents inconsistent
+> >> information. That needs to be fixed one way or the other. If the offending
+> >> information cannot be filtered out for some reason, I don't know what to
+> >> do. Details in my previous comment [1]. BTW, I still do not know the answer
+> >> to the .read_avail question at the end of that message, and I don't have
+> >> time to dig into it. Sorry.  
+> > 
+> > Unless I'm missing something, I think it presents no information unless
+> > we strangely have a driver providing read_avail for _RAW but only
+> > _PROCESSED channels which is a bug.  I'm not that bothered about
+> > missing information in this particular, somewhat obscure, corner case.
+> > 
+> > So I think we should take the patch as it stands.  It's missed the
+> > merge window now anyway unfortunately.  So Peter, I would suggest we
+> > take this and perhaps revisit to tidy up loose corners when we all have
+> > more time.  
 > 
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
-> sensor-custom.c
-> index 4d25577a8573..6c47a2e7623d 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -728,7 +728,7 @@ static int hid_sensor_custom_dev_if_add(struct
-> hid_sensor_custom *sensor_inst)
->  
->         sensor_inst->custom_dev.minor = MISC_DYNAMIC_MINOR;
->         sensor_inst->custom_dev.name = dev_name(&sensor_inst->pdev-
-> >dev);
-> -       sensor_inst->custom_dev.fops = &hid_sensor_custom_fops,
-> +       sensor_inst->custom_dev.fops = &hid_sensor_custom_fops;
->         ret = misc_register(&sensor_inst->custom_dev);
->         if (ret) {
->                 kfifo_free(&sensor_inst->data_fifo);
+> My concern was a driver with a raw channel, including read_avail, providing
+> raw sample values but that no easy conversion existed to get from that to
+> the processed values. One option for the driver in that case would be to
+> provide these raw values, but then have no scaling info.
 
+Generally I resist this a lot. The reason is that it is impossible to write
+generic userspace software against it. The one time we did let this happen
+was with some of the heart rate sensors (pulse oximeters) where the algorithm
+to derive the eventual value is both complex - based on published literature,
+and proprietary (what was actually readily usable). What the measurement being
+provided to userspace was is well documented, but not how on earth you get from
+that to something useable for what the sensor is designed to measure.
+
+> I.e. the way I see
+> it, it is perfectly reasonable for a driver to provide raw with read_avail,
+> no scaling but also processed values.
+
+Why?  What use would the raw values actually be?  There are a couple of historical
+drivers where they evolved to this state, but it is not one we would normally accept.
+We go to a lot of effort to try and avoid this.
+ 
+> And that gets transformed by the
+> rescaler into the processed values being presented as raw, with rescaling
+> added on top, but with the read_avail info for this new raw channel being
+> completely wrong.
+> 
+> For the intended driver (ab8500-gpadc) this is not the case (it has no
+> read_avail for its raw channel). But it does have a raw channel, so adding
+> read_avail seems easy and I can easily see other drivers already doing it.
+> Haven't checked that though...
+
+Drat. I'd failed to register this is one of those corner cases.
+
+
+> 
+> But if you say that this never happens, fine. Otherwise, since it's too
+> late for the merge window anyway, the patch might as well be updated such
+> that the rescaler blocks the read_avail channel in this situation, if it
+> exists.
+
+That's fair enough.  A sanity check and then suitable warning message to explain
+why it is blocked makes sense.
+
+Jonathan
+
+> 
+> Cheers,
+> Peter
 

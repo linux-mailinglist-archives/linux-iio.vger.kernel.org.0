@@ -2,71 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3446F2DA2F9
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 23:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDDC2DA30B
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Dec 2020 23:12:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438982AbgLNWFp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Dec 2020 17:05:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
+        id S2440111AbgLNWLO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Dec 2020 17:11:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438964AbgLNWFd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Dec 2020 17:05:33 -0500
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A1DC06179C
-        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 14:04:53 -0800 (PST)
-Received: by mail-wr1-x444.google.com with SMTP id r7so17930529wrc.5
-        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 14:04:53 -0800 (PST)
+        with ESMTP id S2439147AbgLNWFv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Dec 2020 17:05:51 -0500
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B42C0613D3
+        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 14:05:11 -0800 (PST)
+Received: by mail-wr1-x443.google.com with SMTP id y17so17909947wrr.10
+        for <linux-iio@vger.kernel.org>; Mon, 14 Dec 2020 14:05:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=melexis.com; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=SJ8w9e55v1NV3R6YYsDvUAW+4anA4sCo6rNS/Pm4938=;
-        b=hGUwBVWIuDLQnRR3221elon7FQ/IW3Kw/6XbK8+JgekFeHIrJWGctmK+9YUyfFA4VZ
-         0G8YrxQ/exBjt4jrxVeB3fgJDfmyg3p9MSEP8/gu/tmLyx7HsaxlbsZOhr1AUIR6fDOI
-         vndmykl5HQMbRwyK+Zqu2BotnghcAsCWFc9Tz0UgIpVG0aNx7xXHZ8GNfwBOPCxLxGRe
-         VV3ZWujXhTCHcHIVL4Zm0juy/LIa9l6eImLLATB73T9UePsbUh1dMQneDRJN/RdmDfvL
-         QwaHkfCOoG+59jh5sWaCEbcvdX1QFnzsPR6zczSABqPIIrRUoZRYv7bg21prsR2HUwyW
-         oDjw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=pajgT+cCEU9TrF1fXLIGD0wRsyk3IyF9VopN2P5t67o=;
+        b=Wv6MfygIdz15VPC7rjMO7OvMuffcJGLdRLrI6yok+sV30+k0zFWAlZy2dhDsyzUTce
+         C4K9gvLfRw93RerRBZufvSj23yuwhEOJrTmgGvqsUayrrCu0cr/XP4/dPzbDtP6L9Jv4
+         idDCdjPary6Yn4QUC5lEXtXo09xs9hYf3148Z7CMGfg6IIdt5uKT4DcZpu7GleL6X0mJ
+         Na/sjlePDS5maHAbxnXrs3uyH6RVKqs6T54zfLVBKARoQTAJUP31/FAIWB/CYLKubGKG
+         hu5Sbh0h1nV4nq1sz7eQdyAvWlqaSxea/YOfP8LvYl1sN91cxh4Hc+uhuwl0kpWHBPNM
+         E7Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=SJ8w9e55v1NV3R6YYsDvUAW+4anA4sCo6rNS/Pm4938=;
-        b=BCnN3j43OLyWdA65Got1nfnQGtoXjzbb11lp37AQ+DW0mFoKQZkByHzjesS/YFg6/b
-         DyJlK87MBPDdx+0uhBoQYGY0vu8DMEQd/Utuz0CDMg5Aatg+RRcD0XWL3cc05/FcwBBh
-         D0N0m1oN6PU56Mfo+aaNYpkJs0Z4XLzffzAD2EMGt2fybG4smPYLlAXlySRh1+c7eCRB
-         2b0fTOG7Z94g2XmzW7EosfYHoXQI2f9lLPT4alZHpADNHlSMSzXICYj+3/G+aoaKlptI
-         YcZ9T6u4eH/CdIl6cMNU7v9Fu9cQ62fY0jWlY2QOJe+56xUDXovbH87HU/2sKQDcRAa3
-         Zx4Q==
-X-Gm-Message-State: AOAM530BjDdhmciKhBilSVBfNl7o6S2Br8V7FI1wuxt0LEUjGBb8nt3w
-        2SJAnqNu7MRgD9TPjcvBOLW/Sg==
-X-Google-Smtp-Source: ABdhPJw96+KirAnt4MKvl0nELdVN6TEAi0kN5xCKxUvGLVrKjOEywNj49TfgXyds2DjxXCB5H9iiAA==
-X-Received: by 2002:adf:ffc8:: with SMTP id x8mr30773226wrs.158.1607983491919;
-        Mon, 14 Dec 2020 14:04:51 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=pajgT+cCEU9TrF1fXLIGD0wRsyk3IyF9VopN2P5t67o=;
+        b=LXFweoQ3Q7ZmY5unKN6YiLIRLAj2mBxVjKNFYA7mbkHpaRQ+kUs3c4P9d0Cu9IBdtu
+         n/yUdVjUnifWb9/NxFGjk8dpbWxYlztZRKHvquGWvG1JsxGE/kkMrQw20VIdQ3aD7vi1
+         vZY4y9g+YBkKZp7ciPG3A+p6VeY/wq0lRU/v0kRCG9fIhsBSu/K34WlYQRiNqAXyvWQE
+         rHHP2I7+2nlYfTAVi0rqjU0sIAhWu5U/satxqDTzxXM+Uj2h6bqetuS1E5NfKSsgUupC
+         zVRKlldIHheKb2o9ZyxVRqZg5BprhgYvPnG1S/nZnGZ5xL5gHpxIbl8XtF588f9vKUXa
+         rgwg==
+X-Gm-Message-State: AOAM5322y68hfAXrN/XfLmZP6ptupzAS42QS7v+4q0UwTb3WvHCXQ22W
+        6DJuxPXBB0m320S9MEqdiPIfYA==
+X-Google-Smtp-Source: ABdhPJz/AwRJcwplDuRtmo6kJ9Z5pZeoLx4VuFz/ucRWOs88Ht5+uqUTzKM1mFgnbomWOxJp0SbYdg==
+X-Received: by 2002:adf:e74a:: with SMTP id c10mr31521841wrn.122.1607983509792;
+        Mon, 14 Dec 2020 14:05:09 -0800 (PST)
 Received: from localhost (91-139-165-243.sf.ddns.bulsat.com. [91.139.165.243])
-        by smtp.gmail.com with ESMTPSA id l1sm33637314wrq.64.2020.12.14.14.04.50
+        by smtp.gmail.com with ESMTPSA id u10sm31546676wmd.43.2020.12.14.14.05.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Dec 2020 14:04:50 -0800 (PST)
+        Mon, 14 Dec 2020 14:05:09 -0800 (PST)
 From:   Slaveyko Slaveykov <sis@melexis.com>
 To:     Jonathan.Cameron@huawei.com, cmo@melexis.com
 Cc:     linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
         lars@metafoo.de, Slaveyko Slaveykov <sis@melexis.com>
-Subject: [PATCH v4 0/1] Add delay after the addressed reset command in mlx90632.c
-Date:   Tue, 15 Dec 2020 00:04:11 +0200
-Message-Id: <20201214220412.13224-1-sis@melexis.com>
+Subject: [PATCH v4 1/1] drivers: iio: temperature: Add delay after the addressed reset command in mlx90632.c
+Date:   Tue, 15 Dec 2020 00:04:12 +0200
+Message-Id: <20201214220412.13224-2-sis@melexis.com>
 X-Mailer: git-send-email 2.16.2.windows.1
+In-Reply-To: <20201214220412.13224-1-sis@melexis.com>
+References: <20201214220412.13224-1-sis@melexis.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Using the appropriate usleep_range() and stylefixing based on the 
-remarks made by Lars-Peter Clausen <lars@metafoo.de>
+After an I2C reset command, the mlx90632 needs some time before
+responding to other I2C commands. Without that delay, there is a chance
+that the I2C command(s) after the reset will not be accepted
 
-Slaveyko Slaveykov (1):
-  drivers: iio: temperature: Add delay after the addressed reset command
-    in mlx90632.c
-
+Signed-off-by: Slaveyko Slaveykov <sis@melexis.com>
+---
  drivers/iio/temperature/mlx90632.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 503fe54a0bb9..474e6cd5b534 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -248,6 +248,12 @@ static int mlx90632_set_meas_type(struct regmap *regmap, u8 type)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/*
++	 * give the mlx90632 some time to reset properly before sending a new I2C command
++	 * if this is not done, the following I2C command(s) will not be accepted
++	 */
++	usleep_range(150, 200);
++
+ 	ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
+ 				 (MLX90632_CFG_MTYP_MASK | MLX90632_CFG_PWR_MASK),
+ 				 (MLX90632_MTYP_STATUS(type) | MLX90632_PWR_STATUS_HALT));
 -- 
 2.16.2.windows.1
 

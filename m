@@ -2,148 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EBBD2DB083
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 16:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 210642DB226
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 18:06:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730456AbgLOPuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Dec 2020 10:50:23 -0500
-Received: from www381.your-server.de ([78.46.137.84]:37222 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728720AbgLOPuJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Dec 2020 10:50:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=HOiOWte4I4xjsSkbc0Gb5VvsEwlOuYRe6MvxFWaNfTU=; b=jxNDeXTV2WlOhFRlCEkURR+AMQ
-        lvRE/BSQL8FDzdmYZXKLqJazaYzztgFN3Oj74WdZk9QCh93CqaxuKeqCNL8WBKhgugX+WLBPzV+Cb
-        EwczlhPn9CPFbo7BnyNNvDuvfG9BxXJNboI4Nm5XCGcHzEUC8nC4a5IGQlX+nvgCRP3CmGj5WRwob
-        ITKpGw3yN6LMQBQ8a+/ltruNtUpENKCx18U5kir0zrsRtk8WLpIuTkvz76IjMdcLTmCl4Oiejj17y
-        vzFAqVFl3L2ZrPrhnNRZOzkcirFYziJ3Y5hXyGrlCfkGbkRUTb/7r7/5a+NylvxhQORGyBo3HD5cs
-        isESrsvw==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1kpCZj-000Fsr-Ji; Tue, 15 Dec 2020 16:49:19 +0100
-Received: from [62.216.202.54] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1kpCZj-000MG9-Eg; Tue, 15 Dec 2020 16:49:19 +0100
-Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
- System Monitor
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Anand Ashok Dumbre <ANANDASH@xilinx.com>
-Cc:     Michal Simek <michals@xilinx.com>,
+        id S1730346AbgLORED (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Dec 2020 12:04:03 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:38672 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730307AbgLORDx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Dec 2020 12:03:53 -0500
+Received: by mail-ot1-f66.google.com with SMTP id j20so15582265otq.5;
+        Tue, 15 Dec 2020 09:03:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=my6Pxc4nWMm/kaW+tIaaU9D3enZgF/nrG6Uu+JTXzgg=;
+        b=pw3qTeCSXPTWUtdautPN4xmBHPXYEkPAEzTVyq9gPtRk7Jfy+UeHp8w/KHQpKHIWVz
+         daXPXT/ou1s8uNcSKbjSL7CxIDM2aOsAr7tqFtcSpbJK6cPjmH7fuh4qxu4CKJ7dlzZG
+         TUzIK9Z4Pkp9Us1bdiNLFLl6yVvG3DMUsbY7yChgqfrtv9A2EQXQCLJ4Rtb0zvlm6Bck
+         tBn1NzWw9+F/NfxW6nF7vf4IKam2p8iBbCPCr0lwihoDRg4/MrJ/1I2U8tevIqfIb/if
+         Lz+oo+LcLdcdrVd+6T+7ePnJSxfh0Y6+DfI9C5rbNUtFYJifuMmvrn8a4S68KRNGXju2
+         hqEQ==
+X-Gm-Message-State: AOAM533MsVk0+y9AGk2LrLj07pfmeSOJn3QFUfJZQLvsGZfy5chpV8ul
+        bAigRVtVz0FtsedMj4eSew==
+X-Google-Smtp-Source: ABdhPJx6lB0dGGnpDRZ0c2GBFqFaV2FbGAk/IHanBIR3hNxEwfV7eOIs5rkzPN730rry3PyWao9Xew==
+X-Received: by 2002:a05:6830:1493:: with SMTP id s19mr23920350otq.175.1608051790524;
+        Tue, 15 Dec 2020 09:03:10 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id s26sm541786otd.8.2020.12.15.09.03.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Dec 2020 09:03:09 -0800 (PST)
+Received: (nullmailer pid 4028590 invoked by uid 1000);
+        Tue, 15 Dec 2020 17:03:07 -0000
+Date:   Tue, 15 Dec 2020 11:03:07 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     devajithvs <devajithvs@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Robert Yang <decatf@gmail.com>, devicetree@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <20200922134624.13191-1-lars@metafoo.de>
- <20200922134624.13191-2-lars@metafoo.de> <20200923214728.6e0c07b0@archlinux>
- <fb8db604-0ae3-1736-67bf-20a1dc8bc008@xilinx.com>
- <20201129131441.3e9d83f8@archlinux>
- <BY5PR02MB6916F923D93341D41BA08E8AA9CA0@BY5PR02MB6916.namprd02.prod.outlook.com>
- <20201213115711.58733caa@archlinux>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <d88226b8-74c6-0535-fc72-936f87463fb6@metafoo.de>
-Date:   Tue, 15 Dec 2020 16:49:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: accel: kxcjk1013: Document
+ regulator supplies
+Message-ID: <20201215170307.GA4028538@robh.at.kernel.org>
+References: <20201213172437.2779-1-devajithvs@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201213115711.58733caa@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26018/Tue Dec 15 15:37:09 2020)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201213172437.2779-1-devajithvs@gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/13/20 12:57 PM, Jonathan Cameron wrote:
-> On Fri, 11 Dec 2020 09:57:30 +0000
-> Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
->
->>> -----Original Message-----
->>> From: Jonathan Cameron <jic23@kernel.org>
->>> Sent: Sunday 29 November 2020 1:15 PM
->>> To: Michal Simek <michals@xilinx.com>
->>> Cc: Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler
->>> <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org; Anand Ashok Dumbre
->>> <ANANDASH@xilinx.com>
->>> Subject: Re: [PATCH 2/2] iio: xilinx-xadc: Add basic support for Ultrascale
->>> System Monitor
->>>
->>> On Thu, 24 Sep 2020 08:08:31 +0200
->>> Michal Simek <michal.simek@xilinx.com> wrote:
->>>    
->>>> Hi, +Anand,
->>>>
->>>> On 23. 09. 20 22:47, Jonathan Cameron wrote:
->>>>> On Tue, 22 Sep 2020 15:46:24 +0200
->>>>> Lars-Peter Clausen <lars@metafoo.de> wrote:
->>>>>   
->>>>>> The xilinx-xadc IIO driver currently has support for the XADC in
->>>>>> the Xilinx
->>>>>> 7 series FPGAs. The system-monitor is the equivalent to the XADC in
->>>>>> the Xilinx UltraScale and UltraScale+ FPGAs.
->>>>>>
->>>>>> The IP designers did a good job at maintaining backwards
->>>>>> compatibility and only minor changes are required to add basic
->>>>>> support for the system-monitor core.
->>>>>>
->>>>>> The non backwards compatible changes are:
->>>>>>    * Register map offset was moved from 0x200 to 0x400
->>>>>>    * Only one ADC compared to two in the XADC
->>>>>>    * 10 bit ADC instead of 12 bit ADC
->>>>>>    * Two of the channels monitor different supplies
->>>>>>
->>>>>> Add the necessary logic to accommodate these changes to support the
->>>>>> system-monitor in the XADC driver.
->>>>>>
->>>>>> Note that this patch does not include support for some new features
->>>>>> found in the system-monitor like additional alarms, user supply
->>>>>> monitoring and secondary system-monitor access. This might be added
->>> at a later time.
->>>>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
->>>>> Very nice.  Will let this sit on the mailing list a bit longer but
->>>>> looks good to me.
->>>> FYI: I have asked Anand to take a look at it and retest.
->>>>
->>>> Thanks,
->>>> Michal
->>>>   
->>> Hi Michal / Anand,
->>>
->>> Any feedback on this one?
->>>
->>> Thanks
->>>
->>> Jonathan
->>>
->>> p.s. I'm just ploughing through my older emails and had this one marked as
->>> waiting for a reply.
->>>    
->> Hi Jonathan,
->>
->> Thanks for waiting.
->> The patch looks good.
->>
->> Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
->> Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
-> Thanks. I've applied this but there was a bit of complexity around
-> devm changes that went in whilst this was under review.
->
-> I think I fixed it up correctly, but great if you can take
-> a quick look to make sure I didn't mess it up.
-> I'll try and put the other outstanding series in as well which
-> will probably result in more fiddly corners during the merge.
->
-> Applied to the togreg branch of iio.git and pushed out as testing
-> or the autobuilders to see what we missed.
->
-Thanks Johnathan.
+On Sun, 13 Dec 2020 22:54:35 +0530, devajithvs wrote:
+> From: Devajith V S <devajithvs@gmail.com>
+> 
+> kxcjk1013 devices have VDD and VDDIO power lines. Need
+> to make sure the regulators are enabled before any
+> communication with kxcjk1013. Document support for
+> vdd/vddio-supply to implement this.
+> 
+> Signed-off-by: Devajith V S <devajithvs@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml        | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
 
-I'm not seeing the patches in your public repository yet :)
-
+Reviewed-by: Rob Herring <robh@kernel.org>

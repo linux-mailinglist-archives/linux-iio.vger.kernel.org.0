@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB1C2DA7CE
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 06:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 413A12DA7CF
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 06:46:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbgLOFot (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Dec 2020 00:44:49 -0500
+        id S1726444AbgLOFpG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Dec 2020 00:45:06 -0500
 Received: from mga18.intel.com ([134.134.136.126]:57001 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726319AbgLOFon (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 15 Dec 2020 00:44:43 -0500
-IronPort-SDR: XwHRKz+mf8etRpKOrxFijn10Gz8zNqRBRwyjapvYP6FC4P2wLGhKto+bIwfyBOlKOpJ2p2UM1H
- 8NWi8ucgiSvA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9835"; a="162576868"
+        id S1726431AbgLOFpA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 15 Dec 2020 00:45:00 -0500
+IronPort-SDR: H2kg1p5duQInujVz2nzsFFt5pAqS9x8iqFKy43D6YtVtRN5elSqlVmAYgvnyMgLw5TgkYTyCkm
+ OQNXWEXoUVkg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9835"; a="162576871"
 X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="162576868"
+   d="scan'208";a="162576871"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 21:43:41 -0800
-IronPort-SDR: IdVDPJFzUfzpI/BE3l8QQLaOioZ6LxJiS/KDbPJvjUOWo7PPVnBTYKdgOk4oXSjomO50Aq2JLq
- dQZWtFynQ4WA==
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 21:43:44 -0800
+IronPort-SDR: q2gSK7m5IQbWSDw+zfk2LIVmUoyuNWB7OhrPyv2skoOF4HWHIp93Vwd4bcvfxDospSRHM7o9Kn
+ 7wbrc3MRuTrw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="351719734"
+   d="scan'208";a="351719748"
 Received: from host.sh.intel.com ([10.239.154.115])
-  by orsmga002.jf.intel.com with ESMTP; 14 Dec 2020 21:43:39 -0800
+  by orsmga002.jf.intel.com with ESMTP; 14 Dec 2020 21:43:42 -0800
 From:   Ye Xiang <xiang.ye@intel.com>
 To:     jikos@kernel.org, jic23@kernel.org,
         srinivas.pandruvada@linux.intel.com
 Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v4 1/3] HID: hid-sensor-custom: Add custom sensor iio support
-Date:   Tue, 15 Dec 2020 13:44:42 +0800
-Message-Id: <20201215054444.9324-2-xiang.ye@intel.com>
+Subject: [PATCH v4 2/3] iio: hid-sensors: Add hinge sensor driver
+Date:   Tue, 15 Dec 2020 13:44:43 +0800
+Message-Id: <20201215054444.9324-3-xiang.ye@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20201215054444.9324-1-xiang.ye@intel.com>
 References: <20201215054444.9324-1-xiang.ye@intel.com>
@@ -40,247 +40,466 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently custom sensors properties are not decoded and it is up to
-user space to interpret.
-
-Some manufacturers already standardized the meaning of some custom sensors.
-They can be presented as a proper IIO sensor. We can identify these sensors
-based on manufacturer and serial number property in the report.
-
-This change is identifying hinge sensor when the manufacturer is "INTEL".
-This creates a platform device so that a sensor driver can be loaded to
-process these sensors.
+The Hinge sensor is a common custom sensor on laptops. It calculates
+the angle between the lid (screen) and the base (keyboard). In addition,
+it also exposes screen and the keyboard angles with respect to the
+ground. Applications can easily get laptop's status in space through
+this sensor, in order to display appropriate user interface.
 
 Signed-off-by: Ye Xiang <xiang.ye@intel.com>
 ---
- drivers/hid/hid-sensor-custom.c | 143 ++++++++++++++++++++++++++++++++
- include/linux/hid-sensor-ids.h  |  14 ++++
- 2 files changed, 157 insertions(+)
+ .../hid-sensors/hid-sensor-attributes.c       |   2 +
+ drivers/iio/position/Kconfig                  |  16 +
+ drivers/iio/position/Makefile                 |   1 +
+ .../position/hid-sensor-custom-intel-hinge.c  | 391 ++++++++++++++++++
+ 4 files changed, 410 insertions(+)
+ create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
 
-diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-index 4d25577a8573..2628bc53ed80 100644
---- a/drivers/hid/hid-sensor-custom.c
-+++ b/drivers/hid/hid-sensor-custom.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2015, Intel Corporation.
-  */
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+index 442ff787f7af..5b822a4298a0 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+@@ -71,6 +71,8 @@ static struct {
+ 	{HID_USAGE_SENSOR_TEMPERATURE, HID_USAGE_SENSOR_UNITS_DEGREES, 1000, 0},
  
-+#include <linux/ctype.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -21,6 +22,7 @@
- #define HID_CUSTOM_TOTAL_ATTRS		(HID_CUSTOM_MAX_CORE_ATTRS + 1)
- #define HID_CUSTOM_FIFO_SIZE		4096
- #define HID_CUSTOM_MAX_FEATURE_BYTES	64
-+#define HID_SENSOR_USAGE_LENGTH (4 + 1)
- 
- struct hid_sensor_custom_field {
- 	int report_id;
-@@ -50,6 +52,7 @@ struct hid_sensor_custom {
- 	struct kfifo data_fifo;
- 	unsigned long misc_opened;
- 	wait_queue_head_t wait;
-+	struct platform_device *custom_pdev;
+ 	{HID_USAGE_SENSOR_HUMIDITY, 0, 1000, 0},
++	{HID_USAGE_SENSOR_HINGE, 0, 0, 17453293},
++	{HID_USAGE_SENSOR_HINGE, HID_USAGE_SENSOR_UNITS_DEGREES, 0, 17453293},
  };
  
- /* Header for each sample to user space via dev interface */
-@@ -746,11 +749,130 @@ static void hid_sensor_custom_dev_if_remove(struct hid_sensor_custom
+ static void simple_div(int dividend, int divisor, int *whole,
+diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
+index eda67f008c5b..1576a6380b53 100644
+--- a/drivers/iio/position/Kconfig
++++ b/drivers/iio/position/Kconfig
+@@ -16,4 +16,20 @@ config IQS624_POS
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called iqs624-pos.
  
- }
- 
-+/* luid defined in FW (e.g. ISH).  Maybe used to identify sensor. */
-+static const char *const known_sensor_luid[] = { "020B000000000000" };
++config HID_SENSOR_CUSTOM_INTEL_HINGE
++	depends on HID_SENSOR_HUB
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
++	select HID_SENSOR_IIO_COMMON
++	select HID_SENSOR_IIO_TRIGGER
++	tristate "HID Hinge"
++	help
++	  This sensor present three angles, hinge angel, screen angles
++	  and keyboard angle respect to horizon (ground).
++	  Say yes here to build support for the HID custom
++	  intel hinge sensor.
 +
-+static int get_luid_table_index(unsigned char *usage_str)
++	  To compile this driver as a module, choose M here: the
++	  module will be called hid-sensor-custom-hinge.
++
+ endmenu
+diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
+index 3cbe7a734352..d70902f2979d 100644
+--- a/drivers/iio/position/Makefile
++++ b/drivers/iio/position/Makefile
+@@ -4,4 +4,5 @@
+ 
+ # When adding new entries keep the list in alphabetical order
+ 
++obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
+ obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
+diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+new file mode 100644
+index 000000000000..24cf31c039a3
+--- /dev/null
++++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
+@@ -0,0 +1,391 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * HID Sensors Driver
++ * Copyright (c) 2020, Intel Corporation.
++ */
++#include <linux/hid-sensor-hub.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/iio.h>
++#include <linux/platform_device.h>
++
++#include "../common/hid-sensors/hid-sensor-trigger.h"
++
++enum hinge_channel {
++	CHANNEL_SCAN_INDEX_HINGE_ANGLE,
++	CHANNEL_SCAN_INDEX_SCREEN_ANGLE,
++	CHANNEL_SCAN_INDEX_KEYBOARD_ANGLE,
++	CHANNEL_SCAN_INDEX_MAX,
++};
++
++#define CHANNEL_SCAN_INDEX_TIMESTAMP CHANNEL_SCAN_INDEX_MAX
++
++static const u32 hinge_addresses[CHANNEL_SCAN_INDEX_MAX] = {
++	HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1),
++	HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(2),
++	HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(3)
++};
++
++static const char *const hinge_labels[CHANNEL_SCAN_INDEX_MAX] = { "hinge",
++								  "screen",
++								  "keyboard" };
++
++struct hinge_state {
++	struct iio_dev *indio_dev;
++	struct hid_sensor_hub_attribute_info hinge[CHANNEL_SCAN_INDEX_MAX];
++	struct hid_sensor_hub_callbacks callbacks;
++	struct hid_sensor_common common_attributes;
++	const char *labels[CHANNEL_SCAN_INDEX_MAX];
++	struct {
++		u32 hinge_val[3];
++		u64 timestamp __aligned(8);
++	} scan;
++
++	int scale_pre_decml;
++	int scale_post_decml;
++	int scale_precision;
++	int value_offset;
++	u64 timestamp;
++};
++
++/* Channel definitions */
++static const struct iio_chan_spec hinge_channels[] = {
++	{
++		.type = IIO_ANGL,
++		.indexed = 1,
++		.channel = 0,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_shared_by_type =
++			BIT(IIO_CHAN_INFO_OFFSET) | BIT(IIO_CHAN_INFO_SCALE) |
++			BIT(IIO_CHAN_INFO_SAMP_FREQ) | BIT(IIO_CHAN_INFO_HYSTERESIS),
++		.scan_index = CHANNEL_SCAN_INDEX_HINGE_ANGLE,
++		.scan_type = {
++			.sign = 's',
++			.storagebits = 32,
++		},
++	}, {
++		.type = IIO_ANGL,
++		.indexed = 1,
++		.channel = 1,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_shared_by_type =
++			BIT(IIO_CHAN_INFO_OFFSET) | BIT(IIO_CHAN_INFO_SCALE) |
++			BIT(IIO_CHAN_INFO_SAMP_FREQ) | BIT(IIO_CHAN_INFO_HYSTERESIS),
++		.scan_index = CHANNEL_SCAN_INDEX_SCREEN_ANGLE,
++		.scan_type = {
++			.sign = 's',
++			.storagebits = 32,
++		},
++	}, {
++		.type = IIO_ANGL,
++		.indexed = 1,
++		.channel = 2,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_shared_by_type =
++			BIT(IIO_CHAN_INFO_OFFSET) | BIT(IIO_CHAN_INFO_SCALE) |
++			BIT(IIO_CHAN_INFO_SAMP_FREQ) | BIT(IIO_CHAN_INFO_HYSTERESIS),
++		.scan_index = CHANNEL_SCAN_INDEX_KEYBOARD_ANGLE,
++		.scan_type = {
++			.sign = 's',
++			.storagebits = 32,
++		},
++	},
++	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
++};
++
++/* Adjust channel real bits based on report descriptor */
++static void hinge_adjust_channel_realbits(struct iio_chan_spec *channels,
++					  int channel, int size)
 +{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(known_sensor_luid); i++) {
-+		if (!strncmp(usage_str, known_sensor_luid[i],
-+			     strlen(known_sensor_luid[i])))
-+			return i;
-+	}
-+
-+	return -ENODEV;
++	channels[channel].scan_type.realbits = size * 8;
 +}
 +
-+static int get_known_custom_sensor_index(struct hid_sensor_hub_device *hsdev)
++/* Channel read_raw handler */
++static int hinge_read_raw(struct iio_dev *indio_dev,
++			  struct iio_chan_spec const *chan, int *val, int *val2,
++			  long mask)
 +{
-+	struct hid_sensor_hub_attribute_info sensor_manufacturer = { 0 };
-+	struct hid_sensor_hub_attribute_info sensor_luid_info = { 0 };
-+	int report_size;
-+	int ret;
-+	static u16 w_buf[HID_CUSTOM_MAX_FEATURE_BYTES];
-+	static char buf[HID_CUSTOM_MAX_FEATURE_BYTES];
-+	int i;
++	struct hinge_state *st = iio_priv(indio_dev);
++	struct hid_sensor_hub_device *hsdev;
++	int report_id;
++	int ret_type;
++	s32 min;
 +
-+	memset(w_buf, 0, sizeof(w_buf));
-+	memset(buf, 0, sizeof(buf));
-+
-+	/* get manufacturer info */
-+	ret = sensor_hub_input_get_attribute_info(hsdev,
-+			HID_FEATURE_REPORT, hsdev->usage,
-+			HID_USAGE_SENSOR_PROP_MANUFACTURER, &sensor_manufacturer);
-+	if (ret < 0)
-+		return ret;
-+
-+	report_size =
-+		sensor_hub_get_feature(hsdev, sensor_manufacturer.report_id,
-+				       sensor_manufacturer.index, sizeof(w_buf),
-+				       w_buf);
-+	if (report_size <= 0) {
-+		hid_err(hsdev->hdev,
-+			"Failed to get sensor manufacturer info %d\n",
-+			report_size);
-+		return -ENODEV;
-+	}
-+
-+	/* convert from wide char to char */
-+	for (i = 0; i < ARRAY_SIZE(buf) - 1 && w_buf[i]; i++)
-+		buf[i] = (char)w_buf[i];
-+
-+	/* ensure it's ISH sensor */
-+	if (strncmp(buf, "INTEL", strlen("INTEL")))
-+		return -ENODEV;
-+
-+	memset(w_buf, 0, sizeof(w_buf));
-+	memset(buf, 0, sizeof(buf));
-+
-+	/* get real usage id */
-+	ret = sensor_hub_input_get_attribute_info(hsdev,
-+			HID_FEATURE_REPORT, hsdev->usage,
-+			HID_USAGE_SENSOR_PROP_SERIAL_NUM, &sensor_luid_info);
-+	if (ret < 0)
-+		return ret;
-+
-+	report_size = sensor_hub_get_feature(hsdev, sensor_luid_info.report_id,
-+					     sensor_luid_info.index, sizeof(w_buf),
-+					     w_buf);
-+	if (report_size <= 0) {
-+		hid_err(hsdev->hdev, "Failed to get real usage info %d\n",
-+			report_size);
-+		return -ENODEV;
-+	}
-+
-+	/* convert from wide char to char */
-+	for (i = 0; i < ARRAY_SIZE(buf) - 1 && w_buf[i]; i++)
-+		buf[i] = (char)w_buf[i];
-+
-+	if (strlen(buf) != strlen(known_sensor_luid[0]) + 5) {
-+		hid_err(hsdev->hdev,
-+			"%s luid length not match %zu != (%zu + 5)\n", __func__,
-+			strlen(buf), strlen(known_sensor_luid[0]));
-+		return -ENODEV;
-+	}
-+
-+	/* get table index with luid (not matching 'LUID: ' in luid) */
-+	return get_luid_table_index(&buf[5]);
-+}
-+
-+static struct platform_device *
-+hid_sensor_register_platform_device(struct platform_device *pdev,
-+				    struct hid_sensor_hub_device *hsdev,
-+				    int index)
-+{
-+	char real_usage[HID_SENSOR_USAGE_LENGTH] = { 0 };
-+	struct platform_device *custom_pdev;
-+	const char *dev_name;
-+	char *c;
-+
-+	/* copy real usage id */
-+	memcpy(real_usage, known_sensor_luid[index], 4);
-+
-+	/* usage id are all lowcase */
-+	for (c = real_usage; *c != '\0'; c++)
-+		*c = tolower(*c);
-+
-+	/* HID-SENSOR-INT-REAL_USAGE_ID */
-+	dev_name = kasprintf(GFP_KERNEL, "HID-SENSOR-INT-%s", real_usage);
-+	if (!dev_name)
-+		return ERR_PTR(-ENOMEM);
-+
-+	custom_pdev = platform_device_register_data(pdev->dev.parent, dev_name,
-+						    PLATFORM_DEVID_NONE, hsdev,
-+						    sizeof(*hsdev));
-+	kfree(dev_name);
-+	return custom_pdev;
-+}
-+
- static int hid_sensor_custom_probe(struct platform_device *pdev)
- {
- 	struct hid_sensor_custom *sensor_inst;
- 	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
- 	int ret;
-+	int index;
- 
- 	sensor_inst = devm_kzalloc(&pdev->dev, sizeof(*sensor_inst),
- 				   GFP_KERNEL);
-@@ -764,6 +886,22 @@ static int hid_sensor_custom_probe(struct platform_device *pdev)
- 	sensor_inst->pdev = pdev;
- 	mutex_init(&sensor_inst->mutex);
- 	platform_set_drvdata(pdev, sensor_inst);
-+
-+	index = get_known_custom_sensor_index(hsdev);
-+	if (index >= 0 && index < ARRAY_SIZE(known_sensor_luid)) {
-+		sensor_inst->custom_pdev =
-+			hid_sensor_register_platform_device(pdev, hsdev, index);
-+
-+		ret = PTR_ERR_OR_ZERO(sensor_inst->custom_pdev);
-+		if (ret) {
-+			dev_err(&pdev->dev,
-+				"register_platform_device failed\n");
-+			return ret;
++	hsdev = st->common_attributes.hsdev;
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		hid_sensor_power_state(&st->common_attributes, true);
++		report_id = st->hinge[chan->scan_index].report_id;
++		min = st->hinge[chan->scan_index].logical_minimum;
++		if (report_id < 0) {
++			hid_sensor_power_state(&st->common_attributes, false);
++			return -EINVAL;
 +		}
 +
++		*val = sensor_hub_input_attr_get_raw_value(st->common_attributes.hsdev,
++							   hsdev->usage,
++							   hinge_addresses[chan->scan_index],
++							   report_id,
++							   SENSOR_HUB_SYNC, min < 0);
++
++		hid_sensor_power_state(&st->common_attributes, false);
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = st->scale_pre_decml;
++		*val2 = st->scale_post_decml;
++		return st->scale_precision;
++	case IIO_CHAN_INFO_OFFSET:
++		*val = st->value_offset;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret_type = hid_sensor_read_samp_freq_value(&st->common_attributes,
++							   val, val2);
++		return ret_type;
++	case IIO_CHAN_INFO_HYSTERESIS:
++		ret_type = hid_sensor_read_raw_hyst_value(&st->common_attributes,
++							  val, val2);
++		return ret_type;
++	default:
++		return -EINVAL;
++	}
++}
++
++/* Channel write_raw handler */
++static int hinge_write_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan, int val, int val2,
++			   long mask)
++{
++	struct hinge_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret = hid_sensor_write_samp_freq_value(&st->common_attributes,
++						       val, val2);
++		return ret;
++	case IIO_CHAN_INFO_HYSTERESIS:
++		ret = hid_sensor_write_raw_hyst_value(&st->common_attributes,
++						      val, val2);
++
++		return ret;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int hinge_read_label(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, char *label)
++{
++	struct hinge_state *st = iio_priv(indio_dev);
++
++	return sprintf(label, "%s\n", st->labels[chan->channel]);
++}
++
++static const struct iio_info hinge_info = {
++	.read_raw = hinge_read_raw,
++	.write_raw = hinge_write_raw,
++	.read_label = hinge_read_label,
++};
++
++/*
++ * Callback handler to send event after all samples are received
++ * and captured.
++ */
++static int hinge_proc_event(struct hid_sensor_hub_device *hsdev,
++			    unsigned int usage_id, void *priv)
++{
++	struct iio_dev *indio_dev = platform_get_drvdata(priv);
++	struct hinge_state *st = iio_priv(indio_dev);
++
++	if (atomic_read(&st->common_attributes.data_ready)) {
++		if (!st->timestamp)
++			st->timestamp = iio_get_time_ns(indio_dev);
++
++		iio_push_to_buffers_with_timestamp(indio_dev, &st->scan,
++						   st->timestamp);
++
++		st->timestamp = 0;
++	}
++	return 0;
++}
++
++/* Capture samples in local storage */
++static int hinge_capture_sample(struct hid_sensor_hub_device *hsdev,
++				unsigned int usage_id, size_t raw_len,
++				char *raw_data, void *priv)
++{
++	struct iio_dev *indio_dev = platform_get_drvdata(priv);
++	struct hinge_state *st = iio_priv(indio_dev);
++	int offset;
++
++	switch (usage_id) {
++	case HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1):
++	case HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(2):
++	case HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(3):
++		offset = usage_id - HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1);
++		st->scan.hinge_val[offset] = *(u32 *)raw_data;
 +		return 0;
++	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
++		st->timestamp = hid_sensor_convert_timestamp(&st->common_attributes,
++							     *(int64_t *)raw_data);
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++/* Parse report which is specific to an usage id */
++static int hinge_parse_report(struct platform_device *pdev,
++			      struct hid_sensor_hub_device *hsdev,
++			      struct iio_chan_spec *channels,
++			      unsigned int usage_id, struct hinge_state *st)
++{
++	int ret;
++	int i;
++
++	for (i = 0; i < CHANNEL_SCAN_INDEX_MAX; ++i) {
++		ret = sensor_hub_input_get_attribute_info(hsdev,
++							  HID_INPUT_REPORT,
++							  usage_id,
++							  hinge_addresses[i],
++							  &st->hinge[i]);
++		if (ret < 0)
++			return ret;
++
++		hinge_adjust_channel_realbits(channels, i, st->hinge[i].size);
 +	}
 +
- 	ret = sensor_hub_register_callback(hsdev, hsdev->usage,
- 					   &sensor_inst->callbacks);
- 	if (ret < 0) {
-@@ -802,6 +940,11 @@ static int hid_sensor_custom_remove(struct platform_device *pdev)
- 	struct hid_sensor_custom *sensor_inst = platform_get_drvdata(pdev);
- 	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
- 
-+	if (sensor_inst->custom_pdev) {
-+		platform_device_unregister(sensor_inst->custom_pdev);
-+		return 0;
++	st->scale_precision = hid_sensor_format_scale(HID_USAGE_SENSOR_HINGE,
++			&st->hinge[CHANNEL_SCAN_INDEX_HINGE_ANGLE],
++			&st->scale_pre_decml, &st->scale_post_decml);
++
++	/* Set Sensitivity field ids, when there is no individual modifier */
++	if (st->common_attributes.sensitivity.index < 0) {
++		sensor_hub_input_get_attribute_info(hsdev,
++				HID_FEATURE_REPORT, usage_id,
++				HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
++					HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(1),
++				&st->common_attributes.sensitivity);
++		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
++			st->common_attributes.sensitivity.index,
++			st->common_attributes.sensitivity.report_id);
 +	}
 +
- 	hid_sensor_custom_dev_if_remove(sensor_inst);
- 	hid_sensor_custom_remove_attributes(sensor_inst);
- 	sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
-diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
-index 530c09f3e64a..ac631159403a 100644
---- a/include/linux/hid-sensor-ids.h
-+++ b/include/linux/hid-sensor-ids.h
-@@ -128,6 +128,10 @@
- #define HID_USAGE_SENSOR_UNITS_DEGREES_PER_SECOND		0x15
- 
- /* Common selectors */
-+#define HID_USAGE_SENSOR_PROP_DESC				0x200300
-+#define HID_USAGE_SENSOR_PROP_FRIENDLY_NAME			0x200301
-+#define HID_USAGE_SENSOR_PROP_SERIAL_NUM			0x200307
-+#define HID_USAGE_SENSOR_PROP_MANUFACTURER			0x200305
- #define HID_USAGE_SENSOR_PROP_REPORT_INTERVAL			0x20030E
- #define HID_USAGE_SENSOR_PROP_SENSITIVITY_ABS			0x20030F
- #define HID_USAGE_SENSOR_PROP_SENSITIVITY_RANGE_PCT		0x200310
-@@ -159,4 +163,14 @@
- #define HID_USAGE_SENSOR_PROP_REPORTING_STATE_NO_EVENTS_ENUM	0x200840
- #define HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM	0x200841
- 
-+/* Custom Sensor (2000e1) */
-+#define HID_USAGE_SENSOR_HINGE				        0x20020B
-+#define HID_USAGE_SENSOR_DATA_FIELD_LOCATION			0x200400
-+#define HID_USAGE_SENSOR_DATA_FIELE_TIME_SINCE_SYS_BOOT		0x20052B
-+#define HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_USAGE		0x200541
-+#define HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE_BASE           0x200543
-+/* Custom Sensor data 28=>x>=0 */
-+#define HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(x)                            \
-+	(HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE_BASE + (x))
++	return ret;
++}
 +
- #endif
++/* Function to initialize the processing for usage id */
++static int hid_hinge_probe(struct platform_device *pdev)
++{
++	struct hinge_state *st;
++	struct iio_dev *indio_dev;
++	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
++	int ret;
++	int i;
++
++	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	platform_set_drvdata(pdev, indio_dev);
++
++	st = iio_priv(indio_dev);
++	st->common_attributes.hsdev = hsdev;
++	st->common_attributes.pdev = pdev;
++	st->indio_dev = indio_dev;
++	for (i = 0; i < CHANNEL_SCAN_INDEX_MAX; i++)
++		st->labels[i] = hinge_labels[i];
++
++	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
++						 &st->common_attributes);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to setup common attributes\n");
++		return ret;
++	}
++
++	indio_dev->num_channels = ARRAY_SIZE(hinge_channels);
++	indio_dev->channels = devm_kmemdup(&indio_dev->dev, hinge_channels,
++					   sizeof(hinge_channels), GFP_KERNEL);
++	if (!indio_dev->channels)
++		return -ENOMEM;
++
++	ret = hinge_parse_report(pdev, hsdev,
++				 (struct iio_chan_spec *)indio_dev->channels,
++				 hsdev->usage, st);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to setup attributes\n");
++		return ret;
++	}
++
++	indio_dev->dev.parent = &pdev->dev;
++	indio_dev->info = &hinge_info;
++	indio_dev->name = "hinge";
++	indio_dev->modes = INDIO_DIRECT_MODE;
++
++	atomic_set(&st->common_attributes.data_ready, 0);
++	ret = hid_sensor_setup_trigger(indio_dev, indio_dev->name,
++				       &st->common_attributes);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "trigger setup failed\n");
++		return ret;
++	}
++
++	st->callbacks.send_event = hinge_proc_event;
++	st->callbacks.capture_sample = hinge_capture_sample;
++	st->callbacks.pdev = pdev;
++	ret = sensor_hub_register_callback(hsdev, hsdev->usage, &st->callbacks);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "callback reg failed\n");
++		goto error_remove_trigger;
++	}
++
++	ret = devm_iio_device_register(&pdev->dev, indio_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "device register failed\n");
++		goto error_remove_callback;
++	}
++
++	return ret;
++
++error_remove_callback:
++	sensor_hub_remove_callback(hsdev, hsdev->usage);
++error_remove_trigger:
++	hid_sensor_remove_trigger(indio_dev, &st->common_attributes);
++	return ret;
++}
++
++/* Function to deinitialize the processing for usage id */
++static int hid_hinge_remove(struct platform_device *pdev)
++{
++	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
++	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
++	struct hinge_state *st = iio_priv(indio_dev);
++
++	sensor_hub_remove_callback(hsdev, hsdev->usage);
++	hid_sensor_remove_trigger(indio_dev, &st->common_attributes);
++
++	return 0;
++}
++
++static const struct platform_device_id hid_hinge_ids[] = {
++	{
++		/* Format: HID-SENSOR-INT-usage_id_in_hex_lowercase */
++		.name = "HID-SENSOR-INT-020b",
++	},
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(platform, hid_hinge_ids);
++
++static struct platform_driver hid_hinge_platform_driver = {
++	.id_table = hid_hinge_ids,
++	.driver = {
++		.name	= KBUILD_MODNAME,
++		.pm	= &hid_sensor_pm_ops,
++	},
++	.probe		= hid_hinge_probe,
++	.remove		= hid_hinge_remove,
++};
++module_platform_driver(hid_hinge_platform_driver);
++
++MODULE_DESCRIPTION("HID Sensor INTEL Hinge");
++MODULE_AUTHOR("Ye Xiang <xiang.ye@intel.com>");
++MODULE_LICENSE("GPL");
 -- 
 2.17.1
 

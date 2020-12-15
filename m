@@ -2,78 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0031C2DA7D2
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 06:46:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1CEF2DA96D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Dec 2020 09:47:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726459AbgLOFpQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Dec 2020 00:45:16 -0500
-Received: from mga18.intel.com ([134.134.136.126]:57027 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726455AbgLOFpI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 15 Dec 2020 00:45:08 -0500
-IronPort-SDR: 8sSUJL44ZN4IpVaJbayI3/8x6LXNkFHNhUpJZJcopSG6bQgqTJHRF94+kcW72hNV14pwWEEq0M
- MDT3+J0c23Pg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9835"; a="162576872"
-X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="162576872"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2020 21:43:48 -0800
-IronPort-SDR: P15/LseWliFRAsFWwvVkv+igRmbMS0t+FKp5XnIUewP+PCT8b9h0MyYUP+oRO7YgNOEEJ/EoE0
- HXaPbOYqgLAA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; 
-   d="scan'208";a="351719754"
-Received: from host.sh.intel.com ([10.239.154.115])
-  by orsmga002.jf.intel.com with ESMTP; 14 Dec 2020 21:43:46 -0800
-From:   Ye Xiang <xiang.ye@intel.com>
-To:     jikos@kernel.org, jic23@kernel.org,
-        srinivas.pandruvada@linux.intel.com
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v4 3/3] iio:Documentation: Add documentation for hinge sensor channels
-Date:   Tue, 15 Dec 2020 13:44:44 +0800
-Message-Id: <20201215054444.9324-4-xiang.ye@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201215054444.9324-1-xiang.ye@intel.com>
-References: <20201215054444.9324-1-xiang.ye@intel.com>
+        id S1727651AbgLOIrR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Dec 2020 03:47:17 -0500
+Received: from mail.persuitflow.com ([89.46.74.132]:51668 "EHLO
+        server1.mail.persuitflow.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727649AbgLOIrM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Dec 2020 03:47:12 -0500
+Received: by server1.mail.persuitflow.com (Postfix, from userid 1001)
+        id EA05EA3EF4; Tue, 15 Dec 2020 08:46:19 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=persuitflow.com;
+        s=mail; t=1608021984;
+        bh=LIG/EV9hZypKEB8e9JkxJFCirHVIBsQt3YrIS4TkXUA=;
+        h=Date:From:To:Subject:From;
+        b=p9cuD5WZLG2XivLXAcv3SaIFSh60dOm8ADaOAW46KKRGd/81+vgWWp6xsqQOTAE30
+         /mrAOIvbF3FiEpscGu+8wzJCmQqrUkGLDRaterjwjmuC9jxEyEOJTCNwBoPcmaPsxa
+         NDl52eXIeanEuyPNqxnCnjiyt/FCmiw5fheijftGITcpIRXJ3fc/3xDtI2988a2CtN
+         Gh5A9WCeuA7bqWUvw22C8BXzWyiCX1yFpUgJs6Ei/6jkfWeXSmpa4ZtWwTXszyBDSF
+         2ATiqSf2m2lvdHORFOuvccT9bd0G624VXS7kEJ0eW5R+exSfQxBwWgLGfwM2vV7ETb
+         8rH5qobPk29Fw==
+Received: by mail.persuitflow.com for <linux-iio@vger.kernel.org>; Tue, 15 Dec 2020 08:46:10 GMT
+Message-ID: <20201215074501-0.1.20.9ejn.0.x0ygi69atz@persuitflow.com>
+Date:   Tue, 15 Dec 2020 08:46:10 GMT
+From:   "Raquel Carvalho" <raquel.carvalho@persuitflow.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: Desinfetante
+X-Mailer: mail.persuitflow.com
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add channel description for hinge sensor, including channel label
-attribute and raw data description.
+Bom Dia,
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
----
- Documentation/ABI/testing/sysfs-bus-iio | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+A demanda por desinfetantes eficazes que permitam a elimina=C3=A7=C3=A3o =
+de microrganismos prejudiciais =C3=A9 continuamente alta em todo o mundo.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index df42bed09f25..5c0a84c50d43 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -198,6 +198,7 @@ Description:
- 		Units after application of scale and offset are m/s^2.
- 
- What:		/sys/bus/iio/devices/iio:deviceX/in_angl_raw
-+What:		/sys/bus/iio/devices/iio:deviceX/in_anglY_raw
- KernelVersion:	4.17
- Contact:	linux-iio@vger.kernel.org
- Description:
-@@ -1802,3 +1803,13 @@ Contact:	linux-iio@vger.kernel.org
- Description:
- 		Unscaled light intensity according to CIE 1931/DIN 5033 color space.
- 		Units after application of scale are nano nanowatts per square meter.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_anglY_label
-+KernelVersion:	5.12
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Optional symbolic label for channel Y.
-+		For Intel hid hinge sensor, the label values are:
-+		hinge, keyboard, screen. It means the three channels
-+		each correspond respectively to hinge angle, keyboard angle,
-+		and screen angle.
--- 
-2.17.1
+Expandir a oferta com uma gama profissional de produtos com atividade vir=
+icida e bactericida permite aumentar a posi=C3=A7=C3=A3o competitiva da e=
+mpresa e construir novas redes de vendas.
 
+Diversificamos a linha de atacadistas e distribuidores com sabonetes, l=C3=
+=ADquidos e g=C3=A9is para desinfec=C3=A7=C3=A3o das m=C3=A3os e outros p=
+rodutos de limpeza, entre eles: g=C3=A9is de banho, shampoos e condiciona=
+dores de cabelo, al=C3=A9m de detergentes concentrados.
+
+Nossos parceiros de neg=C3=B3cios est=C3=A3o aumentando sua participa=C3=A7=
+=C3=A3o no mercado externo devido =C3=A0 crescente satisfa=C3=A7=C3=A3o d=
+o cliente e oferta diversificada.
+
+O potencial de crescimento de nossas solu=C3=A7=C3=B5es resulta de pre=C3=
+=A7os acess=C3=ADveis, alto desempenho e versatilidade para se adaptar a =
+todos os tipos de pele.
+
+A extens=C3=A3o da gama de produtos proposta =C3=A9 um campo interessante=
+ para a coopera=C3=A7=C3=A3o?
+
+
+Cumprimentos,
+Raquel Carvalho
+Conselheiro do Cliente

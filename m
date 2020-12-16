@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E132DBC85
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 09:21:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 704022DBCBE
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 09:34:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbgLPITo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Dec 2020 03:19:44 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:25668 "EHLO
+        id S1725951AbgLPIdc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Dec 2020 03:33:32 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:50062 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725710AbgLPITn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 03:19:43 -0500
+        by vger.kernel.org with ESMTP id S1725889AbgLPIdc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 03:33:32 -0500
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BG8AgKC027015;
-        Wed, 16 Dec 2020 03:18:49 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35cun8wcw7-1
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BG8UDt2005974;
+        Wed, 16 Dec 2020 03:32:38 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 35cun8we4g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Dec 2020 03:18:49 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0BG8Il8e002117
+        Wed, 16 Dec 2020 03:32:38 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0BG8Wb2H034159
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Dec 2020 03:18:48 -0500
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+        Wed, 16 Dec 2020 03:32:37 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
+ Wed, 16 Dec 2020 03:32:36 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Wed, 16 Dec 2020 00:18:46 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 16 Dec 2020 00:18:46 -0800
+ Wed, 16 Dec 2020 03:32:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 16 Dec 2020 03:32:36 -0500
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0BG8IhwL020191;
-        Wed, 16 Dec 2020 03:18:43 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0BG8WYAE021749;
+        Wed, 16 Dec 2020 03:32:34 -0500
 From:   Mircea Caprioru <mircea.caprioru@analog.com>
 To:     <jic23@kernel.org>
 CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
@@ -39,9 +43,9 @@ CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
         <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         Dragos Bogdan <dragos.bogdan@analog.com>,
         Mircea Caprioru <mircea.caprioru@analog.com>
-Subject: [PATCH V2] iio: adc: ad7476: Add LTC2314-14 support
-Date:   Wed, 16 Dec 2020 10:23:04 +0200
-Message-ID: <20201216082304.89187-1-mircea.caprioru@analog.com>
+Subject: [PATCH V3] iio: adc: ad7476: Add LTC2314-14 support
+Date:   Wed, 16 Dec 2020 10:36:39 +0200
+Message-ID: <20201216083639.89425-1-mircea.caprioru@analog.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -52,7 +56,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspect
  impostorscore=0 malwarescore=0 phishscore=0 spamscore=0 clxscore=1015
  bulkscore=0 adultscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999
  lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012160052
+ engine=8.12.0-2009150000 definitions=main-2012160054
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,14 +69,11 @@ The LTC2314-14 is a 14-bit, 4.5Msps, serial sampling A/D converter that draws on
 Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
 Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
 ---
-Changelog v2
-- fix conflict with ADS7868 device in chip_info_tbl
-
- drivers/iio/adc/ad7476.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/adc/ad7476.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-index 66c55ae67791..6bb4711b0f61 100644
+index 66c55ae67791..17402714b387 100644
 --- a/drivers/iio/adc/ad7476.c
 +++ b/drivers/iio/adc/ad7476.c
 @@ -67,6 +67,7 @@ enum ad7476_supported_device_ids {
@@ -83,17 +84,18 @@ index 66c55ae67791..6bb4711b0f61 100644
  };
  
  static void ad7091_convst(struct ad7476_state *st)
-@@ -249,6 +250,9 @@ static const struct ad7476_chip_info ad7476_chip_info_tbl[] = {
- 	[ID_ADS7868] = {
+@@ -250,6 +251,10 @@ static const struct ad7476_chip_info ad7476_chip_info_tbl[] = {
  		.channel[0] = ADS786X_CHAN(8),
  		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
+ 	},
 +	[ID_LTC2314_14] = {
 +		.channel[0] = AD7940_CHAN(14),
 +		.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
- 	},
++	},
  };
  
-@@ -365,6 +369,7 @@ static const struct spi_device_id ad7476_id[] = {
+ static const struct iio_info ad7476_info = {
+@@ -365,6 +370,7 @@ static const struct spi_device_id ad7476_id[] = {
  	{"ads7866", ID_ADS7866},
  	{"ads7867", ID_ADS7867},
  	{"ads7868", ID_ADS7868},

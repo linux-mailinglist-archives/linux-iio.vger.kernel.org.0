@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1F42DC3DD
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 17:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFEEF2DC3DF
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 17:18:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgLPQRF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Dec 2020 11:17:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
+        id S1725846AbgLPQSK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Dec 2020 11:18:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbgLPQRF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 11:17:05 -0500
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3687C061794
-        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 08:16:24 -0800 (PST)
-Received: by mail-pj1-x102f.google.com with SMTP id j13so1895362pjz.3
-        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 08:16:24 -0800 (PST)
+        with ESMTP id S1725769AbgLPQSJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 11:18:09 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F77AC061794
+        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 08:17:29 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id w1so1826385pjc.0
+        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 08:17:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XzmLKyj18bddwzKxMCS0D6SM5elZtcyMI5kSlrHeAn0=;
-        b=TZrwV56TBzTY9WbhM/HWeg/LYaQgmqLewJNLI9mGm8FL/SyZ97uO5H0oMnRlFq7Hgb
-         CxEWTQo+3yW/fqJOSZD/2vNaoT8yfTkv8s+Jhvr6QBXLTG4oQK8qrP6dENk/r7/uYxsR
-         gKmxlN5QbFZOJGCC0y/2klLNrp1EZFbAy8zEKD96cfX26nofvcNHaKkSB52vFdxGirPu
-         mmKBf5M5sXOGzv/i8patGDysg4jFbkHlXHLioOJbykYDh15YV4ubqeg5l6IrjlvGdFAl
-         GlPj0xP2wu/SO1t9RyUFEbFkW/rbAvk1hxDr/VSO58k5FFdLc0U4n7kQk7IvWoTOf9i2
-         tcug==
+        bh=fR++yHc9DnNILA0irMur2Oaxn8UEeRZAzGI427OkS8E=;
+        b=lHmabxIK6MqbjZ77bJxVRu4HasqgcvjSAClIpq9nGz5zrtS2wggwOZYv6D9ADwW6E6
+         I6VN3JbcM6gz+mOkPhBP7Jbzm++nFbPkrK3N8dVAh7U3id8Gvog0+JfITQxrmieAk6C9
+         FzqZiP+ifBd9z0AH0Mtn/JnrkeXvAp7JAUcLtAH0Ea57wWaHJKGO66/ZO5nwh3OlXl5F
+         OOS0hvzxqvrXJ5bVYb5nzUqY6s6Hk24J1SULkTUutyUEU5bHTOkp+plTIWnVtQqydSF6
+         k86DMdkGJ0wWe+lOMMvxSP/2cWWkGdP4e2XN5kK48ChU5qw2PW0ooUBnp5XnqxKaW7gT
+         i8Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XzmLKyj18bddwzKxMCS0D6SM5elZtcyMI5kSlrHeAn0=;
-        b=Z+OyoQRHggxJQaeH3BnwVbpR3+wr17e53T+1NeE7n0aAxUtiKr1txgVEyftwPz64a7
-         iPBHC5JkQ/rNxNLUgqKBhF3nJDdUbHDf01xGmzDzvcubCImA7ElDKBxF78MhnT2aAymy
-         wea2B908mEcWyz7uGGB6INK6I5vrYCtZGoFkrEM0Hwdw/KfjznAjcta/Ll6rKAOkKq2o
-         dK1TrP4xngITZiDYBIvXEPqWHrFmdJP8mbID8+FtAWyhHINiBC/mqKU5nudQ6kzUwZgk
-         8z9z/hJSy7EUNzd5NE8gZlCGjfSSebWuntFC2D4+K9829rMg3EV0uVAWRF+JELiSiBPi
-         8CJg==
-X-Gm-Message-State: AOAM532XBMEI4AJrcMHYAwtD4VwwwtgVIiyAtzP7UDz7RPsySR+2RfVl
-        /1c2IZLpxx7uyQlhX8G/Ex8LRTiV//2nK0zC7iY=
-X-Google-Smtp-Source: ABdhPJwlpFoW1To6NCjzfLOhg8PbnTYQLLi+yaPzRXh5bZ8aEvJl9WVMWdJQ0dfBi2lQMctHYy4oLo9+Sew5Xc7Au3Y=
-X-Received: by 2002:a17:90b:a17:: with SMTP id gg23mr3752319pjb.129.1608135384531;
- Wed, 16 Dec 2020 08:16:24 -0800 (PST)
+        bh=fR++yHc9DnNILA0irMur2Oaxn8UEeRZAzGI427OkS8E=;
+        b=cg4GGr3xRRn5N/4/PhyeXPS1lkrW5dCd8PfEC55Up635zvOsfmdHJGECEt1PBgG/Nh
+         FvQlf7BM6/XInRl374Ck87gQj6KK+q22BlTi/m4GAWfTc0oelMglxAPpzAODmHoKt5U7
+         zKX/0IOb4pLyIuAEJ1Uq67fszLfQ1H1Kc1EqcFyEDlpQ0ggltMDB8Sfiv/QjV56BXsS2
+         aK2SGe+cYaJrk5Cx8L9nPTSdKHrurEwGRF/ie9S76pYdwsfYOKjN6qwX9wXb9Rt5n1sH
+         LWAMukrXoTbw4BPr2qddm15F9zGP4a25Sxv/oh5NnXJeggmvQCfHn4GMJbqJ1hyQyxFO
+         pc8w==
+X-Gm-Message-State: AOAM532lImDlE4igLatySnScZO6Ty/aIWxJNHSgHfvbCHipBhekFFUPP
+        4ypjPhDvmf+aqNZD42Zt97Fgk/h7zqyyQPqP7GA=
+X-Google-Smtp-Source: ABdhPJwWdkaP/NqrZfXPR19s7K9HlFNqlodwr+9NZAk87kvPb8ti+Y/xr22fdyQmDYXZLebAetN2D74g+QijrLN1Xmc=
+X-Received: by 2002:a17:902:c244:b029:da:e63c:cede with SMTP id
+ 4-20020a170902c244b02900dae63ccedemr7140165plg.0.1608135449071; Wed, 16 Dec
+ 2020 08:17:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20201216060233.597689-1-gwendal@chromium.org> <20201216060233.597689-3-gwendal@chromium.org>
-In-Reply-To: <20201216060233.597689-3-gwendal@chromium.org>
+References: <20201216060233.597689-1-gwendal@chromium.org> <20201216060233.597689-2-gwendal@chromium.org>
+In-Reply-To: <20201216060233.597689-2-gwendal@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 16 Dec 2020 18:17:13 +0200
-Message-ID: <CAHp75VdR5qEGUgCrsnZYw=CNc7cyFPUceZZBrBzG9duveqB71g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] iio: acpi_als: Add local variable dev in probe
+Date:   Wed, 16 Dec 2020 18:18:17 +0200
+Message-ID: <CAHp75VequjMKSxCaA3OAKxwdWPyp1Lgwp+kotZnipMqAZsO7mg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] iio: acpi_als: Add timestamp channel
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -62,17 +63,24 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Dec 16, 2020 at 8:02 AM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> Use dev = &device->dev in probe routine for clarity.
-> Remove setting parent of iio device, already done in iio_device_alloc().
+> Add timestamp channel in list of channel, to allow retrieving timestamps
+> when events are produced.
 
 ...
 
->         struct acpi_als *als;
->         struct iio_dev *indio_dev;
->         struct iio_buffer *buffer;
-> +       struct device *dev = &device->dev;
+>  /*
+>   * The event buffer contains timestamp and all the data from
+>   * the ACPI0008 block. There are multiple, but so far we only
+> - * support _ALI (illuminance). Once someone adds new channels
+> - * to acpi_als_channels[], the evt_buffer below will grow
+> - * automatically.
 
-Try to keep reversed xmas tree order.
+> + * support _ALI (illuminance):
+> + * One channel, padding and timestamp.
+
+Why on a new line? We have enough space on the previous one, no?
+
+>   */
 
 -- 
 With Best Regards,

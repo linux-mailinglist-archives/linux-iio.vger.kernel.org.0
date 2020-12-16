@@ -2,92 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A31382DBFF4
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 12:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B13B2DC1B4
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Dec 2020 14:57:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725804AbgLPL7X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Dec 2020 06:59:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45164 "EHLO
+        id S1726444AbgLPN4r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Dec 2020 08:56:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbgLPL7X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 06:59:23 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB4CC061794
-        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 03:58:42 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id ce23so32313605ejb.8
-        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 03:58:42 -0800 (PST)
+        with ESMTP id S1726345AbgLPN4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Dec 2020 08:56:47 -0500
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E0B7C061794
+        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 05:56:07 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id bj5so12963789plb.4
+        for <linux-iio@vger.kernel.org>; Wed, 16 Dec 2020 05:56:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=jzn8TR0czymy/ecdbj2AZeWCxKR0EeY46LKLUOJRwt0=;
-        b=hBt6X1lW1HfTGeWsKDpxfOmh7J4NSpgdzO97V43vx55K8TqUdJal7vBe41QqXBUTIB
-         lRicH8/80f5fOmU3D1eGdSOfPf0zzPcn3dAdSGmAmn15SywMezFWDVDgP0LIjY9/Nvwo
-         W9iVDJvUxZhbyh59q6hnR/aj6VYTrCs4TW9T77+s1Y4043S4C4vlMI2PZVw7zFbQJ3si
-         nZ0vkEWaDfWECp4ozCoCVkTpYQDssu6sovMY6Rf2LddjrnB67WDuseZXdgaWbQsXRwp1
-         C33eAJDx7JNdLfQMtttFmC1J0UcU4RYoCBbfRrFG0CoeyihNBSLJJ/3wmchdxTCRlnZt
-         H3MQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GCxnR2OW5Ed1GUJFpLI5+NtLjiW+T/+HOOF4cJogMM0=;
+        b=iwlEu6HJyGMVLps+Ara07SJM4rkRIRRdcPNl3ewWc9hmzXD4t3qGvyhQc0zTum3Pgy
+         wi1oWa6O+vPSvhs8C0nX+mFNJSl0zTdeiZyA8NiPductUZVpMiK+6LuajBHjdfedcHq7
+         9BmVaXxyhj1PuV57Y75ZeEw+Kn82jATLHc2qXkJvTV4Zc6mpdziK1Qw2Oib3ZeeAp9jj
+         JBG+9BRnSVPsOZMCRdAZs1fHjP5+27mGiqoiIPFfIVQeNO0M7rVQqIOtn4xjEFs4Hurd
+         sRRVtvjZiNMkEx0WmDsfKIn3y2Vr2xNPQNhqkZYFyB5leRjlcfD2HL7wQ6iRmTtbmBwZ
+         8MJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=jzn8TR0czymy/ecdbj2AZeWCxKR0EeY46LKLUOJRwt0=;
-        b=DKUQn5GJmbvHSYX+k9BB/VVqGU6SZmSpQFz9tHe2NAVonTMkCh8bxn8IclQJ332bVA
-         FP/dPkT1MpUp9a6/ubD6DNj9R1BG1nDTaNY6UHA07cRImTcD6KocPaIgVOlhUn/56J5n
-         nYG+maNrjji+SJxe52yYknbHl2aqX042WBqjehTqJT5ptJUn8x+IQ/P8AirUhoeLhH/J
-         1dUyh44n/nw+PdJWdLVprU5eF35/6iKWgUesTAonl6XwkUmR51zp9SB5pjYq9+hNMmuR
-         BGDqkPtLdfEyl+ot6HCBE7UNPB9SpzsF8aE2c0ZvqgoCdVkgtIgZmUiNfy+4MJ72Aohk
-         /xQA==
-X-Gm-Message-State: AOAM533SV7qF1BX6Hs7NLbp7PVtML3dBqXmYolU2XdcUu0qlQ2odwpqV
-        Qgl7Vl1Wni3p19QEwds+miNnHA==
-X-Google-Smtp-Source: ABdhPJxPixJ0W4WanDG5uheAKaiAmHidjC7F1v3ymmUcGYKoYb5AVBSTT0XghGR8NcS1gW788qG2bA==
-X-Received: by 2002:a17:906:b309:: with SMTP id n9mr8239350ejz.365.1608119921514;
-        Wed, 16 Dec 2020 03:58:41 -0800 (PST)
-Received: from localhost (91-139-165-243.sf.ddns.bulsat.com. [91.139.165.243])
-        by smtp.gmail.com with ESMTPSA id ga11sm1239316ejb.34.2020.12.16.03.58.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Dec 2020 03:58:40 -0800 (PST)
-From:   Slaveyko Slaveykov <sis@melexis.com>
-To:     Jonathan.Cameron@huawei.com, cmo@melexis.com
-Cc:     linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
-        lars@metafoo.de, Slaveyko Slaveykov <sis@melexis.com>
-Subject: [PATCH v5 1/1] drivers: iio: temperature: Add delay after the addressed reset command in mlx90632.c
-Date:   Wed, 16 Dec 2020 13:57:20 +0200
-Message-Id: <20201216115720.12404-2-sis@melexis.com>
-X-Mailer: git-send-email 2.16.2.windows.1
-In-Reply-To: <20201216115720.12404-1-sis@melexis.com>
-References: <20201216115720.12404-1-sis@melexis.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GCxnR2OW5Ed1GUJFpLI5+NtLjiW+T/+HOOF4cJogMM0=;
+        b=iCj5IfAkXruQE7Zc3Hnqqj8VmRmBC8SnEosLYNeW81MgE0+UWyNgEgj/2KfUrObzTn
+         UYihiGI5QUKek2tMnrzjW1h+j3YtlA0eL3v5HaqI5iMil20QEmnWxPrMS19aVNxARatQ
+         S7Yeb/+ijrnFpntZ0UbP21+puqQTKWCpZQTzV+On9SULysOoVcjPdlfLFD9sVlHL6Ibd
+         CX94BLiwFM3e06mPXCUNjz4iS3vYyMlMx5kj0/OwKnu40VPSIr3fYAieOdr+ocNP7TfH
+         rW7CA+XIG0DpIWB5eifVyuK2MxHy1lJP9JxgHAIuuLAQCk8Ka/kxQNWeIxyyW/rIjWZe
+         Eg0w==
+X-Gm-Message-State: AOAM5336tZrLgTTo6sf4p1foahNhGvVme/tC33Ayn/1qcKXmodkzyzfA
+        oLKVDWNvOWetMruBbey7Y41QMA+GpJxDtHWjans=
+X-Google-Smtp-Source: ABdhPJw9tarObLXU9kHW993AEBDLeePfTtS5TLmv60/SXS/v1FolWPb6qE+MZ7lR+GIJoXecd8HqA4WFJhXsRz9fimE=
+X-Received: by 2002:a17:90a:c592:: with SMTP id l18mr3202998pjt.228.1608126965783;
+ Wed, 16 Dec 2020 05:56:05 -0800 (PST)
+MIME-Version: 1.0
+References: <20201216060233.597689-1-gwendal@chromium.org> <20201216060233.597689-4-gwendal@chromium.org>
+In-Reply-To: <20201216060233.597689-4-gwendal@chromium.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 16 Dec 2020 15:56:54 +0200
+Message-ID: <CAHp75VdKCEQ11Kk=zBynd1g7gWhFyMCo-x=grntLSEY_U29PFA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] iio: acpi_als: Add trigger support
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-After an I2C reset command, the mlx90632 needs some time before
-responding to other I2C commands. Without that delay, there is a chance
-that the I2C command(s) after the reset will not be accepted.
+On Wed, Dec 16, 2020 at 8:02 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> As some firmware does not notify on illuminance changes, add a
+> trigger to be able to query light via software (sysfs-trigger or
+> hrtrigger).
+>
+> Check iio_info reports the sensor as buffer capable:
+>   iio:device0: acpi-als (buffer capable)
+>
+> To test, check we can get data on demand on an Intel based chromebook:
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Crt Mori <cmo@melexis.com>
-Signed-off-by: Slaveyko Slaveykov <sis@melexis.com>
----
- drivers/iio/temperature/mlx90632.c | 6 ++++++
- 1 file changed, 6 insertions(+)
++ blank line
 
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index 503fe54a0bb9..608ccb1d8bc8 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -248,6 +248,12 @@ static int mlx90632_set_meas_type(struct regmap *regmap, u8 type)
- 	if (ret < 0)
- 		return ret;
- 
-+	/*
-+	 * Give the mlx90632 some time to reset properly before sending a new I2C command
-+	 * if this is not done, the following I2C command(s) will not be accepted.
-+	 */
-+	usleep_range(150, 200);
-+
- 	ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
- 				 (MLX90632_CFG_MTYP_MASK | MLX90632_CFG_PWR_MASK),
- 				 (MLX90632_MTYP_STATUS(type) | MLX90632_PWR_STATUS_HALT));
+>   echo 1 > iio_sysfs_trigger/add_trigger
+>   cat trigger2/name > iio\:device0/trigger/current_trigger
+>   for i in iio\:device0/scan_elements/*_en iio\:device0/buffer/enable ; do
+>     echo 1 > $i
+>   done
+>   od -x /dev/iio\:device0&
+
+space before &
+
+>   echo 1 > trigger2/trigger_now
+
+You may improve readability by using a temporary variable:
+
+  IIO_DEV="iio:device0"
+  ...
+  cat trigger2/name > $IIO_DEV/trigger/current_trigger
+  for i in $IIO_DEV/scan_elements/*_en $IIO_DEV/buffer/enable ; do
+  ...
+  od -x /dev/$IIO_DEV &
+
+Commit message keeps silent about the side effect of these changes on
+the old setups.
+Is there any?
+
+...
+
+>  drivers/iio/light/acpi-als.c | 88 +++++++++++++++++++++++++++---------
+
+Question here, does it need a documentation update?
+
+...
+
+>  #include <linux/iio/kfifo_buf.h>
+
+Is it still in use?
+
 -- 
-2.16.2.windows.1
-
+With Best Regards,
+Andy Shevchenko

@@ -2,122 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E4D12DDC70
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Dec 2020 01:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDDD12DE073
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Dec 2020 10:37:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727160AbgLRAle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Dec 2020 19:41:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727136AbgLRAle (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Dec 2020 19:41:34 -0500
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58E2C061794
-        for <linux-iio@vger.kernel.org>; Thu, 17 Dec 2020 16:40:53 -0800 (PST)
-Received: by mail-io1-xd32.google.com with SMTP id z5so456441iob.11
-        for <linux-iio@vger.kernel.org>; Thu, 17 Dec 2020 16:40:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4w1rVgGZkkmQ5xd5p9+H0HBWGMlkftphPuS3GuvMK3w=;
-        b=F+wMcMbfL+YLoy9vzpwf4xc69etB7hxMymx6QGw+AAT05rT0EZudOrTfAnCWT+I4nU
-         7PcD9341oETeAXLLDl5DZyGk28LFBZKZDLPEc5+CAvJsZd5LD1tL9CP/jAHPPFFYcSJu
-         CXJ2yOiDmo53GrQCnOzH4Nn8t9+jPaVfGDyM4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4w1rVgGZkkmQ5xd5p9+H0HBWGMlkftphPuS3GuvMK3w=;
-        b=WA8Etuy54Gj5SkCa+OSXCXiS6XFICluLS+lqEEYT4y6JtqkovlyXJZ0DQZl4iUhiCm
-         ftc/yRJv7xY1RpOeBpmWDktnw2HkysmpWHQn+/meXzQpMGxYBYutnbJGtiF7SqdOxbjv
-         VAIOqIUzZakyKQ+vn/NZ2iM6eowx5C7TRpHlO+Ro+GEfBtENqZMdOxW+MFIbeiVPfjfa
-         fHiJYp95Rcg3fOwG5psEN8kaPjjB4gxQ9BaGi1v89SE+TgQHdVZ9ayXTCrson+yPm+hR
-         dtJmBAae/Gepyc1L2+SOXwBz41Wg8wTzwIwVW369OioX9lEwSW/vMZPYoe7FL8arv2vA
-         k3hQ==
-X-Gm-Message-State: AOAM530cIrZ/Am2MkLgjXX7O9sD3I2kGoDP6QEobL+g6dOMJs1/KKPYG
-        l1K5MOQDM8Re1/f8UsM4N6qZC5aVP1Iaq4nokDJIAQ==
-X-Google-Smtp-Source: ABdhPJwRY7NiANnpNV/mruNA0Bj60DGvF0RZstrWutpDqYbTxLcTAGzsJCYvKOoLxrAlCsESwra3zW1bDl1ezIoblnE=
-X-Received: by 2002:a02:a1ca:: with SMTP id o10mr1425092jah.19.1608252053181;
- Thu, 17 Dec 2020 16:40:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20201216060233.597689-1-gwendal@chromium.org> <20201216060233.597689-4-gwendal@chromium.org>
- <CAHp75VdKCEQ11Kk=zBynd1g7gWhFyMCo-x=grntLSEY_U29PFA@mail.gmail.com>
-In-Reply-To: <CAHp75VdKCEQ11Kk=zBynd1g7gWhFyMCo-x=grntLSEY_U29PFA@mail.gmail.com>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Thu, 17 Dec 2020 16:40:41 -0800
-Message-ID: <CAPUE2uuiDJOAQPy8zNuirmYVeSdSFuOp1CvJXaMok0Femcsi_g@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] iio: acpi_als: Add trigger support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Gabriele Mazzotta <gabriele.mzt@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726798AbgLRJgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Dec 2020 04:36:31 -0500
+Received: from smtp25.cstnet.cn ([159.226.251.25]:47662 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725908AbgLRJgb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Dec 2020 04:36:31 -0500
+Received: from localhost.localdomain (unknown [124.16.141.242])
+        by APP-05 (Coremail) with SMTP id zQCowACXn7PSd9xfS84SAA--.35060S2;
+        Fri, 18 Dec 2020 17:35:15 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     jic23@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        fabrice.gasnier@st.com, krzk@kernel.org, andy.shevchenko@gmail.com,
+        olivier.moysan@st.com, etienne.carriere@st.com,
+        alexandru.ardelean@analog.com, peter.ujfalusi@ti.com,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: stm32-adc: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
+Date:   Fri, 18 Dec 2020 09:35:12 +0000
+Message-Id: <20201218093512.871-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: zQCowACXn7PSd9xfS84SAA--.35060S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZr1UWFW5ZFyxKF4DWr1xXwb_yoW5ZFyUpw
+        nFyF4Fyrs7Za40vFn8JrWjqFyFqa15Ka4IvF4UG3WrWr4ayr98ZFyrtF1IvFWFyrykK3Zx
+        KFyjkFWkuF48uF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+        04v7MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+        C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+        wI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+        v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2
+        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+        UI43ZEXa7IU5l1vDUUUUU==
+X-Originating-IP: [124.16.141.242]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgYOA10Te2kdngAAsS
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 16, 2020 at 5:56 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Dec 16, 2020 at 8:02 AM Gwendal Grignou <gwendal@chromium.org> wrote:
-> >
-> > As some firmware does not notify on illuminance changes, add a
-> > trigger to be able to query light via software (sysfs-trigger or
-> > hrtrigger).
-> >
-> > Check iio_info reports the sensor as buffer capable:
-> >   iio:device0: acpi-als (buffer capable)
-> >
-> > To test, check we can get data on demand on an Intel based chromebook:
->
-> + blank line
->
-> >   echo 1 > iio_sysfs_trigger/add_trigger
-> >   cat trigger2/name > iio\:device0/trigger/current_trigger
-> >   for i in iio\:device0/scan_elements/*_en iio\:device0/buffer/enable ; do
-> >     echo 1 > $i
-> >   done
-> >   od -x /dev/iio\:device0&
->
-> space before &
-Fixed in v5
->
-> >   echo 1 > trigger2/trigger_now
->
-> You may improve readability by using a temporary variable:
->
->   IIO_DEV="iio:device0"
->   ...
->   cat trigger2/name > $IIO_DEV/trigger/current_trigger
->   for i in $IIO_DEV/scan_elements/*_en $IIO_DEV/buffer/enable ; do
->   ...
->   od -x /dev/$IIO_DEV &
-Fixed in v5
->
-> Commit message keeps silent about the side effect of these changes on
-> the old setups.
-> Is there any?
-No, add note in commit message.
->
-> ...
->
-> >  drivers/iio/light/acpi-als.c | 88 +++++++++++++++++++++++++++---------
->
-> Question here, does it need a documentation update?
-No, as the driver follows the current iio ABI.
->
-> ...
->
-> >  #include <linux/iio/kfifo_buf.h>
->
-> Is it still in use?
-Fixed in v5.
->
-> --
-> With Best Regards,
-Thanks for thorough review,
+Because clk_prepare_enable() and clk_disable_unprepare() already checked
+NULL clock parameter, so the additional checks are unnecessary, just
+remove them.
 
-Gwendal.
-> Andy Shevchenko
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ drivers/iio/adc/stm32-adc-core.c | 29 +++++++++++------------------
+ drivers/iio/adc/stm32-adc.c      | 14 +++++---------
+ 2 files changed, 16 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index 9d1ad6e38e85..c088cb990193 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -535,20 +535,16 @@ static int stm32_adc_core_hw_start(struct device *dev)
+ 		goto err_switches_dis;
+ 	}
+ 
+-	if (priv->bclk) {
+-		ret = clk_prepare_enable(priv->bclk);
+-		if (ret < 0) {
+-			dev_err(dev, "bus clk enable failed\n");
+-			goto err_regulator_disable;
+-		}
++	ret = clk_prepare_enable(priv->bclk);
++	if (ret < 0) {
++		dev_err(dev, "bus clk enable failed\n");
++		goto err_regulator_disable;
+ 	}
+ 
+-	if (priv->aclk) {
+-		ret = clk_prepare_enable(priv->aclk);
+-		if (ret < 0) {
+-			dev_err(dev, "adc clk enable failed\n");
+-			goto err_bclk_disable;
+-		}
++	ret = clk_prepare_enable(priv->aclk);
++	if (ret < 0) {
++		dev_err(dev, "adc clk enable failed\n");
++		goto err_bclk_disable;
+ 	}
+ 
+ 	writel_relaxed(priv->ccr_bak, priv->common.base + priv->cfg->regs->ccr);
+@@ -556,8 +552,7 @@ static int stm32_adc_core_hw_start(struct device *dev)
+ 	return 0;
+ 
+ err_bclk_disable:
+-	if (priv->bclk)
+-		clk_disable_unprepare(priv->bclk);
++	clk_disable_unprepare(priv->bclk);
+ err_regulator_disable:
+ 	regulator_disable(priv->vref);
+ err_switches_dis:
+@@ -575,10 +570,8 @@ static void stm32_adc_core_hw_stop(struct device *dev)
+ 
+ 	/* Backup CCR that may be lost (depends on power state to achieve) */
+ 	priv->ccr_bak = readl_relaxed(priv->common.base + priv->cfg->regs->ccr);
+-	if (priv->aclk)
+-		clk_disable_unprepare(priv->aclk);
+-	if (priv->bclk)
+-		clk_disable_unprepare(priv->bclk);
++	clk_disable_unprepare(priv->aclk);
++	clk_disable_unprepare(priv->bclk);
+ 	regulator_disable(priv->vref);
+ 	stm32_adc_core_switches_supply_dis(priv);
+ 	regulator_disable(priv->vdda);
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index c067c994dae2..f7c53cea509a 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -546,8 +546,7 @@ static int stm32_adc_hw_stop(struct device *dev)
+ 	if (adc->cfg->unprepare)
+ 		adc->cfg->unprepare(indio_dev);
+ 
+-	if (adc->clk)
+-		clk_disable_unprepare(adc->clk);
++	clk_disable_unprepare(adc->clk);
+ 
+ 	return 0;
+ }
+@@ -558,11 +557,9 @@ static int stm32_adc_hw_start(struct device *dev)
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	if (adc->clk) {
+-		ret = clk_prepare_enable(adc->clk);
+-		if (ret)
+-			return ret;
+-	}
++	ret = clk_prepare_enable(adc->clk);
++	if (ret)
++		return ret;
+ 
+ 	stm32_adc_set_res(adc);
+ 
+@@ -575,8 +572,7 @@ static int stm32_adc_hw_start(struct device *dev)
+ 	return 0;
+ 
+ err_clk_dis:
+-	if (adc->clk)
+-		clk_disable_unprepare(adc->clk);
++	clk_disable_unprepare(adc->clk);
+ 
+ 	return ret;
+ }
+-- 
+2.17.1
+

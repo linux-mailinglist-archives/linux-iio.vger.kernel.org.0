@@ -2,136 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF3C2DE9E2
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Dec 2020 20:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 797672DEB7F
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Dec 2020 23:22:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733210AbgLRTnN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Dec 2020 14:43:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39202 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726177AbgLRTnN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Dec 2020 14:43:13 -0500
-X-Gm-Message-State: AOAM531+gXCfUfNAnwv4l2aUZOfztupp5NWpQmnX/GsU2sieLLjh97Zl
-        skqQOLmmc6+/h81u7MY+ylb+b1SZXDkuawmpwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608320552;
-        bh=mQT84aDpnYs8EB8cFn/8qYnDx5716aEtFID4Pf2FyoQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OC/DnY2qs0t6WsZCZIf5bI9EaD4Y306LwkFK+nEOI26hXcRi3/Q4eQjolImmeftLO
-         zuXAA4XHrIjc6SzRF7Va6L9wNtTqUNPwDkTd7nE7mbkvE/usho/NqudA5WFKbAZDbQ
-         0NReHUCnzPDouX5esrkDs4zS6lmwL68et/ZSFskA/KPA51akGMwgwSYD+nDXCPs8P2
-         tAifH3mGlv7YHeA/PypFdlAGrMd4X4FIaqD6fuqF11/rFq88mdMzhj897D1gry+2gs
-         rwscW6iYMyzMq5N0FfxxYu2RUWgxHf1TBgZyWkREt/AL3IQSCNcTXHn95VkV8j+o5p
-         fgByTkZX8atvA==
-X-Google-Smtp-Source: ABdhPJynuvAJhAJT69wWAw80PGmLAld92GEZpyQd7brMFdYXXMiH5nz2zC7aVDHWLfje4iUJmYVmaw/dHkn6QYUUY4E=
-X-Received: by 2002:a05:6402:352:: with SMTP id r18mr5858162edw.373.1608320550439;
- Fri, 18 Dec 2020 11:42:30 -0800 (PST)
+        id S1725878AbgLRWU6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Dec 2020 17:20:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725813AbgLRWU6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Dec 2020 17:20:58 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DDFC0617A7
+        for <linux-iio@vger.kernel.org>; Fri, 18 Dec 2020 14:20:17 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id o19so9318248lfo.1
+        for <linux-iio@vger.kernel.org>; Fri, 18 Dec 2020 14:20:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nBJw5V5zd2uYISGPXP0zWHf3OtufiP9E/K+7pvCrjD0=;
+        b=FZBCPnjnx5AjpUUozo1gHqwSd/UJnpxti3PBagDdMl2A5YAjQfhnx6+ibsP1I+aFSD
+         Bjgge6o2tw2T4+CjLXvj6dl38ILxFlJSWr4BTmfQgL/sdbKliIqhsNfmGQVn8jpbUoXS
+         1iQ0eA8XOpq/f4eXQt2sp26HvZk7fzrANhxehUQa3+Lty4p2AIrDMOIeCWbcum03wCvY
+         VA/tOGyUOi6rCpWmZm9kKPf5DFjCLf2WunXUitaBAhvGUuOHk2A8V2TKNpvN9CGEPdn3
+         0V0NvkNh1pZ61c42ESAf5lmrq6OmrcKeFSlFhfhqw76EyRp4SHnLD3xU3JN0C5hfAjVQ
+         bKiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nBJw5V5zd2uYISGPXP0zWHf3OtufiP9E/K+7pvCrjD0=;
+        b=H7lmoDNPA7qpF12fwoqgL48jGL5pdG4txy/nRLrYM1hQbvRYa6EBwevvMI//HAzWJB
+         wj8T8kIsGU5v9HQRw1NPRXSbBVb1XaflA9aboyQD7rvnm+JtHVjiH8ICKYrLSvmaAIE4
+         u/3Ho20QQYYG1amPpkFY5Du3jmdmhxJ8w/oJQeYhLEi6l5Hg5v0YPIPXJW/RidC16z3S
+         AziDGL7HnUhSneNpNbsVtsaSiZgf+UkZhZA5t5CqDjW6Dvp8k/FGCLI5tde1eyYlakJE
+         Uaqiqv/FtT1zlYKxrJKpF3IxRXNfEyF6FtIkQXmpA2TPD0ZMhqk43wkNotaGadfRzQt8
+         cp+A==
+X-Gm-Message-State: AOAM532aea9bS6ZK/ZEUIQ5WpQ84l+CYVfmy3wqkAfybrCyYh6TfLJGl
+        5PiTHdr8NlYOpAw5SxwIRO3U0w==
+X-Google-Smtp-Source: ABdhPJwcmyhGxIoIo715psTRsUeDG3SiKhfDUnzYim26pmyanAGev6RFyhzoaMOf/AcvNZcrNma2hw==
+X-Received: by 2002:ac2:46ca:: with SMTP id p10mr2151804lfo.53.1608330016234;
+        Fri, 18 Dec 2020 14:20:16 -0800 (PST)
+Received: from localhost.localdomain (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id l7sm1186773lja.15.2020.12.18.14.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Dec 2020 14:20:15 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] iio: adc: ab8500-gpadc: Support non-hw-conversion
+Date:   Fri, 18 Dec 2020 23:20:13 +0100
+Message-Id: <20201218222013.383704-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20201031184854.745828-1-jic23@kernel.org> <20201031184854.745828-9-jic23@kernel.org>
-In-Reply-To: <20201031184854.745828-9-jic23@kernel.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 18 Dec 2020 13:42:19 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL0ssp2M02+J8teNu_fcwn9qn4HxPwaOu1weTCTQoC5Kw@mail.gmail.com>
-Message-ID: <CAL_JsqL0ssp2M02+J8teNu_fcwn9qn4HxPwaOu1weTCTQoC5Kw@mail.gmail.com>
-Subject: Re: [PATCH 08/46] dt-bindings:iio:health:ti,afe4404: txt to yaml conversion
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "Andrew F . Davis" <afd@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 1:51 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This basically has same questions as for the afe4403.  We could combine
-> the two bindings, but as the drivers are separate and it would be a little
-> fiddly due to different buses let's keep the separating.
-> To repeat questions from the ti,afe4403 binding.
->
-> A few questions came up whilst converting this one.
-> 1) What is actually required?
->    - Checking Linux driver, interrupt is not, and the tx-supply could
->      be supplied by a stub regulator as long as it's always on.
->      As such I have reduced the required list to just compatible and reg.
-> 2) What is the regulator called?
->    - It's tx-supply in the binding doc, but the driver request tx_sup
->      I've left this alone for now.  Andrew could you confirm what is
->      intended for this?
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Andrew F. Davis <afd@ti.com>
-> ---
->  .../bindings/iio/health/afe4404.txt           | 29 -----------
->  .../bindings/iio/health/ti,afe4404.yaml       | 51 +++++++++++++++++++
->  2 files changed, 51 insertions(+), 29 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/iio/health/afe4404.txt b/Documentation/devicetree/bindings/iio/health/afe4404.txt
-> deleted file mode 100644
-> index 0b52830a0d9c..000000000000
-> --- a/Documentation/devicetree/bindings/iio/health/afe4404.txt
-> +++ /dev/null
-> @@ -1,29 +0,0 @@
-> -Texas Instruments AFE4404 Heart rate and Pulse Oximeter
-> -
-> -Required properties:
-> - - compatible          : Should be "ti,afe4404".
-> - - reg                 : I2C address of the device.
-> - - tx-supply           : Regulator supply to transmitting LEDs.
-> - - interrupts          : The interrupt line the device ADC_RDY pin is
-> -                         connected to. For details refer to,
-> -                         ../interrupt-controller/interrupts.txt.
-> -
-> -Optional properties:
-> - - reset-gpios         : GPIO used to reset the device.
-> -                         For details refer to, ../gpio/gpio.txt.
-> -
-> -Example:
-> -
-> -&i2c2 {
-> -       heart_mon@58 {
-> -               compatible = "ti,afe4404";
-> -               reg = <0x58>;
-> -
-> -               tx-supply = <&vbat>;
-> -
-> -               interrupt-parent = <&gpio1>;
-> -               interrupts = <28 IRQ_TYPE_EDGE_RISING>;
-> -
-> -               reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>;
-> -       };
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
-> new file mode 100644
-> index 000000000000..187b99b22312
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/health/ti,afe4404.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments AFE4404 Heart rate and Pulse Oximeter
-> +
-> +maintainers:
-> +  - Andrew F. Davis <afd@ti.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,afe4403
+The hardware conversion mode only exists in the AB8500
+version of the chip, as it is lacking in the AB8505 it
+will not be in the device tree and we should just not
+even try to obtain it.
 
-Typo here, which causes this warning:
+The driver already contains code to avoid using a
+non-existing hardware conversion IRQ at conversion time.
 
-Documentation/devicetree/bindings/iio/health/ti,afe4403.example.dt.yaml:
-heart_mon@0: 'spi-max-frequency' does not match any of the regexes:
-'pinctrl-[0-9]+'
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/iio/adc/ab8500-gpadc.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-Took me a minute staring at ti,afe4403.yaml to figure out what was happening.
+diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
+index 1bb987a4acba..6f9a3e2d5533 100644
+--- a/drivers/iio/adc/ab8500-gpadc.c
++++ b/drivers/iio/adc/ab8500-gpadc.c
+@@ -1108,10 +1108,14 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+ 		return gpadc->irq_sw;
+ 	}
+ 
+-	gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
+-	if (gpadc->irq_hw < 0) {
+-		dev_err(dev, "failed to get platform hw_conv_end irq\n");
+-		return gpadc->irq_hw;
++	if (is_ab8500(gpadc->ab8500)) {
++		gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
++		if (gpadc->irq_hw < 0) {
++			dev_err(dev, "failed to get platform hw_conv_end irq\n");
++			return gpadc->irq_hw;
++		}
++	} else {
++		gpadc->irq_hw = 0;
+ 	}
+ 
+ 	/* Initialize completion used to notify completion of conversion */
+@@ -1128,14 +1132,16 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	ret = devm_request_threaded_irq(dev, gpadc->irq_hw, NULL,
+-		ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
+-		"ab8500-gpadc-hw", gpadc);
+-	if (ret < 0) {
+-		dev_err(dev,
+-			"Failed to request hw conversion irq: %d\n",
+-			gpadc->irq_hw);
+-		return ret;
++	if (gpadc->irq_hw) {
++		ret = devm_request_threaded_irq(dev, gpadc->irq_hw, NULL,
++			ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
++			"ab8500-gpadc-hw", gpadc);
++		if (ret < 0) {
++			dev_err(dev,
++				"Failed to request hw conversion irq: %d\n",
++				gpadc->irq_hw);
++			return ret;
++		}
+ 	}
+ 
+ 	/* The VTVout LDO used to power the AB8500 GPADC */
+-- 
+2.29.2
 
-Rob

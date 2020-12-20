@@ -2,62 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 996452DF204
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Dec 2020 23:42:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F4282DF2A9
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Dec 2020 02:52:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726621AbgLSWmd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Dec 2020 17:42:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
+        id S1726817AbgLTBwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Dec 2020 20:52:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726570AbgLSWmc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Dec 2020 17:42:32 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B524C0613CF
-        for <linux-iio@vger.kernel.org>; Sat, 19 Dec 2020 14:41:50 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id o19so14849976lfo.1
-        for <linux-iio@vger.kernel.org>; Sat, 19 Dec 2020 14:41:50 -0800 (PST)
+        with ESMTP id S1726660AbgLTBwM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Dec 2020 20:52:12 -0500
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F2CC0613CF;
+        Sat, 19 Dec 2020 17:51:27 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id x12so3618473plr.10;
+        Sat, 19 Dec 2020 17:51:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=82OS3pLNd8iUHESUMUxIhbTgIU37vSfj8yHnrTeu96Y=;
-        b=TrSct3igLxzJi4/z97dqaidZkhkr01QcRXtp42P0HWxxErrIcM5M/1moUcA25uBMkf
-         mNrdJVLAXqj09giY+T1ZqJwAIgjYCoDdPbDTKBT+4En2C9T3FbUMFEtF+9mTaMNwvxis
-         NKO6Ff9CdJ2S54zCfljdp/ZcA5rMJaTMqwWBqmY7MzcBO6f3268Y8BN0b4KvOqnNYN1n
-         j+eskQ8IFO79uiQ+xQqoezbn9PBNj3WA1cZU3kHwQp9OvRtgMXDDiDEdzGdeObQMMkD8
-         GZ/hVFflAS+6iMYqXEohsluX5AWwUloKEbcol2w2fuJGSGInIrsUT126xjVzfuczoM6g
-         WXAA==
+        bh=hMEfLBWoIp7OwRZhC3MXdh4+fV0q2Jqz8suvTSU9g7Q=;
+        b=in3HcGYjy8UKlzXf+PLrKZwg+zQVtsDfmeFRTANZbhvEJy+G5o29W+yed0e3rEhyJQ
+         rMT3g8hNY6/iGm/VhrLYKVyXGWTRDdS0kDYY1ykPdk+woOFaazRpiFXLgHx9OWJlaINO
+         W0U4Z/GOOB2UoEd8e+6ppNGMs2U7xZIzmuY6WF0dVm0kfbDCjmzyEytDy8OPRFW/Rv39
+         eMGLag6xd1bxwdUxDMejl0/xj7BJ//JMB1nBhVYJvg5KUxr5Em4OaBbkRnnVvyScRtI8
+         GAo/07/ZJ3avs5Z5YZ97HQB48inRUctOgmQDi4x2RMJURNfSd7QLEcfWMDmHIR5h3sTW
+         jxHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=82OS3pLNd8iUHESUMUxIhbTgIU37vSfj8yHnrTeu96Y=;
-        b=qSe75AlrgDU218nfZJ1bq9SA8i45o7Fjezu29xaQDjekzWES54xnujhTpE7EoP4y8K
-         ZccpkI/Rnf72pYdyzQoUjmMvLY+bVlFwvnnnrJiuYto9N9dUpnxsGvrror6RC6b1Vz+e
-         V/xU+CyisTelNlCUB/DmYmMsv+jU/KNRiIrN5qWmBhLGjXyP1OUaXr+PbAHtv+UPyR6u
-         2+GyBUfxDfM+YN08lLhGuZrpTXxt/pmGGhWnBnYIqDZVLCy6XVPoGgeulI0T4gy88tTC
-         Hg+ViL4XZ+6nxaUXxmIZyr/bQqwOM7ZMpYs5qa2zSrTwNX+XUO5mWeUTNG3yTn3eVqYt
-         u/ZA==
-X-Gm-Message-State: AOAM533+RzwnVjQIIGMRhZkf7oh2Da25ByNkCjSQbSCMsMMGtIGBTOll
-        W2RoKO0W21+soR9Mejoc4vbxVA==
-X-Google-Smtp-Source: ABdhPJyb4/OE6CfJu11wNoQYGVhclGqX8lAfSXe4t+nUc4gruT1BjchaAm8LF4hX0+js6jjOqSTVkw==
-X-Received: by 2002:a2e:8045:: with SMTP id p5mr4553381ljg.289.1608417708792;
-        Sat, 19 Dec 2020 14:41:48 -0800 (PST)
-Received: from localhost.localdomain (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id 195sm1368982lfk.109.2020.12.19.14.41.47
+        bh=hMEfLBWoIp7OwRZhC3MXdh4+fV0q2Jqz8suvTSU9g7Q=;
+        b=hdm0mGaWWWV7mESuwreibCmpCL8zDLr5xHE+D4mFFCZxTQCQk8P71MgT9le3n5X/UT
+         dyB2R4vIy4i1yk2J2bNsyd0n9yx+QIYRrCkPG2e9NOe2nqj0s69vo6n8QjZQJ6qIiaXr
+         y4MUjIrJ3nOArkof9gdrW9kbJztri2YKqNtSBFslOVxkvkIzfGqVA4hXOErhPL1uxo78
+         tKhY03yHJvtrtWa6H6zYjFb6mbkjJQtRKFOLzsBqQiGHkcr93G4TzeP/TNZtoThPjZt/
+         43kPp6rQTPgBWVz3cGCzhuefoL9YWuBemqfoRcLI2OXKWrXy+LYW9xafHbFR3qYsuekk
+         Wq/w==
+X-Gm-Message-State: AOAM531Z9zIkxFfhsBPJj92VRLigTS2o4YH4+by8e9WZhEmmx176E2f1
+        Ux2Bmp56+xSHgRehTd0b8dccPIAr6SoLFQp4
+X-Google-Smtp-Source: ABdhPJz8YzwHPjAPP3NjeGZO/cc0UDuyz73QK4rLo10pHU4W61/9rJBY4Db5S8tv/22fwGhuS60tfw==
+X-Received: by 2002:a17:90a:394f:: with SMTP id n15mr11312605pjf.121.1608429087231;
+        Sat, 19 Dec 2020 17:51:27 -0800 (PST)
+Received: from max-surface.hsd1.ca.comcast.net ([2601:647:5680:1d90:ed06:7751:4b34:9d75])
+        by smtp.gmail.com with ESMTPSA id js9sm12368718pjb.2.2020.12.19.17.51.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Dec 2020 14:41:48 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Peter Rosin <peda@axentia.se>,
-        Chris Lesiak <chris.lesiak@licor.com>,
-        Jonathan Cameron <jic23@cam.ac.uk>, linux-iio@vger.kernel.org
-Subject: [PATCH] hwmon: (ntc_thermistor): try reading processed
-Date:   Sat, 19 Dec 2020 23:41:43 +0100
-Message-Id: <20201219224143.686074-1-linus.walleij@linaro.org>
+        Sat, 19 Dec 2020 17:51:26 -0800 (PST)
+From:   Max Leiter <maxwell.leiter@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     blaz@mxxn.io, matt.ranostay@konsulko.com,
+        Max Leiter <maxwell.leiter@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio:light:apds9960 add detection for MSHW0184 ACPI device in apds9960 driver
+Date:   Sat, 19 Dec 2020 17:50:55 -0800
+Message-Id: <20201220015057.107246-1-maxwell.leiter@gmail.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,73 +66,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Before trying the custom method of reading the sensor
-as raw and then converting assuming 1000 scaling, just
-use iio_read_channel_processed() which first tries to
-see if the ADC can provide a processed value directly,
-else reads raw and applies scaling inside of IIO
-using the scale attributes of the ADC.
+The device is used in the Microsoft Surface Book 3 and Surface Pro 7
 
-The code that hardcodes scaling to 1000 and assumes
-a 12bit ADC is very dubious. I keep it around here
-but I have a strong urge to just delete it.
-
-This gives correct readings on the AB8500 thermistor
-inputs used in the Ux500 HREFP520 platform for reading
-battery and board temperature.
-
-Cc: Peter Rosin <peda@axentia.se>
-Cc: Chris Lesiak <chris.lesiak@licor.com>
-Cc: Jonathan Cameron <jic23@cam.ac.uk>
-Cc: linux-iio@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Max Leiter <maxwell.leiter@gmail.com>
 ---
- drivers/hwmon/ntc_thermistor.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/iio/light/apds9960.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index 3aad62a0e661..ac0d80faddf6 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -326,18 +326,29 @@ struct ntc_data {
- static int ntc_adc_iio_read(struct ntc_thermistor_platform_data *pdata)
- {
- 	struct iio_channel *channel = pdata->chan;
--	int raw, uv, ret;
-+	int uv, ret;
+diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+index 9afb3fcc74e6..20719141c03a 100644
+--- a/drivers/iio/light/apds9960.c
++++ b/drivers/iio/light/apds9960.c
+@@ -8,6 +8,7 @@
+  * TODO: gesture + proximity calib offsets
+  */
  
--	ret = iio_read_channel_raw(channel, &raw);
-+	/* A processed voltage channel will return microvolts */
-+	ret = iio_read_channel_processed(channel, &uv);
- 	if (ret < 0) {
--		pr_err("read channel() error: %d\n", ret);
--		return ret;
--	}
-+		int raw;
++#include <linux/acpi.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -1113,6 +1114,12 @@ static const struct i2c_device_id apds9960_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, apds9960_id);
  
--	ret = iio_convert_raw_to_processed(channel, raw, &uv, 1000);
--	if (ret < 0) {
--		/* Assume 12 bit ADC with vref at pullup_uv */
--		uv = (pdata->pullup_uv * (s64)raw) >> 12;
-+		/*
-+		 * FIXME: This fallback to using a raw read and then right
-+		 * out assume the ADC is 12 bits and hard-coding scale
-+		 * to 1000 seems a bit dangerous. Should it simply be
-+		 * deleted?
-+		 */
-+		ret = iio_read_channel_raw(channel, &raw);
-+		if (ret < 0) {
-+			pr_err("read channel() error: %d\n", ret);
-+			return ret;
-+		}
-+		ret = iio_convert_raw_to_processed(channel, raw, &uv, 1000);
-+		if (ret < 0) {
-+			/* Assume 12 bit ADC with vref at pullup_uv */
-+			uv = (pdata->pullup_uv * (s64)raw) >> 12;
-+		}
- 	}
- 
- 	return uv;
++static const struct acpi_device_id apds9960_acpi_match[] = {
++	{ "MSHW0184" },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, apds9960_acpi_match);
++
+ static const struct of_device_id apds9960_of_match[] = {
+ 	{ .compatible = "avago,apds9960" },
+ 	{ }
+@@ -1124,6 +1131,7 @@ static struct i2c_driver apds9960_driver = {
+ 		.name	= APDS9960_DRV_NAME,
+ 		.of_match_table = apds9960_of_match,
+ 		.pm	= &apds9960_pm_ops,
++		.acpi_match_table = apds9960_acpi_match,
+ 	},
+ 	.probe		= apds9960_probe,
+ 	.remove		= apds9960_remove,
 -- 
 2.29.2
 

@@ -2,76 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E942DFBB5
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Dec 2020 13:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C242DFCFB
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Dec 2020 15:44:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726082AbgLUMDg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Dec 2020 07:03:36 -0500
-Received: from www381.your-server.de ([78.46.137.84]:55568 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725771AbgLUMDg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Dec 2020 07:03:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=ekx2bP+pSpp8kG02Qbxbz890hUtN88GEowzicB+yYck=; b=Mfeqq3c4G426/ClZKEHyefixjG
-        3l0zTnmwTbhsG1QNvOiZDllUV1FMyHi2XNiidhcBXaqmkBmEphb1EpMthNZY3DQgel4S1pKaFv4Ae
-        9orOgggfWYDbuaFbrTFuzRP+4ZKGkvDsr103ZVLvGER4xt3SELDRWu4SXqKwz74XoHQUCRFMa16wo
-        5AEuph3NDe02wYGErGZE0AS2/OAdQ2vmv+PMf9BAsIc/2HzcpHHocX/jnTnrWSTSOGR1i6odez6H6
-        8BdVDc9BF8Ei7bLQLgDsenUsPVEsNI8Z1QCIysHaUXjMtu4ixwoYrH3maIBCVGMlRmJf6N6/lDbqQ
-        CKhGrwlw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1krJtu-000Dpr-9p; Mon, 21 Dec 2020 13:02:54 +0100
-Received: from [62.216.202.54] (helo=[192.168.178.20])
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1krJtu-0000In-77; Mon, 21 Dec 2020 13:02:54 +0100
-Subject: Re: device tree binding for iio-trig-hrtimer
-To:     yarl-baudig@mailoo.org, linux-iio@vger.kernel.org
-References: <ea-mime-5fe03673-6635-5dbe1461@www-1.mailo.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <f2bd1640-53b7-c558-4a94-c8fd66227415@metafoo.de>
-Date:   Mon, 21 Dec 2020 13:02:53 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1727141AbgLUOni (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Dec 2020 09:43:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56948 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727126AbgLUOni (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 21 Dec 2020 09:43:38 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4306822BEF;
+        Mon, 21 Dec 2020 14:42:56 +0000 (UTC)
+Date:   Mon, 21 Dec 2020 14:42:55 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Max Leiter <maxwell.leiter@gmail.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        blaz@mxxn.io, Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio:light:apds9960 add detection for MSHW0184 ACPI
+ device in apds9960 driver
+Message-ID: <20201221144255.5657887f@archlinux>
+In-Reply-To: <CAJCx=gm2hbfRePezjEh14a=DENX2dj8gc+SW8T-1NDWQY4eSTg@mail.gmail.com>
+References: <20201220015057.107246-1-maxwell.leiter@gmail.com>
+        <CAJCx=gm2hbfRePezjEh14a=DENX2dj8gc+SW8T-1NDWQY4eSTg@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <ea-mime-5fe03673-6635-5dbe1461@www-1.mailo.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26023/Sun Dec 20 13:52:43 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/21/20 6:45 AM, yarl-baudig@mailoo.org wrote:
-> Hello,
->
-> Is it possible to create and bind an iio-trig-hrtimer as an interrupt-parent (or something like that) for a sensor?
-> If so, what would the dts look like?
->
-The very first version of the iio-trig-hrtimer driver did have 
-devicetree bindings[1].
+On Sun, 20 Dec 2020 14:05:17 -0800
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-But since the iio-trig-hrtimer does not represent any piece of hardware 
-and the devicetree is a description of the hardware this was dropped 
-before upstreaming the driver. And a new interface for being able to 
-dynamically create hrtimer triggers using configfs was created.
+> On Sat, Dec 19, 2020 at 5:51 PM Max Leiter <maxwell.leiter@gmail.com> wrote:
+> >
+> > The device is used in the Microsoft Surface Book 3 and Surface Pro 7
+> >
+> > Signed-off-by: Max Leiter <maxwell.leiter@gmail.com>  
+> 
+> Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
 
-Creating a hrtimer trigger and assigning it to a sensor has to be done 
-from a userspace application.
+Thanks,
 
-- Lars
+Jonathan
 
-[1] 
-https://github.com/analogdevicesinc/linux/blob/1594c10513b7becdf7ed6026bb70a07ba8118d5f/drivers/staging/iio/trigger/iio-trig-hrtimer.c#L166-L170 
-<https://github.com/analogdevicesinc/linux/blob/1594c10513b7becdf7ed6026bb70a07ba8118d5f/drivers/staging/iio/trigger/iio-trig-hrtimer.c#L166-L170>
-
+> 
+> > ---
+> >  drivers/iio/light/apds9960.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+> > index 9afb3fcc74e6..20719141c03a 100644
+> > --- a/drivers/iio/light/apds9960.c
+> > +++ b/drivers/iio/light/apds9960.c
+> > @@ -8,6 +8,7 @@
+> >   * TODO: gesture + proximity calib offsets
+> >   */
+> >
+> > +#include <linux/acpi.h>
+> >  #include <linux/module.h>
+> >  #include <linux/init.h>
+> >  #include <linux/interrupt.h>
+> > @@ -1113,6 +1114,12 @@ static const struct i2c_device_id apds9960_id[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, apds9960_id);
+> >
+> > +static const struct acpi_device_id apds9960_acpi_match[] = {
+> > +       { "MSHW0184" },
+> > +       { }
+> > +};
+> > +MODULE_DEVICE_TABLE(acpi, apds9960_acpi_match);
+> > +
+> >  static const struct of_device_id apds9960_of_match[] = {
+> >         { .compatible = "avago,apds9960" },
+> >         { }
+> > @@ -1124,6 +1131,7 @@ static struct i2c_driver apds9960_driver = {
+> >                 .name   = APDS9960_DRV_NAME,
+> >                 .of_match_table = apds9960_of_match,
+> >                 .pm     = &apds9960_pm_ops,
+> > +               .acpi_match_table = apds9960_acpi_match,
+> >         },
+> >         .probe          = apds9960_probe,
+> >         .remove         = apds9960_remove,
+> > --
+> > 2.29.2
+> >  
 

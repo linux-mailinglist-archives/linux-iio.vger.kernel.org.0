@@ -2,116 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F8E2E0846
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 10:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A50062E0878
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 11:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725945AbgLVJtF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Dec 2020 04:49:05 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:10758 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725300AbgLVJtF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 04:49:05 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BM9f0Sa027727;
-        Tue, 22 Dec 2020 04:48:11 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35k0e11wb3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Dec 2020 04:48:10 -0500
-Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0BM9m89c061852
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 22 Dec 2020 04:48:09 -0500
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 22 Dec 2020 01:48:07 -0800
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Tue, 22 Dec 2020 01:48:07 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 22 Dec 2020 01:48:07 -0800
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0BM9m2pL002106;
-        Tue, 22 Dec 2020 04:48:04 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <akpm@linux-foundation.org>,
-        <gregkh@linuxfoundation.org>, <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v5 2/2] iio: Handle enumerated properties with gaps
-Date:   Tue, 22 Dec 2020 11:52:10 +0200
-Message-ID: <20201222095210.61897-2-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201222095210.61897-1-alexandru.ardelean@analog.com>
-References: <20201222095210.61897-1-alexandru.ardelean@analog.com>
+        id S1725999AbgLVKAU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Dec 2020 05:00:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726108AbgLVKAP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 05:00:15 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A4FC0617A6
+        for <linux-iio@vger.kernel.org>; Tue, 22 Dec 2020 01:59:34 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id q75so1585512wme.2
+        for <linux-iio@vger.kernel.org>; Tue, 22 Dec 2020 01:59:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=1uWQ1lsamrDj670psBGhqmITnRdEWIGipMAwVhvN0IQ=;
+        b=nzzFQvbCE9iM4gRr0OHBQhW95iPZnUHGIevbHh6G8/1DaGIs5orfQtZMKTjTyY2zjJ
+         pltvHVHec5UsnNGgJJfthUftOsewWy8YhxnXYppOWmN7Y3UqFISq3+f0ocm6pWy6s+ao
+         uaRBF2vgyNBikZ7ShJgESCzRRRySZbSAjnMwIBBn8PSrZQ33zLQZUN9iSC4x/lmTq981
+         FJ2Ly2VqTgTlLk7P1ecU0mMa6SWh/a/ZrKv1GDXYGD51DpKiA1XsULU+2oq9wzAV5jgw
+         +k0KhDI7UdHfo056NDutP99ttFQbtHZfAKQ81sHnq9JXVyK6fylkzXtS8AJ7ez5tMlJX
+         s4xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=1uWQ1lsamrDj670psBGhqmITnRdEWIGipMAwVhvN0IQ=;
+        b=CJ0l/h4oSrumIr9MbQ/PbZ8NEA7E4FLcHEY+Yn9r7LZC3fu3CHu2Sqqyue1XYU3WGY
+         zrfAV03r6FQH82DIDhyM+w0bHKLvTFB3fM/r41mDRwmo88XpQ8TsrZLNifeLQzWwp3lW
+         JlAIg5ng2R0jBCtUbgfo1up73/6yDtHnpLu0UDTxVKMCo1AWx1T7YZwzwO8qyfDLfM1h
+         XAfYm7E0rIb2NAMWo8vdVDjs4V5pqtZ5egGc80DpoDYO2RBDbZE/+gfzI7va5q5Judko
+         YAWpopDl+rPYEeB7M9V/yTEJ30wW0i2kvK6K+hCxutNG99FsYDzY8AbnaGPqM52s+udL
+         570Q==
+X-Gm-Message-State: AOAM531eMOEgj23p03U6nBkMM2mSCaZCrChxzgwY9/ieF2FVfmKI/T1N
+        asDcDmh3azleTuEkbPaOZ9Lm7A==
+X-Google-Smtp-Source: ABdhPJyryip6dXlJcoBpock1PWleQBmbQZcocbzF4ei8MZdMG4Bgcp5A9SM4uCOXJeAM5U9qRO3loQ==
+X-Received: by 2002:a1c:1d1:: with SMTP id 200mr21458882wmb.98.1608631173322;
+        Tue, 22 Dec 2020 01:59:33 -0800 (PST)
+Received: from dell ([91.110.221.175])
+        by smtp.gmail.com with ESMTPSA id a65sm26056927wmc.35.2020.12.22.01.58.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Dec 2020 01:59:32 -0800 (PST)
+Date:   Tue, 22 Dec 2020 09:58:23 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Drop unnecessary *-supply schemas properties
+Message-ID: <20201222095651.GD53991@dell>
+References: <20201221234659.824881-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-22_04:2020-12-21,2020-12-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 bulkscore=0 mlxlogscore=822 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012220073
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201221234659.824881-1-robh@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+On Mon, 21 Dec 2020, Rob Herring wrote:
 
-Some enums might have gaps or reserved values in the middle of their value
-range. E.g. consider a 2-bit enum where the values 0, 1 and 3 have a
-meaning, but 2 is a reserved value and can not be used.
+> *-supply properties are always a single phandle, so binding schemas
+> don't need a type $ref nor 'maxItems'.
+> 
+> A meta-schema check for this is pending once these existing cases are
+> fixed.
+> 
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/display/bridge/anx6345.yaml | 2 --
+>  .../devicetree/bindings/display/bridge/ite,it6505.yaml        | 2 --
+>  .../devicetree/bindings/display/bridge/lvds-codec.yaml        | 3 +--
+>  Documentation/devicetree/bindings/display/bridge/ps8640.yaml  | 2 --
+>  .../devicetree/bindings/display/bridge/simple-bridge.yaml     | 1 -
+>  .../bindings/display/bridge/thine,thc63lvd1024.yaml           | 1 -
+>  .../devicetree/bindings/display/bridge/toshiba,tc358775.yaml  | 2 --
+>  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml   | 4 +---
+>  .../devicetree/bindings/iio/humidity/ti,hdc2010.yaml          | 3 +--
+>  .../devicetree/bindings/input/fsl,mpr121-touchkey.yaml        | 3 +--
+>  .../devicetree/bindings/input/touchscreen/edt-ft5x06.yaml     | 3 +--
+>  .../devicetree/bindings/media/i2c/maxim,max9286.yaml          | 1 -
+>  Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml     | 3 ---
+>  Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml  | 3 ---
+>  Documentation/devicetree/bindings/media/i2c/sony,imx274.yaml  | 3 ---
+>  Documentation/devicetree/bindings/mfd/st,stmfx.yaml           | 3 +--
 
-Add support for such enums to the IIO enum helper functions. A reserved
-values is marked by setting its entry in the items array to NULL rather
-than the normal descriptive string value.
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/industrialio-core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+>  .../devicetree/bindings/regulator/anatop-regulator.yaml       | 1 -
+>  17 files changed, 6 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index e9ee9363fed0..5f6211bfb428 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -470,8 +470,11 @@ ssize_t iio_enum_available_read(struct iio_dev *indio_dev,
- 	if (!e->num_items)
- 		return 0;
- 
--	for (i = 0; i < e->num_items; ++i)
-+	for (i = 0; i < e->num_items; ++i) {
-+		if (!e->items[i])
-+			continue;
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%s ", e->items[i]);
-+	}
- 
- 	/* replace last space with a newline */
- 	buf[len - 1] = '\n';
-@@ -492,7 +495,7 @@ ssize_t iio_enum_read(struct iio_dev *indio_dev,
- 	i = e->get(indio_dev, chan);
- 	if (i < 0)
- 		return i;
--	else if (i >= e->num_items)
-+	else if (i >= e->num_items || !e->items[i])
- 		return -EINVAL;
- 
- 	return snprintf(buf, PAGE_SIZE, "%s\n", e->items[i]);
-@@ -509,7 +512,7 @@ ssize_t iio_enum_write(struct iio_dev *indio_dev,
- 	if (!e->set)
- 		return -EINVAL;
- 
--	ret = __sysfs_match_string(e->items, e->num_items, buf);
-+	ret = __sysfs_match_string_with_gaps(e->items, e->num_items, buf);
- 	if (ret < 0)
- 		return ret;
- 
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

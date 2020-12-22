@@ -2,78 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE9492E0DC1
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 18:15:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 216D52E0EC7
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 20:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727231AbgLVROt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Dec 2020 12:14:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39308 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727084AbgLVROt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Dec 2020 12:14:49 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7374023130;
-        Tue, 22 Dec 2020 17:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608657249;
-        bh=66GEWSPJvzklIeHSRZpHVnCFR+8HJC+nKGb813bV9hI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aWs69kfw6Bu8vPoRm2mstM8cN5qc21cRYPUxea3N6r6e7jMT1rC4QPXZFbG1nQTSj
-         80RmGS/kZR5s3vEUg57DgvdNXdHY9+qz0nXaIGOV/bCPh9jtUkfW0biDFkaPdjGO7C
-         CPckUBTitQeTJn+0KSAIlVZ8d9WMZWlg/xot+gMfIC6sBR8y3w3UbTv8DExf5ZXkd5
-         OsG4f0NxluCb1z9xA0rEcUYweusb35BWT4NrRInpBFXsYEbuoDIU5wAKkuZlNEhBQO
-         wXekjpo5AkOVBPVRe+kbLym/4TXTDNET7R50Pw4JZOVdanEu3kSVIqnLrdb/bmawxe
-         /qJfMLdp3TiMg==
-Date:   Tue, 22 Dec 2020 17:13:53 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop unnecessary *-supply schemas properties
-Message-ID: <20201222171353.GC5269@sirena.org.uk>
-References: <20201221234659.824881-1-robh@kernel.org>
+        id S1726556AbgLVTRf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Dec 2020 14:17:35 -0500
+Received: from www381.your-server.de ([78.46.137.84]:48162 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725994AbgLVTRf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 14:17:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=2nX1NBMok7jKryviJeJx3ToSK4VKI1dP9A2A4eKLMTQ=; b=Fkdo58SEkzqd4TdVlHPWYlMhfW
+        h7NIrwQ46xMde/ECQk5XXFvYRLV9dMgQojxhJY5PE9jZzTASYOgUtep0FcD5y/am5JfYcAUAgrZaL
+        O2rE+S36eU5kOwIJOragVifNtgRYP5vBgvDv3XhYfkY3X9K8+8VYRf9jJvmYZgr5VlEXYJlwH1eEl
+        7hJft/v3+1+0HBC9Ub16o/KjxY/7abiMqYGm24uv53DNKP7/8a7QMxcT6CDGurFJrCzdNQ35xrdGz
+        lsYgdxFELPr2s0/CBKrZIWzCuton7XMmQkZwU73bAfGBcAsWs3/KNgPomsDm/WMhCFETQ8Wm4JE5B
+        JBbKFfaQ==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1krn9Q-000GFW-Sz; Tue, 22 Dec 2020 20:16:52 +0100
+Received: from [62.216.202.54] (helo=lars-desktop.fritz.box)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1krn9Q-000OSz-NE; Tue, 22 Dec 2020 20:16:52 +0100
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] iio: sc27xx_adc: Use DIV_ROUND_CLOSEST() instead of open-coding it
+Date:   Tue, 22 Dec 2020 20:16:18 +0100
+Message-Id: <20201222191618.3433-1-lars@metafoo.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mvpLiMfbWzRoNl4x"
-Content-Disposition: inline
-In-Reply-To: <20201221234659.824881-1-robh@kernel.org>
-X-Cookie: Truth can wait
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26025/Tue Dec 22 13:51:35 2020)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Use DIV_ROUND_CLOSEST() instead of open-coding it. This makes it more clear
+what is going on for the casual reviewer.
 
---mvpLiMfbWzRoNl4x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Generated using the following the Coccinelle semantic patch.
 
-On Mon, Dec 21, 2020 at 04:46:59PM -0700, Rob Herring wrote:
-> *-supply properties are always a single phandle, so binding schemas
-> don't need a type $ref nor 'maxItems'.
+// <smpl>
+@@
+expression x, y;
+@@
+-((x) + ((y) / 2)) / (y)
++DIV_ROUND_CLOSEST(x, y)
+// </smpl>
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/iio/adc/sc27xx_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---mvpLiMfbWzRoNl4x
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+index aa32a1f385e2..301cf66de695 100644
+--- a/drivers/iio/adc/sc27xx_adc.c
++++ b/drivers/iio/adc/sc27xx_adc.c
+@@ -307,7 +307,7 @@ static int sc27xx_adc_convert_volt(struct sc27xx_adc_data *data, int channel,
+ 
+ 	sc27xx_adc_volt_ratio(data, channel, scale, &numerator, &denominator);
+ 
+-	return (volt * denominator + numerator / 2) / numerator;
++	return DIV_ROUND_CLOSEST(volt * denominator, numerator);
+ }
+ 
+ static int sc27xx_adc_read_processed(struct sc27xx_adc_data *data,
+-- 
+2.20.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/iKVAACgkQJNaLcl1U
-h9BQcwf+IyZrHbhUmoHb97rb0P395HOZ2TPnUA9AQrgEIQGiygf98JpHLjKBN7aJ
-VUR66urIU4NRzpPl8BA55GEgZvCF5U+n6S/vSUWJcHgMFMGgCZGwFzZnhoytB7TJ
-0qvxrT1+fasUg2ioSOGjpCnCDxVbQL0Wdyk6MkpVXLG7cOLJcCnm0Gvuw1Ph8MQV
-k6DuRiPuCOzSjYUnXeu/gsgkBUj78/WI3FBMa3CsNjytiYXIq26Za/m5U03be47y
-N/MGGcnNdxeIMx+TwUBgJNickvKltn6FLuKWzPgltB5d8D07JSupjWwC7Ybndx0b
-M+e04W6kW75K2MskhF6Ef1e4F3qMGg==
-=eF01
------END PGP SIGNATURE-----
-
---mvpLiMfbWzRoNl4x--

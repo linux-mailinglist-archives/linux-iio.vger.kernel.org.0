@@ -2,116 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2F12E0A48
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 14:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CF22E0AFE
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 14:43:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgLVNKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Dec 2020 08:10:02 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:64448 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726683AbgLVNKC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 08:10:02 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BMD6xrq018185;
-        Tue, 22 Dec 2020 08:09:08 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35k0e12c43-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Dec 2020 08:09:08 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0BMD97TT058541
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Dec 2020 08:09:07 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
- Tue, 22 Dec 2020 08:09:06 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2;
- Tue, 22 Dec 2020 08:09:05 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
- Tue, 22 Dec 2020 08:09:05 -0500
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0BMD90Lw009831;
-        Tue, 22 Dec 2020 08:09:03 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <akpm@linux-foundation.org>,
-        <gregkh@linuxfoundation.org>, <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v6 2/2] iio: Handle enumerated properties with gaps
-Date:   Tue, 22 Dec 2020 15:13:12 +0200
-Message-ID: <20201222131312.64957-2-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201222131312.64957-1-alexandru.ardelean@analog.com>
-References: <20201222131312.64957-1-alexandru.ardelean@analog.com>
+        id S1726873AbgLVNmp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Dec 2020 08:42:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726557AbgLVNmo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 08:42:44 -0500
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10F5C0613D3;
+        Tue, 22 Dec 2020 05:42:04 -0800 (PST)
+Received: by mail-pg1-x52d.google.com with SMTP id n25so2869271pgb.0;
+        Tue, 22 Dec 2020 05:42:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DKstfCrObaRIVnqNYrHwR48s9bbWISBjfF34z/wJe/E=;
+        b=oCBl7iB7PMfcwhhQw64sG0dJ6RT8pDv0C6PS50UNZMli/J5vz8kXBoaB75lrFuBzBp
+         tlg7Le/pB2rD+9WTcUXtf7IaFiJTeaERbM8wwywdzky2HJQRl84Zvvr71KpT5Gq+3WM4
+         b04nyYeacZvAoWVnXCUxKg+/V/HrE/usT5NzTEzx8SMVmAYL1IAlYRGNtIHD8EcvEBgK
+         HELLecUMqnWpzDWXLP6xnF4sKM1cUaLFfj4EWi8P9GMtX6PZVsFb8j45HSupcmYI1zhG
+         pS7JnTYltmjyDmRA8c15lY6zaLiiy1KuqpoQGRc6HNsk8kavPFGAuS8V80chNswu8JYR
+         QCDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DKstfCrObaRIVnqNYrHwR48s9bbWISBjfF34z/wJe/E=;
+        b=U43twcgQ4E4vNtggHL5HcTJVbj3niVdUo48rbzI2l3qG4+ARl/SnV9mz+V7xaBYW0z
+         7n2EpDLlx5Ga7AantmIjb8g6DqXxVb9d+tMmvDRbst5s0Y8KVvr8622pZBQ62ghqYGxb
+         72hyJ3g3Tm8J4X4zhtsV0a1C8vFws56BuJdA1fTCxYbQj5lfFkHrMygVaYY5eflJHV8n
+         4GIqCheKMVnLl9o5KukUtB1eas+HG4rlEl9r4HhIGUyFQoAtcTEAUrW7AjVO6yIvhbWd
+         CMo8m6mjC+VW2PHAekO38BtZK+nqch3CrEhsSGgfgZiGaJLnvqhpzt72A7t+10xe1b97
+         187Q==
+X-Gm-Message-State: AOAM531KFYV1nQrPnHtfVxkwyCoSAo2EOi5CIRI+Gvmq4cOSXS+x4jeP
+        Rh+geYQsTZzi3v6OFOK1ZFRg1iqLgGlLeTe/Nn8=
+X-Google-Smtp-Source: ABdhPJzpY3/aKsMoLdWp7h3b2adg/iZaJX9Avp3qIUV0USJTNTDkvMwSKaZTSqcs9UTPxQuG554ia4SkNDbTtlQs0Fs=
+X-Received: by 2002:a63:74b:: with SMTP id 72mr19918744pgh.4.1608644524210;
+ Tue, 22 Dec 2020 05:42:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-22_06:2020-12-21,2020-12-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 bulkscore=0 mlxlogscore=821 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012220096
+References: <20201222131312.64957-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20201222131312.64957-1-alexandru.ardelean@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 22 Dec 2020 15:42:52 +0200
+Message-ID: <CAHp75Ve06gYFE+U_XNZfTFceMEzmADR6wd0OYr+tVMQ6hW3MLQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] lib/string.c: add __sysfs_match_string_with_gaps() helper
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+On Tue, Dec 22, 2020 at 3:09 PM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
+>
+> The original docstring of the __sysfs_match_string() and match_string()
+> helper, implied that -1 could be used to search through NULL terminated
+> arrays, and positive 'n' could be used to go through arrays that may have
+> NULL elements in the middle of the array.
+>
+> This isn't true. Regardless of the value of 'n', the first NULL element in
+> the array will stop the search, even if the element may be after a NULL
+> element.
+>
+> To allow for a behavior where we can use the __sysfs_match_string() to
+> search over arrays with NULL elements in the middle, the
+> __sysfs_match_string_with_gaps() helper is added.
+> If n > 0, the search will continue until the element is found or n is
+> reached.
+> If n < 0, the search will continue until the element is found or a NULL
+> character is found.
 
-Some enums might have gaps or reserved values in the middle of their value
-range. E.g. consider a 2-bit enum where the values 0, 1 and 3 have a
-meaning, but 2 is a reserved value and can not be used.
+I'm wondering if we can leave __sysfs_match_string() alone (w/o adding
+unnecessary branch).
 
-Add support for such enums to the IIO enum helper functions. A reserved
-values is marked by setting its entry in the items array to NULL rather
-than the normal descriptive string value.
+int __sysfs_match_string_with_gaps(const char * const *array, size_t
+n, const char *str)
+{
+       const char *item;
+       int index;
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/industrialio-core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+       for (index = 0; index < n; index++) {
+               item = array[index];
+               if (!item)
+                       continue;
+               if (sysfs_streq(item, str))
+                       return index;
+       }
+       return -EINVAL;
+}
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index e9ee9363fed0..5f6211bfb428 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -470,8 +470,11 @@ ssize_t iio_enum_available_read(struct iio_dev *indio_dev,
- 	if (!e->num_items)
- 		return 0;
- 
--	for (i = 0; i < e->num_items; ++i)
-+	for (i = 0; i < e->num_items; ++i) {
-+		if (!e->items[i])
-+			continue;
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%s ", e->items[i]);
-+	}
- 
- 	/* replace last space with a newline */
- 	buf[len - 1] = '\n';
-@@ -492,7 +495,7 @@ ssize_t iio_enum_read(struct iio_dev *indio_dev,
- 	i = e->get(indio_dev, chan);
- 	if (i < 0)
- 		return i;
--	else if (i >= e->num_items)
-+	else if (i >= e->num_items || !e->items[i])
- 		return -EINVAL;
- 
- 	return snprintf(buf, PAGE_SIZE, "%s\n", e->items[i]);
-@@ -509,7 +512,7 @@ ssize_t iio_enum_write(struct iio_dev *indio_dev,
- 	if (!e->set)
- 		return -EINVAL;
- 
--	ret = __sysfs_match_string(e->items, e->num_items, buf);
-+	ret = __sysfs_match_string_with_gaps(e->items, e->num_items, buf);
- 	if (ret < 0)
- 		return ret;
- 
+Note, the check n>0 seems redundant for this particular function.
+
+> +static int __sysfs_match_string_common(const char * const *array, ssize_t n,
+> +                                      const char *str, bool gaps)
+> +{
+> +       const char *item;
+> +       int index;
+> +
+> +       for (index = 0; index < n; index++) {
+> +               item = array[index];
+> +               if (!item) {
+> +                       if (gaps && n > 0)
+> +                               continue;
+> +                       break;
+> +               }
+> +               if (sysfs_streq(item, str))
+> +                       return index;
+> +       }
+> +
+> +       return -EINVAL;
+> +}
+> +
+>  /**
+>   * __sysfs_match_string - matches given string in an array
+>   * @array: array of strings
+> @@ -770,21 +790,32 @@ EXPORT_SYMBOL(match_string);
+>   */
+>  int __sysfs_match_string(const char * const *array, size_t n, const char *str)
+>  {
+> -       const char *item;
+> -       int index;
+> -
+> -       for (index = 0; index < n; index++) {
+> -               item = array[index];
+> -               if (!item)
+> -                       break;
+> -               if (sysfs_streq(item, str))
+> -                       return index;
+> -       }
+> -
+> -       return -EINVAL;
+> +       return __sysfs_match_string_common(array, n, str, false);
+>  }
+
 -- 
-2.17.1
-
+With Best Regards,
+Andy Shevchenko

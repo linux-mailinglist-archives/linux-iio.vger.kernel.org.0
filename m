@@ -2,123 +2,201 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A50062E0878
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 11:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB782E0904
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Dec 2020 11:55:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725999AbgLVKAU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Dec 2020 05:00:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726108AbgLVKAP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 05:00:15 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A4FC0617A6
-        for <linux-iio@vger.kernel.org>; Tue, 22 Dec 2020 01:59:34 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id q75so1585512wme.2
-        for <linux-iio@vger.kernel.org>; Tue, 22 Dec 2020 01:59:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=1uWQ1lsamrDj670psBGhqmITnRdEWIGipMAwVhvN0IQ=;
-        b=nzzFQvbCE9iM4gRr0OHBQhW95iPZnUHGIevbHh6G8/1DaGIs5orfQtZMKTjTyY2zjJ
-         pltvHVHec5UsnNGgJJfthUftOsewWy8YhxnXYppOWmN7Y3UqFISq3+f0ocm6pWy6s+ao
-         uaRBF2vgyNBikZ7ShJgESCzRRRySZbSAjnMwIBBn8PSrZQ33zLQZUN9iSC4x/lmTq981
-         FJ2Ly2VqTgTlLk7P1ecU0mMa6SWh/a/ZrKv1GDXYGD51DpKiA1XsULU+2oq9wzAV5jgw
-         +k0KhDI7UdHfo056NDutP99ttFQbtHZfAKQ81sHnq9JXVyK6fylkzXtS8AJ7ez5tMlJX
-         s4xA==
+        id S1726452AbgLVKzi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Dec 2020 05:55:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32604 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726108AbgLVKzi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Dec 2020 05:55:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1608634451;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/IEfXU6bCrQ3sMal0t1ThDjcroCrSJSjVmznq5sFKX8=;
+        b=a6JzpKWU36JZ30C619VkjTIxvmuIAF/le/78Rv7Wk+K0PVOOrHfr5eRDQVbvtwr7xoUU47
+        TMTs4z4qtbWlLl7wFjzh1Or9iXp14KAlnNCOScC/P4hyNNjXneYkV0+lN8dtjnkJLEoMF2
+        TFz+v2+O1OVagkinUg7EkLh8LufNTEc=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-497-6jogMdARMR-nZS04L2JLeg-1; Tue, 22 Dec 2020 05:54:08 -0500
+X-MC-Unique: 6jogMdARMR-nZS04L2JLeg-1
+Received: by mail-yb1-f200.google.com with SMTP id m203so17384362ybf.1
+        for <linux-iio@vger.kernel.org>; Tue, 22 Dec 2020 02:54:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=1uWQ1lsamrDj670psBGhqmITnRdEWIGipMAwVhvN0IQ=;
-        b=CJ0l/h4oSrumIr9MbQ/PbZ8NEA7E4FLcHEY+Yn9r7LZC3fu3CHu2Sqqyue1XYU3WGY
-         zrfAV03r6FQH82DIDhyM+w0bHKLvTFB3fM/r41mDRwmo88XpQ8TsrZLNifeLQzWwp3lW
-         JlAIg5ng2R0jBCtUbgfo1up73/6yDtHnpLu0UDTxVKMCo1AWx1T7YZwzwO8qyfDLfM1h
-         XAfYm7E0rIb2NAMWo8vdVDjs4V5pqtZ5egGc80DpoDYO2RBDbZE/+gfzI7va5q5Judko
-         YAWpopDl+rPYEeB7M9V/yTEJ30wW0i2kvK6K+hCxutNG99FsYDzY8AbnaGPqM52s+udL
-         570Q==
-X-Gm-Message-State: AOAM531eMOEgj23p03U6nBkMM2mSCaZCrChxzgwY9/ieF2FVfmKI/T1N
-        asDcDmh3azleTuEkbPaOZ9Lm7A==
-X-Google-Smtp-Source: ABdhPJyryip6dXlJcoBpock1PWleQBmbQZcocbzF4ei8MZdMG4Bgcp5A9SM4uCOXJeAM5U9qRO3loQ==
-X-Received: by 2002:a1c:1d1:: with SMTP id 200mr21458882wmb.98.1608631173322;
-        Tue, 22 Dec 2020 01:59:33 -0800 (PST)
-Received: from dell ([91.110.221.175])
-        by smtp.gmail.com with ESMTPSA id a65sm26056927wmc.35.2020.12.22.01.58.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Dec 2020 01:59:32 -0800 (PST)
-Date:   Tue, 22 Dec 2020 09:58:23 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop unnecessary *-supply schemas properties
-Message-ID: <20201222095651.GD53991@dell>
-References: <20201221234659.824881-1-robh@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/IEfXU6bCrQ3sMal0t1ThDjcroCrSJSjVmznq5sFKX8=;
+        b=FY5gkFFJzXA/F3thliObV5gvOJS/nNAk1ip5qzc+cyldoKDGjX1rC/McEI0qklRoyZ
+         ErAMEhUQko3+NkecfrqiA9MB/ArWiIi2JFBYic51YjS6EQNi0VU0stzJ9LqqaF/OB/JY
+         ysXYQOaWyCu3us7RyVXEx4sliy+aU2SwnwvwJ+HeIc+fsRF9hNagR8jsHemkKrScPiM1
+         gABQT483oTcxvRAsvKyXVmv8vNunWunHSXRk2+umCrpA7tN8bIu6nrTQbodWgN4NS+Rx
+         4m8jPVhaAeP/L4dNZTPsTaxRDkCiQUClPOrZaq4SGp/fxC4btnY6tb82pIEzR0DtG+Zs
+         SQOQ==
+X-Gm-Message-State: AOAM531iv8VQEBac+e4PQ9MmTIFY4gu+L31ygehmETJ4D2sXhVWDxmwh
+        AVR1vl+hmcEKh6dSrJY63CjTMK+BtPsSmCQ+cYwPipLV8mHN2TpraM0+/ztyw+LQp6y6bfCEhwG
+        kuIn5INJREBh9bhet4kcquJ+vFdBwtTv2SUES
+X-Received: by 2002:a25:9c83:: with SMTP id y3mr26012386ybo.307.1608634448185;
+        Tue, 22 Dec 2020 02:54:08 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxzamkZL021j0uWW0iTKqFq84zjtAqITxw7D8q6X+kN9xol8t40LgFhq3LGdAfC7C/NxMtt7qQHgnulNHH7eRU=
+X-Received: by 2002:a25:9c83:: with SMTP id y3mr26012362ybo.307.1608634447920;
+ Tue, 22 Dec 2020 02:54:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201221234659.824881-1-robh@kernel.org>
+References: <c9ec69ed349e7200c779fd7a5bf04c1aaa2817aa.1607438132.git.lorenzo@kernel.org>
+ <20201213150447.119eec7c@archlinux> <CAJ0CqmXmFvEEnt_fQa+H9Lrsu9d-kj+zTWgVXakBF8z2KqEQYA@mail.gmail.com>
+In-Reply-To: <CAJ0CqmXmFvEEnt_fQa+H9Lrsu9d-kj+zTWgVXakBF8z2KqEQYA@mail.gmail.com>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Tue, 22 Dec 2020 11:53:57 +0100
+Message-ID: <CAJ0CqmVJ9qMpLq-ZSVBFzQXSj3MNqeP5b4MjMpZh0b2H7mjXzg@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: common: st_sensors: fix possible infinite loop in st_sensors_irq_thread
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Denis CIOCCA <denis.ciocca@st.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Dec 2020, Rob Herring wrote:
+>
+> >
+> > On Tue,  8 Dec 2020 15:36:40 +0100
+> > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> >
+> > > Return a boolean value in st_sensors_new_samples_available routine in
+> > > order to avoid an infinite loop in st_sensors_irq_thread if
+> > > stat_drdy.addr is not defined or stat_drdy read fails
+> > >
+> > > Fixes: 90efe05562921 ("iio: st_sensors: harden interrupt handling")
+> > > Reported-by: Jonathan Cameron <jic23@kernel.org>
+> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> >
+> > One trivial inline. Note I'm looking for an Ack form Dennis on this one
+> > as it may result in a some breakage if any devices are using
+> > edge interrupts.
+>
+> Looking at the current code I am wondering if it is possible since we
+> would have already triggered the infinite loop in this case. I think
+> nobody is currently using edge interrupts if the status register is
+> not available. What do you think?
+>
 
-> *-supply properties are always a single phandle, so binding schemas
-> don't need a type $ref nor 'maxItems'.
-> 
-> A meta-schema check for this is pending once these existing cases are
-> fixed.
-> 
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/display/bridge/anx6345.yaml | 2 --
->  .../devicetree/bindings/display/bridge/ite,it6505.yaml        | 2 --
->  .../devicetree/bindings/display/bridge/lvds-codec.yaml        | 3 +--
->  Documentation/devicetree/bindings/display/bridge/ps8640.yaml  | 2 --
->  .../devicetree/bindings/display/bridge/simple-bridge.yaml     | 1 -
->  .../bindings/display/bridge/thine,thc63lvd1024.yaml           | 1 -
->  .../devicetree/bindings/display/bridge/toshiba,tc358775.yaml  | 2 --
->  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml   | 4 +---
->  .../devicetree/bindings/iio/humidity/ti,hdc2010.yaml          | 3 +--
->  .../devicetree/bindings/input/fsl,mpr121-touchkey.yaml        | 3 +--
->  .../devicetree/bindings/input/touchscreen/edt-ft5x06.yaml     | 3 +--
->  .../devicetree/bindings/media/i2c/maxim,max9286.yaml          | 1 -
->  Documentation/devicetree/bindings/media/i2c/mipi-ccs.yaml     | 3 ---
->  Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml  | 3 ---
->  Documentation/devicetree/bindings/media/i2c/sony,imx274.yaml  | 3 ---
->  Documentation/devicetree/bindings/mfd/st,stmfx.yaml           | 3 +--
+Hi Jonathan,
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+any news about this patch?
 
->  .../devicetree/bindings/regulator/anatop-regulator.yaml       | 1 -
->  17 files changed, 6 insertions(+), 34 deletions(-)
+Regards,
+Lorenzo
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> Regards,
+> Lorenzo
+>
+> >
+> > It's possible we would be better falling back to interrupt free support
+> > in that case rather than failing to probe at all.
+> > I think that would be best done by moving the check out to the
+> > various per type drivers so we fail in the same fashion as no irq
+> > provided + a warning.
+>
+>
+> >
+> > thanks,
+> >
+> > Jonathan
+> >
+> >
+> > > ---
+> > > Changes since v2:
+> > > - return -EOPNOTSUPP if the drv requests edge IRQ and the sensor does not support
+> > >   status register
+> > >
+> > > Changes since v1:
+> > > - return true if the sensor does not have stat_drdy register
+> > > ---
+> > >  .../common/st_sensors/st_sensors_trigger.c    | 31 ++++++++++---------
+> > >  1 file changed, 17 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > index 0507283bd4c1..2dbd2646e44e 100644
+> > > --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > @@ -23,35 +23,31 @@
+> > >   * @sdata: Sensor data.
+> > >   *
+> > >   * returns:
+> > > - * 0 - no new samples available
+> > > - * 1 - new samples available
+> > > - * negative - error or unknown
+> > > + * false - no new samples available or read error
+> > > + * true - new samples available
+> > >   */
+> > > -static int st_sensors_new_samples_available(struct iio_dev *indio_dev,
+> > > -                                         struct st_sensor_data *sdata)
+> > > +static bool st_sensors_new_samples_available(struct iio_dev *indio_dev,
+> > > +                                          struct st_sensor_data *sdata)
+> > >  {
+> > >       int ret, status;
+> > >
+> > >       /* How would I know if I can't check it? */
+> > >       if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
+> > > -             return -EINVAL;
+> > > +             return true;
+> > >
+> > >       /* No scan mask, no interrupt */
+> > >       if (!indio_dev->active_scan_mask)
+> > > -             return 0;
+> > > +             return false;
+> > >
+> > >       ret = regmap_read(sdata->regmap,
+> > >                         sdata->sensor_settings->drdy_irq.stat_drdy.addr,
+> > >                         &status);
+> > >       if (ret < 0) {
+> > >               dev_err(sdata->dev, "error checking samples available\n");
+> > > -             return ret;
+> > > +             return false;
+> > >       }
+> > >
+> > > -     if (status & sdata->sensor_settings->drdy_irq.stat_drdy.mask)
+> > > -             return 1;
+> > > -
+> > > -     return 0;
+> > > +     return !!(status & sdata->sensor_settings->drdy_irq.stat_drdy.mask);
+> >
+> > No need for the !! as you can rely on type conversion to a boolean.
+> >
+> > >  }
+> > >
+> > >  /**
+> > > @@ -180,9 +176,15 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+> > >
+> > >       /* Tell the interrupt handler that we're dealing with edges */
+> > >       if (irq_trig == IRQF_TRIGGER_FALLING ||
+> > > -         irq_trig == IRQF_TRIGGER_RISING)
+> > > +         irq_trig == IRQF_TRIGGER_RISING) {
+> > > +             if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
+> > > +                     dev_err(&indio_dev->dev,
+> > > +                             "edge IRQ not supported w/o stat register.\n");
+> > > +                     err = -EOPNOTSUPP;
+> > > +                     goto iio_trigger_free;
+> > > +             }
+> > >               sdata->edge_irq = true;
+> > > -     else
+> > > +     } else {
+> > >               /*
+> > >                * If we're not using edges (i.e. level interrupts) we
+> > >                * just mask off the IRQ, handle one interrupt, then
+> > > @@ -190,6 +192,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+> > >                * interrupt handler top half again and start over.
+> > >                */
+> > >               irq_trig |= IRQF_ONESHOT;
+> > > +     }
+> > >
+> > >       /*
+> > >        * If the interrupt pin is Open Drain, by definition this
+> >
+

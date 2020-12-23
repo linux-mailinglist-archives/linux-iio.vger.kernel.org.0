@@ -2,163 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FBD2E2239
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Dec 2020 22:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3EEE2E2279
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Dec 2020 23:40:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725967AbgLWVnM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Dec 2020 16:43:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbgLWVnM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Dec 2020 16:43:12 -0500
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBB3C061794;
-        Wed, 23 Dec 2020 13:42:31 -0800 (PST)
-Received: by mail-ot1-x334.google.com with SMTP id j20so314681otq.5;
-        Wed, 23 Dec 2020 13:42:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VmrWLe4I4zuTOgIyNJuVjkGWRkDBtXR16ouccbG+D18=;
-        b=Hq/SwR6LFIkvuXGbd1to5P+I/xPkuOA4CkggPjxoozQPm+SC/3SEG9BsiovEctHy5Z
-         qAUdGg/P7UQzeRSkWmTSpLKRPohFDak3XMT3+6aoFjtSyFr80kQxLuOBfYPqsLsah0+z
-         uI0ElJOi3/Arpi3jpOGvnV+8uSbVOwusc1CMVSiUfawz06mZKG2m6eUWUDNJbGTQCFG2
-         l4Q7lu2qp77v36Y2ouYAT0mFbuzi9/wqYxvg5NSDa9ITQVMTIEolKR/ImGaBF1b5ilXj
-         +g14+O6NPHRwl4PvlNDis6Iis2zNcCyD2S4xC8D9L9mg68nAJpcw7fbMWWXoWWjJW9zI
-         VbAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=VmrWLe4I4zuTOgIyNJuVjkGWRkDBtXR16ouccbG+D18=;
-        b=DPaHVnHkSq6f6bz0c+6VDWeVfxtUwhUv8wOGCGo7+qR64ukvknY6Cw0AdxOr7c+tfg
-         UXH2lutFNW2t1GsyCMQqmh+fNaAu2axqX2BK7vjOhC+daf+xbFmvO3xYpgGi9NKRrqsH
-         qZlaBqIXWxaE050KkLcyfPRZd5u0sB0w8gDHaX20mF/3sIPjDRg3WNabTerTvnEiaRqN
-         OHVFBhohyQUSxAopu1pm2fMbpAIL14FmEfJeH04RJWXe0U5sQrsYfBaeXQsIjdR4KKkS
-         Hg0no6TAegxEwtYXFsd5XCPEYMpSs1CZohmNbZ+s1Gj37AaUR1uzjw8upjhmZ9uOZFxW
-         jpYQ==
-X-Gm-Message-State: AOAM531It2OLsrtQ0n+XRx7zzeCtn/W46vAcqFFHISnwxNS3JBri7z8I
-        Tj0cvWBc2PNLrzH9P1Ttrp2S4SENsx8=
-X-Google-Smtp-Source: ABdhPJxN4hoLbZZLl1Sqvblt3jGAsevFLmV2swOxk5s3dAjiQVD7g0CdJUoe2WUgh/sN8SBnWcpgjg==
-X-Received: by 2002:a05:6830:20d5:: with SMTP id z21mr20640036otq.310.1608759750742;
-        Wed, 23 Dec 2020 13:42:30 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id o49sm5925007ota.51.2020.12.23.13.42.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Dec 2020 13:42:30 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
+        id S1726839AbgLWWkH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Dec 2020 17:40:07 -0500
+Received: from mail-mw2nam12on2111.outbound.protection.outlook.com ([40.107.244.111]:31201
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725811AbgLWWkH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 23 Dec 2020 17:40:07 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=klN5VjuG2+ILnwyUNx/WYjzhQh18CNZOm1zTlMiqr6QLeRNePbLn9bVa4srx06yndOiEnGZgHxAAtyi+wr3eV3rXym6+rKc5NbMSjsh80yaBMpwX0Lq3gJ3bRObnBCvMfJENBJIVICetedxeJKHx7m53AYh+sFjjqAD1fUCUUvkaqPFQhgsn6LM0RyTmPzxLt2DnkRYLLPIhIWruuACT3OVDCfVbb8uq3gePWlde0VV5VDK/gin9iSLdooMkQ+HAsXBLyC4W5ACs1lhvWZp2Ju1ZZyznlnoP6dZMBxjpZcAcxI35Jf5CU5tad12y7roYgt4KemhDoseoBWBTOdb8uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fwsI52sbyULxJXj44fKvb8/C/Kcfbjl8E1UXo8NtnlQ=;
+ b=QrAI1Je94/uiXhmWRLBDSaOopmUlUBZjoDXRcqgujoIOKYVgtPaI2qmNjto0h6yG5ZQuoongAIsE9z36Z2jF9Yx1ozs+T/vuw/5THNT2hdlgsZ7M/jD6MjJK5HSlIzuo3kRtgsTKBnSztfMBb/qA/LkPl71JUC6JDQVzD1mZfyGtyRA2jhWZVnY0eI5poXiuyyEWsW7roCDARMGRyCUCFkMY2gKTMGlNnt6cumoOs0m9U7QjbIh2tVYOFml0TyAvTsYA6pytTDIfWejNryS8m92NP/hLPVvGi5ONhfi0Aj+PDiAO8bqwyvLhBLHOTHWTVzdok4K73L4Lqv0AhzsWjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=licor.com; dmarc=pass action=none header.from=licor.com;
+ dkim=pass header.d=licor.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=licor.onmicrosoft.com;
+ s=selector2-licor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fwsI52sbyULxJXj44fKvb8/C/Kcfbjl8E1UXo8NtnlQ=;
+ b=RrvRw9votuNhRYKL6iaeqMnoYdSVKBW2FYNbMSpid3zBxbShfPKUZXXn5hvqMUf2ECGTISSO0cd9BJj8cPRwlTMLqbvWY9zhfxq3RkRPtAF5yrjcxAfx4scIOMHToVt5+geos750WvPeH4o1tfad/LnDrvD+KyXlBt7z2qoVOYs=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=licor.com;
+Received: from SN6PR08MB5565.namprd08.prod.outlook.com (2603:10b6:805:100::20)
+ by SA2PR08MB6586.namprd08.prod.outlook.com (2603:10b6:806:f9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3676.25; Wed, 23 Dec
+ 2020 22:39:14 +0000
+Received: from SN6PR08MB5565.namprd08.prod.outlook.com
+ ([fe80::d10:7b1a:5c08:a041]) by SN6PR08MB5565.namprd08.prod.outlook.com
+ ([fe80::d10:7b1a:5c08:a041%6]) with mapi id 15.20.3676.033; Wed, 23 Dec 2020
+ 22:39:14 +0000
 Subject: Re: [PATCH] hwmon: (ntc_thermistor): try reading processed
-To:     Linus Walleij <linus.walleij@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Guenter Roeck <linux@roeck-us.net>
 Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
         Peter Rosin <peda@axentia.se>,
-        Chris Lesiak <chris.lesiak@licor.com>,
         Jonathan Cameron <jic23@cam.ac.uk>,
         linux-iio <linux-iio@vger.kernel.org>
 References: <20201219224143.686074-1-linus.walleij@linaro.org>
  <6d339a6c-6f8c-4a5e-718b-c90a9fbb8c01@roeck-us.net>
  <CACRpkdZTVAoDbbJqTJbxv1ZDyAMsB_h9TAdKKbxqBYGp4-b_jg@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <d990e08f-6f18-836d-89a5-01102a4faa45@roeck-us.net>
-Date:   Wed, 23 Dec 2020 13:42:28 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
+From:   Chris Lesiak <chris.lesiak@licor.com>
+Message-ID: <16895f93-d717-9213-9ed2-21531673d41b@licor.com>
+Date:   Wed, 23 Dec 2020 16:39:12 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 In-Reply-To: <CACRpkdZTVAoDbbJqTJbxv1ZDyAMsB_h9TAdKKbxqBYGp4-b_jg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-Originating-IP: [2607:da00:300:7::2]
+X-ClientProxiedBy: CH2PR18CA0004.namprd18.prod.outlook.com
+ (2603:10b6:610:4f::14) To SN6PR08MB5565.namprd08.prod.outlook.com
+ (2603:10b6:805:100::20)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from bee.licor.com (2607:da00:300:7::2) by CH2PR18CA0004.namprd18.prod.outlook.com (2603:10b6:610:4f::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3700.27 via Frontend Transport; Wed, 23 Dec 2020 22:39:13 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 722c295f-3d19-4e57-44ba-08d8a793932f
+X-MS-TrafficTypeDiagnostic: SA2PR08MB6586:
+X-Microsoft-Antispam-PRVS: <SA2PR08MB65867226E194CF99113B52EA9ADE0@SA2PR08MB6586.namprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6e/syNmSPrtNTfR1KEFQXKKvRHZJtu7sMm34FISmYX9F+DY0BLBsYIjLuyv4bFrA6HF9+4krMX5hnjh01EuPOWT1awx4/6U4uN2wloR1IhGPV+eN7QG+N2upH+MKVkaFXiWEYsylgyn4W3xxV7rO1xZBjxNBkYDUQ1rrAFHEfqY2G7yaNMTMCSWn5dNY7iVia0GjgXbMc3B+QQKwCUV9W6AUdVmV4Rw0jvJ8jfvm4FCjGCLbVCztzoViGTYeTU8yUqTsZ09nd4W5HwwMAo5fK/EHSUisMKG0Vw5Ju8vgMLAtm70w/LC0kZ03QL3b7hnvCIiyXGhRj982W5f26/iZqu7qAy4F0oZz2/cDCHWL75ChHEVe/bCh4rp/ggoQSpQoYk/YmfHw0k/N87xq1UKfG38nouJb/EMQRktl9vhLmS3PAjKSK+P4mi7YdqT+p/k04qjFQOkPJMnISuacZFbUxfcLyIZv1KUoJ6iI+RYiw0Q=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR08MB5565.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(376002)(396003)(366004)(39850400004)(36756003)(110136005)(6486002)(8676002)(186003)(16526019)(31686004)(2906002)(31696002)(86362001)(8936002)(4326008)(66476007)(53546011)(7696005)(52116002)(5660300002)(66556008)(44832011)(316002)(66946007)(54906003)(2616005)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?V04vL2dmQ0RFNUt2YllZcmFuZThRRmZMelZsNWJJK09tdUVpYzZOY0NuV01y?=
+ =?utf-8?B?cm81VlZ3NHM3VnpuOG5YODZzd0tYUnIxR2ZXOXZBZkR6eU5HckUvSzhjRStN?=
+ =?utf-8?B?VEl0blVzdWdpM1lBdmdaODhnWjd4Rld4Z0NnODR5d0hPNldCWU9xOFVUbEFr?=
+ =?utf-8?B?a1owVkdIdVZLY3BEZlNHWlNXNkV4cVNNbG5UcUhHWUJXR2MwWnlSY2lYaGwz?=
+ =?utf-8?B?eEdmM0xxL1N0bkZkRXRpNDVZT1c4TU0zUVBobGlBQjdpZUt4bFFXZFg2SXUy?=
+ =?utf-8?B?dk5SRmQ0SUVjWG5zVERQMTJRcUJveVluVk5UYjJHL0lyQThEcm55UjNqK2Vi?=
+ =?utf-8?B?VkZXVTQ4TE42VGI0VlZ2WWFiRWxxMGYvRzQ0M3ppVnJCek1yZjk2TFlIcWlv?=
+ =?utf-8?B?eEJrMkJJL0lNV0hmY0JYQVZBNUdUa0VpWEt4S0J6TVlGUTZwV0M4L3RTTDJZ?=
+ =?utf-8?B?TUhUWjhRVjdIOEV0UUdlcExCNzB6bnJ0VWEwMy9FZGRXS3RYTkNsMS9hS1Ji?=
+ =?utf-8?B?eW83TzljVjNQbU00NG1DZHplYVd2TTRrZTBtZitLVDM4cUpkQTFnZ09ZeTk1?=
+ =?utf-8?B?QnFIWkl6Z1NDTUZhNk10WFBYUmZxa3c3OWNDZGcvL2FEMzVNUVh6MnlSRTNv?=
+ =?utf-8?B?bVJRQXBoTVdhNU1laC9rN3VUSFNkaENoUlpRRkh1a3ZoUUZCN1B3bDl2cGc4?=
+ =?utf-8?B?Z3J4S3F4SmVOYWsxOExPZEpXK1FFYjVpdmJ1bVhsWDZGNHZ6VS9uVU8vU2pX?=
+ =?utf-8?B?VUdmUDl2emI4cjV3V1FWRmpvUmpZM0pBMUVyOWF1MFhDcDhhWmxoVDkxR3RU?=
+ =?utf-8?B?dUt4eFhpajRlVm9XRHJMNGl6NWpFNEk5d1h2UzRJRUxKYnZmMmQwYnU4MkFM?=
+ =?utf-8?B?ZWxhOEEycEVvVUhTVHk0L0xHdWFaMWZhbWlRN1E4M3NXNHczcytYcGJqcFN5?=
+ =?utf-8?B?aXhRL29WajZEdUk5OHdVZnVqc24xdzdRMXhDWEVFWjR3RUhBb3FVbUZiMjMz?=
+ =?utf-8?B?VkdLZnE5dTd3bmpqV2ZJdm5yeGpGUUpQVHF2Y08zZWM2NENPRElBeG1VYkd1?=
+ =?utf-8?B?UFR0eTJjaU1GOTMya1R6UXBQcHBTdTVOOFBCT253ZTBYdU4zTWVQNEY2bkVK?=
+ =?utf-8?B?UVhsU0hNUWtQb28rRzdEQ2VsZ1lHU2hvVGU0dHgySXlWdG5sVTkrdUgwY2Ra?=
+ =?utf-8?B?UDl2ZGVjVHBzNU9FQml6V2twU1UxbWVTcHUwblBBMTRmck5zVGUyalk2V3Vh?=
+ =?utf-8?B?WnE1VnAwV0t1VkxBakpRWWtSbHNQSjVSQVlCRm5VK2xlZkZqT25sYk9aWE9r?=
+ =?utf-8?Q?7Q3tg0djgThQxdkYEgBbRZGft5x2t3MTXn?=
+X-OriginatorOrg: licor.com
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR08MB5565.namprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2020 22:39:14.3485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 48c70abd-da5a-4c6c-86cb-5e003ca01574
+X-MS-Exchange-CrossTenant-Network-Message-Id: 722c295f-3d19-4e57-44ba-08d8a793932f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: o+z9WlNcVBDikD1pcw1ySwLwFRv8qdct3g/t3zUX2OIkpgS7K35ZPIygv28tco5YI16No5p7e3UsuKUkzenjeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR08MB6586
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/23/20 1:08 PM, Linus Walleij wrote:
-> On Mon, Dec 21, 2020 at 5:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> 
->>> -     ret = iio_convert_raw_to_processed(channel, raw, &uv, 1000);
->>> -     if (ret < 0) {
->>> -             /* Assume 12 bit ADC with vref at pullup_uv */
->>> -             uv = (pdata->pullup_uv * (s64)raw) >> 12;
->>> +             /*
->>> +              * FIXME: This fallback to using a raw read and then right
->>> +              * out assume the ADC is 12 bits and hard-coding scale
->>> +              * to 1000 seems a bit dangerous. Should it simply be
->>> +              * deleted?
->>> +              */
->>
->> The hwmon ABI specifically supports unscaled values, which can then be
->> scaled in userspace using the sensors configuration file.
->> Given that we return the pseudo-scaled value to userspace today,
->> it seems to me that it would do more harm to change that instead of just
->> leaving it in place.
-> 
-> I see.
-> 
-> I tried to drill down and see the history of the driver and in the
-> original commit all values are scaled with the function
-> get_temp_mC() which indicates that the driver has always
-> intended to return millicentigrades, not unscaled values (as
-> far as I can tell).
-> 
+First, let me apologize if some of you may have received an
+earlier version as HTML.
 
-Sure. That isn't the problem. I didn't say that the value reported
-to userspace _shall_ be unscaled, I said that the ABI supports it.
+I forgot that I was in my web email client.
 
-We are not discussing your patch here, just the comment. You don't
-answer the basic question: What should the driver do if the iio
-subsystem only delivers raw values ? I suggested we should just keep
-the current assumption in this case, ie do the fixed conversion,
-and let userspace handle any necessary adjustments. You seem to object.
-With your patch, we get a comment in the driver suggesting that some
-code should be removed. In my opinion, such a comment comment does
-not add any value. Ether we drop the code or we don't, and I dislike
-removing it.
 
-That results in my usual fallback: When in doubt, do nothing.
+On 12/23/20 3:08 PM, Linus Walleij wrote:
+> Then commit 0315253b19bbc63eedad2f6125c21e280c76e29b
+> "hwmon: (ntc_thermistor) fix iio raw to microvolts conversion"
+> calls iio_convert_raw_to_processed() to get around the 12
+> bit assumption, instead adding a 1000x scale assumption
+> on the value passed in from the raw read. This just looks
+> wrong, why would it be 1000 and not 1 like the IIO core does
+> when we call iio_read_channel_processed()? It looks like it is
+> actually compensating for a bug in the ADC returning
+> the wrong scale: the author may have used a buggy ADC
+> driver return a scaling to volts instead of millivolts and then this
+> was a trial-and-error solution to that bug in the ADC
+> driver.
+>
+> In that case it would be nice to know which ADC driver,
+> so we can fix it! I suspect maybe an out-of-tree ADC?
 
-Guenter
+I'm the author ofcommit 0315253b19bbc63eedad2f6125c21e280c76e29b
+"hwmon: (ntc_thermistor) fix iio raw to microvolts conversion".
+
+The 1000X scaling was not to get around a bad ADC driver that returns
+volts instead of millivolts; it was to convert millivolts to microvolts.
+The function ntc_adc_iio_read needs to return microvolts.
+

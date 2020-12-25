@@ -2,161 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637112E2C06
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Dec 2020 18:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 341B62E2C83
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Dec 2020 23:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726565AbgLYRat (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Dec 2020 12:30:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
+        id S1727482AbgLYW4G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Dec 2020 17:56:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725953AbgLYRas (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Dec 2020 12:30:48 -0500
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975A7C061757;
-        Fri, 25 Dec 2020 09:30:08 -0800 (PST)
-Received: by mail-qk1-x729.google.com with SMTP id w79so4335507qkb.5;
-        Fri, 25 Dec 2020 09:30:08 -0800 (PST)
+        with ESMTP id S1727379AbgLYW4G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Dec 2020 17:56:06 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681CEC0613C1
+        for <linux-iio@vger.kernel.org>; Fri, 25 Dec 2020 14:55:19 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id m12so11894427lfo.7
+        for <linux-iio@vger.kernel.org>; Fri, 25 Dec 2020 14:55:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=6tNoeU4rdX0Rp7YesclVSlEoPPasvtmAb8rPCs2D1UA=;
-        b=IIbk73+3Kn9m25AbiWeCyLcszXZliqbmEyDL1AOj0RVNhCQYa3sLxEQIqXZBW3Ypic
-         DQ4wzgFr5B4rLcyjNdl29h0/7/ozhfpbDAocjKdrhtE2hO6WAEXbSpgu+JcR17vgO+sa
-         rQhPpLky45RnexFX4O4NU7kW+Yu2yJBXHMJcLcGRrcFkuwEcTYEHk2G13VPL9sSen70j
-         hSb/9en/J29uqP5MdAdokGjqlxKm4Dhuhv3vLtTcgjZkJhyIDqdlvQ02S5HhEn9hMPGO
-         zktoLKSE4Re4ZHtqIBCUPKVtxs9/k+iyh7tTUzAe1vd+nBFPIspR9ejhvtS0sF/nfH/X
-         gVbw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NgjsHXb/WHneIk8ytfiZho9SSMfNf0stCcaFNeLlmJo=;
+        b=lUDo0krFF0crggGoL1caSrRep+JwTjAmoCsujYmJVaPnB9wSEWnuTaHiL2snK79Nis
+         tEhg7LIaIGSpEDNSSBFQOEn5ACgh0ER8LuPGTg7QDJrT6Ymrz5uN1MNOVzXsa1jCl1BI
+         b3XaZ71A/mH29IOC/r0WNV+gKwpGfn3mOydlcQPzfK23+8nDtfgGHMQdqZfV/bUQa+5z
+         oMu10NmvGHg2Hn+pFLLCZKZaKKaOB/+xyNS58HcvBVSqVSBLAE5wtxABOPcvkgw4UdqD
+         4bhKqcaBHR9jDRWS7lzdRZuafkgXjn8RuQ3EUKuyFDLNzJsJQguCFrxKFk9j2omjQtMP
+         gf1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6tNoeU4rdX0Rp7YesclVSlEoPPasvtmAb8rPCs2D1UA=;
-        b=KLGT+B5iL0Hr6J0kKoz0sdEaPI+J1dMnH1FjSpVgcY5yIaWFv14KgrUdoeSFj+oqkY
-         al2ELnvyIP6dlma6rdneAHrVdzfC8RIJlP+35Ow7vDDanJb0ZtHq35vZOy9dS5xAhRwa
-         a5lBfBhWF0ttr1ZLOoXvyb/dgEhn0S3EsuRy629P1Sk2GyDxNUtGDvQlMX3nKfhSPrZm
-         teZtXEGM7T/UDuWVmH42xQVwEygAl3QMpAkqxoLxGY7dhmVw6wDutZeA65RjFccvKxqy
-         v+VzKUUZRyjP5oqu5cyyjVXMha0cja+mQ64wP/xlFA63LK1T1u25hJVNbQqfT3wfXZv9
-         W3Uw==
-X-Gm-Message-State: AOAM531bJw93frHGG7jFX8d24XzMnKYas3TfLtxQ5pnh19XTazjCORSK
-        ZdeWvgEnJNY4Z/gmXnhWGcTfLNXTaj60vA==
-X-Google-Smtp-Source: ABdhPJw0R+1fIgZCorc4miRt0cUFZr5DYuK5D7K1Bsb8++9DlhiEtxJFg2kyayH/6OeJ0qRyV9381w==
-X-Received: by 2002:a37:a796:: with SMTP id q144mr35953703qke.38.1608917407683;
-        Fri, 25 Dec 2020 09:30:07 -0800 (PST)
-Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id p34sm15771442qtd.62.2020.12.25.09.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Dec 2020 09:30:06 -0800 (PST)
-Date:   Fri, 25 Dec 2020 12:30:04 -0500
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     jic23@kernel.org, kernel@pengutronix.de,
-        linux-stm32@st-md-mailman.stormreply.com, a.fatoum@pengutronix.de,
-        kamel.bouhara@bootlin.com, gwendal@chromium.org,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        syednwaris@gmail.com, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v6 3/5] counter: Add character device interface
-Message-ID: <X+YhnDqLZ7Ad9b2O@shinobu>
-References: <cover.1606075915.git.vilhelm.gray@gmail.com>
- <b52a62196399d33221f78a1689276ac193c10229.1606075915.git.vilhelm.gray@gmail.com>
- <b5d49a3a-99ab-e5c0-3f0b-601eed9b54f5@lechnology.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NgjsHXb/WHneIk8ytfiZho9SSMfNf0stCcaFNeLlmJo=;
+        b=J0NOun/QytgksHE59tW8bHBON5FTAOudTv5JpLBQnW7HYST9wXJ7IYn7vbiKBN+uQj
+         HY6yWkihick5OAUygQhMGyB9hjBbxhf/kIXXQclPftIfqRtIGUsFUZF6RAakf2slwcJ0
+         yPCLesyyE3YTlgD1+d27iEA54HygxeDfr/CIF/3keYSQ5wSBuG4FpoX0NkffugQ0C/YE
+         PlFzXq4b63xxg1nDIJ6kvSYbZGlmbBtuG5hE65yfe2+F1Ngx4dVTXZCglkOKwtJiuWfo
+         lpSK89GJIwT1I+8/HZEf9Ve/pFW/caRq7B+8HdylFQVRNea1VFDPVukIkUPLb59xDkbG
+         hcgw==
+X-Gm-Message-State: AOAM532rhsk37bmwN2WZl43JqxuItLiMeylr+ZafnEPGOFVxlCyGlIiF
+        I2hkbzmzSwY+N9wq4vTs+0jHK/Osh/Jv+IBTBjohJw==
+X-Google-Smtp-Source: ABdhPJxkmj0uNGPpRQIQfVAFgFCJ5wtfGLiiFI0Ga9kjKuA/ANtKo4D2b5QfllwFpqn6lD9ZPqlhWBxdWoBT2CqiZF4=
+X-Received: by 2002:a2e:586:: with SMTP id 128mr18206952ljf.273.1608936915621;
+ Fri, 25 Dec 2020 14:55:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Bi9bW/svyG+8ZjzL"
-Content-Disposition: inline
-In-Reply-To: <b5d49a3a-99ab-e5c0-3f0b-601eed9b54f5@lechnology.com>
+References: <20201224011607.1059534-1-linus.walleij@linaro.org> <SN6PR08MB556580B228FEC722C4A75B669ADD0@SN6PR08MB5565.namprd08.prod.outlook.com>
+In-Reply-To: <SN6PR08MB556580B228FEC722C4A75B669ADD0@SN6PR08MB5565.namprd08.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 25 Dec 2020 23:55:04 +0100
+Message-ID: <CACRpkdZJT386M5y5cyCLYaWDhS+AnpXgB__VEshvYKbxN_=wPg@mail.gmail.com>
+Subject: Re: [PATCH v2] hwmon: (ntc_thermistor): try reading processed
+To:     Chris Lesiak <chris.lesiak@licor.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Jonathan Cameron <jic23@cam.ac.uk>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, Dec 24, 2020 at 2:39 AM Chris Lesiak <chris.lesiak@licor.com> wrote:
 
---Bi9bW/svyG+8ZjzL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Please don't use iio_read_channel_processed and convert from milliVolts to
+> microVolts by multiplying by 1000.  My use case requires the additional
+> precision that iio_read_channel_raw followed by iio_convert_raw_to_processed
+> with the 1000X scaler provides.
 
-Hi David,
+I have to do this change because my ADC driver only provides processed
+channels (drivers/iio/adc/ab8500-gpadc.c). It provides raw values and
+it provides processed values but no scale. That means your code will
+not work, sadly. It will result in the raw value being used without scaling.
 
-I agree with your suggested changes -- just a couple select comments
-following below.
+The reason that the ADC cannot provide scaling is that the scale is not
+linear and based on calibration. IIO scaling is only linear.
 
-On Sun, Dec 13, 2020 at 05:58:26PM -0600, David Lechner wrote:
-> > +static int counter_add_watch(struct counter_device *const counter,
-> > +			     const unsigned long arg)
-> > +{
+After this change the driver will use the processed values directly if possible,
+since these are in millivolts they need to be multiplied by 1000.
 
-[...]
+Notice that actually this NTC driver is the only driver in the entire
+kernel that uses iio_convert_raw_to_processed(). (Well lmp91000.c
+calls it to convert its own raw value to a processed one, so will
+result in a recursive call.) I kind of find the call
+dubious outside of IIO itself, it feels like calling
+iio_read_channel_processed() is more
+natural? Who outside of IIO needs the raw value really?
+It's what I used in all of my drivers.
 
-> > +
-> > +dummy_component:
-> > +	comp_node.component =3D watch.component;
->=20
->=20
-> In my experiments, I added a events_validate driver callback here to
-> validate each event as it is added. This way the user can know exactly
-> which event caused the problem rather than waiting for the event_config
-> callback.
+> But I'm unsure about keeping the fallback 12-bit ADC in place.  I kept it so as
+> not to break Naveen Krishna Chatradhi's use case.  But I'm not sure it still works
+> after commit adc8ec5ff183d09ae7a9d2dd31125401d302ba63
+> "iio: inkern: pass through raw values if no scaling".  Before the commit,
+> iio_convert_raw_to_processed returned a negative number if there was no
+> scaling available.  Now, it returns the raw value.
+> Does that mean that the raw value is already scaled to the correct units?
+> Or does that mean that the scale is unknown and all you get is counts?
 
-Yes, this is a good idea and I have use for this in the 104-quad-8
-driver as well. I'm going to name this "watch_validate" however, because
-I need to validate the requested channel as well as the requested event
-here (both part of the struct counter_watch).
+As far as I can tell it is the former of these two, as you point out
+in your second mail.
 
-> > diff --git a/include/linux/counter.h b/include/linux/counter.h
-> > index 3f3f8ba6c1b4..98cd7c035968 100644
-> > --- a/include/linux/counter.h
->=20
->=20
-> >=20
-> > +/**
-> > + * struct counter_event_node - Counter Event node
-> > + * @l:		list of current watching Counter events
-> > + * @event:	event that triggers
-> > + * @channel:	event channel
-> > + * @comp_list:	list of components to watch when event triggers
-> > + */
-> > +struct counter_event_node {
-> > +	struct list_head l;
-> > +	u8 event;
-> > +	u8 channel;
-> > +	struct list_head comp_list;
-> > +};
-> > +
->=20
->=20
-> Unless this is needed outside of the drivers/counter/ directory, I
-> would suggest putting it in drivers/counter/counter-chrdev.h instead
-> of include/linux/counter.h.
-
-The "events_list" member of the struct counter_device is a list of
-struct counter_event_node. The events_configure() callback should parse
-through this list to determine the current events configuration request.
-As such, driver authors will need this structure available via
-include/linux/counter.h so they can parse "events_list".
-
-William Breathitt Gray
-
---Bi9bW/svyG+8ZjzL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl/mIZwACgkQhvpINdm7
-VJIZxxAAhAKczPADq8u05OkOAmgVD7IeT9cUBIB/XnT0VVSVX46G473g78mZwlsx
-qnfK1l4uDvwjAY+YFFKanUztxg/j60BzJOt9BK4NqWR4ic7J0FPj9i4YgN9J+9oo
-JmFSjqT8Abo7rEdB426yT9Fof9cBU/oPdOpNSufDNidrxXnTIOKnjA9odG/vgOzl
-mlXTQHs2glKeLrHIvJOnK7mwy3l11Ew2xhRvBEsMfbzXIYoOkVC8Ax146tHpqBVl
-hN/vCEU49+JCbZrSOk9EmtjRZ7DiF8AoV7GFUjqGWxkECKx1ov2WeR62DFhUJMvI
-qC/boNu0BZW2N8HgIvgsgKP0r/v0E+RuRFzcahpS/0YhsNh8fgEVfeIWS2ZaVXWT
-7e4FZIOw4Vuk0E2DXw0rWRzvNCCstRsqY9fQ7ee1/WruCHRvZEeiifJADx7E7LBv
-XwQynYXOgFe1hxXFejwSTgTCMl5y25CaT8JVU8GLYgHYnPKkIVSsOJ5dUgTbRCOu
-RBbMgZbcBuB1tUy45SP6Rx8in4joA+AGAt6oj4kxrd+/+O2+uvUoNILqoYHAMyV6
-EBP78O/sAHNObYnwVJNaM1Bc1VYIF7+pMjotOTtHmkZhs5Ac8qxXih4r+mIZgItu
-yGeJ9cG82fkziDp+TtNuYXsfLQQhxtdicKmAqzZeg5VSyGQWkQY=
-=vH3L
------END PGP SIGNATURE-----
-
---Bi9bW/svyG+8ZjzL--
+Yours,
+Linus Walleij

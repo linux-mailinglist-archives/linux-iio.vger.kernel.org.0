@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29BE82E320F
+	by mail.lfdr.de (Postfix) with ESMTP id 95A112E3211
 	for <lists+linux-iio@lfdr.de>; Sun, 27 Dec 2020 18:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbgL0RMa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1726065AbgL0RMa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sun, 27 Dec 2020 12:12:30 -0500
-Received: from www381.your-server.de ([78.46.137.84]:59638 "EHLO
+Received: from www381.your-server.de ([78.46.137.84]:59642 "EHLO
         www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726105AbgL0RM3 (ORCPT
+        with ESMTP id S1726045AbgL0RM3 (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Dec 2020 12:12:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
          s=default2002; h=Content-Transfer-Encoding:MIME-Version:References:
         In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=SWxmXuJLroH/q3H+DADwiH7ZwDZGKLb5OJYQADTPoHc=; b=I29km8AwBrNGWg1ny6ZzUk/IEU
-        OJRkN78vShlnaxrRwYqv4w2HH6QoghY7aw3rAnE2k6xAZHPHFoG2FZnvq8FWgZmemWIrOqlWteqUv
-        PFER4k3Ee8eeVEICSsDfUtiunJlVErsTszMbMMcR4N7NFNiR5P8TXs6ikjSM0EUepEn3VzvrB6Zfq
-        f1v6zNWG09kiNt2TacAWbMBeu15853ogalHYwliYbCIqoEBKuso7mXJAWu/0eAtSZCB3lh+ul6OEG
-        8/MgorM9iNWoiBDSlbMRFauwkpSopMnsMKyjQLFD4gqN9o61LGBbue65dFQ2NA4yLQFCZSUh1lq7f
-        5GDZBNNg==;
+        bh=mSm8vzDAnhl2k4crdbOo2YtVaYJmVkHvtKyvZ4SH3qM=; b=gdqpsA9zkz58C7rxyx6k1imYKB
+        ZJkWZ+89R9p0jcfNacErWxQs3V4EImcGYg64ODDE6WCaH9bluSy7+4hCBsodNxTFMnRSbjGQrQMjJ
+        JAg2kuOYNzDHq9zRYZIXGlsVN+6RMwd0I8Ey+gyDtALaAxWl5EkbxILuYQlIDigOFROd+WtN0Z929
+        FdTnvWsfp3KdQ4XYp0Dc1jviAvF8akRS44AM9pmYeNPdBW429pQAniLjOUbyZ9zwQ3s06n5bNkS1S
+        eFgf0NItExevNcabZTSja2tGdlOT7LU8WQY8g2frgEHkhGFZ2Ftdxi4GPRVdZMv+dHfpK8NPpXy23
+        mZa/Z/ww==;
 Received: from sslproxy05.your-server.de ([78.46.172.2])
         by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <lars@metafoo.de>)
-        id 1ktZa7-0009HZ-En; Sun, 27 Dec 2020 18:11:47 +0100
+        id 1ktZa7-0009Ha-H5; Sun, 27 Dec 2020 18:11:47 +0100
 Received: from [2001:a61:2af4:a201:9e5c:8eff:fe01:8578] (helo=lars-desktop.fritz.box)
         by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <lars@metafoo.de>)
-        id 1ktZa7-000T2x-Ab; Sun, 27 Dec 2020 18:11:47 +0100
+        id 1ktZa7-000T2x-Cq; Sun, 27 Dec 2020 18:11:47 +0100
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Manivannan Sadhasivam <manivannanece23@gmail.com>,
         Himanshu Jha <himanshujha199640@gmail.com>,
         linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 2/3] iio: bme680: Use DIV_ROUND_CLOSEST() instead of open-coding it
-Date:   Sun, 27 Dec 2020 18:11:25 +0100
-Message-Id: <20201227171126.28216-2-lars@metafoo.de>
+Subject: [PATCH 3/3] iio: tsl2583: Use DIV_ROUND_CLOSEST() instead of open-coding it
+Date:   Sun, 27 Dec 2020 18:11:26 +0100
+Message-Id: <20201227171126.28216-3-lars@metafoo.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201227171126.28216-1-lars@metafoo.de>
 References: <20201227171126.28216-1-lars@metafoo.de>
@@ -86,21 +86,45 @@ constant r1.C2;
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 ---
- drivers/iio/chemical/bme680_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/tsl2583.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 6ea99e4cbf92..bf23cc7eb99e 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -479,7 +479,7 @@ static u8 bme680_calc_heater_res(struct bme680_data *data, u16 temp)
- 	var4 = (var3 / (calib->res_heat_range + 4));
- 	var5 = 131 * calib->res_heat_val + 65536;
- 	heatr_res_x100 = ((var4 / var5) - 250) * 34;
--	heatr_res = (heatr_res_x100 + 50) / 100;
-+	heatr_res = DIV_ROUND_CLOSEST(heatr_res_x100, 100);
+diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+index 9e5490b7473b..0f787bfc88fc 100644
+--- a/drivers/iio/light/tsl2583.c
++++ b/drivers/iio/light/tsl2583.c
+@@ -285,7 +285,7 @@ static int tsl2583_get_lux(struct iio_dev *indio_dev)
+ 	lux64 = lux64 * chip->als_settings.als_gain_trim;
+ 	lux64 >>= 13;
+ 	lux = lux64;
+-	lux = (lux + 500) / 1000;
++	lux = DIV_ROUND_CLOSEST(lux, 1000);
  
- 	return heatr_res;
+ 	if (lux > TSL2583_LUX_CALC_OVER_FLOW) { /* check for overflow */
+ return_max:
+@@ -361,12 +361,12 @@ static int tsl2583_set_als_time(struct tsl2583_chip *chip)
+ 	u8 val;
+ 
+ 	/* determine als integration register */
+-	als_count = (chip->als_settings.als_time * 100 + 135) / 270;
++	als_count = DIV_ROUND_CLOSEST(chip->als_settings.als_time * 100, 270);
+ 	if (!als_count)
+ 		als_count = 1; /* ensure at least one cycle */
+ 
+ 	/* convert back to time (encompasses overrides) */
+-	als_time = (als_count * 27 + 5) / 10;
++	als_time = DIV_ROUND_CLOSEST(als_count * 27, 10);
+ 
+ 	val = 256 - als_count;
+ 	ret = i2c_smbus_write_byte_data(chip->client,
+@@ -380,7 +380,7 @@ static int tsl2583_set_als_time(struct tsl2583_chip *chip)
+ 
+ 	/* set chip struct re scaling and saturation */
+ 	chip->als_saturation = als_count * 922; /* 90% of full scale */
+-	chip->als_time_scale = (als_time + 25) / 50;
++	chip->als_time_scale = DIV_ROUND_CLOSEST(als_time, 50);
+ 
+ 	return ret;
  }
 -- 
 2.20.1

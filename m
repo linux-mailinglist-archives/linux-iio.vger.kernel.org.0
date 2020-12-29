@@ -2,30 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAF32E7272
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Dec 2020 17:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD17C2E7284
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Dec 2020 18:10:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726138AbgL2Q5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Dec 2020 11:57:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38974 "EHLO mail.kernel.org"
+        id S1726256AbgL2RKD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Dec 2020 12:10:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726126AbgL2Q5b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 29 Dec 2020 11:57:31 -0500
+        id S1726240AbgL2RKD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 29 Dec 2020 12:10:03 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B673207C9;
-        Tue, 29 Dec 2020 16:56:50 +0000 (UTC)
-Date:   Tue, 29 Dec 2020 16:56:47 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 17EF8207C9;
+        Tue, 29 Dec 2020 17:09:21 +0000 (UTC)
+Date:   Tue, 29 Dec 2020 17:09:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: adc: ab8500-gpadc: Support non-hw-conversion
-Message-ID: <20201229165647.3d162fa1@archlinux>
-In-Reply-To: <20201218222013.383704-1-linus.walleij@linaro.org>
-References: <20201218222013.383704-1-linus.walleij@linaro.org>
+To:     Slaveyko Slaveykov <sis@melexis.com>
+Cc:     Jonathan.Cameron@huawei.com, cmo@melexis.com,
+        linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
+        lars@metafoo.de
+Subject: Re: [PATCH v5 1/1] drivers: iio: temperature: Add delay after the
+ addressed reset command in mlx90632.c
+Message-ID: <20201229170918.631e58a5@archlinux>
+In-Reply-To: <20201216115720.12404-2-sis@melexis.com>
+References: <20201216115720.12404-1-sis@melexis.com>
+        <20201216115720.12404-2-sis@melexis.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,75 +36,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Dec 2020 23:20:13 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Wed, 16 Dec 2020 13:57:20 +0200
+Slaveyko Slaveykov <sis@melexis.com> wrote:
 
-> The hardware conversion mode only exists in the AB8500
-> version of the chip, as it is lacking in the AB8505 it
-> will not be in the device tree and we should just not
-> even try to obtain it.
+> After an I2C reset command, the mlx90632 needs some time before
+> responding to other I2C commands. Without that delay, there is a chance
+> that the I2C command(s) after the reset will not be accepted.
 > 
-> The driver already contains code to avoid using a
-> non-existing hardware conversion IRQ at conversion time.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Applied to the togreg branch of iio.git and pushed out as testing for all
-the normal reasons.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Crt Mori <cmo@melexis.com>
+> Signed-off-by: Slaveyko Slaveykov <sis@melexis.com>
+
+Note that this should have had a fixes tag so we know where to apply it whilst
+backporting.  I took a look and ended up adding:
+Fixes: e02472f74a81 ("iio:temperature:mlx90632: Adding extended calibration option")
+
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ab8500-gpadc.c | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
+>  drivers/iio/temperature/mlx90632.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
-> index 1bb987a4acba..6f9a3e2d5533 100644
-> --- a/drivers/iio/adc/ab8500-gpadc.c
-> +++ b/drivers/iio/adc/ab8500-gpadc.c
-> @@ -1108,10 +1108,14 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
->  		return gpadc->irq_sw;
->  	}
->  
-> -	gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
-> -	if (gpadc->irq_hw < 0) {
-> -		dev_err(dev, "failed to get platform hw_conv_end irq\n");
-> -		return gpadc->irq_hw;
-> +	if (is_ab8500(gpadc->ab8500)) {
-> +		gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
-> +		if (gpadc->irq_hw < 0) {
-> +			dev_err(dev, "failed to get platform hw_conv_end irq\n");
-> +			return gpadc->irq_hw;
-> +		}
-> +	} else {
-> +		gpadc->irq_hw = 0;
->  	}
->  
->  	/* Initialize completion used to notify completion of conversion */
-> @@ -1128,14 +1132,16 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+> diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+> index 503fe54a0bb9..608ccb1d8bc8 100644
+> --- a/drivers/iio/temperature/mlx90632.c
+> +++ b/drivers/iio/temperature/mlx90632.c
+> @@ -248,6 +248,12 @@ static int mlx90632_set_meas_type(struct regmap *regmap, u8 type)
+>  	if (ret < 0)
 >  		return ret;
->  	}
 >  
-> -	ret = devm_request_threaded_irq(dev, gpadc->irq_hw, NULL,
-> -		ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
-> -		"ab8500-gpadc-hw", gpadc);
-> -	if (ret < 0) {
-> -		dev_err(dev,
-> -			"Failed to request hw conversion irq: %d\n",
-> -			gpadc->irq_hw);
-> -		return ret;
-> +	if (gpadc->irq_hw) {
-> +		ret = devm_request_threaded_irq(dev, gpadc->irq_hw, NULL,
-> +			ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
-> +			"ab8500-gpadc-hw", gpadc);
-> +		if (ret < 0) {
-> +			dev_err(dev,
-> +				"Failed to request hw conversion irq: %d\n",
-> +				gpadc->irq_hw);
-> +			return ret;
-> +		}
->  	}
->  
->  	/* The VTVout LDO used to power the AB8500 GPADC */
+> +	/*
+> +	 * Give the mlx90632 some time to reset properly before sending a new I2C command
+> +	 * if this is not done, the following I2C command(s) will not be accepted.
+> +	 */
+> +	usleep_range(150, 200);
+> +
+>  	ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
+>  				 (MLX90632_CFG_MTYP_MASK | MLX90632_CFG_PWR_MASK),
+>  				 (MLX90632_MTYP_STATUS(type) | MLX90632_PWR_STATUS_HALT));
 

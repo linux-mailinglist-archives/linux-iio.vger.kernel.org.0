@@ -2,38 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A892E728C
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Dec 2020 18:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17DBE2E7298
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Dec 2020 18:26:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbgL2RP1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Dec 2020 12:15:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44428 "EHLO mail.kernel.org"
+        id S1726161AbgL2RZY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Dec 2020 12:25:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726111AbgL2RP1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 29 Dec 2020 12:15:27 -0500
+        id S1726111AbgL2RZY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 29 Dec 2020 12:25:24 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F6A021D94;
-        Tue, 29 Dec 2020 17:14:44 +0000 (UTC)
-Date:   Tue, 29 Dec 2020 17:14:41 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 4AD4E21D94;
+        Tue, 29 Dec 2020 17:24:42 +0000 (UTC)
+Date:   Tue, 29 Dec 2020 17:24:39 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     Xu Wang <vulab@iscas.ac.cn>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <krzk@kernel.org>,
-        <andy.shevchenko@gmail.com>, <olivier.moysan@st.com>,
-        <etienne.carriere@st.com>, <alexandru.ardelean@analog.com>,
-        <peter.ujfalusi@ti.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: stm32-adc: Remove redundant null check before
- clk_prepare_enable/clk_disable_unprepare
-Message-ID: <20201229171441.5bfa812b@archlinux>
-In-Reply-To: <ccf4d36d-dbb0-aea0-5625-4aaf6850c73d@foss.st.com>
-References: <20201218093512.871-1-vulab@iscas.ac.cn>
-        <ccf4d36d-dbb0-aea0-5625-4aaf6850c73d@foss.st.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Gabriele Mazzotta <gabriele.mzt@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v5 3/3] iio: acpi_als: Add trigger support
+Message-ID: <20201229172439.2a65580f@archlinux>
+In-Reply-To: <CAHp75Vfn=KtzN7zpm+pRES3L6R9k77GhHUFkxjrHcV67Vwx7kA@mail.gmail.com>
+References: <20201216214107.774969-1-gwendal@chromium.org>
+        <20201216214107.774969-4-gwendal@chromium.org>
+        <CAHp75Vfn=KtzN7zpm+pRES3L6R9k77GhHUFkxjrHcV67Vwx7kA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,129 +37,224 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Dec 2020 15:32:32 +0100
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+On Thu, 17 Dec 2020 00:38:06 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On 12/18/20 10:35 AM, Xu Wang wrote:
-> > Because clk_prepare_enable() and clk_disable_unprepare() already checked
-> > NULL clock parameter, so the additional checks are unnecessary, just
-> > remove them.
-> > 
-> > Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+> On Wed, Dec 16, 2020 at 11:41 PM Gwendal Grignou <gwendal@chromium.org> wrote:
+> >
+> > As some firmware does not notify on illuminance changes, add a
+> > trigger to be able to query light via software (sysfs-trigger or
+> > hrtrigger).
+> > Add a hardware trigger set as the default trigger to maintain backward
+> > compatibility.
+> >
+> > Check iio_info reports the sensor as buffer capable:
+> >   iio:device0: acpi-als (buffer capable)
+> >
+> > To test, check we can get data on demand on an Intel based chromebook:
+> >
+> >   IIO_DEV="iio:device0"
+> >   echo 1 > iio_sysfs_trigger/add_trigger
+> >   cat trigger2/name > ${IIO_DEV}/trigger/current_trigger
+> >   for i in ${IIO_DEV}/scan_elements/*_en ${IIO_DEV}/buffer/enable ; do
+> >     echo 1 > $i
+> >   done
+> >   od -x /dev/${IIO_DEV} &
+> >   echo 1 > trigger2/trigger_now  
+> 
+> Few nitpicks below. After addressing, take my
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> assuming that backward compatibility has been tested as well.
+> 
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > > ---
-> >  drivers/iio/adc/stm32-adc-core.c | 29 +++++++++++------------------
-> >  drivers/iio/adc/stm32-adc.c      | 14 +++++---------
-> >  2 files changed, 16 insertions(+), 27 deletions(-)  
+> >  Changes in v4:
+> >  Added comments when pf->timestamp is 0 and valid. Fix spelling.
+> >  Changes in v5:
+> >  Improve commit message readability, add note about backward
+> >  compatibility.
+> >  Remove unneeded include file.
+> >
+> >  drivers/iio/light/acpi-als.c | 89 ++++++++++++++++++++++++++----------
+> >  1 file changed, 66 insertions(+), 23 deletions(-)
+> >
+> > diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
+> > index fd20808d4a119..80fe0da51fad3 100644
+> > --- a/drivers/iio/light/acpi-als.c
+> > +++ b/drivers/iio/light/acpi-als.c
+> > @@ -16,11 +16,14 @@
+> >  #include <linux/module.h>
+> >  #include <linux/acpi.h>
+> >  #include <linux/err.h>
+> > +#include <linux/irq.h>
+> >  #include <linux/mutex.h>
+> >
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/buffer.h>
+> > -#include <linux/iio/kfifo_buf.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> >
+> >  #define ACPI_ALS_CLASS                 "als"
+> >  #define ACPI_ALS_DEVICE_NAME           "acpi-als"
+> > @@ -59,6 +62,7 @@ static const struct iio_chan_spec acpi_als_channels[] = {
+> >  struct acpi_als {
+> >         struct acpi_device      *device;
+> >         struct mutex            lock;
+> > +       struct iio_trigger      *trig;
+> >
+> >         s32 evt_buffer[ACPI_ALS_EVT_BUFFER_SIZE / sizeof(s32)]  __aligned(8);
+> >  };
+> > @@ -102,33 +106,20 @@ static void acpi_als_notify(struct acpi_device *device, u32 event)
+> >  {
+> >         struct iio_dev *indio_dev = acpi_driver_data(device);
+> >         struct acpi_als *als = iio_priv(indio_dev);
+> > -       s32 *buffer = als->evt_buffer;
+> > -       s64 time_ns = iio_get_time_ns(indio_dev);
+> > -       s32 val;
+> > -       int ret;
+> >
+> > -       mutex_lock(&als->lock);
+> > -
+> > -       memset(buffer, 0, ACPI_ALS_EVT_BUFFER_SIZE);
+> > +       if (!iio_buffer_enabled(indio_dev) ||
+> > +           !iio_trigger_using_own(indio_dev))  
 > 
-> Hi Xu,
+> I guess it can be located on one line.
 > 
-> Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Applied,
+> I hope those functions have no side effects. In that case you may
+> invert logic (save 2 characters)
+> 
+>        if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev))
 
-thanks,
+You can but at cost of indenting the whole following block on level further.
+I'm not that fussed, but in general that doesn't seem like a good idea to
+save two characters here.
 
-Jonathan
+Gwendal made that not too bad in v6 by removing the read that appears to
+be unnecessary.
+
+
 
 > 
-> Thanks for your patch,
-> Best Regards,
-> Fabrice
-> 
-> > 
-> > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> > index 9d1ad6e38e85..c088cb990193 100644
-> > --- a/drivers/iio/adc/stm32-adc-core.c
-> > +++ b/drivers/iio/adc/stm32-adc-core.c
-> > @@ -535,20 +535,16 @@ static int stm32_adc_core_hw_start(struct device *dev)
-> >  		goto err_switches_dis;
-> >  	}
-> >  
-> > -	if (priv->bclk) {
-> > -		ret = clk_prepare_enable(priv->bclk);
-> > -		if (ret < 0) {
-> > -			dev_err(dev, "bus clk enable failed\n");
-> > -			goto err_regulator_disable;
-> > -		}
-> > +	ret = clk_prepare_enable(priv->bclk);
-> > +	if (ret < 0) {
-> > +		dev_err(dev, "bus clk enable failed\n");
-> > +		goto err_regulator_disable;
-> >  	}
-> >  
-> > -	if (priv->aclk) {
-> > -		ret = clk_prepare_enable(priv->aclk);
-> > -		if (ret < 0) {
-> > -			dev_err(dev, "adc clk enable failed\n");
-> > -			goto err_bclk_disable;
-> > -		}
-> > +	ret = clk_prepare_enable(priv->aclk);
-> > +	if (ret < 0) {
-> > +		dev_err(dev, "adc clk enable failed\n");
-> > +		goto err_bclk_disable;
-> >  	}
-> >  
-> >  	writel_relaxed(priv->ccr_bak, priv->common.base + priv->cfg->regs->ccr);
-> > @@ -556,8 +552,7 @@ static int stm32_adc_core_hw_start(struct device *dev)
-> >  	return 0;
-> >  
-> >  err_bclk_disable:
-> > -	if (priv->bclk)
-> > -		clk_disable_unprepare(priv->bclk);
-> > +	clk_disable_unprepare(priv->bclk);
-> >  err_regulator_disable:
-> >  	regulator_disable(priv->vref);
-> >  err_switches_dis:
-> > @@ -575,10 +570,8 @@ static void stm32_adc_core_hw_stop(struct device *dev)
-> >  
-> >  	/* Backup CCR that may be lost (depends on power state to achieve) */
-> >  	priv->ccr_bak = readl_relaxed(priv->common.base + priv->cfg->regs->ccr);
-> > -	if (priv->aclk)
-> > -		clk_disable_unprepare(priv->aclk);
-> > -	if (priv->bclk)
-> > -		clk_disable_unprepare(priv->bclk);
-> > +	clk_disable_unprepare(priv->aclk);
-> > +	clk_disable_unprepare(priv->bclk);
-> >  	regulator_disable(priv->vref);
-> >  	stm32_adc_core_switches_supply_dis(priv);
-> >  	regulator_disable(priv->vdda);
-> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> > index c067c994dae2..f7c53cea509a 100644
-> > --- a/drivers/iio/adc/stm32-adc.c
-> > +++ b/drivers/iio/adc/stm32-adc.c
-> > @@ -546,8 +546,7 @@ static int stm32_adc_hw_stop(struct device *dev)
-> >  	if (adc->cfg->unprepare)
-> >  		adc->cfg->unprepare(indio_dev);
-> >  
-> > -	if (adc->clk)
-> > -		clk_disable_unprepare(adc->clk);
-> > +	clk_disable_unprepare(adc->clk);
-> >  
-> >  	return 0;
+> > +               return;
+> >
+> >         switch (event) {
+> >         case ACPI_ALS_NOTIFY_ILLUMINANCE:
+> > -               ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
+> > -               if (ret < 0)
+> > -                       goto out;
+> > -               *buffer++ = val;
+> > +               iio_trigger_poll_chained(als->trig);
+> >                 break;
+> >         default:
+> >                 /* Unhandled event */
+> >                 dev_dbg(&device->dev, "Unhandled ACPI ALS event (%08x)!\n",
+> >                         event);
+> > -               goto out;
+> >         }
+> > -
+> > -       iio_push_to_buffers_with_timestamp(indio_dev, als->evt_buffer, time_ns);
+> > -
+> > -out:
+> > -       mutex_unlock(&als->lock);
 > >  }
-> > @@ -558,11 +557,9 @@ static int stm32_adc_hw_start(struct device *dev)
-> >  	struct stm32_adc *adc = iio_priv(indio_dev);
-> >  	int ret;
-> >  
-> > -	if (adc->clk) {
-> > -		ret = clk_prepare_enable(adc->clk);
-> > -		if (ret)
-> > -			return ret;
-> > -	}
-> > +	ret = clk_prepare_enable(adc->clk);
-> > +	if (ret)
-> > +		return ret;
-> >  
-> >  	stm32_adc_set_res(adc);
-> >  
-> > @@ -575,8 +572,7 @@ static int stm32_adc_hw_start(struct device *dev)
-> >  	return 0;
-> >  
-> >  err_clk_dis:
-> > -	if (adc->clk)
-> > -		clk_disable_unprepare(adc->clk);
-> > +	clk_disable_unprepare(adc->clk);
-> >  
-> >  	return ret;
+> >
+> >  static int acpi_als_read_raw(struct iio_dev *indio_dev,
+> > @@ -159,12 +150,47 @@ static const struct iio_info acpi_als_info = {
+> >         .read_raw               = acpi_als_read_raw,
+> >  };
+> >
+> > +static irqreturn_t acpi_als_trigger_handler(int irq, void *p)
+> > +{
+> > +       struct iio_poll_func *pf = p;
+> > +       struct iio_dev *indio_dev = pf->indio_dev;
+> > +       struct acpi_als *als = iio_priv(indio_dev);
+> > +       s32 *buffer = als->evt_buffer;
+> > +       s32 val;
+> > +       int ret;
+> > +
+> > +       mutex_lock(&als->lock);
+> > +
+> > +       ret = acpi_als_read_value(als, ACPI_ALS_ILLUMINANCE, &val);
+> > +       if (ret < 0)
+> > +               goto out;
+> > +       *buffer = val;
+> > +
+> > +       /*
+> > +        * When coming from own trigger via polls, set polling function timestamp
+> > +        * here.
+> > +        * Given ACPI notifier is already in a thread and call function directly,
+> > +        * there is no need to set the timestamp in the notify function.  
+> 
+> Continue the second sentence of the previous line. No need to have it
+> in a separate paragraph.
+> 
+> > +        *
+> > +        * If the timestamp was actually 0, the timestamp is set one more time.
+> > +        */
+> > +       if (!pf->timestamp)
+> > +               pf->timestamp = iio_get_time_ns(indio_dev);
+> > +
+> > +       iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
+> > +out:
+> > +       mutex_unlock(&als->lock);
+> > +       iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +       return IRQ_HANDLED;
+> > +}
+> > +
+> >  static int acpi_als_add(struct acpi_device *device)
+> >  {
+> >         struct device *dev = &device->dev;
+> >         struct iio_dev *indio_dev;
+> > -       struct iio_buffer *buffer;
+> >         struct acpi_als *als;
+> > +       int ret;
+> >
+> >         indio_dev = devm_iio_device_alloc(dev, sizeof(*als));
+> >         if (!indio_dev)
+> > @@ -178,15 +204,32 @@ static int acpi_als_add(struct acpi_device *device)
+> >
+> >         indio_dev->name = ACPI_ALS_DEVICE_NAME;
+> >         indio_dev->info = &acpi_als_info;
+> > -       indio_dev->modes = INDIO_BUFFER_SOFTWARE;
+> > +       indio_dev->modes = INDIO_DIRECT_MODE;
+> >         indio_dev->channels = acpi_als_channels;
+> >         indio_dev->num_channels = ARRAY_SIZE(acpi_als_channels);
+> >
+> > -       buffer = devm_iio_kfifo_allocate(dev);
+> > -       if (!buffer)
+> > +       als->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+> > +                                          indio_dev->name,
+> > +                                          indio_dev->id);
+> > +       if (!als->trig)
+> >                 return -ENOMEM;
+> >
+> > -       iio_device_attach_buffer(indio_dev, buffer);
+> > +       iio_trigger_set_drvdata(als->trig, indio_dev);
+> > +       ret = devm_iio_trigger_register(dev, als->trig);
+> > +       if (ret)
+> > +               return ret;
+> > +       /*
+> > +        * Set hardware trigger by default to let events flow when
+> > +        * BIOS support notification.
+> > +        */
+> > +       indio_dev->trig = iio_trigger_get(als->trig);
+> > +
+> > +       ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> > +                                             iio_pollfunc_store_time,
+> > +                                             acpi_als_trigger_handler,
+> > +                                             NULL);
+> > +       if (ret)
+> > +               return ret;
+> >
+> >         return devm_iio_device_register(dev, indio_dev);
 > >  }
-> >   
+> > --
+> > 2.29.2.729.g45daf8777d-goog
+> >  
+> 
+> 
 

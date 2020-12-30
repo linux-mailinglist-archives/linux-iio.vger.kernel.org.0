@@ -2,189 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE6F2E786E
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Dec 2020 13:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C17BD2E7879
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Dec 2020 13:22:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbgL3MJg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Dec 2020 07:09:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45374 "EHLO mail.kernel.org"
+        id S1726555AbgL3MWE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Dec 2020 07:22:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726536AbgL3MJg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 30 Dec 2020 07:09:36 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0B17F20757;
-        Wed, 30 Dec 2020 12:08:53 +0000 (UTC)
-Date:   Wed, 30 Dec 2020 12:08:50 +0000
+        id S1726203AbgL3MWE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 30 Dec 2020 07:22:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 27FE72220B;
+        Wed, 30 Dec 2020 12:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609330884;
+        bh=lxNPnzdDyjWsyS+E0orDPDGd4R0X6oWe5CXCiakGWUs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MdYSn7V0atcJ5SjuK+YnCZgiE5cGJBUpcGalIHnrn7Z58qPKeK2t0oGEdg58X7Z/H
+         GdO7Edg9Y1sCM0a+0h8N+P31+KGpQwzuPxyaG8xisTnYeB9cHJdkOvA8qqxBvN+Iih
+         3lSobYSuawF71NYXbnBM0LQxdyfRBcOySIrKs/4j5T7So5W5Flm+nuhufMSoyxws3w
+         DU7hUaXhBD7SebYUUkPJrS9c+WvHn0ngaEejVVYydzwWLCZYL1ApBZpPau+vyDbf1T
+         hNhKYP06DGQH4PnBwGJAN2ecM1MQ1A5R7t9L/38tG17s8FnJg8BgaeWkyNcfIEjxg8
+         lJ+17jYO/uGow==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Denis CIOCCA <denis.ciocca@st.com>
-Subject: Re: [PATCH v3] iio: common: st_sensors: fix possible infinite loop
- in st_sensors_irq_thread
-Message-ID: <20201230120850.6dd32cfc@archlinux>
-In-Reply-To: <CAJ0CqmVJ9qMpLq-ZSVBFzQXSj3MNqeP5b4MjMpZh0b2H7mjXzg@mail.gmail.com>
-References: <c9ec69ed349e7200c779fd7a5bf04c1aaa2817aa.1607438132.git.lorenzo@kernel.org>
-        <20201213150447.119eec7c@archlinux>
-        <CAJ0CqmXmFvEEnt_fQa+H9Lrsu9d-kj+zTWgVXakBF8z2KqEQYA@mail.gmail.com>
-        <CAJ0CqmVJ9qMpLq-ZSVBFzQXSj3MNqeP5b4MjMpZh0b2H7mjXzg@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH] dt-bindings:iio:health:ti,afe4404: Fix wrong compatible value.
+Date:   Wed, 30 Dec 2020 12:19:19 +0000
+Message-Id: <20201230121919.238335-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Dec 2020 11:53:57 +0100
-Lorenzo Bianconi <lorenzo.bianconi@redhat.com> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> >  
-> > >
-> > > On Tue,  8 Dec 2020 15:36:40 +0100
-> > > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > >  
-> > > > Return a boolean value in st_sensors_new_samples_available routine in
-> > > > order to avoid an infinite loop in st_sensors_irq_thread if
-> > > > stat_drdy.addr is not defined or stat_drdy read fails
-> > > >
-> > > > Fixes: 90efe05562921 ("iio: st_sensors: harden interrupt handling")
-> > > > Reported-by: Jonathan Cameron <jic23@kernel.org>
-> > > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>  
-> > >
-> > > One trivial inline. Note I'm looking for an Ack form Dennis on this one
-> > > as it may result in a some breakage if any devices are using
-> > > edge interrupts.  
-> >
-> > Looking at the current code I am wondering if it is possible since we
-> > would have already triggered the infinite loop in this case. I think
-> > nobody is currently using edge interrupts if the status register is
-> > not available. What do you think?
-> >  
-> 
-> Hi Jonathan,
-> 
-> any news about this patch?
-> 
-> Regards,
-> Lorenzo
-It's a very minor gamble, so I've applied it to the fixes-togreg branch of
-iio.git.  Fingers crossed no one hits the corner case and has somehow been
-getting away with it.
+Cut and paste error.
 
-Thanks,
+Documentation/devicetree/bindings/iio/health/ti,afe4403.example.dt.yaml:
+heart_mon@0: 'spi-max-frequency' does not match any of the regexes:
+'pinctrl-[0-9]+'
 
-Jonathan
+Reported-by: Rob Herring <robh+dt@kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f494151b5eba ("dt-bindings:iio:health:ti,afe4404: txt to yaml conversion")
+---
+ Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> > Regards,
-> > Lorenzo
-> >  
-> > >
-> > > It's possible we would be better falling back to interrupt free support
-> > > in that case rather than failing to probe at all.
-> > > I think that would be best done by moving the check out to the
-> > > various per type drivers so we fail in the same fashion as no irq
-> > > provided + a warning.  
-> >
-> >  
-> > >
-> > > thanks,
-> > >
-> > > Jonathan
-> > >
-> > >  
-> > > > ---
-> > > > Changes since v2:
-> > > > - return -EOPNOTSUPP if the drv requests edge IRQ and the sensor does not support
-> > > >   status register
-> > > >
-> > > > Changes since v1:
-> > > > - return true if the sensor does not have stat_drdy register
-> > > > ---
-> > > >  .../common/st_sensors/st_sensors_trigger.c    | 31 ++++++++++---------
-> > > >  1 file changed, 17 insertions(+), 14 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > > > index 0507283bd4c1..2dbd2646e44e 100644
-> > > > --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > > > +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> > > > @@ -23,35 +23,31 @@
-> > > >   * @sdata: Sensor data.
-> > > >   *
-> > > >   * returns:
-> > > > - * 0 - no new samples available
-> > > > - * 1 - new samples available
-> > > > - * negative - error or unknown
-> > > > + * false - no new samples available or read error
-> > > > + * true - new samples available
-> > > >   */
-> > > > -static int st_sensors_new_samples_available(struct iio_dev *indio_dev,
-> > > > -                                         struct st_sensor_data *sdata)
-> > > > +static bool st_sensors_new_samples_available(struct iio_dev *indio_dev,
-> > > > +                                          struct st_sensor_data *sdata)
-> > > >  {
-> > > >       int ret, status;
-> > > >
-> > > >       /* How would I know if I can't check it? */
-> > > >       if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr)
-> > > > -             return -EINVAL;
-> > > > +             return true;
-> > > >
-> > > >       /* No scan mask, no interrupt */
-> > > >       if (!indio_dev->active_scan_mask)
-> > > > -             return 0;
-> > > > +             return false;
-> > > >
-> > > >       ret = regmap_read(sdata->regmap,
-> > > >                         sdata->sensor_settings->drdy_irq.stat_drdy.addr,
-> > > >                         &status);
-> > > >       if (ret < 0) {
-> > > >               dev_err(sdata->dev, "error checking samples available\n");
-> > > > -             return ret;
-> > > > +             return false;
-> > > >       }
-> > > >
-> > > > -     if (status & sdata->sensor_settings->drdy_irq.stat_drdy.mask)
-> > > > -             return 1;
-> > > > -
-> > > > -     return 0;
-> > > > +     return !!(status & sdata->sensor_settings->drdy_irq.stat_drdy.mask);  
-> > >
-> > > No need for the !! as you can rely on type conversion to a boolean.
-> > >  
-> > > >  }
-> > > >
-> > > >  /**
-> > > > @@ -180,9 +176,15 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
-> > > >
-> > > >       /* Tell the interrupt handler that we're dealing with edges */
-> > > >       if (irq_trig == IRQF_TRIGGER_FALLING ||
-> > > > -         irq_trig == IRQF_TRIGGER_RISING)
-> > > > +         irq_trig == IRQF_TRIGGER_RISING) {
-> > > > +             if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
-> > > > +                     dev_err(&indio_dev->dev,
-> > > > +                             "edge IRQ not supported w/o stat register.\n");
-> > > > +                     err = -EOPNOTSUPP;
-> > > > +                     goto iio_trigger_free;
-> > > > +             }
-> > > >               sdata->edge_irq = true;
-> > > > -     else
-> > > > +     } else {
-> > > >               /*
-> > > >                * If we're not using edges (i.e. level interrupts) we
-> > > >                * just mask off the IRQ, handle one interrupt, then
-> > > > @@ -190,6 +192,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
-> > > >                * interrupt handler top half again and start over.
-> > > >                */
-> > > >               irq_trig |= IRQF_ONESHOT;
-> > > > +     }
-> > > >
-> > > >       /*
-> > > >        * If the interrupt pin is Open Drain, by definition this  
-> > >  
-> 
+diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+index 3b4d6c48b8bb..c0e815d9999e 100644
+--- a/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
++++ b/Documentation/devicetree/bindings/iio/health/ti,afe4404.yaml
+@@ -11,7 +11,7 @@ maintainers:
+ 
+ properties:
+   compatible:
+-    const: ti,afe4403
++    const: ti,afe4404
+ 
+   reg:
+     maxItems: 1
+-- 
+2.30.0
 

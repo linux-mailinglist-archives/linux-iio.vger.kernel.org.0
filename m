@@ -2,99 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A152E7D31
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Dec 2020 00:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EC12E7DBA
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Dec 2020 03:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726277AbgL3Xew (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Dec 2020 18:34:52 -0500
-Received: from vern.gendns.com ([98.142.107.122]:36428 "EHLO vern.gendns.com"
+        id S1726352AbgLaCqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Dec 2020 21:46:04 -0500
+Received: from mga02.intel.com ([134.134.136.20]:59707 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbgL3Xew (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 30 Dec 2020 18:34:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=LsHXR2e4SeHb6nWLvgDlYAkW2jrz4NZvHBU+beGGqjk=; b=nxOVY/Upf6L9yB0fDOUuLdENEu
-        BOdqHHrdHdVimcpoi0AQghaNPDV8Hof/YwQUsMycf1Do8Z67fA/B0Op8weZbHDvlTbxuDiLHH6vTT
-        05DDFAb0CIT8mBUxzrRxqSD64RG/7guGbGOlpB46z/iTK4FC2y9qxjreD6xIOTljiBPSxpaZ6DYsK
-        k/p6zNPA+0xk1PFN6Ohur9iVsPjeN1ixfow1LPIzElqdsm9QtJiSkuJbndXKLgtXkf6nCSIHvg1a9
-        2uPXEFhM3qRbse7xFeW6fpvoUSnfj5z0G33dVVJ57q3JjfowJZvG8wriPL6htGLaRRp4COvxNu1Hn
-        E7vxSzGQ==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:43040 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1kukyn-0006qC-7b; Wed, 30 Dec 2020 18:34:09 -0500
-Subject: Re: [PATCH v7 0/5] Introduce the Counter character device interface
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>, jic23@kernel.org
-Cc:     kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
-        a.fatoum@pengutronix.de, kamel.bouhara@bootlin.com,
-        gwendal@chromium.org, alexandre.belloni@bootlin.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, syednwaris@gmail.com,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com
-References: <cover.1608935587.git.vilhelm.gray@gmail.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <28cfe031-8883-3160-8658-084c2d4260c0@lechnology.com>
-Date:   Wed, 30 Dec 2020 17:34:07 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726293AbgLaCqE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 30 Dec 2020 21:46:04 -0500
+IronPort-SDR: Ppqi4y5iiFW3Rg9qr0o9lYH5xVH4iq8SIDQ+OGiAFRCXHIf0CeB3lghcTCDNZO31xX8YLEHeRe
+ OmKrB2PBHmnA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9850"; a="163725975"
+X-IronPort-AV: E=Sophos;i="5.78,462,1599548400"; 
+   d="scan'208";a="163725975"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2020 18:45:23 -0800
+IronPort-SDR: LRoMqbE4Wmfn6dyeoD7Nvhl52/5s9XRZcjBpcUaD6UqAHe/pG3LY11uX3gZCieFjhTF2ONnc0t
+ Yh9m7jLEao8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,462,1599548400"; 
+   d="scan'208";a="348067911"
+Received: from host.sh.intel.com (HELO host) ([10.239.154.115])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Dec 2020 18:45:21 -0800
+Date:   Thu, 31 Dec 2020 10:46:40 +0800
+From:   "Ye, Xiang" <xiang.ye@intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] add custom hinge sensor support
+Message-ID: <20201231024640.GA5718@host>
+References: <20201215054444.9324-1-xiang.ye@intel.com>
+ <20201230120517.622d3351@archlinux>
 MIME-Version: 1.0
-In-Reply-To: <cover.1608935587.git.vilhelm.gray@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201230120517.622d3351@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/25/20 6:15 PM, William Breathitt Gray wrote:
-> Changes in v7:
->   - Implemented u32 enums; enum types can now be used directly for
->     callbacks and values
->   - Fixed refcount underflow bug
->   - Refactored all err check to check for err < 0; this should help
->     prevent future oversights on valid positive return valids
->   - Use mutex instead of raw_spin_lock in counter_chrdev_read();
->     kifo_to_user() can now safely sleep
->   - Renamed COUNTER_COMPONENT_DUMMY to COUNTER_COMPONENT_NONE to make
->     purpose more obvious
->   - Introduced a watch_validate() callback
->   - Consolidated the functionality to clear the watches to the
->     counter_clear_watches() function
->   - Reimplemented counter_push_event() as a void function; on error,
->     errno is returned via struct counter_event so that it can be handled
->     by userspace (because interrupt handlers can't do much for this)
->   - Renamed the events_config() callback to events_configure();
->     "events_config" could be confused as a read callback when this is
->     actually intended to configure the device for the requested events
->   - Reimplemented 104-QUAD-8 driver to use events_configure() and
->     watch_validate() callbacks; irq_trigger_enable sysfs attribute
->     removed because events_configure() now serves this purpose
+On Wed, Dec 30, 2020 at 12:05:17PM +0000, Jonathan Cameron wrote:
+> On Tue, 15 Dec 2020 13:44:41 +0800
+> Ye Xiang <xiang.ye@intel.com> wrote:
 > 
-> The changes for this revision were much simpler compared to the previous
-> revisions. I don't have any further questions for this patchset, so it's
-> really just a search for possible bugs or regressions now. Please test
-> and verify this patchset on your systems, and ACK appropriately.
+> > Here we register one iio device with three channels which present angle for
+> > hinge, keyboard and screen.
+> > 
+> > This driver works on devices with Intel integrated sensor hub, where
+> > hinge sensor is presented using a custom sensor usage id.
+> > 
+> > Here the angle is presented in degrees, which is converted to radians.
 > 
+> Other than those minor bits I'm happy to fix up in patch 2, this looks
+> good to me.  However, I'll need a Jiri Ack for the hid parts before
+> I apply it.  We are are early in this cycle, so no great rush given
+> the usual xmas slow down!
 
-I'll wait for the next round to give my Reviewed-By, Tested-By but I've
-rebased my WIP TI eQEP changes[1] on this and I haven't ran into any
-problems yet.
+Ok, let's wait Jiri to review the hid parts. Thanks for the help.
 
-[1]: https://github.com/dlech/linux/commits/bone-counter
-
+Thanks
+Ye Xiang
+> 
+> > 
+> > Changes since v3:
+> >   - hid-sensor-custom: remove sensor_inst::custom_pdev_exposed.
+> >   - hid-sensor-custom: use static buf, w_buf to avoid using goto in 
+> >     get_known_custom_sensor_index.
+> >   - hid-sensor-custom-intel-hinge: use devm_ prefix function instead.
+> >   - sysfs-bus-iio: put in_anglY_raw together with in_angl_raw.
+> > 
+> > Changes since v2:
+> >   - use 1 iio device instead of 3 for hinge sensor.
+> >   - use indexed channel instead of modified channel and added channel
+> >     labels.
+> >   - remove 2,3 patch in last version, add a document patch to describe the
+> >     hinge channels.
+> >   - hid-sensor-custom: use meaningful return value in 
+> >     get_known_custom_sensor_index and checked in call side.
+> >   - hid-sensor-ids.h: use HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(x) to 
+> >     define custom sensor value.
+> > 
+> > Changes since v1:
+> >   - fixed errors reported by lkp
+> > 
+> > Ye Xiang (3):
+> >   HID: hid-sensor-custom: Add custom sensor iio support
+> >   iio: hid-sensors: Add hinge sensor driver
+> >   iio:Documentation: Add documentation for hinge sensor channels
+> > 
+> >  Documentation/ABI/testing/sysfs-bus-iio       |  11 +
+> >  drivers/hid/hid-sensor-custom.c               | 143 +++++++
+> >  .../hid-sensors/hid-sensor-attributes.c       |   2 +
+> >  drivers/iio/position/Kconfig                  |  16 +
+> >  drivers/iio/position/Makefile                 |   1 +
+> >  .../position/hid-sensor-custom-intel-hinge.c  | 391 ++++++++++++++++++
+> >  include/linux/hid-sensor-ids.h                |  14 +
+> >  7 files changed, 578 insertions(+)
+> >  create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> > 
+> 

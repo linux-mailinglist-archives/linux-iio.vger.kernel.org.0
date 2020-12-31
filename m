@@ -2,105 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EC12E7DBA
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Dec 2020 03:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71CDE2E7ED5
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Dec 2020 10:02:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgLaCqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Dec 2020 21:46:04 -0500
-Received: from mga02.intel.com ([134.134.136.20]:59707 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbgLaCqE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 30 Dec 2020 21:46:04 -0500
-IronPort-SDR: Ppqi4y5iiFW3Rg9qr0o9lYH5xVH4iq8SIDQ+OGiAFRCXHIf0CeB3lghcTCDNZO31xX8YLEHeRe
- OmKrB2PBHmnA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9850"; a="163725975"
-X-IronPort-AV: E=Sophos;i="5.78,462,1599548400"; 
-   d="scan'208";a="163725975"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2020 18:45:23 -0800
-IronPort-SDR: LRoMqbE4Wmfn6dyeoD7Nvhl52/5s9XRZcjBpcUaD6UqAHe/pG3LY11uX3gZCieFjhTF2ONnc0t
- Yh9m7jLEao8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,462,1599548400"; 
-   d="scan'208";a="348067911"
-Received: from host.sh.intel.com (HELO host) ([10.239.154.115])
-  by fmsmga008.fm.intel.com with ESMTP; 30 Dec 2020 18:45:21 -0800
-Date:   Thu, 31 Dec 2020 10:46:40 +0800
-From:   "Ye, Xiang" <xiang.ye@intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] add custom hinge sensor support
-Message-ID: <20201231024640.GA5718@host>
-References: <20201215054444.9324-1-xiang.ye@intel.com>
- <20201230120517.622d3351@archlinux>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201230120517.622d3351@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S1726139AbgLaJCw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Dec 2020 04:02:52 -0500
+Received: from smtp21.cstnet.cn ([159.226.251.21]:42954 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726130AbgLaJCv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 31 Dec 2020 04:02:51 -0500
+X-Greylist: delayed 498 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Dec 2020 04:02:50 EST
+Received: from localhost.localdomain (unknown [124.16.141.241])
+        by APP-01 (Coremail) with SMTP id qwCowABHThaFke1f1bhfAA--.41536S2;
+        Thu, 31 Dec 2020 16:53:25 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     jic23@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        krzk@kernel.org, andy.shevchenko@gmail.com,
+        bobo.shaobowang@huawei.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: stm32-dfsdm: Remove redundant null check before clk_disable_unprepare
+Date:   Thu, 31 Dec 2020 08:53:22 +0000
+Message-Id: <20201231085322.24398-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: qwCowABHThaFke1f1bhfAA--.41536S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZFy8CFy8Aw1xGryrKr48Zwb_yoW3tFXEy3
+        WUu39rKF4aqrnay3y8WFn8Zr90vry8Zws3ur10yrWrGFy7Z3y7ZrWavr43Jw1UAanFya47
+        A3WDX34fAr1xCjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbV8YjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
+        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
+        A2jsIEc7CjxVAFwI0_Cr1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8Jr0_Cr
+        1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kI
+        c2xKxwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+        1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+        14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+        IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvE
+        x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
+        DU0xZFpf9x07jeApnUUUUU=
+X-Originating-IP: [124.16.141.241]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQkHA102Z1ecAwAAsA
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 30, 2020 at 12:05:17PM +0000, Jonathan Cameron wrote:
-> On Tue, 15 Dec 2020 13:44:41 +0800
-> Ye Xiang <xiang.ye@intel.com> wrote:
-> 
-> > Here we register one iio device with three channels which present angle for
-> > hinge, keyboard and screen.
-> > 
-> > This driver works on devices with Intel integrated sensor hub, where
-> > hinge sensor is presented using a custom sensor usage id.
-> > 
-> > Here the angle is presented in degrees, which is converted to radians.
-> 
-> Other than those minor bits I'm happy to fix up in patch 2, this looks
-> good to me.  However, I'll need a Jiri Ack for the hid parts before
-> I apply it.  We are are early in this cycle, so no great rush given
-> the usual xmas slow down!
+ecause clk_disable_unprepare() already checked NULL clock parameter,
+so the additional check is unnecessary, just remove it.
 
-Ok, let's wait Jiri to review the hid parts. Thanks for the help.
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ drivers/iio/adc/stm32-dfsdm-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks
-Ye Xiang
-> 
-> > 
-> > Changes since v3:
-> >   - hid-sensor-custom: remove sensor_inst::custom_pdev_exposed.
-> >   - hid-sensor-custom: use static buf, w_buf to avoid using goto in 
-> >     get_known_custom_sensor_index.
-> >   - hid-sensor-custom-intel-hinge: use devm_ prefix function instead.
-> >   - sysfs-bus-iio: put in_anglY_raw together with in_angl_raw.
-> > 
-> > Changes since v2:
-> >   - use 1 iio device instead of 3 for hinge sensor.
-> >   - use indexed channel instead of modified channel and added channel
-> >     labels.
-> >   - remove 2,3 patch in last version, add a document patch to describe the
-> >     hinge channels.
-> >   - hid-sensor-custom: use meaningful return value in 
-> >     get_known_custom_sensor_index and checked in call side.
-> >   - hid-sensor-ids.h: use HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(x) to 
-> >     define custom sensor value.
-> > 
-> > Changes since v1:
-> >   - fixed errors reported by lkp
-> > 
-> > Ye Xiang (3):
-> >   HID: hid-sensor-custom: Add custom sensor iio support
-> >   iio: hid-sensors: Add hinge sensor driver
-> >   iio:Documentation: Add documentation for hinge sensor channels
-> > 
-> >  Documentation/ABI/testing/sysfs-bus-iio       |  11 +
-> >  drivers/hid/hid-sensor-custom.c               | 143 +++++++
-> >  .../hid-sensors/hid-sensor-attributes.c       |   2 +
-> >  drivers/iio/position/Kconfig                  |  16 +
-> >  drivers/iio/position/Makefile                 |   1 +
-> >  .../position/hid-sensor-custom-intel-hinge.c  | 391 ++++++++++++++++++
-> >  include/linux/hid-sensor-ids.h                |  14 +
-> >  7 files changed, 578 insertions(+)
-> >  create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> > 
-> 
+diff --git a/drivers/iio/adc/stm32-dfsdm-core.c b/drivers/iio/adc/stm32-dfsdm-core.c
+index 42a7377704a4..bb925a11c8ae 100644
+--- a/drivers/iio/adc/stm32-dfsdm-core.c
++++ b/drivers/iio/adc/stm32-dfsdm-core.c
+@@ -117,8 +117,7 @@ static void stm32_dfsdm_clk_disable_unprepare(struct stm32_dfsdm *dfsdm)
+ {
+ 	struct dfsdm_priv *priv = to_stm32_dfsdm_priv(dfsdm);
+ 
+-	if (priv->aclk)
+-		clk_disable_unprepare(priv->aclk);
++	clk_disable_unprepare(priv->aclk);
+ 	clk_disable_unprepare(priv->clk);
+ }
+ 
+-- 
+2.17.1
+

@@ -2,370 +2,372 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 171152E87A6
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Jan 2021 16:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 370B42E92A3
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jan 2021 10:36:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbhABPAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Jan 2021 10:00:02 -0500
-Received: from www381.your-server.de ([78.46.137.84]:33912 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbhABPAB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jan 2021 10:00:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=3LWhcegitUfdr3DXe2SgfE/jywlVDPt5ijlhb+c1JE8=; b=hPYO3F+Q6+lntLHZfa5akKRkEv
-        ym8SNrP6SU+6Db9CIIjzH88FK+XRvUVMRPsOgU+THLUWTI8GTaBXMBHvriiNXf/duk/SROvuX2yxD
-        rF2GmI7gSEZ0/BvysPB1veUM8hg+sb5Ns2NzZlB3YcZyJFRTF0L8zZd70+OlEe6lR/qtIjD//PvgZ
-        YPMbzlzBz7XpMWUf3JZknGgBaEji53e6NENkMMBLbeihUi9fKAIAn4SOkUJyX0qCulUo3i21t3wLe
-        zgOHHxGlv2OnnaBguL4KmG/GmrHz+DcFYxgrYvaDj0imBA26qdOqq0PPughhWXse6nWnhLhZnGCMY
-        2wC8fWUw==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1kviN9-000D9A-R7; Sat, 02 Jan 2021 15:59:15 +0100
-Received: from [2001:a61:2bd0:3301:9e5c:8eff:fe01:8578]
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1kviN9-000FyD-Nm; Sat, 02 Jan 2021 15:59:15 +0100
-Subject: Re: [PATCH 3/3] iio: Add basic unit test for iio_format_value()
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Brendan Higgins <brendanhiggins@google.com>
-Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-References: <20201215191743.2725-1-lars@metafoo.de>
- <20201215191743.2725-3-lars@metafoo.de> <20201229181658.5aa5e8d4@archlinux>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <a856bbff-a292-b988-84e2-cfd3223f220e@metafoo.de>
-Date:   Sat, 2 Jan 2021 15:59:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1726253AbhADJe2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jan 2021 04:34:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41926 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726124AbhADJe2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jan 2021 04:34:28 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98BDCC061574
+        for <linux-iio@vger.kernel.org>; Mon,  4 Jan 2021 01:33:47 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id h22so62874375lfu.2
+        for <linux-iio@vger.kernel.org>; Mon, 04 Jan 2021 01:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sp2ZVVsfaRn48/FhBoaoMwI8s72Iim60HIepCXCqUd0=;
+        b=EoSoBjXHKV33QXrS65xXQT0RSqjSjwTnNxzldDSo0hu2nRScEvP8o+tQlz0zhorHJU
+         raQkPU4N+O8uP/XNRFqx9nIV05dScIhm/xiFGwkB86RNgppiFdLjtmBhbGnOd+xzLs79
+         lr5fbjB++iJVRxgldiFtjOm/KmYnpHtCavLYQTVeCj3fq/WvCe2QvGNAiBRTptfTTnkc
+         jzt7b00qxYKXU6mkaOXVURVJ8l4oRtTWF6sqdhV9QQczEJas/a1gsroHrih+NzkY8I6J
+         nVZY36xpjC3o4kNffXP7sfJvyt3NHE1ZPu7itIZWgM93CNJdbh3SDZqoz25SEnGUq//h
+         tJNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sp2ZVVsfaRn48/FhBoaoMwI8s72Iim60HIepCXCqUd0=;
+        b=cqToj9KvSAoGJJjyGmcmMQxR8VnxgKBpN3ksSr3SS2oypcTO9OoYoOfpH71kk1eMEe
+         VFLSNR54o7yI11TCCYXYQ5QeI8m5jNuUgVLB1ycf8ePHeOhwS8kNLzXa3HMDraZWXJ9p
+         BCY4hvHUGsmu+Fp2ZbS9aK6vkB2Sw8luD9uiFs5mt1FtNnUTfJXZBgOoe51XxGi78d35
+         6NkPEulIxiKfWRWKAU49FZbQrsck6S8KlL3HBKPRtJ5cHu+p2Qzl71BFYKSjYJfKFRvV
+         x5xZPYXHN5Q4w6Wc6K1uMvQYW1mmndBUWjkkftphquuTGCLiqvoC97oZX+I0fEEjdMIM
+         zhvg==
+X-Gm-Message-State: AOAM530CT3JvtAJSO+sU/qsy4z6SyNhdxLKQlOxxUIJlD1uLy/vvRx7J
+        R+1QM7mSk9Ou0dzmPCsuAwKBaRXhYZfZZg==
+X-Google-Smtp-Source: ABdhPJx0vk3dGfUUqxvExVYAxjJ3DEG6DFIe3wrs3/mJ+TqV79yXsU9+dPQfduEHNfmxHORoSKe16w==
+X-Received: by 2002:a05:651c:2101:: with SMTP id a1mr29304029ljq.322.1609752825999;
+        Mon, 04 Jan 2021 01:33:45 -0800 (PST)
+Received: from localhost.localdomain (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id o21sm7234066lfc.153.2021.01.04.01.33.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Jan 2021 01:33:45 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
+Subject: [PATCH] iio: st-sensors: Update ST Sensor bindings
+Date:   Mon,  4 Jan 2021 10:33:43 +0100
+Message-Id: <20210104093343.2134410-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20201229181658.5aa5e8d4@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.4/26036/Sat Jan  2 13:37:26 2021)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/29/20 7:16 PM, Jonathan Cameron wrote:
-> On Tue, 15 Dec 2020 20:17:43 +0100
-> Lars-Peter Clausen <lars@metafoo.de> wrote:
->
->> The IIO core provides a function to do formatting of fixedpoint numbers.
->>
->> In the past there have been some issues with the implementation of the
->> function where for example negative numbers were not handled correctly.
->>
->> Introduce a basic unit test based on kunit that tests the function and
->> ensures that the generated output matches the expected output.
->>
->> This gives us some confidence that future modifications to the function
->> implementation will not break ABI compatibility.
->>
->> To run the unit tests follow the kunit documentation and add
->>
->>    CONFIG_IIO=y
->>    CONFIG_IIO_TEST_FORMAT=y
->>
->> to the .kunitconfig and run
->>
->>    > ./tools/testing/kunit/kunit.py run
->>    Configuring KUnit Kernel ...
->>    Building KUnit Kernel ...
->>    Starting KUnit Kernel ...
->>    ============================================================
->>    ======== [PASSED] iio-format ========
->>    [PASSED] iio_test_iio_format_value_integer
->>    [PASSED] iio_test_iio_format_value_fixedpoint
->>    [PASSED] iio_test_iio_format_value_fractional
->>    [PASSED] iio_test_iio_format_value_fractional_log2
->>    [PASSED] iio_test_iio_format_value_multiple
->>    ============================================================
->>    Testing complete. 21 tests run. 0 failed. 0 crashed.
->>    Elapsed time: 8.242s total, 0.001s configuring, 3.865s building, 0.000s running
->>
->> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Series looks good to me, but I wonder.  What is convention wrt to
-> MAINTAINERS / Acks etc for self tests?
+This adjusts the ST Sensor bindings with the more fine-grained
+syntax checks that were proposed late in the last kernel cycle
+and colliding with parallel work.
 
-Let's ask Brendan.
+Cc: devicetree@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ .../bindings/iio/st,st-sensors.yaml           | 252 ++++++++++++------
+ 1 file changed, 174 insertions(+), 78 deletions(-)
 
->
-> Jonathan
->
->
->> ---
->>   drivers/iio/Kconfig                |   1 +
->>   drivers/iio/Makefile               |   1 +
->>   drivers/iio/test/Kconfig           |   9 ++
->>   drivers/iio/test/Makefile          |   7 +
->>   drivers/iio/test/iio-test-format.c | 198 +++++++++++++++++++++++++++++
->>   5 files changed, 216 insertions(+)
->>   create mode 100644 drivers/iio/test/Kconfig
->>   create mode 100644 drivers/iio/test/Makefile
->>   create mode 100644 drivers/iio/test/iio-test-format.c
->>
->> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
->> index 267553386c71..b35e0c33b5e2 100644
->> --- a/drivers/iio/Kconfig
->> +++ b/drivers/iio/Kconfig
->> @@ -85,6 +85,7 @@ source "drivers/iio/light/Kconfig"
->>   source "drivers/iio/magnetometer/Kconfig"
->>   source "drivers/iio/multiplexer/Kconfig"
->>   source "drivers/iio/orientation/Kconfig"
->> +source "drivers/iio/test/Kconfig"
->>   if IIO_TRIGGER
->>      source "drivers/iio/trigger/Kconfig"
->>   endif #IIO_TRIGGER
->> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
->> index 1712011c0f4a..2561325aaa74 100644
->> --- a/drivers/iio/Makefile
->> +++ b/drivers/iio/Makefile
->> @@ -38,4 +38,5 @@ obj-y += pressure/
->>   obj-y += proximity/
->>   obj-y += resolver/
->>   obj-y += temperature/
->> +obj-y += test/
->>   obj-y += trigger/
->> diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
->> new file mode 100644
->> index 000000000000..679a7794af20
->> --- /dev/null
->> +++ b/drivers/iio/test/Kconfig
->> @@ -0,0 +1,9 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +#
->> +# Industrial I/O subsystem unit tests configuration
->> +#
->> +
->> +# Keep in alphabetical order
->> +config IIO_TEST_FORMAT
->> +        bool "Test IIO formatting functions"
->> +        depends on KUNIT=y
->> diff --git a/drivers/iio/test/Makefile b/drivers/iio/test/Makefile
->> new file mode 100644
->> index 000000000000..f1099b495301
->> --- /dev/null
->> +++ b/drivers/iio/test/Makefile
->> @@ -0,0 +1,7 @@
->> +# SPDX-License-Identifier: GPL-2.0
->> +#
->> +# Makefile for the industrial I/O unit tests.
->> +#
->> +
->> +# Keep in alphabetical order
->> +obj-$(CONFIG_IIO_TEST_FORMAT) += iio-test-format.o
->> diff --git a/drivers/iio/test/iio-test-format.c b/drivers/iio/test/iio-test-format.c
->> new file mode 100644
->> index 000000000000..55a0cfe9181d
->> --- /dev/null
->> +++ b/drivers/iio/test/iio-test-format.c
->> @@ -0,0 +1,198 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/* Unit tests for IIO formatting functions
->> + *
->> + * Copyright (c) 2020 Lars-Peter Clausen <lars@metafoo.de>
->> + */
->> +
->> +#include <kunit/test.h>
->> +#include <linux/iio/iio.h>
->> +
->> +#define IIO_TEST_FORMAT_EXPECT_EQ(_test, _buf, _ret, _val) do { \
->> +		KUNIT_EXPECT_EQ(_test, (int)strlen(_buf), _ret); \
->> +		KUNIT_EXPECT_STREQ(_test, (_buf), (_val)); \
->> +	} while (0)
->> +
->> +static void iio_test_iio_format_value_integer(struct kunit *test)
->> +{
->> +	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
->> +	int val;
->> +	int ret;
->> +
->> +	val = 42;
->> +	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "42\n");
->> +
->> +	val = -23;
->> +	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-23\n");
->> +
->> +	val = 0;
->> +	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0\n");
->> +
->> +	val = INT_MAX;
->> +	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "2147483647\n");
->> +
->> +	val = INT_MIN;
->> +	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-2147483648\n");
->> +}
->> +
->> +static void iio_test_iio_format_value_fixedpoint(struct kunit *test)
->> +{
->> +	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
->> +	int values[2];
->> +	int ret;
->> +
->> +	/* positive >= 1 */
->> +	values[0] = 1;
->> +	values[1] = 10;
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010 dB\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000000010\n");
->> +
->> +	/* positive < 1 */
->> +	values[0] = 0;
->> +	values[1] = 12;
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012 dB\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000012\n");
->> +
->> +	/* negative <= -1 */
->> +	values[0] = -1;
->> +	values[1] = 10;
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010 dB\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000000010\n");
->> +
->> +	/* negative > -1 */
->> +	values[0] = 0;
->> +	values[1] = -123;
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123 dB\n");
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000123\n");
->> +}
->> +
->> +static void iio_test_iio_format_value_fractional(struct kunit *test)
->> +{
->> +	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
->> +	int values[2];
->> +	int ret;
->> +
->> +	/* positive < 1 */
->> +	values[0] = 1;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.100000000\n");
->> +
->> +	/* positive >= 1 */
->> +	values[0] = 100;
->> +	values[1] = 3;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "33.333333333\n");
->> +
->> +	/* negative > -1 */
->> +	values[0] = -1;
->> +	values[1] = 1000000000;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000001\n");
->> +
->> +	/* negative <= -1 */
->> +	values[0] = -200;
->> +	values[1] = 3;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-66.666666666\n");
->> +
->> +	/* Zero */
->> +	values[0] = 0;
->> +	values[1] = -10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
->> +}
->> +
->> +static void iio_test_iio_format_value_fractional_log2(struct kunit *test)
->> +{
->> +	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
->> +	int values[2];
->> +	int ret;
->> +
->> +	/* positive < 1 */
->> +	values[0] = 123;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.120117187\n");
->> +
->> +	/* positive >= 1 */
->> +	values[0] = 1234567;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1205.631835937\n");
->> +
->> +	/* negative > -1 */
->> +	values[0] = -123;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.120117187\n");
->> +
->> +	/* negative <= -1 */
->> +	values[0] = -1234567;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1205.631835937\n");
->> +
->> +	/* Zero */
->> +	values[0] = 0;
->> +	values[1] = 10;
->> +	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
->> +}
->> +
->> +static void iio_test_iio_format_value_multiple(struct kunit *test)
->> +{
->> +	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
->> +	int values[] = {1, -2, 3, -4, 5};
->> +	int ret;
->> +
->> +	ret = iio_format_value(buf, IIO_VAL_INT_MULTIPLE,
->> +			       ARRAY_SIZE(values), values);
->> +	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1 -2 3 -4 5 \n");
->> +}
->> +
->> +static struct kunit_case iio_format_test_cases[] = {
->> +		KUNIT_CASE(iio_test_iio_format_value_integer),
->> +		KUNIT_CASE(iio_test_iio_format_value_fixedpoint),
->> +		KUNIT_CASE(iio_test_iio_format_value_fractional),
->> +		KUNIT_CASE(iio_test_iio_format_value_fractional_log2),
->> +		KUNIT_CASE(iio_test_iio_format_value_multiple),
->> +		{}
->> +};
->> +
->> +static struct kunit_suite iio_format_test_suite = {
->> +	.name = "iio-format",
->> +	.test_cases = iio_format_test_cases,
->> +};
->> +kunit_test_suite(iio_format_test_suite);
-
+diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+index db291a9390b7..aba8dc4275a9 100644
+--- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
++++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+@@ -6,7 +6,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: STMicroelectronics MEMS sensors
+ 
+-description: |
++description: The STMicroelectronics sensor devices are pretty straight-forward
++  I2C or SPI devices, all sharing the same device tree descriptions no matter
++  what type of sensor it is.
+   Note that whilst this covers many STMicro MEMs sensors, some more complex
+   IMUs need their own bindings.
+   The STMicroelectronics sensor devices are pretty straight-forward I2C or
+@@ -15,89 +17,181 @@ description: |
+ 
+ maintainers:
+   - Denis Ciocca <denis.ciocca@st.com>
++  - Linus Walleij <linus.walleij@linaro.org>
+ 
+ properties:
+   compatible:
+-    description: |
+-      Some values are deprecated.
+-      st,lis3lv02d (deprecated, use st,lis3lv02dl-accel)
+-      st,lis302dl-spi (deprecated, use st,lis3lv02dl-accel)
+-    enum:
+-        # Accelerometers
+-      - st,lis3lv02d
+-      - st,lis302dl-spi
+-      - st,lis3lv02dl-accel
+-      - st,lsm303dlh-accel
+-      - st,lsm303dlhc-accel
+-      - st,lis3dh-accel
+-      - st,lsm330d-accel
+-      - st,lsm330dl-accel
+-      - st,lsm330dlc-accel
+-      - st,lis331dl-accel
+-      - st,lis331dlh-accel
+-      - st,lsm303dl-accel
+-      - st,lsm303dlm-accel
+-      - st,lsm330-accel
+-      - st,lsm303agr-accel
+-      - st,lis2dh12-accel
+-      - st,h3lis331dl-accel
+-      - st,lng2dm-accel
+-      - st,lis3l02dq
+-      - st,lis2dw12
+-      - st,lis3dhh
+-      - st,lis3de
+-      - st,lis2de12
+-      - st,lis2hh12
+-        # Gyroscopes
+-      - st,l3g4200d-gyro
+-      - st,lsm330d-gyro
+-      - st,lsm330dl-gyro
+-      - st,lsm330dlc-gyro
+-      - st,l3gd20-gyro
+-      - st,l3gd20h-gyro
+-      - st,l3g4is-gyro
+-      - st,lsm330-gyro
+-      - st,lsm9ds0-gyro
+-        # Magnetometers
+-      - st,lsm303agr-magn
+-      - st,lsm303dlh-magn
+-      - st,lsm303dlhc-magn
+-      - st,lsm303dlm-magn
+-      - st,lis3mdl-magn
+-      - st,lis2mdl
+-      - st,lsm9ds1-magn
+-        # Pressure sensors
+-      - st,lps001wp-press
+-      - st,lps25h-press
+-      - st,lps331ap-press
+-      - st,lps22hb-press
+-      - st,lps33hw
+-      - st,lps35hw
+-      - st,lps22hh
++    oneOf:
++      - description: STMicroelectronics Accelerometers
++        enum:
++          - st,h3lis331dl-accel
++          - st,lis2de12
++          - st,lis2dw12
++          - st,lis2hh12
++          - st,lis2dh12-accel
++          - st,lis331dl-accel
++          - st,lis331dlh-accel
++          - st,lis3de
++          - st,lis3dh-accel
++          - st,lis3dhh
++          - st,lis3l02dq
++          - st,lis3lv02dl-accel
++          - st,lng2dm-accel
++          - st,lsm303agr-accel
++          - st,lsm303dl-accel
++          - st,lsm303dlh-accel
++          - st,lsm303dlhc-accel
++          - st,lsm303dlm-accel
++          - st,lsm330-accel
++          - st,lsm330d-accel
++          - st,lsm330dl-accel
++          - st,lsm330dlc-accel
++      - description: STMicroelectronics Gyroscopes
++        enum:
++          - st,l3g4200d-gyro
++          - st,l3g4is-gyro
++          - st,l3gd20-gyro
++          - st,l3gd20h-gyro
++          - st,lsm330-gyro
++          - st,lsm330d-gyro
++          - st,lsm330dl-gyro
++          - st,lsm330dlc-gyro
++          - st,lsm9ds0-gyro
++      - description: STMicroelectronics Magnetometers
++        enum:
++          - st,lis2mdl
++          - st,lis3mdl-magn
++          - st,lsm303agr-magn
++          - st,lsm303dlh-magn
++          - st,lsm303dlhc-magn
++          - st,lsm303dlm-magn
++          - st,lsm9ds1-magn
++      - description: STMicroelectronics Pressure Sensors
++        enum:
++          - st,lps001wp-press
++          - st,lps22hb-press
++          - st,lps22hh
++          - st,lps25h-press
++          - st,lps331ap-press
++          - st,lps33hw
++          - st,lps35hw
++      - description: Deprecated bindings
++        enum:
++          - st,lis302dl-spi
++          - st,lis3lv02d
++        deprecated: true
+ 
+   reg:
+     maxItems: 1
+ 
+   interrupts:
++    description: interrupt line(s) connected to the DRDY line(s) and/or the
++      Intertial interrupt lines INT1 and INT2 if these exist. This means up to
++      three interrupts, and the DRDY must be the first one if it exists on
++      the package. The trigger edge of the interrupts is sometimes software
++      configurable in the hardware so the operating system should parse this
++      flag and set up the trigger edge as indicated in the device tree.
+     minItems: 1
++    maxItems: 2
+ 
+   vdd-supply: true
+   vddio-supply: true
+ 
+   st,drdy-int-pin:
+     $ref: /schemas/types.yaml#/definitions/uint32
+-    description:
+-      Some sensors have multiple possible pins via which they can provide
+-      a data ready interrupt.  This selects which one.
+-    enum:
+-      - 1
+-      - 2
++    maxItems: 1
++    description: the pin on the package that will be used to signal
++      "data ready" (valid values 1 or 2). This property is not configurable
++      on all sensors.
++    items:
++      minimum: 1
++      maximum: 2
+ 
+   drive-open-drain:
+-    $ref: /schemas/types.yaml#/definitions/flag
+-    description: |
+-      The interrupt/data ready line will be configured as open drain, which
+-      is useful if several sensors share the same interrupt line.
++    type: boolean
++    description: the interrupt/data ready line will be configured
++      as open drain, which is useful if several sensors share the same
++      interrupt line. (This binding is taken from pinctrl.)
++
++  mount-matrix:
++    description: an optional 3x3 mounting rotation matrix.
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          enum:
++            # These have no interrupts
++            - st,lps001wp
++    then:
++      properties:
++        interrupts: false
++        st,drdy-int-pin: false
++        drive-open-drain: false
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            # These have only DRDY
++            - st,lis2mdl
++            - st,lis3l02dq
++            - st,lis3lv02dl-accel
++            - st,lps22hb-press
++            - st,lps22hh
++            - st,lps25h-press
++            - st,lps33hw
++            - st,lps35hw
++            - st,lsm303agr-magn
++            - st,lsm303dlh-magn
++            - st,lsm303dlhc-magn
++            - st,lsm303dlm-magn
++    then:
++      properties:
++        interrupts:
++          maxItems: 1
++        st,drdy-int-pin: false
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            # Two intertial interrupts i.e. accelerometer/gyro interrupts
++            - st,h3lis331dl-accel
++            - st,l3g4200d-gyro
++            - st,l3g4is-gyro
++            - st,l3gd20-gyro
++            - st,l3gd20h-gyro
++            - st,lis2de12
++            - st,lis2dw12
++            - st,lis2hh12
++            - st,lis2dh12-accel
++            - st,lis331dl-accel
++            - st,lis331dlh-accel
++            - st,lis3de
++            - st,lis3dh-accel
++            - st,lis3dhh
++            - st,lis3mdl-magn
++            - st,lng2dm-accel
++            - st,lps331ap-press
++            - st,lsm303agr-accel
++            - st,lsm303dlh-accel
++            - st,lsm303dlhc-accel
++            - st,lsm303dlm-accel
++            - st,lsm330-accel
++            - st,lsm330-gyro
++            - st,lsm330d-accel
++            - st,lsm330d-gyro
++            - st,lsm330dl-accel
++            - st,lsm330dl-gyro
++            - st,lsm330dlc-accel
++            - st,lsm330dlc-gyro
++            - st,lsm9ds0-gyro
++            - st,lsm9ds1-magn
++    then:
++      properties:
++        interrupts:
++          maxItems: 2
+ 
+ required:
+   - compatible
+@@ -108,16 +202,18 @@ additionalProperties: false
+ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
+     i2c {
+-        #address-cells = <1>;
+-        #size-cells = <0>;
+-        accelerometer@1d {
+-            compatible = "st,lis3lv02dl-accel";
+-            reg = <0x1d>;
+-            interrupt-parent = <&gpio2>;
+-            interrupts = <18 IRQ_TYPE_EDGE_RISING>;
+-            pinctrl-0 = <&lis3lv02dl_nhk_mode>;
+-            pinctrl-names = "default";
+-        };
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      accelerometer@1c {
++        compatible = "st,lis331dl-accel";
++        reg = <0x1c>;
++        st,drdy-int-pin = <1>;
++        vdd-supply = <&ldo1>;
++        vddio-supply = <&ldo2>;
++        interrupt-parent = <&gpio>;
++        interrupts = <18 IRQ_TYPE_EDGE_RISING>, <19 IRQ_TYPE_EDGE_RISING>;
++      };
+     };
+-...
+-- 
+2.29.2
 

@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86A792EA5DB
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jan 2021 08:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ADB42EA5E6
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jan 2021 08:23:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725730AbhAEHVn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jan 2021 02:21:43 -0500
+        id S1726338AbhAEHV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jan 2021 02:21:59 -0500
 Received: from mga02.intel.com ([134.134.136.20]:49499 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725290AbhAEHVn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 5 Jan 2021 02:21:43 -0500
-IronPort-SDR: y/qn43MVI1qJ9R/K5EbOqMcMHC2hA8URLLi3NYRgjWkpSvyHr/irMsXNS/Ope0AeDcGFOwMCvO
- z2M0ZkVD9nyQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="164137783"
+        id S1726330AbhAEHV7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 5 Jan 2021 02:21:59 -0500
+IronPort-SDR: 2Hy1NyMHIrBi62zgJ1ocCuTE7Tyaq03M5K9YFtkxMTTkz66OH0U+T2YkMOB16D6JYLEt7d1tv9
+ S2y5A2nvCpzQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="164137785"
 X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="164137783"
+   d="scan'208";a="164137785"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 23:21:01 -0800
-IronPort-SDR: sW5RbGO75vd3WpgH4YHzP/G7BeLf237flA0BMqfzXD64fkc2JUKoNFKE+BvFyqOA9j4fjXauxt
- jQD+qChEmI3Q==
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 23:21:03 -0800
+IronPort-SDR: +hyeSHcF5QgVABrr0JvHXvOKyjVE0gitbCQdSXU/BjwLQC0YjvFGzKslGDupceTnipVB6E5/g1
+ CD43JLbvNLPg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.78,476,1599548400"; 
-   d="scan'208";a="350260611"
+   d="scan'208";a="350260620"
 Received: from host.sh.intel.com ([10.239.154.115])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Jan 2021 23:20:59 -0800
+  by fmsmga008.fm.intel.com with ESMTP; 04 Jan 2021 23:21:02 -0800
 From:   Ye Xiang <xiang.ye@intel.com>
 To:     jikos@kernel.org, jic23@kernel.org,
         srinivas.pandruvada@linux.intel.com
 Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH v3 4/6] iio: hid-sensor-magn-3d: Add timestamp channel
-Date:   Tue,  5 Jan 2021 15:22:01 +0800
-Message-Id: <20210105072203.5701-5-xiang.ye@intel.com>
+Subject: [PATCH v3 5/6] iio: hid-sensor-incl-3d: Add timestamp channel
+Date:   Tue,  5 Jan 2021 15:22:02 +0800
+Message-Id: <20210105072203.5701-6-xiang.ye@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210105072203.5701-1-xiang.ye@intel.com>
 References: <20210105072203.5701-1-xiang.ye@intel.com>
@@ -46,124 +46,103 @@ unit of timestamp is nanosecond.
 
 Signed-off-by: Ye Xiang <xiang.ye@intel.com>
 ---
- drivers/iio/magnetometer/hid-sensor-magn-3d.c | 48 ++++++++++++-------
- 1 file changed, 30 insertions(+), 18 deletions(-)
+ drivers/iio/orientation/hid-sensor-incl-3d.c | 43 ++++++++++++--------
+ 1 file changed, 27 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-index cacbd053b2c6..b79c8a5a98f9 100644
---- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-+++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-@@ -24,6 +24,7 @@ enum magn_3d_channel {
- 	CHANNEL_SCAN_INDEX_NORTH_TRUE_TILT_COMP,
- 	CHANNEL_SCAN_INDEX_NORTH_MAGN,
- 	CHANNEL_SCAN_INDEX_NORTH_TRUE,
-+	CHANNEL_SCAN_INDEX_TIMESTAMP,
- 	MAGN_3D_CHANNEL_MAX,
+diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
+index df2fe91e8117..3baa52fbb426 100644
+--- a/drivers/iio/orientation/hid-sensor-incl-3d.c
++++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
+@@ -24,15 +24,21 @@ enum incl_3d_channel {
+ 	INCLI_3D_CHANNEL_MAX,
  };
  
-@@ -47,6 +48,7 @@ struct magn_3d_state {
- 
- 	struct common_attributes magn_flux_attr;
- 	struct common_attributes rot_attr;
++#define CHANNEL_SCAN_INDEX_TIMESTAMP INCLI_3D_CHANNEL_MAX
++
+ struct incl_3d_state {
+ 	struct hid_sensor_hub_callbacks callbacks;
+ 	struct hid_sensor_common common_attributes;
+ 	struct hid_sensor_hub_attribute_info incl[INCLI_3D_CHANNEL_MAX];
+-	u32 incl_val[INCLI_3D_CHANNEL_MAX];
++	struct {
++		u32 incl_val[INCLI_3D_CHANNEL_MAX];
++		u64 timestamp __aligned(8);
++	} scan;
+ 	int scale_pre_decml;
+ 	int scale_post_decml;
+ 	int scale_precision;
+ 	int value_offset;
 +	s64 timestamp;
  };
  
- static const u32 magn_3d_addresses[MAGN_3D_CHANNEL_MAX] = {
-@@ -57,6 +59,7 @@ static const u32 magn_3d_addresses[MAGN_3D_CHANNEL_MAX] = {
- 	HID_USAGE_SENSOR_ORIENT_COMP_TRUE_NORTH,
- 	HID_USAGE_SENSOR_ORIENT_MAGN_NORTH,
- 	HID_USAGE_SENSOR_ORIENT_TRUE_NORTH,
-+	HID_USAGE_SENSOR_TIME_TIMESTAMP,
- };
- 
- static const u32 magn_3d_sensitivity_addresses[] = {
-@@ -132,7 +135,8 @@ static const struct iio_chan_spec magn_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SCALE) |
+ static const u32 incl_3d_addresses[INCLI_3D_CHANNEL_MAX] = {
+@@ -81,7 +87,8 @@ static const struct iio_chan_spec incl_3d_channels[] = {
  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
  		BIT(IIO_CHAN_INFO_HYSTERESIS),
+ 		.scan_index = CHANNEL_SCAN_INDEX_Z,
 -	}
 +	},
-+	IIO_CHAN_SOFT_TIMESTAMP(7)
++	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP),
  };
  
  /* Adjust channel real bits based on report descriptor */
-@@ -281,13 +285,6 @@ static const struct iio_info magn_3d_info = {
- 	.write_raw = &magn_3d_write_raw,
+@@ -186,13 +193,6 @@ static const struct iio_info incl_3d_info = {
+ 	.write_raw = &incl_3d_write_raw,
  };
  
 -/* Function to push data to buffer */
--static void hid_sensor_push_data(struct iio_dev *indio_dev, const void *data)
+-static void hid_sensor_push_data(struct iio_dev *indio_dev, u8 *data, int len)
 -{
 -	dev_dbg(&indio_dev->dev, "hid_sensor_push_data\n");
--	iio_push_to_buffers(indio_dev, data);
+-	iio_push_to_buffers(indio_dev, (u8 *)data);
 -}
 -
  /* Callback handler to send event after all samples are received and captured */
- static int magn_3d_proc_event(struct hid_sensor_hub_device *hsdev,
+ static int incl_3d_proc_event(struct hid_sensor_hub_device *hsdev,
  				unsigned usage_id,
-@@ -297,8 +294,15 @@ static int magn_3d_proc_event(struct hid_sensor_hub_device *hsdev,
- 	struct magn_3d_state *magn_state = iio_priv(indio_dev);
+@@ -202,10 +202,16 @@ static int incl_3d_proc_event(struct hid_sensor_hub_device *hsdev,
+ 	struct incl_3d_state *incl_state = iio_priv(indio_dev);
  
- 	dev_dbg(&indio_dev->dev, "magn_3d_proc_event\n");
--	if (atomic_read(&magn_state->magn_flux_attributes.data_ready))
--		hid_sensor_push_data(indio_dev, magn_state->iio_vals);
-+	if (atomic_read(&magn_state->magn_flux_attributes.data_ready)) {
-+		if (!magn_state->timestamp)
-+			magn_state->timestamp = iio_get_time_ns(indio_dev);
+ 	dev_dbg(&indio_dev->dev, "incl_3d_proc_event\n");
+-	if (atomic_read(&incl_state->common_attributes.data_ready))
+-		hid_sensor_push_data(indio_dev,
+-				(u8 *)incl_state->incl_val,
+-				sizeof(incl_state->incl_val));
++	if (atomic_read(&incl_state->common_attributes.data_ready)) {
++		if (!incl_state->timestamp)
++			incl_state->timestamp = iio_get_time_ns(indio_dev);
 +
 +		iio_push_to_buffers_with_timestamp(indio_dev,
-+						   magn_state->iio_vals,
-+						   magn_state->timestamp);
-+		magn_state->timestamp = 0;
++						   &incl_state->scan,
++						   incl_state->timestamp);
++
++		incl_state->timestamp = 0;
 +	}
  
  	return 0;
  }
-@@ -329,6 +333,11 @@ static int magn_3d_capture_sample(struct hid_sensor_hub_device *hsdev,
- 		offset = (usage_id - HID_USAGE_SENSOR_ORIENT_COMP_MAGN_NORTH)
- 				+ CHANNEL_SCAN_INDEX_NORTH_MAGN_TILT_COMP;
+@@ -222,13 +228,18 @@ static int incl_3d_capture_sample(struct hid_sensor_hub_device *hsdev,
+ 
+ 	switch (usage_id) {
+ 	case HID_USAGE_SENSOR_ORIENT_TILT_X:
+-		incl_state->incl_val[CHANNEL_SCAN_INDEX_X] = *(u32 *)raw_data;
++		incl_state->scan.incl_val[CHANNEL_SCAN_INDEX_X] = *(u32 *)raw_data;
  	break;
+ 	case HID_USAGE_SENSOR_ORIENT_TILT_Y:
+-		incl_state->incl_val[CHANNEL_SCAN_INDEX_Y] = *(u32 *)raw_data;
++		incl_state->scan.incl_val[CHANNEL_SCAN_INDEX_Y] = *(u32 *)raw_data;
+ 	break;
+ 	case HID_USAGE_SENSOR_ORIENT_TILT_Z:
+-		incl_state->incl_val[CHANNEL_SCAN_INDEX_Z] = *(u32 *)raw_data;
++		incl_state->scan.incl_val[CHANNEL_SCAN_INDEX_Z] = *(u32 *)raw_data;
++	break;
 +	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
-+		magn_state->timestamp =
-+			hid_sensor_convert_timestamp(&magn_state->magn_flux_attributes,
++		incl_state->timestamp =
++			hid_sensor_convert_timestamp(&incl_state->common_attributes,
 +						     *(s64 *)raw_data);
-+		return ret;
+ 	break;
  	default:
- 		return -EINVAL;
- 	}
-@@ -394,9 +403,10 @@ static int magn_3d_parse_report(struct platform_device *pdev,
- 		return -ENOMEM;
- 	}
- 
--	st->iio_vals = devm_kcalloc(&pdev->dev, attr_count,
--				sizeof(u32),
--				GFP_KERNEL);
-+	/* attr_count include timestamp channel, and the iio_vals should be aligned to 8byte */
-+	st->iio_vals = devm_kcalloc(&pdev->dev,
-+				    ((attr_count + 1) % 2 + (attr_count + 1) / 2) * 2,
-+				    sizeof(u32), GFP_KERNEL);
- 	if (!st->iio_vals) {
- 		dev_err(&pdev->dev,
- 			"failed to allocate space for iio values array\n");
-@@ -412,11 +422,13 @@ static int magn_3d_parse_report(struct platform_device *pdev,
- 			(_channels[*chan_count]).scan_index = *chan_count;
- 			(_channels[*chan_count]).address = i;
- 
--			/* Set magn_val_addr to iio value address */
--			st->magn_val_addr[i] = &(st->iio_vals[*chan_count]);
--			magn_3d_adjust_channel_bit_mask(_channels,
--							*chan_count,
--							st->magn[i].size);
-+			if (i != CHANNEL_SCAN_INDEX_TIMESTAMP) {
-+				/* Set magn_val_addr to iio value address */
-+				st->magn_val_addr[i] = &st->iio_vals[*chan_count];
-+				magn_3d_adjust_channel_bit_mask(_channels,
-+								*chan_count,
-+								st->magn[i].size);
-+			}
- 			(*chan_count)++;
- 		}
- 	}
+ 		ret = -EINVAL;
 -- 
 2.17.1
 

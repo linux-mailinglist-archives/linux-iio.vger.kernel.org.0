@@ -2,176 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C49CA2EB23A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jan 2021 19:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C76E2EB46E
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jan 2021 21:50:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbhAESMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jan 2021 13:12:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56244 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726132AbhAESMm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 5 Jan 2021 13:12:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1791722D06;
-        Tue,  5 Jan 2021 18:12:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1609870321;
-        bh=/reYBV40Ygz4hCARqF75dpeeGG0UhQDuHeRU1Mh/CCA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Dz7ZYIQwZi2PGezSrfZYXMAyFlGgRS3XZShhWjyXT3ufXIdHDHMXjuLt80KX6GoPf
-         GG9vLFuw58bgfcX32hBzQHrbWIbM7IXR3efJsGv2iQnRdRw/2HGqFmSWyIJMZ/uav6
-         zW8xJU3VSIzNihZH289zC2LwLXOyr6xIMVOafDGE=
-Date:   Tue, 5 Jan 2021 19:13:25 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, Stephen Boyd <sboyd@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Add missing array size constraints
-Message-ID: <X/SsRVbYVXRX8Psq@kroah.com>
-References: <20210104230253.2805217-1-robh@kernel.org>
- <X/RjziK30y56uZUj@kroah.com>
- <20210105174008.GB1875909@robh.at.kernel.org>
+        id S1729587AbhAEUtN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jan 2021 15:49:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60036 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729094AbhAEUtK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jan 2021 15:49:10 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD69EC061796;
+        Tue,  5 Jan 2021 12:48:29 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id o13so1666280lfr.3;
+        Tue, 05 Jan 2021 12:48:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=VI6nFNhOrDBsKOeartd6J0bcnx10OA5inX4UBRpL4qE=;
+        b=XMzvAK1uTDP9sqD7pLv4Wz7WB5ahyaA4m6Kusb5//KKj6ORucbf4DEkHedVG2WYchx
+         ww5E+S2pe/MVFqDwCWn3GDiS2f5riKTPoV75h71RVrW0K2vBiy9ckj/U7dA9PWNjyCNI
+         nX5bomPKCcbVJeOgp/Cj7QeOBmzBoXkvbgT+W8lDuSsHgW8SMCpsK5rlGY82XsKP7qkx
+         a29IAV41Ls1xim5un7jcVMha0ymLBu7etMhtRuauiNm4Zo6NPbxuUdxGaFB5dXcGICKr
+         V9gREmCqoUjAr+3BJU51evd6QVFkDSbGIsK3A3GwKvAN8OhPsBEmC8Moy5N8LCKzSIDI
+         qz8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=VI6nFNhOrDBsKOeartd6J0bcnx10OA5inX4UBRpL4qE=;
+        b=FG6SNthz8P94I2FoXGzya5sRVgOPbypbkHtVdcNSFG+DgmibLQoPKra/TvrVh2Vdv2
+         leFN9mNc/tZ6Z4UUKldJnV85Us0eDPB13bP3XeE9gH/lmc3DkevR11UZd9LSJoXTffDe
+         RyicTBGoSPEGcw2FX1g47y0pym2m16A6Qx0hlHeuo0U5WFKzIdNGhGe/qLvRnC93YuOh
+         Eydg2fpeDYwxsB8C0dPUirx7huBeiVBTxGmuuB6L3ChsVSv84N7XjF602qo0pRsH0O6q
+         hli3IB4JvZYYOMjNrjEOHG/depgPQofXFEsga2m4M0bdWml3wvU2pnUloW3Zd9iOnjsZ
+         ux9g==
+X-Gm-Message-State: AOAM5305RrdE0AAtjoTNIhMuTR3cWMeBHvXkoyTtwcA7X2xnyV0sBVOx
+        5IzuPqY/Y3bZU7VBY3YC8bLFZ/Ojoxos58UUjcE=
+X-Google-Smtp-Source: ABdhPJxu0obS2EF+VNsGTCaRCOLzZxvocXJO+DOkx1q/eD1CrMCNDr6ayRfy6f/783TFKHGmdZ4OqMWe5HwKjoHK0HI=
+X-Received: by 2002:a2e:8084:: with SMTP id i4mr635086ljg.291.1609879708350;
+ Tue, 05 Jan 2021 12:48:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210105174008.GB1875909@robh.at.kernel.org>
+References: <20210104230253.2805217-1-robh@kernel.org>
+In-Reply-To: <20210104230253.2805217-1-robh@kernel.org>
+Reply-To: cwchoi00@gmail.com
+From:   Chanwoo Choi <cwchoi00@gmail.com>
+Date:   Wed, 6 Jan 2021 05:47:51 +0900
+Message-ID: <CAGTfZH11n8cRbrNB6XbzCydR4387d7V-gmRWou8hFFXbFBgvHQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Add missing array size constraints
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree <devicetree@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-usb@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-ide@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        netdev@vger.kernel.org, linux-clk@vger.kernel.org,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Marc Zyngier <maz@kernel.org>, linux-riscv@lists.infradead.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, linux-media@vger.kernel.org,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-gpio@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Jens Axboe <axboe@kernel.dk>, Stephen Boyd <sboyd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-mmc@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 05, 2021 at 10:40:08AM -0700, Rob Herring wrote:
-> On Tue, Jan 05, 2021 at 02:04:14PM +0100, Greg Kroah-Hartman wrote:
-> > On Mon, Jan 04, 2021 at 04:02:53PM -0700, Rob Herring wrote:
-> > > DT properties which can have multiple entries need to specify what the
-> > > entries are and define how many entries there can be. In the case of
-> > > only a single entry, just 'maxItems: 1' is sufficient.
-> > > 
-> > > Add the missing entry constraints. These were found with a modified
-> > > meta-schema. Unfortunately, there are a few cases where the size
-> > > constraints are not defined such as common bindings, so the meta-schema
-> > > can't be part of the normal checks.
-> > > 
-> > > Cc: Jens Axboe <axboe@kernel.dk>
-> > > Cc: Stephen Boyd <sboyd@kernel.org>
-> > > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > > Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-> > > Cc: Chanwoo Choi <cw00.choi@samsung.com>
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > Cc: Jonathan Cameron <jic23@kernel.org>
-> > > Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > > Cc: Marc Zyngier <maz@kernel.org>
-> > > Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > > Cc: Chen-Yu Tsai <wens@csie.org>
-> > > Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > Cc: Jakub Kicinski <kuba@kernel.org>
-> > > Cc: Sebastian Reichel <sre@kernel.org>
-> > > Cc: Ohad Ben-Cohen <ohad@wizery.com>
-> > > Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Signed-off-by: Rob Herring <robh@kernel.org>
-> > 
-> > <snip>
-> > 
-> > > diff --git a/Documentation/devicetree/bindings/usb/generic-ehci.yaml b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-> > > index 247ef00381ea..f76b25f7fc7a 100644
-> > > --- a/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-> > > +++ b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
-> > > @@ -83,6 +83,7 @@ properties:
-> > >        Phandle of a companion.
-> > >  
-> > >    phys:
-> > > +    maxItems: 1
-> > >      description: PHY specifier for the USB PHY
-> > >  
-> > >    phy-names:
-> > > diff --git a/Documentation/devicetree/bindings/usb/generic-ohci.yaml b/Documentation/devicetree/bindings/usb/generic-ohci.yaml
-> > > index 2178bcc401bc..8e2bd61f2075 100644
-> > > --- a/Documentation/devicetree/bindings/usb/generic-ohci.yaml
-> > > +++ b/Documentation/devicetree/bindings/usb/generic-ohci.yaml
-> > > @@ -71,6 +71,7 @@ properties:
-> > >        Overrides the detected port count
-> > >  
-> > >    phys:
-> > > +    maxItems: 1
-> > >      description: PHY specifier for the USB PHY
-> > >  
-> > >    phy-names:
-> > > diff --git a/Documentation/devicetree/bindings/usb/ingenic,musb.yaml b/Documentation/devicetree/bindings/usb/ingenic,musb.yaml
-> > > index 678396eeeb78..f506225a4d57 100644
-> > > --- a/Documentation/devicetree/bindings/usb/ingenic,musb.yaml
-> > > +++ b/Documentation/devicetree/bindings/usb/ingenic,musb.yaml
-> > > @@ -40,7 +40,7 @@ properties:
-> > >        - const: mc
-> > >  
-> > >    phys:
-> > > -    description: PHY specifier for the USB PHY
-> > > +    maxItems: 1
-> > >  
-> > >    usb-role-switch:
-> > >      type: boolean
-> > 
-> > Any reason you dropped the description for this entry, but not the other
-> > ones above?
-> 
-> No, I should have dropped those too. I dropped cases of genericish 
-> descriptions on common properties. There's nothing specific to this 
-> binding here really.
-> 
-> > 
-> > > diff --git a/Documentation/devicetree/bindings/usb/ti,j721e-usb.yaml b/Documentation/devicetree/bindings/usb/ti,j721e-usb.yaml
-> > > index 388245b91a55..adce36e48bc9 100644
-> > > --- a/Documentation/devicetree/bindings/usb/ti,j721e-usb.yaml
-> > > +++ b/Documentation/devicetree/bindings/usb/ti,j721e-usb.yaml
-> > > @@ -15,13 +15,14 @@ properties:
-> > >        - const: ti,j721e-usb
-> > >  
-> > >    reg:
-> > > -    description: module registers
-> > > +    maxItems: 1
-> > >  
-> > >    power-domains:
-> > >      description:
-> > >        PM domain provider node and an args specifier containing
-> > >        the USB device id value. See,
-> > >        Documentation/devicetree/bindings/soc/ti/sci-pm-domain.txt
-> > > +    maxItems: 1
-> > >  
-> > >    clocks:
-> > >      description: Clock phandles to usb2_refclk and lpm_clk
-> > 
-> > Same here, why remove the description?
-> 
-> Really, the question is why keep 'description' on power-domains. Perhaps 
-> there's a little value in the reference to sci-pm-domain.txt, so I left 
-> it.
+Hi Rob,
 
-Ok, if you are fine with this, that's ok with me, just didn't look very
-consistent :)
+On Tue, Jan 5, 2021 at 8:03 AM Rob Herring <robh@kernel.org> wrote:
+>
+> DT properties which can have multiple entries need to specify what the
+> entries are and define how many entries there can be. In the case of
+> only a single entry, just 'maxItems: 1' is sufficient.
+>
+> Add the missing entry constraints. These were found with a modified
+> meta-schema. Unfortunately, there are a few cases where the size
+> constraints are not defined such as common bindings, so the meta-schema
+> can't be part of the normal checks.
+>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
+> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Chen-Yu Tsai <wens@csie.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Ohad Ben-Cohen <ohad@wizery.com>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ide@vger.kernel.org
+> Cc: linux-clk@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-gpio@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-mmc@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-serial@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Cc: linux-spi@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> ---
+>  .../socionext,uniphier-system-cache.yaml      |  4 ++--
+>  .../bindings/ata/sata_highbank.yaml           |  1 +
+>  .../bindings/clock/canaan,k210-clk.yaml       |  1 +
+>  .../bindings/display/brcm,bcm2711-hdmi.yaml   |  1 +
+>  .../bindings/display/brcm,bcm2835-hdmi.yaml   |  1 +
+>  .../display/panel/jdi,lt070me05000.yaml       |  1 +
+>  .../display/panel/mantix,mlaf057we51-x.yaml   |  3 ++-
+>  .../display/panel/novatek,nt36672a.yaml       |  1 +
+>  .../devicetree/bindings/dsp/fsl,dsp.yaml      |  2 +-
+>  .../devicetree/bindings/eeprom/at25.yaml      |  3 +--
+>  .../bindings/extcon/extcon-ptn5150.yaml       |  2 ++
+
+For extcon part,
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
+
+(snip)
+
+Best Regards,
+Chanwoo Choi

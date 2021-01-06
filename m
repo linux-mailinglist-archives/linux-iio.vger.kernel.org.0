@@ -2,162 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A5E2EBC7F
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jan 2021 11:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 519EF2EBD25
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jan 2021 12:28:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbhAFKgk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jan 2021 05:36:40 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:35928 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbhAFKgk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jan 2021 05:36:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1609929225;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Subject:Sender;
-        bh=VHvBsxIKSNU5fNhaS0a1jYOPZjucfhkakHCcFPo8UKU=;
-        b=GiUvBTJJwbEpIIls444a6HxyGH/4QlJFjb5s6/7yH5ZY2F1FBJH4HyAdNCRPTbvIbu
-        salyLHlTSezsc8Xs0zP0EM+6h2ajNwh0GUXaDITDruTZ1DZREc4PH+oG1cr1231knXA1
-        MaTK9mS7hodn7RBKY8+SVc2VgoWUSDQBSCotif41tfv/K4Xy6mXh+cjwCIpwfT163/Ih
-        RthsPqMSripZ1X2rqylvGFidtlLQn0QxWH+I5iUj24cbwlEb/q9iK9k2/k2sIla1NZxl
-        aZPP+I03J4hH5bAqx4ybJYhJXB9PVzEml+gO/wGbi8cHN8bNBjNq7A7MkbF+Ee3SL6GU
-        GlcQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j+IcvGBg=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id e09c6dx06AXb5N0
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Wed, 6 Jan 2021 11:33:37 +0100 (CET)
-Date:   Wed, 6 Jan 2021 11:33:31 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        id S1725879AbhAFL1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jan 2021 06:27:51 -0500
+Received: from foss.arm.com ([217.140.110.172]:39588 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725877AbhAFL1v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 6 Jan 2021 06:27:51 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26B88D6E;
+        Wed,  6 Jan 2021 03:27:05 -0800 (PST)
+Received: from e120937-lin (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E2E03F719;
+        Wed,  6 Jan 2021 03:27:02 -0800 (PST)
+Date:   Wed, 6 Jan 2021 11:26:59 +0000
+From:   Cristian Marussi <cristian.marussi@arm.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Jyoti Bhayana <jbhayana@google.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 2/4] iio: magnetometer: bmc150: Add rudimentary regulator
- support
-Message-ID: <X/WR+/PDhLRk7Yek@gerhold.net>
-References: <20201202093322.77114-1-stephan@gerhold.net>
- <20201202093322.77114-2-stephan@gerhold.net>
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        sudeep.holla@arm.com, egranata@google.com,
+        mikhail.golubev@opensynergy.com, Igor.Skalkin@opensynergy.com,
+        Peter.hilber@opensynergy.com, ankitarora@google.com
+Subject: Re: Reply to [RFC PATCH v2 0/1] Adding support for IIO SCMI based
+ sensors
+Message-ID: <20210106112659.GA9138@e120937-lin>
+References: <20201230123748.4e969f82@archlinux>
+ <20210105230920.769144-1-jbhayana@google.com>
+ <20210106102917.0000332c@Huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201202093322.77114-2-stephan@gerhold.net>
+In-Reply-To: <20210106102917.0000332c@Huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi
 
-On Wed, Dec 02, 2020 at 10:33:20AM +0100, Stephan Gerhold wrote:
-> BMC150 needs VDD and VDDIO regulators that might need to be explicitly
-> enabled. Add some rudimentary support to obtain and enable these
-> regulators during probe() and disable them during remove()
-> or on the error path.
+On Wed, Jan 06, 2021 at 10:29:17AM +0000, Jonathan Cameron wrote:
+> On Tue, 5 Jan 2021 23:09:20 +0000
+> Jyoti Bhayana <jbhayana@google.com> wrote:
 > 
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-
-I think we forgot about the bmc150_magn part of this patch series. :)
-
-This is likely my mistake - I only sent a v2 for the bmg160 part of this
-patch series, but not for the bmc150_magn part (since it's not affected
-by the problem you mentioned for the bmg160 patch). Sorry for the confusion!
-
-Should I re-send the bmc150_magn part (with or without some changes)?
-
-Thanks!
-Stephan
-
-> ---
-> This is mostly copy-paste of
-> 079c1c3f2082 ("iio: accel: bmc150-accel: Add rudimentary regulator support")
-> from Linus Walleij but for the BMC150 magnetometer driver.
-> ---
->  drivers/iio/magnetometer/bmc150_magn.c | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
+> > Hi Jonathan,
+> > 
+> > > So, sensor_max_range can effectively be exposed as a combination of
+> > > scale and the *_raw_avail for a raw read (via the read_avail callback in IIO).
+> > > We'll ignore the fact the interface assumes a single value (so I assume symmetric?)  
+> > 
+> > Based on the SCMI specification the sensor min range and max range are 64 bits signed number.
+> > 
+> > looks like IIO_AVAIL_RANGE can only take the following
+> > types of data which all looks like 32 bit. IIO_VAL_FRACTIONAL
+> > also takes two int type numbers.
+> > How can I send 64 bit sensor range using this and read_avail callback?
+> > 
+> > #define IIO_VAL_INT 1
+> > #define IIO_VAL_INT_PLUS_MICRO 2
+> > #define IIO_VAL_INT_PLUS_NANO 3
+> > #define IIO_VAL_INT_PLUS_MICRO_DB 4
+> > #define IIO_VAL_INT_MULTIPLE 5
+> > #define IIO_VAL_FRACTIONAL 10
+> > #define IIO_VAL_FRACTIONAL_LOG2 11
+> > #define IIO_VAL_CHAR 12
 > 
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-> index fa09fcab620a..b2f3129e1b4f 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn.c
-> @@ -25,6 +25,7 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
+> Hmm It is a bit unfortunate that SCMI decided to pretend that real sensor resolutions were
+> greater than 32 bits. I doubt they will ever actually be any (as such accurate measurements
+> are completely pointless) and they aren't anywhere near that today.  Only way it might end
+> up looking a bit like that would be result of a highly non linear sensor being shoved through
+> an interface that pretends it isn't (goody).
+> 
+
+We shared this info internally to involve our architects about this.
+
+> Having said that, specifications are what they are and we have to cope with that.
+> 
+> There is no real problem with defining a new value type except for the fact that any
+> legacy userspace won't necessarily expect to see values that large. Given we need the full
+> 64 bits it would have to be something like
+> IIO_VAL_INT_H32_L32 with the 64 bit values split up appropriately and put back together
+> at time of formatting.   Not particularly pretty but I'm not keep to put that much effort
+> in to support something like this for one driver (so not interesting in changing that
+> the read_raw_* interfaces)
+> 
+
+Regarding the current spec and this IIODEV limit to 32bit, I was thinking about
+the following horrid thing (:D) as a solution: given that as of now no sensor
+exist in real life reporting bigger than 32bits values, instead of adding new
+defines in IIODEV framework to support 64bit that no userspace is expecting and
+no sensor will really emit ever in the foreseable future, couldn't this SCMI
+IIODEV driver simply:
+
+- truncate silently straight away 64bit vals into 32bit when detects
+  that he upper MSB 32bit are unused (zeros or sign-extension) and in
+  fact the values fits into 32bits
+
+- WARN and do not truncate if the upper MSB 32bit are in fact valid because
+  such a 64bit capable sensor was indeed used finally (at that point in time
+  IIODEV driver and framework will need a 64bit update)
+
+Or I am missing something ?
+
+Feel free to insult me about this hack ... :D 
+
+Thanks
+
+Cristian
+
+> Jonathan
 >  
->  #include "bmc150_magn.h"
->  
-> @@ -135,6 +136,7 @@ struct bmc150_magn_data {
->  	 */
->  	struct mutex mutex;
->  	struct regmap *regmap;
-> +	struct regulator_bulk_data regulators[2];
->  	struct iio_mount_matrix orientation;
->  	/* 4 x 32 bits for x, y z, 4 bytes align, 64 bits timestamp */
->  	s32 buffer[6];
-> @@ -692,12 +694,24 @@ static int bmc150_magn_init(struct bmc150_magn_data *data)
->  	int ret, chip_id;
->  	struct bmc150_magn_preset preset;
->  
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-> +				    data->regulators);
-> +	if (ret < 0) {
-> +		dev_err(data->dev, "Failed to enable regulators: %d\n", ret);
-> +		return ret;
-> +	}
-> +	/*
-> +	 * 3ms power-on time according to datasheet, let's better
-> +	 * be safe than sorry and set this delay to 5ms.
-> +	 */
-> +	msleep(5);
-> +
->  	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND,
->  					 false);
->  	if (ret < 0) {
->  		dev_err(data->dev,
->  			"Failed to bring up device from suspend mode\n");
-> -		return ret;
-> +		goto err_regulator_disable;
->  	}
->  
->  	ret = regmap_read(data->regmap, BMC150_MAGN_REG_CHIP_ID, &chip_id);
-> @@ -752,6 +766,8 @@ static int bmc150_magn_init(struct bmc150_magn_data *data)
->  
->  err_poweroff:
->  	bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND, true);
-> +err_regulator_disable:
-> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
->  	return ret;
->  }
->  
-> @@ -867,6 +883,13 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
->  	data->irq = irq;
->  	data->dev = dev;
->  
-> +	data->regulators[0].supply = "vdd";
-> +	data->regulators[1].supply = "vddio";
-> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->regulators),
-> +				      data->regulators);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to get regulators\n");
-> +
->  	ret = iio_read_mount_matrix(dev, "mount-matrix",
->  				&data->orientation);
->  	if (ret)
-> @@ -984,6 +1007,7 @@ int bmc150_magn_remove(struct device *dev)
->  	bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND, true);
->  	mutex_unlock(&data->mutex);
->  
-> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
->  	return 0;
->  }
->  EXPORT_SYMBOL(bmc150_magn_remove);
-> -- 
-> 2.29.2
+> 
+> > 
+> > 
+> > 
+> > Thanks,
+> > Jyoti
+> > 
 > 

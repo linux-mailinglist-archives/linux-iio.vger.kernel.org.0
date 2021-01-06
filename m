@@ -2,185 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD2082EC0E3
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jan 2021 17:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1282EC5A3
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jan 2021 22:24:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbhAFQNY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jan 2021 11:13:24 -0500
-Received: from foss.arm.com ([217.140.110.172]:43478 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727275AbhAFQNY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 6 Jan 2021 11:13:24 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1DF17D6E;
-        Wed,  6 Jan 2021 08:12:38 -0800 (PST)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D66D3F719;
-        Wed,  6 Jan 2021 08:12:35 -0800 (PST)
-Date:   Wed, 6 Jan 2021 16:12:33 +0000
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jyoti Bhayana <jbhayana@google.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1726495AbhAFVYh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jan 2021 16:24:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbhAFVYh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jan 2021 16:24:37 -0500
+Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4721FC061575
+        for <linux-iio@vger.kernel.org>; Wed,  6 Jan 2021 13:23:57 -0800 (PST)
+Received: by mail-pf1-x44a.google.com with SMTP id n8so2475273pfa.8
+        for <linux-iio@vger.kernel.org>; Wed, 06 Jan 2021 13:23:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:in-reply-to:message-id:mime-version:references:subject
+         :from:to:cc;
+        bh=B8PYbSjV2wfSDgFPLbkumGoasg34od4IBoxCKHUJkH8=;
+        b=apIUtTD+RBKMiifUBV/QOKCN1DEsE1JxgWgVOT6qWD8AmqEpUmb5loa4Kv4ZINPHLU
+         c9FopF7c746VzG5HysQawa09pJBxSRVGswENI7gUizRFVTeRXnCKbN8qwo0k5DAjb9rv
+         lsvzhjHh+BG75/8DjRDrJZukOkXaAGCb6bgp754HzFMLKjqVJFDE0UqT/ShNPrUdA4PB
+         4iuSzObdw+PZo8089ea8QbJzgWzef1jv7jflmTDfoywyC9c1Ef8zCWvV0MWmtoE166R5
+         5pH8TnwWr8lAI5IMwBvkSLDFmlGbEnNZ1CLE6G33H2TZUFmfkvxanTra2rm7849asVZe
+         twhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=B8PYbSjV2wfSDgFPLbkumGoasg34od4IBoxCKHUJkH8=;
+        b=OD80yK+ReKVRJ2ZhM5qLlp0R71nFMHX+7QzNvo9JMXEv28DrnUCO4Twtmnz5wApkFX
+         RUGZKSWMstXksQVwvfs/GjPT6fNBdAYgyY2uGJ0n0qdA2DL99Rt5WmArGIcJMr7QCRJL
+         SqVHo0edI3JjwjmQb5dV8iDQz7nZGcKVfujwrojtbDHhanOQw7Sdw3z2QxC0GSLbjBfV
+         8n91aGcXYhpscKODxG7uobsUcvwcMyTvdR7JbNe53PVF6wNAkdVd1BBR4OagPQMgNsq/
+         mphoIoMSHfT9S7y+X3J0n9wrFdmIm3zWrZbreAFGkCTZwyFB9mO8KRRRxJewTRtGOJFS
+         W6Gg==
+X-Gm-Message-State: AOAM532rcUvhsHMwoDvbSWIXCOW0n5obruRJFkubWHSGFIy7Z81+7JFh
+        YCEMxk1QHhlbltJaE8sVAoZ2O+hNQKpfPA==
+X-Google-Smtp-Source: ABdhPJx2tCZ3UYxiwc5oOvOFVbTW/pTurKvOM6UOaZUSA/Rl1yc3ILaQ4uytOXQR7UPwTMqhs48PU+pZ6gLOtA==
+Sender: "jbhayana via sendgmr" <jbhayana@jbhayana.c.googlers.com>
+X-Received: from jbhayana.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:42b2])
+ (user=jbhayana job=sendgmr) by 2002:a62:9208:0:b029:19e:a15f:169e with SMTP
+ id o8-20020a6292080000b029019ea15f169emr5832648pfd.71.1609968236760; Wed, 06
+ Jan 2021 13:23:56 -0800 (PST)
+Date:   Wed,  6 Jan 2021 21:23:53 +0000
+In-Reply-To: <20210106161233.GA44413@e120937-lin>
+Message-Id: <20210106212353.951807-1-jbhayana@google.com>
+Mime-Version: 1.0
+References: <20210106161233.GA44413@e120937-lin>
+X-Mailer: git-send-email 2.30.0.284.gd98b1dd5eaa7-goog
+Subject: Reply to [RFC PATCH v2 0/1] Adding support for IIO SCMI based sensors
+From:   Jyoti Bhayana <jbhayana@google.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jyoti Bhayana <jbhayana@google.com>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        sudeep.holla@arm.com, egranata@google.com,
-        mikhail.golubev@opensynergy.com, Igor.Skalkin@opensynergy.com,
-        Peter.hilber@opensynergy.com, ankitarora@google.com
-Subject: Re: Reply to [RFC PATCH v2 0/1] Adding support for IIO SCMI based
- sensors
-Message-ID: <20210106161233.GA44413@e120937-lin>
-References: <20201230123748.4e969f82@archlinux>
- <20210105230920.769144-1-jbhayana@google.com>
- <20210106102917.0000332c@Huawei.com>
- <20210106112659.GA9138@e120937-lin>
- <20210106143645.000052f3@Huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210106143645.000052f3@Huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        cristian.marussi@arm.com, sudeep.holla@arm.com,
+        egranata@google.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
+        ankitarora@google.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 06, 2021 at 02:36:45PM +0000, Jonathan Cameron wrote:
-> On Wed, 6 Jan 2021 11:26:59 +0000
-> Cristian Marussi <cristian.marussi@arm.com> wrote:
-> 
-> > Hi
-> > 
-> > On Wed, Jan 06, 2021 at 10:29:17AM +0000, Jonathan Cameron wrote:
-> > > On Tue, 5 Jan 2021 23:09:20 +0000
-> > > Jyoti Bhayana <jbhayana@google.com> wrote:
-> > >   
-> > > > Hi Jonathan,
-> > > >   
-> > > > > So, sensor_max_range can effectively be exposed as a combination of
-> > > > > scale and the *_raw_avail for a raw read (via the read_avail callback in IIO).
-> > > > > We'll ignore the fact the interface assumes a single value (so I assume symmetric?)    
-> > > > 
-> > > > Based on the SCMI specification the sensor min range and max range are 64 bits signed number.
-> > > > 
-> > > > looks like IIO_AVAIL_RANGE can only take the following
-> > > > types of data which all looks like 32 bit. IIO_VAL_FRACTIONAL
-> > > > also takes two int type numbers.
-> > > > How can I send 64 bit sensor range using this and read_avail callback?
-> > > > 
-> > > > #define IIO_VAL_INT 1
-> > > > #define IIO_VAL_INT_PLUS_MICRO 2
-> > > > #define IIO_VAL_INT_PLUS_NANO 3
-> > > > #define IIO_VAL_INT_PLUS_MICRO_DB 4
-> > > > #define IIO_VAL_INT_MULTIPLE 5
-> > > > #define IIO_VAL_FRACTIONAL 10
-> > > > #define IIO_VAL_FRACTIONAL_LOG2 11
-> > > > #define IIO_VAL_CHAR 12  
-> > > 
-> > > Hmm It is a bit unfortunate that SCMI decided to pretend that real sensor resolutions were
-> > > greater than 32 bits. I doubt they will ever actually be any (as such accurate measurements
-> > > are completely pointless) and they aren't anywhere near that today.  Only way it might end
-> > > up looking a bit like that would be result of a highly non linear sensor being shoved through
-> > > an interface that pretends it isn't (goody).
-> > >   
-> > 
-> > We shared this info internally to involve our architects about this.
-> > 
-> > > Having said that, specifications are what they are and we have to cope with that.
-> > > 
-> > > There is no real problem with defining a new value type except for the fact that any
-> > > legacy userspace won't necessarily expect to see values that large. Given we need the full
-> > > 64 bits it would have to be something like
-> > > IIO_VAL_INT_H32_L32 with the 64 bit values split up appropriately and put back together
-> > > at time of formatting.   Not particularly pretty but I'm not keep to put that much effort
-> > > in to support something like this for one driver (so not interesting in changing that
-> > > the read_raw_* interfaces)
-> > >   
-> > 
-> > Regarding the current spec and this IIODEV limit to 32bit, I was thinking about
-> > the following horrid thing (:D) as a solution: given that as of now no sensor
-> > exist in real life reporting bigger than 32bits values, instead of adding new
-> > defines in IIODEV framework to support 64bit that no userspace is expecting and
-> > no sensor will really emit ever in the foreseable future, couldn't this SCMI
-> > IIODEV driver simply:
-> > 
-> > - truncate silently straight away 64bit vals into 32bit when detects
-> >   that he upper MSB 32bit are unused (zeros or sign-extension) and in
-> >   fact the values fits into 32bits
-> > 
-> > - WARN and do not truncate if the upper MSB 32bit are in fact valid because
-> >   such a 64bit capable sensor was indeed used finally (at that point in time
-> >   IIODEV driver and framework will need a 64bit update)
-> > 
-> > Or I am missing something ?
-> > 
-> > Feel free to insult me about this hack ... :D 
-> 
-> I had a similar thought :)  But every time we do something like this someone
-> does something crazy like right shifting the value by 24 bits or similar.
-> Warning should make it obvious if we need to paper over this though.
+Hi Jonathan,
 
-Not sure to have understood where this right shift could be done...on
-sysfs output values you mean ?
+Instead of adding IIO_VAL_INT_H32_L32, I am thinking of adding IIO_VAL_FRACTIONAL_LONG
+or IIO_VAL_FRACTIONAL_64 as the scale/exponent used for min/max range can be different
+than the one used in resolution according to specification. 
 
-It is pretty similar (only conceptually) to what happened with SCMIv3.0
-Voltage and SCMI regulator: Voltage protocol supports negative voltages
-representation to be generic enough to handle any kind of regulators
-while regulator framework does NOT support negatives as of now (being mostly
-used in a digital context AFAICU), so the SCMI regulator driver refuses to
-handle any SCMI exposed voltage domain which declares itself as supporting
-negative voltages. (and emit a pr_warn)
+I am planning to use read_avail for IIO_CHAN_INFO_PROCESSED using IIO_AVAIL_RANGE 
+and this new IIO_VAL_FRACTIONAL_64 for min range,max range and resolution.
+Instead of two values used in IIO_VAL_FRACTIONAL, IIO_VAL_FRACTIONAL_64 will use 4 values
+val_high,val_low,and val2_high and val2_low.
 
-I was thinking around the same lines here, given that each SCMI sensor/axis
-is exposed and described also by a descriptor containing scmi_range_attrs
-(a min/max_range 64bit values), the SCMI IIODEV driver could simply skip them
-at initialization time when it see an unsupported range and just do not expose
-such an iiodev, but warn: this way nothing potentially representing something
-greater than 32bit would even appear in sysfs.
-(But I'm far from having a decent knowledge of IIO so I could be missing
-something ovious here).
+Let me know if that is an acceptable solution.
 
-Thanks
 
-Cristian
+Thanks,
+Jyoti
 
-> 
-> But I'm not sure it matters in reality as this is mostly hidden away inside
-> the kernel.   The exposure of these values is limited to:
-> 1) In kernel users - probably aren't any current ones for these sensors.
-> 2) Passing to the pretty print functions that produce sysfs values.
->    The risk here is existing userspace may fail to parse a number that needs
->    more than 32 bits as it's never seen one before.
->    However, if the numbers happen to be smaller it will be fine.  So we are storing
->    up potential esoteric bugs for a long time in the future.  Hopefully any such
->    userspace will report an error though!
-> 
-> If we do support this, I would ask that we also add a channel to the
-> dummy driver to allow us to easily exercise relevant code paths without having
-> to emulate everything needed to fake devices behind SCMI (docs on how to do that
-> would be good as well if there are any (assuming there is public code that does
-> this by now!) :)
-> 
-> Jonathan
-> 
-> > 
-> > Thanks
-> > 
-> > Cristian
-> > 
-> > > Jonathan
-> > >  
-> > >   
-> > > > 
-> > > > 
-> > > > 
-> > > > Thanks,
-> > > > Jyoti
-> > > >   
-> > >   
-> 

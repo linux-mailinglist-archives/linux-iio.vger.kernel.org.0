@@ -2,134 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F9742ECC65
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Jan 2021 10:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 799992ECD7F
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Jan 2021 11:09:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727482AbhAGJLm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Jan 2021 04:11:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34812 "EHLO
+        id S1726906AbhAGKJZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Jan 2021 05:09:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727279AbhAGJLl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Jan 2021 04:11:41 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB51C061285
-        for <linux-iio@vger.kernel.org>; Thu,  7 Jan 2021 01:10:20 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id o13so13003256lfr.3
-        for <linux-iio@vger.kernel.org>; Thu, 07 Jan 2021 01:10:20 -0800 (PST)
+        with ESMTP id S1726541AbhAGKJZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Jan 2021 05:09:25 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD5EC0612F6;
+        Thu,  7 Jan 2021 02:08:44 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id z12so1174325pjn.1;
+        Thu, 07 Jan 2021 02:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=T+iZKNW1gmpT+HQqIiqmRRpQMcaG8pgogUVWa/pKYOM=;
-        b=cyz7QwbTfHcC+qnorIFVkv7DnbL/oyA5L+VJJAN8XWkNMg42oKdig8X5tU4xa7X7pN
-         01zspKzmEcVvu5fY2nzlSr3geA/q2812tr8Wz0sUieGMHhvg1aGrsz+m0J4b8Wmr2jr4
-         Bxuqd5E5gXQb8ARkFssKYAOK0W62M412pmNUBd9NwRQD04zf23syAxjzcLmFBod8VeLt
-         Wkczn2W4OJkxg0o6mQ3tRUOpKTABRCCUpHtxAiPQFjxJEJCf/WQ1QzYZHEZTgGgMtnu2
-         jNC0bNdR63+2S3cfHE4fDoxHLsYIWb3l6Ja+q5Vt8aM4kBs1TbyhYMIEDY91gB4GZfH3
-         2CvQ==
+        bh=+HSOsLBQe2nt/WraeHugrwri6BliaMtp4Brv1T4xWVM=;
+        b=I40kSrCHvS6KIBhuZ/m2vFCQxA+3XOimoRHbjU3Ypd2BKJgVDMpDHNaI1gJcYoxeEG
+         GWL4KScPqUD5y22oygEXYtMKW5O34qBXrmZrR+VCa9KEUmjRkaGdAh05ohAexNdcs4Pr
+         HhojJ+40202Czg3OLz7FkgNy9a3+EdLqnAF9yQJ68Kd/rfYV1lGO6EoJm/tRBwE3q8hp
+         s8mVEUQklMvzJfTZtMCXDK2j7ocffHcNIjQUJ6nKrx6L/vsqL9fnycD4IC2isb5BID7h
+         4BvHOkISXQAAd2rsrAmz5XdIqwIjnBO8nK2RyB05YRByNqN/G3vGUZJQD8FuTZ4FgCm1
+         8qCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=T+iZKNW1gmpT+HQqIiqmRRpQMcaG8pgogUVWa/pKYOM=;
-        b=FQrcl12cYK+QthhIqtHtrwyB9xga57Js/jR3EjIsX7hFBLCIlg7iIL5O5XC5jqyDEe
-         yF2/MVrf/oBZwJ31jPgHyoAiQNvTdxXLvHnzmbUU9wbCycGMpyzLCxdid7e8kv4ULgHW
-         oFd5he89rtO+e90f/X0b5o1Uvuwbpn1Tt2UvWNsztHcatw2at+/ZCs6joAC8GCjQ991e
-         G5ZP4J/UBKIBhgnJPhUjaaycAujG5vSKXI03ioO5SBycG2aZUg9eAFl3HsS2FBPcxMK6
-         rXelc4rtIr1MGUI6XAuYdfcC02THDIBp8fqhy+Vii0C9NxZ6Tupge+bU6QDFHpsADcKH
-         xDrg==
-X-Gm-Message-State: AOAM530Z53hYsz54KEcYDEuve6lQ2Vh8uCXkSDvF5eDdvz7Ng8SQAGwT
-        UhKXD1VKQz5180Soyq7dZE0hNCQfNCT76DmIv0mHKg==
-X-Google-Smtp-Source: ABdhPJz6FNuZKYGADUxlk9Tv8Rh/lJVu/2CmZBJO3UIrMaB/edLmB9ZlsVBcuBoQ7GbjgHsRrGXCE/gOnIldpK4OwK0=
-X-Received: by 2002:a19:495d:: with SMTP id l29mr3392190lfj.465.1610010618615;
- Thu, 07 Jan 2021 01:10:18 -0800 (PST)
+        bh=+HSOsLBQe2nt/WraeHugrwri6BliaMtp4Brv1T4xWVM=;
+        b=q5qy3CqHOM+frgSXeimAg/voP21kypmLMPKTCx1sLYdYOKw3lubWpMVAsouk7zqO7y
+         14gstAqmJ7NttnCjffuSQIa6FFhQFol7WG0zU1+R7zt/fQgn7IBj0UyZFKIz+0zx+5HP
+         szSZ87suWbXWPZMClocGnEu21He59LSzEFFOJSf9QMxcF6YfHOr+Lwodn311EMOjkyEx
+         A33dJk7buSH1As9cNI8CJeiZ3TwLSpFBjNBCouBOVr+97clCARLabNIAdXHqBx3bjcU6
+         g09lPilOeMLXnDLG1txke0hoMUVEIjYySbrvfgeTR/Tu9r6DCbtujND2BVO9mBYuHDrg
+         LvBA==
+X-Gm-Message-State: AOAM531a5cDzODPunrPY6709O9kShJGH1dGfQvCaHfqm+bK3grZE0s86
+        mcptTk3SQEWIte970mteTyUZwP8qgir3rv5xaIY=
+X-Google-Smtp-Source: ABdhPJzCyebVUsqrmKw49ykwoxpO/L7XmLhFpoKxdLZvcJTPsnjvmUD0I0ky2gxLJpnnEXhQIk9ZCc66NiKe/lwirzI=
+X-Received: by 2002:a17:90a:1050:: with SMTP id y16mr8679750pjd.181.1610014123931;
+ Thu, 07 Jan 2021 02:08:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20210104230253.2805217-1-robh@kernel.org>
-In-Reply-To: <20210104230253.2805217-1-robh@kernel.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 7 Jan 2021 10:10:07 +0100
-Message-ID: <CACRpkdZVC8RE-DTes+p6g-1EAHxQWpu2u+sBCX2ei32cvaCrDA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Add missing array size constraints
-To:     Rob Herring <robh@kernel.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jens Axboe <axboe@kernel.dk>, Stephen Boyd <sboyd@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+References: <20210107084434.35283-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20210107084434.35283-1-alexandru.ardelean@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 7 Jan 2021 12:09:32 +0200
+Message-ID: <CAHp75Vd0+r+Yo1+mLbKcHqjfjEUtVoSEX7Kvjj4DO4osu44Wyw@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] lib/string.c: add __sysfs_match_string_with_gaps() helper
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>, linux-clk <linux-clk@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-remoteproc@vger.kernel.org,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-usb <linux-usb@vger.kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 5, 2021 at 12:03 AM Rob Herring <robh@kernel.org> wrote:
-
-> DT properties which can have multiple entries need to specify what the
-> entries are and define how many entries there can be. In the case of
-> only a single entry, just 'maxItems: 1' is sufficient.
+On Thu, Jan 7, 2021 at 10:41 AM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
 >
-> Add the missing entry constraints. These were found with a modified
-> meta-schema. Unfortunately, there are a few cases where the size
-> constraints are not defined such as common bindings, so the meta-schema
-> can't be part of the normal checks.
+> The original docstring of the __sysfs_match_string() and match_string()
+> helper, implied that -1 could be used to search through NULL terminated
+> arrays, and positive 'n' could be used to go through arrays that may have
+> NULL elements in the middle of the array.
 >
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-> Cc: Chanwoo Choi <cw00.choi@samsung.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Ohad Ben-Cohen <ohad@wizery.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> This isn't true. Regardless of the value of 'n', the first NULL element in
+> the array will stop the search, even if the element may be after a NULL
+> element.
+>
+> To allow for a behavior where we can use the __sysfs_match_string() to
+> search over arrays with NULL elements in the middle, the
+> __sysfs_match_string_with_gaps() helper is added.
+> If n > 0, the search will continue until the element is found or n is
+> reached.
 
-This is good. The stricter the better.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+...
 
-Yours,
-Linus Walleij
+> If n < 0, the search will continue until the element is found or a NULL
+> character is found.
+
+And this is what I think is not needed.
+
+...
+
+> FWIW (from my side): I am not fully sure yet that implementing a
+> new helper is the best idea. It's also not a bad idea.
+> It's one of those "this could be useful for others as well later", but
+> right now we would have only one user (IIO) for this.
+
+Taking into account the failure of bitmap_set_clump() promotion, I
+suggest to reduce scope to IIO for now.
+
+> I'm also fine with just implementing it in IIO first, and the someone
+> else can move it to lib/string.c if needed.
+
+Yes, please do.
+
+...
+
+> + * If n < 0, then the search will continue until the element is found or
+> + * until the first NULL element.
+
+...
+
+> +                       if (n < 0)
+> +                               break;
+
+And drop these.
+
+-- 
+With Best Regards,
+Andy Shevchenko

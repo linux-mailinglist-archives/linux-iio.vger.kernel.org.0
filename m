@@ -2,49 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3493A2ECBD7
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Jan 2021 09:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F28472ECBDB
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Jan 2021 09:42:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbhAGIl6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Jan 2021 03:41:58 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:47726 "EHLO
+        id S1725959AbhAGImD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Jan 2021 03:42:03 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:53998 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726616AbhAGIl6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Jan 2021 03:41:58 -0500
+        by vger.kernel.org with ESMTP id S1727188AbhAGImD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Jan 2021 03:42:03 -0500
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1078TUDS014219;
-        Thu, 7 Jan 2021 03:41:02 -0500
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1078TUDT014219;
+        Thu, 7 Jan 2021 03:41:10 -0500
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35wnkjh5te-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 35wnkjh5tm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 07 Jan 2021 03:41:02 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1078f1tY021890
+        Thu, 07 Jan 2021 03:41:09 -0500
+Received: from SCSQMBX11.ad.analog.com (SCSQMBX11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1078f7o6021899
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 7 Jan 2021 03:41:01 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 7 Jan 2021 03:41:00 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Thu, 7 Jan 2021 03:40:57 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 7 Jan 2021 03:40:57 -0500
+        Thu, 7 Jan 2021 03:41:08 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 7 Jan 2021
+ 00:41:06 -0800
+Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.2.721.2 via Frontend Transport;
+ Thu, 7 Jan 2021 00:41:06 -0800
 Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1078es9h007259;
-        Thu, 7 Jan 2021 03:40:55 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1078es9i007259;
+        Thu, 7 Jan 2021 03:41:03 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>, <lars@metafoo.de>, <akpm@linux-foundation.org>,
         <gregkh@linuxfoundation.org>, <andy.shevchenko@gmail.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v7 1/2] lib/string.c: add __sysfs_match_string_with_gaps() helper
-Date:   Thu, 7 Jan 2021 10:44:33 +0200
-Message-ID: <20210107084434.35283-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v7 2/2] iio: Handle enumerated properties with gaps
+Date:   Thu, 7 Jan 2021 10:44:34 +0200
+Message-ID: <20210107084434.35283-2-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210107084434.35283-1-alexandru.ardelean@analog.com>
+References: <20210107084434.35283-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
@@ -52,113 +50,64 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
  definitions=2021-01-07_04:2021-01-06,2021-01-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
  suspectscore=0 clxscore=1015 phishscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ mlxlogscore=812 priorityscore=1501 lowpriorityscore=0 bulkscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2101070051
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The original docstring of the __sysfs_match_string() and match_string()
-helper, implied that -1 could be used to search through NULL terminated
-arrays, and positive 'n' could be used to go through arrays that may have
-NULL elements in the middle of the array.
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-This isn't true. Regardless of the value of 'n', the first NULL element in
-the array will stop the search, even if the element may be after a NULL
-element.
+Some enums might have gaps or reserved values in the middle of their value
+range. E.g. consider a 2-bit enum where the values 0, 1 and 3 have a
+meaning, but 2 is a reserved value and can not be used.
 
-To allow for a behavior where we can use the __sysfs_match_string() to
-search over arrays with NULL elements in the middle, the
-__sysfs_match_string_with_gaps() helper is added.
-If n > 0, the search will continue until the element is found or n is
-reached.
-If n < 0, the search will continue until the element is found or a NULL
-character is found.
+Add support for such enums to the IIO enum helper functions. A reserved
+values is marked by setting its entry in the items array to NULL rather
+than the normal descriptive string value.
 
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
+ drivers/iio/industrialio-core.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-FWIW (from my side): I am not fully sure yet that implementing a
-new helper is the best idea. It's also not a bad idea.
-It's one of those "this could be useful for others as well later", but
-right now we would have only one user (IIO) for this.
-
-I'm also fine with just implementing it in IIO first, and the someone
-else can move it to lib/string.c if needed.
-
-For now, this patch serves mostly as a notifier, in case there is more
-interest out there for something like this.
-I might do a V8, with this implemented in IIO core, and then have it
-there, until others would find it useful.
-
-Changelog v6 -> v7:
-* https://patchwork.kernel.org/project/linux-iio/patch/20201222131312.64957-1-alexandru.ardelean@analog.com/
-* added standalone __sysfs_match_string_with_gaps() function
-
- include/linux/string.h |  1 +
- lib/string.c           | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
-
-diff --git a/include/linux/string.h b/include/linux/string.h
-index b1f3894a0a3e..d7999e50dae1 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -191,6 +191,7 @@ static inline int strtobool(const char *s, bool *res)
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e9ee9363fed0..5f6211bfb428 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -470,8 +470,11 @@ ssize_t iio_enum_available_read(struct iio_dev *indio_dev,
+ 	if (!e->num_items)
+ 		return 0;
  
- int match_string(const char * const *array, size_t n, const char *string);
- int __sysfs_match_string(const char * const *array, size_t n, const char *s);
-+int __sysfs_match_string_with_gaps(const char * const *array, ssize_t n, const char *s);
- 
- /**
-  * sysfs_match_string - matches given string in an array
-diff --git a/lib/string.c b/lib/string.c
-index 4288e0158d47..bb99313ad4c1 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -785,6 +785,42 @@ int __sysfs_match_string(const char * const *array, size_t n, const char *str)
- }
- EXPORT_SYMBOL(__sysfs_match_string);
- 
-+/**
-+ * __sysfs_match_string_with_gaps - matches given string in an array with gaps
-+ * @array: array of strings
-+ * @n: number of strings in the array or negative for NULL terminated arrays
-+ * @str: string to match with
-+ *
-+ * Returns index of @str in the @array or -EINVAL, similar to match_string().
-+ * Uses sysfs_streq instead of strcmp for matching.
-+ *
-+ * This routine will look for a string in an array of strings.
-+ * If n > 0, then the search will continue until the element is found or
-+ * the n-th element is reached, regardless of any NULL elements in the array.
-+ * If n < 0, then the search will continue until the element is found or
-+ * until the first NULL element.
-+ */
-+int __sysfs_match_string_with_gaps(const char * const *array, ssize_t n,
-+				   const char *str)
-+{
-+	const char *item;
-+	int index;
-+
-+	for (index = 0; index < n; index++) {
-+		item = array[index];
-+		if (!item) {
-+			if (n < 0)
-+				break;
+-	for (i = 0; i < e->num_items; ++i)
++	for (i = 0; i < e->num_items; ++i) {
++		if (!e->items[i])
 +			continue;
-+		}
-+		if (sysfs_streq(item, str))
-+			return index;
+ 		len += scnprintf(buf + len, PAGE_SIZE - len, "%s ", e->items[i]);
 +	}
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(__sysfs_match_string_with_gaps);
-+
- #ifndef __HAVE_ARCH_MEMSET
- /**
-  * memset - Fill a region of memory with the given value
+ 
+ 	/* replace last space with a newline */
+ 	buf[len - 1] = '\n';
+@@ -492,7 +495,7 @@ ssize_t iio_enum_read(struct iio_dev *indio_dev,
+ 	i = e->get(indio_dev, chan);
+ 	if (i < 0)
+ 		return i;
+-	else if (i >= e->num_items)
++	else if (i >= e->num_items || !e->items[i])
+ 		return -EINVAL;
+ 
+ 	return snprintf(buf, PAGE_SIZE, "%s\n", e->items[i]);
+@@ -509,7 +512,7 @@ ssize_t iio_enum_write(struct iio_dev *indio_dev,
+ 	if (!e->set)
+ 		return -EINVAL;
+ 
+-	ret = __sysfs_match_string(e->items, e->num_items, buf);
++	ret = __sysfs_match_string_with_gaps(e->items, e->num_items, buf);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.17.1
 

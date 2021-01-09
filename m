@@ -2,41 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0544A2F0301
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 20:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FA32F0315
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 20:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbhAITCV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Jan 2021 14:02:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47540 "EHLO mail.kernel.org"
+        id S1726471AbhAITIr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 9 Jan 2021 14:08:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48678 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbhAITCV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 9 Jan 2021 14:02:21 -0500
+        id S1726265AbhAITIq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 9 Jan 2021 14:08:46 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6C602399A;
-        Sat,  9 Jan 2021 19:01:37 +0000 (UTC)
-Date:   Sat, 9 Jan 2021 19:01:33 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 5B19E2399A;
+        Sat,  9 Jan 2021 19:08:05 +0000 (UTC)
+Date:   Sat, 9 Jan 2021 19:08:02 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jyoti Bhayana <jbhayana@google.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        cristian.marussi@arm.com, sudeep.holla@arm.com,
-        egranata@google.com, mikhail.golubev@opensynergy.com,
-        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
-        ankitarora@google.com
-Subject: Re: Reply to [RFC PATCH v2 0/1] Adding support for IIO SCMI based
- sensors
-Message-ID: <20210109190133.61051fab@archlinux>
-In-Reply-To: <20210106212353.951807-1-jbhayana@google.com>
-References: <20210106161233.GA44413@e120937-lin>
-        <20210106212353.951807-1-jbhayana@google.com>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 2/3] Documentation/ABI/testing: Add documentation for
+ AD5766 new ABI
+Message-ID: <20210109190802.4c4fcbc2@archlinux>
+In-Reply-To: <20210108183739.27634-2-cristian.pop@analog.com>
+References: <20210108183739.27634-1-cristian.pop@analog.com>
+        <20210108183739.27634-2-cristian.pop@analog.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,49 +35,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  6 Jan 2021 21:23:53 +0000
-Jyoti Bhayana <jbhayana@google.com> wrote:
+On Fri, 8 Jan 2021 20:37:38 +0200
+Cristian Pop <cristian.pop@analog.com> wrote:
 
-> Hi Jonathan,
+> New interface is proposed for dither functionality. This future allows
+> composing  an external signals to the selected output channel.
+> The dither signal can be turned on/off, scaled, inverted, or it can be
+> selected from different sources.
 > 
-> Instead of adding IIO_VAL_INT_H32_L32, I am thinking of adding IIO_VAL_FRACTIONAL_LONG
-> or IIO_VAL_FRACTIONAL_64 as the scale/exponent used for min/max range can be different
-> than the one used in resolution according to specification. 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+Hi Cristian,
 
-That's somewhat 'odd'.  Given min/max are inherently values the sensor is supposed to
-be able to return why give them different resolutions?  Can you point me at a specific
-section of the spec?  The axis_min_range_low etc fields don't seem to have units specified
-but I assumed they were in sensor units and so same scale factors?
-
-> 
-> I am planning to use read_avail for IIO_CHAN_INFO_PROCESSED using IIO_AVAIL_RANGE 
-> and this new IIO_VAL_FRACTIONAL_64 for min range,max range and resolution.
-> Instead of two values used in IIO_VAL_FRACTIONAL, IIO_VAL_FRACTIONAL_64 will use 4 values
-> val_high,val_low,and val2_high and val2_low.
-
-I'm not keen on the changing that internal kernel interface unless we absolutely
-have to.  read_avail() is called from consumer drivers and they won't know anything
-about this new variant.
-
-> 
-> Let me know if that is an acceptable solution.
-
-Hmm. It isn't a standard use of the ABI given the value in the buffer is (I assume)
-raw (needs scale applied).  However, it isn't excluded by the ABI docs.  Whether
-a standard userspace is going to expect it is not clear to me.
-
-I don't want to end up in a position where we end up with available being generally
-added for processed when what most people care about is what the value range they
-might get from a polled read is (rather than via a buffer).
-
-So I'm not that keen on this solution but if we can find a way to avoid it.
+One trivial inline to fix if you need to respin. Otherwise I can tidy up whilst
+applying.
 
 Jonathan
 
 
+> ---
+> Changelog v5:                                                              
+>         - Rename property to: "in_voltageY_dither_enable"                  
+>         - Change scale values to: "1 0.75 0.5 0.25"                        
+>         - Specify KernelVersion
+>  .../ABI/testing/sysfs-bus-iio-dac-ad5766      | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
 > 
-> 
-> Thanks,
-> Jyoti
-> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766 b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+> new file mode 100644
+> index 000000000000..6e5e383b2c53
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad5766
+> @@ -0,0 +1,31 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_ennable
+Typo, enable but I can fix that whilst applying if there is nothing else.
+
+Jonathan
+
+> +KernelVersion:	5.12
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Dither enable. Write 1 to enable dither or 0 to disable it.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_invert
+> +KernelVersion:	5.12
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Inverts the dither applied to the selected DAC channel. Dither is not
+> +		inverted by default. Write "1" to invert dither.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale_available
+> +KernelVersion:	5.12
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Returns possible scalings available for the current channel.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_scale
+> +KernelVersion:	5.12
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Scales the dither before it is applied to the selected channel.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_source
+> +KernelVersion:	5.12
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Selects dither source applied to the selected channel. Write "0" to
+> +		select N0 source, write "1" to select N1 source.
 

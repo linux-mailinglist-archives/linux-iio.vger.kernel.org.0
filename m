@@ -2,32 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CD92F02E3
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 19:43:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0544A2F0301
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 20:02:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725999AbhAISmN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Jan 2021 13:42:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45782 "EHLO mail.kernel.org"
+        id S1726303AbhAITCV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 9 Jan 2021 14:02:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47540 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725956AbhAISmN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 9 Jan 2021 13:42:13 -0500
+        id S1726293AbhAITCV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 9 Jan 2021 14:02:21 -0500
 Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 131C923A04;
-        Sat,  9 Jan 2021 18:41:30 +0000 (UTC)
-Date:   Sat, 9 Jan 2021 18:41:27 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id B6C602399A;
+        Sat,  9 Jan 2021 19:01:37 +0000 (UTC)
+Date:   Sat, 9 Jan 2021 19:01:33 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ye, Xiang" <xiang.ye@intel.com>
-Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] add custom hinge sensor support
-Message-ID: <20210109184127.48ac58c3@archlinux>
-In-Reply-To: <20201231024640.GA5718@host>
-References: <20201215054444.9324-1-xiang.ye@intel.com>
-        <20201230120517.622d3351@archlinux>
-        <20201231024640.GA5718@host>
+To:     Jyoti Bhayana <jbhayana@google.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        cristian.marussi@arm.com, sudeep.holla@arm.com,
+        egranata@google.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, Peter.hilber@opensynergy.com,
+        ankitarora@google.com
+Subject: Re: Reply to [RFC PATCH v2 0/1] Adding support for IIO SCMI based
+ sensors
+Message-ID: <20210109190133.61051fab@archlinux>
+In-Reply-To: <20210106212353.951807-1-jbhayana@google.com>
+References: <20210106161233.GA44413@e120937-lin>
+        <20210106212353.951807-1-jbhayana@google.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,77 +45,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 31 Dec 2020 10:46:40 +0800
-"Ye, Xiang" <xiang.ye@intel.com> wrote:
+On Wed,  6 Jan 2021 21:23:53 +0000
+Jyoti Bhayana <jbhayana@google.com> wrote:
 
-> On Wed, Dec 30, 2020 at 12:05:17PM +0000, Jonathan Cameron wrote:
-> > On Tue, 15 Dec 2020 13:44:41 +0800
-> > Ye Xiang <xiang.ye@intel.com> wrote:
-> >   
-> > > Here we register one iio device with three channels which present angle for
-> > > hinge, keyboard and screen.
-> > > 
-> > > This driver works on devices with Intel integrated sensor hub, where
-> > > hinge sensor is presented using a custom sensor usage id.
-> > > 
-> > > Here the angle is presented in degrees, which is converted to radians.  
-> > 
-> > Other than those minor bits I'm happy to fix up in patch 2, this looks
-> > good to me.  However, I'll need a Jiri Ack for the hid parts before
-> > I apply it.  We are are early in this cycle, so no great rush given
-> > the usual xmas slow down!  
+> Hi Jonathan,
 > 
-> Ok, let's wait Jiri to review the hid parts. Thanks for the help.
-Series applied with the changes mentioned in review of patch 2.
+> Instead of adding IIO_VAL_INT_H32_L32, I am thinking of adding IIO_VAL_FRACTIONAL_LONG
+> or IIO_VAL_FRACTIONAL_64 as the scale/exponent used for min/max range can be different
+> than the one used in resolution according to specification. 
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the various autobuilders to poke at it at and see if they can find
-anything I missed.
+That's somewhat 'odd'.  Given min/max are inherently values the sensor is supposed to
+be able to return why give them different resolutions?  Can you point me at a specific
+section of the spec?  The axis_min_range_low etc fields don't seem to have units specified
+but I assumed they were in sensor units and so same scale factors?
 
-Thanks,
+> 
+> I am planning to use read_avail for IIO_CHAN_INFO_PROCESSED using IIO_AVAIL_RANGE 
+> and this new IIO_VAL_FRACTIONAL_64 for min range,max range and resolution.
+> Instead of two values used in IIO_VAL_FRACTIONAL, IIO_VAL_FRACTIONAL_64 will use 4 values
+> val_high,val_low,and val2_high and val2_low.
+
+I'm not keen on the changing that internal kernel interface unless we absolutely
+have to.  read_avail() is called from consumer drivers and they won't know anything
+about this new variant.
+
+> 
+> Let me know if that is an acceptable solution.
+
+Hmm. It isn't a standard use of the ABI given the value in the buffer is (I assume)
+raw (needs scale applied).  However, it isn't excluded by the ABI docs.  Whether
+a standard userspace is going to expect it is not clear to me.
+
+I don't want to end up in a position where we end up with available being generally
+added for processed when what most people care about is what the value range they
+might get from a polled read is (rather than via a buffer).
+
+So I'm not that keen on this solution but if we can find a way to avoid it.
 
 Jonathan
 
+
 > 
-> Thanks
-> Ye Xiang
-> >   
-> > > 
-> > > Changes since v3:
-> > >   - hid-sensor-custom: remove sensor_inst::custom_pdev_exposed.
-> > >   - hid-sensor-custom: use static buf, w_buf to avoid using goto in 
-> > >     get_known_custom_sensor_index.
-> > >   - hid-sensor-custom-intel-hinge: use devm_ prefix function instead.
-> > >   - sysfs-bus-iio: put in_anglY_raw together with in_angl_raw.
-> > > 
-> > > Changes since v2:
-> > >   - use 1 iio device instead of 3 for hinge sensor.
-> > >   - use indexed channel instead of modified channel and added channel
-> > >     labels.
-> > >   - remove 2,3 patch in last version, add a document patch to describe the
-> > >     hinge channels.
-> > >   - hid-sensor-custom: use meaningful return value in 
-> > >     get_known_custom_sensor_index and checked in call side.
-> > >   - hid-sensor-ids.h: use HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(x) to 
-> > >     define custom sensor value.
-> > > 
-> > > Changes since v1:
-> > >   - fixed errors reported by lkp
-> > > 
-> > > Ye Xiang (3):
-> > >   HID: hid-sensor-custom: Add custom sensor iio support
-> > >   iio: hid-sensors: Add hinge sensor driver
-> > >   iio:Documentation: Add documentation for hinge sensor channels
-> > > 
-> > >  Documentation/ABI/testing/sysfs-bus-iio       |  11 +
-> > >  drivers/hid/hid-sensor-custom.c               | 143 +++++++
-> > >  .../hid-sensors/hid-sensor-attributes.c       |   2 +
-> > >  drivers/iio/position/Kconfig                  |  16 +
-> > >  drivers/iio/position/Makefile                 |   1 +
-> > >  .../position/hid-sensor-custom-intel-hinge.c  | 391 ++++++++++++++++++
-> > >  include/linux/hid-sensor-ids.h                |  14 +
-> > >  7 files changed, 578 insertions(+)
-> > >  create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> > >   
-> >   
+> 
+> Thanks,
+> Jyoti
+> 
 

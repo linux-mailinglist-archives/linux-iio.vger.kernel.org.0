@@ -2,148 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEBF2F00D9
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 16:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CD92F02E3
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Jan 2021 19:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbhAIPdA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Jan 2021 10:33:00 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:9562 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbhAIPc7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 9 Jan 2021 10:32:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1610206207;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:From:
-        Subject:Sender;
-        bh=17ZjyfIr0fsiJsOM6r/wfHzinQDKh+E+bvifPTfKU/4=;
-        b=tvdl4dIsM2RJ4usgextBs9cDwPDpYrnwoPM1nWUaO7tQxi6HFtfrpjA7NupkHy1Pk3
-        pf1ICkpTBz5u01cwETTZIgOGCFGtAMUpCbzXaSc6pprBa13ssftz1i6iotdAVTHN7CQO
-        vpr+Uzzfvj1xEw76lR4LmyQCGxxeQDmGePsWSJod1Zs1NVrr3Lalq8DKswAUEqxzggzu
-        ONQ+Z4TwAmFvu3O4AY1c0WcySOGSd+o4JT5lGZ2ZYoDjX96fR9ZZGsTcH5FQut/vrgMk
-        z8VQhOl6QyEYyvXRHoA8EhROK1ThsIzGvm6JI+wmDQ3kfDYf8Tmqal5VssQsCIiM7ZzX
-        v9og==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB5W6NRVg="
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-        by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
-        with ESMTPSA id R0a218x09FO6UP9
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Sat, 9 Jan 2021 16:24:06 +0100 (CET)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v2 2/2] iio: magnetometer: bmc150: Add rudimentary regulator support
-Date:   Sat,  9 Jan 2021 16:23:27 +0100
-Message-Id: <20210109152327.512538-2-stephan@gerhold.net>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210109152327.512538-1-stephan@gerhold.net>
-References: <20210109152327.512538-1-stephan@gerhold.net>
+        id S1725999AbhAISmN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 9 Jan 2021 13:42:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45782 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725956AbhAISmN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 9 Jan 2021 13:42:13 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 131C923A04;
+        Sat,  9 Jan 2021 18:41:30 +0000 (UTC)
+Date:   Sat, 9 Jan 2021 18:41:27 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Ye, Xiang" <xiang.ye@intel.com>
+Cc:     jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] add custom hinge sensor support
+Message-ID: <20210109184127.48ac58c3@archlinux>
+In-Reply-To: <20201231024640.GA5718@host>
+References: <20201215054444.9324-1-xiang.ye@intel.com>
+        <20201230120517.622d3351@archlinux>
+        <20201231024640.GA5718@host>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-BMC150 needs VDD and VDDIO regulators that might need to be explicitly
-enabled. Add some rudimentary support to obtain and enable these
-regulators during probe() and disable them during remove()
-or on the error path.
+On Thu, 31 Dec 2020 10:46:40 +0800
+"Ye, Xiang" <xiang.ye@intel.com> wrote:
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
-This is mostly copy-paste of
-079c1c3f2082 ("iio: accel: bmc150-accel: Add rudimentary regulator support")
-from Linus Walleij but for the BMC150 magnetometer driver.
+> On Wed, Dec 30, 2020 at 12:05:17PM +0000, Jonathan Cameron wrote:
+> > On Tue, 15 Dec 2020 13:44:41 +0800
+> > Ye Xiang <xiang.ye@intel.com> wrote:
+> >   
+> > > Here we register one iio device with three channels which present angle for
+> > > hinge, keyboard and screen.
+> > > 
+> > > This driver works on devices with Intel integrated sensor hub, where
+> > > hinge sensor is presented using a custom sensor usage id.
+> > > 
+> > > Here the angle is presented in degrees, which is converted to radians.  
+> > 
+> > Other than those minor bits I'm happy to fix up in patch 2, this looks
+> > good to me.  However, I'll need a Jiri Ack for the hid parts before
+> > I apply it.  We are are early in this cycle, so no great rush given
+> > the usual xmas slow down!  
+> 
+> Ok, let's wait Jiri to review the hid parts. Thanks for the help.
+Series applied with the changes mentioned in review of patch 2.
 
-Changes in v2: Picked up Reviewed-by:, split patch series from bmg160
----
- drivers/iio/magnetometer/bmc150_magn.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+Applied to the togreg branch of iio.git and pushed out as testing for
+the various autobuilders to poke at it at and see if they can find
+anything I missed.
 
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index fa09fcab620a..b2f3129e1b4f 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -25,6 +25,7 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- 
- #include "bmc150_magn.h"
- 
-@@ -135,6 +136,7 @@ struct bmc150_magn_data {
- 	 */
- 	struct mutex mutex;
- 	struct regmap *regmap;
-+	struct regulator_bulk_data regulators[2];
- 	struct iio_mount_matrix orientation;
- 	/* 4 x 32 bits for x, y z, 4 bytes align, 64 bits timestamp */
- 	s32 buffer[6];
-@@ -692,12 +694,24 @@ static int bmc150_magn_init(struct bmc150_magn_data *data)
- 	int ret, chip_id;
- 	struct bmc150_magn_preset preset;
- 
-+	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-+				    data->regulators);
-+	if (ret < 0) {
-+		dev_err(data->dev, "Failed to enable regulators: %d\n", ret);
-+		return ret;
-+	}
-+	/*
-+	 * 3ms power-on time according to datasheet, let's better
-+	 * be safe than sorry and set this delay to 5ms.
-+	 */
-+	msleep(5);
-+
- 	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND,
- 					 false);
- 	if (ret < 0) {
- 		dev_err(data->dev,
- 			"Failed to bring up device from suspend mode\n");
--		return ret;
-+		goto err_regulator_disable;
- 	}
- 
- 	ret = regmap_read(data->regmap, BMC150_MAGN_REG_CHIP_ID, &chip_id);
-@@ -752,6 +766,8 @@ static int bmc150_magn_init(struct bmc150_magn_data *data)
- 
- err_poweroff:
- 	bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND, true);
-+err_regulator_disable:
-+	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
- 	return ret;
- }
- 
-@@ -867,6 +883,13 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
- 	data->irq = irq;
- 	data->dev = dev;
- 
-+	data->regulators[0].supply = "vdd";
-+	data->regulators[1].supply = "vddio";
-+	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->regulators),
-+				      data->regulators);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to get regulators\n");
-+
- 	ret = iio_read_mount_matrix(dev, "mount-matrix",
- 				&data->orientation);
- 	if (ret)
-@@ -984,6 +1007,7 @@ int bmc150_magn_remove(struct device *dev)
- 	bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND, true);
- 	mutex_unlock(&data->mutex);
- 
-+	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
- 	return 0;
- }
- EXPORT_SYMBOL(bmc150_magn_remove);
--- 
-2.30.0
+Thanks,
+
+Jonathan
+
+> 
+> Thanks
+> Ye Xiang
+> >   
+> > > 
+> > > Changes since v3:
+> > >   - hid-sensor-custom: remove sensor_inst::custom_pdev_exposed.
+> > >   - hid-sensor-custom: use static buf, w_buf to avoid using goto in 
+> > >     get_known_custom_sensor_index.
+> > >   - hid-sensor-custom-intel-hinge: use devm_ prefix function instead.
+> > >   - sysfs-bus-iio: put in_anglY_raw together with in_angl_raw.
+> > > 
+> > > Changes since v2:
+> > >   - use 1 iio device instead of 3 for hinge sensor.
+> > >   - use indexed channel instead of modified channel and added channel
+> > >     labels.
+> > >   - remove 2,3 patch in last version, add a document patch to describe the
+> > >     hinge channels.
+> > >   - hid-sensor-custom: use meaningful return value in 
+> > >     get_known_custom_sensor_index and checked in call side.
+> > >   - hid-sensor-ids.h: use HID_USAGE_SENSOR_DATA_FIELD_CUSTOM_VALUE(x) to 
+> > >     define custom sensor value.
+> > > 
+> > > Changes since v1:
+> > >   - fixed errors reported by lkp
+> > > 
+> > > Ye Xiang (3):
+> > >   HID: hid-sensor-custom: Add custom sensor iio support
+> > >   iio: hid-sensors: Add hinge sensor driver
+> > >   iio:Documentation: Add documentation for hinge sensor channels
+> > > 
+> > >  Documentation/ABI/testing/sysfs-bus-iio       |  11 +
+> > >  drivers/hid/hid-sensor-custom.c               | 143 +++++++
+> > >  .../hid-sensors/hid-sensor-attributes.c       |   2 +
+> > >  drivers/iio/position/Kconfig                  |  16 +
+> > >  drivers/iio/position/Makefile                 |   1 +
+> > >  .../position/hid-sensor-custom-intel-hinge.c  | 391 ++++++++++++++++++
+> > >  include/linux/hid-sensor-ids.h                |  14 +
+> > >  7 files changed, 578 insertions(+)
+> > >  create mode 100644 drivers/iio/position/hid-sensor-custom-intel-hinge.c
+> > >   
+> >   
 

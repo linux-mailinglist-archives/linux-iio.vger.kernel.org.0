@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 640AC2F2515
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Jan 2021 02:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F9722F254C
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Jan 2021 02:18:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbhALArP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jan 2021 19:47:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57860 "EHLO
+        id S1727406AbhALBMl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jan 2021 20:12:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731868AbhALArD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jan 2021 19:47:03 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC9EC061575
-        for <linux-iio@vger.kernel.org>; Mon, 11 Jan 2021 16:46:23 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id i5so302204pgo.1
-        for <linux-iio@vger.kernel.org>; Mon, 11 Jan 2021 16:46:23 -0800 (PST)
+        with ESMTP id S1727236AbhALBMk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jan 2021 20:12:40 -0500
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F576C061575
+        for <linux-iio@vger.kernel.org>; Mon, 11 Jan 2021 17:12:00 -0800 (PST)
+Received: by mail-pj1-x1034.google.com with SMTP id p12so580069pju.5
+        for <linux-iio@vger.kernel.org>; Mon, 11 Jan 2021 17:12:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BFSAmenJoGpDLR5Jd0Z+pzCgvWKTXPzWQPtDSg8JcU0=;
-        b=VE2YKCe/C92UEBhhyJJoeP24tB9ikVQDqd/zqZbBN2DkJM4eq9Fl4E5yYrHlRlh9HY
-         zwh6MYi0JWVUI40ggP4v7bHUxdSsh/3vd0FwMf+7bcyYyH9n0jK5npqG/4J2U2KT58nN
-         CCWtz/3gluSQ64tmoDhcPuSSjGwE87yuW1rOE=
+        bh=6R/cq6PIYbS6Bsrl+RHrnbHTzftJZnFEZon8G4ejAuw=;
+        b=cUece+YuN0yDo7znegO5IPyFtlSL/NRE041LYGwoKyn0FRDsN5NtccbEe0tB4mzq0+
+         A9Y0jZuBbisxTf6ow6I/HYe82ZZgLwCyxShU3NCBI6cyk6g6f5nR7eqg2jlf+E4NbPIx
+         nxYzX0aVAJXyfgdblVIYJbq9SQHqTKflgRFwc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BFSAmenJoGpDLR5Jd0Z+pzCgvWKTXPzWQPtDSg8JcU0=;
-        b=erIP7CeV8p4fPnD4P3rjl3+ntvUN47QUxpX2n1IkYwZYm/gfptNGdieB2As8V46VFs
-         zm80nqfCXMNikpDTOvUfSWzSg2Oeh6y5I7vfWaoY67Du0ePE3/5yr1k9BkCCNhp2+4Lb
-         0YfX/3+L1f76/zCi1z4Op6WJmYQw4t5ijHQEyqq3KxE/3aFR8DQeR5Lu44iJrsE/IxlG
-         31Le4WbCWmFPYtD0TyaJdLBytnP/cZoyLgd1bWkpifJYF2X03C78UK84SSv3/wqXj3e8
-         +9cd/HMsbCGOiZjMx35M7b6REgcQBPDvTIgPtZoBY9skdBQasCqegU2aChqwyfkhGNUN
-         PI+w==
-X-Gm-Message-State: AOAM530i2tjF4HhvGMcwzn5p2GNd3VluY+Fe8s1nYtkb46ADfh5qMo1x
-        SKvW5gz3GGhvuZH+f0NGR4iWdry4nhcPGg==
-X-Google-Smtp-Source: ABdhPJxUcN1yV0bDYbGUfugjVqknKxPy/Y69Rclj/D/5d4rtS57UGvb+x4dIsikImygKIQrdrtJy9w==
-X-Received: by 2002:a63:e246:: with SMTP id y6mr2015962pgj.412.1610412382837;
-        Mon, 11 Jan 2021 16:46:22 -0800 (PST)
+        bh=6R/cq6PIYbS6Bsrl+RHrnbHTzftJZnFEZon8G4ejAuw=;
+        b=gPGYPTSLXCCqtkAaw2Rb1InRoQibBx8XYIMDrV6RF0HRgXiXfavUaaX09ZrdDToUkA
+         TFqUBz5kiILNAjI1RoCJuYob+6UtsE3GMwFWfDkX0CbfqDjV8dmgfgeMf22voQztsg9Q
+         hx+Vg2IuVPGRF6w2bH7/9XATlncctShwF9RXSDbsuPXpu//BxiyK2BXzw+UVi0eQNEyM
+         fkmhy3GlFd1hFb3YqhE8OzWxkR2uMfEwzq0dCJ6GVBOfxmHwOqsvNQYVlaxgy3t7b2hl
+         maNca1nYz6inKZzm93gG+MPbyarL7R1MEKLYZiUKMFY2VHIQSfd2WX0tILC0LVAt2CO6
+         tabQ==
+X-Gm-Message-State: AOAM531XRsR9u0os36xO7SNmu6YyKbaPcc1H7kcC70rhNBEfuXr9dmpP
+        Wv44ubi3WHMZ5BqWz88bNB/jxw==
+X-Google-Smtp-Source: ABdhPJzId2XNSdFw1uWmosuVNyAADqDe42fpPX4zp3axmE85f9lg7Fq2Rvr4F91PGj45EKXmT09HlA==
+X-Received: by 2002:a17:90a:4083:: with SMTP id l3mr1670827pjg.109.1610413919732;
+        Mon, 11 Jan 2021 17:11:59 -0800 (PST)
 Received: from localhost ([2620:15c:202:201:7220:84ff:fe09:94fe])
-        by smtp.gmail.com with ESMTPSA id m3sm795507pfa.134.2021.01.11.16.46.21
+        by smtp.gmail.com with ESMTPSA id cl23sm678118pjb.23.2021.01.11.17.11.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Jan 2021 16:46:21 -0800 (PST)
+        Mon, 11 Jan 2021 17:11:58 -0800 (PST)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com
 Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3] iio: hrtimer: Allow sub Hz granularity
-Date:   Mon, 11 Jan 2021 16:46:11 -0800
-Message-Id: <20210112004611.2426181-1-gwendal@chromium.org>
+Subject: [PATCH v4] iio: hrtimer: Allow sub Hz granularity
+Date:   Mon, 11 Jan 2021 17:11:54 -0800
+Message-Id: <20210112011154.2435035-1-gwendal@chromium.org>
 X-Mailer: git-send-email 2.30.0.284.gd98b1dd5eaa7-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,6 +71,9 @@ done
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
+Changes since v3:
+- Fix rebasing issue. 
+
 Changes since v2:
 - Add do_div to allow divide by a u64 on 32bit machines.
 
@@ -82,7 +85,7 @@ Changes since v1:
  2 files changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/Documentation/iio/iio_configfs.rst b/Documentation/iio/iio_configfs.rst
-index ecbfdb3afef7e..807589ef2bea0 100644
+index 3a5d76f9e2b9..09845fe525e8 100644
 --- a/Documentation/iio/iio_configfs.rst
 +++ b/Documentation/iio/iio_configfs.rst
 @@ -99,3 +99,4 @@ Each trigger can have one or more attributes specific to the trigger type.
@@ -91,7 +94,7 @@ index ecbfdb3afef7e..807589ef2bea0 100644
  It does introduce the sampling_frequency attribute to trigger directory.
 +That attribute sets the polling frequency in Hz, with mHz precision.
 diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
-index a5e670726717f..ac2c3be164ac6 100644
+index 410de837d041..aae12a245ece 100644
 --- a/drivers/iio/trigger/iio-trig-hrtimer.c
 +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
 @@ -22,7 +22,7 @@
@@ -144,7 +147,7 @@ index a5e670726717f..ac2c3be164ac6 100644
  	return len;
  }
 @@ -135,8 +141,8 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
- 	hrtimer_init(&trig_info->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+ 	hrtimer_init(&trig_info->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
  	trig_info->timer.function = iio_hrtimer_trig_handler;
  
 -	trig_info->sampling_frequency = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
